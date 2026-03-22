@@ -4,19 +4,19 @@ import "./App.css";
 const products = [
   // Arabian
   { id: 1, name: "Afnan 9AM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
+  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BEST SELLING" },
   { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
+  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BEST SELLING" },
   { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 6, name: "Armaf Club De Nuit Bling", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 }, badge: "LIMITED" },
-  { id: 7, name: "Armaf Club de Nuit Intense", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
+  { id: 6, name: "Armaf Club De Nuit Bling", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
+  { id: 7, name: "Armaf Club de Nuit Intense", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BEST SELLING" },
   { id: 8, name: "Armaf Club de Nuit Sillage", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "LIMITED" },
+  { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
   { id: 10, name: "Haramain Signature Blue", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
-  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
-  { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
+  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BEST SELLING" },
+  { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BEST SELLING" },
   { id: 13, name: "Lattafa Fakhar Black", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
+  { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BEST SELLING" },
   { id: 15, name: "Lattafa Musamam Black Intense", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
   { id: 16, name: "Lattafa Qaed Al Fursan Untamed", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
   { id: 17, name: "Paris Corner Emir Trillium", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
@@ -25,33 +25,33 @@ const products = [
   { id: 20, name: "Paris Corner Perfumes North Stag Expressions II DEUX", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
   { id: 21, name: "Rayhaan Aquatica", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
   { id: 22, name: "Rayhaan Pacific Aura", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 }, badge: "LIMITED" },
+  { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
 
   // Designer / Niche
   { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
   { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 } },
   { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
-  { id: 28, name: "Bois Impérial by Essential Parfums", category: "Designer/Niche", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 }, badge: "BESTSELLER" },
+  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BEST SELLING" },
+  { id: 28, name: "Bois Impérial by Essential Parfums", category: "Designer/Niche", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 }, badge: "BEST SELLING" },
   { id: 29, name: "BOSS Bottled Beyond Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 30, name: "BOSS The Scent Elixir Parfum Intense for Him", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "LIMITED" },
+  { id: 30, name: "BOSS The Scent Elixir Parfum Intense for Him", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
   { id: 31, name: "BOSS The Scent Le Parfum for Him", category: "Designer/Niche", sizes: { "2ml": 6, "5ml": 14, "10ml": 25 } },
   { id: 32, name: "Calvin Klein CK All Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 } },
   { id: 33, name: "Calvin Klein Defy Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3, "5ml": 7, "10ml": 12 } },
   { id: 34, name: "Calvin Klein Defy Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
   { id: 35, name: "Chopard Oud Malaki Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 36, name: "Creed Aventus Cologne", category: "Designer/Niche", sizes: { "2ml": 13, "5ml": 29, "10ml": 52 }, badge: "BESTSELLER" },
-  { id: 37, name: "Giorgio Armani Acqua di Giò Profondo Parfum", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
-  { id: 38, name: "Gisada Ambassador Men Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 11, "10ml": 20 }, badge: "BESTSELLER" },
+  { id: 36, name: "Creed Aventus Cologne", category: "Designer/Niche", sizes: { "2ml": 13, "5ml": 29, "10ml": 52 }, badge: "BEST SELLING" },
+  { id: 37, name: "Giorgio Armani Acqua di Giò Profondo Parfum", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BEST SELLING" },
+  { id: 38, name: "Gisada Ambassador Men Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 11, "10ml": 20 }, badge: "BEST SELLING" },
   { id: 39, name: "Givenchy Gentleman Eau de Parfum Réserve Privée", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 12, "10ml": 21 } },
   { id: 40, name: "Jimmy Choo Man Blue Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 } },
   { id: 41, name: "L'Homme Eau de Parfum by Yves Saint Laurent", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
   { id: 42, name: "L'Homme Idéal De Guerlain Paris Eau De Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, badge: "BESTSELLER" },
+  { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, badge: "BEST SELLING" },
   { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
   { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
   { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 }, badge: "LIMITED" },
+  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 } },
 ];
 
 const isShopPage =
@@ -81,11 +81,7 @@ function ProductCard({ product, onAddToCart }) {
 
   return (
     <article className="product-card">
-      {product.badge && (
-        <div className={`card-flag ${product.badge === "LIMITED" ? "limited" : "bestseller"}`}>
-          {product.badge}
-        </div>
-      )}
+      {product.badge && <div className="card-flag bestseller">{product.badge}</div>}
 
       <div className="product-badge">{product.category}</div>
 
@@ -249,6 +245,8 @@ export default function App() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
   const [cart, setCart] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -261,6 +259,13 @@ export default function App() {
       return matchesSearch && matchesFilter;
     });
   }, [search, filter]);
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const addToCart = (newItem) => {
     setCart((prev) => {
@@ -418,7 +423,10 @@ export default function App() {
                       className="search-input"
                       placeholder="Search fragrance..."
                       value={search}
-                      onChange={(e) => setSearch(e.target.value)}
+                      onChange={(e) => {
+                        setSearch(e.target.value);
+                        setCurrentPage(1);
+                      }}
                     />
                   </div>
                 </div>
@@ -426,7 +434,10 @@ export default function App() {
                 <div className="filter-bar">
                   <button
                     className={filter === "All" ? "filter-btn active" : "filter-btn"}
-                    onClick={() => setFilter("All")}
+                    onClick={() => {
+                      setFilter("All");
+                      setCurrentPage(1);
+                    }}
                     type="button"
                   >
                     All
@@ -434,7 +445,10 @@ export default function App() {
 
                   <button
                     className={filter === "Arabian" ? "filter-btn active" : "filter-btn"}
-                    onClick={() => setFilter("Arabian")}
+                    onClick={() => {
+                      setFilter("Arabian");
+                      setCurrentPage(1);
+                    }}
                     type="button"
                   >
                     Arabian
@@ -442,7 +456,10 @@ export default function App() {
 
                   <button
                     className={filter === "Designer/Niche" ? "filter-btn active" : "filter-btn"}
-                    onClick={() => setFilter("Designer/Niche")}
+                    onClick={() => {
+                      setFilter("Designer/Niche");
+                      setCurrentPage(1);
+                    }}
                     type="button"
                   >
                     Designer / Niche
@@ -455,13 +472,37 @@ export default function App() {
                 </div>
 
                 <div className="product-grid">
-                  {filteredProducts.map((product) => (
+                  {paginatedProducts.map((product) => (
                     <ProductCard
                       key={product.id}
                       product={product}
                       onAddToCart={addToCart}
                     />
                   ))}
+                </div>
+
+                <div className="pagination">
+                  <button
+                    type="button"
+                    className="pagination-btn"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  >
+                    Prev
+                  </button>
+
+                  <div className="pagination-info">
+                    Page <strong>{currentPage}</strong> of <strong>{totalPages || 1}</strong>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="pagination-btn"
+                    disabled={currentPage === totalPages || totalPages === 0}
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  >
+                    Next
+                  </button>
                 </div>
               </div>
 
