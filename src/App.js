@@ -39,17 +39,15 @@ function getSelectedPrice(product, size) {
 
 function ProductCard({ product }) {
   const [size, setSize] = useState("5ml");
-
   const selectedPrice = getSelectedPrice(product, size);
 
-  const orderText = encodeURIComponent(
+  const mailText = encodeURIComponent(
     `Zdravo, želim da naručim:\n${product.name}\nVeličina: ${size}\nCena: ${formatPrice(selectedPrice)}`
   );
 
-  const instagramUrl = `https://www.instagram.com/direct/new/`;
   const mailUrl = `mailto:order@playniceshop.me?subject=${encodeURIComponent(
     `Order request - ${product.name}`
-  )}&body=${orderText}`;
+  )}&body=${mailText}`;
 
   return (
     <article className="product-card">
@@ -95,21 +93,22 @@ function ProductCard({ product }) {
 
       <div className="selected-price-box">
         <span>Selected</span>
-        <strong>{size} — {formatPrice(selectedPrice)}</strong>
+        <strong>
+          {size} — {formatPrice(selectedPrice)}
+        </strong>
       </div>
 
       <div className="product-actions">
         <a href={mailUrl} className="btn btn-primary">
-          Order by Email
+          Order Now
         </a>
         <a
-          href={instagramUrl}
+          href="https://www.instagram.com/playnice.me/"
           target="_blank"
           rel="noreferrer"
           className="btn btn-secondary"
-          title="Open Instagram DM"
         >
-          Order via Instagram
+          Instagram
         </a>
       </div>
     </article>
@@ -141,7 +140,8 @@ export default function App() {
           </div>
 
           <nav className="nav">
-            <a href="#catalog">Catalog</a>
+            <a href="#intro">Home</a>
+            <a href="#catalog">Shop</a>
             <a href="#how">How it works</a>
             <a href="#contact">Contact</a>
           </nav>
@@ -149,28 +149,35 @@ export default function App() {
       </header>
 
       <main>
-        <section className="hero">
+        <section id="intro" className="hero intro-hero">
           <div className="container hero-grid">
             <div className="hero-copy">
-              <div className="section-kicker">PREMIUM FRAGRANCE DECANTS</div>
+              <div className="section-kicker">PLAYNICE PREMIUM FRAGRANCE DECANTS</div>
+
               <h1 className="hero-title">
-                Discover your next scent
-                <span> the PlayNice way.</span>
+                Try before
+                <span> you buy.</span>
               </h1>
+
               <p className="hero-text">
                 Niche. Designer. Arabic.
                 <br />
-                Testiraj parfem pre pune bočice.
+                Pažljivo odabrani parfemi u premium dekantima.
                 <br />
-                Premium dekanti, pažljivo biran izbor i jednostavna porudžbina.
+                Otkrij pravi miris pre nego što kupiš punu bočicu.
               </p>
 
               <div className="hero-actions">
                 <a href="#catalog" className="btn btn-primary">
-                  Shop Arabian Collection
+                  Shop
                 </a>
-                <a href="mailto:order@playniceshop.me" className="btn btn-secondary">
-                  order@playniceshop.me
+                <a
+                  href="https://www.instagram.com/playnice.me/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-secondary"
+                >
+                  Instagram
                 </a>
               </div>
 
@@ -185,14 +192,14 @@ export default function App() {
                 </div>
                 <div className="stat-card">
                   <div className="stat-value">Luxury</div>
-                  <div className="stat-label">Try before you buy</div>
+                  <div className="stat-label">Curated experience</div>
                 </div>
               </div>
             </div>
 
             <div className="hero-visual">
               <div className="visual-card">
-                <div className="visual-topline">PLAYNICE ARABIAN COLLECTION</div>
+                <div className="visual-topline">ARABIAN COLLECTION</div>
 
                 <div className="bottle-stage">
                   <div className="bottle-glow" />
@@ -204,12 +211,36 @@ export default function App() {
                 </div>
 
                 <div className="visual-panel">
-                  <h3>Try Before You Buy</h3>
+                  <h3>Luxury starts with the right sample</h3>
                   <p>
-                    Izaberi parfem, odaberi 5ml, 10ml ili 20ml i pošalji porudžbinu
-                    direktno sa sajta.
+                    Klikni na Shop i pregledaj kompletnu Arabian kolekciju sa
+                    cenama i opcijom za poručivanje.
                   </p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section intro-strip">
+          <div className="container">
+            <div className="steps-grid">
+              <div className="step-card">
+                <div className="step-number">01</div>
+                <h3>Choose fragrance</h3>
+                <p>Izaberi parfem koji želiš da testiraš ili nosiš svakodnevno.</p>
+              </div>
+
+              <div className="step-card">
+                <div className="step-number">02</div>
+                <h3>Select size</h3>
+                <p>Odaberi 5ml, 10ml ili 20ml u zavisnosti od potreba.</p>
+              </div>
+
+              <div className="step-card">
+                <div className="step-number">03</div>
+                <h3>Order easily</h3>
+                <p>Pošalji porudžbinu direktno sa sajta putem mejla ili Instagrama.</p>
               </div>
             </div>
           </div>
@@ -219,10 +250,10 @@ export default function App() {
           <div className="container">
             <div className="section-head catalog-head">
               <div>
-                <div className="section-kicker">ARABIAN CATALOG</div>
-                <h2 className="section-title">Full PlayNice Arabian collection</h2>
+                <div className="section-kicker">SHOP</div>
+                <h2 className="section-title">PlayNice Arabian collection</h2>
                 <p className="section-text">
-                  Pregledaj sve Arabian parfeme i izaberi veličinu koja ti odgovara.
+                  Pregledaj parfeme, izaberi veličinu i poruči direktno.
                 </p>
               </div>
 
@@ -250,53 +281,19 @@ export default function App() {
           </div>
         </section>
 
-        <section id="how" className="section">
-          <div className="container">
-            <div className="section-head">
-              <div className="section-kicker">HOW TO ORDER</div>
-              <h2 className="section-title">Simple process. Premium result.</h2>
-            </div>
-
-            <div className="steps-grid">
-              <div className="step-card">
-                <div className="step-number">01</div>
-                <h3>Choose fragrance</h3>
-                <p>Pregledaj katalog i pronađi parfem koji želiš da testiraš ili nosiš.</p>
-              </div>
-
-              <div className="step-card">
-                <div className="step-number">02</div>
-                <h3>Select size</h3>
-                <p>Izaberi 5ml, 10ml ili 20ml, u zavisnosti od toga koliko želiš.</p>
-              </div>
-
-              <div className="step-card">
-                <div className="step-number">03</div>
-                <h3>Send order</h3>
-                <p>Pošalji porudžbinu mejlom ili preko Instagrama i završi kupovinu brzo.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="section cta-section">
+        <section id="how" className="section cta-section">
           <div className="container">
             <div className="cta-box">
-              <div className="section-kicker">READY TO ORDER?</div>
-              <h2>Your next compliment starts here.</h2>
+              <div className="section-kicker">PLAYNICE</div>
+              <h2>Discover fragrances the right way.</h2>
               <p>
-                Za porudžbine, pitanja i preporuke piši na Instagram ili na
-                order@playniceshop.me
+                Testiraj pre pune bočice. Premium dekanti, pažljivo biran izbor i
+                jednostavna porudžbina.
               </p>
 
               <div className="cta-actions">
-                <a
-                  href="https://www.instagram.com/playnice.me/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="btn btn-primary"
-                >
-                  Open Instagram
+                <a href="#catalog" className="btn btn-primary">
+                  Shop Now
                 </a>
                 <a href="mailto:order@playniceshop.me" className="btn btn-secondary">
                   Send Email
