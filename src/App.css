@@ -791,3 +791,12 @@ a {
     min-width: 100%;
   }
 }
+.intro-hero {
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+}
+
+.intro-strip {
+  padding-top: 0;
+}
