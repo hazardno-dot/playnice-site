@@ -1152,3 +1152,139 @@ a {
     position: static;
   }
 }
+:root {
+  --bg: #050505;
+  --bg-soft: #090909;
+}
+
+body {
+  background: #050505;
+}
+
+.site-shell {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: #050505;
+}
+
+.bg-orb-1,
+.bg-orb-2,
+.grain-overlay {
+  opacity: 0.25;
+}
+
+.product-card {
+  padding: 22px;
+  border-radius: 26px;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 18, 18, 0.96),
+    rgba(10, 10, 10, 0.96)
+  );
+  border: 1px solid rgba(215, 179, 98, 0.14);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+
+.product-title {
+  margin: 0 0 14px;
+  font-size: 0.98rem;
+  line-height: 1.35;
+  font-weight: 600;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.7em;
+  min-height: 2.7em;
+  max-height: 2.7em;
+}
+
+.product-prices {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+  min-height: 102px;
+}
+
+.size-picker {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  min-height: 40px;
+  align-items: flex-start;
+}
+
+.selected-price-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 16px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(243, 214, 155, 0.12);
+  margin-bottom: 16px;
+  color: var(--muted);
+  min-height: 56px;
+}
+
+.product-actions {
+  margin-top: auto;
+  display: grid;
+  gap: 10px;
+}
+
+.card-flag {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08rem;
+}
+
+.card-flag.bestseller {
+  background: rgba(220, 181, 107, 0.16);
+  border: 1px solid rgba(220, 181, 107, 0.28);
+  color: var(--gold-soft);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.pagination-btn {
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(243, 214, 155, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
