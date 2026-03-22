@@ -1,4 +1,6 @@
-import React from "react";
+git add .
+git commit -m "Debug App.js"
+git pushimport React from "react";
 import "./App.css";
 
 const featuredFragrances = [
