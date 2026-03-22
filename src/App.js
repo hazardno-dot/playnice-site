@@ -1,647 +1,274 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+import React from "react";
+import "./App.css";
 
-:root {
-  --bg: #060606;
-  --bg-soft: #0d0d0d;
-  --panel: rgba(255, 255, 255, 0.04);
-  --panel-strong: rgba(255, 255, 255, 0.06);
-  --line: rgba(215, 179, 98, 0.16);
-  --line-strong: rgba(215, 179, 98, 0.28);
-  --gold: #dcb56b;
-  --gold-soft: #f3d69b;
-  --text: #f7f2e8;
-  --muted: rgba(247, 242, 232, 0.72);
-  --muted-2: rgba(247, 242, 232, 0.5);
-  --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-  --radius: 28px;
-  --container: 1240px;
-}
+function App() {
+  const featuredFragrances = [
+    {
+      name: "Creed Aventus Cologne",
+      vibe: "Fresh luxury icon",
+      desc: "Citrusno-drvenasti potpis za čist, skup i samouveren utisak.",
+    },
+    {
+      name: "Givenchy Gentleman Réserve Privée",
+      vibe: "Dark elegant statement",
+      desc: "Topla, boozy i sofisticirana kompozicija za večernji premium vibe.",
+    },
+    {
+      name: "Gisada Ambassador",
+      vibe: "Compliment magnet",
+      desc: "Modern, dopadljiv i upečatljiv miris koji lako ostavlja trag.",
+    },
+    {
+      name: "Mancera Cedrat Boise",
+      vibe: "Bold niche energy",
+      desc: "Voćno-drvenasta nišna svežina sa ozbiljnim karakterom.",
+    },
+  ];
 
-* {
-  box-sizing: border-box;
-}
+  const benefits = [
+    {
+      title: "Try Before You Buy",
+      text: "Testiraj parfem na svojoj koži pre nego što se odlučiš za punu bočicu.",
+    },
+    {
+      title: "Curated Selection",
+      text: "Biramo samo parfeme koji imaju karakter, stil i wow efekat.",
+    },
+    {
+      title: "Luxury Experience",
+      text: "PlayNice nije samo prodaja dekanta — već premium osećaj od prvog kontakta.",
+    },
+  ];
 
-html {
-  scroll-behavior: smooth;
-}
+  const steps = [
+    {
+      number: "01",
+      title: "Izaberi parfem",
+      text: "Pregledaj našu pažljivo odabranu selekciju niche, designer i Arabic mirisa.",
+    },
+    {
+      number: "02",
+      title: "Odaberi 5ml ili 10ml",
+      text: "Uzmi dekant veličinu koja ti odgovara za testiranje ili nošenje.",
+    },
+    {
+      number: "03",
+      title: "Pošalji porudžbinu",
+      text: "Naruči jednostavno putem Instagrama ili mejla i završi kupovinu brzo.",
+    },
+  ];
 
-body {
-  margin: 0;
-  background:
-    radial-gradient(circle at top, rgba(182, 136, 50, 0.12) 0%, rgba(10, 10, 10, 0.98) 28%, rgba(5, 5, 5, 1) 100%);
-  color: var(--text);
-  font-family: "Inter", sans-serif;
-}
+  return (
+    <div className="site-shell">
+      <div className="bg-orb bg-orb-1" />
+      <div className="bg-orb bg-orb-2" />
+      <div className="grain-overlay" />
 
-a {
-  color: inherit;
-}
+      <header className="header">
+        <div className="container header-inner">
+          <div className="brand-block">
+            <a href="/" className="brand-logo">
+              PLAYNICE
+            </a>
+            <div className="brand-tagline">Remember. PlayNice.</div>
+          </div>
 
-.site-shell {
-  min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
+          <nav className="nav">
+            <a href="#featured">Collection</a>
+            <a href="#experience">Experience</a>
+            <a href="#how">How it works</a>
+            <a href="#contact">Contact</a>
+          </nav>
+        </div>
+      </header>
 
-.container {
-  width: min(var(--container), calc(100% - 40px));
-  margin: 0 auto;
-}
+      <main>
+        <section className="hero">
+          <div className="container hero-grid">
+            <div className="hero-copy">
+              <div className="section-kicker">CURATED LUXURY FRAGRANCE DECANTS</div>
 
-.grain-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.08;
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.35) 0.7px, transparent 0.8px),
-    radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.2) 0.7px, transparent 0.8px),
-    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.18) 0.7px, transparent 0.8px);
-  background-size: 180px 180px;
-  z-index: 0;
-}
+              <h1 className="hero-title">
+                Discover fragrances
+                <span> the PlayNice way.</span>
+              </h1>
 
-.bg-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(70px);
-  pointer-events: none;
-  z-index: 0;
-}
+              <p className="hero-text">
+                Niche. Designer. Arabic.
+                <br />
+                Pažljivo odabrani parfemi dostupni u premium dekantima.
+                <br />
+                Ne kupuj na slepo — prvo testiraj, oseti i odluči.
+              </p>
 
-.bg-orb-1 {
-  width: 360px;
-  height: 360px;
-  background: rgba(215, 179, 98, 0.14);
-  top: 80px;
-  right: -100px;
-}
+              <div className="hero-actions">
+                <a
+                  href="https://www.instagram.com/playnice.me/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-primary"
+                >
+                  DM to Order
+                </a>
+                <a href="#featured" className="btn btn-secondary">
+                  Explore Collection
+                </a>
+              </div>
 
-.bg-orb-2 {
-  width: 280px;
-  height: 280px;
-  background: rgba(215, 179, 98, 0.08);
-  left: -70px;
-  top: 620px;
-}
+              <div className="stats-grid">
+                <div className="stat-card">
+                  <div className="stat-value">5ml / 10ml</div>
+                  <div className="stat-label">Premium decants</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-value">Curated</div>
+                  <div className="stat-label">Selected scents only</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-value">Luxury</div>
+                  <div className="stat-label">Boutique feel</div>
+                </div>
+              </div>
+            </div>
 
-.header,
-.hero,
-.section,
-.footer {
-  position: relative;
-  z-index: 1;
-}
+            <div className="hero-visual">
+              <div className="visual-card">
+                <div className="visual-topline">FEATURED CONCEPT</div>
 
-.header {
-  position: sticky;
-  top: 0;
-  backdrop-filter: blur(14px);
-  background: rgba(8, 8, 8, 0.58);
-  border-bottom: 1px solid rgba(215, 179, 98, 0.1);
-  z-index: 20;
-}
+                <div className="bottle-stage">
+                  <div className="bottle-glow" />
+                  <div className="bottle-shadow" />
+                  <div className="bottle">
+                    <div className="bottle-cap" />
+                    <div className="bottle-front">PN</div>
+                  </div>
+                </div>
 
-.header-inner {
-  min-height: 86px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 28px;
-}
+                <div className="visual-panel">
+                  <h3>Try Before You Buy</h3>
+                  <p>
+                    Premium fragrance discovery za ljude koji žele pravi miris
+                    pre pune bočice.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-.brand-block {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+        <section id="featured" className="section">
+          <div className="container">
+            <div className="section-head">
+              <div className="section-kicker">FEATURED COLLECTION</div>
+              <h2 className="section-title">A selection made to leave an impression</h2>
+              <p className="section-text">
+                Fokus je na mirisima koji imaju identitet, prisustvo i premium osećaj.
+              </p>
+            </div>
 
-.brand-logo {
-  text-decoration: none;
-  color: var(--gold-soft);
-  letter-spacing: 0.36rem;
-  font-weight: 700;
-  font-size: 1.1rem;
-}
+            <div className="feature-grid">
+              {featuredFragrances.map((item, index) => (
+                <article key={index} className="feature-card">
+                  <div className="feature-vibe">{item.vibe}</div>
+                  <h3>{item.name}</h3>
+                  <p>{item.desc}</p>
+                  <div className="feature-meta">Available in 5ml / 10ml</div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
 
-.brand-tagline {
-  color: var(--muted-2);
-  font-size: 0.76rem;
-  letter-spacing: 0.12rem;
-}
+        <section id="experience" className="section">
+          <div className="container">
+            <div className="experience-box">
+              <div className="experience-copy">
+                <div className="section-kicker">THE PLAYNICE EXPERIENCE</div>
+                <h2 className="section-title">Built like a boutique, not just a shop</h2>
+                <p className="section-text">
+                  PlayNice kombinuje premium estetiku, pažljivo birane mirise i
+                  jednostavan način poručivanja. Cilj nije da vidiš što više parfema —
+                  već da pronađeš pravi.
+                </p>
+              </div>
 
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  flex-wrap: wrap;
-}
+              <div className="benefit-list">
+                {benefits.map((item, index) => (
+                  <div key={index} className="benefit-card">
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
-.nav a {
-  text-decoration: none;
-  color: rgba(247, 242, 232, 0.8);
-  font-size: 0.96rem;
-  transition: color 0.25s ease, opacity 0.25s ease;
-}
+        <section id="how" className="section">
+          <div className="container">
+            <div className="section-head">
+              <div className="section-kicker">HOW IT WORKS</div>
+              <h2 className="section-title">Simple process. Premium result.</h2>
+            </div>
 
-.nav a:hover {
-  color: var(--gold-soft);
-}
+            <div className="steps-grid">
+              {steps.map((step, index) => (
+                <div key={index} className="step-card">
+                  <div className="step-number">{step.number}</div>
+                  <h3>{step.title}</h3>
+                  <p>{step.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-.hero {
-  padding: 72px 0 48px;
-}
+        <section className="section cta-section">
+          <div className="container">
+            <div className="cta-box">
+              <div className="section-kicker">READY TO DISCOVER YOUR NEXT SIGNATURE SCENT?</div>
+              <h2>Luxury starts with the right sample.</h2>
+              <p>
+                Pošalji poruku i naruči svoj sledeći PlayNice dekant.
+              </p>
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 48px;
-  align-items: center;
-}
+              <div className="cta-actions">
+                <a
+                  href="https://www.instagram.com/playnice.me/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-primary"
+                >
+                  Order via Instagram
+                </a>
+                <a href="mailto:order@playniceshop.me" className="btn btn-secondary">
+                  order@playniceshop.me
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
 
-.section-kicker {
-  display: inline-block;
-  color: var(--gold);
-  font-size: 0.78rem;
-  letter-spacing: 0.24rem;
-  margin-bottom: 18px;
-}
-
-.hero-title,
-.section-title,
-.cta-box h2 {
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-.hero-title {
-  margin: 0;
-  font-size: clamp(3.2rem, 7vw, 6.3rem);
-  line-height: 0.95;
-  max-width: 760px;
-}
-
-.hero-title span {
-  display: inline-block;
-  color: var(--gold-soft);
-  text-shadow: 0 0 30px rgba(220, 181, 107, 0.08);
-}
-
-.hero-text {
-  max-width: 700px;
-  margin: 24px 0 0;
-  color: var(--muted);
-  font-size: 1.06rem;
-  line-height: 1.9;
-}
-
-.hero-actions,
-.cta-actions {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-top: 30px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  padding: 0 22px;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-}
-
-.btn-primary {
-  color: #111;
-  background: linear-gradient(135deg, #f1d699 0%, #d2a453 52%, #b07a2a 100%);
-  box-shadow: 0 14px 35px rgba(176, 122, 42, 0.28);
-}
-
-.btn-secondary {
-  color: var(--text);
-  border: 1px solid rgba(243, 214, 155, 0.28);
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.btn-secondary:hover {
-  border-color: rgba(243, 214, 155, 0.45);
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 34px;
-  max-width: 760px;
-}
-
-.stat-card {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  padding: 18px;
-  box-shadow: var(--shadow);
-}
-
-.stat-value {
-  color: var(--gold-soft);
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.stat-label {
-  color: var(--muted);
-  font-size: 0.93rem;
-}
-
-.hero-visual {
-  display: flex;
-  justify-content: center;
-}
-
-.visual-card {
-  width: 100%;
-  max-width: 470px;
-  min-height: 620px;
-  padding: 24px;
-  border-radius: 34px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-  border: 1px solid var(--line);
-  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.4);
-  position: relative;
-  overflow: hidden;
-}
-
-.visual-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 32%, transparent 68%, rgba(255, 255, 255, 0.025));
-  pointer-events: none;
-}
-
-.visual-topline {
-  color: var(--muted-2);
-  font-size: 0.78rem;
-  letter-spacing: 0.2rem;
-  position: relative;
-  z-index: 1;
-}
-
-.bottle-stage {
-  position: relative;
-  height: 390px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.bottle-glow {
-  position: absolute;
-  width: 260px;
-  height: 260px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(220, 181, 107, 0.3), transparent 68%);
-  filter: blur(14px);
-}
-
-.bottle-shadow {
-  position: absolute;
-  bottom: 68px;
-  width: 190px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.4);
-  filter: blur(12px);
-}
-
-.bottle {
-  position: relative;
-  width: 180px;
-  height: 238px;
-  border-radius: 30px;
-  background:
-    linear-gradient(180deg, rgba(35, 35, 35, 0.98) 0%, rgba(12, 12, 12, 0.98) 100%);
-  border: 1px solid rgba(243, 214, 155, 0.3);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 26px 44px rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.bottle::before {
-  content: "";
-  position: absolute;
-  left: 18px;
-  top: 18px;
-  bottom: 18px;
-  width: 32px;
-  border-radius: 30px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.16),
-    rgba(255, 255, 255, 0.02)
+      <footer id="contact" className="footer">
+        <div className="container footer-inner">
+          <div className="footer-brand">PLAYNICE</div>
+          <div className="footer-line">Try before you buy.</div>
+          <div className="footer-links">
+            <a
+              href="https://www.instagram.com/playnice.me/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Instagram
+            </a>
+            <a href="mailto:order@playniceshop.me">order@playniceshop.me</a>
+          </div>
+          <div className="footer-copy">Remember. PlayNice.</div>
+        </div>
+      </footer>
+    </div>
   );
-  filter: blur(1px);
 }
 
-.bottle-cap {
-  position: absolute;
-  top: -28px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 84px;
-  height: 38px;
-  border-radius: 14px 14px 8px 8px;
-  background: linear-gradient(180deg, #2d2d2d, #111);
-  border: 1px solid rgba(243, 214, 155, 0.2);
-}
-
-.bottle-front {
-  transform: translateY(10px);
-  color: var(--gold-soft);
-  font-weight: 700;
-  font-size: 2rem;
-  letter-spacing: 0.2rem;
-}
-
-.visual-panel {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 24px;
-  padding: 22px;
-  border-radius: 24px;
-  background: rgba(0, 0, 0, 0.36);
-  border: 1px solid rgba(243, 214, 155, 0.14);
-  z-index: 1;
-}
-
-.visual-panel h3 {
-  margin: 0 0 10px;
-  color: var(--gold-soft);
-  font-size: 1.25rem;
-  font-family: "Cormorant Garamond", serif;
-}
-
-.visual-panel p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.8;
-}
-
-.section {
-  padding: 32px 0 58px;
-}
-
-.section-head {
-  max-width: 760px;
-  margin-bottom: 28px;
-}
-
-.section-title {
-  margin: 0 0 12px;
-  font-size: clamp(2.2rem, 4vw, 4rem);
-  line-height: 1;
-}
-
-.section-text {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.85;
-  font-size: 1rem;
-}
-
-.feature-grid,
-.steps-grid {
-  display: grid;
-  gap: 18px;
-}
-
-.feature-grid {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-.feature-card {
-  padding: 24px;
-  border-radius: 24px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.feature-card:hover,
-.step-card:hover,
-.benefit-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--line-strong);
-}
-
-.feature-vibe {
-  color: var(--gold);
-  font-size: 0.78rem;
-  letter-spacing: 0.14rem;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-
-.feature-card h3,
-.step-card h3,
-.benefit-card h3 {
-  margin: 0 0 10px;
-  font-size: 1.22rem;
-}
-
-.feature-card p,
-.step-card p,
-.benefit-card p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.8;
-}
-
-.feature-meta {
-  margin-top: 18px;
-  color: var(--gold-soft);
-  font-size: 0.93rem;
-  font-weight: 600;
-}
-
-.experience-box {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 22px;
-  border-radius: 30px;
-  padding: 28px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-}
-
-.benefit-list {
-  display: grid;
-  gap: 16px;
-}
-
-.benefit-card,
-.step-card {
-  border-radius: 24px;
-  padding: 22px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--line);
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.steps-grid {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.step-number {
-  color: var(--gold-soft);
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-  font-family: "Cormorant Garamond", serif;
-}
-
-.cta-section {
-  padding-top: 8px;
-  padding-bottom: 76px;
-}
-
-.cta-box {
-  text-align: center;
-  border-radius: 34px;
-  padding: 52px 26px;
-  background:
-    radial-gradient(circle at top, rgba(220, 181, 107, 0.16), rgba(255, 255, 255, 0.03) 36%, rgba(255, 255, 255, 0.02) 100%);
-  border: 1px solid var(--line);
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.26);
-}
-
-.cta-box h2 {
-  margin: 10px 0 12px;
-  font-size: clamp(2.3rem, 4vw, 4.2rem);
-  line-height: 1;
-}
-
-.cta-box p {
-  max-width: 720px;
-  margin: 0 auto;
-  color: var(--muted);
-  line-height: 1.85;
-}
-
-.footer {
-  padding: 10px 0 42px;
-  border-top: 1px solid rgba(215, 179, 98, 0.1);
-}
-
-.footer-inner {
-  text-align: center;
-}
-
-.footer-brand {
-  color: var(--gold-soft);
-  font-weight: 700;
-  letter-spacing: 0.32rem;
-  margin-bottom: 8px;
-}
-
-.footer-line {
-  color: var(--muted);
-  margin-bottom: 12px;
-}
-
-.footer-links {
-  display: flex;
-  justify-content: center;
-  gap: 18px;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-}
-
-.footer-links a {
-  text-decoration: none;
-  color: var(--gold-soft);
-}
-
-.footer-copy {
-  color: var(--muted-2);
-  font-size: 0.92rem;
-}
-
-@media (max-width: 1100px) {
-  .hero-grid,
-  .experience-box {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-copy {
-    order: 1;
-  }
-
-  .hero-visual {
-    order: 2;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    width: min(var(--container), calc(100% - 28px));
-  }
-
-  .header-inner {
-    min-height: auto;
-    padding: 16px 0;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .nav {
-    gap: 14px;
-  }
-
-  .hero {
-    padding: 42px 0 28px;
-  }
-
-  .hero-title {
-    font-size: clamp(2.4rem, 12vw, 4.4rem);
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .visual-card {
-    min-height: 560px;
-  }
-
-  .bottle-stage {
-    height: 320px;
-  }
-
-  .section {
-    padding: 24px 0 44px;
-  }
-
-  .cta-box {
-    padding: 40px 18px;
-  }
-}
+export default App;
