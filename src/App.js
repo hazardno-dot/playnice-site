@@ -1,656 +1,647 @@
-import React from "react";
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
 
-function App() {
-  const featuredFragrances = [
-    {
-      name: "Creed Aventus Cologne",
-      vibe: "Fresh luxury icon",
-      desc: "Citrusno-drvenasti potpis za čist, skup i samouveren utisak.",
-    },
-    {
-      name: "Givenchy Gentleman Réserve Privée",
-      vibe: "Dark elegant statement",
-      desc: "Topla, boozy i sofisticirana kompozicija za večernji premium vibe.",
-    },
-    {
-      name: "Gisada Ambassador",
-      vibe: "Compliment magnet",
-      desc: "Modern, dopadljiv i upečatljiv miris koji lako ostavlja trag.",
-    },
-    {
-      name: "Mancera Cedrat Boise",
-      vibe: "Bold niche energy",
-      desc: "Voćno-drvenasta nišna svežina sa ozbiljnim karakterom.",
-    },
-  ];
-
-  const benefits = [
-    {
-      title: "Try Before You Buy",
-      text: "Testiraj parfem na svojoj koži pre nego što se odlučiš za punu bočicu.",
-    },
-    {
-      title: "Curated Selection",
-      text: "Biramo samo parfeme koji imaju karakter, stil i wow efekat.",
-    },
-    {
-      title: "Luxury Experience",
-      text: "PlayNice nije samo prodaja dekanta — već premium osećaj od prvog kontakta.",
-    },
-  ];
-
-  const steps = [
-    {
-      number: "01",
-      title: "Izaberi parfem",
-      text: "Pregledaj našu pažljivo odabranu selekciju niche, designer i Arabic mirisa.",
-    },
-    {
-      number: "02",
-      title: "Odaberi 5ml ili 10ml",
-      text: "Uzmi dekant veličinu koja ti odgovara za testiranje ili nošenje.",
-    },
-    {
-      number: "03",
-      title: "Pošalji porudžbinu",
-      text: "Naruči jednostavno putem Instagrama ili mejla i završi kupovinu brzo.",
-    },
-  ];
-
-  return (
-    <div style={styles.page}>
-      <div style={styles.noiseOverlay} />
-
-      <header style={styles.header}>
-        <div style={styles.brandWrap}>
-          <div style={styles.logo}>PLAYNICE</div>
-          <div style={styles.tagline}>Remember. PlayNice.</div>
-        </div>
-
-        <nav style={styles.nav}>
-          <a href="#featured" style={styles.navLink}>Collection</a>
-          <a href="#experience" style={styles.navLink}>Experience</a>
-          <a href="#how" style={styles.navLink}>How it works</a>
-          <a href="#contact" style={styles.navLink}>Contact</a>
-        </nav>
-      </header>
-
-      <main>
-        <section style={styles.hero}>
-          <div style={styles.heroLeft}>
-            <div style={styles.eyebrow}>CURATED LUXURY FRAGRANCE DECANTS</div>
-
-            <h1 style={styles.heroTitle}>
-              Discover fragrances
-              <br />
-              <span style={styles.goldText}>the PlayNice way.</span>
-            </h1>
-
-            <p style={styles.heroText}>
-              Niche. Designer. Arabic.
-              <br />
-              Pažljivo odabrani parfemi dostupni u premium dekantima.
-              <br />
-              Ne kupuj na slepo — prvo testiraj, oseti i odluči.
-            </p>
-
-            <div style={styles.heroButtons}>
-              <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" style={styles.primaryButton}>
-                DM to Order
-              </a>
-              <a href="#featured" style={styles.secondaryButton}>
-                Explore Collection
-              </a>
-            </div>
-
-            <div style={styles.heroStats}>
-              <div style={styles.statCard}>
-                <div style={styles.statNumber}>5ml / 10ml</div>
-                <div style={styles.statLabel}>Premium decants</div>
-              </div>
-              <div style={styles.statCard}>
-                <div style={styles.statNumber}>Curated</div>
-                <div style={styles.statLabel}>Only selected scents</div>
-              </div>
-              <div style={styles.statCard}>
-                <div style={styles.statNumber}>Luxury</div>
-                <div style={styles.statLabel}>Brand experience</div>
-              </div>
-            </div>
-          </div>
-
-          <div style={styles.heroRight}>
-            <div style={styles.heroCard}>
-              <div style={styles.heroCardTop}>FEATURED CONCEPT</div>
-              <div style={styles.heroBottleArea}>
-                <div style={styles.bottleGlow} />
-                <div style={styles.bottleMain}>
-                  <div style={styles.bottleCap} />
-                  <div style={styles.bottleBody}>PN</div>
-                </div>
-              </div>
-              <div style={styles.heroCardBottom}>
-                <div style={styles.heroCardTitle}>Try Before You Buy</div>
-                <div style={styles.heroCardText}>
-                  Premium fragrance discovery, designed for people who want the right scent before the full bottle.
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="featured" style={styles.section}>
-          <div style={styles.sectionIntro}>
-            <div style={styles.sectionEyebrow}>FEATURED COLLECTION</div>
-            <h2 style={styles.sectionTitle}>A selection made to leave an impression</h2>
-            <p style={styles.sectionText}>
-              Fokus je na mirisima koji imaju identitet, prisustvo i premium osećaj.
-            </p>
-          </div>
-
-          <div style={styles.grid4}>
-            {featuredFragrances.map((item, index) => (
-              <div key={index} style={styles.fragranceCard}>
-                <div style={styles.fragranceTopLine}>{item.vibe}</div>
-                <h3 style={styles.fragranceName}>{item.name}</h3>
-                <p style={styles.fragranceDesc}>{item.desc}</p>
-                <div style={styles.fragranceFooter}>Available in 5ml / 10ml</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section id="experience" style={styles.section}>
-          <div style={styles.experienceBox}>
-            <div style={styles.experienceLeft}>
-              <div style={styles.sectionEyebrow}>THE PLAYNICE EXPERIENCE</div>
-              <h2 style={styles.sectionTitle}>Built like a boutique, not just a shop</h2>
-              <p style={styles.sectionText}>
-                PlayNice kombinuje premium estetiku, pažljivo birane mirise i jednostavan način poručivanja.
-                Cilj nije da vidiš što više parfema — već da pronađeš pravi.
-              </p>
-            </div>
-
-            <div style={styles.benefitsWrap}>
-              {benefits.map((item, index) => (
-                <div key={index} style={styles.benefitCard}>
-                  <h3 style={styles.benefitTitle}>{item.title}</h3>
-                  <p style={styles.benefitText}>{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="how" style={styles.section}>
-          <div style={styles.sectionIntro}>
-            <div style={styles.sectionEyebrow}>HOW IT WORKS</div>
-            <h2 style={styles.sectionTitle}>Simple process. Premium result.</h2>
-          </div>
-
-          <div style={styles.stepsGrid}>
-            {steps.map((step, index) => (
-              <div key={index} style={styles.stepCard}>
-                <div style={styles.stepNumber}>{step.number}</div>
-                <h3 style={styles.stepTitle}>{step.title}</h3>
-                <p style={styles.stepText}>{step.text}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section style={styles.ctaSection}>
-          <div style={styles.ctaBox}>
-            <div style={styles.sectionEyebrow}>READY TO DISCOVER YOUR NEXT SIGNATURE SCENT?</div>
-            <h2 style={styles.ctaTitle}>Luxury starts with the right sample.</h2>
-            <p style={styles.ctaText}>
-              Pošalji poruku i naruči svoj sledeći PlayNice dekant.
-            </p>
-
-            <div style={styles.ctaButtons}>
-              <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" style={styles.primaryButton}>
-                Order via Instagram
-              </a>
-              <a href="mailto:order@playniceshop.me" style={styles.secondaryButton}>
-                order@playniceshop.me
-              </a>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer id="contact" style={styles.footer}>
-        <div style={styles.footerBrand}>PLAYNICE</div>
-        <div style={styles.footerText}>Try before you buy.</div>
-        <div style={styles.footerLinks}>
-          <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" style={styles.footerLink}>
-            Instagram
-          </a>
-          <a href="mailto:order@playniceshop.me" style={styles.footerLink}>
-            order@playniceshop.me
-          </a>
-        </div>
-        <div style={styles.footerCopy}>Remember. PlayNice.</div>
-      </footer>
-    </div>
-  );
+:root {
+  --bg: #060606;
+  --bg-soft: #0d0d0d;
+  --panel: rgba(255, 255, 255, 0.04);
+  --panel-strong: rgba(255, 255, 255, 0.06);
+  --line: rgba(215, 179, 98, 0.16);
+  --line-strong: rgba(215, 179, 98, 0.28);
+  --gold: #dcb56b;
+  --gold-soft: #f3d69b;
+  --text: #f7f2e8;
+  --muted: rgba(247, 242, 232, 0.72);
+  --muted-2: rgba(247, 242, 232, 0.5);
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  --radius: 28px;
+  --container: 1240px;
 }
 
-const styles = {
-  page: {
-    minHeight: "100vh",
-    background:
-      "radial-gradient(circle at top, rgba(168,130,58,0.18) 0%, rgba(10,10,10,1) 28%, rgba(5,5,5,1) 100%)",
-    color: "#f5efe3",
-    fontFamily:
-      "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    position: "relative",
-    overflow: "hidden",
-  },
-  noiseOverlay: {
-    position: "fixed",
-    inset: 0,
-    pointerEvents: "none",
-    background:
-      "linear-gradient(rgba(255,255,255,0.015), rgba(255,255,255,0.015))",
-    opacity: 0.8,
-  },
-  header: {
-    position: "sticky",
-    top: 0,
-    zIndex: 20,
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "20px 6%",
-    backdropFilter: "blur(10px)",
-    background: "rgba(8,8,8,0.55)",
-    borderBottom: "1px solid rgba(212,175,55,0.16)",
-  },
-  brandWrap: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "3px",
-  },
-  logo: {
-    fontSize: "1.2rem",
-    letterSpacing: "0.35rem",
-    fontWeight: 700,
-    color: "#f3d38a",
-  },
-  tagline: {
-    fontSize: "0.75rem",
-    color: "rgba(255,255,255,0.65)",
-    letterSpacing: "0.08rem",
-  },
-  nav: {
-    display: "flex",
-    gap: "20px",
-    flexWrap: "wrap",
-    justifyContent: "flex-end",
-  },
-  navLink: {
-    color: "rgba(255,255,255,0.82)",
-    textDecoration: "none",
-    fontSize: "0.95rem",
-  },
-  hero: {
-    display: "grid",
-    gridTemplateColumns: "1.15fr 0.85fr",
-    gap: "36px",
-    alignItems: "center",
-    padding: "72px 6% 56px",
-  },
-  heroLeft: {
-    maxWidth: "760px",
-  },
-  eyebrow: {
-    display: "inline-block",
-    color: "#d8b46a",
-    fontSize: "0.8rem",
-    letterSpacing: "0.18rem",
-    marginBottom: "18px",
-  },
-  heroTitle: {
-    fontSize: "clamp(2.7rem, 6vw, 5.6rem)",
-    lineHeight: 1.02,
-    margin: 0,
-    fontWeight: 700,
-    letterSpacing: "-0.03em",
-  },
-  goldText: {
-    color: "#f0c978",
-    textShadow: "0 0 20px rgba(212,175,55,0.12)",
-  },
-  heroText: {
-    marginTop: "22px",
-    fontSize: "1.08rem",
-    lineHeight: 1.8,
-    color: "rgba(255,255,255,0.78)",
-    maxWidth: "700px",
-  },
-  heroButtons: {
-    display: "flex",
-    gap: "14px",
-    flexWrap: "wrap",
-    marginTop: "28px",
-  },
-  primaryButton: {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "14px 22px",
-    borderRadius: "999px",
-    textDecoration: "none",
-    color: "#111",
-    background: "linear-gradient(135deg, #f0d18d, #b88a33)",
-    fontWeight: 700,
-    boxShadow: "0 12px 30px rgba(184,138,51,0.22)",
-  },
-  secondaryButton: {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "14px 22px",
-    borderRadius: "999px",
-    textDecoration: "none",
-    color: "#f5efe3",
-    background: "transparent",
-    border: "1px solid rgba(240,209,141,0.35)",
-    fontWeight: 600,
-  },
-  heroStats: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-    gap: "14px",
-    marginTop: "34px",
-  },
-  statCard: {
-    background: "rgba(255,255,255,0.035)",
-    border: "1px solid rgba(212,175,55,0.14)",
-    borderRadius: "20px",
-    padding: "18px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
-  },
-  statNumber: {
-    fontSize: "1.05rem",
-    fontWeight: 700,
-    color: "#f0c978",
-    marginBottom: "6px",
-  },
-  statLabel: {
-    color: "rgba(255,255,255,0.72)",
-    fontSize: "0.92rem",
-  },
-  heroRight: {
-    display: "flex",
-    justifyContent: "center",
-  },
-  heroCard: {
-    width: "100%",
-    maxWidth: "460px",
-    minHeight: "560px",
-    borderRadius: "32px",
-    padding: "22px",
-    background:
-      "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
-    border: "1px solid rgba(212,175,55,0.16)",
-    boxShadow: "0 30px 80px rgba(0,0,0,0.38)",
-    position: "relative",
-    overflow: "hidden",
-  },
-  heroCardTop: {
-    color: "rgba(255,255,255,0.65)",
-    letterSpacing: "0.18rem",
-    fontSize: "0.78rem",
-  },
-  heroBottleArea: {
-    position: "relative",
-    height: "360px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  bottleGlow: {
-    position: "absolute",
-    width: "240px",
-    height: "240px",
-    borderRadius: "50%",
-    background: "radial-gradient(circle, rgba(212,175,55,0.3), transparent 68%)",
-    filter: "blur(10px)",
-  },
-  bottleMain: {
-    position: "relative",
-    width: "170px",
-    height: "220px",
-    borderRadius: "28px",
-    background:
-      "linear-gradient(180deg, rgba(34,34,34,0.95), rgba(10,10,10,0.98))",
-    border: "1px solid rgba(240,209,141,0.35)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#f0c978",
-    fontWeight: 700,
-    fontSize: "2rem",
-    letterSpacing: "0.18rem",
-    boxShadow: "0 25px 40px rgba(0,0,0,0.45)",
-  },
-  bottleCap: {
-    position: "absolute",
-    top: "-26px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    width: "78px",
-    height: "36px",
-    borderRadius: "12px 12px 6px 6px",
-    background: "linear-gradient(180deg, #2c2c2c, #111)",
-    border: "1px solid rgba(240,209,141,0.22)",
-  },
-  bottleBody: {
-    transform: "translateY(10px)",
-  },
-  heroCardBottom: {
-    position: "absolute",
-    left: "22px",
-    right: "22px",
-    bottom: "22px",
-    padding: "20px",
-    borderRadius: "22px",
-    background: "rgba(0,0,0,0.34)",
-    border: "1px solid rgba(212,175,55,0.14)",
-  },
-  heroCardTitle: {
-    color: "#f0c978",
-    fontSize: "1.2rem",
-    fontWeight: 700,
-    marginBottom: "8px",
-  },
-  heroCardText: {
-    color: "rgba(255,255,255,0.78)",
-    lineHeight: 1.7,
-    fontSize: "0.98rem",
-  },
-  section: {
-    padding: "28px 6% 56px",
-  },
-  sectionIntro: {
-    maxWidth: "760px",
-    marginBottom: "26px",
-  },
-  sectionEyebrow: {
-    color: "#d8b46a",
-    fontSize: "0.8rem",
-    letterSpacing: "0.18rem",
-    marginBottom: "10px",
-  },
-  sectionTitle: {
-    fontSize: "clamp(2rem, 4vw, 3.4rem)",
-    lineHeight: 1.1,
-    margin: "0 0 10px 0",
-  },
-  sectionText: {
-    color: "rgba(255,255,255,0.74)",
-    fontSize: "1.02rem",
-    lineHeight: 1.8,
-    margin: 0,
-  },
-  grid4: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-    gap: "18px",
-  },
-  fragranceCard: {
-    padding: "24px",
-    borderRadius: "24px",
-    background: "rgba(255,255,255,0.035)",
-    border: "1px solid rgba(212,175,55,0.14)",
-    boxShadow: "0 16px 40px rgba(0,0,0,0.18)",
-  },
-  fragranceTopLine: {
-    color: "#d8b46a",
-    fontSize: "0.78rem",
-    letterSpacing: "0.12rem",
-    marginBottom: "14px",
-    textTransform: "uppercase",
-  },
-  fragranceName: {
-    margin: "0 0 12px 0",
-    fontSize: "1.25rem",
-    lineHeight: 1.3,
-  },
-  fragranceDesc: {
-    margin: 0,
-    color: "rgba(255,255,255,0.72)",
-    lineHeight: 1.75,
-    fontSize: "0.97rem",
-  },
-  fragranceFooter: {
-    marginTop: "18px",
-    color: "#f0c978",
-    fontSize: "0.92rem",
-    fontWeight: 600,
-  },
-  experienceBox: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: "22px",
-    padding: "26px",
-    borderRadius: "30px",
-    background:
-      "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02))",
-    border: "1px solid rgba(212,175,55,0.14)",
-  },
-  experienceLeft: {
-    paddingRight: "10px",
-  },
-  benefitsWrap: {
-    display: "grid",
-    gap: "16px",
-  },
-  benefitCard: {
-    borderRadius: "22px",
-    background: "rgba(0,0,0,0.25)",
-    border: "1px solid rgba(212,175,55,0.12)",
-    padding: "20px",
-  },
-  benefitTitle: {
-    margin: "0 0 8px 0",
-    color: "#f0c978",
-    fontSize: "1.08rem",
-  },
-  benefitText: {
-    margin: 0,
-    color: "rgba(255,255,255,0.74)",
-    lineHeight: 1.75,
-  },
-  stepsGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: "18px",
-  },
-  stepCard: {
-    borderRadius: "24px",
-    padding: "24px",
-    background: "rgba(255,255,255,0.03)",
-    border: "1px solid rgba(212,175,55,0.14)",
-  },
-  stepNumber: {
-    color: "#f0c978",
-    fontWeight: 700,
-    fontSize: "1.8rem",
-    marginBottom: "12px",
-  },
-  stepTitle: {
-    margin: "0 0 10px 0",
-    fontSize: "1.18rem",
-  },
-  stepText: {
-    margin: 0,
-    color: "rgba(255,255,255,0.72)",
-    lineHeight: 1.75,
-  },
-  ctaSection: {
-    padding: "8px 6% 72px",
-  },
-  ctaBox: {
-    textAlign: "center",
-    borderRadius: "34px",
-    padding: "46px 24px",
-    background:
-      "radial-gradient(circle at top, rgba(212,175,55,0.16), rgba(255,255,255,0.03) 35%, rgba(255,255,255,0.02) 100%)",
-    border: "1px solid rgba(212,175,55,0.16)",
-    boxShadow: "0 24px 60px rgba(0,0,0,0.24)",
-  },
-  ctaTitle: {
-    fontSize: "clamp(2rem, 4vw, 3.6rem)",
-    margin: "10px 0 12px 0",
-    lineHeight: 1.1,
-  },
-  ctaText: {
-    maxWidth: "720px",
-    margin: "0 auto",
-    color: "rgba(255,255,255,0.74)",
-    lineHeight: 1.8,
-    fontSize: "1rem",
-  },
-  ctaButtons: {
-    display: "flex",
-    gap: "14px",
-    justifyContent: "center",
-    flexWrap: "wrap",
-    marginTop: "26px",
-  },
-  footer: {
-    padding: "26px 6% 44px",
-    borderTop: "1px solid rgba(212,175,55,0.12)",
-    textAlign: "center",
-  },
-  footerBrand: {
-    color: "#f0c978",
-    fontWeight: 700,
-    letterSpacing: "0.28rem",
-    marginBottom: "8px",
-  },
-  footerText: {
-    color: "rgba(255,255,255,0.72)",
-    marginBottom: "12px",
-  },
-  footerLinks: {
-    display: "flex",
-    gap: "18px",
-    justifyContent: "center",
-    flexWrap: "wrap",
-    marginBottom: "10px",
-  },
-  footerLink: {
-    color: "#f3d38a",
-    textDecoration: "none",
-  },
-  footerCopy: {
-    color: "rgba(255,255,255,0.5)",
-    fontSize: "0.92rem",
-  },
-};
+* {
+  box-sizing: border-box;
+}
 
-export default App;
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top, rgba(182, 136, 50, 0.12) 0%, rgba(10, 10, 10, 0.98) 28%, rgba(5, 5, 5, 1) 100%);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+.site-shell {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.container {
+  width: min(var(--container), calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.35) 0.7px, transparent 0.8px),
+    radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.2) 0.7px, transparent 0.8px),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.18) 0.7px, transparent 0.8px);
+  background-size: 180px 180px;
+  z-index: 0;
+}
+
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-orb-1 {
+  width: 360px;
+  height: 360px;
+  background: rgba(215, 179, 98, 0.14);
+  top: 80px;
+  right: -100px;
+}
+
+.bg-orb-2 {
+  width: 280px;
+  height: 280px;
+  background: rgba(215, 179, 98, 0.08);
+  left: -70px;
+  top: 620px;
+}
+
+.header,
+.hero,
+.section,
+.footer {
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(14px);
+  background: rgba(8, 8, 8, 0.58);
+  border-bottom: 1px solid rgba(215, 179, 98, 0.1);
+  z-index: 20;
+}
+
+.header-inner {
+  min-height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.brand-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.brand-logo {
+  text-decoration: none;
+  color: var(--gold-soft);
+  letter-spacing: 0.36rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.brand-tagline {
+  color: var(--muted-2);
+  font-size: 0.76rem;
+  letter-spacing: 0.12rem;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  text-decoration: none;
+  color: rgba(247, 242, 232, 0.8);
+  font-size: 0.96rem;
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+.nav a:hover {
+  color: var(--gold-soft);
+}
+
+.hero {
+  padding: 72px 0 48px;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.section-kicker {
+  display: inline-block;
+  color: var(--gold);
+  font-size: 0.78rem;
+  letter-spacing: 0.24rem;
+  margin-bottom: 18px;
+}
+
+.hero-title,
+.section-title,
+.cta-box h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: clamp(3.2rem, 7vw, 6.3rem);
+  line-height: 0.95;
+  max-width: 760px;
+}
+
+.hero-title span {
+  display: inline-block;
+  color: var(--gold-soft);
+  text-shadow: 0 0 30px rgba(220, 181, 107, 0.08);
+}
+
+.hero-text {
+  max-width: 700px;
+  margin: 24px 0 0;
+  color: var(--muted);
+  font-size: 1.06rem;
+  line-height: 1.9;
+}
+
+.hero-actions,
+.cta-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 22px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  color: #111;
+  background: linear-gradient(135deg, #f1d699 0%, #d2a453 52%, #b07a2a 100%);
+  box-shadow: 0 14px 35px rgba(176, 122, 42, 0.28);
+}
+
+.btn-secondary {
+  color: var(--text);
+  border: 1px solid rgba(243, 214, 155, 0.28);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.btn-secondary:hover {
+  border-color: rgba(243, 214, 155, 0.45);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 34px;
+  max-width: 760px;
+}
+
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.stat-value {
+  color: var(--gold-soft);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 0.93rem;
+}
+
+.hero-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.visual-card {
+  width: 100%;
+  max-width: 470px;
+  min-height: 620px;
+  padding: 24px;
+  border-radius: 34px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--line);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.visual-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 32%, transparent 68%, rgba(255, 255, 255, 0.025));
+  pointer-events: none;
+}
+
+.visual-topline {
+  color: var(--muted-2);
+  font-size: 0.78rem;
+  letter-spacing: 0.2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.bottle-stage {
+  position: relative;
+  height: 390px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottle-glow {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(220, 181, 107, 0.3), transparent 68%);
+  filter: blur(14px);
+}
+
+.bottle-shadow {
+  position: absolute;
+  bottom: 68px;
+  width: 190px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  filter: blur(12px);
+}
+
+.bottle {
+  position: relative;
+  width: 180px;
+  height: 238px;
+  border-radius: 30px;
+  background:
+    linear-gradient(180deg, rgba(35, 35, 35, 0.98) 0%, rgba(12, 12, 12, 0.98) 100%);
+  border: 1px solid rgba(243, 214, 155, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 26px 44px rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottle::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  bottom: 18px;
+  width: 32px;
+  border-radius: 30px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0.02)
+  );
+  filter: blur(1px);
+}
+
+.bottle-cap {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 84px;
+  height: 38px;
+  border-radius: 14px 14px 8px 8px;
+  background: linear-gradient(180deg, #2d2d2d, #111);
+  border: 1px solid rgba(243, 214, 155, 0.2);
+}
+
+.bottle-front {
+  transform: translateY(10px);
+  color: var(--gold-soft);
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: 0.2rem;
+}
+
+.visual-panel {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  padding: 22px;
+  border-radius: 24px;
+  background: rgba(0, 0, 0, 0.36);
+  border: 1px solid rgba(243, 214, 155, 0.14);
+  z-index: 1;
+}
+
+.visual-panel h3 {
+  margin: 0 0 10px;
+  color: var(--gold-soft);
+  font-size: 1.25rem;
+  font-family: "Cormorant Garamond", serif;
+}
+
+.visual-panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.section {
+  padding: 32px 0 58px;
+}
+
+.section-head {
+  max-width: 760px;
+  margin-bottom: 28px;
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  line-height: 1;
+}
+
+.section-text {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.85;
+  font-size: 1rem;
+}
+
+.feature-grid,
+.steps-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.feature-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.feature-card {
+  padding: 24px;
+  border-radius: 24px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.feature-card:hover,
+.step-card:hover,
+.benefit-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--line-strong);
+}
+
+.feature-vibe {
+  color: var(--gold);
+  font-size: 0.78rem;
+  letter-spacing: 0.14rem;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.feature-card h3,
+.step-card h3,
+.benefit-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.22rem;
+}
+
+.feature-card p,
+.step-card p,
+.benefit-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.feature-meta {
+  margin-top: 18px;
+  color: var(--gold-soft);
+  font-size: 0.93rem;
+  font-weight: 600;
+}
+
+.experience-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  border-radius: 30px;
+  padding: 28px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.benefit-list {
+  display: grid;
+  gap: 16px;
+}
+
+.benefit-card,
+.step-card {
+  border-radius: 24px;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.steps-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.step-number {
+  color: var(--gold-soft);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  font-family: "Cormorant Garamond", serif;
+}
+
+.cta-section {
+  padding-top: 8px;
+  padding-bottom: 76px;
+}
+
+.cta-box {
+  text-align: center;
+  border-radius: 34px;
+  padding: 52px 26px;
+  background:
+    radial-gradient(circle at top, rgba(220, 181, 107, 0.16), rgba(255, 255, 255, 0.03) 36%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid var(--line);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.26);
+}
+
+.cta-box h2 {
+  margin: 10px 0 12px;
+  font-size: clamp(2.3rem, 4vw, 4.2rem);
+  line-height: 1;
+}
+
+.cta-box p {
+  max-width: 720px;
+  margin: 0 auto;
+  color: var(--muted);
+  line-height: 1.85;
+}
+
+.footer {
+  padding: 10px 0 42px;
+  border-top: 1px solid rgba(215, 179, 98, 0.1);
+}
+
+.footer-inner {
+  text-align: center;
+}
+
+.footer-brand {
+  color: var(--gold-soft);
+  font-weight: 700;
+  letter-spacing: 0.32rem;
+  margin-bottom: 8px;
+}
+
+.footer-line {
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: var(--gold-soft);
+}
+
+.footer-copy {
+  color: var(--muted-2);
+  font-size: 0.92rem;
+}
+
+@media (max-width: 1100px) {
+  .hero-grid,
+  .experience-box {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy {
+    order: 1;
+  }
+
+  .hero-visual {
+    order: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: min(var(--container), calc(100% - 28px));
+  }
+
+  .header-inner {
+    min-height: auto;
+    padding: 16px 0;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav {
+    gap: 14px;
+  }
+
+  .hero {
+    padding: 42px 0 28px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.4rem, 12vw, 4.4rem);
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-card {
+    min-height: 560px;
+  }
+
+  .bottle-stage {
+    height: 320px;
+  }
+
+  .section {
+    padding: 24px 0 44px;
+  }
+
+  .cta-box {
+    padding: 40px 18px;
+  }
+}
