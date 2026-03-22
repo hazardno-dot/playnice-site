@@ -2,29 +2,56 @@ import React, { useMemo, useState } from "react";
 import "./App.css";
 
 const products = [
-  { id: 1, name: "Afnan 9AM", category: "Arabian", price5: 4, price10: 7, price20: 13 },
-  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", price5: 4, price10: 7, price20: 13 },
-  { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", price5: 5, price10: 9, price20: 17 },
-  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", price5: 5, price10: 9, price20: 17 },
-  { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", price5: 4.5, price10: 8, price20: 15 },
-  { id: 6, name: "Armaf Club De Nuit Bling", category: "Arabian", price5: 6, price10: 11, price20: 20 },
-  { id: 7, name: "Armaf Club de Nuit Intense", category: "Arabian", price5: 4, price10: 7, price20: 13 },
-  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Arabian", price5: 4, price10: 7, price20: 13 },
-  { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", price5: 5, price10: 9, price20: 17 },
-  { id: 10, name: "Haramain Signature Blue", category: "Arabian", price5: 3, price10: 5, price20: 10 },
-  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Arabian", price5: 4.5, price10: 8, price20: 15 },
-  { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", price5: 4.5, price10: 8, price20: 15 },
-  { id: 13, name: "Lattafa Fakhar Black", category: "Arabian", price5: 4, price10: 7, price20: 13 },
-  { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", price5: 5, price10: 9, price20: 17 },
-  { id: 15, name: "Lattafa Musamam Black Intense", category: "Arabian", price5: 5, price10: 9, price20: 17 },
-  { id: 16, name: "Lattafa Qaed Al Fursan Untamed", category: "Arabian", price5: 3, price10: 5, price20: 10 },
-  { id: 17, name: "Paris Corner Emir Trillium", category: "Arabian", price5: 4, price10: 7, price20: 13 },
-  { id: 18, name: "Paris Corner Emir Voux Elegante", category: "Arabian", price5: 4, price10: 7, price20: 13 },
-  { id: 19, name: "Paris Corner Ministry of Oud - Oud Satin", category: "Arabian", price5: 4, price10: 7, price20: 13 },
-  { id: 20, name: "Paris Corner Perfumes North Stag Expressions II DEUX", category: "Arabian", price5: 4, price10: 7, price20: 13 },
-  { id: 21, name: "Rayhaan Aquatica", category: "Arabian", price5: 4.5, price10: 8, price20: 15 },
-  { id: 22, name: "Rayhaan Pacific Aura", category: "Arabian", price5: 4.5, price10: 8, price20: 15 },
-  { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", price5: 10, price10: 18, price20: 34 },
+  // Arabian: 5ml / 10ml / 20ml
+  { id: 1, name: "Afnan 9AM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
+  { id: 6, name: "Armaf Club De Nuit Bling", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
+  { id: 7, name: "Armaf Club de Nuit Intense", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 10, name: "Haramain Signature Blue", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
+  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
+  { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
+  { id: 13, name: "Lattafa Fakhar Black", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 15, name: "Lattafa Musamam Black Intense", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 16, name: "Lattafa Qaed Al Fursan Untamed", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
+  { id: 17, name: "Paris Corner Emir Trillium", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 18, name: "Paris Corner Emir Voux Elegante", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 19, name: "Paris Corner Ministry of Oud - Oud Satin", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 20, name: "Paris Corner Perfumes North Stag Expressions II DEUX", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 21, name: "Rayhaan Aquatica", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
+  { id: 22, name: "Rayhaan Pacific Aura", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
+  { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
+
+  // Designer/Niche: 2ml / 5ml / 10ml
+  { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
+  { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 } },
+  { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
+  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
+  { id: 28, name: "Bois Impérial by Essential Parfums", category: "Designer/Niche", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 } },
+  { id: 29, name: "BOSS Bottled Beyond Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
+  { id: 30, name: "BOSS The Scent Elixir Parfum Intense for Him", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
+  { id: 31, name: "BOSS The Scent Le Parfum for Him", category: "Designer/Niche", sizes: { "2ml": 6, "5ml": 14, "10ml": 25 } },
+  { id: 32, name: "Calvin Klein CK All Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 } },
+  { id: 33, name: "Calvin Klein Defy Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3, "5ml": 7, "10ml": 12 } },
+  { id: 34, name: "Calvin Klein Defy Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 35, name: "Chopard Oud Malaki Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
+  { id: 36, name: "Creed Aventus Cologne", category: "Designer/Niche", sizes: { "2ml": 13, "5ml": 29, "10ml": 52 } },
+  { id: 37, name: "Giorgio Armani Acqua di Giò Profondo Parfum", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
+  { id: 38, name: "Gisada Ambassador Men Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 11, "10ml": 20 } },
+  { id: 39, name: "Givenchy Gentleman Eau de Parfum Réserve Privée", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 12, "10ml": 21 } },
+  { id: 40, name: "Jimmy Choo Man Blue Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 } },
+  { id: 41, name: "L'Homme Eau de Parfum by Yves Saint Laurent", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
+  { id: 42, name: "L'Homme Idéal De Guerlain Paris Eau De Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
+  { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 } },
 ];
 
 const isShopPage =
@@ -35,18 +62,14 @@ function formatPrice(value) {
   return `€${Number(value).toFixed(value % 1 === 0 ? 0 : 1)}`;
 }
 
-function getSelectedPrice(product, size) {
-  if (size === "5ml") return product.price5;
-  if (size === "10ml") return product.price10;
-  return product.price20;
-}
-
 function ProductCard({ product }) {
-  const [size, setSize] = useState("5ml");
-  const selectedPrice = getSelectedPrice(product, size);
+  const sizeOptions = Object.keys(product.sizes);
+  const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
+
+  const selectedPrice = product.sizes[selectedSize];
 
   const mailText = encodeURIComponent(
-    `Zdravo, želim da naručim:\n${product.name}\nVeličina: ${size}\nCena: ${formatPrice(selectedPrice)}`
+    `Zdravo, želim da naručim:\n${product.name}\nVeličina: ${selectedSize}\nCena: ${formatPrice(selectedPrice)}`
   );
 
   const mailUrl = `mailto:order@playniceshop.me?subject=${encodeURIComponent(
@@ -60,48 +83,31 @@ function ProductCard({ product }) {
       <h3 className="product-title">{product.name}</h3>
 
       <div className="product-prices">
-        <div className="price-row">
-          <span>5ml</span>
-          <strong>{formatPrice(product.price5)}</strong>
-        </div>
-        <div className="price-row">
-          <span>10ml</span>
-          <strong>{formatPrice(product.price10)}</strong>
-        </div>
-        <div className="price-row">
-          <span>20ml</span>
-          <strong>{formatPrice(product.price20)}</strong>
-        </div>
+        {sizeOptions.map((size) => (
+          <div className="price-row" key={size}>
+            <span>{size}</span>
+            <strong>{formatPrice(product.sizes[size])}</strong>
+          </div>
+        ))}
       </div>
 
       <div className="size-picker">
-        <button
-          className={size === "5ml" ? "size-btn active" : "size-btn"}
-          onClick={() => setSize("5ml")}
-          type="button"
-        >
-          5ml
-        </button>
-        <button
-          className={size === "10ml" ? "size-btn active" : "size-btn"}
-          onClick={() => setSize("10ml")}
-          type="button"
-        >
-          10ml
-        </button>
-        <button
-          className={size === "20ml" ? "size-btn active" : "size-btn"}
-          onClick={() => setSize("20ml")}
-          type="button"
-        >
-          20ml
-        </button>
+        {sizeOptions.map((size) => (
+          <button
+            key={size}
+            className={selectedSize === size ? "size-btn active" : "size-btn"}
+            onClick={() => setSelectedSize(size)}
+            type="button"
+          >
+            {size}
+          </button>
+        ))}
       </div>
 
       <div className="selected-price-box">
         <span>Selected</span>
         <strong>
-          {size} — {formatPrice(selectedPrice)}
+          {selectedSize} — {formatPrice(selectedPrice)}
         </strong>
       </div>
 
@@ -124,12 +130,20 @@ function ProductCard({ product }) {
 
 export default function App() {
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("All");
 
   const filteredProducts = useMemo(() => {
-    return products.filter((product) =>
-      product.name.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [search]);
+    return products.filter((product) => {
+      const matchesSearch = product.name
+        .toLowerCase()
+        .includes(search.toLowerCase());
+
+      const matchesFilter =
+        filter === "All" || product.category === filter;
+
+      return matchesSearch && matchesFilter;
+    });
+  }, [search, filter]);
 
   return (
     <div className="site-shell">
@@ -192,22 +206,22 @@ export default function App() {
                   <div className="stats-grid">
                     <div className="stat-card">
                       <div className="stat-value">{products.length}+</div>
-                      <div className="stat-label">Arabian fragrances</div>
+                      <div className="stat-label">Fragrances</div>
                     </div>
                     <div className="stat-card">
-                      <div className="stat-value">5ml / 10ml / 20ml</div>
-                      <div className="stat-label">Available sizes</div>
+                      <div className="stat-value">Arabian / Designer / Niche</div>
+                      <div className="stat-label">Curated selection</div>
                     </div>
                     <div className="stat-card">
-                      <div className="stat-value">Luxury</div>
-                      <div className="stat-label">Curated experience</div>
+                      <div className="stat-value">Premium</div>
+                      <div className="stat-label">Try before you buy</div>
                     </div>
                   </div>
                 </div>
 
                 <div className="hero-visual">
                   <div className="visual-card">
-                    <div className="visual-topline">ARABIAN COLLECTION</div>
+                    <div className="visual-topline">PLAYNICE COLLECTION</div>
 
                     <div className="bottle-stage">
                       <div className="bottle-glow" />
@@ -221,8 +235,8 @@ export default function App() {
                     <div className="visual-panel">
                       <h3>Luxury starts with the right sample</h3>
                       <p>
-                        Klikni na Shop i pregledaj kompletnu Arabian kolekciju sa
-                        cenama i opcijom za poručivanje.
+                        Klikni na Shop i pregledaj kompletnu selekciju Arabian i
+                        Designer/Niche parfema sa cenama i opcijom za poručivanje.
                       </p>
                     </div>
                   </div>
@@ -258,7 +272,7 @@ export default function App() {
               <div className="section-head catalog-head">
                 <div>
                   <div className="section-kicker">SHOP</div>
-                  <h2 className="section-title">PlayNice Arabian collection</h2>
+                  <h2 className="section-title">PlayNice fragrance collection</h2>
                   <p className="section-text">
                     Pregledaj parfeme, izaberi veličinu i poruči direktno.
                   </p>
@@ -273,6 +287,32 @@ export default function App() {
                     onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
+              </div>
+
+              <div className="filter-bar">
+                <button
+                  className={filter === "All" ? "filter-btn active" : "filter-btn"}
+                  onClick={() => setFilter("All")}
+                  type="button"
+                >
+                  All
+                </button>
+
+                <button
+                  className={filter === "Arabian" ? "filter-btn active" : "filter-btn"}
+                  onClick={() => setFilter("Arabian")}
+                  type="button"
+                >
+                  Arabian
+                </button>
+
+                <button
+                  className={filter === "Designer/Niche" ? "filter-btn active" : "filter-btn"}
+                  onClick={() => setFilter("Designer/Niche")}
+                  type="button"
+                >
+                  Designer / Niche
+                </button>
               </div>
 
               <div className="catalog-summary">
