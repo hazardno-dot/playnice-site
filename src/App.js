@@ -1,551 +1,1052 @@
 import React from "react";
 
-const products = [
+const featuredFragrances = [
   {
-    name: "Afnan 9PM Night Out",
-    img: "https://i.imgur.com/8QfKuz1.png",
-    desc: "Noćna bomba sa slatkim, zavodljivim DNA potpisom — pravi compliment getter.",
-    price: "5ml = 5€ | 10ml = 9€"
+    name: "Creed Aventus Cologne",
+    vibe: "Fresh luxury icon with effortless confidence.",
+    price5: "€15",
+    price10: "€28",
+    accent: "gold",
   },
   {
-    name: "Lattafa Asad",
-    img: "https://i.imgur.com/Wz4Yx9p.png",
-    desc: "Topla, začinska snaga sa tamnim luksuznim karakterom i ozbiljnim prisustvom.",
-    price: "5ml = 4€ | 10ml = 7€"
+    name: "Givenchy Gentleman Réserve Privée",
+    vibe: "Boozy elegance with dark sophistication.",
+    price5: "€9",
+    price10: "€16",
+    accent: "silver",
+  },
+  {
+    name: "Mancera Cedrat Boisé",
+    vibe: "Citrus, woods and niche mass appeal.",
+    price5: "€8",
+    price10: "€14",
+    accent: "bronze",
+  },
+  {
+    name: "Gisada Ambassador",
+    vibe: "Smooth, modern and dangerously complimented.",
+    price5: "€8",
+    price10: "€14",
+    accent: "gold",
   },
   {
     name: "Armaf Club de Nuit Intense",
-    img: "https://i.imgur.com/ZK0pYzL.png",
-    desc: "Svež, diman i moćan signature miris koji ostavlja trag.",
-    price: "5ml = 5€ | 10ml = 8€"
-  }
+    vibe: "Bold projection with legendary value.",
+    price5: "€4",
+    price10: "€7",
+    accent: "silver",
+  },
+  {
+    name: "Afnan 9PM",
+    vibe: "Night-out energy with addictive sweetness.",
+    price5: "€4",
+    price10: "€7",
+    accent: "bronze",
+  },
 ];
 
-const styles = {
-  page: {
-    minHeight: "100vh",
-    background:
-      "radial-gradient(circle at top, rgba(192,148,38,0.14), transparent 28%), linear-gradient(180deg, #050505 0%, #090909 42%, #030303 100%)",
-    color: "#fff",
-    fontFamily: "Inter, Helvetica, Arial, sans-serif"
+const reasons = [
+  {
+    title: "Try before you buy",
+    text: "Test the fragrance on your skin in real life before committing to a full bottle.",
   },
-  container: {
-    maxWidth: 1240,
-    margin: "0 auto",
-    paddingLeft: 20,
-    paddingRight: 20
+  {
+    title: "Curated selection",
+    text: "Only carefully chosen niche, designer and Arabic fragrances make it into PlayNice.",
   },
-  badge: {
-    display: "inline-block",
-    border: "1px solid rgba(212,175,55,0.28)",
-    borderRadius: 999,
-    padding: "8px 14px",
-    color: "#d9b65b",
-    fontSize: 12,
-    letterSpacing: "0.22em",
-    textTransform: "uppercase",
-    background: "rgba(212,175,55,0.04)"
+  {
+    title: "Luxury experience",
+    text: "From visuals to packaging, every detail is designed to feel premium.",
   },
-  buttonPrimary: {
-    background: "linear-gradient(135deg, #f4d67a 0%, #caa23a 100%)",
-    color: "#050505",
-    padding: "14px 26px",
-    borderRadius: 999,
-    textDecoration: "none",
-    fontWeight: 700,
-    letterSpacing: "0.04em",
-    display: "inline-block",
-    boxShadow: "0 10px 30px rgba(202,162,58,0.25)"
+  {
+    title: "Limited stock drops",
+    text: "We keep things selective, desirable and worth paying attention to.",
   },
-  buttonSecondary: {
-    border: "1px solid rgba(255,255,255,0.18)",
-    color: "#fff",
-    padding: "14px 26px",
-    borderRadius: 999,
-    textDecoration: "none",
-    fontWeight: 600,
-    letterSpacing: "0.04em",
-    display: "inline-block",
-    background: "rgba(255,255,255,0.03)",
-    backdropFilter: "blur(6px)"
-  },
-  sectionLabel: {
-    color: "#d7b255",
-    letterSpacing: "0.18em",
-    fontSize: 12,
-    textTransform: "uppercase"
-  },
-  paragraph: {
-    color: "rgba(255,255,255,0.68)",
-    lineHeight: 1.8
-  }
-};
+];
 
-export default function App() {
+const steps = [
+  {
+    number: "01",
+    title: "Choose your scent",
+    text: "Pick from our curated selection of standout fragrances.",
+  },
+  {
+    number: "02",
+    title: "Order a decant",
+    text: "Get 5ml or 10ml and experience the fragrance properly.",
+  },
+  {
+    number: "03",
+    title: "Wear it for real",
+    text: "See how it performs on your skin, in your day, in your moments.",
+  },
+  {
+    number: "04",
+    title: "Decide with confidence",
+    text: "No blind buying. Only smart fragrance decisions.",
+  },
+];
+
+const faqs = [
+  {
+    q: "What is PlayNice?",
+    a: "PlayNice is a curated fragrance concept focused on premium 5ml and 10ml decants so you can discover fragrances the right way.",
+  },
+  {
+    q: "Why buy a decant first?",
+    a: "Because wearing a fragrance on your skin tells you more than one store test ever will.",
+  },
+  {
+    q: "How do I order?",
+    a: "Send us a DM on Instagram or email us directly and we’ll guide you through the order.",
+  },
+];
+
+function App() {
   return (
-    <div style={styles.page}>
+    <>
       <style>{`
-        * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { margin: 0; }
-        img { max-width: 100%; display: block; }
-        a { transition: all 0.25s ease; }
-
-        .hero-grid {
-          display: grid;
-          grid-template-columns: 1.08fr 0.92fr;
-          gap: 36px;
-          align-items: center;
-          padding: 88px 0 68px;
+        :root{
+          --bg:#060606;
+          --bg-soft:#0d0d0d;
+          --panel:rgba(255,255,255,0.04);
+          --panel-2:rgba(255,255,255,0.06);
+          --text:#f5f1e8;
+          --muted:#b8aea0;
+          --gold:#d4af37;
+          --gold-soft:#8f6d1f;
+          --line:rgba(212,175,55,0.18);
+          --shadow:0 20px 60px rgba(0,0,0,0.45);
+          --radius:22px;
+          --max:1200px;
         }
 
-        .hero-title {
-          font-size: clamp(40px, 7vw, 82px);
-          line-height: 0.98;
-          letter-spacing: 0.03em;
-          margin: 22px 0 0;
+        *{box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{
+          margin:0;
+          font-family: Inter, Arial, Helvetica, sans-serif;
+          background:
+            radial-gradient(circle at top left, rgba(212,175,55,0.12), transparent 25%),
+            radial-gradient(circle at 80% 20%, rgba(212,175,55,0.08), transparent 20%),
+            linear-gradient(180deg, #050505 0%, #090909 35%, #050505 100%);
+          color:var(--text);
         }
 
-        .hero-text {
-          margin-top: 24px;
-          max-width: 640px;
-          color: rgba(255,255,255,0.72);
-          font-size: 18px;
-          line-height: 1.8;
+        a{
+          color:inherit;
+          text-decoration:none;
         }
 
-        .hero-actions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 14px;
-          margin-top: 34px;
+        .app{
+          min-height:100vh;
+          overflow:hidden;
         }
 
-        .feature-grid {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 16px;
-          margin-top: 46px;
-          max-width: 720px;
+        .container{
+          width:min(var(--max), calc(100% - 32px));
+          margin:0 auto;
         }
 
-        .feature-card {
-          border: 1px solid rgba(255,255,255,0.08);
-          background: rgba(255,255,255,0.025);
-          border-radius: 24px;
-          padding: 20px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+        .topbar{
+          position:sticky;
+          top:0;
+          z-index:50;
+          backdrop-filter: blur(14px);
+          background:rgba(6,6,6,0.7);
+          border-bottom:1px solid rgba(255,255,255,0.04);
         }
 
-        .hero-visual {
-          position: relative;
-          min-height: 520px;
-          border-radius: 36px;
-          border: 1px solid rgba(212,175,55,0.16);
-          background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-          overflow: hidden;
-          box-shadow: 0 25px 80px rgba(0,0,0,0.45);
+        .topbar-inner{
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:16px;
+          padding:14px 0;
         }
 
-        .drop-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-          gap: 22px;
+        .brand{
+          display:flex;
+          align-items:center;
+          gap:12px;
+          letter-spacing:0.18em;
+          text-transform:uppercase;
+          font-size:12px;
         }
 
-        .product-card {
-          position: relative;
-          border: 1px solid rgba(255,255,255,0.08);
-          background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%);
-          border-radius: 32px;
-          padding: 24px;
-          overflow: hidden;
-          box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-          transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+        .brand-mark{
+          width:34px;
+          height:34px;
+          border-radius:999px;
+          border:1px solid var(--line);
+          display:grid;
+          place-items:center;
+          color:var(--gold);
+          box-shadow: inset 0 0 20px rgba(212,175,55,0.08);
+          font-weight:700;
         }
 
-        .product-card:hover {
-          transform: translateY(-6px);
-          border-color: rgba(212,175,55,0.22);
-          box-shadow: 0 26px 60px rgba(0,0,0,0.32);
+        .nav{
+          display:flex;
+          gap:22px;
+          align-items:center;
+          color:var(--muted);
+          font-size:14px;
         }
 
-        .product-image-wrap {
-          height: 220px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          position: relative;
+        .nav a:hover{
+          color:var(--text);
         }
 
-        .product-image {
-          max-height: 180px;
-          max-width: 90%;
-          object-fit: contain;
-          position: relative;
-          z-index: 2;
-          filter: drop-shadow(0 18px 34px rgba(0,0,0,0.38));
-          transition: transform 0.28s ease;
+        .btn{
+          display:inline-flex;
+          align-items:center;
+          justify-content:center;
+          gap:10px;
+          min-height:48px;
+          padding:0 20px;
+          border-radius:999px;
+          font-weight:700;
+          letter-spacing:0.04em;
+          transition:0.25s ease;
+          cursor:pointer;
+          border:1px solid transparent;
         }
 
-        .product-card:hover .product-image {
-          transform: scale(1.04);
+        .btn-gold{
+          background:linear-gradient(180deg, #f0cf6c 0%, #d4af37 55%, #a07b19 100%);
+          color:#111;
+          box-shadow:0 10px 30px rgba(212,175,55,0.22);
         }
 
-        .info-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 22px;
+        .btn-gold:hover{
+          transform:translateY(-2px);
+          box-shadow:0 16px 36px rgba(212,175,55,0.28);
         }
 
-        .info-card {
-          border-radius: 32px;
-          border: 1px solid rgba(255,255,255,0.08);
-          background: rgba(255,255,255,0.025);
-          padding: 32px;
+        .btn-dark{
+          background:rgba(255,255,255,0.03);
+          border-color:rgba(255,255,255,0.08);
+          color:var(--text);
         }
 
-        .cta-box {
-          border-radius: 36px;
-          border: 1px solid rgba(212,175,55,0.16);
-          background: radial-gradient(circle at center, rgba(212,175,55,0.12), transparent 48%), rgba(255,255,255,0.025);
-          padding: 46px 28px;
-          text-align: center;
-          box-shadow: 0 25px 80px rgba(0,0,0,0.28);
+        .btn-dark:hover{
+          background:rgba(255,255,255,0.06);
+          transform:translateY(-2px);
         }
 
-        .footer {
-          border-top: 1px solid rgba(255,255,255,0.08);
-          margin-top: 40px;
+        .hero{
+          position:relative;
+          padding:72px 0 48px;
         }
 
-        .footer-grid {
-          display: grid;
-          grid-template-columns: 1.2fr 0.8fr;
-          gap: 28px;
-          padding: 34px 0 44px;
+        .hero-grid{
+          display:grid;
+          grid-template-columns:1.1fr 0.9fr;
+          gap:32px;
+          align-items:center;
         }
 
-        .footer-links {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 12px 18px;
+        .eyebrow{
+          display:inline-flex;
+          align-items:center;
+          gap:10px;
+          padding:10px 14px;
+          border:1px solid var(--line);
+          border-radius:999px;
+          color:var(--gold);
+          background:rgba(255,255,255,0.02);
+          font-size:12px;
+          letter-spacing:0.14em;
+          text-transform:uppercase;
+          margin-bottom:20px;
         }
 
-        .footer-links a {
-          color: rgba(255,255,255,0.72);
-          text-decoration: none;
+        h1{
+          margin:0;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size:clamp(42px, 8vw, 88px);
+          line-height:0.95;
+          letter-spacing:-0.04em;
         }
 
-        .footer-links a:hover {
-          color: #d9b65b;
+        .gold{
+          color:var(--gold);
         }
 
-        @media (max-width: 980px) {
+        .hero p{
+          max-width:640px;
+          color:var(--muted);
+          font-size:18px;
+          line-height:1.7;
+          margin:22px 0 30px;
+        }
+
+        .hero-actions{
+          display:flex;
+          gap:14px;
+          flex-wrap:wrap;
+          margin-bottom:28px;
+        }
+
+        .hero-metrics{
+          display:grid;
+          grid-template-columns:repeat(3, minmax(0,1fr));
+          gap:14px;
+          margin-top:26px;
+        }
+
+        .metric{
+          background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+          border:1px solid rgba(255,255,255,0.05);
+          border-radius:18px;
+          padding:18px;
+          box-shadow:var(--shadow);
+        }
+
+        .metric strong{
+          display:block;
+          font-size:24px;
+          color:var(--gold);
+          margin-bottom:6px;
+        }
+
+        .metric span{
+          color:var(--muted);
+          font-size:14px;
+        }
+
+        .hero-visual{
+          position:relative;
+          min-height:560px;
+          border-radius:32px;
+          border:1px solid var(--line);
+          background:
+            radial-gradient(circle at 50% 20%, rgba(212,175,55,0.22), transparent 22%),
+            radial-gradient(circle at 50% 100%, rgba(212,175,55,0.10), transparent 35%),
+            linear-gradient(180deg, #131313 0%, #090909 100%);
+          box-shadow:var(--shadow);
+          overflow:hidden;
+          display:flex;
+          align-items:flex-end;
+          justify-content:center;
+          padding:30px;
+        }
+
+        .smoke{
+          position:absolute;
+          inset:auto -10% 15% -10%;
+          height:180px;
+          background:radial-gradient(circle, rgba(255,255,255,0.10), transparent 60%);
+          filter:blur(28px);
+          opacity:0.22;
+        }
+
+        .bottle-stage{
+          position:relative;
+          width:100%;
+          height:100%;
+          display:flex;
+          align-items:flex-end;
+          justify-content:center;
+          gap:18px;
+        }
+
+        .bottle{
+          position:relative;
+          width:clamp(90px, 18vw, 150px);
+          border-radius:24px 24px 18px 18px;
+          border:1px solid rgba(255,255,255,0.08);
+          background:linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.03));
+          box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.12),
+            0 20px 50px rgba(0,0,0,0.45);
+          display:flex;
+          align-items:flex-end;
+          justify-content:center;
+          padding:16px 12px;
+        }
+
+        .bottle::before{
+          content:"";
+          position:absolute;
+          top:-22px;
+          left:50%;
+          transform:translateX(-50%);
+          width:42%;
+          height:20px;
+          border-radius:8px 8px 2px 2px;
+          background:linear-gradient(180deg, #191919, #080808);
+          border:1px solid rgba(255,255,255,0.08);
+        }
+
+        .bottle::after{
+          content:"";
+          position:absolute;
+          inset:10px;
+          border-radius:18px;
+          border:1px solid rgba(255,255,255,0.05);
+          pointer-events:none;
+        }
+
+        .bottle.center{
+          height:320px;
+          transform:translateY(-10px);
+        }
+
+        .bottle.left,
+        .bottle.right{
+          height:250px;
+          opacity:0.88;
+        }
+
+        .bottle-label{
+          text-align:center;
+          font-size:11px;
+          letter-spacing:0.15em;
+          text-transform:uppercase;
+          color:var(--gold);
+        }
+
+        .reflection{
+          position:absolute;
+          bottom:6px;
+          left:50%;
+          transform:translateX(-50%);
+          width:80%;
+          height:38px;
+          background:radial-gradient(circle, rgba(212,175,55,0.22), transparent 65%);
+          filter:blur(16px);
+        }
+
+        .floating-card{
+          position:absolute;
+          right:22px;
+          top:22px;
+          padding:14px 16px;
+          border-radius:18px;
+          background:rgba(0,0,0,0.45);
+          border:1px solid rgba(255,255,255,0.08);
+          backdrop-filter:blur(12px);
+          max-width:240px;
+        }
+
+        .floating-card strong{
+          display:block;
+          color:var(--gold);
+          margin-bottom:6px;
+          font-size:12px;
+          letter-spacing:0.14em;
+          text-transform:uppercase;
+        }
+
+        .floating-card span{
+          color:var(--text);
+          font-size:14px;
+          line-height:1.5;
+        }
+
+        section{
+          padding:28px 0 70px;
+        }
+
+        .section-head{
+          display:flex;
+          justify-content:space-between;
+          align-items:end;
+          gap:20px;
+          margin-bottom:26px;
+        }
+
+        .section-head h2{
+          margin:0;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size:clamp(30px, 4vw, 52px);
+          line-height:1;
+          letter-spacing:-0.03em;
+        }
+
+        .section-head p{
+          margin:0;
+          max-width:560px;
+          color:var(--muted);
+          line-height:1.7;
+        }
+
+        .card-grid{
+          display:grid;
+          grid-template-columns:repeat(3, minmax(0, 1fr));
+          gap:18px;
+        }
+
+        .card{
+          position:relative;
+          overflow:hidden;
+          border-radius:24px;
+          background:
+            linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)),
+            linear-gradient(180deg, #111 0%, #090909 100%);
+          border:1px solid rgba(255,255,255,0.06);
+          box-shadow:var(--shadow);
+          padding:22px;
+        }
+
+        .card::before{
+          content:"";
+          position:absolute;
+          inset:auto -10% -30% auto;
+          width:180px;
+          height:180px;
+          border-radius:50%;
+          background:radial-gradient(circle, rgba(212,175,55,0.16), transparent 62%);
+          filter:blur(10px);
+        }
+
+        .tag{
+          display:inline-flex;
+          padding:8px 12px;
+          border-radius:999px;
+          border:1px solid var(--line);
+          color:var(--gold);
+          font-size:11px;
+          text-transform:uppercase;
+          letter-spacing:0.14em;
+          margin-bottom:18px;
+        }
+
+        .fragrance-title{
+          font-size:22px;
+          line-height:1.2;
+          margin:0 0 12px;
+          font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .fragrance-vibe{
+          color:var(--muted);
+          line-height:1.7;
+          margin:0 0 20px;
+          min-height:54px;
+        }
+
+        .prices{
+          display:flex;
+          gap:12px;
+          flex-wrap:wrap;
+        }
+
+        .price-pill{
+          padding:10px 14px;
+          border-radius:999px;
+          background:rgba(255,255,255,0.04);
+          border:1px solid rgba(255,255,255,0.08);
+          font-weight:700;
+          font-size:14px;
+        }
+
+        .steps{
+          display:grid;
+          grid-template-columns:repeat(4, minmax(0,1fr));
+          gap:18px;
+        }
+
+        .step-number{
+          font-size:42px;
+          color:rgba(212,175,55,0.22);
+          font-weight:800;
+          line-height:1;
+          margin-bottom:14px;
+        }
+
+        .step-title{
+          font-size:22px;
+          margin:0 0 10px;
+          font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .step-text{
+          margin:0;
+          color:var(--muted);
+          line-height:1.7;
+        }
+
+        .reason-grid{
+          display:grid;
+          grid-template-columns:repeat(2, minmax(0,1fr));
+          gap:18px;
+        }
+
+        .reason-title{
+          margin:0 0 10px;
+          font-size:22px;
+          font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .reason-text{
+          margin:0;
+          color:var(--muted);
+          line-height:1.7;
+        }
+
+        .split{
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:18px;
+        }
+
+        .cta{
+          position:relative;
+          overflow:hidden;
+          border-radius:32px;
+          background:
+            radial-gradient(circle at top center, rgba(212,175,55,0.16), transparent 30%),
+            linear-gradient(180deg, #111 0%, #070707 100%);
+          border:1px solid var(--line);
+          box-shadow:var(--shadow);
+          padding:34px;
+        }
+
+        .cta h2{
+          margin:0 0 14px;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size:clamp(30px, 5vw, 56px);
+          line-height:1;
+        }
+
+        .cta p{
+          margin:0 0 24px;
+          color:var(--muted);
+          max-width:720px;
+          line-height:1.8;
+          font-size:17px;
+        }
+
+        .cta-actions{
+          display:flex;
+          gap:14px;
+          flex-wrap:wrap;
+        }
+
+        .faq-item{
+          padding:22px;
+          border-radius:22px;
+          border:1px solid rgba(255,255,255,0.06);
+          background:rgba(255,255,255,0.03);
+        }
+
+        .faq-item h3{
+          margin:0 0 10px;
+          font-size:20px;
+        }
+
+        .faq-item p{
+          margin:0;
+          color:var(--muted);
+          line-height:1.7;
+        }
+
+        .footer{
+          padding:28px 0 90px;
+          color:var(--muted);
+        }
+
+        .footer-inner{
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:18px;
+          padding-top:18px;
+          border-top:1px solid rgba(255,255,255,0.06);
+        }
+
+        .footer-links{
+          display:flex;
+          gap:18px;
+          flex-wrap:wrap;
+        }
+
+        .sticky-mobile-cta{
+          display:none;
+        }
+
+        @media (max-width: 980px){
           .hero-grid,
-          .info-grid,
-          .footer-grid {
-            grid-template-columns: 1fr;
+          .split,
+          .reason-grid{
+            grid-template-columns:1fr;
           }
 
-          .hero-visual {
-            min-height: 420px;
+          .card-grid{
+            grid-template-columns:repeat(2, minmax(0,1fr));
           }
 
-          .feature-grid {
-            grid-template-columns: 1fr;
-            max-width: none;
+          .steps{
+            grid-template-columns:repeat(2, minmax(0,1fr));
+          }
+
+          .hero-visual{
+            min-height:420px;
+          }
+
+          .nav{
+            display:none;
           }
         }
 
-        @media (max-width: 640px) {
-          .hero-grid {
-            padding: 64px 0 48px;
-            gap: 24px;
+        @media (max-width: 640px){
+          .container{
+            width:min(var(--max), calc(100% - 20px));
           }
 
-          .hero-text {
-            font-size: 16px;
+          .topbar-inner{
+            padding:12px 0;
           }
 
-          .hero-actions a {
-            width: 100%;
-            text-align: center;
+          .hero{
+            padding:42px 0 28px;
           }
 
-          .hero-visual {
-            min-height: 340px;
-            border-radius: 26px;
+          .hero p{
+            font-size:16px;
           }
 
-          .product-card,
-          .info-card,
-          .cta-box {
-            border-radius: 24px;
+          .hero-metrics,
+          .card-grid,
+          .steps{
+            grid-template-columns:1fr;
+          }
+
+          .section-head{
+            align-items:start;
+            flex-direction:column;
+          }
+
+          .cta{
+            padding:24px;
+            border-radius:26px;
+          }
+
+          .footer-inner{
+            flex-direction:column;
+            align-items:flex-start;
+          }
+
+          .sticky-mobile-cta{
+            display:block;
+            position:fixed;
+            left:12px;
+            right:12px;
+            bottom:12px;
+            z-index:80;
+          }
+
+          .sticky-mobile-cta a{
+            width:100%;
           }
         }
       `}</style>
 
-      <div style={styles.container}>
-        <section className="hero-grid">
-          <div>
-            <div style={styles.badge}>Remember. PlayNice.</div>
+      <div className="app">
+        <header className="topbar">
+          <div className="container topbar-inner">
+            <a href="#top" className="brand">
+              <span className="brand-mark">P</span>
+              <span>PlayNice</span>
+            </a>
 
-            <h1 className="hero-title">
-              Otkrij parfeme
-              <br />
-              na pravi način.
-            </h1>
+            <nav className="nav">
+              <a href="#featured">Featured</a>
+              <a href="#how">How it works</a>
+              <a href="#why">Why PlayNice</a>
+              <a href="#faq">FAQ</a>
+            </nav>
 
-            <p className="hero-text">
-              Premium dekanti za one koji ne kupuju naslepo. Testiraj na svojoj koži,
-              u realnim uslovima, pa tek onda odluči da li je to tvoj sledeći full bottle.
-            </p>
+            <a
+              className="btn btn-gold"
+              href="https://www.instagram.com/playnice.me"
+              target="_blank"
+              rel="noreferrer"
+            >
+              DM to order
+            </a>
+          </div>
+        </header>
 
-            <div className="hero-actions">
-              <a href="https://instagram.com/playnice.me" style={styles.buttonPrimary}>
-                DM TO ORDER
-              </a>
-              <a href="mailto:order@playniceshop.me" style={styles.buttonSecondary}>
-                order@playniceshop.me
-              </a>
-            </div>
+        <main id="top">
+          <section className="hero">
+            <div className="container hero-grid">
+              <div>
+                <div className="eyebrow">Luxury fragrance decants</div>
 
-            <div className="feature-grid">
-              {[
-                ["Curated", "Niche • Designer • Arabic"],
-                ["Try before you buy", "Bez slepe kupovine"],
-                ["Delivery", "Crna Gora"]
-              ].map(([title, text]) => (
-                <div key={title} className="feature-card">
-                  <div style={{ color: "#e0bd64", fontWeight: 700, fontSize: 14 }}>{title}</div>
-                  <div style={{ color: "rgba(255,255,255,0.66)", marginTop: 8, fontSize: 14 }}>
-                    {text}
+                <h1>
+                  Discover fragrances
+                  <br />
+                  <span className="gold">the right way.</span>
+                </h1>
+
+                <p>
+                  Niche. Designer. Arabic. Carefully selected fragrances in 5ml
+                  and 10ml decants for people who want to test properly before
+                  buying a full bottle.
+                </p>
+
+                <div className="hero-actions">
+                  <a
+                    className="btn btn-gold"
+                    href="https://www.instagram.com/playnice.me"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    DM to order
+                  </a>
+                  <a className="btn btn-dark" href="#featured">
+                    Explore selection
+                  </a>
+                </div>
+
+                <div className="hero-metrics">
+                  <div className="metric">
+                    <strong>5ml / 10ml</strong>
+                    <span>Smart testing sizes before full-bottle commitment.</span>
+                  </div>
+                  <div className="metric">
+                    <strong>Curated</strong>
+                    <span>No random clutter. Only fragrances worth attention.</span>
+                  </div>
+                  <div className="metric">
+                    <strong>Limited</strong>
+                    <span>Small-batch drops designed to feel selective.</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
 
-          <div className="hero-visual">
-            <div
-              style={{
-                position: "absolute",
-                inset: "auto -10% 8% -10%",
-                height: 160,
-                background: "radial-gradient(circle, rgba(214,170,62,0.25), transparent 60%)",
-                filter: "blur(18px)"
-              }}
-            />
-            <div
-              style={{
-                position: "absolute",
-                top: 22,
-                left: 22,
-                border: "1px solid rgba(212,175,55,0.28)",
-                color: "#d9b65b",
-                borderRadius: 999,
-                padding: "8px 12px",
-                fontSize: 11,
-                letterSpacing: "0.2em"
-              }}
-            >
-              DROP LIVE
-            </div>
-
-            <div
-              style={{
-                height: "100%",
-                display: "flex",
-                alignItems: "flex-end",
-                justifyContent: "center",
-                gap: 10,
-                padding: "70px 18px 34px"
-              }}
-            >
-              <img
-                src="https://i.imgur.com/Wz4Yx9p.png"
-                alt="Lattafa Asad"
-                style={{
-                  width: "30%",
-                  maxWidth: 140,
-                  objectFit: "contain",
-                  transform: "translateY(18px)",
-                  filter: "drop-shadow(0 18px 36px rgba(0,0,0,0.45))"
-                }}
-              />
-              <img
-                src="https://i.imgur.com/8QfKuz1.png"
-                alt="Afnan 9PM Night Out"
-                style={{
-                  width: "36%",
-                  maxWidth: 180,
-                  objectFit: "contain",
-                  zIndex: 2,
-                  filter: "drop-shadow(0 24px 44px rgba(212,175,55,0.22))"
-                }}
-              />
-              <img
-                src="https://i.imgur.com/ZK0pYzL.png"
-                alt="Armaf Club de Nuit Intense"
-                style={{
-                  width: "30%",
-                  maxWidth: 140,
-                  objectFit: "contain",
-                  transform: "translateY(18px)",
-                  filter: "drop-shadow(0 18px 36px rgba(0,0,0,0.45))"
-                }}
-              />
-            </div>
-          </div>
-        </section>
-
-        <section style={{ padding: "10px 0 72px" }}>
-          <div style={{ textAlign: "center", marginBottom: 34 }}>
-            <div style={styles.sectionLabel}>Limited Stock</div>
-            <h2 style={{ fontSize: "clamp(30px, 4vw, 48px)", margin: "14px 0 0" }}>
-              Aktuelni drop
-            </h2>
-            <p style={{ ...styles.paragraph, maxWidth: 700, margin: "16px auto 0" }}>
-              Pažljivo birani mirisi koji zaslužuju testiranje pre kupovine. Kada drop nestane,
-              čekaš sledeći.
-            </p>
-          </div>
-
-          <div className="drop-grid">
-            {products.map((item) => (
-              <div key={item.name} className="product-card">
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 18,
-                    left: 18,
-                    border: "1px solid rgba(212,175,55,0.35)",
-                    color: "#d9b65b",
-                    borderRadius: 999,
-                    padding: "6px 10px",
-                    fontSize: 10,
-                    letterSpacing: "0.18em"
-                  }}
-                >
-                  LIMITED
+              <div className="hero-visual">
+                <div className="floating-card">
+                  <strong>Remember. PlayNice.</strong>
+                  <span>
+                    Premium decants for people who prefer confidence over blind
+                    buying.
+                  </span>
                 </div>
 
-                <div
-                  style={{
-                    position: "absolute",
-                    left: "50%",
-                    top: 116,
-                    transform: "translateX(-50%)",
-                    width: 190,
-                    height: 190,
-                    background: "radial-gradient(circle, rgba(212,175,55,0.18), transparent 62%)",
-                    filter: "blur(18px)"
-                  }}
-                />
+                <div className="smoke" />
 
-                <div className="product-image-wrap">
-                  <img src={item.img} alt={item.name} className="product-image" />
+                <div className="bottle-stage">
+                  <div className="bottle left">
+                    <div className="bottle-label">
+                      PlayNice
+                      <br />
+                      Selected
+                    </div>
+                  </div>
+                  <div className="bottle center">
+                    <div className="bottle-label">
+                      PlayNice
+                      <br />
+                      Discovery
+                    </div>
+                  </div>
+                  <div className="bottle right">
+                    <div className="bottle-label">
+                      PlayNice
+                      <br />
+                      Luxury
+                    </div>
+                  </div>
+                  <div className="reflection" />
                 </div>
+              </div>
+            </div>
+          </section>
 
-                <h3 style={{ color: "#e1be67", fontSize: 24, margin: "4px 0 0" }}>{item.name}</h3>
-                <p style={{ color: "rgba(255,255,255,0.66)", lineHeight: 1.8, minHeight: 82 }}>
-                  {item.desc}
+          <section id="featured">
+            <div className="container">
+              <div className="section-head">
+                <div>
+                  <h2>Featured fragrances</h2>
+                </div>
+                <p>
+                  A strong first selection for a premium landing page. Easy to
+                  scan, easy to desire, easy to order.
                 </p>
-                <div style={{ color: "#fff", fontWeight: 700, letterSpacing: "0.02em", marginTop: 8 }}>
-                  {item.price}
+              </div>
+
+              <div className="card-grid">
+                {featuredFragrances.map((item) => (
+                  <article key={item.name} className="card">
+                    <div className="tag">Limited stock</div>
+                    <h3 className="fragrance-title">{item.name}</h3>
+                    <p className="fragrance-vibe">{item.vibe}</p>
+                    <div className="prices">
+                      <span className="price-pill">5ml {item.price5}</span>
+                      <span className="price-pill">10ml {item.price10}</span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section id="how">
+            <div className="container">
+              <div className="section-head">
+                <div>
+                  <h2>How it works</h2>
+                </div>
+                <p>
+                  The PlayNice model is simple: experience the fragrance first,
+                  then decide without regret.
+                </p>
+              </div>
+
+              <div className="steps">
+                {steps.map((step) => (
+                  <article key={step.number} className="card">
+                    <div className="step-number">{step.number}</div>
+                    <h3 className="step-title">{step.title}</h3>
+                    <p className="step-text">{step.text}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section id="why">
+            <div className="container split">
+              <div>
+                <div className="section-head" style={{ marginBottom: 18 }}>
+                  <div>
+                    <h2>Why PlayNice</h2>
+                  </div>
+                </div>
+
+                <div className="reason-grid">
+                  {reasons.map((reason) => (
+                    <article key={reason.title} className="card">
+                      <h3 className="reason-title">{reason.title}</h3>
+                      <p className="reason-text">{reason.text}</p>
+                    </article>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
 
-        <section style={{ paddingBottom: 72 }}>
-          <div className="info-grid">
-            <div className="info-card">
-              <div style={styles.sectionLabel}>Zašto dekanti</div>
-              <h2 style={{ fontSize: 36, marginTop: 14 }}>Pametniji način kupovine parfema</h2>
-              <div style={{ marginTop: 22, color: "rgba(255,255,255,0.72)", lineHeight: 1.9 }}>
-                <div>✔ Testiraš parfem na svojoj koži, ne na papiriću</div>
-                <div>✔ Ne trošiš veliki novac na pogrešan full bottle</div>
-                <div>✔ Možeš isprobati više različitih mirisa</div>
-                <div>✔ Lakše pronalaziš signature scent bez rizika</div>
+              <div className="card" style={{ minHeight: 100 }}>
+                <div className="tag">The concept</div>
+                <h3
+                  className="fragrance-title"
+                  style={{ fontSize: "34px", marginBottom: 14 }}
+                >
+                  No blind buying.
+                  <br />
+                  Only smart fragrance moves.
+                </h3>
+                <p className="fragrance-vibe" style={{ minHeight: "auto" }}>
+                  Most people decide too fast. One spray on paper, one quick
+                  impression, one expensive mistake. PlayNice slows that down and
+                  makes fragrance discovery feel premium, deliberate and worth it.
+                </p>
+                <p
+                  className="fragrance-vibe"
+                  style={{ minHeight: "auto", marginBottom: 0 }}
+                >
+                  This is not mass-market perfume shopping. This is curated
+                  access, better testing and a more refined path to finding what
+                  actually deserves your money.
+                </p>
               </div>
             </div>
+          </section>
 
-            <div
-              className="info-card"
-              style={{
-                border: "1px solid rgba(212,175,55,0.16)",
-                background: "linear-gradient(180deg, rgba(212,175,55,0.08), rgba(255,255,255,0.02))"
-              }}
-            >
-              <div style={styles.sectionLabel}>Kako funkcioniše</div>
-              <h2 style={{ fontSize: 36, marginTop: 14 }}>Try before you buy</h2>
-              <div style={{ marginTop: 22, color: "rgba(255,255,255,0.78)", lineHeight: 1.9 }}>
-                <div>1. Izabereš parfem ili sačekaš sledeći drop</div>
-                <div>2. Javiš se preko DM-a ili emaila</div>
-                <div>3. Dobijaš 5ml ili 10ml dekant za pravo testiranje</div>
-                <div>4. Tek onda odlučuješ da li želiš full bottle</div>
+          <section>
+            <div className="container">
+              <div className="cta">
+                <div className="tag">Ready to order?</div>
+                <h2>
+                  Limited stock.
+                  <br />
+                  High attention.
+                </h2>
+                <p>
+                  Explore the current selection, pick your decants, and order by
+                  DM or email. Built for fragrance lovers who want premium taste
+                  without unnecessary risk.
+                </p>
+                <div className="cta-actions">
+                  <a
+                    className="btn btn-gold"
+                    href="https://www.instagram.com/playnice.me"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Order via Instagram
+                  </a>
+                  <a className="btn btn-dark" href="mailto:order@playniceshop.me">
+                    order@playniceshop.me
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section style={{ paddingBottom: 36 }}>
-          <div className="cta-box">
-            <div style={styles.sectionLabel}>Kontakt</div>
-            <h2 style={{ fontSize: "clamp(30px, 4vw, 48px)", margin: "14px 0 0" }}>
-              Spreman za sledeći kompliment?
-            </h2>
-            <p style={{ ...styles.paragraph, maxWidth: 700, margin: "16px auto 0" }}>
-              Pošalji poruku, traži preporuku ili rezerviši svoj dekant iz aktuelnog dropa.
-            </p>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                gap: 14,
-                flexWrap: "wrap",
-                marginTop: 30
-              }}
-            >
-              <a href="https://instagram.com/playnice.me" style={styles.buttonPrimary}>
-                DM TO ORDER
-              </a>
-              <a href="mailto:order@playniceshop.me" style={styles.buttonSecondary}>
-                order@playniceshop.me
-              </a>
+          <section id="faq">
+            <div className="container">
+              <div className="section-head">
+                <div>
+                  <h2>Frequently asked</h2>
+                </div>
+                <p>
+                  Keep the buying process clear, fast and confidence-building.
+                </p>
+              </div>
+
+              <div className="card-grid">
+                {faqs.map((item) => (
+                  <article key={item.q} className="faq-item">
+                    <h3>{item.q}</h3>
+                    <p>{item.a}</p>
+                  </article>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </main>
 
         <footer className="footer">
-          <div className="footer-grid">
+          <div className="container footer-inner">
             <div>
-              <div style={{ color: "#e1be67", fontSize: 28, fontWeight: 700, letterSpacing: "0.08em" }}>
-                PLAYNICE
+              <strong style={{ color: "#f5f1e8" }}>Remember. PlayNice.</strong>
+              <div style={{ marginTop: 8 }}>
+                Premium fragrance decants for smarter buying.
               </div>
-              <p style={{ ...styles.paragraph, maxWidth: 460, marginTop: 12 }}>
-                Curated fragrance decants za ljude koji žele da testiraju parfem pre kupovine.
-                Niche. Designer. Arabic.
-              </p>
             </div>
 
-            <div>
-              <div style={styles.sectionLabel}>Info</div>
-              <div className="footer-links" style={{ marginTop: 14 }}>
-                <a href="https://instagram.com/playnice.me">Instagram</a>
-                <a href="mailto:order@playniceshop.me">order@playniceshop.me</a>
-                <a href="https://www.playniceshop.me/">playniceshop.me</a>
-              </div>
-              <p style={{ color: "rgba(255,255,255,0.5)", marginTop: 18, fontSize: 14 }}>
-                Delivery across Montenegro · Try before you buy
-              </p>
+            <div className="footer-links">
+              <a
+                href="https://www.instagram.com/playnice.me"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Instagram
+              </a>
+              <a href="mailto:order@playniceshop.me">Email</a>
+              <a href="#featured">Featured</a>
+              <a href="#how">How it works</a>
             </div>
           </div>
         </footer>
+
+        <div className="sticky-mobile-cta">
+          <a
+            className="btn btn-gold"
+            href="https://www.instagram.com/playnice.me"
+            target="_blank"
+            rel="noreferrer"
+          >
+            DM to order
+          </a>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
+
+export default App;
