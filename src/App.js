@@ -2,21 +2,21 @@ import React, { useMemo, useState } from "react";
 import "./App.css";
 
 const products = [
-  // Arabian: 5ml / 10ml / 20ml
+  // Arabian
   { id: 1, name: "Afnan 9AM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
   { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
   { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 6, name: "Armaf Club De Nuit Bling", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
-  { id: 7, name: "Armaf Club de Nuit Intense", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 6, name: "Armaf Club De Nuit Bling", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 }, badge: "LIMITED" },
+  { id: 7, name: "Armaf Club de Nuit Intense", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
   { id: 8, name: "Armaf Club de Nuit Sillage", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "LIMITED" },
   { id: 10, name: "Haramain Signature Blue", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
-  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
+  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
+  { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
   { id: 13, name: "Lattafa Fakhar Black", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
   { id: 15, name: "Lattafa Musamam Black Intense", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
   { id: 16, name: "Lattafa Qaed Al Fursan Untamed", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
   { id: 17, name: "Paris Corner Emir Trillium", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
@@ -25,33 +25,33 @@ const products = [
   { id: 20, name: "Paris Corner Perfumes North Stag Expressions II DEUX", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
   { id: 21, name: "Rayhaan Aquatica", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
   { id: 22, name: "Rayhaan Pacific Aura", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
+  { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 }, badge: "LIMITED" },
 
-  // Designer/Niche: 2ml / 5ml / 10ml
+  // Designer / Niche
   { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
   { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 } },
   { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 28, name: "Bois Impérial by Essential Parfums", category: "Designer/Niche", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 } },
+  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
+  { id: 28, name: "Bois Impérial by Essential Parfums", category: "Designer/Niche", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 }, badge: "BESTSELLER" },
   { id: 29, name: "BOSS Bottled Beyond Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 30, name: "BOSS The Scent Elixir Parfum Intense for Him", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
+  { id: 30, name: "BOSS The Scent Elixir Parfum Intense for Him", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "LIMITED" },
   { id: 31, name: "BOSS The Scent Le Parfum for Him", category: "Designer/Niche", sizes: { "2ml": 6, "5ml": 14, "10ml": 25 } },
   { id: 32, name: "Calvin Klein CK All Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 } },
   { id: 33, name: "Calvin Klein Defy Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3, "5ml": 7, "10ml": 12 } },
   { id: 34, name: "Calvin Klein Defy Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
   { id: 35, name: "Chopard Oud Malaki Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 36, name: "Creed Aventus Cologne", category: "Designer/Niche", sizes: { "2ml": 13, "5ml": 29, "10ml": 52 } },
-  { id: 37, name: "Giorgio Armani Acqua di Giò Profondo Parfum", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 38, name: "Gisada Ambassador Men Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 11, "10ml": 20 } },
+  { id: 36, name: "Creed Aventus Cologne", category: "Designer/Niche", sizes: { "2ml": 13, "5ml": 29, "10ml": 52 }, badge: "BESTSELLER" },
+  { id: 37, name: "Giorgio Armani Acqua di Giò Profondo Parfum", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
+  { id: 38, name: "Gisada Ambassador Men Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 11, "10ml": 20 }, badge: "BESTSELLER" },
   { id: 39, name: "Givenchy Gentleman Eau de Parfum Réserve Privée", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 12, "10ml": 21 } },
   { id: 40, name: "Jimmy Choo Man Blue Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 } },
   { id: 41, name: "L'Homme Eau de Parfum by Yves Saint Laurent", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
   { id: 42, name: "L'Homme Idéal De Guerlain Paris Eau De Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, badge: "BESTSELLER" },
   { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
   { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
   { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 } },
+  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 }, badge: "LIMITED" },
 ];
 
 const isShopPage =
@@ -59,13 +59,16 @@ const isShopPage =
   new URLSearchParams(window.location.search).get("view") === "shop";
 
 function formatPrice(value) {
-  return `€${Number(value).toFixed(value % 1 === 0 ? 0 : 1)}`;
+  return `${Number(value).toFixed(value % 1 === 0 ? 0 : 1)}€`;
 }
 
-function ProductCard({ product }) {
+function getCartTotal(cart) {
+  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+}
+
+function ProductCard({ product, onAddToCart }) {
   const sizeOptions = Object.keys(product.sizes);
   const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
-
   const selectedPrice = product.sizes[selectedSize];
 
   const mailText = encodeURIComponent(
@@ -78,6 +81,12 @@ function ProductCard({ product }) {
 
   return (
     <article className="product-card">
+      {product.badge && (
+        <div className={`card-flag ${product.badge === "LIMITED" ? "limited" : "bestseller"}`}>
+          {product.badge}
+        </div>
+      )}
+
       <div className="product-badge">{product.category}</div>
 
       <h3 className="product-title">{product.name}</h3>
@@ -112,25 +121,134 @@ function ProductCard({ product }) {
       </div>
 
       <div className="product-actions">
-        <a href={mailUrl} className="btn btn-primary">
-          Order Now
-        </a>
-        <a
-          href="https://www.instagram.com/playnice.me/"
-          target="_blank"
-          rel="noreferrer"
-          className="btn btn-secondary"
+        <button
+          className="btn btn-primary"
+          type="button"
+          onClick={() =>
+            onAddToCart({
+              productId: product.id,
+              name: product.name,
+              size: selectedSize,
+              price: selectedPrice,
+            })
+          }
         >
-          Instagram
+          Add to Cart
+        </button>
+
+        <a href={mailUrl} className="btn btn-secondary">
+          Order Now
         </a>
       </div>
     </article>
   );
 }
 
+function CartPanel({ cart, setCart }) {
+  const total = getCartTotal(cart);
+
+  const increaseQty = (index) => {
+    setCart((prev) =>
+      prev.map((item, i) => (i === index ? { ...item, qty: item.qty + 1 } : item))
+    );
+  };
+
+  const decreaseQty = (index) => {
+    setCart((prev) =>
+      prev
+        .map((item, i) =>
+          i === index ? { ...item, qty: Math.max(1, item.qty - 1) } : item
+        )
+        .filter((item) => item.qty > 0)
+    );
+  };
+
+  const removeItem = (index) => {
+    setCart((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const orderBody = encodeURIComponent(
+    `Zdravo, želim da naručim:\n\n${cart
+      .map(
+        (item, index) =>
+          `${index + 1}. ${item.name}\n   Veličina: ${item.size}\n   Količina: ${item.qty}\n   Cena: ${formatPrice(item.price)}\n   Ukupno: ${formatPrice(item.price * item.qty)}`
+      )
+      .join("\n\n")}\n\nUkupno za porudžbinu: ${formatPrice(total)}`
+  );
+
+  const mailUrl = `mailto:order@playniceshop.me?subject=${encodeURIComponent(
+    "PlayNice order"
+  )}&body=${orderBody}`;
+
+  return (
+    <aside className="cart-panel">
+      <div className="cart-head">
+        <h3>Cart</h3>
+        <span>{cart.length} items</span>
+      </div>
+
+      {cart.length === 0 ? (
+        <div className="cart-empty">Your cart is empty.</div>
+      ) : (
+        <>
+          <div className="cart-list">
+            {cart.map((item, index) => (
+              <div className="cart-item" key={`${item.productId}-${item.size}-${index}`}>
+                <div className="cart-item-top">
+                  <div className="cart-item-name">{item.name}</div>
+                  <button
+                    type="button"
+                    className="cart-remove"
+                    onClick={() => removeItem(index)}
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <div className="cart-meta">
+                  <span>{item.size}</span>
+                  <strong>{formatPrice(item.price)}</strong>
+                </div>
+
+                <div className="cart-qty-row">
+                  <div className="qty-box">
+                    <button type="button" onClick={() => decreaseQty(index)}>
+                      −
+                    </button>
+                    <span>{item.qty}</span>
+                    <button type="button" onClick={() => increaseQty(index)}>
+                      +
+                    </button>
+                  </div>
+
+                  <div className="cart-line-total">
+                    {formatPrice(item.price * item.qty)}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="cart-footer">
+            <div className="cart-total">
+              <span>Total</span>
+              <strong>{formatPrice(total)}</strong>
+            </div>
+
+            <a href={mailUrl} className="btn btn-primary cart-order-btn">
+              Order Entire Cart
+            </a>
+          </div>
+        </>
+      )}
+    </aside>
+  );
+}
+
 export default function App() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
+  const [cart, setCart] = useState([]);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -138,12 +256,27 @@ export default function App() {
         .toLowerCase()
         .includes(search.toLowerCase());
 
-      const matchesFilter =
-        filter === "All" || product.category === filter;
+      const matchesFilter = filter === "All" || product.category === filter;
 
       return matchesSearch && matchesFilter;
     });
   }, [search, filter]);
+
+  const addToCart = (newItem) => {
+    setCart((prev) => {
+      const existingIndex = prev.findIndex(
+        (item) => item.productId === newItem.productId && item.size === newItem.size
+      );
+
+      if (existingIndex !== -1) {
+        return prev.map((item, index) =>
+          index === existingIndex ? { ...item, qty: item.qty + 1 } : item
+        );
+      }
+
+      return [...prev, { ...newItem, qty: 1 }];
+    });
+  };
 
   return (
     <div className="site-shell">
@@ -268,63 +401,71 @@ export default function App() {
           </>
         ) : (
           <section id="catalog" className="section">
-            <div className="container">
-              <div className="section-head catalog-head">
-                <div>
-                  <div className="section-kicker">SHOP</div>
-                  <h2 className="section-title">PlayNice fragrance collection</h2>
-                  <p className="section-text">
-                    Pregledaj parfeme, izaberi veličinu i poruči direktno.
-                  </p>
+            <div className="container shop-layout">
+              <div className="shop-main">
+                <div className="section-head catalog-head">
+                  <div>
+                    <div className="section-kicker">SHOP</div>
+                    <h2 className="section-title">PlayNice fragrance collection</h2>
+                    <p className="section-text">
+                      Pregledaj parfeme, izaberi veličinu i dodaj u korpu.
+                    </p>
+                  </div>
+
+                  <div className="search-wrap">
+                    <input
+                      type="text"
+                      className="search-input"
+                      placeholder="Search fragrance..."
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                    />
+                  </div>
                 </div>
 
-                <div className="search-wrap">
-                  <input
-                    type="text"
-                    className="search-input"
-                    placeholder="Search fragrance..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
+                <div className="filter-bar">
+                  <button
+                    className={filter === "All" ? "filter-btn active" : "filter-btn"}
+                    onClick={() => setFilter("All")}
+                    type="button"
+                  >
+                    All
+                  </button>
+
+                  <button
+                    className={filter === "Arabian" ? "filter-btn active" : "filter-btn"}
+                    onClick={() => setFilter("Arabian")}
+                    type="button"
+                  >
+                    Arabian
+                  </button>
+
+                  <button
+                    className={filter === "Designer/Niche" ? "filter-btn active" : "filter-btn"}
+                    onClick={() => setFilter("Designer/Niche")}
+                    type="button"
+                  >
+                    Designer / Niche
+                  </button>
+                </div>
+
+                <div className="catalog-summary">
+                  Showing <strong>{filteredProducts.length}</strong> of{" "}
+                  <strong>{products.length}</strong> fragrances
+                </div>
+
+                <div className="product-grid">
+                  {filteredProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      onAddToCart={addToCart}
+                    />
+                  ))}
                 </div>
               </div>
 
-              <div className="filter-bar">
-                <button
-                  className={filter === "All" ? "filter-btn active" : "filter-btn"}
-                  onClick={() => setFilter("All")}
-                  type="button"
-                >
-                  All
-                </button>
-
-                <button
-                  className={filter === "Arabian" ? "filter-btn active" : "filter-btn"}
-                  onClick={() => setFilter("Arabian")}
-                  type="button"
-                >
-                  Arabian
-                </button>
-
-                <button
-                  className={filter === "Designer/Niche" ? "filter-btn active" : "filter-btn"}
-                  onClick={() => setFilter("Designer/Niche")}
-                  type="button"
-                >
-                  Designer / Niche
-                </button>
-              </div>
-
-              <div className="catalog-summary">
-                Showing <strong>{filteredProducts.length}</strong> of{" "}
-                <strong>{products.length}</strong> fragrances
-              </div>
-
-              <div className="product-grid">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
+              <CartPanel cart={cart} setCart={setCart} />
             </div>
           </section>
         )}
