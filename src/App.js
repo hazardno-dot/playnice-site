@@ -1,12 +1,12 @@
 import React from "react";
 import "./App.css";
 
-import creedAventusCologne from "./assets/fragrances/creed-aventus-cologne.png";
-import givenchyReservePrivee from "./assets/fragrances/givenchy-reserve-privee.png";
-import manceraIntenseCedratBoise from "./assets/fragrances/mancera-intense-cedrat-boise.png";
-import gisadaAmbassadorMen from "./assets/fragrances/gisada-ambassador-men.png";
-import armafCdnim from "./assets/fragrances/armaf-cdnim.png";
-import afnan9pm from "./assets/fragrances/afnan-9pm.png";
+import creedAventusCologne from "./public/images/creed-aventus-cologne.png";
+import givenchyReservePrivee from "./public/images/givenchy-reserve-privee.png";
+import manceraIntenseCedratBoise from "./public/images//mancera-intense-cedrat-boise.png";
+import gisadaAmbassadorMen from "./public/images/gisada-ambassador-men.png";
+import armafCdnim from "./public/images/armaf-cdnim.png";
+import afnan9pm from "./public/images/afnan-9pm.png";
 
 const featuredFragrances = [
   {
