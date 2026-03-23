@@ -66,6 +66,32 @@ function getCartTotal(cart) {
   return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 }
 
+function updateUrlParams(nextSearch, nextFilter, nextPage) {
+  const params = new URLSearchParams(window.location.search);
+  params.set("view", "shop");
+
+  if (nextSearch && nextSearch.trim()) {
+    params.set("search", nextSearch.trim());
+  } else {
+    params.delete("search");
+  }
+
+  if (nextFilter && nextFilter !== "All") {
+    params.set("filter", nextFilter);
+  } else {
+    params.delete("filter");
+  }
+
+  if (nextPage && nextPage > 1) {
+    params.set("page", String(nextPage));
+  } else {
+    params.delete("page");
+  }
+
+  const newUrl = `${window.location.pathname}?${params.toString()}`;
+  window.history.replaceState({}, "", newUrl);
+}
+
 function ProductCard({ product, onAddToCart }) {
   const sizeOptions = Object.keys(product.sizes);
   const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
@@ -81,7 +107,13 @@ function ProductCard({ product, onAddToCart }) {
 
   return (
     <article className="product-card">
-      {product.badge && <div className="card-flag bestseller">Bestseller</div>}
+      {product.badge && (
+        <div className="card-flag bestseller">
+          Best
+          <br />
+          Seller
+        </div>
+      )}
 
       <div className="product-badge">{product.category}</div>
 
@@ -112,7 +144,7 @@ function ProductCard({ product, onAddToCart }) {
       <div className="selected-price-box">
         <span>Selected</span>
         <strong>
-          {selectedSize} — {formatPrice(selectedPrice)}
+          {selectedSize} → {formatPrice(selectedPrice)}
         </strong>
       </div>
 
@@ -242,8 +274,21 @@ function CartPanel({ cart, setCart }) {
 }
 
 export default function App() {
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("All");
+  const initialParams =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search)
+      : new URLSearchParams();
+
+  const initialSearch = initialParams.get("search") || "";
+  const initialFilter = initialParams.get("filter") || "All";
+  const initialPage = Number(initialParams.get("page") || "1");
+
+  const [search, setSearch] = useState(initialSearch);
+  const [filter, setFilter] = useState(
+    initialFilter === "Arabian" || initialFilter === "Designer/Niche"
+      ? initialFilter
+      : "All"
+  );
   const [cart, setCart] = useState(() => {
     try {
       const savedCart = localStorage.getItem("playnice_cart");
@@ -252,8 +297,8 @@ export default function App() {
       return [];
     }
   });
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(initialPage > 0 ? initialPage : 1);
+  const itemsPerPage = 12;
 
   useEffect(() => {
     localStorage.setItem("playnice_cart", JSON.stringify(cart));
@@ -279,10 +324,45 @@ export default function App() {
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
+  const safeCurrentPage =
+    totalPages === 0 ? 1 : Math.min(Math.max(currentPage, 1), totalPages);
+
   const paginatedProducts = filteredProducts.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    (safeCurrentPage - 1) * itemsPerPage,
+    safeCurrentPage * itemsPerPage
   );
+
+  useEffect(() => {
+    if (currentPage !== safeCurrentPage) {
+      setCurrentPage(safeCurrentPage);
+    }
+  }, [currentPage, safeCurrentPage]);
+
+  useEffect(() => {
+    if (isShopPage) {
+      updateUrlParams(search, filter, safeCurrentPage);
+    }
+  }, [search, filter, safeCurrentPage]);
+
+  useEffect(() => {
+    const handleUrlChange = () => {
+      const params = new URLSearchParams(window.location.search);
+      const urlSearch = params.get("search") || "";
+      const urlFilter = params.get("filter") || "All";
+      const urlPage = Number(params.get("page") || "1");
+
+      setSearch(urlSearch);
+      setFilter(
+        urlFilter === "Arabian" || urlFilter === "Designer/Niche"
+          ? urlFilter
+          : "All"
+      );
+      setCurrentPage(urlPage > 0 ? urlPage : 1);
+    };
+
+    window.addEventListener("popstate", handleUrlChange);
+    return () => window.removeEventListener("popstate", handleUrlChange);
+  }, []);
 
   const addToCart = (newItem) => {
     setCart((prev) => {
@@ -502,20 +582,20 @@ export default function App() {
                   <button
                     type="button"
                     className="pagination-btn"
-                    disabled={currentPage === 1}
+                    disabled={safeCurrentPage === 1}
                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   >
                     Prev
                   </button>
 
                   <div className="pagination-info">
-                    Page <strong>{currentPage}</strong> of <strong>{totalPages || 1}</strong>
+                    Page <strong>{safeCurrentPage}</strong> of <strong>{totalPages || 1}</strong>
                   </div>
 
                   <button
                     type="button"
                     className="pagination-btn"
-                    disabled={currentPage === totalPages || totalPages === 0}
+                    disabled={safeCurrentPage === totalPages || totalPages === 0}
                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                   >
                     Next
