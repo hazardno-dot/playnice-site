@@ -59,6 +59,7 @@ const isShopPage =
   new URLSearchParams(window.location.search).get("view") === "shop";
 
 const INSTAGRAM_URL = "https://www.instagram.com/playnice.me/";
+const ORDER_EMAIL = "order@playniceshop.me";
 
 function formatPrice(value) {
   return `${Number(value).toFixed(value % 1 === 0 ? 0 : 1)}€`;
@@ -94,27 +95,11 @@ function updateUrlParams(nextSearch, nextFilter, nextPage) {
   window.history.replaceState({}, "", newUrl);
 }
 
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.left = "-9999px";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {
-      document.execCommand("copy");
-      document.body.removeChild(textArea);
-      return true;
-    } catch {
-      document.body.removeChild(textArea);
-      return false;
-    }
-  }
+function openEmailOrder(subject, body) {
+  const mailto = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
 }
 
 function ProductCard({ product, onAddToCart, onQuickOrder }) {
@@ -150,7 +135,11 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
           <button
             key={size}
             className={selectedSize === size ? "size-btn active" : "size-btn"}
-            onClick={() => setSelectedSize(size)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setSelectedSize(size);
+            }}
             type="button"
           >
             {size}
@@ -169,14 +158,16 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
         <button
           className="btn btn-primary"
           type="button"
-          onClick={() =>
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             onAddToCart({
               productId: product.id,
               name: product.name,
               size: selectedSize,
               price: selectedPrice,
-            })
-          }
+            });
+          }}
         >
           Add to Cart
         </button>
@@ -184,13 +175,15 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
         <button
           type="button"
           className="btn btn-secondary"
-          onClick={() =>
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             onQuickOrder({
               name: product.name,
               size: selectedSize,
               price: selectedPrice,
-            })
-          }
+            });
+          }}
         >
           Order Now
         </button>
@@ -398,27 +391,34 @@ export default function App() {
     });
   };
 
-  const handleQuickOrder = async ({ name, size, price }) => {
-    const orderText = `Zdravo, želim da naručim:
+  const handleQuickOrder = ({ name, size, price }) => {
+    const subject = `PlayNice Order - ${name}`;
+    const body = `Zdravo,
+
+Želim da naručim:
 
 ${name}
 Veličina: ${size}
-Cena: ${formatPrice(price)}`;
+Cena: ${formatPrice(price)}
 
-    const copied = await copyText(orderText);
-    window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
+Moji podaci:
+Ime i prezime:
+Telefon:
+Grad:
+Adresa:
 
-    if (copied) {
-      alert("Porudžbina je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.");
-    } else {
-      alert(`Kopiraj ovu poruku i pošalji u DM:\n\n${orderText}`);
-    }
+Hvala.`;
+
+    openEmailOrder(subject, body);
   };
 
-  const handleCartOrder = async (cartItems) => {
+  const handleCartOrder = (cartItems) => {
     const total = getCartTotal(cartItems);
 
-    const orderText = `Zdravo, želim da naručim:
+    const subject = "PlayNice Order";
+    const body = `Zdravo,
+
+Želim da naručim:
 
 ${cartItems
   .map(
@@ -426,21 +426,22 @@ ${cartItems
       `${index + 1}. ${item.name}
 Veličina: ${item.size}
 Količina: ${item.qty}
-Cena: ${formatPrice(item.price)}
+Cena po komadu: ${formatPrice(item.price)}
 Ukupno: ${formatPrice(item.price * item.qty)}`
   )
   .join("\n\n")}
 
-Ukupno za porudžbinu: ${formatPrice(total)}`;
+Ukupno za porudžbinu: ${formatPrice(total)}
 
-    const copied = await copyText(orderText);
-    window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
+Moji podaci:
+Ime i prezime:
+Telefon:
+Grad:
+Adresa:
 
-    if (copied) {
-      alert("Korpa je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.");
-    } else {
-      alert(`Kopiraj ovu poruku i pošalji u DM:\n\n${orderText}`);
-    }
+Hvala.`;
+
+    openEmailOrder(subject, body);
   };
 
   return (
@@ -688,8 +689,8 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
             <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
               Instagram
             </a>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
-              Send DM
+            <a href={`mailto:${ORDER_EMAIL}`}>
+              {ORDER_EMAIL}
             </a>
           </div>
           <div className="footer-copy">Remember. PlayNice.</div>
