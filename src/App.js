@@ -461,10 +461,11 @@ export default function App() {
       if (typeof window === "undefined") {
         return {
           fullName: "",
-          phone: "",
-          city: "",
-          address: "",
-          note: "",
+email: "",
+phone: "",
+city: "",
+address: "",
+note: "",
         };
       }
 
