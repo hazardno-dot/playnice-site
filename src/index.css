@@ -7,7 +7,3 @@ html, body, #root {
 body {
   font-family: Arial, sans-serif;
 }
-
-git add .
-git commit -m "Fix missing index.css"
-git push
