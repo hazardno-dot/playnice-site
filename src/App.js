@@ -58,6 +58,8 @@ const isShopPage =
   typeof window !== "undefined" &&
   new URLSearchParams(window.location.search).get("view") === "shop";
 
+const INSTAGRAM_URL = "https://www.instagram.com/playnice.me/";
+
 function formatPrice(value) {
   return `${Number(value).toFixed(value % 1 === 0 ? 0 : 1)}€`;
 }
@@ -92,18 +94,33 @@ function updateUrlParams(nextSearch, nextFilter, nextPage) {
   window.history.replaceState({}, "", newUrl);
 }
 
-function ProductCard({ product, onAddToCart }) {
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.left = "-9999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+      return true;
+    } catch {
+      document.body.removeChild(textArea);
+      return false;
+    }
+  }
+}
+
+function ProductCard({ product, onAddToCart, onQuickOrder }) {
   const sizeOptions = Object.keys(product.sizes);
   const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
   const selectedPrice = product.sizes[selectedSize];
-
-  const mailText = encodeURIComponent(
-    `Zdravo, želim da naručim:\n${product.name}\nVeličina: ${selectedSize}\nCena: ${formatPrice(selectedPrice)}`
-  );
-
-  const mailUrl = `mailto:order@playniceshop.me?subject=${encodeURIComponent(
-    `Order request - ${product.name}`
-  )}&body=${mailText}`;
 
   return (
     <article className="product-card">
@@ -164,15 +181,25 @@ function ProductCard({ product, onAddToCart }) {
           Add to Cart
         </button>
 
-        <a href={mailUrl} className="btn btn-secondary">
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={() =>
+            onQuickOrder({
+              name: product.name,
+              size: selectedSize,
+              price: selectedPrice,
+            })
+          }
+        >
           Order Now
-        </a>
+        </button>
       </div>
     </article>
   );
 }
 
-function CartPanel({ cart, setCart }) {
+function CartPanel({ cart, setCart, onOrderCart }) {
   const total = getCartTotal(cart);
 
   const increaseQty = (index) => {
@@ -194,19 +221,6 @@ function CartPanel({ cart, setCart }) {
   const removeItem = (index) => {
     setCart((prev) => prev.filter((_, i) => i !== index));
   };
-
-  const orderBody = encodeURIComponent(
-    `Zdravo, želim da naručim:\n\n${cart
-      .map(
-        (item, index) =>
-          `${index + 1}. ${item.name}\n   Veličina: ${item.size}\n   Količina: ${item.qty}\n   Cena: ${formatPrice(item.price)}\n   Ukupno: ${formatPrice(item.price * item.qty)}`
-      )
-      .join("\n\n")}\n\nUkupno za porudžbinu: ${formatPrice(total)}`
-  );
-
-  const mailUrl = `mailto:order@playniceshop.me?subject=${encodeURIComponent(
-    "PlayNice order"
-  )}&body=${orderBody}`;
 
   return (
     <aside className="cart-panel">
@@ -263,9 +277,13 @@ function CartPanel({ cart, setCart }) {
               <strong>{formatPrice(total)}</strong>
             </div>
 
-            <a href={mailUrl} className="btn btn-primary cart-order-btn">
+            <button
+              type="button"
+              className="btn btn-primary cart-order-btn"
+              onClick={() => onOrderCart(cart)}
+            >
               Order Entire Cart
-            </a>
+            </button>
           </div>
         </>
       )}
@@ -380,6 +398,51 @@ export default function App() {
     });
   };
 
+  const handleQuickOrder = async ({ name, size, price }) => {
+    const orderText = `Zdravo, želim da naručim:
+
+${name}
+Veličina: ${size}
+Cena: ${formatPrice(price)}`;
+
+    const copied = await copyText(orderText);
+    window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
+
+    if (copied) {
+      alert("Porudžbina je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.");
+    } else {
+      alert(`Kopiraj ovu poruku i pošalji u DM:\n\n${orderText}`);
+    }
+  };
+
+  const handleCartOrder = async (cartItems) => {
+    const total = getCartTotal(cartItems);
+
+    const orderText = `Zdravo, želim da naručim:
+
+${cartItems
+  .map(
+    (item, index) =>
+      `${index + 1}. ${item.name}
+Veličina: ${item.size}
+Količina: ${item.qty}
+Cena: ${formatPrice(item.price)}
+Ukupno: ${formatPrice(item.price * item.qty)}`
+  )
+  .join("\n\n")}
+
+Ukupno za porudžbinu: ${formatPrice(total)}`;
+
+    const copied = await copyText(orderText);
+    window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
+
+    if (copied) {
+      alert("Korpa je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.");
+    } else {
+      alert(`Kopiraj ovu poruku i pošalji u DM:\n\n${orderText}`);
+    }
+  };
+
   return (
     <div className="site-shell">
       <div className="bg-orb bg-orb-1" />
@@ -398,7 +461,9 @@ export default function App() {
           <nav className="nav">
             <a href="/">Home</a>
             <a href="/?view=shop">Shop</a>
-            <a href="mailto:order@playniceshop.me">Contact</a>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
+              Contact
+            </a>
           </nav>
         </div>
       </header>
@@ -429,7 +494,7 @@ export default function App() {
                       Shop
                     </a>
                     <a
-                      href="https://www.instagram.com/playnice.me/"
+                      href={INSTAGRAM_URL}
                       target="_blank"
                       rel="noreferrer"
                       className="btn btn-secondary"
@@ -493,8 +558,13 @@ export default function App() {
                     <a href="/?view=shop" className="btn btn-primary">
                       Open Shop
                     </a>
-                    <a href="mailto:order@playniceshop.me" className="btn btn-secondary">
-                      Send Email
+                    <a
+                      href={INSTAGRAM_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn btn-secondary"
+                    >
+                      Send DM
                     </a>
                   </div>
                 </div>
@@ -574,6 +644,7 @@ export default function App() {
                       key={product.id}
                       product={product}
                       onAddToCart={addToCart}
+                      onQuickOrder={handleQuickOrder}
                     />
                   ))}
                 </div>
@@ -603,7 +674,7 @@ export default function App() {
                 </div>
               </div>
 
-              <CartPanel cart={cart} setCart={setCart} />
+              <CartPanel cart={cart} setCart={setCart} onOrderCart={handleCartOrder} />
             </div>
           </section>
         )}
@@ -614,14 +685,12 @@ export default function App() {
           <div className="footer-brand">PLAYNICE</div>
           <div className="footer-line">Try before you buy.</div>
           <div className="footer-links">
-            <a
-              href="https://www.instagram.com/playnice.me/"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
               Instagram
             </a>
-            <a href="mailto:order@playniceshop.me">order@playniceshop.me</a>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
+              Send DM
+            </a>
           </div>
           <div className="footer-copy">Remember. PlayNice.</div>
         </div>
