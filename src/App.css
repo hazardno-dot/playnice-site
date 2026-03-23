@@ -1157,4 +1157,121 @@ input {
   line-height: 1.6;
   margin: 12px 0 14px;
 }
+
+  .product-grid > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cart-actions-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.cart-summary-box {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(243, 214, 155, 0.1);
+  margin-bottom: 14px;
+}
+
+.cart-summary-row,
+.cart-total-final {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+}
+
+.cart-summary-row strong {
+  color: var(--text);
+}
+
+.cart-total-final {
+  padding-top: 10px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(243, 214, 155, 0.1);
+}
+
+.cart-total-final strong {
+  color: var(--gold-soft);
+  font-size: 1.08rem;
+}
+
+.shipping-progress-wrap {
+  margin-bottom: 14px;
+}
+
+.shipping-badge {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(220, 181, 107, 0.09);
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  color: var(--gold-soft);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.shipping-badge strong {
+  color: var(--gold-soft);
+}
+
+.shipping-badge.success {
+  background: rgba(83, 201, 110, 0.12);
+  border-color: rgba(83, 201, 110, 0.22);
+  color: #baf2c4;
+}
+
+.checkout-box {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(243, 214, 155, 0.12);
+}
+
+.checkout-title {
+  color: var(--gold-soft);
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 0.04rem;
+}
+
+.checkout-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.checkout-input,
+.checkout-textarea {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(243, 214, 155, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  padding: 14px 16px;
+  outline: none;
+  font: inherit;
+}
+
+.checkout-input::placeholder,
+.checkout-textarea::placeholder {
+  color: rgba(247, 242, 232, 0.45);
+}
+
+.checkout-textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.checkout-note {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 12px 0 14px;
+}
   }
