@@ -54,12 +54,10 @@ const products = [
   { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 } },
 ];
 
-const isShopPage =
-  typeof window !== "undefined" &&
-  new URLSearchParams(window.location.search).get("view") === "shop";
-
 const INSTAGRAM_URL = "https://www.instagram.com/playnice.me/";
 const ORDER_EMAIL = "order@playniceshop.me";
+const ITEMS_PER_PAGE = 12;
+const SHOP_SCROLL_OFFSET = 110;
 
 function formatPrice(value) {
   return `${Number(value).toFixed(value % 1 === 0 ? 0 : 1)}€`;
@@ -67,6 +65,27 @@ function formatPrice(value) {
 
 function getCartTotal(cart) {
   return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+}
+
+function getInitialQueryState() {
+  if (typeof window === "undefined") {
+    return {
+      isShopPage: false,
+      search: "",
+      filter: "All",
+      page: 1,
+    };
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const view = params.get("view");
+
+  return {
+    isShopPage: view === "shop",
+    search: params.get("search") || "",
+    filter: params.get("filter") || "All",
+    page: Number(params.get("page") || "1"),
+  };
 }
 
 function updateUrlParams(nextSearch, nextFilter, nextPage) {
@@ -99,11 +118,32 @@ function openEmailOrder(subject, body) {
   const mailto = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(
     subject
   )}&body=${encodeURIComponent(body)}`;
+
   window.location.href = mailto;
 }
 
-function scrollToTopSmooth() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+function scrollToShopSection(ref, offset = SHOP_SCROLL_OFFSET) {
+  if (!ref?.current) return;
+
+  const elementTop = ref.current.getBoundingClientRect().top + window.pageYOffset;
+  const targetTop = Math.max(elementTop - offset, 0);
+
+  window.scrollTo({
+    top: targetTop,
+    behavior: "smooth",
+  });
+}
+
+function showAddedToCartToast(setCartToast, timerRef, message) {
+  if (timerRef.current) {
+    clearTimeout(timerRef.current);
+  }
+
+  setCartToast(message);
+
+  timerRef.current = setTimeout(() => {
+    setCartToast("");
+  }, 1800);
 }
 
 function ProductCard({ product, onAddToCart, onQuickOrder }) {
@@ -289,19 +329,13 @@ function CartPanel({ cart, setCart, onOrderCart }) {
 }
 
 export default function App() {
-  const initialParams =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search)
-      : new URLSearchParams();
+  const initialState = getInitialQueryState();
 
-  const initialSearch = initialParams.get("search") || "";
-  const initialFilter = initialParams.get("filter") || "All";
-  const initialPage = Number(initialParams.get("page") || "1");
-
-  const [search, setSearch] = useState(initialSearch);
+  const [isShopPage, setIsShopPage] = useState(initialState.isShopPage);
+  const [search, setSearch] = useState(initialState.search);
   const [filter, setFilter] = useState(
-    initialFilter === "Arabian" || initialFilter === "Designer/Niche"
-      ? initialFilter
+    initialState.filter === "Arabian" || initialState.filter === "Designer/Niche"
+      ? initialState.filter
       : "All"
   );
   const [cart, setCart] = useState(() => {
@@ -312,13 +346,24 @@ export default function App() {
       return [];
     }
   });
-  const [currentPage, setCurrentPage] = useState(initialPage > 0 ? initialPage : 1);
-  const itemsPerPage = 12;
+  const [currentPage, setCurrentPage] = useState(initialState.page > 0 ? initialState.page : 1);
+  const [cartToast, setCartToast] = useState("");
+
   const didMountScrollRef = useRef(false);
+  const shopSectionRef = useRef(null);
+  const cartToastTimerRef = useRef(null);
 
   useEffect(() => {
     localStorage.setItem("playnice_cart", JSON.stringify(cart));
   }, [cart]);
+
+  useEffect(() => {
+    return () => {
+      if (cartToastTimerRef.current) {
+        clearTimeout(cartToastTimerRef.current);
+      }
+    };
+  }, []);
 
   const filteredProducts = useMemo(() => {
     const filtered = products.filter((product) => {
@@ -338,14 +383,14 @@ export default function App() {
     return filtered;
   }, [search, filter]);
 
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
 
   const safeCurrentPage =
     totalPages === 0 ? 1 : Math.min(Math.max(currentPage, 1), totalPages);
 
   const paginatedProducts = filteredProducts.slice(
-    (safeCurrentPage - 1) * itemsPerPage,
-    safeCurrentPage * itemsPerPage
+    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
+    safeCurrentPage * ITEMS_PER_PAGE
   );
 
   useEffect(() => {
@@ -358,22 +403,20 @@ export default function App() {
     if (isShopPage) {
       updateUrlParams(search, filter, safeCurrentPage);
     }
-  }, [search, filter, safeCurrentPage]);
+  }, [isShopPage, search, filter, safeCurrentPage]);
 
   useEffect(() => {
     const handleUrlChange = () => {
-      const params = new URLSearchParams(window.location.search);
-      const urlSearch = params.get("search") || "";
-      const urlFilter = params.get("filter") || "All";
-      const urlPage = Number(params.get("page") || "1");
+      const state = getInitialQueryState();
 
-      setSearch(urlSearch);
+      setIsShopPage(state.isShopPage);
+      setSearch(state.search);
       setFilter(
-        urlFilter === "Arabian" || urlFilter === "Designer/Niche"
-          ? urlFilter
+        state.filter === "Arabian" || state.filter === "Designer/Niche"
+          ? state.filter
           : "All"
       );
-      setCurrentPage(urlPage > 0 ? urlPage : 1);
+      setCurrentPage(state.page > 0 ? state.page : 1);
     };
 
     window.addEventListener("popstate", handleUrlChange);
@@ -388,8 +431,8 @@ export default function App() {
       return;
     }
 
-    scrollToTopSmooth();
-  }, [safeCurrentPage, filter, search]);
+    scrollToShopSection(shopSectionRef, SHOP_SCROLL_OFFSET);
+  }, [isShopPage, safeCurrentPage, filter, search]);
 
   const addToCart = (newItem) => {
     setCart((prev) => {
@@ -405,6 +448,12 @@ export default function App() {
 
       return [...prev, { ...newItem, qty: 1 }];
     });
+
+    showAddedToCartToast(
+      setCartToast,
+      cartToastTimerRef,
+      `${newItem.name} • ${newItem.size} added to cart`
+    );
   };
 
   const handleQuickOrder = ({ name, size, price }) => {
@@ -465,6 +514,7 @@ Hvala.`;
       <div className="bg-orb bg-orb-1" />
       <div className="bg-orb bg-orb-2" />
       <div className="grain-overlay" />
+      {cartToast && <div className="cart-toast">{cartToast}</div>}
 
       <header className="header">
         <div className="container header-inner">
@@ -589,7 +639,7 @@ Hvala.`;
             </section>
           </>
         ) : (
-          <section id="catalog" className="section">
+          <section id="catalog" className="section" ref={shopSectionRef}>
             <div className="container shop-layout">
               <div className="shop-main">
                 <div className="section-head catalog-head">
@@ -709,9 +759,7 @@ Hvala.`;
             <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
               Instagram
             </a>
-            <a href={`mailto:${ORDER_EMAIL}`}>
-              {ORDER_EMAIL}
-            </a>
+            <a href={`mailto:${ORDER_EMAIL}`}>{ORDER_EMAIL}</a>
           </div>
           <div className="footer-copy">Remember. PlayNice.</div>
         </div>
