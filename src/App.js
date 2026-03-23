@@ -54,10 +54,6 @@ const products = [
   { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 } },
 ];
 
-const isShopPage =
-  typeof window !== "undefined" &&
-  new URLSearchParams(window.location.search).get("view") === "shop";
-
 const INSTAGRAM_URL = "https://www.instagram.com/playnice.me/";
 
 function formatPrice(value) {
@@ -69,6 +65,8 @@ function getCartTotal(cart) {
 }
 
 function updateUrlParams(nextSearch, nextFilter, nextPage) {
+  if (typeof window === "undefined") return;
+
   const params = new URLSearchParams(window.location.search);
   params.set("view", "shop");
 
@@ -90,7 +88,11 @@ function updateUrlParams(nextSearch, nextFilter, nextPage) {
     params.delete("page");
   }
 
-  const newUrl = `${window.location.pathname}?${params.toString()}`;
+  const queryString = params.toString();
+  const newUrl = queryString
+    ? `${window.location.pathname}?${queryString}`
+    : window.location.pathname;
+
   window.history.replaceState({}, "", newUrl);
 }
 
@@ -106,6 +108,7 @@ async function copyText(text) {
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
+
     try {
       document.execCommand("copy");
       document.body.removeChild(textArea);
@@ -210,11 +213,9 @@ function CartPanel({ cart, setCart, onOrderCart }) {
 
   const decreaseQty = (index) => {
     setCart((prev) =>
-      prev
-        .map((item, i) =>
-          i === index ? { ...item, qty: Math.max(1, item.qty - 1) } : item
-        )
-        .filter((item) => item.qty > 0)
+      prev.map((item, i) =>
+        i === index ? { ...item, qty: Math.max(1, item.qty - 1) } : item
+      )
     );
   };
 
@@ -292,14 +293,18 @@ function CartPanel({ cart, setCart, onOrderCart }) {
 }
 
 export default function App() {
-  const initialParams =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search)
-      : new URLSearchParams();
+  const getUrlParams = () => {
+    if (typeof window === "undefined") {
+      return new URLSearchParams();
+    }
+    return new URLSearchParams(window.location.search);
+  };
 
+  const initialParams = getUrlParams();
   const initialSearch = initialParams.get("search") || "";
   const initialFilter = initialParams.get("filter") || "All";
   const initialPage = Number(initialParams.get("page") || "1");
+  const initialView = initialParams.get("view");
 
   const [search, setSearch] = useState(initialSearch);
   const [filter, setFilter] = useState(
@@ -307,29 +312,29 @@ export default function App() {
       ? initialFilter
       : "All"
   );
+  const [currentPage, setCurrentPage] = useState(initialPage > 0 ? initialPage : 1);
+  const [isShopPage, setIsShopPage] = useState(initialView === "shop");
   const [cart, setCart] = useState(() => {
     try {
-      const savedCart = localStorage.getItem("playnice_cart");
+      if (typeof window === "undefined") return [];
+      const savedCart = window.localStorage.getItem("playnice_cart");
       return savedCart ? JSON.parse(savedCart) : [];
     } catch {
       return [];
     }
   });
-  const [currentPage, setCurrentPage] = useState(initialPage > 0 ? initialPage : 1);
+
   const itemsPerPage = 12;
 
   useEffect(() => {
-    localStorage.setItem("playnice_cart", JSON.stringify(cart));
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("playnice_cart", JSON.stringify(cart));
   }, [cart]);
 
   const filteredProducts = useMemo(() => {
     const filtered = products.filter((product) => {
-      const matchesSearch = product.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
-
+      const matchesSearch = product.name.toLowerCase().includes(search.toLowerCase());
       const matchesFilter = filter === "All" || product.category === filter;
-
       return matchesSearch && matchesFilter;
     });
 
@@ -360,7 +365,7 @@ export default function App() {
     if (isShopPage) {
       updateUrlParams(search, filter, safeCurrentPage);
     }
-  }, [search, filter, safeCurrentPage]);
+  }, [search, filter, safeCurrentPage, isShopPage]);
 
   useEffect(() => {
     const handleUrlChange = () => {
@@ -368,6 +373,7 @@ export default function App() {
       const urlSearch = params.get("search") || "";
       const urlFilter = params.get("filter") || "All";
       const urlPage = Number(params.get("page") || "1");
+      const urlView = params.get("view");
 
       setSearch(urlSearch);
       setFilter(
@@ -376,6 +382,7 @@ export default function App() {
           : "All"
       );
       setCurrentPage(urlPage > 0 ? urlPage : 1);
+      setIsShopPage(urlView === "shop");
     };
 
     window.addEventListener("popstate", handleUrlChange);
