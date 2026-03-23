@@ -1,700 +1,639 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
-const products = [
-  // Arabian
-  { id: 1, name: "Afnan 9AM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
-  { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
-  { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 6, name: "Armaf Club De Nuit Bling", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
-  { id: 7, name: "Armaf Club de Nuit Intense", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
-  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 10, name: "Haramain Signature Blue", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
-  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
-  { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
-  { id: 13, name: "Lattafa Fakhar Black", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
-  { id: 15, name: "Lattafa Musamam Black Intense", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 16, name: "Lattafa Qaed Al Fursan Untamed", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
-  { id: 17, name: "Paris Corner Emir Trillium", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 18, name: "Paris Corner Emir Voux Elegante", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 19, name: "Paris Corner Ministry of Oud - Oud Satin", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 20, name: "Paris Corner Perfumes North Stag Expressions II DEUX", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 21, name: "Rayhaan Aquatica", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 22, name: "Rayhaan Pacific Aura", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
+/*
+  Ako već imaš proizvode u posebnom fajlu, umesto ovog demo niza uradi npr:
+  import { PRODUCTS } from "./data/products";
+*/
 
-  // Designer / Niche
-  { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 } },
-  { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
-  { id: 28, name: "Bois Impérial by Essential Parfums", category: "Designer/Niche", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 }, badge: "BESTSELLER" },
-  { id: 29, name: "BOSS Bottled Beyond Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 30, name: "BOSS The Scent Elixir Parfum Intense for Him", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 31, name: "BOSS The Scent Le Parfum for Him", category: "Designer/Niche", sizes: { "2ml": 6, "5ml": 14, "10ml": 25 } },
-  { id: 32, name: "Calvin Klein CK All Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 } },
-  { id: 33, name: "Calvin Klein Defy Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3, "5ml": 7, "10ml": 12 } },
-  { id: 34, name: "Calvin Klein Defy Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 35, name: "Chopard Oud Malaki Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 36, name: "Creed Aventus Cologne", category: "Designer/Niche", sizes: { "2ml": 13, "5ml": 29, "10ml": 52 }, badge: "BESTSELLER" },
-  { id: 37, name: "Giorgio Armani Acqua di Giò Profondo Parfum", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
-  { id: 38, name: "Gisada Ambassador Men Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 11, "10ml": 20 }, badge: "BESTSELLER" },
-  { id: 39, name: "Givenchy Gentleman Eau de Parfum Réserve Privée", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 12, "10ml": 21 } },
-  { id: 40, name: "Jimmy Choo Man Blue Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 } },
-  { id: 41, name: "L'Homme Eau de Parfum by Yves Saint Laurent", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 42, name: "L'Homme Idéal De Guerlain Paris Eau De Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, badge: "BESTSELLER" },
-  { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 } },
+const PRODUCTS = [
+  {
+    id: 1,
+    name: "Afnan 9PM Rebel",
+    brand: "Afnan",
+    category: "Arabic",
+    price5ml: 9,
+    price10ml: 16,
+    image:
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80",
+    bestseller: true,
+    inStock: true,
+  },
+  {
+    id: 2,
+    name: "Bleu de Chanel EDP",
+    brand: "Chanel",
+    category: "Designer",
+    price5ml: 15,
+    price10ml: 27,
+    image:
+      "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=80",
+    bestseller: false,
+    inStock: true,
+  },
+  {
+    id: 3,
+    name: "Club de Nuit Sillage",
+    brand: "Armaf",
+    category: "Arabic",
+    price5ml: 4,
+    price10ml: 7,
+    image:
+      "https://images.unsplash.com/photo-1588405748880-12d1d2a59dc5?auto=format&fit=crop&w=900&q=80",
+    bestseller: true,
+    inStock: true,
+  },
+  {
+    id: 4,
+    name: "Cedrat Boise",
+    brand: "Mancera",
+    category: "Niche",
+    price5ml: 12,
+    price10ml: 22,
+    image:
+      "https://images.unsplash.com/photo-1615634262417-d1e6db70f9af?auto=format&fit=crop&w=900&q=80",
+    bestseller: false,
+    inStock: true,
+  },
+  {
+    id: 5,
+    name: "Gentleman Réserve Privée",
+    brand: "Givenchy",
+    category: "Designer",
+    price5ml: 11,
+    price10ml: 20,
+    image:
+      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80",
+    bestseller: false,
+    inStock: true,
+  },
+  {
+    id: 6,
+    name: "Ambassador",
+    brand: "Gisada",
+    category: "Designer",
+    price5ml: 10,
+    price10ml: 18,
+    image:
+      "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=900&q=80",
+    bestseller: false,
+    inStock: true,
+  },
+  {
+    id: 7,
+    name: "Supremacy Collector's Edition",
+    brand: "Afnan",
+    category: "Arabic",
+    price5ml: 8,
+    price10ml: 14,
+    image:
+      "https://images.unsplash.com/photo-1566977776052-9c9ad3f4f0bc?auto=format&fit=crop&w=900&q=80",
+    bestseller: false,
+    inStock: true,
+  },
+  {
+    id: 8,
+    name: "Boss The Scent Elixir",
+    brand: "Hugo Boss",
+    category: "Designer",
+    price5ml: 15,
+    price10ml: 27,
+    image:
+      "https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=900&q=80",
+    bestseller: true,
+    inStock: true,
+  },
+  {
+    id: 9,
+    name: "L'Homme EDP",
+    brand: "YSL",
+    category: "Designer",
+    price5ml: 13,
+    price10ml: 23,
+    image:
+      "https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&w=900&q=80",
+    bestseller: false,
+    inStock: true,
+  },
+  {
+    id: 10,
+    name: "Explorer Extreme",
+    brand: "Montblanc",
+    category: "Designer",
+    price5ml: 10,
+    price10ml: 18,
+    image:
+      "https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?auto=format&fit=crop&w=900&q=80",
+    bestseller: false,
+    inStock: true,
+  },
+  {
+    id: 11,
+    name: "Asad Elixir",
+    brand: "Lattafa",
+    category: "Arabic",
+    price5ml: 6,
+    price10ml: 11,
+    image:
+      "https://images.unsplash.com/photo-1603575449299-5a0ef10ac6f6?auto=format&fit=crop&w=900&q=80",
+    bestseller: false,
+    inStock: true,
+  },
+  {
+    id: 12,
+    name: "Musamam Black Intense",
+    brand: "Lattafa",
+    category: "Arabic",
+    price5ml: 5,
+    price10ml: 9,
+    image:
+      "https://images.unsplash.com/photo-1590736969955-71cc94901144?auto=format&fit=crop&w=900&q=80",
+    bestseller: false,
+    inStock: true,
+  },
+  {
+    id: 13,
+    name: "Aventus Cologne",
+    brand: "Creed",
+    category: "Niche",
+    price5ml: 22,
+    price10ml: 40,
+    image:
+      "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?auto=format&fit=crop&w=900&q=80",
+    bestseller: true,
+    inStock: true,
+  },
 ];
 
-const isShopPage =
-  typeof window !== "undefined" &&
-  new URLSearchParams(window.location.search).get("view") === "shop";
+const ITEMS_PER_PAGE = 12;
+const EMAIL_ADDRESS = "order@playniceshop.me";
 
-const INSTAGRAM_URL = "https://www.instagram.com/playnice.me/";
-
-function formatPrice(value) {
-  return `${Number(value).toFixed(value % 1 === 0 ? 0 : 1)}€`;
-}
-
-function getCartTotal(cart) {
-  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-}
-
-function updateUrlParams(nextSearch, nextFilter, nextPage) {
+function getInitialQueryState() {
   const params = new URLSearchParams(window.location.search);
-  params.set("view", "shop");
 
-  if (nextSearch && nextSearch.trim()) {
-    params.set("search", nextSearch.trim());
-  } else {
-    params.delete("search");
-  }
-
-  if (nextFilter && nextFilter !== "All") {
-    params.set("filter", nextFilter);
-  } else {
-    params.delete("filter");
-  }
-
-  if (nextPage && nextPage > 1) {
-    params.set("page", String(nextPage));
-  } else {
-    params.delete("page");
-  }
-
-  const newUrl = `${window.location.pathname}?${params.toString()}`;
-  window.history.replaceState({}, "", newUrl);
-}
-
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.left = "-9999px";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {
-      document.execCommand("copy");
-      document.body.removeChild(textArea);
-      return true;
-    } catch {
-      document.body.removeChild(textArea);
-      return false;
-    }
-  }
-}
-
-function ProductCard({ product, onAddToCart, onQuickOrder }) {
-  const sizeOptions = Object.keys(product.sizes);
-  const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
-  const selectedPrice = product.sizes[selectedSize];
-
-  return (
-    <article className="product-card">
-      {product.badge && (
-        <div className="card-flag bestseller">
-          Best
-          <br />
-          Seller
-        </div>
-      )}
-
-      <div className="product-badge">{product.category}</div>
-
-      <h3 className="product-title">{product.name}</h3>
-
-      <div className="product-prices">
-        {sizeOptions.map((size) => (
-          <div className="price-row" key={size}>
-            <span>{size}</span>
-            <strong>{formatPrice(product.sizes[size])}</strong>
-          </div>
-        ))}
-      </div>
-
-      <div className="size-picker">
-        {sizeOptions.map((size) => (
-          <button
-            key={size}
-            className={selectedSize === size ? "size-btn active" : "size-btn"}
-            onClick={() => setSelectedSize(size)}
-            type="button"
-          >
-            {size}
-          </button>
-        ))}
-      </div>
-
-      <div className="selected-price-box">
-        <span>Selected</span>
-        <strong>
-          {selectedSize} → {formatPrice(selectedPrice)}
-        </strong>
-      </div>
-
-      <div className="product-actions">
-        <button
-          className="btn btn-primary"
-          type="button"
-          onClick={() =>
-            onAddToCart({
-              productId: product.id,
-              name: product.name,
-              size: selectedSize,
-              price: selectedPrice,
-            })
-          }
-        >
-          Add to Cart
-        </button>
-
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={() =>
-            onQuickOrder({
-              name: product.name,
-              size: selectedSize,
-              price: selectedPrice,
-            })
-          }
-        >
-          Order Now
-        </button>
-      </div>
-    </article>
-  );
-}
-
-function CartPanel({ cart, setCart, onOrderCart }) {
-  const total = getCartTotal(cart);
-
-  const increaseQty = (index) => {
-    setCart((prev) =>
-      prev.map((item, i) => (i === index ? { ...item, qty: item.qty + 1 } : item))
-    );
+  return {
+    view: params.get("view") === "shop" ? "shop" : "intro",
+    search: params.get("search") || "",
+    filter: params.get("filter") || "All",
+    page: Math.max(1, Number(params.get("page")) || 1),
   };
-
-  const decreaseQty = (index) => {
-    setCart((prev) =>
-      prev
-        .map((item, i) =>
-          i === index ? { ...item, qty: Math.max(1, item.qty - 1) } : item
-        )
-        .filter((item) => item.qty > 0)
-    );
-  };
-
-  const removeItem = (index) => {
-    setCart((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  return (
-    <aside className="cart-panel">
-      <div className="cart-head">
-        <h3>Cart</h3>
-        <span>{cart.length} items</span>
-      </div>
-
-      {cart.length === 0 ? (
-        <div className="cart-empty">Your cart is empty.</div>
-      ) : (
-        <>
-          <div className="cart-list">
-            {cart.map((item, index) => (
-              <div className="cart-item" key={`${item.productId}-${item.size}-${index}`}>
-                <div className="cart-item-top">
-                  <div className="cart-item-name">{item.name}</div>
-                  <button
-                    type="button"
-                    className="cart-remove"
-                    onClick={() => removeItem(index)}
-                  >
-                    ×
-                  </button>
-                </div>
-
-                <div className="cart-meta">
-                  <span>{item.size}</span>
-                  <strong>{formatPrice(item.price)}</strong>
-                </div>
-
-                <div className="cart-qty-row">
-                  <div className="qty-box">
-                    <button type="button" onClick={() => decreaseQty(index)}>
-                      −
-                    </button>
-                    <span>{item.qty}</span>
-                    <button type="button" onClick={() => increaseQty(index)}>
-                      +
-                    </button>
-                  </div>
-
-                  <div className="cart-line-total">
-                    {formatPrice(item.price * item.qty)}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="cart-footer">
-            <div className="cart-total">
-              <span>Total</span>
-              <strong>{formatPrice(total)}</strong>
-            </div>
-
-            <button
-              type="button"
-              className="btn btn-primary cart-order-btn"
-              onClick={() => onOrderCart(cart)}
-            >
-              Order Entire Cart
-            </button>
-          </div>
-        </>
-      )}
-    </aside>
-  );
 }
 
-export default function App() {
-  const initialParams =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search)
-      : new URLSearchParams();
+function App() {
+  const initial = getInitialQueryState();
 
-  const initialSearch = initialParams.get("search") || "";
-  const initialFilter = initialParams.get("filter") || "All";
-  const initialPage = Number(initialParams.get("page") || "1");
-
-  const [search, setSearch] = useState(initialSearch);
-  const [filter, setFilter] = useState(
-    initialFilter === "Arabian" || initialFilter === "Designer/Niche"
-      ? initialFilter
-      : "All"
-  );
+  const [view, setView] = useState(initial.view);
+  const [search, setSearch] = useState(initial.search);
+  const [selectedFilter, setSelectedFilter] = useState(initial.filter);
+  const [currentPage, setCurrentPage] = useState(initial.page);
   const [cart, setCart] = useState(() => {
     try {
-      const savedCart = localStorage.getItem("playnice_cart");
-      return savedCart ? JSON.parse(savedCart) : [];
+      const saved = localStorage.getItem("playnice_cart");
+      return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
     }
   });
-  const [currentPage, setCurrentPage] = useState(initialPage > 0 ? initialPage : 1);
-  const itemsPerPage = 12;
+
+  const categories = useMemo(() => {
+    const unique = [...new Set(PRODUCTS.map((p) => p.category).filter(Boolean))];
+    return ["All", ...unique];
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("playnice_cart", JSON.stringify(cart));
   }, [cart]);
 
-  const filteredProducts = useMemo(() => {
-    const filtered = products.filter((product) => {
-      const matchesSearch = product.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
+  useEffect(() => {
+    const params = new URLSearchParams();
 
-      const matchesFilter = filter === "All" || product.category === filter;
+    if (view !== "intro") params.set("view", view);
+    if (search.trim()) params.set("search", search.trim());
+    if (selectedFilter !== "All") params.set("filter", selectedFilter);
+    if (currentPage > 1) params.set("page", String(currentPage));
+
+    const queryString = params.toString();
+    const newUrl = queryString
+      ? `${window.location.pathname}?${queryString}`
+      : window.location.pathname;
+
+    window.history.replaceState({}, "", newUrl);
+  }, [view, search, selectedFilter, currentPage]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const state = getInitialQueryState();
+      setView(state.view);
+      setSearch(state.search);
+      setSelectedFilter(state.filter);
+      setCurrentPage(state.page);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const filteredProducts = useMemo(() => {
+    const term = search.trim().toLowerCase();
+
+    return PRODUCTS.filter((product) => {
+      const matchesSearch =
+        !term ||
+        product.name.toLowerCase().includes(term) ||
+        (product.brand || "").toLowerCase().includes(term) ||
+        (product.category || "").toLowerCase().includes(term);
+
+      const matchesFilter =
+        selectedFilter === "All" || product.category === selectedFilter;
 
       return matchesSearch && matchesFilter;
     });
+  }, [search, selectedFilter]);
 
-    if (filter === "All") {
-      return [...filtered].sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    return filtered;
-  }, [search, filter]);
-
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-
-  const safeCurrentPage =
-    totalPages === 0 ? 1 : Math.min(Math.max(currentPage, 1), totalPages);
-
-  const paginatedProducts = filteredProducts.slice(
-    (safeCurrentPage - 1) * itemsPerPage,
-    safeCurrentPage * itemsPerPage
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
   );
 
   useEffect(() => {
-    if (currentPage !== safeCurrentPage) {
-      setCurrentPage(safeCurrentPage);
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
     }
-  }, [currentPage, safeCurrentPage]);
+  }, [currentPage, totalPages]);
 
-  useEffect(() => {
-    if (isShopPage) {
-      updateUrlParams(search, filter, safeCurrentPage);
-    }
-  }, [search, filter, safeCurrentPage]);
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredProducts.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredProducts, currentPage]);
 
-  useEffect(() => {
-    const handleUrlChange = () => {
-      const params = new URLSearchParams(window.location.search);
-      const urlSearch = params.get("search") || "";
-      const urlFilter = params.get("filter") || "All";
-      const urlPage = Number(params.get("page") || "1");
+  const goToShop = () => {
+    setView("shop");
+  };
 
-      setSearch(urlSearch);
-      setFilter(
-        urlFilter === "Arabian" || urlFilter === "Designer/Niche"
-          ? urlFilter
-          : "All"
-      );
-      setCurrentPage(urlPage > 0 ? urlPage : 1);
-    };
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+    setCurrentPage(1);
+  };
 
-    window.addEventListener("popstate", handleUrlChange);
-    return () => window.removeEventListener("popstate", handleUrlChange);
-  }, []);
+  const handleFilterChange = (filter) => {
+    setSelectedFilter(filter);
+    setCurrentPage(1);
+  };
 
-  const addToCart = (newItem) => {
+  const addToCart = (product, size = 10) => {
+    const price = size === 5 ? product.price5ml : product.price10ml;
+    const key = `${product.id}-${size}`;
+
     setCart((prev) => {
-      const existingIndex = prev.findIndex(
-        (item) => item.productId === newItem.productId && item.size === newItem.size
-      );
+      const existing = prev.find((item) => item.key === key);
 
-      if (existingIndex !== -1) {
-        return prev.map((item, index) =>
-          index === existingIndex ? { ...item, qty: item.qty + 1 } : item
+      if (existing) {
+        return prev.map((item) =>
+          item.key === key
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       }
 
-      return [...prev, { ...newItem, qty: 1 }];
+      return [
+        ...prev,
+        {
+          key,
+          id: product.id,
+          name: product.name,
+          brand: product.brand,
+          size,
+          price,
+          quantity: 1,
+        },
+      ];
     });
   };
 
-  const handleQuickOrder = async ({ name, size, price }) => {
-    const orderText = `Zdravo, želim da naručim:
-
-${name}
-Veličina: ${size}
-Cena: ${formatPrice(price)}`;
-
-    const copied = await copyText(orderText);
-    window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
-
-    if (copied) {
-      alert("Porudžbina je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.");
-    } else {
-      alert(`Kopiraj ovu poruku i pošalji u DM:\n\n${orderText}`);
-    }
+  const decreaseQuantity = (key) => {
+    setCart((prev) =>
+      prev
+        .map((item) =>
+          item.key === key
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
   };
 
-  const handleCartOrder = async (cartItems) => {
-    const total = getCartTotal(cartItems);
+  const increaseQuantity = (key) => {
+    setCart((prev) =>
+      prev.map((item) =>
+        item.key === key
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  };
 
-    const orderText = `Zdravo, želim da naručim:
+  const removeFromCart = (key) => {
+    setCart((prev) => prev.filter((item) => item.key !== key));
+  };
 
-${cartItems
-  .map(
-    (item, index) =>
-      `${index + 1}. ${item.name}
-Veličina: ${item.size}
-Količina: ${item.qty}
-Cena: ${formatPrice(item.price)}
-Ukupno: ${formatPrice(item.price * item.qty)}`
-  )
-  .join("\n\n")}
+  const clearCart = () => {
+    setCart([]);
+  };
 
-Ukupno za porudžbinu: ${formatPrice(total)}`;
+  const cartCount = useMemo(
+    () => cart.reduce((sum, item) => sum + item.quantity, 0),
+    [cart]
+  );
 
-    const copied = await copyText(orderText);
-    window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
+  const totalPrice = useMemo(
+    () => cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    [cart]
+  );
 
-    if (copied) {
-      alert("Korpa je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.");
-    } else {
-      alert(`Kopiraj ovu poruku i pošalji u DM:\n\n${orderText}`);
-    }
+  const handleCheckoutEmail = () => {
+    if (!cart.length) return;
+
+    const subject = encodeURIComponent("PlayNice Order");
+
+    const lines = [
+      "Hello PlayNice,",
+      "",
+      "I would like to place the following order:",
+      "",
+      ...cart.map(
+        (item) =>
+          `- ${item.name} | ${item.size}ml | qty: ${item.quantity} | €${(
+            item.price * item.quantity
+          ).toFixed(2)}`
+      ),
+      "",
+      `Total: €${totalPrice.toFixed(2)}`,
+      "",
+      "My details:",
+      "Name:",
+      "Phone:",
+      "City:",
+      "Address:",
+      "",
+      "Thank you.",
+    ];
+
+    const body = encodeURIComponent(lines.join("\n"));
+    window.location.href = `mailto:${EMAIL_ADDRESS}?subject=${subject}&body=${body}`;
   };
 
   return (
-    <div className="site-shell">
-      <div className="bg-orb bg-orb-1" />
-      <div className="bg-orb bg-orb-2" />
-      <div className="grain-overlay" />
+    <div className="app">
+      <header className="topbar">
+        <div className="brand-block">
+          <h1 className="brand-title">PlayNice</h1>
+          <p className="brand-subtitle">Remember. PlayNice.</p>
+        </div>
 
-      <header className="header">
-        <div className="container header-inner">
-          <div className="brand-block">
-            <a href="/" className="brand-logo">
-              PLAYNICE
-            </a>
-            <div className="brand-tagline">Remember. PlayNice.</div>
-          </div>
-
-          <nav className="nav">
-            <a href="/">Home</a>
-            <a href="/?view=shop">Shop</a>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
-              Contact
-            </a>
-          </nav>
+        <div className="topbar-actions">
+          <button
+            className={`nav-btn ${view === "intro" ? "active" : ""}`}
+            onClick={() => setView("intro")}
+            type="button"
+          >
+            Home
+          </button>
+          <button
+            className={`nav-btn ${view === "shop" ? "active" : ""}`}
+            onClick={() => setView("shop")}
+            type="button"
+          >
+            Shop
+          </button>
         </div>
       </header>
 
-      <main>
-        {!isShopPage ? (
-          <>
-            <section id="intro" className="hero intro-hero">
-              <div className="container hero-grid">
-                <div className="hero-copy">
-                  <div className="section-kicker">PLAYNICE PREMIUM FRAGRANCE DECANTS</div>
+      {view === "intro" && (
+        <section className="hero-section">
+          <div className="hero-overlay">
+            <p className="hero-kicker">Niche. Designer. Arabic.</p>
+            <h2 className="hero-title">Try before you buy.</h2>
+            <p className="hero-text">
+              Carefully selected fragrances in premium decants.
+            </p>
+            <button className="hero-cta" onClick={goToShop} type="button">
+              Enter Shop
+            </button>
+          </div>
+        </section>
+      )}
 
-                  <h1 className="hero-title">
-                    Try before
-                    <span> you buy.</span>
-                  </h1>
+      {view === "shop" && (
+        <main className="shop-layout">
+          <section className="shop-main">
+            <div className="shop-toolbar">
+              <div className="search-wrap">
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="Search fragrance, brand or category..."
+                  value={search}
+                  onChange={handleSearchChange}
+                />
+              </div>
 
-                  <p className="hero-text">
-                    Niche. Designer. Arabic.
-                    <br />
-                    Pažljivo odabrani parfemi u premium dekantima.
-                    <br />
-                    Otkrij pravi miris pre nego što kupiš punu bočicu.
-                  </p>
+              <div className="filter-wrap">
+                {categories.map((filter) => (
+                  <button
+                    key={filter}
+                    type="button"
+                    className={`filter-btn ${
+                      selectedFilter === filter ? "active" : ""
+                    }`}
+                    onClick={() => handleFilterChange(filter)}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-                  <div className="hero-actions">
-                    <a href="/?view=shop" className="btn btn-primary">
-                      Shop
-                    </a>
-                    <a
-                      href={INSTAGRAM_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn btn-secondary"
-                    >
-                      Instagram
-                    </a>
+            <div className="results-meta">
+              <span>
+                {filteredProducts.length} fragrance
+                {filteredProducts.length !== 1 ? "s" : ""}
+              </span>
+              <span>
+                Page {currentPage} / {totalPages}
+              </span>
+            </div>
+
+            <div className="products-grid">
+              {paginatedProducts.map((product) => (
+                <article className="product-card" key={product.id}>
+                  <div className="product-image-wrap">
+                    {product.bestseller && (
+                      <div className="bestseller-badge">
+                        <span>Best</span>
+                        <span>Seller</span>
+                      </div>
+                    )}
+
+                    <img
+                      className="product-image"
+                      src={product.image}
+                      alt={product.name}
+                    />
                   </div>
 
-                  <div className="stats-grid">
-                    <div className="stat-card">
-                      <div className="stat-value">{products.length}+</div>
-                      <div className="stat-label">Fragrances</div>
-                    </div>
-                    <div className="stat-card">
-                      <div className="stat-value">Arabian / Designer / Niche</div>
-                      <div className="stat-label">Curated selection</div>
-                    </div>
-                    <div className="stat-card">
-                      <div className="stat-value">Premium</div>
-                      <div className="stat-label">Try before you buy</div>
-                    </div>
-                  </div>
-                </div>
+                  <div className="product-info">
+                    <p className="product-brand">{product.brand}</p>
+                    <h3 className="product-name">{product.name}</h3>
+                    <p className="product-category">{product.category}</p>
 
-                <div className="hero-visual">
-                  <div className="visual-card">
-                    <div className="visual-topline">PLAYNICE COLLECTION</div>
-
-                    <div className="bottle-stage">
-                      <div className="bottle-glow" />
-                      <div className="bottle-shadow" />
-                      <div className="bottle">
-                        <div className="bottle-cap" />
-                        <div className="bottle-front">PN</div>
+                    <div className="product-prices">
+                      <div className="price-line">
+                        <span>5ml</span>
+                        <strong>€{product.price5ml}</strong>
+                      </div>
+                      <div className="price-line">
+                        <span>10ml</span>
+                        <strong>€{product.price10ml}</strong>
                       </div>
                     </div>
 
-                    <div className="visual-panel">
-                      <h3>Luxury starts with the right sample</h3>
-                      <p>
-                        Klikni na Shop i pregledaj kompletnu selekciju Arabian i
-                        Designer/Niche parfema sa cenama i opcijom za poručivanje.
-                      </p>
+                    <div className="product-actions">
+                      <button
+                        type="button"
+                        className="add-to-cart-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(product, 5);
+                        }}
+                      >
+                        Add 5ml
+                      </button>
+
+                      <button
+                        type="button"
+                        className="add-to-cart-btn secondary"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(product, 10);
+                        }}
+                      >
+                        Add 10ml
+                      </button>
                     </div>
                   </div>
-                </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="pagination">
+              <button
+                type="button"
+                className="page-btn"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+              >
+                Prev
+              </button>
+
+              <span className="page-indicator">
+                {currentPage} / {totalPages}
+              </span>
+
+              <button
+                type="button"
+                className="page-btn"
+                disabled={currentPage === totalPages}
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+                }
+              >
+                Next
+              </button>
+            </div>
+          </section>
+
+          <aside className="cart-sidebar">
+            <div className="cart-header">
+              <h2>Cart</h2>
+              <span>{cartCount} item{cartCount !== 1 ? "s" : ""}</span>
+            </div>
+
+            {!cart.length ? (
+              <div className="cart-empty">
+                <p>Your cart is empty.</p>
               </div>
-            </section>
+            ) : (
+              <>
+                <div className="cart-items">
+                  {cart.map((item) => (
+                    <div className="cart-item" key={item.key}>
+                      <div className="cart-item-info">
+                        <h4>{item.name}</h4>
+                        <p>
+                          {item.size}ml · €{item.price}
+                        </p>
+                      </div>
 
-            <section className="section cta-section">
-              <div className="container">
-                <div className="cta-box">
-                  <div className="section-kicker">PLAYNICE</div>
-                  <h2>Discover fragrances the right way.</h2>
-                  <p>
-                    Testiraj pre pune bočice. Premium dekanti, pažljivo biran izbor i
-                    jednostavna porudžbina.
-                  </p>
+                      <div className="cart-item-controls">
+                        <button
+                          type="button"
+                          className="qty-btn"
+                          onClick={() => decreaseQuantity(item.key)}
+                        >
+                          −
+                        </button>
 
-                  <div className="cta-actions">
-                    <a href="/?view=shop" className="btn btn-primary">
-                      Open Shop
-                    </a>
-                    <a
-                      href={INSTAGRAM_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn btn-secondary"
-                    >
-                      Send DM
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </>
-        ) : (
-          <section id="catalog" className="section">
-            <div className="container shop-layout">
-              <div className="shop-main">
-                <div className="section-head catalog-head">
-                  <div>
-                    <div className="section-kicker">SHOP</div>
-                    <h2 className="section-title">PlayNice fragrance collection</h2>
-                    <p className="section-text">
-                      Pregledaj parfeme, izaberi veličinu i dodaj u korpu.
-                    </p>
-                  </div>
+                        <span className="qty-value">{item.quantity}</span>
 
-                  <div className="search-wrap">
-                    <input
-                      type="text"
-                      className="search-input"
-                      placeholder="Search fragrance..."
-                      value={search}
-                      onChange={(e) => {
-                        setSearch(e.target.value);
-                        setCurrentPage(1);
-                      }}
-                    />
-                  </div>
-                </div>
+                        <button
+                          type="button"
+                          className="qty-btn"
+                          onClick={() => increaseQuantity(item.key)}
+                        >
+                          +
+                        </button>
 
-                <div className="filter-bar">
-                  <button
-                    className={filter === "All" ? "filter-btn active" : "filter-btn"}
-                    onClick={() => {
-                      setFilter("All");
-                      setCurrentPage(1);
-                    }}
-                    type="button"
-                  >
-                    All
-                  </button>
-
-                  <button
-                    className={filter === "Arabian" ? "filter-btn active" : "filter-btn"}
-                    onClick={() => {
-                      setFilter("Arabian");
-                      setCurrentPage(1);
-                    }}
-                    type="button"
-                  >
-                    Arabian
-                  </button>
-
-                  <button
-                    className={filter === "Designer/Niche" ? "filter-btn active" : "filter-btn"}
-                    onClick={() => {
-                      setFilter("Designer/Niche");
-                      setCurrentPage(1);
-                    }}
-                    type="button"
-                  >
-                    Designer / Niche
-                  </button>
-                </div>
-
-                <div className="catalog-summary">
-                  Showing <strong>{filteredProducts.length}</strong> of{" "}
-                  <strong>{products.length}</strong> fragrances
-                </div>
-
-                <div className="product-grid">
-                  {paginatedProducts.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      onAddToCart={addToCart}
-                      onQuickOrder={handleQuickOrder}
-                    />
+                        <button
+                          type="button"
+                          className="remove-btn"
+                          onClick={() => removeFromCart(item.key)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
                   ))}
                 </div>
 
-                <div className="pagination">
-                  <button
-                    type="button"
-                    className="pagination-btn"
-                    disabled={safeCurrentPage === 1}
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                  >
-                    Prev
-                  </button>
-
-                  <div className="pagination-info">
-                    Page <strong>{safeCurrentPage}</strong> of <strong>{totalPages || 1}</strong>
+                <div className="cart-footer">
+                  <div className="cart-total">
+                    <span>Total</span>
+                    <strong>€{totalPrice.toFixed(2)}</strong>
                   </div>
 
                   <button
                     type="button"
-                    className="pagination-btn"
-                    disabled={safeCurrentPage === totalPages || totalPages === 0}
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    className="checkout-btn"
+                    onClick={handleCheckoutEmail}
                   >
-                    Next
+                    Order via Email
+                  </button>
+
+                  <button
+                    type="button"
+                    className="clear-cart-btn"
+                    onClick={clearCart}
+                  >
+                    Clear cart
                   </button>
                 </div>
-              </div>
-
-              <CartPanel cart={cart} setCart={setCart} onOrderCart={handleCartOrder} />
-            </div>
-          </section>
-        )}
-      </main>
-
-      <footer id="contact" className="footer">
-        <div className="container footer-inner">
-          <div className="footer-brand">PLAYNICE</div>
-          <div className="footer-line">Try before you buy.</div>
-          <div className="footer-links">
-            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
-              Instagram
-            </a>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
-              Send DM
-            </a>
-          </div>
-          <div className="footer-copy">Remember. PlayNice.</div>
-        </div>
-      </footer>
+              </>
+            )}
+          </aside>
+        </main>
+      )}
     </div>
   );
 }
+
+export default App;
