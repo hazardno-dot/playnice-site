@@ -123,7 +123,20 @@ async function copyText(text) {
 function ProductCard({ product, onAddToCart, onQuickOrder }) {
   const sizeOptions = Object.keys(product.sizes);
   const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
+  const [added, setAdded] = useState(false);
   const selectedPrice = product.sizes[selectedSize];
+
+  const handleAdd = () => {
+    onAddToCart({
+      productId: product.id,
+      name: product.name,
+      size: selectedSize,
+      price: selectedPrice,
+    });
+
+    setAdded(true);
+    window.setTimeout(() => setAdded(false), 1400);
+  };
 
   return (
     <article className="product-card">
@@ -169,19 +182,8 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
       </div>
 
       <div className="product-actions">
-        <button
-          className="btn btn-primary"
-          type="button"
-          onClick={() =>
-            onAddToCart({
-              productId: product.id,
-              name: product.name,
-              size: selectedSize,
-              price: selectedPrice,
-            })
-          }
-        >
-          Add to Cart
+        <button className="btn btn-primary" type="button" onClick={handleAdd}>
+          {added ? "Added ✓" : "Add to Cart"}
         </button>
 
         <button
@@ -202,8 +204,16 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
   );
 }
 
-function CartPanel({ cart, setCart, onOrderCart }) {
+function CartPanel({
+  cart,
+  setCart,
+  onOrderCart,
+  checkoutData,
+  setCheckoutData,
+  onCheckout,
+}) {
   const total = getCartTotal(cart);
+  const [showCheckout, setShowCheckout] = useState(false);
 
   const increaseQty = (index) => {
     setCart((prev) =>
@@ -221,6 +231,14 @@ function CartPanel({ cart, setCart, onOrderCart }) {
 
   const removeItem = (index) => {
     setCart((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleFieldChange = (e) => {
+    const { name, value } = e.target;
+    setCheckoutData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -278,13 +296,86 @@ function CartPanel({ cart, setCart, onOrderCart }) {
               <strong>{formatPrice(total)}</strong>
             </div>
 
-            <button
-              type="button"
-              className="btn btn-primary cart-order-btn"
-              onClick={() => onOrderCart(cart)}
-            >
-              Order Entire Cart
-            </button>
+            <div className="cart-actions-stack">
+              <button
+                type="button"
+                className="btn btn-secondary cart-order-btn"
+                onClick={() => onOrderCart(cart)}
+              >
+                Quick DM Order
+              </button>
+
+              <button
+                type="button"
+                className="btn btn-primary cart-order-btn"
+                onClick={() => setShowCheckout((prev) => !prev)}
+              >
+                {showCheckout ? "Hide Checkout" : "Proceed to Checkout"}
+              </button>
+            </div>
+
+            {showCheckout && (
+              <div className="checkout-box">
+                <div className="checkout-title">Checkout</div>
+
+                <div className="checkout-grid">
+                  <input
+                    className="checkout-input"
+                    type="text"
+                    name="fullName"
+                    placeholder="Full name *"
+                    value={checkoutData.fullName}
+                    onChange={handleFieldChange}
+                  />
+                  <input
+                    className="checkout-input"
+                    type="text"
+                    name="phone"
+                    placeholder="Phone number *"
+                    value={checkoutData.phone}
+                    onChange={handleFieldChange}
+                  />
+                  <input
+                    className="checkout-input"
+                    type="text"
+                    name="city"
+                    placeholder="City / Town *"
+                    value={checkoutData.city}
+                    onChange={handleFieldChange}
+                  />
+                  <input
+                    className="checkout-input"
+                    type="text"
+                    name="address"
+                    placeholder="Address *"
+                    value={checkoutData.address}
+                    onChange={handleFieldChange}
+                  />
+                  <textarea
+                    className="checkout-textarea"
+                    name="note"
+                    placeholder="Order note (optional)"
+                    value={checkoutData.note}
+                    onChange={handleFieldChange}
+                    rows={4}
+                  />
+                </div>
+
+                <div className="checkout-note">
+                  Payment: Cash on delivery
+                  <br />
+                  Delivery is arranged after confirmation in DM.
+                </div>
+
+                <button
+                  type="button"
+                  className="btn btn-primary cart-order-btn"
+                  onClick={() => onCheckout(cart)}
+                >
+                  Confirm Checkout
+                </button>
+              </div>
+            )}
           </div>
         </>
       )}
@@ -324,12 +415,50 @@ export default function App() {
     }
   });
 
+  const [checkoutData, setCheckoutData] = useState(() => {
+    try {
+      if (typeof window === "undefined") {
+        return {
+          fullName: "",
+          phone: "",
+          city: "",
+          address: "",
+          note: "",
+        };
+      }
+
+      const saved = window.localStorage.getItem("playnice_checkout");
+      return saved
+        ? JSON.parse(saved)
+        : {
+            fullName: "",
+            phone: "",
+            city: "",
+            address: "",
+            note: "",
+          };
+    } catch {
+      return {
+        fullName: "",
+        phone: "",
+        city: "",
+        address: "",
+        note: "",
+      };
+    }
+  });
+
   const itemsPerPage = 12;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     window.localStorage.setItem("playnice_cart", JSON.stringify(cart));
   }, [cart]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("playnice_checkout", JSON.stringify(checkoutData));
+  }, [checkoutData]);
 
   const filteredProducts = useMemo(() => {
     const filtered = products.filter((product) => {
@@ -445,6 +574,65 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
 
     if (copied) {
       alert("Korpa je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.");
+    } else {
+      alert(`Kopiraj ovu poruku i pošalji u DM:\n\n${orderText}`);
+    }
+  };
+
+  const handleCheckout = async (cartItems) => {
+    if (!checkoutData.fullName.trim()) {
+      alert("Unesi ime i prezime.");
+      return;
+    }
+
+    if (!checkoutData.phone.trim()) {
+      alert("Unesi broj telefona.");
+      return;
+    }
+
+    if (!checkoutData.city.trim()) {
+      alert("Unesi grad.");
+      return;
+    }
+
+    if (!checkoutData.address.trim()) {
+      alert("Unesi adresu.");
+      return;
+    }
+
+    const total = getCartTotal(cartItems);
+
+    const orderText = `Zdravo, želim da potvrdim porudžbinu:
+
+PODACI KUPCA
+Ime i prezime: ${checkoutData.fullName}
+Telefon: ${checkoutData.phone}
+Grad: ${checkoutData.city}
+Adresa: ${checkoutData.address}
+Napomena: ${checkoutData.note.trim() || "Nema"}
+
+STAVKE
+${cartItems
+  .map(
+    (item, index) =>
+      `${index + 1}. ${item.name}
+Veličina: ${item.size}
+Količina: ${item.qty}
+Cena: ${formatPrice(item.price)}
+Ukupno: ${formatPrice(item.price * item.qty)}`
+  )
+  .join("\n\n")}
+
+UKUPNO
+${formatPrice(total)}
+
+Plaćanje: Pouzećem`;
+
+    const copied = await copyText(orderText);
+    window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
+
+    if (copied) {
+      alert("Checkout podaci i porudžbina su kopirani. Otvorio sam Instagram profil — samo nalepi tekst u DM.");
     } else {
       alert(`Kopiraj ovu poruku i pošalji u DM:\n\n${orderText}`);
     }
@@ -681,7 +869,14 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                 </div>
               </div>
 
-              <CartPanel cart={cart} setCart={setCart} onOrderCart={handleCartOrder} />
+              <CartPanel
+                cart={cart}
+                setCart={setCart}
+                onOrderCart={handleCartOrder}
+                checkoutData={checkoutData}
+                setCheckoutData={setCheckoutData}
+                onCheckout={handleCheckout}
+              />
             </div>
           </section>
         )}
