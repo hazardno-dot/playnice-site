@@ -69,11 +69,6 @@ function getShipping(subtotal) {
   return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_PRICE;
 }
 
-function getOrderTotal(cart) {
-  const subtotal = getSubtotal(cart);
-  return subtotal + getShipping(subtotal);
-}
-
 function updateUrlParams(nextSearch, nextFilter, nextPage) {
   if (typeof window === "undefined") return;
 
@@ -368,6 +363,14 @@ function CartPanel({
                   />
                   <input
                     className="checkout-input"
+                    type="email"
+                    name="email"
+                    placeholder="Email address *"
+                    value={checkoutData.email}
+                    onChange={handleFieldChange}
+                  />
+                  <input
+                    className="checkout-input"
                     type="text"
                     name="phone"
                     placeholder="Phone number *"
@@ -457,36 +460,24 @@ export default function App() {
   });
 
   const [checkoutData, setCheckoutData] = useState(() => {
+    const emptyCheckout = {
+      fullName: "",
+      email: "",
+      phone: "",
+      city: "",
+      address: "",
+      note: "",
+    };
+
     try {
       if (typeof window === "undefined") {
-        return {
-          fullName: "",
-email: "",
-phone: "",
-city: "",
-address: "",
-note: "",
-        };
+        return emptyCheckout;
       }
 
       const saved = window.localStorage.getItem("playnice_checkout");
-      return saved
-        ? JSON.parse(saved)
-        : {
-            fullName: "",
-            phone: "",
-            city: "",
-            address: "",
-            note: "",
-          };
+      return saved ? { ...emptyCheckout, ...JSON.parse(saved) } : emptyCheckout;
     } catch {
-      return {
-        fullName: "",
-        phone: "",
-        city: "",
-        address: "",
-        note: "",
-      };
+      return emptyCheckout;
     }
   });
 
@@ -630,6 +621,11 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
       return;
     }
 
+    if (!checkoutData.email.trim()) {
+      alert("Unesi email adresu.");
+      return;
+    }
+
     if (!checkoutData.phone.trim()) {
       alert("Unesi broj telefona.");
       return;
@@ -645,45 +641,46 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
       return;
     }
 
-    const subtotal = getSubtotal(cartItems);
-    const shipping = getShipping(subtotal);
-    const total = subtotal + shipping;
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...checkoutData,
+          cart: cartItems,
+        }),
+      });
 
-    const orderText = `Zdravo, želim da potvrdim porudžbinu:
+      const data = await response.json();
 
-PODACI KUPCA
-Ime i prezime: ${checkoutData.fullName}
-Telefon: ${checkoutData.phone}
-Grad: ${checkoutData.city}
-Adresa: ${checkoutData.address}
-Napomena: ${checkoutData.note.trim() || "Nema"}
+      if (!response.ok) {
+        throw new Error(data.error || "Greška pri slanju porudžbine.");
+      }
 
-STAVKE
-${cartItems
-  .map(
-    (item, index) =>
-      `${index + 1}. ${item.name}
-Veličina: ${item.size}
-Količina: ${item.qty}
-Cena: ${formatPrice(item.price)}
-Ukupno: ${formatPrice(item.price * item.qty)}`
-  )
-  .join("\n\n")}
+      alert("Porudžbina je uspešno poslata. Kupac će dobiti email potvrdu.");
 
-OBRAČUN
-Subtotal: ${formatPrice(subtotal)}
-Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
-Ukupno: ${formatPrice(total)}
+      setCart([]);
 
-Plaćanje: Pouzećem`;
+      const emptyCheckout = {
+        fullName: "",
+        email: "",
+        phone: "",
+        city: "",
+        address: "",
+        note: "",
+      };
 
-    const copied = await copyText(orderText);
-    window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
+      setCheckoutData(emptyCheckout);
 
-    if (copied) {
-      alert("Checkout podaci i porudžbina su kopirani. Otvorio sam Instagram profil — samo nalepi tekst u DM.");
-    } else {
-      alert(`Kopiraj ovu poruku i pošalji u DM:\n\n${orderText}`);
+      if (typeof window !== "undefined") {
+        window.localStorage.removeItem("playnice_cart");
+        window.localStorage.removeItem("playnice_checkout");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Došlo je do greške pri slanju porudžbine. Pokušaj ponovo.");
     }
   };
 
