@@ -28,7 +28,7 @@ html {
 
 body {
   margin: 0;
-  background: #6f757c;
+  background: #646a71;
   color: var(--text);
   font-family: "Inter", sans-serif;
 }
@@ -47,7 +47,7 @@ input {
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #717881 0%, #687078 46%, #646c74 100%);
+  background: linear-gradient(180deg, #666d75 0%, #5d656d 46%, #596169 100%);
 }
 
 .container {
