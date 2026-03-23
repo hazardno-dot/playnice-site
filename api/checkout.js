@@ -10,7 +10,9 @@ function formatPrice(value) {
 }
 
 function getSubtotal(cart) {
-  return cart.reduce((sum, item) => sum + Number(item.price) * Number(item.qty), 0);
+  return cart.reduce((sum, item) => {
+    return sum + Number(item.price) * Number(item.qty);
+  }, 0);
 }
 
 function getShipping(subtotal) {
@@ -34,16 +36,38 @@ function buildItemsHtml(cart) {
         <tr>
           <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">${index + 1}. ${escapeHtml(item.name)}</td>
           <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#dcb56b;">${escapeHtml(item.size)}</td>
-          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">${item.qty}</td>
-          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">${formatPrice(item.price)}</td>
-          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#dcb56b;font-weight:700;">${formatPrice(item.price * item.qty)}</td>
+          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">${Number(item.qty)}</td>
+          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">${formatPrice(Number(item.price))}</td>
+          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#dcb56b;font-weight:700;">${formatPrice(Number(item.price) * Number(item.qty))}</td>
         </tr>
       `
     )
     .join("");
 }
 
-function customerEmailHtml({ fullName, cart, subtotal, shipping, total, note }) {
+function buildItemsText(cart) {
+  return cart
+    .map(
+      (item, index) =>
+        `${index + 1}. ${item.name}
+Veličina: ${item.size}
+Količina: ${Number(item.qty)}
+Cena: ${formatPrice(Number(item.price))}
+Ukupno: ${formatPrice(Number(item.price) * Number(item.qty))}`
+    )
+    .join("\n\n");
+}
+
+function customerEmailHtml({
+  fullName,
+  cart,
+  subtotal,
+  shipping,
+  total,
+  note,
+  city,
+  address,
+}) {
   return `
   <div style="margin:0;padding:0;background:#0b0b0b;font-family:Inter,Arial,sans-serif;color:#f7f2e8;">
     <div style="max-width:720px;margin:0 auto;padding:32px 20px;">
@@ -65,6 +89,8 @@ function customerEmailHtml({ fullName, cart, subtotal, shipping, total, note }) 
           <div style="padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(220,181,107,0.12);margin-bottom:20px;">
             <div style="color:#f3d69b;font-weight:700;margin-bottom:8px;">Order summary</div>
             <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Kupac: ${escapeHtml(fullName)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Grad: ${escapeHtml(city)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Adresa: ${escapeHtml(address)}</div>
             ${note ? `<div style="color:rgba(247,242,232,0.78);line-height:1.8;">Napomena: ${escapeHtml(note)}</div>` : ""}
           </div>
 
@@ -108,7 +134,18 @@ function customerEmailHtml({ fullName, cart, subtotal, shipping, total, note }) 
   `;
 }
 
-function adminEmailHtml({ fullName, email, phone, city, address, note, cart, subtotal, shipping, total }) {
+function adminEmailHtml({
+  fullName,
+  email,
+  phone,
+  city,
+  address,
+  note,
+  cart,
+  subtotal,
+  shipping,
+  total,
+}) {
   return `
   <div style="font-family:Arial,sans-serif;background:#0b0b0b;color:#f7f2e8;padding:24px;">
     <h2 style="color:#f3d69b;">Nova porudžbina - PlayNice</h2>
@@ -143,6 +180,67 @@ function adminEmailHtml({ fullName, email, phone, city, address, note, cart, sub
   `;
 }
 
+function customerEmailText({
+  fullName,
+  city,
+  address,
+  note,
+  cart,
+  subtotal,
+  shipping,
+  total,
+}) {
+  return `PLAYNICE
+
+Zdravo ${fullName}, hvala na kupovini.
+Primili smo tvoju porudžbinu i uskoro ćemo ti se javiti sa potvrdom i detaljima isporuke.
+
+Kupac: ${fullName}
+Grad: ${city}
+Adresa: ${address}
+Napomena: ${note || "Nema"}
+
+STAVKE
+${buildItemsText(cart)}
+
+Subtotal: ${formatPrice(subtotal)}
+Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
+Ukupno: ${formatPrice(total)}
+
+Plaćanje: Pouzećem
+
+Remember. PlayNice.`;
+}
+
+function adminEmailText({
+  fullName,
+  email,
+  phone,
+  city,
+  address,
+  note,
+  cart,
+  subtotal,
+  shipping,
+  total,
+}) {
+  return `Nova porudžbina - PlayNice
+
+Kupac: ${fullName}
+Email: ${email}
+Telefon: ${phone}
+Grad: ${city}
+Adresa: ${address}
+Napomena: ${note || "Nema"}
+
+STAVKE
+${buildItemsText(cart)}
+
+Subtotal: ${formatPrice(subtotal)}
+Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
+Ukupno: ${formatPrice(total)}`;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -172,7 +270,7 @@ export default async function handler(req, res) {
     const total = subtotal + shipping;
 
     const fromEmail = process.env.RESEND_FROM_EMAIL || "orders@playniceshop.me";
-    const adminEmail = "order@playniceshop.me";
+    const adminEmail = process.env.ADMIN_ORDER_EMAIL || "order@playniceshop.me";
 
     await resend.emails.send({
       from: `PlayNice <${fromEmail}>`,
@@ -180,11 +278,23 @@ export default async function handler(req, res) {
       subject: `PlayNice order confirmation - ${formatPrice(total)}`,
       html: customerEmailHtml({
         fullName,
+        city,
+        address,
+        note,
         cart,
         subtotal,
         shipping,
         total,
+      }),
+      text: customerEmailText({
+        fullName,
+        city,
+        address,
         note,
+        cart,
+        subtotal,
+        shipping,
+        total,
       }),
     });
 
@@ -204,11 +314,26 @@ export default async function handler(req, res) {
         shipping,
         total,
       }),
+      text: adminEmailText({
+        fullName,
+        email,
+        phone,
+        city,
+        address,
+        note,
+        cart,
+        subtotal,
+        shipping,
+        total,
+      }),
     });
 
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error("Checkout email error:", error);
-    return res.status(500).json({ error: "Failed to send order emails" });
+    return res.status(500).json({
+      error: "Failed to send order emails",
+      details: error?.message || "Unknown error",
+    });
   }
 }
