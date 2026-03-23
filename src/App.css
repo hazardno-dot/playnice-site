@@ -1076,4 +1076,26 @@ input {
   .product-grid {
     grid-template-columns: 1fr;
   }
+
+  .product-grid {
+  position: relative;
+}
+
+.product-grid::before {
+  content: "";
+  position: absolute;
+  inset: -60px -40px;
+  z-index: 0;
+  pointer-events: none;
+
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.035) 30%,
+    rgba(0, 0, 0, 0.25) 70%,
+    transparent 100%
+  );
+
+  filter: blur(40px);
+}
 }
