@@ -82,19 +82,19 @@ input {
 }
 
 .bg-orb-1 {
-  width: 340px;
-  height: 340px;
-  background: rgba(215, 179, 98, 0.08);
-  top: 90px;
-  right: -80px;
+  width: 420px;
+  height: 420px;
+  background: rgba(255, 255, 255, 0.05);
+  top: 120px;
+  right: -120px;
 }
 
 .bg-orb-2 {
-  width: 280px;
-  height: 280px;
-  background: rgba(215, 179, 98, 0.05);
-  left: -60px;
-  top: 620px;
+  width: 360px;
+  height: 360px;
+  background: rgba(0, 0, 0, 0.12);
+  left: -80px;
+  top: 640px;
 }
 
 .header,
