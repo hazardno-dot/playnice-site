@@ -55,13 +55,29 @@ const products = [
 ];
 
 const INSTAGRAM_URL = "https://www.instagram.com/playnice.me/";
+const SHIPPING_PRICE = 4;
+const FREE_SHIPPING_THRESHOLD = 39;
+
+function getSubtotal(cart) {
+  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+}
+
+function getShipping(subtotal) {
+  if (subtotal === 0) return 0;
+  return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_PRICE;
+}
+
+function getOrderTotal(cart) {
+  const subtotal = getSubtotal(cart);
+  return subtotal + getShipping(subtotal);
+}
 
 function formatPrice(value) {
   return `${Number(value).toFixed(value % 1 === 0 ? 0 : 1)}€`;
 }
 
 function getCartTotal(cart) {
-  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  return getOrderTotal(cart);
 }
 
 function updateUrlParams(nextSearch, nextFilter, nextPage) {
@@ -212,7 +228,12 @@ function CartPanel({
   setCheckoutData,
   onCheckout,
 }) {
-  const total = getCartTotal(cart);
+  const subtotal = getSubtotal(cart);
+  const shipping = getShipping(subtotal);
+  const total = subtotal + shipping;
+  const amountToFreeShipping =
+    subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : FREE_SHIPPING_THRESHOLD - subtotal;
+
   const [showCheckout, setShowCheckout] = useState(false);
 
   const increaseQty = (index) => {
@@ -290,76 +311,123 @@ function CartPanel({
             ))}
           </div>
 
-          <div className="cart-footer">
-            <div className="cart-total">
-              <span>Total</span>
-              <strong>{formatPrice(total)}</strong>
-            </div>
+          <<div className="cart-footer">
+  <div className="cart-summary-box">
+    <div className="cart-summary-row">
+      <span>Subtotal</span>
+      <strong>{formatPrice(subtotal)}</strong>
+    </div>
 
-            <div className="cart-actions-stack">
-              <button
-                type="button"
-                className="btn btn-secondary cart-order-btn"
-                onClick={() => onOrderCart(cart)}
-              >
-                Quick DM Order
-              </button>
+    <div className="cart-summary-row">
+      <span>Shipping</span>
+      <strong>
+        {shipping === 0 ? "Free" : formatPrice(shipping)}
+      </strong>
+    </div>
 
-              <button
-                type="button"
-                className="btn btn-primary cart-order-btn"
-                onClick={() => setShowCheckout((prev) => !prev)}
-              >
-                {showCheckout ? "Hide Checkout" : "Proceed to Checkout"}
-              </button>
-            </div>
+    <div className="cart-total cart-total-final">
+      <span>Total</span>
+      <strong>{formatPrice(total)}</strong>
+    </div>
+  </div>
 
-            {showCheckout && (
-              <div className="checkout-box">
-                <div className="checkout-title">Checkout</div>
+  {cart.length > 0 && (
+    <div className="shipping-progress-wrap">
+      {shipping === 0 ? (
+        <div className="shipping-badge success">
+          You unlocked free shipping.
+        </div>
+      ) : (
+        <div className="shipping-badge">
+          Add <strong>{formatPrice(amountToFreeShipping)}</strong> more for free shipping.
+        </div>
+      )}
+    </div>
+  )}
 
-                <div className="checkout-grid">
-                  <input
-                    className="checkout-input"
-                    type="text"
-                    name="fullName"
-                    placeholder="Full name *"
-                    value={checkoutData.fullName}
-                    onChange={handleFieldChange}
-                  />
-                  <input
-                    className="checkout-input"
-                    type="text"
-                    name="phone"
-                    placeholder="Phone number *"
-                    value={checkoutData.phone}
-                    onChange={handleFieldChange}
-                  />
-                  <input
-                    className="checkout-input"
-                    type="text"
-                    name="city"
-                    placeholder="City / Town *"
-                    value={checkoutData.city}
-                    onChange={handleFieldChange}
-                  />
-                  <input
-                    className="checkout-input"
-                    type="text"
-                    name="address"
-                    placeholder="Address *"
-                    value={checkoutData.address}
-                    onChange={handleFieldChange}
-                  />
-                  <textarea
-                    className="checkout-textarea"
-                    name="note"
-                    placeholder="Order note (optional)"
-                    value={checkoutData.note}
-                    onChange={handleFieldChange}
-                    rows={4}
-                  />
-                </div>
+  <div className="cart-actions-stack">
+    <button
+      type="button"
+      className="btn btn-secondary cart-order-btn"
+      onClick={() => onOrderCart(cart)}
+    >
+      Quick DM Order
+    </button>
+
+    <button
+      type="button"
+      className="btn btn-primary cart-order-btn"
+      onClick={() => setShowCheckout((prev) => !prev)}
+    >
+      {showCheckout ? "Hide Checkout" : "Proceed to Checkout"}
+    </button>
+  </div>
+
+  {showCheckout && (
+    <div className="checkout-box">
+      <div className="checkout-title">Checkout</div>
+
+      <div className="checkout-grid">
+        <input
+          className="checkout-input"
+          type="text"
+          name="fullName"
+          placeholder="Full name *"
+          value={checkoutData.fullName}
+          onChange={handleFieldChange}
+        />
+        <input
+          className="checkout-input"
+          type="text"
+          name="phone"
+          placeholder="Phone number *"
+          value={checkoutData.phone}
+          onChange={handleFieldChange}
+        />
+        <input
+          className="checkout-input"
+          type="text"
+          name="city"
+          placeholder="City / Town *"
+          value={checkoutData.city}
+          onChange={handleFieldChange}
+        />
+        <input
+          className="checkout-input"
+          type="text"
+          name="address"
+          placeholder="Address *"
+          value={checkoutData.address}
+          onChange={handleFieldChange}
+        />
+        <textarea
+          className="checkout-textarea"
+          name="note"
+          placeholder="Order note (optional)"
+          value={checkoutData.note}
+          onChange={handleFieldChange}
+          rows={4}
+        />
+      </div>
+
+      <div className="checkout-note">
+        Payment: Cash on delivery
+        <br />
+        Shipping: {shipping === 0 ? "Free" : formatPrice(shipping)}
+        <br />
+        Free shipping for orders over {formatPrice(FREE_SHIPPING_THRESHOLD)}.
+      </div>
+
+      <button
+        type="button"
+        className="btn btn-primary cart-order-btn"
+        onClick={() => onCheckout(cart)}
+      >
+        Confirm Checkout
+      </button>
+    </div>
+  )}
+</div>
 
                 <div className="checkout-note">
                   Payment: Cash on delivery
@@ -552,7 +620,9 @@ Cena: ${formatPrice(price)}`;
   };
 
   const handleCartOrder = async (cartItems) => {
-    const total = getCartTotal(cartItems);
+    const subtotal = getSubtotal(cartItems);
+const shipping = getShipping(subtotal);
+const total = subtotal + shipping;
 
     const orderText = `Zdravo, želim da naručim:
 
@@ -567,6 +637,8 @@ Ukupno: ${formatPrice(item.price * item.qty)}`
   )
   .join("\n\n")}
 
+Subtotal: ${formatPrice(subtotal)}
+Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
 Ukupno za porudžbinu: ${formatPrice(total)}`;
 
     const copied = await copyText(orderText);
@@ -600,7 +672,9 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
       return;
     }
 
-    const total = getCartTotal(cartItems);
+    const subtotal = getSubtotal(cartItems);
+const shipping = getShipping(subtotal);
+const total = subtotal + shipping;
 
     const orderText = `Zdravo, želim da potvrdim porudžbinu:
 
@@ -623,8 +697,10 @@ Ukupno: ${formatPrice(item.price * item.qty)}`
   )
   .join("\n\n")}
 
-UKUPNO
-${formatPrice(total)}
+OBRAČUN
+Subtotal: ${formatPrice(subtotal)}
+Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
+Ukupno: ${formatPrice(total)}
 
 Plaćanje: Pouzećem`;
 
