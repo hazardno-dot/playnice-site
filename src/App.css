@@ -1096,6 +1096,11 @@ input {
     transparent 100%
   );
 
+  .product-grid > * {
+  position: relative;
+  z-index: 1;
+}
+  
   filter: blur(40px);
 }
 }
