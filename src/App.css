@@ -28,7 +28,7 @@ html {
 
 body {
   margin: 0;
-  background: #050505;
+  background: #6f757c;
   color: var(--text);
   font-family: "Inter", sans-serif;
 }
@@ -47,7 +47,7 @@ input {
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-  background: #050505;
+  background: linear-gradient(180deg, #717881 0%, #687078 46%, #646c74 100%);
 }
 
 .container {
@@ -59,11 +59,11 @@ input {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.18;
+  opacity: 0.12;
   background-image:
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.25) 0.7px, transparent 0.8px),
-    radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.16) 0.7px, transparent 0.8px),
-    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.12) 0.7px, transparent 0.8px);
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.16) 0.7px, transparent 0.8px),
+    radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.1) 0.7px, transparent 0.8px),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.08) 0.7px, transparent 0.8px);
   background-size: 180px 180px;
   z-index: 0;
 }
@@ -74,7 +74,7 @@ input {
   filter: blur(80px);
   pointer-events: none;
   z-index: 0;
-  opacity: 0.18;
+  opacity: 0.1;
 }
 
 .bg-orb-1 {
@@ -105,7 +105,7 @@ input {
   position: sticky;
   top: 0;
   backdrop-filter: blur(14px);
-  background: rgba(5, 5, 5, 0.92);
+  background: rgba(5, 5, 5, 0.94);
   border-bottom: 1px solid rgba(215, 179, 98, 0.08);
   z-index: 20;
 }
@@ -145,7 +145,7 @@ input {
 }
 
 .nav a {
-  color: rgba(247, 242, 232, 0.8);
+  color: rgba(247, 242, 232, 0.82);
   font-size: 0.96rem;
   transition: color 0.25s ease;
 }
@@ -162,6 +162,7 @@ input {
   min-height: 92vh;
   display: flex;
   align-items: center;
+  background: rgba(255, 255, 255, 0.035);
 }
 
 .hero-grid {
@@ -204,7 +205,7 @@ input {
 .hero-text {
   max-width: 700px;
   margin: 24px 0 0;
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.78);
   font-size: 1.05rem;
   line-height: 1.9;
 }
@@ -259,7 +260,7 @@ input {
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--line);
   border-radius: 22px;
   padding: 18px;
@@ -273,7 +274,7 @@ input {
 }
 
 .stat-label {
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.75);
   font-size: 0.93rem;
 }
 
@@ -288,9 +289,9 @@ input {
   min-height: 620px;
   padding: 24px;
   border-radius: 34px;
-  background: linear-gradient(180deg, rgba(30, 30, 30, 0.98), rgba(20, 20, 20, 0.98));
+  background: linear-gradient(180deg, rgba(32, 32, 32, 0.98), rgba(20, 20, 20, 0.98));
   border: 1px solid var(--line);
-  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.35);
   position: relative;
   overflow: hidden;
 }
@@ -409,12 +410,19 @@ input {
 
 .visual-panel p {
   margin: 0;
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.76);
   line-height: 1.8;
 }
 
 .section {
   padding: 32px 0 58px;
+  position: relative;
+}
+
+#catalog.section {
+  background: rgba(255, 255, 255, 0.07);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .section-head {
@@ -430,7 +438,7 @@ input {
 
 .section-text {
   margin: 0;
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.78);
   line-height: 1.85;
   font-size: 1rem;
 }
@@ -444,9 +452,9 @@ input {
   text-align: center;
   border-radius: 34px;
   padding: 52px 26px;
-  background: linear-gradient(180deg, rgba(30, 30, 30, 0.98), rgba(22, 22, 22, 0.98));
+  background: linear-gradient(180deg, rgba(32, 32, 32, 0.98), rgba(22, 22, 22, 0.98));
   border: 1px solid var(--line);
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.26);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.24);
 }
 
 .cta-box h2 {
@@ -458,7 +466,7 @@ input {
 .cta-box p {
   max-width: 720px;
   margin: 0 auto;
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.76);
   line-height: 1.85;
 }
 
@@ -479,7 +487,7 @@ input {
   min-height: 54px;
   border-radius: 999px;
   border: 1px solid rgba(243, 214, 155, 0.18);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
   color: var(--text);
   padding: 0 18px;
   font-size: 0.98rem;
@@ -501,7 +509,7 @@ input {
   padding: 10px 16px;
   border-radius: 999px;
   border: 1px solid rgba(243, 214, 155, 0.2);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   cursor: pointer;
   font-weight: 600;
@@ -518,7 +526,7 @@ input {
 
 .catalog-summary {
   margin-bottom: 18px;
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.76);
 }
 
 .shop-layout {
@@ -535,15 +543,15 @@ input {
 .product-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: 14px;
 }
 
 .product-card {
-  padding: 22px;
-  border-radius: 26px;
-  background: linear-gradient(180deg, rgba(30, 30, 30, 0.98), rgba(22, 22, 22, 0.98));
+  padding: 16px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(34, 34, 34, 0.98), rgba(24, 24, 24, 0.98));
   border: 1px solid rgba(215, 179, 98, 0.14);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -578,24 +586,24 @@ input {
 }
 
 .product-card:hover {
-  transform: translateY(-6px) scale(1.01);
+  transform: translateY(-5px) scale(1.008);
   border-color: rgba(220, 181, 107, 0.28);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.36);
 }
 
 .card-flag {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
   z-index: 2;
-  width: 64px;
-  height: 64px;
+  width: 54px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 8px;
-  font-size: 0.54rem;
+  padding: 6px;
+  font-size: 0.48rem;
   font-weight: 800;
   line-height: 1;
   letter-spacing: 0.01rem;
@@ -649,46 +657,46 @@ input {
 
 .product-badge {
   display: inline-block;
-  margin-bottom: 14px;
-  padding: 6px 12px;
+  margin-bottom: 10px;
+  padding: 5px 10px;
   border-radius: 999px;
   background: rgba(220, 181, 107, 0.12);
   border: 1px solid rgba(220, 181, 107, 0.2);
   color: var(--gold-soft);
-  font-size: 0.75rem;
-  letter-spacing: 0.08rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.07rem;
   text-transform: uppercase;
 }
 
 .product-title {
-  margin: 0 0 14px;
-  font-size: 0.98rem;
-  line-height: 1.35;
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  line-height: 1.3;
   font-weight: 600;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  height: 2.7em;
-  min-height: 2.7em;
-  max-height: 2.7em;
+  height: 2.35em;
+  min-height: 2.35em;
+  max-height: 2.35em;
 }
 
 .product-prices {
   display: grid;
-  gap: 10px;
-  margin-bottom: 18px;
-  min-height: 102px;
+  gap: 8px;
+  margin-bottom: 14px;
+  min-height: 88px;
 }
 
 .price-row {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
-  font-size: 0.95rem;
-  padding-bottom: 6px;
+  gap: 10px;
+  font-size: 0.88rem;
+  padding-bottom: 5px;
   border-bottom: 1px solid rgba(243, 214, 155, 0.08);
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.72);
 }
 
 .price-row strong {
@@ -697,22 +705,23 @@ input {
 
 .size-picker {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
-  margin-bottom: 16px;
-  min-height: 40px;
+  margin-bottom: 12px;
+  min-height: 36px;
   align-items: flex-start;
 }
 
 .size-btn {
-  min-height: 38px;
-  padding: 0 14px;
+  min-height: 34px;
+  padding: 0 12px;
   border-radius: 999px;
   border: 1px solid rgba(243, 214, 155, 0.2);
   background: rgba(255, 255, 255, 0.03);
   color: var(--text);
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.84rem;
   transition: all 0.25s ease;
   position: relative;
   z-index: 3;
@@ -734,13 +743,14 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 16px;
-  padding: 14px 16px;
+  border-radius: 14px;
+  padding: 11px 13px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(243, 214, 155, 0.12);
-  margin-bottom: 16px;
-  color: var(--muted);
-  min-height: 56px;
+  margin-bottom: 12px;
+  color: rgba(247, 242, 232, 0.72);
+  min-height: 48px;
+  font-size: 0.86rem;
 }
 
 .selected-price-box strong {
@@ -751,7 +761,7 @@ input {
 .product-actions {
   margin-top: auto;
   display: grid;
-  gap: 10px;
+  gap: 8px;
   position: relative;
   z-index: 2;
 }
@@ -761,6 +771,9 @@ input {
   position: relative;
   z-index: 3;
   pointer-events: auto;
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 0.9rem;
 }
 
 .product-actions .btn-primary {
@@ -782,11 +795,11 @@ input {
 .cart-panel {
   position: sticky;
   top: 110px;
-  border-radius: 26px;
-  padding: 20px;
-  background: linear-gradient(180deg, rgba(30, 30, 30, 0.98), rgba(22, 22, 22, 0.98));
+  border-radius: 22px;
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(34, 34, 34, 0.98), rgba(24, 24, 24, 0.98));
   border: 1px solid rgba(215, 179, 98, 0.14);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
 }
 
 .cart-head {
@@ -803,12 +816,12 @@ input {
 }
 
 .cart-head span {
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.72);
   font-size: 0.9rem;
 }
 
 .cart-empty {
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.72);
   padding: 14px 0 4px;
 }
 
@@ -840,7 +853,7 @@ input {
 .cart-remove {
   border: none;
   background: transparent;
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.62);
   font-size: 1.2rem;
   cursor: pointer;
   position: relative;
@@ -852,7 +865,7 @@ input {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.72);
   font-size: 0.92rem;
   margin-bottom: 12px;
 }
@@ -902,7 +915,7 @@ input {
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 14px;
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.72);
 }
 
 .cart-total strong {
@@ -930,7 +943,7 @@ input {
   padding: 0 16px;
   border-radius: 999px;
   border: 1px solid rgba(243, 214, 155, 0.2);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   cursor: pointer;
   font-weight: 600;
@@ -945,10 +958,27 @@ input {
 }
 
 .pagination-info {
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.76);
   font-size: 0.95rem;
   min-width: 130px;
   text-align: center;
+}
+
+.cart-toast {
+  position: fixed;
+  top: 98px;
+  right: 22px;
+  z-index: 60;
+  max-width: 320px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: rgba(18, 18, 18, 0.96);
+  border: 1px solid rgba(111, 218, 68, 0.35);
+  color: #eef9e8;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  font-size: 0.9rem;
+  font-weight: 600;
+  backdrop-filter: blur(12px);
 }
 
 .footer {
@@ -968,7 +998,7 @@ input {
 }
 
 .footer-line {
-  color: var(--muted);
+  color: rgba(247, 242, 232, 0.76);
   margin-bottom: 12px;
 }
 
@@ -985,7 +1015,7 @@ input {
 }
 
 .footer-copy {
-  color: var(--muted-2);
+  color: rgba(247, 242, 232, 0.5);
   font-size: 0.92rem;
 }
 
@@ -1056,5 +1086,13 @@ input {
 
   .product-grid {
     grid-template-columns: 1fr;
+  }
+
+  .cart-toast {
+    top: 88px;
+    right: 14px;
+    left: 14px;
+    max-width: none;
+    font-size: 0.88rem;
   }
 }
