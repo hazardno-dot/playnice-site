@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
 const products = [
-  // Arabian
   { id: 1, name: "Afnan 9AM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
   { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
   { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
@@ -27,7 +26,6 @@ const products = [
   { id: 22, name: "Rayhaan Pacific Aura", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
   { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
 
-  // Designer / Niche
   { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
   { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 } },
   { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
@@ -58,6 +56,10 @@ const INSTAGRAM_URL = "https://www.instagram.com/playnice.me/";
 const SHIPPING_PRICE = 4;
 const FREE_SHIPPING_THRESHOLD = 39;
 
+function formatPrice(value) {
+  return `${Number(value).toFixed(value % 1 === 0 ? 0 : 1)}€`;
+}
+
 function getSubtotal(cart) {
   return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 }
@@ -70,14 +72,6 @@ function getShipping(subtotal) {
 function getOrderTotal(cart) {
   const subtotal = getSubtotal(cart);
   return subtotal + getShipping(subtotal);
-}
-
-function formatPrice(value) {
-  return `${Number(value).toFixed(value % 1 === 0 ? 0 : 1)}€`;
-}
-
-function getCartTotal(cart) {
-  return getOrderTotal(cart);
 }
 
 function updateUrlParams(nextSearch, nextFilter, nextPage) {
@@ -311,128 +305,107 @@ function CartPanel({
             ))}
           </div>
 
-          <<div className="cart-footer">
-  <div className="cart-summary-box">
-    <div className="cart-summary-row">
-      <span>Subtotal</span>
-      <strong>{formatPrice(subtotal)}</strong>
-    </div>
+          <div className="cart-footer">
+            <div className="cart-summary-box">
+              <div className="cart-summary-row">
+                <span>Subtotal</span>
+                <strong>{formatPrice(subtotal)}</strong>
+              </div>
 
-    <div className="cart-summary-row">
-      <span>Shipping</span>
-      <strong>
-        {shipping === 0 ? "Free" : formatPrice(shipping)}
-      </strong>
-    </div>
+              <div className="cart-summary-row">
+                <span>Shipping</span>
+                <strong>{shipping === 0 ? "Free" : formatPrice(shipping)}</strong>
+              </div>
 
-    <div className="cart-total cart-total-final">
-      <span>Total</span>
-      <strong>{formatPrice(total)}</strong>
-    </div>
-  </div>
+              <div className="cart-total cart-total-final">
+                <span>Total</span>
+                <strong>{formatPrice(total)}</strong>
+              </div>
+            </div>
 
-  {cart.length > 0 && (
-    <div className="shipping-progress-wrap">
-      {shipping === 0 ? (
-        <div className="shipping-badge success">
-          You unlocked free shipping.
-        </div>
-      ) : (
-        <div className="shipping-badge">
-          Add <strong>{formatPrice(amountToFreeShipping)}</strong> more for free shipping.
-        </div>
-      )}
-    </div>
-  )}
+            <div className="shipping-progress-wrap">
+              {shipping === 0 ? (
+                <div className="shipping-badge success">
+                  You unlocked free shipping.
+                </div>
+              ) : (
+                <div className="shipping-badge">
+                  Add <strong>{formatPrice(amountToFreeShipping)}</strong> more for free shipping.
+                </div>
+              )}
+            </div>
 
-  <div className="cart-actions-stack">
-    <button
-      type="button"
-      className="btn btn-secondary cart-order-btn"
-      onClick={() => onOrderCart(cart)}
-    >
-      Quick DM Order
-    </button>
+            <div className="cart-actions-stack">
+              <button
+                type="button"
+                className="btn btn-secondary cart-order-btn"
+                onClick={() => onOrderCart(cart)}
+              >
+                Quick DM Order
+              </button>
 
-    <button
-      type="button"
-      className="btn btn-primary cart-order-btn"
-      onClick={() => setShowCheckout((prev) => !prev)}
-    >
-      {showCheckout ? "Hide Checkout" : "Proceed to Checkout"}
-    </button>
-  </div>
+              <button
+                type="button"
+                className="btn btn-primary cart-order-btn"
+                onClick={() => setShowCheckout((prev) => !prev)}
+              >
+                {showCheckout ? "Hide Checkout" : "Proceed to Checkout"}
+              </button>
+            </div>
 
-  {showCheckout && (
-    <div className="checkout-box">
-      <div className="checkout-title">Checkout</div>
+            {showCheckout && (
+              <div className="checkout-box">
+                <div className="checkout-title">Checkout</div>
 
-      <div className="checkout-grid">
-        <input
-          className="checkout-input"
-          type="text"
-          name="fullName"
-          placeholder="Full name *"
-          value={checkoutData.fullName}
-          onChange={handleFieldChange}
-        />
-        <input
-          className="checkout-input"
-          type="text"
-          name="phone"
-          placeholder="Phone number *"
-          value={checkoutData.phone}
-          onChange={handleFieldChange}
-        />
-        <input
-          className="checkout-input"
-          type="text"
-          name="city"
-          placeholder="City / Town *"
-          value={checkoutData.city}
-          onChange={handleFieldChange}
-        />
-        <input
-          className="checkout-input"
-          type="text"
-          name="address"
-          placeholder="Address *"
-          value={checkoutData.address}
-          onChange={handleFieldChange}
-        />
-        <textarea
-          className="checkout-textarea"
-          name="note"
-          placeholder="Order note (optional)"
-          value={checkoutData.note}
-          onChange={handleFieldChange}
-          rows={4}
-        />
-      </div>
-
-      <div className="checkout-note">
-        Payment: Cash on delivery
-        <br />
-        Shipping: {shipping === 0 ? "Free" : formatPrice(shipping)}
-        <br />
-        Free shipping for orders over {formatPrice(FREE_SHIPPING_THRESHOLD)}.
-      </div>
-
-      <button
-        type="button"
-        className="btn btn-primary cart-order-btn"
-        onClick={() => onCheckout(cart)}
-      >
-        Confirm Checkout
-      </button>
-    </div>
-  )}
-</div>
+                <div className="checkout-grid">
+                  <input
+                    className="checkout-input"
+                    type="text"
+                    name="fullName"
+                    placeholder="Full name *"
+                    value={checkoutData.fullName}
+                    onChange={handleFieldChange}
+                  />
+                  <input
+                    className="checkout-input"
+                    type="text"
+                    name="phone"
+                    placeholder="Phone number *"
+                    value={checkoutData.phone}
+                    onChange={handleFieldChange}
+                  />
+                  <input
+                    className="checkout-input"
+                    type="text"
+                    name="city"
+                    placeholder="City / Town *"
+                    value={checkoutData.city}
+                    onChange={handleFieldChange}
+                  />
+                  <input
+                    className="checkout-input"
+                    type="text"
+                    name="address"
+                    placeholder="Address *"
+                    value={checkoutData.address}
+                    onChange={handleFieldChange}
+                  />
+                  <textarea
+                    className="checkout-textarea"
+                    name="note"
+                    placeholder="Order note (optional)"
+                    value={checkoutData.note}
+                    onChange={handleFieldChange}
+                    rows={4}
+                  />
+                </div>
 
                 <div className="checkout-note">
                   Payment: Cash on delivery
                   <br />
-                  Delivery is arranged after confirmation in DM.
+                  Shipping: {shipping === 0 ? "Free" : formatPrice(shipping)}
+                  <br />
+                  Free shipping for orders over {formatPrice(FREE_SHIPPING_THRESHOLD)}.
                 </div>
 
                 <button
@@ -543,7 +516,6 @@ export default function App() {
   }, [search, filter]);
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-
   const safeCurrentPage =
     totalPages === 0 ? 1 : Math.min(Math.max(currentPage, 1), totalPages);
 
@@ -621,8 +593,8 @@ Cena: ${formatPrice(price)}`;
 
   const handleCartOrder = async (cartItems) => {
     const subtotal = getSubtotal(cartItems);
-const shipping = getShipping(subtotal);
-const total = subtotal + shipping;
+    const shipping = getShipping(subtotal);
+    const total = subtotal + shipping;
 
     const orderText = `Zdravo, želim da naručim:
 
@@ -673,8 +645,8 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
     }
 
     const subtotal = getSubtotal(cartItems);
-const shipping = getShipping(subtotal);
-const total = subtotal + shipping;
+    const shipping = getShipping(subtotal);
+    const total = subtotal + shipping;
 
     const orderText = `Zdravo, želim da potvrdim porudžbinu:
 
