@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 
 const products = [
@@ -100,6 +100,10 @@ function openEmailOrder(subject, body) {
     subject
   )}&body=${encodeURIComponent(body)}`;
   window.location.href = mailto;
+}
+
+function scrollToTopSmooth() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function ProductCard({ product, onAddToCart, onQuickOrder }) {
@@ -310,6 +314,7 @@ export default function App() {
   });
   const [currentPage, setCurrentPage] = useState(initialPage > 0 ? initialPage : 1);
   const itemsPerPage = 12;
+  const didMountScrollRef = useRef(false);
 
   useEffect(() => {
     localStorage.setItem("playnice_cart", JSON.stringify(cart));
@@ -374,6 +379,17 @@ export default function App() {
     window.addEventListener("popstate", handleUrlChange);
     return () => window.removeEventListener("popstate", handleUrlChange);
   }, []);
+
+  useEffect(() => {
+    if (!isShopPage) return;
+
+    if (!didMountScrollRef.current) {
+      didMountScrollRef.current = true;
+      return;
+    }
+
+    scrollToTopSmooth();
+  }, [safeCurrentPage, filter, search]);
 
   const addToCart = (newItem) => {
     setCart((prev) => {
@@ -655,7 +671,9 @@ Hvala.`;
                     type="button"
                     className="pagination-btn"
                     disabled={safeCurrentPage === 1}
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    onClick={() => {
+                      setCurrentPage((prev) => Math.max(prev - 1, 1));
+                    }}
                   >
                     Prev
                   </button>
@@ -668,7 +686,9 @@ Hvala.`;
                     type="button"
                     className="pagination-btn"
                     disabled={safeCurrentPage === totalPages || totalPages === 0}
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    onClick={() => {
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+                    }}
                   >
                     Next
                   </button>
