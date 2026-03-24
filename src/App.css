@@ -39,7 +39,8 @@ a {
 }
 
 button,
-input {
+input,
+textarea {
   font: inherit;
 }
 
@@ -551,6 +552,20 @@ input {
   min-width: 0;
 }
 
+.shop-cart {
+  position: relative;
+  min-height: 1px;
+}
+
+.shop-cart-inner {
+  position: fixed;
+  top: 110px;
+  width: 340px;
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
 .product-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -800,9 +815,8 @@ input {
 }
 
 .cart-panel {
-  position: sticky;
-  top: 110px;
-  align-self: start;
+  position: relative;
+  top: auto;
   border-radius: 26px;
   padding: 20px;
   background: linear-gradient(180deg, rgba(30, 30, 30, 0.98), rgba(22, 22, 22, 0.98));
@@ -1027,7 +1041,6 @@ input {
   color: var(--text);
   padding: 14px 16px;
   outline: none;
-  font: inherit;
 }
 
 .checkout-input::placeholder,
@@ -1132,6 +1145,18 @@ input {
   .hero-grid,
   .shop-layout {
     grid-template-columns: 1fr;
+  }
+
+  .shop-cart {
+    position: static;
+  }
+
+  .shop-cart-inner {
+    position: static;
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
   }
 
   .cart-panel {
