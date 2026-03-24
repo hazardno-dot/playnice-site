@@ -544,7 +544,7 @@ select {
 
 .shop-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 285px;
+  grid-template-columns: minmax(0, 1fr) 360px;
   gap: 24px;
   align-items: start;
 }
@@ -1041,11 +1041,19 @@ select {
   gap: 12px;
 }
 
+.checkout-grid > * {
+  width: 100%;
+  min-width: 0;
+  display: block;
+}
+
 .checkout-input,
 .checkout-textarea {
   width: 100%;
   display: block;
   box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
   border-radius: 14px;
   border: 1px solid rgba(243, 214, 155, 0.14);
   background: rgba(255, 255, 255, 0.04);
@@ -1053,6 +1061,21 @@ select {
   padding: 14px 16px;
   outline: none;
   font-size: 0.9rem;
+  min-height: 48px;
+}
+
+.checkout-input[type="email"] {
+  visibility: visible;
+  opacity: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.checkout-input[type="email"] {
+  visibility: visible;
+  opacity: 1;
+  position: relative;
+  z-index: 2;
 }
 
 .checkout-input::placeholder,
