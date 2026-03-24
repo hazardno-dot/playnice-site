@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
 const products = [
@@ -481,16 +481,6 @@ export default function App() {
     }
   });
 
-  const [floatingCartStyle, setFloatingCartStyle] = useState({});
-  const [shopCartMinHeight, setShopCartMinHeight] = useState("auto");
-
-  const shopMainRef = useRef(null);
-  const shopCartRef = useRef(null);
-  const cartInnerRef = useRef(null);
-  const footerRef = useRef(null);
-  const lastStyleRef = useRef("");
-  const lastMinHeightRef = useRef("");
-
   const itemsPerPage = 12;
 
   useEffect(() => {
@@ -559,134 +549,6 @@ export default function App() {
     window.addEventListener("popstate", handleUrlChange);
     return () => window.removeEventListener("popstate", handleUrlChange);
   }, []);
-
-  useEffect(() => {
-    if (!isShopPage) {
-      setFloatingCartStyle({});
-      setShopCartMinHeight("auto");
-      lastStyleRef.current = "";
-      lastMinHeightRef.current = "";
-      return;
-    }
-
-    let frameId = 0;
-    let resizeObserver;
-
-    const TOP_OFFSET = 130;
-    const BOTTOM_GAP = 28;
-    const DESKTOP_BREAKPOINT = 1100;
-
-    const applyStyle = (nextStyle, nextMinHeight) => {
-      const styleKey = JSON.stringify(nextStyle);
-      if (styleKey !== lastStyleRef.current) {
-        lastStyleRef.current = styleKey;
-        setFloatingCartStyle(nextStyle);
-      }
-
-      if (nextMinHeight !== lastMinHeightRef.current) {
-        lastMinHeightRef.current = nextMinHeight;
-        setShopCartMinHeight(nextMinHeight);
-      }
-    };
-
-    const updateFloatingCart = () => {
-      if (
-        !shopMainRef.current ||
-        !shopCartRef.current ||
-        !cartInnerRef.current
-      ) {
-        return;
-      }
-
-      const isDesktop = window.innerWidth > DESKTOP_BREAKPOINT;
-      const mainHeight = shopMainRef.current.offsetHeight || 0;
-      const cartHeight = cartInnerRef.current.offsetHeight || 0;
-      const nextMinHeight = `${Math.max(mainHeight, cartHeight)}px`;
-
-      if (!isDesktop) {
-        applyStyle({}, "auto");
-        return;
-      }
-
-      const scrollY = window.scrollY || window.pageYOffset;
-      const cartColumnRect = shopCartRef.current.getBoundingClientRect();
-      const cartColumnTopAbs = scrollY + cartColumnRect.top;
-      const cartColumnLeft = cartColumnRect.left;
-      const cartColumnWidth = cartColumnRect.width;
-
-      const footerTopAbs = footerRef.current
-        ? scrollY + footerRef.current.getBoundingClientRect().top
-        : Number.POSITIVE_INFINITY;
-
-      const startScroll = Math.max(0, cartColumnTopAbs - TOP_OFFSET);
-      const stopScroll = footerTopAbs - BOTTOM_GAP - cartHeight - TOP_OFFSET;
-
-      if (scrollY < startScroll) {
-        applyStyle(
-          {
-            position: "absolute",
-            top: "0px",
-            left: "0px",
-            width: "100%",
-          },
-          nextMinHeight
-        );
-        return;
-      }
-
-      if (scrollY >= startScroll && scrollY < stopScroll) {
-        applyStyle(
-          {
-            position: "fixed",
-            top: `${TOP_OFFSET}px`,
-            left: `${cartColumnLeft}px`,
-            width: `${cartColumnWidth}px`,
-          },
-          nextMinHeight
-        );
-        return;
-      }
-
-      applyStyle(
-        {
-          position: "absolute",
-          top: `${Math.max(0, stopScroll - cartColumnTopAbs)}px`,
-          left: "0px",
-          width: "100%",
-        },
-        nextMinHeight
-      );
-    };
-
-    const requestUpdate = () => {
-      cancelAnimationFrame(frameId);
-      frameId = window.requestAnimationFrame(updateFloatingCart);
-    };
-
-    requestUpdate();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-
-    if (typeof ResizeObserver !== "undefined") {
-      resizeObserver = new ResizeObserver(requestUpdate);
-
-      [
-        shopMainRef.current,
-        shopCartRef.current,
-        cartInnerRef.current,
-        footerRef.current,
-      ].forEach((el) => {
-        if (el) resizeObserver.observe(el);
-      });
-    }
-
-    return () => {
-      cancelAnimationFrame(frameId);
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-      if (resizeObserver) resizeObserver.disconnect();
-    };
-  }, [isShopPage, cart]);
 
   const addToCart = (newItem) => {
     setCart((prev) => {
@@ -953,7 +815,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
         ) : (
           <section id="catalog" className="section">
             <div className="container shop-layout">
-              <div className="shop-main" ref={shopMainRef}>
+              <div className="shop-main">
                 <div className="section-head catalog-head">
                   <div>
                     <div className="section-kicker">SHOP</div>
@@ -1053,16 +915,8 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                 </div>
               </div>
 
-              <div
-                className="shop-cart"
-                ref={shopCartRef}
-                style={{ minHeight: shopCartMinHeight }}
-              >
-                <div
-                  className="shop-cart-inner"
-                  ref={cartInnerRef}
-                  style={floatingCartStyle}
-                >
+              <div className="shop-cart">
+                <div className="shop-cart-inner">
                   <CartPanel
                     cart={cart}
                     setCart={setCart}
@@ -1078,7 +932,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
         )}
       </main>
 
-      <footer id="contact" className="footer" ref={footerRef}>
+      <footer id="contact" className="footer">
         <div className="container footer-inner">
           <div className="footer-brand">PLAYNICE</div>
           <div className="footer-line">Try before you buy.</div>
