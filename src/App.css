@@ -1697,6 +1697,7 @@ select {
   transform: translateY(-4px) scale(1.02);
   filter: drop-shadow(0 40px 100px rgba(220, 181, 107, 0.22));
 }
+ }
 
 @keyframes heroPulse {
   0%, 100% {
