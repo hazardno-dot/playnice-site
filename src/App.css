@@ -543,7 +543,7 @@ textarea {
 
 .shop-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-columns: minmax(0, 1fr) 265px;
   gap: 24px;
   align-items: start;
 }
@@ -563,6 +563,21 @@ textarea {
   top: 0;
   left: 0;
   width: 100%;
+  transform-origin: top right;
+  will-change: top, left, transform;
+  transition:
+    top 220ms ease,
+    left 220ms ease,
+    transform 220ms ease,
+    width 220ms ease,
+    opacity 220ms ease;
+}
+
+.shop-cart-inner .cart-panel {
+  transform: scale(0.82);
+  transform-origin: top right;
+  width: 121.95%;
+  margin-left: auto;
 }
 
 .product-grid {
@@ -1153,6 +1168,14 @@ textarea {
     top: auto !important;
     left: auto !important;
     width: 100% !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .shop-cart-inner .cart-panel {
+    transform: none !important;
+    width: 100% !important;
+    margin-left: 0 !important;
   }
 }
 
