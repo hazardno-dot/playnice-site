@@ -833,61 +833,81 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
       <main>
         {!isShopPage ? (
           <>
-            <section id="intro" className="hero intro-hero hero-featured">
-              <div className="container hero-featured-grid">
-                <div className="hero-featured-left">
-                  <div className="hero-bottle-wrapper">
-                    <img
-                      src="/images/9pm.png"
-                      alt="Afnan 9PM Rebel"
-                      className="hero-bottle main"
-                    />
-                    <div className="hero-spotlight"></div>
-                  </div>
-                </div>
+    <section id="intro" className="hero intro-hero hero-featured hero-conversion">
+  <div className="container hero-featured-grid">
+    <div className="hero-featured-left">
+      <div className="hero-bottle-wrapper hero-bottle-wrapper-conversion">
+        <div className="hero-floating-badge">FULL BOTTLE AVAILABLE</div>
 
-                <div className="hero-featured-right">
-                  <div className="section-kicker">PLAYNICE FEATURED DROP</div>
+        <img
+          src="/images/9pm.png"
+          alt="Afnan 9PM Rebel"
+          className="hero-bottle main"
+        />
 
-                  <h1 className="hero-featured-title">OWN THE MOMENT.</h1>
+        <div className="hero-spotlight"></div>
+        <div className="hero-bottle-ring"></div>
+      </div>
+    </div>
 
-                  <h2 className="hero-featured-name">AFNAN 9PM REBEL</h2>
+    <div className="hero-featured-right">
+      <div className="section-kicker">PLAYNICE FEATURED DROP</div>
 
-                  <p className="hero-sub">Full bottle now available.</p>
+      <h1 className="hero-featured-title">
+        Own the moment.
+      </h1>
 
-                  <p className="hero-desc">
-                    Try before you buy. Experience it on your skin before committing
-                    to the full bottle.
-                  </p>
+      <h2 className="hero-featured-name">AFNAN 9PM REBEL</h2>
 
-                  <div className="hero-actions">
-                    <a href="/?view=shop" className="btn btn-primary">
-                      Shop Now
-                    </a>
-                    <a
-                      href={INSTAGRAM_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn btn-secondary"
-                    >
-                      Instagram
-                    </a>
-                  </div>
+      <p className="hero-sub hero-sub-strong">
+        Try before you buy — then go full bottle if it’s the one.
+      </p>
 
-                  <div className="hero-secondary">
-                    <div className="hero-secondary-item">
-                      <img src="/images/island.png" alt="Khadlaj Island Dreams" />
-                      <span>Island Dreams</span>
-                    </div>
+      <p className="hero-desc">
+        Dark, bold, attention-grabbing. Start with a premium decant or go straight
+        for the full bottle. Built for compliments, night outs, and instant impact.
+      </p>
 
-                    <div className="hero-secondary-item">
-                      <img src="/images/marwa.png" alt="Arabiyat Prestige Marwa" />
-                      <span>Marwa</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
+      <div className="hero-trust-row">
+        <div className="hero-trust-pill">Premium decants</div>
+        <div className="hero-trust-pill">Cash on delivery</div>
+        <div className="hero-trust-pill">Free shipping over 39€</div>
+      </div>
+
+      <div className="hero-actions hero-actions-conversion">
+        <a href="/?view=shop" className="btn btn-primary hero-main-cta">
+          Shop Now
+        </a>
+
+        <a
+          href={INSTAGRAM_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="btn btn-secondary hero-secondary-cta"
+        >
+          Order via Instagram
+        </a>
+      </div>
+
+      <div className="hero-mini-proof">
+        <span>Featured now:</span>
+        <strong> 9PM Rebel • Island Dreams • Marwa</strong>
+      </div>
+
+      <div className="hero-secondary hero-secondary-conversion">
+        <div className="hero-secondary-item">
+          <img src="/images/island.png" alt="Khadlaj Island Dreams" />
+          <span>Island Dreams</span>
+        </div>
+
+        <div className="hero-secondary-item">
+          <img src="/images/marwa.png" alt="Arabiyat Prestige Marwa" />
+          <span>Marwa</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
             <section className="section cta-section">
               <div className="container">
