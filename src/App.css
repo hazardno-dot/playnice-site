@@ -1532,8 +1532,17 @@ select {
 
 .hero-bottle-float:hover .hero-bottle.main {
   animation-play-state: paused;
-  transform: perspective(1400px) rotateY(0deg) translateY(-10px) scale(1.03);
-  filter: drop-shadow(0 50px 120px rgba(220, 181, 107, 0.25));
+  transform: perspective(1400px) rotateY(0deg) translateY(-22px) scale(1.04);
+  filter: drop-shadow(0 65px 140px rgba(220, 181, 107, 0.32));
+}
+
+.hero-bottle-float:hover .hero-spotlight {
+  transform: translateX(-50%) scale(0.9);
+  opacity: 0.7;
+}
+
+.hero-bottle-float {
+  transition: transform 0.4s ease;
 }
 
 .hero-spotlight {
