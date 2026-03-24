@@ -553,17 +553,13 @@ textarea {
 }
 
 .shop-cart {
-  position: relative;
   min-width: 0;
   align-self: start;
 }
 
 .shop-cart-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: static;
   width: 100%;
-  will-change: top, left;
 }
 
 .product-grid {
@@ -1168,14 +1164,8 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  .shop-cart {
-    min-height: 0 !important;
-  }
-
   .shop-cart-inner {
     position: static !important;
-    top: auto !important;
-    left: auto !important;
     width: 100% !important;
   }
 }
