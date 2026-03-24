@@ -53,7 +53,7 @@ const products = [
 ];
 
 const INSTAGRAM_URL = "https://www.instagram.com/playnice.me/";
-const SHIPPING_PRICE = 4;
+const SHIPPING_PRICE = 3.5;
 const FREE_SHIPPING_THRESHOLD = 39;
 
 function formatPrice(value) {
