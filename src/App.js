@@ -216,6 +216,9 @@ function CartPanel({
   checkoutData,
   setCheckoutData,
   onCheckout,
+  orderSuccess,
+  lastOrderData,
+  onBackToShop,
 }) {
   const subtotal = getSubtotal(cart);
   const shipping = getShipping(subtotal);
@@ -224,6 +227,12 @@ function CartPanel({
     subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : FREE_SHIPPING_THRESHOLD - subtotal;
 
   const [showCheckout, setShowCheckout] = useState(false);
+
+  useEffect(() => {
+    if (orderSuccess) {
+      setShowCheckout(false);
+    }
+  }, [orderSuccess]);
 
   const increaseQty = (index) => {
     setCart((prev) =>
@@ -250,6 +259,86 @@ function CartPanel({
       [name]: value,
     }));
   };
+
+  if (orderSuccess && lastOrderData) {
+    return (
+      <aside className="cart-panel">
+        <div className="success-screen">
+          <div className="success-card">
+            <div className="success-icon">✓</div>
+
+            <p className="success-eyebrow">PLAYNICE</p>
+            <h1 className="success-title">Porudžbina je uspešno poslata</h1>
+            <p className="success-text">
+              Hvala na kupovini. Tvoja porudžbina je primljena i uskoro ćemo te
+              kontaktirati sa potvrdom i detaljima isporuke.
+            </p>
+
+            <div className="success-summary">
+              <div className="success-row">
+                <span>Kupac</span>
+                <strong>{lastOrderData.fullName}</strong>
+              </div>
+              <div className="success-row">
+                <span>Email</span>
+                <strong>{lastOrderData.email}</strong>
+              </div>
+              <div className="success-row">
+                <span>Telefon</span>
+                <strong>{lastOrderData.phone}</strong>
+              </div>
+              <div className="success-row">
+                <span>Grad</span>
+                <strong>{lastOrderData.city}</strong>
+              </div>
+              <div className="success-row">
+                <span>Adresa</span>
+                <strong>{lastOrderData.address}</strong>
+              </div>
+
+              {lastOrderData.note ? (
+                <div className="success-row">
+                  <span>Napomena</span>
+                  <strong>{lastOrderData.note}</strong>
+                </div>
+              ) : null}
+
+              <div className="success-row">
+                <span>Subtotal</span>
+                <strong>{formatPrice(lastOrderData.subtotal)}</strong>
+              </div>
+              <div className="success-row">
+                <span>Dostava</span>
+                <strong>
+                  {lastOrderData.shipping === 0
+                    ? "Free"
+                    : formatPrice(lastOrderData.shipping)}
+                </strong>
+              </div>
+              <div className="success-row total">
+                <span>Ukupno</span>
+                <strong>{formatPrice(lastOrderData.total)}</strong>
+              </div>
+            </div>
+
+            <div className="success-actions">
+              <button className="success-shop-btn" type="button" onClick={onBackToShop}>
+                Nastavi kupovinu
+              </button>
+            </div>
+
+            {lastOrderData.customerEmailSent === false ? (
+              <p className="success-footer">
+                Porudžbina je primljena, ali potvrda na email možda nije stigla.
+              </p>
+            ) : (
+              <p className="success-footer">Remember. PlayNice.</p>
+            )}
+          </div>
+        </div>
+      </aside>
+    );
+  }
 
   return (
     <aside className="cart-panel">
@@ -481,6 +570,9 @@ export default function App() {
     }
   });
 
+  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [lastOrderData, setLastOrderData] = useState(null);
+
   const itemsPerPage = 12;
 
   useEffect(() => {
@@ -642,6 +734,10 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
     }
 
     try {
+      const subtotal = getSubtotal(cartItems);
+      const shipping = getShipping(subtotal);
+      const total = subtotal + shipping;
+
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: {
@@ -656,11 +752,19 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Greška pri slanju porudžbine.");
+        throw new Error(data.details || data.error || "Greška pri slanju porudžbine.");
       }
 
-      alert("Porudžbina je uspešno poslata. Kupac će dobiti email potvrdu.");
+      setLastOrderData({
+        ...checkoutData,
+        cart: [...cartItems],
+        subtotal,
+        shipping,
+        total,
+        customerEmailSent: data?.customerEmailSent ?? true,
+      });
 
+      setOrderSuccess(true);
       setCart([]);
 
       const emptyCheckout = {
@@ -677,10 +781,19 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
       if (typeof window !== "undefined") {
         window.localStorage.removeItem("playnice_cart");
         window.localStorage.removeItem("playnice_checkout");
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } catch (error) {
       console.error(error);
-      alert("Došlo je do greške pri slanju porudžbine. Pokušaj ponovo.");
+      alert(error?.message || "Došlo je do greške pri slanju porudžbine. Pokušaj ponovo.");
+    }
+  };
+
+  const handleBackToShop = () => {
+    setOrderSuccess(false);
+    setLastOrderData(null);
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -924,6 +1037,9 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                     checkoutData={checkoutData}
                     setCheckoutData={setCheckoutData}
                     onCheckout={handleCheckout}
+                    orderSuccess={orderSuccess}
+                    lastOrderData={lastOrderData}
+                    onBackToShop={handleBackToShop}
                   />
                 </div>
               </div>
