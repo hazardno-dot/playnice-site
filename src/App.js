@@ -1,36 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
-<section className="hero">
-  <div className="hero-left">
-    <div className="hero-bottle-wrapper">
-      <img src="/images/9pm.png" alt="Afnan 9PM Rebel" className="hero-bottle main" />
-      <div className="hero-spotlight"></div>
-    </div>
-  </div>
-
-  <div className="hero-right">
-    <h1>OWN THE MOMENT.</h1>
-
-    <h2>AFNAN 9PM REBEL</h2>
-
-    <p className="hero-sub">
-      Full bottle now available.
-    </p>
-
-    <p className="hero-desc">
-      Try before you buy. Experience it on your skin.
-    </p>
-
-    <button className="hero-btn">SHOP NOW</button>
-
-    <div className="hero-secondary">
-      <img src="/images/island.png" alt="Island Dreams" />
-      <img src="/images/marwa.png" alt="Marwa" />
-    </div>
-  </div>
-</section>
-
 const products = [
   { id: 1, name: "Afnan 9AM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
   { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
@@ -863,37 +833,62 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
       <main>
         {!isShopPage ? (
           <>
-            <section id="intro" className="hero intro-hero">
-              <div className="container hero-grid">
-                <div className="hero-copy">
-                  <div className="section-kicker">PLAYNICE PREMIUM FRAGRANCE DECANTS</div>
+            <section id="intro" className="hero intro-hero hero-featured">
+  <div className="container hero-featured-grid">
+    <div className="hero-featured-left">
+      <div className="hero-bottle-wrapper">
+        <img
+          src="/images/9pm.png"
+          alt="Afnan 9PM Rebel"
+          className="hero-bottle main"
+        />
+        <div className="hero-spotlight"></div>
+      </div>
+    </div>
 
-                  <h1 className="hero-title">
-                    Try before
-                    <span> you buy.</span>
-                  </h1>
+    <div className="hero-featured-right">
+      <div className="section-kicker">PLAYNICE FEATURED DROP</div>
 
-                  <p className="hero-text">
-                    Niche. Designer. Arabic.
-                    <br />
-                    Pažljivo odabrani parfemi u premium dekantima.
-                    <br />
-                    Otkrij pravi miris pre nego što kupiš punu bočicu.
-                  </p>
+      <h1 className="hero-featured-title">
+        OWN THE MOMENT.
+      </h1>
 
-                  <div className="hero-actions">
-                    <a href="/?view=shop" className="btn btn-primary">
-                      Shop
-                    </a>
-                    <a
-                      href={INSTAGRAM_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn btn-secondary"
-                    >
-                      Instagram
-                    </a>
-                  </div>
+      <h2 className="hero-featured-name">AFNAN 9PM REBEL</h2>
+
+      <p className="hero-sub">Full bottle now available.</p>
+
+      <p className="hero-desc">
+        Try before you buy. Experience it on your skin before committing to the full bottle.
+      </p>
+
+      <div className="hero-actions">
+        <a href="/?view=shop" className="btn btn-primary">
+          Shop Now
+        </a>
+        <a
+          href={INSTAGRAM_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="btn btn-secondary"
+        >
+          Instagram
+        </a>
+      </div>
+
+      <div className="hero-secondary">
+        <div className="hero-secondary-item">
+          <img src="/images/island.png" alt="Khadlaj Island Dreams" />
+          <span>Island Dreams</span>
+        </div>
+
+        <div className="hero-secondary-item">
+          <img src="/images/marwa.png" alt="Arabiyat Prestige Marwa" />
+          <span>Marwa</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
                   <div className="stats-grid">
                     <div className="stat-card">
