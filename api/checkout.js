@@ -21,6 +21,20 @@ function getShipping(subtotal) {
   return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_PRICE;
 }
 
+function generateOrderId() {
+  const now = new Date();
+
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+  const hh = String(now.getHours()).padStart(2, "0");
+  const min = String(now.getMinutes()).padStart(2, "0");
+  const ss = String(now.getSeconds()).padStart(2, "0");
+  const random = Math.floor(100 + Math.random() * 900);
+
+  return `PN-${yyyy}${mm}${dd}-${hh}${min}${ss}-${random}`;
+}
+
 function escapeHtml(str = "") {
   return String(str)
     .replaceAll("&", "&amp;")
@@ -89,6 +103,7 @@ Ukupno: ${formatPrice(Number(item.price) * Number(item.qty))}`
 }
 
 function customerEmailHtml({
+  orderId,
   fullName,
   cart,
   subtotal,
@@ -118,6 +133,7 @@ function customerEmailHtml({
 
           <div style="padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(220,181,107,0.12);margin-bottom:20px;">
             <div style="color:#f3d69b;font-weight:700;margin-bottom:8px;">Order summary</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Order ID: ${escapeHtml(orderId)}</div>
             <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Kupac: ${escapeHtml(fullName)}</div>
             <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Grad: ${escapeHtml(city)}</div>
             <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Adresa: ${escapeHtml(address)}</div>
@@ -165,6 +181,7 @@ function customerEmailHtml({
 }
 
 function adminEmailHtml({
+  orderId,
   fullName,
   email,
   phone,
@@ -179,6 +196,7 @@ function adminEmailHtml({
   return `
   <div style="font-family:Arial,sans-serif;background:#0b0b0b;color:#f7f2e8;padding:24px;">
     <h2 style="color:#f3d69b;">Nova porudžbina - PlayNice</h2>
+    <p><strong>Order ID:</strong> ${escapeHtml(orderId)}</p>
     <p><strong>Kupac:</strong> ${escapeHtml(fullName)}</p>
     <p><strong>Email:</strong> ${escapeHtml(email)}</p>
     <p><strong>Telefon:</strong> ${escapeHtml(phone)}</p>
@@ -211,6 +229,7 @@ function adminEmailHtml({
 }
 
 function customerEmailText({
+  orderId,
   fullName,
   city,
   address,
@@ -221,6 +240,8 @@ function customerEmailText({
   total,
 }) {
   return `PLAYNICE
+
+Order ID: ${orderId}
 
 Zdravo ${fullName}, hvala na kupovini.
 Primili smo tvoju porudžbinu i uskoro ćemo ti se javiti sa potvrdom i detaljima isporuke.
@@ -243,6 +264,7 @@ Remember. PlayNice.`;
 }
 
 function adminEmailText({
+  orderId,
   fullName,
   email,
   phone,
@@ -255,6 +277,8 @@ function adminEmailText({
   total,
 }) {
   return `Nova porudžbina - PlayNice
+
+Order ID: ${orderId}
 
 Kupac: ${fullName}
 Email: ${email}
@@ -309,6 +333,7 @@ export default async function handler(req, res) {
     const subtotal = getSubtotal(cart);
     const shipping = getShipping(subtotal);
     const total = subtotal + shipping;
+    const orderId = generateOrderId();
 
     const fromEmail = process.env.RESEND_FROM_EMAIL || "noreply@playniceshop.me";
     const adminEmail = process.env.ADMIN_ORDER_EMAIL || "order@playniceshop.me";
@@ -320,8 +345,9 @@ export default async function handler(req, res) {
         from: `PlayNice <${fromEmail}>`,
         to: adminEmail,
         replyTo: email,
-        subject: `Nova porudžbina - ${fullName} - ${formatPrice(total)}`,
+        subject: `PlayNice Order ${orderId} • ${fullName} • ${formatPrice(total)}`,
         html: adminEmailHtml({
+          orderId,
           fullName,
           email,
           phone,
@@ -334,6 +360,7 @@ export default async function handler(req, res) {
           total,
         }),
         text: adminEmailText({
+          orderId,
           fullName,
           email,
           phone,
@@ -361,8 +388,9 @@ export default async function handler(req, res) {
       await resend.emails.send({
         from: `PlayNice <${fromEmail}>`,
         to: email,
-        subject: `PlayNice order confirmation - ${formatPrice(total)}`,
+        subject: `PlayNice Order Confirmation • ${orderId}`,
         html: customerEmailHtml({
+          orderId,
           fullName,
           city,
           address,
@@ -373,6 +401,7 @@ export default async function handler(req, res) {
           total,
         }),
         text: customerEmailText({
+          orderId,
           fullName,
           city,
           address,
@@ -398,6 +427,7 @@ export default async function handler(req, res) {
       warning: customerEmailSent ? null : "Order placed, but customer email was not sent",
       adminMessageId: adminSendResult?.data?.id || null,
       customerEmailError,
+      orderId,
     });
   } catch (error) {
     console.error("Checkout error:", error);
