@@ -1863,16 +1863,6 @@ select {
 
 .hero-bottle-float:hover .hero-bottle.main {
   animation-play-state: paused;
-  transform: rotate(0deg) translateY(0) scale(1.03);
-  filter: drop-shadow(0 46px 110px rgba(220, 181, 107, 0.24));
-}
-
-.hero-bottle-float:hover {
-  animation-play-state: paused;
-}
-
-.hero-bottle-float:hover .hero-bottle.main {
-  animation-play-state: paused;
   transform: perspective(1200px) rotateY(0deg) scale(1.03);
   filter: drop-shadow(0 46px 110px rgba(220, 181, 107, 0.24));
 }
