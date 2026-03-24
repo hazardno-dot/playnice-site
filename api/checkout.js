@@ -2,7 +2,7 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const SHIPPING_PRICE = 4;
+const SHIPPING_PRICE = 3.5;
 const FREE_SHIPPING_THRESHOLD = 39;
 
 function formatPrice(value) {
