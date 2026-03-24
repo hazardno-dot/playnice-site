@@ -916,15 +916,17 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
               </div>
 
               <div className="shop-cart">
-                <CartPanel
-                  cart={cart}
-                  setCart={setCart}
-                  onOrderCart={handleCartOrder}
-                  checkoutData={checkoutData}
-                  setCheckoutData={setCheckoutData}
-                  onCheckout={handleCheckout}
-                />
-              </div>
+  <div className="shop-cart-inner">
+    <CartPanel
+      cart={cart}
+      setCart={setCart}
+      onOrderCart={handleCartOrder}
+      checkoutData={checkoutData}
+      setCheckoutData={setCheckoutData}
+      onCheckout={handleCheckout}
+    />
+  </div>
+</div>
             </div>
           </section>
         )}
