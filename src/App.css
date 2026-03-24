@@ -1839,24 +1839,31 @@ select {
   text-transform: uppercase;
 }
 
+.hero-bottle-float {
+  position: relative;
+  z-index: 2;
+  animation: heroFloat 4.8s ease-in-out infinite;
+}
+
 .hero-bottle.main {
   width: min(41vw, 456px);
   max-width: 100%;
-  position: relative;
-  z-index: 2;
-  animation:
-    heroFloat 4.8s ease-in-out infinite,
-    heroBottleTurn 6.5s ease-in-out infinite;
+  display: block;
   transform-origin: center center;
   transform-style: preserve-3d;
+  animation: heroBottleTurn 6.5s ease-in-out infinite;
   filter: drop-shadow(0 34px 70px rgba(0, 0, 0, 0.65));
   transition: transform 0.45s ease, filter 0.35s ease;
   will-change: transform;
 }
 
-.hero-bottle.main:hover {
+.hero-bottle-float:hover {
   animation-play-state: paused;
-  transform: perspective(1200px) rotateY(0deg) translateY(-2px) scale(1.03);
+}
+
+.hero-bottle-float:hover .hero-bottle.main {
+  animation-play-state: paused;
+  transform: perspective(1200px) rotateY(0deg) scale(1.03);
   filter: drop-shadow(0 46px 110px rgba(220, 181, 107, 0.24));
 }
 
