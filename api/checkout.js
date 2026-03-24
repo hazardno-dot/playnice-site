@@ -313,8 +313,8 @@ export default async function handler(req, res) {
     const fromEmail = process.env.RESEND_FROM_EMAIL || "noreply@playniceshop.me";
     const adminEmail = process.env.ADMIN_ORDER_EMAIL || "order@playniceshop.me";
 
-    // 1) ADMIN EMAIL - critical
     let adminSendResult;
+
     try {
       adminSendResult = await resend.emails.send({
         from: `PlayNice <${fromEmail}>`,
@@ -354,7 +354,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // 2) CUSTOMER EMAIL - non-critical fallback
     let customerEmailSent = false;
     let customerEmailError = null;
 
