@@ -1532,7 +1532,7 @@ select {
 
 .hero-bottle-float:hover .hero-bottle.main {
   animation-play-state: paused;
-  transform: scale(1.04);
+  transform: perspective(1400px) rotateY(0deg) translateY(-10px) scale(1.03);
   filter: drop-shadow(0 50px 120px rgba(220, 181, 107, 0.25));
 }
 
@@ -1722,12 +1722,21 @@ select {
   box-shadow: 0 20px 50px rgba(176, 122, 42, 0.3);
 }
 
-@keyframes heroSpin {
+@keyframes heroSpinY {
   0% {
-    transform: rotate(0deg);
+    transform: perspective(1400px) rotateY(0deg);
+  }
+  20% {
+    transform: perspective(1400px) rotateY(-14deg);
+  }
+  50% {
+    transform: perspective(1400px) rotateY(0deg);
+  }
+  80% {
+    transform: perspective(1400px) rotateY(14deg);
   }
   100% {
-    transform: rotate(360deg);
+    transform: perspective(1400px) rotateY(0deg);
   }
 }
 
@@ -1755,9 +1764,9 @@ select {
     align-items: center;
   }
 
-  .hero-bottle.main {
-    width: min(72vw, 384px);
-  }
+ .hero-bottle.main {
+  width: min(82vw, 460px);
+}
 
   .hero-trust-row,
   .hero-secondary {
