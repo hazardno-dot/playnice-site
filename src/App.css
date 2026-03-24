@@ -558,9 +558,8 @@ textarea {
 }
 
 .shop-cart-inner {
-  position: sticky;
-  top: 110px;
-  align-self: start;
+  position: static;
+  top: auto;
 }
 
 .product-grid {
