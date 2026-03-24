@@ -1520,13 +1520,14 @@ select {
 }
 
 .hero-bottle.main {
-  width: min(41vw, 456px);
+  width: min(49vw, 547px);
   max-width: 100%;
   display: block;
   transform-origin: center center;
-  animation: heroSpin 12s linear infinite;
+  animation: heroSpinY 6.5s ease-in-out infinite;
   filter: drop-shadow(0 34px 70px rgba(0, 0, 0, 0.65));
   will-change: transform;
+  transition: transform 0.45s ease, filter 0.35s ease;
 }
 
 .hero-bottle-float:hover .hero-bottle.main {
