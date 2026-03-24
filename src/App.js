@@ -848,7 +848,7 @@ const goToShopWithSearch = (term) => {
       <main>
         {!isShopPage ? (
           <>
-    <section id="intro" className="hero intro-hero hero-featured hero-conversion">
+<section id="intro" className="hero intro-hero hero-featured hero-conversion">
   <div className="container hero-featured-grid">
     <div className="hero-featured-left">
       <div className="hero-bottle-wrapper hero-bottle-wrapper-conversion">
@@ -868,9 +868,7 @@ const goToShopWithSearch = (term) => {
     <div className="hero-featured-right">
       <div className="section-kicker">PLAYNICE FEATURED DROP</div>
 
-      <h1 className="hero-featured-title">
-        Own the moment.
-      </h1>
+      <h1 className="hero-featured-title">Own the moment.</h1>
 
       <h2 className="hero-featured-name">AFNAN 9PM REBEL</h2>
 
@@ -883,6 +881,10 @@ const goToShopWithSearch = (term) => {
         for the full bottle. Built for compliments, night outs, and instant impact.
       </p>
 
+      <div className="hero-urgency-line">
+        Limited featured picks available now.
+      </div>
+
       <div className="hero-trust-row">
         <div className="hero-trust-pill">Premium decants</div>
         <div className="hero-trust-pill">Cash on delivery</div>
@@ -890,9 +892,13 @@ const goToShopWithSearch = (term) => {
       </div>
 
       <div className="hero-actions hero-actions-conversion">
-        <a href="/?view=shop" className="btn btn-primary hero-main-cta">
+        <button
+          type="button"
+          className="btn btn-primary hero-main-cta"
+          onClick={goToShop}
+        >
           Shop Now
-        </a>
+        </button>
 
         <a
           href={INSTAGRAM_URL}
@@ -910,17 +916,35 @@ const goToShopWithSearch = (term) => {
       </div>
 
       <div className="hero-secondary hero-secondary-conversion">
-        <div className="hero-secondary-item">
+        <button
+          type="button"
+          className="hero-secondary-item hero-secondary-button"
+          onClick={() => goToShopWithSearch("Island Dreams")}
+        >
           <img src="/images/island.png" alt="Khadlaj Island Dreams" />
           <span>Island Dreams</span>
-        </div>
+        </button>
 
-        <div className="hero-secondary-item">
+        <button
+          type="button"
+          className="hero-secondary-item hero-secondary-button"
+          onClick={() => goToShopWithSearch("Marwa")}
+        >
           <img src="/images/marwa.png" alt="Arabiyat Prestige Marwa" />
           <span>Marwa</span>
-        </div>
+        </button>
       </div>
     </div>
+  </div>
+
+  <div className="mobile-sticky-hero-cta">
+    <button
+      type="button"
+      className="btn btn-primary mobile-sticky-hero-btn"
+      onClick={goToShop}
+    >
+      Shop Featured Drop
+    </button>
   </div>
 </section>
 
