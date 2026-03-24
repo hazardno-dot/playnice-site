@@ -1840,18 +1840,24 @@ select {
 }
 
 .hero-bottle.main {
-  width: min(34vw, 380px);
+  width: min(41vw, 456px);
   max-width: 100%;
   position: relative;
   z-index: 2;
-  animation: heroFloat 4.8s ease-in-out infinite;
+  animation:
+    heroFloat 4.8s ease-in-out infinite,
+    heroBottleTurn 6.5s ease-in-out infinite;
+  transform-origin: center center;
+  transform-style: preserve-3d;
   filter: drop-shadow(0 34px 70px rgba(0, 0, 0, 0.65));
-  transition: transform 0.35s ease, filter 0.35s ease;
+  transition: transform 0.45s ease, filter 0.35s ease;
+  will-change: transform;
 }
 
 .hero-bottle.main:hover {
-  transform: translateY(-4px) scale(1.02);
-  filter: drop-shadow(0 40px 100px rgba(220, 181, 107, 0.22));
+  animation-play-state: paused;
+  transform: perspective(1200px) rotateY(0deg) translateY(-2px) scale(1.03);
+  filter: drop-shadow(0 46px 110px rgba(220, 181, 107, 0.24));
 }
 
 .hero-spotlight {
@@ -2049,6 +2055,24 @@ select {
   }
 }
 
+@keyframes heroBottleTurn {
+  0% {
+    transform: perspective(1200px) rotateY(0deg);
+  }
+  20% {
+    transform: perspective(1200px) rotateY(-10deg);
+  }
+  50% {
+    transform: perspective(1200px) rotateY(0deg);
+  }
+  80% {
+    transform: perspective(1200px) rotateY(10deg);
+  }
+  100% {
+    transform: perspective(1200px) rotateY(0deg);
+  }
+}
+
 @keyframes heroPulse {
   0%, 100% {
     transform: translate(-50%, -50%) scale(0.96);
@@ -2073,9 +2097,9 @@ select {
     align-items: center;
   }
 
-  .hero-bottle.main {
-    width: min(62vw, 320px);
-  }
+ .hero-bottle.main {
+  width: min(72vw, 384px);
+}
 
   .hero-trust-row,
   .hero-secondary {
