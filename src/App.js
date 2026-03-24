@@ -834,97 +834,55 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
         {!isShopPage ? (
           <>
             <section id="intro" className="hero intro-hero hero-featured">
-  <div className="container hero-featured-grid">
-    <div className="hero-featured-left">
-      <div className="hero-bottle-wrapper">
-        <img
-          src="/images/9pm.png"
-          alt="Afnan 9PM Rebel"
-          className="hero-bottle main"
-        />
-        <div className="hero-spotlight"></div>
-      </div>
-    </div>
-
-    <div className="hero-featured-right">
-      <div className="section-kicker">PLAYNICE FEATURED DROP</div>
-
-      <h1 className="hero-featured-title">
-        OWN THE MOMENT.
-      </h1>
-
-      <h2 className="hero-featured-name">AFNAN 9PM REBEL</h2>
-
-      <p className="hero-sub">Full bottle now available.</p>
-
-      <p className="hero-desc">
-        Try before you buy. Experience it on your skin before committing to the full bottle.
-      </p>
-
-      <div className="hero-actions">
-        <a href="/?view=shop" className="btn btn-primary">
-          Shop Now
-        </a>
-        <a
-          href={INSTAGRAM_URL}
-          target="_blank"
-          rel="noreferrer"
-          className="btn btn-secondary"
-        >
-          Instagram
-        </a>
-      </div>
-
-      <div className="hero-secondary">
-        <div className="hero-secondary-item">
-          <img src="/images/island.png" alt="Khadlaj Island Dreams" />
-          <span>Island Dreams</span>
-        </div>
-
-        <div className="hero-secondary-item">
-          <img src="/images/marwa.png" alt="Arabiyat Prestige Marwa" />
-          <span>Marwa</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-                  <div className="stats-grid">
-                    <div className="stat-card">
-                      <div className="stat-value">{products.length}+</div>
-                      <div className="stat-label">Fragrances</div>
-                    </div>
-                    <div className="stat-card">
-                      <div className="stat-value">Arabian / Designer / Niche</div>
-                      <div className="stat-label">Curated selection</div>
-                    </div>
-                    <div className="stat-card">
-                      <div className="stat-value">Premium</div>
-                      <div className="stat-label">Try before you buy</div>
-                    </div>
+              <div className="container hero-featured-grid">
+                <div className="hero-featured-left">
+                  <div className="hero-bottle-wrapper">
+                    <img
+                      src="/images/9pm.png"
+                      alt="Afnan 9PM Rebel"
+                      className="hero-bottle main"
+                    />
+                    <div className="hero-spotlight"></div>
                   </div>
                 </div>
 
-                <div className="hero-visual">
-                  <div className="visual-card">
-                    <div className="visual-topline">PLAYNICE COLLECTION</div>
+                <div className="hero-featured-right">
+                  <div className="section-kicker">PLAYNICE FEATURED DROP</div>
 
-                    <div className="bottle-stage">
-                      <div className="bottle-glow" />
-                      <div className="bottle-shadow" />
-                      <div className="bottle">
-                        <div className="bottle-cap" />
-                        <div className="bottle-front">PN</div>
-                      </div>
+                  <h1 className="hero-featured-title">OWN THE MOMENT.</h1>
+
+                  <h2 className="hero-featured-name">AFNAN 9PM REBEL</h2>
+
+                  <p className="hero-sub">Full bottle now available.</p>
+
+                  <p className="hero-desc">
+                    Try before you buy. Experience it on your skin before committing
+                    to the full bottle.
+                  </p>
+
+                  <div className="hero-actions">
+                    <a href="/?view=shop" className="btn btn-primary">
+                      Shop Now
+                    </a>
+                    <a
+                      href={INSTAGRAM_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn btn-secondary"
+                    >
+                      Instagram
+                    </a>
+                  </div>
+
+                  <div className="hero-secondary">
+                    <div className="hero-secondary-item">
+                      <img src="/images/island.png" alt="Khadlaj Island Dreams" />
+                      <span>Island Dreams</span>
                     </div>
 
-                    <div className="visual-panel">
-                      <h3>Luxury starts with the right sample</h3>
-                      <p>
-                        Klikni na Shop i pregledaj kompletnu selekciju Arabian i
-                        Designer/Niche parfema sa cenama i opcijom za poručivanje.
-                      </p>
+                    <div className="hero-secondary-item">
+                      <img src="/images/marwa.png" alt="Arabiyat Prestige Marwa" />
+                      <span>Marwa</span>
                     </div>
                   </div>
                 </div>
