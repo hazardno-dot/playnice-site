@@ -269,7 +269,7 @@ export default async function handler(req, res) {
     const shipping = getShipping(subtotal);
     const total = subtotal + shipping;
 
-    const fromEmail = process.env.RESEND_FROM_EMAIL || "orders@playniceshop.me";
+    const fromEmail = process.env.RESEND_FROM_EMAIL || "noreply@playniceshop.me";
     const adminEmail = process.env.ADMIN_ORDER_EMAIL || "order@playniceshop.me";
 
     await resend.emails.send({
