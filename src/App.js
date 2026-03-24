@@ -851,20 +851,21 @@ const goToShopWithSearch = (term) => {
 <section id="intro" className="hero intro-hero hero-featured hero-conversion">
   <div className="container hero-featured-grid">
     <div className="hero-featured-left">
-     <div className="hero-bottle-wrapper hero-bottle-wrapper-conversion">
-  <div className="hero-floating-badge">FULL BOTTLE AVAILABLE</div>
+      <div className="hero-bottle-wrapper hero-bottle-wrapper-conversion">
+        <div className="hero-floating-badge">FULL BOTTLE AVAILABLE</div>
 
-  <div className="hero-bottle-float">
-    <img
-      src="/images/9pm.png"
-      alt="Afnan 9PM Rebel"
-      className="hero-bottle main"
-    />
-  </div>
+        <div className="hero-bottle-float">
+          <img
+            src="/images/9pm.png"
+            alt="Afnan 9PM Rebel"
+            className="hero-bottle main"
+          />
+        </div>
 
-  <div className="hero-spotlight"></div>
-  <div className="hero-bottle-ring"></div>
-</div>
+        <div className="hero-spotlight"></div>
+        <div className="hero-bottle-ring"></div>
+      </div>
+    </div>
 
     <div className="hero-featured-right">
       <div className="section-kicker">PLAYNICE FEATURED DROP</div>
@@ -948,7 +949,6 @@ const goToShopWithSearch = (term) => {
     </button>
   </div>
 </section>
-
             <section className="section cta-section">
               <div className="container">
                 <div className="cta-box">
