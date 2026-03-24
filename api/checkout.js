@@ -6,7 +6,8 @@ const SHIPPING_PRICE = 4;
 const FREE_SHIPPING_THRESHOLD = 39;
 
 function formatPrice(value) {
-  return `${Number(value).toFixed(value % 1 === 0 ? 0 : 1)}€`;
+  const num = Number(value || 0);
+  return `${num.toFixed(num % 1 === 0 ? 0 : 1)}€`;
 }
 
 function getSubtotal(cart) {
@@ -27,6 +28,35 @@ function escapeHtml(str = "") {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function normalizeText(value = "") {
+  return String(value).trim();
+}
+
+function isValidEmail(email = "") {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
+}
+
+function sanitizeCart(cart) {
+  if (!Array.isArray(cart)) return [];
+
+  return cart
+    .map((item) => ({
+      name: normalizeText(item?.name),
+      size: normalizeText(item?.size),
+      qty: Number(item?.qty),
+      price: Number(item?.price),
+    }))
+    .filter(
+      (item) =>
+        item.name &&
+        item.size &&
+        Number.isFinite(item.qty) &&
+        item.qty > 0 &&
+        Number.isFinite(item.price) &&
+        item.price >= 0
+    );
 }
 
 function buildItemsHtml(cart) {
@@ -242,27 +272,38 @@ Ukupno: ${formatPrice(total)}`;
 }
 
 export default async function handler(req, res) {
+  res.setHeader("Allow", ["POST"]);
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  if (!process.env.RESEND_API_KEY) {
+    console.error("Missing RESEND_API_KEY");
+    return res.status(500).json({ error: "Email service is not configured" });
+  }
+
   try {
-    const {
-      fullName,
-      email,
-      phone,
-      city,
-      address,
-      note,
-      cart,
-    } = req.body || {};
+    const body = req.body || {};
+
+    const fullName = normalizeText(body.fullName);
+    const email = normalizeText(body.email);
+    const phone = normalizeText(body.phone);
+    const city = normalizeText(body.city);
+    const address = normalizeText(body.address);
+    const note = normalizeText(body.note);
+    const cart = sanitizeCart(body.cart);
 
     if (!fullName || !email || !phone || !city || !address) {
       return res.status(400).json({ error: "Missing required customer fields" });
     }
 
-    if (!Array.isArray(cart) || cart.length === 0) {
-      return res.status(400).json({ error: "Cart is empty" });
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ error: "Invalid email address" });
+    }
+
+    if (cart.length === 0) {
+      return res.status(400).json({ error: "Cart is empty or invalid" });
     }
 
     const subtotal = getSubtotal(cart);
@@ -272,67 +313,97 @@ export default async function handler(req, res) {
     const fromEmail = process.env.RESEND_FROM_EMAIL || "noreply@playniceshop.me";
     const adminEmail = process.env.ADMIN_ORDER_EMAIL || "order@playniceshop.me";
 
-    await resend.emails.send({
-      from: `PlayNice <${fromEmail}>`,
-      to: email,
-      subject: `PlayNice order confirmation - ${formatPrice(total)}`,
-      html: customerEmailHtml({
-        fullName,
-        city,
-        address,
-        note,
-        cart,
-        subtotal,
-        shipping,
-        total,
-      }),
-      text: customerEmailText({
-        fullName,
-        city,
-        address,
-        note,
-        cart,
-        subtotal,
-        shipping,
-        total,
-      }),
-    });
+    // 1) ADMIN EMAIL - critical
+    let adminSendResult;
+    try {
+      adminSendResult = await resend.emails.send({
+        from: `PlayNice <${fromEmail}>`,
+        to: adminEmail,
+        replyTo: email,
+        subject: `Nova porudžbina - ${fullName} - ${formatPrice(total)}`,
+        html: adminEmailHtml({
+          fullName,
+          email,
+          phone,
+          city,
+          address,
+          note,
+          cart,
+          subtotal,
+          shipping,
+          total,
+        }),
+        text: adminEmailText({
+          fullName,
+          email,
+          phone,
+          city,
+          address,
+          note,
+          cart,
+          subtotal,
+          shipping,
+          total,
+        }),
+      });
+    } catch (adminError) {
+      console.error("Admin email failed:", adminError);
+      return res.status(500).json({
+        error: "Failed to place order",
+        details: adminError?.message || "Admin email failed",
+      });
+    }
 
-    await resend.emails.send({
-      from: `PlayNice <${fromEmail}>`,
-      to: adminEmail,
-      subject: `Nova porudžbina - ${fullName} - ${formatPrice(total)}`,
-      html: adminEmailHtml({
-        fullName,
-        email,
-        phone,
-        city,
-        address,
-        note,
-        cart,
-        subtotal,
-        shipping,
-        total,
-      }),
-      text: adminEmailText({
-        fullName,
-        email,
-        phone,
-        city,
-        address,
-        note,
-        cart,
-        subtotal,
-        shipping,
-        total,
-      }),
-    });
+    // 2) CUSTOMER EMAIL - non-critical fallback
+    let customerEmailSent = false;
+    let customerEmailError = null;
 
-    return res.status(200).json({ success: true });
+    try {
+      await resend.emails.send({
+        from: `PlayNice <${fromEmail}>`,
+        to: email,
+        subject: `PlayNice order confirmation - ${formatPrice(total)}`,
+        html: customerEmailHtml({
+          fullName,
+          city,
+          address,
+          note,
+          cart,
+          subtotal,
+          shipping,
+          total,
+        }),
+        text: customerEmailText({
+          fullName,
+          city,
+          address,
+          note,
+          cart,
+          subtotal,
+          shipping,
+          total,
+        }),
+      });
+
+      customerEmailSent = true;
+    } catch (customerError) {
+      customerEmailError = customerError?.message || "Customer email failed";
+      console.error("Customer email failed:", customerError);
+    }
+
+    return res.status(200).json({
+      success: true,
+      orderPlaced: true,
+      adminEmailSent: true,
+      customerEmailSent,
+      warning: customerEmailSent ? null : "Order placed, but customer email was not sent",
+      adminMessageId: adminSendResult?.data?.id || null,
+      customerEmailError,
+    });
   } catch (error) {
-    console.error("Checkout email error:", error);
+    console.error("Checkout error:", error);
     return res.status(500).json({
-      error: "Failed to send order emails",
+      error: "Failed to process order",
       details: error?.message || "Unknown error",
     });
   }
