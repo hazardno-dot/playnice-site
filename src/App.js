@@ -1,6 +1,36 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
+<section className="hero">
+  <div className="hero-left">
+    <div className="hero-bottle-wrapper">
+      <img src="/images/9pm.png" alt="Afnan 9PM Rebel" className="hero-bottle main" />
+      <div className="hero-spotlight"></div>
+    </div>
+  </div>
+
+  <div className="hero-right">
+    <h1>OWN THE MOMENT.</h1>
+
+    <h2>AFNAN 9PM REBEL</h2>
+
+    <p className="hero-sub">
+      Full bottle now available.
+    </p>
+
+    <p className="hero-desc">
+      Try before you buy. Experience it on your skin.
+    </p>
+
+    <button className="hero-btn">SHOP NOW</button>
+
+    <div className="hero-secondary">
+      <img src="/images/island.png" alt="Island Dreams" />
+      <img src="/images/marwa.png" alt="Marwa" />
+    </div>
+  </div>
+</section>
+
 const products = [
   { id: 1, name: "Afnan 9AM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
   { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
