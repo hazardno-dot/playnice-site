@@ -820,21 +820,6 @@ const goToShopWithSearch = (term) => {
   }
 };
 
-  const goToShop = () => {
-  if (typeof window !== "undefined") {
-    window.location.href = "/?view=shop";
-  }
-};
-
-const goToShopWithSearch = (term) => {
-  if (typeof window !== "undefined") {
-    const params = new URLSearchParams();
-    params.set("view", "shop");
-    params.set("search", term);
-    window.location.href = `/?${params.toString()}`;
-  }
-};
-
   return (
     <div className="site-shell">
       <div className="bg-orb bg-orb-1" />
