@@ -275,6 +275,13 @@ function CartPanel({
             </p>
 
             <div className="success-summary">
+              {lastOrderData.orderId ? (
+                <div className="success-row">
+                  <span>Order ID</span>
+                  <strong>{lastOrderData.orderId}</strong>
+                </div>
+              ) : null}
+
               <div className="success-row">
                 <span>Kupac</span>
                 <strong>{lastOrderData.fullName}</strong>
@@ -762,6 +769,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
         shipping,
         total,
         customerEmailSent: data?.customerEmailSent ?? true,
+        orderId: data?.orderId || null,
       });
 
       setOrderSuccess(true);
