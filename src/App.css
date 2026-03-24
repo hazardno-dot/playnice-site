@@ -31,6 +31,7 @@ body {
   background: #2b2f34;
   color: var(--text);
   font-family: "Inter", sans-serif;
+  overflow-x: hidden;
 }
 
 a {
@@ -47,8 +48,7 @@ textarea {
 .site-shell {
   min-height: 100vh;
   position: relative;
-  overflow-x: hidden;
-  overflow-y: visible;
+  overflow: visible;
   background:
     radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.025) 0%, transparent 22%),
     radial-gradient(circle at 80% 18%, rgba(255, 255, 255, 0.02) 0%, transparent 18%),
@@ -553,17 +553,14 @@ textarea {
 }
 
 .shop-cart {
-  position: relative;
-  min-height: 1px;
+  min-width: 0;
+  align-self: start;
 }
 
 .shop-cart-inner {
-  position: fixed;
+  position: sticky;
   top: 110px;
-  width: 340px;
-  max-height: calc(100vh - 130px);
-  overflow-y: auto;
-  padding-right: 6px;
+  align-self: start;
 }
 
 .product-grid {
@@ -815,8 +812,6 @@ textarea {
 }
 
 .cart-panel {
-  position: relative;
-  top: auto;
   border-radius: 26px;
   padding: 20px;
   background: linear-gradient(180deg, rgba(30, 30, 30, 0.98), rgba(22, 22, 22, 0.98));
@@ -1147,19 +1142,7 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  .shop-cart {
-    position: static;
-  }
-
   .shop-cart-inner {
-    position: static;
-    width: 100%;
-    max-height: none;
-    overflow: visible;
-    padding-right: 0;
-  }
-
-  .cart-panel {
     position: static;
     top: auto;
   }
