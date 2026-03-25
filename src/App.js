@@ -2,130 +2,230 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
 const products = [
-  { id: 1, name: "Afnan 9AM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
-  { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
-  { id: 5, name: "Afnan 9PM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 6, name: "Lattafa Khamrah Qahwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "HOT" },
-  { id: 7, name: "Armaf Club de Nuit Intense Man EDT", category: "Designer", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Designer", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 9, name: "Armaf Club de Nuit Bling", category: "Designer", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
-  { id: 10, name: "Mancera Cedrat Boise", category: "Niche", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
-  { id: 11, name: "Gisada Ambassador", category: "Designer", sizes: { "5ml": 11, "10ml": 20, "20ml": 38 } },
-  { id: 12, name: "Givenchy Gentleman Réserve Privée", category: "Designer", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
-  { id: 13, name: "Creed Aventus Cologne", category: "Niche", sizes: { "5ml": 29, "10ml": 52, "20ml": 98 } },
-  { id: 14, name: "Bleu de Chanel EDP", category: "Designer", sizes: { "5ml": 15, "10ml": 27, "20ml": 50 } },
-  { id: 15, name: "Boss The Scent Elixir", category: "Designer", sizes: { "5ml": 15, "10ml": 27, "20ml": 50 } },
-  { id: 16, name: "Montblanc Explorer Extreme", category: "Designer", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
-  { id: 17, name: "Swiss Arabian Tobacco 01", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
-  { id: 18, name: "Calvin Klein Defy EDT", category: "Designer", sizes: { "5ml": 7, "10ml": 12, "20ml": 22 } },
-  { id: 19, name: "Calvin Klein Defy Parfum", category: "Designer", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
-  { id: 20, name: "CK All", category: "Designer", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
-  { id: 21, name: "Kadlaj Island Dreams", category: "Summer", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "SUMMER" },
-  { id: 22, name: "Arabian Prestige Marwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 23, name: "Parfums de Marly Castley", category: "Niche", sizes: { "5ml": 16, "10ml": 29, "20ml": 55 } },
-  { id: 24, name: "Afnan Supremacy Not Only Intense", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } }
-];
-
-const productDetails = {
-  "Afnan 9AM": {
-    description: "Bright, modern and easy to wear. A clean energetic opener with a sharp daytime profile.",
-    vibe: "Fresh. Crisp. Effortless daily reach."
+  {
+    id: 1,
+    name: "Afnan 9AM",
+    category: "Arabian",
+    image: "/afnan-9am.png",
+    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+    description:
+      "Fresh, versatile and easy to wear. A clean daily driver with modern energy and broad appeal.",
+    vibe: "Fresh • Bright • Everyday confidence"
   },
-  "Afnan 9PM Rebel": {
-    description: "A bold, addictive crowd-pleaser with strong presence and excellent value. Built to stand out.",
-    vibe: "Sweet. Loud. Compliment magnet."
+  {
+    id: 2,
+    name: "Afnan 9PM Rebel",
+    category: "Arabian",
+    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+    badge: "BESTSELLER",
+    description:
+      "Bold, addictive and attention-grabbing. A nightlife weapon with strong charisma and premium value.",
+    vibe: "Sweet • Magnetic • Night out"
   },
-  "Afnan Supremacy Collector's Edition Pour Homme": {
-    description: "A richer and more elevated masculine profile with polished depth and strong signature energy.",
-    vibe: "Refined. Powerful. Dressed-up confidence."
+  {
+    id: 3,
+    name: "Afnan Supremacy Collector's Edition Pour Homme",
+    category: "Arabian",
+    image: "/afnan-supremacy.png",
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+    description:
+      "A smooth and elevated masculine scent with depth, polish and lasting presence.",
+    vibe: "Refined • Powerful • Signature-ready"
   },
-  "Afnan Turathi Blue": {
-    description: "Fresh citrus sparkle over a smooth woody base. Clean luxury with broad appeal.",
-    vibe: "Blue. Sharp. Versatile."
+  {
+    id: 4,
+    name: "Afnan Turathi Blue",
+    category: "Arabian",
+    image: "/afnan-turathi-blue.png",
+    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
+    description:
+      "A crisp aromatic profile with upscale freshness and excellent versatility.",
+    vibe: "Citrus • Elegant • High impact"
   },
-  "Afnan 9PM": {
-    description: "A proven nightlife favorite with sweetness, projection and instant recognition.",
-    vibe: "Playful. Loud. After-dark energy."
+  {
+    id: 5,
+    name: "Afnan 9PM",
+    category: "Arabian",
+    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+    description:
+      "A crowd-pleasing sweet scent built for compliments, dates and cooler evenings.",
+    vibe: "Warm • Sweet • Compliment magnet"
   },
-  "Lattafa Khamrah Qahwa": {
-    description: "Warm gourmand richness with coffee nuance and a deep addictive sweetness.",
-    vibe: "Cozy. Rich. Delicious."
+  {
+    id: 6,
+    name: "Lattafa Khamrah Qahwa",
+    category: "Arabian",
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+    badge: "HOT",
+    description:
+      "Rich, sweet and spicy with an irresistible gourmand edge and addictive warmth.",
+    vibe: "Spicy • Gourmand • Cozy luxury"
   },
-  "Armaf Club de Nuit Intense Man EDT": {
-    description: "Smoky-fruity freshness with serious impact. A modern classic for attention and projection.",
-    vibe: "Bold. Recognizable. High impact."
+  {
+    id: 7,
+    name: "Armaf Club de Nuit Intense Man EDT",
+    category: "Designer",
+    image: "/armaf-cdn-intense.png",
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+    description:
+      "Sharp, confident and assertive. A modern classic for projection and presence.",
+    vibe: "Smoky • Masculine • Commanding"
   },
-  "Armaf Club de Nuit Sillage": {
-    description: "Metallic-citrus freshness with a cool refined edge and long-lasting airy trail.",
-    vibe: "Silver. Clean. Distinct."
+  {
+    id: 8,
+    name: "Armaf Club de Nuit Sillage",
+    category: "Designer",
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+    description:
+      "Airy metallic freshness with strong identity and standout trail.",
+    vibe: "Bright • Mineral • Distinctive"
   },
-  "Armaf Club de Nuit Bling": {
-    description: "Flashy, stylish and made to be noticed. A confident wear with visual and olfactory presence.",
-    vibe: "Glamorous. Modern. Statement-making."
+  {
+    id: 9,
+    name: "Armaf Club de Nuit Bling",
+    category: "Designer",
+    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
+    description:
+      "A flashy, modern scent with attention-grabbing energy and stylish appeal.",
+    vibe: "Glamorous • Youthful • Loud in a good way"
   },
-  "Mancera Cedrat Boise": {
-    description: "A niche staple balancing citrus brightness, woods and smooth sweetness with serious elegance.",
-    vibe: "Luxurious. Versatile. Elite casual."
+  {
+    id: 10,
+    name: "Mancera Cedrat Boise",
+    category: "Niche",
+    sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
+    description:
+      "A niche favorite balancing citrus brightness with woods and sophistication.",
+    vibe: "Niche • Smooth • Effortlessly classy"
   },
-  "Gisada Ambassador": {
-    description: "Polished and charismatic with a smooth designer feel that performs above expectations.",
-    vibe: "Charismatic. Clean. Expensive aura."
+  {
+    id: 11,
+    name: "Gisada Ambassador",
+    category: "Designer",
+    sizes: { "5ml": 11, "10ml": 20, "20ml": 38 },
+    description:
+      "A polished designer scent with elegant sweetness and strong mass appeal.",
+    vibe: "Luxurious • Modern • Crowd favorite"
   },
-  "Givenchy Gentleman Réserve Privée": {
-    description: "Elegant boozy warmth and iris sophistication in a seductive evening composition.",
-    vibe: "Classy. Creamy. Intimate."
+  {
+    id: 12,
+    name: "Givenchy Gentleman Réserve Privée",
+    category: "Designer",
+    sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
+    description:
+      "A dark, smooth and upscale scent with a dressed-up evening personality.",
+    vibe: "Boozy • Elegant • Refined dark"
   },
-  "Creed Aventus Cologne": {
-    description: "Airy freshness wrapped in prestige. Refined, uplifting and unmistakably premium.",
-    vibe: "Prestige. Fresh. Quiet power."
+  {
+    id: 13,
+    name: "Creed Aventus Cologne",
+    category: "Niche",
+    sizes: { "5ml": 29, "10ml": 52, "20ml": 98 },
+    description:
+      "Premium niche freshness with luxury polish, clean projection and prestige.",
+    vibe: "Prestige • Fresh • Executive energy"
   },
-  "Bleu de Chanel EDP": {
-    description: "A benchmark designer scent with polished woods, freshness and timeless versatility.",
-    vibe: "Elegant. Clean. Universal."
+  {
+    id: 14,
+    name: "Bleu de Chanel EDP",
+    category: "Designer",
+    sizes: { "5ml": 15, "10ml": 27, "20ml": 50 },
+    description:
+      "A universally respected signature scent that feels clean, masculine and premium.",
+    vibe: "Blue • Elegant • Timeless"
   },
-  "Boss The Scent Elixir": {
-    description: "Warm sensual density with a darker seductive edge suited to evening wear.",
-    vibe: "Seductive. Deep. Magnetic."
+  {
+    id: 15,
+    name: "Boss The Scent Elixir",
+    category: "Designer",
+    sizes: { "5ml": 15, "10ml": 27, "20ml": 50 },
+    description:
+      "Dark, sensual and richer than the usual designer style. Ideal for evening wear.",
+    vibe: "Seductive • Dense • Smooth heat"
   },
-  "Montblanc Explorer Extreme": {
-    description: "Adventure-inspired woods and freshness with a masculine polished finish.",
-    vibe: "Confident. Travel-ready. Modern."
+  {
+    id: 16,
+    name: "Montblanc Explorer Extreme",
+    category: "Designer",
+    sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
+    description:
+      "A bold and adventurous scent with familiar masculinity and a polished finish.",
+    vibe: "Woody • Adventurous • Reliable"
   },
-  "Swiss Arabian Tobacco 01": {
-    description: "Rich tobacco warmth with sweet depth and a smooth oriental backbone.",
-    vibe: "Dark. Cozy. Mature."
+  {
+    id: 17,
+    name: "Swiss Arabian Tobacco 01",
+    category: "Arabian",
+    sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
+    description:
+      "Dense tobacco warmth with a rich Middle Eastern character and luxurious depth.",
+    vibe: "Tobacco • Warm • Rich aura"
   },
-  "Calvin Klein Defy EDT": {
-    description: "Fresh and approachable, ideal for daily wear with clean masculine simplicity.",
-    vibe: "Fresh. Easy. Everyday."
+  {
+    id: 18,
+    name: "Calvin Klein Defy EDT",
+    category: "Designer",
+    sizes: { "5ml": 7, "10ml": 12, "20ml": 22 },
+    description:
+      "A clean masculine designer freshie with easy wearability and modern simplicity.",
+    vibe: "Clean • Casual • Everyday"
   },
-  "Calvin Klein Defy Parfum": {
-    description: "A darker, fuller take on the Defy DNA with stronger character and warmth.",
-    vibe: "Smooth. Masculine. Elevated."
+  {
+    id: 19,
+    name: "Calvin Klein Defy Parfum",
+    category: "Designer",
+    sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
+    description:
+      "A darker and richer take on the Defy DNA with improved depth and stronger character.",
+    vibe: "Modern • Darker • Elevated"
   },
-  "CK All": {
-    description: "Clean universal freshness with bright simplicity and easy all-day wearability.",
-    vibe: "Minimal. Fresh. Uncomplicated."
+  {
+    id: 20,
+    name: "CK All",
+    category: "Designer",
+    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
+    description:
+      "Minimal, clean and very wearable. Great for effortless daily freshness.",
+    vibe: "Soft • Clean • Universal"
   },
-  "Kadlaj Island Dreams": {
-    description: "A breezy summer-ready scent that instantly creates vacation mood and sunny energy.",
-    vibe: "Tropical. Easygoing. Must-try summer pick."
+  {
+    id: 21,
+    name: "Kadlaj Island Dreams",
+    category: "Summer",
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+    badge: "SUMMER",
+    description:
+      "A bright tropical mood with vacation energy, easy wear and warm-weather appeal.",
+    vibe: "Tropical • Sunny • Must-try summer"
   },
-  "Arabian Prestige Marwa": {
-    description: "An elegant Arabian composition with smooth presence, warmth and excellent value.",
-    vibe: "Soft spice. Elegant. Boutique feel."
+  {
+    id: 22,
+    name: "Arabian Prestige Marwa",
+    category: "Arabian",
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+    description:
+      "A strong value pick with character, smoothness and a distinctly Arabian profile.",
+    vibe: "Exotic • Smooth • Distinctive"
   },
-  "Parfums de Marly Castley": {
-    description: "A luxury niche profile with upscale structure, sophistication and strong identity.",
-    vibe: "Noble. Rich. High-end signature."
+  {
+    id: 23,
+    name: "Parfums de Marly Castley",
+    category: "Niche",
+    sizes: { "5ml": 16, "10ml": 29, "20ml": 55 },
+    description:
+      "Luxury niche perfumery with depth, polish and a premium signature aura.",
+    vibe: "Niche • Regal • High-end presence"
   },
-  "Afnan Supremacy Not Only Intense": {
-    description: "A powerful fresh-fruity-smoky profile with presence that punches above its price.",
-    vibe: "Strong. Stylish. Attention-grabbing."
+  {
+    id: 24,
+    name: "Afnan Supremacy Not Only Intense",
+    category: "Arabian",
+    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
+    description:
+      "One of the strongest value performers in the category with excellent impact.",
+    vibe: "Intense • Bold • Powerful trail"
   }
-};
+];
 
 const categories = ["All", ...Array.from(new Set(products.map((p) => p.category)))];
 const PRODUCTS_PER_PAGE = 12;
@@ -135,18 +235,25 @@ function formatPrice(value) {
   return `€${Number(value).toFixed(2)}`;
 }
 
+function ProductImage({ product, className = "" }) {
+  if (product.image) {
+    return <img className={className} src={product.image} alt={product.name} />;
+  }
+
+  return <div className={`product-image-fallback ${className}`}>{product.name.charAt(0)}</div>;
+}
+
 function App() {
   const [view, setView] = useState("home");
   const [category, setCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
-  const [productModalOpen, setProductModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [addedFeedback, setAddedFeedback] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-
   const [cart, setCart] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedSize, setSelectedSize] = useState("");
 
   const [checkoutForm, setCheckoutForm] = useState({
     firstName: "",
@@ -194,17 +301,13 @@ function App() {
   }, [addedFeedback]);
 
   useEffect(() => {
-    const handleEscape = (event) => {
-      if (event.key === "Escape") {
-        setCartOpen(false);
-        setCheckoutOpen(false);
-        setProductModalOpen(false);
-      }
-    };
-
-    window.addEventListener("keydown", handleEscape);
-    return () => window.removeEventListener("keydown", handleEscape);
-  }, []);
+    if (selectedProduct) {
+      const firstSize = Object.keys(selectedProduct.sizes)[0];
+      setSelectedSize(firstSize);
+    } else {
+      setSelectedSize("");
+    }
+  }, [selectedProduct]);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -276,6 +379,7 @@ function App() {
     const heroProduct = {
       id: 999,
       name: "Afnan 9PM Rebel",
+      image: "/hero-bottle.png",
       sizes: { "100ml": 34.9 }
     };
 
@@ -320,54 +424,51 @@ function App() {
 
   const openProductModal = (product) => {
     setSelectedProduct(product);
-    setProductModalOpen(true);
   };
 
   const closeProductModal = () => {
-    setProductModalOpen(false);
     setSelectedProduct(null);
   };
 
-  const getProductDetail = (productName) => {
-    return (
-      productDetails[productName] || {
-        description: "A premium fragrance selection curated for style, character and strong impression.",
-        vibe: "Confident. Refined. Memorable."
-      }
-    );
+  const addSelectedProductToCart = () => {
+    if (!selectedProduct || !selectedSize) return;
+    addToCart(selectedProduct, selectedSize);
+    setCartOpen(true);
   };
 
   const ProductCard = ({ product }) => (
-    <article className="product-card" key={product.id}>
+    <article
+      className="product-card clickable"
+      key={product.id}
+      onClick={() => openProductModal(product)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") openProductModal(product);
+      }}
+    >
       {product.badge && <span className="product-badge">{product.badge}</span>}
 
-      <button
-        className="product-card-click"
-        onClick={() => openProductModal(product)}
-        aria-label={`Open details for ${product.name}`}
-      >
-        <div className="product-image">
-          <div className="product-image-inner">{product.name.charAt(0)}</div>
-        </div>
+      <div className="product-image">
+        <ProductImage product={product} className="product-image-real" />
+      </div>
 
-        <div className="product-meta">
-          <p className="product-category">{product.category}</p>
-          <h3>{product.name}</h3>
-          <p className="product-price-from">
-            From {formatPrice(Math.min(...Object.values(product.sizes)))}
-          </p>
-        </div>
-      </button>
+      <div className="product-meta">
+        <p className="product-category">{product.category}</p>
+        <h3>{product.name}</h3>
+        <p className="product-price-from">
+          From {formatPrice(Math.min(...Object.values(product.sizes)))}
+        </p>
+      </div>
 
-      <div className="size-buttons">
+      <div className="product-preview-line">
+        <span>Open details</span>
+        <strong>Luxury modal</strong>
+      </div>
+
+      <div className="size-buttons" onClick={(e) => e.stopPropagation()}>
         {Object.entries(product.sizes).map(([size, price]) => (
-          <button
-            key={size}
-            onClick={(e) => {
-              e.stopPropagation();
-              addToCart(product, size);
-            }}
-          >
+          <button key={size} onClick={() => addToCart(product, size)}>
             <span>{size}</span>
             <strong>{formatPrice(price)}</strong>
           </button>
@@ -443,11 +544,7 @@ function App() {
                     onClick={addHeroBottleToCart}
                     aria-label="Add Afnan 9PM Rebel full bottle to cart"
                   >
-                    <img
-                      className="hero-bottle"
-                      src="/hero-bottle.png"
-                      alt="Afnan 9PM Rebel"
-                    />
+                    <img className="hero-bottle" src="/hero-bottle.png" alt="Afnan 9PM Rebel" />
                   </button>
                 </div>
               </div>
@@ -515,7 +612,7 @@ function App() {
 
               <div className="product-grid">
                 {products.slice(0, 4).map((product) => (
-                  <ProductCard product={product} key={product.id} />
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
 
@@ -573,7 +670,7 @@ function App() {
 
             <div className="product-grid">
               {paginatedProducts.map((product) => (
-                <ProductCard product={product} key={product.id} />
+                <ProductCard key={product.id} product={product} />
               ))}
             </div>
 
@@ -658,7 +755,7 @@ function App() {
       </aside>
 
       <div
-        className={`backdrop ${cartOpen || checkoutOpen || productModalOpen ? "show" : ""}`}
+        className={`backdrop ${cartOpen || checkoutOpen || selectedProduct ? "show" : ""}`}
         onClick={() => {
           setCartOpen(false);
           setCheckoutOpen(false);
@@ -666,7 +763,7 @@ function App() {
         }}
       />
 
-      <div className={`product-modal ${productModalOpen ? "open" : ""}`}>
+      <div className={`product-modal ${selectedProduct ? "open" : ""}`}>
         {selectedProduct && (
           <>
             <div className="product-modal-header">
@@ -685,43 +782,37 @@ function App() {
                   <span className="product-modal-badge">{selectedProduct.badge}</span>
                 )}
 
-                <div className="product-modal-image">
-                  <div className="product-modal-image-inner">
-                    {selectedProduct.name.charAt(0)}
-                  </div>
+                <div className="product-modal-image-wrap">
+                  <ProductImage product={selectedProduct} className="product-modal-image" />
                 </div>
 
-                <div className="product-modal-note">
-                  <span>Try before you buy</span>
-                  <span>Premium decants</span>
-                  <span>PlayNice curated</span>
+                <div className="product-modal-meta">
+                  <p className="product-modal-category">{selectedProduct.category}</p>
+                  <p className="product-modal-vibe">{selectedProduct.vibe}</p>
                 </div>
               </div>
 
               <div className="product-modal-content">
-                <p className="product-modal-category">{selectedProduct.category}</p>
+                <div className="product-modal-copy">
+                  <p className="product-modal-description">{selectedProduct.description}</p>
 
-                <h4>{selectedProduct.name}</h4>
-
-                <p className="product-modal-description">
-                  {getProductDetail(selectedProduct.name).description}
-                </p>
-
-                <div className="product-modal-vibe">
-                  <span>Character</span>
-                  <strong>{getProductDetail(selectedProduct.name).vibe}</strong>
+                  <div className="product-modal-info-box">
+                    <span>Why customers choose this</span>
+                    <strong>
+                      Strong identity, premium feel and excellent value in decant format.
+                    </strong>
+                  </div>
                 </div>
 
-                <div className="product-modal-pricing">
-                  <span>Available sizes</span>
-                  <div className="product-modal-size-grid">
+                <div className="product-modal-sizes">
+                  <p className="modal-label">Choose size</p>
+
+                  <div className="modal-size-grid">
                     {Object.entries(selectedProduct.sizes).map(([size, price]) => (
                       <button
                         key={size}
-                        onClick={() => {
-                          addToCart(selectedProduct, size);
-                          setCartOpen(true);
-                        }}
+                        className={`modal-size-button ${selectedSize === size ? "active" : ""}`}
+                        onClick={() => setSelectedSize(size)}
                       >
                         <span>{size}</span>
                         <strong>{formatPrice(price)}</strong>
@@ -731,28 +822,21 @@ function App() {
                 </div>
 
                 <div className="product-modal-footer">
-                  <p>
-                    Discover the fragrance on skin first, then decide whether it deserves a full
-                    bottle place in your collection.
-                  </p>
-
-                  <div className="product-modal-actions">
-                    <button
-                      className="gold-button"
-                      onClick={() => {
-                        const firstSize = Object.keys(selectedProduct.sizes)[0];
-                        addToCart(selectedProduct, firstSize);
-                        setCartOpen(true);
-                      }}
-                    >
-                      Add Signature Size
-                    </button>
-
-                    <button className="ghost-button" onClick={closeProductModal}>
-                      Continue Browsing
-                    </button>
+                  <div className="product-modal-price">
+                    <span>Selected price</span>
+                    <strong>
+                      {selectedSize ? formatPrice(selectedProduct.sizes[selectedSize]) : "—"}
+                    </strong>
                   </div>
+
+                  <button className="gold-button modal-add-button" onClick={addSelectedProductToCart}>
+                    Add to Cart
+                  </button>
                 </div>
+
+                <p className="product-modal-note">
+                  Try before you buy. Premium fragrance discovery, delivered across Montenegro.
+                </p>
               </div>
             </div>
           </>
