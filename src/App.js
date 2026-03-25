@@ -64,6 +64,10 @@ const HERO_PRODUCT = {
   price: 34.9,
 };
 
+function formatPrice(value) {
+  return `${Number(value).toFixed(2)}€`;
+}
+
 const translations = {
   sr: {
     navHome: "Početna",
@@ -267,10 +271,6 @@ const translations = {
     footerSendDm: "Send DM",
   },
 };
-
-function formatPrice(value) {
-  return `${Number(value).toFixed(2)}€`;
-}
 
 function getSubtotal(cart) {
   return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
@@ -767,6 +767,9 @@ export default function App() {
   const [isShopPage, setIsShopPage] = useState(initialView === "shop");
   const [showCheckout, setShowCheckout] = useState(false);
 
+  const isHomeActive = !isShopPage;
+  const isShopActive = isShopPage;
+
   const [cart, setCart] = useState(() => {
     try {
       if (typeof window === "undefined") return [];
@@ -1100,106 +1103,106 @@ ${t.orderTotal}: ${formatPrice(total)}`;
       <div className="bg-orb bg-orb-2" />
       <div className="grain-overlay" />
 
-  <header className="header">
-  <div className="container header-inner">
-    <div className="brand-block">
-      <a href="/" className="brand-logo" onClick={openHome}>
-        PLAYNICE
-      </a>
-      <div className="brand-tagline">Remember. PlayNice.</div>
-    </div>
+      <header className="header">
+        <div className="container header-inner">
+          <div className="brand-block">
+            <a href="/" className="brand-logo" onClick={openHome}>
+              PLAYNICE
+            </a>
+            <div className="brand-tagline">Remember. PlayNice.</div>
+          </div>
 
-    <nav className="nav nav-centered">
-      <a
-        href="/"
-        onClick={openHome}
-        className={isHomeActive ? "nav-link active" : "nav-link"}
-      >
-        <span className="nav-icon" aria-hidden="true">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M3 10.5 12 3l9 7.5" />
-            <path d="M5.5 9.5V21h13V9.5" />
-            <path d="M9.5 21v-6h5v6" />
-          </svg>
-        </span>
-        <span>{t.navHome}</span>
-      </a>
+          <nav className="nav nav-centered">
+            <a
+              href="/"
+              onClick={openHome}
+              className={isHomeActive ? "nav-link active" : "nav-link"}
+            >
+              <span className="nav-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M3 10.5 12 3l9 7.5" />
+                  <path d="M5.5 9.5V21h13V9.5" />
+                  <path d="M9.5 21v-6h5v6" />
+                </svg>
+              </span>
+              <span>{t.navHome}</span>
+            </a>
 
-      <a
-        href="/?view=shop"
-        onClick={(e) => {
-          e.preventDefault();
-          goToShop();
-        }}
-        className={isShopActive ? "nav-link active" : "nav-link"}
-      >
-        <span className="nav-icon" aria-hidden="true">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M6 7h12l-1 12H7L6 7Z" />
-            <path d="M9 7a3 3 0 0 1 6 0" />
-          </svg>
-        </span>
-        <span>{t.navShop}</span>
-      </a>
+            <a
+              href="/?view=shop"
+              onClick={(e) => {
+                e.preventDefault();
+                goToShop();
+              }}
+              className={isShopActive ? "nav-link active" : "nav-link"}
+            >
+              <span className="nav-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6 7h12l-1 12H7L6 7Z" />
+                  <path d="M9 7a3 3 0 0 1 6 0" />
+                </svg>
+              </span>
+              <span>{t.navShop}</span>
+            </a>
 
-      <a
-        href={INSTAGRAM_URL}
-        target="_blank"
-        rel="noreferrer"
-        className="nav-link"
-      >
-        <span className="nav-icon" aria-hidden="true">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M21 15a4 4 0 0 1-4 4H7l-4 2V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
-            <path d="M8 10h8" />
-            <path d="M8 14h5" />
-          </svg>
-        </span>
-        <span>{t.navContact}</span>
-      </a>
-    </nav>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="nav-link"
+            >
+              <span className="nav-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 15a4 4 0 0 1-4 4H7l-4 2V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+                  <path d="M8 10h8" />
+                  <path d="M8 14h5" />
+                </svg>
+              </span>
+              <span>{t.navContact}</span>
+            </a>
+          </nav>
 
-    <div className="header-right">
-      <div className="lang-toggle">
-        <button
-          type="button"
-          className={lang === "sr" ? "lang-btn active" : "lang-btn"}
-          onClick={() => setLang("sr")}
-        >
-          SR
-        </button>
-        <button
-          type="button"
-          className={lang === "en" ? "lang-btn active" : "lang-btn"}
-          onClick={() => setLang("en")}
-        >
-          EN
-        </button>
-      </div>
-    </div>
-  </div>
-</header>
+          <div className="header-right">
+            <div className="lang-toggle">
+              <button
+                type="button"
+                className={lang === "sr" ? "lang-btn active" : "lang-btn"}
+                onClick={() => setLang("sr")}
+              >
+                SR
+              </button>
+              <button
+                type="button"
+                className={lang === "en" ? "lang-btn active" : "lang-btn"}
+                onClick={() => setLang("en")}
+              >
+                EN
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
 
       <main>
         {!isShopPage ? (
