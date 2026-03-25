@@ -135,9 +135,9 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
 
   const selectedPrice = product.sizes[selectedSize];
 
-  useEffect(() => {
-    setSelectedSize(sizeOptions[0]);
-  }, [product.id, sizeOptions]);
+ useEffect(() => {
+  setSelectedSize(Object.keys(product.sizes)[0]);
+}, [product.id]);
 
   useEffect(() => {
     return () => {
