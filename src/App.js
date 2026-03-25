@@ -1,1474 +1,656 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
 const products = [
   { id: 1, name: "Afnan 9AM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
   { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
   { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
-  { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 6, name: "Armaf Club De Nuit Bling", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
-  { id: 7, name: "Armaf Club de Nuit Intense", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
-  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 10, name: "Haramain Signature Blue", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
-  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
-  { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
-  { id: 13, name: "Lattafa Fakhar Black", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
-  { id: 15, name: "Lattafa Musamam Black Intense", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 16, name: "Lattafa Qaed Al Fursan Untamed", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
-  { id: 17, name: "Paris Corner Emir Trillium", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 18, name: "Paris Corner Emir Voux Elegante", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 19, name: "Paris Corner Ministry of Oud - Oud Satin", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 20, name: "Paris Corner Perfumes North Stag Expressions II DEUX", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 21, name: "Rayhaan Aquatica", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 22, name: "Rayhaan Pacific Aura", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
-
-  { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 } },
-  { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
-  { id: 28, name: "Bois Impérial by Essential Parfums", category: "Designer/Niche", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 }, badge: "BESTSELLER" },
-  { id: 29, name: "BOSS Bottled Beyond Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 30, name: "BOSS The Scent Elixir Parfum Intense for Him", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 31, name: "BOSS The Scent Le Parfum for Him", category: "Designer/Niche", sizes: { "2ml": 6, "5ml": 14, "10ml": 25 } },
-  { id: 32, name: "Calvin Klein CK All Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 } },
-  { id: 33, name: "Calvin Klein Defy Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3, "5ml": 7, "10ml": 12 } },
-  { id: 34, name: "Calvin Klein Defy Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 35, name: "Chopard Oud Malaki Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 36, name: "Creed Aventus Cologne", category: "Designer/Niche", sizes: { "2ml": 13, "5ml": 29, "10ml": 52 }, badge: "BESTSELLER" },
-  { id: 37, name: "Giorgio Armani Acqua di Giò Profondo Parfum", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
-  { id: 38, name: "Gisada Ambassador Men Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 11, "10ml": 20 }, badge: "BESTSELLER" },
-  { id: 39, name: "Givenchy Gentleman Eau de Parfum Réserve Privée", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 12, "10ml": 21 } },
-  { id: 40, name: "Jimmy Choo Man Blue Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 } },
-  { id: 41, name: "L'Homme Eau de Parfum by Yves Saint Laurent", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 42, name: "L'Homme Idéal De Guerlain Paris Eau De Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, badge: "BESTSELLER" },
-  { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 } },
+  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
+  { id: 5, name: "Afnan 9PM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 6, name: "Lattafa Khamrah Qahwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "HOT" },
+  { id: 7, name: "Armaf Club de Nuit Intense Man EDT", category: "Designer", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Designer", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 9, name: "Armaf Club de Nuit Bling", category: "Designer", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
+  { id: 10, name: "Mancera Cedrat Boise", category: "Niche", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
+  { id: 11, name: "Gisada Ambassador", category: "Designer", sizes: { "5ml": 11, "10ml": 20, "20ml": 38 } },
+  { id: 12, name: "Givenchy Gentleman Réserve Privée", category: "Designer", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
+  { id: 13, name: "Creed Aventus Cologne", category: "Niche", sizes: { "5ml": 29, "10ml": 52, "20ml": 98 } },
+  { id: 14, name: "Bleu de Chanel EDP", category: "Designer", sizes: { "5ml": 15, "10ml": 27, "20ml": 50 } },
+  { id: 15, name: "Boss The Scent Elixir", category: "Designer", sizes: { "5ml": 15, "10ml": 27, "20ml": 50 } },
+  { id: 16, name: "Montblanc Explorer Extreme", category: "Designer", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
+  { id: 17, name: "Swiss Arabian Tobacco 01", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
+  { id: 18, name: "Calvin Klein Defy EDT", category: "Designer", sizes: { "5ml": 7, "10ml": 12, "20ml": 22 } },
+  { id: 19, name: "Calvin Klein Defy Parfum", category: "Designer", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
+  { id: 20, name: "CK All", category: "Designer", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
+  { id: 21, name: "Kadlaj Island Dreams", category: "Summer", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "SUMMER" },
+  { id: 22, name: "Arabian Prestige Marwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 23, name: "Parfums de Marly Castley", category: "Niche", sizes: { "5ml": 16, "10ml": 29, "20ml": 55 } },
+  { id: 24, name: "Afnan Supremacy Not Only Intense", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } }
 ];
 
-const INSTAGRAM_URL = "https://www.instagram.com/playnice.me/";
-const SHIPPING_PRICE = 3.5;
-const FREE_SHIPPING_THRESHOLD = 39;
-const ALLOWED_FILTERS = ["All", "Arabian", "Designer/Niche"];
-
-const HERO_PRODUCT = {
-  productId: "hero-9pm-rebel-100ml",
-  name: "Afnan 9PM Rebel",
-  size: "100ml",
-  price: 34.9,
-};
+const categories = ["All", ...Array.from(new Set(products.map((p) => p.category)))];
+const PRODUCTS_PER_PAGE = 12;
+const SHIPPING_COST = 3.5;
 
 function formatPrice(value) {
-  return `${Number(value).toFixed(2)}€`;
+  return `€${Number(value).toFixed(2)}`;
 }
 
-const translations = {
-  sr: {
-    navHome: "Početna",
-    navShop: "Shop",
-    navContact: "Kontakt",
+function App() {
+  const [view, setView] = useState("home");
+  const [category, setCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [cartOpen, setCartOpen] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [addedFeedback, setAddedFeedback] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
-    heroBadge: "PLAYNICE FEATURED DROP",
-    heroTitle: "OWN THE MOMENT.",
-    heroSub: "Miriši kao parfem od 200€ — za 34.90€.",
-    heroDesc: "Mračan. Zarazan. Stvoren za noći koje ne prolaze neprimećeno.",
-    heroTag1: "Premium dekanti",
-    heroTag2: "Plaćanje pouzećem",
-    heroTag3: `Besplatna dostava preko ${FREE_SHIPPING_THRESHOLD}€`,
-    heroPrimaryCta: "Kupi full bottle",
-    heroSecondaryCta: "Naruči preko Instagrama",
-    heroProof: "Aktuelno izdvojeni: 9PM Rebel • Island Dreams • Marwa",
-    heroFloatBadge: "PRE 45.90€ • SADA 34.90€",
-    heroStickyCta: "Kupi 100ml za 34.90€",
+  const [cart, setCart] = useState([]);
 
-    ctaKicker: "PLAYNICE",
-    ctaTitle: "Discover fragrances the right way.",
-    ctaText:
-      "Testiraj pre pune bočice. Premium dekanti, pažljivo biran izbor i jednostavna porudžbina.",
-    ctaOpenShop: "Otvori shop",
-    ctaSendDm: "Pošalji DM",
-
-    shopKicker: "SHOP",
-    shopTitle: "PlayNice fragrance collection",
-    shopText: "Pregledaj parfeme, izaberi veličinu i dodaj u korpu.",
-    searchPlaceholder: "Pretraži parfem...",
-    filterAll: "Sve",
-    filterArabian: "Arabian",
-    filterDesigner: "Designer / Niche",
-    showing: "Prikazano",
-    of: "od",
-    fragrances: "parfema",
-    prev: "Nazad",
-    next: "Dalje",
-    page: "Strana",
-
-    selected: "Izabrano",
-    addToCart: "Dodaj u korpu",
-    added: "Dodato ✓",
-    orderNow: "Naruči odmah",
-    bestSeller: "Best\nSeller",
-
-    cartTitle: "Korpa",
-    items: "stavki",
-    cartEmpty: "Tvoja korpa je prazna.",
-    subtotal: "Subtotal",
-    shipping: "Dostava",
-    total: "Ukupno",
-    free: "Besplatna",
-    unlockedFreeShipping: "Otključao si besplatnu dostavu.",
-    addMoreForFreeShipping: "Dodaj još",
-    forFreeShipping: "za besplatnu dostavu.",
-    quickDmOrder: "Brza DM porudžbina",
-    hideCheckout: "Sakrij checkout",
-    proceedToCheckout: "Nastavi na checkout",
-    checkoutTitle: "Checkout",
-    fullName: "Ime i prezime *",
-    email: "Email adresa *",
-    phone: "Broj telefona *",
-    city: "Grad *",
-    address: "Adresa *",
-    note: "Napomena uz porudžbinu (opciono)",
-    payment: "Plaćanje: Pouzećem",
-    freeShippingRule: `Besplatna dostava za porudžbine preko ${formatPrice(FREE_SHIPPING_THRESHOLD)}.`,
-    confirmCheckout: "Potvrdi porudžbinu",
-
-    successTitle: "Porudžbina je uspešno poslata",
-    successText:
-      "Hvala na kupovini. Tvoja porudžbina je primljena i uskoro ćemo te kontaktirati sa potvrdom i detaljima isporuke.",
-    customer: "Kupac",
-    noteLabel: "Napomena",
-    continueShopping: "Nastavi kupovinu",
-    emailMaybeFailed: "Porudžbina je primljena, ali potvrda na email možda nije stigla.",
-
-    alertQuickOrderCopied:
-      "Porudžbina je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.",
-    alertQuickOrderFallback: "Kopiraj ovu poruku i pošalji u DM:",
-    alertCartCopied:
-      "Korpa je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.",
-    alertCartFallback: "Kopiraj ovu poruku i pošalji u DM:",
-    alertName: "Unesi ime i prezime.",
-    alertEmail: "Unesi email adresu.",
-    alertPhone: "Unesi broj telefona.",
-    alertCity: "Unesi grad.",
-    alertAddress: "Unesi adresu.",
-    alertCheckoutError: "Došlo je do greške pri slanju porudžbine. Pokušaj ponovo.",
-
-    dmIntro: "Zdravo, želim da naručim:",
-    size: "Veličina",
-    quantity: "Količina",
-    price: "Cena",
-    lineTotal: "Ukupno",
-    orderTotal: "Ukupno za porudžbinu",
-
-    footerInstagram: "Instagram",
-    footerSendDm: "Pošalji DM",
-  },
-
-  en: {
-    navHome: "Home",
-    navShop: "Shop",
-    navContact: "Contact",
-
-    heroBadge: "PLAYNICE FEATURED DROP",
-    heroTitle: "OWN THE MOMENT.",
-    heroSub: "Smell like a 200€ fragrance — for 34.90€.",
-    heroDesc: "Dark. Addictive. Built for nights that don’t go unnoticed.",
-    heroTag1: "Premium decants",
-    heroTag2: "Cash on delivery",
-    heroTag3: `Free shipping over ${FREE_SHIPPING_THRESHOLD}€`,
-    heroPrimaryCta: "Buy full bottle",
-    heroSecondaryCta: "Order via Instagram",
-    heroProof: "Featured now: 9PM Rebel • Island Dreams • Marwa",
-    heroFloatBadge: "WAS 45.90€ • NOW 34.90€",
-    heroStickyCta: "Buy 100ml for 34.90€",
-
-    ctaKicker: "PLAYNICE",
-    ctaTitle: "Discover fragrances the right way.",
-    ctaText:
-      "Test before committing to a full bottle. Premium decants, carefully selected fragrances, and effortless ordering.",
-    ctaOpenShop: "Open shop",
-    ctaSendDm: "Send DM",
-
-    shopKicker: "SHOP",
-    shopTitle: "PlayNice fragrance collection",
-    shopText: "Browse fragrances, choose your size, and add them to cart.",
-    searchPlaceholder: "Search fragrance...",
-    filterAll: "All",
-    filterArabian: "Arabian",
-    filterDesigner: "Designer / Niche",
-    showing: "Showing",
-    of: "of",
-    fragrances: "fragrances",
-    prev: "Prev",
-    next: "Next",
-    page: "Page",
-
-    selected: "Selected",
-    addToCart: "Add to cart",
-    added: "Added ✓",
-    orderNow: "Order now",
-    bestSeller: "Best\nSeller",
-
-    cartTitle: "Cart",
-    items: "items",
-    cartEmpty: "Your cart is empty.",
-    subtotal: "Subtotal",
-    shipping: "Shipping",
-    total: "Total",
-    free: "Free",
-    unlockedFreeShipping: "You unlocked free shipping.",
-    addMoreForFreeShipping: "Add",
-    forFreeShipping: "more for free shipping.",
-    quickDmOrder: "Quick DM Order",
-    hideCheckout: "Hide checkout",
-    proceedToCheckout: "Proceed to checkout",
-    checkoutTitle: "Checkout",
-    fullName: "Full name *",
-    email: "Email address *",
-    phone: "Phone number *",
-    city: "City / Town *",
-    address: "Address *",
-    note: "Order note (optional)",
-    payment: "Payment: Cash on delivery",
-    freeShippingRule: `Free shipping for orders over ${formatPrice(FREE_SHIPPING_THRESHOLD)}.`,
-    confirmCheckout: "Confirm checkout",
-
-    successTitle: "Your order has been sent successfully",
-    successText:
-      "Thank you for your purchase. Your order has been received and we will contact you soon with confirmation and delivery details.",
-    customer: "Customer",
-    noteLabel: "Note",
-    continueShopping: "Continue shopping",
-    emailMaybeFailed: "Your order was received, but the confirmation email may not have arrived.",
-
-    alertQuickOrderCopied:
-      "Order text copied. I opened the Instagram profile — just paste the message into DM.",
-    alertQuickOrderFallback: "Copy this message and send it via DM:",
-    alertCartCopied:
-      "Cart text copied. I opened the Instagram profile — just paste the message into DM.",
-    alertCartFallback: "Copy this message and send it via DM:",
-    alertName: "Enter your full name.",
-    alertEmail: "Enter your email address.",
-    alertPhone: "Enter your phone number.",
-    alertCity: "Enter your city.",
-    alertAddress: "Enter your address.",
-    alertCheckoutError: "There was an error sending your order. Please try again.",
-
-    dmIntro: "Hello, I would like to order:",
-    size: "Size",
-    quantity: "Quantity",
-    price: "Price",
-    lineTotal: "Total",
-    orderTotal: "Order total",
-
-    footerInstagram: "Instagram",
-    footerSendDm: "Send DM",
-  },
-};
-
-function getSubtotal(cart) {
-  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-}
-
-function getShipping(subtotal) {
-  if (subtotal === 0) return 0;
-  return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_PRICE;
-}
-
-function getUrlParams() {
-  if (typeof window === "undefined") return new URLSearchParams();
-  return new URLSearchParams(window.location.search);
-}
-
-function normalizeFilter(value) {
-  return ALLOWED_FILTERS.includes(value) ? value : "All";
-}
-
-function buildShopUrl(nextSearch, nextFilter, nextPage) {
-  const params = new URLSearchParams();
-  params.set("view", "shop");
-
-  if (nextSearch && nextSearch.trim()) {
-    params.set("search", nextSearch.trim());
-  }
-
-  if (nextFilter && nextFilter !== "All") {
-    params.set("filter", nextFilter);
-  }
-
-  if (nextPage && nextPage > 1) {
-    params.set("page", String(nextPage));
-  }
-
-  return `/?${params.toString()}`;
-}
-
-function updateUrlParams(nextSearch, nextFilter, nextPage) {
-  if (typeof window === "undefined") return;
-  window.history.replaceState({}, "", buildShopUrl(nextSearch, nextFilter, nextPage));
-}
-
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.left = "-9999px";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-
-    try {
-      document.execCommand("copy");
-      document.body.removeChild(textArea);
-      return true;
-    } catch {
-      document.body.removeChild(textArea);
-      return false;
-    }
-  }
-}
-
-function ProductCard({ product, onAddToCart, onQuickOrder, t }) {
-  const sizeOptions = Object.keys(product.sizes);
-  const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
-  const [added, setAdded] = useState(false);
-  const timeoutRef = useRef(null);
-
-  const selectedPrice = product.sizes[selectedSize];
+  const [checkoutForm, setCheckoutForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    city: "",
+    address: "",
+    note: ""
+  });
 
   useEffect(() => {
-    setSelectedSize(Object.keys(product.sizes)[0]);
-  }, [product.id]);
+    const params = new URLSearchParams(window.location.search);
+    const urlView = params.get("view");
+    const urlCategory = params.get("category");
+    const urlSearch = params.get("search");
+    const urlPage = params.get("page");
 
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
+    if (urlView && ["home", "shop"].includes(urlView)) setView(urlView);
+    if (urlCategory && categories.includes(urlCategory)) setCategory(urlCategory);
+    if (urlSearch) setSearchTerm(urlSearch);
+    if (urlPage && !Number.isNaN(Number(urlPage))) setCurrentPage(Number(urlPage));
   }, []);
 
-  const handleAdd = () => {
-    onAddToCart({
-      productId: product.id,
-      name: product.name,
-      size: selectedSize,
-      price: selectedPrice,
-    });
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("view", view);
 
-    setAdded(true);
+    if (category !== "All") params.set("category", category);
+    if (searchTerm.trim()) params.set("search", searchTerm.trim());
+    if (currentPage > 1) params.set("page", String(currentPage));
 
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = window.setTimeout(() => setAdded(false), 1400);
-  };
-
-  return (
-    <article className="product-card">
-      {product.badge && (
-        <div className="card-flag bestseller">
-          {t.bestSeller.split("\n")[0]}
-          <br />
-          {t.bestSeller.split("\n")[1]}
-        </div>
-      )}
-
-      <div className="product-card-glow" />
-      <div className="product-badge">{product.category}</div>
-      <h3 className="product-title">{product.name}</h3>
-
-      <div className="product-prices">
-        {sizeOptions.map((size) => (
-          <div className="price-row" key={size}>
-            <span>{size}</span>
-            <strong>{formatPrice(product.sizes[size])}</strong>
-          </div>
-        ))}
-      </div>
-
-      <div className="size-picker">
-        {sizeOptions.map((size) => (
-          <button
-            key={size}
-            className={selectedSize === size ? "size-btn active" : "size-btn"}
-            onClick={() => setSelectedSize(size)}
-            type="button"
-          >
-            {size}
-          </button>
-        ))}
-      </div>
-
-      <div className="selected-price-box">
-        <span>{t.selected}</span>
-        <strong>
-          {selectedSize} → {formatPrice(selectedPrice)}
-        </strong>
-      </div>
-
-      <div className="product-actions">
-        <button className="btn btn-primary" type="button" onClick={handleAdd}>
-          {added ? t.added : t.addToCart}
-        </button>
-
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={() =>
-            onQuickOrder({
-              name: product.name,
-              size: selectedSize,
-              price: selectedPrice,
-            })
-          }
-        >
-          {t.orderNow}
-        </button>
-      </div>
-    </article>
-  );
-}
-
-function CartPanel({
-  cart,
-  setCart,
-  onOrderCart,
-  checkoutData,
-  setCheckoutData,
-  onCheckout,
-  orderSuccess,
-  lastOrderData,
-  onBackToShop,
-  showCheckout,
-  setShowCheckout,
-  t,
-}) {
-  const subtotal = getSubtotal(cart);
-  const shipping = getShipping(subtotal);
-  const total = subtotal + shipping;
-  const amountToFreeShipping =
-    subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : FREE_SHIPPING_THRESHOLD - subtotal;
+    const nextUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, "", nextUrl);
+  }, [view, category, searchTerm, currentPage]);
 
   useEffect(() => {
-    if (orderSuccess) {
-      setShowCheckout(false);
-    }
-  }, [orderSuccess, setShowCheckout]);
-
-  const increaseQty = (index) => {
-    setCart((prev) =>
-      prev.map((item, i) => (i === index ? { ...item, qty: item.qty + 1 } : item))
-    );
-  };
-
-  const decreaseQty = (index) => {
-    setCart((prev) =>
-      prev.map((item, i) =>
-        i === index ? { ...item, qty: Math.max(1, item.qty - 1) } : item
-      )
-    );
-  };
-
-  const removeItem = (index) => {
-    setCart((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const handleFieldChange = (e) => {
-    const { name, value } = e.target;
-    setCheckoutData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  if (orderSuccess && lastOrderData) {
-    return (
-      <aside className="cart-panel">
-        <div className="success-screen">
-          <div className="success-card">
-            <div className="success-icon">✓</div>
-
-            <p className="success-eyebrow">PLAYNICE</p>
-            <h1 className="success-title">{t.successTitle}</h1>
-            <p className="success-text">{t.successText}</p>
-
-            <div className="success-summary">
-              {lastOrderData.orderId ? (
-                <div className="success-row">
-                  <span>Order ID</span>
-                  <strong>{lastOrderData.orderId}</strong>
-                </div>
-              ) : null}
-
-              <div className="success-row">
-                <span>{t.customer}</span>
-                <strong>{lastOrderData.fullName}</strong>
-              </div>
-              <div className="success-row">
-                <span>Email</span>
-                <strong>{lastOrderData.email}</strong>
-              </div>
-              <div className="success-row">
-                <span>{t.phone.replace(" *", "")}</span>
-                <strong>{lastOrderData.phone}</strong>
-              </div>
-              <div className="success-row">
-                <span>{t.city.replace(" *", "")}</span>
-                <strong>{lastOrderData.city}</strong>
-              </div>
-              <div className="success-row">
-                <span>{t.address.replace(" *", "")}</span>
-                <strong>{lastOrderData.address}</strong>
-              </div>
-
-              {lastOrderData.note ? (
-                <div className="success-row">
-                  <span>{t.noteLabel}</span>
-                  <strong>{lastOrderData.note}</strong>
-                </div>
-              ) : null}
-
-              <div className="success-row">
-                <span>{t.subtotal}</span>
-                <strong>{formatPrice(lastOrderData.subtotal)}</strong>
-              </div>
-              <div className="success-row">
-                <span>{t.shipping}</span>
-                <strong>
-                  {lastOrderData.shipping === 0 ? t.free : formatPrice(lastOrderData.shipping)}
-                </strong>
-              </div>
-              <div className="success-row total">
-                <span>{t.total}</span>
-                <strong>{formatPrice(lastOrderData.total)}</strong>
-              </div>
-            </div>
-
-            <div className="success-actions">
-              <button className="success-shop-btn" type="button" onClick={onBackToShop}>
-                {t.continueShopping}
-              </button>
-            </div>
-
-            {lastOrderData.customerEmailSent === false ? (
-              <p className="success-footer">{t.emailMaybeFailed}</p>
-            ) : (
-              <p className="success-footer">Remember. PlayNice.</p>
-            )}
-          </div>
-        </div>
-      </aside>
-    );
-  }
-
-  return (
-    <aside className="cart-panel">
-      <div className="cart-head">
-        <h3>{t.cartTitle}</h3>
-        <span>
-          {cart.length} {t.items}
-        </span>
-      </div>
-
-      {cart.length === 0 ? (
-        <div className="cart-empty">{t.cartEmpty}</div>
-      ) : (
-        <>
-          <div className="cart-list">
-            {cart.map((item, index) => (
-              <div className="cart-item" key={`${item.productId}-${item.size}-${index}`}>
-                <div className="cart-item-top">
-                  <div className="cart-item-name">{item.name}</div>
-                  <button
-                    type="button"
-                    className="cart-remove"
-                    onClick={() => removeItem(index)}
-                  >
-                    ×
-                  </button>
-                </div>
-
-                <div className="cart-meta">
-                  <span>{item.size}</span>
-                  <strong>{formatPrice(item.price)}</strong>
-                </div>
-
-                <div className="cart-qty-row">
-                  <div className="qty-box">
-                    <button type="button" onClick={() => decreaseQty(index)}>
-                      −
-                    </button>
-                    <span>{item.qty}</span>
-                    <button type="button" onClick={() => increaseQty(index)}>
-                      +
-                    </button>
-                  </div>
-
-                  <div className="cart-line-total">{formatPrice(item.price * item.qty)}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="cart-footer">
-            <div className="cart-summary-box">
-              <div className="cart-summary-row">
-                <span>{t.subtotal}</span>
-                <strong>{formatPrice(subtotal)}</strong>
-              </div>
-
-              <div className="cart-summary-row">
-                <span>{t.shipping}</span>
-                <strong>{shipping === 0 ? t.free : formatPrice(shipping)}</strong>
-              </div>
-
-              <div className="cart-total-final">
-                <span>{t.total}</span>
-                <strong>{formatPrice(total)}</strong>
-              </div>
-            </div>
-
-            <div className="shipping-progress-wrap">
-              {shipping === 0 ? (
-                <div className="shipping-badge success">{t.unlockedFreeShipping}</div>
-              ) : (
-                <div className="shipping-badge">
-                  {t.addMoreForFreeShipping} <strong>{formatPrice(amountToFreeShipping)}</strong>{" "}
-                  {t.forFreeShipping}
-                </div>
-              )}
-            </div>
-
-            <div className="cart-actions-stack">
-              <button
-                type="button"
-                className="btn btn-secondary cart-order-btn"
-                onClick={() => onOrderCart(cart)}
-              >
-                {t.quickDmOrder}
-              </button>
-
-              <button
-                type="button"
-                className="btn btn-primary cart-order-btn"
-                onClick={() => setShowCheckout((prev) => !prev)}
-              >
-                {showCheckout ? t.hideCheckout : t.proceedToCheckout}
-              </button>
-            </div>
-
-            {showCheckout && (
-              <div className="checkout-box">
-                <div className="checkout-title">{t.checkoutTitle}</div>
-
-                <div className="checkout-grid">
-                  <input
-                    className="checkout-input"
-                    type="text"
-                    name="fullName"
-                    placeholder={t.fullName}
-                    value={checkoutData.fullName}
-                    onChange={handleFieldChange}
-                  />
-                  <input
-                    className="checkout-input"
-                    type="email"
-                    name="email"
-                    placeholder={t.email}
-                    value={checkoutData.email}
-                    onChange={handleFieldChange}
-                  />
-                  <input
-                    className="checkout-input"
-                    type="text"
-                    name="phone"
-                    placeholder={t.phone}
-                    value={checkoutData.phone}
-                    onChange={handleFieldChange}
-                  />
-                  <input
-                    className="checkout-input"
-                    type="text"
-                    name="city"
-                    placeholder={t.city}
-                    value={checkoutData.city}
-                    onChange={handleFieldChange}
-                  />
-                  <input
-                    className="checkout-input"
-                    type="text"
-                    name="address"
-                    placeholder={t.address}
-                    value={checkoutData.address}
-                    onChange={handleFieldChange}
-                  />
-                  <textarea
-                    className="checkout-textarea"
-                    name="note"
-                    placeholder={t.note}
-                    value={checkoutData.note}
-                    onChange={handleFieldChange}
-                    rows={4}
-                  />
-                </div>
-
-                <div className="checkout-note">
-                  {t.payment}
-                  <br />
-                  {t.shipping}: {shipping === 0 ? t.free : formatPrice(shipping)}
-                  <br />
-                  {t.freeShippingRule}
-                </div>
-
-                <button
-                  type="button"
-                  className="btn btn-primary cart-order-btn"
-                  onClick={() => onCheckout(cart)}
-                >
-                  {t.confirmCheckout}
-                </button>
-              </div>
-            )}
-          </div>
-        </>
-      )}
-    </aside>
-  );
-}
-
-export default function App() {
-  const initialParams = getUrlParams();
-  const initialSearch = initialParams.get("search") || "";
-  const initialFilter = normalizeFilter(initialParams.get("filter") || "All");
-  const initialPage = Number(initialParams.get("page") || "1");
-  const initialView = initialParams.get("view");
-
-  const [lang, setLang] = useState(() => {
-    try {
-      if (typeof window === "undefined") return "sr";
-      return window.localStorage.getItem("playnice_lang") || "sr";
-    } catch {
-      return "sr";
-    }
-  });
-
-  const t = translations[lang];
-
-  const [search, setSearch] = useState(initialSearch);
-  const [filter, setFilter] = useState(initialFilter);
-  const [currentPage, setCurrentPage] = useState(initialPage > 0 ? initialPage : 1);
-  const [isShopPage, setIsShopPage] = useState(initialView === "shop");
-  const [showCheckout, setShowCheckout] = useState(false);
-
-  const isHomeActive = !isShopPage;
-  const isShopActive = isShopPage;
-
-  const [cart, setCart] = useState(() => {
-    try {
-      if (typeof window === "undefined") return [];
-      const savedCart = window.localStorage.getItem("playnice_cart");
-      return savedCart ? JSON.parse(savedCart) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  const [checkoutData, setCheckoutData] = useState(() => {
-    const emptyCheckout = {
-      fullName: "",
-      email: "",
-      phone: "",
-      city: "",
-      address: "",
-      note: "",
-    };
-
-    try {
-      if (typeof window === "undefined") return emptyCheckout;
-      const saved = window.localStorage.getItem("playnice_checkout");
-      return saved ? { ...emptyCheckout, ...JSON.parse(saved) } : emptyCheckout;
-    } catch {
-      return emptyCheckout;
-    }
-  });
-
-  const [orderSuccess, setOrderSuccess] = useState(false);
-  const [lastOrderData, setLastOrderData] = useState(null);
-
-  const itemsPerPage = 12;
+    setCurrentPage(1);
+  }, [category, searchTerm]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("playnice_lang", lang);
-  }, [lang]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("playnice_cart", JSON.stringify(cart));
-  }, [cart]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("playnice_checkout", JSON.stringify(checkoutData));
-  }, [checkoutData]);
+    if (!addedFeedback) return;
+    const timer = setTimeout(() => setAddedFeedback(""), 1800);
+    return () => clearTimeout(timer);
+  }, [addedFeedback]);
 
   const filteredProducts = useMemo(() => {
-    const nextProducts = products.filter((product) => {
-      const matchesSearch = product.name.toLowerCase().includes(search.toLowerCase());
-      const matchesFilter = filter === "All" || product.category === filter;
-      return matchesSearch && matchesFilter;
+    return products.filter((product) => {
+      const categoryMatch = category === "All" || product.category === category;
+      const searchMatch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+      return categoryMatch && searchMatch;
     });
+  }, [category, searchTerm]);
 
-    if (filter === "All") {
-      return [...nextProducts].sort((a, b) => a.name.localeCompare(b.name));
-    }
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE));
 
-    return nextProducts;
-  }, [search, filter]);
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(1);
+  }, [currentPage, totalPages]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
-  const safeCurrentPage = Math.min(Math.max(currentPage, 1), totalPages);
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
+    return filteredProducts.slice(start, start + PRODUCTS_PER_PAGE);
+  }, [filteredProducts, currentPage]);
 
-  const paginatedProducts = filteredProducts.slice(
-    (safeCurrentPage - 1) * itemsPerPage,
-    safeCurrentPage * itemsPerPage
+  const cartCount = useMemo(
+    () => cart.reduce((sum, item) => sum + item.quantity, 0),
+    [cart]
   );
 
-  useEffect(() => {
-    if (currentPage !== safeCurrentPage) {
-      setCurrentPage(safeCurrentPage);
-    }
-  }, [currentPage, safeCurrentPage]);
+  const subtotal = useMemo(
+    () => cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    [cart]
+  );
 
-  useEffect(() => {
-    if (isShopPage) {
-      updateUrlParams(search, filter, safeCurrentPage);
-    }
-  }, [search, filter, safeCurrentPage, isShopPage]);
+  const shipping = cart.length > 0 ? SHIPPING_COST : 0;
+  const total = subtotal + shipping;
 
-  useEffect(() => {
-    const handleUrlChange = () => {
-      const params = new URLSearchParams(window.location.search);
-      const urlSearch = params.get("search") || "";
-      const urlFilter = normalizeFilter(params.get("filter") || "All");
-      const urlPage = Number(params.get("page") || "1");
-      const urlView = params.get("view");
+  const showFeedback = (text) => {
+    setAddedFeedback(text);
+  };
 
-      setSearch(urlSearch);
-      setFilter(urlFilter);
-      setCurrentPage(urlPage > 0 ? urlPage : 1);
-      setIsShopPage(urlView === "shop");
-    };
+  const addToCart = (product, size, customPrice = null, customLabel = null) => {
+    const key = `${product.id}-${size}-${customLabel || ""}`;
+    const price = customPrice ?? product.sizes[size];
+    const label = customLabel || size;
 
-    window.addEventListener("popstate", handleUrlChange);
-    return () => window.removeEventListener("popstate", handleUrlChange);
-  }, []);
-
-  const addToCart = (newItem) => {
     setCart((prev) => {
-      const existingIndex = prev.findIndex(
-        (item) => item.productId === newItem.productId && item.size === newItem.size
-      );
+      const existing = prev.find((item) => item.key === key);
 
-      if (existingIndex !== -1) {
-        return prev.map((item, index) =>
-          index === existingIndex ? { ...item, qty: item.qty + 1 } : item
-        );
-      }
-
-      return [...prev, { ...newItem, qty: 1 }];
-    });
-  };
-
-  const handleQuickOrder = async ({ name, size, price }) => {
-    const orderText = `${t.dmIntro}
-
-${name}
-${t.size}: ${size}
-${t.price}: ${formatPrice(price)}`;
-
-    const copied = await copyText(orderText);
-    window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
-
-    if (copied) {
-      alert(t.alertQuickOrderCopied);
-    } else {
-      alert(`${t.alertQuickOrderFallback}\n\n${orderText}`);
-    }
-  };
-
-  const handleCartOrder = async (cartItems) => {
-    const subtotal = getSubtotal(cartItems);
-    const shipping = getShipping(subtotal);
-    const total = subtotal + shipping;
-
-    const orderText = `${t.dmIntro}
-
-${cartItems
-  .map(
-    (item, index) =>
-      `${index + 1}. ${item.name}
-${t.size}: ${item.size}
-${t.quantity}: ${item.qty}
-${t.price}: ${formatPrice(item.price)}
-${t.lineTotal}: ${formatPrice(item.price * item.qty)}`
-  )
-  .join("\n\n")}
-
-${t.subtotal}: ${formatPrice(subtotal)}
-${t.shipping}: ${shipping === 0 ? t.free : formatPrice(shipping)}
-${t.orderTotal}: ${formatPrice(total)}`;
-
-    const copied = await copyText(orderText);
-    window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
-
-    if (copied) {
-      alert(t.alertCartCopied);
-    } else {
-      alert(`${t.alertCartFallback}\n\n${orderText}`);
-    }
-  };
-
-  const handleCheckout = async (cartItems) => {
-    if (!checkoutData.fullName.trim()) {
-      alert(t.alertName);
-      return;
-    }
-
-    if (!checkoutData.email.trim()) {
-      alert(t.alertEmail);
-      return;
-    }
-
-    if (!checkoutData.phone.trim()) {
-      alert(t.alertPhone);
-      return;
-    }
-
-    if (!checkoutData.city.trim()) {
-      alert(t.alertCity);
-      return;
-    }
-
-    if (!checkoutData.address.trim()) {
-      alert(t.alertAddress);
-      return;
-    }
-
-    try {
-      const subtotal = getSubtotal(cartItems);
-      const shipping = getShipping(subtotal);
-      const total = subtotal + shipping;
-
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...checkoutData,
-          cart: cartItems,
-          lang,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.details || data.error || t.alertCheckoutError);
-      }
-
-      setLastOrderData({
-        ...checkoutData,
-        cart: [...cartItems],
-        subtotal,
-        shipping,
-        total,
-        customerEmailSent: data?.customerEmailSent ?? true,
-        orderId: data?.orderId || null,
-      });
-
-      setOrderSuccess(true);
-      setCart([]);
-
-      const emptyCheckout = {
-        fullName: "",
-        email: "",
-        phone: "",
-        city: "",
-        address: "",
-        note: "",
-      };
-
-      setCheckoutData(emptyCheckout);
-
-      if (typeof window !== "undefined") {
-        window.localStorage.removeItem("playnice_cart");
-        window.localStorage.removeItem("playnice_checkout");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    } catch (error) {
-      console.error(error);
-      alert(error?.message || t.alertCheckoutError);
-    }
-  };
-
-  const handleBackToShop = () => {
-    setOrderSuccess(false);
-    setLastOrderData(null);
-    setIsShopPage(true);
-    updateUrlParams(search, filter, safeCurrentPage);
-
-    if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  const handleHeroBottleClick = () => {
-    setCart((prev) => {
-      const existingIndex = prev.findIndex(
-        (item) =>
-          item.productId === HERO_PRODUCT.productId &&
-          item.size === HERO_PRODUCT.size
-      );
-
-      if (existingIndex !== -1) {
-        return prev.map((item, index) =>
-          index === existingIndex ? { ...item, qty: item.qty + 1 } : item
+      if (existing) {
+        return prev.map((item) =>
+          item.key === key ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
 
       return [
         ...prev,
         {
-          ...HERO_PRODUCT,
-          qty: 1,
-        },
+          key,
+          id: product.id,
+          name: product.name,
+          size: label,
+          price,
+          quantity: 1
+        }
       ];
     });
 
-    setIsShopPage(true);
-    setCurrentPage(1);
-    setShowCheckout(true);
-
-    if (typeof window !== "undefined") {
-      window.history.pushState({}, "", buildShopUrl("", "All", 1));
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    showFeedback(`${product.name} added to cart`);
   };
 
-  const openHome = (e) => {
-    e?.preventDefault?.();
-    setIsShopPage(false);
-    setShowCheckout(false);
+  const addHeroBottleToCart = () => {
+    const heroProduct = {
+      id: 999,
+      name: "Afnan 9PM Rebel",
+      sizes: { "100ml": 34.9 }
+    };
 
-    if (typeof window !== "undefined") {
-      window.history.pushState({}, "", "/");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    addToCart(heroProduct, "100ml", 34.9, "100ml Full Bottle");
+    setCartOpen(true);
+    setCheckoutOpen(true);
+  };
+
+  const updateQuantity = (key, delta) => {
+    setCart((prev) =>
+      prev
+        .map((item) =>
+          item.key === key ? { ...item, quantity: item.quantity + delta } : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
+
+  const removeFromCart = (key) => {
+    setCart((prev) => prev.filter((item) => item.key !== key));
+  };
+
+  const handleCheckoutInput = (e) => {
+    const { name, value } = e.target;
+    setCheckoutForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const goToShop = () => {
-    setIsShopPage(true);
-    setCurrentPage(1);
-
-    if (typeof window !== "undefined") {
-      window.history.pushState({}, "", buildShopUrl(search, filter, 1));
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    setView("shop");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const goToShopWithSearch = (term) => {
-    setSearch(term);
-    setFilter("All");
-    setCurrentPage(1);
-    setIsShopPage(true);
+  const nextPage = () => {
+    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-    if (typeof window !== "undefined") {
-      window.history.pushState({}, "", buildShopUrl(term, "All", 1));
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+  const prevPage = () => {
+    setCurrentPage((prev) => Math.max(1, prev - 1));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <div className="site-shell">
-      <div className="bg-orb bg-orb-1" />
-      <div className="bg-orb bg-orb-2" />
-      <div className="grain-overlay" />
+    <div className="app-shell">
+      <header className="topbar">
+        <button className="brand" onClick={() => setView("home")}>
+          <span className="brand-mark">▶</span>
+          <span className="brand-copy">
+            <strong>PlayNice</strong>
+            <small>Remember. PlayNice.</small>
+          </span>
+        </button>
 
-      <header className="header">
-        <div className="container header-inner">
-          <div className="brand-block">
-            <a href="/" className="brand-logo" onClick={openHome}>
-              PLAYNICE
-            </a>
-            <div className="brand-tagline">Remember. PlayNice.</div>
-          </div>
+        <nav className="nav-links">
+          <button className={view === "home" ? "active" : ""} onClick={() => setView("home")}>
+            Home
+          </button>
+          <button className={view === "shop" ? "active" : ""} onClick={() => setView("shop")}>
+            Shop
+          </button>
+        </nav>
 
-          <nav className="nav nav-centered">
-            <a
-              href="/"
-              onClick={openHome}
-              className={isHomeActive ? "nav-link active" : "nav-link"}
-            >
-              <span className="nav-icon" aria-hidden="true">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M3 10.5 12 3l9 7.5" />
-                  <path d="M5.5 9.5V21h13V9.5" />
-                  <path d="M9.5 21v-6h5v6" />
-                </svg>
-              </span>
-              <span>{t.navHome}</span>
-            </a>
-
-            <a
-              href="/?view=shop"
-              onClick={(e) => {
-                e.preventDefault();
-                goToShop();
-              }}
-              className={isShopActive ? "nav-link active" : "nav-link"}
-            >
-              <span className="nav-icon" aria-hidden="true">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 7h12l-1 12H7L6 7Z" />
-                  <path d="M9 7a3 3 0 0 1 6 0" />
-                </svg>
-              </span>
-              <span>{t.navShop}</span>
-            </a>
-
-            <a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="nav-link"
-            >
-              <span className="nav-icon" aria-hidden="true">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M21 15a4 4 0 0 1-4 4H7l-4 2V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
-                  <path d="M8 10h8" />
-                  <path d="M8 14h5" />
-                </svg>
-              </span>
-              <span>{t.navContact}</span>
-            </a>
-          </nav>
-
-          <div className="header-right">
-            <div className="lang-toggle">
-              <button
-                type="button"
-                className={lang === "sr" ? "lang-btn active" : "lang-btn"}
-                onClick={() => setLang("sr")}
-              >
-                SR
-              </button>
-              <button
-                type="button"
-                className={lang === "en" ? "lang-btn active" : "lang-btn"}
-                onClick={() => setLang("en")}
-              >
-                EN
-              </button>
-            </div>
-          </div>
-        </div>
+        <button className="cart-button" onClick={() => setCartOpen((prev) => !prev)}>
+          Cart
+          {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+        </button>
       </header>
 
-      <main>
-        {!isShopPage ? (
-          <>
-            <section id="intro" className="hero intro-hero hero-featured hero-conversion">
-              <div className="container hero-featured-grid">
-                <div className="hero-featured-left">
-                  <div className="hero-bottle-wrapper hero-bottle-wrapper-conversion">
-                    <div className="hero-floating-badge">{t.heroFloatBadge}</div>
+      {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
-                    <button
-                      type="button"
-                      className="hero-bottle-float hero-bottle-button"
-                      onClick={handleHeroBottleClick}
-                      aria-label="Add Afnan 9PM Rebel 100ml to cart"
-                    >
-                      <img
-                        src="/images/9pm.png"
-                        alt="Afnan 9PM Rebel"
-                        className="hero-bottle main"
-                      />
+      <main>
+        {view === "home" && (
+          <>
+            <section className="hero">
+              <div className="hero-grid">
+                <div className="hero-copy">
+                  <p className="eyebrow">Luxury Fragrance Curation</p>
+                  <h1>
+                    Desire begins
+                    <br />
+                    in the dark.
+                  </h1>
+                  <p className="hero-text">
+                    Discover designer, niche and Arabian fragrances through a premium decant
+                    experience. Test on skin. Wear with intent. Own the moment.
+                  </p>
+
+                  <div className="hero-price-line">
+                    <span className="old-price">€45.90</span>
+                    <span className="new-price">Now €34.90</span>
+                    <span className="hero-offer-text">Afnan 9PM Rebel 100ml full bottle</span>
+                  </div>
+
+                  <div className="hero-actions">
+                    <button className="gold-button" onClick={goToShop}>
+                      Explore Collection
+                    </button>
+                    <button className="ghost-button" onClick={addHeroBottleToCart}>
+                      Claim the Offer
                     </button>
                   </div>
                 </div>
 
-                <div className="hero-featured-right">
-                  <div className="section-kicker">{t.heroBadge}</div>
-
-                  <h1 className="hero-title">
-                    {t.heroTitle.replace(".", "")}
-                    <span className="dot">.</span>
-                  </h1>
-
-                  <h2 className="hero-product">AFNAN 9PM REBEL</h2>
-
-                  <p className="hero-sub">{t.heroSub}</p>
-                  <p className="hero-desc">{t.heroDesc}</p>
-
-                  <div className="hero-tags">
-                    <span>{t.heroTag1}</span>
-                    <span>{t.heroTag2}</span>
-                    <span>{t.heroTag3}</span>
-                  </div>
-
-                  <div className="hero-actions hero-actions-conversion">
-                    <button
-                      type="button"
-                      className="btn btn-primary hero-main-cta"
-                      onClick={handleHeroBottleClick}
-                    >
-                      {t.heroPrimaryCta}
-                    </button>
-
-                    <a
-                      href={INSTAGRAM_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn btn-secondary hero-secondary-cta"
-                    >
-                      {t.heroSecondaryCta}
-                    </a>
-                  </div>
-
-                  <div className="hero-proof">{t.heroProof}</div>
-
-                  <div className="hero-secondary hero-secondary-conversion">
-                    <button
-                      type="button"
-                      className="hero-secondary-item hero-secondary-button"
-                      onClick={() => goToShopWithSearch("Island Dreams")}
-                    >
-                      <img src="/images/island.png" alt="Khadlaj Island Dreams" />
-                      <span>Island Dreams</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className="hero-secondary-item hero-secondary-button"
-                      onClick={() => goToShopWithSearch("Marwa")}
-                    >
-                      <img src="/images/marwa.png" alt="Arabiyat Prestige Marwa" />
-                      <span>Marwa</span>
-                    </button>
-                  </div>
+                <div className="hero-visual">
+                  <button className="hero-bottle-wrap" onClick={addHeroBottleToCart} aria-label="Add Afnan 9PM Rebel full bottle to cart">
+                    <img
+                      className="hero-bottle"
+                      src="/hero-bottle.png"
+                      alt="Afnan 9PM Rebel"
+                    />
+                  </button>
                 </div>
               </div>
+            </section>
 
-              <div className="mobile-sticky-hero-cta">
-                <button
-                  type="button"
-                  className="btn btn-primary mobile-sticky-hero-btn"
-                  onClick={handleHeroBottleClick}
-                >
-                  {t.heroStickyCta}
+            <section className="value-strip">
+              <div>✔ Try before you buy</div>
+              <div>✔ Only premium fragrances</div>
+              <div>✔ Delivery across Montenegro</div>
+            </section>
+
+            <div className="section-divider" />
+
+            <section className="featured-section section-wrap">
+              <div className="section-head">
+                <p className="section-kicker">Current Highlights</p>
+                <h2>Selected for impact</h2>
+                <p>
+                  Curated bottles and standout decants chosen for performance, compliment factor
+                  and identity.
+                </p>
+              </div>
+
+              <div className="feature-grid">
+                <article className="feature-card large">
+                  <span className="feature-tag">Campaign Pick</span>
+                  <h3>Afnan 9PM Rebel</h3>
+                  <p>
+                    A bold full-bottle offer with serious value. The current hero of the season.
+                  </p>
+                  <button className="inline-link" onClick={addHeroBottleToCart}>
+                    Add 100ml for €34.90
+                  </button>
+                </article>
+
+                <article className="feature-card">
+                  <span className="feature-tag">Summer Hit</span>
+                  <h3>Kadlaj Island Dreams</h3>
+                  <p>
+                    Bright, addictive and made for warm weather. Easy reach, high reward.
+                  </p>
+                </article>
+
+                <article className="feature-card">
+                  <span className="feature-tag">Arabian Edge</span>
+                  <h3>Arabian Prestige Marwa</h3>
+                  <p>
+                    Smooth character, strong identity and standout value in decant format.
+                  </p>
+                </article>
+              </div>
+            </section>
+
+            <div className="section-divider" />
+
+            <section className="homepage-shop-preview section-wrap">
+              <div className="section-head">
+                <p className="section-kicker">Private Selection</p>
+                <h2>Best sellers & signature picks</h2>
+                <p>
+                  Premium decants that let customers discover the right fragrance before committing
+                  to a full bottle.
+                </p>
+              </div>
+
+              <div className="product-grid">
+                {products.slice(0, 4).map((product) => (
+                  <article className="product-card" key={product.id}>
+                    {product.badge && <span className="product-badge">{product.badge}</span>}
+
+                    <div className="product-image">
+                      <div className="product-image-inner">{product.name.charAt(0)}</div>
+                    </div>
+
+                    <div className="product-meta">
+                      <p className="product-category">{product.category}</p>
+                      <h3>{product.name}</h3>
+                      <p className="product-price-from">
+                        From {formatPrice(Math.min(...Object.values(product.sizes)))}
+                      </p>
+                    </div>
+
+                    <div className="size-buttons">
+                      {Object.entries(product.sizes).map(([size, price]) => (
+                        <button key={size} onClick={() => addToCart(product, size)}>
+                          <span>{size}</span>
+                          <strong>{formatPrice(price)}</strong>
+                        </button>
+                      ))}
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              <div className="section-cta-center">
+                <button className="gold-button" onClick={goToShop}>
+                  View Full Collection
                 </button>
               </div>
             </section>
 
-            <section className="section cta-section">
-              <div className="container">
-                <div className="cta-box">
-                  <div className="section-kicker">{t.ctaKicker}</div>
-                  <h2>{t.ctaTitle}</h2>
-                  <p>{t.ctaText}</p>
+            <div className="section-divider" />
 
-                  <div className="cta-actions">
-                    <button type="button" className="btn btn-primary" onClick={goToShop}>
-                      {t.ctaOpenShop}
-                    </button>
-                    <a
-                      href={INSTAGRAM_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn btn-secondary"
-                    >
-                      {t.ctaSendDm}
-                    </a>
-                  </div>
-                </div>
-              </div>
+            <section className="cta-section">
+              <h2>Discover Your Signature</h2>
+              <p>Test before you commit. Find what truly fits you.</p>
+              <button onClick={goToShop}>Explore Collection</button>
             </section>
           </>
-        ) : (
-          <section id="catalog" className="section">
-            <div className="container shop-layout">
-              <div className="shop-main">
-                <div className="section-head catalog-head">
-                  <div>
-                    <div className="section-kicker">{t.shopKicker}</div>
-                    <h2 className="section-title">{t.shopTitle}</h2>
-                    <p className="section-text">{t.shopText}</p>
-                  </div>
+        )}
 
-                  <div className="search-wrap">
-                    <input
-                      type="text"
-                      className="search-input"
-                      placeholder={t.searchPlaceholder}
-                      value={search}
-                      onChange={(e) => {
-                        setSearch(e.target.value);
-                        setCurrentPage(1);
-                      }}
-                    />
-                  </div>
-                </div>
+        {view === "shop" && (
+          <section className="shop-section section-wrap">
+            <div className="shop-top">
+              <div>
+                <p className="section-kicker">Shop</p>
+                <h2>PlayNice Collection</h2>
+                <p className="shop-subtext">
+                  Premium decants and selected bottles. Built for discovery, style and smart buying.
+                </p>
+              </div>
+            </div>
 
-                <div className="filter-bar">
-                  <button
-                    className={filter === "All" ? "filter-btn active" : "filter-btn"}
-                    onClick={() => {
-                      setFilter("All");
-                      setCurrentPage(1);
-                    }}
-                    type="button"
-                  >
-                    {t.filterAll}
-                  </button>
+            <div className="shop-toolbar">
+              <div className="toolbar-group">
+                <label>Search</label>
+                <input
+                  type="text"
+                  placeholder="Search fragrance..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
 
-                  <button
-                    className={filter === "Arabian" ? "filter-btn active" : "filter-btn"}
-                    onClick={() => {
-                      setFilter("Arabian");
-                      setCurrentPage(1);
-                    }}
-                    type="button"
-                  >
-                    {t.filterArabian}
-                  </button>
-
-                  <button
-                    className={
-                      filter === "Designer/Niche" ? "filter-btn active" : "filter-btn"
-                    }
-                    onClick={() => {
-                      setFilter("Designer/Niche");
-                      setCurrentPage(1);
-                    }}
-                    type="button"
-                  >
-                    {t.filterDesigner}
-                  </button>
-                </div>
-
-                <div className="catalog-summary">
-                  {t.showing} <strong>{filteredProducts.length}</strong> {t.of}{" "}
-                  <strong>{products.length}</strong> {t.fragrances}
-                </div>
-
-                <div className="product-grid">
-                  {paginatedProducts.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      onAddToCart={addToCart}
-                      onQuickOrder={handleQuickOrder}
-                      t={t}
-                    />
+              <div className="toolbar-group">
+                <label>Category</label>
+                <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
                   ))}
-                </div>
+                </select>
+              </div>
+            </div>
 
-                <div className="pagination">
-                  <button
-                    type="button"
-                    className="pagination-btn"
-                    disabled={safeCurrentPage === 1}
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                  >
-                    {t.prev}
-                  </button>
+            <div className="product-grid">
+              {paginatedProducts.map((product) => (
+                <article className="product-card" key={product.id}>
+                  {product.badge && <span className="product-badge">{product.badge}</span>}
 
-                  <div className="pagination-info">
-                    {t.page} <strong>{safeCurrentPage}</strong> {t.of} <strong>{totalPages}</strong>
+                  <div className="product-image">
+                    <div className="product-image-inner">{product.name.charAt(0)}</div>
                   </div>
 
-                  <button
-                    type="button"
-                    className="pagination-btn"
-                    disabled={safeCurrentPage === totalPages}
-                    onClick={() =>
-                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                    }
-                  >
-                    {t.next}
-                  </button>
-                </div>
-              </div>
+                  <div className="product-meta">
+                    <p className="product-category">{product.category}</p>
+                    <h3>{product.name}</h3>
+                    <p className="product-price-from">
+                      From {formatPrice(Math.min(...Object.values(product.sizes)))}
+                    </p>
+                  </div>
 
-              <div className="shop-cart">
-                <div className="shop-cart-inner">
-                  <CartPanel
-                    cart={cart}
-                    setCart={setCart}
-                    onOrderCart={handleCartOrder}
-                    checkoutData={checkoutData}
-                    setCheckoutData={setCheckoutData}
-                    onCheckout={handleCheckout}
-                    orderSuccess={orderSuccess}
-                    lastOrderData={lastOrderData}
-                    onBackToShop={handleBackToShop}
-                    showCheckout={showCheckout}
-                    setShowCheckout={setShowCheckout}
-                    t={t}
-                  />
-                </div>
-              </div>
+                  <div className="size-buttons">
+                    {Object.entries(product.sizes).map(([size, price]) => (
+                      <button key={size} onClick={() => addToCart(product, size)}>
+                        <span>{size}</span>
+                        <strong>{formatPrice(price)}</strong>
+                      </button>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="pagination-wrap">
+              <button onClick={prevPage} disabled={currentPage === 1}>
+                Prev
+              </button>
+              <span>
+                Page {currentPage} / {totalPages}
+              </span>
+              <button onClick={nextPage} disabled={currentPage === totalPages}>
+                Next
+              </button>
             </div>
           </section>
         )}
       </main>
 
-      <footer id="contact" className="footer">
-        <div className="container footer-inner">
-          <div className="footer-brand">PLAYNICE</div>
-          <div className="footer-line">Try before you buy.</div>
-          <div className="footer-links">
-            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
-              {t.footerInstagram}
-            </a>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
-              {t.footerSendDm}
-            </a>
+      <aside className={`cart-drawer ${cartOpen ? "open" : ""}`}>
+        <div className="cart-drawer-header">
+          <div>
+            <p className="section-kicker">Your Cart</p>
+            <h3>Selected items</h3>
           </div>
-          <div className="footer-copy">Remember. PlayNice.</div>
+          <button className="close-button" onClick={() => setCartOpen(false)}>
+            ×
+          </button>
         </div>
-      </footer>
+
+        {cart.length === 0 ? (
+          <div className="cart-empty">
+            <p>Your cart is empty.</p>
+            <button className="gold-button small" onClick={goToShop}>
+              Go to Shop
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="cart-items">
+              {cart.map((item) => (
+                <div className="cart-item" key={item.key}>
+                  <div className="cart-item-info">
+                    <h4>{item.name}</h4>
+                    <p>{item.size}</p>
+                    <strong>{formatPrice(item.price)}</strong>
+                  </div>
+
+                  <div className="cart-item-actions">
+                    <div className="qty-control">
+                      <button onClick={() => updateQuantity(item.key, -1)}>-</button>
+                      <span>{item.quantity}</span>
+                      <button onClick={() => updateQuantity(item.key, 1)}>+</button>
+                    </div>
+                    <button className="remove-link" onClick={() => removeFromCart(item.key)}>
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="cart-summary">
+              <div>
+                <span>Subtotal</span>
+                <strong>{formatPrice(subtotal)}</strong>
+              </div>
+              <div>
+                <span>Shipping</span>
+                <strong>{formatPrice(shipping)}</strong>
+              </div>
+              <div className="cart-total">
+                <span>Total</span>
+                <strong>{formatPrice(total)}</strong>
+              </div>
+            </div>
+
+            <button className="gold-button checkout-button" onClick={() => setCheckoutOpen(true)}>
+              Continue to Checkout
+            </button>
+          </>
+        )}
+      </aside>
+
+      <div
+        className={`backdrop ${cartOpen || checkoutOpen ? "show" : ""}`}
+        onClick={() => {
+          setCartOpen(false);
+          setCheckoutOpen(false);
+        }}
+      />
+
+      <div className={`checkout-modal ${checkoutOpen ? "open" : ""}`}>
+        <div className="checkout-header">
+          <div>
+            <p className="section-kicker">Checkout</p>
+            <h3>Complete your order</h3>
+          </div>
+          <button className="close-button" onClick={() => setCheckoutOpen(false)}>
+            ×
+          </button>
+        </div>
+
+        <div className="checkout-grid">
+          <div className="checkout-form">
+            <div className="form-row two">
+              <input
+                name="firstName"
+                placeholder="First name"
+                value={checkoutForm.firstName}
+                onChange={handleCheckoutInput}
+              />
+              <input
+                name="lastName"
+                placeholder="Last name"
+                value={checkoutForm.lastName}
+                onChange={handleCheckoutInput}
+              />
+            </div>
+
+            <div className="form-row two">
+              <input
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={checkoutForm.email}
+                onChange={handleCheckoutInput}
+              />
+              <input
+                name="phone"
+                placeholder="Phone"
+                value={checkoutForm.phone}
+                onChange={handleCheckoutInput}
+              />
+            </div>
+
+            <div className="form-row two">
+              <input
+                name="city"
+                placeholder="City"
+                value={checkoutForm.city}
+                onChange={handleCheckoutInput}
+              />
+              <input
+                name="address"
+                placeholder="Address"
+                value={checkoutForm.address}
+                onChange={handleCheckoutInput}
+              />
+            </div>
+
+            <div className="form-row">
+              <textarea
+                name="note"
+                placeholder="Order note (optional)"
+                rows="4"
+                value={checkoutForm.note}
+                onChange={handleCheckoutInput}
+              />
+            </div>
+
+            <button className="gold-button submit-order-button" type="button">
+              Place Order
+            </button>
+          </div>
+
+          <div className="checkout-summary">
+            <h4>Order summary</h4>
+
+            {cart.length === 0 ? (
+              <p className="checkout-empty">No items in cart.</p>
+            ) : (
+              <>
+                <div className="checkout-summary-items">
+                  {cart.map((item) => (
+                    <div className="checkout-summary-item" key={item.key}>
+                      <div>
+                        <strong>{item.name}</strong>
+                        <p>
+                          {item.size} × {item.quantity}
+                        </p>
+                      </div>
+                      <span>{formatPrice(item.price * item.quantity)}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="checkout-totals">
+                  <div>
+                    <span>Subtotal</span>
+                    <strong>{formatPrice(subtotal)}</strong>
+                  </div>
+                  <div>
+                    <span>Shipping</span>
+                    <strong>{formatPrice(shipping)}</strong>
+                  </div>
+                  <div className="grand-total">
+                    <span>Total</span>
+                    <strong>{formatPrice(total)}</strong>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
+
+export default App;
