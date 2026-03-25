@@ -861,10 +861,6 @@ const goToShopWithSearch = (term) => {
             className="hero-bottle main"
           />
         </div>
-
-        <div className="hero-spotlight"></div>
-        <div className="hero-bottle-ring"></div>
-      </div>
     </div>
 
     <div className="hero-featured-right">
