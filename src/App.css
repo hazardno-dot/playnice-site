@@ -1627,4 +1627,55 @@ select:focus-visible {
   .success-shop-btn {
     width: 100%;
   }
+
+  .header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+}
+
+.lang-btn {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  transition: all 0.25s ease;
+}
+
+.lang-btn:hover {
+  color: #fff;
+}
+
+.lang-btn.active {
+  background: linear-gradient(135deg, rgba(220, 181, 107, 0.22), rgba(220, 181, 107, 0.1));
+  color: #f3d38f;
+  box-shadow: 0 0 18px rgba(220, 181, 107, 0.12);
+}
+
+@media (max-width: 768px) {
+  .header-inner {
+    gap: 1rem;
+  }
+
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
 }
