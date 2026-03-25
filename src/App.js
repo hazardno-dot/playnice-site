@@ -923,7 +923,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
               <div className="container hero-featured-grid">
                 <div className="hero-featured-left">
                   <div className="hero-bottle-wrapper hero-bottle-wrapper-conversion">
-                    <div className="hero-floating-badge">FULL BOTTLE AVAILABLE</div>
+                    <div className="hero-floating-badge">LIMITED OFFER • NOW 34.90€</div>
 
                     <button
                       type="button"
