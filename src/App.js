@@ -753,8 +753,6 @@ export default function App() {
   const [lang, setLang] = useState(() => {
     try {
       if (typeof window === "undefined") return "sr";
-      const isHomeActive = !isShopPage;
-const isShopActive = isShopPage;
       return window.localStorage.getItem("playnice_lang") || "sr";
     } catch {
       return "sr";
