@@ -1735,14 +1735,14 @@ select {
   0% {
     transform: perspective(1400px) rotateY(0deg);
   }
-  20% {
-    transform: perspective(1400px) rotateY(-14deg);
+  25% {
+    transform: perspective(1400px) rotateY(-28deg);
   }
   50% {
     transform: perspective(1400px) rotateY(0deg);
   }
-  80% {
-    transform: perspective(1400px) rotateY(14deg);
+  75% {
+    transform: perspective(1400px) rotateY(28deg);
   }
   100% {
     transform: perspective(1400px) rotateY(0deg);
