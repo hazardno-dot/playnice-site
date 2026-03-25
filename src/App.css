@@ -150,15 +150,17 @@ select:focus-visible {
 
 .header-inner {
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   min-height: 88px;
+  column-gap: 18px;
 }
 
 .brand-block {
   position: relative;
   z-index: 3;
+  justify-self: start;
 }
 
 .brand-logo {
@@ -182,17 +184,18 @@ select:focus-visible {
   z-index: 3;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-self: end;
 }
 
 .nav-centered {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  left: auto;
+  transform: none;
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
+  justify-self: center;
   gap: 0.7rem;
   padding: 0.38rem;
   border-radius: 999px;
@@ -1619,26 +1622,30 @@ select:focus-visible {
   }
 
   .header-inner {
+    display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 1rem;
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
     min-height: auto;
   }
 
+  .brand-block {
+    justify-self: auto;
+  }
+
+  .header-right {
+    justify-self: auto;
+    margin-left: auto;
+  }
+
   .nav-centered {
-    position: static;
-    left: auto;
-    transform: none;
     order: 3;
     width: 100%;
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 0.15rem;
-  }
-
-  .header-right {
-    margin-left: auto;
   }
 }
 
