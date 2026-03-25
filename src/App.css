@@ -123,6 +123,18 @@ img {
   gap: 10px;
 }
 
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lang-switch {
+  display: flex;
+  gap: 6px;
+}
+
+.lang-switch button,
 .nav-links button,
 .cart-button,
 .gold-button,
@@ -135,6 +147,25 @@ img {
 .cta-section button,
 .modal-size-button {
   transition: all 0.28s ease;
+}
+
+.lang-switch button {
+  min-width: 42px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.025);
+  color: var(--text-soft);
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.lang-switch button.active,
+.lang-switch button:hover {
+  border-color: var(--line-strong);
+  color: var(--gold);
+  background: rgba(220,181,107,0.08);
 }
 
 .nav-links button {
@@ -371,13 +402,13 @@ main {
 .hero-bottle {
   width: min(100%, 420px);
   object-fit: contain;
-  filter: drop-shadow(0 40px 80px rgba(0,0,0,0.8));
+  filter: drop-shadow(0 50px 100px rgba(0,0,0,1));
   transform: translateY(0) scale(1);
-  transition: transform 0.38s ease;
+  transition: transform 0.5s ease;
 }
 
 .hero-bottle-wrap:hover .hero-bottle {
-  transform: translateY(-10px) scale(1.03);
+  transform: scale(1.08) translateY(-8px);
 }
 
 .value-strip {
@@ -561,11 +592,12 @@ main {
 }
 
 .product-image {
-  height: 180px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 160px;
   position: relative;
+  margin-bottom: 18px;
 }
 
 .product-image::after {
@@ -578,20 +610,33 @@ main {
   filter: blur(14px);
 }
 
-.product-image-inner {
-  width: 108px;
-  height: 140px;
-  border-radius: 26px 26px 18px 18px;
-  display: grid;
-  place-items: center;
+.product-image-real {
+  max-height: 140px;
+  width: auto;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.product-card:hover .product-image-real {
+  transform: translateY(-6px) scale(1.05);
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,1));
+}
+
+.product-image-fallback {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: "Cormorant Garamond", serif;
-  font-size: 54px;
+  font-size: 32px;
   color: var(--gold);
   border: 1px solid var(--line);
-  background:
-    linear-gradient(180deg, rgba(220,181,107,0.07), rgba(255,255,255,0.02)),
-    rgba(255,255,255,0.02);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 .product-meta {
@@ -994,34 +1039,36 @@ main {
   text-transform: uppercase;
 }
 
-.product-modal-bottle {
-  width: 240px;
+.product-modal-image-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 320px;
-  border-radius: 42px 42px 28px 28px;
-  display: grid;
-  place-items: center;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 120px;
-  color: var(--gold);
-  border: 1px solid var(--line);
-  background:
-    linear-gradient(180deg, rgba(220,181,107,0.08), rgba(255,255,255,0.02)),
-    rgba(255,255,255,0.02);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.05),
-    0 30px 80px rgba(0,0,0,0.45);
   position: relative;
 }
 
-.product-modal-bottle::after {
+.product-modal-image-wrap::after {
   content: "";
   position: absolute;
-  width: 72%;
-  height: 34px;
-  bottom: -24px;
-  left: 14%;
-  background: radial-gradient(circle, rgba(220,181,107,0.18), transparent 72%);
-  filter: blur(18px);
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(220,181,107,0.15), transparent 70%);
+  filter: blur(40px);
+  z-index: 0;
+}
+
+.product-modal-image {
+  max-height: 300px;
+  width: auto;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 40px 80px rgba(0,0,0,1));
+  transition: transform 0.4s ease;
+}
+
+.product-modal-image:hover {
+  transform: scale(1.08);
 }
 
 .product-modal-meta {
@@ -1066,7 +1113,7 @@ main {
   border: 1px solid rgba(220,181,107,0.14);
   background: rgba(255,255,255,0.02);
   border-radius: 18px;
-  padding: 18px 18px;
+  padding: 18px;
   display: grid;
   gap: 8px;
 }
@@ -1286,6 +1333,11 @@ main {
     justify-content: flex-start;
   }
 
+  .topbar-right {
+    grid-column: 1 / -1;
+    justify-content: space-between;
+  }
+
   .hero {
     padding: 42px 24px;
     border-radius: 28px;
@@ -1329,12 +1381,6 @@ main {
   .product-modal {
     width: calc(100vw - 20px);
     max-height: calc(100vh - 20px);
-  }
-
-  .product-modal-bottle {
-    width: 180px;
-    height: 250px;
-    font-size: 88px;
   }
 
   .product-modal-footer {
@@ -1410,77 +1456,13 @@ main {
   .product-modal-price strong {
     font-size: 28px;
   }
-}
 
-.product-image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 160px;
-  position: relative;
-}
+  .lang-switch button {
+    min-width: 40px;
+    padding: 9px 10px;
+  }
 
-.product-image-real {
-  max-height: 140px;
-  width: auto;
-  object-fit: contain;
-
-  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));
-  transition: transform 0.35s ease, filter 0.35s ease;
-}
-
-.product-card:hover .product-image-real {
-  transform: translateY(-6px) scale(1.05);
-  filter: drop-shadow(0 30px 60px rgba(0,0,0,1));
-}
-
-.product-modal-image-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 320px;
-  position: relative;
-}
-
-.product-modal-image {
-  max-height: 300px;
-  width: auto;
-  object-fit: contain;
-
-  filter: drop-shadow(0 40px 80px rgba(0,0,0,1));
-  transition: transform 0.4s ease;
-}
-
-.product-modal-image:hover {
-  transform: scale(1.08);
-}
-
-.product-modal-image-wrap::after {
-  content: "";
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(220,181,107,0.15), transparent 70%);
-  filter: blur(40px);
-  z-index: 0;
-}
-
-.product-image-fallback {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.05);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-}
-
-.hero-bottle {
-  filter: drop-shadow(0 50px 100px rgba(0,0,0,1));
-  transition: transform 0.5s ease;
-}
-
-.hero-bottle-wrap:hover .hero-bottle {
-  transform: scale(1.08) translateY(-8px);
+  .cart-button {
+    padding: 11px 15px;
+  }
 }
