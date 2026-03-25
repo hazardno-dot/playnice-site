@@ -57,6 +57,13 @@ const SHIPPING_PRICE = 3.5;
 const FREE_SHIPPING_THRESHOLD = 39;
 const ALLOWED_FILTERS = ["All", "Arabian", "Designer/Niche"];
 
+const HERO_PRODUCT = {
+  productId: "hero-9pm-rebel-100ml",
+  name: "Afnan 9PM Rebel",
+  size: "100ml",
+  price: 34.9,
+};
+
 function formatPrice(value) {
   return `${Number(value).toFixed(2)}€`;
 }
@@ -135,9 +142,9 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
 
   const selectedPrice = product.sizes[selectedSize];
 
- useEffect(() => {
-  setSelectedSize(Object.keys(product.sizes)[0]);
-}, [product.id]);
+  useEffect(() => {
+    setSelectedSize(Object.keys(product.sizes)[0]);
+  }, [product.id]);
 
   useEffect(() => {
     return () => {
@@ -235,6 +242,8 @@ function CartPanel({
   orderSuccess,
   lastOrderData,
   onBackToShop,
+  showCheckout,
+  setShowCheckout,
 }) {
   const subtotal = getSubtotal(cart);
   const shipping = getShipping(subtotal);
@@ -242,13 +251,11 @@ function CartPanel({
   const amountToFreeShipping =
     subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : FREE_SHIPPING_THRESHOLD - subtotal;
 
-  const [showCheckout, setShowCheckout] = useState(false);
-
   useEffect(() => {
     if (orderSuccess) {
       setShowCheckout(false);
     }
-  }, [orderSuccess]);
+  }, [orderSuccess, setShowCheckout]);
 
   const increaseQty = (index) => {
     setCart((prev) =>
@@ -551,6 +558,8 @@ export default function App() {
   const [filter, setFilter] = useState(initialFilter);
   const [currentPage, setCurrentPage] = useState(initialPage > 0 ? initialPage : 1);
   const [isShopPage, setIsShopPage] = useState(initialView === "shop");
+  const [showCheckout, setShowCheckout] = useState(false);
+
   const [cart, setCart] = useState(() => {
     try {
       if (typeof window === "undefined") return [];
@@ -806,9 +815,43 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
     }
   };
 
+  const handleHeroBottleClick = () => {
+    setCart((prev) => {
+      const existingIndex = prev.findIndex(
+        (item) =>
+          item.productId === HERO_PRODUCT.productId &&
+          item.size === HERO_PRODUCT.size
+      );
+
+      if (existingIndex !== -1) {
+        return prev.map((item, index) =>
+          index === existingIndex ? { ...item, qty: item.qty + 1 } : item
+        );
+      }
+
+      return [
+        ...prev,
+        {
+          ...HERO_PRODUCT,
+          qty: 1,
+        },
+      ];
+    });
+
+    setIsShopPage(true);
+    setCurrentPage(1);
+    setShowCheckout(true);
+
+    if (typeof window !== "undefined") {
+      window.history.pushState({}, "", buildShopUrl("", "All", 1));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   const openHome = (e) => {
     e?.preventDefault?.();
     setIsShopPage(false);
+    setShowCheckout(false);
 
     if (typeof window !== "undefined") {
       window.history.pushState({}, "", "/");
@@ -882,13 +925,18 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                   <div className="hero-bottle-wrapper hero-bottle-wrapper-conversion">
                     <div className="hero-floating-badge">FULL BOTTLE AVAILABLE</div>
 
-                    <div className="hero-bottle-float">
+                    <button
+                      type="button"
+                      className="hero-bottle-float hero-bottle-button"
+                      onClick={handleHeroBottleClick}
+                      aria-label="Add Afnan 9PM Rebel 100ml to cart"
+                    >
                       <img
                         src="/images/9pm.png"
                         alt="Afnan 9PM Rebel"
                         className="hero-bottle main"
                       />
-                    </div>
+                    </button>
                   </div>
                 </div>
 
@@ -1122,6 +1170,8 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                     orderSuccess={orderSuccess}
                     lastOrderData={lastOrderData}
                     onBackToShop={handleBackToShop}
+                    showCheckout={showCheckout}
+                    setShowCheckout={setShowCheckout}
                   />
                 </div>
               </div>
