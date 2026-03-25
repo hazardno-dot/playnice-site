@@ -28,6 +28,105 @@ const products = [
   { id: 24, name: "Afnan Supremacy Not Only Intense", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } }
 ];
 
+const productDetails = {
+  "Afnan 9AM": {
+    description: "Bright, modern and easy to wear. A clean energetic opener with a sharp daytime profile.",
+    vibe: "Fresh. Crisp. Effortless daily reach."
+  },
+  "Afnan 9PM Rebel": {
+    description: "A bold, addictive crowd-pleaser with strong presence and excellent value. Built to stand out.",
+    vibe: "Sweet. Loud. Compliment magnet."
+  },
+  "Afnan Supremacy Collector's Edition Pour Homme": {
+    description: "A richer and more elevated masculine profile with polished depth and strong signature energy.",
+    vibe: "Refined. Powerful. Dressed-up confidence."
+  },
+  "Afnan Turathi Blue": {
+    description: "Fresh citrus sparkle over a smooth woody base. Clean luxury with broad appeal.",
+    vibe: "Blue. Sharp. Versatile."
+  },
+  "Afnan 9PM": {
+    description: "A proven nightlife favorite with sweetness, projection and instant recognition.",
+    vibe: "Playful. Loud. After-dark energy."
+  },
+  "Lattafa Khamrah Qahwa": {
+    description: "Warm gourmand richness with coffee nuance and a deep addictive sweetness.",
+    vibe: "Cozy. Rich. Delicious."
+  },
+  "Armaf Club de Nuit Intense Man EDT": {
+    description: "Smoky-fruity freshness with serious impact. A modern classic for attention and projection.",
+    vibe: "Bold. Recognizable. High impact."
+  },
+  "Armaf Club de Nuit Sillage": {
+    description: "Metallic-citrus freshness with a cool refined edge and long-lasting airy trail.",
+    vibe: "Silver. Clean. Distinct."
+  },
+  "Armaf Club de Nuit Bling": {
+    description: "Flashy, stylish and made to be noticed. A confident wear with visual and olfactory presence.",
+    vibe: "Glamorous. Modern. Statement-making."
+  },
+  "Mancera Cedrat Boise": {
+    description: "A niche staple balancing citrus brightness, woods and smooth sweetness with serious elegance.",
+    vibe: "Luxurious. Versatile. Elite casual."
+  },
+  "Gisada Ambassador": {
+    description: "Polished and charismatic with a smooth designer feel that performs above expectations.",
+    vibe: "Charismatic. Clean. Expensive aura."
+  },
+  "Givenchy Gentleman Réserve Privée": {
+    description: "Elegant boozy warmth and iris sophistication in a seductive evening composition.",
+    vibe: "Classy. Creamy. Intimate."
+  },
+  "Creed Aventus Cologne": {
+    description: "Airy freshness wrapped in prestige. Refined, uplifting and unmistakably premium.",
+    vibe: "Prestige. Fresh. Quiet power."
+  },
+  "Bleu de Chanel EDP": {
+    description: "A benchmark designer scent with polished woods, freshness and timeless versatility.",
+    vibe: "Elegant. Clean. Universal."
+  },
+  "Boss The Scent Elixir": {
+    description: "Warm sensual density with a darker seductive edge suited to evening wear.",
+    vibe: "Seductive. Deep. Magnetic."
+  },
+  "Montblanc Explorer Extreme": {
+    description: "Adventure-inspired woods and freshness with a masculine polished finish.",
+    vibe: "Confident. Travel-ready. Modern."
+  },
+  "Swiss Arabian Tobacco 01": {
+    description: "Rich tobacco warmth with sweet depth and a smooth oriental backbone.",
+    vibe: "Dark. Cozy. Mature."
+  },
+  "Calvin Klein Defy EDT": {
+    description: "Fresh and approachable, ideal for daily wear with clean masculine simplicity.",
+    vibe: "Fresh. Easy. Everyday."
+  },
+  "Calvin Klein Defy Parfum": {
+    description: "A darker, fuller take on the Defy DNA with stronger character and warmth.",
+    vibe: "Smooth. Masculine. Elevated."
+  },
+  "CK All": {
+    description: "Clean universal freshness with bright simplicity and easy all-day wearability.",
+    vibe: "Minimal. Fresh. Uncomplicated."
+  },
+  "Kadlaj Island Dreams": {
+    description: "A breezy summer-ready scent that instantly creates vacation mood and sunny energy.",
+    vibe: "Tropical. Easygoing. Must-try summer pick."
+  },
+  "Arabian Prestige Marwa": {
+    description: "An elegant Arabian composition with smooth presence, warmth and excellent value.",
+    vibe: "Soft spice. Elegant. Boutique feel."
+  },
+  "Parfums de Marly Castley": {
+    description: "A luxury niche profile with upscale structure, sophistication and strong identity.",
+    vibe: "Noble. Rich. High-end signature."
+  },
+  "Afnan Supremacy Not Only Intense": {
+    description: "A powerful fresh-fruity-smoky profile with presence that punches above its price.",
+    vibe: "Strong. Stylish. Attention-grabbing."
+  }
+};
+
 const categories = ["All", ...Array.from(new Set(products.map((p) => p.category)))];
 const PRODUCTS_PER_PAGE = 12;
 const SHIPPING_COST = 3.5;
@@ -42,6 +141,8 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [productModalOpen, setProductModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [addedFeedback, setAddedFeedback] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -91,6 +192,19 @@ function App() {
     const timer = setTimeout(() => setAddedFeedback(""), 1800);
     return () => clearTimeout(timer);
   }, [addedFeedback]);
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setCartOpen(false);
+        setCheckoutOpen(false);
+        setProductModalOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, []);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -204,6 +318,64 @@ function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const openProductModal = (product) => {
+    setSelectedProduct(product);
+    setProductModalOpen(true);
+  };
+
+  const closeProductModal = () => {
+    setProductModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const getProductDetail = (productName) => {
+    return (
+      productDetails[productName] || {
+        description: "A premium fragrance selection curated for style, character and strong impression.",
+        vibe: "Confident. Refined. Memorable."
+      }
+    );
+  };
+
+  const ProductCard = ({ product }) => (
+    <article className="product-card" key={product.id}>
+      {product.badge && <span className="product-badge">{product.badge}</span>}
+
+      <button
+        className="product-card-click"
+        onClick={() => openProductModal(product)}
+        aria-label={`Open details for ${product.name}`}
+      >
+        <div className="product-image">
+          <div className="product-image-inner">{product.name.charAt(0)}</div>
+        </div>
+
+        <div className="product-meta">
+          <p className="product-category">{product.category}</p>
+          <h3>{product.name}</h3>
+          <p className="product-price-from">
+            From {formatPrice(Math.min(...Object.values(product.sizes)))}
+          </p>
+        </div>
+      </button>
+
+      <div className="size-buttons">
+        {Object.entries(product.sizes).map(([size, price]) => (
+          <button
+            key={size}
+            onClick={(e) => {
+              e.stopPropagation();
+              addToCart(product, size);
+            }}
+          >
+            <span>{size}</span>
+            <strong>{formatPrice(price)}</strong>
+          </button>
+        ))}
+      </div>
+    </article>
+  );
+
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -266,7 +438,11 @@ function App() {
                 </div>
 
                 <div className="hero-visual">
-                  <button className="hero-bottle-wrap" onClick={addHeroBottleToCart} aria-label="Add Afnan 9PM Rebel full bottle to cart">
+                  <button
+                    className="hero-bottle-wrap"
+                    onClick={addHeroBottleToCart}
+                    aria-label="Add Afnan 9PM Rebel full bottle to cart"
+                  >
                     <img
                       className="hero-bottle"
                       src="/hero-bottle.png"
@@ -339,30 +515,7 @@ function App() {
 
               <div className="product-grid">
                 {products.slice(0, 4).map((product) => (
-                  <article className="product-card" key={product.id}>
-                    {product.badge && <span className="product-badge">{product.badge}</span>}
-
-                    <div className="product-image">
-                      <div className="product-image-inner">{product.name.charAt(0)}</div>
-                    </div>
-
-                    <div className="product-meta">
-                      <p className="product-category">{product.category}</p>
-                      <h3>{product.name}</h3>
-                      <p className="product-price-from">
-                        From {formatPrice(Math.min(...Object.values(product.sizes)))}
-                      </p>
-                    </div>
-
-                    <div className="size-buttons">
-                      {Object.entries(product.sizes).map(([size, price]) => (
-                        <button key={size} onClick={() => addToCart(product, size)}>
-                          <span>{size}</span>
-                          <strong>{formatPrice(price)}</strong>
-                        </button>
-                      ))}
-                    </div>
-                  </article>
+                  <ProductCard product={product} key={product.id} />
                 ))}
               </div>
 
@@ -420,30 +573,7 @@ function App() {
 
             <div className="product-grid">
               {paginatedProducts.map((product) => (
-                <article className="product-card" key={product.id}>
-                  {product.badge && <span className="product-badge">{product.badge}</span>}
-
-                  <div className="product-image">
-                    <div className="product-image-inner">{product.name.charAt(0)}</div>
-                  </div>
-
-                  <div className="product-meta">
-                    <p className="product-category">{product.category}</p>
-                    <h3>{product.name}</h3>
-                    <p className="product-price-from">
-                      From {formatPrice(Math.min(...Object.values(product.sizes)))}
-                    </p>
-                  </div>
-
-                  <div className="size-buttons">
-                    {Object.entries(product.sizes).map(([size, price]) => (
-                      <button key={size} onClick={() => addToCart(product, size)}>
-                        <span>{size}</span>
-                        <strong>{formatPrice(price)}</strong>
-                      </button>
-                    ))}
-                  </div>
-                </article>
+                <ProductCard product={product} key={product.id} />
               ))}
             </div>
 
@@ -528,12 +658,106 @@ function App() {
       </aside>
 
       <div
-        className={`backdrop ${cartOpen || checkoutOpen ? "show" : ""}`}
+        className={`backdrop ${cartOpen || checkoutOpen || productModalOpen ? "show" : ""}`}
         onClick={() => {
           setCartOpen(false);
           setCheckoutOpen(false);
+          closeProductModal();
         }}
       />
+
+      <div className={`product-modal ${productModalOpen ? "open" : ""}`}>
+        {selectedProduct && (
+          <>
+            <div className="product-modal-header">
+              <div>
+                <p className="section-kicker">Private Selection</p>
+                <h3>{selectedProduct.name}</h3>
+              </div>
+              <button className="close-button" onClick={closeProductModal}>
+                ×
+              </button>
+            </div>
+
+            <div className="product-modal-grid">
+              <div className="product-modal-visual">
+                {selectedProduct.badge && (
+                  <span className="product-modal-badge">{selectedProduct.badge}</span>
+                )}
+
+                <div className="product-modal-image">
+                  <div className="product-modal-image-inner">
+                    {selectedProduct.name.charAt(0)}
+                  </div>
+                </div>
+
+                <div className="product-modal-note">
+                  <span>Try before you buy</span>
+                  <span>Premium decants</span>
+                  <span>PlayNice curated</span>
+                </div>
+              </div>
+
+              <div className="product-modal-content">
+                <p className="product-modal-category">{selectedProduct.category}</p>
+
+                <h4>{selectedProduct.name}</h4>
+
+                <p className="product-modal-description">
+                  {getProductDetail(selectedProduct.name).description}
+                </p>
+
+                <div className="product-modal-vibe">
+                  <span>Character</span>
+                  <strong>{getProductDetail(selectedProduct.name).vibe}</strong>
+                </div>
+
+                <div className="product-modal-pricing">
+                  <span>Available sizes</span>
+                  <div className="product-modal-size-grid">
+                    {Object.entries(selectedProduct.sizes).map(([size, price]) => (
+                      <button
+                        key={size}
+                        onClick={() => {
+                          addToCart(selectedProduct, size);
+                          setCartOpen(true);
+                        }}
+                      >
+                        <span>{size}</span>
+                        <strong>{formatPrice(price)}</strong>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="product-modal-footer">
+                  <p>
+                    Discover the fragrance on skin first, then decide whether it deserves a full
+                    bottle place in your collection.
+                  </p>
+
+                  <div className="product-modal-actions">
+                    <button
+                      className="gold-button"
+                      onClick={() => {
+                        const firstSize = Object.keys(selectedProduct.sizes)[0];
+                        addToCart(selectedProduct, firstSize);
+                        setCartOpen(true);
+                      }}
+                    >
+                      Add Signature Size
+                    </button>
+
+                    <button className="ghost-button" onClick={closeProductModal}>
+                      Continue Browsing
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
 
       <div className={`checkout-modal ${checkoutOpen ? "open" : ""}`}>
         <div className="checkout-header">
