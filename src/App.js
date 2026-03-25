@@ -64,6 +64,210 @@ const HERO_PRODUCT = {
   price: 34.9,
 };
 
+const translations = {
+  sr: {
+    navHome: "Početna",
+    navShop: "Shop",
+    navContact: "Kontakt",
+
+    heroBadge: "PLAYNICE FEATURED DROP",
+    heroTitle: "OWN THE MOMENT.",
+    heroSub: "Miriši kao parfem od 200€ — za 34.90€.",
+    heroDesc: "Mračan. Zarazan. Stvoren za noći koje ne prolaze neprimećeno.",
+    heroTag1: "Premium dekanti",
+    heroTag2: "Plaćanje pouzećem",
+    heroTag3: `Besplatna dostava preko ${FREE_SHIPPING_THRESHOLD}€`,
+    heroPrimaryCta: "Kupi full bottle",
+    heroSecondaryCta: "Naruči preko Instagrama",
+    heroProof: "Aktuelno izdvojeni: 9PM Rebel • Island Dreams • Marwa",
+    heroFloatBadge: "PRE 45.90€ • SADA 34.90€",
+    heroStickyCta: "Kupi 100ml za 34.90€",
+
+    ctaKicker: "PLAYNICE",
+    ctaTitle: "Discover fragrances the right way.",
+    ctaText:
+      "Testiraj pre pune bočice. Premium dekanti, pažljivo biran izbor i jednostavna porudžbina.",
+    ctaOpenShop: "Otvori shop",
+    ctaSendDm: "Pošalji DM",
+
+    shopKicker: "SHOP",
+    shopTitle: "PlayNice fragrance collection",
+    shopText: "Pregledaj parfeme, izaberi veličinu i dodaj u korpu.",
+    searchPlaceholder: "Pretraži parfem...",
+    filterAll: "Sve",
+    filterArabian: "Arabian",
+    filterDesigner: "Designer / Niche",
+    showing: "Prikazano",
+    of: "od",
+    fragrances: "parfema",
+    prev: "Nazad",
+    next: "Dalje",
+    page: "Strana",
+
+    selected: "Izabrano",
+    addToCart: "Dodaj u korpu",
+    added: "Dodato ✓",
+    orderNow: "Naruči odmah",
+    bestSeller: "Best\nSeller",
+
+    cartTitle: "Korpa",
+    items: "stavki",
+    cartEmpty: "Tvoja korpa je prazna.",
+    subtotal: "Subtotal",
+    shipping: "Dostava",
+    total: "Ukupno",
+    free: "Besplatna",
+    unlockedFreeShipping: "Otključao si besplatnu dostavu.",
+    addMoreForFreeShipping: "Dodaj još",
+    forFreeShipping: "za besplatnu dostavu.",
+    quickDmOrder: "Brza DM porudžbina",
+    hideCheckout: "Sakrij checkout",
+    proceedToCheckout: "Nastavi na checkout",
+    checkoutTitle: "Checkout",
+    fullName: "Ime i prezime *",
+    email: "Email adresa *",
+    phone: "Broj telefona *",
+    city: "Grad *",
+    address: "Adresa *",
+    note: "Napomena uz porudžbinu (opciono)",
+    payment: "Plaćanje: Pouzećem",
+    freeShippingRule: `Besplatna dostava za porudžbine preko ${formatPrice(FREE_SHIPPING_THRESHOLD)}.`,
+    confirmCheckout: "Potvrdi porudžbinu",
+
+    successTitle: "Porudžbina je uspešno poslata",
+    successText:
+      "Hvala na kupovini. Tvoja porudžbina je primljena i uskoro ćemo te kontaktirati sa potvrdom i detaljima isporuke.",
+    customer: "Kupac",
+    noteLabel: "Napomena",
+    continueShopping: "Nastavi kupovinu",
+    emailMaybeFailed: "Porudžbina je primljena, ali potvrda na email možda nije stigla.",
+
+    alertQuickOrderCopied:
+      "Porudžbina je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.",
+    alertQuickOrderFallback: "Kopiraj ovu poruku i pošalji u DM:",
+    alertCartCopied:
+      "Korpa je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.",
+    alertCartFallback: "Kopiraj ovu poruku i pošalji u DM:",
+    alertName: "Unesi ime i prezime.",
+    alertEmail: "Unesi email adresu.",
+    alertPhone: "Unesi broj telefona.",
+    alertCity: "Unesi grad.",
+    alertAddress: "Unesi adresu.",
+    alertCheckoutError: "Došlo je do greške pri slanju porudžbine. Pokušaj ponovo.",
+
+    dmIntro: "Zdravo, želim da naručim:",
+    size: "Veličina",
+    quantity: "Količina",
+    price: "Cena",
+    lineTotal: "Ukupno",
+    orderTotal: "Ukupno za porudžbinu",
+
+    footerInstagram: "Instagram",
+    footerSendDm: "Pošalji DM",
+  },
+
+  en: {
+    navHome: "Home",
+    navShop: "Shop",
+    navContact: "Contact",
+
+    heroBadge: "PLAYNICE FEATURED DROP",
+    heroTitle: "OWN THE MOMENT.",
+    heroSub: "Smell like a 200€ fragrance — for 34.90€.",
+    heroDesc: "Dark. Addictive. Built for nights that don’t go unnoticed.",
+    heroTag1: "Premium decants",
+    heroTag2: "Cash on delivery",
+    heroTag3: `Free shipping over ${FREE_SHIPPING_THRESHOLD}€`,
+    heroPrimaryCta: "Buy full bottle",
+    heroSecondaryCta: "Order via Instagram",
+    heroProof: "Featured now: 9PM Rebel • Island Dreams • Marwa",
+    heroFloatBadge: "WAS 45.90€ • NOW 34.90€",
+    heroStickyCta: "Buy 100ml for 34.90€",
+
+    ctaKicker: "PLAYNICE",
+    ctaTitle: "Discover fragrances the right way.",
+    ctaText:
+      "Test before committing to a full bottle. Premium decants, carefully selected fragrances, and effortless ordering.",
+    ctaOpenShop: "Open shop",
+    ctaSendDm: "Send DM",
+
+    shopKicker: "SHOP",
+    shopTitle: "PlayNice fragrance collection",
+    shopText: "Browse fragrances, choose your size, and add them to cart.",
+    searchPlaceholder: "Search fragrance...",
+    filterAll: "All",
+    filterArabian: "Arabian",
+    filterDesigner: "Designer / Niche",
+    showing: "Showing",
+    of: "of",
+    fragrances: "fragrances",
+    prev: "Prev",
+    next: "Next",
+    page: "Page",
+
+    selected: "Selected",
+    addToCart: "Add to cart",
+    added: "Added ✓",
+    orderNow: "Order now",
+    bestSeller: "Best\nSeller",
+
+    cartTitle: "Cart",
+    items: "items",
+    cartEmpty: "Your cart is empty.",
+    subtotal: "Subtotal",
+    shipping: "Shipping",
+    total: "Total",
+    free: "Free",
+    unlockedFreeShipping: "You unlocked free shipping.",
+    addMoreForFreeShipping: "Add",
+    forFreeShipping: "more for free shipping.",
+    quickDmOrder: "Quick DM Order",
+    hideCheckout: "Hide checkout",
+    proceedToCheckout: "Proceed to checkout",
+    checkoutTitle: "Checkout",
+    fullName: "Full name *",
+    email: "Email address *",
+    phone: "Phone number *",
+    city: "City / Town *",
+    address: "Address *",
+    note: "Order note (optional)",
+    payment: "Payment: Cash on delivery",
+    freeShippingRule: `Free shipping for orders over ${formatPrice(FREE_SHIPPING_THRESHOLD)}.`,
+    confirmCheckout: "Confirm checkout",
+
+    successTitle: "Your order has been sent successfully",
+    successText:
+      "Thank you for your purchase. Your order has been received and we will contact you soon with confirmation and delivery details.",
+    customer: "Customer",
+    noteLabel: "Note",
+    continueShopping: "Continue shopping",
+    emailMaybeFailed: "Your order was received, but the confirmation email may not have arrived.",
+
+    alertQuickOrderCopied:
+      "Order text copied. I opened the Instagram profile — just paste the message into DM.",
+    alertQuickOrderFallback: "Copy this message and send it via DM:",
+    alertCartCopied:
+      "Cart text copied. I opened the Instagram profile — just paste the message into DM.",
+    alertCartFallback: "Copy this message and send it via DM:",
+    alertName: "Enter your full name.",
+    alertEmail: "Enter your email address.",
+    alertPhone: "Enter your phone number.",
+    alertCity: "Enter your city.",
+    alertAddress: "Enter your address.",
+    alertCheckoutError: "There was an error sending your order. Please try again.",
+
+    dmIntro: "Hello, I would like to order:",
+    size: "Size",
+    quantity: "Quantity",
+    price: "Price",
+    lineTotal: "Total",
+    orderTotal: "Order total",
+
+    footerInstagram: "Instagram",
+    footerSendDm: "Send DM",
+  },
+};
+
 function formatPrice(value) {
   return `${Number(value).toFixed(2)}€`;
 }
@@ -134,7 +338,7 @@ async function copyText(text) {
   }
 }
 
-function ProductCard({ product, onAddToCart, onQuickOrder }) {
+function ProductCard({ product, onAddToCart, onQuickOrder, t }) {
   const sizeOptions = Object.keys(product.sizes);
   const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
   const [added, setAdded] = useState(false);
@@ -170,16 +374,14 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
     <article className="product-card">
       {product.badge && (
         <div className="card-flag bestseller">
-          Best
+          {t.bestSeller.split("\n")[0]}
           <br />
-          Seller
+          {t.bestSeller.split("\n")[1]}
         </div>
       )}
 
       <div className="product-card-glow" />
-
       <div className="product-badge">{product.category}</div>
-
       <h3 className="product-title">{product.name}</h3>
 
       <div className="product-prices">
@@ -205,7 +407,7 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
       </div>
 
       <div className="selected-price-box">
-        <span>Selected</span>
+        <span>{t.selected}</span>
         <strong>
           {selectedSize} → {formatPrice(selectedPrice)}
         </strong>
@@ -213,7 +415,7 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
 
       <div className="product-actions">
         <button className="btn btn-primary" type="button" onClick={handleAdd}>
-          {added ? "Added ✓" : "Add to Cart"}
+          {added ? t.added : t.addToCart}
         </button>
 
         <button
@@ -227,7 +429,7 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
             })
           }
         >
-          Order Now
+          {t.orderNow}
         </button>
       </div>
     </article>
@@ -246,6 +448,7 @@ function CartPanel({
   onBackToShop,
   showCheckout,
   setShowCheckout,
+  t,
 }) {
   const subtotal = getSubtotal(cart);
   const shipping = getShipping(subtotal);
@@ -293,11 +496,8 @@ function CartPanel({
             <div className="success-icon">✓</div>
 
             <p className="success-eyebrow">PLAYNICE</p>
-            <h1 className="success-title">Porudžbina je uspešno poslata</h1>
-            <p className="success-text">
-              Hvala na kupovini. Tvoja porudžbina je primljena i uskoro ćemo te
-              kontaktirati sa potvrdom i detaljima isporuke.
-            </p>
+            <h1 className="success-title">{t.successTitle}</h1>
+            <p className="success-text">{t.successText}</p>
 
             <div className="success-summary">
               {lastOrderData.orderId ? (
@@ -308,7 +508,7 @@ function CartPanel({
               ) : null}
 
               <div className="success-row">
-                <span>Kupac</span>
+                <span>{t.customer}</span>
                 <strong>{lastOrderData.fullName}</strong>
               </div>
               <div className="success-row">
@@ -316,53 +516,49 @@ function CartPanel({
                 <strong>{lastOrderData.email}</strong>
               </div>
               <div className="success-row">
-                <span>Telefon</span>
+                <span>{t.phone.replace(" *", "")}</span>
                 <strong>{lastOrderData.phone}</strong>
               </div>
               <div className="success-row">
-                <span>Grad</span>
+                <span>{t.city.replace(" *", "")}</span>
                 <strong>{lastOrderData.city}</strong>
               </div>
               <div className="success-row">
-                <span>Adresa</span>
+                <span>{t.address.replace(" *", "")}</span>
                 <strong>{lastOrderData.address}</strong>
               </div>
 
               {lastOrderData.note ? (
                 <div className="success-row">
-                  <span>Napomena</span>
+                  <span>{t.noteLabel}</span>
                   <strong>{lastOrderData.note}</strong>
                 </div>
               ) : null}
 
               <div className="success-row">
-                <span>Subtotal</span>
+                <span>{t.subtotal}</span>
                 <strong>{formatPrice(lastOrderData.subtotal)}</strong>
               </div>
               <div className="success-row">
-                <span>Dostava</span>
+                <span>{t.shipping}</span>
                 <strong>
-                  {lastOrderData.shipping === 0
-                    ? "Free"
-                    : formatPrice(lastOrderData.shipping)}
+                  {lastOrderData.shipping === 0 ? t.free : formatPrice(lastOrderData.shipping)}
                 </strong>
               </div>
               <div className="success-row total">
-                <span>Ukupno</span>
+                <span>{t.total}</span>
                 <strong>{formatPrice(lastOrderData.total)}</strong>
               </div>
             </div>
 
             <div className="success-actions">
               <button className="success-shop-btn" type="button" onClick={onBackToShop}>
-                Nastavi kupovinu
+                {t.continueShopping}
               </button>
             </div>
 
             {lastOrderData.customerEmailSent === false ? (
-              <p className="success-footer">
-                Porudžbina je primljena, ali potvrda na email možda nije stigla.
-              </p>
+              <p className="success-footer">{t.emailMaybeFailed}</p>
             ) : (
               <p className="success-footer">Remember. PlayNice.</p>
             )}
@@ -375,12 +571,14 @@ function CartPanel({
   return (
     <aside className="cart-panel">
       <div className="cart-head">
-        <h3>Cart</h3>
-        <span>{cart.length} items</span>
+        <h3>{t.cartTitle}</h3>
+        <span>
+          {cart.length} {t.items}
+        </span>
       </div>
 
       {cart.length === 0 ? (
-        <div className="cart-empty">Your cart is empty.</div>
+        <div className="cart-empty">{t.cartEmpty}</div>
       ) : (
         <>
           <div className="cart-list">
@@ -413,9 +611,7 @@ function CartPanel({
                     </button>
                   </div>
 
-                  <div className="cart-line-total">
-                    {formatPrice(item.price * item.qty)}
-                  </div>
+                  <div className="cart-line-total">{formatPrice(item.price * item.qty)}</div>
                 </div>
               </div>
             ))}
@@ -424,30 +620,28 @@ function CartPanel({
           <div className="cart-footer">
             <div className="cart-summary-box">
               <div className="cart-summary-row">
-                <span>Subtotal</span>
+                <span>{t.subtotal}</span>
                 <strong>{formatPrice(subtotal)}</strong>
               </div>
 
               <div className="cart-summary-row">
-                <span>Shipping</span>
-                <strong>{shipping === 0 ? "Free" : formatPrice(shipping)}</strong>
+                <span>{t.shipping}</span>
+                <strong>{shipping === 0 ? t.free : formatPrice(shipping)}</strong>
               </div>
 
               <div className="cart-total-final">
-                <span>Total</span>
+                <span>{t.total}</span>
                 <strong>{formatPrice(total)}</strong>
               </div>
             </div>
 
             <div className="shipping-progress-wrap">
               {shipping === 0 ? (
-                <div className="shipping-badge success">
-                  You unlocked free shipping.
-                </div>
+                <div className="shipping-badge success">{t.unlockedFreeShipping}</div>
               ) : (
                 <div className="shipping-badge">
-                  Add <strong>{formatPrice(amountToFreeShipping)}</strong> more for free
-                  shipping.
+                  {t.addMoreForFreeShipping} <strong>{formatPrice(amountToFreeShipping)}</strong>{" "}
+                  {t.forFreeShipping}
                 </div>
               )}
             </div>
@@ -458,7 +652,7 @@ function CartPanel({
                 className="btn btn-secondary cart-order-btn"
                 onClick={() => onOrderCart(cart)}
               >
-                Quick DM Order
+                {t.quickDmOrder}
               </button>
 
               <button
@@ -466,20 +660,20 @@ function CartPanel({
                 className="btn btn-primary cart-order-btn"
                 onClick={() => setShowCheckout((prev) => !prev)}
               >
-                {showCheckout ? "Hide Checkout" : "Proceed to Checkout"}
+                {showCheckout ? t.hideCheckout : t.proceedToCheckout}
               </button>
             </div>
 
             {showCheckout && (
               <div className="checkout-box">
-                <div className="checkout-title">Checkout</div>
+                <div className="checkout-title">{t.checkoutTitle}</div>
 
                 <div className="checkout-grid">
                   <input
                     className="checkout-input"
                     type="text"
                     name="fullName"
-                    placeholder="Full name *"
+                    placeholder={t.fullName}
                     value={checkoutData.fullName}
                     onChange={handleFieldChange}
                   />
@@ -487,7 +681,7 @@ function CartPanel({
                     className="checkout-input"
                     type="email"
                     name="email"
-                    placeholder="Email address *"
+                    placeholder={t.email}
                     value={checkoutData.email}
                     onChange={handleFieldChange}
                   />
@@ -495,7 +689,7 @@ function CartPanel({
                     className="checkout-input"
                     type="text"
                     name="phone"
-                    placeholder="Phone number *"
+                    placeholder={t.phone}
                     value={checkoutData.phone}
                     onChange={handleFieldChange}
                   />
@@ -503,7 +697,7 @@ function CartPanel({
                     className="checkout-input"
                     type="text"
                     name="city"
-                    placeholder="City / Town *"
+                    placeholder={t.city}
                     value={checkoutData.city}
                     onChange={handleFieldChange}
                   />
@@ -511,14 +705,14 @@ function CartPanel({
                     className="checkout-input"
                     type="text"
                     name="address"
-                    placeholder="Address *"
+                    placeholder={t.address}
                     value={checkoutData.address}
                     onChange={handleFieldChange}
                   />
                   <textarea
                     className="checkout-textarea"
                     name="note"
-                    placeholder="Order note (optional)"
+                    placeholder={t.note}
                     value={checkoutData.note}
                     onChange={handleFieldChange}
                     rows={4}
@@ -526,11 +720,11 @@ function CartPanel({
                 </div>
 
                 <div className="checkout-note">
-                  Payment: Cash on delivery
+                  {t.payment}
                   <br />
-                  Shipping: {shipping === 0 ? "Free" : formatPrice(shipping)}
+                  {t.shipping}: {shipping === 0 ? t.free : formatPrice(shipping)}
                   <br />
-                  Free shipping for orders over {formatPrice(FREE_SHIPPING_THRESHOLD)}.
+                  {t.freeShippingRule}
                 </div>
 
                 <button
@@ -538,7 +732,7 @@ function CartPanel({
                   className="btn btn-primary cart-order-btn"
                   onClick={() => onCheckout(cart)}
                 >
-                  Confirm Checkout
+                  {t.confirmCheckout}
                 </button>
               </div>
             )}
@@ -555,6 +749,17 @@ export default function App() {
   const initialFilter = normalizeFilter(initialParams.get("filter") || "All");
   const initialPage = Number(initialParams.get("page") || "1");
   const initialView = initialParams.get("view");
+
+  const [lang, setLang] = useState(() => {
+    try {
+      if (typeof window === "undefined") return "sr";
+      return window.localStorage.getItem("playnice_lang") || "sr";
+    } catch {
+      return "sr";
+    }
+  });
+
+  const t = translations[lang];
 
   const [search, setSearch] = useState(initialSearch);
   const [filter, setFilter] = useState(initialFilter);
@@ -595,6 +800,11 @@ export default function App() {
   const [lastOrderData, setLastOrderData] = useState(null);
 
   const itemsPerPage = 12;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("playnice_lang", lang);
+  }, [lang]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -675,19 +885,19 @@ export default function App() {
   };
 
   const handleQuickOrder = async ({ name, size, price }) => {
-    const orderText = `Zdravo, želim da naručim:
+    const orderText = `${t.dmIntro}
 
 ${name}
-Veličina: ${size}
-Cena: ${formatPrice(price)}`;
+${t.size}: ${size}
+${t.price}: ${formatPrice(price)}`;
 
     const copied = await copyText(orderText);
     window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
 
     if (copied) {
-      alert("Porudžbina je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.");
+      alert(t.alertQuickOrderCopied);
     } else {
-      alert(`Kopiraj ovu poruku i pošalji u DM:\n\n${orderText}`);
+      alert(`${t.alertQuickOrderFallback}\n\n${orderText}`);
     }
   };
 
@@ -696,56 +906,56 @@ Cena: ${formatPrice(price)}`;
     const shipping = getShipping(subtotal);
     const total = subtotal + shipping;
 
-    const orderText = `Zdravo, želim da naručim:
+    const orderText = `${t.dmIntro}
 
 ${cartItems
   .map(
     (item, index) =>
       `${index + 1}. ${item.name}
-Veličina: ${item.size}
-Količina: ${item.qty}
-Cena: ${formatPrice(item.price)}
-Ukupno: ${formatPrice(item.price * item.qty)}`
+${t.size}: ${item.size}
+${t.quantity}: ${item.qty}
+${t.price}: ${formatPrice(item.price)}
+${t.lineTotal}: ${formatPrice(item.price * item.qty)}`
   )
   .join("\n\n")}
 
-Subtotal: ${formatPrice(subtotal)}
-Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
-Ukupno za porudžbinu: ${formatPrice(total)}`;
+${t.subtotal}: ${formatPrice(subtotal)}
+${t.shipping}: ${shipping === 0 ? t.free : formatPrice(shipping)}
+${t.orderTotal}: ${formatPrice(total)}`;
 
     const copied = await copyText(orderText);
     window.open(INSTAGRAM_URL, "_blank", "noopener,noreferrer");
 
     if (copied) {
-      alert("Korpa je kopirana. Otvorio sam Instagram profil — samo nalepi tekst u DM.");
+      alert(t.alertCartCopied);
     } else {
-      alert(`Kopiraj ovu poruku i pošalji u DM:\n\n${orderText}`);
+      alert(`${t.alertCartFallback}\n\n${orderText}`);
     }
   };
 
   const handleCheckout = async (cartItems) => {
     if (!checkoutData.fullName.trim()) {
-      alert("Unesi ime i prezime.");
+      alert(t.alertName);
       return;
     }
 
     if (!checkoutData.email.trim()) {
-      alert("Unesi email adresu.");
+      alert(t.alertEmail);
       return;
     }
 
     if (!checkoutData.phone.trim()) {
-      alert("Unesi broj telefona.");
+      alert(t.alertPhone);
       return;
     }
 
     if (!checkoutData.city.trim()) {
-      alert("Unesi grad.");
+      alert(t.alertCity);
       return;
     }
 
     if (!checkoutData.address.trim()) {
-      alert("Unesi adresu.");
+      alert(t.alertAddress);
       return;
     }
 
@@ -762,13 +972,14 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
         body: JSON.stringify({
           ...checkoutData,
           cart: cartItems,
+          lang,
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.details || data.error || "Greška pri slanju porudžbine.");
+        throw new Error(data.details || data.error || t.alertCheckoutError);
       }
 
       setLastOrderData({
@@ -802,7 +1013,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
       }
     } catch (error) {
       console.error(error);
-      alert(error?.message || "Došlo je do greške pri slanju porudžbine. Pokušaj ponovo.");
+      alert(error?.message || t.alertCheckoutError);
     }
   };
 
@@ -898,23 +1109,42 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
             <div className="brand-tagline">Remember. PlayNice.</div>
           </div>
 
-          <nav className="nav">
-            <a href="/" onClick={openHome}>
-              Home
-            </a>
-            <a
-              href="/?view=shop"
-              onClick={(e) => {
-                e.preventDefault();
-                goToShop();
-              }}
-            >
-              Shop
-            </a>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
-              Contact
-            </a>
-          </nav>
+          <div className="header-right">
+            <nav className="nav">
+              <a href="/" onClick={openHome}>
+                {t.navHome}
+              </a>
+              <a
+                href="/?view=shop"
+                onClick={(e) => {
+                  e.preventDefault();
+                  goToShop();
+                }}
+              >
+                {t.navShop}
+              </a>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
+                {t.navContact}
+              </a>
+            </nav>
+
+            <div className="lang-toggle">
+              <button
+                type="button"
+                className={lang === "sr" ? "lang-btn active" : "lang-btn"}
+                onClick={() => setLang("sr")}
+              >
+                SR
+              </button>
+              <button
+                type="button"
+                className={lang === "en" ? "lang-btn active" : "lang-btn"}
+                onClick={() => setLang("en")}
+              >
+                EN
+              </button>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -925,7 +1155,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
               <div className="container hero-featured-grid">
                 <div className="hero-featured-left">
                   <div className="hero-bottle-wrapper hero-bottle-wrapper-conversion">
-                    <div className="hero-floating-badge">WAS 45.90€ • NOW 34.90€</div>
+                    <div className="hero-floating-badge">{t.heroFloatBadge}</div>
 
                     <button
                       type="button"
@@ -943,26 +1173,22 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                 </div>
 
                 <div className="hero-featured-right">
-                  <div className="section-kicker">PLAYNICE FEATURED DROP</div>
+                  <div className="section-kicker">{t.heroBadge}</div>
 
                   <h1 className="hero-title">
-                    OWN THE MOMENT<span className="dot">.</span>
+                    {t.heroTitle.replace(".", "")}
+                    <span className="dot">.</span>
                   </h1>
 
                   <h2 className="hero-product">AFNAN 9PM REBEL</h2>
 
-                  <p className="hero-sub">
-                    Smell like a 200€ fragrance — for <strong>34.90€</strong>.
-                  </p>
-
-                  <p className="hero-desc">
-                    Dark. Addictive. Built for nights that don’t go unnoticed.
-                  </p>
+                  <p className="hero-sub">{t.heroSub}</p>
+                  <p className="hero-desc">{t.heroDesc}</p>
 
                   <div className="hero-tags">
-                    <span>Premium decants</span>
-                    <span>Cash on delivery</span>
-                    <span>Free shipping over 39€</span>
+                    <span>{t.heroTag1}</span>
+                    <span>{t.heroTag2}</span>
+                    <span>{t.heroTag3}</span>
                   </div>
 
                   <div className="hero-actions hero-actions-conversion">
@@ -971,7 +1197,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                       className="btn btn-primary hero-main-cta"
                       onClick={handleHeroBottleClick}
                     >
-                      Buy Full Bottle
+                      {t.heroPrimaryCta}
                     </button>
 
                     <a
@@ -980,13 +1206,11 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                       rel="noreferrer"
                       className="btn btn-secondary hero-secondary-cta"
                     >
-                      Order via Instagram
+                      {t.heroSecondaryCta}
                     </a>
                   </div>
 
-                  <div className="hero-proof">
-                    Featured now: <strong>9PM Rebel • Island Dreams • Marwa</strong>
-                  </div>
+                  <div className="hero-proof">{t.heroProof}</div>
 
                   <div className="hero-secondary hero-secondary-conversion">
                     <button
@@ -1016,7 +1240,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                   className="btn btn-primary mobile-sticky-hero-btn"
                   onClick={handleHeroBottleClick}
                 >
-                  Buy 100ml for 34.90€
+                  {t.heroStickyCta}
                 </button>
               </div>
             </section>
@@ -1024,16 +1248,13 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
             <section className="section cta-section">
               <div className="container">
                 <div className="cta-box">
-                  <div className="section-kicker">PLAYNICE</div>
-                  <h2>Discover fragrances the right way.</h2>
-                  <p>
-                    Testiraj pre pune bočice. Premium dekanti, pažljivo biran izbor i
-                    jednostavna porudžbina.
-                  </p>
+                  <div className="section-kicker">{t.ctaKicker}</div>
+                  <h2>{t.ctaTitle}</h2>
+                  <p>{t.ctaText}</p>
 
                   <div className="cta-actions">
                     <button type="button" className="btn btn-primary" onClick={goToShop}>
-                      Open Shop
+                      {t.ctaOpenShop}
                     </button>
                     <a
                       href={INSTAGRAM_URL}
@@ -1041,7 +1262,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                       rel="noreferrer"
                       className="btn btn-secondary"
                     >
-                      Send DM
+                      {t.ctaSendDm}
                     </a>
                   </div>
                 </div>
@@ -1054,18 +1275,16 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
               <div className="shop-main">
                 <div className="section-head catalog-head">
                   <div>
-                    <div className="section-kicker">SHOP</div>
-                    <h2 className="section-title">PlayNice fragrance collection</h2>
-                    <p className="section-text">
-                      Pregledaj parfeme, izaberi veličinu i dodaj u korpu.
-                    </p>
+                    <div className="section-kicker">{t.shopKicker}</div>
+                    <h2 className="section-title">{t.shopTitle}</h2>
+                    <p className="section-text">{t.shopText}</p>
                   </div>
 
                   <div className="search-wrap">
                     <input
                       type="text"
                       className="search-input"
-                      placeholder="Search fragrance..."
+                      placeholder={t.searchPlaceholder}
                       value={search}
                       onChange={(e) => {
                         setSearch(e.target.value);
@@ -1084,7 +1303,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                     }}
                     type="button"
                   >
-                    All
+                    {t.filterAll}
                   </button>
 
                   <button
@@ -1095,7 +1314,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                     }}
                     type="button"
                   >
-                    Arabian
+                    {t.filterArabian}
                   </button>
 
                   <button
@@ -1108,13 +1327,13 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                     }}
                     type="button"
                   >
-                    Designer / Niche
+                    {t.filterDesigner}
                   </button>
                 </div>
 
                 <div className="catalog-summary">
-                  Showing <strong>{filteredProducts.length}</strong> of{" "}
-                  <strong>{products.length}</strong> fragrances
+                  {t.showing} <strong>{filteredProducts.length}</strong> {t.of}{" "}
+                  <strong>{products.length}</strong> {t.fragrances}
                 </div>
 
                 <div className="product-grid">
@@ -1124,6 +1343,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                       product={product}
                       onAddToCart={addToCart}
                       onQuickOrder={handleQuickOrder}
+                      t={t}
                     />
                   ))}
                 </div>
@@ -1135,11 +1355,11 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                     disabled={safeCurrentPage === 1}
                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   >
-                    Prev
+                    {t.prev}
                   </button>
 
                   <div className="pagination-info">
-                    Page <strong>{safeCurrentPage}</strong> of <strong>{totalPages}</strong>
+                    {t.page} <strong>{safeCurrentPage}</strong> {t.of} <strong>{totalPages}</strong>
                   </div>
 
                   <button
@@ -1150,7 +1370,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                       setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                     }
                   >
-                    Next
+                    {t.next}
                   </button>
                 </div>
               </div>
@@ -1169,6 +1389,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                     onBackToShop={handleBackToShop}
                     showCheckout={showCheckout}
                     setShowCheckout={setShowCheckout}
+                    t={t}
                   />
                 </div>
               </div>
@@ -1183,10 +1404,10 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
           <div className="footer-line">Try before you buy.</div>
           <div className="footer-links">
             <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
-              Instagram
+              {t.footerInstagram}
             </a>
             <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
-              Send DM
+              {t.footerSendDm}
             </a>
           </div>
           <div className="footer-copy">Remember. PlayNice.</div>
