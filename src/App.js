@@ -1,6 +1,178 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
+const translations = {
+  en: {
+    navHome: "Home",
+    navShop: "Shop",
+    cart: "Cart",
+    heroEyebrow: "Luxury Fragrance Curation",
+    heroTitleLine1: "Desire begins",
+    heroTitleLine2: "in the dark.",
+    heroText:
+      "Discover designer, niche and Arabian fragrances through a premium decant experience. Test on skin. Wear with intent. Own the moment.",
+    heroNow: "Now €34.90",
+    heroOffer: "Afnan 9PM Rebel 100ml full bottle",
+    exploreCollection: "Explore Collection",
+    claimOffer: "Claim the Offer",
+    valueTry: "✔ Try before you buy",
+    valuePremium: "✔ Only premium fragrances",
+    valueDelivery: "✔ Delivery across Montenegro",
+    highlightsKicker: "Current Highlights",
+    highlightsTitle: "Selected for impact",
+    highlightsText:
+      "Curated bottles and standout decants chosen for performance, compliment factor and identity.",
+    campaignPick: "Campaign Pick",
+    summerHit: "Summer Hit",
+    arabianEdge: "Arabian Edge",
+    rebelCardText:
+      "A bold full-bottle offer with serious value. The current hero of the season.",
+    islandDreamsText:
+      "Bright, addictive and made for warm weather. Easy reach, high reward.",
+    marwaText:
+      "Smooth character, strong identity and standout value in decant format.",
+    add100ml: "Add 100ml for €34.90",
+    privateSelection: "Private Selection",
+    bestsellersTitle: "Best sellers & signature picks",
+    bestsellersText:
+      "Premium decants that let customers discover the right fragrance before committing to a full bottle.",
+    viewFullCollection: "View Full Collection",
+    discoverTitle: "Discover Your Signature",
+    discoverText: "Test before you commit. Find what truly fits you.",
+    shopKicker: "Shop",
+    shopTitle: "PlayNice Collection",
+    shopText:
+      "Premium decants and selected bottles. Built for discovery, style and smart buying.",
+    searchLabel: "Search",
+    searchPlaceholder: "Search fragrance...",
+    categoryLabel: "Category",
+    all: "All",
+    from: "From",
+    openDetails: "Open details",
+    luxuryModal: "Luxury modal",
+    yourCart: "Your Cart",
+    selectedItems: "Selected items",
+    cartEmpty: "Your cart is empty.",
+    goToShop: "Go to Shop",
+    subtotal: "Subtotal",
+    shipping: "Shipping",
+    total: "Total",
+    continueCheckout: "Continue to Checkout",
+    checkoutKicker: "Checkout",
+    checkoutTitle: "Complete your order",
+    firstName: "First name",
+    lastName: "Last name",
+    email: "Email",
+    phone: "Phone",
+    city: "City",
+    address: "Address",
+    note: "Order note (optional)",
+    placeOrder: "Place Order",
+    orderSummary: "Order summary",
+    noItemsCart: "No items in cart.",
+    privateSelectionModal: "Private Selection",
+    whyChoose: "Why customers choose this",
+    whyChooseText:
+      "Strong identity, premium feel and excellent value in decant format.",
+    chooseSize: "Choose size",
+    selectedPrice: "Selected price",
+    addToCart: "Add to Cart",
+    modalNote:
+      "Try before you buy. Premium fragrance discovery, delivered across Montenegro.",
+    page: "Page",
+    remove: "Remove",
+    addedToCart: "added to cart"
+  },
+  sr: {
+    navHome: "Početna",
+    navShop: "Shop",
+    cart: "Korpa",
+    heroEyebrow: "Luksuzna selekcija parfema",
+    heroTitleLine1: "Želja počinje",
+    heroTitleLine2: "u tami.",
+    heroText:
+      "Otkrij dizajnerske, niche i arapske parfeme kroz premium decant iskustvo. Isprobaj na koži. Nosi sa stavom. Osvoji trenutak.",
+    heroNow: "Sada €34.90",
+    heroOffer: "Afnan 9PM Rebel 100ml puna bočica",
+    exploreCollection: "Pogledaj ponudu",
+    claimOffer: "Uzmi ponudu",
+    valueTry: "✔ Probaj prije kupovine",
+    valuePremium: "✔ Samo premium parfemi",
+    valueDelivery: "✔ Dostava širom Crne Gore",
+    highlightsKicker: "Aktuelni izdvojeni",
+    highlightsTitle: "Odabrano za utisak",
+    highlightsText:
+      "Pažljivo odabrane bočice i dekanti koji se izdvajaju performansom, komplimentima i identitetom.",
+    campaignPick: "Glavna ponuda",
+    summerHit: "Ljetni hit",
+    arabianEdge: "Arapski karakter",
+    rebelCardText:
+      "Moćna full bottle ponuda sa ozbiljnom vrijednošću. Trenutni heroj sezone.",
+    islandDreamsText:
+      "Svijetao, zarazan i stvoren za toplo vrijeme. Lak izbor, jak efekat.",
+    marwaText:
+      "Uglađen karakter, snažan identitet i odlična vrijednost u decant formatu.",
+    add100ml: "Dodaj 100ml za €34.90",
+    privateSelection: "Private Selection",
+    bestsellersTitle: "Bestseleri i signature izbor",
+    bestsellersText:
+      "Premium dekanti koji kupcima omogućavaju da otkriju pravi parfem prije nego što se odluče za punu bočicu.",
+    viewFullCollection: "Pogledaj cijelu kolekciju",
+    discoverTitle: "Pronađi svoj signature miris",
+    discoverText: "Isprobaj prije odluke. Pronađi ono što ti zaista pristaje.",
+    shopKicker: "Shop",
+    shopTitle: "PlayNice kolekcija",
+    shopText:
+      "Premium dekanti i pažljivo odabrane bočice. Stvoreno za otkrivanje, stil i pametnu kupovinu.",
+    searchLabel: "Pretraga",
+    searchPlaceholder: "Pretraži parfem...",
+    categoryLabel: "Kategorija",
+    all: "Sve",
+    from: "Od",
+    openDetails: "Otvori detalje",
+    luxuryModal: "Premium prikaz",
+    yourCart: "Tvoja korpa",
+    selectedItems: "Odabrani proizvodi",
+    cartEmpty: "Korpa je prazna.",
+    goToShop: "Idi na shop",
+    subtotal: "Međuzbir",
+    shipping: "Dostava",
+    total: "Ukupno",
+    continueCheckout: "Nastavi na poručivanje",
+    checkoutKicker: "Poručivanje",
+    checkoutTitle: "Završi porudžbinu",
+    firstName: "Ime",
+    lastName: "Prezime",
+    email: "Email",
+    phone: "Telefon",
+    city: "Grad",
+    address: "Adresa",
+    note: "Napomena uz porudžbinu (opciono)",
+    placeOrder: "Poruči",
+    orderSummary: "Pregled porudžbine",
+    noItemsCart: "Nema proizvoda u korpi.",
+    privateSelectionModal: "Private Selection",
+    whyChoose: "Zašto kupci biraju ovaj parfem",
+    whyChooseText:
+      "Snažan identitet, premium utisak i odlična vrijednost u decant formatu.",
+    chooseSize: "Izaberi veličinu",
+    selectedPrice: "Izabrana cijena",
+    addToCart: "Dodaj u korpu",
+    modalNote:
+      "Probaj prije kupovine. Premium fragrance discovery, dostava širom Crne Gore.",
+    page: "Strana",
+    remove: "Ukloni",
+    addedToCart: "dodat u korpu"
+  }
+};
+
+const categoryLabels = {
+  Arabian: { en: "Arabian", sr: "Arabian" },
+  Designer: { en: "Designer", sr: "Designer" },
+  Niche: { en: "Niche", sr: "Niche" },
+  Summer: { en: "Summer", sr: "Summer" }
+};
+
 const products = [
   {
     id: 1,
@@ -8,9 +180,14 @@ const products = [
     category: "Arabian",
     image: "/afnan-9am.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
-    description:
-      "Fresh, versatile and easy to wear. A clean daily driver with modern energy and broad appeal.",
-    vibe: "Fresh • Bright • Everyday confidence"
+    description: {
+      en: "Fresh, versatile and easy to wear. A clean daily driver with modern energy and broad appeal.",
+      sr: "Svjež, svestran i lak za nošenje. Čist svakodnevni izbor sa modernom energijom i širokom dopadljivošću."
+    },
+    vibe: {
+      en: "Fresh • Bright • Everyday confidence",
+      sr: "Svjež • Svijetao • Svakodnevno samopouzdanje"
+    }
   },
   {
     id: 2,
@@ -18,9 +195,14 @@ const products = [
     category: "Arabian",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     badge: "BESTSELLER",
-    description:
-      "Bold, addictive and attention-grabbing. A nightlife weapon with strong charisma and premium value.",
-    vibe: "Sweet • Magnetic • Night out"
+    description: {
+      en: "Bold, addictive and attention-grabbing. A nightlife weapon with strong charisma and premium value.",
+      sr: "Smio, zarazan i magnet za pažnju. Noćni adut sa snažnom harizmom i premium vrijednošću."
+    },
+    vibe: {
+      en: "Sweet • Magnetic • Night out",
+      sr: "Sladak • Magnetičan • Noćni izlazak"
+    }
   },
   {
     id: 3,
@@ -28,9 +210,14 @@ const products = [
     category: "Arabian",
     image: "/afnan-supremacy.png",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-    description:
-      "A smooth and elevated masculine scent with depth, polish and lasting presence.",
-    vibe: "Refined • Powerful • Signature-ready"
+    description: {
+      en: "A smooth and elevated masculine scent with depth, polish and lasting presence.",
+      sr: "Uglađen i uzdignut muški miris sa dubinom, elegancijom i postojanim prisustvom."
+    },
+    vibe: {
+      en: "Refined • Powerful • Signature-ready",
+      sr: "Rafiniran • Snažan • Spreman za signature ulogu"
+    }
   },
   {
     id: 4,
@@ -38,18 +225,28 @@ const products = [
     category: "Arabian",
     image: "/afnan-turathi-blue.png",
     sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
-    description:
-      "A crisp aromatic profile with upscale freshness and excellent versatility.",
-    vibe: "Citrus • Elegant • High impact"
+    description: {
+      en: "A crisp aromatic profile with upscale freshness and excellent versatility.",
+      sr: "Čist aromatičan profil sa elegantnom svježinom i odličnom svestranošću."
+    },
+    vibe: {
+      en: "Citrus • Elegant • High impact",
+      sr: "Citrusan • Elegantan • Jak utisak"
+    }
   },
   {
     id: 5,
     name: "Afnan 9PM",
     category: "Arabian",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
-    description:
-      "A crowd-pleasing sweet scent built for compliments, dates and cooler evenings.",
-    vibe: "Warm • Sweet • Compliment magnet"
+    description: {
+      en: "A crowd-pleasing sweet scent built for compliments, dates and cooler evenings.",
+      sr: "Dopadljiv sladak miris stvoren za komplimente, sastanke i svježije večeri."
+    },
+    vibe: {
+      en: "Warm • Sweet • Compliment magnet",
+      sr: "Topao • Sladak • Magnet za komplimente"
+    }
   },
   {
     id: 6,
@@ -57,9 +254,14 @@ const products = [
     category: "Arabian",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     badge: "HOT",
-    description:
-      "Rich, sweet and spicy with an irresistible gourmand edge and addictive warmth.",
-    vibe: "Spicy • Gourmand • Cozy luxury"
+    description: {
+      en: "Rich, sweet and spicy with an irresistible gourmand edge and addictive warmth.",
+      sr: "Bogat, sladak i začinski, sa neodoljivim gourmand karakterom i zaraznom toplinom."
+    },
+    vibe: {
+      en: "Spicy • Gourmand • Cozy luxury",
+      sr: "Začinski • Gourmand • Ušuškan luksuz"
+    }
   },
   {
     id: 7,
@@ -67,126 +269,196 @@ const products = [
     category: "Designer",
     image: "/armaf-cdn-intense.png",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-    description:
-      "Sharp, confident and assertive. A modern classic for projection and presence.",
-    vibe: "Smoky • Masculine • Commanding"
+    description: {
+      en: "Sharp, confident and assertive. A modern classic for projection and presence.",
+      sr: "Oštar, samouvjeren i upečatljiv. Moderni klasik za projekciju i prisustvo."
+    },
+    vibe: {
+      en: "Smoky • Masculine • Commanding",
+      sr: "Diman • Muževan • Dominantan"
+    }
   },
   {
     id: 8,
     name: "Armaf Club de Nuit Sillage",
     category: "Designer",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-    description:
-      "Airy metallic freshness with strong identity and standout trail.",
-    vibe: "Bright • Mineral • Distinctive"
+    description: {
+      en: "Airy metallic freshness with strong identity and standout trail.",
+      sr: "Prozračna metalna svježina sa snažnim identitetom i upečatljivim tragom."
+    },
+    vibe: {
+      en: "Bright • Mineral • Distinctive",
+      sr: "Svijetao • Mineralan • Poseban"
+    }
   },
   {
     id: 9,
     name: "Armaf Club de Nuit Bling",
     category: "Designer",
     sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
-    description:
-      "A flashy, modern scent with attention-grabbing energy and stylish appeal.",
-    vibe: "Glamorous • Youthful • Loud in a good way"
+    description: {
+      en: "A flashy, modern scent with attention-grabbing energy and stylish appeal.",
+      sr: "Efektan, moderan miris sa energijom koja privlači pažnju i stilskim karakterom."
+    },
+    vibe: {
+      en: "Glamorous • Youthful • Loud in a good way",
+      sr: "Glamurozan • Mladalački • Primjetan na pravi način"
+    }
   },
   {
     id: 10,
     name: "Mancera Cedrat Boise",
     category: "Niche",
     sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
-    description:
-      "A niche favorite balancing citrus brightness with woods and sophistication.",
-    vibe: "Niche • Smooth • Effortlessly classy"
+    description: {
+      en: "A niche favorite balancing citrus brightness with woods and sophistication.",
+      sr: "Niche favorit koji spaja citrusnu svježinu, drvenaste tonove i sofisticiranost."
+    },
+    vibe: {
+      en: "Niche • Smooth • Effortlessly classy",
+      sr: "Niche • Uglađen • Nenametljivo otmen"
+    }
   },
   {
     id: 11,
     name: "Gisada Ambassador",
     category: "Designer",
     sizes: { "5ml": 11, "10ml": 20, "20ml": 38 },
-    description:
-      "A polished designer scent with elegant sweetness and strong mass appeal.",
-    vibe: "Luxurious • Modern • Crowd favorite"
+    description: {
+      en: "A polished designer scent with elegant sweetness and strong mass appeal.",
+      sr: "Uglancan dizajnerski miris sa elegantnom slatkoćom i velikom dopadljivošću."
+    },
+    vibe: {
+      en: "Luxurious • Modern • Crowd favorite",
+      sr: "Luksuzan • Moderan • Omiljen među publikom"
+    }
   },
   {
     id: 12,
     name: "Givenchy Gentleman Réserve Privée",
     category: "Designer",
     sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
-    description:
-      "A dark, smooth and upscale scent with a dressed-up evening personality.",
-    vibe: "Boozy • Elegant • Refined dark"
+    description: {
+      en: "A dark, smooth and upscale scent with a dressed-up evening personality.",
+      sr: "Taman, uglađen i elegantan miris sa večernjim, dotjeranim karakterom."
+    },
+    vibe: {
+      en: "Boozy • Elegant • Refined dark",
+      sr: "Boozy • Elegantan • Rafinirano taman"
+    }
   },
   {
     id: 13,
     name: "Creed Aventus Cologne",
     category: "Niche",
     sizes: { "5ml": 29, "10ml": 52, "20ml": 98 },
-    description:
-      "Premium niche freshness with luxury polish, clean projection and prestige.",
-    vibe: "Prestige • Fresh • Executive energy"
+    description: {
+      en: "Premium niche freshness with luxury polish, clean projection and prestige.",
+      sr: "Premium niche svježina sa luksuznim finišem, čistom projekcijom i prestižem."
+    },
+    vibe: {
+      en: "Prestige • Fresh • Executive energy",
+      sr: "Prestiž • Svježina • Executive energija"
+    }
   },
   {
     id: 14,
     name: "Bleu de Chanel EDP",
     category: "Designer",
     sizes: { "5ml": 15, "10ml": 27, "20ml": 50 },
-    description:
-      "A universally respected signature scent that feels clean, masculine and premium.",
-    vibe: "Blue • Elegant • Timeless"
+    description: {
+      en: "A universally respected signature scent that feels clean, masculine and premium.",
+      sr: "Univerzalno cijenjen signature miris koji djeluje čisto, muževno i premium."
+    },
+    vibe: {
+      en: "Blue • Elegant • Timeless",
+      sr: "Blue • Elegantan • Bezvremenski"
+    }
   },
   {
     id: 15,
     name: "Boss The Scent Elixir",
     category: "Designer",
     sizes: { "5ml": 15, "10ml": 27, "20ml": 50 },
-    description:
-      "Dark, sensual and richer than the usual designer style. Ideal for evening wear.",
-    vibe: "Seductive • Dense • Smooth heat"
+    description: {
+      en: "Dark, sensual and richer than the usual designer style. Ideal for evening wear.",
+      sr: "Taman, senzualan i bogatiji od uobičajenog dizajnerskog stila. Idealan za veče."
+    },
+    vibe: {
+      en: "Seductive • Dense • Smooth heat",
+      sr: "Zavodljiv • Gust • Uglađena toplina"
+    }
   },
   {
     id: 16,
     name: "Montblanc Explorer Extreme",
     category: "Designer",
     sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
-    description:
-      "A bold and adventurous scent with familiar masculinity and a polished finish.",
-    vibe: "Woody • Adventurous • Reliable"
+    description: {
+      en: "A bold and adventurous scent with familiar masculinity and a polished finish.",
+      sr: "Smio i avanturistički miris sa poznatom muževnošću i uglađenim završetkom."
+    },
+    vibe: {
+      en: "Woody • Adventurous • Reliable",
+      sr: "Drvenast • Avanturistički • Pouzdan"
+    }
   },
   {
     id: 17,
     name: "Swiss Arabian Tobacco 01",
     category: "Arabian",
     sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
-    description:
-      "Dense tobacco warmth with a rich Middle Eastern character and luxurious depth.",
-    vibe: "Tobacco • Warm • Rich aura"
+    description: {
+      en: "Dense tobacco warmth with a rich Middle Eastern character and luxurious depth.",
+      sr: "Gusta duvanska toplina sa bogatim bliskoistočnim karakterom i luksuznom dubinom."
+    },
+    vibe: {
+      en: "Tobacco • Warm • Rich aura",
+      sr: "Duvan • Topao • Bogata aura"
+    }
   },
   {
     id: 18,
     name: "Calvin Klein Defy EDT",
     category: "Designer",
     sizes: { "5ml": 7, "10ml": 12, "20ml": 22 },
-    description:
-      "A clean masculine designer freshie with easy wearability and modern simplicity.",
-    vibe: "Clean • Casual • Everyday"
+    description: {
+      en: "A clean masculine designer freshie with easy wearability and modern simplicity.",
+      sr: "Čist muški dizajnerski freshie sa lakim nošenjem i modernom jednostavnošću."
+    },
+    vibe: {
+      en: "Clean • Casual • Everyday",
+      sr: "Čist • Ležeran • Svakodnevan"
+    }
   },
   {
     id: 19,
     name: "Calvin Klein Defy Parfum",
     category: "Designer",
     sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
-    description:
-      "A darker and richer take on the Defy DNA with improved depth and stronger character.",
-    vibe: "Modern • Darker • Elevated"
+    description: {
+      en: "A darker and richer take on the Defy DNA with improved depth and stronger character.",
+      sr: "Tamnija i bogatija interpretacija Defy DNK sa više dubine i jačim karakterom."
+    },
+    vibe: {
+      en: "Modern • Darker • Elevated",
+      sr: "Moderan • Tamniji • Uzdignut"
+    }
   },
   {
     id: 20,
     name: "CK All",
     category: "Designer",
     sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
-    description:
-      "Minimal, clean and very wearable. Great for effortless daily freshness.",
-    vibe: "Soft • Clean • Universal"
+    description: {
+      en: "Minimal, clean and very wearable. Great for effortless daily freshness.",
+      sr: "Minimalan, čist i veoma nosiv. Odličan za nenametljivu svakodnevnu svježinu."
+    },
+    vibe: {
+      en: "Soft • Clean • Universal",
+      sr: "Mekan • Čist • Univerzalan"
+    }
   },
   {
     id: 21,
@@ -194,45 +466,83 @@ const products = [
     category: "Summer",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     badge: "SUMMER",
-    description:
-      "A bright tropical mood with vacation energy, easy wear and warm-weather appeal.",
-    vibe: "Tropical • Sunny • Must-try summer"
+    description: {
+      en: "A bright tropical mood with vacation energy, easy wear and warm-weather appeal.",
+      sr: "Svijetao tropski karakter sa odmorskom energijom, lakim nošenjem i ljetnjom dopadljivošću."
+    },
+    vibe: {
+      en: "Tropical • Sunny • Must-try summer",
+      sr: "Tropski • Sunčan • Ljetnji must-try"
+    }
   },
   {
     id: 22,
     name: "Arabian Prestige Marwa",
     category: "Arabian",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-    description:
-      "A strong value pick with character, smoothness and a distinctly Arabian profile.",
-    vibe: "Exotic • Smooth • Distinctive"
+    description: {
+      en: "A strong value pick with character, smoothness and a distinctly Arabian profile.",
+      sr: "Sjajan value izbor sa karakterom, uglađenošću i prepoznatljivo arapskim profilom."
+    },
+    vibe: {
+      en: "Exotic • Smooth • Distinctive",
+      sr: "Egzotičan • Uglađen • Poseban"
+    }
   },
   {
     id: 23,
     name: "Parfums de Marly Castley",
     category: "Niche",
     sizes: { "5ml": 16, "10ml": 29, "20ml": 55 },
-    description:
-      "Luxury niche perfumery with depth, polish and a premium signature aura.",
-    vibe: "Niche • Regal • High-end presence"
+    description: {
+      en: "Luxury niche perfumery with depth, polish and a premium signature aura.",
+      sr: "Luksuzna niche parfimerija sa dubinom, elegancijom i premium signature aurom."
+    },
+    vibe: {
+      en: "Niche • Regal • High-end presence",
+      sr: "Niche • Kraljevski • High-end prisustvo"
+    }
   },
   {
     id: 24,
     name: "Afnan Supremacy Not Only Intense",
     category: "Arabian",
     sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
-    description:
-      "One of the strongest value performers in the category with excellent impact.",
-    vibe: "Intense • Bold • Powerful trail"
+    description: {
+      en: "One of the strongest value performers in the category with excellent impact.",
+      sr: "Jedan od najjačih value parfema u kategoriji sa odličnim efektom."
+    },
+    vibe: {
+      en: "Intense • Bold • Powerful trail",
+      sr: "Intenzivan • Smio • Snažan trag"
+    }
   }
 ];
 
-const categories = ["All", ...Array.from(new Set(products.map((p) => p.category)))];
 const PRODUCTS_PER_PAGE = 12;
 const SHIPPING_COST = 3.5;
 
 function formatPrice(value) {
   return `€${Number(value).toFixed(2)}`;
+}
+
+function getDefaultLanguage() {
+  if (typeof window === "undefined") return "en";
+
+  const savedLang = window.localStorage.getItem("playnice_lang");
+  if (savedLang === "sr" || savedLang === "en") return savedLang;
+
+  const browserLang = (window.navigator.language || "").toLowerCase();
+  if (
+    browserLang.startsWith("sr") ||
+    browserLang.startsWith("hr") ||
+    browserLang.startsWith("bs") ||
+    browserLang.startsWith("me")
+  ) {
+    return "sr";
+  }
+
+  return "en";
 }
 
 function ProductImage({ product, className = "" }) {
@@ -244,6 +554,7 @@ function ProductImage({ product, className = "" }) {
 }
 
 function App() {
+  const [lang, setLang] = useState(() => getDefaultLanguage());
   const [view, setView] = useState("home");
   const [category, setCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
@@ -265,6 +576,14 @@ function App() {
     note: ""
   });
 
+  const tr = translations[lang];
+
+  const categories = useMemo(() => ["All", ...Array.from(new Set(products.map((p) => p.category)))], []);
+
+  useEffect(() => {
+    window.localStorage.setItem("playnice_lang", lang);
+  }, [lang]);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const urlView = params.get("view");
@@ -276,7 +595,7 @@ function App() {
     if (urlCategory && categories.includes(urlCategory)) setCategory(urlCategory);
     if (urlSearch) setSearchTerm(urlSearch);
     if (urlPage && !Number.isNaN(Number(urlPage))) setCurrentPage(Number(urlPage));
-  }, []);
+  }, [categories]);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -372,7 +691,7 @@ function App() {
       ];
     });
 
-    showFeedback(`${product.name} added to cart`);
+    showFeedback(`${product.name} ${tr.addedToCart}`);
   };
 
   const addHeroBottleToCart = () => {
@@ -436,6 +755,11 @@ function App() {
     setCartOpen(true);
   };
 
+  const getCategoryLabel = (categoryKey) => {
+    if (categoryKey === "All") return tr.all;
+    return categoryLabels[categoryKey]?.[lang] || categoryKey;
+  };
+
   const ProductCard = ({ product }) => (
     <article
       className="product-card clickable"
@@ -454,16 +778,16 @@ function App() {
       </div>
 
       <div className="product-meta">
-        <p className="product-category">{product.category}</p>
+        <p className="product-category">{getCategoryLabel(product.category)}</p>
         <h3>{product.name}</h3>
         <p className="product-price-from">
-          From {formatPrice(Math.min(...Object.values(product.sizes)))}
+          {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
         </p>
       </div>
 
       <div className="product-preview-line">
-        <span>Open details</span>
-        <strong>Luxury modal</strong>
+        <span>{tr.openDetails}</span>
+        <strong>{tr.luxuryModal}</strong>
       </div>
 
       <div className="size-buttons" onClick={(e) => e.stopPropagation()}>
@@ -490,17 +814,36 @@ function App() {
 
         <nav className="nav-links">
           <button className={view === "home" ? "active" : ""} onClick={() => setView("home")}>
-            Home
+            {tr.navHome}
           </button>
           <button className={view === "shop" ? "active" : ""} onClick={() => setView("shop")}>
-            Shop
+            {tr.navShop}
           </button>
         </nav>
 
-        <button className="cart-button" onClick={() => setCartOpen((prev) => !prev)}>
-          Cart
-          {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-        </button>
+        <div className="topbar-right">
+          <div className="lang-switch">
+            <button
+              className={lang === "en" ? "active" : ""}
+              onClick={() => setLang("en")}
+              type="button"
+            >
+              EN
+            </button>
+            <button
+              className={lang === "sr" ? "active" : ""}
+              onClick={() => setLang("sr")}
+              type="button"
+            >
+              SR
+            </button>
+          </div>
+
+          <button className="cart-button" onClick={() => setCartOpen((prev) => !prev)}>
+            {tr.cart}
+            {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+          </button>
+        </div>
       </header>
 
       {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
@@ -511,29 +854,26 @@ function App() {
             <section className="hero">
               <div className="hero-grid">
                 <div className="hero-copy">
-                  <p className="eyebrow">Luxury Fragrance Curation</p>
+                  <p className="eyebrow">{tr.heroEyebrow}</p>
                   <h1>
-                    Desire begins
+                    {tr.heroTitleLine1}
                     <br />
-                    in the dark.
+                    {tr.heroTitleLine2}
                   </h1>
-                  <p className="hero-text">
-                    Discover designer, niche and Arabian fragrances through a premium decant
-                    experience. Test on skin. Wear with intent. Own the moment.
-                  </p>
+                  <p className="hero-text">{tr.heroText}</p>
 
                   <div className="hero-price-line">
                     <span className="old-price">€45.90</span>
-                    <span className="new-price">Now €34.90</span>
-                    <span className="hero-offer-text">Afnan 9PM Rebel 100ml full bottle</span>
+                    <span className="new-price">{tr.heroNow}</span>
+                    <span className="hero-offer-text">{tr.heroOffer}</span>
                   </div>
 
                   <div className="hero-actions">
                     <button className="gold-button" onClick={goToShop}>
-                      Explore Collection
+                      {tr.exploreCollection}
                     </button>
                     <button className="ghost-button" onClick={addHeroBottleToCart}>
-                      Claim the Offer
+                      {tr.claimOffer}
                     </button>
                   </div>
                 </div>
@@ -551,49 +891,40 @@ function App() {
             </section>
 
             <section className="value-strip">
-              <div>✔ Try before you buy</div>
-              <div>✔ Only premium fragrances</div>
-              <div>✔ Delivery across Montenegro</div>
+              <div>{tr.valueTry}</div>
+              <div>{tr.valuePremium}</div>
+              <div>{tr.valueDelivery}</div>
             </section>
 
             <div className="section-divider" />
 
             <section className="featured-section section-wrap">
               <div className="section-head">
-                <p className="section-kicker">Current Highlights</p>
-                <h2>Selected for impact</h2>
-                <p>
-                  Curated bottles and standout decants chosen for performance, compliment factor
-                  and identity.
-                </p>
+                <p className="section-kicker">{tr.highlightsKicker}</p>
+                <h2>{tr.highlightsTitle}</h2>
+                <p>{tr.highlightsText}</p>
               </div>
 
               <div className="feature-grid">
                 <article className="feature-card large">
-                  <span className="feature-tag">Campaign Pick</span>
+                  <span className="feature-tag">{tr.campaignPick}</span>
                   <h3>Afnan 9PM Rebel</h3>
-                  <p>
-                    A bold full-bottle offer with serious value. The current hero of the season.
-                  </p>
+                  <p>{tr.rebelCardText}</p>
                   <button className="inline-link" onClick={addHeroBottleToCart}>
-                    Add 100ml for €34.90
+                    {tr.add100ml}
                   </button>
                 </article>
 
                 <article className="feature-card">
-                  <span className="feature-tag">Summer Hit</span>
+                  <span className="feature-tag">{tr.summerHit}</span>
                   <h3>Kadlaj Island Dreams</h3>
-                  <p>
-                    Bright, addictive and made for warm weather. Easy reach, high reward.
-                  </p>
+                  <p>{tr.islandDreamsText}</p>
                 </article>
 
                 <article className="feature-card">
-                  <span className="feature-tag">Arabian Edge</span>
+                  <span className="feature-tag">{tr.arabianEdge}</span>
                   <h3>Arabian Prestige Marwa</h3>
-                  <p>
-                    Smooth character, strong identity and standout value in decant format.
-                  </p>
+                  <p>{tr.marwaText}</p>
                 </article>
               </div>
             </section>
@@ -602,12 +933,9 @@ function App() {
 
             <section className="homepage-shop-preview section-wrap">
               <div className="section-head">
-                <p className="section-kicker">Private Selection</p>
-                <h2>Best sellers & signature picks</h2>
-                <p>
-                  Premium decants that let customers discover the right fragrance before committing
-                  to a full bottle.
-                </p>
+                <p className="section-kicker">{tr.privateSelection}</p>
+                <h2>{tr.bestsellersTitle}</h2>
+                <p>{tr.bestsellersText}</p>
               </div>
 
               <div className="product-grid">
@@ -618,7 +946,7 @@ function App() {
 
               <div className="section-cta-center">
                 <button className="gold-button" onClick={goToShop}>
-                  View Full Collection
+                  {tr.viewFullCollection}
                 </button>
               </div>
             </section>
@@ -626,9 +954,9 @@ function App() {
             <div className="section-divider" />
 
             <section className="cta-section">
-              <h2>Discover Your Signature</h2>
-              <p>Test before you commit. Find what truly fits you.</p>
-              <button onClick={goToShop}>Explore Collection</button>
+              <h2>{tr.discoverTitle}</h2>
+              <p>{tr.discoverText}</p>
+              <button onClick={goToShop}>{tr.exploreCollection}</button>
             </section>
           </>
         )}
@@ -637,31 +965,29 @@ function App() {
           <section className="shop-section section-wrap">
             <div className="shop-top">
               <div>
-                <p className="section-kicker">Shop</p>
-                <h2>PlayNice Collection</h2>
-                <p className="shop-subtext">
-                  Premium decants and selected bottles. Built for discovery, style and smart buying.
-                </p>
+                <p className="section-kicker">{tr.shopKicker}</p>
+                <h2>{tr.shopTitle}</h2>
+                <p className="shop-subtext">{tr.shopText}</p>
               </div>
             </div>
 
             <div className="shop-toolbar">
               <div className="toolbar-group">
-                <label>Search</label>
+                <label>{tr.searchLabel}</label>
                 <input
                   type="text"
-                  placeholder="Search fragrance..."
+                  placeholder={tr.searchPlaceholder}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
 
               <div className="toolbar-group">
-                <label>Category</label>
+                <label>{tr.categoryLabel}</label>
                 <select value={category} onChange={(e) => setCategory(e.target.value)}>
                   {categories.map((cat) => (
                     <option key={cat} value={cat}>
-                      {cat}
+                      {getCategoryLabel(cat)}
                     </option>
                   ))}
                 </select>
@@ -679,7 +1005,7 @@ function App() {
                 Prev
               </button>
               <span>
-                Page {currentPage} / {totalPages}
+                {tr.page} {currentPage} / {totalPages}
               </span>
               <button onClick={nextPage} disabled={currentPage === totalPages}>
                 Next
@@ -692,8 +1018,8 @@ function App() {
       <aside className={`cart-drawer ${cartOpen ? "open" : ""}`}>
         <div className="cart-drawer-header">
           <div>
-            <p className="section-kicker">Your Cart</p>
-            <h3>Selected items</h3>
+            <p className="section-kicker">{tr.yourCart}</p>
+            <h3>{tr.selectedItems}</h3>
           </div>
           <button className="close-button" onClick={() => setCartOpen(false)}>
             ×
@@ -702,9 +1028,9 @@ function App() {
 
         {cart.length === 0 ? (
           <div className="cart-empty">
-            <p>Your cart is empty.</p>
+            <p>{tr.cartEmpty}</p>
             <button className="gold-button small" onClick={goToShop}>
-              Go to Shop
+              {tr.goToShop}
             </button>
           </div>
         ) : (
@@ -725,7 +1051,7 @@ function App() {
                       <button onClick={() => updateQuantity(item.key, 1)}>+</button>
                     </div>
                     <button className="remove-link" onClick={() => removeFromCart(item.key)}>
-                      Remove
+                      {tr.remove}
                     </button>
                   </div>
                 </div>
@@ -734,21 +1060,21 @@ function App() {
 
             <div className="cart-summary">
               <div>
-                <span>Subtotal</span>
+                <span>{tr.subtotal}</span>
                 <strong>{formatPrice(subtotal)}</strong>
               </div>
               <div>
-                <span>Shipping</span>
+                <span>{tr.shipping}</span>
                 <strong>{formatPrice(shipping)}</strong>
               </div>
               <div className="cart-total">
-                <span>Total</span>
+                <span>{tr.total}</span>
                 <strong>{formatPrice(total)}</strong>
               </div>
             </div>
 
             <button className="gold-button checkout-button" onClick={() => setCheckoutOpen(true)}>
-              Continue to Checkout
+              {tr.continueCheckout}
             </button>
           </>
         )}
@@ -768,7 +1094,7 @@ function App() {
           <>
             <div className="product-modal-header">
               <div>
-                <p className="section-kicker">Private Selection</p>
+                <p className="section-kicker">{tr.privateSelectionModal}</p>
                 <h3>{selectedProduct.name}</h3>
               </div>
               <button className="close-button" onClick={closeProductModal}>
@@ -787,25 +1113,23 @@ function App() {
                 </div>
 
                 <div className="product-modal-meta">
-                  <p className="product-modal-category">{selectedProduct.category}</p>
-                  <p className="product-modal-vibe">{selectedProduct.vibe}</p>
+                  <p className="product-modal-category">{getCategoryLabel(selectedProduct.category)}</p>
+                  <p className="product-modal-vibe">{selectedProduct.vibe[lang]}</p>
                 </div>
               </div>
 
               <div className="product-modal-content">
                 <div className="product-modal-copy">
-                  <p className="product-modal-description">{selectedProduct.description}</p>
+                  <p className="product-modal-description">{selectedProduct.description[lang]}</p>
 
                   <div className="product-modal-info-box">
-                    <span>Why customers choose this</span>
-                    <strong>
-                      Strong identity, premium feel and excellent value in decant format.
-                    </strong>
+                    <span>{tr.whyChoose}</span>
+                    <strong>{tr.whyChooseText}</strong>
                   </div>
                 </div>
 
                 <div className="product-modal-sizes">
-                  <p className="modal-label">Choose size</p>
+                  <p className="modal-label">{tr.chooseSize}</p>
 
                   <div className="modal-size-grid">
                     {Object.entries(selectedProduct.sizes).map(([size, price]) => (
@@ -823,20 +1147,18 @@ function App() {
 
                 <div className="product-modal-footer">
                   <div className="product-modal-price">
-                    <span>Selected price</span>
+                    <span>{tr.selectedPrice}</span>
                     <strong>
                       {selectedSize ? formatPrice(selectedProduct.sizes[selectedSize]) : "—"}
                     </strong>
                   </div>
 
                   <button className="gold-button modal-add-button" onClick={addSelectedProductToCart}>
-                    Add to Cart
+                    {tr.addToCart}
                   </button>
                 </div>
 
-                <p className="product-modal-note">
-                  Try before you buy. Premium fragrance discovery, delivered across Montenegro.
-                </p>
+                <p className="product-modal-note">{tr.modalNote}</p>
               </div>
             </div>
           </>
@@ -846,8 +1168,8 @@ function App() {
       <div className={`checkout-modal ${checkoutOpen ? "open" : ""}`}>
         <div className="checkout-header">
           <div>
-            <p className="section-kicker">Checkout</p>
-            <h3>Complete your order</h3>
+            <p className="section-kicker">{tr.checkoutKicker}</p>
+            <h3>{tr.checkoutTitle}</h3>
           </div>
           <button className="close-button" onClick={() => setCheckoutOpen(false)}>
             ×
@@ -859,13 +1181,13 @@ function App() {
             <div className="form-row two">
               <input
                 name="firstName"
-                placeholder="First name"
+                placeholder={tr.firstName}
                 value={checkoutForm.firstName}
                 onChange={handleCheckoutInput}
               />
               <input
                 name="lastName"
-                placeholder="Last name"
+                placeholder={tr.lastName}
                 value={checkoutForm.lastName}
                 onChange={handleCheckoutInput}
               />
@@ -875,13 +1197,13 @@ function App() {
               <input
                 name="email"
                 type="email"
-                placeholder="Email"
+                placeholder={tr.email}
                 value={checkoutForm.email}
                 onChange={handleCheckoutInput}
               />
               <input
                 name="phone"
-                placeholder="Phone"
+                placeholder={tr.phone}
                 value={checkoutForm.phone}
                 onChange={handleCheckoutInput}
               />
@@ -890,13 +1212,13 @@ function App() {
             <div className="form-row two">
               <input
                 name="city"
-                placeholder="City"
+                placeholder={tr.city}
                 value={checkoutForm.city}
                 onChange={handleCheckoutInput}
               />
               <input
                 name="address"
-                placeholder="Address"
+                placeholder={tr.address}
                 value={checkoutForm.address}
                 onChange={handleCheckoutInput}
               />
@@ -905,7 +1227,7 @@ function App() {
             <div className="form-row">
               <textarea
                 name="note"
-                placeholder="Order note (optional)"
+                placeholder={tr.note}
                 rows="4"
                 value={checkoutForm.note}
                 onChange={handleCheckoutInput}
@@ -913,15 +1235,15 @@ function App() {
             </div>
 
             <button className="gold-button submit-order-button" type="button">
-              Place Order
+              {tr.placeOrder}
             </button>
           </div>
 
           <div className="checkout-summary">
-            <h4>Order summary</h4>
+            <h4>{tr.orderSummary}</h4>
 
             {cart.length === 0 ? (
-              <p className="checkout-empty">No items in cart.</p>
+              <p className="checkout-empty">{tr.noItemsCart}</p>
             ) : (
               <>
                 <div className="checkout-summary-items">
@@ -940,15 +1262,15 @@ function App() {
 
                 <div className="checkout-totals">
                   <div>
-                    <span>Subtotal</span>
+                    <span>{tr.subtotal}</span>
                     <strong>{formatPrice(subtotal)}</strong>
                   </div>
                   <div>
-                    <span>Shipping</span>
+                    <span>{tr.shipping}</span>
                     <strong>{formatPrice(shipping)}</strong>
                   </div>
                   <div className="grand-total">
-                    <span>Total</span>
+                    <span>{tr.total}</span>
                     <strong>{formatPrice(total)}</strong>
                   </div>
                 </div>
