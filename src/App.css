@@ -137,59 +137,6 @@ select:focus-visible {
   z-index: 1;
 }
 
-.header {
-  position: sticky;
-  top: 0;
-  backdrop-filter: blur(14px);
-  background: rgba(5, 5, 5, 0.92);
-  border-bottom: 1px solid rgba(215, 179, 98, 0.08);
-  z-index: 20;
-}
-
-.header-inner {
-  min-height: 86px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 28px;
-}
-
-.brand-block {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.brand-logo {
-  color: var(--gold-soft);
-  letter-spacing: 0.36rem;
-  font-weight: 700;
-  font-size: 1.08rem;
-}
-
-.brand-tagline {
-  color: var(--muted-2);
-  font-size: 0.76rem;
-  letter-spacing: 0.12rem;
-}
-
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-
-.nav a {
-  color: rgba(247, 242, 232, 0.8);
-  font-size: 0.96rem;
-  transition: color 0.25s ease;
-}
-
-.nav a:hover {
-  color: var(--gold-soft);
-}
-
 .hero {
   padding: 72px 0 48px;
 }
