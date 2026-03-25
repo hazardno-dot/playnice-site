@@ -861,6 +861,7 @@ const goToShopWithSearch = (term) => {
             className="hero-bottle main"
           />
         </div>
+        </div>
     </div>
 
     <div className="hero-featured-right">
