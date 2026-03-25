@@ -1110,23 +1110,51 @@ ${t.orderTotal}: ${formatPrice(total)}`;
           </div>
 
           <div className="header-right">
-            <nav className="nav">
-              <a href="/" onClick={openHome}>
-                {t.navHome}
-              </a>
-              <a
-                href="/?view=shop"
-                onClick={(e) => {
-                  e.preventDefault();
-                  goToShop();
-                }}
-              >
-                {t.navShop}
-              </a>
-              <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
-                {t.navContact}
-              </a>
-            </nav>
+            <nav className="nav nav-centered">
+  <a href="/" onClick={openHome} className="nav-link">
+    <span className="nav-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 10.5 12 3l9 7.5" />
+        <path d="M5.5 9.5V21h13V9.5" />
+        <path d="M9.5 21v-6h5v6" />
+      </svg>
+    </span>
+    <span>{t.navHome}</span>
+  </a>
+
+  <a
+    href="/?view=shop"
+    onClick={(e) => {
+      e.preventDefault();
+      goToShop();
+    }}
+    className="nav-link"
+  >
+    <span className="nav-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 7h12l-1 12H7L6 7Z" />
+        <path d="M9 7a3 3 0 0 1 6 0" />
+      </svg>
+    </span>
+    <span>{t.navShop}</span>
+  </a>
+
+  <a
+    href={INSTAGRAM_URL}
+    target="_blank"
+    rel="noreferrer"
+    className="nav-link"
+  >
+    <span className="nav-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a4 4 0 0 1-4 4H7l-4 2V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+        <path d="M8 10h8" />
+        <path d="M8 14h5" />
+      </svg>
+    </span>
+    <span>{t.navContact}</span>
+  </a>
+</nav>
 
             <div className="lang-toggle">
               <button
