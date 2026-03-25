@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 
 const products = [
@@ -55,9 +55,10 @@ const products = [
 const INSTAGRAM_URL = "https://www.instagram.com/playnice.me/";
 const SHIPPING_PRICE = 3.5;
 const FREE_SHIPPING_THRESHOLD = 39;
+const ALLOWED_FILTERS = ["All", "Arabian", "Designer/Niche"];
 
 function formatPrice(value) {
-  return `${Number(value).toFixed(value % 1 === 0 ? 0 : 1)}€`;
+  return `${Number(value).toFixed(2)}€`;
 }
 
 function getSubtotal(cart) {
@@ -69,36 +70,37 @@ function getShipping(subtotal) {
   return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_PRICE;
 }
 
-function updateUrlParams(nextSearch, nextFilter, nextPage) {
-  if (typeof window === "undefined") return;
+function getUrlParams() {
+  if (typeof window === "undefined") return new URLSearchParams();
+  return new URLSearchParams(window.location.search);
+}
 
-  const params = new URLSearchParams(window.location.search);
+function normalizeFilter(value) {
+  return ALLOWED_FILTERS.includes(value) ? value : "All";
+}
+
+function buildShopUrl(nextSearch, nextFilter, nextPage) {
+  const params = new URLSearchParams();
   params.set("view", "shop");
 
   if (nextSearch && nextSearch.trim()) {
     params.set("search", nextSearch.trim());
-  } else {
-    params.delete("search");
   }
 
   if (nextFilter && nextFilter !== "All") {
     params.set("filter", nextFilter);
-  } else {
-    params.delete("filter");
   }
 
   if (nextPage && nextPage > 1) {
     params.set("page", String(nextPage));
-  } else {
-    params.delete("page");
   }
 
-  const queryString = params.toString();
-  const newUrl = queryString
-    ? `${window.location.pathname}?${queryString}`
-    : window.location.pathname;
+  return `/?${params.toString()}`;
+}
 
-  window.history.replaceState({}, "", newUrl);
+function updateUrlParams(nextSearch, nextFilter, nextPage) {
+  if (typeof window === "undefined") return;
+  window.history.replaceState({}, "", buildShopUrl(nextSearch, nextFilter, nextPage));
 }
 
 async function copyText(text) {
@@ -129,7 +131,19 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
   const sizeOptions = Object.keys(product.sizes);
   const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
   const [added, setAdded] = useState(false);
+  const timeoutRef = useRef(null);
+
   const selectedPrice = product.sizes[selectedSize];
+
+  useEffect(() => {
+    setSelectedSize(sizeOptions[0]);
+  }, [product.id, sizeOptions]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const handleAdd = () => {
     onAddToCart({
@@ -140,7 +154,9 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
     });
 
     setAdded(true);
-    window.setTimeout(() => setAdded(false), 1400);
+
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = window.setTimeout(() => setAdded(false), 1400);
   };
 
   return (
@@ -408,7 +424,7 @@ function CartPanel({
                 <strong>{shipping === 0 ? "Free" : formatPrice(shipping)}</strong>
               </div>
 
-              <div className="cart-total cart-total-final">
+              <div className="cart-total-final">
                 <span>Total</span>
                 <strong>{formatPrice(total)}</strong>
               </div>
@@ -421,7 +437,8 @@ function CartPanel({
                 </div>
               ) : (
                 <div className="shipping-badge">
-                  Add <strong>{formatPrice(amountToFreeShipping)}</strong> more for free shipping.
+                  Add <strong>{formatPrice(amountToFreeShipping)}</strong> more for free
+                  shipping.
                 </div>
               )}
             </div>
@@ -524,25 +541,14 @@ function CartPanel({
 }
 
 export default function App() {
-  const getUrlParams = () => {
-    if (typeof window === "undefined") {
-      return new URLSearchParams();
-    }
-    return new URLSearchParams(window.location.search);
-  };
-
   const initialParams = getUrlParams();
   const initialSearch = initialParams.get("search") || "";
-  const initialFilter = initialParams.get("filter") || "All";
+  const initialFilter = normalizeFilter(initialParams.get("filter") || "All");
   const initialPage = Number(initialParams.get("page") || "1");
   const initialView = initialParams.get("view");
 
   const [search, setSearch] = useState(initialSearch);
-  const [filter, setFilter] = useState(
-    initialFilter === "Arabian" || initialFilter === "Designer/Niche"
-      ? initialFilter
-      : "All"
-  );
+  const [filter, setFilter] = useState(initialFilter);
   const [currentPage, setCurrentPage] = useState(initialPage > 0 ? initialPage : 1);
   const [isShopPage, setIsShopPage] = useState(initialView === "shop");
   const [cart, setCart] = useState(() => {
@@ -566,10 +572,7 @@ export default function App() {
     };
 
     try {
-      if (typeof window === "undefined") {
-        return emptyCheckout;
-      }
-
+      if (typeof window === "undefined") return emptyCheckout;
       const saved = window.localStorage.getItem("playnice_checkout");
       return saved ? { ...emptyCheckout, ...JSON.parse(saved) } : emptyCheckout;
     } catch {
@@ -593,22 +596,21 @@ export default function App() {
   }, [checkoutData]);
 
   const filteredProducts = useMemo(() => {
-    const filtered = products.filter((product) => {
+    const nextProducts = products.filter((product) => {
       const matchesSearch = product.name.toLowerCase().includes(search.toLowerCase());
       const matchesFilter = filter === "All" || product.category === filter;
       return matchesSearch && matchesFilter;
     });
 
     if (filter === "All") {
-      return [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+      return [...nextProducts].sort((a, b) => a.name.localeCompare(b.name));
     }
 
-    return filtered;
+    return nextProducts;
   }, [search, filter]);
 
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const safeCurrentPage =
-    totalPages === 0 ? 1 : Math.min(Math.max(currentPage, 1), totalPages);
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+  const safeCurrentPage = Math.min(Math.max(currentPage, 1), totalPages);
 
   const paginatedProducts = filteredProducts.slice(
     (safeCurrentPage - 1) * itemsPerPage,
@@ -631,16 +633,12 @@ export default function App() {
     const handleUrlChange = () => {
       const params = new URLSearchParams(window.location.search);
       const urlSearch = params.get("search") || "";
-      const urlFilter = params.get("filter") || "All";
+      const urlFilter = normalizeFilter(params.get("filter") || "All");
       const urlPage = Number(params.get("page") || "1");
       const urlView = params.get("view");
 
       setSearch(urlSearch);
-      setFilter(
-        urlFilter === "Arabian" || urlFilter === "Designer/Niche"
-          ? urlFilter
-          : "All"
-      );
+      setFilter(urlFilter);
       setCurrentPage(urlPage > 0 ? urlPage : 1);
       setIsShopPage(urlView === "shop");
     };
@@ -800,25 +798,45 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
   const handleBackToShop = () => {
     setOrderSuccess(false);
     setLastOrderData(null);
+    setIsShopPage(true);
+    updateUrlParams(search, filter, safeCurrentPage);
+
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
-  const goToShop = () => {
-  if (typeof window !== "undefined") {
-    window.location.href = "/?view=shop";
-  }
-};
+  const openHome = (e) => {
+    e?.preventDefault?.();
+    setIsShopPage(false);
 
-const goToShopWithSearch = (term) => {
-  if (typeof window !== "undefined") {
-    const params = new URLSearchParams();
-    params.set("view", "shop");
-    params.set("search", term);
-    window.location.href = `/?${params.toString()}`;
-  }
-};
+    if (typeof window !== "undefined") {
+      window.history.pushState({}, "", "/");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const goToShop = () => {
+    setIsShopPage(true);
+    setCurrentPage(1);
+
+    if (typeof window !== "undefined") {
+      window.history.pushState({}, "", buildShopUrl(search, filter, 1));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const goToShopWithSearch = (term) => {
+    setSearch(term);
+    setFilter("All");
+    setCurrentPage(1);
+    setIsShopPage(true);
+
+    if (typeof window !== "undefined") {
+      window.history.pushState({}, "", buildShopUrl(term, "All", 1));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="site-shell">
@@ -829,15 +847,25 @@ const goToShopWithSearch = (term) => {
       <header className="header">
         <div className="container header-inner">
           <div className="brand-block">
-            <a href="/" className="brand-logo">
+            <a href="/" className="brand-logo" onClick={openHome}>
               PLAYNICE
             </a>
             <div className="brand-tagline">Remember. PlayNice.</div>
           </div>
 
           <nav className="nav">
-            <a href="/">Home</a>
-            <a href="/?view=shop">Shop</a>
+            <a href="/" onClick={openHome}>
+              Home
+            </a>
+            <a
+              href="/?view=shop"
+              onClick={(e) => {
+                e.preventDefault();
+                goToShop();
+              }}
+            >
+              Shop
+            </a>
             <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
               Contact
             </a>
@@ -848,104 +876,106 @@ const goToShopWithSearch = (term) => {
       <main>
         {!isShopPage ? (
           <>
-<section id="intro" className="hero intro-hero hero-featured hero-conversion">
-  <div className="container hero-featured-grid">
-    <div className="hero-featured-left">
-      <div className="hero-bottle-wrapper hero-bottle-wrapper-conversion">
-        <div className="hero-floating-badge">FULL BOTTLE AVAILABLE</div>
+            <section id="intro" className="hero intro-hero hero-featured hero-conversion">
+              <div className="container hero-featured-grid">
+                <div className="hero-featured-left">
+                  <div className="hero-bottle-wrapper hero-bottle-wrapper-conversion">
+                    <div className="hero-floating-badge">FULL BOTTLE AVAILABLE</div>
 
-        <div className="hero-bottle-float">
-          <img
-            src="/images/9pm.png"
-            alt="Afnan 9PM Rebel"
-            className="hero-bottle main"
-          />
-        </div>
-        </div>
-    </div>
+                    <div className="hero-bottle-float">
+                      <img
+                        src="/images/9pm.png"
+                        alt="Afnan 9PM Rebel"
+                        className="hero-bottle main"
+                      />
+                    </div>
+                  </div>
+                </div>
 
-    <div className="hero-featured-right">
-      <div className="section-kicker">PLAYNICE FEATURED DROP</div>
+                <div className="hero-featured-right">
+                  <div className="section-kicker">PLAYNICE FEATURED DROP</div>
 
-      <h1 className="hero-featured-title">Own the moment.</h1>
+                  <h1 className="hero-featured-title">Own the moment.</h1>
 
-      <h2 className="hero-featured-name">AFNAN 9PM REBEL</h2>
+                  <h2 className="hero-featured-name">AFNAN 9PM REBEL</h2>
 
-      <p className="hero-sub hero-sub-strong">
-        Try before you buy — then go full bottle if it’s the one.
-      </p>
+                  <p className="hero-sub hero-sub-strong">
+                    Try before you buy — then go full bottle if it’s the one.
+                  </p>
 
-      <p className="hero-desc">
-        Dark, bold, attention-grabbing. Start with a premium decant or go straight
-        for the full bottle. Built for compliments, night outs, and instant impact.
-      </p>
+                  <p className="hero-desc">
+                    Dark, bold, attention-grabbing. Start with a premium decant or go
+                    straight for the full bottle. Built for compliments, night outs, and
+                    instant impact.
+                  </p>
 
-      <div className="hero-urgency-line">
-        Limited featured picks available now.
-      </div>
+                  <div className="hero-urgency-line">
+                    Limited featured picks available now.
+                  </div>
 
-      <div className="hero-trust-row">
-        <div className="hero-trust-pill">Premium decants</div>
-        <div className="hero-trust-pill">Cash on delivery</div>
-        <div className="hero-trust-pill">Free shipping over 39€</div>
-      </div>
+                  <div className="hero-trust-row">
+                    <div className="hero-trust-pill">Premium decants</div>
+                    <div className="hero-trust-pill">Cash on delivery</div>
+                    <div className="hero-trust-pill">Free shipping over 39€</div>
+                  </div>
 
-      <div className="hero-actions hero-actions-conversion">
-        <button
-          type="button"
-          className="btn btn-primary hero-main-cta"
-          onClick={goToShop}
-        >
-          Shop Now
-        </button>
+                  <div className="hero-actions hero-actions-conversion">
+                    <button
+                      type="button"
+                      className="btn btn-primary hero-main-cta"
+                      onClick={goToShop}
+                    >
+                      Shop Now
+                    </button>
 
-        <a
-          href={INSTAGRAM_URL}
-          target="_blank"
-          rel="noreferrer"
-          className="btn btn-secondary hero-secondary-cta"
-        >
-          Order via Instagram
-        </a>
-      </div>
+                    <a
+                      href={INSTAGRAM_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn btn-secondary hero-secondary-cta"
+                    >
+                      Order via Instagram
+                    </a>
+                  </div>
 
-      <div className="hero-mini-proof">
-        <span>Featured now:</span>
-        <strong> 9PM Rebel • Island Dreams • Marwa</strong>
-      </div>
+                  <div className="hero-mini-proof">
+                    <span>Featured now:</span>
+                    <strong> 9PM Rebel • Island Dreams • Marwa</strong>
+                  </div>
 
-      <div className="hero-secondary hero-secondary-conversion">
-        <button
-          type="button"
-          className="hero-secondary-item hero-secondary-button"
-          onClick={() => goToShopWithSearch("Island Dreams")}
-        >
-          <img src="/images/island.png" alt="Khadlaj Island Dreams" />
-          <span>Island Dreams</span>
-        </button>
+                  <div className="hero-secondary hero-secondary-conversion">
+                    <button
+                      type="button"
+                      className="hero-secondary-item hero-secondary-button"
+                      onClick={() => goToShopWithSearch("Island Dreams")}
+                    >
+                      <img src="/images/island.png" alt="Khadlaj Island Dreams" />
+                      <span>Island Dreams</span>
+                    </button>
 
-        <button
-          type="button"
-          className="hero-secondary-item hero-secondary-button"
-          onClick={() => goToShopWithSearch("Marwa")}
-        >
-          <img src="/images/marwa.png" alt="Arabiyat Prestige Marwa" />
-          <span>Marwa</span>
-        </button>
-      </div>
-    </div>
-  </div>
+                    <button
+                      type="button"
+                      className="hero-secondary-item hero-secondary-button"
+                      onClick={() => goToShopWithSearch("Marwa")}
+                    >
+                      <img src="/images/marwa.png" alt="Arabiyat Prestige Marwa" />
+                      <span>Marwa</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
 
-  <div className="mobile-sticky-hero-cta">
-    <button
-      type="button"
-      className="btn btn-primary mobile-sticky-hero-btn"
-      onClick={goToShop}
-    >
-      Shop Featured Drop
-    </button>
-  </div>
-</section>
+              <div className="mobile-sticky-hero-cta">
+                <button
+                  type="button"
+                  className="btn btn-primary mobile-sticky-hero-btn"
+                  onClick={goToShop}
+                >
+                  Shop Featured Drop
+                </button>
+              </div>
+            </section>
+
             <section className="section cta-section">
               <div className="container">
                 <div className="cta-box">
@@ -957,9 +987,9 @@ const goToShopWithSearch = (term) => {
                   </p>
 
                   <div className="cta-actions">
-                    <a href="/?view=shop" className="btn btn-primary">
+                    <button type="button" className="btn btn-primary" onClick={goToShop}>
                       Open Shop
-                    </a>
+                    </button>
                     <a
                       href={INSTAGRAM_URL}
                       target="_blank"
@@ -1024,7 +1054,9 @@ const goToShopWithSearch = (term) => {
                   </button>
 
                   <button
-                    className={filter === "Designer/Niche" ? "filter-btn active" : "filter-btn"}
+                    className={
+                      filter === "Designer/Niche" ? "filter-btn active" : "filter-btn"
+                    }
                     onClick={() => {
                       setFilter("Designer/Niche");
                       setCurrentPage(1);
@@ -1062,14 +1094,16 @@ const goToShopWithSearch = (term) => {
                   </button>
 
                   <div className="pagination-info">
-                    Page <strong>{safeCurrentPage}</strong> of <strong>{totalPages || 1}</strong>
+                    Page <strong>{safeCurrentPage}</strong> of <strong>{totalPages}</strong>
                   </div>
 
                   <button
                     type="button"
                     className="pagination-btn"
-                    disabled={safeCurrentPage === totalPages || totalPages === 0}
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={safeCurrentPage === totalPages}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
                   >
                     Next
                   </button>
