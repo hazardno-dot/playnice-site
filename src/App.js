@@ -176,6 +176,8 @@ function ProductCard({ product, onAddToCart, onQuickOrder }) {
         </div>
       )}
 
+      <div className="product-card-glow" />
+
       <div className="product-badge">{product.category}</div>
 
       <h3 className="product-title">{product.name}</h3>
@@ -923,7 +925,7 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
               <div className="container hero-featured-grid">
                 <div className="hero-featured-left">
                   <div className="hero-bottle-wrapper hero-bottle-wrapper-conversion">
-                    <div className="hero-floating-badge">LIMITED OFFER • NOW 34.90€</div>
+                    <div className="hero-floating-badge">WAS 45.90€ • NOW 34.90€</div>
 
                     <button
                       type="button"
@@ -943,37 +945,33 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                 <div className="hero-featured-right">
                   <div className="section-kicker">PLAYNICE FEATURED DROP</div>
 
-                  <h1 className="hero-featured-title">Own the moment.</h1>
+                  <h1 className="hero-title">
+                    OWN THE MOMENT<span className="dot">.</span>
+                  </h1>
 
-                  <h2 className="hero-featured-name">AFNAN 9PM REBEL</h2>
+                  <h2 className="hero-product">AFNAN 9PM REBEL</h2>
 
-                  <p className="hero-sub hero-sub-strong">
-                    Try before you buy — then go full bottle if it’s the one.
+                  <p className="hero-sub">
+                    Smell like a 200€ fragrance — for <strong>34.90€</strong>.
                   </p>
 
                   <p className="hero-desc">
-                    Dark, bold, attention-grabbing. Start with a premium decant or go
-                    straight for the full bottle. Built for compliments, night outs, and
-                    instant impact.
+                    Dark. Addictive. Built for nights that don’t go unnoticed.
                   </p>
 
-                  <div className="hero-urgency-line">
-                    Limited featured picks available now.
-                  </div>
-
-                  <div className="hero-trust-row">
-                    <div className="hero-trust-pill">Premium decants</div>
-                    <div className="hero-trust-pill">Cash on delivery</div>
-                    <div className="hero-trust-pill">Free shipping over 39€</div>
+                  <div className="hero-tags">
+                    <span>Premium decants</span>
+                    <span>Cash on delivery</span>
+                    <span>Free shipping over 39€</span>
                   </div>
 
                   <div className="hero-actions hero-actions-conversion">
                     <button
                       type="button"
                       className="btn btn-primary hero-main-cta"
-                      onClick={goToShop}
+                      onClick={handleHeroBottleClick}
                     >
-                      Shop Now
+                      Buy Full Bottle
                     </button>
 
                     <a
@@ -986,9 +984,8 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                     </a>
                   </div>
 
-                  <div className="hero-mini-proof">
-                    <span>Featured now:</span>
-                    <strong> 9PM Rebel • Island Dreams • Marwa</strong>
+                  <div className="hero-proof">
+                    Featured now: <strong>9PM Rebel • Island Dreams • Marwa</strong>
                   </div>
 
                   <div className="hero-secondary hero-secondary-conversion">
@@ -1017,9 +1014,9 @@ Ukupno za porudžbinu: ${formatPrice(total)}`;
                 <button
                   type="button"
                   className="btn btn-primary mobile-sticky-hero-btn"
-                  onClick={goToShop}
+                  onClick={handleHeroBottleClick}
                 >
-                  Shop Featured Drop
+                  Buy 100ml for 34.90€
                 </button>
               </div>
             </section>
