@@ -1524,6 +1524,7 @@ select:focus-visible {
     border: 1px solid rgba(243, 214, 155, 0.12);
   }
 
+  @media (max-width: 640px) {
   .success-card {
     padding: 30px 18px;
     border-radius: 22px;
