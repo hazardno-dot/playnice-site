@@ -174,17 +174,17 @@ const categoryLabels = {
 };
 
 const products = [
-  { id: 1, name: "Afnan 9AM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
-  { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
-  { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
+  { id: 1, name: "Afnan 9AM", category: "Arabian", image: "/afnan-9am.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", image: "/9pm.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
+  { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", image: "/afnan-supremacy.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", image: "/afnan-turathi-blue.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
+  { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", image: "/marwa.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
   { id: 6, name: "Armaf Club De Nuit Bling", category: "Designer", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
-  { id: 7, name: "Armaf Club de Nuit Intense", category: "Designer", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
+  { id: 7, name: "Armaf Club de Nuit Intense", category: "Designer", image: "/armaf-cdn-intense.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
   { id: 8, name: "Armaf Club de Nuit Sillage", category: "Designer", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
   { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
   { id: 10, name: "Haramain Signature Blue", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
-  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Summer", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
+  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Summer", image: "/island.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
   { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
   { id: 13, name: "Lattafa Fakhar Black", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
   { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
@@ -672,6 +672,9 @@ function App() {
 
               <div className="feature-grid">
                 <article className="feature-card large">
+                  <div className="feature-image-wrap">
+                    <img src="/9pm.png" alt="Afnan 9PM Rebel" className="feature-image" />
+                  </div>
                   <span className="feature-tag">{tr.campaignPick}</span>
                   <h3>Afnan 9PM Rebel</h3>
                   <p>{tr.rebelCardText}</p>
@@ -681,12 +684,26 @@ function App() {
                 </article>
 
                 <article className="feature-card">
+                  <div className="feature-image-wrap">
+                    <img
+                      src="/island.png"
+                      alt="Khadlaj Island Dreams Extrait de Parfum"
+                      className="feature-image"
+                    />
+                  </div>
                   <span className="feature-tag">{tr.summerHit}</span>
                   <h3>Khadlaj Island Dreams Extrait de Parfum</h3>
                   <p>{tr.islandDreamsText}</p>
                 </article>
 
                 <article className="feature-card">
+                  <div className="feature-image-wrap">
+                    <img
+                      src="/marwa.png"
+                      alt="Arabiyat Prestige Marwa"
+                      className="feature-image"
+                    />
+                  </div>
                   <span className="feature-tag">{tr.arabianEdge}</span>
                   <h3>Arabiyat Prestige Marwa</h3>
                   <p>{tr.marwaText}</p>
@@ -704,9 +721,12 @@ function App() {
               </div>
 
               <div className="product-grid">
-                {products.slice(0, 4).map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
+                {[1, 2, 4, 7]
+                  .map((id) => products.find((product) => product.id === id))
+                  .filter(Boolean)
+                  .map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
               </div>
 
               <div className="section-cta-center">
@@ -749,7 +769,11 @@ function App() {
 
               <div className="toolbar-group">
                 <label>{tr.categoryLabel}</label>
-                <select className="category-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+                <select
+                  className="category-select"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
                   {categories.map((cat) => (
                     <option key={cat} value={cat}>
                       {getCategoryLabel(cat)}
@@ -878,14 +902,18 @@ function App() {
                 </div>
 
                 <div className="product-modal-meta">
-                  <p className="product-modal-category">{getCategoryLabel(selectedProduct.category)}</p>
+                  <p className="product-modal-category">
+                    {getCategoryLabel(selectedProduct.category)}
+                  </p>
                   <p className="product-modal-vibe">{getProductVibe(selectedProduct)}</p>
                 </div>
               </div>
 
               <div className="product-modal-content">
                 <div className="product-modal-copy">
-                  <p className="product-modal-description">{getProductDescription(selectedProduct)}</p>
+                  <p className="product-modal-description">
+                    {getProductDescription(selectedProduct)}
+                  </p>
 
                   <div className="product-modal-info-box">
                     <span>{tr.whyChoose}</span>
@@ -918,7 +946,10 @@ function App() {
                     </strong>
                   </div>
 
-                  <button className="gold-button modal-add-button" onClick={addSelectedProductToCart}>
+                  <button
+                    className="gold-button modal-add-button"
+                    onClick={addSelectedProductToCart}
+                  >
                     {tr.addToCart}
                   </button>
                 </div>
