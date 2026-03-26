@@ -94,32 +94,32 @@ const translations = {
       "Otkrij dizajnerske, niche i arapske parfeme kroz premium decant iskustvo. Isprobaj na koži. Nosi sa stavom. Osvoji trenutak.",
     heroNow: "Sada €34.90",
     heroOffer: "Afnan 9PM Rebel 100ml puna bočica",
-    exploreCollection: "Pogledaj ponudu",
+    exploreCollection: "Pogledaj kolekciju",
     claimOffer: "Uzmi ponudu",
-    valueTry: "✔ Probaj prije kupovine",
+    valueTry: "✔ Probaj pre kupovine",
     valuePremium: "✔ Samo premium parfemi",
     valueDelivery: "✔ Dostava širom Crne Gore",
-    highlightsKicker: "Aktuelni izdvojeni",
-    highlightsTitle: "Odabrano za utisak",
+    highlightsKicker: "Aktuelno izdvojeno",
+    highlightsTitle: "Odabrano da ostavi utisak",
     highlightsText:
-      "Pažljivo odabrane bočice i dekanti koji se izdvajaju performansom, komplimentima i identitetom.",
+      "Pažljivo odabrane bočice i dekanti koji se izdvajaju performansama, komplimentima i karakterom.",
     campaignPick: "Glavna ponuda",
-    summerHit: "Ljetni hit",
+    summerHit: "Letnji hit",
     arabianEdge: "Arapski karakter",
     rebelCardText:
-      "Moćna full bottle ponuda sa ozbiljnom vrijednošću. Trenutni heroj sezone.",
+      "Moćna full bottle ponuda sa ozbiljnom vrednošću. Trenutni heroj sezone.",
     islandDreamsText:
-      "Svijetao, zarazan i stvoren za toplo vrijeme. Lak izbor, jak efekat.",
+      "Svetao, zarazan i stvoren za toplo vreme. Lak izbor, jak efekat.",
     marwaText:
-      "Uglađen karakter, snažan identitet i odlična vrijednost u decant formatu.",
+      "Uglađen karakter, snažan identitet i odlična vrednost u decant formatu.",
     add100ml: "Dodaj 100ml za €34.90",
     privateSelection: "Private Selection",
     bestsellersTitle: "Bestseleri i signature izbor",
     bestsellersText:
-      "Premium dekanti koji kupcima omogućavaju da otkriju pravi parfem prije nego što se odluče za punu bočicu.",
-    viewFullCollection: "Pogledaj cijelu kolekciju",
+      "Premium dekanti koji kupcima omogućavaju da pronađu pravi parfem pre nego što se odluče za punu bočicu.",
+    viewFullCollection: "Pogledaj celu kolekciju",
     discoverTitle: "Pronađi svoj signature miris",
-    discoverText: "Isprobaj prije odluke. Pronađi ono što ti zaista pristaje.",
+    discoverText: "Isprobaj pre odluke. Pronađi ono što ti zaista pristaje.",
     shopKicker: "Shop",
     shopTitle: "PlayNice kolekcija",
     shopText:
@@ -133,36 +133,36 @@ const translations = {
     luxuryModal: "Premium prikaz",
     yourCart: "Tvoja korpa",
     selectedItems: "Odabrani proizvodi",
-    cartEmpty: "Korpa je prazna.",
+    cartEmpty: "Tvoja korpa je trenutno prazna.",
     goToShop: "Idi na shop",
     subtotal: "Međuzbir",
     shipping: "Dostava",
     total: "Ukupno",
-    continueCheckout: "Nastavi na poručivanje",
+    continueCheckout: "Nastavi ka porudžbini",
     checkoutKicker: "Poručivanje",
-    checkoutTitle: "Završi porudžbinu",
+    checkoutTitle: "Još samo korak do tvoje porudžbine",
     firstName: "Ime",
     lastName: "Prezime",
-    email: "Email",
-    phone: "Telefon",
+    email: "Email adresa",
+    phone: "Broj telefona",
     city: "Grad",
     address: "Adresa",
     note: "Napomena uz porudžbinu (opciono)",
-    placeOrder: "Poruči",
+    placeOrder: "Potvrdi i pošalji porudžbinu",
     orderSummary: "Pregled porudžbine",
     noItemsCart: "Nema proizvoda u korpi.",
     privateSelectionModal: "Private Selection",
     whyChoose: "Zašto kupci biraju ovaj parfem",
     whyChooseText:
-      "Snažan identitet, premium utisak i odlična vrijednost u decant formatu.",
+      "Jak identitet, premium utisak i odlična vrednost u decant formatu.",
     chooseSize: "Izaberi veličinu",
-    selectedPrice: "Izabrana cijena",
+    selectedPrice: "Izabrana cena",
     addToCart: "Dodaj u korpu",
     modalNote:
-      "Probaj prije kupovine. Premium fragrance discovery, dostava širom Crne Gore.",
+      "Probaj pre kupovine. Otkrij premium parfeme uz dostavu širom Crne Gore.",
     page: "Strana",
     remove: "Ukloni",
-    addedToCart: "dodat u korpu"
+    addedToCart: "je dodat u korpu"
   }
 };
 
@@ -182,11 +182,11 @@ const products = [
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     description: {
       en: "Fresh, versatile and easy to wear. A clean daily driver with modern energy and broad appeal.",
-      sr: "Svjež, svestran i lak za nošenje. Čist svakodnevni izbor sa modernom energijom i širokom dopadljivošću."
+      sr: "Svež, svestran i lak za nošenje. Čist svakodnevni izbor sa modernom energijom i širokom dopadljivošću."
     },
     vibe: {
       en: "Fresh • Bright • Everyday confidence",
-      sr: "Svjež • Svijetao • Svakodnevno samopouzdanje"
+      sr: "Svež • Svetao • Svakodnevno samopouzdanje"
     }
   },
   {
@@ -197,7 +197,7 @@ const products = [
     badge: "BESTSELLER",
     description: {
       en: "Bold, addictive and attention-grabbing. A nightlife weapon with strong charisma and premium value.",
-      sr: "Smio, zarazan i magnet za pažnju. Noćni adut sa snažnom harizmom i premium vrijednošću."
+      sr: "Smeo, zarazan i magnet za pažnju. Noćni adut sa snažnom harizmom i premium vrednošću."
     },
     vibe: {
       en: "Sweet • Magnetic • Night out",
@@ -227,7 +227,7 @@ const products = [
     sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
     description: {
       en: "A crisp aromatic profile with upscale freshness and excellent versatility.",
-      sr: "Čist aromatičan profil sa elegantnom svježinom i odličnom svestranošću."
+      sr: "Čist aromatičan profil sa elegantnom svežinom i odličnom svestranošću."
     },
     vibe: {
       en: "Citrus • Elegant • High impact",
@@ -241,7 +241,7 @@ const products = [
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     description: {
       en: "A crowd-pleasing sweet scent built for compliments, dates and cooler evenings.",
-      sr: "Dopadljiv sladak miris stvoren za komplimente, sastanke i svježije večeri."
+      sr: "Dopadljiv sladak miris stvoren za komplimente, sastanke i svežije večeri."
     },
     vibe: {
       en: "Warm • Sweet • Compliment magnet",
@@ -271,7 +271,7 @@ const products = [
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     description: {
       en: "Sharp, confident and assertive. A modern classic for projection and presence.",
-      sr: "Oštar, samouvjeren i upečatljiv. Moderni klasik za projekciju i prisustvo."
+      sr: "Oštar, samouveren i upečatljiv. Moderni klasik za projekciju i prisustvo."
     },
     vibe: {
       en: "Smoky • Masculine • Commanding",
@@ -285,11 +285,11 @@ const products = [
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     description: {
       en: "Airy metallic freshness with strong identity and standout trail.",
-      sr: "Prozračna metalna svježina sa snažnim identitetom i upečatljivim tragom."
+      sr: "Prozračna metalna svežina sa snažnim identitetom i upečatljivim tragom."
     },
     vibe: {
       en: "Bright • Mineral • Distinctive",
-      sr: "Svijetao • Mineralan • Poseban"
+      sr: "Svetao • Mineralan • Poseban"
     }
   },
   {
@@ -303,7 +303,7 @@ const products = [
     },
     vibe: {
       en: "Glamorous • Youthful • Loud in a good way",
-      sr: "Glamurozan • Mladalački • Primjetan na pravi način"
+      sr: "Glamurozan • Mladalački • Primetan na pravi način"
     }
   },
   {
@@ -313,7 +313,7 @@ const products = [
     sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
     description: {
       en: "A niche favorite balancing citrus brightness with woods and sophistication.",
-      sr: "Niche favorit koji spaja citrusnu svježinu, drvenaste tonove i sofisticiranost."
+      sr: "Niche favorit koji spaja citrusnu svežinu, drvenaste tonove i sofisticiranost."
     },
     vibe: {
       en: "Niche • Smooth • Effortlessly classy",
@@ -341,7 +341,7 @@ const products = [
     sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
     description: {
       en: "A dark, smooth and upscale scent with a dressed-up evening personality.",
-      sr: "Taman, uglađen i elegantan miris sa večernjim, dotjeranim karakterom."
+      sr: "Taman, uglađen i elegantan miris sa večernjim, doteranim karakterom."
     },
     vibe: {
       en: "Boozy • Elegant • Refined dark",
@@ -355,11 +355,11 @@ const products = [
     sizes: { "5ml": 29, "10ml": 52, "20ml": 98 },
     description: {
       en: "Premium niche freshness with luxury polish, clean projection and prestige.",
-      sr: "Premium niche svježina sa luksuznim finišem, čistom projekcijom i prestižem."
+      sr: "Premium niche svežina sa luksuznim finišem, čistom projekcijom i prestižem."
     },
     vibe: {
       en: "Prestige • Fresh • Executive energy",
-      sr: "Prestiž • Svježina • Executive energija"
+      sr: "Prestiž • Svežina • Executive energija"
     }
   },
   {
@@ -369,7 +369,7 @@ const products = [
     sizes: { "5ml": 15, "10ml": 27, "20ml": 50 },
     description: {
       en: "A universally respected signature scent that feels clean, masculine and premium.",
-      sr: "Univerzalno cijenjen signature miris koji djeluje čisto, muževno i premium."
+      sr: "Univerzalno cenjen signature miris koji deluje čisto, muževno i premium."
     },
     vibe: {
       en: "Blue • Elegant • Timeless",
@@ -397,7 +397,7 @@ const products = [
     sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
     description: {
       en: "A bold and adventurous scent with familiar masculinity and a polished finish.",
-      sr: "Smio i avanturistički miris sa poznatom muževnošću i uglađenim završetkom."
+      sr: "Smeo i avanturistički miris sa poznatom muževnošću i uglađenim završetkom."
     },
     vibe: {
       en: "Woody • Adventurous • Reliable",
@@ -453,7 +453,7 @@ const products = [
     sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
     description: {
       en: "Minimal, clean and very wearable. Great for effortless daily freshness.",
-      sr: "Minimalan, čist i veoma nosiv. Odličan za nenametljivu svakodnevnu svježinu."
+      sr: "Minimalan, čist i veoma nosiv. Odličan za nenametljivu svakodnevnu svežinu."
     },
     vibe: {
       en: "Soft • Clean • Universal",
@@ -468,11 +468,11 @@ const products = [
     badge: "SUMMER",
     description: {
       en: "A bright tropical mood with vacation energy, easy wear and warm-weather appeal.",
-      sr: "Svijetao tropski karakter sa odmorskom energijom, lakim nošenjem i ljetnjom dopadljivošću."
+      sr: "Svetao tropski karakter sa odmorskom energijom, lakim nošenjem i letnjom dopadljivošću."
     },
     vibe: {
       en: "Tropical • Sunny • Must-try summer",
-      sr: "Tropski • Sunčan • Ljetnji must-try"
+      sr: "Tropski • Sunčan • Letnji must-try"
     }
   },
   {
@@ -514,7 +514,7 @@ const products = [
     },
     vibe: {
       en: "Intense • Bold • Powerful trail",
-      sr: "Intenzivan • Smio • Snažan trag"
+      sr: "Intenzivan • Smeo • Snažan trag"
     }
   }
 ];
@@ -578,7 +578,10 @@ function App() {
 
   const tr = translations[lang];
 
-  const categories = useMemo(() => ["All", ...Array.from(new Set(products.map((p) => p.category)))], []);
+  const categories = useMemo(
+    () => ["All", ...Array.from(new Set(products.map((p) => p.category)))],
+    []
+  );
 
   useEffect(() => {
     window.localStorage.setItem("playnice_lang", lang);
