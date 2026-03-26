@@ -168,355 +168,58 @@ const translations = {
 
 const categoryLabels = {
   Arabian: { en: "Arabian", sr: "Arabian" },
-  Designer: { en: "Designer", sr: "Designer" },
-  Niche: { en: "Niche", sr: "Niche" },
-  Summer: { en: "Summer", sr: "Summer" }
+  "Designer/Niche": { en: "Designer / Niche", sr: "Designer / Niche" }
 };
 
 const products = [
-  {
-    id: 1,
-    name: "Afnan 9AM",
-    category: "Arabian",
-    image: "/afnan-9am.png",
-    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
-    description: {
-      en: "Fresh, versatile and easy to wear. A clean daily driver with modern energy and broad appeal.",
-      sr: "Svež, svestran i lak za nošenje. Čist svakodnevni izbor sa modernom energijom i širokom dopadljivošću."
-    },
-    vibe: {
-      en: "Fresh • Bright • Everyday confidence",
-      sr: "Svež • Svetao • Svakodnevno samopouzdanje"
-    }
-  },
-  {
-    id: 2,
-    name: "Afnan 9PM Rebel",
-    category: "Arabian",
-    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
-    badge: "BESTSELLER",
-    description: {
-      en: "Bold, addictive and attention-grabbing. A nightlife weapon with strong charisma and premium value.",
-      sr: "Smeo, zarazan i magnet za pažnju. Noćni adut sa snažnom harizmom i premium vrednošću."
-    },
-    vibe: {
-      en: "Sweet • Magnetic • Night out",
-      sr: "Sladak • Magnetičan • Noćni izlazak"
-    }
-  },
-  {
-    id: 3,
-    name: "Afnan Supremacy Collector's Edition Pour Homme",
-    category: "Arabian",
-    image: "/afnan-supremacy.png",
-    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-    description: {
-      en: "A smooth and elevated masculine scent with depth, polish and lasting presence.",
-      sr: "Uglađen i uzdignut muški miris sa dubinom, elegancijom i postojanim prisustvom."
-    },
-    vibe: {
-      en: "Refined • Powerful • Signature-ready",
-      sr: "Rafiniran • Snažan • Spreman za signature ulogu"
-    }
-  },
-  {
-    id: 4,
-    name: "Afnan Turathi Blue",
-    category: "Arabian",
-    image: "/afnan-turathi-blue.png",
-    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
-    description: {
-      en: "A crisp aromatic profile with upscale freshness and excellent versatility.",
-      sr: "Čist aromatičan profil sa elegantnom svežinom i odličnom svestranošću."
-    },
-    vibe: {
-      en: "Citrus • Elegant • High impact",
-      sr: "Citrusan • Elegantan • Jak utisak"
-    }
-  },
-  {
-    id: 5,
-    name: "Afnan 9PM",
-    category: "Arabian",
-    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
-    description: {
-      en: "A crowd-pleasing sweet scent built for compliments, dates and cooler evenings.",
-      sr: "Dopadljiv sladak miris stvoren za komplimente, sastanke i svežije večeri."
-    },
-    vibe: {
-      en: "Warm • Sweet • Compliment magnet",
-      sr: "Topao • Sladak • Magnet za komplimente"
-    }
-  },
-  {
-    id: 6,
-    name: "Lattafa Khamrah Qahwa",
-    category: "Arabian",
-    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-    badge: "HOT",
-    description: {
-      en: "Rich, sweet and spicy with an irresistible gourmand edge and addictive warmth.",
-      sr: "Bogat, sladak i začinski, sa neodoljivim gourmand karakterom i zaraznom toplinom."
-    },
-    vibe: {
-      en: "Spicy • Gourmand • Cozy luxury",
-      sr: "Začinski • Gourmand • Ušuškan luksuz"
-    }
-  },
-  {
-    id: 7,
-    name: "Armaf Club de Nuit Intense Man EDT",
-    category: "Designer",
-    image: "/armaf-cdn-intense.png",
-    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-    description: {
-      en: "Sharp, confident and assertive. A modern classic for projection and presence.",
-      sr: "Oštar, samouveren i upečatljiv. Moderni klasik za projekciju i prisustvo."
-    },
-    vibe: {
-      en: "Smoky • Masculine • Commanding",
-      sr: "Diman • Muževan • Dominantan"
-    }
-  },
-  {
-    id: 8,
-    name: "Armaf Club de Nuit Sillage",
-    category: "Designer",
-    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-    description: {
-      en: "Airy metallic freshness with strong identity and standout trail.",
-      sr: "Prozračna metalna svežina sa snažnim identitetom i upečatljivim tragom."
-    },
-    vibe: {
-      en: "Bright • Mineral • Distinctive",
-      sr: "Svetao • Mineralan • Poseban"
-    }
-  },
-  {
-    id: 9,
-    name: "Armaf Club de Nuit Bling",
-    category: "Designer",
-    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
-    description: {
-      en: "A flashy, modern scent with attention-grabbing energy and stylish appeal.",
-      sr: "Efektan, moderan miris sa energijom koja privlači pažnju i stilskim karakterom."
-    },
-    vibe: {
-      en: "Glamorous • Youthful • Loud in a good way",
-      sr: "Glamurozan • Mladalački • Primetan na pravi način"
-    }
-  },
-  {
-    id: 10,
-    name: "Mancera Cedrat Boise",
-    category: "Niche",
-    sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
-    description: {
-      en: "A niche favorite balancing citrus brightness with woods and sophistication.",
-      sr: "Niche favorit koji spaja citrusnu svežinu, drvenaste tonove i sofisticiranost."
-    },
-    vibe: {
-      en: "Niche • Smooth • Effortlessly classy",
-      sr: "Niche • Uglađen • Nenametljivo otmen"
-    }
-  },
-  {
-    id: 11,
-    name: "Gisada Ambassador",
-    category: "Designer",
-    sizes: { "5ml": 11, "10ml": 20, "20ml": 38 },
-    description: {
-      en: "A polished designer scent with elegant sweetness and strong mass appeal.",
-      sr: "Uglancan dizajnerski miris sa elegantnom slatkoćom i velikom dopadljivošću."
-    },
-    vibe: {
-      en: "Luxurious • Modern • Crowd favorite",
-      sr: "Luksuzan • Moderan • Omiljen među publikom"
-    }
-  },
-  {
-    id: 12,
-    name: "Givenchy Gentleman Réserve Privée",
-    category: "Designer",
-    sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
-    description: {
-      en: "A dark, smooth and upscale scent with a dressed-up evening personality.",
-      sr: "Taman, uglađen i elegantan miris sa večernjim, doteranim karakterom."
-    },
-    vibe: {
-      en: "Boozy • Elegant • Refined dark",
-      sr: "Boozy • Elegantan • Rafinirano taman"
-    }
-  },
-  {
-    id: 13,
-    name: "Creed Aventus Cologne",
-    category: "Niche",
-    sizes: { "5ml": 29, "10ml": 52, "20ml": 98 },
-    description: {
-      en: "Premium niche freshness with luxury polish, clean projection and prestige.",
-      sr: "Premium niche svežina sa luksuznim finišem, čistom projekcijom i prestižem."
-    },
-    vibe: {
-      en: "Prestige • Fresh • Executive energy",
-      sr: "Prestiž • Svežina • Executive energija"
-    }
-  },
-  {
-    id: 14,
-    name: "Bleu de Chanel EDP",
-    category: "Designer",
-    sizes: { "5ml": 15, "10ml": 27, "20ml": 50 },
-    description: {
-      en: "A universally respected signature scent that feels clean, masculine and premium.",
-      sr: "Univerzalno cenjen signature miris koji deluje čisto, muževno i premium."
-    },
-    vibe: {
-      en: "Blue • Elegant • Timeless",
-      sr: "Blue • Elegantan • Bezvremenski"
-    }
-  },
-  {
-    id: 15,
-    name: "Boss The Scent Elixir",
-    category: "Designer",
-    sizes: { "5ml": 15, "10ml": 27, "20ml": 50 },
-    description: {
-      en: "Dark, sensual and richer than the usual designer style. Ideal for evening wear.",
-      sr: "Taman, senzualan i bogatiji od uobičajenog dizajnerskog stila. Idealan za veče."
-    },
-    vibe: {
-      en: "Seductive • Dense • Smooth heat",
-      sr: "Zavodljiv • Gust • Uglađena toplina"
-    }
-  },
-  {
-    id: 16,
-    name: "Montblanc Explorer Extreme",
-    category: "Designer",
-    sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
-    description: {
-      en: "A bold and adventurous scent with familiar masculinity and a polished finish.",
-      sr: "Smeo i avanturistički miris sa poznatom muževnošću i uglađenim završetkom."
-    },
-    vibe: {
-      en: "Woody • Adventurous • Reliable",
-      sr: "Drvenast • Avanturistički • Pouzdan"
-    }
-  },
-  {
-    id: 17,
-    name: "Swiss Arabian Tobacco 01",
-    category: "Arabian",
-    sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
-    description: {
-      en: "Dense tobacco warmth with a rich Middle Eastern character and luxurious depth.",
-      sr: "Gusta duvanska toplina sa bogatim bliskoistočnim karakterom i luksuznom dubinom."
-    },
-    vibe: {
-      en: "Tobacco • Warm • Rich aura",
-      sr: "Duvan • Topao • Bogata aura"
-    }
-  },
-  {
-    id: 18,
-    name: "Calvin Klein Defy EDT",
-    category: "Designer",
-    sizes: { "5ml": 7, "10ml": 12, "20ml": 22 },
-    description: {
-      en: "A clean masculine designer freshie with easy wearability and modern simplicity.",
-      sr: "Čist muški dizajnerski freshie sa lakim nošenjem i modernom jednostavnošću."
-    },
-    vibe: {
-      en: "Clean • Casual • Everyday",
-      sr: "Čist • Ležeran • Svakodnevan"
-    }
-  },
-  {
-    id: 19,
-    name: "Calvin Klein Defy Parfum",
-    category: "Designer",
-    sizes: { "5ml": 10, "10ml": 18, "20ml": 34 },
-    description: {
-      en: "A darker and richer take on the Defy DNA with improved depth and stronger character.",
-      sr: "Tamnija i bogatija interpretacija Defy DNK sa više dubine i jačim karakterom."
-    },
-    vibe: {
-      en: "Modern • Darker • Elevated",
-      sr: "Moderan • Tamniji • Uzdignut"
-    }
-  },
-  {
-    id: 20,
-    name: "CK All",
-    category: "Designer",
-    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
-    description: {
-      en: "Minimal, clean and very wearable. Great for effortless daily freshness.",
-      sr: "Minimalan, čist i veoma nosiv. Odličan za nenametljivu svakodnevnu svežinu."
-    },
-    vibe: {
-      en: "Soft • Clean • Universal",
-      sr: "Mekan • Čist • Univerzalan"
-    }
-  },
-  {
-    id: 21,
-    name: "Kadlaj Island Dreams",
-    category: "Summer",
-    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-    badge: "SUMMER",
-    description: {
-      en: "A bright tropical mood with vacation energy, easy wear and warm-weather appeal.",
-      sr: "Svetao tropski karakter sa odmorskom energijom, lakim nošenjem i letnjom dopadljivošću."
-    },
-    vibe: {
-      en: "Tropical • Sunny • Must-try summer",
-      sr: "Tropski • Sunčan • Letnji must-try"
-    }
-  },
-  {
-    id: 22,
-    name: "Arabian Prestige Marwa",
-    category: "Arabian",
-    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-    description: {
-      en: "A strong value pick with character, smoothness and a distinctly Arabian profile.",
-      sr: "Sjajan value izbor sa karakterom, uglađenošću i prepoznatljivo arapskim profilom."
-    },
-    vibe: {
-      en: "Exotic • Smooth • Distinctive",
-      sr: "Egzotičan • Uglađen • Poseban"
-    }
-  },
-  {
-    id: 23,
-    name: "Parfums de Marly Castley",
-    category: "Niche",
-    sizes: { "5ml": 16, "10ml": 29, "20ml": 55 },
-    description: {
-      en: "Luxury niche perfumery with depth, polish and a premium signature aura.",
-      sr: "Luksuzna niche parfimerija sa dubinom, elegancijom i premium signature aurom."
-    },
-    vibe: {
-      en: "Niche • Regal • High-end presence",
-      sr: "Niche • Kraljevski • High-end prisustvo"
-    }
-  },
-  {
-    id: 24,
-    name: "Afnan Supremacy Not Only Intense",
-    category: "Arabian",
-    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
-    description: {
-      en: "One of the strongest value performers in the category with excellent impact.",
-      sr: "Jedan od najjačih value parfema u kategoriji sa odličnim efektom."
-    },
-    vibe: {
-      en: "Intense • Bold • Powerful trail",
-      sr: "Intenzivan • Smeo • Snažan trag"
-    }
-  }
+  { id: 1, name: "Afnan 9AM", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
+  { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
+  { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
+  { id: 6, name: "Armaf Club De Nuit Bling", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
+  { id: 7, name: "Armaf Club de Nuit Intense", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
+  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 10, name: "Haramain Signature Blue", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
+  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
+  { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
+  { id: 13, name: "Lattafa Fakhar Black", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
+  { id: 15, name: "Lattafa Musamam Black Intense", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 16, name: "Lattafa Qaed Al Fursan Untamed", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
+  { id: 17, name: "Paris Corner Emir Trillium", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 18, name: "Paris Corner Emir Voux Elegante", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 19, name: "Paris Corner Ministry of Oud - Oud Satin", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 20, name: "Paris Corner Perfumes North Stag Expressions II DEUX", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 21, name: "Rayhaan Aquatica", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
+  { id: 22, name: "Rayhaan Pacific Aura", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
+  { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
+
+  { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
+  { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 } },
+  { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
+  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
+  { id: 28, name: "Bois Impérial by Essential Parfums", category: "Designer/Niche", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 }, badge: "BESTSELLER" },
+  { id: 29, name: "BOSS Bottled Beyond Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
+  { id: 30, name: "BOSS The Scent Elixir Parfum Intense for Him", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
+  { id: 31, name: "BOSS The Scent Le Parfum for Him", category: "Designer/Niche", sizes: { "2ml": 6, "5ml": 14, "10ml": 25 } },
+  { id: 32, name: "Calvin Klein CK All Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 } },
+  { id: 33, name: "Calvin Klein Defy Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3, "5ml": 7, "10ml": 12 } },
+  { id: 34, name: "Calvin Klein Defy Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 35, name: "Chopard Oud Malaki Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
+  { id: 36, name: "Creed Aventus Cologne", category: "Designer/Niche", sizes: { "2ml": 13, "5ml": 29, "10ml": 52 }, badge: "BESTSELLER" },
+  { id: 37, name: "Giorgio Armani Acqua di Giò Profondo Parfum", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
+  { id: 38, name: "Gisada Ambassador Men Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 11, "10ml": 20 }, badge: "BESTSELLER" },
+  { id: 39, name: "Givenchy Gentleman Eau de Parfum Réserve Privée", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 12, "10ml": 21 } },
+  { id: 40, name: "Jimmy Choo Man Blue Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 } },
+  { id: 41, name: "L'Homme Eau de Parfum by Yves Saint Laurent", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
+  { id: 42, name: "L'Homme Idéal De Guerlain Paris Eau De Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, badge: "BESTSELLER" },
+  { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
+  { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 } }
 ];
 
 const PRODUCTS_PER_PAGE = 12;
@@ -543,6 +246,34 @@ function getDefaultLanguage() {
   }
 
   return "en";
+}
+
+function getFallbackDescription(product, lang) {
+  const isArabian = product.category === "Arabian";
+
+  if (lang === "sr") {
+    return isArabian
+      ? "Pažljivo odabran arapski parfem sa izraženim karakterom, odličnim odnosom cene i utiska, i idealan za otkrivanje kroz decant format."
+      : "Pažljivo odabran designer/niche parfem sa premium karakterom, elegantnim nastupom i odličnom prilikom da ga prvo testiraš kroz decant format.";
+  }
+
+  return isArabian
+    ? "A carefully selected Arabian fragrance with strong character, excellent value and an ideal profile for discovery through decant format."
+    : "A carefully selected designer/niche fragrance with premium character, refined presence and a perfect profile to discover through decant format.";
+}
+
+function getFallbackVibe(product, lang) {
+  const isArabian = product.category === "Arabian";
+
+  if (lang === "sr") {
+    return isArabian
+      ? "Karakter • Value • Upečatljiv trag"
+      : "Premium • Elegantno • Signature potencijal";
+  }
+
+  return isArabian
+    ? "Character • Value • Strong trail"
+    : "Premium • Elegant • Signature potential";
 }
 
 function ProductImage({ product, className = "" }) {
@@ -608,7 +339,8 @@ function App() {
     if (searchTerm.trim()) params.set("search", searchTerm.trim());
     if (currentPage > 1) params.set("page", String(currentPage));
 
-    const nextUrl = `${window.location.pathname}?${params.toString()}`;
+    const query = params.toString();
+    const nextUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
     window.history.replaceState({}, "", nextUrl);
   }, [view, category, searchTerm, currentPage]);
 
@@ -761,6 +493,16 @@ function App() {
   const getCategoryLabel = (categoryKey) => {
     if (categoryKey === "All") return tr.all;
     return categoryLabels[categoryKey]?.[lang] || categoryKey;
+  };
+
+  const getProductDescription = (product) => {
+    if (product.description?.[lang]) return product.description[lang];
+    return getFallbackDescription(product, lang);
+  };
+
+  const getProductVibe = (product) => {
+    if (product.vibe?.[lang]) return product.vibe[lang];
+    return getFallbackVibe(product, lang);
   };
 
   const ProductCard = ({ product }) => (
@@ -920,13 +662,13 @@ function App() {
 
                 <article className="feature-card">
                   <span className="feature-tag">{tr.summerHit}</span>
-                  <h3>Kadlaj Island Dreams</h3>
+                  <h3>Khadlaj Island Dreams Extrait de Parfum</h3>
                   <p>{tr.islandDreamsText}</p>
                 </article>
 
                 <article className="feature-card">
                   <span className="feature-tag">{tr.arabianEdge}</span>
-                  <h3>Arabian Prestige Marwa</h3>
+                  <h3>Arabiyat Prestige Marwa</h3>
                   <p>{tr.marwaText}</p>
                 </article>
               </div>
@@ -1117,13 +859,13 @@ function App() {
 
                 <div className="product-modal-meta">
                   <p className="product-modal-category">{getCategoryLabel(selectedProduct.category)}</p>
-                  <p className="product-modal-vibe">{selectedProduct.vibe[lang]}</p>
+                  <p className="product-modal-vibe">{getProductVibe(selectedProduct)}</p>
                 </div>
               </div>
 
               <div className="product-modal-content">
                 <div className="product-modal-copy">
-                  <p className="product-modal-description">{selectedProduct.description[lang]}</p>
+                  <p className="product-modal-description">{getProductDescription(selectedProduct)}</p>
 
                   <div className="product-modal-info-box">
                     <span>{tr.whyChoose}</span>
