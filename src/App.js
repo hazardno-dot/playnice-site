@@ -167,8 +167,10 @@ const translations = {
 };
 
 const categoryLabels = {
-  Arabian: { en: "Arabian", sr: "Arabian" },
-  "Designer/Niche": { en: "Designer / Niche", sr: "Designer / Niche" }
+  Arabian: { en: "Arabian", sr: "Arapski" },
+  Designer: { en: "Designer", sr: "Dizajner" },
+  Niche: { en: "Niche", sr: "Niche" },
+  Summer: { en: "Summer", sr: "Letnji" }
 };
 
 const products = [
@@ -177,12 +179,12 @@ const products = [
   { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
   { id: 4, name: "Afnan Turathi Blue", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
   { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 6, name: "Armaf Club De Nuit Bling", category: "Arabian", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
-  { id: 7, name: "Armaf Club de Nuit Intense", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
-  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
+  { id: 6, name: "Armaf Club De Nuit Bling", category: "Designer", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
+  { id: 7, name: "Armaf Club de Nuit Intense", category: "Designer", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
+  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Designer", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
   { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
   { id: 10, name: "Haramain Signature Blue", category: "Arabian", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
-  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
+  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Summer", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
   { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
   { id: 13, name: "Lattafa Fakhar Black", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
   { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
@@ -192,34 +194,34 @@ const products = [
   { id: 18, name: "Paris Corner Emir Voux Elegante", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
   { id: 19, name: "Paris Corner Ministry of Oud - Oud Satin", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
   { id: 20, name: "Paris Corner Perfumes North Stag Expressions II DEUX", category: "Arabian", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 21, name: "Rayhaan Aquatica", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 22, name: "Rayhaan Pacific Aura", category: "Arabian", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
+  { id: 21, name: "Rayhaan Aquatica", category: "Summer", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
+  { id: 22, name: "Rayhaan Pacific Aura", category: "Summer", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
   { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
 
-  { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 } },
-  { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
-  { id: 28, name: "Bois Impérial by Essential Parfums", category: "Designer/Niche", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 }, badge: "BESTSELLER" },
-  { id: 29, name: "BOSS Bottled Beyond Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 30, name: "BOSS The Scent Elixir Parfum Intense for Him", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 31, name: "BOSS The Scent Le Parfum for Him", category: "Designer/Niche", sizes: { "2ml": 6, "5ml": 14, "10ml": 25 } },
-  { id: 32, name: "Calvin Klein CK All Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 } },
-  { id: 33, name: "Calvin Klein Defy Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3, "5ml": 7, "10ml": 12 } },
-  { id: 34, name: "Calvin Klein Defy Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 35, name: "Chopard Oud Malaki Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 36, name: "Creed Aventus Cologne", category: "Designer/Niche", sizes: { "2ml": 13, "5ml": 29, "10ml": 52 }, badge: "BESTSELLER" },
-  { id: 37, name: "Giorgio Armani Acqua di Giò Profondo Parfum", category: "Designer/Niche", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
-  { id: 38, name: "Gisada Ambassador Men Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 11, "10ml": 20 }, badge: "BESTSELLER" },
-  { id: 39, name: "Givenchy Gentleman Eau de Parfum Réserve Privée", category: "Designer/Niche", sizes: { "2ml": 5, "5ml": 12, "10ml": 21 } },
-  { id: 40, name: "Jimmy Choo Man Blue Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 } },
-  { id: 41, name: "L'Homme Eau de Parfum by Yves Saint Laurent", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 42, name: "L'Homme Idéal De Guerlain Paris Eau De Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, badge: "BESTSELLER" },
-  { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer/Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Designer/Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 } }
+  { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
+  { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 } },
+  { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
+  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
+  { id: 28, name: "Bois Impérial by Essential Parfums", category: "Niche", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 }, badge: "BESTSELLER" },
+  { id: 29, name: "BOSS Bottled Beyond Eau de Parfum", category: "Designer", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
+  { id: 30, name: "BOSS The Scent Elixir Parfum Intense for Him", category: "Designer", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
+  { id: 31, name: "BOSS The Scent Le Parfum for Him", category: "Designer", sizes: { "2ml": 6, "5ml": 14, "10ml": 25 } },
+  { id: 32, name: "Calvin Klein CK All Eau de Toilette", category: "Designer", sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 } },
+  { id: 33, name: "Calvin Klein Defy Eau de Toilette", category: "Designer", sizes: { "2ml": 3, "5ml": 7, "10ml": 12 } },
+  { id: 34, name: "Calvin Klein Defy Parfum", category: "Designer", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 35, name: "Chopard Oud Malaki Eau de Parfum", category: "Designer", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
+  { id: 36, name: "Creed Aventus Cologne", category: "Niche", sizes: { "2ml": 13, "5ml": 29, "10ml": 52 }, badge: "BESTSELLER" },
+  { id: 37, name: "Giorgio Armani Acqua di Giò Profondo Parfum", category: "Designer", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
+  { id: 38, name: "Gisada Ambassador Men Eau de Parfum", category: "Designer", sizes: { "2ml": 5, "5ml": 11, "10ml": 20 }, badge: "BESTSELLER" },
+  { id: 39, name: "Givenchy Gentleman Eau de Parfum Réserve Privée", category: "Designer", sizes: { "2ml": 5, "5ml": 12, "10ml": 21 } },
+  { id: 40, name: "Jimmy Choo Man Blue Eau de Toilette", category: "Designer", sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 } },
+  { id: 41, name: "L'Homme Eau de Parfum by Yves Saint Laurent", category: "Designer", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
+  { id: 42, name: "L'Homme Idéal De Guerlain Paris Eau De Toilette", category: "Designer", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Niche", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, badge: "BESTSELLER" },
+  { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
+  { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 } }
 ];
 
 const PRODUCTS_PER_PAGE = 12;
@@ -249,31 +251,49 @@ function getDefaultLanguage() {
 }
 
 function getFallbackDescription(product, lang) {
-  const isArabian = product.category === "Arabian";
+  const map = {
+    sr: {
+      Arabian:
+        "Pažljivo odabran arapski parfem sa izraženim karakterom, odličnim odnosom cene i utiska, i idealan za otkrivanje kroz decant format.",
+      Designer:
+        "Pažljivo odabran dizajnerski parfem sa premium karakterom, elegantnim nastupom i odličnom prilikom da ga prvo testiraš kroz decant format.",
+      Niche:
+        "Pažljivo odabran niche parfem sa luksuznim karakterom, dubinom i izraženim signature potencijalom.",
+      Summer:
+        "Svetao, svež i dopadljiv parfem idealan za toplije dane, odmor i lagano nošenje."
+    },
+    en: {
+      Arabian:
+        "A carefully selected Arabian fragrance with strong character, excellent value and an ideal profile for discovery through decant format.",
+      Designer:
+        "A carefully selected designer fragrance with premium character, refined presence and a perfect profile to discover through decant format.",
+      Niche:
+        "A carefully selected niche fragrance with luxurious character, depth and strong signature potential.",
+      Summer:
+        "A bright, fresh and easy-to-love fragrance ideal for warm weather, holidays and effortless wear."
+    }
+  };
 
-  if (lang === "sr") {
-    return isArabian
-      ? "Pažljivo odabran arapski parfem sa izraženim karakterom, odličnim odnosom cene i utiska, i idealan za otkrivanje kroz decant format."
-      : "Pažljivo odabran designer/niche parfem sa premium karakterom, elegantnim nastupom i odličnom prilikom da ga prvo testiraš kroz decant format.";
-  }
-
-  return isArabian
-    ? "A carefully selected Arabian fragrance with strong character, excellent value and an ideal profile for discovery through decant format."
-    : "A carefully selected designer/niche fragrance with premium character, refined presence and a perfect profile to discover through decant format.";
+  return map[lang]?.[product.category] || map.en.Designer;
 }
 
 function getFallbackVibe(product, lang) {
-  const isArabian = product.category === "Arabian";
+  const map = {
+    sr: {
+      Arabian: "Karakter • Value • Upečatljiv trag",
+      Designer: "Elegantno • Dopadljivo • Premium osećaj",
+      Niche: "Luksuz • Dubina • Signature potencijal",
+      Summer: "Sveže • Svetlo • Letnji vajb"
+    },
+    en: {
+      Arabian: "Character • Value • Strong trail",
+      Designer: "Elegant • Appealing • Premium feel",
+      Niche: "Luxury • Depth • Signature potential",
+      Summer: "Fresh • Bright • Summer mood"
+    }
+  };
 
-  if (lang === "sr") {
-    return isArabian
-      ? "Karakter • Value • Upečatljiv trag"
-      : "Premium • Elegantno • Signature potencijal";
-  }
-
-  return isArabian
-    ? "Character • Value • Strong trail"
-    : "Premium • Elegant • Signature potential";
+  return map[lang]?.[product.category] || map.en.Designer;
 }
 
 function ProductImage({ product, className = "" }) {
@@ -310,7 +330,7 @@ function App() {
   const tr = translations[lang];
 
   const categories = useMemo(
-    () => ["All", ...Array.from(new Set(products.map((p) => p.category)))],
+    () => ["All", "Arabian", "Designer", "Niche", "Summer"],
     []
   );
 
@@ -729,7 +749,7 @@ function App() {
 
               <div className="toolbar-group">
                 <label>{tr.categoryLabel}</label>
-                <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                <select className="category-select" value={category} onChange={(e) => setCategory(e.target.value)}>
                   {categories.map((cat) => (
                     <option key={cat} value={cat}>
                       {getCategoryLabel(cat)}
