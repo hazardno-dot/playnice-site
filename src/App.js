@@ -91,9 +91,9 @@ const translations = {
     page: "Page",
     remove: "Remove",
     addedToCart: "added to cart",
-    justAdded: "Added ✓"
-    announcement1: "Free shipping over €55",
-    announcement2: "Try before you buy — 5ml & 10ml decants",
+    justAdded: "Added ✓",
+    announcement1: "Free shipping over €39",
+    announcement2: "Try before you buy — 2ml, 5ml, 10ml & 20ml decants",
     announcement3: "Premium niche & designer fragrances",
     announcement4: "Limited stock drops — don’t miss out",
     announcement5: "Delivery across Montenegro",
