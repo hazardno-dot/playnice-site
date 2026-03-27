@@ -7,12 +7,12 @@ const FREE_SHIPPING_THRESHOLD = 39;
 
 function formatPrice(value) {
   const num = Number(value || 0);
-  return `${num.toFixed(num % 1 === 0 ? 0 : 1)}€`;
+  return `${num.toFixed(2)}€`;
 }
 
-function getSubtotal(cart) {
-  return cart.reduce((sum, item) => {
-    return sum + Number(item.price) * Number(item.qty);
+function getSubtotal(items) {
+  return items.reduce((sum, item) => {
+    return sum + Number(item.price) * Number(item.quantity);
   }, 0);
 }
 
@@ -52,52 +52,52 @@ function isValidEmail(email = "") {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
 }
 
-function sanitizeCart(cart) {
-  if (!Array.isArray(cart)) return [];
+function sanitizeItems(items) {
+  if (!Array.isArray(items)) return [];
 
-  return cart
+  return items
     .map((item) => ({
       name: normalizeText(item?.name),
       size: normalizeText(item?.size),
-      qty: Number(item?.qty),
-      price: Number(item?.price),
+      quantity: Number(item?.quantity),
+      price: Number(item?.price)
     }))
     .filter(
       (item) =>
         item.name &&
         item.size &&
-        Number.isFinite(item.qty) &&
-        item.qty > 0 &&
+        Number.isFinite(item.quantity) &&
+        item.quantity > 0 &&
         Number.isFinite(item.price) &&
         item.price >= 0
     );
 }
 
-function buildItemsHtml(cart) {
-  return cart
+function buildItemsHtml(items) {
+  return items
     .map(
       (item, index) => `
         <tr>
           <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">${index + 1}. ${escapeHtml(item.name)}</td>
           <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#dcb56b;">${escapeHtml(item.size)}</td>
-          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">${Number(item.qty)}</td>
+          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">${Number(item.quantity)}</td>
           <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">${formatPrice(Number(item.price))}</td>
-          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#dcb56b;font-weight:700;">${formatPrice(Number(item.price) * Number(item.qty))}</td>
+          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#dcb56b;font-weight:700;">${formatPrice(Number(item.price) * Number(item.quantity))}</td>
         </tr>
       `
     )
     .join("");
 }
 
-function buildItemsText(cart) {
-  return cart
+function buildItemsText(items) {
+  return items
     .map(
       (item, index) =>
         `${index + 1}. ${item.name}
 Veličina: ${item.size}
-Količina: ${Number(item.qty)}
+Količina: ${Number(item.quantity)}
 Cena: ${formatPrice(Number(item.price))}
-Ukupno: ${formatPrice(Number(item.price) * Number(item.qty))}`
+Ukupno: ${formatPrice(Number(item.price) * Number(item.quantity))}`
     )
     .join("\n\n");
 }
@@ -105,13 +105,13 @@ Ukupno: ${formatPrice(Number(item.price) * Number(item.qty))}`
 function customerEmailHtml({
   orderId,
   fullName,
-  cart,
+  items,
   subtotal,
   shipping,
   total,
   note,
   city,
-  address,
+  address
 }) {
   return `
   <div style="margin:0;padding:0;background:#0b0b0b;font-family:Inter,Arial,sans-serif;color:#f7f2e8;">
@@ -151,7 +151,7 @@ function customerEmailHtml({
               </tr>
             </thead>
             <tbody>
-              ${buildItemsHtml(cart)}
+              ${buildItemsHtml(items)}
             </tbody>
           </table>
 
@@ -188,10 +188,10 @@ function adminEmailHtml({
   city,
   address,
   note,
-  cart,
+  items,
   subtotal,
   shipping,
-  total,
+  total
 }) {
   return `
   <div style="font-family:Arial,sans-serif;background:#0b0b0b;color:#f7f2e8;padding:24px;">
@@ -215,7 +215,7 @@ function adminEmailHtml({
         </tr>
       </thead>
       <tbody>
-        ${buildItemsHtml(cart)}
+        ${buildItemsHtml(items)}
       </tbody>
     </table>
 
@@ -234,10 +234,10 @@ function customerEmailText({
   city,
   address,
   note,
-  cart,
+  items,
   subtotal,
   shipping,
-  total,
+  total
 }) {
   return `PLAYNICE
 
@@ -252,7 +252,7 @@ Adresa: ${address}
 Napomena: ${note || "Nema"}
 
 STAVKE
-${buildItemsText(cart)}
+${buildItemsText(items)}
 
 Subtotal: ${formatPrice(subtotal)}
 Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
@@ -271,10 +271,10 @@ function adminEmailText({
   city,
   address,
   note,
-  cart,
+  items,
   subtotal,
   shipping,
-  total,
+  total
 }) {
   return `Nova porudžbina - PlayNice
 
@@ -288,7 +288,7 @@ Adresa: ${address}
 Napomena: ${note || "Nema"}
 
 STAVKE
-${buildItemsText(cart)}
+${buildItemsText(items)}
 
 Subtotal: ${formatPrice(subtotal)}
 Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
@@ -309,16 +309,19 @@ export default async function handler(req, res) {
 
   try {
     const body = req.body || {};
+    const customer = body.customer || {};
 
-    const fullName = normalizeText(body.fullName);
-    const email = normalizeText(body.email);
-    const phone = normalizeText(body.phone);
-    const city = normalizeText(body.city);
-    const address = normalizeText(body.address);
-    const note = normalizeText(body.note);
-    const cart = sanitizeCart(body.cart);
+    const firstName = normalizeText(customer.firstName);
+    const lastName = normalizeText(customer.lastName);
+    const fullName = normalizeText(`${firstName} ${lastName}`);
+    const email = normalizeText(customer.email);
+    const phone = normalizeText(customer.phone);
+    const city = normalizeText(customer.city);
+    const address = normalizeText(customer.address);
+    const note = normalizeText(customer.note);
+    const items = sanitizeItems(body.items);
 
-    if (!fullName || !email || !phone || !city || !address) {
+    if (!firstName || !lastName || !email || !phone || !city || !address) {
       return res.status(400).json({ error: "Missing required customer fields" });
     }
 
@@ -326,11 +329,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Invalid email address" });
     }
 
-    if (cart.length === 0) {
+    if (items.length === 0) {
       return res.status(400).json({ error: "Cart is empty or invalid" });
     }
 
-    const subtotal = getSubtotal(cart);
+    const subtotal = getSubtotal(items);
     const shipping = getShipping(subtotal);
     const total = subtotal + shipping;
     const orderId = generateOrderId();
@@ -354,10 +357,10 @@ export default async function handler(req, res) {
           city,
           address,
           note,
-          cart,
+          items,
           subtotal,
           shipping,
-          total,
+          total
         }),
         text: adminEmailText({
           orderId,
@@ -367,17 +370,17 @@ export default async function handler(req, res) {
           city,
           address,
           note,
-          cart,
+          items,
           subtotal,
           shipping,
-          total,
-        }),
+          total
+        })
       });
     } catch (adminError) {
       console.error("Admin email failed:", adminError);
       return res.status(500).json({
         error: "Failed to place order",
-        details: adminError?.message || "Admin email failed",
+        details: adminError?.message || "Admin email failed"
       });
     }
 
@@ -395,10 +398,10 @@ export default async function handler(req, res) {
           city,
           address,
           note,
-          cart,
+          items,
           subtotal,
           shipping,
-          total,
+          total
         }),
         text: customerEmailText({
           orderId,
@@ -406,11 +409,11 @@ export default async function handler(req, res) {
           city,
           address,
           note,
-          cart,
+          items,
           subtotal,
           shipping,
-          total,
-        }),
+          total
+        })
       });
 
       customerEmailSent = true;
@@ -427,13 +430,13 @@ export default async function handler(req, res) {
       warning: customerEmailSent ? null : "Order placed, but customer email was not sent",
       adminMessageId: adminSendResult?.data?.id || null,
       customerEmailError,
-      orderId,
+      orderId
     });
   } catch (error) {
     console.error("Checkout error:", error);
     return res.status(500).json({
       error: "Failed to process order",
-      details: error?.message || "Unknown error",
+      details: error?.message || "Unknown error"
     });
   }
 }
