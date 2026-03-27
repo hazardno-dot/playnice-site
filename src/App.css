@@ -2261,12 +2261,12 @@ main {
 }
 
 /* =========================================
-   ANNOUNCEMENT BAR (FINAL CLEAN)
+   ANNOUNCEMENT BAR (STICKY + PROGRESS)
 ========================================= */
 
 .announcement-bar {
   position: sticky;
-  top: 92px; /* prilagodi po visini tvog headera */
+  top: 92px;
   z-index: 55;
   width: 100%;
   margin: 6px 0 0;
@@ -2440,7 +2440,7 @@ main {
 
 @media (max-width: 820px) {
   .announcement-bar {
-    top: 0;
+    top: 84px;
     margin-top: 6px;
   }
 
