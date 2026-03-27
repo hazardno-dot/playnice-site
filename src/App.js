@@ -383,7 +383,9 @@ function App() {
     if (urlView && ["home", "shop"].includes(urlView)) setView(urlView);
     if (urlCategory && categories.includes(urlCategory)) setCategory(urlCategory);
     if (urlSearch) setSearchTerm(urlSearch);
-    if (urlPage && !Number.isNaN(Number(urlPage))) setCurrentPage(Number(urlPage));
+    if (urlPage && !Number.isNaN(Number(urlPage))) {
+      setCurrentPage(Number(urlPage));
+    }
   }, [categories]);
 
   useEffect(() => {
@@ -751,7 +753,7 @@ function App() {
               <strong>{formatPrice(price)}</strong>
 
               <span className={`size-chip-feedback ${isJustAdded ? "show" : ""}`}>
-                Added ✓
+                {tr.justAdded}
               </span>
             </button>
           );
