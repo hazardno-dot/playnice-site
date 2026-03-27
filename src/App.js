@@ -443,6 +443,11 @@ function App() {
   const total = subtotal + shipping;
   const amountLeftForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 
+  const freeShippingProgress = Math.min(
+  100,
+  Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
+);
+
   const showFeedback = (text) => {
     setAddedFeedback(text);
   };
@@ -959,17 +964,27 @@ function App() {
                 <strong>{shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}</strong>
               </div>
 
+
 {cart.length > 0 && (
   <div
-    className={`shipping-note ${
+    className={`shipping-progress-card ${
       subtotal >= FREE_SHIPPING_THRESHOLD
         ? "shipping-note-unlocked"
         : "shipping-note-locked"
     }`}
   >
-    {subtotal >= FREE_SHIPPING_THRESHOLD
-      ? `${tr.freeShippingUnlocked} ✓`
-      : `${formatPrice(amountLeftForFreeShipping)} ${tr.freeShippingLeft}`}
+    <div className="shipping-note">
+      {subtotal >= FREE_SHIPPING_THRESHOLD
+        ? `${tr.freeShippingUnlocked} ✓`
+        : `You’re ${formatPrice(amountLeftForFreeShipping)} away from free shipping`}
+    </div>
+
+    <div className="shipping-progress-bar">
+      <div
+        className="shipping-progress-fill"
+        style={{ width: `${freeShippingProgress}%` }}
+      />
+    </div>
   </div>
 )}
 
@@ -1184,15 +1199,24 @@ function App() {
 
                 
                   {subtotal >=<div
-  className={`shipping-note checkout-shipping-note ${
+  className={`shipping-progress-card checkout-shipping-note ${
     subtotal >= FREE_SHIPPING_THRESHOLD
       ? "shipping-note-unlocked"
       : "shipping-note-locked"
   }`}
 >
-  {subtotal >= FREE_SHIPPING_THRESHOLD
-    ? `${tr.freeShippingUnlocked} ✓`
-    : `${tr.freeShippingNote} · ${formatPrice(amountLeftForFreeShipping)} ${tr.freeShippingLeft}`}
+  <div className="shipping-note">
+    {subtotal >= FREE_SHIPPING_THRESHOLD
+      ? `${tr.freeShippingUnlocked} ✓`
+      : `You’re ${formatPrice(amountLeftForFreeShipping)} away from free shipping`}
+  </div>
+
+  <div className="shipping-progress-bar">
+    <div
+      className="shipping-progress-fill"
+      style={{ width: `${freeShippingProgress}%` }}
+    />
+  </div>
 </div>
 
                 <div className="checkout-totals">
