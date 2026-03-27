@@ -877,7 +877,7 @@ function App() {
     </div>
   </header>
 
- <div
+<div
   className={`announcement-bar ${
     cart.length === 0
       ? ""
@@ -886,25 +886,51 @@ function App() {
       : "announcement-bar-warning"
   }`}
 >
-  <div className="announcement-track">
-    {[...announcementItems, ...announcementItems].map((item, index) => (
-      <React.Fragment key={`${item.text}-${index}`}>
-        <span
-          className={`announcement-text ${
-            item.tone ? `announcement-${item.tone}` : ""
-          }`}
-        >
-          {item.text}
-        </span>
-        <span
-          className={`announcement-icon ${
-            item.tone ? `announcement-${item.tone}` : ""
-          }`}
-        >
-          {item.icon}
-        </span>
-      </React.Fragment>
-    ))}
+  <div className="announcement-bar-inner">
+
+    {/* MARQUEE */}
+    <div className="announcement-marquee">
+      <div className="announcement-track">
+        {[...announcementItems, ...announcementItems].map((item, index) => (
+          <React.Fragment key={`${item.text}-${index}`}>
+            <span
+              className={`announcement-text ${
+                item.tone ? `announcement-${item.tone}` : ""
+              }`}
+            >
+              {item.text}
+            </span>
+
+            <span
+              className={`announcement-icon ${
+                item.tone ? `announcement-${item.tone}` : ""
+              }`}
+            >
+              {item.icon}
+            </span>
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
+
+    {/* MINI PROGRESS BAR */}
+    <div className="announcement-progress-shell">
+      <div className="announcement-progress-bar">
+        <div
+          className="announcement-progress-fill"
+          style={{
+            width:
+              cart.length === 0
+                ? "100%"
+                : `${Math.min(
+                    100,
+                    (subtotal / FREE_SHIPPING_THRESHOLD) * 100
+                  )}%`
+          }}
+        />
+      </div>
+    </div>
+
   </div>
 </div>
 
