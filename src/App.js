@@ -187,7 +187,7 @@ const translations = {
     page: "Strana",
     remove: "Ukloni",
     addedToCart: "je dodat u korpu",
-    justAdded: "Dodato ✓"
+    justAdded: "Dodato ✓",
     announcement1: "Besplatna dostava preko 55€",
 announcement2: "Probaj pre kupovine — 5ml i 10ml dekanti",
 announcement3: "Premium niche i dizajnerski parfemi",
