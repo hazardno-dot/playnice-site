@@ -758,7 +758,8 @@ function App() {
     addToCart(product, size, null, null, { showToast: false });
     triggerInlineAddedFeedback(product.id, size);
   }}
-  
+  >
+
                 e.preventDefault();
                 e.stopPropagation();
                 e.currentTarget.blur();
