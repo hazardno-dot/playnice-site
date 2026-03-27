@@ -90,7 +90,8 @@ const translations = {
       "Try before you buy. Premium fragrance discovery, delivered across Montenegro.",
     page: "Page",
     remove: "Remove",
-    addedToCart: "added to cart"
+    addedToCart: "added to cart",
+    justAdded: "Added ✓"
   },
   sr: {
     navHome: "Početna",
@@ -180,7 +181,8 @@ const translations = {
       "Probaj pre kupovine. Otkrij premium parfeme uz dostavu širom Crne Gore.",
     page: "Strana",
     remove: "Ukloni",
-    addedToCart: "je dodat u korpu"
+    addedToCart: "je dodat u korpu",
+    justAdded: "Dodato ✓"
   }
 };
 
@@ -319,7 +321,11 @@ function ProductImage({ product, className = "" }) {
     return <img className={className} src={product.image} alt={product.name} />;
   }
 
-  return <div className={`product-image-fallback ${className}`}>{product.name.charAt(0)}</div>;
+  return (
+    <div className={`product-image-fallback ${className}`}>
+      {product.name.charAt(0)}
+    </div>
+  );
 }
 
 function App() {
@@ -330,6 +336,7 @@ function App() {
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState("");
+  const [justAddedKey, setJustAddedKey] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [cart, setCart] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -349,7 +356,10 @@ function App() {
 
   const tr = translations[lang];
 
-  const categories = useMemo(() => ["All", "Arabian", "Designer", "Niche", "Summer"], []);
+  const categories = useMemo(
+    () => ["All", "Arabian", "Designer", "Niche", "Summer"],
+    []
+  );
 
   const impactProducts = useMemo(
     () =>
@@ -385,7 +395,10 @@ function App() {
     if (currentPage > 1) params.set("page", String(currentPage));
 
     const query = params.toString();
-    const nextUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    const nextUrl = query
+      ? `${window.location.pathname}?${query}`
+      : window.location.pathname;
+
     window.history.replaceState({}, "", nextUrl);
   }, [view, category, searchTerm, currentPage]);
 
@@ -394,10 +407,16 @@ function App() {
   }, [category, searchTerm]);
 
   useEffect(() => {
-  if (!addedFeedback) return;
-  const timer = setTimeout(() => setAddedFeedback(""), 1200);
-  return () => clearTimeout(timer);
-}, [addedFeedback]);
+    if (!addedFeedback) return;
+    const timer = setTimeout(() => setAddedFeedback(""), 1200);
+    return () => clearTimeout(timer);
+  }, [addedFeedback]);
+
+  useEffect(() => {
+    if (!justAddedKey) return;
+    const timer = setTimeout(() => setJustAddedKey(""), 900);
+    return () => clearTimeout(timer);
+  }, [justAddedKey]);
 
   useEffect(() => {
     if (!orderSuccessMessage) return;
@@ -417,12 +436,17 @@ function App() {
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const categoryMatch = category === "All" || product.category === category;
-      const searchMatch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const searchMatch = product.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
       return categoryMatch && searchMatch;
     });
   }, [category, searchTerm]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE));
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)
+  );
 
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(1);
@@ -447,7 +471,10 @@ function App() {
     cart.length === 0 ? 0 : subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
 
   const total = subtotal + shipping;
-  const amountLeftForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+  const amountLeftForFreeShipping = Math.max(
+    0,
+    FREE_SHIPPING_THRESHOLD - subtotal
+  );
   const freeShippingProgress = Math.min(
     100,
     Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
@@ -457,45 +484,27 @@ function App() {
     setAddedFeedback(text);
   };
 
-const addToCart = (
-  product,
-  size,
-  customPrice = null,
-  customLabel = null,
-  options = {}
-) => {
-  const { showToast = true } = options;
+  const addToCart = (
+    product,
+    size,
+    customPrice = null,
+    customLabel = null,
+    options = {}
+  ) => {
+    const { showToast = true } = options;
 
-  const key = `${product.id}-${size}-${customLabel || ""}`;
-  const price = customPrice ?? product.sizes[size];
-  const label = customLabel || size;
+    const key = `${product.id}-${size}-${customLabel || ""}`;
+    const price = customPrice ?? product.sizes[size];
+    const label = customLabel || size;
 
-  setCart((prev) => {
-    const existing = prev.find((item) => item.key === key);
+    setCart((prev) => {
+      const existing = prev.find((item) => item.key === key);
 
-    if (existing) {
-      return prev.map((item) =>
-        item.key === key ? { ...item, quantity: item.quantity + 1 } : item
-      );
-    }
-
-    return [
-      ...prev,
-      {
-        key,
-        id: product.id,
-        name: product.name,
-        size: label,
-        price,
-        quantity: 1
+      if (existing) {
+        return prev.map((item) =>
+          item.key === key ? { ...item, quantity: item.quantity + 1 } : item
+        );
       }
-    ];
-  });
-
-  if (showToast) {
-    showFeedback(`${product.name} ${tr.addedToCart}`);
-  }
-};
 
       return [
         ...prev,
@@ -510,7 +519,13 @@ const addToCart = (
       ];
     });
 
-    showFeedback(`${product.name} ${tr.addedToCart}`);
+    if (showToast) {
+      showFeedback(`${product.name} ${tr.addedToCart}`);
+    }
+  };
+
+  const triggerInlineAddedFeedback = (productId, size) => {
+    setJustAddedKey(`${productId}-${size}`);
   };
 
   const addHeroBottleToCart = () => {
@@ -700,28 +715,35 @@ const addToCart = (
         <strong>{tr.luxuryModal}</strong>
       </div>
 
-<div
-  className="size-buttons"
-  onClick={(e) => {
-    e.stopPropagation();
-  }}
->
-  {Object.entries(product.sizes).map(([size, price]) => (
-    <button
-      key={size}
-      type="button"
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.currentTarget.blur();
-        addToCart(product, size, null, null, { showToast: false });
-      }}
-    >
-      <span>{size}</span>
-      <strong>{formatPrice(price)}</strong>
-    </button>
-  ))}
-</div>
+      <div
+        className="size-buttons"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        {Object.entries(product.sizes).map(([size, price]) => {
+          const feedbackKey = `${product.id}-${size}`;
+          const isJustAdded = justAddedKey === feedbackKey;
+
+          return (
+            <button
+              key={size}
+              type="button"
+              className={isJustAdded ? "is-added" : ""}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.currentTarget.blur();
+                addToCart(product, size, null, null, { showToast: false });
+                triggerInlineAddedFeedback(product.id, size);
+              }}
+            >
+              <span>{isJustAdded ? tr.justAdded : size}</span>
+              <strong>{isJustAdded ? tr.addedToCart : formatPrice(price)}</strong>
+            </button>
+          );
+        })}
+      </div>
     </article>
   );
 
@@ -808,7 +830,11 @@ const addToCart = (
                     <button className="gold-button" type="button" onClick={goToShop}>
                       {tr.exploreCollection}
                     </button>
-                    <button className="ghost-button" type="button" onClick={addHeroBottleToCart}>
+                    <button
+                      className="ghost-button"
+                      type="button"
+                      onClick={addHeroBottleToCart}
+                    >
                       {tr.claimOffer}
                     </button>
                   </div>
@@ -821,7 +847,11 @@ const addToCart = (
                     onClick={addHeroBottleToCart}
                     aria-label="Add Afnan 9PM Rebel full bottle to cart"
                   >
-                    <img className="hero-bottle" src="/hero-bottle.png" alt="Afnan 9PM Rebel" />
+                    <img
+                      className="hero-bottle"
+                      src="/hero-bottle.png"
+                      alt="Afnan 9PM Rebel"
+                    />
                   </button>
                 </div>
               </div>
@@ -1011,7 +1041,11 @@ const addToCart = (
               <span>
                 {tr.page} {currentPage} / {totalPages}
               </span>
-              <button type="button" onClick={nextPage} disabled={currentPage === totalPages}>
+              <button
+                type="button"
+                onClick={nextPage}
+                disabled={currentPage === totalPages}
+              >
                 Next
               </button>
             </div>
@@ -1078,7 +1112,9 @@ const addToCart = (
 
               <div>
                 <span>{tr.shipping}</span>
-                <strong>{shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}</strong>
+                <strong>
+                  {shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}
+                </strong>
               </div>
 
               {cart.length > 0 && (
@@ -1184,7 +1220,9 @@ const addToCart = (
                       <button
                         key={size}
                         type="button"
-                        className={`modal-size-button ${selectedSize === size ? "active" : ""}`}
+                        className={`modal-size-button ${
+                          selectedSize === size ? "active" : ""
+                        }`}
                         onClick={(e) => {
                           e.preventDefault();
                           setSelectedSize(size);
@@ -1356,7 +1394,9 @@ const addToCart = (
                   </div>
                   <div>
                     <span>{tr.shipping}</span>
-                    <strong>{shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}</strong>
+                    <strong>
+                      {shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}
+                    </strong>
                   </div>
                   <div className="grand-total">
                     <span>{tr.total}</span>
