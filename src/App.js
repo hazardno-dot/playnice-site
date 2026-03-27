@@ -487,21 +487,6 @@ function App() {
     showFeedback(`${product.name} ${tr.addedToCart}`);
   };
 
-  const addToCartPreserveScroll = (product, size, customPrice = null, customLabel = null) => {
-    const scrollY = window.scrollY;
-    const scrollX = window.scrollX;
-
-    addToCart(product, size, customPrice, customLabel);
-
-    requestAnimationFrame(() => {
-      window.scrollTo(scrollX, scrollY);
-
-      requestAnimationFrame(() => {
-        window.scrollTo(scrollX, scrollY);
-      });
-    });
-  };
-
   const addHeroBottleToCart = () => {
     const heroProduct = {
       id: 999,
@@ -690,30 +675,27 @@ function App() {
       </div>
 
       <div
-        className="size-buttons"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-      >
-        {Object.entries(product.sizes).map(([size, price]) => (
-          <button
-            key={size}
-            type="button"
-            onMouseDown={(e) => {
-              e.preventDefault();
-            }}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              addToCartPreserveScroll(product, size);
-            }}
-          >
-            <span>{size}</span>
-            <strong>{formatPrice(price)}</strong>
-          </button>
-        ))}
-      </div>
+  className="size-buttons"
+  onClick={(e) => {
+    e.stopPropagation();
+  }}
+>
+  {Object.entries(product.sizes).map(([size, price]) => (
+    <button
+      key={size}
+      type="button"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.currentTarget.blur();
+        addToCart(product, size);
+      }}
+    >
+      <span>{size}</span>
+      <strong>{formatPrice(price)}</strong>
+    </button>
+  ))}
+</div>
     </article>
   );
 
