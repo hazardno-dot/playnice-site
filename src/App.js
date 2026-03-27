@@ -92,6 +92,11 @@ const translations = {
     remove: "Remove",
     addedToCart: "added to cart",
     justAdded: "Added ✓"
+    announcement1: "Free shipping over €55",
+announcement2: "Try before you buy — 5ml & 10ml decants",
+announcement3: "Premium niche & designer fragrances",
+announcement4: "Limited stock drops — don’t miss out",
+announcement5: "Delivery across Montenegro",
   },
   sr: {
     navHome: "Početna",
@@ -183,6 +188,11 @@ const translations = {
     remove: "Ukloni",
     addedToCart: "je dodat u korpu",
     justAdded: "Dodato ✓"
+    announcement1: "Besplatna dostava preko 55€",
+announcement2: "Probaj pre kupovine — 5ml i 10ml dekanti",
+announcement3: "Premium niche i dizajnerski parfemi",
+announcement4: "Ograničene količine — ne propusti",
+announcement5: "Dostava širom Crne Gore",
   }
 };
 
@@ -765,6 +775,39 @@ function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
+        <div className="announcement-bar">
+  <div className="announcement-track">
+    <span>{tr.announcement1}</span>
+    <span className="announcement-icon">🚚</span>
+
+    <span>{tr.announcement2}</span>
+    <span className="announcement-icon">✓</span>
+
+    <span>{tr.announcement3}</span>
+    <span className="announcement-icon">🔥</span>
+
+    <span>{tr.announcement4}</span>
+    <span className="announcement-icon">🔥</span>
+
+    <span>{tr.announcement5}</span>
+    <span className="announcement-icon">🚚</span>
+
+    <span>{tr.announcement1}</span>
+    <span className="announcement-icon">🚚</span>
+
+    <span>{tr.announcement2}</span>
+    <span className="announcement-icon">✓</span>
+
+    <span>{tr.announcement3}</span>
+    <span className="announcement-icon">🔥</span>
+
+    <span>{tr.announcement4}</span>
+    <span className="announcement-icon">🔥</span>
+
+    <span>{tr.announcement5}</span>
+    <span className="announcement-icon">🚚</span>
+  </div>
+</div>
         <button className="brand" type="button" onClick={() => setView("home")}>
           <span className="brand-mark">▶</span>
           <span className="brand-copy">
