@@ -355,6 +355,14 @@ function App() {
     []
   );
 
+  const impactProducts = useMemo(
+    () =>
+      [2, 11, 5]
+        .map((id) => products.find((product) => product.id === id))
+        .filter(Boolean),
+    []
+  );
+
   useEffect(() => {
     window.localStorage.setItem("playnice_lang", lang);
   }, [lang]);
@@ -611,6 +619,11 @@ function App() {
     setSelectedProduct(null);
   };
 
+  const openImpactProductModal = (product) => {
+    if (!product) return;
+    setSelectedProduct(product);
+  };
+
   const addSelectedProductToCart = () => {
     if (!selectedProduct || !selectedSize) return;
     addToCart(selectedProduct, selectedSize);
@@ -640,7 +653,10 @@ function App() {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") openProductModal(product);
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openProductModal(product);
+        }
       }}
     >
       {product.badge && <span className="product-badge">{product.badge}</span>}
@@ -664,7 +680,15 @@ function App() {
 
       <div className="size-buttons" onClick={(e) => e.stopPropagation()}>
         {Object.entries(product.sizes).map(([size, price]) => (
-          <button key={size} onClick={() => addToCart(product, size)}>
+          <button
+            key={size}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addToCart(product, size);
+            }}
+          >
             <span>{size}</span>
             <strong>{formatPrice(price)}</strong>
           </button>
@@ -676,7 +700,7 @@ function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <button className="brand" onClick={() => setView("home")}>
+        <button className="brand" type="button" onClick={() => setView("home")}>
           <span className="brand-mark">▶</span>
           <span className="brand-copy">
             <strong>PlayNice</strong>
@@ -685,10 +709,18 @@ function App() {
         </button>
 
         <nav className="nav-links">
-          <button className={view === "home" ? "active" : ""} onClick={() => setView("home")}>
+          <button
+            type="button"
+            className={view === "home" ? "active" : ""}
+            onClick={() => setView("home")}
+          >
             {tr.navHome}
           </button>
-          <button className={view === "shop" ? "active" : ""} onClick={() => setView("shop")}>
+          <button
+            type="button"
+            className={view === "shop" ? "active" : ""}
+            onClick={() => setView("shop")}
+          >
             {tr.navShop}
           </button>
         </nav>
@@ -711,7 +743,11 @@ function App() {
             </button>
           </div>
 
-          <button className="cart-button" onClick={() => setCartOpen((prev) => !prev)}>
+          <button
+            className="cart-button"
+            type="button"
+            onClick={() => setCartOpen((prev) => !prev)}
+          >
             {tr.cart}
             {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
           </button>
@@ -741,10 +777,10 @@ function App() {
                   </div>
 
                   <div className="hero-actions">
-                    <button className="gold-button" onClick={goToShop}>
+                    <button className="gold-button" type="button" onClick={goToShop}>
                       {tr.exploreCollection}
                     </button>
-                    <button className="ghost-button" onClick={addHeroBottleToCart}>
+                    <button className="ghost-button" type="button" onClick={addHeroBottleToCart}>
                       {tr.claimOffer}
                     </button>
                   </div>
@@ -753,6 +789,7 @@ function App() {
                 <div className="hero-visual">
                   <button
                     className="hero-bottle-wrap"
+                    type="button"
                     onClick={addHeroBottleToCart}
                     aria-label="Add Afnan 9PM Rebel full bottle to cart"
                   >
@@ -778,19 +815,49 @@ function App() {
               </div>
 
               <div className="feature-grid">
-                <article className="feature-card large">
+                <article
+                  className="feature-card large"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => openImpactProductModal(impactProducts[0])}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      openImpactProductModal(impactProducts[0]);
+                    }
+                  }}
+                >
                   <div className="feature-image-wrap">
                     <img src="/9pm.png" alt="Afnan 9PM Rebel" className="feature-image" />
                   </div>
                   <span className="feature-tag">{tr.campaignPick}</span>
                   <h3>Afnan 9PM Rebel</h3>
                   <p>{tr.rebelCardText}</p>
-                  <button className="inline-link" onClick={addHeroBottleToCart}>
+                  <button
+                    className="inline-link"
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      addHeroBottleToCart();
+                    }}
+                  >
                     {tr.add100ml}
                   </button>
                 </article>
 
-                <article className="feature-card">
+                <article
+                  className="feature-card"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => openImpactProductModal(impactProducts[1])}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      openImpactProductModal(impactProducts[1]);
+                    }
+                  }}
+                >
                   <div className="feature-image-wrap">
                     <img
                       src="/island.png"
@@ -803,7 +870,18 @@ function App() {
                   <p>{tr.islandDreamsText}</p>
                 </article>
 
-                <article className="feature-card">
+                <article
+                  className="feature-card"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => openImpactProductModal(impactProducts[2])}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      openImpactProductModal(impactProducts[2]);
+                    }
+                  }}
+                >
                   <div className="feature-image-wrap">
                     <img
                       src="/marwa.png"
@@ -837,7 +915,7 @@ function App() {
               </div>
 
               <div className="section-cta-center">
-                <button className="gold-button" onClick={goToShop}>
+                <button className="gold-button" type="button" onClick={goToShop}>
                   {tr.viewFullCollection}
                 </button>
               </div>
@@ -848,7 +926,9 @@ function App() {
             <section className="cta-section">
               <h2>{tr.discoverTitle}</h2>
               <p>{tr.discoverText}</p>
-              <button onClick={goToShop}>{tr.exploreCollection}</button>
+              <button type="button" onClick={goToShop}>
+                {tr.exploreCollection}
+              </button>
             </section>
           </>
         )}
@@ -897,13 +977,13 @@ function App() {
             </div>
 
             <div className="pagination-wrap">
-              <button onClick={prevPage} disabled={currentPage === 1}>
+              <button type="button" onClick={prevPage} disabled={currentPage === 1}>
                 Prev
               </button>
               <span>
                 {tr.page} {currentPage} / {totalPages}
               </span>
-              <button onClick={nextPage} disabled={currentPage === totalPages}>
+              <button type="button" onClick={nextPage} disabled={currentPage === totalPages}>
                 Next
               </button>
             </div>
@@ -917,7 +997,7 @@ function App() {
             <p className="section-kicker">{tr.yourCart}</p>
             <h3>{tr.selectedItems}</h3>
           </div>
-          <button className="close-button" onClick={() => setCartOpen(false)}>
+          <button className="close-button" type="button" onClick={() => setCartOpen(false)}>
             ×
           </button>
         </div>
@@ -925,7 +1005,7 @@ function App() {
         {cart.length === 0 ? (
           <div className="cart-empty">
             <p>{tr.cartEmpty}</p>
-            <button className="gold-button small" onClick={goToShop}>
+            <button className="gold-button small" type="button" onClick={goToShop}>
               {tr.goToShop}
             </button>
           </div>
@@ -942,11 +1022,19 @@ function App() {
 
                   <div className="cart-item-actions">
                     <div className="qty-control">
-                      <button onClick={() => updateQuantity(item.key, -1)}>-</button>
+                      <button type="button" onClick={() => updateQuantity(item.key, -1)}>
+                        -
+                      </button>
                       <span>{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.key, 1)}>+</button>
+                      <button type="button" onClick={() => updateQuantity(item.key, 1)}>
+                        +
+                      </button>
                     </div>
-                    <button className="remove-link" onClick={() => removeFromCart(item.key)}>
+                    <button
+                      className="remove-link"
+                      type="button"
+                      onClick={() => removeFromCart(item.key)}
+                    >
                       {tr.remove}
                     </button>
                   </div>
@@ -997,7 +1085,11 @@ function App() {
               </div>
             </div>
 
-            <button className="gold-button checkout-button" onClick={() => setCheckoutOpen(true)}>
+            <button
+              className="gold-button checkout-button"
+              type="button"
+              onClick={() => setCheckoutOpen(true)}
+            >
               {tr.continueCheckout}
             </button>
           </>
@@ -1021,7 +1113,7 @@ function App() {
                 <p className="section-kicker">{tr.privateSelectionModal}</p>
                 <h3>{selectedProduct.name}</h3>
               </div>
-              <button className="close-button" onClick={closeProductModal}>
+              <button className="close-button" type="button" onClick={closeProductModal}>
                 ×
               </button>
             </div>
@@ -1063,8 +1155,12 @@ function App() {
                     {Object.entries(selectedProduct.sizes).map(([size, price]) => (
                       <button
                         key={size}
+                        type="button"
                         className={`modal-size-button ${selectedSize === size ? "active" : ""}`}
-                        onClick={() => setSelectedSize(size)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setSelectedSize(size);
+                        }}
                       >
                         <span>{size}</span>
                         <strong>{formatPrice(price)}</strong>
@@ -1083,6 +1179,7 @@ function App() {
 
                   <button
                     className="gold-button modal-add-button"
+                    type="button"
                     onClick={addSelectedProductToCart}
                   >
                     {tr.addToCart}
@@ -1102,7 +1199,7 @@ function App() {
             <p className="section-kicker">{tr.checkoutKicker}</p>
             <h3>{tr.checkoutTitle}</h3>
           </div>
-          <button className="close-button" onClick={() => setCheckoutOpen(false)}>
+          <button className="close-button" type="button" onClick={() => setCheckoutOpen(false)}>
             ×
           </button>
         </div>
