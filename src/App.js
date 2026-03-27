@@ -59,6 +59,7 @@ const translations = {
     freeShippingNote: "Free shipping over €39",
     freeShippingUnlocked: "Free shipping unlocked",
     freeShippingLeft: "left to free shipping",
+    freeShippingProgress: "You’re {{amount}} away from free shipping",
     total: "Total",
     continueCheckout: "Continue to Checkout",
     checkoutKicker: "Checkout",
@@ -148,6 +149,7 @@ const translations = {
     freeShippingNote: "Besplatna dostava preko 39€",
     freeShippingUnlocked: "Besplatna dostava otključana",
     freeShippingLeft: "do besplatne dostave",
+    freeShippingProgress: "Nedostaje ti {{amount}} do besplatne dostave",
     total: "Ukupno",
     continueCheckout: "Nastavi ka porudžbini",
     checkoutKicker: "Poručivanje",
@@ -442,11 +444,10 @@ function App() {
 
   const total = subtotal + shipping;
   const amountLeftForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
-
   const freeShippingProgress = Math.min(
-  100,
-  Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
-);
+    100,
+    Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
+  );
 
   const showFeedback = (text) => {
     setAddedFeedback(text);
@@ -964,29 +965,31 @@ function App() {
                 <strong>{shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}</strong>
               </div>
 
+              {cart.length > 0 && (
+                <div
+                  className={`shipping-progress-card ${
+                    subtotal >= FREE_SHIPPING_THRESHOLD
+                      ? "shipping-note-unlocked"
+                      : "shipping-note-locked"
+                  }`}
+                >
+                  <div className="shipping-note">
+                    {subtotal >= FREE_SHIPPING_THRESHOLD
+                      ? `${tr.freeShippingUnlocked} ✓`
+                      : tr.freeShippingProgress.replace(
+                          "{{amount}}",
+                          formatPrice(amountLeftForFreeShipping)
+                        )}
+                  </div>
 
-{cart.length > 0 && (
-  <div
-    className={`shipping-progress-card ${
-      subtotal >= FREE_SHIPPING_THRESHOLD
-        ? "shipping-note-unlocked"
-        : "shipping-note-locked"
-    }`}
-  >
-    <div className="shipping-note">
-      {subtotal >= FREE_SHIPPING_THRESHOLD
-        ? `${tr.freeShippingUnlocked} ✓`
-        : `You’re ${formatPrice(amountLeftForFreeShipping)} away from free shipping`}
-    </div>
-
-    <div className="shipping-progress-bar">
-      <div
-        className="shipping-progress-fill"
-        style={{ width: `${freeShippingProgress}%` }}
-      />
-    </div>
-  </div>
-)}
+                  <div className="shipping-progress-bar">
+                    <div
+                      className="shipping-progress-fill"
+                      style={{ width: `${freeShippingProgress}%` }}
+                    />
+                  </div>
+                </div>
+              )}
 
               <div className="cart-total">
                 <span>{tr.total}</span>
@@ -1197,30 +1200,29 @@ function App() {
                   ))}
                 </div>
 
-                
-                  <div
-  className={`shipping-progress-card checkout-shipping-note ${
-    subtotal >= FREE_SHIPPING_THRESHOLD
-      ? "shipping-note-unlocked"
-      : "shipping-note-locked"
-  }`}
->
-  <div className="shipping-note">
-    {subtotal >= FREE_SHIPPING_THRESHOLD
-      ? `${tr.freeShippingUnlocked} ✓`
-      : tr.freeShippingProgress.replace(
-          "{{amount}}",
-          formatPrice(amountLeftForFreeShipping)
-        )}
-  </div>
+                <div
+                  className={`shipping-progress-card checkout-shipping-note ${
+                    subtotal >= FREE_SHIPPING_THRESHOLD
+                      ? "shipping-note-unlocked"
+                      : "shipping-note-locked"
+                  }`}
+                >
+                  <div className="shipping-note">
+                    {subtotal >= FREE_SHIPPING_THRESHOLD
+                      ? `${tr.freeShippingUnlocked} ✓`
+                      : tr.freeShippingProgress.replace(
+                          "{{amount}}",
+                          formatPrice(amountLeftForFreeShipping)
+                        )}
+                  </div>
 
-  <div className="shipping-progress-bar">
-    <div
-      className="shipping-progress-fill"
-      style={{ width: `${freeShippingProgress}%` }}
-    />
-  </div>
-</div>
+                  <div className="shipping-progress-bar">
+                    <div
+                      className="shipping-progress-fill"
+                      style={{ width: `${freeShippingProgress}%` }}
+                    />
+                  </div>
+                </div>
 
                 <div className="checkout-totals">
                   <div>
