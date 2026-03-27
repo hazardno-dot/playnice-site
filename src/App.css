@@ -5,9 +5,8 @@
 ========================================= */
 
 .announcement-bar {
-  position: sticky;
-  top: 94px;
-  z-index: 55;
+  position: relative;
+  top: 0;
   width: 100%;
   margin: 6px 0 0;
   overflow: hidden;
@@ -180,7 +179,7 @@
 
 @media (max-width: 820px) {
   .announcement-bar {
-    top: 86px;
+    top: 0;
     margin-top: 6px;
   }
 
