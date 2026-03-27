@@ -1934,3 +1934,13 @@ main {
     transform: scaleX(0.92) scaleY(0.94);
   }
 }
+
+.size-buttons button.is-locked {
+  cursor: default;
+  pointer-events: none;
+  border-color: rgba(220, 181, 107, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(220, 181, 107, 0.25),
+    0 0 12px rgba(220, 181, 107, 0.18),
+    0 8px 20px rgba(0, 0, 0, 0.4);
+}

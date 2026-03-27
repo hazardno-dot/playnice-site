@@ -524,9 +524,22 @@ function App() {
     }
   };
 
-  const triggerInlineAddedFeedback = (productId, size) => {
-    setJustAddedKey(`${productId}-${size}`);
-  };
+ const triggerInlineAddedFeedback = (productId, size) => {
+  const key = `${productId}-${size}`;
+
+  setJustAddedKey(key);
+
+  setLockedButtons((prev) => ({ ...prev, [key]: true }));
+
+  setTimeout(() => {
+    setJustAddedKey("");
+    setLockedButtons((prev) => {
+      const copy = { ...prev };
+      delete copy[key];
+      return copy;
+    });
+  }, 900);
+};
 
   const addHeroBottleToCart = () => {
     const heroProduct = {
@@ -726,11 +739,26 @@ function App() {
           const isJustAdded = justAddedKey === feedbackKey;
 
           return (
-            <button
+            
               key={size}
-              type="button"
-              className={isJustAdded ? "is-added" : ""}
-              onClick={(e) => {
+              type="button"const isLocked = lockedButtons[feedbackKey];
+
+<button
+  key={size}
+  type="button"
+  disabled={isLocked}
+  className={`${isJustAdded ? "is-added" : ""} ${isLocked ? "is-locked" : ""}`}
+  onClick={(e) => {
+    if (isLocked) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    e.currentTarget.blur();
+
+    addToCart(product, size, null, null, { showToast: false });
+    triggerInlineAddedFeedback(product.id, size);
+  }}
+>
                 e.preventDefault();
                 e.stopPropagation();
                 e.currentTarget.blur();
@@ -738,8 +766,9 @@ function App() {
                 triggerInlineAddedFeedback(product.id, size);
               }}
             >
-              <span>{isJustAdded ? tr.justAdded : size}</span>
-              <strong>{isJustAdded ? tr.addedToCart : formatPrice(price)}</strong>
+              <span>{isJustAdded ? "✓" : size}</span>
+<strong>{formatPrice(price)}</strong>
+const [lockedButtons, setLockedButtons] = useState({});
             </button>
           );
         })}
