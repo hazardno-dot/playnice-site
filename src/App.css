@@ -2214,3 +2214,33 @@ main {
     width: 40px;
   }
 }
+
+/* =========================================
+   ANNOUNCEMENT BAR DYNAMIC CART LINK
+========================================= */
+
+.announcement-text.announcement-warning,
+.announcement-icon.announcement-warning {
+  color: #f0c46b;
+}
+
+.announcement-text.announcement-success,
+.announcement-icon.announcement-success {
+  color: #7edb95;
+}
+
+.announcement-bar-warning {
+  border-color: rgba(220, 181, 107, 0.16);
+  background:
+    radial-gradient(circle at top left, rgba(220, 181, 107, 0.08), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+    rgba(10, 10, 10, 0.95);
+}
+
+.announcement-bar-success {
+  border-color: rgba(99, 193, 122, 0.2);
+  background:
+    radial-gradient(circle at top left, rgba(99, 193, 122, 0.12), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+    rgba(10, 10, 10, 0.95);
+}

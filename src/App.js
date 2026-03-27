@@ -97,6 +97,13 @@ const translations = {
     announcement3: "Premium niche & designer fragrances",
     announcement4: "Limited stock drops — don’t miss out",
     announcement5: "Delivery across Montenegro",
+    announcementDynamicLocked: "Add {{amount}} more to unlock free shipping",
+announcementDynamicUnlocked: "Free shipping unlocked ✓",
+announcementDynamicEmpty1: "Free shipping over €39",
+announcementDynamicEmpty2: "Try before you buy — 2ml, 5ml, 10ml & 20ml decants",
+announcementDynamicEmpty3: "Premium niche & designer fragrances",
+announcementDynamicEmpty4: "Limited stock drops — don’t miss out",
+announcementDynamicEmpty5: "Delivery across Montenegro",
   },
   sr: {
     navHome: "Početna",
@@ -193,6 +200,13 @@ const translations = {
     announcement3: "Premium niche i dizajnerski parfemi",
     announcement4: "Ograničene količine — ne propusti",
     announcement5: "Dostava širom Crne Gore",
+    announcementDynamicLocked: "Dodaj još {{amount}} za besplatnu dostavu",
+announcementDynamicUnlocked: "Besplatna dostava otključana ✓",
+announcementDynamicEmpty1: "Besplatna dostava preko 39€",
+announcementDynamicEmpty2: "Probaj pre kupovine — 2ml, 5ml, 10ml i 20ml dekanti",
+announcementDynamicEmpty3: "Premium niche i dizajnerski parfemi",
+announcementDynamicEmpty4: "Ograničene količine — ne propusti",
+announcementDynamicEmpty5: "Dostava širom Crne Gore",
   }
 };
 
@@ -488,6 +502,40 @@ function App() {
     0,
     FREE_SHIPPING_THRESHOLD - subtotal
   );
+    const announcementItems = useMemo(() => {
+    if (cart.length === 0) {
+      return [
+        { text: tr.announcementDynamicEmpty1, icon: "🚚" },
+        { text: tr.announcementDynamicEmpty2, icon: "✓" },
+        { text: tr.announcementDynamicEmpty3, icon: "🔥" },
+        { text: tr.announcementDynamicEmpty4, icon: "🔥" },
+        { text: tr.announcementDynamicEmpty5, icon: "🚚" }
+      ];
+    }
+
+    if (subtotal >= FREE_SHIPPING_THRESHOLD) {
+      return [
+        { text: tr.announcementDynamicUnlocked, icon: "✓", tone: "success" },
+        { text: tr.announcementDynamicEmpty3, icon: "🔥" },
+        { text: tr.announcementDynamicEmpty4, icon: "🔥" },
+        { text: tr.announcementDynamicEmpty5, icon: "🚚" }
+      ];
+    }
+
+    return [
+      {
+        text: tr.announcementDynamicLocked.replace(
+          "{{amount}}",
+          formatPrice(amountLeftForFreeShipping)
+        ),
+        icon: "🚚",
+        tone: "warning"
+      },
+      { text: tr.announcementDynamicEmpty2, icon: "✓" },
+      { text: tr.announcementDynamicEmpty3, icon: "🔥" },
+      { text: tr.announcementDynamicEmpty4, icon: "🔥" }
+    ];
+  }, [cart.length, subtotal, amountLeftForFreeShipping, tr]);
   const freeShippingProgress = Math.min(
     100,
     Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
@@ -829,41 +877,36 @@ function App() {
     </div>
   </header>
 
-  <div className="announcement-bar">
-    <div className="announcement-track">
-      <span>{tr.announcement1}</span>
-      <span className="announcement-icon">🚚</span>
-
-      <span>{tr.announcement2}</span>
-      <span className="announcement-icon">✓</span>
-
-      <span>{tr.announcement3}</span>
-      <span className="announcement-icon">🔥</span>
-
-      <span>{tr.announcement4}</span>
-      <span className="announcement-icon">🔥</span>
-
-      <span>{tr.announcement5}</span>
-      <span className="announcement-icon">🚚</span>
-
-      <span>{tr.announcement1}</span>
-      <span className="announcement-icon">🚚</span>
-
-      <span>{tr.announcement2}</span>
-      <span className="announcement-icon">✓</span>
-
-      <span>{tr.announcement3}</span>
-      <span className="announcement-icon">🔥</span>
-
-      <span>{tr.announcement4}</span>
-      <span className="announcement-icon">🔥</span>
-
-      <span>{tr.announcement5}</span>
-      <span className="announcement-icon">🚚</span>
-    </div>
+ <div
+  className={`announcement-bar ${
+    cart.length === 0
+      ? ""
+      : subtotal >= FREE_SHIPPING_THRESHOLD
+      ? "announcement-bar-success"
+      : "announcement-bar-warning"
+  }`}
+>
+  <div className="announcement-track">
+    {[...announcementItems, ...announcementItems].map((item, index) => (
+      <React.Fragment key={`${item.text}-${index}`}>
+        <span
+          className={`announcement-text ${
+            item.tone ? `announcement-${item.tone}` : ""
+          }`}
+        >
+          {item.text}
+        </span>
+        <span
+          className={`announcement-icon ${
+            item.tone ? `announcement-${item.tone}` : ""
+          }`}
+        >
+          {item.icon}
+        </span>
+      </React.Fragment>
+    ))}
   </div>
-
-  {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
+</div>
 
   <main>
         {view === "home" && (
