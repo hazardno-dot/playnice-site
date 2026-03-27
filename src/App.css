@@ -508,12 +508,6 @@ main {
   margin: 0;
 }
 
-.feature-card p {
-  color: var(--text-soft);
-  line-height: 1.75;
-  margin: 0;
-}
-
 .feature-image-wrap {
   width: 100%;
   min-height: 220px;
@@ -540,15 +534,8 @@ main {
   max-height: 250px;
 }
 
-.inline-link {
-  margin-top: 18px;
-  padding: 0;
-  background: none;
-  border: 0;
-  color: var(--gold);
-  font-weight: 700;
-  text-align: left;
-}
+margin-top: 18px;
+  padding:
 
 .inline-link {
   margin-top: 18px;
@@ -1550,27 +1537,7 @@ main {
   }
 }
 
-/* === SHIPPING NOTE (FREE SHIPPING STATUS) === */
-.shipping-note { 
-  margin: 4px 0 14px;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 700;
-}
-
-.shipping-note-locked {
-  color: #d14b4b;
-}
-
-.shipping-note-unlocked {
-  color: #39b86f;
-}
-
-.checkout-shipping-note {
-  margin-bottom: 18px;
-}
-
+/* === SHIPPING / FREE SHIPPING PROGRESS === */
 .shipping-progress-card {
   margin: 6px 0 14px;
 }
@@ -1609,4 +1576,20 @@ main {
 
 .checkout-shipping-note {
   margin-bottom: 18px;
+}
+
+.order-success-message {
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(220, 181, 107, 0.28);
+  background: rgba(220, 181, 107, 0.08);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.submit-order-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
 }
