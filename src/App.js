@@ -215,7 +215,6 @@ const products = [
   { id: 21, name: "Rayhaan Aquatica", category: "Summer", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
   { id: 22, name: "Rayhaan Pacific Aura", category: "Summer", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
   { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
-
   { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
   { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 } },
   { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
@@ -350,10 +349,7 @@ function App() {
 
   const tr = translations[lang];
 
-  const categories = useMemo(
-    () => ["All", "Arabian", "Designer", "Niche", "Summer"],
-    []
-  );
+  const categories = useMemo(() => ["All", "Arabian", "Designer", "Niche", "Summer"], []);
 
   const impactProducts = useMemo(
     () =>
@@ -462,20 +458,6 @@ function App() {
   };
 
   const addToCart = (product, size, customPrice = null, customLabel = null) => {
-    const addToCartPreserveScroll = (product, size, customPrice = null, customLabel = null) => {
-  const scrollY = window.scrollY;
-  const scrollX = window.scrollX;
-
-  addToCart(product, size, customPrice, customLabel);
-
-  requestAnimationFrame(() => {
-    window.scrollTo(scrollX, scrollY);
-
-    requestAnimationFrame(() => {
-      window.scrollTo(scrollX, scrollY);
-    });
-  });
-};
     const key = `${product.id}-${size}-${customLabel || ""}`;
     const price = customPrice ?? product.sizes[size];
     const label = customLabel || size;
@@ -503,6 +485,21 @@ function App() {
     });
 
     showFeedback(`${product.name} ${tr.addedToCart}`);
+  };
+
+  const addToCartPreserveScroll = (product, size, customPrice = null, customLabel = null) => {
+    const scrollY = window.scrollY;
+    const scrollX = window.scrollX;
+
+    addToCart(product, size, customPrice, customLabel);
+
+    requestAnimationFrame(() => {
+      window.scrollTo(scrollX, scrollY);
+
+      requestAnimationFrame(() => {
+        window.scrollTo(scrollX, scrollY);
+      });
+    });
   };
 
   const addHeroBottleToCart = () => {
@@ -693,30 +690,32 @@ function App() {
       </div>
 
       <div
-  className="size-buttons"
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  }}
->
-  {Object.entries(product.sizes).map(([size, price]) => (
-    <button
-      key={size}
-      type="button"
-      onMouseDown={(e) => {
-        e.preventDefault();
-      }}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        addToCartPreserveScroll(product, size);
-      }}
-    >
-      <span>{size}</span>
-      <strong>{formatPrice(price)}</strong>
-    </button>
-  ))}
-</div>
+        className="size-buttons"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
+        {Object.entries(product.sizes).map(([size, price]) => (
+          <button
+            key={size}
+            type="button"
+            onMouseDown={(e) => {
+              e.preventDefault();
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addToCartPreserveScroll(product, size);
+            }}
+          >
+            <span>{size}</span>
+            <strong>{formatPrice(price)}</strong>
+          </button>
+        ))}
+      </div>
+    </article>
+  );
 
   return (
     <div className="app-shell">
@@ -1214,7 +1213,7 @@ function App() {
         )}
       </div>
 
-            <div className={`checkout-modal ${checkoutOpen ? "open" : ""}`}>
+      <div className={`checkout-modal ${checkoutOpen ? "open" : ""}`}>
         <div className="checkout-header">
           <div>
             <p className="section-kicker">{tr.checkoutKicker}</p>
