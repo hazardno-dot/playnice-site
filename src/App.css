@@ -292,8 +292,10 @@ main {
     radial-gradient(circle at top, rgba(220, 181, 107, 0.04), transparent 30%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 16%),
     var(--bg);
-    main {
-  margin-top: 120px; /* header + announcement visina */
+main {
+  overflow: hidden;
+  margin-top: 0;
+  padding-top: 0;
 }
 }
 
@@ -659,7 +661,7 @@ main {
 .hero {
   position: relative;
   width: min(calc(100% - 32px), var(--max));
-  margin: 8px auto 0;
+  margin: 4px auto 0;
   padding: 76px 52px;
   border: 1px solid var(--line);
   border-radius: 34px;
