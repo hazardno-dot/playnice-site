@@ -457,19 +457,45 @@ function App() {
     setAddedFeedback(text);
   };
 
-  const addToCart = (product, size, customPrice = null, customLabel = null) => {
-    const key = `${product.id}-${size}-${customLabel || ""}`;
-    const price = customPrice ?? product.sizes[size];
-    const label = customLabel || size;
+const addToCart = (
+  product,
+  size,
+  customPrice = null,
+  customLabel = null,
+  options = {}
+) => {
+  const { showToast = true } = options;
 
-    setCart((prev) => {
-      const existing = prev.find((item) => item.key === key);
+  const key = `${product.id}-${size}-${customLabel || ""}`;
+  const price = customPrice ?? product.sizes[size];
+  const label = customLabel || size;
 
-      if (existing) {
-        return prev.map((item) =>
-          item.key === key ? { ...item, quantity: item.quantity + 1 } : item
-        );
+  setCart((prev) => {
+    const existing = prev.find((item) => item.key === key);
+
+    if (existing) {
+      return prev.map((item) =>
+        item.key === key ? { ...item, quantity: item.quantity + 1 } : item
+      );
+    }
+
+    return [
+      ...prev,
+      {
+        key,
+        id: product.id,
+        name: product.name,
+        size: label,
+        price,
+        quantity: 1
       }
+    ];
+  });
+
+  if (showToast) {
+    showFeedback(`${product.name} ${tr.addedToCart}`);
+  }
+};
 
       return [
         ...prev,
@@ -674,7 +700,7 @@ function App() {
         <strong>{tr.luxuryModal}</strong>
       </div>
 
-      <div
+<div
   className="size-buttons"
   onClick={(e) => {
     e.stopPropagation();
@@ -688,7 +714,7 @@ function App() {
         e.preventDefault();
         e.stopPropagation();
         e.currentTarget.blur();
-        addToCart(product, size);
+        addToCart(product, size, null, null, { showToast: false });
       }}
     >
       <span>{size}</span>
