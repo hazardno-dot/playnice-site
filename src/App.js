@@ -773,134 +773,99 @@ function App() {
   );
 
   return (
-    <div className="app-shell">
-      <header className="topbar">
-        <div className="announcement-bar">
-  <div className="announcement-track">
-    <span>{tr.announcement1}</span>
-    <span className="announcement-icon">🚚</span>
+ <div className="app-shell">
+  <header className="topbar">
+    <button className="brand" type="button" onClick={() => setView("home")}>
+      <span className="brand-mark">▶</span>
+      <span className="brand-copy">
+        <strong>PlayNice</strong>
+        <small>Remember. PlayNice.</small>
+      </span>
+    </button>
 
-    <span>{tr.announcement2}</span>
-    <span className="announcement-icon">✓</span>
+    <nav className="nav-links">
+      <button
+        type="button"
+        className={view === "home" ? "active" : ""}
+        onClick={() => setView("home")}
+      >
+        {tr.navHome}
+      </button>
+      <button
+        type="button"
+        className={view === "shop" ? "active" : ""}
+        onClick={() => setView("shop")}
+      >
+        {tr.navShop}
+      </button>
+    </nav>
 
-    <span>{tr.announcement3}</span>
-    <span className="announcement-icon">🔥</span>
-
-    <span>{tr.announcement4}</span>
-    <span className="announcement-icon">🔥</span>
-
-    <span>{tr.announcement5}</span>
-    <span className="announcement-icon">🚚</span>
-
-    <span>{tr.announcement1}</span>
-    <span className="announcement-icon">🚚</span>
-
-    <span>{tr.announcement2}</span>
-    <span className="announcement-icon">✓</span>
-
-    <span>{tr.announcement3}</span>
-    <span className="announcement-icon">🔥</span>
-
-    <span>{tr.announcement4}</span>
-    <span className="announcement-icon">🔥</span>
-
-    <span>{tr.announcement5}</span>
-    <span className="announcement-icon">🚚</span>
-  </div>
-</div>
-        <button className="brand" type="button" onClick={() => setView("home")}>
-          <span className="brand-mark">▶</span>
-          <span className="brand-copy">
-            <strong>PlayNice</strong>
-            <small>Remember. PlayNice.</small>
-          </span>
+    <div className="topbar-right">
+      <div className="lang-switch">
+        <button
+          className={lang === "en" ? "active" : ""}
+          onClick={() => setLang("en")}
+          type="button"
+        >
+          EN
         </button>
+        <button
+          className={lang === "sr" ? "active" : ""}
+          onClick={() => setLang("sr")}
+          type="button"
+        >
+          SR
+        </button>
+      </div>
 
-        <nav className="nav-links">
-          <button
-            type="button"
-            className={view === "home" ? "active" : ""}
-            onClick={() => setView("home")}
-          >
-            {tr.navHome}
-          </button>
-          <button
-            type="button"
-            className={view === "shop" ? "active" : ""}
-            onClick={() => setView("shop")}
-          >
-            {tr.navShop}
-          </button>
-        </nav>
+      <button
+        className="cart-button"
+        type="button"
+        onClick={() => setCartOpen((prev) => !prev)}
+      >
+        {tr.cart}
+        {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+      </button>
+    </div>
+  </header>
 
-        <div className="topbar-right">
-          <div className="lang-switch">
-            <button
-              className={lang === "en" ? "active" : ""}
-              onClick={() => setLang("en")}
-              type="button"
-            >
-              EN
-            </button>
-            <button
-              className={lang === "sr" ? "active" : ""}
-              onClick={() => setLang("sr")}
-              type="button"
-            >
-              SR
-            </button>
-          </div>
+  <div className="announcement-bar">
+    <div className="announcement-track">
+      <span>{tr.announcement1}</span>
+      <span className="announcement-icon">🚚</span>
 
-          <button
-            className="cart-button"
-            type="button"
-            onClick={() => setCartOpen((prev) => !prev)}
-          >
-            {tr.cart}
-            {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-          </button>
-        </div>
-<div className="announcement-bar">
-  <div className="announcement-track">
+      <span>{tr.announcement2}</span>
+      <span className="announcement-icon">✓</span>
 
-    <span>Free shipping over €55</span>
-    <span className="announcement-icon">🚚</span>
+      <span>{tr.announcement3}</span>
+      <span className="announcement-icon">🔥</span>
 
-    <span>Try before you buy — 5ml & 10ml decants</span>
-    <span className="announcement-icon">✓</span>
+      <span>{tr.announcement4}</span>
+      <span className="announcement-icon">🔥</span>
 
-    <span>Premium niche & designer fragrances</span>
-    <span className="announcement-icon">🔥</span>
+      <span>{tr.announcement5}</span>
+      <span className="announcement-icon">🚚</span>
 
-    <span>Limited stock drops — don’t miss out</span>
-    <span className="announcement-icon">🔥</span>
+      <span>{tr.announcement1}</span>
+      <span className="announcement-icon">🚚</span>
 
-    <span>Delivery across Montenegro</span>
-    <span className="announcement-icon">🚚</span>
+      <span>{tr.announcement2}</span>
+      <span className="announcement-icon">✓</span>
 
-    {/* duplikat za loop */}
-    <span>Free shipping over €55</span>
-    <span className="announcement-icon">🚚</span>
+      <span>{tr.announcement3}</span>
+      <span className="announcement-icon">🔥</span>
 
-    <span>Try before you buy — 5ml & 10ml decants</span>
-    <span className="announcement-icon">✓</span>
+      <span>{tr.announcement4}</span>
+      <span className="announcement-icon">🔥</span>
 
-    <span>Premium niche & designer fragrances</span>
-    <span className="announcement-icon">🔥</span>
-
-    <span>Limited stock drops — don’t miss out</span>
-    <span className="announcement-icon">🔥</span>
-
-    <span>Delivery across Montenegro</span>
-    <span className="announcement-icon">🚚</span>
-
+      <span>{tr.announcement5}</span>
+      <span className="announcement-icon">🚚</span>
+    </div>
   </div>
-</div>
-      </header>
 
-      {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
+  {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
-      <main>
+  <main>
         {view === "home" && (
           <>
             <section className="hero">
