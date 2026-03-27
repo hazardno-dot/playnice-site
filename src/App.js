@@ -189,10 +189,10 @@ const translations = {
     addedToCart: "je dodat u korpu",
     justAdded: "Dodato ✓",
     announcement1: "Besplatna dostava preko 55€",
-announcement2: "Probaj pre kupovine — 5ml i 10ml dekanti",
-announcement3: "Premium niche i dizajnerski parfemi",
-announcement4: "Ograničene količine — ne propusti",
-announcement5: "Dostava širom Crne Gore",
+    announcement2: "Probaj pre kupovine — 5ml i 10ml dekanti",
+    announcement3: "Premium niche i dizajnerski parfemi",
+    announcement4: "Ograničene količine — ne propusti",
+    announcement5: "Dostava širom Crne Gore",
   }
 };
 
