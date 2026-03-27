@@ -1606,6 +1606,10 @@ main {
     0 0 24px rgba(180, 25, 25, 0.28);
 }
 
+.size-chip.is-added {
+  animation: chipSettle 0.22s ease;
+}
+
 /* GOLD TEXT POP */
 .size-chip.is-added .size-chip-main,
 .size-chip.is-added strong {
@@ -1726,6 +1730,15 @@ main {
   100% {
     opacity: 0;
     transform: translateX(135%);
+  }
+}
+
+@keyframes chipSettle {
+  0% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
