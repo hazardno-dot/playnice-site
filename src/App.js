@@ -1214,7 +1214,7 @@ function App() {
         )}
       </div>
 
-      <div className={`checkout-modal ${checkoutOpen ? "open" : ""}`}>
+            <div className={`checkout-modal ${checkoutOpen ? "open" : ""}`}>
         <div className="checkout-header">
           <div>
             <p className="section-kicker">{tr.checkoutKicker}</p>
