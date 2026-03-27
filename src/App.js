@@ -743,21 +743,16 @@ const triggerInlineAddedFeedback = (productId, size) => {
           e.stopPropagation();
           e.currentTarget.blur();
 
-          if (isJustAdded) return;
-
           addToCart(product, size, null, null, { showToast: false });
           triggerInlineAddedFeedback(product.id, size);
         }}
       >
-        <span className="size-chip-label">
-          <span className={`size-chip-default ${isJustAdded ? "hidden" : ""}`}>
-            {size}
-          </span>
-          <span className={`size-chip-added ${isJustAdded ? "show" : ""}`}>
-            Added ✓
-          </span>
-        </span>
+        <span className="size-chip-main">{size}</span>
         <strong>{formatPrice(price)}</strong>
+
+        <span className={`size-chip-feedback ${isJustAdded ? "show" : ""}`}>
+          Added ✓
+        </span>
       </button>
     );
   })}
