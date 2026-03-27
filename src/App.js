@@ -741,7 +741,7 @@ function App() {
           return (
             
               key={size}
-              type="button"const isLocked = lockedButtons[feedbackKey];
+              type="button"const isLocked = lockedButtons[feedbackKey];)
 
 <button
   key={size}
