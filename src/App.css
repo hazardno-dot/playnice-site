@@ -1535,244 +1535,126 @@ main {
 }
 
 /* =========================================
-   SHIPPING / FREE SHIPPING PROGRESS
+   CINEMATIC RED SMOKE V2 (ULTRA PREMIUM)
 ========================================= */
-.shipping-progress-card {
-  margin: 6px 0 14px;
-}
 
-.shipping-note {
-  margin: 0 0 10px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.shipping-note-locked .shipping-note {
-  color: #d14b4b;
-}
-
-.shipping-note-unlocked .shipping-note {
-  color: #39b86f;
-}
-
-.shipping-progress-bar {
-  width: 100%;
-  height: 8px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
-}
-
-.shipping-progress-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #d14b4b 0%, #dcb56b 55%, #39b86f 100%);
-  transition: width 0.35s ease;
-}
-
-.checkout-shipping-note {
-  margin-bottom: 18px;
-}
-
-/* =========================================
-   SUCCESS / SUBMIT STATES
-========================================= */
-.order-success-message {
-  margin: 0 0 14px;
-  padding: 14px 16px;
-  border: 1px solid rgba(220, 181, 107, 0.28);
-  border-radius: 16px;
-  background: rgba(220, 181, 107, 0.08);
-  color: var(--text);
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.submit-order-button:disabled {
-  opacity: 0.7;
-  cursor: wait;
-}
-
-/* =========================================
-   FEATURED HIGHLIGHTS / CLICKABLE POLISH
-========================================= */
-.feature-card[role="button"] {
-  cursor: pointer;
-  position: relative;
-  transition:
-    transform 0.28s ease,
-    box-shadow 0.28s ease,
-    border-color 0.28s ease,
-    background 0.28s ease;
-}
-
-.feature-card[role="button"]::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: radial-gradient(circle at top center, rgba(220, 181, 107, 0.1), transparent 42%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.feature-card[role="button"]:hover {
-  transform: translateY(-6px);
-  border-color: rgba(220, 181, 107, 0.28);
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.72),
-    0 0 24px rgba(220, 181, 107, 0.05);
-}
-
-.feature-card[role="button"]:hover::before {
-  opacity: 1;
-}
-
-.feature-card[role="button"]:focus-visible {
-  outline: none;
-  border-color: var(--line-strong);
-  box-shadow:
-    0 0 0 3px rgba(220, 181, 107, 0.12),
-    0 24px 60px rgba(0, 0, 0, 0.72);
-}
-
-.feature-card[role="button"] .feature-image {
-  transition:
-    transform 0.35s ease,
-    filter 0.35s ease;
-}
-
-.feature-card[role="button"]:hover .feature-image {
-  transform: translateY(-4px) scale(1.03);
-  filter: drop-shadow(0 24px 45px rgba(0, 0, 0, 0.5));
-}
-
-.feature-card[role="button"] .feature-tag,
-.feature-card[role="button"] h3,
-.feature-card[role="button"] p,
-.feature-card[role="button"] .inline-link {
-  position: relative;
-  z-index: 1;
-}
-
-/* =========================================
-   SIZE BUTTONS — FINAL PREMIUM GLOW PATCH
-========================================= */
+/* base */
 .size-chip {
   position: relative;
-  min-width: 118px;
   isolation: isolate;
+  overflow: visible;
 }
 
-.size-chip-main {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 34px;
-  position: relative;
-  z-index: 2;
-}
-
-.size-chip strong {
-  position: relative;
-  z-index: 2;
-}
-
-.size-chip-feedback {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  opacity: 0;
-  pointer-events: none;
-  white-space: nowrap;
-  transition: opacity 0.18s ease;
-  background: rgba(10, 10, 10, 0.82);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  z-index: 3;
-  backface-visibility: hidden;
-}
-
-.size-chip-feedback.show {
-  opacity: 1;
-}
-
+/* DEEP SMOKE LAYER (ambient dim) */
 .size-chip::before {
   content: "";
   position: absolute;
-  inset: -1px;
-  border-radius: inherit;
+  inset: -10px;
+  border-radius: 999px;
   opacity: 0;
   pointer-events: none;
   z-index: 0;
-  background: radial-gradient(
-    circle at center,
-    rgba(220, 181, 107, 0.24) 0%,
-    rgba(220, 181, 107, 0.1) 42%,
-    transparent 72%
-  );
-  filter: blur(10px);
-  transform: scale(0.88);
+
+  background:
+    radial-gradient(circle at 50% 60%,
+      rgba(160, 20, 20, 0.45) 0%,
+      rgba(110, 10, 10, 0.32) 22%,
+      rgba(70, 5, 5, 0.22) 40%,
+      rgba(30, 2, 2, 0.12) 60%,
+      transparent 78%);
+
+  filter: blur(22px);
+  transform: scale(0.85);
 }
 
+/* HOT CORE GLOW (inner fire) */
 .size-chip::after {
   content: "";
   position: absolute;
-  inset: -1px;
+  inset: -2px;
   border-radius: inherit;
   opacity: 0;
   pointer-events: none;
   z-index: 1;
-  background: linear-gradient(
-    115deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.02) 28%,
-    rgba(255, 255, 255, 0.14) 50%,
-    rgba(255, 255, 255, 0.02) 72%,
-    transparent 100%
-  );
-  transform: translateX(-135%);
-}
 
-.size-chip.is-added {
-  border-color: rgba(220, 181, 107, 0.58) !important;
   background:
-    linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.07)),
-    rgba(255, 255, 255, 0.03) !important;
-  box-shadow:
-    0 8px 18px rgba(220, 181, 107, 0.12),
-    0 0 0 1px rgba(220, 181, 107, 0.11) inset,
-    0 0 20px rgba(220, 181, 107, 0.1);
+    radial-gradient(circle at 50% 50%,
+      rgba(255, 90, 70, 0.28) 0%,
+      rgba(255, 60, 60, 0.16) 30%,
+      rgba(255, 120, 90, 0.08) 55%,
+      transparent 75%);
+
+  filter: blur(6px);
+  transform: scale(0.92);
 }
 
+/* ACTIVE STATE */
+.size-chip.is-added {
+  border-color: rgba(220, 181, 107, 0.62) !important;
+  background:
+    linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.06)),
+    rgba(255, 255, 255, 0.03) !important;
+
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(220, 181, 107, 0.14) inset,
+    0 0 24px rgba(180, 25, 25, 0.28);
+}
+
+/* GOLD TEXT POP */
 .size-chip.is-added .size-chip-main,
 .size-chip.is-added strong {
   color: var(--gold);
 }
 
+/* SMOKE EXPANSION */
 .size-chip.is-added::before {
-  animation: sizeChipGlowPulse 0.55s ease-out forwards;
+  animation: redSmokeExpand 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* FIRE CORE PULSE */
 .size-chip.is-added::after {
-  animation: sizeChipGlowSweep 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: redCorePulse 0.6s ease-out forwards;
 }
 
-@keyframes sizeChipGlowPulse {
+/* SHIMMER SWEEP (subtle metallic pass) */
+.size-chip.is-added .size-chip-feedback {
+  backdrop-filter: blur(3px);
+}
+
+/* KEYFRAMES */
+
+@keyframes redSmokeExpand {
+  0% {
+    opacity: 0;
+    transform: scale(0.78);
+  }
+  35% {
+    opacity: 0.85;
+    transform: scale(1.02);
+  }
+  70% {
+    opacity: 0.45;
+    transform: scale(1.12);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes redCorePulse {
   0% {
     opacity: 0;
     transform: scale(0.88);
   }
-  38% {
-    opacity: 0.62;
-    transform: scale(1);
+  40% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  70% {
+    opacity: 0.5;
+    transform: scale(1.08);
   }
   100% {
     opacity: 0;
