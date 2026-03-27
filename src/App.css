@@ -716,11 +716,16 @@ main {
 }
 
 .product-card:hover {
-  transform: translateY(-6px);
+  transform: none;
   border-color: rgba(220, 181, 107, 0.28);
   box-shadow:
     0 24px 60px rgba(0, 0, 0, 0.82),
     0 0 28px rgba(220, 181, 107, 0.06);
+}
+
+.product-card {
+  transform: translateZ(0);
+  will-change: box-shadow, border-color;
 }
 
 .product-card:hover::before {
