@@ -1198,7 +1198,7 @@ function App() {
                 </div>
 
                 
-                  {subtotal >=<div
+                  <div
   className={`shipping-progress-card checkout-shipping-note ${
     subtotal >= FREE_SHIPPING_THRESHOLD
       ? "shipping-note-unlocked"
@@ -1208,7 +1208,10 @@ function App() {
   <div className="shipping-note">
     {subtotal >= FREE_SHIPPING_THRESHOLD
       ? `${tr.freeShippingUnlocked} ✓`
-      : `You’re ${formatPrice(amountLeftForFreeShipping)} away from free shipping`}
+      : tr.freeShippingProgress.replace(
+          "{{amount}}",
+          formatPrice(amountLeftForFreeShipping)
+        )}
   </div>
 
   <div className="shipping-progress-bar">
