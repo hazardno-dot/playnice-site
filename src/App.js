@@ -959,13 +959,19 @@ function App() {
                 <strong>{shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}</strong>
               </div>
 
-              {cart.length > 0 && (
-                <div className="shipping-note">
-                  {subtotal >= FREE_SHIPPING_THRESHOLD
-                    ? `${tr.freeShippingUnlocked} ✓`
-                    : `${formatPrice(amountLeftForFreeShipping)} ${tr.freeShippingLeft}`}
-                </div>
-              )}
+{cart.length > 0 && (
+  <div
+    className={`shipping-note ${
+      subtotal >= FREE_SHIPPING_THRESHOLD
+        ? "shipping-note-unlocked"
+        : "shipping-note-locked"
+    }`}
+  >
+    {subtotal >= FREE_SHIPPING_THRESHOLD
+      ? `${tr.freeShippingUnlocked} ✓`
+      : `${formatPrice(amountLeftForFreeShipping)} ${tr.freeShippingLeft}`}
+  </div>
+)}
 
               <div className="cart-total">
                 <span>{tr.total}</span>
@@ -1176,11 +1182,18 @@ function App() {
                   ))}
                 </div>
 
-                <div className="shipping-note checkout-shipping-note">
-                  {subtotal >= FREE_SHIPPING_THRESHOLD
-                    ? `${tr.freeShippingUnlocked} ✓`
-                    : `${tr.freeShippingNote} · ${formatPrice(amountLeftForFreeShipping)} ${tr.freeShippingLeft}`}
-                </div>
+                
+                  {subtotal >=<div
+  className={`shipping-note checkout-shipping-note ${
+    subtotal >= FREE_SHIPPING_THRESHOLD
+      ? "shipping-note-unlocked"
+      : "shipping-note-locked"
+  }`}
+>
+  {subtotal >= FREE_SHIPPING_THRESHOLD
+    ? `${tr.freeShippingUnlocked} ✓`
+    : `${tr.freeShippingNote} · ${formatPrice(amountLeftForFreeShipping)} ${tr.freeShippingLeft}`}
+</div>
 
                 <div className="checkout-totals">
                   <div>
