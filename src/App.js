@@ -817,6 +817,42 @@ function App() {
             {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
           </button>
         </div>
+<div className="announcement-bar">
+  <div className="announcement-track">
+
+    <span>Free shipping over €55</span>
+    <span className="announcement-icon">🚚</span>
+
+    <span>Try before you buy — 5ml & 10ml decants</span>
+    <span className="announcement-icon">✓</span>
+
+    <span>Premium niche & designer fragrances</span>
+    <span className="announcement-icon">🔥</span>
+
+    <span>Limited stock drops — don’t miss out</span>
+    <span className="announcement-icon">🔥</span>
+
+    <span>Delivery across Montenegro</span>
+    <span className="announcement-icon">🚚</span>
+
+    {/* duplikat za loop */}
+    <span>Free shipping over €55</span>
+    <span className="announcement-icon">🚚</span>
+
+    <span>Try before you buy — 5ml & 10ml decants</span>
+    <span className="announcement-icon">✓</span>
+
+    <span>Premium niche & designer fragrances</span>
+    <span className="announcement-icon">🔥</span>
+
+    <span>Limited stock drops — don’t miss out</span>
+    <span className="announcement-icon">🔥</span>
+
+    <span>Delivery across Montenegro</span>
+    <span className="announcement-icon">🚚</span>
+
+  </div>
+</div>
       </header>
 
       {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}

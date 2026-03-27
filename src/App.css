@@ -1,6 +1,78 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap");
 
 /* =========================================
+   ANNOUNCEMENT BAR (PREMIUM MARQUEE)
+========================================= */
+
+.announcement-bar {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-top: 1px solid rgba(220, 181, 107, 0.12);
+  border-bottom: 1px solid rgba(220, 181, 107, 0.12);
+
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+    rgba(10, 10, 10, 0.95);
+}
+
+.announcement-track {
+  display: flex;
+  gap: 60px;
+  white-space: nowrap;
+  padding: 10px 0;
+  animation: scrollAnnouncements 22s linear infinite;
+}
+
+.announcement-track span {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(220, 181, 107, 0.85);
+}
+
+/* subtle fade edges */
+.announcement-bar::before,
+.announcement-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 80px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.announcement-bar::before {
+  left: 0;
+  background: linear-gradient(to right, #050505, transparent);
+}
+
+.announcement-bar::after {
+  right: 0;
+  background: linear-gradient(to left, #050505, transparent);
+}
+
+@keyframes scrollAnnouncements {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.announcement-track {
+  display: flex;
+  align-items: center;
+  gap: 42px;
+  white-space: nowrap;
+  padding: 10px 0;
+  animation: scrollAnnouncements 22s linear infinite;
+}
+
+/* =========================================
    ROOT / TOKENS
 ========================================= */
 :root {
