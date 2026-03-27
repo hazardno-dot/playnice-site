@@ -683,6 +683,10 @@ main {
   gap: 20px;
 }
 
+/* =========================================
+   PRODUCT CARD (CLEAN FINAL)
+========================================= */
+
 .product-card {
   position: relative;
   display: flex;
@@ -697,39 +701,32 @@ main {
   box-shadow: var(--shadow);
   overflow: hidden;
   isolation: isolate;
+  transform: translateZ(0);
+  will-change: box-shadow, border-color;
 }
 
+/* REMOVE global glow layer */
 .product-card::before {
   content: "";
   position: absolute;
   inset: -1px;
   z-index: -1;
   border-radius: inherit;
-  background: radial-gradient(circle at 50% 0%, rgba(220, 181, 107, 0.14), transparent 45%);
+  background: radial-gradient(circle at 50% 0%, rgba(220, 181, 107, 0.08), transparent 45%);
   opacity: 0;
-  transition: opacity 0.32s ease;
+  transition: opacity 0.24s ease;
   pointer-events: none;
-}
-
-.product-card.clickable {
-  cursor: pointer;
 }
 
 .product-card:hover {
   transform: none;
-  border-color: rgba(220, 181, 107, 0.28);
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.82),
-    0 0 28px rgba(220, 181, 107, 0.06);
+  border-color: rgba(220, 181, 107, 0.22);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.82);
 }
 
-.product-card {
-  transform: translateZ(0);
-  will-change: box-shadow, border-color;
-}
-
+/* 🔴 ključ: nema više glow-a na hover */
 .product-card:hover::before {
-  opacity: 1;
+  opacity: 0;
 }
 
 .product-card::after {
@@ -748,41 +745,7 @@ main {
   opacity: 1;
 }
 
-.product-badge {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 2;
-  padding: 7px 10px;
-  border-radius: 999px;
-  background: #b32a2a;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  box-shadow: 0 10px 24px rgba(179, 42, 42, 0.25);
-}
-
-.product-image {
-  position: relative;
-  height: 160px;
-  margin-bottom: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.product-image::after {
-  content: "";
-  position: absolute;
-  bottom: 6px;
-  width: 70%;
-  height: 26px;
-  background: radial-gradient(circle, rgba(220, 181, 107, 0.16), transparent 72%);
-  filter: blur(14px);
-}
-
+/* IMAGE BEHAVIOR (smoothed) */
 .product-image-real {
   position: relative;
   z-index: 1;
@@ -791,6 +754,11 @@ main {
   object-fit: contain;
   filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.9));
   transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.product-card:hover .product-image-real {
+  transform: translateY(-2px) scale(1.02);
+  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.95));
 }
 
 .product-card:hover .product-image-real {
@@ -1792,52 +1760,104 @@ main {
   backdrop-filter: blur(3px);
 }
 
+/* =========================================
+   SIZE CHIP (FINAL CLEAN)
+========================================= */
+
 .size-chip {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  overflow: visible;
 }
 
-.size-chip-main,
-.size-chip strong {
-  position: relative;
-  z-index: 2;
-}
-
-.size-chip-feedback {
+/* ambient smoke */
+.size-chip::before {
+  content: "";
   position: absolute;
-  inset: 0;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: inherit;
-  background: linear-gradient(
-    180deg,
-    rgba(18, 18, 18, 0.18),
-    rgba(18, 18, 18, 0.08)
-  );
-  color: var(--gold);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  inset: -10px;
+  border-radius: 999px;
   opacity: 0;
   pointer-events: none;
-  transform: scale(0.96);
-  transition:
-    opacity 0.18s ease,
-    transform 0.22s ease;
+  z-index: 0;
+
+  background:
+    radial-gradient(circle at 50% 60%,
+      rgba(160, 20, 20, 0.45) 0%,
+      rgba(110, 10, 10, 0.32) 22%,
+      rgba(70, 5, 5, 0.22) 40%,
+      rgba(30, 2, 2, 0.12) 60%,
+      transparent 78%);
+
+  filter: blur(22px);
+  transform: scale(0.85);
 }
 
-.size-chip-feedback.show {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.size-chip.is-added .size-chip-main,
-.size-chip.is-added > strong {
+/* inner glow */
+.size-chip::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
   opacity: 0;
-  transition: opacity 0.16s ease;
+  pointer-events: none;
+  z-index: 1;
+
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(255, 90, 70, 0.28) 0%,
+      rgba(255, 60, 60, 0.16) 30%,
+      rgba(255, 120, 90, 0.08) 55%,
+      transparent 75%);
+
+  filter: blur(6px);
+  transform: scale(0.92);
+}
+
+/* CLICK STATE (JEDINI GLOW) */
+.size-chip.is-added {
+  border-color: rgba(220, 181, 107, 0.62) !important;
+  background:
+    linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.06)),
+    rgba(255, 255, 255, 0.03) !important;
+
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(220, 181, 107, 0.14) inset,
+    0 0 24px rgba(180, 25, 25, 0.28);
+
+  filter: brightness(1.04);
+
+  animation: chipPulseGlow 0.4s ease-out;
+  animation-fill-mode: forwards;
+}
+
+/* hover NE SME da pravi novi glow */
+.size-buttons button:hover {
+  border-color: rgba(220, 181, 107, 0.16);
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* zaštita: hover ne override-uje klik */
+.size-chip.is-added:hover {
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(220, 181, 107, 0.14) inset,
+    0 0 24px rgba(180, 25, 25, 0.28);
+}
+
+/* tekst */
+.size-chip.is-added strong {
+  color: var(--gold);
+}
+
+/* smoke animacije */
+.size-chip.is-added::before {
+  animation: redSmokeExpand 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.size-chip.is-added::after {
+  animation: redCorePulse 0.6s ease-out forwards;
 }
 
 /* KEYFRAMES */
