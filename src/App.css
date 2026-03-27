@@ -170,8 +170,8 @@ main {
     background-color 0.2s ease,
     border-color 0.2s ease,
     color 0.2s ease,
-    opacity 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.22s ease,
+    opacity 0.18s ease;
 }
 
 /* =========================================
@@ -1660,13 +1660,12 @@ main {
 }
 
 /* =========================================
-   SIZE CHIP — ULTRA PREMIUM MICRO-INTERACTION
+   SIZE BUTTONS — FINAL PREMIUM GLOW PATCH
 ========================================= */
 .size-chip {
   position: relative;
   min-width: 118px;
   isolation: isolate;
-  will-change: auto;
 }
 
 .size-chip-main {
@@ -1674,6 +1673,13 @@ main {
   align-items: center;
   justify-content: center;
   min-width: 34px;
+  position: relative;
+  z-index: 2;
+}
+
+.size-chip strong {
+  position: relative;
+  z-index: 2;
 }
 
 .size-chip-feedback {
@@ -1684,14 +1690,13 @@ main {
   justify-content: center;
   gap: 6px;
   opacity: 0;
-  transform: none;
   pointer-events: none;
   white-space: nowrap;
   transition: opacity 0.18s ease;
   background: rgba(10, 10, 10, 0.82);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  z-index: 2;
+  z-index: 3;
   backface-visibility: hidden;
 }
 
@@ -1702,14 +1707,19 @@ main {
 .size-chip::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -1px;
   border-radius: inherit;
   opacity: 0;
   pointer-events: none;
   z-index: 0;
-  background:
-    radial-gradient(circle at center, rgba(220, 181, 107, 0.18), transparent 62%);
-  transform: scale(0.72);
+  background: radial-gradient(
+    circle at center,
+    rgba(220, 181, 107, 0.24) 0%,
+    rgba(220, 181, 107, 0.1) 42%,
+    transparent 72%
+  );
+  filter: blur(10px);
+  transform: scale(0.88);
 }
 
 .size-chip::after {
@@ -1720,52 +1730,57 @@ main {
   opacity: 0;
   pointer-events: none;
   z-index: 1;
-  background:
-    linear-gradient(
-      115deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.02) 28%,
-      rgba(255, 255, 255, 0.16) 50%,
-      rgba(255, 255, 255, 0.02) 72%,
-      transparent 100%
-    );
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.02) 28%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.02) 72%,
+    transparent 100%
+  );
   transform: translateX(-135%);
 }
 
 .size-chip.is-added {
-  border-color: rgba(220, 181, 107, 0.52) !important;
+  border-color: rgba(220, 181, 107, 0.58) !important;
   background:
-    linear-gradient(180deg, rgba(220, 181, 107, 0.16), rgba(220, 181, 107, 0.06)),
+    linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.07)),
     rgba(255, 255, 255, 0.03) !important;
   box-shadow:
-    0 6px 14px rgba(220, 181, 107, 0.12),
-    0 0 0 1px rgba(220, 181, 107, 0.1) inset;
+    0 8px 18px rgba(220, 181, 107, 0.12),
+    0 0 0 1px rgba(220, 181, 107, 0.11) inset,
+    0 0 20px rgba(220, 181, 107, 0.1);
+}
+
+.size-chip.is-added .size-chip-main,
+.size-chip.is-added strong {
+  color: var(--gold);
 }
 
 .size-chip.is-added::before {
-  animation: sizeChipSoftPulse 0.52s ease-out forwards;
+  animation: sizeChipGlowPulse 0.55s ease-out forwards;
 }
 
 .size-chip.is-added::after {
-  animation: sizeChipRippleSweep 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: sizeChipGlowSweep 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-@keyframes sizeChipSoftPulse {
+@keyframes sizeChipGlowPulse {
   0% {
     opacity: 0;
-    transform: scale(0.72);
+    transform: scale(0.88);
   }
   38% {
-    opacity: 0.58;
+    opacity: 0.62;
     transform: scale(1);
   }
   100% {
     opacity: 0;
-    transform: scale(1.18);
+    transform: scale(1.16);
   }
 }
 
-@keyframes sizeChipRippleSweep {
+@keyframes sizeChipGlowSweep {
   0% {
     opacity: 0;
     transform: translateX(-135%);
