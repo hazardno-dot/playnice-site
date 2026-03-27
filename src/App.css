@@ -5,20 +5,25 @@
 ========================================= */
 
 .announcement-bar {
-  position: relative;
-  top: 0;
+  position: fixed;
+  top: 72px; /* VISINA HEADERA – prilagodi ako treba */
+  left: 0;
   width: 100%;
-  margin: 6px 0 0;
+  z-index: 998;
+
   overflow: hidden;
   border-top: 1px solid rgba(220, 181, 107, 0.1);
   border-bottom: 1px solid rgba(220, 181, 107, 0.1);
+
   background:
-    linear-gradient(180deg, rgba(18, 18, 18, 0.82), rgba(10, 10, 10, 0.76)),
-    rgba(8, 8, 8, 0.72);
+    linear-gradient(180deg, rgba(18, 18, 18, 0.88), rgba(10, 10, 10, 0.82)),
+    rgba(8, 8, 8, 0.78);
+
   backdrop-filter: blur(14px) saturate(120%);
   -webkit-backdrop-filter: blur(14px) saturate(120%);
+
   box-shadow:
-    0 6px 14px rgba(0, 0, 0, 0.14),
+    0 6px 14px rgba(0, 0, 0, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
@@ -288,6 +293,9 @@ main {
     radial-gradient(circle at top, rgba(220, 181, 107, 0.04), transparent 30%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 16%),
     var(--bg);
+    main {
+  margin-top: 120px; /* header + announcement visina */
+}
 }
 
 .section-wrap {
