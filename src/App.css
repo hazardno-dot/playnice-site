@@ -1794,3 +1794,35 @@ main {
   position: relative;
   z-index: 1;
 }
+
+/* === ANTI-LAYOUT-SHIFT PATCH === */
+.cart-button {
+  min-width: 108px;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+}
+
+.cart-count {
+  flex: 0 0 24px;
+}
+
+.added-feedback {
+  min-width: 220px;
+  will-change: opacity, transform;
+}
+
+.added-feedback {
+  animation: addedFeedbackIn 0.22s ease;
+}
+
+@keyframes addedFeedbackIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

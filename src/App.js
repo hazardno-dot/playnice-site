@@ -394,10 +394,10 @@ function App() {
   }, [category, searchTerm]);
 
   useEffect(() => {
-    if (!addedFeedback) return;
-    const timer = setTimeout(() => setAddedFeedback(""), 1800);
-    return () => clearTimeout(timer);
-  }, [addedFeedback]);
+  if (!addedFeedback) return;
+  const timer = setTimeout(() => setAddedFeedback(""), 1200);
+  return () => clearTimeout(timer);
+}, [addedFeedback]);
 
   useEffect(() => {
     if (!orderSuccessMessage) return;
