@@ -56,6 +56,9 @@ const translations = {
     goToShop: "Go to Shop",
     subtotal: "Subtotal",
     shipping: "Shipping",
+    freeShippingNote: "Free shipping over €39",
+    freeShippingUnlocked: "Free shipping unlocked",
+    freeShippingLeft: "left to free shipping",
     total: "Total",
     continueCheckout: "Continue to Checkout",
     checkoutKicker: "Checkout",
@@ -68,6 +71,11 @@ const translations = {
     address: "Address",
     note: "Order note (optional)",
     placeOrder: "Place Order",
+    placingOrder: "Placing order...",
+    orderSuccess: "Order sent successfully.",
+    orderError: "There was an error sending your order. Please try again.",
+    fillRequired: "Please fill in all required fields.",
+    emptyCartAlert: "Your cart is empty.",
     orderSummary: "Order summary",
     noItemsCart: "No items in cart.",
     privateSelectionModal: "Private Selection",
@@ -137,6 +145,9 @@ const translations = {
     goToShop: "Idi na shop",
     subtotal: "Međuzbir",
     shipping: "Dostava",
+    freeShippingNote: "Besplatna dostava preko 39€",
+    freeShippingUnlocked: "Besplatna dostava otključana",
+    freeShippingLeft: "do besplatne dostave",
     total: "Ukupno",
     continueCheckout: "Nastavi ka porudžbini",
     checkoutKicker: "Poručivanje",
@@ -149,6 +160,11 @@ const translations = {
     address: "Adresa",
     note: "Napomena uz porudžbinu (opciono)",
     placeOrder: "Potvrdi i pošalji porudžbinu",
+    placingOrder: "Šalje se porudžbina...",
+    orderSuccess: "Porudžbina je uspešno poslata.",
+    orderError: "Došlo je do greške pri slanju porudžbine. Pokušaj ponovo.",
+    fillRequired: "Molimo popuni sva obavezna polja.",
+    emptyCartAlert: "Korpa je prazna.",
     orderSummary: "Pregled porudžbine",
     noItemsCart: "Nema proizvoda u korpi.",
     privateSelectionModal: "Private Selection",
@@ -226,6 +242,7 @@ const products = [
 
 const PRODUCTS_PER_PAGE = 12;
 const SHIPPING_COST = 3.5;
+const FREE_SHIPPING_THRESHOLD = 39;
 
 function formatPrice(value) {
   return `€${Number(value).toFixed(2)}`;
@@ -316,6 +333,8 @@ function App() {
   const [cart, setCart] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState("");
+  const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
+  const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
 
   const [checkoutForm, setCheckoutForm] = useState({
     firstName: "",
@@ -375,6 +394,12 @@ function App() {
   }, [addedFeedback]);
 
   useEffect(() => {
+    if (!orderSuccessMessage) return;
+    const timer = setTimeout(() => setOrderSuccessMessage(""), 2200);
+    return () => clearTimeout(timer);
+  }, [orderSuccessMessage]);
+
+  useEffect(() => {
     if (selectedProduct) {
       const firstSize = Object.keys(selectedProduct.sizes)[0];
       setSelectedSize(firstSize);
@@ -412,8 +437,11 @@ function App() {
     [cart]
   );
 
-  const shipping = cart.length > 0 ? SHIPPING_COST : 0;
+  const shipping =
+    cart.length === 0 ? 0 : subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+
   const total = subtotal + shipping;
+  const amountLeftForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 
   const showFeedback = (text) => {
     setAddedFeedback(text);
@@ -479,6 +507,79 @@ function App() {
   const handleCheckoutInput = (e) => {
     const { name, value } = e.target;
     setCheckoutForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handlePlaceOrder = async () => {
+    if (cart.length === 0) {
+      alert(tr.emptyCartAlert);
+      return;
+    }
+
+    if (
+      !checkoutForm.firstName.trim() ||
+      !checkoutForm.lastName.trim() ||
+      !checkoutForm.email.trim() ||
+      !checkoutForm.phone.trim() ||
+      !checkoutForm.city.trim() ||
+      !checkoutForm.address.trim()
+    ) {
+      alert(tr.fillRequired);
+      return;
+    }
+
+    setIsSubmittingOrder(true);
+
+    try {
+      const payload = {
+        customer: {
+          firstName: checkoutForm.firstName.trim(),
+          lastName: checkoutForm.lastName.trim(),
+          email: checkoutForm.email.trim(),
+          phone: checkoutForm.phone.trim(),
+          city: checkoutForm.city.trim(),
+          address: checkoutForm.address.trim(),
+          note: checkoutForm.note.trim()
+        },
+        items: cart,
+        subtotal,
+        shipping,
+        total,
+        language: lang
+      };
+
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error("Checkout request failed");
+      }
+
+      setOrderSuccessMessage(tr.orderSuccess);
+      setCart([]);
+      setCheckoutForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        city: "",
+        address: "",
+        note: ""
+      });
+
+      setTimeout(() => {
+        setCheckoutOpen(false);
+        setCartOpen(false);
+      }, 1800);
+    } catch (error) {
+      alert(tr.orderError);
+    } finally {
+      setIsSubmittingOrder(false);
+    }
   };
 
   const goToShop = () => {
@@ -852,10 +953,20 @@ function App() {
                 <span>{tr.subtotal}</span>
                 <strong>{formatPrice(subtotal)}</strong>
               </div>
+
               <div>
                 <span>{tr.shipping}</span>
-                <strong>{formatPrice(shipping)}</strong>
+                <strong>{shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}</strong>
               </div>
+
+              {cart.length > 0 && (
+                <div className="shipping-note">
+                  {subtotal >= FREE_SHIPPING_THRESHOLD
+                    ? `${tr.freeShippingUnlocked} ✓`
+                    : `${formatPrice(amountLeftForFreeShipping)} ${tr.freeShippingLeft}`}
+                </div>
+              )}
+
               <div className="cart-total">
                 <span>{tr.total}</span>
                 <strong>{formatPrice(total)}</strong>
@@ -1030,8 +1141,17 @@ function App() {
               />
             </div>
 
-            <button className="gold-button submit-order-button" type="button">
-              {tr.placeOrder}
+            {orderSuccessMessage && (
+              <div className="order-success-message">{orderSuccessMessage}</div>
+            )}
+
+            <button
+              className="gold-button submit-order-button"
+              type="button"
+              onClick={handlePlaceOrder}
+              disabled={isSubmittingOrder}
+            >
+              {isSubmittingOrder ? tr.placingOrder : tr.placeOrder}
             </button>
           </div>
 
@@ -1056,6 +1176,12 @@ function App() {
                   ))}
                 </div>
 
+                <div className="shipping-note checkout-shipping-note">
+                  {subtotal >= FREE_SHIPPING_THRESHOLD
+                    ? `${tr.freeShippingUnlocked} ✓`
+                    : `${tr.freeShippingNote} · ${formatPrice(amountLeftForFreeShipping)} ${tr.freeShippingLeft}`}
+                </div>
+
                 <div className="checkout-totals">
                   <div>
                     <span>{tr.subtotal}</span>
@@ -1063,7 +1189,7 @@ function App() {
                   </div>
                   <div>
                     <span>{tr.shipping}</span>
-                    <strong>{formatPrice(shipping)}</strong>
+                    <strong>{shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}</strong>
                   </div>
                   <div className="grand-total">
                     <span>{tr.total}</span>
