@@ -5,11 +5,10 @@
 ========================================= */
 
 .announcement-bar {
-  position: sticky;
-  top: 94px;
-  z-index: 55;
+  position: relative; /* 🔥 KLJUČNO */
+  top: 0;
   width: 100%;
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   overflow: hidden;
   border-top: 1px solid rgba(220, 181, 107, 0.1);
   border-bottom: 1px solid rgba(220, 181, 107, 0.1);
@@ -19,8 +18,12 @@
   backdrop-filter: blur(14px) saturate(120%);
   -webkit-backdrop-filter: blur(14px) saturate(120%);
   box-shadow:
-    0 8px 18px rgba(0, 0, 0, 0.16),
+    0 6px 14px rgba(0, 0, 0, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.topbar {
+  margin-bottom: 4px;
 }
 
 .announcement-bar-inner {
