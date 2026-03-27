@@ -367,18 +367,6 @@ function App() {
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
-  const [announcementSticky, setAnnouncementSticky] = useState(false);
-
-  useEffect(() => {
-  const handleScroll = () => {
-    setAnnouncementSticky(window.scrollY > 40);
-  };
-
-  handleScroll();
-  window.addEventListener("scroll", handleScroll, { passive: true });
-
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
 
   const [checkoutForm, setCheckoutForm] = useState({
     firstName: "",
@@ -889,10 +877,118 @@ function App() {
     </div>
   </header>
 
+<header className="topbar">
+  <button className="brand" type="button" onClick={() => setView("home")}>
+    <span className="brand-mark">▶</span>
+    <span className="brand-copy">
+      <strong>PlayNice</strong>
+      <small>Remember. PlayNice.</small>
+    </span>
+  </button>
+
+  <nav className="nav-links">
+    <button
+      type="button"
+      className={view === "home" ? "active" : ""}
+      onClick={() => setView("home")}
+    >
+      {tr.navHome}
+    </button>
+    <button
+      type="button"
+      className={view === "shop" ? "active" : ""}
+      onClick={() => setView("shop")}
+    >
+      {tr.navShop}
+    </button>
+  </nav>
+
+  <div className="topbar-right">
+    <div className="lang-switch">
+      <button
+        className={lang === "en" ? "active" : ""}
+        onClick={() => setLang("en")}
+        type="button"
+      >
+        EN
+      </button>
+      <button
+        className={lang === "sr" ? "active" : ""}
+        onClick={() => setLang("sr")}
+        type="button"
+      >
+        SR
+      </button>
+    </div>
+
+    <button
+      className="cart-button"
+      type="button"
+      onClick={() => setCartOpen((prev) => !prev)}
+    >
+      {tr.cart}
+      {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+    </button>
+  </div>
+</header>
+
+<header className="topbar">
+  <button className="brand" type="button" onClick={() => setView("home")}>
+    <span className="brand-mark">▶</span>
+    <span className="brand-copy">
+      <strong>PlayNice</strong>
+      <small>Remember. PlayNice.</small>
+    </span>
+  </button>
+
+  <nav className="nav-links">
+    <button
+      type="button"
+      className={view === "home" ? "active" : ""}
+      onClick={() => setView("home")}
+    >
+      {tr.navHome}
+    </button>
+    <button
+      type="button"
+      className={view === "shop" ? "active" : ""}
+      onClick={() => setView("shop")}
+    >
+      {tr.navShop}
+    </button>
+  </nav>
+
+  <div className="topbar-right">
+    <div className="lang-switch">
+      <button
+        className={lang === "en" ? "active" : ""}
+        onClick={() => setLang("en")}
+        type="button"
+      >
+        EN
+      </button>
+      <button
+        className={lang === "sr" ? "active" : ""}
+        onClick={() => setLang("sr")}
+        type="button"
+      >
+        SR
+      </button>
+    </div>
+
+    <button
+      className="cart-button"
+      type="button"
+      onClick={() => setCartOpen((prev) => !prev)}
+    >
+      {tr.cart}
+      {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+    </button>
+  </div>
+</header>
+
 <div
   className={`announcement-bar ${
-    announcementSticky ? "is-sticky" : ""
-  } ${
     cart.length === 0
       ? ""
       : subtotal >= FREE_SHIPPING_THRESHOLD
@@ -901,8 +997,6 @@ function App() {
   }`}
 >
   <div className="announcement-bar-inner">
-
-    {/* MARQUEE */}
     <div className="announcement-marquee">
       <div className="announcement-track">
         {[...announcementItems, ...announcementItems].map((item, index) => (
@@ -927,7 +1021,6 @@ function App() {
       </div>
     </div>
 
-    {/* MINI PROGRESS BAR */}
     <div className="announcement-progress-shell">
       <div className="announcement-progress-bar">
         <div
@@ -944,11 +1037,12 @@ function App() {
         />
       </div>
     </div>
-
   </div>
 </div>
 
-  <main>
+{addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
+
+<main>
         {view === "home" && (
           <>
             <section className="hero">
