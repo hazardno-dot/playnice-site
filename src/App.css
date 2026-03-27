@@ -160,7 +160,6 @@ main {
 
 .product-card {
   transition:
-    transform 0.28s ease,
     box-shadow 0.28s ease,
     border-color 0.28s ease;
 }
@@ -171,7 +170,8 @@ main {
     border-color 0.2s ease,
     color 0.2s ease,
     box-shadow 0.22s ease,
-    opacity 0.18s ease;
+    opacity 0.18s ease,
+    filter 0.18s ease;
 }
 
 /* =========================================
@@ -681,17 +681,15 @@ main {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
+  align-items: stretch;
 }
-
-/* =========================================
-   PRODUCT CARD (CLEAN FINAL)
-========================================= */
 
 .product-card {
   position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  height: 100%;
   padding: 22px;
   border: 1px solid var(--line);
   border-radius: 26px;
@@ -705,7 +703,6 @@ main {
   will-change: box-shadow, border-color;
 }
 
-/* REMOVE global glow layer */
 .product-card::before {
   content: "";
   position: absolute;
@@ -718,13 +715,16 @@ main {
   pointer-events: none;
 }
 
+.product-card.clickable {
+  cursor: pointer;
+}
+
 .product-card:hover {
   transform: none;
   border-color: rgba(220, 181, 107, 0.22);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.82);
 }
 
-/* 🔴 ključ: nema više glow-a na hover */
 .product-card:hover::before {
   opacity: 0;
 }
@@ -745,7 +745,42 @@ main {
   opacity: 1;
 }
 
-/* IMAGE BEHAVIOR (smoothed) */
+.product-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #b32a2a;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 24px rgba(179, 42, 42, 0.25);
+}
+
+.product-image {
+  position: relative;
+  height: 160px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.product-image::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  width: 70%;
+  height: 26px;
+  background: radial-gradient(circle, rgba(220, 181, 107, 0.16), transparent 72%);
+  filter: blur(14px);
+}
+
 .product-image-real {
   position: relative;
   z-index: 1;
@@ -759,11 +794,6 @@ main {
 .product-card:hover .product-image-real {
   transform: translateY(-2px) scale(1.02);
   filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.95));
-}
-
-.product-card:hover .product-image-real {
-  transform: translateY(-6px) scale(1.05);
-  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 1));
 }
 
 .product-image-fallback {
@@ -782,6 +812,7 @@ main {
 
 .product-meta {
   margin-bottom: 14px;
+  flex: 0 0 auto;
 }
 
 .product-category {
@@ -817,6 +848,7 @@ main {
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  flex: 0 0 auto;
 }
 
 .product-preview-line strong {
@@ -833,6 +865,7 @@ main {
 .size-buttons button {
   position: relative;
   width: 100%;
+  min-height: 48px;
   padding: 12px 14px;
   display: flex;
   align-items: center;
@@ -848,16 +881,9 @@ main {
 }
 
 .size-buttons button:hover {
-  border-color: rgba(220, 181, 107, 0.22);
+  border-color: rgba(220, 181, 107, 0.16);
   box-shadow: none;
-}
-
-.size-chip.is-added:hover {
-  box-shadow:
-    0 10px 26px rgba(0, 0, 0, 0.42),
-    0 0 0 1px rgba(220, 181, 107, 0.14) inset,
-    0 0 24px rgba(180, 25, 25, 0.28);
-  border-color: rgba(220, 181, 107, 0.62);
+  background: rgba(255, 255, 255, 0.025);
 }
 
 .size-buttons button:focus,
@@ -1271,30 +1297,19 @@ main {
   position: relative;
   height: 100%;
   border-radius: inherit;
-
-  /* 🔥 dynamic gradient feel */
   background: linear-gradient(
     90deg,
-    #d04b4b 0%,     /* red */
-    #e0b04b 45%,    /* gold/yellow */
-    #63c17a 100%    /* green */
+    #d04b4b 0%,
+    #e0b04b 45%,
+    #63c17a 100%
   );
-
   box-shadow:
     0 0 18px rgba(220, 181, 107, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.24);
-
   transition:
     width 0.4s ease,
     background 0.3s ease,
     box-shadow 0.3s ease;
-}
-
-.shipping-note-unlocked .shipping-progress-fill {
-  background: linear-gradient(90deg, #63c17a 0%, #95e5aa 100%);
-  box-shadow:
-    0 0 20px rgba(99, 193, 122, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .shipping-progress-fill::after {
@@ -1657,17 +1672,14 @@ main {
 }
 
 /* =========================================
-   CINEMATIC RED SMOKE V2 (ULTRA PREMIUM)
+   SIZE CHIP / CLICK FEEDBACK
 ========================================= */
-
-/* base */
 .size-chip {
   position: relative;
   isolation: isolate;
-  overflow: visible;
+  overflow: hidden;
 }
 
-/* DEEP SMOKE LAYER (ambient dim) */
 .size-chip::before {
   content: "";
   position: absolute;
@@ -1676,7 +1688,6 @@ main {
   opacity: 0;
   pointer-events: none;
   z-index: 0;
-
   background:
     radial-gradient(circle at 50% 60%,
       rgba(160, 20, 20, 0.45) 0%,
@@ -1684,12 +1695,10 @@ main {
       rgba(70, 5, 5, 0.22) 40%,
       rgba(30, 2, 2, 0.12) 60%,
       transparent 78%);
-
   filter: blur(22px);
   transform: scale(0.85);
 }
 
-/* HOT CORE GLOW (inner fire) */
 .size-chip::after {
   content: "";
   position: absolute;
@@ -1698,160 +1707,85 @@ main {
   opacity: 0;
   pointer-events: none;
   z-index: 1;
-
   background:
     radial-gradient(circle at 50% 50%,
       rgba(255, 90, 70, 0.28) 0%,
       rgba(255, 60, 60, 0.16) 30%,
       rgba(255, 120, 90, 0.08) 55%,
       transparent 75%);
-
   filter: blur(6px);
   transform: scale(0.92);
 }
 
-/* ACTIVE STATE */
-.size-chip.is-added {
-  border-color: rgba(220, 181, 107, 0.62) !important;
-  background:
-    linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.06)),
-    rgba(255, 255, 255, 0.03) !important;
-    animation: chipPulseGlow 0.4s ease-out;
-    .size-chip.is-added {
-  animation-fill-mode: forwards;
+.size-chip-main,
+.size-chip strong {
+  position: relative;
+  z-index: 2;
 }
 
-  box-shadow:
-    0 10px 26px rgba(0, 0, 0, 0.42),
-    0 0 0 1px rgba(220, 181, 107, 0.14) inset,
-    0 0 24px rgba(180, 25, 25, 0.28);
-}
-
-.size-chip.is-added {
-  border-color: rgba(220, 181, 107, 0.62) !important;
-  background:
-    linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.06)),
-    rgba(255, 255, 255, 0.03) !important;
-  box-shadow:
-    0 10px 26px rgba(0, 0, 0, 0.42),
-    0 0 0 1px rgba(220, 181, 107, 0.14) inset,
-    0 0 24px rgba(180, 25, 25, 0.28);
-  filter: brightness(1.04);
-}
-
-/* GOLD TEXT POP */
-.size-chip.is-added .size-chip-main,
-.size-chip.is-added strong {
+.size-chip-feedback {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 18, 18, 0.18),
+    rgba(18, 18, 18, 0.08)
+  );
   color: var(--gold);
-}
-
-/* SMOKE EXPANSION */
-.size-chip.is-added::before {
-  animation: redSmokeExpand 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-/* FIRE CORE PULSE */
-.size-chip.is-added::after {
-  animation: redCorePulse 0.6s ease-out forwards;
-}
-
-/* SHIMMER SWEEP (subtle metallic pass) */
-.size-chip.is-added .size-chip-feedback {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.96);
+  transition:
+    opacity 0.18s ease,
+    transform 0.22s ease;
   backdrop-filter: blur(3px);
 }
 
-/* =========================================
-   SIZE CHIP (FINAL CLEAN)
-========================================= */
-
-.size-chip {
-  position: relative;
-  isolation: isolate;
-  overflow: visible;
+.size-chip-feedback.show {
+  opacity: 1;
+  transform: scale(1);
 }
 
-/* ambient smoke */
-.size-chip::before {
-  content: "";
-  position: absolute;
-  inset: -10px;
-  border-radius: 999px;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 0;
-
-  background:
-    radial-gradient(circle at 50% 60%,
-      rgba(160, 20, 20, 0.45) 0%,
-      rgba(110, 10, 10, 0.32) 22%,
-      rgba(70, 5, 5, 0.22) 40%,
-      rgba(30, 2, 2, 0.12) 60%,
-      transparent 78%);
-
-  filter: blur(22px);
-  transform: scale(0.85);
-}
-
-/* inner glow */
-.size-chip::after {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 1;
-
-  background:
-    radial-gradient(circle at 50% 50%,
-      rgba(255, 90, 70, 0.28) 0%,
-      rgba(255, 60, 60, 0.16) 30%,
-      rgba(255, 120, 90, 0.08) 55%,
-      transparent 75%);
-
-  filter: blur(6px);
-  transform: scale(0.92);
-}
-
-/* CLICK STATE (JEDINI GLOW) */
 .size-chip.is-added {
   border-color: rgba(220, 181, 107, 0.62) !important;
   background:
     linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.06)),
     rgba(255, 255, 255, 0.03) !important;
-
   box-shadow:
     0 10px 26px rgba(0, 0, 0, 0.42),
     0 0 0 1px rgba(220, 181, 107, 0.14) inset,
     0 0 24px rgba(180, 25, 25, 0.28);
-
   filter: brightness(1.04);
-
   animation: chipPulseGlow 0.4s ease-out;
   animation-fill-mode: forwards;
 }
 
-/* hover NE SME da pravi novi glow */
-.size-buttons button:hover {
-  border-color: rgba(220, 181, 107, 0.16);
-  box-shadow: none;
-  background: rgba(255, 255, 255, 0.025);
-}
-
-/* zaštita: hover ne override-uje klik */
 .size-chip.is-added:hover {
   box-shadow:
     0 10px 26px rgba(0, 0, 0, 0.42),
     0 0 0 1px rgba(220, 181, 107, 0.14) inset,
     0 0 24px rgba(180, 25, 25, 0.28);
+  border-color: rgba(220, 181, 107, 0.62);
 }
 
-/* tekst */
+.size-chip.is-added .size-chip-main,
+.size-chip.is-added > strong {
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+
 .size-chip.is-added strong {
   color: var(--gold);
 }
 
-/* smoke animacije */
 .size-chip.is-added::before {
   animation: redSmokeExpand 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
@@ -1859,8 +1793,6 @@ main {
 .size-chip.is-added::after {
   animation: redCorePulse 0.6s ease-out forwards;
 }
-
-/* KEYFRAMES */
 
 @keyframes redSmokeExpand {
   0% {
@@ -1900,20 +1832,6 @@ main {
   }
 }
 
-@keyframes sizeChipGlowSweep {
-  0% {
-    opacity: 0;
-    transform: translateX(-135%);
-  }
-  18% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(135%);
-  }
-}
-
 @keyframes chipPulseGlow {
   0% {
     box-shadow:
@@ -1921,14 +1839,12 @@ main {
       0 0 0 1px rgba(220, 181, 107, 0.14) inset,
       0 0 0 rgba(180, 25, 25, 0);
   }
-
   50% {
     box-shadow:
       0 12px 30px rgba(0, 0, 0, 0.5),
       0 0 0 1px rgba(220, 181, 107, 0.2) inset,
       0 0 36px rgba(180, 25, 25, 0.45);
   }
-
   100% {
     box-shadow:
       0 10px 26px rgba(0, 0, 0, 0.42),
