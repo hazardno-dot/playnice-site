@@ -525,16 +525,16 @@ function App() {
     }
   };
 
-const triggerInlineAddedFeedback = (productId, size) => {
-  const key = `${productId}-${size}`;
-  setJustAddedKey(key);
+  const triggerInlineAddedFeedback = (productId, size) => {
+    const key = `${productId}-${size}`;
+    setJustAddedKey(key);
 
-  window.clearTimeout(triggerInlineAddedFeedback.timeoutId);
+    window.clearTimeout(triggerInlineAddedFeedback.timeoutId);
 
-  triggerInlineAddedFeedback.timeoutId = window.setTimeout(() => {
-    setJustAddedKey("");
-  }, 900);
-};
+    triggerInlineAddedFeedback.timeoutId = window.setTimeout(() => {
+      setJustAddedKey("");
+    }, 900);
+  };
 
   const addHeroBottleToCart = () => {
     const heroProduct = {
@@ -689,76 +689,76 @@ const triggerInlineAddedFeedback = (productId, size) => {
     if (product.vibe?.[lang]) return product.vibe[lang];
     return getFallbackVibe(product, lang);
   };
-  
-const ProductCard = ({ product }) => (
-  <article
-    className="product-card clickable"
-    key={product.id}
-    onClick={() => openProductModal(product)}
-    role="button"
-    tabIndex={0}
-    onKeyDown={(e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        openProductModal(product);
-      }
-    }}
-  >
-    {product.badge && <span className="product-badge">{product.badge}</span>}
 
-    <div className="product-image">
-      <ProductImage product={product} className="product-image-real" />
-    </div>
-
-    <div className="product-meta">
-      <p className="product-category">{getCategoryLabel(product.category)}</p>
-      <h3>{product.name}</h3>
-      <p className="product-price-from">
-        {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
-      </p>
-    </div>
-
-    <div className="product-preview-line">
-      <span>{tr.openDetails}</span>
-      <strong>{tr.luxuryModal}</strong>
-    </div>
-
-    <div
-      className="size-buttons"
-      onClick={(e) => {
-        e.stopPropagation();
+  const ProductCard = ({ product }) => (
+    <article
+      className="product-card clickable"
+      key={product.id}
+      onClick={() => openProductModal(product)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openProductModal(product);
+        }
       }}
     >
-      {Object.entries(product.sizes).map(([size, price]) => {
-        const feedbackKey = `${product.id}-${size}`;
-        const isJustAdded = justAddedKey === feedbackKey;
+      {product.badge && <span className="product-badge">{product.badge}</span>}
 
-        return (
-          <button
-            key={size}
-            type="button"
-            className={`size-chip ${isJustAdded ? "is-added" : ""}`}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              e.currentTarget.blur();
+      <div className="product-image">
+        <ProductImage product={product} className="product-image-real" />
+      </div>
 
-              addToCart(product, size, null, null, { showToast: false });
-              triggerInlineAddedFeedback(product.id, size);
-            }}
-          >
-            <span className="size-chip-main">{size}</span>
-            <strong>{formatPrice(price)}</strong>
+      <div className="product-meta">
+        <p className="product-category">{getCategoryLabel(product.category)}</p>
+        <h3>{product.name}</h3>
+        <p className="product-price-from">
+          {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
+        </p>
+      </div>
 
-            <span className={`size-chip-feedback ${isJustAdded ? "show" : ""}`}>
-              Added ✓
-            </span>
-          </button>
-        );
-      })}
-    </div>
-  </article>
-);
+      <div className="product-preview-line">
+        <span>{tr.openDetails}</span>
+        <strong>{tr.luxuryModal}</strong>
+      </div>
+
+      <div
+        className="size-buttons"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        {Object.entries(product.sizes).map(([size, price]) => {
+          const feedbackKey = `${product.id}-${size}`;
+          const isJustAdded = justAddedKey === feedbackKey;
+
+          return (
+            <button
+              key={size}
+              type="button"
+              className={`size-chip ${isJustAdded ? "is-added" : ""}`}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.currentTarget.blur();
+
+                addToCart(product, size, null, null, { showToast: false });
+                triggerInlineAddedFeedback(product.id, size);
+              }}
+            >
+              <span className="size-chip-main">{size}</span>
+              <strong>{formatPrice(price)}</strong>
+
+              <span className={`size-chip-feedback ${isJustAdded ? "show" : ""}`}>
+                Added ✓
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </article>
+  );
 
   return (
     <div className="app-shell">
