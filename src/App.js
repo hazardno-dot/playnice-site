@@ -533,7 +533,7 @@ const triggerInlineAddedFeedback = (productId, size) => {
 
   triggerInlineAddedFeedback.timeoutId = window.setTimeout(() => {
     setJustAddedKey("");
-  }, 950);
+  }, 900);
 };
 
   const addHeroBottleToCart = () => {
