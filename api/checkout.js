@@ -194,35 +194,61 @@ function adminEmailHtml({
   total
 }) {
   return `
-  <div style="font-family:Arial,sans-serif;background:#0b0b0b;color:#f7f2e8;padding:24px;">
-    <h2 style="color:#f3d69b;">Nova porudžbina - PlayNice</h2>
-    <p><strong>Order ID:</strong> ${escapeHtml(orderId)}</p>
-    <p><strong>Kupac:</strong> ${escapeHtml(fullName)}</p>
-    <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-    <p><strong>Telefon:</strong> ${escapeHtml(phone)}</p>
-    <p><strong>Grad:</strong> ${escapeHtml(city)}</p>
-    <p><strong>Adresa:</strong> ${escapeHtml(address)}</p>
-    <p><strong>Napomena:</strong> ${escapeHtml(note || "Nema")}</p>
+  <div style="margin:0;padding:0;background:#0b0b0b;font-family:Inter,Arial,sans-serif;color:#f7f2e8;">
+    <div style="max-width:720px;margin:0 auto;padding:32px 20px;">
+      <div style="background:linear-gradient(180deg,#171717,#0f0f0f);border:1px solid rgba(220,181,107,0.22);border-radius:24px;overflow:hidden;">
+        <div style="padding:28px 28px 18px;border-bottom:1px solid rgba(220,181,107,0.14);">
+          <div style="letter-spacing:.35rem;font-weight:700;color:#f3d69b;font-size:18px;">PLAYNICE</div>
+          <div style="color:rgba(247,242,232,0.65);font-size:12px;margin-top:8px;">Nova porudžbina</div>
+        </div>
 
-    <table style="width:100%;border-collapse:collapse;margin-top:20px;">
-      <thead>
-        <tr>
-          <th style="text-align:left;padding:10px;border-bottom:1px solid #333;color:#f3d69b;">Proizvod</th>
-          <th style="text-align:left;padding:10px;border-bottom:1px solid #333;color:#f3d69b;">Veličina</th>
-          <th style="text-align:left;padding:10px;border-bottom:1px solid #333;color:#f3d69b;">Količina</th>
-          <th style="text-align:left;padding:10px;border-bottom:1px solid #333;color:#f3d69b;">Cena</th>
-          <th style="text-align:left;padding:10px;border-bottom:1px solid #333;color:#f3d69b;">Ukupno</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${buildItemsHtml(items)}
-      </tbody>
-    </table>
+        <div style="padding:28px;">
+          <h1 style="margin:0 0 14px;font-family:Georgia,serif;font-size:34px;line-height:1;color:#f3d69b;font-weight:600;">
+            Nova porudžbina
+          </h1>
 
-    <div style="margin-top:20px;">
-      <p><strong>Subtotal:</strong> ${formatPrice(subtotal)}</p>
-      <p><strong>Dostava:</strong> ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}</p>
-      <p><strong>Ukupno:</strong> ${formatPrice(total)}</p>
+          <div style="padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(220,181,107,0.12);margin-bottom:20px;">
+            <div style="color:#f3d69b;font-weight:700;margin-bottom:8px;">Order details</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Order ID: ${escapeHtml(orderId)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Kupac: ${escapeHtml(fullName)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Email: ${escapeHtml(email)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Telefon: ${escapeHtml(phone)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Grad: ${escapeHtml(city)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Adresa: ${escapeHtml(address)}</div>
+            ${note ? `<div style="color:rgba(247,242,232,0.78);line-height:1.8;">Napomena: ${escapeHtml(note)}</div>` : ""}
+          </div>
+
+          <table style="width:100%;border-collapse:collapse;border-spacing:0;margin-bottom:22px;background:rgba(255,255,255,0.02);border-radius:18px;overflow:hidden;">
+            <thead>
+              <tr>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Proizvod</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Veličina</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Količina</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Cena</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Ukupno</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${buildItemsHtml(items)}
+            </tbody>
+          </table>
+
+          <div style="padding:18px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(220,181,107,0.12);">
+            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.82);">
+              <span>Subtotal</span>
+              <strong style="color:#f7f2e8;">${formatPrice(subtotal)}</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.82);">
+              <span>Dostava</span>
+              <strong style="color:#f7f2e8;">${shipping === 0 ? "Besplatna" : formatPrice(shipping)}</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px solid #2c2c2c;color:#f3d69b;">
+              <span style="font-weight:700;">Ukupno</span>
+              <strong style="font-size:18px;color:#f3d69b;">${formatPrice(total)}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   `;
