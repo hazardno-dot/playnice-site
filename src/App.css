@@ -1831,23 +1831,23 @@ main {
   position: relative;
   overflow: hidden;
   transition:
-    background 0.24s ease,
-    border-color 0.24s ease,
-    color 0.24s ease,
-    transform 0.24s ease,
-    box-shadow 0.24s ease;
+    background 0.28s ease,
+    border-color 0.28s ease,
+    color 0.28s ease,
+    transform 0.28s ease,
+    box-shadow 0.28s ease;
 }
 
 .size-buttons button.is-added {
-  border-color: rgba(220, 181, 107, 0.62);
+  border-color: rgba(220, 181, 107, 0.7);
   background:
-    linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.08)),
+    linear-gradient(180deg, rgba(220, 181, 107, 0.22), rgba(220, 181, 107, 0.1)),
     rgba(255, 255, 255, 0.02);
   transform: translateY(-1px);
   box-shadow:
-    0 10px 24px rgba(220, 181, 107, 0.14),
-    0 0 0 1px rgba(220, 181, 107, 0.08) inset,
-    0 0 18px rgba(220, 181, 107, 0.08);
+    0 12px 28px rgba(220, 181, 107, 0.16),
+    0 0 0 1px rgba(220, 181, 107, 0.1) inset,
+    0 0 28px rgba(220, 181, 107, 0.12);
 }
 
 .size-buttons button.is-added span,
@@ -1855,27 +1855,82 @@ main {
   color: var(--gold);
 }
 
+/* PREMIUM SHIMMER — spor, mekan, “težak” */
 .size-buttons button.is-added::after {
   content: "";
   position: absolute;
-  inset: -20%;
+  top: -40%;
+  left: -60%;
+  width: 60%;
+  height: 180%;
   background: linear-gradient(
-    110deg,
+    120deg,
     transparent 0%,
-    transparent 35%,
-    rgba(255, 255, 255, 0.06) 48%,
-    rgba(255, 255, 255, 0.18) 52%,
-    rgba(255, 255, 255, 0.06) 56%,
-    transparent 70%,
+    rgba(255, 255, 255, 0.04) 35%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.04) 65%,
     transparent 100%
   );
-  transform: translateX(-140%) skewX(-18deg);
-  animation: sizeButtonShimmer 0.8s ease forwards;
+  transform: translateX(0) rotate(12deg);
+  animation: luxuryShimmer 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
   pointer-events: none;
 }
 
-@keyframes sizeButtonShimmer {
+@keyframes luxuryShimmer {
+  0% {
+    transform: translateX(0) rotate(12deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
   100% {
-    transform: translateX(140%) skewX(-18deg);
+    transform: translateX(260%) rotate(12deg);
+    opacity: 0;
+  }
+}
+
+.size-buttons button.is-added::before {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: -8px;
+  height: 14px;
+  border-radius: 999px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(220, 181, 107, 0.28) 0%,
+    rgba(220, 181, 107, 0.14) 38%,
+    rgba(220, 181, 107, 0.05) 62%,
+    transparent 100%
+  );
+  filter: blur(8px);
+  opacity: 0;
+  transform: scaleX(0.82) scaleY(0.9);
+  animation: luxuryPulseGlow 1s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes luxuryPulseGlow {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.82) scaleY(0.9);
+  }
+  18% {
+    opacity: 0.55;
+    transform: scaleX(1.02) scaleY(1.06);
+  }
+  38% {
+    opacity: 0.22;
+    transform: scaleX(0.9) scaleY(0.96);
+  }
+  58% {
+    opacity: 0.42;
+    transform: scaleX(1) scaleY(1.02);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(0.92) scaleY(0.94);
   }
 }
