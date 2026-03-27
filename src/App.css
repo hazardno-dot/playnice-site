@@ -1549,3 +1549,24 @@ main {
     padding: 11px 15px;
   }
 }
+
+/* === SHIPPING NOTE (FREE SHIPPING STATUS) === */
+.shipping-note { 
+  margin: 4px 0 14px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.shipping-note-locked {
+  color: #d14b4b;
+}
+
+.shipping-note-unlocked {
+  color: #39b86f;
+}
+
+.checkout-shipping-note {
+  margin-bottom: 18px;
+}
