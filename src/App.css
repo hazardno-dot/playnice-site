@@ -5,7 +5,7 @@
 ========================================= */
 
 .announcement-bar {
-  position: relative; /* 🔥 KLJUČNO */
+  position: relative;
   top: 0;
   width: 100%;
   margin: 6px 0 0;
@@ -19,6 +19,21 @@
   -webkit-backdrop-filter: blur(14px) saturate(120%);
   box-shadow:
     0 6px 14px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  transition:
+    margin 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.announcement-bar.is-sticky {
+  position: sticky;
+  top: 94px;
+  z-index: 55;
+  margin-top: 8px;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
@@ -182,10 +197,11 @@
 }
 
 @media (max-width: 820px) {
-  .announcement-bar {
+  .announcement-bar.is-sticky {
     top: 86px;
     margin-top: 8px;
   }
+}
 
   .announcement-track {
     gap: 30px;

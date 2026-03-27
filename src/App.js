@@ -367,6 +367,18 @@ function App() {
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
+  const [announcementSticky, setAnnouncementSticky] = useState(false);
+
+  useEffect(() => {
+  const handleScroll = () => {
+    setAnnouncementSticky(window.scrollY > 40);
+  };
+
+  handleScroll();
+  window.addEventListener("scroll", handleScroll, { passive: true });
+
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
 
   const [checkoutForm, setCheckoutForm] = useState({
     firstName: "",
@@ -879,6 +891,8 @@ function App() {
 
 <div
   className={`announcement-bar ${
+    announcementSticky ? "is-sticky" : ""
+  } ${
     cart.length === 0
       ? ""
       : subtotal >= FREE_SHIPPING_THRESHOLD
