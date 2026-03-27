@@ -1733,3 +1733,64 @@ main {
     padding: 11px 15px;
   }
 }
+
+/* === FEATURED HIGHLIGHTS / CLICKABLE POLISH === */
+.feature-card[role="button"] {
+  cursor: pointer;
+  position: relative;
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease,
+    background 0.28s ease;
+}
+
+.feature-card[role="button"]::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(circle at top center, rgba(220, 181, 107, 0.1), transparent 42%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.feature-card[role="button"]:hover {
+  transform: translateY(-6px);
+  border-color: rgba(220, 181, 107, 0.28);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.72),
+    0 0 24px rgba(220, 181, 107, 0.05);
+}
+
+.feature-card[role="button"]:hover::before {
+  opacity: 1;
+}
+
+.feature-card[role="button"]:focus-visible {
+  outline: none;
+  border-color: var(--line-strong);
+  box-shadow:
+    0 0 0 3px rgba(220, 181, 107, 0.12),
+    0 24px 60px rgba(0, 0, 0, 0.72);
+}
+
+.feature-card[role="button"] .feature-image {
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+.feature-card[role="button"]:hover .feature-image {
+  transform: translateY(-4px) scale(1.03);
+  filter: drop-shadow(0 24px 45px rgba(0, 0, 0, 0.5));
+}
+
+.feature-card[role="button"] .feature-tag,
+.feature-card[role="button"] h3,
+.feature-card[role="button"] p,
+.feature-card[role="button"] .inline-link {
+  position: relative;
+  z-index: 1;
+}
