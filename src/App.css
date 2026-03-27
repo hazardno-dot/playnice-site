@@ -879,7 +879,19 @@ main {
   -webkit-font-smoothing: antialiased;
 }
 
-.size-buttons button:hover,
+.size-buttons button:hover {
+  border-color: rgba(220, 181, 107, 0.22);
+  box-shadow: none;
+}
+
+.size-chip.is-added:hover {
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(220, 181, 107, 0.14) inset,
+    0 0 24px rgba(180, 25, 25, 0.28);
+  border-color: rgba(220, 181, 107, 0.62);
+}
+
 .size-buttons button:focus,
 .size-buttons button:active {
   transform: none !important;
@@ -1736,6 +1748,10 @@ main {
   background:
     linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.06)),
     rgba(255, 255, 255, 0.03) !important;
+    animation: chipPulseGlow 0.4s ease-out;
+    .size-chip.is-added {
+  animation-fill-mode: forwards;
+}
 
   box-shadow:
     0 10px 26px rgba(0, 0, 0, 0.42),
@@ -1875,6 +1891,29 @@ main {
   100% {
     opacity: 0;
     transform: translateX(135%);
+  }
+}
+
+@keyframes chipPulseGlow {
+  0% {
+    box-shadow:
+      0 10px 26px rgba(0, 0, 0, 0.42),
+      0 0 0 1px rgba(220, 181, 107, 0.14) inset,
+      0 0 0 rgba(180, 25, 25, 0);
+  }
+
+  50% {
+    box-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(220, 181, 107, 0.2) inset,
+      0 0 36px rgba(180, 25, 25, 0.45);
+  }
+
+  100% {
+    box-shadow:
+      0 10px 26px rgba(0, 0, 0, 0.42),
+      0 0 0 1px rgba(220, 181, 107, 0.14) inset,
+      0 0 24px rgba(180, 25, 25, 0.28);
   }
 }
 
