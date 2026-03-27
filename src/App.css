@@ -1826,3 +1826,56 @@ main {
     transform: translateY(0);
   }
 }
+
+.size-buttons button {
+  position: relative;
+  overflow: hidden;
+  transition:
+    background 0.24s ease,
+    border-color 0.24s ease,
+    color 0.24s ease,
+    transform 0.24s ease,
+    box-shadow 0.24s ease;
+}
+
+.size-buttons button.is-added {
+  border-color: rgba(220, 181, 107, 0.62);
+  background:
+    linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.08)),
+    rgba(255, 255, 255, 0.02);
+  transform: translateY(-1px);
+  box-shadow:
+    0 10px 24px rgba(220, 181, 107, 0.14),
+    0 0 0 1px rgba(220, 181, 107, 0.08) inset,
+    0 0 18px rgba(220, 181, 107, 0.08);
+}
+
+.size-buttons button.is-added span,
+.size-buttons button.is-added strong {
+  color: var(--gold);
+}
+
+.size-buttons button.is-added::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(255, 255, 255, 0.06) 48%,
+    rgba(255, 255, 255, 0.18) 52%,
+    rgba(255, 255, 255, 0.06) 56%,
+    transparent 70%,
+    transparent 100%
+  );
+  transform: translateX(-140%) skewX(-18deg);
+  animation: sizeButtonShimmer 0.8s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes sizeButtonShimmer {
+  100% {
+    transform: translateX(140%) skewX(-18deg);
+  }
+}
