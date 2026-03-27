@@ -1944,3 +1944,54 @@ main {
     0 0 12px rgba(220, 181, 107, 0.18),
     0 8px 20px rgba(0, 0, 0, 0.4);
 }
+
+.size-chip {
+  position: relative;
+  min-width: 118px;
+}
+
+.size-chip-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 62px;
+  height: 20px;
+}
+
+.size-chip-default,
+.size-chip-added {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.size-chip-default {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.size-chip-default.hidden {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.size-chip-added {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+}
+
+.size-chip-added.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.size-chip.is-added {
+  box-shadow: 0 0 0 1px rgba(220, 181, 107, 0.32),
+    0 0 18px rgba(220, 181, 107, 0.16);
+}
