@@ -93,10 +93,10 @@ const translations = {
     addedToCart: "added to cart",
     justAdded: "Added ✓"
     announcement1: "Free shipping over €55",
-announcement2: "Try before you buy — 5ml & 10ml decants",
-announcement3: "Premium niche & designer fragrances",
-announcement4: "Limited stock drops — don’t miss out",
-announcement5: "Delivery across Montenegro",
+    announcement2: "Try before you buy — 5ml & 10ml decants",
+    announcement3: "Premium niche & designer fragrances",
+    announcement4: "Limited stock drops — don’t miss out",
+    announcement5: "Delivery across Montenegro",
   },
   sr: {
     navHome: "Početna",
