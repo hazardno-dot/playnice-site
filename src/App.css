@@ -5,23 +5,36 @@
 ========================================= */
 
 .announcement-bar {
-  position: relative;
-  width: min(calc(100% - 32px), var(--max));
-  margin: 8px auto 0;
+  position: sticky;
+  top: 94px;
+  z-index: 55;
+  width: 100%;
+  margin: 8px 0 0;
   overflow: hidden;
-  border: 1px solid rgba(220, 181, 107, 0.08);
-  border-radius: 16px;
+  border-top: 1px solid rgba(220, 181, 107, 0.1);
+  border-bottom: 1px solid rgba(220, 181, 107, 0.1);
   background:
-    linear-gradient(180deg, rgba(18, 18, 18, 0.84), rgba(10, 10, 10, 0.78)),
-    rgba(8, 8, 8, 0.72);
+    linear-gradient(180deg, rgba(18, 18, 18, 0.82), rgba(10, 10, 10, 0.76)),
+    rgba(8, 8, 8, 0.7);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
 .announcement-track {
   display: flex;
-  gap: 60px;
+  align-items: center;
+  gap: 42px;
+  min-width: max-content;
   white-space: nowrap;
-  padding: 10px 0;
-  animation: scrollAnnouncements 22s linear infinite;
+  padding: 8px 16px 7px;
+  animation: scrollAnnouncements 24s linear infinite;
+}
+
+.announcement-progress-shell {
+  padding: 0 16px 8px;
 }
 
 .announcement-track span {
