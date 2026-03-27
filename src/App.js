@@ -337,6 +337,7 @@ function App() {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState("");
   const [justAddedKey, setJustAddedKey] = useState("");
+  const [lockedButtons, setLockedButtons] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [cart, setCart] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -439,6 +440,7 @@ function App() {
       const searchMatch = product.name
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
+
       return categoryMatch && searchMatch;
     });
   }, [category, searchTerm]);
@@ -524,22 +526,21 @@ function App() {
     }
   };
 
- const triggerInlineAddedFeedback = (productId, size) => {
-  const key = `${productId}-${size}`;
+  const triggerInlineAddedFeedback = (productId, size) => {
+    const key = `${productId}-${size}`;
 
-  setJustAddedKey(key);
+    setJustAddedKey(key);
+    setLockedButtons((prev) => ({ ...prev, [key]: true }));
 
-  setLockedButtons((prev) => ({ ...prev, [key]: true }));
-
-  setTimeout(() => {
-    setJustAddedKey("");
-    setLockedButtons((prev) => {
-      const copy = { ...prev };
-      delete copy[key];
-      return copy;
-    });
-  }, 900);
-};
+    setTimeout(() => {
+      setJustAddedKey("");
+      setLockedButtons((prev) => {
+        const copy = { ...prev };
+        delete copy[key];
+        return copy;
+      });
+    }, 900);
+  };
 
   const addHeroBottleToCart = () => {
     const heroProduct = {
@@ -737,39 +738,27 @@ function App() {
         {Object.entries(product.sizes).map(([size, price]) => {
           const feedbackKey = `${product.id}-${size}`;
           const isJustAdded = justAddedKey === feedbackKey;
+          const isLocked = lockedButtons[feedbackKey];
 
           return (
-            
+            <button
               key={size}
-              type="button"const isLocked = lockedButtons[feedbackKey];)
-
-<button
-  key={size}
-  type="button"
-  disabled={isLocked}
-  className={`${isJustAdded ? "is-added" : ""} ${isLocked ? "is-locked" : ""}`}
-  onClick={(e) => {
-    if (isLocked) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-    e.currentTarget.blur();
-
-    addToCart(product, size, null, null, { showToast: false });
-    triggerInlineAddedFeedback(product.id, size);
-  }}
-  >
+              type="button"
+              disabled={isLocked}
+              className={`${isJustAdded ? "is-added" : ""} ${isLocked ? "is-locked" : ""}`}
+              onClick={(e) => {
+                if (isLocked) return;
 
                 e.preventDefault();
                 e.stopPropagation();
                 e.currentTarget.blur();
+
                 addToCart(product, size, null, null, { showToast: false });
                 triggerInlineAddedFeedback(product.id, size);
               }}
             >
               <span>{isJustAdded ? "✓" : size}</span>
-<strong>{formatPrice(price)}</strong>
-const [lockedButtons, setLockedButtons] = useState({});
+              <strong>{formatPrice(price)}</strong>
             </button>
           );
         })}
