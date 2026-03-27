@@ -689,69 +689,76 @@ const triggerInlineAddedFeedback = (productId, size) => {
     if (product.vibe?.[lang]) return product.vibe[lang];
     return getFallbackVibe(product, lang);
   };
+  
+const ProductCard = ({ product }) => (
+  <article
+    className="product-card clickable"
+    key={product.id}
+    onClick={() => openProductModal(product)}
+    role="button"
+    tabIndex={0}
+    onKeyDown={(e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openProductModal(product);
+      }
+    }}
+  >
+    {product.badge && <span className="product-badge">{product.badge}</span>}
 
-const ProductCard = ({ product }) => {
-  return (
-    <article className="product-card">
-      <div className="product-image-wrap">
-        {product.badge && (
-          <span className="product-badge">{product.badge}</span>
-        )}
+    <div className="product-image">
+      <ProductImage product={product} className="product-image-real" />
+    </div>
 
-        <img
-          src={product.image}
-          alt={product.name}
-          className="product-image"
-          loading="lazy"
-        />
-      </div>
+    <div className="product-meta">
+      <p className="product-category">{getCategoryLabel(product.category)}</p>
+      <h3>{product.name}</h3>
+      <p className="product-price-from">
+        {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
+      </p>
+    </div>
 
-      <div className="product-body">
-        <h3 className="product-name">{product.name}</h3>
-        <p className="product-category">{product.category}</p>
+    <div className="product-preview-line">
+      <span>{tr.openDetails}</span>
+      <strong>{tr.luxuryModal}</strong>
+    </div>
 
-        <div
-          className="size-buttons"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          {Object.entries(product.sizes).map(([size, price]) => {
-            const feedbackKey = `${product.id}-${size}`;
-            const isJustAdded = justAddedKey === feedbackKey;
+    <div
+      className="size-buttons"
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      {Object.entries(product.sizes).map(([size, price]) => {
+        const feedbackKey = `${product.id}-${size}`;
+        const isJustAdded = justAddedKey === feedbackKey;
 
-            return (
-              <button
-                key={size}
-                type="button"
-                className={`size-chip ${isJustAdded ? "is-added" : ""}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  e.currentTarget.blur();
+        return (
+          <button
+            key={size}
+            type="button"
+            className={`size-chip ${isJustAdded ? "is-added" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              e.currentTarget.blur();
 
-                  addToCart(product, size, null, null, { showToast: false });
-                  triggerInlineAddedFeedback(product.id, size);
-                }}
-              >
-                <span className="size-chip-main">{size}</span>
-                <strong>{formatPrice(price)}</strong>
+              addToCart(product, size, null, null, { showToast: false });
+              triggerInlineAddedFeedback(product.id, size);
+            }}
+          >
+            <span className="size-chip-main">{size}</span>
+            <strong>{formatPrice(price)}</strong>
 
-                <span
-                  className={`size-chip-feedback ${
-                    isJustAdded ? "show" : ""
-                  }`}
-                >
-                  Added ✓
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </article>
-  );
-};
+            <span className={`size-chip-feedback ${isJustAdded ? "show" : ""}`}>
+              Added ✓
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  </article>
+);
 
   return (
     <div className="app-shell">
