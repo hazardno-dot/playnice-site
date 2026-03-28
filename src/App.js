@@ -1253,13 +1253,15 @@ const prevPage = () => {
   });
 };
 
-  const openProductModal = (product) => {
-    setSelectedProduct(product);
-  };
+const openProductModal = (product) => {
+  setSelectedProduct(product);
+  setSelectedSize(Object.keys(product.sizes)[0]);
+};
 
-  const closeProductModal = () => {
-    setSelectedProduct(null);
-  };
+const closeProductModal = () => {
+  setSelectedProduct(null);
+  setSelectedSize("");
+};
 
   const openImpactProductModal = (product) => {
     if (!product) return;
@@ -1865,104 +1867,167 @@ const ProductCard = ({ product }) => {
       />
 
       <div className={`product-modal ${selectedProduct ? "open" : ""}`}>
-        {selectedProduct && (
-          <>
-            <div className="product-modal-header">
-              <div>
-                <p className="section-kicker">{tr.privateSelectionModal}</p>
-                <h3>{selectedProduct.name}</h3>
+{selectedProduct && (
+  <div className="modal-overlay" onClick={closeProductModal}>
+    <div
+      className="product-modal"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        className="modal-close"
+        type="button"
+        onClick={closeProductModal}
+        aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
+      >
+        ×
+      </button>
+
+      <div className="modal-header">
+        <span className="modal-eyebrow">
+          {lang === "sr" ? "PRIVATE SELECTION" : "PRIVATE SELECTION"}
+        </span>
+        <h2>{selectedProduct.name}</h2>
+      </div>
+
+      <div className="modal-body">
+        <div className="modal-media">
+          {selectedProduct.badge && (
+            <span className="modal-badge">{selectedProduct.badge}</span>
+          )}
+
+          <div className="modal-image-wrap">
+            {selectedProduct.image ? (
+              <img
+                src={selectedProduct.image}
+                alt={selectedProduct.name}
+                className="modal-image"
+              />
+            ) : (
+              <div className="modal-monogram">L</div>
+            )}
+          </div>
+
+          <div className="modal-media-meta">
+            <span className="modal-category">
+              {lang === "sr"
+                ? selectedProduct.category === "Arabian"
+                  ? "ARAPSKI"
+                  : selectedProduct.category === "Designer"
+                  ? "DIZAJNERSKI"
+                  : selectedProduct.category === "Niche"
+                  ? "NICHE"
+                  : selectedProduct.category === "Summer"
+                  ? "LETNJI"
+                  : selectedProduct.category.toUpperCase()
+                : selectedProduct.category.toUpperCase()}
+            </span>
+
+            <p>
+              {productCopy[selectedProduct.name]?.dominantNotes?.[lang]?.join(" • ") ||
+                (lang === "sr"
+                  ? "Premium mirisna selekcija"
+                  : "Premium fragrance selection")}
+            </p>
+          </div>
+        </div>
+
+        <div className="modal-content">
+          {productCopy[selectedProduct.name]?.miniTag?.[lang] && (
+            <span className="modal-chip">
+              {productCopy[selectedProduct.name].miniTag[lang]}
+            </span>
+          )}
+
+          <p className="modal-description">
+            {productCopy[selectedProduct.name]?.modal?.[lang] ||
+              (lang === "sr"
+                ? "Luksuzan miris sa izraženim karakterom i premium prisustvom."
+                : "A luxurious scent with strong character and premium presence.")}
+          </p>
+
+          <div className="modal-info-grid">
+            <div className="modal-info-card">
+              <span>
+                {lang === "sr" ? "DOMINANTNE NOTE" : "DOMINANT NOTES"}
+              </span>
+              <strong>
+                {productCopy[selectedProduct.name]?.dominantNotes?.[lang]?.join(" • ") ||
+                  (lang === "sr"
+                    ? "premium akordi"
+                    : "premium accords")}
+              </strong>
+            </div>
+
+            <div className="modal-info-card">
+              <span>
+                {lang === "sr"
+                  ? "ZAŠTO KUPCI BIRAJU OVAJ PARFEM"
+                  : "WHY CUSTOMERS CHOOSE THIS FRAGRANCE"}
+              </span>
+              <strong>
+                {productCopy[selectedProduct.name]?.whyChoose?.[lang] ||
+                  (lang === "sr"
+                    ? "Odličan izbor za one koji žele upečatljiv premium miris."
+                    : "An excellent choice for those who want a memorable premium scent.")}
+              </strong>
+            </div>
+          </div>
+
+          <div className="modal-purchase">
+            <div className="modal-size-block">
+              <span className="modal-label">
+                {lang === "sr" ? "IZABERI VELIČINU" : "CHOOSE SIZE"}
+              </span>
+
+              <div className="modal-sizes">
+                {Object.entries(selectedProduct.sizes).map(([size, price]) => (
+                  <button
+                    key={size}
+                    type="button"
+                    className={`modal-size ${
+                      selectedSize === size ? "active" : ""
+                    }`}
+                    onClick={() => setSelectedSize(size)}
+                  >
+                    <span>{size}</span>
+                    <strong>€{Number(price).toFixed(2)}</strong>
+                  </button>
+                ))}
               </div>
-              <button className="close-button" type="button" onClick={closeProductModal}>
-                ×
+            </div>
+
+            <div className="modal-purchase-bar">
+              <div className="modal-price-box">
+                <span>
+                  {lang === "sr" ? "IZABRANA CENA" : "SELECTED PRICE"}
+                </span>
+                <strong>
+                  €
+                  {Number(
+                    selectedProduct.sizes[selectedSize] ??
+                      Object.values(selectedProduct.sizes)[0]
+                  ).toFixed(2)}
+                </strong>
+              </div>
+
+              <button
+                type="button"
+                className="modal-add-button"
+                onClick={() => {
+                  const activeSize =
+                    selectedSize || Object.keys(selectedProduct.sizes)[0];
+                  addToCart(selectedProduct, activeSize);
+                }}
+              >
+                {lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}
               </button>
             </div>
-
-            <div className="product-modal-grid">
-              <div className="product-modal-visual">
-                {selectedProduct.badge && (
-                  <span className="product-modal-badge">{selectedProduct.badge}</span>
-                )}
-
-                <div className="product-modal-image-wrap">
-                  <ProductImage product={selectedProduct} className="product-modal-image" />
-                </div>
-
-                <div className="product-modal-meta">
-                  <p className="product-modal-category">
-                    {getCategoryLabel(selectedProduct.category)}
-                  </p>
-                  <p className="product-modal-vibe">{getProductVibe(selectedProduct)}</p>
-                </div>
-              </div>
-
-              <div className="product-modal-content">
-<div className="product-modal-copy premium-copy-layout">
-  <span className="product-mini-tag">{selectedCopy.miniTag}</span>
-
-  <p className="product-modal-story">
-    {selectedCopy.modal}
-  </p>
-
-  <div className="product-notes-box">
-    <span className="product-notes-label">
-  {lang === "sr" ? "Dominantne note" : "Dominant notes"}
-</span>
-    <p className="product-notes-value">
-      {selectedCopy.dominantNotes.join(" • ")}
-    </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div className="product-modal-info-box premium-why-box">
-    <span>{tr.whyChoose}</span>
-    <strong>{selectedCopy.whyChoose}</strong>
-  </div>
-</div>
-
-                <div className="product-modal-sizes">
-                  <p className="modal-label">{tr.chooseSize}</p>
-
-                  <div className="modal-size-grid">
-                    {Object.entries(selectedProduct.sizes).map(([size, price]) => (
-                      <button
-                        key={size}
-                        type="button"
-                        className={`modal-size-button ${
-                          selectedSize === size ? "active" : ""
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setSelectedSize(size);
-                        }}
-                      >
-                        <span>{size}</span>
-                        <strong>{formatPrice(price)}</strong>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="product-modal-footer">
-                  <div className="product-modal-price">
-                    <span>{tr.selectedPrice}</span>
-                    <strong>
-                      {selectedSize ? formatPrice(selectedProduct.sizes[selectedSize]) : "—"}
-                    </strong>
-                  </div>
-
-                  <button
-                    className="gold-button modal-add-button"
-                    type="button"
-                    onClick={addSelectedProductToCart}
-                  >
-                    {tr.addToCart}
-                  </button>
-                </div>
-
-                <p className="product-modal-note">{tr.modalNote}</p>
-              </div>
-            </div>
-          </>
-        )}
+)}
       </div>
 
       <div className={`checkout-modal ${checkoutOpen ? "open" : ""}`}>
