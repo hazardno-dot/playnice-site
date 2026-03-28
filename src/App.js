@@ -824,6 +824,10 @@ function getFallbackVibe(product, lang) {
   return map[lang]?.[product.category] || map.en.Designer;
 }
 
+function getProductCopy(product) {
+  return productCopy[product.name] || fallbackCopy;
+}
+
 function ProductImage({ product, className = "" }) {
   if (product.image) {
     return <img className={className} src={product.image} alt={product.name} />;
@@ -1246,7 +1250,12 @@ const prevPage = () => {
     return getFallbackVibe(product, lang);
   };
 
-  const ProductCard = ({ product }) => (
+  const selectedCopy = selectedProduct ? getProductCopy(selectedProduct) : fallbackCopy;
+
+const ProductCard = ({ product }) => {
+  const copy = getProductCopy(product);
+
+  return (
     <article
       className="product-card clickable"
       key={product.id}
@@ -1269,6 +1278,12 @@ const prevPage = () => {
       <div className="product-meta">
         <p className="product-category">{getCategoryLabel(product.category)}</p>
         <h3>{product.name}</h3>
+
+        <div className="product-copy-block">
+          <span className="product-mini-tag">{copy.miniTag}</span>
+          <p className="product-card-copy">{copy.card}</p>
+        </div>
+
         <p className="product-price-from">
           {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
         </p>
@@ -1315,6 +1330,7 @@ const prevPage = () => {
       </div>
     </article>
   );
+};
 
   return (
  <div className="app-shell">
@@ -1823,16 +1839,22 @@ const prevPage = () => {
               </div>
 
               <div className="product-modal-content">
-                <div className="product-modal-copy">
-                  <p className="product-modal-description">
-                    {getProductDescription(selectedProduct)}
-                  </p>
+<div className="product-modal-copy">
+  <span className="product-mini-tag">{selectedCopy.miniTag}</span>
 
-                  <div className="product-modal-info-box">
-                    <span>{tr.whyChoose}</span>
-                    <strong>{tr.whyChooseText}</strong>
-                  </div>
-                </div>
+  <p className="product-modal-description">
+    {selectedCopy.modal}
+  </p>
+
+  <p className="product-modal-notes">
+    Dominantne note: {selectedCopy.dominantNotes.join(", ")}
+  </p>
+
+  <div className="product-modal-info-box">
+    <span>{tr.whyChoose}</span>
+    <strong>{tr.whyChooseText}</strong>
+  </div>
+</div>
 
                 <div className="product-modal-sizes">
                   <p className="modal-label">{tr.chooseSize}</p>
