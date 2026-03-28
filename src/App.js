@@ -1711,7 +1711,7 @@ const ProductCard = ({ product }) => {
     Dominantne note: {selectedCopy.dominantNotes.join(", ")}
   </p>
 
-<div className="product-modal-info-box">
+<div className="product-modal-info-box"></div>
   <span>{tr.whyChoose}</span>
   <strong>{selectedCopy.whyChoose}</strong>
 </div>
