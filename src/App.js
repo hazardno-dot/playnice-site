@@ -871,6 +871,9 @@ function ProductImage({ product, className = "" }) {
   }
 
   return (
+    <div className={`product-image-fallback ${className}`}>
+      {product.name.charAt(0)}
+    </div>
   );
 }
 
