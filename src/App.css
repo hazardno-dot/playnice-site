@@ -2039,27 +2039,28 @@ main {
 }
 
 .size-chip.is-added {
-  border-color: rgba(220, 181, 107, 0.48) !important;
+  border-color: rgba(220, 181, 107, 0.42) !important;
   background:
-    linear-gradient(180deg, rgba(220, 181, 107, 0.12), rgba(220, 181, 107, 0.04)),
+    linear-gradient(180deg, rgba(220, 181, 107, 0.10), rgba(220, 181, 107, 0.04)),
     rgba(255, 255, 255, 0.03) !important;
   box-shadow:
-    0 8px 22px rgba(0, 0, 0, 0.34),
-    0 0 0 1px rgba(220, 181, 107, 0.1) inset;
-  filter: none;
-  animation: none;
+    0 6px 18px rgba(0, 0, 0, 0.26),
+    0 0 0 1px rgba(220, 181, 107, 0.08) inset;
+  filter: none !important;
+  animation: none !important;
+  transform: none !important;
 }
 
 .size-chip.is-added:hover {
-  border-color: rgba(220, 181, 107, 0.48) !important;
+  border-color: rgba(220, 181, 107, 0.42) !important;
   box-shadow:
-    0 8px 22px rgba(0, 0, 0, 0.34),
-    0 0 0 1px rgba(220, 181, 107, 0.1) inset;
+    0 6px 18px rgba(0, 0, 0, 0.26),
+    0 0 0 1px rgba(220, 181, 107, 0.08) inset;
 }
 
 .size-chip.is-added .size-chip-main,
 .size-chip.is-added > strong {
-  opacity: 0;
+  opacity: 1 !important;
 }
 
 .size-chip::before,
