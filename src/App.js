@@ -1143,7 +1143,7 @@ const fallbackCopy = {
   tags: {
     sr: ["Signature"],
     en: ["Signature"]
-  }
+  },
   whyChoose: {
   sr: "Odličan izbor za otkrivanje mirisa sa karakterom, jasnim identitetom i premium utiskom u decant formatu.",
   en: "A strong choice for discovering a fragrance with character, clear identity and a premium feel in decant format."
