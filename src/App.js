@@ -2010,17 +2010,17 @@ const ProductCard = ({ product }) => {
                 </strong>
               </div>
 
-              <button
-                type="button"
-                className="modal-add-button"
-                onClick={() => {
-                  const activeSize =
-                    selectedSize || Object.keys(selectedProduct.sizes)[0];
-                  addToCart(selectedProduct, activeSize);
-                }}
-              >
-                {lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}
-              </button>
+<button
+  type="button"
+  className="modal-add-button"
+  onClick={() => {
+    const activeSize =
+      selectedSize || Object.keys(selectedProduct.sizes)[0];
+    addToCart(selectedProduct, activeSize);
+  }}
+>
+  <span>{lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}</span>
+</button>
             </div>
           </div>
         </div>
