@@ -2079,6 +2079,9 @@ main {
   0% { background-position: 0% }
   100% { background-position: 200% }
 }
+.modal-add-button:active {
+  transform: scale(0.96);
+}
 .modal-add-button:hover {
   box-shadow:
     0 0 0 1px rgba(220, 181, 107, 0.3),
