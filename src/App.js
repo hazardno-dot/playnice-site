@@ -548,7 +548,7 @@ const productCopy = {
   dominantNotes:{sr:["vanila","kardamom"],en:["vanilla","cardamom"]},
   tags:{sr:["Night"],en:["Night"]},
   whyChoose:{sr:"Za luksuzne večeri.",en:"For luxury nights."}
-}
+},
 
 "Acqua di Parma Colonia Essenza Eau de Cologne":{
   miniTag:{sr:"❄️ Fresh / Luxury",en:"❄️ Fresh / Luxury"},
