@@ -1998,12 +1998,10 @@ main {
 .size-chip:hover {
   background: rgba(255, 255, 255, 0.045);
   border-color: rgba(220, 181, 107, 0.32);
-
   box-shadow:
     0 10px 28px rgba(0, 0, 0, 0.32),
     0 0 0 1px rgba(220, 181, 107, 0.08) inset,
     0 0 18px rgba(220, 181, 107, 0.08);
-
   animation: goldBreath 2.4s ease-in-out infinite;
 }
 
@@ -2037,9 +2035,6 @@ main {
     0 6px 18px rgba(0, 0, 0, 0.26),
     0 0 0 1px rgba(220, 181, 107, 0.08) inset,
     0 0 16px rgba(220, 181, 107, 0.06);
-}
-
-.size-chip.is-added:hover {
   animation: chipBloom 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -2070,6 +2065,27 @@ main {
       0 0 16px rgba(220, 181, 107, 0.06),
       0 6px 18px rgba(0, 0, 0, 0.26),
       0 0 0 1px rgba(220, 181, 107, 0.08) inset;
+  }
+}
+
+@keyframes goldBreath {
+  0% {
+    box-shadow:
+      0 10px 28px rgba(0, 0, 0, 0.32),
+      0 0 0 1px rgba(220, 181, 107, 0.08) inset,
+      0 0 12px rgba(220, 181, 107, 0.06);
+  }
+  50% {
+    box-shadow:
+      0 12px 32px rgba(0, 0, 0, 0.36),
+      0 0 0 1px rgba(220, 181, 107, 0.12) inset,
+      0 0 22px rgba(220, 181, 107, 0.12);
+  }
+  100% {
+    box-shadow:
+      0 10px 28px rgba(0, 0, 0, 0.32),
+      0 0 0 1px rgba(220, 181, 107, 0.08) inset,
+      0 0 12px rgba(220, 181, 107, 0.06);
   }
 }
 
@@ -2118,11 +2134,6 @@ main {
 }
 
 .size-chip-feedback.show {
-  opacity: 1;
-}
-
-.size-chip-feedback.show + .size-chip-main,
-.size-chip-feedback.show + strong {
   opacity: 1;
 }
 
