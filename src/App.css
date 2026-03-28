@@ -2092,12 +2092,12 @@ main {
 }
 
 @media (max-width: 820px) {
-  :root {
-    --topbar-top-offset: 8px;
-    --topbar-height: 120px;
-    --announcement-height: 42px;
-    --announcement-gap: 10px;
-  }
+:root {
+  --topbar-top-offset: 8px;
+  --topbar-height: 136px;
+  --announcement-height: 42px;
+  --announcement-gap: 12px;
+}
 
   main {
     padding-top: calc(var(--announcement-height) + var(--announcement-gap) + 6px);
