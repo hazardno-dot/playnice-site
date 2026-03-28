@@ -760,11 +760,12 @@ main {
   object-fit: contain;
   filter: drop-shadow(0 50px 100px rgba(0, 0, 0, 1));
   transform: translateY(0) scale(1);
-  transition: transform 0.5s ease;
+  transition: transform 0.35s ease, filter 0.35s ease;
 }
 
 .hero-bottle-wrap:hover .hero-bottle {
-  transform: scale(1.08) translateY(-8px);
+  transform: translateY(-2px) scale(1.02);
+  filter: drop-shadow(0 54px 104px rgba(0, 0, 0, 1));
 }
 
 /* =========================================
@@ -861,11 +862,11 @@ main {
 }
 
 .feature-card[role="button"] .feature-image {
-  transition: transform 0.28s ease, filter 0.28s ease;
+  transition: transform 0.35s ease, filter 0.35s ease;
 }
 
 .feature-card[role="button"]:hover .feature-image {
-  transform: translateY(-3px) scale(1.02);
+  transform: translateY(-2px) scale(1.02);
   filter: drop-shadow(0 22px 40px rgba(0, 0, 0, 0.44));
 }
 
@@ -2002,47 +2003,11 @@ main {
   overflow: hidden;
 }
 
-.size-chip::before {
-  content: "";
-  position: absolute;
-  inset: -10px;
-  border-radius: 999px;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(circle at 50% 60%,
-      rgba(160, 20, 20, 0.45) 0%,
-      rgba(110, 10, 10, 0.32) 22%,
-      rgba(70, 5, 5, 0.22) 40%,
-      rgba(30, 2, 2, 0.12) 60%,
-      transparent 78%);
-  filter: blur(22px);
-  transform: scale(0.85);
-}
-
-.size-chip::after {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 1;
-  background:
-    radial-gradient(circle at 50% 50%,
-      rgba(255, 90, 70, 0.28) 0%,
-      rgba(255, 60, 60, 0.16) 30%,
-      rgba(255, 120, 90, 0.08) 55%,
-      transparent 75%);
-  filter: blur(6px);
-  transform: scale(0.92);
-}
-
 .size-chip-main,
 .size-chip strong {
   position: relative;
   z-index: 2;
+  transition: opacity 0.16s ease;
 }
 
 .size-chip-feedback {
@@ -2064,56 +2029,42 @@ main {
   letter-spacing: 0.04em;
   opacity: 0;
   pointer-events: none;
-  transform: scale(0.96);
-  transition:
-    opacity 0.18s ease,
-    transform 0.22s ease;
+  transform: none;
+  transition: opacity 0.18s ease;
   backdrop-filter: blur(3px);
 }
 
 .size-chip-feedback.show {
   opacity: 1;
-  transform: scale(1);
 }
 
 .size-chip.is-added {
-  border-color: rgba(220, 181, 107, 0.62) !important;
+  border-color: rgba(220, 181, 107, 0.48) !important;
   background:
-    linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.06)),
+    linear-gradient(180deg, rgba(220, 181, 107, 0.12), rgba(220, 181, 107, 0.04)),
     rgba(255, 255, 255, 0.03) !important;
   box-shadow:
-    0 10px 26px rgba(0, 0, 0, 0.42),
-    0 0 0 1px rgba(220, 181, 107, 0.14) inset,
-    0 0 24px rgba(180, 25, 25, 0.28);
-  filter: brightness(1.04);
-  animation: chipPulseGlow 0.4s ease-out;
-  animation-fill-mode: forwards;
+    0 8px 22px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(220, 181, 107, 0.1) inset;
+  filter: none;
+  animation: none;
 }
 
 .size-chip.is-added:hover {
+  border-color: rgba(220, 181, 107, 0.48) !important;
   box-shadow:
-    0 10px 26px rgba(0, 0, 0, 0.42),
-    0 0 0 1px rgba(220, 181, 107, 0.14) inset,
-    0 0 24px rgba(180, 25, 25, 0.28);
-  border-color: rgba(220, 181, 107, 0.62);
+    0 8px 22px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(220, 181, 107, 0.1) inset;
 }
 
 .size-chip.is-added .size-chip-main,
 .size-chip.is-added > strong {
   opacity: 0;
-  transition: opacity 0.16s ease;
 }
 
-.size-chip.is-added strong {
-  color: var(--gold);
-}
-
-.size-chip.is-added::before {
-  animation: redSmokeExpand 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.size-chip.is-added::after {
-  animation: redCorePulse 0.6s ease-out forwards;
+.size-chip::before,
+.size-chip::after {
+  content: none !important;
 }
 
 @keyframes redSmokeExpand {

@@ -393,6 +393,11 @@ function App() {
     []
   );
 
+  const switchView = (nextView) => {
+  setView(nextView);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
   useEffect(() => {
     window.localStorage.setItem("playnice_lang", lang);
   }, [lang]);
@@ -823,7 +828,7 @@ function App() {
   return (
  <div className="app-shell">
 <header className="topbar">
-  <button className="brand" type="button" onClick={() => setView("home")}>
+  <button className="brand" type="button" onClick={() => switchView("home")}>
     <span className="brand-mark">▶</span>
     <span className="brand-copy">
       <strong>PlayNice</strong>
@@ -835,14 +840,14 @@ function App() {
     <button
       type="button"
       className={view === "home" ? "active" : ""}
-      onClick={() => setView("home")}
+      onClick={() => switchView("home")}
     >
       {tr.navHome}
     </button>
     <button
       type="button"
       className={view === "shop" ? "active" : ""}
-      onClick={() => setView("shop")}
+      onClick={() => switchView("shop")}
     >
       {tr.navShop}
     </button>
