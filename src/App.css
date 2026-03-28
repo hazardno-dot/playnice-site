@@ -2092,12 +2092,12 @@ main {
 }
 
 @media (max-width: 820px) {
-:root {
-  --topbar-top-offset: 8px;
-  --topbar-height: 180px;
-  --announcement-height: 42px;
-  --announcement-gap: 10px;
-}
+  :root {
+    --topbar-top-offset: 8px;
+    --topbar-height: 124px;
+    --announcement-height: 42px;
+    --announcement-gap: 10px;
+  }
 
   main {
     padding-top: calc(var(--announcement-height) + var(--announcement-gap) + 6px);
@@ -2107,18 +2107,86 @@ main {
     top: var(--topbar-top-offset);
     min-height: var(--topbar-height);
     grid-template-columns: 1fr auto;
-    gap: 14px;
-    padding: 14px;
+    grid-template-areas:
+      "brand cart"
+      "nav lang";
+    align-items: center;
+    gap: 10px 12px;
+    padding: 12px 14px;
+    border-radius: 20px;
+  }
+
+  .brand {
+    grid-area: brand;
+    min-width: 0;
+    gap: 10px;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+  }
+
+  .brand-copy strong {
+    font-size: 22px;
+    letter-spacing: 0.05em;
+    line-height: 0.95;
+  }
+
+  .brand-copy small {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    opacity: 0.78;
   }
 
   .nav-links {
-    grid-column: 1 / -1;
+    grid-area: nav;
+    grid-column: auto;
     justify-content: flex-start;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .nav-links button {
+    padding: 8px 12px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
   }
 
   .topbar-right {
-    grid-column: 1 / -1;
-    justify-content: space-between;
+    display: contents;
+  }
+
+  .lang-switch {
+    grid-area: lang;
+    justify-self: end;
+    gap: 6px;
+  }
+
+  .lang-switch button {
+    min-width: 38px;
+    padding: 8px 9px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  .cart-button {
+    grid-area: cart;
+    justify-self: end;
+    min-width: auto;
+    padding: 10px 14px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .cart-count {
+    margin-left: 8px;
+    min-width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    font-size: 11px;
   }
 
   .announcement-bar {
@@ -2126,7 +2194,7 @@ main {
   }
 
   .announcement-track {
-    gap: 30px;
+    gap: 26px;
     padding: 8px 12px 7px;
     animation-duration: 20s;
   }
@@ -2142,7 +2210,7 @@ main {
 
   .announcement-bar::before,
   .announcement-bar::after {
-    width: 36px;
+    width: 30px;
   }
 
   .announcement-progress-shell {
@@ -2230,63 +2298,44 @@ main {
 }
 
 @media (max-width: 560px) {
+  :root {
+    --topbar-height: 118px;
+  }
+
+  .topbar {
+    padding: 11px 12px;
+    gap: 8px 10px;
+    border-radius: 18px;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+  }
+
   .brand-copy strong {
-    font-size: 24px;
-  }
-
-  .hero h1 {
-    font-size: 46px;
-  }
-
-  .hero-text {
-    font-size: 15px;
-  }
-
-  .hero-price-line {
-    gap: 8px;
-  }
-
-  .new-price {
     font-size: 20px;
   }
 
-  .product-card,
-  .feature-card,
-  .cart-drawer,
-  .checkout-modal,
-  .product-modal {
-    border-radius: 22px;
+  .brand-copy small {
+    font-size: 8px;
+    letter-spacing: 0.16em;
   }
 
-  .cart-item {
-    grid-template-columns: 1fr;
-  }
-
-  .cart-item-actions {
-    align-items: flex-start;
-  }
-
-  .product-modal-header h3,
-  .checkout-header h3,
-  .cart-drawer-header h3 {
-    font-size: 28px;
-  }
-
-  .product-modal-content,
-  .product-modal-visual {
-    padding: 22px;
-  }
-
-  .product-modal-price strong {
-    font-size: 28px;
+  .nav-links button {
+    padding: 7px 10px;
+    font-size: 11px;
   }
 
   .lang-switch button {
-    min-width: 40px;
-    padding: 9px 10px;
+    min-width: 34px;
+    padding: 7px 8px;
+    font-size: 10px;
   }
 
   .cart-button {
-    padding: 11px 15px;
+    padding: 9px 12px;
+    font-size: 11px;
   }
 }
