@@ -2433,3 +2433,46 @@ main {
       0 0 12px rgba(220, 181, 107, 0.06);
   }
 }
+
+.product-copy-block,
+.product-modal-copy-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-mini-tag {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(215, 179, 98, 0.22);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  backdrop-filter: blur(8px);
+}
+
+.product-card-copy {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.product-modal-copy {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.product-modal-notes {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
