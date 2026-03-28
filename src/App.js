@@ -1266,11 +1266,6 @@ const prevPage = () => {
         <ProductImage product={product} className="product-image-real" />
       </div>
 
-      <div className="product-copy-block">
-  <span className="product-mini-tag">{product.copy.miniTag}</span>
-  <p className="product-card-copy">{product.copy.card}</p>
-</div>
-
       <div className="product-meta">
         <p className="product-category">{getCategoryLabel(product.category)}</p>
         <h3>{product.name}</h3>
@@ -1278,18 +1273,6 @@ const prevPage = () => {
           {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
         </p>
       </div>
-
-      <div className="product-modal-copy-block">
-  <span className="product-mini-tag">{selectedProduct.copy.miniTag}</span>
-
-  <p className="product-modal-copy">
-    {selectedProduct.copy.modal}
-  </p>
-
-  <p className="product-modal-notes">
-    Dominantne note: {selectedProduct.copy.dominantNotes.join(", ")}
-  </p>
-</div>
 
       <div className="product-preview-line">
         <span>{tr.openDetails}</span>
