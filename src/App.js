@@ -268,13 +268,30 @@ const products = [
 ];
 
 const fallbackCopy = {
-  miniTag: "💎 Luxury / Signature",
-  card: "Premium miris sa karakterom i pažljivo biranim akordima.",
-  modal:
-    "Pažljivo odabran miris sa upečatljivim stilom, dominantnim akordima i premium PlayNice karakterom.",
-  scentType: "Signature fragrance",
-  dominantNotes: ["premium akordi"],
-  tags: ["Signature"]
+  miniTag: {
+    sr: "💎 Luxury / Signature",
+    en: "💎 Luxury / Signature"
+  },
+  card: {
+    sr: "Premium miris sa karakterom i pažljivo biranim akordima.",
+    en: "A premium fragrance with character and carefully chosen accords."
+  },
+  modal: {
+    sr: "Pažljivo odabran miris sa upečatljivim stilom, dominantnim akordima i premium PlayNice karakterom.",
+    en: "A carefully selected fragrance with distinctive style, dominant accords and premium PlayNice character."
+  },
+  scentType: {
+    sr: "Signature fragrance",
+    en: "Signature fragrance"
+  },
+  dominantNotes: {
+    sr: ["premium akordi"],
+    en: ["premium accords"]
+  },
+  tags: {
+    sr: ["Signature"],
+    en: ["Signature"]
+  }
 };
 
 const productCopy = {
@@ -824,8 +841,20 @@ function getFallbackVibe(product, lang) {
   return map[lang]?.[product.category] || map.en.Designer;
 }
 
-function getProductCopy(product) {
-  return productCopy[product.name] || fallbackCopy;
+function getProductCopy(product, lang) {
+  const copy = productCopy[product.name] || fallbackCopy;
+
+  return {
+    miniTag: copy.miniTag?.[lang] || copy.miniTag?.en || fallbackCopy.miniTag[lang],
+    card: copy.card?.[lang] || copy.card?.en || fallbackCopy.card[lang],
+    modal: copy.modal?.[lang] || copy.modal?.en || fallbackCopy.modal[lang],
+    scentType: copy.scentType?.[lang] || copy.scentType?.en || fallbackCopy.scentType[lang],
+    dominantNotes:
+      copy.dominantNotes?.[lang] ||
+      copy.dominantNotes?.en ||
+      fallbackCopy.dominantNotes[lang],
+    tags: copy.tags?.[lang] || copy.tags?.en || fallbackCopy.tags[lang]
+  };
 }
 
 function ProductImage({ product, className = "" }) {
@@ -1250,10 +1279,19 @@ const prevPage = () => {
     return getFallbackVibe(product, lang);
   };
 
-  const selectedCopy = selectedProduct ? getProductCopy(selectedProduct) : fallbackCopy;
+  const selectedCopy = selectedProduct
+  ? getProductCopy(selectedProduct, lang)
+  : {
+      miniTag: fallbackCopy.miniTag[lang],
+      card: fallbackCopy.card[lang],
+      modal: fallbackCopy.modal[lang],
+      scentType: fallbackCopy.scentType[lang],
+      dominantNotes: fallbackCopy.dominantNotes[lang],
+      tags: fallbackCopy.tags[lang]
+    };
 
 const ProductCard = ({ product }) => {
-  const copy = getProductCopy(product);
+  const copy = getProductCopy(product, lang);
 
   return (
     <article
