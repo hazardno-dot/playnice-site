@@ -817,6 +817,83 @@ main {
   justify-content: flex-end;
 }
 
+.feature-card[role="button"] {
+  cursor: pointer;
+}
+
+.feature-card[role="button"]:hover {
+  border-color: rgba(220, 181, 107, 0.22);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+.feature-card[role="button"]:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.35);
+  outline-offset: 3px;
+}
+
+.feature-card[role="button"] .feature-image {
+  transition: transform 0.28s ease, filter 0.28s ease;
+}
+
+.feature-card[role="button"]:hover .feature-image {
+  transform: translateY(-3px) scale(1.02);
+  filter: drop-shadow(0 22px 40px rgba(0, 0, 0, 0.44));
+}
+
+/* === FEATURE CARD HOVER GLOW (Selected for impact) === */
+
+.feature-card[role="button"] {
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+}
+
+/* Glow layer */
+.feature-card[role="button"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(220, 181, 107, 0.18),
+      transparent 60%
+    );
+}
+
+/* Hover stanje */
+.feature-card[role="button"]:hover {
+  transform: translateY(-4px);
+  border-color: rgba(220, 181, 107, 0.28);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(220, 181, 107, 0.08);
+}
+
+.feature-card[role="button"]:hover::before {
+  opacity: 1;
+}
+
+/* Fokus (keyboard UX) */
+.feature-card[role="button"]:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.35);
+  outline-offset: 4px;
+}
+
+.feature-card[role="button"]:hover .feature-title {
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  transition: all 0.28s ease;
+}
+
 .feature-tag {
   display: inline-block;
   margin-bottom: 16px;
