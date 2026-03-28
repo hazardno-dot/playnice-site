@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import "./App.css";
 
 const translations = {
@@ -378,6 +378,10 @@ function App() {
     note: ""
   });
 
+  useLayoutEffect(() => {
+  window.scrollTo(0, 0);
+}, [view]);
+
   const tr = translations[lang];
 
   const categories = useMemo(
@@ -393,9 +397,9 @@ function App() {
     []
   );
 
-  const switchView = (nextView) => {
+const switchView = (nextView) => {
   setView(nextView);
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo(0, 0);
 };
 
   useEffect(() => {
@@ -706,10 +710,10 @@ function App() {
     }
   };
 
-  const goToShop = () => {
-    setView("shop");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+const goToShop = () => {
+  setView("shop");
+  window.scrollTo(0, 0);
+};
 
   const nextPage = () => {
     setCurrentPage((prev) => Math.min(totalPages, prev + 1));
