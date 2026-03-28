@@ -1,218 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap");
 
 /* =========================================
-   ANNOUNCEMENT BAR (HYBRID STICKY - SMOOTH)
-========================================= */
-
-.announcement-bar {
-  position: fixed;
-  top: 72px; /* VISINA HEADERA – prilagodi ako treba */
-  left: 0;
-  width: 100%;
-  z-index: 998;
-
-  overflow: hidden;
-  border-top: 1px solid rgba(220, 181, 107, 0.1);
-  border-bottom: 1px solid rgba(220, 181, 107, 0.1);
-
-  background:
-    linear-gradient(180deg, rgba(18, 18, 18, 0.88), rgba(10, 10, 10, 0.82)),
-    rgba(8, 8, 8, 0.78);
-
-  backdrop-filter: blur(14px) saturate(120%);
-  -webkit-backdrop-filter: blur(14px) saturate(120%);
-
-  box-shadow:
-    0 6px 14px rgba(0, 0, 0, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.02);
-}
-
-.announcement-bar-inner {
-  position: relative;
-}
-
-.announcement-marquee {
-  position: relative;
-  overflow: hidden;
-}
-
-.announcement-track {
-  display: flex;
-  align-items: center;
-  gap: 42px;
-  min-width: max-content;
-  white-space: nowrap;
-  padding: 8px 16px 7px;
-  animation: scrollAnnouncements 24s linear infinite;
-}
-
-.announcement-track span {
-  flex: 0 0 auto;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(220, 181, 107, 0.84);
-}
-
-.announcement-text {
-  color: rgba(220, 181, 107, 0.84);
-}
-
-.announcement-icon {
-  font-size: 13px;
-  opacity: 0.9;
-  filter: drop-shadow(0 0 6px rgba(220, 181, 107, 0.22));
-  transform: translateY(1px);
-}
-
-.announcement-text.announcement-warning,
-.announcement-icon.announcement-warning {
-  color: #f0c46b;
-}
-
-.announcement-text.announcement-success,
-.announcement-icon.announcement-success {
-  color: #7edb95;
-}
-
-.announcement-bar::before,
-.announcement-bar::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 72px;
-  height: calc(100% - 4px);
-  z-index: 2;
-  pointer-events: none;
-}
-
-.announcement-bar::before {
-  left: 0;
-  background: linear-gradient(to right, rgba(5, 5, 5, 0.96), transparent);
-}
-
-.announcement-bar::after {
-  right: 0;
-  background: linear-gradient(to left, rgba(5, 5, 5, 0.96), transparent);
-}
-
-.announcement-bar:hover .announcement-track {
-  animation-play-state: paused;
-}
-
-.announcement-bar-warning {
-  border-top-color: rgba(220, 181, 107, 0.16);
-  border-bottom-color: rgba(220, 181, 107, 0.16);
-}
-
-.announcement-bar-success {
-  border-top-color: rgba(99, 193, 122, 0.2);
-  border-bottom-color: rgba(99, 193, 122, 0.2);
-  background:
-    radial-gradient(circle at top left, rgba(99, 193, 122, 0.08), transparent 36%),
-    linear-gradient(180deg, rgba(18, 18, 18, 0.82), rgba(10, 10, 10, 0.76)),
-    rgba(8, 8, 8, 0.72);
-}
-
-.announcement-progress-shell {
-  padding: 0 16px 8px;
-}
-
-.announcement-progress-bar {
-  position: relative;
-  width: 100%;
-  height: 4px;
-  overflow: hidden;
-  border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03)),
-    rgba(0, 0, 0, 0.28);
-  box-shadow:
-    inset 0 1px 2px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.02);
-}
-
-.announcement-progress-fill {
-  position: relative;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    #d04b4b 0%,
-    #e0b04b 45%,
-    #63c17a 100%
-  );
-  box-shadow:
-    0 0 10px rgba(220, 181, 107, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.16);
-  transition:
-    width 0.4s ease,
-    background 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.announcement-progress-fill::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.24) 35%,
-    transparent 65%
-  );
-  opacity: 0.7;
-}
-
-.announcement-bar-success .announcement-progress-fill {
-  background: linear-gradient(90deg, #63c17a 0%, #95e5aa 100%);
-  box-shadow:
-    0 0 12px rgba(99, 193, 122, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-}
-
-@keyframes scrollAnnouncements {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-@media (max-width: 820px) {
-  .announcement-bar {
-    top: 84px;
-  }
-}
-
-  .announcement-track {
-    gap: 30px;
-    padding: 8px 12px 7px;
-    animation-duration: 20s;
-  }
-
-  .announcement-track span {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-  }
-
-  .announcement-icon {
-    font-size: 12px;
-  }
-
-  .announcement-bar::before,
-  .announcement-bar::after {
-    width: 36px;
-  }
-
-  .announcement-progress-shell {
-    padding: 0 10px 8px;
-  }
-
-/* =========================================
    ROOT / TOKENS
 ========================================= */
 :root {
@@ -281,6 +69,8 @@ img {
 
 main {
   overflow: hidden;
+  margin-top: 0;
+  padding-top: 54px;
 }
 
 /* =========================================
@@ -292,11 +82,6 @@ main {
     radial-gradient(circle at top, rgba(220, 181, 107, 0.04), transparent 30%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 16%),
     var(--bg);
-main {
-  overflow: hidden;
-  margin-top: 0;
-  padding-top: 0;
-}
 }
 
 .section-wrap {
@@ -514,6 +299,185 @@ main {
 }
 
 /* =========================================
+   ANNOUNCEMENT BAR - FINAL
+========================================= */
+.announcement-bar {
+  position: fixed;
+  top: 92px;
+  left: 0;
+  width: 100%;
+  z-index: 55;
+  overflow: hidden;
+  border-top: 1px solid rgba(220, 181, 107, 0.1);
+  border-bottom: 1px solid rgba(220, 181, 107, 0.1);
+  background:
+    linear-gradient(180deg, rgba(18, 18, 18, 0.82), rgba(10, 10, 10, 0.76)),
+    rgba(8, 8, 8, 0.72);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.announcement-bar-inner {
+  position: relative;
+}
+
+.announcement-marquee {
+  position: relative;
+  overflow: hidden;
+}
+
+.announcement-track {
+  display: flex;
+  align-items: center;
+  gap: 42px;
+  min-width: max-content;
+  white-space: nowrap;
+  padding: 8px 16px 7px;
+  animation: scrollAnnouncements 24s linear infinite;
+}
+
+.announcement-track span {
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(220, 181, 107, 0.84);
+}
+
+.announcement-text {
+  color: rgba(220, 181, 107, 0.84);
+}
+
+.announcement-icon {
+  font-size: 13px;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 6px rgba(220, 181, 107, 0.22));
+  transform: translateY(1px);
+}
+
+.announcement-text.announcement-warning,
+.announcement-icon.announcement-warning {
+  color: #f0c46b;
+}
+
+.announcement-text.announcement-success,
+.announcement-icon.announcement-success {
+  color: #7edb95;
+}
+
+.announcement-bar::before,
+.announcement-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 72px;
+  height: calc(100% - 4px);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.announcement-bar::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(5, 5, 5, 0.96), transparent);
+}
+
+.announcement-bar::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(5, 5, 5, 0.96), transparent);
+}
+
+.announcement-bar:hover .announcement-track {
+  animation-play-state: paused;
+}
+
+.announcement-bar-warning {
+  border-color: rgba(220, 181, 107, 0.16);
+  background:
+    radial-gradient(circle at top left, rgba(220, 181, 107, 0.08), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+    rgba(10, 10, 10, 0.95);
+}
+
+.announcement-bar-success {
+  border-color: rgba(99, 193, 122, 0.2);
+  background:
+    radial-gradient(circle at top left, rgba(99, 193, 122, 0.12), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+    rgba(10, 10, 10, 0.95);
+}
+
+.announcement-progress-shell {
+  padding: 0 16px 8px;
+}
+
+.announcement-progress-bar {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03)),
+    rgba(0, 0, 0, 0.28);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.announcement-progress-fill {
+  position: relative;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    #d04b4b 0%,
+    #e0b04b 45%,
+    #63c17a 100%
+  );
+  box-shadow:
+    0 0 10px rgba(220, 181, 107, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transition:
+    width 0.4s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.announcement-progress-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.24) 35%,
+    transparent 65%
+  );
+  opacity: 0.7;
+}
+
+.announcement-bar-success .announcement-progress-fill {
+  background: linear-gradient(90deg, #63c17a 0%, #95e5aa 100%);
+  box-shadow:
+    0 0 12px rgba(99, 193, 122, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+@keyframes scrollAnnouncements {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* =========================================
    BUTTONS / UI
 ========================================= */
 .cart-button {
@@ -628,7 +592,7 @@ main {
 ========================================= */
 .added-feedback {
   position: fixed;
-  top: 96px;
+  top: 132px;
   right: 20px;
   z-index: 120;
   min-width: 220px;
@@ -2116,6 +2080,10 @@ main {
 }
 
 @media (max-width: 820px) {
+  main {
+    padding-top: 50px;
+  }
+
   .topbar {
     top: 8px;
     grid-template-columns: 1fr auto;
@@ -2131,6 +2099,34 @@ main {
   .topbar-right {
     grid-column: 1 / -1;
     justify-content: space-between;
+  }
+
+  .announcement-bar {
+    top: 84px;
+  }
+
+  .announcement-track {
+    gap: 30px;
+    padding: 8px 12px 7px;
+    animation-duration: 20s;
+  }
+
+  .announcement-track span {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  .announcement-icon {
+    font-size: 12px;
+  }
+
+  .announcement-bar::before,
+  .announcement-bar::after {
+    width: 36px;
+  }
+
+  .announcement-progress-shell {
+    padding: 0 10px 8px;
   }
 
   .hero {
@@ -2198,6 +2194,13 @@ main {
   .checkout-modal.open {
     transform: translate(0, 0);
   }
+
+  .added-feedback {
+    top: 124px;
+    right: 12px;
+    min-width: 0;
+    max-width: calc(100vw - 24px);
+  }
 }
 
 @media (max-width: 560px) {
@@ -2260,243 +2263,4 @@ main {
   .cart-button {
     padding: 11px 15px;
   }
-}
-
-/* =========================================
-   ANNOUNCEMENT BAR (STICKY + PROGRESS)
-========================================= */
-
-.announcement-bar {
-  position: sticky;
-  top: 92px;
-  z-index: 55;
-  width: 100%;
-  margin: 6px 0 0;
-  overflow: hidden;
-  border-top: 1px solid rgba(220, 181, 107, 0.1);
-  border-bottom: 1px solid rgba(220, 181, 107, 0.1);
-  background:
-    linear-gradient(180deg, rgba(18, 18, 18, 0.82), rgba(10, 10, 10, 0.76)),
-    rgba(8, 8, 8, 0.72);
-  backdrop-filter: blur(14px) saturate(120%);
-  -webkit-backdrop-filter: blur(14px) saturate(120%);
-  box-shadow:
-    0 6px 14px rgba(0, 0, 0, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.02);
-}
-
-.announcement-bar-inner {
-  position: relative;
-}
-
-.announcement-marquee {
-  position: relative;
-  overflow: hidden;
-}
-
-.announcement-track {
-  display: flex;
-  align-items: center;
-  gap: 42px;
-  min-width: max-content;
-  white-space: nowrap;
-  padding: 8px 16px 7px;
-  animation: scrollAnnouncements 24s linear infinite;
-}
-
-.announcement-track span {
-  flex: 0 0 auto;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(220, 181, 107, 0.84);
-}
-
-.announcement-text {
-  color: rgba(220, 181, 107, 0.84);
-}
-
-.announcement-icon {
-  font-size: 13px;
-  opacity: 0.9;
-  filter: drop-shadow(0 0 6px rgba(220, 181, 107, 0.22));
-  transform: translateY(1px);
-}
-
-.announcement-text.announcement-warning,
-.announcement-icon.announcement-warning {
-  color: #f0c46b;
-}
-
-.announcement-text.announcement-success,
-.announcement-icon.announcement-success {
-  color: #7edb95;
-}
-
-.announcement-bar::before,
-.announcement-bar::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 72px;
-  height: calc(100% - 4px);
-  z-index: 2;
-  pointer-events: none;
-}
-
-.announcement-bar::before {
-  left: 0;
-  background: linear-gradient(to right, rgba(5, 5, 5, 0.96), transparent);
-}
-
-.announcement-bar::after {
-  right: 0;
-  background: linear-gradient(to left, rgba(5, 5, 5, 0.96), transparent);
-}
-
-.announcement-bar:hover .announcement-track {
-  animation-play-state: paused;
-}
-
-.announcement-bar-warning {
-  border-top-color: rgba(220, 181, 107, 0.16);
-  border-bottom-color: rgba(220, 181, 107, 0.16);
-}
-
-.announcement-bar-success {
-  border-top-color: rgba(99, 193, 122, 0.2);
-  border-bottom-color: rgba(99, 193, 122, 0.2);
-  background:
-    radial-gradient(circle at top left, rgba(99, 193, 122, 0.08), transparent 36%),
-    linear-gradient(180deg, rgba(18, 18, 18, 0.82), rgba(10, 10, 10, 0.76)),
-    rgba(8, 8, 8, 0.72);
-}
-
-.announcement-progress-shell {
-  padding: 0 16px 8px;
-}
-
-.announcement-progress-bar {
-  position: relative;
-  width: 100%;
-  height: 4px;
-  overflow: hidden;
-  border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03)),
-    rgba(0, 0, 0, 0.28);
-  box-shadow:
-    inset 0 1px 2px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.02);
-}
-
-.announcement-progress-fill {
-  position: relative;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    #d04b4b 0%,
-    #e0b04b 45%,
-    #63c17a 100%
-  );
-  box-shadow:
-    0 0 10px rgba(220, 181, 107, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.16);
-  transition:
-    width 0.4s ease,
-    background 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.announcement-progress-fill::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.24) 35%,
-    transparent 65%
-  );
-  opacity: 0.7;
-}
-
-.announcement-bar-success .announcement-progress-fill {
-  background: linear-gradient(90deg, #63c17a 0%, #95e5aa 100%);
-  box-shadow:
-    0 0 12px rgba(99, 193, 122, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-}
-
-@keyframes scrollAnnouncements {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-@media (max-width: 820px) {
-  .announcement-bar {
-    top: 84px;
-    margin-top: 6px;
-  }
-
-  .announcement-track {
-    gap: 30px;
-    padding: 8px 12px 7px;
-    animation-duration: 20s;
-  }
-
-  .announcement-track span {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-  }
-
-  .announcement-icon {
-    font-size: 12px;
-  }
-
-  .announcement-bar::before,
-  .announcement-bar::after {
-    width: 36px;
-  }
-
-  .announcement-progress-shell {
-    padding: 0 10px 8px;
-  }
-}
-
-/* =========================================
-   ANNOUNCEMENT BAR DYNAMIC CART LINK
-========================================= */
-
-.announcement-text.announcement-warning,
-.announcement-icon.announcement-warning {
-  color: #f0c46b;
-}
-
-.announcement-text.announcement-success,
-.announcement-icon.announcement-success {
-  color: #7edb95;
-}
-
-.announcement-bar-warning {
-  border-color: rgba(220, 181, 107, 0.16);
-  background:
-    radial-gradient(circle at top left, rgba(220, 181, 107, 0.08), transparent 42%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
-    rgba(10, 10, 10, 0.95);
-}
-
-.announcement-bar-success {
-  border-color: rgba(99, 193, 122, 0.2);
-  background:
-    radial-gradient(circle at top left, rgba(99, 193, 122, 0.12), transparent 42%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
-    rgba(10, 10, 10, 0.95);
 }
