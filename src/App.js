@@ -749,7 +749,10 @@ const productCopy = {
   }
 };
 
-const enrichedProducts = products;
+const enrichedProducts = products.map((product) => ({
+  ...product,
+  copy: productCopy[product.name] || fallbackCopy
+}));
 
 const PRODUCTS_PER_PAGE = 12;
 const SHIPPING_COST = 3.5;
