@@ -284,6 +284,10 @@ const productCopy = {
       en: ["citrus", "lavender", "bergamot", "woody notes"]
     },
     tags: { sr: ["Fresh", "Daily", "Clean"], en: ["Fresh", "Daily", "Clean"] }
+    whyChoose: {
+  sr: "Savršen izbor za večernje izlaske, komplimente i sve koji vole sladak, gust i zavodljiv trag.",
+  en: "A perfect pick for nights out, compliments and anyone who loves a sweet, rich and seductive trail."
+}
   },
 
   "Afnan 9PM Rebel": {
@@ -1140,6 +1144,10 @@ const fallbackCopy = {
     sr: ["Signature"],
     en: ["Signature"]
   }
+  whyChoose: {
+  sr: "Odličan izbor za otkrivanje mirisa sa karakterom, jasnim identitetom i premium utiskom u decant formatu.",
+  en: "A strong choice for discovering a fragrance with character, clear identity and a premium feel in decant format."
+}
 };
 
 const PRODUCTS_PER_PAGE = 12;
@@ -1227,7 +1235,11 @@ function getProductCopy(product, lang) {
       copy.dominantNotes?.[lang] ||
       copy.dominantNotes?.en ||
       fallbackCopy.dominantNotes[lang],
-    tags: copy.tags?.[lang] || copy.tags?.en || fallbackCopy.tags[lang]
+    tags: copy.tags?.[lang] || copy.tags?.en || fallbackCopy.tags[lang],
+    whyChoose:
+      copy.whyChoose?.[lang] ||
+      copy.whyChoose?.en ||
+      fallbackCopy.whyChoose[lang]
   };
 }
 
@@ -2267,10 +2279,9 @@ const ProductCard = ({ product }) => {
     Dominantne note: {selectedCopy.dominantNotes.join(", ")}
   </p>
 
-  <div className="product-modal-info-box">
-    <span>{tr.whyChoose}</span>
-    <strong>{tr.whyChooseText}</strong>
-  </div>
+<div className="product-modal-info-box">
+  <span>{tr.whyChoose}</span>
+  <strong>{selectedCopy.whyChoose}</strong>
 </div>
 
                 <div className="product-modal-sizes">
