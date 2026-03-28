@@ -1700,20 +1700,26 @@ const ProductCard = ({ product }) => {
               </div>
 
               <div className="product-modal-content">
-<div className="product-modal-copy">
+<div className="product-modal-copy premium-copy-layout">
   <span className="product-mini-tag">{selectedCopy.miniTag}</span>
 
-  <p className="product-modal-description">
+  <p className="product-modal-story">
     {selectedCopy.modal}
   </p>
 
-  <p className="product-modal-notes">
-    Dominantne note: {selectedCopy.dominantNotes.join(", ")}
-  </p>
+  <div className="product-notes-box">
+    <span className="product-notes-label">
+  {lang === "sr" ? "Dominantne note" : "Dominant notes"}
+</span>
+    <p className="product-notes-value">
+      {selectedCopy.dominantNotes.join(" • ")}
+    </p>
+  </div>
 
-<div className="product-modal-info-box"></div>
-  <span>{tr.whyChoose}</span>
-  <strong>{selectedCopy.whyChoose}</strong>
+  <div className="product-modal-info-box premium-why-box">
+    <span>{tr.whyChoose}</span>
+    <strong>{selectedCopy.whyChoose}</strong>
+  </div>
 </div>
 
                 <div className="product-modal-sizes">

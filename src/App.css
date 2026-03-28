@@ -2512,3 +2512,92 @@ main {
   font-size: 0.88rem;
   line-height: 1.6;
 }
+
+.premium-copy-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 10px;
+}
+
+.product-modal-story {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: rgba(255, 248, 235, 0.96);
+  max-width: 18ch;
+}
+
+.product-notes-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid rgba(215, 179, 98, 0.14);
+  border-radius: 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.035) 0%,
+    rgba(255, 255, 255, 0.015) 100%
+  );
+}
+
+.product-notes-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(220, 181, 107, 0.85);
+}
+
+.product-notes-value {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.premium-why-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 18px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(215, 179, 98, 0.16);
+  background:
+    radial-gradient(circle at top left, rgba(220, 181, 107, 0.08), transparent 42%),
+    rgba(255, 255, 255, 0.02);
+}
+
+.premium-why-box span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(220, 181, 107, 0.85);
+}
+
+.premium-why-box strong {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.34rem;
+  line-height: 1.2;
+  font-weight: 600;
+  color: rgba(255, 248, 235, 0.95);
+}
+
+.product-mini-tag {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(215, 179, 98, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--gold);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  backdrop-filter: blur(10px);
+}
