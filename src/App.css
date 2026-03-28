@@ -2813,3 +2813,87 @@ main {
   line-height: 1;
   backdrop-filter: blur(10px);
 }
+
+.premium-product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.premium-product-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.product-card-title {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.9rem;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: rgba(255, 248, 235, 0.96);
+  min-height: 3.9rem;
+}
+
+.product-card-copy-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 96px;
+}
+
+.product-card-mini-tag {
+  margin-top: 2px;
+}
+
+.premium-card-copy {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 28ch;
+}
+
+.premium-product-price {
+  margin: 2px 0 0;
+  color: var(--gold);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.premium-preview-line {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.premium-preview-line span {
+  color: rgba(255, 255, 255, 0.54);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.premium-preview-line strong {
+  color: rgba(255, 248, 235, 0.88);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .product-card-title {
+    font-size: 1.6rem;
+    min-height: auto;
+  }
+
+  .product-card-copy-stack {
+    min-height: auto;
+  }
+
+  .premium-card-copy {
+    max-width: none;
+  }
+}

@@ -1118,7 +1118,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <article
-      className="product-card clickable"
+      className="product-card clickable premium-product-card"
       key={product.id}
       onClick={() => openProductModal(product)}
       role="button"
@@ -1136,21 +1136,27 @@ const ProductCard = ({ product }) => {
         <ProductImage product={product} className="product-image-real" />
       </div>
 
-      <div className="product-meta">
+      <div className="product-meta premium-product-meta">
         <p className="product-category">{getCategoryLabel(product.category)}</p>
-        <h3>{product.name}</h3>
 
-        <div className="product-copy-block">
-          <span className="product-mini-tag">{copy.miniTag}</span>
-          <p className="product-card-copy">{copy.card}</p>
+        <h3 className="product-card-title">{product.name}</h3>
+
+        <div className="product-card-copy-stack">
+          <span className="product-mini-tag product-card-mini-tag">
+            {copy.miniTag}
+          </span>
+
+          <p className="product-card-copy premium-card-copy">
+            {copy.card}
+          </p>
         </div>
 
-        <p className="product-price-from">
+        <p className="product-price-from premium-product-price">
           {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
         </p>
       </div>
 
-      <div className="product-preview-line">
+      <div className="product-preview-line premium-preview-line">
         <span>{tr.openDetails}</span>
         <strong>{tr.luxuryModal}</strong>
       </div>
