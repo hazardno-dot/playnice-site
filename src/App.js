@@ -1873,14 +1873,14 @@ const ProductCard = ({ product }) => {
       className="product-modal"
       onClick={(e) => e.stopPropagation()}
     >
-      <button
-        className="modal-close"
-        type="button"
-        onClick={closeProductModal}
-        aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
-      >
-        ×
-      </button>
+<button
+  className="modal-close"
+  type="button"
+  onClick={closeProductModal}
+  aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
+>
+  <span>×</span>
+</button>
 
       <div className="modal-header">
         <span className="modal-eyebrow">
