@@ -2094,7 +2094,7 @@ main {
 @media (max-width: 820px) {
 :root {
   --topbar-top-offset: 8px;
-  --topbar-height: 182px;
+  --topbar-height: 178px;
   --announcement-height: 42px;
   --announcement-gap: 12px;
 }
