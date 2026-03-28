@@ -2975,3 +2975,28 @@ main {
     max-width: none;
   }
 }
+
+/* =========================================
+   MODAL OVERLAY
+========================================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 115;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(12px);
+
+  opacity: 0;
+  animation: overlayFade 0.25s ease forwards;
+}
+
+@keyframes overlayFade {
+  to {
+    opacity: 1;
+  }
+}
