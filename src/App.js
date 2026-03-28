@@ -398,8 +398,8 @@ function App() {
   );
 
 const switchView = (nextView) => {
+  if (view === nextView) return;
   setView(nextView);
-  window.scrollTo(0, 0);
 };
 
   useEffect(() => {
