@@ -283,7 +283,7 @@ const productCopy = {
       sr: ["citrusi", "lavanda", "bergamot", "drveni tonovi"],
       en: ["citrus", "lavender", "bergamot", "woody notes"]
     },
-    tags: { sr: ["Fresh", "Daily", "Clean"], en: ["Fresh", "Daily", "Clean"] }
+    tags: { sr: ["Fresh", "Daily", "Clean"], en: ["Fresh", "Daily", "Clean"] },
     whyChoose: {
   sr: "Savršen izbor za večernje izlaske, komplimente i sve koji vole sladak, gust i zavodljiv trag.",
   en: "A perfect pick for nights out, compliments and anyone who loves a sweet, rich and seductive trail."
