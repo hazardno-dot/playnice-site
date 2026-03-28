@@ -3333,3 +3333,85 @@ main {
     opacity: 1;
   }
 }
+
+/* =========================================
+   PRODUCT GRID – COMPACT OVERRIDE V3
+========================================= */
+
+.product-card {
+  padding: 16px;
+  border-radius: 22px;
+}
+
+.product-image {
+  height: 120px;
+  margin-bottom: 10px;
+}
+
+.product-image-real {
+  max-height: 100px;
+}
+
+.premium-product-meta {
+  gap: 5px;
+}
+
+.product-category {
+  font-size: 9px;
+  margin-bottom: 3px;
+}
+
+.product-card-title {
+  font-size: 1.35rem;
+  line-height: 1.05;
+  min-height: 2.9rem;
+  max-height: 2.9rem;
+}
+
+.product-card-copy-stack {
+  gap: 5px;
+  min-height: 64px;
+}
+
+.product-card-copy,
+.premium-card-copy {
+  font-size: 0.82rem;
+  line-height: 1.35;
+  min-height: 2.2rem;
+  max-height: 2.2rem;
+}
+
+.product-price-from,
+.premium-product-price {
+  font-size: 0.9rem;
+  margin-top: 4px;
+  min-height: 18px;
+}
+
+.product-preview-line,
+.premium-preview-line {
+  margin-top: 8px;
+  padding-top: 8px;
+  margin-bottom: 8px;
+  font-size: 10px;
+  min-height: 28px;
+}
+
+.size-buttons {
+  gap: 6px;
+}
+
+.size-buttons button {
+  min-height: 38px;
+  padding: 7px 10px;
+  border-radius: 12px;
+}
+
+.size-chip-main,
+.size-chip strong {
+  font-size: 13px;
+}
+
+.size-chip-feedback {
+  font-size: 10px;
+}
