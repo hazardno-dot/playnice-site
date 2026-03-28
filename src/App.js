@@ -195,7 +195,7 @@ const translations = {
     remove: "Ukloni",
     addedToCart: "je dodat u korpu",
     justAdded: "Dodato ✓",
-    announcement1: "Besplatna dostava preko 55€",
+    announcement1: "Besplatna dostava preko 39€",
     announcement2: "Probaj pre kupovine — 5ml i 10ml dekanti",
     announcement3: "Premium niche i dizajnerski parfemi",
     announcement4: "Ograničene količine — ne propusti",
@@ -1866,26 +1866,23 @@ const ProductCard = ({ product }) => {
         }}
       />
 
-      <div className={`product-modal ${selectedProduct ? "open" : ""}`}>
-{selectedProduct && (
+     {selectedProduct && (
   <div className="modal-overlay" onClick={closeProductModal}>
     <div
-      className="product-modal"
+      className="product-modal open"
       onClick={(e) => e.stopPropagation()}
     >
-<button
-  className="modal-close"
-  type="button"
-  onClick={closeProductModal}
-  aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
->
-  <span>×</span>
-</button>
+      <button
+        className="modal-close"
+        type="button"
+        onClick={closeProductModal}
+        aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
+      >
+        <span>×</span>
+      </button>
 
       <div className="modal-header">
-        <span className="modal-eyebrow">
-          {lang === "sr" ? "PRIVATE SELECTION" : "PRIVATE SELECTION"}
-        </span>
+        <span className="modal-eyebrow">PRIVATE SELECTION</span>
         <h2>{selectedProduct.name}</h2>
       </div>
 
@@ -1903,7 +1900,9 @@ const ProductCard = ({ product }) => {
                 className="modal-image"
               />
             ) : (
-              <div className="modal-monogram">L</div>
+<div className="modal-monogram">
+  {selectedProduct.name.charAt(0)}
+</div>
             )}
           </div>
 
@@ -1947,14 +1946,10 @@ const ProductCard = ({ product }) => {
 
           <div className="modal-info-grid">
             <div className="modal-info-card">
-              <span>
-                {lang === "sr" ? "DOMINANTNE NOTE" : "DOMINANT NOTES"}
-              </span>
+              <span>{lang === "sr" ? "DOMINANTNE NOTE" : "DOMINANT NOTES"}</span>
               <strong>
                 {productCopy[selectedProduct.name]?.dominantNotes?.[lang]?.join(" • ") ||
-                  (lang === "sr"
-                    ? "premium akordi"
-                    : "premium accords")}
+                  (lang === "sr" ? "premium akordi" : "premium accords")}
               </strong>
             </div>
 
@@ -1984,13 +1979,11 @@ const ProductCard = ({ product }) => {
                   <button
                     key={size}
                     type="button"
-                    className={`modal-size ${
-                      selectedSize === size ? "active" : ""
-                    }`}
+                    className={`modal-size ${selectedSize === size ? "active" : ""}`}
                     onClick={() => setSelectedSize(size)}
                   >
                     <span>{size}</span>
-                    <strong>€{Number(price).toFixed(2)}</strong>
+                    <strong>{formatPrice(price)}</strong>
                   </button>
                 ))}
               </div>
@@ -1998,29 +1991,27 @@ const ProductCard = ({ product }) => {
 
             <div className="modal-purchase-bar">
               <div className="modal-price-box">
-                <span>
-                  {lang === "sr" ? "IZABRANA CENA" : "SELECTED PRICE"}
-                </span>
+                <span>{lang === "sr" ? "IZABRANA CENA" : "SELECTED PRICE"}</span>
                 <strong>
-                  €
-                  {Number(
+                  {formatPrice(
                     selectedProduct.sizes[selectedSize] ??
                       Object.values(selectedProduct.sizes)[0]
-                  ).toFixed(2)}
+                  )}
                 </strong>
               </div>
 
-<button
-  type="button"
-  className="modal-add-button"
-  onClick={() => {
-    const activeSize =
-      selectedSize || Object.keys(selectedProduct.sizes)[0];
-    addToCart(selectedProduct, activeSize);
-  }}
->
-  <span>{lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}</span>
-</button>
+              <button
+                type="button"
+                className="modal-add-button"
+                onClick={() => {
+                  const activeSize =
+                    selectedSize || Object.keys(selectedProduct.sizes)[0];
+                  addToCart(selectedProduct, activeSize);
+                  setCartOpen(true);
+                }}
+              >
+                <span>{lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}</span>
+              </button>
             </div>
           </div>
         </div>
