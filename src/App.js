@@ -1643,15 +1643,20 @@ const prevPage = () => {
     return categoryLabels[categoryKey]?.[lang] || categoryKey;
   };
 
-  const getProductDescription = (product) => {
-    if (product.description?.[lang]) return product.description[lang];
-    return getFallbackDescription(product, lang);
-  };
+const getProductDescription = (product) => {
+  const copy = getProductCopy(product, lang);
+  return copy.modal || getFallbackDescription(product, lang);
+};
 
-  const getProductVibe = (product) => {
-    if (product.vibe?.[lang]) return product.vibe[lang];
-    return getFallbackVibe(product, lang);
-  };
+const getProductVibe = (product) => {
+  const copy = getProductCopy(product, lang);
+
+  if (copy?.dominantNotes?.length) {
+    return copy.dominantNotes.slice(0, 3).join(" • ");
+  }
+
+  return getFallbackVibe(product, lang);
+};
 
   const selectedCopy = selectedProduct
   ? getProductCopy(selectedProduct, lang)
