@@ -712,18 +712,21 @@ const switchView = (nextView) => {
 
 const goToShop = () => {
   setView("shop");
-  window.scrollTo(0, 0);
 };
 
-  const nextPage = () => {
-    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+const nextPage = () => {
+  setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+  requestAnimationFrame(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  });
+};
 
-  const prevPage = () => {
-    setCurrentPage((prev) => Math.max(1, prev - 1));
+const prevPage = () => {
+  setCurrentPage((prev) => Math.max(1, prev - 1));
+  requestAnimationFrame(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  });
+};
 
   const openProductModal = (product) => {
     setSelectedProduct(product);
