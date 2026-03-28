@@ -549,6 +549,196 @@ const productCopy = {
   tags:{sr:["Night"],en:["Night"]},
   whyChoose:{sr:"Za luksuzne večeri.",en:"For luxury nights."}
 }
+
+"Acqua di Parma Colonia Essenza Eau de Cologne":{
+  miniTag:{sr:"❄️ Fresh / Luxury",en:"❄️ Fresh / Luxury"},
+  card:{sr:"Klasična citrusna elegancija.",en:"Classic citrus elegance."},
+  modal:{sr:"Bezvremenska svežina sa sofisticiranim karakterom.",en:"Timeless freshness with refined character."},
+  scentType:{sr:"Fresh citrus aromatic",en:"Fresh citrus aromatic"},
+  dominantNotes:{sr:["citrusi","bergamot","drvo"],en:["citrus","bergamot","woods"]},
+  tags:{sr:["Luxury"],en:["Luxury"]},
+  whyChoose:{sr:"Za klasičnu eleganciju.",en:"For classic elegance."}
+},
+
+"Acqua di Parma Colonia Pura Eau de Cologne":{
+  miniTag:{sr:"❄️ Fresh / Clean",en:"❄️ Fresh / Clean"},
+  card:{sr:"Čista i moderna citrusna svežina.",en:"Clean modern citrus freshness."},
+  modal:{sr:"Minimalistički i svetao miris za svaki dan.",en:"Minimal bright scent for everyday."},
+  scentType:{sr:"Fresh citrus",en:"Fresh citrus"},
+  dominantNotes:{sr:["citrusi","mošus","drvo"],en:["citrus","musk","woods"]},
+  tags:{sr:["Fresh"],en:["Fresh"]},
+  whyChoose:{sr:"Za clean i lagan vibe.",en:"For clean easy vibe."}
+},
+
+"BOSS Bottled Beyond Eau de Parfum":{
+  miniTag:{sr:"🍯 Sweet / Modern",en:"🍯 Sweet / Modern"},
+  card:{sr:"Topao i moderan muški profil.",en:"Warm modern masculine profile."},
+  modal:{sr:"Savremen, uglađen i prijatan za nošenje.",en:"Modern smooth and easy to wear."},
+  scentType:{sr:"Sweet woody",en:"Sweet woody"},
+  dominantNotes:{sr:["vanila","drvo","začini"],en:["vanilla","woods","spices"]},
+  tags:{sr:["Modern"],en:["Modern"]},
+  whyChoose:{sr:"Siguran moderan izbor.",en:"Safe modern pick."}
+},
+
+"BOSS The Scent Elixir Parfum Intense for Him":{
+  miniTag:{sr:"🔥 Night / Intense",en:"🔥 Night / Intense"},
+  card:{sr:"Tamna, začinska senzualnost.",en:"Dark spicy sensuality."},
+  modal:{sr:"Intenzivan i zavodljiv miris za večernje prilike.",en:"Intense seductive evening scent."},
+  scentType:{sr:"Spicy sweet",en:"Spicy sweet"},
+  dominantNotes:{sr:["začini","amber","drvo"],en:["spices","amber","woods"]},
+  tags:{sr:["Night"],en:["Night"]},
+  whyChoose:{sr:"Za snažan večernji utisak.",en:"For strong evening impact."}
+},
+
+"BOSS The Scent Le Parfum for Him":{
+  miniTag:{sr:"🍯 Sweet / Elegant",en:"🍯 Sweet / Elegant"},
+  card:{sr:"Sladak i sofisticiran profil.",en:"Sweet sophisticated profile."},
+  modal:{sr:"Topao i elegantan miris sa zavodljivim karakterom.",en:"Warm elegant and seductive scent."},
+  scentType:{sr:"Sweet spicy",en:"Sweet spicy"},
+  dominantNotes:{sr:["vanila","đumbir","drvo"],en:["vanilla","ginger","woods"]},
+  tags:{sr:["Elegant"],en:["Elegant"]},
+  whyChoose:{sr:"Za suptilnu zavodljivost.",en:"For subtle seduction."}
+},
+
+"Calvin Klein CK All Eau de Toilette":{
+  miniTag:{sr:"❄️ Fresh / Daily",en:"❄️ Fresh / Daily"},
+  card:{sr:"Čista unisex svežina.",en:"Clean unisex freshness."},
+  modal:{sr:"Lagano, čisto i nenametljivo.",en:"Light clean and effortless."},
+  scentType:{sr:"Fresh citrus",en:"Fresh citrus"},
+  dominantNotes:{sr:["citrusi","mošus","drvo"],en:["citrus","musk","woods"]},
+  tags:{sr:["Daily"],en:["Daily"]},
+  whyChoose:{sr:"Za svakodnevnu lakoću.",en:"For everyday ease."}
+},
+
+"Calvin Klein Defy Eau de Toilette":{
+  miniTag:{sr:"❄️ Fresh / Modern",en:"❄️ Fresh / Modern"},
+  card:{sr:"Svež i urban miris.",en:"Fresh urban scent."},
+  modal:{sr:"Moderan, čist i energičan profil.",en:"Modern clean energetic profile."},
+  scentType:{sr:"Fresh woody",en:"Fresh woody"},
+  dominantNotes:{sr:["citrusi","lavanda","drvo"],en:["citrus","lavender","woods"]},
+  tags:{sr:["Fresh"],en:["Fresh"]},
+  whyChoose:{sr:"Za moderan dnevni stil.",en:"For modern daily style."}
+},
+
+"Calvin Klein Defy Parfum":{
+  miniTag:{sr:"🍯 Sweet / Bold",en:"🍯 Sweet / Bold"},
+  card:{sr:"Jača i toplija verzija Defy.",en:"Stronger warmer Defy."},
+  modal:{sr:"Bogata i senzualna interpretacija sa više dubine.",en:"Richer deeper sensual version."},
+  scentType:{sr:"Sweet woody",en:"Sweet woody"},
+  dominantNotes:{sr:["vanila","drvo","amber"],en:["vanilla","woods","amber"]},
+  tags:{sr:["Bold"],en:["Bold"]},
+  whyChoose:{sr:"Za intenzivniji efekat.",en:"For stronger impact."}
+},
+
+"Chopard Oud Malaki Eau de Parfum":{
+  miniTag:{sr:"💎 Oud / Luxury",en:"💎 Oud / Luxury"},
+  card:{sr:"Oud sa toplim začinima.",en:"Oud with warm spices."},
+  modal:{sr:"Bogata orijentalna kompozicija sa dubinom.",en:"Rich oriental composition."},
+  scentType:{sr:"Oud spicy",en:"Oud spicy"},
+  dominantNotes:{sr:["oud","začini","duvan"],en:["oud","spices","tobacco"]},
+  tags:{sr:["Luxury"],en:["Luxury"]},
+  whyChoose:{sr:"Za ljubitelje ouda.",en:"For oud lovers."}
+},
+
+"Giorgio Armani Acqua di Giò Profondo Parfum":{
+  miniTag:{sr:"🔥 Bestseller",en:"🔥 Bestseller"},
+  card:{sr:"Duboka morska svežina.",en:"Deep marine freshness."},
+  modal:{sr:"Intenzivna i moderna interpretacija klasika.",en:"Intense modern take on a classic."},
+  scentType:{sr:"Aquatic aromatic",en:"Aquatic aromatic"},
+  dominantNotes:{sr:["more","bergamot","minerali"],en:["marine","bergamot","minerals"]},
+  tags:{sr:["Fresh"],en:["Fresh"]},
+  whyChoose:{sr:"Za svežinu sa snagom.",en:"Freshness with depth."}
+},
+
+"Gisada Ambassador Men Eau de Parfum":{
+  miniTag:{sr:"🔥 Bestseller",en:"🔥 Bestseller"},
+  card:{sr:"Voćno-sladak crowd pleaser.",en:"Fruity sweet crowd pleaser."},
+  modal:{sr:"Moderan, upečatljiv i vrlo primetan miris.",en:"Modern noticeable compliment magnet."},
+  scentType:{sr:"Sweet fruity",en:"Sweet fruity"},
+  dominantNotes:{sr:["jabuka","vanila","amber"],en:["apple","vanilla","amber"]},
+  tags:{sr:["Sweet"],en:["Sweet"]},
+  whyChoose:{sr:"Za maksimalne komplimente.",en:"For maximum compliments."}
+},
+
+"Givenchy Gentleman Eau de Parfum Réserve Privée":{
+  miniTag:{sr:"💎 Luxury / Night",en:"💎 Luxury / Night"},
+  card:{sr:"Whiskey i iris elegancija.",en:"Whiskey iris elegance."},
+  modal:{sr:"Topao, kremast i sofisticiran miris.",en:"Warm creamy sophisticated scent."},
+  scentType:{sr:"Sweet woody",en:"Sweet woody"},
+  dominantNotes:{sr:["whiskey","iris","drvo"],en:["whiskey","iris","woods"]},
+  tags:{sr:["Luxury"],en:["Luxury"]},
+  whyChoose:{sr:"Za elegantne večeri.",en:"For elegant evenings."}
+},
+
+"Jimmy Choo Man Blue Eau de Toilette":{
+  miniTag:{sr:"❄️ Fresh / Casual",en:"❄️ Fresh / Casual"},
+  card:{sr:"Ležerna svežina sa modernim twistom.",en:"Casual fresh with modern twist."},
+  modal:{sr:"Opušten i prijatan miris za svaki dan.",en:"Relaxed easy everyday scent."},
+  scentType:{sr:"Fresh aromatic",en:"Fresh aromatic"},
+  dominantNotes:{sr:["citrusi","lavanda","drvo"],en:["citrus","lavender","woods"]},
+  tags:{sr:["Daily"],en:["Daily"]},
+  whyChoose:{sr:"Za opušten stil.",en:"For relaxed style."}
+},
+
+"L'Homme Eau de Parfum by Yves Saint Laurent":{
+  miniTag:{sr:"💎 Elegant",en:"💎 Elegant"},
+  card:{sr:"Topao i uglađen profil.",en:"Warm refined profile."},
+  modal:{sr:"Sofisticiran i moderan miris za posebne prilike.",en:"Sophisticated modern scent."},
+  scentType:{sr:"Woody spicy",en:"Woody spicy"},
+  dominantNotes:{sr:["začini","drvo","amber"],en:["spices","woods","amber"]},
+  tags:{sr:["Elegant"],en:["Elegant"]},
+  whyChoose:{sr:"Za classy utisak.",en:"For classy impression."}
+},
+
+"L'Homme Idéal De Guerlain Paris Eau De Toilette":{
+  miniTag:{sr:"🍯 Sweet / Unique",en:"🍯 Sweet / Unique"},
+  card:{sr:"Badem i slatki tonovi.",en:"Almond sweet profile."},
+  modal:{sr:"Topao i drugačiji miris sa karakterom.",en:"Warm unique scent with character."},
+  scentType:{sr:"Sweet nutty",en:"Sweet nutty"},
+  dominantNotes:{sr:["badem","vanila","drvo"],en:["almond","vanilla","woods"]},
+  tags:{sr:["Unique"],en:["Unique"]},
+  whyChoose:{sr:"Za drugačiji stil.",en:"For unique style."}
+},
+
+"Mancera Cedrat Boise Eau de Parfum":{
+  miniTag:{sr:"🔥 Bestseller",en:"🔥 Bestseller"},
+  card:{sr:"Citrus i drvo u savršenom balansu.",en:"Citrus and woods balance."},
+  modal:{sr:"Svež, luksuzan i izuzetno nosiv miris.",en:"Fresh luxurious versatile scent."},
+  scentType:{sr:"Fresh woody fruity",en:"Fresh woody fruity"},
+  dominantNotes:{sr:["limun","crna ribizla","drvo"],en:["lemon","blackcurrant","woods"]},
+  tags:{sr:["Luxury"],en:["Luxury"]},
+  whyChoose:{sr:"Jedan od najboljih all-roundera.",en:"One of the best all-rounders."}
+},
+
+"Montblanc Explorer Extreme Parfum":{
+  miniTag:{sr:"💎 Bold",en:"💎 Bold"},
+  card:{sr:"Intenzivan drveni profil.",en:"Intense woody profile."},
+  modal:{sr:"Jača i dublja verzija Explorer DNA.",en:"Stronger deeper Explorer DNA."},
+  scentType:{sr:"Woody aromatic",en:"Woody aromatic"},
+  dominantNotes:{sr:["vetiver","drvo","amber"],en:["vetiver","woods","amber"]},
+  tags:{sr:["Bold"],en:["Bold"]},
+  whyChoose:{sr:"Za snažan karakter.",en:"For strong presence."}
+},
+
+"Narciso Rodriguez for Him Bleu Noir Eau de Parfum":{
+  miniTag:{sr:"💎 Elegant / Clean",en:"💎 Elegant / Clean"},
+  card:{sr:"Mošusna elegancija.",en:"Musky elegance."},
+  modal:{sr:"Čist, elegantan i sofisticiran miris.",en:"Clean elegant sophisticated scent."},
+  scentType:{sr:"Musky woody",en:"Musky woody"},
+  dominantNotes:{sr:["mošus","drvo","vetiver"],en:["musk","woods","vetiver"]},
+  tags:{sr:["Elegant"],en:["Elegant"]},
+  whyChoose:{sr:"Za suptilnu eleganciju.",en:"For subtle elegance."}
+},
+
+"Terre d'Hermès Eau de Toilette":{
+  miniTag:{sr:"💎 Signature",en:"💎 Signature"},
+  card:{sr:"Zemljani citrus klasik.",en:"Earthy citrus classic."},
+  modal:{sr:"Ikoničan, sofisticiran i prepoznatljiv miris.",en:"Iconic sophisticated recognizable scent."},
+  scentType:{sr:"Woody citrus",en:"Woody citrus"},
+  dominantNotes:{sr:["narandža","vetiver","kremen"],en:["orange","vetiver","flint"]},
+  tags:{sr:["Signature"],en:["Signature"]},
+  whyChoose:{sr:"Bezvremenski izbor.",en:"Timeless choice."}
+}
 };
 
 const fallbackCopy = {
