@@ -98,12 +98,12 @@ const translations = {
     announcement4: "Limited stock drops — don’t miss out",
     announcement5: "Delivery across Montenegro",
     announcementDynamicLocked: "Add {{amount}} more to unlock free shipping",
-announcementDynamicUnlocked: "Free shipping unlocked ✓",
-announcementDynamicEmpty1: "Free shipping over €39",
-announcementDynamicEmpty2: "Try before you buy — 2ml, 5ml, 10ml & 20ml decants",
-announcementDynamicEmpty3: "Premium niche & designer fragrances",
-announcementDynamicEmpty4: "Limited stock drops — don’t miss out",
-announcementDynamicEmpty5: "Delivery across Montenegro",
+    announcementDynamicUnlocked: "Free shipping unlocked ✓",
+    announcementDynamicEmpty1: "Free shipping over €39",
+    announcementDynamicEmpty2: "Try before you buy — 2ml, 5ml, 10ml & 20ml decants",
+    announcementDynamicEmpty3: "Premium niche & designer fragrances",
+    announcementDynamicEmpty4: "Limited stock drops — don’t miss out",
+    announcementDynamicEmpty5: "Delivery across Montenegro",
   },
   sr: {
     navHome: "Početna",
@@ -201,12 +201,12 @@ announcementDynamicEmpty5: "Delivery across Montenegro",
     announcement4: "Ograničene količine — ne propusti",
     announcement5: "Dostava širom Crne Gore",
     announcementDynamicLocked: "Dodaj još {{amount}} za besplatnu dostavu",
-announcementDynamicUnlocked: "Besplatna dostava otključana ✓",
-announcementDynamicEmpty1: "Besplatna dostava preko 39€",
-announcementDynamicEmpty2: "Probaj pre kupovine — 2ml, 5ml, 10ml i 20ml dekanti",
-announcementDynamicEmpty3: "Premium niche i dizajnerski parfemi",
-announcementDynamicEmpty4: "Ograničene količine — ne propusti",
-announcementDynamicEmpty5: "Dostava širom Crne Gore",
+    announcementDynamicUnlocked: "Besplatna dostava otključana ✓",
+    announcementDynamicEmpty1: "Besplatna dostava preko 39€",
+    announcementDynamicEmpty2: "Probaj pre kupovine — 2ml, 5ml, 10ml i 20ml dekanti",
+    announcementDynamicEmpty3: "Premium niche i dizajnerski parfemi",
+    announcementDynamicEmpty4: "Ograničene količine — ne propusti",
+    announcementDynamicEmpty5: "Dostava širom Crne Gore",
   }
 };
 
@@ -266,6 +266,16 @@ const products = [
   { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
   { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Niche", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 } }
 ];
+
+const fallbackCopy = {
+  miniTag: "💎 Luxury / Signature",
+  card: "Premium miris sa karakterom i pažljivo biranim akordima.",
+  modal:
+    "Pažljivo odabran miris sa upečatljivim stilom, dominantnim akordima i premium PlayNice karakterom.",
+  scentType: "Signature fragrance",
+  dominantNotes: ["premium akordi"],
+  tags: ["Signature"]
+};
 
 const productCopy = {
   "Afnan 9AM": {
@@ -737,16 +747,6 @@ const productCopy = {
     dominantNotes: ["kardamom", "vanila", "amber", "kremasti tonovi"],
     tags: ["Luxury", "Date Night", "Rich"]
   }
-};
-
-const fallbackCopy = {
-  miniTag: "💎 Luxury / Signature",
-  card: "Premium miris sa karakterom i pažljivo biranim akordima.",
-  modal:
-    "Pažljivo odabran miris sa upečatljivim stilom, dominantnim akordima i premium PlayNice karakterom.",
-  scentType: "Signature fragrance",
-  dominantNotes: ["premium akordi"],
-  tags: ["Signature"]
 };
 
 const enrichedProducts = products.map((product) => ({
