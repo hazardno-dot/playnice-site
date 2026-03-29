@@ -904,14 +904,6 @@ function App() {
 
 const [currentVideo, setCurrentVideo] = useState(0);
 
-useEffect(() => {
-  const interval = setInterval(() => {
-    setCurrentVideo((prev) => (prev + 1) % heroVideos.length);
-  }, 5000); // promena na svakih 5s
-
-  return () => clearInterval(interval);
-}, []);
-
   const [checkoutForm, setCheckoutForm] = useState({
     firstName: "",
     lastName: "",
@@ -1607,12 +1599,14 @@ const ProductCard = ({ product }) => {
 <section className="featured-section section-wrap impact-split-section">
   <div className="impact-video-column">
     <div className="impact-video-frame">
-      <video
+<video
   key={currentVideo}
   autoPlay
   muted
-  loop
   playsInline
+  onEnded={() => {
+    setCurrentVideo((prev) => (prev + 1) % heroVideos.length);
+  }}
 >
   <source src={heroVideos[currentVideo]} type="video/mp4" />
 </video>
