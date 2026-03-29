@@ -1062,7 +1062,7 @@ main {
 }
 
 .product-meta {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   flex: 0 0 auto;
 }
 
@@ -1129,10 +1129,8 @@ main {
 
 .product-price-from,
 .premium-product-price {
-  margin: 6px 0 0;
-  color: var(--text-soft);
-  font-size: 0.95rem;
-  min-height: 22px;
+  margin: 4px 0 0;
+  min-height: 20px;
 }
 
 .product-card-copy,
@@ -3250,29 +3248,30 @@ main {
 
 .product-card-title {
   margin: 0;
+  display: block;
+  height: 3.15rem;
+
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.45rem;
-  line-height: 1.15;
+  font-size: 1.38rem;
+  line-height: 1.14;
   letter-spacing: -0.01em;
   color: rgba(255, 248, 235, 0.96);
 
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-
   overflow: hidden;
-  text-overflow: ellipsis;
+}
 
-  min-height: 3.3rem;
-  max-height: 3.3rem;
+.product-card-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .product-card-copy-stack {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
-  min-height: 96px;
+  gap: 6px;
+  height: 74px;
 }
 
 .product-card-mini-tag {
