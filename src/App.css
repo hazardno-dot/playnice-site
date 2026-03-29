@@ -3552,14 +3552,14 @@ main {
 
 /* NEW SECTION – overrides legacy feature grid */
 /* =========================================
-   IMPACT SPLIT SECTION
+   IMPACT SPLIT SECTION V2
 ========================================= */
 
 .impact-split-section {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  align-items: stretch;
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 22px;
+  align-items: start;
 }
 
 .impact-video-column,
@@ -3569,14 +3569,14 @@ main {
 
 .impact-video-frame {
   position: relative;
-  height: 100%;
-  min-height: 540px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: 28px;
+  border-radius: 24px;
   border: 1px solid var(--line);
   background: #050505;
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.42),
+    0 18px 46px rgba(0, 0, 0, 0.34),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
@@ -3593,21 +3593,21 @@ main {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.32)),
-    radial-gradient(circle at 50% 50%, transparent 58%, rgba(0, 0, 0, 0.16) 100%);
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.28)),
+    radial-gradient(circle at 50% 50%, transparent 58%, rgba(0, 0, 0, 0.14) 100%);
 }
 
 .impact-video-badge {
   position: absolute;
-  top: 18px;
-  left: 18px;
+  top: 14px;
+  left: 14px;
   z-index: 2;
-  padding: 8px 12px;
+  padding: 7px 11px;
   border-radius: 999px;
   border: 1px solid rgba(220, 181, 107, 0.24);
   background: rgba(5, 5, 5, 0.58);
   color: var(--gold);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -3617,31 +3617,31 @@ main {
 .impact-products-column {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .impact-head {
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .impact-products-stack {
   display: grid;
-  gap: 16px;
+  gap: 14px;
 }
 
 .impact-product-card {
   display: grid;
-  grid-template-columns: 108px 1fr;
-  gap: 16px;
+  grid-template-columns: 92px 1fr;
+  gap: 14px;
   align-items: center;
-  padding: 16px;
-  border-radius: 24px;
+  padding: 14px;
+  border-radius: 22px;
   border: 1px solid var(--line);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.018)),
+    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
     rgba(10, 10, 10, 0.92);
   box-shadow:
-    0 14px 34px rgba(0,0,0,0.24),
+    0 12px 28px rgba(0,0,0,0.22),
     inset 0 1px 0 rgba(255,255,255,0.04);
   cursor: pointer;
   transition:
@@ -3655,7 +3655,7 @@ main {
   transform: translateY(-2px);
   border-color: rgba(220, 181, 107, 0.24);
   box-shadow:
-    0 18px 38px rgba(0,0,0,0.3),
+    0 16px 34px rgba(0,0,0,0.28),
     inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
@@ -3663,18 +3663,18 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 124px;
-  padding: 10px;
-  border-radius: 18px;
+  min-height: 96px;
+  padding: 8px;
+  border-radius: 16px;
   background:
-    radial-gradient(circle at 50% 20%, rgba(220,181,107,0.12), transparent 60%),
+    radial-gradient(circle at 50% 20%, rgba(220,181,107,0.10), transparent 60%),
     rgba(255,255,255,0.02);
 }
 
 .impact-product-image {
   display: block;
   width: 100%;
-  max-height: 110px;
+  max-height: 84px;
   object-fit: contain;
   transition: transform 260ms ease;
 }
@@ -3693,19 +3693,19 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-bottom: 6px;
 }
 
 .impact-product-tag {
   display: inline-flex;
   align-items: center;
-  padding: 4px 9px;
+  padding: 4px 8px;
   border-radius: 999px;
   border: 1px solid rgba(220, 181, 107, 0.18);
   background: rgba(220, 181, 107, 0.08);
   color: var(--gold);
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -3713,18 +3713,19 @@ main {
 
 .impact-product-copy h3 {
   margin: 0;
-  font-size: 1.08rem;
-  line-height: 1.28;
+  font-size: 1rem;
+  line-height: 1.24;
 }
 
 .impact-product-copy p {
-  margin: 8px 0 0;
+  margin: 7px 0 0;
   color: var(--text-soft);
-  line-height: 1.58;
+  line-height: 1.5;
+  font-size: 0.93rem;
 }
 
 .impact-product-actions {
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .impact-inline-link {
@@ -3734,54 +3735,37 @@ main {
 @media (max-width: 1120px) {
   .impact-split-section {
     grid-template-columns: 1fr;
+    gap: 18px;
   }
-
-.impact-video-frame {
-  min-height: 320px;
-  max-height: 360px;
-}
-
-.impact-video-frame video {
-  transform: scale(1.05);
-}
 }
 
 @media (max-width: 720px) {
-  .impact-split-section {
-    gap: 18px;
-  }
-
   .impact-video-frame {
-    min-height: 240px;
-    border-radius: 22px;
-  }
-
-  .impact-product-card {
-    grid-template-columns: 88px 1fr;
-    gap: 12px;
-    padding: 14px;
     border-radius: 20px;
   }
 
+  .impact-product-card {
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+    padding: 13px;
+    border-radius: 18px;
+  }
+
   .impact-product-image-wrap {
-    min-height: 100px;
+    min-height: 86px;
     padding: 8px;
   }
 
-  .impact-split-section {
-  margin-top: 26px;
-}
-
   .impact-product-image {
-    max-height: 88px;
+    max-height: 74px;
   }
 
   .impact-product-copy h3 {
-    font-size: 0.98rem;
+    font-size: 0.95rem;
   }
 
   .impact-product-copy p {
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-size: 0.88rem;
+    line-height: 1.45;
   }
 }
