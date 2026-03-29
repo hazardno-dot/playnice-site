@@ -1588,7 +1588,15 @@ const ProductCard = ({ product }) => {
 <section className="featured-section section-wrap impact-split-section">
   <div className="impact-video-column">
     <div className="impact-video-frame">
-      <div className="impact-video-panel">
+      <video autoPlay muted loop playsInline>
+        <source src="/videos/hero.mp4" type="video/mp4" />
+      </video>
+
+      <div className="impact-video-badge">PLAYNICE FILM</div>
+    </div>
+  </div>
+
+  <div className="impact-video-panel">
   <div className="impact-video-panel-content">
     <span className="impact-video-eyebrow">
       {lang === "sr" ? "PLAYNICE CONCEPT" : "PLAYNICE CONCEPT"}
@@ -1614,13 +1622,6 @@ const ProductCard = ({ product }) => {
     </button>
   </div>
 </div>
-      <video autoPlay muted loop playsInline>
-        <source src="/videos/hero.mp4" type="video/mp4" />
-      </video>
-
-      <div className="impact-video-badge">PLAYNICE FILM</div>
-    </div>
-  </div>
 
   <div className="impact-products-column">
     <div className="section-head impact-head">
