@@ -1527,11 +1527,6 @@ const ProductCard = ({ product }) => {
 {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
 <main>
-                          <div className="hero-video">
-  <video autoPlay muted loop playsInline>
-    <source src="/videos/hero.mp4" type="video/mp4" />
-  </video>
-</div>
         {view === "home" && (
           <>
             <section className="hero">
@@ -1581,6 +1576,14 @@ const ProductCard = ({ product }) => {
                 </div>
               </div>
             </section>
+
+            <section className="hero-video-section">
+  <div className="hero-video-frame">
+    <video autoPlay muted loop playsInline>
+      <source src="/videos/hero.mp4" type="video/mp4" />
+    </video>
+  </div>
+</section>
 
             <section className="value-strip">
               <div>{tr.valueTry}</div>
