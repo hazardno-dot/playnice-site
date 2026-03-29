@@ -1630,22 +1630,101 @@ const ProductCard = ({ product }) => {
       <p>{tr.highlightsText}</p>
     </div>
 
-    <div className="impact-products-stack">
-      <article
-        className="impact-product-card"
-        role="button"
-        tabIndex={0}
+ <div className="impact-products-panel">
+  <article className="impact-products-merged-card">
+    <div className="impact-product-row">
+      <button
+        type="button"
+        className="impact-product-image-button"
         onClick={() => openImpactProductModal(impactProducts[0])}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openImpactProductModal(impactProducts[0]);
-          }
-        }}
+        aria-label="Afnan 9PM Rebel"
       >
         <div className="impact-product-image-wrap">
           <img src="/9pm.png" alt="Afnan 9PM Rebel" className="impact-product-image" />
         </div>
+      </button>
+
+      <div className="impact-product-copy">
+        <div className="impact-product-topline">
+          <span className="impact-product-tag">{tr.campaignPick}</span>
+        </div>
+
+        <h3>Afnan 9PM Rebel</h3>
+        <p>{tr.rebelCardText}</p>
+
+        <div className="impact-product-actions">
+          <button
+            className="inline-link impact-inline-link"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addHeroBottleToCart();
+            }}
+          >
+            {tr.add100ml}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div className="impact-product-divider" />
+
+    <div className="impact-product-row">
+      <button
+        type="button"
+        className="impact-product-image-button"
+        onClick={() => openImpactProductModal(impactProducts[1])}
+        aria-label="Khadlaj Island Dreams Extrait de Parfum"
+      >
+        <div className="impact-product-image-wrap">
+          <img
+            src="/island.png"
+            alt="Khadlaj Island Dreams Extrait de Parfum"
+            className="impact-product-image"
+          />
+        </div>
+      </button>
+
+      <div className="impact-product-copy">
+        <div className="impact-product-topline">
+          <span className="impact-product-tag">{tr.summerHit}</span>
+        </div>
+
+        <h3>Khadlaj Island Dreams Extrait de Parfum</h3>
+        <p>{tr.islandDreamsText}</p>
+      </div>
+    </div>
+
+    <div className="impact-product-divider" />
+
+    <div className="impact-product-row">
+      <button
+        type="button"
+        className="impact-product-image-button"
+        onClick={() => openImpactProductModal(impactProducts[2])}
+        aria-label="Arabiyat Prestige Marwa"
+      >
+        <div className="impact-product-image-wrap">
+          <img
+            src="/marwa.png"
+            alt="Arabiyat Prestige Marwa"
+            className="impact-product-image"
+          />
+        </div>
+      </button>
+
+      <div className="impact-product-copy">
+        <div className="impact-product-topline">
+          <span className="impact-product-tag">{tr.arabianEdge}</span>
+        </div>
+
+        <h3>Arabiyat Prestige Marwa</h3>
+        <p>{tr.marwaText}</p>
+      </div>
+    </div>
+  </article>
+</div>
 
         <div className="impact-product-copy">
           <div className="impact-product-topline">
