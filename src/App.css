@@ -4085,6 +4085,17 @@ main {
   pointer-events: auto;
 }
 
+/* =========================================
+   STORY DRAWER – BASE (MISSING BLOCK FIXED)
+========================================= */
+.story-drawer {
+  position: fixed;
+  top: 22px;
+  left: 16px;
+  width: min(540px, calc(100vw - 32px));
+  height: calc(100vh - 44px);
+  z-index: 1200;
+
   transform: translateX(calc(-100% - 28px));
   transition:
     transform 0.48s cubic-bezier(0.22, 1, 0.36, 1),
@@ -4102,7 +4113,15 @@ main {
 
   overflow-y: auto;
   overscroll-behavior: contain;
+}
 
+.story-drawer.open {
+  transform: translateX(0);
+}
+
+/* =========================================
+   STORY CONTENT
+========================================= */
 .story-drawer-header .section-kicker {
   margin-bottom: 8px;
 }
@@ -4128,6 +4147,9 @@ main {
   font-size: 1.05rem;
 }
 
+/* =========================================
+   Z-INDEX SYSTEM
+========================================= */
 .cart-drawer {
   z-index: 1300;
 }
