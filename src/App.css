@@ -2158,8 +2158,8 @@ main {
 .modal-description {
   margin: 0;
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.02rem;
-  line-height: 1.18;
+  font-size: 0.96rem;
+  line-height: 1.16;
   color: rgba(255, 248, 235, 0.96);
 
   display: -webkit-box;
@@ -2169,8 +2169,8 @@ main {
   overflow: hidden;
   text-overflow: ellipsis;
 
-  min-height: 3.54rem;
-  max-height: 3.54rem;
+  min-height: 3.35rem;
+  max-height: 3.35rem;
 }
 
 .modal-info-grid {
