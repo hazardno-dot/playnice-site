@@ -1936,7 +1936,19 @@ const ProductCard = ({ product }) => {
         )}
       </main>
 
-      <aside className={`story-drawer ${storyOpen ? "open" : ""}`}>
+<div
+  className={`backdrop ${
+    cartOpen || checkoutOpen || selectedProduct || storyOpen ? "show" : ""
+  }`}
+  onClick={() => {
+    setCartOpen(false);
+    setCheckoutOpen(false);
+    setStoryOpen(false);
+    closeProductModal();
+  }}
+/>
+
+<aside className={`story-drawer ${storyOpen ? "open" : ""}`}>
   <div className="story-drawer-header">
     <div>
       <p className="section-kicker">OUR STORY</p>
@@ -1973,9 +1985,21 @@ const ProductCard = ({ product }) => {
     </p>
 
     <div className="story-drawer-points">
-      <div>{lang === "sr" ? "Dizajnerski, niche i arapski izbor" : "Designer, niche, and Arabian curation"}</div>
-      <div>{lang === "sr" ? "Premium dekanti pre pune bočice" : "Premium decants before full bottle commitment"}</div>
-      <div>{lang === "sr" ? "Limitirani dropovi i boutique pristup" : "Limited drops with boutique selection logic"}</div>
+      <div>
+        {lang === "sr"
+          ? "Dizajnerski, niche i arapski izbor"
+          : "Designer, niche, and Arabian curation"}
+      </div>
+      <div>
+        {lang === "sr"
+          ? "Premium dekanti pre pune bočice"
+          : "Premium decants before full bottle commitment"}
+      </div>
+      <div>
+        {lang === "sr"
+          ? "Limitirani dropovi i boutique pristup"
+          : "Limited drops with boutique selection logic"}
+      </div>
     </div>
 
     <div className="story-drawer-footer">
@@ -1995,125 +2019,116 @@ const ProductCard = ({ product }) => {
   </div>
 </aside>
 
-      <div
-  className={`backdrop ${
-    cartOpen || checkoutOpen || selectedProduct || storyOpen ? "show" : ""
-  }`}
-  onClick={() => {
-    setCartOpen(false);
-    setCheckoutOpen(false);
-    setStoryOpen(false);
-    closeProductModal();
-  }}
-/>
+<aside className={`cart-drawer ${cartOpen ? "open" : ""}`}>
+  <div className="cart-drawer-header">
+    <div>
+      <p className="section-kicker">{tr.yourCart}</p>
+      <h3>{tr.selectedItems}</h3>
+    </div>
+    <button
+      className="close-button"
+      type="button"
+      onClick={() => setCartOpen(false)}
+    >
+      ×
+    </button>
+  </div>
 
-      <aside className={`cart-drawer ${cartOpen ? "open" : ""}`}>
-        <div className="cart-drawer-header">
-          <div>
-            <p className="section-kicker">{tr.yourCart}</p>
-            <h3>{tr.selectedItems}</h3>
+  {cart.length === 0 ? (
+    <div className="cart-empty">
+      <p>{tr.cartEmpty}</p>
+      <button className="gold-button small" type="button" onClick={goToShop}>
+        {tr.goToShop}
+      </button>
+    </div>
+  ) : (
+    <>
+      <div className="cart-items">
+        {cart.map((item) => (
+          <div className="cart-item" key={item.key}>
+            <div className="cart-item-info">
+              <h4>{item.name}</h4>
+              <p>{item.size}</p>
+              <strong>{formatPrice(item.price)}</strong>
+            </div>
+
+            <div className="cart-item-actions">
+              <div className="qty-control">
+                <button type="button" onClick={() => updateQuantity(item.key, -1)}>
+                  -
+                </button>
+                <span>{item.quantity}</span>
+                <button type="button" onClick={() => updateQuantity(item.key, 1)}>
+                  +
+                </button>
+              </div>
+              <button
+                className="remove-link"
+                type="button"
+                onClick={() => removeFromCart(item.key)}
+              >
+                {tr.remove}
+              </button>
+            </div>
           </div>
-          <button className="close-button" type="button" onClick={() => setCartOpen(false)}>
-            ×
-          </button>
+        ))}
+      </div>
+
+      <div className="cart-summary">
+        <div>
+          <span>{tr.subtotal}</span>
+          <strong>{formatPrice(subtotal)}</strong>
         </div>
 
-        {cart.length === 0 ? (
-          <div className="cart-empty">
-            <p>{tr.cartEmpty}</p>
-            <button className="gold-button small" type="button" onClick={goToShop}>
-              {tr.goToShop}
-            </button>
+        <div>
+          <span>{tr.shipping}</span>
+          <strong>
+            {shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}
+          </strong>
+        </div>
+
+        {cart.length > 0 && (
+          <div
+            className={`shipping-progress-card ${
+              subtotal >= FREE_SHIPPING_THRESHOLD
+                ? "shipping-note-unlocked"
+                : "shipping-note-locked"
+            }`}
+          >
+            <div className="shipping-note">
+              {subtotal >= FREE_SHIPPING_THRESHOLD
+                ? `${tr.freeShippingUnlocked} ✓`
+                : tr.freeShippingProgress.replace(
+                    "{{amount}}",
+                    formatPrice(amountLeftForFreeShipping)
+                  )}
+            </div>
+
+            <div className="shipping-progress-bar">
+              <div
+                className="shipping-progress-fill"
+                style={{ width: `${freeShippingProgress}%` }}
+              />
+            </div>
           </div>
-        ) : (
-          <>
-            <div className="cart-items">
-              {cart.map((item) => (
-                <div className="cart-item" key={item.key}>
-                  <div className="cart-item-info">
-                    <h4>{item.name}</h4>
-                    <p>{item.size}</p>
-                    <strong>{formatPrice(item.price)}</strong>
-                  </div>
-
-                  <div className="cart-item-actions">
-                    <div className="qty-control">
-                      <button type="button" onClick={() => updateQuantity(item.key, -1)}>
-                        -
-                      </button>
-                      <span>{item.quantity}</span>
-                      <button type="button" onClick={() => updateQuantity(item.key, 1)}>
-                        +
-                      </button>
-                    </div>
-                    <button
-                      className="remove-link"
-                      type="button"
-                      onClick={() => removeFromCart(item.key)}
-                    >
-                      {tr.remove}
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="cart-summary">
-              <div>
-                <span>{tr.subtotal}</span>
-                <strong>{formatPrice(subtotal)}</strong>
-              </div>
-
-              <div>
-                <span>{tr.shipping}</span>
-                <strong>
-                  {shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}
-                </strong>
-              </div>
-
-              {cart.length > 0 && (
-                <div
-                  className={`shipping-progress-card ${
-                    subtotal >= FREE_SHIPPING_THRESHOLD
-                      ? "shipping-note-unlocked"
-                      : "shipping-note-locked"
-                  }`}
-                >
-                  <div className="shipping-note">
-                    {subtotal >= FREE_SHIPPING_THRESHOLD
-                      ? `${tr.freeShippingUnlocked} ✓`
-                      : tr.freeShippingProgress.replace(
-                          "{{amount}}",
-                          formatPrice(amountLeftForFreeShipping)
-                        )}
-                  </div>
-
-                  <div className="shipping-progress-bar">
-                    <div
-                      className="shipping-progress-fill"
-                      style={{ width: `${freeShippingProgress}%` }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              <div className="cart-total">
-                <span>{tr.total}</span>
-                <strong>{formatPrice(total)}</strong>
-              </div>
-            </div>
-
-            <button
-              className="gold-button checkout-button"
-              type="button"
-              onClick={() => setCheckoutOpen(true)}
-            >
-              {tr.continueCheckout}
-            </button>
-          </>
         )}
-      </aside>
 
+        <div className="cart-total">
+          <span>{tr.total}</span>
+          <strong>{formatPrice(total)}</strong>
+        </div>
+      </div>
+
+      <button
+        className="gold-button checkout-button"
+        type="button"
+        onClick={() => setCheckoutOpen(true)}
+      >
+        {tr.continueCheckout}
+      </button>
+    </>
+  )}
+</aside>
             <div
         className={`backdrop ${cartOpen || checkoutOpen || selectedProduct ? "show" : ""}`}
         onClick={() => {
