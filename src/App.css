@@ -4400,3 +4400,123 @@ main {
     opacity: 1 !important;
   }
 }
+
+/* =========================================
+   STORY CTA (Luxury upgrade)
+========================================= */
+
+.story-drawer-cta {
+  position: relative;
+  overflow: hidden;
+
+  padding: 15px 26px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(220, 181, 107, 0.28);
+
+  background:
+    linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.08));
+
+  color: #f8edd8;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+}
+
+/* light sweep */
+.story-drawer-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(120deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.25),
+      transparent 70%
+    );
+
+  opacity: 0;
+  transform: translateX(-120%);
+  transition: transform 0.8s ease, opacity 0.4s ease;
+}
+
+.story-drawer-cta:hover::after {
+  opacity: 1;
+  transform: translateX(120%);
+}
+
+.story-drawer-cta:hover {
+  transform: translateY(-2px);
+  border-color: rgba(220, 181, 107, 0.5);
+
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(220, 181, 107, 0.12);
+}
+
+.story-drawer-cta:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================================
+   STORY CTA POLISH
+========================================= */
+
+.story-drawer-footer .gold-button.small {
+  position: relative;
+  overflow: hidden;
+  min-width: 220px;
+  justify-content: center;
+  letter-spacing: 0.06em;
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.22),
+    0 0 0 1px rgba(220, 181, 107, 0.08);
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease,
+    background 0.28s ease;
+}
+
+.story-drawer-footer .gold-button.small::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      120deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.22),
+      transparent 70%
+    );
+  opacity: 0;
+  transform: translateX(-120%);
+  transition: transform 0.8s ease, opacity 0.4s ease;
+}
+
+.story-drawer-footer .gold-button.small:hover::after {
+  opacity: 1;
+  transform: translateX(120%);
+}
+
+.story-drawer-footer .gold-button.small:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(220, 181, 107, 0.12);
+}
+
+.story-drawer-footer .gold-button.small:active {
+  transform: translateY(0);
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.22),
+    0 0 0 1px rgba(220, 181, 107, 0.08);
+}
