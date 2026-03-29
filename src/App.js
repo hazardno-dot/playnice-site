@@ -1456,6 +1456,18 @@ const ProductCard = ({ product }) => {
   </button>
 
   <button
+  className="nav-link"
+  type="button"
+  onClick={() => {
+    document.getElementById("story")?.scrollIntoView({
+      behavior: "smooth"
+    });
+  }}
+>
+  Story
+</button>
+
+  <button
     className="nav-link cart-link"
     type="button"
     onClick={() => setCartOpen(true)}
@@ -1765,7 +1777,59 @@ const ProductCard = ({ product }) => {
 
             <div className="section-divider" />
 
-            <section className="homepage-shop-preview section-wrap">
+<div className="section-divider" />
+
+<section className="story-section" id="story">
+  <div className="story-shell">
+    <div className="story-copy">
+      <span className="story-eyebrow">OUR STORY</span>
+      <h2 className="story-title">Curated to be remembered.</h2>
+      <p className="story-lead">
+        PlayNice was created for people who want more than a random bottle on a shelf.
+        We curate designer, niche, and Arabian fragrances with one simple idea in mind —
+        <strong> try before you buy</strong>.
+      </p>
+      <p className="story-text">
+        A fragrance should not be chosen in a rush. It should be worn, felt, and remembered.
+        That is why PlayNice offers a more personal way to discover scent through carefully
+        selected decants and limited drops.
+      </p>
+      <p className="story-text">
+        This is not about selling everything. It is about selecting what deserves attention.
+      </p>
+      <div className="story-signature">Remember. PlayNice.</div>
+    </div>
+
+    <div className="story-card">
+      <div className="story-card-inner">
+        <span className="story-card-label">Private Selection</span>
+        <h3 className="story-card-title">
+          Luxury fragrance.
+          <br />
+          Smarter discovery.
+        </h3>
+
+        <ul className="story-points">
+          <li>Designer, niche, and Arabian curation</li>
+          <li>Premium decants before full bottle commitment</li>
+          <li>Limited drops with boutique selection logic</li>
+        </ul>
+
+        <button
+          className="story-link"
+          type="button"
+          onClick={goToShop}
+        >
+          Explore the collection
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div className="section-divider" />
+
+<section className="homepage-shop-preview section-wrap">
               <div className="section-head">
                 <p className="section-kicker">{tr.privateSelection}</p>
                 <h2>{tr.bestsellersTitle}</h2>
