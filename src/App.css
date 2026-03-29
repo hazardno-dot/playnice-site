@@ -43,8 +43,9 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
+html,
+body {
+  scroll-behavior: auto;
 }
 
 body {
