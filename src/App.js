@@ -1606,7 +1606,9 @@ const ProductCard = ({ product }) => {
               <div>{tr.valueDelivery}</div>
             </section>
 
-            <div className="section-divider" />
+            <div className="section-divider">
+  <span />
+</div>
 
 <section className="featured-section section-wrap impact-split-section">
   <div className="impact-video-column">
@@ -1791,7 +1793,9 @@ const ProductCard = ({ product }) => {
               </div>
             </section>
 
-            <div className="section-divider" />
+            <div className="section-divider">
+  <span />
+</div>
 
             <section className="cta-section">
               <h2>{tr.discoverTitle}</h2>
