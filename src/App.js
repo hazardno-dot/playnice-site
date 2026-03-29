@@ -894,6 +894,7 @@ function App() {
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
+  const [storyOpen, setStoryOpen] = useState(false);
 
   const heroVideos = [
   "/videos/hero.mp4",
@@ -1456,23 +1457,11 @@ const ProductCard = ({ product }) => {
   </button>
 
   <button
-  className="nav-link"
-  type="button"
-  onClick={() => {
-    document.getElementById("story")?.scrollIntoView({
-      behavior: "smooth"
-    });
-  }}
->
-  Story
-</button>
-
-  <button
-    className="nav-link cart-link"
+    className="nav-link"
     type="button"
-    onClick={() => setCartOpen(true)}
+    onClick={() => setStoryOpen(true)}
   >
-    {tr.cart}
+    {tr.navStory}
   </button>
 </nav>
 
@@ -1946,6 +1935,77 @@ const ProductCard = ({ product }) => {
           </section>
         )}
       </main>
+
+      <aside className={`story-drawer ${storyOpen ? "open" : ""}`}>
+  <div className="story-drawer-header">
+    <div>
+      <p className="section-kicker">OUR STORY</p>
+      <h3>Curated to be remembered.</h3>
+    </div>
+
+    <button
+      className="close-button"
+      type="button"
+      onClick={() => setStoryOpen(false)}
+      aria-label={lang === "sr" ? "Zatvori Story panel" : "Close story panel"}
+    >
+      ×
+    </button>
+  </div>
+
+  <div className="story-drawer-body">
+    <p className="story-drawer-lead">
+      {lang === "sr"
+        ? "PlayNice je nastao za ljude koji žele više od nasumične bočice na polici. Biramo dizajnerske, niche i arapske parfeme sa jednom jasnom idejom — probaj pre kupovine."
+        : "PlayNice was created for people who want more than a random bottle on a shelf. We curate designer, niche, and Arabian fragrances with one simple idea in mind — try before you buy."}
+    </p>
+
+    <p>
+      {lang === "sr"
+        ? "Parfem ne treba birati na brzinu. Treba ga nositi, osetiti i zapamtiti. Zato PlayNice nudi ličniji način otkrivanja mirisa kroz pažljivo odabrane dekante i limitirane dropove."
+        : "A fragrance should not be chosen in a rush. It should be worn, felt, and remembered. That is why PlayNice offers a more personal way to discover scent through carefully selected decants and limited drops."}
+    </p>
+
+    <p>
+      {lang === "sr"
+        ? "Ovde nije poenta prodati sve. Poenta je odabrati ono što zaista zaslužuje pažnju."
+        : "This is not about selling everything. It is about selecting what deserves attention."}
+    </p>
+
+    <div className="story-drawer-points">
+      <div>{lang === "sr" ? "Dizajnerski, niche i arapski izbor" : "Designer, niche, and Arabian curation"}</div>
+      <div>{lang === "sr" ? "Premium dekanti pre pune bočice" : "Premium decants before full bottle commitment"}</div>
+      <div>{lang === "sr" ? "Limitirani dropovi i boutique pristup" : "Limited drops with boutique selection logic"}</div>
+    </div>
+
+    <div className="story-drawer-footer">
+      <span className="story-drawer-signature">Remember. PlayNice.</span>
+
+      <button
+        className="gold-button small"
+        type="button"
+        onClick={() => {
+          setStoryOpen(false);
+          goToShop();
+        }}
+      >
+        {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
+      </button>
+    </div>
+  </div>
+</aside>
+
+      <div
+  className={`backdrop ${
+    cartOpen || checkoutOpen || selectedProduct || storyOpen ? "show" : ""
+  }`}
+  onClick={() => {
+    setCartOpen(false);
+    setCheckoutOpen(false);
+    setStoryOpen(false);
+    closeProductModal();
+  }}
+/>
 
       <aside className={`cart-drawer ${cartOpen ? "open" : ""}`}>
         <div className="cart-drawer-header">
