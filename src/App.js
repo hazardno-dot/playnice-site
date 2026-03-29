@@ -1441,6 +1441,14 @@ const ProductCard = ({ product }) => {
 
 <nav className="nav-links">
   <button
+    className="nav-link"
+    type="button"
+    onClick={() => setStoryOpen(true)}
+  >
+    {tr.navStory}
+  </button>
+
+  <button
     className={`nav-link ${view === "home" ? "active" : ""}`}
     type="button"
     onClick={() => switchView("home")}
@@ -1454,14 +1462,6 @@ const ProductCard = ({ product }) => {
     onClick={goToShop}
   >
     {tr.navShop}
-  </button>
-
-  <button
-    className="nav-link"
-    type="button"
-    onClick={() => setStoryOpen(true)}
-  >
-    {tr.navStory}
   </button>
 </nav>
 
