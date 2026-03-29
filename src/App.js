@@ -894,7 +894,6 @@ function App() {
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
-  const [activeSection, setActiveSection] = useState("home");
 
   const heroVideos = [
   "/videos/hero.mp4",
@@ -1457,17 +1456,9 @@ const ProductCard = ({ product }) => {
   </button>
 
   <button
-    className="nav-link"
-    type="button"
-    onClick={goToStory}
-  >
-    {t.navStory}
-  </button>
-
-  <button
     className="nav-link cart-link"
     type="button"
-    onClick={openCart}
+    onClick={() => setCartOpen(true)}
   >
     {t.cart}
   </button>
