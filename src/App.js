@@ -1587,41 +1587,42 @@ const ProductCard = ({ product }) => {
 
 <section className="featured-section section-wrap impact-split-section">
   <div className="impact-video-column">
-  <div className="impact-video-frame">
-    <video autoPlay muted loop playsInline>
-      <source src="/videos/hero.mp4" type="video/mp4" />
-    </video>
+    <div className="impact-video-frame">
+      <video autoPlay muted loop playsInline>
+        <source src="/videos/hero.mp4" type="video/mp4" />
+      </video>
 
-    <div className="impact-video-badge">PLAYNICE FILM</div>
-  </div>
+      <div className="impact-video-badge">PLAYNICE FILM</div>
+    </div>
 
-  <div className="impact-video-panel">
-    <div className="impact-video-panel-content">
-      <span className="impact-video-eyebrow">
-        {lang === "sr" ? "PLAYNICE CONCEPT" : "PLAYNICE CONCEPT"}
-      </span>
+    <div className="impact-video-panel">
+      <div className="impact-video-panel-content">
+        <span className="impact-video-eyebrow">
+          {lang === "sr" ? "PLAYNICE CONCEPT" : "PLAYNICE CONCEPT"}
+        </span>
 
-      <h3>
-        {lang === "sr"
-          ? "Probaj pre nego što se odlučiš."
-          : "Try before you commit."}
-      </h3>
+        <h3>
+          {lang === "sr"
+            ? "Probaj pre nego što se odlučiš."
+            : "Try before you commit."}
+        </h3>
 
-      <p>
-        {lang === "sr"
-          ? "Isprobaj na koži kroz 5ml ili 10ml dekante. Bez rizika. Samo pravi izbor."
-          : "Experience it on skin first. 5ml and 10ml decants. No risk. Just the right decision."}
-      </p>
+        <p>
+          {lang === "sr"
+            ? "Isprobaj na koži kroz 5ml ili 10ml dekante. Bez rizika. Samo pravi izbor."
+            : "Experience it on skin first. 5ml and 10ml decants. No risk. Just the right decision."}
+        </p>
 
-      <button
-        className="impact-video-cta"
-        onClick={() => setView("shop")}
-      >
-        {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
-      </button>
+        <button
+          className="impact-video-cta"
+          type="button"
+          onClick={() => setView("shop")}
+        >
+          {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
   <div className="impact-products-column">
     <div className="section-head impact-head">
@@ -1630,183 +1631,102 @@ const ProductCard = ({ product }) => {
       <p>{tr.highlightsText}</p>
     </div>
 
- <div className="impact-products-panel">
-  <article className="impact-products-merged-card">
-    <div className="impact-product-row">
-      <button
-        type="button"
-        className="impact-product-image-button"
-        onClick={() => openImpactProductModal(impactProducts[0])}
-        aria-label="Afnan 9PM Rebel"
-      >
-        <div className="impact-product-image-wrap">
-          <img src="/9pm.png" alt="Afnan 9PM Rebel" className="impact-product-image" />
-        </div>
-      </button>
-
-      <div className="impact-product-copy">
-        <div className="impact-product-topline">
-          <span className="impact-product-tag">{tr.campaignPick}</span>
-        </div>
-
-        <h3>Afnan 9PM Rebel</h3>
-        <p>{tr.rebelCardText}</p>
-
-        <div className="impact-product-actions">
+    <div className="impact-products-panel">
+      <article className="impact-products-merged-card">
+        <div className="impact-product-row">
           <button
-            className="inline-link impact-inline-link"
             type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              addHeroBottleToCart();
-            }}
+            className="impact-product-image-button"
+            onClick={() => openImpactProductModal(impactProducts[0])}
+            aria-label="Afnan 9PM Rebel"
           >
-            {tr.add100ml}
+            <div className="impact-product-image-wrap">
+              <img
+                src="/9pm.png"
+                alt="Afnan 9PM Rebel"
+                className="impact-product-image"
+              />
+            </div>
           </button>
-        </div>
-      </div>
-    </div>
 
-    <div className="impact-product-divider" />
+          <div className="impact-product-copy">
+            <div className="impact-product-topline">
+              <span className="impact-product-tag">{tr.campaignPick}</span>
+            </div>
 
-    <div className="impact-product-row">
-      <button
-        type="button"
-        className="impact-product-image-button"
-        onClick={() => openImpactProductModal(impactProducts[1])}
-        aria-label="Khadlaj Island Dreams Extrait de Parfum"
-      >
-        <div className="impact-product-image-wrap">
-          <img
-            src="/island.png"
-            alt="Khadlaj Island Dreams Extrait de Parfum"
-            className="impact-product-image"
-          />
-        </div>
-      </button>
+            <h3>Afnan 9PM Rebel</h3>
+            <p>{tr.rebelCardText}</p>
 
-      <div className="impact-product-copy">
-        <div className="impact-product-topline">
-          <span className="impact-product-tag">{tr.summerHit}</span>
-        </div>
-
-        <h3>Khadlaj Island Dreams Extrait de Parfum</h3>
-        <p>{tr.islandDreamsText}</p>
-      </div>
-    </div>
-
-    <div className="impact-product-divider" />
-
-    <div className="impact-product-row">
-      <button
-        type="button"
-        className="impact-product-image-button"
-        onClick={() => openImpactProductModal(impactProducts[2])}
-        aria-label="Arabiyat Prestige Marwa"
-      >
-        <div className="impact-product-image-wrap">
-          <img
-            src="/marwa.png"
-            alt="Arabiyat Prestige Marwa"
-            className="impact-product-image"
-          />
-        </div>
-      </button>
-
-      <div className="impact-product-copy">
-        <div className="impact-product-topline">
-          <span className="impact-product-tag">{tr.arabianEdge}</span>
-        </div>
-
-        <h3>Arabiyat Prestige Marwa</h3>
-        <p>{tr.marwaText}</p>
-      </div>
-    </div>
-  </article>
-</div>
-
-        <div className="impact-product-copy">
-          <div className="impact-product-topline">
-            <span className="impact-product-tag">{tr.campaignPick}</span>
-          </div>
-
-          <h3>Afnan 9PM Rebel</h3>
-          <p>{tr.rebelCardText}</p>
-
-          <div className="impact-product-actions">
-            <button
-              className="inline-link impact-inline-link"
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                addHeroBottleToCart();
-              }}
-            >
-              {tr.add100ml}
-            </button>
+            <div className="impact-product-actions">
+              <button
+                className="inline-link impact-inline-link"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  addHeroBottleToCart();
+                }}
+              >
+                {tr.add100ml}
+              </button>
+            </div>
           </div>
         </div>
-      </article>
 
-      <article
-        className="impact-product-card"
-        role="button"
-        tabIndex={0}
-        onClick={() => openImpactProductModal(impactProducts[1])}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openImpactProductModal(impactProducts[1]);
-          }
-        }}
-      >
-        <div className="impact-product-image-wrap">
-          <img
-            src="/island.png"
-            alt="Khadlaj Island Dreams Extrait de Parfum"
-            className="impact-product-image"
-          />
-        </div>
+        <div className="impact-product-divider" />
 
-        <div className="impact-product-copy">
-          <div className="impact-product-topline">
-            <span className="impact-product-tag">{tr.summerHit}</span>
+        <div className="impact-product-row">
+          <button
+            type="button"
+            className="impact-product-image-button"
+            onClick={() => openImpactProductModal(impactProducts[1])}
+            aria-label="Khadlaj Island Dreams Extrait de Parfum"
+          >
+            <div className="impact-product-image-wrap">
+              <img
+                src="/island.png"
+                alt="Khadlaj Island Dreams Extrait de Parfum"
+                className="impact-product-image"
+              />
+            </div>
+          </button>
+
+          <div className="impact-product-copy">
+            <div className="impact-product-topline">
+              <span className="impact-product-tag">{tr.summerHit}</span>
+            </div>
+
+            <h3>Khadlaj Island Dreams Extrait de Parfum</h3>
+            <p>{tr.islandDreamsText}</p>
           </div>
-
-          <h3>Khadlaj Island Dreams Extrait de Parfum</h3>
-          <p>{tr.islandDreamsText}</p>
-        </div>
-      </article>
-
-      <article
-        className="impact-product-card"
-        role="button"
-        tabIndex={0}
-        onClick={() => openImpactProductModal(impactProducts[2])}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openImpactProductModal(impactProducts[2]);
-          }
-        }}
-      >
-        <div className="impact-product-image-wrap">
-          <img
-            src="/marwa.png"
-            alt="Arabiyat Prestige Marwa"
-            className="impact-product-image"
-          />
         </div>
 
-        <div className="impact-product-copy">
-          <div className="impact-product-topline">
-            <span className="impact-product-tag">{tr.arabianEdge}</span>
+        <div className="impact-product-divider" />
+
+        <div className="impact-product-row">
+          <button
+            type="button"
+            className="impact-product-image-button"
+            onClick={() => openImpactProductModal(impactProducts[2])}
+            aria-label="Arabiyat Prestige Marwa"
+          >
+            <div className="impact-product-image-wrap">
+              <img
+                src="/marwa.png"
+                alt="Arabiyat Prestige Marwa"
+                className="impact-product-image"
+              />
+            </div>
+          </button>
+
+          <div className="impact-product-copy">
+            <div className="impact-product-topline">
+              <span className="impact-product-tag">{tr.arabianEdge}</span>
+            </div>
+
+            <h3>Arabiyat Prestige Marwa</h3>
+            <p>{tr.marwaText}</p>
           </div>
-
-          <h3>Arabiyat Prestige Marwa</h3>
-          <p>{tr.marwaText}</p>
         </div>
       </article>
     </div>
