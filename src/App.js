@@ -1755,20 +1755,41 @@ const ProductCard = ({ product }) => {
             </div>
 
             <div className="pagination-wrap">
-              <button type="button" onClick={prevPage} disabled={currentPage === 1}>
-                Prev
-              </button>
-              <span>
-                {tr.page} {currentPage} / {totalPages}
-              </span>
-              <button
-                type="button"
-                onClick={nextPage}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </button>
-            </div>
+  <button type="button" onClick={prevPage} disabled={currentPage === 1}>
+    Prev
+  </button>
+
+  <div className="pagination-numbers">
+    {Array.from({ length: totalPages }, (_, index) => {
+      const pageNumber = index + 1;
+      return (
+        <button
+          key={pageNumber}
+          type="button"
+          className={`pagination-number ${
+            currentPage === pageNumber ? "active" : ""
+          }`}
+          onClick={() => {
+            setCurrentPage(pageNumber);
+            requestAnimationFrame(() => {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+          }}
+        >
+          {pageNumber}
+        </button>
+      );
+    })}
+  </div>
+
+  <button
+    type="button"
+    onClick={nextPage}
+    disabled={currentPage === totalPages}
+  >
+    Next
+  </button>
+</div>
           </section>
         )}
       </main>
