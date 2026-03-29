@@ -1527,13 +1527,13 @@ const ProductCard = ({ product }) => {
 {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
 <main>
-        {view === "home" && (
-          <>
-                        <div className="hero-video">
+                          <div className="hero-video">
   <video autoPlay muted loop playsInline>
     <source src="/videos/hero.mp4" type="video/mp4" />
   </video>
 </div>
+        {view === "home" && (
+          <>
             <section className="hero">
               <div className="hero-grid">
                 <div className="hero-copy">
