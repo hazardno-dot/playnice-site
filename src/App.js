@@ -1034,25 +1034,6 @@ const switchView = (nextView) => {
     if (currentPage > totalPages) setCurrentPage(1);
   }, [currentPage, totalPages]);
 
-  useEffect(() => {
-  const handleScroll = () => {
-    const story = document.getElementById("story");
-
-    if (!story) return;
-
-    const rect = story.getBoundingClientRect();
-
-    if (rect.top <= 120 && rect.bottom >= 120) {
-      setActiveSection("story");
-    } else {
-      setActiveSection("home");
-    }
-  };
-
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
-
   const paginatedProducts = useMemo(() => {
     const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
     return filteredProducts.slice(start, start + PRODUCTS_PER_PAGE);
@@ -1293,28 +1274,6 @@ const goToShop = () => {
       behavior: "smooth",
     });
   }
-};
-
-const goToStory = () => {
-  if (view !== "home") {
-    setView("home");
-
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        document.getElementById("story")?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }, 80);
-    });
-
-    return;
-  }
-
-  document.getElementById("story")?.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
 };
 
 const nextPage = () => {
