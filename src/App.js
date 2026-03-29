@@ -2129,14 +2129,6 @@ const ProductCard = ({ product }) => {
     </>
   )}
 </aside>
-            <div
-        className={`backdrop ${cartOpen || checkoutOpen || selectedProduct ? "show" : ""}`}
-        onClick={() => {
-          setCartOpen(false);
-          setCheckoutOpen(false);
-          closeProductModal();
-        }}
-      />
 
       {selectedProduct && (
         <div className="modal-overlay" onClick={closeProductModal}>
