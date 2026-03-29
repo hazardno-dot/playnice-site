@@ -1577,14 +1577,6 @@ const ProductCard = ({ product }) => {
               </div>
             </section>
 
-            <section className="hero-video-section">
-  <div className="hero-video-frame">
-    <video autoPlay muted loop playsInline>
-      <source src="/videos/hero.mp4" type="video/mp4" />
-    </video>
-  </div>
-</section>
-
             <section className="value-strip">
               <div>{tr.valueTry}</div>
               <div>{tr.valuePremium}</div>
