@@ -1764,7 +1764,9 @@ const ProductCard = ({ product }) => {
   </div>
 </section>
 
-<div className="section-divider" />
+<div className="section-divider">
+  <span />
+</div>
 
 <section className="homepage-shop-preview section-wrap">
               <div className="section-head">
