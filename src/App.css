@@ -2157,17 +2157,25 @@ main {
 
 .modal-description {
   margin: 0;
-  max-width: 14ch;
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(2rem, 2.7vw, 2.75rem);
-  line-height: 0.98;
-  letter-spacing: -0.02em;
-  color: #f5efe5;
+  font-size: 1.02rem;
+  line-height: 1.18;
+  color: rgba(255, 248, 235, 0.96);
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  min-height: 3.54rem;
+  max-height: 3.54rem;
 }
 
 .modal-info-grid {
   display: grid;
-  gap: 14px;
+  gap: 10px;
 }
 
 .modal-info-card {
@@ -2392,9 +2400,11 @@ main {
     min-height: 360px;
   }
 
-  .modal-content {
-    padding: 28px 24px 24px;
-  }
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
 
   .modal-description {
     max-width: none;
