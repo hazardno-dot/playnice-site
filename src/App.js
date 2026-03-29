@@ -893,6 +893,25 @@ function App() {
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
 
+  const heroVideos = [
+  "/videos/hero.mp4",
+  "/videos/hero1.mp4",
+  "/videos/hero2.mp4",
+  "/videos/hero3.mp4",
+  "/videos/hero4.mp4",
+  "/videos/hero5.mp4",
+];
+
+const [currentVideo, setCurrentVideo] = useState(0);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentVideo((prev) => (prev + 1) % heroVideos.length);
+  }, 5000); // promena na svakih 5s
+
+  return () => clearInterval(interval);
+}, []);
+
   const [checkoutForm, setCheckoutForm] = useState({
     firstName: "",
     lastName: "",
@@ -1588,9 +1607,15 @@ const ProductCard = ({ product }) => {
 <section className="featured-section section-wrap impact-split-section">
   <div className="impact-video-column">
     <div className="impact-video-frame">
-      <video autoPlay muted loop playsInline>
-        <source src="/videos/hero.mp4" type="video/mp4" />
-      </video>
+      <video
+  key={currentVideo}
+  autoPlay
+  muted
+  loop
+  playsInline
+>
+  <source src={heroVideos[currentVideo]} type="video/mp4" />
+</video>
 
       <div className="impact-video-badge">PLAYNICE FILM</div>
     </div>
