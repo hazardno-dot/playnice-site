@@ -104,6 +104,7 @@ const translations = {
     announcementDynamicEmpty3: "Premium niche & designer fragrances",
     announcementDynamicEmpty4: "Limited stock drops — don’t miss out",
     announcementDynamicEmpty5: "Delivery across Montenegro",
+    navStory: "Story",
   },
   sr: {
     navHome: "Početna",
@@ -207,6 +208,7 @@ const translations = {
     announcementDynamicEmpty3: "Premium niche i dizajnerski parfemi",
     announcementDynamicEmpty4: "Ograničene količine — ne propusti",
     announcementDynamicEmpty5: "Dostava širom Crne Gore",
+    navStory: "Priča",
   }
 };
 
@@ -892,6 +894,7 @@ function App() {
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
+  const [activeSection, setActiveSection] = useState("home");
 
   const heroVideos = [
   "/videos/hero.mp4",
@@ -1030,6 +1033,25 @@ const switchView = (nextView) => {
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(1);
   }, [currentPage, totalPages]);
+
+  useEffect(() => {
+  const handleScroll = () => {
+    const story = document.getElementById("story");
+
+    if (!story) return;
+
+    const rect = story.getBoundingClientRect();
+
+    if (rect.top <= 120 && rect.bottom >= 120) {
+      setActiveSection("story");
+    } else {
+      setActiveSection("home");
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
 
   const paginatedProducts = useMemo(() => {
     const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
@@ -1273,6 +1295,28 @@ const goToShop = () => {
   }
 };
 
+const goToStory = () => {
+  if (view !== "home") {
+    setView("home");
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        document.getElementById("story")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 80);
+    });
+
+    return;
+  }
+
+  document.getElementById("story")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+};
+
 const nextPage = () => {
   setCurrentPage((prev) => Math.min(totalPages, prev + 1));
   requestAnimationFrame(() => {
@@ -1436,22 +1480,39 @@ const ProductCard = ({ product }) => {
     </span>
   </button>
 
-  <nav className="nav-links">
-    <button
-      type="button"
-      className={view === "home" ? "active" : ""}
-      onClick={() => switchView("home")}
-    >
-      {tr.navHome}
-    </button>
-    <button
-      type="button"
-      className={view === "shop" ? "active" : ""}
-      onClick={() => switchView("shop")}
-    >
-      {tr.navShop}
-    </button>
-  </nav>
+<nav className="nav-links">
+  <button
+    className={`nav-link ${view === "home" ? "active" : ""}`}
+    type="button"
+    onClick={() => switchView("home")}
+  >
+    {t.navHome}
+  </button>
+
+  <button
+    className={`nav-link ${view === "shop" ? "active" : ""}`}
+    type="button"
+    onClick={goToShop}
+  >
+    {t.navShop}
+  </button>
+
+  <button
+    className="nav-link"
+    type="button"
+    onClick={goToStory}
+  >
+    {t.navStory}
+  </button>
+
+  <button
+    className="nav-link cart-link"
+    type="button"
+    onClick={openCart}
+  >
+    {t.cart}
+  </button>
+</nav>
 
   <div className="topbar-right">
     <div className="lang-switch">
