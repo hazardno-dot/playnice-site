@@ -1993,12 +1993,12 @@ const ProductCard = ({ product }) => {
       <div>
         {lang === "sr"
           ? "Premium dekanti pre pune bočice"
-          : "Premium decants before full bottle commitment"}
+          : "Premium decants before full bottles"}
       </div>
       <div>
         {lang === "sr"
           ? "Limitirani dropovi i boutique pristup"
-          : "Limited drops with boutique selection logic"}
+          : "Limited drops with boutique logic"}
       </div>
     </div>
 
