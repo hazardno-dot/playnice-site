@@ -1587,39 +1587,39 @@ const ProductCard = ({ product }) => {
 
 <section className="featured-section section-wrap impact-split-section">
   <div className="impact-video-column">
-    <div className="impact-video-frame">
-      <video autoPlay muted loop playsInline>
-        <source src="/videos/hero.mp4" type="video/mp4" />
-      </video>
+  <div className="impact-video-frame">
+    <video autoPlay muted loop playsInline>
+      <source src="/videos/hero.mp4" type="video/mp4" />
+    </video>
 
-      <div className="impact-video-badge">PLAYNICE FILM</div>
-    </div>
+    <div className="impact-video-badge">PLAYNICE FILM</div>
   </div>
 
   <div className="impact-video-panel">
-  <div className="impact-video-panel-content">
-    <span className="impact-video-eyebrow">
-      {lang === "sr" ? "PLAYNICE CONCEPT" : "PLAYNICE CONCEPT"}
-    </span>
+    <div className="impact-video-panel-content">
+      <span className="impact-video-eyebrow">
+        {lang === "sr" ? "PLAYNICE CONCEPT" : "PLAYNICE CONCEPT"}
+      </span>
 
-    <h3>
-      {lang === "sr"
-        ? "Probaj pre nego što se odlučiš."
-        : "Try before you commit."}
-    </h3>
+      <h3>
+        {lang === "sr"
+          ? "Probaj pre nego što se odlučiš."
+          : "Try before you commit."}
+      </h3>
 
-    <p>
-      {lang === "sr"
-        ? "Isprobaj na koži kroz 5ml ili 10ml dekante. Bez rizika. Samo pravi izbor."
-        : "Experience it on skin first. 5ml and 10ml decants. No risk. Just the right decision."}
-    </p>
+      <p>
+        {lang === "sr"
+          ? "Isprobaj na koži kroz 5ml ili 10ml dekante. Bez rizika. Samo pravi izbor."
+          : "Experience it on skin first. 5ml and 10ml decants. No risk. Just the right decision."}
+      </p>
 
-    <button
-      className="impact-video-cta"
-      onClick={() => setView("shop")}
-    >
-      {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
-    </button>
+      <button
+        className="impact-video-cta"
+        onClick={() => setView("shop")}
+      >
+        {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
+      </button>
+    </div>
   </div>
 </div>
 
