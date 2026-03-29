@@ -1444,7 +1444,7 @@ const ProductCard = ({ product }) => {
     type="button"
     onClick={() => switchView("home")}
   >
-    {t.navHome}
+    {tr.navHome}
   </button>
 
   <button
@@ -1452,7 +1452,7 @@ const ProductCard = ({ product }) => {
     type="button"
     onClick={goToShop}
   >
-    {t.navShop}
+    {tr.navShop}
   </button>
 
   <button
@@ -1460,7 +1460,7 @@ const ProductCard = ({ product }) => {
     type="button"
     onClick={() => setCartOpen(true)}
   >
-    {t.cart}
+    {tr.cart}
   </button>
 </nav>
 
