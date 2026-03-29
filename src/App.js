@@ -921,11 +921,16 @@ function App() {
 const switchView = (nextView) => {
   if (view === nextView) return;
 
-  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  // prvo render (bez delay)
   setView(nextView);
 
+  // onda smooth scroll (ali odmah, bez čekanja)
   requestAnimationFrame(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   });
 };
 
@@ -1239,14 +1244,21 @@ const switchView = (nextView) => {
 
 const goToShop = () => {
   if (view !== "shop") {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     setView("shop");
 
     requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
     });
   } else {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   }
 };
 
