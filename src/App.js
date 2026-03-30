@@ -271,7 +271,7 @@ const products = [
   { id: 39, name: "Givenchy Gentleman Eau de Parfum Réserve Privée", category: "Designer", image: "/products/Givenchy-Gentleman-EdP-Réserve-Privée.png", sizes: { "2ml": 5, "5ml": 12, "10ml": 21 } },
   { id: 40, name: "Jimmy Choo Man Blue Eau de Toilette", category: "Designer", image: "/products/Jimmy-Choo-Man-Blue-EdT.png", sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 } },
   { id: 41, name: "L'Homme Eau de Parfum by Yves Saint Laurent", category: "Designer", image: "/products/L'Homme-EdP-YSL.png", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 42, name: "L'Homme Idéal De Guerlain Paris Eau De Toilette", category: "Designer", image: "/products/Mancera-Cedrat-Boise-EdP.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
+  { id: 42, name: "L'Homme Idéal De Guerlain Paris Eau De Toilette", category: "Designer", image: "/products/L'Homme-Idéal-De-Guerlain-Paris-EDT.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
   { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Niche", image: "/products/Mancera-Cedrat-Boise-EdP.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, badge: "BESTSELLER" },
   { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer", image: "/products/Montblanc-Explorer-Extreme-Parfum.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
   { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer", image: "/products/Narciso-Rodriguez-for-Him-Bleu-Noir-EdP.png", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
