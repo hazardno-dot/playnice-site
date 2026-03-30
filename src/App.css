@@ -4587,6 +4587,11 @@ main {
     0 0 0 1px rgba(220, 181, 107, 0.08);
 }
 
+.product-card {
+  position: relative;
+  overflow: hidden;
+}
+
 .product-card-media {
   position: relative;
   display: flex;
@@ -4595,6 +4600,7 @@ main {
   min-height: 240px;
   padding: 20px 18px 10px;
   overflow: hidden;
+  z-index: 1;
 }
 
 .product-card-media::after {
@@ -4611,6 +4617,7 @@ main {
   filter: blur(6px);
   opacity: 0.6;
   pointer-events: none;
+  z-index: 0;
 }
 
 .product-card-image {
@@ -4621,21 +4628,18 @@ main {
   display: block;
   position: relative;
   z-index: 1;
+  will-change: transform, filter;
   transition:
     transform 0.45s ease,
     filter 0.45s ease,
     opacity 0.3s ease;
-  will-change: transform;
   filter:
     drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6))
     drop-shadow(0 0 18px rgba(220, 181, 107, 0.08));
-  
-  transition: all 0.35s ease;
 }
 
 .product-card:hover .product-card-image {
   transform: translateY(-6px) scale(1.02);
-
   filter:
     drop-shadow(0 30px 60px rgba(0, 0, 0, 0.8))
     drop-shadow(0 0 28px rgba(220, 181, 107, 0.18))
@@ -4645,17 +4649,19 @@ main {
 .product-card::after {
   content: "";
   position: absolute;
-  inset: 20%;
-
+  left: 12%;
+  right: 12%;
+  top: 18%;
+  bottom: 18%;
   background: radial-gradient(
     circle,
     rgba(220, 181, 107, 0.12),
     transparent 70%
   );
-
   opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
+  z-index: 0;
 }
 
 .product-card:hover::after {
