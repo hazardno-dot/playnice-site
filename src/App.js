@@ -1,6 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
+const slugify = (text) =>
+  text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const getProductImage = (product) => `/products/${slugify(product.name)}.png`;
+
 const translations = {
   en: {
     navHome: "Home",
@@ -1348,6 +1358,16 @@ const ProductCard = ({ product }) => {
   return (
     <article
       className="product-card clickable premium-product-card"
+
+      <div className="product-card-media">
+  <img
+    src={product.image || "/placeholder.png"}
+    alt={product.name}
+    className="product-card-image"
+    loading="lazy"
+  />
+</div>
+
       key={product.id}
       onClick={() => openProductModal(product)}
       role="button"
