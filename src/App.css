@@ -4626,10 +4626,40 @@ main {
     filter 0.45s ease,
     opacity 0.3s ease;
   will-change: transform;
+  filter:
+    drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 0 18px rgba(220, 181, 107, 0.08));
+  
+  transition: all 0.35s ease;
 }
 
 .product-card:hover .product-card-image {
-  transform: translateY(-4px) scale(1.03);
+  transform: translateY(-6px) scale(1.02);
+
+  filter:
+    drop-shadow(0 30px 60px rgba(0, 0, 0, 0.8))
+    drop-shadow(0 0 28px rgba(220, 181, 107, 0.18))
+    drop-shadow(0 0 60px rgba(220, 181, 107, 0.08));
+}
+
+.product-card::after {
+  content: "";
+  position: absolute;
+  inset: 20%;
+
+  background: radial-gradient(
+    circle,
+    rgba(220, 181, 107, 0.12),
+    transparent 70%
+  );
+
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.product-card:hover::after {
+  opacity: 1;
 }
 
 @media (max-width: 768px) {
