@@ -4625,3 +4625,22 @@ main {
     max-height: 180px;
   }
 }
+
+.product-card-media {
+  position: relative;
+}
+
+.product-card-media::after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  width: 60%;
+  height: 20px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.45),
+    transparent 70%
+  );
+  filter: blur(6px);
+  opacity: 0.6;
+}

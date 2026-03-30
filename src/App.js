@@ -1377,12 +1377,8 @@ const ProductCard = ({ product }) => {
           loading="lazy"
         />
       </div>
-      
-      {product.badge && <span className="product-badge">{product.badge}</span>}
 
-      <div className="product-image">
-        <ProductImage product={product} className="product-image-real" />
-      </div>
+      {product.badge && <span className="product-badge">{product.badge}</span>}
 
       <div className="product-meta premium-product-meta">
         <p className="product-category">{getCategoryLabel(product.category)}</p>
