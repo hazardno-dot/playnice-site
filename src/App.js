@@ -1358,16 +1358,6 @@ const ProductCard = ({ product }) => {
   return (
     <article
       className="product-card clickable premium-product-card"
-
-      <div className="product-card-media">
-  <img
-    src={product.image || "/placeholder.png"}
-    alt={product.name}
-    className="product-card-image"
-    loading="lazy"
-  />
-</div>
-
       key={product.id}
       onClick={() => openProductModal(product)}
       role="button"
@@ -1379,6 +1369,15 @@ const ProductCard = ({ product }) => {
         }
       }}
     >
+      <div className="product-card-media">
+        <img
+          src={product.image || "/placeholder.png"}
+          alt={product.name}
+          className="product-card-image"
+          loading="lazy"
+        />
+      </div>
+      
       {product.badge && <span className="product-badge">{product.badge}</span>}
 
       <div className="product-image">
