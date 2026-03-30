@@ -1690,7 +1690,7 @@ const ProductCard = ({ product }) => {
           >
             <div className="impact-product-image-wrap">
               <img
-                src="/9pm.png"
+                src="/products/9pm.png"
                 alt="Afnan 9PM Rebel"
                 className="impact-product-image"
               />
@@ -1732,7 +1732,7 @@ const ProductCard = ({ product }) => {
           >
             <div className="impact-product-image-wrap">
               <img
-                src="/island.png"
+                src="/products/island.png"
                 alt="Khadlaj Island Dreams Extrait de Parfum"
                 className="impact-product-image"
               />
@@ -1760,7 +1760,7 @@ const ProductCard = ({ product }) => {
           >
             <div className="impact-product-image-wrap">
               <img
-                src="/marwa.png"
+                src="/products/marwa.png"
                 alt="Arabiyat Prestige Marwa"
                 className="impact-product-image"
               />
