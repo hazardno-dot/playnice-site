@@ -1354,6 +1354,7 @@ const getProductVibe = (product) => {
 
 const ProductCard = ({ product }) => {
   const copy = getProductCopy(product, lang);
+  const minPrice = Math.min(...Object.values(product.sizes));
 
   const ratingLabels = {
     en: {
@@ -1400,10 +1401,10 @@ const ProductCard = ({ product }) => {
       </div>
 
       {copy.miniTag && (
-  <span className="product-top-mini-badge">
-    {copy.miniTag}
-  </span>
-)}
+        <span className="product-top-mini-badge">
+          {copy.miniTag}
+        </span>
+      )}
 
       <div className="product-meta premium-product-meta">
         <div className="product-meta-top">
@@ -1447,17 +1448,11 @@ const ProductCard = ({ product }) => {
         </div>
 
         <div className="product-meta-bottom">
-<div className="product-price-row">
-  <span className="product-price-from premium-product-price">
-    {tr.from} €{minPrice}
-  </span>
-
-  {copy.miniTag && (
-    <span className="product-mini-tag product-card-mini-tag product-price-tag">
-      {copy.miniTag}
-    </span>
-  )}
-</div>
+          <div className="product-price-row">
+            <span className="product-price-from premium-product-price">
+              {tr.from} €{minPrice}
+            </span>
+          </div>
 
           <div className="product-preview-line premium-preview-line single-line-preview">
             <span>
