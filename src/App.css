@@ -1347,16 +1347,16 @@ main {
   margin-top: auto;
 }
 
-.size-buttons button {
+.size-buttons .size-chip {
   position: relative;
   width: 100%;
-  min-height: 42px;
-  padding: 9px 12px;
+  min-height: 56px;
+  padding: 12px 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.025);
   color: var(--text);
   overflow: hidden;
