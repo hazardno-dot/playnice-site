@@ -1447,10 +1447,16 @@ const ProductCard = ({ product }) => {
         </div>
 
         <div className="product-meta-bottom">
-          <div className="product-price-row">
+<div className="product-price-row">
   <span className="product-price-from premium-product-price">
     {tr.from} €{minPrice}
   </span>
+
+  {copy.miniTag && (
+    <span className="product-mini-tag product-card-mini-tag product-price-tag">
+      {copy.miniTag}
+    </span>
+  )}
 </div>
 
           <div className="product-preview-line premium-preview-line single-line-preview">
