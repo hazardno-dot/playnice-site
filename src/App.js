@@ -1379,19 +1379,22 @@ const ProductCard = ({ product }) => {
 
   return (
     <article
-      className="product-card clickable premium-product-card"
+      className="product-card premium-product-card"
       key={product.id}
-      onClick={() => openProductModal(product)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          openProductModal(product);
-        }
-      }}
     >
-      <div className="product-card-media">
+      {/* CLICKABLE IMAGE ONLY */}
+      <div
+        className="product-card-media clickable-media"
+        onClick={() => openProductModal(product)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openProductModal(product);
+          }
+        }}
+      >
         <img
           src={product.image || "/placeholder.png"}
           alt={product.name}
@@ -1400,10 +1403,14 @@ const ProductCard = ({ product }) => {
         />
       </div>
 
-      {product.badge && <span className="product-badge">{product.badge}</span>}
+      {product.badge && (
+        <span className="product-badge">{product.badge}</span>
+      )}
 
       <div className="product-meta premium-product-meta">
-        <p className="product-category">{getCategoryLabel(product.category)}</p>
+        <p className="product-category">
+          {getCategoryLabel(product.category)}
+        </p>
 
         <h3 className="product-card-title">{product.name}</h3>
 
@@ -1413,7 +1420,9 @@ const ProductCard = ({ product }) => {
               {Array.from({ length: 10 }).map((_, index) => (
                 <span
                   key={index}
-                  className={index < Math.round(product.rating) ? "filled" : ""}
+                  className={
+                    index < Math.round(product.rating) ? "filled" : ""
+                  }
                 >
                   ★
                 </span>
@@ -1425,7 +1434,8 @@ const ProductCard = ({ product }) => {
                 {product.rating.toFixed(1)} / 10
               </span>
               <span className="product-rating-label">
-                {product.ratingLabel || getRatingLabel(product.rating, lang)}
+                {product.ratingLabel ||
+                  getRatingLabel(product.rating, lang)}
               </span>
             </div>
           </div>
@@ -1442,7 +1452,8 @@ const ProductCard = ({ product }) => {
         </div>
 
         <p className="product-price-from premium-product-price">
-          {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
+          {tr.from}{" "}
+          {formatPrice(Math.min(...Object.values(product.sizes)))}
         </p>
       </div>
 
@@ -1465,20 +1476,28 @@ const ProductCard = ({ product }) => {
             <button
               key={size}
               type="button"
-              className={`size-chip ${isJustAdded ? "is-added" : ""}`}
+              className={`size-chip ${
+                isJustAdded ? "is-added" : ""
+              }`}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 e.currentTarget.blur();
 
-                addToCart(product, size, null, null, { showToast: false });
+                addToCart(product, size, null, null, {
+                  showToast: false
+                });
                 triggerInlineAddedFeedback(product.id, size);
               }}
             >
               <span className="size-chip-main">{size}</span>
               <strong>{formatPrice(price)}</strong>
 
-              <span className={`size-chip-feedback ${isJustAdded ? "show" : ""}`}>
+              <span
+                className={`size-chip-feedback ${
+                  isJustAdded ? "show" : ""
+                }`}
+              >
                 {tr.justAdded}
               </span>
             </button>
