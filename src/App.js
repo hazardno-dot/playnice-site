@@ -1379,8 +1379,6 @@ const ProductCard = ({ product }) => {
 
   return (
     <article className="product-card premium-product-card" key={product.id}>
-      
-      {/* CLICKABLE IMAGE */}
       <div
         className="product-card-media clickable-media"
         onClick={() => openProductModal(product)}
@@ -1401,7 +1399,6 @@ const ProductCard = ({ product }) => {
         />
       </div>
 
-      {/* RED BADGE */}
       {product.badge && (
         <span className="product-badge">{product.badge}</span>
       )}
@@ -1413,16 +1410,13 @@ const ProductCard = ({ product }) => {
 
         <h3 className="product-card-title">{product.name}</h3>
 
-        {/* RATING */}
         {product.rating && (
           <div className="product-rating">
             <div className="product-rating-stars" aria-hidden="true">
               {Array.from({ length: 10 }).map((_, index) => (
                 <span
                   key={index}
-                  className={
-                    index < Math.round(product.rating) ? "filled" : ""
-                  }
+                  className={index < Math.round(product.rating) ? "filled" : ""}
                 >
                   ★
                 </span>
@@ -1434,14 +1428,12 @@ const ProductCard = ({ product }) => {
                 {product.rating.toFixed(1)} / 10
               </span>
               <span className="product-rating-label">
-                {product.ratingLabel ||
-                  getRatingLabel(product.rating, lang)}
+                {product.ratingLabel || getRatingLabel(product.rating, lang)}
               </span>
             </div>
           </div>
         )}
 
-        {/* COPY */}
         <div className="product-card-copy-stack">
           <p className="product-card-copy premium-card-copy">
             {copy.card}
@@ -1449,23 +1441,22 @@ const ProductCard = ({ product }) => {
         </div>
 
         <div className="product-price-row">
-  <p className="product-price-from premium-product-price">
-    {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
-  </p>
+          <p className="product-price-from premium-product-price">
+            {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
+          </p>
 
-  {copy.miniTag && (
-    <span className="product-mini-tag product-card-mini-tag product-price-tag">
-      {copy.miniTag}
-    </span>
-  )}
-</div>
+          {copy.miniTag && (
+            <span className="product-mini-tag product-card-mini-tag product-price-tag">
+              {copy.miniTag}
+            </span>
+          )}
+        </div>
+      </div>
 
-      {/* PREVIEW */}
       <div className="product-preview-line premium-preview-line single-line-preview">
-  <span>{lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}</span>
-</div>
+        <span>{lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}</span>
+      </div>
 
-      {/* SIZE BUTTONS */}
       <div
         className="size-buttons"
         onClick={(e) => {
@@ -1480,28 +1471,20 @@ const ProductCard = ({ product }) => {
             <button
               key={size}
               type="button"
-              className={`size-chip ${
-                isJustAdded ? "is-added" : ""
-              }`}
+              className={`size-chip ${isJustAdded ? "is-added" : ""}`}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 e.currentTarget.blur();
 
-                addToCart(product, size, null, null, {
-                  showToast: false
-                });
+                addToCart(product, size, null, null, { showToast: false });
                 triggerInlineAddedFeedback(product.id, size);
               }}
             >
               <span className="size-chip-main">{size}</span>
               <strong>{formatPrice(price)}</strong>
 
-              <span
-                className={`size-chip-feedback ${
-                  isJustAdded ? "show" : ""
-                }`}
-              >
+              <span className={`size-chip-feedback ${isJustAdded ? "show" : ""}`}>
                 {tr.justAdded}
               </span>
             </button>
