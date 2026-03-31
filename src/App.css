@@ -5069,3 +5069,82 @@ main {
     0 10px 24px rgba(0, 0, 0, 0.28),
     0 0 0 1px rgba(220, 181, 107, 0.06) inset;
 }
+
+/* =========================================
+   TITLE + PRICE ALIGNMENT — FINAL
+========================================= */
+
+/* TITLE */
+.product-card-title {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  font-size: 1.35rem;
+  line-height: 1.2;
+
+  /* ključ: stabilna visina za 2 reda */
+  min-height: 2.8em;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+  white-space: normal;
+
+  /* BITNO: sprečava lom posle jedne reči */
+  word-break: normal;
+  overflow-wrap: normal;
+
+  text-wrap: balance;
+}
+
+/* META TOP spacing */
+.product-meta-top {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* META MIDDLE — drži razmak stabilnim */
+.product-meta-middle {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 10px;
+}
+
+/* COPY block stabilizacija */
+.product-card-copy-stack {
+  min-height: 56px;
+}
+
+/* META BOTTOM — zaključava price dole */
+.product-meta-bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 12px;
+}
+
+/* PRICE ROW */
+.product-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  min-height: 24px;
+}
+
+/* PRICE TEXT */
+.product-price-from.premium-product-price {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
