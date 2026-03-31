@@ -4202,15 +4202,14 @@ main {
 }
 
 .story-drawer-body p {
-  margin: 0 0 16px;
-  color: rgba(255, 248, 235, 0.74);
-  font-size: 0.98rem;
-  line-height: 1.85;
+  margin: 0;
+  color: rgba(255, 248, 235, 0.76);
+  font-size: 1rem;
+  line-height: 1.82;
 }
 
-.story-drawer-lead {
-  color: rgba(255, 248, 235, 0.92) !important;
-  font-size: 1.05rem;
+.story-drawer-body p + p {
+  margin-top: 10px; /* probaj 8px ako hoćeš još tight */
 }
 
 /* =========================================
