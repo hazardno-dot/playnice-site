@@ -1269,13 +1269,14 @@ main {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
-  word-break: normal;
-  overflow-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: anywhere;
   hyphens: auto;
 
   min-height: 3.18rem;
-  max-height: 3.18rem;
+  max-height: none;
 }
+
 .product-meta h3,
 .product-card-title {
   text-wrap: balance;
