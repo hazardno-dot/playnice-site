@@ -1489,65 +1489,6 @@ const ProductCard = ({ product }) => {
   );
 };
 
-        <div className="product-card-copy-stack">
-          <span className="product-mini-tag product-card-mini-tag">
-            {copy.miniTag}
-          </span>
-
-          <p className="product-card-copy premium-card-copy">
-            {copy.card}
-          </p>
-        </div>
-
-        <p className="product-price-from premium-product-price">
-          {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
-        </p>
-      </div>
-
-      <div className="product-preview-line premium-preview-line">
-        <span>{tr.openDetails}</span>
-        <strong>{tr.luxuryModal}</strong>
-      </div>
-
-      <div
-        className="size-buttons"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        {Object.entries(product.sizes).map(([size, price]) => {
-          const feedbackKey = `${product.id}-${size}`;
-          const isJustAdded = justAddedKey === feedbackKey;
-
-          return (
-            <button
-              key={size}
-              type="button"
-              className={`size-chip ${isJustAdded ? "is-added" : ""}`}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                e.currentTarget.blur();
-
-                addToCart(product, size, null, null, { showToast: false });
-                triggerInlineAddedFeedback(product.id, size);
-              }}
-            >
-              <span className="size-chip-main">{size}</span>
-              <strong>{formatPrice(price)}</strong>
-
-              <span className={`size-chip-feedback ${isJustAdded ? "show" : ""}`}>
-                {tr.justAdded}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </article>
-  );
-};
-
-  return (
  <div className="app-shell">
 <header className="topbar">
   <button className="brand" type="button" onClick={() => switchView("home")}>
