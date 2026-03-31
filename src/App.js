@@ -1403,6 +1403,7 @@ const ProductCard = ({ product }) => {
         />
       </div>
 
+      {/* BADGE */}
       {product.badge && (
         <span className="product-badge">{product.badge}</span>
       )}
@@ -1414,6 +1415,7 @@ const ProductCard = ({ product }) => {
 
         <h3 className="product-card-title">{product.name}</h3>
 
+        {/* RATING */}
         {product.rating && (
           <div className="product-rating">
             <div className="product-rating-stars" aria-hidden="true">
@@ -1441,31 +1443,36 @@ const ProductCard = ({ product }) => {
           </div>
         )}
 
+        {/* MINI TAG (MOVED UP) */}
+        {copy.miniTag && (
+          <div className="product-card-top-tags">
+            <span className="product-mini-tag product-card-mini-tag">
+              {copy.miniTag}
+            </span>
+          </div>
+        )}
+
+        {/* COPY */}
         <div className="product-card-copy-stack">
-  <div className="product-card-top-tags">
-    {copy.miniTag && (
-      <span className="product-mini-tag product-card-mini-tag top-right-mini-tag">
-        {copy.miniTag}
-      </span>
-    )}
-  </div>
+          <p className="product-card-copy premium-card-copy">
+            {copy.card}
+          </p>
+        </div>
 
-  <p className="product-card-copy premium-card-copy">
-    {copy.card}
-  </p>
-</div>
-
+        {/* PRICE */}
         <p className="product-price-from premium-product-price">
           {tr.from}{" "}
           {formatPrice(Math.min(...Object.values(product.sizes)))}
         </p>
       </div>
 
+      {/* PREVIEW LINE */}
       <div className="product-preview-line premium-preview-line">
         <span>{tr.openDetails}</span>
         <strong>{tr.luxuryModal}</strong>
       </div>
 
+      {/* SIZE BUTTONS */}
       <div
         className="size-buttons"
         onClick={(e) => {
