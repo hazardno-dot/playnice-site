@@ -4209,7 +4209,7 @@ main {
 }
 
 .story-drawer-body p + p {
-  margin-top: 10px; /* probaj 8px ako hoćeš još tight */
+  margin-top: 6px;
 }
 
 /* =========================================
