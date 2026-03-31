@@ -1404,57 +1404,65 @@ const ProductCard = ({ product }) => {
       )}
 
       <div className="product-meta premium-product-meta">
-        <p className="product-category">
-          {getCategoryLabel(product.category)}
-        </p>
+        <div className="product-meta-top">
+          <p className="product-category">
+            {getCategoryLabel(product.category)}
+          </p>
 
-        <h3 className="product-card-title">{product.name}</h3>
+          <h3 className="product-card-title">{product.name}</h3>
 
-        {product.rating && (
-          <div className="product-rating">
-            <div className="product-rating-stars" aria-hidden="true">
-              {Array.from({ length: 10 }).map((_, index) => (
-                <span
-                  key={index}
-                  className={index < Math.round(product.rating) ? "filled" : ""}
-                >
-                  ★
+          {product.rating && (
+            <div className="product-rating">
+              <div className="product-rating-stars" aria-hidden="true">
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <span
+                    key={index}
+                    className={index < Math.round(product.rating) ? "filled" : ""}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+
+              <div className="product-rating-meta">
+                <span className="product-rating-score">
+                  {product.rating.toFixed(1)} / 10
                 </span>
-              ))}
+                <span className="product-rating-label">
+                  {product.ratingLabel || getRatingLabel(product.rating, lang)}
+                </span>
+              </div>
             </div>
-
-            <div className="product-rating-meta">
-              <span className="product-rating-score">
-                {product.rating.toFixed(1)} / 10
-              </span>
-              <span className="product-rating-label">
-                {product.ratingLabel || getRatingLabel(product.rating, lang)}
-              </span>
-            </div>
-          </div>
-        )}
-
-        <div className="product-card-copy-stack">
-          <p className="product-card-copy premium-card-copy">
-            {copy.card}
-          </p>
-        </div>
-
-        <div className="product-price-row">
-          <p className="product-price-from premium-product-price">
-            {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
-          </p>
-
-          {copy.miniTag && (
-            <span className="product-mini-tag product-card-mini-tag product-price-tag">
-              {copy.miniTag}
-            </span>
           )}
         </div>
-      </div>
 
-      <div className="product-preview-line premium-preview-line single-line-preview">
-        <span>{lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}</span>
+        <div className="product-meta-middle">
+          <div className="product-card-copy-stack">
+            <p className="product-card-copy premium-card-copy">
+              {copy.card}
+            </p>
+          </div>
+        </div>
+
+        <div className="product-meta-bottom">
+          <div className="product-price-row">
+            <p className="product-price-from premium-product-price">
+              {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
+            </p>
+
+            {copy.miniTag && (
+              <span className="product-mini-tag product-card-mini-tag product-price-tag">
+                {copy.miniTag}
+              </span>
+            )}
+          </div>
+
+          <div className="product-preview-line premium-preview-line single-line-preview">
+            <span>
+              {lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}
+            </span>
+          </div>
+        </div>
       </div>
 
       <div
