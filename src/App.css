@@ -5148,3 +5148,81 @@ main {
   letter-spacing: 0.04em;
   line-height: 1.2;
 }
+
+/* =========================================
+   PRODUCT CARD HEIGHT COMPACT CLEANUP
+========================================= */
+
+.product-card.premium-product-card {
+  padding: 14px;
+}
+
+.product-card-media {
+  min-height: 210px;
+  padding: 14px 14px 6px;
+}
+
+.product-card-image {
+  max-width: 170px;
+  max-height: 195px;
+}
+
+.product-meta.premium-product-meta {
+  padding: 14px 14px 10px;
+}
+
+.product-meta-top {
+  gap: 4px;
+}
+
+.product-category {
+  margin: 0 0 1px;
+}
+
+.product-card-title {
+  min-height: 2.65em;
+  line-height: 1.16;
+}
+
+.product-rating {
+  margin-top: 1px;
+  margin-bottom: 6px;
+  gap: 3px;
+}
+
+.product-meta-middle {
+  padding-top: 8px;
+}
+
+.product-card-copy-stack {
+  min-height: 44px;
+}
+
+.product-card-copy.premium-card-copy {
+  min-height: 2.5em;
+  line-height: 1.38;
+}
+
+.product-meta-bottom {
+  gap: 8px;
+  padding-top: 10px;
+}
+
+.product-price-row {
+  min-height: 20px;
+}
+
+.product-preview-line.premium-preview-line.single-line-preview {
+  min-height: 18px;
+}
+
+.size-buttons {
+  margin-top: 10px;
+  padding: 0 14px 14px;
+  gap: 8px;
+}
+
+.size-buttons .size-chip {
+  min-height: 52px;
+  padding: 10px 14px;
+}
