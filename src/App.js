@@ -1463,10 +1463,9 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* PREVIEW */}
-      <div className="product-preview-line premium-preview-line">
-        <span>{tr.openDetails}</span>
-        <strong>{tr.luxuryModal}</strong>
-      </div>
+      <div className="product-preview-line premium-preview-line single-line-preview">
+  <span>{lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}</span>
+</div>
 
       {/* SIZE BUTTONS */}
       <div
