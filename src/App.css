@@ -1320,7 +1320,7 @@ main {
   display: flex;
   justify-content: flex-end;
   margin-top: 2px;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .product-preview-line {
@@ -4697,4 +4697,25 @@ main {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: rgba(255, 255, 255, 0.58);
+}
+
+/* =========================================
+   FLOATING MINI TAG
+========================================= */
+
+.product-meta {
+  position: relative;
+}
+
+.product-mini-tag-floating {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  z-index: 2;
+}
+
+/* prostor da se ne sudari sa nazivom */
+.product-card-title {
+  padding-right: 130px;
 }

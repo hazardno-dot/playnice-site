@@ -1378,11 +1378,9 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <article
-      className="product-card premium-product-card"
-      key={product.id}
-    >
-      {/* CLICKABLE IMAGE ONLY */}
+    <article className="product-card premium-product-card" key={product.id}>
+      
+      {/* CLICKABLE IMAGE */}
       <div
         className="product-card-media clickable-media"
         onClick={() => openProductModal(product)}
@@ -1403,7 +1401,7 @@ const ProductCard = ({ product }) => {
         />
       </div>
 
-      {/* BADGE */}
+      {/* RED BADGE */}
       {product.badge && (
         <span className="product-badge">{product.badge}</span>
       )}
@@ -1414,6 +1412,13 @@ const ProductCard = ({ product }) => {
         </p>
 
         <h3 className="product-card-title">{product.name}</h3>
+
+        {/* FLOATING MINI TAG */}
+        {copy.miniTag && (
+          <span className="product-mini-tag product-card-mini-tag product-mini-tag-floating">
+            {copy.miniTag}
+          </span>
+        )}
 
         {/* RATING */}
         {product.rating && (
@@ -1443,15 +1448,6 @@ const ProductCard = ({ product }) => {
           </div>
         )}
 
-        {/* MINI TAG (MOVED UP) */}
-        {copy.miniTag && (
-          <div className="product-card-top-tags">
-            <span className="product-mini-tag product-card-mini-tag">
-              {copy.miniTag}
-            </span>
-          </div>
-        )}
-
         {/* COPY */}
         <div className="product-card-copy-stack">
           <p className="product-card-copy premium-card-copy">
@@ -1466,7 +1462,7 @@ const ProductCard = ({ product }) => {
         </p>
       </div>
 
-      {/* PREVIEW LINE */}
+      {/* PREVIEW */}
       <div className="product-preview-line premium-preview-line">
         <span>{tr.openDetails}</span>
         <strong>{tr.luxuryModal}</strong>
