@@ -4828,11 +4828,6 @@ main {
   line-height: 1.2;
 }
 
-.product-mini-tag.product-card-mini-tag.product-price-tag {
-  margin: 0;
-  flex-shrink: 0;
-}
-
 .product-preview-line.premium-preview-line.single-line-preview {
   min-height: 22px;
   margin: 0;

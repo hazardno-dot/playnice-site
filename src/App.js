@@ -1448,16 +1448,10 @@ const ProductCard = ({ product }) => {
 
         <div className="product-meta-bottom">
           <div className="product-price-row">
-            <p className="product-price-from premium-product-price">
-              {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
-            </p>
-
-            {copy.miniTag && (
-              <span className="product-mini-tag product-card-mini-tag product-price-tag">
-                {copy.miniTag}
-              </span>
-            )}
-          </div>
+  <span className="product-price-from premium-product-price">
+    {tr.from} €{minPrice}
+  </span>
+</div>
 
           <div className="product-preview-line premium-preview-line single-line-preview">
             <span>
