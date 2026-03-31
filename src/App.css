@@ -1347,11 +1347,11 @@ main {
   margin-top: auto;
 }
 
-.size-buttons .size-chip {
+.size-buttons button {
   position: relative;
   width: 100%;
-  min-height: 56px;
-  padding: 12px 10px;
+  min-height: 58px;
+  padding: 12px 11px;
   display: flex;
   align-items: center;
   justify-content: space-between;
