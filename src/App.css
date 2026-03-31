@@ -1354,7 +1354,7 @@ main {
   background: rgba(255, 255, 255, 0.025);
   color: var(--text);
   overflow: hidden;
-  transform: none !important;
+  transform: none;
   backface-visibility: hidden;
   -webkit-font-smoothing: antialiased;
 }
