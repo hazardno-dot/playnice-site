@@ -1353,60 +1353,143 @@ const getProductVibe = (product) => {
     };
 
 const ProductCard = ({ product }) => {
-  const copy = productCopy?.[product.name] || {};
+  const copy = getProductCopy(product, lang);
 
-  const minPrice = Math.min(...Object.values(product.sizes));
+  const ratingLabels = {
+    en: {
+      top: "Top Rated",
+      high: "Audience Favorite",
+      mid: "Well Loved",
+      low: "Popular Pick"
+    },
+    sr: {
+      top: "Najviše ocenjen",
+      high: "Publika ga voli",
+      mid: "Veoma voljen",
+      low: "Popularan izbor"
+    }
+  };
+
+  const getRatingLabel = (rating, lang) => {
+    if (rating >= 9) return ratingLabels[lang].top;
+    if (rating >= 8) return ratingLabels[lang].high;
+    if (rating >= 7) return ratingLabels[lang].mid;
+    return ratingLabels[lang].low;
+  };
 
   return (
-    <article className="product-card">
-      {/* IMAGE */}
-      <div className="product-card-media">
-        {product.image ? (
-          <img
-            src={product.image}
-            alt={product.name}
-            className="product-card-image"
-          />
-        ) : (
-          <div className="product-card-fallback">
-            {product.name?.charAt(0)}
-          </div>
-        )}
+    <article className="product-card premium-product-card" key={product.id}>
+      <div
+        className="product-card-media clickable-media"
+        onClick={() => openProductModal(product)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openProductModal(product);
+          }
+        }}
+      >
+        <img
+          src={product.image || "/placeholder.png"}
+          alt={product.name}
+          className="product-card-image"
+          loading="lazy"
+        />
       </div>
 
-      {/* BODY */}
-      <div className="product-card-body">
-        <div className="product-card-copy">
-          {/* NAME (do 2 reda, bez sečenja) */}
-          <h3 className="product-card-title">
-            {product.name}
-          </h3>
+      {product.badge && (
+        <span className="product-badge">{product.badge}</span>
+      )}
 
-          {/* PRICE + MINITAG */}
-          <div className="product-card-price-row">
-            <span className="product-card-price">
-              from €{minPrice}
-            </span>
+      <div className="product-meta premium-product-meta">
+        <p className="product-category">
+          {getCategoryLabel(product.category)}
+        </p>
 
-            {copy.miniTag && (
-              <span className="product-card-minitag">
-                {copy.miniTag}
+        <h3 className="product-card-title">{product.name}</h3>
+
+        {product.rating && (
+          <div className="product-rating">
+            <div className="product-rating-stars" aria-hidden="true">
+              {Array.from({ length: 10 }).map((_, index) => (
+                <span
+                  key={index}
+                  className={index < Math.round(product.rating) ? "filled" : ""}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+
+            <div className="product-rating-meta">
+              <span className="product-rating-score">
+                {product.rating.toFixed(1)} / 10
               </span>
-            )}
+              <span className="product-rating-label">
+                {product.ratingLabel || getRatingLabel(product.rating, lang)}
+              </span>
+            </div>
           </div>
+        )}
 
-          {/* SHORT TEXT (ako postoji) */}
-          {copy.card && (
-            <p className="product-card-desc">
-              {copy.card}
-            </p>
+        <div className="product-card-copy-stack">
+          <p className="product-card-copy premium-card-copy">
+            {copy.card}
+          </p>
+        </div>
+
+        <div className="product-price-row">
+          <p className="product-price-from premium-product-price">
+            {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
+          </p>
+
+          {copy.miniTag && (
+            <span className="product-mini-tag product-card-mini-tag product-price-tag">
+              {copy.miniTag}
+            </span>
           )}
         </div>
+      </div>
 
-        {/* CTA – ZAKUCAN DOLE */}
-        <div className="product-card-cta">
-          TRY BEFORE YOU BUY
-        </div>
+      <div className="product-preview-line premium-preview-line single-line-preview">
+        <span>{lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}</span>
+      </div>
+
+      <div
+        className="size-buttons"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        {Object.entries(product.sizes).map(([size, price]) => {
+          const feedbackKey = `${product.id}-${size}`;
+          const isJustAdded = justAddedKey === feedbackKey;
+
+          return (
+            <button
+              key={size}
+              type="button"
+              className={`size-chip ${isJustAdded ? "is-added" : ""}`}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.currentTarget.blur();
+
+                addToCart(product, size, null, null, { showToast: false });
+                triggerInlineAddedFeedback(product.id, size);
+              }}
+            >
+              <span className="size-chip-main">{size}</span>
+              <strong>{formatPrice(price)}</strong>
+
+              <span className={`size-chip-feedback ${isJustAdded ? "show" : ""}`}>
+                {tr.justAdded}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </article>
   );
