@@ -1227,55 +1227,6 @@ main {
   backdrop-filter: blur(6px);
 }
 
-.product-image {
-  position: relative;
-  height: 132px;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-}
-
-.product-image::after {
-  content: "";
-  position: absolute;
-  bottom: 6px;
-  width: 70%;
-  height: 24px;
-  background: radial-gradient(circle, rgba(220, 181, 107, 0.16), transparent 72%);
-  filter: blur(14px);
-}
-
-.product-image-real {
-  position: relative;
-  z-index: 1;
-  width: auto;
-  max-height: 112px;
-  object-fit: contain;
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.9));
-  transition: transform 0.35s ease, filter 0.35s ease;
-}
-
-.product-card:hover .product-image-real {
-  transform: translateY(-1px) scale(1.015);
-  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.95));
-}
-
-.product-image-fallback {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--gold);
-  font-family: "Cormorant Garamond", serif;
-  font-size: 32px;
-}
-
 .product-meta {
   margin-bottom: 8px;
   flex: 0 0 auto;
