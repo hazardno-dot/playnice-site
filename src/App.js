@@ -1399,9 +1399,11 @@ const ProductCard = ({ product }) => {
         />
       </div>
 
-      {product.badge && (
-        <span className="product-badge">{product.badge}</span>
-      )}
+      {copy.miniTag && (
+  <span className="product-top-mini-badge">
+    {copy.miniTag}
+  </span>
+)}
 
       <div className="product-meta premium-product-meta">
         <div className="product-meta-top">
