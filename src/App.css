@@ -1341,12 +1341,6 @@ main {
   font-size: 11px;
 }
 
-.size-buttons {
-  display: grid;
-  gap: 8px;
-  margin-top: auto;
-}
-
 .size-buttons button {
   position: relative;
   width: 100%;
@@ -4878,13 +4872,6 @@ main {
   }
 }
 
-.size-buttons {
-  margin-top: 14px;
-  padding: 0 18px 18px;
-  display: flex;
-  gap: 10px;
-}
-
 .size-chip {
   flex: 1 1 0;
   min-height: 56px;
@@ -5041,11 +5028,14 @@ main {
 .size-buttons {
   margin-top: 14px;
   padding: 0 18px 18px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.size-chip {
+.size-buttons .size-chip {
+  width: 100%;
   min-height: 56px;
+  padding: 12px 14px;
+  border-radius: 16px;
 }
