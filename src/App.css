@@ -1169,8 +1169,14 @@ main {
   pointer-events: none;
 }
 
-.product-card.clickable {
+.clickable-media {
   cursor: pointer;
+}
+
+.clickable-media:focus-visible {
+  outline: 1px solid rgba(220, 181, 107, 0.55);
+  outline-offset: 4px;
+  border-radius: 22px;
 }
 
 .product-card:hover {

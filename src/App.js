@@ -1442,14 +1442,18 @@ const ProductCard = ({ product }) => {
         )}
 
         <div className="product-card-copy-stack">
-          <span className="product-mini-tag product-card-mini-tag">
-            {copy.miniTag}
-          </span>
+  <div className="product-card-top-tags">
+    {copy.miniTag && (
+      <span className="product-mini-tag product-card-mini-tag top-right-mini-tag">
+        {copy.miniTag}
+      </span>
+    )}
+  </div>
 
-          <p className="product-card-copy premium-card-copy">
-            {copy.card}
-          </p>
-        </div>
+  <p className="product-card-copy premium-card-copy">
+    {copy.card}
+  </p>
+</div>
 
         <p className="product-price-from premium-product-price">
           {tr.from}{" "}
