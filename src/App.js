@@ -1413,13 +1413,6 @@ const ProductCard = ({ product }) => {
 
         <h3 className="product-card-title">{product.name}</h3>
 
-        {/* FLOATING MINI TAG */}
-        {copy.miniTag && (
-          <span className="product-mini-tag product-card-mini-tag product-mini-tag-floating">
-            {copy.miniTag}
-          </span>
-        )}
-
         {/* RATING */}
         {product.rating && (
           <div className="product-rating">
@@ -1455,12 +1448,17 @@ const ProductCard = ({ product }) => {
           </p>
         </div>
 
-        {/* PRICE */}
-        <p className="product-price-from premium-product-price">
-          {tr.from}{" "}
-          {formatPrice(Math.min(...Object.values(product.sizes)))}
-        </p>
-      </div>
+        <div className="product-price-row">
+  <p className="product-price-from premium-product-price">
+    {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
+  </p>
+
+  {copy.miniTag && (
+    <span className="product-mini-tag product-card-mini-tag product-price-tag">
+      {copy.miniTag}
+    </span>
+  )}
+</div>
 
       {/* PREVIEW */}
       <div className="product-preview-line premium-preview-line single-line-preview">
