@@ -1300,6 +1300,14 @@ main {
   min-height: 28px;
 }
 
+.product-meta-top,
+.product-meta-middle,
+.product-meta-bottom,
+.product-card-copy-stack,
+.product-price-row {
+  width: 100%;
+}
+
 .product-price-row .product-price-from {
   margin: 0;
 }
