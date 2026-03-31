@@ -1407,39 +1407,6 @@ const ProductCard = ({ product }) => {
 
         <h3 className="product-card-title">{product.name}</h3>
 
-        const ProductCard = ({ product }) => {
-  const copy = getProductCopy(product, lang);
-
-  return (
-    <article
-      className="product-card clickable premium-product-card"
-      key={product.id}
-      onClick={() => openProductModal(product)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          openProductModal(product);
-        }
-      }}
-    >
-      <div className="product-card-media">
-        <img
-          src={product.image || "/placeholder.png"}
-          alt={product.name}
-          className="product-card-image"
-          loading="lazy"
-        />
-      </div>
-
-      {product.badge && <span className="product-badge">{product.badge}</span>}
-
-      <div className="product-meta premium-product-meta">
-        <p className="product-category">{getCategoryLabel(product.category)}</p>
-
-        <h3 className="product-card-title">{product.name}</h3>
-
         {product.rating && (
           <div className="product-rating">
             <div className="product-rating-stars" aria-hidden="true">
