@@ -5020,22 +5020,6 @@ main {
   }
 }
 
-.size-buttons {
-  margin-top: 14px;
-  padding: 0 18px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.size-buttons .size-chip {
-  width: 100%;
-  min-height: 24px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  margin: 0 auto;
-}
-
 /* =========================================
    PRODUCT TOP MINI BADGE
 ========================================= */
@@ -5219,10 +5203,16 @@ main {
 .size-buttons {
   margin-top: 10px;
   padding: 0 14px 14px;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
 .size-buttons .size-chip {
+  width: 100%;
+  max-width: 60%;
   min-height: 52px;
   padding: 10px 14px;
+  border-radius: 16px;
+  margin: 0 auto;
 }
