@@ -1489,6 +1489,7 @@ const ProductCard = ({ product }) => {
   );
 };
 
+return (
  <div className="app-shell">
 <header className="topbar">
   <button className="brand" type="button" onClick={() => switchView("home")}>
@@ -2452,6 +2453,7 @@ const ProductCard = ({ product }) => {
         </div>
       </div>
     </div>
+  );
 }
 
 export default App;
