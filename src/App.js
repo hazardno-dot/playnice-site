@@ -230,53 +230,53 @@ const categoryLabels = {
 };
 
 const products = [
-  { id: 1, name: "Afnan 9AM", category: "Arabian", image: "/products/afnan-9am.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", image: "/products/9pm.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
-  { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", image: "/products/afnan-supremacy.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", image: "/products/afnan-turathi-blue.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
-  { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", image: "/products/marwa.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 6, name: "Armaf Club De Nuit Bling", category: "Designer", image: "/products/Bling.png", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 } },
-  { id: 7, name: "Armaf Club de Nuit Intense", category: "Designer", image: "/products/armaf-cdn-intense.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER" },
-  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Designer", image: "/products/CDN-Sillage.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", image: "/products/Vulcan-Sable.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
+  { id: 1, name: "Afnan 9AM", category: "Arabian", image: "/products/afnan-9am.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 7.8, ratingLabel: "Well Loved" },
+  { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", image: "/products/9pm.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER", rating: 8.6, ratingLabel: "Audience Favorite" },
+  { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", image: "/products/afnan-supremacy.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, rating: 8.1, ratingLabel: "Audience Favorite" },
+  { id: 4, name: "Afnan Turathi Blue", category: "Arabian", image: "/products/afnan-turathi-blue.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER", rating: 8.9, ratingLabel: "Audience Favorite" },
+  { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", image: "/products/marwa.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, rating: 8.0, ratingLabel: "Audience Favorite" },
+  { id: 6, name: "Armaf Club De Nuit Bling", category: "Designer", image: "/products/Bling.png", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 }, rating: 7.7, ratingLabel: "Well Loved" },
+  { id: 7, name: "Armaf Club de Nuit Intense", category: "Designer", image: "/products/armaf-cdn-intense.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER", rating: 8.8, ratingLabel: "Audience Favorite" },
+  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Designer", image: "/products/CDN-Sillage.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 8.0, ratingLabel: "Audience Favorite" },
+  { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", image: "/products/Vulcan-Sable.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, rating: 7.9, ratingLabel: "Well Loved" },
   { id: 10, name: "Haramain Signature Blue", category: "Arabian", image: "/products/Haramain-Signature-Blue.png", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
-  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Summer", image: "/products/island.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
-  { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", image: "/products/Lattafa-Asad-Elixir.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER" },
-  { id: 13, name: "Lattafa Fakhar Black", category: "Arabian", image: "/products/Lattafa-Fakhar-Black.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", image: "/products/Lattafa-Khamrah-Qahwa.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER" },
-  { id: 15, name: "Lattafa Musamam Black Intense", category: "Arabian", image: "/products/Lattafa-Musamam-Black-Intense.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 } },
-  { id: 16, name: "Lattafa Qaed Al Fursan Untamed", category: "Arabian", image: "/products/Lattafa-Qaed-Al-Fursan-Untamed.png", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 } },
+  { id: 11, name: "Khadlaj Island Dreams Extrait de Parfum", category: "Summer", image: "/products/island.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER", rating: 8.7, ratingLabel: "Audience Favorite" },
+  { id: 12, name: "Lattafa Asad Elixir", category: "Arabian", image: "/products/Lattafa-Asad-Elixir.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, badge: "BESTSELLER", rating: 8.4, ratingLabel: "Audience Favorite" },
+  { id: 13, name: "Lattafa Fakhar Black", category: "Arabian", image: "/products/Lattafa-Fakhar-Black.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 8.0, ratingLabel: "Audience Favorite" },
+  { id: 14, name: "Lattafa Khamrah Qahwa", category: "Arabian", image: "/products/Lattafa-Khamrah-Qahwa.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER", rating: 9.0, ratingLabel: "Top Rated" },
+  { id: 15, name: "Lattafa Musamam Black Intense", category: "Arabian", image: "/products/Lattafa-Musamam-Black-Intense.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, rating: 7.8, ratingLabel: "Well Loved" },
+  { id: 16, name: "Lattafa Qaed Al Fursan Untamed", category: "Arabian", image: "/products/Lattafa-Qaed-Al-Fursan-Untamed.png", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 }, rating: 7.5, ratingLabel: "Well Loved" },
   { id: 17, name: "Paris Corner Emir Trillium", category: "Arabian", image: "/products/Emir-Trillium.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 18, name: "Paris Corner Emir Voux Elegante", category: "Arabian", image: "/products/Emir-Voux-Elegante.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 19, name: "Paris Corner Ministry of Oud - Oud Satin", category: "Arabian", image: "/products/Ministry-of-Oud-Oud-Satin.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 20, name: "Paris Corner Perfumes North Stag Expressions II DEUX", category: "Arabian", image: "/products/II-DEUX.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 } },
-  { id: 21, name: "Rayhaan Aquatica", category: "Summer", image: "/products/Rayhaan-AQUTICA.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 22, name: "Rayhaan Pacific Aura", category: "Summer", image: "/products/Rayhaan-Pacific-Aura.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 } },
-  { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", image: "/products/Swiss-Arabian-Tobacco01.png", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 } },
-  { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer", image: "/products/AdP-Fico.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer", image: "/products/AdP-Colonia-Essenza.png", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 } },
-  { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer", image: "/products/AdP-Colonia-Pura.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer", image: "/products/BDC-EdP.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
-  { id: 28, name: "Bois Impérial by Essential Parfums", category: "Niche", image: "/products/Bois-Impérial-by-Essential-Parfums.png", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 }, badge: "BESTSELLER" },
+  { id: 18, name: "Paris Corner Emir Voux Elegante", category: "Arabian", image: "/products/Emir-Voux-Elegante.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 7.7, ratingLabel: "Well Loved" },
+  { id: 19, name: "Paris Corner Ministry of Oud - Oud Satin", category: "Arabian", image: "/products/Ministry-of-Oud-Oud-Satin.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 8.1, ratingLabel: "Audience Favorite" },
+  { id: 20, name: "Paris Corner Perfumes North Stag Expressions II DEUX", category: "Arabian", image: "/products/II-DEUX.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 7.9, ratingLabel: "Well Loved" },
+  { id: 21, name: "Rayhaan Aquatica", category: "Summer", image: "/products/Rayhaan-AQUTICA.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, rating: 7.8, ratingLabel: "Well Loved" },
+  { id: 22, name: "Rayhaan Pacific Aura", category: "Summer", image: "/products/Rayhaan-Pacific-Aura.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, rating: 7.9, ratingLabel: "Well Loved" },
+  { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", image: "/products/Swiss-Arabian-Tobacco01.png", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 }, rating: 8.5, ratingLabel: "Audience Favorite" },
+  { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer", image: "/products/AdP-Fico.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, rating: 8.3, ratingLabel: "Audience Favorite" },
+  { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer", image: "/products/AdP-Colonia-Essenza.png", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 }, rating: 8.0, ratingLabel: "Audience Favorite" },
+  { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer", image: "/products/AdP-Colonia-Pura.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, rating: 7.8, ratingLabel: "Well Loved" },
+  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer", image: "/products/BDC-EdP.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER", rating: 9.2, ratingLabel: "Top Rated" },
+  { id: 28, name: "Bois Impérial by Essential Parfums", category: "Niche", image: "/products/Bois-Impérial-by-Essential-Parfums.png", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 }, badge: "BESTSELLER", rating: 8.9, ratingLabel: "Audience Favorite" },
   { id: 29, name: "BOSS Bottled Beyond Eau de Parfum", category: "Designer", image: "/products/BOSS-Bottled-Beyond.png", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 30, name: "BOSS The Scent Elixir Parfum Intense for Him", category: "Designer", image: "/products/BOSS-The-Scent-Elixir.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 } },
-  { id: 31, name: "BOSS The Scent Le Parfum for Him", category: "Designer", image: "/products/BOSS-The-Scent-Le-Parfum.png", sizes: { "2ml": 6, "5ml": 14, "10ml": 25 } },
+  { id: 30, name: "BOSS The Scent Elixir Parfum Intense for Him", category: "Designer", image: "/products/BOSS-The-Scent-Elixir.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, rating: 8.1, ratingLabel: "Audience Favorite" },
+  { id: 31, name: "BOSS The Scent Le Parfum for Him", category: "Designer", image: "/products/BOSS-The-Scent-Le-Parfum.png", sizes: { "2ml": 6, "5ml": 14, "10ml": 25 }, rating: 7.9, ratingLabel: "Well Loved" },
   { id: 32, name: "Calvin Klein CK All Eau de Toilette", category: "Designer", image: "/products/CK-All.png", sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 } },
   { id: 33, name: "Calvin Klein Defy Eau de Toilette", category: "Designer", image: "/products/CK-Defy-EdT.png", sizes: { "2ml": 3, "5ml": 7, "10ml": 12 } },
-  { id: 34, name: "Calvin Klein Defy Parfum", category: "Designer", image: "/products/CK-Defy-Parfum.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 35, name: "Chopard Oud Malaki Eau de Parfum", category: "Designer", image: "/products/Chopard-Oud-Malaki-EdP.png", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 36, name: "Creed Aventus Cologne", category: "Niche", image: "/products/Creed-Aventus-Cologne.png", sizes: { "2ml": 13, "5ml": 29, "10ml": 52 }, badge: "BESTSELLER" },
-  { id: 37, name: "Giorgio Armani Acqua di Giò Profondo Parfum", category: "Designer", image: "/products/AcquadiGiò-Profondo-Parfum.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER" },
-  { id: 38, name: "Gisada Ambassador Men Eau de Parfum", category: "Designer", image: "/products/Gisada-Ambassador-Men-EdP.png", sizes: { "2ml": 5, "5ml": 11, "10ml": 20 }, badge: "BESTSELLER" },
-  { id: 39, name: "Givenchy Gentleman Eau de Parfum Réserve Privée", category: "Designer", image: "/products/Givenchy-Gentleman-EdP-Réserve-Privée.png", sizes: { "2ml": 5, "5ml": 12, "10ml": 21 } },
+  { id: 34, name: "Calvin Klein Defy Parfum", category: "Designer", image: "/products/CK-Defy-Parfum.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, rating: 7.6, ratingLabel: "Well Loved" },
+  { id: 35, name: "Chopard Oud Malaki Eau de Parfum", category: "Designer", image: "/products/Chopard-Oud-Malaki-EdP.png", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 }, rating: 8.0, ratingLabel: "Audience Favorite" },
+  { id: 36, name: "Creed Aventus Cologne", category: "Niche", image: "/products/Creed-Aventus-Cologne.png", sizes: { "2ml": 13, "5ml": 29, "10ml": 52 }, badge: "BESTSELLER", rating: 9.3, ratingLabel: "Top Rated" },
+  { id: 37, name: "Giorgio Armani Acqua di Giò Profondo Parfum", category: "Designer", image: "/products/AcquadiGiò-Profondo-Parfum.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER", rating: 8.8, ratingLabel: "Audience Favorite" },
+  { id: 38, name: "Gisada Ambassador Men Eau de Parfum", category: "Designer", image: "/products/Gisada-Ambassador-Men-EdP.png", sizes: { "2ml": 5, "5ml": 11, "10ml": 20 }, badge: "BESTSELLER", rating: 8.6, ratingLabel: "Audience Favorite" },
+  { id: 39, name: "Givenchy Gentleman Eau de Parfum Réserve Privée", category: "Designer", image: "/products/Givenchy-Gentleman-EdP-Réserve-Privée.png", sizes: { "2ml": 5, "5ml": 12, "10ml": 21 }, rating: 8.7, ratingLabel: "Audience Favorite" },
   { id: 40, name: "Jimmy Choo Man Blue Eau de Toilette", category: "Designer", image: "/products/Jimmy-Choo-Man-Blue-EdT.png", sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 } },
-  { id: 41, name: "L'Homme Eau de Parfum by Yves Saint Laurent", category: "Designer", image: "/products/L'Homme-EdP-YSL.png", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 42, name: "L'Homme Idéal De Guerlain Paris Eau De Toilette", category: "Designer", image: "/products/L'Homme-Idéal-De-Guerlain-Paris-EDT.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Niche", image: "/products/Mancera-Cedrat-Boise-EdP.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, badge: "BESTSELLER" },
-  { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer", image: "/products/Montblanc-Explorer-Extreme-Parfum.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer", image: "/products/Narciso-Rodriguez-for-Him-Bleu-Noir-EdP.png", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 } },
-  { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer", image: "/products/Terre-d'Hermès-EdT.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 } },
-  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Niche", image: "/products/Tom-Ford-Noir-Extreme-EdP.png", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 } }
+  { id: 41, name: "L'Homme Eau de Parfum by Yves Saint Laurent", category: "Designer", image: "/products/L'Homme-EdP-YSL.png", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 }, rating: 8.1, ratingLabel: "Audience Favorite" },
+  { id: 42, name: "L'Homme Idéal De Guerlain Paris Eau De Toilette", category: "Designer", image: "/products/L'Homme-Idéal-De-Guerlain-Paris-EDT.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, rating: 8.4, ratingLabel: "Audience Favorite" },
+  { id: 43, name: "Mancera Cedrat Boise Eau de Parfum", category: "Niche", image: "/products/Mancera-Cedrat-Boise-EdP.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, badge: "BESTSELLER", rating: 9.0, ratingLabel: "Top Rated" },
+  { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer", image: "/products/Montblanc-Explorer-Extreme-Parfum.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, rating: 7.8, ratingLabel: "Well Loved" },
+  { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer", image: "/products/Narciso-Rodriguez-for-Him-Bleu-Noir-EdP.png", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 }, rating: 8.2, ratingLabel: "Audience Favorite" },
+  { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer", image: "/products/Terre-d'Hermès-EdT.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, rating: 8.9, ratingLabel: "Audience Favorite" },
+  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Niche", image: "/products/Tom-Ford-Noir-Extreme-EdP.png", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 }, rating: 9.1, ratingLabel: "Top Rated" }
 ];
 
 const productCopy = {
@@ -1384,6 +1384,143 @@ const ProductCard = ({ product }) => {
         <p className="product-category">{getCategoryLabel(product.category)}</p>
 
         <h3 className="product-card-title">{product.name}</h3>
+
+        const ProductCard = ({ product }) => {
+  const copy = getProductCopy(product, lang);
+
+const ratingLabels = {
+  en: {
+    top: "Top Rated",
+    high: "Audience Favorite",
+    mid: "Well Loved",
+    low: "Popular Pick"
+  },
+  sr: {
+    top: "Najviše ocenjen",
+    high: "Publika ga voli",
+    mid: "Veoma voljen",
+    low: "Popularan izbor"
+  }
+};
+
+const getRatingLabel = (rating, lang) => {
+  if (rating >= 9) return ratingLabels[lang].top;
+  if (rating >= 8) return ratingLabels[lang].high;
+  if (rating >= 7) return ratingLabels[lang].mid;
+  return ratingLabels[lang].low;
+};
+
+  return (
+    <article
+      className="product-card clickable premium-product-card"
+      key={product.id}
+      onClick={() => openProductModal(product)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openProductModal(product);
+        }
+      }}
+    >
+      <div className="product-card-media">
+        <img
+          src={product.image || "/placeholder.png"}
+          alt={product.name}
+          className="product-card-image"
+          loading="lazy"
+        />
+      </div>
+
+      {product.badge && <span className="product-badge">{product.badge}</span>}
+
+      <div className="product-meta premium-product-meta">
+        <p className="product-category">{getCategoryLabel(product.category)}</p>
+
+        <h3 className="product-card-title">{product.name}</h3>
+
+        {product.rating && (
+          <div className="product-rating">
+            <div className="product-rating-stars" aria-hidden="true">
+              {Array.from({ length: 10 }).map((_, index) => (
+                <span
+                  key={index}
+                  className={index < Math.round(product.rating) ? "filled" : ""}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+
+            <div className="product-rating-meta">
+              <span className="product-rating-score">
+                {product.rating.toFixed(1)} / 10
+              </span>
+              <span className="product-rating-label">
+                {product.ratingLabel || getRatingLabel(product.rating, lang)}
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div className="product-card-copy-stack">
+          <span className="product-mini-tag product-card-mini-tag">
+            {copy.miniTag}
+          </span>
+
+          <p className="product-card-copy premium-card-copy">
+            {copy.card}
+          </p>
+        </div>
+
+        <p className="product-price-from premium-product-price">
+          {tr.from} {formatPrice(Math.min(...Object.values(product.sizes)))}
+        </p>
+      </div>
+
+      <div className="product-preview-line premium-preview-line">
+        <span>{tr.openDetails}</span>
+        <strong>{tr.luxuryModal}</strong>
+      </div>
+
+      <div
+        className="size-buttons"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        {Object.entries(product.sizes).map(([size, price]) => {
+          const feedbackKey = `${product.id}-${size}`;
+          const isJustAdded = justAddedKey === feedbackKey;
+
+          return (
+            <button
+              key={size}
+              type="button"
+              className={`size-chip ${isJustAdded ? "is-added" : ""}`}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.currentTarget.blur();
+
+                addToCart(product, size, null, null, { showToast: false });
+                triggerInlineAddedFeedback(product.id, size);
+              }}
+            >
+              <span className="size-chip-main">{size}</span>
+              <strong>{formatPrice(price)}</strong>
+
+              <span className={`size-chip-feedback ${isJustAdded ? "show" : ""}`}>
+                {tr.justAdded}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </article>
+  );
+};
 
         <div className="product-card-copy-stack">
           <span className="product-mini-tag product-card-mini-tag">

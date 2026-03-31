@@ -4678,3 +4678,53 @@ main {
     max-height: 180px;
   }
 }
+
+/* =========================================
+   PRODUCT RATING
+========================================= */
+.product-rating {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: grid;
+  gap: 4px;
+}
+
+.product-rating-stars {
+  display: flex;
+  gap: 3px;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.product-rating-stars span {
+  color: rgba(220, 181, 107, 0.18);
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.product-rating-stars span.filled {
+  color: var(--gold);
+  text-shadow: 0 0 8px rgba(220, 181, 107, 0.18);
+}
+
+.product-rating-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.product-rating-score {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f5e7c2;
+  letter-spacing: 0.04em;
+}
+
+.product-rating-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.58);
+}
