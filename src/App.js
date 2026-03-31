@@ -1355,6 +1355,28 @@ const getProductVibe = (product) => {
 const ProductCard = ({ product }) => {
   const copy = getProductCopy(product, lang);
 
+  const ratingLabels = {
+    en: {
+      top: "Top Rated",
+      high: "Audience Favorite",
+      mid: "Well Loved",
+      low: "Popular Pick"
+    },
+    sr: {
+      top: "Najviše ocenjen",
+      high: "Publika ga voli",
+      mid: "Veoma voljen",
+      low: "Popularan izbor"
+    }
+  };
+
+  const getRatingLabel = (rating, lang) => {
+    if (rating >= 9) return ratingLabels[lang].top;
+    if (rating >= 8) return ratingLabels[lang].high;
+    if (rating >= 7) return ratingLabels[lang].mid;
+    return ratingLabels[lang].low;
+  };
+
   return (
     <article
       className="product-card clickable premium-product-card"
@@ -1387,28 +1409,6 @@ const ProductCard = ({ product }) => {
 
         const ProductCard = ({ product }) => {
   const copy = getProductCopy(product, lang);
-
-const ratingLabels = {
-  en: {
-    top: "Top Rated",
-    high: "Audience Favorite",
-    mid: "Well Loved",
-    low: "Popular Pick"
-  },
-  sr: {
-    top: "Najviše ocenjen",
-    high: "Publika ga voli",
-    mid: "Veoma voljen",
-    low: "Popularan izbor"
-  }
-};
-
-const getRatingLabel = (rating, lang) => {
-  if (rating >= 9) return ratingLabels[lang].top;
-  if (rating >= 8) return ratingLabels[lang].high;
-  if (rating >= 7) return ratingLabels[lang].mid;
-  return ratingLabels[lang].low;
-};
 
   return (
     <article
