@@ -5370,3 +5370,22 @@ main {
 
   box-shadow: 0 0 12px rgba(220, 181, 107, 0.15);
 }
+
+.product-card-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.55rem;
+  line-height: 1.12;
+  color: rgba(255, 248, 235, 0.96);
+}
+
+.price-value {
+  color: #ddb76d;
+}
+
+.product-category {
+  color: rgba(255, 255, 255, 0.46);
+}
+
+.product-card-copy.premium-card-copy {
+  color: rgba(255, 255, 255, 0.66);
+}
