@@ -1418,13 +1418,6 @@ const ProductCard = ({ product }) => {
         />
       </div>
 
-      {/* TOP MINI BADGE */}
-      {copy.miniTag && (
-        <span className="product-top-mini-badge">
-          {copy.miniTag}
-        </span>
-      )}
-
       {/* META */}
       <div className="product-meta premium-product-meta">
         {/* TOP */}
@@ -1471,14 +1464,29 @@ const ProductCard = ({ product }) => {
 
         {/* BOTTOM */}
         <div className="product-meta-bottom">
-          <div className="product-price-row">
-            <span className="product-price-from premium-product-price">
-  <span className="price-prefix">{tr.from}</span>
-  <span className="price-value">€{minPrice}</span>
-</span>
-          </div>
+  <div className="product-price-block">
 
-          <div className="product-preview-line premium-preview-line single-line-preview">
+    {copy.miniTag && (
+      <span className="product-price-mini-badge">
+        {copy.miniTag}
+      </span>
+    )}
+
+    <div className="product-price-row">
+      <span className="product-price-from premium-product-price">
+        <span className="price-prefix">{tr.from}</span>
+        <span className="price-value">€{minPrice}</span>
+      </span>
+    </div>
+
+  </div>
+
+  <div className="product-preview-line premium-preview-line single-line-preview">
+    <span>
+      {lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}
+    </span>
+  </div>
+</div>
             <span>
               {lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}
             </span>
