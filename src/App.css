@@ -3781,23 +3781,85 @@ main {
   isolation: isolate;
 }
 
+.product-card-media::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 110px;
+  height: 110px;
+  transform: translate(-50%, -50%) scale(0.55);
+  transform-origin: center;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.34) 0%,
+      rgba(255, 255, 255, 0.18) 18%,
+      rgba(255, 255, 255, 0.08) 34%,
+      rgba(255, 255, 255, 0.02) 56%,
+      transparent 76%
+    );
+
+  filter: blur(10px);
+  mix-blend-mode: screen;
+
+  transition:
+    opacity 0.14s ease,
+    transform 0.34s ease,
+    filter 0.34s ease;
+}
+
 .product-card-media::after {
   content: "";
   position: absolute;
-  bottom: 12px;
   left: 50%;
-  width: 62%;
-  height: 22px;
-  transform: translateX(-50%);
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 0.42),
-    transparent 72%
-  );
-  filter: blur(7px);
-  opacity: 0.6;
+  top: 50%;
+  width: 220px;
+  height: 220px;
+  transform: translate(-50%, -50%) scale(0.72);
+  transform-origin: center;
+  border-radius: 50%;
   pointer-events: none;
   z-index: 0;
+  opacity: 0;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0.08) 20%,
+      rgba(255, 255, 255, 0.035) 40%,
+      rgba(255, 255, 255, 0.012) 58%,
+      transparent 78%
+    );
+
+  filter: blur(24px);
+  mix-blend-mode: screen;
+
+  transition:
+    opacity 0.28s ease 0.08s,
+    transform 0.95s ease 0.08s,
+    filter 0.95s ease 0.08s;
+}
+
+/* =========================================
+   PRODUCT CARD — SMOKE HOVER TRIGGER
+========================================= */
+.product-card:hover .product-card-media::before {
+  opacity: 0.95;
+  transform: translate(-50%, -50%) scale(1.18);
+  filter: blur(18px);
+}
+
+.product-card:hover .product-card-media::after {
+  opacity: 0.72;
+  transform: translate(-50%, -50%) scale(1.18);
+  filter: blur(34px);
 }
 
 .product-card-image {
@@ -3821,7 +3883,7 @@ main {
   transform: translateY(-4px) scale(1.015);
   filter:
     drop-shadow(0 28px 56px rgba(0, 0, 0, 0.78))
-    drop-shadow(0 0 12px rgba(255, 255, 255, 0.05));
+    drop-shadow(0 0 10px rgba(255, 255, 255, 0.06));
 }
 
 .product-meta {
