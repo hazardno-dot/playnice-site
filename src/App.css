@@ -4137,6 +4137,11 @@ main {
   transition: opacity 0.16s ease;
 }
 
+.size-chip {
+  position: relative;
+  overflow: hidden;
+}
+
 .size-chip-feedback {
   position: absolute;
   inset: 0;
@@ -4145,30 +4150,7 @@ main {
   align-items: center;
   justify-content: center;
   border-radius: inherit;
-  background: rgba(255, 0, 0, 0.45);
-  color: #fff;
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.size-chip-feedback.show {
-  opacity: 1;
-}
-
-.size-chip-feedback {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: inherit;
-  background: rgba(10, 10, 10, 0.58);
+  background: rgba(10, 10, 10, 0.62);
   color: #f3e1b8;
   font-family: "Inter", sans-serif;
   font-size: 10px;
@@ -4177,6 +4159,17 @@ main {
   text-transform: uppercase;
   opacity: 0;
   pointer-events: none;
+}
+
+.size-chip-feedback.show {
+  animation: addedFlash 0.62s ease forwards;
+}
+
+@keyframes addedFlash {
+  0% { opacity: 0; }
+  18% { opacity: 1; }
+  72% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 /* =========================================
