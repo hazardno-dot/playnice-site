@@ -1373,31 +1373,8 @@ const ProductCard = ({ product }) => {
   const copy = getProductCopy(product, lang);
   const minPrice = Math.min(...Object.values(product.sizes));
 
-  const ratingLabels = {
-    en: {
-      top: "Top Rated",
-      high: "Audience Favorite",
-      mid: "Well Loved",
-      low: "Popular Pick"
-    },
-    sr: {
-      top: "Najviše ocenjen",
-      high: "Publika ga voli",
-      mid: "Veoma voljen",
-      low: "Popularan izbor"
-    }
-  };
-
-  const getRatingLabel = (rating, lang) => {
-    if (rating >= 9) return ratingLabels[lang].top;
-    if (rating >= 8) return ratingLabels[lang].high;
-    if (rating >= 7) return ratingLabels[lang].mid;
-    return ratingLabels[lang].low;
-  };
-
   return (
     <article className="product-card premium-product-card">
-      {/* IMAGE */}
       <div
         className="product-card-media clickable-media"
         onClick={() => openProductModal(product)}
@@ -1418,42 +1395,15 @@ const ProductCard = ({ product }) => {
         />
       </div>
 
-      {/* META */}
       <div className="product-meta premium-product-meta">
-        {/* TOP */}
         <div className="product-meta-top">
           <p className="product-category">
             {getCategoryLabel(product.category)}
           </p>
 
           <h3 className="product-card-title">{product.name}</h3>
-
-          {product.rating && (
-            <div className="product-rating">
-              <div className="product-rating-stars" aria-hidden="true">
-                {Array.from({ length: 10 }).map((_, index) => (
-                  <span
-                    key={index}
-                    className={index < Math.round(product.rating) ? "filled" : ""}
-                  >
-                    ★
-                  </span>
-                ))}
-              </div>
-
-              <div className="product-rating-meta">
-                <span className="product-rating-score">
-                  {product.rating.toFixed(1)} / 10
-                </span>
-                <span className="product-rating-label">
-                  {product.ratingLabel || getRatingLabel(product.rating, lang)}
-                </span>
-              </div>
-            </div>
-          )}
         </div>
 
-        {/* MIDDLE */}
         <div className="product-meta-middle">
           <div className="product-card-copy-stack">
             <p className="product-card-copy premium-card-copy">
@@ -1462,7 +1412,6 @@ const ProductCard = ({ product }) => {
           </div>
         </div>
 
-        {/* BOTTOM */}
         <div className="product-meta-bottom">
           <div className="product-price-block">
             {copy.miniTag && (
@@ -1487,7 +1436,6 @@ const ProductCard = ({ product }) => {
         </div>
       </div>
 
-      {/* SIZE BUTTONS */}
       <div
         className="size-buttons"
         onClick={(e) => e.stopPropagation()}
@@ -2198,6 +2146,30 @@ return (
             <div className="modal-header">
               <span className="modal-eyebrow">PRIVATE SELECTION</span>
               <h2>{selectedProduct.name}</h2>
+
+              {selectedProduct.rating && (
+  <div className="modal-rating">
+    <div className="modal-rating-stars" aria-hidden="true">
+      {Array.from({ length: 10 }).map((_, index) => (
+        <span
+          key={index}
+          className={index < Math.round(selectedProduct.rating) ? "filled" : ""}
+        >
+          ★
+        </span>
+      ))}
+    </div>
+
+    <div className="modal-rating-meta">
+      <span className="modal-rating-score">
+        {selectedProduct.rating.toFixed(1)} / 10
+      </span>
+      <span className="modal-rating-label">
+        {selectedProduct.ratingLabel}
+      </span>
+    </div>
+  </div>
+)}
             </div>
 
             <div className="modal-body">
