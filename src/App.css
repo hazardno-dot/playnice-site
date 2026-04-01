@@ -5347,45 +5347,224 @@ main {
   position: relative; /* OBAVEZNO */
 }
 
-/* FLOATING BADGE - TOP RIGHT */
-.product-floating-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
+/* =========================================
+   PRODUCT CARD — PREMIUM SPACING + TYPE
+========================================= */
 
-  font-size: 0.65rem;
-  padding: 5px 10px;
-  border-radius: 999px;
+.product-card.premium-product-card {
+  padding: 14px;
+}
 
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(8px);
+.product-card-media {
+  min-height: 205px;
+  padding: 12px 14px 4px;
+  margin-bottom: 0;
+}
 
-  border: 1px solid rgba(220, 181, 107, 0.35);
-  color: var(--gold);
+.product-card-image {
+  max-width: 172px;
+  max-height: 192px;
+}
 
-  letter-spacing: 0.08em;
+.product-meta.premium-product-meta {
+  padding: 10px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.product-meta-top {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-category {
+  margin: 0 0 1px;
+}
+
+.product-card-title {
+  margin: 0;
+  min-height: 2.45em;
+}
+
+.product-meta-middle {
+  padding-top: 6px;
+}
+
+.product-card-copy-stack {
+  min-height: 40px;
+}
+
+.product-card-copy.premium-card-copy {
+  margin: 0;
+  min-height: 2.35em;
+}
+
+.product-meta-bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 8px;
+}
+
+.product-price-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 0;
+}
+
+.product-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 22px;
+  margin: 0;
+}
+
+.product-preview-line.premium-preview-line.single-line-preview {
+  min-height: 18px;
+  margin: 0;
+}
+
+/* =========================================
+   PRODUCT CARD — PREMIUM TYPOGRAPHY
+========================================= */
+
+.product-category {
+  font-family: "Inter", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-
-  z-index: 2;
-
-  box-shadow: 0 0 12px rgba(220, 181, 107, 0.15);
+  color: rgba(255, 255, 255, 0.46);
+  line-height: 1.2;
 }
 
 .product-card-title {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.55rem;
+  font-weight: 600;
   line-height: 1.12;
   color: rgba(255, 248, 235, 0.96);
-}
-
-.price-value {
-  color: #ddb76d;
-}
-
-.product-category {
-  color: rgba(255, 255, 255, 0.46);
+  letter-spacing: 0.01em;
 }
 
 .product-card-copy.premium-card-copy {
+  font-family: "Inter", sans-serif;
+  font-size: 0.80rem;
+  line-height: 1.4;
   color: rgba(255, 255, 255, 0.66);
+}
+
+.product-floating-badge {
+  font-family: "Inter", sans-serif;
+  font-size: 0.60rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e0bc74;
+  background: rgba(7, 7, 7, 0.56);
+  border: 1px solid rgba(220, 181, 107, 0.26);
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.24),
+    0 0 12px rgba(220, 181, 107, 0.10);
+}
+
+.price-prefix {
+  font-family: "Inter", sans-serif;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.price-value {
+  font-family: "Inter", sans-serif;
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #ddb76d;
+  text-shadow:
+    0 0 8px rgba(220, 181, 107, 0.14),
+    0 0 18px rgba(220, 181, 107, 0.08);
+}
+
+.product-preview-line.premium-preview-line.single-line-preview span {
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #49dbe6;
+}
+
+/* =========================================
+   PRODUCT CARD — FLOATING MINI BADGE (FINAL)
+========================================= */
+
+.product-card {
+  position: relative;
+}
+
+/* BADGE */
+.product-floating-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px 11px;
+  border-radius: 999px;
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  color: #e6c27a;
+
+  background: rgba(8, 8, 8, 0.58);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(220, 181, 107, 0.28);
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.35),
+    0 0 10px rgba(220, 181, 107, 0.08);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+/* HOVER — suptilan luksuz */
+.product-card:hover .product-floating-badge {
+  transform: translateY(-1px);
+
+  border-color: rgba(220, 181, 107, 0.42);
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.45),
+    0 0 16px rgba(220, 181, 107, 0.18);
+}
+
+/* AKTIVNO (klik feedback) */
+.product-card:active .product-floating-badge {
+  transform: translateY(0);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 8px rgba(220, 181, 107, 0.12);
 }
