@@ -1487,12 +1487,6 @@ const ProductCard = ({ product }) => {
     </span>
   </div>
 </div>
-            <span>
-              {lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}
-            </span>
-          </div>
-        </div>
-      </div>
 
       {/* SIZE BUTTONS */}
       <div
