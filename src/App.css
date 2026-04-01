@@ -4290,21 +4290,17 @@ main {
 /* =========================================
    PRODUCT GRID — MOBILE FIX
 ========================================= */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .product-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-}
 
-@media (max-width: 768px) {
   .product-card {
     padding: 16px;
     border-radius: 20px;
   }
-}
 
-@media (max-width: 768px) {
   .product-card-media {
     min-height: 180px;
   }
