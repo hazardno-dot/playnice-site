@@ -4013,6 +4013,27 @@ main {
   text-align: center;
 }
 
+@keyframes playniceBreath {
+  0% {
+    opacity: 0.76;
+    text-shadow:
+      0 0 0 rgba(73, 219, 230, 0),
+      0 0 0 rgba(220, 181, 107, 0);
+  }
+  50% {
+    opacity: 1;
+    text-shadow:
+      0 0 8px rgba(73, 219, 230, 0.18),
+      0 0 4px rgba(220, 181, 107, 0.10);
+  }
+  100% {
+    opacity: 0.76;
+    text-shadow:
+      0 0 0 rgba(73, 219, 230, 0),
+      0 0 0 rgba(220, 181, 107, 0);
+  }
+}
+
 .product-preview-line.single-line-preview span,
 .product-preview-line.premium-preview-line.single-line-preview span {
   font-family: "Inter", sans-serif;
@@ -4021,10 +4042,7 @@ main {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #49dbe6;
-  text-shadow:
-    0 0 6px rgba(73, 219, 230, 0.18),
-    0 0 14px rgba(73, 219, 230, 0.10);
-  animation: tryBeforePulse 3.2s ease-in-out infinite;
+  animation: playniceBreath 4.8s ease-in-out infinite;
 }
 
 .product-card:hover .price-value {
