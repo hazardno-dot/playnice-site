@@ -3589,35 +3589,6 @@ main {
   filter: blur(26px);
 }
 
-.product-card-media::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  width: 180px;
-  height: 180px;
-  transform: translate(-50%, -50%) scale(0.82);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0;
-
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.04) 28%, transparent 74%);
-
-  filter: blur(28px);
-  transition:
-    opacity 0.45s ease,
-    transform 1.1s ease,
-    filter 1.1s ease;
-}
-
-.product-card:hover .product-card-media::after {
-  opacity: 0.5;
-  transform: translate(-50%, -50%) scale(1.08);
-  filter: blur(34px);
-}
-
 .product-card-image {
   margin-bottom: 0;
   width: 100%;
