@@ -4162,7 +4162,7 @@ main {
 }
 
 .size-chip-feedback.show {
-  animation: addedFlash 0.85s ease forwards;
+  animation: addedFlash 1.15s ease forwards;
 }
 
 @keyframes addedFlash {
