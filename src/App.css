@@ -4338,32 +4338,76 @@ main {
     border-radius: 12px;
   }
 
-  .size-chip.is-added {
-    border-color: rgba(220, 181, 107, 0.42) !important;
-    background:
-      linear-gradient(180deg, rgba(220, 181, 107, 0.12), rgba(220, 181, 107, 0.05)),
-      rgba(22, 18, 12, 0.94) !important;
-    color: #f3e1b8;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.05),
-      0 4px 12px rgba(0, 0, 0, 0.22),
-      0 0 0 1px rgba(220, 181, 107, 0.08);
-    transform: none !important;
-    filter: none !important;
+@media (max-width: 768px) {
+  .size-buttons .size-chip {
+    min-height: 40px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    transition:
+      background-color 0.18s ease,
+      border-color 0.18s ease,
+      color 0.18s ease;
+    box-shadow: none;
+  }
+
+  .size-buttons .size-chip::before,
+  .size-buttons .size-chip::after {
+    display: none;
+  }
+
+  .size-buttons .size-chip:hover {
+    box-shadow: none;
+    transform: none;
     animation: none;
   }
 
-  .size-chip.is-added:hover {
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.05),
-      0 4px 12px rgba(0, 0, 0, 0.22),
-      0 0 0 1px rgba(220, 181, 107, 0.08);
+  .size-chip.is-added {
+    border-color: rgba(220, 181, 107, 0.42) !important;
+    background:
+      linear-gradient(180deg, rgba(220, 181, 107, 0.10), rgba(220, 181, 107, 0.04)),
+      rgba(22, 18, 12, 0.94) !important;
+    color: #f3e1b8;
+    box-shadow: none !important;
     transform: none !important;
     filter: none !important;
-    animation: none;
+    animation: none !important;
+  }
+
+  .size-chip.is-added:hover {
+    box-shadow: none !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
   }
 
   .size-chip-feedback {
     font-size: 10px;
+    backdrop-filter: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-card,
+  .product-card-media,
+  .product-card-image {
+    transform: translateZ(0);
+  }
+
+  .product-card-image {
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6));
+  }
+}
+
+@media (max-width: 768px) {
+  .size-chip.is-added {
+    border-color: rgba(220, 181, 107, 0.42) !important;
+    background:
+      linear-gradient(180deg, rgba(220, 181, 107, 0.09), rgba(220, 181, 107, 0.03)),
+      rgba(22, 18, 12, 0.94) !important;
+    color: #f3e1b8;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 0 0 1px rgba(220, 181, 107, 0.06);
+    animation: none !important;
   }
 }
