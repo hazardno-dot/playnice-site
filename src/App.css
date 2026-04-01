@@ -5227,3 +5227,48 @@ main {
 .size-chip-feedback {
   font-size: 10px;
 }
+
+/* =========================================
+   CARD ALIGNMENT LOCK SYSTEM
+========================================= */
+
+/* 1. MEDIA ZONA — identična visina */
+.product-card-media {
+  min-height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 2. TITLE — fiksno 2 reda */
+.product-card-title {
+  min-height: 2.8em;
+  line-height: 1.2;
+}
+
+/* 3. RATING — rezerviši prostor čak i kad ga nema */
+.product-rating {
+  min-height: 38px;
+}
+
+/* 4. COPY — fiksan blok */
+.product-card-copy-stack {
+  min-height: 50px;
+}
+
+/* 5. META TOP — zaključava spacing */
+.product-meta-top {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 6. META MIDDLE — ne sme da raste haotično */
+.product-meta-middle {
+  padding-top: 8px;
+}
+
+/* 7. PRICE LOCK */
+.product-price-row {
+  min-height: 22px;
+}
