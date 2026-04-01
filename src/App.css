@@ -3779,6 +3779,7 @@ main {
   overflow: hidden;
   z-index: 1;
   isolation: isolate;
+  cursor: pointer;
 }
 
 /* =========================================
@@ -3816,41 +3817,20 @@ main {
 .product-card-media::after {
   content: "";
   position: absolute;
-  left: 52%;
-  bottom: 54px;
-  width: 156px;
-  height: 255px;
-  transform: translateX(-50%) translateY(26px) scale(0.88);
-  transform-origin: bottom center;
+  inset: 0;
   pointer-events: none;
   z-index: 0;
   opacity: 0;
 
   background:
     radial-gradient(
-      ellipse at 52% 88%,
-      rgba(210, 216, 222, 0.07) 0%,
-      rgba(186, 194, 202, 0.03) 20%,
-      transparent 58%
-    ),
-    radial-gradient(
-      ellipse at 40% 58%,
-      rgba(196, 204, 212, 0.055) 0%,
-      rgba(174, 182, 190, 0.022) 18%,
-      transparent 50%
-    ),
-    radial-gradient(
-      ellipse at 64% 22%,
-      rgba(188, 196, 204, 0.04) 0%,
-      rgba(166, 174, 182, 0.015) 16%,
-      transparent 44%
+      circle at 50% 45%,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.025) 35%,
+      transparent 70%
     );
 
-  filter: blur(26px);
-  transition:
-    opacity 0.42s ease 0.08s,
-    transform 1.8s ease 0.08s,
-    filter 1.8s ease 0.08s;
+  transition: opacity 0.28s ease;
 }
 
 .product-card:hover .product-card-media::before {
@@ -3882,11 +3862,16 @@ main {
     drop-shadow(0 0 10px rgba(255, 255, 255, 0.03));
 }
 
-.product-card:hover .product-card-image {
-  transform: translateY(-4px) scale(1.015);
+.product-card:hover .product-card-image,
+.product-card-media:hover .product-card-image {
+  transform: translateY(-4px) scale(1.03);
   filter:
     drop-shadow(0 28px 56px rgba(0, 0, 0, 0.78))
     drop-shadow(0 0 16px rgba(220, 181, 107, 0.10));
+}
+
+.product-card-media:hover::after {
+  opacity: 1;
 }
 
 .product-meta {
