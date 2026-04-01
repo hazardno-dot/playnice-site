@@ -1395,6 +1395,12 @@ const ProductCard = ({ product }) => {
         />
       </div>
 
+      {copy.miniTag && (
+  <span className="product-floating-badge">
+    {copy.miniTag}
+  </span>
+)}
+
       <div className="product-meta premium-product-meta">
         <div className="product-meta-top">
           <p className="product-category">
@@ -1414,11 +1420,6 @@ const ProductCard = ({ product }) => {
 
         <div className="product-meta-bottom">
           <div className="product-price-block">
-            {copy.miniTag && (
-              <span className="product-price-mini-badge">
-                {copy.miniTag}
-              </span>
-            )}
 
             <div className="product-price-row">
               <span className="product-price-from premium-product-price">
