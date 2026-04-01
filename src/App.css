@@ -4140,20 +4140,24 @@ main {
 .size-chip-feedback {
   position: absolute;
   inset: 0;
-  z-index: 3;
+  z-index: 999;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: inherit;
-  background: rgba(10, 10, 10, 0.58);
-  color: #f3e1b8;
+  background: rgba(255, 0, 0, 0.45);
+  color: #fff;
   font-family: "Inter", sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   opacity: 0;
   pointer-events: none;
+}
+
+.size-chip-feedback.show {
+  opacity: 1;
 }
 
 .size-chip-feedback {
