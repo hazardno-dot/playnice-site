@@ -1196,6 +1196,10 @@ main {
   flex: 0 0 auto;
 }
 
+.product-meta > *:last-child {
+  margin-bottom: 0;
+}
+
 .product-category {
   margin: 0 0 4px;
   color: var(--gold);
@@ -4220,8 +4224,8 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 205px;
-  padding: 12px 14px 4px;
+  min-height: 212px;
+  padding: 14px 14px 8px;
   margin-bottom: 0;
   overflow: hidden;
   z-index: 1;
@@ -4273,7 +4277,7 @@ main {
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 10px 14px 8px;
+  padding: 12px 14px 10px;
   gap: 0;
   min-width: 0;
 }
@@ -4281,24 +4285,24 @@ main {
 .product-meta-top {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
   min-width: 0;
 }
 
 .product-category {
-  margin: 0 0 1px;
+  margin: 0 0 2px;
   font-family: "Inter", sans-serif;
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.46);
+  color: rgba(255, 255, 255, 0.44);
   line-height: 1.2;
 }
 
 .product-card-title {
   margin: 0;
-  min-height: 2.45em;
+  min-height: 2.5em;
   font-family: "Cormorant Garamond", serif;
   font-size: 1.48rem;
   font-weight: 600;
@@ -4320,12 +4324,12 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-top: 6px;
+  padding-top: 8px;
   min-width: 0;
 }
 
 .product-card-copy-stack {
-  min-height: 40px;
+  min-height: 42px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -4335,7 +4339,7 @@ main {
 .product-card-copy,
 .premium-card-copy {
   margin: 0;
-  min-height: 2.35em;
+  min-height: 2.4em;
   font-family: "Inter", sans-serif;
   font-size: 0.79rem;
   line-height: 1.46;
@@ -4351,22 +4355,22 @@ main {
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding-top: 8px;
+  gap: 8px;
+  padding-top: 10px;
 }
 
 .product-price-block {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: 5px;
 }
 
 .product-price-row {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  min-height: 22px;
+  min-height: 24px;
   margin: 0;
 }
 
@@ -4380,11 +4384,11 @@ main {
 
 .price-prefix {
   font-family: "Inter", sans-serif;
-  font-size: 0.66rem;
+  font-size: 0.63rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.48);
+  color: rgba(255, 255, 255, 0.44);
 }
 
 .price-value {
@@ -4400,7 +4404,7 @@ main {
 
 .product-preview-line.single-line-preview,
 .product-preview-line.premium-preview-line.single-line-preview {
-  min-height: 18px;
+  min-height: 20px;
   margin: 0;
   display: flex;
   align-items: center;
@@ -4429,7 +4433,7 @@ main {
 }
 
 .size-buttons {
-  margin-top: 8px;
+  margin-top: 10px;
   padding: 0 14px 14px;
   display: flex;
   flex-direction: column;
