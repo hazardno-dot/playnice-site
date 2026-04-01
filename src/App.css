@@ -3543,6 +3543,101 @@ main {
     0 0 0 1px rgba(220, 181, 107, 0.08);
 }
 
+.product-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card-media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  padding: 20px 18px 10px;
+  overflow: hidden;
+  z-index: 1;
+  margin-bottom: 0;
+}
+
+.product-card-media::after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  width: 60%;
+  height: 20px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.45),
+    transparent 70%
+  );
+  filter: blur(6px);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.product-card-image {
+  margin-bottom: 0;
+  width: 100%;
+  max-width: 190px;
+  max-height: 220px;
+  object-fit: contain;
+  display: block;
+  position: relative;
+  z-index: 1;
+  will-change: transform, filter;
+  transition:
+    transform 0.45s ease,
+    filter 0.45s ease,
+    opacity 0.3s ease;
+  filter:
+    drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 0 18px rgba(220, 181, 107, 0.08));
+}
+
+.product-card:hover .product-card-image {
+  transform: translateY(-6px) scale(1.02);
+  filter:
+    drop-shadow(0 30px 60px rgba(0, 0, 0, 0.8))
+    drop-shadow(0 0 28px rgba(220, 181, 107, 0.18))
+    drop-shadow(0 0 60px rgba(220, 181, 107, 0.08));
+}
+
+.product-card::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 18%;
+  bottom: 18%;
+  background: radial-gradient(
+    circle,
+    rgba(220, 181, 107, 0.12),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.product-card:hover::after {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .product-card-media {
+    min-height: 200px;
+    padding: 16px 14px 8px;
+  }
+
+  .product-card-image {
+    max-width: 150px;
+    max-height: 180px;
+  }
+}
+
 /* =========================================
    PRODUCT CARD — PREMIUM TYPOGRAPHY
 ========================================= */
