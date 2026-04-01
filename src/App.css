@@ -4332,13 +4332,7 @@ main {
     gap: 8px;
   }
 
-  .size-buttons .size-chip {
-    min-height: 40px;
-    padding: 8px 12px;
-    border-radius: 12px;
-  }
-
-@media (max-width: 768px) {
+  @media (max-width: 768px) {
   .size-buttons .size-chip {
     min-height: 40px;
     padding: 8px 12px;
@@ -4396,4 +4390,17 @@ main {
   .product-card-image {
     filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6));
   }
+}
+
+@media (max-width: 768px) {
+  .product-card,
+  .product-card-media,
+  .product-card-image {
+    transform: translateZ(0);
+  }
+
+  .product-card-image {
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6));
+  }
+}
 }
