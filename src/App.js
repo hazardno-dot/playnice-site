@@ -1372,6 +1372,46 @@ const getProductVibe = (product) => {
 const ProductCard = ({ product }) => {
   const copy = getProductCopy(product, lang);
   const minPrice = Math.min(...Object.values(product.sizes));
+  const getBadgeVariant = (miniTag = "") => {
+  const tag = miniTag.toLowerCase();
+
+  if (
+    tag.includes("bestseller") ||
+    tag.includes("top") ||
+    tag.includes("🔥")
+  ) {
+    return "badge-hot";
+  }
+
+  if (
+    tag.includes("fresh") ||
+    tag.includes("summer") ||
+    tag.includes("blue") ||
+    tag.includes("❄️")
+  ) {
+    return "badge-fresh";
+  }
+
+  if (
+    tag.includes("sweet") ||
+    tag.includes("date") ||
+    tag.includes("gourmand") ||
+    tag.includes("🍯")
+  ) {
+    return "badge-sweet";
+  }
+
+  if (
+    tag.includes("luxury") ||
+    tag.includes("signature") ||
+    tag.includes("exclusive") ||
+    tag.includes("💎")
+  ) {
+    return "badge-luxury";
+  }
+
+  return "badge-default";
+};
 
   return (
     <article className="product-card premium-product-card">
@@ -1396,7 +1436,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {copy.miniTag && (
-  <span className="product-floating-badge">
+  <span className={`product-floating-badge ${getBadgeVariant(copy.miniTag)}`}>
     {copy.miniTag}
   </span>
 )}
