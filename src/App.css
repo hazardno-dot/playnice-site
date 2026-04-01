@@ -232,12 +232,6 @@ main {
   transition: 0.28s ease;
 }
 
-.product-card {
-  transition:
-    box-shadow 0.28s ease,
-    border-color 0.28s ease;
-}
-
 .size-buttons button {
   transition:
     background-color 0.2s ease,
@@ -1138,25 +1132,6 @@ main {
   align-items: stretch;
 }
 
-.product-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 100%;
-  padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
-    rgba(12, 12, 12, 0.98);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  isolation: isolate;
-  transform: translateZ(0);
-  will-change: box-shadow, border-color;
-}
-
 .product-card::before {
   content: "";
   position: absolute;
@@ -1187,18 +1162,6 @@ main {
 
 .product-card:hover::before {
   opacity: 0;
-}
-
-.product-card::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 1px;
-  background: rgba(215, 179, 98, 0.4);
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
 .product-card:hover::after {
@@ -1246,28 +1209,6 @@ main {
   min-height: 0;
   font-size: 18px;
   line-height: 1.35;
-}
-
-.product-card-title {
-  margin: 0;
-  line-height: 1.18;
-  min-height: 2.36em;
-  width: 100%;
-  max-width: 100%;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-.product-card-copy-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  min-height: 54px;
 }
 
 .product-card-mini-tag {
@@ -1663,39 +1604,6 @@ main {
 .form-row textarea:focus {
   border-color: var(--line-strong);
   box-shadow: 0 0 0 3px rgba(220, 181, 107, 0.08);
-}
-
-/* =========================================
-   PAGINATION
-========================================= */
-.pagination-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin: 34px auto 0;
-}
-
-.pagination-wrap button {
-  padding: 12px 16px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.03);
-  color: var(--text);
-}
-
-.pagination-wrap button:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.pagination-wrap button:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-.pagination-wrap span {
-  color: var(--text-soft);
-  letter-spacing: 0.08em;
 }
 
 /* =========================================
@@ -3017,56 +2925,6 @@ main {
   }
 }
 
-@keyframes goldBreath {
-  0% {
-    box-shadow:
-      0 10px 28px rgba(0, 0, 0, 0.32),
-      0 0 0 1px rgba(220, 181, 107, 0.08) inset,
-      0 0 12px rgba(220, 181, 107, 0.06);
-  }
-  50% {
-    box-shadow:
-      0 12px 32px rgba(0, 0, 0, 0.36),
-      0 0 0 1px rgba(220, 181, 107, 0.12) inset,
-      0 0 22px rgba(220, 181, 107, 0.12);
-  }
-  100% {
-    box-shadow:
-      0 10px 28px rgba(0, 0, 0, 0.32),
-      0 0 0 1px rgba(220, 181, 107, 0.08) inset,
-      0 0 12px rgba(220, 181, 107, 0.06);
-  }
-}
-
-.product-copy-block,
-.product-modal-copy-block {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.product-mini-tag {
-  display: inline-flex;
-  align-self: flex-start;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(215, 179, 98, 0.22);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--gold);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  line-height: 1;
-  backdrop-filter: blur(8px);
-}
-
-.product-card-copy {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 0.92rem;
-  line-height: 1.55;
-}
-
 .product-modal-copy {
   margin: 0;
   color: rgba(255, 255, 255, 0.86);
@@ -3074,33 +2932,11 @@ main {
   line-height: 1.7;
 }
 
-.product-modal-notes {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.64);
-  font-size: 0.88rem;
-  line-height: 1.6;
-}
-
 .product-copy-block {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-top: 10px;
-}
-
-.product-mini-tag {
-  display: inline-flex;
-  align-self: flex-start;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(215, 179, 98, 0.22);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--gold);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  line-height: 1;
-  backdrop-filter: blur(8px);
 }
 
 .product-card-copy {
@@ -3218,37 +3054,6 @@ main {
   gap: 8px;
 }
 
-.product-card-title {
-  margin: 0;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.42rem;
-  line-height: 1.12;
-  letter-spacing: -0.012em;
-  color: rgba(255, 248, 235, 0.96);
-
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  hyphens: auto;
-
-  min-height: 3.18rem;
-  max-height: none;
-}
-
-.product-card-copy-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  height: 74px;
-}
-
 .product-card-mini-tag {
   margin-top: 2px;
 }
@@ -3286,21 +3091,6 @@ main {
   color: rgba(255, 248, 235, 0.88);
   font-size: 0.88rem;
   font-weight: 600;
-}
-
-@media (max-width: 760px) {
-  .product-card-title {
-    font-size: 1.6rem;
-    min-height: auto;
-  }
-
-  .product-card-copy-stack {
-    min-height: auto;
-  }
-
-  .premium-card-copy {
-    max-width: none;
-  }
 }
 
 /* =========================================
@@ -4130,23 +3920,6 @@ main {
     0 0 0 1px rgba(220, 181, 107, 0.08);
 }
 
-.product-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.product-card-media {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 240px;
-  padding: 20px 18px 10px;
-  overflow: hidden;
-  z-index: 1;
-  margin-bottom: 0;
-}
-
 .product-card-media::after {
   content: "";
   position: absolute;
@@ -4239,15 +4012,6 @@ main {
   line-height: 1.2;
 }
 
-.product-card-title {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.55rem;
-  font-weight: 600;
-  line-height: 1.12;
-  color: rgba(255, 248, 235, 0.96);
-  letter-spacing: 0.01em;
-}
-
 .product-card-copy.premium-card-copy {
   font-family: "Inter", sans-serif;
   font-size: 0.80rem;
@@ -4302,10 +4066,6 @@ main {
 /* =========================================
    PRODUCT CARD — FLOATING BADGE VARIANTS
 ========================================= */
-
-.product-card {
-  position: relative;
-}
 
 .product-floating-badge {
   position: absolute;
