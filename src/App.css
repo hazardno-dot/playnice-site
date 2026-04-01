@@ -3781,13 +3781,16 @@ main {
   isolation: isolate;
 }
 
+/* =========================================
+   PRODUCT CARD — SMOKE V2 (GREY-WHITE)
+========================================= */
 .product-card-media::before {
   content: "";
   position: absolute;
   left: 50%;
   bottom: 34px;
-  width: 120px;
-  height: 210px;
+  width: 126px;
+  height: 220px;
   transform: translateX(-50%) translateY(18px) scale(0.92);
   transform-origin: bottom center;
   pointer-events: none;
@@ -3795,9 +3798,25 @@ main {
   opacity: 0;
 
   background:
-    radial-gradient(ellipse at 50% 100%, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.08) 18%, rgba(255,255,255,0.035) 36%, transparent 68%),
-    radial-gradient(ellipse at 45% 72%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 24%, transparent 62%),
-    radial-gradient(ellipse at 58% 38%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 20%, transparent 56%);
+    radial-gradient(
+      ellipse at 50% 100%,
+      rgba(228, 232, 236, 0.12) 0%,
+      rgba(208, 214, 220, 0.07) 18%,
+      rgba(184, 192, 200, 0.03) 36%,
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse at 44% 70%,
+      rgba(214, 220, 226, 0.07) 0%,
+      rgba(186, 194, 202, 0.03) 22%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 58% 38%,
+      rgba(206, 212, 218, 0.05) 0%,
+      rgba(176, 184, 192, 0.02) 20%,
+      transparent 54%
+    );
 
   filter: blur(18px);
   transition:
@@ -3811,8 +3830,8 @@ main {
   position: absolute;
   left: 52%;
   bottom: 54px;
-  width: 150px;
-  height: 250px;
+  width: 156px;
+  height: 255px;
   transform: translateX(-50%) translateY(26px) scale(0.88);
   transform-origin: bottom center;
   pointer-events: none;
@@ -3820,9 +3839,24 @@ main {
   opacity: 0;
 
   background:
-    radial-gradient(ellipse at 52% 88%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 20%, transparent 60%),
-    radial-gradient(ellipse at 40% 58%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 18%, transparent 52%),
-    radial-gradient(ellipse at 64% 22%, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.015) 16%, transparent 46%);
+    radial-gradient(
+      ellipse at 52% 88%,
+      rgba(210, 216, 222, 0.07) 0%,
+      rgba(186, 194, 202, 0.03) 20%,
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse at 40% 58%,
+      rgba(196, 204, 212, 0.055) 0%,
+      rgba(174, 182, 190, 0.022) 18%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 64% 22%,
+      rgba(188, 196, 204, 0.04) 0%,
+      rgba(166, 174, 182, 0.015) 16%,
+      transparent 44%
+    );
 
   filter: blur(26px);
   transition:
@@ -3831,9 +3865,6 @@ main {
     filter 1.8s ease 0.08s;
 }
 
-/* =========================================
-   PRODUCT CARD — SMOKE HOVER TRIGGER
-========================================= */
 .product-card:hover .product-card-media::before {
   opacity: 0.72;
   transform: translateX(-50%) translateY(-18px) scale(1.04);
