@@ -4290,10 +4290,10 @@ main {
 /* =========================================
    PRODUCT GRID — MOBILE FIX
 ========================================= */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }
 
