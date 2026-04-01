@@ -1379,7 +1379,8 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <article className="product-card premium-product-card" key={product.id}>
+    <article className="product-card premium-product-card">
+      {/* IMAGE */}
       <div
         className="product-card-media clickable-media"
         onClick={() => openProductModal(product)}
@@ -1400,13 +1401,16 @@ const ProductCard = ({ product }) => {
         />
       </div>
 
+      {/* TOP MINI BADGE */}
       {copy.miniTag && (
         <span className="product-top-mini-badge">
           {copy.miniTag}
         </span>
       )}
 
+      {/* META */}
       <div className="product-meta premium-product-meta">
+        {/* TOP */}
         <div className="product-meta-top">
           <p className="product-category">
             {getCategoryLabel(product.category)}
@@ -1414,32 +1418,32 @@ const ProductCard = ({ product }) => {
 
           <h3 className="product-card-title">{product.name}</h3>
 
-          <div className="product-rating">
-  {product.rating && (
-  <div className="product-rating">
-    <div className="product-rating-stars" aria-hidden="true">
-      {Array.from({ length: 10 }).map((_, index) => (
-        <span
-          key={index}
-          className={index < Math.round(product.rating) ? "filled" : ""}
-        >
-          ★
-        </span>
-      ))}
-    </div>
+          {product.rating && (
+            <div className="product-rating">
+              <div className="product-rating-stars" aria-hidden="true">
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <span
+                    key={index}
+                    className={index < Math.round(product.rating) ? "filled" : ""}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
 
-    <div className="product-rating-meta">
-      <span className="product-rating-score">
-        {product.rating.toFixed(1)} / 10
-      </span>
-      <span className="product-rating-label">
-        {product.ratingLabel || getRatingLabel(product.rating, lang)}
-      </span>
-    </div>
-  </div>
-)}
+              <div className="product-rating-meta">
+                <span className="product-rating-score">
+                  {product.rating.toFixed(1)} / 10
+                </span>
+                <span className="product-rating-label">
+                  {product.ratingLabel || getRatingLabel(product.rating, lang)}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
 
+        {/* MIDDLE */}
         <div className="product-meta-middle">
           <div className="product-card-copy-stack">
             <p className="product-card-copy premium-card-copy">
@@ -1448,6 +1452,7 @@ const ProductCard = ({ product }) => {
           </div>
         </div>
 
+        {/* BOTTOM */}
         <div className="product-meta-bottom">
           <div className="product-price-row">
             <span className="product-price-from premium-product-price">
@@ -1463,11 +1468,10 @@ const ProductCard = ({ product }) => {
         </div>
       </div>
 
+      {/* SIZE BUTTONS */}
       <div
         className="size-buttons"
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
+        onClick={(e) => e.stopPropagation()}
       >
         {Object.entries(product.sizes).map(([size, price]) => {
           const feedbackKey = `${product.id}-${size}`;
