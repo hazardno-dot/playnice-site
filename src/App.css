@@ -3604,28 +3604,6 @@ main {
     drop-shadow(0 0 60px rgba(220, 181, 107, 0.08));
 }
 
-.product-card::after {
-  content: "";
-  position: absolute;
-  left: 12%;
-  right: 12%;
-  top: 18%;
-  bottom: 18%;
-  background: radial-gradient(
-    circle,
-    rgba(220, 181, 107, 0.12),
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.product-card:hover::after {
-  opacity: 1;
-}
-
 @media (max-width: 768px) {
   .product-card-media {
     min-height: 200px;
