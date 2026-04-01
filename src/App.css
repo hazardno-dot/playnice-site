@@ -5231,3 +5231,36 @@ main {
 .size-chip-feedback {
   font-size: 10px;
 }
+
+.product-price-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-price-from {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  text-align: center;
+}
+
+/* SUBTILNI TEKST */
+.price-prefix {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+}
+
+/* GLAVNA CENA */
+.price-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+
+  text-shadow:
+    0 0 10px rgba(220, 181, 107, 0.25),
+    0 0 20px rgba(220, 181, 107, 0.15);
+}

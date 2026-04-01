@@ -57,7 +57,7 @@ const translations = {
     searchPlaceholder: "Search fragrance...",
     categoryLabel: "Category",
     all: "All",
-    from: "starting at",
+    from: "Starting at",
     openDetails: "Open details",
     luxuryModal: "Luxury modal",
     yourCart: "Your Cart",
@@ -161,7 +161,7 @@ const translations = {
     searchPlaceholder: "Pretraži parfem...",
     categoryLabel: "Kategorija",
     all: "Sve",
-    from: "već od",
+    from: "Već od",
     openDetails: "Otvori detalje",
     luxuryModal: "Premium prikaz",
     yourCart: "Tvoja korpa",
@@ -1473,8 +1473,9 @@ const ProductCard = ({ product }) => {
         <div className="product-meta-bottom">
           <div className="product-price-row">
             <span className="product-price-from premium-product-price">
-              {tr.from} €{minPrice}
-            </span>
+  <span className="price-prefix">{tr.from}</span>
+  <span className="price-value">€{minPrice}</span>
+</span>
           </div>
 
           <div className="product-preview-line premium-preview-line single-line-preview">
