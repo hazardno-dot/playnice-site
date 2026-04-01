@@ -1415,32 +1415,29 @@ const ProductCard = ({ product }) => {
           <h3 className="product-card-title">{product.name}</h3>
 
           <div className="product-rating">
-  {product.rating ? (
-    <>
-      <div className="product-rating-stars" aria-hidden="true">
-        {Array.from({ length: 10 }).map((_, index) => (
-          <span
-            key={index}
-            className={index < Math.round(product.rating) ? "filled" : ""}
-          >
-            ★
-          </span>
-        ))}
-      </div>
+  {product.rating && (
+  <div className="product-rating">
+    <div className="product-rating-stars" aria-hidden="true">
+      {Array.from({ length: 10 }).map((_, index) => (
+        <span
+          key={index}
+          className={index < Math.round(product.rating) ? "filled" : ""}
+        >
+          ★
+        </span>
+      ))}
+    </div>
 
-      <div className="product-rating-meta">
-        <span className="product-rating-score">
-          {product.rating.toFixed(1)} / 10
-        </span>
-        <span className="product-rating-label">
-          {product.ratingLabel || getRatingLabel(product.rating, lang)}
-        </span>
-      </div>
-    </>
-  ) : (
-    <div className="product-rating-placeholder" />
-  )}
-</div>
+    <div className="product-rating-meta">
+      <span className="product-rating-score">
+        {product.rating.toFixed(1)} / 10
+      </span>
+      <span className="product-rating-label">
+        {product.ratingLabel || getRatingLabel(product.rating, lang)}
+      </span>
+    </div>
+  </div>
+)}
         </div>
 
         <div className="product-meta-middle">
