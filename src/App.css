@@ -1283,10 +1283,14 @@ main {
 .product-price-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 10px;
   margin-top: 2px;
   min-height: 28px;
+}
+
+.product-price-from {
+  text-align: center;
 }
 
 .product-meta-top,
