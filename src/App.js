@@ -1893,15 +1893,18 @@ return (
     </div>
 
     <div className="catalog-download-actions">
-  <a
-    className="catalog-download-button"
-    href="/catalog-dark.pdf"
-    download
-    target="_blank"
-    rel="noreferrer"
-  >
-    {lang === "sr" ? "Premium katalog" : "Premium catalog"}
-  </a>
+<a
+  className="catalog-download-button recommended"
+  href="/catalog-dark.pdf"
+  onClick={(e) => {
+    e.preventDefault();
+    openCatalogPreview("/catalog-dark.pdf");
+  }}
+>
+  <span className="recommended-badge">Recommended</span>
+
+  {lang === "sr" ? "Premium katalog" : "Premium catalog"}
+</a>
 
   <a
     className="catalog-download-button secondary"
