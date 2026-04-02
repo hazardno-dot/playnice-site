@@ -1520,32 +1520,7 @@ const ProductCard = ({ product }) => {
     </button>
   );
 })}
-    const feedbackKey = `${product.id}-${size}`;
-const isJustAdded = inlineAddedKey === feedbackKey;
 
-    return (
-      <button
-        key={size}
-        type="button"
-        className="size-chip"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          e.currentTarget.blur();
-
-          addToCart(product, size, null, null, { showToast: false });
-          triggerInlineAddedFeedback(product.id, size);
-        }}
-      >
-        <span className="size-chip-main">{size}</span>
-        <span className="size-chip-price">{formatPrice(price)}</span>
-
-        <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
-          {tr.justAdded}
-        </span>
-      </button>
-    );
-  })}
 </div>
     </article>
   );
