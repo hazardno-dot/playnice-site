@@ -3764,6 +3764,60 @@ main {
   color: #49dbe6;
 }
 
+/* =========================================
+   CTA — SHIMMER (TRY BEFORE YOU BUY)
+========================================= */
+
+.product-card-cta {
+  position: relative;
+  display: inline-block;
+
+  font-size: 11px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+
+  color: rgba(255,255,255,0.55);
+  overflow: hidden;
+}
+
+/* shimmer layer */
+.product-card-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(220,181,107,0.25) 40%,
+    rgba(220,181,107,0.5) 50%,
+    rgba(220,181,107,0.25) 60%,
+    transparent 100%
+  );
+
+  transform: translateX(-120%);
+  animation: ctaShimmer 3.2s ease-in-out infinite;
+}
+
+/* animation */
+@keyframes ctaShimmer {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateX(120%);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
 /* BADGE — STATIC (NO ANIMATION) */
 .product-floating-badge {
   position: absolute;
