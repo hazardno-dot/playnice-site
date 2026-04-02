@@ -3780,7 +3780,6 @@ main {
   overflow: hidden;
 }
 
-/* shimmer layer */
 .product-card-cta::after {
   content: "";
   position: absolute;
@@ -3789,34 +3788,34 @@ main {
   background: linear-gradient(
     120deg,
     transparent 0%,
-    rgba(220,181,107,0.25) 40%,
-    rgba(220,181,107,0.5) 50%,
-    rgba(220,181,107,0.25) 60%,
+    rgba(220,181,107,0.18) 40%,
+    rgba(220,181,107,0.42) 50%,
+    rgba(220,181,107,0.18) 60%,
     transparent 100%
   );
 
   transform: translateX(-120%);
-  animation: ctaShimmer 1.2s ease-in-out infinite;
+  animation: ctaShimmer 3.2s ease-in-out infinite;
 }
 
-/* animation */
 @keyframes ctaShimmer {
   0% {
     transform: translateX(-120%);
     opacity: 0;
   }
   15% {
-    opacity: 0.4;
+    opacity: 0.28;
   }
   50% {
     transform: translateX(120%);
-    opacity: 0.6;
+    opacity: 0.5;
   }
   100% {
     transform: translateX(120%);
     opacity: 0;
   }
 }
+
 
 /* BADGE — STATIC (NO ANIMATION) */
 .product-floating-badge {
