@@ -4374,3 +4374,16 @@ main {
     background: rgba(10, 10, 10, 0.62) !important;
   }
 }
+
+/* =========================================
+   SIZE CHIP — MOBILE DISABLE ADDED OVERLAY
+========================================= */
+@media (max-width: 768px) {
+  .size-chip-feedback,
+  .size-chip-feedback.show {
+    display: none !important;
+    opacity: 0 !important;
+    animation: none !important;
+    background: transparent !important;
+  }
+}
