@@ -529,7 +529,7 @@ const productCopy = {
 
 // Nastavlja se identično za remaining designer/niche…
 
-"Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette":{
+"Acqua di Parma Fico di Amalfi Eau de Toilette":{
   miniTag:{sr:"❄️ Fresh / Luxury",en:"❄️ Fresh / Luxury"},
   card:{sr:"Smokva i mediteranska svežina.",en:"Fig and mediterranean freshness."},
   modal:{sr:"Prirodan, lagan i elegantan.",en:"Natural light elegant."},
