@@ -4140,12 +4140,12 @@ main {
 .size-chip-feedback {
   position: absolute;
   inset: 0;
-  z-index: 999;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: inherit;
-  background: rgba(10, 10, 10, 0.62);
+  background: transparent;
   color: #f3e1b8;
   font-family: "Inter", sans-serif;
   font-size: 10px;
@@ -4157,14 +4157,7 @@ main {
 }
 
 .size-chip-feedback.show {
-  animation: addedFlash 1.10s ease forwards;
-}
-
-@keyframes addedFlash {
-  0% { opacity: 0; }
-  18% { opacity: 1; }
-  72% { opacity: 1; }
-  100% { opacity: 0; }
+  opacity: 1;
 }
 
 /* =========================================
