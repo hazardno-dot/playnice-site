@@ -2114,13 +2114,6 @@ return (
     closeProductModal();
   }}
 />
-  onClick={() => {
-    setCartOpen(false);
-    setCheckoutOpen(false);
-    setStoryOpen(false);
-    closeProductModal();
-  }}
-/>
 
 <aside className={`story-drawer ${storyOpen ? "open" : ""}`}>
   <div className="story-drawer-header story-anim story-anim-1">
