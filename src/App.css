@@ -3721,14 +3721,12 @@ main {
   position: relative;
   z-index: 1;
 
-  transition: opacity 0.22s ease;
+  transform: none;
+  transition:
+    opacity 0.22s ease,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 
-  transform: none !important;
-  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
-}
-
-.product-card:hover .product-card-image {
-  filter: drop-shadow(0 22px 44px rgba(0,0,0,0.62));
+  filter: none;
 }
 
 @media (max-width: 768px) {
