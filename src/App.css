@@ -3815,12 +3815,8 @@ main {
 
   color: rgba(255,248,235,0.92);
 
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.02);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
 
-  transform: none;
-  filter: none;
-  text-shadow: none;
   overflow: hidden;
   isolation: isolate;
 
@@ -3859,18 +3855,8 @@ main {
     inset 0 1px 0 rgba(255,255,255,0.02);
 }
 
-.size-buttons .size-chip.is-added {
-  border-color: rgba(220, 181, 107, 0.24) !important;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.014)),
-    rgba(17,17,17,0.92) !important;
-  color: rgba(255,248,235,0.92) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.02) !important;
-}
-
 .size-chip-main,
-.size-chip strong {
+.size-chip-price {
   position: relative;
   z-index: 1;
   font-family: "Inter", sans-serif;
@@ -3883,9 +3869,37 @@ main {
   font-weight: 600;
 }
 
-.size-chip strong {
+.size-chip-price {
   color: #ddb76d;
   font-weight: 700;
+}
+
+/* transient added feedback */
+.size-chip-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: inherit;
+  background: rgba(17, 17, 17, 0.88);
+
+  color: #f3e1b8;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 0.18s ease;
+}
+
+.size-chip-flash.show {
+  opacity: 1;
 }
 
 @media (max-width: 768px) {
@@ -3893,15 +3907,12 @@ main {
   .size-buttons .size-chip:hover,
   .size-buttons .size-chip:focus,
   .size-buttons .size-chip:focus-visible,
-  .size-buttons .size-chip:active,
-  .size-buttons .size-chip.is-added {
+  .size-buttons .size-chip:active {
     min-height: 40px;
     padding: 8px 12px;
     transform: none !important;
     filter: none !important;
     animation: none !important;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.02) !important;
     text-shadow: none !important;
   }
 }
