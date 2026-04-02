@@ -1605,6 +1605,59 @@ main {
 }
 
 /* =========================================
+   MODAL RATING
+========================================= */
+
+.modal-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+
+  margin-top: 12px;
+  padding-top: 2px;
+}
+
+.modal-rating-stars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  line-height: 1;
+}
+
+.modal-rating-stars span {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.16);
+  transition: color 0.18s ease, text-shadow 0.18s ease;
+}
+
+.modal-rating-stars span.filled {
+  color: #dcb56b;
+  text-shadow: 0 0 8px rgba(220, 181, 107, 0.14);
+}
+
+.modal-rating-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  line-height: 1.1;
+}
+
+.modal-rating-score {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: rgba(255, 248, 235, 0.92);
+}
+
+.modal-rating-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+/* =========================================
    MODAL CLOSE BUTTON — PREMIUM
 ========================================= */
 .modal-close {
