@@ -4165,21 +4165,6 @@ main {
 }
 
 /* =========================================
-   PRODUCT CARD — RESPONSIVE
-========================================= */
-@media (max-width: 768px) {
-  .product-card-media {
-    min-height: 200px;
-    padding: 16px 14px 8px;
-  }
-
-  .product-card-image {
-    max-width: 150px;
-    max-height: 180px;
-  }
-}
-
-/* =========================================
    PRODUCT CARD — FLOATING BADGE VARIANTS
 ========================================= */
 .product-floating-badge {
@@ -4292,13 +4277,32 @@ main {
 }
 
 /* =========================================
-   PRODUCT CARD — MOBILE TAP STABILITY
+   PRODUCT CARD — MOBILE FINAL
 ========================================= */
 @media (max-width: 768px) {
-  .product-card,
-  .product-card-media,
-  .product-card-image,
-  .size-chip {
+  .product-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+
+  .product-card {
+    padding: 16px;
+    border-radius: 20px;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .product-card-media {
+    min-height: 200px;
+    height: 200px;
+    padding: 16px 14px 8px;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .product-card-image {
+    max-width: 150px;
+    max-height: 180px;
     transform: translateZ(0);
     backface-visibility: hidden;
   }
@@ -4358,12 +4362,4 @@ main {
   .size-chip-feedback {
     background: rgba(10, 10, 10, 0.62);
   }
-
-  @media (max-width: 768px) {
-  .size-chip.is-added {
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 0 0 1px rgba(220, 181, 107, 0.08) !important;
-  }
-}
 }
