@@ -4341,3 +4341,76 @@ main {
   color: rgba(255, 248, 235, 0.92) !important;
 }
 }
+
+/* =========================================
+   PRODUCT CARD — GLITCH ISOLATION TEST
+========================================= */
+.product-card,
+.product-card *,
+.product-card *::before,
+.product-card *::after {
+  animation: none !important;
+}
+
+.product-card:hover {
+  box-shadow: var(--shadow) !important;
+  border-color: var(--line) !important;
+  transform: none !important;
+}
+
+.product-card:hover .product-card-image,
+.product-card-media:hover .product-card-image {
+  transform: none !important;
+  filter:
+    drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 0 10px rgba(255, 255, 255, 0.03)) !important;
+}
+
+.product-card-media::before,
+.product-card-media::after,
+.product-card:hover .product-card-media::before,
+.product-card-media:hover::after {
+  opacity: 0 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+.product-card:hover .price-value {
+  text-shadow:
+    0 0 10px rgba(220, 181, 107, 0.18),
+    0 0 22px rgba(220, 181, 107, 0.10) !important;
+}
+
+.product-floating-badge,
+.product-card:hover .product-floating-badge,
+.product-card:hover .product-floating-badge.badge-default,
+.product-card:hover .product-floating-badge.badge-hot,
+.product-card:hover .product-floating-badge.badge-fresh,
+.product-card:hover .product-floating-badge.badge-sweet,
+.product-card:hover .product-floating-badge.badge-luxury {
+  transform: none !important;
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.35) !important;
+  border-color: rgba(220, 181, 107, 0.28) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.product-preview-line.single-line-preview span,
+.product-preview-line.premium-preview-line.single-line-preview span {
+  animation: none !important;
+  text-shadow: none !important;
+}
+
+.size-buttons .size-chip,
+.size-buttons .size-chip:hover,
+.size-buttons .size-chip:focus,
+.size-buttons .size-chip:focus-visible,
+.size-buttons .size-chip:active,
+.size-buttons .size-chip.is-added {
+  transform: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  animation: none !important;
+}
