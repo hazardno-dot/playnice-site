@@ -4145,30 +4145,60 @@ main {
   align-items: center;
   justify-content: center;
   border-radius: inherit;
-  background: linear-gradient(
-    180deg,
-    rgba(18, 18, 18, 0.22),
-    rgba(18, 18, 18, 0.1)
-  );
+  background: rgba(10, 10, 10, 0.26);
   color: var(--gold);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.04em;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.18s ease;
-  backdrop-filter: blur(3px);
+  transition: opacity 0.16s ease;
+  will-change: opacity;
 }
 
 .size-chip-feedback.show {
-  animation: addedFlash 0.62s ease forwards;
+  opacity: 1;
 }
 
-@keyframes addedFlash {
-  0% { opacity: 0; }
-  18% { opacity: 1; }
-  72% { opacity: 1; }
-  100% { opacity: 0; }
+@media (max-width: 768px) {
+  .size-buttons .size-chip,
+  .size-chip,
+  .size-chip:hover,
+  .size-chip:active,
+  .size-chip:focus,
+  .size-chip:focus-visible,
+  .size-chip.is-added,
+  .size-chip.is-added:hover,
+  .size-buttons .size-chip:hover,
+  .size-buttons .size-chip:active,
+  .size-buttons .size-chip:focus,
+  .size-buttons .size-chip:focus-visible {
+    min-height: 40px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition:
+      border-color 0.12s ease,
+      color 0.12s ease,
+      opacity 0.12s ease !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .size-chip::before,
+  .size-chip::after,
+  .size-buttons .size-chip::before,
+  .size-buttons .size-chip::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .size-chip-feedback {
+    background: rgba(10, 10, 10, 0.22) !important;
+  }
 }
 
 /* =========================================
@@ -4320,42 +4350,6 @@ main {
     filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6));
   }
 
-  .size-buttons .size-chip,
-  .size-chip,
-  .size-chip:hover,
-  .size-chip:active,
-  .size-chip:focus,
-  .size-chip:focus-visible,
-  .size-chip.is-added,
-  .size-chip.is-added:hover,
-  .size-buttons .size-chip:hover,
-  .size-buttons .size-chip:active,
-  .size-buttons .size-chip:focus,
-  .size-buttons .size-chip:focus-visible {
-    min-height: 40px;
-    padding: 8px 12px;
-    border-radius: 12px;
-    transform: none !important;
-    filter: none !important;
-    animation: none !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-    transition:
-      background-color 0.12s ease,
-      border-color 0.12s ease,
-      color 0.12s ease,
-      opacity 0.12s ease !important;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .size-chip::before,
-  .size-chip::after,
-  .size-buttons .size-chip::before,
-  .size-buttons .size-chip::after {
-    content: none !important;
-    display: none !important;
-  }
-
   .size-buttons .size-chip:hover,
   .size-buttons .size-chip:focus-visible {
     border-color: rgba(220, 181, 107, 0.30) !important;
@@ -4380,8 +4374,3 @@ main {
       rgba(22, 18, 12, 0.94) !important;
     color: #f3e1b8 !important;
   }
-
-  .size-chip-feedback {
-    background: rgba(10, 10, 10, 0.62) !important;
-  }
-}
