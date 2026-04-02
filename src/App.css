@@ -3897,14 +3897,13 @@ main {
 
 .product-card-title {
   margin: 0;
-  min-height: 2.5em;
+  min-height: 2.32em;
 
   font-family: "Cormorant Garamond", serif;
-
-  font-size: clamp(1.22rem, 1.9vw, 1.48rem);
+  font-size: clamp(1.02rem, 1.35vw, 1.26rem);
   font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: 0.005em;
+  line-height: 1.03;
+  letter-spacing: 0;
 
   color: rgba(255, 248, 235, 0.96);
 
