@@ -3972,6 +3972,10 @@ main {
     max-width: 100%;
   }
 
+    .product-card-cta::after {
+    animation: ctaShimmer 3.2s ease-in-out infinite;
+  }
+
   .size-buttons .size-chip,
   .size-buttons .size-chip:hover,
   .size-buttons .size-chip:focus,
