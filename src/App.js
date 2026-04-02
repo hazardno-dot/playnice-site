@@ -922,6 +922,15 @@ function App() {
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
   const [storyOpen, setStoryOpen] = useState(false);
   const [inlineAddedKey, setInlineAddedKey] = useState(null);
+  const [catalogPreview, setCatalogPreview] = useState(null);
+
+  const openCatalogPreview = (url) => {
+  setCatalogPreview(url);
+};
+
+const closeCatalogPreview = () => {
+  setCatalogPreview(null);
+};
 
   const heroVideos = [
   "/videos/hero.mp4",
@@ -2543,6 +2552,35 @@ return (
           </div>
         </div>
       </div>
+      {catalogPreview && (
+  <div className="catalog-modal-overlay" onClick={closeCatalogPreview}>
+    <div
+      className="catalog-modal"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        className="catalog-modal-close"
+        onClick={closeCatalogPreview}
+      >
+        ×
+      </button>
+
+      <iframe
+        src={catalogPreview}
+        title="Catalog Preview"
+        className="catalog-modal-frame"
+      />
+
+      <a
+        href={catalogPreview}
+        download
+        className="catalog-modal-download"
+      >
+        {lang === "sr" ? "Preuzmi PDF" : "Download PDF"}
+      </a>
+    </div>
+  </div>
+)}
     </div>
   );
 }
