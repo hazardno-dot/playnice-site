@@ -2271,6 +2271,16 @@ return (
       >
         {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
       </button>
+      
+      <button
+  className="gold-button"
+  onClick={() => {
+    setHowItWorksOpen(false);
+    goToShop();
+  }}
+>
+  {lang === "sr" ? "Kreni od 2ml" : "Start with 2ml"}
+</button>
     </div>
   </div>
 </aside>
