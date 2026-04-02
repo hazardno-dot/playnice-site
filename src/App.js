@@ -1462,10 +1462,10 @@ const ProductCard = ({ product }) => {
           </div>
 
           <div className="product-preview-line premium-preview-line single-line-preview">
-            <span>
-              {lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}
-            </span>
-          </div>
+  <span className="product-card-cta">
+    {lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}
+  </span>
+</div>
         </div>
       </div>
 
