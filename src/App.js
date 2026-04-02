@@ -914,7 +914,6 @@ function App() {
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState("");
-  const [justAddedKey, setJustAddedKey] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [cart, setCart] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -1020,12 +1019,6 @@ const switchView = (nextView) => {
     const timer = setTimeout(() => setAddedFeedback(""), 1200);
     return () => clearTimeout(timer);
   }, [addedFeedback]);
-
-  useEffect(() => {
-    if (!justAddedKey) return;
-    const timer = setTimeout(() => setJustAddedKey(""), 900);
-    return () => clearTimeout(timer);
-  }, [justAddedKey]);
 
   useEffect(() => {
     if (!orderSuccessMessage) return;
@@ -1482,7 +1475,7 @@ const ProductCard = ({ product }) => {
 >
   {Object.entries(product.sizes).map(([size, price]) => {
     const feedbackKey = `${product.id}-${size}`;
-    const isJustAdded = justAddedKey === feedbackKey;
+const isJustAdded = inlineAddedKey === feedbackKey;
 
     return (
       <button
