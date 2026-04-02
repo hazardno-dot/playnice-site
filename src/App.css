@@ -3870,6 +3870,11 @@ main {
 }
 
 .size-chip-price {
+  position: relative;
+  z-index: 1;
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  line-height: 1;
   color: #ddb76d;
   font-weight: 700;
 }
@@ -3894,7 +3899,6 @@ main {
 
   opacity: 0;
   pointer-events: none;
-
   transition: opacity 0.18s ease;
 }
 

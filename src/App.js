@@ -922,6 +922,7 @@ function App() {
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
   const [storyOpen, setStoryOpen] = useState(false);
+  const [inlineAddedKey, setInlineAddedKey] = useState(null);
 
   const heroVideos = [
   "/videos/hero.mp4",
@@ -1166,6 +1167,15 @@ const switchView = (nextView) => {
       showFeedback(`${product.name} ${tr.addedToCart}`);
     }
   };
+
+  const triggerInlineAddedFeedback = (productId, size) => {
+  const key = `${productId}-${size}`;
+  setInlineAddedKey(key);
+
+  setTimeout(() => {
+    setInlineAddedKey((current) => (current === key ? null : current));
+  }, 500);
+};
 
   const triggerInlineAddedFeedback = (productId, size) => {
     const key = `${productId}-${size}`;
@@ -1478,37 +1488,37 @@ const ProductCard = ({ product }) => {
       </div>
 
       <div
-        className="size-buttons"
-        onClick={(e) => e.stopPropagation()}
+  className="size-buttons"
+  onClick={(e) => e.stopPropagation()}
+>
+  {Object.entries(product.sizes).map(([size, price]) => {
+    const feedbackKey = `${product.id}-${size}`;
+    const isJustAdded = justAddedKey === feedbackKey;
+
+    return (
+      <button
+        key={size}
+        type="button"
+        className="size-chip"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          e.currentTarget.blur();
+
+          addToCart(product, size, null, null, { showToast: false });
+          triggerInlineAddedFeedback(product.id, size);
+        }}
       >
-        {Object.entries(product.sizes).map(([size, price]) => {
-          const feedbackKey = `${product.id}-${size}`;
-          const isJustAdded = justAddedKey === feedbackKey;
+        <span className="size-chip-main">{size}</span>
+        <span className="size-chip-price">{formatPrice(price)}</span>
 
-          return (
-            <button
-              key={size}
-              type="button"
-              className={`size-chip ${isJustAdded ? "is-added" : ""}`}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                e.currentTarget.blur();
-
-                addToCart(product, size, null, null, { showToast: false });
-                triggerInlineAddedFeedback(product.id, size);
-              }}
-            >
-              <span className="size-chip-main">{size}</span>
-              <strong>{formatPrice(price)}</strong>
-
-              <span className={`size-chip-feedback ${isJustAdded ? "show" : ""}`}>
-                {tr.justAdded}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+        <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
+          {tr.justAdded}
+        </span>
+      </button>
+    );
+  })}
+</div>
     </article>
   );
 };
