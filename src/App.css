@@ -4175,23 +4175,38 @@ main {
   overflow: hidden;
 }
 
+.catalog-download-button.recommended {
+  position: relative;
+  overflow: visible;
+}
+
 .recommended-badge {
   position: absolute;
-  top: -8px;
-  right: -10px;
+  top: -12px;
+  right: 14px;
+  z-index: 2;
 
-  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 20px;
+  padding: 0 10px;
   border-radius: 999px;
 
-  font-size: 0.55rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  white-space: nowrap;
 
-  background: linear-gradient(135deg, #dcb56b, #f3dfb2);
-  color: #000;
+  background: linear-gradient(135deg, #f3dfb2, #dcb56b);
+  color: #111;
+  border: 1px solid rgba(0, 0, 0, 0.18);
 
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.28),
+    0 0 0 1px rgba(255,255,255,0.06);
 }
 
 /* =========================================
