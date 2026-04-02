@@ -4145,19 +4145,30 @@ main {
   align-items: center;
   justify-content: center;
   border-radius: inherit;
-  background: transparent;
-  color: #f3e1b8;
-  font-family: "Inter", sans-serif;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 18, 18, 0.22),
+    rgba(18, 18, 18, 0.1)
+  );
+  color: var(--gold);
   font-size: 10px;
   font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
   opacity: 0;
   pointer-events: none;
+  transition: opacity 0.18s ease;
+  backdrop-filter: blur(3px);
 }
 
 .size-chip-feedback.show {
-  opacity: 1;
+  animation: addedFlash 0.62s ease forwards;
+}
+
+@keyframes addedFlash {
+  0% { opacity: 0; }
+  18% { opacity: 1; }
+  72% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 /* =========================================
@@ -4372,18 +4383,5 @@ main {
 
   .size-chip-feedback {
     background: rgba(10, 10, 10, 0.62) !important;
-  }
-}
-
-/* =========================================
-   SIZE CHIP — MOBILE DISABLE ADDED OVERLAY
-========================================= */
-@media (max-width: 768px) {
-  .size-chip-feedback,
-  .size-chip-feedback.show {
-    display: none !important;
-    opacity: 0 !important;
-    animation: none !important;
-    background: transparent !important;
   }
 }
