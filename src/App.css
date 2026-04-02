@@ -4209,6 +4209,10 @@ main {
     0 0 0 1px rgba(255,255,255,0.06);
 }
 
+.catalog-download-button.recommended {
+  padding-top: 2px;
+}
+
 /* =========================================
    CATALOG MODAL
 ========================================= */
