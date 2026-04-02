@@ -1177,17 +1177,6 @@ const switchView = (nextView) => {
   }, 500);
 };
 
-  const triggerInlineAddedFeedback = (productId, size) => {
-    const key = `${productId}-${size}`;
-    setJustAddedKey(key);
-
-    window.clearTimeout(triggerInlineAddedFeedback.timeoutId);
-
-    triggerInlineAddedFeedback.timeoutId = window.setTimeout(() => {
-      setJustAddedKey("");
-    }, 900);
-  };
-
   const addHeroBottleToCart = () => {
     const heroProduct = {
       id: 999,
