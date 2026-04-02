@@ -2252,6 +2252,12 @@ return (
       </div>
     </div>
 
+    <p className="how-it-works-proof">
+  {lang === "sr"
+    ? "Hiljade kupaca prvo testira dekante pre nego što kupi punu bočicu."
+    : "Thousands of customers test decants before committing to a full bottle."}
+</p>
+
     <div className="how-it-works-drawer-footer">
       <span className="story-drawer-signature">Remember. PlayNice.</span>
 
