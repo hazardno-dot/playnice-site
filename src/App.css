@@ -3712,9 +3712,25 @@ main {
   position: relative;
   z-index: 1;
 
-  transition: opacity 0.2s ease;
+  transition:
+    opacity 0.22s ease,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.32s ease;
 
+  transform: translateY(0);
   filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+}
+
+.product-card:hover .product-card-image {
+  transform: translateY(-3px) scale(1.01);
+  filter: drop-shadow(0 22px 44px rgba(0,0,0,0.62));
+}
+
+@media (max-width: 768px) {
+  .product-card:hover .product-card-image {
+    transform: none;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+  }
 }
 
 /* META */
