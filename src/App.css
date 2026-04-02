@@ -3578,6 +3578,28 @@ main {
     box-shadow 0.2s ease;
 }
 
+.product-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.035) 0%,
+      rgba(255,255,255,0.012) 28%,
+      transparent 55%
+    );
+
+  transition: opacity 0.22s ease;
+}
+
+.product-card:hover::after {
+  opacity: 1;
+}
+
 .product-card:hover {
   border-color: rgba(220,181,107,0.18);
   box-shadow: 0 16px 38px rgba(0,0,0,0.55);
