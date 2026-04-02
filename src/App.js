@@ -2431,11 +2431,11 @@ return (
 
     <div className="modal-rating-meta">
       <span className="modal-rating-score">
-        {selectedProduct.rating.toFixed(1)} / 10
-      </span>
-      <span className="modal-rating-label">
-        {selectedProduct.ratingLabel}
-      </span>
+  {selectedProduct.rating.toFixed(1)}
+</span>
+<span className="modal-rating-label">
+  / 10 • {selectedProduct.ratingLabel}
+</span>
     </div>
   </div>
 )}
