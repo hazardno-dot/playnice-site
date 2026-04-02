@@ -1719,8 +1719,8 @@ return (
     </p>
     <h2>
       {lang === "sr"
-        ? "Kako funkcionišu dekanti."
-        : "How decants work."}
+        ? "Kako funkcionišu dekanti?"
+        : "How decants work?"}
     </h2>
     <p>
       {lang === "sr"
@@ -1732,7 +1732,7 @@ return (
   <div className="how-it-works-grid">
     <article className="how-it-works-card">
       <span className="how-it-works-number">01</span>
-      <h3>{lang === "sr" ? "Šta su dekanti" : "What are decants"}</h3>
+      <h3>{lang === "sr" ? "Šta su dekanti?" : "What are decants?"}</h3>
       <p>
         {lang === "sr"
           ? "Manja, pažljivo presuta pakovanja originalnih parfema."
@@ -1742,7 +1742,7 @@ return (
 
     <article className="how-it-works-card">
       <span className="how-it-works-number">02</span>
-      <h3>{lang === "sr" ? "Zašto su korisni" : "Why they matter"}</h3>
+      <h3>{lang === "sr" ? "Zašto su korisni?" : "Why they matter?"}</h3>
       <p>
         {lang === "sr"
           ? "Možeš da probaš miris na svojoj koži pre kupovine pune bočice."
@@ -1752,7 +1752,7 @@ return (
 
     <article className="how-it-works-card">
       <span className="how-it-works-number">03</span>
-      <h3>{lang === "sr" ? "Zašto je to pametnije" : "Why it is smarter"}</h3>
+      <h3>{lang === "sr" ? "Zašto je to pametnije?" : "Why it is smarter?"}</h3>
       <p>
         {lang === "sr"
           ? "Manji rizik, manji trošak i više parfema za rotaciju."
@@ -2221,8 +2221,8 @@ return (
   <div className="how-it-works-drawer-body">
     <p className="how-it-works-drawer-lead">
       {lang === "sr"
-        ? "Dekanti su manja, pažljivo presuta pakovanja originalnih parfema. Napravljeni su za ljude koji žele da miris prvo osete na svojoj koži, u svom ritmu, pre nego što se odluče za punu bočicu."
-        : "Decants are smaller, carefully transferred portions of original fragrances. They are made for people who want to wear a scent on their skin, in real life, before committing to a full bottle."}
+        ? "Dekanti su manja, pažljivo presuta pakovanja originalnih parfema. Napravljeni su za ljude koji žele da miris prvo osete na svojoj koži, u svom ritmu, pre nego što se odluče za punu bočicu. Hiljade kupaca prvo testira dekante pre nego što kupi punu bočicu."
+        : "Decants are smaller, carefully transferred portions of original fragrances. They are made for people who want to wear a scent on their skin, in real life, before committing to a full bottle. Thousands of customers test decants before committing to a full bottle."}
     </p>
 
     <div className="how-it-works-drawer-grid">
@@ -2262,12 +2262,6 @@ return (
         </p>
       </div>
     </div>
-
-            <p className="how-it-works-proof">
-  {lang === "sr"
-    ? "Hiljade kupaca prvo testira dekante pre nego što kupi punu bočicu."
-    : "Thousands of customers test decants before committing to a full bottle."}
-</p>
 
     <div className="how-it-works-drawer-footer">
       <span className="story-drawer-signature">Remember. PlayNice.</span>
