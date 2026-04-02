@@ -1893,20 +1893,32 @@ return (
     </div>
 
     <div className="catalog-download-actions">
-      <a
-        className="catalog-download-button"
-        href="/PlayNice_Dark_Premium_V2.pdf"
-        download
-        target="_blank"
-        rel="noreferrer"
-      >
-        {lang === "sr" ? "Preuzmi PDF" : "Download PDF"}
-      </a>
+  <a
+    className="catalog-download-button"
+    href="/catalog-dark.pdf"
+    download
+    target="_blank"
+    rel="noreferrer"
+  >
+    {lang === "sr" ? "Premium katalog" : "Premium catalog"}
+  </a>
 
-      <span className="catalog-download-note">
-        {lang === "sr" ? "DM / print verzija" : "DM / print version"}
-      </span>
-    </div>
+  <a
+    className="catalog-download-button secondary"
+    href="/catalog-clean.pdf"
+    download
+    target="_blank"
+    rel="noreferrer"
+  >
+    {lang === "sr" ? "Brzi cenovnik" : "Quick price list"}
+  </a>
+
+  <span className="catalog-download-note">
+    {lang === "sr"
+      ? "DM / print verzije"
+      : "DM / print versions"}
+  </span>
+</div>
   </div>
 </section>
 
