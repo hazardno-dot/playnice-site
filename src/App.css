@@ -3072,7 +3072,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 96px;
+  min-height: 104px;
   padding: 8px;
   border-radius: 16px;
   background:
@@ -3744,7 +3744,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  min-height: 96px;
+  min-height: 104px;
 }
 
 .product-card-title {
@@ -3778,7 +3778,7 @@ main {
 }
 
 .product-card-copy {
-  margin: 0;
+  margin: 2px 0 0;
   font-family: "Inter", sans-serif;
   font-size: 0.79rem;
   line-height: 1.46;
@@ -3807,6 +3807,7 @@ main {
 }
 
 .product-price-row {
+  margin-top: 2px;
   display: flex;
   align-items: center;
   min-height: 30px;
