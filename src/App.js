@@ -259,7 +259,7 @@ const products = [
   { id: 22, name: "Rayhaan Pacific Aura", category: "Summer", image: "/products/Rayhaan-Pacific-Aura.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, rating: 7.9, ratingLabel: "Well Loved" },
   { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", image: "/products/Swiss-Arabian-Tobacco01.png", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 }, rating: 8.5, ratingLabel: "Audience Favorite" },
 
-  { id: 24, name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette", category: "Designer", image: "/products/AdP-Fico.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, rating: 8.3, ratingLabel: "Audience Favorite" },
+  { id: 24, name: "Acqua di Parma Fico di Amalfi Eau de Toilette", category: "Designer", image: "/products/AdP-Fico.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, rating: 8.3, ratingLabel: "Audience Favorite" },
   { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer", image: "/products/AdP-Colonia-Essenza.png", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 }, rating: 8.0, ratingLabel: "Audience Favorite" },
   { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer", image: "/products/AdP-Colonia-Pura.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, rating: 7.8, ratingLabel: "Well Loved" },
 
