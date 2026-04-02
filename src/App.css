@@ -3701,6 +3701,15 @@ main {
   cursor: pointer;
 }
 
+.product-card-media {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.product-card:hover .product-card-media {
+  transform: translateY(-2px);
+}
+
 /* IMAGE — CLEAN (NO TRANSFORM / NO GLOW) */
 .product-card-image {
   width: 100%;
