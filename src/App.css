@@ -1244,25 +1244,46 @@ main {
 }
 
 /* =========================================
-   BACKDROP
+   BACKDROP — CINEMATIC FADE
 ========================================= */
 .backdrop {
   position: fixed;
   inset: 0;
   z-index: 90;
+
   background:
-    radial-gradient(circle at center, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.72)),
-    rgba(0, 0, 0, 0.62);
-  backdrop-filter: blur(10px) saturate(120%);
-  -webkit-backdrop-filter: blur(10px) saturate(120%);
+    radial-gradient(circle at center, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.75)),
+    rgba(0, 0, 0, 0.65);
+
+  backdrop-filter: blur(0px) saturate(110%);
+  -webkit-backdrop-filter: blur(0px) saturate(110%);
+
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+
+  transition:
+    opacity 0.35s ease,
+    backdrop-filter 0.45s ease,
+    -webkit-backdrop-filter 0.45s ease;
 }
 
 .backdrop.show {
   opacity: 1;
   pointer-events: auto;
+
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+}
+
+.backdrop.show::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.35));
+
+  pointer-events: none;
 }
 
 /* =========================================
@@ -1567,16 +1588,23 @@ main {
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(18px);
   overflow: hidden;
+
   opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, -46%) scale(0.96);
-  transition: opacity 0.28s ease, transform 0.28s ease;
+  transform: translate(-50%, -48%) scale(0.94);
+  filter: blur(6px);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.35s ease;
 }
 
 .product-modal.open {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1);
+  filter: blur(0);
 }
 
 .modal-header {
