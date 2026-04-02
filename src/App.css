@@ -3874,8 +3874,10 @@ main {
   }
 }
 
+/* =========================================
+   BADGE
+========================================= */
 
-/* BADGE — STATIC (NO ANIMATION) */
 .product-floating-badge {
   position: absolute;
   top: 14px;
@@ -4017,7 +4019,6 @@ main {
   border-color: rgba(220, 181, 107, 0.30);
 }
 
-/* transient added feedback */
 .size-chip-flash {
   position: absolute;
   inset: 0;
@@ -4044,9 +4045,12 @@ main {
   opacity: 1;
 }
 
+/* =========================================
+   MOBILE
+========================================= */
+
 @media (max-width: 768px) {
   .product-grid {
-    display: grid;
     grid-template-columns: 1fr !important;
     gap: 16px;
   }
@@ -4054,6 +4058,10 @@ main {
   .product-card {
     width: 100%;
     max-width: 100%;
+  }
+
+  .product-card:hover .product-card-media {
+    transform: none;
   }
 
   .product-card-cta::after {
