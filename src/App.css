@@ -3718,7 +3718,7 @@ main {
 }
 
 /* =========================================
-   PRODUCT CARD — CONTENT ALIGNMENT FIX
+   PRODUCT CARD — CONTENT ALIGNMENT FIX V2
 ========================================= */
 
 .product-meta {
@@ -3732,17 +3732,29 @@ main {
 .product-meta-top {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
+  min-height: 92px;
+}
+
+.product-card-category {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 248, 235, 0.54);
 }
 
 .product-card-title {
   margin: 0;
-  min-height: 2.3em;
+  min-height: 2.35em;
 
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1.02rem, 1.35vw, 1.26rem);
+  font-size: clamp(1.02rem, 1.35vw, 1.22rem);
   font-weight: 600;
-  line-height: 1.03;
+  line-height: 1.02;
   color: rgba(255,248,235,0.96);
 
   display: -webkit-box;
@@ -3753,16 +3765,19 @@ main {
 
 .product-meta-middle {
   flex: 1;
-  padding-top: 8px;
+  padding-top: 10px;
+  display: flex;
+  align-items: flex-start;
 }
 
 .product-card-copy-stack {
   display: block;
+  width: 100%;
 }
 
 .product-card-copy {
   margin: 0;
-  min-height: 2.4em;
+  min-height: 2.9em;
 
   font-family: "Inter", sans-serif;
   font-size: 0.79rem;
@@ -3779,12 +3794,12 @@ main {
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding-top: 10px;
+  gap: 10px;
+  padding-top: 12px;
 }
 
 .product-price-block {
-  min-height: 28px;
+  min-height: 30px;
   display: flex;
   align-items: flex-end;
 }
@@ -3792,16 +3807,14 @@ main {
 .product-price-row {
   display: flex;
   align-items: center;
-  min-height: 28px;
+  min-height: 30px;
 }
 
 .product-preview-line {
-  min-height: 20px;
-
+  min-height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-
   text-align: center;
 }
 
@@ -3810,7 +3823,6 @@ main {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-
   color: #49dbe6;
 }
 
