@@ -1484,6 +1484,42 @@ const ProductCard = ({ product }) => {
   onClick={(e) => e.stopPropagation()}
 >
   {Object.entries(product.sizes).map(([size, price]) => {
+  const feedbackKey = `${product.id}-${size}`;
+  const isJustAdded = inlineAddedKey === feedbackKey;
+  const isRecommendedSize = size === "5ml";
+
+  return (
+    <button
+      key={size}
+      type="button"
+      className={`size-chip ${isRecommendedSize ? "is-recommended" : ""}`}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.currentTarget.blur();
+
+        addToCart(product, size, null, null, { showToast: false });
+        triggerInlineAddedFeedback(product.id, size);
+      }}
+    >
+      <span className="size-chip-main-wrap">
+        <span className="size-chip-main">{size}</span>
+
+        {isRecommendedSize && (
+          <span className="size-chip-recommended">
+            {lang === "sr" ? "Najbolji izbor" : "Recommended"}
+          </span>
+        )}
+      </span>
+
+      <span className="size-chip-price">{formatPrice(price)}</span>
+
+      <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
+        {tr.justAdded}
+      </span>
+    </button>
+  );
+})}
     const feedbackKey = `${product.id}-${size}`;
 const isJustAdded = inlineAddedKey === feedbackKey;
 
