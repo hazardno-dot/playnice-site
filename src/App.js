@@ -923,6 +923,7 @@ function App() {
   const [storyOpen, setStoryOpen] = useState(false);
   const [inlineAddedKey, setInlineAddedKey] = useState(null);
   const [catalogPreview, setCatalogPreview] = useState(null);
+  const [howItWorksOpen, setHowItWorksOpen] = useState(false);
 
   const openCatalogPreview = (url) => {
   setCatalogPreview(url);
@@ -1535,6 +1536,14 @@ return (
   </button>
 
   <button
+  className="nav-link"
+  type="button"
+  onClick={() => setHowItWorksOpen(true)}
+>
+  {lang === "sr" ? "How it works" : "How it works"}
+</button>
+
+  <button
     className={`nav-link ${view === "home" ? "active" : ""}`}
     type="button"
     onClick={() => switchView("home")}
@@ -1691,6 +1700,66 @@ return (
               <div>{tr.valuePremium}</div>
               <div>{tr.valueDelivery}</div>
             </section>
+
+            <section className="how-it-works-section section-wrap">
+  <div className="section-head how-it-works-head">
+    <p className="section-kicker">
+      {lang === "sr" ? "HOW IT WORKS" : "HOW IT WORKS"}
+    </p>
+    <h2>
+      {lang === "sr"
+        ? "Kako funkcionišu dekanti."
+        : "How decants work."}
+    </h2>
+    <p>
+      {lang === "sr"
+        ? "Jednostavan i pametan način da pronađeš pravi parfem pre kupovine pune bočice."
+        : "A simple and smart way to find the right fragrance before buying a full bottle."}
+    </p>
+  </div>
+
+  <div className="how-it-works-grid">
+    <article className="how-it-works-card">
+      <span className="how-it-works-number">01</span>
+      <h3>{lang === "sr" ? "Šta su dekanti" : "What are decants"}</h3>
+      <p>
+        {lang === "sr"
+          ? "Manja, pažljivo presuta pakovanja originalnih parfema."
+          : "Smaller, carefully decanted portions of original fragrances."}
+      </p>
+    </article>
+
+    <article className="how-it-works-card">
+      <span className="how-it-works-number">02</span>
+      <h3>{lang === "sr" ? "Zašto su korisni" : "Why they matter"}</h3>
+      <p>
+        {lang === "sr"
+          ? "Možeš da probaš miris na svojoj koži pre kupovine pune bočice."
+          : "They let you test a fragrance on your skin before committing to a full bottle."}
+      </p>
+    </article>
+
+    <article className="how-it-works-card">
+      <span className="how-it-works-number">03</span>
+      <h3>{lang === "sr" ? "Zašto je to pametnije" : "Why it is smarter"}</h3>
+      <p>
+        {lang === "sr"
+          ? "Manji rizik, manji trošak i više parfema za rotaciju."
+          : "Lower risk, lower cost, and more room to build a fragrance rotation."}
+      </p>
+    </article>
+  </div>
+
+  <div className="how-it-works-cta">
+    <button
+      className="ghost-button"
+      type="button"
+      onClick={() => setHowItWorksOpen(true)}
+    >
+      {lang === "sr" ? "Saznaj više" : "Learn more"}
+    </button>
+  </div>
+</section>
 
             <div className="section-divider">
   <span />
@@ -2029,8 +2098,22 @@ return (
 
 <div
   className={`backdrop ${
-    cartOpen || checkoutOpen || selectedProduct || storyOpen ? "show" : ""
+    cartOpen ||
+    checkoutOpen ||
+    selectedProduct ||
+    storyOpen ||
+    howItWorksOpen
+      ? "show"
+      : ""
   }`}
+  onClick={() => {
+    setCartOpen(false);
+    setCheckoutOpen(false);
+    setStoryOpen(false);
+    setHowItWorksOpen(false);
+    closeProductModal();
+  }}
+/>
   onClick={() => {
     setCartOpen(false);
     setCheckoutOpen(false);
@@ -2101,6 +2184,89 @@ return (
         type="button"
         onClick={() => {
           setStoryOpen(false);
+          goToShop();
+        }}
+      >
+        {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
+      </button>
+    </div>
+  </div>
+</aside>
+
+<aside className={`how-it-works-drawer ${howItWorksOpen ? "open" : ""}`}>
+  <div className="how-it-works-drawer-header">
+    <div>
+      <p className="section-kicker">HOW IT WORKS</p>
+      <h3>
+        {lang === "sr"
+          ? "Šta su dekanti i zašto imaju smisla."
+          : "What decants are and why they matter."}
+      </h3>
+    </div>
+
+    <button
+      className="close-button"
+      type="button"
+      onClick={() => setHowItWorksOpen(false)}
+      aria-label={lang === "sr" ? "Zatvori prozor" : "Close panel"}
+    >
+      ×
+    </button>
+  </div>
+
+  <div className="how-it-works-drawer-body">
+    <p className="how-it-works-drawer-lead">
+      {lang === "sr"
+        ? "Dekanti su manja, pažljivo presuta pakovanja originalnih parfema. Napravljeni su za ljude koji žele da miris prvo osete na svojoj koži, u svom ritmu, pre nego što se odluče za punu bočicu."
+        : "Decants are smaller, carefully transferred portions of original fragrances. They are made for people who want to wear a scent on their skin, in real life, before committing to a full bottle."}
+    </p>
+
+    <div className="how-it-works-drawer-grid">
+      <div className="how-it-works-drawer-card">
+        <h4>{lang === "sr" ? "Manji rizik" : "Lower risk"}</h4>
+        <p>
+          {lang === "sr"
+            ? "Ne kupuješ naslepo. Prvo probaš, pa tek onda odlučuješ da li miris zaista vredi pune bočice."
+            : "You do not buy blindly. You test first, then decide whether the fragrance deserves a full bottle."}
+        </p>
+      </div>
+
+      <div className="how-it-works-drawer-card">
+        <h4>{lang === "sr" ? "Pametniji trošak" : "Smarter spending"}</h4>
+        <p>
+          {lang === "sr"
+            ? "Umesto jedne skupe greške, možeš probati više parfema i pronaći ono što ti stvarno odgovara."
+            : "Instead of making one expensive mistake, you can test several fragrances and find what truly fits you."}
+        </p>
+      </div>
+
+      <div className="how-it-works-drawer-card">
+        <h4>{lang === "sr" ? "Više izbora" : "More variety"}</h4>
+        <p>
+          {lang === "sr"
+            ? "Dekanti ti omogućavaju da rotiraš više mirisa za različite prilike, godišnja doba i raspoloženja."
+            : "Decants let you build a rotation for different occasions, seasons, and moods."}
+        </p>
+      </div>
+
+      <div className="how-it-works-drawer-card">
+        <h4>{lang === "sr" ? "Originalni parfemi" : "Original fragrances"}</h4>
+        <p>
+          {lang === "sr"
+            ? "Poenta nije u zameni za bočicu, već u tome da originalan parfem doživiš na pametniji i pristupačniji način."
+            : "The point is not to replace the bottle, but to experience the original fragrance in a smarter and more accessible way."}
+        </p>
+      </div>
+    </div>
+
+    <div className="how-it-works-drawer-footer">
+      <span className="story-drawer-signature">Remember. PlayNice.</span>
+
+      <button
+        className="gold-button small"
+        type="button"
+        onClick={() => {
+          setHowItWorksOpen(false);
           goToShop();
         }}
       >
