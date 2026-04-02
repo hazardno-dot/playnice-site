@@ -4363,3 +4363,58 @@ main {
     background: rgba(10, 10, 10, 0.62);
   }
 }
+
+/* =========================================
+   SIZE CHIP — MOBILE NO-GLOW OVERRIDE
+========================================= */
+@media (max-width: 768px) {
+  .size-chip,
+  .size-buttons .size-chip,
+  .size-chip.is-added,
+  .size-chip.is-added:hover,
+  .size-buttons .size-chip:hover,
+  .size-buttons .size-chip:focus-visible {
+    box-shadow: none !important;
+    filter: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .size-chip,
+  .size-buttons .size-chip {
+    transition:
+      background-color 0.14s ease,
+      border-color 0.14s ease,
+      color 0.14s ease !important;
+  }
+
+  .size-chip::before,
+  .size-chip::after,
+  .size-buttons .size-chip::before,
+  .size-buttons .size-chip::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .size-chip.is-added {
+    border-color: rgba(220, 181, 107, 0.42) !important;
+    background:
+      linear-gradient(180deg, rgba(220, 181, 107, 0.10), rgba(220, 181, 107, 0.04)),
+      rgba(22, 18, 12, 0.94) !important;
+    color: #f3e1b8 !important;
+  }
+
+  .size-chip.is-added:hover,
+  .size-buttons .size-chip:hover,
+  .size-buttons .size-chip:focus-visible {
+    border-color: rgba(220, 181, 107, 0.30) !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.022)),
+      rgba(20, 20, 20, 0.94) !important;
+    color: rgba(255, 248, 235, 0.92) !important;
+  }
+
+  .size-chip-feedback {
+    background: rgba(10, 10, 10, 0.62) !important;
+  }
+}
