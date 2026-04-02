@@ -2251,7 +2251,6 @@ return (
         </p>
       </div>
     </div>
-
     <p className="how-it-works-proof">
   {lang === "sr"
     ? "Hiljade kupaca prvo testira dekante pre nego što kupi punu bočicu."
@@ -2271,7 +2270,7 @@ return (
       >
         {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
       </button>
-      
+
       <button
   className="gold-button"
   onClick={() => {
