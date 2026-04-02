@@ -3686,30 +3686,6 @@ main {
   box-shadow: 0 16px 38px rgba(0,0,0,0.55);
 }
 
-/* MEDIA */
-.product-card-media {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 212px;
-  padding: 14px 14px 8px;
-
-  overflow: hidden;
-  z-index: 1;
-  cursor: pointer;
-}
-
-.product-card-media {
-  transform: translateZ(0);
-  will-change: transform;
-}
-
-.product-card:hover .product-card-media {
-  transform: translateY(-2px);
-}
-
 /* =========================================
    PRODUCT CARD — MEDIA (FINAL CLEAN)
 ========================================= */
