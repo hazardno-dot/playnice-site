@@ -1874,6 +1874,42 @@ return (
   <span />
 </div>
 
+<section className="catalog-download-section">
+  <div className="catalog-download-card">
+    <div className="catalog-download-copy">
+      <p className="catalog-download-kicker">
+        {lang === "sr" ? "PLAYNICE KATALOG" : "PLAYNICE CATALOG"}
+      </p>
+
+      <h2>
+        {lang === "sr" ? "Preuzmi katalog." : "Download the catalog."}
+      </h2>
+
+      <p>
+        {lang === "sr"
+          ? "Brz pregled parfema, dostupnih militraža i cena. Idealno za lako deljenje, brzo pregledanje i poručivanje."
+          : "A quick overview of fragrances, available sizes, and prices. Perfect for easy sharing, fast browsing, and ordering."}
+      </p>
+    </div>
+
+    <div className="catalog-download-actions">
+      <a
+        className="catalog-download-button"
+        href="/PlayNice_Dark_Premium_V2.pdf"
+        download
+        target="_blank"
+        rel="noreferrer"
+      >
+        {lang === "sr" ? "Preuzmi PDF" : "Download PDF"}
+      </a>
+
+      <span className="catalog-download-note">
+        {lang === "sr" ? "DM / print verzija" : "DM / print version"}
+      </span>
+    </div>
+  </div>
+</section>
+
             <section className="cta-section">
               <h2>{tr.discoverTitle}</h2>
               <p>{tr.discoverText}</p>

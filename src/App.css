@@ -3795,7 +3795,7 @@ main {
   );
 
   transform: translateX(-120%);
-  animation: ctaShimmer 2.2s ease-in-out infinite;
+  animation: ctaShimmer 3.2s ease-in-out infinite;
 }
 
 @keyframes ctaShimmer {
@@ -3986,5 +3986,150 @@ main {
     filter: none !important;
     animation: none !important;
     text-shadow: none !important;
+  }
+}
+
+/* =========================================
+   CATALOG DOWNLOAD SECTION
+========================================= */
+
+.catalog-download-section {
+  padding: 28px 0 10px;
+}
+
+.catalog-download-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding: 28px 30px;
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  border-radius: 28px;
+
+  background:
+    radial-gradient(circle at top left, rgba(220, 181, 107, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
+    rgba(10,10,10,0.96);
+
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.catalog-download-copy {
+  max-width: 640px;
+}
+
+.catalog-download-kicker {
+  margin: 0 0 8px;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(220, 181, 107, 0.72);
+  font-weight: 700;
+}
+
+.catalog-download-copy h2 {
+  margin: 0 0 10px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 0.95;
+  color: rgba(255,248,235,0.96);
+}
+
+.catalog-download-copy p {
+  margin: 0;
+  max-width: 58ch;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.68);
+}
+
+.catalog-download-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.catalog-download-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 180px;
+  min-height: 48px;
+  padding: 0 18px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.22);
+
+  background:
+    linear-gradient(180deg, rgba(220,181,107,0.18), rgba(220,181,107,0.08)),
+    rgba(18,18,18,0.96);
+
+  color: #f3dfb2;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.catalog-download-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(220, 181, 107, 0.34);
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.34),
+    0 0 0 1px rgba(220,181,107,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.catalog-download-note {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.42);
+}
+
+@media (max-width: 768px) {
+  .catalog-download-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 22px 18px;
+    gap: 18px;
+    border-radius: 22px;
+  }
+
+  .catalog-download-copy h2 {
+    font-size: 2rem;
+  }
+
+  .catalog-download-copy p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .catalog-download-actions {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .catalog-download-button {
+    width: 100%;
+  }
+
+  .catalog-download-note {
+    text-align: center;
   }
 }
