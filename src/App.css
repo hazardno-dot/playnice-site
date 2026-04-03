@@ -827,6 +827,7 @@ main {
   display: grid;
   grid-template-columns: 0.92fr 1.08fr;
   align-items: center;
+  justify-items: center;
   gap: 30px;
   min-height: 500px;
 }
@@ -839,12 +840,14 @@ main {
   position: relative;
   max-width: 400px;
   align-self: center;
-  padding-left: 8px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  /* KLJUČNO */
   align-items: flex-start;
-  gap: 10px;
+  margin: 0 auto; /* centriranje u grid koloni */
 }
 
 .hero h1,
@@ -954,8 +957,12 @@ main {
 .hero-visual-campaign {
   height: 340px;
   min-height: 340px;
-  padding-right: 8px;
-  overflow: visible;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto; /* KLJUČNO */
 }
 
 .hero-visual-campaign::before {
