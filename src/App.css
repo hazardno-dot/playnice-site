@@ -1378,6 +1378,34 @@ main {
 }
 
 /* =========================================
+   HERO CAMPAIGN TITLE SPLIT
+========================================= */
+
+.hero-campaign-title {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hero-campaign-title .line-main {
+  display: block;
+}
+
+.hero-campaign-title .line-secondary {
+  display: block;
+  font-size: 0.82em;
+  opacity: 0.82;
+  letter-spacing: 0.04em;
+}
+
+.hero-campaign-title .line-accent {
+  display: block;
+  color: var(--gold);
+  font-size: 0.9em;
+  letter-spacing: 0.06em;
+}
+
+/* =========================================
    VALUE STRIP
 ========================================= */
 .value-strip {

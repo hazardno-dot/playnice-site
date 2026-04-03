@@ -1795,11 +1795,17 @@ return (
             <div className="hero-copy">
               <p className="eyebrow">{slide.eyebrow}</p>
 
-              <h1>
-                {slide.title1}
-                <br />
-                {slide.title2}
-              </h1>
+              <h1 className="hero-campaign-title">
+  <span className="line-main">{slide.title1}</span>
+
+  <span className="line-secondary">
+    {slide.title2.split(" ").slice(0, 2).join(" ")}
+  </span>
+
+  <span className="line-accent">
+    {slide.title2.split(" ").slice(2).join(" ")}
+  </span>
+</h1>
 
               <p className="hero-text">{slide.text}</p>
 
