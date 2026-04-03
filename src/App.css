@@ -828,7 +828,7 @@ main {
   grid-template-columns: 0.92fr 1.08fr;
   align-items: center;
   gap: 30px;
-  min-height: 400px;
+  min-height: 600px;
 }
 
 /* =========================================
@@ -1125,7 +1125,7 @@ main {
 }
 
 .hero-slide .hero-grid {
-  min-height: 400px;
+  min-height: 600px;
 }
 
 /* =========================================
