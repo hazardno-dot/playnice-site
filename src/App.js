@@ -1184,7 +1184,7 @@ const switchView = (nextView) => {
     const heroProduct = {
       id: 999,
       name: "Afnan 9PM Rebel",
-      image: "/hero-bottle.png",
+      image: "/public/hero/hero-bottle.png",
       sizes: { "100ml": 34.9 }
     };
 
