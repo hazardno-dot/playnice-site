@@ -793,6 +793,7 @@ main {
   box-shadow: var(--shadow-heavy);
   overflow: hidden;
   isolation: isolate;
+  min-height: clamp(480px, 52vw, 620px);
 }
 
 .hero::before {
