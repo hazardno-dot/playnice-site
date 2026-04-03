@@ -115,6 +115,18 @@ const translations = {
     announcementDynamicEmpty4: "Limited stock drops — don’t miss out",
     announcementDynamicEmpty5: "Delivery across Montenegro",
     navStory: "Story",
+    heroCampaigns: [
+  {
+    id: "9pm",
+    eyebrow: "NEW NIGHT DROP",
+    title1: "9PM Night Out",
+    title2: "was made to be tried.",
+    text:
+      "New from Afnan. Dark, modern and made for nights that leave an impression.",
+    cta: "TRY BEFORE YOU BUY",
+    sub: "Available in 5ml, 10ml and 20ml decants"
+  }
+],
   },
   sr: {
     navHome: "Početna",
@@ -959,6 +971,8 @@ const [currentVideo, setCurrentVideo] = useState(0);
 
 const tr = translations[lang];
 
+const campaign9pm = tr.heroCampaigns?.find((item) => item.id === "9pm");
+
 const heroSlides = [
   {
     id: "rebel-offer",
@@ -979,12 +993,15 @@ const heroSlides = [
   {
     id: "night-out",
     kind: "campaign",
-    eyebrow: "NEW NIGHT DROP",
-    title1: "9PM Night Out",
-    title2: "was made to be tried.",
-    text: "New from Afnan. Dark, modern and made for nights that leave an impression.",
-    sub: "Available in 5ml, 10ml and 20ml decants",
-    primaryCta: "Try before you buy",
+    eyebrow: campaign9pm?.eyebrow || "NEW NIGHT DROP",
+    title1: campaign9pm?.title1 || "9PM Night Out",
+    title2: campaign9pm?.title2 || "was made to be tried.",
+    text:
+      campaign9pm?.text ||
+      "New from Afnan. Dark, modern and made for nights that leave an impression.",
+    sub:
+      campaign9pm?.sub || "Available in 5ml, 10ml and 20ml decants",
+    primaryCta: campaign9pm?.cta || "Try before you buy",
     actionPrimary: "shop",
     imageType: "background",
     image: "/hero/9pm-night-out.png"
