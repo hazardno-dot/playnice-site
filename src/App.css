@@ -776,7 +776,7 @@ main {
 }
 
 /* =========================================
-   HERO + HERO CAROUSEL — FINAL COMPACT POLISH
+   HERO + HERO CAROUSEL — MASTER FINAL
 ========================================= */
 
 .hero {
@@ -788,20 +788,19 @@ main {
   border-radius: 34px;
   background:
     radial-gradient(circle at 50% 40%, rgba(220, 181, 107, 0.07), transparent 55%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
-    rgba(8, 8, 8, 0.96);
+    linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
+    rgba(8,8,8,0.96);
   box-shadow: var(--shadow-heavy);
   overflow: hidden;
   isolation: isolate;
-  min-height: clamp(480px, 52vw, 620px);
 }
 
+/* overlays */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 40%, rgba(220, 181, 107, 0.12), transparent 60%);
-  pointer-events: none;
+  background: radial-gradient(circle at 50% 40%, rgba(220,181,107,0.12), transparent 60%);
   z-index: 0;
 }
 
@@ -810,296 +809,99 @@ main {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.95)),
-    radial-gradient(circle at 30% 40%, rgba(220, 181, 107, 0.08), transparent 60%);
-  pointer-events: none;
+    linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.95)),
+    radial-gradient(circle at 30% 40%, rgba(220,181,107,0.08), transparent 60%);
   z-index: 1;
 }
 
-.hero-grid {
+/* =========================================
+   GRID
+========================================= */
+
+.hero-grid,
+.hero-grid-campaign {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  align-items: start;
-  gap: 28px;
+  grid-template-columns: 0.92fr 1.08fr;
+  align-items: center;
+  gap: 30px;
   min-height: 500px;
+}
+
+/* =========================================
+   TEXT SIDE
+========================================= */
+
+.hero-copy {
+  max-width: 500px;
+  align-self: center;
+  padding-left: 8px;
 }
 
 .hero h1 {
   margin: 0;
+  max-width: 7.2ch;
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(52px, 7vw, 92px);
-  line-height: 0.95;
-  letter-spacing: 0.07em;
+  font-size: clamp(48px, 6vw, 84px);
+  line-height: 0.94;
+  letter-spacing: 0.05em;
 }
 
 .hero-text {
-  max-width: 620px;
-  margin-top: 18px;
-  color: var(--text-soft);
-  font-size: 16px;
+  margin: 18px 0 0;
+  max-width: 520px;
+  font-size: 15px;
   line-height: 1.7;
-  letter-spacing: 0.04em;
+  color: var(--text-soft);
 }
 
 .hero-price-line {
-  width: fit-content;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin-top: 22px;
+  margin-top: 20px;
   padding: 14px 16px;
-  border: 1px solid rgba(220, 181, 107, 0.18);
   border-radius: 14px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)),
-    rgba(255, 255, 255, 0.015);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-.old-price {
-  color: rgba(255, 255, 255, 0.38);
-  text-decoration: line-through;
-  font-weight: 600;
-}
-
-.new-price {
-  color: var(--gold);
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-}
-
-.hero-offer-text {
-  color: var(--text);
-  font-weight: 600;
 }
 
 .hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
   margin-top: 18px;
-}
-
-.hero-actions-single {
-  margin-top: 20px;
+  gap: 12px;
 }
 
 .hero-subline {
-  margin-top: 6px;
-  color: rgba(255, 248, 235, 0.52);
+  margin-top: 8px;
   font-size: 0.68rem;
-  line-height: 1.4;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.hero-visual {
-  display: grid;
-  place-items: center;
-  min-height: 430px;
-  padding-left: 10px;
-}
-
-.hero-bottle-wrap {
-  position: relative;
-  padding: 0;
-  border: 0;
-  background: transparent;
-}
-
-.hero-bottle-wrap::before {
-  content: "";
-  position: absolute;
-  inset: auto 10% -6% 10%;
-  height: 30px;
-  background: radial-gradient(circle, rgba(220, 181, 107, 0.18), transparent 72%);
-  filter: blur(18px);
-  pointer-events: none;
-}
-
-.hero-bottle {
-  width: min(100%, 400px);
-  object-fit: contain;
-  filter: drop-shadow(0 50px 100px rgba(0, 0, 0, 1));
-  transform: translateY(0) scale(1);
-  transition: transform 0.35s ease, filter 0.35s ease;
-}
-
-.hero-bottle-wrap:hover .hero-bottle {
-  transform: translateY(-2px) scale(1.02);
-  filter: drop-shadow(0 54px 104px rgba(0, 0, 0, 1));
-}
-
-.hero-video {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.hero-video video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.35;
-  filter: contrast(1.1) brightness(0.6);
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-}
-
-.hero-video-frame video {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 500px;
-  object-fit: cover;
-}
-
-.hero-video-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(to bottom, rgba(0,0,0,0.08), rgba(0,0,0,0.32)),
-    radial-gradient(circle at 50% 50%, transparent 55%, rgba(0,0,0,0.18) 100%);
 }
 
 /* =========================================
-   HERO CAROUSEL
+   VISUAL SIDE
 ========================================= */
 
-.hero-carousel {
-  min-height: 500px;
+.hero-visual,
+.hero-visual-campaign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero-carousel-track {
-  position: relative;
-  min-height: 500px;
-}
-
-.hero-slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  filter: blur(10px);
-  transform: scale(1.01);
-  transition:
-    opacity 0.9s ease,
-    filter 0.9s ease,
-    transform 0.9s ease,
-    visibility 0s linear 0.9s;
-  z-index: 1;
-}
-
-.hero-slide.active {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  filter: blur(0);
-  transform: scale(1);
-  transition:
-    opacity 0.9s ease,
-    filter 0.9s ease,
-    transform 0.9s ease;
-  z-index: 3;
-}
-
-.hero-slide .hero-copy {
-  opacity: 0;
-  transform: translateY(10px);
-  transition:
-    opacity 0.75s ease,
-    transform 0.75s ease;
-}
-
-.hero-slide.active .hero-copy {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.12s;
-}
-
-.hero-slide .hero-grid {
-  min-height: 500px;
-}
-
-.hero-grid-campaign {
-  position: relative;
-  grid-template-columns: 0.85fr 1.15fr;
-  align-items: start;
-  gap: 20px;
-}
-
-.hero-grid-campaign .hero-copy {
-  max-width: 500px;
-  padding-right: 6px;
-}
-
-.hero-grid-campaign h1 {
-  font-size: clamp(42px, 5.2vw, 78px);
-  line-height: 0.92;
-  letter-spacing: 0.025em;
-  max-width: 8.5ch;
-}
-
-.hero-grid-campaign .hero-text {
-  max-width: 500px;
-  margin-top: 16px;
-  font-size: 15px;
-  line-height: 1.65;
+.hero-visual {
+  min-height: 380px;
 }
 
 .hero-visual-campaign {
-  position: relative;
   height: 400px;
   min-height: 400px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  overflow: hidden;
-  border-radius: 22px;
-  padding-top: 0;
+  padding-right: 12px;
 }
 
-.hero-copy {
-  max-width: 480px;
-  align-self: start;
-  padding-top: 4px;
-  transform: translateY(-4px);
+.hero-bottle {
+  width: min(100%, 360px);
+  object-fit: contain;
+  filter: drop-shadow(0 40px 80px rgba(0,0,0,1));
+  transition: transform 0.35s ease;
 }
 
-.hero-visual-campaign::before {
-  content: "";
-  position: absolute;
-  inset: 10% 8% 10% 8%;
-  border-radius: 22px;
-  background: radial-gradient(circle, rgba(220, 181, 107, 0.10), transparent 68%);
-  filter: blur(24px);
-  opacity: 0.48;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.hero-visual-campaign::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-  background:
-    radial-gradient(circle at center,
-      rgba(0,0,0,0) 48%,
-      rgba(0,0,0,0.28) 74%,
-      rgba(0,0,0,0.62) 100%
-    );
+.hero-bottle-wrap:hover .hero-bottle {
+  transform: translateY(-3px) scale(1.02);
 }
 
 .hero-campaign-image {
@@ -1107,35 +909,72 @@ main {
   height: 100%;
   object-fit: contain;
   object-position: center;
-  display: block;
-  border-radius: 20px;
-  filter: brightness(1.08) contrast(1.08);
 }
 
-.hero-slide.active .hero-campaign-image {
-  filter:
-    drop-shadow(0 28px 56px rgba(0, 0, 0, 0.5))
-    drop-shadow(0 0 28px rgba(220, 181, 107, 0.12));
+/* =========================================
+   CAROUSEL
+========================================= */
+
+.hero-carousel,
+.hero-carousel-track {
+  min-height: 500px;
+  position: relative;
 }
 
-.hero-campaign-overlay {
+.hero-slide {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(5, 5, 5, 0.08) 0%,
-      rgba(5, 5, 5, 0.04) 28%,
-      rgba(5, 5, 5, 0.02) 55%,
-      rgba(5, 5, 5, 0.04) 100%
-    );
-  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.8s ease;
 }
 
-/* arrows */
+.hero-slide.active {
+  opacity: 1;
+  visibility: visible;
+}
 
-.hero-carousel-arrow-left { left: 12px; }
-.hero-carousel-arrow-right { right: 12px; }
+/* =========================================
+   ARROWS (VISIBLE FIXED)
+========================================= */
+
+.hero-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(220,181,107,0.18);
+  background: rgba(10,10,10,0.5);
+  backdrop-filter: blur(8px);
+
+  color: #fff;
+  font-size: 20px;
+
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+
+  opacity: 0.9;
+  transition: 0.2s ease;
+}
+
+.hero-carousel-arrow:hover {
+  transform: translateY(-50%) scale(1.05);
+  background: rgba(10,10,10,0.7);
+}
+
+.hero-carousel-arrow-left {
+  left: 16px;
+}
+
+.hero-carousel-arrow-right {
+  right: 16px;
+}
 
 /* =========================================
    HERO CAMPAIGN TITLE SPLIT
