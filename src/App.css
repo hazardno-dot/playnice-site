@@ -783,7 +783,7 @@ main {
   position: relative;
   width: min(calc(100% - 40px), 1240px);
   margin: 4px auto 0;
-  padding: 52px 42px 52px;
+  padding: 52px 42px 80px;
   border: 1px solid var(--line);
   border-radius: 34px;
   background:
@@ -820,9 +820,9 @@ main {
   z-index: 2;
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
-  align-items: center;
+  align-items: start;
   gap: 34px;
-  min-height: 500px;
+  min-height: 620px;
 }
 
 .hero h1 {
@@ -974,12 +974,12 @@ main {
 ========================================= */
 
 .hero-carousel {
-  min-height: 520px;
+  min-height: 620px;
 }
 
 .hero-carousel-track {
   position: relative;
-  min-height: 520px;
+  min-height: 620px;
 }
 
 .hero-slide {
@@ -1026,14 +1026,14 @@ main {
 }
 
 .hero-slide .hero-grid {
-  min-height: 440px;
+  min-height: 620px;
 }
 
 .hero-grid-campaign {
   position: relative;
   grid-template-columns: 0.9fr 1.1fr;
-  align-items: center;
-  gap: 24px;
+  align-items: start;
+  gap: 22px;
 }
 
 .hero-grid-campaign .hero-copy {
@@ -1068,7 +1068,9 @@ main {
 }
 
 .hero-copy {
-  margin-top: 10px;
+  max-width: 500px;
+  align-self: start;
+  padding-top: 8px;
 }
 
 .hero-visual-campaign {
