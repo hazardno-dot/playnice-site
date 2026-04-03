@@ -3856,17 +3856,16 @@ main {
   margin: 0;
   padding: 0;
 
-  font-family: "Inter", sans-serif !important;
-  font-size: 0.54rem !important;
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  line-height: 1;
+  font-weight: 700;
   letter-spacing: 0.16em;
-  opacity: 0.9;
-  line-height: 1 !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.16em !important;
-  text-transform: uppercase !important;
+  text-transform: uppercase;
 
-  color: #49dbe6 !important;
-  opacity: 1 !important;
+  color: #49dbe6;
+  opacity: 0.92;
+
   text-shadow:
     0 0 10px rgba(73, 219, 230, 0.08),
     0 0 18px rgba(73, 219, 230, 0.05);
@@ -3882,18 +3881,18 @@ main {
   background: linear-gradient(
     115deg,
     transparent 0%,
-    transparent 34%,
-    rgba(73, 219, 230, 0.00) 42%,
-    rgba(73, 219, 230, 0.18) 47%,
-    rgba(255, 255, 255, 0.55) 50%,
-    rgba(73, 219, 230, 0.22) 53%,
-    rgba(73, 219, 230, 0.00) 58%,
-    transparent 66%,
+    transparent 36%,
+    rgba(73, 219, 230, 0) 44%,
+    rgba(73, 219, 230, 0.14) 48%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(73, 219, 230, 0.16) 52%,
+    rgba(73, 219, 230, 0) 56%,
+    transparent 64%,
     transparent 100%
   );
 
   transform: translateX(-135%);
-  animation: productCtaElectric 3.4s ease-in-out infinite;
+  animation: productCtaElectric 4.2s ease-in-out infinite;
   pointer-events: none;
   mix-blend-mode: screen;
 }
@@ -3907,11 +3906,11 @@ main {
     opacity: 0;
   }
   18% {
-    opacity: 0.45;
+    opacity: 0.35;
   }
   34% {
     transform: translateX(135%);
-    opacity: 0.9;
+    opacity: 0.75;
   }
   40% {
     transform: translateX(135%);
@@ -4125,31 +4124,6 @@ main {
     animation: none !important;
     text-shadow: none !important;
   }
-}
-
-/* =========================================
-   CTA — TRY BEFORE YOU BUY FINAL LOCK
-========================================= */
-
-.product-preview-line .product-card-cta,
-.product-preview-line.premium-preview-line .product-card-cta,
-.product-preview-line.single-line-preview .product-card-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  margin: 0;
-  padding: 0;
-
-  font-family: "Inter", sans-serif !important;
-  font-size: 0.74rem !important;
-  line-height: 1 !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.16em !important;
-  text-transform: uppercase !important;
-
-  color: #49dbe6 !important;
-  opacity: 1 !important;
 }
 
 /* =========================================
