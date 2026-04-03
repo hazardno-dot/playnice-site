@@ -1784,7 +1784,7 @@ return (
               >
                 <img
                   className="hero-bottle"
-                  src="/hero-bottle.png"
+                  src="hero/hero-bottle.png"
                   alt="Afnan 9PM Rebel"
                 />
               </button>
