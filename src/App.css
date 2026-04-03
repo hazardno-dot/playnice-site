@@ -1033,30 +1033,24 @@ main {
 .hero-visual-campaign {
   position: relative;
   min-height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
   border-radius: 22px;
 }
 
 .hero-campaign-image {
-  width: 94%;
-  height: auto;
-  max-height: 500px;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   object-position: center;
   display: block;
   border-radius: 22px;
+
   transform: scale(1);
-  transition:
-    width 6s ease,
-    transform 6s ease;
+  transition: transform 6s ease;
 }
 
 .hero-slide.active .hero-campaign-image {
-  width: 100%;
-  transform: scale(1.015);
+  transform: scale(1.04);
 }
 
 .hero-campaign-overlay {
