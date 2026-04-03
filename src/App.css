@@ -840,6 +840,11 @@ main {
   max-width: 500px;
   align-self: center;
   padding-left: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
 }
 
 .hero h1,
@@ -858,7 +863,7 @@ main {
 
 .hero-text,
 .hero-grid-campaign .hero-text {
-  margin: 18px 0 0;
+  margin: 0;
   max-width: 520px;
   color: rgba(255, 248, 235, 0.72);
   font-size: 15px;
@@ -868,11 +873,12 @@ main {
 
 .hero-price-line {
   width: fit-content;
+  max-width: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  margin-top: 22px;
+  margin: 4px 0 0;
   padding: 14px 16px;
   border: 1px solid rgba(220, 181, 107, 0.16);
   border-radius: 16px;
@@ -903,18 +909,23 @@ main {
 }
 
 .hero-actions {
+  width: fit-content;
+  max-width: 100%;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 12px;
-  margin-top: 18px;
+  margin: 0;
 }
 
 .hero-actions-single {
-  margin-top: 18px;
+  margin: 0;
 }
 
 .hero-subline {
-  margin: 8px 0 0;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
   color: rgba(255, 248, 235, 0.48);
   font-size: 0.68rem;
   line-height: 1.4;
