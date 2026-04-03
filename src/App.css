@@ -1032,12 +1032,13 @@ main {
   background:
     linear-gradient(
       90deg,
-      rgba(5, 5, 5, 0.82) 0%,
-      rgba(5, 5, 5, 0.46) 22%,
-      rgba(5, 5, 5, 0.14) 42%,
+      rgba(5, 5, 5, 0.92) 0%,
+      rgba(5, 5, 5, 0.75) 18%,
+      rgba(5, 5, 5, 0.45) 38%,
+      rgba(5, 5, 5, 0.18) 58%,
       rgba(5, 5, 5, 0.08) 100%
     ),
-    radial-gradient(circle at 70% 40%, rgba(220, 181, 107, 0.08), transparent 42%);
+    radial-gradient(circle at 65% 40%, rgba(220, 181, 107, 0.06), transparent 42%);
   pointer-events: none;
 }
 
@@ -1054,30 +1055,28 @@ main {
   text-transform: uppercase;
 }
 
-.hero-carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 6;
-  width: 46px;
-  height: 46px;
-  border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.18);
+.hero-carousel-arrow:hover {
+  opacity: 0.9;
+  transform: translateY(-50%) scale(1.06);
+
+  border-color: rgba(220, 181, 107, 0.28);
+  background: rgba(14,14,14,0.55);
+
+  color: rgba(255, 248, 235, 0.9);
+}
+
+.hero-carousel-arrow-left {
+  left: 8px;
+}
+
+.hero-carousel-arrow-right {
+  right: 8px;
+}
+
+.hero::before {
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015)),
-    rgba(10,10,10,0.72);
-  color: rgba(255, 248, 235, 0.84);
-  font-size: 1.6rem;
-  line-height: 1;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  transition:
-    transform 0.22s ease,
-    border-color 0.22s ease,
-    background 0.22s ease,
-    opacity 0.22s ease;
+    linear-gradient(to right, rgba(0,0,0,0.6), transparent 30%),
+    radial-gradient(circle at 50% 40%, rgba(220, 181, 107, 0.12), transparent 60%);
 }
 
 .hero-carousel-arrow:hover {
