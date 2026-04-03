@@ -1026,14 +1026,14 @@ main {
 }
 
 .hero-slide .hero-grid {
-  min-height: 520px;
+  min-height: 440px;
 }
 
 .hero-grid-campaign {
   position: relative;
   grid-template-columns: 0.9fr 1.1fr;
   align-items: center;
-  gap: 22px;
+  gap: 24px;
 }
 
 .hero-grid-campaign .hero-copy {
@@ -1065,6 +1065,14 @@ main {
   overflow: hidden;
   border-radius: 22px;
   padding-top: 0;
+}
+
+.hero-copy {
+  margin-top: 10px;
+}
+
+.hero-visual-campaign {
+  padding-top: 10px;
 }
 
 .hero-visual-campaign::before {
@@ -1229,7 +1237,7 @@ main {
   .hero-grid,
   .hero-grid-campaign {
     grid-template-columns: 1fr;
-    align-items: start;
+    align-items: flex-start;
     gap: 22px;
     min-height: auto;
   }
