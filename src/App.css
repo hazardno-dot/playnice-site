@@ -853,11 +853,11 @@ main {
 .hero h1,
 .hero-grid-campaign h1 {
   margin: 0;
-  max-width: 9ch;
+  max-width: 11ch;
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(34px, 4.2vw, 60px);
-  line-height: 0.92;
-  letter-spacing: 0.02em;
+  line-height: 0.94;
+  letter-spacing: 0.015em;
   color: rgba(255, 248, 238, 0.98);
   text-shadow:
     0 2px 18px rgba(0, 0, 0, 0.16),
