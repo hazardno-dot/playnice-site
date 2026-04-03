@@ -3641,7 +3641,7 @@ main {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 14px;
+  padding: 12px;
 
   border: 1px solid var(--line);
   border-radius: 22px;
@@ -3714,18 +3714,17 @@ main {
 ========================================= */
 
 .product-meta {
+  padding: 14px 14px 12px;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  padding: 12px 14px 10px;
-  min-width: 0;
+  gap: 10px; /* bilo ~16+ */
 }
 
 .product-meta-top {
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  min-height: 92px;
+  min-height: 88px;
+  gap: 6px; /* NOVO */
 }
 
 .product-category {
@@ -3756,8 +3755,8 @@ main {
 }
 
 .product-meta-middle {
-  padding-top: 12px;
-  min-height: 84px;
+  padding-top: 6px;
+  min-height: 70px;
 }
 
 .product-card-copy-stack {
@@ -3779,7 +3778,7 @@ main {
 }
 
 .product-meta-bottom {
-  margin-top: auto;
+  margin-top: 6px;
   display: flex;
   flex-direction: column;
   gap: 10px;
