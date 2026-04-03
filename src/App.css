@@ -1035,22 +1035,24 @@ main {
   min-height: 500px;
   overflow: hidden;
   border-radius: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-campaign-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 70% center;
+
+  object-fit: contain;
+  object-position: center;
+
   display: block;
   border-radius: 22px;
 
-  transform: scale(1);
-  transition: transform 6s ease;
-}
-
-.hero-slide.active .hero-campaign-image {
-  transform: scale(1.04);
+  transform: none;
+  transition: none;
 }
 
 .hero-campaign-overlay {
