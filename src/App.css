@@ -2645,9 +2645,9 @@ main {
 
 .product-card-copy {
   margin: 0;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 0.92rem;
-  line-height: 1.55;
+  font-size: 0.81rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.64);
 }
 
 .product-modal-notes {
@@ -3632,7 +3632,7 @@ main {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
-  align-items: stretch;
+  align-items: start;
 }
 
 /* CARD */
@@ -3640,7 +3640,8 @@ main {
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  justify-content: flex-start;
+  height: auto;
   padding: 12px;
 
   border: 1px solid var(--line);
@@ -3718,13 +3719,13 @@ main {
   display: flex;
   flex-direction: column;
   gap: 10px; /* bilo ~16+ */
+  height: auto;
 }
 
 .product-meta-top {
   display: flex;
   flex-direction: column;
-  min-height: 88px;
-  gap: 6px; /* NOVO */
+  gap: 6px;
 }
 
 .product-category {
@@ -3756,7 +3757,6 @@ main {
 
 .product-meta-middle {
   padding-top: 6px;
-  min-height: 70px;
 }
 
 .product-card-copy-stack {
