@@ -944,52 +944,52 @@ const closeCatalogPreview = () => {
 
 const [currentVideo, setCurrentVideo] = useState(0);
 
-  const heroSlides = [
-    {
-      id: "rebel-offer",
-      kind: "legacy",
-      eyebrow: tr.heroEyebrow,
-      title1: tr.heroTitleLine1,
-      title2: tr.heroTitleLine2,
-      text: tr.heroText,
-      oldPrice: "€45.90",
-      newPrice: tr.heroNow,
-      offerText: tr.heroOffer,
-      primaryCta: tr.exploreCollection,
-      secondaryCta: tr.claimOffer,
-      actionPrimary: "shop",
-      actionSecondary: "heroBottle",
-      imageType: "bottle"
-    },
-    {
-      id: "night-out",
-      kind: "campaign",
-      eyebrow: "NEW NIGHT DROP",
-      title1: "9PM Night Out",
-      title2: "was made to be tried.",
-      text: "New from Afnan. Dark, modern and made for nights that leave an impression.",
-      sub: "Available in 5ml, 10ml and 20ml decants",
-      primaryCta: "Try before you buy",
-      actionPrimary: "shop",
-      imageType: "background",
-      image: "/hero/9pm-night-out.png"
-    }
-  ];
+const tr = translations[lang];
 
-  const [currentHero, setCurrentHero] = useState(0);
-  const [heroPaused, setHeroPaused] = useState(false);
+const heroSlides = [
+  {
+    id: "rebel-offer",
+    kind: "legacy",
+    eyebrow: tr.heroEyebrow,
+    title1: tr.heroTitleLine1,
+    title2: tr.heroTitleLine2,
+    text: tr.heroText,
+    oldPrice: "€45.90",
+    newPrice: tr.heroNow,
+    offerText: tr.heroOffer,
+    primaryCta: tr.exploreCollection,
+    secondaryCta: tr.claimOffer,
+    actionPrimary: "shop",
+    actionSecondary: "heroBottle",
+    imageType: "bottle"
+  },
+  {
+    id: "night-out",
+    kind: "campaign",
+    eyebrow: "NEW NIGHT DROP",
+    title1: "9PM Night Out",
+    title2: "was made to be tried.",
+    text: "New from Afnan. Dark, modern and made for nights that leave an impression.",
+    sub: "Available in 5ml, 10ml and 20ml decants",
+    primaryCta: "Try before you buy",
+    actionPrimary: "shop",
+    imageType: "background",
+    image: "/hero/9pm-night-out.png"
+  }
+];
 
-  const [checkoutForm, setCheckoutForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    city: "",
-    address: "",
-    note: ""
-  });
+const [currentHero, setCurrentHero] = useState(0);
+const [heroPaused, setHeroPaused] = useState(false);
 
-  const tr = translations[lang];
+const [checkoutForm, setCheckoutForm] = useState({
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  city: "",
+  address: "",
+  note: ""
+});
 
   const categories = useMemo(
     () => ["All", "Arabian", "Designer", "Niche", "Summer"],
