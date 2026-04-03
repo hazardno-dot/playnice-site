@@ -819,9 +819,9 @@ main {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-columns: 0.85fr 1.15fr;
   align-items: start;
-  gap: 28px;
+  gap: 32px;
   min-height: 560px;
 }
 
@@ -830,15 +830,15 @@ main {
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(52px, 7vw, 92px);
   line-height: 0.95;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
 }
 
 .hero-text {
   max-width: 620px;
-  margin: 20px 0 0;
+  margin-top: 18px;
   color: var(--text-soft);
   font-size: 16px;
-  line-height: 1.75;
+  line-height: 1.7;
   letter-spacing: 0.04em;
 }
 
@@ -848,7 +848,7 @@ main {
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  margin-top: 24px;
+  margin-top: 22px;
   padding: 14px 16px;
   border: 1px solid rgba(220, 181, 107, 0.18);
   border-radius: 14px;
@@ -880,7 +880,7 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 .hero-actions-single {
@@ -888,7 +888,7 @@ main {
 }
 
 .hero-subline {
-  margin: 8px 0 0;
+  margin-top: 6px;
   color: rgba(255, 248, 235, 0.52);
   font-size: 0.68rem;
   line-height: 1.4;
@@ -900,6 +900,7 @@ main {
   display: grid;
   place-items: center;
   min-height: 430px;
+  padding-left: 10px;
 }
 
 .hero-bottle-wrap {
@@ -1031,7 +1032,7 @@ main {
 
 .hero-grid-campaign {
   position: relative;
-  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-columns: 0.85fr 1.15fr;
   align-items: start;
   gap: 20px;
 }
@@ -1044,12 +1045,12 @@ main {
 .hero-grid-campaign h1 {
   font-size: clamp(42px, 5.2vw, 78px);
   line-height: 0.92;
-  letter-spacing: 0.03em;
-  max-width: 9ch;
+  letter-spacing: 0.025em;
+  max-width: 8.5ch;
 }
 
 .hero-grid-campaign .hero-text {
-  max-width: 520px;
+  max-width: 500px;
   margin-top: 16px;
   font-size: 15px;
   line-height: 1.65;
@@ -1064,12 +1065,15 @@ main {
   justify-content: center;
   overflow: hidden;
   border-radius: 20px;
+  padding-left: 12px;
+  transform: translateY(6px);
 }
 
 .hero-copy {
-  max-width: 500px;
+  max-width: 480px;
   align-self: start;
-  padding-top: 6px;
+  padding-top: 4px;
+  transform: translateY(-4px);
 }
 
 .hero-visual-campaign::before {
@@ -1078,8 +1082,8 @@ main {
   inset: 10% 8% 10% 8%;
   border-radius: 22px;
   background: radial-gradient(circle, rgba(220, 181, 107, 0.10), transparent 68%);
-  filter: blur(26px);
-  opacity: 0.55;
+  filter: blur(24px);
+  opacity: 0.48;
   pointer-events: none;
   z-index: 0;
 }
@@ -1226,7 +1230,7 @@ main {
   }
 
   .hero-bottle {
-    width: min(100%, 300px);
+    width: min(100%, 380px);
   }
 }
 
@@ -1304,7 +1308,7 @@ main {
     max-height: 240px;
     min-height: 240px;
     object-fit: contain;
-    object-position: center;
+    object-position: center 52%;
     border-radius: 20px;
   }
 
