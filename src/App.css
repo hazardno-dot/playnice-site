@@ -783,7 +783,7 @@ main {
   position: relative;
   width: min(calc(100% - 40px), 1240px);
   margin: 4px auto 0;
-  padding: 52px 42px 70px;
+  padding: 42px 42px 44px;
   border: 1px solid var(--line);
   border-radius: 34px;
   background:
@@ -822,7 +822,7 @@ main {
   grid-template-columns: 1.08fr 0.92fr;
   align-items: center;
   gap: 24px;
-  min-height: 520px;
+  min-height: 460px;
 }
 
 .hero h1 {
@@ -888,11 +888,11 @@ main {
 }
 
 .hero-subline {
-  margin: 12px 0 0;
+  margin: 10px 0 0;
   color: rgba(255, 248, 235, 0.52);
-  font-size: 0.72rem;
-  line-height: 1.6;
-  letter-spacing: 0.06em;
+  font-size: 0.7rem;
+  line-height: 1.45;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
@@ -1240,8 +1240,12 @@ main {
   .hero-carousel,
   .hero-carousel-track,
   .hero-slide .hero-grid {
-    min-height: 460px;
+    min-height: 430px;
   }
+
+  .hero-copy {
+  align-self: center;
+}
 
   .hero-grid-campaign {
     grid-template-columns: 1fr;
