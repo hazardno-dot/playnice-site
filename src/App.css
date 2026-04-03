@@ -1049,11 +1049,14 @@ main {
   display: block;
   border-radius: 22px;
   transform: scale(1);
-  transition: transform 6s ease;
+  transition:
+    width 6s ease,
+    transform 6s ease;
 }
 
 .hero-slide.active .hero-campaign-image {
-  transform: scale(1.02);
+  width: 100%;
+  transform: scale(1.015);
 }
 
 .hero-campaign-overlay {
