@@ -1113,7 +1113,6 @@ main {
 }
 
 .hero-slide.active .hero-campaign-image {
-  transform: translateY(-2px);
   filter:
     drop-shadow(0 28px 56px rgba(0, 0, 0, 0.5))
     drop-shadow(0 0 28px rgba(220, 181, 107, 0.12));
