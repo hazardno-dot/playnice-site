@@ -219,8 +219,7 @@ const translations = {
     announcementDynamicEmpty4: "Ograničene količine — ne propusti",
     announcementDynamicEmpty5: "Dostava širom Crne Gore",
     navStory: "Priča",
-    sr: {
-  ...
+    
   heroCampaigns: [
     {
       id: "9pm",
@@ -234,7 +233,6 @@ const translations = {
     }
   ]
 }
-  }
 };
 
 const categoryLabels = {
