@@ -1060,18 +1060,11 @@ main {
   height: 500px;
   min-height: 500px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   overflow: hidden;
   border-radius: 22px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background:
-    radial-gradient(circle at 50% 50%, rgba(220, 181, 107, 0.05), transparent 62%),
-    linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.005));
+  padding-top: 10px;
 }
 
 .hero-visual-campaign::before {
