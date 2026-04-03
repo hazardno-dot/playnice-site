@@ -219,6 +219,21 @@ const translations = {
     announcementDynamicEmpty4: "Ograničene količine — ne propusti",
     announcementDynamicEmpty5: "Dostava širom Crne Gore",
     navStory: "Priča",
+    sr: {
+  ...
+  heroCampaigns: [
+    {
+      id: "9pm",
+      eyebrow: "NOVI NOĆNI DROP",
+      title1: "9PM Night Out",
+      title2: "stvoren da se doživi.",
+      text:
+        "Novo iz Afnan kolekcije. Tamno, moderno i stvoreno za noći koje ostavljaju utisak.",
+      cta: "ISPROBAJ PRE KUPOVINE",
+      sub: "Dostupno u 5ml, 10ml i 20ml dekantima"
+    }
+  ]
+}
   }
 };
 
