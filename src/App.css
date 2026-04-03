@@ -3703,6 +3703,7 @@ main {
     opacity 0.22s ease,
     transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.45s ease;
+    }
 
 /* HOVER */
 .product-card:hover .product-card-image {
