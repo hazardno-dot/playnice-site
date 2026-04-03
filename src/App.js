@@ -944,6 +944,41 @@ const closeCatalogPreview = () => {
 
 const [currentVideo, setCurrentVideo] = useState(0);
 
+  const heroSlides = [
+    {
+      id: "rebel-offer",
+      kind: "legacy",
+      eyebrow: tr.heroEyebrow,
+      title1: tr.heroTitleLine1,
+      title2: tr.heroTitleLine2,
+      text: tr.heroText,
+      oldPrice: "€45.90",
+      newPrice: tr.heroNow,
+      offerText: tr.heroOffer,
+      primaryCta: tr.exploreCollection,
+      secondaryCta: tr.claimOffer,
+      actionPrimary: "shop",
+      actionSecondary: "heroBottle",
+      imageType: "bottle"
+    },
+    {
+      id: "night-out",
+      kind: "campaign",
+      eyebrow: "NEW NIGHT DROP",
+      title1: "9PM Night Out",
+      title2: "was made to be tried.",
+      text: "New from Afnan. Dark, modern and made for nights that leave an impression.",
+      sub: "Available in 5ml, 10ml and 20ml decants",
+      primaryCta: "Try before you buy",
+      actionPrimary: "shop",
+      imageType: "background",
+      image: "/hero/9pm-night-out.png"
+    }
+  ];
+
+  const [currentHero, setCurrentHero] = useState(0);
+  const [heroPaused, setHeroPaused] = useState(false);
+
   const [checkoutForm, setCheckoutForm] = useState({
     firstName: "",
     lastName: "",
@@ -1044,6 +1079,16 @@ const switchView = (nextView) => {
       setSelectedSize("");
     }
   }, [selectedProduct]);
+
+    useEffect(() => {
+    if (heroPaused || heroSlides.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentHero((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [heroPaused, heroSlides.length]);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -1284,6 +1329,30 @@ const switchView = (nextView) => {
       setIsSubmittingOrder(false);
     }
   };
+
+  const handleHeroAction = (action) => {
+  if (action === "shop") {
+    goToShop();
+    return;
+  }
+
+  if (action === "heroBottle") {
+    addHeroBottleToCart();
+    return;
+  }
+};
+
+const nextHeroSlide = () => {
+  setCurrentHero((prev) => (prev + 1) % heroSlides.length);
+};
+
+const prevHeroSlide = () => {
+  setCurrentHero((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+};
+
+const goToHeroSlide = (index) => {
+  setCurrentHero(index);
+};
 
 const goToShop = () => {
   if (view !== "shop") {
@@ -1658,53 +1727,143 @@ return (
 <main>
         {view === "home" && (
           <>
-            <section className="hero">
-              <div className="hero-grid">
-                <div className="hero-copy">
-                  <p className="eyebrow">{tr.heroEyebrow}</p>
-                  <h1>
-                    {tr.heroTitleLine1}
-                    <br />
-                    {tr.heroTitleLine2}
-                  </h1>
-                  <p className="hero-text">{tr.heroText}</p>
+            <section
+  className="hero hero-carousel"
+  onMouseEnter={() => setHeroPaused(true)}
+  onMouseLeave={() => setHeroPaused(false)}
+>
+  <div className="hero-carousel-track">
+    {heroSlides.map((slide, index) => (
+      <article
+        key={slide.id}
+        className={`hero-slide ${index === currentHero ? "active" : ""}`}
+        aria-hidden={index !== currentHero}
+      >
+        {slide.kind === "legacy" ? (
+          <div className="hero-grid">
+            <div className="hero-copy">
+              <p className="eyebrow">{slide.eyebrow}</p>
+              <h1>
+                {slide.title1}
+                <br />
+                {slide.title2}
+              </h1>
+              <p className="hero-text">{slide.text}</p>
 
-                  <div className="hero-price-line">
-                    <span className="old-price">€45.90</span>
-                    <span className="new-price">{tr.heroNow}</span>
-                    <span className="hero-offer-text">{tr.heroOffer}</span>
-                  </div>
-
-                  <div className="hero-actions">
-                    <button className="gold-button" type="button" onClick={goToShop}>
-                      {tr.exploreCollection}
-                    </button>
-                    <button
-                      className="ghost-button"
-                      type="button"
-                      onClick={addHeroBottleToCart}
-                    >
-                      {tr.claimOffer}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="hero-visual">
-                  <button
-                    className="hero-bottle-wrap"
-                    type="button"
-                    onClick={addHeroBottleToCart}
-                    aria-label="Add Afnan 9PM Rebel full bottle to cart"
-                  >
-                    <img
-                      className="hero-bottle"
-                      src="/hero-bottle.png"
-                      alt="Afnan 9PM Rebel"
-                    />
-                  </button>
-                </div>
+              <div className="hero-price-line">
+                <span className="old-price">{slide.oldPrice}</span>
+                <span className="new-price">{slide.newPrice}</span>
+                <span className="hero-offer-text">{slide.offerText}</span>
               </div>
-            </section>
+
+              <div className="hero-actions">
+                <button
+                  className="gold-button"
+                  type="button"
+                  onClick={() => handleHeroAction(slide.actionPrimary)}
+                >
+                  {slide.primaryCta}
+                </button>
+
+                <button
+                  className="ghost-button"
+                  type="button"
+                  onClick={() => handleHeroAction(slide.actionSecondary)}
+                >
+                  {slide.secondaryCta}
+                </button>
+              </div>
+            </div>
+
+            <div className="hero-visual">
+              <button
+                className="hero-bottle-wrap"
+                type="button"
+                onClick={addHeroBottleToCart}
+                aria-label="Add Afnan 9PM Rebel full bottle to cart"
+              >
+                <img
+                  className="hero-bottle"
+                  src="/hero-bottle.png"
+                  alt="Afnan 9PM Rebel"
+                />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="hero-grid hero-grid-campaign">
+            <div className="hero-copy">
+              <p className="eyebrow">{slide.eyebrow}</p>
+
+              <h1>
+                {slide.title1}
+                <br />
+                {slide.title2}
+              </h1>
+
+              <p className="hero-text">{slide.text}</p>
+
+              <div className="hero-actions hero-actions-single">
+                <button
+                  className="gold-button"
+                  type="button"
+                  onClick={() => handleHeroAction(slide.actionPrimary)}
+                >
+                  {slide.primaryCta}
+                </button>
+              </div>
+
+              {slide.sub && <p className="hero-subline">{slide.sub}</p>}
+            </div>
+
+            <div className="hero-visual hero-visual-campaign">
+              <img
+                className="hero-campaign-image"
+                src={slide.image}
+                alt={slide.title1}
+              />
+              <div className="hero-campaign-overlay" />
+            </div>
+          </div>
+        )}
+      </article>
+    ))}
+  </div>
+
+  {heroSlides.length > 1 && (
+    <>
+      <button
+        type="button"
+        className="hero-carousel-arrow hero-carousel-arrow-left"
+        onClick={prevHeroSlide}
+        aria-label="Previous slide"
+      >
+        ‹
+      </button>
+
+      <button
+        type="button"
+        className="hero-carousel-arrow hero-carousel-arrow-right"
+        onClick={nextHeroSlide}
+        aria-label="Next slide"
+      >
+        ›
+      </button>
+
+      <div className="hero-carousel-dots">
+        {heroSlides.map((slide, index) => (
+          <button
+            key={slide.id}
+            type="button"
+            className={`hero-carousel-dot ${index === currentHero ? "active" : ""}`}
+            onClick={() => goToHeroSlide(index)}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+    </>
+  )}
+</section>
 
             <section className="value-strip">
               <div>{tr.valueTry}</div>

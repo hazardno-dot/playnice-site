@@ -966,6 +966,291 @@ main {
 }
 
 /* =========================================
+   HERO CAROUSEL PATCH
+========================================= */
+
+.hero-carousel {
+  min-height: 640px;
+}
+
+.hero-carousel-track {
+  position: relative;
+  min-height: 640px;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+  z-index: 1;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.hero-slide .hero-grid {
+  min-height: 640px;
+}
+
+.hero-grid-campaign {
+  position: relative;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 0;
+}
+
+.hero-visual-campaign {
+  position: relative;
+  min-height: 640px;
+  display: block;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.hero-campaign-image {
+  width: 100%;
+  height: 100%;
+  min-height: 640px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transform: scale(1.03);
+  transition: transform 6s ease;
+}
+
+.hero-slide.active .hero-campaign-image {
+  transform: scale(1.07);
+}
+
+.hero-campaign-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 5, 5, 0.82) 0%,
+      rgba(5, 5, 5, 0.46) 22%,
+      rgba(5, 5, 5, 0.14) 42%,
+      rgba(5, 5, 5, 0.08) 100%
+    ),
+    radial-gradient(circle at 70% 40%, rgba(220, 181, 107, 0.08), transparent 42%);
+  pointer-events: none;
+}
+
+.hero-actions-single {
+  margin-top: 30px;
+}
+
+.hero-subline {
+  margin: 14px 0 0;
+  color: rgba(255, 248, 235, 0.52);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 6;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015)),
+    rgba(10,10,10,0.72);
+  color: rgba(255, 248, 235, 0.84);
+  font-size: 1.6rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease,
+    opacity 0.22s ease;
+}
+
+.hero-carousel-arrow:hover {
+  transform: translateY(-50%) scale(1.04);
+  border-color: rgba(220, 181, 107, 0.34);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)),
+    rgba(14,14,14,0.82);
+}
+
+.hero-carousel-arrow-left {
+  left: 20px;
+}
+
+.hero-carousel-arrow-right {
+  right: 20px;
+}
+
+.hero-carousel-dots {
+  position: absolute;
+  left: 52px;
+  bottom: 26px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-carousel-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.24);
+  cursor: pointer;
+  transition:
+    transform 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.hero-carousel-dot.active {
+  background: var(--gold);
+  box-shadow: 0 0 0 4px rgba(220, 181, 107, 0.12);
+  transform: scale(1.08);
+}
+
+.hero-carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 1024px) {
+  .hero-carousel,
+  .hero-carousel-track,
+  .hero-slide .hero-grid,
+  .hero-visual-campaign,
+  .hero-campaign-image {
+    min-height: 560px;
+  }
+
+  .hero-grid-campaign {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-visual-campaign {
+    order: -1;
+    min-height: 320px;
+    margin-bottom: 24px;
+  }
+
+  .hero-campaign-image {
+    min-height: 320px;
+  }
+
+  .hero-campaign-overlay {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5, 5, 5, 0.18) 0%,
+        rgba(5, 5, 5, 0.28) 30%,
+        rgba(5, 5, 5, 0.56) 65%,
+        rgba(5, 5, 5, 0.78) 100%
+      );
+  }
+
+  .hero-carousel-dots {
+    left: 28px;
+    bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-carousel {
+    min-height: auto;
+    padding: 22px 18px 62px;
+  }
+
+  .hero-carousel-track {
+    min-height: 0;
+  }
+
+  .hero-slide {
+    position: relative;
+    inset: auto;
+    display: none;
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .hero-slide.active {
+    display: block;
+    pointer-events: auto;
+  }
+
+  .hero-slide .hero-grid {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .hero-copy {
+    order: 2;
+  }
+
+  .hero-visual,
+  .hero-visual-campaign {
+    order: 1;
+    min-height: 280px;
+  }
+
+  .hero-bottle {
+    width: min(100%, 280px);
+  }
+
+  .hero-campaign-image {
+    min-height: 280px;
+    height: 280px;
+    border-radius: 20px;
+  }
+
+  .hero-carousel-arrow {
+    top: auto;
+    bottom: 14px;
+    transform: none;
+    width: 40px;
+    height: 40px;
+  }
+
+  .hero-carousel-arrow:hover {
+    transform: scale(1.03);
+  }
+
+  .hero-carousel-arrow-left {
+    left: 18px;
+  }
+
+  .hero-carousel-arrow-right {
+    right: 18px;
+  }
+
+  .hero-carousel-dots {
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+  }
+
+  .hero-subline {
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+}
+
+/* =========================================
    VALUE STRIP
 ========================================= */
 .value-strip {
