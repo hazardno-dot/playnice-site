@@ -776,7 +776,7 @@ main {
 }
 
 /* =========================================
-   HERO + HERO CAROUSEL — MASTER FINAL
+   HERO + HERO CAROUSEL — MASTER FINAL POLISHED
 ========================================= */
 
 .hero {
@@ -787,20 +787,21 @@ main {
   border: 1px solid var(--line);
   border-radius: 34px;
   background:
-    radial-gradient(circle at 50% 40%, rgba(220, 181, 107, 0.07), transparent 55%),
-    linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
-    rgba(8,8,8,0.96);
+    radial-gradient(circle at 50% 38%, rgba(220, 181, 107, 0.07), transparent 56%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+    rgba(8, 8, 8, 0.96);
   box-shadow: var(--shadow-heavy);
   overflow: hidden;
   isolation: isolate;
 }
 
-/* overlays */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 40%, rgba(220,181,107,0.12), transparent 60%);
+  background:
+    radial-gradient(circle at 50% 38%, rgba(220, 181, 107, 0.11), transparent 60%);
+  pointer-events: none;
   z-index: 0;
 }
 
@@ -809,13 +810,14 @@ main {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.95)),
-    radial-gradient(circle at 30% 40%, rgba(220,181,107,0.08), transparent 60%);
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.54), rgba(0, 0, 0, 0.88)),
+    radial-gradient(circle at 28% 42%, rgba(220, 181, 107, 0.06), transparent 58%);
+  pointer-events: none;
   z-index: 1;
 }
 
 /* =========================================
-   GRID
+   HERO GRID
 ========================================= */
 
 .hero-grid,
@@ -834,42 +836,90 @@ main {
 ========================================= */
 
 .hero-copy {
+  position: relative;
   max-width: 500px;
   align-self: center;
   padding-left: 8px;
 }
 
-.hero h1 {
+.hero h1,
+.hero-grid-campaign h1 {
   margin: 0;
   max-width: 7.2ch;
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(48px, 6vw, 84px);
   line-height: 0.94;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.045em;
+  color: rgba(255, 248, 238, 0.98);
+  text-shadow:
+    0 2px 20px rgba(0, 0, 0, 0.18),
+    0 10px 40px rgba(0, 0, 0, 0.22);
 }
 
-.hero-text {
+.hero-text,
+.hero-grid-campaign .hero-text {
   margin: 18px 0 0;
   max-width: 520px;
+  color: rgba(255, 248, 235, 0.72);
   font-size: 15px;
-  line-height: 1.7;
-  color: var(--text-soft);
+  line-height: 1.72;
+  letter-spacing: 0.015em;
 }
 
 .hero-price-line {
-  margin-top: 20px;
+  width: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
   padding: 14px 16px;
-  border-radius: 14px;
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.026), rgba(255, 255, 255, 0.012)),
+    rgba(255, 255, 255, 0.012);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 10px 26px rgba(0, 0, 0, 0.16);
+}
+
+.old-price {
+  color: rgba(255, 255, 255, 0.34);
+  text-decoration: line-through;
+  font-weight: 600;
+}
+
+.new-price {
+  color: var(--gold);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.hero-offer-text {
+  color: rgba(255, 248, 235, 0.92);
+  font-weight: 600;
 }
 
 .hero-actions {
-  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
+  margin-top: 18px;
+}
+
+.hero-actions-single {
+  margin-top: 18px;
 }
 
 .hero-subline {
-  margin-top: 8px;
+  margin: 8px 0 0;
+  color: rgba(255, 248, 235, 0.48);
   font-size: 0.68rem;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 /* =========================================
@@ -878,6 +928,7 @@ main {
 
 .hero-visual,
 .hero-visual-campaign {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -891,34 +942,148 @@ main {
   height: 400px;
   min-height: 400px;
   padding-right: 12px;
+  overflow: visible;
+}
+
+.hero-visual-campaign::before {
+  content: "";
+  position: absolute;
+  inset: 12% 10% 12% 10%;
+  border-radius: 28px;
+  background: radial-gradient(circle, rgba(220, 181, 107, 0.1), transparent 68%);
+  filter: blur(26px);
+  opacity: 0.48;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-visual-campaign::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    radial-gradient(circle at center,
+      rgba(0, 0, 0, 0) 46%,
+      rgba(0, 0, 0, 0.18) 74%,
+      rgba(0, 0, 0, 0.42) 100%);
+}
+
+.hero-bottle-wrap {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.hero-bottle-wrap::before {
+  content: "";
+  position: absolute;
+  inset: auto 10% -6% 10%;
+  height: 30px;
+  background: radial-gradient(circle, rgba(220, 181, 107, 0.18), transparent 72%);
+  filter: blur(18px);
+  pointer-events: none;
 }
 
 .hero-bottle {
   width: min(100%, 360px);
   object-fit: contain;
-  filter: drop-shadow(0 40px 80px rgba(0,0,0,1));
-  transition: transform 0.35s ease;
+  filter: drop-shadow(0 42px 86px rgba(0, 0, 0, 1));
+  transform: translateY(0) scale(1);
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .hero-bottle-wrap:hover .hero-bottle {
-  transform: translateY(-3px) scale(1.02);
+  transform: translateY(-2px) scale(1.015);
+  filter: drop-shadow(0 48px 92px rgba(0, 0, 0, 1));
 }
 
 .hero-campaign-image {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
+  display: block;
   object-fit: contain;
-  object-position: center;
+  object-position: center center;
+  background: transparent !important;
+  border-radius: 20px;
+  filter:
+    brightness(1.04)
+    contrast(1.05)
+    drop-shadow(0 26px 54px rgba(0, 0, 0, 0.42));
+}
+
+.hero-campaign-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 5, 5, 0.08) 0%,
+      rgba(5, 5, 5, 0.03) 30%,
+      rgba(5, 5, 5, 0.01) 56%,
+      rgba(5, 5, 5, 0.04) 100%
+    );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* =========================================
+   VIDEO
+========================================= */
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.32;
+  filter: contrast(1.08) brightness(0.58);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-video-frame video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+}
+
+.hero-video-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.3)),
+    radial-gradient(circle at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.16) 100%);
 }
 
 /* =========================================
    CAROUSEL
 ========================================= */
 
-.hero-carousel,
-.hero-carousel-track {
-  min-height: 500px;
+.hero-carousel {
   position: relative;
+  min-height: 500px;
+}
+
+.hero-carousel-track {
+  position: relative;
+  min-height: 500px;
 }
 
 .hero-slide {
@@ -926,16 +1091,45 @@ main {
   inset: 0;
   opacity: 0;
   visibility: hidden;
-  transition: 0.8s ease;
+  pointer-events: none;
+  filter: blur(6px);
+  transform: scale(1.008);
+  transition:
+    opacity 0.42s ease,
+    filter 0.42s ease,
+    transform 0.42s ease;
+  z-index: 1;
 }
 
 .hero-slide.active {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
+  filter: blur(0);
+  transform: scale(1);
+  z-index: 3;
+}
+
+.hero-slide .hero-copy {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.34s ease,
+    transform 0.34s ease;
+}
+
+.hero-slide.active .hero-copy {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.08s;
+}
+
+.hero-slide .hero-grid {
+  min-height: 500px;
 }
 
 /* =========================================
-   ARROWS (VISIBLE FIXED)
+   ARROWS
 ========================================= */
 
 .hero-carousel-arrow {
@@ -943,29 +1137,36 @@ main {
   top: 50%;
   transform: translateY(-50%);
   z-index: 30;
-
   width: 42px;
   height: 42px;
   border-radius: 999px;
-
-  border: 1px solid rgba(220,181,107,0.18);
-  background: rgba(10,10,10,0.5);
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  background: rgba(10, 10, 10, 0.46);
   backdrop-filter: blur(8px);
-
-  color: #fff;
-  font-size: 20px;
-
+  color: rgba(255, 248, 235, 0.88);
+  font-size: 1.35rem;
+  line-height: 1;
   display: grid;
   place-items: center;
   cursor: pointer;
-
   opacity: 0.9;
-  transition: 0.2s ease;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.26);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .hero-carousel-arrow:hover {
-  transform: translateY(-50%) scale(1.05);
-  background: rgba(10,10,10,0.7);
+  opacity: 1;
+  transform: translateY(-50%) scale(1.04);
+  background: rgba(10, 10, 10, 0.62);
+  border-color: rgba(220, 181, 107, 0.28);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(220, 181, 107, 0.07);
 }
 
 .hero-carousel-arrow-left {
@@ -974,6 +1175,10 @@ main {
 
 .hero-carousel-arrow-right {
   right: 16px;
+}
+
+.hero-carousel-dots {
+  display: none;
 }
 
 /* =========================================
@@ -1033,6 +1238,7 @@ main {
     max-width: 100%;
     align-self: start;
     order: 2;
+    padding-left: 0;
     padding-right: 0;
   }
 
@@ -1043,8 +1249,10 @@ main {
     height: 320px;
     max-height: 320px;
     margin-bottom: 0;
+    padding-right: 0;
   }
 
+  .hero h1,
   .hero-grid-campaign h1 {
     font-size: clamp(34px, 6vw, 56px);
     line-height: 0.96;
@@ -1052,6 +1260,7 @@ main {
     max-width: 9ch;
   }
 
+  .hero-text,
   .hero-grid-campaign .hero-text {
     max-width: 100%;
     margin-top: 14px;
@@ -1064,12 +1273,10 @@ main {
     height: 100%;
     max-height: 320px;
     min-height: 320px;
-    object-fit: contain;
-    object-position: center;
   }
 
   .hero-bottle {
-    width: min(100%, 380px);
+    width: min(100%, 300px);
   }
 }
 
@@ -1094,6 +1301,8 @@ main {
     opacity: 1;
     visibility: visible;
     pointer-events: none;
+    filter: none;
+    transform: none;
   }
 
   .hero-slide.active {
@@ -1128,12 +1337,14 @@ main {
     width: min(100%, 250px);
   }
 
+  .hero h1,
   .hero-grid-campaign h1 {
     font-size: clamp(30px, 10vw, 46px);
     line-height: 0.98;
     max-width: 9ch;
   }
 
+  .hero-text,
   .hero-grid-campaign .hero-text {
     max-width: 100%;
     margin-top: 12px;
@@ -1146,8 +1357,6 @@ main {
     height: 100%;
     max-height: 240px;
     min-height: 240px;
-    object-fit: contain;
-    object-position: center 52%;
     border-radius: 20px;
   }
 
