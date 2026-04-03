@@ -1251,6 +1251,133 @@ main {
 }
 
 /* =========================================
+   HERO CAROUSEL SIZE TUNE
+========================================= */
+
+.hero.hero-carousel {
+  width: min(calc(100% - 40px), 1240px);
+  padding: 52px 42px 70px;
+}
+
+.hero-carousel-track,
+.hero-slide .hero-grid {
+  min-height: 520px;
+}
+
+.hero-grid-campaign {
+  grid-template-columns: 0.82fr 1.18fr;
+  align-items: center;
+  gap: 18px;
+}
+
+.hero-grid-campaign .hero-copy {
+  max-width: 500px;
+  padding-right: 8px;
+}
+
+.hero-grid-campaign h1 {
+  font-size: clamp(42px, 5.2vw, 78px);
+  line-height: 0.92;
+  letter-spacing: 0.03em;
+  max-width: 9ch;
+}
+
+.hero-grid-campaign .hero-text {
+  max-width: 520px;
+  margin-top: 18px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.hero-grid-campaign .hero-actions {
+  margin-top: 22px;
+}
+
+.hero-subline {
+  margin-top: 12px;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+
+.hero-visual-campaign {
+  min-height: 520px;
+  border-radius: 22px;
+}
+
+.hero-campaign-image {
+  min-height: 520px;
+  border-radius: 22px;
+  object-position: center right;
+}
+
+.hero-carousel-arrow-left {
+  left: 14px;
+}
+
+.hero-carousel-arrow-right {
+  right: 14px;
+}
+
+.hero-carousel-dots {
+  left: 42px;
+  bottom: 22px;
+}
+
+@media (max-width: 1024px) {
+  .hero.hero-carousel {
+    width: min(calc(100% - 28px), 1240px);
+    padding: 38px 28px 62px;
+  }
+
+  .hero-carousel-track,
+  .hero-slide .hero-grid,
+  .hero-visual-campaign,
+  .hero-campaign-image {
+    min-height: 460px;
+  }
+
+  .hero-grid-campaign .hero-copy {
+    max-width: 100%;
+    padding-right: 0;
+  }
+
+  .hero-grid-campaign h1 {
+    font-size: clamp(36px, 6vw, 60px);
+    max-width: 11ch;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero.hero-carousel {
+    width: min(calc(100% - 18px), 100%);
+    padding: 18px 16px 58px;
+  }
+
+  .hero-grid-campaign h1 {
+    font-size: clamp(34px, 11vw, 52px);
+    line-height: 0.96;
+    max-width: 10ch;
+  }
+
+  .hero-grid-campaign .hero-text {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .hero-visual-campaign,
+  .hero-campaign-image {
+    min-height: 250px;
+    height: 250px;
+  }
+
+  .hero-carousel-dots {
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+  }
+}
+
+/* =========================================
    VALUE STRIP
 ========================================= */
 .value-strip {
