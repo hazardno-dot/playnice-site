@@ -1223,55 +1223,73 @@ main {
 
 @media (max-width: 1024px) {
   .hero {
-    width: min(calc(100% - 28px), 1240px);
-    padding: 38px 28px 62px;
+    width: min(calc(100% - 24px), 100%);
+    padding: 28px 22px 30px;
   }
 
   .hero-carousel,
   .hero-carousel-track,
   .hero-slide .hero-grid {
-    min-height: 430px;
+    min-height: auto;
   }
 
- .hero-copy {
-  max-width: 480px;
-  align-self: center;
-}
+  .hero-grid,
+  .hero-grid-campaign {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 22px;
+    min-height: auto;
+  }
 
- .hero-grid-campaign {
-  grid-template-columns: 0.9fr 1.1fr;
-  align-items: center;
-  gap: 34px;
-}
+  .hero-copy,
+  .hero-grid-campaign .hero-copy {
+    max-width: 100%;
+    align-self: start;
+    order: 2;
+    padding-right: 0;
+  }
 
- .hero-grid-campaign .hero-copy {
-  max-width: 480px;
-  padding-right: 0;
-}
+  .hero-visual,
+  .hero-visual-campaign {
+    order: 1;
+    min-height: 320px;
+    height: 320px;
+    max-height: 320px;
+    margin-bottom: 0;
+  }
 
   .hero-grid-campaign h1 {
-  font-size: clamp(40px, 5vw, 74px);
-  line-height: 0.94;
-  letter-spacing: 0.02em;
-  max-width: 8.5ch;
-}
+    font-size: clamp(34px, 6vw, 56px);
+    line-height: 0.96;
+    letter-spacing: 0.02em;
+    max-width: 9ch;
+  }
 
-  .hero-visual-campaign {
-    order: -1;
-    min-height: 320px;
-    margin-bottom: 24px;
+  .hero-grid-campaign .hero-text {
+    max-width: 100%;
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.65;
   }
 
   .hero-campaign-image {
     width: 100%;
+    height: 100%;
     max-height: 320px;
+    min-height: 320px;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .hero-bottle {
+    width: min(100%, 300px);
   }
 }
 
 @media (max-width: 768px) {
   .hero {
-    width: min(calc(100% - 18px), 100%);
-    padding: 18px 16px 58px;
+    width: min(calc(100% - 16px), 100%);
+    padding: 20px 16px 22px;
   }
 
   .hero-carousel {
@@ -1296,55 +1314,70 @@ main {
     pointer-events: auto;
   }
 
-  .hero-slide .hero-grid {
+  .hero-slide .hero-grid,
+  .hero-grid,
+  .hero-grid-campaign {
     min-height: auto;
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 16px;
   }
 
-  .hero-copy {
+  .hero-copy,
+  .hero-grid-campaign .hero-copy {
     order: 2;
+    max-width: 100%;
+    align-self: start;
   }
 
   .hero-visual,
   .hero-visual-campaign {
     order: 1;
-    min-height: 250px;
+    min-height: 240px;
+    height: 240px;
+    max-height: 240px;
   }
 
   .hero-bottle {
-    width: min(100%, 280px);
+    width: min(100%, 250px);
   }
 
   .hero-grid-campaign h1 {
-    font-size: clamp(34px, 11vw, 52px);
-    line-height: 0.96;
-    max-width: 10ch;
+    font-size: clamp(30px, 10vw, 46px);
+    line-height: 0.98;
+    max-width: 9ch;
   }
 
   .hero-grid-campaign .hero-text {
-  max-width: 460px;
-  margin-top: 18px;
-  font-size: 15px;
-  line-height: 1.7;
-}
+    max-width: 100%;
+    margin-top: 12px;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
 
   .hero-campaign-image {
     width: 100%;
-    max-height: 250px;
-    min-height: 250px;
-    height: 250px;
+    height: 100%;
+    max-height: 240px;
+    min-height: 240px;
+    object-fit: contain;
+    object-position: center;
     border-radius: 20px;
   }
 
-  .hero-carousel-arrow {
-    width: 40px;
-    height: 40px;
+  .hero-actions {
+    margin-top: 18px;
+    gap: 10px;
   }
 
   .hero-subline {
-    font-size: 0.72rem;
-    line-height: 1.5;
+    margin-top: 8px;
+    font-size: 0.68rem;
+    line-height: 1.4;
+  }
+
+  .hero-carousel-arrow {
+    width: 38px;
+    height: 38px;
   }
 }
 
