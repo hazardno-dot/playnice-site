@@ -3723,10 +3723,11 @@ main {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 86px;
 }
 
 .product-category {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   font-family: "Inter", sans-serif;
   font-size: 0.68rem;
   line-height: 1.2;
@@ -3738,13 +3739,14 @@ main {
 
 .product-card-title {
   margin: 0;
-  min-height: 2.35em;
+  min-height: 2.42em;
 
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1.02rem, 1.08vw, 1.15rem);
+  font-size: clamp(1.16rem, 1.42vw, 1.42rem);
   font-weight: 600;
-  line-height: 1.04;
-  color: rgba(255, 248, 235, 0.96);
+  line-height: 1.02;
+  letter-spacing: 0.01em;
+  color: rgba(255, 248, 235, 0.98);
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -3754,7 +3756,7 @@ main {
 
 .product-meta-middle {
   padding-top: 12px;
-  min-height: 72px;
+  min-height: 84px;
 }
 
 .product-card-copy-stack {
@@ -3764,12 +3766,12 @@ main {
 .product-card-copy,
 .product-card-copy.premium-card-copy {
   margin: 0;
-  min-height: 2.8em;
+  min-height: 3.05em;
 
   font-family: "Inter", sans-serif;
-  font-size: 0.79rem;
-  line-height: 1.46;
-  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.81rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.64);
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -3825,11 +3827,13 @@ main {
   justify-content: center;
   min-height: 22px;
   text-align: center;
+  overflow: hidden;
 }
 
 .product-preview-line .product-card-cta,
 .product-preview-line.premium-preview-line .product-card-cta,
 .product-preview-line.single-line-preview .product-card-cta {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3846,7 +3850,60 @@ main {
 
   color: #49dbe6 !important;
   opacity: 1 !important;
-  text-shadow: none !important;
+  text-shadow:
+    0 0 10px rgba(73, 219, 230, 0.08),
+    0 0 18px rgba(73, 219, 230, 0.05);
+}
+
+.product-preview-line .product-card-cta::after,
+.product-preview-line.premium-preview-line .product-card-cta::after,
+.product-preview-line.single-line-preview .product-card-cta::after {
+  content: "";
+  position: absolute;
+  inset: -1px -8px;
+
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 34%,
+    rgba(73, 219, 230, 0.00) 42%,
+    rgba(73, 219, 230, 0.18) 47%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(73, 219, 230, 0.22) 53%,
+    rgba(73, 219, 230, 0.00) 58%,
+    transparent 66%,
+    transparent 100%
+  );
+
+  transform: translateX(-135%);
+  animation: productCtaElectric 3.4s ease-in-out infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+@keyframes productCtaElectric {
+  0% {
+    transform: translateX(-135%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.45;
+  }
+  34% {
+    transform: translateX(135%);
+    opacity: 0.9;
+  }
+  40% {
+    transform: translateX(135%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(135%);
+    opacity: 0;
+  }
 }
 
 /* =========================================
