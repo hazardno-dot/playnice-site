@@ -2442,7 +2442,6 @@ return (
   </div>
 </section>
 
-            <>
   <section className="closing-section section-wrap">
     <div className="closing-shell">
       <p className="closing-kicker">
@@ -2586,7 +2585,6 @@ return (
     </div>
   </footer>
 </>
-          </>
         )}
 
         {view === "shop" && (
