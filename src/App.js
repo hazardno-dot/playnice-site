@@ -2469,12 +2469,12 @@ return (
         </button>
 
         <button
-          type="button"
-          className="ghost-button"
-          onClick={() => setStoryOpen(true)}
-        >
-          Private Selection
-        </button>
+  type="button"
+  className="ghost-button"
+  onClick={goToShop}
+>
+  Private Selection
+</button>
       </div>
     </div>
   </section>
@@ -2531,15 +2531,12 @@ return (
         </button>
 
         <button
-          type="button"
-          className="footer-link"
-          onClick={() => {
-            setView("shop");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-        >
-          Private Selection
-        </button>
+  type="button"
+  className="footer-link"
+  onClick={goToShop}
+>
+  Private Selection
+</button>
 
         <button
   type="button"
