@@ -794,7 +794,7 @@ const productCopy = {
   dominantNotes:{sr:["narandža","vetiver","kremen"],en:["orange","vetiver","flint"]},
   tags:{sr:["Signature"],en:["Signature"]},
   whyChoose:{sr:"Bezvremenski izbor.",en:"Timeless choice."}
-}
+},
 
 "Afnan 9PM Night Out": {
   miniTag: "🌙 Night / Sweet",
