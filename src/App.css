@@ -6180,8 +6180,22 @@ main {
 }
 
 @media (max-width: 768px) {
-  :root {
-    --topbar-height: 82px;
-    --announcement-gap: 8px;
+  .header-private-selection-btn {
+    padding: 6px 10px;
+    gap: 6px;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+  }
+
+  .ps-heart {
+    font-size: 10px;
+    margin-right: 0;
+  }
+
+  .ps-count {
+    min-width: 15px;
+    height: 15px;
+    padding: 0 4px;
+    font-size: 0.56rem;
   }
 }
