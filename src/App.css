@@ -5485,3 +5485,102 @@ main {
 .size-chip.is-recommended:hover {
   border-color: rgba(220, 181, 107, 0.38);
 }
+
+/* =========================================
+   HEADER — PRIVATE SELECTION (WISHLIST)
+========================================= */
+
+.header-private-selection-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 14px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(220, 181, 107, 0.2);
+  background: rgba(10, 10, 10, 0.6);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  color: rgba(255, 248, 235, 0.78);
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.header-private-selection-btn:hover {
+  border-color: rgba(220, 181, 107, 0.4);
+  background: rgba(20, 20, 20, 0.85);
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.35),
+    0 0 12px rgba(220, 181, 107, 0.08);
+}
+
+/* HEART ICON */
+
+.ps-heart {
+  color: #9f1f2d;
+  font-size: 12px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(-1px);
+  transition:
+    transform 0.2s ease,
+    text-shadow 0.2s ease;
+}
+
+.header-private-selection-btn:hover .ps-heart {
+  text-shadow:
+    0 0 8px rgba(159, 31, 45, 0.25),
+    0 0 16px rgba(159, 31, 45, 0.15);
+}
+
+/* LABEL */
+
+.ps-label {
+  white-space: nowrap;
+}
+
+/* COUNT BADGE */
+
+.ps-count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+
+  font-size: 0.65rem;
+  font-weight: 700;
+
+  color: #fff;
+
+  background: linear-gradient(
+    180deg,
+    #b72a38 0%,
+    #7f1822 100%
+  );
+
+  box-shadow:
+    0 0 0 1px rgba(183, 42, 56, 0.3),
+    0 4px 10px rgba(0, 0, 0, 0.35);
+}

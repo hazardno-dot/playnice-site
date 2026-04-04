@@ -987,6 +987,7 @@ function App() {
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const [sortBy, setSortBy] = useState("default");
   const [season, setSeason] = useState("All");
+  const [privateSelectionOpen, setPrivateSelectionOpen] = useState(false);
 
   const [wishlist, setWishlist] = useState(() => {
     return JSON.parse(localStorage.getItem("playnice_wishlist")) || [];
@@ -1820,6 +1821,35 @@ return (
         SR
       </button>
     </div>
+
+    <button
+  className="header-private-selection-btn"
+  onClick={() => setPrivateSelectionOpen(true)}
+  type="button"
+>
+  <span className="ps-heart">♥</span>
+  
+  <span className="ps-label">
+    {lang === "sr" ? "Private Selection" : "Private Selection"}
+  </span>
+
+  {wishlist.length > 0 && (
+    <span className="ps-count">{wishlist.length}</span>
+  )}
+</button>
+
+{privateSelectionOpen && (
+  <div className="ps-placeholder">
+    <p style={{ padding: "20px" }}>
+      {lang === "sr"
+        ? "Private Selection uskoro..."
+        : "Private Selection coming soon..."}
+    </p>
+    <button onClick={() => setPrivateSelectionOpen(false)}>
+      {lang === "sr" ? "Zatvori" : "Close"}
+    </button>
+  </div>
+)}
 
     <button
       className="cart-button"
