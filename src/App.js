@@ -2460,8 +2460,7 @@ return (
         : "Try before you buy. Discover designer, niche and Arabian fragrances through carefully curated decants before committing to a full bottle."}
     </p>
 
-    <div className="closing-actions">
-      <button
+    <button
   type="button"
   className="footer-link"
   onClick={() => setStoryOpen(true)}
@@ -2469,6 +2468,7 @@ return (
   {lang === "sr" ? "Priča" : "Our Story"}
 </button>
 
+    <div className="closing-actions">
       <button
         type="button"
         className="gold-button"
