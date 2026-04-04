@@ -126,6 +126,7 @@ const translations = {
     cta: "TRY BEFORE YOU BUY",
     sub: "Available in 5ml, 10ml and 20ml decants"
   }
+],
 {
   sortLabel: "Sort by",
   sortFeatured: "Featured",
@@ -134,7 +135,6 @@ const translations = {
   sortPriceHigh: "Price: High to Low",
   sortName: "A–Z"
 },
-],
   },
   sr: {
     navHome: "Početna",
@@ -239,8 +239,7 @@ const translations = {
     announcementDynamicEmpty4: "Ograničene količine — ne propusti",
     announcementDynamicEmpty5: "Dostava širom Crne Gore",
     navStory: "Priča",
-    
-  heroCampaigns: [
+    heroCampaigns: [
     {
       id: "9pm",
       eyebrow: "NOVI NOĆNI DROP",
@@ -251,15 +250,14 @@ const translations = {
       cta: "ISPROBAJ PRE KUPOVINE",
       sub: "Dostupno u 5ml, 10ml i 20ml dekantima"
     }
-    {
+  ]
+  {
   sortLabel: "Sortiranje",
   sortFeatured: "Preporučeno",
   sortRating: "Najbolje ocenjeni",
   sortPriceLow: "Cena: niža → viša",
   sortPriceHigh: "Cena: viša → niža",
   sortName: "A–Š"
-}
-  ]
 }
 };
 
