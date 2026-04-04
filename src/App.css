@@ -6181,7 +6181,7 @@ main {
 
 @media (max-width: 768px) {
   :root {
-    --topbar-height: 86px;
+    --topbar-height: 82px;
     --announcement-gap: 8px;
   }
 }
