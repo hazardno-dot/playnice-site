@@ -991,8 +991,13 @@ function App() {
   const [closingVisible, setClosingVisible] = useState(false);
 
   const [wishlist, setWishlist] = useState(() => {
-    return JSON.parse(localStorage.getItem("playnice_wishlist")) || [];
-  });
+  try {
+    const raw = localStorage.getItem("playnice_wishlist");
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+});
 
   const [sprayingWishlistId, setSprayingWishlistId] = useState(null);
 
@@ -1902,19 +1907,6 @@ return (
   )}
 </button>
 
-{privateSelectionOpen && (
-  <div className="ps-placeholder">
-    <p style={{ padding: "20px" }}>
-      {lang === "sr"
-        ? "Private Selection uskoro..."
-        : "Private Selection coming soon..."}
-    </p>
-    <button onClick={() => setPrivateSelectionOpen(false)}>
-      {lang === "sr" ? "Zatvori" : "Close"}
-    </button>
-  </div>
-)}
-
     <button
       className="cart-button"
       type="button"
@@ -2134,7 +2126,7 @@ return (
               <div>{tr.valueDelivery}</div>
             </section>
 
-            <section className="how-it-works-section section-wrap">
+            <section id="how-it-works" className="how-it-works-section section-wrap">
   <div className="section-head how-it-works-head">
     <p className="section-kicker">
       {lang === "sr" ? "Kako funkcioniše" : "How it works"}
@@ -2442,7 +2434,11 @@ return (
   </div>
 </section>
 
-  <section className="closing-section section-wrap">
+  <section
+  className={`closing-section section-wrap ${
+    closingVisible ? "is-visible" : ""
+  }`}
+>
     <div className="closing-shell">
       <p className="closing-kicker">
         {lang === "sr" ? "ZAVRŠNI UTISAK" : "FINAL IMPRESSION"}
@@ -2545,10 +2541,18 @@ return (
           Private Selection
         </button>
 
-        <a href="#how-it-works" className="footer-link">
-          {lang === "sr" ? "Kako funkcioniše" : "How it works"}
-        </a>
-      </div>
+        <button
+  type="button"
+  className="footer-link"
+  onClick={() => {
+    const section = document.getElementById("how-it-works");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }}
+>
+  {lang === "sr" ? "Kako funkcioniše" : "How it works"}
+</button>
 
       <div className="footer-trust">
         <h4>{lang === "sr" ? "Informacije" : "Information"}</h4>
