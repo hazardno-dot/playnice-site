@@ -2327,15 +2327,6 @@ main {
   border-bottom: 1px solid rgba(220, 181, 107, 0.10);
 }
 
-.modal-eyebrow {
-  display: inline-block;
-  margin-bottom: 10px;
-  font-size: 12px;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: rgba(220, 181, 107, 0.92);
-}
-
 .modal-header h2 {
   margin: 0;
   max-width: calc(100% - 56px);
@@ -2344,6 +2335,63 @@ main {
   line-height: 0.96;
   letter-spacing: -0.02em;
   color: #f6f1e8;
+}
+
+/* =========================================
+   PRODUCT MODAL — EYEBROW
+========================================= */
+
+.modal-eyebrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 12px;
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+
+  color: rgba(230, 200, 143, 0.9);
+
+  text-shadow:
+    0 0 10px rgba(220, 181, 107, 0.08),
+    0 0 18px rgba(220, 181, 107, 0.04);
+}
+
+.modal-eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  flex: 0 0 22px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(220, 181, 107, 0),
+    rgba(220, 181, 107, 0.65)
+  );
+}
+
+.modal-eyebrow::after {
+  content: "";
+  position: absolute;
+  left: 32px;
+  bottom: -6px;
+
+  width: 72px;
+  height: 1px;
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(220, 181, 107, 0.75) 0%,
+    rgba(220, 181, 107, 0.18) 55%,
+    rgba(220, 181, 107, 0) 100%
+  );
 }
 
 /* =========================================
