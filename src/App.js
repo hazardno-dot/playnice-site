@@ -132,7 +132,7 @@ const translations = {
   sortRating: "Top Rated",
   sortPriceLow: "Price: Low to High",
   sortPriceHigh: "Price: High to Low",
-  sortName: "A–Z"
+  sortName: "A–Z",
 
   seasonLabel: "Season",
   seasonAll: "All",
@@ -260,7 +260,7 @@ const translations = {
   sortRating: "Najbolje ocenjeni",
   sortPriceLow: "Cena: niža → viša",
   sortPriceHigh: "Cena: viša → niža",
-  sortName: "A–Š"
+  sortName: "A–Š",
 
   seasonLabel: "Sezona",
   seasonAll: "Sve",
