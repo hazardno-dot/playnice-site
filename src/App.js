@@ -126,6 +126,15 @@ const translations = {
     cta: "TRY BEFORE YOU BUY",
     sub: "Available in 5ml, 10ml and 20ml decants"
   }
+
+{
+  sortLabel: "Sort by",
+  sortFeatured: "Featured",
+  sortRating: "Top Rated",
+  sortPriceLow: "Price: Low to High",
+  sortPriceHigh: "Price: High to Low",
+  sortName: "A–Z"
+},
 ],
   },
   sr: {
@@ -243,6 +252,14 @@ const translations = {
       cta: "ISPROBAJ PRE KUPOVINE",
       sub: "Dostupno u 5ml, 10ml i 20ml dekantima"
     }
+    {
+  sortLabel: "Sortiranje",
+  sortFeatured: "Preporučeno",
+  sortRating: "Najbolje ocenjeni",
+  sortPriceLow: "Cena: niža → viša",
+  sortPriceHigh: "Cena: viša → niža",
+  sortName: "A–Š"
+}
   ]
 }
 };
@@ -1074,6 +1091,10 @@ const switchView = (nextView) => {
     });
   });
 };
+
+useEffect(() => {
+  setCurrentPage(1);
+}, [category, searchTerm, sortBy]);
 
   useEffect(() => {
     window.localStorage.setItem("playnice_lang", lang);
@@ -2280,39 +2301,46 @@ return (
             </div>
 
             <div className="shop-toolbar">
-              <div className="toolbar-group">
-                <label>{tr.searchLabel}</label>
-                <input
-                  type="text"
-                  placeholder={tr.searchPlaceholder}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
+  <div className="toolbar-group">
+    <label>{tr.searchLabel}</label>
+    <input
+      type="text"
+      placeholder={tr.searchPlaceholder}
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
+  </div>
 
-              <div className="toolbar-group">
-                <label>{tr.categoryLabel}</label>
-                <select
-                  className="category-select"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                >
-                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-  <option value="default">Featured</option>
-  <option value="rating">Top Rated</option>
-  <option value="priceLow">Price: Low to High</option>
-  <option value="priceHigh">Price: High to Low</option>
-  <option value="name">A–Z</option>
-</select>
+  <div className="toolbar-group">
+    <label>{tr.categoryLabel}</label>
+    <select
+      className="category-select"
+      value={category}
+      onChange={(e) => setCategory(e.target.value)}
+    >
+      {categories.map((cat) => (
+        <option key={cat} value={cat}>
+          {getCategoryLabel(cat)}
+        </option>
+      ))}
+    </select>
+  </div>
 
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {getCategoryLabel(cat)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+  <div className="toolbar-group">
+    <label>{tr.sortLabel}</label>
+    <select
+      className="category-select"
+      value={sortBy}
+      onChange={(e) => setSortBy(e.target.value)}
+    >
+      <option value="default">{tr.sortFeatured}</option>
+      <option value="rating">{tr.sortRating}</option>
+      <option value="priceLow">{tr.sortPriceLow}</option>
+      <option value="priceHigh">{tr.sortPriceHigh}</option>
+      <option value="name">{tr.sortName}</option>
+    </select>
+  </div>
+</div>
 
             <div className="product-grid">
               {paginatedProducts.map((product) => (
