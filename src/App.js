@@ -2516,6 +2516,14 @@ return (
       </button>
 
       <button
+  type="button"
+  className="footer-link"
+  onClick={() => setStoryOpen(true)}
+>
+  {lang === "sr" ? "Priča" : "Our Story"}
+</button>
+
+      <button
         type="button"
         className="footer-link"
         onClick={() => {
@@ -2527,12 +2535,15 @@ return (
       </button>
 
       <button
-        type="button"
-        className="footer-link"
-        onClick={() => setStoryOpen(true)}
-      >
-        Private Selection
-      </button>
+  type="button"
+  className="footer-link"
+  onClick={() => {
+    setView("shop");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }}
+>
+  Private Selection
+</button>
 
       <a href="#how-it-works" className="footer-link">
         {lang === "sr" ? "Kako funkcioniše" : "How it works"}
