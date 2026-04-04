@@ -825,11 +825,10 @@ main {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 0.92fr 1.08fr;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
   justify-items: center;
-  gap: 30px;
-  min-height: 500px;
+  column-gap: 56px;
 }
 
 /* =========================================
@@ -840,11 +839,14 @@ main {
   position: relative;
   max-width: 420px;
   align-self: center;
+  justify-self: end;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+
+  transform: translateX(18px);
 }
 
 /* HEADLINE */
@@ -959,12 +961,15 @@ main {
 .hero-visual-campaign {
   height: 340px;
   min-height: 340px;
+  padding-right: 0;
+  overflow: visible;
 
   display: flex;
   align-items: center;
   justify-content: center;
+  justify-self: start;
 
-  margin: 0 auto; /* KLJUČNO */
+  transform: translateX(-18px);
 }
 
 .hero-visual-campaign::before {
