@@ -2554,6 +2554,7 @@ return (
   {lang === "sr" ? "Kako funkcioniše" : "How it works"}
 </button>
 
+</div>
       <div className="footer-trust">
         <h4>{lang === "sr" ? "Informacije" : "Information"}</h4>
 
