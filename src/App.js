@@ -995,6 +995,39 @@ function App() {
 
   const [sprayingWishlistId, setSprayingWishlistId] = useState(null);
 
+/* =========================================
+   SCROLL LOCK — MODALS & DRAWERS
+========================================= */
+useEffect(() => {
+  const shouldLockScroll =
+    !!selectedProduct ||
+    cartOpen ||
+    checkoutOpen ||
+    storyOpen ||
+    howItWorksOpen ||
+    privateSelectionOpen;
+
+  if (shouldLockScroll) {
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+  }
+
+  return () => {
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+  };
+}, [
+  selectedProduct,
+  cartOpen,
+  checkoutOpen,
+  storyOpen,
+  howItWorksOpen,
+  privateSelectionOpen,
+]);
+
   const toggleWishlist = (productId) => {
   const isAdding = !wishlist.includes(productId);
 
