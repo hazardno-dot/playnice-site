@@ -137,7 +137,7 @@ const translations = {
 
   sr: {
     navHome: "Početna",
-    navShop: "Shop",
+    navShop: "Prodavnica",
     cart: "Korpa",
     heroEyebrow: "Luksuzna selekcija parfema",
     heroTitleLine1: "Želja počinje",
