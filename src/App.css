@@ -1019,7 +1019,7 @@ hero-bottle {
   object-fit: contain;
 
   transform: translateX(0px) scale(1); /* KLJUČNO */
-  transform-origin: center right;
+  transform-origin: center;
 
   filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 1));
   transition: transform 0.3s ease, filter 0.3s ease;
