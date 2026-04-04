@@ -133,6 +133,11 @@ const translations = {
   sortPriceLow: "Price: Low to High",
   sortPriceHigh: "Price: High to Low",
   sortName: "A–Z"
+
+  seasonLabel: "Season",
+  seasonAll: "All",
+  seasonSummer: "Spring / Summer",
+  seasonWinter: "Fall / Winter",
   },
 
   sr: {
@@ -256,6 +261,11 @@ const translations = {
   sortPriceLow: "Cena: niža → viša",
   sortPriceHigh: "Cena: viša → niža",
   sortName: "A–Š"
+
+  seasonLabel: "Sezona",
+  seasonAll: "Sve",
+  seasonSummer: "Proleće / leto",
+  seasonWinter: "Jesen / zima",
 }
 };
 
@@ -988,10 +998,10 @@ function App() {
   const [sortBy, setSortBy] = useState("default");
   const [season, setSeason] = useState("All");
 
-  const seasons = [
-  { value: "All", label: "All" },
-  { value: "summer", label: "Spring / Summer" },
-  { value: "winter", label: "Fall / Winter" }
+const seasons = [
+  { value: "All", label: tr.seasonAll },
+  { value: "summer", label: tr.seasonSummer },
+  { value: "winter", label: tr.seasonWinter }
 ];
 
   const openCatalogPreview = (url) => {
@@ -2334,32 +2344,34 @@ return (
   </div>
 
   <div className="toolbar-group">
-  <label>{tr.sortLabel}</label>
-  <select
-    className="category-select"
-    value={sortBy}
-    onChange={(e) => setSortBy(e.target.value)}
-  >
-    <option value="default">{tr.sortFeatured}</option>
-    <option value="rating">{tr.sortRating}</option>
-    <option value="priceLow">{tr.sortPriceLow}</option>
-    <option value="priceHigh">{tr.sortPriceHigh}</option>
-    <option value="name">{tr.sortName}</option>
-  </select>
-</div>
+    <label>{tr.seasonLabel}</label>
+    <select
+      className="category-select"
+      value={season}
+      onChange={(e) => setSeason(e.target.value)}
+    >
+      {seasons.map((s) => (
+        <option key={s.value} value={s.value}>
+          {s.label}
+        </option>
+      ))}
+    </select>
+  </div>
 
-<div className="toolbar-group">
-  <label>Season</label>
-  <select
-    className="category-select"
-    value={season}
-    onChange={(e) => setSeason(e.target.value)}
-  >
-    <option value="All">All</option>
-    <option value="summer">Spring / Summer</option>
-    <option value="winter">Fall / Winter</option>
-  </select>
-</div>
+  <div className="toolbar-group">
+    <label>{tr.sortLabel}</label>
+    <select
+      className="category-select"
+      value={sortBy}
+      onChange={(e) => setSortBy(e.target.value)}
+    >
+      <option value="default">{tr.sortFeatured}</option>
+      <option value="rating">{tr.sortRating}</option>
+      <option value="priceLow">{tr.sortPriceLow}</option>
+      <option value="priceHigh">{tr.sortPriceHigh}</option>
+      <option value="name">{tr.sortName}</option>
+    </select>
+  </div>
 </div>
 
             <div className="product-grid">
