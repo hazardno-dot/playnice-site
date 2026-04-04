@@ -1664,13 +1664,9 @@ const isSpraying = sprayingWishlistId === product.id;
       : `Add ${product.name} to wishlist`
   }
 >
-  <span className="decant-icon" aria-hidden="true">
-    <span className="decant-cap"></span>
-    <span className="decant-neck"></span>
-    <span className="decant-body"></span>
-  </span>
-
-  <span className="spray"></span>
+<span className="heart-icon" aria-hidden="true">
+  ♥
+</span>
 </button>
 
       {copy.miniTag && (

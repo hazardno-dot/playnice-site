@@ -4685,107 +4685,54 @@ main {
   transform: translateY(0);
 }
 
-.wishlist-btn .decant-icon {
-  position: relative;
-  z-index: 2;
-  width: 14px;
-  height: 16px;
-  display: block;
-  transform: rotate(0deg) scale(1);
-  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.wishlist-btn .decant-cap {
-  position: absolute;
-  top: 0;
-  left: 4px;
-  width: 6px;
-  height: 3px;
-  border-radius: 2px;
-  background: linear-gradient(180deg, #f1d8a6 0%, #cfa24e 100%);
-  box-shadow: 0 0 6px rgba(220, 181, 107, 0.2);
-}
-
-.wishlist-btn .decant-neck {
-  position: absolute;
-  top: 3px;
-  left: 5px;
-  width: 4px;
-  height: 3px;
-  border-radius: 1px;
-  background: rgba(240, 220, 180, 0.85);
-}
-
-.wishlist-btn .decant-body {
-  position: absolute;
-  top: 6px;
-  left: 1px;
-  width: 12px;
-  height: 9px;
-  border-radius: 4px 4px 5px 5px;
-  background:
-    linear-gradient(180deg, rgba(245, 232, 205, 0.95) 0%, rgba(214, 180, 108, 0.88) 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 248, 232, 0.22),
-    0 0 8px rgba(220, 181, 107, 0.12);
-}
-
-.wishlist-btn .spray {
-  position: absolute;
-  top: 9px;
-  right: 8px;
-  z-index: 1;
-
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-
-  background: radial-gradient(
-    circle,
-    rgba(255, 245, 220, 0.98) 0%,
-    rgba(220, 181, 107, 0.72) 42%,
-    rgba(220, 181, 107, 0) 100%
-  );
-
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.3) translate(0, 0);
-}
-
 .wishlist-btn.active {
-  border-color: rgba(220, 181, 107, 0.58);
-  background: rgba(18, 14, 8, 0.78);
+  border-color: rgba(159, 31, 45, 0.5);
+  background: rgba(24, 10, 12, 0.82);
   box-shadow:
     0 8px 22px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(220, 181, 107, 0.18),
-    0 0 18px rgba(220, 181, 107, 0.14);
+    0 0 0 1px rgba(159, 31, 45, 0.14),
+    0 0 18px rgba(159, 31, 45, 0.12);
 }
 
-.wishlist-btn.active .decant-icon {
-  transform: rotate(-8deg) scale(1.04);
+.wishlist-btn .heart-icon {
+  position: relative;
+  z-index: 2;
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(255, 240, 235, 0.78);
+  transform: scale(1);
+  transition:
+    transform 0.22s ease,
+    color 0.22s ease,
+    text-shadow 0.22s ease,
+    opacity 0.22s ease;
 }
 
-.wishlist-btn.is-spraying .decant-icon {
-  transform: rotate(-14deg) scale(1.1);
+.wishlist-btn:hover .heart-icon {
+  color: rgba(255, 232, 228, 0.96);
+  text-shadow: 0 0 10px rgba(140, 28, 36, 0.18);
 }
 
-.wishlist-btn.is-spraying .spray {
-  animation: sprayBurst 0.6s ease forwards;
+.wishlist-btn.active .heart-icon {
+  color: #9f1f2d;
+  text-shadow:
+    0 0 10px rgba(159, 31, 45, 0.2),
+    0 0 18px rgba(159, 31, 45, 0.12);
 }
 
-@keyframes sprayBurst {
+.wishlist-btn.is-spraying .heart-icon {
+  animation: wishlistHeartPulse 0.42s ease;
+}
+
+@keyframes wishlistHeartPulse {
   0% {
-    opacity: 0;
-    transform: scale(0.3) translate(0, 0);
-    filter: blur(0px);
+    transform: scale(1);
   }
-  18% {
-    opacity: 1;
+  35% {
+    transform: scale(1.22);
   }
   100% {
-    opacity: 0;
-    transform: scale(1.9) translate(10px, -15px);
-    filter: blur(1px);
+    transform: scale(1);
   }
 }
 
