@@ -999,10 +999,14 @@ function App() {
   const [season, setSeason] = useState("All");
 
   const [wishlist, setWishlist] = useState(() => {
-  return JSON.parse(localStorage.getItem("playnice_wishlist")) || [];
-});
+    return JSON.parse(localStorage.getItem("playnice_wishlist")) || [];
+  });
 
-const toggleWishlist = (productId) => {
+  const [sprayingWishlistId, setSprayingWishlistId] = useState(null);
+
+  const toggleWishlist = (productId) => {
+  const isAdding = !wishlist.includes(productId);
+
   setWishlist((prev) => {
     let updated;
 
@@ -1015,7 +1019,19 @@ const toggleWishlist = (productId) => {
     localStorage.setItem("playnice_wishlist", JSON.stringify(updated));
     return updated;
   });
+
+  if (isAdding) {
+    setSprayingWishlistId(productId);
+    setTimeout(() => {
+      setSprayingWishlistId((current) =>
+        current === productId ? null : current
+      );
+    }, 650);
+  }
 };
+
+  // ostale funkcije...
+}
 
   const openCatalogPreview = (url) => {
   setCatalogPreview(url);
@@ -1577,9 +1593,16 @@ const getProductVibe = (product) => {
       tags: fallbackCopy.tags[lang]
     };
 
-const ProductCard = ({ product, wishlist, toggleWishlist }) => {
+const ProductCard = ({
+  product,
+  wishlist,
+  toggleWishlist,
+  sprayingWishlistId,
+}) => {
   const copy = getProductCopy(product, lang);
   const minPrice = Math.min(...Object.values(product.sizes));
+  const isWishlisted = wishlist.includes(product.id);
+const isSpraying = sprayingWishlistId === product.id;
 
   const getBadgeVariant = (miniTag = "") => {
     const tag = miniTag.toLowerCase();
@@ -1645,28 +1668,33 @@ const ProductCard = ({ product, wishlist, toggleWishlist }) => {
       </div>
 
       <button
-        type="button"
-        className={`wishlist-btn ${
-          wishlist.includes(product.id) ? "active" : ""
-        }`}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          toggleWishlist(product.id);
-        }}
-        aria-label={
-          wishlist.includes(product.id)
-            ? lang === "sr"
-              ? `Ukloni ${product.name} iz wishlist`
-              : `Remove ${product.name} from wishlist`
-            : lang === "sr"
-            ? `Dodaj ${product.name} u wishlist`
-            : `Add ${product.name} to wishlist`
-        }
-      >
-        <span className="bottle">🍾</span>
-        <span className="spray"></span>
-      </button>
+  type="button"
+  className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
+    isSpraying ? "is-spraying" : ""
+  }`}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product.id);
+  }}
+  aria-label={
+    isWishlisted
+      ? lang === "sr"
+        ? `Ukloni ${product.name} iz wishlist`
+        : `Remove ${product.name} from wishlist`
+      : lang === "sr"
+      ? `Dodaj ${product.name} u wishlist`
+      : `Add ${product.name} to wishlist`
+  }
+>
+  <span className="decant-icon" aria-hidden="true">
+    <span className="decant-cap"></span>
+    <span className="decant-neck"></span>
+    <span className="decant-body"></span>
+  </span>
+
+  <span className="spray"></span>
+</button>
 
       {copy.miniTag && (
         <span
@@ -2280,6 +2308,7 @@ return (
   product={product}
   wishlist={wishlist}
   toggleWishlist={toggleWishlist}
+  sprayingWishlistId={sprayingWishlistId}
 />
                   ))}
               </div>
@@ -2526,6 +2555,7 @@ return (
   product={product}
   wishlist={wishlist}
   toggleWishlist={toggleWishlist}
+  sprayingWishlistId={sprayingWishlistId}
 />
               ))}
             </div>
