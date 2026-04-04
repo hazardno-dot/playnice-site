@@ -783,7 +783,7 @@ main {
   position: relative;
   width: min(calc(100% - 32px), var(--max));
   margin: 12px auto 16px;
-  padding: 34px 30px 42px;
+  padding: 34px 30px 38px;
   border: 1px solid var(--line);
   border-radius: 34px;
   background:
