@@ -264,8 +264,8 @@ const translations = {
 
   seasonLabel: "Sezona",
   seasonAll: "Sve",
-  seasonSummer: "Proleće / leto",
-  seasonWinter: "Jesen / zima",
+  seasonSummer: "Proleće / Leto",
+  seasonWinter: "Jesen / Zima",
 }
 };
 
