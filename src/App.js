@@ -1571,6 +1571,14 @@ const getProductVibe = (product) => {
       tags: fallbackCopy.tags[lang]
     };
 
+    const privateSelectionProducts = useMemo(() => {
+  return products.filter((product) => wishlist.includes(product.id));
+}, [wishlist]);
+
+const removeFromPrivateSelection = (productId) => {
+  toggleWishlist(productId);
+};
+
 const ProductCard = ({
   product,
   wishlist,
@@ -1828,7 +1836,7 @@ return (
   type="button"
 >
   <span className="ps-heart">♥</span>
-  
+
   <span className="ps-label">
     {lang === "sr" ? "Private Selection" : "Private Selection"}
   </span>
@@ -2605,21 +2613,23 @@ return (
 
 <div
   className={`backdrop ${
-    cartOpen ||
-    checkoutOpen ||
-    selectedProduct ||
-    storyOpen ||
-    howItWorksOpen
-      ? "show"
-      : ""
-  }`}
+  cartOpen ||
+  checkoutOpen ||
+  selectedProduct ||
+  storyOpen ||
+  howItWorksOpen ||
+  privateSelectionOpen
+    ? "show"
+    : ""
+}`}
   onClick={() => {
-    setCartOpen(false);
-    setCheckoutOpen(false);
-    setStoryOpen(false);
-    setHowItWorksOpen(false);
-    closeProductModal();
-  }}
+  setCartOpen(false);
+  setCheckoutOpen(false);
+  setStoryOpen(false);
+  setHowItWorksOpen(false);
+  setPrivateSelectionOpen(false);
+  closeProductModal();
+}}
 />
 
 <aside className={`story-drawer ${storyOpen ? "open" : ""}`}>
@@ -2774,6 +2784,136 @@ return (
       </button>
     </div>
   </div>
+</aside>
+
+<aside className={`private-selection-drawer ${privateSelectionOpen ? "open" : ""}`}>
+  <div className="private-selection-header">
+    <div>
+      <p className="section-kicker">
+        {lang === "sr" ? "PRIVATE SELECTION" : "PRIVATE SELECTION"}
+      </p>
+      <h3>
+        {lang === "sr" ? "Sačuvani parfemi" : "Saved fragrances"}
+      </h3>
+    </div>
+
+    <button
+      className="close-button"
+      type="button"
+      onClick={() => setPrivateSelectionOpen(false)}
+      aria-label={lang === "sr" ? "Zatvori Private Selection" : "Close Private Selection"}
+    >
+      ×
+    </button>
+  </div>
+
+  {privateSelectionProducts.length === 0 ? (
+    <div className="private-selection-empty">
+      <p>
+        {lang === "sr"
+          ? "Još nisi sačuvao nijedan parfem."
+          : "You have not saved any fragrances yet."}
+      </p>
+
+      <span className="private-selection-empty-sub">
+        {lang === "sr"
+          ? "Klikni srce na kartici i sačuvaj favorite za kasnije."
+          : "Tap the heart on a product card to save your favorites for later."}
+      </span>
+
+      <button
+        className="gold-button small"
+        type="button"
+        onClick={() => {
+          setPrivateSelectionOpen(false);
+          goToShop();
+        }}
+      >
+        {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
+      </button>
+    </div>
+  ) : (
+    <>
+      <div className="private-selection-items">
+        {privateSelectionProducts.map((product) => {
+          const minPrice = Math.min(...Object.values(product.sizes));
+          const copy = getProductCopy(product, lang);
+
+          return (
+            <div className="private-selection-item" key={product.id}>
+              <button
+                type="button"
+                className="private-selection-item-media"
+                onClick={() => {
+                  setPrivateSelectionOpen(false);
+                  openProductModal(product);
+                }}
+                aria-label={product.name}
+              >
+                <img
+                  src={product.image || "/placeholder.png"}
+                  alt={product.name}
+                  className="private-selection-item-image"
+                />
+              </button>
+
+              <div className="private-selection-item-info">
+                <span className="private-selection-item-category">
+                  {getCategoryLabel(product.category)}
+                </span>
+
+                <h4>{product.name}</h4>
+
+                <p>{copy.card}</p>
+
+                <div className="private-selection-item-bottom">
+                  <span className="private-selection-item-price">
+                    <span>{tr.from}</span> €{minPrice}
+                  </span>
+
+                  <div className="private-selection-item-actions">
+                    <button
+                      type="button"
+                      className="private-selection-link"
+                      onClick={() => {
+                        setPrivateSelectionOpen(false);
+                        openProductModal(product);
+                      }}
+                    >
+                      {lang === "sr" ? "Otvori" : "Open"}
+                    </button>
+
+                    <button
+                      type="button"
+                      className="private-selection-remove"
+                      onClick={() => removeFromPrivateSelection(product.id)}
+                    >
+                      {lang === "sr" ? "Ukloni" : "Remove"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="private-selection-footer">
+        <span className="story-drawer-signature">Remember. PlayNice.</span>
+
+        <button
+          className="gold-button small"
+          type="button"
+          onClick={() => {
+            setPrivateSelectionOpen(false);
+            goToShop();
+          }}
+        >
+          {lang === "sr" ? "Dodaj još" : "Discover more"}
+        </button>
+      </div>
+    </>
+  )}
 </aside>
 
 <aside className={`cart-drawer ${cartOpen ? "open" : ""}`}>

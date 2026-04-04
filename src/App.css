@@ -4341,6 +4341,255 @@ main {
 }
 
 /* =========================================
+   PRIVATE SELECTION DRAWER
+========================================= */
+
+.private-selection-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1140;
+
+  width: min(440px, 100vw);
+  height: 100vh;
+  padding: 24px 20px 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  background:
+    radial-gradient(circle at 20% 10%, rgba(159, 31, 45, 0.08), transparent 34%),
+    radial-gradient(circle at 80% 0%, rgba(220, 181, 107, 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(12, 12, 12, 0.985), rgba(8, 8, 8, 0.995));
+
+  border-left: 1px solid rgba(220, 181, 107, 0.16);
+  box-shadow: -24px 0 60px rgba(0, 0, 0, 0.45);
+
+  transform: translateX(104%);
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+
+.private-selection-drawer.open {
+  transform: translateX(0);
+}
+
+.private-selection-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(220, 181, 107, 0.1);
+}
+
+.private-selection-header h3 {
+  margin: 4px 0 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.6rem, 2vw, 2rem);
+  line-height: 1.05;
+  color: rgba(255, 248, 235, 0.98);
+}
+
+.private-selection-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+}
+
+.private-selection-empty p {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.4rem;
+  color: rgba(255, 248, 235, 0.96);
+}
+
+.private-selection-empty-sub {
+  max-width: 280px;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.private-selection-items {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.private-selection-item {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 14px;
+  align-items: start;
+
+  padding: 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(220, 181, 107, 0.12);
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015)),
+    rgba(14, 14, 14, 0.95);
+
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+.private-selection-item-media {
+  width: 88px;
+  height: 96px;
+  border: 0;
+  border-radius: 16px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.private-selection-item-image {
+  width: 100%;
+  max-width: 64px;
+  max-height: 78px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.private-selection-item-media:hover .private-selection-item-image {
+  transform: translateY(-2px) scale(1.03);
+}
+
+.private-selection-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.private-selection-item-category {
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 248, 235, 0.44);
+}
+
+.private-selection-item-info h4 {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.1rem;
+  line-height: 1.1;
+  color: rgba(255, 248, 235, 0.98);
+}
+
+.private-selection-item-info p {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.private-selection-item-bottom {
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.private-selection-item-price {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #ddb76d;
+}
+
+.private-selection-item-price span {
+  color: rgba(255, 248, 235, 0.58);
+  font-weight: 500;
+}
+
+.private-selection-item-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.private-selection-link,
+.private-selection-remove {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.private-selection-link {
+  color: #dcb56b;
+}
+
+.private-selection-remove {
+  color: #a42a36;
+}
+
+.private-selection-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding-top: 14px;
+  border-top: 1px solid rgba(220, 181, 107, 0.1);
+}
+
+@media (max-width: 768px) {
+  .private-selection-drawer {
+    width: 100vw;
+    padding: 20px 16px 16px;
+  }
+
+  .private-selection-item {
+    grid-template-columns: 76px 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .private-selection-item-media {
+    width: 76px;
+    height: 86px;
+  }
+
+  .private-selection-item-image {
+    max-width: 56px;
+    max-height: 70px;
+  }
+
+  .private-selection-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* =========================================
    PRODUCT CARD — FINAL CLEAN V2
 ========================================= */
 
