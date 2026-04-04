@@ -1,16 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
-const slugify = (text) =>
-  text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-const getProductImage = (product) => `/products/${slugify(product.name)}.png`;
-
 const translations = {
   en: {
     navHome: "Home",
@@ -819,7 +809,7 @@ const productCopy = {
 },
 
 "Afnan 9PM Night Out": {
-  miniTag: "🌙 Night / Sweet",
+  miniTag: { sr: "🌙 Night / Sweet", en: "🌙 Night / Sweet" }
   card: "Dark, playful and attention-grabbing scent made for nights out.",
   modal:
     "A bold evening fragrance with sweet warmth, seductive depth and strong clubbing energy. Great choice if you want something modern, easy to wear and highly noticeable after dark.",
@@ -830,7 +820,7 @@ const productCopy = {
 },
 
 "Rasasi Hawas Ice for Him": {
-  miniTag: "❄️ Fresh / Summer",
+  miniTag:{sr:"❄️ Fresh / Summer",en:"❄️ Fresh / Summer"},
   card: "Ultra fresh aquatic with icy sweetness and strong projection.",
   modal:
     "A modern summer fragrance combining aquatic freshness with sweet fruity undertones and a cool icy vibe. Clean, energetic and highly complimented in warm weather.",
@@ -1051,12 +1041,6 @@ const [currentVideo, setCurrentVideo] = useState(0);
 
 const tr = translations[lang];
 
-const seasons = [
-  { value: "All", label: tr.seasonAll },
-  { value: "summer", label: tr.seasonSummer },
-  { value: "winter", label: tr.seasonWinter }
-];
-
 const campaign9pm = tr.heroCampaigns?.find((item) => item.id === "9pm");
 
 const heroSlides = [
@@ -1135,10 +1119,6 @@ const switchView = (nextView) => {
     });
   });
 };
-
-useEffect(() => {
-  setCurrentPage(1);
-}, [category, searchTerm, sortBy]);
 
   useEffect(() => {
     window.localStorage.setItem("playnice_lang", lang);
@@ -1249,7 +1229,7 @@ useEffect(() => {
     default:
       return result;
   }
-}, [products, category, searchTerm, season, sortBy]);
+}, [category, searchTerm, season, sortBy]);
 
   const totalPages = Math.max(
     1,
@@ -1807,7 +1787,7 @@ return (
   type="button"
   onClick={() => setHowItWorksOpen(true)}
 >
-  {lang === "sr" ? "How it works" : "How it works"}
+  {lang === "sr" ? "Kako funkcioniše" : "How it works"}
 </button>
 
   <button
@@ -2067,7 +2047,7 @@ return (
             <section className="how-it-works-section section-wrap">
   <div className="section-head how-it-works-head">
     <p className="section-kicker">
-      {lang === "sr" ? "HOW IT WORKS" : "HOW IT WORKS"}
+      {lang === "sr" ? "Kako funkcioniše" : "How it works"}
     </p>
     <h2>
       {lang === "sr"
@@ -2167,7 +2147,7 @@ return (
         <button
           className="impact-video-cta"
           type="button"
-          onClick={() => setView("shop")}
+          onClick={goToShop}
         >
           {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
         </button>
