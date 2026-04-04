@@ -2318,6 +2318,7 @@ return (
             </div>
 
             <div className="shop-toolbar">
+  {/* SEARCH */}
   <div className="toolbar-group">
     <label>{tr.searchLabel}</label>
     <input
@@ -2328,6 +2329,7 @@ return (
     />
   </div>
 
+  {/* CATEGORY */}
   <div className="toolbar-group">
     <label>{tr.categoryLabel}</label>
     <select
@@ -2343,78 +2345,83 @@ return (
     </select>
   </div>
 
-  <div className="toolbar-group">
-  <label>{tr.seasonLabel}</label>
+  {/* SEASON PILLS */}
+  <div className="toolbar-group toolbar-group-season">
+    <label>{tr.seasonLabel}</label>
 
-  <div className="season-pills">
-    <button
-      className={`season-pill ${season === "All" ? "active" : ""}`}
-      onClick={() => setSeason("All")}
-    >
-      {tr.seasonAll}
-    </button>
+    <div className="season-pills">
+      <button
+        type="button"
+        className={`season-pill ${season === "All" ? "active" : ""}`}
+        onClick={() => setSeason("All")}
+      >
+        {tr.seasonAll}
+      </button>
 
-    <button
-      className={`season-pill ${season === "summer" ? "active" : ""}`}
-      onClick={() => setSeason("summer")}
-    >
-      ☀️ {tr.seasonSummer}
-    </button>
+      <button
+        type="button"
+        className={`season-pill ${season === "summer" ? "active" : ""}`}
+        onClick={() => setSeason("summer")}
+      >
+        ☀️ {tr.seasonSummer}
+      </button>
 
-    <button
-      className={`season-pill ${season === "winter" ? "active" : ""}`}
-      onClick={() => setSeason("winter")}
-    >
-      ❄️ {tr.seasonWinter}
-    </button>
+      <button
+        type="button"
+        className={`season-pill ${season === "winter" ? "active" : ""}`}
+        onClick={() => setSeason("winter")}
+      >
+        ❄️ {tr.seasonWinter}
+      </button>
+    </div>
   </div>
-</div>
 
-  <div className="toolbar-group">
-  <label>{tr.sortLabel}</label>
+  {/* SORT PILLS */}
+  <div className="toolbar-group toolbar-group-sort">
+    <label>{tr.sortLabel}</label>
 
-  <div className="sort-pills">
-    <button
-      type="button"
-      className={`sort-pill ${sortBy === "default" ? "active" : ""}`}
-      onClick={() => setSortBy("default")}
-    >
-      {tr.sortFeatured}
-    </button>
+    <div className="sort-pills">
+      <button
+        type="button"
+        className={`sort-pill ${sortBy === "default" ? "active" : ""}`}
+        onClick={() => setSortBy("default")}
+      >
+        {tr.sortFeatured}
+      </button>
 
-    <button
-      type="button"
-      className={`sort-pill ${sortBy === "rating" ? "active" : ""}`}
-      onClick={() => setSortBy("rating")}
-    >
-      ★ {tr.sortRating}
-    </button>
+      <button
+        type="button"
+        className={`sort-pill ${sortBy === "rating" ? "active" : ""}`}
+        onClick={() => setSortBy("rating")}
+      >
+        ★ {tr.sortRating}
+      </button>
 
-    <button
-      type="button"
-      className={`sort-pill ${sortBy === "priceLow" ? "active" : ""}`}
-      onClick={() => setSortBy("priceLow")}
-    >
-      ↗ {tr.sortPriceLow}
-    </button>
+      <button
+        type="button"
+        className={`sort-pill ${sortBy === "priceLow" ? "active" : ""}`}
+        onClick={() => setSortBy("priceLow")}
+      >
+        ↗ {tr.sortPriceLow}
+      </button>
 
-    <button
-      type="button"
-      className={`sort-pill ${sortBy === "priceHigh" ? "active" : ""}`}
-      onClick={() => setSortBy("priceHigh")}
-    >
-      ↘ {tr.sortPriceHigh}
-    </button>
+      <button
+        type="button"
+        className={`sort-pill ${sortBy === "priceHigh" ? "active" : ""}`}
+        onClick={() => setSortBy("priceHigh")}
+      >
+        ↘ {tr.sortPriceHigh}
+      </button>
 
-    <button
-      type="button"
-      className={`sort-pill ${sortBy === "name" ? "active" : ""}`}
-      onClick={() => setSortBy("name")}
-    >
-      {tr.sortName}
-    </button>
+      <button
+        type="button"
+        className={`sort-pill ${sortBy === "name" ? "active" : ""}`}
+        onClick={() => setSortBy("name")}
+      >
+        {tr.sortName}
+      </button>
+    </div>
   </div>
-</div>
 </div>
 
             <div className="product-grid">
