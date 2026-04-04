@@ -6277,3 +6277,248 @@ main {
     flex: 0 0 auto;
 }
 }
+
+/* =========================================
+   CLOSING SECTION
+========================================= */
+.closing-section {
+  width: min(calc(100% - 32px), var(--max));
+  margin: 0 auto 16px;
+}
+
+.closing-shell {
+  position: relative;
+  padding: 56px 32px;
+  border: 1px solid rgba(220, 181, 107, 0.14);
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(220, 181, 107, 0.08), transparent 54%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+    rgba(8, 8, 8, 0.96);
+  box-shadow: var(--shadow-heavy);
+  text-align: center;
+  overflow: hidden;
+}
+
+.closing-kicker {
+  margin: 0 0 14px;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(220, 181, 107, 0.8);
+}
+
+.closing-title {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+  color: #f6efe6;
+}
+
+.closing-text {
+  width: min(700px, 100%);
+  margin: 20px auto 0;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgba(255, 248, 235, 0.72);
+}
+
+.closing-actions {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+.site-footer {
+  width: min(calc(100% - 32px), var(--max));
+  margin: 0 auto 24px;
+  padding: 28px 0 0;
+  border-top: 1px solid rgba(220, 181, 107, 0.12);
+}
+
+.site-footer-inner {
+  display: grid;
+  grid-template-columns: 1.3fr 0.8fr 0.9fr;
+  gap: 28px;
+  padding: 0 0 24px;
+}
+
+.footer-brand,
+.footer-links,
+.footer-trust {
+  padding: 8px 0;
+}
+
+.footer-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.footer-logo-mark {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  background: rgba(220, 181, 107, 0.05);
+  color: var(--gold);
+  font-size: 0.9rem;
+}
+
+.footer-logo {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  line-height: 0.9;
+  color: #f6efe6;
+}
+
+.footer-tagline {
+  margin-top: 2px;
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 248, 235, 0.55);
+}
+
+.footer-brand-text {
+  max-width: 420px;
+  margin: 0;
+  line-height: 1.8;
+  color: rgba(255, 248, 235, 0.66);
+}
+
+.footer-links h4,
+.footer-trust h4 {
+  margin: 0 0 14px;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(220, 181, 107, 0.76);
+}
+
+.footer-links,
+.footer-trust {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-link,
+.footer-contact,
+.footer-mini-link {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  color: rgba(255, 248, 235, 0.72);
+  transition:
+    color 0.22s ease,
+    transform 0.22s ease;
+}
+
+.footer-link:hover,
+.footer-contact:hover,
+.footer-mini-link:hover {
+  color: var(--gold);
+  transform: translateX(2px);
+}
+
+.footer-trust p {
+  margin: 0;
+  color: rgba(255, 248, 235, 0.68);
+  line-height: 1.7;
+}
+
+.footer-bottom {
+  padding: 18px 0 0;
+  border-top: 1px solid rgba(220, 181, 107, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.footer-bottom p {
+  margin: 0;
+  color: rgba(255, 248, 235, 0.45);
+  font-size: 0.92rem;
+}
+
+.footer-bottom-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.footer-mini-link {
+  color: rgba(255, 248, 235, 0.48);
+  font-size: 0.92rem;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+@media (max-width: 1024px) {
+  .site-footer-inner {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .closing-shell {
+    padding: 48px 24px;
+  }
+
+  .closing-text {
+    font-size: 0.98rem;
+    line-height: 1.7;
+  }
+}
+
+@media (max-width: 768px) {
+  .closing-section,
+  .site-footer {
+    width: min(calc(100% - 24px), var(--max));
+  }
+
+  .closing-shell {
+    padding: 42px 18px;
+    border-radius: 24px;
+  }
+
+  .closing-title {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .closing-text {
+    margin-top: 16px;
+    font-size: 0.95rem;
+  }
+
+  .closing-actions {
+    margin-top: 22px;
+    gap: 10px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-bottom-links {
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+}
