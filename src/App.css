@@ -1013,13 +1013,13 @@ main {
   pointer-events: none;
 }
 
-hero-bottle {
-  width: min(100%, 240px);
+.hero-bottle {
+  width: min(100%, 420px); /* +15–20% */
 
   object-fit: contain;
 
-  transform: translateX(0px) scale(0.92); /* KLJUČNO */
-  transform-origin: center;
+  transform: translateX(10px) scale(1.08); /* KLJUČNO */
+  transform-origin: center right;
 
   filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 1));
   transition: transform 0.3s ease, filter 0.3s ease;
