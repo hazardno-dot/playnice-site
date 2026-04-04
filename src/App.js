@@ -127,14 +127,13 @@ const translations = {
     sub: "Available in 5ml, 10ml and 20ml decants"
   }
 ],
-{
   sortLabel: "Sort by",
   sortFeatured: "Featured",
   sortRating: "Top Rated",
   sortPriceLow: "Price: Low to High",
   sortPriceHigh: "Price: High to Low",
   sortName: "A–Z"
-},
+
   },
   sr: {
     navHome: "Početna",
@@ -251,14 +250,12 @@ const translations = {
       sub: "Dostupno u 5ml, 10ml i 20ml dekantima"
     }
   ]
-  {
   sortLabel: "Sortiranje",
   sortFeatured: "Preporučeno",
   sortRating: "Najbolje ocenjeni",
   sortPriceLow: "Cena: niža → viša",
   sortPriceHigh: "Cena: viša → niža",
   sortName: "A–Š"
-}
 }
 };
 
