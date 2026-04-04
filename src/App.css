@@ -1746,6 +1746,115 @@ main {
 }
 
 /* =========================================
+   PREMIUM SORT BAR
+========================================= */
+.toolbar-group-sort {
+  grid-column: 1 / -1;
+}
+
+.sort-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  padding: 4px 0 0;
+}
+
+.sort-pill {
+  position: relative;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.14);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015)),
+    rgba(12, 12, 12, 0.9);
+  color: rgba(255, 248, 235, 0.72);
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 8px 20px rgba(0, 0, 0, 0.16);
+  transition:
+    color 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
+}
+
+.sort-pill:hover {
+  color: rgba(255, 248, 235, 0.92);
+  border-color: rgba(220, 181, 107, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 24px rgba(0, 0, 0, 0.22);
+  transform: translateY(-1px);
+}
+
+.sort-pill.active {
+  border-color: rgba(220, 181, 107, 0.52);
+  background:
+    linear-gradient(180deg, rgba(220, 181, 107, 0.16), rgba(220, 181, 107, 0.06)),
+    rgba(18, 18, 18, 0.96);
+  color: rgba(255, 248, 235, 0.98);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
+.sort-pill.active::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 7px;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(220, 181, 107, 0.95),
+    transparent
+  );
+  opacity: 0.95;
+}
+
+.sort-pill:focus-visible {
+  outline: none;
+  border-color: rgba(220, 181, 107, 0.55);
+  box-shadow:
+    0 0 0 3px rgba(220, 181, 107, 0.08),
+    0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
+/* =========================================
+   SORT BAR — MOBILE
+========================================= */
+@media (max-width: 640px) {
+  .sort-pills {
+    gap: 8px;
+  }
+
+  .sort-pill {
+    min-height: 38px;
+    padding: 0 13px;
+    font-size: 0.74rem;
+    letter-spacing: 0.03em;
+  }
+
+  .sort-pill.active::after {
+    left: 13px;
+    right: 13px;
+    bottom: 6px;
+  }
+}
+
+/* =========================================
    CTA SECTION
 ========================================= */
 .cta-section {
