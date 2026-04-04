@@ -2925,36 +2925,83 @@ main {
 }
 
 .modal-price-box {
-  display: grid;
-  gap: 6px;
+  position: relative;
   flex: 1;
+
+  display: grid;
+  gap: 8px;
+
+  padding: 14px 16px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(220, 181, 107, 0.12);
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.012)),
+    rgba(14, 14, 14, 0.9);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.01),
+    0 10px 24px rgba(0, 0, 0, 0.2);
 }
 
 .modal-price-box span {
   display: block;
-  font-size: 12px;
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  line-height: 1;
   font-weight: 800;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.62);
+
+  color: rgba(255, 248, 235, 0.56);
 }
 
 .modal-price-box strong {
   display: block;
-  font-size: clamp(2rem, 3vw, 3rem);
-  line-height: 1;
-  font-weight: 800;
-  letter-spacing: -0.04em;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2rem, 3vw, 2.85rem);
+  line-height: 0.94;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+
   background: linear-gradient(
-    90deg,
-    #dcb56b,
-    #fff2c6,
-    #dcb56b
+    120deg,
+    #f3d9a4 0%,
+    #e6c88f 26%,
+    #dcb56b 50%,
+    #f0d7a3 72%,
+    #cfa24e 100%
   );
   background-size: 200% auto;
+
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: goldShimmer 4s linear infinite;
+
+  text-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.55),
+    0 0 12px rgba(220, 181, 107, 0.08);
+
+  animation: goldShimmer 4.2s linear infinite;
+}
+
+.modal-price-box::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  bottom: 10px;
+
+  width: 56px;
+  height: 1px;
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(220, 181, 107, 0.65),
+    rgba(220, 181, 107, 0.18),
+    transparent
+  );
 }
 
 @keyframes goldShimmer {
