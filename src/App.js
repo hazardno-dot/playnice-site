@@ -79,7 +79,7 @@ const translations = {
     emptyCartAlert: "Your cart is empty.",
     orderSummary: "Order summary",
     noItemsCart: "No items in cart.",
-    privateSelectionModal: "Private Selection",
+    privateDetailModal: "Private Detail",
     whyChoose: "Why customers choose this",
     whyChooseText:
       "Strong identity, premium feel and excellent value in decant format.",
@@ -207,7 +207,7 @@ const translations = {
     emptyCartAlert: "Korpa je prazna.",
     orderSummary: "Pregled porudžbine",
     noItemsCart: "Nema proizvoda u korpi.",
-    privateSelectionModal: "Private Selection",
+    privateDetailModal: "Detalji parfema",
     whyChoose: "Zašto kupci biraju ovaj parfem",
     whyChooseText:
       "Jak identitet, premium utisak i odlična vrednost u decant formatu.",
