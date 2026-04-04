@@ -319,7 +319,7 @@ const products = [
   { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer", image: "/products/Narciso-Rodriguez-for-Him-Bleu-Noir-EdP.png", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 }, rating: 8.2, ratingLabel: "Audience Favorite" },
   { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer", image: "/products/Terre-d'Hermès-EdT.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, rating: 8.9, ratingLabel: "Audience Favorite" },
   { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Niche", image: "/products/Tom-Ford-Noir-Extreme-EdP.png", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 }, rating: 9.1, ratingLabel: "Top Rated" },
-  { id: 48, name: "Afnan 9PM Night Out", category: "Arabian", image: "/products/afnan-9pm-night-out.png", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 }, badge: "NEW" },
+  { id: 48, name: "Afnan 9PM Night Out", category: "Arabian", image: "/products/9pm-night-out.png", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 }, badge: "NEW" },
   { id: 49, name: "Rasasi Hawas Ice for Him", category: "Arabian", image: "/products/rasasi-hawas-ice.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "SOON"},
 ];
 
