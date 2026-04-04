@@ -3241,6 +3241,13 @@ main {
     width: calc(100vw - 16px);
     max-height: calc(100vh - 16px);
     border-radius: 24px;
+
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-body {
+    overflow: visible;
   }
 
   .modal-header {
@@ -3853,6 +3860,9 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 
   background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(12px);
