@@ -137,7 +137,7 @@ const translations = {
   seasonLabel: "Season",
   seasonAll: "All",
   seasonSummer: "Spring / Summer",
-  seasonWinter: "Fall / Winter"
+  seasonWinter: "Fall / Winter",
   },
 
   sr: {
@@ -265,7 +265,7 @@ const translations = {
   seasonLabel: "Sezona",
   seasonAll: "Sve",
   seasonSummer: "Proleće / leto",
-  seasonWinter: "Jesen / zima"
+  seasonWinter: "Jesen / zima",
 }
 };
 
@@ -998,17 +998,11 @@ function App() {
   const [sortBy, setSortBy] = useState("default");
   const [season, setSeason] = useState("All");
 
-const seasons = [
-  { value: "All", label: tr.seasonAll },
-  { value: "summer", label: tr.seasonSummer },
-  { value: "winter", label: tr.seasonWinter }
-];
-
   const openCatalogPreview = (url) => {
   setCatalogPreview(url);
 };
 
-const closeCatalogPreview = () => {
+ const closeCatalogPreview = () => {
   setCatalogPreview(null);
 };
 
@@ -1024,6 +1018,12 @@ const closeCatalogPreview = () => {
 const [currentVideo, setCurrentVideo] = useState(0);
 
 const tr = translations[lang];
+
+const seasons = [
+  { value: "All", label: tr.seasonAll },
+  { value: "summer", label: tr.seasonSummer },
+  { value: "winter", label: tr.seasonWinter }
+];
 
 const campaign9pm = tr.heroCampaigns?.find((item) => item.id === "9pm");
 
