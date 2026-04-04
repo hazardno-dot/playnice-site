@@ -809,7 +809,7 @@ const productCopy = {
 },
 
 "Afnan 9PM Night Out": {
-  miniTag: { sr: "🌙 Night / Sweet", en: "🌙 Night / Sweet" }
+  miniTag: { sr: "🌙 Night / Sweet", en: "🌙 Night / Sweet" },
   card: "Dark, playful and attention-grabbing scent made for nights out.",
   modal:
     "A bold evening fragrance with sweet warmth, seductive depth and strong clubbing energy. Great choice if you want something modern, easy to wear and highly noticeable after dark.",
