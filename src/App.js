@@ -1030,9 +1030,6 @@ function App() {
   }
 };
 
-  // ostale funkcije...
-}
-
   const openCatalogPreview = (url) => {
   setCatalogPreview(url);
 };
