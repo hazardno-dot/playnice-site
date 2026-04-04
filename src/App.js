@@ -2442,148 +2442,150 @@ return (
   </div>
 </section>
 
-            <section className="closing-section section-wrap">
-  <div className="closing-shell">
-    <p className="closing-kicker">
-      {lang === "sr" ? "ZAVRŠNI UTISAK" : "FINAL IMPRESSION"}
-    </p>
+            <>
+  <section className="closing-section section-wrap">
+    <div className="closing-shell">
+      <p className="closing-kicker">
+        {lang === "sr" ? "ZAVRŠNI UTISAK" : "FINAL IMPRESSION"}
+      </p>
 
-    <h2 className="closing-title">
-      {lang === "sr"
-        ? "Biraj miris koji želiš da pamte."
-        : "Choose the scent they’ll remember."}
-    </h2>
+      <h2 className="closing-title">
+        {lang === "sr"
+          ? "Biraj miris koji želiš da pamte."
+          : "Choose the scent they’ll remember."}
+      </h2>
 
-    <p className="closing-text">
-      {lang === "sr"
-        ? "Probaj prije kupovine. Otkrij designer, niche i Arabian parfeme kroz pažljivo birane dekante, prije nego se odlučiš za punu bočicu."
-        : "Try before you buy. Discover designer, niche and Arabian fragrances through carefully curated decants before committing to a full bottle."}
-    </p>
+      <p className="closing-text">
+        {lang === "sr"
+          ? "Probaj prije kupovine. Otkrij designer, niche i Arabian parfeme kroz pažljivo birane dekante, prije nego se odlučiš za punu bočicu."
+          : "Try before you buy. Discover designer, niche and Arabian fragrances through carefully curated decants before committing to a full bottle."}
+      </p>
 
-    <div className="closing-actions">
-      <button
-        type="button"
-        className="gold-button"
-        onClick={() => {
-          setView("shop");
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }}
-      >
-        {lang === "sr" ? "Istraži kolekciju" : "Explore Collection"}
-      </button>
+      <div className="closing-actions">
+        <button
+          type="button"
+          className="gold-button"
+          onClick={() => {
+            setView("shop");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        >
+          {lang === "sr" ? "Istraži kolekciju" : "Explore Collection"}
+        </button>
 
-      <button
-        type="button"
-        className="ghost-button"
-        onClick={() => setStoryOpen(true)}
-      >
-        {lang === "sr" ? "Private Selection" : "Private Selection"}
-      </button>
+        <button
+          type="button"
+          className="ghost-button"
+          onClick={() => setStoryOpen(true)}
+        >
+          Private Selection
+        </button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<footer className="site-footer">
-  <div className="site-footer-inner">
-    <div className="footer-brand">
-      <div className="footer-logo-wrap">
-        <div className="footer-logo-mark">▶</div>
-        <div>
-          <div className="footer-logo">PlayNice</div>
-          <div className="footer-tagline">Remember. PlayNice.</div>
+  <footer className="site-footer">
+    <div className="site-footer-inner">
+      <div className="footer-brand">
+        <div className="footer-logo-wrap">
+          <div className="footer-logo-mark">▶</div>
+          <div>
+            <div className="footer-logo">PlayNice</div>
+            <div className="footer-tagline">Remember. PlayNice.</div>
+          </div>
         </div>
+
+        <p className="footer-brand-text">
+          {lang === "sr"
+            ? "Kurirana selekcija designer, niche i Arabian parfema za one koji žele da probaju prije pune bočice."
+            : "A curated selection of designer, niche and Arabian fragrances for those who want to try before committing to a full bottle."}
+        </p>
       </div>
 
-      <p className="footer-brand-text">
-        {lang === "sr"
-          ? "Kurirana selekcija designer, niche i Arabian parfema za one koji žele da probaju prije pune bočice."
-          : "A curated selection of designer, niche and Arabian fragrances for those who want to try before committing to a full bottle."}
-      </p>
+      <div className="footer-links">
+        <h4>{lang === "sr" ? "Navigacija" : "Navigation"}</h4>
+
+        <button
+          type="button"
+          className="footer-link"
+          onClick={() => {
+            setView("home");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        >
+          {lang === "sr" ? "Početna" : "Home"}
+        </button>
+
+        <button
+          type="button"
+          className="footer-link"
+          onClick={() => setStoryOpen(true)}
+        >
+          {lang === "sr" ? "Priča" : "Our Story"}
+        </button>
+
+        <button
+          type="button"
+          className="footer-link"
+          onClick={() => {
+            setView("shop");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        >
+          {lang === "sr" ? "Prodavnica" : "Shop"}
+        </button>
+
+        <button
+          type="button"
+          className="footer-link"
+          onClick={() => {
+            setView("shop");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        >
+          Private Selection
+        </button>
+
+        <a href="#how-it-works" className="footer-link">
+          {lang === "sr" ? "Kako funkcioniše" : "How it works"}
+        </a>
+      </div>
+
+      <div className="footer-trust">
+        <h4>{lang === "sr" ? "Informacije" : "Information"}</h4>
+
+        <p>{lang === "sr" ? "Dostava širom Crne Gore" : "Delivery across Montenegro"}</p>
+        <p>{lang === "sr" ? "Besplatna dostava preko 39€" : "Free shipping over €39"}</p>
+
+        <a href="mailto:order@playniceshop.me" className="footer-contact">
+          order@playniceshop.me
+        </a>
+
+        <a
+          href="https://www.instagram.com/playnice.me/"
+          target="_blank"
+          rel="noreferrer"
+          className="footer-contact"
+        >
+          @playnice.me
+        </a>
+      </div>
     </div>
 
-    <div className="footer-links">
-      <h4>{lang === "sr" ? "Navigacija" : "Navigation"}</h4>
+    <div className="footer-bottom">
+      <p>© 2026 PlayNice. {lang === "sr" ? "Sva prava zadržana." : "All rights reserved."}</p>
 
-      <button
-        type="button"
-        className="footer-link"
-        onClick={() => {
-          setView("home");
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }}
-      >
-        {lang === "sr" ? "Početna" : "Home"}
-      </button>
-
-      <button
-  type="button"
-  className="footer-link"
-  onClick={() => setStoryOpen(true)}
->
-  {lang === "sr" ? "Priča" : "Our Story"}
-</button>
-
-      <button
-        type="button"
-        className="footer-link"
-        onClick={() => {
-          setView("shop");
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }}
-      >
-        {lang === "sr" ? "Prodavnica" : "Shop"}
-      </button>
-
-      <button
-  type="button"
-  className="footer-link"
-  onClick={() => {
-    setView("shop");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }}
->
-  Private Selection
-</button>
-
-      <a href="#how-it-works" className="footer-link">
-        {lang === "sr" ? "Kako funkcioniše" : "How it works"}
-      </a>
+      <div className="footer-bottom-links">
+        <button type="button" className="footer-mini-link">
+          {lang === "sr" ? "Privatnost" : "Privacy"}
+        </button>
+        <button type="button" className="footer-mini-link">
+          {lang === "sr" ? "Uslovi" : "Terms"}
+        </button>
+      </div>
     </div>
-
-    <div className="footer-trust">
-      <h4>{lang === "sr" ? "Informacije" : "Information"}</h4>
-
-      <p>{lang === "sr" ? "Dostava širom Crne Gore" : "Delivery across Montenegro"}</p>
-      <p>{lang === "sr" ? "Besplatna dostava preko 39€" : "Free shipping over €39"}</p>
-
-      <a href="mailto:order@playniceshop.me" className="footer-contact">
-        order@playniceshop.me
-      </a>
-
-      <a
-        href="https://www.instagram.com/playnice.me/"
-        target="_blank"
-        rel="noreferrer"
-        className="footer-contact"
-      >
-        @playnice.me
-      </a>
-    </div>
-  </div>
-
-  <div className="footer-bottom">
-    <p>© 2026 PlayNice. {lang === "sr" ? "Sva prava zadržana." : "All rights reserved."}</p>
-
-    <div className="footer-bottom-links">
-      <button type="button" className="footer-mini-link">
-        {lang === "sr" ? "Privatnost" : "Privacy"}
-      </button>
-      <button type="button" className="footer-mini-link">
-        {lang === "sr" ? "Uslovi" : "Terms"}
-      </button>
-    </div>
-  </div>
-</footer>
+  </footer>
+</>
           </>
         )}
 
