@@ -6181,15 +6181,16 @@ main {
 
 @media (max-width: 768px) {
   .header-private-selection-btn {
-    padding: 6px 10px;
-    gap: 6px;
-    font-size: 0.58rem;
-    letter-spacing: 0.1em;
+    padding: 6px 8px;
+    min-width: auto;
+  }
+
+  .header-private-selection-btn .ps-label {
+    display: none;
   }
 
   .ps-heart {
-    font-size: 10px;
-    margin-right: 0;
+    font-size: 11px;
   }
 
   .ps-count {
