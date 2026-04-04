@@ -2442,9 +2442,7 @@ return (
   </div>
 </section>
 
-            <section
-  className={`closing-section section-wrap ${closingVisible ? "is-visible" : ""}`}
->
+            <section className="closing-section section-wrap">
   <div className="closing-shell">
     <p className="closing-kicker">
       {lang === "sr" ? "ZAVRŠNI UTISAK" : "FINAL IMPRESSION"}
@@ -2463,6 +2461,14 @@ return (
     </p>
 
     <div className="closing-actions">
+      <button
+  type="button"
+  className="footer-link"
+  onClick={() => setStoryOpen(true)}
+>
+  {lang === "sr" ? "Priča" : "Our Story"}
+</button>
+
       <button
         type="button"
         className="gold-button"
@@ -2540,13 +2546,11 @@ return (
   type="button"
   className="footer-link"
   onClick={() => {
-    const section = document.getElementById("how-it-works");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    setView("shop");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }}
 >
-  {lang === "sr" ? "Kako funkcioniše" : "How it works"}
+  Private Selection
 </button>
     </div>
 
