@@ -2424,6 +2424,52 @@ return (
   </div>
 </div>
 
+{(category !== "All" || season !== "All" || sortBy !== "default" || searchTerm.trim() !== "") && (
+  <div className="active-filters-bar">
+    <div className="active-filters-left">
+      {category !== "All" && (
+        <span className="active-filter-chip">
+          {getCategoryLabel(category)}
+        </span>
+      )}
+
+      {season !== "All" && (
+        <span className="active-filter-chip">
+          {season === "summer" ? `☀️ ${tr.seasonSummer}` : `❄️ ${tr.seasonWinter}`}
+        </span>
+      )}
+
+      {sortBy !== "default" && (
+        <span className="active-filter-chip">
+          {sortBy === "rating" && `★ ${tr.sortRating}`}
+          {sortBy === "priceLow" && `↗ ${tr.sortPriceLow}`}
+          {sortBy === "priceHigh" && `↘ ${tr.sortPriceHigh}`}
+          {sortBy === "name" && tr.sortName}
+        </span>
+      )}
+
+      {searchTerm.trim() !== "" && (
+        <span className="active-filter-chip">
+          “{searchTerm.trim()}”
+        </span>
+      )}
+    </div>
+
+    <button
+      type="button"
+      className="clear-filters-button"
+      onClick={() => {
+        setCategory("All");
+        setSeason("All");
+        setSortBy("default");
+        setSearchTerm("");
+      }}
+    >
+      {lang === "sr" ? "Obriši filtere" : "Clear all"}
+    </button>
+  </div>
+)}
+
             <div className="product-grid">
               {paginatedProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
