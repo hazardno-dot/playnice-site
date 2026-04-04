@@ -2845,8 +2845,8 @@ return (
                 type="button"
                 className="private-selection-item-media"
                 onClick={() => {
-  openProductModal(product);
-}}
+                openProductModal(product);
+                }}
                 aria-label={product.name}
               >
                 <img
@@ -3041,7 +3041,7 @@ return (
             </button>
 
             <div className="modal-header">
-              <span className="modal-eyebrow">PRIVATE SELECTION</span>
+              <span className="modal-eyebrow">PRIVATE DETAIL</span>
               <h2>{selectedProduct.name}</h2>
 
               {selectedProduct.rating && (
