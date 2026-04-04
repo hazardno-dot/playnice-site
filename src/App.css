@@ -1014,7 +1014,7 @@ main {
 }
 
 .hero-bottle {
-  width: min(100%, 420px); /* +15–20% */
+  width: min(100%, 360px); /* +15–20% */
 
   object-fit: contain;
 
