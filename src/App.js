@@ -988,6 +988,7 @@ function App() {
   const [sortBy, setSortBy] = useState("default");
   const [season, setSeason] = useState("All");
   const [privateSelectionOpen, setPrivateSelectionOpen] = useState(false);
+  const [closingVisible, setClosingVisible] = useState(false);
 
   const [wishlist, setWishlist] = useState(() => {
     return JSON.parse(localStorage.getItem("playnice_wishlist")) || [];
@@ -1153,6 +1154,28 @@ const switchView = (nextView) => {
     });
   });
 };
+
+useEffect(() => {
+  const section = document.querySelector(".closing-section");
+  if (!section) return;
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        setClosingVisible(true);
+        observer.disconnect();
+      }
+    },
+    {
+      threshold: 0.12,
+      rootMargin: "0px 0px -20px 0px",
+    }
+  );
+
+  observer.observe(section);
+
+  return () => observer.disconnect();
+}, []);
 
   useEffect(() => {
     window.localStorage.setItem("playnice_lang", lang);
@@ -2419,7 +2442,9 @@ return (
   </div>
 </section>
 
-            <section className="closing-section section-wrap">
+            <section
+  className={`closing-section section-wrap ${closingVisible ? "is-visible" : ""}`}
+>
   <div className="closing-shell">
     <p className="closing-kicker">
       {lang === "sr" ? "ZAVRŠNI UTISAK" : "FINAL IMPRESSION"}
