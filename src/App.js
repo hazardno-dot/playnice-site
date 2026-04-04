@@ -2371,19 +2371,50 @@ return (
 </div>
 
   <div className="toolbar-group">
-    <label>{tr.sortLabel}</label>
-    <select
-      className="category-select"
-      value={sortBy}
-      onChange={(e) => setSortBy(e.target.value)}
+  <label>{tr.sortLabel}</label>
+
+  <div className="sort-pills">
+    <button
+      type="button"
+      className={`sort-pill ${sortBy === "default" ? "active" : ""}`}
+      onClick={() => setSortBy("default")}
     >
-      <option value="default">{tr.sortFeatured}</option>
-      <option value="rating">{tr.sortRating}</option>
-      <option value="priceLow">{tr.sortPriceLow}</option>
-      <option value="priceHigh">{tr.sortPriceHigh}</option>
-      <option value="name">{tr.sortName}</option>
-    </select>
+      {tr.sortFeatured}
+    </button>
+
+    <button
+      type="button"
+      className={`sort-pill ${sortBy === "rating" ? "active" : ""}`}
+      onClick={() => setSortBy("rating")}
+    >
+      ★ {tr.sortRating}
+    </button>
+
+    <button
+      type="button"
+      className={`sort-pill ${sortBy === "priceLow" ? "active" : ""}`}
+      onClick={() => setSortBy("priceLow")}
+    >
+      ↗ {tr.sortPriceLow}
+    </button>
+
+    <button
+      type="button"
+      className={`sort-pill ${sortBy === "priceHigh" ? "active" : ""}`}
+      onClick={() => setSortBy("priceHigh")}
+    >
+      ↘ {tr.sortPriceHigh}
+    </button>
+
+    <button
+      type="button"
+      className={`sort-pill ${sortBy === "name" ? "active" : ""}`}
+      onClick={() => setSortBy("name")}
+    >
+      A–Ž
+    </button>
   </div>
+</div>
 </div>
 
             <div className="product-grid">
