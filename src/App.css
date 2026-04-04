@@ -2801,42 +2801,118 @@ main {
 }
 
 .modal-size {
-  padding: 14px 14px 12px;
+  position: relative;
+  overflow: hidden;
+
+  min-height: 72px;
+  padding: 12px 14px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 6px;
+
   border-radius: 18px;
-  border: 1px solid rgba(220, 181, 107, 0.12);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(220, 181, 107, 0.14);
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015)),
+    rgba(16, 16, 16, 0.94);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.01),
+    0 10px 24px rgba(0, 0, 0, 0.22);
+
   text-align: left;
   cursor: pointer;
+
   transition:
-    transform 180ms ease,
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    background 180ms ease;
-}
-
-.modal-size span {
-  display: block;
-  margin-bottom: 6px;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 0.95rem;
-}
-
-.modal-size strong {
-  color: #f7f2e8;
-  font-size: 1.05rem;
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
 }
 
 .modal-size:hover {
   transform: translateY(-1px);
-  border-color: rgba(220, 181, 107, 0.22);
+  border-color: rgba(220, 181, 107, 0.3);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.015),
+    0 14px 28px rgba(0, 0, 0, 0.28),
+    0 0 18px rgba(220, 181, 107, 0.06);
+}
+
+.modal-size span {
+  display: block;
+  margin-bottom: 0;
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  color: rgba(255, 248, 235, 0.72);
+}
+
+.modal-size strong {
+  display: block;
+
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+
+  color: #f6f1e8;
 }
 
 .modal-size.active {
-  border-color: rgba(220, 181, 107, 0.5);
-  background: rgba(220, 181, 107, 0.08);
+  border-color: rgba(220, 181, 107, 0.58);
+
+  background:
+    linear-gradient(180deg, rgba(220,181,107,0.12), rgba(220,181,107,0.04)),
+    rgba(18, 16, 12, 0.98);
+
   box-shadow:
-    inset 0 0 0 1px rgba(220, 181, 107, 0.14),
-    0 10px 26px rgba(220, 181, 107, 0.10);
+    inset 0 0 0 1px rgba(220,181,107,0.16),
+    0 16px 34px rgba(0, 0, 0, 0.34),
+    0 0 24px rgba(220, 181, 107, 0.12);
+}
+
+.modal-size.active span {
+  color: rgba(255, 244, 220, 0.88);
+}
+
+.modal-size.active strong {
+  background: linear-gradient(
+    120deg,
+    #f3d9a4 0%,
+    #e6c88f 30%,
+    #dcb56b 55%,
+    #f0d7a3 75%,
+    #cfa24e 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.modal-size.active::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+
+  background: radial-gradient(circle, #f0d7a3 0%, #dcb56b 100%);
+  box-shadow:
+    0 0 0 4px rgba(220, 181, 107, 0.08),
+    0 0 12px rgba(220, 181, 107, 0.22);
 }
 
 .modal-purchase-bar {
