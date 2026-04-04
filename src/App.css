@@ -6178,3 +6178,10 @@ main {
     0 0 0 1px rgba(183, 42, 56, 0.3),
     0 4px 10px rgba(0, 0, 0, 0.35);
 }
+
+@media (max-width: 768px) {
+  :root {
+    --topbar-height: 86px;
+    --announcement-gap: 8px;
+  }
+}
