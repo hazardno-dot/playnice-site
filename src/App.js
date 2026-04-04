@@ -2521,7 +2521,12 @@ return (
 
             <div className="product-grid">
               {paginatedProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard
+  key={product.id}
+  product={product}
+  wishlist={wishlist}
+  toggleWishlist={toggleWishlist}
+/>
               ))}
             </div>
 
