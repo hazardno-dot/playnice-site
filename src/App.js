@@ -259,6 +259,7 @@ const translations = {
   sortPriceHigh: "Cena: viša → niža",
   sortName: "A–Š"
 }
+}
 };
 
 const categoryLabels = {
