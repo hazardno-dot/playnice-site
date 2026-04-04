@@ -260,9 +260,9 @@ const products = [
   { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", image: "/products/afnan-supremacy.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, rating: 8.1, ratingLabel: "Audience Favorite" },
   { id: 4, name: "Afnan Turathi Blue", category: "Arabian", image: "/products/afnan-turathi-blue.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER", rating: 8.9, ratingLabel: "Audience Favorite" },
   { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", image: "/products/marwa.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, rating: 8.0, ratingLabel: "Audience Favorite" },
-  { id: 6, name: "Armaf Club De Nuit Bling", category: "Designer", image: "/products/Bling.png", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 }, rating: 7.7, ratingLabel: "Well Loved" },
-  { id: 7, name: "Armaf Club de Nuit Intense", category: "Designer", image: "/products/armaf-cdn-intense.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER", rating: 8.8, ratingLabel: "Audience Favorite" },
-  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Designer", image: "/products/CDN-Sillage.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 8.0, ratingLabel: "Audience Favorite" },
+  { id: 6, name: "Armaf Club De Nuit Bling", category: "Arabian", image: "/products/Bling.png", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 }, rating: 7.7, ratingLabel: "Well Loved" },
+  { id: 7, name: "Armaf Club de Nuit Intense", category: "Arabian", image: "/products/armaf-cdn-intense.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER", rating: 8.8, ratingLabel: "Audience Favorite" },
+  { id: 8, name: "Armaf Club de Nuit Sillage", category: "Arabian", image: "/products/CDN-Sillage.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 8.0, ratingLabel: "Audience Favorite" },
   { id: 9, name: "French Avenue Vulcan Sable by Fragrance World", category: "Arabian", image: "/products/Vulcan-Sable.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, rating: 7.9, ratingLabel: "Well Loved" },
 
   { id: 10, name: "Haramain Signature Blue", category: "Arabian", image: "/products/Haramain-Signature-Blue.png", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 }, rating: 7.4, ratingLabel: "Popular Pick" },
@@ -284,9 +284,9 @@ const products = [
   { id: 22, name: "Rayhaan Pacific Aura", category: "Summer", image: "/products/Rayhaan-Pacific-Aura.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, rating: 7.9, ratingLabel: "Well Loved" },
   { id: 23, name: "Swiss Arabian Tobacco 01 Extrait de Parfum", category: "Arabian", image: "/products/Swiss-Arabian-Tobacco01.png", sizes: { "5ml": 10, "10ml": 18, "20ml": 34 }, rating: 8.5, ratingLabel: "Audience Favorite" },
 
-  { id: 24, name: "Acqua di Parma Fico di Amalfi Eau de Toilette", category: "Designer", image: "/products/AdP-Fico.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, rating: 8.3, ratingLabel: "Audience Favorite" },
-  { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Designer", image: "/products/AdP-Colonia-Essenza.png", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 }, rating: 8.0, ratingLabel: "Audience Favorite" },
-  { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Designer", image: "/products/AdP-Colonia-Pura.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, rating: 7.8, ratingLabel: "Well Loved" },
+  { id: 24, name: "Acqua di Parma Fico di Amalfi Eau de Toilette", category: "Niche", image: "/products/AdP-Fico.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, rating: 8.3, ratingLabel: "Audience Favorite" },
+  { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Niche", image: "/products/AdP-Colonia-Essenza.png", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 }, rating: 8.0, ratingLabel: "Audience Favorite" },
+  { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Niche", image: "/products/AdP-Colonia-Pura.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, rating: 7.8, ratingLabel: "Well Loved" },
 
   { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer", image: "/products/BDC-EdP.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER", rating: 9.2, ratingLabel: "Top Rated" },
 
@@ -318,7 +318,7 @@ const products = [
   { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer", image: "/products/Montblanc-Explorer-Extreme-Parfum.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, rating: 7.8, ratingLabel: "Well Loved" },
   { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer", image: "/products/Narciso-Rodriguez-for-Him-Bleu-Noir-EdP.png", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 }, rating: 8.2, ratingLabel: "Audience Favorite" },
   { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer", image: "/products/Terre-d'Hermès-EdT.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, rating: 8.9, ratingLabel: "Audience Favorite" },
-  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Niche", image: "/products/Tom-Ford-Noir-Extreme-EdP.png", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 }, rating: 9.1, ratingLabel: "Top Rated" },
+  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Designer", image: "/products/Tom-Ford-Noir-Extreme-EdP.png", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 }, rating: 9.1, ratingLabel: "Top Rated" },
   { id: 48, name: "Afnan 9PM Night Out", category: "Arabian", image: "/products/9pm-night-out.png", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 }, badge: "NEW", rating: 8.6, ratingLabel: "Night Beast" },
   { id: 49, name: "Rasasi Hawas Ice for Him", category: "Arabian", image: "/products/rasasi-hawas-ice.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "SOON", rating: 8.4, ratingLabel: "Fresh King" },
 ];
