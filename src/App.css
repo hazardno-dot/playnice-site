@@ -4640,13 +4640,118 @@ main {
 }
 
 /* =========================================
-   BADGE
+   WISHLIST + BADGE
 ========================================= */
 
+.wishlist-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 4;
+
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(220, 181, 107, 0.2);
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(8, 8, 8, 0.58);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  overflow: hidden;
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
+}
+
+.wishlist-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(220, 181, 107, 0.42);
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(220, 181, 107, 0.1);
+}
+
+.wishlist-btn:active {
+  transform: translateY(0);
+}
+
+.wishlist-btn .bottle {
+  position: relative;
+  z-index: 2;
+  font-size: 15px;
+  line-height: 1;
+  transform: rotate(0deg) scale(1);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.wishlist-btn .spray {
+  position: absolute;
+  top: 10px;
+  right: 9px;
+  z-index: 1;
+
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 243, 210, 0.95) 0%,
+    rgba(220, 181, 107, 0.75) 38%,
+    rgba(220, 181, 107, 0) 100%
+  );
+
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.35) translate(0, 0);
+}
+
+.wishlist-btn.active {
+  border-color: rgba(220, 181, 107, 0.58);
+  background: rgba(18, 14, 8, 0.78);
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(220, 181, 107, 0.18),
+    0 0 18px rgba(220, 181, 107, 0.14);
+}
+
+.wishlist-btn.active .bottle {
+  transform: rotate(-10deg) scale(1.08);
+}
+
+.wishlist-btn.active .spray {
+  animation: sprayBurst 0.6s ease forwards;
+}
+
+@keyframes sprayBurst {
+  0% {
+    opacity: 0;
+    transform: scale(0.35) translate(0, 0);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.8) translate(8px, -14px);
+  }
+}
+
+/* Badge prebačen levo da ne udara u wishlist */
 .product-floating-badge {
   position: absolute;
   top: 14px;
-  right: 14px;
+  left: 14px;
   z-index: 3;
 
   padding: 5px 11px;
@@ -4657,11 +4762,11 @@ main {
   letter-spacing: 0.14em;
   text-transform: uppercase;
 
-  border: 1px solid rgba(220,181,107,0.24);
-  background: rgba(8,8,8,0.58);
+  border: 1px solid rgba(220, 181, 107, 0.24);
+  background: rgba(8, 8, 8, 0.58);
   color: #e6c27a;
 
-  box-shadow: 0 6px 16px rgba(0,0,0,0.28);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
 }
 
 /* =========================================

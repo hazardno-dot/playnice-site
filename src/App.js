@@ -998,6 +998,25 @@ function App() {
   const [sortBy, setSortBy] = useState("default");
   const [season, setSeason] = useState("All");
 
+  const [wishlist, setWishlist] = useState(() => {
+  return JSON.parse(localStorage.getItem("playnice_wishlist")) || [];
+});
+
+const toggleWishlist = (productId) => {
+  setWishlist((prev) => {
+    let updated;
+
+    if (prev.includes(productId)) {
+      updated = prev.filter((id) => id !== productId);
+    } else {
+      updated = [...prev, productId];
+    }
+
+    localStorage.setItem("playnice_wishlist", JSON.stringify(updated));
+    return updated;
+  });
+};
+
   const openCatalogPreview = (url) => {
   setCatalogPreview(url);
 };
@@ -1558,49 +1577,50 @@ const getProductVibe = (product) => {
       tags: fallbackCopy.tags[lang]
     };
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, wishlist, toggleWishlist }) => {
   const copy = getProductCopy(product, lang);
   const minPrice = Math.min(...Object.values(product.sizes));
+
   const getBadgeVariant = (miniTag = "") => {
-  const tag = miniTag.toLowerCase();
+    const tag = miniTag.toLowerCase();
 
-  if (
-    tag.includes("bestseller") ||
-    tag.includes("top") ||
-    tag.includes("🔥")
-  ) {
-    return "badge-hot";
-  }
+    if (
+      tag.includes("bestseller") ||
+      tag.includes("top") ||
+      tag.includes("🔥")
+    ) {
+      return "badge-hot";
+    }
 
-  if (
-    tag.includes("fresh") ||
-    tag.includes("summer") ||
-    tag.includes("blue") ||
-    tag.includes("❄️")
-  ) {
-    return "badge-fresh";
-  }
+    if (
+      tag.includes("fresh") ||
+      tag.includes("summer") ||
+      tag.includes("blue") ||
+      tag.includes("❄️")
+    ) {
+      return "badge-fresh";
+    }
 
-  if (
-    tag.includes("sweet") ||
-    tag.includes("date") ||
-    tag.includes("gourmand") ||
-    tag.includes("🍯")
-  ) {
-    return "badge-sweet";
-  }
+    if (
+      tag.includes("sweet") ||
+      tag.includes("date") ||
+      tag.includes("gourmand") ||
+      tag.includes("🍯")
+    ) {
+      return "badge-sweet";
+    }
 
-  if (
-    tag.includes("luxury") ||
-    tag.includes("signature") ||
-    tag.includes("exclusive") ||
-    tag.includes("💎")
-  ) {
-    return "badge-luxury";
-  }
+    if (
+      tag.includes("luxury") ||
+      tag.includes("signature") ||
+      tag.includes("exclusive") ||
+      tag.includes("💎")
+    ) {
+      return "badge-luxury";
+    }
 
-  return "badge-default";
-};
+    return "badge-default";
+  };
 
   return (
     <article className="product-card premium-product-card">
@@ -1624,11 +1644,37 @@ const ProductCard = ({ product }) => {
         />
       </div>
 
+      <button
+        type="button"
+        className={`wishlist-btn ${
+          wishlist.includes(product.id) ? "active" : ""
+        }`}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleWishlist(product.id);
+        }}
+        aria-label={
+          wishlist.includes(product.id)
+            ? lang === "sr"
+              ? `Ukloni ${product.name} iz wishlist`
+              : `Remove ${product.name} from wishlist`
+            : lang === "sr"
+            ? `Dodaj ${product.name} u wishlist`
+            : `Add ${product.name} to wishlist`
+        }
+      >
+        <span className="bottle">🍾</span>
+        <span className="spray"></span>
+      </button>
+
       {copy.miniTag && (
-  <span className={`product-floating-badge ${getBadgeVariant(copy.miniTag)}`}>
-    {copy.miniTag}
-  </span>
-)}
+        <span
+          className={`product-floating-badge ${getBadgeVariant(copy.miniTag)}`}
+        >
+          {copy.miniTag}
+        </span>
+      )}
 
       <div className="product-meta premium-product-meta">
         <div className="product-meta-top">
@@ -1649,7 +1695,6 @@ const ProductCard = ({ product }) => {
 
         <div className="product-meta-bottom">
           <div className="product-price-block">
-
             <div className="product-price-row">
               <span className="product-price-from premium-product-price">
                 <span className="price-prefix">{tr.from}</span>
@@ -1659,56 +1704,55 @@ const ProductCard = ({ product }) => {
           </div>
 
           <div className="product-preview-line premium-preview-line single-line-preview">
-  <span className="product-card-cta">
-    {lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}
-  </span>
-</div>
+            <span className="product-card-cta">
+              {lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}
+            </span>
+          </div>
         </div>
       </div>
 
       <div
-  className="size-buttons"
-  onClick={(e) => e.stopPropagation()}
->
-  {Object.entries(product.sizes).map(([size, price]) => {
-  const feedbackKey = `${product.id}-${size}`;
-  const isJustAdded = inlineAddedKey === feedbackKey;
-  const isRecommendedSize = size === "5ml";
+        className="size-buttons"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {Object.entries(product.sizes).map(([size, price]) => {
+          const feedbackKey = `${product.id}-${size}`;
+          const isJustAdded = inlineAddedKey === feedbackKey;
+          const isRecommendedSize = size === "5ml";
 
-  return (
-    <button
-      key={size}
-      type="button"
-      className={`size-chip ${isRecommendedSize ? "is-recommended" : ""}`}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.currentTarget.blur();
+          return (
+            <button
+              key={size}
+              type="button"
+              className={`size-chip ${isRecommendedSize ? "is-recommended" : ""}`}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                e.currentTarget.blur();
 
-        addToCart(product, size, null, null, { showToast: false });
-        triggerInlineAddedFeedback(product.id, size);
-      }}
-    >
-      <span className="size-chip-main-wrap">
-        <span className="size-chip-main">{size}</span>
+                addToCart(product, size, null, null, { showToast: false });
+                triggerInlineAddedFeedback(product.id, size);
+              }}
+            >
+              <span className="size-chip-main-wrap">
+                <span className="size-chip-main">{size}</span>
 
-        {isRecommendedSize && (
-          <span className="size-chip-recommended">
-            {lang === "sr" ? "Najbolji izbor" : "Recommended"}
-          </span>
-        )}
-      </span>
+                {isRecommendedSize && (
+                  <span className="size-chip-recommended">
+                    {lang === "sr" ? "Najbolji izbor" : "Recommended"}
+                  </span>
+                )}
+              </span>
 
-      <span className="size-chip-price">{formatPrice(price)}</span>
+              <span className="size-chip-price">{formatPrice(price)}</span>
 
-      <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
-        {tr.justAdded}
-      </span>
-    </button>
-  );
-})}
-
-</div>
+              <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
+                {tr.justAdded}
+              </span>
+            </button>
+          );
+        })}
+      </div>
     </article>
   );
 };
@@ -2231,7 +2275,12 @@ return (
                   .map((id) => products.find((product) => product.id === id))
                   .filter(Boolean)
                   .map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard
+  key={product.id}
+  product={product}
+  wishlist={wishlist}
+  toggleWishlist={toggleWishlist}
+/>
                   ))}
               </div>
 
