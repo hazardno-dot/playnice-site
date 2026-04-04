@@ -2411,7 +2411,7 @@ return (
       className={`sort-pill ${sortBy === "name" ? "active" : ""}`}
       onClick={() => setSortBy("name")}
     >
-      A–Ž
+      {tr.sortName}
     </button>
   </div>
 </div>
