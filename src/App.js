@@ -2542,16 +2542,9 @@ return (
         Private Selection
       </button>
 
-      <button
-  type="button"
-  className="footer-link"
-  onClick={() => {
-    setView("shop");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }}
->
-  Private Selection
-</button>
+      <a href="#how-it-works" className="footer-link">
+        {lang === "sr" ? "Kako funkcioniše" : "How it works"}
+      </a>
     </div>
 
     <div className="footer-trust">
