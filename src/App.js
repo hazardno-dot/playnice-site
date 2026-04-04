@@ -2845,9 +2845,8 @@ return (
                 type="button"
                 className="private-selection-item-media"
                 onClick={() => {
-                  setPrivateSelectionOpen(false);
-                  openProductModal(product);
-                }}
+  openProductModal(product);
+}}
                 aria-label={product.name}
               >
                 <img
@@ -2876,7 +2875,6 @@ return (
                       type="button"
                       className="private-selection-link"
                       onClick={() => {
-                        setPrivateSelectionOpen(false);
                         openProductModal(product);
                       }}
                     >
