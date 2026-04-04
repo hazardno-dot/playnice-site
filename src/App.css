@@ -6179,24 +6179,43 @@ main {
     0 4px 10px rgba(0, 0, 0, 0.35);
 }
 
+/* MOBILE AFTER PRIVATE SELECTION BUTTON */
+
 @media (max-width: 768px) {
   .header-private-selection-btn {
-    padding: 6px 8px;
-    min-width: auto;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 999px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+
+    flex: 0 0 auto;
   }
 
   .header-private-selection-btn .ps-label {
     display: none;
   }
 
-  .ps-heart {
-    font-size: 11px;
+  .header-private-selection-btn .ps-heart {
+    font-size: 12px;
+    margin: 0;
+    transform: none;
   }
 
-  .ps-count {
-    min-width: 15px;
-    height: 15px;
+  .header-private-selection-btn .ps-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+
+    min-width: 16px;
+    height: 16px;
     padding: 0 4px;
-    font-size: 0.56rem;
+
+    font-size: 0.55rem;
   }
 }
