@@ -1993,20 +1993,6 @@ main {
 }
 
 /* =========================================
-   CTA SECTION
-========================================= */
-.cta-section {
-  width: min(calc(100% - 32px), 900px);
-  margin: 0 auto;
-  padding: 80px 20px 100px;
-  text-align: center;
-}
-
-.cta-section p {
-  margin-bottom: 26px;
-}
-
-/* =========================================
    BACKDROP — CINEMATIC FADE
 ========================================= */
 .backdrop {
