@@ -281,7 +281,7 @@ const products = [
   { id: 2, name: "Afnan 9PM Rebel", category: "Arabian", image: "/products/9pm.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER", rating: 8.6, ratingLabel: "Audience Favorite", season: "winter" },
   { id: 3, name: "Afnan Supremacy Collector's Edition Pour Homme", category: "Arabian", image: "/products/afnan-supremacy.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, rating: 8.1, ratingLabel: "Audience Favorite", season: "summer" },
   { id: 4, name: "Afnan Turathi Blue", category: "Arabian", image: "/products/afnan-turathi-blue.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "BESTSELLER", rating: 8.9, ratingLabel: "Audience Favorite", season: "summer" },
-  { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", image: "/products/marwa.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, rating: 8.0, ratingLabel: "Audience Favorite", season: "winter" },
+  { id: 5, name: "Arabiyat Prestige Marwa", category: "Arabian", image: "/products/marwa.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, rating: 8.0, ratingLabel: "Audience Favorite", season: "summer" },
   { id: 6, name: "Armaf Club De Nuit Bling", category: "Arabian", image: "/products/Bling.png", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 }, rating: 7.7, ratingLabel: "Well Loved", season: "summer" },
   { id: 7, name: "Armaf Club de Nuit Intense", category: "Arabian", image: "/products/armaf-cdn-intense.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, badge: "BESTSELLER", rating: 8.8, ratingLabel: "Audience Favorite", season: "summer" },
   { id: 8, name: "Armaf Club de Nuit Sillage", category: "Arabian", image: "/products/CDN-Sillage.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 8.0, ratingLabel: "Audience Favorite", season: "summer" },
@@ -2344,19 +2344,31 @@ return (
   </div>
 
   <div className="toolbar-group">
-    <label>{tr.seasonLabel}</label>
-    <select
-      className="category-select"
-      value={season}
-      onChange={(e) => setSeason(e.target.value)}
+  <label>{tr.seasonLabel}</label>
+
+  <div className="season-pills">
+    <button
+      className={`season-pill ${season === "All" ? "active" : ""}`}
+      onClick={() => setSeason("All")}
     >
-      {seasons.map((s) => (
-        <option key={s.value} value={s.value}>
-          {s.label}
-        </option>
-      ))}
-    </select>
+      {tr.seasonAll}
+    </button>
+
+    <button
+      className={`season-pill ${season === "summer" ? "active" : ""}`}
+      onClick={() => setSeason("summer")}
+    >
+      ☀️ {tr.seasonSummer}
+    </button>
+
+    <button
+      className={`season-pill ${season === "winter" ? "active" : ""}`}
+      onClick={() => setSeason("winter")}
+    >
+      ❄️ {tr.seasonWinter}
+    </button>
   </div>
+</div>
 
   <div className="toolbar-group">
     <label>{tr.sortLabel}</label>
