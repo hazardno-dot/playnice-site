@@ -318,9 +318,9 @@ const products = [
   { id: 44, name: "Montblanc Explorer Extreme Parfum", category: "Designer", image: "/products/Montblanc-Explorer-Extreme-Parfum.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, rating: 7.8, ratingLabel: "Well Loved" },
   { id: 45, name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum", category: "Designer", image: "/products/Narciso-Rodriguez-for-Him-Bleu-Noir-EdP.png", sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 }, rating: 8.2, ratingLabel: "Audience Favorite" },
   { id: 46, name: "Terre d'Hermès Eau de Toilette", category: "Designer", image: "/products/Terre-d'Hermès-EdT.png", sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 }, rating: 8.9, ratingLabel: "Audience Favorite" },
-  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Niche", image: "/products/Tom-Ford-Noir-Extreme-EdP.png", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 }, rating: 9.1, ratingLabel: "Top Rated" }
-  { id: 48, name: "Afnan 9PM Night Out", category: "Arabian", image: "/products/afnan-9pm-night-out.png", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 }, badge: "NEW"
-},
+  { id: 47, name: "Tom Ford Noir Extreme Eau de Parfum", category: "Niche", image: "/products/Tom-Ford-Noir-Extreme-EdP.png", sizes: { "2ml": 9, "5ml": 21, "10ml": 37 }, rating: 9.1, ratingLabel: "Top Rated" },
+  { id: 48, name: "Afnan 9PM Night Out", category: "Arabian", image: "/products/afnan-9pm-night-out.png", sizes: { "5ml": 6, "10ml": 11, "20ml": 20 }, badge: "NEW" },
+  { id: 49, name: "Rasasi Hawas Ice for Him", category: "Arabian", image: "/products/rasasi-hawas-ice.png", sizes: { "5ml": 5, "10ml": 9, "20ml": 17 }, badge: "SOON"},
 ];
 
 const productCopy = {
@@ -805,6 +805,17 @@ const productCopy = {
   dominantNotes: ["Sweet spices", "Amber", "Vanilla", "Woods"],
   tags: ["Night out", "Compliment getter", "Cool weather"],
   whyChoose: "If you want an affordable evening scent with strong mass appeal and nightlife character."
+},
+
+"Rasasi Hawas Ice for Him": {
+  miniTag: "❄️ Fresh / Summer",
+  card: "Ultra fresh aquatic with icy sweetness and strong projection.",
+  modal:
+    "A modern summer fragrance combining aquatic freshness with sweet fruity undertones and a cool icy vibe. Clean, energetic and highly complimented in warm weather.",
+  scentType: "Fresh / Aquatic / Sweet",
+  dominantNotes: ["Aquatic notes", "Fruits", "Ambergris", "Musk"],
+  tags: ["Summer", "Daily", "Fresh", "Compliment getter"],
+  whyChoose: "If you want a fresh but noticeable summer scent that stands out from typical citrus fragrances."
 },
 };
 
