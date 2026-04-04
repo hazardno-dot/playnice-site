@@ -782,7 +782,7 @@ main {
 .hero {
   position: relative;
   width: min(calc(100% - 32px), var(--max));
-  margin: 16px auto 0;
+  margin: 12px auto 16px;
   padding: 34px 30px 42px;
   border: 1px solid var(--line);
   border-radius: 34px;
