@@ -973,6 +973,7 @@ function App() {
   const [inlineAddedKey, setInlineAddedKey] = useState(null);
   const [catalogPreview, setCatalogPreview] = useState(null);
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
+  const [sortBy, setSortBy] = useState("default");
 
   const openCatalogPreview = (url) => {
   setCatalogPreview(url);
@@ -1145,15 +1146,40 @@ const switchView = (nextView) => {
   }, [heroPaused, heroSlides.length]);
 
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
-      const categoryMatch = category === "All" || product.category === category;
-      const searchMatch = product.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
+  const result = products.filter((product) => {
+    const categoryMatch = category === "All" || product.category === category;
+    const searchMatch = product.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
 
-      return categoryMatch && searchMatch;
-    });
-  }, [category, searchTerm]);
+    return categoryMatch && searchMatch;
+  });
+
+  switch (sortBy) {
+    case "rating":
+      return result.sort((a, b) => b.rating - a.rating);
+
+    case "priceLow":
+      return result.sort(
+        (a, b) =>
+          Math.min(...Object.values(a.sizes)) -
+          Math.min(...Object.values(b.sizes))
+      );
+
+    case "priceHigh":
+      return result.sort(
+        (a, b) =>
+          Math.min(...Object.values(b.sizes)) -
+          Math.min(...Object.values(a.sizes))
+      );
+
+    case "name":
+      return result.sort((a, b) => a.name.localeCompare(b.name));
+
+    default:
+      return result;
+  }
+}, [products, category, searchTerm, sortBy]);
 
   const totalPages = Math.max(
     1,
@@ -2271,6 +2297,14 @@ return (
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+  <option value="default">Featured</option>
+  <option value="rating">Top Rated</option>
+  <option value="priceLow">Price: Low to High</option>
+  <option value="priceHigh">Price: High to Low</option>
+  <option value="name">A–Z</option>
+</select>
+
                   {categories.map((cat) => (
                     <option key={cat} value={cat}>
                       {getCategoryLabel(cat)}
