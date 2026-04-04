@@ -846,7 +846,7 @@ main {
   justify-content: center;
   align-items: flex-start;
 
-  transform: translateX(18px);
+  transform: translateX(12px);
 }
 
 /* HEADLINE */
@@ -969,7 +969,7 @@ main {
   justify-content: center;
   justify-self: start;
 
-  transform: translateX(-18px);
+  transform: translateX(-12px);
 }
 
 .hero-visual-campaign::before {
