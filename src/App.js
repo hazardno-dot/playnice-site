@@ -133,8 +133,8 @@ const translations = {
   sortPriceLow: "Price: Low to High",
   sortPriceHigh: "Price: High to Low",
   sortName: "A–Z"
-
   },
+
   sr: {
     navHome: "Početna",
     navShop: "Shop",
@@ -249,7 +249,7 @@ const translations = {
       cta: "ISPROBAJ PRE KUPOVINE",
       sub: "Dostupno u 5ml, 10ml i 20ml dekantima"
     }
-  ]
+  ],
   sortLabel: "Sortiranje",
   sortFeatured: "Preporučeno",
   sortRating: "Najbolje ocenjeni",
