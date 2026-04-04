@@ -6179,8 +6179,6 @@ main {
     0 4px 10px rgba(0, 0, 0, 0.35);
 }
 
-/* MOBILE AFTER PRIVATE SELECTION BUTTON */
-
 @media (max-width: 768px) {
   .header-private-selection-btn {
     width: 40px;
@@ -6218,4 +6216,14 @@ main {
 
     font-size: 0.55rem;
   }
+
+    .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+
+  .topbar-right > * {
+    flex: 0 0 auto;
 }
