@@ -1414,7 +1414,7 @@ main {
 ========================================= */
 .value-strip {
   width: min(calc(100% - 32px), var(--max));
-  margin: 0 auto 16;
+  margin: 0 auto 16px;
   padding: 14px 20px;
   display: flex;
   justify-content: center;
