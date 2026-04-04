@@ -2460,14 +2460,6 @@ return (
         : "Try before you buy. Discover designer, niche and Arabian fragrances through carefully curated decants before committing to a full bottle."}
     </p>
 
-    <button
-  type="button"
-  className="footer-link"
-  onClick={() => setStoryOpen(true)}
->
-  {lang === "sr" ? "Priča" : "Our Story"}
-</button>
-
     <div className="closing-actions">
       <button
         type="button"
@@ -2522,6 +2514,14 @@ return (
       >
         {lang === "sr" ? "Početna" : "Home"}
       </button>
+
+      <button
+  type="button"
+  className="footer-link"
+  onClick={() => setStoryOpen(true)}
+>
+  {lang === "sr" ? "Priča" : "Our Story"}
+</button>
 
       <button
         type="button"
