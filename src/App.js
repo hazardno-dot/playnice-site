@@ -297,9 +297,9 @@ const products = [
   { id: 16, name: "Lattafa Qaed Al Fursan Untamed", category: "Arabian", image: "/products/Lattafa-Qaed-Al-Fursan-Untamed.png", sizes: { "5ml": 3, "10ml": 5, "20ml": 10 }, rating: 7.5, ratingLabel: "Well Loved", season: "summer" },
 
   { id: 17, name: "Paris Corner Emir Trillium", category: "Arabian", image: "/products/Emir-Trillium.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 7.6, ratingLabel: "Well Loved", season: "summer" },
-  { id: 18, name: "Paris Corner Emir Voux Elegante", category: "Arabian", image: "/products/Emir-Voux-Elegante.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 7.7, ratingLabel: "Well Loved", season: "summer" },
+  { id: 18, name: "Paris Corner Emir Voux Elegante", category: "Arabian", image: "/products/Emir-Voux-Elegante.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 7.7, ratingLabel: "Well Loved", season: "winter" },
   { id: 19, name: "Paris Corner Ministry of Oud - Oud Satin", category: "Arabian", image: "/products/Ministry-of-Oud-Oud-Satin.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 8.1, ratingLabel: "Audience Favorite", season: "winter" },
-  { id: 20, name: "Paris Corner Perfumes North Stag Expressions II DEUX", category: "Arabian", image: "/products/II-DEUX.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 7.9, ratingLabel: "Well Loved", season: "summer" },
+  { id: 20, name: "Paris Corner Perfumes North Stag Expressions II DEUX", category: "Arabian", image: "/products/II-DEUX.png", sizes: { "5ml": 4, "10ml": 7, "20ml": 13 }, rating: 7.9, ratingLabel: "Well Loved", season: "winter" },
 
   { id: 21, name: "Rayhaan Aquatica", category: "Arabian", image: "/products/Rayhaan-AQUTICA.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, rating: 7.8, ratingLabel: "Well Loved", season: "summer" },
   { id: 22, name: "Rayhaan Pacific Aura", category: "Arabian", image: "/products/Rayhaan-Pacific-Aura.png", sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 }, rating: 7.9, ratingLabel: "Well Loved", season: "summer" },
@@ -309,7 +309,7 @@ const products = [
   { id: 25, name: "Acqua di Parma Colonia Essenza Eau de Cologne", category: "Niche", image: "/products/AdP-Colonia-Essenza.png", sizes: { "2ml": 7, "5ml": 16, "10ml": 29 }, rating: 8.0, ratingLabel: "Audience Favorite", season: "summer" },
   { id: 26, name: "Acqua di Parma Colonia Pura Eau de Cologne", category: "Niche", image: "/products/AdP-Colonia-Pura.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, rating: 7.8, ratingLabel: "Well Loved", season: "summer" },
 
-  { id: 27, name: "BLEU DE CHANEL Eau de Parfum Spray", category: "Designer", image: "/products/BDC-EdP.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER", rating: 9.2, ratingLabel: "Top Rated", season: "summer" },
+  { id: 27, name: "BLEU DE CHANEL Eau de Parfum", category: "Designer", image: "/products/BDC-EdP.png", sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 }, badge: "BESTSELLER", rating: 9.2, ratingLabel: "Top Rated", season: "summer" },
 
   { id: 28, name: "Bois Impérial by Essential Parfums", category: "Niche", image: "/products/Bois-Impérial-by-Essential-Parfums.png", sizes: { "2ml": 4, "5ml": 9, "10ml": 16 }, badge: "BESTSELLER", rating: 8.9, ratingLabel: "Audience Favorite", season: "summer" },
 
@@ -588,7 +588,7 @@ const productCopy = {
   whyChoose:{sr:"Za prirodan luksuz.",en:"For natural luxury."}
 },
 
-"BLEU DE CHANEL Eau de Parfum Spray":{
+"BLEU DE CHANEL Eau de Parfum":{
   miniTag:{sr:"💎 Signature",en:"💎 Signature"},
   card:{sr:"Elegantna klasika.",en:"Elegant classic."},
   modal:{sr:"Bezvremenski izbor.",en:"Timeless choice."},
