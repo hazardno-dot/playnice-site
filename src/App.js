@@ -2516,14 +2516,6 @@ return (
       </button>
 
       <button
-  type="button"
-  className="footer-link"
-  onClick={() => setStoryOpen(true)}
->
-  {lang === "sr" ? "Priča" : "Our Story"}
-</button>
-
-      <button
         type="button"
         className="footer-link"
         onClick={() => {
