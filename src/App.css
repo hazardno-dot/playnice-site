@@ -846,7 +846,7 @@ main {
   justify-content: center;
   align-items: flex-start;
 
-  transform: translateX(12px);
+  transform: translateX(18px);
 }
 
 /* HEADLINE */
@@ -961,15 +961,14 @@ main {
 .hero-visual-campaign {
   height: 340px;
   min-height: 340px;
-  padding-right: 0;
-  overflow: visible;
 
   display: flex;
   align-items: center;
-  justify-content: center;
-  justify-self: start;
+  justify-content: flex-end; /* KLJUČNO */
 
-  transform: translateX(-12px);
+  padding-right: 6px;
+
+  transform: translateX(12px); /* blago udesno */
 }
 
 .hero-visual-campaign::before {
@@ -1014,17 +1013,21 @@ main {
   pointer-events: none;
 }
 
-.hero-bottle {
-  width: min(100%, 355px);
+hero-bottle {
+  width: min(100%, 420px); /* +15–20% */
+
   object-fit: contain;
-  filter: drop-shadow(0 36px 72px rgba(0, 0, 0, 1));
-  transform: translateY(0) scale(1);
+
+  transform: translateX(10px) scale(1.08); /* KLJUČNO */
+  transform-origin: center right;
+
+  filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 1));
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .hero-bottle-wrap:hover .hero-bottle {
-  transform: translateY(-2px) scale(1.015);
-  filter: drop-shadow(0 42px 82px rgba(0, 0, 0, 1));
+  transform: translateX(10px) scale(1.1);
+  filter: drop-shadow(0 48px 90px rgba(0, 0, 0, 1));
 }
 
 .hero-campaign-image {
