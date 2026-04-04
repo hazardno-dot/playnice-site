@@ -126,7 +126,6 @@ const translations = {
     cta: "TRY BEFORE YOU BUY",
     sub: "Available in 5ml, 10ml and 20ml decants"
   }
-
 {
   sortLabel: "Sort by",
   sortFeatured: "Featured",
