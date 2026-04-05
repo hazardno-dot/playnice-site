@@ -1086,38 +1086,28 @@ const campaign9pm = tr.heroCampaigns?.find((item) => item.id === "9pm");
 const heroSlides = [
   {
     id: "slide-1",
-    kind: "imageOnly",
-    image: "/hero/slide-1-9pm-night-out.jpg",
-    alt: "Afnan 9PM Night Out campaign",
-    actionPrimary: "shop",
+    image: "/hero/slide-1.jpg",
+    alt: "PlayNice hero slide 1",
   },
   {
     id: "slide-2",
-    kind: "imageOnly",
-    image: "/hero/slide-2-9pm-rebel.jpg",
-    alt: "Afnan 9PM Rebel campaign",
-    actionPrimary: "shop",
+    image: "/hero/slide-2.jpg",
+    alt: "PlayNice hero slide 2",
   },
   {
     id: "slide-3",
-    kind: "imageOnly",
-    image: "/hero/slide-3-hawas-ice.jpg",
-    alt: "Rasasi Hawas Ice coming soon",
-    actionPrimary: "shop",
+    image: "/hero/slide-3.jpg",
+    alt: "PlayNice hero slide 3",
   },
   {
     id: "slide-4",
-    kind: "imageOnly",
-    image: "/hero/slide-4-playnice-trust-white.jpg",
-    alt: "PlayNice Private Selection trust slide",
-    actionPrimary: "shop",
+    image: "/hero/slide-4.jpg",
+    alt: "PlayNice hero slide 4",
   },
   {
     id: "slide-5",
-    kind: "imageOnly",
-    image: "/hero/slide-5-trust-dark.jpg",
-    alt: "PlayNice trust and premium selection slide",
-    actionPrimary: "shop",
+    image: "/hero/slide-5.jpg",
+    alt: "PlayNice hero slide 5",
   },
 ];
 
@@ -1979,150 +1969,62 @@ return (
 <main>
         {view === "home" && (
           <>
-            <section
+          <section
   className="hero hero-carousel"
   onMouseEnter={() => setHeroPaused(true)}
   onMouseLeave={() => setHeroPaused(false)}
 >
   <div className="hero-carousel-track">
-  {heroSlides.map((slide, index) => (
-    <article
-      key={slide.id}
-      className={`hero-slide ${index === currentHero ? "active" : ""}`}
-      aria-hidden={index !== currentHero}
-    >
-      {slide.kind === "imageOnly" ? (
-  <div className="hero-image-only">
-    <img
-      className="hero-image-only-img"
-      src={slide.image}
-      alt={slide.alt}
-    />
-  </div>
-) : slide.kind === "legacy" ? (
-  <div className="hero-grid">
-    <div className="hero-copy">
-      <p className="eyebrow">{slide.eyebrow}</p>
-      <h1>
-        {slide.title1}
-        <br />
-        {slide.title2}
-      </h1>
-      <p className="hero-text">{slide.text}</p>
-
-      <div className="hero-price-line">
-        <span className="old-price">{slide.oldPrice}</span>
-        <span className="new-price">{slide.newPrice}</span>
-        <span className="hero-offer-text">{slide.offerText}</span>
-      </div>
-
-      <div className="hero-actions">
-        <button
-          className="gold-button"
-          type="button"
-          onClick={() => handleHeroAction(slide.actionPrimary)}
-        >
-          {slide.primaryCta}
-        </button>
-
-        <button
-          className="ghost-button"
-          type="button"
-          onClick={() => handleHeroAction(slide.actionSecondary)}
-        >
-          {slide.secondaryCta}
-        </button>
-      </div>
-    </div>
-
-    <div className="hero-visual">
-      <button
-        className="hero-bottle-wrap"
-        type="button"
-        onClick={addHeroBottleToCart}
-        aria-label="Add Afnan 9PM Rebel full bottle to cart"
+    {heroSlides.map((slide, index) => (
+      <article
+        key={slide.id}
+        className={`hero-slide ${index === currentHero ? "active" : ""}`}
+        aria-hidden={index !== currentHero}
       >
-        <img
-          className="hero-bottle"
-          src="hero/hero-bottle.png"
-          alt="Afnan 9PM Rebel"
-        />
-      </button>
-    </div>
-  </div>
-) : (
-  <div className="hero-cinematic">
-    <img
-      className="hero-cinematic-image"
-      src={slide.image}
-      alt={slide.title1}
-    />
-
-    <div className="hero-cinematic-overlay" />
-
-    <div className="hero-cinematic-content">
-      <div className="hero-cinematic-copy">
-        <p className="eyebrow">{slide.eyebrow}</p>
-
-        <h1 className="hero-campaign-title">
-          <span className="line-main">{slide.title1}</span>
-          <span className="line-secondary">{slide.title2}</span>
-        </h1>
-
-        <p className="hero-text">{slide.text}</p>
-
-        <div className="hero-actions hero-actions-single">
-          <button
-            className="gold-button"
-            type="button"
-            onClick={() => handleHeroAction(slide.actionPrimary)}
-          >
-            {slide.primaryCta}
-          </button>
+        <div className="hero-image-only">
+          <img
+            className="hero-image-only-img"
+            src={slide.image}
+            alt={slide.alt}
+          />
         </div>
-
-        {slide.sub && <p className="hero-subline">{slide.sub}</p>}
-      </div>
-    </div>
+      </article>
+    ))}
   </div>
-)}
-    </article>
-  ))}
-</div>
 
-{heroSlides.length > 1 && (
-  <>
-    <button
-      type="button"
-      className="hero-carousel-arrow hero-carousel-arrow-left"
-      onClick={prevHeroSlide}
-      aria-label="Previous slide"
-    >
-      ‹
-    </button>
+  {heroSlides.length > 1 && (
+    <>
+      <button
+        type="button"
+        className="hero-carousel-arrow hero-carousel-arrow-left"
+        onClick={prevHeroSlide}
+        aria-label="Previous slide"
+      >
+        ‹
+      </button>
 
-    <button
-      type="button"
-      className="hero-carousel-arrow hero-carousel-arrow-right"
-      onClick={nextHeroSlide}
-      aria-label="Next slide"
-    >
-      ›
-    </button>
+      <button
+        type="button"
+        className="hero-carousel-arrow hero-carousel-arrow-right"
+        onClick={nextHeroSlide}
+        aria-label="Next slide"
+      >
+        ›
+      </button>
 
-    <div className="hero-carousel-dots">
-      {heroSlides.map((slide, index) => (
-        <button
-          key={slide.id}
-          type="button"
-          className={`hero-carousel-dot ${index === currentHero ? "active" : ""}`}
-          onClick={() => goToHeroSlide(index)}
-          aria-label={`Go to slide ${index + 1}`}
-        />
-      ))}
-    </div>
-  </>
-)}
+      <div className="hero-carousel-dots">
+        {heroSlides.map((slide, index) => (
+          <button
+            key={slide.id}
+            type="button"
+            className={`hero-carousel-dot ${index === currentHero ? "active" : ""}`}
+            onClick={() => goToHeroSlide(index)}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+    </>
+  )}
 </section>
 
             <section className="value-strip">
