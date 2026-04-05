@@ -2459,15 +2459,15 @@ return (
 
 <div className="social-links">
   <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer">
-    <i className="fab fa-instagram"></i>
+    <i className="fa-brands fa-instagram"></i>
   </a>
 
   <a href="https://wa.me/382XXXXXXXXX" target="_blank" rel="noreferrer">
-    <i className="fab fa-whatsapp"></i>
+    <i className="fa-brands fa-whatsapp"></i>
   </a>
 
   <a href="https://tiktok.com/@playnice" target="_blank" rel="noreferrer">
-    <i className="fab fa-tiktok"></i>
+    <i className="fa-brands fa-tiktok"></i>
   </a>
 </div>
       </div>
