@@ -823,7 +823,7 @@ main {
 .hero-carousel {
   position: relative;
   width: 100%;
-  aspect-ratio: 2 / 1;
+  aspect-ratio: 2.4 / 1;
   min-height: 0;
   touch-action: pan-y;
   user-select: none;
@@ -1188,7 +1188,7 @@ main {
   }
 
   .hero-carousel {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 1.8 / 1;
   }
 
   .hero-slide {
