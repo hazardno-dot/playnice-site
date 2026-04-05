@@ -1126,15 +1126,24 @@ const heroSlides = [
   },
 ];
 
+const bumpHeroAutoplay = () => {
+  setHeroPaused(true);
+  setTimeout(() => setHeroPaused(false), 220);
+};
+
 const nextHeroSlide = () => {
+  bumpHeroAutoplay();
   setCurrentHero((prev) => (prev + 1) % heroSlides.length);
 };
 
 const prevHeroSlide = () => {
+  bumpHeroAutoplay();
   setCurrentHero((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
 };
 
 const goToHeroSlide = (index) => {
+  if (index === currentHero) return;
+  bumpHeroAutoplay();
   setCurrentHero(index);
 };
 
