@@ -1158,7 +1158,7 @@ main {
 
 @media (max-width: 1024px) {
   .hero {
-    width: min(calc(100% - 24px), 100%);
+    width: min(calc(100% - 32px), var(--max));
     padding: 10px;
     border-radius: 26px;
   }
@@ -1182,7 +1182,7 @@ main {
 
 @media (max-width: 768px) {
   .hero {
-    width: min(calc(100% - 12px), 100%);
+    width: min(calc(100% - 32px), var(--max));
     padding: 8px;
     border-radius: 22px;
   }
