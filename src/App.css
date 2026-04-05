@@ -840,28 +840,19 @@ main {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  filter: blur(8px);
-  transform: translate3d(14px, 0, 0) scale(1.01);
-  transform-origin: center center;
   transition:
-    opacity 950ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 950ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 950ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 950ms;
+    opacity 1100ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 1100ms;
   z-index: 1;
-  will-change: opacity, transform, filter;
+  will-change: opacity;
 }
 
 .hero-slide.active {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  filter: blur(0);
-  transform: translate3d(0, 0, 0) scale(1);
   transition:
-    opacity 950ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 950ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 950ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 1100ms cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0s linear 0s;
   z-index: 3;
 }
@@ -901,22 +892,18 @@ main {
   display: block;
   object-fit: cover;
   object-position: center center;
-  transform: scale(1) translate3d(0, 0, 0);
+  transform: scale(1.018) translate3d(12px, 0, 0);
   transform-origin: center center;
   backface-visibility: hidden;
   -webkit-user-drag: none;
   user-select: none;
-  will-change: transform, filter, opacity;
-  transition:
-  transform 1800ms cubic-bezier(0.22, 1, 0.36, 1),
-  filter 950ms cubic-bezier(0.22, 1, 0.36, 1),
-  opacity 950ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+  transition: transform 2200ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hero-slide.active .hero-image-only-img,
 .hero-image-only-img.is-active {
-  transform: scale(1.045) translate3d(0, 0, 0);
-  filter: saturate(1.02);
+  transform: scale(1.03) translate3d(0, 0, 0);
 }
 
 /* =========================================
@@ -1210,15 +1197,17 @@ main {
     border-radius: 16px;
   }
 
- .hero-slide:not(.active) .hero-image-only-img {
-  transform: scale(1.012) translate3d(8px, 0, 0);
-  filter: saturate(0.97);
+.hero-slide:not(.active) .hero-image-only-img {
+  transform: scale(1.018) translate3d(12px, 0, 0);
 }
 
 .hero-slide.active .hero-image-only-img,
 .hero-image-only-img.is-active {
-  transform: scale(1.03) translate3d(0, 0, 0);
-  filter: saturate(1.02);
+  transform: scale(1.022) translate3d(0, 0, 0);
+}
+
+.hero-slide:not(.active) .hero-image-only-img {
+  transform: scale(1.012) translate3d(8px, 0, 0);
 }
 
 .hero-carousel-arrow {
