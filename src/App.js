@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 
 const translations = {
@@ -989,6 +989,11 @@ function App() {
   const [season, setSeason] = useState("All");
   const [privateSelectionOpen, setPrivateSelectionOpen] = useState(false);
   const [closingVisible, setClosingVisible] = useState(false);
+  const [currentHero, setCurrentHero] = useState(0);
+  const [heroPaused, setHeroPaused] = useState(false);
+
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   const [wishlist, setWishlist] = useState(() => {
   try {
@@ -1121,6 +1126,18 @@ const heroSlides = [
   },
 ];
 
+const nextHeroSlide = () => {
+  setCurrentHero((prev) => (prev + 1) % heroSlides.length);
+};
+
+const prevHeroSlide = () => {
+  setCurrentHero((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+};
+
+const goToHeroSlide = (index) => {
+  setCurrentHero(index);
+};
+
 const [currentHero, setCurrentHero] = useState(0);
 const [heroPaused, setHeroPaused] = useState(false);
 
@@ -1162,6 +1179,16 @@ const switchView = (nextView) => {
     });
   });
 };
+
+useEffect(() => {
+  if (heroPaused || heroSlides.length <= 1) return;
+
+  const interval = setInterval(() => {
+    setCurrentHero((prev) => (prev + 1) % heroSlides.length);
+  }, 5000); // 5s
+
+  return () => clearInterval(interval);
+}, [heroPaused, heroSlides.length]);
 
 useEffect(() => {
   const section = document.querySelector(".closing-section");
@@ -1534,6 +1561,25 @@ useEffect(() => {
   if (action === "heroBottle") {
     addHeroBottleToCart();
     return;
+  }
+};
+
+const handleHeroTouchStart = (e) => {
+  touchStartX.current = e.changedTouches[0].clientX;
+};
+
+const handleHeroTouchEnd = (e) => {
+  touchEndX.current = e.changedTouches[0].clientX;
+
+  const distance = touchStartX.current - touchEndX.current;
+  const swipeThreshold = 50;
+
+  if (Math.abs(distance) < swipeThreshold) return;
+
+  if (distance > 0) {
+    nextHeroSlide();
+  } else {
+    prevHeroSlide();
   }
 };
 
@@ -1983,6 +2029,8 @@ return (
   className="hero hero-carousel"
   onMouseEnter={() => setHeroPaused(true)}
   onMouseLeave={() => setHeroPaused(false)}
+  onTouchStart={handleHeroTouchStart}
+  onTouchEnd={handleHeroTouchEnd}
 >
   <div className="hero-carousel-track">
     {heroSlides.map((slide, index) => (
@@ -1996,6 +2044,8 @@ return (
             className="hero-image-only-img"
             src={slide.image}
             alt={slide.alt}
+            loading={index === 0 ? "eager" : "lazy"}
+            draggable="false"
           />
         </div>
       </article>

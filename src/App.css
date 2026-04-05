@@ -823,6 +823,8 @@ main {
 .hero-carousel {
   position: relative;
   min-height: 450px;
+  touch-action: pan-y;
+  user-select: none;
 }
 
 .hero-carousel-track {
@@ -881,6 +883,8 @@ main {
   object-position: center center;
   transform: translateZ(0);
   backface-visibility: hidden;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 /* =========================================
