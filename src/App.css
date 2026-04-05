@@ -783,7 +783,7 @@ main {
   position: relative;
   width: min(calc(100% - 32px), var(--max));
   margin: 10px auto 14px;
-  padding: 0;
+  padding: 0 18px; /* KLJUČ */
   border: 1px solid var(--line);
   border-radius: 30px;
   background:
@@ -822,12 +822,9 @@ main {
 
 .hero-carousel {
   position: relative;
-  width: 100%;
+  width: calc(100% + 36px);
+  margin-left: -18px;
   aspect-ratio: 2.4 / 1;
-  min-height: 0;
-  touch-action: pan-y;
-  user-select: none;
-  display: block;
   overflow: hidden;
   border-radius: 30px;
 }
