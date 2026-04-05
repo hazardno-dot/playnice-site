@@ -840,13 +840,16 @@ main {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  filter: blur(6px);
-  transform: scale(1.008);
+  filter: blur(8px);
+  transform: translate3d(18px, 0, 0) scale(1.012);
+  transform-origin: center center;
   transition:
-    opacity 0.42s ease,
-    filter 0.42s ease,
-    transform 0.42s ease;
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 900ms;
   z-index: 1;
+  will-change: opacity, transform, filter;
 }
 
 .hero-slide.active {
@@ -854,7 +857,12 @@ main {
   visibility: visible;
   pointer-events: auto;
   filter: blur(0);
-  transform: scale(1);
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0s;
   z-index: 3;
 }
 
@@ -873,6 +881,18 @@ main {
   background: #050505;
 }
 
+.hero-image-only::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.16)),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03), transparent 62%);
+  opacity: 0.9;
+}
+
 .hero-image-only-img {
   position: absolute;
   inset: 0;
@@ -881,21 +901,22 @@ main {
   display: block;
   object-fit: cover;
   object-position: center center;
-  transform: scale(1) translateZ(0);
+  transform: scale(1) translate3d(0, 0, 0);
   transform-origin: center center;
   backface-visibility: hidden;
   -webkit-user-drag: none;
   user-select: none;
-  will-change: transform;
+  will-change: transform, filter, opacity;
   transition:
-    transform 1400ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 400ms ease,
-    filter 400ms ease;
+    transform 1600ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 500ms ease;
 }
 
 .hero-slide.active .hero-image-only-img,
 .hero-image-only-img.is-active {
-  transform: scale(1.045) translateZ(0);
+  transform: scale(1.045) translate3d(0, 0, 0);
+  filter: saturate(1.02);
 }
 
 /* =========================================
@@ -1074,21 +1095,27 @@ main {
     min-height: 288px;
   }
 
-  .hero-slide {
-    position: relative;
-    inset: auto;
-    display: none;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: none;
-    filter: none;
-    transform: none;
-  }
+.hero-slide {
+  position: relative;
+  inset: auto;
+  display: none;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  filter: none;
+  transform: none;
+  transition: none;
+}
 
-  .hero-slide.active {
-    display: block;
-    pointer-events: auto;
-  }
+.hero-slide.active {
+  display: block;
+  pointer-events: auto;
+}
+
+.hero-slide:not(.active) .hero-image-only-img {
+  transform: scale(1.01) translate3d(10px, 0, 0);
+  filter: saturate(0.96);
+}
 
   .hero-image-only {
     height: 288px;
