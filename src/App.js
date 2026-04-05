@@ -1086,28 +1086,38 @@ const campaign9pm = tr.heroCampaigns?.find((item) => item.id === "9pm");
 const heroSlides = [
   {
     id: "slide-1",
-    image: "/hero/slide-1.jpg",
-    alt: "PlayNice hero slide 1",
+    kind: "imageOnly",
+    image: "/hero/slide-1-9pm-night-out.jpg",
+    alt: "Afnan 9PM Night Out campaign",
+    actionPrimary: "shop",
   },
   {
     id: "slide-2",
-    image: "/hero/slide-2.jpg",
-    alt: "PlayNice hero slide 2",
+    kind: "imageOnly",
+    image: "/hero/slide-2-9pm-rebel.jpg",
+    alt: "Afnan 9PM Rebel campaign",
+    actionPrimary: "shop",
   },
   {
     id: "slide-3",
-    image: "/hero/slide-3.jpg",
-    alt: "PlayNice hero slide 3",
+    kind: "imageOnly",
+    image: "/hero/slide-3-hawas-ice.jpg",
+    alt: "Rasasi Hawas Ice coming soon",
+    actionPrimary: "shop",
   },
   {
     id: "slide-4",
-    image: "/hero/slide-4.jpg",
-    alt: "PlayNice hero slide 4",
+    kind: "imageOnly",
+    image: "/hero/slide-4-playnice-trust-white.jpg",
+    alt: "PlayNice Private Selection trust slide",
+    actionPrimary: "shop",
   },
   {
     id: "slide-5",
-    image: "/hero/slide-5.jpg",
-    alt: "PlayNice hero slide 5",
+    kind: "imageOnly",
+    image: "/hero/slide-5-trust-dark.jpg",
+    alt: "PlayNice trust and premium selection slide",
+    actionPrimary: "shop",
   },
 ];
 
