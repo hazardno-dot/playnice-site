@@ -1047,6 +1047,20 @@ main {
   right: 16px;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .hero-carousel-arrow {
+    opacity: 0;
+  }
+
+  .hero-carousel:hover .hero-carousel-arrow {
+    opacity: 0.94;
+  }
+
+  .hero-carousel:hover .hero-carousel-arrow:hover {
+    opacity: 1;
+  }
+}
+
 /* =========================================
    PREMIUM DOTS
 ========================================= */
@@ -1207,18 +1221,24 @@ main {
   }
 
   .hero-carousel-arrow {
-    width: 34px;
-    height: 34px;
-    font-size: 1.15rem;
-  }
+  width: 38px;
+  height: 38px;
+}
 
-  .hero-carousel-arrow-left {
-    left: 10px;
-  }
+.hero-carousel-arrow::after {
+  width: 9px;
+  height: 9px;
+  border-top-width: 1.7px;
+  border-right-width: 1.7px;
+}
 
-  .hero-carousel-arrow-right {
-    right: 10px;
-  }
+.hero-carousel-arrow-left {
+  left: 10px;
+}
+
+.hero-carousel-arrow-right {
+  right: 10px;
+}
 
   .hero-carousel-dots {
     bottom: 14px;
