@@ -2452,10 +2452,24 @@ return (
         </div>
 
         <p className="footer-brand-text">
-          {lang === "sr"
-            ? "Kurirana selekcija designer, niche i Arabian parfema za one koji žele da probaju prije pune bočice."
-            : "A curated selection of designer, niche and Arabian fragrances for those who want to try before committing to a full bottle."}
-        </p>
+  {lang === "sr"
+    ? "Kurirana selekcija designer, niche i Arabian parfema za one koji žele da probaju prije pune bočice."
+    : "A curated selection of designer, niche and Arabian fragrances for those who want to try before committing to a full bottle."}
+</p>
+
+<div className="social-links">
+  <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer">
+    <i className="fab fa-instagram"></i>
+  </a>
+
+  <a href="https://wa.me/382XXXXXXXXX" target="_blank" rel="noreferrer">
+    <i className="fab fa-whatsapp"></i>
+  </a>
+
+  <a href="https://tiktok.com/@playnice" target="_blank" rel="noreferrer">
+    <i className="fab fa-tiktok"></i>
+  </a>
+</div>
       </div>
 
       <div className="footer-links">
