@@ -1085,37 +1085,40 @@ const campaign9pm = tr.heroCampaigns?.find((item) => item.id === "9pm");
 
 const heroSlides = [
   {
-    id: "rebel-offer",
-    kind: "legacy",
-    eyebrow: tr.heroEyebrow,
-    title1: tr.heroTitleLine1,
-    title2: tr.heroTitleLine2,
-    text: tr.heroText,
-    oldPrice: "€45.90",
-    newPrice: tr.heroNow,
-    offerText: tr.heroOffer,
-    primaryCta: tr.exploreCollection,
-    secondaryCta: tr.claimOffer,
+    id: "slide-1",
+    kind: "imageOnly",
+    image: "/hero/slide-1-9pm-night-out.jpg",
+    alt: "Afnan 9PM Night Out campaign",
     actionPrimary: "shop",
-    actionSecondary: "heroBottle",
-    imageType: "bottle"
   },
   {
-    id: "night-out",
-    kind: "campaign",
-    eyebrow: campaign9pm?.eyebrow || "NEW NIGHT DROP",
-    title1: campaign9pm?.title1 || "9PM Night Out",
-    title2: campaign9pm?.title2 || "was made to be tried.",
-    text:
-      campaign9pm?.text ||
-      "New from Afnan. Dark, modern and made for nights that leave an impression.",
-    sub:
-      campaign9pm?.sub || "Available in 5ml, 10ml and 20ml decants",
-    primaryCta: campaign9pm?.cta || "Try before you buy",
+    id: "slide-2",
+    kind: "imageOnly",
+    image: "/hero/slide-2-9pm-rebel.jpg",
+    alt: "Afnan 9PM Rebel campaign",
     actionPrimary: "shop",
-    imageType: "background",
-    image: "/hero/9pm-night-out.png"
-  }
+  },
+  {
+    id: "slide-3",
+    kind: "imageOnly",
+    image: "/hero/slide-3-hawas-ice.jpg",
+    alt: "Rasasi Hawas Ice coming soon",
+    actionPrimary: "shop",
+  },
+  {
+    id: "slide-4",
+    kind: "imageOnly",
+    image: "/hero/slide-4-playnice-trust-white.jpg",
+    alt: "PlayNice Private Selection trust slide",
+    actionPrimary: "shop",
+  },
+  {
+    id: "slide-5",
+    kind: "imageOnly",
+    image: "/hero/slide-5-trust-dark.jpg",
+    alt: "PlayNice trust and premium selection slide",
+    actionPrimary: "shop",
+  },
 ];
 
 const [currentHero, setCurrentHero] = useState(0);
@@ -1988,93 +1991,101 @@ return (
       className={`hero-slide ${index === currentHero ? "active" : ""}`}
       aria-hidden={index !== currentHero}
     >
-      {slide.kind === "legacy" ? (
-        <div className="hero-grid">
-          <div className="hero-copy">
-            <p className="eyebrow">{slide.eyebrow}</p>
-            <h1>
-              {slide.title1}
-              <br />
-              {slide.title2}
-            </h1>
-            <p className="hero-text">{slide.text}</p>
+      {slide.kind === "imageOnly" ? (
+  <div className="hero-image-only">
+    <img
+      className="hero-image-only-img"
+      src={slide.image}
+      alt={slide.alt}
+    />
+  </div>
+) : slide.kind === "legacy" ? (
+  <div className="hero-grid">
+    <div className="hero-copy">
+      <p className="eyebrow">{slide.eyebrow}</p>
+      <h1>
+        {slide.title1}
+        <br />
+        {slide.title2}
+      </h1>
+      <p className="hero-text">{slide.text}</p>
 
-            <div className="hero-price-line">
-              <span className="old-price">{slide.oldPrice}</span>
-              <span className="new-price">{slide.newPrice}</span>
-              <span className="hero-offer-text">{slide.offerText}</span>
-            </div>
+      <div className="hero-price-line">
+        <span className="old-price">{slide.oldPrice}</span>
+        <span className="new-price">{slide.newPrice}</span>
+        <span className="hero-offer-text">{slide.offerText}</span>
+      </div>
 
-            <div className="hero-actions">
-              <button
-                className="gold-button"
-                type="button"
-                onClick={() => handleHeroAction(slide.actionPrimary)}
-              >
-                {slide.primaryCta}
-              </button>
+      <div className="hero-actions">
+        <button
+          className="gold-button"
+          type="button"
+          onClick={() => handleHeroAction(slide.actionPrimary)}
+        >
+          {slide.primaryCta}
+        </button>
 
-              <button
-                className="ghost-button"
-                type="button"
-                onClick={() => handleHeroAction(slide.actionSecondary)}
-              >
-                {slide.secondaryCta}
-              </button>
-            </div>
-          </div>
+        <button
+          className="ghost-button"
+          type="button"
+          onClick={() => handleHeroAction(slide.actionSecondary)}
+        >
+          {slide.secondaryCta}
+        </button>
+      </div>
+    </div>
 
-          <div className="hero-visual">
-            <button
-              className="hero-bottle-wrap"
-              type="button"
-              onClick={addHeroBottleToCart}
-              aria-label="Add Afnan 9PM Rebel full bottle to cart"
-            >
-              <img
-                className="hero-bottle"
-                src="hero/hero-bottle.png"
-                alt="Afnan 9PM Rebel"
-              />
-            </button>
-          </div>
+    <div className="hero-visual">
+      <button
+        className="hero-bottle-wrap"
+        type="button"
+        onClick={addHeroBottleToCart}
+        aria-label="Add Afnan 9PM Rebel full bottle to cart"
+      >
+        <img
+          className="hero-bottle"
+          src="hero/hero-bottle.png"
+          alt="Afnan 9PM Rebel"
+        />
+      </button>
+    </div>
+  </div>
+) : (
+  <div className="hero-cinematic">
+    <img
+      className="hero-cinematic-image"
+      src={slide.image}
+      alt={slide.title1}
+    />
+
+    <div className="hero-cinematic-overlay" />
+
+    <div className="hero-cinematic-content">
+      <div className="hero-cinematic-copy">
+        <p className="eyebrow">{slide.eyebrow}</p>
+
+        <h1 className="hero-campaign-title">
+          <span className="line-main">{slide.title1}</span>
+          <span className="line-secondary">{slide.title2}</span>
+        </h1>
+
+        <p className="hero-text">{slide.text}</p>
+
+        <div className="hero-actions hero-actions-single">
+          <button
+            className="gold-button"
+            type="button"
+            onClick={() => handleHeroAction(slide.actionPrimary)}
+          >
+            {slide.primaryCta}
+          </button>
         </div>
-      ) : (
-        <div className="hero-cinematic">
-          <img
-            className="hero-cinematic-image"
-            src={slide.image}
-            alt={slide.title1}
-          />
 
-          <div className="hero-cinematic-overlay" />
-
-          <div className="hero-cinematic-content">
-            <div className="hero-cinematic-copy">
-              <p className="eyebrow">{slide.eyebrow}</p>
-
-              <h1 className="hero-campaign-title">
-                <span className="line-main">{slide.title1}</span>
-                <span className="line-secondary">{slide.title2}</span>
-              </h1>
-
-              <p className="hero-text">{slide.text}</p>
-
-              <div className="hero-actions hero-actions-single">
-                <button
-                  className="gold-button"
-                  type="button"
-                  onClick={() => handleHeroAction(slide.actionPrimary)}
-                >
-                  {slide.primaryCta}
-                </button>
-              </div>
-
-              {slide.sub && <p className="hero-subline">{slide.sub}</p>}
-            </div>
-          </div>
-        </div>
-      )}
+        {slide.sub && <p className="hero-subline">{slide.sub}</p>}
+      </div>
+    </div>
+  </div>
+)}
     </article>
   ))}
 </div>
