@@ -1085,38 +1085,38 @@ const campaign9pm = tr.heroCampaigns?.find((item) => item.id === "9pm");
 
 const heroSlides = [
   {
-    id: "slide-1",
+    id: 1,
     kind: "imageOnly",
     image: "/hero/slide-1-9pm-night-out.jpg",
-    alt: "Afnan 9PM Night Out campaign",
+    alt: "Afnan 9PM Night Out – premium night fragrance campaign",
     actionPrimary: "shop",
   },
   {
-    id: "slide-2",
+    id: 2,
     kind: "imageOnly",
     image: "/hero/slide-2-9pm-rebel.jpg",
-    alt: "Afnan 9PM Rebel campaign",
+    alt: "Afnan 9PM Rebel – bold evening fragrance",
     actionPrimary: "shop",
   },
   {
-    id: "slide-3",
+    id: 3,
     kind: "imageOnly",
     image: "/hero/slide-3-hawas-ice.jpg",
-    alt: "Rasasi Hawas Ice coming soon",
+    alt: "Rasasi Hawas Ice – fresh summer fragrance coming soon",
     actionPrimary: "shop",
   },
   {
-    id: "slide-4",
+    id: 4,
     kind: "imageOnly",
     image: "/hero/slide-4-playnice-trust-white.jpg",
-    alt: "PlayNice Private Selection trust slide",
+    alt: "PlayNice Private Selection – trusted premium decants",
     actionPrimary: "shop",
   },
   {
-    id: "slide-5",
+    id: 5,
     kind: "imageOnly",
     image: "/hero/slide-5-trust-dark.jpg",
-    alt: "PlayNice trust and premium selection slide",
+    alt: "PlayNice – luxury fragrance experience and trust",
     actionPrimary: "shop",
   },
 ];
