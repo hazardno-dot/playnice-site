@@ -840,13 +840,16 @@ main {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  filter: blur(6px);
-  transform: scale(1.008);
+  filter: blur(8px);
+  transform: translate3d(18px, 0, 0) scale(1.012);
+  transform-origin: center center;
   transition:
-    opacity 0.42s ease,
-    filter 0.42s ease,
-    transform 0.42s ease;
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 900ms;
   z-index: 1;
+  will-change: opacity, transform, filter;
 }
 
 .hero-slide.active {
@@ -854,7 +857,12 @@ main {
   visibility: visible;
   pointer-events: auto;
   filter: blur(0);
-  transform: scale(1);
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0s;
   z-index: 3;
 }
 
@@ -873,6 +881,18 @@ main {
   background: #050505;
 }
 
+.hero-image-only::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.16)),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03), transparent 62%);
+  opacity: 0.9;
+}
+
 .hero-image-only-img {
   position: absolute;
   inset: 0;
@@ -881,25 +901,26 @@ main {
   display: block;
   object-fit: cover;
   object-position: center center;
-  transform: scale(1) translateZ(0);
+  transform: scale(1) translate3d(0, 0, 0);
   transform-origin: center center;
   backface-visibility: hidden;
   -webkit-user-drag: none;
   user-select: none;
-  will-change: transform;
+  will-change: transform, filter, opacity;
   transition:
-    transform 1400ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 400ms ease,
-    filter 400ms ease;
+    transform 1600ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 500ms ease;
 }
 
 .hero-slide.active .hero-image-only-img,
 .hero-image-only-img.is-active {
-  transform: scale(1.045) translateZ(0);
+  transform: scale(1.045) translate3d(0, 0, 0);
+  filter: saturate(1.02);
 }
 
 /* =========================================
-   ARROWS
+   ARROWS — ULTRA PREMIUM V2
 ========================================= */
 
 .hero-carousel-arrow {
@@ -907,45 +928,123 @@ main {
   top: 50%;
   transform: translateY(-50%);
   z-index: 30;
-  width: 40px;
-  height: 40px;
+
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.18);
-  background: rgba(10, 10, 10, 0.46);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: rgba(255, 248, 235, 0.88);
-  font-size: 1.35rem;
-  line-height: 1;
+
   display: grid;
   place-items: center;
   cursor: pointer;
-  opacity: 0.9;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.26);
+
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015)),
+    rgba(10, 10, 10, 0.42);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+
+  color: rgba(255, 248, 235, 0.92);
+  font-size: 0;
+  line-height: 1;
+  opacity: 0.94;
+
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+
   transition:
-    opacity 0.2s ease,
-    transform 0.2s ease,
-    background 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 220ms ease,
+    background 220ms ease,
+    border-color 220ms ease,
+    box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 220ms ease;
+}
+
+.hero-carousel-arrow::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.08), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.hero-carousel-arrow::after {
+  content: "";
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-top: 1.8px solid rgba(255, 248, 235, 0.9);
+  border-right: 1.8px solid rgba(255, 248, 235, 0.9);
+  transform-origin: center;
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms ease,
+    opacity 220ms ease;
+  opacity: 0.96;
+}
+
+.hero-carousel-arrow-left::after {
+  transform: rotate(-135deg);
+  margin-left: 3px;
+}
+
+.hero-carousel-arrow-right::after {
+  transform: rotate(45deg);
+  margin-right: 3px;
 }
 
 .hero-carousel-arrow:hover {
+  transform: translateY(-50%) scale(1.06);
   opacity: 1;
-  transform: translateY(-50%) scale(1.04);
-  background: rgba(10, 10, 10, 0.62);
-  border-color: rgba(220, 181, 107, 0.28);
+  border-color: rgba(220, 181, 107, 0.22);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02)),
+    rgba(10, 10, 10, 0.54);
   box-shadow:
-    0 14px 30px rgba(0, 0, 0, 0.34),
-    0 0 0 1px rgba(220, 181, 107, 0.07);
+    0 18px 40px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(220, 181, 107, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22);
+  filter: saturate(115%);
+}
+
+.hero-carousel-arrow:hover::after {
+  border-color: rgba(255, 248, 235, 0.98);
+}
+
+.hero-carousel-arrow-left:hover::after {
+  transform: rotate(-135deg) translateX(1px);
+}
+
+.hero-carousel-arrow-right:hover::after {
+  transform: rotate(45deg) translateX(1px);
+}
+
+.hero-carousel-arrow:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.hero-carousel-arrow:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(220, 181, 107, 0.16),
+    0 16px 36px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .hero-carousel-arrow-left {
-  left: 14px;
+  left: 16px;
 }
 
 .hero-carousel-arrow-right {
-  right: 14px;
+  right: 16px;
 }
 
 /* =========================================
@@ -1075,20 +1174,26 @@ main {
   }
 
   .hero-slide {
-    position: relative;
-    inset: auto;
-    display: none;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: none;
-    filter: none;
-    transform: none;
-  }
+  position: relative;
+  inset: auto;
+  display: none;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  filter: none;
+  transform: none;
+  transition: none;
+}
 
-  .hero-slide.active {
-    display: block;
-    pointer-events: auto;
-  }
+.hero-slide.active {
+  display: block;
+  pointer-events: auto;
+}
+
+.hero-slide:not(.active) .hero-image-only-img {
+  transform: scale(1.01) translate3d(10px, 0, 0);
+  filter: saturate(0.96);
+}
 
   .hero-image-only {
     height: 288px;
