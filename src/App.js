@@ -2601,7 +2601,7 @@ return (
 
             <div className="shop-toolbar">
   {/* SEARCH */}
-  <div className="toolbar-group">
+  <div className="toolbar-group toolbar-group-search">
     <label>{tr.searchLabel}</label>
     <input
       type="text"
@@ -2612,53 +2612,21 @@ return (
   </div>
 
   {/* CATEGORY */}
-  <div className="toolbar-group">
+  <div className="toolbar-group toolbar-group-category">
     <label>{tr.categoryLabel}</label>
     <select
-      className="category-select"
       value={category}
       onChange={(e) => setCategory(e.target.value)}
     >
-      {categories.map((cat) => (
-        <option key={cat} value={cat}>
-          {getCategoryLabel(cat)}
-        </option>
-      ))}
+      <option value="All">{tr.categoryAll}</option>
+      <option value="Arabian">{tr.categoryArabian}</option>
+      <option value="Designer">{tr.categoryDesigner}</option>
+      <option value="Niche">{tr.categoryNiche}</option>
+      <option value="Summer">{tr.categorySummer}</option>
     </select>
   </div>
 
-  {/* SEASON PILLS */}
-  <div className="toolbar-group toolbar-group-season">
-    <label>{tr.seasonLabel}</label>
-
-    <div className="season-pills">
-      <button
-        type="button"
-        className={`season-pill ${season === "All" ? "active" : ""}`}
-        onClick={() => setSeason("All")}
-      >
-        {tr.seasonAll}
-      </button>
-
-      <button
-        type="button"
-        className={`season-pill ${season === "summer" ? "active" : ""}`}
-        onClick={() => setSeason("summer")}
-      >
-        ☀️ {tr.seasonSummer}
-      </button>
-
-      <button
-        type="button"
-        className={`season-pill ${season === "winter" ? "active" : ""}`}
-        onClick={() => setSeason("winter")}
-      >
-        ❄️ {tr.seasonWinter}
-      </button>
-    </div>
-  </div>
-
-  {/* SORT PILLS */}
+  {/* SORT PILLS (SADA GORE) */}
   <div className="toolbar-group toolbar-group-sort">
     <label>{tr.sortLabel}</label>
 
@@ -2701,6 +2669,37 @@ return (
         onClick={() => setSortBy("name")}
       >
         {tr.sortName}
+      </button>
+    </div>
+  </div>
+
+  {/* SEASON PILLS (SADA DOLE) */}
+  <div className="toolbar-group toolbar-group-season">
+    <label>{tr.seasonLabel}</label>
+
+    <div className="season-pills">
+      <button
+        type="button"
+        className={`season-pill ${season === "All" ? "active" : ""}`}
+        onClick={() => setSeason("All")}
+      >
+        {tr.seasonAll}
+      </button>
+
+      <button
+        type="button"
+        className={`season-pill ${season === "summer" ? "active" : ""}`}
+        onClick={() => setSeason("summer")}
+      >
+        ☀️ {tr.seasonSummer}
+      </button>
+
+      <button
+        type="button"
+        className={`season-pill ${season === "winter" ? "active" : ""}`}
+        onClick={() => setSeason("winter")}
+      >
+        ❄️ {tr.seasonWinter}
       </button>
     </div>
   </div>
