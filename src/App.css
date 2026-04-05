@@ -1209,15 +1209,16 @@ main {
   filter: saturate(0.96);
 }
 
+.hero-slide.active .hero-image-only-img,
+.hero-image-only-img.is-active {
+  transform: scale(1.03) translate3d(0, 0, 0);
+  filter: saturate(1.02);
+}
+
   .hero-image-only {
     height: 288px;
     min-height: 288px;
     border-radius: 16px;
-  }
-
-  .hero-slide.active .hero-image-only-img,
-  .hero-image-only-img.is-active {
-    transform: scale(1.03) translateZ(0);
   }
 
   .hero-carousel-arrow {
