@@ -1982,30 +1982,85 @@ return (
   onMouseLeave={() => setHeroPaused(false)}
 >
   <div className="hero-carousel-track">
-    {heroSlides.map((slide, index) => (
-      <article
-        key={slide.id}
-        className={`hero-slide ${index === currentHero ? "active" : ""}`}
-        aria-hidden={index !== currentHero}
-      >
-        {slide.kind === "legacy" ? (
-          <div className="hero-grid">
-            <div className="hero-copy">
+  {heroSlides.map((slide, index) => (
+    <article
+      key={slide.id}
+      className={`hero-slide ${index === currentHero ? "active" : ""}`}
+      aria-hidden={index !== currentHero}
+    >
+      {slide.kind === "legacy" ? (
+        <div className="hero-grid">
+          <div className="hero-copy">
+            <p className="eyebrow">{slide.eyebrow}</p>
+            <h1>
+              {slide.title1}
+              <br />
+              {slide.title2}
+            </h1>
+            <p className="hero-text">{slide.text}</p>
+
+            <div className="hero-price-line">
+              <span className="old-price">{slide.oldPrice}</span>
+              <span className="new-price">{slide.newPrice}</span>
+              <span className="hero-offer-text">{slide.offerText}</span>
+            </div>
+
+            <div className="hero-actions">
+              <button
+                className="gold-button"
+                type="button"
+                onClick={() => handleHeroAction(slide.actionPrimary)}
+              >
+                {slide.primaryCta}
+              </button>
+
+              <button
+                className="ghost-button"
+                type="button"
+                onClick={() => handleHeroAction(slide.actionSecondary)}
+              >
+                {slide.secondaryCta}
+              </button>
+            </div>
+          </div>
+
+          <div className="hero-visual">
+            <button
+              className="hero-bottle-wrap"
+              type="button"
+              onClick={addHeroBottleToCart}
+              aria-label="Add Afnan 9PM Rebel full bottle to cart"
+            >
+              <img
+                className="hero-bottle"
+                src="hero/hero-bottle.png"
+                alt="Afnan 9PM Rebel"
+              />
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="hero-cinematic">
+          <img
+            className="hero-cinematic-image"
+            src={slide.image}
+            alt={slide.title1}
+          />
+
+          <div className="hero-cinematic-overlay" />
+
+          <div className="hero-cinematic-content">
+            <div className="hero-cinematic-copy">
               <p className="eyebrow">{slide.eyebrow}</p>
-              <h1>
-                {slide.title1}
-                <br />
-                {slide.title2}
+
+              <h1 className="hero-campaign-title">
+                <span className="line-main">{slide.title1}</span>
+                <span className="line-secondary">{slide.title2}</span>
               </h1>
+
               <p className="hero-text">{slide.text}</p>
 
-              <div className="hero-price-line">
-                <span className="old-price">{slide.oldPrice}</span>
-                <span className="new-price">{slide.newPrice}</span>
-                <span className="hero-offer-text">{slide.offerText}</span>
-              </div>
-
-              <div className="hero-actions">
+              <div className="hero-actions hero-actions-single">
                 <button
                   className="gold-button"
                   type="button"
@@ -2013,156 +2068,50 @@ return (
                 >
                   {slide.primaryCta}
                 </button>
-
-                <button
-                  className="ghost-button"
-                  type="button"
-                  onClick={() => handleHeroAction(slide.actionSecondary)}
-                >
-                  {slide.secondaryCta}
-                </button>
               </div>
-            </div>
 
-            <div className="hero-visual">
-              <button
-                className="hero-bottle-wrap"
-                type="button"
-                onClick={addHeroBottleToCart}
-                aria-label="Add Afnan 9PM Rebel full bottle to cart"
-              >
-                <img
-                  className="hero-bottle"
-                  src="hero/hero-bottle.png"
-                  alt="Afnan 9PM Rebel"
-                />
-              </button>
+              {slide.sub && <p className="hero-subline">{slide.sub}</p>}
             </div>
           </div>
-        {slide.kind === "legacy" ? (
-  <div className="hero-grid">
-    <div className="hero-copy">
-      <p className="eyebrow">{slide.eyebrow}</p>
-      <h1>
-        {slide.title1}
-        <br />
-        {slide.title2}
-      </h1>
-      <p className="hero-text">{slide.text}</p>
-
-      <div className="hero-price-line">
-        <span className="old-price">{slide.oldPrice}</span>
-        <span className="new-price">{slide.newPrice}</span>
-        <span className="hero-offer-text">{slide.offerText}</span>
-      </div>
-
-      <div className="hero-actions">
-        <button
-          className="gold-button"
-          type="button"
-          onClick={() => handleHeroAction(slide.actionPrimary)}
-        >
-          {slide.primaryCta}
-        </button>
-
-        <button
-          className="ghost-button"
-          type="button"
-          onClick={() => handleHeroAction(slide.actionSecondary)}
-        >
-          {slide.secondaryCta}
-        </button>
-      </div>
-    </div>
-
-    <div className="hero-visual">
-      <button
-        className="hero-bottle-wrap"
-        type="button"
-        onClick={addHeroBottleToCart}
-        aria-label="Add Afnan 9PM Rebel full bottle to cart"
-      >
-        <img
-          className="hero-bottle"
-          src="hero/hero-bottle.png"
-          alt="Afnan 9PM Rebel"
-        />
-      </button>
-    </div>
-  </div>
-) : (
-  <div className="hero-cinematic">
-    <img
-      className="hero-cinematic-image"
-      src={slide.image}
-      alt={slide.title1}
-    />
-
-    <div className="hero-cinematic-overlay" />
-
-    <div className="hero-cinematic-content">
-      <div className="hero-cinematic-copy">
-        <p className="eyebrow">{slide.eyebrow}</p>
-
-        <h1 className="hero-campaign-title">
-          <span className="line-main">{slide.title1}</span>
-          <span className="line-secondary">{slide.title2}</span>
-        </h1>
-
-        <p className="hero-text">{slide.text}</p>
-
-        <div className="hero-actions hero-actions-single">
-          <button
-            className="gold-button"
-            type="button"
-            onClick={() => handleHeroAction(slide.actionPrimary)}
-          >
-            {slide.primaryCta}
-          </button>
         </div>
+      )}
+    </article>
+  ))}
+</div>
 
-        {slide.sub && <p className="hero-subline">{slide.sub}</p>}
-      </div>
+{heroSlides.length > 1 && (
+  <>
+    <button
+      type="button"
+      className="hero-carousel-arrow hero-carousel-arrow-left"
+      onClick={prevHeroSlide}
+      aria-label="Previous slide"
+    >
+      ‹
+    </button>
+
+    <button
+      type="button"
+      className="hero-carousel-arrow hero-carousel-arrow-right"
+      onClick={nextHeroSlide}
+      aria-label="Next slide"
+    >
+      ›
+    </button>
+
+    <div className="hero-carousel-dots">
+      {heroSlides.map((slide, index) => (
+        <button
+          key={slide.id}
+          type="button"
+          className={`hero-carousel-dot ${index === currentHero ? "active" : ""}`}
+          onClick={() => goToHeroSlide(index)}
+          aria-label={`Go to slide ${index + 1}`}
+        />
+      ))}
     </div>
-  </div>
+  </>
 )}
-      </article>
-    ))}
-  </div>
-
-  {heroSlides.length > 1 && (
-    <>
-      <button
-        type="button"
-        className="hero-carousel-arrow hero-carousel-arrow-left"
-        onClick={prevHeroSlide}
-        aria-label="Previous slide"
-      >
-        ‹
-      </button>
-
-      <button
-        type="button"
-        className="hero-carousel-arrow hero-carousel-arrow-right"
-        onClick={nextHeroSlide}
-        aria-label="Next slide"
-      >
-        ›
-      </button>
-
-      <div className="hero-carousel-dots">
-        {heroSlides.map((slide, index) => (
-          <button
-            key={slide.id}
-            type="button"
-            className={`hero-carousel-dot ${index === currentHero ? "active" : ""}`}
-            onClick={() => goToHeroSlide(index)}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </div>
-    </>
-  )}
 </section>
 
             <section className="value-strip">
