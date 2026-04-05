@@ -2026,12 +2026,12 @@ return (
       >
         <div className="hero-image-only">
           <img
-            className="hero-image-only-img"
-            src={slide.image}
-            alt={slide.alt}
-            loading={index === 0 ? "eager" : "lazy"}
-            draggable="false"
-          />
+  className={`hero-image-only-img ${index === currentHero ? "is-active" : ""}`}
+  src={slide.image}
+  alt={slide.alt}
+  loading={index === 0 ? "eager" : "lazy"}
+  draggable="false"
+/>
         </div>
       </article>
     ))}
@@ -2057,17 +2057,21 @@ return (
         ›
       </button>
 
-      <div className="hero-carousel-dots">
-        {heroSlides.map((slide, index) => (
-          <button
-            key={slide.id}
-            type="button"
-            className={`hero-carousel-dot ${index === currentHero ? "active" : ""}`}
-            onClick={() => goToHeroSlide(index)}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </div>
+      <div className="hero-carousel-dots" role="tablist" aria-label="Hero slides">
+  {heroSlides.map((slide, index) => (
+    <button
+      key={slide.id}
+      type="button"
+      className={`hero-carousel-dot ${index === currentHero ? "active" : ""}`}
+      onClick={() => goToHeroSlide(index)}
+      aria-label={`Go to slide ${index + 1}`}
+      aria-selected={index === currentHero}
+      role="tab"
+    >
+      <span className="hero-carousel-dot-pill" />
+    </button>
+  ))}
+</div>
     </>
   )}
 </section>
