@@ -1138,9 +1138,6 @@ const goToHeroSlide = (index) => {
   setCurrentHero(index);
 };
 
-const [currentHero, setCurrentHero] = useState(0);
-const [heroPaused, setHeroPaused] = useState(false);
-
 const [checkoutForm, setCheckoutForm] = useState({
   firstName: "",
   lastName: "",
