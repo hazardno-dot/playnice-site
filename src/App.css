@@ -830,6 +830,10 @@ main {
 .hero-carousel-track {
   position: relative;
   min-height: 450px;
+  overflow: hidden;
+  border-radius: 24px;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .hero-slide {
@@ -845,6 +849,8 @@ main {
     visibility 0s linear 1100ms;
   z-index: 1;
   will-change: opacity;
+  overflow: hidden;
+  border-radius: 24px;
 }
 
 .hero-slide.active {
@@ -870,6 +876,7 @@ main {
   border-radius: 24px;
   overflow: hidden;
   background: #050505;
+  isolation: isolate;
 }
 
 .hero-image-only::after {
@@ -903,7 +910,7 @@ main {
 
 .hero-slide.active .hero-image-only-img,
 .hero-image-only-img.is-active {
-  transform: scale(1.03) translate3d(0, 0, 0);
+  transform: scale(1.015) translate3d(0, 0, 0);
 }
 
 /* =========================================
@@ -1134,6 +1141,14 @@ main {
     0 4px 14px rgba(220, 181, 107, 0.22);
 }
 
+.hero,
+.hero-carousel,
+.hero-carousel-track,
+.hero-slide,
+.hero-image-only {
+  clip-path: inset(0 round 24px);
+}
+
 /* =========================================
    RESPONSIVE
 ========================================= */
@@ -1160,6 +1175,13 @@ main {
   .hero-image-only-img.is-active {
     transform: scale(1.038) translateZ(0);
   }
+
+  .hero-carousel-track,
+.hero-slide,
+.hero-image-only {
+  border-radius: 20px;
+  clip-path: inset(0 round 20px);
+}
 }
 
 @media (max-width: 768px) {
@@ -1198,7 +1220,7 @@ main {
   }
 
 .hero-slide:not(.active) .hero-image-only-img {
-  transform: scale(1.018) translate3d(12px, 0, 0);
+  transform: scale(1.01) translate3d(8px, 0, 0);
 }
 
 .hero-slide.active .hero-image-only-img,
@@ -1244,6 +1266,13 @@ main {
   .hero-carousel-dot.active .hero-carousel-dot-pill {
     width: 20px;
   }
+
+  .hero-carousel-track,
+.hero-slide,
+.hero-image-only {
+  border-radius: 16px;
+  clip-path: inset(0 round 16px);
+}
 }
 
 /* =========================================
