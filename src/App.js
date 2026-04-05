@@ -1580,18 +1580,6 @@ const handleHeroTouchEnd = (e) => {
   }
 };
 
-const nextHeroSlide = () => {
-  setCurrentHero((prev) => (prev + 1) % heroSlides.length);
-};
-
-const prevHeroSlide = () => {
-  setCurrentHero((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
-};
-
-const goToHeroSlide = (index) => {
-  setCurrentHero(index);
-};
-
 const goToShop = () => {
   if (view !== "shop") {
     setView("shop");
