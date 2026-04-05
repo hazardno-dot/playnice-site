@@ -783,7 +783,11 @@ main {
   position: relative;
   width: min(calc(100% - 32px), var(--max));
   margin: 10px auto 14px;
+<<<<<<< HEAD
+  padding: 10px;
+=======
   padding: 0 18px; /* KLJUČ */
+>>>>>>> 2cbae14c644c84522d320b380c2bdf625feae852
   border: 1px solid var(--line);
   border-radius: 30px;
   background:
@@ -822,26 +826,23 @@ main {
 
 .hero-carousel {
   position: relative;
+<<<<<<< HEAD
+  min-height: 450px;
+  touch-action: pan-y;
+  user-select: none;
+=======
   width: calc(100% + 36px);
   margin-left: -18px;
   aspect-ratio: 2.4 / 1;
   overflow: hidden;
   border-radius: 30px;
+>>>>>>> 2cbae14c644c84522d320b380c2bdf625feae852
 }
 
 .hero-carousel-track {
   position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: inherit;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+  min-height: 450px;
 }
-
-/* =========================================
-   SLIDES (PREMIUM FADE)
-========================================= */
 
 .hero-slide {
   position: absolute;
@@ -851,50 +852,37 @@ main {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  filter: blur(6px);
+  transform: scale(1.008);
   transition:
-    opacity 1100ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 1100ms;
+    opacity 0.42s ease,
+    filter 0.42s ease,
+    transform 0.42s ease;
   z-index: 1;
-  will-change: opacity;
-  overflow: hidden;
-  border-radius: inherit;
 }
 
 .hero-slide.active {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transition:
-    opacity 1100ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 0s;
+  filter: blur(0);
+  transform: scale(1);
   z-index: 3;
 }
 
 /* =========================================
-   IMAGE LAYER
+   HERO — IMAGE ONLY SLIDES
 ========================================= */
 
 .hero-image-only {
   position: relative;
   z-index: 2;
   width: 100%;
-  height: 100%;
-  border-radius: inherit;
+  height: 450px;
+  min-height: 450px;
+  border-radius: 24px;
   overflow: hidden;
   background: #050505;
-  isolation: isolate;
-}
-
-.hero-image-only::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.16)),
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03), transparent 62%);
-  opacity: 0.9;
 }
 
 .hero-image-only-img {
@@ -905,21 +893,21 @@ main {
   display: block;
   object-fit: cover;
   object-position: center center;
-
-  transform: scale(1.02) translate3d(10px, 0, 0);
+  transform: scale(1) translateZ(0);
   transform-origin: center center;
-
   backface-visibility: hidden;
   -webkit-user-drag: none;
   user-select: none;
-
-  will-change: transform, opacity;
-  transition: transform 2200ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  transition:
+    transform 1400ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 400ms ease,
+    filter 400ms ease;
 }
 
 .hero-slide.active .hero-image-only-img,
 .hero-image-only-img.is-active {
-  transform: scale(1.015) translate3d(0, 0, 0);
+  transform: scale(1.045) translateZ(0);
 }
 
 /* =========================================
@@ -934,8 +922,9 @@ main {
 
   width: 46px;
   height: 46px;
-  border-radius: 999px;
+  padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
 
   display: grid;
   place-items: center;
@@ -944,37 +933,123 @@ main {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015)),
     rgba(10, 10, 10, 0.42);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
 
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
+  color: rgba(255, 248, 235, 0.92);
+  font-size: 0;
+  line-height: 1;
   opacity: 0.94;
 
-  transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 220ms ease,
+    background 220ms ease,
+    border-color 220ms ease,
+    box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 220ms ease;
+}
+
+.hero-carousel-arrow::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.08), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0));
+  pointer-events: none;
 }
 
 .hero-carousel-arrow::after {
   content: "";
+  position: relative;
   width: 10px;
   height: 10px;
   border-top: 1.8px solid rgba(255, 248, 235, 0.9);
   border-right: 1.8px solid rgba(255, 248, 235, 0.9);
+  transform-origin: center;
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms ease,
+    opacity 220ms ease;
+  opacity: 0.96;
+}
+
+.hero-carousel-arrow-left::after {
+  transform: rotate(-135deg);
+  margin-left: 3px;
+}
+
+.hero-carousel-arrow-right::after {
+  transform: rotate(45deg);
+  margin-right: 3px;
+}
+
+.hero-carousel-arrow:hover {
+  transform: translateY(-50%) scale(1.06);
+  opacity: 1;
+  border-color: rgba(220, 181, 107, 0.22);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02)),
+    rgba(10, 10, 10, 0.54);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(220, 181, 107, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22);
+  filter: saturate(115%);
+}
+
+.hero-carousel-arrow:hover::after {
+  border-color: rgba(255, 248, 235, 0.98);
+}
+
+.hero-carousel-arrow-left:hover::after {
+  transform: rotate(-135deg) translateX(1px);
+}
+
+.hero-carousel-arrow-right:hover::after {
+  transform: rotate(45deg) translateX(1px);
+}
+
+.hero-carousel-arrow:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.hero-carousel-arrow:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(220, 181, 107, 0.16),
+    0 16px 36px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .hero-carousel-arrow-left {
   left: 16px;
 }
 
-.hero-carousel-arrow-left::after {
-  transform: rotate(-135deg);
-}
-
 .hero-carousel-arrow-right {
   right: 16px;
 }
 
-.hero-carousel-arrow-right::after {
-  transform: rotate(45deg);
+@media (hover: hover) and (pointer: fine) {
+  .hero-carousel-arrow {
+    opacity: 0;
+  }
+
+  .hero-carousel:hover .hero-carousel-arrow {
+    opacity: 0.94;
+  }
+
+  .hero-carousel:hover .hero-carousel-arrow:hover {
+    opacity: 1;
+  }
 }
 
 /* =========================================
@@ -989,20 +1064,49 @@ main {
   z-index: 25;
 
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
 
   padding: 8px 12px;
   border-radius: 999px;
-
+  border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(10, 10, 10, 0.34);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .hero-carousel-dot {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: transparent;
   padding: 4px;
+  margin: 0;
   cursor: pointer;
-  opacity: 0.7;
-  transition: all 0.25s ease;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+  opacity: 0.72;
+  transition:
+    transform 0.22s ease,
+    opacity 0.22s ease;
+}
+
+.hero-carousel-dot:hover {
+  transform: scale(1.08);
+  opacity: 1;
+}
+
+.hero-carousel-dot:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(220, 181, 107, 0.18);
 }
 
 .hero-carousel-dot-pill {
@@ -1010,12 +1114,28 @@ main {
   height: 7px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.5);
-  transition: all 0.3s ease;
+  transition:
+    width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 320ms ease,
+    box-shadow 320ms ease,
+    opacity 320ms ease;
+}
+
+.hero-carousel-dot.active {
+  opacity: 1;
 }
 
 .hero-carousel-dot.active .hero-carousel-dot-pill {
   width: 24px;
-  background: linear-gradient(90deg, #fff, #dcb56b);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(220, 181, 107, 0.95)
+  );
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 4px 14px rgba(220, 181, 107, 0.22);
 }
 
 /* =========================================
@@ -1024,36 +1144,100 @@ main {
 
 @media (max-width: 1024px) {
   .hero {
-    width: min(calc(100% - 32px), var(--max));
-    padding: 0;
+    width: min(calc(100% - 24px), 100%);
+    padding: 10px;
     border-radius: 26px;
   }
 
-  .hero-carousel {
-    aspect-ratio: 2.4 / 1;
-    border-radius: 26px;
+  .hero-carousel,
+  .hero-carousel-track {
+    min-height: 384px;
+  }
+
+  .hero-image-only {
+    height: 384px;
+    min-height: 384px;
+    border-radius: 20px;
+  }
+
+  .hero-slide.active .hero-image-only-img,
+  .hero-image-only-img.is-active {
+    transform: scale(1.038) translateZ(0);
   }
 }
 
 @media (max-width: 768px) {
   .hero {
-    width: min(calc(100% - 32px), var(--max));
-    padding: 0;
+    width: min(calc(100% - 12px), 100%);
+    padding: 8px;
     border-radius: 22px;
   }
 
-  .hero-carousel {
-    aspect-ratio: 1.8 / 1;
-    border-radius: 22px;
+  .hero-carousel,
+  .hero-carousel-track {
+    min-height: 288px;
   }
 
   .hero-slide {
     position: relative;
+    inset: auto;
     display: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: none;
+    filter: none;
+    transform: none;
   }
 
   .hero-slide.active {
     display: block;
+    pointer-events: auto;
+  }
+
+  .hero-image-only {
+    height: 288px;
+    min-height: 288px;
+    border-radius: 16px;
+  }
+
+  .hero-slide.active .hero-image-only-img,
+  .hero-image-only-img.is-active {
+    transform: scale(1.03) translateZ(0);
+  }
+
+  .hero-carousel-arrow {
+  width: 38px;
+  height: 38px;
+}
+
+.hero-carousel-arrow::after {
+  width: 9px;
+  height: 9px;
+  border-top-width: 1.7px;
+  border-right-width: 1.7px;
+}
+
+.hero-carousel-arrow-left {
+  left: 10px;
+}
+
+.hero-carousel-arrow-right {
+  right: 10px;
+}
+
+  .hero-carousel-dots {
+    bottom: 14px;
+    gap: 7px;
+    padding: 7px 10px;
+  }
+
+  .hero-carousel-dot-pill {
+    width: 6px;
+    height: 6px;
+  }
+
+  .hero-carousel-dot.active .hero-carousel-dot-pill {
+    width: 20px;
   }
 }
 
