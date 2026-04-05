@@ -1787,14 +1787,6 @@ main {
   object-position: center center;
 }
 
-.hero-image-only-img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  object-position: center center;
-}
-
 @media (max-width: 1200px) {
   .hero-image-only {
     min-height: 390px;
