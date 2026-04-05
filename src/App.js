@@ -2040,22 +2040,18 @@ return (
   {heroSlides.length > 1 && (
     <>
       <button
-        type="button"
-        className="hero-carousel-arrow hero-carousel-arrow-left"
-        onClick={prevHeroSlide}
-        aria-label="Previous slide"
-      >
-        ‹
-      </button>
+  type="button"
+  className="hero-carousel-arrow hero-carousel-arrow-left"
+  onClick={prevHeroSlide}
+  aria-label="Previous slide"
+/>
 
-      <button
-        type="button"
-        className="hero-carousel-arrow hero-carousel-arrow-right"
-        onClick={nextHeroSlide}
-        aria-label="Next slide"
-      >
-        ›
-      </button>
+<button
+  type="button"
+  className="hero-carousel-arrow hero-carousel-arrow-right"
+  onClick={nextHeroSlide}
+  aria-label="Next slide"
+/>
 
       <div className="hero-carousel-dots" role="tablist" aria-label="Hero slides">
   {heroSlides.map((slide, index) => (
