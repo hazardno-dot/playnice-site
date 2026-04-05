@@ -1182,7 +1182,7 @@ useEffect(() => {
 
   const interval = setInterval(() => {
     setCurrentHero((prev) => (prev + 1) % heroSlides.length);
-  }, 5000); // 5s
+  }, 6000); // 5s
 
   return () => clearInterval(interval);
 }, [heroPaused, heroSlides.length]);
