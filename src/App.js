@@ -2039,48 +2039,93 @@ return (
               </button>
             </div>
           </div>
-        ) : (
-          <div className="hero-grid hero-grid-campaign">
-            <div className="hero-copy">
-              <p className="eyebrow">{slide.eyebrow}</p>
+        {slide.kind === "legacy" ? (
+  <div className="hero-grid">
+    <div className="hero-copy">
+      <p className="eyebrow">{slide.eyebrow}</p>
+      <h1>
+        {slide.title1}
+        <br />
+        {slide.title2}
+      </h1>
+      <p className="hero-text">{slide.text}</p>
 
-              <h1 className="hero-campaign-title">
-  <span className="line-main">{slide.title1}</span>
+      <div className="hero-price-line">
+        <span className="old-price">{slide.oldPrice}</span>
+        <span className="new-price">{slide.newPrice}</span>
+        <span className="hero-offer-text">{slide.offerText}</span>
+      </div>
 
-  <span className="line-secondary">
-    {slide.title2.split(" ").slice(0, 2).join(" ")}
-  </span>
+      <div className="hero-actions">
+        <button
+          className="gold-button"
+          type="button"
+          onClick={() => handleHeroAction(slide.actionPrimary)}
+        >
+          {slide.primaryCta}
+        </button>
 
-  <span className="line-accent">
-    {slide.title2.split(" ").slice(2).join(" ")}
-  </span>
-</h1>
+        <button
+          className="ghost-button"
+          type="button"
+          onClick={() => handleHeroAction(slide.actionSecondary)}
+        >
+          {slide.secondaryCta}
+        </button>
+      </div>
+    </div>
 
-              <p className="hero-text">{slide.text}</p>
+    <div className="hero-visual">
+      <button
+        className="hero-bottle-wrap"
+        type="button"
+        onClick={addHeroBottleToCart}
+        aria-label="Add Afnan 9PM Rebel full bottle to cart"
+      >
+        <img
+          className="hero-bottle"
+          src="hero/hero-bottle.png"
+          alt="Afnan 9PM Rebel"
+        />
+      </button>
+    </div>
+  </div>
+) : (
+  <div className="hero-cinematic">
+    <img
+      className="hero-cinematic-image"
+      src={slide.image}
+      alt={slide.title1}
+    />
 
-              <div className="hero-actions hero-actions-single">
-                <button
-                  className="gold-button"
-                  type="button"
-                  onClick={() => handleHeroAction(slide.actionPrimary)}
-                >
-                  {slide.primaryCta}
-                </button>
-              </div>
+    <div className="hero-cinematic-overlay" />
 
-              {slide.sub && <p className="hero-subline">{slide.sub}</p>}
-            </div>
+    <div className="hero-cinematic-content">
+      <div className="hero-cinematic-copy">
+        <p className="eyebrow">{slide.eyebrow}</p>
 
-            <div className="hero-visual hero-visual-campaign">
-              <img
-                className="hero-campaign-image"
-                src={slide.image}
-                alt={slide.title1}
-              />
-              <div className="hero-campaign-overlay" />
-            </div>
-          </div>
-        )}
+        <h1 className="hero-campaign-title">
+          <span className="line-main">{slide.title1}</span>
+          <span className="line-secondary">{slide.title2}</span>
+        </h1>
+
+        <p className="hero-text">{slide.text}</p>
+
+        <div className="hero-actions hero-actions-single">
+          <button
+            className="gold-button"
+            type="button"
+            onClick={() => handleHeroAction(slide.actionPrimary)}
+          >
+            {slide.primaryCta}
+          </button>
+        </div>
+
+        {slide.sub && <p className="hero-subline">{slide.sub}</p>}
+      </div>
+    </div>
+  </div>
+)}
       </article>
     ))}
   </div>

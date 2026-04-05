@@ -1410,6 +1410,363 @@ main {
 }
 
 /* =========================================
+   HERO — CINEMATIC CAMPAIGN MODE
+========================================= */
+
+.hero {
+  margin: 10px auto 14px;
+  padding: 18px 18px 18px;
+  border-radius: 30px;
+}
+
+.hero-carousel,
+.hero-carousel-track {
+  min-height: 420px;
+}
+
+.hero-slide .hero-grid {
+  min-height: 420px;
+}
+
+/* campaign slide sada više nije split layout */
+.hero-cinematic {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 420px;
+  height: 420px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #080808;
+  isolation: isolate;
+}
+
+.hero-cinematic-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center center;
+  transform: scale(1.01);
+}
+
+.hero-cinematic-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3, 3, 3, 0.78) 0%,
+      rgba(3, 3, 3, 0.62) 22%,
+      rgba(3, 3, 3, 0.28) 48%,
+      rgba(3, 3, 3, 0.18) 66%,
+      rgba(3, 3, 3, 0.32) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.18) 0%,
+      rgba(0, 0, 0, 0.08) 26%,
+      rgba(0, 0, 0, 0.28) 100%
+    ),
+    radial-gradient(
+      circle at 72% 48%,
+      rgba(220, 181, 107, 0.12),
+      transparent 34%
+    );
+}
+
+.hero-cinematic-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 42px 52px;
+}
+
+.hero-cinematic-copy {
+  max-width: 470px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hero-cinematic .eyebrow {
+  margin-bottom: 14px;
+}
+
+.hero-cinematic .hero-campaign-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  max-width: 10ch;
+}
+
+.hero-cinematic .hero-campaign-title .line-main {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(42px, 5vw, 72px);
+  line-height: 0.92;
+  letter-spacing: 0.015em;
+  color: rgba(255, 248, 238, 0.985);
+  text-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.24),
+    0 14px 44px rgba(0, 0, 0, 0.28);
+}
+
+.hero-cinematic .hero-campaign-title .line-secondary {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(28px, 2.3vw, 38px);
+  line-height: 1;
+  letter-spacing: 0.035em;
+  color: var(--gold);
+  text-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.22),
+    0 10px 30px rgba(0, 0, 0, 0.24);
+}
+
+.hero-cinematic .hero-text {
+  margin-top: 16px;
+  max-width: 430px;
+  font-size: 14px;
+  line-height: 1.72;
+  color: rgba(255, 248, 235, 0.8);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.24);
+}
+
+.hero-cinematic .hero-actions {
+  margin-top: 22px;
+}
+
+.hero-cinematic .hero-subline {
+  margin-top: 10px;
+  color: rgba(255, 248, 235, 0.56);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* legacy slide ostaje niži da prati cinematic visinu */
+.hero-grid,
+.hero-grid-campaign {
+  min-height: 420px;
+}
+
+.hero-visual,
+.hero-visual-campaign {
+  min-height: 300px;
+  height: 300px;
+}
+
+.hero-bottle {
+  width: min(100%, 320px);
+  transform: translateX(8px) scale(1.02);
+}
+
+.hero-bottle-wrap:hover .hero-bottle {
+  transform: translateX(8px) scale(1.05);
+}
+
+/* carousel polish */
+.hero-slide {
+  transition:
+    opacity 0.42s ease,
+    filter 0.42s ease,
+    transform 0.42s ease;
+}
+
+.hero-carousel-arrow {
+  width: 40px;
+  height: 40px;
+}
+
+.hero-carousel-arrow-left {
+  left: 14px;
+}
+
+.hero-carousel-arrow-right {
+  right: 14px;
+}
+
+/* =========================================
+   RESPONSIVE — CINEMATIC
+========================================= */
+
+@media (max-width: 1200px) {
+  .hero-carousel,
+  .hero-carousel-track,
+  .hero-slide .hero-grid,
+  .hero-cinematic {
+    min-height: 390px;
+    height: 390px;
+  }
+
+  .hero-cinematic-content {
+    padding: 36px 38px;
+  }
+
+  .hero-cinematic .hero-campaign-title .line-main {
+    font-size: clamp(38px, 5vw, 60px);
+  }
+
+  .hero-cinematic .hero-campaign-title .line-secondary {
+    font-size: clamp(24px, 2.4vw, 32px);
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    padding: 14px;
+    border-radius: 26px;
+  }
+
+  .hero-carousel,
+  .hero-carousel-track,
+  .hero-cinematic {
+    min-height: 340px;
+    height: 340px;
+  }
+
+  .hero-slide .hero-grid {
+    min-height: auto;
+  }
+
+  .hero-cinematic-content {
+    padding: 30px 28px;
+    align-items: flex-end;
+  }
+
+  .hero-cinematic-copy {
+    max-width: 420px;
+  }
+
+  .hero-cinematic-overlay {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(3, 3, 3, 0.18) 0%,
+        rgba(3, 3, 3, 0.12) 18%,
+        rgba(3, 3, 3, 0.42) 58%,
+        rgba(3, 3, 3, 0.76) 100%
+      ),
+      radial-gradient(
+        circle at 70% 44%,
+        rgba(220, 181, 107, 0.08),
+        transparent 32%
+      );
+  }
+
+  .hero-cinematic .hero-campaign-title {
+    max-width: 11ch;
+  }
+
+  .hero-cinematic .hero-campaign-title .line-main {
+    font-size: clamp(34px, 6vw, 52px);
+    line-height: 0.95;
+  }
+
+  .hero-cinematic .hero-campaign-title .line-secondary {
+    font-size: clamp(22px, 3vw, 28px);
+  }
+
+  .hero-cinematic .hero-text {
+    margin-top: 12px;
+    max-width: 100%;
+    font-size: 13.5px;
+    line-height: 1.62;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    width: min(calc(100% - 12px), 100%);
+    padding: 10px;
+    border-radius: 22px;
+  }
+
+  .hero-carousel,
+  .hero-carousel-track,
+  .hero-cinematic {
+    min-height: 280px;
+    height: 280px;
+  }
+
+  .hero-cinematic {
+    border-radius: 18px;
+  }
+
+  .hero-cinematic-image {
+    object-position: center center;
+  }
+
+  .hero-cinematic-content {
+    padding: 18px 16px;
+    align-items: flex-end;
+  }
+
+  .hero-cinematic-copy {
+    max-width: 100%;
+  }
+
+  .hero-cinematic .eyebrow {
+    margin-bottom: 10px;
+  }
+
+  .hero-cinematic .hero-campaign-title {
+    gap: 3px;
+    max-width: 9ch;
+  }
+
+  .hero-cinematic .hero-campaign-title .line-main {
+    font-size: clamp(28px, 8vw, 42px);
+    line-height: 0.94;
+  }
+
+  .hero-cinematic .hero-campaign-title .line-secondary {
+    font-size: clamp(18px, 4.5vw, 24px);
+    line-height: 1;
+  }
+
+  .hero-cinematic .hero-text {
+    margin-top: 10px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    max-width: 95%;
+  }
+
+  .hero-cinematic .hero-actions {
+    margin-top: 14px;
+  }
+
+  .hero-cinematic .hero-subline {
+    margin-top: 8px;
+    font-size: 0.56rem;
+    letter-spacing: 0.07em;
+  }
+
+  .hero-carousel-arrow {
+    width: 34px;
+    height: 34px;
+    font-size: 1.15rem;
+  }
+
+  .hero-carousel-arrow-left {
+    left: 10px;
+  }
+
+  .hero-carousel-arrow-right {
+    right: 10px;
+  }
+}
+
+/* =========================================
    VALUE STRIP
 ========================================= */
 .value-strip {
