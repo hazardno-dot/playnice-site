@@ -5909,11 +5909,16 @@ body.scrolled .announcement-bar::after {
 
 .how-it-works-drawer {
   position: fixed;
-  top: 90px;
+  top: 50%;
   left: 20px;
-  bottom: 20px;
+  transform: translateY(-50%) translateX(calc(-100% - 34px));
+
+  z-index: 120;
+
   width: min(560px, calc(100vw - 40px));
+  max-height: calc(100vh - 40px);
   padding: 22px 22px 18px;
+
   border-radius: 30px;
   border: 1px solid rgba(220, 181, 107, 0.16);
   background:
@@ -5923,17 +5928,22 @@ body.scrolled .announcement-bar::after {
     0 30px 80px rgba(0, 0, 0, 0.56),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
 
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateX(calc(-100% - 34px));
+
+  filter: blur(6px);
 
   transition:
     transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
     opacity 0.42s ease,
+    filter 0.42s ease,
     visibility 0s linear 0.72s;
 
-  will-change: transform, opacity;
+  will-change: transform, opacity, filter;
 }
 
 .how-it-works-drawer {
@@ -5944,11 +5954,14 @@ body.scrolled .announcement-bar::after {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateX(0);
+
+  transform: translateY(-50%) translateX(0);
+  filter: blur(0);
 
   transition:
     transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
     opacity 0.42s ease,
+    filter 0.42s ease,
     visibility 0s linear 0s;
 }
 
