@@ -3242,186 +3242,190 @@ return (
 </aside>
 
       {selectedProduct && (
-        <div className="modal-overlay" onClick={closeProductModal}>
-          <div
-            className="product-modal open"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="modal-close"
-              type="button"
-              onClick={closeProductModal}
-              aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
-            >
-              <span>×</span>
-            </button>
+  <div className="modal-overlay" onClick={closeProductModal}>
+    <div
+      className="product-modal open panel-open"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        className="modal-close"
+        type="button"
+        onClick={closeProductModal}
+        aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
+      >
+        <span>×</span>
+      </button>
 
-            <div className="modal-header">
-              <span className="modal-eyebrow">PRIVATE DETAIL</span>
-              <h2>{selectedProduct.name}</h2>
+      <div className="modal-header panel-anim panel-anim-1">
+        <span className="modal-eyebrow">PRIVATE DETAIL</span>
+        <h2>{selectedProduct.name}</h2>
 
-              {selectedProduct.rating && (
-  <div className="modal-rating">
-    <div className="modal-rating-stars" aria-hidden="true">
-      {Array.from({ length: 10 }).map((_, index) => (
-        <span
-          key={index}
-          className={index < Math.round(selectedProduct.rating) ? "filled" : ""}
-        >
-          ★
-        </span>
-      ))}
-    </div>
-
-    <div className="modal-rating-meta">
-      <span className="modal-rating-score">
-  {selectedProduct.rating.toFixed(1)}
-</span>
-<span className="modal-rating-label">
-  / 10 • {selectedProduct.ratingLabel}
-</span>
-    </div>
-  </div>
-)}
+        {selectedProduct.rating && (
+          <div className="modal-rating panel-item-anim panel-item-1">
+            <div className="modal-rating-stars" aria-hidden="true">
+              {Array.from({ length: 10 }).map((_, index) => (
+                <span
+                  key={index}
+                  className={index < Math.round(selectedProduct.rating) ? "filled" : ""}
+                >
+                  ★
+                </span>
+              ))}
             </div>
 
-            <div className="modal-body">
-              <div className="modal-media">
-                {selectedProduct.badge && (
-                  <span className="modal-badge">{selectedProduct.badge}</span>
-                )}
+            <div className="modal-rating-meta">
+              <span className="modal-rating-score">
+                {selectedProduct.rating.toFixed(1)}
+              </span>
+              <span className="modal-rating-label">
+                / 10 • {selectedProduct.ratingLabel}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
 
-                <div className="modal-image-wrap">
-                  {selectedProduct.image ? (
-                    <img
-                      src={selectedProduct.image}
-                      alt={selectedProduct.name}
-                      className="modal-image"
-                    />
-                  ) : (
-                    <div className="modal-monogram">
-                      {selectedProduct.name.charAt(0)}
-                    </div>
+      <div className="modal-body">
+        <div className="modal-media panel-anim panel-anim-2">
+          {selectedProduct.badge && (
+            <span className="modal-badge panel-item-anim panel-item-1">
+              {selectedProduct.badge}
+            </span>
+          )}
+
+          <div className="modal-image-wrap panel-item-anim panel-item-2">
+            {selectedProduct.image ? (
+              <img
+                src={selectedProduct.image}
+                alt={selectedProduct.name}
+                className="modal-image"
+              />
+            ) : (
+              <div className="modal-monogram">
+                {selectedProduct.name.charAt(0)}
+              </div>
+            )}
+          </div>
+
+          <div className="modal-media-meta panel-item-anim panel-item-3">
+            <span className="modal-category">
+              {lang === "sr"
+                ? selectedProduct.category === "Arabian"
+                  ? "ARAPSKI"
+                  : selectedProduct.category === "Designer"
+                  ? "DIZAJNERSKI"
+                  : selectedProduct.category === "Niche"
+                  ? "NICHE"
+                  : selectedProduct.category.toUpperCase()
+                : selectedProduct.category.toUpperCase()}
+            </span>
+
+            <p>
+              {selectedCopy.dominantNotes?.join(" • ") ||
+                (lang === "sr"
+                  ? "Premium mirisna selekcija"
+                  : "Premium fragrance selection")}
+            </p>
+          </div>
+        </div>
+
+        <div className="modal-content panel-anim panel-anim-3">
+          {selectedCopy.miniTag && (
+            <span className="modal-chip panel-item-anim panel-item-1">
+              {selectedCopy.miniTag}
+            </span>
+          )}
+
+          <p className="modal-description panel-item-anim panel-item-2">
+            {selectedCopy.modal ||
+              (lang === "sr"
+                ? "Luksuzan miris sa izraženim karakterom i premium prisustvom."
+                : "A luxurious scent with strong character and premium presence.")}
+          </p>
+
+          <div className="modal-info-grid">
+            <div className="modal-info-card panel-item-anim panel-item-3">
+              <span>
+                {lang === "sr" ? "DOMINANTNE NOTE" : "DOMINANT NOTES"}
+              </span>
+              <strong>
+                {selectedCopy.dominantNotes?.join(" • ") ||
+                  (lang === "sr" ? "premium akordi" : "premium accords")}
+              </strong>
+            </div>
+
+            <div className="modal-info-card panel-item-anim panel-item-4">
+              <span>
+                {lang === "sr"
+                  ? "ZAŠTO KUPCI BIRAJU OVAJ PARFEM"
+                  : "WHY CUSTOMERS CHOOSE THIS FRAGRANCE"}
+              </span>
+              <strong>
+                {selectedCopy.whyChoose ||
+                  (lang === "sr"
+                    ? "Odličan izbor za one koji žele upečatljiv premium miris."
+                    : "An excellent choice for those who want a memorable premium scent.")}
+              </strong>
+            </div>
+          </div>
+
+          <div className="modal-purchase panel-anim panel-anim-4">
+            <div className="modal-size-block panel-item-anim panel-item-5">
+              <span className="modal-label">
+                {lang === "sr" ? "IZABERI VELIČINU" : "CHOOSE SIZE"}
+              </span>
+
+              <div className="modal-sizes">
+                {Object.entries(selectedProduct.sizes).map(([size, price], index) => (
+                  <button
+                    key={size}
+                    type="button"
+                    className={`modal-size ${
+                      selectedSize === size ? "active" : ""
+                    } panel-item-anim panel-item-${Math.min(index + 1, 6)}`}
+                    onClick={() => setSelectedSize(size)}
+                  >
+                    <span>{size}</span>
+                    <strong>{formatPrice(price)}</strong>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="modal-purchase-bar panel-item-anim panel-item-6">
+              <div className="modal-price-box">
+                <span>
+                  {lang === "sr" ? "IZABRANA CENA" : "SELECTED PRICE"}
+                </span>
+                <strong>
+                  {formatPrice(
+                    selectedProduct.sizes[selectedSize] ??
+                      Object.values(selectedProduct.sizes)[0]
                   )}
-                </div>
-
-                <div className="modal-media-meta">
-                  <span className="modal-category">
-                    {lang === "sr"
-                      ? selectedProduct.category === "Arabian"
-                        ? "ARAPSKI"
-                        : selectedProduct.category === "Designer"
-                        ? "DIZAJNERSKI"
-                        : selectedProduct.category === "Niche"
-                        ? "NICHE"
-                        : selectedProduct.category === "Summer"
-                        ? "LETNJI"
-                        : selectedProduct.category.toUpperCase()
-                      : selectedProduct.category.toUpperCase()}
-                  </span>
-
-                  <p>
-                    {productCopy[selectedProduct.name]?.dominantNotes?.[lang]?.join(" • ") ||
-                      (lang === "sr"
-                        ? "Premium mirisna selekcija"
-                        : "Premium fragrance selection")}
-                  </p>
-                </div>
+                </strong>
               </div>
 
-              <div className="modal-content">
-                {productCopy[selectedProduct.name]?.miniTag?.[lang] && (
-                  <span className="modal-chip">
-                    {productCopy[selectedProduct.name].miniTag[lang]}
-                  </span>
-                )}
-
-                <p className="modal-description">
-                  {productCopy[selectedProduct.name]?.modal?.[lang] ||
-                    (lang === "sr"
-                      ? "Luksuzan miris sa izraženim karakterom i premium prisustvom."
-                      : "A luxurious scent with strong character and premium presence.")}
-                </p>
-
-                <div className="modal-info-grid">
-                  <div className="modal-info-card">
-                    <span>
-                      {lang === "sr" ? "DOMINANTNE NOTE" : "DOMINANT NOTES"}
-                    </span>
-                    <strong>
-                      {productCopy[selectedProduct.name]?.dominantNotes?.[lang]?.join(" • ") ||
-                        (lang === "sr" ? "premium akordi" : "premium accords")}
-                    </strong>
-                  </div>
-
-                  <div className="modal-info-card">
-                    <span>
-                      {lang === "sr"
-                        ? "ZAŠTO KUPCI BIRAJU OVAJ PARFEM"
-                        : "WHY CUSTOMERS CHOOSE THIS FRAGRANCE"}
-                    </span>
-                    <strong>
-                      {productCopy[selectedProduct.name]?.whyChoose?.[lang] ||
-                        (lang === "sr"
-                          ? "Odličan izbor za one koji žele upečatljiv premium miris."
-                          : "An excellent choice for those who want a memorable premium scent.")}
-                    </strong>
-                  </div>
-                </div>
-
-                <div className="modal-purchase">
-                  <div className="modal-size-block">
-                    <span className="modal-label">
-                      {lang === "sr" ? "IZABERI VELIČINU" : "CHOOSE SIZE"}
-                    </span>
-
-                    <div className="modal-sizes">
-                      {Object.entries(selectedProduct.sizes).map(([size, price]) => (
-                        <button
-                          key={size}
-                          type="button"
-                          className={`modal-size ${selectedSize === size ? "active" : ""}`}
-                          onClick={() => setSelectedSize(size)}
-                        >
-                          <span>{size}</span>
-                          <strong>{formatPrice(price)}</strong>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="modal-purchase-bar">
-                    <div className="modal-price-box">
-                      <span>
-                        {lang === "sr" ? "IZABRANA CENA" : "SELECTED PRICE"}
-                      </span>
-                      <strong>
-                        {formatPrice(
-                          selectedProduct.sizes[selectedSize] ??
-                            Object.values(selectedProduct.sizes)[0]
-                        )}
-                      </strong>
-                    </div>
-
-                    <button
-                      type="button"
-                      className="modal-add-button"
-                      onClick={() => {
-                        const activeSize =
-                          selectedSize || Object.keys(selectedProduct.sizes)[0];
-                        addToCart(selectedProduct, activeSize);
-                        setCartOpen(true);
-                      }}
-                    >
-                      <span>{lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <button
+                type="button"
+                className="modal-add-button"
+                onClick={() => {
+                  const activeSize =
+                    selectedSize || Object.keys(selectedProduct.sizes)[0];
+                  addToCart(selectedProduct, activeSize);
+                  setCartOpen(true);
+                }}
+              >
+                <span>
+                  {lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}
+                </span>
+              </button>
             </div>
           </div>
         </div>
-      )}
+      </div>
+    </div>
+  </div>
+)}
 
       <div className={`checkout-modal ${checkoutOpen ? "open panel-open" : ""}`}>
   <div className="checkout-header panel-anim panel-anim-1">
