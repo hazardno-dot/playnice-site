@@ -688,6 +688,51 @@ main {
 }
 
 /* =========================================
+   ANNOUNCEMENT BAR — INTERACTION GLOW
+========================================= */
+
+/* base transition upgrade */
+.announcement-bar {
+  transition:
+    box-shadow 0.35s ease,
+    border-color 0.35s ease,
+    transform 0.35s ease,
+    background 0.35s ease;
+}
+
+/* subtle hover glow */
+.announcement-bar:hover {
+  transform: translateY(-1px);
+
+  border-color: rgba(220, 181, 107, 0.22);
+
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.22),
+    0 0 18px rgba(220, 181, 107, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* soft animated glow layer */
+.announcement-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 50% 0%, rgba(220, 181, 107, 0.12), transparent 60%);
+
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* glow activates on hover */
+.announcement-bar:hover::after {
+  opacity: 1;
+}
+
+/* =========================================
    BUTTONS / UI
 ========================================= */
 .cart-button {
