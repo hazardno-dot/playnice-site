@@ -263,8 +263,7 @@ const translations = {
 const categoryLabels = {
   Arabian: { en: "Arabian", sr: "Arapski" },
   Designer: { en: "Designer", sr: "Dizajner" },
-  Niche: { en: "Niche", sr: "Niche" },
-  Summer: { en: "Summer", sr: "Letnji" }
+  Niche: { en: "Niche", sr: "Niche" }
 };
 
 const products = [
@@ -1195,16 +1194,6 @@ const switchView = (nextView) => {
     });
   });
 };
-
-useEffect(() => {
-  if (heroPaused || heroSlides.length <= 1) return;
-
-  const interval = setInterval(() => {
-    setCurrentHero((prev) => (prev + 1) % heroSlides.length);
-  }, 6000); // 5s
-
-  return () => clearInterval(interval);
-}, [heroPaused, heroSlides.length]);
 
 useEffect(() => {
   const section = document.querySelector(".closing-section");
@@ -2622,18 +2611,17 @@ return (
 
   {/* CATEGORY */}
   <div className="toolbar-group toolbar-group-category">
-    <label>{tr.categoryLabel}</label>
-    <select
-      value={category}
-      onChange={(e) => setCategory(e.target.value)}
-    >
-      <option value="All">{tr.categoryAll}</option>
-      <option value="Arabian">{tr.categoryArabian}</option>
-      <option value="Designer">{tr.categoryDesigner}</option>
-      <option value="Niche">{tr.categoryNiche}</option>
-      <option value="Summer">{tr.categorySummer}</option>
-    </select>
-  </div>
+  <label>{tr.categoryLabel}</label>
+  <select
+    value={category}
+    onChange={(e) => setCategory(e.target.value)}
+  >
+    <option value="All">{tr.all}</option>
+    <option value="Arabian">{getCategoryLabel("Arabian")}</option>
+    <option value="Designer">{getCategoryLabel("Designer")}</option>
+    <option value="Niche">{getCategoryLabel("Niche")}</option>
+  </select>
+</div>
 
   {/* SORT PILLS (SADA GORE) */}
   <div className="toolbar-group toolbar-group-sort">
