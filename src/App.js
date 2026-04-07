@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
+import { trackPageView, trackEvent, trackMeta } from "./ga";
 
 const translations = {
   en: {
@@ -1173,10 +1174,18 @@ const [checkoutForm, setCheckoutForm] = useState({
 const switchView = (nextView) => {
   if (view === nextView) return;
 
-  // prvo render (bez delay)
   setView(nextView);
 
-  // onda smooth scroll (ali odmah, bez čekanja)
+  const path =
+    nextView === "shop"
+      ? "/?view=shop"
+      : nextView === "checkout"
+      ? "/?view=checkout"
+      : "/";
+
+  window.history.pushState({}, "", path);
+  trackPageView(path);
+
   requestAnimationFrame(() => {
     window.scrollTo({
       top: 0,
@@ -1338,6 +1347,11 @@ useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(1);
   }, [currentPage, totalPages]);
 
+  useEffect(() => {
+  const path = window.location.pathname + window.location.search;
+  trackPageView(path || "/");
+}, []);
+
   const paginatedProducts = useMemo(() => {
     const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
     return filteredProducts.slice(start, start + PRODUCTS_PER_PAGE);
@@ -1405,44 +1419,40 @@ useEffect(() => {
   };
 
   const addToCart = (
-    product,
-    size,
-    customPrice = null,
-    customLabel = null,
-    options = {}
-  ) => {
-    const { showToast = true } = options;
+  product,
+  size,
+  customPrice = null,
+  customLabel = null,
+  options = {}
+) => {
+  const { showToast = true } = options;
 
-    const key = `${product.id}-${size}-${customLabel || ""}`;
-    const price = customPrice ?? product.sizes[size];
-    const label = customLabel || size;
+  const key = `${product.id}-${size}-${customLabel || ""}`;
+  const price = customPrice ?? product.sizes[size];
+  const label = customLabel || size;
 
-    setCart((prev) => {
-      const existing = prev.find((item) => item.key === key);
+  trackEvent("add_to_cart", {
+    currency: "EUR",
+    value: Number(price),
+    item_name: `${product.name} ${label}`,
+    item_category: product.category,
+  });
 
-      if (existing) {
-        return prev.map((item) =>
-          item.key === key ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
+  trackMeta("AddToCart", {
+    content_name: `${product.name} ${label}`,
+    content_category: product.category,
+    value: Number(price),
+    currency: "EUR",
+  });
 
-      return [
-        ...prev,
-        {
-          key,
-          id: product.id,
-          name: product.name,
-          size: label,
-          price,
-          quantity: 1
-        }
-      ];
-    });
+  setCart((prev) => {
+    const existing = prev.find((item) => item.key === key);
 
-    if (showToast) {
-      showFeedback(`${product.name} ${tr.addedToCart}`);
+    if (existing) {
+      return prev.map((item) =>
+        item.key === key ? { ...item, quantity: item.quantity + 1 } : item
+      );
     }
-  };
 
   const triggerInlineAddedFeedback = (productId, size) => {
   const key = `${productId}-${size}`;
@@ -1592,6 +1602,10 @@ const handleHeroTouchEnd = (e) => {
 const goToShop = () => {
   if (view !== "shop") {
     setView("shop");
+
+    const path = "/?view=shop";
+    window.history.pushState({}, "", path);
+    trackPageView(path);
 
     requestAnimationFrame(() => {
       window.scrollTo({
