@@ -3606,10 +3606,27 @@ body.scrolled .announcement-bar::after {
   }
 
   .value-strip {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 18px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.value-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.value-strip div {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
 
   .feature-card.large {
     grid-column: span 1;
@@ -6646,30 +6663,4 @@ body.scrolled .announcement-bar::after {
     inset 0 0 8px rgba(220, 181, 107, 0.1);
 
   transform: translateY(-2px);
-}
-
-@media (max-width: 768px) {
-  .value-strip {
-    justify-content: flex-start;
-    gap: 18px;
-
-    overflow-x: auto;
-    overflow-y: hidden;
-
-    padding: 12px 16px;
-
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .value-strip::-webkit-scrollbar {
-    display: none;
-  }
-
-  .value-strip div {
-    flex: 0 0 auto;
-    white-space: nowrap;
-    font-size: 12px;
-    letter-spacing: 0.06em;
-  }
 }
