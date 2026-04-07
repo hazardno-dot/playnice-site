@@ -1996,7 +1996,6 @@ main {
   position: fixed;
   top: 18px;
   right: 18px;
-  z-index: 110;
   width: min(430px, calc(100vw - 20px));
   height: calc(100vh - 36px);
   display: flex;
@@ -2016,9 +2015,11 @@ main {
   transform: translateX(calc(100% + 28px));
 
   transition:
-  transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
-  opacity 0.38s ease,
-  visibility 0s linear 0.68s;
+    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.38s ease,
+    visibility 0s linear 0.68s;
+
+  will-change: transform, opacity;
 }
 
 .cart-drawer.open {
@@ -2028,14 +2029,13 @@ main {
   transform: translateX(0);
 
   transition:
-  transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
-  opacity 0.38s ease,
-  visibility 0s linear 0s;
+    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.38s ease,
+    visibility 0s linear 0s;
 }
 
 .cart-drawer-header,
-.checkout-header,
-.product-modal-header {
+.checkout-header {
   padding: 24px 24px 18px;
   display: flex;
   justify-content: space-between;
@@ -2045,8 +2045,7 @@ main {
 }
 
 .cart-drawer-header h3,
-.checkout-header h3,
-.product-modal-header h3 {
+.checkout-header h3 {
   margin: 0;
   font-family: "Cormorant Garamond", serif;
   font-size: 34px;
@@ -2154,8 +2153,7 @@ main {
   font-weight: 800;
 }
 
-.checkout-button,
-.submit-order-button {
+.checkout-button {
   width: calc(100% - 48px);
   margin: 12px 24px 24px;
 }
