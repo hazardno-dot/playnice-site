@@ -3244,13 +3244,13 @@ return (
       onClick={(e) => e.stopPropagation()}
     >
       <button
-        className="modal-close"
-        type="button"
-        onClick={closeProductModal}
-        aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
-      >
-        <span>×</span>
-      </button>
+  className="close-button"
+  type="button"
+  onClick={closeProductModal}
+  aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
+>
+  ×
+</button>
 
       <div className="modal-header panel-anim panel-anim-1">
         <span className="modal-eyebrow">PRIVATE DETAIL</span>
