@@ -1910,10 +1910,9 @@ main {
   transform: translateX(calc(100% + 28px));
 
   transition:
-    transform 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.28s ease,
-    visibility 0s linear 0.52s;
-  will-change: transform, opacity;
+  transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+  opacity 0.42s ease,
+  visibility 0s linear 0.75s;
 }
 
 .cart-drawer.open {
@@ -1923,9 +1922,9 @@ main {
   transform: translateX(0);
 
   transition:
-    transform 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.28s ease,
-    visibility 0s linear 0s;
+  transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
+  opacity 0.38s ease,
+  visibility 0s linear 0s;
 }
 
 .cart-drawer-header,
