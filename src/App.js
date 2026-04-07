@@ -2598,10 +2598,10 @@ return (
             </div>
 
             <div className="shop-toolbar">
-  {/* SEARCH */}
   <div className="toolbar-group toolbar-group-search">
-    <label>{tr.searchLabel}</label>
+    <label htmlFor="shop-search">{tr.searchLabel}</label>
     <input
+      id="shop-search"
       type="text"
       placeholder={tr.searchPlaceholder}
       value={searchTerm}
@@ -2609,21 +2609,20 @@ return (
     />
   </div>
 
-  {/* CATEGORY */}
   <div className="toolbar-group toolbar-group-category">
-  <label>{tr.categoryLabel}</label>
-  <select
-    value={category}
-    onChange={(e) => setCategory(e.target.value)}
-  >
-    <option value="All">{tr.all}</option>
-    <option value="Arabian">{getCategoryLabel("Arabian")}</option>
-    <option value="Designer">{getCategoryLabel("Designer")}</option>
-    <option value="Niche">{getCategoryLabel("Niche")}</option>
-  </select>
-</div>
+    <label htmlFor="shop-category">{tr.categoryLabel}</label>
+    <select
+      id="shop-category"
+      value={category}
+      onChange={(e) => setCategory(e.target.value)}
+    >
+      <option value="All">{tr.all}</option>
+      <option value="Arabian">{getCategoryLabel("Arabian")}</option>
+      <option value="Designer">{getCategoryLabel("Designer")}</option>
+      <option value="Niche">{getCategoryLabel("Niche")}</option>
+    </select>
+  </div>
 
-  {/* SORT PILLS (SADA GORE) */}
   <div className="toolbar-group toolbar-group-sort">
     <label>{tr.sortLabel}</label>
 
@@ -2669,6 +2668,37 @@ return (
       </button>
     </div>
   </div>
+
+  <div className="toolbar-group toolbar-group-season">
+    <label>{tr.seasonLabel}</label>
+
+    <div className="season-pills">
+      <button
+        type="button"
+        className={`season-pill ${season === "All" ? "active" : ""}`}
+        onClick={() => setSeason("All")}
+      >
+        {tr.seasonAll}
+      </button>
+
+      <button
+        type="button"
+        className={`season-pill ${season === "summer" ? "active" : ""}`}
+        onClick={() => setSeason("summer")}
+      >
+        ☀️ {tr.seasonSummer}
+      </button>
+
+      <button
+        type="button"
+        className={`season-pill ${season === "winter" ? "active" : ""}`}
+        onClick={() => setSeason("winter")}
+      >
+        ❄️ {tr.seasonWinter}
+      </button>
+    </div>
+  </div>
+</div>
 
   {/* SEASON PILLS (SADA DOLE) */}
   <div className="toolbar-group toolbar-group-season">
