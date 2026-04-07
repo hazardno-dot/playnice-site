@@ -3787,7 +3787,6 @@ main {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 115;
 
   display: flex;
   align-items: center;
@@ -3805,13 +3804,45 @@ main {
   touch-action: pan-y;
 
   opacity: 0;
-  animation: overlayFade 0.25s ease forwards;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 0.38s ease,
+    visibility 0s linear 0.38s,
+    backdrop-filter 0.68s cubic-bezier(0.16, 1, 0.3, 1),
+    -webkit-backdrop-filter 0.68s cubic-bezier(0.16, 1, 0.3, 1);
+
+  will-change: opacity, backdrop-filter;
 }
 
-@keyframes overlayFade {
-  to {
-    opacity: 1;
-  }
+.modal-overlay .product-modal.open {
+  pointer-events: auto;
+}
+
+.modal-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.02), transparent 36%);
+
+  opacity: 0;
+  transition: opacity 0.58s ease;
+}
+
+.modal-overlay.show,
+.modal-overlay:has(.product-modal.open) {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.modal-overlay.show::before,
+.modal-overlay:has(.product-modal.open)::before {
+  opacity: 1;
 }
 
 /* =========================================

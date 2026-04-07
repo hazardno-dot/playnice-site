@@ -3242,7 +3242,7 @@ return (
 </aside>
 
       {selectedProduct && (
-  <div className="modal-overlay" onClick={closeProductModal}>
+  <div className="modal-overlay show" onClick={closeProductModal}>
     <div
       className="product-modal open panel-open"
       onClick={(e) => e.stopPropagation()}
