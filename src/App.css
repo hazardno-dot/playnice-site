@@ -1500,11 +1500,9 @@ body.scrolled .announcement-bar::after {
     margin: 0 auto 16px;
     padding: 12px 16px;
 
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
+    display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
     gap: 18px;
 
     overflow-x: auto;
@@ -1518,6 +1516,7 @@ body.scrolled .announcement-bar::after {
   }
 
   .value-strip div {
+    flex: 0 0 auto;
     white-space: nowrap;
     font-size: 12px;
     letter-spacing: 0.06em;
