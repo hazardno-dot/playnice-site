@@ -40,16 +40,6 @@ html {
   overflow-y: scroll;
 }
 
-body.scroll-locked {
-  overflow: hidden;
-  padding-right: var(--scrollbar-compensation, 0px);
-}
-
-body.scroll-locked .topbar,
-body.scroll-locked .announcement-bar {
-  padding-right: var(--scrollbar-compensation, 0px);
-}
-
 /* =========================================
    RESET / BASE
 ========================================= */
@@ -496,8 +486,9 @@ main {
 .announcement-bar {
   position: fixed;
   top: calc(var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap));
-  left: 0;
-  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(calc(100% - 32px), var(--max));
   z-index: 55;
   overflow: hidden;
   border-top: 1px solid rgba(220, 181, 107, 0.1);

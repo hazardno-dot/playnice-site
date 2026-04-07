@@ -1018,23 +1018,14 @@ useEffect(() => {
     howItWorksOpen ||
     privateSelectionOpen;
 
-  const scrollbarWidth =
-    window.innerWidth - document.documentElement.clientWidth;
-
-  document.documentElement.style.setProperty(
-    "--scrollbar-compensation",
-    `${scrollbarWidth}px`
-  );
-
   if (shouldLockScroll) {
-    document.body.classList.add("scroll-locked");
+    document.body.style.overflow = "hidden";
   } else {
-    document.body.classList.remove("scroll-locked");
+    document.body.style.overflow = "";
   }
 
   return () => {
-    document.body.classList.remove("scroll-locked");
-    document.documentElement.style.removeProperty("--scrollbar-compensation");
+    document.body.style.overflow = "";
   };
 }, [
   selectedProduct,
