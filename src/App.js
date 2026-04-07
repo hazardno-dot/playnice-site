@@ -1018,25 +1018,23 @@ useEffect(() => {
     howItWorksOpen ||
     privateSelectionOpen;
 
+  const scrollbarWidth =
+    window.innerWidth - document.documentElement.clientWidth;
+
+  document.documentElement.style.setProperty(
+    "--scrollbar-compensation",
+    `${scrollbarWidth}px`
+  );
+
   if (shouldLockScroll) {
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
-
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-
-    // sprečava layout shift
-    document.body.style.paddingRight = `${scrollbarWidth}px`;
+    document.body.classList.add("scroll-locked");
   } else {
-    document.body.style.overflow = "";
-    document.documentElement.style.overflow = "";
-    document.body.style.paddingRight = "";
+    document.body.classList.remove("scroll-locked");
   }
 
   return () => {
-    document.body.style.overflow = "";
-    document.documentElement.style.overflow = "";
-    document.body.style.paddingRight = "";
+    document.body.classList.remove("scroll-locked");
+    document.documentElement.style.removeProperty("--scrollbar-compensation");
   };
 }, [
   selectedProduct,
