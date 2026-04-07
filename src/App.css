@@ -5924,29 +5924,39 @@ main {
 
   padding: 22px 22px 18px;
   border-radius: 30px;
-  border: 1px solid rgba(220,181,107,0.16);
+  border: 1px solid rgba(220, 181, 107, 0.16);
 
   background:
-    radial-gradient(circle at 18% 18%, rgba(220,181,107,0.08), transparent 46%),
-    linear-gradient(180deg, rgba(18,18,18,0.97), rgba(10,10,10,0.98));
+    radial-gradient(circle at 18% 18%, rgba(220, 181, 107, 0.08), transparent 46%),
+    linear-gradient(180deg, rgba(18, 18, 18, 0.97), rgba(10, 10, 10, 0.98));
 
   box-shadow:
-    0 30px 80px rgba(0,0,0,0.56),
-    inset 0 1px 0 rgba(255,255,255,0.03);
+    0 30px 80px rgba(0, 0, 0, 0.56),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
 
-  transform: translateX(calc(-100% - 28px));
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
+  transform: translateX(calc(-100% - 34px));
 
   transition:
-    transform 0.48s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.3s ease;
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.42s ease,
+    visibility 0s linear 0.72s;
+
+  will-change: transform, opacity;
 }
 
 .how-it-works-drawer.open {
-  transform: translateX(0);
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
+  transform: translateX(0);
+
+  transition:
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.42s ease,
+    visibility 0s linear 0s;
 }
 
 .how-it-works-drawer-header {
@@ -5962,7 +5972,7 @@ main {
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(2rem, 4vw, 2.5rem);
   line-height: 0.95;
-  color: rgba(255,248,235,0.96);
+  color: rgba(255, 248, 235, 0.96);
 }
 
 .how-it-works-drawer-body {
@@ -5975,7 +5985,7 @@ main {
   margin: 0;
   font-size: 1rem;
   line-height: 1.78;
-  color: rgba(255,255,255,0.72);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .how-it-works-drawer-grid {
@@ -5987,10 +5997,10 @@ main {
 .how-it-works-drawer-card {
   padding: 16px 16px 15px;
   border-radius: 20px;
-  border: 1px solid rgba(220,181,107,0.12);
+  border: 1px solid rgba(220, 181, 107, 0.12);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
-    rgba(14,14,14,0.94);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)),
+    rgba(14, 14, 14, 0.94);
 }
 
 .how-it-works-drawer-card h4 {
@@ -5998,14 +6008,14 @@ main {
   font-size: 0.85rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(220,181,107,0.8);
+  color: rgba(220, 181, 107, 0.8);
 }
 
 .how-it-works-drawer-card p {
   margin: 0;
   font-size: 0.92rem;
   line-height: 1.65;
-  color: rgba(255,255,255,0.68);
+  color: rgba(255, 255, 255, 0.68);
 }
 
 .how-it-works-drawer-footer {
