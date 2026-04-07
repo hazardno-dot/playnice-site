@@ -6117,6 +6117,32 @@ body.scrolled .announcement-bar::after {
 }
 
 @media (max-width: 768px) {
+  .how-it-works-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .how-it-works-card {
+    padding: 20px 18px !important;
+    border-radius: 20px !important;
+  }
+
+  .how-it-works-card h3 {
+    font-size: 1.7rem !important;
+    line-height: 0.98 !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+  }
+
+  .how-it-works-card p {
+    font-size: 0.92rem !important;
+    line-height: 1.62 !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+  }
+
   .how-it-works-drawer {
     top: max(12px, env(safe-area-inset-top));
     left: 12px;
@@ -6125,7 +6151,6 @@ body.scrolled .announcement-bar::after {
     max-height: calc(100dvh - 24px - env(safe-area-inset-top));
     padding: 18px 16px 16px;
     border-radius: 24px;
-
     transform: translateY(0) translateX(calc(-100% - 28px));
   }
 
