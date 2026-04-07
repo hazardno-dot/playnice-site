@@ -2700,38 +2700,6 @@ return (
   </div>
 </div>
 
-  {/* SEASON PILLS (SADA DOLE) */}
-  <div className="toolbar-group toolbar-group-season">
-    <label>{tr.seasonLabel}</label>
-
-    <div className="season-pills">
-      <button
-        type="button"
-        className={`season-pill ${season === "All" ? "active" : ""}`}
-        onClick={() => setSeason("All")}
-      >
-        {tr.seasonAll}
-      </button>
-
-      <button
-        type="button"
-        className={`season-pill ${season === "summer" ? "active" : ""}`}
-        onClick={() => setSeason("summer")}
-      >
-        ☀️ {tr.seasonSummer}
-      </button>
-
-      <button
-        type="button"
-        className={`season-pill ${season === "winter" ? "active" : ""}`}
-        onClick={() => setSeason("winter")}
-      >
-        ❄️ {tr.seasonWinter}
-      </button>
-    </div>
-  </div>
-</div>
-
 {(category !== "All" || season !== "All" || sortBy !== "default" || searchTerm.trim() !== "") && (
   <div className="active-filters-bar">
     <div className="active-filters-left">
