@@ -3225,7 +3225,6 @@ main {
 .checkout-modal {
   position: fixed;
   inset: auto 50% 24px auto;
-  z-index: 115;
   width: min(1100px, calc(100vw - 32px));
   max-height: calc(100vh - 48px);
   border: 1px solid rgba(220, 181, 107, 0.14);
@@ -3303,6 +3302,13 @@ main {
   margin-bottom: 22px;
 }
 
+.checkout-summary-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
 .checkout-summary-item strong {
   display: block;
   margin-bottom: 4px;
@@ -3318,6 +3324,20 @@ main {
 .checkout-totals {
   display: grid;
   gap: 12px;
+}
+
+.checkout-totals > div,
+.grand-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.grand-total {
+  padding-top: 10px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .order-success-message {
@@ -3341,19 +3361,6 @@ main {
 /* =========================================
    CHECKOUT FORM FIELDS
 ========================================= */
-
-.checkout-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 24px 24px 0;
-}
-
-.checkout-header h3 {
-  margin: 6px 0 0;
-}
-
 .checkout-form input,
 .checkout-form textarea {
   width: 100%;
@@ -3407,27 +3414,6 @@ main {
 .checkout-form textarea {
   min-height: 118px;
   resize: vertical;
-}
-
-.checkout-summary-item {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.checkout-totals > div,
-.grand-total {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.grand-total {
-  padding-top: 10px;
-  margin-top: 4px;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .submit-order-button {
