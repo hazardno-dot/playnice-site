@@ -481,47 +481,63 @@ main {
 }
 
 /* =========================================
-   ANNOUNCEMENT BAR - FINAL
+   ANNOUNCEMENT BAR — SOFT FULL WIDTH FINAL
 ========================================= */
 .announcement-bar {
   position: fixed;
   top: calc(var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap));
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(calc(100% - 32px), var(--max));
+  left: 0;
+  right: 0;
+
+  width: calc(100% - 16px);
+  max-width: calc(var(--max) + 16px);
+  margin: 0 auto;
+
   z-index: 55;
   overflow: hidden;
+
   border-top: 1px solid rgba(220, 181, 107, 0.1);
   border-bottom: 1px solid rgba(220, 181, 107, 0.1);
+  border-radius: 14px;
+
   background:
     linear-gradient(180deg, rgba(18, 18, 18, 0.82), rgba(10, 10, 10, 0.76)),
     rgba(8, 8, 8, 0.72);
+
   backdrop-filter: blur(14px) saturate(120%);
   -webkit-backdrop-filter: blur(14px) saturate(120%);
+
   box-shadow:
     0 6px 14px rgba(0, 0, 0, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
+/* inner wrapper */
 .announcement-bar-inner {
   position: relative;
 }
 
+/* marquee container */
 .announcement-marquee {
   position: relative;
   overflow: hidden;
 }
 
+/* scrolling track */
 .announcement-track {
   display: flex;
   align-items: center;
   gap: 42px;
+
   min-width: max-content;
   white-space: nowrap;
+
   padding: 8px 16px 7px;
+
   animation: scrollAnnouncements 24s linear infinite;
 }
 
+/* text */
 .announcement-track span {
   flex: 0 0 auto;
   font-size: 12px;
@@ -535,6 +551,7 @@ main {
   color: rgba(220, 181, 107, 0.84);
 }
 
+/* icons */
 .announcement-icon {
   font-size: 13px;
   opacity: 0.9;
@@ -542,6 +559,7 @@ main {
   transform: translateY(1px);
 }
 
+/* variants */
 .announcement-text.announcement-warning,
 .announcement-icon.announcement-warning {
   color: #f0c46b;
@@ -552,6 +570,7 @@ main {
   color: #7edb95;
 }
 
+/* edge fade */
 .announcement-bar::before,
 .announcement-bar::after {
   content: "";
@@ -573,10 +592,12 @@ main {
   background: linear-gradient(to left, rgba(5, 5, 5, 0.96), transparent);
 }
 
+/* pause on hover */
 .announcement-bar:hover .announcement-track {
   animation-play-state: paused;
 }
 
+/* variants background */
 .announcement-bar-warning {
   border-color: rgba(220, 181, 107, 0.16);
   background:
@@ -593,6 +614,7 @@ main {
     rgba(10, 10, 10, 0.95);
 }
 
+/* progress */
 .announcement-progress-shell {
   padding: 0 16px 8px;
 }
@@ -603,9 +625,11 @@ main {
   height: 4px;
   overflow: hidden;
   border-radius: 999px;
+
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03)),
     rgba(0, 0, 0, 0.28);
+
   box-shadow:
     inset 0 1px 2px rgba(0, 0, 0, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.02);
@@ -615,15 +639,18 @@ main {
   position: relative;
   height: 100%;
   border-radius: inherit;
+
   background: linear-gradient(
     90deg,
     #d04b4b 0%,
     #e0b04b 45%,
     #63c17a 100%
   );
+
   box-shadow:
     0 0 10px rgba(220, 181, 107, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.16);
+
   transition:
     width 0.4s ease,
     background 0.3s ease,
@@ -635,15 +662,18 @@ main {
   position: absolute;
   inset: 0;
   border-radius: inherit;
+
   background: linear-gradient(
     120deg,
     transparent 0%,
     rgba(255, 255, 255, 0.24) 35%,
     transparent 65%
   );
+
   opacity: 0.7;
 }
 
+/* success variant */
 .announcement-bar-success .announcement-progress-fill {
   background: linear-gradient(90deg, #63c17a 0%, #95e5aa 100%);
   box-shadow:
@@ -651,13 +681,10 @@ main {
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
+/* animation */
 @keyframes scrollAnnouncements {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* =========================================
