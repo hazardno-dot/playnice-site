@@ -4681,14 +4681,31 @@ main {
 
   border-left: 1px solid rgba(220, 181, 107, 0.16);
   box-shadow: -24px 0 60px rgba(0, 0, 0, 0.45);
-
-  transform: translateX(104%);
-  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(calc(100% + 28px));
+
+  transition:
+    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.38s ease,
+    visibility 0s linear 0.68s;
+
+  will-change: transform, opacity;
 }
 
 .private-selection-drawer.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
   transform: translateX(0);
+
+  transition:
+    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.38s ease,
+    visibility 0s linear 0s;
 }
 
 .private-selection-header {
@@ -4696,7 +4713,6 @@ main {
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-
   padding-bottom: 14px;
   border-bottom: 1px solid rgba(220, 181, 107, 0.1);
 }
@@ -4738,7 +4754,6 @@ main {
   flex: 1;
   overflow-y: auto;
   padding-right: 4px;
-
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -4749,15 +4764,12 @@ main {
   grid-template-columns: 88px 1fr;
   gap: 14px;
   align-items: start;
-
   padding: 14px;
   border-radius: 20px;
   border: 1px solid rgba(220, 181, 107, 0.12);
-
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015)),
     rgba(14, 14, 14, 0.95);
-
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
@@ -4769,7 +4781,6 @@ main {
   padding: 8px;
   background: rgba(255, 255, 255, 0.02);
   cursor: pointer;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4829,7 +4840,6 @@ main {
   display: inline-flex;
   align-items: baseline;
   gap: 6px;
-
   font-size: 0.86rem;
   font-weight: 600;
   color: #ddb76d;
@@ -4852,7 +4862,6 @@ main {
   background: transparent;
   padding: 0;
   cursor: pointer;
-
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -4872,7 +4881,6 @@ main {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-
   padding-top: 14px;
   border-top: 1px solid rgba(220, 181, 107, 0.1);
 }
@@ -5818,26 +5826,23 @@ main {
   padding: 24px 22px 22px;
   border-radius: 24px;
   border: 1px solid rgba(220, 181, 107, 0.14);
-
   background:
-    radial-gradient(circle at top left, rgba(220,181,107,0.07), transparent 34%),
-    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)),
-    rgba(10,10,10,0.96);
-
+    radial-gradient(circle at top left, rgba(220, 181, 107, 0.07), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)),
+    rgba(10, 10, 10, 0.96);
   box-shadow:
-    0 14px 34px rgba(0,0,0,0.26),
-    inset 0 1px 0 rgba(255,255,255,0.03);
+    0 14px 34px rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .how-it-works-number {
   display: inline-block;
   margin-bottom: 14px;
-
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(220,181,107,0.72);
+  color: rgba(220, 181, 107, 0.72);
 }
 
 .how-it-works-card h3 {
@@ -5845,14 +5850,14 @@ main {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.9rem;
   line-height: 0.98;
-  color: rgba(255,248,235,0.96);
+  color: rgba(255, 248, 235, 0.96);
 }
 
 .how-it-works-card p {
   margin: 0;
   font-size: 0.96rem;
   line-height: 1.7;
-  color: rgba(255,255,255,0.68);
+  color: rgba(255, 255, 255, 0.68);
 }
 
 .how-it-works-cta {
@@ -5871,16 +5876,12 @@ main {
   left: 20px;
   bottom: 20px;
   width: min(560px, calc(100vw - 40px));
-  z-index: 1200;
-
   padding: 22px 22px 18px;
   border-radius: 30px;
   border: 1px solid rgba(220, 181, 107, 0.16);
-
   background:
     radial-gradient(circle at 18% 18%, rgba(220, 181, 107, 0.08), transparent 46%),
     linear-gradient(180deg, rgba(18, 18, 18, 0.97), rgba(10, 10, 10, 0.98));
-
   box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.56),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
@@ -6005,6 +6006,10 @@ main {
     width: auto;
     padding: 18px 16px 16px;
     border-radius: 24px;
+  }
+
+  .how-it-works-drawer-header h3 {
+    font-size: clamp(1.8rem, 7vw, 2.2rem);
   }
 
   .how-it-works-drawer-grid {
