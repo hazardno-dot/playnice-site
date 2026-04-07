@@ -2890,8 +2890,12 @@ return (
   </div>
 </aside>
 
-<aside className={`how-it-works-drawer ${howItWorksOpen ? "open" : ""}`}>
-  <div className="how-it-works-drawer-header">
+<aside
+  className={`how-it-works-drawer ${
+    howItWorksOpen ? "open panel-open" : ""
+  }`}
+>
+  <div className="how-it-works-drawer-header panel-anim panel-anim-1">
     <div>
       <p className="section-kicker">HOW IT WORKS</p>
       <h3>
@@ -2912,14 +2916,14 @@ return (
   </div>
 
   <div className="how-it-works-drawer-body">
-    <p className="how-it-works-drawer-lead">
+    <p className="how-it-works-drawer-lead panel-anim panel-anim-2">
       {lang === "sr"
         ? "Dekanti su manja, pažljivo presuta pakovanja originalnih parfema. Napravljeni su za ljude koji žele da miris prvo osete na svojoj koži, u svom ritmu, pre nego što se odluče za punu bočicu. Hiljade kupaca prvo testira dekante pre nego što kupi punu bočicu."
         : "Decants are smaller, carefully transferred portions of original fragrances. They are made for people who want to wear a scent on their skin, in real life, before committing to a full bottle. Thousands of customers test decants before committing to a full bottle."}
     </p>
 
     <div className="how-it-works-drawer-grid">
-      <div className="how-it-works-drawer-card">
+      <div className="how-it-works-drawer-card panel-item-anim panel-item-1">
         <h4>{lang === "sr" ? "Manji rizik" : "Lower risk"}</h4>
         <p>
           {lang === "sr"
@@ -2928,7 +2932,7 @@ return (
         </p>
       </div>
 
-      <div className="how-it-works-drawer-card">
+      <div className="how-it-works-drawer-card panel-item-anim panel-item-2">
         <h4>{lang === "sr" ? "Pametniji trošak" : "Smarter spending"}</h4>
         <p>
           {lang === "sr"
@@ -2937,7 +2941,7 @@ return (
         </p>
       </div>
 
-      <div className="how-it-works-drawer-card">
+      <div className="how-it-works-drawer-card panel-item-anim panel-item-3">
         <h4>{lang === "sr" ? "Više izbora" : "More variety"}</h4>
         <p>
           {lang === "sr"
@@ -2946,7 +2950,7 @@ return (
         </p>
       </div>
 
-      <div className="how-it-works-drawer-card">
+      <div className="how-it-works-drawer-card panel-item-anim panel-item-4">
         <h4>{lang === "sr" ? "Originalni parfemi" : "Original fragrances"}</h4>
         <p>
           {lang === "sr"
@@ -2956,7 +2960,7 @@ return (
       </div>
     </div>
 
-    <div className="how-it-works-drawer-footer">
+    <div className="how-it-works-drawer-footer panel-anim panel-anim-4">
       <span className="story-drawer-signature">Remember. PlayNice.</span>
 
       <button
@@ -3101,8 +3105,8 @@ return (
   )}
 </aside>
 
-<aside className={`cart-drawer ${cartOpen ? "open" : ""}`}>
-  <div className="cart-drawer-header">
+<aside className={`cart-drawer ${cartOpen ? "open panel-open" : ""}`}>
+  <div className="cart-drawer-header panel-anim panel-anim-1">
     <div>
       <p className="section-kicker">{tr.yourCart}</p>
       <h3>{tr.selectedItems}</h3>
@@ -3117,24 +3121,30 @@ return (
   </div>
 
   {cart.length === 0 ? (
-    <div className="cart-empty">
-  <p>{tr.cartEmpty}</p>
-  <button
-    className="gold-button small"
-    type="button"
-    onClick={() => {
-      setCartOpen(false);
-      goToShop();
-    }}
-  >
-    {tr.goToShop}
-  </button>
-</div>
+    <div className="cart-empty panel-anim panel-anim-2">
+      <p>{tr.cartEmpty}</p>
+      <button
+        className="gold-button small panel-anim panel-anim-3"
+        type="button"
+        onClick={() => {
+          setCartOpen(false);
+          goToShop();
+        }}
+      >
+        {tr.goToShop}
+      </button>
+    </div>
   ) : (
     <>
-      <div className="cart-items">
-        {cart.map((item) => (
-          <div className="cart-item" key={item.key}>
+      <div className="cart-items panel-anim panel-anim-2">
+        {cart.map((item, index) => (
+          <div
+            className={`cart-item panel-item-anim panel-item-${Math.min(
+              index + 1,
+              6
+            )}`}
+            key={item.key}
+          >
             <div className="cart-item-info">
               <h4>{item.name}</h4>
               <p>{item.size}</p>
@@ -3163,7 +3173,7 @@ return (
         ))}
       </div>
 
-      <div className="cart-summary">
+      <div className="cart-summary panel-anim panel-anim-4">
         <div>
           <span>{tr.subtotal}</span>
           <strong>{formatPrice(subtotal)}</strong>
@@ -3178,7 +3188,7 @@ return (
 
         {cart.length > 0 && (
           <div
-            className={`shipping-progress-card ${
+            className={`shipping-progress-card panel-anim panel-anim-5 ${
               subtotal >= FREE_SHIPPING_THRESHOLD
                 ? "shipping-note-unlocked"
                 : "shipping-note-locked"
@@ -3209,7 +3219,7 @@ return (
       </div>
 
       <button
-        className="gold-button checkout-button"
+        className="gold-button checkout-button panel-anim panel-anim-6"
         type="button"
         onClick={() => setCheckoutOpen(true)}
       >
