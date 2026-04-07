@@ -3434,12 +3434,13 @@ return (
       <h3>{tr.checkoutTitle}</h3>
     </div>
     <button
-      className="close-button"
-      type="button"
-      onClick={() => setCheckoutOpen(false)}
-    >
-      ×
-    </button>
+  className="close-button"
+  type="button"
+  onClick={closeProductModal}
+  aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
+>
+  ×
+</button>
   </div>
 
   <div className="checkout-grid">
