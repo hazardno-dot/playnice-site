@@ -3881,7 +3881,7 @@ body.scrolled .announcement-bar::after {
   position: fixed;
   inset: 0;
 
-  display: flex;
+  display: block;
   align-items: center;
   justify-content: center;
 
