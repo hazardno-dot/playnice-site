@@ -2977,8 +2977,12 @@ return (
   </div>
 </aside>
 
-<aside className={`private-selection-drawer ${privateSelectionOpen ? "open" : ""}`}>
-  <div className="private-selection-header">
+<aside
+  className={`private-selection-drawer ${
+    privateSelectionOpen ? "open panel-open" : ""
+  }`}
+>
+  <div className="private-selection-header panel-anim panel-anim-1">
     <div>
       <p className="section-kicker">
         {lang === "sr" ? "PRIVATE SELECTION" : "PRIVATE SELECTION"}
@@ -2992,28 +2996,30 @@ return (
       className="close-button"
       type="button"
       onClick={() => setPrivateSelectionOpen(false)}
-      aria-label={lang === "sr" ? "Zatvori Private Selection" : "Close Private Selection"}
+      aria-label={
+        lang === "sr" ? "Zatvori Private Selection" : "Close Private Selection"
+      }
     >
       ×
     </button>
   </div>
 
   {privateSelectionProducts.length === 0 ? (
-    <div className="private-selection-empty">
+    <div className="private-selection-empty panel-anim panel-anim-2">
       <p>
         {lang === "sr"
           ? "Još nisi sačuvao nijedan parfem."
           : "You have not saved any fragrances yet."}
       </p>
 
-      <span className="private-selection-empty-sub">
+      <span className="private-selection-empty-sub panel-anim panel-anim-3">
         {lang === "sr"
           ? "Klikni srce na kartici i sačuvaj favorite za kasnije."
           : "Tap the heart on a product card to save your favorites for later."}
       </span>
 
       <button
-        className="gold-button small"
+        className="gold-button small panel-anim panel-anim-4"
         type="button"
         onClick={() => {
           setPrivateSelectionOpen(false);
@@ -3025,18 +3031,24 @@ return (
     </div>
   ) : (
     <>
-      <div className="private-selection-items">
-        {privateSelectionProducts.map((product) => {
+      <div className="private-selection-items panel-anim panel-anim-2">
+        {privateSelectionProducts.map((product, index) => {
           const minPrice = Math.min(...Object.values(product.sizes));
           const copy = getProductCopy(product, lang);
 
           return (
-            <div className="private-selection-item" key={product.id}>
+            <div
+              className={`private-selection-item panel-item-anim panel-item-${Math.min(
+                index + 1,
+                6
+              )}`}
+              key={product.id}
+            >
               <button
                 type="button"
                 className="private-selection-item-media"
                 onClick={() => {
-                openProductModal(product);
+                  openProductModal(product);
                 }}
                 aria-label={product.name}
               >
@@ -3087,7 +3099,7 @@ return (
         })}
       </div>
 
-      <div className="private-selection-footer">
+      <div className="private-selection-footer panel-anim panel-anim-4">
         <span className="story-drawer-signature">Remember. PlayNice.</span>
 
         <button
@@ -3411,155 +3423,170 @@ return (
         </div>
       )}
 
-      <div className={`checkout-modal ${checkoutOpen ? "open" : ""}`}>
-        <div className="checkout-header">
-          <div>
-            <p className="section-kicker">{tr.checkoutKicker}</p>
-            <h3>{tr.checkoutTitle}</h3>
-          </div>
-          <button className="close-button" type="button" onClick={() => setCheckoutOpen(false)}>
-            ×
-          </button>
-        </div>
+      <div className={`checkout-modal ${checkoutOpen ? "open panel-open" : ""}`}>
+  <div className="checkout-header panel-anim panel-anim-1">
+    <div>
+      <p className="section-kicker">{tr.checkoutKicker}</p>
+      <h3>{tr.checkoutTitle}</h3>
+    </div>
+    <button
+      className="close-button"
+      type="button"
+      onClick={() => setCheckoutOpen(false)}
+    >
+      ×
+    </button>
+  </div>
 
-        <div className="checkout-grid">
-          <div className="checkout-form">
-            <div className="form-row two">
-              <input
-                name="firstName"
-                placeholder={tr.firstName}
-                value={checkoutForm.firstName}
-                onChange={handleCheckoutInput}
-              />
-              <input
-                name="lastName"
-                placeholder={tr.lastName}
-                value={checkoutForm.lastName}
-                onChange={handleCheckoutInput}
-              />
-            </div>
-
-            <div className="form-row two">
-              <input
-                name="email"
-                type="email"
-                placeholder={tr.email}
-                value={checkoutForm.email}
-                onChange={handleCheckoutInput}
-              />
-              <input
-                name="phone"
-                placeholder={tr.phone}
-                value={checkoutForm.phone}
-                onChange={handleCheckoutInput}
-              />
-            </div>
-
-            <div className="form-row two">
-              <input
-                name="city"
-                placeholder={tr.city}
-                value={checkoutForm.city}
-                onChange={handleCheckoutInput}
-              />
-              <input
-                name="address"
-                placeholder={tr.address}
-                value={checkoutForm.address}
-                onChange={handleCheckoutInput}
-              />
-            </div>
-
-            <div className="form-row">
-              <textarea
-                name="note"
-                placeholder={tr.note}
-                rows="4"
-                value={checkoutForm.note}
-                onChange={handleCheckoutInput}
-              />
-            </div>
-
-            {orderSuccessMessage && (
-              <div className="order-success-message">{orderSuccessMessage}</div>
-            )}
-
-            <button
-              className="gold-button submit-order-button"
-              type="button"
-              onClick={handlePlaceOrder}
-              disabled={isSubmittingOrder}
-            >
-              {isSubmittingOrder ? tr.placingOrder : tr.placeOrder}
-            </button>
-          </div>
-
-          <div className="checkout-summary">
-            <h4>{tr.orderSummary}</h4>
-
-            {cart.length === 0 ? (
-              <p className="checkout-empty">{tr.noItemsCart}</p>
-            ) : (
-              <>
-                <div className="checkout-summary-items">
-                  {cart.map((item) => (
-                    <div className="checkout-summary-item" key={item.key}>
-                      <div>
-                        <strong>{item.name}</strong>
-                        <p>
-                          {item.size} × {item.quantity}
-                        </p>
-                      </div>
-                      <span>{formatPrice(item.price * item.quantity)}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div
-                  className={`shipping-progress-card checkout-shipping-note ${
-                    subtotal >= FREE_SHIPPING_THRESHOLD
-                      ? "shipping-note-unlocked"
-                      : "shipping-note-locked"
-                  }`}
-                >
-                  <div className="shipping-note">
-                    {subtotal >= FREE_SHIPPING_THRESHOLD
-                      ? `${tr.freeShippingUnlocked} ✓`
-                      : tr.freeShippingProgress.replace(
-                          "{{amount}}",
-                          formatPrice(amountLeftForFreeShipping)
-                        )}
-                  </div>
-
-                  <div className="shipping-progress-bar">
-                    <div
-                      className="shipping-progress-fill"
-                      style={{ width: `${freeShippingProgress}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className="checkout-totals">
-                  <div>
-                    <span>{tr.subtotal}</span>
-                    <strong>{formatPrice(subtotal)}</strong>
-                  </div>
-                  <div>
-                    <span>{tr.shipping}</span>
-                    <strong>
-                      {shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}
-                    </strong>
-                  </div>
-                  <div className="grand-total">
-                    <span>{tr.total}</span>
-                    <strong>{formatPrice(total)}</strong>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
+  <div className="checkout-grid">
+    <div className="checkout-form panel-anim panel-anim-2">
+      <div className="form-row two panel-item-anim panel-item-1">
+        <input
+          name="firstName"
+          placeholder={tr.firstName}
+          value={checkoutForm.firstName}
+          onChange={handleCheckoutInput}
+        />
+        <input
+          name="lastName"
+          placeholder={tr.lastName}
+          value={checkoutForm.lastName}
+          onChange={handleCheckoutInput}
+        />
       </div>
+
+      <div className="form-row two panel-item-anim panel-item-2">
+        <input
+          name="email"
+          type="email"
+          placeholder={tr.email}
+          value={checkoutForm.email}
+          onChange={handleCheckoutInput}
+        />
+        <input
+          name="phone"
+          placeholder={tr.phone}
+          value={checkoutForm.phone}
+          onChange={handleCheckoutInput}
+        />
+      </div>
+
+      <div className="form-row two panel-item-anim panel-item-3">
+        <input
+          name="city"
+          placeholder={tr.city}
+          value={checkoutForm.city}
+          onChange={handleCheckoutInput}
+        />
+        <input
+          name="address"
+          placeholder={tr.address}
+          value={checkoutForm.address}
+          onChange={handleCheckoutInput}
+        />
+      </div>
+
+      <div className="form-row panel-item-anim panel-item-4">
+        <textarea
+          name="note"
+          placeholder={tr.note}
+          rows="4"
+          value={checkoutForm.note}
+          onChange={handleCheckoutInput}
+        />
+      </div>
+
+      {orderSuccessMessage && (
+        <div className="order-success-message panel-item-anim panel-item-5">
+          {orderSuccessMessage}
+        </div>
+      )}
+
+      <button
+        className="gold-button submit-order-button panel-anim panel-anim-4"
+        type="button"
+        onClick={handlePlaceOrder}
+        disabled={isSubmittingOrder}
+      >
+        {isSubmittingOrder ? tr.placingOrder : tr.placeOrder}
+      </button>
+    </div>
+
+    <div className="checkout-summary panel-anim panel-anim-3">
+      <h4>{tr.orderSummary}</h4>
+
+      {cart.length === 0 ? (
+        <p className="checkout-empty panel-item-anim panel-item-1">
+          {tr.noItemsCart}
+        </p>
+      ) : (
+        <>
+          <div className="checkout-summary-items">
+            {cart.map((item, index) => (
+              <div
+                className={`checkout-summary-item panel-item-anim panel-item-${Math.min(
+                  index + 1,
+                  6
+                )}`}
+                key={item.key}
+              >
+                <div>
+                  <strong>{item.name}</strong>
+                  <p>
+                    {item.size} × {item.quantity}
+                  </p>
+                </div>
+                <span>{formatPrice(item.price * item.quantity)}</span>
+              </div>
+            ))}
+          </div>
+
+          <div
+            className={`shipping-progress-card checkout-shipping-note panel-anim panel-anim-4 ${
+              subtotal >= FREE_SHIPPING_THRESHOLD
+                ? "shipping-note-unlocked"
+                : "shipping-note-locked"
+            }`}
+          >
+            <div className="shipping-note">
+              {subtotal >= FREE_SHIPPING_THRESHOLD
+                ? `${tr.freeShippingUnlocked} ✓`
+                : tr.freeShippingProgress.replace(
+                    "{{amount}}",
+                    formatPrice(amountLeftForFreeShipping)
+                  )}
+            </div>
+
+            <div className="shipping-progress-bar">
+              <div
+                className="shipping-progress-fill"
+                style={{ width: `${freeShippingProgress}%` }}
+              />
+            </div>
+          </div>
+
+          <div className="checkout-totals panel-anim panel-anim-5">
+            <div>
+              <span>{tr.subtotal}</span>
+              <strong>{formatPrice(subtotal)}</strong>
+            </div>
+            <div>
+              <span>{tr.shipping}</span>
+              <strong>
+                {shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}
+              </strong>
+            </div>
+            <div className="grand-total">
+              <span>{tr.total}</span>
+              <strong>{formatPrice(total)}</strong>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+</div>
+
       {catalogPreview && (
   <div className="catalog-modal-overlay" onClick={closeCatalogPreview}>
     <div
