@@ -1339,6 +1339,19 @@ useEffect(() => {
   trackPageView(path || "/");
 }, []);
 
+useEffect(() => {
+  const handleScroll = () => {
+    if (window.scrollY > 20) {
+      document.body.classList.add("scrolled");
+    } else {
+      document.body.classList.remove("scrolled");
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
   const paginatedProducts = useMemo(() => {
     const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
     return filteredProducts.slice(start, start + PRODUCTS_PER_PAGE);
