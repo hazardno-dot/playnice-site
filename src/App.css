@@ -2292,7 +2292,6 @@ main {
   overscroll-behavior: contain;
   top: 50%;
   left: 50%;
-  z-index: 116;
   width: min(920px, 92vw);
   max-height: calc(100vh - 40px);
   border: 1px solid rgba(220, 181, 107, 0.16);
@@ -2308,21 +2307,32 @@ main {
   overflow: hidden;
 
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   transform: translate(-50%, -48%) scale(0.94);
   filter: blur(6px);
 
   transition:
-    opacity 0.35s ease,
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.35s ease;
+    opacity 0.38s ease,
+    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.38s ease,
+    visibility 0s linear 0.68s;
+
+  will-change: transform, opacity, filter;
 }
 
 .product-modal.open {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1);
   filter: blur(0);
+
+  transition:
+    opacity 0.38s ease,
+    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.38s ease,
+    visibility 0s linear 0s;
 }
 
 .modal-header {
@@ -2334,12 +2344,10 @@ main {
 .modal-header h2 {
   margin: 0;
   max-width: calc(100% - 56px);
-
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(2rem, 3vw, 3rem);
   line-height: 1.02;
   letter-spacing: -0.01em;
-
   background: linear-gradient(
     120deg,
     #f3d9a4 0%,
@@ -2348,14 +2356,11 @@ main {
     #f0d7a3 70%,
     #cfa24e 100%
   );
-
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
   text-shadow:
     0 6px 26px rgba(0, 0, 0, 0.6),
     0 0 14px rgba(220, 181, 107, 0.08);
-
   position: relative;
 }
 
@@ -2364,41 +2369,33 @@ main {
   position: absolute;
   left: 0;
   bottom: -8px;
-
   width: 38%;
   height: 1px;
-
   background: linear-gradient(
     90deg,
     rgba(220, 181, 107, 0.6),
     rgba(220, 181, 107, 0.2),
     transparent
   );
-
   opacity: 0.7;
 }
 
 /* =========================================
    PRODUCT MODAL — EYEBROW
 ========================================= */
-
 .modal-eyebrow {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-
   margin-bottom: 12px;
-
   font-family: "Inter", sans-serif;
   font-size: 0.68rem;
   line-height: 1;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-
   color: rgba(230, 200, 143, 0.9);
-
   text-shadow:
     0 0 10px rgba(220, 181, 107, 0.08),
     0 0 18px rgba(220, 181, 107, 0.04);
@@ -2409,7 +2406,6 @@ main {
   width: 22px;
   height: 1px;
   flex: 0 0 22px;
-
   background: linear-gradient(
     90deg,
     rgba(220, 181, 107, 0),
@@ -2422,11 +2418,9 @@ main {
   position: absolute;
   left: 32px;
   bottom: -6px;
-
   width: 72px;
   height: 1px;
   border-radius: 999px;
-
   background: linear-gradient(
     90deg,
     rgba(220, 181, 107, 0.75) 0%,
@@ -2438,13 +2432,11 @@ main {
 /* =========================================
    MODAL RATING
 ========================================= */
-
 .modal-rating {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
-
   margin-top: 12px;
   padding-top: 2px;
 }
@@ -2491,7 +2483,6 @@ main {
 /* =========================================
    PRODUCT MODAL — CLOSE BUTTON POSITION
 ========================================= */
-
 .product-modal .close-button {
   position: absolute;
   top: 18px;
@@ -2614,49 +2605,26 @@ main {
   gap: 18px;
 }
 
-.modal-content > * {
-  opacity: 0;
-  transform: translateY(6px);
-  animation: modalFade 0.5s ease forwards;
-}
-
-.modal-content > *:nth-child(1) { animation-delay: 0.05s; }
-.modal-content > *:nth-child(2) { animation-delay: 0.1s; }
-.modal-content > *:nth-child(3) { animation-delay: 0.15s; }
-.modal-content > *:nth-child(4) { animation-delay: 0.2s; }
-
-@keyframes modalFade {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .modal-chip {
   position: relative;
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
   gap: 8px;
-
   padding: 9px 15px 8px;
   border-radius: 999px;
   border: 1px solid rgba(220, 181, 107, 0.16);
-
   background:
-    linear-gradient(180deg, rgba(220,181,107,0.08), rgba(220,181,107,0.03)),
+    linear-gradient(180deg, rgba(220, 181, 107, 0.08), rgba(220, 181, 107, 0.03)),
     rgba(18, 16, 12, 0.78);
-
   color: rgba(240, 215, 163, 0.96);
-
   font-family: "Inter", sans-serif;
   font-size: 0.74rem;
   line-height: 1;
   font-weight: 800;
   letter-spacing: 0.08em;
-
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.01),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.01),
     0 8px 20px rgba(0, 0, 0, 0.16);
 }
 
@@ -2666,26 +2634,21 @@ main {
   height: 6px;
   border-radius: 999px;
   flex: 0 0 6px;
-
   background: radial-gradient(circle, #f0d7a3 0%, #dcb56b 100%);
   box-shadow: 0 0 10px rgba(220, 181, 107, 0.18);
 }
 
 .modal-description {
   margin: 0;
-
   font-family: "Cormorant Garamond", serif;
   font-size: 1.16rem;
   line-height: 1.22;
   color: rgba(255, 248, 235, 0.94);
-
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-
   overflow: hidden;
   text-overflow: ellipsis;
-
   min-height: 4.05rem;
   max-height: 4.05rem;
 }
@@ -2698,19 +2661,15 @@ main {
 .modal-info-card {
   position: relative;
   overflow: hidden;
-
   padding: 18px 18px 16px;
   border-radius: 22px;
   border: 1px solid rgba(220, 181, 107, 0.12);
-
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.012)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012)),
     rgba(14, 14, 14, 0.94);
-
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.01),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.01),
     0 10px 24px rgba(0, 0, 0, 0.18);
-
   transition:
     border-color 0.22s ease,
     transform 0.22s ease,
@@ -2721,7 +2680,7 @@ main {
   transform: translateY(-1px);
   border-color: rgba(220, 181, 107, 0.22);
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.015),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.015),
     0 14px 28px rgba(0, 0, 0, 0.22),
     0 0 18px rgba(220, 181, 107, 0.05);
 }
@@ -2729,20 +2688,17 @@ main {
 .modal-info-card span {
   display: block;
   margin-bottom: 10px;
-
   font-family: "Inter", sans-serif;
   font-size: 0.68rem;
   line-height: 1;
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-
   color: rgba(220, 181, 107, 0.82);
 }
 
 .modal-info-card strong {
   display: block;
-
   color: #f3efe8;
   font-family: "Cormorant Garamond", serif;
   font-size: 1.12rem;
@@ -2755,11 +2711,9 @@ main {
   position: absolute;
   left: 18px;
   bottom: 12px;
-
   width: 44px;
   height: 1px;
   border-radius: 999px;
-
   background: linear-gradient(
     90deg,
     rgba(220, 181, 107, 0.45),
@@ -2796,30 +2750,23 @@ main {
 .modal-size {
   position: relative;
   overflow: hidden;
-
   min-height: 72px;
   padding: 12px 14px;
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   gap: 6px;
-
   border-radius: 18px;
   border: 1px solid rgba(220, 181, 107, 0.14);
-
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015)),
     rgba(16, 16, 16, 0.94);
-
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.01),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.01),
     0 10px 24px rgba(0, 0, 0, 0.22);
-
   text-align: left;
   cursor: pointer;
-
   transition:
     transform 0.22s ease,
     border-color 0.22s ease,
@@ -2831,7 +2778,7 @@ main {
   transform: translateY(-1px);
   border-color: rgba(220, 181, 107, 0.3);
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.015),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.015),
     0 14px 28px rgba(0, 0, 0, 0.28),
     0 0 18px rgba(220, 181, 107, 0.06);
 }
@@ -2839,38 +2786,32 @@ main {
 .modal-size span {
   display: block;
   margin-bottom: 0;
-
   font-family: "Inter", sans-serif;
   font-size: 0.72rem;
   line-height: 1;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-
   color: rgba(255, 248, 235, 0.72);
 }
 
 .modal-size strong {
   display: block;
-
   font-family: "Inter", sans-serif;
   font-size: 1rem;
   line-height: 1.1;
   font-weight: 700;
   letter-spacing: 0.01em;
-
   color: #f6f1e8;
 }
 
 .modal-size.active {
   border-color: rgba(220, 181, 107, 0.58);
-
   background:
-    linear-gradient(180deg, rgba(220,181,107,0.12), rgba(220,181,107,0.04)),
+    linear-gradient(180deg, rgba(220, 181, 107, 0.12), rgba(220, 181, 107, 0.04)),
     rgba(18, 16, 12, 0.98);
-
   box-shadow:
-    inset 0 0 0 1px rgba(220,181,107,0.16),
+    inset 0 0 0 1px rgba(220, 181, 107, 0.16),
     0 16px 34px rgba(0, 0, 0, 0.34),
     0 0 24px rgba(220, 181, 107, 0.12);
 }
@@ -2897,11 +2838,9 @@ main {
   position: absolute;
   top: 10px;
   right: 10px;
-
   width: 8px;
   height: 8px;
   border-radius: 999px;
-
   background: radial-gradient(circle, #f0d7a3 0%, #dcb56b 100%);
   box-shadow:
     0 0 0 4px rgba(220, 181, 107, 0.08),
@@ -2920,45 +2859,37 @@ main {
 .modal-price-box {
   position: relative;
   flex: 1;
-
   display: grid;
   gap: 8px;
-
   padding: 14px 16px 12px;
   border-radius: 20px;
   border: 1px solid rgba(220, 181, 107, 0.12);
-
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.012)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012)),
     rgba(14, 14, 14, 0.9);
-
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.01),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.01),
     0 10px 24px rgba(0, 0, 0, 0.2);
 }
 
 .modal-price-box span {
   display: block;
-
   font-family: "Inter", sans-serif;
   font-size: 0.68rem;
   line-height: 1;
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-
   color: rgba(255, 248, 235, 0.56);
 }
 
 .modal-price-box strong {
   display: block;
-
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(2rem, 3vw, 2.85rem);
   line-height: 0.94;
   font-weight: 600;
   letter-spacing: -0.02em;
-
   background: linear-gradient(
     120deg,
     #f3d9a4 0%,
@@ -2968,14 +2899,11 @@ main {
     #cfa24e 100%
   );
   background-size: 200% auto;
-
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
   text-shadow:
     0 6px 24px rgba(0, 0, 0, 0.55),
     0 0 12px rgba(220, 181, 107, 0.08);
-
   animation: goldShimmer 4.2s linear infinite;
 }
 
@@ -2984,11 +2912,9 @@ main {
   position: absolute;
   left: 16px;
   bottom: 10px;
-
   width: 56px;
   height: 1px;
   border-radius: 999px;
-
   background: linear-gradient(
     90deg,
     rgba(220, 181, 107, 0.65),
@@ -3008,30 +2934,22 @@ main {
   min-height: 56px;
   padding: 0 30px;
   border-radius: 999px;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   border: 1px solid rgba(220, 181, 107, 0.24);
-
-  background:
-    linear-gradient(135deg, #f0d7a3 0%, #ddb76d 42%, #cfa24e 100%);
+  background: linear-gradient(135deg, #f0d7a3 0%, #ddb76d 42%, #cfa24e 100%);
   color: #111;
-
   font-family: "Inter", sans-serif;
   font-size: 0.84rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-
   cursor: pointer;
   overflow: hidden;
-
   box-shadow:
     0 16px 38px rgba(220, 181, 107, 0.2),
     inset 0 1px 0 rgba(255, 248, 232, 0.24);
-
   transition:
     transform 0.22s ease,
     box-shadow 0.22s ease,
@@ -3045,7 +2963,6 @@ main {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-
   background: linear-gradient(
     115deg,
     transparent 0%,
@@ -3056,7 +2973,6 @@ main {
     rgba(255, 255, 255, 0) 60%,
     transparent 100%
   );
-
   transform: translateX(-135%);
   animation: modalButtonShine 4.6s ease-in-out infinite;
   z-index: 0;
@@ -3096,12 +3012,10 @@ main {
 .modal-add-button:hover {
   transform: translateY(-2px);
   border-color: rgba(220, 181, 107, 0.38);
-
   box-shadow:
     0 0 0 1px rgba(220, 181, 107, 0.2),
     0 22px 44px rgba(220, 181, 107, 0.24),
     0 0 18px rgba(220, 181, 107, 0.08);
-
   filter: brightness(1.02);
 }
 
