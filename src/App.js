@@ -1185,6 +1185,7 @@ const switchView = (nextView) => {
 
   window.history.pushState({}, "", path);
   trackPageView(path);
+  trackMeta("PageView");
 
   requestAnimationFrame(() => {
     window.scrollTo({
@@ -1624,6 +1625,7 @@ const goToShop = () => {
     const path = "/?view=shop";
     window.history.pushState({}, "", path);
     trackPageView(path);
+    trackMeta("PageView");
 
     requestAnimationFrame(() => {
       window.scrollTo({
