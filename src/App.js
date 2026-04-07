@@ -3118,11 +3118,18 @@ return (
 
   {cart.length === 0 ? (
     <div className="cart-empty">
-      <p>{tr.cartEmpty}</p>
-      <button className="gold-button small" type="button" onClick={goToShop}>
-        {tr.goToShop}
-      </button>
-    </div>
+  <p>{tr.cartEmpty}</p>
+  <button
+    className="gold-button small"
+    type="button"
+    onClick={() => {
+      setCartOpen(false);
+      goToShop();
+    }}
+  >
+    {tr.goToShop}
+  </button>
+</div>
   ) : (
     <>
       <div className="cart-items">
