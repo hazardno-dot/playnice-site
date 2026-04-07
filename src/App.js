@@ -2800,23 +2800,21 @@ return (
 
 <div
   className={`backdrop ${
-  cartOpen ||
-  checkoutOpen ||
-  selectedProduct ||
-  storyOpen ||
-  howItWorksOpen ||
-  privateSelectionOpen
-    ? "show"
-    : ""
-}`}
+    cartOpen ||
+    checkoutOpen ||
+    selectedProduct ||
+    storyOpen ||
+    privateSelectionOpen
+      ? "show"
+      : ""
+  }`}
   onClick={() => {
-  setCartOpen(false);
-  setCheckoutOpen(false);
-  setStoryOpen(false);
-  setHowItWorksOpen(false);
-  setPrivateSelectionOpen(false);
-  closeProductModal();
-}}
+    setCartOpen(false);
+    setCheckoutOpen(false);
+    setStoryOpen(false);
+    setPrivateSelectionOpen(false);
+    closeProductModal();
+  }}
 />
 
 <aside className={`story-drawer ${storyOpen ? "open panel-open" : ""}`}>
@@ -2891,9 +2889,7 @@ return (
 </aside>
 
 <aside
-  className={`how-it-works-drawer ${
-  howItWorksOpen ? "open panel-open" : ""
-}`}
+  className={`how-it-works-drawer ${howItWorksOpen ? "open panel-open" : ""}`}
 >
   <div className="how-it-works-drawer-header panel-anim panel-anim-1">
     <div>
@@ -3436,7 +3432,7 @@ return (
     <button
   className="close-button"
   type="button"
-  onClick={closeProductModal}
+  onClick={() => setCheckoutOpen(false)}
   aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
 >
   ×
