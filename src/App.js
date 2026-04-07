@@ -1419,58 +1419,58 @@ useEffect(() => {
   };
 
   const addToCart = (
-    product,
-    size,
-    customPrice = null,
-    customLabel = null,
-    options = {}
-  ) => {
-    const { showToast = true } = options;
+  product,
+  size,
+  customPrice = null,
+  customLabel = null,
+  options = {}
+) => {
+  const { showToast = true } = options;
 
-    const key = `${product.id}-${size}-${customLabel || ""}`;
-    const price = customPrice ?? product.sizes[size];
-    const label = customLabel || size;
+  const key = `${product.id}-${size}-${customLabel || ""}`;
+  const price = customPrice ?? product.sizes[size];
+  const label = customLabel || size;
 
-    trackEvent("add_to_cart", {
-  currency: "EUR",
-  value: Number(price),
-  item_name: `${product.name} ${label}`,
-  item_category: product.category,
-});
+  trackEvent("add_to_cart", {
+    currency: "EUR",
+    value: Number(price),
+    item_name: `${product.name} ${label}`,
+    item_category: product.category,
+  });
 
-trackMeta("AddToCart", {
-  content_name: `${product.name} ${label}`,
-  content_category: product.category,
-  value: Number(price),
-  currency: "EUR",
-});
+  trackMeta("AddToCart", {
+    content_name: `${product.name} ${label}`,
+    content_category: product.category,
+    value: Number(price),
+    currency: "EUR",
+  });
 
-    setCart((prev) => {
-      const existing = prev.find((item) => item.key === key);
+  setCart((prev) => {
+    const existing = prev.find((item) => item.key === key);
 
-      if (existing) {
-        return prev.map((item) =>
-          item.key === key ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-
-      return [
-        ...prev,
-        {
-          key,
-          id: product.id,
-          name: product.name,
-          size: label,
-          price,
-          quantity: 1
-        }
-      ];
-    });
-
-    if (showToast) {
-      showFeedback(`${product.name} ${tr.addedToCart}`);
+    if (existing) {
+      return prev.map((item) =>
+        item.key === key ? { ...item, quantity: item.quantity + 1 } : item
+      );
     }
-  };
+
+    return [
+      ...prev,
+      {
+        key,
+        id: product.id,
+        name: product.name,
+        size: label,
+        price,
+        quantity: 1,
+      },
+    ];
+  });
+
+  if (showToast) {
+    showFeedback(`${product.name} ${tr.addedToCart}`);
+  }
+};
 
   const triggerInlineAddedFeedback = (productId, size) => {
   const key = `${productId}-${size}`;
