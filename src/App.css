@@ -3136,11 +3136,11 @@ main {
     min-height: 360px;
   }
 
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
 
   .modal-description {
     max-width: none;
@@ -3158,14 +3158,20 @@ main {
 }
 
 @media (max-width: 640px) {
-  ...
+  .product-modal {
+    width: calc(100vw - 16px);
+    max-height: calc(100vh - 16px);
+    border-radius: 24px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .product-modal .close-button {
     top: 16px;
     right: 16px;
     width: 40px;
     height: 40px;
   }
-}
 
   .modal-body {
     overflow: visible;
