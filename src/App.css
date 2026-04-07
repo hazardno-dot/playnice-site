@@ -754,9 +754,11 @@ main {
 ========================================= */
 .close-button {
   position: relative;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
+
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+
   border: 1px solid rgba(220, 181, 107, 0.18);
 
   background: rgba(255, 255, 255, 0.04);
@@ -767,7 +769,7 @@ main {
   align-items: center;
   justify-content: center;
 
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1;
   color: #f6e7c5;
 
@@ -802,7 +804,7 @@ main {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 50%;
+  border-radius: inherit;
   background:
     radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), transparent 60%);
   opacity: 0.35;
