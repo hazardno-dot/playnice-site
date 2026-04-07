@@ -2819,8 +2819,8 @@ return (
 }}
 />
 
-<aside className={`story-drawer ${storyOpen ? "open" : ""}`}>
-  <div className="story-drawer-header story-anim story-anim-1">
+<aside className={`story-drawer ${storyOpen ? "open panel-open" : ""}`}>
+  <div className="story-drawer-header panel-anim panel-anim-1">
     <div>
       <p className="section-kicker">OUR STORY</p>
       <h3>Curated to be remembered.</h3>
@@ -2837,43 +2837,43 @@ return (
   </div>
 
   <div className="story-drawer-body">
-    <p className="story-drawer-lead story-anim story-anim-2">
+    <p className="story-drawer-lead panel-anim panel-anim-2">
       {lang === "sr"
         ? "PlayNice je nastao za ljude koji žele više od nasumične bočice na polici. Biramo dizajnerske, niche i arapske parfeme sa jednom jasnom idejom — probaj pre kupovine."
         : "PlayNice was created for people who want more than a random bottle on a shelf. We curate designer, niche, and Arabian fragrances with one simple idea in mind — try before you buy."}
     </p>
 
-    <p className="story-anim story-anim-3">
+    <p className="panel-anim panel-anim-3">
       {lang === "sr"
         ? "Parfem ne treba birati na brzinu. Treba ga nositi, osetiti i zapamtiti. Zato PlayNice nudi ličniji način otkrivanja mirisa kroz pažljivo odabrane dekante i limitirane dropove."
         : "A fragrance should not be chosen in a rush. It should be worn, felt, and remembered. That is why PlayNice offers a more personal way to discover scent through carefully selected decants and limited drops."}
     </p>
 
-    <p className="story-anim story-anim-4">
+    <p className="panel-anim panel-anim-4">
       {lang === "sr"
         ? "Ovde nije poenta prodati sve. Poenta je odabrati ono što zaista zaslužuje pažnju."
         : "This is not about selling everything. It is about selecting what deserves attention."}
     </p>
 
-    <div className="story-drawer-points story-anim story-anim-5">
-      <div>
+    <div className="story-drawer-points panel-anim panel-anim-5">
+      <div className="panel-item-anim panel-item-1">
         {lang === "sr"
           ? "Dizajnerski, niche i arapski izbor"
           : "Designer, niche, and Arabian curation"}
       </div>
-      <div>
+      <div className="panel-item-anim panel-item-2">
         {lang === "sr"
           ? "Premium dekanti pre pune bočice"
           : "Premium decants before full bottles"}
       </div>
-      <div>
+      <div className="panel-item-anim panel-item-3">
         {lang === "sr"
           ? "Limitirani dropovi i boutique pristup"
           : "Limited drops with boutique logic"}
       </div>
     </div>
 
-    <div className="story-drawer-footer story-anim story-anim-6">
+    <div className="story-drawer-footer panel-anim panel-anim-6">
       <span className="story-drawer-signature">Remember. PlayNice.</span>
 
       <button
