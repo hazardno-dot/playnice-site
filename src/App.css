@@ -2402,7 +2402,7 @@ body.scrolled .announcement-bar::after {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate(-50%, -48%) scale(0.94);
+  transform: translate(-50%, -52%) scale(0.94);
   filter: blur(6px);
 
   transition:
@@ -2418,9 +2418,8 @@ body.scrolled .announcement-bar::after {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -52%) scale(1);
   filter: blur(0);
-
   transition:
     opacity 0.38s ease,
     transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
