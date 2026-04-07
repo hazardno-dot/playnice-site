@@ -2891,7 +2891,9 @@ return (
 </aside>
 
 <aside
-  className={`how-it-works-drawer ${howItWorksOpen ? "open" : ""}`}
+  className={`how-it-works-drawer ${
+  howItWorksOpen ? "open panel-open" : ""
+}`}
 >
   <div className="how-it-works-drawer-header panel-anim panel-anim-1">
     <div>
