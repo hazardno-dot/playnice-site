@@ -5844,6 +5844,10 @@ main {
   will-change: transform, opacity;
 }
 
+.how-it-works-drawer {
+  z-index: 120;
+}
+
 .how-it-works-drawer.open {
   opacity: 1;
   visibility: visible;
