@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
-import { trackPageView, trackEvent, trackMeta } from "./ga";
+import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 
 const translations = {
   en: {
