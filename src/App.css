@@ -45,6 +45,11 @@ body.scroll-locked {
   padding-right: var(--scrollbar-compensation, 0px);
 }
 
+body.scroll-locked .topbar,
+body.scroll-locked .announcement-bar {
+  padding-right: var(--scrollbar-compensation, 0px);
+}
+
 /* =========================================
    RESET / BASE
 ========================================= */
