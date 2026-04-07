@@ -4742,31 +4742,37 @@ body.scrolled .announcement-bar::after {
 
 .private-selection-drawer {
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 50%;
+  right: 16px;
   z-index: 1140;
 
-  width: min(440px, 100vw);
-  height: 100vh;
-  padding: 24px 20px 20px;
+  width: min(440px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 22px 20px 18px;
 
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 
   background:
     radial-gradient(circle at 20% 10%, rgba(159, 31, 45, 0.08), transparent 34%),
     radial-gradient(circle at 80% 0%, rgba(220, 181, 107, 0.08), transparent 28%),
     linear-gradient(180deg, rgba(12, 12, 12, 0.985), rgba(8, 8, 8, 0.995));
 
-  border-left: 1px solid rgba(220, 181, 107, 0.16);
-  box-shadow: -24px 0 60px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  border-radius: 30px;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
   overflow: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateX(calc(100% + 28px));
+  transform: translateY(-50%) translateX(calc(100% + 28px));
 
   transition:
     transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
@@ -4780,7 +4786,7 @@ body.scrolled .announcement-bar::after {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateX(0);
+  transform: translateY(-50%) translateX(0);
 
   transition:
     transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
@@ -4795,6 +4801,7 @@ body.scrolled .announcement-bar::after {
   gap: 16px;
   padding-bottom: 14px;
   border-bottom: 1px solid rgba(220, 181, 107, 0.1);
+  flex-shrink: 0;
 }
 
 .private-selection-header h3 {
@@ -4813,7 +4820,7 @@ body.scrolled .announcement-bar::after {
   text-align: center;
   flex-direction: column;
   gap: 14px;
-  padding: 24px;
+  padding: 24px 18px;
 }
 
 .private-selection-empty p {
@@ -4832,6 +4839,7 @@ body.scrolled .announcement-bar::after {
 
 .private-selection-items {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding-right: 4px;
   display: flex;
@@ -4963,12 +4971,22 @@ body.scrolled .announcement-bar::after {
   gap: 12px;
   padding-top: 14px;
   border-top: 1px solid rgba(220, 181, 107, 0.1);
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
   .private-selection-drawer {
-    width: 100vw;
+    top: 50%;
+    right: 10px;
+    width: calc(100vw - 20px);
+    max-height: calc(100vh - 20px);
     padding: 20px 16px 16px;
+    border-radius: 24px;
+    transform: translateY(-50%) translateX(calc(100% + 24px));
+  }
+
+  .private-selection-drawer.open {
+    transform: translateY(-50%) translateX(0);
   }
 
   .private-selection-item {
