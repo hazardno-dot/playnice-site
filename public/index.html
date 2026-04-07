@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>PlayNice – Premium parfemi i decanti u Crnoj Gori</title>
+
     <meta
       name="description"
       content="PlayNice nudi premium parfeme i decante u Crnoj Gori. Try before you buy pristup, designer, niche i Arabian mirisi, dostava širom Crne Gore."
@@ -16,6 +17,7 @@
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://www.playniceshop.me/" />
 
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.playniceshop.me/" />
     <meta property="og:title" content="PlayNice – Premium parfemi i decanti u Crnoj Gori" />
@@ -25,6 +27,7 @@
     />
     <meta property="og:image" content="https://www.playniceshop.me/og-image.jpg" />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="PlayNice – Premium parfemi i decanti u Crnoj Gori" />
     <meta
@@ -33,12 +36,66 @@
     />
     <meta name="twitter:image" content="https://www.playniceshop.me/og-image.jpg" />
 
+    <!-- =========================
+         GOOGLE ANALYTICS (GA4)
+    ========================== -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E81945BBL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+
+      gtag('js', new Date());
+
+      // VAŽNO: SPA kontrola
+      gtag('config', 'G-0E81945BBL', {
+        send_page_view: false
+      });
+    </script>
+
+    <!-- =========================
+         META PIXEL
+    ========================== -->
+    <script>
+      !(function(f,b,e,v,n,t,s){
+        if(f.fbq)return;n=f.fbq=function(){
+          n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments)
+        };
+        if(!f._fbq)f._fbq=n;
+        n.push=n;
+        n.loaded=true;
+        n.version='2.0';
+        n.queue=[];
+        t=b.createElement(e);
+        t.async=true;
+        t.src=v;
+        s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)
+      })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+      // ⚠️ OVDE UBACI SVOJ PIXEL ID
+      fbq('init', 'YOUR_PIXEL_ID_HERE');
+
+      // osnovni pageview (React će raditi ostalo)
+      fbq('track', 'PageView');
+    </script>
+
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display:none"
+        src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID_HERE&ev=PageView&noscript=1"
+      />
+    </noscript>
+
     <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
   </head>
+
   <body>
     <div id="root"></div>
   </body>
