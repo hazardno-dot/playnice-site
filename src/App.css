@@ -783,11 +783,28 @@ body.scrolled .announcement-bar::after {
   background: rgba(255, 255, 255, 0.035);
   color: var(--text);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    border-color 0.22s ease,
+    background 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.cart-button:focus,
+.cart-button:focus-visible {
+  outline: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
 }
 
 .cart-button:hover {
   border-color: var(--line-strong);
   background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
+}
+
+.cart-button:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .cart-count {
@@ -817,6 +834,21 @@ body.scrolled .announcement-bar::after {
   box-shadow:
     0 12px 28px rgba(220, 181, 107, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    opacity 0.22s ease;
+}
+
+.gold-button:focus,
+.gold-button:focus-visible,
+.cta-section button:focus,
+.cta-section button:focus-visible {
+  outline: none;
+  box-shadow:
+    0 12px 28px rgba(220, 181, 107, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .gold-button:hover,
@@ -825,6 +857,11 @@ body.scrolled .announcement-bar::after {
   box-shadow:
     0 16px 34px rgba(220, 181, 107, 0.24),
     inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.gold-button:active,
+.cta-section button:active {
+  transform: translateY(0) scale(0.985);
 }
 
 .gold-button.small {
@@ -841,11 +878,28 @@ body.scrolled .announcement-bar::after {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    border-color 0.22s ease,
+    background 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.ghost-button:focus,
+.ghost-button:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .ghost-button:hover {
   border-color: var(--line-strong);
   background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+
+.ghost-button:active {
+  transform: translateY(0) scale(0.985);
 }
 
 .inline-link {
@@ -856,10 +910,24 @@ body.scrolled .announcement-bar::after {
   color: var(--gold);
   font-weight: 700;
   text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.inline-link:focus,
+.inline-link:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .inline-link:hover {
   opacity: 0.82;
+}
+
+.inline-link:active {
+  transform: scale(0.99);
 }
 
 /* =========================================
