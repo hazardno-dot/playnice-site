@@ -5381,11 +5381,21 @@ body.scrolled .announcement-bar::after {
   cursor: pointer;
   overflow: hidden;
 
+  /* FIX: uklanja plavi tap highlight */
+  -webkit-tap-highlight-color: transparent;
+
   transition:
     transform 0.22s ease,
     border-color 0.22s ease,
     box-shadow 0.22s ease,
     background 0.22s ease;
+}
+
+/* FIX: uklanja focus outline */
+.wishlist-btn:focus,
+.wishlist-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .wishlist-btn:hover {
@@ -5397,7 +5407,7 @@ body.scrolled .announcement-bar::after {
 }
 
 .wishlist-btn:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.96); /* mali premium tap feedback */
 }
 
 .wishlist-btn.active {
