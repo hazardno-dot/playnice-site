@@ -6087,6 +6087,38 @@ body.scrolled .announcement-bar::after {
 }
 
 /* =========================================
+   HOW IT WORKS OVERLAY
+========================================= */
+
+.how-it-works-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 119;
+
+  background: rgba(0, 0, 0, 0.56);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 0.32s ease,
+    visibility 0s linear 0.32s;
+}
+
+.how-it-works-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transition:
+    opacity 0.32s ease,
+    visibility 0s linear 0s;
+}
+
+/* =========================================
    HOW IT WORKS DRAWER
 ========================================= */
 
