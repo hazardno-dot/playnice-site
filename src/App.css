@@ -353,6 +353,13 @@ main {
   border: 0;
   background: transparent;
   color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.brand:focus,
+.brand:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .brand-mark {
@@ -398,7 +405,7 @@ main {
 
 .nav-links button {
   position: relative;
-  min-width: 78px;
+  min-width: 72px;
   padding: 10px 16px;
   border: 1px solid transparent;
   border-radius: 999px;
@@ -408,6 +415,19 @@ main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.nav-links button:focus,
+.nav-links button:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .nav-links button.active,
@@ -420,16 +440,6 @@ main {
 /* ========================================
    NAV POLISH (PlayNice refinement)
 ======================================== */
-
-/* subtle lift */
-.nav-links button {
-  transition:
-    color 0.25s ease,
-    border-color 0.25s ease,
-    background 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
 
 /* elegant hover lift */
 .nav-links button:hover {
@@ -476,6 +486,13 @@ main {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lang-switch button:focus,
+.lang-switch button:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .lang-switch button.active,
