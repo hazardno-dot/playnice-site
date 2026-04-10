@@ -2487,7 +2487,6 @@ body.scrolled .announcement-bar::after {
 }
 
 @media (max-width: 768px) {
-  @media (max-width: 768px) {
   .cart-drawer,
   .cart-drawer.is-empty,
   .cart-drawer.has-items {
@@ -2496,8 +2495,7 @@ body.scrolled .announcement-bar::after {
     width: calc(100vw - 20px);
     max-height: calc(100vh - 20px);
     transform: translateX(calc(100% + 28px));
-
-}
+  }
 
   .cart-drawer.open {
     transform: translateX(0);
