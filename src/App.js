@@ -2076,34 +2076,36 @@ function App() {
   );
 
     /* =========================================
-     EFFECTS
-  ========================================= */
+   EFFECTS
+========================================= */
+useEffect(() => {
   const shouldLockScroll =
-  !!selectedProduct ||
-  cartOpen ||
-  checkoutOpen ||
-  storyOpen ||
-  howItWorksOpen ||
-  privateSelectionOpen ||
-  !!catalogPreview;
+    !!selectedProduct ||
+    cartOpen ||
+    checkoutOpen ||
+    storyOpen ||
+    howItWorksOpen ||
+    privateSelectionOpen ||
+    !!catalogPreview;
 
-    if (shouldLockScroll) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+  if (shouldLockScroll) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+  }
 
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [
-    selectedProduct,
-    cartOpen,
-    checkoutOpen,
-    storyOpen,
-    howItWorksOpen,
-    privateSelectionOpen
-  ]);
+  return () => {
+    document.body.style.overflow = "";
+  };
+}, [
+  selectedProduct,
+  cartOpen,
+  checkoutOpen,
+  storyOpen,
+  howItWorksOpen,
+  privateSelectionOpen,
+  catalogPreview
+]);
 
   useEffect(() => {
     const section = document.querySelector(".closing-section");
