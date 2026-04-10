@@ -2205,10 +2205,11 @@ body.scrolled .announcement-bar::after {
 ========================================= */
 .cart-drawer {
   position: fixed;
-  top: 18px;
+  top: 50%;
   right: 18px;
   width: min(520px, calc(100vw - 20px));
-  height: calc(100vh - 36px);
+  max-height: calc(100vh - 36px);
+  height: auto;
   display: flex;
   flex-direction: column;
   border: 1px solid rgba(220, 181, 107, 0.14);
@@ -2223,36 +2224,40 @@ body.scrolled .announcement-bar::after {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateX(calc(100% + 28px));
+  transform: translateY(-50%) translateX(calc(100% + 28px));
 
   transition:
     transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
     opacity 0.38s ease,
     visibility 0s linear 0.68s,
-    width 0.34s ease;
+    width 0.34s ease,
+    max-height 0.34s ease;
 
   will-change: transform, opacity, width;
 }
 
 .cart-drawer.is-empty {
   width: min(380px, calc(100vw - 20px));
+  max-height: 520px;
 }
 
 .cart-drawer.has-items {
   width: min(520px, calc(100vw - 20px));
+  max-height: calc(100vh - 36px);
 }
 
 .cart-drawer.open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateX(0);
+  transform: translateY(-50%) translateX(0);
 
   transition:
     transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
     opacity 0.38s ease,
     visibility 0s linear 0s,
-    width 0.34s ease;
+    width 0.34s ease,
+    max-height 0.34s ease;
 }
 
 .cart-drawer-header,
@@ -2285,11 +2290,28 @@ body.scrolled .announcement-bar::after {
 }
 
 .cart-drawer.is-empty .cart-drawer-header {
-  padding-bottom: 14px;
+  padding: 24px 24px 16px;
+}
+
+.cart-drawer.is-empty .cart-drawer-header h3 {
+  font-size: 32px;
+  line-height: 1.05;
+  max-width: 220px;
 }
 
 .cart-drawer.is-empty .cart-empty {
-  padding: 28px 24px 30px;
+  flex: 0 0 auto;
+  min-height: 0;
+  padding: 26px 24px 30px;
+}
+
+.cart-drawer.is-empty .cart-empty p {
+  margin: 0;
+}
+
+.cart-drawer.is-empty .cart-empty .gold-button,
+.cart-drawer.is-empty .gold-button.small {
+  align-self: flex-start;
 }
 
 .cart-items {
@@ -2401,7 +2423,17 @@ body.scrolled .announcement-bar::after {
     top: 10px;
     right: 10px;
     width: calc(100vw - 20px);
-    height: calc(100vh - 20px);
+    max-height: calc(100vh - 20px);
+    height: auto;
+    transform: translateX(calc(100% + 28px));
+  }
+
+  .cart-drawer.open {
+    transform: translateX(0);
+  }
+
+  .cart-drawer.is-empty {
+    max-height: none;
   }
 }
 
@@ -7107,52 +7139,5 @@ body.scrolled .announcement-bar::after {
 
   .shop-section.has-sticky-cta {
     padding-bottom: 108px;
-  }
-}
-
-/* =========================================
-   CART DRAWER — EMPTY STATE COMPACT HEIGHT
-========================================= */
-.cart-drawer.is-empty {
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: 520px;
-}
-
-.cart-drawer.is-empty .cart-empty {
-  flex: 0 0 auto;
-  min-height: 0;
-  padding: 26px 24px 30px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 18px;
-}
-
-.cart-drawer.is-empty .cart-drawer-header {
-  padding: 24px 24px 16px;
-}
-
-.cart-drawer.is-empty .cart-drawer-header h3 {
-  font-size: 32px;
-  line-height: 1.05;
-  max-width: 220px;
-}
-
-.cart-drawer.is-empty .cart-empty p {
-  margin: 0;
-}
-
-.cart-drawer.is-empty .gold-button.small,
-.cart-drawer.is-empty .cart-empty .gold-button {
-  align-self: flex-start;
-}
-
-@media (max-width: 768px) {
-  .cart-drawer.is-empty {
-    height: auto !important;
-    max-height: none;
   }
 }
