@@ -3582,7 +3582,7 @@ setCheckoutOpen(false);
         )}
 
         {view === "shop" && (
-          <section className="shop-section section-wrap has-sticky-cta">
+          <section className="shop-section section-wrap">
             <div className="shop-top">
               <div>
                 <p className="section-kicker">{tr.shopKicker}</p>
@@ -4660,10 +4660,7 @@ setCheckoutOpen(false);
       )}
 
       {showStickyCta && (
-  <div
-    className={`sticky-cta-shell ${view === "shop" ? "is-compact" : ""}`}
-    aria-live="polite"
-  >
+  <div className="sticky-cta-shell" aria-live="polite">
           <button
             type="button"
             className="sticky-cta-button"
