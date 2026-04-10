@@ -7434,27 +7434,3 @@ body.scrolled .announcement-bar::after {
     opacity: 0;
   }
 }
-
-/* =========================================
-   SLOWER FADE FOR NON-STORY PANELS
-========================================= */
-
-.cart-drawer,
-.private-selection-drawer,
-.product-modal,
-.checkout-modal {
-  transition:
-    transform var(--panel-duration) var(--panel-ease),
-    opacity 1.02s ease, /* bilo ~0.42s */
-    visibility 0s linear 0.72s;
-}
-
-.cart-drawer.open,
-.private-selection-drawer.open,
-.product-modal.open,
-.checkout-modal.open {
-  transition:
-    transform var(--panel-duration) var(--panel-ease),
-    opacity 1.02s ease,
-    visibility 0s linear 0s;
-}
