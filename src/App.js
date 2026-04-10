@@ -2134,35 +2134,51 @@ useEffect(() => {
   }, [lang]);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const urlView = params.get("view");
-    const urlCategory = params.get("category");
-    const urlSearch = params.get("search");
-    const urlPage = params.get("page");
+  const params = new URLSearchParams(window.location.search);
+  const urlView = params.get("view");
+  const urlCategory = params.get("category");
+  const urlSearch = params.get("search");
+  const urlPage = params.get("page");
+  const urlSort = params.get("sort");
+  const urlSeason = params.get("season");
 
-    if (urlView && ["home", "shop"].includes(urlView)) setView(urlView);
-    if (urlCategory && categories.includes(urlCategory)) setCategory(urlCategory);
-    if (urlSearch) setSearchTerm(urlSearch);
-    if (urlPage && !Number.isNaN(Number(urlPage))) {
-      setCurrentPage(Number(urlPage));
-    }
-  }, [categories]);
+  if (urlView && ["home", "shop"].includes(urlView)) setView(urlView);
+  if (urlCategory && categories.includes(urlCategory)) setCategory(urlCategory);
+  if (urlSearch) setSearchTerm(urlSearch);
+
+  if (urlPage && !Number.isNaN(Number(urlPage))) {
+    setCurrentPage(Number(urlPage));
+  }
+
+  if (
+    urlSort &&
+    ["featured", "rating", "priceLow", "priceHigh", "name"].includes(urlSort)
+  ) {
+    setSortBy(urlSort);
+  }
+
+  if (urlSeason && ["All", "summer", "winter"].includes(urlSeason)) {
+    setSeason(urlSeason);
+  }
+}, [categories]);
 
   useEffect(() => {
-    const params = new URLSearchParams();
-    params.set("view", view);
+  const params = new URLSearchParams();
+  params.set("view", view);
 
-    if (category !== "All") params.set("category", category);
-    if (searchTerm.trim()) params.set("search", searchTerm.trim());
-    if (currentPage > 1) params.set("page", String(currentPage));
+  if (category !== "All") params.set("category", category);
+  if (searchTerm.trim()) params.set("search", searchTerm.trim());
+  if (season !== "All") params.set("season", season);
+  if (sortBy !== "featured") params.set("sort", sortBy);
+  if (currentPage > 1) params.set("page", String(currentPage));
 
-    const query = params.toString();
-    const nextUrl = query
-      ? `${window.location.pathname}?${query}`
-      : window.location.pathname;
+  const query = params.toString();
+  const nextUrl = query
+    ? `${window.location.pathname}?${query}`
+    : window.location.pathname;
 
-    window.history.replaceState({}, "", nextUrl);
-  }, [view, category, searchTerm, currentPage]);
+  window.history.replaceState({}, "", nextUrl);
+}, [view, category, searchTerm, season, sortBy, currentPage]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -2362,25 +2378,17 @@ const goToShop = () => {
      ACTIONS
   ========================================= */
   const switchView = (nextView) => {
-    if (view !== nextView) {
-      setView(nextView);
-    }
+  if (view !== nextView) {
+    setView(nextView);
+  }
 
-    const path =
-      nextView === "shop"
-        ? "/?view=shop"
-        : nextView === "checkout"
-        ? "/?view=checkout"
-        : "/";
+  trackPageView(nextView === "shop" ? "/?view=shop" : "/");
+  trackMeta("PageView");
 
-    window.history.pushState({}, "", path);
-    trackPageView(path);
-    trackMeta("PageView");
-
-    requestAnimationFrame(() => {
-      smoothScrollToTop();
-    });
-  };
+  requestAnimationFrame(() => {
+    smoothScrollToTop();
+  });
+};
 
   const toggleWishlist = (productId) => {
     const isAdding = !wishlist.includes(productId);
@@ -2394,7 +2402,9 @@ const goToShop = () => {
         updated = [...prev, productId];
       }
 
-      localStorage.setItem("playnice_wishlist", JSON.stringify(updated));
+      try {
+  window.localStorage.setItem("playnice_wishlist", JSON.stringify(updated));
+} catch {}
       return updated;
     });
 
@@ -3472,50 +3482,56 @@ const goToShop = () => {
                 </div>
 
                 <div className="footer-links">
-                  <h4>{lang === "sr" ? "Navigacija" : "Navigation"}</h4>
+  <h4>{lang === "sr" ? "Navigacija" : "Navigation"}</h4>
 
-                  onClick={() => switchView("home")}
+  <button
+    type="button"
+    className="footer-link"
+    onClick={() => switchView("home")}
+  >
+    {lang === "sr" ? "Početna" : "Home"}
+  </button>
 
-                  <button
-                    type="button"
-                    className="footer-link"
-                    onClick={() => setStoryOpen(true)}
-                  >
-                    {lang === "sr" ? "Priča" : "Our Story"}
-                  </button>
+  <button
+    type="button"
+    className="footer-link"
+    onClick={() => setStoryOpen(true)}
+  >
+    {lang === "sr" ? "Priča" : "Our Story"}
+  </button>
 
-                  <button
-                    type="button"
-                    className="footer-link"
-                    onClick={goToShop}
-                  >
-                    {lang === "sr" ? "Prodavnica" : "Shop"}
-                  </button>
+  <button
+    type="button"
+    className="footer-link"
+    onClick={goToShop}
+  >
+    {lang === "sr" ? "Prodavnica" : "Shop"}
+  </button>
 
-                  <button
-                    type="button"
-                    className="footer-link"
-                    onClick={goToShop}
-                  >
-                    Private Selection
-                  </button>
+  <button
+    type="button"
+    className="footer-link"
+    onClick={() => setPrivateSelectionOpen(true)}
+  >
+    Private Selection
+  </button>
 
-                  <button
-                    type="button"
-                    className="footer-link"
-                    onClick={() => {
-                      const section = document.getElementById("how-it-works");
-                      if (section) {
-                        section.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start"
-                        });
-                      }
-                    }}
-                  >
-                    {lang === "sr" ? "Kako funkcioniše" : "How it works"}
-                  </button>
-                </div>
+  <button
+    type="button"
+    className="footer-link"
+    onClick={() => {
+      const section = document.getElementById("how-it-works");
+      if (section) {
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    }}
+  >
+    {lang === "sr" ? "Kako funkcioniše" : "How it works"}
+  </button>
+</div>
 
                 <div className="footer-trust">
                   <h4>{lang === "sr" ? "Informacije" : "Information"}</h4>
@@ -3749,8 +3765,8 @@ const goToShop = () => {
 
             <div className="pagination-wrap">
               <button type="button" onClick={prevPage} disabled={currentPage === 1}>
-                Prev
-              </button>
+  {lang === "sr" ? "Nazad" : "Prev"}
+</button>
 
               <div className="pagination-numbers">
                 {Array.from({ length: totalPages }, (_, index) => {
@@ -3776,12 +3792,12 @@ const goToShop = () => {
               </div>
 
               <button
-                type="button"
-                onClick={nextPage}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </button>
+  type="button"
+  onClick={nextPage}
+  disabled={currentPage === totalPages}
+>
+  {lang === "sr" ? "Dalje" : "Next"}
+</button>
             </div>
           </section>
         )}
