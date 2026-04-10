@@ -1925,6 +1925,7 @@ function App() {
   const [heroPaused, setHeroPaused] = useState(false);
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
+  const [productModalVisible, setProductModalVisible] = useState(false);
 
   const [wishlist, setWishlist] = useState(() =>
     safeReadLocalStorage("playnice_wishlist", [])
@@ -2267,6 +2268,17 @@ useEffect(() => {
     cartCount,
     wishlist.length
   ]);
+
+  useEffect(() => {
+  if (selectedProduct) {
+    const id = requestAnimationFrame(() => {
+      setProductModalVisible(true);
+    });
+    return () => cancelAnimationFrame(id);
+  } else {
+    setProductModalVisible(false);
+  }
+}, [selectedProduct]);
 
   /* =========================================
    DERIVED DATA
@@ -2658,7 +2670,13 @@ setCheckoutOpen(false);
   };
 
   const closeProductModal = () => {
+    const closeProductModal = () => {
+  setProductModalVisible(false);
+
+  setTimeout(() => {
     setSelectedProduct(null);
+  }, 320);
+};
     setSelectedSize("");
   };
 
@@ -4276,11 +4294,14 @@ setCheckoutOpen(false);
       </aside>
 
       {selectedProduct && (
-        <div className="modal-overlay show" onClick={closeProductModal}>
-          <div
-            className="product-modal open panel-open"
-            onClick={(e) => e.stopPropagation()}
-          >
+  <div
+    className={`modal-overlay ${productModalVisible ? "show" : ""}`}
+    onClick={closeProductModal}
+  >
+    <div
+      className={`product-modal ${productModalVisible ? "open panel-open" : ""}`}
+      onClick={(e) => e.stopPropagation()}
+    >
             <button
               className="close-button"
               type="button"
