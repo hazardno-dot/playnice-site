@@ -2263,7 +2263,7 @@ body.scrolled .announcement-bar::after {
 ========================================= */
 .cart-drawer {
   position: fixed;
-  top: 12px;
+  top: 10px;
   right: 18px;
   width: min(520px, calc(100vw - 20px));
   max-height: calc(100vh - 36px);
@@ -2288,20 +2288,18 @@ body.scrolled .announcement-bar::after {
     transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
     opacity 0.38s ease,
     visibility 0s linear 0.68s,
-    width 0.34s ease,
     max-height 0.34s ease;
 
-  will-change: transform, opacity, width;
+  will-change: transform, opacity, max-height;
 }
 
 .cart-drawer.is-empty {
   width: min(380px, calc(100vw - 20px));
-  max-height: 520px;
+  max-height: 320px;
 }
 
 .cart-drawer.has-items {
   width: min(520px, calc(100vw - 20px));
-  max-height: calc(100vh - 36px);
 }
 
 .cart-drawer.open {
@@ -2373,7 +2371,7 @@ body.scrolled .announcement-bar::after {
 }
 
 .cart-items {
-  flex: 1;
+  flex: 0 1 auto;
   padding: 12px 24px 0;
   overflow: auto;
 }
