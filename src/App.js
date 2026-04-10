@@ -2524,7 +2524,7 @@ const stickyCtaData = useMemo(() => {
 
     addToCart(heroProduct, "100ml", 34.9, "100ml Full Bottle");
 setCartOpen(true);
-setCheckoutOpen(true);
+setCheckoutOpen(false);
   };
 
   const updateQuantity = (key, delta) => {
