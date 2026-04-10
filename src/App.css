@@ -239,7 +239,7 @@ main {
 /* base reveal for panel internals */
 .panel-anim {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(-14px);
   filter: blur(6px);
   transition:
     opacity var(--content-duration) ease,
@@ -257,7 +257,7 @@ main {
 /* reveal for cards / list items */
 .panel-item-anim {
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(-10px);
   filter: blur(5px);
   transition:
     opacity var(--item-duration) ease,
