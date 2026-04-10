@@ -231,16 +231,16 @@ main {
   --panel-fade-duration: 0.42s;
 
   --content-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --content-duration: 0.82s;
+  --content-duration: 0.92s;
 
-  --item-duration: 0.72s;
+  --item-duration: 0.82s;
 }
 
 /* base reveal for panel internals */
 .panel-anim {
   opacity: 0;
-  transform: translateY(-14px);
-  filter: blur(6px);
+  transform: translateY(-18px);
+  filter: blur(4px);
   transition:
     opacity var(--content-duration) ease,
     transform var(--content-duration) var(--content-ease),
@@ -257,8 +257,8 @@ main {
 /* reveal for cards / list items */
 .panel-item-anim {
   opacity: 0;
-  transform: translateY(-10px);
-  filter: blur(5px);
+  transform: translateY(-14px);
+  filter: blur(3px);
   transition:
     opacity var(--item-duration) ease,
     transform var(--item-duration) var(--content-ease),
