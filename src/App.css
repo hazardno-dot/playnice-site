@@ -2718,42 +2718,47 @@ body.scrolled .announcement-bar::after {
    PRODUCT MODAL — CONTENT REVEAL
 ========================================= */
 
-.modal-header,
-.product-modal-content,
-.product-modal-body,
-.product-modal-footer,
-.modal-close {
+.product-modal .panel-anim,
+.product-modal .panel-item-anim,
+.product-modal .close-button {
   opacity: 0;
   transform: translateY(-14px);
+  will-change: transform, opacity;
+}
+
+.product-modal .panel-anim {
   transition:
     opacity 0.34s ease,
     transform 0.46s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.product-modal.open .modal-header {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.08s;
+.product-modal .panel-item-anim,
+.product-modal .close-button {
+  transition:
+    opacity 0.3s ease,
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.product-modal.open .product-modal-content,
-.product-modal.open .product-modal-body {
+.product-modal.open .panel-anim,
+.product-modal.open .panel-item-anim,
+.product-modal.open .close-button {
   opacity: 1;
   transform: translateY(0);
-  transition-delay: 0.14s;
 }
 
-.product-modal.open .product-modal-footer {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.2s;
-}
+.product-modal.open .panel-anim-1 { transition-delay: 0.08s; }
+.product-modal.open .panel-anim-2 { transition-delay: 0.14s; }
+.product-modal.open .panel-anim-3 { transition-delay: 0.2s; }
+.product-modal.open .panel-anim-4 { transition-delay: 0.26s; }
 
-.product-modal.open .modal-close {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.1s;
-}
+.product-modal.open .panel-item-1 { transition-delay: 0.12s; }
+.product-modal.open .panel-item-2 { transition-delay: 0.18s; }
+.product-modal.open .panel-item-3 { transition-delay: 0.24s; }
+.product-modal.open .panel-item-4 { transition-delay: 0.3s; }
+.product-modal.open .panel-item-5 { transition-delay: 0.36s; }
+.product-modal.open .panel-item-6 { transition-delay: 0.42s; }
+
+.product-modal.open .close-button { transition-delay: 0.1s; }
 
 /* =========================================
    PRODUCT MODAL — EYEBROW
@@ -3495,9 +3500,9 @@ body.scrolled .announcement-bar::after {
   }
 
   .modal-description {
-    font-size: 2rem;
-    line-height: 1.02;
-  }
+  font-size: 1.08rem;
+  line-height: 1.2;
+}
 
   .modal-info-card strong {
     font-size: 1.08rem;
