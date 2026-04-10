@@ -7109,3 +7109,11 @@ body.scrolled .announcement-bar::after {
     padding-bottom: 108px;
   }
 }
+
+.cart-drawer.is-empty {
+  width: 380px !important;
+}
+
+.cart-drawer.has-items {
+  width: 520px !important;
+}
