@@ -1001,6 +1001,55 @@ body.scrolled .announcement-bar::after {
 }
 
 /* =========================================
+   PLAYNICE SCROLLBAR — PREMIUM DARK GOLD
+========================================= */
+
+/* Target scrollable areas */
+.cart-items,
+.private-selection-items {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(220, 181, 107, 0.35) transparent;
+}
+
+/* WebKit */
+.cart-items::-webkit-scrollbar,
+.private-selection-items::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cart-items::-webkit-scrollbar-track,
+.private-selection-items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cart-items::-webkit-scrollbar-thumb,
+.private-selection-items::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(220, 181, 107, 0.22),
+    rgba(220, 181, 107, 0.08)
+  );
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  box-shadow:
+    0 0 6px rgba(220, 181, 107, 0.12),
+    inset 0 0 4px rgba(255, 255, 255, 0.04);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cart-items::-webkit-scrollbar-thumb:hover,
+.private-selection-items::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(220, 181, 107, 0.34),
+    rgba(220, 181, 107, 0.14)
+  );
+  box-shadow:
+    0 0 10px rgba(220, 181, 107, 0.22),
+    inset 0 0 6px rgba(255, 255, 255, 0.06);
+}
+
+/* =========================================
    TOAST / FEEDBACK
 ========================================= */
 .added-feedback {
