@@ -279,19 +279,19 @@ main {
    PANEL STAGGER SYSTEM
 ========================================= */
 
-.panel-open .panel-anim-1 { transition-delay: 0.10s; }
-.panel-open .panel-anim-2 { transition-delay: 0.20s; }
-.panel-open .panel-anim-3 { transition-delay: 0.30s; }
-.panel-open .panel-anim-4 { transition-delay: 0.40s; }
-.panel-open .panel-anim-5 { transition-delay: 0.50s; }
-.panel-open .panel-anim-6 { transition-delay: 0.60s; }
+.panel-open .panel-anim-1 { transition-delay: 0.06s; }
+.panel-open .panel-anim-2 { transition-delay: 0.12s; }
+.panel-open .panel-anim-3 { transition-delay: 0.18s; }
+.panel-open .panel-anim-4 { transition-delay: 0.24s; }
+.panel-open .panel-anim-5 { transition-delay: 0.30s; }
+.panel-open .panel-anim-6 { transition-delay: 0.36s; }
 
-.panel-open .panel-item-1 { transition-delay: 0.56s; }
-.panel-open .panel-item-2 { transition-delay: 0.66s; }
-.panel-open .panel-item-3 { transition-delay: 0.76s; }
-.panel-open .panel-item-4 { transition-delay: 0.86s; }
-.panel-open .panel-item-5 { transition-delay: 0.96s; }
-.panel-open .panel-item-6 { transition-delay: 1.06s; }
+.panel-open .panel-item-1 { transition-delay: 0.10s; }
+.panel-open .panel-item-2 { transition-delay: 0.14s; }
+.panel-open .panel-item-3 { transition-delay: 0.18s; }
+.panel-open .panel-item-4 { transition-delay: 0.22s; }
+.panel-open .panel-item-5 { transition-delay: 0.26s; }
+.panel-open .panel-item-6 { transition-delay: 0.30s; }
 
 /* =========================================
    TRANSITIONS
