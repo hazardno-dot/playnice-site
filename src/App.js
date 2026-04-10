@@ -1713,7 +1713,7 @@ const productCopy = {
   "Rasasi Hawas Ice for Him": {
     miniTag: { sr: "❄️ Fresh / Summer", en: "❄️ Fresh / Summer" },
     card: {
-      sr: "Ultra svež aquatic parfem sa ledenom slatkoćom i jakom projekcijom.",
+      sr: "Ultra svež aquatic parfem sa ledenom slatkoćom i snažnom projekcijom.",
       en: "Ultra fresh aquatic with icy sweetness and strong projection."
     },
     modal: {
