@@ -7110,14 +7110,49 @@ body.scrolled .announcement-bar::after {
   }
 }
 
+/* =========================================
+   CART DRAWER — EMPTY STATE COMPACT HEIGHT
+========================================= */
 .cart-drawer.is-empty {
-  width: 280px !important;
-  min-width: 280px !important;
-  max-width: 280px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: 520px;
 }
 
-.cart-drawer.has-items {
-  width: 520px !important;
-  min-width: 520px !important;
-  max-width: 520px !important;
+.cart-drawer.is-empty .cart-empty {
+  flex: 0 0 auto;
+  min-height: 0;
+  padding: 26px 24px 30px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.cart-drawer.is-empty .cart-drawer-header {
+  padding: 24px 24px 16px;
+}
+
+.cart-drawer.is-empty .cart-drawer-header h3 {
+  font-size: 32px;
+  line-height: 1.05;
+  max-width: 220px;
+}
+
+.cart-drawer.is-empty .cart-empty p {
+  margin: 0;
+}
+
+.cart-drawer.is-empty .gold-button.small,
+.cart-drawer.is-empty .cart-empty .gold-button {
+  align-self: flex-start;
+}
+
+@media (max-width: 768px) {
+  .cart-drawer.is-empty {
+    height: auto !important;
+    max-height: none;
+  }
 }
