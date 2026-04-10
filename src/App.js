@@ -4660,7 +4660,10 @@ setCheckoutOpen(false);
       )}
 
       {showStickyCta && (
-  <div className="sticky-cta-shell" aria-live="polite">
+  <div
+    className={`sticky-cta-shell ${view === "shop" ? "is-compact" : ""}`}
+    aria-live="polite"
+  >
           <button
             type="button"
             className="sticky-cta-button"
