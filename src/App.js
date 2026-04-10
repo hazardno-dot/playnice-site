@@ -2089,17 +2089,28 @@ useEffect(() => {
     privateSelectionOpen ||
     !!catalogPreview;
 
+  const html = document.documentElement;
+  const body = document.body;
+
   if (shouldLockScroll) {
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
+    const scrollbarWidth = window.innerWidth - html.clientWidth;
+
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+
+    if (scrollbarWidth > 0) {
+      body.style.paddingRight = `${scrollbarWidth}px`;
+    }
   } else {
-    document.body.style.overflow = "";
-    document.documentElement.style.overflow = "";
+    html.style.overflow = "";
+    body.style.overflow = "";
+    body.style.paddingRight = "";
   }
 
   return () => {
-    document.body.style.overflow = "";
-    document.documentElement.style.overflow = "";
+    html.style.overflow = "";
+    body.style.overflow = "";
+    body.style.paddingRight = "";
   };
 }, [
   selectedProduct,
