@@ -2310,6 +2310,10 @@ useEffect(() => {
     return products.filter((product) => wishlist.includes(product.id));
   }, [wishlist]);
 
+const goToShop = () => {
+    switchView("shop");
+  };
+
   const stickyCtaData = useMemo(() => {
     if (cartCount > 0) {
       return {
@@ -2622,10 +2626,6 @@ useEffect(() => {
     } else {
       prevHeroSlide();
     }
-  };
-
-  const goToShop = () => {
-    switchView("shop");
   };
 
   const nextPage = () => {
@@ -3474,13 +3474,7 @@ useEffect(() => {
                 <div className="footer-links">
                   <h4>{lang === "sr" ? "Navigacija" : "Navigation"}</h4>
 
-                  <button
-                    type="button"
-                    className="footer-link"
-                    onClick={goToShop}
-                  >
-                    {lang === "sr" ? "Početna" : "Home"}
-                  </button>
+                  onClick={() => switchView("home")}
 
                   <button
                     type="button"
@@ -3799,7 +3793,9 @@ useEffect(() => {
           checkoutOpen ||
           selectedProduct ||
           storyOpen ||
-          privateSelectionOpen
+          howItWorksOpen ||
+          privateSelectionOpen ||
+          catalogPreview
             ? "show"
             : ""
         }`}
@@ -3809,6 +3805,8 @@ useEffect(() => {
           setStoryOpen(false);
           setPrivateSelectionOpen(false);
           closeProductModal();
+          setHowItWorksOpen(false);
+          closeCatalogPreview();
         }}
       />
 
