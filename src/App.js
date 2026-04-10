@@ -4027,7 +4027,7 @@ const goToShop = () => {
           <div className="private-selection-empty panel-anim panel-anim-2">
             <p>
               {lang === "sr"
-                ? "Još nisi sačuvao nijedan parfem."
+                ? "Još niste sačuvali nijedan parfem."
                 : "You have not saved any fragrances yet."}
             </p>
 
