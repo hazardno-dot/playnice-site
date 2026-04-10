@@ -4690,10 +4690,6 @@ body.scrolled .announcement-bar::after {
   z-index: 1300;
 }
 
-.topbar {
-  pointer-events: none;
-}
-
 /* =========================================
    STORY DRAWER — FINAL COMPACT FIT
 ========================================= */
