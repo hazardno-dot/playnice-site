@@ -7445,7 +7445,7 @@ body.scrolled .announcement-bar::after {
 .checkout-modal {
   transition:
     transform var(--panel-duration) var(--panel-ease),
-    opacity 0.62s ease, /* bilo ~0.42s */
+    opacity 0.82s ease, /* bilo ~0.42s */
     visibility 0s linear 0.72s;
 }
 
@@ -7455,6 +7455,6 @@ body.scrolled .announcement-bar::after {
 .checkout-modal.open {
   transition:
     transform var(--panel-duration) var(--panel-ease),
-    opacity 0.62s ease,
+    opacity 0.82s ease,
     visibility 0s linear 0s;
 }
