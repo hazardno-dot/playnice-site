@@ -2496,11 +2496,7 @@ body.scrolled .announcement-bar::after {
     width: calc(100vw - 20px);
     max-height: calc(100vh - 20px);
     transform: translateX(calc(100% + 28px));
-  }
 
-  .cart-drawer.open {
-    transform: translateX(0);
-  }
 }
 
   .cart-drawer.open {
