@@ -48,6 +48,21 @@ body {
   padding-bottom: var(--sticky-cta-safe);
 }
 
+/* REMOVE MOBILE BLUE TAP HIGHLIGHT */
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+.product-card,
+.modal-size,
+.modal-add-button,
+.close-button {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* =========================================
    RESET / BASE
 ========================================= */
