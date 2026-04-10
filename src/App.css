@@ -7120,11 +7120,6 @@ body.scrolled .announcement-bar::after {
   font-size: 0.72rem;
 }
 
-/* Reserve space so pagination stays visible */
-.shop-section.has-sticky-cta {
-  padding-bottom: 120px;
-}
-
 @media (max-width: 768px) {
   .sticky-cta-shell {
     width: calc(100% - 16px);
@@ -7143,10 +7138,6 @@ body.scrolled .announcement-bar::after {
 
   .sticky-cta-copy small {
     font-size: 0.72rem;
-  }
-
-  .shop-section.has-sticky-cta {
-    padding-bottom: 108px;
   }
 }
 
