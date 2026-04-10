@@ -5395,14 +5395,14 @@ body.scrolled .announcement-bar::after {
 .product-card-copy,
 .product-card-copy.premium-card-copy {
   margin: 0;
-  min-height: calc(1.42em * 2);
-  max-height: calc(1.42em * 2);
+  min-height: calc(1.32em * 2);
+  max-height: calc(1.32em * 2);
 
   font-family: "Inter", sans-serif;
-  font-size: 0.86rem;
-  line-height: 1.42;
+  font-size: 0.78rem;
+  line-height: 1.32;
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
   color: rgba(255, 248, 235, 0.72);
 
   overflow: hidden;
