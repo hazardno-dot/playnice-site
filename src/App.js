@@ -2670,13 +2670,7 @@ setCheckoutOpen(false);
   };
 
   const closeProductModal = () => {
-    const closeProductModal = () => {
-  setProductModalVisible(false);
-
-  setTimeout(() => {
     setSelectedProduct(null);
-  }, 320);
-};
     setSelectedSize("");
   };
 
