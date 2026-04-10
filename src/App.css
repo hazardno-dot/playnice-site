@@ -4665,14 +4665,33 @@ body.scrolled .announcement-bar::after {
 /* =========================================
    Z-INDEX SYSTEM
 ========================================= */
+/* OVERLAY — ispod headera */
+.modal-overlay {
+  z-index: 1100;
+}
+
+/* HEADER — iznad overlay-a */
+.topbar {
+  z-index: 1200;
+}
+
+/* OPTIONAL (ako imaš announcement bar) */
+.announcement-bar {
+  z-index: 1190;
+}
+
+/* MODALS / DRAWERS — iznad svega */
 .cart-drawer {
   z-index: 1300;
 }
 
 .checkout-modal,
-.product-modal,
-.modal-overlay {
-  z-index: 1400;
+.product-modal {
+  z-index: 1300;
+}
+
+.topbar {
+  pointer-events: none;
 }
 
 /* =========================================
