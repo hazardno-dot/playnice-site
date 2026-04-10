@@ -34,14 +34,12 @@
   --topbar-height: 72px;
   --announcement-height: 42px;
   --announcement-gap: 10px;
+
+  --sticky-cta-safe: 92px;
 }
 
 html {
   overflow-y: scroll;
-}
-
-:root {
-  --sticky-cta-safe: 92px;
 }
 
 body {
@@ -49,17 +47,7 @@ body {
 }
 
 /* REMOVE MOBILE BLUE TAP HIGHLIGHT */
-
 * {
-  -webkit-tap-highlight-color: transparent;
-}
-
-button,
-a,
-.product-card,
-.modal-size,
-.modal-add-button,
-.close-button {
   -webkit-tap-highlight-color: transparent;
 }
 
