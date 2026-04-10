@@ -2330,19 +2330,18 @@ const goToShop = () => {
     switchView("shop");
   };
 
-  const stickyCtaData = useMemo(() => {
-    if (cartCount > 0) {
-      return {
-        label: tr.stickyCheckout,
-        sublabel: `${cartCount} ${
-          cartCount === 1 ? tr.stickyItem : tr.stickyItems
-        } • ${formatPrice(total)}`,
-        onClick: () => {
-          setCartOpen(true);
-          setCheckoutOpen(true);
-        }
-      };
+  if (cartCount > 0) {
+  return {
+    label: tr.stickyCheckout,
+    sublabel: `${cartCount} ${
+      cartCount === 1 ? tr.stickyItem : tr.stickyItems
+    } • ${formatPrice(total)}`,
+    onClick: () => {
+      setCartOpen(false);
+      setCheckoutOpen(true);
     }
+  };
+}
 
     if (wishlist.length > 0 && view === "shop") {
       return {
@@ -2523,8 +2522,8 @@ const goToShop = () => {
     };
 
     addToCart(heroProduct, "100ml", 34.9, "100ml Full Bottle");
-    setCartOpen(true);
-    setCheckoutOpen(true);
+setCartOpen(false);
+setCheckoutOpen(true);
   };
 
   const updateQuantity = (key, delta) => {
@@ -4262,12 +4261,15 @@ const goToShop = () => {
             </div>
 
             <button
-              className="gold-button checkout-button panel-anim panel-anim-6"
-              type="button"
-              onClick={() => setCheckoutOpen(true)}
-            >
-              {tr.continueCheckout}
-            </button>
+  className="gold-button checkout-button panel-anim panel-anim-6"
+  type="button"
+  onClick={() => {
+    setCartOpen(false);
+    setCheckoutOpen(true);
+  }}
+>
+  {tr.continueCheckout}
+</button>
           </>
         )}
       </aside>
