@@ -40,6 +40,14 @@ html {
   overflow-y: scroll;
 }
 
+:root {
+  --sticky-cta-safe: 92px;
+}
+
+body {
+  padding-bottom: var(--sticky-cta-safe);
+}
+
 /* =========================================
    RESET / BASE
 ========================================= */
@@ -7052,6 +7060,21 @@ body.scrolled .announcement-bar::after {
   box-shadow:
     0 16px 34px rgba(0, 0, 0, 0.34),
     0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+}
+
+.sticky-cta::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(5, 5, 5, 0.85),
+    rgba(5, 5, 5, 0)
+  );
 }
 
 .sticky-cta-button:active {
