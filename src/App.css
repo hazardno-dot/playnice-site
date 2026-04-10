@@ -2275,7 +2275,7 @@ body.scrolled .announcement-bar::after {
 ========================================= */
 .cart-drawer {
   position: fixed;
-  top: calc(var(--topbar-top-offset) + var(--topbar-height) + 8px);
+  top: 12px;
   right: 18px;
   width: min(520px, calc(100vw - 20px));
   max-height: calc(100vh - 36px);
