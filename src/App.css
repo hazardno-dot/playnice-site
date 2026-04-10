@@ -2502,7 +2502,8 @@ body.scrolled .announcement-bar::after {
   }
 
   .cart-drawer.is-empty {
-    max-height: none;
+  max-height: 440px;
+  height: auto;
   }
 
   .cart-drawer-header,
