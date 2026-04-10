@@ -2490,16 +2490,16 @@ body.scrolled .announcement-bar::after {
   .cart-drawer,
   .cart-drawer.is-empty,
   .cart-drawer.has-items {
-    top: 10px;
+    top: 50%;
     right: 10px;
     width: calc(100vw - 20px);
     max-height: calc(100vh - 20px);
     height: auto;
-    transform: translateX(calc(100% + 28px));
+    transform: translateY(-50%) translateX(calc(100% + 28px));
   }
 
   .cart-drawer.open {
-    transform: translateX(0);
+    transform: translateY(-50%) translateX(0);
   }
 
   .cart-drawer.is-empty {
