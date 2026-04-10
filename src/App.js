@@ -4136,7 +4136,11 @@ const goToShop = () => {
         )}
       </aside>
 
-      <aside className={`cart-drawer ${cartOpen ? "open panel-open" : ""}`}>
+      <aside
+  className={`cart-drawer ${cartOpen ? "open panel-open" : ""} ${
+    cart.length === 0 ? "is-empty" : "has-items"
+  }`}
+>
         <div className="cart-drawer-header panel-anim panel-anim-1">
           <div>
             <p className="section-kicker">{tr.yourCart}</p>
