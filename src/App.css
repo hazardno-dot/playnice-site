@@ -7111,9 +7111,13 @@ body.scrolled .announcement-bar::after {
 }
 
 .cart-drawer.is-empty {
-  width: 380px !important;
+  width: 280px !important;
+  min-width: 280px !important;
+  max-width: 280px !important;
 }
 
 .cart-drawer.has-items {
   width: 520px !important;
+  min-width: 520px !important;
+  max-width: 520px !important;
 }
