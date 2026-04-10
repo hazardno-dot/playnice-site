@@ -2269,109 +2269,110 @@ useEffect(() => {
   ]);
 
   /* =========================================
-     DERIVED DATA
-  ========================================= */
-  const announcementItems = useMemo(() => {
-    if (cart.length === 0) {
-      return [
-        { text: tr.announcementDynamicEmpty1, icon: "🚚" },
-        { text: tr.announcementDynamicEmpty2, icon: "✓" },
-        { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-        { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-        { text: tr.announcementDynamicEmpty5, icon: "🚚" }
-      ];
-    }
-
-    if (subtotal >= FREE_SHIPPING_THRESHOLD) {
-      return [
-        { text: tr.announcementDynamicUnlocked, icon: "✓", tone: "success" },
-        { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-        { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-        { text: tr.announcementDynamicEmpty5, icon: "🚚" }
-      ];
-    }
-
+   DERIVED DATA
+========================================= */
+const announcementItems = useMemo(() => {
+  if (cart.length === 0) {
     return [
-      {
-        text: tr.announcementDynamicLocked.replace(
-          "{{amount}}",
-          formatPrice(amountLeftForFreeShipping)
-        ),
-        icon: "🚚",
-        tone: "warning"
-      },
+      { text: tr.announcementDynamicEmpty1, icon: "🚚" },
       { text: tr.announcementDynamicEmpty2, icon: "✓" },
       { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-      { text: tr.announcementDynamicEmpty4, icon: "🔥" }
+      { text: tr.announcementDynamicEmpty4, icon: "🔥" },
+      { text: tr.announcementDynamicEmpty5, icon: "🚚" }
     ];
-  }, [cart.length, subtotal, amountLeftForFreeShipping, tr]);
+  }
 
-  const freeShippingProgress = Math.min(
-    100,
-    Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
-  );
+  if (subtotal >= FREE_SHIPPING_THRESHOLD) {
+    return [
+      { text: tr.announcementDynamicUnlocked, icon: "✓", tone: "success" },
+      { text: tr.announcementDynamicEmpty3, icon: "🔥" },
+      { text: tr.announcementDynamicEmpty4, icon: "🔥" },
+      { text: tr.announcementDynamicEmpty5, icon: "🚚" }
+    ];
+  }
 
-  const selectedCopy = selectedProduct
-    ? getProductCopy(selectedProduct, lang)
-    : {
-        miniTag: fallbackCopy.miniTag[lang],
-        card: fallbackCopy.card[lang],
-        modal: fallbackCopy.modal[lang],
-        scentType: fallbackCopy.scentType[lang],
-        dominantNotes: fallbackCopy.dominantNotes[lang],
-        tags: fallbackCopy.tags[lang]
-      };
+  return [
+    {
+      text: tr.announcementDynamicLocked.replace(
+        "{{amount}}",
+        formatPrice(amountLeftForFreeShipping)
+      ),
+      icon: "🚚",
+      tone: "warning"
+    },
+    { text: tr.announcementDynamicEmpty2, icon: "✓" },
+    { text: tr.announcementDynamicEmpty3, icon: "🔥" },
+    { text: tr.announcementDynamicEmpty4, icon: "🔥" }
+  ];
+}, [cart.length, subtotal, amountLeftForFreeShipping, tr]);
 
-  const privateSelectionProducts = useMemo(() => {
-    return products.filter((product) => wishlist.includes(product.id));
-  }, [wishlist]);
+const freeShippingProgress = Math.min(
+  100,
+  Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
+);
+
+const selectedCopy = selectedProduct
+  ? getProductCopy(selectedProduct, lang)
+  : {
+      miniTag: fallbackCopy.miniTag[lang],
+      card: fallbackCopy.card[lang],
+      modal: fallbackCopy.modal[lang],
+      scentType: fallbackCopy.scentType[lang],
+      dominantNotes: fallbackCopy.dominantNotes[lang],
+      tags: fallbackCopy.tags[lang]
+    };
+
+const privateSelectionProducts = useMemo(() => {
+  return products.filter((product) => wishlist.includes(product.id));
+}, [wishlist]);
 
 const goToShop = () => {
-    switchView("shop");
-  };
+  switchView("shop");
+};
 
+const stickyCtaData = useMemo(() => {
   if (cartCount > 0) {
-  return {
-    label: tr.stickyCheckout,
-    sublabel: `${cartCount} ${
-      cartCount === 1 ? tr.stickyItem : tr.stickyItems
-    } • ${formatPrice(total)}`,
-    onClick: () => {
-      setCartOpen(false);
-      setCheckoutOpen(true);
-    }
-  };
-}
-
-    if (wishlist.length > 0 && view === "shop") {
-      return {
-        label: tr.stickySaved,
-        sublabel: `${wishlist.length} ${
-          wishlist.length === 1 ? tr.stickyItem : tr.stickyItems
-        }`,
-        onClick: () => setPrivateSelectionOpen(true)
-      };
-    }
-
     return {
-      label: tr.stickyExplore,
-      sublabel:
-        view === "shop"
-          ? `${filteredProducts.length} ${
-              lang === "sr" ? "parfema" : "fragrances"
-            }`
-          : tr.privateSelection,
-      onClick: goToShop
+      label: tr.stickyCheckout,
+      sublabel: `${cartCount} ${
+        cartCount === 1 ? tr.stickyItem : tr.stickyItems
+      } • ${formatPrice(total)}`,
+      onClick: () => {
+        setCartOpen(false);
+        setCheckoutOpen(true);
+      }
     };
-  }, [
-    cartCount,
-    total,
-    wishlist.length,
-    view,
-    filteredProducts.length,
-    tr,
-    lang
-  ]);
+  }
+
+  if (wishlist.length > 0 && view === "shop") {
+    return {
+      label: tr.stickySaved,
+      sublabel: `${wishlist.length} ${
+        wishlist.length === 1 ? tr.stickyItem : tr.stickyItems
+      }`,
+      onClick: () => setPrivateSelectionOpen(true)
+    };
+  }
+
+  return {
+    label: tr.stickyExplore,
+    sublabel:
+      view === "shop"
+        ? `${filteredProducts.length} ${
+            lang === "sr" ? "parfema" : "fragrances"
+          }`
+        : tr.privateSelection,
+    onClick: goToShop
+  };
+}, [
+  cartCount,
+  total,
+  wishlist.length,
+  view,
+  filteredProducts.length,
+  tr,
+  lang
+]);
 
   /* =========================================
      ACTIONS
