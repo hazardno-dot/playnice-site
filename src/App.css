@@ -2643,14 +2643,14 @@ body.scrolled .announcement-bar::after {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate(-50%, -52%) scale(0.94);
-  filter: blur(6px);
+  transform: translate(-50%, -47%) scale(0.965);
+  filter: blur(8px);
 
   transition:
-    opacity 0.38s ease,
-    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.38s ease,
-    visibility 0s linear 0.68s;
+    opacity 0.28s ease,
+    transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.32s ease,
+    visibility 0s linear 0.52s;
 
   will-change: transform, opacity, filter;
 }
@@ -2659,12 +2659,13 @@ body.scrolled .announcement-bar::after {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translate(-50%, -52%) scale(1);
+  transform: translate(-50%, -50%) scale(1);
   filter: blur(0);
+
   transition:
-    opacity 0.38s ease,
-    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.38s ease,
+    opacity 0.28s ease,
+    transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.32s ease,
     visibility 0s linear 0s;
 }
 
@@ -2711,6 +2712,47 @@ body.scrolled .announcement-bar::after {
     transparent
   );
   opacity: 0.7;
+}
+
+/* =========================================
+   PRODUCT MODAL — CONTENT REVEAL
+========================================= */
+
+.modal-header,
+.product-modal-content,
+.product-modal-body,
+.product-modal-footer,
+.modal-close {
+  opacity: 0;
+  transform: translateY(-14px);
+  transition:
+    opacity 0.34s ease,
+    transform 0.46s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.product-modal.open .modal-header {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.08s;
+}
+
+.product-modal.open .product-modal-content,
+.product-modal.open .product-modal-body {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.14s;
+}
+
+.product-modal.open .product-modal-footer {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.product-modal.open .modal-close {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
 }
 
 /* =========================================
