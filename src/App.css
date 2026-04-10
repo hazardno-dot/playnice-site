@@ -2275,7 +2275,7 @@ body.scrolled .announcement-bar::after {
 ========================================= */
 .cart-drawer {
   position: fixed;
-  top: 50%;
+  top: 18%;
   right: 18px;
   width: min(520px, calc(100vw - 20px));
   max-height: calc(100vh - 36px);
@@ -2294,7 +2294,7 @@ body.scrolled .announcement-bar::after {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateY(-50%) translateX(calc(100% + 28px));
+  transform: translateX(calc(100% + 28px));
 
   transition:
     transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
@@ -2320,7 +2320,7 @@ body.scrolled .announcement-bar::after {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateY(-50%) translateX(0);
+  transform: translateX(0);
 
   transition:
     transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
@@ -2490,20 +2490,20 @@ body.scrolled .announcement-bar::after {
   .cart-drawer,
   .cart-drawer.is-empty,
   .cart-drawer.has-items {
-    top: 50%;
+    top: 10%;
     right: 16px;
     width: min(420px, calc(100vw - 32px));
     max-height: calc(100vh - 24px);
     height: auto;
     border-radius: 24px;
-    transform: translateY(-50%) translateX(calc(100% + 28px));
+    transform: translateX(calc(100% + 28px));
     box-shadow:
       0 30px 80px rgba(0, 0, 0, 0.6),
       0 0 40px rgba(220, 181, 107, 0.08);
   }
 
   .cart-drawer.open {
-    transform: translateY(-50%) translateX(0);
+    transform: translateX(0);
   }
 
   .cart-drawer.is-empty {
