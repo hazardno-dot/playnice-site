@@ -5391,7 +5391,7 @@ body.scrolled .announcement-bar::after {
 
   font-size: 0.95rem;
   line-height: 1.4;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.015em;
 
   color: rgba(245, 230, 205, 0.78);
@@ -5403,7 +5403,7 @@ body.scrolled .announcement-bar::after {
 }
 
 .product-meta-middle {
-  padding-top: 6px;
+  padding-top: 8px;
 }
 
 .product-card-copy-stack {
