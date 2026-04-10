@@ -3678,6 +3678,51 @@ body.scrolled .announcement-bar::after {
     0 12px 28px rgba(0, 0, 0, 0.16);
 }
 
+@media (max-width: 768px) {
+  .checkout-modal {
+    inset: 10px 10px auto 10px;
+    width: auto;
+    max-height: calc(100vh - 20px);
+    border-radius: 24px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translateY(calc(100% + 24px));
+  }
+
+  .checkout-modal.open {
+    transform: translateY(0);
+  }
+
+  .checkout-grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .checkout-form,
+  .checkout-summary {
+    padding: 18px;
+  }
+
+  .checkout-form {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .form-row.two {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .checkout-form input,
+  .checkout-form textarea {
+    font-size: 16px;
+  }
+
+  .checkout-summary h4 {
+    margin: 0 0 14px;
+  }
+}
+
 /* =========================================
    CHECKOUT FORM FIELDS
 ========================================= */
