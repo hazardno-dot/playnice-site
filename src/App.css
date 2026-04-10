@@ -7012,6 +7012,145 @@ body.scrolled .announcement-bar::after {
 }
 
 /* =========================================
+   STICKY CTA — MICRO INTERACTION UPGRADE
+========================================= */
+.sticky-cta-shell {
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  z-index: 140;
+  width: min(calc(100% - 24px), 760px);
+  pointer-events: none;
+}
+
+.sticky-cta-button {
+  width: 100%;
+  min-height: 64px;
+  padding: 14px 18px;
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+
+  pointer-events: auto;
+  transition:
+    transform 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    opacity 0.22s ease;
+}
+
+.sticky-cta-button:hover {
+  transform: translateY(-2px);
+  background: rgba(12, 12, 12, 0.8);
+  border-color: rgba(220, 181, 107, 0.26);
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+}
+
+.sticky-cta-button:active {
+  transform: translateY(0);
+}
+
+.sticky-cta-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sticky-cta-copy strong {
+  font-size: 0.98rem;
+  line-height: 1.1;
+}
+
+.sticky-cta-copy small {
+  font-size: 0.78rem;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.sticky-cta-arrow {
+  flex-shrink: 0;
+  font-size: 1.05rem;
+  opacity: 0.82;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.sticky-cta-button:hover .sticky-cta-arrow {
+  transform: translateX(3px);
+  opacity: 1;
+}
+
+/* Compact mode for Shop */
+.sticky-cta-shell.is-compact {
+  bottom: 10px;
+  width: min(calc(100% - 20px), 640px);
+}
+
+.sticky-cta-shell.is-compact .sticky-cta-button {
+  min-height: 54px;
+  padding: 11px 15px;
+  border-radius: 18px;
+  background: rgba(10, 10, 10, 0.58);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.sticky-cta-shell.is-compact .sticky-cta-copy strong {
+  font-size: 0.92rem;
+}
+
+.sticky-cta-shell.is-compact .sticky-cta-copy small {
+  font-size: 0.72rem;
+}
+
+/* Reserve space so pagination stays visible */
+.shop-section.has-sticky-cta {
+  padding-bottom: 120px;
+}
+
+@media (max-width: 768px) {
+  .sticky-cta-shell {
+    width: calc(100% - 16px);
+    bottom: 10px;
+  }
+
+  .sticky-cta-button {
+    min-height: 56px;
+    padding: 12px 14px;
+    border-radius: 18px;
+  }
+
+  .sticky-cta-copy strong {
+    font-size: 0.92rem;
+  }
+
+  .sticky-cta-copy small {
+    font-size: 0.72rem;
+  }
+
+  .shop-section.has-sticky-cta {
+    padding-bottom: 108px;
+  }
+}
+
+/* =========================================
    STICKY CTA — ELECTRIC LUXE TEXT EFFECT
 ========================================= */
 .sticky-cta-copy strong {
