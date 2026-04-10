@@ -2523,7 +2523,7 @@ const stickyCtaData = useMemo(() => {
     };
 
     addToCart(heroProduct, "100ml", 34.9, "100ml Full Bottle");
-setCartOpen(false);
+setCartOpen(true);
 setCheckoutOpen(true);
   };
 
