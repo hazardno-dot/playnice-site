@@ -2082,7 +2082,7 @@ function App() {
     /* =========================================
    EFFECTS
 ========================================= */
-useEffect(() => {
+useLayoutEffect(() => {
   const shouldLockScroll =
     !!selectedProduct ||
     cartOpen ||
