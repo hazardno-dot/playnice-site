@@ -2706,7 +2706,7 @@ setCheckoutOpen(false);
   setTimeout(() => {
     setSelectedProduct(null);
     setSelectedSize("");
-  }, 180);
+  }, 200);
 };
 
   const openImpactProductModal = (product) => {
