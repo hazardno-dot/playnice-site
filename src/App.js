@@ -1867,7 +1867,7 @@ const productWearContext = {
     en: "For a strong signature impression."
   },
   "Afnan Turathi Blue": {
-    sr: "Za clean, elegantan utisak.",
+    sr: "Za čist, elegantan utisak.",
     en: "For a clean elegant impression."
   },
   "Arabiyat Prestige Marwa": {
