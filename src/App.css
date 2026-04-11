@@ -6451,6 +6451,13 @@ will-change: transform, opacity;
     visibility 0s linear 0s;
 }
 
+.how-it-works-drawer .panel-anim {
+  transition:
+    opacity 1.08s ease,
+    transform 1.08s var(--content-ease),
+    filter 1.08s ease;
+}
+
 .how-it-works-drawer.open .how-it-works-drawer-footer {
   transition-delay: 0.34s;
 }
