@@ -1851,6 +1851,208 @@ const fallbackCopy = {
 };
 
 /* =========================================
+   DECANT SITUATION NOTE
+========================================= */
+const productWearContext = {
+  "Afnan 9AM": {
+    sr: "Idealan za svaki dan.",
+    en: "Ideal for daily wear."
+  },
+  "Afnan 9PM Rebel": {
+    sr: "Stvoren za noćne izlaske.",
+    en: "Made for nights out."
+  },
+  "Afnan Supremacy Collector's Edition Pour Homme": {
+    sr: "Za jak signature utisak.",
+    en: "For a strong signature impression."
+  },
+  "Afnan Turathi Blue": {
+    sr: "Za clean, elegantan utisak.",
+    en: "For a clean elegant impression."
+  },
+  "Arabiyat Prestige Marwa": {
+    sr: "Za elegantne večernje prilike.",
+    en: "For elegant evening occasions."
+  },
+  "Armaf Club De Nuit Bling": {
+    sr: "Idealan za večernji izlazak.",
+    en: "Ideal for evening outings."
+  },
+  "Armaf Club de Nuit Intense": {
+    sr: "Za snažan prvi utisak.",
+    en: "For a strong first impression."
+  },
+  "Armaf Club de Nuit Sillage": {
+    sr: "Za drugačiju dnevnu svežinu.",
+    en: "For a different daytime freshness."
+  },
+  "French Avenue Vulcan Sable by Fragrance World": {
+    sr: "Za mračnije večernje trenutke.",
+    en: "For darker evening moments."
+  },
+  "Haramain Signature Blue": {
+    sr: "Za lagan i uredan dan.",
+    en: "For an easy polished day."
+  },
+  "Khadlaj Island Dreams Extrait de Parfum": {
+    sr: "Savršen za tople dane.",
+    en: "Perfect for warm days."
+  },
+  "Lattafa Asad Elixir": {
+    sr: "Za hladnije večeri.",
+    en: "For cooler evenings."
+  },
+  "Lattafa Fakhar Black": {
+    sr: "Siguran izbor za svaki dan.",
+    en: "A safe pick for every day."
+  },
+  "Lattafa Khamrah Qahwa": {
+    sr: "Savršen za hladne noći.",
+    en: "Perfect for cold nights."
+  },
+  "Lattafa Musamam Black Intense": {
+    sr: "Za dubok večernji utisak.",
+    en: "For a deep evening impression."
+  },
+  "Lattafa Qaed Al Fursan Untamed": {
+    sr: "Kad želiš nešto drugačije.",
+    en: "When you want something different."
+  },
+  "Paris Corner Emir Trillium": {
+    sr: "Za čist i moderan dan.",
+    en: "For a clean modern day."
+  },
+  "Paris Corner Emir Voux Elegante": {
+    sr: "Za elegantne dnevne prilike.",
+    en: "For elegant daytime occasions."
+  },
+  "Paris Corner Ministry of Oud - Oud Satin": {
+    sr: "Za luksuzne večeri.",
+    en: "For luxurious evenings."
+  },
+  "Paris Corner Perfumes North Stag Expressions II DEUX": {
+    sr: "Za energičan dnevni vibe.",
+    en: "For an energetic daytime vibe."
+  },
+  "Rayhaan Aquatica": {
+    sr: "Idealno za leto i vrućinu.",
+    en: "Ideal for summer heat."
+  },
+  "Rayhaan Pacific Aura": {
+    sr: "Za lagane letnje dane.",
+    en: "For easy summer days."
+  },
+  "Swiss Arabian Tobacco 01 Extrait de Parfum": {
+    sr: "Za tople, elegantne večeri.",
+    en: "For warm elegant evenings."
+  },
+  "Acqua di Parma Fico di Amalfi Eau de Toilette": {
+    sr: "Savršen za sunčane dane.",
+    en: "Perfect for sunny days."
+  },
+  "BLEU DE CHANEL Eau de Parfum": {
+    sr: "Tvoj signature za sve prilike.",
+    en: "Your signature for any occasion."
+  },
+  "Bois Impérial by Essential Parfums": {
+    sr: "Kad želiš niche utisak.",
+    en: "When you want a niche impression."
+  },
+  "Creed Aventus Cologne": {
+    sr: "Za tih i skup utisak.",
+    en: "For a quiet expensive impression."
+  },
+  "Tom Ford Noir Extreme Eau de Parfum": {
+    sr: "Za luksuzne večernje trenutke.",
+    en: "For luxurious evening moments."
+  },
+  "Acqua di Parma Colonia Essenza Eau de Cologne": {
+    sr: "Za klasično elegantan dan.",
+    en: "For a classically elegant day."
+  },
+  "Acqua di Parma Colonia Pura Eau de Cologne": {
+    sr: "Za čist i lagan dan.",
+    en: "For a clean easy day."
+  },
+  "BOSS Bottled Beyond Eau de Parfum": {
+    sr: "Za moderan dnevni stil.",
+    en: "For a modern daytime style."
+  },
+  "BOSS The Scent Elixir Parfum Intense for Him": {
+    sr: "Za intenzivne večernje prilike.",
+    en: "For intense evening occasions."
+  },
+  "BOSS The Scent Le Parfum for Him": {
+    sr: "Za suptilno zavodljive večeri.",
+    en: "For subtly seductive evenings."
+  },
+  "Calvin Klein CK All Eau de Toilette": {
+    sr: "Za opušten svaki dan.",
+    en: "For an effortless everyday feel."
+  },
+  "Calvin Klein Defy Eau de Toilette": {
+    sr: "Za urban i svež dan.",
+    en: "For a fresh urban day."
+  },
+  "Calvin Klein Defy Parfum": {
+    sr: "Kad želiš jači utisak.",
+    en: "When you want a stronger impression."
+  },
+  "Chopard Oud Malaki Eau de Parfum": {
+    sr: "Za bogate večernje prilike.",
+    en: "For rich evening occasions."
+  },
+  "Giorgio Armani Acqua di Giò Profondo Parfum": {
+    sr: "Za svežinu sa karakterom.",
+    en: "For freshness with character."
+  },
+  "Gisada Ambassador Men Eau de Parfum": {
+    sr: "Kad želiš komplimente.",
+    en: "When you want compliments."
+  },
+  "Givenchy Gentleman Eau de Parfum Réserve Privée": {
+    sr: "Za elegantne noćne izlaske.",
+    en: "For elegant nights out."
+  },
+  "Jimmy Choo Man Blue Eau de Toilette": {
+    sr: "Za opušten dnevni stil.",
+    en: "For a relaxed daytime style."
+  },
+  "L'Homme Eau de Parfum by Yves Saint Laurent": {
+    sr: "Za classy večernji utisak.",
+    en: "For a classy evening impression."
+  },
+  "L'Homme Idéal De Guerlain Paris Eau De Toilette": {
+    sr: "Kad želiš nešto svoje.",
+    en: "When you want something of your own."
+  },
+  "Mancera Cedrat Boise Eau de Parfum": {
+    sr: "Radi od dana do večeri.",
+    en: "Works from day to night."
+  },
+  "Montblanc Explorer Extreme Parfum": {
+    sr: "Za snažniji dnevno-noćni stil.",
+    en: "For a stronger day-to-night style."
+  },
+  "Narciso Rodriguez for Him Bleu Noir Eau de Parfum": {
+    sr: "Za tihu, čistu eleganciju.",
+    en: "For quiet clean elegance."
+  },
+  "Terre d'Hermès Eau de Toilette": {
+    sr: "Za bezvremenski signature utisak.",
+    en: "For a timeless signature impression."
+  },
+  "Afnan 9PM Night Out": {
+    sr: "Pravljen za noćni izlazak.",
+    en: "Built for a night out."
+  },
+  "Rasasi Hawas Ice for Him": {
+    sr: "Za vruće dane i noći.",
+    en: "For hot days and nights."
+  }
+};
+
+/* =========================================
    GLOBAL CONSTANTS & HELPERS
 ========================================= */
 const PRODUCTS_PER_PAGE = 12;
@@ -2854,6 +3056,10 @@ const ProductCard = ({
     return "badge-default";
   };
 
+  const getWearContext = (product, lang) => {
+  return productWearContext[product.name]?.[lang] || "";
+};
+
   const tr = translations[lang];
 
 const getSizeWearHint = (size) => {
@@ -2866,139 +3072,133 @@ const getSizeWearHint = (size) => {
 
   return (
     <article className="product-card premium-product-card">
-      <button
-        type="button"
-        className="product-card-media clickable-media"
-        onMouseDown={(e) => e.preventDefault()}
-        onClick={() => openProductModal(product)}
-        aria-label={product.name}
-      >
-        <img
-          src={product.image || "/placeholder.png"}
-          alt={product.name}
-          className="product-card-image"
-          loading="lazy"
-        />
-      </button>
+  <button
+    type="button"
+    className="product-card-media clickable-media"
+    onMouseDown={(e) => e.preventDefault()}
+    onClick={() => openProductModal(product)}
+    aria-label={product.name}
+  >
+    <img
+      src={product.image || "/placeholder.png"}
+      alt={product.name}
+      className="product-card-image"
+      loading="lazy"
+    />
+  </button>
 
-      <button
-        type="button"
-        className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
-          isSpraying ? "is-spraying" : ""
-        }`}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          toggleWishlist(product.id);
-        }}
-        aria-label={
-          isWishlisted
-            ? lang === "sr"
-              ? `Ukloni ${product.name} iz wishlist`
-              : `Remove ${product.name} from wishlist`
-            : lang === "sr"
-            ? `Dodaj ${product.name} u wishlist`
-            : `Add ${product.name} to wishlist`
-        }
-      >
-        <span className="heart-icon" aria-hidden="true">
-          ♥
-        </span>
-      </button>
+  <button
+    type="button"
+    className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
+      isSpraying ? "is-spraying" : ""
+    }`}
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleWishlist(product.id);
+    }}
+    aria-label={
+      isWishlisted
+        ? lang === "sr"
+          ? `Ukloni ${product.name} iz wishlist`
+          : `Remove ${product.name} from wishlist`
+        : lang === "sr"
+        ? `Dodaj ${product.name} u wishlist`
+        : `Add ${product.name} to wishlist`
+    }
+  >
+    <span className="heart-icon" aria-hidden="true">
+      ♥
+    </span>
+  </button>
 
-      {copy.miniTag && (
-        <span
-          className={`product-floating-badge ${getBadgeVariant(copy.miniTag)}`}
+  {copy.miniTag && (
+    <span
+      className={`product-floating-badge ${getBadgeVariant(copy.miniTag)}`}
+    >
+      {copy.miniTag}
+    </span>
+  )}
+
+  <div className="product-meta premium-product-meta">
+    <div className="product-meta-top">
+      <p className="product-category">{getCategoryLabel(product.category)}</p>
+      <h3 className="product-card-title">{product.name}</h3>
+    </div>
+
+    <div className="product-meta-middle">
+      <div className="product-card-copy-stack">
+        <p className="product-card-copy premium-card-copy">{copy.card}</p>
+
+        <p className="product-card-decant-note">
+          {getWearContext(product, lang)}
+        </p>
+      </div>
+    </div>
+
+    <div className="product-meta-bottom">
+      <div className="product-price-block">
+        <div className="product-price-row">
+          <span className="product-price-from premium-product-price">
+            <span className="price-prefix">{tr.tryFrom}</span>
+            <span className="price-value">€{minPrice}</span>
+          </span>
+        </div>
+      </div>
+
+      <div className="product-preview-line premium-preview-line single-line-preview">
+        <span className="product-card-cta">{tr.productCardCta}</span>
+      </div>
+    </div>
+  </div>
+
+  <div className="size-buttons" onClick={(e) => e.stopPropagation()}>
+    {Object.entries(product.sizes).map(([size, price]) => {
+      const feedbackKey = `${product.id}-${size}`;
+      const isJustAdded = inlineAddedKey === feedbackKey;
+      const isRecommendedSize = size === "5ml";
+      const wearHint = getSizeWearHint(size);
+
+      return (
+        <button
+          key={size}
+          type="button"
+          className={`size-chip ${isRecommendedSize ? "is-recommended" : ""}`}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            e.currentTarget.blur();
+
+            addToCart(product, size, null, null, { showToast: false });
+            triggerInlineAddedFeedback(product.id, size);
+          }}
         >
-          {copy.miniTag}
-        </span>
-      )}
+          <span className="size-chip-main-wrap">
+            <span className="size-chip-main-row">
+              <span className="size-chip-main">{size}</span>
 
-      <div className="product-meta premium-product-meta">
-        <div className="product-meta-top">
-          <p className="product-category">{getCategoryLabel(product.category)}</p>
-          <h3 className="product-card-title">{product.name}</h3>
-        </div>
-
-        <div className="product-meta-middle">
-          <div className="product-card-copy-stack">
-            <p className="product-card-copy premium-card-copy">{copy.card}</p>
-
-            <p className="product-card-decant-note">
-            {tr.productDecantNote}
-            </p>
-          </div>
-        </div>
-
-        <div className="product-meta-bottom">
-          <div className="product-price-block">
-            <div className="product-price-row">
-              <span className="product-price-from premium-product-price">
-                <span className="price-prefix">
-                {tr.tryFrom}
-              </span>
-                <span className="price-value">€{minPrice}</span>
-              </span>
-            </div>
-          </div>
-
-          <div className="product-preview-line premium-preview-line single-line-preview">
-            <span className="product-card-cta">
-              {lang === "sr"
-                ? "Probaj pre kupovine"
-                : "Try before you buy"}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div className="size-buttons" onClick={(e) => e.stopPropagation()}>
-        {Object.entries(product.sizes).map(([size, price]) => {
-          const feedbackKey = `${product.id}-${size}`;
-          const isJustAdded = inlineAddedKey === feedbackKey;
-          const isRecommendedSize = size === "5ml";
-          const wearHint = getSizeWearHint(size);
-
-          return (
-            <button
-              key={size}
-              type="button"
-              className={`size-chip ${isRecommendedSize ? "is-recommended" : ""}`}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                e.currentTarget.blur();
-
-                addToCart(product, size, null, null, { showToast: false });
-                triggerInlineAddedFeedback(product.id, size);
-              }}
-            >
-              <span className="size-chip-main-wrap">
-                <span className="size-chip-main-row">
-                  <span className="size-chip-main">{size}</span>
-
-                  {isRecommendedSize && (
-                    <span className="size-chip-recommended">
-                    {tr.sizeBestChoice}
-                   </span>
-                  )}
+              {isRecommendedSize && (
+                <span className="size-chip-recommended">
+                  {tr.sizeBestChoice}
                 </span>
+              )}
+            </span>
 
-                {wearHint && (
-                  <span className="size-chip-wear-hint">{wearHint}</span>
-                )}
-              </span>
+            {wearHint && (
+              <span className="size-chip-wear-hint">{wearHint}</span>
+            )}
+          </span>
 
-              <span className="size-chip-price">{formatPrice(price)}</span>
+          <span className="size-chip-price">{formatPrice(price)}</span>
 
-              <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
-                {tr.justAdded}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </article>
+          <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
+            {tr.justAdded}
+          </span>
+        </button>
+      );
+    })}
+  </div>
+</article>
   );
 };
 
