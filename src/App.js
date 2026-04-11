@@ -2077,7 +2077,6 @@ function App() {
   );
 
   const scrollYRef = useRef(0);
-  const productModalScrollYRef = useRef(0);
 
     /* =========================================
    EFFECTS
@@ -2095,9 +2094,7 @@ useLayoutEffect(() => {
   const body = document.body;
 
   if (shouldLockScroll) {
-    const lockY = selectedProduct
-      ? productModalScrollYRef.current
-      : window.scrollY || window.pageYOffset || 0;
+    const lockY = window.scrollY || window.pageYOffset || 0;
 
     scrollYRef.current = lockY;
 
@@ -2706,7 +2703,7 @@ setCheckoutOpen(false);
   setTimeout(() => {
     setSelectedProduct(null);
     setSelectedSize("");
-  }, 200);
+  }, 260);
 };
 
   const openImpactProductModal = (product) => {
