@@ -6113,7 +6113,8 @@ body.scrolled .announcement-bar::after {
   transition:
     border-color 0.16s ease,
     background 0.16s ease,
-    color 0.16s ease;
+    color 0.16s ease,
+    box-shadow 0.16s ease;
 }
 
 .size-buttons .size-chip:hover {
@@ -6138,9 +6139,19 @@ body.scrolled .announcement-bar::after {
 
 .size-chip-main-wrap {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+}
+
+.size-chip-main-row {
+  display: flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
+  flex-wrap: wrap;
 }
 
 .size-chip-main,
@@ -6160,6 +6171,17 @@ body.scrolled .announcement-bar::after {
 .size-chip-price {
   color: #ddb76d;
   font-weight: 700;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.size-chip-wear-hint {
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: rgba(245, 239, 230, 0.5);
 }
 
 .size-chip-recommended {
@@ -6185,11 +6207,14 @@ body.scrolled .announcement-bar::after {
 }
 
 .size-chip.is-recommended {
-  border-color: rgba(220, 181, 107, 0.24);
+  border-color: rgba(220, 181, 107, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.03),
+    0 0 0 1px rgba(220,181,107,0.05);
 }
 
 .size-chip.is-recommended:hover {
-  border-color: rgba(220, 181, 107, 0.30);
+  border-color: rgba(220, 181, 107, 0.38);
 }
 
 .size-chip-flash {
@@ -6248,6 +6273,10 @@ body.scrolled .announcement-bar::after {
     filter: none !important;
     animation: none !important;
     text-shadow: none !important;
+  }
+
+  .size-chip-wear-hint {
+    font-size: 0.64rem;
   }
 }
 
@@ -6863,50 +6892,6 @@ will-change: transform, opacity;
     filter: none !important;
     opacity: 1 !important;
   }
-}
-
-/* =========================================
-   PRODUCT CARD — RECOMMENDED SIZE
-========================================= */
-
-.size-chip-main-wrap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-.size-chip-recommended {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 3px 8px;
-  border-radius: 999px;
-
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-
-  background: linear-gradient(135deg, #f3dfb2, #dcb56b);
-  color: #111;
-
-  box-shadow:
-    0 4px 10px rgba(0,0,0,0.18),
-    inset 0 1px 0 rgba(255,255,255,0.28);
-}
-
-.size-chip.is-recommended {
-  border-color: rgba(220, 181, 107, 0.28);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.03),
-    0 0 0 1px rgba(220,181,107,0.05);
-}
-
-.size-chip.is-recommended:hover {
-  border-color: rgba(220, 181, 107, 0.38);
 }
 
 /* =========================================
