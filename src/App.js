@@ -168,7 +168,7 @@ const translations = {
     checkoutTrust4: "Delivery across Montenegro",
 
     // PRODUCT CARD
-    tryFrom: "Try from",
+    tryFrom: "From",
     productDecantNote: "Perfect for testing before buying a full bottle.",
     productCardCta: "Try before you buy",
 
@@ -348,7 +348,7 @@ const translations = {
     checkoutTrust4: "Dostava širom Crne Gore",
 
     // PRODUCT CARD
-    tryFrom: "Probaj od",
+    tryFrom: "Već od",
     productDecantNote: "Idealno da probaš miris pre full bottle kupovine.",
     productCardCta: "Probaj pre kupovine",
 
