@@ -170,7 +170,7 @@ const translations = {
     // PRODUCT CARD
     tryFrom: "From",
     productDecantNote: "Wear it first. Decide later.",
-    productCardCta: "Start with 5ml 👇",
+    productCardCta: "Start with 5ml →",
 
     sizeBestChoice: "Best pick",
 
@@ -350,7 +350,7 @@ const translations = {
     // PRODUCT CARD
     tryFrom: "Već od",
     productDecantNote: "Nosi ga prvo. Odluči kasnije.",
-    productCardCta: "Kreni sa 5ml 👇",
+    productCardCta: "Kreni sa 5ml →",
 
     sizeBestChoice: "Preporuka",
 

@@ -5860,7 +5860,7 @@ body.scrolled .announcement-bar::after {
   align-items: baseline;
   gap: 4px;
   font-family: "Inter", sans-serif;
-  font-weight: 600;
+  font-weight: 640;
 
   background: linear-gradient(
     90deg,
@@ -5917,7 +5917,7 @@ body.scrolled .announcement-bar::after {
   font-size: 0.72rem;
   line-height: 1;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.10em;
   text-transform: uppercase;
 
   color: rgba(120, 232, 242, 0.96);
