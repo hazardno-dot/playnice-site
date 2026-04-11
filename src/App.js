@@ -2830,6 +2830,22 @@ setCheckoutOpen(false);
       return "badge-default";
     };
 
+    const getSizeWearHint = (size) => {
+  if (lang === "sr") {
+    if (size === "2ml") return "1–3 nošenja";
+    if (size === "5ml") return "5–7 nošenja";
+    if (size === "10ml") return "10–14 nošenja";
+    if (size === "20ml") return "20+ nošenja";
+    return "";
+  }
+
+  if (size === "2ml") return "1–3 wears";
+  if (size === "5ml") return "5–7 wears";
+  if (size === "10ml") return "10–14 wears";
+  if (size === "20ml") return "20+ wears";
+  return "";
+};
+
     return (
       <article className="product-card premium-product-card">
   <button
