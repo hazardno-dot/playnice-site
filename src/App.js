@@ -2108,7 +2108,7 @@ useLayoutEffect(() => {
     body.style.width = "100%";
     body.style.overflow = "hidden";
   } else {
-    const scrollY = Math.abs(parseInt(body.style.top || "0", 10));
+    const savedScrollY = Math.abs(parseInt(body.style.top || "0", 10));
 
     body.style.position = "";
     body.style.top = "";
@@ -2117,22 +2117,16 @@ useLayoutEffect(() => {
     body.style.width = "";
     body.style.overflow = "";
 
-    window.scrollTo(0, scrollY);
+    window.scrollTo(0, savedScrollY || scrollYRef.current || 0);
   }
 
   return () => {
-    const scrollY = Math.abs(parseInt(body.style.top || "0", 10));
-
     body.style.position = "";
     body.style.top = "";
     body.style.left = "";
     body.style.right = "";
     body.style.width = "";
     body.style.overflow = "";
-
-    if (shouldLockScroll) {
-      window.scrollTo(0, scrollY);
-    }
   };
 }, [
   selectedProduct,
