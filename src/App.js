@@ -166,6 +166,18 @@ const translations = {
     checkoutTrust2: "Order confirmation and all details will be sent by email",
     checkoutTrust3: "100% original fragrances and premium decants",
     checkoutTrust4: "Delivery across Montenegro",
+
+    // PRODUCT CARD
+    tryFrom: "Try from",
+    productDecantNote: "Perfect for testing before buying a full bottle.",
+    productCardCta: "Test before buying full bottle",
+
+    sizeBestChoice: "Best first try",
+
+    wearHint_2ml: "1–3 wears",
+    wearHint_5ml: "5–7 wears",
+    wearHint_10ml: "10–14 wears",
+    wearHint_20ml: "20+ wears",
   },
 
   sr: {
@@ -334,6 +346,18 @@ const translations = {
     checkoutTrust2: "Potvrda narudžbine i svi detalji stižu na email",
     checkoutTrust3: "100% original parfemi i premium dekanti",
     checkoutTrust4: "Dostava širom Crne Gore",
+
+    // PRODUCT CARD
+    tryFrom: "Probaj od",
+    productDecantNote: "Idealno da probaš miris pre full bottle kupovine.",
+    productCardCta: "Probaj prije full bottle kupovine",
+
+    sizeBestChoice: "Najbolji za prvo testiranje",
+
+    wearHint_2ml: "1–3 nošenja",
+    wearHint_5ml: "5–7 nošenja",
+    wearHint_10ml: "10–14 nošenja",
+    wearHint_20ml: "20+ nošenja",
   }
 };
 
@@ -2830,21 +2854,15 @@ const ProductCard = ({
     return "badge-default";
   };
 
-  const getSizeWearHint = (size) => {
-    if (lang === "sr") {
-      if (size === "2ml") return "1–3 nošenja";
-      if (size === "5ml") return "5–7 nošenja";
-      if (size === "10ml") return "10–14 nošenja";
-      if (size === "20ml") return "20+ nošenja";
-      return "";
-    }
+  const tr = translations[lang];
 
-    if (size === "2ml") return "1–3 wears";
-    if (size === "5ml") return "5–7 wears";
-    if (size === "10ml") return "10–14 wears";
-    if (size === "20ml") return "20+ wears";
-    return "";
-  };
+const getSizeWearHint = (size) => {
+  if (size === "2ml") return tr.wearHint_2ml;
+  if (size === "5ml") return tr.wearHint_5ml;
+  if (size === "10ml") return tr.wearHint_10ml;
+  if (size === "20ml") return tr.wearHint_20ml;
+  return "";
+};
 
   return (
     <article className="product-card premium-product-card">
@@ -2907,9 +2925,7 @@ const ProductCard = ({
             <p className="product-card-copy premium-card-copy">{copy.card}</p>
 
             <p className="product-card-decant-note">
-              {lang === "sr"
-                ? "Idealno da probaš miris pre full bottle kupovine."
-                : "Perfect for testing before buying a full bottle."}
+            {tr.productDecantNote}
             </p>
           </div>
         </div>
@@ -2919,8 +2935,8 @@ const ProductCard = ({
             <div className="product-price-row">
               <span className="product-price-from premium-product-price">
                 <span className="price-prefix">
-                  {lang === "sr" ? "Probaj od" : "Try from"}
-                </span>
+                {tr.tryFrom}
+              </span>
                 <span className="price-value">€{minPrice}</span>
               </span>
             </div>
@@ -2963,10 +2979,8 @@ const ProductCard = ({
 
                   {isRecommendedSize && (
                     <span className="size-chip-recommended">
-                      {lang === "sr"
-                        ? "Najbolji za prvo testiranje"
-                        : "Best first try"}
-                    </span>
+                    {tr.sizeBestChoice}
+                   </span>
                   )}
                 </span>
 
