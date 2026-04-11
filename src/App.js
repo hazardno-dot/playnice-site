@@ -4224,108 +4224,138 @@ setCheckoutOpen(false);
             </button>
           </div>
         ) : (
-          <>
-            <div className="cart-items">
-              {cart.map((item, index) => (
-                <div
-                  className={`cart-item panel-item-anim panel-item-${Math.min(
-                    index + 1,
-                    6
-                  )}`}
-                  key={item.key}
-                >
-                  <div className="cart-item-info">
-                    <h4>{item.name}</h4>
-                    <p>{item.size}</p>
-                    <strong>{formatPrice(item.price)}</strong>
-                  </div>
+            <>
+  <div className="cart-items">
+    {cart.map((item, index) => (
+      <div
+        className={`cart-item panel-item-anim panel-item-${Math.min(
+          index + 1,
+          6
+        )}`}
+        key={item.key}
+      >
+        <div className="cart-item-info">
+          <h4>{item.name}</h4>
+          <p>{item.size}</p>
+          <strong>{formatPrice(item.price)}</strong>
+        </div>
 
-                  <div className="cart-item-actions">
-                    <div className="qty-control">
-                      <button
-                        type="button"
-                        onClick={() => updateQuantity(item.key, -1)}
-                      >
-                        -
-                      </button>
-                      <span>{item.quantity}</span>
-                      <button
-                        type="button"
-                        onClick={() => updateQuantity(item.key, 1)}
-                      >
-                        +
-                      </button>
-                    </div>
-                    <button
-                      className="remove-link"
-                      type="button"
-                      onClick={() => removeFromCart(item.key)}
-                    >
-                      {tr.remove}
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="cart-summary panel-anim panel-anim-4">
-              <div>
-                <span>{tr.subtotal}</span>
-                <strong>{formatPrice(subtotal)}</strong>
-              </div>
-
-              <div>
-                <span>{tr.shipping}</span>
-                <strong>
-                  {shipping === 0 && cart.length > 0
-                    ? "FREE"
-                    : formatPrice(shipping)}
-                </strong>
-              </div>
-
-              {cart.length > 0 && (
-                <div
-                  className={`shipping-progress-card panel-anim panel-anim-5 ${
-                    subtotal >= FREE_SHIPPING_THRESHOLD
-                      ? "shipping-note-unlocked"
-                      : "shipping-note-locked"
-                  }`}
-                >
-                  <div className="shipping-note">
-                    {subtotal >= FREE_SHIPPING_THRESHOLD
-                      ? `${tr.freeShippingUnlocked} ✓`
-                      : tr.freeShippingProgress.replace(
-                          "{{amount}}",
-                          formatPrice(amountLeftForFreeShipping)
-                        )}
-                  </div>
-
-                  <div className="shipping-progress-bar">
-                    <div
-                      className="shipping-progress-fill"
-                      style={{ width: `${freeShippingProgress}%` }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              <div className="cart-total">
-                <span>{tr.total}</span>
-                <strong>{formatPrice(total)}</strong>
-              </div>
-            </div>
-
+        <div className="cart-item-actions">
+          <div className="qty-control">
             <button
-  className="gold-button checkout-button panel-anim panel-anim-6"
-  type="button"
-  onClick={() => {
-    setCartOpen(false);
-    setCheckoutOpen(true);
-  }}
->
-  {tr.continueCheckout}
-</button>
-          </>
+              type="button"
+              onClick={() => updateQuantity(item.key, -1)}
+            >
+              -
+            </button>
+            <span>{item.quantity}</span>
+            <button
+              type="button"
+              onClick={() => updateQuantity(item.key, 1)}
+            >
+              +
+            </button>
+          </div>
+          <button
+            className="remove-link"
+            type="button"
+            onClick={() => removeFromCart(item.key)}
+          >
+            {tr.remove}
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div className="cart-summary panel-anim panel-anim-4">
+    <div className="cart-total-row">
+      <span>{tr.subtotal}</span>
+      <strong>{formatPrice(subtotal)}</strong>
+    </div>
+
+    <div className="cart-total-row">
+      <span>{tr.shipping}</span>
+      <strong>
+        {shipping === 0 && cart.length > 0 ? "FREE" : formatPrice(shipping)}
+      </strong>
+    </div>
+
+    {cart.length > 0 && (
+      <div
+        className={`shipping-progress-card cart-shipping-note panel-anim panel-anim-5 ${
+          subtotal >= FREE_SHIPPING_THRESHOLD
+            ? "shipping-note-unlocked"
+            : "shipping-note-locked"
+        }`}
+      >
+        <div className="shipping-note">
+          {subtotal >= FREE_SHIPPING_THRESHOLD
+            ? `${tr.freeShippingUnlocked} ✓`
+            : lang === "sr"
+            ? `Još ${formatPrice(amountLeftForFreeShipping)} do besplatne dostave`
+            : `${formatPrice(amountLeftForFreeShipping)} away from free shipping`}
+        </div>
+
+        <div className="shipping-progress-bar">
+          <div
+            className="shipping-progress-fill"
+            style={{ width: `${freeShippingProgress}%` }}
+          />
+        </div>
+      </div>
+    )}
+
+    <div className="cart-trust-block panel-anim panel-anim-5">
+      <div className="cart-trust-item">
+        <span>✔</span>
+        <span>{lang === "sr" ? "Plaćanje pouzećem" : "Cash on delivery"}</span>
+      </div>
+
+      <div className="cart-trust-item">
+        <span>✔</span>
+        <span>
+          {lang === "sr"
+            ? "Potvrda i detalji stižu na email"
+            : "Confirmation and details sent by email"}
+        </span>
+      </div>
+
+      <div className="cart-trust-item">
+        <span>✔</span>
+        <span>
+          {lang === "sr"
+            ? "Dostava širom Crne Gore"
+            : "Delivery across Montenegro"}
+        </span>
+      </div>
+    </div>
+
+    <div className="cart-total cart-grand-total">
+      <span>{tr.total}</span>
+      <strong>{formatPrice(total)}</strong>
+    </div>
+  </div>
+
+  <button
+    className="gold-button checkout-button cart-checkout-button panel-anim panel-anim-6"
+    type="button"
+    onClick={() => {
+      setCartOpen(false);
+      setCheckoutOpen(true);
+    }}
+  >
+    {lang === "sr"
+      ? "Dalje do podataka za dostavu"
+      : "Continue to delivery details"}
+  </button>
+
+  <div className="cart-safe-note panel-anim panel-anim-6">
+    {lang === "sr"
+      ? "Bez online plaćanja — plaćate tek pri preuzimanju"
+      : "No online payment — you pay only on delivery"}
+  </div>
+</>
         )}
       </aside>
 
