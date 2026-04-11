@@ -4304,7 +4304,8 @@ body.scrolled .announcement-bar::after {
   margin: 0;
   font-size: 0.81rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.64);
+  color: rgba(255, 245, 225, 0.9); /* bilo 0.78 */
+  font-style: italic;
 }
 
 .product-modal-notes {
@@ -5797,7 +5798,7 @@ body.scrolled .announcement-bar::after {
   font-weight: 500;
   letter-spacing: 0.01em;
 
-  color: rgba(245, 239, 230, 0.6);
+  color: rgba(255, 255, 255, 0.65);
 
   max-width: 95%;
 }
@@ -5808,6 +5809,22 @@ body.scrolled .announcement-bar::after {
 
 .product-card-copy-stack {
   width: 100%;
+
+  padding: 10px 12px;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)),
+    rgba(0,0,0,0.25);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  border: 1px solid rgba(255,255,255,0.04);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 8px 20px rgba(0,0,0,0.25);
 }
 
 .product-price-block {
