@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 
@@ -2083,13 +2083,13 @@ function App() {
 ========================================= */
 useEffect(() => {
   const shouldLockScroll =
-  !!selectedProduct ||
-  cartOpen ||
-  checkoutOpen ||
-  storyOpen ||
-  howItWorksOpen ||
-  privateSelectionOpen ||
-  !!catalogPreview;
+    !!selectedProduct ||
+    cartOpen ||
+    checkoutOpen ||
+    storyOpen ||
+    howItWorksOpen ||
+    privateSelectionOpen ||
+    !!catalogPreview;
 
   const body = document.body;
 
