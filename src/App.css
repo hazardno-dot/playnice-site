@@ -5870,6 +5870,31 @@ body.scrolled .announcement-bar::after {
     #cfa24e 100%
   );
 
+  .product-price-from,
+.premium-product-price {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+
+  font-family: "Inter", sans-serif;
+  font-weight: 680; /* ⬅️ malo jače od 640 */
+  letter-spacing: 0.02em; /* ⬅️ micro premium feel */
+
+  background: linear-gradient(
+    90deg,
+    #e6c88f 0%,
+    #dcb56b 35%,
+    #f0d7a3 60%,
+    #cfa24e 100%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+    0 0 8px rgba(220, 181, 107, 0.18); /* ⬅️ subtle glow */
+}
+
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
