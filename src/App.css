@@ -5126,7 +5126,7 @@ body.scrolled .announcement-bar::after {
   transform: translateX(calc(100% + 32px));
 
   transition:
-    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.76s cubic-bezier(0.16, 1, 0.3, 1),
     opacity 0.42s ease,
     visibility 0s linear 0.72s;
 
@@ -5140,7 +5140,7 @@ body.scrolled .announcement-bar::after {
   transform: translateX(0);
 
   transition:
-    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.76s cubic-bezier(0.16, 1, 0.3, 1),
     opacity 0.42s ease,
     visibility 0s linear 0s;
 }
@@ -5214,7 +5214,16 @@ body.scrolled .announcement-bar::after {
     linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015)),
     rgba(14, 14, 14, 0.95);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-  transition-duration: 0.98s;
+}
+
+.private-selection-drawer .panel-item-anim {
+  transition:
+    opacity 0.98s ease,
+    transform 0.98s var(--content-ease),
+    filter 0.98s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
 }
 
 .private-selection-item-media {
