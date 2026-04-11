@@ -170,7 +170,7 @@ const translations = {
     // PRODUCT CARD
     tryFrom: "Try from",
     productDecantNote: "Perfect for testing before buying a full bottle.",
-    productCardCta: "Test before buying full bottle",
+    productCardCta: "Try before you buy",
 
     sizeBestChoice: "Best pick",
 
@@ -350,7 +350,7 @@ const translations = {
     // PRODUCT CARD
     tryFrom: "Probaj od",
     productDecantNote: "Idealno da probaš miris pre full bottle kupovine.",
-    productCardCta: "Probaj prije full bottle kupovine",
+    productCardCta: "Probaj pre kupovine",
 
     sizeBestChoice: "Preporuka",
 
