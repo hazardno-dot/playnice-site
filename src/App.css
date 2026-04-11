@@ -6000,7 +6000,7 @@ body.scrolled .announcement-bar::after {
   );
 
   transform: translateX(-140%);
-  animation: productCtaElectric 5.2s ease-in-out infinite;
+  animation: productCtaElectric 6.5s ease-in-out infinite;
 
   pointer-events: none;
   mix-blend-mode: screen;
