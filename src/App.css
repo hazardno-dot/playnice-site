@@ -3839,6 +3839,58 @@ body.scrolled .announcement-bar::after {
 }
 
 /* =========================================
+   CHECKOUT TRUST / INFO
+========================================= */
+
+.checkout-subnote {
+  margin: 10px 0 0;
+  max-width: 520px;
+  color: rgba(255, 248, 235, 0.68);
+  font-size: 0.96rem;
+  line-height: 1.5;
+}
+
+.checkout-trust {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(220, 181, 107, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.checkout-trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: rgba(255, 248, 235, 0.84);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.checkout-trust-item span:first-child {
+  color: var(--gold);
+  flex: 0 0 auto;
+  transform: translateY(1px);
+}
+
+.checkout-safe-note {
+  margin-top: 12px;
+  text-align: center;
+  color: rgba(255, 248, 235, 0.62);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.checkout-summary-trust {
+  margin: 14px 0 0;
+  color: rgba(255, 248, 235, 0.62);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+/* =========================================
    RESPONSIVE
 ========================================= */
 @media (max-width: 1100px) {

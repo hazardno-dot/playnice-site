@@ -137,7 +137,15 @@ const translations = {
     stickyCart: "Open Cart",
     stickyCheckout: "Checkout",
     stickyItems: "items",
-    stickyItem: "item"
+    stickyItem: "item",
+    checkoutCodInfo: "Cash on delivery — order confirmation and details will be sent by email.",
+    checkoutTrust1: "Cash on delivery — you pay only when your order arrives",
+    checkoutTrust2: "Order confirmation and all details will be sent by email",
+    checkoutTrust3: "100% original fragrances and premium decants",
+    checkoutTrust4: "Delivery across Montenegro",
+    checkoutSafeNote: "No online payment — after placing your order, you will receive confirmation and all details by email.",
+    checkoutSummaryTrust: "Cash on delivery • Original fragrances • Delivery in Montenegro",
+    checkoutSubmitCod: "Order — pay on delivery",
   },
 
   sr: {
@@ -277,7 +285,15 @@ const translations = {
     stickyCart: "Otvori korpu",
     stickyCheckout: "Nastavi porudžbinu",
     stickyItems: "artikala",
-    stickyItem: "artikal"
+    stickyItem: "artikal",
+    checkoutCodInfo: "Plaćanje pouzećem — potvrda narudžbine i detalji stižu na email.",
+    checkoutTrust1: "Plaćanje pouzećem — plaćate tek kada pošiljka stigne",
+    checkoutTrust2: "Potvrda narudžbine i svi detalji stižu na email",
+    checkoutTrust3: "100% original parfemi i premium dekanti",
+    checkoutTrust4: "Dostava širom Crne Gore",
+    checkoutSafeNote: "Bez online plaćanja — nakon narudžbine dobijate potvrdu i sve informacije na email.",
+    checkoutSummaryTrust: "Plaćanje pouzećem • Original parfemi • Dostava u Crnoj Gori",
+    checkoutSubmitCod: "Naruči — plaćanje pouzećem",
   }
 };
 
@@ -4507,171 +4523,227 @@ setCheckoutOpen(false);
       )}
 
       <div className={`checkout-modal ${checkoutOpen ? "open panel-open" : ""}`}>
-        <div className="checkout-header panel-anim panel-anim-1">
-          <div>
-            <p className="section-kicker">{tr.checkoutKicker}</p>
-            <h3>{tr.checkoutTitle}</h3>
-          </div>
-          <button
-            className="close-button"
-            type="button"
-            onClick={() => setCheckoutOpen(false)}
-            aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
-          >
-            ×
-          </button>
+  <div className="checkout-header panel-anim panel-anim-1">
+    <div>
+      <p className="section-kicker">{tr.checkoutKicker}</p>
+      <h3>{tr.checkoutTitle}</h3>
+      <p className="checkout-subnote">
+        {lang === "sr"
+          ? "Plaćanje pouzećem — potvrda narudžbine i detalji stižu na email."
+          : "Cash on delivery — order confirmation and details will be sent by email."}
+      </p>
+    </div>
+    <button
+      className="close-button"
+      type="button"
+      onClick={() => setCheckoutOpen(false)}
+      aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
+    >
+      ×
+    </button>
+  </div>
+
+  <div className="checkout-grid">
+    <div className="checkout-form panel-anim panel-anim-2">
+      <div className="form-row two panel-item-anim panel-item-1">
+        <input
+          name="firstName"
+          placeholder={tr.firstName}
+          value={checkoutForm.firstName}
+          onChange={handleCheckoutInput}
+        />
+        <input
+          name="lastName"
+          placeholder={tr.lastName}
+          value={checkoutForm.lastName}
+          onChange={handleCheckoutInput}
+        />
+      </div>
+
+      <div className="form-row two panel-item-anim panel-item-2">
+        <input
+          name="email"
+          type="email"
+          placeholder={tr.email}
+          value={checkoutForm.email}
+          onChange={handleCheckoutInput}
+        />
+        <input
+          name="phone"
+          placeholder={tr.phone}
+          value={checkoutForm.phone}
+          onChange={handleCheckoutInput}
+        />
+      </div>
+
+      <div className="form-row two panel-item-anim panel-item-3">
+        <input
+          name="city"
+          placeholder={tr.city}
+          value={checkoutForm.city}
+          onChange={handleCheckoutInput}
+        />
+        <input
+          name="address"
+          placeholder={tr.address}
+          value={checkoutForm.address}
+          onChange={handleCheckoutInput}
+        />
+      </div>
+
+      <div className="form-row panel-item-anim panel-item-4">
+        <textarea
+          name="note"
+          placeholder={tr.note}
+          rows="4"
+          value={checkoutForm.note}
+          onChange={handleCheckoutInput}
+        />
+      </div>
+
+      <div className="checkout-trust panel-item-anim panel-item-5">
+        <div className="checkout-trust-item">
+          <span>✔</span>
+          <span>
+            {lang === "sr"
+              ? "Plaćanje pouzećem — plaćate tek kada pošiljka stigne"
+              : "Cash on delivery — you pay only when your order arrives"}
+          </span>
         </div>
-
-        <div className="checkout-grid">
-          <div className="checkout-form panel-anim panel-anim-2">
-            <div className="form-row two panel-item-anim panel-item-1">
-              <input
-                name="firstName"
-                placeholder={tr.firstName}
-                value={checkoutForm.firstName}
-                onChange={handleCheckoutInput}
-              />
-              <input
-                name="lastName"
-                placeholder={tr.lastName}
-                value={checkoutForm.lastName}
-                onChange={handleCheckoutInput}
-              />
-            </div>
-
-            <div className="form-row two panel-item-anim panel-item-2">
-              <input
-                name="email"
-                type="email"
-                placeholder={tr.email}
-                value={checkoutForm.email}
-                onChange={handleCheckoutInput}
-              />
-              <input
-                name="phone"
-                placeholder={tr.phone}
-                value={checkoutForm.phone}
-                onChange={handleCheckoutInput}
-              />
-            </div>
-
-            <div className="form-row two panel-item-anim panel-item-3">
-              <input
-                name="city"
-                placeholder={tr.city}
-                value={checkoutForm.city}
-                onChange={handleCheckoutInput}
-              />
-              <input
-                name="address"
-                placeholder={tr.address}
-                value={checkoutForm.address}
-                onChange={handleCheckoutInput}
-              />
-            </div>
-
-            <div className="form-row panel-item-anim panel-item-4">
-              <textarea
-                name="note"
-                placeholder={tr.note}
-                rows="4"
-                value={checkoutForm.note}
-                onChange={handleCheckoutInput}
-              />
-            </div>
-
-            {orderSuccessMessage && (
-              <div className="order-success-message panel-item-anim panel-item-5">
-                {orderSuccessMessage}
-              </div>
-            )}
-
-            <button
-              className="gold-button submit-order-button panel-anim panel-anim-4"
-              type="button"
-              onClick={handlePlaceOrder}
-              disabled={isSubmittingOrder}
-            >
-              {isSubmittingOrder ? tr.placingOrder : tr.placeOrder}
-            </button>
-          </div>
-
-          <div className="checkout-summary panel-anim panel-anim-3">
-            <h4>{tr.orderSummary}</h4>
-
-            {cart.length === 0 ? (
-              <p className="checkout-empty panel-item-anim panel-item-1">
-                {tr.noItemsCart}
-              </p>
-            ) : (
-              <>
-                <div className="checkout-summary-items">
-                  {cart.map((item, index) => (
-                    <div
-                      className={`checkout-summary-item panel-item-anim panel-item-${Math.min(
-                        index + 1,
-                        6
-                      )}`}
-                      key={item.key}
-                    >
-                      <div>
-                        <strong>{item.name}</strong>
-                        <p>
-                          {item.size} × {item.quantity}
-                        </p>
-                      </div>
-                      <span>{formatPrice(item.price * item.quantity)}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div
-                  className={`shipping-progress-card checkout-shipping-note panel-anim panel-anim-4 ${
-                    subtotal >= FREE_SHIPPING_THRESHOLD
-                      ? "shipping-note-unlocked"
-                      : "shipping-note-locked"
-                  }`}
-                >
-                  <div className="shipping-note">
-                    {subtotal >= FREE_SHIPPING_THRESHOLD
-                      ? `${tr.freeShippingUnlocked} ✓`
-                      : tr.freeShippingProgress.replace(
-                          "{{amount}}",
-                          formatPrice(amountLeftForFreeShipping)
-                        )}
-                  </div>
-
-                  <div className="shipping-progress-bar">
-                    <div
-                      className="shipping-progress-fill"
-                      style={{ width: `${freeShippingProgress}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className="checkout-totals panel-anim panel-anim-5">
-                  <div>
-                    <span>{tr.subtotal}</span>
-                    <strong>{formatPrice(subtotal)}</strong>
-                  </div>
-                  <div>
-                    <span>{tr.shipping}</span>
-                    <strong>
-                      {shipping === 0 && cart.length > 0
-                        ? "FREE"
-                        : formatPrice(shipping)}
-                    </strong>
-                  </div>
-                  <div className="grand-total">
-                    <span>{tr.total}</span>
-                    <strong>{formatPrice(total)}</strong>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
+        <div className="checkout-trust-item">
+          <span>✔</span>
+          <span>
+            {lang === "sr"
+              ? "Potvrda narudžbine i svi detalji stižu na email"
+              : "Order confirmation and all details will be sent by email"}
+          </span>
+        </div>
+        <div className="checkout-trust-item">
+          <span>✔</span>
+          <span>
+            {lang === "sr"
+              ? "100% original parfemi i premium dekanti"
+              : "100% original fragrances and premium decants"}
+          </span>
+        </div>
+        <div className="checkout-trust-item">
+          <span>✔</span>
+          <span>
+            {lang === "sr"
+              ? "Dostava širom Crne Gore"
+              : "Delivery across Montenegro"}
+          </span>
         </div>
       </div>
+
+      {orderSuccessMessage && (
+        <div className="order-success-message panel-item-anim panel-item-6">
+          {orderSuccessMessage}
+        </div>
+      )}
+
+      <button
+        className="gold-button submit-order-button panel-anim panel-anim-4"
+        type="button"
+        onClick={handlePlaceOrder}
+        disabled={isSubmittingOrder}
+      >
+        {isSubmittingOrder
+          ? tr.placingOrder
+          : lang === "sr"
+          ? "Naruči — plaćanje pouzećem"
+          : "Order — pay on delivery"}
+      </button>
+
+      <div className="checkout-safe-note panel-anim panel-anim-5">
+        {lang === "sr"
+          ? "Bez online plaćanja — nakon narudžbine dobijate potvrdu i sve informacije na email."
+          : "No online payment — after placing your order, you will receive confirmation and all details by email."}
+      </div>
+    </div>
+
+    <div className="checkout-summary panel-anim panel-anim-3">
+      <h4>{tr.orderSummary}</h4>
+
+      {cart.length === 0 ? (
+        <p className="checkout-empty panel-item-anim panel-item-1">
+          {tr.noItemsCart}
+        </p>
+      ) : (
+        <>
+          <div className="checkout-summary-items">
+            {cart.map((item, index) => (
+              <div
+                className={`checkout-summary-item panel-item-anim panel-item-${Math.min(
+                  index + 1,
+                  6
+                )}`}
+                key={item.key}
+              >
+                <div>
+                  <strong>{item.name}</strong>
+                  <p>
+                    {item.size} × {item.quantity}
+                  </p>
+                </div>
+                <span>{formatPrice(item.price * item.quantity)}</span>
+              </div>
+            ))}
+          </div>
+
+          <div
+            className={`shipping-progress-card checkout-shipping-note panel-anim panel-anim-4 ${
+              subtotal >= FREE_SHIPPING_THRESHOLD
+                ? "shipping-note-unlocked"
+                : "shipping-note-locked"
+            }`}
+          >
+            <div className="shipping-note">
+              {subtotal >= FREE_SHIPPING_THRESHOLD
+                ? `${tr.freeShippingUnlocked} ✓`
+                : tr.freeShippingProgress.replace(
+                    "{{amount}}",
+                    formatPrice(amountLeftForFreeShipping)
+                  )}
+            </div>
+
+            <div className="shipping-progress-bar">
+              <div
+                className="shipping-progress-fill"
+                style={{ width: `${freeShippingProgress}%` }}
+              />
+            </div>
+          </div>
+
+          <div className="checkout-summary-trust panel-anim panel-anim-5">
+            {lang === "sr"
+              ? "Plaćanje pouzećem • Original parfemi • Dostava u Crnoj Gori"
+              : "Cash on delivery • Original fragrances • Delivery in Montenegro"}
+          </div>
+
+          <div className="checkout-totals panel-anim panel-anim-6">
+            <div>
+              <span>{tr.subtotal}</span>
+              <strong>{formatPrice(subtotal)}</strong>
+            </div>
+            <div>
+              <span>{tr.shipping}</span>
+              <strong>
+                {shipping === 0 && cart.length > 0
+                  ? "FREE"
+                  : formatPrice(shipping)}
+              </strong>
+            </div>
+            <div className="grand-total">
+              <span>{tr.total}</span>
+              <strong>{formatPrice(total)}</strong>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+</div>
 
       {catalogPreview && (
         <div className="catalog-modal-overlay" onClick={closeCatalogPreview}>
