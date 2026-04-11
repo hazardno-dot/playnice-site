@@ -4214,7 +4214,7 @@ setCheckoutOpen(false);
           </div>
         ) : (
           <>
-            <div className="cart-items panel-anim panel-anim-2">
+            <div className="cart-items">
               {cart.map((item, index) => (
                 <div
                   className={`cart-item panel-item-anim panel-item-${Math.min(

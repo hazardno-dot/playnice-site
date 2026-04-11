@@ -2282,24 +2282,15 @@ body.scrolled .announcement-bar::after {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateX(calc(100% + 28px));
+  transform: translateX(calc(100% + 32px));
 
   transition:
-    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.38s ease,
-    visibility 0s linear 0.68s,
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.42s ease,
+    visibility 0s linear 0.72s,
     max-height 0.34s ease;
 
   will-change: transform, opacity, max-height;
-}
-
-.cart-drawer.is-empty {
-  width: min(380px, calc(100vw - 20px));
-  max-height: 320px;
-}
-
-.cart-drawer.has-items {
-  width: min(520px, calc(100vw - 20px));
 }
 
 .cart-drawer.open {
@@ -2309,11 +2300,42 @@ body.scrolled .announcement-bar::after {
   transform: translateX(0);
 
   transition:
-    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.38s ease,
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.42s ease,
     visibility 0s linear 0s,
     width 0.34s ease,
     max-height 0.34s ease;
+}
+
+.cart-drawer.open .cart-summary {
+  transition-delay: 0.26s;
+}
+
+.cart-drawer.open .shipping-progress-card {
+  transition-delay: 0.36s;
+}
+
+.cart-drawer.open .checkout-button {
+  transition-delay: 0.46s;
+}
+
+.cart-drawer .panel-item-anim {
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s var(--content-ease),
+    filter 0.9s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+.cart-drawer.is-empty {
+  width: min(380px, calc(100vw - 20px));
+  max-height: 320px;
+}
+
+.cart-drawer.has-items {
+  width: min(520px, calc(100vw - 20px));
 }
 
 .cart-drawer-header,
