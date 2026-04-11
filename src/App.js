@@ -2090,7 +2090,7 @@ useEffect(() => {
   howItWorksOpen ||
   privateSelectionOpen ||
   !!catalogPreview;
-  
+
   const body = document.body;
 
   if (shouldLockScroll) {
@@ -2706,7 +2706,7 @@ setCheckoutOpen(false);
   setTimeout(() => {
     setSelectedProduct(null);
     setSelectedSize("");
-  }, 720);
+  }, 420);
 };
 
   const openImpactProductModal = (product) => {
