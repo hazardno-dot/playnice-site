@@ -4305,10 +4305,10 @@ body.scrolled .announcement-bar::after {
   pointer-events: none;
 
   transition:
-    opacity 0.42s ease,
-    visibility 0s linear 0.42s,
-    backdrop-filter 0.72s cubic-bezier(0.16, 1, 0.3, 1),
-    -webkit-backdrop-filter 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.26s ease,
+    visibility 0s linear 0.26s,
+    backdrop-filter 0.26s ease,
+    -webkit-backdrop-filter 0.26s ease;
 
   will-change: opacity, backdrop-filter;
 }
@@ -4323,7 +4323,7 @@ body.scrolled .announcement-bar::after {
     radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.02), transparent 36%);
 
   opacity: 0;
-  transition: opacity 0.72s ease;
+  transition: opacity 0.26s ease;
 }
 
 .modal-overlay .product-modal.open {
