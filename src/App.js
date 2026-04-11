@@ -2077,6 +2077,7 @@ function App() {
   );
 
   const scrollYRef = useRef(0);
+  const productModalScrollYRef = useRef(0);
 
     /* =========================================
    EFFECTS
@@ -2094,7 +2095,12 @@ useEffect(() => {
   const body = document.body;
 
   if (shouldLockScroll) {
-    scrollYRef.current = window.scrollY;
+    const lockY = selectedProduct
+  ? productModalScrollYRef.current
+  : window.scrollY || window.pageYOffset || 0;
+
+scrollYRef.current = lockY;
+body.style.top = `-${lockY}px`;
 
     body.style.position = "fixed";
     body.style.top = `-${scrollYRef.current}px`;
@@ -2696,6 +2702,7 @@ setCheckoutOpen(false);
   };
 
   const openProductModal = (product) => {
+  productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
   setSelectedProduct(product);
   setSelectedSize(Object.keys(product.sizes || {})[0] || "");
 };
