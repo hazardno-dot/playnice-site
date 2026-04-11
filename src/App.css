@@ -5782,34 +5782,40 @@ body.scrolled .announcement-bar::after {
   font-weight: 400;
   letter-spacing: 0.015em;
 
-  color: rgba(245, 230, 205, 0.78);
+  color: rgba(255, 245, 225, 0.9);
 
-  min-height: calc(1.4em * 3);
-  max-height: calc(1.4em * 3);
+  min-height: calc(1.4em * 2);
+  max-height: calc(1.4em * 2);
 
   overflow: hidden;
 }
 
 .product-card-decant-note {
-  margin: 6px 0 0;
+  margin: 8px 0 0;
 
   font-family: "Inter", sans-serif;
   font-size: 0.82rem;
-  line-height: 1.45;
+  line-height: 1.35;
   font-weight: 500;
   letter-spacing: 0.01em;
 
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(245, 239, 230, 0.6);
 
-  max-width: 95%;
+  min-height: calc(1.35em * 2);
+  max-height: calc(1.35em * 2);
+
+  overflow: hidden;
 }
 
 .product-meta-middle {
-  padding-top: 6px;
+  padding-top: 2px;
 }
 
 .product-card-copy-stack {
   width: 100%;
+
+  min-height: 120px;
+  max-height: 120px;
 
   padding: 10px 12px;
   border-radius: 12px;
