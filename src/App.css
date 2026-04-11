@@ -4306,6 +4306,7 @@ body.scrolled .announcement-bar::after {
   line-height: 1.5;
   color: rgba(255, 245, 225, 0.9); /* bilo 0.78 */
   font-style: italic;
+  letter-spacing: 0.02em;
 }
 
 .product-modal-notes {
