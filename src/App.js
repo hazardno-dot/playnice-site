@@ -350,7 +350,7 @@ const translations = {
     // PRODUCT CARD
     tryFrom: "Već od",
     productDecantNote: "Nosi ga prvo. Odluči kasnije.",
-    productCardCta: "Kreni sa 5ml",
+    productCardCta: "Startuj sa 5ml",
 
     sizeBestChoice: "Preporuka",
 
