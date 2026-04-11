@@ -2095,10 +2095,14 @@ useLayoutEffect(() => {
   const body = document.body;
 
   if (shouldLockScroll) {
-    scrollYRef.current = window.scrollY;
+    const lockY = selectedProduct
+      ? productModalScrollYRef.current
+      : window.scrollY || window.pageYOffset || 0;
+
+    scrollYRef.current = lockY;
 
     body.style.position = "fixed";
-    body.style.top = `-${scrollYRef.current}px`;
+    body.style.top = `-${lockY}px`;
     body.style.left = "0";
     body.style.right = "0";
     body.style.width = "100%";
@@ -2785,6 +2789,7 @@ setCheckoutOpen(false);
         <button
   type="button"
   className="product-card-media clickable-media"
+  onMouseDown={(e) => e.preventDefault()}
   onClick={() => openProductModal(product)}
   aria-label={product.name}
 >
