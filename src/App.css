@@ -5123,12 +5123,12 @@ body.scrolled .announcement-bar::after {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateX(calc(100% + 28px));
+  transform: translateX(calc(100% + 32px));
 
   transition:
-    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.38s ease,
-    visibility 0s linear 0.68s;
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.42s ease,
+    visibility 0s linear 0.72s;
 
   will-change: transform, opacity;
 }
@@ -5140,9 +5140,13 @@ body.scrolled .announcement-bar::after {
   transform: translateX(0);
 
   transition:
-    transform 0.68s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.38s ease,
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.42s ease,
     visibility 0s linear 0s;
+}
+
+.private-selection-drawer.open .private-selection-footer {
+  transition-delay: 0.34s;
 }
 
 .private-selection-header {

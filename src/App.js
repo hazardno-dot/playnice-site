@@ -4093,7 +4093,7 @@ setCheckoutOpen(false);
           </div>
         ) : (
           <>
-            <div className="private-selection-items panel-anim panel-anim-2">
+            <div className="private-selection-items">
               {privateSelectionProducts.map((product, index) => {
                 const minPrice = getMinPrice(product);
                 const copy = getProductCopy(product, lang);
@@ -4161,7 +4161,7 @@ setCheckoutOpen(false);
               })}
             </div>
 
-            <div className="private-selection-footer panel-anim panel-anim-4">
+            <div className="private-selection-footer panel-anim panel-anim-3">
               <span className="story-drawer-signature">Remember. PlayNice.</span>
 
               <button
