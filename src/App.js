@@ -2083,14 +2083,14 @@ function App() {
 ========================================= */
 useEffect(() => {
   const shouldLockScroll =
-    !!selectedProduct ||
-    cartOpen ||
-    checkoutOpen ||
-    storyOpen ||
-    howItWorksOpen ||
-    privateSelectionOpen ||
-    !!catalogPreview;
-
+  productModalVisible ||
+  cartOpen ||
+  checkoutOpen ||
+  storyOpen ||
+  howItWorksOpen ||
+  privateSelectionOpen ||
+  !!catalogPreview;
+  
   const body = document.body;
 
   if (shouldLockScroll) {
