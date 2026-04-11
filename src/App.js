@@ -172,7 +172,7 @@ const translations = {
     productDecantNote: "Perfect for testing before buying a full bottle.",
     productCardCta: "Test before buying full bottle",
 
-    sizeBestChoice: "Best first try",
+    sizeBestChoice: "Best pick",
 
     wearHint_2ml: "1–3 wears",
     wearHint_5ml: "5–7 wears",
@@ -352,7 +352,7 @@ const translations = {
     productDecantNote: "Idealno da probaš miris pre full bottle kupovine.",
     productCardCta: "Probaj prije full bottle kupovine",
 
-    sizeBestChoice: "Za prvi test👍",
+    sizeBestChoice: "Preporuka",
 
     wearHint_2ml: "1–3 nošenja",
     wearHint_5ml: "5–7 nošenja",
