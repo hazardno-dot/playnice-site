@@ -5825,6 +5825,12 @@ body.scrolled .announcement-bar::after {
     0 4px 12px rgba(0,0,0,0.18);
 }
 
+.product-card:hover .product-card-copy-stack {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.24)),
+    rgba(10,10,10,0.65);
+}
+
 .product-price-block {
   display: flex;
   align-items: center;
