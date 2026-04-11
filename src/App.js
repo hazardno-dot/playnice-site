@@ -2832,125 +2832,137 @@ setCheckoutOpen(false);
 
     return (
       <article className="product-card premium-product-card">
-        <button
-  type="button"
-  className="product-card-media clickable-media"
-  onMouseDown={(e) => e.preventDefault()}
-  onClick={() => openProductModal(product)}
-  aria-label={product.name}
->
-  <img
-    src={product.image || "/placeholder.png"}
-    alt={product.name}
-    className="product-card-image"
-    loading="lazy"
-  />
-</button>
+  <button
+    type="button"
+    className="product-card-media clickable-media"
+    onMouseDown={(e) => e.preventDefault()}
+    onClick={() => openProductModal(product)}
+    aria-label={product.name}
+  >
+    <img
+      src={product.image || "/placeholder.png"}
+      alt={product.name}
+      className="product-card-image"
+      loading="lazy"
+    />
+  </button>
 
+  <button
+    type="button"
+    className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
+      isSpraying ? "is-spraying" : ""
+    }`}
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleWishlist(product.id);
+    }}
+    aria-label={
+      isWishlisted
+        ? lang === "sr"
+          ? `Ukloni ${product.name} iz wishlist`
+          : `Remove ${product.name} from wishlist`
+        : lang === "sr"
+        ? `Dodaj ${product.name} u wishlist`
+        : `Add ${product.name} to wishlist`
+    }
+  >
+    <span className="heart-icon" aria-hidden="true">
+      ♥
+    </span>
+  </button>
+
+  {copy.miniTag && (
+    <span
+      className={`product-floating-badge ${getBadgeVariant(copy.miniTag)}`}
+    >
+      {copy.miniTag}
+    </span>
+  )}
+
+  <div className="product-meta premium-product-meta">
+    <div className="product-meta-top">
+      <p className="product-category">{getCategoryLabel(product.category)}</p>
+
+      <h3 className="product-card-title">{product.name}</h3>
+    </div>
+
+    <div className="product-meta-middle">
+      <div className="product-card-copy-stack">
+        <p className="product-card-copy premium-card-copy">{copy.card}</p>
+
+        <p className="product-card-decant-note">
+          {lang === "sr"
+            ? "Idealno da probaš miris pre full bottle kupovine."
+            : "Perfect for testing before buying a full bottle."}
+        </p>
+      </div>
+    </div>
+
+    <div className="product-meta-bottom">
+      <div className="product-price-block">
+        <div className="product-price-row">
+          <span className="product-price-from premium-product-price">
+            <span className="price-prefix">
+              {lang === "sr" ? "Probaj od" : "Try from"}
+            </span>
+            <span className="price-value">€{minPrice}</span>
+          </span>
+        </div>
+      </div>
+
+      <div className="product-preview-line premium-preview-line single-line-preview">
+        <span className="product-card-cta">
+          {lang === "sr"
+            ? "Probaj prije full bottle kupovine"
+            : "Test before buying full bottle"}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div className="size-buttons" onClick={(e) => e.stopPropagation()}>
+    {Object.entries(product.sizes).map(([size, price]) => {
+      const feedbackKey = `${product.id}-${size}`;
+      const isJustAdded = inlineAddedKey === feedbackKey;
+      const isRecommendedSize = size === "5ml";
+
+      return (
         <button
+          key={size}
           type="button"
-          className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
-            isSpraying ? "is-spraying" : ""
-          }`}
+          className={`size-chip ${isRecommendedSize ? "is-recommended" : ""}`}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            toggleWishlist(product.id);
+            e.currentTarget.blur();
+
+            addToCart(product, size, null, null, { showToast: false });
+            triggerInlineAddedFeedback(product.id, size);
           }}
-          aria-label={
-            isWishlisted
-              ? lang === "sr"
-                ? `Ukloni ${product.name} iz wishlist`
-                : `Remove ${product.name} from wishlist`
-              : lang === "sr"
-              ? `Dodaj ${product.name} u wishlist`
-              : `Add ${product.name} to wishlist`
-          }
         >
-          <span className="heart-icon" aria-hidden="true">
-            ♥
+          <span className="size-chip-main-wrap">
+            <span className="size-chip-main">{size}</span>
+
+            {isRecommendedSize && (
+              <span className="size-chip-recommended">
+                {lang === "sr"
+                  ? "Najbolji za prvo testiranje"
+                  : "Best first try"}
+              </span>
+            )}
+          </span>
+
+          <span className="size-chip-price">{formatPrice(price)}</span>
+
+          <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
+            {tr.justAdded}
           </span>
         </button>
-
-        {copy.miniTag && (
-          <span
-            className={`product-floating-badge ${getBadgeVariant(copy.miniTag)}`}
-          >
-            {copy.miniTag}
-          </span>
-        )}
-
-        <div className="product-meta premium-product-meta">
-          <div className="product-meta-top">
-            <p className="product-category">{getCategoryLabel(product.category)}</p>
-
-            <h3 className="product-card-title">{product.name}</h3>
-          </div>
-
-          <div className="product-meta-middle">
-            <div className="product-card-copy-stack">
-              <p className="product-card-copy premium-card-copy">{copy.card}</p>
-            </div>
-          </div>
-
-          <div className="product-meta-bottom">
-            <div className="product-price-block">
-              <div className="product-price-row">
-                <span className="product-price-from premium-product-price">
-                  <span className="price-prefix">{tr.from}</span>
-                  <span className="price-value">€{minPrice}</span>
-                </span>
-              </div>
-            </div>
-
-            <div className="product-preview-line premium-preview-line single-line-preview">
-              <span className="product-card-cta">
-                {lang === "sr" ? "Probaj pre kupovine" : "Try before you buy"}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="size-buttons" onClick={(e) => e.stopPropagation()}>
-          {Object.entries(product.sizes).map(([size, price]) => {
-            const feedbackKey = `${product.id}-${size}`;
-            const isJustAdded = inlineAddedKey === feedbackKey;
-            const isRecommendedSize = size === "5ml";
-
-            return (
-              <button
-                key={size}
-                type="button"
-                className={`size-chip ${isRecommendedSize ? "is-recommended" : ""}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  e.currentTarget.blur();
-
-                  addToCart(product, size, null, null, { showToast: false });
-                  triggerInlineAddedFeedback(product.id, size);
-                }}
-              >
-                <span className="size-chip-main-wrap">
-                  <span className="size-chip-main">{size}</span>
-
-                  {isRecommendedSize && (
-                    <span className="size-chip-recommended">
-                      {lang === "sr" ? "Najbolji izbor" : "Recommended"}
-                    </span>
-                  )}
-                </span>
-
-                <span className="size-chip-price">{formatPrice(price)}</span>
-
-                <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
-                  {tr.justAdded}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </article>
+      );
+    })}
+  </div>
+</article>
     );
   };
 

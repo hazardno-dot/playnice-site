@@ -5717,6 +5717,12 @@ body.scrolled .announcement-bar::after {
     contrast(1.04);
 }
 
+@media (max-width: 768px) {
+  .product-card-decant-note {
+    font-size: 0.78rem;
+  }
+}
+
 /* =========================================
    PRODUCT CARD — CONTENT
 ========================================= */
@@ -5780,6 +5786,20 @@ body.scrolled .announcement-bar::after {
   max-height: calc(1.4em * 3);
 
   overflow: hidden;
+}
+
+.product-card-decant-note {
+  margin: 6px 0 0;
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+
+  color: rgba(245, 239, 230, 0.6);
+
+  max-width: 95%;
 }
 
 .product-meta-middle {
