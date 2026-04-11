@@ -2689,29 +2689,25 @@ body.scrolled .announcement-bar::after {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate(-50%, -47%) scale(0.965);
-  filter: blur(8px);
+  transform: translate(-50%, -48.5%);
 
   transition:
-    opacity 0.28s ease,
-    transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.32s ease,
-    visibility 0s linear 0.52s;
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.42s ease,
+    visibility 0s linear 0.72s;
 
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
 }
 
 .product-modal.open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
-  filter: blur(0);
+  transform: translate(-50%, -50%);
 
   transition:
-    opacity 0.28s ease,
-    transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.32s ease,
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.42s ease,
     visibility 0s linear 0s;
 }
 
@@ -2768,21 +2764,24 @@ body.scrolled .announcement-bar::after {
 .product-modal .panel-item-anim,
 .product-modal .close-button {
   opacity: 0;
-  transform: translateY(-14px);
-  will-change: transform, opacity;
+  transform: translateY(-18px);
+  filter: blur(4px);
+  will-change: transform, opacity, filter;
 }
 
-.product-modal .panel-anim {
-  transition:
-    opacity 0.34s ease,
-    transform 0.46s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.product-modal .panel-item-anim,
+.product-modal .panel-anim,
 .product-modal .close-button {
   transition:
-    opacity 0.3s ease,
-    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.98s ease,
+    transform 0.98s var(--content-ease),
+    filter 0.98s ease;
+}
+
+.product-modal .panel-item-anim {
+  transition:
+    opacity 0.88s ease,
+    transform 0.88s var(--content-ease),
+    filter 0.88s ease;
 }
 
 .product-modal.open .panel-anim,
@@ -2790,21 +2789,21 @@ body.scrolled .announcement-bar::after {
 .product-modal.open .close-button {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0);
 }
 
-.product-modal.open .panel-anim-1 { transition-delay: 0.08s; }
-.product-modal.open .panel-anim-2 { transition-delay: 0.14s; }
-.product-modal.open .panel-anim-3 { transition-delay: 0.2s; }
-.product-modal.open .panel-anim-4 { transition-delay: 0.26s; }
+.product-modal.open .panel-anim-1 { transition-delay: 0.10s; }
+.product-modal.open .panel-anim-2 { transition-delay: 0.20s; }
+.product-modal.open .panel-anim-3 { transition-delay: 0.30s; }
 
-.product-modal.open .panel-item-1 { transition-delay: 0.12s; }
-.product-modal.open .panel-item-2 { transition-delay: 0.18s; }
-.product-modal.open .panel-item-3 { transition-delay: 0.24s; }
-.product-modal.open .panel-item-4 { transition-delay: 0.3s; }
-.product-modal.open .panel-item-5 { transition-delay: 0.36s; }
-.product-modal.open .panel-item-6 { transition-delay: 0.42s; }
+.product-modal.open .panel-item-1 { transition-delay: 0.14s; }
+.product-modal.open .panel-item-2 { transition-delay: 0.22s; }
+.product-modal.open .panel-item-3 { transition-delay: 0.30s; }
+.product-modal.open .panel-item-4 { transition-delay: 0.38s; }
+.product-modal.open .panel-item-5 { transition-delay: 0.46s; }
+.product-modal.open .panel-item-6 { transition-delay: 0.54s; }
 
-.product-modal.open .close-button { transition-delay: 0.1s; }
+.product-modal.open .close-button { transition-delay: 0.12s; }
 
 /* =========================================
    PRODUCT MODAL — EYEBROW
@@ -4306,16 +4305,12 @@ body.scrolled .announcement-bar::after {
   pointer-events: none;
 
   transition:
-    opacity 0.38s ease,
-    visibility 0s linear 0.38s,
-    backdrop-filter 0.68s cubic-bezier(0.16, 1, 0.3, 1),
-    -webkit-backdrop-filter 0.68s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.42s ease,
+    visibility 0s linear 0.42s,
+    backdrop-filter 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    -webkit-backdrop-filter 0.72s cubic-bezier(0.16, 1, 0.3, 1);
 
   will-change: opacity, backdrop-filter;
-}
-
-.modal-overlay .product-modal.open {
-  pointer-events: auto;
 }
 
 .modal-overlay::before {
@@ -4328,7 +4323,11 @@ body.scrolled .announcement-bar::after {
     radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.02), transparent 36%);
 
   opacity: 0;
-  transition: opacity 0.58s ease;
+  transition: opacity 0.72s ease;
+}
+
+.modal-overlay .product-modal.open {
+  pointer-events: auto;
 }
 
 .modal-overlay.show,

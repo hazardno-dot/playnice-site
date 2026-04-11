@@ -4451,7 +4451,7 @@ setCheckoutOpen(false);
                   </div>
                 </div>
 
-                <div className="modal-purchase panel-anim panel-anim-4">
+                <div className="modal-purchase">
                   <div className="modal-size-block panel-item-anim panel-item-5">
                     <span className="modal-label">
                       {lang === "sr" ? "IZABERI VELIČINU" : "CHOOSE SIZE"}
