@@ -6451,13 +6451,6 @@ will-change: transform, opacity;
   transition-delay: 0.34s;
 }
 
-.how-it-works-drawer .panel-anim {
-  transition:
-    opacity 1.08s ease,
-    transform 1.08s var(--content-ease),
-    filter 1.08s ease;
-}
-
 .how-it-works-drawer-header {
   display: flex;
   align-items: flex-start;
@@ -6524,6 +6517,23 @@ will-change: transform, opacity;
   gap: 14px;
   margin-top: 6px;
 }
+
+.how-it-works-drawer .panel-anim {
+  transition-duration: 1.08s;
+}
+
+.how-it-works-drawer .panel-item-anim {
+  transition-duration: 0.96s;
+}
+
+.how-it-works-drawer.open .panel-anim-1 { transition-delay: 0.12s; }
+.how-it-works-drawer.open .panel-anim-2 { transition-delay: 0.24s; }
+.how-it-works-drawer.open .panel-anim-4 { transition-delay: 0.50s; }
+
+.how-it-works-drawer.open .panel-item-1 { transition-delay: 0.18s; }
+.how-it-works-drawer.open .panel-item-2 { transition-delay: 0.26s; }
+.how-it-works-drawer.open .panel-item-3 { transition-delay: 0.34s; }
+.how-it-works-drawer.open .panel-item-4 { transition-delay: 0.42s; }
 
 @media (max-width: 768px) {
   .how-it-works-grid {
