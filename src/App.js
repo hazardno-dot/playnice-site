@@ -2095,12 +2095,7 @@ useLayoutEffect(() => {
   const body = document.body;
 
   if (shouldLockScroll) {
-    const lockY = selectedProduct
-  ? productModalScrollYRef.current
-  : window.scrollY || window.pageYOffset || 0;
-
-scrollYRef.current = lockY;
-body.style.top = `-${lockY}px`;
+    scrollYRef.current = window.scrollY;
 
     body.style.position = "fixed";
     body.style.top = `-${scrollYRef.current}px`;
