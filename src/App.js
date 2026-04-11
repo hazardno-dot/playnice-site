@@ -2077,6 +2077,7 @@ function App() {
   );
 
   const scrollYRef = useRef(0);
+  const productModalScrollYRef = useRef(0);
 
     /* =========================================
    EFFECTS
