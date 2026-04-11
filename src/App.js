@@ -2696,14 +2696,18 @@ setCheckoutOpen(false);
   };
 
   const openProductModal = (product) => {
-    setSelectedProduct(product);
-    setSelectedSize(Object.keys(product.sizes)[0]);
-  };
+  setSelectedProduct(product);
+  setSelectedSize(Object.keys(product.sizes || {})[0] || "");
+};
 
   const closeProductModal = () => {
+  setProductModalVisible(false);
+
+  setTimeout(() => {
     setSelectedProduct(null);
     setSelectedSize("");
-  };
+  }, 720);
+};
 
   const openImpactProductModal = (product) => {
     if (!product) return;
