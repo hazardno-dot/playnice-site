@@ -146,6 +146,26 @@ const translations = {
     checkoutSafeNote: "No online payment — after placing your order, you will receive confirmation and all details by email.",
     checkoutSummaryTrust: "Cash on delivery • Original fragrances • Delivery in Montenegro",
     checkoutSubmitCod: "Order — pay on delivery",
+    // CART
+    continueCheckout: "Continue to delivery details",
+    cartSafeNote: "No online payment — you pay only on delivery",
+    cartTrust1: "Cash on delivery",
+    cartTrust2: "Confirmation and details sent by email",
+    cartTrust3: "Delivery across Montenegro",
+
+    // SHIPPING
+    freeShippingSoft: "{{amount}} away from free shipping",
+
+    // CHECKOUT
+    checkoutSubmitCod: "Order — pay on delivery",
+    checkoutCodInfo: "Cash on delivery — order confirmation and details will be sent by email.",
+    checkoutSafeNote: "No online payment — after placing your order, you will receive confirmation and all details by email.",
+
+    // CHECKOUT TRUST
+    checkoutTrust1: "Cash on delivery — you pay only when your order arrives",
+    checkoutTrust2: "Order confirmation and all details will be sent by email",
+    checkoutTrust3: "100% original fragrances and premium decants",
+    checkoutTrust4: "Delivery across Montenegro",
   },
 
   sr: {
@@ -294,6 +314,26 @@ const translations = {
     checkoutSafeNote: "Bez online plaćanja — nakon narudžbine dobijate potvrdu i sve informacije na email.",
     checkoutSummaryTrust: "Plaćanje pouzećem • Original parfemi • Dostava u Crnoj Gori",
     checkoutSubmitCod: "Naruči — plaćanje pouzećem",
+    // CART
+    continueCheckout: "Dalje do podataka za dostavu",
+    cartSafeNote: "Bez online plaćanja — plaćate tek pri preuzimanju",
+    cartTrust1: "Plaćanje pouzećem",
+    cartTrust2: "Potvrda i detalji stižu na email",
+    cartTrust3: "Dostava širom Crne Gore",
+
+    // SHIPPING
+    freeShippingSoft: "Još {{amount}} do besplatne dostave",
+
+    // CHECKOUT
+    checkoutSubmitCod: "Naruči — plaćanje pouzećem",
+    checkoutCodInfo: "Plaćanje pouzećem — potvrda narudžbine i detalji stižu na email.",
+    checkoutSafeNote: "Bez online plaćanja — nakon narudžbine dobijate potvrdu i sve informacije na email.",
+
+    // CHECKOUT TRUST
+    checkoutTrust1: "Plaćanje pouzećem — plaćate tek kada pošiljka stigne",
+    checkoutTrust2: "Potvrda narudžbine i svi detalji stižu na email",
+    checkoutTrust3: "100% original parfemi i premium dekanti",
+    checkoutTrust4: "Dostava širom Crne Gore",
   }
 };
 
