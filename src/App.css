@@ -5502,14 +5502,9 @@ body.scrolled .announcement-bar::after {
   cursor: pointer;
 }
 
-.product-card-media:focus {
-  outline: none;
-}
-
+.product-card-media:focus,
 .product-card-media:focus-visible {
-  outline: 1px solid rgba(220, 181, 107, 0.4);
-  outline-offset: 4px;
-  border-radius: 12px;
+  outline: none;
 }
 
 .product-card-image {
