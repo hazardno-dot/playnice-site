@@ -5495,6 +5495,18 @@ body.scrolled .announcement-bar::after {
   will-change: transform;
 }
 
+.product-card-media {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.product-card-media:focus,
+.product-card-media:focus-visible {
+  outline: none;
+}
+
 .product-card-image {
   width: 100%;
   max-width: 160px;

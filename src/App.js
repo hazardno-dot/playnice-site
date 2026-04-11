@@ -2083,7 +2083,7 @@ function App() {
 ========================================= */
 useEffect(() => {
   const shouldLockScroll =
-  productModalVisible ||
+  !!selectedProduct ||
   cartOpen ||
   checkoutOpen ||
   storyOpen ||
@@ -2780,25 +2780,19 @@ setCheckoutOpen(false);
 
     return (
       <article className="product-card premium-product-card">
-        <div
-          className="product-card-media clickable-media"
-          onClick={() => openProductModal(product)}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              openProductModal(product);
-            }
-          }}
-        >
-          <img
-            src={product.image || "/placeholder.png"}
-            alt={product.name}
-            className="product-card-image"
-            loading="lazy"
-          />
-        </div>
+        <button
+  type="button"
+  className="product-card-media clickable-media"
+  onClick={() => openProductModal(product)}
+  aria-label={product.name}
+>
+  <img
+    src={product.image || "/placeholder.png"}
+    alt={product.name}
+    className="product-card-image"
+    loading="lazy"
+  />
+</button>
 
         <button
           type="button"
