@@ -2945,8 +2945,8 @@ const getSizeWearHint = (size) => {
           <div className="product-preview-line premium-preview-line single-line-preview">
             <span className="product-card-cta">
               {lang === "sr"
-                ? "Probaj prije full bottle kupovine"
-                : "Test before buying full bottle"}
+                ? "Probaj pre kupovine"
+                : "Try before you buy"}
             </span>
           </div>
         </div>
