@@ -2076,6 +2076,8 @@ function App() {
     FREE_SHIPPING_THRESHOLD - subtotal
   );
 
+  const scrollYRef = useRef(0);
+
     /* =========================================
    EFFECTS
 ========================================= */
@@ -2089,28 +2091,43 @@ useEffect(() => {
     privateSelectionOpen ||
     !!catalogPreview;
 
-  const html = document.documentElement;
   const body = document.body;
 
   if (shouldLockScroll) {
-    const scrollbarWidth = window.innerWidth - html.clientWidth;
+    scrollYRef.current = window.scrollY;
 
-    html.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollYRef.current}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
     body.style.overflow = "hidden";
-
-    if (scrollbarWidth > 0) {
-      body.style.paddingRight = `${scrollbarWidth}px`;
-    }
   } else {
-    html.style.overflow = "";
+    const scrollY = Math.abs(parseInt(body.style.top || "0", 10));
+
+    body.style.position = "";
+    body.style.top = "";
+    body.style.left = "";
+    body.style.right = "";
+    body.style.width = "";
     body.style.overflow = "";
-    body.style.paddingRight = "";
+
+    window.scrollTo(0, scrollY);
   }
 
   return () => {
-    html.style.overflow = "";
+    const scrollY = Math.abs(parseInt(body.style.top || "0", 10));
+
+    body.style.position = "";
+    body.style.top = "";
+    body.style.left = "";
+    body.style.right = "";
+    body.style.width = "";
     body.style.overflow = "";
-    body.style.paddingRight = "";
+
+    if (shouldLockScroll) {
+      window.scrollTo(0, scrollY);
+    }
   };
 }, [
   selectedProduct,
