@@ -3698,6 +3698,43 @@ body.scrolled .announcement-bar::after {
     background 0.22s ease;
 }
 
+.modal-cta-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 200px;
+}
+
+/* secondary CTA */
+.modal-buy-now {
+  border: none;
+  background: transparent;
+
+  color: rgba(220, 181, 107, 0.82);
+
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  padding: 4px 0;
+
+  transition:
+    color 0.22s ease,
+    text-shadow 0.22s ease,
+    opacity 0.22s ease;
+}
+
+.modal-buy-now:hover {
+  color: var(--gold);
+
+  text-shadow:
+    0 0 10px rgba(220, 181, 107, 0.22),
+    0 0 20px rgba(220, 181, 107, 0.12);
+}
+
 .modal-add-button::before {
   content: "";
   position: absolute;

@@ -4890,7 +4890,7 @@ const getSizeWearHint = (size) => {
       return null;
     })()}
   </p>
-  
+
                     <div className="modal-sizes">
                       {Object.entries(selectedProduct.sizes).map(
                         ([size, price], index) => (
@@ -4911,34 +4911,49 @@ const getSizeWearHint = (size) => {
                   </div>
 
                   <div className="modal-purchase-bar panel-item-anim panel-item-6">
-                    <div className="modal-price-box">
-                      <span>
-                        {lang === "sr" ? "IZABRANA CENA" : "SELECTED PRICE"}
-                      </span>
-                      <strong>
-                        {formatPrice(
-                          selectedProduct.sizes[selectedSize] ??
-                            Object.values(selectedProduct.sizes)[0]
-                        )}
-                      </strong>
-                    </div>
+  <div className="modal-price-box">
+    <span>
+      {lang === "sr" ? "IZABRANA CENA" : "SELECTED PRICE"}
+    </span>
+    <strong>
+      {formatPrice(
+        selectedProduct.sizes[selectedSize] ??
+          Object.values(selectedProduct.sizes)[0]
+      )}
+    </strong>
+  </div>
 
-                    <button
-                      type="button"
-                      className="modal-add-button"
-                      onClick={() => {
-                        const activeSize =
-                          selectedSize || Object.keys(selectedProduct.sizes)[0];
-                        addToCart(selectedProduct, activeSize);
-                        setCartOpen(true);
-                      }}
-                    >
-                      <span>
-                        {lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}
-                      </span>
-                    </button>
-                  </div>
-                </div>
+  <div className="modal-cta-group">
+    <button
+      type="button"
+      className="modal-add-button"
+      onClick={() => {
+        const activeSize =
+          selectedSize || Object.keys(selectedProduct.sizes)[0];
+        addToCart(selectedProduct, activeSize);
+        setCartOpen(true);
+      }}
+    >
+      <span>
+        {lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}
+      </span>
+    </button>
+
+    <button
+      type="button"
+      className="modal-buy-now"
+      onClick={() => {
+        const activeSize =
+          selectedSize || Object.keys(selectedProduct.sizes)[0];
+        addToCart(selectedProduct, activeSize);
+        setCartOpen(true);
+        setCheckoutOpen(true);
+      }}
+    >
+      {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
+    </button>
+  </div>
+</div>
               </div>
             </div>
           </div>
