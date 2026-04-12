@@ -4375,8 +4375,8 @@ const getSizeWearHint = (size) => {
           <div className="how-it-works-drawer-body">
             <p className="how-it-works-drawer-lead panel-anim panel-anim-2">
               {lang === "sr"
-                ? "Dekanti su manja, pažljivo presuta pakovanja originalnih parfema. Napravljeni su za ljude koji žele da miris prvo osete na svojoj koži, u svom ritmu, pre nego što se odluče za punu bočicu. Hiljade kupaca prvo testira dekante pre nego što kupi punu bočicu."
-                : "Decants are smaller, carefully transferred portions of original fragrances. They are made for people who want to wear a scent on their skin, in real life, before committing to a full bottle. Thousands of customers test decants before committing to a full bottle."}
+                ? "Dekanti su manja, pažljivo presuta pakovanja originalnih parfema. Namenjeni su onima koji žele da miris prvo dožive na svojoj koži, u svom ritmu, pre nego što se odluče za punu bočicu. Hiljade kupaca upravo tako donosi sigurnu odluku."
+                : "Decants are smaller, carefully transferred portions of original fragrances. They are designed for those who want to experience a scent on their own skin, in their own rhythm, before committing to a full bottle. Thousands of customers make confident decisions this way."}
             </p>
 
             <div className="how-it-works-drawer-grid">
