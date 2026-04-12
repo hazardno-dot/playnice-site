@@ -2975,11 +2975,13 @@ setCheckoutOpen(false);
     });
   };
 
-  const openProductModal = (product) => {
+  const openImpactProductModal = (product) => {
+  if (!product) return;
   productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
   setSelectedProduct(product);
   setSelectedSize(Object.keys(product.sizes || {})[0] || "");
   setHasUserPickedSize(false);
+  setProductModalVisible(true);
 };
 
   const closeProductModal = () => {
