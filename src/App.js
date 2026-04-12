@@ -4983,9 +4983,10 @@ const getSizeWearHint = (size) => {
     onClick={() => {
       const activeSize =
         selectedSize || Object.keys(selectedProduct.sizes)[0];
-      addToCart(selectedProduct, activeSize);
-      setCartOpen(true);
+      addToCart(selectedProduct, activeSize, null, null, { showToast: false });
+      setCartOpen(false);
       setCheckoutOpen(true);
+      closeProductModal();
     }}
   >
     {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
