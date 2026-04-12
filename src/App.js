@@ -101,6 +101,7 @@ const translations = {
     announcement3: "Premium niche, designer & arabic fragrances",
     announcement4: "Limited stock drops — don’t miss out",
     announcement5: "Delivery across Montenegro",
+    announcement6: "✔ 50+ satisfied customers",
     announcementDynamicLocked: "Add {{amount}} more to unlock free shipping",
     announcementDynamicUnlocked: "Free shipping unlocked ✓",
     announcementDynamicEmpty1: "Free shipping over €39",
@@ -279,6 +280,7 @@ const translations = {
     announcement3: "Premium niche, dizajnerski & arapski parfemi",
     announcement4: "Ograničene količine — ne propusti",
     announcement5: "Dostava širom Crne Gore",
+    announcement6: "✔ 50+ zadovoljnih kupaca",
     announcementDynamicLocked:
       "Dodaj još {{amount}} za besplatnu dostavu",
     announcementDynamicUnlocked: "Besplatna dostava otključana ✓",
@@ -2611,7 +2613,8 @@ const announcementItems = useMemo(() => {
       { text: tr.announcementDynamicEmpty2, icon: "✓" },
       { text: tr.announcementDynamicEmpty3, icon: "🔥" },
       { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-      { text: tr.announcementDynamicEmpty5, icon: "🚚" }
+      { text: tr.announcementDynamicEmpty5, icon: "🚚" },
+      { text: tr.announcementDynamicEmpty6, icon: "★" }
     ];
   }
 
@@ -2620,7 +2623,8 @@ const announcementItems = useMemo(() => {
       { text: tr.announcementDynamicUnlocked, icon: "✓", tone: "success" },
       { text: tr.announcementDynamicEmpty3, icon: "🔥" },
       { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-      { text: tr.announcementDynamicEmpty5, icon: "🚚" }
+      { text: tr.announcementDynamicEmpty5, icon: "🚚" },
+      { text: tr.announcementDynamicEmpty6, icon: "★" }
     ];
   }
 
@@ -2635,7 +2639,8 @@ const announcementItems = useMemo(() => {
     },
     { text: tr.announcementDynamicEmpty2, icon: "✓" },
     { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-    { text: tr.announcementDynamicEmpty4, icon: "🔥" }
+    { text: tr.announcementDynamicEmpty4, icon: "🔥" },
+    { text: tr.announcementDynamicEmpty6, icon: "★" }
   ];
 }, [cart.length, subtotal, amountLeftForFreeShipping, tr]);
 
