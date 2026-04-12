@@ -2592,6 +2592,14 @@ useLayoutEffect(() => {
   }
 }, [selectedProduct]);
 
+useEffect(() => {
+  return () => {
+    if (productModalCloseTimeoutRef.current) {
+      clearTimeout(productModalCloseTimeoutRef.current);
+    }
+  };
+}, []);
+
   /* =========================================
    DERIVED DATA
 ========================================= */
@@ -2986,11 +2994,10 @@ setCheckoutOpen(false);
 
   productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
 
-  openProductModal(product);
-
-  requestAnimationFrame(() => {
-    setProductModalVisible(true);
-  });
+  setSelectedProduct(product);
+  setSelectedSize(Object.keys(product.sizes || {})[0] || "");
+  setHasUserPickedSize(false);
+  setProductModalVisible(true);
 };
 
 const closeProductModal = () => {
@@ -3008,9 +3015,9 @@ const closeProductModal = () => {
   }, 200);
 };
 
-  const openImpactProductModal = (product) => {
+const openImpactProductModal = (product) => {
   openProductModal(product);
-  };
+};
 
   const getCategoryLabel = (categoryKey) => {
     if (categoryKey === "All") return tr.all;
