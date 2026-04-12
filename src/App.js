@@ -3957,55 +3957,76 @@ const getSizeWearHint = (size) => {
           </>
         )}
 
-        <section className="shop-value-anchor section-wrap" aria-label="Why try before you buy">
-  <div className="shop-value-anchor-inner">
-    <span className="shop-value-anchor-eyebrow">
-      {lang === "sr" ? "PLAYNICE PRISTUP" : "THE PLAYNICE WAY"}
-    </span>
-
-    <h2 className="shop-value-anchor-title">
-      {lang === "sr"
-        ? "Ne kupuj bočicu pre nego što upoznaš miris."
-        : "Do not buy the bottle before you know the scent."}
-    </h2>
-
-    <p className="shop-value-anchor-text">
-      {lang === "sr"
-        ? "Prvo probaj parfem na svojoj koži. Oseti kako se otvara, kako se razvija tokom dana i da li je zaista tvoj — pre nego što se odlučiš za punu bočicu."
-        : "Try the fragrance on your skin first. Experience how it opens, how it wears throughout the day, and whether it is truly yours — before committing to a full bottle."}
-    </p>
-
-    <div className="shop-value-anchor-points">
-      <div className="shop-value-anchor-point">
-        <span className="shop-value-anchor-point-value">€80–€200+</span>
-        <span className="shop-value-anchor-point-label">
-          {lang === "sr"
-            ? "često koštaju designer i niche bočice"
-            : "is often what designer and niche bottles cost"}
+          {view === "shop" && (
+  <>
+    <section
+      className="shop-value-anchor section-wrap"
+      aria-label="Why try before you buy"
+    >
+      <div className="shop-value-anchor-inner">
+        <span className="shop-value-anchor-eyebrow">
+          {lang === "sr" ? "PLAYNICE PRISTUP" : "THE PLAYNICE WAY"}
         </span>
+
+        <h2 className="shop-value-anchor-title">
+          {lang === "sr"
+            ? "Ne kupuj bočicu pre nego što upoznaš miris."
+            : "Do not buy the bottle before you know the scent."}
+        </h2>
+
+        <p className="shop-value-anchor-text">
+          {lang === "sr"
+            ? "Prvo probaj parfem na svojoj koži. Oseti kako se otvara, kako se razvija tokom dana i da li je zaista tvoj — pre nego što se odlučiš za punu bočicu."
+            : "Try the fragrance on your skin first. Experience how it opens, how it wears throughout the day, and whether it is truly yours — before committing to a full bottle."}
+        </p>
+
+        <div className="shop-value-anchor-points">
+          <div className="shop-value-anchor-point">
+            <span className="shop-value-anchor-point-value">
+              €80–€200+
+            </span>
+            <span className="shop-value-anchor-point-label">
+              {lang === "sr"
+                ? "često koštaju designer i niche bočice"
+                : "is often what designer and niche bottles cost"}
+            </span>
+          </div>
+
+          <div className="shop-value-anchor-divider" />
+
+          <div className="shop-value-anchor-point">
+            <span className="shop-value-anchor-point-value">
+              €4+
+            </span>
+            <span className="shop-value-anchor-point-label">
+              {lang === "sr"
+                ? "je dovoljno da probaš pre kupovine"
+                : "is enough to try before you buy"}
+            </span>
+          </div>
+        </div>
+
+        <p className="shop-value-anchor-note">
+          {lang === "sr"
+            ? "Manje rizika. Više sigurnosti. Bolja odluka."
+            : "Less risk. More certainty. A better decision."}
+        </p>
+      </div>
+    </section>
+
+    <section className="shop-section section-wrap">
+      <div className="shop-top">
+        <div>
+          <p className="section-kicker">{tr.shopKicker}</p>
+          <h2>{tr.shopTitle}</h2>
+          <p className="shop-subtext">{tr.shopText}</p>
+        </div>
       </div>
 
-      <div className="shop-value-anchor-divider" />
-
-      <div className="shop-value-anchor-point">
-        <span className="shop-value-anchor-point-value">€4+</span>
-        <span className="shop-value-anchor-point-label">
-          {lang === "sr"
-            ? "je dovoljno da probaš pre kupovine"
-            : "is enough to try before you buy"}
-        </span>
-      </div>
-    </div>
-
-    <p className="shop-value-anchor-note">
-      {lang === "sr"
-        ? "Manje rizika. Više sigurnosti. Bolja odluka."
-        : "Less risk. More certainty. A better decision."}
-    </p>
-  </div>
-</section>
-
-        {view === "shop" && (
+      {/* ostatak shop sadržaja ide ovde */}
+    </section>
+  </>
+)}
           <section className="shop-section section-wrap">
             <div className="shop-top">
               <div>
