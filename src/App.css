@@ -3112,7 +3112,8 @@ body.scrolled .announcement-bar::after {
 .modal-body {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
-  min-height: 560px;
+  min-height: 0;
+  max-height: calc(100vh - 210px);
 }
 
 .modal-media {
@@ -3215,10 +3216,11 @@ body.scrolled .announcement-bar::after {
 }
 
 .modal-content {
-  padding: 28px 28px 26px;
+  padding: 22px 24px 18px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
+  min-height: 0;
 }
 
 .modal-chip {
@@ -3357,11 +3359,11 @@ body.scrolled .announcement-bar::after {
 }
 
 .modal-purchase {
-  margin-top: auto;
+  margin-top: 4px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-top: 4px;
+  gap: 12px;
+  padding-top: 2px;
 }
 
 .modal-label {
@@ -3484,8 +3486,8 @@ body.scrolled .announcement-bar::after {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding-top: 4px;
+  gap: 12px;
+  padding-top: 10px;
   border-top: 1px solid rgba(220, 181, 107, 0.10);
 }
 
@@ -3493,9 +3495,9 @@ body.scrolled .announcement-bar::after {
   position: relative;
   flex: 1;
   display: grid;
-  gap: 8px;
-  padding: 14px 16px 12px;
-  border-radius: 20px;
+  gap: 6px;
+  padding: 12px 14px 10px;
+  border-radius: 18px;
   border: 1px solid rgba(220, 181, 107, 0.12);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012)),
@@ -3519,8 +3521,8 @@ body.scrolled .announcement-bar::after {
 .modal-price-box strong {
   display: block;
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(2rem, 3vw, 2.85rem);
-  line-height: 0.94;
+  font-size: clamp(1.55rem, 2.1vw, 2.15rem);
+  line-height: 0.96;
   font-weight: 600;
   letter-spacing: -0.02em;
   background: linear-gradient(
@@ -3563,9 +3565,9 @@ body.scrolled .announcement-bar::after {
 
 .modal-add-button {
   position: relative;
-  min-width: 220px;
-  min-height: 56px;
-  padding: 0 30px;
+  min-width: 200px;
+  min-height: 52px;
+  padding: 0 24px;
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
@@ -3574,9 +3576,9 @@ body.scrolled .announcement-bar::after {
   background: linear-gradient(135deg, #f0d7a3 0%, #ddb76d 42%, #cfa24e 100%);
   color: #111;
   font-family: "Inter", sans-serif;
-  font-size: 0.84rem;
+  font-size: 0.79rem;
   font-weight: 800;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   cursor: pointer;
   overflow: hidden;
