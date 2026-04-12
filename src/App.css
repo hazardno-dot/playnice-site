@@ -7958,6 +7958,28 @@ will-change: transform, opacity;
   min-height: 92px;
 }
 
+.shop-value-anchor-point:first-child .shop-value-anchor-point-value {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.shop-value-anchor-point:last-child .shop-value-anchor-point-value {
+  color: var(--gold);
+  text-shadow: 0 0 18px rgba(220, 181, 107, 0.25);
+}
+
+.shop-value-anchor-point:last-child {
+  position: relative;
+}
+
+.shop-value-anchor-point:last-child::after {
+  content: "";
+  position: absolute;
+  inset: -8px -12px;
+  border-radius: 16px;
+  background: radial-gradient(circle, rgba(220,181,107,0.12), transparent 70%);
+  z-index: -1;
+}
+
 .shop-value-anchor-point-value {
   color: var(--gold);
   font-size: clamp(24px, 3vw, 34px);
@@ -7994,35 +8016,48 @@ will-change: transform, opacity;
   position: relative;
   z-index: 1;
 
-  margin: 20px 0 0;
+  margin: 26px auto 0;
+  text-align: center;
 
-  color: rgba(255, 255, 255, 0.54);
+  color: rgba(255, 255, 255, 0.65);
   font-size: 12px;
   line-height: 1.5;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
-.shop-value-anchor-point:first-child .shop-value-anchor-point-value {
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.shop-value-anchor-point:last-child .shop-value-anchor-point-value {
-  color: var(--gold);
-  text-shadow: 0 0 18px rgba(220, 181, 107, 0.25);
-}
-
-.shop-value-anchor-point:last-child {
+.shop-value-anchor-note {
   position: relative;
+  z-index: 1;
+
+  margin: 26px auto 0;
+  text-align: center;
+
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  color: var(--gold);
+
+  text-shadow:
+    0 0 8px rgba(220, 181, 107, 0.25),
+    0 0 18px rgba(220, 181, 107, 0.12);
+
+  animation: noteGlow 2.8s ease-in-out infinite alternate;
 }
 
-.shop-value-anchor-point:last-child::after {
-  content: "";
-  position: absolute;
-  inset: -8px -12px;
-  border-radius: 16px;
-  background: radial-gradient(circle, rgba(220,181,107,0.12), transparent 70%);
-  z-index: -1;
+@keyframes noteGlow {
+  0% {
+    text-shadow:
+      0 0 6px rgba(220, 181, 107, 0.18),
+      0 0 14px rgba(220, 181, 107, 0.08);
+  }
+  100% {
+    text-shadow:
+      0 0 12px rgba(220, 181, 107, 0.35),
+      0 0 26px rgba(220, 181, 107, 0.18);
+  }
 }
 
 /* =========================================
