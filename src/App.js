@@ -3931,8 +3931,8 @@ const getSizeWearHint = (size) => {
 
     <h2 className="shop-value-anchor-title">
       {lang === "sr"
-        ? "Zašto rizikovati full bottle na slepo?"
-        : "Why risk a full bottle blind?"}
+        ? "Ne kupuj bočicu pre nego što upoznaš miris."
+        : "Do not buy the bottle before you know the scent."}
     </h2>
 
     <p className="shop-value-anchor-text">
