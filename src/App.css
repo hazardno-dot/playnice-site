@@ -3400,6 +3400,14 @@ body.scrolled .announcement-bar::after {
   color: rgba(255, 255, 255, 0.72);
 }
 
+.modal-size-helper {
+  margin: -4px 0 6px;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+}
+
 .modal-sizes {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
