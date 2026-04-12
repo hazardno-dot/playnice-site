@@ -5315,14 +5315,15 @@ body.scrolled .announcement-bar::after {
 }
 
 .story-drawer-footer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 18px;
   margin-top: 2px;
 }
 
 .story-drawer-signature {
+  margin: 0;
   color: var(--gold);
   font-family: "Cormorant Garamond", serif;
   font-size: 1.45rem;
@@ -5331,12 +5332,12 @@ body.scrolled .announcement-bar::after {
   line-height: 1;
 }
 
-/* optional: CTA inside footer, ako koristiš dugme */
 .story-drawer-footer .button,
 .story-drawer-footer .btn,
 .story-drawer-footer .gold-button {
   min-height: 44px;
   padding: 11px 18px;
+  flex-shrink: 0;
 }
 
 /* =========================================
@@ -5393,7 +5394,12 @@ body.scrolled .announcement-bar::after {
   }
 
   .story-drawer-footer {
-    gap: 10px;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  }
+
+.story-drawer-footer .gold-button {
+  width: 100%;
   }
 
   .story-drawer-signature {
