@@ -110,6 +110,7 @@ const translations = {
     announcementDynamicEmpty3: "Premium niche, designer & arabic fragrances",
     announcementDynamicEmpty4: "Limited stock drops — don’t miss out",
     announcementDynamicEmpty5: "Delivery across Montenegro",
+    announcementDynamicEmpty6: "✔ 50+ satisfied customers",
     navStory: "Story",
     heroCampaigns: [
       {
@@ -291,6 +292,7 @@ const translations = {
       "Premium niche, dizajnerski i arapski parfemi",
     announcementDynamicEmpty4: "Ograničene količine — ne propusti",
     announcementDynamicEmpty5: "Dostava širom Crne Gore",
+    announcementDynamicEmpty6: "✔ 50+ zadovoljnih kupaca",
     navStory: "Priča",
     heroCampaigns: [
       {
@@ -2639,7 +2641,7 @@ const announcementItems = useMemo(() => {
     },
     { text: tr.announcementDynamicEmpty2, icon: "✓" },
     { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-    { text: tr.announcementDynamicEmpty4, icon: "🔥" },
+    { text: tr.announcementDynamicEmpty4, icon: "🔥" }
     { text: tr.announcementDynamicEmpty6, icon: "★" }
   ];
 }, [cart.length, subtotal, amountLeftForFreeShipping, tr]);
