@@ -3982,9 +3982,7 @@ const getSizeWearHint = (size) => {
 
         <div className="shop-value-anchor-points">
           <div className="shop-value-anchor-point">
-            <span className="shop-value-anchor-point-value">
-              €80–€200+
-            </span>
+            <span className="shop-value-anchor-point-value">€80–€200+</span>
             <span className="shop-value-anchor-point-label">
               {lang === "sr"
                 ? "često koštaju designer i niche bočice"
@@ -3995,9 +3993,7 @@ const getSizeWearHint = (size) => {
           <div className="shop-value-anchor-divider" />
 
           <div className="shop-value-anchor-point">
-            <span className="shop-value-anchor-point-value">
-              €4+
-            </span>
+            <span className="shop-value-anchor-point-value">€4+</span>
             <span className="shop-value-anchor-point-label">
               {lang === "sr"
                 ? "je dovoljno da probaš pre kupovine"
@@ -4023,229 +4019,215 @@ const getSizeWearHint = (size) => {
         </div>
       </div>
 
-      {/* ostatak shop sadržaja ide ovde */}
+      <div className="shop-toolbar">
+        <div className="toolbar-group toolbar-group-search">
+          <label htmlFor="shop-search">{tr.searchLabel}</label>
+          <input
+            id="shop-search"
+            type="text"
+            placeholder={tr.searchPlaceholder}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
+        <div className="toolbar-group toolbar-group-category">
+          <label htmlFor="shop-category">{tr.categoryLabel}</label>
+          <select
+            id="shop-category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="All">{tr.all}</option>
+            <option value="Arabian">{getCategoryLabel("Arabian")}</option>
+            <option value="Designer">{getCategoryLabel("Designer")}</option>
+            <option value="Niche">{getCategoryLabel("Niche")}</option>
+          </select>
+        </div>
+
+        <div className="toolbar-group toolbar-group-sort">
+          <label>{tr.sortLabel}</label>
+
+          <div className="sort-pills">
+            <button
+              type="button"
+              className={`sort-pill ${sortBy === "featured" ? "active" : ""}`}
+              onClick={() => setSortBy("featured")}
+            >
+              {tr.sortFeatured}
+            </button>
+
+            <button
+              type="button"
+              className={`sort-pill ${sortBy === "rating" ? "active" : ""}`}
+              onClick={() => setSortBy("rating")}
+            >
+              ★ {tr.sortRating}
+            </button>
+
+            <button
+              type="button"
+              className={`sort-pill ${sortBy === "priceLow" ? "active" : ""}`}
+              onClick={() => setSortBy("priceLow")}
+            >
+              ↗ {tr.sortPriceLow}
+            </button>
+
+            <button
+              type="button"
+              className={`sort-pill ${sortBy === "priceHigh" ? "active" : ""}`}
+              onClick={() => setSortBy("priceHigh")}
+            >
+              ↘ {tr.sortPriceHigh}
+            </button>
+
+            <button
+              type="button"
+              className={`sort-pill ${sortBy === "name" ? "active" : ""}`}
+              onClick={() => setSortBy("name")}
+            >
+              {tr.sortName}
+            </button>
+          </div>
+        </div>
+
+        <div className="toolbar-group toolbar-group-season">
+          <label>{tr.seasonLabel}</label>
+
+          <div className="season-pills">
+            <button
+              type="button"
+              className={`season-pill ${season === "All" ? "active" : ""}`}
+              onClick={() => setSeason("All")}
+            >
+              {tr.seasonAll}
+            </button>
+
+            <button
+              type="button"
+              className={`season-pill ${season === "summer" ? "active" : ""}`}
+              onClick={() => setSeason("summer")}
+            >
+              ☀️ {tr.seasonSummer}
+            </button>
+
+            <button
+              type="button"
+              className={`season-pill ${season === "winter" ? "active" : ""}`}
+              onClick={() => setSeason("winter")}
+            >
+              ❄️ {tr.seasonWinter}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {(category !== "All" ||
+        season !== "All" ||
+        sortBy !== "featured" ||
+        searchTerm.trim() !== "") && (
+        <div className="active-filters-bar">
+          <div className="active-filters-left">
+            {category !== "All" && (
+              <span className="active-filter-chip">
+                {getCategoryLabel(category)}
+              </span>
+            )}
+
+            {season !== "All" && (
+              <span className="active-filter-chip">
+                {season === "summer"
+                  ? `☀️ ${tr.seasonSummer}`
+                  : `❄️ ${tr.seasonWinter}`}
+              </span>
+            )}
+
+            {sortBy !== "featured" && (
+              <span className="active-filter-chip">
+                {sortBy === "rating" && `★ ${tr.sortRating}`}
+                {sortBy === "priceLow" && `↗ ${tr.sortPriceLow}`}
+                {sortBy === "priceHigh" && `↘ ${tr.sortPriceHigh}`}
+                {sortBy === "name" && tr.sortName}
+              </span>
+            )}
+
+            {searchTerm.trim() !== "" && (
+              <span className="active-filter-chip">
+                “{searchTerm.trim()}”
+              </span>
+            )}
+          </div>
+
+          <button
+            type="button"
+            className="clear-filters-button"
+            onClick={() => {
+              setCategory("All");
+              setSeason("All");
+              setSortBy("featured");
+              setSearchTerm("");
+            }}
+          >
+            {lang === "sr" ? "Obriši filtere" : "Clear all"}
+          </button>
+        </div>
+      )}
+
+      <div className="product-grid">
+        {paginatedProducts.map((product) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            wishlist={wishlist}
+            toggleWishlist={toggleWishlist}
+            sprayingWishlistId={sprayingWishlistId}
+          />
+        ))}
+      </div>
+
+      <div className="pagination-wrap">
+        <button
+          type="button"
+          onClick={prevPage}
+          disabled={currentPage === 1}
+        >
+          {lang === "sr" ? "Nazad" : "Prev"}
+        </button>
+
+        <div className="pagination-numbers">
+          {Array.from({ length: totalPages }, (_, index) => {
+            const pageNumber = index + 1;
+            return (
+              <button
+                key={pageNumber}
+                type="button"
+                className={`pagination-number ${
+                  currentPage === pageNumber ? "active" : ""
+                }`}
+                onClick={() => {
+                  setCurrentPage(pageNumber);
+                  requestAnimationFrame(() => {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  });
+                }}
+              >
+                {pageNumber}
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          type="button"
+          onClick={nextPage}
+          disabled={currentPage === totalPages}
+        >
+          {lang === "sr" ? "Dalje" : "Next"}
+        </button>
+      </div>
     </section>
   </>
 )}
-          <section className="shop-section section-wrap">
-            <div className="shop-top">
-              <div>
-                <p className="section-kicker">{tr.shopKicker}</p>
-                <h2>{tr.shopTitle}</h2>
-                <p className="shop-subtext">{tr.shopText}</p>
-              </div>
-            </div>
-
-            <div className="shop-toolbar">
-              <div className="toolbar-group toolbar-group-search">
-                <label htmlFor="shop-search">{tr.searchLabel}</label>
-                <input
-                  id="shop-search"
-                  type="text"
-                  placeholder={tr.searchPlaceholder}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-
-              <div className="toolbar-group toolbar-group-category">
-                <label htmlFor="shop-category">{tr.categoryLabel}</label>
-                <select
-                  id="shop-category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                >
-                  <option value="All">{tr.all}</option>
-                  <option value="Arabian">{getCategoryLabel("Arabian")}</option>
-                  <option value="Designer">{getCategoryLabel("Designer")}</option>
-                  <option value="Niche">{getCategoryLabel("Niche")}</option>
-                </select>
-              </div>
-
-              <div className="toolbar-group toolbar-group-sort">
-                <label>{tr.sortLabel}</label>
-
-                <div className="sort-pills">
-                  <button
-                    type="button"
-                    className={`sort-pill ${
-                      sortBy === "featured" ? "active" : ""
-                    }`}
-                    onClick={() => setSortBy("featured")}
-                  >
-                    {tr.sortFeatured}
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`sort-pill ${sortBy === "rating" ? "active" : ""}`}
-                    onClick={() => setSortBy("rating")}
-                  >
-                    ★ {tr.sortRating}
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`sort-pill ${sortBy === "priceLow" ? "active" : ""}`}
-                    onClick={() => setSortBy("priceLow")}
-                  >
-                    ↗ {tr.sortPriceLow}
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`sort-pill ${sortBy === "priceHigh" ? "active" : ""}`}
-                    onClick={() => setSortBy("priceHigh")}
-                  >
-                    ↘ {tr.sortPriceHigh}
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`sort-pill ${sortBy === "name" ? "active" : ""}`}
-                    onClick={() => setSortBy("name")}
-                  >
-                    {tr.sortName}
-                  </button>
-                </div>
-              </div>
-
-              <div className="toolbar-group toolbar-group-season">
-                <label>{tr.seasonLabel}</label>
-
-                <div className="season-pills">
-                  <button
-                    type="button"
-                    className={`season-pill ${season === "All" ? "active" : ""}`}
-                    onClick={() => setSeason("All")}
-                  >
-                    {tr.seasonAll}
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`season-pill ${
-                      season === "summer" ? "active" : ""
-                    }`}
-                    onClick={() => setSeason("summer")}
-                  >
-                    ☀️ {tr.seasonSummer}
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`season-pill ${
-                      season === "winter" ? "active" : ""
-                    }`}
-                    onClick={() => setSeason("winter")}
-                  >
-                    ❄️ {tr.seasonWinter}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {(category !== "All" ||
-              season !== "All" ||
-              sortBy !== "featured" ||
-              searchTerm.trim() !== "") && (
-              <div className="active-filters-bar">
-                <div className="active-filters-left">
-                  {category !== "All" && (
-                    <span className="active-filter-chip">
-                      {getCategoryLabel(category)}
-                    </span>
-                  )}
-
-                  {season !== "All" && (
-                    <span className="active-filter-chip">
-                      {season === "summer"
-                        ? `☀️ ${tr.seasonSummer}`
-                        : `❄️ ${tr.seasonWinter}`}
-                    </span>
-                  )}
-
-                  {sortBy !== "featured" && (
-                    <span className="active-filter-chip">
-                      {sortBy === "rating" && `★ ${tr.sortRating}`}
-                      {sortBy === "priceLow" && `↗ ${tr.sortPriceLow}`}
-                      {sortBy === "priceHigh" && `↘ ${tr.sortPriceHigh}`}
-                      {sortBy === "name" && tr.sortName}
-                    </span>
-                  )}
-
-                  {searchTerm.trim() !== "" && (
-                    <span className="active-filter-chip">
-                      “{searchTerm.trim()}”
-                    </span>
-                  )}
-                </div>
-
-                <button
-                  type="button"
-                  className="clear-filters-button"
-                  onClick={() => {
-                    setCategory("All");
-                    setSeason("All");
-                    setSortBy("featured");
-                    setSearchTerm("");
-                  }}
-                >
-                  {lang === "sr" ? "Obriši filtere" : "Clear all"}
-                </button>
-              </div>
-            )}
-
-            <div className="product-grid">
-              {paginatedProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  wishlist={wishlist}
-                  toggleWishlist={toggleWishlist}
-                  sprayingWishlistId={sprayingWishlistId}
-                />
-              ))}
-            </div>
-
-            <div className="pagination-wrap">
-              <button type="button" onClick={prevPage} disabled={currentPage === 1}>
-  {lang === "sr" ? "Nazad" : "Prev"}
-</button>
-
-              <div className="pagination-numbers">
-                {Array.from({ length: totalPages }, (_, index) => {
-                  const pageNumber = index + 1;
-                  return (
-                    <button
-                      key={pageNumber}
-                      type="button"
-                      className={`pagination-number ${
-                        currentPage === pageNumber ? "active" : ""
-                      }`}
-                      onClick={() => {
-                        setCurrentPage(pageNumber);
-                        requestAnimationFrame(() => {
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        });
-                      }}
-                    >
-                      {pageNumber}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <button
-  type="button"
-  onClick={nextPage}
-  disabled={currentPage === totalPages}
->
-  {lang === "sr" ? "Dalje" : "Next"}
-</button>
-            </div>
-          </section>
-        )}
       </main>
 
       <div
