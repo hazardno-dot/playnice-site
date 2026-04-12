@@ -7864,6 +7864,17 @@ will-change: transform, opacity;
   box-shadow:
     0 24px 70px rgba(0, 0, 0, 0.34),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  animation: valueFadeIn 0.8s ease forwards;
+  opacity: 0;
+  transform: translateY(12px);
+
+  @keyframes valueFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 }
 
 .shop-value-anchor-inner::before {
@@ -8003,6 +8014,28 @@ will-change: transform, opacity;
   text-transform: uppercase;
 }
 
+.shop-value-anchor-point:first-child .shop-value-anchor-point-value {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.shop-value-anchor-point:last-child .shop-value-anchor-point-value {
+  color: var(--gold);
+  text-shadow: 0 0 18px rgba(220, 181, 107, 0.25);
+}
+
+.shop-value-anchor-point:last-child {
+  position: relative;
+}
+
+.shop-value-anchor-point:last-child::after {
+  content: "";
+  position: absolute;
+  inset: -8px -12px;
+  border-radius: 16px;
+  background: radial-gradient(circle, rgba(220,181,107,0.12), transparent 70%);
+  z-index: -1;
+}
+
 /* =========================================
    SHOP VALUE ANCHOR — HOVER POLISH
 ========================================= */
@@ -8120,8 +8153,9 @@ will-change: transform, opacity;
   }
 
   .shop-value-anchor-note {
-    margin-top: 18px;
+    margin-top: 26px;
     font-size: 11px;
     letter-spacing: 0.14em;
+    opacity: 0.75;
   }
 }
