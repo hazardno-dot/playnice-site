@@ -2975,8 +2975,7 @@ setCheckoutOpen(false);
     });
   };
 
-  const openImpactProductModal = (product) => {
-  if (!product) return;
+  const openProductModal = (product) => {
   productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
   setSelectedProduct(product);
   setSelectedSize(Object.keys(product.sizes || {})[0] || "");
@@ -2995,9 +2994,13 @@ setCheckoutOpen(false);
 };
 
   const openImpactProductModal = (product) => {
-    if (!product) return;
-    setSelectedProduct(product);
-  };
+  if (!product) return;
+  productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
+  setSelectedProduct(product);
+  setSelectedSize(Object.keys(product.sizes || {})[0] || "");
+  setHasUserPickedSize(false);
+  setProductModalVisible(true);
+};
 
   const getCategoryLabel = (categoryKey) => {
     if (categoryKey === "All") return tr.all;
