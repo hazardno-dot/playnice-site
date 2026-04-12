@@ -8060,6 +8060,21 @@ will-change: transform, opacity;
   }
 }
 
+.shop-value-anchor-note::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(220, 181, 107, 0.25),
+    transparent
+  );
+  opacity: 0.15;
+  filter: blur(6px);
+  pointer-events: none;
+}
+
 /* =========================================
    SHOP VALUE ANCHOR — HOVER POLISH
 ========================================= */
