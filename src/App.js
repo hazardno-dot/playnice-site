@@ -4802,6 +4802,12 @@ const getSizeWearHint = (size) => {
                       : "A luxurious scent with strong character and premium presence.")}
                 </p>
 
+                <p className="product-modal-anchor">
+  {lang === "sr"
+    ? <>Prvo ga <strong>probaj na svojoj koži</strong> — pre nego što se odlučiš za bočicu.</>
+    : <>Try it <strong>on your skin first</strong> — before committing to the bottle.</>}
+</p>
+
                 <div className="modal-info-grid">
                   <div className="modal-info-card panel-item-anim panel-item-3">
                     <span>

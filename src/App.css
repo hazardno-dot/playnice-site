@@ -2880,6 +2880,43 @@ body.scrolled .announcement-bar::after {
   opacity: 0.7;
 }
 
+.product-modal-anchor {
+  margin: 10px 0 16px;
+
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+  line-height: 1.6;
+
+  letter-spacing: 0.04em;
+
+  position: relative;
+}
+
+/* subtle gold accent line */
+.product-modal-anchor::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -6px;
+  width: 36px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(220, 181, 107, 0.6),
+    transparent
+  );
+}
+
+/* hover micro interaction */
+.product-modal-anchor:hover {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.product-modal-anchor strong {
+  color: var(--gold);
+  font-weight: 500;
+}
+
 /* =========================================
    PRODUCT MODAL — CONTENT REVEAL
 ========================================= */
