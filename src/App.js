@@ -4840,12 +4840,57 @@ const getSizeWearHint = (size) => {
                       {lang === "sr" ? "IZABERI VELIČINU" : "CHOOSE SIZE"}
                     </span>
 
-                    <p className="modal-size-helper">
-                     {lang === "sr"
-                       ? "Kreni manjom količinom. Nosi ga prvo."
-                         : "Start small. Wear it first."}
-                          </p>
+                      <p className="modal-size-helper">
+    {(() => {
+      if (!selectedSize) {
+        return lang === "sr"
+          ? "Kreni manjom količinom. Nosi ga prvo."
+          : "Start small. Wear it first.";
+      }
 
+      if (selectedSize.includes("2ml")) {
+        return lang === "sr"
+          ? "Brzi test na koži."
+          : "Quick skin test.";
+      }
+
+      if (selectedSize.includes("5ml")) {
+        return (
+          <>
+            {lang === "sr" ? "Testiraj " : "Test it over "}
+            <strong>
+              {lang === "sr" ? "nekoliko dana" : "a few days"}
+            </strong>
+          </>
+        );
+      }
+
+      if (selectedSize.includes("10ml")) {
+        return (
+          <>
+            {lang === "sr" ? "Savršen za " : "Perfect for "}
+            <strong>
+              {lang === "sr" ? "svakodnevno nošenje" : "daily wear"}
+            </strong>
+          </>
+        );
+      }
+
+      if (selectedSize.includes("20ml")) {
+        return (
+          <>
+            {lang === "sr" ? "Skoro kao " : "Almost like a "}
+            <strong>
+              {lang === "sr" ? "mala bočica" : "small bottle"}
+            </strong>
+          </>
+        );
+      }
+
+      return null;
+    })()}
+  </p>
+  
                     <div className="modal-sizes">
                       {Object.entries(selectedProduct.sizes).map(
                         ([size, price], index) => (
