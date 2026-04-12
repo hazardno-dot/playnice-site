@@ -2224,6 +2224,8 @@ function App() {
     note: ""
   });
 
+  const [hasUserPickedSize, setHasUserPickedSize] = useState(false);
+
   /* =========================================
      APP REFS
   ========================================= */
@@ -2974,12 +2976,17 @@ setCheckoutOpen(false);
   };
 
   const openProductModal = (product) => {
+  productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
   setSelectedProduct(product);
   setSelectedSize(Object.keys(product.sizes || {})[0] || "");
+  setHasUserPickedSize(false);
 };
 
   const closeProductModal = () => {
   setProductModalVisible(false);
+  setHasUserPickedSize(false);
+  // ostatak tvoje postojeće logike
+};
 
   setTimeout(() => {
     setSelectedProduct(null);
@@ -4900,7 +4907,10 @@ const getSizeWearHint = (size) => {
                             className={`modal-size ${
                               selectedSize === size ? "active" : ""
                             } panel-item-anim panel-item-${Math.min(index + 1, 6)}`}
-                            onClick={() => setSelectedSize(size)}
+                            onClick={() => {
+  setSelectedSize(size);
+  setHasUserPickedSize(true);
+}}
                           >
                             <span>{size}</span>
                             <strong>{formatPrice(price)}</strong>
@@ -4940,22 +4950,18 @@ const getSizeWearHint = (size) => {
     </button>
 
     <button
-  type="button"
-  className="modal-buy-now"
-  onClick={() => {
-    const activeSize =
-      selectedSize || Object.keys(selectedProduct.sizes)[0];
-    addToCart(selectedProduct, activeSize);
-    setCartOpen(true);
-    setCheckoutOpen(true);
-  }}
->
-  {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
-
-  <span className="modal-buy-now-sub">
-    {lang === "sr" ? "direktna kupovina" : "instant checkout"}
-  </span>
-</button>
+    type="button"
+    className="modal-buy-now"
+    onClick={() => {
+      const activeSize =
+        selectedSize || Object.keys(selectedProduct.sizes)[0];
+      addToCart(selectedProduct, activeSize);
+      setCartOpen(true);
+      setCheckoutOpen(true);
+    }}
+  >
+    {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
+  </button>
   </div>
  </div>
 </div>

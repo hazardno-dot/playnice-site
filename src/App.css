@@ -3739,23 +3739,6 @@ body.scrolled .announcement-bar::after {
   }
 }
 
-.modal-buy-now::after {
-  content: "instant checkout";
-  display: block;
-  font-size: 10px;
-  opacity: 0.5;
-  letter-spacing: 0.08em;
-  margin-top: 2px;
-}
-
-.modal-buy-now-sub {
-  display: block;
-  font-size: 10px;
-  opacity: 0.5;
-  letter-spacing: 0.08em;
-  margin-top: 2px;
-}
-
 .modal-buy-now:hover {
   color: var(--gold);
 
