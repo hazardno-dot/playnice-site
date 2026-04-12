@@ -2231,6 +2231,7 @@ function App() {
   ========================================= */
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const productModalCloseTimeoutRef = useRef(null);
 
   /* =========================================
      DERIVED TRANSLATIONS / STATIC ARRAYS
@@ -2976,31 +2977,40 @@ setCheckoutOpen(false);
   };
 
   const openProductModal = (product) => {
+  if (!product) return;
+
+  if (productModalCloseTimeoutRef.current) {
+    clearTimeout(productModalCloseTimeoutRef.current);
+    productModalCloseTimeoutRef.current = null;
+  }
+
   productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
-  setSelectedProduct(product);
-  setSelectedSize(Object.keys(product.sizes || {})[0] || "");
-  setHasUserPickedSize(false);
-  setProductModalVisible(true);
+
+  openProductModal(product);
+
+  requestAnimationFrame(() => {
+    setProductModalVisible(true);
+  });
 };
 
-  const closeProductModal = () => {
+const closeProductModal = () => {
   setProductModalVisible(false);
   setHasUserPickedSize(false);
 
-  setTimeout(() => {
+  if (productModalCloseTimeoutRef.current) {
+    clearTimeout(productModalCloseTimeoutRef.current);
+  }
+
+  productModalCloseTimeoutRef.current = setTimeout(() => {
     setSelectedProduct(null);
     setSelectedSize("");
+    productModalCloseTimeoutRef.current = null;
   }, 200);
 };
 
   const openImpactProductModal = (product) => {
-  if (!product) return;
-  productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
-  setSelectedProduct(product);
-  setSelectedSize(Object.keys(product.sizes || {})[0] || "");
-  setHasUserPickedSize(false);
-  setProductModalVisible(true);
-};
+  openProductModal(product);
+  };
 
   const getCategoryLabel = (categoryKey) => {
     if (categoryKey === "All") return tr.all;
