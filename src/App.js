@@ -4256,9 +4256,16 @@ const getSizeWearHint = (size) => {
       <aside className={`story-drawer ${storyOpen ? "open panel-open" : ""}`}>
         <div className="story-drawer-header panel-anim panel-anim-1">
           <div>
-            <p className="section-kicker">OUR STORY</p>
-            <h3>Curated to be remembered.</h3>
-          </div>
+  <p className="section-kicker">
+    {lang === "sr" ? "NAŠA PRIČA" : "OUR STORY"}
+  </p>
+
+  <h3>
+    {lang === "sr"
+      ? "Stvoreno da se pamti."
+      : "Curated to be remembered."}
+  </h3>
+</div>
 
           <button
             className="close-button"
