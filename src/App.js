@@ -2641,7 +2641,7 @@ const announcementItems = useMemo(() => {
     },
     { text: tr.announcementDynamicEmpty2, icon: "✓" },
     { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-    { text: tr.announcementDynamicEmpty4, icon: "🔥" }
+    { text: tr.announcementDynamicEmpty4, icon: "🔥" },
     { text: tr.announcementDynamicEmpty6, icon: "★" }
   ];
 }, [cart.length, subtotal, amountLeftForFreeShipping, tr]);
