@@ -3937,8 +3937,8 @@ const getSizeWearHint = (size) => {
 
     <p className="shop-value-anchor-text">
       {lang === "sr"
-        ? "Prvo probaj parfem na svojoj koži. Oseti kako se otvara, kako traje i da li je zaista tvoj — pre nego što se odlučiš za punu bočicu."
-        : "Try the fragrance on your skin first. Experience how it opens, how it lasts, and whether it is truly yours — before committing to a full bottle."}
+        ? "Prvo probaj parfem na svojoj koži. Oseti kako se otvara, kako se razvija tokom dana i da li je zaista tvoj — pre nego što se odlučiš za punu bočicu."
+        : "Try the fragrance on your skin first. Experience how it opens, how it wears throughout the day, and whether it is truly yours — before committing to a full bottle."}
     </p>
 
     <div className="shop-value-anchor-points">
