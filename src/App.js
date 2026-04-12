@@ -2982,11 +2982,11 @@ setCheckoutOpen(false);
   setHasUserPickedSize(false);
 };
 
-  const closeProductModal = () => {
+const closeProductModal = () => {
   setProductModalVisible(false);
   setHasUserPickedSize(false);
-  // ostatak tvoje postojeće logike
-};
+  setSelectedProduct(null);
+  setSelectedSize("");
 
   setTimeout(() => {
     setSelectedProduct(null);
@@ -4949,7 +4949,8 @@ const getSizeWearHint = (size) => {
       </span>
     </button>
 
-    <button
+    {hasUserPickedSize && (
+  <button
     type="button"
     className="modal-buy-now"
     onClick={() => {
@@ -4962,6 +4963,7 @@ const getSizeWearHint = (size) => {
   >
     {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
   </button>
+)}
   </div>
  </div>
 </div>
