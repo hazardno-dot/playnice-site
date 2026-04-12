@@ -2797,16 +2797,20 @@ body.scrolled .announcement-bar::after {
   top: 50%;
   left: 50%;
   width: min(920px, 92vw);
-  max-height: calc(100vh - 40px);
+  max-height: calc(100vh - 32px);
+
   border: 1px solid rgba(220, 181, 107, 0.16);
   border-radius: 30px;
+
   background:
     radial-gradient(circle at 20% 20%, rgba(220, 181, 107, 0.10), transparent 30%),
     radial-gradient(circle at 80% 80%, rgba(220, 181, 107, 0.06), transparent 30%),
     linear-gradient(180deg, rgba(18, 18, 18, 0.98), rgba(8, 8, 8, 0.98));
+
   box-shadow:
     0 30px 90px rgba(0, 0, 0, 0.55),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
   backdrop-filter: blur(18px);
   overflow: hidden;
 
@@ -2835,122 +2839,19 @@ body.scrolled .announcement-bar::after {
     visibility 0s linear 0s;
 }
 
-.modal-header {
-  position: relative;
-  padding: 24px 28px 20px;
-  border-bottom: 1px solid rgba(220, 181, 107, 0.10);
-}
-
-.modal-header h2 {
-  margin: 0;
-  max-width: calc(100% - 56px);
-  font-family: "Cormorant Garamond", serif;
-  font-size: clamp(2rem, 3vw, 3rem);
-  line-height: 1.02;
-  letter-spacing: -0.01em;
-  background: linear-gradient(
-    120deg,
-    #f3d9a4 0%,
-    #e6c88f 25%,
-    #dcb56b 50%,
-    #f0d7a3 70%,
-    #cfa24e 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow:
-    0 6px 26px rgba(0, 0, 0, 0.6),
-    0 0 14px rgba(220, 181, 107, 0.08);
-  position: relative;
-}
-
-.modal-header h2::after {
-  content: "";
+/* =========================================
+   PRODUCT MODAL — CLOSE BUTTON POSITION
+========================================= */
+.product-modal .close-button {
   position: absolute;
-  left: 0;
-  bottom: -8px;
-  width: 38%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(220, 181, 107, 0.6),
-    rgba(220, 181, 107, 0.2),
-    transparent
-  );
-  opacity: 0.7;
-}
-
-.product-modal-anchor {
-  margin: 6px 0 10px;
-
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 12.5px;
-  line-height: 1.5;
-
-  letter-spacing: 0.04em;
-
-  position: relative;
-}
-
-.product-modal-anchor {
-  margin: 8px 0 12px;
-
-  font-size: 13px;
-  line-height: 1.5;
-  letter-spacing: 0.04em;
-
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.product-modal-anchor strong {
-  color: var(--gold);
-}
-
-.product-modal-anchor::before {
-  content: "";
-  display: block;
-
-  width: 42px;
-  height: 1px;
-
-  margin-bottom: 6px;
-
-  background: linear-gradient(
-    90deg,
-    rgba(220, 181, 107, 0.7),
-    transparent
-  );
-}
-
-/* subtle gold accent line */
-.product-modal-anchor::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: -6px;
-  width: 36px;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(220, 181, 107, 0.6),
-    transparent
-  );
-}
-
-/* hover micro interaction */
-.product-modal-anchor:hover {
-  color: rgba(255, 255, 255, 0.82);
-}
-
-.product-modal-anchor strong {
-  color: var(--gold);
-  font-weight: 500;
+  top: 18px;
+  right: 18px;
+  z-index: 10;
 }
 
 /* =========================================
    PRODUCT MODAL — CONTENT REVEAL
 ========================================= */
-
 .product-modal .panel-anim,
 .product-modal .panel-item-anim,
 .product-modal .close-button {
@@ -2997,6 +2898,63 @@ body.scrolled .announcement-bar::after {
 .product-modal.open .close-button { transition-delay: 0.12s; }
 
 /* =========================================
+   MODAL HEADER
+========================================= */
+.modal-header {
+  position: relative;
+  padding: 20px 28px 16px;
+  border-bottom: 1px solid rgba(220, 181, 107, 0.10);
+}
+
+.modal-header h2 {
+  margin: 0;
+  max-width: calc(100% - 56px);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.9rem, 2.8vw, 2.75rem);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+
+  background: linear-gradient(
+    120deg,
+    #f3d9a4 0%,
+    #e6c88f 25%,
+    #dcb56b 50%,
+    #f0d7a3 70%,
+    #cfa24e 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+    0 6px 26px rgba(0, 0, 0, 0.6),
+    0 0 14px rgba(220, 181, 107, 0.08);
+
+  position: relative;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.modal-header h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 38%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(220, 181, 107, 0.6),
+    rgba(220, 181, 107, 0.2),
+    transparent
+  );
+  opacity: 0.7;
+}
+
+/* =========================================
    PRODUCT MODAL — EYEBROW
 ========================================= */
 .modal-eyebrow {
@@ -3004,13 +2962,15 @@ body.scrolled .announcement-bar::after {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+
   font-family: "Inter", sans-serif;
   font-size: 0.68rem;
   line-height: 1;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+
   color: rgba(230, 200, 143, 0.9);
   text-shadow:
     0 0 10px rgba(220, 181, 107, 0.08),
@@ -3052,9 +3012,9 @@ body.scrolled .announcement-bar::after {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
-  margin-top: 12px;
-  padding-top: 2px;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 0;
 }
 
 .modal-rating-stars {
@@ -3097,47 +3057,74 @@ body.scrolled .announcement-bar::after {
 }
 
 /* =========================================
-   PRODUCT MODAL — CLOSE BUTTON POSITION
-========================================= */
-.product-modal .close-button {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  z-index: 10;
-}
-
-/* =========================================
-   PRODUCT MODAL — CONTENT
+   PRODUCT MODAL — LAYOUT
 ========================================= */
 .modal-body {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   min-height: 0;
-  max-height: calc(100vh - 210px);
+  max-height: calc(100vh - 190px);
 }
 
 .modal-media {
   position: relative;
-  padding: 26px;
+  padding: 22px 20px 18px;
   border-right: 1px solid rgba(220, 181, 107, 0.10);
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   background:
     radial-gradient(circle at center, rgba(220, 181, 107, 0.14), transparent 34%);
 }
 
+.modal-content {
+  padding: 22px 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 999px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: rgba(220, 181, 107, 0.24);
+  border-radius: 999px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(220, 181, 107, 0.38);
+}
+
+/* =========================================
+   LEFT SIDE
+========================================= */
 .modal-badge {
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
   padding: 10px 14px;
   border-radius: 999px;
+
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #fff;
+
   background: linear-gradient(135deg, #d72626, #ff4343);
   box-shadow:
     0 10px 30px rgba(215, 38, 38, 0.28),
@@ -3147,11 +3134,13 @@ body.scrolled .announcement-bar::after {
 .modal-image-wrap {
   position: relative;
   flex: 1;
-  min-height: 320px;
+  min-height: 280px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px 0;
+
+  padding: 12px 0;
 }
 
 .modal-image-wrap::after {
@@ -3168,7 +3157,7 @@ body.scrolled .announcement-bar::after {
   position: relative;
   z-index: 1;
   max-width: 84%;
-  max-height: 340px;
+  max-height: 300px;
   object-fit: contain;
   filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.42));
   transition: transform 240ms ease;
@@ -3185,8 +3174,10 @@ body.scrolled .announcement-bar::after {
   height: 76px;
   border-radius: 999px;
   border: 1px solid rgba(220, 181, 107, 0.18);
+
   display: grid;
   place-items: center;
+
   font-family: "Cormorant Garamond", serif;
   font-size: 2.5rem;
   color: var(--gold);
@@ -3195,12 +3186,12 @@ body.scrolled .announcement-bar::after {
 
 .modal-media-meta {
   text-align: center;
-  padding-top: 10px;
+  padding-top: 8px;
 }
 
 .modal-category {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.22em;
@@ -3211,36 +3202,35 @@ body.scrolled .announcement-bar::after {
 .modal-media-meta p {
   margin: 0;
   color: rgba(255, 255, 255, 0.76);
-  font-size: 0.98rem;
-  line-height: 1.6;
+  font-size: 0.96rem;
+  line-height: 1.5;
 }
 
-.modal-content {
-  padding: 22px 24px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-height: 0;
-}
-
+/* =========================================
+   RIGHT SIDE
+========================================= */
 .modal-chip {
   position: relative;
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
   gap: 8px;
+
   padding: 9px 15px 8px;
   border-radius: 999px;
   border: 1px solid rgba(220, 181, 107, 0.16);
+
   background:
     linear-gradient(180deg, rgba(220, 181, 107, 0.08), rgba(220, 181, 107, 0.03)),
     rgba(18, 16, 12, 0.78);
+
   color: rgba(240, 215, 163, 0.96);
   font-family: "Inter", sans-serif;
   font-size: 0.74rem;
   line-height: 1;
   font-weight: 800;
   letter-spacing: 0.08em;
+
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.01),
     0 8px 20px rgba(0, 0, 0, 0.16);
@@ -3257,36 +3247,69 @@ body.scrolled .announcement-bar::after {
 }
 
 .modal-description {
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.16rem;
-  line-height: 1.55;
+  font-size: 1.12rem;
+  line-height: 1.48;
   color: rgba(255, 248, 235, 0.94);
+
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 4.05rem;
-  max-height: 4.05rem;
+
+  min-height: 3.3rem;
+  max-height: 3.3rem;
+}
+
+.product-modal-anchor {
+  position: relative;
+  margin: 2px 0 8px;
+
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+}
+
+.product-modal-anchor::before {
+  content: "";
+  display: block;
+  width: 32px;
+  height: 1px;
+  margin-bottom: 6px;
+  background: linear-gradient(
+    90deg,
+    rgba(220, 181, 107, 0.7),
+    transparent
+  );
+}
+
+.product-modal-anchor strong {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.product-modal-anchor:hover {
+  color: rgba(255, 255, 255, 0.82);
 }
 
 /* =========================================
-   MODAL INFO GRID — FINAL
+   INFO GRID
 ========================================= */
 .modal-info-grid {
   display: grid;
-  gap: 12px;
-  margin-top: 6px;
+  gap: 10px;
+  margin-top: 2px;
 }
 
-/* CONSISTENT padding system */
 .modal-info-card {
   position: relative;
   overflow: hidden;
 
-  padding: 16px 18px; /* ← FINAL (balans između tvojih 14 i 18) */
-
+  padding: 14px 16px 12px;
   border-radius: 22px;
   border: 1px solid rgba(220, 181, 107, 0.12);
 
@@ -3305,14 +3328,12 @@ body.scrolled .announcement-bar::after {
 }
 
 .modal-info-card:hover {
-  transform: translateY(-2px);
-
-  border-color: rgba(220, 181, 107, 0.24);
-
+  transform: translateY(-1px);
+  border-color: rgba(220, 181, 107, 0.22);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.015),
-    0 18px 34px rgba(0, 0, 0, 0.26),
-    0 0 22px rgba(220, 181, 107, 0.06);
+    0 14px 28px rgba(0, 0, 0, 0.22),
+    0 0 18px rgba(220, 181, 107, 0.05);
 }
 
 .modal-info-card span {
@@ -3321,8 +3342,8 @@ body.scrolled .announcement-bar::after {
 
   font-family: "Inter", sans-serif;
   font-size: 0.68rem;
+  line-height: 1;
   font-weight: 800;
-
   letter-spacing: 0.18em;
   text-transform: uppercase;
 
@@ -3331,35 +3352,36 @@ body.scrolled .announcement-bar::after {
 
 .modal-info-card strong {
   display: block;
+  color: #f3efe8;
 
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.16rem;
-  line-height: 1.3;
-
-  color: #f3efe8;
+  font-size: 1.08rem;
+  line-height: 1.28;
+  font-weight: 600;
 }
 
-/* subtle gold underline */
 .modal-info-card::after {
   content: "";
   position: absolute;
-
   left: 18px;
   bottom: 12px;
-
-  width: 48px;
+  width: 44px;
   height: 1px;
-
+  border-radius: 999px;
   background: linear-gradient(
     90deg,
-    rgba(220, 181, 107, 0.55),
+    rgba(220, 181, 107, 0.45),
     rgba(220, 181, 107, 0.12),
     transparent
   );
+  opacity: 0.8;
 }
 
+/* =========================================
+   PURCHASE AREA
+========================================= */
 .modal-purchase {
-  margin-top: 4px;
+  margin-top: 6px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -3368,11 +3390,13 @@ body.scrolled .announcement-bar::after {
 
 .modal-label {
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
+
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+
   color: rgba(255, 255, 255, 0.72);
 }
 
@@ -3386,22 +3410,28 @@ body.scrolled .announcement-bar::after {
   position: relative;
   overflow: hidden;
   min-height: 72px;
-  padding: 12px 14px;
+  padding: 12px 14px 10px;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   gap: 6px;
+
   border-radius: 18px;
   border: 1px solid rgba(220, 181, 107, 0.14);
+
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015)),
     rgba(16, 16, 16, 0.94);
+
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.01),
     0 10px 24px rgba(0, 0, 0, 0.22);
+
   text-align: left;
   cursor: pointer;
+
   transition:
     transform 0.22s ease,
     border-color 0.22s ease,
@@ -3421,12 +3451,14 @@ body.scrolled .announcement-bar::after {
 .modal-size span {
   display: block;
   margin-bottom: 0;
+
   font-family: "Inter", sans-serif;
   font-size: 0.72rem;
   line-height: 1;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+
   color: rgba(255, 248, 235, 0.72);
 }
 
@@ -3496,12 +3528,15 @@ body.scrolled .announcement-bar::after {
   flex: 1;
   display: grid;
   gap: 6px;
+
   padding: 12px 14px 10px;
   border-radius: 18px;
   border: 1px solid rgba(220, 181, 107, 0.12);
+
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012)),
     rgba(14, 14, 14, 0.9);
+
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.01),
     0 10px 24px rgba(0, 0, 0, 0.2);
@@ -3520,11 +3555,13 @@ body.scrolled .announcement-bar::after {
 
 .modal-price-box strong {
   display: block;
+
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(1.55rem, 2.1vw, 2.15rem);
   line-height: 0.96;
   font-weight: 600;
   letter-spacing: -0.02em;
+
   background: linear-gradient(
     120deg,
     #f3d9a4 0%,
@@ -3536,9 +3573,11 @@ body.scrolled .announcement-bar::after {
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
   text-shadow:
     0 6px 24px rgba(0, 0, 0, 0.55),
     0 0 12px rgba(220, 181, 107, 0.08);
+
   animation: goldShimmer 4.2s linear infinite;
 }
 
@@ -3569,22 +3608,28 @@ body.scrolled .announcement-bar::after {
   min-height: 52px;
   padding: 0 24px;
   border-radius: 999px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   border: 1px solid rgba(220, 181, 107, 0.24);
   background: linear-gradient(135deg, #f0d7a3 0%, #ddb76d 42%, #cfa24e 100%);
   color: #111;
+
   font-family: "Inter", sans-serif;
   font-size: 0.79rem;
   font-weight: 800;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+
   cursor: pointer;
   overflow: hidden;
+
   box-shadow:
     0 16px 38px rgba(220, 181, 107, 0.2),
     inset 0 1px 0 rgba(255, 248, 232, 0.24);
+
   transition:
     transform 0.22s ease,
     box-shadow 0.22s ease,
@@ -3665,6 +3710,9 @@ body.scrolled .announcement-bar::after {
     0 18px 38px rgba(220, 181, 107, 0.22);
 }
 
+/* =========================================
+   RESPONSIVE
+========================================= */
 @media (max-width: 980px) {
   .product-modal {
     width: min(94vw, 760px);
@@ -3675,18 +3723,17 @@ body.scrolled .announcement-bar::after {
   .modal-body {
     grid-template-columns: 1fr;
     min-height: auto;
+    max-height: none;
   }
 
   .modal-media {
     border-right: 0;
     border-bottom: 1px solid rgba(220, 181, 107, 0.10);
-    min-height: 360px;
+    min-height: 320px;
   }
 
   .modal-content {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    overflow: visible;
   }
 
   .modal-description {
@@ -3725,29 +3772,32 @@ body.scrolled .announcement-bar::after {
   }
 
   .modal-header {
-    padding: 20px 18px 16px;
+    padding: 18px 18px 14px;
   }
 
   .modal-header h2 {
-    font-size: 2.2rem;
+    max-width: calc(100% - 50px);
+    font-size: 2.05rem;
+    line-height: 0.98;
   }
 
   .modal-media {
-    padding: 22px 18px 18px;
+    padding: 20px 18px 16px;
     min-height: 0;
   }
 
   .modal-content {
-    padding: 22px 18px 20px;
+    padding: 20px 18px 18px;
+    gap: 10px;
   }
 
   .modal-image-wrap {
-    min-height: 250px;
-    padding: 8px 0;
+    min-height: 230px;
+    padding: 6px 0;
   }
 
   .modal-image {
-    max-height: 225px;
+    max-height: 215px;
   }
 
   .modal-media-meta {
@@ -3755,12 +3805,15 @@ body.scrolled .announcement-bar::after {
   }
 
   .modal-description {
-  font-size: 1.08rem;
-  line-height: 1.2;
-}
+    font-size: 1.04rem;
+    line-height: 1.28;
+    min-height: auto;
+    max-height: none;
+    -webkit-line-clamp: unset;
+  }
 
   .modal-info-card strong {
-    font-size: 1.08rem;
+    font-size: 1.04rem;
   }
 
   .modal-sizes {
