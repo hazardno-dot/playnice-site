@@ -2231,6 +2231,7 @@ function App() {
   ========================================= */
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
 
   /* =========================================
