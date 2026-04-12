@@ -2982,11 +2982,9 @@ setCheckoutOpen(false);
   setHasUserPickedSize(false);
 };
 
-const closeProductModal = () => {
+  const closeProductModal = () => {
   setProductModalVisible(false);
   setHasUserPickedSize(false);
-  setSelectedProduct(null);
-  setSelectedSize("");
 
   setTimeout(() => {
     setSelectedProduct(null);
