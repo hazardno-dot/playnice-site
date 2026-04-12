@@ -2892,6 +2892,36 @@ body.scrolled .announcement-bar::after {
   position: relative;
 }
 
+.product-modal-anchor {
+  margin: 8px 0 12px;
+
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.product-modal-anchor strong {
+  color: var(--gold);
+}
+
+.product-modal-anchor::before {
+  content: "";
+  display: block;
+
+  width: 42px;
+  height: 1px;
+
+  margin-bottom: 6px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(220, 181, 107, 0.7),
+    transparent
+  );
+}
+
 /* subtle gold accent line */
 .product-modal-anchor::before {
   content: "";
@@ -3239,23 +3269,33 @@ body.scrolled .announcement-bar::after {
   max-height: 4.05rem;
 }
 
+/* =========================================
+   MODAL INFO GRID — FINAL
+========================================= */
 .modal-info-grid {
   display: grid;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 6px;
 }
 
+/* CONSISTENT padding system */
 .modal-info-card {
   position: relative;
   overflow: hidden;
-  padding: 14px 16px 12px;
+
+  padding: 16px 18px; /* ← FINAL (balans između tvojih 14 i 18) */
+
   border-radius: 22px;
   border: 1px solid rgba(220, 181, 107, 0.12);
+
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012)),
     rgba(14, 14, 14, 0.94);
+
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.01),
     0 10px 24px rgba(0, 0, 0, 0.18);
+
   transition:
     border-color 0.22s ease,
     transform 0.22s ease,
@@ -3263,50 +3303,57 @@ body.scrolled .announcement-bar::after {
 }
 
 .modal-info-card:hover {
-  transform: translateY(-1px);
-  border-color: rgba(220, 181, 107, 0.22);
+  transform: translateY(-2px);
+
+  border-color: rgba(220, 181, 107, 0.24);
+
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.015),
-    0 14px 28px rgba(0, 0, 0, 0.22),
-    0 0 18px rgba(220, 181, 107, 0.05);
+    0 18px 34px rgba(0, 0, 0, 0.26),
+    0 0 22px rgba(220, 181, 107, 0.06);
 }
 
 .modal-info-card span {
   display: block;
   margin-bottom: 10px;
+
   font-family: "Inter", sans-serif;
   font-size: 0.68rem;
-  line-height: 1;
   font-weight: 800;
+
   letter-spacing: 0.18em;
   text-transform: uppercase;
+
   color: rgba(220, 181, 107, 0.82);
 }
 
 .modal-info-card strong {
   display: block;
-  color: #f3efe8;
+
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.12rem;
-  line-height: 1.28;
-  font-weight: 600;
+  font-size: 1.16rem;
+  line-height: 1.3;
+
+  color: #f3efe8;
 }
 
+/* subtle gold underline */
 .modal-info-card::after {
   content: "";
   position: absolute;
+
   left: 18px;
   bottom: 12px;
-  width: 44px;
+
+  width: 48px;
   height: 1px;
-  border-radius: 999px;
+
   background: linear-gradient(
     90deg,
-    rgba(220, 181, 107, 0.45),
+    rgba(220, 181, 107, 0.55),
     rgba(220, 181, 107, 0.12),
     transparent
   );
-  opacity: 0.8;
 }
 
 .modal-purchase {
