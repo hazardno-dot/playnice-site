@@ -4940,18 +4940,22 @@ const getSizeWearHint = (size) => {
     </button>
 
     <button
-    type="button"
-    className="modal-buy-now"
-    onClick={() => {
-      const activeSize =
-        selectedSize || Object.keys(selectedProduct.sizes)[0];
-      addToCart(selectedProduct, activeSize);
-      setCartOpen(true);
-      setCheckoutOpen(true);
-    }}
-  >
-    {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
-  </button>
+  type="button"
+  className="modal-buy-now"
+  onClick={() => {
+    const activeSize =
+      selectedSize || Object.keys(selectedProduct.sizes)[0];
+    addToCart(selectedProduct, activeSize);
+    setCartOpen(true);
+    setCheckoutOpen(true);
+  }}
+>
+  {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
+
+  <span className="modal-buy-now-sub">
+    {lang === "sr" ? "direktna kupovina" : "instant checkout"}
+  </span>
+</button>
   </div>
  </div>
 </div>
