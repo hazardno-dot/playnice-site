@@ -2998,7 +2998,13 @@ setCheckoutOpen(false);
   setSelectedProduct(product);
   setSelectedSize(Object.keys(product.sizes || {})[0] || "");
   setHasUserPickedSize(false);
-  setProductModalVisible(true);
+  setProductModalVisible(false);
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      setProductModalVisible(true);
+    });
+  });
 };
 
 const closeProductModal = () => {
