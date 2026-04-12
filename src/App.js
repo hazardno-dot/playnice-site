@@ -4983,6 +4983,7 @@ const getSizeWearHint = (size) => {
     onClick={() => {
       const activeSize =
         selectedSize || Object.keys(selectedProduct.sizes)[0];
+
       addToCart(selectedProduct, activeSize, null, null, { showToast: false });
       setCartOpen(false);
       setCheckoutOpen(true);
