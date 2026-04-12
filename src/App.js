@@ -4841,10 +4841,10 @@ const getSizeWearHint = (size) => {
                     </span>
 
                     <p className="modal-size-helper">
-  {lang === "sr"
-    ? "Kreni manjom količinom. Nosi ga prvo."
-    : "Start small. Wear it first."}
-</p>
+                     {lang === "sr"
+                       ? "Kreni manjom količinom. Nosi ga prvo."
+                         : "Start small. Wear it first."}
+                          </p>
 
                     <div className="modal-sizes">
                       {Object.entries(selectedProduct.sizes).map(
