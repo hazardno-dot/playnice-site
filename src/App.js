@@ -4953,6 +4953,7 @@ const getSizeWearHint = (size) => {
       {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
     </button>
   </div>
+ </div>
 </div>
               </div>
             </div>
