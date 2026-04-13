@@ -101,7 +101,7 @@ const translations = {
     announcement3: "Premium niche, designer & arabic fragrances",
     announcement4: "Limited stock drops — don’t miss out",
     announcement5: "Delivery across Montenegro",
-    announcement6: "✔ 50+ satisfied customers",
+    announcement6: "✔ 100+ satisfied customers",
     announcementDynamicLocked: "Add {{amount}} more to unlock free shipping",
     announcementDynamicUnlocked: "Free shipping unlocked ✓",
     announcementDynamicEmpty1: "Free shipping over €39",
@@ -110,7 +110,7 @@ const translations = {
     announcementDynamicEmpty3: "Premium niche, designer & arabic fragrances",
     announcementDynamicEmpty4: "Limited stock drops — don’t miss out",
     announcementDynamicEmpty5: "Delivery across Montenegro",
-    announcementDynamicEmpty6: "✔ 50+ satisfied customers",
+    announcementDynamicEmpty6: "✔ 100+ satisfied customers",
     navStory: "Story",
     heroCampaigns: [
       {
