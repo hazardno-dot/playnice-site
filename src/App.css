@@ -8771,6 +8771,13 @@ will-change: transform, opacity;
   color: rgba(215, 179, 98, 0.84);
 }
 
+.journal-body-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
 /* =========================================
    JOURNAL ARTICLE
 ========================================= */
@@ -8907,8 +8914,10 @@ will-change: transform, opacity;
 
 .journal-top-sheet {
   width: min(calc(100% - 12px), 1380px);
-  max-height: min(88vh, 920px);
+  height: min(88vh, 920px);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   border: 1px solid rgba(215, 179, 98, 0.12);
   border-radius: 0 0 28px 28px;
   background:
@@ -8993,15 +9002,13 @@ will-change: transform, opacity;
 .journal-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  padding: 18px 24px 24px;
-  max-height: calc(88vh - 150px);
-  overflow-y: auto;
+  gap: 14px;
+  padding: 16px 24px 0;
 }
 
 .journal-card {
-  padding: 18px;
-  border-radius: 22px;
+  padding: 16px;
+  border-radius: 18px;
   border: 1px solid rgba(215, 179, 98, 0.12);
   background:
     linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.025));
@@ -9034,15 +9041,15 @@ will-change: transform, opacity;
 
 .journal-card-title {
   margin: 0 0 8px;
-  font-size: 20px;
-  line-height: 1.2;
+  font-size: 17px;
+  line-height: 1.22;
   color: rgba(255, 248, 232, 0.96);
 }
 
 .journal-card-excerpt {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.72;
+  font-size: 13px;
+  line-height: 1.65;
   color: rgba(255, 255, 255, 0.66);
 }
 

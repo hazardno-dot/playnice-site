@@ -4894,62 +4894,76 @@ const getSizeWearHint = (size) => {
         </button>
       </div>
 
-      <div
-  className="journal-featured"
-  onClick={() => setSelectedArticle(journalArticles[0])}
->
-  <div
-    className="journal-featured-bg"
-    style={{
-      backgroundImage: `url(${journalArticles[0].image || ""})`,
-    }}
-  />
+      <div className="journal-body-scroll">
+        <div
+          className="journal-featured"
+          onClick={() => setSelectedArticle(journalArticles[0])}
+        >
+          <div
+            className="journal-featured-bg"
+            style={{
+              backgroundImage: `url(${journalArticles[0].image || ""})`,
+            }}
+          />
 
-  <div className="journal-featured-glow" />
+          <div className="journal-featured-glow" />
 
-  <div className="journal-featured-content">
-    <div className="journal-card-meta">
-      <span className="journal-card-date">
-        {journalArticles[0].date.toUpperCase()}
-      </span>
-      <span className="journal-reading-time">2 min read</span>
-    </div>
-
-    <h2>{journalArticles[0].title}</h2>
-
-    <div className="journal-author-signature small">
-      <div className="journal-author-avatar">Č</div>
-
-      <div className="journal-author-meta">
-        <div className="journal-author-name">Čarli</div>
-        <div className="journal-author-role">PlayNice Editorial</div>
-      </div>
-    </div>
-
-    <p>{journalArticles[0].excerpt}</p>
-
-    <span>Read article →</span>
-  </div>
-</div>
-
-      <div className="journal-grid">
-        {journalArticles.slice(1).map((article) => (
-          <article
-            key={article.id}
-            className="journal-card"
-            onClick={() => setSelectedArticle(article)}
-          >
+          <div className="journal-featured-content">
             <div className="journal-card-meta">
-  <span className="journal-card-date">{article.date}</span>
-  <span className="journal-reading-time">2 min read</span>
-</div>
+              <span className="journal-card-date">
+                {journalArticles[0].date.toUpperCase()}
+              </span>
+              <span className="journal-reading-time">2 min read</span>
+            </div>
 
-            <h3 className="journal-card-title">{article.title}</h3>
-            <p className="journal-card-excerpt">{article.excerpt}</p>
+            <h2>{journalArticles[0].title}</h2>
 
-            <div className="journal-card-link">Read article</div>
-          </article>
-        ))}
+            <div className="journal-author-signature small">
+              <div className="journal-author-avatar">Č</div>
+
+              <div className="journal-author-meta">
+                <div className="journal-author-name">Čarli</div>
+                <div className="journal-author-role">PlayNice Editorial</div>
+              </div>
+            </div>
+
+            <p>{journalArticles[0].excerpt}</p>
+
+            <span>Read article →</span>
+          </div>
+        </div>
+
+        <div className="journal-grid">
+          {journalArticles.slice(1).map((article) => (
+            <article
+              key={article.id}
+              className="journal-card"
+              onClick={() => setSelectedArticle(article)}
+            >
+              <div className="journal-card-meta">
+                <span className="journal-card-date">{article.date}</span>
+                <span className="journal-reading-time">2 min read</span>
+              </div>
+
+              <h3 className="journal-card-title">{article.title}</h3>
+
+              <div className="journal-author-signature small">
+                <div className="journal-author-avatar">Č</div>
+
+                <div className="journal-author-meta">
+                  <div className="journal-author-name">Čarli</div>
+                  <div className="journal-author-role">
+                    PlayNice Editorial
+                  </div>
+                </div>
+              </div>
+
+              <p className="journal-card-excerpt">{article.excerpt}</p>
+
+              <div className="journal-card-link">Read article</div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   </div>
@@ -4965,10 +4979,10 @@ const getSizeWearHint = (size) => {
       onClick={(e) => e.stopPropagation()}
     >
       <div className="journal-article-head">
-  <div className="journal-card-meta">
-    <span className="journal-card-date">{selectedArticle.date}</span>
-    <span className="journal-reading-time">2 min read</span>
-  </div>
+        <div className="journal-card-meta">
+          <span className="journal-card-date">{selectedArticle.date}</span>
+          <span className="journal-reading-time">2 min read</span>
+        </div>
 
         <button
           type="button"
@@ -4982,18 +4996,16 @@ const getSizeWearHint = (size) => {
 
       <h2 className="journal-article-title">{selectedArticle.title}</h2>
 
-      <div className="journal-author">By PlayNice Editorial</div>
+      <div className="journal-author-signature">
+        <div className="journal-author-avatar">Č</div>
+
+        <div className="journal-author-meta">
+          <div className="journal-author-name">Čarli</div>
+          <div className="journal-author-role">PlayNice Editorial</div>
+        </div>
+      </div>
 
       <p className="journal-article-body">{selectedArticle.content}</p>
-
-      <div className="journal-author-signature">
-  <div className="journal-author-avatar">Č</div>
-
-  <div className="journal-author-meta">
-    <div className="journal-author-name">Čarli</div>
-    <div className="journal-author-role">PlayNice Editorial</div>
-  </div>
-</div>
     </div>
   </div>
 )}
