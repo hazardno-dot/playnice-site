@@ -4984,34 +4984,38 @@ const getSizeWearHint = (size) => {
       className="journal-article-modal"
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="journal-article-head">
-        <div className="journal-card-meta">
-          <span className="journal-card-date">{selectedArticle.date}</span>
-          <span className="journal-reading-time">2 min read</span>
+      <div className="journal-article-sticky-head">
+        <div className="journal-article-head">
+          <div className="journal-card-meta">
+            <span className="journal-card-date">{selectedArticle.date}</span>
+            <span className="journal-reading-time">2 min read</span>
+          </div>
+
+          <button
+            type="button"
+            className="journal-close-btn"
+            onClick={() => setSelectedArticle(null)}
+            aria-label="Close article"
+          >
+            ×
+          </button>
         </div>
 
-        <button
-          type="button"
-          className="journal-close-btn"
-          onClick={() => setSelectedArticle(null)}
-          aria-label="Close article"
-        >
-          ×
-        </button>
-      </div>
+        <h2 className="journal-article-title">{selectedArticle.title}</h2>
 
-      <h2 className="journal-article-title">{selectedArticle.title}</h2>
+        <div className="journal-author-signature">
+          <div className="journal-author-avatar">Č</div>
 
-      <div className="journal-author-signature">
-        <div className="journal-author-avatar">Č</div>
-
-        <div className="journal-author-meta">
-          <div className="journal-author-name">Čarli</div>
-          <div className="journal-author-role">PlayNice Editorial</div>
+          <div className="journal-author-meta">
+            <div className="journal-author-name">Čarli</div>
+            <div className="journal-author-role">PlayNice Editorial</div>
+          </div>
         </div>
       </div>
 
-      <p className="journal-article-body">{selectedArticle.content}</p>
+      <div className="journal-article-scroll">
+        <p className="journal-article-body">{selectedArticle.content}</p>
+      </div>
     </div>
   </div>
 )}

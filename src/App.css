@@ -8903,7 +8903,7 @@ will-change: transform, opacity;
 }
 
 /* =========================================
-   JOURNAL ARTICLE MODAL — FINAL POLISH
+   JOURNAL ARTICLE MODAL — FINAL
 ========================================= */
 
 .journal-article-overlay {
@@ -8915,7 +8915,6 @@ will-change: transform, opacity;
   align-items: center;
   justify-content: center;
 
-  /* gore malo manje, dole više zbog sticky CTA */
   padding: 18px 18px 110px;
 
   background: rgba(0, 0, 0, 0.72);
@@ -8927,8 +8926,13 @@ will-change: transform, opacity;
 
 .journal-article-modal {
   width: min(920px, 92vw);
-  max-height: calc(100vh - 150px);
-  overflow-y: auto;
+  height: calc(100vh - 150px);
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+  overscroll-behavior: contain;
 
   border-radius: 30px;
   border: 1px solid rgba(215, 179, 98, 0.14);
@@ -8940,9 +8944,24 @@ will-change: transform, opacity;
     0 40px 80px rgba(0, 0, 0, 0.45),
     0 0 0 1px rgba(255, 255, 255, 0.02) inset;
 
-  padding: 30px 30px 28px;
-
   animation: journalArticleIn 0.34s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* sticky top zone */
+.journal-article-sticky-head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+
+  padding: 30px 30px 18px;
+
+  background:
+    linear-gradient(180deg, rgba(9, 9, 9, 0.98), rgba(9, 9, 9, 0.94));
+
+  border-bottom: 1px solid rgba(215, 179, 98, 0.08);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .journal-article-head {
@@ -8954,7 +8973,7 @@ will-change: transform, opacity;
 }
 
 .journal-article-title {
-  margin: 0 0 18px;
+  margin: 0 0 16px;
   max-width: 18ch;
 
   font-size: clamp(30px, 4vw, 46px);
@@ -8964,8 +8983,19 @@ will-change: transform, opacity;
   color: rgba(255, 248, 232, 0.98);
 }
 
+/* scroll only in body */
+.journal-article-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+
+  padding: 22px 30px 30px;
+
+  scroll-behavior: smooth;
+}
+
 .journal-article-body {
-  margin: 18px 0 0;
+  margin: 0;
   max-width: 64ch;
 
   white-space: pre-line;
@@ -8975,12 +9005,13 @@ will-change: transform, opacity;
   color: rgba(255, 255, 255, 0.78);
 }
 
-/* malo lepši spacing za autor blok u modalu */
-.journal-article-modal .journal-author-signature {
-  margin-top: 6px;
-  margin-bottom: 6px;
+/* malo lepši spacing za author blok u sticky headeru */
+.journal-article-sticky-head .journal-author-signature {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
+/* article animation */
 @keyframes journalArticleIn {
   from {
     opacity: 0;
@@ -8996,77 +9027,26 @@ will-change: transform, opacity;
    JOURNAL ARTICLE SCROLLBAR
 ========================================= */
 
-.journal-article-modal::-webkit-scrollbar {
+.journal-article-scroll::-webkit-scrollbar {
   width: 8px;
 }
 
-.journal-article-modal::-webkit-scrollbar-track {
+.journal-article-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.journal-article-modal::-webkit-scrollbar-thumb {
+.journal-article-scroll::-webkit-scrollbar-thumb {
   background: rgba(215, 179, 98, 0.24);
   border-radius: 999px;
 }
 
-.journal-article-modal::-webkit-scrollbar-thumb:hover {
+.journal-article-scroll::-webkit-scrollbar-thumb:hover {
   background: rgba(215, 179, 98, 0.42);
 }
 
 /* =========================================
-   MOBILE / TABLET
+   JOURNAL AUTHOR
 ========================================= */
-
-@media (max-width: 1024px) {
-  .journal-article-modal {
-    width: min(820px, 94vw);
-    max-height: calc(100vh - 140px);
-    padding: 24px 22px 22px;
-  }
-
-  .journal-article-body {
-    max-width: 100%;
-    font-size: 15.5px;
-    line-height: 1.86;
-  }
-}
-
-@media (max-width: 768px) {
-  .journal-article-overlay {
-    padding: 10px 10px 96px;
-  }
-
-  .journal-article-modal {
-    width: 100%;
-    max-height: calc(100vh - 112px);
-    border-radius: 24px;
-    padding: 20px 18px 18px;
-  }
-
-  .journal-article-title {
-    max-width: 100%;
-    font-size: clamp(28px, 7vw, 38px);
-    margin-bottom: 14px;
-  }
-
-  .journal-article-body {
-    font-size: 14px;
-    line-height: 1.82;
-  }
-}
-
-@keyframes journalArticleIn {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.985);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* ---------- author ---------- */
 
 .journal-author {
   margin: 6px 0 12px;
@@ -9132,7 +9112,9 @@ will-change: transform, opacity;
   color: rgba(255, 255, 255, 0.45);
 }
 
-/* ---------- scrollbar ---------- */
+/* =========================================
+   JOURNAL BODY SCROLLBAR
+========================================= */
 
 .journal-body-scroll::-webkit-scrollbar {
   width: 6px;
@@ -9151,11 +9133,32 @@ will-change: transform, opacity;
   background: rgba(215, 179, 98, 0.45);
 }
 
-/* ---------- responsive ---------- */
+/* =========================================
+   RESPONSIVE
+========================================= */
 
 @media (max-width: 1024px) {
   .journal-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .journal-article-modal {
+    width: min(820px, 94vw);
+    height: calc(100vh - 140px);
+  }
+
+  .journal-article-sticky-head {
+    padding: 24px 22px 16px;
+  }
+
+  .journal-article-scroll {
+    padding: 18px 22px 24px;
+  }
+
+  .journal-article-body {
+    max-width: 100%;
+    font-size: 15.5px;
+    line-height: 1.86;
   }
 }
 
@@ -9209,11 +9212,28 @@ will-change: transform, opacity;
     line-height: 1.68;
   }
 
+  .journal-article-overlay {
+    padding: 10px 10px 96px;
+  }
+
   .journal-article-modal {
     width: 100%;
-    max-height: 100vh;
-    border-radius: 0;
-    padding: 20px 18px 18px;
+    height: calc(100vh - 112px);
+    border-radius: 24px;
+  }
+
+  .journal-article-sticky-head {
+    padding: 20px 18px 14px;
+  }
+
+  .journal-article-title {
+    max-width: 100%;
+    font-size: clamp(28px, 7vw, 38px);
+    margin-bottom: 14px;
+  }
+
+  .journal-article-scroll {
+    padding: 16px 18px 20px;
   }
 
   .journal-article-body {
