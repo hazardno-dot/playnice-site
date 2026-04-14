@@ -2057,6 +2057,20 @@ const productWearContext = {
 };
 
 /* =========================================
+   JOURNAL ATRICLES
+========================================= */
+
+const journalArticles = [
+  {
+    id: 1,
+    title: "Tri nova mirisa koja su nam poremetila planove",
+    excerpt: "Hteli smo samo da bacimo pogled...",
+    content: "OVDE IDE ČARLI TEKST...",
+    date: "14 Apr",
+  },
+];
+
+/* =========================================
    GLOBAL CONSTANTS & HELPERS
 ========================================= */
 const PRODUCTS_PER_PAGE = 12;
@@ -2229,6 +2243,8 @@ function App() {
   });
 
   const [hasUserPickedSize, setHasUserPickedSize] = useState(false);
+  const [journalOpen, setJournalOpen] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState(null);
 
   /* =========================================
      APP REFS
@@ -2379,6 +2395,7 @@ useLayoutEffect(() => {
     storyOpen ||
     howItWorksOpen ||
     privateSelectionOpen ||
+      journalOpen ||
     !!catalogPreview;
 
   const body = document.body;
@@ -3289,6 +3306,13 @@ const getSizeWearHint = (size) => {
           >
             {tr.navShop}
           </button>
+
+          <button 
+  className="header-journal-btn"
+  onClick={() => setJournalOpen(true)}
+>
+  Journal
+</button>
         </nav>
 
         <div className="topbar-right">
@@ -4745,6 +4769,106 @@ const getSizeWearHint = (size) => {
 </>
         )}
       </aside>
+
+      {journalOpen && (
+  <div
+    className="story-overlay"
+    onClick={() => {
+      setJournalOpen(false);
+      setSelectedArticle(null);
+    }}
+  >
+    <aside
+      className="story-panel journal-story-panel"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="story-panel-shell journal-panel-shell">
+        <div className="story-panel-head journal-panel-head panel-anim panel-anim-1">
+          <div className="story-panel-kicker">So what’s new?</div>
+
+          <button
+            type="button"
+            className="story-close-btn"
+            onClick={() => {
+              setJournalOpen(false);
+              setSelectedArticle(null);
+            }}
+            aria-label="Close Journal"
+          >
+            ×
+          </button>
+        </div>
+
+        <div className="story-panel-intro journal-panel-intro panel-anim panel-anim-2">
+          <h2 className="story-panel-title journal-panel-title">Journal</h2>
+          <p className="story-panel-text journal-panel-text">
+            Priče, noviteti, mali haosi i veliki mirisi — iz ugla kuće koja
+            živi parfeme svaki dan.
+          </p>
+        </div>
+
+        <div className="journal-list panel-anim panel-anim-3">
+          {journalArticles.map((article, index) => (
+            <article
+              key={article.id}
+              className={`journal-card panel-anim panel-anim-${Math.min(
+                index + 4,
+                6
+              )}`}
+              onClick={() => setSelectedArticle(article)}
+            >
+              <div className="journal-card-meta">
+                <span className="journal-card-date">{article.date}</span>
+              </div>
+
+              <h3 className="journal-card-title">{article.title}</h3>
+              <p className="journal-card-excerpt">{article.excerpt}</p>
+
+              <div className="journal-card-link">Read article</div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </aside>
+  </div>
+)}
+
+{selectedArticle && (
+  <div
+    className="modal-overlay journal-article-overlay"
+    onClick={() => setSelectedArticle(null)}
+  >
+    <div
+      className="journal-modal story-like-article-modal"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="journal-modal-inner">
+        <div className="journal-modal-head panel-anim panel-anim-1">
+          <div className="journal-card-date">{selectedArticle.date}</div>
+
+          <button
+            type="button"
+            className="story-close-btn"
+            onClick={() => setSelectedArticle(null)}
+            aria-label="Close article"
+          >
+            ×
+          </button>
+        </div>
+
+        <h2 className="journal-modal-title panel-anim panel-anim-2">
+          {selectedArticle.title}
+        </h2>
+
+        <p className="journal-modal-body panel-anim panel-anim-3">
+          {selectedArticle.content}
+        </p>
+
+        <p className="journal-signature panel-anim panel-anim-4">— Čarli</p>
+      </div>
+    </div>
+  </div>
+)}
 
       {selectedProduct && (
   <div

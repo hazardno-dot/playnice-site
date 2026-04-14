@@ -8463,3 +8463,203 @@ will-change: transform, opacity;
     opacity: 0.75;
   }
 }
+
+/* =========================================
+   JOURNAL — STORY-LIKE PANEL
+========================================= */
+
+.journal-story-panel {
+  width: min(720px, calc(100vw - 20px));
+  max-width: 720px;
+}
+
+.journal-panel-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.journal-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.journal-panel-intro {
+  margin-bottom: 22px;
+}
+
+.journal-panel-title {
+  margin: 0 0 10px;
+}
+
+.journal-panel-text {
+  max-width: 56ch;
+  margin: 0;
+}
+
+.journal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.journal-card {
+  position: relative;
+  padding: 18px 18px 17px;
+  border-radius: 20px;
+  border: 1px solid rgba(215, 179, 98, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
+  cursor: pointer;
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.journal-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(215, 179, 98, 0.28);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.22);
+}
+
+.journal-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.journal-card-date {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(215, 179, 98, 0.78);
+}
+
+.journal-card-title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  line-height: 1.2;
+  color: rgba(255, 248, 232, 0.96);
+}
+
+.journal-card-excerpt {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.72;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.journal-card-link {
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(215, 179, 98, 0.85);
+}
+
+/* =========================================
+   JOURNAL ARTICLE MODAL
+========================================= */
+
+.story-like-article-modal {
+  width: min(760px, calc(100vw - 20px));
+  max-height: min(88vh, 920px);
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid rgba(215, 179, 98, 0.14);
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.96), rgba(6, 6, 6, 0.94));
+  box-shadow:
+    0 40px 80px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255,255,255,0.02) inset;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.journal-modal-inner {
+  padding: 26px 24px 24px;
+  overflow-y: auto;
+  max-height: min(88vh, 920px);
+}
+
+.journal-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.journal-modal-title {
+  margin: 0 0 16px;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: rgba(255, 248, 232, 0.98);
+}
+
+.journal-modal-body {
+  margin: 0;
+  white-space: pre-line;
+  font-size: 15px;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.journal-signature {
+  margin-top: 20px;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(215, 179, 98, 0.84);
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+  .journal-story-panel {
+    width: min(calc(100vw - 12px), 100%);
+    max-width: none;
+  }
+
+  .journal-card {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .journal-card-title {
+    font-size: 18px;
+  }
+
+  .journal-card-excerpt {
+    font-size: 13.5px;
+    line-height: 1.68;
+  }
+
+  .journal-modal-inner {
+    padding: 20px 18px 18px;
+  }
+
+  .journal-modal-title {
+    margin-bottom: 14px;
+  }
+
+  .journal-modal-body {
+    font-size: 14px;
+    line-height: 1.82;
+  }
+}
