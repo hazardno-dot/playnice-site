@@ -180,6 +180,17 @@ const translations = {
     wearHint_5ml: "5–7 wears",
     wearHint_10ml: "10–14 wears",
     wearHint_20ml: "20+ wears",
+
+    journalKicker: "So what’s new?",
+    journalTitle: "Journal",
+    journalSubtitle:
+     "Stories, updates, little chaos and big scents — from the point of view of a house that lives fragrance every day.",
+    journalReadArticle: "Read article →",
+    journalReadingTime: "2 min read",
+    journalAuthorName: "Charlie",
+    journalAuthorRole: "PlayNice Editorial",
+    journalClose: "Close Journal",
+    journalCloseArticle: "Close article",
   },
 
   sr: {
@@ -362,6 +373,17 @@ const translations = {
     wearHint_5ml: "5–7 nošenja",
     wearHint_10ml: "10–14 nošenja",
     wearHint_20ml: "20+ nošenja",
+
+    journalKicker: "Šta je novo?",
+    journalTitle: "Journal",
+    journalSubtitle:
+      "Priče, noviteti, mali haosi i veliki mirisi — iz ugla kuće koja živi parfeme svaki dan.",
+    journalReadArticle: "Pročitaj članak →",
+    journalReadingTime: "2 min čitanja",
+    journalAuthorName: "Čarli",
+    journalAuthorRole: "PlayNice Editorial",
+    journalClose: "Zatvori Journal",
+    journalCloseArticle: "Zatvori članak",
   }
 };
 
@@ -2063,10 +2085,39 @@ const productWearContext = {
 const journalArticles = [
   {
     id: 1,
-    title: "Tri nova mirisa koja su nam poremetila planove",
-    excerpt:
-      "Hteli smo samo da bacimo pogled. Standardna priča. Bez velikih očekivanja, bez ikakve namere da pravimo dramu. Onda su se pojavila tri nova mirisa i od mirnog dana napravila mali haos.",
-    content: `Postoje dani kada sve ide po planu.
+    date: "14 Apr",
+    image: "/hero/slide-5-trust-dark.jpg",
+    title: {
+      en: "Three new scents that completely ruined our plans",
+      sr: "Tri nova mirisa koja su nam poremetila planove",
+    },
+    excerpt: {
+      en: "We only wanted to take a quick look. Standard story. No huge expectations, no intention to make a scene. Then three new scents showed up and turned a calm day into a small mess.",
+      sr: "Hteli smo samo da bacimo pogled. Standardna priča. Bez velikih očekivanja, bez ikakve namere da pravimo dramu. Onda su se pojavila tri nova mirisa i od mirnog dana napravila mali haos.",
+    },
+    content: {
+      en: `There are days when everything goes according to plan.
+
+And then there are days when you tell yourself, “Let me just take a quick look and see what’s new.”
+
+Well, this was definitely the second kind.
+
+We did not plan to fall for anything. We did not even plan to turn it into a story. We only wanted to check three new fragrances, calmly, over coffee, without hype and without big words. And then the thing happened that always happens when you least expect it — one stops you in your tracks, the second gets under your skin, and the third stays in your head long after you get home.
+
+The first one had that kind of energy that changes the room the moment it appears. It does not shout, it does not perform, but it somehow says, “Alright, I’m here.” Those are the scents you do not explain for too long. You just wear them and let them do their job.
+
+The second one was a completely different story. Calmer, more mature, more like the fragrance that does not demand attention right away, but gets it ten minutes later. Like people who do not walk into a room the loudest, but somehow end up being remembered the most.
+
+And the third... the third was the reason why this tiny “let’s just check what’s new” moment went in a completely different direction. You know that feeling when you cannot explain a scent right away, but you already know you are not going to let it go easily? That one.
+
+That is exactly why we love this part of the story. It is not all about notes, and it is not all about hype either. Sometimes it is just about the moment. About something new showing up and you realizing that it was exactly what had been missing.
+
+Those three new scents are arriving to us soon.
+
+And we turned a simple “let’s just see what’s new” into what we always turn it into when a fragrance is good — something personal.
+
+— Charlie`,
+      sr: `Postoje dani kada sve ide po planu.
 
 I postoje dani kada samo kažeš sebi: “Ajde da bacim pogled, čisto da vidim šta ima novo.”
 
@@ -2087,15 +2138,44 @@ Ta tri nova mirisa uskoro stižu kod nas.
 A mi smo od običnog “da vidimo šta ima” opet napravili ono što uvek napravimo kad je miris dobar — lično smo se umešali.
 
 — Čarli`,
-    date: "14 Apr",
-    image: "/hero/slide-5-trust-dark.jpg",
+    },
   },
   {
     id: 2,
-    title: "Dostava je sada 4€, a mi smo to primili kao odrasli. Skoro.",
-    excerpt:
-      "Postoji trenutak u svakom malom brendu kad sedne vest koju nisi naručio. Kod nas je ovog puta stigla iz kurirske službe. Dostava više nije 3.5€, nego 4€.",
-    content: `Postoji onaj poseban trenutak kada otvoriš poruku i već po prvih nekoliko reči znaš da nećeš biti oduševljen.
+    date: "13 Apr",
+    title: {
+      en: "Delivery is now €4, and we handled it like adults. Almost.",
+      sr: "Dostava je sada 4€, a mi smo to primili kao odrasli. Skoro.",
+    },
+    excerpt: {
+      en: "There comes a moment in every small brand when news arrives that nobody asked for. For us, this time, it came from the courier service. Delivery is no longer €3.5 — it is €4.",
+      sr: "Postoji trenutak u svakom malom brendu kad sedne vest koju nisi naručio. Kod nas je ovog puta stigla iz kurirske službe. Dostava više nije 3.5€, nego 4€.",
+    },
+    content: {
+      en: `There is a very particular moment when you open a message and, from the first few words alone, you already know you are not going to love what comes next.
+
+That is exactly how we found out that delivery went from €3.5 to €4.
+
+It is not a tragedy. It is not the end of the world. It is not even what a normal person would call drama. But it is that small, annoying change that makes you stare at the ceiling for a few seconds, then at a calculator, and then back at the ceiling, just in case the ceiling suddenly has a better solution.
+
+It did not.
+
+Still, because we like being clear and fair, it only makes sense to say it plainly: delivery is now €4.
+
+And that is exactly the kind of information we never want hidden behind three clicks, tiny print and vague wording. If something changes, we want people to see it immediately. No games, no marketing fog, no moment where you end up paying more than you thought you would.
+
+The good news is that nothing changed in the part that matters more to us than the number itself: we still pack carefully, we still choose what deserves a place on the site, and we still want every package to feel like it was handled properly from start to finish.
+
+Sometimes small costs go up. That does not mean small details are allowed to go down.
+
+If we are being honest, €4 is not dream news. But it is real news. And PlayNice should be the kind of place where a guest does not have to guess what changed, what is new, and what to expect.
+
+That is exactly why this Journal exists.
+
+To say things normally. Clearly. Like people. And maybe survive one more unnecessary price increase together.
+
+— Charlie`,
+      sr: `Postoji onaj poseban trenutak kada otvoriš poruku i već po prvih nekoliko reči znaš da nećeš biti oduševljen.
 
 Tako smo i mi saznali da je dostava otišla sa 3.5€ na 4€.
 
@@ -2118,14 +2198,47 @@ Zato i postoji ovaj Journal.
 Da kažemo stvari normalno. Ljudski. I da usput možda zajedno preživimo još po neko “poskupljenje koje nam nije trebalo”.
 
 — Čarli`,
-    date: "13 Apr",
+    },
   },
   {
     id: 3,
-    title: "9PM Night Out nije tražio pažnju. Onda je dobio previše.",
-    excerpt:
-      "Neki parfemi uđu tiho. Ovaj nije baš imao tu nameru. Priča je počela kao običan izlazak, a završila se kao još jedan podsetnik da dobar miris ume da produži noć više nego što si planirao.",
-    content: `Postoje parfemi koje staviš jer ti lepo mirišu.
+    date: "12 Apr",
+    image: "/hero/slide-1-9pm-night-out.jpg",
+    title: {
+      en: "9PM Night Out did not ask for attention. Then it got too much of it.",
+      sr: "9PM Night Out nije tražio pažnju. Onda je dobio previše.",
+    },
+    excerpt: {
+      en: "Some fragrances arrive quietly. This one did not seem interested in that. It started as an ordinary night out and turned into another reminder that a good scent can stretch a night further than you planned.",
+      sr: "Neki parfemi uđu tiho. Ovaj nije baš imao tu nameru. Priča je počela kao običan izlazak, a završila se kao još jedan podsetnik da dobar miris ume da produži noć više nego što si planirao.",
+    },
+    content: {
+      en: `There are fragrances you wear because they smell good.
+
+And then there are fragrances you wear and somehow the rest of the evening starts writing itself.
+
+9PM Night Out belongs to that second group.
+
+That was not the plan. The plan was simple: a bit of town, a bit of music, one drink, maybe two at most, and then home like a serious person with responsibilities the next day. The moment you hear that sentence, you already know none of it went according to plan.
+
+I wore the fragrance more out of curiosity than calculation. I knew it had energy. I knew it had that evening character that does not belong to the sun, the office or a clean schedule. But I did not expect it to settle into the whole atmosphere that naturally.
+
+At some point I stopped thinking about it at all, and to me that is the best sign. A good fragrance does not need to constantly remind you that it is there. It just has to make heads turn once in a while, catch someone’s attention when you walk by, and make you feel slightly more confident than you were when you left the house.
+
+And the night? The night did what nights do.
+
+The music kept getting better as the hours passed. Plans kept falling apart one by one. One drink had long stopped being one drink. Somewhere in between all of that, I realized that 9PM Night Out is exactly what its name promises — a fragrance that does not show up to do the bare minimum, but to become part of the night.
+
+No, we are not going to pretend this turned into a movie and that half the city started chasing me through clubs. But there were looks, questions, and the usual “what are you wearing?” — enough for the fragrance to register a serious win.
+
+That is the whole point of a proper night out scent. Not to speak instead of you, but to give you that small edge when you need it.
+
+If you like fragrances with evening energy, confidence and enough character to stay memorable after the music stops, this one deserves your attention.
+
+As for everything else, as usual, blame the city.
+
+— Charlie`,
+      sr: `Postoje parfemi koje staviš jer ti lepo mirišu.
 
 A postoje i oni koje staviš pa se ostatak večeri nekako sam napiše.
 
@@ -2150,7 +2263,7 @@ Ako voliš mirise koji imaju energiju večeri, malo samopouzdanja i dovoljno kar
 A za sve ostalo, kao i obično, kriv je grad.
 
 — Čarli`,
-    date: "12 Apr",
+    },
   },
 ];
 
@@ -4872,12 +4985,9 @@ const getSizeWearHint = (size) => {
     >
       <div className="journal-topbar">
         <div className="journal-topbar-copy">
-          <div className="journal-kicker">So what’s new?</div>
-          <h2 className="journal-heading">Journal</h2>
-          <p className="journal-subheading">
-            Priče, noviteti, mali haosi i veliki mirisi — iz ugla kuće koja
-            živi parfeme svaki dan.
-          </p>
+          <div className="journal-kicker">{tr.journalKicker}</div>
+          <h2 className="journal-heading">{tr.journalTitle}</h2>
+          <p className="journal-subheading">{tr.journalSubtitle}</p>
         </div>
 
         <button
@@ -4887,7 +4997,7 @@ const getSizeWearHint = (size) => {
             setJournalOpen(false);
             setSelectedArticle(null);
           }}
-          aria-label="Close Journal"
+          aria-label={tr.journalClose}
         >
           ×
         </button>
@@ -4913,25 +5023,34 @@ const getSizeWearHint = (size) => {
             <div className="journal-featured-content">
               <div className="journal-card-meta">
                 <span className="journal-card-date">
-                  {journalArticles[0].date?.toUpperCase?.() || journalArticles[0].date}
+                  {journalArticles[0].date?.toUpperCase?.() ||
+                    journalArticles[0].date}
                 </span>
-                <span className="journal-reading-time">2 min read</span>
+                <span className="journal-reading-time">
+                  {tr.journalReadingTime}
+                </span>
               </div>
 
-              <h2>{journalArticles[0].title}</h2>
+              <h2>{journalArticles[0].title[lang]}</h2>
 
               <div className="journal-author-signature small">
-                <div className="journal-author-avatar">Č</div>
+                <div className="journal-author-avatar">
+                  {lang === "sr" ? "Č" : "C"}
+                </div>
 
                 <div className="journal-author-meta">
-                  <div className="journal-author-name">Čarli</div>
-                  <div className="journal-author-role">PlayNice Editorial</div>
+                  <div className="journal-author-name">
+                    {tr.journalAuthorName}
+                  </div>
+                  <div className="journal-author-role">
+                    {tr.journalAuthorRole}
+                  </div>
                 </div>
               </div>
 
-              <p>{journalArticles[0].excerpt}</p>
+              <p>{journalArticles[0].excerpt[lang]}</p>
 
-              <span>Read article →</span>
+              <span>{tr.journalReadArticle}</span>
             </div>
           </div>
         )}
@@ -4946,31 +5065,94 @@ const getSizeWearHint = (size) => {
               >
                 <div className="journal-card-meta">
                   <span className="journal-card-date">{article.date}</span>
-                  <span className="journal-reading-time">2 min read</span>
+                  <span className="journal-reading-time">
+                    {tr.journalReadingTime}
+                  </span>
                 </div>
 
-                <h3 className="journal-card-title">{article.title}</h3>
+                <h3 className="journal-card-title">{article.title[lang]}</h3>
 
                 <div className="journal-author-signature small">
-                  <div className="journal-author-avatar">Č</div>
+                  <div className="journal-author-avatar">
+                    {lang === "sr" ? "Č" : "C"}
+                  </div>
 
                   <div className="journal-author-meta">
-                    <div className="journal-author-name">Čarli</div>
+                    <div className="journal-author-name">
+                      {tr.journalAuthorName}
+                    </div>
                     <div className="journal-author-role">
-                      PlayNice Editorial
+                      {tr.journalAuthorRole}
                     </div>
                   </div>
                 </div>
 
-                <p className="journal-card-excerpt">{article.excerpt}</p>
+                <p className="journal-card-excerpt">{article.excerpt[lang]}</p>
 
-                <div className="journal-card-link">Read article</div>
+                <div className="journal-card-link">
+                  {tr.journalReadArticle}
+                </div>
               </article>
             ))}
           </div>
         )}
       </div>
     </section>
+  </div>
+)}
+
+{selectedArticle && (
+  <div
+    className="journal-article-overlay"
+    onClick={() => setSelectedArticle(null)}
+  >
+    <div
+      className="journal-article-modal"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="journal-article-sticky-head">
+        <div className="journal-article-head">
+          <div className="journal-card-meta">
+            <span className="journal-card-date">{selectedArticle.date}</span>
+            <span className="journal-reading-time">
+              {tr.journalReadingTime}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            className="journal-close-btn"
+            onClick={() => setSelectedArticle(null)}
+            aria-label={tr.journalCloseArticle}
+          >
+            ×
+          </button>
+        </div>
+
+        <h2 className="journal-article-title">
+          {selectedArticle.title[lang]}
+        </h2>
+
+        <div className="journal-author-signature">
+          <div className="journal-author-avatar">
+            {lang === "sr" ? "Č" : "C"}
+          </div>
+
+          <div className="journal-author-meta">
+            <div className="journal-author-name">
+              {tr.journalAuthorName}
+            </div>
+            <div className="journal-author-role">
+              {tr.journalAuthorRole}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="journal-article-scroll">
+        <p className="journal-article-body">{selectedArticle.content[lang]}</p>
+      </div>
+    </div>
   </div>
 )}
 
@@ -4994,7 +5176,7 @@ const getSizeWearHint = (size) => {
             type="button"
             className="journal-close-btn"
             onClick={() => setSelectedArticle(null)}
-            aria-label="Close article"
+            aria-label={tr.journalCloseArticle}
           >
             ×
           </button>
