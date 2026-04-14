@@ -2390,6 +2390,20 @@ function getProductCopy(product, lang) {
   };
 }
 
+const getJournalText = (field, lang) => {
+  if (!field) return "";
+
+  if (typeof field === "string") return field;
+
+  if (typeof field === "object") {
+    return field[lang] || field.en || field.sr || "";
+  }
+
+  return "";
+};
+
+const getJournalAvatarLetter = () => (lang === "sr" ? "Č" : "C");
+
 /* =========================================
    APP
 ========================================= */
@@ -5031,11 +5045,11 @@ const getSizeWearHint = (size) => {
                 </span>
               </div>
 
-              <h2>{journalArticles[0].title[lang]}</h2>
+              <h2>{getJournalText(journalArticles[0].title, lang)}</h2>
 
               <div className="journal-author-signature small">
                 <div className="journal-author-avatar">
-                  {lang === "sr" ? "Č" : "C"}
+                  {getJournalAvatarLetter()}
                 </div>
 
                 <div className="journal-author-meta">
@@ -5048,7 +5062,7 @@ const getSizeWearHint = (size) => {
                 </div>
               </div>
 
-              <p>{journalArticles[0].excerpt[lang]}</p>
+              <p>{getJournalText(journalArticles[0].excerpt, lang)}</p>
 
               <span>{tr.journalReadArticle}</span>
             </div>
@@ -5070,11 +5084,13 @@ const getSizeWearHint = (size) => {
                   </span>
                 </div>
 
-                <h3 className="journal-card-title">{article.title[lang]}</h3>
+                <h3 className="journal-card-title">
+                  {getJournalText(article.title, lang)}
+                </h3>
 
                 <div className="journal-author-signature small">
                   <div className="journal-author-avatar">
-                    {lang === "sr" ? "Č" : "C"}
+                    {getJournalAvatarLetter()}
                   </div>
 
                   <div className="journal-author-meta">
@@ -5087,7 +5103,9 @@ const getSizeWearHint = (size) => {
                   </div>
                 </div>
 
-                <p className="journal-card-excerpt">{article.excerpt[lang]}</p>
+                <p className="journal-card-excerpt">
+                  {getJournalText(article.excerpt, lang)}
+                </p>
 
                 <div className="journal-card-link">
                   {tr.journalReadArticle}
@@ -5130,12 +5148,12 @@ const getSizeWearHint = (size) => {
         </div>
 
         <h2 className="journal-article-title">
-          {selectedArticle.title[lang]}
+          {getJournalText(selectedArticle.title, lang)}
         </h2>
 
         <div className="journal-author-signature">
           <div className="journal-author-avatar">
-            {lang === "sr" ? "Č" : "C"}
+            {getJournalAvatarLetter()}
           </div>
 
           <div className="journal-author-meta">
@@ -5150,52 +5168,9 @@ const getSizeWearHint = (size) => {
       </div>
 
       <div className="journal-article-scroll">
-        <p className="journal-article-body">{selectedArticle.content[lang]}</p>
-      </div>
-    </div>
-  </div>
-)}
-
-{selectedArticle && (
-  <div
-    className="journal-article-overlay"
-    onClick={() => setSelectedArticle(null)}
-  >
-    <div
-      className="journal-article-modal"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="journal-article-sticky-head">
-        <div className="journal-article-head">
-          <div className="journal-card-meta">
-            <span className="journal-card-date">{selectedArticle.date}</span>
-            <span className="journal-reading-time">2 min read</span>
-          </div>
-
-          <button
-            type="button"
-            className="journal-close-btn"
-            onClick={() => setSelectedArticle(null)}
-            aria-label={tr.journalCloseArticle}
-          >
-            ×
-          </button>
-        </div>
-
-        <h2 className="journal-article-title">{selectedArticle.title}</h2>
-
-        <div className="journal-author-signature">
-          <div className="journal-author-avatar">Č</div>
-
-          <div className="journal-author-meta">
-            <div className="journal-author-name">Čarli</div>
-            <div className="journal-author-role">PlayNice Editorial</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="journal-article-scroll">
-        <p className="journal-article-body">{selectedArticle.content}</p>
+        <p className="journal-article-body">
+          {getJournalText(selectedArticle.content, lang)}
+        </p>
       </div>
     </div>
   </div>
