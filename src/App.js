@@ -3311,6 +3311,7 @@ const getSizeWearHint = (size) => {
   type="button"
   className="header-private-selection-btn header-journal-btn"
   onClick={() => {
+    console.log("Journal clicked");
     setJournalOpen(true);
     setSelectedArticle(null);
   }}
@@ -4777,14 +4778,14 @@ const getSizeWearHint = (size) => {
 
       {journalOpen && (
   <div
-    className="story-overlay"
+    className="story-overlay show"
     onClick={() => {
       setJournalOpen(false);
       setSelectedArticle(null);
     }}
   >
     <aside
-      className="story-panel journal-story-panel"
+      className="story-panel journal-story-panel show"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="story-panel-shell journal-panel-shell">
