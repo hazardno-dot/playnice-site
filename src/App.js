@@ -3311,7 +3311,6 @@ const getSizeWearHint = (size) => {
   type="button"
   className="header-private-selection-btn header-journal-btn"
   onClick={() => {
-    console.log("Journal clicked");
     setJournalOpen(true);
     setSelectedArticle(null);
   }}
