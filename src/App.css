@@ -7505,18 +7505,6 @@ will-change: transform, opacity;
     0 10px 24px rgba(0, 0, 0, 0.18);
 }
 
-.header-journal-btn-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  flex: 0 0 7px;
-
-  background: radial-gradient(circle, #f4d58d 0%, #d7b362 72%, rgba(215,179,98,0.55) 100%);
-  box-shadow:
-    0 0 10px rgba(215, 179, 98, 0.42),
-    0 0 18px rgba(215, 179, 98, 0.2);
-}
-
 .header-journal-btn-text {
   display: inline-block;
   transform: translateY(0.5px);
@@ -7565,12 +7553,6 @@ will-change: transform, opacity;
     gap: 7px;
     font-size: 11px;
     letter-spacing: 0.1em;
-  }
-
-  .header-journal-btn-dot {
-    width: 6px;
-    height: 6px;
-    flex-basis: 6px;
   }
 }
 

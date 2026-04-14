@@ -184,7 +184,7 @@ const translations = {
 
   sr: {
     navHome: "Početna",
-    navShop: "Prodavnica",
+    navShop: "Shop",
     cart: "Korpa",
     heroEyebrow: "Luksuzna selekcija parfema",
     heroTitleLine1: "Želja počinje",
@@ -3372,7 +3372,7 @@ const getSizeWearHint = (size) => {
             type="button"
             onClick={() => setHowItWorksOpen(true)}
           >
-            {lang === "sr" ? "Kako funkcioniše" : "How it works"}
+            {lang === "sr" ? "Kako radi?" : "How it works"}
           </button>
 
           <button
@@ -3399,7 +3399,6 @@ const getSizeWearHint = (size) => {
     setSelectedArticle(null);
   }}
 >
-  <span className="header-journal-btn-dot" />
   <span className="header-journal-btn-text">Journal</span>
 </button>
         </nav>
@@ -3587,7 +3586,7 @@ const getSizeWearHint = (size) => {
             >
               <div className="section-head how-it-works-head">
                 <p className="section-kicker">
-                  {lang === "sr" ? "Kako funkcioniše" : "How it works"}
+                  {lang === "sr" ? "Kako radi?" : "How it works"}
                 </p>
                 <h2>
                   {lang === "sr"
@@ -4001,7 +4000,7 @@ const getSizeWearHint = (size) => {
     className="footer-link"
     onClick={goToShop}
   >
-    {lang === "sr" ? "Prodavnica" : "Shop"}
+    {lang === "sr" ? "Shop" : "Shop"}
   </button>
 
   <button
@@ -4025,7 +4024,7 @@ const getSizeWearHint = (size) => {
       }
     }}
   >
-    {lang === "sr" ? "Kako funkcioniše" : "How it works"}
+    {lang === "sr" ? "Kako radi?" : "How it works"}
   </button>
 </div>
 
