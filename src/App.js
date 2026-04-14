@@ -4895,75 +4895,81 @@ const getSizeWearHint = (size) => {
       </div>
 
       <div className="journal-body-scroll">
-        <div
-          className="journal-featured"
-          onClick={() => setSelectedArticle(journalArticles[0])}
-        >
+        {journalArticles?.[0] && (
           <div
-            className="journal-featured-bg"
-            style={{
-              backgroundImage: `url(${journalArticles[0].image || ""})`,
-            }}
-          />
+            className="journal-featured"
+            onClick={() => setSelectedArticle(journalArticles[0])}
+          >
+            {journalArticles[0].image && (
+              <div
+                className="journal-featured-bg"
+                style={{
+                  backgroundImage: `url(${journalArticles[0].image})`,
+                }}
+              />
+            )}
 
-          <div className="journal-featured-glow" />
+            <div className="journal-featured-glow" />
 
-          <div className="journal-featured-content">
-            <div className="journal-card-meta">
-              <span className="journal-card-date">
-                {journalArticles[0].date.toUpperCase()}
-              </span>
-              <span className="journal-reading-time">2 min read</span>
-            </div>
-
-            <h2>{journalArticles[0].title}</h2>
-
-            <div className="journal-author-signature small">
-              <div className="journal-author-avatar">Č</div>
-
-              <div className="journal-author-meta">
-                <div className="journal-author-name">Čarli</div>
-                <div className="journal-author-role">PlayNice Editorial</div>
-              </div>
-            </div>
-
-            <p>{journalArticles[0].excerpt}</p>
-
-            <span>Read article →</span>
-          </div>
-        </div>
-
-        <div className="journal-grid">
-          {journalArticles.slice(1).map((article) => (
-            <article
-              key={article.id}
-              className="journal-card"
-              onClick={() => setSelectedArticle(article)}
-            >
+            <div className="journal-featured-content">
               <div className="journal-card-meta">
-                <span className="journal-card-date">{article.date}</span>
+                <span className="journal-card-date">
+                  {journalArticles[0].date?.toUpperCase?.() || journalArticles[0].date}
+                </span>
                 <span className="journal-reading-time">2 min read</span>
               </div>
 
-              <h3 className="journal-card-title">{article.title}</h3>
+              <h2>{journalArticles[0].title}</h2>
 
               <div className="journal-author-signature small">
                 <div className="journal-author-avatar">Č</div>
 
                 <div className="journal-author-meta">
                   <div className="journal-author-name">Čarli</div>
-                  <div className="journal-author-role">
-                    PlayNice Editorial
-                  </div>
+                  <div className="journal-author-role">PlayNice Editorial</div>
                 </div>
               </div>
 
-              <p className="journal-card-excerpt">{article.excerpt}</p>
+              <p>{journalArticles[0].excerpt}</p>
 
-              <div className="journal-card-link">Read article</div>
-            </article>
-          ))}
-        </div>
+              <span>Read article →</span>
+            </div>
+          </div>
+        )}
+
+        {journalArticles.length > 1 && (
+          <div className="journal-grid">
+            {journalArticles.slice(1).map((article) => (
+              <article
+                key={article.id}
+                className="journal-card"
+                onClick={() => setSelectedArticle(article)}
+              >
+                <div className="journal-card-meta">
+                  <span className="journal-card-date">{article.date}</span>
+                  <span className="journal-reading-time">2 min read</span>
+                </div>
+
+                <h3 className="journal-card-title">{article.title}</h3>
+
+                <div className="journal-author-signature small">
+                  <div className="journal-author-avatar">Č</div>
+
+                  <div className="journal-author-meta">
+                    <div className="journal-author-name">Čarli</div>
+                    <div className="journal-author-role">
+                      PlayNice Editorial
+                    </div>
+                  </div>
+                </div>
+
+                <p className="journal-card-excerpt">{article.excerpt}</p>
+
+                <div className="journal-card-link">Read article</div>
+              </article>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   </div>
