@@ -2088,7 +2088,7 @@ A mi smo od običnog “da vidimo šta ima” opet napravili ono što uvek napra
 
 — Čarli`,
     date: "14 Apr",
-    image: "/hero/slide-1-9pm-night-out.jpg",
+    image: "/hero/slide-5-trust-dark.jpg",
   },
   {
     id: 2,
