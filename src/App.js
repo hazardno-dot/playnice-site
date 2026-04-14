@@ -4777,64 +4777,25 @@ const getSizeWearHint = (size) => {
 
       {journalOpen && (
   <div
-    className="story-overlay"
-    onClick={() => {
-      setJournalOpen(false);
-      setSelectedArticle(null);
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 9999,
+      background: "rgba(0,0,0,0.92)",
+      color: "#fff",
+      padding: "40px"
     }}
   >
-    <aside
-      className="story-panel journal-story-panel"
-      onClick={(e) => e.stopPropagation()}
+    <button
+      onClick={() => {
+        setJournalOpen(false);
+        setSelectedArticle(null);
+      }}
     >
-      <div className="story-panel-shell journal-panel-shell">
-        <div className="story-panel-head journal-panel-head panel-anim panel-anim-1">
-          <div className="story-panel-kicker">So what’s new?</div>
+      Close
+    </button>
 
-          <button
-            type="button"
-            className="story-close-btn"
-            onClick={() => {
-              setJournalOpen(false);
-              setSelectedArticle(null);
-            }}
-            aria-label="Close Journal"
-          >
-            ×
-          </button>
-        </div>
-
-        <div className="story-panel-intro journal-panel-intro panel-anim panel-anim-2">
-          <h2 className="story-panel-title journal-panel-title">Journal</h2>
-          <p className="story-panel-text journal-panel-text">
-            Priče, noviteti, mali haosi i veliki mirisi — iz ugla kuće koja
-            živi parfeme svaki dan.
-          </p>
-        </div>
-
-        <div className="journal-list panel-anim panel-anim-3">
-          {journalArticles.map((article, index) => (
-            <article
-              key={article.id}
-              className={`journal-card panel-anim panel-anim-${Math.min(
-                index + 4,
-                6
-              )}`}
-              onClick={() => setSelectedArticle(article)}
-            >
-              <div className="journal-card-meta">
-                <span className="journal-card-date">{article.date}</span>
-              </div>
-
-              <h3 className="journal-card-title">{article.title}</h3>
-              <p className="journal-card-excerpt">{article.excerpt}</p>
-
-              <div className="journal-card-link">Read article</div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </aside>
+    <h1>Journal radi</h1>
   </div>
 )}
 
