@@ -2088,6 +2088,7 @@ A mi smo od običnog “da vidimo šta ima” opet napravili ono što uvek napra
 
 — Čarli`,
     date: "14 Apr",
+    image: "/hero/slide-1-9pm-night-out.jpg",
   },
   {
     id: 2,
@@ -4894,33 +4895,42 @@ const getSizeWearHint = (size) => {
       </div>
 
       <div
-        className="journal-featured"
-        onClick={() => setSelectedArticle(journalArticles[0])}
-      >
-        <div className="journal-featured-content">
-          <div className="journal-card-meta">
-  <span className="journal-card-date">
-    {journalArticles[0].date.toUpperCase()}
-  </span>
-  <span className="journal-reading-time">2 min read</span>
-</div>
+  className="journal-featured"
+  onClick={() => setSelectedArticle(journalArticles[0])}
+>
+  <div
+    className="journal-featured-bg"
+    style={{
+      backgroundImage: `url(${journalArticles[0].image || ""})`,
+    }}
+  />
 
-          <h2>{journalArticles[0].title}</h2>
+  <div className="journal-featured-glow" />
 
-          <div className="journal-author-signature small">
-            <div className="journal-author-avatar">Č</div>
+  <div className="journal-featured-content">
+    <div className="journal-card-meta">
+      <span className="journal-card-date">
+        {journalArticles[0].date.toUpperCase()}
+      </span>
+      <span className="journal-reading-time">2 min read</span>
+    </div>
 
-            <div className="journal-author-meta">
-              <div className="journal-author-name">Čarli</div>
-              <div className="journal-author-role">PlayNice Editorial</div>
-            </div>
-          </div>
+    <h2>{journalArticles[0].title}</h2>
 
-          <p>{journalArticles[0].excerpt}</p>
+    <div className="journal-author-signature small">
+      <div className="journal-author-avatar">Č</div>
 
-          <span>Read article →</span>
-        </div>
+      <div className="journal-author-meta">
+        <div className="journal-author-name">Čarli</div>
+        <div className="journal-author-role">PlayNice Editorial</div>
       </div>
+    </div>
+
+    <p>{journalArticles[0].excerpt}</p>
+
+    <span>Read article →</span>
+  </div>
+</div>
 
       <div className="journal-grid">
         {journalArticles.slice(1).map((article) => (
