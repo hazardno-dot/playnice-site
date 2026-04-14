@@ -8902,34 +8902,157 @@ will-change: transform, opacity;
   color: rgba(215, 179, 98, 0.9);
 }
 
-/* ---------- article modal ---------- */
+/* =========================================
+   JOURNAL ARTICLE MODAL — FINAL POLISH
+========================================= */
 
 .journal-article-overlay {
   position: fixed;
   inset: 0;
   z-index: 135;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px;
+
+  /* gore malo manje, dole više zbog sticky CTA */
+  padding: 18px 18px 110px;
+
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+
   animation: journalOverlayFade 0.24s ease forwards;
 }
 
 .journal-article-modal {
-  width: min(760px, 92vw);
-  max-height: 88vh;
+  width: min(920px, 92vw);
+  max-height: calc(100vh - 150px);
   overflow-y: auto;
-  border-radius: 28px;
+
+  border-radius: 30px;
   border: 1px solid rgba(215, 179, 98, 0.14);
-  background: linear-gradient(180deg, rgba(10, 10, 10, 0.97), rgba(6, 6, 6, 0.95));
+
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.975), rgba(6, 6, 6, 0.955));
+
   box-shadow:
     0 40px 80px rgba(0, 0, 0, 0.45),
     0 0 0 1px rgba(255, 255, 255, 0.02) inset;
-  padding: 26px 24px 24px;
+
+  padding: 30px 30px 28px;
+
   animation: journalArticleIn 0.34s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.journal-article-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.journal-article-title {
+  margin: 0 0 18px;
+  max-width: 18ch;
+
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+
+  color: rgba(255, 248, 232, 0.98);
+}
+
+.journal-article-body {
+  margin: 18px 0 0;
+  max-width: 64ch;
+
+  white-space: pre-line;
+  font-size: 17px;
+  line-height: 1.95;
+
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* malo lepši spacing za autor blok u modalu */
+.journal-article-modal .journal-author-signature {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+@keyframes journalArticleIn {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.982);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   JOURNAL ARTICLE SCROLLBAR
+========================================= */
+
+.journal-article-modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.journal-article-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.journal-article-modal::-webkit-scrollbar-thumb {
+  background: rgba(215, 179, 98, 0.24);
+  border-radius: 999px;
+}
+
+.journal-article-modal::-webkit-scrollbar-thumb:hover {
+  background: rgba(215, 179, 98, 0.42);
+}
+
+/* =========================================
+   MOBILE / TABLET
+========================================= */
+
+@media (max-width: 1024px) {
+  .journal-article-modal {
+    width: min(820px, 94vw);
+    max-height: calc(100vh - 140px);
+    padding: 24px 22px 22px;
+  }
+
+  .journal-article-body {
+    max-width: 100%;
+    font-size: 15.5px;
+    line-height: 1.86;
+  }
+}
+
+@media (max-width: 768px) {
+  .journal-article-overlay {
+    padding: 10px 10px 96px;
+  }
+
+  .journal-article-modal {
+    width: 100%;
+    max-height: calc(100vh - 112px);
+    border-radius: 24px;
+    padding: 20px 18px 18px;
+  }
+
+  .journal-article-title {
+    max-width: 100%;
+    font-size: clamp(28px, 7vw, 38px);
+    margin-bottom: 14px;
+  }
+
+  .journal-article-body {
+    font-size: 14px;
+    line-height: 1.82;
+  }
 }
 
 @keyframes journalArticleIn {
@@ -8941,30 +9064,6 @@ will-change: transform, opacity;
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-}
-
-.journal-article-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 18px;
-}
-
-.journal-article-title {
-  margin: 0 0 16px;
-  font-size: clamp(28px, 4vw, 40px);
-  line-height: 1.04;
-  letter-spacing: -0.02em;
-  color: rgba(255, 248, 232, 0.98);
-}
-
-.journal-article-body {
-  margin: 0;
-  white-space: pre-line;
-  font-size: 15px;
-  line-height: 1.9;
-  color: rgba(255, 255, 255, 0.76);
 }
 
 /* ---------- author ---------- */
