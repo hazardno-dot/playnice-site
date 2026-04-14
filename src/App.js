@@ -3307,11 +3307,16 @@ const getSizeWearHint = (size) => {
             {tr.navShop}
           </button>
 
-          <button 
+          <button
+  type="button"
   className="header-journal-btn"
-  onClick={() => setJournalOpen(true)}
+  onClick={() => {
+    setJournalOpen(true);
+    setSelectedArticle(null);
+  }}
 >
-  Journal
+  <span className="header-journal-btn-dot" />
+  <span className="header-journal-btn-text">So what’s new?</span>
 </button>
         </nav>
 
