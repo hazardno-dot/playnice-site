@@ -9222,8 +9222,75 @@ will-change: transform, opacity;
 ========================================= */
 
 .journal-author {
+  margin: 6px 0 12px;
   font-size: 11px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
+  color: rgba(215,179,98,0.6);
+}
+
+/* =========================================
+   JOURNAL AUTHOR SIGNATURE
+========================================= */
+
+.journal-author-signature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.journal-author-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  color: rgba(255,248,232,0.95);
+
+  background:
+    radial-gradient(circle at 30% 30%, rgba(215,179,98,0.4), transparent 60%),
+    rgba(255,255,255,0.05);
+
+  border: 1px solid rgba(215,179,98,0.25);
+}
+
+.journal-author-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.journal-author-name {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: rgba(255,248,232,0.92);
+}
+
+.journal-author-role {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+
+/* manja verzija za featured */
+.journal-author-signature.small {
+  margin: 10px 0 14px;
+  gap: 10px;
+}
+
+.journal-author-signature.small .journal-author-avatar {
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+}
+
+.journal-author-signature.small .journal-author-name {
+  font-size: 12px;
 }

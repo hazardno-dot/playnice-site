@@ -4904,7 +4904,15 @@ const getSizeWearHint = (size) => {
     </div>
 
     <h2>{journalArticles[0].title}</h2>
-    <div className="journal-author">By PlayNice Editorial</div>
+
+    <div className="journal-author-signature small">
+  <div className="journal-author-avatar">Č</div>
+
+  <div className="journal-author-meta">
+    <div className="journal-author-name">Čarli</div>
+    <div className="journal-author-role">PlayNice Editorial</div>
+  </div>
+</div>
 
     <p>{journalArticles[0].excerpt}</p>
 
@@ -4975,9 +4983,18 @@ const getSizeWearHint = (size) => {
 
       <h2 className="journal-article-title">{selectedArticle.title}</h2>
 
+      <div className="journal-author">By PlayNice Editorial</div>
+
       <p className="journal-article-body">{selectedArticle.content}</p>
 
-      <p className="journal-signature">— Čarli</p>
+      <div className="journal-author-signature">
+  <div className="journal-author-avatar">Č</div>
+
+  <div className="journal-author-meta">
+    <div className="journal-author-name">Čarli</div>
+    <div className="journal-author-role">PlayNice Editorial</div>
+  </div>
+</div>
     </div>
   </div>
 )}
