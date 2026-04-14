@@ -4778,14 +4778,14 @@ const getSizeWearHint = (size) => {
 
       {journalOpen && (
   <div
-    className="story-overlay show"
+    className="story-overlay"
     onClick={() => {
       setJournalOpen(false);
       setSelectedArticle(null);
     }}
   >
     <aside
-      className="story-panel journal-story-panel show"
+      className="story-panel journal-story-panel"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="story-panel-shell journal-panel-shell">
