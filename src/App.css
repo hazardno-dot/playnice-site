@@ -9182,3 +9182,48 @@ will-change: transform, opacity;
     line-height: 1.82;
   }
 }
+
+/* =========================================
+   JOURNAL FEATURED
+========================================= */
+
+.journal-featured {
+  margin: 18px 24px 0;
+  padding: 28px;
+  border-radius: 26px;
+  border: 1px solid rgba(215, 179, 98, 0.14);
+  background:
+    linear-gradient(120deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
+    radial-gradient(circle at 80% 20%, rgba(215,179,98,0.12), transparent 60%);
+}
+
+.journal-featured h2 {
+  margin: 8px 0 10px;
+  font-size: 28px;
+  color: rgba(255,248,232,0.98);
+}
+
+.journal-featured p {
+  margin: 0;
+  color: rgba(255,255,255,0.7);
+}
+
+.journal-featured span {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(215,179,98,0.85);
+}
+
+/* =========================================
+   JOURNAL AUTHOR
+========================================= */
+
+.journal-author {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}

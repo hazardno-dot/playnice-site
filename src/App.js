@@ -2064,9 +2064,92 @@ const journalArticles = [
   {
     id: 1,
     title: "Tri nova mirisa koja su nam poremetila planove",
-    excerpt: "Hteli smo samo da bacimo pogled...",
-    content: "OVDE IDE ČARLI TEKST...",
+    excerpt:
+      "Hteli smo samo da bacimo pogled. Standardna priča. Bez velikih očekivanja, bez ikakve namere da pravimo dramu. Onda su se pojavila tri nova mirisa i od mirnog dana napravila mali haos.",
+    content: `Postoje dani kada sve ide po planu.
+
+I postoje dani kada samo kažeš sebi: “Ajde da bacim pogled, čisto da vidim šta ima novo.”
+
+E, ovo je bio taj drugi tip dana.
+
+Nismo planirali da se zaljubimo ni u šta. Nismo planirali ni da pravimo veliku priču. Hteli smo da proverimo tri nova parfema, onako mirno, uz kafu, bez pompe i bez velikih reči. I onda se desilo ono što se često desi kad najmanje očekuješ — jedan te zaustavi, drugi ti se uvuče pod kožu, a treći ti ostane u glavi i kad odeš kući.
+
+Prvi je bio onaj tip mirisa koji odmah unese energiju u prostor. Ne viče, ne glumi, ali kao da samo svojim prisustvom kaže: “Dobro, stigao sam.” Takve parfeme ne objašnjavaš dugo. Samo ih nosiš i pustiš da rade svoje.
+
+Drugi je bio potpuno druga priča. Smireniji, zreliji, više onaj miris koji ne traži pažnju na prvu, ali je dobije posle deset minuta. Kao ljudi koji ne ulaze najglasnije u sobu, ali ih na kraju svi zapamte.
+
+A treći... treći je bio razlog zbog kog je cela ova mala “provera noviteta” otišla u potpuno drugom pravcu. Znate onaj osećaj kad miris ne uspeš da objasniš odmah, ali ti je jasno da nećeš moći da ga pustiš tek tako? E, taj.
+
+Zato i volimo ovaj deo priče. Nije sve u notama, nije sve ni u hajpu. Nekad je stvar samo u trenutku. U tome da naiđe nešto novo, a ti shvatiš da ti je baš to falilo.
+
+Ta tri nova mirisa uskoro stižu kod nas.
+
+A mi smo od običnog “da vidimo šta ima” opet napravili ono što uvek napravimo kad je miris dobar — lično smo se umešali.
+
+— Čarli`,
     date: "14 Apr",
+  },
+  {
+    id: 2,
+    title: "Dostava je sada 4€, a mi smo to primili kao odrasli. Skoro.",
+    excerpt:
+      "Postoji trenutak u svakom malom brendu kad sedne vest koju nisi naručio. Kod nas je ovog puta stigla iz kurirske službe. Dostava više nije 3.5€, nego 4€.",
+    content: `Postoji onaj poseban trenutak kada otvoriš poruku i već po prvih nekoliko reči znaš da nećeš biti oduševljen.
+
+Tako smo i mi saznali da je dostava otišla sa 3.5€ na 4€.
+
+Nije tragedija. Nije smak sveta. Nije čak ni ono što bi normalan čovek nazvao dramom. Ali jeste ta sitna, dosadna promena koja te natera da na kratko pogledaš u plafon, pa u kalkulator, pa opet u plafon, čisto da proveriš da li je plafon možda spreman da ponudi bolje rešenje.
+
+Naravno, nije.
+
+Ali pošto volimo da budemo fer i jasni, red je da kažemo kako stvari stoje: dostava je sada 4€.
+
+I to je upravo ona vrsta informacije koju niko ne želi da skriva iza tri klika, fusnote i sitnih slova. Ako nešto menjamo, hoćemo da to čovek vidi odmah. Bez glume, bez marketinške magle, bez one priče gde na kraju ispadne da si platio više nego što si mislio.
+
+Dobra vest je da se ništa drugo nije promenilo u onom delu koji je nama važniji od same cifre: i dalje pažljivo pakujemo, i dalje biramo šta ide na sajt, i dalje nam je cilj da čovek kad otvori paket ima osećaj da je dobio nešto što je sređeno kako treba.
+
+Nekad mali troškovi porastu, ali to ne znači da mali detalji smeju da padnu.
+
+Ako ćemo iskreno, 4€ nije vest iz snova. Ali je stvarna vest. A PlayNice i treba da bude mesto gde gost ne mora da nagađa šta je novo, šta se promenilo i šta može da očekuje.
+
+Zato i postoji ovaj Journal.
+
+Da kažemo stvari normalno. Ljudski. I da usput možda zajedno preživimo još po neko “poskupljenje koje nam nije trebalo”.
+
+— Čarli`,
+    date: "13 Apr",
+  },
+  {
+    id: 3,
+    title: "9PM Night Out nije tražio pažnju. Onda je dobio previše.",
+    excerpt:
+      "Neki parfemi uđu tiho. Ovaj nije baš imao tu nameru. Priča je počela kao običan izlazak, a završila se kao još jedan podsetnik da dobar miris ume da produži noć više nego što si planirao.",
+    content: `Postoje parfemi koje staviš jer ti lepo mirišu.
+
+A postoje i oni koje staviš pa se ostatak večeri nekako sam napiše.
+
+9PM Night Out spada u ovu drugu grupu.
+
+Nije to bio plan. Plan je bio jednostavan: malo grad, malo muzika, jedno piće, dva maksimalno, i kući kao ozbiljan čovek koji sutra ima obaveze. Već po toj rečenici ti je jasno da se ništa od toga nije desilo kako je zamišljeno.
+
+Parfem sam stavio više iz radoznalosti nego iz kalkulacije. Znao sam da ima energiju. Znao sam da ima taj večernji karakter koji ne traži sunce, kancelariju i uredan raspored. Ali nisam očekivao da će toliko prirodno da legne na celu atmosferu.
+
+U nekom trenutku sam prestao da razmišljam o njemu i to je, po meni, najbolji znak. Dobar parfem ne mora stalno da te podseća da postoji. Dovoljno je da povremeno vrati glave u tvom pravcu, da uhvati nečiju pažnju kada prolaziš i da te natera da i sam sebi deluješ za nijansu sigurnije nego što si bio kad si izlazio iz kuće.
+
+A noć? Pa, noć je uradila svoje.
+
+Muzika je postajala sve bolja kako je sat odmicao. Planovi su se raspadali redom. Jedno piće je odavno prestalo da bude jedno piće. A ja sam negde usput shvatio da je 9PM Night Out tačno ono što mu ime obećava — parfem koji ne dolazi da odradi formalnost, nego da bude deo izlaska.
+
+Ne, nećemo sad glumiti film i pričati da me je pola grada jurilo kroz diskoteke. Ali da je bilo pogleda, pitanja i onog standardnog “šta ti je to?”, bilo je. I to sasvim dovoljno da miris upiše sebi jednu ozbiljnu pobedu.
+
+To je, uostalom, i poenta dobrog night out parfema. Ne da viče umesto tebe. Nego da ti da onu malu prednost kad ti zatreba.
+
+Ako voliš mirise koji imaju energiju večeri, malo samopouzdanja i dovoljno karaktera da ostanu zapamćeni i kad muzika stane, ovaj zaslužuje tvoju pažnju.
+
+A za sve ostalo, kao i obično, kriv je grad.
+
+— Čarli`,
+    date: "12 Apr",
   },
 ];
 
@@ -4810,8 +4893,44 @@ const getSizeWearHint = (size) => {
         </button>
       </div>
 
-      <div className="journal-grid">
-        {journalArticles.map((article) => (
+      {/* FEATURED ARTICLE */}
+<div
+  className="journal-featured"
+  onClick={() => setSelectedArticle(journalArticles[0])}
+>
+  <div className="journal-featured-content">
+    <div className="journal-card-date">
+      {journalArticles[0].date.toUpperCase()}
+    </div>
+
+    <h2>{journalArticles[0].title}</h2>
+    <div className="journal-author">By PlayNice Editorial</div>
+
+    <p>{journalArticles[0].excerpt}</p>
+
+    <span>Read article →</span>
+  </div>
+</div>
+
+{/* GRID OSTALIH */}
+<div className="journal-grid">
+  {journalArticles.slice(1).map((article) => (
+    <article
+      key={article.id}
+      className="journal-card"
+      onClick={() => setSelectedArticle(article)}
+    >
+      <div className="journal-card-meta">
+        <span className="journal-card-date">{article.date}</span>
+      </div>
+
+      <h3 className="journal-card-title">{article.title}</h3>
+      <p className="journal-card-excerpt">{article.excerpt}</p>
+
+      <div className="journal-card-link">Read article</div>
+    </article>
+  ))}
+</div>
           <article
             key={article.id}
             className="journal-card"
