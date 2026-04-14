@@ -281,7 +281,7 @@ const translations = {
     announcement3: "Premium niche, dizajnerski & arapski parfemi",
     announcement4: "Ograničene količine — ne propusti",
     announcement5: "Dostava širom Crne Gore",
-    announcement6: "✔ 50+ zadovoljnih kupaca",
+    announcement6: "✔ 100+ zadovoljnih kupaca",
     announcementDynamicLocked:
       "Dodaj još {{amount}} za besplatnu dostavu",
     announcementDynamicUnlocked: "Besplatna dostava otključana ✓",
@@ -292,7 +292,7 @@ const translations = {
       "Premium niche, dizajnerski i arapski parfemi",
     announcementDynamicEmpty4: "Ograničene količine — ne propusti",
     announcementDynamicEmpty5: "Dostava širom Crne Gore",
-    announcementDynamicEmpty6: "✔ 50+ zadovoljnih kupaca",
+    announcementDynamicEmpty6: "✔ 100+ zadovoljnih kupaca",
     navStory: "Priča",
     heroCampaigns: [
       {
@@ -2060,7 +2060,7 @@ const productWearContext = {
    GLOBAL CONSTANTS & HELPERS
 ========================================= */
 const PRODUCTS_PER_PAGE = 12;
-const SHIPPING_COST = 3.5;
+const SHIPPING_COST = 4.0;
 const FREE_SHIPPING_THRESHOLD = 39;
 
 function formatPrice(value) {
