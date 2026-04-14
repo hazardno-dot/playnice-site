@@ -2402,7 +2402,7 @@ const getJournalText = (field, lang) => {
   return "";
 };
 
-const getJournalAvatarLetter = () => (lang === "sr" ? "Č" : "C");
+const getJournalAvatarLetter = (lang) => (lang === "sr" ? "Č" : "C");
 
 /* =========================================
    APP
@@ -5049,7 +5049,7 @@ const getSizeWearHint = (size) => {
 
               <div className="journal-author-signature small">
                 <div className="journal-author-avatar">
-                  {getJournalAvatarLetter()}
+                  {getJournalAvatarLetter(lang)}
                 </div>
 
                 <div className="journal-author-meta">
@@ -5090,7 +5090,7 @@ const getSizeWearHint = (size) => {
 
                 <div className="journal-author-signature small">
                   <div className="journal-author-avatar">
-                    {getJournalAvatarLetter()}
+                    {getJournalAvatarLetter(lang)}
                   </div>
 
                   <div className="journal-author-meta">
@@ -5153,7 +5153,7 @@ const getSizeWearHint = (size) => {
 
         <div className="journal-author-signature">
           <div className="journal-author-avatar">
-            {getJournalAvatarLetter()}
+            {getJournalAvatarLetter(lang)}
           </div>
 
           <div className="journal-author-meta">
