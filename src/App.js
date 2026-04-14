@@ -3309,14 +3309,14 @@ const getSizeWearHint = (size) => {
 
           <button
   type="button"
-  className="header-journal-btn"
+  className="header-private-selection-btn header-journal-btn"
   onClick={() => {
     setJournalOpen(true);
     setSelectedArticle(null);
   }}
 >
   <span className="header-journal-btn-dot" />
-  <span className="header-journal-btn-text">So what’s new?</span>
+  <span className="header-journal-btn-text">Journal</span>
 </button>
         </nav>
 
