@@ -4898,9 +4898,12 @@ const getSizeWearHint = (size) => {
         onClick={() => setSelectedArticle(journalArticles[0])}
       >
         <div className="journal-featured-content">
-          <div className="journal-card-date">
-            {journalArticles[0].date.toUpperCase()}
-          </div>
+          <div className="journal-card-meta">
+  <span className="journal-card-date">
+    {journalArticles[0].date.toUpperCase()}
+  </span>
+  <span className="journal-reading-time">2 min read</span>
+</div>
 
           <h2>{journalArticles[0].title}</h2>
 
@@ -4927,8 +4930,9 @@ const getSizeWearHint = (size) => {
             onClick={() => setSelectedArticle(article)}
           >
             <div className="journal-card-meta">
-              <span className="journal-card-date">{article.date}</span>
-            </div>
+  <span className="journal-card-date">{article.date}</span>
+  <span className="journal-reading-time">2 min read</span>
+</div>
 
             <h3 className="journal-card-title">{article.title}</h3>
             <p className="journal-card-excerpt">{article.excerpt}</p>
@@ -4951,7 +4955,10 @@ const getSizeWearHint = (size) => {
       onClick={(e) => e.stopPropagation()}
     >
       <div className="journal-article-head">
-        <div className="journal-card-date">{selectedArticle.date}</div>
+  <div className="journal-card-meta">
+    <span className="journal-card-date">{selectedArticle.date}</span>
+    <span className="journal-reading-time">2 min read</span>
+  </div>
 
         <button
           type="button"

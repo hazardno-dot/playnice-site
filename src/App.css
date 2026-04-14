@@ -9294,3 +9294,11 @@ will-change: transform, opacity;
 .journal-author-signature.small .journal-author-name {
   font-size: 12px;
 }
+
+.journal-reading-time {
+  margin-left: 10px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
