@@ -4783,55 +4783,52 @@ const getSizeWearHint = (size) => {
       setSelectedArticle(null);
     }}
   >
-    <aside
-      className="journal-panel"
+    <section
+      className="journal-top-sheet"
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="journal-panel-shell">
-        <div className="journal-panel-head panel-anim panel-anim-1">
-          <div className="journal-panel-kicker">So what’s new?</div>
-
-          <button
-            type="button"
-            className="journal-close-btn"
-            onClick={() => {
-              setJournalOpen(false);
-              setSelectedArticle(null);
-            }}
-            aria-label="Close Journal"
-          >
-            ×
-          </button>
-        </div>
-
-        <div className="journal-panel-intro panel-anim panel-anim-2">
-          <h2 className="journal-panel-title">Journal</h2>
-          <p className="journal-panel-text">
+      <div className="journal-topbar">
+        <div className="journal-topbar-copy">
+          <div className="journal-kicker">So what’s new?</div>
+          <h2 className="journal-heading">Journal</h2>
+          <p className="journal-subheading">
             Priče, noviteti, mali haosi i veliki mirisi — iz ugla kuće koja
             živi parfeme svaki dan.
           </p>
         </div>
 
-        <div className="journal-list panel-anim panel-anim-3">
-          {journalArticles.map((article, index) => (
-            <article
-              key={article.id}
-              className={`journal-card panel-anim panel-anim-${Math.min(index + 4, 6)}`}
-              onClick={() => setSelectedArticle(article)}
-            >
-              <div className="journal-card-meta">
-                <span className="journal-card-date">{article.date}</span>
-              </div>
-
-              <h3 className="journal-card-title">{article.title}</h3>
-              <p className="journal-card-excerpt">{article.excerpt}</p>
-
-              <div className="journal-card-link">Read article</div>
-            </article>
-          ))}
-        </div>
+        <button
+          type="button"
+          className="journal-close-btn"
+          onClick={() => {
+            setJournalOpen(false);
+            setSelectedArticle(null);
+          }}
+          aria-label="Close Journal"
+        >
+          ×
+        </button>
       </div>
-    </aside>
+
+      <div className="journal-grid">
+        {journalArticles.map((article) => (
+          <article
+            key={article.id}
+            className="journal-card"
+            onClick={() => setSelectedArticle(article)}
+          >
+            <div className="journal-card-meta">
+              <span className="journal-card-date">{article.date}</span>
+            </div>
+
+            <h3 className="journal-card-title">{article.title}</h3>
+            <p className="journal-card-excerpt">{article.excerpt}</p>
+
+            <div className="journal-card-link">Read article</div>
+          </article>
+        ))}
+      </div>
+    </section>
   </div>
 )}
 
@@ -4844,30 +4841,24 @@ const getSizeWearHint = (size) => {
       className="journal-article-modal"
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="journal-article-inner">
-        <div className="journal-article-head panel-anim panel-anim-1">
-          <div className="journal-card-date">{selectedArticle.date}</div>
+      <div className="journal-article-head">
+        <div className="journal-card-date">{selectedArticle.date}</div>
 
-          <button
-            type="button"
-            className="journal-close-btn"
-            onClick={() => setSelectedArticle(null)}
-            aria-label="Close article"
-          >
-            ×
-          </button>
-        </div>
-
-        <h2 className="journal-article-title panel-anim panel-anim-2">
-          {selectedArticle.title}
-        </h2>
-
-        <p className="journal-article-body panel-anim panel-anim-3">
-          {selectedArticle.content}
-        </p>
-
-        <p className="journal-signature panel-anim panel-anim-4">— Čarli</p>
+        <button
+          type="button"
+          className="journal-close-btn"
+          onClick={() => setSelectedArticle(null)}
+          aria-label="Close article"
+        >
+          ×
+        </button>
       </div>
+
+      <h2 className="journal-article-title">{selectedArticle.title}</h2>
+
+      <p className="journal-article-body">{selectedArticle.content}</p>
+
+      <p className="journal-signature">— Čarli</p>
     </div>
   </div>
 )}
