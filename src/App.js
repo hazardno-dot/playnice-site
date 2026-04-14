@@ -4777,44 +4777,80 @@ const getSizeWearHint = (size) => {
 
       {journalOpen && (
   <div
-    style={{
-      position: "fixed",
-      inset: 0,
-      zIndex: 9999,
-      background: "rgba(0,0,0,0.92)",
-      color: "#fff",
-      padding: "40px"
+    className="journal-overlay"
+    onClick={() => {
+      setJournalOpen(false);
+      setSelectedArticle(null);
     }}
   >
-    <button
-      onClick={() => {
-        setJournalOpen(false);
-        setSelectedArticle(null);
-      }}
+    <aside
+      className="journal-panel"
+      onClick={(e) => e.stopPropagation()}
     >
-      Close
-    </button>
+      <div className="journal-panel-shell">
+        <div className="journal-panel-head panel-anim panel-anim-1">
+          <div className="journal-panel-kicker">So what’s new?</div>
 
-    <h1>Journal radi</h1>
+          <button
+            type="button"
+            className="journal-close-btn"
+            onClick={() => {
+              setJournalOpen(false);
+              setSelectedArticle(null);
+            }}
+            aria-label="Close Journal"
+          >
+            ×
+          </button>
+        </div>
+
+        <div className="journal-panel-intro panel-anim panel-anim-2">
+          <h2 className="journal-panel-title">Journal</h2>
+          <p className="journal-panel-text">
+            Priče, noviteti, mali haosi i veliki mirisi — iz ugla kuće koja
+            živi parfeme svaki dan.
+          </p>
+        </div>
+
+        <div className="journal-list panel-anim panel-anim-3">
+          {journalArticles.map((article, index) => (
+            <article
+              key={article.id}
+              className={`journal-card panel-anim panel-anim-${Math.min(index + 4, 6)}`}
+              onClick={() => setSelectedArticle(article)}
+            >
+              <div className="journal-card-meta">
+                <span className="journal-card-date">{article.date}</span>
+              </div>
+
+              <h3 className="journal-card-title">{article.title}</h3>
+              <p className="journal-card-excerpt">{article.excerpt}</p>
+
+              <div className="journal-card-link">Read article</div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </aside>
   </div>
 )}
 
 {selectedArticle && (
   <div
-    className="modal-overlay journal-article-overlay"
+    className="journal-article-overlay"
     onClick={() => setSelectedArticle(null)}
   >
     <div
-      className="journal-modal story-like-article-modal"
+      className="journal-article-modal"
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="journal-modal-inner">
-        <div className="journal-modal-head panel-anim panel-anim-1">
+      <div className="journal-article-inner">
+        <div className="journal-article-head panel-anim panel-anim-1">
           <div className="journal-card-date">{selectedArticle.date}</div>
 
           <button
             type="button"
-            className="story-close-btn"
+            className="journal-close-btn"
             onClick={() => setSelectedArticle(null)}
             aria-label="Close article"
           >
@@ -4822,11 +4858,11 @@ const getSizeWearHint = (size) => {
           </button>
         </div>
 
-        <h2 className="journal-modal-title panel-anim panel-anim-2">
+        <h2 className="journal-article-title panel-anim panel-anim-2">
           {selectedArticle.title}
         </h2>
 
-        <p className="journal-modal-body panel-anim panel-anim-3">
+        <p className="journal-article-body panel-anim panel-anim-3">
           {selectedArticle.content}
         </p>
 
