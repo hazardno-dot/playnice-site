@@ -3499,7 +3499,7 @@ const getSizeWearHint = (size) => {
             type="button"
             onClick={() => setHowItWorksOpen(true)}
           >
-            {lang === "sr" ? "Kako?" : "How it works"}
+            {lang === "sr" ? "Kako funcioniše?" : "How it works"}
           </button>
 
           <button
@@ -3713,7 +3713,7 @@ const getSizeWearHint = (size) => {
             >
               <div className="section-head how-it-works-head">
                 <p className="section-kicker">
-                  {lang === "sr" ? "Kako?" : "How it works"}
+                  {lang === "sr" ? "Kako funcioniše?" : "How it works"}
                 </p>
                 <h2>
                   {lang === "sr"
@@ -4151,7 +4151,7 @@ const getSizeWearHint = (size) => {
       }
     }}
   >
-    {lang === "sr" ? "Kako?" : "How it works"}
+    {lang === "sr" ? "Kako funcioniše?" : "How it works"}
   </button>
 </div>
 
@@ -4596,8 +4596,8 @@ const getSizeWearHint = (size) => {
               <p className="section-kicker">HOW IT WORKS</p>
               <h3>
                 {lang === "sr"
-                  ? "Šta su dekanti i zašto imaju smisla."
-                  : "What decants are and why they matter."}
+                  ? "Šta su dekanti i zašto imaju smisla?"
+                  : "What decants are and why they matter?"}
               </h3>
             </div>
 
