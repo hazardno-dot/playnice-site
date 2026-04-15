@@ -9228,20 +9228,20 @@ will-change: transform, opacity;
 
 /* gornji red: datum levo */
 .journal-article-head {
-  position: relative;
-  display: block;
-  margin-bottom: 8px;
-  min-height: 0;
-  transition:
-    gap 0.28s ease,
-    margin-bottom 0.28s ease,
-    min-height 0.28s ease;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+
+  gap: 16px;
+  margin-bottom: 10px;
 }
 
 /* naslov centriran */
 .journal-article-title {
-  margin: 0 0 10px;
-  max-width: 22ch;
+  margin: 0;
+  min-width: 0;
+  max-width: 20ch;
+
   text-align: left;
 
   font-size: clamp(26px, 3vw, 38px);
@@ -9253,13 +9253,29 @@ will-change: transform, opacity;
 
 /* author blok */
 .journal-article-sticky-head .journal-author-signature {
-  margin-top: 0;
-  margin-bottom: 0;
+  margin: 0;
+  white-space: nowrap;
+
   display: flex;
-  justify-content: flex-start;
-  transition:
-    transform 0.28s ease,
-    opacity 0.28s ease;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  opacity: 0.85;
+  transform: translateY(1px);
+}
+
+.journal-author-signature span {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.journal-author-signature strong {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* scroll only in body */
