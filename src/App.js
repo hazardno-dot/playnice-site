@@ -2614,7 +2614,7 @@ useLayoutEffect(() => {
     howItWorksOpen ||
     privateSelectionOpen ||
     journalOpen ||
-    !!selectedJournalArticle ||
+    !!selectedArticle ||
     !!catalogPreview;
 
   const body = document.body;
@@ -2659,7 +2659,7 @@ useLayoutEffect(() => {
   howItWorksOpen,
   privateSelectionOpen,
   journalOpen,
-  selectedJournalArticle,
+  selectedArticle,
   catalogPreview
 ]);
 
