@@ -8616,11 +8616,12 @@ will-change: transform, opacity;
   display: flex;
   flex-direction: column;
   border: 1px solid rgba(215, 179, 98, 0.12);
-  border-radius: 0 0 28px 28px;
+  border-radius: 28px;
   background: linear-gradient(180deg, rgba(8, 8, 8, 0.98), rgba(5, 5, 5, 0.96));
   box-shadow:
-    0 30px 70px rgba(0, 0, 0, 0.42),
-    0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+  0 30px 70px rgba(0, 0, 0, 0.42),
+  0 0 0 1px rgba(255, 255, 255, 0.02) inset,
+  0 1px 0 rgba(255, 255, 255, 0.04) inset;
   animation: journalSheetDrop 0.52s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -8651,9 +8652,9 @@ will-change: transform, opacity;
   border: 1px solid rgba(215, 179, 98, 0.18);
 
   background:
-    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.06), transparent 30%),
-    radial-gradient(circle at 82% 24%, rgba(0, 0, 0, 0.18), transparent 34%),
-    linear-gradient(120deg, #8f7745 0%, #7a6337 45%, #6a552f 100%); /* 🔥 TAMNIJE ZLATO */
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.05), transparent 30%),
+    radial-gradient(circle at 82% 24%, rgba(0, 0, 0, 0.22), transparent 34%),
+    linear-gradient(120deg, #6f5a2f 0%, #5c4a27 45%, #4e3f22 100%); /* 🔥 TAMNIJE ZLATO */
 
   overflow: hidden;
 
