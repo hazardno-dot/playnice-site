@@ -9079,6 +9079,11 @@ will-change: transform, opacity;
   animation: journalOverlayFade 0.24s ease forwards;
 }
 
+.journal-overlay,
+.journal-article-overlay {
+  overscroll-behavior: contain;
+}
+
 .journal-article-modal {
   position: relative;
 

@@ -2613,7 +2613,8 @@ useLayoutEffect(() => {
     storyOpen ||
     howItWorksOpen ||
     privateSelectionOpen ||
-      journalOpen ||
+    journalOpen ||
+    !!selectedJournalArticle ||
     !!catalogPreview;
 
   const body = document.body;
@@ -2657,6 +2658,8 @@ useLayoutEffect(() => {
   storyOpen,
   howItWorksOpen,
   privateSelectionOpen,
+  journalOpen,
+  selectedJournalArticle,
   catalogPreview
 ]);
 
