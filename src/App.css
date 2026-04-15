@@ -9173,7 +9173,8 @@ will-change: transform, opacity;
   align-items: center;
   justify-content: center;
 
-  padding: 24px 18px 110px; /* dole rezervisan prostor za CTA */
+  /* isti vizuelni razmak gore i dole do CTA zone */
+  padding: 24px 18px 24px;
 
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(14px);
@@ -9186,8 +9187,8 @@ will-change: transform, opacity;
   position: relative;
 
   width: min(760px, 92vw);
-  height: 100%;
-  max-height: 100%;
+  height: calc(100vh - 48px);
+  max-height: calc(100vh - 48px);
   margin: 0 auto;
 
   display: flex;
@@ -9215,7 +9216,7 @@ will-change: transform, opacity;
   top: 0;
   z-index: 3;
 
-  padding: 16px 26px 10px;
+  padding: 14px 24px 10px;
 
   background:
     linear-gradient(180deg, rgba(9, 9, 9, 0.98), rgba(9, 9, 9, 0.94));
@@ -9224,30 +9225,56 @@ will-change: transform, opacity;
 
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+
+  transition:
+    padding 0.28s ease,
+    border-color 0.28s ease,
+    background 0.28s ease,
+    box-shadow 0.28s ease;
 }
 
+/* gornji red: datum levo */
 .journal-article-head {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  gap: 8px;
-  margin-bottom: 10px;
+  display: block;
+  margin-bottom: 8px;
+  min-height: 0;
+  transition:
+    gap 0.28s ease,
+    margin-bottom 0.28s ease,
+    min-height 0.28s ease;
 }
 
+/* naslov centriran */
 .journal-article-title {
-  margin: 0;
+  margin: 0 auto 12px;
   max-width: 14ch;
 
   text-align: center;
 
-  font-size: clamp(26px, 3.4vw, 40px);
-  line-height: 1;
+  font-size: clamp(24px, 3.2vw, 38px);
+  line-height: 0.98;
   letter-spacing: -0.03em;
 
   color: rgba(255, 248, 232, 0.98);
+
+  transition:
+    font-size 0.28s ease,
+    max-width 0.28s ease,
+    line-height 0.28s ease,
+    transform 0.28s ease,
+    opacity 0.28s ease;
+}
+
+/* author blok */
+.journal-article-sticky-head .journal-author-signature {
+  margin-top: 0;
+  margin-bottom: 0;
+  display: flex;
+  justify-content: flex-start;
+  transition:
+    transform 0.28s ease,
+    opacity 0.28s ease;
 }
 
 /* scroll only in body */
@@ -9256,7 +9283,7 @@ will-change: transform, opacity;
   min-height: 0;
   overflow-y: auto;
 
-  padding: 20px 30px 28px;
+  padding: 18px 30px 34px;
 
   scroll-behavior: smooth;
 }
@@ -9275,26 +9302,15 @@ will-change: transform, opacity;
   color: rgba(255, 255, 255, 0.78);
 }
 
-/* author blok u sticky headeru */
-.journal-article-sticky-head .journal-author-signature {
-  margin-top: 0;
-  margin-bottom: 0;
-
-  .journal-author-signature {
-  display: flex;
-  justify-content: center;
-}
-}
-
-/* close button — premium, gore desno */
+/* close button — više u ćošku */
 .journal-article-sticky-head .journal-close-btn {
   position: absolute;
-  top: 18px;
-  right: 18px;
+  top: 12px;
+  right: 12px;
   z-index: 4;
 
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 999px;
 
   border: 1px solid rgba(215, 179, 98, 0.28);
@@ -9351,6 +9367,40 @@ will-change: transform, opacity;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
     inset 0 -1px 0 rgba(0, 0, 0, 0.42);
+}
+
+/* =========================================
+   JOURNAL ARTICLE — SHRINK ON SCROLL
+========================================= */
+
+.journal-article-modal.is-condensed .journal-article-sticky-head {
+  padding: 10px 24px 8px;
+  border-bottom-color: rgba(215, 179, 98, 0.12);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.journal-article-modal.is-condensed .journal-article-head {
+  margin-bottom: 6px;
+}
+
+.journal-article-modal.is-condensed .journal-article-title {
+  font-size: clamp(20px, 2.1vw, 28px);
+  line-height: 0.98;
+  max-width: 18ch;
+  transform: translateY(-1px);
+}
+
+.journal-article-modal.is-condensed .journal-article-sticky-head .journal-author-signature {
+  transform: scale(0.96);
+  opacity: 0.92;
+}
+
+.journal-article-modal.is-condensed .journal-article-sticky-head .journal-close-btn {
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  font-size: 17px;
 }
 
 /* article animation */
