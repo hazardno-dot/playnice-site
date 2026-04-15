@@ -4302,7 +4302,7 @@ body.scrolled .announcement-bar::after {
     --topbar-top-offset: 8px;
     --topbar-height: 88px;
     --announcement-height: 42px;
-    --announcement-gap: 10px;
+    --announcement-gap: 18px;
   }
 
   main {
@@ -4352,6 +4352,7 @@ body.scrolled .announcement-bar::after {
 
   .topbar-right {
     grid-area: right;
+    justify-self: end;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -4423,17 +4424,20 @@ body.scrolled .announcement-bar::after {
   }
 
   .announcement-bar {
-  top: calc(
-    var(--topbar-top-offset) +
-    var(--topbar-height) +
-    var(--announcement-gap) +
-    18px
-  );
-}
+    top: calc(
+      var(--topbar-top-offset) +
+      var(--topbar-height) +
+      var(--announcement-gap)
+    );
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: box-shadow 0.35s ease;
+  }
 
-.announcement-bar {
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
-}
+  body.scrolled .announcement-bar {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
 
   .announcement-track {
     gap: 26px;
