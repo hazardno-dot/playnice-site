@@ -9233,14 +9233,12 @@ will-change: transform, opacity;
   position: absolute;
   top: 14px;
   right: 14px;
-  left: auto;
-  bottom: auto;
   z-index: 4;
 
   width: 40px;
   height: 40px;
-  border-radius: 999px;
   margin: 0;
+  border-radius: 999px;
 
   border: 1px solid rgba(215, 179, 98, 0.28);
   background: linear-gradient(
@@ -9270,7 +9268,6 @@ will-change: transform, opacity;
     box-shadow 0.25s ease;
 }
 
-.journal-article-modal .journal-close-btn:hover,
 .journal-article-sticky-head .journal-close-btn:hover {
   transform: translateY(-1px);
   background: linear-gradient(
@@ -9286,7 +9283,6 @@ will-change: transform, opacity;
     0 0 0 1px rgba(255, 255, 255, 0.04) inset;
 }
 
-.journal-article-modal .journal-close-btn::after,
 .journal-article-sticky-head .journal-close-btn::after {
   content: "";
   position: absolute;
