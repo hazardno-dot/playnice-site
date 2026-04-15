@@ -4423,8 +4423,17 @@ body.scrolled .announcement-bar::after {
   }
 
   .announcement-bar {
-    top: calc(var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap));
-  }
+  top: calc(
+    var(--topbar-top-offset) +
+    var(--topbar-height) +
+    var(--announcement-gap) +
+    6px
+  );
+}
+
+.announcement-bar {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
 
   .announcement-track {
     gap: 26px;
