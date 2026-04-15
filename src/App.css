@@ -8668,10 +8668,25 @@ will-change: transform, opacity;
   position: absolute;
   inset: 0;
   pointer-events: none;
+
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 32%),
-    radial-gradient(circle at 75% 35%, rgba(255, 255, 255, 0.08), transparent 24%);
-  opacity: 0.55;
+    linear-gradient(180deg, rgba(255,255,255,0.05), transparent 40%),
+    radial-gradient(circle at 75% 35%, rgba(255,255,255,0.06), transparent 24%);
+
+  opacity: 0.5;
+}
+
+.journal-topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+
+  background-image: url("https://www.transparenttextures.com/patterns/noise.png");
+  opacity: 0.08; /* 🔥 vrlo suptilno */
+
+  mix-blend-mode: overlay;
 }
 
 .journal-topbar-copy,
@@ -8706,9 +8721,13 @@ will-change: transform, opacity;
 .journal-subheading {
   margin: 0;
   max-width: 56ch;
-  font-size: 14.5px;
-  line-height: 1.72;
-  color: rgba(0, 0, 0, 0.68);
+  font-size: 14.8px; /* malo veći */
+  line-height: 1.7;
+
+  font-weight: 500; /* 🔥 ključ */
+  letter-spacing: 0.01em;
+
+  color: rgba(0, 0, 0, 0.78); /* jači kontrast */
 }
 
 .journal-topbar-side {
@@ -8721,10 +8740,13 @@ will-change: transform, opacity;
 
 .journal-topbar-quote {
   max-width: 360px;
-  font-size: 16px;
-  line-height: 1.65;
+  font-size: 16.5px;
+  line-height: 1.7;
+
   font-style: italic;
-  color: rgba(0, 0, 0, 0.74);
+  font-weight: 500; /* 🔥 ključ */
+
+  color: rgba(0, 0, 0, 0.82);
 }
 
 .journal-close-btn {
