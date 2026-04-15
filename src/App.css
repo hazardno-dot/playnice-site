@@ -9215,7 +9215,7 @@ will-change: transform, opacity;
   top: 0;
   z-index: 3;
 
-  padding: 12px 70px 8px 24px;
+  padding: 12px 76px 10px 24px;
 
   background:
     linear-gradient(180deg, rgba(9, 9, 9, 0.98), rgba(9, 9, 9, 0.94));
@@ -9224,46 +9224,66 @@ will-change: transform, opacity;
 
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+
+  transition:
+    padding 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.34s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* gornji red: datum levo */
+/* meta gore levo ostaje */
 .journal-article-head {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-
-  gap: 16px;
+  position: relative;
+  display: block;
   margin-bottom: 10px;
+  min-height: 0;
+  transition:
+    margin-bottom 0.34s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* naslov centriran */
+/* naslov levo, 2–3 reda */
 .journal-article-title {
-  margin: 0;
+  margin: 0 0 10px;
   min-width: 0;
-  max-width: 20ch;
+  max-width: 16ch;
 
   text-align: left;
 
   font-size: clamp(26px, 3vw, 38px);
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  line-height: 1;
+  letter-spacing: -0.035em;
 
   color: rgba(255, 248, 232, 0.98);
+
+  transition:
+    font-size 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    max-width 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    line-height 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.34s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* author blok */
+/* author/signature vizuelno u istoj zoni kao naslov */
 .journal-article-sticky-head .journal-author-signature {
+  position: absolute;
+  top: 54px;
+  right: 76px;
+
   margin: 0;
   white-space: nowrap;
 
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
   gap: 10px;
 
-  opacity: 0.85;
-  transform: translateY(1px);
+  opacity: 0.9;
+  transition:
+    top 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    right 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.34s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .journal-author-signature span {
@@ -9289,9 +9309,10 @@ will-change: transform, opacity;
   scroll-behavior: smooth;
 }
 
+/* tekst stvarno levo */
 .journal-article-body {
-  margin: 0 auto;
-  max-width: 62ch;
+  margin: 0;
+  max-width: 64ch;
 
   text-align: left;
   white-space: pre-line;
@@ -9303,11 +9324,11 @@ will-change: transform, opacity;
   color: rgba(255, 255, 255, 0.78);
 }
 
-/* close button — više u ćošku */
+/* close button — malo manje u ćošku */
 .journal-article-sticky-head .journal-close-btn {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 12px;
+  right: 12px;
   z-index: 4;
 
   width: 40px;
@@ -9335,6 +9356,18 @@ will-change: transform, opacity;
   box-shadow:
     0 10px 24px rgba(0, 0, 0, 0.24),
     0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+
+  transition:
+    top 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    right 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    width 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    font-size 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .journal-article-sticky-head .journal-close-btn:hover {
@@ -9368,7 +9401,7 @@ will-change: transform, opacity;
 ========================================= */
 
 .journal-article-modal.is-condensed .journal-article-sticky-head {
-  padding: 10px 24px 8px;
+  padding: 8px 64px 6px 20px;
   border-bottom-color: rgba(215, 179, 98, 0.12);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
 }
@@ -9378,15 +9411,17 @@ will-change: transform, opacity;
 }
 
 .journal-article-modal.is-condensed .journal-article-title {
-  font-size: clamp(20px, 2.1vw, 28px);
+  font-size: clamp(20px, 2.1vw, 27px);
   line-height: 0.98;
-  max-width: 18ch;
+  max-width: 20ch;
   transform: translateY(-1px);
 }
 
 .journal-article-modal.is-condensed .journal-article-sticky-head .journal-author-signature {
-  transform: scale(0.96);
-  opacity: 0.92;
+  top: 42px;
+  right: 64px;
+  transform: scale(0.94);
+  opacity: 0.82;
 }
 
 .journal-article-modal.is-condensed .journal-article-sticky-head .journal-close-btn {
