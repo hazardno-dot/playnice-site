@@ -9328,8 +9328,8 @@ will-change: transform, opacity;
 /* close button — malo manje u ćošku */
 .journal-article-sticky-head .journal-close-btn {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
   z-index: 4;
 
   width: 40px;
