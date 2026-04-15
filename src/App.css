@@ -9173,7 +9173,7 @@ will-change: transform, opacity;
   align-items: center;
   justify-content: center;
 
-  padding: 24px 18px 24px;
+  padding: 24px 18px 110px; /* dole rezervisan prostor za CTA */
 
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(14px);
@@ -9186,8 +9186,8 @@ will-change: transform, opacity;
   position: relative;
 
   width: min(760px, 92vw);
-  height: calc(100vh - 48px);
-  max-height: calc(100vh - 48px);
+  height: 100%;
+  max-height: 100%;
   margin: 0 auto;
 
   display: flex;
@@ -9215,7 +9215,7 @@ will-change: transform, opacity;
   top: 0;
   z-index: 3;
 
-  padding: 20px 30px 14px;
+  padding: 16px 26px 10px;
 
   background:
     linear-gradient(180deg, rgba(9, 9, 9, 0.98), rgba(9, 9, 9, 0.94));
@@ -9228,19 +9228,23 @@ will-change: transform, opacity;
 
 .journal-article-head {
   position: relative;
-  display: block;
-  margin-bottom: 14px;
-  min-height: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .journal-article-title {
-  margin: 0 auto 14px;
+  margin: 0;
   max-width: 14ch;
 
   text-align: center;
 
-  font-size: clamp(28px, 3.6vw, 42px);
-  line-height: 0.98;
+  font-size: clamp(26px, 3.4vw, 40px);
+  line-height: 1;
   letter-spacing: -0.03em;
 
   color: rgba(255, 248, 232, 0.98);
@@ -9275,6 +9279,11 @@ will-change: transform, opacity;
 .journal-article-sticky-head .journal-author-signature {
   margin-top: 0;
   margin-bottom: 0;
+
+  .journal-author-signature {
+  display: flex;
+  justify-content: center;
+}
 }
 
 /* close button — premium, gore desno */
