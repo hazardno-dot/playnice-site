@@ -4427,7 +4427,7 @@ body.scrolled .announcement-bar::after {
     var(--topbar-top-offset) +
     var(--topbar-height) +
     var(--announcement-gap) +
-    6px
+    14px
   );
 }
 
