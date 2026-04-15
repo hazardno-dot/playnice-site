@@ -9452,6 +9452,10 @@ will-change: transform, opacity;
     max-height: calc(100vh - 124px);
   }
 
+  .journal-article-sticky-head {
+    padding: 12px 56px 10px 24px;
+  }
+
   .journal-article-scroll {
     padding: 18px 24px 24px;
   }
@@ -9561,7 +9565,7 @@ will-change: transform, opacity;
   }
 
   .journal-topbar .journal-close-btn,
-  .journal-top-sheet .journal-close-btn {
+  .journal-top-sheet > .journal-close-btn {
     width: 38px;
     height: 38px;
     font-size: 18px;
@@ -9705,6 +9709,8 @@ will-change: transform, opacity;
   }
 
   .journal-article-sticky-head .journal-close-btn {
+    top: 6px;
+    right: 6px;
     width: 34px;
     height: 34px;
     font-size: 16px;
