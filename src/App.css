@@ -8695,14 +8695,15 @@ will-change: transform, opacity;
 .journal-topbar {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.62fr);
-  gap: 24px;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.5fr);
+  gap: 18px;
+  align-items: start;
 
-  padding: 20px 24px 18px;
-  margin: 12px 12px 0;
+  margin: 12px 24px 0;
+  padding: 14px 20px 14px 20px;
+  min-height: 140px;
 
-  border-radius: 26px;
+  border-radius: 24px;
   border: 1px solid rgba(215, 179, 98, 0.18);
 
   background:
@@ -8713,7 +8714,7 @@ will-change: transform, opacity;
   overflow: hidden;
 
   box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.25),
+    0 16px 34px rgba(0, 0, 0, 0.22),
     0 0 0 1px rgba(255, 255, 255, 0.03) inset;
 }
 
@@ -8750,22 +8751,22 @@ will-change: transform, opacity;
 }
 
 .journal-topbar-copy {
-  max-width: 620px;
+  max-width: 520px;
 }
 
 .journal-kicker {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-size: 10px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.72);
 }
 
 .journal-heading {
-  margin: 0 0 8px;
-  font-size: clamp(24px, 2.8vw, 40px);
-  line-height: 0.96;
+  margin: 0 0 6px;
+  font-size: clamp(22px, 2.4vw, 34px);
+  line-height: 0.94;
   letter-spacing: -0.035em;
   color: rgba(10, 10, 10, 0.98);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -8773,9 +8774,9 @@ will-change: transform, opacity;
 
 .journal-subheading {
   margin: 0;
-  max-width: 48ch;
-  font-size: 13.5px;
-  line-height: 1.55;
+  max-width: 42ch;
+  font-size: 12.5px;
+  line-height: 1.5;
   font-weight: 500;
   letter-spacing: 0.01em;
   color: rgba(0, 0, 0, 0.78);
@@ -8783,39 +8784,47 @@ will-change: transform, opacity;
 
 .journal-topbar-side {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-end;
-  min-height: 100%;
   text-align: right;
-  padding-right: 52px;
+  padding-top: 8px;
+  padding-right: 54px;
+  min-height: 0;
 }
 
 .journal-topbar-quote {
-  max-width: 300px;
-  font-size: 14px;
-  line-height: 1.55;
+  max-width: 280px;
+  font-size: 13px;
+  line-height: 1.45;
   font-style: italic;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.82);
 }
 
-.journal-close-btn {
+.journal-topbar .journal-close-btn,
+.journal-top-sheet .journal-close-btn {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 4;
+  top: 14px;
+  right: 14px;
+  left: auto;
+  bottom: auto;
+  z-index: 10;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
   border-radius: 999px;
   border: 1px solid rgba(215, 179, 98, 0.34);
 
-  background:
-    linear-gradient(180deg, rgba(8, 8, 8, 0.92), rgba(18, 18, 18, 0.88));
+  background: linear-gradient(
+    180deg,
+    rgba(8, 8, 8, 0.94),
+    rgba(18, 18, 18, 0.9)
+  );
   color: rgba(235, 198, 118, 0.96);
 
   box-shadow:
@@ -8834,11 +8843,15 @@ will-change: transform, opacity;
     color 0.25s ease;
 }
 
-.journal-close-btn:hover {
+.journal-topbar .journal-close-btn:hover,
+.journal-top-sheet .journal-close-btn:hover {
   transform: translateY(-1px);
   border-color: rgba(235, 198, 118, 0.52);
-  background:
-    linear-gradient(180deg, rgba(12, 12, 12, 0.96), rgba(22, 22, 22, 0.92));
+  background: linear-gradient(
+    180deg,
+    rgba(12, 12, 12, 0.96),
+    rgba(22, 22, 22, 0.92)
+  );
   color: rgba(255, 214, 128, 1);
   box-shadow:
     0 14px 30px rgba(0, 0, 0, 0.28),
@@ -9038,13 +9051,16 @@ will-change: transform, opacity;
 @media (max-width: 1024px) {
   .journal-topbar {
     grid-template-columns: 1fr;
-    gap: 14px;
-    padding: 20px 20px 18px;
+    gap: 12px;
+    margin: 12px 20px 0;
+    padding: 16px 18px 16px;
+    min-height: auto;
   }
 
   .journal-topbar-side {
     justify-content: flex-start;
     text-align: left;
+    padding-top: 0;
     padding-right: 0;
   }
 
