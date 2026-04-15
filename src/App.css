@@ -9717,3 +9717,18 @@ will-change: transform, opacity;
     font-size: 16px;
   }
 }
+
+/* DEBUG — ARTICLE CLOSE BUTTON FORCE */
+.journal-article-modal .journal-close-btn,
+.journal-article-sticky-head .journal-close-btn {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+
+  outline: 2px solid red !important;
+}
