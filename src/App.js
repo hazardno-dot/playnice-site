@@ -2514,6 +2514,13 @@ function App() {
       image: "/hero/slide-5-trust-dark.jpg",
       alt: "PlayNice – luxury fragrance experience and trust",
       actionPrimary: "shop"
+    },
+    {
+      id: 6,
+      kind: "imageOnly",
+      image: "/hero/slide-6.jpg",
+      alt: "PlayNice – luxury fragrance experience and trust",
+      actionPrimary: "shop"
     }
   ];
 
