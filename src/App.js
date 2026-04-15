@@ -4998,24 +4998,32 @@ const getSizeWearHint = (size) => {
       onClick={(e) => e.stopPropagation()}
     >
       <div className="journal-topbar">
-        <div className="journal-topbar-copy">
-          <div className="journal-kicker">{tr.journalKicker}</div>
-          <h2 className="journal-heading">{tr.journalTitle}</h2>
-          <p className="journal-subheading">{tr.journalSubtitle}</p>
-        </div>
+  <div className="journal-topbar-copy">
+    <div className="journal-kicker">{tr.journalKicker}</div>
+    <h2 className="journal-heading">{tr.journalTitle}</h2>
+    <p className="journal-subheading">{tr.journalSubtitle}</p>
+  </div>
 
-        <button
-          type="button"
-          className="journal-close-btn"
-          onClick={() => {
-            setJournalOpen(false);
-            setSelectedArticle(null);
-          }}
-          aria-label={tr.journalClose}
-        >
-          ×
-        </button>
-      </div>
+  <div className="journal-topbar-side">
+    <div className="journal-topbar-quote">
+      {lang === "sr"
+        ? "Ne pišemo o parfemima. Pišemo o trenucima koje ostavljaju."
+        : "We don’t write about perfumes. We write about moments they leave behind."}
+    </div>
+  </div>
+
+  <button
+    type="button"
+    className="journal-close-btn"
+    onClick={() => {
+      setJournalOpen(false);
+      setSelectedArticle(null);
+    }}
+    aria-label={tr.journalClose}
+  >
+    ×
+  </button>
+</div>
 
       <div className="journal-body-scroll">
         {journalArticles?.[0] && (
