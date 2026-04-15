@@ -2794,35 +2794,39 @@ useLayoutEffect(() => {
   }, []);
 
   useEffect(() => {
-    const hasBlockingLayer =
-      !!selectedProduct ||
-      cartOpen ||
-      checkoutOpen ||
-      storyOpen ||
-      howItWorksOpen ||
-      privateSelectionOpen ||
-      !!catalogPreview;
+  const hasBlockingLayer =
+    !!selectedProduct ||
+    cartOpen ||
+    checkoutOpen ||
+    storyOpen ||
+    howItWorksOpen ||
+    privateSelectionOpen ||
+    journalOpen ||
+    !!selectedArticle ||
+    !!catalogPreview;
 
-    const shouldShow =
-      !hasBlockingLayer &&
-      (view === "home" ||
-        view === "shop" ||
-        cartCount > 0 ||
-        wishlist.length > 0);
+  const shouldShow =
+    !hasBlockingLayer &&
+    (view === "home" ||
+      view === "shop" ||
+      cartCount > 0 ||
+      wishlist.length > 0);
 
-    setShowStickyCta(shouldShow);
-  }, [
-    view,
-    selectedProduct,
-    cartOpen,
-    checkoutOpen,
-    storyOpen,
-    howItWorksOpen,
-    privateSelectionOpen,
-    catalogPreview,
-    cartCount,
-    wishlist.length
-  ]);
+  setShowStickyCta(shouldShow);
+}, [
+  view,
+  selectedProduct,
+  cartOpen,
+  checkoutOpen,
+  storyOpen,
+  howItWorksOpen,
+  privateSelectionOpen,
+  journalOpen,
+  selectedArticle,
+  catalogPreview,
+  cartCount,
+  wishlist.length
+]);
 
   useEffect(() => {
   if (selectedProduct) {
