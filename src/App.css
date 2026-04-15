@@ -8884,7 +8884,7 @@ will-change: transform, opacity;
 .journal-featured {
   position: relative;
   margin: 0;
-  padding: 18px;
+  padding: 16px 18px 14px;
   border-radius: var(--journal-radius-section);
   border: 1px solid rgba(215, 179, 98, 0.14);
   overflow: hidden;
@@ -8951,11 +8951,12 @@ will-change: transform, opacity;
 .journal-featured-content {
   position: relative;
   z-index: 2;
-  max-width: 640px;
+  max-width: 760px;
+  transform: translateY(-8px);
 }
 
 .journal-featured h2 {
-  margin: 6px 0 6px;
+  margin: 6px 0 8px;
   font-size: clamp(28px, 4vw, 40px);
   line-height: 1.04;
   letter-spacing: -0.02em;
@@ -8966,13 +8967,13 @@ will-change: transform, opacity;
   margin: 0;
   max-width: 62ch;
   font-size: 14px;
-  line-height: 1.8;
+  line-height: 1.72;
   color: rgba(255, 255, 255, 0.76);
 }
 
 .journal-featured span {
   display: inline-block;
-  margin-top: 12px;
+  margin-top: 10px;
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
