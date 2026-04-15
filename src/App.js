@@ -2088,8 +2088,8 @@ const journalArticles = [
     date: "14 Apr",
     image: "/hero/slide-5-trust-dark.jpg",
     title: {
-      en: "Three new scents that completely ruined our plans..",
-      sr: "Tri nova mirisa koja su nam poremetila planove..",
+      en: "Three new scents that completely ruined our plans",
+      sr: "Tri nova mirisa koja su nam poremetila planove",
     },
     excerpt: {
       en: "We only wanted to take a quick look. Standard story. No huge expectations, no intention to make a scene. Then three new scents showed up and turned a calm day into a small mess.",
