@@ -9231,8 +9231,8 @@ will-change: transform, opacity;
 /* close button */
 .journal-article-sticky-head .journal-close-btn {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 10px;
+  right: 10px;
   left: auto;
   bottom: auto;
   z-index: 4;
