@@ -9173,8 +9173,7 @@ will-change: transform, opacity;
   align-items: center;
   justify-content: center;
 
-  /* isti vizuelni razmak gore i dole do CTA zone */
-  padding: 24px 18px 8px;
+  padding: 24px 18px 110px;
 
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(14px);
@@ -9187,8 +9186,8 @@ will-change: transform, opacity;
   position: relative;
 
   width: min(760px, 92vw);
-  height: calc(100vh - 32px);
-  max-height: calc(100vh - 32px);
+  height: calc(100vh - 134px);
+  max-height: calc(100vh - 134px);
   margin: 0 auto;
 
   display: flex;
@@ -9216,7 +9215,7 @@ will-change: transform, opacity;
   top: 0;
   z-index: 3;
 
-  padding: 14px 24px 10px;
+  padding: 12px 24px 8px;
 
   background:
     linear-gradient(180deg, rgba(9, 9, 9, 0.98), rgba(9, 9, 9, 0.94));
@@ -9225,12 +9224,6 @@ will-change: transform, opacity;
 
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-
-  transition:
-    padding 0.28s ease,
-    border-color 0.28s ease,
-    background 0.28s ease,
-    box-shadow 0.28s ease;
 }
 
 /* gornji red: datum levo */
@@ -9247,20 +9240,15 @@ will-change: transform, opacity;
 
 /* naslov centriran */
 .journal-article-title {
-  margin: 0 auto 12px;
-  max-width: 10ch;
+  margin: 0 auto 10px;
+  max-width: 12ch;
   text-align: center;
-  font-size: clamp(24px, 3vw, 36px);
-  line-height: 0.98;
+
+  font-size: clamp(24px, 3vw, 38px);
+  line-height: 0.96;
   letter-spacing: -0.03em;
+
   color: rgba(255, 248, 232, 0.98);
-  
-  transition:
-    font-size 0.28s ease,
-    max-width 0.28s ease,
-    line-height 0.28s ease,
-    transform 0.28s ease,
-    opacity 0.28s ease;
 }
 
 /* author blok */
@@ -9302,8 +9290,8 @@ will-change: transform, opacity;
 /* close button — više u ćošku */
 .journal-article-sticky-head .journal-close-btn {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 8px;
+  right: 8px;
   z-index: 4;
 
   width: 40px;
@@ -9331,13 +9319,6 @@ will-change: transform, opacity;
   box-shadow:
     0 10px 24px rgba(0, 0, 0, 0.24),
     0 0 0 1px rgba(255, 255, 255, 0.03) inset;
-
-  transition:
-    transform 0.25s ease,
-    background 0.25s ease,
-    border-color 0.25s ease,
-    color 0.25s ease,
-    box-shadow 0.25s ease;
 }
 
 .journal-article-sticky-head .journal-close-btn:hover {
