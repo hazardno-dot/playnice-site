@@ -9174,7 +9174,7 @@ will-change: transform, opacity;
   justify-content: center;
 
   /* isti vizuelni razmak gore i dole do CTA zone */
-  padding: 24px 18px 24px;
+  padding: 24px 18px 8px;
 
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(14px);
@@ -9187,8 +9187,8 @@ will-change: transform, opacity;
   position: relative;
 
   width: min(760px, 92vw);
-  height: calc(100vh - 48px);
-  max-height: calc(100vh - 48px);
+  height: calc(100vh - 32px);
+  max-height: calc(100vh - 32px);
   margin: 0 auto;
 
   display: flex;
@@ -9248,8 +9248,13 @@ will-change: transform, opacity;
 /* naslov centriran */
 .journal-article-title {
   margin: 0 auto 12px;
-  max-width: 14ch;
-
+  max-width: 10ch;
+  text-align: center;
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: rgba(255, 248, 232, 0.98);
+}
   text-align: center;
 
   font-size: clamp(24px, 3.2vw, 38px);
