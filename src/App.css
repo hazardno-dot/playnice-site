@@ -8637,9 +8637,10 @@ will-change: transform, opacity;
 ========================================= */
 
 :root {
-  --journal-gap: 12px;
-  --journal-gap-sm: 8px;
-  --journal-gap-xs: 6px;
+  --journal-space: 8px;
+  --journal-radius-shell: 28px;
+  --journal-radius-section: 22px;
+  --journal-radius-card: 16px;
 }
 
 /* ---------- overlay ---------- */
@@ -8670,19 +8671,20 @@ will-change: transform, opacity;
 /* ---------- top sheet ---------- */
 
 .journal-top-sheet {
-  padding: 10px;
   width: min(calc(100% - 12px), 1380px);
   height: min(88vh, 920px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  gap: var(--journal-space);
+  padding: var(--journal-space);
   border: 1px solid rgba(215, 179, 98, 0.12);
-  border-radius: 28px;
+  border-radius: var(--journal-radius-shell);
   background: linear-gradient(180deg, rgba(8, 8, 8, 0.98), rgba(5, 5, 5, 0.96));
   box-shadow:
-  0 30px 70px rgba(0, 0, 0, 0.42),
-  0 0 0 1px rgba(255, 255, 255, 0.02) inset,
-  0 1px 0 rgba(255, 255, 255, 0.04) inset;
+    0 30px 70px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(255, 255, 255, 0.02) inset,
+    0 1px 0 rgba(255, 255, 255, 0.04) inset;
   animation: journalSheetDrop 0.52s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -8706,11 +8708,11 @@ will-change: transform, opacity;
   gap: 18px;
   align-items: start;
 
-  margin: var(--journal-gap) var(--journal-gap) 0;
-  padding: 14px 20px 14px 20px;
+  margin: 0;
+  padding: 14px 20px;
   min-height: 140px;
 
-  border-radius: 24px;
+  border-radius: var(--journal-radius-section);
   border: 1px solid rgba(215, 179, 98, 0.18);
 
   background:
@@ -8730,11 +8732,9 @@ will-change: transform, opacity;
   position: absolute;
   inset: 0;
   pointer-events: none;
-
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.05), transparent 40%),
-    radial-gradient(circle at 75% 35%, rgba(255,255,255,0.06), transparent 24%);
-
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 40%),
+    radial-gradient(circle at 75% 35%, rgba(255, 255, 255, 0.06), transparent 24%);
   opacity: 0.5;
 }
 
@@ -8744,10 +8744,8 @@ will-change: transform, opacity;
   inset: 0;
   pointer-events: none;
   z-index: 1;
-
   background-image: url("https://www.transparenttextures.com/patterns/noise.png");
-  opacity: 0.08; /* 🔥 vrlo suptilno */
-
+  opacity: 0.08;
   mix-blend-mode: overlay;
 }
 
@@ -8762,7 +8760,7 @@ will-change: transform, opacity;
 }
 
 .journal-kicker {
-  margin-bottom: 6px;
+  margin: 0 0 6px;
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -8872,20 +8870,20 @@ will-change: transform, opacity;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding-bottom: var(--journal-gap);
+  padding: 0 0 var(--journal-space);
   scroll-behavior: smooth;
   display: flex;
   flex-direction: column;
-  gap: var(--journal-gap);
+  gap: var(--journal-space);
 }
 
 /* ---------- featured ---------- */
 
 .journal-featured {
   position: relative;
-  margin: var(--journal-gap) var(--journal-gap) 0;
-  padding: 18px 18px;
-  border-radius: 22px;
+  margin: 0;
+  padding: 18px;
+  border-radius: var(--journal-radius-section);
   border: 1px solid rgba(215, 179, 98, 0.14);
   overflow: hidden;
   cursor: pointer;
@@ -8984,14 +8982,14 @@ will-change: transform, opacity;
 .journal-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--journal-gap-sm);
-  padding: var(--journal-gap) var(--journal-gap) 0;
+  gap: var(--journal-space);
+  padding: 0;
 }
 
 .journal-card {
   position: relative;
   padding: 14px;
-  border-radius: 16px;
+  border-radius: var(--journal-radius-card);
   border: 1px solid rgba(215, 179, 98, 0.12);
   background: linear-gradient(120deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
   cursor: pointer;
@@ -9062,8 +9060,7 @@ will-change: transform, opacity;
   .journal-topbar {
     grid-template-columns: 1fr;
     gap: 12px;
-    margin: 12px 20px 0;
-    padding: 16px 18px 16px;
+    padding: 16px 18px;
     min-height: auto;
   }
 
@@ -9092,11 +9089,12 @@ will-change: transform, opacity;
     width: 100%;
     height: 100vh;
     border-radius: 0;
-    gap: var(--journal-gap);
+    gap: var(--journal-space);
+    padding: var(--journal-space);
   }
 
   .journal-topbar {
-    padding: 24px 18px 18px;
+    padding: 18px 16px 16px;
     border-radius: 0;
   }
 
@@ -9123,9 +9121,8 @@ will-change: transform, opacity;
   }
 
   .journal-featured {
-    margin: 16px 16px 0;
-    padding: 20px 18px;
-    border-radius: 22px;
+    padding: 18px 16px;
+    border-radius: 20px;
   }
 
   .journal-featured-bg {
@@ -9140,7 +9137,6 @@ will-change: transform, opacity;
 
   .journal-grid {
     grid-template-columns: 1fr;
-    padding: 16px;
   }
 
   .journal-card {
