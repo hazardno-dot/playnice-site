@@ -4299,109 +4299,107 @@ body.scrolled .announcement-bar::after {
 
 @media (max-width: 820px) {
   :root {
-    --topbar-top-offset: 8px;
-    --topbar-height: 148px;
-    --announcement-height: 42px;
-    --announcement-gap: 10px;
-  }
+  --topbar-top-offset: 8px;
+  --topbar-height: 96px;
+  --announcement-height: 42px;
+  --announcement-gap: 10px;
+}
 
   main {
     padding-top: calc(var(--announcement-height) + var(--announcement-gap) + 6px);
   }
 
   .topbar {
-    top: var(--topbar-top-offset);
-    min-height: var(--topbar-height);
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "brand cart"
-      "nav nav"
-      "lang lang";
-    align-items: center;
-    gap: 10px 12px;
-    padding: 12px 14px;
-    border-radius: 20px;
-  }
+  top: var(--topbar-top-offset);
+  min-height: var(--topbar-height);
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "brand right"
+    "nav nav";
+  align-items: center;
+  gap: 8px 10px;
+  padding: 10px 12px;
+  border-radius: 18px;
+}
 
   .brand {
-    grid-area: brand;
-    min-width: 0;
-    gap: 10px;
-  }
+  grid-area: brand;
+  min-width: 0;
+  gap: 8px;
+}
 
-  .brand-mark {
-    width: 38px;
-    height: 38px;
-    flex: 0 0 38px;
-  }
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+}
 
   .brand-copy {
     min-width: 0;
   }
 
   .brand-copy strong {
-    font-size: 22px;
-    letter-spacing: 0.05em;
-    line-height: 0.95;
-  }
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  line-height: 0.95;
+}
 
-  .brand-copy small {
-    font-size: 9px;
-    letter-spacing: 0.18em;
-    opacity: 0.78;
-  }
+.brand-copy small {
+  font-size: 7px;
+  letter-spacing: 0.14em;
+  opacity: 0.78;
+}
 
   /* ovo je glavni fix */
   .nav-links {
-    grid-area: nav;
-    grid-column: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 8px;
-    min-width: 0;
-    width: 100%;
-  }
+  grid-area: nav;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 6px;
+  min-width: 0;
+  width: 100%;
+}
 
-  .nav-links button {
-    padding: 8px 11px;
-    font-size: 11px;
-    letter-spacing: 0.07em;
-    white-space: nowrap;
-    flex: 0 0 auto;
-  }
+.nav-links button {
+  padding: 6px 10px;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
 
   /* izbegavamo display: contents na mobile */
   .topbar-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
-    min-width: max-content;
-  }
+  grid-area: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: max-content;
+}
 
   .lang-switch {
-    grid-area: lang;
-    justify-self: start;
-    gap: 6px;
-  }
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
 
-  .lang-switch button {
-    min-width: 38px;
-    padding: 8px 9px;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-  }
+.lang-switch button {
+  min-width: 34px;
+  padding: 7px 8px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
 
-  .cart-button {
-    grid-area: cart;
-    justify-self: end;
-    min-width: auto;
-    padding: 10px 14px;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-  }
+.cart-button {
+  justify-self: end;
+  min-width: auto;
+  padding: 8px 12px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
 
   .cart-count {
     margin-left: 8px;
@@ -4515,52 +4513,49 @@ body.scrolled .announcement-bar::after {
   }
 }
 
-@media (max-width: 560px) {
-  :root {
-    --topbar-height: 142px;
-  }
+:root {
+  --topbar-height: 92px;
+}
 
-  .topbar {
-    padding: 11px 12px;
-    gap: 8px 10px;
-    border-radius: 18px;
-  }
+.topbar {
+  padding: 9px 10px;
+  gap: 7px 8px;
+  border-radius: 16px;
+}
 
-  .brand-mark {
-    width: 34px;
-    height: 34px;
-    flex: 0 0 34px;
-  }
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+}
 
-  .brand-copy strong {
-    font-size: 20px;
-  }
+.brand-copy strong {
+  font-size: 16px;
+}
 
-  .brand-copy small {
-    font-size: 8px;
-    letter-spacing: 0.16em;
-  }
+.brand-copy small {
+  font-size: 6.5px;
+  letter-spacing: 0.12em;
+}
 
-  .nav-links {
-    gap: 6px;
-  }
+.nav-links {
+  gap: 5px;
+}
 
-  .nav-links button {
-    padding: 7px 10px;
-    font-size: 10px;
-    letter-spacing: 0.06em;
-  }
+.nav-links button {
+  padding: 6px 8px;
+  font-size: 10px;
+}
 
-  .lang-switch button {
-    min-width: 34px;
-    padding: 7px 8px;
-    font-size: 10px;
-  }
+.lang-switch button {
+  min-width: 30px;
+  padding: 6px 7px;
+  font-size: 9.5px;
+}
 
-  .cart-button {
-    padding: 9px 12px;
-    font-size: 11px;
-  }
+.cart-button {
+  padding: 7px 10px;
+  font-size: 10px;
 }
 
 .product-modal-copy {
