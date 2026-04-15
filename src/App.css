@@ -9130,7 +9130,7 @@ will-change: transform, opacity;
 
 /* meta gore levo ostaje */
 .journal-article-head {
-  position: relative;
+  position: static;
   display: block;
   margin-bottom: 10px;
   min-height: 0;
@@ -9229,7 +9229,6 @@ will-change: transform, opacity;
 }
 
 /* close button */
-.journal-article-modal .journal-close-btn,
 .journal-article-sticky-head .journal-close-btn {
   position: absolute;
   top: 6px;
@@ -9251,14 +9250,12 @@ will-change: transform, opacity;
   );
 
   color: rgba(235, 198, 118, 0.96);
-
   font-size: 19px;
   font-weight: 500;
 
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
 
   box-shadow:
@@ -9716,19 +9713,4 @@ will-change: transform, opacity;
     height: 34px;
     font-size: 16px;
   }
-}
-
-/* DEBUG — ARTICLE CLOSE BUTTON FORCE */
-.journal-article-modal .journal-close-btn,
-.journal-article-sticky-head .journal-close-btn {
-  position: absolute !important;
-  top: 0 !important;
-  right: 0 !important;
-  left: auto !important;
-  bottom: auto !important;
-  transform: none !important;
-  margin: 0 !important;
-  z-index: 9999 !important;
-
-  outline: 2px solid red !important;
 }
