@@ -9199,8 +9199,11 @@ will-change: transform, opacity;
   border-radius: 30px;
   border: 1px solid rgba(215, 179, 98, 0.14);
 
-  background:
-    linear-gradient(180deg, rgba(10, 10, 10, 0.975), rgba(6, 6, 6, 0.955));
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.975),
+    rgba(6, 6, 6, 0.955)
+  );
 
   box-shadow:
     0 40px 80px rgba(0, 0, 0, 0.45),
@@ -9217,8 +9220,11 @@ will-change: transform, opacity;
 
   padding: 12px 56px 10px 24px;
 
-  background:
-    linear-gradient(180deg, rgba(9, 9, 9, 0.98), rgba(9, 9, 9, 0.94));
+  background: linear-gradient(
+    180deg,
+    rgba(9, 9, 9, 0.98),
+    rgba(9, 9, 9, 0.94)
+  );
 
   border-bottom: 1px solid rgba(215, 179, 98, 0.08);
 
@@ -9266,16 +9272,38 @@ will-change: transform, opacity;
   opacity: 0.9;
 }
 
-.journal-author-signature span {
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
+.journal-article-sticky-head .journal-author-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 248, 232, 0.95);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(215, 179, 98, 0.4), transparent 60%),
+    rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(215, 179, 98, 0.25);
 }
 
-.journal-author-signature strong {
+.journal-article-sticky-head .journal-author-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.journal-article-sticky-head .journal-author-name {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.04em;
+  color: rgba(255, 248, 232, 0.92);
+}
+
+.journal-article-sticky-head .journal-author-role {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 /* scroll only in body */
@@ -9305,15 +9333,19 @@ will-change: transform, opacity;
 }
 
 /* close button */
+.journal-article-modal .journal-close-btn,
 .journal-article-sticky-head .journal-close-btn {
   position: absolute;
   top: 6px;
   right: 6px;
+  left: auto;
+  bottom: auto;
   z-index: 4;
 
   width: 40px;
   height: 40px;
   border-radius: 999px;
+  margin: 0;
 
   border: 1px solid rgba(215, 179, 98, 0.28);
   background: linear-gradient(
@@ -9345,6 +9377,7 @@ will-change: transform, opacity;
     box-shadow 0.25s ease;
 }
 
+.journal-article-modal .journal-close-btn:hover,
 .journal-article-sticky-head .journal-close-btn:hover {
   transform: translateY(-1px);
   background: linear-gradient(
@@ -9360,6 +9393,7 @@ will-change: transform, opacity;
     0 0 0 1px rgba(255, 255, 255, 0.04) inset;
 }
 
+.journal-article-modal .journal-close-btn::after,
 .journal-article-sticky-head .journal-close-btn::after {
   content: "";
   position: absolute;
