@@ -9215,7 +9215,7 @@ will-change: transform, opacity;
   top: 0;
   z-index: 3;
 
-  padding: 12px 76px 10px 24px;
+  padding: 12px 56px 10px 24px;
 
   background:
     linear-gradient(180deg, rgba(9, 9, 9, 0.98), rgba(9, 9, 9, 0.94));
@@ -9268,7 +9268,7 @@ will-change: transform, opacity;
 .journal-article-sticky-head .journal-author-signature {
   position: absolute;
   top: 54px;
-  right: 76px;
+  right: 56px;
 
   margin: 0;
   white-space: nowrap;
@@ -9401,7 +9401,7 @@ will-change: transform, opacity;
 ========================================= */
 
 .journal-article-modal.is-condensed .journal-article-sticky-head {
-  padding: 8px 64px 6px 20px;
+  padding: 8px 48px 6px 20px;
   border-bottom-color: rgba(215, 179, 98, 0.12);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
 }
@@ -9419,7 +9419,7 @@ will-change: transform, opacity;
 
 .journal-article-modal.is-condensed .journal-article-sticky-head .journal-author-signature {
   top: 42px;
-  right: 64px;
+  right: 48px;
   transform: scale(0.94);
   opacity: 0.82;
 }
