@@ -4427,12 +4427,12 @@ body.scrolled .announcement-bar::after {
     var(--topbar-top-offset) +
     var(--topbar-height) +
     var(--announcement-gap) +
-    14px
+    18px
   );
 }
 
 .announcement-bar {
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
 }
 
   .announcement-track {
