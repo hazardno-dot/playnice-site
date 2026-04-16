@@ -8810,8 +8810,8 @@ will-change: transform, opacity;
 .journal-topbar .journal-close-btn,
 .journal-top-sheet > .journal-close-btn {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 6px;
+  right: 6px;
   left: auto;
   bottom: auto;
   z-index: 10;
@@ -9693,7 +9693,7 @@ will-change: transform, opacity;
     min-height: 320px;
   }
 
-    .journal-article-overlay {
+  .journal-article-overlay {
     padding: 8px 8px 92px;
   }
 
