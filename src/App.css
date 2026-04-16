@@ -9605,6 +9605,7 @@ will-change: transform, opacity;
     right: 12px;
   }
 
+  /* SCROLL */
   .journal-body-scroll {
     flex: 1 1 auto;
     min-height: 0;
@@ -9616,19 +9617,20 @@ will-change: transform, opacity;
     padding: 0 0 calc(16px + env(safe-area-inset-bottom));
   }
 
+  /* FEATURED */
   .journal-featured {
-  position: relative;
-  margin: 0;
-  padding: 20px 16px 22px;
-  border-radius: 20px;
+    position: relative;
+    margin: 0;
+    padding: 20px 16px 22px;
+    border-radius: 20px;
 
-  min-height: 340px;
+    min-height: 340px; /* ključni fix */
 
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-  box-sizing: border-box;
-}
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
 
   .journal-featured-bg {
     filter: saturate(0.9) brightness(0.42);
@@ -9649,12 +9651,12 @@ will-change: transform, opacity;
   }
 
   .journal-featured-content {
-  position: relative;
-  z-index: 2;
-  max-width: 100%;
-  transform: none;
-  width: 100%;
-}
+    position: relative;
+    z-index: 2;
+    max-width: 100%;
+    transform: none;
+    width: 100%;
+  }
 
   .journal-featured h2 {
     font-size: clamp(22px, 6vw, 28px);
@@ -9669,23 +9671,25 @@ will-change: transform, opacity;
     margin: 0 0 16px;
   }
 
+  /* GRID */
   .journal-grid {
     grid-template-columns: 1fr;
     gap: var(--journal-space);
     padding: 0;
   }
 
+  /* CARD */
   .journal-card {
-  padding: 20px 16px 22px;
-  border-radius: 20px;
+    padding: 20px 16px 22px;
+    border-radius: 20px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 
-  overflow: hidden;
-  box-sizing: border-box;
-}
+    overflow: hidden;
+    box-sizing: border-box;
+  }
 
   .journal-card-title {
     font-size: clamp(22px, 6vw, 28px);
@@ -9700,17 +9704,17 @@ will-change: transform, opacity;
   }
 
   .journal-card-title,
-.journal-featured h2 {
-  display: block;
-  max-width: 100%;
-}
+  .journal-featured h2 {
+    display: block;
+    max-width: 100%;
+  }
 
-.journal-card-excerpt,
-.journal-featured p {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+  .journal-card-excerpt,
+  .journal-featured p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 
   /* ARTICLE MODAL */
   .journal-article-overlay {
