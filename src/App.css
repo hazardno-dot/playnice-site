@@ -9588,13 +9588,6 @@ will-change: transform, opacity;
     padding: 20px 16px 16px;
     border-radius: 18px;
 
-    background: linear-gradient(
-      180deg,
-      rgba(215, 179, 98, 0.22) 0%,
-      rgba(215, 179, 98, 0.12) 28%,
-      rgba(20, 20, 20, 0.55) 100%
-    );
-
     border: 1px solid rgba(215, 179, 98, 0.18);
   }
 
@@ -9778,13 +9771,6 @@ will-change: transform, opacity;
   .journal-topbar {
     padding: 18px 14px 14px;
     border-radius: 18px;
-
-    background: linear-gradient(
-      180deg,
-      rgba(215, 179, 98, 0.22) 0%,
-      rgba(215, 179, 98, 0.12) 28%,
-      rgba(20, 20, 20, 0.55) 100%
-    );
 
     border: 1px solid rgba(215, 179, 98, 0.18);
   }
