@@ -9859,9 +9859,9 @@ will-change: transform, opacity;
 .journal-featured,
 .journal-featured-card,
 .journal-card {
-  height: 360px !important;
-  min-height: 360px !important;
-  max-height: 360px !important;
+  height: 340px !important;
+  min-height: 340px !important;
+  max-height: 340px !important;
   box-sizing: border-box;
 }
 
