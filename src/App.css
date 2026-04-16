@@ -8989,17 +8989,6 @@ will-change: transform, opacity;
   align-items: stretch;
 }
 
-.journal-grid .journal-card {
-  height: 100%;
-  min-height: 420px;
-  display: flex;
-  flex-direction: column;
-}
-
-.journal-grid .journal-card-link {
-  margin-top: auto;
-}
-
 .journal-card {
   position: relative;
   padding: 14px;
