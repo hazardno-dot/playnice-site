@@ -9775,7 +9775,7 @@ will-change: transform, opacity;
   @media (max-width: 480px) {
   .journal-featured {
     padding: 16px 14px;
-    min-height: 300px;
+    min-height: 320px;
   }
 
   .journal-card {
