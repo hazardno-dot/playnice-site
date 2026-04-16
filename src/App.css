@@ -8716,7 +8716,6 @@ will-change: transform, opacity;
   border: 1px solid rgba(215, 179, 98, 0.18);
 
   background:
-    background:
     radial-gradient(circle at 20% 18%, #ffffff0d, #0000 30%),
     radial-gradient(circle at 82% 24%, #00000038, #0000 34%),
     linear-gradient(120deg, #6f5a2f, #5c4a27 45%, #4e3f22);
