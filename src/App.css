@@ -8716,9 +8716,10 @@ will-change: transform, opacity;
   border: 1px solid rgba(215, 179, 98, 0.18);
 
   background:
-    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.05), transparent 30%),
-    radial-gradient(circle at 82% 24%, rgba(0, 0, 0, 0.22), transparent 34%),
-    linear-gradient(120deg, #6f5a2f 0%, #5c4a27 45%, #4e3f22 100%);
+    background:
+    radial-gradient(circle at 20% 18%, #ffffff0d, #0000 30%),
+    radial-gradient(circle at 82% 24%, #00000038, #0000 34%),
+    linear-gradient(120deg, #6f5a2f, #5c4a27 45%, #4e3f22);
 
   overflow: hidden;
 
@@ -9570,13 +9571,6 @@ will-change: transform, opacity;
     padding: 20px 16px 16px;
     border-radius: 18px;
 
-    background: linear-gradient(
-      180deg,
-      rgba(215, 179, 98, 0.08) 0%,
-      rgba(215, 179, 98, 0.03) 22%,
-      rgba(10, 10, 10, 0.86) 100%
-    );
-
     border: 1px solid rgba(215, 179, 98, 0.16);
   }
 
@@ -9611,13 +9605,6 @@ will-change: transform, opacity;
   .journal-topbar {
     padding: 18px 14px 14px;
     border-radius: 18px;
-
-    background: linear-gradient(
-      180deg,
-      rgba(215, 179, 98, 0.08) 0%,
-      rgba(215, 179, 98, 0.03) 22%,
-      rgba(10, 10, 10, 0.86) 100%
-    );
 
     border: 1px solid rgba(215, 179, 98, 0.16);
   }
