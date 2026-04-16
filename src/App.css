@@ -9766,6 +9766,7 @@ will-change: transform, opacity;
 
   .journal-topbar {
     padding: 18px 14px 14px;
+    border-radius: 18px 18px 0 0;
   }
 
   .journal-topbar-side {
@@ -9795,6 +9796,16 @@ will-change: transform, opacity;
   .journal-grid {
     grid-template-columns: 1fr;
   }
+
+  .journal-top-sheet {
+  padding: 6px;
+
+  border-radius: 22px; /* 👈 ključ */
+  overflow: hidden;    /* 👈 mora */
+
+  background: rgba(10, 10, 10, 0.96); /* da se vidi ivica */
+  border: 1px solid rgba(215, 179, 98, 0.18);
+}
 
   /* ARTICLE MODAL */
   .journal-article-overlay {
