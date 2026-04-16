@@ -5040,106 +5040,109 @@ const getSizeWearHint = (size) => {
 </div>
 
       <div className="journal-body-scroll">
-        {journalArticles?.[0] && (
-          <div
-            className="journal-featured"
-            onClick={() => setSelectedArticle(journalArticles[0])}
-          >
-            {journalArticles[0].image && (
-              <div
-                className="journal-featured-bg"
-                style={{
-                  backgroundImage: `url(${journalArticles[0].image})`,
-                }}
-              />
-            )}
+  {journalArticles?.[0] && (
+    <article
+      className="journal-featured journal-card"
+      onClick={() => setSelectedArticle(journalArticles[0])}
+    >
+      {journalArticles[0].image && (
+        <div
+          className="journal-featured-bg"
+          style={{
+            backgroundImage: `url(${journalArticles[0].image})`,
+          }}
+        />
+      )}
 
-            <div className="journal-featured-glow" />
+      <div className="journal-featured-glow" />
 
-            <div className="journal-featured-content">
-              <div className="journal-card-meta">
-                <span className="journal-card-date">
-                  {journalArticles[0].date?.toUpperCase?.() ||
-                    journalArticles[0].date}
-                </span>
-                <span className="journal-reading-time">
-                  {tr.journalReadingTime}
-                </span>
-              </div>
+      <div className="journal-featured-content">
+        <div className="journal-card-meta">
+          <span className="journal-card-date">
+            {journalArticles[0].date?.toUpperCase?.() ||
+              journalArticles[0].date}
+          </span>
+          <span className="journal-reading-time">
+            {tr.journalReadingTime}
+          </span>
+        </div>
 
-              <h2>{getJournalText(journalArticles[0].title, lang)}</h2>
+        <h2 className="journal-card-title">
+          {getJournalText(journalArticles[0].title, lang)}
+        </h2>
 
-              <div className="journal-author-signature small">
-                <div className="journal-author-avatar">
-                  {getJournalAvatarLetter(lang)}
-                </div>
+        <div className="journal-author-signature small">
+          <div className="journal-author-avatar">
+            {getJournalAvatarLetter(lang)}
+          </div>
 
-                <div className="journal-author-meta">
-                  <div className="journal-author-name">
-                    {tr.journalAuthorName}
-                  </div>
-                  <div className="journal-author-role">
-                    {tr.journalAuthorRole}
-                  </div>
-                </div>
-              </div>
-
-              <p>{getJournalText(journalArticles[0].excerpt, lang)}</p>
-
-              <span>{tr.journalReadArticle}</span>
+          <div className="journal-author-meta">
+            <div className="journal-author-name">
+              {tr.journalAuthorName}
+            </div>
+            <div className="journal-author-role">
+              {tr.journalAuthorRole}
             </div>
           </div>
-        )}
+        </div>
 
-        {journalArticles.length > 1 && (
-          <div className="journal-grid">
-            {journalArticles.slice(1).map((article) => (
-              <article
-                key={article.id}
-                className="journal-card"
-                onClick={() => setSelectedArticle(article)}
-              >
-                <div className="journal-card-meta">
-                  <span className="journal-card-date">{article.date}</span>
-                  <span className="journal-reading-time">
-                    {tr.journalReadingTime}
-                  </span>
-                </div>
+        <p className="journal-card-excerpt">
+          {getJournalText(journalArticles[0].excerpt, lang)}
+        </p>
 
-                <h3 className="journal-card-title">
-                  {getJournalText(article.title, lang)}
-                </h3>
-
-                <div className="journal-author-signature small">
-                  <div className="journal-author-avatar">
-                    {getJournalAvatarLetter(lang)}
-                  </div>
-
-                  <div className="journal-author-meta">
-                    <div className="journal-author-name">
-                      {tr.journalAuthorName}
-                    </div>
-                    <div className="journal-author-role">
-                      {tr.journalAuthorRole}
-                    </div>
-                  </div>
-                </div>
-
-                <p className="journal-card-excerpt">
-                  {getJournalText(article.excerpt, lang)}
-                </p>
-
-                <div className="journal-card-link">
-                  {tr.journalReadArticle}
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
+        <div className="journal-card-link">
+          {tr.journalReadArticle}
+        </div>
       </div>
-    </section>
-  </div>
-)}
+    </article>
+  )}
+
+  {journalArticles.length > 1 && (
+    <div className="journal-grid">
+      {journalArticles.slice(1).map((article) => (
+        <article
+          key={article.id}
+          className="journal-card"
+          onClick={() => setSelectedArticle(article)}
+        >
+          <div className="journal-card-meta">
+            <span className="journal-card-date">{article.date}</span>
+            <span className="journal-reading-time">
+              {tr.journalReadingTime}
+            </span>
+          </div>
+
+          <h3 className="journal-card-title">
+            {getJournalText(article.title, lang)}
+          </h3>
+
+          <div className="journal-author-signature small">
+            <div className="journal-author-avatar">
+              {getJournalAvatarLetter(lang)}
+            </div>
+
+            <div className="journal-author-meta">
+              <div className="journal-author-name">
+                {tr.journalAuthorName}
+              </div>
+              <div className="journal-author-role">
+                {tr.journalAuthorRole}
+              </div>
+            </div>
+          </div>
+
+          <p className="journal-card-excerpt">
+            {getJournalText(article.excerpt, lang)}
+          </p>
+
+          <div className="journal-card-link">
+            {tr.journalReadArticle}
+          </div>
+        </article>
+      ))}
+    </div>
+  )}
+</div>
 
 {selectedArticle && (
   <div
