@@ -9057,6 +9057,16 @@ will-change: transform, opacity;
   color: rgba(215, 179, 98, 0.9);
 }
 
+.journal-top-sheet,
+.journal-body-scroll {
+  min-height: 0;
+}
+
+.journal-body-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 /* =========================================
    JOURNAL ARTICLE MODAL — FINAL
 ========================================= */
@@ -9552,6 +9562,7 @@ will-change: transform, opacity;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    min-height: 0;
   }
 
   .journal-topbar {
@@ -9606,13 +9617,15 @@ will-change: transform, opacity;
   }
 
   .journal-featured {
+    position: relative;
     margin: 0;
-    padding: 18px 16px;
+    padding: 20px 16px 22px;
     border-radius: 20px;
-    min-height: 220px;
+    min-height: 420px;
 
     display: flex;
     align-items: flex-end;
+    overflow: hidden;
   }
 
   .journal-featured-bg {
@@ -9626,28 +9639,31 @@ will-change: transform, opacity;
     background:
       linear-gradient(
         180deg,
-        rgba(0, 0, 0, 0.18) 0%,
-        rgba(0, 0, 0, 0.38) 30%,
-        rgba(0, 0, 0, 0.72) 100%
+        rgba(0, 0, 0, 0.16) 0%,
+        rgba(0, 0, 0, 0.36) 28%,
+        rgba(0, 0, 0, 0.84) 100%
       ),
       radial-gradient(circle at 78% 18%, rgba(215, 179, 98, 0.1), transparent 26%);
   }
 
   .journal-featured-content {
+    position: relative;
+    z-index: 2;
     max-width: 100%;
     transform: none;
   }
 
   .journal-featured h2 {
-    font-size: clamp(24px, 7vw, 32px);
-    line-height: 1.04;
-    margin: 6px 0 8px;
+    font-size: clamp(22px, 6vw, 28px);
+    line-height: 1.12;
+    margin: 8px 0 12px;
   }
 
   .journal-featured p {
-    font-size: 13.5px;
-    line-height: 1.72;
+    font-size: 14.5px;
+    line-height: 1.7;
     max-width: 100%;
+    margin: 0 0 16px;
   }
 
   .journal-grid {
@@ -9657,17 +9673,25 @@ will-change: transform, opacity;
   }
 
   .journal-card {
-    padding: 16px;
-    border-radius: 18px;
+    min-height: 420px;
+    padding: 20px 16px 22px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
   }
 
   .journal-card-title {
-    font-size: 18px;
+    font-size: clamp(22px, 6vw, 28px);
+    line-height: 1.12;
+    margin: 8px 0 12px;
   }
 
   .journal-card-excerpt {
-    font-size: 13.5px;
-    line-height: 1.68;
+    font-size: 14.5px;
+    line-height: 1.7;
+    margin-bottom: 16px;
   }
 
   /* ARTICLE MODAL */
