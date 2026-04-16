@@ -9622,9 +9622,7 @@ will-change: transform, opacity;
   padding: 20px 16px 22px;
   border-radius: 20px;
 
-  height: 440px;
-  min-height: 440px;
-  max-height: 440px;
+  min-height: 340px;
 
   display: flex;
   align-items: flex-end;
@@ -9678,10 +9676,6 @@ will-change: transform, opacity;
   }
 
   .journal-card {
-  height: 440px;
-  min-height: 440px;
-  max-height: 440px;
-
   padding: 20px 16px 22px;
   border-radius: 20px;
 
@@ -9852,45 +9846,4 @@ will-change: transform, opacity;
     height: 34px;
     font-size: 16px;
   }
-}
-
-/* ===== JOURNAL MOBILE HARD OVERRIDE ===== */
-
-.journal-featured,
-.journal-featured-card,
-.journal-card {
-  height: 340px !important;
-  min-height: 340px !important;
-  max-height: 340px !important;
-  box-sizing: border-box;
-}
-
-.journal-featured,
-.journal-featured-card {
-  display: flex !important;
-  align-items: flex-end !important;
-  overflow: hidden !important;
-  border-radius: 20px !important;
-}
-
-.journal-featured-content {
-  width: 100% !important;
-  max-width: 100% !important;
-  position: relative;
-  z-index: 2;
-}
-
-.journal-featured h2,
-.journal-featured-card h2,
-.journal-card-title {
-  font-size: clamp(22px, 6vw, 28px) !important;
-  line-height: 1.12 !important;
-  margin: 8px 0 12px !important;
-}
-
-.journal-featured p,
-.journal-card-excerpt {
-  font-size: 14.5px !important;
-  line-height: 1.7 !important;
-  margin-bottom: 16px !important;
 }
