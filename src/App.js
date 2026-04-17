@@ -900,7 +900,7 @@ const products = [
     badge: "SOON",
     rating: 8.4,
     ratingLabel: "Fresh King",
-    season: "summer"
+    season: "summer",
     isNew: true,
   },
   {
@@ -911,7 +911,7 @@ const products = [
     sizes: { "5ml": 9, "10ml": 16, "20ml": 30 },
     rating: 9.1,
     ratingLabel: "Top Rated",
-    season: "all"
+    season: "all",
     isNew: true,
   },
   {
@@ -922,7 +922,7 @@ const products = [
     sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
     rating: 7.9,
     ratingLabel: "Well Loved",
-    season: "summer"
+    season: "summer",
     isNew: true,
   },
   {
@@ -933,7 +933,7 @@ const products = [
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     rating: 8.1,
     ratingLabel: "Popular Pick",
-    season: "summer"
+    season: "summer",
     isNew: true,
   }
 ];
