@@ -2461,6 +2461,95 @@ Remember. PlayNice.`,
   },
   relatedProducts: ["Arabiyat Prestige Marwa"]
 }
+
+{
+  id: 5,
+  date: "18 Apr",
+  image: "/hero/slide-1-9pm-night-out.jpg",
+  title: {
+    en: "Open passage",
+    sr: "Otvoren prolaz",
+  },
+  excerpt: {
+    en: "They say the passage is open. On paper, that sounds simple. In real life, the difference between open and truly free is usually where the story begins.",
+    sr: "Kažu da je prolaz otvoren. Na papiru, to zvuči jednostavno. U stvarnom životu, razlika između otvorenog i zaista slobodnog je obično mesto gde priča tek počinje.",
+  },
+  content: {
+    en: `They say the strait is open. Ships are moving, the world has calmed down a little, and everything looks as if the problem has been solved. At first glance, it sounds simple.
+
+The passage exists. You can go through. Just… not exactly like that.
+
+It is interesting how these things work. On paper — freedom. In practice — rules.
+
+It reminded me of people. We all like to think we can go wherever we want. Until the moment comes to actually make a move.
+
+Then suddenly:
+“Maybe this is not the right time.”
+“Maybe this is not smart.”
+“What will people say…”
+
+It is not forbidden. It just is not exactly free.
+
+And that is the fine distinction most people miss. Closed doors are not the real problem. At least you can see those.
+
+The problem is the ones that look open — but still make you pause before stepping through.
+
+And the world works like that more often than we admit. Passages exist. Rules exist. People move — carefully.
+
+In the end, it comes down to one question:
+
+Are you moving because you can —
+or because you were allowed to?
+
+Everyone loves open passages. Until they realize they still have to ask to get through.
+
+Alright. That is enough philosophy for today.
+
+I’ll just put on a bit of Creed Aventus Cologne, give myself an open passage 👍 and things will probably feel better. That part is at least predictable.
+
+—
+
+Charlie  
+Remember. PlayNice.`,
+    sr: `Kažu da je moreuz otvoren. Brodovi prolaze, svet se malo smirio i sve izgleda kao da je problem rešen. Na prvu, zvuči jednostavno.
+
+Prolaz postoji. Može da se prođe. Samo… ne baš tek tako.
+
+Zanimljivo je kako te stvari funkcionišu. Na papiru — sloboda. U praksi — pravila.
+
+Podsetilo me na ljude. Svi volimo da mislimo da možemo gde hoćemo. Dok ne dođe trenutak da stvarno treba da napravimo korak.
+
+Onda odjednom:
+“Možda nije pravi trenutak.”
+“Možda nije pametno.”
+“Šta će reći…”
+
+Nije zabranjeno. Samo nije baš ni slobodno.
+
+I to je ona fina razlika koju većina ne primećuje. Nisu zatvorena vrata pravi problem. Njih bar vidiš.
+
+Problem su ona koja izgledaju otvoreno — ali te ipak nateraju da zastaneš pre nego što prođeš.
+
+I svet mnogo češće funkcioniše baš tako nego što volimo da priznamo. Prolazi postoje. Pravila postoje. Ljudi prolaze — pažljivo.
+
+Na kraju se sve svede na jedno pitanje:
+
+Da li ideš jer možeš —
+ili jer ti je dozvoljeno?
+
+Svi vole otvorene prolaze. Dok ne shvate da moraju da pitaju da prođu.
+
+Dobro. Dosta filozofije za danas.
+
+Staviću malo Creed Aventus Cologne, dam sebi otvoren prolaz 👍 i biće bolje. To je bar sigurno.
+
+—
+
+Čarli  
+Remember. PlayNice.`,
+  },
+  relatedProducts: ["Creed Aventus Cologne"]
+}
 ];
 
 /* =========================================
