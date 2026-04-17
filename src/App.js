@@ -903,7 +903,7 @@ const products = [
   },
   {
     id: 50,
-    name: "Armaf Club de Nuit Precieux I Extrait de Parfum NEW",
+    name: "Armaf Club de Nuit Precieux I Extrait de Parfum",
     category: "Arabian",
     image: "/products/armaf-club-de-nuit-precieux.png",
     sizes: { "5ml": 9, "10ml": 16, "20ml": 30 },
@@ -913,7 +913,7 @@ const products = [
   },
   {
     id: 51,
-    name: "French Avenue Safari Breeze NEW",
+    name: "French Avenue Safari Breeze",
     category: "Arabian",
     image: "/products/french-avenue-safari-breeze.png",
     sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
@@ -923,7 +923,7 @@ const products = [
   },
   {
     id: 52,
-    name: "Lattafa Dynasty NEW",
+    name: "Lattafa Dynasty",
     category: "Arabian",
     image: "/products/lattafa-dynasty.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -1919,24 +1919,38 @@ const productCopy = {
 },
 
 "Lattafa Dynasty": {
-  miniTag: { sr: "🍯 Sweet / Crowd Pleaser", en: "🍯 Sweet / Crowd Pleaser" },
+  miniTag: { sr: "🌿 Fresh / Spicy Tea", en: "🌿 Fresh / Spicy Tea" },
+
   card: {
-    sr: "Sladak, topao i privlačan — miris koji se dopada svima.",
-    en: "Sweet, warm and addictive — a crowd-pleasing scent."
+    sr: "Začinjeni crni čaj sa citrusima i čistim drvenim završetkom.",
+    en: "Spiced black tea with citrus and a clean woody finish."
   },
+
   modal: {
-    sr: "Topla i kremasta kompozicija sa slatkim tonovima — prijatan i lako nosiv miris sa modernim karakterom.",
-    en: "Warm and creamy composition with sweet tones — smooth, wearable and modern."
+    sr: "Dinamično otvaranje sa citrusima i začinjenim crnim čajem prelazi u čistu, drvenastu i mošusnu bazu. Svež, ali karakteran miris sa izraženim prisustvom.",
+    en: "A vibrant opening of citrus and spiced black tea settles into a clean woody-musky base. Fresh yet distinctive with strong presence."
   },
-  scentType: { sr: "Sweet gourmand amber", en: "Sweet gourmand amber" },
+
+  scentType: { sr: "Spicy tea woody musky", en: "Spicy tea woody musky" },
+
   dominantNotes: {
-    sr: ["vanila", "ambra", "slatke note"],
-    en: ["vanilla", "amber", "sweet notes"]
+    sr: ["crni čaj", "citrusi", "drvo", "mošus"],
+    en: ["black tea", "citrus", "woods", "musk"]
   },
-  tags: { sr: ["Sweet", "Date Night", "Mass Appeal"], en: ["Sweet", "Date Night", "Mass Appeal"] },
+
+  tags: {
+    sr: ["Fresh", "Spicy", "Unisex"],
+    en: ["Fresh", "Spicy", "Unisex"]
+  },
+
   whyChoose: {
-    sr: "Ako želiš siguran kompliment magnet miris.",
-    en: "If you want a guaranteed compliment magnet."
+    sr: "Ako želiš svež, ali drugačiji miris sa karakterom.",
+    en: "If you want a fresh scent with a unique twist."
+  },
+
+  inspiredBy: {
+    sr: "U stilu modernih čajnih i citrusno-drvenih kompozicija.",
+    en: "Inspired by modern tea-based citrus woody compositions."
   }
 }
 };
@@ -2172,20 +2186,20 @@ const productWearContext = {
     sr: "Za vruće dane i noći.",
     en: "For hot days and nights."
   },
-  "Armaf Club de Nuit Precieux I Extrait de Parfum NEW": {
+  "Armaf Club de Nuit Precieux I Extrait de Parfum": {
   sr: "Veče, izlazak, specijalne prilike.",
   en: "Evening, nights out, special occasions."
   },
 
-  "French Avenue Safari Breeze NEW": {
+  "French Avenue Safari Breeze": {
   sr: "Dnevno, leto, opuštene prilike.",
   en: "Daily wear, summer, casual moments."
   },
 
-  "Lattafa Dynasty NEW": {
-  sr: "Dejt, izlazak, večernja vibra.",
-  en: "Date night, going out, evening vibe."
-  }
+  "Lattafa Dynasty": {
+  sr: "Toplo vreme, dnevno, unisex nošenje.",
+  en: "Warm weather, daily wear, unisex use."
+}
 };
 
 /* =========================================
