@@ -2460,7 +2460,7 @@ Arabiyat Prestige Marwa
 Remember. PlayNice.`,
   },
   relatedProducts: ["Arabiyat Prestige Marwa"]
-}
+},
 
 {
   id: 5,
