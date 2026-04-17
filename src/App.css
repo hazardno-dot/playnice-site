@@ -8924,6 +8924,7 @@ will-change: transform, opacity;
   position: relative;
   margin: 0;
   padding: 16px 18px 14px;
+  min-height: 300px;
   border-radius: var(--journal-radius-section);
   border: 1px solid rgba(215, 179, 98, 0.14);
   overflow: hidden;
@@ -8978,10 +8979,10 @@ will-change: transform, opacity;
   background:
     linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.78) 0%,
-      rgba(0, 0, 0, 0.56) 38%,
-      rgba(0, 0, 0, 0.28) 68%,
-      rgba(0, 0, 0, 0.52) 100%
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.58) 34%,
+      rgba(0, 0, 0, 0.22) 72%,
+      rgba(0, 0, 0, 0.34) 100%
     ),
     radial-gradient(circle at 78% 18%, rgba(215, 179, 98, 0.12), transparent 26%);
   pointer-events: none;
@@ -8990,7 +8991,7 @@ will-change: transform, opacity;
 .journal-featured-content {
   position: relative;
   z-index: 2;
-  width: 100%;
+  width: calc(100% - 2px);
   max-width: none;
   transform: translateY(-8px);
 }
