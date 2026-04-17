@@ -900,6 +900,36 @@ const products = [
     rating: 8.4,
     ratingLabel: "Fresh King",
     season: "summer"
+  },
+  {
+    id: 50,
+    name: "Armaf Club de Nuit Precieux I Extrait de Parfum NEW",
+    category: "Arabian",
+    image: "/products/armaf-club-de-nuit-precieux.png",
+    sizes: { "5ml": 9, "10ml": 16, "20ml": 30 },
+    rating: 9.1,
+    ratingLabel: "Top Rated",
+    season: "all"
+  },
+  {
+    id: 51,
+    name: "French Avenue Safari Breeze NEW",
+    category: "Arabian",
+    image: "/products/french-avenue-safari-breeze.png",
+    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    rating: 7.9,
+    ratingLabel: "Well Loved",
+    season: "summer"
+  },
+  {
+    id: 52,
+    name: "Lattafa Dynasty NEW",
+    category: "Arabian",
+    image: "/products/lattafa-dynasty.png",
+    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+    rating: 8.1,
+    ratingLabel: "Popular Pick",
+    season: "summer"
   }
 ];
 
