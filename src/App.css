@@ -8990,12 +8990,14 @@ will-change: transform, opacity;
 .journal-featured-content {
   position: relative;
   z-index: 2;
-  max-width: 760px;
+  width: 100%;
+  max-width: none;
   transform: translateY(-8px);
 }
 
 .journal-featured h2 {
   margin: 6px 0 8px;
+  max-width: none;
   font-size: clamp(28px, 4vw, 40px);
   line-height: 1.04;
   letter-spacing: -0.02em;
@@ -9004,7 +9006,8 @@ will-change: transform, opacity;
 
 .journal-featured p {
   margin: 0;
-  max-width: 62ch;
+  max-width: none;
+  width: 100%;
   font-size: 14px;
   line-height: 1.72;
   color: rgba(255, 255, 255, 0.76);
