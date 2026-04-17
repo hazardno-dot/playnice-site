@@ -6538,7 +6538,7 @@ body.scrolled .announcement-bar::after {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 
-  color: rgba(132, 28, 28, 0.98);
+  color: rgba(196, 58, 58, 0.96);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.14em;
