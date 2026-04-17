@@ -191,6 +191,7 @@ const translations = {
     journalAuthorRole: "PlayNice Editorial",
     journalClose: "Close Journal",
     journalCloseArticle: "Close article",
+    justIn: "JUST IN",
   },
 
   sr: {
@@ -384,6 +385,7 @@ const translations = {
     journalAuthorRole: "PlayNice Editorial",
     journalClose: "Zatvori Journal",
     journalCloseArticle: "Zatvori članak",
+    justIn: "NOVO",
   }
 };
 
@@ -3485,10 +3487,10 @@ const getSizeWearHint = (size) => {
       />
 
       {product.isNew && (
-        <span className="product-new-badge">
-          NEW
-        </span>
-      )}
+  <span className="product-new-badge">
+    {tr.justIn}
+  </span>
+)}
     </button>
 
     <button
