@@ -2386,6 +2386,7 @@ A za sve ostalo, kao i obično, kriv je grad.
 
 — Čarli`,
     },
+    relatedProducts: ["Afnan 9PM Night Out"]
   },
 ];
 
