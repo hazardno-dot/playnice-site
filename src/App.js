@@ -5209,9 +5209,9 @@ const getSizeWearHint = (size) => {
                 </div>
               </div>
 
-              <p className="journal-card-excerpt">
-                {getJournalText(journalArticles[0].excerpt, lang)}
-              </p>
+              <p className="journal-featured-excerpt">
+  {getJournalText(journalArticles[0].excerpt, lang)}
+</p>
 
               <div className="journal-card-link">
                 {tr.journalReadArticle}

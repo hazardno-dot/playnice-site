@@ -8991,7 +8991,7 @@ will-change: transform, opacity;
 .journal-featured-content {
   position: relative;
   z-index: 2;
-  width: calc(100% - 2px);
+  width: 100%;
   max-width: none;
   transform: translateY(-8px);
 }
@@ -9021,6 +9021,26 @@ will-change: transform, opacity;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(215, 179, 98, 0.9);
+}
+
+.journal-featured-excerpt {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+
+  display: block;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  word-break: normal;
+  overflow-wrap: anywhere;
+
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: unset;
+
+  font-size: 14px;
+  line-height: 1.72;
+  color: rgba(255, 255, 255, 0.76);
 }
 
 /* ---------- cards grid ---------- */
