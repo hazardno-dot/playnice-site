@@ -8924,7 +8924,7 @@ will-change: transform, opacity;
   position: relative;
   margin: 0;
   padding: 18px 20px 16px;
-  min-height: 300px;
+  min-height: 260px;
 
   border-radius: var(--journal-radius-section);
   border: 1px solid rgba(215, 179, 98, 0.14);
