@@ -1874,7 +1874,7 @@ const productCopy = {
     }
   },
 
-  "Armaf Club de Nuit Precieux I Extrait de Parfum NEW": {
+  "Armaf Club de Nuit Precieux I Extrait de Parfum": {
   miniTag: { sr: "💎 Luxury / Signature", en: "💎 Luxury / Signature" },
   card: {
     sr: "Dubok, elegantan i moćan — luksuzni signature miris.",
@@ -1896,7 +1896,7 @@ const productCopy = {
   }
 },
 
-"French Avenue Safari Breeze NEW": {
+"French Avenue Safari Breeze": {
   miniTag: { sr: "🌴 Fresh / Summer", en: "🌴 Fresh / Summer" },
   card: {
     sr: "Lagano, sveže i letnje — idealno za tople dane.",
@@ -1918,7 +1918,7 @@ const productCopy = {
   }
 },
 
-"Lattafa Dynasty NEW": {
+"Lattafa Dynasty": {
   miniTag: { sr: "🍯 Sweet / Crowd Pleaser", en: "🍯 Sweet / Crowd Pleaser" },
   card: {
     sr: "Sladak, topao i privlačan — miris koji se dopada svima.",
@@ -2171,6 +2171,20 @@ const productWearContext = {
   "Rasasi Hawas Ice for Him": {
     sr: "Za vruće dane i noći.",
     en: "For hot days and nights."
+  },
+  "Armaf Club de Nuit Precieux I Extrait de Parfum NEW": {
+  sr: "Veče, izlazak, specijalne prilike.",
+  en: "Evening, nights out, special occasions."
+  },
+
+  "French Avenue Safari Breeze NEW": {
+  sr: "Dnevno, leto, opuštene prilike.",
+  en: "Daily wear, summer, casual moments."
+  },
+
+  "Lattafa Dynasty NEW": {
+  sr: "Dejt, izlazak, večernja vibra.",
+  en: "Date night, going out, evening vibe."
   }
 };
 
