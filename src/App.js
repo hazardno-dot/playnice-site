@@ -5358,8 +5358,6 @@ const getSizeWearHint = (size) => {
                   type="button"
                   className="journal-related-card"
                   onClick={() => {
-                    setSelectedArticle(null);
-                    setJournalOpen(false);
                     openProductModal(product);
                   }}
                 >
