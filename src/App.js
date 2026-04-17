@@ -3464,27 +3464,33 @@ const getSizeWearHint = (size) => {
 };
 
   return (
-    <article className="product-card premium-product-card">
-  <button
-    type="button"
-    className="product-card-media clickable-media"
-    onMouseDown={(e) => e.preventDefault()}
-    onClick={() => openProductModal(product)}
-    aria-label={product.name}
-  >
-    <img
-      src={product.image || "/placeholder.png"}
-      alt={product.name}
-      className="product-card-image"
-      loading="lazy"
-    />
-  </button>
+  <article className="product-card premium-product-card">
+    <button
+      type="button"
+      className="product-card-media clickable-media"
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={() => openProductModal(product)}
+      aria-label={product.name}
+    >
+      <img
+        src={product.image || "/placeholder.png"}
+        alt={product.name}
+        className="product-card-image"
+        loading="lazy"
+      />
+    </button>
 
-  <button
-    type="button"
-    className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
-      isSpraying ? "is-spraying" : ""
-    }`}
+    {product.isNew && (
+      <span className="product-new-badge">
+        NEW
+      </span>
+    )}
+
+    <button
+      type="button"
+      className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
+        isSpraying ? "is-spraying" : ""
+      }`}
     onClick={(e) => {
       e.preventDefault();
       e.stopPropagation();
