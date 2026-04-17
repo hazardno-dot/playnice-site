@@ -2256,6 +2256,11 @@ A mi smo od običnog “da vidimo šta ima” opet napravili ono što uvek napra
 
 — Čarli`,
     },
+    relatedProducts: [
+      "Armaf Club de Nuit Precieux I Extrait de Parfum",
+      "French Avenue Safari Breeze",
+      "Lattafa Dynasty"
+    ]
   },
   {
     id: 2,
