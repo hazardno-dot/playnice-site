@@ -1872,7 +1872,7 @@ const productCopy = {
       sr: "Ako želiš svež, ali primetan letnji parfem koji se izdvaja od tipičnih citrusnih mirisa.",
       en: "If you want a fresh but noticeable summer scent that stands out from typical citrus fragrances."
     }
-  }
+  },
 
   "Armaf Club de Nuit Precieux I Extrait de Parfum NEW": {
   miniTag: { sr: "💎 Luxury / Signature", en: "💎 Luxury / Signature" },
