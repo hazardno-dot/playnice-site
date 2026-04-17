@@ -9078,11 +9078,9 @@ will-change: transform, opacity;
 
 .journal-featured-excerpt {
   margin: 0;
-
-  width: min(72%, 980px);
+  width: min(88%, 1180px);
 
   display: block;
-
   white-space: normal;
   overflow: visible;
   text-overflow: clip;
@@ -9091,7 +9089,6 @@ will-change: transform, opacity;
 
   font-size: 14px;
   line-height: 1.78;
-
   color: rgba(255, 255, 255, 0.76);
 }
 
