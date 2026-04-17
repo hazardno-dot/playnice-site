@@ -889,6 +889,7 @@ const products = [
     rating: 8.6,
     ratingLabel: "Night Beast",
     season: "winter"
+    isNew: true,
   },
   {
     id: 49,
@@ -900,6 +901,7 @@ const products = [
     rating: 8.4,
     ratingLabel: "Fresh King",
     season: "summer"
+    isNew: true,
   },
   {
     id: 50,
@@ -910,6 +912,7 @@ const products = [
     rating: 9.1,
     ratingLabel: "Top Rated",
     season: "all"
+    isNew: true,
   },
   {
     id: 51,
@@ -920,6 +923,7 @@ const products = [
     rating: 7.9,
     ratingLabel: "Well Loved",
     season: "summer"
+    isNew: true,
   },
   {
     id: 52,
@@ -930,6 +934,7 @@ const products = [
     rating: 8.1,
     ratingLabel: "Popular Pick",
     season: "summer"
+    isNew: true,
   }
 ];
 
@@ -3478,13 +3483,13 @@ const getSizeWearHint = (size) => {
         className="product-card-image"
         loading="lazy"
       />
-    </button>
 
-    {product.isNew && (
-      <span className="product-new-badge">
-        NEW
-      </span>
-    )}
+      {product.isNew && (
+        <span className="product-new-badge">
+          NEW
+        </span>
+      )}
+    </button>
 
     <button
       type="button"

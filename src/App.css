@@ -6515,14 +6515,14 @@ body.scrolled .announcement-bar::after {
 }
 
 /* Novi Badge dole desno */
-.product-card.premium-product-card {
+.product-card-media {
   position: relative;
 }
 
 .product-new-badge {
   position: absolute;
-  right: 12px;
-  top: 210px;
+  right: 10px;
+  bottom: 10px;
   z-index: 4;
 
   display: inline-flex;
