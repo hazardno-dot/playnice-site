@@ -9005,15 +9005,6 @@ will-change: transform, opacity;
   color: rgba(255, 248, 232, 0.98);
 }
 
-.journal-featured p {
-  margin: 0;
-  max-width: none;
-  width: 100%;
-  font-size: 14px;
-  line-height: 1.72;
-  color: rgba(255, 255, 255, 0.76);
-}
-
 .journal-featured span {
   display: inline-block;
   margin-top: 10px;
@@ -9021,16 +9012,6 @@ will-change: transform, opacity;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(215, 179, 98, 0.9);
-}
-
-.journal-featured-excerpt {
-  margin: 0;
-  width: 100%;
-  max-width: 920px;
-  display: block;
-  font-size: 14px;
-  line-height: 1.72;
-  color: rgba(255, 255, 255, 0.76);
 }
 
 .journal-featured-meta {
