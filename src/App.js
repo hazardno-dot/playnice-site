@@ -5163,62 +5163,63 @@ const getSizeWearHint = (size) => {
       </div>
 
       <div className="journal-body-scroll">
+
         {journalArticles?.[0] && (
-          <article
-            className="journal-featured journal-card"
-            onClick={() => setSelectedArticle(journalArticles[0])}
-          >
-            {journalArticles[0].image && (
-              <div
-                className="journal-featured-bg"
-                style={{
-                  backgroundImage: `url(${journalArticles[0].image})`,
-                }}
-              />
-            )}
+  <article
+    className="journal-featured"
+    onClick={() => setSelectedArticle(journalArticles[0])}
+  >
+    {journalArticles[0].image && (
+      <div
+        className="journal-featured-bg"
+        style={{
+          backgroundImage: `url(${journalArticles[0].image})`,
+        }}
+      />
+    )}
 
-            <div className="journal-featured-glow" />
+    <div className="journal-featured-glow" />
 
-            <div className="journal-featured-content">
-              <div className="journal-card-meta">
-                <span className="journal-card-date">
-                  {journalArticles[0].date?.toUpperCase?.() ||
-                    journalArticles[0].date}
-                </span>
-                <span className="journal-reading-time">
-                  {tr.journalReadingTime}
-                </span>
-              </div>
+    <div className="journal-featured-content">
+      <div className="journal-featured-meta">
+        <span className="journal-featured-date">
+          {journalArticles[0].date?.toUpperCase?.() ||
+            journalArticles[0].date}
+        </span>
+        <span className="journal-featured-reading-time">
+          {tr.journalReadingTime}
+        </span>
+      </div>
 
-              <h2 className="journal-card-title">
-                {getJournalText(journalArticles[0].title, lang)}
-              </h2>
+      <h2 className="journal-featured-title">
+        {getJournalText(journalArticles[0].title, lang)}
+      </h2>
 
-              <div className="journal-author-signature small">
-                <div className="journal-author-avatar">
-                  {getJournalAvatarLetter(lang)}
-                </div>
+      <div className="journal-author-signature small">
+        <div className="journal-author-avatar">
+          {getJournalAvatarLetter(lang)}
+        </div>
 
-                <div className="journal-author-meta">
-                  <div className="journal-author-name">
-                    {tr.journalAuthorName}
-                  </div>
-                  <div className="journal-author-role">
-                    {tr.journalAuthorRole}
-                  </div>
-                </div>
-              </div>
+        <div className="journal-author-meta">
+          <div className="journal-author-name">
+            {tr.journalAuthorName}
+          </div>
+          <div className="journal-author-role">
+            {tr.journalAuthorRole}
+          </div>
+        </div>
+      </div>
 
-              <p className="journal-featured-excerpt">
-  {getJournalText(journalArticles[0].excerpt, lang)}
-</p>
+      <p className="journal-featured-excerpt">
+        {getJournalText(journalArticles[0].excerpt, lang)}
+      </p>
 
-              <div className="journal-card-link">
-                {tr.journalReadArticle}
-              </div>
-            </div>
-          </article>
-        )}
+      <div className="journal-featured-link">
+        {tr.journalReadArticle}
+      </div>
+    </div>
+  </article>
+)}
 
         {journalArticles.length > 1 && (
           <div className="journal-grid">

@@ -9043,6 +9043,69 @@ will-change: transform, opacity;
   color: rgba(255, 255, 255, 0.76);
 }
 
+.journal-featured-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.journal-featured-date {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(215, 179, 98, 0.78);
+}
+
+.journal-featured-reading-time {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(215, 179, 98, 0.8);
+}
+
+.journal-featured-title {
+  margin: 0 0 8px;
+  max-width: none;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: rgba(255, 248, 232, 0.98);
+}
+
+.journal-featured-excerpt {
+  margin: 0;
+  width: 100%;
+  max-width: none;
+
+  display: block !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+
+  font-size: 14px;
+  line-height: 1.72;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.journal-featured-link {
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(215, 179, 98, 0.9);
+}
+
 /* ---------- cards grid ---------- */
 
 .journal-grid { 
