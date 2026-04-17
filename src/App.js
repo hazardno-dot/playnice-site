@@ -888,7 +888,7 @@ const products = [
     badge: "NEW",
     rating: 8.6,
     ratingLabel: "Night Beast",
-    season: "winter"
+    season: "winter",
     isNew: true,
   },
   {
