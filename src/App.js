@@ -1920,38 +1920,24 @@ const productCopy = {
 
 "Lattafa Dynasty": {
   miniTag: { sr: "🌿 Fresh / Spicy Tea", en: "🌿 Fresh / Spicy Tea" },
-
   card: {
     sr: "Začinjeni crni čaj sa citrusima i čistim drvenim završetkom.",
     en: "Spiced black tea with citrus and a clean woody finish."
   },
-
   modal: {
     sr: "Dinamično otvaranje sa citrusima i začinjenim crnim čajem prelazi u čistu, drvenastu i mošusnu bazu. Svež, ali karakteran miris sa izraženim prisustvom.",
     en: "A vibrant opening of citrus and spiced black tea settles into a clean woody-musky base. Fresh yet distinctive with strong presence."
   },
-
   scentType: { sr: "Spicy tea woody musky", en: "Spicy tea woody musky" },
-
   dominantNotes: {
     sr: ["crni čaj", "citrusi", "drvo", "mošus"],
     en: ["black tea", "citrus", "woods", "musk"]
   },
-
-  tags: {
-    sr: ["Fresh", "Spicy", "Unisex"],
-    en: ["Fresh", "Spicy", "Unisex"]
-  },
-
+  tags: { sr: ["Fresh", "Spicy", "Unisex"], en: ["Fresh", "Spicy", "Unisex"] },
   whyChoose: {
     sr: "Ako želiš svež, ali drugačiji miris sa karakterom.",
     en: "If you want a fresh scent with a unique twist."
   },
-
-  inspiredBy: {
-    sr: "U stilu modernih čajnih i citrusno-drvenih kompozicija.",
-    en: "Inspired by modern tea-based citrus woody compositions."
-  }
 }
 };
 
