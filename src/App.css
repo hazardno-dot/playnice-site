@@ -8923,17 +8923,26 @@ will-change: transform, opacity;
 .journal-featured {
   position: relative;
   margin: 0;
-  padding: 16px 18px 14px;
-  min-height: 286px;
+  padding: 18px 20px 16px;
+  min-height: 320px;
+
   border-radius: var(--journal-radius-section);
   border: 1px solid rgba(215, 179, 98, 0.14);
+
   overflow: hidden;
   cursor: pointer;
   isolation: isolate;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
+
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0.015)
+  );
+
   box-shadow:
     0 24px 50px rgba(0, 0, 0, 0.24),
     0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+
   transition:
     transform 0.35s ease,
     border-color 0.35s ease,
@@ -8946,6 +8955,7 @@ will-change: transform, opacity;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
+
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.03),
     inset 0 -1px 0 rgba(0, 0, 0, 0.22);
@@ -8954,56 +8964,83 @@ will-change: transform, opacity;
 .journal-featured:hover {
   transform: translateY(-2px);
   border-color: rgba(215, 179, 98, 0.24);
+
   box-shadow:
     0 30px 70px rgba(0, 0, 0, 0.3),
     0 0 30px rgba(215, 179, 98, 0.08),
     0 0 0 1px rgba(255, 255, 255, 0.025) inset;
 }
 
+/* background image */
+
 .journal-featured-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
+
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+
   transform: scale(1.02);
   filter: saturate(0.95) brightness(0.42);
   opacity: 0.88;
 }
 
+/* overlay glow */
+
 .journal-featured-glow {
   position: absolute;
   inset: 0;
   z-index: 1;
+
   background:
     linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.8) 0%,
-      rgba(0, 0, 0, 0.58) 34%,
+      rgba(0, 0, 0, 0.82) 0%,
+      rgba(0, 0, 0, 0.6) 34%,
       rgba(0, 0, 0, 0.22) 72%,
       rgba(0, 0, 0, 0.34) 100%
     ),
-    radial-gradient(circle at 78% 18%, rgba(215, 179, 98, 0.12), transparent 26%);
+    radial-gradient(
+      circle at 78% 18%,
+      rgba(215, 179, 98, 0.12),
+      transparent 26%
+    );
+
   pointer-events: none;
 }
+
+/* content layout */
 
 .journal-featured-content {
   position: relative;
   z-index: 2;
+
   width: 100%;
   max-width: none;
-  transform: translateY(-8px);
+  min-height: 100%;
+
+  transform: translateY(-6px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
+
+/* meta */
 
 .journal-featured-meta {
   display: flex;
   align-items: center;
   gap: 10px;
+
   margin-bottom: 10px;
+
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+
   color: rgba(255, 255, 255, 0.45);
 }
 
@@ -9011,6 +9048,7 @@ will-change: transform, opacity;
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+
   color: rgba(215, 179, 98, 0.78);
 }
 
@@ -9018,24 +9056,33 @@ will-change: transform, opacity;
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+
   color: rgba(215, 179, 98, 0.8);
 }
 
+/* title */
+
 .journal-featured-title {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
+
   max-width: none;
+
   font-size: clamp(28px, 4vw, 40px);
   line-height: 1.04;
   letter-spacing: -0.02em;
+
   color: rgba(255, 248, 232, 0.98);
 }
 
+/* excerpt — ključni deo */
+
 .journal-featured-excerpt {
   margin: 0;
-  width: 100%;
-  max-width: 980px;
+
+  width: min(72%, 980px);
 
   display: block;
+
   white-space: normal;
   overflow: visible;
   text-overflow: clip;
@@ -9043,15 +9090,20 @@ will-change: transform, opacity;
   overflow-wrap: break-word;
 
   font-size: 14px;
-  line-height: 1.72;
+  line-height: 1.78;
+
   color: rgba(255, 255, 255, 0.76);
 }
 
+/* CTA link */
+
 .journal-featured-link {
-  margin-top: 10px;
+  margin-top: 18px;
+
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+
   color: rgba(215, 179, 98, 0.9);
 }
 
