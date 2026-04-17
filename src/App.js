@@ -2388,6 +2388,157 @@ A za sve ostalo, kao i obično, kriv je grad.
     },
     relatedProducts: ["Afnan 9PM Night Out"]
   },
+
+  {
+  id: 4,
+  date: "17 Apr",
+  image: "/hero/slide-1-9pm-night-out.jpg",
+  title: {
+    en: "I did not fail the day. I just entered it wrong.",
+    sr: "Nisam pao dan. Samo sam ušao u njega pogrešno.",
+  },
+  excerpt: {
+    en: "Some days do not go wrong because of what happens. They go wrong because of how you show up. I realized that a little too late — and fixed it even later.",
+    sr: "Neki dani ne krenu loše zbog onoga što se desi. Krenu loše zbog toga kako uđeš u njih. Ja sam to shvatio malo kasno — a popravio još kasnije.",
+  },
+  content: {
+    en: `There are days when nothing works.
+
+Not in a dramatic way. Just quietly wrong.
+
+You wake up on time but still feel late. Coffee is there, but it does not do its job. Conversations happen, but you are half a second behind them.
+
+That was the day.
+
+And of course — that was the day something important was waiting for me. Not an exam. Not an interview. But close enough that you know it matters.
+
+I walked in already knowing I was not fully there.
+
+Sat down. Nodded. Answered everything correctly.
+
+And still — something was missing.
+
+At one point, I caught myself thinking about completely irrelevant things. Like why chairs always make noise at the worst possible moment.
+
+That is when it clicked.
+
+It was not the day.
+
+It was me.
+
+I entered it wrong.
+
+It sounds small, but it is not — when you get the scent right, you are slightly ahead of everything. When you miss it, you are always catching up.
+
+And yes, that morning I missed it.
+
+It was not a bad fragrance. It just did not belong there. It was made for slow walks, light air, no pressure.
+
+Not for a moment that required presence.
+
+A few hours later, I changed it.
+
+No strategy. Just instinct.
+
+One spray. Then another.
+
+And suddenly… posture returns. Focus returns. You stop explaining yourself too much.
+
+It did not fix the day.
+
+But it fixed me inside it.
+
+And that is usually enough.
+
+Most people think fragrance is an extra.
+
+It is not.
+
+It is the quiet ally that brings you back when you drift a little too far.
+
+—
+
+If you had a day like this, you already understand.
+
+If not — you will.
+
+Just do not walk into it alone.
+
+Arabiyat Prestige Marwa
+
+—
+
+Charlie  
+Remember. PlayNice.`,
+    sr: `Postoje dani kada ništa ne ide.
+
+Ne dramatično. Samo — tiho pogrešno.
+
+Ustaneš na vreme, ali kasniš. Kafa je tu, ali ne radi posao. Razgovori se vode, ali ti si uvek pola sekunde iza.
+
+Takav je bio taj dan.
+
+I naravno — baš tada me je čekalo nešto važno. Nije bio prijemni. Nije bio intervju. Ali dovoljno blizu da znaš da ima težinu.
+
+Ušao sam već svestan da nisam skroz tu.
+
+Seo. Klimam glavom. Odgovaram tačno.
+
+I opet — nešto fali.
+
+U jednom trenutku sam uhvatio sebe kako razmišljam o potpuno nebitnim stvarima. Recimo, zašto stolice uvek škripe baš kad treba da ćutiš.
+
+I tada mi klikne.
+
+Nije bio problem dan.
+
+Ja sam pogrešno ušao u njega.
+
+Zvuči sitno, ali nije — kad pogodiš miris, kao da si malo ispred svega. Kad ga promašiš, stalno sustižeš.
+
+I da, tog jutra sam ga promašio.
+
+Nije bio loš. Samo nije bio za to.
+
+Bio je za laganu šetnju, vazduh bez obaveza. Ne za trenutak koji traži prisustvo.
+
+Par sati kasnije — promenim ga.
+
+Bez plana. Samo refleks.
+
+Jedan sprej. Pa drugi.
+
+I odjednom… telo se seti kako treba da stoji. Kako da gleda. Kako da ne objašnjava previše.
+
+Nije popravio dan.
+
+Ali je popravio mene u tom danu.
+
+A to je obično dovoljno.
+
+Većina misli da je parfem dodatak.
+
+Nije.
+
+To je tihi saveznik koji te vrati kad malo odlepiš.
+
+—
+
+Ako si imao ovakav dan — znaš.
+
+Ako nisi — imaćeš.
+
+Samo nemoj da uđeš u njega sam.
+
+Arabiyat Prestige Marwa
+
+—
+
+Čarli  
+Remember. PlayNice.`,
+  },
+  relatedProducts: ["Arabiyat Prestige Marwa"]
+}
 ];
 
 /* =========================================
