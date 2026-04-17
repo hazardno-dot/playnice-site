@@ -1873,6 +1873,72 @@ const productCopy = {
       en: "If you want a fresh but noticeable summer scent that stands out from typical citrus fragrances."
     }
   }
+
+  "Armaf Club de Nuit Precieux I Extrait de Parfum NEW": {
+  miniTag: { sr: "💎 Luxury / Signature", en: "💎 Luxury / Signature" },
+  card: {
+    sr: "Dubok, elegantan i moćan — luksuzni signature miris.",
+    en: "Deep, elegant and powerful — a true luxury signature scent."
+  },
+  modal: {
+    sr: "Bogata, sofisticirana kompozicija sa jakim prisustvom — miris koji ostavlja utisak i traje satima.",
+    en: "Rich and sophisticated composition with strong presence — a scent that leaves a lasting impression."
+  },
+  scentType: { sr: "Woody amber oriental", en: "Woody amber oriental" },
+  dominantNotes: {
+    sr: ["drvo", "ambra", "začini"],
+    en: ["woods", "amber", "spices"]
+  },
+  tags: { sr: ["Luxury", "Strong", "Evening"], en: ["Luxury", "Strong", "Evening"] },
+  whyChoose: {
+    sr: "Ako želiš ozbiljan, skup i upečatljiv miris.",
+    en: "If you want a bold, expensive-smelling signature scent."
+  }
+},
+
+"French Avenue Safari Breeze NEW": {
+  miniTag: { sr: "🌴 Fresh / Summer", en: "🌴 Fresh / Summer" },
+  card: {
+    sr: "Lagano, sveže i letnje — idealno za tople dane.",
+    en: "Light, fresh and summery — perfect for warm days."
+  },
+  modal: {
+    sr: "Čist i osvežavajući miris sa laganim voćnim i aromatičnim tonovima — nenametljiv ali prijatan.",
+    en: "Clean and refreshing scent with soft fruity and aromatic tones — subtle yet enjoyable."
+  },
+  scentType: { sr: "Fresh fruity aromatic", en: "Fresh fruity aromatic" },
+  dominantNotes: {
+    sr: ["voće", "citrusi", "zeleni tonovi"],
+    en: ["fruits", "citrus", "green notes"]
+  },
+  tags: { sr: ["Fresh", "Summer", "Daily"], en: ["Fresh", "Summer", "Daily"] },
+  whyChoose: {
+    sr: "Savršen za dnevno nošenje i letnju opuštenu vibru.",
+    en: "Perfect for daily wear and relaxed summer vibe."
+  }
+},
+
+"Lattafa Dynasty NEW": {
+  miniTag: { sr: "🍯 Sweet / Crowd Pleaser", en: "🍯 Sweet / Crowd Pleaser" },
+  card: {
+    sr: "Sladak, topao i privlačan — miris koji se dopada svima.",
+    en: "Sweet, warm and addictive — a crowd-pleasing scent."
+  },
+  modal: {
+    sr: "Topla i kremasta kompozicija sa slatkim tonovima — prijatan i lako nosiv miris sa modernim karakterom.",
+    en: "Warm and creamy composition with sweet tones — smooth, wearable and modern."
+  },
+  scentType: { sr: "Sweet gourmand amber", en: "Sweet gourmand amber" },
+  dominantNotes: {
+    sr: ["vanila", "ambra", "slatke note"],
+    en: ["vanilla", "amber", "sweet notes"]
+  },
+  tags: { sr: ["Sweet", "Date Night", "Mass Appeal"], en: ["Sweet", "Date Night", "Mass Appeal"] },
+  whyChoose: {
+    sr: "Ako želiš siguran kompliment magnet miris.",
+    en: "If you want a guaranteed compliment magnet."
+  }
+}
 };
 
 const fallbackCopy = {
