@@ -9635,7 +9635,10 @@ will-change: transform, opacity;
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
-    transform 0.2s ease;
+    transform 0.16s ease,
+    box-shadow 0.22s ease,
+    color 0.2s ease;
+  will-change: transform, box-shadow;
 }
 
 .jf-btn:hover {
@@ -9644,9 +9647,44 @@ will-change: transform, opacity;
   transform: translateY(-1px);
 }
 
+.jf-btn:active {
+  transform: translateY(0) scale(0.94);
+  border-color: rgba(212, 175, 55, 0.45);
+  background: rgba(212, 175, 55, 0.1);
+}
+
 .jf-btn.active {
-  background: rgba(212, 175, 55, 0.12);
-  border-color: rgba(212, 175, 55, 0.4);
+  background:
+    radial-gradient(circle at 50% 45%, rgba(212, 175, 55, 0.22), rgba(212, 175, 55, 0.08) 70%);
+  border-color: rgba(212, 175, 55, 0.55);
+  color: #ffe8a3;
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.08),
+    0 0 14px rgba(212, 175, 55, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  animation: journalThumbPulse 0.34s ease;
+}
+
+@keyframes journalThumbPulse {
+  0% {
+    transform: scale(0.92);
+    box-shadow:
+      0 0 0 0 rgba(212, 175, 55, 0),
+      0 0 0 rgba(212, 175, 55, 0);
+  }
+  55% {
+    transform: scale(1.08);
+    box-shadow:
+      0 0 0 6px rgba(212, 175, 55, 0.08),
+      0 0 18px rgba(212, 175, 55, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 0 1px rgba(212, 175, 55, 0.08),
+      0 0 14px rgba(212, 175, 55, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
 }
 
 .journal-feedback-inline-shell {
