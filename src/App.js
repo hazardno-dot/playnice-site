@@ -3242,32 +3242,30 @@ useEffect(() => {
   }
 
   try {
-    await fetch(
-      "https://script.google.com/macros/s/AKfycbxQawoSj2QydJHb6qstxVH1xbZxViQNvzLOgAKXsyaN_VFMwVv49G7mzRvyuQgn_V-d/exec",
-      {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          article: key,
-          articleTitle: getJournalText(article?.title, lang),
-          vote: payload.vote || "",
-          note: trimmedNote,
-          lang,
-          page: window.location.pathname,
-          source: "journal"
-        })
-      }
-    );
+  const payloadToSend = JSON.stringify({
+    timestamp: new Date().toISOString(),
+    article: key,
+    articleTitle: getJournalText(article?.title, lang),
+    vote: payload.vote || "",
+    note: trimmedNote,
+    lang,
+    page: window.location.pathname,
+    source: "journal"
+  });
 
-    console.log("Journal feedback sent");
-  } catch (error) {
-    console.error("Journal feedback submit failed:", error);
-  }
-};
+  const blob = new Blob([payloadToSend], {
+    type: "text/plain;charset=utf-8"
+  });
+
+  const ok = navigator.sendBeacon(
+    "https://script.google.com/macros/s/AKfycbxQawoSj2QydJHb6qstxVH1xbZxViQNvzLOgAKXsyaN_VFMwVv49G7mzRvyuQgn_V-d/exec",
+    blob
+  );
+
+  console.log("Journal feedback beacon sent:", ok);
+} catch (error) {
+  console.error("Journal feedback submit failed:", error);
+}
 
   const activeJournalFeedback = selectedArticle
     ? getJournalSavedFeedback(selectedArticle)
