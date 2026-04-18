@@ -3290,7 +3290,7 @@ const handleJournalFeedbackSubmit = (article) => {
   if (!current.vote || !trimmedNote) return;
 
   sendJournalFeedback(article, {
-    vote: current.vote || "",
+    vote: current.vote,
     note: trimmedNote
   });
 
@@ -3317,6 +3317,13 @@ const handleJournalFeedbackSubmit = (article) => {
 
     return nextFeedback;
   });
+
+  setJournalFeedbackSubmitted(true);
+  setJournalFeedbackSuccess(true);
+
+  setTimeout(() => {
+    setJournalFeedbackSuccess(false);
+  }, 1200);
 };
 
 const activeJournalFeedback = selectedArticle
@@ -5718,50 +5725,49 @@ const getSizeWearHint = (size) => {
 </button>
 
             <div className="journal-feedback-inline-shell">
-              <div className="journal-feedback-inline-inner">
+  <div className="journal-feedback-inline-inner">
+    <input
+      type="text"
+      maxLength={180}
+      value={activeJournalFeedback?.note || ""}
+      onChange={(e) =>
+        handleJournalFeedbackNoteChange(
+          selectedArticle,
+          e.target.value
+        )
+      }
+      placeholder={
+        lang === "sr"
+          ? "Feedback u jednoj rečenici..."
+          : "Feedback in one sentence..."
+      }
+      className="journal-feedback-inline-input"
+    />
 
-                <input
-                  type="text"
-                  maxLength={180}
-                  value={getJournalSavedFeedback(selectedArticle)?.note || ""}
-                  onChange={(e) =>
-                    handleJournalFeedbackNoteChange(
-                      selectedArticle,
-                      e.target.value
-                    )
-                  }
-                  placeholder={
-                    lang === "sr"
-                      ? "Feedback u jednoj rečenici..."
-                      : "Feedback in one sentence..."
-                  }
-                  className="journal-feedback-inline-input"
-                />
+    {(activeJournalFeedback?.note || "").length > 0 && (
+      <span className="journal-feedback-inline-count">
+        {(activeJournalFeedback?.note || "").length}/180
+      </span>
+    )}
 
-                {(getJournalSavedFeedback(selectedArticle)?.note || "").length > 0 && (
-                  <span className="journal-feedback-inline-count">
-                    {(getJournalSavedFeedback(selectedArticle)?.note || "").length}/180
-                  </span>
-                )}
+    <button
+      type="button"
+      className={`journal-feedback-inline-send ${
+        journalFeedbackSuccess ? "is-success" : ""
+      }`}
+      onClick={() => handleJournalFeedbackSubmit(selectedArticle)}
+      disabled={!activeJournalFeedback?.vote}
+    >
+      <span className="jf-send-label">
+        {lang === "sr" ? "Pošalji" : "Send"}
+      </span>
 
-                <button
-  type="button"
-  className={`journal-feedback-inline-send ${
-    journalFeedbackSuccess ? "is-success" : ""
-  }`}
-  onClick={() => handleJournalFeedbackSubmit(selectedArticle)}
-  disabled={!activeJournalFeedback?.vote}
->
-  <span className="jf-send-label">
-    {lang === "sr" ? "Pošalji" : "Send"}
-  </span>
-
-  <span className="jf-send-check" aria-hidden="true">
-    ✓
-  </span>
-</button>
-              </div>
-            </div>
+      <span className="jf-send-check" aria-hidden="true">
+        ✓
+      </span>
+    </button>
+  </div>
+</div>
           </div>
         </div>
 
