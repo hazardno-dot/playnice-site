@@ -8926,28 +8926,22 @@ will-change: transform, opacity;
   margin: 0;
   padding: 18px 20px 16px;
   min-height: 210px;
-
   border-radius: var(--journal-radius-section);
   border: 1px solid rgba(215, 179, 98, 0.14);
-
   overflow: hidden;
   cursor: pointer;
   isolation: isolate;
-
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0.03),
-    rgba(255, 255, 255, 0.015)
-  );
-
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)),
+    radial-gradient(circle at top left, rgba(215, 179, 98, 0.05), transparent 42%);
   box-shadow:
     0 24px 50px rgba(0, 0, 0, 0.24),
     0 0 0 1px rgba(255, 255, 255, 0.02) inset;
-
   transition:
     transform 0.35s ease,
     border-color 0.35s ease,
-    box-shadow 0.35s ease;
+    box-shadow 0.35s ease,
+    background 0.35s ease;
 }
 
 .journal-featured::after {
@@ -8956,7 +8950,6 @@ will-change: transform, opacity;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.03),
     inset 0 -1px 0 rgba(0, 0, 0, 0.22);
@@ -8965,22 +8958,22 @@ will-change: transform, opacity;
 .journal-featured:hover {
   transform: translateY(-2px);
   border-color: rgba(215, 179, 98, 0.24);
-
   box-shadow:
     0 30px 70px rgba(0, 0, 0, 0.3),
     0 0 30px rgba(215, 179, 98, 0.08),
     0 0 0 1px rgba(255, 255, 255, 0.025) inset;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.032), rgba(255, 255, 255, 0.016)),
+    radial-gradient(circle at top left, rgba(215, 179, 98, 0.065), transparent 44%);
 }
 
 .journal-featured-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-
   transform: scale(1.02);
   filter: saturate(0.95) brightness(0.42);
   opacity: 0.88;
@@ -8990,7 +8983,6 @@ will-change: transform, opacity;
   position: absolute;
   inset: 0;
   z-index: 1;
-
   background:
     linear-gradient(
       90deg,
@@ -9004,19 +8996,16 @@ will-change: transform, opacity;
       rgba(215, 179, 98, 0.12),
       transparent 26%
     );
-
   pointer-events: none;
 }
 
 .journal-featured-content {
   position: relative;
   z-index: 2;
-
   width: 100%;
   max-width: none;
-
-  transform: translateY(-4px);
-
+  min-width: 0;
+  transform: translateY(-2px);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -9027,61 +9016,113 @@ will-change: transform, opacity;
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
-
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.44);
 }
 
 .journal-featured-date {
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(215, 179, 98, 0.78);
+  color: rgba(215, 179, 98, 0.82);
 }
 
 .journal-featured-reading-time {
   font-size: 10px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(215, 179, 98, 0.8);
+  color: rgba(215, 179, 98, 0.76);
 }
 
 .journal-featured-title {
   margin: 0 0 10px;
-  max-width: none;
-
+  max-width: 16ch;
   font-size: clamp(28px, 4vw, 40px);
+  font-weight: 600;
   line-height: 1.04;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   color: rgba(255, 248, 232, 0.98);
+  text-wrap: balance;
 }
 
 .journal-featured-excerpt {
   margin: 0;
   width: 100%;
-  max-width: none;
-
-  display: block;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-  word-break: normal;
-  overflow-wrap: break-word;
-
-  font-size: 14px;
-  line-height: 1.72;
-  color: rgba(255, 255, 255, 0.76);
+  max-width: 68ch;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 13.5px;
+  line-height: 1.68;
+  color: rgba(255, 255, 255, 0.74);
 }
 
 .journal-featured-link {
-  margin-top: 12px;
-
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  position: relative;
+  display: inline-block;
+  min-width: 0;
+  margin-top: 14px;
+  padding-right: 14px;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(215, 179, 98, 0.9);
+  transition:
+    color 0.25s ease,
+    letter-spacing 0.25s ease,
+    transform 0.25s ease;
+}
+
+.journal-featured-link::before {
+  content: "→";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(0);
+  font-size: 11px;
+  opacity: 0.85;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.journal-featured-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(215, 179, 98, 0),
+    rgba(215, 179, 98, 0.6),
+    rgba(215, 179, 98, 0)
+  );
+  opacity: 0.4;
+  transform: scaleX(0.6);
+  transform-origin: left;
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease;
+}
+
+.journal-featured:hover .journal-featured-link {
+  color: rgba(255, 222, 160, 0.98);
+  letter-spacing: 0.19em;
+  transform: translateY(-1px);
+}
+
+.journal-featured:hover .journal-featured-link::after {
+  opacity: 0.9;
+  transform: scaleX(1);
+}
+
+.journal-featured:hover .journal-featured-link::before {
+  transform: translateY(-50%) translateX(4px);
+  opacity: 1;
 }
 
 /* ---------- cards grid ---------- */
