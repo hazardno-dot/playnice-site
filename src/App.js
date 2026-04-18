@@ -3231,7 +3231,7 @@ const handleJournalFeedbackVote = (article, vote) => {
       ...current,
       vote: nextVote,
       submittedAt: nextVote ? Date.now() : current.submittedAt || null
-    }
+    },
   
     if (nextVote) {
   // ... sendBeacon
