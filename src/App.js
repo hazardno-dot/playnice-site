@@ -3216,6 +3216,8 @@ useEffect(() => {
   const handleJournalFeedbackSubmit = async (article) => {
   const key = getJournalArticleKey(article);
   if (!key) return;
+  console.log("NEW FEEDBACK FUNCTION RUNNING");
+alert("NEW FEEDBACK FUNCTION RUNNING");
 
   const payload = journalFeedback[key] || {};
   const trimmedNote = (payload.note || "").trim();
