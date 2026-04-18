@@ -9005,6 +9005,7 @@ will-change: transform, opacity;
   width: 100%;
   max-width: none;
   min-width: 0;
+  min-height: 100%;
   transform: translateY(-2px);
   display: flex;
   flex-direction: column;
@@ -9052,11 +9053,13 @@ will-change: transform, opacity;
 .journal-featured-excerpt {
   margin: 0;
   width: 100%;
-  max-width: 68ch;
+  max-width: 72ch;
+
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+
   font-size: 13.5px;
   line-height: 1.68;
   color: rgba(255, 255, 255, 0.74);
@@ -9066,13 +9069,17 @@ will-change: transform, opacity;
   position: relative;
   display: inline-block;
   min-width: 0;
-  margin-top: 14px;
+
+  margin-top: auto;
+  padding-top: 14px;
   padding-right: 14px;
+
   font-size: 10.5px;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(215, 179, 98, 0.9);
+
   transition:
     color 0.25s ease,
     letter-spacing 0.25s ease,
