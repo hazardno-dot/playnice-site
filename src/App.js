@@ -3242,30 +3242,31 @@ useEffect(() => {
   }
 
   try {
-  const payloadToSend = JSON.stringify({
-    timestamp: new Date().toISOString(),
-    article: key,
-    articleTitle: getJournalText(article?.title, lang),
-    vote: payload.vote || "",
-    note: trimmedNote,
-    lang,
-    page: window.location.pathname,
-    source: "journal"
-  });
+    const payloadToSend = JSON.stringify({
+      timestamp: new Date().toISOString(),
+      article: key,
+      articleTitle: getJournalText(article?.title, lang),
+      vote: payload.vote || "",
+      note: trimmedNote,
+      lang,
+      page: window.location.pathname,
+      source: "journal"
+    });
 
-  const blob = new Blob([payloadToSend], {
-    type: "text/plain;charset=utf-8"
-  });
+    const blob = new Blob([payloadToSend], {
+      type: "text/plain;charset=utf-8"
+    });
 
-  const ok = navigator.sendBeacon(
-    "https://script.google.com/macros/s/AKfycbxQawoSj2QydJHb6qstxVH1xbZxViQNvzLOgAKXsyaN_VFMwVv49G7mzRvyuQgn_V-d/exec",
-    blob
-  );
+    const ok = navigator.sendBeacon(
+      "https://script.google.com/macros/s/AKfycbxQawoSj2QydJHb6qstxVH1xbZxViQNvzLOgAKXsyaN_VFMwVv49G7mzRvyuQgn_V-d/exec",
+      blob
+    );
 
-  console.log("Journal feedback beacon sent:", ok);
-} catch (error) {
-  console.error("Journal feedback submit failed:", error);
-}
+    console.log("Journal feedback beacon sent:", ok);
+  } catch (error) {
+    console.error("Journal feedback submit failed:", error);
+  }
+};
 
   const activeJournalFeedback = selectedArticle
     ? getJournalSavedFeedback(selectedArticle)
