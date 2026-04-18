@@ -3172,6 +3172,7 @@ useEffect(() => {
   setJournalFeedbackSubmitted(false);
 }, [selectedArticle]);
 
+/* feedback helper */
   const getJournalSavedFeedback = (article) => {
     const key = getJournalArticleKey(article);
     if (!key) return null;
