@@ -2703,7 +2703,7 @@ const getRelatedJournalProducts = (article) => {
     .filter(Boolean);
 };
 
-// 👍👎 feedback
+// feedback
 const getJournalArticleKey = (article) => {
   if (!article) return "";
   return article.id || article.slug || article.title?.en || article.title?.sr || article.title || "";
