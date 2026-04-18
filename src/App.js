@@ -3298,7 +3298,7 @@ const handleJournalFeedbackNoteChange = (article, value) => {
     ...journalFeedback,
     [key]: {
       ...payload,
-      note: trimmedNote,
+      note: "",
       submittedAt: Date.now()
     }
   };
