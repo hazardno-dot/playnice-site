@@ -3258,7 +3258,7 @@ useEffect(() => {
     });
 
     const ok = navigator.sendBeacon(
-      "https://script.google.com/macros/s/AKfycbxQawoSj2QydJHb6qstxVH1xbZxViQNvzLOgAKXsyaN_VFMwVv49G7mzRvyuQgn_V-d/exec",
+      "https://script.google.com/macros/s/AKfycbxOO0qZ82f-jTBeMEteIJCHaQpZmh5_apyWYNVNHj4ZX924ifEF_rwU6rAZv33IXfv15A/exec",
       blob
     );
 
