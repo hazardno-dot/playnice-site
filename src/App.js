@@ -3243,7 +3243,7 @@ useEffect(() => {
 
   try {
     await fetch(
-      "https://script.google.com/macros/s/AKfycbxrJeUe3PLhZfSgZM69yVqzaSUxOtmT1KPb8I-O-aef__cv2T4c957on5C_OudqLR_rog/exec",
+      "https://script.google.com/macros/s/AKfycbxQawoSj2QydJHb6qstxVH1xbZxViQNvzLOgAKXsyaN_VFMwVv49G7mzRvyuQgn_V-d/exec",
       {
         method: "POST",
         mode: "no-cors",
