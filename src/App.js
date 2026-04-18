@@ -3242,8 +3242,19 @@ useEffect(() => {
   }
 
   try {
+    console.log("Submitting feedback payload:", {
+      timestamp: new Date().toISOString(),
+      article: key,
+      articleTitle: getJournalText(article?.title, lang),
+      vote: payload.vote || "",
+      note: trimmedNote,
+      lang,
+      page: window.location.pathname,
+      source: "journal"
+    });
+
     const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbxmOsmNiFU4gUIOZoYcGFAUAdezHW3ROLZdItp6vIHZgXUYv4Um1brWc5CUhhgF1P1U_w/exec",
+      "https://script.google.com/macros/s/AKfycbyXmD4bWfcrNI-VmZhVxD_vT_zJWtcanYlZ6T8NoHtGPs0Grt5UH4B9QfNcdCxM29BVkg/exec",
       {
         method: "POST",
         headers: {
@@ -3257,6 +3268,7 @@ useEffect(() => {
           note: trimmedNote,
           lang,
           page: window.location.pathname,
+          source: "journal"
         })
       }
     );
