@@ -9753,6 +9753,65 @@ will-change: transform, opacity;
   }
 }
 
+.jf-cross {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: radial-gradient(circle, #ff8a8a 0%, #e74c3c 70%);
+  color: #2a0d0d;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  box-shadow:
+    0 0 0 2px rgba(10, 10, 10, 0.92),
+    0 0 8px rgba(231, 76, 60, 0.35),
+    0 0 16px rgba(231, 76, 60, 0.18);
+
+  animation: journalCrossIn 0.28s ease forwards;
+
+  pointer-events: none;
+}
+
+.jf-cross::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.05)
+  );
+  opacity: 0.35;
+}
+
+@keyframes journalCrossIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) rotate(-8deg);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.15) rotate(0deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .journal-feedback-inline-shell {
   width: min(330px, 100%);
   min-width: 0;

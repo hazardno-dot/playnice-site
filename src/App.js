@@ -5719,10 +5719,10 @@ const getSizeWearHint = (size) => {
 >
   <span className="jf-icon">👎</span>
   {journalVoteSuccess === "down" && (
-    <span className="jf-check" aria-hidden="true">
-      ✓
-    </span>
-  )}
+  <span className="jf-cross" aria-hidden="true">
+    ✕
+  </span>
+)}
 </button>
 
             <div className="journal-feedback-inline-shell">
