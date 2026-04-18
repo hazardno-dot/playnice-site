@@ -3171,9 +3171,18 @@ useEffect(() => {
 
 useEffect(() => {
   setJournalFeedbackSubmitted(false);
+  setJournalFeedbackSuccess(false);
 }, [selectedArticle]);
 
 /* feedback helper */
+
+const triggerJournalFeedbackSuccess = () => {
+  setJournalFeedbackSuccess(true);
+
+  setTimeout(() => {
+    setJournalFeedbackSuccess(false);
+  }, 1400);
+};
 
 const sendJournalFeedback = (article, override = {}) => {
   const key = getJournalArticleKey(article);
@@ -3210,7 +3219,7 @@ const sendJournalFeedback = (article, override = {}) => {
   }
 };
 
-  const getJournalSavedFeedback = (article) => {
+const getJournalSavedFeedback = (article) => {
   const key = getJournalArticleKey(article);
   if (!key) return null;
   return journalFeedback[key] || null;
@@ -3231,13 +3240,7 @@ const handleJournalFeedbackVote = (article, vote) => {
       ...current,
       vote: nextVote,
       submittedAt: nextVote ? Date.now() : current.submittedAt || null
-    },
-  
-    if (nextVote) {
-  // ... sendBeacon
-
-  triggerJournalFeedbackSuccess();
-}
+    }
   };
 
   setJournalFeedback(nextFeedback);
@@ -3251,31 +3254,14 @@ const handleJournalFeedbackVote = (article, vote) => {
     console.error("Journal feedback storage failed:", error);
   }
 
-  if (nextVote) {
-    try {
-      const payloadToSend = JSON.stringify({
-        timestamp: new Date().toISOString(),
-        article: key,
-        articleTitle: getJournalText(article?.title, lang),
-        vote: nextVote,
-        note: (current.note || "").trim(),
-        lang,
-        page: window.location.pathname,
-        source: "journal"
-      });
+  if (!nextVote) return;
 
-      const blob = new Blob([payloadToSend], {
-        type: "text/plain;charset=utf-8"
-      });
+  sendJournalFeedback(article, {
+    vote: nextVote,
+    note: (current.note || "").trim()
+  });
 
-      navigator.sendBeacon(
-        "https://script.google.com/macros/s/AKfycbyVebg-sr3b2iKNXL7aJaVHkai6E90qOioPYX6eucLFHuMOvry2L4g2llzkTl9Zm_MtiQ/exec",
-        blob
-      );
-    } catch (error) {
-      console.error("Journal feedback submit failed:", error);
-    }
-  }
+  triggerJournalFeedbackSuccess();
 };
 
 const handleJournalFeedbackNoteChange = (article, value) => {
@@ -3294,7 +3280,7 @@ const handleJournalFeedbackNoteChange = (article, value) => {
   });
 };
 
-  const handleJournalFeedbackSubmit = (article) => {
+const handleJournalFeedbackSubmit = (article) => {
   const key = getJournalArticleKey(article);
   if (!key) return;
 
@@ -3303,29 +3289,10 @@ const handleJournalFeedbackNoteChange = (article, value) => {
 
   if (!current.vote || !trimmedNote) return;
 
-  try {
-    const payloadToSend = JSON.stringify({
-      timestamp: new Date().toISOString(),
-      article: key,
-      articleTitle: getJournalText(article?.title, lang),
-      vote: current.vote || "",
-      note: trimmedNote,
-      lang,
-      page: window.location.pathname,
-      source: "journal"
-    });
-
-    const blob = new Blob([payloadToSend], {
-      type: "text/plain;charset=utf-8"
-    });
-
-    navigator.sendBeacon(
-      "https://script.google.com/macros/s/AKfycbyVebg-sr3b2iKNXL7aJaVHkai6E90qOioPYX6eucLFHuMOvry2L4g2llzkTl9Zm_MtiQ/exec",
-      blob
-    );
-  } catch (error) {
-    console.error("Journal feedback submit failed:", error);
-  }
+  sendJournalFeedback(article, {
+    vote: current.vote || "",
+    note: trimmedNote
+  });
 
   setJournalFeedback((prev) => {
     const prevItem = prev[key] || {};
@@ -3354,17 +3321,9 @@ const handleJournalFeedbackNoteChange = (article, value) => {
   triggerJournalFeedbackSuccess();
 };
 
-  const activeJournalFeedback = selectedArticle
-    ? getJournalSavedFeedback(selectedArticle)
-    : null;
-
-    const triggerJournalFeedbackSuccess = () => {
-  setJournalFeedbackSuccess(true);
-
-  setTimeout(() => {
-    setJournalFeedbackSuccess(false);
-  }, 1400);
-};
+const activeJournalFeedback = selectedArticle
+  ? getJournalSavedFeedback(selectedArticle)
+  : null;
 
   /* =========================================
    DERIVED DATA
