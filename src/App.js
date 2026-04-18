@@ -3257,12 +3257,10 @@ useEffect(() => {
       type: "text/plain;charset=utf-8"
     });
 
-    const ok = navigator.sendBeacon(
+    navigator.sendBeacon(
       "https://script.google.com/macros/s/AKfycbyVebg-sr3b2iKNXL7aJaVHkai6E90qOioPYX6eucLFHuMOvry2L4g2llzkTl9Zm_MtiQ/exec",
       blob
     );
-
-    console.log("Journal feedback beacon sent:", ok);
   } catch (error) {
     console.error("Journal feedback submit failed:", error);
   }
