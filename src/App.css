@@ -9650,7 +9650,7 @@ will-change: transform, opacity;
 }
 
 .journal-feedback-inline-shell {
-  width: min(460px, 100%);
+  width: min(330px, 100%);
   min-height: 34px;
   display: flex;
   align-items: center;

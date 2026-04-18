@@ -5663,10 +5663,11 @@ const getSizeWearHint = (size) => {
                     className="journal-feedback-inline-input"
                   />
 
-                  <span className="journal-feedback-inline-count">
-                    {(getJournalSavedFeedback(selectedArticle)?.note || "").length}
-                    /180
-                  </span>
+                  {(getJournalSavedFeedback(selectedArticle)?.note || "").length > 0 && (
+  <span className="journal-feedback-inline-count">
+    {(getJournalSavedFeedback(selectedArticle)?.note || "").length}/180
+  </span>
+)}
 
                   <button
                     type="button"
