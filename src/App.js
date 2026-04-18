@@ -3242,22 +3242,28 @@ useEffect(() => {
   }
 
   try {
-    await fetch("https://script.google.com/macros/s/AKfycbxgf99j9r_X3xu04tg6KXaK9-QRnM4Eb1aPbnoKlUp9nWuogY6pGcnJXTMHEaD5Xy-s4A/exec", {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
-      body: JSON.stringify({
-  timestamp: new Date().toISOString(),
-  article: key,
-  articleTitle: getJournalText(article?.title, lang),
-  vote: payload.vote || "",
-  note: trimmedNote,
-  lang,
-  page: window.location.pathname,
-  source: "journal"
-})
-    });
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbyi2inTXxdzd0H-IU4jnbUCVYNZCyQJ511JGBPCxWQ3Tox601UKEAqDeuOVgTqY_U8Ydw/exec",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({
+          timestamp: new Date().toISOString(),
+          article: key,
+          articleTitle: getJournalText(article?.title, lang),
+          vote: payload.vote || "",
+          note: trimmedNote,
+          lang,
+          page: window.location.pathname,
+          source: "journal"
+        })
+      }
+    );
+
+    const text = await response.text();
+    console.log("Journal feedback response:", text);
   } catch (error) {
     console.error("Journal feedback submit failed:", error);
   }
