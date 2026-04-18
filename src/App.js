@@ -5607,7 +5607,7 @@ const getSizeWearHint = (size) => {
         </p>
 
         <div className="journal-inline-feedback-row">
-          <div className="journal-inline-feedback">
+          <div className="journal-inline-feedback-cluster">
             <button
               type="button"
               className={`jf-btn ${
@@ -5633,48 +5633,54 @@ const getSizeWearHint = (size) => {
             >
               👎
             </button>
+
+            <div
+              className={`journal-feedback-inline-shell ${
+                journalFeedbackSubmitted ? "is-success" : ""
+              }`}
+            >
+              {journalFeedbackSubmitted ? (
+                <span className="journal-feedback-inline-success">
+                  {lang === "sr" ? "Sačuvano." : "Saved."}
+                </span>
+              ) : (
+                <>
+                  <input
+                    type="text"
+                    maxLength={180}
+                    value={getJournalSavedFeedback(selectedArticle)?.note || ""}
+                    onChange={(e) =>
+                      handleJournalFeedbackNoteChange(
+                        selectedArticle,
+                        e.target.value
+                      )
+                    }
+                    placeholder={
+                      lang === "sr"
+                        ? "Feedback u jednoj rečenici..."
+                        : "Feedback in one sentence..."
+                    }
+                    className="journal-feedback-inline-input"
+                  />
+
+                  <span className="journal-feedback-inline-count">
+                    {(getJournalSavedFeedback(selectedArticle)?.note || "").length}
+                    /180
+                  </span>
+
+                  <button
+                    type="button"
+                    className="journal-feedback-inline-send"
+                    onClick={() => handleJournalFeedbackSubmit(selectedArticle)}
+                    disabled={!getJournalSavedFeedback(selectedArticle)?.vote}
+                  >
+                    {lang === "sr" ? "Pošalji" : "Send"}
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </div>
-
-        {getJournalSavedFeedback(selectedArticle)?.vote &&
-          !journalFeedbackSubmitted && (
-            <div className="journal-feedback-bar">
-              <input
-                type="text"
-                maxLength={180}
-                value={getJournalSavedFeedback(selectedArticle)?.note || ""}
-                onChange={(e) =>
-                  handleJournalFeedbackNoteChange(
-                    selectedArticle,
-                    e.target.value
-                  )
-                }
-                placeholder={
-                  lang === "sr"
-                    ? "Feedback u jednoj rečenici..."
-                    : "Feedback in one sentence..."
-                }
-              />
-
-              <span className="journal-feedback-char-count">
-                {(getJournalSavedFeedback(selectedArticle)?.note || "").length}
-                /180
-              </span>
-
-              <button
-                type="button"
-                onClick={() => handleJournalFeedbackSubmit(selectedArticle)}
-              >
-                {lang === "sr" ? "Pošalji" : "Send"}
-              </button>
-            </div>
-          )}
-
-        {journalFeedbackSubmitted && (
-          <div className="journal-feedback-bar success">
-            {lang === "sr" ? "Hvala — sačuvano." : "Thanks — saved."}
-          </div>
-        )}
 
         {getRelatedJournalProducts(selectedArticle).length > 0 && (
           <div className="journal-related-products">
