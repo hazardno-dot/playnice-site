@@ -3213,34 +3213,54 @@ useEffect(() => {
     });
   };
 
-  const handleJournalFeedbackSubmit = (article) => {
-    const key = getJournalArticleKey(article);
-    if (!key) return;
+  const handleJournalFeedbackSubmit = async (article) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return;
 
-    const payload = journalFeedback[key] || {};
-    const trimmedNote = (payload.note || "").trim();
+  const payload = journalFeedback[key] || {};
+  const trimmedNote = (payload.note || "").trim();
 
-    const nextFeedback = {
-      ...journalFeedback,
-      [key]: {
-        ...payload,
-        note: trimmedNote,
-        submittedAt: Date.now()
-      }
-    };
-
-    setJournalFeedback(nextFeedback);
-    setJournalFeedbackSubmitted(true);
-
-    try {
-      localStorage.setItem(
-        "playnice_journal_feedback",
-        JSON.stringify(nextFeedback)
-      );
-    } catch (error) {
-      console.error("Journal feedback storage failed:", error);
+  const nextFeedback = {
+    ...journalFeedback,
+    [key]: {
+      ...payload,
+      note: trimmedNote,
+      submittedAt: Date.now()
     }
   };
+
+  setJournalFeedback(nextFeedback);
+  setJournalFeedbackSubmitted(true);
+
+  try {
+    localStorage.setItem(
+      "playnice_journal_feedback",
+      JSON.stringify(nextFeedback)
+    );
+  } catch (error) {
+    console.error("Journal feedback storage failed:", error);
+  }
+
+  try {
+    await fetch("https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbyvTgNaX3XsrV6NdZlLmbbUX2bYvJRNsko7dRFO3FRAyqp-LVNdaAY1Tu5yt5JpDQAPgQ/exec/exec", {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        timestamp: new Date().toISOString(),
+        article: key,
+        articleTitle: getJournalText(article?.title, lang),
+        vote: payload.vote || "",
+        note: trimmedNote,
+        lang,
+        page: window.location.pathname
+      })
+    });
+  } catch (error) {
+    console.error("Journal feedback submit failed:", error);
+  }
+};
 
   const activeJournalFeedback = selectedArticle
     ? getJournalSavedFeedback(selectedArticle)
