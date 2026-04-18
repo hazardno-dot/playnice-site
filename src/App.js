@@ -3242,21 +3242,11 @@ useEffect(() => {
   }
 
   try {
-    console.log("Submitting feedback payload:", {
-      timestamp: new Date().toISOString(),
-      article: key,
-      articleTitle: getJournalText(article?.title, lang),
-      vote: payload.vote || "",
-      note: trimmedNote,
-      lang,
-      page: window.location.pathname,
-      source: "journal"
-    });
-
-    const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbyXmD4bWfcrNI-VmZhVxD_vT_zJWtcanYlZ6T8NoHtGPs0Grt5UH4B9QfNcdCxM29BVkg/exec",
+    await fetch(
+      "https://script.google.com/macros/s/AKfycbyi2inTXxdzd0H-IU4jnbUCVYNZCyQJ511JGBPCxWQ3Tox601UKEAqDeuOVgTqY_U8Ydw/exec",
       {
         method: "POST",
+        mode: "no-cors",
         headers: {
           "Content-Type": "text/plain;charset=utf-8"
         },
@@ -3273,8 +3263,7 @@ useEffect(() => {
       }
     );
 
-    const text = await response.text();
-    console.log("Journal feedback response:", text);
+    console.log("Journal feedback sent");
   } catch (error) {
     console.error("Journal feedback submit failed:", error);
   }
