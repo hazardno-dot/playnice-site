@@ -9622,25 +9622,6 @@ will-change: transform, opacity;
 .jf-btn {
   position: relative;
   overflow: visible;
-  width: 30px;
-  height: 30px;
-  flex: 0 0 30px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  border: 1px solid rgba(212, 175, 55, 0.15);
-  background: rgba(255, 255, 255, 0.02);
-  color: #f5efe4;
-  font-size: 13px;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.16s ease,
-    box-shadow 0.22s ease,
-    color 0.2s ease;
-  will-change: transform, box-shadow;
 }
 
 .jf-btn:hover {
@@ -9777,6 +9758,42 @@ will-change: transform, opacity;
   transform: none;
 }
 
+.jf-check {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 15px;
+  height: 15px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212, 175, 55, 0.96);
+  color: #111;
+  font-size: 10px;
+  font-weight: 700;
+  box-shadow:
+    0 0 0 2px rgba(10, 10, 10, 0.92),
+    0 4px 10px rgba(212, 175, 55, 0.22);
+  animation: journalVoteCheckIn 0.26s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes journalVoteCheckIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.55) translateY(2px);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.08) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 @keyframes journalThumbPulse {
   0% {
     transform: scale(0.92);
@@ -9796,31 +9813,6 @@ will-change: transform, opacity;
       0 0 0 1px rgba(212, 175, 55, 0.08),
       0 0 14px rgba(212, 175, 55, 0.16),
       inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  }
-}
-
-@keyframes journalDotPulse {
-  0% {
-    transform: scale(0.6);
-    opacity: 0;
-    box-shadow:
-      0 0 0 0 rgba(212, 175, 55, 0),
-      0 0 0 rgba(212, 175, 55, 0);
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 1;
-    box-shadow:
-      0 0 0 6px rgba(212, 175, 55, 0.08),
-      0 0 14px rgba(212, 175, 55, 0.25);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-    box-shadow:
-      0 0 0 2px rgba(10, 10, 10, 0.9),
-      0 0 6px rgba(212, 175, 55, 0.3),
-      0 0 10px rgba(212, 175, 55, 0.16);
   }
 }
 
