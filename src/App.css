@@ -9106,6 +9106,7 @@ will-change: transform, opacity;
 
 .journal-card {
   position: relative;
+  min-width: 0;
   min-height: 260px;
   height: 100%;
   display: flex;
@@ -9237,23 +9238,19 @@ will-change: transform, opacity;
 .journal-card-link {
   position: relative;
   display: inline-block;
-
+  min-width: 0;
   margin-top: auto;
   padding-top: 14px;
   padding-right: 14px;
-
   font-size: 10.5px;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-
   color: rgba(215, 179, 98, 0.88);
-
   transition:
     color 0.25s ease,
     letter-spacing 0.25s ease,
     transform 0.25s ease;
-
   cursor: pointer;
 }
 
@@ -9263,10 +9260,8 @@ will-change: transform, opacity;
   right: 0;
   top: 50%;
   transform: translateY(-50%) translateX(0);
-
   font-size: 11px;
   opacity: 0.85;
-
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
@@ -9274,22 +9269,18 @@ will-change: transform, opacity;
   content: "";
   position: absolute;
   left: 0;
-  bottom: 2px;
-
+  bottom: 0;
   width: 100%;
   height: 1px;
-
   background: linear-gradient(
     90deg,
     rgba(215, 179, 98, 0),
     rgba(215, 179, 98, 0.6),
     rgba(215, 179, 98, 0)
   );
-
   opacity: 0.4;
   transform: scaleX(0.6);
   transform-origin: left;
-
   transition:
     transform 0.35s ease,
     opacity 0.35s ease;
@@ -9297,7 +9288,7 @@ will-change: transform, opacity;
 
 .journal-card:hover .journal-card-link {
   color: rgba(255, 222, 160, 0.98);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.19em;
   transform: translateY(-1px);
 }
 
