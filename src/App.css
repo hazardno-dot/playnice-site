@@ -9823,21 +9823,6 @@ will-change: transform, opacity;
   pointer-events: none;
 }
 
-@keyframes journalVoteCheckIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.55) translateY(2px);
-  }
-  70% {
-    opacity: 1;
-    transform: scale(1.08) translateY(0);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
 @keyframes journalDotPulse {
   0% {
     transform: scale(0.6);
