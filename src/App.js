@@ -5609,30 +5609,28 @@ const getSizeWearHint = (size) => {
         <div className="journal-inline-feedback-row">
           <div className="journal-inline-feedback-cluster">
             <button
-              type="button"
-              className={`jf-btn ${
-                getJournalSavedFeedback(selectedArticle)?.vote === "up"
-                  ? "active"
-                  : ""
-              }`}
-              onClick={() => handleJournalFeedbackVote(selectedArticle, "up")}
-              aria-label={lang === "sr" ? "Korisno" : "Helpful"}
-            >
-              👍
-            </button>
+  type="button"
+  className={`jf-btn jf-up ${
+    getJournalSavedFeedback(selectedArticle)?.vote === "up"
+      ? "active"
+      : ""
+  }`}
+  onClick={() => handleJournalFeedbackVote(selectedArticle, "up")}
+>
+  👍
+</button>
 
-            <button
-              type="button"
-              className={`jf-btn ${
-                getJournalSavedFeedback(selectedArticle)?.vote === "down"
-                  ? "active"
-                  : ""
-              }`}
-              onClick={() => handleJournalFeedbackVote(selectedArticle, "down")}
-              aria-label={lang === "sr" ? "Nije korisno" : "Not helpful"}
-            >
-              👎
-            </button>
+<button
+  type="button"
+  className={`jf-btn jf-down ${
+    getJournalSavedFeedback(selectedArticle)?.vote === "down"
+      ? "active"
+      : ""
+  }`}
+  onClick={() => handleJournalFeedbackVote(selectedArticle, "down")}
+>
+  👎
+</button>
 
             <div
               className={`journal-feedback-inline-shell ${
