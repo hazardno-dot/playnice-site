@@ -2764,6 +2764,7 @@ function App() {
   const [journalFeedback, setJournalFeedback] = useState({});
   const [journalFeedbackSubmitted, setJournalFeedbackSubmitted] = useState(false);
   const [journalVoteSuccess, setJournalVoteSuccess] = useState("");
+  const [journalFeedbackSuccess, setJournalFeedbackSuccess] = useState(false);
 
   /* =========================================
      APP REFS
