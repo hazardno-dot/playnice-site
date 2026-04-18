@@ -9605,255 +9605,72 @@ will-change: transform, opacity;
    JOURNAL ARTICLE FEEDBACK
 ========================================= */
 
-.journal-feedback-card {
-  margin-top: 34px;
-  padding: 24px 22px 20px;
-  border-radius: 24px;
-  border: 1px solid rgba(212, 175, 55, 0.14);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.012) 100%),
-    rgba(10, 10, 10, 0.82);
-  box-shadow:
-    0 18px 50px rgba(0, 0, 0, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.journal-feedback-top {
-  margin-bottom: 18px;
-}
-
-.journal-feedback-kicker {
-  display: inline-block;
-  margin-bottom: 10px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(212, 175, 55, 0.82);
-}
-
-.journal-feedback-title {
-  margin: 0 0 8px;
-  font-size: clamp(18px, 2.2vw, 24px);
-  line-height: 1.2;
-  font-weight: 600;
-  color: #f5efe4;
-}
-
-.journal-feedback-text {
-  margin: 0;
-  font-size: 14.5px;
-  line-height: 1.75;
-  color: rgba(255, 248, 235, 0.72);
-}
-
-.journal-feedback-actions {
+.journal-inline-feedback-row {
   display: flex;
-  gap: 12px;
-  margin-bottom: 18px;
+  justify-content: flex-end;
+  margin-top: 10px;
 }
 
-.journal-feedback-vote {
-  flex: 1;
-  min-height: 56px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 0 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(212, 175, 55, 0.14);
-  background: rgba(255, 255, 255, 0.025);
-  color: #f5efe4;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    transform 0.22s ease,
-    border-color 0.22s ease,
-    background 0.22s ease,
-    box-shadow 0.22s ease,
-    color 0.22s ease;
-}
-
-.journal-feedback-vote:hover {
-  transform: translateY(-1px);
-  border-color: rgba(212, 175, 55, 0.28);
-  background: rgba(255, 255, 255, 0.045);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-}
-
-.journal-feedback-vote.active {
-  border-color: rgba(212, 175, 55, 0.44);
-  background:
-    linear-gradient(180deg, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0.06) 100%);
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-}
-
-.journal-feedback-vote.active.up {
-  color: #f6e7b3;
-}
-
-.journal-feedback-vote.active.down {
-  color: #ffd8d2;
-}
-
-.journal-feedback-icon {
-  font-size: 16px;
-  line-height: 1;
-}
-
-.journal-feedback-note-wrap {
+.journal-inline-feedback {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
-.journal-feedback-label {
-  font-size: 13px;
-  line-height: 1.5;
-  color: rgba(255, 248, 235, 0.76);
-}
-
-.journal-feedback-note {
-  width: 100%;
-  resize: vertical;
-  min-height: 94px;
-  padding: 14px 15px;
-  border-radius: 16px;
-  border: 1px solid rgba(212, 175, 55, 0.12);
-  background: rgba(255, 255, 255, 0.03);
-  color: #f5efe4;
-  font: inherit;
-  line-height: 1.65;
-  outline: none;
-  transition:
-    border-color 0.22s ease,
-    box-shadow 0.22s ease,
-    background 0.22s ease;
-}
-
-.journal-feedback-note::placeholder {
-  color: rgba(255, 248, 235, 0.34);
-}
-
-.journal-feedback-note:focus {
-  border-color: rgba(212, 175, 55, 0.3);
-  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.08);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.journal-feedback-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.journal-feedback-counter {
-  font-size: 12px;
-  color: rgba(255, 248, 235, 0.46);
-}
-
-.journal-feedback-submit {
-  min-width: 158px;
-  min-height: 46px;
-  padding: 0 18px;
-  border: 1px solid rgba(212, 175, 55, 0.18);
+.jf-btn {
+  width: 30px;
+  height: 30px;
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(212, 175, 55, 0.16) 0%, rgba(212, 175, 55, 0.08) 100%);
+  border: 1px solid rgba(212,175,55,0.15);
+  background: rgba(255,255,255,0.02);
   color: #f5efe4;
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
   cursor: pointer;
-  transition:
-    transform 0.22s ease,
-    border-color 0.22s ease,
-    box-shadow 0.22s ease,
-    opacity 0.22s ease;
+  transition: all 0.2s ease;
 }
 
-.journal-feedback-submit:hover:not(:disabled) {
-  transform: translateY(-1px);
-  border-color: rgba(212, 175, 55, 0.34);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+.jf-btn:hover {
+  border-color: rgba(212,175,55,0.35);
+  background: rgba(255,255,255,0.05);
 }
 
-.journal-feedback-submit:disabled {
-  opacity: 0.42;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+.jf-btn.active {
+  background: rgba(212,175,55,0.12);
+  border-color: rgba(212,175,55,0.4);
 }
 
-.journal-feedback-success {
-  margin-top: 14px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(212, 175, 55, 0.12);
-  background: rgba(212, 175, 55, 0.06);
-  color: #f0dfaa;
+.journal-feedback-bar {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(212,175,55,0.15);
+  background: rgba(255,255,255,0.03);
+}
+
+.journal-feedback-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f5efe4;
   font-size: 13px;
-  line-height: 1.5;
 }
 
-/* =========================================
-   JOURNAL FEEDBACK — RESPONSIVE
-========================================= */
-
-@media (max-width: 768px) {
-  .journal-feedback-card {
-    margin-top: 28px;
-    padding: 20px 16px 16px;
-    border-radius: 20px;
-  }
-
-  .journal-feedback-actions {
-    flex-direction: column;
-  }
-
-  .journal-feedback-vote {
-    width: 100%;
-    min-height: 52px;
-  }
-
-  .journal-feedback-bottom {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .journal-feedback-counter {
-    order: 2;
-    text-align: right;
-  }
-
-  .journal-feedback-submit {
-    width: 100%;
-    min-width: 100%;
-  }
+.journal-feedback-bar button {
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(212,175,55,0.2);
+  background: rgba(212,175,55,0.12);
+  color: #f5efe4;
+  font-size: 12px;
+  cursor: pointer;
 }
 
-@media (max-width: 480px) {
-  .journal-feedback-title {
-    font-size: 19px;
-  }
-
-  .journal-feedback-text {
-    font-size: 14px;
-    line-height: 1.72;
-  }
-
-  .journal-feedback-note {
-    min-height: 88px;
-    padding: 13px 14px;
-    font-size: 14px;
-  }
+.journal-feedback-bar.success {
+  justify-content: center;
+  color: #f0dfaa;
+  font-size: 12.5px;
 }
 
 /* =========================================
