@@ -3242,28 +3242,21 @@ useEffect(() => {
   }
 
   try {
-    await fetch(
-      "https://script.google.com/macros/s/AKfycbyi2inTXxdzd0H-IU4jnbUCVYNZCyQJ511JGBPCxWQ3Tox601UKEAqDeuOVgTqY_U8Ydw/exec",
-      {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          article: key,
-          articleTitle: getJournalText(article?.title, lang),
-          vote: payload.vote || "",
-          note: trimmedNote,
-          lang,
-          page: window.location.pathname,
-          source: "journal"
-        })
-      }
-    );
-
-    console.log("Journal feedback sent");
+    await fetch("https://script.google.com/macros/s/AKfycbwnmROzxz_ym4B6bdjc1dc6EHcXsbC5JghA1C1cNcj50Q5p8RXAh0gHs3VNxh4E0lvsYA/exec", {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        timestamp: new Date().toISOString(),
+        article: key,
+        articleTitle: getJournalText(article?.title, lang),
+        vote: payload.vote || "",
+        note: trimmedNote,
+        lang,
+        page: window.location.pathname
+      })
+    });
   } catch (error) {
     console.error("Journal feedback submit failed:", error);
   }
