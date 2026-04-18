@@ -9775,8 +9775,17 @@ will-change: transform, opacity;
 
 .journal-feedback-inline-success {
   font-size: 12px;
-  color: #f0dfaa;
-  white-space: nowrap;
+  color: #c6a15b; /* gold */
+  opacity: 0;
+  transform: translateY(4px);
+  animation: feedbackSuccessIn 0.3s ease forwards;
+}
+
+@keyframes feedbackSuccessIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 768px) {
