@@ -3173,45 +3173,118 @@ useEffect(() => {
 }, [selectedArticle]);
 
 /* feedback helper */
+
+const sendJournalFeedback = (article, override = {}) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return;
+
+  const saved = journalFeedback[key] || {};
+  const vote = override.vote ?? saved.vote ?? "";
+  const note = (override.note ?? saved.note ?? "").trim();
+
+  if (!vote) return;
+
+  try {
+    const payloadToSend = JSON.stringify({
+      timestamp: new Date().toISOString(),
+      article: key,
+      articleTitle: getJournalText(article?.title, lang),
+      vote,
+      note,
+      lang,
+      page: window.location.pathname,
+      source: "journal"
+    });
+
+    const blob = new Blob([payloadToSend], {
+      type: "text/plain;charset=utf-8"
+    });
+
+    navigator.sendBeacon(
+      "https://script.google.com/macros/s/AKfycbyVebg-sr3b2iKNXL7aJaVHkai6E90qOioPYX6eucLFHuMOvry2L4g2llzkTl9Zm_MtiQ/exec",
+      blob
+    );
+  } catch (error) {
+    console.error("Journal feedback submit failed:", error);
+  }
+};
+
   const getJournalSavedFeedback = (article) => {
-    const key = getJournalArticleKey(article);
-    if (!key) return null;
-    return journalFeedback[key] || null;
+  const key = getJournalArticleKey(article);
+  if (!key) return null;
+  return journalFeedback[key] || null;
+};
+
+const handleJournalFeedbackVote = (article, vote) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return;
+
+  const current = journalFeedback[key] || {};
+  const nextVote = current.vote === vote ? "" : vote;
+
+  const nextFeedback = {
+    ...journalFeedback,
+    [key]: {
+      ...current,
+      vote: nextVote,
+      submittedAt: nextVote ? Date.now() : current.submittedAt || null
+    }
   };
 
-  const handleJournalFeedbackVote = (article, vote) => {
-    const key = getJournalArticleKey(article);
-    if (!key) return;
+  setJournalFeedback(nextFeedback);
+  setJournalFeedbackSubmitted(!!nextVote);
 
-    setJournalFeedbackSubmitted(false);
+  try {
+    localStorage.setItem(
+      "playnice_journal_feedback",
+      JSON.stringify(nextFeedback)
+    );
+  } catch (error) {
+    console.error("Journal feedback storage failed:", error);
+  }
 
-    setJournalFeedback((prev) => {
-      const current = prev[key] || {};
-      return {
-        ...prev,
-        [key]: {
-          ...current,
-          vote
-        }
-      };
-    });
-  };
+  if (nextVote) {
+    try {
+      const payloadToSend = JSON.stringify({
+        timestamp: new Date().toISOString(),
+        article: key,
+        articleTitle: getJournalText(article?.title, lang),
+        vote: nextVote,
+        note: (current.note || "").trim(),
+        lang,
+        page: window.location.pathname,
+        source: "journal"
+      });
 
-  const handleJournalFeedbackNoteChange = (article, value) => {
-    const key = getJournalArticleKey(article);
-    if (!key) return;
+      const blob = new Blob([payloadToSend], {
+        type: "text/plain;charset=utf-8"
+      });
 
-    setJournalFeedback((prev) => {
-      const current = prev[key] || {};
-      return {
-        ...prev,
-        [key]: {
-          ...current,
-          note: value
-        }
-      };
-    });
-  };
+      navigator.sendBeacon(
+        "https://script.google.com/macros/s/AKfycbyVebg-sr3b2iKNXL7aJaVHkai6E90qOioPYX6eucLFHuMOvry2L4g2llzkTl9Zm_MtiQ/exec",
+        blob
+      );
+    } catch (error) {
+      console.error("Journal feedback submit failed:", error);
+    }
+  }
+};
+
+const handleJournalFeedbackNoteChange = (article, value) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return;
+
+  setJournalFeedback((prev) => {
+    const current = prev[key] || {};
+    return {
+      ...prev,
+      [key]: {
+        ...current,
+        note: value
+      }
+    };
+  });
+};
 
   const handleJournalFeedbackSubmit = (article) => {
   const key = getJournalArticleKey(article);
