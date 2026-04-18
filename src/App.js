@@ -3257,7 +3257,6 @@ useEffect(() => {
           note: trimmedNote,
           lang,
           page: window.location.pathname,
-          source: "journal"
         })
       }
     );
