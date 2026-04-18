@@ -2763,6 +2763,7 @@ function App() {
 
   const [journalFeedback, setJournalFeedback] = useState({});
   const [journalFeedbackSubmitted, setJournalFeedbackSubmitted] = useState(false);
+  const [journalVoteSuccess, setJournalVoteSuccess] = useState("");
 
   /* =========================================
      APP REFS
@@ -3170,6 +3171,7 @@ useEffect(() => {
 
 useEffect(() => {
   setJournalFeedbackSubmitted(false);
+  setJournalVoteSuccess("");
 }, [selectedArticle]);
 
 /* feedback helper */
@@ -3215,6 +3217,14 @@ const getJournalSavedFeedback = (article) => {
   return journalFeedback[key] || null;
 };
 
+const triggerJournalVoteSuccess = (vote) => {
+  setJournalVoteSuccess(vote);
+
+  setTimeout(() => {
+    setJournalVoteSuccess("");
+  }, 1100);
+};
+
 const handleJournalFeedbackVote = (article, vote) => {
   const key = getJournalArticleKey(article);
   if (!key) return;
@@ -3250,6 +3260,8 @@ const handleJournalFeedbackVote = (article, vote) => {
     vote: nextVote,
     note: (current.note || "").trim()
   });
+
+  triggerJournalVoteSuccess(nextVote);
 };
 
 const handleJournalFeedbackNoteChange = (article, value) => {
@@ -5674,28 +5686,36 @@ const getSizeWearHint = (size) => {
         <div className="journal-inline-feedback-row">
           <div className="journal-inline-feedback-cluster">
             <button
-              type="button"
-              className={`jf-btn jf-up ${
-                getJournalSavedFeedback(selectedArticle)?.vote === "up"
-                  ? "active"
-                  : ""
-              }`}
-              onClick={() => handleJournalFeedbackVote(selectedArticle, "up")}
-            >
-              👍
-            </button>
+  type="button"
+  className={`jf-btn jf-up ${
+    activeJournalFeedback?.vote === "up" ? "active" : ""
+  }`}
+  onClick={() => handleJournalFeedbackVote(selectedArticle, "up")}
+  aria-label={lang === "sr" ? "Pozitivan feedback" : "Positive feedback"}
+>
+  <span className="jf-icon">👍</span>
+  {journalVoteSuccess === "up" && (
+    <span className="jf-check" aria-hidden="true">
+      ✓
+    </span>
+  )}
+</button>
 
-            <button
-              type="button"
-              className={`jf-btn jf-down ${
-                getJournalSavedFeedback(selectedArticle)?.vote === "down"
-                  ? "active"
-                  : ""
-              }`}
-              onClick={() => handleJournalFeedbackVote(selectedArticle, "down")}
-            >
-              👎
-            </button>
+<button
+  type="button"
+  className={`jf-btn jf-down ${
+    activeJournalFeedback?.vote === "down" ? "active" : ""
+  }`}
+  onClick={() => handleJournalFeedbackVote(selectedArticle, "down")}
+  aria-label={lang === "sr" ? "Negativan feedback" : "Negative feedback"}
+>
+  <span className="jf-icon">👎</span>
+  {journalVoteSuccess === "down" && (
+    <span className="jf-check" aria-hidden="true">
+      ✓
+    </span>
+  )}
+</button>
 
             <div className="journal-feedback-inline-shell">
               <div className="journal-feedback-inline-inner">
