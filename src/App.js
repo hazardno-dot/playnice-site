@@ -3248,14 +3248,15 @@ useEffect(() => {
         "Content-Type": "text/plain;charset=utf-8"
       },
       body: JSON.stringify({
-        timestamp: new Date().toISOString(),
-        article: key,
-        articleTitle: getJournalText(article?.title, lang),
-        vote: payload.vote || "",
-        note: trimmedNote,
-        lang,
-        page: window.location.pathname
-      })
+  timestamp: new Date().toISOString(),
+  article: key,
+  articleTitle: getJournalText(article?.title, lang),
+  vote: payload.vote || "",
+  note: trimmedNote,
+  lang,
+  page: window.location.pathname,
+  source: "journal"
+})
     });
   } catch (error) {
     console.error("Journal feedback submit failed:", error);
