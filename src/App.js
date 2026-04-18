@@ -3291,36 +3291,17 @@ const handleJournalFeedbackNoteChange = (article, value) => {
   const key = getJournalArticleKey(article);
   if (!key) return;
 
-  const payload = journalFeedback[key] || {};
-  const trimmedNote = (payload.note || "").trim();
+  const current = journalFeedback[key] || {};
+  const trimmedNote = (current.note || "").trim();
 
-  const nextFeedback = {
-    ...journalFeedback,
-    [key]: {
-      ...payload,
-      note: "",
-      submittedAt: Date.now()
-    }
-  };
-
-  setJournalFeedback(nextFeedback);
-  setJournalFeedbackSubmitted(true);
-
-  try {
-    localStorage.setItem(
-      "playnice_journal_feedback",
-      JSON.stringify(nextFeedback)
-    );
-  } catch (error) {
-    console.error("Journal feedback storage failed:", error);
-  }
+  if (!current.vote || !trimmedNote) return;
 
   try {
     const payloadToSend = JSON.stringify({
       timestamp: new Date().toISOString(),
       article: key,
       articleTitle: getJournalText(article?.title, lang),
-      vote: payload.vote || "",
+      vote: current.vote || "",
       note: trimmedNote,
       lang,
       page: window.location.pathname,
@@ -3338,6 +3319,32 @@ const handleJournalFeedbackNoteChange = (article, value) => {
   } catch (error) {
     console.error("Journal feedback submit failed:", error);
   }
+
+  setJournalFeedback((prev) => {
+    const prevItem = prev[key] || {};
+
+    const nextFeedback = {
+      ...prev,
+      [key]: {
+        ...prevItem,
+        note: "",
+        submittedAt: Date.now()
+      }
+    };
+
+    try {
+      localStorage.setItem(
+        "playnice_journal_feedback",
+        JSON.stringify(nextFeedback)
+      );
+    } catch (error) {
+      console.error("Journal feedback storage failed:", error);
+    }
+
+    return nextFeedback;
+  });
+
+  setJournalFeedbackSubmitted(true);
 };
 
   const activeJournalFeedback = selectedArticle
