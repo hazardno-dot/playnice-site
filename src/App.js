@@ -5667,27 +5667,27 @@ const getSizeWearHint = (size) => {
             <button
               type="button"
               className={`journal-feedback-vote ${
-                activeJournalFeedback?.vote === "up" ? "active up" : ""
+                getJournalSavedFeedback(selectedArticle)?.vote === "up"
+                  ? "active up"
+                  : ""
               }`}
               onClick={() => handleJournalFeedbackVote(selectedArticle, "up")}
             >
               <span className="journal-feedback-icon">👍</span>
-              <span>
-                {lang === "sr" ? "Da, korisno je" : "Yes, helpful"}
-              </span>
+              <span>{lang === "sr" ? "Da, korisno je" : "Yes, helpful"}</span>
             </button>
 
             <button
               type="button"
               className={`journal-feedback-vote ${
-                activeJournalFeedback?.vote === "down" ? "active down" : ""
+                getJournalSavedFeedback(selectedArticle)?.vote === "down"
+                  ? "active down"
+                  : ""
               }`}
               onClick={() => handleJournalFeedbackVote(selectedArticle, "down")}
             >
               <span className="journal-feedback-icon">👎</span>
-              <span>
-                {lang === "sr" ? "Ne baš" : "Not really"}
-              </span>
+              <span>{lang === "sr" ? "Ne baš" : "Not really"}</span>
             </button>
           </div>
 
@@ -5702,7 +5702,7 @@ const getSizeWearHint = (size) => {
               className="journal-feedback-note"
               rows={3}
               maxLength={180}
-              value={activeJournalFeedback?.note || ""}
+              value={getJournalSavedFeedback(selectedArticle)?.note || ""}
               onChange={(e) =>
                 handleJournalFeedbackNoteChange(selectedArticle, e.target.value)
               }
@@ -5715,14 +5715,15 @@ const getSizeWearHint = (size) => {
 
             <div className="journal-feedback-bottom">
               <span className="journal-feedback-counter">
-                {(activeJournalFeedback?.note || "").length}/180
+                {(getJournalSavedFeedback(selectedArticle)?.note || "").length}
+                /180
               </span>
 
               <button
                 type="button"
                 className="journal-feedback-submit"
                 onClick={() => handleJournalFeedbackSubmit(selectedArticle)}
-                disabled={!activeJournalFeedback?.vote}
+                disabled={!getJournalSavedFeedback(selectedArticle)?.vote}
               >
                 {lang === "sr" ? "Pošalji feedback" : "Send feedback"}
               </button>
