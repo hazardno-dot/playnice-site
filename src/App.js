@@ -2703,92 +2703,10 @@ const getRelatedJournalProducts = (article) => {
     .filter(Boolean);
 };
 
-// feedback
 const getJournalArticleKey = (article) => {
   if (!article) return "";
   return article.id || article.slug || article.title?.en || article.title?.sr || article.title || "";
 };
-
-const getJournalSavedFeedback = (article) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return null;
-  return journalFeedback[key] || null;
-};
-
-const handleJournalFeedbackVote = (article, vote) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return;
-
-  setJournalFeedbackSubmitted(false);
-
-  setJournalFeedback((prev) => {
-    const current = prev[key] || {};
-    return {
-      ...prev,
-      [key]: {
-        ...current,
-        vote
-      }
-    };
-  });
-};
-
-const handleJournalFeedbackNoteChange = (article, value) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return;
-
-  setJournalFeedbackNote(value);
-
-  setJournalFeedback((prev) => {
-    const current = prev[key] || {};
-    return {
-      ...prev,
-      [key]: {
-        ...current,
-        note: value
-      }
-    };
-  });
-};
-
-const handleJournalFeedbackSubmit = (article) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return;
-
-  const payload = journalFeedback[key] || {};
-  const trimmedNote = (payload.note || "").trim();
-
-  setJournalFeedback((prev) => ({
-    ...prev,
-    [key]: {
-      ...prev[key],
-      note: trimmedNote,
-      submittedAt: Date.now()
-    }
-  }));
-
-  setJournalFeedbackSubmitted(true);
-
-  try {
-    localStorage.setItem(
-      "playnice_journal_feedback",
-      JSON.stringify({
-        ...journalFeedback,
-        [key]: {
-          ...payload,
-          note: trimmedNote,
-          submittedAt: Date.now()
-        }
-      })
-    );
-  } catch (error) {
-    console.error("Journal feedback storage failed:", error);
-  }
-};
-
-const activeJournalFeedback = selectedArticle
-  ? getJournalSavedFeedback(selectedArticle)
-  : null;
 
 /* =========================================
    APP
@@ -2844,7 +2762,6 @@ function App() {
   const [selectedArticle, setSelectedArticle] = useState(null);
 
   const [journalFeedback, setJournalFeedback] = useState({});
-  const [journalFeedbackNote, setJournalFeedbackNote] = useState("");
   const [journalFeedbackSubmitted, setJournalFeedbackSubmitted] = useState(false);
 
   /* =========================================
@@ -3254,6 +3171,79 @@ useEffect(() => {
 useEffect(() => {
   setJournalFeedbackSubmitted(false);
 }, [selectedArticle]);
+
+  const getJournalSavedFeedback = (article) => {
+    const key = getJournalArticleKey(article);
+    if (!key) return null;
+    return journalFeedback[key] || null;
+  };
+
+  const handleJournalFeedbackVote = (article, vote) => {
+    const key = getJournalArticleKey(article);
+    if (!key) return;
+
+    setJournalFeedbackSubmitted(false);
+
+    setJournalFeedback((prev) => {
+      const current = prev[key] || {};
+      return {
+        ...prev,
+        [key]: {
+          ...current,
+          vote
+        }
+      };
+    });
+  };
+
+  const handleJournalFeedbackNoteChange = (article, value) => {
+    const key = getJournalArticleKey(article);
+    if (!key) return;
+
+    setJournalFeedback((prev) => {
+      const current = prev[key] || {};
+      return {
+        ...prev,
+        [key]: {
+          ...current,
+          note: value
+        }
+      };
+    });
+  };
+
+  const handleJournalFeedbackSubmit = (article) => {
+    const key = getJournalArticleKey(article);
+    if (!key) return;
+
+    const payload = journalFeedback[key] || {};
+    const trimmedNote = (payload.note || "").trim();
+
+    const nextFeedback = {
+      ...journalFeedback,
+      [key]: {
+        ...payload,
+        note: trimmedNote,
+        submittedAt: Date.now()
+      }
+    };
+
+    setJournalFeedback(nextFeedback);
+    setJournalFeedbackSubmitted(true);
+
+    try {
+      localStorage.setItem(
+        "playnice_journal_feedback",
+        JSON.stringify(nextFeedback)
+      );
+    } catch (error) {
+      console.error("Journal feedback storage failed:", error);
+    }
+  };
+
+  const activeJournalFeedback = selectedArticle
+    ? getJournalSavedFeedback(selectedArticle)
+    : null;
 
   /* =========================================
    DERIVED DATA
