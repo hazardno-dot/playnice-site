@@ -5745,13 +5745,21 @@ const getSizeWearHint = (size) => {
                 )}
 
                 <button
-                  type="button"
-                  className="journal-feedback-inline-send"
-                  onClick={() => handleJournalFeedbackSubmit(selectedArticle)}
-                  disabled={!getJournalSavedFeedback(selectedArticle)?.vote}
-                >
-                  {lang === "sr" ? "Pošalji" : "Send"}
-                </button>
+  type="button"
+  className={`journal-feedback-inline-send ${
+    journalFeedbackSuccess ? "is-success" : ""
+  }`}
+  onClick={() => handleJournalFeedbackSubmit(selectedArticle)}
+  disabled={!activeJournalFeedback?.vote}
+>
+  <span className="jf-send-label">
+    {lang === "sr" ? "Pošalji" : "Send"}
+  </span>
+
+  <span className="jf-send-check" aria-hidden="true">
+    ✓
+  </span>
+</button>
               </div>
             </div>
           </div>
