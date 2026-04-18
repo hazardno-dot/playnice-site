@@ -9236,12 +9236,11 @@ will-change: transform, opacity;
 
 .journal-card-link {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: inline-block;
 
   margin-top: auto;
   padding-top: 14px;
+  padding-right: 14px;
 
   font-size: 10.5px;
   font-weight: 500;
@@ -9258,6 +9257,19 @@ will-change: transform, opacity;
   cursor: pointer;
 }
 
+.journal-card-link::before {
+  content: "→";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(0);
+
+  font-size: 11px;
+  opacity: 0.85;
+
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
 .journal-card-link::after {
   content: "";
   position: absolute;
@@ -9269,9 +9281,9 @@ will-change: transform, opacity;
 
   background: linear-gradient(
     90deg,
-    rgba(215, 179, 98, 0.0),
+    rgba(215, 179, 98, 0),
     rgba(215, 179, 98, 0.6),
-    rgba(215, 179, 98, 0.0)
+    rgba(215, 179, 98, 0)
   );
 
   opacity: 0.4;
@@ -9281,6 +9293,22 @@ will-change: transform, opacity;
   transition:
     transform 0.35s ease,
     opacity 0.35s ease;
+}
+
+.journal-card:hover .journal-card-link {
+  color: rgba(255, 222, 160, 0.98);
+  letter-spacing: 0.2em;
+  transform: translateY(-1px);
+}
+
+.journal-card:hover .journal-card-link::after {
+  opacity: 0.9;
+  transform: scaleX(1);
+}
+
+.journal-card:hover .journal-card-link::before {
+  transform: translateY(-50%) translateX(4px);
+  opacity: 1;
 }
 
 /* =========================================

@@ -185,7 +185,7 @@ const translations = {
     journalTitle: "Journal",
     journalSubtitle:
      "Stories, updates, little chaos and big scents — from the point of view of a house that lives fragrance every day.",
-    journalReadArticle: "Read article →",
+    journalReadArticle: "Read article",
     journalReadingTime: "2 min read",
     journalAuthorName: "Charlie",
     journalAuthorRole: "PlayNice Editorial",
