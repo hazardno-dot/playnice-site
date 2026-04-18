@@ -3233,7 +3233,7 @@ const handleJournalFeedbackVote = (article, vote) => {
   setJournalFeedbackSubmitted(false);
 
   const current = journalFeedback[key] || {};
-  const nextVote = current.vote === vote ? "" : vote;
+  const nextVote = vote;
 
   const nextFeedback = {
     ...journalFeedback,
