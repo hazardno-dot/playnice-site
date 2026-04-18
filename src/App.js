@@ -379,7 +379,7 @@ const translations = {
     journalTitle: "Journal",
     journalSubtitle:
       "Priče, noviteti, mali haosi i veliki mirisi — iz ugla kuće koja živi parfeme svaki dan.",
-    journalReadArticle: "Pročitaj članak →",
+    journalReadArticle: "Pročitaj članak",
     journalReadingTime: "2 min čitanja",
     journalAuthorName: "Čarli",
     journalAuthorRole: "PlayNice Editorial",
