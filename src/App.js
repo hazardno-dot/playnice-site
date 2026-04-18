@@ -3242,7 +3242,7 @@ useEffect(() => {
   }
 
   try {
-    await fetch("https://script.google.com/macros/s/AKfycbwnmROzxz_ym4B6bdjc1dc6EHcXsbC5JghA1C1cNcj50Q5p8RXAh0gHs3VNxh4E0lvsYA/exec", {
+    await fetch("https://script.google.com/macros/s/AKfycbzMKZdzrVSx-SdU6FEmPaJehViWgDllZkd59Lr0-2p_5-i1ZRYr0B88YHgvV-japoeOgg/exec", {
       method: "POST",
       headers: {
         "Content-Type": "text/plain;charset=utf-8"
