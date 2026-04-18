@@ -3213,7 +3213,7 @@ useEffect(() => {
     });
   };
 
-  const handleJournalFeedbackSubmit = async (article) => {
+  const handleJournalFeedbackSubmit = (article) => {
   const key = getJournalArticleKey(article);
   if (!key) return;
 
