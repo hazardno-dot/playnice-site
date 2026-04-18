@@ -3219,6 +3219,8 @@ const handleJournalFeedbackVote = (article, vote) => {
   const key = getJournalArticleKey(article);
   if (!key) return;
 
+  setJournalFeedbackSubmitted(false);
+
   const current = journalFeedback[key] || {};
   const nextVote = current.vote === vote ? "" : vote;
 
@@ -3232,7 +3234,6 @@ const handleJournalFeedbackVote = (article, vote) => {
   };
 
   setJournalFeedback(nextFeedback);
-  setJournalFeedbackSubmitted(!!nextVote);
 
   try {
     localStorage.setItem(
