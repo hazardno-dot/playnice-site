@@ -2763,7 +2763,6 @@ function App() {
 
   const [journalFeedback, setJournalFeedback] = useState({});
   const [journalFeedbackSubmitted, setJournalFeedbackSubmitted] = useState(false);
-  const [journalFeedbackSuccess, setJournalFeedbackSuccess] = useState(false);
 
   /* =========================================
      APP REFS
@@ -3171,18 +3170,9 @@ useEffect(() => {
 
 useEffect(() => {
   setJournalFeedbackSubmitted(false);
-  setJournalFeedbackSuccess(false);
 }, [selectedArticle]);
 
 /* feedback helper */
-
-const triggerJournalFeedbackSuccess = () => {
-  setJournalFeedbackSuccess(true);
-
-  setTimeout(() => {
-    setJournalFeedbackSuccess(false);
-  }, 1400);
-};
 
 const sendJournalFeedback = (article, override = {}) => {
   const key = getJournalArticleKey(article);
@@ -3260,8 +3250,6 @@ const handleJournalFeedbackVote = (article, vote) => {
     vote: nextVote,
     note: (current.note || "").trim()
   });
-
-  triggerJournalFeedbackSuccess();
 };
 
 const handleJournalFeedbackNoteChange = (article, value) => {
@@ -3317,8 +3305,6 @@ const handleJournalFeedbackSubmit = (article) => {
 
     return nextFeedback;
   });
-
-  triggerJournalFeedbackSuccess();
 };
 
 const activeJournalFeedback = selectedArticle
@@ -5713,11 +5699,6 @@ const getSizeWearHint = (size) => {
 
             <div className="journal-feedback-inline-shell">
               <div className="journal-feedback-inline-inner">
-                {journalFeedbackSuccess && (
-                  <span className="journal-feedback-inline-success">
-                    {lang === "sr" ? "Sačuvano." : "Saved."}
-                  </span>
-                )}
 
                 <input
                   type="text"

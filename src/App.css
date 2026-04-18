@@ -9710,9 +9710,6 @@ will-change: transform, opacity;
 .journal-feedback-inline-shell {
   width: min(330px, 100%);
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
 }
 
 .journal-feedback-inline-inner {
@@ -9775,26 +9772,6 @@ will-change: transform, opacity;
   opacity: 0.45;
   cursor: not-allowed;
   transform: none;
-}
-
-.journal-feedback-inline-success {
-  display: inline-flex;
-  align-items: center;
-  min-height: 16px;
-  padding-left: 12px;
-  font-size: 12px;
-  line-height: 1;
-  color: #c6a15b;
-  opacity: 0;
-  transform: translateY(4px);
-  animation: feedbackSuccessIn 0.3s ease forwards;
-}
-
-@keyframes feedbackSuccessIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 @media (max-width: 768px) {
