@@ -2703,6 +2703,93 @@ const getRelatedJournalProducts = (article) => {
     .filter(Boolean);
 };
 
+// 👍👎 feedback
+const getJournalArticleKey = (article) => {
+  if (!article) return "";
+  return article.id || article.slug || article.title?.en || article.title?.sr || article.title || "";
+};
+
+const getJournalSavedFeedback = (article) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return null;
+  return journalFeedback[key] || null;
+};
+
+const handleJournalFeedbackVote = (article, vote) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return;
+
+  setJournalFeedbackSubmitted(false);
+
+  setJournalFeedback((prev) => {
+    const current = prev[key] || {};
+    return {
+      ...prev,
+      [key]: {
+        ...current,
+        vote
+      }
+    };
+  });
+};
+
+const handleJournalFeedbackNoteChange = (article, value) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return;
+
+  setJournalFeedbackNote(value);
+
+  setJournalFeedback((prev) => {
+    const current = prev[key] || {};
+    return {
+      ...prev,
+      [key]: {
+        ...current,
+        note: value
+      }
+    };
+  });
+};
+
+const handleJournalFeedbackSubmit = (article) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return;
+
+  const payload = journalFeedback[key] || {};
+  const trimmedNote = (payload.note || "").trim();
+
+  setJournalFeedback((prev) => ({
+    ...prev,
+    [key]: {
+      ...prev[key],
+      note: trimmedNote,
+      submittedAt: Date.now()
+    }
+  }));
+
+  setJournalFeedbackSubmitted(true);
+
+  try {
+    localStorage.setItem(
+      "playnice_journal_feedback",
+      JSON.stringify({
+        ...journalFeedback,
+        [key]: {
+          ...payload,
+          note: trimmedNote,
+          submittedAt: Date.now()
+        }
+      })
+    );
+  } catch (error) {
+    console.error("Journal feedback storage failed:", error);
+  }
+};
+
+const activeJournalFeedback = selectedArticle
+  ? getJournalSavedFeedback(selectedArticle)
+  : null;
+
 /* =========================================
    APP
 ========================================= */
@@ -2755,6 +2842,10 @@ function App() {
   const [hasUserPickedSize, setHasUserPickedSize] = useState(false);
   const [journalOpen, setJournalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
+
+  const [journalFeedback, setJournalFeedback] = useState({});
+  const [journalFeedbackNote, setJournalFeedbackNote] = useState("");
+  const [journalFeedbackSubmitted, setJournalFeedbackSubmitted] = useState(false);
 
   /* =========================================
      APP REFS
@@ -3145,6 +3236,24 @@ useEffect(() => {
     }
   };
 }, []);
+
+useEffect(() => {
+  try {
+    const saved = localStorage.getItem("playnice_journal_feedback");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed && typeof parsed === "object") {
+        setJournalFeedback(parsed);
+      }
+    }
+  } catch (error) {
+    console.error("Failed to restore journal feedback:", error);
+  }
+}, []);
+
+useEffect(() => {
+  setJournalFeedbackSubmitted(false);
+}, [selectedArticle]);
 
   /* =========================================
    DERIVED DATA
@@ -5534,6 +5643,100 @@ const getSizeWearHint = (size) => {
             </div>
           </div>
         )}
+
+        <section className="journal-feedback-card">
+          <div className="journal-feedback-top">
+            <span className="journal-feedback-kicker">
+              PLAYNICE FEEDBACK
+            </span>
+
+            <h3 className="journal-feedback-title">
+              {lang === "sr"
+                ? "Da li ti je ovaj članak pomogao pri izboru mirisa?"
+                : "Did this article help you choose a scent?"}
+            </h3>
+
+            <p className="journal-feedback-text">
+              {lang === "sr"
+                ? "Bez komentara i rasprava — samo kratak signal da li idemo u dobrom pravcu."
+                : "No comments or debates — just a quick signal to tell us if we're heading in the right direction."}
+            </p>
+          </div>
+
+          <div className="journal-feedback-actions">
+            <button
+              type="button"
+              className={`journal-feedback-vote ${
+                activeJournalFeedback?.vote === "up" ? "active up" : ""
+              }`}
+              onClick={() => handleJournalFeedbackVote(selectedArticle, "up")}
+            >
+              <span className="journal-feedback-icon">👍</span>
+              <span>
+                {lang === "sr" ? "Da, korisno je" : "Yes, helpful"}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              className={`journal-feedback-vote ${
+                activeJournalFeedback?.vote === "down" ? "active down" : ""
+              }`}
+              onClick={() => handleJournalFeedbackVote(selectedArticle, "down")}
+            >
+              <span className="journal-feedback-icon">👎</span>
+              <span>
+                {lang === "sr" ? "Ne baš" : "Not really"}
+              </span>
+            </button>
+          </div>
+
+          <div className="journal-feedback-note-wrap">
+            <label className="journal-feedback-label">
+              {lang === "sr"
+                ? "Ako želiš, napiši u jednoj rečenici šta da popravimo"
+                : "If you want, tell us in one sentence what to improve"}
+            </label>
+
+            <textarea
+              className="journal-feedback-note"
+              rows={3}
+              maxLength={180}
+              value={activeJournalFeedback?.note || ""}
+              onChange={(e) =>
+                handleJournalFeedbackNoteChange(selectedArticle, e.target.value)
+              }
+              placeholder={
+                lang === "sr"
+                  ? "Na primer: više poređenja, manje priče, više konkretnog opisa mirisa..."
+                  : "For example: more comparisons, less storytelling, more scent detail..."
+              }
+            />
+
+            <div className="journal-feedback-bottom">
+              <span className="journal-feedback-counter">
+                {(activeJournalFeedback?.note || "").length}/180
+              </span>
+
+              <button
+                type="button"
+                className="journal-feedback-submit"
+                onClick={() => handleJournalFeedbackSubmit(selectedArticle)}
+                disabled={!activeJournalFeedback?.vote}
+              >
+                {lang === "sr" ? "Pošalji feedback" : "Send feedback"}
+              </button>
+            </div>
+          </div>
+
+          {journalFeedbackSubmitted && (
+            <div className="journal-feedback-success">
+              {lang === "sr"
+                ? "Hvala — feedback je sačuvan."
+                : "Thank you — your feedback has been saved."}
+            </div>
+          )}
+        </section>
       </div>
     </div>
   </div>
