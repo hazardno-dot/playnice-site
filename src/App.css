@@ -9038,12 +9038,14 @@ will-change: transform, opacity;
 
 .journal-featured-title {
   margin: 0 0 10px;
-  max-width: 16ch;
+  max-width: none;
+
   font-size: clamp(28px, 4vw, 40px);
   font-weight: 600;
   line-height: 1.04;
   letter-spacing: -0.025em;
   color: rgba(255, 248, 232, 0.98);
+
   text-wrap: balance;
 }
 
