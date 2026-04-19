@@ -986,7 +986,7 @@ const products = [
     inspiredBy: {
     name: "Paco Rabanne Invictus Aqua",
     short: "Invictus DNA"
-  }
+  },
     isNew: true,
   },
   {
@@ -1001,7 +1001,7 @@ const products = [
     inspiredBy: {
     name: "Creed Absolu Aventus",
     short: "Absolu Aventus DNA"
-  }
+  },
     isNew: true,
   },
   {
@@ -1016,7 +1016,7 @@ const products = [
     inspiredBy: {
     name: "Tales from Zanzibar by Memoirs of a Perfume Collector",
     short: "Tales from Zanzibar DNA"
-  }
+  },
     isNew: true,
   },
   {
@@ -1031,7 +1031,7 @@ const products = [
     inspiredBy: {
     name: "Clive Christian L Red Tea Vetiver",
     short: "Red Tea Vetiver DNA"
-  }
+  },
     isNew: true,
   }
 ];
