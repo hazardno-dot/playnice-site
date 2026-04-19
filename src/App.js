@@ -2867,7 +2867,7 @@ Ali izgleda da ipak imam razlog zašto se stalno vraćaju. 😉
 Čarli  
 Remember. PlayNice.`,
   },
-  relatedProducts: ["Rasasi Hawas Ice"]
+  relatedProducts: ["Rasasi Hawas Ice for Him"]
 },
 
 {
