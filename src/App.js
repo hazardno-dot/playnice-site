@@ -2787,13 +2787,10 @@ I onda naravno — kupiš.
 
 —
 
-Par dana kasnije, stiže.
-
-Otvaram bez nekog velikog očekivanja. Realno, više sam bio u fazonu: “Dobro, da vidimo šta sam sad uradio.”
+Par dana kasnije, stiže. Otvaram bez nekog velikog očekivanja. Realno, više sam bio u fazonu: “Dobro, da vidimo šta sam sad uradio.”
 
 Prvi sprej. Zastanem.
 Drugi. Ok.
-
 Ovo… nije uopšte loše.
 
 —
@@ -2803,7 +2800,6 @@ Nije to bio onaj dramatični “wow” momenat. Više ono: “Čekaj malo… ovo
 Ne viče.
 Ne gura se.
 Ali ostaje.
-
 I ljudi počnu da primećuju.
 
 —
@@ -2811,8 +2807,7 @@ I ljudi počnu da primećuju.
 Najbolji deo?
 Ptičice.
 
-Kućicu im nikad nisam napravio, ali one i dalje kruže oko moje. Kao avioni. Mislim da će me bombardovati jednog dana.
-Stvarno.
+Kućicu im nikad nisam napravio, ali one i dalje kruže oko moje. Kao avioni. Mislim da će me bombardovati jednog dana. Stvarno.
 
 —
 
@@ -2823,7 +2818,7 @@ I ponekad - isplati se.
 
 I ako me pitaš da li je vredelo?
 
-Ne,nemam kućicu za ptičice.
+Ne, nemam kućicu za ptičice.
 Ali izgleda da ipak imam razlog zašto se stalno vraćaju. 😉
 
 —
