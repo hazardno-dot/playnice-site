@@ -409,7 +409,7 @@ const products = [
     ratingLabel: "Well Loved",
     season: "summer",
     inspiredBy: {
-    name: "MFK Aqua Vitae Forte",
+    name: "Maison Francis Kurkdjian Aqua Vitae Forte",
     short: "Aqua Vitae Forte DNA"
   }
   },
