@@ -1037,26 +1037,29 @@ const productCopy = {
   },
 
   "Arabiyat Prestige Marwa": {
-    miniTag: { sr: "💎 Luxury / Signature", en: "💎 Luxury / Signature" },
-    card: {
-      sr: "Ruža i toplina u luksuznom orijentalnom stilu.",
-      en: "Rose and warmth in oriental luxury style."
-    },
-    modal: {
-      sr: "Raskošan, topao i elegantan miris sa dubinom.",
-      en: "Rich, warm and elegant scent with depth."
-    },
-    scentType: { sr: "Oriental floral", en: "Oriental floral" },
-    dominantNotes: {
-      sr: ["ruža", "amber", "začini"],
-      en: ["rose", "amber", "spices"]
-    },
-    tags: { sr: ["Luxury"], en: ["Luxury"] },
-    whyChoose: {
-      sr: "Za ljubitelje orijentalne elegancije.",
-      en: "For lovers of oriental elegance."
-    }
+  miniTag: { sr: "🍋 Fresh / Signature", en: "🍋 Fresh / Signature" },
+  card: {
+    sr: "Svež citrusni miris sa đumbirom, čajem i modernom drvenastom bazom.",
+    en: "Fresh citrus scent with ginger, tea and a modern woody base."
   },
+  modal: {
+    sr: "Otvara se svetlo i energično kroz bergamot, limun i pomorandžu, zatim prelazi u začinsko-aromatično srce sa đumbirom, cimetom i nerolijem, dok baza donosi crni čaj, ambroksan i guaiac drvo za čist, moderan i elegantan trag.",
+    en: "It opens bright and energetic with bergamot, lemon and orange, then moves into a spicy-aromatic heart of ginger, cinnamon and neroli, while the base brings black tea, ambroxan and guaiac wood for a clean, modern and elegant trail."
+  },
+  scentType: { sr: "Fresh citrus aromatic", en: "Fresh citrus aromatic" },
+  dominantNotes: {
+    sr: ["bergamot", "đumbir", "crni čaj"],
+    en: ["bergamot", "ginger", "black tea"]
+  },
+  tags: {
+    sr: ["Fresh", "Elegant"],
+    en: ["Fresh", "Elegant"]
+  },
+  whyChoose: {
+    sr: "Ako voliš čist, luksuzan i moderan miris sa citrusno-začinskim karakterom.",
+    en: "If you like a clean, luxurious and modern scent with a citrus-spicy character."
+  }
+},
 
   "Armaf Club De Nuit Bling": {
     miniTag: { sr: "🍯 Sweet / Date Night", en: "🍯 Sweet / Date Night" },
