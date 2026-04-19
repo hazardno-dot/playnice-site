@@ -2651,6 +2651,223 @@ Staviću malo Creed Aventus Cologne, dam sebi otvoren prolaz 👍 i biće bolje.
 Remember. PlayNice.`,
   },
   relatedProducts: ["Creed Aventus Cologne"]
+},
+
+{
+  id: 6,
+  date: "18 Apr",
+  image: "/hero/slide-1-9pm-night-out.jpg",
+  title: {
+    en: "That was not the plan",
+    sr: "To nije bio plan",
+  },
+  excerpt: {
+    en: "I went online to look up how to build a birdhouse. A few videos later, I was ordering Rasasi Hawas Ice for more money than I planned. The birdhouse never happened. The fragrance did.",
+    sr: "Seo sam da tražim kako se pravi kućica za ptičice. Posle nekoliko videa, naručivao sam Rasasi Hawas Ice za više novca nego što sam planirao. Kućica se nije desila. Parfem jeste.",
+  },
+  content: {
+    en: `I was looking up how to build a birdhouse.
+
+Seriously.
+
+One of those days when you feel like slowing things down a little. No phone chaos, no noise, just something normal. Wood, a hammer, maybe even some peace.
+
+So — YouTube.
+
+A video about birdhouses.
+
+Then another one.
+Then another…
+
+And then something else.
+
+Some guy. Chinese. Confident. Talking about a fragrance like he had just discovered electricity.
+
+I did not understand half of it.
+But I understood enough.
+
+Click.
+
+One more video.
+Then another.
+
+And suddenly, I was no longer looking up birdhouses.
+
+I was looking for where to buy Rasasi Hawas Ice.
+
+—
+
+The price? Hmm.
+
+It was new, a little expensive, and exactly the kind of moment where you stop and tell yourself:
+“You do not need this.”
+
+And then, naturally — you buy it.
+
+—
+
+A few days later, it arrived.
+
+I opened it without huge expectations.
+Honestly, I was more in the mood of:
+“Alright, let’s see what I’ve done now.”
+
+First spray.
+
+Pause.
+
+Second spray.
+
+Ok.
+
+This… is not bad at all.
+
+—
+
+It was not one of those dramatic “wow” moments.
+
+More like:
+“Wait a second… this actually makes sense.”
+
+It does not shout.
+It does not push itself forward.
+But it stays.
+
+And people notice.
+
+—
+
+Best part?
+
+The birds.
+
+I never built the birdhouse, but they are still circling the house.
+
+Like planes.
+
+I think they are going to bomb me.
+Seriously.
+
+—
+
+Sometimes you start off looking for one thing… and end up with something completely different.
+
+And sometimes — it works out.
+
+—
+
+So if you ask me whether it was worth it?
+
+I do not have a birdhouse.
+
+But I do seem to have a reason they keep coming back. 😉
+
+—
+
+Charlie  
+Remember. PlayNice.`,
+    sr: `Tražio sam kako da napravim kućicu za ptičice.
+
+Ozbiljno.
+
+Jedan od onih dana kad pomisliš da bi mogao malo da usporiš. Ne telefon, ne haos, nego nešto normalno. Drvo, čekić, možda čak i malo mira.
+
+I tako — YouTube.
+
+Video o kućicama.
+
+Pa još jedan.
+Pa još jedan…
+
+A onda nešto drugo.
+
+Neki lik. Kinez. Samouveren. Priča o parfemu kao da je otkrio struju.
+
+Ne razumem pola.
+Ali razumem dovoljno.
+
+Klik.
+
+Još jedan video.
+Pa još jedan.
+
+I odjednom — više ne tražim kućicu za ptičice.
+
+Tražim gde da kupim Rasasi Hawas Ice.
+
+—
+
+Cena? Hmm.
+
+Nov je, košta malo više, i to je baš onaj trenutak kad zastaneš i kažeš sebi:
+“Ne treba mi ovo.”
+
+I onda naravno — kupiš.
+
+—
+
+Par dana kasnije, stiže.
+
+Otvaram bez nekog velikog očekivanja.
+Realno, više sam bio u fazonu:
+“Dobro, da vidimo šta sam sad uradio.”
+
+Prvi sprej.
+
+Zastanem.
+
+Drugi.
+
+Ok.
+
+Ovo… nije uopšte loše.
+
+—
+
+Nije to bio onaj dramatični “wow” momenat.
+
+Više ono:
+“Čekaj malo… ovo zapravo ima smisla.”
+
+Ne viče.
+Ne gura se.
+Ali ostaje.
+
+I ljudi počnu da primećuju.
+
+—
+
+Najbolji deo?
+
+Ptičice.
+
+Kućicu nikad nisam napravio, ali one i dalje kruže oko kuće.
+
+Kao avioni.
+
+Mislim da će me bombardovati.
+Ozbiljno.
+
+—
+
+Nekad kreneš po jednu stvar… a završiš na potpuno drugoj.
+
+I ponekad — isplati se.
+
+—
+
+I ako me pitaš da li je vredelo?
+
+Nemam kućicu za ptičice.
+
+Ali izgleda da ipak imam razlog zašto se stalno vraćaju. 😉
+
+—
+
+Čarli  
+Remember. PlayNice.`,
+  },
+  relatedProducts: ["Rasasi Hawas Ice"]
 }
 ];
 
