@@ -5862,7 +5862,9 @@ const getSizeWearHint = (size) => {
 
           {selectedProduct.inspiredBy?.name && (
             <div className="modal-inspired-mini panel-item-anim panel-item-2">
-              <span className="modal-inspired-mini-label">INSPIRED BY</span>
+              <span className="modal-inspired-mini-label">
+                {lang === "sr" ? "INSPIRISANO" : "INSPIRED BY"}
+              </span>
 
               <strong className="modal-inspired-mini-name">
                 {selectedProduct.inspiredBy.name}
