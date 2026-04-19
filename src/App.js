@@ -2885,14 +2885,15 @@ Remember. PlayNice.`,
   content: {
     en: `I was sitting in a café today and noticed something interesting.
 
-Three people at the same table. Quiet. Not awkward, not tense — just… silence. Each one looking at their own phone.
-Everyone seemed to be somewhere. Just not there.
+Three people at the same table. Quiet. Not awkward, not tense — just… silence. Each one looking at their own phone. Everyone seemed to be somewhere.
+Just not there.
 The waiter passed by, lightly bumped into a chair. No one looked up.
 One guy smiled. Not because something happened at the table — but because something happened somewhere else.
 
-Then I caught myself.
-Same thing. Phone in hand. Thumb moving. Head… somewhere in between. It is strange how we have all become available to everyone.
+Then I caught myself. Same thing. Phone in hand. Thumb moving. Head… somewhere in between.
+It is strange how we have all become available to everyone.
 Except the people sitting right next to us.
+
 A few years ago, silence at a table meant something was wrong. Now it feels normal. Almost comfortable.
 No one asks anything. No one needs attention. Everyone is “busy”.
 
@@ -2902,8 +2903,8 @@ The problem is that we no longer know where to look when the phone is not in our
 
 —
 
-Maybe that is the only thing worth trying tonight. Not to use your phone less.
-Just to see what is left when you are not looking at it. If it feels uncomfortable — good.
+Maybe that is the only thing worth trying tonight. Not to use your phone less. Just to see what is left when you are not looking at it.
+If it feels uncomfortable — good.
 
 That probably means you are finally there.
 
@@ -2913,35 +2914,17 @@ Charlie
 Remember. PlayNice.`,
     sr: `Sedeo sam danas u kafiću i primetio nešto zanimljivo.
 
-Za istim stolom — troje ljudi. Tišina. Ne neprijatna, ne napeta — samo… ćute.
-
-Svako gleda u svoj telefon.
-
-Svi deluju kao da su negde.
-
+Za istim stolom — troje ljudi. Tišina. Ne neprijatna, ne napeta — samo… ćute. Svako gleda u svoj telefon. Svi deluju kao da su negde.
 Ali niko nije tu.
-
 Konobar prolazi, nosi piće, malo zakači stolicu. Niko ne podiže pogled.
+Jedan momak se nasmeje. Ne zato što se nešto desilo tu — nego negde drugde.
 
-Jedan momak se nasmeje.
-
-Ne zato što se nešto desilo tu — nego negde drugde.
-
-I onda uhvatim sebe.
-
-Isto. Telefon u ruci. Palac radi. Glava… negde između.
-
+I onda uhvatim sebe. Isto. Telefon u ruci. Palac radi. Glava… negde između.
 Zanimljivo je kako smo postali dostupni svima.
-
 Osim onima pored nas.
 
 Pre par godina, tišina za stolom je značila da nešto nije u redu.
-
-Danas je normalna.
-
-Čak i prijatna.
-
-Niko te ne pita ništa. Niko ne traži pažnju. Svi su “zauzeti”.
+Danas je normalna. Čak i prijatna. Niko te ne pita ništa. Niko ne traži pažnju. Svi su “zauzeti”.
 
 Ali to nije pravi problem.
 
@@ -2949,12 +2932,7 @@ Problem je što više ne znamo gde da gledamo kad spustimo telefon.
 
 —
 
-Možda je to jedina stvar koju vredi probati večeras.
-
-Ne da manje koristiš telefon.
-
-Nego da vidiš šta ostane kad ga ne gledaš.
-
+Možda je to jedina stvar koju vredi probati večeras. Ne da manje koristiš telefon. Nego da vidiš šta ostane kad ga ne gledaš.
 Ako bude neprijatno — dobro.
 
 Znači da si konačno tu.
