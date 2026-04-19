@@ -3303,7 +3303,7 @@ const sendJournalFeedback = (article, override = {}) => {
     });
 
     navigator.sendBeacon(
-      "https://script.google.com/macros/s/AKfycbyVebg-sr3b2iKNXL7aJaVHkai6E90qOioPYX6eucLFHuMOvry2L4g2llzkTl9Zm_MtiQ/exec",
+      "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
       blob
     );
   } catch (error) {
