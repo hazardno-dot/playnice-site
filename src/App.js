@@ -2885,34 +2885,15 @@ Remember. PlayNice.`,
   content: {
     en: `I was sitting in a café today and noticed something interesting.
 
-Three people at the same table. Quiet. Not awkward, not tense — just… silence.
-
-Each one looking at their own phone.
-
-Everyone seemed to be somewhere.
-
-Just not there.
-
+Three people at the same table. Quiet. Not awkward, not tense — just… silence. Each one looking at their own phone.
+Everyone seemed to be somewhere. Just not there.
 The waiter passed by, lightly bumped into a chair. No one looked up.
-
-One guy smiled.
-
-Not because something happened at the table — but because something happened somewhere else.
+One guy smiled. Not because something happened at the table — but because something happened somewhere else.
 
 Then I caught myself.
-
-Same thing. Phone in hand. Thumb moving. Head… somewhere in between.
-
-It is strange how we have all become available to everyone.
-
+Same thing. Phone in hand. Thumb moving. Head… somewhere in between. It is strange how we have all become available to everyone.
 Except the people sitting right next to us.
-
-A few years ago, silence at a table meant something was wrong.
-
-Now it feels normal.
-
-Almost comfortable.
-
+A few years ago, silence at a table meant something was wrong. Now it feels normal. Almost comfortable.
 No one asks anything. No one needs attention. Everyone is “busy”.
 
 But that is not really the problem.
@@ -2921,13 +2902,8 @@ The problem is that we no longer know where to look when the phone is not in our
 
 —
 
-Maybe that is the only thing worth trying tonight.
-
-Not to use your phone less.
-
-Just to see what is left when you are not looking at it.
-
-If it feels uncomfortable — good.
+Maybe that is the only thing worth trying tonight. Not to use your phone less.
+Just to see what is left when you are not looking at it. If it feels uncomfortable — good.
 
 That probably means you are finally there.
 
