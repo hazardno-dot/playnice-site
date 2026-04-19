@@ -3081,7 +3081,7 @@ body.scrolled .announcement-bar::after {
 .modal-inspired-mini {
   flex: 1;
   min-width: 0;
-  max-width: 430px;
+  max-width: 360px;
 
   display: flex;
   align-items: center;
@@ -3102,6 +3102,9 @@ body.scrolled .announcement-bar::after {
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.006),
     0 6px 14px rgba(0, 0, 0, 0.10);
+
+    backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .modal-inspired-mini-label {
