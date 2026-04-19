@@ -1039,12 +1039,12 @@ const productCopy = {
   "Arabiyat Prestige Marwa": {
   miniTag: { sr: "🍋 Fresh / Signature", en: "🍋 Fresh / Signature" },
   card: {
-    sr: "Svež citrusni miris sa đumbirom, čajem i modernom drvenastom bazom.",
-    en: "Fresh citrus scent with ginger, tea and a modern woody base."
+    sr: "Svež citrusni miris sa modernom drvenastom bazom.",
+    en: "Fresh citrus scent with a modern woody base."
   },
   modal: {
-    sr: "Otvara se svetlo i energično kroz bergamot, limun i pomorandžu, zatim prelazi u začinsko-aromatično srce sa đumbirom, cimetom i nerolijem, dok baza donosi crni čaj, ambroksan i guaiac drvo za čist, moderan i elegantan trag.",
-    en: "It opens bright and energetic with bergamot, lemon and orange, then moves into a spicy-aromatic heart of ginger, cinnamon and neroli, while the base brings black tea, ambroxan and guaiac wood for a clean, modern and elegant trail."
+    sr: "Citrusi, đumbir i crni čaj u čistom, elegantnom i modernom mirisu.",
+    en: "Citrus, ginger and black tea in a clean, elegant modern scent."
   },
   scentType: { sr: "Fresh citrus aromatic", en: "Fresh citrus aromatic" },
   dominantNotes: {
@@ -1052,12 +1052,12 @@ const productCopy = {
     en: ["bergamot", "ginger", "black tea"]
   },
   tags: {
-    sr: ["Fresh", "Elegant"],
-    en: ["Fresh", "Elegant"]
+    sr: ["Fresh", "Clean"],
+    en: ["Fresh", "Clean"]
   },
   whyChoose: {
-    sr: "Ako voliš čist, luksuzan i moderan miris sa citrusno-začinskim karakterom.",
-    en: "If you like a clean, luxurious and modern scent with a citrus-spicy character."
+    sr: "Ako želiš čist i luksuzan svakodnevni miris.",
+    en: "If you want a clean, luxurious everyday scent."
   }
 },
 
