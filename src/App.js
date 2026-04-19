@@ -1959,9 +1959,9 @@ const productCopy = {
       en: "Ultra fresh aquatic with icy sweetness and strong projection."
     },
     modal: {
-      sr: "Moderan letnji parfem koji spaja aquatic svežinu sa slatkastim voćnim podtonovima i hladnim ledenim vajbom. Čist, energičan i vrlo pohvaljen u toplom vremenu.",
-      en: "A modern summer fragrance combining aquatic freshness with sweet fruity undertones and a cool icy vibe. Clean, energetic and highly complimented in warm weather."
-    },
+      sr: "Hladan, čist i energičan — miris koji ostavlja svež i upečatljiv trag.",
+      en: "Cool, clean and energetic — a scent that leaves a fresh, striking trail."
+    }
     scentType: {
       sr: "Fresh / Aquatic / Sweet",
       en: "Fresh / Aquatic / Sweet"
