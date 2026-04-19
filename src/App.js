@@ -455,8 +455,8 @@ const products = [
     inspiredBy: {
     name: "Bvlgari Tygar",
     short: "Tygar DNA"
-  },
   }
+  },
   {
     id: 5,
     name: "Arabiyat Prestige Marwa",
