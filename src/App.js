@@ -453,7 +453,7 @@ const products = [
     ratingLabel: "Audience Favorite",
     season: "summer",
     inspiredBy: {
-    name: "Bvlgari Tygar",
+    name: "Bvlgari Tygar / Sospiro Perfumes Vibrato",
     short: "Tygar DNA"
   }
   },
@@ -578,7 +578,7 @@ const products = [
     ratingLabel: "Audience Favorite",
     season: "spring",
     inspiredBy: {
-    name: "Yves Saint Laurent Y EDP",
+    name: "Yves Saint Laurent (YSL) Y EDP",
     short: "YSL Y EDP DNA"
   }
   },
