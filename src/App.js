@@ -428,7 +428,7 @@ const products = [
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     rating: 8.1,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "summer",
     inspiredBy: {
     name: "Creed Absolu Aventus",
     short: "Absolu Aventus DNA"
