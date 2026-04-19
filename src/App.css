@@ -3141,7 +3141,7 @@ body.scrolled .announcement-bar::after {
 .modal-inspired-mini-short {
   flex: 0 0 auto;
 
-  display: inline-flex;
+  display: none;
   align-items: center;
   gap: 5px;
 
