@@ -5814,269 +5814,301 @@ const getSizeWearHint = (size) => {
       className={`product-modal ${productModalVisible ? "open panel-open" : ""}`}
       onClick={(e) => e.stopPropagation()}
     >
-            <button
-              className="close-button"
-              type="button"
-              onClick={closeProductModal}
-              aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
-            >
-              ×
-            </button>
+      <button
+        className="close-button"
+        type="button"
+        onClick={closeProductModal}
+        aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
+      >
+        ×
+      </button>
 
-            <div className="modal-header panel-anim panel-anim-1">
-              <span className="modal-eyebrow">PRIVATE DETAIL</span>
-              <h2>{selectedProduct.name}</h2>
+      <div className="modal-header panel-anim panel-anim-1">
+        <span className="modal-eyebrow">PRIVATE DETAIL</span>
+        <h2>{selectedProduct.name}</h2>
 
-              {selectedProduct.rating && (
-                <div className="modal-rating panel-item-anim panel-item-1">
-                  <div className="modal-rating-stars" aria-hidden="true">
-                    {Array.from({ length: 10 }).map((_, index) => (
-                      <span
-                        key={index}
-                        className={
-                          index < Math.round(selectedProduct.rating) ? "filled" : ""
-                        }
-                      >
-                        ★
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="modal-rating-meta">
-                    <span className="modal-rating-score">
-                      {selectedProduct.rating.toFixed(1)}
-                    </span>
-                    <span className="modal-rating-label">
-                      / 10 • {selectedProduct.ratingLabel}
-                    </span>
-                  </div>
-                </div>
-              )}
+        {selectedProduct.rating && (
+          <div className="modal-rating panel-item-anim panel-item-1">
+            <div className="modal-rating-stars" aria-hidden="true">
+              {Array.from({ length: 10 }).map((_, index) => (
+                <span
+                  key={index}
+                  className={
+                    index < Math.round(selectedProduct.rating) ? "filled" : ""
+                  }
+                >
+                  ★
+                </span>
+              ))}
             </div>
 
-            <div className="modal-body">
-              <div className="modal-media panel-anim panel-anim-2">
-                {selectedProduct.badge && (
-                  <span className="modal-badge panel-item-anim panel-item-1">
-                    {selectedProduct.badge}
-                  </span>
+            <div className="modal-rating-meta">
+              <span className="modal-rating-score">
+                {selectedProduct.rating.toFixed(1)}
+              </span>
+              <span className="modal-rating-label">
+                / 10 • {selectedProduct.ratingLabel}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="modal-body">
+        <div className="modal-media panel-anim panel-anim-2">
+          {selectedProduct.badge && (
+            <span className="modal-badge panel-item-anim panel-item-1">
+              {selectedProduct.badge}
+            </span>
+          )}
+
+          <div className="modal-image-wrap panel-item-anim panel-item-2">
+            {selectedProduct.image ? (
+              <img
+                src={selectedProduct.image}
+                alt={selectedProduct.name}
+                className="modal-image"
+              />
+            ) : (
+              <div className="modal-monogram">
+                {selectedProduct.name.charAt(0)}
+              </div>
+            )}
+          </div>
+
+          <div className="modal-media-meta panel-item-anim panel-item-3">
+            <span className="modal-category">
+              {lang === "sr"
+                ? selectedProduct.category === "Arabian"
+                  ? "ARAPSKI"
+                  : selectedProduct.category === "Designer"
+                  ? "DIZAJNERSKI"
+                  : selectedProduct.category === "Niche"
+                  ? "NICHE"
+                  : selectedProduct.category.toUpperCase()
+                : selectedProduct.category.toUpperCase()}
+            </span>
+
+            <p>
+              {selectedCopy.dominantNotes?.join(" • ") ||
+                (lang === "sr"
+                  ? "Premium mirisna selekcija"
+                  : "Premium fragrance selection")}
+            </p>
+          </div>
+        </div>
+
+        <div className="modal-content panel-anim panel-anim-3">
+          {selectedCopy.miniTag && (
+            <span className="modal-chip panel-item-anim panel-item-1">
+              {selectedCopy.miniTag}
+            </span>
+          )}
+
+          <p className="modal-description panel-item-anim panel-item-2">
+            {selectedCopy.modal ||
+              (lang === "sr"
+                ? "Luksuzan miris sa izraženim karakterom i premium prisustvom."
+                : "A luxurious scent with strong character and premium presence.")}
+          </p>
+
+          {selectedProduct.inspiredBy?.name && (
+            <div className="modal-inspired panel-item-anim panel-item-3">
+              <span className="modal-inspired-label">INSPIRED BY</span>
+
+              <strong className="modal-inspired-name">
+                {selectedProduct.inspiredBy.name}
+              </strong>
+
+              {selectedProduct.inspiredBy.short && (
+                <span className="modal-inspired-short">
+                  {selectedProduct.inspiredBy.short}
+                </span>
+              )}
+
+              {selectedProduct.inspiredBy.vibe && (
+                <p className="modal-inspired-vibe">
+                  {selectedProduct.inspiredBy.vibe}
+                </p>
+              )}
+            </div>
+          )}
+
+          <p className="product-modal-anchor panel-item-anim panel-item-4">
+            {lang === "sr" ? (
+              <>
+                Prvo ga <strong>probaj na svojoj koži</strong> — pre nego što se
+                odlučiš za bočicu.
+              </>
+            ) : (
+              <>
+                Try it <strong>on your skin first</strong> — before committing to
+                the bottle.
+              </>
+            )}
+          </p>
+
+          <div className="modal-info-grid">
+            <div className="modal-info-card panel-item-anim panel-item-5">
+              <span>
+                {lang === "sr" ? "DOMINANTNE NOTE" : "DOMINANT NOTES"}
+              </span>
+              <strong>
+                {selectedCopy.dominantNotes?.join(" • ") ||
+                  (lang === "sr" ? "premium akordi" : "premium accords")}
+              </strong>
+            </div>
+
+            <div className="modal-info-card panel-item-anim panel-item-6">
+              <span>
+                {lang === "sr"
+                  ? "ZAŠTO KUPCI BIRAJU OVAJ PARFEM"
+                  : "WHY CUSTOMERS CHOOSE THIS FRAGRANCE"}
+              </span>
+              <strong>
+                {selectedCopy.whyChoose ||
+                  (lang === "sr"
+                    ? "Odličan izbor za one koji žele upečatljiv premium miris."
+                    : "An excellent choice for those who want a memorable premium scent.")}
+              </strong>
+            </div>
+          </div>
+
+          <div className="modal-purchase">
+            <div className="modal-size-block panel-anim panel-anim-3">
+              <span className="modal-label">
+                {lang === "sr" ? "IZABERI VELIČINU" : "CHOOSE SIZE"}
+              </span>
+
+              <p className="modal-size-helper">
+                {(() => {
+                  if (!selectedSize) {
+                    return lang === "sr"
+                      ? "Kreni manjom količinom. Nosi ga prvo."
+                      : "Start small. Wear it first.";
+                  }
+
+                  if (selectedSize.includes("2ml")) {
+                    return lang === "sr"
+                      ? "Brzi test na koži."
+                      : "Quick skin test.";
+                  }
+
+                  if (selectedSize.includes("5ml")) {
+                    return (
+                      <>
+                        {lang === "sr" ? "Testiraj " : "Test it over "}
+                        <strong>
+                          {lang === "sr" ? "nekoliko dana" : "a few days"}
+                        </strong>
+                      </>
+                    );
+                  }
+
+                  if (selectedSize.includes("10ml")) {
+                    return (
+                      <>
+                        {lang === "sr" ? "Savršen za " : "Perfect for "}
+                        <strong>
+                          {lang === "sr"
+                            ? "svakodnevno nošenje"
+                            : "daily wear"}
+                        </strong>
+                      </>
+                    );
+                  }
+
+                  if (selectedSize.includes("20ml")) {
+                    return (
+                      <>
+                        {lang === "sr" ? "Skoro kao " : "Almost like a "}
+                        <strong>
+                          {lang === "sr" ? "mala bočica" : "small bottle"}
+                        </strong>
+                      </>
+                    );
+                  }
+
+                  return null;
+                })()}
+              </p>
+
+              <div className="modal-sizes">
+                {Object.entries(selectedProduct.sizes).map(
+                  ([size, price], index) => (
+                    <button
+                      key={size}
+                      type="button"
+                      className={`modal-size ${
+                        selectedSize === size ? "active" : ""
+                      } panel-item-anim panel-item-${Math.min(index + 1, 6)}`}
+                      onClick={() => {
+                        setSelectedSize(size);
+                        setHasUserPickedSize(true);
+                      }}
+                    >
+                      <span>{size}</span>
+                      <strong>{formatPrice(price)}</strong>
+                    </button>
+                  )
                 )}
+              </div>
+            </div>
 
-                <div className="modal-image-wrap panel-item-anim panel-item-2">
-                  {selectedProduct.image ? (
-                    <img
-                      src={selectedProduct.image}
-                      alt={selectedProduct.name}
-                      className="modal-image"
-                    />
-                  ) : (
-                    <div className="modal-monogram">
-                      {selectedProduct.name.charAt(0)}
-                    </div>
+            <div className="modal-purchase-bar panel-anim panel-anim-3">
+              <div className="modal-price-box">
+                <span>
+                  {lang === "sr" ? "IZABRANA CENA" : "SELECTED PRICE"}
+                </span>
+                <strong>
+                  {formatPrice(
+                    selectedProduct.sizes[selectedSize] ??
+                      Object.values(selectedProduct.sizes)[0]
                   )}
-                </div>
-
-                <div className="modal-media-meta panel-item-anim panel-item-3">
-                  <span className="modal-category">
-                    {lang === "sr"
-                      ? selectedProduct.category === "Arabian"
-                        ? "ARAPSKI"
-                        : selectedProduct.category === "Designer"
-                        ? "DIZAJNERSKI"
-                        : selectedProduct.category === "Niche"
-                        ? "NICHE"
-                        : selectedProduct.category.toUpperCase()
-                      : selectedProduct.category.toUpperCase()}
-                  </span>
-
-                  <p>
-                    {selectedCopy.dominantNotes?.join(" • ") ||
-                      (lang === "sr"
-                        ? "Premium mirisna selekcija"
-                        : "Premium fragrance selection")}
-                  </p>
-                </div>
+                </strong>
               </div>
 
-              <div className="modal-content panel-anim panel-anim-3">
-                {selectedCopy.miniTag && (
-                  <span className="modal-chip panel-item-anim panel-item-1">
-                    {selectedCopy.miniTag}
-                  </span>
+              <div className="modal-cta-group">
+                <button
+                  type="button"
+                  className="modal-add-button"
+                  onClick={() => {
+                    const activeSize =
+                      selectedSize || Object.keys(selectedProduct.sizes)[0];
+                    addToCart(selectedProduct, activeSize);
+                    setCartOpen(true);
+                  }}
+                >
+                  <span>{lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}</span>
+                </button>
+
+                {hasUserPickedSize && (
+                  <button
+                    type="button"
+                    className="modal-buy-now"
+                    onClick={() => {
+                      const activeSize =
+                        selectedSize || Object.keys(selectedProduct.sizes)[0];
+
+                      addToCart(selectedProduct, activeSize, null, null, {
+                        showToast: false
+                      });
+                      setCartOpen(false);
+                      setCheckoutOpen(true);
+                      closeProductModal();
+                    }}
+                  >
+                    {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
+                  </button>
                 )}
-
-                <p className="modal-description panel-item-anim panel-item-2">
-                  {selectedCopy.modal ||
-                    (lang === "sr"
-                      ? "Luksuzan miris sa izraženim karakterom i premium prisustvom."
-                      : "A luxurious scent with strong character and premium presence.")}
-                </p>
-
-                <p className="product-modal-anchor">
-  {lang === "sr"
-    ? <>Prvo ga <strong>probaj na svojoj koži</strong> — pre nego što se odlučiš za bočicu.</>
-    : <>Try it <strong>on your skin first</strong> — before committing to the bottle.</>}
-</p>
-
-                <div className="modal-info-grid">
-                  <div className="modal-info-card panel-item-anim panel-item-3">
-                    <span>
-                      {lang === "sr" ? "DOMINANTNE NOTE" : "DOMINANT NOTES"}
-                    </span>
-                    <strong>
-                      {selectedCopy.dominantNotes?.join(" • ") ||
-                        (lang === "sr" ? "premium akordi" : "premium accords")}
-                    </strong>
-                  </div>
-
-                  <div className="modal-info-card panel-item-anim panel-item-4">
-                    <span>
-                      {lang === "sr"
-                        ? "ZAŠTO KUPCI BIRAJU OVAJ PARFEM"
-                        : "WHY CUSTOMERS CHOOSE THIS FRAGRANCE"}
-                    </span>
-                    <strong>
-                      {selectedCopy.whyChoose ||
-                        (lang === "sr"
-                          ? "Odličan izbor za one koji žele upečatljiv premium miris."
-                          : "An excellent choice for those who want a memorable premium scent.")}
-                    </strong>
-                  </div>
-                </div>
-
-                <div className="modal-purchase">
-                  <div className="modal-size-block panel-item-anim panel-item-5">
-                    <span className="modal-label">
-                      {lang === "sr" ? "IZABERI VELIČINU" : "CHOOSE SIZE"}
-                    </span>
-
-                      <p className="modal-size-helper">
-    {(() => {
-      if (!selectedSize) {
-        return lang === "sr"
-          ? "Kreni manjom količinom. Nosi ga prvo."
-          : "Start small. Wear it first.";
-      }
-
-      if (selectedSize.includes("2ml")) {
-        return lang === "sr"
-          ? "Brzi test na koži."
-          : "Quick skin test.";
-      }
-
-      if (selectedSize.includes("5ml")) {
-        return (
-          <>
-            {lang === "sr" ? "Testiraj " : "Test it over "}
-            <strong>
-              {lang === "sr" ? "nekoliko dana" : "a few days"}
-            </strong>
-          </>
-        );
-      }
-
-      if (selectedSize.includes("10ml")) {
-        return (
-          <>
-            {lang === "sr" ? "Savršen za " : "Perfect for "}
-            <strong>
-              {lang === "sr" ? "svakodnevno nošenje" : "daily wear"}
-            </strong>
-          </>
-        );
-      }
-
-      if (selectedSize.includes("20ml")) {
-        return (
-          <>
-            {lang === "sr" ? "Skoro kao " : "Almost like a "}
-            <strong>
-              {lang === "sr" ? "mala bočica" : "small bottle"}
-            </strong>
-          </>
-        );
-      }
-
-      return null;
-    })()}
-  </p>
-
-                    <div className="modal-sizes">
-                      {Object.entries(selectedProduct.sizes).map(
-                        ([size, price], index) => (
-                          <button
-                            key={size}
-                            type="button"
-                            className={`modal-size ${
-                              selectedSize === size ? "active" : ""
-                            } panel-item-anim panel-item-${Math.min(index + 1, 6)}`}
-                            onClick={() => {
-  setSelectedSize(size);
-  setHasUserPickedSize(true);
-}}
-                          >
-                            <span>{size}</span>
-                            <strong>{formatPrice(price)}</strong>
-                          </button>
-                        )
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="modal-purchase-bar panel-item-anim panel-item-6">
-  <div className="modal-price-box">
-    <span>
-      {lang === "sr" ? "IZABRANA CENA" : "SELECTED PRICE"}
-    </span>
-    <strong>
-      {formatPrice(
-        selectedProduct.sizes[selectedSize] ??
-          Object.values(selectedProduct.sizes)[0]
-      )}
-    </strong>
-  </div>
-
-  <div className="modal-cta-group">
-    <button
-      type="button"
-      className="modal-add-button"
-      onClick={() => {
-        const activeSize =
-          selectedSize || Object.keys(selectedProduct.sizes)[0];
-        addToCart(selectedProduct, activeSize);
-        setCartOpen(true);
-      }}
-    >
-      <span>
-        {lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}
-      </span>
-    </button>
-
-    {hasUserPickedSize && (
-  <button
-    type="button"
-    className="modal-buy-now"
-    onClick={() => {
-      const activeSize =
-        selectedSize || Object.keys(selectedProduct.sizes)[0];
-
-      addToCart(selectedProduct, activeSize, null, null, { showToast: false });
-      setCartOpen(false);
-      setCheckoutOpen(true);
-      closeProductModal();
-    }}
-  >
-    {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
-  </button>
-)}
-  </div>
- </div>
-</div>
               </div>
             </div>
           </div>
         </div>
-      )}
+      </div>
+    </div>
+  </div>
+)}
 
       <div className={`checkout-modal ${checkoutOpen ? "open panel-open" : ""}`}>
   <div className="checkout-header panel-anim panel-anim-1">
