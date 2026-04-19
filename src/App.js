@@ -429,6 +429,10 @@ const products = [
     rating: 8.1,
     ratingLabel: "Audience Favorite",
     season: "summer"
+    inspiredBy: {
+    name: "Creed Absolu Aventus",
+    short: "Absolu Aventus DNA"
+  }
   },
   {
     id: 4,
