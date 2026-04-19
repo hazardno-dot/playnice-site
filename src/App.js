@@ -2007,8 +2007,8 @@ const productWearContext = {
     en: "For a clean elegant impression."
   },
   "Arabiyat Prestige Marwa": {
-    sr: "Za elegantne večernje prilike.",
-    en: "For elegant evening occasions."
+  sr: "Savršen za svaki dan i čist, siguran utisak.",
+  en: "Perfect for everyday wear and a clean, confident impression."
   },
   "Armaf Club De Nuit Bling": {
     sr: "Idealan za večernji izlazak.",
