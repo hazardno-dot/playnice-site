@@ -407,7 +407,11 @@ const products = [
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     rating: 7.8,
     ratingLabel: "Well Loved",
-    season: "summer"
+    season: "summer",
+    inspiredBy: {
+    name: "MFK Aqua Vitae Forte",
+    short: "Aqua Vitae Forte DNA"
+  }
   },
   {
     id: 2,
@@ -418,7 +422,11 @@ const products = [
     badge: "BESTSELLER",
     rating: 8.6,
     ratingLabel: "Audience Favorite",
-    season: "winter"
+    season: "winter",
+    inspiredBy: {
+    name: "Creed Aventus and MFK Baccarat Rouge 540",
+    short: "Aventus and Baccarat Rouge 540 DNA"
+  }
   },
   {
     id: 3,
@@ -443,7 +451,10 @@ const products = [
     badge: "BESTSELLER",
     rating: 8.9,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "summer",
+    inspiredBy: {
+    name: "Bvlgari Tygar",
+    short: "Tygar DNA"
   },
   {
     id: 5,
@@ -453,7 +464,11 @@ const products = [
     sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
     rating: 8.0,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "summer",
+    inspiredBy: {
+    name: "Louis Vuitton Imagination",
+    short: "Imagination DNA"
+  }
   },
   {
     id: 6,
@@ -474,7 +489,11 @@ const products = [
     badge: "BESTSELLER",
     rating: 8.8,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "summer",
+    inspiredBy: {
+    name: "Creed Aventus",
+    short: "Aventus DNA"
+  }
   },
   {
     id: 8,
@@ -484,7 +503,11 @@ const products = [
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     rating: 8.0,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "summer",
+    inspiredBy: {
+    name: "Creed Silver Mountain Water",
+    short: "Silver Mountain Water DNA"
+  }
   },
   {
     id: 9,
@@ -494,7 +517,11 @@ const products = [
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     rating: 7.9,
     ratingLabel: "Well Loved",
-    season: "winter"
+    season: "winter",
+    inspiredBy: {
+    name: "Stéphane Humbert Lucas 777 Sand Dance",
+    short: "Sand Dance DNA"
+  }
   },
   {
     id: 10,
@@ -504,7 +531,11 @@ const products = [
     sizes: { "5ml": 3, "10ml": 5, "20ml": 10 },
     rating: 7.4,
     ratingLabel: "Popular Pick",
-    season: "summer"
+    season: "summer",
+    inspiredBy: {
+    name: "Bleu de Chanel Eau de Parfum",
+    short: "Bleu de Chanel DNA"
+  }
   },
   {
     id: 11,
@@ -515,7 +546,11 @@ const products = [
     badge: "BESTSELLER",
     rating: 8.7,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "summer",
+    inspiredBy: {
+    name: "Louis Vuitton Symphony",
+    short: "Symphony DNA"
+  }
   },
   {
     id: 12,
@@ -526,7 +561,11 @@ const products = [
     badge: "BESTSELLER",
     rating: 8.4,
     ratingLabel: "Audience Favorite",
-    season: "winter"
+    season: "winter",
+    inspiredBy: {
+    name: "Hugo Boss Bottled Absolute",
+    short: "Boss Absolute DNA"
+  }
   },
   {
     id: 13,
@@ -536,7 +575,11 @@ const products = [
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     rating: 8.0,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "spring",
+    inspiredBy: {
+    name: "Yves Saint Laurent Y EDP",
+    short: "YSL Y EDP DNA"
+  }
   },
   {
     id: 14,
@@ -547,7 +590,11 @@ const products = [
     badge: "BESTSELLER",
     rating: 9.0,
     ratingLabel: "Top Rated",
-    season: "winter"
+    season: "winter",
+    inspiredBy: {
+    name: "By Kilian Angels' Share",
+    short: "Angels' Share DNA"
+  }
   },
   {
     id: 15,
@@ -567,7 +614,11 @@ const products = [
     sizes: { "5ml": 3, "10ml": 5, "20ml": 10 },
     rating: 7.5,
     ratingLabel: "Well Loved",
-    season: "summer"
+    season: "summer",
+    inspiredBy: {
+    name: "Versace Eros Najim",
+    short: "Eros Najim DNA"
+  }
   },
   {
     id: 17,
@@ -577,7 +628,11 @@ const products = [
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     rating: 7.6,
     ratingLabel: "Well Loved",
-    season: "summer"
+    season: "summer",
+    inspiredBy: {
+    name: "Roja Dove Elysium Parfum Cologne",
+    short: "Elysium DNA"
+  }
   },
   {
     id: 18,
@@ -587,7 +642,11 @@ const products = [
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     rating: 7.7,
     ratingLabel: "Well Loved",
-    season: "winter"
+    season: "winter",
+    inspiredBy: {
+    name: "Xerjoff 1861 Naxos",
+    short: "Naxos DNA"
+  }
   },
   {
     id: 19,
@@ -597,7 +656,11 @@ const products = [
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     rating: 8.1,
     ratingLabel: "Audience Favorite",
-    season: "winter"
+    season: "winter",
+    inspiredBy: {
+    name: "Maison Francis Kurkdjian Oud Satin Mood",
+    short: "Oud Satin Mood DNA"
+  }
   },
   {
     id: 20,
@@ -607,7 +670,11 @@ const products = [
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     rating: 7.9,
     ratingLabel: "Well Loved",
-    season: "winter"
+    season: "winter",
+    inspiredBy: {
+    name: "Parfums de Marly Layton",
+    short: "Layton DNA"
+  }
   },
   {
     id: 21,
@@ -617,7 +684,11 @@ const products = [
     sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
     rating: 7.8,
     ratingLabel: "Well Loved",
-    season: "summer"
+    season: "summer",
+    inspiredBy: {
+    name: "Creed Virgin Island Water",
+    short: "Virgin Island Water DNA"
+  }
   },
   {
     id: 22,
@@ -627,7 +698,11 @@ const products = [
     sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
     rating: 7.9,
     ratingLabel: "Well Loved",
-    season: "summer"
+    season: "summer",
+    inspiredBy: {
+    name: "Louis Vuitton Pacific Chill",
+    short: "Pacific Chill DNA"
+  }
   },
   {
     id: 23,
@@ -907,6 +982,10 @@ const products = [
     rating: 8.4,
     ratingLabel: "Fresh King",
     season: "summer",
+    inspiredBy: {
+    name: "Paco Rabanne Invictus Aqua",
+    short: "Invictus DNA"
+  }
     isNew: true,
   },
   {
@@ -918,6 +997,10 @@ const products = [
     rating: 9.1,
     ratingLabel: "Top Rated",
     season: "all",
+    inspiredBy: {
+    name: "Creed Absolu Aventus",
+    short: "Absolu Aventus DNA"
+  }
     isNew: true,
   },
   {
@@ -929,6 +1012,10 @@ const products = [
     rating: 7.9,
     ratingLabel: "Well Loved",
     season: "summer",
+    inspiredBy: {
+    name: "Tales from Zanzibar by Memoirs of a Perfume Collector",
+    short: "Tales from Zanzibar DNA"
+  }
     isNew: true,
   },
   {
@@ -940,6 +1027,10 @@ const products = [
     rating: 8.1,
     ratingLabel: "Popular Pick",
     season: "summer",
+    inspiredBy: {
+    name: "Clive Christian L Red Tea Vetiver",
+    short: "Red Tea Vetiver DNA"
+  }
     isNew: true,
   }
 ];
