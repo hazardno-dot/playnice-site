@@ -1961,7 +1961,7 @@ const productCopy = {
     modal: {
       sr: "Hladan, čist i energičan — miris koji ostavlja svež i upečatljiv trag.",
       en: "Cool, clean and energetic — a scent that leaves a fresh, striking trail."
-    }
+    },
     scentType: {
       sr: "Fresh / Aquatic / Sweet",
       en: "Fresh / Aquatic / Sweet"
