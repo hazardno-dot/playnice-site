@@ -2771,63 +2771,34 @@ Remember. PlayNice.`,
 Ozbiljno.
 
 Jedan od onih dana kad pomisliš da bi mogao malo da usporiš. Ne telefon, ne haos, nego nešto normalno. Drvo, čekić, možda čak i malo mira.
-
-I tako — YouTube.
-
-Video o kućicama.
-
-Pa još jedan.
-Pa još jedan…
-
-A onda nešto drugo.
-
-Neki lik. Kinez. Samouveren. Priča o parfemu kao da je otkrio struju.
-
-Ne razumem pola.
-Ali razumem dovoljno.
+I tako — YouTube. Video o kućicama. Pa još jedan. Pa još jedan… A onda nešto drugo.
+Neki lik. Kinez. Samouveren. Priča o parfemu kao da je otkrio struju. Ne razumem pola. Ali razumem dovoljno.
 
 Klik.
 
-Još jedan video.
-Pa još jedan.
-
-I odjednom — više ne tražim kućicu za ptičice.
-
+Još jedan video. Pa još jedan. I odjednom — više ne tražim kućicu za ptičice.
 Tražim gde da kupim Rasasi Hawas Ice.
 
 —
 
-Cena? Hmm.
-
-Nov je, košta malo više, i to je baš onaj trenutak kad zastaneš i kažeš sebi:
+Cena? Hmm. Nov je, košta malo više, i to je baš onaj trenutak kad zastaneš i kažeš sebi:
 “Ne treba mi ovo.”
-
 I onda naravno — kupiš.
 
 —
 
 Par dana kasnije, stiže.
 
-Otvaram bez nekog velikog očekivanja.
-Realno, više sam bio u fazonu:
-“Dobro, da vidimo šta sam sad uradio.”
+Otvaram bez nekog velikog očekivanja. Realno, više sam bio u fazonu: “Dobro, da vidimo šta sam sad uradio.”
 
-Prvi sprej.
-
-Zastanem.
-
-Drugi.
-
-Ok.
+Prvi sprej. Zastanem.
+Drugi. Ok.
 
 Ovo… nije uopšte loše.
 
 —
 
-Nije to bio onaj dramatični “wow” momenat.
-
-Više ono:
-“Čekaj malo… ovo zapravo ima smisla.”
+Nije to bio onaj dramatični “wow” momenat. Više ono: “Čekaj malo… ovo zapravo ima smisla.”
 
 Ne viče.
 Ne gura se.
@@ -2838,28 +2809,21 @@ I ljudi počnu da primećuju.
 —
 
 Najbolji deo?
-
 Ptičice.
 
-Kućicu nikad nisam napravio, ali one i dalje kruže oko kuće.
-
-Kao avioni.
-
-Mislim da će me bombardovati.
-Ozbiljno.
+Kućicu im nikad nisam napravio, ali one i dalje kruže oko moje. Kao avioni. Mislim da će me bombardovati jednog dana.
+Stvarno.
 
 —
 
-Nekad kreneš po jednu stvar… a završiš na potpuno drugoj.
-
-I ponekad — isplati se.
+I tako - nekad kreneš po jednu stvar… a završiš na potpuno drugoj.
+I ponekad - isplati se.
 
 —
 
 I ako me pitaš da li je vredelo?
 
-Nemam kućicu za ptičice.
-
+Ne,nemam kućicu za ptičice.
 Ali izgleda da ipak imam razlog zašto se stalno vraćaju. 😉
 
 —
