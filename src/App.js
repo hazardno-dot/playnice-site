@@ -5831,31 +5831,51 @@ const getSizeWearHint = (size) => {
         <span className="modal-eyebrow">PRIVATE DETAIL</span>
         <h2>{selectedProduct.name}</h2>
 
-        {selectedProduct.rating && (
-          <div className="modal-rating panel-item-anim panel-item-1">
-            <div className="modal-rating-stars" aria-hidden="true">
-              {Array.from({ length: 10 }).map((_, index) => (
-                <span
-                  key={index}
-                  className={
-                    index < Math.round(selectedProduct.rating) ? "filled" : ""
-                  }
-                >
-                  ★
-                </span>
-              ))}
-            </div>
+        <div className="modal-header-meta">
+          {selectedProduct.rating ? (
+            <div className="modal-rating panel-item-anim panel-item-1">
+              <div className="modal-rating-stars" aria-hidden="true">
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <span
+                    key={index}
+                    className={
+                      index < Math.round(selectedProduct.rating) ? "filled" : ""
+                    }
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
 
-            <div className="modal-rating-meta">
-              <span className="modal-rating-score">
-                {selectedProduct.rating.toFixed(1)}
-              </span>
-              <span className="modal-rating-label">
-                / 10 • {selectedProduct.ratingLabel}
-              </span>
+              <div className="modal-rating-meta">
+                <span className="modal-rating-score">
+                  {selectedProduct.rating.toFixed(1)}
+                </span>
+                <span className="modal-rating-label">
+                  / 10 • {selectedProduct.ratingLabel}
+                </span>
+              </div>
             </div>
-          </div>
-        )}
+          ) : (
+            <div />
+          )}
+
+          {selectedProduct.inspiredBy?.name && (
+            <div className="modal-inspired-mini panel-item-anim panel-item-2">
+              <span className="modal-inspired-mini-label">INSPIRED BY</span>
+
+              <strong className="modal-inspired-mini-name">
+                {selectedProduct.inspiredBy.name}
+              </strong>
+
+              {selectedProduct.inspiredBy.short && (
+                <span className="modal-inspired-mini-short">
+                  {selectedProduct.inspiredBy.short}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="modal-body">
@@ -5916,29 +5936,7 @@ const getSizeWearHint = (size) => {
                 : "A luxurious scent with strong character and premium presence.")}
           </p>
 
-          {selectedProduct.inspiredBy?.name && (
-            <div className="modal-inspired panel-item-anim panel-item-3">
-              <span className="modal-inspired-label">INSPIRED BY</span>
-
-              <strong className="modal-inspired-name">
-                {selectedProduct.inspiredBy.name}
-              </strong>
-
-              {selectedProduct.inspiredBy.short && (
-                <span className="modal-inspired-short">
-                  {selectedProduct.inspiredBy.short}
-                </span>
-              )}
-
-              {selectedProduct.inspiredBy.vibe && (
-                <p className="modal-inspired-vibe">
-                  {selectedProduct.inspiredBy.vibe}
-                </p>
-              )}
-            </div>
-          )}
-
-          <p className="product-modal-anchor panel-item-anim panel-item-4">
+          <p className="product-modal-anchor panel-item-anim panel-item-3">
             {lang === "sr" ? (
               <>
                 Prvo ga <strong>probaj na svojoj koži</strong> — pre nego što se
@@ -5953,7 +5951,7 @@ const getSizeWearHint = (size) => {
           </p>
 
           <div className="modal-info-grid">
-            <div className="modal-info-card panel-item-anim panel-item-5">
+            <div className="modal-info-card panel-item-anim panel-item-4">
               <span>
                 {lang === "sr" ? "DOMINANTNE NOTE" : "DOMINANT NOTES"}
               </span>
@@ -5963,7 +5961,7 @@ const getSizeWearHint = (size) => {
               </strong>
             </div>
 
-            <div className="modal-info-card panel-item-anim panel-item-6">
+            <div className="modal-info-card panel-item-anim panel-item-5">
               <span>
                 {lang === "sr"
                   ? "ZAŠTO KUPCI BIRAJU OVAJ PARFEM"
@@ -5979,7 +5977,7 @@ const getSizeWearHint = (size) => {
           </div>
 
           <div className="modal-purchase">
-            <div className="modal-size-block panel-anim panel-anim-3">
+            <div className="modal-size-block panel-item-anim panel-item-6">
               <span className="modal-label">
                 {lang === "sr" ? "IZABERI VELIČINU" : "CHOOSE SIZE"}
               </span>
