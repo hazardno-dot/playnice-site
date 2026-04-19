@@ -2671,63 +2671,34 @@ Remember. PlayNice.`,
 Seriously.
 
 One of those days when you feel like slowing things down a little. No phone chaos, no noise, just something normal. Wood, a hammer, maybe even some peace.
-
-So — YouTube.
-
-A video about birdhouses.
-
-Then another one.
-Then another…
-
-And then something else.
-
-Some guy. Chinese. Confident. Talking about a fragrance like he had just discovered electricity.
-
-I did not understand half of it.
-But I understood enough.
+So — YouTube. A video about birdhouses. Then another one. Then another… And then something else.
+Some guy. Chinese. Confident. Talking about a fragrance like he had just discovered electricity. I did not understand half of it. But I understood enough.
 
 Click.
 
-One more video.
-Then another.
-
-And suddenly, I was no longer looking up birdhouses.
-
+One more video. Then another. And suddenly, I was no longer looking up birdhouses.
 I was looking for where to buy Rasasi Hawas Ice.
 
 —
 
-The price? Hmm.
-
-It was new, a little expensive, and exactly the kind of moment where you stop and tell yourself:
+The price? Hmm. It was new, a little expensive, and exactly the kind of moment where you stop and tell yourself:
 “You do not need this.”
-
 And then, naturally — you buy it.
 
 —
 
 A few days later, it arrived.
 
-I opened it without huge expectations.
-Honestly, I was more in the mood of:
-“Alright, let’s see what I’ve done now.”
+I opened it without huge expectations. Honestly, I was more in the mood of: “Alright, let’s see what I’ve done now.”
 
-First spray.
-
-Pause.
-
-Second spray.
-
-Ok.
+First spray. Pause.
+Second spray. Ok.
 
 This… is not bad at all.
 
 —
 
-It was not one of those dramatic “wow” moments.
-
-More like:
-“Wait a second… this actually makes sense.”
+It was not one of those dramatic “wow” moments. More like: “Wait a second… this actually makes sense.”
 
 It does not shout.
 It does not push itself forward.
@@ -2738,28 +2709,21 @@ And people notice.
 —
 
 Best part?
-
 The birds.
 
-I never built the birdhouse, but they are still circling the house.
-
-Like planes.
-
-I think they are going to bomb me.
+I never built them the birdhouse, but they are still circling around mine. Like planes. I think they are going to bomb me.
 Seriously.
 
 —
 
-Sometimes you start off looking for one thing… and end up with something completely different.
-
-And sometimes — it works out.
+And there you go - sometimes you start off looking for one thing… and end up with something completely different.
+And sometimes - it works out.
 
 —
 
 So if you ask me whether it was worth it?
 
-I do not have a birdhouse.
-
+No, i do not have a birdhouse.
 But I do seem to have a reason they keep coming back. 😉
 
 —
