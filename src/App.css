@@ -4661,7 +4661,8 @@ body.scrolled .announcement-bar::after {
   top: calc(
     var(--topbar-top-offset) +
     var(--topbar-height) +
-    28px
+    var(--announcement-gap) +
+    10px
   );
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(10px);
