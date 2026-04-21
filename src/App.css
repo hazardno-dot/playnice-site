@@ -91,7 +91,7 @@ img {
 main {
   overflow: hidden;
   margin-top: 0;
-  padding-top: calc(var(--announcement-height) + var(--announcement-gap) + 2px);
+  padding-top: calc(var(--announcement-height) + 4px);
 }
 
 /* =========================================
