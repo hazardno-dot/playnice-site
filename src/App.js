@@ -4353,18 +4353,14 @@ const getSizeWearHint = (size) => {
 
       <div className="topbar-right">
         <button
-  className="header-private-selection-btn"
-  onClick={() => setPrivateSelectionOpen(true)}
-  type="button"
->
-  <span className="ps-icon">✦</span>
-
-  <span className="ps-label">Private Selection</span>
-
-  {wishlist.length > 0 && (
-    <span className="ps-count">{wishlist.length}</span>
-  )}
-</button>
+          className="header-private-selection-btn"
+          onClick={() => setPrivateSelectionOpen(true)}
+          type="button"
+        >
+          <span className="ps-heart">♥</span>
+          <span className="ps-label">Private Selection</span>
+          {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
+        </button>
 
         <div className="lang-vertical lang-vertical--in-header" aria-label="Language switch">
           <button
