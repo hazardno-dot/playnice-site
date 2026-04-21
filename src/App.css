@@ -7768,9 +7768,15 @@ will-change: transform, opacity;
 
   .header-private-selection-btn .ps-heart {
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: 12px;
+    color: #b72a38;
     margin: 0;
     transform: none;
+    text-shadow:
+      0 0 8px rgba(183, 42, 56, 0.22),
+      0 0 16px rgba(183, 42, 56, 0.12);
   }
 
   .header-private-selection-btn .ps-count {
