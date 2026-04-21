@@ -485,7 +485,7 @@ main {
 ========================================= */
 .lang-vertical {
   position: fixed;
-  top: calc(var(--topbar-top-offset) + 26x);
+  top: calc(var(--topbar-top-offset) + 30x);
   right: calc((100vw - min(calc(100% - 32px), var(--max))) / 2 - 52px);
   z-index: 120;
 
