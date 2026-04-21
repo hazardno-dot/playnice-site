@@ -4661,11 +4661,15 @@ body.scrolled .announcement-bar::after {
 
   /* mobile fix: announcement bar lowered below taller header */
   .announcement-bar {
-  top: calc(
-    var(--topbar-top-offset) +
-    var(--topbar-height) +
-    var(--announcement-gap)
-  );
+  top: 140px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: box-shadow 0.35s ease;
+}
+
+main {
+  padding-top: 56px;
 }
 
   body.scrolled .announcement-bar {
