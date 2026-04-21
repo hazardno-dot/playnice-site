@@ -483,6 +483,12 @@ main {
 /* =========================================
    VERTICAL LANGUAGE SWITCH (FINAL)
 ========================================= */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .lang-vertical {
   display: flex;
   flex-direction: column;
