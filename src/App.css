@@ -7680,13 +7680,13 @@ will-change: transform, opacity;
   font-family: "Inter", sans-serif;
   font-size: 0.64rem;
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.19em;
   text-transform: uppercase;
   color: rgba(255, 248, 235, 0.86);
 }
 
 .ps-line-bottom {
-  margin-top: -3px;
+  margin-top: 2px;
   font-family: "English 111 Vivace BT", "English 111 Vivace", "Brush Script MT", cursive;
   font-size: 1.28rem;
   font-weight: 400;
