@@ -4540,7 +4540,9 @@ body.scrolled .announcement-bar::after {
   }
 
   main {
-    padding-top: calc(var(--announcement-height) + 4px);
+    main {
+  padding-top: 56px;
+}
   }
 
   .topbar {
@@ -4659,17 +4661,12 @@ body.scrolled .announcement-bar::after {
 
   /* mobile fix: announcement bar lowered below taller header */
   .announcement-bar {
-    top: calc(
-      var(--topbar-top-offset) +
-      var(--topbar-height) +
-      var(--announcement-gap) +
-      10px
-    );
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: box-shadow 0.35s ease;
-  }
+  top: 122px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: box-shadow 0.35s ease;
+}
 
   body.scrolled .announcement-bar {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
