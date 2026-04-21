@@ -7610,30 +7610,24 @@ will-change: transform, opacity;
 }
 
 /* =========================================
-   HEADER — PRIVATE SELECTION (FINAL)
+   HEADER — PRIVATE SELECTION (FINAL ROYAL)
 ========================================= */
 
 .header-private-selection-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 0;
 
-  height: 52px; /* KLJUČ: ne dira header visinu */
-  padding: 8px 14px;
+  height: 52px;
+  padding: 8px 16px;
 
   border-radius: 999px;
-
   border: 1px solid rgba(220, 181, 107, 0.2);
   background: rgba(10, 10, 10, 0.6);
 
-  font-family: "Inter", sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-
-  color: rgba(255, 248, 235, 0.78);
-
+  color: rgba(255, 248, 235, 0.82);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 
@@ -7651,10 +7645,9 @@ will-change: transform, opacity;
 }
 
 .header-private-selection-btn:hover {
-  border-color: rgba(220, 181, 107, 0.4);
+  border-color: rgba(220, 181, 107, 0.42);
   background: rgba(20, 20, 20, 0.85);
   transform: translateY(-1px);
-
   box-shadow:
     0 6px 18px rgba(0, 0, 0, 0.35),
     0 0 12px rgba(220, 181, 107, 0.08);
@@ -7664,56 +7657,73 @@ will-change: transform, opacity;
   transform: translateY(0) scale(0.98);
 }
 
-/* LEFT HEART ICON */
-
+/* old left heart removed */
 .ps-heart {
-  color: #9f1f2d;
-  font-size: 12px;
+  display: none;
+}
 
-  display: inline-flex;
-  align-items: center;
+/* stacked label */
+.ps-label {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  line-height: 0.98;
+  white-space: nowrap;
+}
 
-  transform: translateY(-1px);
+.ps-label-stacked {
+  min-width: 116px;
+}
+
+.ps-line-top {
+  font-family: "Inter", sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 248, 235, 0.86);
+}
+
+.ps-line-bottom {
+  margin-top: -1px;
+  font-family: "English 111 Vivace BT", "English 111 Vivace", "Brush Script MT", cursive;
+  font-size: 1.02rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: rgba(255, 248, 235, 0.92);
+}
+
+/* inline heart inside word */
+.ps-heart-inline {
+  display: inline-block;
+  margin: 0 1px 0 0;
+  color: #b72a38;
+  font-size: 1.08em;
+  line-height: 1;
+  position: relative;
+  top: -0.02em;
+
+  text-shadow:
+    0 0 6px rgba(183, 42, 56, 0.22),
+    0 0 12px rgba(183, 42, 56, 0.14);
 
   transition:
     transform 0.2s ease,
     text-shadow 0.2s ease;
 }
 
-.header-private-selection-btn:hover .ps-heart {
+.header-private-selection-btn:hover .ps-heart-inline {
+  transform: scale(1.08);
   text-shadow:
-    0 0 8px rgba(159, 31, 45, 0.25),
-    0 0 16px rgba(159, 31, 45, 0.15);
+    0 0 8px rgba(183, 42, 56, 0.3),
+    0 0 16px rgba(183, 42, 56, 0.18);
 }
 
-/* LABEL — 2 LINES */
-
-.ps-label {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  line-height: 1.05;
-}
-
-/* INLINE HEART (inside word) */
-
-.ps-heart-inline {
-  color: var(--gold);
-  font-size: 12px;
-  margin: 0 1px;
-  position: relative;
-  top: -1px;
-
-  text-shadow: 0 0 6px rgba(220, 181, 107, 0.2);
-}
-
-/* COUNT BADGE */
-
+/* count badge */
 .ps-count {
-  margin-left: 6px;
-
+  margin-left: 8px;
   min-width: 18px;
   height: 18px;
   padding: 0 6px;
@@ -7723,18 +7733,11 @@ will-change: transform, opacity;
   justify-content: center;
 
   border-radius: 999px;
-
   font-size: 0.65rem;
   font-weight: 700;
-
   color: #fff;
 
-  background: linear-gradient(
-    180deg,
-    #b72a38 0%,
-    #7f1822 100%
-  );
-
+  background: linear-gradient(180deg, #b72a38 0%, #7f1822 100%);
   box-shadow:
     0 0 0 1px rgba(183, 42, 56, 0.3),
     0 4px 10px rgba(0, 0, 0, 0.35);
@@ -7750,13 +7753,11 @@ will-change: transform, opacity;
     min-width: 40px;
     height: 40px;
     padding: 0;
-
     border-radius: 999px;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0;
 
     flex: 0 0 auto;
   }
@@ -7766,6 +7767,7 @@ will-change: transform, opacity;
   }
 
   .header-private-selection-btn .ps-heart {
+    display: inline-flex;
     font-size: 12px;
     margin: 0;
     transform: none;
@@ -7781,6 +7783,7 @@ will-change: transform, opacity;
     padding: 0 4px;
 
     font-size: 0.55rem;
+    margin-left: 0;
   }
 
   .topbar-right {

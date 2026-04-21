@@ -4357,10 +4357,9 @@ const getSizeWearHint = (size) => {
           onClick={() => setPrivateSelectionOpen(true)}
           type="button"
         >
-          <span className="ps-heart">♥</span>
-          <span className="ps-label">
-  <span>Private</span>
-  <span>
+          <span className="ps-label ps-label-stacked">
+  <span className="ps-line-top">Private</span>
+  <span className="ps-line-bottom">
     Selecti<span className="ps-heart-inline">♥</span>n
   </span>
 </span>
