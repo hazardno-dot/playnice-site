@@ -485,17 +485,11 @@ main {
 ========================================= */
 .lang-vertical {
   position: fixed;
-
-  /* 👉 poravnanje sa headerom (isti top) */
   top: var(--topbar-top-offset);
-
-  /* 👉 uz ivicu headera, malo napolje */
   right: calc((100vw - min(calc(100% - 32px), var(--max))) / 2 - 48px);
-
   z-index: 120;
 
-  /* 👉 TAČNA VISINA */
-  height: 60px;
+  height: 72px;
   width: 40px;
 
   display: flex;
@@ -510,7 +504,6 @@ main {
   background:
     linear-gradient(180deg, rgba(18, 18, 18, 0.9), rgba(10, 10, 10, 0.86)),
     rgba(8, 8, 8, 0.84);
-
   border: 1px solid rgba(220, 181, 107, 0.1);
 
   backdrop-filter: blur(16px) saturate(125%);
@@ -524,20 +517,22 @@ main {
 .lang-vertical button {
   width: 26px;
   height: 26px;
-
   display: grid;
   place-items: center;
-
   border-radius: 999px;
   border: 1px solid transparent;
   background: transparent;
   color: var(--text-soft);
-
   font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 0.06em;
-
   transition: all 0.22s ease;
+}
+
+.lang-divider {
+  width: 8px;
+  height: 1px;
+  background: rgba(220, 181, 107, 0.22);
 }
 
 .lang-vertical button:focus,
@@ -556,12 +551,6 @@ main {
   border-color: rgba(220, 181, 107, 0.28);
   background: rgba(220, 181, 107, 0.07);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
-}
-
-.lang-divider {
-  width: 8px;
-  height: 1px;
-  background: rgba(220, 181, 107, 0.22);
 }
 
 .lang-vertical {
