@@ -7668,7 +7668,7 @@ will-change: transform, opacity;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  line-height: 1.22;
+  line-height: 1.1;
   white-space: nowrap;
 }
 
@@ -7690,28 +7690,35 @@ will-change: transform, opacity;
   font-family: "English 111 Vivace BT", "English 111 Vivace", "Brush Script MT", cursive;
   font-size: 1.28rem;
   font-weight: 400;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.035em;
   text-transform: none;
   color: rgba(255, 248, 235, 0.92);
+  transform: translateY(1px); /* blago spušten */
 }
 
 /* inline heart inside word */
 .ps-heart-inline {
   display: inline-block;
-  margin: 0 1px 0 0;
+  margin-left: 1px;
   color: #b72a38;
-  font-size: 1.16em;
+  font-size: 1.18em;
   line-height: 1;
   position: relative;
   top: -0.02em;
+  transform: translateY(-0.02em);
 
   text-shadow:
-    0 0 6px rgba(183, 42, 56, 0.22),
-    0 0 12px rgba(183, 42, 56, 0.14);
+    0 0 6px rgba(183, 42, 56, 0.25),
+    0 0 14px rgba(183, 42, 56, 0.18);
 
   transition:
     transform 0.2s ease,
     text-shadow 0.2s ease;
+}
+
+.header-private-selection-btn:hover .ps-line-bottom {
+  text-shadow:
+    0 0 10px rgba(220, 181, 107, 0.08);
 }
 
 .header-private-selection-btn:hover .ps-heart-inline {
