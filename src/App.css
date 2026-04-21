@@ -7668,7 +7668,7 @@ will-change: transform, opacity;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  line-height: 1.12;
+  line-height: 1.22;
   white-space: nowrap;
 }
 
@@ -7686,7 +7686,7 @@ will-change: transform, opacity;
 }
 
 .ps-line-bottom {
-  margin-top: 4px;
+  margin-top: 2px;
   font-family: "English 111 Vivace BT", "English 111 Vivace", "Brush Script MT", cursive;
   font-size: 1.28rem;
   font-weight: 400;
