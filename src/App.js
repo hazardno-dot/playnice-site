@@ -4297,7 +4297,6 @@ const getSizeWearHint = (size) => {
   ========================================= */
   return (
   <div className="app-shell">
-
     <header className="topbar">
       <button className="brand" type="button" onClick={() => switchView("home")}>
         <span className="brand-mark">▶</span>
@@ -4359,55 +4358,41 @@ const getSizeWearHint = (size) => {
           type="button"
         >
           <span className="ps-heart">♥</span>
-
           <span className="ps-label">Private Selection</span>
-
           {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
         </button>
 
-        <div className="topbar-right">
-  <button
-    className="header-private-selection-btn"
-    onClick={() => setPrivateSelectionOpen(true)}
-    type="button"
-  >
-    <span className="ps-heart">♥</span>
-    <span className="ps-label">Private Selection</span>
-    {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
-  </button>
+        <div className="lang-vertical lang-vertical--in-header" aria-label="Language switch">
+          <button
+            className={lang === "sr" ? "active" : ""}
+            onClick={() => setLang("sr")}
+            type="button"
+          >
+            SR
+          </button>
 
-  <div className="lang-vertical lang-vertical--in-header" aria-label="Language switch">
-    <button
-      className={lang === "sr" ? "active" : ""}
-      onClick={() => setLang("sr")}
-      type="button"
-    >
-      SR
-    </button>
+          <div className="lang-divider" />
 
-    <div className="lang-divider" />
+          <button
+            className={lang === "en" ? "active" : ""}
+            onClick={() => setLang("en")}
+            type="button"
+          >
+            EN
+          </button>
+        </div>
 
-    <button
-      className={lang === "en" ? "active" : ""}
-      onClick={() => setLang("en")}
-      type="button"
-    >
-      EN
-    </button>
-  </div>
-
-  <button
-    className="cart-button cart-button--icon-only"
-    type="button"
-    onClick={() => setCartOpen((prev) => !prev)}
-    aria-label={lang === "sr" ? "Korpa" : "Cart"}
-    title={lang === "sr" ? "Korpa" : "Cart"}
-  >
-    <span className="cart-icon" aria-hidden="true">🛒</span>
-    {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-  </button>
-</div>
-
+        <button
+          className="cart-button cart-button--icon-only"
+          type="button"
+          onClick={() => setCartOpen((prev) => !prev)}
+          aria-label={lang === "sr" ? "Korpa" : "Cart"}
+          title={lang === "sr" ? "Korpa" : "Cart"}
+        >
+          <span className="cart-icon" aria-hidden="true">🛒</span>
+          {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+        </button>
+      </div>
     </header>
 
       <div
@@ -4964,7 +4949,7 @@ const getSizeWearHint = (size) => {
     className="footer-link"
     onClick={goToShop}
   >
-    {lang === "sr" ? "Prodavnica" : "Shop"}
+    {lang === "sr" ? "Shop" : "Shop"}
   </button>
 
   <button
