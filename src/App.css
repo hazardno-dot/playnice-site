@@ -485,10 +485,11 @@ main {
 ========================================= */
 .lang-vertical {
   position: fixed;
-  top: calc(var(--topbar-top-offset) + 12px);
-  right: 6px;
+  top: calc(var(--topbar-top-offset) + 8px);
+  right: calc((100vw - min(calc(100% - 32px), var(--max))) / 2 + 6px);
   z-index: 120;
 
+  width: 52px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -496,11 +497,9 @@ main {
 
   padding: 10px 6px;
   border-radius: 999px;
-
   background:
     linear-gradient(180deg, rgba(18, 18, 18, 0.88), rgba(10, 10, 10, 0.82)),
     rgba(8, 8, 8, 0.82);
-
   border: 1px solid rgba(220, 181, 107, 0.12);
 
   backdrop-filter: blur(18px) saturate(130%);
@@ -511,21 +510,18 @@ main {
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-/* dugmad */
 .lang-vertical button {
-  width: 38px;
-  height: 38px;
-
+  width: 100%;
+  height: 36px;
   display: grid;
   place-items: center;
 
   border-radius: 999px;
   border: 1px solid transparent;
-
   background: transparent;
   color: var(--text-soft);
 
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.14em;
 
@@ -550,7 +546,6 @@ main {
   color: var(--text);
 }
 
-/* active state */
 .lang-vertical button.active {
   color: var(--gold);
   border-color: rgba(220, 181, 107, 0.34);
@@ -558,7 +553,6 @@ main {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.24);
 }
 
-/* divider između SR / EN */
 .lang-divider {
   width: 14px;
   height: 1px;

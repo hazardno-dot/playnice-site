@@ -4297,14 +4297,7 @@ const getSizeWearHint = (size) => {
   ========================================= */
   return (
   <div className="app-shell">
-    <div className="floating-lang-switch" aria-label="Language switch">
-      <button
-        className={lang === "en" ? "active" : ""}
-        onClick={() => setLang("en")}
-        type="button"
-      >
-        EN
-      </button>
+    <div className="lang-vertical" aria-label="Language switch">
       <button
         className={lang === "sr" ? "active" : ""}
         onClick={() => setLang("sr")}
@@ -4312,27 +4305,17 @@ const getSizeWearHint = (size) => {
       >
         SR
       </button>
+
+      <div className="lang-divider" />
+
+      <button
+        className={lang === "en" ? "active" : ""}
+        onClick={() => setLang("en")}
+        type="button"
+      >
+        EN
+      </button>
     </div>
-
-    <div className="lang-vertical">
-  <button
-    className={lang === "sr" ? "active" : ""}
-    onClick={() => setLang("sr")}
-    type="button"
-  >
-    SR
-  </button>
-
-  <div className="lang-divider" />
-
-  <button
-    className={lang === "en" ? "active" : ""}
-    onClick={() => setLang("en")}
-    type="button"
-  >
-    EN
-  </button>
-</div>
 
     <header className="topbar">
       <button className="brand" type="button" onClick={() => switchView("home")}>
@@ -4384,38 +4367,34 @@ const getSizeWearHint = (size) => {
             setSelectedArticle(null);
           }}
         >
-          <span className="header-journal-btn-text">
-            {lang === "sr" ? "Journal" : "Journal"}
-          </span>
+          <span className="header-journal-btn-text">Journal</span>
         </button>
       </nav>
 
       <div className="topbar-right">
-  <button
-    className="header-private-selection-btn"
-    onClick={() => setPrivateSelectionOpen(true)}
-    type="button"
-  >
-    <span className="ps-heart">♥</span>
+        <button
+          className="header-private-selection-btn"
+          onClick={() => setPrivateSelectionOpen(true)}
+          type="button"
+        >
+          <span className="ps-heart">♥</span>
 
-    <span className="ps-label">
-      {lang === "sr" ? "Private Selection" : "Private Selection"}
-    </span>
+          <span className="ps-label">Private Selection</span>
 
-    {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
-  </button>
+          {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
+        </button>
 
-  <button
-    className="cart-button cart-button--icon-only"
-    type="button"
-    onClick={() => setCartOpen((prev) => !prev)}
-    aria-label={lang === "sr" ? "Korpa" : "Cart"}
-    title={lang === "sr" ? "Korpa" : "Cart"}
-  >
-    <span className="cart-icon" aria-hidden="true">🛒</span>
-    {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-  </button>
-</div>
+        <button
+          className="cart-button cart-button--icon-only"
+          type="button"
+          onClick={() => setCartOpen((prev) => !prev)}
+          aria-label={lang === "sr" ? "Korpa" : "Cart"}
+          title={lang === "sr" ? "Korpa" : "Cart"}
+        >
+          <span className="cart-icon" aria-hidden="true">🛒</span>
+          {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+        </button>
+      </div>
     </header>
 
       <div
