@@ -4314,20 +4314,23 @@ const getSizeWearHint = (size) => {
       </button>
     </div>
 
-    <div className="floating-lang-switch" aria-label="Language switch">
-  <button
-    className={lang === "en" ? "active" : ""}
-    onClick={() => setLang("en")}
-    type="button"
-  >
-    EN
-  </button>
+    <div className="lang-vertical">
   <button
     className={lang === "sr" ? "active" : ""}
     onClick={() => setLang("sr")}
     type="button"
   >
     SR
+  </button>
+
+  <div className="lang-divider" />
+
+  <button
+    className={lang === "en" ? "active" : ""}
+    onClick={() => setLang("en")}
+    type="button"
+  >
+    EN
   </button>
 </div>
 
