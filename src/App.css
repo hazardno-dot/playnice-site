@@ -7621,7 +7621,7 @@ will-change: transform, opacity;
   gap: 0;
 
   height: 52px;
-  padding: 8px 16px;
+  padding: 8px 12px;
 
   border-radius: 999px;
   border: 1px solid rgba(220, 181, 107, 0.2);
@@ -7657,11 +7657,6 @@ will-change: transform, opacity;
   transform: translateY(0) scale(0.98);
 }
 
-/* old left heart removed */
-.ps-heart {
-  display: none;
-}
-
 /* stacked label */
 .ps-label {
   display: flex;
@@ -7673,7 +7668,7 @@ will-change: transform, opacity;
 }
 
 .ps-label-stacked {
-  min-width: 116px;
+  min-width: 108px;
 }
 
 .ps-line-top {
