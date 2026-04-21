@@ -564,6 +564,10 @@ main {
   background: rgba(220, 181, 107, 0.22);
 }
 
+.lang-vertical {
+  border-left: none;
+}
+
 /* =========================================
    ANNOUNCEMENT BAR — SOFT FULL WIDTH FINAL
 ========================================= */
