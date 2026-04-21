@@ -7657,6 +7657,11 @@ will-change: transform, opacity;
   transform: translateY(0) scale(0.98);
 }
 
+/* old left heart removed */
+.ps-heart {
+  display: none;
+}
+
 /* stacked label */
 .ps-label {
   display: flex;
@@ -7673,17 +7678,17 @@ will-change: transform, opacity;
 
 .ps-line-top {
   font-family: "Inter", sans-serif;
-  font-size: 0.62rem;
+  font-size: 0.64rem;
   font-weight: 700;
-  letter-spacing: 0.20em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: rgba(255, 248, 235, 0.86);
 }
 
 .ps-line-bottom {
-  margin-top: -2px;
+  margin-top: -3px;
   font-family: "English 111 Vivace BT", "English 111 Vivace", "Brush Script MT", cursive;
-  font-size: 1.18rem;
+  font-size: 1.28rem;
   font-weight: 400;
   letter-spacing: 0.02em;
   text-transform: none;
@@ -7695,7 +7700,7 @@ will-change: transform, opacity;
   display: inline-block;
   margin: 0 1px 0 0;
   color: #b72a38;
-  font-size: 1.08em;
+  font-size: 1.16em;
   line-height: 1;
   position: relative;
   top: -0.02em;
