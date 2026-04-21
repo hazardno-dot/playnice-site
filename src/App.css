@@ -4533,11 +4533,11 @@ body.scrolled .announcement-bar::after {
 
 @media (max-width: 820px) {
   :root {
-    --topbar-top-offset: 8px;
-    --topbar-height: 88px;
-    --announcement-height: 42px;
-    --announcement-gap: 18px;
-  }
+  --topbar-top-offset: 8px;
+  --topbar-height: 120px; /* REALNA VISINA */
+  --announcement-height: 42px;
+  --announcement-gap: 12px;
+}
 
   main {
     main {
@@ -4661,11 +4661,11 @@ body.scrolled .announcement-bar::after {
 
   /* mobile fix: announcement bar lowered below taller header */
   .announcement-bar {
-  top: 140px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: box-shadow 0.35s ease;
+  top: calc(
+    var(--topbar-top-offset) +
+    var(--topbar-height) +
+    var(--announcement-gap)
+  );
 }
 
   body.scrolled .announcement-bar {
