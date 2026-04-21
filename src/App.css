@@ -7610,24 +7610,26 @@ will-change: transform, opacity;
 }
 
 /* =========================================
-   HEADER — PRIVATE SELECTION (WISHLIST)
+   HEADER — PRIVATE SELECTION (FINAL)
 ========================================= */
 
 .header-private-selection-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 
+  height: 52px; /* KLJUČ: ne dira header visinu */
   padding: 8px 14px;
+
   border-radius: 999px;
 
   border: 1px solid rgba(220, 181, 107, 0.2);
   background: rgba(10, 10, 10, 0.6);
 
   font-family: "Inter", sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 
   color: rgba(255, 248, 235, 0.78);
@@ -7662,7 +7664,7 @@ will-change: transform, opacity;
   transform: translateY(0) scale(0.98);
 }
 
-/* HEART ICON */
+/* LEFT HEART ICON */
 
 .ps-heart {
   color: #9f1f2d;
@@ -7673,6 +7675,7 @@ will-change: transform, opacity;
   justify-content: center;
 
   transform: translateY(-1px);
+
   transition:
     transform 0.2s ease,
     text-shadow 0.2s ease;
@@ -7684,15 +7687,33 @@ will-change: transform, opacity;
     0 0 16px rgba(159, 31, 45, 0.15);
 }
 
-/* LABEL */
+/* LABEL — 2 LINES */
 
 .ps-label {
-  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  line-height: 1.05;
+}
+
+/* INLINE HEART (inside word) */
+
+.ps-heart-inline {
+  color: var(--gold);
+  font-size: 12px;
+  margin: 0 1px;
+  position: relative;
+  top: -1px;
+
+  text-shadow: 0 0 6px rgba(220, 181, 107, 0.2);
 }
 
 /* COUNT BADGE */
 
 .ps-count {
+  margin-left: 6px;
+
   min-width: 18px;
   height: 18px;
   padding: 0 6px;
@@ -7719,12 +7740,17 @@ will-change: transform, opacity;
     0 4px 10px rgba(0, 0, 0, 0.35);
 }
 
+/* =========================================
+   MOBILE
+========================================= */
+
 @media (max-width: 768px) {
   .header-private-selection-btn {
     width: 40px;
     min-width: 40px;
     height: 40px;
     padding: 0;
+
     border-radius: 999px;
 
     display: inline-flex;

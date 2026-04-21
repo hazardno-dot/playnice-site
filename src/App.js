@@ -4358,7 +4358,12 @@ const getSizeWearHint = (size) => {
           type="button"
         >
           <span className="ps-heart">♥</span>
-          <span className="ps-label">Private Selection</span>
+          <span className="ps-label">
+  <span>Private</span>
+  <span>
+    Selecti<span className="ps-heart-inline">♥</span>n
+  </span>
+</span>
           {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
         </button>
 
