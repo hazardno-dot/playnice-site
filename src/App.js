@@ -4951,7 +4951,7 @@ const getSizeWearHint = (size) => {
     className="footer-link"
     onClick={goToShop}
   >
-    {lang === "sr" ? "Shop" : "Shop"}
+    {lang === "sr" ? "Prodavnica" : "Shop"}
   </button>
 
   <button
