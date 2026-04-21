@@ -7668,7 +7668,7 @@ will-change: transform, opacity;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  line-height: 0.98;
+  line-height: 0.92;
   white-space: nowrap;
 }
 
@@ -7677,18 +7677,18 @@ will-change: transform, opacity;
 }
 
 .ps-line-top {
-  font-family: "Inter", sans-serif;
-  font-size: 0.58rem;
+  font-family: "English 111 Vivace BT", "English 111 Vivace", "Brush Script MT", cursive;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.20em;
   text-transform: uppercase;
   color: rgba(255, 248, 235, 0.86);
 }
 
 .ps-line-bottom {
-  margin-top: -1px;
+  margin-top: -2px;
   font-family: "English 111 Vivace BT", "English 111 Vivace", "Brush Script MT", cursive;
-  font-size: 1.02rem;
+  font-size: 1.18rem;
   font-weight: 400;
   letter-spacing: 0.02em;
   text-transform: none;
