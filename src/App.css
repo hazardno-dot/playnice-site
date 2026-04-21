@@ -4539,7 +4539,7 @@ body.scrolled .announcement-bar::after {
   --announcement-gap: 12px;
 
   /* KLJUČNO */
-  --announcement-top-mobile: 138px;
+  --announcement-top-mobile: 137px;
 }
 
   main {
@@ -7734,9 +7734,12 @@ will-change: transform, opacity;
 }
 
 .ps-count {
-  margin-left: 8px;
-  min-width: 18px;
-  height: 18px;
+  position: absolute;
+  top: -4px;
+  right: -4px;
+
+  min-width: 20px;
+  height: 20px;
   padding: 0 6px;
 
   display: inline-flex;
@@ -7746,6 +7749,7 @@ will-change: transform, opacity;
   border-radius: 999px;
   font-size: 0.65rem;
   font-weight: 700;
+  line-height: 1;
   color: #fff;
 
   background: linear-gradient(180deg, #b72a38 0%, #7f1822 100%);
