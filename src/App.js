@@ -4296,103 +4296,124 @@ const getSizeWearHint = (size) => {
      RENDER
   ========================================= */
   return (
-    <div className="app-shell">
-      <header className="topbar">
-        <button className="brand" type="button" onClick={() => switchView("home")}>
-          <span className="brand-mark">▶</span>
-          <span className="brand-copy">
-            <strong>PlayNice</strong>
-            <small>Remember. PlayNice.</small>
-          </span>
+  <div className="app-shell">
+    <div className="floating-lang-switch" aria-label="Language switch">
+      <button
+        className={lang === "en" ? "active" : ""}
+        onClick={() => setLang("en")}
+        type="button"
+      >
+        EN
+      </button>
+      <button
+        className={lang === "sr" ? "active" : ""}
+        onClick={() => setLang("sr")}
+        type="button"
+      >
+        SR
+      </button>
+    </div>
+
+    <div className="floating-lang-switch" aria-label="Language switch">
+  <button
+    className={lang === "en" ? "active" : ""}
+    onClick={() => setLang("en")}
+    type="button"
+  >
+    EN
+  </button>
+  <button
+    className={lang === "sr" ? "active" : ""}
+    onClick={() => setLang("sr")}
+    type="button"
+  >
+    SR
+  </button>
+</div>
+
+    <header className="topbar">
+      <button className="brand" type="button" onClick={() => switchView("home")}>
+        <span className="brand-mark">▶</span>
+        <span className="brand-copy">
+          <strong>PlayNice</strong>
+          <small>Remember. PlayNice.</small>
+        </span>
+      </button>
+
+      <nav className="nav-links">
+        <button
+          className="nav-link"
+          type="button"
+          onClick={() => setStoryOpen(true)}
+        >
+          {tr.navStory}
         </button>
 
-        <nav className="nav-links">
-          <button
-            className="nav-link"
-            type="button"
-            onClick={() => setStoryOpen(true)}
-          >
-            {tr.navStory}
-          </button>
+        <button
+          className="nav-link"
+          type="button"
+          onClick={() => setHowItWorksOpen(true)}
+        >
+          {lang === "sr" ? "Kako?" : "How it works"}
+        </button>
 
-          <button
-            className="nav-link"
-            type="button"
-            onClick={() => setHowItWorksOpen(true)}
-          >
-            {lang === "sr" ? "Kako?" : "How it works"}
-          </button>
+        <button
+          className={`nav-link ${view === "home" ? "active" : ""}`}
+          type="button"
+          onClick={() => switchView("home")}
+        >
+          {tr.navHome}
+        </button>
 
-          <button
-            className={`nav-link ${view === "home" ? "active" : ""}`}
-            type="button"
-            onClick={() => switchView("home")}
-          >
-            {tr.navHome}
-          </button>
+        <button
+          className={`nav-link ${view === "shop" ? "active" : ""}`}
+          type="button"
+          onClick={goToShop}
+        >
+          {tr.navShop}
+        </button>
 
-          <button
-            className={`nav-link ${view === "shop" ? "active" : ""}`}
-            type="button"
-            onClick={goToShop}
-          >
-            {tr.navShop}
-          </button>
+        <button
+          type="button"
+          className="header-private-selection-btn header-journal-btn"
+          onClick={() => {
+            setJournalOpen(true);
+            setSelectedArticle(null);
+          }}
+        >
+          <span className="header-journal-btn-text">
+            {lang === "sr" ? "Journal" : "Journal"}
+          </span>
+        </button>
+      </nav>
 
-          <button
-  type="button"
-  className="header-private-selection-btn header-journal-btn"
-  onClick={() => {
-    setJournalOpen(true);
-    setSelectedArticle(null);
-  }}
->
-  <span className="header-journal-btn-text">Journal</span>
-</button>
-        </nav>
+      <div className="topbar-right">
+  <button
+    className="header-private-selection-btn"
+    onClick={() => setPrivateSelectionOpen(true)}
+    type="button"
+  >
+    <span className="ps-heart">♥</span>
 
-        <div className="topbar-right">
-          <div className="lang-switch">
-            <button
-              className={lang === "en" ? "active" : ""}
-              onClick={() => setLang("en")}
-              type="button"
-            >
-              EN
-            </button>
-            <button
-              className={lang === "sr" ? "active" : ""}
-              onClick={() => setLang("sr")}
-              type="button"
-            >
-              SR
-            </button>
-          </div>
+    <span className="ps-label">
+      {lang === "sr" ? "Private Selection" : "Private Selection"}
+    </span>
 
-          <button
-            className="header-private-selection-btn"
-            onClick={() => setPrivateSelectionOpen(true)}
-            type="button"
-          >
-            <span className="ps-heart">♥</span>
+    {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
+  </button>
 
-            <span className="ps-label">
-              {lang === "sr" ? "Private Selection" : "Private Selection"}
-            </span>
-
-            {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
-          </button>
-
-          <button
-            className="cart-button"
-            type="button"
-            onClick={() => setCartOpen((prev) => !prev)}
-          >
-            {tr.cart}
-            {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-          </button>
-        </div>
-      </header>
+  <button
+    className="cart-button cart-button--icon-only"
+    type="button"
+    onClick={() => setCartOpen((prev) => !prev)}
+    aria-label={lang === "sr" ? "Korpa" : "Cart"}
+    title={lang === "sr" ? "Korpa" : "Cart"}
+  >
+    <span className="cart-icon" aria-hidden="true">🛒</span>
+    {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+  </button>
+</div>
+    </header>
 
       <div
         className={`announcement-bar ${
