@@ -4353,6 +4353,18 @@ const getSizeWearHint = (size) => {
       </nav>
 
       <div className="topbar-right">
+        <button
+          className="header-private-selection-btn"
+          onClick={() => setPrivateSelectionOpen(true)}
+          type="button"
+        >
+          <span className="ps-heart">♥</span>
+
+          <span className="ps-label">Private Selection</span>
+
+          {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
+        </button>
+
         <div className="topbar-right">
   <button
     className="header-private-selection-btn"
@@ -4396,29 +4408,6 @@ const getSizeWearHint = (size) => {
   </button>
 </div>
 
-        <button
-          className="header-private-selection-btn"
-          onClick={() => setPrivateSelectionOpen(true)}
-          type="button"
-        >
-          <span className="ps-heart">♥</span>
-
-          <span className="ps-label">Private Selection</span>
-
-          {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
-        </button>
-
-        <button
-          className="cart-button cart-button--icon-only"
-          type="button"
-          onClick={() => setCartOpen((prev) => !prev)}
-          aria-label={lang === "sr" ? "Korpa" : "Cart"}
-          title={lang === "sr" ? "Korpa" : "Cart"}
-        >
-          <span className="cart-icon" aria-hidden="true">🛒</span>
-          {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-        </button>
-      </div>
     </header>
 
       <div
