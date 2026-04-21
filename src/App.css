@@ -4661,7 +4661,7 @@ body.scrolled .announcement-bar::after {
 
   /* mobile fix: announcement bar lowered below taller header */
   .announcement-bar {
-  top: 128px;
+  top: 136px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
