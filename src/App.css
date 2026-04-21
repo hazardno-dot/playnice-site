@@ -486,21 +486,21 @@ main {
 .lang-vertical {
   position: fixed;
 
-  /* 👉 savršeno centriranje po visini headera */
-  top: calc(var(--topbar-top-offset));
+  /* 👉 poravnanje sa headerom (isti top) */
+  top: var(--topbar-top-offset);
 
-  /* 👉 poravnanje uz ivicu headera (van njega) */
-  right: calc((100vw - min(calc(100% - 32px), var(--max))) / 2 - 52px);
+  /* 👉 uz ivicu headera, malo napolje */
+  right: calc((100vw - min(calc(100% - 32px), var(--max))) / 2 - 48px);
 
   z-index: 120;
 
-  /* 👉 ISTA VISINA KAO HEADER */
-  height: var(--topbar-height);
-  width: 42px;
+  /* 👉 TAČNA VISINA */
+  height: 60px;
+  width: 40px;
 
   display: flex;
   flex-direction: column;
-  justify-content: center; /* centriranje SR/EN unutra */
+  justify-content: center;
   align-items: center;
   gap: 6px;
 
@@ -522,8 +522,8 @@ main {
 }
 
 .lang-vertical button {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
 
   display: grid;
   place-items: center;
@@ -533,9 +533,9 @@ main {
   background: transparent;
   color: var(--text-soft);
 
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 
   transition: all 0.22s ease;
 }
@@ -559,7 +559,7 @@ main {
 }
 
 .lang-divider {
-  width: 10px;
+  width: 8px;
   height: 1px;
   background: rgba(220, 181, 107, 0.22);
 }
