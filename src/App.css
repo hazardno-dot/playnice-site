@@ -4534,9 +4534,12 @@ body.scrolled .announcement-bar::after {
 @media (max-width: 820px) {
   :root {
   --topbar-top-offset: 8px;
-  --topbar-height: 120px; /* REALNA VISINA */
+  --topbar-height: 120px; /* informativno */
   --announcement-height: 42px;
   --announcement-gap: 12px;
+
+  /* KLJUČNO */
+  --announcement-top-mobile: 140px;
 }
 
   main {
@@ -4546,17 +4549,19 @@ body.scrolled .announcement-bar::after {
   }
 
   .topbar {
-    top: var(--topbar-top-offset);
-    min-height: var(--topbar-height);
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "brand right"
-      "nav nav";
-    align-items: center;
-    gap: 8px 10px;
-    padding: 10px 12px;
-    border-radius: 18px;
-  }
+  top: var(--topbar-top-offset);
+  min-height: var(--topbar-height);
+  z-index: 200;
+
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "brand right"
+    "nav nav";
+  align-items: center;
+  gap: 8px 10px;
+  padding: 10px 12px;
+  border-radius: 18px;
+}
 
   .brand {
     grid-area: brand;
@@ -4661,7 +4666,9 @@ body.scrolled .announcement-bar::after {
 
   /* mobile fix: announcement bar lowered below taller header */
   .announcement-bar {
-  top: 140px;
+  top: var(--announcement-top-mobile);
+  z-index: 190;
+
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
