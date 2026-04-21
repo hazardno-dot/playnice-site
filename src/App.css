@@ -485,22 +485,32 @@ main {
 ========================================= */
 .lang-vertical {
   position: fixed;
-  top: calc(var(--topbar-top-offset) + 30x);
+
+  /* 👉 savršeno centriranje po visini headera */
+  top: calc(var(--topbar-top-offset));
+
+  /* 👉 poravnanje uz ivicu headera (van njega) */
   right: calc((100vw - min(calc(100% - 32px), var(--max))) / 2 - 52px);
+
   z-index: 120;
 
+  /* 👉 ISTA VISINA KAO HEADER */
+  height: var(--topbar-height);
   width: 42px;
+
   display: flex;
   flex-direction: column;
+  justify-content: center; /* centriranje SR/EN unutra */
   align-items: center;
   gap: 6px;
 
-  padding: 8px 4px;
+  padding: 6px 4px;
   border-radius: 999px;
 
   background:
     linear-gradient(180deg, rgba(18, 18, 18, 0.9), rgba(10, 10, 10, 0.86)),
     rgba(8, 8, 8, 0.84);
+
   border: 1px solid rgba(220, 181, 107, 0.1);
 
   backdrop-filter: blur(16px) saturate(125%);
@@ -512,8 +522,9 @@ main {
 }
 
 .lang-vertical button {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
+
   display: grid;
   place-items: center;
 
@@ -525,16 +536,8 @@ main {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
-  line-height: 1;
 
-  transition:
-    color 0.22s ease,
-    border-color 0.22s ease,
-    background 0.22s ease,
-    transform 0.22s ease,
-    box-shadow 0.22s ease;
-
-  -webkit-tap-highlight-color: transparent;
+  transition: all 0.22s ease;
 }
 
 .lang-vertical button:focus,
@@ -559,7 +562,6 @@ main {
   width: 10px;
   height: 1px;
   background: rgba(220, 181, 107, 0.22);
-  border-radius: 1px;
 }
 
 /* =========================================
