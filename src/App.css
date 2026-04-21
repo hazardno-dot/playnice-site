@@ -7657,12 +7657,10 @@ will-change: transform, opacity;
   transform: translateY(0) scale(0.98);
 }
 
-/* old left heart removed */
 .ps-heart {
   display: none;
 }
 
-/* stacked label */
 .ps-label {
   display: flex;
   flex-direction: column;
@@ -7693,18 +7691,15 @@ will-change: transform, opacity;
   letter-spacing: 0.035em;
   text-transform: none;
   color: rgba(255, 248, 235, 0.92);
-  transform: translateY(1px); /* blago spušten */
+  transform: translateY(1px);
 }
 
-/* inline heart inside word */
 .ps-heart-inline {
   display: inline-block;
   margin-left: 1px;
   color: #b72a38;
   font-size: 1.18em;
   line-height: 1;
-  position: relative;
-  top: -0.02em;
   transform: translateY(-0.02em);
 
   text-shadow:
@@ -7722,13 +7717,12 @@ will-change: transform, opacity;
 }
 
 .header-private-selection-btn:hover .ps-heart-inline {
-  transform: scale(1.08);
+  transform: translateY(-0.02em) scale(1.08);
   text-shadow:
     0 0 8px rgba(183, 42, 56, 0.3),
     0 0 16px rgba(183, 42, 56, 0.18);
 }
 
-/* count badge */
 .ps-count {
   margin-left: 8px;
   min-width: 18px;
