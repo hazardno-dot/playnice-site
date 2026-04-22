@@ -10867,18 +10867,10 @@ will-change: transform, opacity;
 }
 
 /* =========================================
-   MOBILE OVERLAY LAYER FIX — FINAL
+   MOBILE OVERLAY FIX
 ========================================= */
 @media (max-width: 820px) {
-  .journal-overlay,
-  .journal-article-overlay,
-  .how-it-works-overlay {
-    z-index: 1000 !important;
-  }
-
-  .journal-top-sheet,
-  .journal-article-modal,
-  .how-it-works-drawer {
-    z-index: 1001 !important;
+  main {
+    overflow: visible !important;
   }
 }
