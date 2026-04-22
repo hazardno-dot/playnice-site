@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
+import { createPortal } from "react-dom";
 
 /* =========================================
    TRANSLATIONS
@@ -5413,88 +5414,92 @@ const getSizeWearHint = (size) => {
         </div>
       </aside>
 
-      <aside className={`how-it-works-drawer ${howItWorksOpen ? "open panel-open" : ""}`}>
-  <div className="how-it-works-drawer-header panel-anim panel-anim-1">
-    <div>
-      <p className="section-kicker">HOW IT WORKS</p>
-      <h3>
-        {lang === "sr"
-          ? "Šta su dekanti i zašto imaju smisla?"
-          : "What decants are and why they matter?"}
-      </h3>
-    </div>
+      {howItWorksOpen &&
+  createPortal(
+    <aside className="how-it-works-drawer open panel-open">
+      <div className="how-it-works-drawer-header panel-anim panel-anim-1">
+        <div>
+          <p className="section-kicker">HOW IT WORKS</p>
+          <h3>
+            {lang === "sr"
+              ? "Šta su dekanti i zašto imaju smisla?"
+              : "What decants are and why they matter?"}
+          </h3>
+        </div>
 
-    <button
-      className="close-button"
-      type="button"
-      onClick={() => setHowItWorksOpen(false)}
-      aria-label={lang === "sr" ? "Zatvori prozor" : "Close panel"}
-    >
-      ×
-    </button>
-  </div>
-
-  <div className="how-it-works-drawer-body">
-    <p className="how-it-works-drawer-lead panel-anim panel-anim-2">
-      {lang === "sr"
-        ? "Dekanti su manja, pažljivo presuta pakovanja originalnih parfema. Namenjeni su onima koji žele da miris prvo dožive na svojoj koži, u svom ritmu, pre nego što se odluče za punu bočicu. Hiljade kupaca upravo tako donosi sigurnu odluku."
-        : "Decants are smaller, carefully transferred portions of original fragrances. They are designed for those who want to experience a scent on their own skin, in their own rhythm, before committing to a full bottle. Thousands of customers make confident decisions this way."}
-    </p>
-
-    <div className="how-it-works-drawer-grid">
-      <div className="how-it-works-drawer-card panel-item-anim panel-item-1">
-        <h4>{lang === "sr" ? "Manji rizik" : "Lower risk"}</h4>
-        <p>
-          {lang === "sr"
-            ? "Ne kupuješ naslepo. Prvo probaš, pa tek onda odlučuješ da li miris zaista vredi pune bočice."
-            : "You do not buy blindly. You test first, then decide whether the fragrance deserves a full bottle."}
-        </p>
+        <button
+          className="close-button"
+          type="button"
+          onClick={() => setHowItWorksOpen(false)}
+          aria-label={lang === "sr" ? "Zatvori prozor" : "Close panel"}
+        >
+          ×
+        </button>
       </div>
 
-      <div className="how-it-works-drawer-card panel-item-anim panel-item-2">
-        <h4>{lang === "sr" ? "Pametniji trošak" : "Smarter spending"}</h4>
-        <p>
+      <div className="how-it-works-drawer-body">
+        <p className="how-it-works-drawer-lead panel-anim panel-anim-2">
           {lang === "sr"
-            ? "Umesto jedne skupe greške, možeš probati više parfema i pronaći ono što ti stvarno odgovara."
-            : "Instead of making one expensive mistake, you can test several fragrances and find what truly fits you."}
+            ? "Dekanti su manja, pažljivo presuta pakovanja originalnih parfema. Namenjeni su onima koji žele da miris prvo dožive na svojoj koži, u svom ritmu, pre nego što se odluče za punu bočicu. Hiljade kupaca upravo tako donosi sigurnu odluku."
+            : "Decants are smaller, carefully transferred portions of original fragrances. They are designed for those who want to experience a scent on their own skin, in their own rhythm, before committing to a full bottle. Thousands of customers make confident decisions this way."}
         </p>
+
+        <div className="how-it-works-drawer-grid">
+          <div className="how-it-works-drawer-card panel-item-anim panel-item-1">
+            <h4>{lang === "sr" ? "Manji rizik" : "Lower risk"}</h4>
+            <p>
+              {lang === "sr"
+                ? "Ne kupuješ naslepo. Prvo probaš, pa tek onda odlučuješ da li miris zaista vredi pune bočice."
+                : "You do not buy blindly. You test first, then decide whether the fragrance deserves a full bottle."}
+            </p>
+          </div>
+
+          <div className="how-it-works-drawer-card panel-item-anim panel-item-2">
+            <h4>{lang === "sr" ? "Pametniji trošak" : "Smarter spending"}</h4>
+            <p>
+              {lang === "sr"
+                ? "Umesto jedne skupe greške, možeš probati više parfema i pronaći ono što ti stvarno odgovara."
+                : "Instead of making one expensive mistake, you can test several fragrances and find what truly fits you."}
+            </p>
+          </div>
+
+          <div className="how-it-works-drawer-card panel-item-anim panel-item-3">
+            <h4>{lang === "sr" ? "Više izbora" : "More variety"}</h4>
+            <p>
+              {lang === "sr"
+                ? "Dekanti ti omogućavaju da rotiraš više mirisa za različite prilike, godišnja doba i raspoloženja."
+                : "Decants let you build a rotation for different occasions, seasons, and moods."}
+            </p>
+          </div>
+
+          <div className="how-it-works-drawer-card panel-item-anim panel-item-4">
+            <h4>{lang === "sr" ? "Originalni parfemi" : "Original fragrances"}</h4>
+            <p>
+              {lang === "sr"
+                ? "Poenta nije u zameni za bočicu, već u tome da originalan parfem doživiš na pametniji i pristupačniji način."
+                : "The point is not to replace the bottle, but to experience the original fragrance in a smarter and more accessible way."}
+            </p>
+          </div>
+        </div>
+
+        <div className="how-it-works-drawer-footer panel-anim panel-anim-4">
+          <span className="story-drawer-signature">Remember. PlayNice.</span>
+
+          <button
+            className="gold-button small"
+            type="button"
+            onClick={() => {
+              setHowItWorksOpen(false);
+              goToShop();
+            }}
+          >
+            {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
+          </button>
+        </div>
       </div>
-
-      <div className="how-it-works-drawer-card panel-item-anim panel-item-3">
-        <h4>{lang === "sr" ? "Više izbora" : "More variety"}</h4>
-        <p>
-          {lang === "sr"
-            ? "Dekanti ti omogućavaju da rotiraš više mirisa za različite prilike, godišnja doba i raspoloženja."
-            : "Decants let you build a rotation for different occasions, seasons, and moods."}
-        </p>
-      </div>
-
-      <div className="how-it-works-drawer-card panel-item-anim panel-item-4">
-        <h4>{lang === "sr" ? "Originalni parfemi" : "Original fragrances"}</h4>
-        <p>
-          {lang === "sr"
-            ? "Poenta nije u zameni za bočicu, već u tome da originalan parfem doživiš na pametniji i pristupačniji način."
-            : "The point is not to replace the bottle, but to experience the original fragrance in a smarter and more accessible way."}
-        </p>
-      </div>
-    </div>
-
-    <div className="how-it-works-drawer-footer panel-anim panel-anim-4">
-      <span className="story-drawer-signature">Remember. PlayNice.</span>
-
-      <button
-        className="gold-button small"
-        type="button"
-        onClick={() => {
-          setHowItWorksOpen(false);
-          goToShop();
-        }}
-      >
-        {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
-      </button>
-    </div>
-  </div>
-</aside>
+    </aside>,
+    document.body
+  )}
 
       <aside
         className={`private-selection-drawer ${

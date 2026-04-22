@@ -7328,7 +7328,7 @@ body.scrolled .announcement-bar::after {
   left: 16px;
   width: min(540px, calc(100vw - 32px));
   max-height: calc(100vh - 32px);
-  z-index: 1200;
+  z-index: 1410 !important;
 
   opacity: 0;
   visibility: hidden;
