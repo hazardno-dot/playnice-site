@@ -5309,25 +5309,28 @@ const getSizeWearHint = (size) => {
 
       <div
         className={`backdrop ${
-          cartOpen ||
-          checkoutOpen ||
-          selectedProduct ||
-          storyOpen ||
-          howItWorksOpen ||
-          privateSelectionOpen ||
-          catalogPreview
-            ? "show"
-            : ""
-        }`}
+  cartOpen ||
+  checkoutOpen ||
+  selectedProduct ||
+  storyOpen ||
+  howItWorksOpen ||
+  journalOpen ||
+  privateSelectionOpen ||
+  catalogPreview
+    ? "show"
+    : ""
+}`}
         onClick={() => {
-          setCartOpen(false);
-          setCheckoutOpen(false);
-          setStoryOpen(false);
-          setPrivateSelectionOpen(false);
-          closeProductModal();
-          setHowItWorksOpen(false);
-          closeCatalogPreview();
-        }}
+  setCartOpen(false);
+  setCheckoutOpen(false);
+  setStoryOpen(false);
+  setPrivateSelectionOpen(false);
+  setJournalOpen(false);
+  setSelectedArticle(null);
+  closeProductModal();
+  setHowItWorksOpen(false);
+  closeCatalogPreview();
+}}
       />
 
       <aside className={`story-drawer ${storyOpen ? "open panel-open" : ""}`}>
