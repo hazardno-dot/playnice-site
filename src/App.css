@@ -7381,7 +7381,7 @@ body.scrolled .announcement-bar::after {
 .how-it-works-overlay {
   position: fixed;
   inset: 0;
-  z-index: 119;
+  z-index: 1200;
 
   background: rgba(0, 0, 0, 0.56);
   backdrop-filter: blur(10px);
@@ -7416,7 +7416,7 @@ body.scrolled .announcement-bar::after {
   left: 20px;
   transform: translateY(-50%) translateX(calc(-100% - 34px));
 
-  z-index: 120;
+  z-index: 1210;
 
   width: min(560px, calc(100vw - 40px));
   max-height: calc(100vh - 40px);
@@ -8984,7 +8984,7 @@ will-change: transform, opacity;
 .journal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 125;
+  z-index: 1200;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -9007,6 +9007,8 @@ will-change: transform, opacity;
 /* ---------- top sheet ---------- */
 
 .journal-top-sheet {
+  position: relative;
+  z-index: 1210;
   width: min(calc(100% - 12px), 1380px);
   height: min(88vh, 920px);
   min-height: 0;
