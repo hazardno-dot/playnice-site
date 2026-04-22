@@ -7400,7 +7400,6 @@ body.scrolled .announcement-bar::after {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-
   transition:
     opacity 0.32s ease,
     visibility 0s linear 0s;
@@ -10864,5 +10863,22 @@ will-change: transform, opacity;
     width: 34px;
     height: 34px;
     font-size: 16px;
+  }
+}
+
+/* =========================================
+   MOBILE OVERLAY LAYER FIX — FINAL
+========================================= */
+@media (max-width: 820px) {
+  .journal-overlay,
+  .journal-article-overlay,
+  .how-it-works-overlay {
+    z-index: 1000 !important;
+  }
+
+  .journal-top-sheet,
+  .journal-article-modal,
+  .how-it-works-drawer {
+    z-index: 1001 !important;
   }
 }

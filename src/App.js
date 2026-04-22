@@ -5412,7 +5412,7 @@ const getSizeWearHint = (size) => {
 
       {howItWorksOpen && (
   <div
-    className="how-it-works-overlay"
+    className="how-it-works-overlay open"
     onClick={() => setHowItWorksOpen(false)}
   >
     <aside
