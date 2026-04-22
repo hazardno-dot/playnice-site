@@ -4504,6 +4504,7 @@ body.scrolled .announcement-bar::after {
   line-height: 1.45;
 }
 
+imam ga ovde u responsive
 /* =========================================
    RESPONSIVE
 ========================================= */
@@ -4534,29 +4535,18 @@ body.scrolled .announcement-bar::after {
 @media (max-width: 820px) {
   :root {
     --topbar-top-offset: 8px;
-    --topbar-height: 116px;
+    --topbar-height: 88px;
     --announcement-height: 42px;
-    --announcement-gap: 12px;
-    --announcement-top-mobile: calc(
-      var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap)
-    );
+    --announcement-gap: 18px;
   }
 
   main {
-    padding-top: calc(
-      var(--topbar-top-offset) +
-      var(--topbar-height) +
-      var(--announcement-gap) +
-      var(--announcement-height) +
-      20px
-    );
+    padding-top: calc(var(--announcement-height) + var(--announcement-gap) + 6px);
   }
 
   .topbar {
     top: var(--topbar-top-offset);
     min-height: var(--topbar-height);
-    z-index: 200;
-
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       "brand right"
@@ -4669,13 +4659,16 @@ body.scrolled .announcement-bar::after {
   }
 
   .announcement-bar {
-    top: var(--announcement-top-mobile);
-    z-index: 190;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: box-shadow 0.35s ease;
-  }
+  top: calc(
+    var(--topbar-top-offset) +
+    var(--topbar-height) +
+    28px
+  );
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: box-shadow 0.35s ease;
+}
 
   body.scrolled .announcement-bar {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
@@ -4783,22 +4776,7 @@ body.scrolled .announcement-bar::after {
 
 @media (max-width: 560px) {
   :root {
-    --topbar-height: 112px;
-    --announcement-height: 40px;
-    --announcement-gap: 10px;
-    --announcement-top-mobile: calc(
-      var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap)
-    );
-  }
-
-  main {
-    padding-top: calc(
-      var(--topbar-top-offset) +
-      var(--topbar-height) +
-      var(--announcement-gap) +
-      var(--announcement-height) +
-      18px
-    );
+    --topbar-height: 84px;
   }
 
   .topbar {
