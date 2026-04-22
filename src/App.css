@@ -10772,28 +10772,3 @@ body.scrolled .announcement-bar::after {
     font-size: 16px;
   }
 }
-
-/* =========================================
-   DEBUG OVERLAY LAYER TEST
-========================================= */
-@media (max-width: 820px) {
-  .topbar {
-    z-index: 60 !important;
-  }
-
-  .announcement-bar {
-    z-index: 50 !important;
-  }
-
-  .story-drawer,
-  .how-it-works-drawer,
-  .journal-overlay,
-  .journal-top-sheet {
-    z-index: 99999 !important;
-  }
-
-  .how-it-works-drawer,
-  .story-drawer {
-    position: fixed !important;
-  }
-}
