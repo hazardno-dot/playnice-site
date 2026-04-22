@@ -4555,7 +4555,6 @@ body.scrolled .announcement-bar::after {
   .topbar {
     top: var(--topbar-top-offset);
     min-height: var(--topbar-height);
-    z-index: 200;
 
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
@@ -4670,7 +4669,6 @@ body.scrolled .announcement-bar::after {
 
   .announcement-bar {
     top: var(--announcement-top-mobile);
-    z-index: 190;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
