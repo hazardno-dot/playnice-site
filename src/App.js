@@ -5416,7 +5416,26 @@ const getSizeWearHint = (size) => {
 
       {howItWorksOpen &&
   createPortal(
-    <aside className="how-it-works-drawer open panel-open">
+    <aside
+      className="how-it-works-drawer open panel-open"
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "10px",
+        width: "calc(100vw - 20px)",
+        maxHeight: "calc(100vh - 20px)",
+        transform: "translateY(-50%) translateX(0)",
+        zIndex: 999999,
+        opacity: 1,
+        visibility: "visible",
+        pointerEvents: "auto",
+        background: "rgba(10,10,10,0.98)",
+        border: "1px solid rgba(220,181,107,0.16)",
+        borderRadius: "26px",
+        boxShadow: "0 30px 80px rgba(0,0,0,0.56)",
+        overflowY: "auto"
+      }}
+    >
       <div className="how-it-works-drawer-header panel-anim panel-anim-1">
         <div>
           <p className="section-kicker">HOW IT WORKS</p>
