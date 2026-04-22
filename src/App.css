@@ -10772,3 +10772,7 @@ body.scrolled .announcement-bar::after {
     font-size: 16px;
   }
 }
+
+.how-it-works-drawer {
+  z-index: 1410 !important;
+}
