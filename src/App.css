@@ -10772,3 +10772,13 @@ body.scrolled .announcement-bar::after {
     font-size: 16px;
   }
 }
+
+@media (max-width: 820px) {
+  .topbar {
+    z-index: 10 !important;
+  }
+
+  .announcement-bar {
+    z-index: 9 !important;
+  }
+}
