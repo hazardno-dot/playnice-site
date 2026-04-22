@@ -7351,50 +7351,46 @@ body.scrolled .announcement-bar::after {
 }
 
 /* =========================================
-   HOW IT WORKS DRAWER
+   HOW IT WORKS DRAWER — STORY PATTERN
 ========================================= */
-
 .how-it-works-drawer {
   position: fixed;
   top: 50%;
-  left: 20px;
+  left: 16px;
+  width: min(540px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  z-index: 1200;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   transform: translateY(-50%) translateX(calc(-100% - 34px));
 
-  z-index: 1210;
+  transition:
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.42s ease,
+    visibility 0s linear 0.72s;
 
-  width: min(560px, calc(100vw - 40px));
-  max-height: calc(100vh - 40px);
-  padding: 22px 22px 18px;
-
-  border-radius: 30px;
-  border: 1px solid rgba(220, 181, 107, 0.16);
   background:
     radial-gradient(circle at 18% 18%, rgba(220, 181, 107, 0.08), transparent 46%),
     linear-gradient(180deg, rgba(18, 18, 18, 0.97), rgba(10, 10, 10, 0.98));
+
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  border-radius: 30px;
   box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.56),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
 
   overflow-y: auto;
   overscroll-behavior: contain;
-
-  opacity: 0;
-visibility: hidden;
-pointer-events: none;
-
-transition:
-  transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
-  opacity 0.42s ease,
-  visibility 0s linear 0.72s;
-
-will-change: transform, opacity;
+  -webkit-overflow-scrolling: touch;
+  will-change: transform, opacity;
 }
 
 .how-it-works-drawer.open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-
   transform: translateY(-50%) translateX(0);
 
   transition:
@@ -7413,13 +7409,17 @@ will-change: transform, opacity;
   justify-content: space-between;
   gap: 18px;
   margin-bottom: 18px;
+  padding: 18px 22px 12px;
+  border-bottom: 1px solid rgba(220, 181, 107, 0.08);
 }
 
 .how-it-works-drawer-header h3 {
   margin: 6px 0 0;
+  max-width: 340px;
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(2rem, 4vw, 2.5rem);
-  line-height: 0.95;
+  font-size: clamp(1.9rem, 3.4vw, 2.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
   color: rgba(255, 248, 235, 0.96);
 }
 
@@ -7427,12 +7427,13 @@ will-change: transform, opacity;
   display: flex;
   flex-direction: column;
   gap: 18px;
+  padding: 16px 22px 18px;
 }
 
 .how-it-works-drawer-lead {
   margin: 0;
   font-size: 1rem;
-  line-height: 1.78;
+  line-height: 1.72;
   color: rgba(255, 255, 255, 0.72);
 }
 
@@ -7467,10 +7468,10 @@ will-change: transform, opacity;
 }
 
 .how-it-works-drawer-footer {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+  gap: 18px;
   margin-top: 6px;
 }
 
@@ -7492,67 +7493,59 @@ will-change: transform, opacity;
 .how-it-works-drawer.open .panel-item-4 { transition-delay: 0.42s; }
 
 @media (max-width: 768px) {
-  .how-it-works-grid {
-    grid-template-columns: 1fr !important;
-    gap: 14px !important;
-  }
-
-  .how-it-works-card {
-    padding: 20px 18px !important;
-    border-radius: 20px !important;
-  }
-
-  .how-it-works-card h3 {
-    font-size: 1.7rem !important;
-    line-height: 0.98 !important;
-    word-break: normal !important;
-    overflow-wrap: normal !important;
-    hyphens: none !important;
-  }
-
-  .how-it-works-card p {
-    font-size: 0.92rem !important;
-    line-height: 1.62 !important;
-    word-break: normal !important;
-    overflow-wrap: normal !important;
-    hyphens: none !important;
-  }
-
   .how-it-works-drawer {
-    top: max(12px, env(safe-area-inset-top));
-    left: 12px;
-    right: 12px;
-    width: auto;
-    max-height: calc(100dvh - 24px - env(safe-area-inset-top));
-    padding: 18px 16px 16px;
-    border-radius: 24px;
-    transform: translateY(0) translateX(calc(-100% - 28px));
+    top: 50%;
+    left: 10px;
+    width: calc(100vw - 20px);
+    max-height: calc(100vh - 20px);
+    border-radius: 26px;
+    transform: translateY(-50%) translateX(calc(-100% - 28px));
   }
 
   .how-it-works-drawer.open {
-    transform: translateY(0) translateX(0);
+    transform: translateY(-50%) translateX(0);
   }
 
   .how-it-works-drawer-header {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    padding-bottom: 12px;
-    background:
-      linear-gradient(180deg, rgba(18, 18, 18, 0.98), rgba(18, 18, 18, 0.92));
+    gap: 12px;
+    padding: 16px 18px 10px;
+  }
+
+  .how-it-works-drawer-body {
+    padding: 14px 18px 16px;
   }
 
   .how-it-works-drawer-header h3 {
-    font-size: clamp(1.8rem, 7vw, 2.2rem);
+    font-size: clamp(1.75rem, 7vw, 2.2rem);
+    max-width: 100%;
+  }
+
+  .how-it-works-drawer-lead {
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
 
   .how-it-works-drawer-grid {
     grid-template-columns: 1fr;
   }
 
+  .how-it-works-drawer-card {
+    padding: 14px 14px 13px;
+    border-radius: 16px;
+  }
+
+  .how-it-works-drawer-card p {
+    font-size: 0.9rem;
+    line-height: 1.58;
+  }
+
   .how-it-works-drawer-footer {
-    flex-direction: column;
-    align-items: stretch;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .how-it-works-drawer-footer .gold-button {
+    width: 100%;
   }
 }
 
