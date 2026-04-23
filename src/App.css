@@ -4844,7 +4844,6 @@ body.scrolled .announcement-bar::after {
   :root {
     --topbar-height: 114px;
   }
-}
 
   .topbar {
     padding: 9px 10px;
