@@ -4546,7 +4546,6 @@ body.scrolled .announcement-bar::after {
     padding-top: 62px !important;
     margin-top: 0 !important;
   }
-}
 
   .topbar {
     top: var(--topbar-top-offset);
@@ -4839,6 +4838,7 @@ body.scrolled .announcement-bar::after {
     min-width: 0;
     max-width: calc(100vw - 24px);
   }
+}
 
 @media (max-width: 560px) {
   :root {
