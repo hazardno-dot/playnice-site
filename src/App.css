@@ -10700,3 +10700,73 @@ body.scrolled .announcement-bar::after {
 .how-it-works-overlay {
   z-index: 1600 !important;
 }
+
+/* =========================================
+   MOBILE HEADER POLISH — FINAL
+========================================= */
+@media (max-width: 820px) {
+  :root {
+    --topbar-height: 120px;
+    --announcement-gap: 14px;
+  }
+
+  .nav-links {
+    gap: 5px;
+  }
+
+  .nav-links button {
+    font-size: 9.5px;
+    letter-spacing: 0.03em;
+    padding: 8px 3px;
+  }
+
+  .header-journal-btn {
+    min-height: 36px;
+    padding: 7px 8px;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .header-journal-btn-text {
+    display: block;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .announcement-bar {
+    top: calc(var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap)) !important;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --topbar-height: 116px;
+    --announcement-gap: 14px;
+  }
+
+  .nav-links {
+    gap: 4px;
+  }
+
+  .nav-links button {
+    font-size: 8.8px;
+    letter-spacing: 0.02em;
+    padding: 7px 2px;
+  }
+
+  .header-journal-btn {
+    min-height: 34px;
+    padding: 6px 6px;
+    font-size: 8.4px;
+    letter-spacing: 0.04em;
+  }
+
+  .announcement-bar {
+    top: calc(var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap)) !important;
+  }
+}
