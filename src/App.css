@@ -4839,7 +4839,6 @@ body.scrolled .announcement-bar::after {
     min-width: 0;
     max-width: calc(100vw - 24px);
   }
-}
 
 @media (max-width: 560px) {
   :root {
