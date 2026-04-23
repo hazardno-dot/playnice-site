@@ -4543,13 +4543,7 @@ body.scrolled .announcement-bar::after {
   }
 
   main {
-    padding-top: calc(
-      var(--topbar-top-offset) +
-      var(--topbar-height) +
-      var(--announcement-gap) +
-      var(--announcement-height) +
-      20px
-    );
+    padding-top: calc(var(--announcement-height) + var(--announcement-gap) + 6px);
   }
 
   .topbar {
@@ -4557,10 +4551,11 @@ body.scrolled .announcement-bar::after {
     min-height: var(--topbar-height);
     z-index: 200;
 
-    grid-template-columns: minmax(0, 1fr) auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
     grid-template-areas:
-      "brand right"
-      "nav nav";
+      "brand cart"
+      "nav lang";
     align-items: center;
     gap: 8px 10px;
     padding: 10px 12px;
@@ -4595,14 +4590,17 @@ body.scrolled .announcement-bar::after {
     opacity: 0.78;
   }
 
+  /* rollback: topbar-right više ne pravi poseban layout kontekst */
   .topbar-right {
-    grid-area: right;
+    display: contents;
+  }
+
+  /* lang direktno u grid */
+  .lang-vertical,
+  .lang-vertical--in-header,
+  .lang-switch {
+    grid-area: lang;
     justify-self: end;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 6px;
-    min-width: max-content;
   }
 
   .lang-switch {
@@ -4617,6 +4615,13 @@ body.scrolled .announcement-bar::after {
     padding: 0 8px;
     font-size: 10px;
     letter-spacing: 0.06em;
+  }
+
+  /* cart direktno u grid */
+  .cart-button,
+  .cart-button--icon-only {
+    grid-area: cart;
+    justify-self: end;
   }
 
   .cart-button,
@@ -9559,7 +9564,7 @@ body.scrolled .announcement-bar::after {
 .journal-article-overlay {
   position: fixed;
   inset: 0;
-  z-index: 135;
+  z-index: 1600;
 
   display: flex;
   align-items: center;
@@ -10771,4 +10776,10 @@ body.scrolled .announcement-bar::after {
     height: 34px;
     font-size: 16px;
   }
+}
+
+.journal-overlay,
+.journal-article-overlay,
+.how-it-works-overlay {
+  z-index: 1600 !important;
 }
