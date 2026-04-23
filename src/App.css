@@ -10859,14 +10859,3 @@ body.scrolled .announcement-bar::after {
 .how-it-works-overlay {
   z-index: 1600 !important;
 }
-
-@media (max-width: 820px) {
-  main {
-    outline: 2px solid red;
-  }
-
-  .hero,
-  .hero.hero-carousel {
-    outline: 2px solid lime;
-  }
-}
