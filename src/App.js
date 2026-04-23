@@ -3289,21 +3289,6 @@ useLayoutEffect(() => {
   catalogPreview
 ]);
 
-useEffect(() => {
-  const isMobile = window.innerWidth <= 820;
-  const mobileProblemPanelOpen =
-    isMobile && (howItWorksOpen || journalOpen || !!selectedArticle);
-
-  document.body.classList.toggle(
-    "mobile-panel-debug-open",
-    mobileProblemPanelOpen
-  );
-
-  return () => {
-    document.body.classList.remove("mobile-panel-debug-open");
-  };
-}, [howItWorksOpen, journalOpen, selectedArticle]);
-
   useEffect(() => {
     const section = document.querySelector(".closing-section");
     if (!section) return;
