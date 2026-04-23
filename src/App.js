@@ -3492,21 +3492,6 @@ useEffect(() => {
   setJournalVoteSuccess("");
 }, [selectedArticle]);
 
-useEffect(() => {
-  const shouldHideMobileChrome =
-    howItWorksOpen || journalOpen || !!selectedArticle;
-
-  if (shouldHideMobileChrome) {
-    document.body.classList.add("mobile-fullscreen-panel-open");
-  } else {
-    document.body.classList.remove("mobile-fullscreen-panel-open");
-  }
-
-  return () => {
-    document.body.classList.remove("mobile-fullscreen-panel-open");
-  };
-}, [howItWorksOpen, journalOpen, selectedArticle]);
-
 /* feedback helper */
 
 const sendJournalFeedback = (article, override = {}) => {
