@@ -4543,9 +4543,10 @@ body.scrolled .announcement-bar::after {
   }
 
   main {
-    padding-top: 32px !important;
+    padding-top: 62px !important;
     margin-top: 0 !important;
   }
+}
 
   .topbar {
     top: var(--topbar-top-offset);
@@ -4843,16 +4844,8 @@ body.scrolled .announcement-bar::after {
 @media (max-width: 560px) {
   :root {
     --topbar-height: 114px;
-    --announcement-gap: 16px;
-    --announcement-top-mobile: calc(
-      var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap)
-    );
   }
-
-  main {
-    padding-top: 62px !important;
-    margin-top: 0 !important;
-  }
+}
 
   .topbar {
     padding: 9px 10px;
