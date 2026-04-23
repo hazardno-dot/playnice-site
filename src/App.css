@@ -4543,13 +4543,9 @@ body.scrolled .announcement-bar::after {
   }
 
   main {
-  padding-top: calc(
-    var(--topbar-top-offset) +
-    var(--topbar-height) +
-    var(--announcement-gap) +
-    var(--announcement-height)
-  );
-}
+    padding-top: 6px !important;
+    margin-top: 0 !important;
+  }
 
   .topbar {
     top: var(--topbar-top-offset);
@@ -4761,6 +4757,13 @@ body.scrolled .announcement-bar::after {
     padding: 0 10px 8px;
   }
 
+  .hero,
+  .hero.hero-carousel,
+  .shop-value-anchor,
+  .shop-value-anchor.section-wrap {
+    margin-top: 6px !important;
+  }
+
   .hero {
     padding: 42px 24px;
     border-radius: 28px;
@@ -4847,13 +4850,9 @@ body.scrolled .announcement-bar::after {
   }
 
   main {
-  padding-top: calc(
-    var(--topbar-top-offset) +
-    var(--topbar-height) +
-    var(--announcement-gap) +
-    var(--announcement-height)
-  );
-}
+    padding-top: 4px !important;
+    margin-top: 0 !important;
+  }
 
   .topbar {
     padding: 9px 10px;
@@ -4927,6 +4926,13 @@ body.scrolled .announcement-bar::after {
   .announcement-bar {
     top: var(--announcement-top-mobile);
     width: calc(100% - 16px);
+  }
+
+  .hero,
+  .hero.hero-carousel,
+  .shop-value-anchor,
+  .shop-value-anchor.section-wrap {
+    margin-top: 4px !important;
   }
 }
 
