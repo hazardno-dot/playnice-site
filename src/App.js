@@ -4347,7 +4347,7 @@ const getSizeWearHint = (size) => {
             setSelectedArticle(null);
           }}
         >
-          <span className="header-journal-btn-text">Journal</span>
+          <span className="header-journal-btn-text">TEST JOURNAL</span>
         </button>
       </nav>
 
