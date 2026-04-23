@@ -4534,13 +4534,22 @@ body.scrolled .announcement-bar::after {
 @media (max-width: 820px) {
   :root {
     --topbar-top-offset: 8px;
-    --topbar-height: 124px;
+    --topbar-height: 118px;
     --announcement-height: 42px;
-    --announcement-gap: 10px;
+    --announcement-gap: 16px;
+    --announcement-top-mobile: calc(
+      var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap)
+    );
   }
 
   main {
-    padding-top: calc(var(--announcement-height) + var(--announcement-gap) + 6px);
+    padding-top: calc(
+      var(--topbar-top-offset) +
+      var(--topbar-height) +
+      var(--announcement-gap) +
+      var(--announcement-height) +
+      20px
+    );
   }
 
   .topbar {
@@ -4548,26 +4557,27 @@ body.scrolled .announcement-bar::after {
     min-height: var(--topbar-height);
     z-index: 200;
 
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
-      "brand cart"
-      "nav lang";
+      "brand right"
+      "nav nav";
+
     align-items: center;
-    gap: 10px 12px;
-    padding: 12px 14px;
-    border-radius: 20px;
+    gap: 8px 10px;
+    padding: 10px 12px;
+    border-radius: 18px;
   }
 
   .brand {
     grid-area: brand;
     min-width: 0;
-    gap: 10px;
+    gap: 8px;
   }
 
   .brand-mark {
-    width: 38px;
-    height: 38px;
-    flex: 0 0 38px;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
   }
 
   .brand-copy {
@@ -4575,86 +4585,168 @@ body.scrolled .announcement-bar::after {
   }
 
   .brand-copy strong {
-    font-size: 22px;
-    letter-spacing: 0.05em;
+    font-size: 17px;
+    letter-spacing: 0.04em;
     line-height: 0.95;
   }
 
   .brand-copy small {
-    font-size: 9px;
-    letter-spacing: 0.18em;
+    font-size: 6.8px;
+    letter-spacing: 0.13em;
     opacity: 0.78;
   }
 
   .topbar-right {
-    display: contents;
-  }
-
-  .nav-links {
-    grid-area: nav;
-    justify-content: flex-start;
-    gap: 8px;
-    min-width: 0;
-  }
-
-  .nav-links button {
-    padding: 8px 12px;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-  }
-
-  .lang-switch,
-  .lang-vertical,
-  .lang-vertical--in-header {
-    grid-area: lang;
+    grid-area: right;
     justify-self: end;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    min-width: max-content;
   }
 
-  .lang-switch {
+  .header-private-selection-btn {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 999px;
+    flex: 0 0 36px;
+  }
+
+  .header-private-selection-btn .ps-label {
+    display: none;
+  }
+
+  .header-private-selection-btn .ps-heart {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    font-size: 11px;
+    color: #b72a38;
+    margin: 0;
+    transform: none;
   }
 
-  .lang-switch button {
-    min-width: 38px;
-    padding: 8px 9px;
-    font-size: 11px;
-    letter-spacing: 0.1em;
+  .header-private-selection-btn .ps-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    font-size: 0.55rem;
+    margin-left: 0;
+  }
+
+  .lang-vertical,
+  .lang-vertical--in-header {
+    width: 38px;
+    height: 58px;
+    padding: 5px 4px;
+    gap: 5px;
+    flex: 0 0 auto;
+  }
+
+  .lang-vertical button {
+    width: 24px;
+    height: 24px;
+    font-size: 9px;
+    letter-spacing: 0.05em;
   }
 
   .cart-button,
   .cart-button--icon-only {
-    grid-area: cart;
-    justify-self: end;
-    min-width: auto;
-    padding: 10px 14px;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
+    width: 46px;
+    min-width: 46px;
+    height: 46px;
+    padding: 0;
+    flex: 0 0 46px;
+  }
+
+  .cart-button--icon-only .cart-icon {
+    font-size: 17px;
   }
 
   .cart-count {
-    margin-left: 8px;
-    min-width: 22px;
-    height: 22px;
-    flex: 0 0 22px;
-    font-size: 11px;
+    top: -4px;
+    right: -4px;
+    margin-left: 0;
+    min-width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    font-size: 10px;
+  }
+
+  .nav-links {
+    grid-area: nav;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 5px;
+    width: 100%;
+    min-width: 0;
+    align-items: stretch;
+  }
+
+  .nav-links button {
+    width: 100%;
+    min-width: 0;
+    padding: 8px 2px;
+    font-size: 9px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    text-align: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .header-journal-btn {
+    min-height: 34px;
+    padding: 7px 4px;
+    font-size: 8.4px;
+    letter-spacing: 0.04em;
+    gap: 0;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .header-journal-btn-text {
+    display: block;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
   }
 
   .announcement-bar {
-    top: calc(var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap));
+    top: var(--announcement-top-mobile);
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: calc(100% - 20px);
+    z-index: 190;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: box-shadow 0.35s ease;
+  }
+
+  body.scrolled .announcement-bar {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   }
 
   .announcement-track {
-    gap: 26px;
+    gap: 24px;
     padding: 8px 12px 7px;
     animation-duration: 20s;
   }
 
   .announcement-track span {
     font-size: 11px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
   }
 
   .announcement-icon {
@@ -4663,11 +4755,16 @@ body.scrolled .announcement-bar::after {
 
   .announcement-bar::before,
   .announcement-bar::after {
-    width: 30px;
+    width: 24px;
   }
 
   .announcement-progress-shell {
     padding: 0 10px 8px;
+  }
+
+  .hero {
+    padding: 42px 24px;
+    border-radius: 28px;
   }
 
   .hero-grid,
@@ -4678,6 +4775,20 @@ body.scrolled .announcement-bar::after {
   .form-row.two,
   .modal-size-grid {
     grid-template-columns: 1fr;
+  }
+
+  .hero-visual {
+    display: grid;
+    place-items: center;
+    min-height: 390px;
+  }
+
+  .hero-bottle {
+    width: min(100%, 280px);
+  }
+
+  .feature-card.large {
+    grid-column: span 1;
   }
 
   .cart-drawer {
@@ -4729,45 +4840,95 @@ body.scrolled .announcement-bar::after {
 
 @media (max-width: 560px) {
   :root {
-    --topbar-height: 118px;
+    --topbar-height: 114px;
+    --announcement-gap: 16px;
+    --announcement-top-mobile: calc(
+      var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap)
+    );
+  }
+
+  main {
+    padding-top: calc(
+      var(--topbar-top-offset) +
+      var(--topbar-height) +
+      var(--announcement-gap) +
+      var(--announcement-height) +
+      18px
+    );
   }
 
   .topbar {
-    padding: 11px 12px;
-    gap: 8px 10px;
-    border-radius: 18px;
+    padding: 9px 10px;
+    gap: 7px 8px;
+    border-radius: 16px;
   }
 
   .brand-mark {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+  }
+
+  .brand-copy strong {
+    font-size: 15px;
+  }
+
+  .brand-copy small {
+    font-size: 6px;
+    letter-spacing: 0.11em;
+  }
+
+  .topbar-right {
+    gap: 5px;
+  }
+
+  .header-private-selection-btn {
     width: 34px;
+    min-width: 34px;
     height: 34px;
     flex: 0 0 34px;
   }
 
-  .brand-copy strong {
-    font-size: 20px;
+  .lang-vertical,
+  .lang-vertical--in-header {
+    width: 36px;
+    height: 54px;
   }
 
-  .brand-copy small {
-    font-size: 8px;
-    letter-spacing: 0.16em;
-  }
-
-  .nav-links button {
-    padding: 7px 10px;
-    font-size: 11px;
-  }
-
-  .lang-switch button {
-    min-width: 34px;
-    padding: 7px 8px;
-    font-size: 10px;
+  .lang-vertical button {
+    width: 22px;
+    height: 22px;
+    font-size: 8.5px;
   }
 
   .cart-button,
   .cart-button--icon-only {
-    padding: 9px 12px;
-    font-size: 11px;
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+  }
+
+  .nav-links {
+    gap: 4px;
+  }
+
+  .nav-links button {
+    padding: 7px 2px;
+    font-size: 8.4px;
+    letter-spacing: 0.01em;
+  }
+
+  .header-journal-btn {
+    min-height: 32px;
+    padding: 6px 2px;
+    font-size: 7.8px;
+    letter-spacing: 0.03em;
+  }
+
+  .announcement-bar {
+    top: var(--announcement-top-mobile);
+    width: calc(100% - 16px);
   }
 }
 
