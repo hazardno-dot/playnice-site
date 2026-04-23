@@ -4543,14 +4543,13 @@ body.scrolled .announcement-bar::after {
   }
 
   main {
-    padding-top: calc(
-      var(--topbar-top-offset) +
-      var(--topbar-height) +
-      var(--announcement-gap) +
-      var(--announcement-height) +
-      20px
-    );
-  }
+  padding-top: calc(
+    var(--topbar-top-offset) +
+    var(--topbar-height) +
+    var(--announcement-gap) +
+    var(--announcement-height)
+  );
+}
 
   .topbar {
     top: var(--topbar-top-offset);
