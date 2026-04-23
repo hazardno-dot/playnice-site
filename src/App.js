@@ -3232,14 +3232,6 @@ function App() {
    EFFECTS
 ========================================= */
 useLayoutEffect(() => {
-  const body = document.body;
-  const html = document.documentElement;
-
-  const isMobile = window.innerWidth <= 768;
-
-  const fullscreenMobilePanelOpen =
-    isMobile && (howItWorksOpen || journalOpen || !!selectedArticle);
-
   const shouldLockScroll =
     !!selectedProduct ||
     cartOpen ||
@@ -3251,35 +3243,11 @@ useLayoutEffect(() => {
     !!selectedArticle ||
     !!catalogPreview;
 
-  if (fullscreenMobilePanelOpen) {
-    body.style.position = "";
-    body.style.top = "";
-    body.style.left = "";
-    body.style.right = "";
-    body.style.width = "";
-
-    body.style.overflow = "hidden";
-    body.style.height = "100dvh";
-
-    html.style.overflow = "hidden";
-    html.style.height = "100dvh";
-
-    return () => {
-      body.style.position = "";
-      body.style.top = "";
-      body.style.left = "";
-      body.style.right = "";
-      body.style.width = "";
-      body.style.overflow = "";
-      body.style.height = "";
-
-      html.style.overflow = "";
-      html.style.height = "";
-    };
-  }
+  const body = document.body;
 
   if (shouldLockScroll) {
     const lockY = window.scrollY || window.pageYOffset || 0;
+
     scrollYRef.current = lockY;
 
     body.style.position = "fixed";
@@ -3298,9 +3266,6 @@ useLayoutEffect(() => {
     body.style.width = "";
     body.style.overflow = "";
 
-    html.style.overflow = "";
-    html.style.height = "";
-
     window.scrollTo(0, savedScrollY || scrollYRef.current || 0);
   }
 
@@ -3311,10 +3276,6 @@ useLayoutEffect(() => {
     body.style.right = "";
     body.style.width = "";
     body.style.overflow = "";
-    body.style.height = "";
-
-    html.style.overflow = "";
-    html.style.height = "";
   };
 }, [
   selectedProduct,
