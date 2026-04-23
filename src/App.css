@@ -4936,6 +4936,9 @@ body.scrolled .announcement-bar::after {
   }
 }
 
+/* =========================================
+   PRODUCT MODAL COPY
+========================================= */
 .product-modal-copy {
   margin: 0;
   color: rgba(255, 255, 255, 0.86);
