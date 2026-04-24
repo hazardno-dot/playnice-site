@@ -3237,7 +3237,7 @@ function App() {
 
   const scrollYRef = useRef(0);
 
-    /* =========================================
+/* =========================================
    EFFECTS
 ========================================= */
 useLayoutEffect(() => {
@@ -3333,7 +3333,7 @@ useLayoutEffect(() => {
   const urlSort = params.get("sort");
   const urlSeason = params.get("season");
 
-  if (urlView && ["home", "shop"].includes(urlView)) setView(urlView);
+  if (urlView && ["home", "shop", "journal"].includes(urlView)) setView(urlView);
   if (urlCategory && categories.includes(urlCategory)) setCategory(urlCategory);
   if (urlSearch) setSearchTerm(urlSearch);
 
