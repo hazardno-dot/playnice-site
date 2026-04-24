@@ -4371,37 +4371,36 @@ const getSizeWearHint = (size) => {
   {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
 </button>
 
-        <div className="lang-vertical lang-vertical--in-header" aria-label="Language switch">
-          <button
-            className={lang === "sr" ? "active" : ""}
-            onClick={() => setLang("sr")}
-            type="button"
-          >
-            SR
-          </button>
-
-          <div className="lang-divider" />
-
-          <button
-            className={lang === "en" ? "active" : ""}
-            onClick={() => setLang("en")}
-            type="button"
-          >
-            EN
-          </button>
-        </div>
-
         <button
-          className="cart-button cart-button--icon-only"
-          type="button"
-          onClick={() => setCartOpen((prev) => !prev)}
-          aria-label={lang === "sr" ? "Korpa" : "Cart"}
-          title={lang === "sr" ? "Korpa" : "Cart"}
-        >
-          <span className="cart-icon" aria-hidden="true">🛒</span>
-          {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-        </button>
-      </div>
+  className="cart-button cart-button--icon-only"
+  type="button"
+  onClick={() => setCartOpen((prev) => !prev)}
+  aria-label={lang === "sr" ? "Korpa" : "Cart"}
+  title={lang === "sr" ? "Korpa" : "Cart"}
+>
+  <span className="cart-icon" aria-hidden="true">🛒</span>
+  {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+</button>
+
+<div className="lang-vertical lang-vertical--in-header" aria-label="Language switch">
+  <button
+    className={lang === "sr" ? "active" : ""}
+    onClick={() => setLang("sr")}
+    type="button"
+  >
+    SR
+  </button>
+
+  <div className="lang-divider" />
+
+  <button
+    className={lang === "en" ? "active" : ""}
+    onClick={() => setLang("en")}
+    type="button"
+  >
+    EN
+  </button>
+</div>
     </header>
 
       <div
