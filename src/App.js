@@ -5922,6 +5922,10 @@ const getSizeWearHint = (size) => {
                 className="journal-card"
                 onClick={() => setSelectedArticle(article)}
               >
+                <div
+  className="journal-card-bg"
+  style={{ backgroundImage: `url(${article.image})` }}
+/>
                 <div className="journal-card-meta">
                   <span className="journal-card-date">{article.date}</span>
                   <span className="journal-reading-time">
