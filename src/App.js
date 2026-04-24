@@ -2657,7 +2657,7 @@ Remember. PlayNice.`,
 {
   id: 6,
   date: "18 Apr",
-  image: "/hero/slide-1-9pm-night-out.jpg",
+  image: "/journal/article6.png",
   title: {
     en: "That was not the plan",
     sr: "To nije bio plan",
