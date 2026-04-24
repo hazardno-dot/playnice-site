@@ -9621,9 +9621,9 @@ body.scrolled .announcement-bar::after {
     filter 0.6s ease;
 }
 
-.journal-featured:hover .journal-featured-bg {
-  transform: scale(1.025);
-  filter: saturate(1.05) brightness(0.95) contrast(1.06);
+.journal-featured:hover .journal-featured-bg::before {
+  transform: scale(1.03);
+  filter: saturate(1.05) brightness(0.96);
 }
 
 .journal-featured-glow {
