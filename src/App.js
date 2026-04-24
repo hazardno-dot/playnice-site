@@ -2797,7 +2797,7 @@ Remember. PlayNice.`,
 {
   id: 7,
   date: "19 Apr",
-  image: "/hero/slide-1-9pm-night-out.jpg",
+  image: "/journal/article7.png",
   title: {
     en: "No one knows where they are looking",
     sr: "Niko ne zna gde gleda",
