@@ -2495,7 +2495,7 @@ A za sve ostalo, kao i obično, kriv je grad.
   {
   id: 4,
   date: "17 Apr",
-  image: "/hero/slide-1-9pm-night-out.jpg",
+  image: "/journal/article4.png",
   title: {
     en: "I did not fail the day. I just entered it wrong.",
     sr: "Nisam pao dan. Samo sam ušao u njega pogrešno.",
