@@ -11266,3 +11266,45 @@ body.scrolled .announcement-bar::after {
   }
 }
 }
+
+/* FEATURED ARTICLE — IMAGE FRAME FINAL OVERRIDE */
+
+.journal-featured {
+  padding: 12px !important;
+  gap: 14px !important;
+  align-items: stretch !important;
+}
+
+.journal-featured-content {
+  padding: 16px 18px !important;
+  min-height: 236px !important;
+}
+
+.journal-featured-bg {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 1 !important;
+
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 236px !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(215, 179, 98, 0.12) !important;
+
+  background-position: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+
+  transform: none !important;
+  filter: saturate(0.98) brightness(0.92) contrast(1.04) !important;
+}
+
+.journal-featured:hover .journal-featured-bg {
+  transform: scale(1.015) !important;
+  filter: saturate(1.05) brightness(0.96) contrast(1.06) !important;
+}
