@@ -406,30 +406,42 @@ main {
   text-transform: uppercase;
 }
 
+/* ========================================
+   NAV LINKS — PREMIUM BALANCED
+======================================== */
 .nav-links {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;
 }
 
 .nav-links button {
   position: relative;
-  min-width: 72px;
-  padding: 10px 16px;
+
+  min-width: 76px;
+  min-height: 42px;
+  padding: 10px 18px;
+
   border: 1px solid transparent;
   border-radius: 999px;
   background: transparent;
   color: var(--text-soft);
-  text-align: center;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  -webkit-tap-highlight-color: transparent;
 
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.01em;
-  
+  line-height: 1;
+
+  text-align: center;
+  white-space: nowrap;
+
+  -webkit-tap-highlight-color: transparent;
+
   transition:
     color 0.25s ease,
     border-color 0.25s ease,
@@ -438,17 +450,37 @@ main {
     box-shadow 0.25s ease;
 }
 
+.nav-links button:hover {
+  color: var(--text);
+  border-color: rgba(220, 181, 107, 0.16);
+  background: rgba(255, 255, 255, 0.025);
+  transform: translateY(-1px);
+}
+
+.nav-links button.active {
+  color: var(--gold);
+  border-color: rgba(220, 181, 107, 0.38);
+  background:
+    linear-gradient(180deg, rgba(220, 181, 107, 0.12), rgba(220, 181, 107, 0.055));
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.nav-links button.active::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 0 20px rgba(220, 181, 107, 0.16);
+  opacity: 0.65;
+}
+
 .nav-links button:focus,
 .nav-links button:focus-visible {
   outline: none;
   box-shadow: none;
-}
-
-.nav-links button.active,
-.nav-links button:hover {
-  color: var(--text);
-  border-color: var(--line);
-  background: rgba(255, 255, 255, 0.03);
 }
 
 /* ========================================
@@ -4681,36 +4713,46 @@ body.scrolled .announcement-bar::after {
   }
 
   .nav-links {
-    grid-area: nav;
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 5px;
-    width: 100%;
-    min-width: 0;
-    align-items: stretch;
-  }
+  grid-area: nav;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 5px;
+  width: 100%;
+  min-width: 0;
+  align-items: stretch;
+}
 
-  .nav-links button {
-    width: 100%;
-    min-width: 0;
-    padding: 8px 2px;
-    font-size: 9px;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    text-align: center;
-    justify-content: center;
-    overflow: hidden;
-  }
+.nav-links button {
+  width: 100%;
+  min-width: 0;
+  min-height: 34px;
+  padding: 7px 2px;
 
-  .header-journal-btn {
-    min-height: 34px;
-    padding: 7px 4px;
-    font-size: 8.4px;
-    letter-spacing: 0.04em;
-    gap: 0;
-    width: 100%;
-    min-width: 0;
-  }
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  line-height: 1;
+
+  white-space: nowrap;
+  text-align: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.header-journal-btn {
+  width: 100%;
+  min-width: 0;
+  min-height: 34px;
+  padding: 7px 3px;
+
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  line-height: 1;
+  text-transform: none;
+
+  gap: 0;
+}
 
   .header-journal-btn-text {
     display: block;
@@ -7835,8 +7877,9 @@ body.scrolled .announcement-bar::after {
   justify-content: center;
   gap: 8px;
 
-  min-height: 40px;
-  padding: 8px 14px;
+  min-height: 42px;
+  min-width: 82px;
+  padding: 10px 18px;
   border-radius: 999px;
 
   border: 1px solid rgba(215, 179, 98, 0.26);
