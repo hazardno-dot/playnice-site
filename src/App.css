@@ -9379,7 +9379,8 @@ body.scrolled .announcement-bar::after {
 
   margin: 0;
   padding: 0;
-  height: 260px;
+  min-height: 260px;
+  height: auto;
 
   border-radius: var(--journal-radius-section);
   border: 1px solid rgba(215, 179, 98, 0.14);
@@ -9437,8 +9438,8 @@ body.scrolled .announcement-bar::after {
   justify-content: center;
 
   min-width: 0;
-  min-height: 250px;
-  height: 100%;
+  min-height: 260px;
+  height: auto;
 
   padding: 20px 20px 16px;
   overflow: hidden;
