@@ -9633,6 +9633,54 @@ body.scrolled .announcement-bar::after {
     radial-gradient(circle at top left, rgba(215, 179, 98, 0.065), transparent 40%);
 }
 
+.journal-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  flex: 0 0 auto;
+
+  margin-bottom: 14px;
+  border-radius: calc(var(--journal-radius-card) - 8px);
+  border: 1px solid rgba(215, 179, 98, 0.1);
+
+  background:
+    radial-gradient(circle at top left, rgba(215, 179, 98, 0.08), transparent 42%),
+    rgba(8, 8, 8, 0.96);
+}
+
+.journal-card-bg {
+  position: absolute;
+  inset: 0;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  transform: scale(1.03);
+  filter: saturate(0.95) contrast(1.05);
+
+  transition:
+    transform 0.55s ease,
+    filter 0.55s ease;
+}
+
+.journal-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.34)),
+    radial-gradient(circle at top left, rgba(215, 179, 98, 0.1), transparent 40%);
+  pointer-events: none;
+}
+
+.journal-card:hover .journal-card-bg {
+  transform: scale(1.085);
+  filter: saturate(1.08) contrast(1.08);
+}
+
 .journal-card-meta {
   display: flex;
   align-items: center;
