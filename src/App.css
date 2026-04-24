@@ -5012,7 +5012,7 @@ body.scrolled .announcement-bar::after {
 }
 
   .hero {
-    width: calc(100% - 32px) !important;
+    width: calc(100% - 34px) !important;
     max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -5020,7 +5020,7 @@ body.scrolled .announcement-bar::after {
 
   .hero-carousel,
   .hero-slide {
-    aspect-ratio: 2.2 / 1;
+    aspect-ratio: 2.4 / 1;
     width: 100%;
   }
 
