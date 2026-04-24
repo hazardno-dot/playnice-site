@@ -2568,7 +2568,7 @@ Remember. PlayNice.`,
 {
   id: 5,
   date: "18 Apr",
-  image: "/hero/slide-1-9pm-night-out.jpg",
+  image: "/journal/article5.png",
   title: {
     en: "Open passage",
     sr: "Otvoren prolaz",
