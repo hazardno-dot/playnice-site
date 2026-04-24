@@ -4764,17 +4764,18 @@ body.scrolled .announcement-bar::after {
   }
 
   .announcement-bar {
-    top: var(--announcement-top-mobile);
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    width: calc(100% - 24px);
-    z-index: 190;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: box-shadow 0.35s ease;
-  }
+  top: var(--announcement-top-mobile);
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  width: min(calc(100% - 32px), var(--max));
+  max-width: var(--max);
+  z-index: 190;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: box-shadow 0.35s ease;
+}
 
   body.scrolled .announcement-bar {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
@@ -4998,9 +4999,13 @@ body.scrolled .announcement-bar::after {
 }
 
   .announcement-bar {
-    top: var(--announcement-top-mobile);
-    width: calc(100% - 24px);
-  }
+  top: var(--announcement-top-mobile);
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  width: min(calc(100% - 32px), var(--max));
+  max-width: var(--max);
+}
 
   .hero,
   .hero.hero-carousel,
