@@ -11030,6 +11030,9 @@ body.scrolled .announcement-bar::after {
     max-width: 34ch;
   }
 
+/* =========================================
+   NAV LINKS HEADER BUTTONS
+========================================= */
   .nav-links button,
 .header-journal-btn {
   min-height: 34px;
@@ -11050,6 +11053,9 @@ body.scrolled .announcement-bar::after {
 }
 }
 
+/* =========================================
+   HOW IT WORKS SECTION MOBILE OVERRIDE 560px
+========================================= */
 @media (max-width: 560px) {
   .how-it-works-card {
     padding: 17px 16px;
@@ -11065,6 +11071,9 @@ body.scrolled .announcement-bar::after {
     line-height: 1.52;
   }
 
+/* =========================================
+   NAV LINKS HEADER BUTTONS 560px
+========================================= */
   .nav-links button,
 .header-journal-btn {
   min-height: 32px;
@@ -11078,5 +11087,44 @@ body.scrolled .announcement-bar::after {
 .nav-links button.active {
   font-size: 10px;
   font-weight: 600;
+}
+
+/* =========================================
+   HOW IT WORKS DRAWER MOBILE OVERRIDE 560px
+========================================= */
+@media (max-width: 560px) {
+  .how-it-works-drawer {
+    top: 74px !important;
+    bottom: 74px !important;
+
+    height: auto !important;
+    max-height: none !important;
+
+    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .how-it-works-drawer-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto !important;
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(220, 181, 107, 0.35) transparent;
+  }
+
+  .how-it-works-drawer-body::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .how-it-works-drawer-body::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .how-it-works-drawer-body::-webkit-scrollbar-thumb {
+    background: rgba(220, 181, 107, 0.35);
+    border-radius: 999px;
+  }
 }
 }
