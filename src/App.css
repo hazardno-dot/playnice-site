@@ -4806,48 +4806,52 @@ body.scrolled .announcement-bar::after {
   }
 
   .hero {
-    width: min(calc(100% - 32px), var(--max));
-    max-width: var(--max);
-    margin-left: auto;
-    margin-right: auto;
+  width: min(calc(100% - 32px), var(--max));
+  max-width: var(--max);
+  margin-left: auto;
+  margin-right: auto;
 
-    padding: 0; /* sklanjamo padding da ne “širi” okvir */
-    border-radius: 22px;
-    overflow: hidden;
-  }
+  padding: 0; /* sklanjamo padding da ne “širi” okvir */
+  border-radius: 22px;
+  overflow: hidden;
 
-  .hero-carousel,
-  .hero-slide {
-    aspect-ratio: 2.2 / 1;
-    height: auto;
-  }
+  margin-top: 6px; /* smanjuje gap od announcement bara */
+}
 
-  .hero img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
+.hero-carousel,
+.hero-slide {
+  aspect-ratio: 2.2 / 1;
+  height: auto;
 
-  .hero-grid,
-  .feature-grid,
-  .product-grid,
-  .checkout-grid,
-  .shop-toolbar,
-  .form-row.two,
-  .modal-size-grid {
-   grid-template-columns: 1fr;
-  }
+  width: 100%; /* osigurava da ne probija širinu */
+}
 
-  .hero-visual {
-    display: grid;
-    place-items: center;
-    min-height: unset;
-  }
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
-  .hero-bottle {
-    width: min(100%, 280px);
-  }
+.hero-grid,
+.feature-grid,
+.product-grid,
+.checkout-grid,
+.shop-toolbar,
+.form-row.two,
+.modal-size-grid {
+  grid-template-columns: 1fr;
+}
+
+.hero-visual {
+  display: grid;
+  place-items: center;
+  min-height: unset;
+}
+
+.hero-bottle {
+  width: min(100%, 280px);
+}
 
   .feature-card.large {
     grid-column: span 1;
