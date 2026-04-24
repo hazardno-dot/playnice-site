@@ -7839,9 +7839,9 @@ body.scrolled .announcement-bar::after {
     linear-gradient(180deg, rgba(215, 179, 98, 0.1), rgba(215, 179, 98, 0.04));
   color: rgba(245, 224, 173, 0.96);
 
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   text-transform: none;
   line-height: 1;
 
