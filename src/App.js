@@ -4401,6 +4401,7 @@ const getSizeWearHint = (size) => {
     EN
   </button>
 </div>
+</div>
     </header>
 
       <div
