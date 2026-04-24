@@ -227,7 +227,7 @@ const translations = {
     privateSelection: "Private Selection",
     bestsellersTitle: "Bestseleri i signature izbor",
     bestsellersText:
-      "Premium dekanti koji kupcima omogućavaju da pronađu pravi parfem pre nego što se odluče za punu bočicu.",
+      "Premium dekanti koji kupcima omogućuju da pronađu pravi parfem pre nego što se odluče za punu bočicu.",
     viewFullCollection: "Pogledaj celu kolekciju",
     discoverTitle: "Pronađi svoj signature miris",
     discoverText:
@@ -4775,7 +4775,7 @@ const getSizeWearHint = (size) => {
               </div>
 
               <div className="product-grid">
-                {[1, 2, 4, 7]
+                {[5, 21, 48, 49]
                   .map((id) => products.find((product) => product.id === id))
                   .filter(Boolean)
                   .map((product) => (
@@ -5464,7 +5464,7 @@ const getSizeWearHint = (size) => {
         <h4>{lang === "sr" ? "Više izbora" : "More variety"}</h4>
         <p>
           {lang === "sr"
-            ? "Dekanti ti omogućavaju da rotiraš više mirisa za različite prilike, godišnja doba i raspoloženja."
+            ? "Dekanti ti omogućuju da rotiraš više mirisa za različite prilike, godišnja doba i raspoloženja."
             : "Decants let you build a rotation for different occasions, seasons, and moods."}
         </p>
       </div>
