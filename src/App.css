@@ -114,7 +114,10 @@ main {
 .featured-section,
 .shop-section {
   padding-bottom: 8px;
-  padding-bottom: 8px;
+}
+
+.view-shop .shop-section:first-child {
+  padding-top: 6px;
 }
 
 /* =========================================
