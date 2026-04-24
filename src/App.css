@@ -4576,7 +4576,7 @@ body.scrolled .announcement-bar::after {
     --topbar-top-offset: 8px;
     --topbar-height: 118px;
     --announcement-height: 42px;
-    --announcement-gap: 6px;
+    --announcement-gap: 10px;
     --announcement-top-mobile: calc(
       var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap)
     );
