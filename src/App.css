@@ -4768,7 +4768,7 @@ body.scrolled .announcement-bar::after {
     left: 50%;
     right: auto;
     transform: translateX(-50%);
-    width: calc(100% - 20px);
+    width: calc(100% - 24px);
     z-index: 190;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
     backdrop-filter: blur(10px);
@@ -4999,7 +4999,7 @@ body.scrolled .announcement-bar::after {
 
   .announcement-bar {
     top: var(--announcement-top-mobile);
-    width: calc(100% - 16px);
+    width: calc(100% - 20px);
   }
 
   .hero,
