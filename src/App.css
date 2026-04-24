@@ -4805,7 +4805,7 @@ body.scrolled .announcement-bar::after {
     padding: 0 10px 8px;
   }
 
-  .hero {
+.hero {
   width: min(calc(100% - 32px), var(--max));
   max-width: var(--max);
   margin-left: auto;
@@ -4820,7 +4820,7 @@ body.scrolled .announcement-bar::after {
 
 .hero-carousel,
 .hero-slide {
-  aspect-ratio: 2.2 / 1;
+  aspect-ratio: 2.4 / 1;
   height: auto;
 
   width: 100%; /* osigurava da ne probija širinu */
