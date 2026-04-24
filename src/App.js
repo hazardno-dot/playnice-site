@@ -5859,36 +5859,18 @@ const getSizeWearHint = (size) => {
 
         {journalArticles?.[0] && (
   <article
-    className="journal-featured"
+    className="journal-featured journal-featured--split"
     onClick={() => setSelectedArticle(journalArticles[0])}
   >
-    {journalArticles[0].image && (
-      <div
-        className="journal-featured-bg"
-        style={{
-          backgroundImage: `url(${journalArticles[0].image})`,
-        }}
-      />
-    )}
-
-    <div className="journal-featured-glow" />
-
-    <div className="journal-featured-content">
+    <div className="journal-featured-copy">
       <div className="journal-featured-meta">
-        <span className="journal-featured-date">
-          {journalArticles[0].date?.toUpperCase?.() ||
-            journalArticles[0].date}
-        </span>
-        <span className="journal-featured-reading-time">
-          {tr.journalReadingTime}
-        </span>
+        <span>{journalArticles[0].date}</span>
+        <span>{tr.journalReadingTime}</span>
       </div>
 
-      <h2 className="journal-featured-title">
-        {getJournalText(journalArticles[0].title, lang)}
-      </h2>
+      <h2>{getJournalText(journalArticles[0].title, lang)}</h2>
 
-      <div className="journal-author-signature small">
+      <div className="journal-author-signature">
         <div className="journal-author-avatar">
           {getJournalAvatarLetter(lang)}
         </div>
@@ -5903,14 +5885,22 @@ const getSizeWearHint = (size) => {
         </div>
       </div>
 
-      <p className="journal-featured-excerpt">
-        {getJournalText(journalArticles[0].excerpt, lang)}
-      </p>
+      <p>{getJournalText(journalArticles[0].excerpt, lang)}</p>
 
       <div className="journal-featured-link">
         {tr.journalReadArticle}
       </div>
     </div>
+
+    {journalArticles[0].image && (
+      <div className="journal-featured-image-wrap">
+        <img
+          src={journalArticles[0].image}
+          alt={getJournalText(journalArticles[0].title, lang)}
+          className="journal-featured-image"
+        />
+      </div>
+    )}
   </article>
 )}
 
