@@ -7150,6 +7150,9 @@ body.scrolled .announcement-bar::after {
 ========================================= */
 
 .catalog-download-section {
+  width: min(calc(100% - 32px), var(--max));
+  max-width: var(--max);
+  margin: 0 auto;
   padding: 28px 0 10px;
 }
 
@@ -7259,6 +7262,10 @@ body.scrolled .announcement-bar::after {
 }
 
 @media (max-width: 768px) {
+  .catalog-download-section {
+    width: calc(100% - 24px);
+  }
+
   .catalog-download-card {
     flex-direction: column;
     align-items: flex-start;
