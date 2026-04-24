@@ -2428,7 +2428,7 @@ Da kažemo stvari normalno. Ljudski. I da usput možda zajedno preživimo još p
   {
     id: 3,
     date: "12 Apr",
-    image: "/hero/slide-1-9pm-night-out.jpg",
+    image: "/journal/article3.png",
     title: {
       en: "9PM Night Out did not ask for attention. Then it got too much of it.",
       sr: "9PM Night Out nije tražio pažnju. Onda je dobio previše.",
