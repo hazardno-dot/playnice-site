@@ -123,8 +123,9 @@ main {
 
 .section-divider {
   position: relative;
-  height: 80px;
-  margin: 90px 0;
+  width: min(calc(100% - 32px), var(--max));
+  height: 72px;
+  margin: 64px auto;
 }
 
 /* centralna linija */
@@ -4897,6 +4898,21 @@ body.scrolled .announcement-bar::after {
     min-width: 0;
     max-width: calc(100vw - 24px);
   }
+
+  .section-divider {
+    width: calc(100% - 24px);
+    height: 58px;
+    margin: 42px auto;
+  }
+
+  .section-divider::before {
+    width: min(320px, 76vw);
+  }
+
+  .section-divider::after {
+    width: min(380px, 86vw);
+    height: 46px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -4997,7 +5013,24 @@ body.scrolled .announcement-bar::after {
   .hero {
   padding: 8px 8px;
   border-radius: 22px;
-}
+  }
+
+.section-divider {
+    width: calc(100% - 18px);
+    height: 46px;
+    margin: 30px auto;
+  }
+
+  .section-divider::before {
+    width: min(240px, 72vw);
+  }
+
+  .section-divider::after {
+    width: min(300px, 84vw);
+    height: 38px;
+    filter: blur(14px);
+    opacity: 0.65;
+  }
 }
 
 /* =========================================
