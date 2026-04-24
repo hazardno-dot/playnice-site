@@ -5012,7 +5012,7 @@ body.scrolled .announcement-bar::after {
 }
 
   .hero {
-    width: calc(100% - 28px) !important;
+    width: calc(100% - 32px) !important;
     max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
