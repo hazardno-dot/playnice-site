@@ -7841,8 +7841,8 @@ body.scrolled .announcement-bar::after {
 
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-transform: none;
   line-height: 1;
 
   box-shadow:
@@ -7929,7 +7929,8 @@ body.scrolled .announcement-bar::after {
     padding: 8px 12px;
     gap: 7px;
     font-size: 11px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.04em;
+    text-transform: none;
   }
 }
 
