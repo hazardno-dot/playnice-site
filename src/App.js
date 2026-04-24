@@ -3025,6 +3025,15 @@ const getJournalArticleKey = (article) => {
   return article.id || article.slug || article.title?.en || article.title?.sr || article.title || "";
 };
 
+const getInitialView = () => {
+  if (typeof window === "undefined") return "home";
+
+  const params = new URLSearchParams(window.location.search);
+  const urlView = params.get("view");
+
+  return ["home", "shop", "journal"].includes(urlView) ? urlView : "home";
+};
+
 /* =========================================
    APP
 ========================================= */
@@ -3033,7 +3042,7 @@ function App() {
      APP STATE
   ========================================= */
   const [lang, setLang] = useState(() => getDefaultLanguage());
-  const [view, setView] = useState("home");
+  const [view, setView] = useState(() => getInitialView());
   const [category, setCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [cartOpen, setCartOpen] = useState(false);
