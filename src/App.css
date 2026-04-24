@@ -5012,34 +5012,27 @@ body.scrolled .announcement-bar::after {
 }
 
 .hero {
-  width: min(calc(100% - 32px), var(--max)); /* ključna promjena */
-  max-width: var(--max);
-  margin-left: auto;
-  margin-right: auto;
+    width: calc(100% - 24px) !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 
-  padding: 0;
-  border-radius: 20px;
-  overflow: hidden;
+  .hero-carousel,
+  .hero-slide {
+    aspect-ratio: 2.2 / 1;
+    width: 100%;
+  }
 
-  margin-top: 6px; /* da legne bliže announcement-u */
-}
+  .hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-.hero-carousel,
-.hero-slide {
-  aspect-ratio: 2.2 / 1;
-  height: auto;
-  width: 100%; /* dodatna sigurnost */
-}
-
-.hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.hero-visual {
-  min-height: unset;
+  .hero * {
+    max-width: 100%;
+  }
 }
 
   .section-divider {
