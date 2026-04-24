@@ -2367,6 +2367,7 @@ A mi smo od običnog “da vidimo šta ima” opet napravili ono što uvek napra
   {
     id: 2,
     date: "13 Apr",
+    image: "/journal/article2.png",
     title: {
       en: "Delivery is now €4, and we handled it like adults. Almost.",
       sr: "Dostava je sada 4€, a mi smo to primili kao odrasli. Skoro.",
