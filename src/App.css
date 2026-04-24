@@ -4715,7 +4715,7 @@ body.scrolled .announcement-bar::after {
     font-size: 10px;
   }
 
-  .nav-links {
+.nav-links {
   grid-area: nav;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -4968,19 +4968,19 @@ body.scrolled .announcement-bar::after {
     font-size: 8.5px;
   }
 
-  .cart-button,
-  .cart-button--icon-only {
+ .cart-button,
+ .cart-button--icon-only {
     width: 42px;
     min-width: 42px;
     height: 42px;
     flex: 0 0 42px;
   }
 
-  .nav-links {
+.nav-links {
     gap: 4px;
   }
 
-  .nav-links button {
+.nav-links button {
   padding: 6px 2px;
   min-height: 32px;
 
@@ -4990,7 +4990,7 @@ body.scrolled .announcement-bar::after {
   line-height: 1;
 }
 
-  .header-journal-btn {
+.header-journal-btn {
   min-height: 32px;
   padding: 6px 2px;
 
@@ -5002,7 +5002,7 @@ body.scrolled .announcement-bar::after {
   text-transform: none;
 }
 
-  .announcement-bar {
+.announcement-bar {
   top: var(--announcement-top-mobile);
   left: 50%;
   right: auto;
@@ -5011,7 +5011,7 @@ body.scrolled .announcement-bar::after {
   max-width: var(--max);
 }
 
-.hero {
+  .hero {
     width: calc(100% - 24px) !important;
     max-width: 100% !important;
     margin-left: auto !important;
@@ -5033,7 +5033,6 @@ body.scrolled .announcement-bar::after {
   .hero * {
     max-width: 100%;
   }
-}
 
   .section-divider {
     width: calc(100% - 18px);
