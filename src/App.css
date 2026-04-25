@@ -10893,6 +10893,7 @@ body.scrolled .announcement-bar::after {
 /* =========================================
    JOURNAL — MOBILE (≤768px)
 ========================================= */
+
 @media (max-width: 768px) {
   .journal-featured {
     display: flex;
@@ -10955,7 +10956,8 @@ body.scrolled .announcement-bar::after {
   .journal-featured-link {
     margin-top: 12px;
   }
-}
+
+  /* 👇 OVO MORA BITI UNUTRA */
 
   .journal-grid {
     grid-template-columns: 1fr;
@@ -11042,10 +11044,12 @@ body.scrolled .announcement-bar::after {
   .journal-related-grid {
     grid-template-columns: 1fr;
   }
+}
 
 /* =========================================
    JOURNAL — SMALL MOBILE (≤480px)
 ========================================= */
+
 @media (max-width: 480px) {
   .journal-featured {
     gap: 12px;
@@ -11074,7 +11078,6 @@ body.scrolled .announcement-bar::after {
     line-height: 1.58;
     -webkit-line-clamp: 4;
   }
-}
 
   .journal-grid {
     gap: 10px;
@@ -11142,6 +11145,7 @@ body.scrolled .announcement-bar::after {
     height: 34px;
     font-size: 16px;
   }
+}
 
 .journal-overlay,
 .journal-article-overlay,
