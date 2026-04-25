@@ -11336,3 +11336,161 @@ body.scrolled .announcement-bar::after {
   }
 }
 }
+
+/* =========================================
+   JOURNAL FEATURED — MOBILE FINAL SIZE FIX
+========================================= */
+
+@media (max-width: 768px) {
+  .journal-featured {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    padding: 12px !important;
+    border-radius: 22px !important;
+    overflow: hidden !important;
+  }
+
+  .journal-featured-image-wrap {
+    order: 1 !important;
+
+    width: 100% !important;
+    height: 210px !important;
+    min-height: 210px !important;
+    max-height: 210px !important;
+
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .journal-featured-image {
+    display: block !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  .journal-featured-content,
+  .journal-featured-copy {
+    order: 2 !important;
+
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    padding: 14px 14px 12px !important;
+    overflow: hidden !important;
+  }
+
+  .journal-featured .journal-card-meta,
+  .journal-featured .journal-featured-meta,
+  .journal-featured [class*="meta"] {
+    margin: 0 0 12px !important;
+
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .journal-featured h1,
+  .journal-featured h2,
+  .journal-featured h3,
+  .journal-featured .journal-card-title,
+  .journal-featured .journal-featured-title,
+  .journal-featured [class*="title"] {
+    margin: 0 0 16px !important;
+
+    font-size: 26px !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.045em !important;
+    font-weight: 800 !important;
+  }
+
+  .journal-featured .journal-author,
+  .journal-featured .journal-featured-author,
+  .journal-featured [class*="author"] {
+    margin: 0 0 14px !important;
+  }
+
+  .journal-featured .journal-author-avatar,
+  .journal-featured [class*="avatar"] {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+
+    font-size: 18px !important;
+  }
+
+  .journal-featured .journal-author-name,
+  .journal-featured [class*="name"] {
+    font-size: 16px !important;
+    line-height: 1.15 !important;
+  }
+
+  .journal-featured .journal-author-role,
+  .journal-featured [class*="role"] {
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .journal-featured .journal-card-excerpt,
+  .journal-featured .journal-featured-excerpt,
+  .journal-featured [class*="excerpt"] {
+    margin: 0 !important;
+
+    font-size: 14.5px !important;
+    line-height: 1.45 !important;
+
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .journal-featured .journal-read-link,
+  .journal-featured [class*="read"] {
+    margin-top: 12px !important;
+
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.18em !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .journal-featured-image-wrap {
+    height: 195px !important;
+    min-height: 195px !important;
+    max-height: 195px !important;
+  }
+
+  .journal-featured h1,
+  .journal-featured h2,
+  .journal-featured h3,
+  .journal-featured .journal-card-title,
+  .journal-featured .journal-featured-title,
+  .journal-featured [class*="title"] {
+    font-size: 24px !important;
+    line-height: 1.08 !important;
+    margin-bottom: 14px !important;
+  }
+
+  .journal-featured .journal-card-excerpt,
+  .journal-featured .journal-featured-excerpt,
+  .journal-featured [class*="excerpt"] {
+    font-size: 14px !important;
+    line-height: 1.42 !important;
+    -webkit-line-clamp: 2 !important;
+  }
+}
