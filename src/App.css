@@ -10896,94 +10896,104 @@ body.scrolled .announcement-bar::after {
 }
 
 /* =========================================
-   JOURNAL — MOBILE (≤768px)
+   JOURNAL — MOBILE FEATURED FIX (≤768px)
 ========================================= */
 
 @media (max-width: 768px) {
   .journal-featured {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 12px !important;
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
 
-  padding: 12px !important;
-  min-height: auto !important;
-  height: auto !important;
+    width: 100% !important;
+    min-height: 560px !important;
+    height: auto !important;
 
-  border-radius: 22px;
-  overflow: hidden;
-}
+    padding: 12px !important;
+    border-radius: 22px !important;
+    overflow: hidden !important;
+  }
 
-.journal-featured-image-wrap {
-  order: 1;
-  width: 100% !important;
-  height: 220px !important;
-  min-height: 220px !important;
-  max-height: 220px !important;
+  .journal-featured-image-wrap {
+    position: relative !important;
+    inset: auto !important;
+    order: 1 !important;
 
-  flex: 0 0 220px !important;
+    width: 100% !important;
+    height: 260px !important;
+    min-height: 260px !important;
+    max-height: none !important;
+    flex: 0 0 260px !important;
 
-  border-radius: 18px;
-  overflow: hidden;
-}
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
 
-.journal-featured-image {
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 0 !important;
+  .journal-featured-image {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
 
-  display: block;
-  object-fit: cover;
-  object-position: center;
-}
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
 
-.journal-featured-content,
-.journal-featured-copy {
-  order: 2;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
 
-  width: 100%;
-  min-width: 0;
-  min-height: 0;
-  height: auto;
+  .journal-featured-content,
+  .journal-featured-copy {
+    position: relative !important;
+    inset: auto !important;
+    order: 2 !important;
 
-  display: flex;
-  flex-direction: column;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: auto !important;
+    height: auto !important;
+    max-height: none !important;
 
-  padding: 0 2px;
-  overflow: hidden;
-}
+    display: flex !important;
+    flex-direction: column !important;
 
-.journal-featured-title {
-  max-width: 100%;
-  margin: 0 0 10px;
+    padding: 16px 14px 14px !important;
+    overflow: visible !important;
+  }
 
-  font-size: 18px;
-  line-height: 1.16;
-  font-weight: 650;
+  .journal-featured-title {
+    max-width: 100% !important;
+    margin: 0 0 10px !important;
 
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+    font-size: 20px !important;
+    line-height: 1.15 !important;
+    font-weight: 700 !important;
 
-.journal-featured-excerpt {
-  max-width: 100%;
-  margin: 0;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
 
-  font-size: 12.5px;
-  line-height: 1.5;
+  .journal-featured-excerpt {
+    max-width: 100% !important;
+    margin: 0 !important;
 
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
 
-.journal-featured-link {
-  margin-top: 12px;
-  padding-top: 0;
-  font-size: 10px;
-}
+    display: -webkit-box !important;
+    -webkit-line-clamp: 4 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .journal-featured-link {
+    margin-top: auto !important;
+    padding-top: 16px !important;
+    font-size: 10.5px !important;
+  }
 
   .journal-grid {
     grid-template-columns: 1fr;
@@ -11073,40 +11083,48 @@ body.scrolled .announcement-bar::after {
 }
 
 /* =========================================
-   JOURNAL — SMALL MOBILE (≤480px)
+   JOURNAL — SMALL MOBILE FEATURED FIX (≤480px)
 ========================================= */
 
 @media (max-width: 480px) {
   .journal-featured {
-    gap: 12px;
-    padding: 12px;
-    border-radius: 22px;
+    gap: 14px !important;
+    padding: 12px !important;
+    min-height: 540px !important;
+    border-radius: 22px !important;
   }
 
   .journal-featured-image-wrap {
-    aspect-ratio: 1.85 / 1;
-    border-radius: 18px;
-    height: 210px !important;
-    min-height: 210px !important;
-    max-height: 210px !important;
-    flex-basis: 210px !important;
+    height: 245px !important;
+    min-height: 245px !important;
+    max-height: none !important;
+    flex: 0 0 245px !important;
+
+    aspect-ratio: auto !important;
+    border-radius: 18px !important;
   }
 
   .journal-featured-content,
   .journal-featured-copy {
-    padding: 0 2px 0;
+    padding: 15px 13px 14px !important;
+    overflow: visible !important;
   }
 
   .journal-featured-title {
-    font-size: 17px;
-    line-height: 1.16;
-    -webkit-line-clamp: 2;
+    font-size: 19px !important;
+    line-height: 1.16 !important;
+    -webkit-line-clamp: 3 !important;
   }
 
   .journal-featured-excerpt {
-    font-size: 12px;
-    line-height: 1.5;
-    -webkit-line-clamp: 2;
+    font-size: 13px !important;
+    line-height: 1.58 !important;
+    -webkit-line-clamp: 4 !important;
+  }
+
+  .journal-featured-link {
+    padding-top: 15px !important;
+    font-size: 10.5px !important;
   }
 
   .journal-grid {
@@ -11176,6 +11194,10 @@ body.scrolled .announcement-bar::after {
     font-size: 16px;
   }
 }
+
+/* =========================================
+   OVERLAY STACK FIX
+========================================= */
 
 .journal-overlay,
 .journal-article-overlay,
@@ -11313,59 +11335,4 @@ body.scrolled .announcement-bar::after {
     border-radius: 999px;
   }
 }
-}
-
-/* =========================================
-   JOURNAL FEATURED — MOBILE FORCE FIX
-========================================= */
-
-@media (max-width: 768px) {
-  .journal-featured {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 14px !important;
-
-    width: 100% !important;
-    min-height: 560px !important;
-    height: auto !important;
-
-    padding: 12px !important;
-    border-radius: 22px !important;
-    overflow: hidden !important;
-  }
-
-  .journal-featured-image-wrap {
-    order: 1 !important;
-
-    width: 100% !important;
-    height: 260px !important;
-    min-height: 260px !important;
-    max-height: none !important;
-
-    border-radius: 18px !important;
-    overflow: hidden !important;
-  }
-
-  .journal-featured-image {
-    display: block !important;
-
-    width: 100% !important;
-    height: 100% !important;
-
-    object-fit: cover !important;
-    object-position: center !important;
-  }
-
-  .journal-featured-content,
-  .journal-featured-copy {
-    order: 2 !important;
-
-    width: 100% !important;
-    min-height: auto !important;
-    height: auto !important;
-    max-height: none !important;
-
-    padding: 16px 14px 14px !important;
-    overflow: visible !important;
-  }
 }
