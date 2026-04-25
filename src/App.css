@@ -11338,18 +11338,18 @@ body.scrolled .announcement-bar::after {
 }
 
 /* =========================================
-   JOURNAL FEATURED — MOBILE FINAL SIZE FIX
+   JOURNAL FEATURED — MOBILE STABLE FIX
 ========================================= */
 
 @media (max-width: 768px) {
   .journal-featured {
     display: flex !important;
     flex-direction: column !important;
-    gap: 12px !important;
+    gap: 14px !important;
 
     width: 100% !important;
+    min-height: 560px !important;
     height: auto !important;
-    min-height: 0 !important;
     max-height: none !important;
 
     padding: 12px !important;
@@ -11361,9 +11361,9 @@ body.scrolled .announcement-bar::after {
     order: 1 !important;
 
     width: 100% !important;
-    height: 210px !important;
-    min-height: 210px !important;
-    max-height: 210px !important;
+    height: 230px !important;
+    min-height: 230px !important;
+    max-height: 230px !important;
 
     border-radius: 18px !important;
     overflow: hidden !important;
@@ -11385,45 +11385,43 @@ body.scrolled .announcement-bar::after {
 
     width: 100% !important;
     height: auto !important;
-    min-height: 0 !important;
+    min-height: auto !important;
     max-height: none !important;
 
-    padding: 14px 14px 12px !important;
-    overflow: hidden !important;
+    padding: 16px 14px 14px !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
   }
 
   .journal-featured .journal-card-meta,
-  .journal-featured .journal-featured-meta,
-  .journal-featured [class*="meta"] {
+  .journal-featured-meta {
     margin: 0 0 12px !important;
 
     font-size: 11px !important;
     line-height: 1.2 !important;
-    letter-spacing: 0.16em !important;
+    letter-spacing: 0.18em !important;
   }
 
   .journal-featured h1,
   .journal-featured h2,
   .journal-featured h3,
   .journal-featured .journal-card-title,
-  .journal-featured .journal-featured-title,
-  .journal-featured [class*="title"] {
-    margin: 0 0 16px !important;
+  .journal-featured-title {
+    margin: 0 0 14px !important;
 
-    font-size: 26px !important;
-    line-height: 1.08 !important;
-    letter-spacing: -0.045em !important;
+    font-size: 24px !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.035em !important;
     font-weight: 800 !important;
   }
 
   .journal-featured .journal-author,
-  .journal-featured .journal-featured-author,
-  .journal-featured [class*="author"] {
+  .journal-featured-author {
     margin: 0 0 14px !important;
+    gap: 12px !important;
   }
 
-  .journal-featured .journal-author-avatar,
-  .journal-featured [class*="avatar"] {
+  .journal-featured .journal-author-avatar {
     width: 46px !important;
     height: 46px !important;
     min-width: 46px !important;
@@ -11431,22 +11429,19 @@ body.scrolled .announcement-bar::after {
     font-size: 18px !important;
   }
 
-  .journal-featured .journal-author-name,
-  .journal-featured [class*="name"] {
+  .journal-featured .journal-author-name {
     font-size: 16px !important;
     line-height: 1.15 !important;
   }
 
-  .journal-featured .journal-author-role,
-  .journal-featured [class*="role"] {
+  .journal-featured .journal-author-role {
     font-size: 11px !important;
     line-height: 1.2 !important;
     letter-spacing: 0.16em !important;
   }
 
   .journal-featured .journal-card-excerpt,
-  .journal-featured .journal-featured-excerpt,
-  .journal-featured [class*="excerpt"] {
+  .journal-featured-excerpt {
     margin: 0 !important;
 
     font-size: 14.5px !important;
@@ -11459,7 +11454,7 @@ body.scrolled .announcement-bar::after {
   }
 
   .journal-featured .journal-read-link,
-  .journal-featured [class*="read"] {
+  .journal-featured-read {
     margin-top: 12px !important;
 
     font-size: 11px !important;
@@ -11469,26 +11464,28 @@ body.scrolled .announcement-bar::after {
 }
 
 @media (max-width: 560px) {
+  .journal-featured {
+    min-height: 540px !important;
+  }
+
   .journal-featured-image-wrap {
-    height: 195px !important;
-    min-height: 195px !important;
-    max-height: 195px !important;
+    height: 215px !important;
+    min-height: 215px !important;
+    max-height: 215px !important;
   }
 
   .journal-featured h1,
   .journal-featured h2,
   .journal-featured h3,
   .journal-featured .journal-card-title,
-  .journal-featured .journal-featured-title,
-  .journal-featured [class*="title"] {
-    font-size: 24px !important;
-    line-height: 1.08 !important;
-    margin-bottom: 14px !important;
+  .journal-featured-title {
+    font-size: 23px !important;
+    line-height: 1.1 !important;
+    margin-bottom: 13px !important;
   }
 
   .journal-featured .journal-card-excerpt,
-  .journal-featured .journal-featured-excerpt,
-  .journal-featured [class*="excerpt"] {
+  .journal-featured-excerpt {
     font-size: 14px !important;
     line-height: 1.42 !important;
     -webkit-line-clamp: 2 !important;
