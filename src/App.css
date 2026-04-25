@@ -10902,10 +10902,12 @@ body.scrolled .announcement-bar::after {
 }
 
 /* =========================================
-   JOURNAL — MOBILE RECOVERY LOCK
+   JOURNAL — MOBILE LOCKED FIX
+   Keep this block as the LAST block in App.css
 ========================================= */
 
 @media (max-width: 768px) {
+  /* JOURNAL WINDOW */
   .journal-overlay {
     padding: 0 !important;
     align-items: flex-start !important;
@@ -10921,67 +10923,83 @@ body.scrolled .announcement-bar::after {
     overflow: hidden !important;
   }
 
-  .journal-scroll {
+  .journal-body-scroll {
     height: 100% !important;
-    padding: 18px 18px 22px !important;
-
     overflow-y: auto !important;
     overscroll-behavior: contain !important;
     -webkit-overflow-scrolling: touch !important;
+
+    padding: 18px 18px 22px !important;
   }
 
-  .journal-header-card {
+  /* JOURNAL HEADER — real classes from JSX */
+  .journal-topbar {
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
-    gap: 22px !important;
+    justify-content: flex-start !important;
+    gap: 20px !important;
+
+    position: relative !important;
 
     width: 100% !important;
     height: auto !important;
-    min-height: unset !important;
+    min-height: auto !important;
     max-height: none !important;
 
     padding: 28px 24px 26px !important;
     border-radius: 24px !important;
-    overflow: hidden !important;
+
+    overflow: visible !important;
   }
 
-  .journal-header-card > * {
+  .journal-topbar-copy,
+  .journal-topbar-side {
     width: 100% !important;
     max-width: 100% !important;
+    min-width: 0 !important;
   }
 
-  .journal-header-card h1,
-  .journal-header-card h2 {
-    margin: 0 !important;
+  .journal-kicker {
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.22em !important;
+  }
+
+  .journal-heading {
+    margin: 8px 0 12px !important;
 
     font-size: 34px !important;
     line-height: 1.05 !important;
     letter-spacing: -0.045em !important;
   }
 
-  .journal-header-card p {
+  .journal-subheading {
+    max-width: 100% !important;
     margin: 0 !important;
 
     font-size: 17px !important;
     line-height: 1.45 !important;
   }
 
-  .journal-header-card em {
-    display: block !important;
-    margin-top: 18px !important;
+  .journal-topbar-quote {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
 
     font-size: 17px !important;
     line-height: 1.45 !important;
     text-align: left !important;
   }
 
-  .journal-grid {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 18px !important;
+  .journal-close-btn {
+    position: absolute !important;
+    top: 18px !important;
+    right: 18px !important;
+    z-index: 5 !important;
   }
 
+  /* FEATURED CARD — lock image above, text below */
   .journal-featured {
     display: flex !important;
     flex-direction: column !important;
@@ -10991,20 +11009,18 @@ body.scrolled .announcement-bar::after {
     min-height: unset !important;
     max-height: none !important;
 
-    padding: 0 !important;
-    border-radius: 24px !important;
-    overflow: hidden !important;
+    overflow: visible !important;
   }
 
   .journal-featured-image-wrap {
+    order: 1 !important;
+
     width: 100% !important;
     height: auto !important;
     min-height: unset !important;
     max-height: none !important;
 
     aspect-ratio: 16 / 9 !important;
-
-    border-radius: 20px !important;
     overflow: hidden !important;
   }
 
@@ -11020,50 +11036,32 @@ body.scrolled .announcement-bar::after {
 
   .journal-featured-content,
   .journal-featured-copy {
+    order: 2 !important;
+
     width: 100% !important;
     height: auto !important;
     min-height: unset !important;
     max-height: none !important;
 
-    padding: 24px 24px 22px !important;
     overflow: visible !important;
   }
 
   .journal-featured .journal-card-title,
   .journal-featured-title {
-    margin: 0 0 20px !important;
-
-    font-size: 30px !important;
-    line-height: 1.08 !important;
-    letter-spacing: -0.045em !important;
+    font-size: 26px !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.04em !important;
   }
 
   .journal-featured .journal-card-excerpt,
   .journal-featured-excerpt {
-    font-size: 17px !important;
-    line-height: 1.55 !important;
+    font-size: 16px !important;
+    line-height: 1.5 !important;
 
     display: -webkit-box !important;
     -webkit-line-clamp: 3 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
-  }
-
-  .journal-card {
-    border-radius: 24px !important;
-    padding: 14px !important;
-  }
-
-  .journal-card-image-wrap {
-    aspect-ratio: 16 / 9 !important;
-    border-radius: 18px !important;
-    overflow: hidden !important;
-  }
-
-  .journal-card-image {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
   }
 }
 
@@ -11077,220 +11075,35 @@ body.scrolled .announcement-bar::after {
     border-radius: 26px !important;
   }
 
-  .journal-scroll {
+  .journal-body-scroll {
     padding: 16px 16px 20px !important;
   }
 
-  .journal-header-card {
-    gap: 20px !important;
+  .journal-topbar {
+    gap: 18px !important;
     padding: 26px 24px 26px !important;
     border-radius: 24px !important;
   }
 
-  .journal-header-card h1,
-  .journal-header-card h2 {
+  .journal-heading {
     font-size: 32px !important;
   }
 
-  .journal-header-card p,
-  .journal-header-card em {
+  .journal-subheading,
+  .journal-topbar-quote {
     font-size: 16.5px !important;
     line-height: 1.45 !important;
   }
 
-  .journal-featured-content,
-  .journal-featured-copy {
-    padding: 22px 22px 20px !important;
-  }
-
   .journal-featured .journal-card-title,
   .journal-featured-title {
-    font-size: 28px !important;
-    line-height: 1.08 !important;
-  }
-
-  .journal-featured .journal-card-excerpt,
-  .journal-featured-excerpt {
-    font-size: 16.5px !important;
-    line-height: 1.52 !important;
-    -webkit-line-clamp: 3 !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .journal-top-sheet {
-    width: calc(100vw - 18px) !important;
-    height: calc(100vh - 124px) !important;
-    max-height: calc(100vh - 124px) !important;
-
-    margin: 100px 9px 9px !important;
-    border-radius: 24px !important;
-  }
-
-  .journal-scroll {
-    padding: 14px 14px 18px !important;
-  }
-
-  .journal-header-card {
-    padding: 24px 22px 24px !important;
-    border-radius: 22px !important;
-  }
-
-  .journal-header-card h1,
-  .journal-header-card h2 {
-    font-size: 30px !important;
-  }
-
-  .journal-header-card p,
-  .journal-header-card em {
-    font-size: 16px !important;
-  }
-
-  .journal-featured-content,
-  .journal-featured-copy {
-    padding: 20px 20px 18px !important;
-  }
-
-  .journal-featured .journal-card-title,
-  .journal-featured-title {
-    font-size: 26px !important;
-    line-height: 1.09 !important;
-  }
-
-  .journal-featured .journal-card-excerpt,
-  .journal-featured-excerpt {
-    font-size: 16px !important;
-    line-height: 1.5 !important;
-  }
-}
-
-/* =========================================
-   JOURNAL — MOBILE HEADER + FEATURED LOCK
-   Keep this as the LAST block in App.css
-========================================= */
-
-@media (max-width: 768px) {
-  /* HEADER CARD — force one-column mobile layout */
-  .journal-top-sheet .journal-header-card,
-  .journal-top-sheet .journal-header,
-  .journal-top-sheet .journal-hero,
-  .journal-top-sheet .journal-hero-card,
-  .journal-top-sheet .journal-intro,
-  .journal-top-sheet .journal-intro-card {
-    display: flex !important;
-    flex-direction: column !important;
-    grid-template-columns: 1fr !important;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    gap: 18px !important;
-
-    height: auto !important;
-    min-height: auto !important;
-    max-height: none !important;
-
-    padding: 28px 24px 26px !important;
-    overflow: visible !important;
-  }
-
-  .journal-top-sheet .journal-header-card > *,
-  .journal-top-sheet .journal-header > *,
-  .journal-top-sheet .journal-hero > *,
-  .journal-top-sheet .journal-hero-card > *,
-  .journal-top-sheet .journal-intro > *,
-  .journal-top-sheet .journal-intro-card > * {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  .journal-top-sheet .journal-header-card p,
-  .journal-top-sheet .journal-header p,
-  .journal-top-sheet .journal-hero p,
-  .journal-top-sheet .journal-hero-card p,
-  .journal-top-sheet .journal-intro p,
-  .journal-top-sheet .journal-intro-card p {
-    max-width: 100% !important;
-    text-align: left !important;
-  }
-
-  .journal-top-sheet .journal-header-card em,
-  .journal-top-sheet .journal-header em,
-  .journal-top-sheet .journal-hero em,
-  .journal-top-sheet .journal-hero-card em,
-  .journal-top-sheet .journal-intro em,
-  .journal-top-sheet .journal-intro-card em {
-    display: block !important;
-
-    width: 100% !important;
-    max-width: 100% !important;
-
-    margin-top: 14px !important;
-
-    text-align: left !important;
-  }
-
-  /* FEATURED CARD — lock image above, text below */
-  .journal-top-sheet .journal-featured {
-    display: flex !important;
-    flex-direction: column !important;
-
-    width: 100% !important;
-    height: auto !important;
-    min-height: unset !important;
-    max-height: none !important;
-
-    overflow: visible !important;
-  }
-
-  .journal-top-sheet .journal-featured-image-wrap {
-    order: 1 !important;
-
-    width: 100% !important;
-    height: auto !important;
-    min-height: unset !important;
-    max-height: none !important;
-
-    aspect-ratio: 16 / 9 !important;
-    overflow: hidden !important;
-  }
-
-  .journal-top-sheet .journal-featured-image {
-    display: block !important;
-
-    width: 100% !important;
-    height: 100% !important;
-
-    object-fit: cover !important;
-    object-position: center !important;
-  }
-
-  .journal-top-sheet .journal-featured-content,
-  .journal-top-sheet .journal-featured-copy {
-    order: 2 !important;
-
-    width: 100% !important;
-    height: auto !important;
-    min-height: unset !important;
-    max-height: none !important;
-
-    overflow: visible !important;
-  }
-
-  .journal-top-sheet .journal-featured .journal-card-title,
-  .journal-top-sheet .journal-featured-title {
-    font-size: 26px !important;
+    font-size: 25px !important;
     line-height: 1.1 !important;
-    letter-spacing: -0.04em !important;
   }
 
-  .journal-top-sheet .journal-featured .journal-card-excerpt,
-  .journal-top-sheet .journal-featured-excerpt {
-    font-size: 16px !important;
+  .journal-featured .journal-card-excerpt,
+  .journal-featured-excerpt {
+    font-size: 15.8px !important;
     line-height: 1.5 !important;
-
-    display: -webkit-box !important;
-    -webkit-line-clamp: 3 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
   }
 }
