@@ -11307,3 +11307,71 @@ body.scrolled .announcement-bar::after {
   }
 }
 }
+
+/* =========================================
+   JOURNAL FEATURED — MOBILE HARD FIX
+========================================= */
+
+@media (max-width: 768px) {
+  .journal-featured {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+
+    padding: 12px !important;
+    min-height: auto !important;
+    height: auto !important;
+
+    border-radius: 22px !important;
+    overflow: hidden !important;
+  }
+
+  .journal-featured-content {
+    order: 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+
+    min-height: auto !important;
+    height: auto !important;
+
+    padding: 16px 14px 14px !important;
+    overflow: visible !important;
+  }
+
+  .journal-featured-image-wrap {
+    order: 1 !important;
+    display: block !important;
+
+    width: 100% !important;
+    height: auto !important;
+    min-height: 230px !important;
+    aspect-ratio: 1.55 / 1 !important;
+
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .journal-featured-image {
+    display: block !important;
+
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 230px !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  .journal-featured-title {
+    max-width: none !important;
+    font-size: clamp(26px, 8vw, 34px) !important;
+    line-height: 1.02 !important;
+  }
+
+  .journal-featured-excerpt {
+    max-width: 100% !important;
+    -webkit-line-clamp: 4 !important;
+    font-size: 13.5px !important;
+    line-height: 1.58 !important;
+  }
+}
