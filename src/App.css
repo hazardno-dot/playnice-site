@@ -11314,3 +11314,58 @@ body.scrolled .announcement-bar::after {
   }
 }
 }
+
+/* =========================================
+   JOURNAL FEATURED — MOBILE FORCE FIX
+========================================= */
+
+@media (max-width: 768px) {
+  .journal-featured {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+
+    width: 100% !important;
+    min-height: 560px !important;
+    height: auto !important;
+
+    padding: 12px !important;
+    border-radius: 22px !important;
+    overflow: hidden !important;
+  }
+
+  .journal-featured-image-wrap {
+    order: 1 !important;
+
+    width: 100% !important;
+    height: 260px !important;
+    min-height: 260px !important;
+    max-height: none !important;
+
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .journal-featured-image {
+    display: block !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  .journal-featured-content,
+  .journal-featured-copy {
+    order: 2 !important;
+
+    width: 100% !important;
+    min-height: auto !important;
+    height: auto !important;
+    max-height: none !important;
+
+    padding: 16px 14px 14px !important;
+    overflow: visible !important;
+  }
+}
