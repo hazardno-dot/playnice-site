@@ -10903,35 +10903,26 @@ body.scrolled .announcement-bar::after {
   .journal-featured {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
 
     padding: 12px;
-    min-height: 560px;
+    min-height: auto;
     height: auto;
 
     border-radius: 22px;
     overflow: hidden;
   }
 
-  .journal-featured-content,
-  .journal-featured-copy {
-    order: 2;
-    min-height: auto;
-    height: auto;
-
-    padding: 16px 14px 14px;
-    justify-content: flex-start;
-    overflow: visible;
-  }
-
   .journal-featured-image-wrap {
     order: 1;
     width: 100%;
-    height: 260px;
-    min-height: 260px;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1.85 / 1;
 
     border-radius: 18px;
     overflow: hidden;
+    flex: 0 0 auto;
   }
 
   .journal-featured-image {
@@ -10944,25 +10935,66 @@ body.scrolled .announcement-bar::after {
     object-position: center;
   }
 
+  .journal-featured-content,
+  .journal-featured-copy {
+    order: 2;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 0 2px 0;
+    overflow: hidden;
+  }
+
+  .journal-featured-meta {
+    margin-bottom: 9px;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+  }
+
   .journal-featured-title {
-    max-width: none;
-    font-size: clamp(22px, 6.2vw, 28px);
-    line-height: 1.08;
-    margin-bottom: 10px;
+    max-width: 100%;
+    margin: 0 0 10px;
+
+    font-size: 18px;
+    line-height: 1.16;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .journal-featured .journal-author-signature {
+    margin-bottom: 11px;
   }
 
   .journal-featured-excerpt {
     max-width: 100%;
-    font-size: 13px;
-    line-height: 1.55;
-    -webkit-line-clamp: 4;
+    margin: 0;
+
+    font-size: 12.5px;
+    line-height: 1.5;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .journal-featured-link {
     margin-top: 12px;
+    padding-top: 0;
+    font-size: 10px;
+    flex: 0 0 auto;
   }
-
-  /* 👇 OVO MORA BITI UNUTRA */
 
   .journal-grid {
     grid-template-columns: 1fr;
@@ -11059,31 +11091,29 @@ body.scrolled .announcement-bar::after {
   .journal-featured {
     gap: 12px;
     padding: 12px;
-    min-height: 580px;
     border-radius: 22px;
   }
 
   .journal-featured-image-wrap {
-    height: 250px;
-    min-height: 250px;
+    aspect-ratio: 1.85 / 1;
     border-radius: 18px;
   }
 
   .journal-featured-content,
   .journal-featured-copy {
-    padding: 13px 12px 12px;
+    padding: 0 2px 0;
   }
 
   .journal-featured-title {
-  font-size: 18px;
-  line-height: 1.16;
-  margin-bottom: 11px;
+    font-size: 17px;
+    line-height: 1.16;
+    -webkit-line-clamp: 2;
   }
 
   .journal-featured-excerpt {
-  font-size: 12.5px;
-  line-height: 1.52;
-  -webkit-line-clamp: 3;
+    font-size: 12px;
+    line-height: 1.5;
+    -webkit-line-clamp: 2;
   }
 
   .journal-grid {
