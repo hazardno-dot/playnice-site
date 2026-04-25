@@ -10833,7 +10833,96 @@ body.scrolled .announcement-bar::after {
 
     margin: 104px 12px 12px;
     border-radius: 28px;
+    overflow: hidden;
+  }
 
+  .journal-scroll {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+
+    padding: 18px 18px 22px;
+  }
+
+  /* Header card — mobile single column */
+  .journal-header-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+
+    padding: 28px 24px 26px;
+    border-radius: 24px;
+  }
+
+  .journal-header-card .section-kicker,
+  .journal-header-card .journal-kicker {
+    font-size: 12px;
+    letter-spacing: 0.22em;
+  }
+
+  .journal-header-card h1,
+  .journal-header-card h2 {
+    margin: 0;
+
+    font-size: 34px;
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+  }
+
+  .journal-header-card p {
+    margin: 0;
+
+    font-size: 17px;
+    line-height: 1.45;
+  }
+
+  .journal-header-card em {
+    display: block;
+    margin-top: 18px;
+
+    font-size: 17px;
+    line-height: 1.45;
+    text-align: left;
+  }
+
+  .journal-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .journal-card {
+    border-radius: 24px;
+  }
+
+  .journal-card-image-wrap {
+    aspect-ratio: 16 / 9;
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .journal-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* ≤768px */
+@media (max-width: 768px) {
+  .journal-overlay {
+    padding: 0;
+    align-items: flex-start;
+  }
+
+  .journal-top-sheet {
+    width: calc(100vw - 24px);
+    height: calc(100vh - 128px);
+    max-height: calc(100vh - 128px);
+
+    margin: 104px 12px 12px;
+    border-radius: 28px;
     overflow: hidden;
   }
 
@@ -10847,55 +10936,11 @@ body.scrolled .announcement-bar::after {
   }
 
   .journal-header-card {
-    padding: 28px 24px 26px;
-    border-radius: 24px;
-  }
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
 
-  .journal-header-card h2,
-  .journal-header-card h1 {
-    font-size: 34px;
-    line-height: 1.05;
-  }
-
-  .journal-header-card p {
-    font-size: 17px;
-    line-height: 1.45;
-  }
-
-  .journal-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .journal-card {
-    border-radius: 24px;
-  }
-
-  .journal-card-image-wrap {
-    border-radius: 18px;
-  }
-}
-
-/* ≤768px */
-@media (max-width: 768px) {
-  .journal-overlay {
-    padding: 0;
-  }
-
-  .journal-top-sheet {
-    width: calc(100vw - 24px);
-    height: calc(100vh - 128px);
-    max-height: calc(100vh - 128px);
-
-    margin: 104px 12px 12px;
-    border-radius: 28px;
-  }
-
-  .journal-scroll {
-    padding: 18px 18px 22px;
-  }
-
-  .journal-header-card {
     padding: 28px 24px 26px;
     border-radius: 24px;
   }
@@ -10908,19 +10953,27 @@ body.scrolled .announcement-bar::after {
 
   .journal-header-card h1,
   .journal-header-card h2 {
+    margin: 0;
+
     font-size: 34px;
     line-height: 1.05;
     letter-spacing: -0.045em;
   }
 
   .journal-header-card p {
+    margin: 0;
+
     font-size: 17px;
     line-height: 1.45;
   }
 
   .journal-header-card em {
+    display: block;
+    margin-top: 18px;
+
     font-size: 17px;
     line-height: 1.45;
+    text-align: left;
   }
 
   .journal-grid {
@@ -10932,7 +10985,6 @@ body.scrolled .announcement-bar::after {
   .journal-featured {
     display: flex;
     flex-direction: column;
-    gap: 0;
 
     width: 100%;
     height: auto;
@@ -10941,7 +10993,7 @@ body.scrolled .announcement-bar::after {
 
     padding: 0;
     border-radius: 24px;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .journal-featured-image-wrap {
@@ -11022,6 +11074,7 @@ body.scrolled .announcement-bar::after {
   .journal-card-image-wrap {
     aspect-ratio: 16 / 9;
     border-radius: 18px;
+    overflow: hidden;
   }
 
   .journal-card-title {
@@ -11114,6 +11167,8 @@ body.scrolled .announcement-bar::after {
   }
 
   .journal-header-card {
+    gap: 20px;
+
     padding: 26px 24px 26px;
     border-radius: 24px;
   }
@@ -11313,7 +11368,7 @@ body.scrolled .announcement-bar::after {
 .journal-overlay,
 .journal-article-overlay,
 .how-it-works-overlay {
-  z-index: 1600 !important;
+  z-index: 1600;
 }
 
 /* =========================================
