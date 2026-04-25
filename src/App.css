@@ -11042,7 +11042,6 @@ body.scrolled .announcement-bar::after {
   .journal-related-grid {
     grid-template-columns: 1fr;
   }
-}
 
 /* =========================================
    JOURNAL — SMALL MOBILE (≤480px)
