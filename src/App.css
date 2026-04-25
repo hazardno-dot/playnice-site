@@ -11502,38 +11502,3 @@ body.scrolled .announcement-bar::after {
   }
 }
 }
-
-/* =========================================
-   JOURNAL FEATURED — TEMP RESET ONLY
-========================================= */
-
-@media (max-width: 768px) {
-  .journal-featured {
-    height: auto !important;
-    min-height: unset !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-
-  .journal-featured-image-wrap {
-    height: auto !important;
-    min-height: unset !important;
-    max-height: none !important;
-    aspect-ratio: 16 / 9 !important;
-    overflow: hidden !important;
-  }
-
-  .journal-featured-image {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-  }
-
-  .journal-featured-content,
-  .journal-featured-copy {
-    height: auto !important;
-    min-height: unset !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-}
