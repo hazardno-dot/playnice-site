@@ -11321,3 +11321,168 @@ body.scrolled .announcement-bar::after {
   }
 }
 }
+
+/* =========================================
+   JOURNAL FEATURED — MOBILE FINAL
+========================================= */
+
+@media (max-width: 768px) {
+  .journal-featured.journal-featured--split {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    padding: 0 !important;
+    border-radius: 22px !important;
+    overflow: hidden !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-featured-image-wrap {
+    order: 1 !important;
+
+    position: relative !important;
+    inset: auto !important;
+
+    width: 100% !important;
+    height: 230px !important;
+    min-height: 230px !important;
+    max-height: 230px !important;
+
+    border-radius: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-featured-image {
+    display: block !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-featured-copy {
+    order: 2 !important;
+
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    padding: 22px 20px 20px !important;
+    overflow: visible !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-featured-meta {
+    margin: 0 0 14px !important;
+
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-featured-copy h2 {
+    margin: 0 0 18px !important;
+
+    font-size: 27px !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.04em !important;
+    font-weight: 800 !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-author-signature {
+    margin: 0 0 18px !important;
+    gap: 13px !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-author-avatar {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+
+    font-size: 18px !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-author-name {
+    font-size: 17px !important;
+    line-height: 1.15 !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-author-role {
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-featured-copy > p {
+    margin: 0 !important;
+
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-featured-link {
+    margin-top: 16px !important;
+
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.18em !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .journal-featured.journal-featured--split .journal-featured-image-wrap {
+    height: 215px !important;
+    min-height: 215px !important;
+    max-height: 215px !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-featured-copy {
+    padding: 20px 18px 18px !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-featured-meta {
+    margin-bottom: 13px !important;
+
+    font-size: 11px !important;
+    letter-spacing: 0.17em !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-featured-copy h2 {
+    margin-bottom: 16px !important;
+
+    font-size: 25px !important;
+    line-height: 1.08 !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-author-signature {
+    margin-bottom: 16px !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-author-avatar {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-featured-copy > p {
+    font-size: 14.5px !important;
+    line-height: 1.46 !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  .journal-featured.journal-featured--split .journal-featured-link {
+    margin-top: 14px !important;
+  }
+}
