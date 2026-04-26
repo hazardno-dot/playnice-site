@@ -3761,10 +3761,6 @@ const latestJournalArticleKey = latestJournalArticle?.id
   ? String(latestJournalArticle.id)
   : "";
 
-const latestJournalArticleKey = latestJournalArticle?.id
-  ? String(latestJournalArticle.id)
-  : "";
-
 const hasNewJournalArticle =
   Boolean(latestJournalArticleKey) &&
   seenLatestJournalKey !== latestJournalArticleKey;
