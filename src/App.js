@@ -3755,7 +3755,16 @@ const handleJournalFeedbackSubmit = (article) => {
   }, 1200);
 };
 
-const latestJournalArticle = journalArticles?.[0] || null;
+const latestJournalArticle = useMemo(() => {
+  if (!journalArticles?.length) return null;
+
+  return journalArticles.reduce((latest, article) => {
+    const latestId = Number(latest?.id || 0);
+    const articleId = Number(article?.id || 0);
+
+    return articleId > latestId ? article : latest;
+  }, journalArticles[0]);
+}, [journalArticles]);
 
 const latestJournalArticleKey = latestJournalArticle?.id
   ? String(latestJournalArticle.id)
