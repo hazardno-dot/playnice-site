@@ -2867,7 +2867,7 @@ Znači da si konačno tu.
 Remember. PlayNice.`,
   },
   relatedProducts: []
-}
+},
 
 {
   id: 8,
