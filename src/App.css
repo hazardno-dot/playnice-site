@@ -5428,19 +5428,6 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
-   PRODUCT MODAL — ABOVE JOURNAL / ARTICLE
-========================================= */
-
-.product-modal-layer {
-  z-index: 9999;
-}
-
-.product-modal-layer .product-modal {
-  position: relative;
-  z-index: 10000;
-}
-
-/* =========================================
    PAGINATION
 ========================================= */
 .pagination-wrap {
@@ -11637,4 +11624,17 @@ body.scrolled .announcement-bar {
     border-radius: 999px;
   }
 }
+}
+
+/* =========================================
+   PRODUCT MODAL — ABOVE JOURNAL / ARTICLE
+========================================= */
+
+.product-modal-layer {
+  z-index: 9999;
+}
+
+.product-modal-layer .product-modal {
+  position: relative;
+  z-index: 10000;
 }
