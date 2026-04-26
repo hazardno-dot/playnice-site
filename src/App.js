@@ -4495,13 +4495,21 @@ const getSizeWearHint = (size) => {
   return (
   <div className="app-shell">
     <header className="topbar">
-      <button className="brand" type="button" onClick={() => switchView("home")}>
-        <span className="brand-mark">▶</span>
-        <span className="brand-copy">
-          <strong>PlayNice</strong>
-          <small>Remember. PlayNice.</small>
-        </span>
-      </button>
+      <button
+  className="brand brand-premium"
+  type="button"
+  onClick={() => switchView("home")}
+  aria-label="PlayNice homepage"
+>
+  <span className="brand-emblem" aria-hidden="true">
+    ✦
+  </span>
+
+  <span className="brand-copy">
+    <strong>PlayNice</strong>
+    <small>Remember. PlayNice.</small>
+  </span>
+</button>
 
       <nav className="nav-links">
         <button
