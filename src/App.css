@@ -627,7 +627,7 @@ main {
   place-items: center;
 
   text-align: center;
-  text-indent: 0;
+  text-indent: 0.4px;
 
   font-family: inherit;
   letter-spacing: 0.02em;
