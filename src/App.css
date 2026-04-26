@@ -8358,6 +8358,17 @@ body.scrolled .announcement-bar {
     font-size: 5px;
     letter-spacing: 0.05em;
   }
+
+  .header-journal-btn.has-unread .journal-unread-badge {
+    display: none;
+  }
+
+  .header-journal-btn.has-unread .header-journal-btn-text {
+    color: #7edb95;
+    text-shadow:
+      0 0 10px rgba(126, 219, 149, 0.22),
+      0 0 18px rgba(126, 219, 149, 0.12);
+  }
 }
 
 /* =========================================
