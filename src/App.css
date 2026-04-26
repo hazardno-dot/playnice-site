@@ -5369,7 +5369,7 @@ body.scrolled .announcement-bar {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 900;
+  z-index: 9999;
 
   display: block;
   align-items: center;
