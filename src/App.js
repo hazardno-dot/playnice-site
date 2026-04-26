@@ -3797,9 +3797,10 @@ const activeJournalFeedback = selectedArticle
   ? getJournalSavedFeedback(selectedArticle)
   : null;
 
-  /* =========================================
+/* =========================================
    DERIVED DATA
 ========================================= */
+
 const sortedJournalArticles = useMemo(() => {
   if (!journalArticles?.length) return [];
 
@@ -3810,6 +3811,47 @@ const sortedJournalArticles = useMemo(() => {
     return bId - aId;
   });
 }, [journalArticles]);
+
+const latestJournalArticle = sortedJournalArticles?.[0] || null;
+
+const latestJournalArticleKey = latestJournalArticle?.id
+  ? String(latestJournalArticle.id)
+  : "";
+
+const featuredJournalArticle = latestJournalArticle;
+const otherJournalArticles = sortedJournalArticles.slice(1);
+
+const hasNewJournalArticle =
+  Boolean(latestJournalArticleKey) &&
+  seenLatestJournalKey !== latestJournalArticleKey;
+
+const journalUnreadCount = hasNewJournalArticle ? 1 : 0;
+
+const markLatestJournalAsSeen = () => {
+  if (!latestJournalArticleKey) return;
+
+  try {
+    localStorage.setItem(JOURNAL_SEEN_KEY, latestJournalArticleKey);
+  } catch (error) {
+    console.error("Failed to save seen journal article:", error);
+  }
+
+  setSeenLatestJournalKey(latestJournalArticleKey);
+};
+
+const handleJournalOpen = () => {
+  setJournalOpen(true);
+  setSelectedArticle(null);
+  markLatestJournalAsSeen();
+};
+
+const handleJournalArticleOpen = (article) => {
+  if (!article) return;
+
+  setJournalOpen(true);
+  setSelectedArticle(article);
+  markLatestJournalAsSeen();
+};
 
 const announcementItems = useMemo(() => {
   const latestJournalTitle = latestJournalArticle
