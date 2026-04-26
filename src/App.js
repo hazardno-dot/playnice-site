@@ -3800,28 +3800,48 @@ const activeJournalFeedback = selectedArticle
    DERIVED DATA
 ========================================= */
 const announcementItems = useMemo(() => {
+  const latestJournalTitle = latestJournalArticle
+    ? getJournalText(latestJournalArticle.title, lang)
+    : "";
+
+  const journalAnnouncementItem =
+    hasNewJournalArticle && latestJournalArticle && latestJournalTitle
+      ? {
+          text:
+            lang === "sr"
+              ? `Novo u Journalu: ${latestJournalTitle}`
+              : `New in Journal: ${latestJournalTitle}`,
+          icon: "→",
+          tone: "journal",
+          action: "openLatestJournalArticle"
+        }
+      : null;
+
+  const withJournalAnnouncement = (items) =>
+    journalAnnouncementItem ? [journalAnnouncementItem, ...items] : items;
+
   if (cart.length === 0) {
-    return [
+    return withJournalAnnouncement([
       { text: tr.announcementDynamicEmpty1, icon: "🚚" },
       { text: tr.announcementDynamicEmpty2, icon: "✓" },
       { text: tr.announcementDynamicEmpty3, icon: "🔥" },
       { text: tr.announcementDynamicEmpty4, icon: "🔥" },
       { text: tr.announcementDynamicEmpty5, icon: "🚚" },
       { text: tr.announcementDynamicEmpty6, icon: "★" }
-    ];
+    ]);
   }
 
   if (subtotal >= FREE_SHIPPING_THRESHOLD) {
-    return [
+    return withJournalAnnouncement([
       { text: tr.announcementDynamicUnlocked, icon: "✓", tone: "success" },
       { text: tr.announcementDynamicEmpty3, icon: "🔥" },
       { text: tr.announcementDynamicEmpty4, icon: "🔥" },
       { text: tr.announcementDynamicEmpty5, icon: "🚚" },
       { text: tr.announcementDynamicEmpty6, icon: "★" }
-    ];
+    ]);
   }
 
-  return [
+  return withJournalAnnouncement([
     {
       text: tr.announcementDynamicLocked.replace(
         "{{amount}}",
@@ -3834,8 +3854,24 @@ const announcementItems = useMemo(() => {
     { text: tr.announcementDynamicEmpty3, icon: "🔥" },
     { text: tr.announcementDynamicEmpty4, icon: "🔥" },
     { text: tr.announcementDynamicEmpty6, icon: "★" }
-  ];
-}, [cart.length, subtotal, amountLeftForFreeShipping, tr]);
+  ]);
+}, [
+  cart.length,
+  subtotal,
+  amountLeftForFreeShipping,
+  tr,
+  lang,
+  hasNewJournalArticle,
+  latestJournalArticle,
+  latestJournalArticleKey
+]);
+
+const handleAnnouncementItemClick = (item) => {
+  if (item?.action !== "openLatestJournalArticle") return;
+  if (!latestJournalArticle) return;
+
+  handleJournalArticleOpen(latestJournalArticle);
+};
 
 const freeShippingProgress = Math.min(
   100,
@@ -4565,59 +4601,72 @@ const getSizeWearHint = (size) => {
     </header>
 
       <div
-        className={`announcement-bar ${
-          cart.length === 0
-            ? ""
-            : subtotal >= FREE_SHIPPING_THRESHOLD
-            ? "announcement-bar-success"
-            : "announcement-bar-warning"
-        }`}
-      >
-        <div className="announcement-bar-inner">
-          <div className="announcement-marquee">
-            <div className="announcement-track">
-              {[...announcementItems, ...announcementItems].map((item, index) => (
-                <React.Fragment key={`${item.text}-${index}`}>
-                  <span
-                    className={`announcement-text ${
-                      item.tone ? `announcement-${item.tone}` : ""
-                    }`}
-                  >
-                    {item.text}
-                  </span>
+  className={`announcement-bar ${
+    cart.length === 0
+      ? ""
+      : subtotal >= FREE_SHIPPING_THRESHOLD
+      ? "announcement-bar-success"
+      : "announcement-bar-warning"
+  }`}
+>
+  <div className="announcement-bar-inner">
+    <div className="announcement-marquee">
+      <div className="announcement-track">
+        {[...announcementItems, ...announcementItems].map((item, index) => {
+          const itemClassName = `announcement-text ${
+            item.tone ? `announcement-${item.tone}` : ""
+          }`;
 
-                  <span
-                    className={`announcement-icon ${
-                      item.tone ? `announcement-${item.tone}` : ""
-                    }`}
-                  >
-                    {item.icon}
-                  </span>
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
+          const iconClassName = `announcement-icon ${
+            item.tone ? `announcement-${item.tone}` : ""
+          }`;
 
-          <div className="announcement-progress-shell">
-            <div className="announcement-progress-bar">
-              <div
-                className="announcement-progress-fill"
-                style={{
-                  width:
-                    cart.length === 0
-                      ? "100%"
-                      : `${Math.min(
-                          100,
-                          (subtotal / FREE_SHIPPING_THRESHOLD) * 100
-                        )}%`
-                }}
-              />
-            </div>
-          </div>
-        </div>
+          return (
+            <React.Fragment key={`${item.text}-${index}`}>
+              {item.action ? (
+                <button
+                  type="button"
+                  className={`${itemClassName} announcement-action`}
+                  onClick={() => handleAnnouncementItemClick(item)}
+                  aria-label={item.text}
+                >
+                  {item.text}
+                </button>
+              ) : (
+                <span className={itemClassName}>
+                  {item.text}
+                </span>
+              )}
+
+              <span className={iconClassName}>
+                {item.icon}
+              </span>
+            </React.Fragment>
+          );
+        })}
       </div>
+    </div>
 
-      {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
+    <div className="announcement-progress-shell">
+      <div className="announcement-progress-bar">
+        <div
+          className="announcement-progress-fill"
+          style={{
+            width:
+              cart.length === 0
+                ? "100%"
+                : `${Math.min(
+                    100,
+                    (subtotal / FREE_SHIPPING_THRESHOLD) * 100
+                  )}%`
+          }}
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+{addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
       <main>
         {view === "home" && (
