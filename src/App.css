@@ -7987,6 +7987,8 @@ body.scrolled .announcement-bar::after {
 
 .header-journal-btn {
   position: relative;
+  isolation: isolate;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -8000,6 +8002,7 @@ body.scrolled .announcement-bar::after {
   border: 1px solid rgba(215, 179, 98, 0.26);
   background:
     linear-gradient(180deg, rgba(215, 179, 98, 0.1), rgba(215, 179, 98, 0.04));
+
   color: rgba(245, 224, 173, 0.96);
 
   font-size: 14px;
@@ -8010,9 +8013,11 @@ body.scrolled .announcement-bar::after {
 
   box-shadow:
     0 10px 24px rgba(0, 0, 0, 0.16),
-    0 0 0 1px rgba(255,255,255,0.015) inset;
+    0 0 0 1px rgba(255, 255, 255, 0.015) inset;
 
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
   transition:
     transform 0.28s ease,
     border-color 0.28s ease,
@@ -8027,18 +8032,23 @@ body.scrolled .announcement-bar::after {
   background:
     linear-gradient(180deg, rgba(215, 179, 98, 0.14), rgba(215, 179, 98, 0.06));
   color: rgba(255, 244, 217, 0.98);
+
   box-shadow:
     0 14px 30px rgba(0, 0, 0, 0.2),
     0 0 18px rgba(215, 179, 98, 0.12),
-    0 0 0 1px rgba(255,255,255,0.02) inset;
+    0 0 0 1px rgba(255, 255, 255, 0.02) inset;
 }
 
 .header-journal-btn:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
+}
+
+.header-journal-btn:focus,
+.header-journal-btn:focus-visible {
+  outline: none;
 }
 
 .header-journal-btn:focus-visible {
-  outline: none;
   border-color: rgba(215, 179, 98, 0.5);
   box-shadow:
     0 0 0 3px rgba(215, 179, 98, 0.14),
@@ -8046,17 +8056,23 @@ body.scrolled .announcement-bar::after {
 }
 
 .header-journal-btn-text {
+  position: relative;
+  z-index: 1;
+
   display: inline-block;
   transform: translateY(0.5px);
 }
 
-/* subtle "new" pulse */
-.header-journal-btn::after {
+/* pulse only when there is unread journal article */
+.header-journal-btn.has-unread::after {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 0;
+
   border-radius: inherit;
   pointer-events: none;
+
   box-shadow: 0 0 0 0 rgba(215, 179, 98, 0.18);
   animation: journalPulse 2.8s ease-in-out infinite;
   opacity: 0.75;
@@ -8067,9 +8083,42 @@ body.scrolled .announcement-bar::after {
   100% {
     box-shadow: 0 0 0 0 rgba(215, 179, 98, 0.12);
   }
+
   50% {
     box-shadow: 0 0 0 6px rgba(215, 179, 98, 0);
   }
+}
+
+/* unread badge */
+.journal-unread-badge {
+  position: absolute;
+  top: -6px;
+  right: -7px;
+  z-index: 3;
+
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+
+  background: linear-gradient(180deg, #d94343 0%, #9f202b 100%);
+  color: #fff;
+
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+
+  box-shadow:
+    0 0 0 1px rgba(255, 248, 235, 0.18),
+    0 5px 12px rgba(0, 0, 0, 0.38),
+    0 0 16px rgba(217, 67, 67, 0.35);
+
+  pointer-events: none;
 }
 
 /* reduce noise on touch devices */
@@ -8080,20 +8129,32 @@ body.scrolled .announcement-bar::after {
     background:
       linear-gradient(180deg, rgba(215, 179, 98, 0.1), rgba(215, 179, 98, 0.04));
     color: rgba(245, 224, 173, 0.96);
+
     box-shadow:
       0 10px 24px rgba(0, 0, 0, 0.16),
-      0 0 0 1px rgba(255,255,255,0.015) inset;
+      0 0 0 1px rgba(255, 255, 255, 0.015) inset;
   }
 }
 
 @media (max-width: 768px) {
   .header-journal-btn {
-    min-height: 38px;
+    min-height: 40px;
+    min-width: 58px;
     padding: 8px 12px;
-    gap: 7px;
+
     font-size: 11px;
     letter-spacing: 0.04em;
-    text-transform: none;
+  }
+
+  .journal-unread-badge {
+    top: -5px;
+    right: -5px;
+
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+
+    font-size: 9px;
   }
 }
 

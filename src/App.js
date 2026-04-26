@@ -4487,7 +4487,7 @@ const getSizeWearHint = (size) => {
 
         <button
   type="button"
-  className={`header-private-selection-btn header-journal-btn ${
+  className={`header-journal-btn ${
     journalUnreadCount > 0 ? "has-unread" : ""
   }`}
   onClick={handleJournalOpen}
