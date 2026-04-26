@@ -5369,6 +5369,7 @@ body.scrolled .announcement-bar {
 .modal-overlay {
   position: fixed;
   inset: 0;
+  z-index: 900;
 
   display: block;
   align-items: center;
@@ -11607,20 +11608,4 @@ body.scrolled .announcement-bar {
     border-radius: 999px;
   }
 }
-}
-
-/* =========================================
-   PRODUCT MODAL — ABOVE JOURNAL / ARTICLE
-========================================= */
-
-.product-modal-overlay,
-.product-overlay,
-.product-modal-backdrop {
-  z-index: 700;
-}
-
-.product-modal,
-.product-modal-panel,
-.product-detail-modal {
-  z-index: 701;
 }
