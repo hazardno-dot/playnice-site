@@ -8138,12 +8138,17 @@ body.scrolled .announcement-bar::after {
 
 @media (max-width: 768px) {
   .header-journal-btn {
-    padding-right: 30px;
+    min-height: 40px;
+    min-width: 58px;
+    padding: 8px 12px;
+
+    font-size: 11px;
+    letter-spacing: 0.04em;
   }
 
   .journal-unread-badge {
-    top: 3px;
-    right: 3px;
+    top: -4px;
+    left: -4px;
 
     min-width: 16px;
     height: 16px;
