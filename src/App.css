@@ -10381,21 +10381,13 @@ body.scrolled .announcement-bar {
 /* ---------- journal related products ---------- */
 
 .journal-related-products {
-  margin-top: 34px;
-  padding: 24px 18px 22px;
+  margin-top: 30px;
+  padding: 0;
 
-  border: 1px solid rgba(215, 179, 98, 0.12);
-  border-radius: 18px;
-
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0.018),
-    rgba(255, 255, 255, 0.008)
-  );
-
-  box-shadow:
-    0 14px 30px rgba(0, 0, 0, 0.14),
-    0 0 0 1px rgba(255, 255, 255, 0.018) inset;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 
   text-align: center;
 }
