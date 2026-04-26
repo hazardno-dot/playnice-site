@@ -2872,7 +2872,7 @@ Remember. PlayNice.`,
 {
   id: 8,
   date: "26 Apr",
-  image: "/hero/slide-1-9pm-night-out.jpg",
+  image: "/journal/article8.png",
   title: {
     en: "The bus as destiny",
     sr: "Autobus kao sudbina",
