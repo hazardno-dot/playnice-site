@@ -4208,12 +4208,21 @@ body.scrolled .announcement-bar-inner::before {
 
 @media (max-width: 640px) {
   .product-modal {
-    width: calc(100vw - 16px);
-    max-height: calc(100vh - 16px);
-    border-radius: 24px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
+  width: calc(100vw - 16px);
+  max-height: calc(100vh - 16px);
+  border-radius: 24px;
+
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.product-modal::-webkit-scrollbar {
+  display: none;
+}
 
   .product-modal .close-button {
     top: 16px;
@@ -11675,4 +11684,19 @@ body.scrolled .announcement-bar {
 .product-modal-layer .product-modal {
   position: relative;
   z-index: 10000;
+}
+
+/* =========================================
+   PRODUCT MODAL — HIDE MOBILE SCROLLBAR
+========================================= */
+
+.product-modal-layer,
+.product-modal-layer .product-modal {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.product-modal-layer::-webkit-scrollbar,
+.product-modal-layer .product-modal::-webkit-scrollbar {
+  display: none;
 }
