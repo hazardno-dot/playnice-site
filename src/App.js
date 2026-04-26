@@ -3755,48 +3755,6 @@ const handleJournalFeedbackSubmit = (article) => {
   }, 1200);
 };
 
-const latestJournalArticle = sortedJournalArticles?.[0] || null;
-
-const latestJournalArticleKey = latestJournalArticle?.id
-  ? String(latestJournalArticle.id)
-  : "";
-
-const hasNewJournalArticle =
-  Boolean(latestJournalArticleKey) &&
-  seenLatestJournalKey !== latestJournalArticleKey;
-
-const journalUnreadCount = hasNewJournalArticle ? 1 : 0;
-
-const markLatestJournalAsSeen = () => {
-  if (!latestJournalArticleKey) return;
-
-  try {
-    localStorage.setItem(JOURNAL_SEEN_KEY, latestJournalArticleKey);
-  } catch (error) {
-    console.error("Failed to save seen journal article:", error);
-  }
-
-  setSeenLatestJournalKey(latestJournalArticleKey);
-};
-
-const handleJournalOpen = () => {
-  setJournalOpen(true);
-  setSelectedArticle(null);
-  markLatestJournalAsSeen();
-};
-
-const handleJournalArticleOpen = (article) => {
-  if (!article) return;
-
-  setJournalOpen(true);
-  setSelectedArticle(article);
-  markLatestJournalAsSeen();
-};
-
-const activeJournalFeedback = selectedArticle
-  ? getJournalSavedFeedback(selectedArticle)
-  : null;
-
 /* =========================================
    DERIVED DATA
 ========================================= */
@@ -3817,9 +3775,6 @@ const latestJournalArticle = sortedJournalArticles?.[0] || null;
 const latestJournalArticleKey = latestJournalArticle?.id
   ? String(latestJournalArticle.id)
   : "";
-
-const featuredJournalArticle = latestJournalArticle;
-const otherJournalArticles = sortedJournalArticles.slice(1);
 
 const hasNewJournalArticle =
   Boolean(latestJournalArticleKey) &&
@@ -3931,6 +3886,10 @@ const freeShippingProgress = Math.min(
   100,
   Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
 );
+
+const activeJournalFeedback = selectedArticle
+  ? getJournalSavedFeedback(selectedArticle)
+  : null;
 
 const selectedCopy = selectedProduct
   ? getProductCopy(selectedProduct, lang)
