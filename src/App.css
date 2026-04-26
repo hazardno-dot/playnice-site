@@ -613,7 +613,7 @@ main {
 }
 
 /* =========================================
-   LANGUAGE SWITCH — TEXT CENTER FIX
+   LANGUAGE SWITCH — FINAL CENTER FIX
 ========================================= */
 
 .lang-vertical button {
@@ -627,9 +627,10 @@ main {
   place-items: center;
 
   text-align: center;
-  text-indent: -0.0px;
+  text-indent: 0;
 
   font-family: inherit;
+  letter-spacing: 0.02em;
 }
 
 /* =========================================
