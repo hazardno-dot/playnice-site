@@ -2878,63 +2878,62 @@ Remember. PlayNice.`,
     sr: "Autobus kao sudbina",
   },
   excerpt: {
-    en: "I was supposed to travel by motorcycle. Life had other plans. And somehow… it all worked out.",
+    en: "I was supposed to travel by motorcycle. Life had other plans. Somehow… it all worked out.",
     sr: "Trebao sam da putujem motorom. Život je imao druge planove. I nekako… sve je ispalo kako treba.",
   },
   content: {
-    en: `I was supposed to travel by motorcycle, but the motorcycle decided it didn’t want to be part of this story.
+    en: `The bus as destiny.
 
-The day before the trip something started acting up. Nothing dramatic, but serious enough to know this was not going anywhere good. No philosophy there — the plan falls apart and you look for the next option.
+I was supposed to travel by motorcycle, but the motorcycle decided not to be part of this story.
+The day before the trip something started acting up, nothing serious, but serious enough, and there’s not much philosophy there — the plan falls apart and you look for the next alternative. The bus.
 
-The next option: bus.
+I wasn’t happy about it, but I was stubborn enough to still get somewhere, so I showed up at the station with that face that says “it’ll be fine.”
+Yeah, right..
 
-I wasn’t happy about it, but I was stubborn enough to still go somewhere, so I showed up at the station with that face that says “it’ll be fine.”
+I step inside and everything is clear within three seconds… a day at the zoo in Nairobi would have been calmer and more organized. And probably with better ventilation.
 
-Yeah… sure.
+Anyway, the bus… so beautiful. So colorful.
+Grandmas with bags who clearly have more travel experience than I have life experience, kids with energy like they just drank three liters of juice, people having phone conversations nobody asked to hear, people who say nothing but take up space, and of course, the driver smoking like it’s part of the equipment.
 
-I step inside and within three seconds everything is clear… a day in a zoo in Nairobi would have been calmer and better organized. Probably with better air too.
-
-Anyway, the bus. Beautiful. Colorful.
-
-Grandmas with bags who clearly have more travel experience than I have life experience, kids with energy like they just drank three liters of juice, people having phone calls nobody asked to hear, people who say nothing but somehow take up space, and of course, the driver smoking like it’s part of the equipment.
-
-I sit down, adjust as much as I can and try to accept the situation without overthinking, but the mind does what it does, and at one point I catch myself thinking how nice it would be if a normal, beautiful girl showed up, just so I’d have a reason to stand up, move, do something that looks like proper behavior, carry her bag if needed, feel like I’m part of a normal story for a second.
+I sit down, adjust as much as I can.
+I try to accept the situation without overthinking, but the mind does what it does, and at one point I think how nice it would be if a normal, beautiful girl showed up, just so you have a reason to stand up, move, do something that looks like proper behavior, to at least feel like a normal person in a normal story.
 
 Nothing.
 
-The ride goes the way it goes, everyone in their own world, and at some point I realize I stopped getting annoyed, not because it got better, but because I somehow stepped out of it. I look through the window, thoughts drift, time moves slower than I’d like, but it moves.
+The ride goes the way it goes, people do their thing, everyone in their own world, and at some point you realize you stopped getting annoyed, not because it got better, but because you somehow disconnected from the whole situation. You look out the window, thoughts drift, time moves slower than you’d like, but it moves.
 
-When I finally got off, I was tired and slightly overloaded with people, but not broken, which honestly surprised me, because everything had the potential to go much worse, and then it hit me…
+When I finally got off, I was tired and slightly overloaded with people, but I wasn’t broken, which honestly surprised me, because everything had the potential to go much worse, and then it hit me…
 
-…without even thinking about it, I had been wearing Boss The Scent Elixir the whole time, and it just kept doing its thing, quietly, steadily… and somehow everything felt easier.
+…I had been wearing Boss The Scent Elixir the whole time, without even thinking about it, and it just kept working, and working, and working… because the trip was pretty long and obviously everything felt a lot easier.
 
 And someone said, in the middle of all that chaos:
-“You smell good.”
+“You smell really good.”
 
-That was it.
-
-And yeah, that’s probably the only reason my mental health survived that trip.
+And yeah, that’s probably the only reason my mental health wasn’t permanently damaged by this trip.
 
 And yeah, a few days later I met an interesting girl. Where I arrived.
 
-And yeah… it didn’t turn out that bad after all. 🙂`,
-    sr: `Trebao sam da putujem motorom, ali motor je odlučio da ne učestvuje u ovoj priči.
+And yeah, this didn’t turn out that bad after all. 🙂
 
-Dan pred put počne nešto da zeza, ništa strašno, ali dovoljno ozbiljno, i tu nema puno filozofije — plan se raspadne, a ti tražiš sledeću alternativu.
+—
 
-Sledeća opcija: autobus.
+Charlie
+Remember. PlayNice.`,
+    sr: `Autobus kao sudbina.
+
+Trebao sam da putujem motorom, ali motor je odlučio da ne učestvuje u ovoj priči.
+Dan pred put počne nešto da zeza, ništa strašno, ali dovoljno ozbiljno, i tu nema puno filozofije — plan se raspadne, a ti tražiš sledeću alternativu. Autobus.
 
 Nisam bio srećan zbog toga, ali sam bio uporan da ipak negde stignem, pa sam se pojavio na stanici sa tim izrazom lica koji govori “biće ok”.
-
 Daaaa, kako da ne..
 
 Ulazim unutra i sve mi je jasno već posle tri sekunde… dan u zoološkom vrtu u Najrobiju bi bio mirniji i organizovaniji. I verovatno sa boljom ventilacijom.
 
-Elem, autobus. Predivan. Živopisan.
-
+Elem, autobus.. tako predivan. Živopisan.
 Babe sa kesama koje očigledno imaju više iskustva sa putovanjima nego ja sa životom, deca koja imaju energiju kao da su upravo popila tri litre soka, ljudi koji vode telefonske razgovore koje niko nije tražio da čuje, ljudi koji ćute ali zauzimaju prostor, i naravno, šofer koji dimi kao da mu je to dodatna oprema.
 
-Sednem, namestim se koliko mogu. Pokušam da prihvatim situaciju bez previše razmišljanja, ali glava radi svoje i u jednom trenutku pomislim kako bi bilo lepo da se pojavi neka normalna, lepa devojka, čisto da imaš razlog da ustaneš, da se pomeriš, da uradiš nešto što liči na pristojno ponašanje, da se bar malo osećaš kao čovek u normalnoj priči.
+Sednem, namestim se koliko mogu.
+Pokušam da prihvatim situaciju bez previše razmišljanja, ali glava radi svoje i u jednom trenutku pomislim kako bi bilo lepo da se pojavi neka normalna, lepa devojka, čisto da imaš razlog da ustaneš, da se pomeriš, da uradiš nešto što liči na pristojno ponašanje, da se bar malo osećaš kao čovek u normalnoj priči.
 
 Ništa od toga.
 
@@ -2951,10 +2950,15 @@ I da, to je verovatno jedini razlog što moje mentalno zdravlje nije trajno ošt
 
 I da, par dana kasnije sam upoznao jednu interesantnu devojku. Tamo gde sam stigao.
 
-I da, sve ovo i nije tako loše ispalo. 🙂`,
+I da, sve ovo i nije tako loše ispalo. 🙂
+
+—
+
+Čarli
+Remember. PlayNice.`,
   },
   relatedProducts: ["Boss The Scent Elixir"]
-}
+},
 ];
 
 /* =========================================
