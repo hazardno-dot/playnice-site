@@ -8106,17 +8106,17 @@ body.scrolled .announcement-bar::after {
 
   border-radius: 999px;
 
-  background: linear-gradient(180deg, #d94343 0%, #9f202b 100%);
-  color: #fff;
+  background: linear-gradient(180deg, #63d471 0%, #2faa4a 100%);
+  color: #111;
 
   font-size: 10px;
   font-weight: 800;
   line-height: 1;
 
   box-shadow:
-    0 0 0 1px rgba(255, 248, 235, 0.18),
-    0 5px 12px rgba(0, 0, 0, 0.38),
-    0 0 16px rgba(217, 67, 67, 0.35);
+    0 0 0 1px rgba(255, 248, 235, 0.16),
+    0 5px 12px rgba(0, 0, 0, 0.34),
+    0 0 14px rgba(99, 212, 113, 0.28);
 
   pointer-events: none;
 }
@@ -8146,7 +8146,7 @@ body.scrolled .announcement-bar::after {
     letter-spacing: 0.04em;
   }
 
-  .journal-unread-badge {
+  journal-unread-badge {
     top: -5px;
     right: -5px;
 
