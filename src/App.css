@@ -8349,9 +8349,9 @@ body.scrolled .announcement-bar {
 
   .journal-unread-badge {
     top: 2px;
-    left: 5px;
+    left: 6px;
 
-    min-width: 14px;
+    min-width: 8px;
     height: 8px;
     padding: 0 6px;
 
