@@ -3126,6 +3126,8 @@ const getInitialView = () => {
   return ["home", "shop", "journal"].includes(urlView) ? urlView : "home";
 };
 
+const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
+
 /* =========================================
    APP
 ========================================= */
@@ -3178,6 +3180,14 @@ function App() {
   const [hasUserPickedSize, setHasUserPickedSize] = useState(false);
   const [journalOpen, setJournalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
+
+  const [seenLatestJournalKey, setSeenLatestJournalKey] = useState(() => {
+  try {
+    return localStorage.getItem(JOURNAL_SEEN_KEY) || "";
+  } catch {
+    return "";
+  }
+});
 
   const [journalFeedback, setJournalFeedback] = useState({});
   const [journalFeedbackSubmitted, setJournalFeedbackSubmitted] = useState(false);
@@ -3743,6 +3753,40 @@ const handleJournalFeedbackSubmit = (article) => {
   setTimeout(() => {
     setJournalFeedbackSuccess(false);
   }, 1200);
+};
+
+const latestJournalArticle = journalArticles?.[0] || null;
+
+const latestJournalArticleKey = latestJournalArticle
+  ? getJournalArticleKey(latestJournalArticle)
+  : "";
+
+const hasNewJournalArticle =
+  Boolean(latestJournalArticleKey) &&
+  seenLatestJournalKey !== latestJournalArticleKey;
+
+const journalUnreadCount = hasNewJournalArticle ? 1 : 0;
+
+const markLatestJournalAsSeen = () => {
+  if (!latestJournalArticleKey) return;
+
+  try {
+    localStorage.setItem(JOURNAL_SEEN_KEY, latestJournalArticleKey);
+  } catch {}
+
+  setSeenLatestJournalKey(latestJournalArticleKey);
+};
+
+const handleJournalOpen = () => {
+  setJournalOpen(true);
+  markLatestJournalAsSeen();
+};
+
+const handleJournalArticleOpen = (article) => {
+  if (!article) return;
+
+  setSelectedArticle(article);
+  markLatestJournalAsSeen();
 };
 
 const activeJournalFeedback = selectedArticle
@@ -5950,8 +5994,8 @@ const getSizeWearHint = (size) => {
 
         {journalArticles?.[0] && (
   <article
-    className="journal-featured journal-featured--split"
-    onClick={() => setSelectedArticle(journalArticles[0])}
+  className="journal-featured journal-featured--split"
+  onClick={() => handleJournalArticleOpen(journalArticles[0])}
   >
     <div className="journal-featured-copy">
       <div className="journal-featured-meta">
@@ -5999,9 +6043,9 @@ const getSizeWearHint = (size) => {
   <div className="journal-grid">
     {journalArticles.slice(1).map((article) => (
       <article
-        key={article.id}
-        className="journal-card"
-        onClick={() => setSelectedArticle(article)}
+  key={article.id}
+  className="journal-card"
+  onClick={() => handleJournalArticleOpen(article)}
       >
         {article.image && (
           <div className="journal-card-media">
