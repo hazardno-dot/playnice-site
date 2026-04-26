@@ -356,13 +356,13 @@ main {
 }
 
 /* =========================================
-   HEADER — BRAND / WORDMARK
+   HEADER — BRAND / WORDMARK CLEAN
 ========================================= */
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  justify-content: flex-start;
 
   min-width: 0;
   padding: 0;
@@ -380,37 +380,6 @@ main {
   box-shadow: none;
 }
 
-.brand-mark {
-  width: 44px;
-  height: 44px;
-  flex: 0 0 44px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.34);
-
-  background:
-    radial-gradient(circle at 50% 38%, rgba(220, 181, 107, 0.22), transparent 58%),
-    linear-gradient(180deg, rgba(18, 18, 18, 0.84), rgba(6, 6, 6, 0.94));
-
-  color: rgba(245, 209, 128, 0.96);
-  font-size: 15px;
-  line-height: 1;
-
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.025) inset,
-    0 10px 24px rgba(0, 0, 0, 0.26),
-    0 0 18px rgba(220, 181, 107, 0.08);
-
-  transition:
-    transform 0.24s ease,
-    border-color 0.24s ease,
-    box-shadow 0.24s ease;
-}
-
 .brand-copy {
   display: flex;
   flex-direction: column;
@@ -425,33 +394,23 @@ main {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: 31px;
   font-weight: 700;
-  line-height: 0.9;
-  letter-spacing: 0.015em;
+  line-height: 0.92;
+  letter-spacing: 0.02em;
 
-  color: transparent;
-
-  background:
-    linear-gradient(
-      180deg,
-      #fff7de 0%,
-      #f0d18a 42%,
-      #b98534 100%
-    );
-
-  -webkit-background-clip: text;
-  background-clip: text;
+  color: #e7c57b;
 
   text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.08),
-    0 10px 26px rgba(220, 181, 107, 0.1);
+    0 1px 0 rgba(255, 255, 255, 0.04),
+    0 8px 18px rgba(220, 181, 107, 0.08);
 
   transition:
-    filter 0.24s ease,
-    transform 0.24s ease;
+    color 0.24s ease,
+    transform 0.24s ease,
+    text-shadow 0.24s ease;
 }
 
 .brand-copy small {
-  margin-top: 7px;
+  margin-top: 6px;
 
   font-size: 10px;
   font-weight: 700;
@@ -460,21 +419,19 @@ main {
   text-transform: uppercase;
 
   color: rgba(255, 248, 235, 0.46);
-}
 
-.brand:hover .brand-mark {
-  transform: translateY(-1px);
-
-  border-color: rgba(220, 181, 107, 0.48);
-
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
-    0 12px 28px rgba(0, 0, 0, 0.3),
-    0 0 22px rgba(220, 181, 107, 0.13);
+  transition: color 0.24s ease;
 }
 
 .brand:hover .brand-copy strong {
-  filter: brightness(1.08);
+  color: #f0d38f;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05),
+    0 10px 22px rgba(220, 181, 107, 0.12);
+}
+
+.brand:hover .brand-copy small {
+  color: rgba(255, 248, 235, 0.6);
 }
 
 /* ========================================
@@ -4794,12 +4751,12 @@ body.scrolled .announcement-bar-inner::before {
   }
 
   .brand-copy strong {
-    font-size: 23px;
-    line-height: 0.92;
+    font-size: 24px;
+    line-height: 0.94;
   }
 
   .brand-copy small {
-    margin-top: 5px;
+    margin-top: 4px;
     font-size: 7px;
     letter-spacing: 0.18em;
   }
@@ -5115,7 +5072,7 @@ body.scrolled .announcement-bar {
     border-radius: 16px;
   }
 
- .brand-copy small {
+  .brand-copy small {
     display: none;
   }
 
