@@ -3788,6 +3788,7 @@ const handleJournalOpen = () => {
 const handleJournalArticleOpen = (article) => {
   if (!article) return;
 
+  setJournalOpen(true);
   setSelectedArticle(article);
   markLatestJournalAsSeen();
 };
