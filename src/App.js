@@ -6118,9 +6118,9 @@ const getSizeWearHint = (size) => {
   </article>
 )}
 
-      {journalArticles.length > 1 && (
+      {sortedJournalArticles.length > 1 && (
   <div className="journal-grid">
-    {journalArticles.slice(1).map((article) => (
+    {sortedJournalArticles.slice(1).map((article) => (
       <article
   key={article.id}
   className="journal-card"
