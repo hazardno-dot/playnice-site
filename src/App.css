@@ -8359,6 +8359,10 @@ body.scrolled .announcement-bar {
     letter-spacing: 0.05em;
   }
 
+  /* =========================================
+   JOURNAL NEW STATE — MOBILE TEXT VERSION
+========================================= */
+
   .header-journal-btn.has-unread .journal-unread-badge {
     display: none;
   }
