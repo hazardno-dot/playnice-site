@@ -8292,9 +8292,10 @@ body.scrolled .announcement-bar {
 /* unread badge */
 .journal-unread-badge {
   position: absolute;
-  top: 5px;
-  right: 7px;
-  z-index: 5;
+  top: -6px;
+  left: -8px;
+  right: auto;
+  z-index: 6;
 
   min-width: 30px;
   height: 16px;
@@ -8305,7 +8306,6 @@ body.scrolled .announcement-bar {
   justify-content: center;
 
   border-radius: 999px;
-
   background: linear-gradient(180deg, #63d471 0%, #2faa4a 100%);
   color: #090909;
 
