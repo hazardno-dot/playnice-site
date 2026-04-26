@@ -2890,7 +2890,7 @@ The day before the trip something started acting up, nothing serious, but seriou
 I wasn’t happy about it, but I was stubborn enough to still get somewhere, so I showed up at the station with that face that says “it’ll be fine.”
 Yeah, right..
 
-I step inside and everything is clear within three seconds… a day at the zoo in Nairobi would have been calmer and more organized. And probably with better ventilation.
+I step inside and everything is clear within three seconds… a day at the Nairobi National Park would have been calmer and more organized. And probably with better ventilation.
 
 Anyway, the bus… so beautiful. So colorful.
 Grandmas with bags who clearly have more travel experience than I have life experience, kids with energy like they just drank three liters of juice, people having phone conversations nobody asked to hear, people who say nothing but take up space, and of course, the driver smoking like it’s part of the equipment.
@@ -2925,7 +2925,7 @@ Dan pred put počne nešto da zeza, ništa strašno, ali dovoljno ozbiljno, i tu
 Nisam bio srećan zbog toga, ali sam bio uporan da ipak negde stignem, pa sam se pojavio na stanici sa tim izrazom lica koji govori “biće ok”.
 Daaaa, kako da ne..
 
-Ulazim unutra i sve mi je jasno već posle tri sekunde… dan u zoološkom vrtu u Najrobiju bi bio mirniji i organizovaniji. I verovatno sa boljom ventilacijom.
+Ulazim unutra i sve mi je jasno već posle tri sekunde… dan u Nacionalnom parku Najrobi bi bio mirniji i organizovaniji. I verovatno sa boljom ventilacijom.
 
 Elem, autobus.. tako predivan. Živopisan.
 Babe sa kesama koje očigledno imaju više iskustva sa putovanjima nego ja sa životom, deca koja imaju energiju kao da su upravo popila tri litre soka, ljudi koji vode telefonske razgovore koje niko nije tražio da čuje, ljudi koji ćute ali zauzimaju prostor, i naravno, šofer koji dimi kao da mu je to dodatna oprema.
