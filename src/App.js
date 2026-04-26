@@ -6344,7 +6344,9 @@ const getSizeWearHint = (size) => {
 
       {selectedProduct && (
   <div
-    className={`modal-overlay ${productModalVisible ? "show" : ""}`}
+    className={`modal-overlay product-modal-layer ${
+      productModalVisible ? "show" : ""
+    }`}
     onClick={closeProductModal}
   >
     <div
