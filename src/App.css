@@ -8348,8 +8348,8 @@ body.scrolled .announcement-bar {
   }
 
   .journal-unread-badge {
-    top: -5px;
-    left: -6px;
+    top: -1px;
+    left: -1px;
 
     min-width: 20px;
     height: 10px;
