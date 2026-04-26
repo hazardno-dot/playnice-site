@@ -961,6 +961,17 @@ body.scrolled .announcement-bar-inner::before {
   }
 }
 
+/* animation */
+@keyframes scrollAnnouncements {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 /* =========================================
    BUTTONS / UI
 ========================================= */
