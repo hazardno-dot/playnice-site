@@ -5082,12 +5082,29 @@ body.scrolled .announcement-bar {
     border-radius: 16px;
   }
 
-  .brand-copy small {
-    display: none;
+  .brand-copy {
+    align-items: flex-start;
+    overflow: visible;
   }
 
   .brand-copy strong {
-    font-size: 25px;
+    font-size: 34px;
+    line-height: 0.92;
+    letter-spacing: 0.018em;
+  }
+
+  .brand-copy small {
+    display: block;
+    margin-top: 8px;
+
+    font-size: 8.5px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    color: rgba(255, 248, 235, 0.48);
   }
 
   .topbar-right {
