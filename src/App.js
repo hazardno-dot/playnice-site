@@ -3757,8 +3757,8 @@ const handleJournalFeedbackSubmit = (article) => {
 
 const latestJournalArticle = journalArticles?.[0] || null;
 
-const latestJournalArticleKey = latestJournalArticle?.id
-  ? String(latestJournalArticle.id)
+const latestJournalArticleKey = latestJournalArticle
+  ? getJournalArticleKey(latestJournalArticle)
   : "";
 
 const hasNewJournalArticle =
@@ -3772,16 +3772,13 @@ const markLatestJournalAsSeen = () => {
 
   try {
     localStorage.setItem(JOURNAL_SEEN_KEY, latestJournalArticleKey);
-  } catch (error) {
-    console.error("Failed to save seen journal article:", error);
-  }
+  } catch {}
 
   setSeenLatestJournalKey(latestJournalArticleKey);
 };
 
 const handleJournalOpen = () => {
   setJournalOpen(true);
-  setSelectedArticle(null);
   markLatestJournalAsSeen();
 };
 
