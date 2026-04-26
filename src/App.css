@@ -961,50 +961,6 @@ body.scrolled .announcement-bar-inner::before {
   }
 }
 
-/* mobile polish */
-@media (max-width: 768px) {
-  .announcement-bar {
-    width: calc(100% - 24px);
-    border-radius: 13px;
-  }
-
-  .announcement-track {
-    gap: 34px;
-    padding: 8px 14px 7px;
-    animation-duration: 22s;
-  }
-
-  .announcement-text,
-  .announcement-action {
-    font-size: 10.5px;
-    letter-spacing: 0.095em;
-  }
-
-  .announcement-icon {
-    font-size: 12px;
-  }
-
-  .announcement-progress-shell {
-    padding: 0 14px 7px;
-  }
-
-  .announcement-bar::before,
-  .announcement-bar::after {
-    width: 44px;
-  }
-}
-
-/* animation */
-@keyframes scrollAnnouncements {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
 /* =========================================
    BUTTONS / UI
 ========================================= */
@@ -4890,47 +4846,59 @@ body.scrolled .announcement-bar-inner::before {
     text-overflow: clip;
   }
 
-  .announcement-bar {
+.announcement-bar {
   top: var(--announcement-top-mobile);
   left: 50%;
   right: auto;
   transform: translateX(-50%);
+
   width: min(calc(100% - 32px), var(--max));
   max-width: var(--max);
+
   z-index: 190;
+
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  transition: box-shadow 0.35s ease;
+
+  transition:
+    box-shadow 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease;
 }
 
-  body.scrolled .announcement-bar {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  }
+.announcement-bar:hover {
+  transform: translateX(-50%);
+}
 
-  .announcement-track {
-    gap: 24px;
-    padding: 8px 12px 7px;
-    animation-duration: 20s;
-  }
+body.scrolled .announcement-bar {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
 
-  .announcement-track span {
-    font-size: 11px;
-    letter-spacing: 0.08em;
-  }
+.announcement-track {
+  gap: 24px;
+  padding: 8px 12px 7px;
+  animation-duration: 20s;
+}
 
-  .announcement-icon {
-    font-size: 12px;
-  }
+.announcement-text,
+.announcement-action {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
 
-  .announcement-bar::before,
-  .announcement-bar::after {
-    width: 24px;
-  }
+.announcement-icon {
+  font-size: 12px;
+}
 
-  .announcement-progress-shell {
-    padding: 0 10px 8px;
-  }
+.announcement-bar::before,
+.announcement-bar::after {
+  width: 24px;
+}
+
+.announcement-progress-shell {
+  padding: 0 10px 8px;
+}
 
 .hero {
   width: min(calc(100% - 32px), var(--max));
@@ -5134,8 +5102,40 @@ body.scrolled .announcement-bar-inner::before {
   left: 50%;
   right: auto;
   transform: translateX(-50%);
-  width: min(calc(100% - 32px), var(--max));
+
+  width: min(calc(100% - 24px), var(--max));
   max-width: var(--max);
+
+  border-radius: 13px;
+}
+
+.announcement-bar:hover {
+  transform: translateX(-50%);
+}
+
+.announcement-track {
+  gap: 22px;
+  padding: 7px 11px 7px;
+  animation-duration: 18s;
+}
+
+.announcement-text,
+.announcement-action {
+  font-size: 10px;
+  letter-spacing: 0.075em;
+}
+
+.announcement-icon {
+  font-size: 11px;
+}
+
+.announcement-bar::before,
+.announcement-bar::after {
+  width: 20px;
+}
+
+.announcement-progress-shell {
+  padding: 0 9px 7px;
 }
 
   .hero {
