@@ -8150,8 +8150,8 @@ body.scrolled .announcement-bar::after {
     top: 4px;
     left: 4px;
 
-    min-width: 10px;
-    height: 10px;
+    min-width: 9px;
+    height: 9px;
     padding: 0 4px;
 
     font-size: 6px;
