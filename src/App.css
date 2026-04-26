@@ -8092,8 +8092,8 @@ body.scrolled .announcement-bar::after {
 /* unread badge */
 .journal-unread-badge {
   position: absolute;
-  top: -6px;
-  right: -7px;
+  top: -5px;
+  left: -5px;
   z-index: 3;
 
   min-width: 18px;
@@ -8144,8 +8144,8 @@ body.scrolled .announcement-bar::after {
   }
 
   .journal-unread-badge {
-    top: 3px;
-    right: 3px;
+    top: -4px;
+    left: -4px;
 
     min-width: 16px;
     height: 16px;
