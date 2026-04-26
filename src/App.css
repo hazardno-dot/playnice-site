@@ -11608,3 +11608,19 @@ body.scrolled .announcement-bar {
   }
 }
 }
+
+/* =========================================
+   PRODUCT MODAL — ABOVE JOURNAL / ARTICLE
+========================================= */
+
+.product-modal-overlay,
+.product-overlay,
+.product-modal-backdrop {
+  z-index: 700;
+}
+
+.product-modal,
+.product-modal-panel,
+.product-detail-modal {
+  z-index: 701;
+}
