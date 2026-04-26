@@ -8351,11 +8351,11 @@ body.scrolled .announcement-bar {
     top: -5px;
     left: -6px;
 
-    min-width: 28px;
-    height: 15px;
+    min-width: 20px;
+    height: 10px;
     padding: 0 6px;
 
-    font-size: 7.5px;
+    font-size: 5px;
     letter-spacing: 0.05em;
   }
 }
