@@ -6310,33 +6310,29 @@ const getSizeWearHint = (size) => {
         </div>
 
         {getRelatedJournalProducts(selectedArticle).length > 0 && (
-          <div className="journal-related-products">
-            <div className="journal-related-kicker">
-              {lang === "sr"
-                ? "Mirisi iz ove priče"
-                : "Featured in this story"}
-            </div>
+  <div className="journal-related-products">
+    <div className="journal-related-kicker">
+      {lang === "sr"
+        ? "Mirisi iz ove priče"
+        : "Featured in this story"}
+    </div>
 
-            <div className="journal-related-grid">
-              {getRelatedJournalProducts(selectedArticle).map((product) => (
-                <button
-                  key={product.id}
-                  type="button"
-                  className="journal-related-card"
-                  onClick={() => {
-                    openProductModal(product);
-                  }}
-                >
-                  <div className="journal-related-name">{product.name}</div>
-
-                  <div className="journal-related-link">
-                    {lang === "sr" ? "Pogledaj miris" : "View fragrance"}
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+    <div className="journal-related-links">
+      {getRelatedJournalProducts(selectedArticle).map((product) => (
+        <button
+          key={product.id}
+          type="button"
+          className="journal-related-text-link"
+          onClick={() => {
+            openProductModal(product);
+          }}
+        >
+          {product.name}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
       </div>
     </div>
   </div>
