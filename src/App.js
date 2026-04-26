@@ -2910,7 +2910,9 @@ And someone said, in the middle of all that chaos:
 “You smell really good.”
 
 And yeah, that’s probably the only reason my mental health wasn’t permanently damaged by this trip.
+
 And yeah, a few days later I met an interesting girl. Where I arrived.
+
 And yeah, this didn’t turn out that bad after all. 🙂
 
 —
@@ -2945,15 +2947,17 @@ I neko reče, u svom onom haosu:
 “Baš lepo miriše.”
 
 I da, to je verovatno jedini razlog što moje mentalno zdravlje nije trajno oštećeno ovim putovanjem.
+
 I da, par dana kasnije sam upoznao jednu interesantnu devojku. Tamo gde sam stigao.
-I da, sve ovo i nije tako loše ispalo. 🙂
+
+I da, sve ovo i nije ispalo tako loše. 🙂
 
 —
 
 Čarli
 Remember. PlayNice.`,
   },
-  relatedProducts: ["Boss The Scent Elixir"]
+  relatedProducts: ["BOSS The Scent Elixir Parfum Intense for Him"]
 },
 ];
 
