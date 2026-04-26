@@ -8348,11 +8348,11 @@ body.scrolled .announcement-bar {
   }
 
   .journal-unread-badge {
-    top: 3px;
+    top: 2px;
     left: 5px;
 
     min-width: 14px;
-    height: 10px;
+    height: 8px;
     padding: 0 6px;
 
     font-size: 5px;
