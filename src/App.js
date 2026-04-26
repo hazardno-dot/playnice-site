@@ -3755,16 +3755,11 @@ const handleJournalFeedbackSubmit = (article) => {
   }, 1200);
 };
 
-const latestJournalArticle = useMemo(() => {
-  if (!journalArticles?.length) return null;
+const latestJournalArticle = sortedJournalArticles?.[0] || null;
 
-  return journalArticles.reduce((latest, article) => {
-    const latestId = Number(latest?.id || 0);
-    const articleId = Number(article?.id || 0);
-
-    return articleId > latestId ? article : latest;
-  }, journalArticles[0]);
-}, [journalArticles]);
+const latestJournalArticleKey = latestJournalArticle?.id
+  ? String(latestJournalArticle.id)
+  : "";
 
 const latestJournalArticleKey = latestJournalArticle?.id
   ? String(latestJournalArticle.id)
@@ -3808,6 +3803,17 @@ const activeJournalFeedback = selectedArticle
   /* =========================================
    DERIVED DATA
 ========================================= */
+const sortedJournalArticles = useMemo(() => {
+  if (!journalArticles?.length) return [];
+
+  return [...journalArticles].sort((a, b) => {
+    const aId = Number(a?.id || 0);
+    const bId = Number(b?.id || 0);
+
+    return bId - aId;
+  });
+}, [journalArticles]);
+
 const announcementItems = useMemo(() => {
   const latestJournalTitle = latestJournalArticle
     ? getJournalText(latestJournalArticle.title, lang)
@@ -6065,18 +6071,18 @@ const getSizeWearHint = (size) => {
 
       <div className="journal-body-scroll">
 
-        {journalArticles?.[0] && (
+        {sortedJournalArticles?.[0] && (
   <article
-  className="journal-featured journal-featured--split"
-  onClick={() => handleJournalArticleOpen(journalArticles[0])}
+    className="journal-featured journal-featured--split"
+    onClick={() => handleJournalArticleOpen(sortedJournalArticles[0])}
   >
     <div className="journal-featured-copy">
       <div className="journal-featured-meta">
-        <span>{journalArticles[0].date}</span>
+        <span>{sortedJournalArticles[0].date}</span>
         <span>{tr.journalReadingTime}</span>
       </div>
 
-      <h2>{getJournalText(journalArticles[0].title, lang)}</h2>
+      <h2>{getJournalText(sortedJournalArticles[0].title, lang)}</h2>
 
       <div className="journal-author-signature">
         <div className="journal-author-avatar">
@@ -6093,18 +6099,18 @@ const getSizeWearHint = (size) => {
         </div>
       </div>
 
-      <p>{getJournalText(journalArticles[0].excerpt, lang)}</p>
+      <p>{getJournalText(sortedJournalArticles[0].excerpt, lang)}</p>
 
       <div className="journal-featured-link">
         {tr.journalReadArticle}
       </div>
     </div>
 
-    {journalArticles[0].image && (
+    {sortedJournalArticles[0].image && (
       <div className="journal-featured-image-wrap">
         <img
-          src={journalArticles[0].image}
-          alt={getJournalText(journalArticles[0].title, lang)}
+          src={sortedJournalArticles[0].image}
+          alt={getJournalText(sortedJournalArticles[0].title, lang)}
           className="journal-featured-image"
         />
       </div>
