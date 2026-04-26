@@ -2868,6 +2868,93 @@ Remember. PlayNice.`,
   },
   relatedProducts: []
 }
+
+{
+  id: 8,
+  date: "26 Apr",
+  image: "/hero/slide-1-9pm-night-out.jpg",
+  title: {
+    en: "The bus as destiny",
+    sr: "Autobus kao sudbina",
+  },
+  excerpt: {
+    en: "I was supposed to travel by motorcycle. Life had other plans. And somehow… it all worked out.",
+    sr: "Trebao sam da putujem motorom. Život je imao druge planove. I nekako… sve je ispalo kako treba.",
+  },
+  content: {
+    en: `I was supposed to travel by motorcycle, but the motorcycle decided it didn’t want to be part of this story.
+
+The day before the trip something started acting up. Nothing dramatic, but serious enough to know this was not going anywhere good. No philosophy there — the plan falls apart and you look for the next option.
+
+The next option: bus.
+
+I wasn’t happy about it, but I was stubborn enough to still go somewhere, so I showed up at the station with that face that says “it’ll be fine.”
+
+Yeah… sure.
+
+I step inside and within three seconds everything is clear… a day in a zoo in Nairobi would have been calmer and better organized. Probably with better air too.
+
+Anyway, the bus. Beautiful. Colorful.
+
+Grandmas with bags who clearly have more travel experience than I have life experience, kids with energy like they just drank three liters of juice, people having phone calls nobody asked to hear, people who say nothing but somehow take up space, and of course, the driver smoking like it’s part of the equipment.
+
+I sit down, adjust as much as I can and try to accept the situation without overthinking, but the mind does what it does, and at one point I catch myself thinking how nice it would be if a normal, beautiful girl showed up, just so I’d have a reason to stand up, move, do something that looks like proper behavior, carry her bag if needed, feel like I’m part of a normal story for a second.
+
+Nothing.
+
+The ride goes the way it goes, everyone in their own world, and at some point I realize I stopped getting annoyed, not because it got better, but because I somehow stepped out of it. I look through the window, thoughts drift, time moves slower than I’d like, but it moves.
+
+When I finally got off, I was tired and slightly overloaded with people, but not broken, which honestly surprised me, because everything had the potential to go much worse, and then it hit me…
+
+…without even thinking about it, I had been wearing Boss The Scent Elixir the whole time, and it just kept doing its thing, quietly, steadily… and somehow everything felt easier.
+
+And someone said, in the middle of all that chaos:
+“You smell good.”
+
+That was it.
+
+And yeah, that’s probably the only reason my mental health survived that trip.
+
+And yeah, a few days later I met an interesting girl. Where I arrived.
+
+And yeah… it didn’t turn out that bad after all. 🙂`,
+    sr: `Trebao sam da putujem motorom, ali motor je odlučio da ne učestvuje u ovoj priči.
+
+Dan pred put počne nešto da zeza, ništa strašno, ali dovoljno ozbiljno, i tu nema puno filozofije — plan se raspadne, a ti tražiš sledeću alternativu.
+
+Sledeća opcija: autobus.
+
+Nisam bio srećan zbog toga, ali sam bio uporan da ipak negde stignem, pa sam se pojavio na stanici sa tim izrazom lica koji govori “biće ok”.
+
+Daaaa, kako da ne..
+
+Ulazim unutra i sve mi je jasno već posle tri sekunde… dan u zoološkom vrtu u Najrobiju bi bio mirniji i organizovaniji. I verovatno sa boljom ventilacijom.
+
+Elem, autobus. Predivan. Živopisan.
+
+Babe sa kesama koje očigledno imaju više iskustva sa putovanjima nego ja sa životom, deca koja imaju energiju kao da su upravo popila tri litre soka, ljudi koji vode telefonske razgovore koje niko nije tražio da čuje, ljudi koji ćute ali zauzimaju prostor, i naravno, šofer koji dimi kao da mu je to dodatna oprema.
+
+Sednem, namestim se koliko mogu. Pokušam da prihvatim situaciju bez previše razmišljanja, ali glava radi svoje i u jednom trenutku pomislim kako bi bilo lepo da se pojavi neka normalna, lepa devojka, čisto da imaš razlog da ustaneš, da se pomeriš, da uradiš nešto što liči na pristojno ponašanje, da se bar malo osećaš kao čovek u normalnoj priči.
+
+Ništa od toga.
+
+Put ide kako ide, ljudi rade svoje, svako u svom filmu, i u nekom trenutku shvatiš da si prestao da se nerviraš, ne zato što je postalo bolje, nego zato što si se nekako isključio iz cele te situacije. Gledaš kroz prozor, misli lutaju, vreme prolazi sporije nego što bi želeo, ali ipak prolazi.
+
+Kad sam konačno sišao, bio sam umoran i pomalo zasićen ljudima, ali nisam bio slomljen, što je iskreno bilo malo iznenađenje, jer je sve imalo potencijal da ode mnogo gore, i onda ukapiram…
+
+…čitavo sam vreme, i ne razmišljajući o tome, nosio Boss The Scent Elixir, koji je radio, i radio, i radio… jer put je prilično dugačak i očigledno je sve bilo mnogo lakše.
+
+I neko reče, u svom onom haosu:
+“Baš lepo miriše.”
+
+I da, to je verovatno jedini razlog što moje mentalno zdravlje nije trajno oštećeno ovim putovanjem.
+
+I da, par dana kasnije sam upoznao jednu interesantnu devojku. Tamo gde sam stigao.
+
+I da, sve ovo i nije tako loše ispalo. 🙂`,
+  },
+  relatedProducts: ["Boss The Scent Elixir"]
+}
 ];
 
 /* =========================================
