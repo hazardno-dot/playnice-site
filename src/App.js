@@ -2066,8 +2066,8 @@ const productCopy = {
   whyChoose: {
     sr: "Ako želiš svež, ali drugačiji miris sa karakterom.",
     en: "If you want a fresh scent with a unique twist."
-  },
-}
+  }
+},
 
 "Dolce & Gabbana The One for Men Eau de Toilette": {
   miniTag: { sr: "🖤 Elegant / Date Night", en: "🖤 Elegant / Date Night" },
