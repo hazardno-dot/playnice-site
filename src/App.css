@@ -2218,6 +2218,7 @@ body.scrolled .announcement-bar-inner::before {
 /* =========================================
    SHOP TOOLBAR — PREMIUM V2
 ========================================= */
+
 .shop-toolbar {
   display: grid;
   grid-template-columns: minmax(280px, 1.4fr) minmax(180px, 0.75fr);
@@ -2236,27 +2237,35 @@ body.scrolled .announcement-bar-inner::before {
 .toolbar-group label {
   margin: 0;
   padding-left: 2px;
+
   font-family: "Inter", sans-serif;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+
   color: rgba(255, 248, 235, 0.56);
 }
 
-/* search + select controls */
-.shop-toolbar input,
-.shop-toolbar select,
-.category-select {
+/* =========================================
+   SEARCH INPUT
+========================================= */
+
+.shop-toolbar input {
   width: 100%;
   height: 52px;
   padding: 0 16px;
+
   border-radius: 16px;
   border: 1px solid rgba(220, 181, 107, 0.16);
   outline: none;
 
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.018)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.018)
+    ),
     rgba(10, 10, 10, 0.92);
 
   color: rgba(255, 248, 235, 0.94);
@@ -2281,205 +2290,40 @@ body.scrolled .announcement-bar-inner::before {
   letter-spacing: 0.01em;
 }
 
-.shop-toolbar input:hover,
-.shop-toolbar select:hover,
-.category-select:hover {
+.shop-toolbar input:hover {
   border-color: rgba(220, 181, 107, 0.3);
+
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
     0 12px 30px rgba(0, 0, 0, 0.26);
 }
 
-.shop-toolbar input:focus,
-.shop-toolbar select:focus,
-.category-select:focus {
+.shop-toolbar input:focus {
   border-color: rgba(220, 181, 107, 0.55);
+
   box-shadow:
     0 0 0 3px rgba(220, 181, 107, 0.08),
     0 14px 34px rgba(0, 0, 0, 0.28);
+
   transform: translateY(-1px);
-}
-
-/* custom arrow for select */
-.shop-toolbar select,
-.category-select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  padding-right: 44px;
-
-  background-image:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.018)),
-    linear-gradient(45deg, transparent 50%, rgba(220, 181, 107, 0.88) 50%),
-    linear-gradient(135deg, rgba(220, 181, 107, 0.88) 50%, transparent 50%);
-  background-repeat: no-repeat;
-  background-position:
-    0 0,
-    calc(100% - 20px) 50%,
-    calc(100% - 14px) 50%;
-  background-size:
-    100% 100%,
-    6px 6px,
-    6px 6px;
-}
-
-.shop-toolbar select option,
-.category-select option {
-  background: #111;
-  color: rgba(255, 248, 235, 0.96);
-}
-
-/* second row layout */
-.toolbar-group-season,
-.toolbar-group-sort {
-  grid-column: span 1;
-}
-
-/* shared pills system */
-.season-pills,
-.sort-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  width: 100%;
-  min-height: 52px;
-  padding: 2px 0 0;
-  align-items: center;
-}
-
-.season-pill,
-.sort-pill {
-  min-height: 40px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.18);
-
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
-    rgba(12, 12, 12, 0.92);
-
-  color: rgba(255, 248, 235, 0.68);
-  font-family: "Inter", sans-serif;
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  line-height: 1;
-  white-space: nowrap;
-  cursor: pointer;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.025),
-    0 8px 18px rgba(0, 0, 0, 0.16);
-
-  transition:
-    border-color 0.22s ease,
-    color 0.22s ease,
-    background 0.22s ease,
-    box-shadow 0.22s ease,
-    transform 0.22s ease;
-}
-
-.season-pill:hover,
-.sort-pill:hover {
-  border-color: rgba(220, 181, 107, 0.36);
-  color: rgba(255, 248, 235, 0.92);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.035),
-    0 10px 22px rgba(0, 0, 0, 0.22);
-  transform: translateY(-1px);
-}
-
-.season-pill.active,
-.sort-pill.active {
-  border-color: rgba(220, 181, 107, 0.58);
-  background:
-    linear-gradient(135deg, rgba(220, 181, 107, 0.2), rgba(220, 181, 107, 0.08)),
-    rgba(18, 18, 18, 0.96);
-  color: #f6e7c1;
-  box-shadow:
-    0 0 0 1px rgba(220, 181, 107, 0.22),
-    0 8px 24px rgba(220, 181, 107, 0.1);
-}
-
-.season-pill:focus-visible,
-.sort-pill:focus-visible {
-  outline: none;
-  border-color: rgba(220, 181, 107, 0.55);
-  box-shadow:
-    0 0 0 3px rgba(220, 181, 107, 0.08),
-    0 10px 24px rgba(0, 0, 0, 0.22);
-}
-
-/* =========================================
-   TABLET
-========================================= */
-@media (max-width: 980px) {
-  .shop-toolbar {
-    grid-template-columns: 1fr 1fr;
-    gap: 14px 12px;
-  }
-
-  .season-pills,
-  .sort-pills {
-    min-height: auto;
-  }
-}
-
-/* =========================================
-   MOBILE
-========================================= */
-@media (max-width: 640px) {
-  .shop-toolbar {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin: 18px 0 22px;
-  }
-
-  .toolbar-group {
-    gap: 7px;
-  }
-
-  .toolbar-group label {
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-  }
-
-  .shop-toolbar input,
-  .shop-toolbar select,
-  .category-select {
-    height: 48px;
-    padding: 0 14px;
-    border-radius: 14px;
-    font-size: 0.92rem;
-  }
-
-  .season-pills,
-  .sort-pills {
-    gap: 7px;
-    padding-top: 0;
-  }
-
-  .season-pill,
-  .sort-pill {
-    min-height: 36px;
-    padding: 7px 12px;
-    font-size: 0.7rem;
-    letter-spacing: 0.04em;
-  }
 }
 
 /* =========================================
    PREMIUM CATEGORY SELECT — PLAYNICE
 ========================================= */
 
-.premium-category-select {
+.toolbar-group-category {
   position: relative;
-  width: 100%;
-  z-index: 25;
 }
 
 .toolbar-group-category:has(.premium-category-select.open) {
   z-index: 80;
+}
+
+.premium-category-select {
+  position: relative;
+  width: 100%;
+  z-index: 25;
 }
 
 .premium-category-trigger {
@@ -2498,8 +2342,16 @@ body.scrolled .announcement-bar-inner::before {
   outline: none;
 
   background:
-    radial-gradient(circle at 92% 48%, rgba(220, 181, 107, 0.13), transparent 32%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.052), rgba(255, 255, 255, 0.018)),
+    radial-gradient(
+      circle at 92% 48%,
+      rgba(220, 181, 107, 0.13),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.052),
+      rgba(255, 255, 255, 0.018)
+    ),
     rgba(10, 10, 10, 0.94);
 
   color: rgba(255, 248, 235, 0.95);
@@ -2525,15 +2377,18 @@ body.scrolled .announcement-bar-inner::before {
 .premium-category-trigger:hover,
 .premium-category-select.open .premium-category-trigger {
   border-color: rgba(220, 181, 107, 0.42);
+
   box-shadow:
     0 0 0 1px rgba(220, 181, 107, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.045),
     0 14px 34px rgba(0, 0, 0, 0.28);
+
   transform: translateY(-1px);
 }
 
 .premium-category-trigger:focus-visible {
   border-color: rgba(220, 181, 107, 0.58);
+
   box-shadow:
     0 0 0 3px rgba(220, 181, 107, 0.09),
     0 14px 34px rgba(0, 0, 0, 0.28);
@@ -2571,8 +2426,16 @@ body.scrolled .announcement-bar-inner::before {
   border: 1px solid rgba(220, 181, 107, 0.24);
 
   background:
-    radial-gradient(circle at 88% 0%, rgba(220, 181, 107, 0.14), transparent 36%),
-    linear-gradient(180deg, rgba(24, 24, 24, 0.98), rgba(9, 9, 9, 0.985));
+    radial-gradient(
+      circle at 88% 0%,
+      rgba(220, 181, 107, 0.14),
+      transparent 36%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(24, 24, 24, 0.98),
+      rgba(9, 9, 9, 0.985)
+    );
 
   box-shadow:
     0 26px 72px rgba(0, 0, 0, 0.55),
@@ -2580,6 +2443,8 @@ body.scrolled .announcement-bar-inner::before {
 
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
+
+  z-index: 90;
 
   animation: premiumCategoryIn 0.18s ease forwards;
 }
@@ -2615,21 +2480,133 @@ body.scrolled .announcement-bar-inner::before {
 .premium-category-option:hover {
   background: rgba(220, 181, 107, 0.09);
   color: rgba(255, 248, 235, 0.96);
+
   transform: translateX(2px);
 }
 
 .premium-category-option.active {
   background:
-    linear-gradient(135deg, rgba(220, 181, 107, 0.2), rgba(220, 181, 107, 0.075));
+    linear-gradient(
+      135deg,
+      rgba(220, 181, 107, 0.2),
+      rgba(220, 181, 107, 0.075)
+    );
+
   color: #f6e7c1;
 }
 
 .premium-category-option.active::before {
   content: "✓";
   margin-right: 8px;
+
   color: var(--gold);
   font-size: 12px;
 }
+
+/* =========================================
+   SEASON / SORT PILLS
+========================================= */
+
+.toolbar-group-season,
+.toolbar-group-sort {
+  grid-column: span 1;
+}
+
+.season-pills,
+.sort-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  width: 100%;
+  min-height: 52px;
+  padding: 2px 0 0;
+
+  align-items: center;
+}
+
+.season-pill,
+.sort-pill {
+  min-height: 40px;
+  padding: 8px 14px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.18);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.04),
+      rgba(255, 255, 255, 0.015)
+    ),
+    rgba(12, 12, 12, 0.92);
+
+  color: rgba(255, 248, 235, 0.68);
+  font-family: "Inter", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 8px 18px rgba(0, 0, 0, 0.16);
+
+  transition:
+    border-color 0.22s ease,
+    color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
+}
+
+.season-pill:hover,
+.sort-pill:hover {
+  border-color: rgba(220, 181, 107, 0.36);
+  color: rgba(255, 248, 235, 0.92);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 10px 22px rgba(0, 0, 0, 0.22);
+
+  transform: translateY(-1px);
+}
+
+.season-pill.active,
+.sort-pill.active {
+  border-color: rgba(220, 181, 107, 0.58);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(220, 181, 107, 0.2),
+      rgba(220, 181, 107, 0.08)
+    ),
+    rgba(18, 18, 18, 0.96);
+
+  color: #f6e7c1;
+
+  box-shadow:
+    0 0 0 1px rgba(220, 181, 107, 0.22),
+    0 8px 24px rgba(220, 181, 107, 0.1);
+}
+
+.season-pill:focus-visible,
+.sort-pill:focus-visible {
+  outline: none;
+  border-color: rgba(220, 181, 107, 0.55);
+
+  box-shadow:
+    0 0 0 3px rgba(220, 181, 107, 0.08),
+    0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+/* =========================================
+   KEYFRAMES
+========================================= */
 
 @keyframes premiumCategoryIn {
   from {
@@ -2643,10 +2620,54 @@ body.scrolled .announcement-bar-inner::before {
   }
 }
 
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 980px) {
+  .shop-toolbar {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 12px;
+  }
+
+  .season-pills,
+  .sort-pills {
+    min-height: auto;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
 @media (max-width: 640px) {
+  .shop-toolbar {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 18px 0 22px;
+  }
+
+  .toolbar-group {
+    gap: 7px;
+  }
+
+  .toolbar-group label {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+  }
+
+  .shop-toolbar input {
+    height: 48px;
+    padding: 0 14px;
+
+    border-radius: 14px;
+    font-size: 0.92rem;
+  }
+
   .premium-category-trigger {
     height: 48px;
     padding: 0 14px;
+
     border-radius: 14px;
     font-size: 0.92rem;
   }
@@ -2658,6 +2679,21 @@ body.scrolled .announcement-bar-inner::before {
   .premium-category-option {
     min-height: 38px;
     font-size: 13px;
+  }
+
+  .season-pills,
+  .sort-pills {
+    gap: 7px;
+    padding-top: 0;
+  }
+
+  .season-pill,
+  .sort-pill {
+    min-height: 36px;
+    padding: 7px 12px;
+
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
   }
 }
 
