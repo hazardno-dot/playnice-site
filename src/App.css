@@ -289,15 +289,15 @@ main {
 }
 
 .shop-collection-subtext {
-  margin: 18px auto 0;
-  max-width: 760px;
+  margin: 16px auto 0;
+  max-width: 920px;
 
-  color: rgba(255, 248, 235, 0.76);
-  font-size: 18px;
-  line-height: 1.72;
-  letter-spacing: 0.01em;
+  color: rgba(255, 248, 235, 0.74);
+  font-size: 16px;
+  line-height: 1.65;
+  letter-spacing: 0.005em;
   font-weight: 400;
-  text-wrap: balance;
+  text-wrap: normal;
 }
 
 /* =========================================
