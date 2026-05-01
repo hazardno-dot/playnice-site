@@ -3404,27 +3404,27 @@ function App() {
   }, [category, searchTerm, season, sortBy]);
 
   const categoryOptions = [
-  {
-    value: "All",
-    label: lang === "sr" ? "Sve" : "All",
-  },
-  {
-    value: "Arabian",
-    label: getCategoryLabel("Arabian"),
-  },
-  {
-    value: "Designer",
-    label: getCategoryLabel("Designer"),
-  },
-  {
-    value: "Niche",
-    label: getCategoryLabel("Niche"),
-  },
-];
+    {
+      value: "All",
+      label: lang === "sr" ? "Sve" : "All",
+    },
+    {
+      value: "Arabian",
+      label: lang === "sr" ? "Arapski" : "Arabian",
+    },
+    {
+      value: "Designer",
+      label: lang === "sr" ? "Dizajner" : "Designer",
+    },
+    {
+      value: "Niche",
+      label: "Niche",
+    },
+  ];
 
-const selectedCategory =
-  categoryOptions.find((option) => option.value === category) ||
-  categoryOptions[0];
+  const selectedCategory =
+    categoryOptions.find((option) => option.value === category) ||
+    categoryOptions[0];
 
   const totalPages = Math.max(
     1,
