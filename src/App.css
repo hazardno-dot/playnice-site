@@ -12205,6 +12205,7 @@ body.scrolled .announcement-bar {
 
   .side-ad-rail-right {
     right: calc((var(--side-gutter) - var(--side-rail-width)) / 2);
+    text-align: center;
   }
 
   .side-ad-rail:hover {
@@ -12306,16 +12307,32 @@ body.scrolled .announcement-bar {
     transform: translateX(2px);
   }
 
-  /* Desni baner — malo smireniji da tekst ne iskače */
+  /* Desni baner — smireniji i centriran */
+  .side-ad-rail-right .side-ad-label {
+    align-self: center;
+  }
+
   .side-ad-rail-right .side-ad-title {
+    width: 100%;
+
     font-size: clamp(27px, 1.9vw, 35px);
     line-height: 0.92;
     letter-spacing: -0.03em;
+    text-align: center;
   }
 
   .side-ad-rail-right .side-ad-copy {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 4px;
+
     font-size: 11px;
     line-height: 1.46;
+    text-align: center;
+  }
+
+  .side-ad-rail-right .side-ad-cta {
+    text-align: left;
   }
 }
 
