@@ -3434,7 +3434,7 @@ function App() {
     id: "left-partner-placeholder",
     side: "left",
     enabled: true,
-    icon: "✦",
+    icon: "♡",
     label: "PLAYNICE PICK",
     title: lang === "sr" ? "Fresh\nSeason" : "Fresh\nSeason",
     text:

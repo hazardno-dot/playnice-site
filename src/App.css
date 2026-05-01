@@ -12140,6 +12140,7 @@ body.scrolled .announcement-bar {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
     gap: 16px;
 
     padding: 18px 15px 16px;
@@ -12156,7 +12157,7 @@ body.scrolled .announcement-bar {
       linear-gradient(180deg, rgba(9, 9, 10, 0.96), rgba(7, 7, 8, 0.94));
 
     color: rgba(255, 248, 235, 0.9);
-    text-align: left;
+    text-align: center;
 
     box-shadow:
       0 24px 70px rgba(0, 0, 0, 0.34),
@@ -12219,9 +12220,6 @@ body.scrolled .announcement-bar {
     --rail-accent-cool: rgba(220, 181, 107, 0.10);
 
     right: calc((var(--side-gutter) - var(--side-rail-width)) / 2);
-
-    align-items: center;
-    text-align: center;
   }
 
   .side-ad-rail:hover {
@@ -12238,6 +12236,7 @@ body.scrolled .announcement-bar {
   }
 
   .side-ad-label,
+  .side-ad-icon,
   .side-ad-title,
   .side-ad-copy,
   .side-ad-cta {
@@ -12247,7 +12246,7 @@ body.scrolled .announcement-bar {
 
   .side-ad-label {
     display: inline-flex;
-    align-self: flex-start;
+    align-self: center;
 
     padding: 6px 9px;
 
@@ -12274,66 +12273,65 @@ body.scrolled .announcement-bar {
   }
 
   .side-ad-icon {
-  position: relative;
-  z-index: 1;
+    width: 38px;
+    height: 38px;
 
-  width: 38px;
-  height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+    margin-top: 4px;
+    align-self: center;
 
-  margin-top: 4px;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--rail-accent) 24%, transparent);
 
-  border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--rail-accent) 24%, transparent);
+    background:
+      radial-gradient(
+        circle at 35% 25%,
+        rgba(255, 255, 255, 0.16),
+        transparent 36%
+      ),
+      radial-gradient(
+        circle at 50% 80%,
+        color-mix(in srgb, var(--rail-accent) 20%, transparent),
+        transparent 58%
+      ),
+      rgba(255, 255, 255, 0.025);
 
-  background:
-    radial-gradient(
-      circle at 35% 25%,
-      rgba(255, 255, 255, 0.16),
-      transparent 36%
-    ),
-    radial-gradient(
-      circle at 50% 80%,
-      color-mix(in srgb, var(--rail-accent) 20%, transparent),
-      transparent 58%
-    ),
-    rgba(255, 255, 255, 0.025);
+    color: color-mix(in srgb, var(--rail-accent) 88%, #fff7e8 12%);
 
-  color: color-mix(in srgb, var(--rail-accent) 88%, #fff7e8 12%);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1;
 
-  font-family: "Cormorant Garamond", serif;
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 1;
+    box-shadow:
+      0 8px 22px rgba(0, 0, 0, 0.24),
+      0 0 22px color-mix(in srgb, var(--rail-accent) 16%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
-  box-shadow:
-    0 8px 22px rgba(0, 0, 0, 0.24),
-    0 0 22px color-mix(in srgb, var(--rail-accent) 16%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
 
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
-}
+  .side-ad-rail:hover .side-ad-icon {
+    transform: translateY(-1px) scale(1.04);
 
-.side-ad-rail:hover .side-ad-icon {
-  transform: translateY(-1px) scale(1.04);
+    border-color: color-mix(in srgb, var(--rail-accent) 38%, transparent);
 
-  border-color: color-mix(in srgb, var(--rail-accent) 38%, transparent);
-
-  box-shadow:
-    0 10px 26px rgba(0, 0, 0, 0.28),
-    0 0 30px color-mix(in srgb, var(--rail-accent) 24%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
+    box-shadow:
+      0 10px 26px rgba(0, 0, 0, 0.28),
+      0 0 30px color-mix(in srgb, var(--rail-accent) 24%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
 
   .side-ad-title {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1px;
 
     width: 100%;
@@ -12345,7 +12343,7 @@ body.scrolled .announcement-bar {
     font-weight: 600;
     line-height: 0.9;
     letter-spacing: -0.035em;
-    text-align: left;
+    text-align: center;
 
     text-shadow:
       0 12px 30px rgba(0, 0, 0, 0.45),
@@ -12354,11 +12352,17 @@ body.scrolled .announcement-bar {
 
   .side-ad-title span {
     display: block;
+    width: 100%;
+    text-align: center;
   }
 
   .side-ad-copy {
     display: block;
     width: 100%;
+    max-width: 96px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
 
     color: rgba(255, 248, 235, 0.66);
     font-family: "Inter", sans-serif;
@@ -12366,17 +12370,18 @@ body.scrolled .announcement-bar {
     font-weight: 500;
     line-height: 1.56;
     letter-spacing: 0.01em;
+    text-align: center;
   }
 
   .side-ad-cta {
     display: inline-flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 8px;
 
     width: 100%;
     margin-top: auto;
-    padding: 11px 12px 0;
+    padding: 11px 0 0;
 
     border-top: 1px solid rgba(255, 255, 255, 0.06);
 
@@ -12386,6 +12391,7 @@ body.scrolled .announcement-bar {
     font-weight: 800;
     letter-spacing: 0.13em;
     text-transform: uppercase;
+    text-align: center;
 
     background:
       linear-gradient(
@@ -12393,7 +12399,6 @@ body.scrolled .announcement-bar {
         transparent,
         rgba(255, 255, 255, 0.01)
       );
-    border-radius: 0 0 16px 16px;
   }
 
   .side-ad-cta span {
@@ -12405,52 +12410,6 @@ body.scrolled .announcement-bar {
   .side-ad-rail:hover .side-ad-cta span {
     transform: translateX(2px);
   }
-
-  /* LEFT BANNER — warm luxury */
-  .side-ad-rail-left .side-ad-copy {
-    text-align: left;
-  }
-
-  /* RIGHT BANNER — centered, same title style as left */
-  .side-ad-rail-right .side-ad-label {
-    align-self: center;
-    text-align: center;
-  }
-
-  .side-ad-rail-right .side-ad-title {
-    width: 100%;
-    font-size: clamp(30px, 2.1vw, 40px);
-    line-height: 0.9;
-    letter-spacing: -0.035em;
-    text-align: center;
-    align-items: center;
-  }
-
-  .side-ad-rail-right .side-ad-title span {
-    width: 100%;
-    text-align: center;
-  }
-
-  .side-ad-rail-right .side-ad-copy {
-    width: 100%;
-    max-width: 96px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0;
-
-    font-size: 11.5px;
-    line-height: 1.56;
-    text-align: center;
-  }
-
-  .side-ad-rail-right .side-ad-cta {
-    align-self: stretch;
-    text-align: left;
-  }
-
-  .side-ad-rail-right .side-ad-icon {
-  align-self: center;
-}
 }
 
 /* Sakrij na nižim desktop visinama da ne guši ekran */
