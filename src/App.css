@@ -12114,7 +12114,7 @@ body.scrolled .announcement-bar {
     pointer-events: none;
 
     --side-rail-gap: 14px;
-    --side-rail-top: 160px;
+    --side-rail-top: 170px;
     --side-content-width: min(calc(100vw - 32px), var(--max, 1240px));
     --side-gutter: calc((100vw - var(--side-content-width)) / 2);
     --side-rail-width: clamp(
