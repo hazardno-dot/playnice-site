@@ -5353,55 +5353,55 @@ const getSizeWearHint = (size) => {
           {view === "shop" && (
   <>
     <section
-      className="shop-value-anchor section-wrap"
-      aria-label="Why try before you buy"
-    >
-      <div className="shop-value-anchor-inner">
-        <span className="shop-value-anchor-eyebrow">
-          {lang === "sr" ? "PLAYNICE PRISTUP" : "THE PLAYNICE WAY"}
+  className="shop-value-anchor shop-value-anchor-compact section-wrap"
+  aria-label={lang === "sr" ? "Zašto probati pre kupovine" : "Why try before you buy"}
+>
+  <div className="shop-value-anchor-inner">
+    <div className="shop-value-anchor-copy">
+      <span className="shop-value-anchor-eyebrow">
+        {lang === "sr" ? "PLAYNICE PRISTUP" : "THE PLAYNICE WAY"}
+      </span>
+
+      <h2 className="shop-value-anchor-title">
+        {lang === "sr"
+          ? "Probaj miris pre pune bočice."
+          : "Try the scent before the full bottle."}
+      </h2>
+
+      <p className="shop-value-anchor-text">
+        {lang === "sr"
+          ? "Designer i niche parfemi često koštaju €80–€200+. Kod PlayNice možeš da ih upoznaš već od €4."
+          : "Designer and niche bottles often cost €80–€200+. With PlayNice, you can get to know them from €4."}
+      </p>
+    </div>
+
+    <div className="shop-value-anchor-points">
+      <div className="shop-value-anchor-point">
+        <span className="shop-value-anchor-point-value">€80–€200+</span>
+        <span className="shop-value-anchor-point-label">
+          {lang === "sr"
+            ? "pune designer i niche bočice"
+            : "designer and niche full bottles"}
         </span>
-
-        <h2 className="shop-value-anchor-title">
-          {lang === "sr"
-            ? "Ne kupuj bočicu pre nego što upoznaš miris."
-            : "Do not buy the bottle before you know the scent."}
-        </h2>
-
-        <p className="shop-value-anchor-text">
-          {lang === "sr"
-            ? "Prvo probaj parfem na svojoj koži. Oseti kako se otvara, kako se razvija tokom dana i da li je zaista tvoj — pre nego što se odlučiš za punu bočicu."
-            : "Try the fragrance on your skin first. Experience how it opens, how it wears throughout the day, and whether it is truly yours — before committing to a full bottle."}
-        </p>
-
-        <div className="shop-value-anchor-points">
-          <div className="shop-value-anchor-point">
-            <span className="shop-value-anchor-point-value">€80–€200+</span>
-            <span className="shop-value-anchor-point-label">
-              {lang === "sr"
-                ? "često koštaju designer i niche bočice"
-                : "is often what designer and niche bottles cost"}
-            </span>
-          </div>
-
-          <div className="shop-value-anchor-divider" />
-
-          <div className="shop-value-anchor-point">
-            <span className="shop-value-anchor-point-value">€4+</span>
-            <span className="shop-value-anchor-point-label">
-              {lang === "sr"
-                ? "je dovoljno da probaš pre kupovine"
-                : "is enough to try before you buy"}
-            </span>
-          </div>
-        </div>
-
-        <p className="shop-value-anchor-note">
-          {lang === "sr"
-            ? "Manje rizika. Više sigurnosti. Bolja odluka."
-            : "Less risk. More certainty. A better decision."}
-        </p>
       </div>
-    </section>
+
+      <div className="shop-value-anchor-point shop-value-anchor-point-highlight">
+        <span className="shop-value-anchor-point-value">€4+</span>
+        <span className="shop-value-anchor-point-label">
+          {lang === "sr"
+            ? "dovoljno da probaš pre kupovine"
+            : "enough to try before you buy"}
+        </span>
+      </div>
+    </div>
+
+    <p className="shop-value-anchor-note">
+      {lang === "sr"
+        ? "Manje rizika. Više sigurnosti. Bolja odluka."
+        : "Less risk. More certainty. A better decision."}
+    </p>
+  </div>
+</section>
 
     <section className="shop-section section-wrap">
       <div className="shop-top">
