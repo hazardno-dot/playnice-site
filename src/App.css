@@ -9271,9 +9271,9 @@ body.scrolled .announcement-bar {
   max-width: 700px;
 
   color: rgba(255, 255, 255, 0.72);
-  font-size: 14.5px;
+  font-size: 13.8px;
   line-height: 1.62;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
 }
 
 .shop-value-anchor-points {
