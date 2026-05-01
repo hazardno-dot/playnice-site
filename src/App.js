@@ -5182,7 +5182,7 @@ const getSizeWearHint = (size) => {
 
                 <p className="closing-text">
                   {lang === "sr"
-                    ? "Probaj prije kupovine. Otkrij designer, niche i Arabian parfeme kroz pažljivo birane dekante, prije nego se odlučiš za punu bočicu."
+                    ? "Probaj pre kupovine. Otkrij designer, niche i Arabian parfeme kroz pažljivo birane dekante, pre nego se odlučiš za punu bočicu."
                     : "Try before you buy. Discover designer, niche and Arabian fragrances through carefully curated decants before committing to a full bottle."}
                 </p>
 
