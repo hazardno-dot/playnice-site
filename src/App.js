@@ -1037,6 +1037,26 @@ const products = [
   },
     isNew: true,
   }
+  {
+  id: 53,
+  name: "Dolce & Gabbana The One for Men Eau de Toilette",
+  category: "Designer",
+  image: "/products/dolce-gabbana-the-one-edt.png",
+  sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 },
+  rating: 8.7,
+  ratingLabel: "Elegant Pick",
+  season: "winter"
+},
+{
+  id: 54,
+  name: "Versace Man Eau Fraiche",
+  category: "Designer",
+  image: "/products/versace-man-eau-fraiche.png",
+  sizes: { "2ml": 3, "5ml": 7, "10ml": 12 },
+  rating: 8.3,
+  ratingLabel: "Fresh Favorite",
+  season: "summer"
+}
 ];
 
 /* =========================================
