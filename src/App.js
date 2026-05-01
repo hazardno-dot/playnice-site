@@ -971,7 +971,7 @@ const products = [
     rating: 8.6,
     ratingLabel: "Night Beast",
     season: "winter",
-    
+
     isNew: true,
   },
   {
@@ -1047,7 +1047,7 @@ const products = [
   badge: "NEW",
   rating: 8.7,
   ratingLabel: "Elegant Pick",
-  season: "winter"
+  season: "winter",
 
   isNew: true,
 },
@@ -1060,7 +1060,7 @@ const products = [
   badge: "NEW",
   rating: 8.3,
   ratingLabel: "Fresh Favorite",
-  season: "summer"
+  season: "summer",
 
   isNew: true,
 }
