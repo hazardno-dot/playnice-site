@@ -12410,6 +12410,26 @@ body.scrolled .announcement-bar {
   .side-ad-rail:hover .side-ad-cta span {
     transform: translateX(2px);
   }
+
+    /* SIDE AD TITLE — smaller, centered, same on both banners */
+  .side-ad-title,
+  .side-ad-rail-left .side-ad-title,
+  .side-ad-rail-right .side-ad-title {
+    font-size: clamp(25px, 1.55vw, 30px);
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+    text-align: center;
+    align-items: center;
+  }
+
+  .side-ad-title span,
+  .side-ad-rail-left .side-ad-title span,
+  .side-ad-rail-right .side-ad-title span {
+    display: block;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+  }
 }
 
 /* Sakrij na nižim desktop visinama da ne guši ekran */
