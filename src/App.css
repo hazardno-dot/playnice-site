@@ -12334,6 +12334,46 @@ body.scrolled .announcement-bar {
   .side-ad-rail-right .side-ad-cta {
     text-align: left;
   }
+
+    /* FORCE CENTER — RIGHT SIDE AD */
+  .side-ad-rail-right {
+    align-items: center;
+    text-align: center;
+  }
+
+  .side-ad-rail-right .side-ad-label {
+    align-self: center;
+    text-align: center;
+  }
+
+  .side-ad-rail-right .side-ad-title {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .side-ad-rail-right .side-ad-title span {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .side-ad-rail-right .side-ad-copy {
+    display: block;
+    width: 100%;
+    max-width: 92px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+
+    text-align: center;
+  }
+
+  .side-ad-rail-right .side-ad-cta {
+    align-self: stretch;
+    width: 100%;
+    text-align: left;
+  }
 }
 
 /* Sakrij na nižim desktop visinama da ne guši ekran */
