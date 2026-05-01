@@ -6514,22 +6514,6 @@ const getSizeWearHint = (size) => {
   )}
 </button>
 
-<button
-  type="button"
-  className={`jf-btn jf-down ${
-    activeJournalFeedback?.vote === "down" ? "active" : ""
-  }`}
-  onClick={() => handleJournalFeedbackVote(selectedArticle, "down")}
-  aria-label={lang === "sr" ? "Negativan feedback" : "Negative feedback"}
->
-  <span className="jf-icon">👎</span>
-  {journalVoteSuccess === "down" && (
-  <span className="jf-cross" aria-hidden="true">
-    ✕
-  </span>
-)}
-</button>
-
             <div className="journal-feedback-inline-shell">
   <div className="journal-feedback-inline-inner">
     <input
@@ -6574,6 +6558,22 @@ const getSizeWearHint = (size) => {
     </button>
   </div>
 </div>
+
+<button
+  type="button"
+  className={`jf-btn jf-down ${
+    activeJournalFeedback?.vote === "down" ? "active" : ""
+  }`}
+  onClick={() => handleJournalFeedbackVote(selectedArticle, "down")}
+  aria-label={lang === "sr" ? "Negativan feedback" : "Negative feedback"}
+>
+  <span className="jf-icon">👎</span>
+  {journalVoteSuccess === "down" && (
+  <span className="jf-cross" aria-hidden="true">
+    ✕
+  </span>
+)}
+</button>
           </div>
         </div>
 
