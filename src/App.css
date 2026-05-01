@@ -223,6 +223,134 @@ main {
 }
 
 /* =========================================
+   SHOP COLLECTION INTRO
+========================================= */
+
+.shop-collection-intro {
+  width: min(calc(100% - 32px), var(--max));
+  margin: 18px auto 30px;
+  text-align: center;
+}
+
+.shop-collection-copy {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.shop-collection-kicker {
+  margin: 0 0 12px;
+
+  color: rgba(220, 181, 107, 0.9);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+.shop-collection-title {
+  position: relative;
+
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(46px, 6vw, 72px);
+  line-height: 0.94;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+
+  background: linear-gradient(
+    180deg,
+    #fff8eb 0%,
+    #efe0bf 42%,
+    #dcb56b 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  text-shadow:
+    0 12px 34px rgba(0, 0, 0, 0.35),
+    0 0 22px rgba(220, 181, 107, 0.08);
+}
+
+.shop-collection-title::after {
+  content: "";
+  display: block;
+
+  width: 92px;
+  height: 1px;
+  margin: 18px auto 0;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(220, 181, 107, 0.82),
+    transparent
+  );
+}
+
+.shop-collection-subtext {
+  margin: 18px auto 0;
+  max-width: 760px;
+
+  color: rgba(255, 248, 235, 0.76);
+  font-size: 18px;
+  line-height: 1.72;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+/* =========================================
+   SHOP COLLECTION INTRO — RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+  .shop-collection-intro {
+    margin: 16px auto 26px;
+  }
+
+  .shop-collection-title {
+    font-size: clamp(40px, 8vw, 58px);
+  }
+
+  .shop-collection-subtext {
+    max-width: 680px;
+    font-size: 16.5px;
+    line-height: 1.65;
+  }
+}
+
+@media (max-width: 640px) {
+  .shop-collection-intro {
+    width: min(calc(100% - 24px), var(--max));
+    margin: 14px auto 22px;
+  }
+
+  .shop-collection-kicker {
+    margin-bottom: 9px;
+    font-size: 10px;
+    letter-spacing: 0.21em;
+  }
+
+  .shop-collection-title {
+    font-size: clamp(36px, 11vw, 48px);
+    line-height: 0.97;
+  }
+
+  .shop-collection-title::after {
+    width: 74px;
+    margin-top: 14px;
+  }
+
+  .shop-collection-subtext {
+    margin-top: 14px;
+    max-width: 100%;
+    font-size: 14.8px;
+    line-height: 1.62;
+  }
+}
+
+/* =========================================
    PANEL MOTION SYSTEM
 ========================================= */
 

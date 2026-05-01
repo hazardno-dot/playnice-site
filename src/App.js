@@ -5404,13 +5404,15 @@ const getSizeWearHint = (size) => {
 </section>
 
     <section className="shop-section section-wrap">
-      <div className="shop-top">
-        <div>
-          <p className="section-kicker">{tr.shopKicker}</p>
-          <h2>{tr.shopTitle}</h2>
-          <p className="shop-subtext">{tr.shopText}</p>
-        </div>
-      </div>
+      <div className="shop-top shop-collection-intro">
+  <div className="shop-collection-copy">
+    <p className="section-kicker shop-collection-kicker">{tr.shopKicker}</p>
+
+    <h2 className="shop-collection-title">{tr.shopTitle}</h2>
+
+    <p className="shop-subtext shop-collection-subtext">{tr.shopText}</p>
+  </div>
+</div>
 
       <div className="shop-toolbar">
         <div className="toolbar-group toolbar-group-search">
