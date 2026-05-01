@@ -1036,7 +1036,7 @@ const products = [
     short: "Red Tea Vetiver DNA"
   },
     isNew: true,
-  }
+  },
   {
   id: 53,
   name: "Dolce & Gabbana The One for Men Eau de Toilette",
