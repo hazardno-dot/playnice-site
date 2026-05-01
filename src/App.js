@@ -3434,7 +3434,7 @@ function App() {
     id: "left-partner-placeholder",
     side: "left",
     enabled: true,
-    icon: "♡",
+    icon: "✦",
     label: "PLAYNICE PICK",
     title: lang === "sr" ? "Fresh\nSeason" : "Fresh\nSeason",
     text:
@@ -3448,7 +3448,7 @@ function App() {
     id: "right-partner-placeholder",
     side: "right",
     enabled: true,
-    icon: "♡",
+    icon: "♥",
     label: "FEATURED",
     title: lang === "sr" ? "Private\nSelection" : "Private\nSelection",
     text:
