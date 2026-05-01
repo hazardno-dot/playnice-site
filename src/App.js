@@ -2068,6 +2068,64 @@ const productCopy = {
     en: "If you want a fresh scent with a unique twist."
   },
 }
+
+"Dolce & Gabbana The One for Men Eau de Toilette": {
+  miniTag: { sr: "🖤 Elegant / Date Night", en: "🖤 Elegant / Date Night" },
+  card: {
+    sr: "Topao, začinjen i zavodljiv — klasik za večernje prilike.",
+    en: "Warm, spicy and seductive — a timeless evening classic."
+  },
+  modal: {
+    sr: "Kombinacija duvana, začina i toplih amber tonova daje elegantan i zavodljiv karakter. Diskretan, ali vrlo privlačan miris za bliži kontakt.",
+    en: "A blend of tobacco, spices and warm amber creates an elegant and seductive scent. Subtle, yet highly attractive in close encounters."
+  },
+  scentType: { sr: "Warm spicy amber", en: "Warm spicy amber" },
+  dominantNotes: {
+    sr: ["duvan", "začini", "ambra"],
+    en: ["tobacco", "spices", "amber"]
+  },
+  tags: {
+    sr: ["Elegant", "Date Night", "Classic"],
+    en: ["Elegant", "Date Night", "Classic"]
+  },
+  whyChoose: {
+    sr: "Ako želiš sofisticiran i zavodljiv večernji miris.",
+    en: "If you want a refined and seductive evening scent."
+  },
+  inspiredBy: {
+    sr: "Original dizajnerski klasik — nema klon.",
+    en: "Original designer classic — no clone."
+  }
+},
+
+"Versace Man Eau Fraiche": {
+  miniTag: { sr: "💧 Fresh / Summer", en: "💧 Fresh / Summer" },
+  card: {
+    sr: "Ultra svež, lagan i čist — savršen za letnje dane.",
+    en: "Ultra fresh, light and clean — perfect for summer days."
+  },
+  modal: {
+    sr: "Citrusi, morski tonovi i lagano drvo čine ga jednim od najlakših i najnosivijih letnjih parfema. Diskretan, ali vrlo prijatan.",
+    en: "Citrus, marine notes and soft woods make it one of the easiest summer fragrances to wear. Light yet very pleasant."
+  },
+  scentType: { sr: "Fresh aquatic citrus", en: "Fresh aquatic citrus" },
+  dominantNotes: {
+    sr: ["citrusi", "morski tonovi", "drvo"],
+    en: ["citrus", "marine notes", "woods"]
+  },
+  tags: {
+    sr: ["Fresh", "Summer", "Daily"],
+    en: ["Fresh", "Summer", "Daily"]
+  },
+  whyChoose: {
+    sr: "Ako želiš siguran, čist i nenametljiv letnji miris.",
+    en: "If you want a safe, clean and easy summer scent."
+  },
+  inspiredBy: {
+    sr: "Original Versace kompozicija.",
+    en: "Original Versace composition."
+  }
+}
 };
 
 const fallbackCopy = {
