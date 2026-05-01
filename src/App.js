@@ -2372,7 +2372,17 @@ const productWearContext = {
   "Lattafa Dynasty": {
   sr: "Toplo vreme, dnevno, unisex nošenje.",
   en: "Warm weather, daily wear, unisex use."
-}
+  },
+
+  "Dolce & Gabbana The One for Men Eau de Toilette": {
+  sr: "Veče, dejt, bliži kontakt.",
+  en: "Evening, date night, close encounters."
+  },
+
+  "Versace Man Eau Fraiche": {
+  sr: "Dnevno, leto, vrućine.",
+  en: "Daily wear, summer, hot weather."
+  },
 };
 
 /* =========================================
