@@ -3233,6 +3233,7 @@ function App() {
   const [lang, setLang] = useState(() => getDefaultLanguage());
   const [view, setView] = useState(() => getInitialView());
   const [category, setCategory] = useState("All");
+  const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -3401,6 +3402,29 @@ function App() {
         return result;
     }
   }, [category, searchTerm, season, sortBy]);
+
+  const categoryOptions = [
+  {
+    value: "All",
+    label: tr.all,
+  },
+  {
+    value: "Arabian",
+    label: getCategoryLabel("Arabian"),
+  },
+  {
+    value: "Designer",
+    label: getCategoryLabel("Designer"),
+  },
+  {
+    value: "Niche",
+    label: getCategoryLabel("Niche"),
+  },
+];
+
+const selectedCategory =
+  categoryOptions.find((option) => option.value === category) ||
+  categoryOptions[0];
 
   const totalPages = Math.max(
     1,
@@ -5427,18 +5451,60 @@ const getSizeWearHint = (size) => {
         </div>
 
         <div className="toolbar-group toolbar-group-category">
-          <label htmlFor="shop-category">{tr.categoryLabel}</label>
-          <select
-            id="shop-category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+  <label id="shop-category-label">{tr.categoryLabel}</label>
+
+  <div
+    className={`premium-category-select ${
+      categoryMenuOpen ? "open" : ""
+    }`}
+    onBlur={(e) => {
+      if (!e.currentTarget.contains(e.relatedTarget)) {
+        setCategoryMenuOpen(false);
+      }
+    }}
+  >
+    <button
+      type="button"
+      className="premium-category-trigger"
+      aria-labelledby="shop-category-label"
+      aria-expanded={categoryMenuOpen}
+      aria-controls="shop-category-menu"
+      onClick={() => setCategoryMenuOpen((open) => !open)}
+    >
+      <span>{selectedCategory.label}</span>
+      <span className="premium-category-arrow" aria-hidden="true">
+        ▾
+      </span>
+    </button>
+
+    {categoryMenuOpen && (
+      <div
+        id="shop-category-menu"
+        className="premium-category-menu"
+        role="listbox"
+        aria-labelledby="shop-category-label"
+      >
+        {categoryOptions.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            role="option"
+            aria-selected={category === option.value}
+            className={`premium-category-option ${
+              category === option.value ? "active" : ""
+            }`}
+            onClick={() => {
+              setCategory(option.value);
+              setCategoryMenuOpen(false);
+            }}
           >
-            <option value="All">{tr.all}</option>
-            <option value="Arabian">{getCategoryLabel("Arabian")}</option>
-            <option value="Designer">{getCategoryLabel("Designer")}</option>
-            <option value="Niche">{getCategoryLabel("Niche")}</option>
-          </select>
-        </div>
+            <span>{option.label}</span>
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
 
         <div className="toolbar-group toolbar-group-sort">
           <label>{tr.sortLabel}</label>
