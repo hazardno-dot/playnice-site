@@ -314,9 +314,9 @@ main {
   }
 
   .shop-collection-subtext {
-    max-width: 680px;
-    font-size: 16.5px;
-    line-height: 1.65;
+    max-width: 720px;
+    font-size: 15.5px;
+    line-height: 1.62;
   }
 }
 
@@ -343,10 +343,10 @@ main {
   }
 
   .shop-collection-subtext {
-    margin-top: 14px;
+    margin-top: 13px;
     max-width: 100%;
-    font-size: 14.8px;
-    line-height: 1.62;
+    font-size: 14px;
+    line-height: 1.58;
   }
 }
 
