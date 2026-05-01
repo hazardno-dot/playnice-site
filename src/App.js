@@ -971,6 +971,7 @@ const products = [
     rating: 8.6,
     ratingLabel: "Night Beast",
     season: "winter",
+    
     isNew: true,
   },
   {
@@ -1043,9 +1044,12 @@ const products = [
   category: "Designer",
   image: "/products/dolce-gabbana-the-one-edt.png",
   sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 },
+  badge: "NEW",
   rating: 8.7,
   ratingLabel: "Elegant Pick",
   season: "winter"
+
+  isNew: true,
 },
 {
   id: 54,
@@ -1053,9 +1057,12 @@ const products = [
   category: "Designer",
   image: "/products/versace-man-eau-fraiche.png",
   sizes: { "2ml": 3, "5ml": 7, "10ml": 12 },
+  badge: "NEW",
   rating: 8.3,
   ratingLabel: "Fresh Favorite",
   season: "summer"
+
+  isNew: true,
 }
 ];
 
