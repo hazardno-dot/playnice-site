@@ -3426,6 +3426,72 @@ function App() {
     categoryOptions.find((option) => option.value === category) ||
     categoryOptions[0];
 
+/* =========================================
+   SIDE RAILS ADS
+========================================= */
+      const sideRailAds = [
+    {
+      id: "left-partner-placeholder",
+      side: "left",
+      enabled: true,
+      label: "PLAYNICE PICK",
+      title: lang === "sr" ? "Fresh\nSeason" : "Fresh\nSeason",
+      text:
+        lang === "sr"
+          ? "Lagana, čista i upečatljiva selekcija za toplije dane."
+          : "Light, clean and memorable picks for warmer days.",
+      cta: lang === "sr" ? "Istraži" : "Explore",
+      action: "shop",
+    },
+    {
+      id: "right-partner-placeholder",
+      side: "right",
+      enabled: true,
+      label: "FEATURED",
+      title: lang === "sr" ? "Private\nSelection" : "Private\nSelection",
+      text:
+        lang === "sr"
+          ? "Sačuvaj favorite i napravi svoju mirisnu shortlistu."
+          : "Save favourites and build your personal scent shortlist.",
+      cta: lang === "sr" ? "Otvori" : "Open",
+      action: "privateSelection",
+    },
+  ];
+
+  const sideRailBlocked =
+    cartOpen ||
+    checkoutOpen ||
+    storyOpen ||
+    howItWorksOpen ||
+    privateSelectionOpen ||
+    journalOpen ||
+    Boolean(selectedArticle) ||
+    productModalVisible;
+
+  const shouldShowSideRails =
+    (view === "home" || view === "shop") && !sideRailBlocked;
+
+  const handleSideRailAction = (ad) => {
+    if (ad.action === "shop") {
+      setView("shop");
+      setCurrentPage(1);
+
+      window.setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 0);
+
+      return;
+    }
+
+    if (ad.action === "privateSelection") {
+      setPrivateSelectionOpen(true);
+    }
+  };
+
+/* =========================================
+   TOTAL PAGES
+========================================= */
+
   const totalPages = Math.max(
     1,
     Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)
@@ -4613,6 +4679,40 @@ const getSizeWearHint = (size) => {
   ========================================= */
   return (
   <div className="app-shell">
+
+  {shouldShowSideRails && (
+  <aside
+    className="side-ad-rails"
+    aria-label={lang === "sr" ? "PlayNice istaknuti partneri" : "PlayNice featured partners"}
+  >
+    {sideRailAds
+      .filter((ad) => ad.enabled)
+      .map((ad) => (
+        <button
+          key={ad.id}
+          type="button"
+          className={`side-ad-rail side-ad-rail-${ad.side}`}
+          onClick={() => handleSideRailAction(ad)}
+        >
+          <span className="side-ad-label">{ad.label}</span>
+
+          <span className="side-ad-title">
+            {ad.title.split("\n").map((line) => (
+              <span key={line}>{line}</span>
+            ))}
+          </span>
+
+          <span className="side-ad-copy">{ad.text}</span>
+
+          <span className="side-ad-cta">
+            {ad.cta}
+            <span aria-hidden="true">→</span>
+          </span>
+        </button>
+      ))}
+  </aside>
+)}
+
     <header className="topbar">
       <button className="brand" type="button" onClick={() => switchView("home")}>
      <span className="brand-copy">
