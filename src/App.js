@@ -3429,34 +3429,36 @@ function App() {
 /* =========================================
    SIDE RAILS ADS
 ========================================= */
-      const sideRailAds = [
-    {
-      id: "left-partner-placeholder",
-      side: "left",
-      enabled: true,
-      label: "PLAYNICE PICK",
-      title: lang === "sr" ? "Fresh\nSeason" : "Fresh\nSeason",
-      text:
-        lang === "sr"
-          ? "Lagana, čista i upečatljiva selekcija za toplije dane."
-          : "Light, clean and memorable picks for warmer days.",
-      cta: lang === "sr" ? "Istraži" : "Explore",
-      action: "shop",
-    },
-    {
-      id: "right-partner-placeholder",
-      side: "right",
-      enabled: true,
-      label: "FEATURED",
-      title: lang === "sr" ? "Private\nSelection" : "Private\nSelection",
-      text:
-        lang === "sr"
-          ? "Sačuvaj favorite i napravi svoju mirisnu shortlistu."
-          : "Save favourites and build your personal scent shortlist.",
-      cta: lang === "sr" ? "Otvori" : "Open",
-      action: "privateSelection",
-    },
-  ];
+  const sideRailAds = [
+  {
+    id: "left-partner-placeholder",
+    side: "left",
+    enabled: true,
+    icon: "✦",
+    label: "PLAYNICE PICK",
+    title: lang === "sr" ? "Fresh\nSeason" : "Fresh\nSeason",
+    text:
+      lang === "sr"
+        ? "Lagana, čista i upečatljiva selekcija za toplije dane."
+        : "Light, clean and memorable picks for warmer days.",
+    cta: lang === "sr" ? "Istraži" : "Explore",
+    action: "shop",
+  },
+  {
+    id: "right-partner-placeholder",
+    side: "right",
+    enabled: true,
+    icon: "♡",
+    label: "FEATURED",
+    title: lang === "sr" ? "Private\nSelection" : "Private\nSelection",
+    text:
+      lang === "sr"
+        ? "Sačuvaj favorite i napravi svoju mirisnu shortlistu."
+        : "Save favourites and build your personal scent shortlist.",
+    cta: lang === "sr" ? "Otvori" : "Open",
+    action: "privateSelection",
+  },
+];
 
   const sideRailBlocked =
     cartOpen ||
@@ -4695,6 +4697,10 @@ const getSizeWearHint = (size) => {
           onClick={() => handleSideRailAction(ad)}
         >
           <span className="side-ad-label">{ad.label}</span>
+
+          <span className="side-ad-icon" aria-hidden="true">
+          {ad.icon}
+          </span>
 
           <span className="side-ad-title">
             {ad.title.split("\n").map((line) => (
