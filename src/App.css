@@ -12112,25 +12112,30 @@ body.scrolled .announcement-bar {
   .side-ad-rails {
     display: block;
     pointer-events: none;
+
+    --side-rail-gap: 14px;
+    --side-rail-top: 160px;
+    --side-content-width: min(calc(100vw - 32px), var(--max, 1240px));
+    --side-gutter: calc((100vw - var(--side-content-width)) / 2);
+    --side-rail-width: clamp(
+      112px,
+      calc(var(--side-gutter) - (var(--side-rail-gap) * 2)),
+      148px
+    );
   }
 
   .side-ad-rail {
-  position: fixed;
-  top: 255px;
+    position: fixed;
+    top: var(--side-rail-top);
 
-  width: clamp(
-    112px,
-    calc((100vw - var(--max, 1240px)) / 2 - 22px),
-    148px
-  );
-
-  height: clamp(420px, 52vh, 520px);
+    width: var(--side-rail-width);
+    height: clamp(420px, 52vh, 520px);
     min-height: 420px;
 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 14px;
+    justify-content: flex-start;
+    gap: 16px;
 
     padding: 18px 15px 16px;
 
@@ -12170,8 +12175,10 @@ body.scrolled .announcement-bar {
     content: "";
     position: absolute;
     inset: 1px;
+
     border-radius: 23px;
     border: 1px solid rgba(255, 255, 255, 0.025);
+
     pointer-events: none;
   }
 
@@ -12188,15 +12195,16 @@ body.scrolled .announcement-bar {
     background: radial-gradient(circle, rgba(220, 181, 107, 0.16), transparent 68%);
     filter: blur(6px);
     opacity: 0.65;
+
     pointer-events: none;
   }
 
   .side-ad-rail-left {
-    left: 16px;
+    left: calc((var(--side-gutter) - var(--side-rail-width)) / 2);
   }
 
   .side-ad-rail-right {
-    right: 16px;
+    right: calc((var(--side-gutter) - var(--side-rail-width)) / 2);
   }
 
   .side-ad-rail:hover {
@@ -12223,6 +12231,7 @@ body.scrolled .announcement-bar {
     align-self: flex-start;
 
     padding: 6px 8px;
+
     border-radius: 999px;
     border: 1px solid rgba(220, 181, 107, 0.18);
     background: rgba(220, 181, 107, 0.075);
@@ -12241,7 +12250,7 @@ body.scrolled .announcement-bar {
     flex-direction: column;
     gap: 1px;
 
-    margin-top: auto;
+    margin-top: 6px;
 
     color: #f7f1e6;
     font-family: "Cormorant Garamond", serif;
@@ -12273,6 +12282,7 @@ body.scrolled .announcement-bar {
     gap: 8px;
 
     width: 100%;
+    margin-top: auto;
     padding-top: 12px;
 
     border-top: 1px solid rgba(220, 181, 107, 0.12);
@@ -12288,11 +12298,24 @@ body.scrolled .announcement-bar {
   .side-ad-cta span {
     font-size: 14px;
     line-height: 1;
+
     transition: transform 0.22s ease;
   }
 
   .side-ad-rail:hover .side-ad-cta span {
     transform: translateX(2px);
+  }
+
+  /* Desni baner — malo smireniji da tekst ne iskače */
+  .side-ad-rail-right .side-ad-title {
+    font-size: clamp(27px, 1.9vw, 35px);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+  }
+
+  .side-ad-rail-right .side-ad-copy {
+    font-size: 11px;
+    line-height: 1.46;
   }
 }
 
