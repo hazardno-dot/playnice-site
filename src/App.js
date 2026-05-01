@@ -3406,7 +3406,7 @@ function App() {
   const categoryOptions = [
   {
     value: "All",
-    label: tr.all,
+    label: lang === "sr" ? "Sve" : "All",
   },
   {
     value: "Arabian",
