@@ -2076,8 +2076,8 @@ const productCopy = {
     en: "Warm, spicy and seductive — a timeless evening classic."
   },
   modal: {
-    sr: "Kombinacija duvana, začina i toplih amber tonova daje elegantan i zavodljiv karakter. Diskretan, ali vrlo privlačan miris za bliži kontakt.",
-    en: "A blend of tobacco, spices and warm amber creates an elegant and seductive scent. Subtle, yet highly attractive in close encounters."
+    sr: "Kombinacija duvana, začina i toplih amber tonova daje elegantan i zavodljiv karakter.",
+    en: "A blend of tobacco, spices and warm amber creates an elegant and seductive scent."
   },
   scentType: { sr: "Warm spicy amber", en: "Warm spicy amber" },
   dominantNotes: {
