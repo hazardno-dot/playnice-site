@@ -3882,6 +3882,10 @@ useLayoutEffect(() => {
   }, [lang]);
 
   useEffect(() => {
+  if (window.location.pathname.startsWith("/product/")) {
+    return;
+  }
+
   const params = new URLSearchParams(window.location.search);
   const urlView = params.get("view");
   const urlCategory = params.get("category");
@@ -3890,9 +3894,17 @@ useLayoutEffect(() => {
   const urlSort = params.get("sort");
   const urlSeason = params.get("season");
 
-  if (urlView && ["home", "shop", "journal"].includes(urlView)) setView(urlView);
-  if (urlCategory && categories.includes(urlCategory)) setCategory(urlCategory);
-  if (urlSearch) setSearchTerm(urlSearch);
+  if (urlView && ["home", "shop", "journal"].includes(urlView)) {
+    setView(urlView);
+  }
+
+  if (urlCategory && categories.includes(urlCategory)) {
+    setCategory(urlCategory);
+  }
+
+  if (urlSearch) {
+    setSearchTerm(urlSearch);
+  }
 
   if (urlPage && !Number.isNaN(Number(urlPage))) {
     setCurrentPage(Number(urlPage));
@@ -3911,6 +3923,10 @@ useLayoutEffect(() => {
 }, [categories]);
 
   useEffect(() => {
+  if (window.location.pathname.startsWith("/product/")) {
+    return;
+  }
+
   const params = new URLSearchParams();
   params.set("view", view);
 
@@ -3921,11 +3937,16 @@ useLayoutEffect(() => {
   if (currentPage > 1) params.set("page", String(currentPage));
 
   const query = params.toString();
+
   const nextUrl = query
     ? `${window.location.pathname}?${query}`
     : window.location.pathname;
 
-  window.history.replaceState({}, "", nextUrl);
+  const currentUrl = `${window.location.pathname}${window.location.search}`;
+
+  if (currentUrl !== nextUrl) {
+    window.history.replaceState({}, "", nextUrl);
+  }
 }, [view, category, searchTerm, season, sortBy, currentPage]);
 
   useEffect(() => {
