@@ -4843,24 +4843,25 @@ const getSizeWearHint = (size) => {
         <button
   type="button"
   className={`header-journal-btn ${
-  hasNewJournalArticle ? "has-unread" : ""
-}`}
-  onClick={handleJournalOpen}
+    hasNewJournalArticle ? "has-unread" : ""
+  }`}
+  onClick={() => {
+    switchView("journal");
+    handleJournalOpen();
+  }}
   aria-label={
-  hasNewJournalArticle
-    ? lang === "sr"
-      ? "Journal, novi članak"
-      : "Journal, new article"
-    : "Journal"
-}
+    hasNewJournalArticle
+      ? lang === "sr"
+        ? "Journal, novi članak"
+        : "Journal, new article"
+      : "Journal"
+  }
 >
   <span className="header-journal-btn-text">Journal</span>
 
   {hasNewJournalArticle && (
-  <span className="journal-unread-badge">
-    NEW
-  </span>
-)}
+    <span className="journal-unread-badge">NEW</span>
+  )}
 </button>
       </nav>
 
