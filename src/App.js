@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
+import { Helmet } from "react-helmet-async";
 
 const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 
@@ -4826,6 +4827,88 @@ const getSizeWearHint = (size) => {
   ========================================= */
   return (
   <div className="app-shell">
+
+    <Helmet>
+  <title>
+    {selectedProduct
+      ? `${selectedProduct.name} | Dekant Crna Gora | PlayNice`
+      : view === "shop"
+      ? "Shop | Premium parfemi i dekanti u Crnoj Gori | PlayNice"
+      : view === "journal"
+      ? "Journal | Mirisne priče i preporuke | PlayNice"
+      : "PlayNice | Premium parfemi i dekanti u Crnoj Gori"}
+  </title>
+
+  <meta
+    name="description"
+    content={
+      selectedProduct
+        ? `${selectedProduct.name} dostupan kao dekant u Crnoj Gori. Probaj miris prije kupovine uz PlayNice.`
+        : view === "shop"
+        ? "Istraži PlayNice kolekciju premium parfema i dekanata u Crnoj Gori. Designer, niche i Arabian mirisi, dostava širom Crne Gore."
+        : view === "journal"
+        ? "PlayNice Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
+        : "Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi."
+    }
+  />
+
+  <link
+    rel="canonical"
+    href={
+      selectedProduct
+        ? `https://www.playniceshop.me${getProductUrl(selectedProduct)}`
+        : view === "shop"
+        ? "https://www.playniceshop.me/shop"
+        : view === "journal"
+        ? "https://www.playniceshop.me/journal"
+        : "https://www.playniceshop.me/"
+    }
+  />
+
+  <meta
+    property="og:title"
+    content={
+      selectedProduct
+        ? `${selectedProduct.name} | PlayNice`
+        : view === "shop"
+        ? "Shop | PlayNice"
+        : view === "journal"
+        ? "Journal | PlayNice"
+        : "PlayNice | Premium parfemi i dekanti u Crnoj Gori"
+    }
+  />
+
+  <meta
+    property="og:description"
+    content={
+      selectedProduct
+        ? `${selectedProduct.name} dostupan kao dekant. Probaj prije kupovine uz PlayNice.`
+        : "Premium parfemi i dekanti u Crnoj Gori. Try before you buy."
+    }
+  />
+
+  <meta
+    property="og:url"
+    content={
+      selectedProduct
+        ? `https://www.playniceshop.me${getProductUrl(selectedProduct)}`
+        : view === "shop"
+        ? "https://www.playniceshop.me/shop"
+        : view === "journal"
+        ? "https://www.playniceshop.me/journal"
+        : "https://www.playniceshop.me/"
+    }
+  />
+
+  <meta
+    property="og:image"
+    content={
+      selectedProduct?.image
+        ? `https://www.playniceshop.me${selectedProduct.image}`
+        : "https://www.playniceshop.me/og-image.jpg"
+    }
+  />
+</Helmet>
 
   {shouldShowSideRails && (
   <aside
