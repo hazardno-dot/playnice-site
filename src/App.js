@@ -2,6 +2,8 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "re
 import "./App.css";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 
+const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
+
 /* =========================================
    TRANSLATIONS
 ========================================= */
