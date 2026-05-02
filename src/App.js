@@ -4021,9 +4021,12 @@ const markLatestJournalAsSeen = () => {
 };
 
 const handleJournalOpen = () => {
+  markLatestJournalAsSeen();
+
   setJournalOpen(true);
   setSelectedArticle(null);
-  markLatestJournalAsSeen();
+
+  switchView("journal");
 };
 
 const handleJournalArticleOpen = (article) => {
@@ -4845,10 +4848,7 @@ const getSizeWearHint = (size) => {
   className={`header-journal-btn ${
     hasNewJournalArticle ? "has-unread" : ""
   }`}
-  onClick={() => {
-    switchView("journal");
-    handleJournalOpen();
-  }}
+  onClick={handleJournalOpen}
   aria-label={
     hasNewJournalArticle
       ? lang === "sr"
@@ -4862,7 +4862,7 @@ const getSizeWearHint = (size) => {
   {hasNewJournalArticle && (
     <span className="journal-unread-badge">NEW</span>
   )}
-</button>
+        </button>
       </nav>
 
       <div className="topbar-right">
