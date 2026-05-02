@@ -4021,11 +4021,8 @@ const markLatestJournalAsSeen = () => {
 };
 
 const handleJournalOpen = () => {
-  markLatestJournalAsSeen();
-
   setJournalOpen(true);
   setSelectedArticle(null);
-
   switchView("journal");
 };
 
@@ -4034,7 +4031,12 @@ const handleJournalArticleOpen = (article) => {
 
   setJournalOpen(true);
   setSelectedArticle(article);
-  markLatestJournalAsSeen();
+
+  if (String(article.id) === latestJournalArticleKey) {
+    markLatestJournalAsSeen();
+  }
+
+  switchView("journal");
 };
 
 const announcementItems = useMemo(() => {
