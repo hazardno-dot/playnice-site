@@ -3116,6 +3116,19 @@ const getSeoProductUrl = (product) => {
   return `${SITE_BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
 };
 
+const getProductFromCurrentUrl = () => {
+  const path = window.location.pathname;
+  const match = path.match(/^\/product\/([^/]+)$/);
+
+  if (!match?.[1]) return null;
+
+  const slugFromUrl = decodeURIComponent(match[1]);
+
+  return (
+    products.find((product) => getProductSlug(product) === slugFromUrl) || null
+  );
+};
+
 const getSeoProductImage = (product) => {
   if (!product?.image) return `${SITE_BASE_URL}/og-image.jpg`;
 
@@ -4799,14 +4812,17 @@ useEffect(() => {
 
   if (!path.startsWith("/product/")) return;
 
-  const slugFromUrl = path.replace("/product/", "").replace(/\/$/, "");
+  const slugFromUrl = decodeURIComponent(
+    path.replace("/product/", "").replace(/\/$/, "")
+  );
 
   const matchedProduct = products.find(
-    (product) => slugifyProduct(product.name) === slugFromUrl
+    (product) => getProductSlug(product) === slugFromUrl
   );
 
   if (!matchedProduct) {
     setView("shop");
+    window.history.replaceState({}, "", "/shop");
     return;
   }
 
@@ -4846,6 +4862,17 @@ const openImpactProductModal = (product) => {
   const removeFromPrivateSelection = (productId) => {
     toggleWishlist(productId);
   };
+
+  useEffect(() => {
+  const productFromUrl = getProductFromCurrentUrl();
+
+  if (!productFromUrl) {
+    return;
+  }
+
+  setSelectedProduct(productFromUrl);
+  setView("shop");
+}, []);
 
 /* =========================================
    SEO title/meta useEffect
