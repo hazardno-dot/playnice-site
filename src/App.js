@@ -3215,13 +3215,20 @@ const getJournalArticleKey = (article) => {
 const getInitialView = () => {
   if (typeof window === "undefined") return "home";
 
+  // 1. prvo gledamo PATH (SEO URL)
+  const path = window.location.pathname;
+
+  if (path === "/shop") return "shop";
+  if (path === "/journal") return "journal";
+
+  // 2. fallback na query (stari sistem)
   const params = new URLSearchParams(window.location.search);
   const urlView = params.get("view");
 
-  return ["home", "shop", "journal"].includes(urlView) ? urlView : "home";
+  return ["home", "shop", "journal"].includes(urlView)
+    ? urlView
+    : "home";
 };
-
-const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 
 /* =========================================
    APP
@@ -3800,6 +3807,22 @@ useEffect(() => {
   };
 }, []);
 
+useEffect(() => {
+  const handlePopState = () => {
+    setView(getInitialView());
+
+    requestAnimationFrame(() => {
+      smoothScrollToTop();
+    });
+  };
+
+  window.addEventListener("popstate", handlePopState);
+
+  return () => {
+    window.removeEventListener("popstate", handlePopState);
+  };
+}, []);
+
 /* feedback helper */
 
 const sendJournalFeedback = (article, override = {}) => {
@@ -4154,17 +4177,41 @@ const stickyCtaData = useMemo(() => {
   /* =========================================
      ACTIONS
   ========================================= */
-  const switchView = (nextView) => {
+  const routeForView = (nextView) => {
+  if (nextView === "shop") return "/shop";
+  if (nextView === "journal") return "/journal";
+  return "/";
+};
+
+const switchView = (nextView) => {
+  const nextPath = routeForView(nextView);
+
   if (view !== nextView) {
     setView(nextView);
   }
 
-  trackPageView(nextView === "shop" ? "/?view=shop" : "/");
+  // 👉 PUSH CLEAN URL
+  if (window.location.pathname !== nextPath) {
+    window.history.pushState({}, "", nextPath);
+  }
+
+  // 👉 (opciono) zadrži query za debug ako želiš
+  // window.history.pushState({}, "", `${nextPath}?view=${nextView}`);
+
+  trackPageView(nextPath);
   trackMeta("PageView");
 
   requestAnimationFrame(() => {
     smoothScrollToTop();
   });
+};
+
+const goHome = () => {
+  switchView("home");
+};
+
+const goToJournal = () => {
+  switchView("journal");
 };
 
   const toggleWishlist = (productId) => {
