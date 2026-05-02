@@ -4430,6 +4430,45 @@ body.scrolled .announcement-bar-inner::before {
     background 0.22s ease;
 }
 
+/* =========================================
+   MODAL ADD TO CART — ADDED STATE
+========================================= */
+
+.modal-add-button.is-added {
+  background:
+    linear-gradient(135deg, rgba(170, 226, 188, 0.98) 0%, rgba(103, 184, 134, 0.98) 48%, rgba(64, 138, 92, 0.98) 100%);
+  border-color: rgba(170, 226, 188, 0.5);
+  color: #07130b;
+
+  box-shadow:
+    0 16px 38px rgba(103, 184, 134, 0.22),
+    0 0 0 1px rgba(170, 226, 188, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+
+  transform: translateY(-1px) scale(1.01);
+}
+
+.modal-add-button.is-added::before {
+  animation: none;
+  opacity: 0;
+}
+
+.modal-add-button.is-added span {
+  animation: modalAddedPop 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalAddedPop {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.55;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .modal-cta-group {
   display: flex;
   flex-direction: column;

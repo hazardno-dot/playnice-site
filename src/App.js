@@ -3257,6 +3257,8 @@ function App() {
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
   const [productModalVisible, setProductModalVisible] = useState(false);
+  const [modalAddedKey, setModalAddedKey] = useState(null);
+  const modalAddedTimeoutRef = useRef(null);
 
   const [wishlist, setWishlist] = useState(() =>
     safeReadLocalStorage("playnice_wishlist", [])
@@ -3790,6 +3792,14 @@ useEffect(() => {
   setJournalVoteSuccess("");
 }, [selectedArticle]);
 
+useEffect(() => {
+  return () => {
+    if (modalAddedTimeoutRef.current) {
+      clearTimeout(modalAddedTimeoutRef.current);
+    }
+  };
+}, []);
+
 /* feedback helper */
 
 const sendJournalFeedback = (article, override = {}) => {
@@ -4219,80 +4229,97 @@ const stickyCtaData = useMemo(() => {
   };
 
   const addToCart = (
-    product,
-    size,
-    customPrice = null,
-    customLabel = null,
-    options = {}
-  ) => {
-    const { showToast = true } = options;
+  product,
+  size,
+  customPrice = null,
+  customLabel = null,
+  options = {}
+) => {
+  const { showToast = true } = options;
 
-    const key = `${product.id}-${size}-${customLabel || ""}`;
-    const price = customPrice ?? product.sizes[size];
-    const label = customLabel || size;
+  const key = `${product.id}-${size}-${customLabel || ""}`;
+  const price = customPrice ?? product.sizes[size];
+  const label = customLabel || size;
 
-    trackEvent("add_to_cart", {
-      currency: "EUR",
-      value: Number(price),
-      item_name: `${product.name} ${label}`,
-      item_category: product.category
-    });
+  trackEvent("add_to_cart", {
+    currency: "EUR",
+    value: Number(price),
+    item_name: `${product.name} ${label}`,
+    item_category: product.category
+  });
 
-    trackMeta("AddToCart", {
-      content_name: `${product.name} ${label}`,
-      content_category: product.category,
-      value: Number(price),
-      currency: "EUR"
-    });
+  trackMeta("AddToCart", {
+    content_name: `${product.name} ${label}`,
+    content_category: product.category,
+    value: Number(price),
+    currency: "EUR"
+  });
 
-    setCart((prev) => {
-      const existing = prev.find((item) => item.key === key);
+  setCart((prev) => {
+    const existing = prev.find((item) => item.key === key);
 
-      if (existing) {
-        return prev.map((item) =>
-          item.key === key ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-
-      return [
-        ...prev,
-        {
-          key,
-          id: product.id,
-          name: product.name,
-          size: label,
-          price,
-          quantity: 1
-        }
-      ];
-    });
-
-    if (showToast) {
-      showFeedback(`${product.name} ${tr.addedToCart}`);
+    if (existing) {
+      return prev.map((item) =>
+        item.key === key ? { ...item, quantity: item.quantity + 1 } : item
+      );
     }
+
+    return [
+      ...prev,
+      {
+        key,
+        id: product.id,
+        name: product.name,
+        size: label,
+        price,
+        quantity: 1
+      }
+    ];
+  });
+
+  if (showToast) {
+    showFeedback(`${product.name} ${tr.addedToCart}`);
+  }
+};
+
+const triggerInlineAddedFeedback = (productId, size) => {
+  const key = `${productId}-${size}`;
+  setInlineAddedKey(key);
+
+  setTimeout(() => {
+    setInlineAddedKey((current) => (current === key ? null : current));
+  }, 500);
+};
+
+const handleModalAddToCart = (product, size) => {
+  if (!product || !size) return;
+
+  addToCart(product, size);
+
+  const key = `${product.id}-${size}`;
+  setModalAddedKey(key);
+
+  if (modalAddedTimeoutRef.current) {
+    clearTimeout(modalAddedTimeoutRef.current);
+  }
+
+  modalAddedTimeoutRef.current = setTimeout(() => {
+    setModalAddedKey(null);
+  }, 1300);
+};
+
+const addHeroBottleToCart = () => {
+  const heroProduct = {
+    id: 999,
+    name: "Afnan 9PM Rebel",
+    image: "/hero/hero-bottle.png",
+    sizes: { "100ml": 34.9 }
   };
 
-  const triggerInlineAddedFeedback = (productId, size) => {
-    const key = `${productId}-${size}`;
-    setInlineAddedKey(key);
-
-    setTimeout(() => {
-      setInlineAddedKey((current) => (current === key ? null : current));
-    }, 500);
-  };
-
-  const addHeroBottleToCart = () => {
-    const heroProduct = {
-      id: 999,
-      name: "Afnan 9PM Rebel",
-      image: "/hero/hero-bottle.png",
-      sizes: { "100ml": 34.9 }
-    };
-
-    addToCart(heroProduct, "100ml", 34.9, "100ml Full Bottle");
-setCartOpen(true);
-setCheckoutOpen(false);
-  };
+  addToCart(heroProduct, "100ml", 34.9, "100ml Full Bottle");
+  setCartOpen(true);
+  setCheckoutOpen(false);
+};
 
   const updateQuantity = (key, delta) => {
     setCart((prev) =>
@@ -6872,18 +6899,34 @@ const getSizeWearHint = (size) => {
               </div>
 
               <div className="modal-cta-group">
-                <button
-                  type="button"
-                  className="modal-add-button"
-                  onClick={() => {
-                    const activeSize =
-                      selectedSize || Object.keys(selectedProduct.sizes)[0];
-                    addToCart(selectedProduct, activeSize);
-                    setCartOpen(true);
-                  }}
-                >
-                  <span>{lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}</span>
-                </button>
+                {(() => {
+  const activeSize =
+    selectedSize || Object.keys(selectedProduct.sizes)[0];
+
+  const modalKey = `${selectedProduct.id}-${activeSize}`;
+  const isModalAdded = modalAddedKey === modalKey;
+
+  return (
+    <button
+      type="button"
+      className={`modal-add-button ${isModalAdded ? "is-added" : ""}`}
+      onClick={() => {
+        handleModalAddToCart(selectedProduct, activeSize);
+      }}
+      aria-live="polite"
+    >
+      <span>
+        {isModalAdded
+          ? lang === "sr"
+            ? "DODATO ✓"
+            : "ADDED ✓"
+          : lang === "sr"
+            ? "DODAJ U KORPU"
+            : "ADD TO CART"}
+      </span>
+    </button>
+  );
+})()}
 
                 {hasUserPickedSize && (
                   <button
