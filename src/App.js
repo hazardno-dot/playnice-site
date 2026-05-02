@@ -4013,13 +4013,21 @@ const journalUnreadCount = hasNewJournalArticle ? 1 : 0;
 const markLatestJournalAsSeen = () => {
   if (!latestJournalArticleKey) return;
 
+  const keyToSave = String(latestJournalArticleKey);
+
   try {
-    localStorage.setItem(JOURNAL_SEEN_KEY, String(latestJournalArticleKey));
+    window.localStorage.setItem(JOURNAL_SEEN_KEY, keyToSave);
+
+    console.log("SAVED JOURNAL KEY:", keyToSave);
+    console.log(
+      "READ BACK:",
+      window.localStorage.getItem(JOURNAL_SEEN_KEY)
+    );
   } catch (error) {
     console.error("Failed to save seen journal article:", error);
   }
 
-  setSeenLatestJournalKey(String(latestJournalArticleKey));
+  setSeenLatestJournalKey(keyToSave);
 };
 
 const handleJournalOpen = () => {
