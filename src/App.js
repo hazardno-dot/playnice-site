@@ -3287,6 +3287,8 @@ function App() {
   const [selectedArticle, setSelectedArticle] = useState(null);
 
   const [seenLatestJournalKey, setSeenLatestJournalKey] = useState(() => {
+  if (typeof window === "undefined") return "";
+
   try {
     return localStorage.getItem(JOURNAL_SEEN_KEY) || "";
   } catch {
@@ -4004,7 +4006,7 @@ const latestJournalArticleKey = latestJournalArticle?.id
 
 const hasNewJournalArticle =
   Boolean(latestJournalArticleKey) &&
-  seenLatestJournalKey !== latestJournalArticleKey;
+  String(seenLatestJournalKey) !== String(latestJournalArticleKey);
 
 const journalUnreadCount = hasNewJournalArticle ? 1 : 0;
 
@@ -4012,12 +4014,12 @@ const markLatestJournalAsSeen = () => {
   if (!latestJournalArticleKey) return;
 
   try {
-    localStorage.setItem(JOURNAL_SEEN_KEY, latestJournalArticleKey);
+    localStorage.setItem(JOURNAL_SEEN_KEY, String(latestJournalArticleKey));
   } catch (error) {
     console.error("Failed to save seen journal article:", error);
   }
 
-  setSeenLatestJournalKey(latestJournalArticleKey);
+  setSeenLatestJournalKey(String(latestJournalArticleKey));
 };
 
 const handleJournalOpen = () => {
@@ -4032,7 +4034,7 @@ const handleJournalArticleOpen = (article) => {
   setJournalOpen(true);
   setSelectedArticle(article);
 
-  if (String(article.id) === latestJournalArticleKey) {
+  if (String(article.id) === String(latestJournalArticleKey)) {
     markLatestJournalAsSeen();
   }
 
