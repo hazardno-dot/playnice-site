@@ -4614,6 +4614,55 @@ const openImpactProductModal = (product) => {
     toggleWishlist(productId);
   };
 
+  useEffect(() => {
+  const seoTitle = selectedProduct
+    ? `${selectedProduct.name} | Dekant Crna Gora | PlayNice`
+    : view === "shop"
+    ? "Shop | Premium parfemi i dekanti u Crnoj Gori | PlayNice"
+    : view === "journal"
+    ? "Journal | Mirisne priče i preporuke | PlayNice"
+    : "PlayNice | Premium parfemi i dekanti u Crnoj Gori";
+
+  const seoDescription = selectedProduct
+    ? `${selectedProduct.name} dostupan kao dekant u Crnoj Gori. Probaj miris prije kupovine uz PlayNice.`
+    : view === "shop"
+    ? "Istraži PlayNice kolekciju premium parfema i dekanata u Crnoj Gori. Designer, niche i Arabian mirisi, dostava širom Crne Gore."
+    : view === "journal"
+    ? "PlayNice Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
+    : "Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi.";
+
+  const seoUrl = selectedProduct
+    ? `https://www.playniceshop.me${getProductUrl(selectedProduct)}`
+    : view === "shop"
+    ? "https://www.playniceshop.me/shop"
+    : view === "journal"
+    ? "https://www.playniceshop.me/journal"
+    : "https://www.playniceshop.me/";
+
+  const seoImage = selectedProduct?.image
+    ? `https://www.playniceshop.me${selectedProduct.image}`
+    : "https://www.playniceshop.me/og-image.jpg";
+
+  document.title = seoTitle;
+
+  const setMeta = (selector, attribute, value) => {
+    const element = document.head.querySelector(selector);
+    if (element) {
+      element.setAttribute(attribute, value);
+    }
+  };
+
+  setMeta('meta[name="description"]', "content", seoDescription);
+  setMeta('link[rel="canonical"]', "href", seoUrl);
+  setMeta('meta[property="og:title"]', "content", seoTitle);
+  setMeta('meta[property="og:description"]', "content", seoDescription);
+  setMeta('meta[property="og:url"]', "content", seoUrl);
+  setMeta('meta[property="og:image"]', "content", seoImage);
+  setMeta('meta[name="twitter:title"]', "content", seoTitle);
+  setMeta('meta[name="twitter:description"]', "content", seoDescription);
+  setMeta('meta[name="twitter:image"]', "content", seoImage);
+}, [view, selectedProduct]);
+
   /* =========================================
    INNER COMPONENTS
 ========================================= */
