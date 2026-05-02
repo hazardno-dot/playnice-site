@@ -3068,6 +3068,157 @@ Remember. PlayNice.`,
 ];
 
 /* =========================================
+   SEO helper
+========================================= */
+
+const SITE_BASE_URL = "https://www.playniceshop.me";
+
+const cleanSeoProductName = (name = "") =>
+  String(name)
+    .replace(/\s+NEW\s*$/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const getSeoProductUrl = (product) => {
+  const url = getProductUrl(product);
+
+  if (!url) return SITE_BASE_URL;
+
+  if (url.startsWith("http")) return url;
+
+  return `${SITE_BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+};
+
+const getSeoProductImage = (product) => {
+  if (!product?.image) return `${SITE_BASE_URL}/og-image.jpg`;
+
+  if (product.image.startsWith("http")) return product.image;
+
+  return `${SITE_BASE_URL}${product.image}`;
+};
+
+const getSeoProductSizes = (product) =>
+  product?.sizes ? Object.keys(product.sizes) : [];
+
+const getSeoProductPrices = (product) =>
+  product?.sizes ? Object.values(product.sizes).filter(Boolean) : [];
+
+const getSeoLowestPrice = (product) => {
+  const prices = getSeoProductPrices(product);
+
+  if (!prices.length) return null;
+
+  return Math.min(...prices);
+};
+
+const getSeoCategoryLabel = (category, lang = "sr") => {
+  const labels = {
+    Arabian: {
+      sr: "arapski parfem",
+      en: "Arabian fragrance"
+    },
+    Designer: {
+      sr: "dizajnerski parfem",
+      en: "designer fragrance"
+    },
+    Niche: {
+      sr: "niche parfem",
+      en: "niche fragrance"
+    }
+  };
+
+  return labels?.[category]?.[lang] || (lang === "en" ? "fragrance" : "parfem");
+};
+
+const getSeoSeasonText = (season, lang = "sr") => {
+  const labels = {
+    summer: {
+      sr: "Posebno dobar izbor za toplije dane.",
+      en: "Especially suited for warmer days."
+    },
+    winter: {
+      sr: "Posebno dobar izbor za hladnije dane.",
+      en: "Especially suited for colder days."
+    },
+    all: {
+      sr: "Lako nosiv tokom cijele godine.",
+      en: "Easy to wear all year round."
+    },
+    spring: {
+      sr: "Odličan izbor za proljeće.",
+      en: "A great choice for spring."
+    },
+    autumn: {
+      sr: "Odličan izbor za jesen.",
+      en: "A great choice for autumn."
+    }
+  };
+
+  return labels?.[season]?.[lang] || "";
+};
+
+const getSeoProductCopy = (product, lang = "sr") => {
+  const cleanName = cleanSeoProductName(product?.name);
+  const directCopy = productCopy?.[cleanName];
+  const fallbackCopy = productCopy?.[product?.name];
+
+  const copy = directCopy || fallbackCopy;
+
+  if (copy?.modal?.[lang]) return copy.modal[lang];
+  if (copy?.card?.[lang]) return copy.card[lang];
+
+  return "";
+};
+
+const getProductSeoTitle = (product, lang = "sr") => {
+  const name = cleanSeoProductName(product?.name);
+
+  if (lang === "en") {
+    return `${name} decants | Try before you buy | PlayNice`;
+  }
+
+  return `${name} dekanti | Probaj prije kupovine | PlayNice`;
+};
+
+const getProductSeoDescription = (product, lang = "sr") => {
+  const name = cleanSeoProductName(product?.name);
+  const category = getSeoCategoryLabel(product?.category, lang);
+  const sizes = getSeoProductSizes(product);
+  const sizeText = sizes.length ? sizes.join(", ") : lang === "en" ? "decants" : "dekantima";
+  const lowestPrice = getSeoLowestPrice(product);
+  const productCopyText = getSeoProductCopy(product, lang);
+  const seasonText = getSeoSeasonText(product?.season, lang);
+
+  if (lang === "en") {
+    return [
+      `${name} is available at PlayNice as a ${category} in ${sizeText} sizes${lowestPrice ? ` from €${lowestPrice}` : ""}.`,
+      productCopyText,
+      seasonText,
+      "Try before you buy, with delivery across Montenegro and payment on delivery."
+    ]
+      .filter(Boolean)
+      .join(" ");
+  }
+
+  return [
+    `${name} je dostupan u PlayNice ponudi kao ${category} u ${sizeText} dekantima${lowestPrice ? ` već od €${lowestPrice}` : ""}.`,
+    productCopyText,
+    seasonText,
+    "Probaj parfem prije kupovine cijele bočice, uz dostavu širom Crne Gore i plaćanje pouzećem."
+  ]
+    .filter(Boolean)
+    .join(" ");
+};
+
+const getProductMetaDescription = (product, lang = "sr") => {
+  const description = getProductSeoDescription(product, lang);
+
+  if (description.length <= 160) return description;
+
+  return `${description.slice(0, 157).trim()}...`;
+};
+
+/* =========================================
    GLOBAL CONSTANTS & HELPERS
 ========================================= */
 const PRODUCTS_PER_PAGE = 12;
@@ -4625,52 +4776,89 @@ const openImpactProductModal = (product) => {
 
   useEffect(() => {
   const seoTitle = selectedProduct
-    ? `${selectedProduct.name} | Dekant Crna Gora | PlayNice`
+    ? getProductSeoTitle(selectedProduct, lang)
     : view === "shop"
-    ? "Shop | Premium parfemi i dekanti u Crnoj Gori | PlayNice"
+    ? lang === "en"
+      ? "Shop | Premium fragrances and decants in Montenegro | PlayNice"
+      : "Shop | Premium parfemi i dekanti u Crnoj Gori | PlayNice"
     : view === "journal"
-    ? "Journal | Mirisne priče i preporuke | PlayNice"
+    ? lang === "en"
+      ? "Journal | Fragrance stories and recommendations | PlayNice"
+      : "Journal | Mirisne priče i preporuke | PlayNice"
+    : lang === "en"
+    ? "PlayNice | Premium fragrances and decants in Montenegro"
     : "PlayNice | Premium parfemi i dekanti u Crnoj Gori";
 
   const seoDescription = selectedProduct
-    ? `${selectedProduct.name} dostupan kao dekant u Crnoj Gori. Probaj miris prije kupovine uz PlayNice.`
+    ? getProductMetaDescription(selectedProduct, lang)
     : view === "shop"
-    ? "Istraži PlayNice kolekciju premium parfema i dekanata u Crnoj Gori. Designer, niche i Arabian mirisi, dostava širom Crne Gore."
+    ? lang === "en"
+      ? "Explore the PlayNice collection of premium fragrance decants in Montenegro. Designer, niche and Arabian fragrances with delivery across Montenegro."
+      : "Istraži PlayNice kolekciju premium parfema i dekanata u Crnoj Gori. Designer, niche i Arabian mirisi, dostava širom Crne Gore."
     : view === "journal"
-    ? "PlayNice Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
+    ? lang === "en"
+      ? "PlayNice Journal brings short fragrance stories, recommendations and guides for choosing the right perfume."
+      : "PlayNice Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
+    : lang === "en"
+    ? "Premium fragrance decants and original perfumes in Montenegro. Try before you buy with PlayNice — designer, niche and Arabian fragrances."
     : "Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi.";
 
   const seoUrl = selectedProduct
-    ? `https://www.playniceshop.me${getProductUrl(selectedProduct)}`
+    ? getSeoProductUrl(selectedProduct)
     : view === "shop"
-    ? "https://www.playniceshop.me/shop"
+    ? `${SITE_BASE_URL}/shop`
     : view === "journal"
-    ? "https://www.playniceshop.me/journal"
-    : "https://www.playniceshop.me/";
+    ? `${SITE_BASE_URL}/journal`
+    : `${SITE_BASE_URL}/`;
 
-  const seoImage = selectedProduct?.image
-    ? `https://www.playniceshop.me${selectedProduct.image}`
-    : "https://www.playniceshop.me/og-image.jpg";
+  const seoImage = selectedProduct
+    ? getSeoProductImage(selectedProduct)
+    : `${SITE_BASE_URL}/og-image.jpg`;
 
   document.title = seoTitle;
 
   const setMeta = (selector, attribute, value) => {
-    const element = document.head.querySelector(selector);
-    if (element) {
-      element.setAttribute(attribute, value);
+    let element = document.head.querySelector(selector);
+
+    if (!element) {
+      if (selector.startsWith("link")) {
+        element = document.createElement("link");
+        element.setAttribute("rel", "canonical");
+      } else {
+        element = document.createElement("meta");
+
+        const nameMatch = selector.match(/name="([^"]+)"/);
+        const propertyMatch = selector.match(/property="([^"]+)"/);
+
+        if (nameMatch?.[1]) {
+          element.setAttribute("name", nameMatch[1]);
+        }
+
+        if (propertyMatch?.[1]) {
+          element.setAttribute("property", propertyMatch[1]);
+        }
+      }
+
+      document.head.appendChild(element);
     }
+
+    element.setAttribute(attribute, value);
   };
 
   setMeta('meta[name="description"]', "content", seoDescription);
   setMeta('link[rel="canonical"]', "href", seoUrl);
+
   setMeta('meta[property="og:title"]', "content", seoTitle);
   setMeta('meta[property="og:description"]', "content", seoDescription);
   setMeta('meta[property="og:url"]', "content", seoUrl);
   setMeta('meta[property="og:image"]', "content", seoImage);
+  setMeta('meta[property="og:type"]', "content", selectedProduct ? "product" : "website");
+
   setMeta('meta[name="twitter:title"]', "content", seoTitle);
   setMeta('meta[name="twitter:description"]', "content", seoDescription);
   setMeta('meta[name="twitter:image"]', "content", seoImage);
-}, [view, selectedProduct]);
+  setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
+}, [view, selectedProduct, lang]);
 
   /* =========================================
    INNER COMPONENTS
