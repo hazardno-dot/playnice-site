@@ -3975,6 +3975,12 @@ const handleJournalFeedbackSubmit = (article) => {
   }, 1200);
 };
 
+const handleJournalClose = () => {
+  setJournalOpen(false);
+  setSelectedArticle(null);
+  switchView("home");
+};
+
 /* =========================================
    DERIVED DATA
 ========================================= */
@@ -6387,12 +6393,9 @@ const getSizeWearHint = (size) => {
       {journalOpen && (
   <div
     className="journal-overlay"
-    onClick={() => {
-      setJournalOpen(false);
-      setSelectedArticle(null);
-    }}
-  >
-    <section
+    onClick={handleJournalClose}
+  >    
+  <section
       className="journal-top-sheet"
       onClick={(e) => e.stopPropagation()}
     >
@@ -6412,18 +6415,15 @@ const getSizeWearHint = (size) => {
         </div>
 
         <button
-          type="button"
-          className="journal-close-btn"
-          onClick={() => {
-            setJournalOpen(false);
-            setSelectedArticle(null);
-          }}
-          aria-label={tr.journalClose}
-        >
-          ×
-        </button>
-      </div>
+  type="button"
+  className="journal-close-btn"
+  onClick={handleJournalClose}
+  aria-label={tr.journalClose}
+>
+  ×
+</button>
 
+   </div>
       <div className="journal-body-scroll">
 
         {sortedJournalArticles?.[0] && (
