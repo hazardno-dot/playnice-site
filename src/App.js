@@ -4288,7 +4288,7 @@ const triggerInlineAddedFeedback = (productId, size) => {
 
   setTimeout(() => {
     setInlineAddedKey((current) => (current === key ? null : current));
-  }, 500);
+  }, 1300);
 };
 
 const handleModalAddToCart = (product, size) => {
