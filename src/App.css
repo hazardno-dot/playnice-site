@@ -3284,22 +3284,125 @@ body.scrolled .announcement-bar-inner::before {
 }
 
 /* =========================================
-   SHIPPING PROGRESS V2 (PREMIUM)
+   CART DRAWER — SCROLL AREA + FIXED FOOTER
 ========================================= */
+
+.cart-drawer.has-items {
+  height: calc(100vh - 36px);
+  max-height: calc(100vh - 36px);
+}
+
+.cart-drawer-header {
+  flex: 0 0 auto;
+}
+
+.cart-scroll-area {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(220, 181, 107, 0.34) transparent;
+}
+
+.cart-scroll-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cart-scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cart-scroll-area::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(220, 181, 107, 0.28);
+}
+
+.cart-items {
+  flex: none;
+  overflow: visible;
+  padding: 12px 24px 0;
+}
+
+.cart-summary {
+  flex: none;
+  padding: 14px 24px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.012),
+    rgba(255, 255, 255, 0)
+  );
+}
+
+.cart-fixed-footer {
+  flex: 0 0 auto;
+  padding: 14px 24px 22px;
+  border-top: 1px solid rgba(220, 181, 107, 0.12);
+
+  background:
+    linear-gradient(180deg, rgba(18, 18, 18, 0.92), rgba(9, 9, 9, 0.98)),
+    rgba(9, 9, 9, 0.98);
+
+  box-shadow:
+    0 -18px 34px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.cart-fixed-footer .cart-grand-total {
+  margin: 0 0 14px;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.cart-fixed-footer .cart-grand-total span {
+  color: rgba(255, 248, 235, 0.9);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.cart-fixed-footer .cart-grand-total strong {
+  color: #f7f0e6;
+  font-size: 1.65rem;
+  line-height: 1;
+  font-weight: 850;
+}
+
+.cart-fixed-footer .cart-checkout-button {
+  width: 100%;
+  min-height: 54px;
+  margin: 0;
+  padding: 14px 18px;
+}
+
+.cart-fixed-footer .cart-safe-note {
+  margin: 10px 0 0;
+  text-align: center;
+}
+
+/* =========================================
+   SHIPPING PROGRESS — COMPACT PREMIUM
+========================================= */
+
 .shipping-progress-card {
   position: relative;
-  margin: 16px 0 6px;
-  padding: 16px 16px 14px;
+  margin: 10px 0 12px;
+  padding: 11px 12px 12px;
   border: 1px solid rgba(220, 181, 107, 0.12);
-  border-radius: 18px;
+  border-radius: 15px;
   overflow: hidden;
+
   background:
-    radial-gradient(circle at top left, rgba(220, 181, 107, 0.06), transparent 42%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012)),
-    rgba(255, 255, 255, 0.015);
+    radial-gradient(circle at 12% 0%, rgba(220, 181, 107, 0.075), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.01)),
+    rgba(255, 255, 255, 0.014);
+
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.025),
-    0 16px 32px rgba(0, 0, 0, 0.18);
+    0 10px 22px rgba(0, 0, 0, 0.16);
 }
 
 .shipping-progress-card::before {
@@ -3307,77 +3410,87 @@ body.scrolled .announcement-bar-inner::before {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.03) 20%,
-    transparent 42%
-  );
-  opacity: 0.7;
+
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.035) 28%,
+      transparent 48%
+    );
+
+  opacity: 0.5;
 }
 
 .shipping-note {
   position: relative;
   z-index: 1;
-  margin-bottom: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.45;
-  letter-spacing: 0.02em;
+
+  margin: 0 0 9px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.015em;
 }
 
 .shipping-note-locked {
-  border-color: rgba(208, 92, 92, 0.18);
+  border-color: rgba(208, 92, 92, 0.16);
   background:
-    radial-gradient(circle at top left, rgba(208, 92, 92, 0.08), transparent 40%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012)),
-    rgba(255, 255, 255, 0.015);
+    radial-gradient(circle at 12% 0%, rgba(208, 92, 92, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.01)),
+    rgba(255, 255, 255, 0.014);
 }
 
 .shipping-note-locked .shipping-note {
-  color: #e07a7a;
+  color: rgba(235, 126, 126, 0.94);
 }
 
 .shipping-note-unlocked {
-  border-color: rgba(99, 193, 122, 0.2);
+  border-color: rgba(126, 219, 149, 0.18);
   background:
-    radial-gradient(circle at top left, rgba(99, 193, 122, 0.1), transparent 40%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012)),
-    rgba(255, 255, 255, 0.015);
+    radial-gradient(circle at 12% 0%, rgba(126, 219, 149, 0.11), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.01)),
+    rgba(255, 255, 255, 0.014);
 }
 
 .shipping-note-unlocked .shipping-note {
-  color: #7edb95;
+  color: rgba(126, 219, 149, 0.96);
 }
 
 .shipping-progress-bar {
   position: relative;
   z-index: 1;
+
   width: 100%;
-  height: 12px;
+  height: 7px;
   overflow: hidden;
   border-radius: 999px;
+
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.035)),
     rgba(0, 0, 0, 0.28);
+
   box-shadow:
-    inset 0 2px 4px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    inset 0 1px 3px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
 }
 
 .shipping-progress-fill {
   position: relative;
   height: 100%;
   border-radius: inherit;
+
   background: linear-gradient(
     90deg,
-    #d04b4b 0%,
-    #e0b04b 45%,
-    #63c17a 100%
+    rgba(208, 75, 75, 0.96) 0%,
+    rgba(224, 176, 75, 0.98) 48%,
+    rgba(99, 193, 122, 0.98) 100%
   );
+
   box-shadow:
-    0 0 18px rgba(220, 181, 107, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    0 0 14px rgba(220, 181, 107, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+
   transition:
     width 0.4s ease,
     background 0.3s ease,
@@ -3389,24 +3502,84 @@ body.scrolled .announcement-bar-inner::before {
   position: absolute;
   inset: 0;
   border-radius: inherit;
+
   background: linear-gradient(
     120deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.28) 30%,
-    transparent 60%
+    rgba(255, 255, 255, 0.24) 34%,
+    transparent 64%
   );
-  opacity: 0.7;
+
+  opacity: 0.55;
 }
 
 .shipping-note-unlocked .shipping-progress-fill {
-  background: linear-gradient(90deg, #63c17a 0%, #95e5aa 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(99, 193, 122, 0.98) 0%,
+    rgba(149, 229, 170, 0.98) 100%
+  );
+
   box-shadow:
-    0 0 18px rgba(99, 193, 122, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    0 0 14px rgba(99, 193, 122, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 .checkout-shipping-note {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .cart-drawer.has-items {
+    height: calc(100vh - 20px);
+    max-height: calc(100vh - 20px);
+  }
+
+  .cart-items {
+    padding: 10px 18px 0;
+  }
+
+  .cart-summary {
+    padding: 12px 18px 12px;
+  }
+
+  .cart-fixed-footer {
+    padding: 12px 18px 18px;
+  }
+
+  .cart-fixed-footer .cart-grand-total {
+    margin-bottom: 12px;
+  }
+
+  .cart-fixed-footer .cart-grand-total strong {
+    font-size: 1.42rem;
+  }
+
+  .cart-fixed-footer .cart-checkout-button {
+    min-height: 50px;
+    padding: 13px 16px;
+    font-size: 0.86rem;
+  }
+
+  .cart-fixed-footer .cart-safe-note {
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  .shipping-progress-card {
+    margin: 9px 0 11px;
+    padding: 10px 11px 11px;
+    border-radius: 14px;
+  }
+
+  .shipping-note {
+    margin-bottom: 8px;
+    font-size: 11.5px;
+  }
+
+  .shipping-progress-bar {
+    height: 6px;
+  }
 }
 
 /* =========================================
