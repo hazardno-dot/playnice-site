@@ -3220,7 +3220,7 @@ const getProductSeoTitle = (product, lang = "sr") => {
   return `${name} dekanti | Probaj prije kupovine | PlayNice`;
 };
 
-const getProductSeoDescription = (product, lang = "sr") => {
+  const getProductSeoDescription = (product, lang = "sr") => {
   const name = cleanSeoProductName(product?.name);
   const category = getSeoCategoryLabel(product?.category, lang);
   const sizes = getSeoProductSizes(product);
@@ -3231,7 +3231,7 @@ const getProductSeoDescription = (product, lang = "sr") => {
 
   if (lang === "en") {
     return [
-      `${name} is available at PlayNice as a ${category} in ${sizeText} sizes${lowestPrice ? ` from €${lowestPrice}` : ""}.`,
+      `${name} is available at PlayNice as ${getEnglishArticle(category)} ${category} in ${sizeText} sizes${lowestPrice ? ` from €${lowestPrice}` : ""}.`,
       productCopyText,
       seasonText,
       "Try before you buy, with delivery across Montenegro and payment on delivery."
@@ -3259,6 +3259,15 @@ const getProductMetaDescription = (product, lang = "sr") => {
 };
 
 /* =========================================
+   Arabian fragrance "AN" HELPER
+========================================= */
+const getEnglishArticle = (text = "") => {
+  const firstLetter = String(text).trim().charAt(0).toLowerCase();
+
+  return ["a", "e", "i", "o", "u"].includes(firstLetter) ? "an" : "a";
+};
+
+/* =========================================
    JSON-LD HELPER
 ========================================= */
 const getProductStructuredData = (product, lang = "sr") => {
@@ -3278,6 +3287,7 @@ const getProductStructuredData = (product, lang = "sr") => {
       name: `${name} ${size} decant`,
       priceCurrency: "EUR",
       price: String(price),
+      priceValidUntil: "2026-12-31",
       availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
       seller: {
