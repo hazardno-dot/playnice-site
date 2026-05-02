@@ -3217,19 +3217,28 @@ const getJournalArticleKey = (article) => {
 const getInitialView = () => {
   if (typeof window === "undefined") return "home";
 
-  // 1. prvo gledamo PATH (SEO URL)
   const path = window.location.pathname;
 
   if (path === "/shop") return "shop";
   if (path === "/journal") return "journal";
+  if (path.startsWith("/product/")) return "shop";
 
-  // 2. fallback na query (stari sistem)
   const params = new URLSearchParams(window.location.search);
   const urlView = params.get("view");
 
   return ["home", "shop", "journal"].includes(urlView)
     ? urlView
     : "home";
+};
+
+const createProductSlug = (name = "") => {
+  return String(name)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 };
 
 /* =========================================
@@ -4510,8 +4519,16 @@ const addHeroBottleToCart = () => {
     });
   };
 
-  const openProductModal = (product) => {
+  const getProductUrl = (product) => {
+  if (!product?.name) return "/shop";
+
+  return `/product/${slugifyProduct(product.name)}`;
+};
+
+  const openProductModal = (product, options = {}) => {
   if (!product) return;
+
+  const { updateUrl = true } = options;
 
   if (productModalCloseTimeoutRef.current) {
     clearTimeout(productModalCloseTimeoutRef.current);
@@ -4520,10 +4537,22 @@ const addHeroBottleToCart = () => {
 
   productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
 
+  setView("shop");
   setSelectedProduct(product);
   setSelectedSize(Object.keys(product.sizes || {})[0] || "");
   setHasUserPickedSize(false);
   setProductModalVisible(false);
+
+  if (updateUrl) {
+    const productUrl = getProductUrl(product);
+
+    if (window.location.pathname !== productUrl) {
+      window.history.pushState({}, "", productUrl);
+    }
+
+    trackPageView(productUrl);
+    trackMeta("PageView");
+  }
 
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
@@ -4531,6 +4560,25 @@ const addHeroBottleToCart = () => {
     });
   });
 };
+
+useEffect(() => {
+  const path = window.location.pathname;
+
+  if (!path.startsWith("/product/")) return;
+
+  const slugFromUrl = path.replace("/product/", "").replace(/\/$/, "");
+
+  const matchedProduct = products.find(
+    (product) => slugifyProduct(product.name) === slugFromUrl
+  );
+
+  if (!matchedProduct) {
+    setView("shop");
+    return;
+  }
+
+  openProductModal(matchedProduct, { updateUrl: false });
+}, []);
 
 const closeProductModal = () => {
   setProductModalVisible(false);
@@ -4544,6 +4592,12 @@ const closeProductModal = () => {
     setSelectedProduct(null);
     setSelectedSize("");
     productModalCloseTimeoutRef.current = null;
+
+    if (window.location.pathname.startsWith("/product/")) {
+      window.history.pushState({}, "", "/shop");
+      trackPageView("/shop");
+      trackMeta("PageView");
+    }
   }, 200);
 };
 
