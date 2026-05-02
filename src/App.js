@@ -3079,6 +3079,34 @@ const cleanSeoProductName = (name = "") =>
     .replace(/\s+/g, " ")
     .trim();
 
+    const getProductSlug = (product) => {
+  if (!product) return "";
+
+  if (product.slug) {
+    return String(product.slug)
+      .replace(/^\/+|\/+$/g, "")
+      .trim();
+  }
+
+  return String(product.name || "")
+    .replace(/\s+NEW\s*$/i, "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .trim();
+};
+
+const getProductUrl = (product) => {
+  const slug = getProductSlug(product);
+
+  if (!slug) return "/shop";
+
+  return `/product/${slug}`;
+};
+
 const getSeoProductUrl = (product) => {
   const url = getProductUrl(product);
 
