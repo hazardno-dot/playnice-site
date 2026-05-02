@@ -4019,12 +4019,6 @@ const markLatestJournalAsSeen = () => {
 
   try {
     window.localStorage.setItem(JOURNAL_SEEN_KEY, keyToSave);
-
-    console.log("SAVED JOURNAL KEY:", keyToSave);
-    console.log(
-      "READ BACK:",
-      window.localStorage.getItem(JOURNAL_SEEN_KEY)
-    );
   } catch (error) {
     console.error("Failed to save seen journal article:", error);
   }
