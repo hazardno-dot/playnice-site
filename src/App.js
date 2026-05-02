@@ -3070,7 +3070,6 @@ Remember. PlayNice.`,
 /* =========================================
    SEO helper
 ========================================= */
-
 const SITE_BASE_URL = "https://www.playniceshop.me";
 
 const cleanSeoProductName = (name = "") =>
@@ -3244,6 +3243,52 @@ const getProductMetaDescription = (product, lang = "sr") => {
   if (description.length <= 160) return description;
 
   return `${description.slice(0, 157).trim()}...`;
+};
+
+/* =========================================
+   JSON-LD HELPER
+========================================= */
+const getProductStructuredData = (product, lang = "sr") => {
+  if (!product) return null;
+
+  const name = cleanSeoProductName(product.name);
+  const productUrl = getSeoProductUrl(product);
+  const imageUrl = getSeoProductImage(product);
+  const description = getProductSeoDescription(product, lang);
+  const sizes = product?.sizes || {};
+
+  const offers = Object.entries(sizes)
+    .filter(([, price]) => price)
+    .map(([size, price]) => ({
+      "@type": "Offer",
+      url: productUrl,
+      name: `${name} ${size} decant`,
+      priceCurrency: "EUR",
+      price: String(price),
+      availability: "https://schema.org/InStock",
+      itemCondition: "https://schema.org/NewCondition",
+      seller: {
+        "@type": "Organization",
+        name: "PlayNice",
+        url: SITE_BASE_URL
+      }
+    }));
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name,
+    image: [imageUrl],
+    description,
+    sku: String(product.id || getProductSlug(product)),
+    category: product.category || "Fragrance",
+    url: productUrl,
+    brand: {
+      "@type": "Brand",
+      name: name.split(" ")[0]
+    },
+    offers
+  };
 };
 
 /* =========================================
@@ -4802,6 +4847,9 @@ const openImpactProductModal = (product) => {
     toggleWishlist(productId);
   };
 
+/* =========================================
+   SEO title/meta useEffect
+========================================= */
   useEffect(() => {
   const seoTitle = selectedProduct
     ? getProductSeoTitle(selectedProduct, lang)
@@ -4888,7 +4936,39 @@ const openImpactProductModal = (product) => {
   setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
 }, [view, selectedProduct, lang]);
 
-  /* =========================================
+/* =========================================
+   SEO existingSchema useEffect
+========================================= */
+useEffect(() => {
+  const existingSchema = document.getElementById("playnice-product-schema");
+
+  if (existingSchema) {
+    existingSchema.remove();
+  }
+
+  if (!selectedProduct) return;
+
+  const schema = getProductStructuredData(selectedProduct, lang);
+
+  if (!schema) return;
+
+  const script = document.createElement("script");
+  script.id = "playnice-product-schema";
+  script.type = "application/ld+json";
+  script.textContent = JSON.stringify(schema);
+
+  document.head.appendChild(script);
+
+  return () => {
+    const currentSchema = document.getElementById("playnice-product-schema");
+
+    if (currentSchema) {
+      currentSchema.remove();
+    }
+  };
+}, [selectedProduct, lang]);
+
+/* =========================================
    INNER COMPONENTS
 ========================================= */
 const ProductCard = ({
