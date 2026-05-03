@@ -6911,8 +6911,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </div>
       </div>
 
-      <DeliveryReturnsMini surface="cart" />
-
       <div className="cart-fixed-footer panel-anim panel-anim-6">
         <div className="cart-total-row cart-grand-total">
           <span>{tr.total}</span>

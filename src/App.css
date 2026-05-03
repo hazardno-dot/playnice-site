@@ -9584,21 +9584,14 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
-   POLICY POSITION — CART / CHECKOUT
+   POLICY POSITION — CHECKOUT
 ========================================= */
-
-.policy-compact--cart {
-  margin-top: 6px;
-  transform: translateY(-4px);
-}
 
 .policy-compact--checkout {
   margin-top: 6px;
   transform: translateY(-4px);
 }
 
-/* Malo kompenzujemo prostor ispod, da layout ostane zategnut */
-.policy-compact--cart + *,
 .policy-compact--checkout + * {
   margin-top: 6px;
 }
