@@ -9064,9 +9064,10 @@ body.scrolled .announcement-bar {
 
 .site-footer-inner {
   display: grid;
-  grid-template-columns: 1.3fr 0.8fr 0.9fr;
+  grid-template-columns: 1.15fr 0.72fr 0.86fr 1.12fr;
   gap: 28px;
   padding: 0 0 24px;
+  align-items: start;
 }
 
 .footer-brand,
@@ -9188,6 +9189,201 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
+   MINI POLICY — DELIVERY & RETURNS
+========================================= */
+
+.footer-policy-wrap {
+  min-width: 0;
+}
+
+.policy-mini {
+  position: relative;
+  overflow: hidden;
+
+  border: 1px solid rgba(220, 181, 107, 0.14);
+  border-radius: 24px;
+
+  background:
+    radial-gradient(circle at top left, rgba(220, 181, 107, 0.12), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018));
+
+  box-shadow:
+    0 18px 46px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+
+  color: rgba(255, 248, 235, 0.74);
+}
+
+.policy-mini::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.055),
+    transparent 38%,
+    rgba(220, 181, 107, 0.035)
+  );
+
+  opacity: 0.9;
+}
+
+.policy-mini--footer {
+  padding: 18px;
+}
+
+.policy-mini--cart,
+.policy-mini--checkout {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 18px;
+
+  background:
+    radial-gradient(circle at top left, rgba(220, 181, 107, 0.1), transparent 36%),
+    rgba(255, 255, 255, 0.032);
+
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.policy-mini-head {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  margin-bottom: 14px;
+}
+
+.policy-mini-mark {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.24);
+  background: rgba(220, 181, 107, 0.08);
+
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  box-shadow: 0 0 18px rgba(220, 181, 107, 0.12);
+}
+
+.policy-mini-kicker {
+  margin: 0 0 4px;
+
+  font-size: 0.66rem;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  color: rgba(220, 181, 107, 0.72);
+}
+
+.policy-mini h4 {
+  margin: 0;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.32rem;
+  line-height: 1.08;
+  font-weight: 600;
+
+  color: #f6efe6;
+}
+
+.policy-mini-list {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  gap: 8px;
+
+  margin-top: 12px;
+}
+
+.policy-mini-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(220, 181, 107, 0.075);
+}
+
+.policy-mini-row:last-child {
+  border-bottom: 0;
+}
+
+.policy-mini-row span {
+  color: rgba(255, 248, 235, 0.54);
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+.policy-mini-row strong {
+  color: rgba(255, 248, 235, 0.9);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.policy-mini-note {
+  position: relative;
+  z-index: 1;
+
+  margin: 14px 0 0;
+  padding-top: 12px;
+
+  border-top: 1px solid rgba(220, 181, 107, 0.09);
+
+  color: rgba(255, 248, 235, 0.58);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+.policy-mini--cart .policy-mini-head,
+.policy-mini--checkout .policy-mini-head {
+  margin-bottom: 10px;
+}
+
+.policy-mini--cart .policy-mini-mark,
+.policy-mini--checkout .policy-mini-mark {
+  width: 26px;
+  height: 26px;
+  flex-basis: 26px;
+  font-size: 0.7rem;
+}
+
+.policy-mini--cart h4,
+.policy-mini--checkout h4 {
+  font-size: 1.15rem;
+}
+
+.policy-mini--cart .policy-mini-row,
+.policy-mini--checkout .policy-mini-row {
+  padding: 7px 0;
+}
+
+.policy-mini--cart .policy-mini-note,
+.policy-mini--checkout .policy-mini-note {
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+/* =========================================
    RESPONSIVE
 ========================================= */
 @media (max-width: 1024px) {
@@ -9239,6 +9435,29 @@ body.scrolled .announcement-bar {
   .footer-bottom-links {
     gap: 14px;
     flex-wrap: wrap;
+  }
+
+  .policy-mini--footer {
+    padding: 16px;
+    border-radius: 22px;
+  }
+
+  .policy-mini h4 {
+    font-size: 1.22rem;
+  }
+
+  .policy-mini-row {
+    gap: 10px;
+  }
+
+  .policy-mini-row span,
+  .policy-mini-row strong {
+    font-size: 0.84rem;
+  }
+
+  .policy-mini-note {
+    font-size: 0.8rem;
+    line-height: 1.6;
   }
 }
 

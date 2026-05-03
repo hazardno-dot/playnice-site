@@ -5233,6 +5233,71 @@ const getSizeWearHint = (size) => {
   );
 };
 
+/* =========================================
+     DeliveryReturns
+========================================= */
+const DeliveryReturnsMini = ({ surface = "footer" }) => {
+  const isSr = lang === "sr";
+
+  return (
+    <section
+      id={surface === "footer" ? "delivery-returns" : undefined}
+      className={`policy-mini policy-mini--${surface}`}
+      aria-label={isSr ? "Dostava i povrat" : "Delivery and returns"}
+    >
+      <div className="policy-mini-head">
+        <div className="policy-mini-mark">✓</div>
+
+        <div>
+          <p className="policy-mini-kicker">
+            {isSr ? "DOSTAVA I POVRAT" : "DELIVERY & RETURNS"}
+          </p>
+
+          <h4>
+            {isSr
+              ? "Jasno, mirno i bez iznenađenja."
+              : "Clear, calm and no surprises."}
+          </h4>
+        </div>
+      </div>
+
+      <div className="policy-mini-list">
+        <div className="policy-mini-row">
+          <span>{isSr ? "Dostava" : "Delivery"}</span>
+          <strong>
+            {isSr ? "Širom Crne Gore" : "Across Montenegro"}
+          </strong>
+        </div>
+
+        <div className="policy-mini-row">
+          <span>{isSr ? "Cijena dostave" : "Shipping fee"}</span>
+          <strong>€4</strong>
+        </div>
+
+        <div className="policy-mini-row">
+          <span>{isSr ? "Besplatna dostava" : "Free shipping"}</span>
+          <strong>
+            {isSr ? "Preko €39" : "Over €39"}
+          </strong>
+        </div>
+
+        <div className="policy-mini-row">
+          <span>{isSr ? "Plaćanje" : "Payment"}</span>
+          <strong>
+            {isSr ? "Pouzećem" : "Cash on delivery"}
+          </strong>
+        </div>
+      </div>
+
+      <p className="policy-mini-note">
+        {isSr
+          ? "Otvoreni dekanti se ne vraćaju iz higijenskih razloga. Povrat je moguć samo za neotvoreno, nekorišćeno i neoštećeno pakovanje, ili ako je došlo do greške ili oštećenja pri dostavi."
+          : "Opened decants cannot be returned for hygiene reasons. Returns are possible only for unopened, unused and undamaged items, or in case of delivery error or damage."}
+      </p>
+    </section>
+  );
+};
+
   /* =========================================
      RENDER
   ========================================= */
@@ -6016,20 +6081,34 @@ const getSizeWearHint = (size) => {
                 </div>
               </div>
 
+              <div className="footer-policy-wrap">
+               <DeliveryReturnsMini surface="footer" />
+                </div>
+
               <div className="footer-bottom">
                 <p>
                   © 2026 PlayNice.{" "}
                   {lang === "sr" ? "Sva prava zadržana." : "All rights reserved."}
                 </p>
 
-                <div className="footer-bottom-links">
-                  <button type="button" className="footer-mini-link">
-                    {lang === "sr" ? "Privatnost" : "Privacy"}
-                  </button>
-                  <button type="button" className="footer-mini-link">
-                    {lang === "sr" ? "Uslovi" : "Terms"}
-                  </button>
-                </div>
+              <div className="footer-bottom-links">
+                <button
+                  type="button"
+                  className="footer-mini-link"
+                  onClick={() => {
+                  document.getElementById("delivery-returns")?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center"
+                });
+              }}
+            >
+             {lang === "sr" ? "Dostava i povrat" : "Delivery & Returns"}
+                </button>
+
+             <a href="mailto:order@playniceshop.me" className="footer-mini-link">
+             {lang === "sr" ? "Kontakt" : "Contact"}
+              </a>
+            </div>
               </div>
             </footer>
           </>
@@ -6836,6 +6915,8 @@ const getSizeWearHint = (size) => {
         </div>
       </div>
 
+      <DeliveryReturnsMini surface="cart" />
+
       <div className="cart-fixed-footer panel-anim panel-anim-6">
         <div className="cart-total-row cart-grand-total">
           <span>{tr.total}</span>
@@ -7612,6 +7693,8 @@ const getSizeWearHint = (size) => {
           {orderSuccessMessage}
         </div>
       )}
+
+      <DeliveryReturnsMini surface="checkout" />
 
       <button
         className="gold-button submit-order-button panel-anim panel-anim-4"
