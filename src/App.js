@@ -3270,6 +3270,7 @@ const getEnglishArticle = (text = "") => {
 /* =========================================
    JSON-LD HELPER
 ========================================= */
+
 const getProductStructuredData = (product, lang = "sr") => {
   if (!product) return null;
 
@@ -3278,6 +3279,49 @@ const getProductStructuredData = (product, lang = "sr") => {
   const imageUrl = getSeoProductImage(product);
   const description = getProductSeoDescription(product, lang);
   const sizes = product?.sizes || {};
+
+  const shippingDetails = {
+    "@type": "OfferShippingDetails",
+    shippingRate: {
+      "@type": "MonetaryAmount",
+      value: 4,
+      currency: "EUR"
+    },
+    shippingDestination: {
+      "@type": "DefinedRegion",
+      addressCountry: "ME"
+    },
+    deliveryTime: {
+      "@type": "ShippingDeliveryTime",
+      handlingTime: {
+        "@type": "QuantitativeValue",
+        minValue: 0,
+        maxValue: 1,
+        unitCode: "DAY"
+      },
+      transitTime: {
+        "@type": "QuantitativeValue",
+        minValue: 1,
+        maxValue: 3,
+        unitCode: "DAY"
+      }
+    }
+  };
+
+  const hasMerchantReturnPolicy = {
+    "@type": "MerchantReturnPolicy",
+    applicableCountry: "ME",
+    returnPolicyCountry: "ME",
+    returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+    merchantReturnDays: 14,
+    itemCondition: [
+      "https://schema.org/NewCondition",
+      "https://schema.org/DamagedCondition"
+    ],
+    returnMethod: "https://schema.org/ReturnByMail",
+    returnFees: "https://schema.org/ReturnFeesCustomerResponsibility",
+    refundType: "https://schema.org/FullRefund"
+  };
 
   const offers = Object.entries(sizes)
     .filter(([, price]) => price)
@@ -3290,6 +3334,8 @@ const getProductStructuredData = (product, lang = "sr") => {
       priceValidUntil: "2026-12-31",
       availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
+      shippingDetails,
+      hasMerchantReturnPolicy,
       seller: {
         "@type": "Organization",
         name: "PlayNice",
