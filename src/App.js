@@ -3065,6 +3065,144 @@ Remember. PlayNice.`,
   },
   relatedProducts: ["BOSS The Scent Elixir Parfum Intense for Him"]
 },
+
+{
+  id: 9,
+  date: "20 Apr",
+  image: "/hero/slide-1-9pm-night-out.jpg",
+  title: {
+    en: "Special Edition: Fragrances Tonight",
+    sr: "Specijalno izdanje: Mirisi večeras"
+  },
+  excerpt: {
+    en: "Two classics. Different energies. And a few surprises that don’t show up often.",
+    sr: "Dva klasika. Dve energije. I nekoliko iznenađenja koja ne dolaze često."
+  },
+  content: {
+    en: `Good evening. This is Charlie, and you’re watching… something that looks like the news, just with better scents and fewer reasons to worry.
+
+Tonight we have a short but very clear announcement: new fragrances have arrived.
+
+Yes, I know. Take a breath. There’s time for everything.
+
+—
+
+We begin with two main guests.
+
+Two classics. Two completely different characters.
+
+On the left: Dolce & Gabbana The One  
+A gentleman who enters quietly but never leaves unnoticed. Warm, composed, made for the evening. It doesn’t ask for attention — it simply gets it.
+
+On the right: Versace Man Eau Fraîche  
+The complete opposite. Fresh, clean, light, like a day you didn’t manage to ruin. It doesn’t complicate things — it just works.
+
+Two worlds. One decision. Or both, if we’re being honest.
+
+—
+
+But like every good broadcast, this is not all.
+
+In the next segment — reinforcement from the East. A group that doesn’t ask for permission.
+
+Arabian fragrances with attitude. Louder, bolder, the kind that stay even after you think they’re gone. Not for everyone — and not meant to be.
+
+—
+
+And now, what usually comes at the end, but tonight comes right away — the surprise.
+
+A few pieces that don’t show up often. Niche and designer selections that slow you down for a second. Not “just another fragrance” — but a reason to come back and try again.
+
+—
+
+If this sounds like something you should experience in person…
+
+it is.
+
+Our recommendation is simple: come by, try, don’t decide too early, and bring a good mood. The rest tends to work itself out.
+
+—
+
+This has been a special broadcast.
+
+We’re staying here, the fragrances are ready, and you are — if we’re being honest — already halfway here.
+
+And remember, because this goes in the lower right corner of the screen:
+
+It’s not a problem what you wear…  
+it’s a problem when you wear nothing.
+
+Good night.
+
+—
+
+Charlie  
+Remember. PlayNice.`,
+    sr: `Dobro veče. Ovde Čarli, a vi gledate… pa, nešto što liči na vesti, samo sa mnogo boljim mirisima i znatno manje razloga za brigu.
+
+Večeras imamo kratko, ali vrlo konkretno saopštenje: stigli su novi parfemi.
+
+Da, znam. Smirite se. Udahnite. Ima vremena za sve.
+
+—
+
+Na početku emisije — dva glavna gosta.
+
+Dva klasika. Dva potpuno različita karaktera.
+
+Sa leve strane: Dolce & Gabbana The One  
+Gospodin koji ulazi tiho, ali ne izlazi neprimećen. Topao, ozbiljan, večernji tip koji ne traži pažnju, ali je dobija bez pregovora.
+
+Sa desne strane: Versace Man Eau Fraîche  
+Njegov potpuni kontrast. Svež, čist, lagan, kao jutro koje si uspeo da ne pokvariš. Onaj tip koji ne komplikuje stvari — samo radi posao i radi ga dobro.
+
+Dva sveta. Jedan izbor. Ili oba, ako si realan čovek.
+
+—
+
+Ali, kao i svaka dobra emisija, ovo nije sve.
+
+U nastavku programa — pojačanje sa istoka — dolazi ekipa koja ne pita da li sme.
+
+Arapski mirisi sa stavom. Malo glasniji, malo bezobrazniji, oni koji ostanu i kad misliš da su završili. Nisu za svakoga, ali nisu ni napravljeni da budu.
+
+—
+
+I sada, ono što obično ide na kraju, ali večeras ide odmah — iznenađenje.
+
+Par komada koji ne dolaze često. Niche i dizajnerski mirisi, oni zbog kojih se ne žuri, nego se zastane. Oni koji nisu “još jedan parfem”, nego razlog da se vratiš i probaš ponovo.
+
+—
+
+Ako sve ovo zvuči kao nešto što bi trebalo da vidiš uživo…
+
+to je zato što i jeste.
+
+Naša preporuka je jednostavna: dođi, probaj, ne donosi odluke unapred i ponesi dobro raspoloženje. Ostalo će se rešiti samo.
+
+—
+
+Ovo je bilo vanredno uključenje.
+
+Mi ostajemo ovde, mirisi su spremni, a ti si — ako ćemo iskreno — već na pola puta.
+
+I zapamti, jer ovo ide u donji desni ugao ekrana:
+
+Nije problem šta nosiš…  
+problem je kad ništa ne nosiš.
+
+Laku noć.
+
+—
+
+Čarli  
+Remember. PlayNice.`
+  },
+  relatedProducts: [
+    "Dolce & Gabbana The One",
+    "Versace Man Eau Fraîche"
+  ]
+}
 ];
 
 /* =========================================
