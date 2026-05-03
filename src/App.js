@@ -7712,80 +7712,82 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <h4>{tr.orderSummary}</h4>
 
       {cart.length === 0 ? (
-        <p className="checkout-empty panel-item-anim panel-item-1">
-          {tr.noItemsCart}
-        </p>
-      ) : (
-        <>
-          <div className="checkout-summary-items">
-            {cart.map((item, index) => (
-              <div
-                className={`checkout-summary-item panel-item-anim panel-item-${Math.min(
-                  index + 1,
-                  6
-                )}`}
-                key={item.key}
-              >
-                <div>
-                  <strong>{item.name}</strong>
-                  <p>
-                    {item.size} × {item.quantity}
-                  </p>
-                </div>
-                <span>{formatPrice(item.price * item.quantity)}</span>
-              </div>
-            ))}
-          </div>
-
+  <p className="checkout-empty panel-item-anim panel-item-1">
+    {tr.noItemsCart}
+  </p>
+) : (
+  <>
+    <div className="checkout-summary-scroll">
+      <div className="checkout-summary-items">
+        {cart.map((item, index) => (
           <div
-            className={`shipping-progress-card checkout-shipping-note panel-anim panel-anim-4 ${
-              subtotal >= FREE_SHIPPING_THRESHOLD
-                ? "shipping-note-unlocked"
-                : "shipping-note-locked"
-            }`}
+            className={`checkout-summary-item panel-item-anim panel-item-${Math.min(
+              index + 1,
+              6
+            )}`}
+            key={item.key}
           >
-            <div className="shipping-note">
-              {subtotal >= FREE_SHIPPING_THRESHOLD
-                ? `${tr.freeShippingUnlocked} ✓`
-                : tr.freeShippingProgress.replace(
-                    "{{amount}}",
-                    formatPrice(amountLeftForFreeShipping)
-                  )}
-            </div>
-
-            <div className="shipping-progress-bar">
-              <div
-                className="shipping-progress-fill"
-                style={{ width: `${freeShippingProgress}%` }}
-              />
-            </div>
-          </div>
-
-          <DeliveryReturnsMini surface="checkout" />
-
-          <div className="checkout-totals panel-anim panel-anim-6">
             <div>
-              <span>{tr.subtotal}</span>
-              <strong>{formatPrice(subtotal)}</strong>
+              <strong>{item.name}</strong>
+              <p>
+                {item.size} × {item.quantity}
+              </p>
             </div>
-            <div>
-              <span>{tr.shipping}</span>
-              <strong>
-                {shipping === 0 && cart.length > 0
-                  ? "FREE"
-                  : formatPrice(shipping)}
-              </strong>
-            </div>
-            <div className="grand-total">
-              <span>{tr.total}</span>
-              <strong>{formatPrice(total)}</strong>
-            </div>
+
+            <span>{formatPrice(item.price * item.quantity)}</span>
           </div>
-        </>
-      )}
+        ))}
+      </div>
+
+      <div
+        className={`shipping-progress-card checkout-shipping-note panel-anim panel-anim-4 ${
+          subtotal >= FREE_SHIPPING_THRESHOLD
+            ? "shipping-note-unlocked"
+            : "shipping-note-locked"
+        }`}
+      >
+        <div className="shipping-note">
+          {subtotal >= FREE_SHIPPING_THRESHOLD
+            ? `${tr.freeShippingUnlocked} ✓`
+            : tr.freeShippingProgress.replace(
+                "{{amount}}",
+                formatPrice(amountLeftForFreeShipping)
+              )}
+        </div>
+
+        <div className="shipping-progress-bar">
+          <div
+            className="shipping-progress-fill"
+            style={{ width: `${freeShippingProgress}%` }}
+          />
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+
+    <DeliveryReturnsMini surface="checkout" />
+
+    <div className="checkout-totals panel-anim panel-anim-6">
+      <div>
+        <span>{tr.subtotal}</span>
+        <strong>{formatPrice(subtotal)}</strong>
+      </div>
+
+      <div>
+        <span>{tr.shipping}</span>
+        <strong>
+          {shipping === 0 && cart.length > 0
+            ? "FREE"
+            : formatPrice(shipping)}
+        </strong>
+      </div>
+
+      <div className="grand-total">
+        <span>{tr.total}</span>
+        <strong>{formatPrice(total)}</strong>
+      </div>
+    </div>
+  </>
+)}
 
       {catalogPreview && (
         <div className="catalog-modal-overlay" onClick={closeCatalogPreview}>
