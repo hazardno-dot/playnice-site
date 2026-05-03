@@ -7788,6 +7788,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </>
 )}
+    </div>
+  </div>
+</div>
 
       {catalogPreview && (
         <div className="catalog-modal-overlay" onClick={closeCatalogPreview}>
