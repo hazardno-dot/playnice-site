@@ -1399,24 +1399,28 @@ body.scrolled .announcement-bar-inner::before {
 
 /* Target scrollable areas */
 .cart-items,
-.private-selection-items {
+.private-selection-items,
+.checkout-summary-items {
   scrollbar-width: thin;
   scrollbar-color: rgba(220, 181, 107, 0.35) transparent;
 }
 
 /* WebKit */
 .cart-items::-webkit-scrollbar,
-.private-selection-items::-webkit-scrollbar {
+.private-selection-items::-webkit-scrollbar,
+.checkout-summary-items::-webkit-scrollbar {
   width: 8px;
 }
 
 .cart-items::-webkit-scrollbar-track,
-.private-selection-items::-webkit-scrollbar-track {
+.private-selection-items::-webkit-scrollbar-track,
+.checkout-summary-items::-webkit-scrollbar-track {
   background: transparent;
 }
 
 .cart-items::-webkit-scrollbar-thumb,
-.private-selection-items::-webkit-scrollbar-thumb {
+.private-selection-items::-webkit-scrollbar-thumb,
+.checkout-summary-items::-webkit-scrollbar-thumb {
   border-radius: 999px;
   background: linear-gradient(
     180deg,
@@ -1427,11 +1431,14 @@ body.scrolled .announcement-bar-inner::before {
   box-shadow:
     0 0 6px rgba(220, 181, 107, 0.12),
     inset 0 0 4px rgba(255, 255, 255, 0.04);
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .cart-items::-webkit-scrollbar-thumb:hover,
-.private-selection-items::-webkit-scrollbar-thumb:hover {
+.private-selection-items::-webkit-scrollbar-thumb:hover,
+.checkout-summary-items::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(
     180deg,
     rgba(220, 181, 107, 0.34),
@@ -5015,12 +5022,19 @@ body.scrolled .announcement-bar-inner::before {
 .checkout-grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
+
   min-height: 480px;
+  max-height: calc(100vh - 48px);
 }
 
 .checkout-form,
 .checkout-summary {
   padding: 24px;
+}
+
+.checkout-summary {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .checkout-form {
@@ -5050,7 +5064,15 @@ body.scrolled .announcement-bar-inner::before {
 .checkout-summary-items {
   display: grid;
   gap: 14px;
-  margin-bottom: 22px;
+
+  max-height: clamp(180px, 34vh, 320px);
+  margin: 0 -8px 18px 0;
+  padding-right: 8px;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(220, 181, 107, 0.35) transparent;
 }
 
 .checkout-summary-item {
@@ -5185,6 +5207,13 @@ body.scrolled .announcement-bar-inner::before {
   .checkout-summary h4 {
     margin: 0 0 14px;
   }
+
+  .checkout-summary-items {
+  max-height: none;
+  margin-right: 0;
+  padding-right: 0;
+  overflow: visible;
+}
 }
 
 /* =========================================
