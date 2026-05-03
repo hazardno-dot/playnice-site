@@ -9559,122 +9559,26 @@ body.scrolled .announcement-bar {
   line-height: 1;
 }
 
-/* Checkout policy — tighter one-line info + short note */
-
-.policy-compact--checkout {
-  margin: 3px 0 7px;
-  padding: 7px 10px;
-}
-
 .policy-compact--checkout .policy-detail-row {
-  flex-wrap: nowrap;
   margin-top: 5px;
-  gap: 4px 7px;
+  gap: 5px 9px;
 
-  font-size: 0.62rem;
-  line-height: 1.2;
-}
-
-.policy-compact--checkout .policy-detail-row span {
-  white-space: nowrap;
+  font-size: 0.67rem;
+  line-height: 1.25;
 }
 
 .policy-compact--checkout .policy-detail-row span:not(:last-child)::after {
-  margin-left: 7px;
+  margin-left: 9px;
 }
 
+/* U checkoutu skrivamo dugu return rečenicu.
+   Footer ostaje mjesto za puni policy tekst. */
 .policy-compact--checkout p {
-  display: -webkit-box;
-  margin-top: 5px;
-
-  color: rgba(255, 248, 235, 0.44);
-  font-size: 0.62rem;
-  line-height: 1.28;
-
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  display: none;
 }
 
 .policy-compact--checkout + * {
   margin-top: 4px;
-}
-
-/* =========================================
-   CHECKOUT POLICY — INLINE COMPACT
-========================================= */
-
-.policy-compact--checkout {
-  padding: 7px 10px;
-  margin: 3px 0 7px;
-  line-height: 1.35;
-}
-
-/* Title starts inline */
-.policy-compact--checkout .policy-title-row {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-
-  margin-right: 8px;
-  vertical-align: baseline;
-}
-
-.policy-compact--checkout .policy-dot {
-  width: 16px;
-  height: 16px;
-  flex-basis: 16px;
-
-  font-size: 0.55rem;
-}
-
-.policy-compact--checkout .policy-title-row strong {
-  font-size: 0.92rem;
-  line-height: 1;
-}
-
-/* Info starts immediately after title */
-.policy-compact--checkout .policy-detail-row {
-  display: inline;
-  margin: 0;
-
-  color: rgba(255, 248, 235, 0.58);
-  font-size: 0.64rem;
-  line-height: 1.35;
-}
-
-.policy-compact--checkout .policy-detail-row span {
-  display: inline;
-  white-space: nowrap;
-}
-
-/* Same feeling as footer — dot separator */
-.policy-compact--checkout .policy-detail-row span:not(:last-child)::after {
-  content: "•";
-  margin: 0 7px;
-  color: rgba(220, 181, 107, 0.38);
-}
-
-/* Return note continues after the first info line */
-.policy-compact--checkout p {
-  display: inline;
-
-  margin: 0;
-
-  color: rgba(255, 248, 235, 0.43);
-  font-size: 0.64rem;
-  line-height: 1.35;
-
-  overflow: visible;
-
-  -webkit-line-clamp: unset;
-  -webkit-box-orient: initial;
-}
-
-/* Separator before return policy sentence */
-.policy-compact--checkout p::before {
-  content: " • ";
-  color: rgba(220, 181, 107, 0.38);
 }
 
 /* =========================================
