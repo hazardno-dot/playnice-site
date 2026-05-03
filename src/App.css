@@ -9559,22 +9559,41 @@ body.scrolled .announcement-bar {
   line-height: 1;
 }
 
-.policy-compact--checkout .policy-detail-row {
-  margin-top: 5px;
-  gap: 5px 9px;
+/* Checkout policy — tighter one-line info + short note */
 
-  font-size: 0.67rem;
-  line-height: 1.25;
+.policy-compact--checkout {
+  margin: 3px 0 7px;
+  padding: 7px 10px;
+}
+
+.policy-compact--checkout .policy-detail-row {
+  flex-wrap: nowrap;
+  margin-top: 5px;
+  gap: 4px 7px;
+
+  font-size: 0.62rem;
+  line-height: 1.2;
+}
+
+.policy-compact--checkout .policy-detail-row span {
+  white-space: nowrap;
 }
 
 .policy-compact--checkout .policy-detail-row span:not(:last-child)::after {
-  margin-left: 9px;
+  margin-left: 7px;
 }
 
-/* U checkoutu skrivamo dugu return rečenicu.
-   Footer ostaje mjesto za puni policy tekst. */
 .policy-compact--checkout p {
-  display: none;
+  display: -webkit-box;
+  margin-top: 5px;
+
+  color: rgba(255, 248, 235, 0.44);
+  font-size: 0.62rem;
+  line-height: 1.28;
+
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .policy-compact--checkout + * {
