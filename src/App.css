@@ -9276,7 +9276,7 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
-   POLICY STRIP — FOOTER / CART / CHECKOUT
+   POLICY STRIP — FOOTER / CHECKOUT
 ========================================= */
 
 .policy-dot {
@@ -9296,7 +9296,7 @@ body.scrolled .announcement-bar {
   font-weight: 700;
 }
 
-/* Footer policy strip */
+/* Footer policy */
 
 .policy-strip {
   margin: 4px 0 18px;
@@ -9370,14 +9370,14 @@ body.scrolled .announcement-bar {
   line-height: 1.55;
 }
 
-/* Cart / Checkout compact policy */
+/* Base compact policy */
 
 .policy-compact {
-  margin-top: 12px;
-  padding: 11px 13px;
+  margin-top: 10px;
+  padding: 10px 12px;
 
   border: 1px solid rgba(220, 181, 107, 0.1);
-  border-radius: 16px;
+  border-radius: 15px;
 
   background:
     linear-gradient(135deg, rgba(220, 181, 107, 0.045), transparent 42%),
@@ -9389,14 +9389,14 @@ body.scrolled .announcement-bar {
 }
 
 .policy-compact .policy-title-row strong {
-  font-size: 1.02rem;
+  font-size: 1rem;
 }
 
 .policy-compact .policy-detail-row {
   margin-top: 7px;
   gap: 7px 11px;
 
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   line-height: 1.35;
 }
 
@@ -9408,36 +9408,64 @@ body.scrolled .announcement-bar {
   margin: 7px 0 0;
 
   color: rgba(255, 248, 235, 0.46);
-  font-size: 0.74rem;
-  line-height: 1.48;
+  font-size: 0.72rem;
+  line-height: 1.42;
 }
 
-/* Checkout should be extra tight */
+/* Checkout policy — micro version */
 
 .policy-compact--checkout {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border-radius: 14px;
+  margin-top: 4px;
+  padding: 8px 10px;
+  border-radius: 13px;
+
+  transform: translateY(-2px);
+}
+
+.policy-compact--checkout .policy-dot {
+  width: 17px;
+  height: 17px;
+  flex-basis: 17px;
+
+  font-size: 0.58rem;
+}
+
+.policy-compact--checkout .policy-title-row {
+  gap: 7px;
 }
 
 .policy-compact--checkout .policy-title-row strong {
-  font-size: 1rem;
+  font-size: 0.94rem;
+  line-height: 1;
 }
 
 .policy-compact--checkout .policy-detail-row {
-  margin-top: 7px;
-  gap: 7px 10px;
+  margin-top: 5px;
+  gap: 5px 9px;
 
-  font-size: 0.74rem;
+  font-size: 0.68rem;
+  line-height: 1.25;
 }
 
 .policy-compact--checkout .policy-detail-row span:not(:last-child)::after {
-  margin-left: 10px;
+  margin-left: 9px;
 }
 
 .policy-compact--checkout p {
-  font-size: 0.72rem;
-  line-height: 1.42;
+  margin-top: 5px;
+
+  font-size: 0.66rem;
+  line-height: 1.34;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+.policy-compact--checkout + * {
+  margin-top: 4px;
 }
 
 /* =========================================
@@ -9506,6 +9534,7 @@ body.scrolled .announcement-bar {
   }
 
   .policy-strip {
+    margin: 2px 0 16px;
     padding: 13px 14px;
     border-radius: 16px;
   }
@@ -9525,27 +9554,31 @@ body.scrolled .announcement-bar {
     margin-left: 11px;
   }
 
-  .policy-strip p,
-  .policy-compact p {
+  .policy-strip p {
     font-size: 0.71rem;
     line-height: 1.48;
   }
 
   .policy-compact {
-    padding: 10px 11px;
+    padding: 9px 10px;
   }
 
   .policy-compact .policy-title-row strong {
-    font-size: 0.98rem;
+    font-size: 0.94rem;
   }
 
   .policy-compact .policy-detail-row {
-    font-size: 0.72rem;
-    gap: 6px 10px;
+    font-size: 0.68rem;
+    gap: 5px 9px;
   }
 
   .policy-compact .policy-detail-row span:not(:last-child)::after {
-    margin-left: 10px;
+    margin-left: 9px;
+  }
+
+  .policy-compact p {
+    font-size: 0.66rem;
+    line-height: 1.34;
   }
 
   .footer-bottom {
@@ -9561,7 +9594,6 @@ body.scrolled .announcement-bar {
 
 @media (max-width: 560px) {
   .policy-strip {
-    margin: 2px 0 16px;
     padding: 12px 13px;
   }
 
@@ -9574,26 +9606,23 @@ body.scrolled .announcement-bar {
     white-space: normal;
   }
 
+  .policy-strip p {
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+
   .policy-compact {
-    margin-top: 10px;
+    margin-top: 8px;
   }
 
   .policy-compact p {
-    margin-top: 6px;
+    margin-top: 5px;
   }
-}
 
-/* =========================================
-   POLICY POSITION — CHECKOUT
-========================================= */
-
-.policy-compact--checkout {
-  margin-top: 6px;
-  transform: translateY(-4px);
-}
-
-.policy-compact--checkout + * {
-  margin-top: 6px;
+  .policy-compact--checkout {
+    margin-top: 4px;
+    padding: 8px 9px;
+  }
 }
 
 /* =========================================
