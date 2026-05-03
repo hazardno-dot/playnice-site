@@ -9601,7 +9601,7 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
-   CHECKOUT POLICY — INLINE 3-LINE TEST
+   CHECKOUT POLICY — INLINE COMPACT
 ========================================= */
 
 .policy-compact--checkout {
@@ -9610,7 +9610,7 @@ body.scrolled .announcement-bar {
   line-height: 1.35;
 }
 
-/* Naslov ide inline */
+/* Title starts inline */
 .policy-compact--checkout .policy-title-row {
   display: inline-flex;
   align-items: center;
@@ -9633,7 +9633,7 @@ body.scrolled .announcement-bar {
   line-height: 1;
 }
 
-/* Info red ide odmah iza naslova */
+/* Info starts immediately after title */
 .policy-compact--checkout .policy-detail-row {
   display: inline;
   margin: 0;
@@ -9648,14 +9648,14 @@ body.scrolled .announcement-bar {
   white-space: nowrap;
 }
 
-/* Umjesto tačkica koristimo / jer zauzima manje mjesta */
+/* Same feeling as footer — dot separator */
 .policy-compact--checkout .policy-detail-row span:not(:last-child)::after {
-  content: "/";
+  content: "•";
   margin: 0 7px;
   color: rgba(220, 181, 107, 0.38);
 }
 
-/* Return rečenica ide odmah iza prve linije */
+/* Return note continues after the first info line */
 .policy-compact--checkout p {
   display: inline;
 
@@ -9671,8 +9671,9 @@ body.scrolled .announcement-bar {
   -webkit-box-orient: initial;
 }
 
+/* Separator before return policy sentence */
 .policy-compact--checkout p::before {
-  content: " / ";
+  content: " • ";
   color: rgba(220, 181, 107, 0.38);
 }
 
