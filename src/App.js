@@ -7763,12 +7763,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             </div>
           </div>
 
-          <div className="checkout-summary-trust panel-anim panel-anim-5">
-            {lang === "sr"
-              ? "Plaćanje pouzećem • Original parfemi • Dostava u Crnoj Gori"
-              : "Cash on delivery • Original fragrances • Delivery in Montenegro"}
-          </div>
-
           <DeliveryReturnsMini surface="checkout" />
 
           <div className="checkout-totals panel-anim panel-anim-6">
