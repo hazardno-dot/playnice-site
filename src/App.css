@@ -9582,6 +9582,82 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
+   CHECKOUT POLICY — INLINE 3-LINE TEST
+========================================= */
+
+.policy-compact--checkout {
+  padding: 7px 10px;
+  margin: 3px 0 7px;
+  line-height: 1.35;
+}
+
+/* Naslov ide inline */
+.policy-compact--checkout .policy-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-right: 8px;
+  vertical-align: baseline;
+}
+
+.policy-compact--checkout .policy-dot {
+  width: 16px;
+  height: 16px;
+  flex-basis: 16px;
+
+  font-size: 0.55rem;
+}
+
+.policy-compact--checkout .policy-title-row strong {
+  font-size: 0.92rem;
+  line-height: 1;
+}
+
+/* Info red ide odmah iza naslova */
+.policy-compact--checkout .policy-detail-row {
+  display: inline;
+  margin: 0;
+
+  color: rgba(255, 248, 235, 0.58);
+  font-size: 0.64rem;
+  line-height: 1.35;
+}
+
+.policy-compact--checkout .policy-detail-row span {
+  display: inline;
+  white-space: nowrap;
+}
+
+/* Umjesto tačkica koristimo / jer zauzima manje mjesta */
+.policy-compact--checkout .policy-detail-row span:not(:last-child)::after {
+  content: "/";
+  margin: 0 7px;
+  color: rgba(220, 181, 107, 0.38);
+}
+
+/* Return rečenica ide odmah iza prve linije */
+.policy-compact--checkout p {
+  display: inline;
+
+  margin: 0;
+
+  color: rgba(255, 248, 235, 0.43);
+  font-size: 0.64rem;
+  line-height: 1.35;
+
+  overflow: visible;
+
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: initial;
+}
+
+.policy-compact--checkout p::before {
+  content: " / ";
+  color: rgba(220, 181, 107, 0.38);
+}
+
+/* =========================================
    CLOSING SECTION — REVEAL
 ========================================= */
 
