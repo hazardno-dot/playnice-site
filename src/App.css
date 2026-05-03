@@ -9064,10 +9064,9 @@ body.scrolled .announcement-bar {
 
 .site-footer-inner {
   display: grid;
-  grid-template-columns: 1.15fr 0.72fr 0.86fr 1.12fr;
+  grid-template-columns: 1.3fr 0.8fr 0.9fr;
   gap: 28px;
-  padding: 0 0 24px;
-  align-items: start;
+  padding: 0 0 20px;
 }
 
 .footer-brand,
@@ -9189,198 +9188,169 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
-   MINI POLICY — DELIVERY & RETURNS
+   POLICY STRIP — FOOTER / CART / CHECKOUT
 ========================================= */
 
-.footer-policy-wrap {
-  min-width: 0;
-}
+.policy-dot {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
 
-.policy-mini {
-  position: relative;
-  overflow: hidden;
-
-  border: 1px solid rgba(220, 181, 107, 0.14);
-  border-radius: 24px;
-
-  background:
-    radial-gradient(circle at top left, rgba(220, 181, 107, 0.12), transparent 34%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018));
-
-  box-shadow:
-    0 18px 46px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.045);
-
-  color: rgba(255, 248, 235, 0.74);
-}
-
-.policy-mini::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.055),
-    transparent 38%,
-    rgba(220, 181, 107, 0.035)
-  );
-
-  opacity: 0.9;
-}
-
-.policy-mini--footer {
-  padding: 18px;
-}
-
-.policy-mini--cart,
-.policy-mini--checkout {
-  margin-top: 14px;
-  padding: 14px;
-  border-radius: 18px;
-
-  background:
-    radial-gradient(circle at top left, rgba(220, 181, 107, 0.1), transparent 36%),
-    rgba(255, 255, 255, 0.032);
-
-  box-shadow:
-    0 14px 34px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-}
-
-.policy-mini-head {
-  position: relative;
-  z-index: 1;
-
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-
-  margin-bottom: 14px;
-}
-
-.policy-mini-mark {
-  width: 30px;
-  height: 30px;
-  flex: 0 0 30px;
-
-  display: grid;
+  display: inline-grid;
   place-items: center;
 
   border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.24);
+  border: 1px solid rgba(220, 181, 107, 0.26);
   background: rgba(220, 181, 107, 0.08);
 
   color: var(--gold);
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   font-weight: 700;
-
-  box-shadow: 0 0 18px rgba(220, 181, 107, 0.12);
 }
 
-.policy-mini-kicker {
-  margin: 0 0 4px;
+/* Footer policy strip */
 
-  font-size: 0.66rem;
-  line-height: 1;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+.policy-strip {
+  margin: 4px 0 18px;
+  padding: 14px 18px;
 
-  color: rgba(220, 181, 107, 0.72);
+  border: 1px solid rgba(220, 181, 107, 0.1);
+  border-radius: 18px;
+
+  background:
+    linear-gradient(135deg, rgba(220, 181, 107, 0.055), transparent 38%),
+    rgba(255, 255, 255, 0.025);
+
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
 }
 
-.policy-mini h4 {
-  margin: 0;
-
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.32rem;
-  line-height: 1.08;
-  font-weight: 600;
-
-  color: #f6efe6;
-}
-
-.policy-mini-list {
-  position: relative;
-  z-index: 1;
-
-  display: grid;
-  gap: 8px;
-
-  margin-top: 12px;
-}
-
-.policy-mini-row {
+.policy-strip-main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-
-  padding: 9px 0;
-  border-bottom: 1px solid rgba(220, 181, 107, 0.075);
+  gap: 18px;
 }
 
-.policy-mini-row:last-child {
-  border-bottom: 0;
-}
+.policy-strip-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
 
-.policy-mini-row span {
-  color: rgba(255, 248, 235, 0.54);
-  font-size: 0.86rem;
-  line-height: 1.35;
-}
+  min-width: max-content;
 
-.policy-mini-row strong {
-  color: rgba(255, 248, 235, 0.9);
-  font-size: 0.88rem;
+  color: rgba(246, 239, 230, 0.92);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.16rem;
   font-weight: 600;
-  line-height: 1.35;
-  text-align: right;
-  white-space: nowrap;
+  line-height: 1.1;
 }
 
-.policy-mini-note {
+.policy-strip-items {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+
+  color: rgba(255, 248, 235, 0.66);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.policy-strip-items span {
   position: relative;
-  z-index: 1;
-
-  margin: 14px 0 0;
-  padding-top: 12px;
-
-  border-top: 1px solid rgba(220, 181, 107, 0.09);
-
-  color: rgba(255, 248, 235, 0.58);
-  font-size: 0.82rem;
-  line-height: 1.65;
 }
 
-.policy-mini--cart .policy-mini-head,
-.policy-mini--checkout .policy-mini-head {
-  margin-bottom: 10px;
+.policy-strip-items span:not(:last-child)::after {
+  content: "•";
+  margin-left: 14px;
+  color: rgba(220, 181, 107, 0.46);
 }
 
-.policy-mini--cart .policy-mini-mark,
-.policy-mini--checkout .policy-mini-mark {
-  width: 26px;
-  height: 26px;
-  flex-basis: 26px;
-  font-size: 0.7rem;
-}
+.policy-strip p {
+  margin: 9px 0 0;
+  padding-top: 9px;
 
-.policy-mini--cart h4,
-.policy-mini--checkout h4 {
-  font-size: 1.15rem;
-}
+  border-top: 1px solid rgba(220, 181, 107, 0.07);
 
-.policy-mini--cart .policy-mini-row,
-.policy-mini--checkout .policy-mini-row {
-  padding: 7px 0;
-}
-
-.policy-mini--cart .policy-mini-note,
-.policy-mini--checkout .policy-mini-note {
+  color: rgba(255, 248, 235, 0.48);
   font-size: 0.78rem;
   line-height: 1.55;
+}
+
+/* Cart / Checkout compact policy */
+
+.policy-compact {
+  margin-top: 12px;
+  padding: 11px 13px;
+
+  border: 1px solid rgba(220, 181, 107, 0.1);
+  border-radius: 16px;
+
+  background:
+    linear-gradient(135deg, rgba(220, 181, 107, 0.045), transparent 42%),
+    rgba(255, 255, 255, 0.025);
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.policy-compact-line {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+
+  color: rgba(255, 248, 235, 0.62);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.policy-compact-line strong {
+  margin-right: 2px;
+
+  color: rgba(246, 239, 230, 0.9);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.02rem;
+  font-weight: 600;
+}
+
+.policy-compact-line span:not(.policy-dot):not(:last-child)::after {
+  content: "•";
+  margin-left: 9px;
+  color: rgba(220, 181, 107, 0.44);
+}
+
+.policy-compact p {
+  margin: 7px 0 0;
+
+  color: rgba(255, 248, 235, 0.46);
+  font-size: 0.74rem;
+  line-height: 1.48;
+}
+
+/* Checkout should be extra tight */
+
+.policy-compact--checkout {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+}
+
+.policy-compact--checkout .policy-compact-line {
+  font-size: 0.76rem;
+}
+
+.policy-compact--checkout .policy-compact-line strong {
+  font-size: 0.96rem;
+}
+
+.policy-compact--checkout p {
+  font-size: 0.72rem;
+  line-height: 1.42;
 }
 
 /* =========================================
@@ -9427,37 +9397,48 @@ body.scrolled .announcement-bar {
     gap: 10px;
   }
 
-  .footer-bottom {
-    flex-direction: column;
+  .policy-strip {
+    padding: 13px 14px;
+    border-radius: 16px;
+  }
+
+  .policy-strip-main {
     align-items: flex-start;
-  }
-
-  .footer-bottom-links {
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  .policy-mini--footer {
-    padding: 16px;
-    border-radius: 22px;
-  }
-
-  .policy-mini h4 {
-    font-size: 1.22rem;
-  }
-
-  .policy-mini-row {
+    flex-direction: column;
     gap: 10px;
   }
 
-  .policy-mini-row span,
-  .policy-mini-row strong {
-    font-size: 0.84rem;
+  .policy-strip-items {
+    justify-content: flex-start;
+    gap: 8px 12px;
+    font-size: 0.82rem;
   }
 
-  .policy-mini-note {
-    font-size: 0.8rem;
-    line-height: 1.6;
+  .policy-strip-items span:not(:last-child)::after {
+    margin-left: 12px;
+  }
+
+  .policy-strip p {
+    font-size: 0.74rem;
+    line-height: 1.5;
+  }
+
+  .policy-compact {
+    padding: 10px 11px;
+  }
+
+  .policy-compact-line {
+    gap: 7px;
+    font-size: 0.75rem;
+  }
+
+  .policy-compact-line strong {
+    width: calc(100% - 30px);
+    font-size: 0.98rem;
+  }
+
+  .policy-compact p {
+    font-size: 0.72rem;
   }
 }
 

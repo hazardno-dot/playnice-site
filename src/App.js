@@ -5234,66 +5234,62 @@ const getSizeWearHint = (size) => {
 };
 
 /* =========================================
-     DeliveryReturns
+     DeliveryReturns MINI
 ========================================= */
 const DeliveryReturnsMini = ({ surface = "footer" }) => {
   const isSr = lang === "sr";
 
+  const labels = {
+    title: isSr ? "Dostava i povrat" : "Delivery & Returns",
+    delivery: isSr ? "Dostava širom Crne Gore" : "Delivery across Montenegro",
+    shipping: isSr ? "Dostava €4" : "Shipping €4",
+    free: isSr ? "Besplatno preko €39" : "Free over €39",
+    cod: isSr ? "Plaćanje pouzećem" : "Cash on delivery",
+    returnNote: isSr
+      ? "Otvoreni dekanti se ne vraćaju iz higijenskih razloga. Povrat je moguć za neotvoreno, nekorišćeno i neoštećeno pakovanje, ili u slučaju greške/oštećenja pri dostavi."
+      : "Opened decants cannot be returned for hygiene reasons. Returns are possible for unopened, unused and undamaged items, or in case of delivery error/damage."
+  };
+
+  if (surface === "footer") {
+    return (
+      <section
+        id="delivery-returns"
+        className="policy-strip policy-strip--footer"
+        aria-label={labels.title}
+      >
+        <div className="policy-strip-main">
+          <div className="policy-strip-title">
+            <span className="policy-dot">✓</span>
+            <span>{labels.title}</span>
+          </div>
+
+          <div className="policy-strip-items">
+            <span>{labels.delivery}</span>
+            <span>{labels.shipping}</span>
+            <span>{labels.free}</span>
+            <span>{labels.cod}</span>
+          </div>
+        </div>
+
+        <p>{labels.returnNote}</p>
+      </section>
+    );
+  }
+
   return (
     <section
-      id={surface === "footer" ? "delivery-returns" : undefined}
-      className={`policy-mini policy-mini--${surface}`}
-      aria-label={isSr ? "Dostava i povrat" : "Delivery and returns"}
+      className={`policy-compact policy-compact--${surface}`}
+      aria-label={labels.title}
     >
-      <div className="policy-mini-head">
-        <div className="policy-mini-mark">✓</div>
-
-        <div>
-          <p className="policy-mini-kicker">
-            {isSr ? "DOSTAVA I POVRAT" : "DELIVERY & RETURNS"}
-          </p>
-
-          <h4>
-            {isSr
-              ? "Jasno, mirno i bez iznenađenja."
-              : "Clear, calm and no surprises."}
-          </h4>
-        </div>
+      <div className="policy-compact-line">
+        <span className="policy-dot">✓</span>
+        <strong>{labels.title}</strong>
+        <span>{labels.shipping}</span>
+        <span>{labels.free}</span>
+        <span>{labels.cod}</span>
       </div>
 
-      <div className="policy-mini-list">
-        <div className="policy-mini-row">
-          <span>{isSr ? "Dostava" : "Delivery"}</span>
-          <strong>
-            {isSr ? "Širom Crne Gore" : "Across Montenegro"}
-          </strong>
-        </div>
-
-        <div className="policy-mini-row">
-          <span>{isSr ? "Cijena dostave" : "Shipping fee"}</span>
-          <strong>€4</strong>
-        </div>
-
-        <div className="policy-mini-row">
-          <span>{isSr ? "Besplatna dostava" : "Free shipping"}</span>
-          <strong>
-            {isSr ? "Preko €39" : "Over €39"}
-          </strong>
-        </div>
-
-        <div className="policy-mini-row">
-          <span>{isSr ? "Plaćanje" : "Payment"}</span>
-          <strong>
-            {isSr ? "Pouzećem" : "Cash on delivery"}
-          </strong>
-        </div>
-      </div>
-
-      <p className="policy-mini-note">
-        {isSr
-          ? "Otvoreni dekanti se ne vraćaju iz higijenskih razloga. Povrat je moguć samo za neotvoreno, nekorišćeno i neoštećeno pakovanje, ili ako je došlo do greške ili oštećenja pri dostavi."
-          : "Opened decants cannot be returned for hygiene reasons. Returns are possible only for unopened, unused and undamaged items, or in case of delivery error or damage."}
-      </p>
+      <p>{labels.returnNote}</p>
     </section>
   );
 };
@@ -6081,9 +6077,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 </div>
               </div>
 
-              <div className="footer-policy-wrap">
                <DeliveryReturnsMini surface="footer" />
-                </div>
 
               <div className="footer-bottom">
                 <p>
@@ -7694,8 +7688,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </div>
       )}
 
-      <DeliveryReturnsMini surface="checkout" />
-
       <button
         className="gold-button submit-order-button panel-anim panel-anim-4"
         type="button"
@@ -7774,6 +7766,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               ? "Plaćanje pouzećem • Original parfemi • Dostava u Crnoj Gori"
               : "Cash on delivery • Original fragrances • Delivery in Montenegro"}
           </div>
+
+          <DeliveryReturnsMini surface="checkout" />
 
           <div className="checkout-totals panel-anim panel-anim-6">
             <div>
