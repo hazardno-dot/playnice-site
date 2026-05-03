@@ -9055,6 +9055,7 @@ body.scrolled .announcement-bar {
 /* =========================================
    FOOTER
 ========================================= */
+
 .site-footer {
   width: min(calc(100% - 32px), var(--max));
   margin: 0 auto 24px;
@@ -9085,11 +9086,14 @@ body.scrolled .announcement-bar {
 .footer-logo-mark {
   width: 36px;
   height: 36px;
+
   display: grid;
   place-items: center;
+
   border-radius: 999px;
   border: 1px solid rgba(220, 181, 107, 0.18);
   background: rgba(220, 181, 107, 0.05);
+
   color: var(--gold);
   font-size: 0.9rem;
 }
@@ -9103,15 +9107,18 @@ body.scrolled .announcement-bar {
 
 .footer-tagline {
   margin-top: 2px;
+
   font-size: 0.74rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+
   color: rgba(255, 248, 235, 0.55);
 }
 
 .footer-brand-text {
   max-width: 420px;
   margin: 0;
+
   line-height: 1.8;
   color: rgba(255, 248, 235, 0.66);
 }
@@ -9119,9 +9126,11 @@ body.scrolled .announcement-bar {
 .footer-links h4,
 .footer-trust h4 {
   margin: 0 0 14px;
+
   font-size: 0.78rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+
   color: rgba(220, 181, 107, 0.76);
 }
 
@@ -9138,11 +9147,15 @@ body.scrolled .announcement-bar {
   appearance: none;
   border: 0;
   background: transparent;
+
   padding: 0;
+
   text-align: left;
   text-decoration: none;
   cursor: pointer;
+
   color: rgba(255, 248, 235, 0.72);
+
   transition:
     color 0.22s ease,
     transform 0.22s ease;
@@ -9157,6 +9170,7 @@ body.scrolled .announcement-bar {
 
 .footer-trust p {
   margin: 0;
+
   color: rgba(255, 248, 235, 0.68);
   line-height: 1.7;
 }
@@ -9164,6 +9178,7 @@ body.scrolled .announcement-bar {
 .footer-bottom {
   padding: 18px 0 0;
   border-top: 1px solid rgba(220, 181, 107, 0.08);
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -9172,6 +9187,7 @@ body.scrolled .announcement-bar {
 
 .footer-bottom p {
   margin: 0;
+
   color: rgba(255, 248, 235, 0.45);
   font-size: 0.92rem;
 }
@@ -9185,6 +9201,49 @@ body.scrolled .announcement-bar {
 .footer-mini-link {
   color: rgba(255, 248, 235, 0.48);
   font-size: 0.92rem;
+}
+
+/* =========================================
+   SOCIAL LINKS
+========================================= */
+
+.social-links {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 20px;
+}
+
+.social-links a {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  border: 1px solid rgba(220, 181, 107, 0.18);
+
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 15px;
+
+  background: rgba(255, 255, 255, 0.02);
+
+  transition: all 0.25s ease;
+}
+
+.social-links a:hover {
+  color: #dcb56b;
+  border-color: rgba(220, 181, 107, 0.5);
+
+  box-shadow:
+    0 0 12px rgba(220, 181, 107, 0.25),
+    inset 0 0 8px rgba(220, 181, 107, 0.1);
+
+  transform: translateY(-2px);
 }
 
 /* =========================================
@@ -9226,48 +9285,50 @@ body.scrolled .announcement-bar {
     inset 0 1px 0 rgba(255, 255, 255, 0.035);
 }
 
-.policy-strip-main {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-}
+/* Shared title row */
 
-.policy-strip-title {
-  display: inline-flex;
+.policy-title-row {
+  display: flex;
   align-items: center;
   gap: 9px;
 
-  min-width: max-content;
-
   color: rgba(246, 239, 230, 0.92);
+}
+
+.policy-title-row strong {
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.16rem;
+  font-size: 1.08rem;
   font-weight: 600;
   line-height: 1.1;
 }
 
-.policy-strip-items {
+/* Shared detail row */
+
+.policy-detail-row {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 14px;
+  gap: 10px 13px;
   flex-wrap: wrap;
 
-  color: rgba(255, 248, 235, 0.66);
-  font-size: 0.88rem;
+  margin-top: 9px;
+
+  color: rgba(255, 248, 235, 0.62);
+  font-size: 0.82rem;
   line-height: 1.4;
 }
 
-.policy-strip-items span {
+.policy-detail-row span {
   position: relative;
+  white-space: nowrap;
 }
 
-.policy-strip-items span:not(:last-child)::after {
+.policy-detail-row span:not(:last-child)::after {
   content: "•";
-  margin-left: 14px;
-  color: rgba(220, 181, 107, 0.46);
+  margin-left: 13px;
+  color: rgba(220, 181, 107, 0.44);
 }
+
+/* Footer note */
 
 .policy-strip p {
   margin: 9px 0 0;
@@ -9298,30 +9359,20 @@ body.scrolled .announcement-bar {
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-.policy-compact-line {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  flex-wrap: wrap;
+.policy-compact .policy-title-row strong {
+  font-size: 1.02rem;
+}
 
-  color: rgba(255, 248, 235, 0.62);
-  font-size: 0.8rem;
+.policy-compact .policy-detail-row {
+  margin-top: 7px;
+  gap: 7px 11px;
+
+  font-size: 0.76rem;
   line-height: 1.35;
 }
 
-.policy-compact-line strong {
-  margin-right: 2px;
-
-  color: rgba(246, 239, 230, 0.9);
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.02rem;
-  font-weight: 600;
-}
-
-.policy-compact-line span:not(.policy-dot):not(:last-child)::after {
-  content: "•";
-  margin-left: 9px;
-  color: rgba(220, 181, 107, 0.44);
+.policy-compact .policy-detail-row span:not(:last-child)::after {
+  margin-left: 11px;
 }
 
 .policy-compact p {
@@ -9340,12 +9391,19 @@ body.scrolled .announcement-bar {
   border-radius: 14px;
 }
 
-.policy-compact--checkout .policy-compact-line {
-  font-size: 0.76rem;
+.policy-compact--checkout .policy-title-row strong {
+  font-size: 1rem;
 }
 
-.policy-compact--checkout .policy-compact-line strong {
-  font-size: 0.96rem;
+.policy-compact--checkout .policy-detail-row {
+  margin-top: 7px;
+  gap: 7px 10px;
+
+  font-size: 0.74rem;
+}
+
+.policy-compact--checkout .policy-detail-row span:not(:last-child)::after {
+  margin-left: 10px;
 }
 
 .policy-compact--checkout p {
@@ -9354,8 +9412,29 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
+   CLOSING SECTION — REVEAL
+========================================= */
+
+.closing-section {
+  opacity: 0;
+  transform: translateY(18px);
+
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+
+  will-change: opacity, transform;
+}
+
+.closing-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================
    RESPONSIVE
 ========================================= */
+
 @media (max-width: 1024px) {
   .site-footer-inner {
     grid-template-columns: 1fr;
@@ -9402,43 +9481,76 @@ body.scrolled .announcement-bar {
     border-radius: 16px;
   }
 
-  .policy-strip-main {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 10px;
+  .policy-title-row strong {
+    font-size: 1.02rem;
   }
 
-  .policy-strip-items {
-    justify-content: flex-start;
-    gap: 8px 12px;
-    font-size: 0.82rem;
+  .policy-detail-row {
+    margin-top: 8px;
+    gap: 7px 11px;
+
+    font-size: 0.76rem;
   }
 
-  .policy-strip-items span:not(:last-child)::after {
-    margin-left: 12px;
+  .policy-detail-row span:not(:last-child)::after {
+    margin-left: 11px;
   }
 
-  .policy-strip p {
-    font-size: 0.74rem;
-    line-height: 1.5;
+  .policy-strip p,
+  .policy-compact p {
+    font-size: 0.71rem;
+    line-height: 1.48;
   }
 
   .policy-compact {
     padding: 10px 11px;
   }
 
-  .policy-compact-line {
-    gap: 7px;
-    font-size: 0.75rem;
-  }
-
-  .policy-compact-line strong {
-    width: calc(100% - 30px);
+  .policy-compact .policy-title-row strong {
     font-size: 0.98rem;
   }
 
-  .policy-compact p {
+  .policy-compact .policy-detail-row {
     font-size: 0.72rem;
+    gap: 6px 10px;
+  }
+
+  .policy-compact .policy-detail-row span:not(:last-child)::after {
+    margin-left: 10px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-bottom-links {
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .policy-strip {
+    margin: 2px 0 16px;
+    padding: 12px 13px;
+  }
+
+  .policy-detail-row {
+    align-items: flex-start;
+    gap: 6px 10px;
+  }
+
+  .policy-detail-row span {
+    white-space: normal;
+  }
+
+  .policy-compact {
+    margin-top: 10px;
+  }
+
+  .policy-compact p {
+    margin-top: 6px;
   }
 }
 

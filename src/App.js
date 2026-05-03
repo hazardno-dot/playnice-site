@@ -5241,7 +5241,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
   const labels = {
     title: isSr ? "Dostava i povrat" : "Delivery & Returns",
-    delivery: isSr ? "Dostava širom Crne Gore" : "Delivery across Montenegro",
+    delivery: isSr ? "Dostava širom CG" : "Delivery across Montenegro",
     shipping: isSr ? "Dostava €4" : "Shipping €4",
     free: isSr ? "Besplatno preko €39" : "Free over €39",
     cod: isSr ? "Plaćanje pouzećem" : "Cash on delivery",
@@ -5257,18 +5257,16 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         className="policy-strip policy-strip--footer"
         aria-label={labels.title}
       >
-        <div className="policy-strip-main">
-          <div className="policy-strip-title">
-            <span className="policy-dot">✓</span>
-            <span>{labels.title}</span>
-          </div>
+        <div className="policy-title-row">
+          <span className="policy-dot">✓</span>
+          <strong>{labels.title}</strong>
+        </div>
 
-          <div className="policy-strip-items">
-            <span>{labels.delivery}</span>
-            <span>{labels.shipping}</span>
-            <span>{labels.free}</span>
-            <span>{labels.cod}</span>
-          </div>
+        <div className="policy-detail-row">
+          <span>{labels.delivery}</span>
+          <span>{labels.shipping}</span>
+          <span>{labels.free}</span>
+          <span>{labels.cod}</span>
         </div>
 
         <p>{labels.returnNote}</p>
@@ -5281,9 +5279,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       className={`policy-compact policy-compact--${surface}`}
       aria-label={labels.title}
     >
-      <div className="policy-compact-line">
+      <div className="policy-title-row">
         <span className="policy-dot">✓</span>
         <strong>{labels.title}</strong>
+      </div>
+
+      <div className="policy-detail-row">
+        <span>{labels.delivery}</span>
         <span>{labels.shipping}</span>
         <span>{labels.free}</span>
         <span>{labels.cod}</span>
