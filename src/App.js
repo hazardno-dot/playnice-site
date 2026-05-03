@@ -3199,8 +3199,8 @@ Laku noć.
 Remember. PlayNice.`
   },
   relatedProducts: [
-    "Dolce & Gabbana The One",
-    "Versace Man Eau Fraîche"
+    "Dolce & Gabbana The One for Men Eau de Toilette",
+    "Versace Man Eau Fraiche"
   ]
 }
 ];
