@@ -3068,8 +3068,8 @@ Remember. PlayNice.`,
 
 {
   id: 9,
-  date: "20 Apr",
-  image: "/hero/slide-1-9pm-night-out.jpg",
+  date: "03 Maj",
+  image: "/journal/article9.png",
   title: {
     en: "Special Edition: Fragrances Tonight",
     sr: "Specijalno izdanje: Mirisi večeras"
