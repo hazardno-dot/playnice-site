@@ -8157,7 +8157,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         />
       </div>
 
-      <div className="checkout-trust panel-item-anim panel-item-5">
+      <div className="checkout-trust panel-item-anim panel-item-6">
         <div className="checkout-trust-item">
           <span>✔</span>
           <span>
@@ -8197,7 +8197,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       {orderSuccessMessage && (
-        <div className="order-success-message panel-item-anim panel-item-6">
+        <div className="order-success-message panel-item-anim panel-item-7">
           {orderSuccessMessage}
         </div>
       )}
@@ -8239,78 +8239,65 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </p>
 ) : (
   <>
-    <div className="checkout-summary-scroll">
-      <div className="checkout-summary-items">
-        {cart.map((item, index) => (
-          <div
-            className={`checkout-summary-item panel-item-anim panel-item-${Math.min(
-              index + 1,
-              6
-            )}`}
-            key={item.key}
-          >
-            <div>
-              <strong>{item.name}</strong>
-              <p>
-                {item.size} × {item.quantity}
-              </p>
-            </div>
 
-            <span>{formatPrice(item.price * item.quantity)}</span>
-          </div>
-        ))}
-      </div>
-
-      {isMontenegroOrder && (
-  <div
-    className={`shipping-progress-card checkout-shipping-note panel-anim panel-anim-4 ${
-      subtotal >= FREE_SHIPPING_THRESHOLD
-        ? "shipping-note-unlocked"
-        : "shipping-note-locked"
-    }`}
-  >
-    <div className="shipping-note">
-      {subtotal >= FREE_SHIPPING_THRESHOLD
-        ? `${tr.freeShippingUnlocked} ✓`
-        : tr.freeShippingProgress.replace(
-            "{{amount}}",
-            formatPrice(amountLeftForFreeShipping)
-          )}
-    </div>
-
-    <div className="shipping-progress-bar">
+  <div className="checkout-summary-scroll">
+  <div className="checkout-summary-items">
+    {cart.map((item, index) => (
       <div
-        className="shipping-progress-fill"
-        style={{ width: `${freeShippingProgress}%` }}
-      />
-    </div>
-  </div>
-)}
-
-{isInternationalEnquiry && (
-  <div className="checkout-shipping-note international-shipping-note panel-anim panel-anim-4">
-    {lang === "sr"
-      ? "Dostava van Crne Gore se proverava posebno — poslaćemo vam odgovor sa mogućnostima i cenom."
-      : "Delivery outside Montenegro is checked separately — we’ll reply with availability and shipping cost."}
-  </div>
-)}
-        <div className="shipping-note">
-          {subtotal >= FREE_SHIPPING_THRESHOLD
-            ? `${tr.freeShippingUnlocked} ✓`
-            : tr.freeShippingProgress.replace(
-                "{{amount}}",
-                formatPrice(amountLeftForFreeShipping)
-              )}
+        className={`checkout-summary-item panel-item-anim panel-item-${Math.min(
+          index + 1,
+          6
+        )}`}
+        key={item.key}
+      >
+        <div>
+          <strong>{item.name}</strong>
+          <p>
+            {item.size} × {item.quantity}
+          </p>
         </div>
 
-        <div className="shipping-progress-bar">
-          <div
-            className="shipping-progress-fill"
-            style={{ width: `${freeShippingProgress}%` }}
-          />
-        </div>
+        <span>{formatPrice(item.price * item.quantity)}</span>
+      </div>
+    ))}
+  </div>
+
+  {isMontenegroOrder && (
+    <div
+      className={`shipping-progress-card checkout-shipping-note panel-anim panel-anim-4 ${
+        subtotal >= FREE_SHIPPING_THRESHOLD
+          ? "shipping-note-unlocked"
+          : "shipping-note-locked"
+      }`}
+    >
+      <div className="shipping-note">
+        {subtotal >= FREE_SHIPPING_THRESHOLD
+          ? `${tr.freeShippingUnlocked} ✓`
+          : tr.freeShippingProgress.replace(
+              "{{amount}}",
+              formatPrice(amountLeftForFreeShipping)
+            )}
+      </div>
+
+      <div className="shipping-progress-bar">
+        <div
+          className="shipping-progress-fill"
+          style={{ width: `${freeShippingProgress}%` }}
+        />
       </div>
     </div>
+  )}
+
+  {isInternationalEnquiry && (
+    <div className="checkout-shipping-note international-shipping-note panel-anim panel-anim-4">
+      {lang === "sr"
+        ? "Dostava van Crne Gore se proverava posebno — poslaćemo vam odgovor sa mogućnostima i cenom."
+        : "Delivery outside Montenegro is checked separately — we’ll reply with availability and shipping cost."}
+    </div>
+  )}
+</div>
+
+<DeliveryReturnsMini surface="checkout" />
 
     <DeliveryReturnsMini surface="checkout" />
 
