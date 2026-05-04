@@ -5475,58 +5475,69 @@ body.scrolled .announcement-bar-inner::before {
 ========================================= */
 
 .checkout-subnote {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   max-width: 520px;
 
-  color: rgba(255, 248, 235, 0.68);
-  font-size: 0.96rem;
-  line-height: 1.5;
+  color: rgba(255, 248, 235, 0.62);
+  font-size: 0.9rem;
+  line-height: 1.42;
 }
 
 .checkout-trust {
   display: grid;
-  gap: 10px;
+  gap: 6px;
 
-  margin: 16px 0 18px;
-  padding: 14px 16px;
+  margin: 12px 0 14px;
+  padding: 11px 14px;
 
-  border: 1px solid rgba(220, 181, 107, 0.14);
-  border-radius: 18px;
+  border: 1px solid rgba(220, 181, 107, 0.13);
+  border-radius: 16px;
 
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.025);
 }
 
 .checkout-trust-item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 8px;
 
-  color: rgba(255, 248, 235, 0.84);
-  font-size: 0.95rem;
-  line-height: 1.45;
+  color: rgba(255, 248, 235, 0.74);
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: 0.005em;
 }
 
 .checkout-trust-item span:first-child {
   color: var(--gold);
   flex: 0 0 auto;
+
+  font-size: 0.78rem;
+  line-height: 1.28;
+
   transform: translateY(1px);
 }
 
+.checkout-trust-item span:last-child {
+  display: block;
+  margin: 0;
+}
+
 .checkout-safe-note {
-  margin-top: 12px;
+  margin-top: 10px;
 
   text-align: center;
-  color: rgba(255, 248, 235, 0.62);
-  font-size: 0.9rem;
-  line-height: 1.45;
+  color: rgba(255, 248, 235, 0.54);
+  font-size: 0.82rem;
+  line-height: 1.36;
 }
 
 .checkout-summary-trust {
-  margin: 14px 0 0;
+  margin: 12px 0 0;
 
-  color: rgba(255, 248, 235, 0.62);
-  font-size: 0.88rem;
-  line-height: 1.45;
+  color: rgba(255, 248, 235, 0.56);
+  font-size: 0.8rem;
+  line-height: 1.36;
 }
 
 /* =========================================
