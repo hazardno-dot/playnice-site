@@ -5857,53 +5857,34 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             {shouldShowMobileSponsoredAd && (
   <section
     className="mobile-sponsored-ad-wrap"
-    aria-label={
-      lang === "sr"
-        ? "Sponzorisani partner"
-        : "Sponsored partner"
-    }
+    aria-label={lang === "sr" ? "Sponzorisani partner" : "Sponsored partner"}
   >
     <a
-      className="mobile-sponsored-ad mobile-sponsored-ad-forever"
+      className="mobile-sponsored-ad mobile-sponsored-ad-inline"
       href={mobileSponsoredAd.href}
       target="_blank"
       rel="sponsored noopener noreferrer"
       onClick={() => handleSideRailAction(mobileSponsoredAd)}
     >
-      <div className="mobile-sponsored-ad-top">
-        <span className="mobile-sponsored-ad-label">
-          {mobileSponsoredAd.label}
+      <span className="mobile-sponsored-ad-label">
+        {mobileSponsoredAd.label}
+      </span>
+
+      {mobileSponsoredAd.logoSrc ? (
+        <img
+          src={mobileSponsoredAd.logoSrc}
+          alt={mobileSponsoredAd.logoAlt || "Forever Living"}
+          className="mobile-sponsored-ad-logo"
+          loading="lazy"
+        />
+      ) : (
+        <span className="mobile-sponsored-ad-icon" aria-hidden="true">
+          {mobileSponsoredAd.icon}
         </span>
+      )}
 
-        {mobileSponsoredAd.logoSrc ? (
-          <img
-            src={mobileSponsoredAd.logoSrc}
-            alt={mobileSponsoredAd.logoAlt || "Forever Living"}
-            className="mobile-sponsored-ad-logo"
-            loading="lazy"
-          />
-        ) : (
-          <span className="mobile-sponsored-ad-icon" aria-hidden="true">
-            {mobileSponsoredAd.icon}
-          </span>
-        )}
-      </div>
-
-      <div className="mobile-sponsored-ad-content">
-        <h3>
-          {mobileSponsoredAd.title.split("\n").map((line, index) => (
-            <span key={`${mobileSponsoredAd.id}-mobile-${index}`}>
-              {line}
-            </span>
-          ))}
-        </h3>
-
-        <p>{mobileSponsoredAd.text}</p>
-      </div>
-
-      <span className="mobile-sponsored-ad-cta">
-        {mobileSponsoredAd.cta}
-        <span aria-hidden="true">→</span>
+      <span className="mobile-sponsored-ad-title-inline">
+        {mobileSponsoredAd.title.replace("\n", " ")}
       </span>
     </a>
   </section>
