@@ -3724,14 +3724,37 @@ function App() {
   const [sprayingWishlistId, setSprayingWishlistId] = useState(null);
 
   const [checkoutForm, setCheckoutForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    city: "",
-    address: "",
-    note: ""
-  });
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  country: "ME",
+  city: "",
+  address: "",
+  note: ""
+});
+
+const checkoutCountryOptions = [
+  { value: "ME", sr: "Crna Gora", en: "Montenegro" },
+  { value: "RS", sr: "Srbija", en: "Serbia" },
+  { value: "BA", sr: "Bosna i Hercegovina", en: "Bosnia and Herzegovina" },
+  { value: "HR", sr: "Hrvatska", en: "Croatia" },
+  { value: "SI", sr: "Slovenija", en: "Slovenia" },
+  { value: "MK", sr: "Severna Makedonija", en: "North Macedonia" },
+  { value: "AL", sr: "Albanija", en: "Albania" },
+  { value: "XK", sr: "Kosovo", en: "Kosovo" },
+  { value: "OTHER", sr: "Druga zemlja", en: "Other country" }
+];
+
+const selectedCheckoutCountry =
+  checkoutCountryOptions.find((country) => country.value === checkoutForm.country) ||
+  checkoutCountryOptions[0];
+
+const selectedCheckoutCountryLabel =
+  lang === "sr" ? selectedCheckoutCountry.sr : selectedCheckoutCountry.en;
+
+const isMontenegroOrder = checkoutForm.country === "ME";
+const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== "ME";
 
   const [hasUserPickedSize, setHasUserPickedSize] = useState(false);
   const [journalOpen, setJournalOpen] = useState(false);
@@ -4926,78 +4949,183 @@ const addHeroBottleToCart = () => {
     setCheckoutForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleInternationalEnquiry = async () => {
+  if (cart.length === 0) {
+    alert(tr.noItemsCart || (lang === "sr" ? "Korpa je prazna." : "Your cart is empty."));
+    return;
+  }
+
+  if (
+    !checkoutForm.firstName.trim() ||
+    !checkoutForm.lastName.trim() ||
+    !checkoutForm.email.trim() ||
+    !checkoutForm.phone.trim() ||
+    !checkoutForm.country.trim() ||
+    !checkoutForm.city.trim()
+  ) {
+    alert(
+      lang === "sr"
+        ? "Molimo unesite ime, prezime, email, telefon, zemlju i grad."
+        : "Please enter your first name, last name, email, phone, country and city."
+    );
+    return;
+  }
+
+  setIsSubmittingOrder(true);
+
+  try {
+    const payload = {
+      type: "international_enquiry",
+      customer: {
+        firstName: checkoutForm.firstName.trim(),
+        lastName: checkoutForm.lastName.trim(),
+        email: checkoutForm.email.trim(),
+        phone: checkoutForm.phone.trim(),
+        country: checkoutForm.country,
+        countryLabel: selectedCheckoutCountryLabel,
+        city: checkoutForm.city.trim(),
+        address: checkoutForm.address.trim(),
+        note: checkoutForm.note.trim()
+      },
+      items: cart,
+      subtotal,
+      shippingStatus: "to_be_confirmed",
+      totalStatus: "products_only_not_final",
+      language: lang,
+      source: "checkout_international_enquiry",
+      page: window.location.href,
+      createdAt: new Date().toISOString()
+    };
+
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error("International enquiry request failed");
+    }
+
+    setOrderSuccessMessage(
+      lang === "sr"
+        ? "Upit je poslat. Proverićemo mogućnost dostave van Crne Gore i javiti vam se uskoro."
+        : "Your enquiry has been sent. We’ll check delivery outside Montenegro and get back to you soon."
+    );
+
+    setCheckoutForm({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      country: "ME",
+      city: "",
+      address: "",
+      note: ""
+    });
+
+    setTimeout(() => {
+      setCheckoutOpen(false);
+      setCartOpen(false);
+    }, 2200);
+  } catch (error) {
+    alert(
+      lang === "sr"
+        ? "Došlo je do greške pri slanju upita. Molimo pokušajte ponovo ili nas kontaktirajte direktno."
+        : "Something went wrong while sending your enquiry. Please try again or contact us directly."
+    );
+  } finally {
+    setIsSubmittingOrder(false);
+  }
+};
+
   const handlePlaceOrder = async () => {
-    if (cart.length === 0) {
-      alert(tr.emptyCartAlert);
-      return;
+  if (!isMontenegroOrder) {
+    handleInternationalEnquiry();
+    return;
+  }
+
+  if (cart.length === 0) {
+    alert(tr.emptyCartAlert);
+    return;
+  }
+
+  if (
+    !checkoutForm.firstName.trim() ||
+    !checkoutForm.lastName.trim() ||
+    !checkoutForm.email.trim() ||
+    !checkoutForm.phone.trim() ||
+    !checkoutForm.city.trim() ||
+    !checkoutForm.address.trim()
+  ) {
+    alert(tr.fillRequired);
+    return;
+  }
+
+  setIsSubmittingOrder(true);
+
+  try {
+    const payload = {
+      type: "order",
+      customer: {
+        firstName: checkoutForm.firstName.trim(),
+        lastName: checkoutForm.lastName.trim(),
+        email: checkoutForm.email.trim(),
+        phone: checkoutForm.phone.trim(),
+        country: checkoutForm.country,
+        countryLabel: selectedCheckoutCountryLabel,
+        city: checkoutForm.city.trim(),
+        address: checkoutForm.address.trim(),
+        note: checkoutForm.note.trim()
+      },
+      items: cart,
+      subtotal,
+      shipping,
+      total,
+      language: lang,
+      source: "checkout_order",
+      page: window.location.href,
+      createdAt: new Date().toISOString()
+    };
+
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error("Checkout request failed");
     }
 
-    if (
-      !checkoutForm.firstName.trim() ||
-      !checkoutForm.lastName.trim() ||
-      !checkoutForm.email.trim() ||
-      !checkoutForm.phone.trim() ||
-      !checkoutForm.city.trim() ||
-      !checkoutForm.address.trim()
-    ) {
-      alert(tr.fillRequired);
-      return;
-    }
+    setOrderSuccessMessage(tr.orderSuccess);
+    setCart([]);
 
-    setIsSubmittingOrder(true);
+    setCheckoutForm({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      country: "ME",
+      city: "",
+      address: "",
+      note: ""
+    });
 
-    try {
-      const payload = {
-        customer: {
-          firstName: checkoutForm.firstName.trim(),
-          lastName: checkoutForm.lastName.trim(),
-          email: checkoutForm.email.trim(),
-          phone: checkoutForm.phone.trim(),
-          city: checkoutForm.city.trim(),
-          address: checkoutForm.address.trim(),
-          note: checkoutForm.note.trim()
-        },
-        items: cart,
-        subtotal,
-        shipping,
-        total,
-        language: lang
-      };
-
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) {
-        throw new Error("Checkout request failed");
-      }
-
-      setOrderSuccessMessage(tr.orderSuccess);
-      setCart([]);
-      setCheckoutForm({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        city: "",
-        address: "",
-        note: ""
-      });
-
-      setTimeout(() => {
-        setCheckoutOpen(false);
-        setCartOpen(false);
-      }, 1800);
-    } catch (error) {
-      alert(tr.orderError);
-    } finally {
-      setIsSubmittingOrder(false);
-    }
-  };
+    setTimeout(() => {
+      setCheckoutOpen(false);
+      setCartOpen(false);
+    }, 1800);
+  } catch (error) {
+    alert(tr.orderError);
+  } finally {
+    setIsSubmittingOrder(false);
+  }
+};
 
   const handleHeroTouchStart = (e) => {
     touchStartX.current = e.changedTouches[0].clientX;
@@ -7974,19 +8102,50 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="form-row two panel-item-anim panel-item-3">
-        <input
-          name="city"
-          placeholder={tr.city}
-          value={checkoutForm.city}
-          onChange={handleCheckoutInput}
-        />
-        <input
-          name="address"
-          placeholder={tr.address}
-          value={checkoutForm.address}
-          onChange={handleCheckoutInput}
-        />
-      </div>
+  <select
+    name="country"
+    value={checkoutForm.country}
+    onChange={handleCheckoutInput}
+    aria-label={lang === "sr" ? "Zemlja dostave" : "Delivery country"}
+  >
+    {checkoutCountryOptions.map((country) => (
+      <option key={country.value} value={country.value}>
+        {lang === "sr" ? country.sr : country.en}
+      </option>
+    ))}
+  </select>
+
+  <input
+    name="city"
+    placeholder={tr.city}
+    value={checkoutForm.city}
+    onChange={handleCheckoutInput}
+  />
+</div>
+
+<div className="form-row panel-item-anim panel-item-4">
+  <input
+    name="address"
+    placeholder={tr.address}
+    value={checkoutForm.address}
+    onChange={handleCheckoutInput}
+  />
+</div>
+
+{isInternationalEnquiry && (
+  <div className="checkout-international-note panel-item-anim panel-item-5">
+    <strong>
+      {lang === "sr"
+        ? "Dostava van Crne Gore nije automatski dostupna."
+        : "Delivery outside Montenegro is not automatically available."}
+    </strong>
+    <span>
+      {lang === "sr"
+        ? "Pošaljite upit — proverićemo da li je dostava moguća za vašu zemlju i javiti vam se."
+        : "Send an enquiry — we’ll check whether delivery is possible for your country and get back to you."}
+    </span>
+  </div>
+)}
 
       <div className="form-row panel-item-anim panel-item-4">
         <textarea
@@ -8026,9 +8185,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <div className="checkout-trust-item">
           <span>✔</span>
           <span>
-            {lang === "sr"
-              ? "Dostava širom Crne Gore"
-              : "Delivery across Montenegro"}
+            {isMontenegroOrder
+  ? lang === "sr"
+    ? "Dostava širom Crne Gore"
+    : "Delivery across Montenegro"
+  : lang === "sr"
+  ? "Za dostavu van Crne Gore šaljete upit — bez automatske porudžbine"
+  : "For delivery outside Montenegro, you send an enquiry — not an automatic order"}
           </span>
         </div>
       </div>
@@ -8040,23 +8203,31 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       )}
 
       <button
-        className="gold-button submit-order-button panel-anim panel-anim-4"
-        type="button"
-        onClick={handlePlaceOrder}
-        disabled={isSubmittingOrder}
-      >
-        {isSubmittingOrder
-          ? tr.placingOrder
-          : lang === "sr"
-          ? "Naruči — plaćanje pouzećem"
-          : "Order — pay on delivery"}
-      </button>
+  className="gold-button submit-order-button panel-anim panel-anim-4"
+  type="button"
+  onClick={isMontenegroOrder ? handlePlaceOrder : handleInternationalEnquiry}
+  disabled={isSubmittingOrder}
+>
+  {isSubmittingOrder
+    ? tr.placingOrder
+    : isMontenegroOrder
+    ? lang === "sr"
+      ? "Naruči — plaćanje pouzećem"
+      : "Order — pay on delivery"
+    : lang === "sr"
+    ? "Pošalji upit za dostavu"
+    : "Send delivery enquiry"}
+</button>
 
       <div className="checkout-safe-note panel-anim panel-anim-5">
-        {lang === "sr"
-          ? "Bez online plaćanja — nakon narudžbine dobijate potvrdu i sve informacije na email."
-          : "No online payment — after placing your order, you will receive confirmation and all details by email."}
-      </div>
+  {isMontenegroOrder
+    ? lang === "sr"
+      ? "Bez online plaćanja — nakon narudžbine dobijate potvrdu i sve informacije na email."
+      : "No online payment — after placing your order, you will receive confirmation and all details by email."
+    : lang === "sr"
+    ? "Ovo nije automatska porudžbina — šaljete upit za dostavu van Crne Gore."
+    : "This is not an automatic order — you are sending a delivery enquiry outside Montenegro."}
+</div>
     </div>
 
     <div className="checkout-summary panel-anim panel-anim-3">
