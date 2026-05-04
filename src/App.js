@@ -3891,20 +3891,27 @@ function App() {
 /* =========================================
    SIDE RAILS ADS
 ========================================= */
-  const sideRailAds = [
+const foreverAloeUrl =
+  "https://foreverliving.com/shop/scg/sr-Cyrl-RS/drinks?fboId=360000920762&categoryId=1&title=Napici";
+
+const sideRailAds = [
   {
-    id: "left-partner-placeholder",
+    id: "forever-aloe-refresh",
     side: "left",
     enabled: true,
+    isSponsored: true,
     icon: "✦",
-    label: "PLAYNICE PICK",
-    title: lang === "sr" ? "Fresh\nSeason" : "Fresh\nSeason",
+    label: "SPONSORED",
+    title: "Aloe\nRefresh",
     text:
       lang === "sr"
-        ? "Lagana, čista i upečatljiva selekcija za toplije dane."
-        : "Light, clean and memorable picks for warmer days.",
-    cta: lang === "sr" ? "Istraži" : "Explore",
-    action: "shop",
+        ? "Forever Living aloe vera napici."
+        : "Forever Living aloe vera drinks.",
+    cta: lang === "sr" ? "Pogledaj" : "Explore",
+    href: foreverAloeUrl,
+    partner: "forever_living",
+    sellerId: "360000920762",
+    campaign: "aloe_refresh",
   },
   {
     id: "right-partner-placeholder",
@@ -3912,7 +3919,7 @@ function App() {
     enabled: true,
     icon: "♥",
     label: "FEATURED",
-    title: lang === "sr" ? "Private\nSelection" : "Private\nSelection",
+    title: "Private\nSelection",
     text:
       lang === "sr"
         ? "Sačuvaj favorite i napravi svoju mirisnu shortlistu."
@@ -3922,35 +3929,39 @@ function App() {
   },
 ];
 
-  const sideRailBlocked =
-    cartOpen ||
-    checkoutOpen ||
-    storyOpen ||
-    howItWorksOpen ||
-    privateSelectionOpen ||
-    journalOpen ||
-    Boolean(selectedArticle) ||
-    productModalVisible;
+const sideRailBlocked =
+  cartOpen ||
+  checkoutOpen ||
+  storyOpen ||
+  howItWorksOpen ||
+  privateSelectionOpen ||
+  journalOpen ||
+  Boolean(selectedArticle) ||
+  productModalVisible;
 
-  const shouldShowSideRails =
-    (view === "home" || view === "shop") && !sideRailBlocked;
+const shouldShowSideRails =
+  (view === "home" || view === "shop") && !sideRailBlocked;
 
-  const handleSideRailAction = (ad) => {
-    if (ad.action === "shop") {
-      setView("shop");
-      setCurrentPage(1);
+const handleSideRailAction = (ad) => {
+  if (ad.href) {
+    return;
+  }
 
-      window.setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }, 0);
+  if (ad.action === "shop") {
+    setView("shop");
+    setCurrentPage(1);
 
-      return;
-    }
+    window.setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 0);
 
-    if (ad.action === "privateSelection") {
-      setPrivateSelectionOpen(true);
-    }
-  };
+    return;
+  }
+
+  if (ad.action === "privateSelection") {
+    setPrivateSelectionOpen(true);
+  }
+};
 
 /* =========================================
    TOTAL PAGES
@@ -5489,37 +5500,73 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   {shouldShowSideRails && (
   <aside
     className="side-ad-rails"
-    aria-label={lang === "sr" ? "PlayNice istaknuti partneri" : "PlayNice featured partners"}
+    aria-label={
+      lang === "sr"
+        ? "PlayNice istaknuti partneri"
+        : "PlayNice featured partners"
+    }
   >
     {sideRailAds
       .filter((ad) => ad.enabled)
-      .map((ad) => (
-        <button
-          key={ad.id}
-          type="button"
-          className={`side-ad-rail side-ad-rail-${ad.side}`}
-          onClick={() => handleSideRailAction(ad)}
-        >
-          <span className="side-ad-label">{ad.label}</span>
+      .map((ad) => {
+        const railClassName = [
+          "side-ad-rail",
+          `side-ad-rail-${ad.side}`,
+          ad.isSponsored ? "side-ad-rail-sponsored" : "",
+        ]
+          .filter(Boolean)
+          .join(" ");
 
-          <span className="side-ad-icon" aria-hidden="true">
-          {ad.icon}
-          </span>
+        const railContent = (
+          <>
+            <span className="side-ad-label">{ad.label}</span>
 
-          <span className="side-ad-title">
-            {ad.title.split("\n").map((line) => (
-              <span key={line}>{line}</span>
-            ))}
-          </span>
+            <span className="side-ad-icon" aria-hidden="true">
+              {ad.icon}
+            </span>
 
-          <span className="side-ad-copy">{ad.text}</span>
+            <span className="side-ad-title">
+              {ad.title.split("\n").map((line, index) => (
+                <span key={`${ad.id}-${index}`}>{line}</span>
+              ))}
+            </span>
 
-          <span className="side-ad-cta">
-            {ad.cta}
-            <span aria-hidden="true">→</span>
-          </span>
-        </button>
-      ))}
+            <span className="side-ad-copy">{ad.text}</span>
+
+            <span className="side-ad-cta">
+              {ad.cta}
+              <span aria-hidden="true">→</span>
+            </span>
+          </>
+        );
+
+        if (ad.href) {
+          return (
+            <a
+              key={ad.id}
+              className={railClassName}
+              href={ad.href}
+              target="_blank"
+              rel="sponsored noopener noreferrer"
+              aria-label={`${ad.label}: ${ad.title.replace("\n", " ")}`}
+              onClick={() => handleSideRailAction(ad)}
+            >
+              {railContent}
+            </a>
+          );
+        }
+
+        return (
+          <button
+            key={ad.id}
+            type="button"
+            className={railClassName}
+            onClick={() => handleSideRailAction(ad)}
+          >
+            {railContent}
+          </button>
+        );
+      })}
   </aside>
 )}
 

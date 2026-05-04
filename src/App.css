@@ -13176,3 +13176,42 @@ body.scrolled .announcement-bar {
     display: none;
   }
 }
+
+/* =========================================
+   SIDE AD RAILS — SPONSORED / FOREVER PATCH
+========================================= */
+
+.side-ad-rail,
+.side-ad-rail:visited,
+.side-ad-rail:hover,
+.side-ad-rail:focus {
+  color: rgba(255, 248, 235, 0.9);
+  text-decoration: none;
+}
+
+.side-ad-rail {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Forever sponsored rail — aloe green premium accent */
+@media (min-width: 1520px) and (min-height: 720px) {
+  .side-ad-rail-left.side-ad-rail-sponsored {
+    --rail-accent: rgba(164, 216, 122, 0.96);
+    --rail-accent-soft: rgba(164, 216, 122, 0.16);
+    --rail-accent-glow: rgba(164, 216, 122, 0.2);
+    --rail-accent-cool: rgba(120, 196, 255, 0.1);
+  }
+
+  .side-ad-rail-sponsored .side-ad-label {
+    letter-spacing: 0.17em;
+  }
+
+  .side-ad-rail-sponsored .side-ad-icon {
+    font-size: 21px;
+  }
+
+  .side-ad-rail-sponsored .side-ad-copy {
+    max-width: 104px;
+  }
+}
