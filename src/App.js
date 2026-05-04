@@ -5860,31 +5860,37 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     aria-label={lang === "sr" ? "Sponzorisani partner" : "Sponsored partner"}
   >
     <a
-      className="mobile-sponsored-ad mobile-sponsored-ad-inline"
+      className="mobile-sponsored-ad mobile-sponsored-ad-micro"
       href={mobileSponsoredAd.href}
       target="_blank"
       rel="sponsored noopener noreferrer"
       onClick={() => handleSideRailAction(mobileSponsoredAd)}
     >
-      <span className="mobile-sponsored-ad-label">
-        {mobileSponsoredAd.label}
+      <span className="mobile-sponsored-ad-side mobile-sponsored-ad-side-left">
+        <span className="mobile-sponsored-ad-label">
+          {mobileSponsoredAd.label}
+        </span>
       </span>
 
-      {mobileSponsoredAd.logoSrc ? (
-        <img
-          src={mobileSponsoredAd.logoSrc}
-          alt={mobileSponsoredAd.logoAlt || "Forever Living"}
-          className="mobile-sponsored-ad-logo"
-          loading="lazy"
-        />
-      ) : (
-        <span className="mobile-sponsored-ad-icon" aria-hidden="true">
-          {mobileSponsoredAd.icon}
-        </span>
-      )}
+      <span className="mobile-sponsored-ad-center">
+        {mobileSponsoredAd.logoSrc ? (
+          <img
+            src={mobileSponsoredAd.logoSrc}
+            alt={mobileSponsoredAd.logoAlt || "Forever Living"}
+            className="mobile-sponsored-ad-logo"
+            loading="lazy"
+          />
+        ) : (
+          <span className="mobile-sponsored-ad-icon" aria-hidden="true">
+            {mobileSponsoredAd.icon}
+          </span>
+        )}
+      </span>
 
-      <span className="mobile-sponsored-ad-title-inline">
-        {mobileSponsoredAd.title.replace("\n", " ")}
+      <span className="mobile-sponsored-ad-side mobile-sponsored-ad-side-right">
+        <span className="mobile-sponsored-ad-title-inline">
+          {mobileSponsoredAd.title.replace("\n", " ")}
+        </span>
       </span>
     </a>
   </section>

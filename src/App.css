@@ -13260,7 +13260,7 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
-   MOBILE SPONSORED AD — COMPACT INLINE BAR
+   MOBILE SPONSORED AD — MICRO INLINE BAR
 ========================================= */
 
 .mobile-sponsored-ad-wrap {
@@ -13275,25 +13275,24 @@ body.scrolled .announcement-bar {
     margin: 12px auto 16px;
   }
 
-  .mobile-sponsored-ad-inline {
+  .mobile-sponsored-ad-micro {
     position: relative;
 
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    gap: 12px;
 
     width: 100%;
-    min-height: 68px;
-    padding: 12px 14px;
+    min-height: 58px;
+    padding: 10px 14px;
 
-    border-radius: 20px;
+    border-radius: 18px;
     border: 1px solid rgba(255, 198, 0, 0.18);
     outline: 1px solid rgba(255, 255, 255, 0.03);
     outline-offset: -1px;
 
     background:
-      radial-gradient(circle at 20% 50%, rgba(255, 198, 0, 0.10), transparent 34%),
-      radial-gradient(circle at 80% 50%, rgba(255, 198, 0, 0.06), transparent 32%),
+      radial-gradient(circle at 50% 50%, rgba(255, 198, 0, 0.08), transparent 36%),
       linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
       linear-gradient(180deg, rgba(9, 9, 10, 0.97), rgba(6, 6, 7, 0.96));
 
@@ -13301,28 +13300,53 @@ body.scrolled .announcement-bar {
     text-decoration: none;
 
     box-shadow:
-      0 18px 48px rgba(0, 0, 0, 0.28),
-      0 0 22px rgba(255, 198, 0, 0.06),
+      0 14px 34px rgba(0, 0, 0, 0.24),
+      0 0 18px rgba(255, 198, 0, 0.05),
       inset 0 1px 0 rgba(255, 255, 255, 0.03);
 
     overflow: hidden;
   }
 
-  .mobile-sponsored-ad-inline::before {
+  .mobile-sponsored-ad-micro::before {
     content: "";
     position: absolute;
     inset: 1px;
-    border-radius: 19px;
+    border-radius: 17px;
     border: 1px solid rgba(255, 255, 255, 0.02);
     pointer-events: none;
   }
 
+  .mobile-sponsored-ad-side,
+  .mobile-sponsored-ad-center,
   .mobile-sponsored-ad-label,
   .mobile-sponsored-ad-logo,
   .mobile-sponsored-ad-title-inline,
   .mobile-sponsored-ad-icon {
     position: relative;
     z-index: 1;
+  }
+
+  .mobile-sponsored-ad-side-left {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .mobile-sponsored-ad-side-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 0;
+    text-align: right;
+  }
+
+  .mobile-sponsored-ad-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 54px;
+    margin: 0 10px;
   }
 
   .mobile-sponsored-ad-label {
@@ -13343,7 +13367,7 @@ body.scrolled .announcement-bar {
 
     color: #ffc600;
     font-family: "Inter", sans-serif;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 800;
     line-height: 1;
     letter-spacing: 0.14em;
@@ -13353,35 +13377,31 @@ body.scrolled .announcement-bar {
 
   .mobile-sponsored-ad-logo {
     display: block;
-    flex: 0 0 auto;
-
-    width: 58px;
-    max-height: 30px;
-
+    width: 50px;
+    max-height: 26px;
     object-fit: contain;
 
     filter:
-      drop-shadow(0 8px 18px rgba(0, 0, 0, 0.28))
-      drop-shadow(0 0 8px rgba(255, 198, 0, 0.06));
+      drop-shadow(0 6px 14px rgba(0, 0, 0, 0.24))
+      drop-shadow(0 0 8px rgba(255, 198, 0, 0.05));
   }
 
   .mobile-sponsored-ad-icon {
     color: #ffc600;
-    font-size: 22px;
+    font-size: 20px;
     line-height: 1;
-    flex: 0 0 auto;
   }
 
   .mobile-sponsored-ad-title-inline {
+    display: block;
     min-width: 0;
-    flex: 1 1 auto;
 
     color: #fff4d2;
     font-family: "Cormorant Garamond", serif;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 600;
     line-height: 1;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     white-space: nowrap;
   }
 }
@@ -13389,53 +13409,61 @@ body.scrolled .announcement-bar {
 @media (max-width: 560px) {
   .mobile-sponsored-ad-wrap {
     padding: 0 12px;
-    margin: 12px auto 15px;
+    margin: 10px auto 14px;
   }
 
-  .mobile-sponsored-ad-inline {
-    gap: 10px;
-    min-height: 62px;
-    padding: 11px 12px;
-    border-radius: 18px;
+  .mobile-sponsored-ad-micro {
+    min-height: 54px;
+    padding: 9px 12px;
+    border-radius: 16px;
   }
 
-  .mobile-sponsored-ad-inline::before {
-    border-radius: 17px;
+  .mobile-sponsored-ad-micro::before {
+    border-radius: 15px;
+  }
+
+  .mobile-sponsored-ad-center {
+    min-width: 48px;
+    margin: 0 8px;
   }
 
   .mobile-sponsored-ad-label {
     padding: 5px 8px;
-    font-size: 8px;
+    font-size: 7px;
     letter-spacing: 0.12em;
   }
 
   .mobile-sponsored-ad-logo {
-    width: 52px;
-    max-height: 26px;
+    width: 44px;
+    max-height: 23px;
   }
 
   .mobile-sponsored-ad-title-inline {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
 @media (max-width: 400px) {
-  .mobile-sponsored-ad-inline {
-    gap: 8px;
-    padding: 10px 11px;
+  .mobile-sponsored-ad-micro {
+    padding: 8px 10px;
+  }
+
+  .mobile-sponsored-ad-center {
+    min-width: 42px;
+    margin: 0 6px;
   }
 
   .mobile-sponsored-ad-label {
     padding: 5px 7px;
-    font-size: 7.5px;
+    font-size: 6.8px;
   }
 
   .mobile-sponsored-ad-logo {
-    width: 46px;
-    max-height: 24px;
+    width: 40px;
+    max-height: 21px;
   }
 
   .mobile-sponsored-ad-title-inline {
-    font-size: 15px;
+    font-size: 13px;
   }
 }
