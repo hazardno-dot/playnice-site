@@ -13276,33 +13276,10 @@ body.scrolled .announcement-bar {
     outline-offset: -1px;
 
     background:
-      radial-gradient(
-        ellipse at center,
-        rgba(255, 198, 0, 0.18) 0%,
-        rgba(255, 198, 0, 0.12) 22%,
-        rgba(255, 198, 0, 0.06) 38%,
-        transparent 62%
-      ),
-      radial-gradient(
-        circle at 50% 0%,
-        rgba(255, 198, 0, 0.10),
-        transparent 34%
-      ),
-      radial-gradient(
-        circle at 50% 100%,
-        rgba(0, 0, 0, 0.18),
-        transparent 42%
-      ),
-      linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.035),
-        rgba(255, 255, 255, 0.01)
-      ),
-      linear-gradient(
-        180deg,
-        rgba(10, 10, 11, 0.97),
-        rgba(6, 6, 7, 0.98)
-      );
+  radial-gradient(circle at 50% 0%, rgba(255, 198, 0, 0.12), transparent 38%),
+  radial-gradient(circle at 50% 100%, rgba(255, 198, 0, 0.06), transparent 42%),
+  linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)),
+  linear-gradient(180deg, rgba(9, 9, 10, 0.96), rgba(7, 7, 8, 0.94));
 
     color: #f3e7bf;
 
