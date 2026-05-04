@@ -5335,6 +5335,36 @@ body.scrolled .announcement-bar-inner::before {
 }
 
 /* =========================================
+   CHECKOUT — INTERNATIONAL NOTE TONE PATCH
+========================================= */
+
+.checkout-international-note,
+.international-shipping-note {
+  margin-top: 10px;
+
+  color: rgba(220, 181, 107, 0.78);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.42;
+  letter-spacing: 0.005em;
+}
+
+.checkout-international-note strong,
+.international-shipping-note strong {
+  color: rgba(220, 181, 107, 0.92);
+  font-weight: 700;
+}
+
+.checkout-international-note span {
+  color: rgba(220, 181, 107, 0.72);
+}
+
+.checkout-summary .international-shipping-note {
+  margin-top: 8px;
+  padding-right: 8px;
+}
+
+/* =========================================
    CHECKOUT FORM FIELDS
 ========================================= */
 
