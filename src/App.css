@@ -4,22 +4,25 @@
    ROOT / TOKENS
 ========================================= */
 :root {
-  --bg: #050505;
-  --bg-soft: #090909;
+  --bg: #090806;
+  --bg-soft: #0f0d0a;
 
-  --panel: rgba(18, 18, 18, 0.94);
-  --panel-soft: rgba(255, 255, 255, 0.03);
-  --panel-strong: rgba(255, 255, 255, 0.06);
+  --panel: #14110d;
+  --panel-soft: #1b1712;
+  --panel-strong: #211b14;
 
-  --line: rgba(220, 181, 107, 0.14);
-  --line-strong: rgba(220, 181, 107, 0.32);
+  --line: rgba(220, 181, 107, 0.16);
+  --line-strong: rgba(220, 181, 107, 0.34);
 
   --gold: #dcb56b;
   --gold-soft: rgba(220, 181, 107, 0.18);
 
-  --text: #f4f0e8;
-  --text-soft: rgba(255, 255, 255, 0.66);
-  --text-dim: rgba(255, 255, 255, 0.48);
+  --text: #f4ead8;
+  --text-soft: #b7aa96;
+  --text-dim: #8f826f;
+
+  --success: #9fcf9a;
+  --success-soft: rgba(159, 207, 154, 0.16);
 
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
   --shadow-heavy: 0 30px 80px rgba(0, 0, 0, 0.72);
