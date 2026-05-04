@@ -3973,6 +3973,19 @@ const handleSideRailAction = (ad) => {
   }
 };
 
+const handleSponsoredAdClick = (ad, placement) => {
+  if (typeof trackEvent !== "function") return;
+
+  trackEvent("sponsored_ad_click", {
+    partner: ad?.partner || "forever_living",
+    sellerId: ad?.sellerId || "360000920762",
+    campaign: ad?.campaign || "aloe_drinks",
+    placement,
+    lang,
+    view,
+  });
+};
+
 /* =========================================
    TOTAL PAGES
 ========================================= */
@@ -4556,15 +4569,18 @@ const announcementItems = useMemo(() => {
       : null;
 
   const foreverAnnouncementItem = {
-    id: "forever-announcement-logo",
-    type: "logoLink",
-    text: "Forever Living Products",
-    icon: "★",
-    tone: "forever",
-    href: foreverAloeUrl,
-    logoSrc: "/partners/forever-logo-wide.png",
-    logoAlt: "Forever Living Products",
-  };
+  id: "forever-announcement-logo",
+  type: "logoLink",
+  text: "Forever Living Products",
+  icon: "★",
+  tone: "forever",
+  href: foreverAloeUrl,
+  logoSrc: "/partners/forever-logo-wide.png",
+  logoAlt: "Forever Living Products",
+  partner: "forever_living",
+  sellerId: "360000920762",
+  campaign: "aloe_drinks",
+};
 
   const withPriorityAnnouncements = (items) => [
     ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
@@ -5585,7 +5601,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               target="_blank"
               rel="sponsored noopener noreferrer"
               aria-label={`${ad.label}: ${ad.title.replace("\n", " ")}`}
-              onClick={() => handleSideRailAction(ad)}
+              onClick={() =>
+               handleSponsoredAdClick(ad, "desktop_left_side_rail")
+              }
             >
               {railContent}
             </a>
@@ -5749,12 +5767,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <React.Fragment key={key}>
       {item.type === "logoLink" ? (
         <a
-          className="announcement-logo-link announcement-logo-link-forever"
-          href={item.href}
-          target="_blank"
-          rel="sponsored noopener noreferrer"
-          aria-label={item.logoAlt || item.text}
-        >
+  className="announcement-logo-link announcement-logo-link-forever"
+  href={item.href}
+  target="_blank"
+  rel="sponsored noopener noreferrer"
+  aria-label={item.logoAlt || item.text}
+  onClick={() =>
+    handleSponsoredAdClick(item, "announcement_bar")
+  }
+>
           <img
             src={item.logoSrc}
             alt={item.logoAlt || item.text}
@@ -5892,7 +5913,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       href={mobileSponsoredAd.href}
       target="_blank"
       rel="sponsored noopener noreferrer"
-      onClick={() => handleSideRailAction(mobileSponsoredAd)}
+      onClick={() =>
+  handleSponsoredAdClick(mobileSponsoredAd, "mobile_sponsored_bar")
+}
     >
       <span className="mobile-sponsored-ad-side mobile-sponsored-ad-side-left">
         <span className="mobile-sponsored-ad-label">
