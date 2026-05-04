@@ -13276,12 +13276,17 @@ body.scrolled .announcement-bar {
   }
 
   .mobile-sponsored-ad-micro {
+    --mobile-ad-side-width: 92px;
+
     position: relative;
 
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns:
+      var(--mobile-ad-side-width)
+      minmax(0, 1fr)
+      var(--mobile-ad-side-width);
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 
     width: 100%;
     min-height: 60px;
@@ -13293,10 +13298,26 @@ body.scrolled .announcement-bar {
     outline-offset: -1px;
 
     background:
-      radial-gradient(circle at 45% 50%, rgba(255, 198, 0, 0.10), transparent 34%),
-      radial-gradient(circle at 72% 50%, rgba(255, 198, 0, 0.06), transparent 24%),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
-      linear-gradient(180deg, rgba(9, 9, 10, 0.97), rgba(6, 6, 7, 0.96));
+      radial-gradient(
+        circle at 45% 50%,
+        rgba(255, 198, 0, 0.1),
+        transparent 34%
+      ),
+      radial-gradient(
+        circle at 72% 50%,
+        rgba(255, 198, 0, 0.06),
+        transparent 24%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.035),
+        rgba(255, 255, 255, 0.01)
+      ),
+      linear-gradient(
+        180deg,
+        rgba(9, 9, 10, 0.97),
+        rgba(6, 6, 7, 0.96)
+      );
 
     color: rgba(255, 248, 235, 0.92);
     text-decoration: none;
@@ -13307,6 +13328,7 @@ body.scrolled .announcement-bar {
       inset 0 1px 0 rgba(255, 255, 255, 0.03);
 
     overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .mobile-sponsored-ad-micro::before {
@@ -13323,14 +13345,17 @@ body.scrolled .announcement-bar {
     position: absolute;
     inset: auto 12% -20px 12%;
     height: 46px;
-    background: radial-gradient(
-      ellipse at center,
-      rgba(255, 198, 0, 0.12),
-      transparent 70%
-    );
+
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgba(255, 198, 0, 0.13),
+        transparent 70%
+      );
+
     filter: blur(10px);
-    pointer-events: none;
     opacity: 0.9;
+    pointer-events: none;
   }
 
   .mobile-sponsored-ad-side,
@@ -13344,18 +13369,21 @@ body.scrolled .announcement-bar {
     z-index: 1;
   }
 
-  .mobile-sponsored-ad-side-left {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex: 0 0 auto;
-  }
-
+  .mobile-sponsored-ad-side-left,
   .mobile-sponsored-ad-side-right {
     display: flex;
     align-items: center;
+
+    width: var(--mobile-ad-side-width);
+    min-width: var(--mobile-ad-side-width);
+  }
+
+  .mobile-sponsored-ad-side-left {
+    justify-content: flex-start;
+  }
+
+  .mobile-sponsored-ad-side-right {
     justify-content: flex-end;
-    flex: 0 0 auto;
   }
 
   .mobile-sponsored-ad-label {
@@ -13367,11 +13395,13 @@ body.scrolled .announcement-bar {
 
     border-radius: 999px;
     border: 1px solid rgba(255, 198, 0, 0.28);
-    background: linear-gradient(
-      180deg,
-      rgba(255, 198, 0, 0.12),
-      rgba(255, 198, 0, 0.05)
-    );
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 198, 0, 0.12),
+        rgba(255, 198, 0, 0.05)
+      );
 
     color: #ffc600;
     font-family: "Inter", sans-serif;
@@ -13391,36 +13421,44 @@ body.scrolled .announcement-bar {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+
     min-width: 0;
-    padding-right: 2px;
+    padding: 0;
+
+    text-align: center;
   }
 
   .mobile-sponsored-ad-title-inline {
     display: block;
+    width: 100%;
 
     color: #fff4d2;
     font-family: "Cormorant Garamond", serif;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 600;
     line-height: 0.98;
     letter-spacing: -0.02em;
+    text-align: center;
     white-space: nowrap;
 
     text-shadow:
       0 8px 18px rgba(0, 0, 0, 0.24),
-      0 0 12px rgba(255, 198, 0, 0.06);
+      0 0 12px rgba(255, 198, 0, 0.08);
   }
 
   .mobile-sponsored-ad-subtitle-inline {
     display: -webkit-box;
+    width: 100%;
     margin-top: 2px;
 
     color: rgba(255, 248, 235, 0.68);
     font-family: "Inter", sans-serif;
-    font-size: 9.2px;
+    font-size: 9px;
     font-weight: 600;
-    line-height: 1.15;
+    line-height: 1.12;
     letter-spacing: 0.005em;
+    text-align: center;
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -13430,13 +13468,15 @@ body.scrolled .announcement-bar {
 
   .mobile-sponsored-ad-logo {
     display: block;
-    width: 44px;
-    max-height: 24px;
+
+    width: 64px;
+    max-height: 34px;
+
     object-fit: contain;
 
     filter:
       drop-shadow(0 6px 14px rgba(0, 0, 0, 0.24))
-      drop-shadow(0 0 8px rgba(255, 198, 0, 0.05));
+      drop-shadow(0 0 10px rgba(255, 198, 0, 0.07));
   }
 
   .mobile-sponsored-ad-icon {
@@ -13453,9 +13493,17 @@ body.scrolled .announcement-bar {
   }
 
   .mobile-sponsored-ad-micro {
-    gap: 10px;
+    --mobile-ad-side-width: 84px;
+
+    grid-template-columns:
+      var(--mobile-ad-side-width)
+      minmax(0, 1fr)
+      var(--mobile-ad-side-width);
+    gap: 7px;
+
     min-height: 56px;
     padding: 9px 12px;
+
     border-radius: 16px;
   }
 
@@ -13463,123 +13511,17 @@ body.scrolled .announcement-bar {
     border-radius: 15px;
   }
 
+  .mobile-sponsored-ad-side-left,
+  .mobile-sponsored-ad-side-right {
+    width: var(--mobile-ad-side-width);
+    min-width: var(--mobile-ad-side-width);
+  }
+
   .mobile-sponsored-ad-label {
     padding: 5px 8px;
+
     font-size: 7px;
     letter-spacing: 0.12em;
-  }
-
-  .mobile-sponsored-ad-title-inline {
-    font-size: 17px;
-  }
-
-  .mobile-sponsored-ad-subtitle-inline {
-    font-size: 8.6px;
-    line-height: 1.12;
-  }
-
-  .mobile-sponsored-ad-logo {
-    width: 40px;
-    max-height: 22px;
-  }
-}
-
-@media (max-width: 400px) {
-  .mobile-sponsored-ad-micro {
-    gap: 8px;
-    padding: 8px 10px;
-  }
-
-  .mobile-sponsored-ad-label {
-    padding: 5px 7px;
-    font-size: 6.8px;
-  }
-
-  .mobile-sponsored-ad-title-inline {
-    font-size: 15px;
-  }
-
-  .mobile-sponsored-ad-subtitle-inline {
-    font-size: 8px;
-  }
-
-  .mobile-sponsored-ad-logo {
-    width: 36px;
-    max-height: 20px;
-  }
-}
-
-/* =========================================
-   MOBILE SPONSORED AD — CENTER TEXT + BIGGER LOGO
-========================================= */
-
-@media (max-width: 820px) {
-  .mobile-sponsored-ad-micro {
-    --mobile-ad-side-width: 92px;
-
-    grid-template-columns: var(--mobile-ad-side-width) minmax(0, 1fr) var(--mobile-ad-side-width);
-    gap: 8px;
-    min-height: 60px;
-    padding: 10px 14px;
-  }
-
-  .mobile-sponsored-ad-side-left,
-  .mobile-sponsored-ad-side-right {
-    width: var(--mobile-ad-side-width);
-    min-width: var(--mobile-ad-side-width);
-  }
-
-  .mobile-sponsored-ad-side-left {
-    justify-content: flex-start;
-  }
-
-  .mobile-sponsored-ad-side-right {
-    justify-content: flex-end;
-  }
-
-  .mobile-sponsored-ad-textblock {
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  .mobile-sponsored-ad-title-inline {
-    width: 100%;
-    text-align: center;
-    font-size: 17px;
-    line-height: 0.98;
-  }
-
-  .mobile-sponsored-ad-subtitle-inline {
-    width: 100%;
-    text-align: center;
-    margin-top: 2px;
-    font-size: 9px;
-    line-height: 1.12;
-  }
-
-  .mobile-sponsored-ad-logo {
-    width: 56px;
-    max-height: 30px;
-  }
-}
-
-@media (max-width: 560px) {
-  .mobile-sponsored-ad-micro {
-    --mobile-ad-side-width: 84px;
-
-    grid-template-columns: var(--mobile-ad-side-width) minmax(0, 1fr) var(--mobile-ad-side-width);
-    gap: 7px;
-    min-height: 56px;
-    padding: 9px 12px;
-  }
-
-  .mobile-sponsored-ad-side-left,
-  .mobile-sponsored-ad-side-right {
-    width: var(--mobile-ad-side-width);
-    min-width: var(--mobile-ad-side-width);
   }
 
   .mobile-sponsored-ad-title-inline {
@@ -13601,8 +13543,12 @@ body.scrolled .announcement-bar {
   .mobile-sponsored-ad-micro {
     --mobile-ad-side-width: 76px;
 
-    grid-template-columns: var(--mobile-ad-side-width) minmax(0, 1fr) var(--mobile-ad-side-width);
+    grid-template-columns:
+      var(--mobile-ad-side-width)
+      minmax(0, 1fr)
+      var(--mobile-ad-side-width);
     gap: 6px;
+
     padding: 8px 10px;
   }
 
@@ -13610,6 +13556,11 @@ body.scrolled .announcement-bar {
   .mobile-sponsored-ad-side-right {
     width: var(--mobile-ad-side-width);
     min-width: var(--mobile-ad-side-width);
+  }
+
+  .mobile-sponsored-ad-label {
+    padding: 5px 7px;
+    font-size: 6.8px;
   }
 
   .mobile-sponsored-ad-title-inline {
@@ -13621,7 +13572,7 @@ body.scrolled .announcement-bar {
   }
 
   .mobile-sponsored-ad-logo {
-    width: 46px;
-    max-height: 24px;
+    width: 50px;
+    max-height: 27px;
   }
 }
