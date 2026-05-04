@@ -2,7 +2,7 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const SHIPPING_PRICE = 3.5;
+const SHIPPING_PRICE = 4;
 const FREE_SHIPPING_THRESHOLD = 39;
 
 function formatPrice(value) {
@@ -321,6 +321,205 @@ Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
 Ukupno: ${formatPrice(total)}`;
 }
 
+function internationalAdminEmailHtml({
+  enquiryId,
+  fullName,
+  email,
+  phone,
+  countryLabel,
+  city,
+  address,
+  note,
+  items,
+  subtotal,
+  page
+}) {
+  return `
+  <div style="margin:0;padding:0;background:#0b0b0b;font-family:Inter,Arial,sans-serif;color:#f7f2e8;">
+    <div style="max-width:720px;margin:0 auto;padding:32px 20px;">
+      <div style="background:linear-gradient(180deg,#171717,#0f0f0f);border:1px solid rgba(159,207,154,0.28);border-radius:24px;overflow:hidden;">
+        <div style="padding:28px 28px 18px;border-bottom:1px solid rgba(159,207,154,0.18);">
+          <div style="letter-spacing:.35rem;font-weight:700;color:#9fcf9a;font-size:18px;">PLAYNICE</div>
+          <div style="color:rgba(247,242,232,0.65);font-size:12px;margin-top:8px;">International delivery enquiry</div>
+        </div>
+
+        <div style="padding:28px;">
+          <h1 style="margin:0 0 14px;font-family:Georgia,serif;font-size:34px;line-height:1;color:#9fcf9a;font-weight:600;">
+            Upit za dostavu van Crne Gore
+          </h1>
+
+          <div style="padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(159,207,154,0.16);margin-bottom:20px;">
+            <div style="color:#9fcf9a;font-weight:700;margin-bottom:8px;">Enquiry details</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Enquiry ID: ${escapeHtml(enquiryId)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Kupac: ${escapeHtml(fullName)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Email: ${escapeHtml(email)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Telefon: ${escapeHtml(phone)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Zemlja: ${escapeHtml(countryLabel)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Grad: ${escapeHtml(city)}</div>
+            ${address ? `<div style="color:rgba(247,242,232,0.78);line-height:1.8;">Adresa: ${escapeHtml(address)}</div>` : ""}
+            ${note ? `<div style="color:rgba(247,242,232,0.78);line-height:1.8;">Napomena: ${escapeHtml(note)}</div>` : ""}
+            ${page ? `<div style="color:rgba(247,242,232,0.6);line-height:1.8;font-size:13px;">Page: ${escapeHtml(page)}</div>` : ""}
+          </div>
+
+          <table style="width:100%;border-collapse:collapse;border-spacing:0;margin-bottom:22px;background:rgba(255,255,255,0.02);border-radius:18px;overflow:hidden;">
+            <thead>
+              <tr>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#9fcf9a;">Proizvod</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#9fcf9a;">Veličina</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#9fcf9a;">Količina</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#9fcf9a;">Cena</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#9fcf9a;">Ukupno</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${buildItemsHtml(items)}
+            </tbody>
+          </table>
+
+          <div style="padding:18px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(159,207,154,0.16);">
+            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.82);">
+              <span>Products subtotal</span>
+              <strong style="color:#f7f2e8;">${formatPrice(subtotal)}</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.82);">
+              <span>Dostava</span>
+              <strong style="color:#9fcf9a;">Proveriti posebno</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px solid #2c2c2c;color:#9fcf9a;">
+              <span style="font-weight:700;">Final total</span>
+              <strong style="font-size:18px;color:#9fcf9a;">Nije automatski potvrđeno</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+function internationalAdminEmailText({
+  enquiryId,
+  fullName,
+  email,
+  phone,
+  countryLabel,
+  city,
+  address,
+  note,
+  items,
+  subtotal,
+  page
+}) {
+  return `PlayNice - upit za dostavu van Crne Gore
+
+Enquiry ID: ${enquiryId}
+
+Kupac: ${fullName}
+Email: ${email}
+Telefon: ${phone}
+Zemlja: ${countryLabel}
+Grad: ${city}
+Adresa: ${address || "Nije uneta"}
+Napomena: ${note || "Nema"}
+Page: ${page || "N/A"}
+
+STAVKE
+${buildItemsText(items)}
+
+Products subtotal: ${formatPrice(subtotal)}
+Dostava: proveriti posebno
+Final total: nije automatski potvrđeno`;
+}
+
+function internationalCustomerEmailHtml({
+  enquiryId,
+  fullName,
+  countryLabel,
+  city,
+  items,
+  subtotal
+}) {
+  return `
+  <div style="margin:0;padding:0;background:#0b0b0b;font-family:Inter,Arial,sans-serif;color:#f7f2e8;">
+    <div style="max-width:720px;margin:0 auto;padding:32px 20px;">
+      <div style="background:linear-gradient(180deg,#171717,#0f0f0f);border:1px solid rgba(220,181,107,0.22);border-radius:24px;overflow:hidden;">
+        <div style="padding:28px 28px 18px;border-bottom:1px solid rgba(220,181,107,0.14);">
+          <div style="letter-spacing:.35rem;font-weight:700;color:#f3d69b;font-size:18px;">PLAYNICE</div>
+          <div style="color:rgba(247,242,232,0.65);font-size:12px;margin-top:8px;">Remember. PlayNice.</div>
+        </div>
+
+        <div style="padding:28px;">
+          <h1 style="margin:0 0 14px;font-family:Georgia,serif;font-size:34px;line-height:1;color:#f3d69b;font-weight:600;">
+            Delivery enquiry received
+          </h1>
+
+          <p style="margin:0 0 18px;color:rgba(247,242,232,0.82);line-height:1.8;">
+            Zdravo ${escapeHtml(fullName)}, primili smo tvoj upit za dostavu van Crne Gore. Ovo nije automatska porudžbina — proverićemo mogućnost dostave i javiti ti se sa detaljima.
+          </p>
+
+          <div style="padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(220,181,107,0.12);margin-bottom:20px;">
+            <div style="color:#f3d69b;font-weight:700;margin-bottom:8px;">Enquiry summary</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Enquiry ID: ${escapeHtml(enquiryId)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Zemlja: ${escapeHtml(countryLabel)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Grad: ${escapeHtml(city)}</div>
+            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Products subtotal: ${formatPrice(subtotal)}</div>
+          </div>
+
+          <table style="width:100%;border-collapse:collapse;border-spacing:0;margin-bottom:22px;background:rgba(255,255,255,0.02);border-radius:18px;overflow:hidden;">
+            <thead>
+              <tr>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Fragrance</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Size</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Qty</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Price</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${buildItemsHtml(items)}
+            </tbody>
+          </table>
+
+          <p style="margin:22px 0 0;color:rgba(247,242,232,0.7);line-height:1.8;font-size:14px;">
+            Dostava i finalna cena biće potvrđene naknadno.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+function internationalCustomerEmailText({
+  enquiryId,
+  fullName,
+  countryLabel,
+  city,
+  items,
+  subtotal
+}) {
+  return `PLAYNICE
+
+Delivery enquiry received
+
+Enquiry ID: ${enquiryId}
+
+Zdravo ${fullName}, primili smo tvoj upit za dostavu van Crne Gore.
+Ovo nije automatska porudžbina — proverićemo mogućnost dostave i javiti ti se sa detaljima.
+
+Zemlja: ${countryLabel}
+Grad: ${city}
+
+STAVKE
+${buildItemsText(items)}
+
+Products subtotal: ${formatPrice(subtotal)}
+Dostava: biće potvrđena naknadno
+Final total: biće potvrđen naknadno
+
+Remember. PlayNice.`;
+}
+
 export default async function handler(req, res) {
   res.setHeader("Allow", ["POST"]);
 
@@ -337,18 +536,39 @@ export default async function handler(req, res) {
     const body = req.body || {};
     const customer = body.customer || {};
 
+    const requestType = normalizeText(body.type);
     const firstName = normalizeText(customer.firstName);
     const lastName = normalizeText(customer.lastName);
     const fullName = normalizeText(`${firstName} ${lastName}`);
     const email = normalizeText(customer.email);
     const phone = normalizeText(customer.phone);
+    const country = normalizeText(customer.country || "ME");
+    const countryLabel = normalizeText(
+      customer.countryLabel || (country === "ME" ? "Montenegro" : country)
+    );
     const city = normalizeText(customer.city);
     const address = normalizeText(customer.address);
     const note = normalizeText(customer.note);
+    const page = normalizeText(body.page);
     const items = sanitizeItems(body.items);
 
-    if (!firstName || !lastName || !email || !phone || !city || !address) {
-      return res.status(400).json({ error: "Missing required customer fields" });
+    const isInternationalEnquiry =
+      requestType === "international_enquiry" || country !== "ME";
+
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !phone ||
+      !country ||
+      !city ||
+      (!isInternationalEnquiry && !address)
+    ) {
+      return res.status(400).json({
+        error: isInternationalEnquiry
+          ? "Missing required enquiry fields"
+          : "Missing required customer fields"
+      });
     }
 
     if (!isValidEmail(email)) {
@@ -360,12 +580,106 @@ export default async function handler(req, res) {
     }
 
     const subtotal = getSubtotal(items);
-    const shipping = getShipping(subtotal);
-    const total = subtotal + shipping;
-    const orderId = generateOrderId();
+    const orderId = isInternationalEnquiry
+      ? generateOrderId().replace("PN-", "PN-INT-")
+      : generateOrderId();
 
     const fromEmail = process.env.RESEND_FROM_EMAIL || "noreply@playniceshop.me";
     const adminEmail = process.env.ADMIN_ORDER_EMAIL || "order@playniceshop.me";
+
+    if (isInternationalEnquiry) {
+      let adminSendResult;
+
+      try {
+        adminSendResult = await resend.emails.send({
+          from: `PlayNice <${fromEmail}>`,
+          to: adminEmail,
+          replyTo: email,
+          subject: `PlayNice International Enquiry ${orderId} • ${countryLabel} • ${fullName} • ${formatPrice(subtotal)}`,
+          html: internationalAdminEmailHtml({
+            enquiryId: orderId,
+            fullName,
+            email,
+            phone,
+            countryLabel,
+            city,
+            address,
+            note,
+            items,
+            subtotal,
+            page
+          }),
+          text: internationalAdminEmailText({
+            enquiryId: orderId,
+            fullName,
+            email,
+            phone,
+            countryLabel,
+            city,
+            address,
+            note,
+            items,
+            subtotal,
+            page
+          })
+        });
+      } catch (adminError) {
+        console.error("International enquiry admin email failed:", adminError);
+        return res.status(500).json({
+          error: "Failed to send international enquiry",
+          details: adminError?.message || "Admin enquiry email failed"
+        });
+      }
+
+      let customerEmailSent = false;
+      let customerEmailError = null;
+
+      try {
+        await resend.emails.send({
+          from: `PlayNice <${fromEmail}>`,
+          to: email,
+          subject: `PlayNice Delivery Enquiry Received • ${orderId}`,
+          html: internationalCustomerEmailHtml({
+            enquiryId: orderId,
+            fullName,
+            countryLabel,
+            city,
+            items,
+            subtotal
+          }),
+          text: internationalCustomerEmailText({
+            enquiryId: orderId,
+            fullName,
+            countryLabel,
+            city,
+            items,
+            subtotal
+          })
+        });
+
+        customerEmailSent = true;
+      } catch (customerError) {
+        customerEmailError = customerError?.message || "Customer enquiry email failed";
+        console.error("Customer enquiry email failed:", customerError);
+      }
+
+      return res.status(200).json({
+        success: true,
+        enquiryReceived: true,
+        orderPlaced: false,
+        adminEmailSent: true,
+        customerEmailSent,
+        warning: customerEmailSent
+          ? null
+          : "Enquiry received, but customer email was not sent",
+        adminMessageId: adminSendResult?.data?.id || null,
+        customerEmailError,
+        enquiryId: orderId
+      });
+    }
+
+    const shipping = getShipping(subtotal);
+    const total = subtotal + shipping;
 
     let adminSendResult;
 
@@ -451,6 +765,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       orderPlaced: true,
+      enquiryReceived: false,
       adminEmailSent: true,
       customerEmailSent,
       warning: customerEmailSent ? null : "Order placed, but customer email was not sent",
@@ -461,7 +776,7 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error("Checkout error:", error);
     return res.status(500).json({
-      error: "Failed to process order",
+      error: "Failed to process checkout request",
       details: error?.message || "Unknown error"
     });
   }
