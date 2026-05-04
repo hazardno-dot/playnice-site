@@ -5902,11 +5902,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <span className="mobile-sponsored-ad-textblock">
         <span className="mobile-sponsored-ad-title-inline">
-          Aloe Vera Drinks
+          {lang === "sr" ? "Aloe Vera napici" : "Aloe Vera Drinks"}
         </span>
 
         <span className="mobile-sponsored-ad-subtitle-inline">
-          Explore Forever Living aloe vera drinks.
+          {lang === "sr"
+            ? "Istraži Forever Living aloe vera napitke."
+            : "Explore Forever Living aloe vera drinks."}
         </span>
       </span>
 
