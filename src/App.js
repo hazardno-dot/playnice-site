@@ -8261,13 +8261,39 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         ))}
       </div>
 
+      {isMontenegroOrder && (
+  <div
+    className={`shipping-progress-card checkout-shipping-note panel-anim panel-anim-4 ${
+      subtotal >= FREE_SHIPPING_THRESHOLD
+        ? "shipping-note-unlocked"
+        : "shipping-note-locked"
+    }`}
+  >
+    <div className="shipping-note">
+      {subtotal >= FREE_SHIPPING_THRESHOLD
+        ? `${tr.freeShippingUnlocked} ✓`
+        : tr.freeShippingProgress.replace(
+            "{{amount}}",
+            formatPrice(amountLeftForFreeShipping)
+          )}
+    </div>
+
+    <div className="shipping-progress-bar">
       <div
-        className={`shipping-progress-card checkout-shipping-note panel-anim panel-anim-4 ${
-          subtotal >= FREE_SHIPPING_THRESHOLD
-            ? "shipping-note-unlocked"
-            : "shipping-note-locked"
-        }`}
-      >
+        className="shipping-progress-fill"
+        style={{ width: `${freeShippingProgress}%` }}
+      />
+    </div>
+  </div>
+)}
+
+{isInternationalEnquiry && (
+  <div className="checkout-shipping-note international-shipping-note panel-anim panel-anim-4">
+    {lang === "sr"
+      ? "Dostava van Crne Gore se proverava posebno — poslaćemo vam odgovor sa mogućnostima i cenom."
+      : "Delivery outside Montenegro is checked separately — we’ll reply with availability and shipping cost."}
+  </div>
+)}
         <div className="shipping-note">
           {subtotal >= FREE_SHIPPING_THRESHOLD
             ? `${tr.freeShippingUnlocked} ✓`
@@ -8289,25 +8315,35 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <DeliveryReturnsMini surface="checkout" />
 
     <div className="checkout-totals panel-anim panel-anim-6">
-      <div>
-        <span>{tr.subtotal}</span>
-        <strong>{formatPrice(subtotal)}</strong>
-      </div>
+  <div>
+    <span>{isInternationalEnquiry ? (lang === "sr" ? "Proizvodi" : "Products") : tr.subtotal}</span>
+    <strong>{formatPrice(subtotal)}</strong>
+  </div>
 
-      <div>
-        <span>{tr.shipping}</span>
-        <strong>
-          {shipping === 0 && cart.length > 0
-            ? "FREE"
-            : formatPrice(shipping)}
-        </strong>
-      </div>
+  <div>
+    <span>{tr.shipping}</span>
+    <strong>
+      {isInternationalEnquiry
+        ? lang === "sr"
+          ? "Po dogovoru"
+          : "To be confirmed"
+        : shipping === 0 && cart.length > 0
+        ? "FREE"
+        : formatPrice(shipping)}
+    </strong>
+  </div>
 
-      <div className="grand-total">
-        <span>{tr.total}</span>
-        <strong>{formatPrice(total)}</strong>
-      </div>
-    </div>
+  <div className="grand-total">
+    <span>{tr.total}</span>
+    <strong>
+      {isInternationalEnquiry
+        ? lang === "sr"
+          ? "Biće potvrđeno"
+          : "To be confirmed"
+        : formatPrice(total)}
+    </strong>
+  </div>
+</div>
   </>
 )}
     </div>
