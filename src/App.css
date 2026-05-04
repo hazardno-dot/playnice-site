@@ -13342,6 +13342,96 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
+   SIDE AD RAILS — SOFTER GLOW PATCH
+   Keeps premium look, reduces heavy halo
+========================================= */
+
+@media (min-width: 1520px) and (min-height: 720px) {
+  .side-ad-rail {
+    --rail-accent-soft: rgba(220, 181, 107, 0.11);
+    --rail-accent-glow: rgba(220, 181, 107, 0.08);
+    --rail-accent-cool: rgba(120, 196, 255, 0.055);
+
+    box-shadow:
+      0 18px 48px rgba(0, 0, 0, 0.38),
+      0 0 18px var(--rail-accent-glow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03),
+      inset 0 -14px 32px rgba(0, 0, 0, 0.16);
+  }
+
+  .side-ad-rail::after {
+    inset: auto -14px -14px -14px;
+    height: 86px;
+
+    filter: blur(8px);
+    opacity: 0.36;
+  }
+
+  .side-ad-rail-left {
+    --rail-accent-soft: rgba(220, 181, 107, 0.11);
+    --rail-accent-glow: rgba(220, 181, 107, 0.075);
+    --rail-accent-cool: rgba(120, 196, 255, 0.045);
+  }
+
+  .side-ad-rail-right {
+    --rail-accent-soft: rgba(120, 196, 255, 0.10);
+    --rail-accent-glow: rgba(120, 196, 255, 0.07);
+    --rail-accent-cool: rgba(220, 181, 107, 0.055);
+  }
+
+  .side-ad-rail:hover {
+    box-shadow:
+      0 22px 62px rgba(0, 0, 0, 0.44),
+      0 0 0 1px rgba(255, 255, 255, 0.025),
+      0 0 26px var(--rail-accent-glow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.045),
+      inset 0 -16px 38px rgba(0, 0, 0, 0.18);
+  }
+
+  .side-ad-icon {
+    box-shadow:
+      0 7px 18px rgba(0, 0, 0, 0.22),
+      0 0 12px color-mix(in srgb, var(--rail-accent) 10%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+
+  .side-ad-rail:hover .side-ad-icon {
+    box-shadow:
+      0 9px 22px rgba(0, 0, 0, 0.26),
+      0 0 18px color-mix(in srgb, var(--rail-accent) 14%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  }
+
+  .side-ad-title {
+    text-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.42),
+      0 0 10px rgba(255, 255, 255, 0.025);
+  }
+
+  .side-ad-rail-left.side-ad-rail-sponsored {
+    --rail-accent-soft: rgba(255, 198, 0, 0.095);
+    --rail-accent-glow: rgba(255, 198, 0, 0.075);
+    --rail-accent-cool: rgba(116, 170, 80, 0.045);
+
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255, 198, 0, 0.075), transparent 38%),
+      radial-gradient(circle at 50% 100%, rgba(116, 170, 80, 0.045), transparent 42%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.008)),
+      linear-gradient(180deg, rgba(9, 9, 10, 0.98), rgba(4, 4, 5, 0.98));
+  }
+
+  .side-ad-rail-sponsored .side-ad-title {
+    text-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.44),
+      0 0 8px rgba(255, 198, 0, 0.04);
+  }
+
+  .side-ad-logo {
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.2));
+  }
+}
+
+/* =========================================
    MOBILE SPONSORED AD — FINAL MICRO BAR
 ========================================= */
 
