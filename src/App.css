@@ -13178,14 +13178,14 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
-   SIDE AD RAILS — SPONSORED / FOREVER PATCH
+   FOREVER SPONSORED RAIL — BRAND PATCH
 ========================================= */
 
 .side-ad-rail,
 .side-ad-rail:visited,
 .side-ad-rail:hover,
 .side-ad-rail:focus {
-  color: rgba(255, 248, 235, 0.9);
+  color: rgba(255, 248, 235, 0.92);
   text-decoration: none;
 }
 
@@ -13194,24 +13194,67 @@ body.scrolled .announcement-bar {
   -webkit-appearance: none;
 }
 
-/* Forever sponsored rail — aloe green premium accent */
 @media (min-width: 1520px) and (min-height: 720px) {
   .side-ad-rail-left.side-ad-rail-sponsored {
-    --rail-accent: rgba(164, 216, 122, 0.96);
-    --rail-accent-soft: rgba(164, 216, 122, 0.16);
-    --rail-accent-glow: rgba(164, 216, 122, 0.2);
-    --rail-accent-cool: rgba(120, 196, 255, 0.1);
+    --rail-accent: rgba(255, 198, 0, 0.96);       /* Forever Aloe Gold */
+    --rail-accent-soft: rgba(255, 198, 0, 0.14);
+    --rail-accent-glow: rgba(255, 198, 0, 0.18);
+    --rail-accent-cool: rgba(116, 170, 80, 0.08); /* Aloe Green only as support */
+
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255, 198, 0, 0.11), transparent 38%),
+      radial-gradient(circle at 50% 100%, rgba(116, 170, 80, 0.08), transparent 42%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
+      linear-gradient(180deg, rgba(9, 9, 10, 0.98), rgba(4, 4, 5, 0.98));
   }
 
   .side-ad-rail-sponsored .side-ad-label {
-    letter-spacing: 0.17em;
+    color: #ffc600;
+    border-color: rgba(255, 198, 0, 0.28);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 198, 0, 0.14),
+      rgba(255, 198, 0, 0.06)
+    );
+    letter-spacing: 0.16em;
   }
 
-  .side-ad-rail-sponsored .side-ad-icon {
-    font-size: 21px;
+  .side-ad-logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 6px;
+    padding: 2px 0 0;
+  }
+
+  .side-ad-logo {
+    display: block;
+    width: min(108px, 100%);
+    max-height: 52px;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.22));
+  }
+
+  .side-ad-rail-sponsored .side-ad-title {
+    margin-top: 2px;
+    font-size: clamp(24px, 1.55vw, 30px);
+    line-height: 0.92;
+    color: #fff7e2;
+    text-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.46),
+      0 0 14px rgba(255, 198, 0, 0.07);
   }
 
   .side-ad-rail-sponsored .side-ad-copy {
-    max-width: 104px;
+    max-width: 106px;
+    font-size: 11.25px;
+    line-height: 1.52;
+    color: rgba(255, 248, 235, 0.76);
+  }
+
+  .side-ad-rail-sponsored .side-ad-cta {
+    color: #ffc600;
+    border-top: 1px solid rgba(255, 198, 0, 0.1);
   }
 }

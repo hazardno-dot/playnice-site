@@ -3896,23 +3896,24 @@ const foreverAloeUrl =
 
 const sideRailAds = [
   {
-    id: "forever-aloe-refresh",
-    side: "left",
-    enabled: true,
-    isSponsored: true,
-    icon: "✦",
-    label: "SPONSORED",
-    title: "Aloe\nRefresh",
-    text:
-      lang === "sr"
-        ? "Forever Living aloe vera napici."
-        : "Forever Living aloe vera drinks.",
-    cta: lang === "sr" ? "Pogledaj" : "Explore",
-    href: foreverAloeUrl,
-    partner: "forever_living",
-    sellerId: "360000920762",
-    campaign: "aloe_refresh",
-  },
+  id: "forever-aloe-refresh",
+  side: "left",
+  enabled: true,
+  isSponsored: true,
+  label: "SPONSORED",
+  title: lang === "sr" ? "Aloe Vera\nDrinks" : "Aloe Vera\nDrinks",
+  text:
+    lang === "sr"
+      ? "Napici sa aloe verom iz Forever Living ponude. Pogledaj gel, berry, mango i druge favorite."
+      : "Explore Forever Living aloe vera drinks. Discover gel, berry, mango and other favourites.",
+  cta: lang === "sr" ? "Pogledaj" : "Explore",
+  href: "https://foreverliving.com/shop/scg/sr-Cyrl-RS/drinks?fboId=360000920762&categoryId=1&title=Napici",
+  partner: "forever_living",
+  sellerId: "360000920762",
+  campaign: "aloe_drinks",
+  logoSrc: "/partners/forever-logo.png",
+  logoAlt: "Forever Living",
+},
   {
     id: "right-partner-placeholder",
     side: "right",
@@ -5521,9 +5522,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           <>
             <span className="side-ad-label">{ad.label}</span>
 
-            <span className="side-ad-icon" aria-hidden="true">
-              {ad.icon}
-            </span>
+            {ad.logoSrc ? (
+  <span className="side-ad-logo-wrap">
+    <img
+      src={ad.logoSrc}
+      alt={ad.logoAlt || ad.label}
+      className="side-ad-logo"
+      loading="lazy"
+    />
+  </span>
+) : (
+  <span className="side-ad-icon" aria-hidden="true">
+    {ad.icon}
+  </span>
+)}
 
             <span className="side-ad-title">
               {ad.title.split("\n").map((line, index) => (
