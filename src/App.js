@@ -4536,9 +4536,6 @@ const handleJournalArticleOpen = (article) => {
   switchView("journal");
 };
 
-const foreverAloeUrl =
-  "https://foreverliving.com/shop/scg/sr-Cyrl-RS/drinks?fboId=360000920762&categoryId=1&title=Napici";
-
 const announcementItems = useMemo(() => {
   const latestJournalTitle = latestJournalArticle
     ? getJournalText(latestJournalArticle.title, lang)
