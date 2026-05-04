@@ -13258,3 +13258,99 @@ body.scrolled .announcement-bar {
     border-top: 1px solid rgba(255, 198, 0, 0.1);
   }
 }
+
+/* =========================================
+   FOREVER SPONSORED RAIL — INVERTED GOLD/BLACK
+========================================= */
+
+@media (min-width: 1520px) and (min-height: 720px) {
+  .side-ad-rail-left.side-ad-rail-sponsored {
+    --rail-accent: rgba(255, 198, 0, 0.98);
+    --rail-accent-soft: rgba(255, 198, 0, 0.22);
+    --rail-accent-glow: rgba(255, 198, 0, 0.18);
+    --rail-accent-cool: rgba(0, 0, 0, 0.08);
+
+    border: 1px solid rgba(255, 198, 0, 0.52);
+    outline: 1px solid rgba(0, 0, 0, 0.12);
+    outline-offset: -1px;
+
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.22), transparent 34%),
+      radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.08), transparent 42%),
+      linear-gradient(180deg, rgba(255, 214, 51, 0.98), rgba(255, 198, 0, 0.98));
+
+    color: #111111;
+
+    box-shadow:
+      0 24px 70px rgba(0, 0, 0, 0.28),
+      0 0 26px rgba(255, 198, 0, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -18px 36px rgba(0, 0, 0, 0.08);
+  }
+
+  .side-ad-rail-left.side-ad-rail-sponsored::before {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .side-ad-rail-left.side-ad-rail-sponsored::after {
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 198, 0, 0.18),
+      transparent 66%
+    );
+    opacity: 0.7;
+  }
+
+  .side-ad-rail-left.side-ad-rail-sponsored:hover {
+    outline-color: rgba(0, 0, 0, 0.18);
+
+    box-shadow:
+      0 30px 86px rgba(0, 0, 0, 0.34),
+      0 0 0 1px rgba(0, 0, 0, 0.04),
+      0 0 30px rgba(255, 198, 0, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.34),
+      inset 0 -20px 46px rgba(0, 0, 0, 0.1);
+
+    transform: translateY(-3px);
+  }
+
+  .side-ad-rail-sponsored .side-ad-label {
+    color: #111111;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    background: rgba(255, 255, 255, 0.26);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.24),
+      0 4px 14px rgba(0, 0, 0, 0.08);
+  }
+
+  .side-ad-rail-sponsored .side-ad-title,
+  .side-ad-rail-sponsored .side-ad-copy,
+  .side-ad-rail-sponsored .side-ad-cta {
+    color: #111111;
+  }
+
+  .side-ad-rail-sponsored .side-ad-title {
+    text-shadow: none;
+  }
+
+  .side-ad-rail-sponsored .side-ad-copy {
+    color: rgba(17, 17, 17, 0.82);
+  }
+
+  .side-ad-rail-sponsored .side-ad-cta {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.08),
+      rgba(0, 0, 0, 0.02)
+    );
+  }
+
+  .side-ad-rail-sponsored .side-ad-cta span {
+    color: #111111;
+  }
+
+  .side-ad-rail-sponsored .side-ad-logo {
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.12));
+  }
+}
