@@ -13258,3 +13258,70 @@ body.scrolled .announcement-bar {
     border-top: 1px solid rgba(255, 198, 0, 0.1);
   }
 }
+
+/* =========================================
+   FOREVER LEFT RAIL — GRADIENT TEMPLATE
+   po uzoru na desni panel
+========================================= */
+
+@media (min-width: 1520px) and (min-height: 720px) {
+  .side-ad-rail-left.side-ad-rail-sponsored {
+    --rail-accent: rgba(255, 198, 0, 0.94);       /* Forever Gold */
+    --rail-accent-soft: rgba(255, 198, 0, 0.14);  /* mekši gold glow */
+    --rail-accent-glow: rgba(255, 198, 0, 0.16);
+    --rail-accent-cool: rgba(0, 0, 0, 0.12);      /* tamna podrška */
+
+    border: 1px solid rgba(255, 198, 0, 0.18);
+    outline: 1px solid rgba(255, 255, 255, 0.03);
+    outline-offset: -1px;
+
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgba(255, 198, 0, 0.18) 0%,
+        rgba(255, 198, 0, 0.12) 22%,
+        rgba(255, 198, 0, 0.06) 38%,
+        transparent 62%
+      ),
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(255, 198, 0, 0.10),
+        transparent 34%
+      ),
+      radial-gradient(
+        circle at 50% 100%,
+        rgba(0, 0, 0, 0.18),
+        transparent 42%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.035),
+        rgba(255, 255, 255, 0.01)
+      ),
+      linear-gradient(
+        180deg,
+        rgba(10, 10, 11, 0.97),
+        rgba(6, 6, 7, 0.98)
+      );
+
+    color: #f3e7bf;
+
+    box-shadow:
+      0 24px 70px rgba(0, 0, 0, 0.34),
+      0 0 30px rgba(255, 198, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      inset 0 -18px 40px rgba(0, 0, 0, 0.18);
+  }
+
+  .side-ad-rail-left.side-ad-rail-sponsored:hover {
+    outline-color: rgba(255, 255, 255, 0.05);
+
+    box-shadow:
+      0 30px 86px rgba(0, 0, 0, 0.42),
+      0 0 38px rgba(255, 198, 0, 0.10),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      inset 0 -20px 46px rgba(0, 0, 0, 0.20);
+
+    transform: translateY(-3px);
+  }
+}
