@@ -8297,8 +8297,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   )}
 </div>
 
-<DeliveryReturnsMini surface="checkout" />
-
     <DeliveryReturnsMini surface="checkout" />
 
     <div className="checkout-totals panel-anim panel-anim-6">
