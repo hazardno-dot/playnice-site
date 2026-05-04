@@ -13260,45 +13260,184 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
-   FOREVER LEFT RAIL — GRADIENT TEMPLATE
-   po uzoru na desni panel
+   FOREVER SPONSORED RAIL — FINAL GOLD/DARK
+   same visual family as right side rail
 ========================================= */
 
+.side-ad-rail,
+.side-ad-rail:visited,
+.side-ad-rail:hover,
+.side-ad-rail:focus {
+  color: rgba(255, 248, 235, 0.92);
+  text-decoration: none;
+}
+
+.side-ad-rail {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Forever logo support */
 @media (min-width: 1520px) and (min-height: 720px) {
+  .side-ad-logo-wrap {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    margin-top: 2px;
+    padding: 0;
+  }
+
+  .side-ad-logo {
+    display: block;
+
+    width: min(92px, 100%);
+    max-height: 46px;
+
+    object-fit: contain;
+
+    filter:
+      drop-shadow(0 8px 18px rgba(0, 0, 0, 0.28))
+      drop-shadow(0 0 10px rgba(255, 198, 0, 0.08));
+  }
+
   .side-ad-rail-left.side-ad-rail-sponsored {
-    --rail-accent: rgba(255, 198, 0, 0.94);       /* Forever Gold */
-    --rail-accent-soft: rgba(255, 198, 0, 0.14);  /* mekši gold glow */
+    --rail-accent: rgba(255, 198, 0, 0.94);
+    --rail-accent-soft: rgba(255, 198, 0, 0.15);
     --rail-accent-glow: rgba(255, 198, 0, 0.16);
-    --rail-accent-cool: rgba(0, 0, 0, 0.12);      /* tamna podrška */
+    --rail-accent-cool: rgba(255, 198, 0, 0.07);
 
     border: 1px solid rgba(255, 198, 0, 0.18);
-    outline: 1px solid rgba(255, 255, 255, 0.03);
+    outline: 1px solid rgba(255, 255, 255, 0.035);
     outline-offset: -1px;
 
     background:
-  radial-gradient(circle at 50% 0%, rgba(255, 198, 0, 0.12), transparent 38%),
-  radial-gradient(circle at 50% 100%, rgba(255, 198, 0, 0.06), transparent 42%),
-  linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)),
-  linear-gradient(180deg, rgba(9, 9, 10, 0.96), rgba(7, 7, 8, 0.94));
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(255, 198, 0, 0.14),
+        transparent 38%
+      ),
+      radial-gradient(
+        circle at 50% 100%,
+        rgba(255, 198, 0, 0.08),
+        transparent 42%
+      ),
+      radial-gradient(
+        ellipse at center,
+        rgba(255, 198, 0, 0.10) 0%,
+        rgba(255, 198, 0, 0.07) 24%,
+        rgba(255, 198, 0, 0.035) 44%,
+        transparent 68%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.04),
+        rgba(255, 255, 255, 0.01)
+      ),
+      linear-gradient(
+        180deg,
+        rgba(9, 9, 10, 0.96),
+        rgba(7, 7, 8, 0.94)
+      );
 
-    color: #f3e7bf;
+    color: rgba(255, 248, 235, 0.92);
 
     box-shadow:
       0 24px 70px rgba(0, 0, 0, 0.34),
-      0 0 30px rgba(255, 198, 0, 0.08),
+      0 0 34px rgba(255, 198, 0, 0.08),
       inset 0 1px 0 rgba(255, 255, 255, 0.04),
       inset 0 -18px 40px rgba(0, 0, 0, 0.18);
   }
 
+  .side-ad-rail-left.side-ad-rail-sponsored::before {
+    border: 1px solid rgba(255, 255, 255, 0.025);
+  }
+
+  .side-ad-rail-left.side-ad-rail-sponsored::after {
+    background:
+      radial-gradient(
+        circle at 50% 50%,
+        rgba(255, 198, 0, 0.14),
+        transparent 66%
+      );
+
+    opacity: 0.82;
+  }
+
   .side-ad-rail-left.side-ad-rail-sponsored:hover {
-    outline-color: rgba(255, 255, 255, 0.05);
+    outline-color: rgba(255, 255, 255, 0.06);
 
     box-shadow:
       0 30px 86px rgba(0, 0, 0, 0.42),
-      0 0 38px rgba(255, 198, 0, 0.10),
+      0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 0 42px rgba(255, 198, 0, 0.10),
       inset 0 1px 0 rgba(255, 255, 255, 0.05),
       inset 0 -20px 46px rgba(0, 0, 0, 0.20);
 
     transform: translateY(-3px);
+  }
+
+  .side-ad-rail-left.side-ad-rail-sponsored .side-ad-label {
+    color: #ffc600;
+
+    border: 1px solid rgba(255, 198, 0, 0.30);
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 198, 0, 0.14),
+        rgba(255, 198, 0, 0.06)
+      );
+
+    letter-spacing: 0.16em;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 4px 14px rgba(0, 0, 0, 0.12);
+  }
+
+  .side-ad-rail-left.side-ad-rail-sponsored .side-ad-title {
+    margin-top: 2px;
+
+    color: #fff4d2;
+
+    font-size: clamp(24px, 1.55vw, 30px);
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+
+    text-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.46),
+      0 0 16px rgba(255, 198, 0, 0.08);
+  }
+
+  .side-ad-rail-left.side-ad-rail-sponsored .side-ad-copy {
+    max-width: 106px;
+
+    color: rgba(255, 248, 235, 0.74);
+
+    font-size: 11.2px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .side-ad-rail-left.side-ad-rail-sponsored .side-ad-cta {
+    color: #ffc600;
+
+    border-top: 1px solid rgba(255, 198, 0, 0.11);
+
+    background:
+      linear-gradient(
+        180deg,
+        transparent,
+        rgba(255, 198, 0, 0.025)
+      );
+  }
+
+  .side-ad-rail-left.side-ad-rail-sponsored .side-ad-cta span {
+    color: #ffc600;
   }
 }
