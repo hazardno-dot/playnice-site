@@ -3943,6 +3943,15 @@ const sideRailBlocked =
 const shouldShowSideRails =
   (view === "home" || view === "shop") && !sideRailBlocked;
 
+  const mobileSponsoredAd = sideRailAds.find(
+  (ad) => ad.id === "forever-aloe-refresh" && ad.enabled
+);
+
+const shouldShowMobileSponsoredAd =
+  Boolean(mobileSponsoredAd) &&
+  (view === "home" || view === "shop") &&
+  !sideRailBlocked;
+
 const handleSideRailAction = (ad) => {
   if (ad.href) {
     return;
@@ -5844,6 +5853,61 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               <div>{tr.valuePremium}</div>
               <div>{tr.valueDelivery}</div>
             </section>
+
+            {shouldShowMobileSponsoredAd && (
+  <section
+    className="mobile-sponsored-ad-wrap"
+    aria-label={
+      lang === "sr"
+        ? "Sponzorisani partner"
+        : "Sponsored partner"
+    }
+  >
+    <a
+      className="mobile-sponsored-ad mobile-sponsored-ad-forever"
+      href={mobileSponsoredAd.href}
+      target="_blank"
+      rel="sponsored noopener noreferrer"
+      onClick={() => handleSideRailAction(mobileSponsoredAd)}
+    >
+      <div className="mobile-sponsored-ad-top">
+        <span className="mobile-sponsored-ad-label">
+          {mobileSponsoredAd.label}
+        </span>
+
+        {mobileSponsoredAd.logoSrc ? (
+          <img
+            src={mobileSponsoredAd.logoSrc}
+            alt={mobileSponsoredAd.logoAlt || "Forever Living"}
+            className="mobile-sponsored-ad-logo"
+            loading="lazy"
+          />
+        ) : (
+          <span className="mobile-sponsored-ad-icon" aria-hidden="true">
+            {mobileSponsoredAd.icon}
+          </span>
+        )}
+      </div>
+
+      <div className="mobile-sponsored-ad-content">
+        <h3>
+          {mobileSponsoredAd.title.split("\n").map((line, index) => (
+            <span key={`${mobileSponsoredAd.id}-mobile-${index}`}>
+              {line}
+            </span>
+          ))}
+        </h3>
+
+        <p>{mobileSponsoredAd.text}</p>
+      </div>
+
+      <span className="mobile-sponsored-ad-cta">
+        {mobileSponsoredAd.cta}
+        <span aria-hidden="true">→</span>
+      </span>
+    </a>
+  </section>
+)}
 
             <section
               id="how-it-works"
