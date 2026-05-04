@@ -1138,6 +1138,63 @@ body.scrolled .announcement-bar-inner::before {
 }
 
 /* =========================================
+   ANNOUNCEMENT BAR — FOREVER LOGO LINK
+========================================= */
+
+.announcement-logo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 20px;
+  max-height: 20px;
+
+  color: inherit;
+  text-decoration: none;
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.announcement-logo-img {
+  display: block;
+
+  width: auto;
+  height: 18px;
+  max-width: 158px;
+  max-height: 18px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 0 6px rgba(255, 198, 0, 0.12))
+    drop-shadow(0 2px 6px rgba(0, 0, 0, 0.28));
+
+  opacity: 0.92;
+}
+
+.announcement-logo-link:hover {
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
+.announcement-logo-link:hover .announcement-logo-img {
+  filter:
+    drop-shadow(0 0 10px rgba(255, 198, 0, 0.2))
+    drop-shadow(0 2px 8px rgba(0, 0, 0, 0.32));
+}
+
+.announcement-icon.announcement-forever {
+  color: rgba(255, 198, 0, 0.84);
+  filter: drop-shadow(0 0 6px rgba(255, 198, 0, 0.2));
+}
+
+/* =========================================
    BUTTONS / UI
 ========================================= */
 .cart-button {
@@ -5722,6 +5779,17 @@ body.scrolled .announcement-bar {
   padding: 0 10px 8px;
 }
 
+.announcement-logo-link {
+  height: 18px;
+  max-height: 18px;
+}
+
+.announcement-logo-img {
+  height: 16px;
+  max-height: 16px;
+  max-width: 134px;
+}
+
 .hero {
   width: min(calc(100% - 32px), var(--max));
   max-width: var(--max);
@@ -5978,6 +6046,17 @@ body.scrolled .announcement-bar {
 
 .announcement-progress-shell {
   padding: 0 9px 7px;
+}
+
+.announcement-logo-link {
+  height: 17px;
+  max-height: 17px;
+}
+
+.announcement-logo-img {
+  height: 15px;
+  max-height: 15px;
+  max-width: 116px;
 }
 
   .hero {

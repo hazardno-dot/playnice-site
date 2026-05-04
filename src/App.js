@@ -4536,6 +4536,9 @@ const handleJournalArticleOpen = (article) => {
   switchView("journal");
 };
 
+const foreverAloeUrl =
+  "https://foreverliving.com/shop/scg/sr-Cyrl-RS/drinks?fboId=360000920762&categoryId=1&title=Napici";
+
 const announcementItems = useMemo(() => {
   const latestJournalTitle = latestJournalArticle
     ? getJournalText(latestJournalArticle.title, lang)
@@ -4544,53 +4547,68 @@ const announcementItems = useMemo(() => {
   const journalAnnouncementItem =
     hasNewJournalArticle && latestJournalArticle && latestJournalTitle
       ? {
+          id: "latest-journal-announcement",
           text:
             lang === "sr"
               ? `Novo u Journalu: ${latestJournalTitle}`
               : `New in Journal: ${latestJournalTitle}`,
           icon: "→",
           tone: "journal",
-          action: "openLatestJournalArticle"
+          action: "openLatestJournalArticle",
         }
       : null;
 
-  const withJournalAnnouncement = (items) =>
-    journalAnnouncementItem ? [journalAnnouncementItem, ...items] : items;
+  const foreverAnnouncementItem = {
+    id: "forever-announcement-logo",
+    type: "logoLink",
+    text: "Forever Living Products",
+    icon: "★",
+    tone: "forever",
+    href: foreverAloeUrl,
+    logoSrc: "/partners/forever-logo-wide.png",
+    logoAlt: "Forever Living Products",
+  };
+
+  const withPriorityAnnouncements = (items) => [
+    ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
+    foreverAnnouncementItem,
+    ...items,
+  ];
 
   if (cart.length === 0) {
-    return withJournalAnnouncement([
+    return withPriorityAnnouncements([
       { text: tr.announcementDynamicEmpty1, icon: "🚚" },
       { text: tr.announcementDynamicEmpty2, icon: "✓" },
       { text: tr.announcementDynamicEmpty3, icon: "🔥" },
       { text: tr.announcementDynamicEmpty4, icon: "🔥" },
       { text: tr.announcementDynamicEmpty5, icon: "🚚" },
-      { text: tr.announcementDynamicEmpty6, icon: "★" }
+      { text: tr.announcementDynamicEmpty6, icon: "★" },
     ]);
   }
 
   if (subtotal >= FREE_SHIPPING_THRESHOLD) {
-    return withJournalAnnouncement([
+    return withPriorityAnnouncements([
       { text: tr.announcementDynamicUnlocked, icon: "✓", tone: "success" },
       { text: tr.announcementDynamicEmpty3, icon: "🔥" },
       { text: tr.announcementDynamicEmpty4, icon: "🔥" },
       { text: tr.announcementDynamicEmpty5, icon: "🚚" },
-      { text: tr.announcementDynamicEmpty6, icon: "★" }
+      { text: tr.announcementDynamicEmpty6, icon: "★" },
     ]);
   }
 
-  return withJournalAnnouncement([
+  return withPriorityAnnouncements([
     {
       text: tr.announcementDynamicLocked.replace(
         "{{amount}}",
         formatPrice(amountLeftForFreeShipping)
       ),
       icon: "🚚",
-      tone: "warning"
+      tone: "warning",
     },
     { text: tr.announcementDynamicEmpty2, icon: "✓" },
     { text: tr.announcementDynamicEmpty3, icon: "🔥" },
     { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-    { text: tr.announcementDynamicEmpty6, icon: "★" }
+    { text: tr.announcementDynamicEmpty6, icon: "★" },
   ]);
 }, [
   cart.length,
@@ -4600,7 +4618,7 @@ const announcementItems = useMemo(() => {
   lang,
   hasNewJournalArticle,
   latestJournalArticle,
-  latestJournalArticleKey
+  latestJournalArticleKey,
 ]);
 
 const handleAnnouncementItemClick = (item) => {
@@ -5720,37 +5738,50 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <div className="announcement-marquee">
       <div className="announcement-track">
         {[...announcementItems, ...announcementItems].map((item, index) => {
-          const itemClassName = `announcement-text ${
-            item.tone ? `announcement-${item.tone}` : ""
-          }`;
+  const itemClassName = `announcement-text ${
+    item.tone ? `announcement-${item.tone}` : ""
+  }`;
 
-          const iconClassName = `announcement-icon ${
-            item.tone ? `announcement-${item.tone}` : ""
-          }`;
+  const iconClassName = `announcement-icon ${
+    item.tone ? `announcement-${item.tone}` : ""
+  }`;
 
-          return (
-            <React.Fragment key={`${item.text}-${index}`}>
-              {item.action ? (
-                <button
-                  type="button"
-                  className={`${itemClassName} announcement-action`}
-                  onClick={() => handleAnnouncementItemClick(item)}
-                  aria-label={item.text}
-                >
-                  {item.text}
-                </button>
-              ) : (
-                <span className={itemClassName}>
-                  {item.text}
-                </span>
-              )}
+  const key = `${item.id || item.text}-${index}`;
 
-              <span className={iconClassName}>
-                {item.icon}
-              </span>
-            </React.Fragment>
-          );
-        })}
+  return (
+    <React.Fragment key={key}>
+      {item.type === "logoLink" ? (
+        <a
+          className="announcement-logo-link announcement-logo-link-forever"
+          href={item.href}
+          target="_blank"
+          rel="sponsored noopener noreferrer"
+          aria-label={item.logoAlt || item.text}
+        >
+          <img
+            src={item.logoSrc}
+            alt={item.logoAlt || item.text}
+            className="announcement-logo-img"
+            loading="lazy"
+          />
+        </a>
+      ) : item.action ? (
+        <button
+          type="button"
+          className={`${itemClassName} announcement-action`}
+          onClick={() => handleAnnouncementItemClick(item)}
+          aria-label={item.text}
+        >
+          {item.text}
+        </button>
+      ) : (
+        <span className={itemClassName}>{item.text}</span>
+      )}
+
+      <span className={iconClassName}>{item.icon}</span>
+    </React.Fragment>
+  );
+})}
       </div>
     </div>
 
