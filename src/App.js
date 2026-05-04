@@ -8141,8 +8141,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </strong>
     <span>
       {lang === "sr"
-        ? "Pošaljite upit — proverićemo da li je dostava moguća za vašu zemlju i javiti vam se."
-        : "Send an enquiry — we’ll check whether delivery is possible for your country and get back to you."}
+        ? " Pošaljite upit — proverićemo da li je dostava moguća za vašu zemlju i javiti vam se."
+        : " Send an enquiry — we’ll check whether delivery is possible for your country and get back to you."}
     </span>
   </div>
 )}
