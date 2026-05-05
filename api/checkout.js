@@ -5,6 +5,9 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const SHIPPING_PRICE = 4;
 const FREE_SHIPPING_THRESHOLD = 39;
 
+const SHIPPING_PAUSE_ACTIVE = true;
+const SHIPPING_RESUME_TEXT = "za oko 10 dana";
+
 function formatPrice(value) {
   const num = Number(value || 0);
   return `${num.toFixed(2)}€`;
@@ -102,6 +105,44 @@ Ukupno: ${formatPrice(Number(item.price) * Number(item.quantity))}`
     .join("\n\n");
 }
 
+function shippingPauseHtml() {
+  if (!SHIPPING_PAUSE_ACTIVE) return "";
+
+  return `
+    <div style="padding:16px 18px;border-radius:18px;background:rgba(220,181,107,0.08);border:1px solid rgba(220,181,107,0.22);margin:0 0 20px;">
+      <div style="color:#f3d69b;font-weight:700;margin-bottom:8px;">
+        Važno obaveštenje o isporuci
+      </div>
+
+      <div style="color:rgba(247,242,232,0.82);line-height:1.8;">
+        Trenutno ne šaljemo pošiljke zbog kratke pauze u radu.
+        Tvoja porudžbina je uspešno primljena i biće pripremljena za slanje čim ponovo krenemo sa isporukama.
+      </div>
+
+      <div style="color:rgba(247,242,232,0.82);line-height:1.8;margin-top:8px;">
+        Isporuke nastavljamo ${escapeHtml(SHIPPING_RESUME_TEXT)}.
+      </div>
+
+      <div style="color:rgba(247,242,232,0.68);line-height:1.8;margin-top:8px;font-size:14px;">
+        Plaćanje je pouzećem, tako da ništa ne plaćaš unapred.
+      </div>
+    </div>
+  `;
+}
+
+function shippingPauseText() {
+  if (!SHIPPING_PAUSE_ACTIVE) return "";
+
+  return `VAŽNO OBAVEŠTENJE O ISPORUCI
+
+Trenutno ne šaljemo pošiljke zbog kratke pauze u radu.
+Tvoja porudžbina je uspešno primljena i biće pripremljena za slanje čim ponovo krenemo sa isporukama.
+
+Isporuke nastavljamo ${SHIPPING_RESUME_TEXT}.
+
+Plaćanje je pouzećem, tako da ništa ne plaćaš unapred.`;
+}
+
 function customerEmailHtml({
   orderId,
   fullName,
@@ -130,6 +171,8 @@ function customerEmailHtml({
           <p style="margin:0 0 18px;color:rgba(247,242,232,0.82);line-height:1.8;">
             Zdravo ${escapeHtml(fullName)}, hvala na kupovini. Primili smo tvoju porudžbinu i uskoro ćemo ti se javiti sa potvrdom i detaljima isporuke.
           </p>
+
+          ${shippingPauseHtml()}
 
           <div style="padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(220,181,107,0.12);margin-bottom:20px;">
             <div style="color:#f3d69b;font-weight:700;margin-bottom:8px;">Order summary</div>
@@ -272,7 +315,7 @@ Order ID: ${orderId}
 Zdravo ${fullName}, hvala na kupovini.
 Primili smo tvoju porudžbinu i uskoro ćemo ti se javiti sa potvrdom i detaljima isporuke.
 
-Kupac: ${fullName}
+${shippingPauseText() ? `${shippingPauseText()}\n\n` : ""}Kupac: ${fullName}
 Grad: ${city}
 Adresa: ${address}
 Napomena: ${note || "Nema"}
