@@ -1074,6 +1074,54 @@ const products = [
   season: "summer",
 
   isNew: true,
+},
+{
+  id: 55,
+  name: "Emir Voux Zingy by Paris Corner",
+  category: "Arabian",
+  image: "/products/emir-voux-zingy.png",
+  sizes: { "2ml": 3, "5ml": 5, "10ml": 10 },
+  badge: "NEW",
+  rating: 8.0,
+  ratingLabel: "Fresh Pick",
+  season: "summer",
+  inspiredBy: {
+    name: "Xerjoff Torino 21",
+    short: "Torino 21 DNA"
+  },
+  isNew: true,
+},
+{
+  id: 56,
+  name: "Rayhaan Crimson Eau de Parfum",
+  category: "Arabian",
+  image: "/products/rayhaan-crimson.png",
+  sizes: { "2ml": 3.5, "5ml": 6, "10ml": 12 },
+  badge: "NEW",
+  rating: 8.4,
+  ratingLabel: "Bold Choice",
+  season: "winter",
+  inspiredBy: {
+    name: "Creed Centaurus",
+    short: "Centaurus DNA"
+  },
+  isNew: true,
+},
+{
+  id: 57,
+  name: "Rasasi Hawas Black Eau de Parfum",
+  category: "Arabian",
+  image: "/products/rasasi-hawas-black.png",
+  sizes: { "2ml": 4, "5ml": 7, "10ml": 13 },
+  badge: "NEW",
+  rating: 8.8,
+  ratingLabel: "Top Seller",
+  season: "all",
+  inspiredBy: {
+    name: "Nishane Hacivat",
+    short: "Hacivat DNA"
+  },
+  isNew: true,
 }
 ];
 
@@ -2109,10 +2157,6 @@ const productCopy = {
   whyChoose: {
     sr: "Ako želiš sofisticiran i zavodljiv večernji miris.",
     en: "If you want a refined and seductive evening scent."
-  },
-  inspiredBy: {
-    sr: "Original dizajnerski klasik — nema klon.",
-    en: "Original designer classic — no clone."
   }
 },
 
@@ -2138,10 +2182,81 @@ const productCopy = {
   whyChoose: {
     sr: "Ako želiš siguran, čist i nenametljiv letnji miris.",
     en: "If you want a safe, clean and easy summer scent."
+  }
+},
+
+"Emir Voux Zingy by Paris Corner": {
+  miniTag: { sr: "🍋 Citrus / Fresh", en: "🍋 Citrus / Fresh" },
+  card: {
+    sr: "Sočan citrusni start sa čistim modernim karakterom.",
+    en: "Juicy citrus opening with a clean modern character."
   },
-  inspiredBy: {
-    sr: "Original Versace kompozicija.",
-    en: "Original Versace composition."
+  modal: {
+    sr: "Osvežavajuća citrusna kompozicija sa laganim aromatičnim i drvenim tonovima. Energičan i lako nosiv miris za toplije dane.",
+    en: "Refreshing citrus composition with soft aromatic and woody tones. Energetic and easy to wear in warm weather."
+  },
+  scentType: { sr: "Fresh citrus woody", en: "Fresh citrus woody" },
+  dominantNotes: {
+    sr: ["citrusi", "aromatične note", "drvo"],
+    en: ["citrus", "aromatic notes", "woods"]
+  },
+  tags: {
+    sr: ["Fresh", "Summer", "Daily"],
+    en: ["Fresh", "Summer", "Daily"]
+  },
+  whyChoose: {
+    sr: "Ako želiš čist i energičan letnji miris.",
+    en: "If you want a clean energetic summer scent."
+  }
+},
+
+"Rayhaan Crimson Eau de Parfum": {
+  miniTag: { sr: "🔥 Warm / Spicy", en: "🔥 Warm / Spicy" },
+  card: {
+    sr: "Topao, začinjen i intenzivan sa modernim karakterom.",
+    en: "Warm, spicy and intense with a modern edge."
+  },
+  modal: {
+    sr: "Bogata kombinacija začina, toplih amber tonova i drveta daje ozbiljan i upečatljiv karakter. Idealan za veče i hladnije vreme.",
+    en: "A rich blend of spices, warm amber and woods creates a bold and memorable scent. Perfect for evenings and colder weather."
+  },
+  scentType: { sr: "Warm spicy amber", en: "Warm spicy amber" },
+  dominantNotes: {
+    sr: ["začini", "ambra", "drvo"],
+    en: ["spices", "amber", "woods"]
+  },
+  tags: {
+    sr: ["Warm", "Evening", "Strong"],
+    en: ["Warm", "Evening", "Strong"]
+  },
+  whyChoose: {
+    sr: "Ako voliš intenzivne i moderne večernje mirise.",
+    en: "If you enjoy bold modern evening scents."
+  }
+},
+
+"Rasasi Hawas Black Eau de Parfum": {
+  miniTag: { sr: "🖤 Dark / Fresh", en: "🖤 Dark / Fresh" },
+  card: {
+    sr: "Tamna Hawas interpretacija sa jačim i ozbiljnijim karakterom.",
+    en: "A darker Hawas interpretation with stronger character."
+  },
+  modal: {
+    sr: "Sveža otvaranja spojena sa tamnijim drvenim i ambroxan tonovima daju moderan, muževan i vrlo upečatljiv profil.",
+    en: "Fresh openings blended with darker woody and ambroxan tones create a modern masculine and highly noticeable scent."
+  },
+  scentType: { sr: "Fresh woody ambroxan", en: "Fresh woody ambroxan" },
+  dominantNotes: {
+    sr: ["ambroxan", "drvo", "sveže note"],
+    en: ["ambroxan", "woods", "fresh notes"]
+  },
+  tags: {
+    sr: ["Fresh", "Strong", "Compliment"],
+    en: ["Fresh", "Strong", "Compliment"]
+  },
+  whyChoose: {
+    sr: "Ako želiš moderan compliment magnet sa jačim karakterom.",
+    en: "If you want a modern compliment magnet with stronger presence."
   }
 }
 };
@@ -2401,6 +2516,21 @@ const productWearContext = {
   sr: "Dnevno, leto, vrućine.",
   en: "Daily wear, summer, hot weather."
   },
+
+  "Emir Voux Zingy by Paris Corner": {
+  sr: "Leto, dnevno, sveže prilike.",
+  en: "Summer, daytime, fresh situations."
+  },
+
+"Rayhaan Crimson Eau de Parfum": {
+  sr: "Veče, hladnije vreme, izlazak.",
+  en: "Evening, colder weather, nights out."
+  },
+
+"Rasasi Hawas Black Eau de Parfum": {
+  sr: "Izlazak, večernji izlazak, komplimenti.",
+  en: "Going out, nightlife, compliments."
+  }
 };
 
 /* =========================================
