@@ -6,7 +6,7 @@ const SHIPPING_PRICE = 4;
 const FREE_SHIPPING_THRESHOLD = 39;
 
 const SHIPPING_PAUSE_ACTIVE = true;
-const SHIPPING_RESUME_TEXT = "za oko 10 dana";
+const SHIPPING_RESUME_TEXT = "za 10 dana";
 
 function formatPrice(value) {
   const num = Number(value || 0);
