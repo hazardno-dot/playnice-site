@@ -6137,22 +6137,27 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <div className="topbar-right">
         <button
-  className="header-private-selection-btn"
+  className={`header-private-selection-btn ${
+    wishlist.length > 0 ? "has-items" : ""
+  }`}
   onClick={() => setPrivateSelectionOpen(true)}
   type="button"
-  aria-label={lang === "sr" ? "Private Selection" : "Private Selection"}
-  title={lang === "sr" ? "Private Selection" : "Private Selection"}
+  aria-label="Private Selection"
+  title="Private Selection"
 >
-  <span className="ps-heart">♥</span>
-
-  <span className="ps-label ps-label-stacked">
-    <span className="ps-line-top">Private</span>
-    <span className="ps-line-bottom">
-      Selecti<span className="ps-heart-inline">♥</span>n
-    </span>
+  <span className="ps-heart" aria-hidden="true">
+    ♡
   </span>
 
-  {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
+  <span className="ps-label">
+    Private Selection
+  </span>
+
+  {wishlist.length > 0 && (
+    <span className="ps-count">
+      {wishlist.length}
+    </span>
+  )}
 </button>
 
         <button

@@ -8991,146 +8991,150 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
-   HEADER — PRIVATE SELECTION (FINAL ROYAL)
+   HEADER — PRIVATE SELECTION REFINED
 ========================================= */
 
 .header-private-selection-btn {
   position: relative;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
+  gap: 7px;
 
-  height: 52px;
-  padding: 8px 12px;
+  min-width: 142px;
+  height: 42px;
+  padding: 0 16px;
 
   border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.2);
-  background: rgba(10, 10, 10, 0.6);
+  border: 1px solid rgba(220, 181, 107, 0.22);
+  background:
+    linear-gradient(180deg, rgba(220, 181, 107, 0.055), rgba(255, 255, 255, 0.012)),
+    rgba(10, 10, 10, 0.58);
 
   color: rgba(255, 248, 235, 0.82);
+
+  font-family: inherit;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.2:
+    0 8px 22px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+
   transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    transform 0.15s ease,
-    box-shadow 0.2s ease;
+    color 0.24s ease,
+    border-color 0.24s ease,
+    background 0.24s ease,
+    transform 0.2s ease,
+    box-shadow 0.24s ease;
+}
+
+.header-private-selection-btn:hover {
+  color: rgba(255, 244, 217, 0.94);
+  border-color: rgba(220, 181, 107, 0.38);
+  background:
+    linear-gradient(180deg, rgba(220, 181, 107, 0.085), rgba(255, 255, 255, 0.018)),
+    rgba(14, 14, 14, 0.72);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.26),
+    0 0 16px rgba(220, 181, 107, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.header-private-selection-btn:active {
+  transform: translateY(0) scale(0.985);
 }
 
 .header-private-selection-btn:focus,
 .header-private-selection-btn:focus-visible {
   outline: none;
-  box-shadow: none;
-}
-
-.header-private-selection-btn:hover {
-  border-color: rgba(220, 181, 107, 0.42);
-  background: rgba(20, 20, 20, 0.85);
-  transform: translateY(-1px);
-  box-shadow:
-    0 6px 18px rgba(0, 0, 0, 0.35),
-    0 0 12px rgba(220, 181, 107, 0.08);
-}
-
-.header-private-selection-btn:active {
-  transform: translateY(0) scale(0.98);
 }
 
 .ps-heart {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 15px;
+  line-height: 1;
+  color: rgba(183, 42, 56, 0.9);
+
+  transform: translateY(-0.5px);
+
+  text-shadow:
+    0 0 8px rgba(183, 42, 56, 0.16),
+    0 0 14px rgba(183, 42, 56, 0.08);
+
+  transition:
+    color 0.24s ease,
+    transform 0.24s ease,
+    text-shadow 0.24s ease;
+}
+
+.header-private-selection-btn:hover .ps-heart {
+  color: rgba(205, 54, 70, 0.96);
+  transform: translateY(-0.5px) scale(1.04);
+
+  text-shadow:
+    0 0 9px rgba(183, 42, 56, 0.2),
+    0 0 16px rgba(183, 42, 56, 0.1);
 }
 
 .ps-label {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: inline-flex;
   align-items: center;
-  line-height: 1.1;
-  white-space: nowrap;
-}
+  justify-content: center;
 
-.ps-label-stacked {
-  min-width: 108px;
-}
-
-.ps-line-top {
-  font-family: "Inter", sans-serif;
-  font-size: 0.64rem;
+  font-family: inherit;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.19em;
-  text-transform: uppercase;
-  color: rgba(255, 248, 235, 0.86);
-}
-
-.ps-line-bottom {
-  margin-top: 2px;
-  font-family: "English 111 Vivace BT", "English 111 Vivace", "Brush Script MT", cursive;
-  font-size: 1.28rem;
-  font-weight: 400;
-  letter-spacing: 0.035em;
-  text-transform: none;
-  color: rgba(255, 248, 235, 0.92);
-  transform: translateY(1px);
-}
-
-.ps-heart-inline {
-  display: inline-block;
-  margin-left: 1px;
-  color: #b72a38;
-  font-size: 1.18em;
   line-height: 1;
-  transform: translateY(-0.02em);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
 
-  text-shadow:
-    0 0 6px rgba(183, 42, 56, 0.25),
-    0 0 14px rgba(183, 42, 56, 0.18);
-
-  transition:
-    transform 0.2s ease,
-    text-shadow 0.2s ease;
+  color: rgba(255, 248, 235, 0.84);
 }
 
-.header-private-selection-btn:hover .ps-line-bottom {
-  text-shadow:
-    0 0 10px rgba(220, 181, 107, 0.08);
-}
-
-.header-private-selection-btn:hover .ps-heart-inline {
-  transform: translateY(-0.02em) scale(1.08);
-  text-shadow:
-    0 0 8px rgba(183, 42, 56, 0.3),
-    0 0 16px rgba(183, 42, 56, 0.18);
+.header-private-selection-btn:hover .ps-label {
+  color: rgba(255, 244, 217, 0.95);
 }
 
 .ps-count {
   position: absolute;
-  top: -4px;
-  right: -4px;
+  top: -5px;
+  right: -5px;
 
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
   border-radius: 999px;
-  font-size: 0.65rem;
-  font-weight: 700;
+
+  font-size: 0.58rem;
+  font-weight: 800;
   line-height: 1;
   color: #fff;
 
   background: linear-gradient(180deg, #b72a38 0%, #7f1822 100%);
+
   box-shadow:
-    0 0 0 1px rgba(183, 42, 56, 0.3),
-    0 4px 10px rgba(0, 0, 0, 0.35);
+    0 0 0 1px rgba(255, 248, 235, 0.12),
+    0 4px 10px rgba(0, 0, 0, 0.35),
+    0 0 10px rgba(183, 42, 56, 0.18);
 }
 
 /* =========================================
-   MOBILE
+   HEADER — PRIVATE SELECTION MOBILE
 ========================================= */
 
 @media (max-width: 768px) {
@@ -9139,13 +9143,9 @@ body.scrolled .announcement-bar {
     min-width: 40px;
     height: 40px;
     padding: 0;
+
+    gap: 0;
     border-radius: 999px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    flex: 0 0 auto;
   }
 
   .header-private-selection-btn .ps-label {
@@ -9153,20 +9153,15 @@ body.scrolled .announcement-bar {
   }
 
   .header-private-selection-btn .ps-heart {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: #b72a38;
-    margin: 0;
+    font-size: 14px;
     transform: none;
-    text-shadow:
-      0 0 8px rgba(183, 42, 56, 0.22),
-      0 0 16px rgba(183, 42, 56, 0.12);
+  }
+
+  .header-private-selection-btn:hover .ps-heart {
+    transform: scale(1.04);
   }
 
   .header-private-selection-btn .ps-count {
-    position: absolute;
     top: -4px;
     right: -4px;
 
@@ -9174,8 +9169,7 @@ body.scrolled .announcement-bar {
     height: 16px;
     padding: 0 4px;
 
-    font-size: 0.55rem;
-    margin-left: 0;
+    font-size: 0.52rem;
   }
 
   .topbar-right {
