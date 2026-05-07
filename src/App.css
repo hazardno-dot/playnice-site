@@ -12971,8 +12971,8 @@ body.scrolled .announcement-bar {
 /* =========================================
    NAV LINKS HEADER BUTTONS
 ========================================= */
-  .nav-links button,
-  .header-journal-btn {
+.nav-links button,
+.header-journal-btn {
   min-height: 34px;
   padding: 7px 2px;
 
