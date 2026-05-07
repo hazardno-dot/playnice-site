@@ -3901,36 +3901,36 @@ const BASE_HERO_SLIDES = [
   {
     id: 1,
     kind: "imageOnly",
-    image: "/hero/slide-1-9pm-night-out.jpg",
-    alt: "Afnan 9PM Night Out – premium night fragrance campaign",
+    image: "/hero/slide-1-fix.jpg",
+    alt: "New In / Best of the Best",
     actionPrimary: "shop"
   },
   {
     id: 2,
     kind: "imageOnly",
-    image: "/hero/slide-2-9pm-rebel.jpg",
-    alt: "Afnan 9PM Rebel – bold evening fragrance",
+    image: "/hero/slide-2.jpg",
+    alt: "PlayNice – luxury fragrance experience and trust",
     actionPrimary: "shop"
   },
   {
     id: 3,
     kind: "imageOnly",
-    image: "/hero/slide-3-hawas-ice.jpg",
-    alt: "Rasasi Hawas Ice – fresh summer fragrance coming soon",
+    image: "/hero/slide-3.jpg",
+    alt: "Proleće-leto sezona",
     actionPrimary: "shop"
   },
   {
     id: 4,
     kind: "imageOnly",
-    image: "/hero/slide-4-playnice-trust-white.jpg",
+    image: "/hero/slide-4.jpg",
     alt: "PlayNice Private Selection – trusted premium decants",
     actionPrimary: "shop"
   },
   {
     id: 5,
     kind: "imageOnly",
-    image: "/hero/slide-5-trust-dark.jpg",
-    alt: "PlayNice – luxury fragrance experience and trust",
+    image: "/hero/slide-5.jpg",
+    alt: "Try before you buy / dekanti",
     actionPrimary: "shop"
   },
   {
@@ -3944,7 +3944,7 @@ const BASE_HERO_SLIDES = [
     id: 7,
     kind: "imageOnly",
     image: "/hero/slide-7.jpg",
-    alt: "PlayNice new arrivals – five new fragrances now available",
+    alt: "Optional: special action, drop ili limited stock",
     actionPrimary: "shop"
   }
 ];
