@@ -4854,6 +4854,19 @@ const announcementItems = useMemo(() => {
     ? getJournalText(latestJournalArticle.title, lang)
     : "";
 
+  const shopNewAnnouncementItem = hasNewShopProducts
+    ? {
+        id: "new-shop-products-announcement",
+        text:
+          lang === "sr"
+            ? "Novi parfemi su stigli u PlayNice"
+            : "New fragrances just arrived at PlayNice",
+        icon: "→",
+        tone: "new-shop",
+        action: "openShop",
+      }
+    : null;
+
   const journalAnnouncementItem =
     hasNewJournalArticle && latestJournalArticle && latestJournalTitle
       ? {
@@ -4869,20 +4882,21 @@ const announcementItems = useMemo(() => {
       : null;
 
   const foreverAnnouncementItem = {
-  id: "forever-announcement-logo",
-  type: "logoLink",
-  text: "Forever Living Products",
-  icon: "★",
-  tone: "forever",
-  href: foreverAloeUrl,
-  logoSrc: "/partners/forever-logo-wide.png",
-  logoAlt: "Forever Living Products",
-  partner: "forever_living",
-  sellerId: "360000920762",
-  campaign: "aloe_drinks",
-};
+    id: "forever-announcement-logo",
+    type: "logoLink",
+    text: "Forever Living Products",
+    icon: "★",
+    tone: "forever",
+    href: foreverAloeUrl,
+    logoSrc: "/partners/forever-logo-wide.png",
+    logoAlt: "Forever Living Products",
+    partner: "forever_living",
+    sellerId: "360000920762",
+    campaign: "aloe_drinks",
+  };
 
   const withPriorityAnnouncements = (items) => [
+    ...(shopNewAnnouncementItem ? [shopNewAnnouncementItem] : []),
     ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
     foreverAnnouncementItem,
     ...items,
@@ -4929,16 +4943,23 @@ const announcementItems = useMemo(() => {
   amountLeftForFreeShipping,
   tr,
   lang,
+  hasNewShopProducts,
   hasNewJournalArticle,
   latestJournalArticle,
   latestJournalArticleKey,
 ]);
 
 const handleAnnouncementItemClick = (item) => {
-  if (item?.action !== "openLatestJournalArticle") return;
-  if (!latestJournalArticle) return;
+  if (item?.action === "openShop") {
+    goToShop();
+    return;
+  }
 
-  handleJournalArticleOpen(latestJournalArticle);
+  if (item?.action === "openLatestJournalArticle") {
+    if (!latestJournalArticle) return;
+
+    handleJournalArticleOpen(latestJournalArticle);
+  }
 };
 
 const freeShippingProgress = Math.min(

@@ -1198,6 +1198,35 @@ body.scrolled .announcement-bar-inner::before {
 }
 
 /* =========================================
+   ANNOUNCEMENT — NEW SHOP PRODUCTS
+========================================= */
+
+.announcement-text.announcement-new-shop,
+.announcement-icon.announcement-new-shop {
+  color: #7edb95;
+  text-shadow:
+    0 0 10px rgba(126, 219, 149, 0.28),
+    0 0 18px rgba(126, 219, 149, 0.16);
+}
+
+.announcement-action.announcement-new-shop {
+  color: #7edb95;
+  font-weight: 800;
+  letter-spacing: 0.025em;
+}
+
+.announcement-action.announcement-new-shop:hover {
+  color: #a6efb6;
+  text-shadow:
+    0 0 12px rgba(126, 219, 149, 0.34),
+    0 0 22px rgba(126, 219, 149, 0.18);
+}
+
+.announcement-icon.announcement-new-shop {
+  font-weight: 900;
+}
+
+/* =========================================
    BUTTONS / UI
 ========================================= */
 .cart-button {
