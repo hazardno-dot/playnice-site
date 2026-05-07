@@ -447,7 +447,7 @@ const products = [
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     rating: 8.1,
     ratingLabel: "Audience Favorite",
-    season: "summer",
+    season: "all",
     inspiredBy: {
     name: "Creed Absolu Aventus",
     short: "Absolu Aventus DNA"
@@ -490,7 +490,7 @@ const products = [
     sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
     rating: 7.7,
     ratingLabel: "Well Loved",
-    season: "summer"
+    season: "all"
   },
   {
     id: 7,
@@ -501,7 +501,7 @@ const products = [
     badge: "BESTSELLER",
     rating: 8.8,
     ratingLabel: "Audience Favorite",
-    season: "summer",
+    season: "all",
     inspiredBy: {
     name: "Creed Aventus",
     short: "Aventus DNA"
@@ -587,7 +587,7 @@ const products = [
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     rating: 8.0,
     ratingLabel: "Audience Favorite",
-    season: "spring",
+    season: "all",
     inspiredBy: {
     name: "Yves Saint Laurent (YSL) Y EDP",
     short: "YSL Y EDP DNA"
@@ -626,7 +626,7 @@ const products = [
     sizes: { "5ml": 3, "10ml": 5, "20ml": 10 },
     rating: 7.5,
     ratingLabel: "Well Loved",
-    season: "summer",
+    season: "all",
     inspiredBy: {
     name: "Versace Eros Najim",
     short: "Eros Najim DNA"
@@ -744,7 +744,7 @@ const products = [
     sizes: { "2ml": 7, "5ml": 16, "10ml": 29 },
     rating: 8.0,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "all"
   },
   {
     id: 26,
@@ -765,7 +765,7 @@ const products = [
     badge: "BESTSELLER",
     rating: 9.2,
     ratingLabel: "Top Rated",
-    season: "summer"
+    season: "all"
   },
   {
     id: 28,
@@ -776,7 +776,7 @@ const products = [
     badge: "BESTSELLER",
     rating: 8.9,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "all"
   },
   {
     id: 29,
@@ -786,7 +786,7 @@ const products = [
     sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
     rating: 7.7,
     ratingLabel: "Well Loved",
-    season: "winter"
+    season: "all"
   },
   {
     id: 30,
@@ -796,7 +796,7 @@ const products = [
     sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
     rating: 8.1,
     ratingLabel: "Audience Favorite",
-    season: "winter"
+    season: "all"
   },
   {
     id: 31,
@@ -806,7 +806,7 @@ const products = [
     sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
     rating: 7.9,
     ratingLabel: "Well Loved",
-    season: "winter"
+    season: "all"
   },
   {
     id: 32,
@@ -836,7 +836,7 @@ const products = [
     sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
     rating: 7.6,
     ratingLabel: "Well Loved",
-    season: "winter"
+    season: "all"
   },
   {
     id: 35,
@@ -857,7 +857,7 @@ const products = [
     badge: "BESTSELLER",
     rating: 9.3,
     ratingLabel: "Top Rated",
-    season: "summer"
+    season: "all"
   },
   {
     id: 37,
@@ -919,7 +919,7 @@ const products = [
     sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
     rating: 8.4,
     ratingLabel: "Audience Favorite",
-    season: "winter"
+    season: "summer"
   },
   {
     id: 43,
@@ -930,7 +930,7 @@ const products = [
     badge: "BESTSELLER",
     rating: 9.0,
     ratingLabel: "Top Rated",
-    season: "summer"
+    season: "all"
   },
   {
     id: 44,
@@ -950,7 +950,7 @@ const products = [
     sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
     rating: 8.2,
     ratingLabel: "Audience Favorite",
-    season: "winter"
+    season: "all"
   },
   {
     id: 46,
