@@ -6146,11 +6146,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   title="Private Selection"
 >
   <span className="ps-heart" aria-hidden="true">
-    ♡
-  </span>
-
-  <span className="ps-label">
-    Private Selection
+    {wishlist.length > 0 ? "♥" : "♡"}
   </span>
 
   {wishlist.length > 0 && (
