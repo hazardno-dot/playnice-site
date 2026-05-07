@@ -4096,37 +4096,43 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
   );
 
  const filteredProducts = useMemo(() => {
-    const result = products.filter((product) => {
-      const categoryMatch =
-        category === "All" || product.category === category;
+  const result = products.filter((product) => {
+    const categoryMatch =
+      category === "All" || product.category === category;
 
-      const searchMatch = product.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
+    const searchMatch = product.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
 
-      const seasonMatch = season === "All" || product.season === season;
+    const selectedSeason = String(season || "").toLowerCase();
+    const productSeason = String(product.season || "").toLowerCase();
 
-      return categoryMatch && searchMatch && seasonMatch;
-    });
+    const seasonMatch =
+      selectedSeason === "all" ||
+      productSeason === "all" ||
+      productSeason === selectedSeason;
 
-    switch (sortBy) {
-      case "rating":
-        return [...result].sort((a, b) => b.rating - a.rating);
+    return categoryMatch && searchMatch && seasonMatch;
+  });
 
-      case "priceLow":
-        return [...result].sort((a, b) => getMinPrice(a) - getMinPrice(b));
+  switch (sortBy) {
+    case "rating":
+      return [...result].sort((a, b) => b.rating - a.rating);
 
-      case "priceHigh":
-        return [...result].sort((a, b) => getMinPrice(b) - getMinPrice(a));
+    case "priceLow":
+      return [...result].sort((a, b) => getMinPrice(a) - getMinPrice(b));
 
-      case "name":
-        return [...result].sort((a, b) => a.name.localeCompare(b.name));
+    case "priceHigh":
+      return [...result].sort((a, b) => getMinPrice(b) - getMinPrice(a));
 
-      case "featured":
-      default:
-        return result;
-    }
-  }, [category, searchTerm, season, sortBy]);
+    case "name":
+      return [...result].sort((a, b) => a.name.localeCompare(b.name));
+
+    case "featured":
+    default:
+      return result;
+  }
+}, [category, searchTerm, season, sortBy]);
 
   const categoryOptions = [
     {
