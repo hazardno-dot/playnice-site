@@ -9057,10 +9057,10 @@ body.scrolled .announcement-bar {
   align-items: center;
   justify-content: center;
 
-  font-size: 18px;
+  font-size: 19px;
   line-height: 1;
 
-  color: rgba(255, 248, 235, 0.76);
+  color: rgba(255, 248, 235, 0.78);
 
   transform: translateY(-0.5px);
 
@@ -9080,15 +9080,15 @@ body.scrolled .announcement-bar {
 
 /* when Private Selection has items */
 .header-private-selection-btn.has-items {
-  border-color: rgba(183, 42, 56, 0.34);
+  border-color: rgba(183, 42, 56, 0.24);
   box-shadow:
     0 8px 22px rgba(0, 0, 0, 0.22),
-    0 0 14px rgba(183, 42, 56, 0.1),
+    0 0 10px rgba(183, 42, 56, 0.07),
     inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
 .header-private-selection-btn.has-items .ps-heart {
-  color: #b72a38;
+  color: #c93242;
 
   text-shadow:
     0 0 8px rgba(183, 42, 56, 0.26),
