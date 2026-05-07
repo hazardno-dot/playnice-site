@@ -2631,6 +2631,57 @@ body.scrolled .announcement-bar-inner::before {
 }
 
 /* =========================================
+   PREMIUM FILTER SELECTS — SEASON / SORT
+   Uses same visual language as Category
+========================================= */
+
+.toolbar-group-season,
+.toolbar-group-sort {
+  position: relative;
+}
+
+.toolbar-group-season:has(.premium-filter-select.open),
+.toolbar-group-sort:has(.premium-filter-select.open) {
+  z-index: 80;
+}
+
+.premium-filter-select {
+  width: 100%;
+}
+
+.premium-filter-trigger span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.premium-filter-menu {
+  min-width: 100%;
+}
+
+.premium-filter-option {
+  justify-content: flex-start;
+}
+
+/* sort menu can be a little wider, because labels are longer */
+.toolbar-group-sort .premium-filter-menu {
+  min-width: 180px;
+}
+
+/* season menu can stay compact */
+.toolbar-group-season .premium-filter-menu {
+  min-width: 150px;
+}
+
+@media (max-width: 720px) {
+  .toolbar-group-sort .premium-filter-menu,
+  .toolbar-group-season .premium-filter-menu {
+    min-width: 100%;
+  }
+}
+
+/* =========================================
    COMPACT SELECTS — SEASON / SORT
 ========================================= */
 

@@ -3987,6 +3987,8 @@ function App() {
   const [view, setView] = useState(() => getInitialView());
   const [category, setCategory] = useState("All");
   const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
+  const [seasonMenuOpen, setSeasonMenuOpen] = useState(false);
+  const [sortMenuOpen, setSortMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -7137,7 +7139,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           aria-labelledby="shop-category-label"
           aria-expanded={categoryMenuOpen}
           aria-controls="shop-category-menu"
-          onClick={() => setCategoryMenuOpen((open) => !open)}
+          onClick={() => {
+  setSeasonMenuOpen(false);
+  setSortMenuOpen(false);
+  setCategoryMenuOpen((open) => !open);
+}}
         >
           <span>{selectedCategory.label}</span>
           <span className="premium-category-arrow" aria-hidden="true">
@@ -7175,50 +7181,126 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
 
     <div className="toolbar-group toolbar-group-season">
-      <label htmlFor="shop-season-select">{tr.seasonLabel}</label>
+  <label id="shop-season-label">{tr.seasonLabel}</label>
 
-      <div className="compact-select-shell">
-        <select
-          id="shop-season-select"
-          className="compact-select"
-          value={season}
-          onChange={(e) => setSeason(e.target.value)}
-        >
-          {seasonOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+  <div
+    className={`premium-category-select premium-filter-select ${
+      seasonMenuOpen ? "open" : ""
+    }`}
+    onBlur={(e) => {
+      if (!e.currentTarget.contains(e.relatedTarget)) {
+        setSeasonMenuOpen(false);
+      }
+    }}
+  >
+    <button
+      type="button"
+      className="premium-category-trigger premium-filter-trigger"
+      aria-labelledby="shop-season-label"
+      aria-expanded={seasonMenuOpen}
+      aria-controls="shop-season-menu"
+      onClick={() => {
+        setCategoryMenuOpen(false);
+        setSortMenuOpen(false);
+        setSeasonMenuOpen((open) => !open);
+      }}
+    >
+      <span>{selectedSeasonOption.label}</span>
 
-        <span className="compact-select-arrow" aria-hidden="true">
-          ▾
-        </span>
+      <span className="premium-category-arrow" aria-hidden="true">
+        ▾
+      </span>
+    </button>
+
+    {seasonMenuOpen && (
+      <div
+        id="shop-season-menu"
+        className="premium-category-menu premium-filter-menu"
+        role="listbox"
+        aria-labelledby="shop-season-label"
+      >
+        {seasonOptions.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            role="option"
+            aria-selected={season === option.value}
+            className={`premium-category-option premium-filter-option ${
+              season === option.value ? "active" : ""
+            }`}
+            onClick={() => {
+              setSeason(option.value);
+              setSeasonMenuOpen(false);
+            }}
+          >
+            <span>{option.label}</span>
+          </button>
+        ))}
       </div>
-    </div>
+    )}
+  </div>
+</div>
 
     <div className="toolbar-group toolbar-group-sort">
-      <label htmlFor="shop-sort-select">{tr.sortLabel}</label>
+  <label id="shop-sort-label">{tr.sortLabel}</label>
 
-      <div className="compact-select-shell">
-        <select
-          id="shop-sort-select"
-          className="compact-select"
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-        >
-          {sortOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+  <div
+    className={`premium-category-select premium-filter-select ${
+      sortMenuOpen ? "open" : ""
+    }`}
+    onBlur={(e) => {
+      if (!e.currentTarget.contains(e.relatedTarget)) {
+        setSortMenuOpen(false);
+      }
+    }}
+  >
+    <button
+      type="button"
+      className="premium-category-trigger premium-filter-trigger"
+      aria-labelledby="shop-sort-label"
+      aria-expanded={sortMenuOpen}
+      aria-controls="shop-sort-menu"
+      onClick={() => {
+        setCategoryMenuOpen(false);
+        setSeasonMenuOpen(false);
+        setSortMenuOpen((open) => !open);
+      }}
+    >
+      <span>{selectedSortOption.label}</span>
 
-        <span className="compact-select-arrow" aria-hidden="true">
-          ▾
-        </span>
+      <span className="premium-category-arrow" aria-hidden="true">
+        ▾
+      </span>
+    </button>
+
+    {sortMenuOpen && (
+      <div
+        id="shop-sort-menu"
+        className="premium-category-menu premium-filter-menu"
+        role="listbox"
+        aria-labelledby="shop-sort-label"
+      >
+        {sortOptions.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            role="option"
+            aria-selected={sortBy === option.value}
+            className={`premium-category-option premium-filter-option ${
+              sortBy === option.value ? "active" : ""
+            }`}
+            onClick={() => {
+              setSortBy(option.value);
+              setSortMenuOpen(false);
+            }}
+          >
+            <span>{option.label}</span>
+          </button>
+        ))}
       </div>
-    </div>
+    )}
+  </div>
+</div>
   </div>
 </div>
 
