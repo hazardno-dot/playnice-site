@@ -2299,8 +2299,8 @@ const productCopy = {
     en: "Fresh, spicy and modern with a clean citrus opening."
   },
   modal: {
-    sr: "Bergamot, đumbir i crni biber daju svež i začinjen start, dok kardamom, labdanum, benzoin i tonka donose topliju, glatku bazu.",
-    en: "Bergamot, ginger and black pepper create a fresh spicy opening, while cardamom, labdanum, benzoin and tonka bring a warmer smooth base."
+  sr: "Bergamot, đumbir i crni biber otvaraju miris sveže i začinjeno, uz toplu tonka-drvenu bazu.",
+  en: "Bergamot, ginger and black pepper open fresh and spicy, with a warm tonka-woody base."
   },
   scentType: { sr: "Fresh spicy resinous", en: "Fresh spicy resinous" },
   dominantNotes: {
@@ -2321,8 +2321,8 @@ const productCopy = {
     en: "Metallic-fresh spicy opening with a lovely amber-woody base."
   },
   modal: {
-    sr: "Začinske i metalne note sa elemi smolom otvaraju miris energično, zatim dolaze cvet narandže, tamjan i pačuli, uz završetak od ambergrisa, vanile i mahovine.",
-    en: "Spicy metallic notes and elemi open the scent with energy, followed by orange blossom, incense and patchouli, with ambergris, vanilla and moss in the base."
+  sr: "Začinske i metalne note sa elemi smolom prelaze u elegantnu amber-drvenu bazu sa tamjanom i vanilom.",
+  en: "Spicy metallic notes and elemi settle into an elegant amber-woody base with incense and vanilla."
   },
   scentType: { sr: "Woody spicy amber", en: "Woody spicy amber" },
   dominantNotes: {
