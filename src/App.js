@@ -7070,7 +7070,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="shop-value-anchor-point shop-value-anchor-point-highlight">
-        <span className="shop-value-anchor-point-value">€4+</span>
+        <span className="shop-value-anchor-point-value">€3+</span>
         <span className="shop-value-anchor-point-label">
           {lang === "sr"
             ? "dovoljno da probaš pre kupovine"
