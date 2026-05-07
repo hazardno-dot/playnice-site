@@ -4287,6 +4287,53 @@ const handleSponsoredAdClick = (ad, placement) => {
 };
 
 /* =========================================
+   seasonOptions
+========================================= */
+const seasonOptions = [
+  {
+    value: "All",
+    label: tr.seasonAll,
+  },
+  {
+    value: "summer",
+    label: `☀️ ${tr.seasonSummer}`,
+  },
+  {
+    value: "winter",
+    label: `❄️ ${tr.seasonWinter}`,
+  },
+];
+
+const sortOptions = [
+  {
+    value: "featured",
+    label: tr.sortFeatured,
+  },
+  {
+    value: "rating",
+    label: `★ ${tr.sortRating}`,
+  },
+  {
+    value: "priceLow",
+    label: `↗ ${tr.sortPriceLow}`,
+  },
+  {
+    value: "priceHigh",
+    label: `↘ ${tr.sortPriceHigh}`,
+  },
+  {
+    value: "name",
+    label: tr.sortName,
+  },
+];
+
+const selectedSeasonOption =
+  seasonOptions.find((option) => option.value === season) || seasonOptions[0];
+
+const selectedSortOption =
+  sortOptions.find((option) => option.value === sortBy) || sortOptions[0];
+
+/* =========================================
    TOTAL PAGES
 ========================================= */
 
@@ -7032,200 +7079,175 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </div>
 
       <div className="shop-toolbar">
-        <div className="toolbar-group toolbar-group-search">
-          <label htmlFor="shop-search">{tr.searchLabel}</label>
-          <input
-            id="shop-search"
-            type="text"
-            placeholder={tr.searchPlaceholder}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+      <div className="shop-toolbar shop-toolbar-compact">
+  <div className="toolbar-group toolbar-group-search">
+    <label htmlFor="shop-search">{tr.searchLabel}</label>
 
-        <div className="toolbar-group toolbar-group-category">
-  <label id="shop-category-label">{tr.categoryLabel}</label>
-
-  <div
-    className={`premium-category-select ${
-      categoryMenuOpen ? "open" : ""
-    }`}
-    onBlur={(e) => {
-      if (!e.currentTarget.contains(e.relatedTarget)) {
-        setCategoryMenuOpen(false);
-      }
-    }}
-  >
-    <button
-      type="button"
-      className="premium-category-trigger"
-      aria-labelledby="shop-category-label"
-      aria-expanded={categoryMenuOpen}
-      aria-controls="shop-category-menu"
-      onClick={() => setCategoryMenuOpen((open) => !open)}
-    >
-      <span>{selectedCategory.label}</span>
-      <span className="premium-category-arrow" aria-hidden="true">
-        ▾
+    <div className="compact-search-shell">
+      <span className="compact-search-icon" aria-hidden="true">
+        ⌕
       </span>
-    </button>
 
-    {categoryMenuOpen && (
+      <input
+        id="shop-search"
+        type="text"
+        placeholder={tr.searchPlaceholder}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+    </div>
+  </div>
+
+  <div className="toolbar-row-controls">
+    <div className="toolbar-group toolbar-group-category">
+      <label id="shop-category-label">{tr.categoryLabel}</label>
+
       <div
-        id="shop-category-menu"
-        className="premium-category-menu"
-        role="listbox"
-        aria-labelledby="shop-category-label"
+        className={`premium-category-select ${
+          categoryMenuOpen ? "open" : ""
+        }`}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget)) {
+            setCategoryMenuOpen(false);
+          }
+        }}
       >
-        {categoryOptions.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            role="option"
-            aria-selected={category === option.value}
-            className={`premium-category-option ${
-              category === option.value ? "active" : ""
-            }`}
-            onClick={() => {
-              setCategory(option.value);
-              setCategoryMenuOpen(false);
-            }}
+        <button
+          type="button"
+          className="premium-category-trigger"
+          aria-labelledby="shop-category-label"
+          aria-expanded={categoryMenuOpen}
+          aria-controls="shop-category-menu"
+          onClick={() => setCategoryMenuOpen((open) => !open)}
+        >
+          <span>{selectedCategory.label}</span>
+          <span className="premium-category-arrow" aria-hidden="true">
+            ▾
+          </span>
+        </button>
+
+        {categoryMenuOpen && (
+          <div
+            id="shop-category-menu"
+            className="premium-category-menu"
+            role="listbox"
+            aria-labelledby="shop-category-label"
           >
-            <span>{option.label}</span>
-          </button>
-        ))}
+            {categoryOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                role="option"
+                aria-selected={category === option.value}
+                className={`premium-category-option ${
+                  category === option.value ? "active" : ""
+                }`}
+                onClick={() => {
+                  setCategory(option.value);
+                  setCategoryMenuOpen(false);
+                }}
+              >
+                <span>{option.label}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
-    )}
+    </div>
+
+    <div className="toolbar-group toolbar-group-season">
+      <label htmlFor="shop-season-select">{tr.seasonLabel}</label>
+
+      <div className="compact-select-shell">
+        <select
+          id="shop-season-select"
+          className="compact-select"
+          value={season}
+          onChange={(e) => setSeason(e.target.value)}
+        >
+          {seasonOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        <span className="compact-select-arrow" aria-hidden="true">
+          ▾
+        </span>
+      </div>
+    </div>
+
+    <div className="toolbar-group toolbar-group-sort">
+      <label htmlFor="shop-sort-select">{tr.sortLabel}</label>
+
+      <div className="compact-select-shell">
+        <select
+          id="shop-sort-select"
+          className="compact-select"
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+        >
+          {sortOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        <span className="compact-select-arrow" aria-hidden="true">
+          ▾
+        </span>
+      </div>
+    </div>
   </div>
 </div>
 
-        <div className="toolbar-group toolbar-group-sort">
-          <label>{tr.sortLabel}</label>
-
-          <div className="sort-pills">
-            <button
-              type="button"
-              className={`sort-pill ${sortBy === "featured" ? "active" : ""}`}
-              onClick={() => setSortBy("featured")}
-            >
-              {tr.sortFeatured}
-            </button>
-
-            <button
-              type="button"
-              className={`sort-pill ${sortBy === "rating" ? "active" : ""}`}
-              onClick={() => setSortBy("rating")}
-            >
-              ★ {tr.sortRating}
-            </button>
-
-            <button
-              type="button"
-              className={`sort-pill ${sortBy === "priceLow" ? "active" : ""}`}
-              onClick={() => setSortBy("priceLow")}
-            >
-              ↗ {tr.sortPriceLow}
-            </button>
-
-            <button
-              type="button"
-              className={`sort-pill ${sortBy === "priceHigh" ? "active" : ""}`}
-              onClick={() => setSortBy("priceHigh")}
-            >
-              ↘ {tr.sortPriceHigh}
-            </button>
-
-            <button
-              type="button"
-              className={`sort-pill ${sortBy === "name" ? "active" : ""}`}
-              onClick={() => setSortBy("name")}
-            >
-              {tr.sortName}
-            </button>
-          </div>
-        </div>
-
-        <div className="toolbar-group toolbar-group-season">
-          <label>{tr.seasonLabel}</label>
-
-          <div className="season-pills">
-            <button
-              type="button"
-              className={`season-pill ${season === "All" ? "active" : ""}`}
-              onClick={() => setSeason("All")}
-            >
-              {tr.seasonAll}
-            </button>
-
-            <button
-              type="button"
-              className={`season-pill ${season === "summer" ? "active" : ""}`}
-              onClick={() => setSeason("summer")}
-            >
-              ☀️ {tr.seasonSummer}
-            </button>
-
-            <button
-              type="button"
-              className={`season-pill ${season === "winter" ? "active" : ""}`}
-              onClick={() => setSeason("winter")}
-            >
-              ❄️ {tr.seasonWinter}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {(category !== "All" ||
-        season !== "All" ||
-        sortBy !== "featured" ||
-        searchTerm.trim() !== "") && (
-        <div className="active-filters-bar">
-          <div className="active-filters-left">
-            {category !== "All" && (
-              <span className="active-filter-chip">
-                {getCategoryLabel(category)}
-              </span>
-            )}
-
-            {season !== "All" && (
-              <span className="active-filter-chip">
-                {season === "summer"
-                  ? `☀️ ${tr.seasonSummer}`
-                  : `❄️ ${tr.seasonWinter}`}
-              </span>
-            )}
-
-            {sortBy !== "featured" && (
-              <span className="active-filter-chip">
-                {sortBy === "rating" && `★ ${tr.sortRating}`}
-                {sortBy === "priceLow" && `↗ ${tr.sortPriceLow}`}
-                {sortBy === "priceHigh" && `↘ ${tr.sortPriceHigh}`}
-                {sortBy === "name" && tr.sortName}
-              </span>
-            )}
-
-            {searchTerm.trim() !== "" && (
-              <span className="active-filter-chip">
-                “{searchTerm.trim()}”
-              </span>
-            )}
-          </div>
-
-          <button
-            type="button"
-            className="clear-filters-button"
-            onClick={() => {
-              setCategory("All");
-              setSeason("All");
-              setSortBy("featured");
-              setSearchTerm("");
-            }}
-          >
-            {lang === "sr" ? "Obriši filtere" : "Clear all"}
-          </button>
-        </div>
+{(category !== "All" ||
+  season !== "All" ||
+  sortBy !== "featured" ||
+  searchTerm.trim() !== "") && (
+  <div className="active-filters-bar active-filters-bar-compact">
+    <div className="active-filters-left">
+      {category !== "All" && (
+        <span className="active-filter-chip">
+          {getCategoryLabel(category)}
+        </span>
       )}
+
+      {season !== "All" && (
+        <span className="active-filter-chip">
+          {selectedSeasonOption.label}
+        </span>
+      )}
+
+      {sortBy !== "featured" && (
+        <span className="active-filter-chip">
+          {selectedSortOption.label}
+        </span>
+      )}
+
+      {searchTerm.trim() !== "" && (
+        <span className="active-filter-chip">
+          “{searchTerm.trim()}”
+        </span>
+      )}
+    </div>
+
+    <button
+      type="button"
+      className="clear-filters-button"
+      onClick={() => {
+        setCategory("All");
+        setSeason("All");
+        setSortBy("featured");
+        setSearchTerm("");
+      }}
+    >
+      {lang === "sr" ? "Obriši" : "Clear"}
+    </button>
+  </div>
+)}
 
       {renderPagination("top")}
 
