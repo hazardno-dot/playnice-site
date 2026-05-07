@@ -5444,19 +5444,86 @@ const addHeroBottleToCart = () => {
     }
   };
 
-  const nextPage = () => {
-    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  };
+  const goToPage = (pageNumber) => {
+  const safePageNumber = Math.min(Math.max(pageNumber, 1), totalPages);
 
-  const prevPage = () => {
-    setCurrentPage((prev) => Math.max(1, prev - 1));
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  };
+  if (safePageNumber === currentPage) return;
+
+  setCurrentPage(safePageNumber);
+
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+};
+
+const nextPage = () => {
+  goToPage(currentPage + 1);
+};
+
+const prevPage = () => {
+  goToPage(currentPage - 1);
+};
+
+const renderPagination = (position = "bottom") => {
+  if (totalPages <= 1) return null;
+
+  return (
+    <div className={`pagination-wrap pagination-wrap-${position}`}>
+      <button
+        type="button"
+        className="pagination-nav"
+        onClick={prevPage}
+        disabled={currentPage === 1}
+      >
+        {lang === "sr" ? "Nazad" : "Prev"}
+      </button>
+
+      <div className="pagination-numbers">
+        {Array.from({ length: totalPages }, (_, index) => {
+          const pageNumber = index + 1;
+
+          return (
+            <button
+              key={pageNumber}
+              type="button"
+              className={`pagination-number ${
+                currentPage === pageNumber ? "active" : ""
+              }`}
+              onClick={() => goToPage(pageNumber)}
+              aria-label={
+                lang === "sr"
+                  ? `Idi na stranicu ${pageNumber}`
+                  : `Go to page ${pageNumber}`
+              }
+              aria-current={currentPage === pageNumber ? "page" : undefined}
+            >
+              {pageNumber}
+            </button>
+          );
+        })}
+      </div>
+
+      <button
+        type="button"
+        className="pagination-nav"
+        onClick={nextPage}
+        disabled={currentPage === totalPages}
+      >
+        {lang === "sr" ? "Dalje" : "Next"}
+      </button>
+    </div>
+  );
+};
+
+const totalPages = Math.max(
+  1,
+  Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)
+);
+
+const paginatedProducts = useMemo(() => {
+  const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
+  return filteredProducts.slice(start, start + PRODUCTS_PER_PAGE);
+}, [filteredProducts, currentPage]);
 
   const getProductUrl = (product) => {
   if (!product?.name) return "/shop";
@@ -7170,6 +7237,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </div>
       )}
 
+      {renderPagination("top")}
+
       <div className="product-grid">
         {paginatedProducts.map((product) => (
           <ProductCard
@@ -7183,44 +7252,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="pagination-wrap">
-        <button
-          type="button"
-          onClick={prevPage}
-          disabled={currentPage === 1}
-        >
-          {lang === "sr" ? "Nazad" : "Prev"}
-        </button>
-
-        <div className="pagination-numbers">
-          {Array.from({ length: totalPages }, (_, index) => {
-            const pageNumber = index + 1;
-            return (
-              <button
-                key={pageNumber}
-                type="button"
-                className={`pagination-number ${
-                  currentPage === pageNumber ? "active" : ""
-                }`}
-                onClick={() => {
-                  setCurrentPage(pageNumber);
-                  requestAnimationFrame(() => {
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  });
-                }}
-              >
-                {pageNumber}
-              </button>
-            );
-          })}
-        </div>
-
-        <button
-          type="button"
-          onClick={nextPage}
-          disabled={currentPage === totalPages}
-        >
-          {lang === "sr" ? "Dalje" : "Next"}
-        </button>
+        {renderPagination("bottom")}
       </div>
     </section>
   </>
