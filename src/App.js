@@ -5515,16 +5515,6 @@ const renderPagination = (position = "bottom") => {
   );
 };
 
-const totalPages = Math.max(
-  1,
-  Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)
-);
-
-const paginatedProducts = useMemo(() => {
-  const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
-  return filteredProducts.slice(start, start + PRODUCTS_PER_PAGE);
-}, [filteredProducts, currentPage]);
-
   const getProductUrl = (product) => {
   if (!product?.name) return "/shop";
 
