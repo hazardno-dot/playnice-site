@@ -14292,3 +14292,69 @@ body.scrolled .announcement-bar {
     font-size: 0.78rem;
   }
 }
+
+/* =========================================
+   MOBILE PRODUCT CARD — FINAL POLISH
+========================================= */
+
+@media (max-width: 640px) {
+  /* NOVO badge top-left */
+  .product-new-badge {
+    top: 7px;
+    left: 7px;
+    right: auto;
+    bottom: auto;
+
+    min-height: 20px;
+    padding: 0 8px;
+
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+
+    color: rgba(220, 82, 82, 0.98);
+  }
+
+  /* title always max 2 lines */
+  .product-card-title {
+    min-height: 2.1em;
+    max-height: 2.1em;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* slightly long names */
+  .product-card-title.is-long-title {
+    font-size: 0.92rem;
+    line-height: 1.06;
+    letter-spacing: 0.004em;
+  }
+
+  /* very long names */
+  .product-card-title.is-very-long-title {
+    font-size: 0.84rem;
+    line-height: 1.05;
+    letter-spacing: 0.002em;
+  }
+
+  .product-card-title.is-long-title,
+  .product-card-title.is-very-long-title {
+    min-height: 2.12em;
+    max-height: 2.12em;
+  }
+}
+
+@media (max-width: 380px) {
+  .product-card-title.is-long-title {
+    font-size: 0.88rem;
+  }
+
+  .product-card-title.is-very-long-title {
+    font-size: 0.8rem;
+  }
+}

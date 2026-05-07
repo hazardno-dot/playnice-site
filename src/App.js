@@ -3720,7 +3720,7 @@ const getProductStructuredData = (product, lang = "sr") => {
 /* =========================================
    GLOBAL CONSTANTS & HELPERS
 ========================================= */
-const PRODUCTS_PER_PAGE = 12;
+const PRODUCTS_PER_PAGE = 24;
 const SHIPPING_COST = 4.0;
 const FREE_SHIPPING_THRESHOLD = 39;
 
@@ -5870,6 +5870,13 @@ const getSizeWearHint = (size) => {
   return "";
 };
 
+const titleLengthClass =
+  product.name.length > 44
+    ? "is-very-long-title"
+    : product.name.length > 32
+    ? "is-long-title"
+    : "";
+
   return (
   <article className="product-card premium-product-card">
     <button
@@ -5940,7 +5947,9 @@ const getSizeWearHint = (size) => {
 >
     <div className="product-meta-top">
       <p className="product-category">{getCategoryLabel(product.category)}</p>
-      <h3 className="product-card-title">{product.name}</h3>
+      <h3 className={`product-card-title ${titleLengthClass}`}>
+  {product.name}
+</h3>
     </div>
 
     <div className="product-meta-middle">
