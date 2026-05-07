@@ -1122,6 +1122,38 @@ const products = [
     short: "Hacivat DNA"
   },
   isNew: true,
+},
+{
+  id: 58,
+  name: "Khadlaj Onyx Silver",
+  category: "Arabian",
+  image: "/products/khadlaj-onyx-silver.png",
+  sizes: { "2ml": 3.5, "5ml": 6, "10ml": 12 },
+  badge: "NEW",
+  rating: 8.2,
+  ratingLabel: "Fresh Spicy",
+  season: "all",
+  inspiredBy: {
+    name: "Parfums de Marly Castley",
+    short: "Castley DNA"
+  },
+  isNew: true,
+},
+{
+  id: 59,
+  name: "Arabiyat Prestige Fahad Gaze",
+  category: "Arabian",
+  image: "/products/arabiyat-prestige-fahad-gaze.png",
+  sizes: { "2ml": 4.5, "5ml": 8, "10ml": 15 },
+  badge: "NEW",
+  rating: 8.4,
+  ratingLabel: "Elegant Pick",
+  season: "all",
+  inspiredBy: {
+    name: "Gucci Guilty Elixir pour Homme",
+    short: "Guilty Elixir DNA"
+  },
+  isNew: true,
 }
 ];
 
@@ -2258,6 +2290,50 @@ const productCopy = {
     sr: "Ako želiš moderan compliment magnet sa jačim karakterom.",
     en: "If you want a modern compliment magnet with stronger presence."
   }
+},
+
+"Khadlaj Onyx Silver": {
+  miniTag: { sr: "✨ Fresh / Spicy", en: "✨ Fresh / Spicy" },
+  card: {
+    sr: "Svež, začinjen i moderan miris sa čistim citrusnim otvaranjem.",
+    en: "Fresh, spicy and modern with a clean citrus opening."
+  },
+  modal: {
+    sr: "Bergamot, đumbir i crni biber daju svež i začinjen start, dok kardamom, labdanum, benzoin i tonka donose topliju, glatku bazu.",
+    en: "Bergamot, ginger and black pepper create a fresh spicy opening, while cardamom, labdanum, benzoin and tonka bring a warmer smooth base."
+  },
+  scentType: { sr: "Fresh spicy resinous", en: "Fresh spicy resinous" },
+  dominantNotes: {
+    sr: ["bergamot", "đumbir", "crni biber", "tonka"],
+    en: ["bergamot", "ginger", "black pepper", "tonka"]
+  },
+  tags: { sr: ["Fresh", "Spicy", "Modern"], en: ["Fresh", "Spicy", "Modern"] },
+  whyChoose: {
+    sr: "Ako želiš svež, čist i začinjen miris koji radi tokom cele godine.",
+    en: "If you want a fresh, clean and spicy scent that works year-round."
+  }
+},
+
+"Arabiyat Prestige Fahad Gaze": {
+  miniTag: { sr: "🪞 Elegant / Spicy", en: "🪞 Elegant / Spicy" },
+  card: {
+    sr: "Metalno-svež začinski start sa elegantnom amber-drvenom bazom.",
+    en: "Metallic fresh spicy opening with an elegant amber-woody base."
+  },
+  modal: {
+    sr: "Začinske i metalne note sa elemi smolom otvaraju miris energično, zatim dolaze cvet narandže, tamjan i pačuli, uz završetak od ambergrisa, vanile i mahovine.",
+    en: "Spicy metallic notes and elemi open the scent with energy, followed by orange blossom, incense and patchouli, with ambergris, vanilla and moss in the base."
+  },
+  scentType: { sr: "Woody spicy amber", en: "Woody spicy amber" },
+  dominantNotes: {
+    sr: ["začini", "elemi", "cvet narandže", "tamjan"],
+    en: ["spices", "elemi", "orange blossom", "incense"]
+  },
+  tags: { sr: ["Elegant", "Spicy", "Evening"], en: ["Elegant", "Spicy", "Evening"] },
+  whyChoose: {
+    sr: "Ako želiš elegantan, moderan i ozbiljan miris sa čistim gentleman karakterom.",
+    en: "If you want an elegant, modern and refined scent with a clean gentleman character."
+  }
 }
 };
 
@@ -2522,14 +2598,24 @@ const productWearContext = {
   en: "Summer, daytime, fresh situations."
   },
 
-"Rayhaan Crimson Eau de Parfum": {
+  "Rayhaan Crimson Eau de Parfum": {
   sr: "Veče, hladnije vreme, izlazak.",
   en: "Evening, colder weather, nights out."
   },
 
-"Rasasi Hawas Black Eau de Parfum": {
+  "Rasasi Hawas Black Eau de Parfum": {
   sr: "Izlazak, večernji izlazak, komplimenti.",
   en: "Going out, nightlife, compliments."
+  },
+
+  "Khadlaj Onyx Silver": {
+  sr: "Dnevno, posao, sveže prilike.",
+  en: "Daily wear, work, fresh situations."
+  },
+
+  "Arabiyat Prestige Fahad Gaze": {
+  sr: "Posao, veče, elegantne prilike.",
+  en: "Work, evening, elegant occasions."
   }
 };
 
