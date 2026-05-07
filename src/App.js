@@ -4055,6 +4055,13 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
       image: "/hero/slide-6.jpg",
       alt: "PlayNice – luxury fragrance experience and trust",
       actionPrimary: "shop"
+    },
+    {
+      id: 7,
+      kind: "imageOnly",
+      image: "/hero/slide-7.jpg",
+      alt: "PlayNice – luxury fragrance experience and trust",
+      actionPrimary: "shop"
     }
   ];
 
