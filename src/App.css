@@ -623,10 +623,10 @@ main {
 }
 
 .nav-links button.active {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: 0.018em;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.012em;
 
   color: var(--gold);
   border-color: rgba(220, 181, 107, 0.38);
@@ -12972,7 +12972,7 @@ body.scrolled .announcement-bar {
    NAV LINKS HEADER BUTTONS
 ========================================= */
   .nav-links button,
-.header-journal-btn {
+  .header-journal-btn {
   min-height: 34px;
   padding: 7px 2px;
 
@@ -12985,10 +12985,11 @@ body.scrolled .announcement-bar {
 }
 
 .nav-links button.active {
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 600;
-}
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.005em;
+  }
 }
 
 /* =========================================
