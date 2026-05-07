@@ -13871,3 +13871,92 @@ body.scrolled .announcement-bar {
     max-height: 27px;
   }
 }
+
+/* =========================================
+   HEADER — SHOP NEW STATE
+========================================= */
+
+.nav-shop-link {
+  position: relative;
+  isolation: isolate;
+}
+
+.nav-shop-link-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* desktop badge */
+.shop-nav-new-badge {
+  position: absolute;
+  top: -6px;
+  left: -8px;
+  right: auto;
+  z-index: 6;
+
+  min-width: 30px;
+  height: 16px;
+  padding: 0 7px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+  background: linear-gradient(180deg, #63d471 0%, #2faa4a 100%);
+  color: #090909;
+
+  font-size: 8px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.06em;
+
+  box-shadow:
+    0 0 0 1px rgba(255, 248, 235, 0.12),
+    0 4px 10px rgba(0, 0, 0, 0.38),
+    0 0 12px rgba(99, 212, 113, 0.26);
+
+  pointer-events: none;
+}
+
+/* subtle desktop attention state */
+.nav-shop-link.has-new-shop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+
+  box-shadow: 0 0 0 0 rgba(99, 212, 113, 0.16);
+  animation: shopNewPulse 2.8s ease-in-out infinite;
+  opacity: 0.7;
+}
+
+@keyframes shopNewPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 212, 113, 0.12);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(99, 212, 113, 0);
+  }
+}
+
+/* mobile: no badge, only green Shop text */
+@media (max-width: 768px) {
+  .nav-shop-link.has-new-shop .shop-nav-new-badge {
+    display: none;
+  }
+
+  .nav-shop-link.has-new-shop .nav-shop-link-text {
+    color: #7edb95;
+    text-shadow:
+      0 0 10px rgba(126, 219, 149, 0.22),
+      0 0 18px rgba(126, 219, 149, 0.12);
+  }
+
+  .nav-shop-link.has-new-shop.active .nav-shop-link-text {
+    color: #7edb95;
+  }
+}

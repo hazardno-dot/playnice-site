@@ -3964,6 +3964,19 @@ const shuffleHeroSlides = (slides) => {
 };
 
 /* =========================================
+   SHOP_NEW_PRODUCTS_SEEN_KEY
+========================================= */
+const SHOP_NEW_PRODUCTS_SEEN_KEY = "playnice_seen_new_products_signature";
+
+const getNewProductsSignature = (items = []) => {
+  return items
+    .filter((product) => product.isNew)
+    .map((product) => String(product.id))
+    .sort()
+    .join("|");
+};
+
+/* =========================================
    APP
 ========================================= */
 function App() {
@@ -3980,7 +3993,6 @@ function App() {
   const [addedFeedback, setAddedFeedback] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [cart, setCart] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
@@ -3999,6 +4011,22 @@ function App() {
   const [productModalVisible, setProductModalVisible] = useState(false);
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const newProductsSignature = useMemo(() => {
+  return getNewProductsSignature(products);
+}, []);
+
+const [hasNewShopProducts, setHasNewShopProducts] = useState(() => {
+  if (typeof window === "undefined") return false;
+
+  const currentSignature = getNewProductsSignature(products);
+
+  if (!currentSignature) return false;
+
+  return localStorage.getItem(SHOP_NEW_PRODUCTS_SEEN_KEY) !== currentSignature;
+});
 
   const [wishlist, setWishlist] = useState(() =>
     safeReadLocalStorage("playnice_wishlist", [])
@@ -5451,6 +5479,15 @@ const addHeroBottleToCart = () => {
   });
 };
 
+const handleProductCardOpen = (product) => {
+  openProductModal(product);
+
+  if (!product?.isNew || !newProductsSignature) return;
+
+  localStorage.setItem(SHOP_NEW_PRODUCTS_SEEN_KEY, newProductsSignature);
+  setHasNewShopProducts(false);
+};
+
 useEffect(() => {
   const path = window.location.pathname;
 
@@ -5714,7 +5751,7 @@ const getSizeWearHint = (size) => {
       type="button"
       className="product-card-media clickable-media"
       onMouseDown={(e) => e.preventDefault()}
-      onClick={() => openProductModal(product)}
+      onClick={() => handleProductCardOpen(product)}
       aria-label={product.name}
     >
       <img
@@ -6035,12 +6072,25 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </button>
 
         <button
-          className={`nav-link ${view === "shop" ? "active" : ""}`}
-          type="button"
-          onClick={goToShop}
-        >
-          {tr.navShop}
-        </button>
+  className={`nav-link nav-shop-link ${view === "shop" ? "active" : ""} ${
+    hasNewShopProducts ? "has-new-shop" : ""
+  }`}
+  type="button"
+  onClick={goToShop}
+  aria-label={
+    hasNewShopProducts
+      ? lang === "sr"
+        ? "Shop, novi parfemi"
+        : "Shop, new fragrances"
+      : "Shop"
+  }
+>
+  <span className="nav-shop-link-text">{tr.navShop}</span>
+
+  {hasNewShopProducts && (
+    <span className="shop-nav-new-badge">NEW</span>
+  )}
+</button>
 
         <button
   type="button"
