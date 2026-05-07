@@ -1199,31 +1199,25 @@ body.scrolled .announcement-bar-inner::before {
 
 /* =========================================
    ANNOUNCEMENT — NEW SHOP PRODUCTS
-   same tone as Journal announcement
+   identical Journal tone
 ========================================= */
 
 .announcement-text.announcement-new-shop,
 .announcement-icon.announcement-new-shop,
 .announcement-action.announcement-new-shop {
   color: rgba(245, 224, 173, 0.96);
-  text-shadow: 0 0 10px rgba(220, 181, 107, 0.14);
+  text-shadow: 0 0 10px rgba(220, 181, 107, 0.12);
 }
 
 .announcement-action.announcement-new-shop {
-  font-weight: 700;
-  letter-spacing: 0.018em;
+  font-weight: inherit;
+  letter-spacing: inherit;
 }
 
 .announcement-action.announcement-new-shop:hover {
   color: rgba(255, 239, 197, 0.98);
   text-shadow: 0 0 12px rgba(220, 181, 107, 0.18);
   transform: translateY(-1px);
-}
-
-.announcement-icon.announcement-new-shop {
-  color: rgba(220, 181, 107, 0.92);
-  font-weight: 800;
-  text-shadow: 0 0 10px rgba(220, 181, 107, 0.16);
 }
 
 /* =========================================
