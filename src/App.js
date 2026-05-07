@@ -3897,6 +3897,69 @@ const createProductSlug = (name = "") => {
     .replace(/^-+|-+$/g, "");
 };
 
+const BASE_HERO_SLIDES = [
+  {
+    id: 1,
+    kind: "imageOnly",
+    image: "/hero/slide-1-9pm-night-out.jpg",
+    alt: "Afnan 9PM Night Out – premium night fragrance campaign",
+    actionPrimary: "shop"
+  },
+  {
+    id: 2,
+    kind: "imageOnly",
+    image: "/hero/slide-2-9pm-rebel.jpg",
+    alt: "Afnan 9PM Rebel – bold evening fragrance",
+    actionPrimary: "shop"
+  },
+  {
+    id: 3,
+    kind: "imageOnly",
+    image: "/hero/slide-3-hawas-ice.jpg",
+    alt: "Rasasi Hawas Ice – fresh summer fragrance coming soon",
+    actionPrimary: "shop"
+  },
+  {
+    id: 4,
+    kind: "imageOnly",
+    image: "/hero/slide-4-playnice-trust-white.jpg",
+    alt: "PlayNice Private Selection – trusted premium decants",
+    actionPrimary: "shop"
+  },
+  {
+    id: 5,
+    kind: "imageOnly",
+    image: "/hero/slide-5-trust-dark.jpg",
+    alt: "PlayNice – luxury fragrance experience and trust",
+    actionPrimary: "shop"
+  },
+  {
+    id: 6,
+    kind: "imageOnly",
+    image: "/hero/slide-6.jpg",
+    alt: "PlayNice – Try it first",
+    actionPrimary: "shop"
+  },
+  {
+    id: 7,
+    kind: "imageOnly",
+    image: "/hero/slide-7.jpg",
+    alt: "PlayNice new arrivals – five new fragrances now available",
+    actionPrimary: "shop"
+  }
+];
+
+const shuffleHeroSlides = (slides) => {
+  const shuffled = [...slides];
+
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[i]];
+  }
+
+  return shuffled;
+};
+
 /* =========================================
    APP
 ========================================= */
@@ -4013,57 +4076,11 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
     "/videos/hero5.mp4"
   ];
 
-  const heroSlides = [
-    {
-      id: 1,
-      kind: "imageOnly",
-      image: "/hero/slide-1-9pm-night-out.jpg",
-      alt: "Afnan 9PM Night Out – premium night fragrance campaign",
-      actionPrimary: "shop"
-    },
-    {
-      id: 2,
-      kind: "imageOnly",
-      image: "/hero/slide-2-9pm-rebel.jpg",
-      alt: "Afnan 9PM Rebel – bold evening fragrance",
-      actionPrimary: "shop"
-    },
-    {
-      id: 3,
-      kind: "imageOnly",
-      image: "/hero/slide-3-hawas-ice.jpg",
-      alt: "Rasasi Hawas Ice – fresh summer fragrance coming soon",
-      actionPrimary: "shop"
-    },
-    {
-      id: 4,
-      kind: "imageOnly",
-      image: "/hero/slide-4-playnice-trust-white.jpg",
-      alt: "PlayNice Private Selection – trusted premium decants",
-      actionPrimary: "shop"
-    },
-    {
-      id: 5,
-      kind: "imageOnly",
-      image: "/hero/slide-5-trust-dark.jpg",
-      alt: "PlayNice – luxury fragrance experience and trust",
-      actionPrimary: "shop"
-    },
-    {
-      id: 6,
-      kind: "imageOnly",
-      image: "/hero/slide-6.jpg",
-      alt: "PlayNice – Try it first",
-      actionPrimary: "shop"
-    },
-    {
-      id: 7,
-      kind: "imageOnly",
-      image: "/hero/slide-7.jpg",
-      alt: "PlayNice new arrivals – five new fragrances now available",
-      actionPrimary: "shop"
-    }
-  ];
+  const heroSlides = useMemo(() => {
+  const [fixedFirstSlide, ...randomSlides] = BASE_HERO_SLIDES;
+
+  return [fixedFirstSlide, ...shuffleHeroSlides(randomSlides)];
+}, []);
 
   const categories = useMemo(
     () => ["All", "Arabian", "Designer", "Niche"],
