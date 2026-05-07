@@ -9052,6 +9052,7 @@ body.scrolled .announcement-bar {
   outline: none;
 }
 
+/* heart base */
 .ps-heart {
   display: inline-flex;
   align-items: center;
@@ -9060,12 +9061,7 @@ body.scrolled .announcement-bar {
   font-size: 19px;
   line-height: 1;
 
-  color: rgba(255, 248, 235, 0.78);
-
   transform: translateY(-0.5px);
-
-  text-shadow:
-    0 0 8px rgba(220, 181, 107, 0.1);
 
   transition:
     color 0.24s ease,
@@ -9073,14 +9069,28 @@ body.scrolled .announcement-bar {
     text-shadow 0.24s ease;
 }
 
-.header-private-selection-btn:hover .ps-heart {
-  color: rgba(255, 244, 217, 0.92);
+/* empty Private Selection heart */
+.header-private-selection-btn:not(.has-items) .ps-heart {
+  color: rgba(183, 42, 56, 0.78);
+
+  text-shadow:
+    0 0 6px rgba(183, 42, 56, 0.16),
+    0 0 12px rgba(183, 42, 56, 0.08);
+}
+
+.header-private-selection-btn:not(.has-items):hover .ps-heart {
+  color: rgba(205, 54, 70, 0.94);
   transform: translateY(-0.5px) scale(1.05);
+
+  text-shadow:
+    0 0 8px rgba(183, 42, 56, 0.22),
+    0 0 14px rgba(183, 42, 56, 0.1);
 }
 
 /* when Private Selection has items */
 .header-private-selection-btn.has-items {
   border-color: rgba(183, 42, 56, 0.24);
+
   box-shadow:
     0 8px 22px rgba(0, 0, 0, 0.22),
     0 0 10px rgba(183, 42, 56, 0.07),
@@ -9097,12 +9107,14 @@ body.scrolled .announcement-bar {
 
 .header-private-selection-btn.has-items:hover .ps-heart {
   color: #d83a4a;
+  transform: translateY(-0.5px) scale(1.05);
 
   text-shadow:
     0 0 10px rgba(183, 42, 56, 0.32),
     0 0 18px rgba(183, 42, 56, 0.16);
 }
 
+/* count badge */
 .ps-count {
   position: absolute;
   top: -5px;
@@ -9129,23 +9141,6 @@ body.scrolled .announcement-bar {
     0 0 0 1px rgba(255, 248, 235, 0.12),
     0 4px 10px rgba(0, 0, 0, 0.35),
     0 0 10px rgba(183, 42, 56, 0.18);
-}
-
-/* Empty Private Selection heart — red outline */
-.header-private-selection-btn:not(.has-items) .ps-heart {
-  color: rgba(183, 42, 56, 0.78);
-
-  text-shadow:
-    0 0 6px rgba(183, 42, 56, 0.16),
-    0 0 12px rgba(183, 42, 56, 0.08);
-}
-
-.header-private-selection-btn:not(.has-items):hover .ps-heart {
-  color: rgba(205, 54, 70, 0.94);
-
-  text-shadow:
-    0 0 8px rgba(183, 42, 56, 0.22),
-    0 0 14px rgba(183, 42, 56, 0.1);
 }
 
 /* =========================================
