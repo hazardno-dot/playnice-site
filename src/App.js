@@ -7078,7 +7078,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 </div>
 
-      <div className="shop-toolbar">
       <div className="shop-toolbar shop-toolbar-compact">
   <div className="toolbar-group toolbar-group-search">
     <label htmlFor="shop-search">{tr.searchLabel}</label>
