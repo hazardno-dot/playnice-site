@@ -9131,6 +9131,23 @@ body.scrolled .announcement-bar {
     0 0 10px rgba(183, 42, 56, 0.18);
 }
 
+/* Empty Private Selection heart — red outline */
+.header-private-selection-btn:not(.has-items) .ps-heart {
+  color: rgba(183, 42, 56, 0.78);
+
+  text-shadow:
+    0 0 6px rgba(183, 42, 56, 0.16),
+    0 0 12px rgba(183, 42, 56, 0.08);
+}
+
+.header-private-selection-btn:not(.has-items):hover .ps-heart {
+  color: rgba(205, 54, 70, 0.94);
+
+  text-shadow:
+    0 0 8px rgba(183, 42, 56, 0.22),
+    0 0 14px rgba(183, 42, 56, 0.1);
+}
+
 /* =========================================
    HEADER — PRIVATE SELECTION MOBILE
 ========================================= */
