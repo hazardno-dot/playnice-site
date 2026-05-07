@@ -14071,3 +14071,224 @@ body.scrolled .announcement-bar {
     color: #8fdcff;
   }
 }
+
+/* =========================================
+   MOBILE PRODUCT GRID — COMPACT CATALOG
+   image + name + from price only
+========================================= */
+
+@media (max-width: 640px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    align-items: stretch;
+  }
+
+  .product-card,
+  .premium-product-card {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+
+    padding: 8px;
+    border-radius: 18px;
+
+    cursor: pointer;
+
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+      rgba(12, 12, 12, 0.96);
+
+    box-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.018);
+  }
+
+  .product-card:hover {
+    border-color: rgba(220, 181, 107, 0.16);
+    box-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.018);
+  }
+
+  .product-card-media {
+    width: 100%;
+    height: 132px;
+    min-height: 132px;
+    padding: 10px 8px 6px;
+
+    border-radius: 14px;
+
+    background:
+      radial-gradient(circle at 50% 38%, rgba(220, 181, 107, 0.08), transparent 48%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.006)),
+      rgba(5, 5, 5, 0.28);
+  }
+
+  .product-card-image {
+    max-width: 104px;
+    max-height: 116px;
+  }
+
+  .product-card:hover .product-card-image {
+    transform: none;
+    filter:
+      drop-shadow(0 14px 24px rgba(0, 0, 0, 0.34))
+      brightness(1.035)
+      contrast(1.02);
+  }
+
+  .product-meta,
+  .premium-product-meta {
+    padding: 9px 4px 2px;
+    gap: 5px;
+    min-height: 76px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .product-meta:focus,
+  .product-meta:focus-visible {
+    outline: none;
+  }
+
+  .product-meta-top {
+    gap: 0;
+  }
+
+  .product-category,
+  .product-meta-middle,
+  .product-card-copy-stack,
+  .product-card-copy,
+  .product-card-decant-note,
+  .product-preview-line,
+  .premium-preview-line,
+  .single-line-preview,
+  .product-card-cta,
+  .size-buttons,
+  .product-floating-badge {
+    display: none !important;
+  }
+
+  .product-card-title {
+    min-height: auto;
+    max-height: none;
+
+    margin: 0;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1rem;
+    font-weight: 650;
+    line-height: 1.05;
+    letter-spacing: 0.008em;
+
+    color: rgba(255, 248, 235, 0.96);
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+    text-align: left;
+  }
+
+  .product-meta-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    margin-top: 4px;
+  }
+
+  .product-price-block,
+  .product-price-row {
+    min-height: 20px;
+  }
+
+  .product-price-from,
+  .premium-product-price {
+    gap: 3px;
+    line-height: 1;
+  }
+
+  .price-prefix {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.035em;
+  }
+
+  .price-value {
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+
+  .wishlist-btn {
+    top: 8px;
+    right: 8px;
+
+    width: 30px;
+    height: 30px;
+
+    background: rgba(8, 8, 8, 0.52);
+    border-color: rgba(220, 181, 107, 0.16);
+
+    box-shadow:
+      0 6px 14px rgba(0, 0, 0, 0.24);
+  }
+
+  .wishlist-btn .heart-icon {
+    font-size: 13px;
+  }
+
+  .product-new-badge {
+    right: 7px;
+    bottom: 7px;
+
+    min-height: 20px;
+    padding: 0 7px;
+
+    font-size: 7px;
+    letter-spacing: 0.11em;
+
+    background: rgba(8, 8, 8, 0.68);
+    box-shadow:
+      0 6px 14px rgba(0, 0, 0, 0.24),
+      0 0 0 1px rgba(255, 255, 255, 0.025) inset;
+  }
+}
+
+@media (max-width: 380px) {
+  .product-grid {
+    gap: 8px !important;
+  }
+
+  .product-card,
+  .premium-product-card {
+    padding: 7px;
+    border-radius: 16px;
+  }
+
+  .product-card-media {
+    height: 122px;
+    min-height: 122px;
+  }
+
+  .product-card-image {
+    max-width: 96px;
+    max-height: 108px;
+  }
+
+  .product-card-title {
+    font-size: 0.94rem;
+  }
+
+  .price-prefix {
+    font-size: 0.64rem;
+  }
+
+  .price-value {
+    font-size: 0.78rem;
+  }
+}
