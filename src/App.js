@@ -2317,8 +2317,8 @@ const productCopy = {
 "Arabiyat Prestige Fahad Gaze": {
   miniTag: { sr: "🪞 Elegant / Spicy", en: "🪞 Elegant / Spicy" },
   card: {
-    sr: "Metalno-svež začinski start sa elegantnom amber-drvenom bazom.",
-    en: "Metallic fresh spicy opening with an elegant amber-woody base."
+    sr: "Metalno-svež začinski start sa divnom amber-drvenom bazom.",
+    en: "Metallic-fresh spicy opening with a lovely amber-woody base."
   },
   modal: {
     sr: "Začinske i metalne note sa elemi smolom otvaraju miris energično, zatim dolaze cvet narandže, tamjan i pačuli, uz završetak od ambergrisa, vanile i mahovine.",
