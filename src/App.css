@@ -15163,3 +15163,185 @@ body.scrolled .topbar .announcement-bar--header-connector {
   position: relative;
   z-index: 8;
 }
+
+/* =========================================
+   HEADER CONNECTOR — OPAQUE MODULES + CENTER FIX
+========================================= */
+
+/* 1) LEVA PILULA — neprozirnija */
+.topbar .brand {
+  background:
+    linear-gradient(180deg, rgba(14, 14, 14, 0.96), rgba(7, 7, 7, 0.94)),
+    #0a0a0a !important;
+
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.26),
+    0 0 0 1px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+/* 2) DESNA PILULA — neprozirnija */
+.topbar .topbar-right {
+  background:
+    linear-gradient(180deg, rgba(14, 14, 14, 0.96), rgba(7, 7, 7, 0.94)),
+    #0a0a0a !important;
+
+  border: 1px solid rgba(220, 181, 107, 0.12);
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.26),
+    0 0 0 1px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.018);
+}
+
+/* i mali krugovi unutra da budu puni */
+.topbar .cart-button--icon-only,
+.topbar .header-private-selection-btn,
+.topbar .language-current {
+  background:
+    linear-gradient(180deg, rgba(16, 16, 16, 0.98), rgba(9, 9, 9, 0.96)),
+    #0b0b0b !important;
+
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.018);
+}
+
+/* 3) CENTRALNI KRUG — HOME stanje potpuno zatvoren */
+.topbar .nav-links.is-home {
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.03), transparent 40%),
+    linear-gradient(180deg, rgba(14, 14, 14, 0.98), rgba(7, 7, 7, 0.96)),
+    #0a0a0a !important;
+
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(0, 0, 0, 0.24),
+    0 0 18px rgba(220, 181, 107, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.018);
+}
+
+/* 4) CENTRALNI KRUG — SHOP stanje takođe potpuno zatvoren */
+.topbar .nav-links.is-shop {
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 246, 220, 0.26), transparent 38%),
+    linear-gradient(180deg, var(--gold-lit, #e2bf7a) 0%, var(--gold) 56%, var(--gold-deep, #c9964d) 100%) !important;
+
+  border: 1px solid rgba(220, 181, 107, 0.42);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.28),
+    0 0 20px rgba(220, 181, 107, 0.15),
+    0 0 36px rgba(220, 181, 107, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* 5) ANNOUNCEMENT CONNECTOR — unutrašnje centriranje */
+.topbar .announcement-bar--header-connector {
+  display: flex;
+  align-items: center;
+}
+
+.topbar .announcement-bar--header-connector .announcement-bar-inner {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.topbar .announcement-bar--header-connector .announcement-marquee {
+  width: 100%;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.topbar .announcement-bar--header-connector .announcement-track {
+  min-height: 20px;
+  height: 20px;
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 38px;
+  padding: 0 14px;
+  margin: 0;
+}
+
+/* tekst i buttoni vertikalno tačno u centru */
+.topbar .announcement-bar--header-connector .announcement-text,
+.topbar .announcement-bar--header-connector .announcement-action,
+.topbar .announcement-bar--header-connector .announcement-icon,
+.topbar .announcement-bar--header-connector .announcement-logo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.topbar .announcement-bar--header-connector .announcement-text,
+.topbar .announcement-bar--header-connector .announcement-action {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.105em;
+}
+
+/* progress linija ostaje dole, ali ne remeti centriranje */
+.topbar .announcement-bar--header-connector .announcement-progress-shell {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 3px;
+  padding: 0;
+}
+
+/* =========================================
+   RESPONSIVE CENTER FIX
+========================================= */
+
+@media (max-width: 820px) {
+  .topbar .announcement-bar--header-connector .announcement-marquee {
+    height: 18px;
+  }
+
+  .topbar .announcement-bar--header-connector .announcement-track {
+    min-height: 18px;
+    height: 18px;
+    gap: 26px;
+    padding: 0 10px;
+  }
+
+  .topbar .announcement-bar--header-connector .announcement-text,
+  .topbar .announcement-bar--header-connector .announcement-action {
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (max-width: 560px) {
+  .topbar .announcement-bar--header-connector .announcement-marquee {
+    height: 17px;
+  }
+
+  .topbar .announcement-bar--header-connector .announcement-track {
+    min-height: 17px;
+    height: 17px;
+    gap: 22px;
+    padding: 0 9px;
+  }
+
+  .topbar .announcement-bar--header-connector .announcement-text,
+  .topbar .announcement-bar--header-connector .announcement-action {
+    font-size: 8.5px;
+    letter-spacing: 0.07em;
+  }
+}
