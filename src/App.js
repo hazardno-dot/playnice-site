@@ -6185,135 +6185,127 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </aside>
 )}
 
-    <header className="topbar">
-      <button className="brand" type="button" onClick={() => switchView("home")}>
-     <span className="brand-copy">
+<header className="topbar">
+  <button
+    className="brand"
+    type="button"
+    onClick={() => switchView("home")}
+    aria-label="PlayNice home"
+  >
+    <span className="brand-copy">
       <strong>PlayNice</strong>
-       <small>Remember. PlayNice.</small>
-     </span>
+      <small>Remember. PlayNice.</small>
+    </span>
+  </button>
+
+  <nav className="nav-links" aria-label="Primary navigation">
+    <button
+      className={`nav-link ${view === "home" ? "active" : ""}`}
+      type="button"
+      onClick={() => switchView("home")}
+    >
+      {tr.navHome}
+    </button>
+
+    <button
+      className={`nav-link nav-shop-link ${view === "shop" ? "active" : ""} ${
+        hasNewShopProducts ? "has-new-shop" : ""
+      }`}
+      type="button"
+      onClick={goToShop}
+      aria-label={
+        hasNewShopProducts
+          ? lang === "sr"
+            ? "Shop, novi parfemi"
+            : "Shop, new fragrances"
+          : "Shop"
+      }
+    >
+      <span className="nav-shop-link-text">{tr.navShop}</span>
+
+      {hasNewShopProducts && (
+        <span className="shop-nav-new-badge">NEW</span>
+      )}
+    </button>
+
+    <button
+      type="button"
+      className={`header-journal-btn ${
+        hasNewJournalArticle ? "has-unread" : ""
+      }`}
+      onClick={handleJournalOpen}
+      aria-label={
+        hasNewJournalArticle
+          ? lang === "sr"
+            ? "Journal, novi članak"
+            : "Journal, new article"
+          : "Journal"
+      }
+    >
+      <span className="header-journal-btn-text">Journal</span>
+
+      {hasNewJournalArticle && (
+        <span className="journal-unread-badge">NEW</span>
+      )}
+    </button>
+  </nav>
+
+  <div className="topbar-right">
+    <button
+      className={`header-private-selection-btn ${
+        wishlist.length > 0 ? "has-items" : ""
+      }`}
+      onClick={() => setPrivateSelectionOpen(true)}
+      type="button"
+      aria-label="Private Selection"
+      title="Private Selection"
+    >
+      <span className="ps-heart" aria-hidden="true">
+        {wishlist.length > 0 ? "♥" : "♡"}
+      </span>
+
+      {wishlist.length > 0 && (
+        <span className="ps-count">
+          {wishlist.length}
+        </span>
+      )}
+    </button>
+
+    <button
+      className="cart-button cart-button--icon-only"
+      type="button"
+      onClick={() => setCartOpen((prev) => !prev)}
+      aria-label={lang === "sr" ? "Korpa" : "Cart"}
+      title={lang === "sr" ? "Korpa" : "Cart"}
+    >
+      <span className="cart-icon" aria-hidden="true">🛒</span>
+      {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+    </button>
+
+    <div
+      className="lang-vertical lang-vertical--in-header"
+      aria-label="Language switch"
+    >
+      <button
+        className={lang === "sr" ? "active" : ""}
+        onClick={() => setLang("sr")}
+        type="button"
+      >
+        SR
       </button>
 
-      <nav className="nav-links">
-        <button
-          className="nav-link"
-          type="button"
-          onClick={() => setStoryOpen(true)}
-        >
-          {tr.navStory}
-        </button>
+      <div className="lang-divider" />
 
-        <button
-          className="nav-link"
-          type="button"
-          onClick={() => setHowItWorksOpen(true)}
-        >
-          {lang === "sr" ? "Kako?" : "How?"}
-        </button>
-
-        <button
-          className={`nav-link ${view === "home" ? "active" : ""}`}
-          type="button"
-          onClick={() => switchView("home")}
-        >
-          {tr.navHome}
-        </button>
-
-        <button
-  className={`nav-link nav-shop-link ${view === "shop" ? "active" : ""} ${
-    hasNewShopProducts ? "has-new-shop" : ""
-  }`}
-  type="button"
-  onClick={goToShop}
-  aria-label={
-    hasNewShopProducts
-      ? lang === "sr"
-        ? "Shop, novi parfemi"
-        : "Shop, new fragrances"
-      : "Shop"
-  }
->
-  <span className="nav-shop-link-text">{tr.navShop}</span>
-
-  {hasNewShopProducts && (
-    <span className="shop-nav-new-badge">NEW</span>
-  )}
-</button>
-
-        <button
-  type="button"
-  className={`header-journal-btn ${
-    hasNewJournalArticle ? "has-unread" : ""
-  }`}
-  onClick={handleJournalOpen}
-  aria-label={
-    hasNewJournalArticle
-      ? lang === "sr"
-        ? "Journal, novi članak"
-        : "Journal, new article"
-      : "Journal"
-  }
->
-  <span className="header-journal-btn-text">Journal</span>
-
-  {hasNewJournalArticle && (
-    <span className="journal-unread-badge">NEW</span>
-  )}
-        </button>
-      </nav>
-
-      <div className="topbar-right">
-        <button
-  className={`header-private-selection-btn ${
-    wishlist.length > 0 ? "has-items" : ""
-  }`}
-  onClick={() => setPrivateSelectionOpen(true)}
-  type="button"
-  aria-label="Private Selection"
-  title="Private Selection"
->
-  <span className="ps-heart" aria-hidden="true">
-    {wishlist.length > 0 ? "♥" : "♡"}
-  </span>
-
-  {wishlist.length > 0 && (
-    <span className="ps-count">
-      {wishlist.length}
-    </span>
-  )}
-</button>
-
-        <button
-  className="cart-button cart-button--icon-only"
-  type="button"
-  onClick={() => setCartOpen((prev) => !prev)}
-  aria-label={lang === "sr" ? "Korpa" : "Cart"}
-  title={lang === "sr" ? "Korpa" : "Cart"}
->
-  <span className="cart-icon" aria-hidden="true">🛒</span>
-  {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-</button>
-
-<div className="lang-vertical lang-vertical--in-header" aria-label="Language switch">
-  <button
-    className={lang === "sr" ? "active" : ""}
-    onClick={() => setLang("sr")}
-    type="button"
-  >
-    SR
-  </button>
-
-  <div className="lang-divider" />
-
-  <button
-    className={lang === "en" ? "active" : ""}
-    onClick={() => setLang("en")}
-    type="button"
-  >
-    EN
-  </button>
-</div>
-</div>
-    </header>
+      <button
+        className={lang === "en" ? "active" : ""}
+        onClick={() => setLang("en")}
+        type="button"
+      >
+        EN
+      </button>
+    </div>
+  </div>
+</header>
 
       <div
   className={`announcement-bar ${
@@ -6881,158 +6873,163 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             </section>
 
             <footer className="site-footer">
-              <div className="site-footer-inner">
-                <div className="footer-brand">
-                  <div className="footer-logo-wrap">
-                    <div className="footer-logo-mark">▶</div>
-                    <div>
-                      <div className="footer-logo">PlayNice</div>
-                      <div className="footer-tagline">Remember. PlayNice.</div>
-                    </div>
-                  </div>
+  <div className="site-footer-inner">
+    <div className="footer-brand">
+      <div className="footer-logo-wrap">
+        <div className="footer-logo-mark">▶</div>
 
-                  <p className="footer-brand-text">
-                    {lang === "sr"
-                      ? "Kurirana selekcija designer, niche i Arabian parfema za one koji žele da probaju prije pune bočice."
-                      : "A curated selection of designer, niche and Arabian fragrances for those who want to try before committing to a full bottle."}
-                  </p>
+        <div>
+          <div className="footer-logo">PlayNice</div>
+          <div className="footer-tagline">Remember. PlayNice.</div>
+        </div>
+      </div>
 
-                  <div className="social-links">
-                    <a
-                      href="https://www.instagram.com/playnice.me/"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <i className="fa-brands fa-instagram"></i>
-                    </a>
+      <p className="footer-brand-text">
+        {lang === "sr"
+          ? "Kurirana selekcija designer, niche i Arabian parfema za one koji žele da probaju prije pune bočice."
+          : "A curated selection of designer, niche and Arabian fragrances for those who want to try before committing to a full bottle."}
+      </p>
 
-                    <a
-                      href="https://wa.me/382XXXXXXXXX"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <i className="fa-brands fa-whatsapp"></i>
-                    </a>
+      <div className="social-links">
+        <a
+          href="https://www.instagram.com/playnice.me/"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="PlayNice Instagram"
+        >
+          <i className="fa-brands fa-instagram"></i>
+        </a>
 
-                    <a
-                      href="https://tiktok.com/@playnice"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <i className="fa-brands fa-tiktok"></i>
-                    </a>
-                  </div>
-                </div>
+        <a
+          href="https://wa.me/382XXXXXXXXX"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="PlayNice WhatsApp"
+        >
+          <i className="fa-brands fa-whatsapp"></i>
+        </a>
 
-                <div className="footer-links">
-  <h4>{lang === "sr" ? "Navigacija" : "Navigation"}</h4>
+        <a
+          href="https://tiktok.com/@playnice"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="PlayNice TikTok"
+        >
+          <i className="fa-brands fa-tiktok"></i>
+        </a>
+      </div>
+    </div>
 
-  <button
-    type="button"
-    className="footer-link"
-    onClick={() => switchView("home")}
-  >
-    {lang === "sr" ? "Početna" : "Home"}
-  </button>
+    <div className="footer-links">
+      <h4>{lang === "sr" ? "Navigacija" : "Navigation"}</h4>
 
-  <button
-    type="button"
-    className="footer-link"
-    onClick={() => setStoryOpen(true)}
-  >
-    {lang === "sr" ? "Priča" : "Our Story"}
-  </button>
+      <button
+        type="button"
+        className="footer-link"
+        onClick={() => switchView("home")}
+      >
+        {lang === "sr" ? "Početna" : "Home"}
+      </button>
 
-  <button
-    type="button"
-    className="footer-link"
-    onClick={goToShop}
-  >
-    {lang === "sr" ? "Shop" : "Shop"}
-  </button>
+      <button
+        type="button"
+        className="footer-link"
+        onClick={goToShop}
+      >
+        Shop
+      </button>
 
-  <button
-    type="button"
-    className="footer-link"
-    onClick={() => setPrivateSelectionOpen(true)}
-  >
-    Private Selection
-  </button>
+      <button
+        type="button"
+        className="footer-link"
+        onClick={handleJournalOpen}
+      >
+        Journal
+      </button>
 
-  <button
-    type="button"
-    className="footer-link"
-    onClick={() => {
-      const section = document.getElementById("how-it-works");
-      if (section) {
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
-    }}
-  >
-    {lang === "sr" ? "Kako funkcioniše?" : "How it works"}
-  </button>
-</div>
+      <button
+        type="button"
+        className="footer-link"
+        onClick={() => setStoryOpen(true)}
+      >
+        {lang === "sr" ? "Naša priča" : "Our Story"}
+      </button>
 
-                <div className="footer-trust">
-                  <h4>{lang === "sr" ? "Informacije" : "Information"}</h4>
+      <button
+        type="button"
+        className="footer-link"
+        onClick={() => setHowItWorksOpen(true)}
+      >
+        {lang === "sr" ? "Kako funkcioniše?" : "How it works"}
+      </button>
 
-                  <p>
-                    {lang === "sr"
-                      ? "Dostava širom Crne Gore"
-                      : "Delivery across Montenegro"}
-                  </p>
-                  <p>
-                    {lang === "sr"
-                      ? "Besplatna dostava preko 39€"
-                      : "Free shipping over €39"}
-                  </p>
+      <button
+        type="button"
+        className="footer-link"
+        onClick={() => setPrivateSelectionOpen(true)}
+      >
+        Private Selection
+      </button>
+    </div>
 
-                  <a href="mailto:order@playniceshop.me" className="footer-contact">
-                    order@playniceshop.me
-                  </a>
+    <div className="footer-trust">
+      <h4>{lang === "sr" ? "Informacije" : "Information"}</h4>
 
-                  <a
-                    href="https://www.instagram.com/playnice.me/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="footer-contact"
-                  >
-                    @playnice.me
-                  </a>
-                </div>
-              </div>
+      <p>
+        {lang === "sr"
+          ? "Dostava širom Crne Gore"
+          : "Delivery across Montenegro"}
+      </p>
 
-               <DeliveryReturnsMini surface="footer" />
+      <p>
+        {lang === "sr"
+          ? "Besplatna dostava preko 39€"
+          : "Free shipping over €39"}
+      </p>
 
-              <div className="footer-bottom">
-                <p>
-                  © 2026 PlayNice.{" "}
-                  {lang === "sr" ? "Sva prava zadržana." : "All rights reserved."}
-                </p>
+      <a href="mailto:order@playniceshop.me" className="footer-contact">
+        order@playniceshop.me
+      </a>
 
-              <div className="footer-bottom-links">
-                <button
-                  type="button"
-                  className="footer-mini-link"
-                  onClick={() => {
-                  document.getElementById("delivery-returns")?.scrollIntoView({
-                  behavior: "smooth",
-                  block: "center"
-                });
-              }}
-            >
-             {lang === "sr" ? "Dostava i povrat" : "Delivery & Returns"}
-                </button>
+      <a
+        href="https://www.instagram.com/playnice.me/"
+        target="_blank"
+        rel="noreferrer"
+        className="footer-contact"
+      >
+        @playnice.me
+      </a>
+    </div>
+  </div>
 
-             <a href="mailto:order@playniceshop.me" className="footer-mini-link">
-             {lang === "sr" ? "Kontakt" : "Contact"}
-              </a>
-            </div>
-              </div>
-            </footer>
+  <DeliveryReturnsMini surface="footer" />
+
+  <div className="footer-bottom">
+    <p>
+      © 2026 PlayNice.{" "}
+      {lang === "sr" ? "Sva prava zadržana." : "All rights reserved."}
+    </p>
+
+    <div className="footer-bottom-links">
+      <button
+        type="button"
+        className="footer-mini-link"
+        onClick={() => {
+          document.getElementById("delivery-returns")?.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+        }}
+      >
+        {lang === "sr" ? "Dostava i povrat" : "Delivery & Returns"}
+      </button>
+
+      <a href="mailto:order@playniceshop.me" className="footer-mini-link">
+        {lang === "sr" ? "Kontakt" : "Contact"}
+      </a>
+    </div>
+  </div>
+</footer>
           </>
         )}
 
