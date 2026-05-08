@@ -6188,88 +6188,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 )}
 
 <header className="topbar topbar-enterprise">
-
-  <div
-  className={`announcement-bar ${
-    cart.length === 0
-      ? ""
-      : subtotal >= FREE_SHIPPING_THRESHOLD
-      ? "announcement-bar-success"
-      : "announcement-bar-warning"
-  }`}
->
-  <div className="announcement-bar-inner">
-    <div className="announcement-marquee">
-      <div className="announcement-track">
-        {[...announcementItems, ...announcementItems].map((item, index) => {
-  const itemClassName = `announcement-text ${
-    item.tone ? `announcement-${item.tone}` : ""
-  }`;
-
-  const iconClassName = `announcement-icon ${
-    item.tone ? `announcement-${item.tone}` : ""
-  }`;
-
-  const key = `${item.id || item.text}-${index}`;
-
-  return (
-    <React.Fragment key={key}>
-      {item.type === "logoLink" ? (
-        <a
-  className="announcement-logo-link announcement-logo-link-forever"
-  href={item.href}
-  target="_blank"
-  rel="sponsored noopener noreferrer"
-  aria-label={item.logoAlt || item.text}
-  onClick={() =>
-    handleSponsoredAdClick(item, "announcement_bar")
-  }
->
-          <img
-            src={item.logoSrc}
-            alt={item.logoAlt || item.text}
-            className="announcement-logo-img"
-            loading="lazy"
-          />
-        </a>
-      ) : item.action ? (
-        <button
-          type="button"
-          className={`${itemClassName} announcement-action`}
-          onClick={() => handleAnnouncementItemClick(item)}
-          aria-label={item.text}
-        >
-          {item.text}
-        </button>
-      ) : (
-        <span className={itemClassName}>{item.text}</span>
-      )}
-
-      <span className={iconClassName}>{item.icon}</span>
-    </React.Fragment>
-  );
-})}
-      </div>
-    </div>
-
-    <div className="announcement-progress-shell">
-      <div className="announcement-progress-bar">
-        <div
-          className="announcement-progress-fill"
-          style={{
-            width:
-              cart.length === 0
-                ? "100%"
-                : `${Math.min(
-                    100,
-                    (subtotal / FREE_SHIPPING_THRESHOLD) * 100
-                  )}%`
-          }}
-        />
-      </div>
-    </div>
-  </div>
-</div>
+  <span className="topbar-connector" aria-hidden="true" />
 
   <button
     className="brand enterprise-brand"
@@ -6387,6 +6306,88 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </div>
 </header>
+
+<div
+  className={`announcement-bar ${
+    cart.length === 0
+      ? ""
+      : subtotal >= FREE_SHIPPING_THRESHOLD
+      ? "announcement-bar-success"
+      : "announcement-bar-warning"
+  }`}
+>
+  <div className="announcement-bar-inner">
+    <div className="announcement-marquee">
+      <div className="announcement-track">
+        {[...announcementItems, ...announcementItems].map((item, index) => {
+  const itemClassName = `announcement-text ${
+    item.tone ? `announcement-${item.tone}` : ""
+  }`;
+
+  const iconClassName = `announcement-icon ${
+    item.tone ? `announcement-${item.tone}` : ""
+  }`;
+
+  const key = `${item.id || item.text}-${index}`;
+
+  return (
+    <React.Fragment key={key}>
+      {item.type === "logoLink" ? (
+        <a
+  className="announcement-logo-link announcement-logo-link-forever"
+  href={item.href}
+  target="_blank"
+  rel="sponsored noopener noreferrer"
+  aria-label={item.logoAlt || item.text}
+  onClick={() =>
+    handleSponsoredAdClick(item, "announcement_bar")
+  }
+>
+          <img
+            src={item.logoSrc}
+            alt={item.logoAlt || item.text}
+            className="announcement-logo-img"
+            loading="lazy"
+          />
+        </a>
+      ) : item.action ? (
+        <button
+          type="button"
+          className={`${itemClassName} announcement-action`}
+          onClick={() => handleAnnouncementItemClick(item)}
+          aria-label={item.text}
+        >
+          {item.text}
+        </button>
+      ) : (
+        <span className={itemClassName}>{item.text}</span>
+      )}
+
+      <span className={iconClassName}>{item.icon}</span>
+    </React.Fragment>
+  );
+})}
+      </div>
+    </div>
+
+    <div className="announcement-progress-shell">
+      <div className="announcement-progress-bar">
+        <div
+          className="announcement-progress-fill"
+          style={{
+            width:
+              cart.length === 0
+                ? "100%"
+                : `${Math.min(
+                    100,
+                    (subtotal / FREE_SHIPPING_THRESHOLD) * 100
+                  )}%`
+          }}
+        />
+      </div>
+    </div>
+  </div>
+</div>
 
 {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
