@@ -726,7 +726,6 @@ main {
 
   transition:
     color 0.24s ease,
-    text-shadow 0.24s ease,
     transform 0.24s ease,
     opacity 0.24s ease;
 }
@@ -744,42 +743,39 @@ main {
   outline: none;
 }
 
-/* Home active */
+/* Home active / Shop inactive */
 .nav-links.is-home .nav-link-home {
   color: var(--gold);
-  text-shadow:
-    0 0 10px rgba(220, 181, 107, 0.24),
-    0 0 18px rgba(220, 181, 107, 0.12);
+  text-shadow: none;
 }
 
-.nav-links.is-home .nav-link-shop {
-  color: rgba(255, 248, 235, 0.74);
+.nav-links.is-home .nav-link-shop,
+.nav-links.is-home .nav-link-shop .nav-shop-link-text {
+  color: #b72a38;
+  text-shadow: none;
+  opacity: 1;
 }
 
-/* Shop active */
-.nav-links.is-shop .nav-link-home,
-.nav-links.is-shop .nav-link-shop {
-  color: rgba(12, 12, 12, 0.88);
-}
-
-.nav-links.is-shop .nav-link-shop {
+/* Shop active / Home inactive */
+.nav-links.is-shop .nav-link-shop,
+.nav-links.is-shop .nav-link-shop .nav-shop-link-text {
   color: #0b0b0b;
   font-weight: 800;
-
-  text-shadow:
-    0 0 8px rgba(255, 248, 235, 0.18),
-    0 0 14px rgba(255, 248, 235, 0.08);
+  text-shadow: none;
+  opacity: 1;
 }
 
 .nav-links.is-shop .nav-link-home {
-  opacity: 0.88;
+  color: #b72a38;
+  text-shadow: none;
+  opacity: 1;
 }
 
 /* Remove old blue shop text override inside circle */
 .nav-links.is-home .nav-shop-link.has-new-shop .nav-shop-link-text,
 .nav-links.is-shop .nav-shop-link.has-new-shop .nav-shop-link-text {
   color: inherit;
-  text-shadow: inherit;
+  text-shadow: none;
 }
 
 /* NEW badge inside circular module */
