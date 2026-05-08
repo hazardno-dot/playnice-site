@@ -15354,8 +15354,8 @@ body.scrolled .header-system .announcement-bar-system {
 ========================================= */
 
 .header-system {
-  height: 78px;
-  min-height: 78px;
+  height: 84px;
+  min-height: 84px;
 }
 
 .header-system .topbar {
