@@ -14790,17 +14790,16 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
-   HEADER SYSTEM — FINAL INTEGRATED CONNECTOR
-   Put this at the very end of App.css
+   HEADER SYSTEM — FINAL SAFE CONNECTOR
+   No tunnel polish. Put this at the very end.
 ========================================= */
 
-/* old decorative connector no longer needed */
 .topbar-connector {
   display: none;
 }
 
 /* =========================================
-   HEADER SYSTEM — LAYOUT STABILITY
+   HEADER — STABLE LAYOUT
 ========================================= */
 
 .topbar {
@@ -14808,49 +14807,39 @@ body.scrolled .announcement-bar {
   top: 4px;
   z-index: 200;
 
+  width: 100vw;
+  max-width: none;
+
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+
+  min-height: 96px;
+  padding: 8px clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px);
+
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
+  gap: 18px;
 
-  min-height: 98px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 
   overflow: visible;
 }
 
+/* left module */
 .topbar .brand {
   grid-column: 1;
   justify-self: start;
+
   position: relative;
   z-index: 8;
   isolation: isolate;
-}
 
-.topbar .nav-links {
-  grid-column: 2;
-  justify-self: center;
-  position: relative;
-  z-index: 12;
-  isolation: isolate;
-  overflow: visible;
-}
-
-.topbar .topbar-right {
-  grid-column: 3;
-  justify-self: end;
-  position: relative;
-  z-index: 8;
-  isolation: isolate;
-}
-
-/* =========================================
-   HEADER MODULES — OPAQUE OVER CONNECTOR
-========================================= */
-
-.topbar .brand {
   background:
-    linear-gradient(180deg, rgba(14, 14, 14, 0.96), rgba(7, 7, 7, 0.94)),
+    linear-gradient(180deg, rgba(14, 14, 14, 0.97), rgba(7, 7, 7, 0.95)),
     #0a0a0a;
 
   border: 1px solid rgba(220, 181, 107, 0.16);
@@ -14861,9 +14850,17 @@ body.scrolled .announcement-bar {
     inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
+/* right module */
 .topbar .topbar-right {
+  grid-column: 3;
+  justify-self: end;
+
+  position: relative;
+  z-index: 8;
+  isolation: isolate;
+
   background:
-    linear-gradient(180deg, rgba(14, 14, 14, 0.96), rgba(7, 7, 7, 0.94)),
+    linear-gradient(180deg, rgba(14, 14, 14, 0.97), rgba(7, 7, 7, 0.95)),
     #0a0a0a;
 
   border: 1px solid rgba(220, 181, 107, 0.12);
@@ -14874,6 +14871,7 @@ body.scrolled .announcement-bar {
     inset 0 1px 0 rgba(255, 255, 255, 0.018);
 }
 
+/* small utility circles */
 .topbar .cart-button--icon-only,
 .topbar .header-private-selection-btn,
 .topbar .language-current {
@@ -14888,95 +14886,32 @@ body.scrolled .announcement-bar {
     inset 0 1px 0 rgba(255, 255, 255, 0.018);
 }
 
-/* central circle — home state */
-.topbar .nav-links.is-home {
-  background:
-    radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.03), transparent 40%),
-    linear-gradient(180deg, rgba(14, 14, 14, 0.98), rgba(7, 7, 7, 0.96)),
-    #0a0a0a;
-
-  border: 1px solid rgba(220, 181, 107, 0.18);
-
-  box-shadow:
-    0 12px 26px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(0, 0, 0, 0.24),
-    0 0 18px rgba(220, 181, 107, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.018);
-}
-
-/* central circle — shop state */
-.topbar .nav-links.is-shop {
-  background:
-    radial-gradient(circle at 50% 24%, rgba(255, 246, 220, 0.26), transparent 38%),
-    linear-gradient(
-      180deg,
-      var(--gold-lit, #e2bf7a) 0%,
-      var(--gold) 56%,
-      var(--gold-deep, #c9964d) 100%
-    );
-
-  border: 1px solid rgba(220, 181, 107, 0.42);
-
-  box-shadow:
-    0 14px 30px rgba(0, 0, 0, 0.28),
-    0 0 20px rgba(220, 181, 107, 0.15),
-    0 0 36px rgba(220, 181, 107, 0.07),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
 /* =========================================
-   CENTER CIRCLE — TUNNEL + DIVIDER
+   CENTER CIRCLE — TRUE CENTER LOCK
 ========================================= */
 
-/* tunnel shoulder behind the circle, without stealing ::after from divider */
-.topbar .nav-links::before {
-  content: "";
+.topbar .nav-links {
   position: absolute;
-  left: -10px;
-  right: -10px;
+  left: 50%;
   top: 50%;
-  z-index: -1;
+  z-index: 12;
 
-  height: 26px;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
 
-  border-radius: 999px;
-  pointer-events: none;
+  justify-self: auto;
+  grid-column: auto;
+
+  isolation: isolate;
+  overflow: hidden;
 }
 
-.topbar .nav-links.is-home::before {
-  background:
-    linear-gradient(
-      90deg,
-      rgba(8, 8, 8, 0) 0%,
-      rgba(9, 9, 9, 0.96) 18%,
-      rgba(9, 9, 9, 0.98) 50%,
-      rgba(9, 9, 9, 0.96) 82%,
-      rgba(8, 8, 8, 0) 100%
-    );
-
-  box-shadow:
-    0 0 0 1px rgba(220, 181, 107, 0.055),
-    0 0 10px rgba(220, 181, 107, 0.025);
+/* Remove all previous tunnel polish */
+.topbar .nav-links::before {
+  content: none;
+  display: none;
 }
 
-.topbar .nav-links.is-shop::before {
-  background:
-    linear-gradient(
-      90deg,
-      rgba(220, 181, 107, 0) 0%,
-      var(--gold-deep, #c9964d) 18%,
-      var(--gold) 50%,
-      var(--gold-deep, #c9964d) 82%,
-      rgba(220, 181, 107, 0) 100%
-    );
-
-  box-shadow:
-    0 0 0 1px rgba(220, 181, 107, 0.1),
-    0 0 12px rgba(220, 181, 107, 0.075);
-}
-
-/* keep Home / Shop divider intact */
+/* Home / Shop divider only */
 .topbar .nav-links::after {
   content: "";
   position: absolute;
@@ -15002,14 +14937,50 @@ body.scrolled .announcement-bar {
   z-index: 4;
 }
 
+/* center circle — home state */
+.topbar .nav-links.is-home {
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.03), transparent 40%),
+    linear-gradient(180deg, rgba(14, 14, 14, 0.98), rgba(7, 7, 7, 0.96)),
+    #0a0a0a;
+
+  border: 1px solid rgba(220, 181, 107, 0.18);
+
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(0, 0, 0, 0.24),
+    0 0 18px rgba(220, 181, 107, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.018);
+}
+
+/* center circle — shop state */
+.topbar .nav-links.is-shop {
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 246, 220, 0.26), transparent 38%),
+    linear-gradient(
+      180deg,
+      var(--gold-lit, #e2bf7a) 0%,
+      var(--gold) 56%,
+      var(--gold-deep, #c9964d) 100%
+    );
+
+  border: 1px solid rgba(220, 181, 107, 0.42);
+
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.28),
+    0 0 20px rgba(220, 181, 107, 0.15),
+    0 0 36px rgba(220, 181, 107, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
 /* =========================================
-   ANNOUNCEMENT — HEADER CONNECTOR FINAL
+   ANNOUNCEMENT — HEADER CONNECTOR
 ========================================= */
 
 .topbar .announcement-bar--header-connector {
   position: absolute;
-
   top: 50%;
+
   left: clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px);
   right: clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px);
 
@@ -15041,15 +15012,11 @@ body.scrolled .announcement-bar {
     0 4px 12px rgba(0, 0, 0, 0.14),
     0 0 14px rgba(220, 181, 107, 0.03),
     inset 0 1px 0 rgba(255, 255, 255, 0.014);
-
-  transition:
-    border-color 0.3s ease,
-    background 0.3s ease,
-    box-shadow 0.3s ease;
 }
 
 .topbar .announcement-bar--header-connector:hover {
   transform: translateY(-50%);
+
   border-color: rgba(220, 181, 107, 0.16);
 
   box-shadow:
@@ -15082,7 +15049,7 @@ body.scrolled .announcement-bar {
   background: linear-gradient(to left, rgba(7, 7, 7, 0.88), transparent);
 }
 
-/* warning / success retain behavior, but quieter */
+/* warning / success */
 .topbar .announcement-bar--header-connector.announcement-bar-warning {
   border-color: rgba(220, 181, 107, 0.15);
 
@@ -15111,7 +15078,7 @@ body.scrolled .topbar .announcement-bar--header-connector {
 }
 
 /* =========================================
-   ANNOUNCEMENT — TRUE VERTICAL CENTERING
+   ANNOUNCEMENT — VERTICAL CENTER FIX
 ========================================= */
 
 .topbar .announcement-bar--header-connector .announcement-bar-inner {
@@ -15121,10 +15088,8 @@ body.scrolled .topbar .announcement-bar--header-connector {
   width: 100%;
   height: 100%;
 
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  display: flex;
   align-items: center;
-  justify-items: stretch;
 
   padding: 0;
   margin: 0;
@@ -15245,14 +15210,14 @@ main > :first-child {
 }
 
 /* =========================================
-   RESPONSIVE — HEADER CONNECTOR FINAL
+   RESPONSIVE — FINAL SAFE CONNECTOR
 ========================================= */
 
 @media (max-width: 820px) {
   .topbar {
     min-height: 88px;
-    padding-top: 7px;
-    padding-bottom: 7px;
+    padding: 7px 7px;
+    gap: 7px;
   }
 
   .topbar .announcement-bar--header-connector {
@@ -15301,12 +15266,6 @@ main > :first-child {
     bottom: 2px;
   }
 
-  .topbar .nav-links::before {
-    left: -7px;
-    right: -7px;
-    height: 22px;
-  }
-
   .topbar .nav-links::after {
     left: 17px;
     right: 17px;
@@ -15320,8 +15279,8 @@ main > :first-child {
 @media (max-width: 560px) {
   .topbar {
     min-height: 80px;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding: 6px 6px;
+    gap: 6px;
   }
 
   .topbar .announcement-bar--header-connector {
@@ -15370,12 +15329,6 @@ main > :first-child {
     bottom: 2px;
   }
 
-  .topbar .nav-links::before {
-    left: -6px;
-    right: -6px;
-    height: 20px;
-  }
-
   .topbar .nav-links::after {
     left: 15px;
     right: 15px;
@@ -15383,222 +15336,5 @@ main > :first-child {
 
   main {
     padding-top: 6px;
-  }
-}
-
-/* =========================================
-   HEADER SYSTEM — CENTER LOCK FIX
-   Fixes broken connector/header alignment
-========================================= */
-
-.topbar {
-  position: sticky;
-  top: 4px;
-  z-index: 200;
-
-  width: 100vw;
-  max-width: none;
-
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-
-  min-height: 98px;
-  padding:
-    8px
-    clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px);
-
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 18px;
-
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-
-  overflow: visible;
-}
-
-/* left module locked left */
-.topbar .brand {
-  grid-column: 1;
-  justify-self: start;
-  position: relative;
-  z-index: 8;
-}
-
-/* right module locked right */
-.topbar .topbar-right {
-  grid-column: 3;
-  justify-self: end;
-  position: relative;
-  z-index: 8;
-}
-
-/* central circle locked to true viewport center */
-.topbar .nav-links {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 12;
-
-  transform: translate(-50%, -50%);
-
-  justify-self: auto;
-  grid-column: auto;
-
-  overflow: visible;
-}
-
-/* announcement connector locked behind all modules */
-.topbar .announcement-bar--header-connector {
-  position: absolute;
-  top: 50%;
-  left: clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px);
-  right: clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px);
-
-  width: auto;
-  max-width: none;
-  margin: 0;
-
-  height: 24px;
-  min-height: 24px;
-
-  transform: translateY(-50%);
-  z-index: 1;
-
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-/* keep modules opaque above the connector */
-.topbar .brand,
-.topbar .topbar-right,
-.topbar .nav-links {
-  isolation: isolate;
-}
-
-/* true centering inside announcement */
-.topbar .announcement-bar--header-connector .announcement-bar-inner,
-.topbar .announcement-bar--header-connector .announcement-marquee {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-
-  padding: 0;
-  margin: 0;
-}
-
-.topbar .announcement-bar--header-connector .announcement-track {
-  height: 100%;
-  min-height: 0;
-
-  display: inline-flex;
-  align-items: center;
-
-  gap: 34px;
-  padding: 0 14px;
-  margin: 0;
-}
-
-.topbar .announcement-bar--header-connector .announcement-text,
-.topbar .announcement-bar--header-connector .announcement-action,
-.topbar .announcement-bar--header-connector .announcement-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  line-height: 1;
-  transform: translateY(-0.5px);
-}
-
-/* progress line should not affect vertical centering */
-.topbar .announcement-bar--header-connector .announcement-progress-shell {
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 2px;
-
-  padding: 0;
-}
-
-/* =========================================
-   HEADER SYSTEM — CENTER LOCK RESPONSIVE
-========================================= */
-
-@media (max-width: 820px) {
-  .topbar {
-    min-height: 88px;
-    padding: 7px 7px;
-    gap: 7px;
-  }
-
-  .topbar .nav-links {
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .topbar .announcement-bar--header-connector {
-    left: 7px;
-    right: 7px;
-
-    height: 22px;
-    min-height: 22px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-track {
-    gap: 24px;
-    padding: 0 10px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-text,
-  .topbar .announcement-bar--header-connector .announcement-action {
-    font-size: 9px;
-    letter-spacing: 0.075em;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-icon {
-    font-size: 9px;
-  }
-}
-
-@media (max-width: 560px) {
-  .topbar {
-    min-height: 80px;
-    padding: 6px 6px;
-    gap: 6px;
-  }
-
-  .topbar .nav-links {
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .topbar .announcement-bar--header-connector {
-    left: 6px;
-    right: 6px;
-
-    height: 20px;
-    min-height: 20px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-track {
-    gap: 20px;
-    padding: 0 9px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-text,
-  .topbar .announcement-bar--header-connector .announcement-action {
-    font-size: 8.2px;
-    letter-spacing: 0.065em;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-icon {
-    font-size: 8px;
   }
 }
