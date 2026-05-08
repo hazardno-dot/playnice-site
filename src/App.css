@@ -460,7 +460,7 @@ main {
 }
 
 /* =========================================
-   HEADER — PLAYNICE ENTERPRISE CLEAN
+   HEADER — PLAYNICE ENTERPRISE FINAL
 ========================================= */
 
 .topbar {
@@ -474,7 +474,7 @@ main {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
 
-  min-height: 74px;
+  min-height: 112px;
 
   /* current safe max */
   padding: 12px clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px);
@@ -530,9 +530,10 @@ main {
 ========================================= */
 
 .brand {
-  min-width: 174px;
-  min-height: 52px;
-  padding: 0 20px;
+  width: 180px;
+  min-width: 180px;
+  min-height: 58px;
+  padding: 0 18px;
 
   display: inline-flex;
   align-items: center;
@@ -574,16 +575,20 @@ main {
 }
 
 .brand-copy {
+  width: 100%;
+
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
+
+  text-align: center;
   line-height: 1;
 }
 
 .brand-copy strong {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 29px;
+  font-size: 30px;
   font-weight: 800;
   line-height: 0.92;
   letter-spacing: 0.018em;
@@ -611,18 +616,218 @@ main {
 }
 
 /* =========================================
-   HEADER — CENTER HOME / SHOP MODULE
+   HEADER — CENTER TRUE CIRCLE HOME / SHOP
 ========================================= */
 
 .nav-links {
+  position: relative;
   justify-self: center;
 
-  min-height: 52px;
-  padding: 6px;
+  width: 94px;
+  min-width: 94px;
+  height: 94px;
+  padding: 10px;
 
-  display: inline-grid;
-  grid-template-columns: repeat(2, minmax(78px, 1fr));
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 0;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  transition:
+    background 0.28s ease,
+    border-color 0.28s ease,
+    box-shadow 0.28s ease,
+    transform 0.28s ease;
+}
+
+/* Home state = dark circle */
+.nav-links.is-home {
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  background:
+    radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.035), transparent 52%),
+    linear-gradient(180deg, rgba(18, 18, 18, 0.94), rgba(7, 7, 7, 0.9));
+
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.28),
+    0 0 18px rgba(220, 181, 107, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+/* Shop state = lit gold circle */
+.nav-links.is-shop {
+  border: 1px solid rgba(245, 216, 156, 0.46);
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 248, 228, 0.56), transparent 42%),
+    linear-gradient(180deg, #eed08e 0%, #d9ae66 58%, #c8934a 100%);
+
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.28),
+    0 0 22px rgba(220, 181, 107, 0.18),
+    0 0 42px rgba(220, 181, 107, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.26);
+}
+
+/* Divider between Home and Shop */
+.nav-links::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  top: 50%;
+  z-index: 1;
+
+  height: 1px;
+  transform: translateY(-0.5px);
+
+  background: rgba(220, 181, 107, 0.24);
+  pointer-events: none;
+}
+
+.nav-links.is-shop::after {
+  background: rgba(17, 17, 17, 0.18);
+}
+
+.nav-links button {
+  position: relative;
+  z-index: 2;
+
+  flex: 1 1 50%;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 0 10px;
+  margin: 0;
+
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 20px;
+  background: transparent;
+  box-shadow: none;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    color 0.24s ease,
+    text-shadow 0.24s ease,
+    transform 0.24s ease,
+    opacity 0.24s ease;
+}
+
+.nav-links button:hover,
+.nav-links button.active {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  transform: none;
+}
+
+.nav-links button:focus,
+.nav-links button:focus-visible {
+  outline: none;
+}
+
+/* Home active */
+.nav-links.is-home .nav-link-home {
+  color: var(--gold);
+  text-shadow:
+    0 0 10px rgba(220, 181, 107, 0.24),
+    0 0 18px rgba(220, 181, 107, 0.12);
+}
+
+.nav-links.is-home .nav-link-shop {
+  color: rgba(255, 248, 235, 0.74);
+}
+
+/* Shop active */
+.nav-links.is-shop .nav-link-home,
+.nav-links.is-shop .nav-link-shop {
+  color: rgba(12, 12, 12, 0.88);
+}
+
+.nav-links.is-shop .nav-link-shop {
+  color: #0b0b0b;
+  font-weight: 800;
+
+  text-shadow:
+    0 0 8px rgba(255, 248, 235, 0.18),
+    0 0 14px rgba(255, 248, 235, 0.08);
+}
+
+.nav-links.is-shop .nav-link-home {
+  opacity: 0.88;
+}
+
+/* Remove old blue shop text override inside circle */
+.nav-links.is-home .nav-shop-link.has-new-shop .nav-shop-link-text,
+.nav-links.is-shop .nav-shop-link.has-new-shop .nav-shop-link-text {
+  color: inherit;
+  text-shadow: inherit;
+}
+
+/* NEW badge inside circular module */
+.shop-nav-new-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  left: auto;
+  z-index: 4;
+
+  min-width: 24px;
+  height: 14px;
+  padding: 0 6px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+  background: linear-gradient(180deg, #8ee8ff 0%, #46bde8 100%);
+  color: #071014;
+
+  font-size: 7px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.05em;
+
+  box-shadow:
+    0 0 0 1px rgba(255, 248, 235, 0.12),
+    0 4px 10px rgba(0, 0, 0, 0.28),
+    0 0 10px rgba(90, 205, 255, 0.18);
+
+  pointer-events: none;
+}
+
+/* =========================================
+   HEADER — RIGHT UTILITY MODULE
+========================================= */
+
+.topbar-right {
+  justify-self: end;
+
+  width: 180px;
+  min-width: 180px;
+  min-height: 58px;
+  padding: 6px 8px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 6px;
 
   border-radius: 999px;
@@ -637,130 +842,8 @@ main {
     inset 0 1px 0 rgba(255, 255, 255, 0.022);
 }
 
-.nav-links button {
-  position: relative;
-
-  min-width: 0;
-  min-height: 40px;
-  padding: 0 18px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background: transparent;
-
-  color: rgba(245, 245, 245, 0.72);
-
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.012em;
-  line-height: 1;
-  white-space: nowrap;
-
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-
-  transition:
-    color 0.24s ease,
-    border-color 0.24s ease,
-    background 0.24s ease,
-    transform 0.24s ease,
-    box-shadow 0.24s ease;
-}
-
-.nav-links button:hover {
-  color: rgba(255, 255, 255, 0.92);
-  border-color: rgba(220, 181, 107, 0.14);
-  background: rgba(255, 255, 255, 0.025);
-  transform: translateY(-1px);
-}
-
-.nav-links button.active {
-  color: var(--gold);
-  border-color: rgba(220, 181, 107, 0.36);
-  background:
-    linear-gradient(180deg, rgba(220, 181, 107, 0.12), rgba(220, 181, 107, 0.052));
-
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.24),
-    0 0 18px rgba(220, 181, 107, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.035);
-}
-
-.nav-links button:focus,
-.nav-links button:focus-visible {
-  outline: none;
-}
-
-/* shop blue NEW signal */
-.nav-shop-link.has-new-shop .nav-shop-link-text {
-  color: rgba(120, 217, 255, 0.96);
-  text-shadow:
-    0 0 10px rgba(120, 217, 255, 0.18),
-    0 0 18px rgba(120, 217, 255, 0.1);
-}
-
-.shop-nav-new-badge {
-  position: absolute;
-  top: -8px;
-  left: 10px;
-  z-index: 2;
-
-  min-width: 30px;
-  height: 16px;
-  padding: 0 7px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 999px;
-
-  background: linear-gradient(180deg, #8ee8ff 0%, #46bde8 100%);
-  color: #071014;
-
-  font-size: 8px;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: 0.06em;
-
-  box-shadow:
-    0 0 0 1px rgba(255, 248, 235, 0.12),
-    0 4px 10px rgba(0, 0, 0, 0.36),
-    0 0 12px rgba(90, 205, 255, 0.24);
-
-  pointer-events: none;
-}
-
-/* =========================================
-   HEADER — RIGHT UTILITY MODULE
-========================================= */
-
-.topbar-right {
-  justify-self: end;
-
-  min-height: 52px;
-  padding: 6px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-
-  border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.12);
-
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.01)),
-    rgba(9, 9, 9, 0.72);
-
-  box-shadow:
-    0 10px 26px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.022);
+.topbar-right > * {
+  flex: 0 0 auto;
 }
 
 .topbar .cart-button--icon-only,
@@ -920,6 +1003,10 @@ main {
 .language-compact {
   position: relative;
   flex: 0 0 auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .language-current {
@@ -6368,13 +6455,13 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
-   HEADER — ENTERPRISE RESPONSIVE
+   HEADER — ENTERPRISE FINAL RESPONSIVE
 ========================================= */
 
 @media (max-width: 820px) {
   :root {
     --topbar-top-offset: 8px;
-    --topbar-height: 68px;
+    --topbar-height: 96px;
     --announcement-height: 42px;
     --announcement-gap: 10px;
     --announcement-top-mobile: calc(
@@ -6390,8 +6477,6 @@ body.scrolled .announcement-bar {
     margin-right: calc(50% - 50vw);
 
     min-height: var(--topbar-height);
-
-    /* current safe max mobile/tablet */
     padding: 8px 7px;
 
     grid-template-columns: auto minmax(0, 1fr) auto;
@@ -6411,16 +6496,16 @@ body.scrolled .announcement-bar {
   }
 
   .brand {
-    min-width: 52px;
     width: 52px;
+    min-width: 52px;
     height: 52px;
     min-height: 52px;
     padding: 0;
-    border-radius: 999px;
   }
 
   .brand-copy {
     align-items: center;
+    text-align: center;
   }
 
   .brand-full,
@@ -6441,17 +6526,18 @@ body.scrolled .announcement-bar {
   }
 
   .nav-links {
-    width: 100%;
-    min-width: 0;
-    min-height: 52px;
-    padding: 5px;
-    gap: 4px;
+    width: 80px;
+    min-width: 80px;
+    height: 80px;
+    padding: 8px;
+  }
 
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .nav-links::after {
+    left: 18px;
+    right: 18px;
   }
 
   .nav-links button {
-    min-height: 40px;
     padding: 0 8px;
 
     font-size: 12px;
@@ -6460,8 +6546,10 @@ body.scrolled .announcement-bar {
   }
 
   .topbar-right {
+    width: auto;
+    min-width: 128px;
     min-height: 52px;
-    padding: 5px;
+    padding: 5px 6px;
     gap: 4px;
   }
 
@@ -6488,14 +6576,14 @@ body.scrolled .announcement-bar {
   }
 
   .shop-nav-new-badge {
-    display: none;
-  }
+    top: 6px;
+    right: 6px;
 
-  .nav-shop-link.has-new-shop .nav-shop-link-text {
-    color: #83dcff;
-    text-shadow:
-      0 0 10px rgba(131, 220, 255, 0.26),
-      0 0 18px rgba(131, 220, 255, 0.14);
+    min-width: 20px;
+    height: 12px;
+    padding: 0 5px;
+
+    font-size: 6px;
   }
 
   .announcement-bar {
@@ -6521,7 +6609,7 @@ body.scrolled .announcement-bar {
 
 @media (max-width: 560px) {
   :root {
-    --topbar-height: 64px;
+    --topbar-height: 86px;
   }
 
   .topbar {
@@ -6531,7 +6619,7 @@ body.scrolled .announcement-bar {
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
 
-    /* current safe max small mobile */
+    min-height: var(--topbar-height);
     padding: 7px 6px;
     gap: 6px;
 
@@ -6560,21 +6648,30 @@ body.scrolled .announcement-bar {
   }
 
   .nav-links {
-    min-height: 48px;
-    padding: 4px;
+    width: 72px;
+    min-width: 72px;
+    height: 72px;
+    padding: 7px;
+  }
+
+  .nav-links::after {
+    left: 16px;
+    right: 16px;
   }
 
   .nav-links button {
-    min-height: 38px;
     padding: 0 6px;
 
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 700;
+    letter-spacing: 0.004em;
   }
 
   .topbar-right {
+    width: auto;
+    min-width: 114px;
     min-height: 48px;
-    padding: 4px;
+    padding: 4px 5px;
     gap: 3px;
   }
 
@@ -6615,6 +6712,17 @@ body.scrolled .announcement-bar {
   .language-option {
     width: 31px;
     height: 31px;
+  }
+
+  .shop-nav-new-badge {
+    top: 5px;
+    right: 5px;
+
+    min-width: 18px;
+    height: 11px;
+    padding: 0 4px;
+
+    font-size: 5.5px;
   }
 
   .announcement-bar {

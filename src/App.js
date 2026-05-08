@@ -6203,36 +6203,41 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </span>
   </button>
 
-  <nav className="nav-links enterprise-main-nav" aria-label="Primary navigation">
-    <button
-      className={`nav-link ${view === "home" ? "active" : ""}`}
-      type="button"
-      onClick={() => switchView("home")}
-    >
-      {tr.navHome}
-    </button>
+  <nav
+  className={`nav-links enterprise-main-nav ${
+    view === "shop" ? "is-shop" : "is-home"
+  }`}
+  aria-label="Primary navigation"
+>
+  <button
+    className={`nav-link nav-link-home ${view === "home" ? "active" : ""}`}
+    type="button"
+    onClick={() => switchView("home")}
+  >
+    {tr.navHome}
+  </button>
 
-    <button
-      className={`nav-link nav-shop-link ${view === "shop" ? "active" : ""} ${
-        hasNewShopProducts ? "has-new-shop" : ""
-      }`}
-      type="button"
-      onClick={goToShop}
-      aria-label={
-        hasNewShopProducts
-          ? lang === "sr"
-            ? "Shop, novi parfemi"
-            : "Shop, new fragrances"
-          : "Shop"
-      }
-    >
-      <span className="nav-shop-link-text">{tr.navShop}</span>
+  <button
+    className={`nav-link nav-link-shop nav-shop-link ${
+      view === "shop" ? "active" : ""
+    } ${hasNewShopProducts ? "has-new-shop" : ""}`}
+    type="button"
+    onClick={goToShop}
+    aria-label={
+      hasNewShopProducts
+        ? lang === "sr"
+          ? "Shop, novi parfemi"
+          : "Shop, new fragrances"
+        : "Shop"
+    }
+  >
+    <span className="nav-shop-link-text">{tr.navShop}</span>
 
-      {hasNewShopProducts && (
-        <span className="shop-nav-new-badge">NEW</span>
-      )}
-    </button>
-  </nav>
+    {hasNewShopProducts && (
+      <span className="shop-nav-new-badge">NEW</span>
+    )}
+  </button>
+</nav>
 
   <div className="topbar-right enterprise-utility">
     <button
