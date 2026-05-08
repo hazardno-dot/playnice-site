@@ -15347,3 +15347,90 @@ body.scrolled .header-system .announcement-bar-system {
     right: 15px;
   }
 }
+
+/* =========================================
+   HEADER SYSTEM — COMPACT HERO GAP
+   Reduces space between header system and hero
+========================================= */
+
+.header-system {
+  height: 78px;
+  min-height: 78px;
+}
+
+.header-system .topbar {
+  height: 78px;
+  min-height: 78px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+/* announcement ostaje connector, samo malo kompaktnije */
+.header-system .announcement-bar-system {
+  height: 22px;
+  min-height: 22px;
+}
+
+/* hero neka krene kao normalan homepage blok */
+.header-system + main {
+  padding-top: 14px !important;
+  margin-top: 0 !important;
+}
+
+/* ako je hero prvi blok u main-u */
+.header-system + main .hero:first-child,
+.header-system + main > .hero:first-child {
+  margin-top: 0 !important;
+}
+
+/* fallback ako hero nije direktno prvi element */
+.hero {
+  margin-top: 0;
+}
+
+/* responsive */
+@media (max-width: 820px) {
+  .header-system {
+    height: 74px;
+    min-height: 74px;
+  }
+
+  .header-system .topbar {
+    height: 74px;
+    min-height: 74px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .header-system .announcement-bar-system {
+    height: 20px;
+    min-height: 20px;
+  }
+
+  .header-system + main {
+    padding-top: 12px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .header-system {
+    height: 70px;
+    min-height: 70px;
+  }
+
+  .header-system .topbar {
+    height: 70px;
+    min-height: 70px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .header-system .announcement-bar-system {
+    height: 19px;
+    min-height: 19px;
+  }
+
+  .header-system + main {
+    padding-top: 10px !important;
+  }
+}
