@@ -4014,6 +4014,8 @@ function App() {
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
 
+  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const newProductsSignature = useMemo(() => {
@@ -6185,20 +6187,23 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </aside>
 )}
 
-<header className="topbar">
+<header className="topbar topbar-enterprise">
+  <span className="topbar-connector" aria-hidden="true" />
+
   <button
-    className="brand"
+    className="brand enterprise-brand"
     type="button"
     onClick={() => switchView("home")}
     aria-label="PlayNice home"
   >
     <span className="brand-copy">
-      <strong>PlayNice</strong>
+      <strong className="brand-full">PlayNice</strong>
+      <strong className="brand-short" aria-hidden="true">PN</strong>
       <small>Remember. PlayNice.</small>
     </span>
   </button>
 
-  <nav className="nav-links" aria-label="Primary navigation">
+  <nav className="nav-links enterprise-main-nav" aria-label="Primary navigation">
     <button
       className={`nav-link ${view === "home" ? "active" : ""}`}
       type="button"
@@ -6227,30 +6232,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <span className="shop-nav-new-badge">NEW</span>
       )}
     </button>
-
-    <button
-      type="button"
-      className={`header-journal-btn ${
-        hasNewJournalArticle ? "has-unread" : ""
-      }`}
-      onClick={handleJournalOpen}
-      aria-label={
-        hasNewJournalArticle
-          ? lang === "sr"
-            ? "Journal, novi članak"
-            : "Journal, new article"
-          : "Journal"
-      }
-    >
-      <span className="header-journal-btn-text">Journal</span>
-
-      {hasNewJournalArticle && (
-        <span className="journal-unread-badge">NEW</span>
-      )}
-    </button>
   </nav>
 
-  <div className="topbar-right">
+  <div className="topbar-right enterprise-utility">
+    <button
+      className="cart-button cart-button--icon-only"
+      type="button"
+      onClick={() => setCartOpen((prev) => !prev)}
+      aria-label={lang === "sr" ? "Korpa" : "Cart"}
+      title={lang === "sr" ? "Korpa" : "Cart"}
+    >
+      <span className="cart-icon" aria-hidden="true">🛒</span>
+      {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+    </button>
+
     <button
       className={`header-private-selection-btn ${
         wishlist.length > 0 ? "has-items" : ""
@@ -6271,38 +6266,38 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       )}
     </button>
 
-    <button
-      className="cart-button cart-button--icon-only"
-      type="button"
-      onClick={() => setCartOpen((prev) => !prev)}
-      aria-label={lang === "sr" ? "Korpa" : "Cart"}
-      title={lang === "sr" ? "Korpa" : "Cart"}
-    >
-      <span className="cart-icon" aria-hidden="true">🛒</span>
-      {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-    </button>
-
     <div
-      className="lang-vertical lang-vertical--in-header"
-      aria-label="Language switch"
+      className={`language-compact ${languageMenuOpen ? "open" : ""}`}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          setLanguageMenuOpen(false);
+        }
+      }}
     >
       <button
-        className={lang === "sr" ? "active" : ""}
-        onClick={() => setLang("sr")}
+        className="language-current"
         type="button"
+        aria-haspopup="menu"
+        aria-expanded={languageMenuOpen}
+        aria-label={lang === "sr" ? "Promeni jezik" : "Change language"}
+        onClick={() => setLanguageMenuOpen((prev) => !prev)}
       >
-        SR
+        {lang.toUpperCase()}
       </button>
 
-      <div className="lang-divider" />
-
-      <button
-        className={lang === "en" ? "active" : ""}
-        onClick={() => setLang("en")}
-        type="button"
-      >
-        EN
-      </button>
+      <div className="language-options" role="menu">
+        <button
+          className="language-option"
+          type="button"
+          role="menuitem"
+          onClick={() => {
+            setLang(lang === "sr" ? "en" : "sr");
+            setLanguageMenuOpen(false);
+          }}
+        >
+          {lang === "sr" ? "EN" : "SR"}
+        </button>
+      </div>
     </div>
   </div>
 </header>
