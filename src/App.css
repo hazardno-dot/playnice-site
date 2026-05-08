@@ -13374,6 +13374,7 @@ body.scrolled .announcement-bar {
     line-height: 1.55;
     max-width: 34ch;
   }
+}
 
 /* =========================================
    HOW IT WORKS SECTION MOBILE OVERRIDE 560px
@@ -13392,6 +13393,7 @@ body.scrolled .announcement-bar {
     font-size: 0.9rem;
     line-height: 1.52;
   }
+}
 
 /* =========================================
    HOW IT WORKS DRAWER MOBILE OVERRIDE 560px
@@ -13430,7 +13432,6 @@ body.scrolled .announcement-bar {
     background: rgba(220, 181, 107, 0.35);
     border-radius: 999px;
   }
-}
 }
 
 /* =========================================
