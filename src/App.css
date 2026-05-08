@@ -14790,310 +14790,17 @@ body.scrolled .announcement-bar {
 }
 
 /* =========================================
-   ANNOUNCEMENT AS HEADER CONNECTOR
-   Must stay after old announcement + responsive CSS
+   HEADER SYSTEM — FINAL INTEGRATED CONNECTOR
+   Put this at the very end of App.css
 ========================================= */
 
+/* old decorative connector no longer needed */
 .topbar-connector {
   display: none;
 }
 
-.topbar {
-  overflow: visible;
-}
-
-.topbar .brand,
-.topbar .nav-links,
-.topbar .topbar-right {
-  position: relative;
-  z-index: 4;
-}
-
-/* announcement becomes the connector line */
-.topbar .announcement-bar--header-connector {
-  position: absolute;
-  top: 50%;
-  left: clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px);
-  right: clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px);
-
-  width: auto;
-  max-width: none;
-  margin: 0;
-
-  height: 28px;
-  min-height: 28px;
-
-  z-index: 1;
-  overflow: hidden;
-
-  transform: translateY(-50%);
-
-  border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.1);
-
-  background:
-    linear-gradient(180deg, rgba(18, 18, 18, 0.58), rgba(8, 8, 8, 0.5)),
-    rgba(8, 8, 8, 0.42);
-
-  backdrop-filter: blur(10px) saturate(118%);
-  -webkit-backdrop-filter: blur(10px) saturate(118%);
-
-  box-shadow:
-    0 5px 14px rgba(0, 0, 0, 0.16),
-    0 0 16px rgba(220, 181, 107, 0.035),
-    inset 0 1px 0 rgba(255, 255, 255, 0.018);
-
-  transition:
-    border-color 0.3s ease,
-    background 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.topbar .announcement-bar--header-connector:hover {
-  transform: translateY(-50%);
-  border-color: rgba(220, 181, 107, 0.18);
-
-  box-shadow:
-    0 6px 18px rgba(0, 0, 0, 0.18),
-    0 0 18px rgba(220, 181, 107, 0.055),
-    inset 0 1px 0 rgba(255, 255, 255, 0.025);
-}
-
-/* keep the glow layer controlled */
-.topbar .announcement-bar--header-connector .announcement-bar-inner {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-}
-
-.topbar .announcement-bar--header-connector .announcement-bar-inner::before {
-  opacity: 0;
-}
-
-/* marquee is now thinner */
-.topbar .announcement-bar--header-connector .announcement-marquee {
-  height: 24px;
-  overflow: hidden;
-}
-
-.topbar .announcement-bar--header-connector .announcement-track {
-  height: 24px;
-  padding: 0 14px;
-
-  display: flex;
-  align-items: center;
-  gap: 38px;
-
-  animation-duration: 24s;
-}
-
-/* thinner typography */
-.topbar .announcement-bar--header-connector .announcement-text,
-.topbar .announcement-bar--header-connector .announcement-action {
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.105em;
-  line-height: 1;
-}
-
-.topbar .announcement-bar--header-connector .announcement-icon {
-  font-size: 11px;
-  transform: translateY(0);
-}
-
-/* smaller logo inside connector */
-.topbar .announcement-bar--header-connector .announcement-logo-link {
-  height: 16px;
-  max-height: 16px;
-}
-
-.topbar .announcement-bar--header-connector .announcement-logo-img {
-  height: 14px;
-  max-height: 14px;
-  max-width: 126px;
-}
-
-/* progress becomes a thin energy line */
-.topbar .announcement-bar--header-connector .announcement-progress-shell {
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 3px;
-  z-index: 2;
-
-  padding: 0;
-}
-
-.topbar .announcement-bar--header-connector .announcement-progress-bar {
-  height: 2px;
-  background: rgba(255, 255, 255, 0.045);
-}
-
-.topbar .announcement-bar--header-connector .announcement-progress-fill {
-  box-shadow:
-    0 0 8px rgba(220, 181, 107, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
-}
-
-/* edge fade adjusted for tunnel effect */
-.topbar .announcement-bar--header-connector::before,
-.topbar .announcement-bar--header-connector::after {
-  top: 0;
-  width: 56px;
-  height: 100%;
-  z-index: 3;
-}
-
-.topbar .announcement-bar--header-connector::before {
-  left: 0;
-  background: linear-gradient(to right, rgba(5, 5, 5, 0.9), transparent);
-}
-
-.topbar .announcement-bar--header-connector::after {
-  right: 0;
-  background: linear-gradient(to left, rgba(5, 5, 5, 0.9), transparent);
-}
-
-/* success / warning still work, just quieter */
-.topbar .announcement-bar--header-connector.announcement-bar-warning {
-  border-color: rgba(220, 181, 107, 0.16);
-  background:
-    radial-gradient(circle at 20% 50%, rgba(220, 181, 107, 0.07), transparent 36%),
-    linear-gradient(180deg, rgba(18, 18, 18, 0.64), rgba(8, 8, 8, 0.52)),
-    rgba(8, 8, 8, 0.44);
-}
-
-.topbar .announcement-bar--header-connector.announcement-bar-success {
-  border-color: rgba(99, 193, 122, 0.18);
-  background:
-    radial-gradient(circle at 20% 50%, rgba(99, 193, 122, 0.09), transparent 36%),
-    linear-gradient(180deg, rgba(18, 18, 18, 0.64), rgba(8, 8, 8, 0.52)),
-    rgba(8, 8, 8, 0.44);
-}
-
-/* scrolled state, scoped */
-body.scrolled .topbar .announcement-bar--header-connector {
-  border-color: rgba(220, 181, 107, 0.14);
-
-  box-shadow:
-    0 6px 18px rgba(0, 0, 0, 0.18),
-    0 0 14px rgba(220, 181, 107, 0.045),
-    inset 0 1px 0 rgba(255, 255, 255, 0.022);
-}
-
 /* =========================================
-   ANNOUNCEMENT CONNECTOR RESPONSIVE
-========================================= */
-
-@media (max-width: 820px) {
-  .topbar .announcement-bar--header-connector {
-    left: 7px;
-    right: 7px;
-
-    height: 24px;
-    min-height: 24px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-marquee,
-  .topbar .announcement-bar--header-connector .announcement-track {
-    height: 21px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-track {
-    gap: 26px;
-    padding: 0 10px;
-    animation-duration: 20s;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-text,
-  .topbar .announcement-bar--header-connector .announcement-action {
-    font-size: 9.5px;
-    letter-spacing: 0.08em;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-icon {
-    font-size: 10px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-progress-shell {
-    left: 10px;
-    right: 10px;
-    bottom: 2px;
-  }
-
-  .topbar .announcement-bar--header-connector::before,
-  .topbar .announcement-bar--header-connector::after {
-    width: 34px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-logo-link {
-    height: 14px;
-    max-height: 14px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-logo-img {
-    height: 12px;
-    max-height: 12px;
-    max-width: 104px;
-  }
-}
-
-@media (max-width: 560px) {
-  .topbar .announcement-bar--header-connector {
-    left: 6px;
-    right: 6px;
-
-    height: 22px;
-    min-height: 22px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-marquee,
-  .topbar .announcement-bar--header-connector .announcement-track {
-    height: 19px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-track {
-    gap: 22px;
-    padding: 0 9px;
-    animation-duration: 18s;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-text,
-  .topbar .announcement-bar--header-connector .announcement-action {
-    font-size: 8.5px;
-    letter-spacing: 0.07em;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-icon {
-    font-size: 9px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-progress-shell {
-    left: 9px;
-    right: 9px;
-    bottom: 2px;
-  }
-
-  .topbar .announcement-bar--header-connector::before,
-  .topbar .announcement-bar--header-connector::after {
-    width: 24px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-logo-link {
-    height: 13px;
-    max-height: 13px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-logo-img {
-    height: 11px;
-    max-height: 11px;
-    max-width: 92px;
-  }
-}
-
-/* =========================================
-   HEADER CONNECTOR — EMERGENCY STABILIZER
-   Keeps announcement inside header without breaking 3 modules
+   HEADER SYSTEM — LAYOUT STABILITY
 ========================================= */
 
 .topbar {
@@ -15105,117 +14812,91 @@ body.scrolled .topbar .announcement-bar--header-connector {
   grid-template-columns: auto 1fr auto;
   align-items: center;
 
+  min-height: 98px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+
   overflow: visible;
 }
 
-/* Force header modules into correct columns */
 .topbar .brand {
   grid-column: 1;
   justify-self: start;
-  z-index: 5;
+  position: relative;
+  z-index: 8;
+  isolation: isolate;
 }
 
 .topbar .nav-links {
   grid-column: 2;
   justify-self: center;
-  z-index: 6;
+  position: relative;
+  z-index: 12;
+  isolation: isolate;
+  overflow: visible;
 }
 
 .topbar .topbar-right {
   grid-column: 3;
   justify-self: end;
-  z-index: 5;
-}
-
-/* Force announcement to become background connector, not layout item */
-.topbar .announcement-bar,
-.topbar .announcement-bar--header-connector {
-  position: absolute !important;
-
-  top: 50% !important;
-  left: clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px) !important;
-  right: clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px) !important;
-
-  width: auto !important;
-  max-width: none !important;
-  margin: 0 !important;
-
-  height: 26px !important;
-  min-height: 26px !important;
-
-  transform: translateY(-50%) !important;
-
-  z-index: 1 !important;
-
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-/* The center circle must visually cover the connector */
-.topbar .nav-links {
-  position: relative;
-  z-index: 10;
-}
-
-/* Utility and logo stay above connector too */
-.topbar .brand,
-.topbar .topbar-right {
   position: relative;
   z-index: 8;
+  isolation: isolate;
 }
 
 /* =========================================
-   HEADER CONNECTOR — OPAQUE MODULES + CENTER FIX
+   HEADER MODULES — OPAQUE OVER CONNECTOR
 ========================================= */
 
-/* 1) LEVA PILULA — neprozirnija */
 .topbar .brand {
   background:
     linear-gradient(180deg, rgba(14, 14, 14, 0.96), rgba(7, 7, 7, 0.94)),
-    #0a0a0a !important;
+    #0a0a0a;
 
   border: 1px solid rgba(220, 181, 107, 0.16);
+
   box-shadow:
     0 10px 26px rgba(0, 0, 0, 0.26),
     0 0 0 1px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
-/* 2) DESNA PILULA — neprozirnija */
 .topbar .topbar-right {
   background:
     linear-gradient(180deg, rgba(14, 14, 14, 0.96), rgba(7, 7, 7, 0.94)),
-    #0a0a0a !important;
+    #0a0a0a;
 
   border: 1px solid rgba(220, 181, 107, 0.12);
+
   box-shadow:
     0 10px 26px rgba(0, 0, 0, 0.26),
     0 0 0 1px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.018);
 }
 
-/* i mali krugovi unutra da budu puni */
 .topbar .cart-button--icon-only,
 .topbar .header-private-selection-btn,
 .topbar .language-current {
   background:
     linear-gradient(180deg, rgba(16, 16, 16, 0.98), rgba(9, 9, 9, 0.96)),
-    #0b0b0b !important;
+    #0b0b0b;
 
   border: 1px solid rgba(220, 181, 107, 0.18);
+
   box-shadow:
     0 8px 18px rgba(0, 0, 0, 0.24),
     inset 0 1px 0 rgba(255, 255, 255, 0.018);
 }
 
-/* 3) CENTRALNI KRUG — HOME stanje potpuno zatvoren */
+/* central circle — home state */
 .topbar .nav-links.is-home {
   background:
     radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.03), transparent 40%),
     linear-gradient(180deg, rgba(14, 14, 14, 0.98), rgba(7, 7, 7, 0.96)),
-    #0a0a0a !important;
+    #0a0a0a;
 
   border: 1px solid rgba(220, 181, 107, 0.18);
+
   box-shadow:
     0 12px 26px rgba(0, 0, 0, 0.3),
     0 0 0 1px rgba(0, 0, 0, 0.24),
@@ -15223,13 +14904,19 @@ body.scrolled .topbar .announcement-bar--header-connector {
     inset 0 1px 0 rgba(255, 255, 255, 0.018);
 }
 
-/* 4) CENTRALNI KRUG — SHOP stanje takođe potpuno zatvoren */
+/* central circle — shop state */
 .topbar .nav-links.is-shop {
   background:
     radial-gradient(circle at 50% 24%, rgba(255, 246, 220, 0.26), transparent 38%),
-    linear-gradient(180deg, var(--gold-lit, #e2bf7a) 0%, var(--gold) 56%, var(--gold-deep, #c9964d) 100%) !important;
+    linear-gradient(
+      180deg,
+      var(--gold-lit, #e2bf7a) 0%,
+      var(--gold) 56%,
+      var(--gold-deep, #c9964d) 100%
+    );
 
   border: 1px solid rgba(220, 181, 107, 0.42);
+
   box-shadow:
     0 14px 30px rgba(0, 0, 0, 0.28),
     0 0 20px rgba(220, 181, 107, 0.15),
@@ -15237,11 +14924,195 @@ body.scrolled .topbar .announcement-bar--header-connector {
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* 5) ANNOUNCEMENT CONNECTOR — unutrašnje centriranje */
+/* =========================================
+   CENTER CIRCLE — TUNNEL + DIVIDER
+========================================= */
+
+/* tunnel shoulder behind the circle, without stealing ::after from divider */
+.topbar .nav-links::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  top: 50%;
+  z-index: -1;
+
+  height: 26px;
+  transform: translateY(-50%);
+
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.topbar .nav-links.is-home::before {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 8, 8, 0) 0%,
+      rgba(9, 9, 9, 0.96) 18%,
+      rgba(9, 9, 9, 0.98) 50%,
+      rgba(9, 9, 9, 0.96) 82%,
+      rgba(8, 8, 8, 0) 100%
+    );
+
+  box-shadow:
+    0 0 0 1px rgba(220, 181, 107, 0.055),
+    0 0 10px rgba(220, 181, 107, 0.025);
+}
+
+.topbar .nav-links.is-shop::before {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(220, 181, 107, 0) 0%,
+      var(--gold-deep, #c9964d) 18%,
+      var(--gold) 50%,
+      var(--gold-deep, #c9964d) 82%,
+      rgba(220, 181, 107, 0) 100%
+    );
+
+  box-shadow:
+    0 0 0 1px rgba(220, 181, 107, 0.1),
+    0 0 12px rgba(220, 181, 107, 0.075);
+}
+
+/* keep Home / Shop divider intact */
+.topbar .nav-links::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 50%;
+  z-index: 3;
+
+  height: 1px;
+  transform: translateY(-0.5px);
+
+  background: rgba(220, 181, 107, 0.24);
+  pointer-events: none;
+}
+
+.topbar .nav-links.is-shop::after {
+  background: rgba(17, 17, 17, 0.18);
+}
+
+.topbar .nav-links .nav-link-home,
+.topbar .nav-links .nav-link-shop {
+  position: relative;
+  z-index: 4;
+}
+
+/* =========================================
+   ANNOUNCEMENT — HEADER CONNECTOR FINAL
+========================================= */
+
 .topbar .announcement-bar--header-connector {
+  position: absolute;
+
+  top: 50%;
+  left: clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px);
+  right: clamp(10px, calc((100vw - var(--max)) / 2 + 12px), 60px);
+
+  width: auto;
+  max-width: none;
+  height: 24px;
+  min-height: 24px;
+  margin: 0;
+
   display: flex;
   align-items: center;
+
+  transform: translateY(-50%);
+  z-index: 1;
+
+  overflow: hidden;
+  border-radius: 999px;
+
+  border: 1px solid rgba(220, 181, 107, 0.085);
+
+  background:
+    linear-gradient(180deg, rgba(14, 14, 14, 0.56), rgba(8, 8, 8, 0.46)),
+    rgba(8, 8, 8, 0.38);
+
+  backdrop-filter: blur(10px) saturate(118%);
+  -webkit-backdrop-filter: blur(10px) saturate(118%);
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.14),
+    0 0 14px rgba(220, 181, 107, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.014);
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
 }
+
+.topbar .announcement-bar--header-connector:hover {
+  transform: translateY(-50%);
+  border-color: rgba(220, 181, 107, 0.16);
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.18),
+    0 0 16px rgba(220, 181, 107, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+/* edge fade */
+.topbar .announcement-bar--header-connector::before,
+.topbar .announcement-bar--header-connector::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  z-index: 3;
+
+  width: 44px;
+  height: 100%;
+
+  pointer-events: none;
+}
+
+.topbar .announcement-bar--header-connector::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(7, 7, 7, 0.88), transparent);
+}
+
+.topbar .announcement-bar--header-connector::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(7, 7, 7, 0.88), transparent);
+}
+
+/* warning / success retain behavior, but quieter */
+.topbar .announcement-bar--header-connector.announcement-bar-warning {
+  border-color: rgba(220, 181, 107, 0.15);
+
+  background:
+    radial-gradient(circle at 20% 50%, rgba(220, 181, 107, 0.07), transparent 36%),
+    linear-gradient(180deg, rgba(18, 18, 18, 0.6), rgba(8, 8, 8, 0.5)),
+    rgba(8, 8, 8, 0.42);
+}
+
+.topbar .announcement-bar--header-connector.announcement-bar-success {
+  border-color: rgba(99, 193, 122, 0.18);
+
+  background:
+    radial-gradient(circle at 20% 50%, rgba(99, 193, 122, 0.09), transparent 36%),
+    linear-gradient(180deg, rgba(18, 18, 18, 0.6), rgba(8, 8, 8, 0.5)),
+    rgba(8, 8, 8, 0.42);
+}
+
+body.scrolled .topbar .announcement-bar--header-connector {
+  border-color: rgba(220, 181, 107, 0.14);
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.18),
+    0 0 14px rgba(220, 181, 107, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.022);
+}
+
+/* =========================================
+   ANNOUNCEMENT — TRUE VERTICAL CENTERING
+========================================= */
 
 .topbar .announcement-bar--header-connector .announcement-bar-inner {
   position: relative;
@@ -15250,170 +15121,104 @@ body.scrolled .topbar .announcement-bar--header-connector {
   width: 100%;
   height: 100%;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: center;
+  justify-items: stretch;
+
+  padding: 0;
+  margin: 0;
+}
+
+.topbar .announcement-bar--header-connector .announcement-bar-inner::before {
+  opacity: 0;
 }
 
 .topbar .announcement-bar--header-connector .announcement-marquee {
   width: 100%;
-  height: 20px;
+  height: 100%;
 
   display: flex;
   align-items: center;
+
   overflow: hidden;
-}
-
-.topbar .announcement-bar--header-connector .announcement-track {
-  min-height: 20px;
-  height: 20px;
-
-  display: inline-flex;
-  align-items: center;
-
-  gap: 38px;
-  padding: 0 14px;
+  padding: 0;
   margin: 0;
 }
 
-/* tekst i buttoni vertikalno tačno u centru */
+.topbar .announcement-bar--header-connector .announcement-track {
+  min-width: max-content;
+  height: 100%;
+  min-height: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 34px;
+  padding: 0 14px;
+  margin: 0;
+
+  white-space: nowrap;
+  animation-duration: 24s;
+}
+
+.topbar .announcement-bar--header-connector .announcement-track > * {
+  flex: 0 0 auto;
+  align-self: center;
+}
+
 .topbar .announcement-bar--header-connector .announcement-text,
 .topbar .announcement-bar--header-connector .announcement-action,
 .topbar .announcement-bar--header-connector .announcement-icon,
-.topbar .announcement-bar--header-connector .announcement-logo-link {
+.topbar .announcement-bar--header-connector .announcement-logo-link,
+.topbar .announcement-bar--header-connector .announcement-logo-img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  vertical-align: middle;
+  align-self: center;
+
   line-height: 1;
+  vertical-align: middle;
 }
 
 .topbar .announcement-bar--header-connector .announcement-text,
 .topbar .announcement-bar--header-connector .announcement-action {
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 800;
-  letter-spacing: 0.105em;
+  letter-spacing: 0.095em;
+  line-height: 1;
+
+  transform: translateY(-0.5px);
 }
 
-/* progress linija ostaje dole, ali ne remeti centriranje */
+.topbar .announcement-bar--header-connector .announcement-icon {
+  font-size: 10px;
+  line-height: 1;
+  transform: translateY(-0.5px);
+}
+
+.topbar .announcement-bar--header-connector .announcement-logo-link {
+  height: 14px;
+  max-height: 14px;
+}
+
+.topbar .announcement-bar--header-connector .announcement-logo-img {
+  width: auto;
+  height: 12px;
+  max-height: 12px;
+  max-width: 120px;
+}
+
+/* progress line */
 .topbar .announcement-bar--header-connector .announcement-progress-shell {
   position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 3px;
-  padding: 0;
-}
-
-/* =========================================
-   RESPONSIVE CENTER FIX
-========================================= */
-
-@media (max-width: 820px) {
-  .topbar .announcement-bar--header-connector .announcement-marquee {
-    height: 18px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-track {
-    min-height: 18px;
-    height: 18px;
-    gap: 26px;
-    padding: 0 10px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-text,
-  .topbar .announcement-bar--header-connector .announcement-action {
-    font-size: 9.5px;
-    letter-spacing: 0.08em;
-  }
-}
-
-@media (max-width: 560px) {
-  .topbar .announcement-bar--header-connector .announcement-marquee {
-    height: 17px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-track {
-    min-height: 17px;
-    height: 17px;
-    gap: 22px;
-    padding: 0 9px;
-  }
-
-  .topbar .announcement-bar--header-connector .announcement-text,
-  .topbar .announcement-bar--header-connector .announcement-action {
-    font-size: 8.5px;
-    letter-spacing: 0.07em;
-  }
-}
-
-/* =========================================
-   HEADER SYSTEM — MINI POLISH PATCH
-========================================= */
-
-/* -----------------------------------------
-   1) HEADER SYSTEM GENERAL BALANCE
------------------------------------------ */
-
-.topbar {
-  min-height: 98px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-/* malo nežniji raspored tri modula */
-.topbar .brand,
-.topbar .topbar-right {
-  z-index: 8;
-  isolation: isolate;
-}
-
-.topbar .nav-links {
-  z-index: 12;
-  isolation: isolate;
-}
-
-/* -----------------------------------------
-   2) CONNECTOR — ELEGANTNIJI IZGLED
------------------------------------------ */
-
-.topbar .announcement-bar--header-connector {
-  height: 24px !important;
-  min-height: 24px !important;
-
-  border: 1px solid rgba(220, 181, 107, 0.085);
-
-  background:
-    linear-gradient(180deg, rgba(14, 14, 14, 0.56), rgba(8, 8, 8, 0.46)),
-    rgba(8, 8, 8, 0.38);
-
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.14),
-    0 0 14px rgba(220, 181, 107, 0.03),
-    inset 0 1px 0 rgba(255, 255, 255, 0.014);
-}
-
-/* mekši fade na krajevima */
-.topbar .announcement-bar--header-connector::before,
-.topbar .announcement-bar--header-connector::after {
-  width: 44px;
-  height: 100%;
-  top: 0;
-  z-index: 3;
-}
-
-.topbar .announcement-bar--header-connector::before {
-  background: linear-gradient(to right, rgba(7, 7, 7, 0.88), transparent);
-}
-
-.topbar .announcement-bar--header-connector::after {
-  background: linear-gradient(to left, rgba(7, 7, 7, 0.88), transparent);
-}
-
-/* progress linija tanja i čistija */
-.topbar .announcement-bar--header-connector .announcement-progress-shell {
   left: 12px;
   right: 12px;
   bottom: 2px;
+  z-index: 2;
+
+  padding: 0;
 }
 
 .topbar .announcement-bar--header-connector .announcement-progress-bar {
@@ -15427,170 +15232,21 @@ body.scrolled .topbar .announcement-bar--header-connector {
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-/* -----------------------------------------
-   3) TUNNEL EFFECT AROUND CENTER CIRCLE
------------------------------------------ */
+/* =========================================
+   HEADER / HERO SPACING
+========================================= */
 
-/* centralni krug ostaje pun, ali dobija "tunel" ramena */
-.topbar .nav-links {
-  overflow: visible;
-}
-
-/* leva i desna "tunel" kapija */
-.topbar .nav-links::before,
-.topbar .nav-links::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 16px;
-  height: 26px;
-  transform: translateY(-50%);
-  z-index: -1;
-  pointer-events: none;
-}
-
-.topbar .nav-links::before {
-  left: -8px;
-  border-radius: 999px 0 0 999px;
-}
-
-.topbar .nav-links::after {
-  right: -8px;
-  border-radius: 0 999px 999px 0;
-}
-
-/* Home stanje */
-.topbar .nav-links.is-home::before,
-.topbar .nav-links.is-home::after {
-  background:
-    linear-gradient(180deg, rgba(13, 13, 13, 0.96), rgba(8, 8, 8, 0.94)),
-    #0a0a0a;
-  box-shadow:
-    0 0 0 1px rgba(220, 181, 107, 0.08),
-    0 0 10px rgba(220, 181, 107, 0.03);
-}
-
-/* Shop stanje */
-.topbar .nav-links.is-shop::before,
-.topbar .nav-links.is-shop::after {
-  background:
-    linear-gradient(180deg, var(--gold-lit, #e2bf7a), var(--gold), var(--gold-deep, #c9964d));
-  box-shadow:
-    0 0 0 1px rgba(220, 181, 107, 0.12),
-    0 0 12px rgba(220, 181, 107, 0.08);
-}
-
-/* dodatni mask effect da connector deluje kao da ulazi u tunel */
-.topbar .nav-links .nav-link-home,
-.topbar .nav-links .nav-link-shop {
-  position: relative;
-  z-index: 2;
-}
-
-/* -----------------------------------------
-   4) ANNOUNCEMENT TEXT — PRAVO CENTRIRANJE
------------------------------------------ */
-
-.topbar .announcement-bar--header-connector {
-  display: flex;
-  align-items: center;
-}
-
-.topbar .announcement-bar--header-connector .announcement-bar-inner {
-  width: 100%;
-  height: 100%;
-
-  display: grid;
-  grid-template-rows: 1fr auto;
-  align-items: center;
-  justify-items: stretch;
-
-  padding: 0;
-  margin: 0;
-}
-
-.topbar .announcement-bar--header-connector .announcement-marquee {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-
-  padding: 0;
-  margin: 0;
-}
-
-.topbar .announcement-bar--header-connector .announcement-track {
-  height: 100%;
-  min-height: 0;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  gap: 34px;
-  padding: 0 14px;
-  margin: 0;
-}
-
-/* svi unutrašnji elementi tačno po sredini */
-.topbar .announcement-bar--header-connector .announcement-text,
-.topbar .announcement-bar--header-connector .announcement-action,
-.topbar .announcement-bar--header-connector .announcement-icon,
-.topbar .announcement-bar--header-connector .announcement-logo-link,
-.topbar .announcement-bar--header-connector .announcement-logo-img {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-  line-height: 1;
-  vertical-align: middle;
-}
-
-.topbar .announcement-bar--header-connector .announcement-text,
-.topbar .announcement-bar--header-connector .announcement-action {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.095em;
-  line-height: 1;
-  transform: translateY(-0.5px);
-}
-
-.topbar .announcement-bar--header-connector .announcement-icon {
-  font-size: 10px;
-  line-height: 1;
-  transform: translateY(-0.5px);
-}
-
-.topbar .announcement-bar--header-connector .announcement-logo-link {
-  height: 14px;
-  max-height: 14px;
-}
-
-.topbar .announcement-bar--header-connector .announcement-logo-img {
-  height: 12px;
-  max-height: 12px;
-  width: auto;
-}
-
-/* -----------------------------------------
-   5) RAZMAK IZMEĐU HEADER-A I HERO SEKCIJE
------------------------------------------ */
-
-/* ovo zateže prostor ispod header sistema */
 main {
-  padding-top: 10px !important;
+  padding-top: 10px;
 }
 
-/* ako imaš poseban prvi homepage block, ovo mu dodatno smanjuje vrh */
 main > :first-child {
-  margin-top: 0 !important;
+  margin-top: 0;
 }
 
-/* -----------------------------------------
-   6) RESPONSIVE POLISH
------------------------------------------ */
+/* =========================================
+   RESPONSIVE — HEADER CONNECTOR FINAL
+========================================= */
 
 @media (max-width: 820px) {
   .topbar {
@@ -15600,8 +15256,11 @@ main > :first-child {
   }
 
   .topbar .announcement-bar--header-connector {
-    height: 22px !important;
-    min-height: 22px !important;
+    left: 7px;
+    right: 7px;
+
+    height: 22px;
+    min-height: 22px;
   }
 
   .topbar .announcement-bar--header-connector::before,
@@ -15612,6 +15271,7 @@ main > :first-child {
   .topbar .announcement-bar--header-connector .announcement-track {
     gap: 24px;
     padding: 0 10px;
+    animation-duration: 20s;
   }
 
   .topbar .announcement-bar--header-connector .announcement-text,
@@ -15624,22 +15284,36 @@ main > :first-child {
     font-size: 9px;
   }
 
-  .topbar .nav-links::before,
-  .topbar .nav-links::after {
-    width: 12px;
-    height: 22px;
+  .topbar .announcement-bar--header-connector .announcement-logo-link {
+    height: 13px;
+    max-height: 13px;
+  }
+
+  .topbar .announcement-bar--header-connector .announcement-logo-img {
+    height: 11px;
+    max-height: 11px;
+    max-width: 104px;
+  }
+
+  .topbar .announcement-bar--header-connector .announcement-progress-shell {
+    left: 10px;
+    right: 10px;
+    bottom: 2px;
   }
 
   .topbar .nav-links::before {
-    left: -6px;
+    left: -7px;
+    right: -7px;
+    height: 22px;
   }
 
   .topbar .nav-links::after {
-    right: -6px;
+    left: 17px;
+    right: 17px;
   }
 
   main {
-    padding-top: 8px !important;
+    padding-top: 8px;
   }
 }
 
@@ -15651,8 +15325,11 @@ main > :first-child {
   }
 
   .topbar .announcement-bar--header-connector {
-    height: 20px !important;
-    min-height: 20px !important;
+    left: 6px;
+    right: 6px;
+
+    height: 20px;
+    min-height: 20px;
   }
 
   .topbar .announcement-bar--header-connector::before,
@@ -15663,6 +15340,7 @@ main > :first-child {
   .topbar .announcement-bar--header-connector .announcement-track {
     gap: 20px;
     padding: 0 9px;
+    animation-duration: 18s;
   }
 
   .topbar .announcement-bar--header-connector .announcement-text,
@@ -15675,21 +15353,35 @@ main > :first-child {
     font-size: 8px;
   }
 
-  .topbar .nav-links::before,
-  .topbar .nav-links::after {
-    width: 10px;
-    height: 20px;
+  .topbar .announcement-bar--header-connector .announcement-logo-link {
+    height: 12px;
+    max-height: 12px;
+  }
+
+  .topbar .announcement-bar--header-connector .announcement-logo-img {
+    height: 10px;
+    max-height: 10px;
+    max-width: 92px;
+  }
+
+  .topbar .announcement-bar--header-connector .announcement-progress-shell {
+    left: 9px;
+    right: 9px;
+    bottom: 2px;
   }
 
   .topbar .nav-links::before {
-    left: -5px;
+    left: -6px;
+    right: -6px;
+    height: 20px;
   }
 
   .topbar .nav-links::after {
-    right: -5px;
+    left: 15px;
+    right: 15px;
   }
 
   main {
-    padding-top: 6px !important;
+    padding-top: 6px;
   }
 }
