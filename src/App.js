@@ -6187,203 +6187,205 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </aside>
 )}
 
-<header className="topbar topbar-enterprise">
-  <span className="topbar-connector" aria-hidden="true" />
-
-  <button
-    className="brand enterprise-brand"
-    type="button"
-    onClick={() => switchView("home")}
-    aria-label="PlayNice home"
-  >
-    <span className="brand-copy">
-      <strong className="brand-full">PlayNice</strong>
-      <strong className="brand-short" aria-hidden="true">PN</strong>
-      <small>Remember. PlayNice.</small>
-    </span>
-  </button>
-
-  <nav
-  className={`nav-links enterprise-main-nav ${
-    view === "shop" ? "is-shop" : "is-home"
-  }`}
-  aria-label="Primary navigation"
->
-  <button
-    className={`nav-link nav-link-home ${view === "home" ? "active" : ""}`}
-    type="button"
-    onClick={() => switchView("home")}
-  >
-    {tr.navHome}
-  </button>
-
-  <button
-    className={`nav-link nav-link-shop nav-shop-link ${
-      view === "shop" ? "active" : ""
-    } ${hasNewShopProducts ? "has-new-shop" : ""}`}
-    type="button"
-    onClick={goToShop}
-    aria-label={
-      hasNewShopProducts
-        ? lang === "sr"
-          ? "Shop, novi parfemi"
-          : "Shop, new fragrances"
-        : "Shop"
-    }
-  >
-    <span className="nav-shop-link-text">{tr.navShop}</span>
-
-    {hasNewShopProducts && (
-      <span className="shop-nav-new-badge">NEW</span>
-    )}
-  </button>
-</nav>
-
-  <div className="topbar-right enterprise-utility">
-    <button
-      className="cart-button cart-button--icon-only"
-      type="button"
-      onClick={() => setCartOpen((prev) => !prev)}
-      aria-label={lang === "sr" ? "Korpa" : "Cart"}
-      title={lang === "sr" ? "Korpa" : "Cart"}
-    >
-      <span className="cart-icon" aria-hidden="true">🛒</span>
-      {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-    </button>
+<div className="header-system">
+  <header className="topbar topbar-enterprise">
+    <span className="topbar-connector" aria-hidden="true" />
 
     <button
-      className={`header-private-selection-btn ${
-        wishlist.length > 0 ? "has-items" : ""
-      }`}
-      onClick={() => setPrivateSelectionOpen(true)}
+      className="brand enterprise-brand"
       type="button"
-      aria-label="Private Selection"
-      title="Private Selection"
+      onClick={() => switchView("home")}
+      aria-label="PlayNice home"
     >
-      <span className="ps-heart" aria-hidden="true">
-        {wishlist.length > 0 ? "♥" : "♡"}
+      <span className="brand-copy">
+        <strong className="brand-full">PlayNice</strong>
+        <strong className="brand-short" aria-hidden="true">
+          PN
+        </strong>
+        <small>Remember. PlayNice.</small>
       </span>
-
-      {wishlist.length > 0 && (
-        <span className="ps-count">
-          {wishlist.length}
-        </span>
-      )}
     </button>
 
-    <div
-      className={`language-compact ${languageMenuOpen ? "open" : ""}`}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) {
-          setLanguageMenuOpen(false);
-        }
-      }}
+    <nav
+      className={`nav-links enterprise-main-nav ${
+        view === "shop" ? "is-shop" : "is-home"
+      }`}
+      aria-label="Primary navigation"
     >
       <button
-        className="language-current"
+        className={`nav-link nav-link-home ${
+          view === "home" ? "active" : ""
+        }`}
         type="button"
-        aria-haspopup="menu"
-        aria-expanded={languageMenuOpen}
-        aria-label={lang === "sr" ? "Promeni jezik" : "Change language"}
-        onClick={() => setLanguageMenuOpen((prev) => !prev)}
+        onClick={() => switchView("home")}
       >
-        {lang.toUpperCase()}
+        {tr.navHome}
       </button>
 
-      <div className="language-options" role="menu">
-        <button
-          className="language-option"
-          type="button"
-          role="menuitem"
-          onClick={() => {
-            setLang(lang === "sr" ? "en" : "sr");
+      <button
+        className={`nav-link nav-link-shop nav-shop-link ${
+          view === "shop" ? "active" : ""
+        } ${hasNewShopProducts ? "has-new-shop" : ""}`}
+        type="button"
+        onClick={goToShop}
+        aria-label={
+          hasNewShopProducts
+            ? lang === "sr"
+              ? "Shop, novi parfemi"
+              : "Shop, new fragrances"
+            : "Shop"
+        }
+      >
+        <span className="nav-shop-link-text">{tr.navShop}</span>
+
+        {hasNewShopProducts && <span className="shop-nav-new-badge">NEW</span>}
+      </button>
+    </nav>
+
+    <div className="topbar-right enterprise-utility">
+      <button
+        className="cart-button cart-button--icon-only"
+        type="button"
+        onClick={() => setCartOpen((prev) => !prev)}
+        aria-label={lang === "sr" ? "Korpa" : "Cart"}
+        title={lang === "sr" ? "Korpa" : "Cart"}
+      >
+        <span className="cart-icon" aria-hidden="true">
+          🛒
+        </span>
+        {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+      </button>
+
+      <button
+        className={`header-private-selection-btn ${
+          wishlist.length > 0 ? "has-items" : ""
+        }`}
+        onClick={() => setPrivateSelectionOpen(true)}
+        type="button"
+        aria-label="Private Selection"
+        title="Private Selection"
+      >
+        <span className="ps-heart" aria-hidden="true">
+          {wishlist.length > 0 ? "♥" : "♡"}
+        </span>
+
+        {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
+      </button>
+
+      <div
+        className={`language-compact ${languageMenuOpen ? "open" : ""}`}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) {
             setLanguageMenuOpen(false);
-          }}
-        >
-          {lang === "sr" ? "EN" : "SR"}
-        </button>
-      </div>
-    </div>
-  </div>
-</header>
-
-<div
-  className={`announcement-bar ${
-    cart.length === 0
-      ? ""
-      : subtotal >= FREE_SHIPPING_THRESHOLD
-      ? "announcement-bar-success"
-      : "announcement-bar-warning"
-  }`}
->
-  <div className="announcement-bar-inner">
-    <div className="announcement-marquee">
-      <div className="announcement-track">
-        {[...announcementItems, ...announcementItems].map((item, index) => {
-  const itemClassName = `announcement-text ${
-    item.tone ? `announcement-${item.tone}` : ""
-  }`;
-
-  const iconClassName = `announcement-icon ${
-    item.tone ? `announcement-${item.tone}` : ""
-  }`;
-
-  const key = `${item.id || item.text}-${index}`;
-
-  return (
-    <React.Fragment key={key}>
-      {item.type === "logoLink" ? (
-        <a
-  className="announcement-logo-link announcement-logo-link-forever"
-  href={item.href}
-  target="_blank"
-  rel="sponsored noopener noreferrer"
-  aria-label={item.logoAlt || item.text}
-  onClick={() =>
-    handleSponsoredAdClick(item, "announcement_bar")
-  }
->
-          <img
-            src={item.logoSrc}
-            alt={item.logoAlt || item.text}
-            className="announcement-logo-img"
-            loading="lazy"
-          />
-        </a>
-      ) : item.action ? (
+          }
+        }}
+      >
         <button
+          className="language-current"
           type="button"
-          className={`${itemClassName} announcement-action`}
-          onClick={() => handleAnnouncementItemClick(item)}
-          aria-label={item.text}
+          aria-haspopup="menu"
+          aria-expanded={languageMenuOpen}
+          aria-label={lang === "sr" ? "Promeni jezik" : "Change language"}
+          onClick={() => setLanguageMenuOpen((prev) => !prev)}
         >
-          {item.text}
+          {lang.toUpperCase()}
         </button>
-      ) : (
-        <span className={itemClassName}>{item.text}</span>
-      )}
 
-      <span className={iconClassName}>{item.icon}</span>
-    </React.Fragment>
-  );
-})}
+        <div className="language-options" role="menu">
+          <button
+            className="language-option"
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              setLang(lang === "sr" ? "en" : "sr");
+              setLanguageMenuOpen(false);
+            }}
+          >
+            {lang === "sr" ? "EN" : "SR"}
+          </button>
+        </div>
       </div>
     </div>
+  </header>
 
-    <div className="announcement-progress-shell">
-      <div className="announcement-progress-bar">
-        <div
-          className="announcement-progress-fill"
-          style={{
-            width:
-              cart.length === 0
-                ? "100%"
-                : `${Math.min(
-                    100,
-                    (subtotal / FREE_SHIPPING_THRESHOLD) * 100
-                  )}%`
-          }}
-        />
+  <div
+    className={`announcement-bar announcement-bar-system ${
+      cart.length === 0
+        ? ""
+        : subtotal >= FREE_SHIPPING_THRESHOLD
+        ? "announcement-bar-success"
+        : "announcement-bar-warning"
+    }`}
+  >
+    <div className="announcement-bar-inner">
+      <div className="announcement-marquee">
+        <div className="announcement-track">
+          {[...announcementItems, ...announcementItems].map((item, index) => {
+            const itemClassName = `announcement-text ${
+              item.tone ? `announcement-${item.tone}` : ""
+            }`;
+
+            const iconClassName = `announcement-icon ${
+              item.tone ? `announcement-${item.tone}` : ""
+            }`;
+
+            const key = `${item.id || item.text}-${index}`;
+
+            return (
+              <React.Fragment key={key}>
+                {item.type === "logoLink" ? (
+                  <a
+                    className="announcement-logo-link announcement-logo-link-forever"
+                    href={item.href}
+                    target="_blank"
+                    rel="sponsored noopener noreferrer"
+                    aria-label={item.logoAlt || item.text}
+                    onClick={() =>
+                      handleSponsoredAdClick(item, "announcement_bar")
+                    }
+                  >
+                    <img
+                      src={item.logoSrc}
+                      alt={item.logoAlt || item.text}
+                      className="announcement-logo-img"
+                      loading="lazy"
+                    />
+                  </a>
+                ) : item.action ? (
+                  <button
+                    type="button"
+                    className={`${itemClassName} announcement-action`}
+                    onClick={() => handleAnnouncementItemClick(item)}
+                    aria-label={item.text}
+                  >
+                    {item.text}
+                  </button>
+                ) : (
+                  <span className={itemClassName}>{item.text}</span>
+                )}
+
+                <span className={iconClassName}>{item.icon}</span>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="announcement-progress-shell">
+        <div className="announcement-progress-bar">
+          <div
+            className="announcement-progress-fill"
+            style={{
+              width:
+                cart.length === 0
+                  ? "100%"
+                  : `${Math.min(
+                      100,
+                      (subtotal / FREE_SHIPPING_THRESHOLD) * 100
+                    )}%`
+            }}
+          />
+        </div>
       </div>
     </div>
   </div>
