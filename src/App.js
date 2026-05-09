@@ -5085,7 +5085,7 @@ const stickyCtaData = useMemo(() => {
   lang
 ]);
 
-const stickyCtaJournalHasNew = hasUnreadJournal;
+const stickyCtaJournalHasNew = journalUnreadCount > 0;
 
 const handleStickyCtaJournalClick = (event) => {
   event.stopPropagation();
