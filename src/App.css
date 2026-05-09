@@ -462,98 +462,6 @@ main {
 }
 
 /* =========================================
-   ANNOUNCEMENT BAR — FOREVER LOGO LINK
-========================================= */
-
-.announcement-logo-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 20px;
-  max-height: 20px;
-
-  color: inherit;
-  text-decoration: none;
-
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease,
-    filter 0.25s ease;
-}
-
-.announcement-logo-img {
-  display: block;
-
-  width: auto;
-  height: 18px;
-  max-width: 158px;
-  max-height: 18px;
-
-  object-fit: contain;
-
-  filter:
-    drop-shadow(0 0 6px rgba(255, 198, 0, 0.12))
-    drop-shadow(0 2px 6px rgba(0, 0, 0, 0.28));
-
-  opacity: 0.92;
-}
-
-.announcement-logo-link:hover {
-  transform: translateY(-1px);
-  opacity: 1;
-}
-
-.announcement-logo-link:hover .announcement-logo-img {
-  filter:
-    drop-shadow(0 0 10px rgba(255, 198, 0, 0.2))
-    drop-shadow(0 2px 8px rgba(0, 0, 0, 0.32));
-}
-
-.announcement-icon.announcement-forever {
-  color: rgba(255, 198, 0, 0.84);
-  filter: drop-shadow(0 0 6px rgba(255, 198, 0, 0.2));
-}
-
-/* =========================================
-   SHOP NEW STATE — SKY BLUE REFINED
-========================================= */
-
-/* Announcement bar — new shop products */
-.announcement-text.announcement-new-shop,
-.announcement-icon.announcement-new-shop,
-.announcement-action.announcement-new-shop {
-  color: #8fdcff;
-  text-shadow:
-    0 0 7px rgba(143, 220, 255, 0.18),
-    0 0 14px rgba(79, 183, 255, 0.08);
-}
-
-.announcement-action.announcement-new-shop {
-  font-weight: 800;
-  letter-spacing: 0.052em;
-}
-
-.announcement-action.announcement-new-shop:hover {
-  color: #aee8ff;
-  text-shadow:
-    0 0 8px rgba(143, 220, 255, 0.22),
-    0 0 16px rgba(79, 183, 255, 0.1);
-  transform: translateY(-1px);
-}
-
-.announcement-icon.announcement-new-shop {
-  color: #8fdcff;
-  font-weight: 900;
-  text-shadow:
-    0 0 7px rgba(143, 220, 255, 0.2),
-    0 0 13px rgba(79, 183, 255, 0.08);
-}
-
-/* =========================================
    BUTTONS / UI
 ========================================= */
 .cart-button {
@@ -14200,6 +14108,97 @@ body.scrolled .header-system .announcement-bar-system {
   box-shadow:
     0 0 7px rgba(220, 181, 107, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* =========================================
+   ANNOUNCEMENT BAR — FOREVER LOGO LINK
+========================================= */
+
+.header-system .announcement-logo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 14px;
+  max-height: 14px;
+
+  color: inherit;
+  text-decoration: none;
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.header-system .announcement-logo-img {
+  display: block;
+
+  width: auto;
+  height: 12px;
+  max-width: 120px;
+  max-height: 12px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 0 6px rgba(255, 198, 0, 0.12))
+    drop-shadow(0 2px 6px rgba(0, 0, 0, 0.28));
+
+  opacity: 0.92;
+}
+
+.header-system .announcement-logo-link:hover {
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
+.header-system .announcement-logo-link:hover .announcement-logo-img {
+  filter:
+    drop-shadow(0 0 10px rgba(255, 198, 0, 0.2))
+    drop-shadow(0 2px 8px rgba(0, 0, 0, 0.32));
+}
+
+.header-system .announcement-icon.announcement-forever {
+  color: rgba(255, 198, 0, 0.84);
+  filter: drop-shadow(0 0 6px rgba(255, 198, 0, 0.2));
+}
+
+/* =========================================
+   SHOP NEW STATE — SKY BLUE REFINED
+========================================= */
+
+.header-system .announcement-text.announcement-new-shop,
+.header-system .announcement-icon.announcement-new-shop,
+.header-system .announcement-action.announcement-new-shop {
+  color: #8fdcff;
+  text-shadow:
+    0 0 7px rgba(143, 220, 255, 0.18),
+    0 0 14px rgba(79, 183, 255, 0.08);
+}
+
+.header-system .announcement-action.announcement-new-shop {
+  font-weight: 800;
+  letter-spacing: 0.052em;
+}
+
+.header-system .announcement-action.announcement-new-shop:hover {
+  color: #aee8ff;
+  text-shadow:
+    0 0 8px rgba(143, 220, 255, 0.22),
+    0 0 16px rgba(79, 183, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.header-system .announcement-icon.announcement-new-shop {
+  color: #8fdcff;
+  font-weight: 900;
+  text-shadow:
+    0 0 7px rgba(143, 220, 255, 0.2),
+    0 0 13px rgba(79, 183, 255, 0.08);
 }
 
 @keyframes scrollAnnouncements {
