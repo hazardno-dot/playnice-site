@@ -14205,6 +14205,7 @@ body.scrolled .header-system .announcement-bar-system {
     letter-spacing: 0.18em;
   }
 
+  /* CENTER NAV — two separate round buttons */
   .header-system .nav-links {
     grid-column: 2;
     justify-self: center;
@@ -14215,34 +14216,104 @@ body.scrolled .header-system .announcement-bar-system {
     top: auto;
     transform: none;
 
-    width: 62px;
-    min-width: 62px;
-    height: 62px;
-    padding: 5px;
+    width: auto;
+    min-width: 0;
+    height: 46px;
+    padding: 0;
+
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .header-system .nav-links.is-home,
+  .header-system .nav-links.is-shop {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
   .header-system .nav-links::after {
-    left: 14px;
-    right: 14px;
+    display: none;
   }
 
   .header-system .nav-links button {
-    min-height: 0;
+    position: relative;
+
+    flex: 0 0 46px;
+    width: 46px;
+    min-width: 46px;
+    height: 46px;
+    min-height: 46px;
     padding: 0;
     margin: 0;
 
-    font-size: 10px;
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 999px;
+    border: 1px solid rgba(220, 181, 107, 0.16);
+
+    background:
+      linear-gradient(180deg, rgba(16, 16, 16, 0.98), rgba(9, 9, 9, 0.96)),
+      #0b0b0b;
+
+    color: rgba(255, 248, 235, 0.78);
+
+    font-size: 9.5px;
+    font-weight: 800;
     line-height: 1;
-    letter-spacing: 0.004em;
+    letter-spacing: 0.01em;
+
+    box-shadow:
+      0 8px 18px rgba(0, 0, 0, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.018);
   }
 
-  .header-system .nav-link-home {
-    padding-bottom: 1px;
+  .header-system .nav-links button:hover,
+  .header-system .nav-links button.active {
+    transform: none;
   }
 
-  .header-system .nav-link-shop {
-    padding-top: 1px;
+  .header-system .nav-links.is-home .nav-link-home,
+  .header-system .nav-links.is-shop .nav-link-shop {
+    border-color: rgba(220, 181, 107, 0.42);
+
+    background:
+      radial-gradient(circle at 50% 24%, rgba(255, 246, 220, 0.26), transparent 42%),
+      linear-gradient(
+        180deg,
+        var(--gold-lit, #e2bf7a) 0%,
+        var(--gold, #dcb56b) 56%,
+        var(--gold-deep, #c9964d) 100%
+      );
+
+    color: #0b0b0b;
+    font-weight: 900;
+
+    box-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.28),
+      0 0 18px rgba(220, 181, 107, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .header-system .nav-links.is-home .nav-link-shop,
+  .header-system .nav-links.is-shop .nav-link-home {
+    color: #b72a38;
+  }
+
+  .header-system .nav-links.is-home .nav-link-shop .nav-shop-link-text,
+  .header-system .nav-links.is-shop .nav-link-shop .nav-shop-link-text {
+    color: inherit;
   }
 
   .header-system .topbar-right {
@@ -14292,8 +14363,8 @@ body.scrolled .header-system .announcement-bar-system {
   }
 
   .header-system .shop-nav-new-badge {
-    top: 5px;
-    right: 5px;
+    top: -4px;
+    right: -4px;
 
     min-width: 20px;
     height: 12px;
@@ -14428,34 +14499,55 @@ body.scrolled .header-system .announcement-bar-system {
     top: auto;
     transform: none;
 
-    width: 56px;
-    min-width: 56px;
-    height: 56px;
-    padding: 4px;
+    width: auto;
+    min-width: 0;
+    height: 42px;
+    padding: 0;
+
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .header-system .nav-links.is-home,
+  .header-system .nav-links.is-shop {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
   .header-system .nav-links::after {
-    left: 13px;
-    right: 13px;
+    display: none;
   }
 
   .header-system .nav-links button {
-    min-height: 0;
+    flex: 0 0 42px;
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    min-height: 42px;
     padding: 0;
     margin: 0;
 
-    font-size: 9px;
-    font-weight: 700;
+    border-radius: 999px;
+
+    font-size: 8.8px;
+    font-weight: 800;
     line-height: 1;
     letter-spacing: 0.005em;
   }
 
-  .header-system .nav-link-home {
-    padding-bottom: 1px;
-  }
-
+  .header-system .nav-link-home,
   .header-system .nav-link-shop {
-    padding-top: 1px;
+    padding: 0;
   }
 
   .header-system .topbar-right {
@@ -14505,8 +14597,8 @@ body.scrolled .header-system .announcement-bar-system {
   }
 
   .header-system .shop-nav-new-badge {
-    top: 4px;
-    right: 4px;
+    top: -4px;
+    right: -4px;
 
     min-width: 18px;
     height: 11px;
@@ -14578,14 +14670,24 @@ body.scrolled .header-system .announcement-bar-system {
   }
 
   .header-system .nav-links {
-    width: 54px;
-    min-width: 54px;
-    height: 54px;
-    padding: 4px;
+    width: auto;
+    min-width: 0;
+    height: 40px;
+    padding: 0;
+    gap: 4px;
+
+    display: inline-flex;
+    flex-direction: row;
   }
 
   .header-system .nav-links button {
-    font-size: 8.5px;
+    flex: 0 0 40px;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+
+    font-size: 8.2px;
   }
 
   .header-system .topbar-right {
