@@ -7040,7 +7040,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <section className="shop-section section-wrap">
   <div className="shop-top shop-collection-intro">
     <div className="shop-collection-copy">
-      <p className="section-kicker shop-collection-kicker">{tr.shopKicker}</p>
 
       <h2 className="shop-collection-title">{tr.shopTitle}</h2>
 
