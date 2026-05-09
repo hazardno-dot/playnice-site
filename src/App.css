@@ -4047,6 +4047,70 @@ main {
 }
 
 /* =========================================
+   MODAL OVERLAY
+========================================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  display: block;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px;
+  overflow-y: auto;
+
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 0.26s ease,
+    visibility 0s linear 0.26s,
+    backdrop-filter 0.26s ease,
+    -webkit-backdrop-filter 0.26s ease;
+
+  will-change: opacity, backdrop-filter;
+}
+
+.modal-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.02), transparent 36%);
+
+  opacity: 0;
+  transition: opacity 0.26s ease;
+}
+
+.modal-overlay .product-modal.open {
+  pointer-events: auto;
+}
+
+.modal-overlay.show,
+.modal-overlay:has(.product-modal.open) {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.modal-overlay.show::before,
+.modal-overlay:has(.product-modal.open)::before {
+  opacity: 1;
+}
+
+/* =========================================
    PRODUCT MODAL — RESPONSIVE
 ========================================= */
 
@@ -4089,6 +4153,53 @@ main {
 }
 
 @media (max-width: 640px) {
+  /* =========================================
+     MOBILE OVERLAY/BACKDROP CLEANUP
+     Integrated here because overlay/backdrop CSS is above
+  ========================================= */
+
+  .modal-overlay,
+  .modal-overlay.show,
+  .modal-overlay:has(.product-modal.open) {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+    transition: none !important;
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  .modal-overlay::before {
+    display: none !important;
+    opacity: 0 !important;
+
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .backdrop,
+  .backdrop.show {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+    transition: none !important;
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  .backdrop::before,
+  .backdrop::after {
+    display: none !important;
+    opacity: 0 !important;
+
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* =========================================
+     PRODUCT MODAL — MOBILE LAYOUT + NO MOTION
+  ========================================= */
+
   .product-modal {
     width: calc(100vw - 16px);
     max-height: calc(100vh - 16px);
@@ -4101,21 +4212,22 @@ main {
     scrollbar-width: none;
     -ms-overflow-style: none;
 
-    /* Mobile: no modal movement */
     transform: translate(-50%, -50%) !important;
+
     transition: none !important;
     animation: none !important;
     will-change: auto !important;
 
-    /* Mobile: lighter render */
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
   .product-modal.open {
     transform: translate(-50%, -50%) !important;
+
     transition: none !important;
     animation: none !important;
+    will-change: auto !important;
   }
 
   .product-modal::-webkit-scrollbar {
@@ -4165,6 +4277,7 @@ main {
 
   .modal-image {
     max-height: 215px;
+
     transition: none !important;
     transform: none !important;
   }
@@ -4197,6 +4310,7 @@ main {
     font-size: 1.04rem;
   }
 
+  /* ML dugmad — 3 u jednom redu */
   .modal-sizes,
   .modal-size-grid {
     display: grid;
@@ -4272,7 +4386,7 @@ main {
 
   .modal-add-button::before {
     animation: none !important;
-    opacity: 0;
+    opacity: 0 !important;
   }
 
   .modal-buy-now {
@@ -4317,7 +4431,10 @@ main {
     font-size: 0.48rem;
   }
 
-  /* Mobile: remove inner reveal animation / blur */
+  /* =========================================
+     PRODUCT MODAL — MOBILE INNER REVEAL OFF
+  ========================================= */
+
   .product-modal .panel-anim,
   .product-modal .panel-item-anim,
   .product-modal .close-button,
@@ -5397,70 +5514,6 @@ main {
   color: rgba(255, 248, 235, 0.88);
   font-size: 0.88rem;
   font-weight: 600;
-}
-
-/* =========================================
-   MODAL OVERLAY
-========================================= */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-
-  display: block;
-  align-items: center;
-  justify-content: center;
-
-  padding: 8px;
-  overflow-y: auto;
-
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
-
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-
-  transition:
-    opacity 0.26s ease,
-    visibility 0s linear 0.26s,
-    backdrop-filter 0.26s ease,
-    -webkit-backdrop-filter 0.26s ease;
-
-  will-change: opacity, backdrop-filter;
-}
-
-.modal-overlay::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-
-  background:
-    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.02), transparent 36%);
-
-  opacity: 0;
-  transition: opacity 0.26s ease;
-}
-
-.modal-overlay .product-modal.open {
-  pointer-events: auto;
-}
-
-.modal-overlay.show,
-.modal-overlay:has(.product-modal.open) {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-.modal-overlay.show::before,
-.modal-overlay:has(.product-modal.open)::before {
-  opacity: 1;
 }
 
 /* =========================================
