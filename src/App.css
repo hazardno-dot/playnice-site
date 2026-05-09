@@ -4100,10 +4100,51 @@ main {
 
     scrollbar-width: none;
     -ms-overflow-style: none;
+
+    /* MOBILE: no open/close motion */
+    transform: translate(-50%, -50%) !important;
+    transition: none !important;
+    will-change: auto !important;
+
+    /* lighter mobile rendering */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .product-modal.open {
+    transform: translate(-50%, -50%) !important;
+    transition: none !important;
   }
 
   .product-modal::-webkit-scrollbar {
     display: none;
+  }
+
+  /* MOBILE: remove inner reveal animation / blur */
+  .product-modal .panel-anim,
+  .product-modal .panel-item-anim,
+  .product-modal .close-button {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+
+    transition: none !important;
+    transition-delay: 0s !important;
+    animation: none !important;
+
+    will-change: auto !important;
+  }
+
+  .product-modal.open .panel-anim,
+  .product-modal.open .panel-item-anim,
+  .product-modal.open .close-button {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+
+    transition: none !important;
+    transition-delay: 0s !important;
+    animation: none !important;
   }
 
   .product-modal .close-button {
@@ -4142,8 +4183,19 @@ main {
     padding: 6px 0;
   }
 
+  .modal-image-wrap::after {
+    filter: blur(18px);
+    opacity: 0.5;
+  }
+
   .modal-image {
     max-height: 215px;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .modal-image:hover {
+    transform: none !important;
   }
 
   .modal-media-meta {
@@ -4156,6 +4208,14 @@ main {
     min-height: auto;
     max-height: none;
     -webkit-line-clamp: unset;
+  }
+
+  .modal-info-card {
+    transition: none !important;
+  }
+
+  .modal-info-card:hover {
+    transform: none !important;
   }
 
   .modal-info-card strong {
@@ -4181,6 +4241,14 @@ main {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .modal-sizes > button:hover,
+  .modal-size-grid > button:hover {
+    transform: none !important;
   }
 
   .modal-sizes > button span,
@@ -4214,6 +4282,37 @@ main {
     line-height: 1;
   }
 
+  .modal-price-box strong {
+    animation: none !important;
+  }
+
+  .modal-add-button {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .modal-add-button:hover,
+  .modal-add-button:active {
+    transform: none !important;
+  }
+
+  .modal-add-button::before {
+    animation: none !important;
+    opacity: 0;
+  }
+
+  .modal-buy-now {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  .modal-size-block:hover .modal-size-helper {
+    animation: none !important;
+    -webkit-text-fill-color: currentColor;
+    background: none;
+  }
+
   .modal-header-meta {
     flex-direction: column;
     align-items: flex-start;
@@ -4242,79 +4341,6 @@ main {
 
   .modal-inspired-mini-short {
     font-size: 0.48rem;
-  }
-}
-
-/* =========================================
-   PRODUCT MODAL — MOBILE PERFORMANCE MODE
-   Removes heavy open/close animations on mobile only
-========================================= */
-
-@media (max-width: 640px) {
-  .product-modal {
-    transform: translate(-50%, -50%);
-
-    transition:
-      opacity 0.12s ease,
-      visibility 0s linear 0.12s;
-
-    will-change: auto;
-  }
-
-  .product-modal.open {
-    transform: translate(-50%, -50%);
-
-    transition:
-      opacity 0.12s ease,
-      visibility 0s linear 0s;
-  }
-
-  .product-modal .panel-anim,
-  .product-modal .panel-item-anim,
-  .product-modal .close-button {
-    opacity: 1;
-    transform: none;
-    filter: none;
-
-    transition: none;
-    transition-delay: 0s;
-
-    will-change: auto;
-  }
-
-  .product-modal.open .panel-anim,
-  .product-modal.open .panel-item-anim,
-  .product-modal.open .close-button {
-    opacity: 1;
-    transform: none;
-    filter: none;
-
-    transition: none;
-    transition-delay: 0s;
-  }
-
-  .product-modal.open .panel-anim-1,
-  .product-modal.open .panel-anim-2,
-  .product-modal.open .panel-anim-3,
-  .product-modal.open .panel-item-1,
-  .product-modal.open .panel-item-2,
-  .product-modal.open .panel-item-3,
-  .product-modal.open .panel-item-4,
-  .product-modal.open .panel-item-5,
-  .product-modal.open .panel-item-6,
-  .product-modal.open .close-button {
-    transition-delay: 0s;
-  }
-
-  .modal-image,
-  .modal-image:hover,
-  .modal-info-card,
-  .modal-info-card:hover,
-  .modal-size,
-  .modal-size:hover,
-  .modal-add-button,
-  .modal-add-button:hover {
-    transform: none;
   }
 }
 
