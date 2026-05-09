@@ -4254,6 +4254,79 @@ main {
 }
 
 /* =========================================
+   PRODUCT MODAL — MOBILE PERFORMANCE MODE
+   Removes heavy open/close animations on mobile only
+========================================= */
+
+@media (max-width: 640px) {
+  .product-modal {
+    transform: translate(-50%, -50%);
+
+    transition:
+      opacity 0.12s ease,
+      visibility 0s linear 0.12s;
+
+    will-change: auto;
+  }
+
+  .product-modal.open {
+    transform: translate(-50%, -50%);
+
+    transition:
+      opacity 0.12s ease,
+      visibility 0s linear 0s;
+  }
+
+  .product-modal .panel-anim,
+  .product-modal .panel-item-anim,
+  .product-modal .close-button {
+    opacity: 1;
+    transform: none;
+    filter: none;
+
+    transition: none;
+    transition-delay: 0s;
+
+    will-change: auto;
+  }
+
+  .product-modal.open .panel-anim,
+  .product-modal.open .panel-item-anim,
+  .product-modal.open .close-button {
+    opacity: 1;
+    transform: none;
+    filter: none;
+
+    transition: none;
+    transition-delay: 0s;
+  }
+
+  .product-modal.open .panel-anim-1,
+  .product-modal.open .panel-anim-2,
+  .product-modal.open .panel-anim-3,
+  .product-modal.open .panel-item-1,
+  .product-modal.open .panel-item-2,
+  .product-modal.open .panel-item-3,
+  .product-modal.open .panel-item-4,
+  .product-modal.open .panel-item-5,
+  .product-modal.open .panel-item-6,
+  .product-modal.open .close-button {
+    transition-delay: 0s;
+  }
+
+  .modal-image,
+  .modal-image:hover,
+  .modal-info-card,
+  .modal-info-card:hover,
+  .modal-size,
+  .modal-size:hover,
+  .modal-add-button,
+  .modal-add-button:hover {
+    transform: none;
+  }
+}
+
+/* =========================================
    CHECKOUT MODAL
 ========================================= */
 
