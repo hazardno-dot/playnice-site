@@ -5085,6 +5085,13 @@ const stickyCtaData = useMemo(() => {
   lang
 ]);
 
+const stickyCtaJournalHasNew = hasUnreadJournal;
+
+const handleStickyCtaJournalClick = (event) => {
+  event.stopPropagation();
+  setJournalOpen(true);
+};
+
   /* =========================================
      ACTIONS
   ========================================= */
@@ -8831,22 +8838,35 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     className={`sticky-cta-shell ${view === "shop" ? "is-compact" : ""}`}
     aria-live="polite"
   >
-          <button
-            type="button"
-            className="sticky-cta-button"
-            onClick={stickyCtaData.onClick}
-          >
-            <span className="sticky-cta-copy">
-              <strong>{stickyCtaData.label}</strong>
-              <small>{stickyCtaData.sublabel}</small>
-            </span>
+    <div className="sticky-cta-button">
+      <button
+        type="button"
+        className="sticky-cta-main"
+        onClick={stickyCtaData.onClick}
+      >
+        <span className="sticky-cta-copy">
+          <strong>{stickyCtaData.label}</strong>
+          <small>{stickyCtaData.sublabel}</small>
+        </span>
 
-            <span className="sticky-cta-arrow" aria-hidden="true">
-              →
-            </span>
-          </button>
-        </div>
-      )}
+        <span className="sticky-cta-arrow" aria-hidden="true">
+          →
+        </span>
+      </button>
+
+      <button
+        type="button"
+        className={`sticky-cta-journal-link ${
+          stickyCtaJournalHasNew ? "has-new" : ""
+        }`}
+        onClick={handleStickyCtaJournalClick}
+        aria-label={lang === "sr" ? "Otvori Journal" : "Open Journal"}
+      >
+        Read me
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 }
