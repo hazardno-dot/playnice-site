@@ -15304,15 +15304,17 @@ body.scrolled .header-system .announcement-bar-system {
   }
 
   .header-system .topbar {
-    height: 58px;
-    min-height: 58px;
-    padding: 0 8px;
-    gap: 6px;
+  position: static;
 
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-  }
+  height: 58px;
+  min-height: 58px;
+  padding: 0 8px;
+  gap: 6px;
+
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+}
 
   /* LEFT PILL — PlayNice, never PN */
   .header-system .brand {
@@ -15344,14 +15346,14 @@ body.scrolled .header-system .announcement-bar-system {
   .header-system .nav-links {
   position: absolute;
   left: 50%;
-  top: 36%;
-  transform: translate(-50%, -50%);
+  top: 26px;
+  transform: translateX(-50%);
 
   width: 56px;
   min-width: 56px;
   height: 56px;
   padding: 4px;
-}
+  }
 
   .header-system .nav-links::after {
     left: 13px;
