@@ -9310,8 +9310,9 @@ body.scrolled .announcement-bar {
 ========================================= */
 
 .shop-value-anchor {
-  width: min(calc(100% - 32px), var(--max));
-  margin: 18px auto 24px;
+  width: 100%;
+  max-width: none;
+  margin: 18px 0 24px;
 }
 
 .shop-value-anchor-inner {
@@ -9530,7 +9531,9 @@ body.scrolled .announcement-bar {
 
 @media (max-width: 900px) {
   .shop-value-anchor {
-    margin: 16px auto 22px;
+    width: 100%;
+    max-width: none;
+    margin: 16px 0 22px;
   }
 
   .shop-value-anchor-inner {
@@ -9576,9 +9579,10 @@ body.scrolled .announcement-bar {
 }
 
 @media (max-width: 640px) {
-  .shop-value-anchor {
-    width: min(calc(100% - 24px), var(--max));
-    margin: 14px auto 18px;
+  shop-value-anchor {
+    width: 100%;
+    max-width: none;
+    margin: 14px 0 18px;
   }
 
   .shop-value-anchor-inner {
