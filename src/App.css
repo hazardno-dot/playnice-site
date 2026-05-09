@@ -4100,6 +4100,22 @@ main {
 
     scrollbar-width: none;
     -ms-overflow-style: none;
+
+    /* Mobile: no modal movement */
+    transform: translate(-50%, -50%) !important;
+    transition: none !important;
+    animation: none !important;
+    will-change: auto !important;
+
+    /* Mobile: lighter render */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .product-modal.open {
+    transform: translate(-50%, -50%) !important;
+    transition: none !important;
+    animation: none !important;
   }
 
   .product-modal::-webkit-scrollbar {
@@ -4142,8 +4158,19 @@ main {
     padding: 6px 0;
   }
 
+  .modal-image-wrap::after {
+    filter: blur(18px);
+    opacity: 0.5;
+  }
+
   .modal-image {
     max-height: 215px;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .modal-image:hover {
+    transform: none !important;
   }
 
   .modal-media-meta {
@@ -4158,11 +4185,18 @@ main {
     -webkit-line-clamp: unset;
   }
 
+  .modal-info-card {
+    transition: none !important;
+  }
+
+  .modal-info-card:hover {
+    transform: none !important;
+  }
+
   .modal-info-card strong {
     font-size: 1.04rem;
   }
 
-  /* ML dugmad — 3 u jednom redu */
   .modal-sizes,
   .modal-size-grid {
     display: grid;
@@ -4181,6 +4215,14 @@ main {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .modal-sizes > button:hover,
+  .modal-size-grid > button:hover {
+    transform: none !important;
   }
 
   .modal-sizes > button span,
@@ -4214,6 +4256,37 @@ main {
     line-height: 1;
   }
 
+  .modal-price-box strong {
+    animation: none !important;
+  }
+
+  .modal-add-button {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .modal-add-button:hover,
+  .modal-add-button:active {
+    transform: none !important;
+  }
+
+  .modal-add-button::before {
+    animation: none !important;
+    opacity: 0;
+  }
+
+  .modal-buy-now {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  .modal-size-block:hover .modal-size-helper {
+    animation: none !important;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+  }
+
   .modal-header-meta {
     flex-direction: column;
     align-items: flex-start;
@@ -4242,6 +4315,27 @@ main {
 
   .modal-inspired-mini-short {
     font-size: 0.48rem;
+  }
+
+  /* Mobile: remove inner reveal animation / blur */
+  .product-modal .panel-anim,
+  .product-modal .panel-item-anim,
+  .product-modal .close-button,
+  .product-modal.open .panel-anim,
+  .product-modal.open .panel-item-anim,
+  .product-modal.open .close-button {
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transform: none !important;
+    filter: none !important;
+
+    transition: none !important;
+    transition-delay: 0s !important;
+    animation: none !important;
+    animation-delay: 0s !important;
+
+    will-change: auto !important;
   }
 }
 
@@ -14702,75 +14796,5 @@ body.scrolled .header-system .announcement-bar-system {
 
   .header-system + main {
     padding-top: 7px;
-  }
-}
-
-/* =========================================
-   MOBILE OVERLAYS — NO MOTION / NO BLUR
-   Fixes product modal open/close glitch on mobile
-========================================= */
-
-@media (max-width: 640px) {
-  .modal-overlay,
-  .modal-overlay.show,
-  .modal-overlay:has(.product-modal.open) {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-
-    transition: none !important;
-    animation: none !important;
-    will-change: auto !important;
-  }
-
-  .modal-overlay::before {
-    display: none !important;
-    opacity: 0 !important;
-    transition: none !important;
-    animation: none !important;
-  }
-
-  .backdrop,
-  .backdrop.show {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-
-    transition: none !important;
-    animation: none !important;
-    will-change: auto !important;
-  }
-
-  .backdrop::before,
-  .backdrop::after {
-    display: none !important;
-    opacity: 0 !important;
-    transition: none !important;
-    animation: none !important;
-  }
-
-  .product-modal,
-  .product-modal.open {
-    transform: translate(-50%, -50%) !important;
-
-    transition: none !important;
-    animation: none !important;
-    will-change: auto !important;
-  }
-
-  .product-modal .panel-anim,
-  .product-modal .panel-item-anim,
-  .product-modal .close-button,
-  .product-modal.open .panel-anim,
-  .product-modal.open .panel-item-anim,
-  .product-modal.open .close-button {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-
-    transition: none !important;
-    transition-delay: 0s !important;
-    animation: none !important;
-    animation-delay: 0s !important;
-
-    will-change: auto !important;
   }
 }
