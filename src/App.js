@@ -5579,10 +5579,14 @@ const renderPagination = (position = "bottom") => {
   return `/product/${slugifyProduct(product.name)}`;
 };
 
-  const openProductModal = (product, options = {}) => {
+const isMobileProductModal = () =>
+  window.matchMedia("(max-width: 640px)").matches;
+
+const openProductModal = (product, options = {}) => {
   if (!product) return;
 
   const { updateUrl = true } = options;
+  const isMobileModal = isMobileProductModal();
 
   if (productModalCloseTimeoutRef.current) {
     clearTimeout(productModalCloseTimeoutRef.current);
@@ -5595,7 +5599,12 @@ const renderPagination = (position = "bottom") => {
   setSelectedProduct(product);
   setSelectedSize(Object.keys(product.sizes || {})[0] || "");
   setHasUserPickedSize(false);
-  setProductModalVisible(false);
+
+  if (isMobileModal) {
+    setProductModalVisible(true);
+  } else {
+    setProductModalVisible(false);
+  }
 
   if (updateUrl) {
     const productUrl = getProductUrl(product);
@@ -5608,11 +5617,13 @@ const renderPagination = (position = "bottom") => {
     trackMeta("PageView");
   }
 
-  requestAnimationFrame(() => {
+  if (!isMobileModal) {
     requestAnimationFrame(() => {
-      setProductModalVisible(true);
+      requestAnimationFrame(() => {
+        setProductModalVisible(true);
+      });
     });
-  });
+  }
 };
 
 const handleProductCardOpen = (product) => {
@@ -5647,14 +5658,17 @@ useEffect(() => {
 }, []);
 
 const closeProductModal = () => {
+  const isMobileModal = isMobileProductModal();
+
   setProductModalVisible(false);
   setHasUserPickedSize(false);
 
   if (productModalCloseTimeoutRef.current) {
     clearTimeout(productModalCloseTimeoutRef.current);
+    productModalCloseTimeoutRef.current = null;
   }
 
-  productModalCloseTimeoutRef.current = setTimeout(() => {
+  const cleanupProductModal = () => {
     setSelectedProduct(null);
     setSelectedSize("");
     productModalCloseTimeoutRef.current = null;
@@ -5664,6 +5678,15 @@ const closeProductModal = () => {
       trackPageView("/shop");
       trackMeta("PageView");
     }
+  };
+
+  if (isMobileModal) {
+    cleanupProductModal();
+    return;
+  }
+
+  productModalCloseTimeoutRef.current = setTimeout(() => {
+    cleanupProductModal();
   }, 200);
 };
 
