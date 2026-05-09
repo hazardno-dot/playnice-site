@@ -8834,11 +8834,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       )}
 
       {showStickyCta && (
-  <div
-    className={`sticky-cta-shell ${view === "shop" ? "is-compact" : ""}`}
-    aria-live="polite"
-  >
-    <div className="sticky-cta-button">
+        <div className="sticky-cta-shell" aria-live="polite">
+         <div className="sticky-cta-button">
       <button
         type="button"
         className="sticky-cta-main"

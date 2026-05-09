@@ -8765,18 +8765,19 @@ main {
 }
 
 /* =========================================
-   STICKY CTA — FINAL WITH JOURNAL LINK
+   STICKY CTA — FINAL COMPACT GLOBAL
+   Same CTA for homepage + shop, with Journal link
 ========================================= */
 
 .sticky-cta-shell {
   position: fixed;
   left: 50%;
-  bottom: 14px;
+  bottom: 10px;
   transform: translateX(-50%);
 
   z-index: 140;
 
-  width: min(calc(100% - 24px), 760px);
+  width: min(calc(100% - 20px), 640px);
 
   pointer-events: none;
 }
@@ -8785,20 +8786,20 @@ main {
   position: relative;
 
   width: 100%;
-  min-height: 64px;
+  min-height: 54px;
 
   display: flex;
   align-items: stretch;
 
-  border-radius: 20px;
+  border-radius: 18px;
   border: 1px solid rgba(220, 181, 107, 0.16);
 
   background:
-    linear-gradient(180deg, rgba(18, 18, 18, 0.82), rgba(8, 8, 8, 0.76)),
-    rgba(10, 10, 10, 0.72);
+    linear-gradient(180deg, rgba(16, 16, 16, 0.72), rgba(8, 8, 8, 0.66)),
+    rgba(10, 10, 10, 0.58);
 
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 
   box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.28),
@@ -8817,9 +8818,10 @@ main {
 
 .sticky-cta-button:hover {
   transform: translateY(-2px);
+
   background:
-    linear-gradient(180deg, rgba(20, 20, 20, 0.88), rgba(9, 9, 9, 0.82)),
-    rgba(12, 12, 12, 0.8);
+    linear-gradient(180deg, rgba(20, 20, 20, 0.82), rgba(9, 9, 9, 0.74)),
+    rgba(12, 12, 12, 0.72);
 
   border-color: rgba(220, 181, 107, 0.26);
 
@@ -8828,13 +8830,18 @@ main {
     0 0 0 1px rgba(255, 255, 255, 0.03) inset;
 }
 
+.sticky-cta-button:active {
+  transform: translateY(0);
+}
+
+/* Main CTA click area */
 .sticky-cta-main {
   appearance: none;
   -webkit-appearance: none;
 
   width: 100%;
-  min-height: 64px;
-  padding: 14px 116px 14px 18px;
+  min-height: 54px;
+  padding: 11px 108px 11px 15px;
 
   display: flex;
   align-items: center;
@@ -8857,6 +8864,7 @@ main {
   outline: none;
 }
 
+/* Copy */
 .sticky-cta-copy {
   display: flex;
   flex-direction: column;
@@ -8873,7 +8881,7 @@ main {
 
   color: rgba(255, 248, 235, 0.97);
   font-family: "Cormorant Garamond", serif;
-  font-size: 0.98rem;
+  font-size: 0.92rem;
   font-weight: 650;
   line-height: 1.1;
 
@@ -8910,13 +8918,18 @@ main {
 .sticky-cta-copy small {
   color: rgba(255, 255, 255, 0.68);
   font-family: "Inter", sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 500;
   line-height: 1.2;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+/* Arrow */
 .sticky-cta-arrow {
   position: absolute;
   right: 18px;
@@ -8947,7 +8960,7 @@ main {
   -webkit-appearance: none;
 
   position: absolute;
-  right: 43px;
+  right: 40px;
   top: 50%;
   z-index: 3;
 
@@ -8962,7 +8975,7 @@ main {
 
   color: rgba(220, 181, 107, 0.86);
   font-family: "Inter", sans-serif;
-  font-size: 0.74rem;
+  font-size: 0.7rem;
   font-weight: 800;
   line-height: 1;
   letter-spacing: 0.075em;
@@ -8995,6 +9008,7 @@ main {
   outline: none;
 }
 
+/* Journal new/unread state */
 .sticky-cta-journal-link.has-new {
   color: #7edb95;
   text-shadow:
@@ -9009,121 +9023,81 @@ main {
     0 0 22px rgba(126, 219, 149, 0.14);
 }
 
-/* Compact mode for Shop */
-.sticky-cta-shell.is-compact {
-  bottom: 10px;
-  width: min(calc(100% - 20px), 640px);
-}
-
-.sticky-cta-shell.is-compact .sticky-cta-button {
-  min-height: 54px;
-  border-radius: 18px;
-
-  background:
-    linear-gradient(180deg, rgba(16, 16, 16, 0.72), rgba(8, 8, 8, 0.66)),
-    rgba(10, 10, 10, 0.58);
-
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-
-.sticky-cta-shell.is-compact .sticky-cta-main {
-  min-height: 54px;
-  padding: 11px 108px 11px 15px;
-}
-
-.sticky-cta-shell.is-compact .sticky-cta-copy strong {
-  font-size: 0.92rem;
-}
-
-.sticky-cta-shell.is-compact .sticky-cta-copy small {
-  font-size: 0.72rem;
-}
-
-.sticky-cta-shell.is-compact .sticky-cta-journal-link {
-  right: 40px;
-  font-size: 0.7rem;
-}
-
 /* =========================================
    STICKY CTA — MOBILE
+   Same width rhythm as mobile sections
 ========================================= */
 
 @media (max-width: 768px) {
   .sticky-cta-shell {
-    width: calc(100% - 16px);
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
     bottom: 10px;
   }
 
   .sticky-cta-button {
-    min-height: 56px;
+    min-height: 54px;
     border-radius: 18px;
   }
 
   .sticky-cta-main {
-    min-height: 56px;
-    padding: 12px 102px 12px 14px;
+    min-height: 54px;
+    padding: 11px 98px 11px 14px;
   }
 
   .sticky-cta-copy strong {
-    font-size: 0.92rem;
+    font-size: 0.9rem;
   }
 
   .sticky-cta-copy small {
-    font-size: 0.72rem;
+    max-width: calc(100vw - 160px);
+
+    font-size: 0.7rem;
+    letter-spacing: 0.075em;
   }
 
   .sticky-cta-journal-link {
-    right: 38px;
-    font-size: 0.68rem;
+    right: 36px;
+
+    font-size: 0.66rem;
     letter-spacing: 0.065em;
   }
 
   .sticky-cta-arrow {
     right: 15px;
   }
-
-  .sticky-cta-shell.is-compact .sticky-cta-main {
-    padding-right: 98px;
-  }
-
-  .sticky-cta-shell.is-compact .sticky-cta-journal-link {
-    right: 36px;
-    font-size: 0.66rem;
-  }
 }
 
 @media (max-width: 390px) {
+  .sticky-cta-shell {
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+  }
+
   .sticky-cta-main {
-    padding-right: 90px;
+    padding-right: 88px;
   }
 
   .sticky-cta-copy strong {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
   }
 
   .sticky-cta-copy small {
-    font-size: 0.66rem;
-    letter-spacing: 0.065em;
+    max-width: calc(100vw - 150px);
+
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
   }
 
   .sticky-cta-journal-link {
-    right: 34px;
-    font-size: 0.62rem;
+    right: 33px;
+
+    font-size: 0.6rem;
     letter-spacing: 0.055em;
   }
 
   .sticky-cta-arrow {
     right: 13px;
-  }
-
-  .sticky-cta-shell.is-compact .sticky-cta-main {
-    padding-right: 88px;
-  }
-
-  .sticky-cta-shell.is-compact .sticky-cta-journal-link {
-    right: 33px;
-    font-size: 0.61rem;
   }
 }
 
