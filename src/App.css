@@ -15090,13 +15090,16 @@ body.scrolled .header-system .announcement-bar-system {
     padding: 0 12px;
 
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: minmax(118px, auto) 1fr minmax(118px, auto);
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   /* LEFT PILL — PlayNice wordmark */
   .header-system .brand {
+    grid-column: 1;
+    justify-self: start;
+
     width: auto;
     min-width: 124px;
     height: 48px;
@@ -15108,7 +15111,6 @@ body.scrolled .header-system .announcement-bar-system {
     justify-content: center;
 
     border-radius: 999px;
-    justify-self: start;
   }
 
   .header-system .brand-copy {
@@ -15153,12 +15155,16 @@ body.scrolled .header-system .announcement-bar-system {
     color: rgba(255, 248, 235, 0.46);
   }
 
-  /* CENTER CIRCLE */
+  /* CENTER CIRCLE — grid aligned with pills */
   .header-system .nav-links {
-    position: absolute;
-    left: 50%;
-    top: 46%;
-    transform: translate(-50%, -50%);
+    grid-column: 2;
+    justify-self: center;
+    align-self: center;
+
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
 
     width: 62px;
     min-width: 62px;
@@ -15200,7 +15206,9 @@ body.scrolled .header-system .announcement-bar-system {
 
   /* RIGHT PILL */
   .header-system .topbar-right {
+    grid-column: 3;
     justify-self: end;
+    align-self: center;
 
     min-width: 118px;
     width: auto;
@@ -15304,20 +15312,22 @@ body.scrolled .header-system .announcement-bar-system {
   }
 
   .header-system .topbar {
-  position: static;
+    height: 58px;
+    min-height: 58px;
+    padding: 0 8px;
+    gap: 6px;
 
-  height: 58px;
-  min-height: 58px;
-  padding: 0 8px;
-  gap: 6px;
-
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-}
+    display: grid;
+    grid-template-columns: 112px 1fr 110px;
+    align-items: center;
+  }
 
   /* LEFT PILL — PlayNice, never PN */
   .header-system .brand {
+    grid-column: 1;
+    justify-self: start;
+    align-self: center;
+
     min-width: 112px;
     height: 42px;
     min-height: 42px;
@@ -15342,17 +15352,21 @@ body.scrolled .header-system .announcement-bar-system {
     letter-spacing: 0.15em;
   }
 
-  /* CENTER CIRCLE — raised */
+  /* CENTER CIRCLE — same vertical axis as pills */
   .header-system .nav-links {
-  position: absolute;
-  left: 50%;
-  top: 26px;
-  transform: translateX(-50%);
+    grid-column: 2;
+    justify-self: center;
+    align-self: center;
 
-  width: 56px;
-  min-width: 56px;
-  height: 56px;
-  padding: 4px;
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+
+    width: 56px;
+    min-width: 56px;
+    height: 56px;
+    padding: 4px;
   }
 
   .header-system .nav-links::after {
@@ -15361,31 +15375,35 @@ body.scrolled .header-system .announcement-bar-system {
   }
 
   .header-system .nav-links button {
-  min-height: 0;
-  padding: 0;
-  margin: 0;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  font-size: 9px;
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
-  letter-spacing: 0.002em;
-}
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    letter-spacing: 0.005em;
+  }
 
-.header-system .nav-link-home {
-  padding: 0 0 1px;
-}
+  .header-system .nav-link-home {
+    padding-bottom: 1px;
+  }
 
-.header-system .nav-link-shop {
-  padding: 1px 0 0;
-}
+  .header-system .nav-link-shop {
+    padding-top: 1px;
+  }
 
   /* RIGHT PILL */
   .header-system .topbar-right {
+    grid-column: 3;
+    justify-self: end;
+    align-self: center;
+
     min-width: 110px;
     height: 42px;
     min-height: 42px;
@@ -15416,13 +15434,13 @@ body.scrolled .header-system .announcement-bar-system {
 
   /* ANNOUNCEMENT BELOW */
   .header-system .announcement-bar-system {
-  left: 10px;
-  right: 10px;
-  top: 66px;
+    left: 10px;
+    right: 10px;
+    top: 70px;
 
-  height: 20px;
-  min-height: 20px;
-}
+    height: 20px;
+    min-height: 20px;
+  }
 
   .header-system .announcement-bar-system .announcement-track {
     gap: 18px;
@@ -15457,6 +15475,7 @@ body.scrolled .header-system .announcement-bar-system {
 
   .header-system .topbar {
     padding: 0 7px;
+    grid-template-columns: 104px 1fr 104px;
   }
 
   .header-system .brand {
@@ -15476,8 +15495,6 @@ body.scrolled .header-system .announcement-bar-system {
   }
 
   .header-system .nav-links {
-    top: 44%;
-
     width: 54px;
     min-width: 54px;
     height: 54px;
