@@ -12010,7 +12010,7 @@ body.scrolled .announcement-bar {
     pointer-events: none;
 
     --side-rail-gap: 14px;
-    --side-rail-top: 180px;
+    --side-rail-top: 50%;
     --side-content-width: min(calc(100vw - 32px), var(--max, 1240px));
     --side-gutter: calc((100vw - var(--side-content-width)) / 2);
     --side-rail-width: clamp(
@@ -12028,6 +12028,7 @@ body.scrolled .announcement-bar {
 
     position: fixed;
     top: var(--side-rail-top);
+    transform: translateY(-50%);
 
     width: var(--side-rail-width);
     height: clamp(420px, 52vh, 520px);
@@ -12128,7 +12129,7 @@ body.scrolled .announcement-bar {
       inset 0 1px 0 rgba(255, 255, 255, 0.05),
       inset 0 -20px 46px rgba(0, 0, 0, 0.2);
 
-    transform: translateY(-3px);
+    transform: translateY(calc(-50% - 3px));
   }
 
   .side-ad-label,
