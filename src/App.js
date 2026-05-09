@@ -3905,6 +3905,8 @@ const BASE_HERO_SLIDES = [
     id: 1,
     kind: "imageOnly",
     image: "/hero/slide-1-fix.jpg",
+    desktopImage: "/hero/slide-1-fix.jpg",
+    mobileImage: "/hero/mobile/slide-1-mobile.jpg",
     alt: "New In / Best of the Best",
     actionPrimary: "shop"
   },
@@ -3912,6 +3914,8 @@ const BASE_HERO_SLIDES = [
     id: 2,
     kind: "imageOnly",
     image: "/hero/slide-2.jpg",
+    desktopImage: "/hero/slide-2.jpg",
+    mobileImage: "/hero/mobile/slide-2-mobile.jpg",
     alt: "PlayNice – luxury fragrance experience and trust",
     actionPrimary: "shop"
   },
@@ -3919,6 +3923,8 @@ const BASE_HERO_SLIDES = [
     id: 3,
     kind: "imageOnly",
     image: "/hero/slide-3.jpg",
+    desktopImage: "/hero/slide-3.jpg",
+    mobileImage: "/hero/mobile/slide-3-mobile.jpg",
     alt: "Proleće-leto sezona",
     actionPrimary: "shop"
   },
@@ -3926,6 +3932,8 @@ const BASE_HERO_SLIDES = [
     id: 4,
     kind: "imageOnly",
     image: "/hero/slide-4.jpg",
+    desktopImage: "/hero/slide-4.jpg",
+    mobileImage: "/hero/mobile/slide-4-mobile.jpg",
     alt: "PlayNice Private Selection – trusted premium decants",
     actionPrimary: "shop"
   },
@@ -3933,6 +3941,8 @@ const BASE_HERO_SLIDES = [
     id: 5,
     kind: "imageOnly",
     image: "/hero/slide-5.jpg",
+    desktopImage: "/hero/slide-5.jpg",
+    mobileImage: "/hero/mobile/slide-5-mobile.jpg",
     alt: "Try before you buy / dekanti",
     actionPrimary: "shop"
   },
@@ -3940,6 +3950,8 @@ const BASE_HERO_SLIDES = [
     id: 6,
     kind: "imageOnly",
     image: "/hero/slide-6.jpg",
+    desktopImage: "/hero/slide-6.jpg",
+    mobileImage: "/hero/mobile/slide-6-mobile.jpg",
     alt: "PlayNice – Try it first",
     actionPrimary: "shop"
   },
@@ -3947,6 +3959,8 @@ const BASE_HERO_SLIDES = [
     id: 7,
     kind: "imageOnly",
     image: "/hero/slide-7.jpg",
+    desktopImage: "/hero/slide-7.jpg",
+    mobileImage: "/hero/mobile/slide-7-mobile.jpg",
     alt: "Optional: special action, drop ili limited stock",
     actionPrimary: "shop"
   }
@@ -6441,15 +6455,22 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     aria-hidden={index !== currentHero}
                   >
                     <div className="hero-image-only">
-                      <img
-                        className={`hero-image-only-img ${
-                          index === currentHero ? "is-active" : ""
-                        }`}
-                        src={slide.image}
-                        alt={slide.alt}
-                        loading={index === 0 ? "eager" : "lazy"}
-                        draggable="false"
-                      />
+                      <picture>
+  <source
+    media="(max-width: 768px)"
+    srcSet={slide.mobileImage || slide.image}
+  />
+
+  <img
+    className={`hero-image-only-img ${
+      index === currentHero ? "is-active" : ""
+    }`}
+    src={slide.desktopImage || slide.image}
+    alt={slide.alt}
+    loading={index === 0 ? "eager" : "lazy"}
+    draggable="false"
+  />
+</picture>
                     </div>
                   </article>
                 ))}
