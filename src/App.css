@@ -4839,8 +4839,10 @@ main {
 }
 
 /* =========================================
-   RESPONSIVE
+   RESPONSIVE — CLEANED
+   Non-header / non-announcement responsive rules only
 ========================================= */
+
 @media (max-width: 1100px) {
   .hero-grid,
   .feature-grid,
@@ -4865,250 +4867,60 @@ main {
   }
 }
 
+/* =========================================
+   TABLET / LARGE MOBILE
+========================================= */
+
 @media (max-width: 820px) {
-  :root {
-    --topbar-top-offset: 8px;
-    --topbar-height: 118px;
-    --announcement-height: 42px;
-    --announcement-gap: 10px;
-    --announcement-top-mobile: calc(
-      var(--topbar-top-offset) + var(--topbar-height) + var(--announcement-gap)
-    );
+  .hero {
+    width: min(calc(100% - 32px), var(--max));
+    max-width: var(--max);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+
+    padding: 0;
+    border-radius: 22px;
+    overflow: hidden;
   }
 
-  main {
-    padding-top: 62px !important;
-    margin-top: 0 !important;
+  .hero-carousel,
+  .hero-slide {
+    aspect-ratio: 2.4 / 1;
+    height: auto;
+    width: 100%;
   }
 
-  .topbar {
-    top: var(--topbar-top-offset);
-    min-height: var(--topbar-height);
-    z-index: 200;
-
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "brand right"
-      "nav nav";
-
-    align-items: center;
-    gap: 8px 10px;
-    padding: 10px 12px;
-    border-radius: 18px;
+  .hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
-  .brand {
-    grid-area: brand;
-    min-width: 0;
+  .hero-grid,
+  .feature-grid,
+  .product-grid,
+  .checkout-grid,
+  .shop-toolbar,
+  .form-row.two {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-size-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
   }
 
-  .brand {
-    gap: 8px;
+  .hero-visual {
+    display: grid;
+    place-items: center;
+    min-height: unset;
   }
 
-  .brand-mark {
-    width: 34px;
-    height: 34px;
-    flex-basis: 34px;
-    font-size: 12px;
+  .hero-bottle {
+    width: min(100%, 280px);
   }
-
-  .brand-copy strong {
-    font-size: 25px;
-    line-height: 0.96;
-  }
-
-  .brand-copy small {
-    margin-top: 4px;
-    font-size: 7px;
-    letter-spacing: 0.18em;
-  }
-
-  .topbar-right {
-    grid-area: right;
-    justify-self: end;
-
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 6px;
-    min-width: max-content;
-  }
-
-  .header-private-selection-btn {
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
-    padding: 0;
-    border-radius: 999px;
-    flex: 0 0 36px;
-  }
-
-  .header-private-selection-btn .ps-label {
-    display: none;
-  }
-
-  .header-private-selection-btn .ps-heart {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    color: #b72a38;
-    margin: 0;
-    transform: none;
-  }
-
-  .header-private-selection-btn .ps-count {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    min-width: 16px;
-    height: 16px;
-    padding: 0 4px;
-    font-size: 0.55rem;
-    margin-left: 0;
-  }
-
-  .cart-button,
-  .cart-button--icon-only {
-    width: 46px;
-    min-width: 46px;
-    height: 46px;
-    padding: 0;
-    flex: 0 0 46px;
-  }
-
-  .cart-button--icon-only .cart-icon {
-    font-size: 17px;
-  }
-
-  .cart-count {
-    top: -4px;
-    right: -4px;
-    margin-left: 0;
-    min-width: 18px;
-    height: 18px;
-    flex: 0 0 18px;
-    font-size: 10px;
-  }
-
-.announcement-bar {
-  top: var(--announcement-top-mobile);
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
-
-  width: min(calc(100% - 32px), var(--max));
-  max-width: var(--max);
-
-  z-index: 190;
-
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  transition:
-    box-shadow 0.35s ease,
-    border-color 0.35s ease,
-    background 0.35s ease;
-}
-
-.announcement-bar:hover {
-  transform: translateX(-50%);
-}
-
-body.scrolled .announcement-bar {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-}
-
-.announcement-track {
-  gap: 24px;
-  padding: 8px 12px 7px;
-  animation-duration: 20s;
-}
-
-.announcement-text,
-.announcement-action {
-  font-size: 11px;
-  letter-spacing: 0.08em;
-}
-
-.announcement-icon {
-  font-size: 12px;
-}
-
-.announcement-bar::before,
-.announcement-bar::after {
-  width: 24px;
-}
-
-.announcement-progress-shell {
-  padding: 0 10px 8px;
-}
-
-.announcement-logo-link {
-  height: 18px;
-  max-height: 18px;
-}
-
-.announcement-logo-img {
-  height: 16px;
-  max-height: 16px;
-  max-width: 134px;
-}
-
-.hero {
-  width: min(calc(100% - 32px), var(--max));
-  max-width: var(--max);
-  margin-left: auto;
-  margin-right: auto;
-
-  padding: 0; /* sklanjamo padding da ne “širi” okvir */
-  border-radius: 22px;
-  overflow: hidden;
-
-  margin-top: 6px; /* smanjuje gap od announcement bara */
-}
-
-.hero-carousel,
-.hero-slide {
-  aspect-ratio: 2.4 / 1;
-  height: auto;
-
-  width: 100%; /* osigurava da ne probija širinu */
-}
-
-.hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.hero-grid,
-.feature-grid,
-.product-grid,
-.checkout-grid,
-.shop-toolbar,
-.form-row.two {
-  grid-template-columns: 1fr;
-}
-
-.modal-size-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.hero-visual {
-  display: grid;
-  place-items: center;
-  min-height: unset;
-}
-
-.hero-bottle {
-  width: min(100%, 280px);
-}
 
   .feature-card.large {
     grid-column: span 1;
@@ -5148,13 +4960,7 @@ body.scrolled .announcement-bar {
   }
 
   .added-feedback {
-    top: calc(
-      var(--topbar-top-offset) +
-      var(--topbar-height) +
-      var(--announcement-gap) +
-      var(--announcement-height) +
-      14px
-    );
+    top: 118px;
     right: 12px;
     min-width: 0;
     max-width: calc(100vw - 24px);
@@ -5176,124 +4982,28 @@ body.scrolled .announcement-bar {
   }
 }
 
+/* =========================================
+   MOBILE
+========================================= */
+
 @media (max-width: 560px) {
-  :root {
-    --topbar-height: 114px;
-  }
-
-  .topbar {
-    padding: 9px 10px;
-    gap: 7px 8px;
-    border-radius: 16px;
-  }
-
-  .brand-copy {
-    align-items: flex-start;
-    overflow: visible;
-  }
-
-  .brand-copy strong {
-    font-size: 34px;
-    line-height: 0.92;
-    letter-spacing: 0.018em;
-  }
-
-  .brand-copy small {
-    display: block;
-    margin-top: 8px;
-
-    font-size: 8.5px;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    white-space: nowrap;
-
-    color: rgba(255, 248, 235, 0.48);
-  }
-
-  .topbar-right {
-    gap: 5px;
-  }
-
-  .header-private-selection-btn {
-    width: 34px;
-    min-width: 34px;
-    height: 34px;
-    flex: 0 0 34px;
-  }
-
- .cart-button,
- .cart-button--icon-only {
-    width: 42px;
-    min-width: 42px;
-    height: 42px;
-    flex: 0 0 42px;
-  }
-
-.announcement-bar {
-  top: var(--announcement-top-mobile);
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
-
-  width: min(calc(100% - 24px), var(--max));
-  max-width: var(--max);
-
-  border-radius: 13px;
-}
-
-.announcement-bar:hover {
-  transform: translateX(-50%);
-}
-
-.announcement-track {
-  gap: 22px;
-  padding: 7px 11px 7px;
-  animation-duration: 18s;
-}
-
-.announcement-text,
-.announcement-action {
-  font-size: 10px;
-  letter-spacing: 0.075em;
-}
-
-.announcement-icon {
-  font-size: 11px;
-}
-
-.announcement-bar::before,
-.announcement-bar::after {
-  width: 20px;
-}
-
-.announcement-progress-shell {
-  padding: 0 9px 7px;
-}
-
-.announcement-logo-link {
-  height: 17px;
-  max-height: 17px;
-}
-
-.announcement-logo-img {
-  height: 15px;
-  max-height: 15px;
-  max-width: 116px;
-}
-
   .hero {
-    width: calc(100% - 34px) !important;
-    max-width: 100% !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    width: calc(100% - 34px);
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+
+    padding: 0;
+    border-radius: 22px;
+    overflow: hidden;
   }
 
   .hero-carousel,
   .hero-slide {
     aspect-ratio: 2.4 / 1;
     width: 100%;
+    height: auto;
   }
 
   .hero img {
@@ -5304,6 +5014,13 @@ body.scrolled .announcement-bar {
 
   .hero * {
     max-width: 100%;
+  }
+
+  .added-feedback {
+    top: 108px;
+    right: 12px;
+    min-width: 0;
+    max-width: calc(100vw - 24px);
   }
 
   .section-divider {
