@@ -7037,67 +7037,67 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
           {view === "shop" && (
   <>
-    <section
-  className="shop-value-anchor shop-value-anchor-compact section-wrap"
-  aria-label={lang === "sr" ? "Zašto probati pre kupovine" : "Why try before you buy"}
->
-  <div className="shop-value-anchor-inner">
-    <div className="shop-value-anchor-copy">
-      <span className="shop-value-anchor-eyebrow">
-        {lang === "sr" ? "PLAYNICE PRISTUP" : "THE PLAYNICE WAY"}
-      </span>
+    <section className="shop-section section-wrap">
+  <div className="shop-top shop-collection-intro">
+    <div className="shop-collection-copy">
+      <p className="section-kicker shop-collection-kicker">{tr.shopKicker}</p>
 
-      <h2 className="shop-value-anchor-title">
-        {lang === "sr"
-          ? "Probaj miris pre pune bočice."
-          : "Try the scent before the full bottle."}
-      </h2>
+      <h2 className="shop-collection-title">{tr.shopTitle}</h2>
 
-      <p className="shop-value-anchor-text">
+      <p className="shop-subtext shop-collection-subtext">{tr.shopText}</p>
+    </div>
+  </div>
+
+  <div
+    className="shop-value-anchor shop-value-anchor-compact"
+    aria-label={lang === "sr" ? "Zašto probati pre kupovine" : "Why try before you buy"}
+  >
+    <div className="shop-value-anchor-inner">
+      <div className="shop-value-anchor-copy">
+        <span className="shop-value-anchor-eyebrow">
+          {lang === "sr" ? "PLAYNICE PRISTUP" : "THE PLAYNICE WAY"}
+        </span>
+
+        <h2 className="shop-value-anchor-title">
+          {lang === "sr"
+            ? "Probaj miris pre pune bočice."
+            : "Try the scent before the full bottle."}
+        </h2>
+
+        <p className="shop-value-anchor-text">
+          {lang === "sr"
+            ? "Designer i niche parfemi često koštaju €80–€200+. Kod PlayNice možeš da ih upoznaš već od €4."
+            : "Designer and niche bottles often cost €80–€200+. With PlayNice, you can get to know them from €4."}
+        </p>
+      </div>
+
+      <div className="shop-value-anchor-points">
+        <div className="shop-value-anchor-point">
+          <span className="shop-value-anchor-point-value">€80–€200+</span>
+          <span className="shop-value-anchor-point-label">
+            {lang === "sr"
+              ? "pune designer i niche bočice"
+              : "designer and niche full bottles"}
+          </span>
+        </div>
+
+        <div className="shop-value-anchor-point shop-value-anchor-point-highlight">
+          <span className="shop-value-anchor-point-value">€3+</span>
+          <span className="shop-value-anchor-point-label">
+            {lang === "sr"
+              ? "dovoljno da probaš pre kupovine"
+              : "enough to try before you buy"}
+          </span>
+        </div>
+      </div>
+
+      <p className="shop-value-anchor-note">
         {lang === "sr"
-          ? "Designer i niche parfemi često koštaju €80–€200+. Kod PlayNice možeš da ih upoznaš već od €4."
-          : "Designer and niche bottles often cost €80–€200+. With PlayNice, you can get to know them from €4."}
+          ? "Manje rizika. Više sigurnosti. Bolja odluka."
+          : "Less risk. More certainty. A better decision."}
       </p>
     </div>
-
-    <div className="shop-value-anchor-points">
-      <div className="shop-value-anchor-point">
-        <span className="shop-value-anchor-point-value">€80–€200+</span>
-        <span className="shop-value-anchor-point-label">
-          {lang === "sr"
-            ? "pune designer i niche bočice"
-            : "designer and niche full bottles"}
-        </span>
-      </div>
-
-      <div className="shop-value-anchor-point shop-value-anchor-point-highlight">
-        <span className="shop-value-anchor-point-value">€3+</span>
-        <span className="shop-value-anchor-point-label">
-          {lang === "sr"
-            ? "dovoljno da probaš pre kupovine"
-            : "enough to try before you buy"}
-        </span>
-      </div>
-    </div>
-
-    <p className="shop-value-anchor-note">
-      {lang === "sr"
-        ? "Manje rizika. Više sigurnosti. Bolja odluka."
-        : "Less risk. More certainty. A better decision."}
-    </p>
   </div>
-</section>
-
-    <section className="shop-section section-wrap">
-      <div className="shop-top shop-collection-intro">
-  <div className="shop-collection-copy">
-    <p className="section-kicker shop-collection-kicker">{tr.shopKicker}</p>
-
-    <h2 className="shop-collection-title">{tr.shopTitle}</h2>
-
-    <p className="shop-subtext shop-collection-subtext">{tr.shopText}</p>
-  </div>
-</div>
 
       <div className="shop-toolbar shop-toolbar-compact">
   <div className="toolbar-group toolbar-group-search">
