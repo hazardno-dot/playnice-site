@@ -3752,7 +3752,7 @@ function smoothScrollToTop() {
 }
 
 function getDefaultLanguage() {
-  if (typeof window === "undefined") return "en";
+  if (typeof window === "undefined") return "sr";
 
   const savedLang = window.localStorage.getItem("playnice_lang");
   if (savedLang === "sr" || savedLang === "en") return savedLang;
