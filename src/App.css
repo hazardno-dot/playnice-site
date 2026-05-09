@@ -3974,14 +3974,6 @@ main {
     0 0 20px rgba(220, 181, 107, 0.12);
 }
 
-.modal-buy-now:hover {
-  color: var(--gold);
-
-  text-shadow:
-    0 0 10px rgba(220, 181, 107, 0.22),
-    0 0 20px rgba(220, 181, 107, 0.12);
-}
-
 .modal-add-button::before {
   content: "";
   position: absolute;
