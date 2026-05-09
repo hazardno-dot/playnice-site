@@ -12724,8 +12724,8 @@ main {
 }
 
 /* =========================================
-   MOBILE PRODUCT GRID — COMPACT CATALOG
-   image + name + from price only
+   MOBILE PRODUCT GRID — COMPACT PREMIUM CATALOG
+   Image + title + card note + why choose + from price
 ========================================= */
 
 @media (max-width: 640px) {
@@ -12755,8 +12755,10 @@ main {
       inset 0 1px 0 rgba(255, 255, 255, 0.018);
   }
 
-  .product-card:hover {
+  .product-card:hover,
+  .premium-product-card:hover {
     border-color: rgba(220, 181, 107, 0.16);
+
     box-shadow:
       0 10px 24px rgba(0, 0, 0, 0.22),
       inset 0 1px 0 rgba(255, 255, 255, 0.018);
@@ -12764,8 +12766,8 @@ main {
 
   .product-card-media {
     width: 100%;
-    height: 132px;
-    min-height: 132px;
+    height: 126px;
+    min-height: 126px;
     padding: 10px 8px 6px;
 
     border-radius: 14px;
@@ -12777,12 +12779,13 @@ main {
   }
 
   .product-card-image {
-    max-width: 104px;
-    max-height: 116px;
+    max-width: 100px;
+    max-height: 112px;
   }
 
   .product-card:hover .product-card-image {
     transform: none;
+
     filter:
       drop-shadow(0 14px 24px rgba(0, 0, 0, 0.34))
       brightness(1.035)
@@ -12791,13 +12794,15 @@ main {
 
   .product-meta,
   .premium-product-meta {
+    flex: 1 1 auto;
+
     padding: 9px 4px 2px;
-    gap: 5px;
-    min-height: 76px;
+    gap: 6px;
+    min-height: 132px;
 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
   .product-meta:focus,
@@ -12810,10 +12815,6 @@ main {
   }
 
   .product-category,
-  .product-meta-middle,
-  .product-card-copy-stack,
-  .product-card-copy,
-  .product-card-decant-note,
   .product-preview-line,
   .premium-preview-line,
   .single-line-preview,
@@ -12824,8 +12825,8 @@ main {
   }
 
   .product-card-title {
-    min-height: auto;
-    max-height: none;
+    min-height: 2.1em;
+    max-height: 2.1em;
 
     margin: 0;
 
@@ -12842,14 +12843,111 @@ main {
     -webkit-box-orient: vertical;
 
     overflow: hidden;
+    text-overflow: ellipsis;
     text-align: left;
+  }
+
+  .product-card-title.is-long-title {
+    font-size: 0.92rem;
+    line-height: 1.06;
+    letter-spacing: 0.004em;
+  }
+
+  .product-card-title.is-very-long-title {
+    font-size: 0.84rem;
+    line-height: 1.05;
+    letter-spacing: 0.002em;
+  }
+
+  .product-card-title.is-long-title,
+  .product-card-title.is-very-long-title {
+    min-height: 2.12em;
+    max-height: 2.12em;
+  }
+
+  .product-meta-middle {
+    display: block !important;
+    padding-top: 1px;
+  }
+
+  .product-card-copy-stack {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 4px;
+
+    width: 100%;
+    min-height: 52px;
+    max-height: 52px;
+
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+
+    background: transparent;
+    box-shadow: none;
+
+    overflow: hidden;
+  }
+
+  .product-card-copy,
+  .product-card-copy.premium-card-copy {
+    display: -webkit-box !important;
+
+    margin: 0;
+
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 0.74rem;
+    font-weight: 500;
+    line-height: 1.22;
+    letter-spacing: 0.008em;
+
+    color: rgba(255, 245, 225, 0.78);
+
+    min-height: auto;
+    max-height: calc(1.22em * 2);
+
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .product-card-decant-note {
+    display: -webkit-box !important;
+
+    margin: 0;
+
+    font-family: "Inter", sans-serif;
+    font-size: 0.56rem;
+    font-weight: 750;
+    line-height: 1.18;
+    letter-spacing: 0.075em;
+    text-transform: uppercase;
+
+    color: rgba(220, 181, 107, 0.78);
+
+    min-height: auto;
+    max-height: 1.18em;
+
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    text-shadow: 0 0 8px rgba(220, 181, 107, 0.08);
   }
 
   .product-meta-bottom {
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
-    margin-top: 4px;
+
+    margin-top: auto;
+    padding-top: 5px;
   }
 
   .product-price-block,
@@ -12894,16 +12992,22 @@ main {
   }
 
   .product-new-badge {
-    right: 7px;
-    bottom: 7px;
+    top: 7px;
+    left: 7px;
+    right: auto;
+    bottom: auto;
 
     min-height: 20px;
-    padding: 0 7px;
+    padding: 0 8px;
 
     font-size: 7px;
-    letter-spacing: 0.11em;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+
+    color: rgba(220, 82, 82, 0.98);
 
     background: rgba(8, 8, 8, 0.68);
+
     box-shadow:
       0 6px 14px rgba(0, 0, 0, 0.24),
       0 0 0 1px rgba(255, 255, 255, 0.025) inset;
@@ -12922,17 +13026,50 @@ main {
   }
 
   .product-card-media {
-    height: 122px;
-    min-height: 122px;
+    height: 120px;
+    min-height: 120px;
   }
 
   .product-card-image {
-    max-width: 96px;
-    max-height: 108px;
+    max-width: 94px;
+    max-height: 106px;
+  }
+
+  .product-meta,
+  .premium-product-meta {
+    min-height: 126px;
+    padding: 8px 3px 2px;
+    gap: 5px;
   }
 
   .product-card-title {
     font-size: 0.94rem;
+  }
+
+  .product-card-title.is-long-title {
+    font-size: 0.88rem;
+  }
+
+  .product-card-title.is-very-long-title {
+    font-size: 0.8rem;
+  }
+
+  .product-card-copy-stack {
+    min-height: 50px;
+    max-height: 50px;
+    gap: 3px;
+  }
+
+  .product-card-copy,
+  .product-card-copy.premium-card-copy {
+    font-size: 0.7rem;
+    line-height: 1.2;
+    max-height: calc(1.2em * 2);
+  }
+
+  .product-card-decant-note {
+    font-size: 0.52rem;
+    letter-spacing: 0.06em;
   }
 
   .price-prefix {
@@ -12941,72 +13078,6 @@ main {
 
   .price-value {
     font-size: 0.78rem;
-  }
-}
-
-/* =========================================
-   MOBILE PRODUCT CARD — FINAL POLISH
-========================================= */
-
-@media (max-width: 640px) {
-  /* NOVO badge top-left */
-  .product-new-badge {
-    top: 7px;
-    left: 7px;
-    right: auto;
-    bottom: auto;
-
-    min-height: 20px;
-    padding: 0 8px;
-
-    font-size: 7px;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-
-    color: rgba(220, 82, 82, 0.98);
-  }
-
-  /* title always max 2 lines */
-  .product-card-title {
-    min-height: 2.1em;
-    max-height: 2.1em;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* slightly long names */
-  .product-card-title.is-long-title {
-    font-size: 0.92rem;
-    line-height: 1.06;
-    letter-spacing: 0.004em;
-  }
-
-  /* very long names */
-  .product-card-title.is-very-long-title {
-    font-size: 0.84rem;
-    line-height: 1.05;
-    letter-spacing: 0.002em;
-  }
-
-  .product-card-title.is-long-title,
-  .product-card-title.is-very-long-title {
-    min-height: 2.12em;
-    max-height: 2.12em;
-  }
-}
-
-@media (max-width: 380px) {
-  .product-card-title.is-long-title {
-    font-size: 0.88rem;
-  }
-
-  .product-card-title.is-very-long-title {
-    font-size: 0.8rem;
   }
 }
 
