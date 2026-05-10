@@ -6246,6 +6246,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   } ${hasNewShopProducts ? "has-new-shop-signal" : ""}`}
   aria-label="Primary navigation"
     >
+      {hasNewShopProducts && (
+  <span className="shop-orb-ripples" aria-hidden="true">
+    <span></span>
+    <span></span>
+  </span>
+      )}
       <button
         className={`nav-link nav-link-home ${
           view === "home" ? "active" : ""
