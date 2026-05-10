@@ -13636,21 +13636,32 @@ main {
 }
 
 /* =========================================
-   SHOP ORB — NEW PRODUCT SIGNAL
+   SHOP ORB — NEW PRODUCT SIGNAL + SHAKE
 ========================================= */
 
 .header-system .nav-links.has-new-shop-signal {
   overflow: visible;
+  transform-origin: center;
+  animation: shopOrbAttention 2.8s ease-in-out infinite;
+}
+
+@media (min-width: 821px) {
+  .header-system .nav-links.has-new-shop-signal {
+    animation: shopOrbAttentionDesktop 2.8s ease-in-out infinite;
+  }
 }
 
 .header-system .nav-links.has-new-shop-signal::before {
   content: "";
   position: absolute;
-  inset: -8px;
+  inset: -10px;
   z-index: 1;
 
   border-radius: 50%;
-  border: 1px solid rgba(220, 181, 107, 0.45);
+  border: 1px solid rgba(220, 181, 107, 0.72);
+  box-shadow:
+    0 0 14px rgba(220, 181, 107, 0.22),
+    inset 0 0 10px rgba(220, 181, 107, 0.08);
 
   opacity: 0;
   pointer-events: none;
@@ -13661,11 +13672,12 @@ main {
 .header-system .nav-links.has-new-shop-signal .nav-link-shop::before {
   content: "";
   position: absolute;
-  inset: -34px;
+  inset: -38px;
   z-index: 0;
 
   border-radius: 50%;
-  border: 1px solid rgba(220, 181, 107, 0.22);
+  border: 1px solid rgba(220, 181, 107, 0.42);
+  box-shadow: 0 0 18px rgba(220, 181, 107, 0.16);
 
   opacity: 0;
   pointer-events: none;
@@ -13684,44 +13696,29 @@ main {
     opacity: 0;
   }
 
-  18% {
-    opacity: 0.55;
+  16% {
+    opacity: 0.72;
   }
 
   100% {
-    transform: scale(1.48);
+    transform: scale(1.55);
     opacity: 0;
   }
 }
 
 @keyframes shopSignalRippleSoft {
   0% {
-    transform: scale(0.65);
+    transform: scale(0.62);
     opacity: 0;
   }
 
-  20% {
-    opacity: 0.32;
+  18% {
+    opacity: 0.48;
   }
 
   100% {
-    transform: scale(1.18);
+    transform: scale(1.2);
     opacity: 0;
-  }
-}
-
-/* =========================================
-   SHOP ORB — NEW PRODUCT ATTENTION SHAKE
-========================================= */
-
-.header-system .nav-links.has-new-shop-signal {
-  animation: shopOrbAttention 2.8s ease-in-out infinite;
-  transform-origin: center;
-}
-
-@media (min-width: 821px) {
-  .header-system .nav-links.has-new-shop-signal {
-    animation: shopOrbAttentionDesktop 2.8s ease-in-out infinite;
   }
 }
 
