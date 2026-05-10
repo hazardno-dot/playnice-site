@@ -3518,82 +3518,57 @@ Remember. PlayNice.`,
     sr: `Samo imaju bolje osvetljenje.
 
 Nekad čovek nije znao šta mu fali i bio je prilično miran zbog toga.
-
 Onda smo dobili društvene mreže.
-
 I odjednom svi negde putuju, svi imaju “jutarnje rutine”, svi treniraju u 6 ujutru, kuvaju kafu iz aparata koji košta kao polovan motor i izgledaju kao da nikad nisu seli mokrom guzicom na hladnu plastičnu stolicu ispred trafike.
-
 A ti sediš kući, jedeš nešto iz dostave i razmišljaš da li je normalno što si danas već treći put otvorio frižider bez ikakvog konkretnog razloga.
+Naravno da jeste, ali online život baš i ne voli ovaj običan, pravi život.
 
-Naravno da jeste.
-
-Ali online život baš i ne voli ovaj običan, pravi život.
-
-Online život voli da sve izgleda kao scena iz filma gde glavni lik tačno zna šta radi sa sobom.
-
-A realno… većina nas samo improvizuje dovoljno dobro da ne deluje potpuno izgubljeno.
+Online život voli da sve izgleda kao scena iz filma gde glavni lik tačno zna šta radi sa sobom, a realno… većina nas samo improvizuje dovoljno dobro da ne deluje potpuno izgubljeno.
 
 —
 
 Najgore je što počneš nesvesno da porediš svoj “behind the scenes” sa tuđim “best moments”.
 
 Neko vozi brod po Italiji.
-
 Neko meditira na Baliju.
-
 Neko je “zahvalan na svom putovanju”.
 
 A ti pokušavaš da preživiš ponedeljak bez psihološkog raspada jer ti je neko poslao:
 “Aj samo ovo brzo.”
 
 I znaš šta?
-
 Mislim da smo svi malo umorni od toga da sve mora da izgleda savršeno.
 
 —
 
 Jer niko ne postavlja sliku trenutka kad sedi u kolima pet minuta u tišini pre nego što uđe kući.
-
 Niko ne kači kako je proveo 40 minuta gledajući šta da naruči i na kraju uzeo isto što uzima već tri godine.
-
 Niko ne objavljuje kako je pet puta napisao poruku i obrisao je jer nije znao kako da zvuči normalno.
-
 A baš se tu dešava pravi život.
 
 —
 
 I iskreno, možda je najveći luksuz danas postalo to da ne moraš nikome ništa da dokazuješ.
-
 Da odeš na kafu i ne slikaš je.
-
 Da kupiš parfem jer se tebi sviđa, a ne zato što ga je neko nazvao “must have”.
-
 Da ti dan bude dobar čak i ako nije “content”.
 
 —
 
 Naravno, svi ćemo nastaviti da skrolujemo.
-
 I ja ću.
-
 Ti ćeš.
-
 Cela planeta će.
-
 To je već izgubljena bitka.
 
 Ali možda bi bilo lepo da se s vremena na vreme setimo da ljudi sa društvenih mreža ne žive stvarno u tim reelovima.
-
 I oni posle ugase kameru, sednu umorni, jedu nešto iz kese i gledaju u plafon kao ostatak civilizacije.
-
 Samo imaju bolje osvetljenje.
 
 —
 
 A da, inače… stiglo je i 5 novih parfema na sajt.
-
 Eto malo materijala za reels, story ili onu fotografiju gde zamišljeno gledaš kroz prozor automobila dok ti igra neki deep house u pozadini.
-
 Malo i ja da pomognem u kreiranju tog “savršenog”, vrednog življenja života.
 
 Nema na čemu.
