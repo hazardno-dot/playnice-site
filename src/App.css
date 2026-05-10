@@ -13681,7 +13681,7 @@ main {
 
   opacity: 0;
 
-  animation: shopSignalRipple 4.8s ease-out infinite;
+  animation: shopSignalRipple 3.8s ease-out infinite;
 }
 
 .header-system .shop-orb-ripples span:nth-child(2) {
@@ -13693,7 +13693,7 @@ main {
     0 0 18px rgba(220, 181, 107, 0.18),
     inset 0 0 10px rgba(220, 181, 107, 0.05);
 
-  animation-delay: 0.55s;
+  animation-delay: 1.05s;
 }
 
 /* Keep buttons above ripples */
