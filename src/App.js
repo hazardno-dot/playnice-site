@@ -3411,6 +3411,205 @@ Remember. PlayNice.`
     "Dolce & Gabbana The One for Men Eau de Toilette",
     "Versace Man Eau Fraiche"
   ]
+},
+
+{
+  id: 10,
+  date: "10 Maj",
+  image: "/journal/article10.png",
+  title: {
+    en: "They just have better lighting.",
+    sr: "Samo imaju bolje osvetljenje."
+  },
+  excerpt: {
+    en: "Maybe the internet didn’t ruin us completely. Maybe it just made ordinary life look less interesting than it really is.",
+    sr: "Možda nas internet nije potpuno pokvario. Možda je samo učinio da običan život izgleda manje zanimljivo nego što zapravo jeste."
+  },
+  content: {
+    en: `Honestly.
+
+There was a time when people didn’t know what they were missing and were pretty peaceful because of it.
+
+Then social media happened.
+
+And suddenly everyone is traveling somewhere, everyone has “morning routines”, everyone trains at 6AM, makes coffee from machines that cost as much as a used motorcycle and somehow looks like they’ve never sat on a cold plastic chair outside a corner shop.
+
+Meanwhile, you’re sitting at home, eating delivery food and wondering if it’s normal that you’ve opened the fridge three times today without any actual reason.
+
+Of course it is.
+
+But online life doesn’t really like this ordinary, real kind of life.
+
+Online life likes everything to look like a movie scene where the main character completely knows what they’re doing.
+
+And realistically… most of us are just improvising well enough not to look completely lost.
+
+—
+
+The worst part is that you slowly start comparing your behind the scenes with someone else’s best moments.
+
+Someone is driving a boat through Italy.
+
+Someone is meditating in Bali.
+
+Someone is “grateful for their journey”.
+
+And you’re just trying to survive Monday without a psychological collapse because someone sent:
+“Hey, can you do this really quickly?”
+
+And you know what?
+
+I think we’re all a little tired of everything needing to look perfect.
+
+—
+
+Because nobody posts the moment they sit in the car for five minutes in silence before going home.
+
+Nobody uploads the part where they spent 40 minutes deciding what to order and still picked the same thing they’ve been eating for three years.
+
+Nobody shares how they typed and deleted the same message five times because they didn’t know how to sound normal.
+
+And honestly, that’s where real life actually happens.
+
+—
+
+And maybe the biggest luxury today is not having to prove anything to anyone.
+
+Going for coffee without photographing it.
+
+Buying a fragrance because you like it, not because somebody online called it a “must have”.
+
+Having a good day even if it’s not content.
+
+—
+
+Of course, we’re all going to keep scrolling.
+
+I will.
+
+You will.
+
+The entire planet will.
+
+That battle is already lost.
+
+But maybe it would be nice to remember from time to time that people on social media don’t actually live inside those reels.
+
+They also turn the camera off.
+
+They also sit tired at home, eat something straight from the bag and stare at the ceiling like the rest of civilization.
+
+They just have better lighting.
+
+—
+
+Oh, and by the way… we added 5 new fragrances to the site.
+
+There’s some material for your next reel, story or that photo where you thoughtfully stare through the car window while deep house plays in the background.
+
+Just doing my part in helping create that “perfect”, worth-living life.
+
+You’re welcome.
+
+—
+
+Charlie  
+Remember. PlayNice.`,
+    sr: `Samo imaju bolje osvetljenje.
+
+Nekad čovek nije znao šta mu fali i bio je prilično miran zbog toga.
+
+Onda smo dobili društvene mreže.
+
+I odjednom svi negde putuju, svi imaju “jutarnje rutine”, svi treniraju u 6 ujutru, kuvaju kafu iz aparata koji košta kao polovan motor i izgledaju kao da nikad nisu seli mokrom guzicom na hladnu plastičnu stolicu ispred trafike.
+
+A ti sediš kući, jedeš nešto iz dostave i razmišljaš da li je normalno što si danas već treći put otvorio frižider bez ikakvog konkretnog razloga.
+
+Naravno da jeste.
+
+Ali online život baš i ne voli ovaj običan, pravi život.
+
+Online život voli da sve izgleda kao scena iz filma gde glavni lik tačno zna šta radi sa sobom.
+
+A realno… većina nas samo improvizuje dovoljno dobro da ne deluje potpuno izgubljeno.
+
+—
+
+Najgore je što počneš nesvesno da porediš svoj “behind the scenes” sa tuđim “best moments”.
+
+Neko vozi brod po Italiji.
+
+Neko meditira na Baliju.
+
+Neko je “zahvalan na svom putovanju”.
+
+A ti pokušavaš da preživiš ponedeljak bez psihološkog raspada jer ti je neko poslao:
+“Aj samo ovo brzo.”
+
+I znaš šta?
+
+Mislim da smo svi malo umorni od toga da sve mora da izgleda savršeno.
+
+—
+
+Jer niko ne postavlja sliku trenutka kad sedi u kolima pet minuta u tišini pre nego što uđe kući.
+
+Niko ne kači kako je proveo 40 minuta gledajući šta da naruči i na kraju uzeo isto što uzima već tri godine.
+
+Niko ne objavljuje kako je pet puta napisao poruku i obrisao je jer nije znao kako da zvuči normalno.
+
+A baš se tu dešava pravi život.
+
+—
+
+I iskreno, možda je najveći luksuz danas postalo to da ne moraš nikome ništa da dokazuješ.
+
+Da odeš na kafu i ne slikaš je.
+
+Da kupiš parfem jer se tebi sviđa, a ne zato što ga je neko nazvao “must have”.
+
+Da ti dan bude dobar čak i ako nije “content”.
+
+—
+
+Naravno, svi ćemo nastaviti da skrolujemo.
+
+I ja ću.
+
+Ti ćeš.
+
+Cela planeta će.
+
+To je već izgubljena bitka.
+
+Ali možda bi bilo lepo da se s vremena na vreme setimo da ljudi sa društvenih mreža ne žive stvarno u tim reelovima.
+
+I oni posle ugase kameru, sednu umorni, jedu nešto iz kese i gledaju u plafon kao ostatak civilizacije.
+
+Samo imaju bolje osvetljenje.
+
+—
+
+A da, inače… stiglo je i 5 novih parfema na sajt.
+
+Eto malo materijala za reels, story ili onu fotografiju gde zamišljeno gledaš kroz prozor automobila dok ti igra neki deep house u pozadini.
+
+Malo i ja da pomognem u kreiranju tog “savršenog”, vrednog življenja života.
+
+Nema na čemu.
+
+—
+
+Čarli  
+Remember. PlayNice.`
+  },
+  relatedProducts: [
+    Emir Voux Zingy by Paris Corner,
+    Rayhaan Crimson Eau de Parfum,
+    Rasasi Hawas Black Eau de Parfum,
+    Khadlaj Onyx Silver,
+    Arabiyat Prestige Fahad Gaze
+  ]
 }
 ];
 
