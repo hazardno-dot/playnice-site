@@ -985,8 +985,6 @@ const products = [
     rating: 8.6,
     ratingLabel: "Night Beast",
     season: "winter",
-
-    isNew: true,
   },
   {
     id: 49,
@@ -1002,7 +1000,6 @@ const products = [
     name: "Paco Rabanne Invictus Aqua",
     short: "Invictus DNA"
   },
-    isNew: true,
   },
   {
     id: 50,
@@ -1010,7 +1007,7 @@ const products = [
     category: "Arabian",
     image: "/products/armaf-club-de-nuit-precieux.png",
     sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
-    badge: "NEW",
+    badge: "BESTSELLER",
     rating: 9.1,
     ratingLabel: "Top Rated",
     season: "all",
@@ -1018,7 +1015,6 @@ const products = [
     name: "Creed Absolu Aventus",
     short: "Absolu Aventus DNA"
   },
-    isNew: true,
   },
   {
     id: 51,
@@ -1034,7 +1030,6 @@ const products = [
     name: "Tales from Zanzibar by Memoirs of a Perfume Collector",
     short: "Tales from Zanzibar DNA"
   },
-    isNew: true,
   },
   {
     id: 52,
@@ -1050,7 +1045,6 @@ const products = [
     name: "Clive Christian L Red Tea Vetiver",
     short: "Red Tea Vetiver DNA"
   },
-    isNew: true,
   },
   {
   id: 53,
@@ -1062,8 +1056,6 @@ const products = [
   rating: 8.7,
   ratingLabel: "Elegant Pick",
   season: "winter",
-
-  isNew: true,
 },
 {
   id: 54,
@@ -1075,8 +1067,6 @@ const products = [
   rating: 8.3,
   ratingLabel: "Fresh Favorite",
   season: "summer",
-
-  isNew: true,
 },
 {
   id: 55,
