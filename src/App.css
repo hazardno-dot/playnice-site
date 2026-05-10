@@ -13655,7 +13655,8 @@ main {
   }
 }
 
-.header-system .nav-links.has-new-shop-signal::before {
+.header-system .nav-links.has-new-shop-signal::before,
+.header-system .nav-links.has-new-shop-signal::after {
   content: "";
   position: absolute;
   inset: -10px;
@@ -13673,20 +13674,13 @@ main {
   animation: shopSignalRipple 2.4s ease-out infinite;
 }
 
-.header-system .nav-links.has-new-shop-signal .nav-link-shop::before {
-  content: "";
-  position: absolute;
-  inset: -38px;
+.header-system .nav-links.has-new-shop-signal::after {
+  inset: -18px;
   z-index: 0;
 
-  border-radius: 50%;
-  border: 1px solid rgba(220, 181, 107, 0.42);
+  border-color: rgba(220, 181, 107, 0.42);
   box-shadow: 0 0 18px rgba(220, 181, 107, 0.16);
 
-  opacity: 0;
-  pointer-events: none;
-
-  animation: shopSignalRippleSoft 2.4s ease-out infinite;
   animation-delay: 1.05s;
 }
 
@@ -13706,22 +13700,6 @@ main {
 
   100% {
     transform: scale(1.55);
-    opacity: 0;
-  }
-}
-
-@keyframes shopSignalRippleSoft {
-  0% {
-    transform: scale(0.62);
-    opacity: 0;
-  }
-
-  18% {
-    opacity: 0.48;
-  }
-
-  100% {
-    transform: scale(1.2);
     opacity: 0;
   }
 }
