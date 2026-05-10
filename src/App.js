@@ -3428,20 +3428,14 @@ Remember. PlayNice.`
   content: {
     en: `Honestly.
 
-There was a time when people didn’t know what they were missing and were pretty peaceful because of it.
-
-Then social media happened.
-
+There was a time when people didn’t know what they were missing and were pretty peaceful because of it. Then social media happened.
 And suddenly everyone is traveling somewhere, everyone has “morning routines”, everyone trains at 6AM, makes coffee from machines that cost as much as a used motorcycle and somehow looks like they’ve never sat on a cold plastic chair outside a corner shop.
 
 Meanwhile, you’re sitting at home, eating delivery food and wondering if it’s normal that you’ve opened the fridge three times today without any actual reason.
-
 Of course it is.
-
-But online life doesn’t really like this ordinary, real kind of life.
+But online life doesn’t really like this ordinary kind of life.
 
 Online life likes everything to look like a movie scene where the main character completely knows what they’re doing.
-
 And realistically… most of us are just improvising well enough not to look completely lost.
 
 —
@@ -3449,24 +3443,19 @@ And realistically… most of us are just improvising well enough not to look com
 The worst part is that you slowly start comparing your behind the scenes with someone else’s best moments.
 
 Someone is driving a boat through Italy.
-
 Someone is meditating in Bali.
-
 Someone is “grateful for their journey”.
 
 And you’re just trying to survive Monday without a psychological collapse because someone sent:
 “Hey, can you do this really quickly?”
 
 And you know what?
-
 I think we’re all a little tired of everything needing to look perfect.
 
 —
 
 Because nobody posts the moment they sit in the car for five minutes in silence before going home.
-
 Nobody uploads the part where they spent 40 minutes deciding what to order and still picked the same thing they’ve been eating for three years.
-
 Nobody shares how they typed and deleted the same message five times because they didn’t know how to sound normal.
 
 And honestly, that’s where real life actually happens.
@@ -3474,21 +3463,15 @@ And honestly, that’s where real life actually happens.
 —
 
 And maybe the biggest luxury today is not having to prove anything to anyone.
-
 Going for coffee without photographing it.
-
 Buying a fragrance because you like it, not because somebody online called it a “must have”.
-
 Having a good day even if it’s not content.
 
 —
 
 Of course, we’re all going to keep scrolling.
-
 I will.
-
 You will.
-
 The entire planet will.
 
 That battle is already lost.
@@ -3496,7 +3479,6 @@ That battle is already lost.
 But maybe it would be nice to remember from time to time that people on social media don’t actually live inside those reels.
 
 They also turn the camera off.
-
 They also sit tired at home, eat something straight from the bag and stare at the ceiling like the rest of civilization.
 
 They just have better lighting.
@@ -3524,7 +3506,8 @@ A ti sediš kući, jedeš nešto iz dostave i razmišljaš da li je normalno št
 Naravno da jeste.
 Ali online život baš ne voli običan život.
 
-Online život voli da sve izgleda kao scena iz filma gde glavni lik tačno zna šta radi sa sobom, a realno… većina nas samo improvizuje dovoljno dobro da ne deluje potpuno izgubljeno.
+Online život voli da sve izgleda kao scena iz filma gde glavni lik tačno zna šta radi sa sobom.
+A realno… većina nas samo improvizuje dovoljno dobro da ne deluje potpuno izgubljeno.
 
 —
 
@@ -3567,6 +3550,7 @@ To je već izgubljena bitka.
 Ali možda bi bilo lepo da se s vremena na vreme setimo da ljudi sa društvenih mreža ne žive stvarno u tim reelovima.
 
 I oni posle ugase kameru, sednu umorni, jedu nešto iz kese i gledaju u plafon kao ostatak civilizacije.
+
 Samo imaju bolje osvetljenje.
 
 —
