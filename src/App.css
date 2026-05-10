@@ -13606,6 +13606,10 @@ main {
   gap: 3px;
 }
 
+.header-system .nav-shop-link.has-new-shop .nav-shop-link-text {
+  transform: translateY(2px);
+}
+
 .header-system .shop-nav-new-badge {
   position: static;
   z-index: 6;
