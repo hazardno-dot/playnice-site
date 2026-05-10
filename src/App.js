@@ -6241,10 +6241,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </button>
 
     <nav
-      className={`nav-links enterprise-main-nav ${
-        view === "shop" ? "is-shop" : "is-home"
-      }`}
-      aria-label="Primary navigation"
+  className={`nav-links enterprise-main-nav ${
+    view === "shop" ? "is-shop" : "is-home"
+  } ${hasNewShopProducts ? "has-new-shop-signal" : ""}`}
+  aria-label="Primary navigation"
     >
       <button
         className={`nav-link nav-link-home ${
