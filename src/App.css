@@ -13708,16 +13708,16 @@ main {
 ========================================= */
 
 @keyframes shopSignalRipple {
-  0%, 8% {
+  0%, 3% {
     transform: scale(0.88);
     opacity: 0;
   }
 
-  13% {
+  7% {
     opacity: 0.82;
   }
 
-  34% {
+  28% {
     transform: scale(1.55);
     opacity: 0;
   }
