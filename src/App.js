@@ -2630,7 +2630,7 @@ const journalArticles = [
   {
     id: 1,
     date: "14 Apr",
-    image: "/hero/slide-5-trust-dark.jpg",
+    image: "/journal/article1.png",
     title: {
       en: "Three new scents that completely ruined our plans",
       sr: "Tri nova mirisa koja su nam poremetila planove",
