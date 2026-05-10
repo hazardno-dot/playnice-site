@@ -13601,15 +13601,17 @@ main {
   text-shadow: none;
 }
 
+.header-system .nav-shop-link {
+  flex-direction: column;
+  gap: 3px;
+}
+
 .header-system .shop-nav-new-badge {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  left: auto;
+  position: static;
   z-index: 6;
 
   min-width: 24px;
-  height: 14px;
+  height: 13px;
   padding: 0 6px;
 
   display: inline-flex;
@@ -13620,15 +13622,15 @@ main {
   background: linear-gradient(180deg, #8ee8ff 0%, #46bde8 100%);
   color: #071014;
 
-  font-size: 7px;
+  font-size: 6.5px;
   font-weight: 900;
   line-height: 1;
   letter-spacing: 0.05em;
 
   box-shadow:
     0 0 0 1px rgba(255, 248, 235, 0.12),
-    0 4px 10px rgba(0, 0, 0, 0.28),
-    0 0 10px rgba(90, 205, 255, 0.18);
+    0 4px 10px rgba(0, 0, 0, 0.22),
+    0 0 10px rgba(90, 205, 255, 0.16);
 
   pointer-events: none;
 }
