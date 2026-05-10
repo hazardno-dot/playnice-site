@@ -1009,7 +1009,7 @@ const products = [
     name: "Armaf Club de Nuit Precieux I Extrait de Parfum",
     category: "Arabian",
     image: "/products/armaf-club-de-nuit-precieux.png",
-    sizes: { "5ml": 9, "10ml": 16, "20ml": 30 },
+    sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
     badge: "NEW",
     rating: 9.1,
     ratingLabel: "Top Rated",
