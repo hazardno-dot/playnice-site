@@ -7264,119 +7264,72 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 <div className="section-divider"></div>
 
 <footer className="site-footer">
-  <div className="site-footer-inner">
-    <div className="footer-brand">
-      <div className="footer-logo-wrap">
-        <div className="footer-logo-mark">▶</div>
-
-        <div>
-          <div className="footer-logo">PlayNice</div>
-          <div className="footer-tagline">Remember. PlayNice.</div>
-        </div>
-      </div>
+  <div className="site-footer-signature">
+    <div className="footer-brand-block">
+      <div className="footer-logo">PlayNice</div>
+      <div className="footer-tagline">Remember. PlayNice.</div>
 
       <p className="footer-brand-text">
         {lang === "sr"
           ? "Kurirana selekcija designer, niche i Arabian parfema za one koji žele da probaju pre pune bočice."
           : "A curated selection of designer, niche and Arabian fragrances for those who want to try before committing to a full bottle."}
       </p>
-
-      <div className="social-links">
-        <a
-          href="https://www.instagram.com/playnice.me/"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="PlayNice Instagram"
-        >
-          <i className="fa-brands fa-instagram"></i>
-        </a>
-
-        <a
-          href="https://wa.me/382XXXXXXXXX"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="PlayNice WhatsApp"
-        >
-          <i className="fa-brands fa-whatsapp"></i>
-        </a>
-
-        <a
-          href="https://tiktok.com/@playnice"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="PlayNice TikTok"
-        >
-          <i className="fa-brands fa-tiktok"></i>
-        </a>
-      </div>
     </div>
 
-    <div className="footer-links">
-      <h4>{lang === "sr" ? "Navigacija" : "Navigation"}</h4>
+    <div className="footer-statement">
+      <span>{lang === "sr" ? "Probaj miris." : "Try the scent."}</span>
+      <strong>{lang === "sr" ? "Zapamti trenutak." : "Remember the moment."}</strong>
+    </div>
+  </div>
 
-      <button
-        type="button"
-        className="footer-link"
-        onClick={() => switchView("home")}
-      >
+  <div className="site-footer-inner">
+    <div className="footer-column">
+      <h4>{lang === "sr" ? "Explore" : "Explore"}</h4>
+
+      <button type="button" className="footer-link" onClick={() => switchView("home")}>
         {lang === "sr" ? "Početna" : "Home"}
       </button>
 
-      <button
-        type="button"
-        className="footer-link"
-        onClick={goToShop}
-      >
+      <button type="button" className="footer-link" onClick={goToShop}>
         Shop
       </button>
 
-      <button
-        type="button"
-        className="footer-link"
-        onClick={handleJournalOpen}
-      >
+      <button type="button" className="footer-link" onClick={handleJournalOpen}>
         Journal
       </button>
 
-      <button
-        type="button"
-        className="footer-link"
-        onClick={() => setStoryOpen(true)}
-      >
+      <button type="button" className="footer-link" onClick={() => setStoryOpen(true)}>
         {lang === "sr" ? "Naša priča" : "Our Story"}
-      </button>
-
-      <button
-        type="button"
-        className="footer-link"
-        onClick={() => setHowItWorksOpen(true)}
-      >
-        {lang === "sr" ? "Kako funkcioniše?" : "How it works"}
-      </button>
-
-      <button
-        type="button"
-        className="footer-link"
-        onClick={() => setPrivateSelectionOpen(true)}
-      >
-        Private Selection
       </button>
     </div>
 
-    <div className="footer-trust">
-      <h4>{lang === "sr" ? "Informacije" : "Information"}</h4>
+    <div className="footer-column">
+      <h4>{lang === "sr" ? "Service" : "Service"}</h4>
 
-      <p>
-        {lang === "sr"
-          ? "Dostava širom Crne Gore"
-          : "Delivery across Montenegro"}
-      </p>
+      <button type="button" className="footer-link" onClick={() => setHowItWorksOpen(true)}>
+        {lang === "sr" ? "Kako funkcioniše?" : "How it works"}
+      </button>
 
-      <p>
-        {lang === "sr"
-          ? "Besplatna dostava preko 39€"
-          : "Free shipping over €39"}
-      </p>
+      <button type="button" className="footer-link" onClick={() => setPrivateSelectionOpen(true)}>
+        Private Selection
+      </button>
+
+      <button
+        type="button"
+        className="footer-link"
+        onClick={() => {
+          document.getElementById("delivery-returns")?.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+        }}
+      >
+        {lang === "sr" ? "Dostava i povrat" : "Delivery & Returns"}
+      </button>
+    </div>
+
+    <div className="footer-column footer-contact-column">
+      <h4>{lang === "sr" ? "Contact" : "Contact"}</h4>
 
       <a href="mailto:order@playniceshop.me" className="footer-contact">
         order@playniceshop.me
@@ -7390,6 +7343,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       >
         @playnice.me
       </a>
+
+      <div className="social-links">
+        <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" aria-label="PlayNice Instagram">
+          <i className="fa-brands fa-instagram"></i>
+        </a>
+
+        <a href="https://wa.me/382XXXXXXXXX" target="_blank" rel="noreferrer" aria-label="PlayNice WhatsApp">
+          <i className="fa-brands fa-whatsapp"></i>
+        </a>
+
+        <a href="https://tiktok.com/@playnice" target="_blank" rel="noreferrer" aria-label="PlayNice TikTok">
+          <i className="fa-brands fa-tiktok"></i>
+        </a>
+      </div>
     </div>
   </div>
 
