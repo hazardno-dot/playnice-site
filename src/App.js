@@ -7364,8 +7364,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <div className="footer-column footer-contact-column">
       <h4>{lang === "sr" ? "Kontakt" : "Contact"}</h4>
 
-      <a href="mailto:order@playniceshop.me" className="footer-contact">
-        order@playniceshop.me
+      <a href="mailto:info@playniceshop.me" className="footer-contact">
+       info@playniceshop.me
       </a>
 
       <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" className="footer-contact">
@@ -7400,7 +7400,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         {lang === "sr" ? "Dostava i povrat" : "Delivery & Returns"}
       </button>
 
-      <a href="mailto:info@playniceshop.me" className="footer-mini-link">
+      <a href="mailto:order@playniceshop.me" className="footer-mini-link">
         {lang === "sr" ? "Kontakt" : "Contact"}
       </a>
     </div>
