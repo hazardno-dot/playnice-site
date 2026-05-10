@@ -3604,11 +3604,11 @@ Nema na čemu.
 Remember. PlayNice.`
   },
   relatedProducts: [
-    Emir Voux Zingy by Paris Corner,
-    Rayhaan Crimson Eau de Parfum,
-    Rasasi Hawas Black Eau de Parfum,
-    Khadlaj Onyx Silver,
-    Arabiyat Prestige Fahad Gaze
+    "Emir Voux Zingy by Paris Corner",
+    "Rayhaan Crimson Eau de Parfum",
+    "Rasasi Hawas Black Eau de Parfum",
+    "Khadlaj Onyx Silver",
+    "Arabiyat Prestige Fahad Gaze"
   ]
 }
 ];
