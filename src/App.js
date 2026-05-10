@@ -3543,9 +3543,7 @@ Mislim da smo svi malo umorni od toga da sve mora da izgleda savršeno.
 —
 
 Jer niko ne postavlja sliku trenutka kad sedi u kolima pet minuta u tišini pre nego što uđe kući.
-
 Niko ne kači kako je proveo 40 minuta gledajući šta da naruči i na kraju uzeo isto što uzima već tri godine.
-
 Niko ne objavljuje kako je pet puta napisao poruku i obrisao je jer nije znao kako da zvuči normalno.
 
 A baš se tu dešava pravi život.
@@ -3553,7 +3551,6 @@ A baš se tu dešava pravi život.
 —
 
 I iskreno, možda je najveći luksuz danas postalo to da ne moraš nikome ništa da dokazuješ.
-
 Da odeš na kafu i ne slikaš je.
 Da kupiš parfem jer se tebi sviđa, a ne zato što ga je neko nazvao “must have”.
 Da ti dan bude dobar čak i ako nije “content”.
@@ -3574,7 +3571,7 @@ Samo imaju bolje osvetljenje.
 
 —
 
-A da, inače… stiglo je i pet novih parfema na sajt.
+A da, inače… stiglo je i 5 novih parfema na sajt.
 
 Eto malo materijala za reels, story ili onu fotografiju gde zamišljeno gledaš kroz prozor automobila dok ti igra neki deep house u pozadini.
 
