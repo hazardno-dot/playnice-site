@@ -13733,53 +13733,53 @@ main {
 ========================================= */
 
 @keyframes shopOrbAttention {
-  0%, 72%, 100% {
+  0%, 68%, 100% {
     transform: translateX(0) rotate(0deg);
   }
 
-  74% {
+  70% {
     transform: translateX(-1px) rotate(-1deg);
   }
 
-  76% {
+  72% {
     transform: translateX(1px) rotate(1deg);
   }
 
-  78% {
+  74% {
     transform: translateX(-1px) rotate(-0.6deg);
   }
 
-  80% {
+  76% {
     transform: translateX(1px) rotate(0.6deg);
   }
 
-  82% {
+  78% {
     transform: translateX(0) rotate(0deg);
   }
 }
 
 @keyframes shopOrbAttentionDesktop {
-  0%, 72%, 100% {
+  0%, 68%, 100% {
     transform: translate(-50%, -50%) rotate(0deg);
   }
 
-  74% {
+  70% {
     transform: translate(calc(-50% - 1px), -50%) rotate(-1deg);
   }
 
-  76% {
+  72% {
     transform: translate(calc(-50% + 1px), -50%) rotate(1deg);
   }
 
-  78% {
+  74% {
     transform: translate(calc(-50% - 1px), -50%) rotate(-0.6deg);
   }
 
-  80% {
+  76% {
     transform: translate(calc(-50% + 1px), -50%) rotate(0.6deg);
   }
 
-  82% {
+  78% {
     transform: translate(-50%, -50%) rotate(0deg);
   }
 }
