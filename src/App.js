@@ -3522,7 +3522,7 @@ I odjednom svi negde putuju, svi imaju “jutarnje rutine”, svi treniraju u 6 
 
 A ti sediš kući, jedeš nešto iz dostave i razmišljaš da li je normalno što si danas već treći put otvorio frižider bez ikakvog konkretnog razloga.
 Naravno da jeste.
-Ali online život baš i ne voli ovaj običan, pravi život.
+Ali online život baš ne voli običan život.
 
 Online život voli da sve izgleda kao scena iz filma gde glavni lik tačno zna šta radi sa sobom, a realno… većina nas samo improvizuje dovoljno dobro da ne deluje potpuno izgubljeno.
 
