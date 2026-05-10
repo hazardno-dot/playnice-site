@@ -7277,7 +7277,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <p className="footer-brand-text">
         {lang === "sr"
-          ? "Kurirana selekcija designer, niche i Arabian parfema za one koji žele da probaju prije pune bočice."
+          ? "Kurirana selekcija designer, niche i Arabian parfema za one koji žele da probaju pre pune bočice."
           : "A curated selection of designer, niche and Arabian fragrances for those who want to try before committing to a full bottle."}
       </p>
 
