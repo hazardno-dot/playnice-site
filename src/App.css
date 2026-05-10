@@ -13636,6 +13636,81 @@ main {
 }
 
 /* =========================================
+   SHOP ORB — SIGNAL RIPPLES
+========================================= */
+
+.header-system .nav-links.is-shop::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  z-index: -1;
+
+  border-radius: 50%;
+  border: 1px solid rgba(220, 181, 107, 0.42);
+
+  opacity: 0;
+  pointer-events: none;
+
+  animation: shopOrbRipple 2.6s ease-out infinite;
+}
+
+.header-system .nav-links.is-shop {
+  overflow: visible;
+}
+
+.header-system .nav-links.is-shop::after {
+  z-index: 3;
+}
+
+@keyframes shopOrbRipple {
+  0% {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+
+  18% {
+    opacity: 0.42;
+  }
+
+  100% {
+    transform: scale(1.42);
+    opacity: 0;
+  }
+}
+
+.header-system .nav-links.is-shop .nav-link-shop::before {
+  content: "";
+  position: absolute;
+  inset: -40px;
+  z-index: -2;
+
+  border-radius: 50%;
+  border: 1px solid rgba(220, 181, 107, 0.24);
+
+  opacity: 0;
+  pointer-events: none;
+
+  animation: shopOrbRippleSoft 2.6s ease-out infinite;
+  animation-delay: 1.15s;
+}
+
+@keyframes shopOrbRippleSoft {
+  0% {
+    transform: scale(0.58);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.28;
+  }
+
+  100% {
+    transform: scale(1.05);
+    opacity: 0;
+  }
+}
+
+/* =========================================
    HEADER — RIGHT UTILITY PILL
 ========================================= */
 
