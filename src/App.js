@@ -7261,8 +7261,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </>
 )}
 
-<div className="section-divider"></div>
-
 <footer className="site-footer">
   <div className="site-footer-signature">
     <div className="footer-brand-block">
