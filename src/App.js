@@ -7262,8 +7262,34 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 )}
 
 <footer className="site-footer">
-  <div className="site-footer-signature">
-    <div className="footer-brand-block">
+  <div className="footer-benefits">
+    <div className="footer-benefit">
+      <i className="fa-solid fa-spray-can-sparkles"></i>
+      <strong>{lang === "sr" ? "Dekanti" : "Decants"}</strong>
+      <span>2ml, 5ml, 10ml, 20ml</span>
+    </div>
+
+    <div className="footer-benefit">
+      <i className="fa-solid fa-truck-fast"></i>
+      <strong>{lang === "sr" ? "Dostava" : "Delivery"}</strong>
+      <span>{lang === "sr" ? "Širom Crne Gore" : "Across Montenegro"}</span>
+    </div>
+
+    <div className="footer-benefit">
+      <i className="fa-solid fa-gift"></i>
+      <strong>{lang === "sr" ? "Besplatna dostava" : "Free shipping"}</strong>
+      <span>{lang === "sr" ? "Preko 39€" : "Over €39"}</span>
+    </div>
+
+    <div className="footer-benefit">
+      <i className="fa-solid fa-hand-holding-heart"></i>
+      <strong>{lang === "sr" ? "Plaćanje" : "Payment"}</strong>
+      <span>{lang === "sr" ? "Pouzećem" : "Cash on delivery"}</span>
+    </div>
+  </div>
+
+  <div className="site-footer-inner">
+    <div className="footer-brand">
       <div className="footer-logo">PlayNice</div>
       <div className="footer-tagline">Remember. PlayNice.</div>
 
@@ -7272,17 +7298,24 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           ? "Kurirana selekcija designer, niche i Arabian parfema za one koji žele da probaju pre pune bočice."
           : "A curated selection of designer, niche and Arabian fragrances for those who want to try before committing to a full bottle."}
       </p>
+
+      <div className="social-links">
+        <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" aria-label="PlayNice Instagram">
+          <i className="fa-brands fa-instagram"></i>
+        </a>
+
+        <a href="https://wa.me/382XXXXXXXXX" target="_blank" rel="noreferrer" aria-label="PlayNice WhatsApp">
+          <i className="fa-brands fa-whatsapp"></i>
+        </a>
+
+        <a href="https://tiktok.com/@playnice" target="_blank" rel="noreferrer" aria-label="PlayNice TikTok">
+          <i className="fa-brands fa-tiktok"></i>
+        </a>
+      </div>
     </div>
 
-    <div className="footer-statement">
-      <span>{lang === "sr" ? "Probaj miris." : "Try the scent."}</span>
-      <strong>{lang === "sr" ? "Zapamti trenutak." : "Remember the moment."}</strong>
-    </div>
-  </div>
-
-  <div className="site-footer-inner">
     <div className="footer-column">
-      <h4>{lang === "sr" ? "Explore" : "Explore"}</h4>
+      <h4>{lang === "sr" ? "Navigacija" : "Navigation"}</h4>
 
       <button type="button" className="footer-link" onClick={() => switchView("home")}>
         {lang === "sr" ? "Početna" : "Home"}
@@ -7302,7 +7335,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
 
     <div className="footer-column">
-      <h4>{lang === "sr" ? "Service" : "Service"}</h4>
+      <h4>{lang === "sr" ? "Servis" : "Service"}</h4>
 
       <button type="button" className="footer-link" onClick={() => setHowItWorksOpen(true)}>
         {lang === "sr" ? "Kako funkcioniše?" : "How it works"}
@@ -7327,38 +7360,23 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
 
     <div className="footer-column footer-contact-column">
-      <h4>{lang === "sr" ? "Contact" : "Contact"}</h4>
+      <h4>{lang === "sr" ? "Kontakt" : "Contact"}</h4>
 
       <a href="mailto:order@playniceshop.me" className="footer-contact">
         order@playniceshop.me
       </a>
 
-      <a
-        href="https://www.instagram.com/playnice.me/"
-        target="_blank"
-        rel="noreferrer"
-        className="footer-contact"
-      >
+      <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" className="footer-contact">
         @playnice.me
       </a>
 
-      <div className="social-links">
-        <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" aria-label="PlayNice Instagram">
-          <i className="fa-brands fa-instagram"></i>
-        </a>
-
-        <a href="https://wa.me/382XXXXXXXXX" target="_blank" rel="noreferrer" aria-label="PlayNice WhatsApp">
-          <i className="fa-brands fa-whatsapp"></i>
-        </a>
-
-        <a href="https://tiktok.com/@playnice" target="_blank" rel="noreferrer" aria-label="PlayNice TikTok">
-          <i className="fa-brands fa-tiktok"></i>
-        </a>
-      </div>
+      <p>{lang === "sr" ? "Dostava širom Crne Gore" : "Delivery across Montenegro"}</p>
     </div>
   </div>
 
-  <DeliveryReturnsMini surface="footer" />
+  <div id="delivery-returns">
+    <DeliveryReturnsMini surface="footer" />
+  </div>
 
   <div className="footer-bottom">
     <p>

@@ -8335,109 +8335,111 @@ main {
 }
 
 /* =========================================
-   FOOTER — COMPACT LUXURY
+   FOOTER — E-COMMERCE LUXURY
 ========================================= */
 
 .site-footer {
-  position: relative;
   width: min(calc(100% - 32px), var(--max));
   margin: 0 auto 22px;
-  padding: 22px 0 0;
-
+  padding: 0;
   border-top: 1px solid rgba(220, 181, 107, 0.1);
 }
 
-.site-footer-signature {
+.footer-benefits {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 28px;
-  align-items: center;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
 
-  padding: 0 0 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(220, 181, 107, 0.08);
 }
 
-.footer-brand-block {
-  max-width: 520px;
+.footer-benefit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+
+  padding: 0 14px;
+  text-align: center;
+}
+
+.footer-benefit:not(:last-child) {
+  border-right: 1px solid rgba(220, 181, 107, 0.08);
+}
+
+.footer-benefit i {
+  color: rgba(220, 181, 107, 0.72);
+  font-size: 1.15rem;
+  margin-bottom: 4px;
+}
+
+.footer-benefit strong {
+  color: rgba(246, 239, 230, 0.86);
+  font-size: 0.82rem;
+  line-height: 1.15;
+}
+
+.footer-benefit span {
+  color: rgba(255, 248, 235, 0.48);
+  font-size: 0.76rem;
+  line-height: 1.2;
+}
+
+.site-footer-inner {
+  display: grid;
+  grid-template-columns: 1.25fr 0.8fr 0.8fr 0.9fr;
+  gap: 34px;
+
+  padding: 26px 0 22px;
+}
+
+.footer-brand,
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .footer-logo {
   font-family: "Cormorant Garamond", serif;
-  font-size: 2.55rem;
-  line-height: 0.85;
-  letter-spacing: -0.04em;
+  font-size: 2.25rem;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
   color: #f6efe6;
 }
 
 .footer-tagline {
-  margin-top: 4px;
+  margin-top: 5px;
 
   color: rgba(220, 181, 107, 0.72);
-  font-size: 0.62rem;
+  font-size: 0.61rem;
   font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
 .footer-brand-text {
-  max-width: 500px;
+  max-width: 380px;
   margin: 14px 0 0;
 
-  color: rgba(255, 248, 235, 0.58);
-  font-size: 0.9rem;
-  line-height: 1.65;
-}
-
-.footer-statement {
-  min-width: 260px;
-  text-align: right;
-}
-
-.footer-statement span {
-  display: block;
-
-  color: rgba(220, 181, 107, 0.62);
-  font-size: 0.62rem;
-  font-weight: 900;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.footer-statement strong {
-  display: block;
-  margin-top: 6px;
-
-  font-family: "Cormorant Garamond", serif;
-  color: rgba(246, 239, 230, 0.92);
-  font-size: 1.8rem;
-  font-weight: 500;
-  line-height: 1;
-}
-
-.site-footer-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 26px;
-
-  padding: 18px 0;
-
-  border-top: 1px solid rgba(220, 181, 107, 0.07);
-  border-bottom: 1px solid rgba(220, 181, 107, 0.07);
-}
-
-.footer-column {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  color: rgba(255, 248, 235, 0.56);
+  font-size: 0.86rem;
+  line-height: 1.62;
 }
 
 .footer-column h4 {
-  margin: 0 0 5px;
+  margin: 0 0 13px;
 
-  color: rgba(220, 181, 107, 0.75);
-  font-size: 0.64rem;
+  color: rgba(220, 181, 107, 0.76);
+  font-size: 0.66rem;
   font-weight: 900;
   letter-spacing: 0.2em;
   text-transform: uppercase;
+}
+
+.footer-column {
+  gap: 8px;
 }
 
 .footer-link,
@@ -8451,8 +8453,8 @@ main {
 
   color: rgba(255, 248, 235, 0.58);
   font: inherit;
-  font-size: 0.9rem;
-  line-height: 1.28;
+  font-size: 0.86rem;
+  line-height: 1.32;
   text-align: left;
   text-decoration: none;
   cursor: pointer;
@@ -8469,17 +8471,49 @@ main {
   transform: translateX(2px);
 }
 
-.footer-contact-column {
-  align-items: flex-end;
-  text-align: right;
+.footer-contact-column p {
+  margin: 3px 0 0;
+
+  color: rgba(255, 248, 235, 0.5);
+  font-size: 0.82rem;
+  line-height: 1.45;
 }
 
-.footer-contact-column .footer-contact {
-  text-align: right;
+.social-links {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  margin-top: 15px;
 }
 
-.footer-contact-column .social-links {
-  justify-content: flex-end;
+.social-links a {
+  width: 30px;
+  height: 30px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.14);
+  background: rgba(255, 255, 255, 0.018);
+
+  color: rgba(255, 248, 235, 0.55);
+  font-size: 12px;
+  text-decoration: none;
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.social-links a:hover {
+  color: var(--gold);
+  border-color: rgba(220, 181, 107, 0.42);
+  transform: translateY(-1px);
+  box-shadow: 0 0 14px rgba(220, 181, 107, 0.12);
 }
 
 .footer-bottom {
@@ -8488,14 +8522,15 @@ main {
   justify-content: space-between;
   gap: 14px;
 
-  padding: 14px 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid rgba(220, 181, 107, 0.07);
 }
 
 .footer-bottom p {
   margin: 0;
 
   color: rgba(255, 248, 235, 0.38);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
 }
 
 .footer-bottom-links {
@@ -8506,7 +8541,7 @@ main {
 
 .footer-mini-link {
   color: rgba(255, 248, 235, 0.42);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
 }
 
 /* =========================================
@@ -8772,160 +8807,60 @@ main {
 }
 
 /* =========================================
-   RESPONSIVE
+   RESPONSIVE — FOOTER
 ========================================= */
 
 @media (max-width: 1024px) {
-  .site-footer-signature {
-    grid-template-columns: 1fr auto;
-    gap: 22px;
-  }
-
-  .footer-statement {
-    justify-self: start;
-    text-align: left;
+  .footer-benefits {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 16px 0;
   }
 
   .site-footer-inner {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: 1.1fr 0.8fr 0.8fr 0.9fr;
+    gap: 22px;
   }
 
-  .closing-shell {
-    padding: 48px 24px;
-  }
-
-  .closing-text {
-    font-size: 0.98rem;
-    line-height: 1.7;
+  .footer-brand-text {
+    max-width: 330px;
   }
 }
 
 @media (max-width: 768px) {
-  .closing-section,
-    .site-footer {
+  .site-footer {
     width: min(calc(100% - 24px), var(--max));
-    padding-top: 24px;
   }
 
-  .site-footer-signature {
-    grid-template-columns: 1fr;
-    gap: 18px;
-    padding-bottom: 20px;
+  .footer-benefits {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0;
   }
 
-  .footer-statement {
-    min-width: 0;
-    text-align: left;
+  .footer-benefit {
+    padding: 15px 10px;
   }
 
-  .footer-brand-text {
-    margin-top: 16px;
-    font-size: 0.94rem;
-    line-height: 1.72;
+  .footer-benefit:nth-child(2) {
+    border-right: 0;
+  }
+
+  .footer-benefit:nth-child(1),
+  .footer-benefit:nth-child(2) {
+    border-bottom: 1px solid rgba(220, 181, 107, 0.08);
   }
 
   .site-footer-inner {
-    grid-template-columns: 1fr;
-    gap: 22px;
-    padding: 22px 0;
+    grid-template-columns: 1fr 1fr;
+    gap: 26px 22px;
+    padding: 24px 0 20px;
   }
 
-  .footer-contact-column {
-    align-items: flex-start;
-    text-align: left;
+  .footer-brand {
+    grid-column: 1 / -1;
   }
 
-  .footer-contact-column .footer-contact {
-    text-align: left;
-  }
-
-  .footer-contact-column .social-links {
-    justify-content: flex-start;
-  }
-
-  .closing-shell {
-    padding: 42px 18px;
-    border-radius: 24px;
-  }
-
-  .closing-title {
-    font-size: clamp(2rem, 9vw, 3rem);
-  }
-
-  .closing-text {
-    margin-top: 16px;
-    font-size: 0.95rem;
-  }
-
-  .closing-actions {
-    margin-top: 22px;
-    gap: 10px;
-  }
-
-  .policy-strip {
-    margin: 2px 0 16px;
-    padding: 13px 14px;
-    border-radius: 16px;
-  }
-
-  .policy-title-row strong {
-    font-size: 1.02rem;
-  }
-
-  .policy-detail-row {
-    margin-top: 8px;
-    gap: 7px 11px;
-    font-size: 0.76rem;
-  }
-
-  .policy-detail-row span:not(:last-child)::after {
-    margin-left: 11px;
-  }
-
-  .policy-strip p {
-    font-size: 0.71rem;
-    line-height: 1.48;
-  }
-
-  .policy-compact {
-    padding: 9px 10px;
-  }
-
-  .policy-compact .policy-title-row strong {
-    font-size: 0.94rem;
-  }
-
-  .policy-compact .policy-detail-row {
-    font-size: 0.68rem;
-    gap: 5px 9px;
-  }
-
-  .policy-compact .policy-detail-row span:not(:last-child)::after {
-    margin-left: 9px;
-  }
-
-  .policy-compact p {
-    font-size: 0.66rem;
-    line-height: 1.34;
-  }
-
-  .policy-compact--checkout {
-    margin: 12px 0 16px;
-    padding: 10px 12px;
-    border-radius: 16px;
-  }
-
-  .policy-compact--checkout .policy-title-row strong {
-    font-size: 1.02rem;
-  }
-
-  .policy-compact--checkout p {
-    display: block;
-    margin: 6px 0 0;
-    color: rgba(255, 248, 235, 0.5);
-    font-size: 0.66rem;
-    line-height: 1.38;
+  .footer-brand-text {
+    max-width: 100%;
   }
 
   .footer-bottom {
@@ -8940,89 +8875,48 @@ main {
 }
 
 @media (max-width: 560px) {
+  .footer-benefits {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-benefit {
+    padding: 13px 8px;
+  }
+
+  .footer-benefit i {
+    font-size: 1rem;
+  }
+
+  .footer-benefit strong {
+    font-size: 0.76rem;
+  }
+
+  .footer-benefit span {
+    font-size: 0.7rem;
+  }
+
+  .site-footer-inner {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
   .footer-logo {
-    font-size: 2.35rem;
+    font-size: 2.05rem;
   }
 
   .footer-brand-text {
-    font-size: 0.86rem;
-    line-height: 1.58;
-  }
-
-  .footer-tagline {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-  }
-
-  .footer-statement strong {
-    font-size: 1.55rem;
-  }
-
-  .footer-column {
-    gap: 10px;
-  }
-
-  .footer-bottom p,
-  .footer-mini-link {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
+    line-height: 1.55;
   }
 
   .footer-link,
   .footer-contact {
-    font-size: 0.88rem;
+    font-size: 0.84rem;
   }
 
-  .policy-strip {
-    padding: 12px 13px;
-  }
-
-  .policy-detail-row {
-    align-items: flex-start;
-    gap: 6px 10px;
-  }
-
-  .policy-detail-row span {
-    white-space: normal;
-  }
-
-  .policy-strip p {
-    margin-top: 8px;
-    padding-top: 8px;
-  }
-
-  .policy-compact {
-    margin-top: 8px;
-  }
-
-  .policy-compact p {
-    margin-top: 5px;
-  }
-
-  .policy-compact--checkout {
-    margin: 12px 0 16px;
-    padding: 10px 12px;
-  }
-
-  .policy-compact--checkout .policy-detail-row {
-    gap: 5px 8px;
-    font-size: 0.66rem;
-  }
-
-  .policy-compact--checkout .policy-detail-row span:not(:last-child)::after {
-    margin-left: 8px;
-  }
-
-  .policy-compact--checkout p {
-    display: block;
-    margin: 6px 0 0;
-
-    color: rgba(255, 248, 235, 0.5);
-    font-size: 0.66rem;
-    line-height: 1.38;
-
-    overflow: visible;
-    -webkit-line-clamp: unset;
-    -webkit-box-orient: initial;
+  .footer-bottom p,
+  .footer-mini-link {
+    font-size: 0.78rem;
   }
 }
 
