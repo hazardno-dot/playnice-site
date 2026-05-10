@@ -7400,7 +7400,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         {lang === "sr" ? "Dostava i povrat" : "Delivery & Returns"}
       </button>
 
-      <a href="mailto:order@playniceshop.me" className="footer-mini-link">
+      <a href="mailto:info@playniceshop.me" className="footer-mini-link">
         {lang === "sr" ? "Kontakt" : "Contact"}
       </a>
     </div>
