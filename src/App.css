@@ -13681,7 +13681,7 @@ main {
 
   opacity: 0;
 
-  animation: shopSignalRipple 3.8s ease-out infinite;
+  animation: shopSignalRipple 4.8s ease-out infinite;
 }
 
 .header-system .shop-orb-ripples span:nth-child(2) {
