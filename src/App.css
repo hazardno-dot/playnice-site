@@ -13603,11 +13603,11 @@ main {
 
 .header-system .nav-shop-link {
   flex-direction: column;
-  gap: 7px;
+  gap: 9px;
 }
 
 .header-system .nav-shop-link.has-new-shop .nav-shop-link-text {
-  transform: translateY(3px);
+  transform: translateY(4px);
 }
 
 .header-system .shop-nav-new-badge {
@@ -13708,7 +13708,7 @@ main {
 ========================================= */
 
 @keyframes shopSignalRipple {
-  0%, 3% {
+  0%, 1% {
     transform: scale(0.88);
     opacity: 0;
   }
