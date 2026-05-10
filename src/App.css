@@ -8335,129 +8335,106 @@ main {
 }
 
 /* =========================================
-   FOOTER — PREMIUM EDITORIAL
+   FOOTER — COMPACT LUXURY
 ========================================= */
 
 .site-footer {
   position: relative;
   width: min(calc(100% - 32px), var(--max));
-  margin: 0 auto 24px;
-  padding: 34px 0 0;
+  margin: 0 auto 22px;
+  padding: 22px 0 0;
 
-  border-top: 1px solid rgba(220, 181, 107, 0.13);
-}
-
-.site-footer::before {
-  content: "";
-  position: absolute;
-  top: -1px;
-  left: 50%;
-  width: min(420px, 52vw);
-  height: 1px;
-  transform: translateX(-50%);
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(220, 181, 107, 0.62),
-    transparent
-  );
+  border-top: 1px solid rgba(220, 181, 107, 0.1);
 }
 
 .site-footer-signature {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 32px;
-  align-items: end;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: center;
 
-  padding: 0 0 30px;
+  padding: 0 0 18px;
 }
 
 .footer-brand-block {
-  max-width: 560px;
+  max-width: 520px;
 }
 
 .footer-logo {
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(2.4rem, 4vw, 4rem);
+  font-size: 2.55rem;
   line-height: 0.85;
   letter-spacing: -0.04em;
   color: #f6efe6;
 }
 
 .footer-tagline {
-  margin-top: 8px;
-
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
+  margin-top: 4px;
 
   color: rgba(220, 181, 107, 0.72);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 
 .footer-brand-text {
   max-width: 500px;
-  margin: 20px 0 0;
+  margin: 14px 0 0;
 
-  color: rgba(255, 248, 235, 0.62);
-  font-size: 1rem;
-  line-height: 1.85;
+  color: rgba(255, 248, 235, 0.58);
+  font-size: 0.9rem;
+  line-height: 1.65;
 }
 
 .footer-statement {
-  justify-self: end;
-  max-width: 360px;
-
+  min-width: 260px;
   text-align: right;
 }
 
 .footer-statement span {
   display: block;
 
-  color: rgba(255, 248, 235, 0.48);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  color: rgba(220, 181, 107, 0.62);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
 .footer-statement strong {
   display: block;
-  margin-top: 10px;
+  margin-top: 6px;
 
   font-family: "Cormorant Garamond", serif;
-  color: rgba(246, 239, 230, 0.95);
-  font-size: clamp(1.7rem, 2.6vw, 2.65rem);
+  color: rgba(246, 239, 230, 0.92);
+  font-size: 1.8rem;
   font-weight: 500;
   line-height: 1;
 }
 
 .site-footer-inner {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 26px;
 
-  padding: 28px 0;
+  padding: 18px 0;
 
-  border-top: 1px solid rgba(220, 181, 107, 0.08);
-  border-bottom: 1px solid rgba(220, 181, 107, 0.08);
+  border-top: 1px solid rgba(220, 181, 107, 0.07);
+  border-bottom: 1px solid rgba(220, 181, 107, 0.07);
 }
 
 .footer-column {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 11px;
-
-  min-height: 100%;
+  gap: 8px;
 }
 
 .footer-column h4 {
-  margin: 0 0 8px;
+  margin: 0 0 5px;
 
-  color: rgba(220, 181, 107, 0.78);
-  font-size: 0.72rem;
+  color: rgba(220, 181, 107, 0.75);
+  font-size: 0.64rem;
   font-weight: 900;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -8472,24 +8449,24 @@ main {
 
   padding: 0;
 
-  color: rgba(255, 248, 235, 0.64);
+  color: rgba(255, 248, 235, 0.58);
   font: inherit;
-  line-height: 1.35;
+  font-size: 0.9rem;
+  line-height: 1.28;
   text-align: left;
   text-decoration: none;
   cursor: pointer;
 
   transition:
-    color 0.22s ease,
-    transform 0.22s ease,
-    opacity 0.22s ease;
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .footer-link:hover,
 .footer-contact:hover,
 .footer-mini-link:hover {
   color: var(--gold);
-  transform: translateX(3px);
+  transform: translateX(2px);
 }
 
 .footer-contact-column {
@@ -8509,73 +8486,69 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
 
-  padding: 20px 0 0;
+  padding: 14px 0 0;
 }
 
 .footer-bottom p {
   margin: 0;
 
-  color: rgba(255, 248, 235, 0.42);
-  font-size: 0.88rem;
+  color: rgba(255, 248, 235, 0.38);
+  font-size: 0.82rem;
 }
 
 .footer-bottom-links {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
 }
 
 .footer-mini-link {
-  color: rgba(255, 248, 235, 0.46);
-  font-size: 0.88rem;
+  color: rgba(255, 248, 235, 0.42);
+  font-size: 0.82rem;
 }
 
 /* =========================================
-   SOCIAL LINKS — FOOTER
+   SOCIAL LINKS — FOOTER COMPACT
 ========================================= */
 
 .social-links {
   display: flex;
-  gap: 10px;
+  gap: 9px;
   align-items: center;
 
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .social-links a {
-  width: 36px;
-  height: 36px;
+  width: 31px;
+  height: 31px;
 
   display: grid;
   place-items: center;
 
   border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.16);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(220, 181, 107, 0.1), transparent 58%),
-    rgba(255, 255, 255, 0.018);
+  border: 1px solid rgba(220, 181, 107, 0.15);
+  background: rgba(255, 255, 255, 0.018);
 
-  color: rgba(255, 248, 235, 0.62);
-  font-size: 14px;
+  color: rgba(255, 248, 235, 0.56);
+  font-size: 12px;
   text-decoration: none;
 
   transition:
-    transform 0.22s ease,
-    color 0.22s ease,
-    border-color 0.22s ease,
-    box-shadow 0.22s ease;
+    transform 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .social-links a:hover {
   color: var(--gold);
-  border-color: rgba(220, 181, 107, 0.45);
-  transform: translateY(-2px);
+  border-color: rgba(220, 181, 107, 0.42);
+  transform: translateY(-1px);
 
-  box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.24),
-    0 0 18px rgba(220, 181, 107, 0.13);
+  box-shadow: 0 0 14px rgba(220, 181, 107, 0.12);
 }
 
 /* =========================================
@@ -8804,7 +8777,7 @@ main {
 
 @media (max-width: 1024px) {
   .site-footer-signature {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr auto;
     gap: 22px;
   }
 
@@ -8815,7 +8788,7 @@ main {
 
   .site-footer-inner {
     grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
+    gap: 20px;
   }
 
   .closing-shell {
@@ -8830,16 +8803,20 @@ main {
 
 @media (max-width: 768px) {
   .closing-section,
-  .site-footer {
+    .site-footer {
     width: min(calc(100% - 24px), var(--max));
-  }
-
-  .site-footer {
-    padding-top: 30px;
+    padding-top: 24px;
   }
 
   .site-footer-signature {
-    padding-bottom: 24px;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding-bottom: 20px;
+  }
+
+  .footer-statement {
+    min-width: 0;
+    text-align: left;
   }
 
   .footer-brand-text {
@@ -8850,8 +8827,8 @@ main {
 
   .site-footer-inner {
     grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 24px 0;
+    gap: 22px;
+    padding: 22px 0;
   }
 
   .footer-contact-column {
@@ -8964,7 +8941,12 @@ main {
 
 @media (max-width: 560px) {
   .footer-logo {
-    font-size: 2.55rem;
+    font-size: 2.35rem;
+  }
+
+  .footer-brand-text {
+    font-size: 0.86rem;
+    line-height: 1.58;
   }
 
   .footer-tagline {
@@ -8973,7 +8955,7 @@ main {
   }
 
   .footer-statement strong {
-    font-size: 1.85rem;
+    font-size: 1.55rem;
   }
 
   .footer-column {
@@ -8982,7 +8964,12 @@ main {
 
   .footer-bottom p,
   .footer-mini-link {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
+  }
+
+  .footer-link,
+  .footer-contact {
+    font-size: 0.88rem;
   }
 
   .policy-strip {
