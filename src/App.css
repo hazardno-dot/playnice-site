@@ -3854,7 +3854,7 @@ main {
   justify-content: center;
 
   border: 1px solid rgba(220, 181, 107, 0.24);
-  background: linear-gradient(135deg, #f0d7a3 0%, #ddb76d 42%, #cfa24e 100%);
+  background: linear-gradient(135deg, #ead19a 0%, #d5ad61 46%, #b98e45 100%);
   color: #111;
 
   font-family: "Inter", sans-serif;
@@ -3867,8 +3867,8 @@ main {
   overflow: hidden;
 
   box-shadow:
-    0 16px 38px rgba(220, 181, 107, 0.2),
-    inset 0 1px 0 rgba(255, 248, 232, 0.24);
+  0 14px 30px rgba(220, 181, 107, 0.14),
+  inset 0 1px 0 rgba(255, 248, 232, 0.20);
 
   transition:
     transform 0.22s ease,
@@ -4010,13 +4010,15 @@ main {
 .modal-add-button:hover {
   transform: translateY(-1px);
 
-  border-color: rgba(220, 181, 107, 0.32);
+  border-color: rgba(220, 181, 107, 0.30);
+
+  background: linear-gradient(135deg, #efd8a7 0%, #d8b263 46%, #bd9349 100%);
 
   box-shadow:
-    0 16px 34px rgba(220, 181, 107, 0.18),
+    0 16px 32px rgba(220, 181, 107, 0.16),
     inset 0 1px 0 rgba(255, 248, 232, 0.22);
 
-  filter: brightness(1.01);
+  filter: brightness(1.005);
 }
 
 .modal-add-button:active {
