@@ -3335,20 +3335,20 @@ main {
 .modal-image-wrap::after {
   content: "";
   position: absolute;
-  width: 240px;
-  height: 240px;
-  background: radial-gradient(circle, rgba(220, 181, 107, 0.16), transparent 70%);
-  filter: blur(40px);
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(220, 181, 107, 0.12), transparent 70%);
+  filter: blur(34px);
   z-index: 0;
 }
 
 .modal-image {
   position: relative;
   z-index: 1;
-  max-width: 84%;
-  max-height: 300px;
+  max-width: 96%;
+  max-height: 350px;
   object-fit: contain;
-  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.42));
+  filter: drop-shadow(0 24px 38px rgba(0, 0, 0, 0.40));
   transition: transform 240ms ease;
 }
 
