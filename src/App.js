@@ -3197,9 +3197,7 @@ Remember. PlayNice.`,
     sr: "Trebao sam da putujem motorom. Život je imao druge planove. I nekako… sve je ispalo kako treba.",
   },
   content: {
-    en: `The bus as destiny.
-
-I was supposed to travel by motorcycle, but the motorcycle decided not to be part of this story.
+    en: `I was supposed to travel by motorcycle, but the motorcycle decided not to be part of this story.
 The day before the trip something started acting up, nothing serious, but serious enough, and there’s not much philosophy there — the plan falls apart and you look for the next alternative. The bus.
 
 I wasn’t happy about it, but I was stubborn enough to still get somewhere, so I showed up at the station with that face that says “it’ll be fine.”
@@ -3234,9 +3232,7 @@ And yeah, this didn’t turn out that bad after all. 🙂
 
 Charlie
 Remember. PlayNice.`,
-    sr: `Autobus kao sudbina.
-
-Trebao sam da putujem motorom, ali motor je odlučio da ne učestvuje u ovoj priči.
+    sr: `Trebao sam da putujem motorom, ali motor je odlučio da ne učestvuje u ovoj priči.
 Dan pred put počne nešto da zeza, ništa strašno, ali dovoljno ozbiljno, i tu nema puno filozofije — plan se raspadne, a ti tražiš sledeću alternativu. Autobus.
 
 Nisam bio srećan zbog toga, ali sam bio uporan da ipak negde stignem, pa sam se pojavio na stanici sa tim izrazom lica koji govori “biće ok”.
@@ -3497,7 +3493,7 @@ You’re welcome.
 
 Charlie  
 Remember. PlayNice.`,
-    sr: `Samo imaju bolje osvetljenje.
+    sr: `Iskreno.
 
 Nekad čovek nije znao šta mu fali i bio je prilično miran zbog toga. Onda smo dobili društvene mreže.
 I odjednom svi negde putuju, svi imaju “jutarnje rutine”, svi treniraju u 6 ujutru, kuvaju kafu iz aparata koji košta kao polovan motor i izgledaju kao da nikad nisu seli mokrom guzicom na hladnu plastičnu stolicu ispred trafike.
