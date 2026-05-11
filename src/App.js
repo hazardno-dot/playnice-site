@@ -1,4 +1,10 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import "./App.css";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
@@ -19,7 +25,7 @@ const slugifyProduct = (name = "") =>
     .replace(/^-+|-+$/g, "");
 
 /* =========================================
-   SEO helper
+   SEO HELPERS
 ========================================= */
 const SITE_BASE_URL = "https://www.playniceshop.me";
 
@@ -29,7 +35,7 @@ const cleanSeoProductName = (name = "") =>
     .replace(/\s+/g, " ")
     .trim();
 
-    const getProductSlug = (product) => {
+const getProductSlug = (product) => {
   if (!product) return "";
 
   if (product.slug) {
@@ -76,7 +82,8 @@ const getProductFromCurrentUrl = () => {
   const slugFromUrl = decodeURIComponent(match[1]);
 
   return (
-    products.find((product) => getProductSlug(product) === slugFromUrl) || null
+    products.find((product) => getProductSlug(product) === slugFromUrl) ||
+    null
   );
 };
 
@@ -151,9 +158,9 @@ const getSeoSeasonText = (season, lang = "sr") => {
 const getSeoProductCopy = (product, lang = "sr") => {
   const cleanName = cleanSeoProductName(product?.name);
   const directCopy = productCopy?.[cleanName];
-  const fallbackCopy = productCopy?.[product?.name];
+  const fallbackProductCopy = productCopy?.[product?.name];
 
-  const copy = directCopy || fallbackCopy;
+  const copy = directCopy || fallbackProductCopy;
 
   if (copy?.modal?.[lang]) return copy.modal[lang];
   if (copy?.card?.[lang]) return copy.card[lang];
@@ -171,18 +178,26 @@ const getProductSeoTitle = (product, lang = "sr") => {
   return `${name} dekanti | Probaj prije kupovine | PlayNice`;
 };
 
-  const getProductSeoDescription = (product, lang = "sr") => {
+const getProductSeoDescription = (product, lang = "sr") => {
   const name = cleanSeoProductName(product?.name);
   const category = getSeoCategoryLabel(product?.category, lang);
   const sizes = getSeoProductSizes(product);
-  const sizeText = sizes.length ? sizes.join(", ") : lang === "en" ? "decants" : "dekantima";
+  const sizeText = sizes.length
+    ? sizes.join(", ")
+    : lang === "en"
+    ? "decants"
+    : "dekantima";
   const lowestPrice = getSeoLowestPrice(product);
   const productCopyText = getSeoProductCopy(product, lang);
   const seasonText = getSeoSeasonText(product?.season, lang);
 
   if (lang === "en") {
     return [
-      `${name} is available at PlayNice as ${getEnglishArticle(category)} ${category} in ${sizeText} sizes${lowestPrice ? ` from €${lowestPrice}` : ""}.`,
+      `${name} is available at PlayNice as ${getEnglishArticle(
+        category
+      )} ${category} in ${sizeText} sizes${
+        lowestPrice ? ` from €${lowestPrice}` : ""
+      }.`,
       productCopyText,
       seasonText,
       "Try before you buy, with delivery across Montenegro and payment on delivery."
@@ -192,7 +207,9 @@ const getProductSeoTitle = (product, lang = "sr") => {
   }
 
   return [
-    `${name} je dostupan u PlayNice ponudi kao ${category} u ${sizeText} dekantima${lowestPrice ? ` već od €${lowestPrice}` : ""}.`,
+    `${name} je dostupan u PlayNice ponudi kao ${category} u ${sizeText} dekantima${
+      lowestPrice ? ` već od €${lowestPrice}` : ""
+    }.`,
     productCopyText,
     seasonText,
     "Probaj parfem prije kupovine cijele bočice, uz dostavu širom Crne Gore i plaćanje pouzećem."
@@ -210,7 +227,7 @@ const getProductMetaDescription = (product, lang = "sr") => {
 };
 
 /* =========================================
-   Arabian fragrance "AN" HELPER
+   ARABIAN FRAGRANCE "AN" HELPER
 ========================================= */
 const getEnglishArticle = (text = "") => {
   const firstLetter = String(text).trim().charAt(0).toLowerCase();
@@ -221,7 +238,6 @@ const getEnglishArticle = (text = "") => {
 /* =========================================
    JSON-LD HELPER
 ========================================= */
-
 const getProductStructuredData = (product, lang = "sr") => {
   if (!product) return null;
 
@@ -349,9 +365,11 @@ function getDefaultLanguage() {
   if (typeof window === "undefined") return "sr";
 
   const savedLang = window.localStorage.getItem("playnice_lang");
+
   if (savedLang === "sr" || savedLang === "en") return savedLang;
 
   const browserLang = (window.navigator.language || "").toLowerCase();
+
   if (
     browserLang.startsWith("sr") ||
     browserLang.startsWith("hr") ||
@@ -415,7 +433,9 @@ function getProductCopy(product, lang) {
 
   return {
     miniTag:
-      copy.miniTag?.[lang] || copy.miniTag?.en || fallbackCopy.miniTag[lang],
+      copy.miniTag?.[lang] ||
+      copy.miniTag?.en ||
+      fallbackCopy.miniTag[lang],
     card: copy.card?.[lang] || copy.card?.en || fallbackCopy.card[lang],
     modal: copy.modal?.[lang] || copy.modal?.en || fallbackCopy.modal[lang],
     scentType:
@@ -464,7 +484,15 @@ const getRelatedJournalProducts = (article) => {
 
 const getJournalArticleKey = (article) => {
   if (!article) return "";
-  return article.id || article.slug || article.title?.en || article.title?.sr || article.title || "";
+
+  return (
+    article.id ||
+    article.slug ||
+    article.title?.en ||
+    article.title?.sr ||
+    article.title ||
+    ""
+  );
 };
 
 const getInitialView = () => {
@@ -565,7 +593,11 @@ const shuffleHeroSlides = (slides) => {
 
   for (let i = shuffled.length - 1; i > 0; i -= 1) {
     const randomIndex = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[i]];
+
+    [shuffled[i], shuffled[randomIndex]] = [
+      shuffled[randomIndex],
+      shuffled[i]
+    ];
   }
 
   return shuffled;
