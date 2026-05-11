@@ -3157,30 +3157,24 @@ main {
 .modal-inspired-mini {
   flex: 1.45;
   min-width: 0;
-  max-width: 450px;
+  max-width: 460px;
 
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
 
-  padding: 6px 12px;
-  min-height: 40px;
+  padding: 0;
+  min-height: auto;
 
-  border-radius: 12px;
-  border: 1px solid rgba(220, 181, 107, 0.12);
+  border: none;
+  border-radius: 0;
 
-  background:
-    radial-gradient(circle at top right, rgba(220, 181, 107, 0.045), transparent 46%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.024), rgba(255, 255, 255, 0.01)),
-    rgba(14, 14, 14, 0.68);
+  background: transparent;
+  box-shadow: none;
 
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.007),
-    0 6px 14px rgba(0, 0, 0, 0.10);
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .modal-inspired-mini-label {
