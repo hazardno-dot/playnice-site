@@ -2265,7 +2265,7 @@ useEffect(() => {
   openProductModal(matchedProduct, { updateUrl: false });
 }, []);
 
-const PRODUCT_MODAL_CLOSE_DELAY = 100;
+const PRODUCT_MODAL_CLOSE_DELAY = 80;
 
 const closeProductModal = () => {
   const isMobileModal = isMobileProductModal();
