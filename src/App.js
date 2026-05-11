@@ -2556,255 +2556,290 @@ function App() {
     };
   }, [selectedProduct, lang]);
 
-/* =========================================
-   INNER COMPONENTS
-========================================= */
-const ProductCard = ({
-  product,
-  wishlist,
-  toggleWishlist,
-  sprayingWishlistId
-}) => {
-  const copy = getProductCopy(product, lang);
-  const minPrice = getMinPrice(product);
-  const isWishlisted = wishlist.includes(product.id);
-  const isSpraying = sprayingWishlistId === product.id;
+  /* =========================================
+     INNER COMPONENTS
+  ========================================= */
+  const ProductCard = ({
+    product,
+    wishlist,
+    toggleWishlist,
+    sprayingWishlistId
+  }) => {
+    const copy = getProductCopy(product, lang);
+    const minPrice = getMinPrice(product);
+    const isWishlisted = wishlist.includes(product.id);
+    const isSpraying = sprayingWishlistId === product.id;
 
-  const getBadgeVariant = (miniTag = "") => {
-    const tag = miniTag.toLowerCase();
+    const getBadgeVariant = (miniTag = "") => {
+      const tag = miniTag.toLowerCase();
 
-    if (
-      tag.includes("bestseller") ||
-      tag.includes("top") ||
-      tag.includes("🔥")
-    ) {
-      return "badge-hot";
-    }
+      if (
+        tag.includes("bestseller") ||
+        tag.includes("top") ||
+        tag.includes("🔥")
+      ) {
+        return "badge-hot";
+      }
 
-    if (
-      tag.includes("fresh") ||
-      tag.includes("summer") ||
-      tag.includes("blue") ||
-      tag.includes("❄️")
-    ) {
-      return "badge-fresh";
-    }
+      if (
+        tag.includes("fresh") ||
+        tag.includes("summer") ||
+        tag.includes("blue") ||
+        tag.includes("❄️")
+      ) {
+        return "badge-fresh";
+      }
 
-    if (
-      tag.includes("sweet") ||
-      tag.includes("date") ||
-      tag.includes("gourmand") ||
-      tag.includes("🍯")
-    ) {
-      return "badge-sweet";
-    }
+      if (
+        tag.includes("sweet") ||
+        tag.includes("date") ||
+        tag.includes("gourmand") ||
+        tag.includes("🍯")
+      ) {
+        return "badge-sweet";
+      }
 
-    if (
-      tag.includes("luxury") ||
-      tag.includes("signature") ||
-      tag.includes("exclusive") ||
-      tag.includes("💎")
-    ) {
-      return "badge-luxury";
-    }
+      if (
+        tag.includes("luxury") ||
+        tag.includes("signature") ||
+        tag.includes("exclusive") ||
+        tag.includes("💎")
+      ) {
+        return "badge-luxury";
+      }
 
-    return "badge-default";
-  };
+      return "badge-default";
+    };
 
-  const getWearContext = (product, lang) => {
-  return productWearContext[product.name]?.[lang] || "";
-};
+    const getWearContext = (product, lang) => {
+      return productWearContext[product.name]?.[lang] || "";
+    };
 
-  const tr = translations[lang];
+    const tr = translations[lang];
 
-const getSizeWearHint = (size) => {
-  if (size === "2ml") return tr.wearHint_2ml;
-  if (size === "5ml") return tr.wearHint_5ml;
-  if (size === "10ml") return tr.wearHint_10ml;
-  if (size === "20ml") return tr.wearHint_20ml;
-  return "";
-};
+    const getSizeWearHint = (size) => {
+      if (size === "2ml") return tr.wearHint_2ml;
+      if (size === "5ml") return tr.wearHint_5ml;
+      if (size === "10ml") return tr.wearHint_10ml;
+      if (size === "20ml") return tr.wearHint_20ml;
 
-const titleLengthClass =
-  product.name.length > 44
-    ? "is-very-long-title"
-    : product.name.length > 32
-    ? "is-long-title"
-    : "";
+      return "";
+    };
 
-  return (
-  <article className="product-card premium-product-card">
-    <button
-      type="button"
-      className="product-card-media clickable-media"
-      onMouseDown={(e) => e.preventDefault()}
-      onClick={() => handleProductCardOpen(product)}
-      aria-label={product.name}
-    >
-      <img
-        src={product.image || "/placeholder.png"}
-        alt={product.name}
-        className="product-card-image"
-        loading="lazy"
-      />
+    const titleLengthClass =
+      product.name.length > 44
+        ? "is-very-long-title"
+        : product.name.length > 32
+        ? "is-long-title"
+        : "";
 
-      {product.isNew && (
-  <span className="product-new-badge">
-    {tr.justIn}
-  </span>
-)}
-    </button>
-
-    <button
-      type="button"
-      className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
-        isSpraying ? "is-spraying" : ""
-      }`}
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleWishlist(product.id);
-    }}
-    aria-label={
-      isWishlisted
-        ? lang === "sr"
-          ? `Ukloni ${product.name} iz wishlist`
-          : `Remove ${product.name} from wishlist`
-        : lang === "sr"
-        ? `Dodaj ${product.name} u wishlist`
-        : `Add ${product.name} to wishlist`
-    }
-  >
-    <span className="heart-icon" aria-hidden="true">
-      ♥
-    </span>
-  </button>
-
-  {copy.miniTag && (
-    <span
-      className={`product-floating-badge ${getBadgeVariant(copy.miniTag)}`}
-    >
-      {copy.miniTag}
-    </span>
-  )}
-
-  <div
-  className="product-meta premium-product-meta"
-  role="button"
-  tabIndex={0}
-  onClick={() => handleProductCardOpen(product)}
-  onKeyDown={(e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      handleProductCardOpen(product);
-    }
-  }}
->
-    <div className="product-meta-top">
-      <p className="product-category">{getCategoryLabel(product.category)}</p>
-      <h3 className={`product-card-title ${titleLengthClass}`}>
-  {product.name}
-</h3>
-    </div>
-
-    <div className="product-meta-middle">
-      <div className="product-card-copy-stack">
-        <p className="product-card-copy premium-card-copy">{copy.card}</p>
-
-        <p className="product-card-decant-note">
-          {getWearContext(product, lang)}
-        </p>
-      </div>
-    </div>
-
-    <div className="product-meta-bottom">
-      <div className="product-price-block">
-        <div className="product-price-row">
-          <span className="product-price-from premium-product-price">
-            <span className="price-prefix">{tr.tryFrom}</span>
-            <span className="price-value">€{minPrice}</span>
-          </span>
-        </div>
-      </div>
-
-      <div className="product-preview-line premium-preview-line single-line-preview">
-        <span className="product-card-cta">{tr.productCardCta}</span>
-      </div>
-    </div>
-  </div>
-
-  <div className="size-buttons" onClick={(e) => e.stopPropagation()}>
-    {Object.entries(product.sizes).map(([size, price]) => {
-      const feedbackKey = `${product.id}-${size}`;
-      const isJustAdded = inlineAddedKey === feedbackKey;
-      const isRecommendedSize = size === "5ml";
-      const wearHint = getSizeWearHint(size);
-
-      return (
+    return (
+      <article className="product-card premium-product-card">
         <button
-          key={size}
           type="button"
-          className={`size-chip ${isRecommendedSize ? "is-recommended" : ""}`}
+          className="product-card-media clickable-media"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => handleProductCardOpen(product)}
+          aria-label={product.name}
+        >
+          <img
+            src={product.image || "/placeholder.png"}
+            alt={product.name}
+            className="product-card-image"
+            loading="lazy"
+          />
+
+          {product.isNew && (
+            <span className="product-new-badge">{tr.justIn}</span>
+          )}
+        </button>
+
+        <button
+          type="button"
+          className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
+            isSpraying ? "is-spraying" : ""
+          }`}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            e.currentTarget.blur();
-
-            addToCart(product, size, null, null, { showToast: false });
-            triggerInlineAddedFeedback(product.id, size);
+            toggleWishlist(product.id);
           }}
+          aria-label={
+            isWishlisted
+              ? lang === "sr"
+                ? `Ukloni ${product.name} iz wishlist`
+                : `Remove ${product.name} from wishlist`
+              : lang === "sr"
+              ? `Dodaj ${product.name} u wishlist`
+              : `Add ${product.name} to wishlist`
+          }
         >
-          <span className="size-chip-main-wrap">
-            <span className="size-chip-main-row">
-              <span className="size-chip-main">{size}</span>
-
-              {isRecommendedSize && (
-                <span className="size-chip-recommended">
-                  {tr.sizeBestChoice}
-                </span>
-              )}
-            </span>
-
-            {wearHint && (
-              <span className="size-chip-wear-hint">{wearHint}</span>
-            )}
-          </span>
-
-          <span className="size-chip-price">{formatPrice(price)}</span>
-
-          <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
-            {tr.justAdded}
+          <span className="heart-icon" aria-hidden="true">
+            ♥
           </span>
         </button>
-      );
-    })}
-  </div>
-</article>
-  );
-};
 
-/* =========================================
-     DeliveryReturns MINI
-========================================= */
-const DeliveryReturnsMini = ({ surface = "footer" }) => {
-  const isSr = lang === "sr";
+        {copy.miniTag && (
+          <span
+            className={`product-floating-badge ${getBadgeVariant(
+              copy.miniTag
+            )}`}
+          >
+            {copy.miniTag}
+          </span>
+        )}
 
-  const labels = {
-    title: isSr ? "Dostava i povrat" : "Delivery & Returns",
-    delivery: isSr ? "Dostava širom CG" : "Delivery across Montenegro",
-    shipping: isSr ? "Dostava €4" : "Shipping €4",
-    free: isSr ? "Besplatno preko €39" : "Free over €39",
-    cod: isSr ? "Plaćanje pouzećem" : "Cash on delivery",
-    returnNote: isSr
-      ? "Otvoreni dekanti se ne vraćaju iz higijenskih razloga. Povrat je moguć za neotvoreno, nekorišćeno i neoštećeno pakovanje, ili u slučaju greške/oštećenja pri dostavi."
-      : "Opened decants cannot be returned for hygiene reasons. Returns are possible for unopened, unused and undamaged items, or in case of delivery error/damage."
+        <div
+          className="product-meta premium-product-meta"
+          role="button"
+          tabIndex={0}
+          onClick={() => handleProductCardOpen(product)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleProductCardOpen(product);
+            }
+          }}
+        >
+          <div className="product-meta-top">
+            <p className="product-category">
+              {getCategoryLabel(product.category)}
+            </p>
+
+            <h3 className={`product-card-title ${titleLengthClass}`}>
+              {product.name}
+            </h3>
+          </div>
+
+          <div className="product-meta-middle">
+            <div className="product-card-copy-stack">
+              <p className="product-card-copy premium-card-copy">
+                {copy.card}
+              </p>
+
+              <p className="product-card-decant-note">
+                {getWearContext(product, lang)}
+              </p>
+            </div>
+          </div>
+
+          <div className="product-meta-bottom">
+            <div className="product-price-block">
+              <div className="product-price-row">
+                <span className="product-price-from premium-product-price">
+                  <span className="price-prefix">{tr.tryFrom}</span>
+                  <span className="price-value">€{minPrice}</span>
+                </span>
+              </div>
+            </div>
+
+            <div className="product-preview-line premium-preview-line single-line-preview">
+              <span className="product-card-cta">{tr.productCardCta}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="size-buttons" onClick={(e) => e.stopPropagation()}>
+          {Object.entries(product.sizes).map(([size, price]) => {
+            const feedbackKey = `${product.id}-${size}`;
+            const isJustAdded = inlineAddedKey === feedbackKey;
+            const isRecommendedSize = size === "5ml";
+            const wearHint = getSizeWearHint(size);
+
+            return (
+              <button
+                key={size}
+                type="button"
+                className={`size-chip ${
+                  isRecommendedSize ? "is-recommended" : ""
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  e.currentTarget.blur();
+
+                  addToCart(product, size, null, null, {
+                    showToast: false
+                  });
+
+                  triggerInlineAddedFeedback(product.id, size);
+                }}
+              >
+                <span className="size-chip-main-wrap">
+                  <span className="size-chip-main-row">
+                    <span className="size-chip-main">{size}</span>
+
+                    {isRecommendedSize && (
+                      <span className="size-chip-recommended">
+                        {tr.sizeBestChoice}
+                      </span>
+                    )}
+                  </span>
+
+                  {wearHint && (
+                    <span className="size-chip-wear-hint">{wearHint}</span>
+                  )}
+                </span>
+
+                <span className="size-chip-price">{formatPrice(price)}</span>
+
+                <span
+                  className={`size-chip-flash ${isJustAdded ? "show" : ""}`}
+                >
+                  {tr.justAdded}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </article>
+    );
   };
 
-  if (surface === "footer") {
+  /* =========================================
+     DELIVERY / RETURNS MINI
+  ========================================= */
+  const DeliveryReturnsMini = ({ surface = "footer" }) => {
+    const isSr = lang === "sr";
+
+    const labels = {
+      title: isSr ? "Dostava i povrat" : "Delivery & Returns",
+      delivery: isSr ? "Dostava širom CG" : "Delivery across Montenegro",
+      shipping: isSr ? "Dostava €4" : "Shipping €4",
+      free: isSr ? "Besplatno preko €39" : "Free over €39",
+      cod: isSr ? "Plaćanje pouzećem" : "Cash on delivery",
+      returnNote: isSr
+        ? "Otvoreni dekanti se ne vraćaju iz higijenskih razloga. Povrat je moguć za neotvoreno, nekorišćeno i neoštećeno pakovanje, ili u slučaju greške/oštećenja pri dostavi."
+        : "Opened decants cannot be returned for hygiene reasons. Returns are possible for unopened, unused and undamaged items, or in case of delivery error/damage."
+    };
+
+    if (surface === "footer") {
+      return (
+        <section
+          id="delivery-returns"
+          className="policy-strip policy-strip--footer"
+          aria-label={labels.title}
+        >
+          <div className="policy-title-row">
+            <span className="policy-dot">✓</span>
+            <strong>{labels.title}</strong>
+          </div>
+
+          <div className="policy-detail-row">
+            <span>{labels.delivery}</span>
+            <span>{labels.shipping}</span>
+            <span>{labels.free}</span>
+            <span>{labels.cod}</span>
+          </div>
+
+          <p>{labels.returnNote}</p>
+        </section>
+      );
+    }
+
     return (
       <section
-        id="delivery-returns"
-        className="policy-strip policy-strip--footer"
+        className={`policy-compact policy-compact--${surface}`}
         aria-label={labels.title}
       >
         <div className="policy-title-row">
@@ -2822,333 +2857,306 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <p>{labels.returnNote}</p>
       </section>
     );
-  }
-
-  return (
-    <section
-      className={`policy-compact policy-compact--${surface}`}
-      aria-label={labels.title}
-    >
-      <div className="policy-title-row">
-        <span className="policy-dot">✓</span>
-        <strong>{labels.title}</strong>
-      </div>
-
-      <div className="policy-detail-row">
-        <span>{labels.delivery}</span>
-        <span>{labels.shipping}</span>
-        <span>{labels.free}</span>
-        <span>{labels.cod}</span>
-      </div>
-
-      <p>{labels.returnNote}</p>
-    </section>
-  );
-};
+  };
 
   /* =========================================
      RENDER
   ========================================= */
   return (
-  <div className="app-shell">
-
-  {shouldShowSideRails && (
-  <aside
-    className="side-ad-rails"
-    aria-label={
-      lang === "sr"
-        ? "PlayNice istaknuti partneri"
-        : "PlayNice featured partners"
-    }
-  >
-    {sideRailAds
-      .filter((ad) => ad.enabled)
-      .map((ad) => {
-        const railClassName = [
-          "side-ad-rail",
-          `side-ad-rail-${ad.side}`,
-          ad.isSponsored ? "side-ad-rail-sponsored" : "",
-        ]
-          .filter(Boolean)
-          .join(" ");
-
-        const railContent = (
-          <>
-            <span className="side-ad-label">{ad.label}</span>
-
-            {ad.logoSrc ? (
-  <span className="side-ad-logo-wrap">
-    <img
-      src={ad.logoSrc}
-      alt={ad.logoAlt || ad.label}
-      className="side-ad-logo"
-      loading="lazy"
-    />
-  </span>
-) : (
-  <span className="side-ad-icon" aria-hidden="true">
-    {ad.icon}
-  </span>
-)}
-
-            <span className="side-ad-title">
-              {ad.title.split("\n").map((line, index) => (
-                <span key={`${ad.id}-${index}`}>{line}</span>
-              ))}
-            </span>
-
-            <span className="side-ad-copy">{ad.text}</span>
-
-            <span className="side-ad-cta">
-              {ad.cta}
-              <span aria-hidden="true">→</span>
-            </span>
-          </>
-        );
-
-        if (ad.href) {
-          return (
-            <a
-              key={ad.id}
-              className={railClassName}
-              href={ad.href}
-              target="_blank"
-              rel="sponsored noopener noreferrer"
-              aria-label={`${ad.label}: ${ad.title.replace("\n", " ")}`}
-              onClick={() =>
-               handleSponsoredAdClick(ad, "desktop_left_side_rail")
-              }
-            >
-              {railContent}
-            </a>
-          );
-        }
-
-        return (
-          <button
-            key={ad.id}
-            type="button"
-            className={railClassName}
-            onClick={() => handleSideRailAction(ad)}
-          >
-            {railContent}
-          </button>
-        );
-      })}
-  </aside>
-)}
-
-<div className="header-system">
-  <header className="topbar topbar-enterprise">
-    <span className="topbar-connector" aria-hidden="true" />
-
-    <button
-      className="brand enterprise-brand"
-      type="button"
-      onClick={() => switchView("home")}
-      aria-label="PlayNice home"
-    >
-      <span className="brand-copy">
-        <strong className="brand-full">PlayNice</strong>
-        <strong className="brand-short" aria-hidden="true">
-          PN
-        </strong>
-        <small>Remember. PlayNice.</small>
-      </span>
-    </button>
-
-    <nav
-  className={`nav-links enterprise-main-nav ${
-    view === "shop" ? "is-shop" : "is-home"
-  } ${hasNewShopProducts ? "has-new-shop-signal" : ""}`}
-  aria-label="Primary navigation"
-    >
-      {hasNewShopProducts && (
-  <span className="shop-orb-ripples" aria-hidden="true">
-    <span></span>
-    <span></span>
-  </span>
-      )}
-      <button
-        className={`nav-link nav-link-home ${
-          view === "home" ? "active" : ""
-        }`}
-        type="button"
-        onClick={() => switchView("home")}
-      >
-        {tr.navHome}
-      </button>
-
-      <button
-        className={`nav-link nav-link-shop nav-shop-link ${
-          view === "shop" ? "active" : ""
-        } ${hasNewShopProducts ? "has-new-shop" : ""}`}
-        type="button"
-        onClick={goToShop}
-        aria-label={
-          hasNewShopProducts
-            ? lang === "sr"
-              ? "Shop, novi parfemi"
-              : "Shop, new fragrances"
-            : "Shop"
-        }
-      >
-        <span className="nav-shop-link-text">{tr.navShop}</span>
-
-        {hasNewShopProducts && <span className="shop-nav-new-badge">NEW</span>}
-      </button>
-    </nav>
-
-    <div className="topbar-right enterprise-utility">
-      <button
-        className="cart-button cart-button--icon-only"
-        type="button"
-        onClick={() => setCartOpen((prev) => !prev)}
-        aria-label={lang === "sr" ? "Korpa" : "Cart"}
-        title={lang === "sr" ? "Korpa" : "Cart"}
-      >
-        <span className="cart-icon" aria-hidden="true">
-          🛒
-        </span>
-        {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-      </button>
-
-      <button
-        className={`header-private-selection-btn ${
-          wishlist.length > 0 ? "has-items" : ""
-        }`}
-        onClick={() => setPrivateSelectionOpen(true)}
-        type="button"
-        aria-label="Private Selection"
-        title="Private Selection"
-      >
-        <span className="ps-heart" aria-hidden="true">
-          {wishlist.length > 0 ? "♥" : "♡"}
-        </span>
-
-        {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
-      </button>
-
-      <div
-        className={`language-compact ${languageMenuOpen ? "open" : ""}`}
-        onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) {
-            setLanguageMenuOpen(false);
+    <div className="app-shell">
+      {shouldShowSideRails && (
+        <aside
+          className="side-ad-rails"
+          aria-label={
+            lang === "sr"
+              ? "PlayNice istaknuti partneri"
+              : "PlayNice featured partners"
           }
-        }}
-      >
-        <button
-          className="language-current"
-          type="button"
-          aria-haspopup="menu"
-          aria-expanded={languageMenuOpen}
-          aria-label={lang === "sr" ? "Promeni jezik" : "Change language"}
-          onClick={() => setLanguageMenuOpen((prev) => !prev)}
         >
-          {lang.toUpperCase()}
-        </button>
+          {sideRailAds
+            .filter((ad) => ad.enabled)
+            .map((ad) => {
+              const railClassName = [
+                "side-ad-rail",
+                `side-ad-rail-${ad.side}`,
+                ad.isSponsored ? "side-ad-rail-sponsored" : ""
+              ]
+                .filter(Boolean)
+                .join(" ");
 
-        <div className="language-options" role="menu">
-          <button
-            className="language-option"
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              setLang(lang === "sr" ? "en" : "sr");
-              setLanguageMenuOpen(false);
-            }}
-          >
-            {lang === "sr" ? "EN" : "SR"}
-          </button>
-        </div>
-      </div>
-    </div>
-  </header>
+              const railContent = (
+                <>
+                  <span className="side-ad-label">{ad.label}</span>
 
-  <div
-    className={`announcement-bar announcement-bar-system ${
-      cart.length === 0
-        ? ""
-        : subtotal >= FREE_SHIPPING_THRESHOLD
-        ? "announcement-bar-success"
-        : "announcement-bar-warning"
-    }`}
-  >
-    <div className="announcement-bar-inner">
-      <div className="announcement-marquee">
-        <div className="announcement-track">
-          {[...announcementItems, ...announcementItems].map((item, index) => {
-            const itemClassName = `announcement-text ${
-              item.tone ? `announcement-${item.tone}` : ""
-            }`;
+                  {ad.logoSrc ? (
+                    <span className="side-ad-logo-wrap">
+                      <img
+                        src={ad.logoSrc}
+                        alt={ad.logoAlt || ad.label}
+                        className="side-ad-logo"
+                        loading="lazy"
+                      />
+                    </span>
+                  ) : (
+                    <span className="side-ad-icon" aria-hidden="true">
+                      {ad.icon}
+                    </span>
+                  )}
 
-            const iconClassName = `announcement-icon ${
-              item.tone ? `announcement-${item.tone}` : ""
-            }`;
+                  <span className="side-ad-title">
+                    {ad.title.split("\n").map((line, index) => (
+                      <span key={`${ad.id}-${index}`}>{line}</span>
+                    ))}
+                  </span>
 
-            const key = `${item.id || item.text}-${index}`;
+                  <span className="side-ad-copy">{ad.text}</span>
 
-            return (
-              <React.Fragment key={key}>
-                {item.type === "logoLink" ? (
+                  <span className="side-ad-cta">
+                    {ad.cta}
+                    <span aria-hidden="true">→</span>
+                  </span>
+                </>
+              );
+
+              if (ad.href) {
+                return (
                   <a
-                    className="announcement-logo-link announcement-logo-link-forever"
-                    href={item.href}
+                    key={ad.id}
+                    className={railClassName}
+                    href={ad.href}
                     target="_blank"
                     rel="sponsored noopener noreferrer"
-                    aria-label={item.logoAlt || item.text}
+                    aria-label={`${ad.label}: ${ad.title.replace("\n", " ")}`}
                     onClick={() =>
-                      handleSponsoredAdClick(item, "announcement_bar")
+                      handleSponsoredAdClick(ad, "desktop_left_side_rail")
                     }
                   >
-                    <img
-                      src={item.logoSrc}
-                      alt={item.logoAlt || item.text}
-                      className="announcement-logo-img"
-                      loading="lazy"
-                    />
+                    {railContent}
                   </a>
-                ) : item.action ? (
-                  <button
-                    type="button"
-                    className={`${itemClassName} announcement-action`}
-                    onClick={() => handleAnnouncementItemClick(item)}
-                    aria-label={item.text}
-                  >
-                    {item.text}
-                  </button>
-                ) : (
-                  <span className={itemClassName}>{item.text}</span>
+                );
+              }
+
+              return (
+                <button
+                  key={ad.id}
+                  type="button"
+                  className={railClassName}
+                  onClick={() => handleSideRailAction(ad)}
+                >
+                  {railContent}
+                </button>
+              );
+            })}
+        </aside>
+      )}
+
+      <div className="header-system">
+        <header className="site-header">
+          <div className="header-inner">
+            <button
+              type="button"
+              className="brand-mark brand-mark-button"
+              onClick={goHome}
+              aria-label={lang === "sr" ? "Idi na početnu" : "Go to homepage"}
+            >
+              <span className="brand-mark-main">PlayNice</span>
+              <span className="brand-mark-sub">Remember. PlayNice.</span>
+            </button>
+
+            <nav className="nav-links" aria-label="Primary navigation">
+              <button
+                type="button"
+                className={view === "home" ? "active" : ""}
+                onClick={goHome}
+              >
+                {tr.home}
+              </button>
+
+              <button
+                type="button"
+                className={view === "shop" ? "active" : ""}
+                onClick={goToShop}
+              >
+                {tr.shop}
+              </button>
+
+              <button
+                type="button"
+                className={view === "journal" ? "active" : ""}
+                onClick={handleJournalOpen}
+              >
+                <span
+                  className={`journal-nav-label ${
+                    hasNewJournalArticle ? "has-new-journal" : ""
+                  }`}
+                >
+                  {tr.journal}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setStoryOpen(true)}
+              >
+                {tr.story}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setHowItWorksOpen(true)}
+              >
+                {tr.howItWorks}
+              </button>
+            </nav>
+
+            <div className="header-actions">
+              <button
+                type="button"
+                className="header-icon-button selection-button"
+                onClick={() => setPrivateSelectionOpen(true)}
+                aria-label={tr.privateSelection}
+              >
+                <span className="selection-heart" aria-hidden="true">
+                  ♥
+                </span>
+
+                {wishlist.length > 0 && (
+                  <span className="header-count-badge">{wishlist.length}</span>
                 )}
+              </button>
 
-                <span className={iconClassName}>{item.icon}</span>
-              </React.Fragment>
-            );
-          })}
+              <button
+                type="button"
+                className="header-icon-button cart-button"
+                onClick={() => setCartOpen(true)}
+                aria-label={tr.cart}
+              >
+                <span aria-hidden="true">🛒</span>
+
+                {cartCount > 0 && (
+                  <span className="header-count-badge">{cartCount}</span>
+                )}
+              </button>
+
+              <div className="language-switcher">
+                <button
+                  type="button"
+                  className="language-button"
+                  aria-expanded={languageMenuOpen}
+                  aria-label={
+                    lang === "sr" ? "Promeni jezik" : "Change language"
+                  }
+                  onClick={() => setLanguageMenuOpen((prev) => !prev)}
+                >
+                  {lang.toUpperCase()}
+                </button>
+
+                <div className="language-options" role="menu">
+                  <button
+                    className="language-option"
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setLang(lang === "sr" ? "en" : "sr");
+                      setLanguageMenuOpen(false);
+                    }}
+                  >
+                    {lang === "sr" ? "EN" : "SR"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div
+          className={`announcement-bar announcement-bar-system ${
+            cart.length === 0
+              ? ""
+              : subtotal >= FREE_SHIPPING_THRESHOLD
+              ? "announcement-bar-success"
+              : "announcement-bar-warning"
+          }`}
+        >
+          <div className="announcement-bar-inner">
+            <div className="announcement-marquee">
+              <div className="announcement-track">
+                {[...announcementItems, ...announcementItems].map(
+                  (item, index) => {
+                    const itemClassName = `announcement-text ${
+                      item.tone ? `announcement-${item.tone}` : ""
+                    }`;
+
+                    const iconClassName = `announcement-icon ${
+                      item.tone ? `announcement-${item.tone}` : ""
+                    }`;
+
+                    const key = `${item.id || item.text}-${index}`;
+
+                    return (
+                      <React.Fragment key={key}>
+                        {item.type === "logoLink" ? (
+                          <a
+                            className="announcement-logo-link announcement-logo-link-forever"
+                            href={item.href}
+                            target="_blank"
+                            rel="sponsored noopener noreferrer"
+                            aria-label={item.logoAlt || item.text}
+                            onClick={() =>
+                              handleSponsoredAdClick(item, "announcement_bar")
+                            }
+                          >
+                            <img
+                              src={item.logoSrc}
+                              alt={item.logoAlt || item.text}
+                              className="announcement-logo-img"
+                              loading="lazy"
+                            />
+                          </a>
+                        ) : item.action ? (
+                          <button
+                            type="button"
+                            className={`${itemClassName} announcement-action`}
+                            onClick={() => handleAnnouncementItemClick(item)}
+                            aria-label={item.text}
+                          >
+                            {item.text}
+                          </button>
+                        ) : (
+                          <span className={itemClassName}>{item.text}</span>
+                        )}
+
+                        <span className={iconClassName}>{item.icon}</span>
+                      </React.Fragment>
+                    );
+                  }
+                )}
+              </div>
+            </div>
+
+            <div className="announcement-progress-shell">
+              <div className="announcement-progress-bar">
+                <div
+                  className="announcement-progress-fill"
+                  style={{
+                    width:
+                      cart.length === 0
+                        ? "100%"
+                        : `${Math.min(
+                            100,
+                            (subtotal / FREE_SHIPPING_THRESHOLD) * 100
+                          )}%`
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="announcement-progress-shell">
-        <div className="announcement-progress-bar">
-          <div
-            className="announcement-progress-fill"
-            style={{
-              width:
-                cart.length === 0
-                  ? "100%"
-                  : `${Math.min(
-                      100,
-                      (subtotal / FREE_SHIPPING_THRESHOLD) * 100
-                    )}%`
-            }}
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-{addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
+      {addedFeedback && (
+        <div className="added-feedback">{addedFeedback}</div>
+      )}
 
       <main>
         {view === "home" && (
