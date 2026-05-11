@@ -2007,183 +2007,188 @@ function App() {
     }));
   };
 
-  const handleInternationalEnquiry = async () => {
-  if (cart.length === 0) {
-    alert(tr.noItemsCart || (lang === "sr" ? "Korpa je prazna." : "Your cart is empty."));
-    return;
-  }
+    const handleInternationalEnquiry = async () => {
+    if (cart.length === 0) {
+      alert(
+        tr.noItemsCart ||
+          (lang === "sr" ? "Korpa je prazna." : "Your cart is empty.")
+      );
 
-  if (
-    !checkoutForm.firstName.trim() ||
-    !checkoutForm.lastName.trim() ||
-    !checkoutForm.email.trim() ||
-    !checkoutForm.phone.trim() ||
-    !checkoutForm.country.trim() ||
-    !checkoutForm.city.trim()
-  ) {
-    alert(
-      lang === "sr"
-        ? "Molimo unesite ime, prezime, email, telefon, zemlju i grad."
-        : "Please enter your first name, last name, email, phone, country and city."
-    );
-    return;
-  }
-
-  setIsSubmittingOrder(true);
-
-  try {
-    const payload = {
-      type: "international_enquiry",
-      customer: {
-        firstName: checkoutForm.firstName.trim(),
-        lastName: checkoutForm.lastName.trim(),
-        email: checkoutForm.email.trim(),
-        phone: checkoutForm.phone.trim(),
-        country: checkoutForm.country,
-        countryLabel: selectedCheckoutCountryLabel,
-        city: checkoutForm.city.trim(),
-        address: checkoutForm.address.trim(),
-        note: checkoutForm.note.trim()
-      },
-      items: cart,
-      subtotal,
-      shippingStatus: "to_be_confirmed",
-      totalStatus: "products_only_not_final",
-      language: lang,
-      source: "checkout_international_enquiry",
-      page: window.location.href,
-      createdAt: new Date().toISOString()
-    };
-
-    const response = await fetch("/api/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      throw new Error("International enquiry request failed");
+      return;
     }
 
-    setOrderSuccessMessage(
-      lang === "sr"
-        ? "Upit je poslat. Proverićemo mogućnost dostave van Crne Gore i javiti vam se uskoro."
-        : "Your enquiry has been sent. We’ll check delivery outside Montenegro and get back to you soon."
-    );
+    if (
+      !checkoutForm.firstName.trim() ||
+      !checkoutForm.lastName.trim() ||
+      !checkoutForm.email.trim() ||
+      !checkoutForm.phone.trim() ||
+      !checkoutForm.country.trim() ||
+      !checkoutForm.city.trim()
+    ) {
+      alert(
+        lang === "sr"
+          ? "Molimo unesite ime, prezime, email, telefon, zemlju i grad."
+          : "Please enter your first name, last name, email, phone, country and city."
+      );
 
-    setCheckoutForm({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      country: "ME",
-      city: "",
-      address: "",
-      note: ""
-    });
+      return;
+    }
 
-    setTimeout(() => {
-      setCheckoutOpen(false);
-      setCartOpen(false);
-    }, 2200);
-  } catch (error) {
-    alert(
-      lang === "sr"
-        ? "Došlo je do greške pri slanju upita. Molimo pokušajte ponovo ili nas kontaktirajte direktno."
-        : "Something went wrong while sending your enquiry. Please try again or contact us directly."
-    );
-  } finally {
-    setIsSubmittingOrder(false);
-  }
-};
+    setIsSubmittingOrder(true);
+
+    try {
+      const payload = {
+        type: "international_enquiry",
+        customer: {
+          firstName: checkoutForm.firstName.trim(),
+          lastName: checkoutForm.lastName.trim(),
+          email: checkoutForm.email.trim(),
+          phone: checkoutForm.phone.trim(),
+          country: checkoutForm.country,
+          countryLabel: selectedCheckoutCountryLabel,
+          city: checkoutForm.city.trim(),
+          address: checkoutForm.address.trim(),
+          note: checkoutForm.note.trim()
+        },
+        items: cart,
+        subtotal,
+        shippingStatus: "to_be_confirmed",
+        totalStatus: "products_only_not_final",
+        language: lang,
+        source: "checkout_international_enquiry",
+        page: window.location.href,
+        createdAt: new Date().toISOString()
+      };
+
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error("International enquiry request failed");
+      }
+
+      setOrderSuccessMessage(
+        lang === "sr"
+          ? "Upit je poslat. Proverićemo mogućnost dostave van Crne Gore i javiti vam se uskoro."
+          : "Your enquiry has been sent. We’ll check delivery outside Montenegro and get back to you soon."
+      );
+
+      setCheckoutForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        country: "ME",
+        city: "",
+        address: "",
+        note: ""
+      });
+
+      setTimeout(() => {
+        setCheckoutOpen(false);
+        setCartOpen(false);
+      }, 2200);
+    } catch (error) {
+      alert(
+        lang === "sr"
+          ? "Došlo je do greške pri slanju upita. Molimo pokušajte ponovo ili nas kontaktirajte direktno."
+          : "Something went wrong while sending your enquiry. Please try again or contact us directly."
+      );
+    } finally {
+      setIsSubmittingOrder(false);
+    }
+  };
 
   const handlePlaceOrder = async () => {
-  if (!isMontenegroOrder) {
-    handleInternationalEnquiry();
-    return;
-  }
-
-  if (cart.length === 0) {
-    alert(tr.emptyCartAlert);
-    return;
-  }
-
-  if (
-    !checkoutForm.firstName.trim() ||
-    !checkoutForm.lastName.trim() ||
-    !checkoutForm.email.trim() ||
-    !checkoutForm.phone.trim() ||
-    !checkoutForm.city.trim() ||
-    !checkoutForm.address.trim()
-  ) {
-    alert(tr.fillRequired);
-    return;
-  }
-
-  setIsSubmittingOrder(true);
-
-  try {
-    const payload = {
-      type: "order",
-      customer: {
-        firstName: checkoutForm.firstName.trim(),
-        lastName: checkoutForm.lastName.trim(),
-        email: checkoutForm.email.trim(),
-        phone: checkoutForm.phone.trim(),
-        country: checkoutForm.country,
-        countryLabel: selectedCheckoutCountryLabel,
-        city: checkoutForm.city.trim(),
-        address: checkoutForm.address.trim(),
-        note: checkoutForm.note.trim()
-      },
-      items: cart,
-      subtotal,
-      shipping,
-      total,
-      language: lang,
-      source: "checkout_order",
-      page: window.location.href,
-      createdAt: new Date().toISOString()
-    };
-
-    const response = await fetch("/api/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      throw new Error("Checkout request failed");
+    if (!isMontenegroOrder) {
+      handleInternationalEnquiry();
+      return;
     }
 
-    setOrderSuccessMessage(tr.orderSuccess);
-    setCart([]);
+    if (cart.length === 0) {
+      alert(tr.emptyCartAlert);
+      return;
+    }
 
-    setCheckoutForm({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      country: "ME",
-      city: "",
-      address: "",
-      note: ""
-    });
+    if (
+      !checkoutForm.firstName.trim() ||
+      !checkoutForm.lastName.trim() ||
+      !checkoutForm.email.trim() ||
+      !checkoutForm.phone.trim() ||
+      !checkoutForm.city.trim() ||
+      !checkoutForm.address.trim()
+    ) {
+      alert(tr.fillRequired);
+      return;
+    }
 
-    setTimeout(() => {
-      setCheckoutOpen(false);
-      setCartOpen(false);
-    }, 1800);
-  } catch (error) {
-    alert(tr.orderError);
-  } finally {
-    setIsSubmittingOrder(false);
-  }
-};
+    setIsSubmittingOrder(true);
+
+    try {
+      const payload = {
+        type: "order",
+        customer: {
+          firstName: checkoutForm.firstName.trim(),
+          lastName: checkoutForm.lastName.trim(),
+          email: checkoutForm.email.trim(),
+          phone: checkoutForm.phone.trim(),
+          country: checkoutForm.country,
+          countryLabel: selectedCheckoutCountryLabel,
+          city: checkoutForm.city.trim(),
+          address: checkoutForm.address.trim(),
+          note: checkoutForm.note.trim()
+        },
+        items: cart,
+        subtotal,
+        shipping,
+        total,
+        language: lang,
+        source: "checkout_order",
+        page: window.location.href,
+        createdAt: new Date().toISOString()
+      };
+
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error("Checkout request failed");
+      }
+
+      setOrderSuccessMessage(tr.orderSuccess);
+      setCart([]);
+
+      setCheckoutForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        country: "ME",
+        city: "",
+        address: "",
+        note: ""
+      });
+
+      setTimeout(() => {
+        setCheckoutOpen(false);
+        setCartOpen(false);
+      }, 1800);
+    } catch (error) {
+      alert(tr.orderError);
+    } finally {
+      setIsSubmittingOrder(false);
+    }
+  };
 
   const handleHeroTouchStart = (e) => {
     touchStartX.current = e.changedTouches[0].clientX;
@@ -2204,200 +2209,209 @@ function App() {
     }
   };
 
-  const goToPage = (pageNumber) => {
-  const safePageNumber = Math.min(Math.max(pageNumber, 1), totalPages);
+    const goToPage = (pageNumber) => {
+    const safePageNumber = Math.min(Math.max(pageNumber, 1), totalPages);
 
-  if (safePageNumber === currentPage) return;
+    if (safePageNumber === currentPage) return;
 
-  setCurrentPage(safePageNumber);
+    setCurrentPage(safePageNumber);
 
-  requestAnimationFrame(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-};
-
-const nextPage = () => {
-  goToPage(currentPage + 1);
-};
-
-const prevPage = () => {
-  goToPage(currentPage - 1);
-};
-
-const renderPagination = (position = "bottom") => {
-  if (totalPages <= 1) return null;
-
-  return (
-    <div className={`pagination-wrap pagination-wrap-${position}`}>
-      <button
-        type="button"
-        className="pagination-nav"
-        onClick={prevPage}
-        disabled={currentPage === 1}
-      >
-        {lang === "sr" ? "Nazad" : "Prev"}
-      </button>
-
-      <div className="pagination-numbers">
-        {Array.from({ length: totalPages }, (_, index) => {
-          const pageNumber = index + 1;
-
-          return (
-            <button
-              key={pageNumber}
-              type="button"
-              className={`pagination-number ${
-                currentPage === pageNumber ? "active" : ""
-              }`}
-              onClick={() => goToPage(pageNumber)}
-              aria-label={
-                lang === "sr"
-                  ? `Idi na stranicu ${pageNumber}`
-                  : `Go to page ${pageNumber}`
-              }
-              aria-current={currentPage === pageNumber ? "page" : undefined}
-            >
-              {pageNumber}
-            </button>
-          );
-        })}
-      </div>
-
-      <button
-        type="button"
-        className="pagination-nav"
-        onClick={nextPage}
-        disabled={currentPage === totalPages}
-      >
-        {lang === "sr" ? "Dalje" : "Next"}
-      </button>
-    </div>
-  );
-};
-
-  const getProductUrl = (product) => {
-  if (!product?.name) return "/shop";
-
-  return `/product/${slugifyProduct(product.name)}`;
-};
-
-const isMobileProductModal = () =>
-  window.matchMedia("(max-width: 640px)").matches;
-
-const openProductModal = (product, options = {}) => {
-  if (!product) return;
-
-  const { updateUrl = true } = options;
-  const isMobileModal = isMobileProductModal();
-
-  if (productModalCloseTimeoutRef.current) {
-    clearTimeout(productModalCloseTimeoutRef.current);
-    productModalCloseTimeoutRef.current = null;
-  }
-
-  productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
-
-  setView("shop");
-  setSelectedProduct(product);
-  setSelectedSize(Object.keys(product.sizes || {})[0] || "");
-  setHasUserPickedSize(false);
-
-  if (isMobileModal) {
-    setProductModalVisible(true);
-  } else {
-    setProductModalVisible(false);
-  }
-
-  if (updateUrl) {
-    const productUrl = getProductUrl(product);
-
-    if (window.location.pathname !== productUrl) {
-      window.history.pushState({}, "", productUrl);
-    }
-
-    trackPageView(productUrl);
-    trackMeta("PageView");
-  }
-
-  if (!isMobileModal) {
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setProductModalVisible(true);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
       });
     });
-  }
-};
+  };
 
-const handleProductCardOpen = (product) => {
-  openProductModal(product);
+  const nextPage = () => {
+    goToPage(currentPage + 1);
+  };
 
-  if (!product?.isNew || !newProductsSignature) return;
+  const prevPage = () => {
+    goToPage(currentPage - 1);
+  };
 
-  localStorage.setItem(SHOP_NEW_PRODUCTS_SEEN_KEY, newProductsSignature);
-  setHasNewShopProducts(false);
-};
+  const renderPagination = (position = "bottom") => {
+    if (totalPages <= 1) return null;
 
-useEffect(() => {
-  const path = window.location.pathname;
+    return (
+      <div className={`pagination-wrap pagination-wrap-${position}`}>
+        <button
+          type="button"
+          className="pagination-nav"
+          onClick={prevPage}
+          disabled={currentPage === 1}
+        >
+          {lang === "sr" ? "Nazad" : "Prev"}
+        </button>
 
-  if (!path.startsWith("/product/")) return;
+        <div className="pagination-numbers">
+          {Array.from({ length: totalPages }, (_, index) => {
+            const pageNumber = index + 1;
 
-  const slugFromUrl = decodeURIComponent(
-    path.replace("/product/", "").replace(/\/$/, "")
-  );
+            return (
+              <button
+                key={pageNumber}
+                type="button"
+                className={`pagination-number ${
+                  currentPage === pageNumber ? "active" : ""
+                }`}
+                onClick={() => goToPage(pageNumber)}
+                aria-label={
+                  lang === "sr"
+                    ? `Idi na stranicu ${pageNumber}`
+                    : `Go to page ${pageNumber}`
+                }
+                aria-current={
+                  currentPage === pageNumber ? "page" : undefined
+                }
+              >
+                {pageNumber}
+              </button>
+            );
+          })}
+        </div>
 
-  const matchedProduct = products.find(
-    (product) => getProductSlug(product) === slugFromUrl
-  );
+        <button
+          type="button"
+          className="pagination-nav"
+          onClick={nextPage}
+          disabled={currentPage === totalPages}
+        >
+          {lang === "sr" ? "Dalje" : "Next"}
+        </button>
+      </div>
+    );
+  };
 
-  if (!matchedProduct) {
+  const getProductUrl = (product) => {
+    if (!product?.name) return "/shop";
+
+    return `/product/${slugifyProduct(product.name)}`;
+  };
+
+  const isMobileProductModal = () =>
+    window.matchMedia("(max-width: 640px)").matches;
+
+  const openProductModal = (product, options = {}) => {
+    if (!product) return;
+
+    const { updateUrl = true } = options;
+    const isMobileModal = isMobileProductModal();
+
+    if (productModalCloseTimeoutRef.current) {
+      clearTimeout(productModalCloseTimeoutRef.current);
+      productModalCloseTimeoutRef.current = null;
+    }
+
+    productModalScrollYRef.current =
+      window.scrollY || window.pageYOffset || 0;
+
     setView("shop");
-    window.history.replaceState({}, "", "/shop");
-    return;
-  }
+    setSelectedProduct(product);
+    setSelectedSize(Object.keys(product.sizes || {})[0] || "");
+    setHasUserPickedSize(false);
 
-  openProductModal(matchedProduct, { updateUrl: false });
-}, []);
+    if (isMobileModal) {
+      setProductModalVisible(true);
+    } else {
+      setProductModalVisible(false);
+    }
 
-const closeProductModal = () => {
-  const isMobileModal = isMobileProductModal();
+    if (updateUrl) {
+      const productUrl = getProductUrl(product);
 
-  setProductModalVisible(false);
-  setHasUserPickedSize(false);
+      if (window.location.pathname !== productUrl) {
+        window.history.pushState({}, "", productUrl);
+      }
 
-  if (productModalCloseTimeoutRef.current) {
-    clearTimeout(productModalCloseTimeoutRef.current);
-    productModalCloseTimeoutRef.current = null;
-  }
-
-  const cleanupProductModal = () => {
-    setSelectedProduct(null);
-    setSelectedSize("");
-    productModalCloseTimeoutRef.current = null;
-
-    if (window.location.pathname.startsWith("/product/")) {
-      window.history.pushState({}, "", "/shop");
-      trackPageView("/shop");
+      trackPageView(productUrl);
       trackMeta("PageView");
+    }
+
+    if (!isMobileModal) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setProductModalVisible(true);
+        });
+      });
     }
   };
 
-  if (isMobileModal) {
-    cleanupProductModal();
-    return;
-  }
+  const handleProductCardOpen = (product) => {
+    openProductModal(product);
 
-  productModalCloseTimeoutRef.current = setTimeout(() => {
-    cleanupProductModal();
-  }, 200);
-};
+    if (!product?.isNew || !newProductsSignature) return;
 
-const openImpactProductModal = (product) => {
-  openProductModal(product);
-};
+    localStorage.setItem(SHOP_NEW_PRODUCTS_SEEN_KEY, newProductsSignature);
+    setHasNewShopProducts(false);
+  };
+
+  useEffect(() => {
+    const path = window.location.pathname;
+
+    if (!path.startsWith("/product/")) return;
+
+    const slugFromUrl = decodeURIComponent(
+      path.replace("/product/", "").replace(/\/$/, "")
+    );
+
+    const matchedProduct = products.find(
+      (product) => getProductSlug(product) === slugFromUrl
+    );
+
+    if (!matchedProduct) {
+      setView("shop");
+      window.history.replaceState({}, "", "/shop");
+      return;
+    }
+
+    openProductModal(matchedProduct, {
+      updateUrl: false
+    });
+  }, []);
+
+    const closeProductModal = () => {
+    const isMobileModal = isMobileProductModal();
+
+    setProductModalVisible(false);
+    setHasUserPickedSize(false);
+
+    if (productModalCloseTimeoutRef.current) {
+      clearTimeout(productModalCloseTimeoutRef.current);
+      productModalCloseTimeoutRef.current = null;
+    }
+
+    const cleanupProductModal = () => {
+      setSelectedProduct(null);
+      setSelectedSize("");
+      productModalCloseTimeoutRef.current = null;
+
+      if (window.location.pathname.startsWith("/product/")) {
+        window.history.pushState({}, "", "/shop");
+        trackPageView("/shop");
+        trackMeta("PageView");
+      }
+    };
+
+    if (isMobileModal) {
+      cleanupProductModal();
+      return;
+    }
+
+    productModalCloseTimeoutRef.current = setTimeout(() => {
+      cleanupProductModal();
+    }, 200);
+  };
+
+  const openImpactProductModal = (product) => {
+    openProductModal(product);
+  };
 
   const getCategoryLabel = (categoryKey) => {
     if (categoryKey === "All") return tr.all;
+
     return categoryLabels[categoryKey]?.[lang] || categoryKey;
   };
 
@@ -2406,136 +2420,141 @@ const openImpactProductModal = (product) => {
   };
 
   useEffect(() => {
-  const productFromUrl = getProductFromCurrentUrl();
+    const productFromUrl = getProductFromCurrentUrl();
 
-  if (!productFromUrl) {
-    return;
-  }
+    if (!productFromUrl) {
+      return;
+    }
 
-  setSelectedProduct(productFromUrl);
-  setView("shop");
-}, []);
+    setSelectedProduct(productFromUrl);
+    setView("shop");
+  }, []);
 
-/* =========================================
-   SEO title/meta useEffect
-========================================= */
+  /* =========================================
+     SEO TITLE / META USEEFFECT
+  ========================================= */
   useEffect(() => {
-  const seoTitle = selectedProduct
-    ? getProductSeoTitle(selectedProduct, lang)
-    : view === "shop"
-    ? lang === "en"
-      ? "Shop | Premium fragrances and decants in Montenegro | PlayNice"
-      : "Shop | Premium parfemi i dekanti u Crnoj Gori | PlayNice"
-    : view === "journal"
-    ? lang === "en"
-      ? "Journal | Fragrance stories and recommendations | PlayNice"
-      : "Journal | Mirisne priče i preporuke | PlayNice"
-    : lang === "en"
-    ? "PlayNice | Premium fragrances and decants in Montenegro"
-    : "PlayNice | Premium parfemi i dekanti u Crnoj Gori";
+    const seoTitle = selectedProduct
+      ? getProductSeoTitle(selectedProduct, lang)
+      : view === "shop"
+      ? lang === "en"
+        ? "Shop | Premium fragrances and decants in Montenegro | PlayNice"
+        : "Shop | Premium parfemi i dekanti u Crnoj Gori | PlayNice"
+      : view === "journal"
+      ? lang === "en"
+        ? "Journal | Fragrance stories and recommendations | PlayNice"
+        : "Journal | Mirisne priče i preporuke | PlayNice"
+      : lang === "en"
+      ? "PlayNice | Premium fragrances and decants in Montenegro"
+      : "PlayNice | Premium parfemi i dekanti u Crnoj Gori";
 
-  const seoDescription = selectedProduct
-    ? getProductMetaDescription(selectedProduct, lang)
-    : view === "shop"
-    ? lang === "en"
-      ? "Explore the PlayNice collection of premium fragrance decants in Montenegro. Designer, niche and Arabian fragrances with delivery across Montenegro."
-      : "Istraži PlayNice kolekciju premium parfema i dekanata u Crnoj Gori. Designer, niche i Arabian mirisi, dostava širom Crne Gore."
-    : view === "journal"
-    ? lang === "en"
-      ? "PlayNice Journal brings short fragrance stories, recommendations and guides for choosing the right perfume."
-      : "PlayNice Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
-    : lang === "en"
-    ? "Premium fragrance decants and original perfumes in Montenegro. Try before you buy with PlayNice — designer, niche and Arabian fragrances."
-    : "Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi.";
+    const seoDescription = selectedProduct
+      ? getProductMetaDescription(selectedProduct, lang)
+      : view === "shop"
+      ? lang === "en"
+        ? "Explore the PlayNice collection of premium fragrance decants in Montenegro. Designer, niche and Arabian fragrances with delivery across Montenegro."
+        : "Istraži PlayNice kolekciju premium parfema i dekanata u Crnoj Gori. Designer, niche i Arabian mirisi, dostava širom Crne Gore."
+      : view === "journal"
+      ? lang === "en"
+        ? "PlayNice Journal brings short fragrance stories, recommendations and guides for choosing the right perfume."
+        : "PlayNice Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
+      : lang === "en"
+      ? "Premium fragrance decants and original perfumes in Montenegro. Try before you buy with PlayNice — designer, niche and Arabian fragrances."
+      : "Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi.";
 
-  const seoUrl = selectedProduct
-    ? getSeoProductUrl(selectedProduct)
-    : view === "shop"
-    ? `${SITE_BASE_URL}/shop`
-    : view === "journal"
-    ? `${SITE_BASE_URL}/journal`
-    : `${SITE_BASE_URL}/`;
+    const seoUrl = selectedProduct
+      ? getSeoProductUrl(selectedProduct)
+      : view === "shop"
+      ? `${SITE_BASE_URL}/shop`
+      : view === "journal"
+      ? `${SITE_BASE_URL}/journal`
+      : `${SITE_BASE_URL}/`;
 
-  const seoImage = selectedProduct
-    ? getSeoProductImage(selectedProduct)
-    : `${SITE_BASE_URL}/og-image.jpg`;
+    const seoImage = selectedProduct
+      ? getSeoProductImage(selectedProduct)
+      : `${SITE_BASE_URL}/og-image.jpg`;
 
-  document.title = seoTitle;
+    document.title = seoTitle;
 
-  const setMeta = (selector, attribute, value) => {
-    let element = document.head.querySelector(selector);
+    const setMeta = (selector, attribute, value) => {
+      let element = document.head.querySelector(selector);
 
-    if (!element) {
-      if (selector.startsWith("link")) {
-        element = document.createElement("link");
-        element.setAttribute("rel", "canonical");
-      } else {
-        element = document.createElement("meta");
+      if (!element) {
+        if (selector.startsWith("link")) {
+          element = document.createElement("link");
+          element.setAttribute("rel", "canonical");
+        } else {
+          element = document.createElement("meta");
 
-        const nameMatch = selector.match(/name="([^"]+)"/);
-        const propertyMatch = selector.match(/property="([^"]+)"/);
+          const nameMatch = selector.match(/name="([^"]+)"/);
+          const propertyMatch = selector.match(/property="([^"]+)"/);
 
-        if (nameMatch?.[1]) {
-          element.setAttribute("name", nameMatch[1]);
+          if (nameMatch?.[1]) {
+            element.setAttribute("name", nameMatch[1]);
+          }
+
+          if (propertyMatch?.[1]) {
+            element.setAttribute("property", propertyMatch[1]);
+          }
         }
 
-        if (propertyMatch?.[1]) {
-          element.setAttribute("property", propertyMatch[1]);
-        }
+        document.head.appendChild(element);
       }
 
-      document.head.appendChild(element);
+      element.setAttribute(attribute, value);
+    };
+
+    setMeta('meta[name="description"]', "content", seoDescription);
+    setMeta('link[rel="canonical"]', "href", seoUrl);
+
+    setMeta('meta[property="og:title"]', "content", seoTitle);
+    setMeta('meta[property="og:description"]', "content", seoDescription);
+    setMeta('meta[property="og:url"]', "content", seoUrl);
+    setMeta('meta[property="og:image"]', "content", seoImage);
+    setMeta(
+      'meta[property="og:type"]',
+      "content",
+      selectedProduct ? "product" : "website"
+    );
+
+    setMeta('meta[name="twitter:title"]', "content", seoTitle);
+    setMeta('meta[name="twitter:description"]', "content", seoDescription);
+    setMeta('meta[name="twitter:image"]', "content", seoImage);
+    setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
+  }, [view, selectedProduct, lang]);
+
+  /* =========================================
+     SEO EXISTING SCHEMA USEEFFECT
+  ========================================= */
+  useEffect(() => {
+    const existingSchema = document.getElementById("playnice-product-schema");
+
+    if (existingSchema) {
+      existingSchema.remove();
     }
 
-    element.setAttribute(attribute, value);
-  };
+    if (!selectedProduct) return;
 
-  setMeta('meta[name="description"]', "content", seoDescription);
-  setMeta('link[rel="canonical"]', "href", seoUrl);
+    const schema = getProductStructuredData(selectedProduct, lang);
 
-  setMeta('meta[property="og:title"]', "content", seoTitle);
-  setMeta('meta[property="og:description"]', "content", seoDescription);
-  setMeta('meta[property="og:url"]', "content", seoUrl);
-  setMeta('meta[property="og:image"]', "content", seoImage);
-  setMeta('meta[property="og:type"]', "content", selectedProduct ? "product" : "website");
+    if (!schema) return;
 
-  setMeta('meta[name="twitter:title"]', "content", seoTitle);
-  setMeta('meta[name="twitter:description"]', "content", seoDescription);
-  setMeta('meta[name="twitter:image"]', "content", seoImage);
-  setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
-}, [view, selectedProduct, lang]);
+    const script = document.createElement("script");
 
-/* =========================================
-   SEO existingSchema useEffect
-========================================= */
-useEffect(() => {
-  const existingSchema = document.getElementById("playnice-product-schema");
+    script.id = "playnice-product-schema";
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify(schema);
 
-  if (existingSchema) {
-    existingSchema.remove();
-  }
+    document.head.appendChild(script);
 
-  if (!selectedProduct) return;
+    return () => {
+      const currentSchema = document.getElementById("playnice-product-schema");
 
-  const schema = getProductStructuredData(selectedProduct, lang);
-
-  if (!schema) return;
-
-  const script = document.createElement("script");
-  script.id = "playnice-product-schema";
-  script.type = "application/ld+json";
-  script.textContent = JSON.stringify(schema);
-
-  document.head.appendChild(script);
-
-  return () => {
-    const currentSchema = document.getElementById("playnice-product-schema");
-
-    if (currentSchema) {
-      currentSchema.remove();
-    }
-  };
-}, [selectedProduct, lang]);
+      if (currentSchema) {
+        currentSchema.remove();
+      }
+    };
+  }, [selectedProduct, lang]);
 
 /* =========================================
    INNER COMPONENTS
