@@ -1239,7 +1239,7 @@ function App() {
     trackPageView(path || "/");
   }, []);
 
-  useEffect(() => {
+    useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
         document.body.classList.add("scrolled");
@@ -1249,237 +1249,185 @@ function App() {
     };
 
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-  const hasBlockingLayer =
-    !!selectedProduct ||
-    cartOpen ||
-    checkoutOpen ||
-    storyOpen ||
-    howItWorksOpen ||
-    privateSelectionOpen ||
-    journalOpen ||
-    !!selectedArticle ||
-    !!catalogPreview;
+    const hasBlockingLayer =
+      !!selectedProduct ||
+      cartOpen ||
+      checkoutOpen ||
+      storyOpen ||
+      howItWorksOpen ||
+      privateSelectionOpen ||
+      journalOpen ||
+      !!selectedArticle ||
+      !!catalogPreview;
 
-  const shouldShow =
-    !hasBlockingLayer &&
-    (view === "home" ||
-      view === "shop" ||
-      cartCount > 0 ||
-      wishlist.length > 0);
+    const shouldShow =
+      !hasBlockingLayer &&
+      (view === "home" ||
+        view === "shop" ||
+        cartCount > 0 ||
+        wishlist.length > 0);
 
-  setShowStickyCta(shouldShow);
-}, [
-  view,
-  selectedProduct,
-  cartOpen,
-  checkoutOpen,
-  storyOpen,
-  howItWorksOpen,
-  privateSelectionOpen,
-  journalOpen,
-  selectedArticle,
-  catalogPreview,
-  cartCount,
-  wishlist.length
-]);
+    setShowStickyCta(shouldShow);
+  }, [
+    view,
+    selectedProduct,
+    cartOpen,
+    checkoutOpen,
+    storyOpen,
+    howItWorksOpen,
+    privateSelectionOpen,
+    journalOpen,
+    selectedArticle,
+    catalogPreview,
+    cartCount,
+    wishlist.length
+  ]);
 
   useEffect(() => {
-  if (selectedProduct) {
-    const id = requestAnimationFrame(() => {
-      setProductModalVisible(true);
-    });
-    return () => cancelAnimationFrame(id);
-  } else {
+    if (selectedProduct) {
+      const id = requestAnimationFrame(() => {
+        setProductModalVisible(true);
+      });
+
+      return () => cancelAnimationFrame(id);
+    }
+
     setProductModalVisible(false);
-  }
-}, [selectedProduct]);
+  }, [selectedProduct]);
 
-useEffect(() => {
-  return () => {
-    if (productModalCloseTimeoutRef.current) {
-      clearTimeout(productModalCloseTimeoutRef.current);
-    }
-  };
-}, []);
-
-useEffect(() => {
-  try {
-    const saved = localStorage.getItem("playnice_journal_feedback");
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (parsed && typeof parsed === "object") {
-        setJournalFeedback(parsed);
-      }
-    }
-  } catch (error) {
-    console.error("Failed to restore journal feedback:", error);
-  }
-}, []);
-
-useEffect(() => {
-  setJournalFeedbackSubmitted(false);
-  setJournalVoteSuccess("");
-}, [selectedArticle]);
-
-useEffect(() => {
-  return () => {
-    if (modalAddedTimeoutRef.current) {
-      clearTimeout(modalAddedTimeoutRef.current);
-    }
-  };
-}, []);
-
-useEffect(() => {
-  const handlePopState = () => {
-    setView(getInitialView());
-
-    requestAnimationFrame(() => {
-      smoothScrollToTop();
-    });
-  };
-
-  window.addEventListener("popstate", handlePopState);
-
-  return () => {
-    window.removeEventListener("popstate", handlePopState);
-  };
-}, []);
-
-/* feedback helper */
-
-const sendJournalFeedback = (article, override = {}) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return;
-
-  const saved = journalFeedback[key] || {};
-  const vote = override.vote ?? saved.vote ?? "";
-  const note = (override.note ?? saved.note ?? "").trim();
-
-  if (!vote) return;
-
-  try {
-    const payloadToSend = JSON.stringify({
-      timestamp: new Date().toISOString(),
-      article: key,
-      articleTitle: getJournalText(article?.title, lang),
-      vote,
-      note,
-      lang,
-      page: window.location.pathname,
-      source: "journal"
-    });
-
-    const blob = new Blob([payloadToSend], {
-      type: "text/plain;charset=utf-8"
-    });
-
-    navigator.sendBeacon(
-      "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
-      blob
-    );
-  } catch (error) {
-    console.error("Journal feedback submit failed:", error);
-  }
-};
-
-const getJournalSavedFeedback = (article) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return null;
-  return journalFeedback[key] || null;
-};
-
-const triggerJournalVoteSuccess = (vote) => {
-  setJournalVoteSuccess(vote);
-
-  setTimeout(() => {
-    setJournalVoteSuccess("");
-  }, 1100);
-};
-
-const handleJournalFeedbackVote = (article, vote) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return;
-
-  setJournalFeedbackSubmitted(false);
-
-  const current = journalFeedback[key] || {};
-  const nextVote = vote;
-
-  const nextFeedback = {
-    ...journalFeedback,
-    [key]: {
-      ...current,
-      vote: nextVote,
-      submittedAt: nextVote ? Date.now() : current.submittedAt || null
-    }
-  };
-
-  setJournalFeedback(nextFeedback);
-
-  try {
-    localStorage.setItem(
-      "playnice_journal_feedback",
-      JSON.stringify(nextFeedback)
-    );
-  } catch (error) {
-    console.error("Journal feedback storage failed:", error);
-  }
-
-  if (!nextVote) return;
-
-  sendJournalFeedback(article, {
-    vote: nextVote,
-    note: (current.note || "").trim()
-  });
-
-  triggerJournalVoteSuccess(nextVote);
-};
-
-const handleJournalFeedbackNoteChange = (article, value) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return;
-
-  setJournalFeedback((prev) => {
-    const current = prev[key] || {};
-    return {
-      ...prev,
-      [key]: {
-        ...current,
-        note: value
+  useEffect(() => {
+    return () => {
+      if (productModalCloseTimeoutRef.current) {
+        clearTimeout(productModalCloseTimeoutRef.current);
       }
     };
-  });
-};
+  }, []);
 
-const handleJournalFeedbackSubmit = (article) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return;
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("playnice_journal_feedback");
 
-  const current = journalFeedback[key] || {};
-  const trimmedNote = (current.note || "").trim();
+      if (saved) {
+        const parsed = JSON.parse(saved);
 
-  if (!current.vote || !trimmedNote) return;
+        if (parsed && typeof parsed === "object") {
+          setJournalFeedback(parsed);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to restore journal feedback:", error);
+    }
+  }, []);
 
-  sendJournalFeedback(article, {
-    vote: current.vote,
-    note: trimmedNote
-  });
+  useEffect(() => {
+    setJournalFeedbackSubmitted(false);
+    setJournalVoteSuccess("");
+  }, [selectedArticle]);
 
-  setJournalFeedback((prev) => {
-    const prevItem = prev[key] || {};
+  useEffect(() => {
+    return () => {
+      if (modalAddedTimeoutRef.current) {
+        clearTimeout(modalAddedTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setView(getInitialView());
+
+      requestAnimationFrame(() => {
+        smoothScrollToTop();
+      });
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+  /* =========================================
+     JOURNAL FEEDBACK HELPERS
+  ========================================= */
+  const sendJournalFeedback = (article, override = {}) => {
+    const key = getJournalArticleKey(article);
+
+    if (!key) return;
+
+    const saved = journalFeedback[key] || {};
+    const vote = override.vote ?? saved.vote ?? "";
+    const note = (override.note ?? saved.note ?? "").trim();
+
+    if (!vote) return;
+
+    try {
+      const payloadToSend = JSON.stringify({
+        timestamp: new Date().toISOString(),
+        article: key,
+        articleTitle: getJournalText(article?.title, lang),
+        vote,
+        note,
+        lang,
+        page: window.location.pathname,
+        source: "journal"
+      });
+
+      const blob = new Blob([payloadToSend], {
+        type: "text/plain;charset=utf-8"
+      });
+
+      navigator.sendBeacon(
+        "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
+        blob
+      );
+    } catch (error) {
+      console.error("Journal feedback submit failed:", error);
+    }
+  };
+
+  const getJournalSavedFeedback = (article) => {
+    const key = getJournalArticleKey(article);
+
+    if (!key) return null;
+
+    return journalFeedback[key] || null;
+  };
+
+  const triggerJournalVoteSuccess = (vote) => {
+    setJournalVoteSuccess(vote);
+
+    setTimeout(() => {
+      setJournalVoteSuccess("");
+    }, 1100);
+  };
+
+  const handleJournalFeedbackVote = (article, vote) => {
+    const key = getJournalArticleKey(article);
+
+    if (!key) return;
+
+    setJournalFeedbackSubmitted(false);
+
+    const current = journalFeedback[key] || {};
+    const nextVote = vote;
 
     const nextFeedback = {
-      ...prev,
+      ...journalFeedback,
       [key]: {
-        ...prevItem,
-        note: "",
-        submittedAt: Date.now()
+        ...current,
+        vote: nextVote,
+        submittedAt: nextVote ? Date.now() : current.submittedAt || null
       }
     };
+
+    setJournalFeedback(nextFeedback);
 
     try {
       localStorage.setItem(
@@ -1490,314 +1438,374 @@ const handleJournalFeedbackSubmit = (article) => {
       console.error("Journal feedback storage failed:", error);
     }
 
-    return nextFeedback;
-  });
+    if (!nextVote) return;
 
-  setJournalFeedbackSubmitted(true);
-  setJournalFeedbackSuccess(true);
+    sendJournalFeedback(article, {
+      vote: nextVote,
+      note: (current.note || "").trim()
+    });
 
-  setTimeout(() => {
-    setJournalFeedbackSuccess(false);
-  }, 1200);
-};
+    triggerJournalVoteSuccess(nextVote);
+  };
 
-const handleJournalClose = () => {
-  setJournalOpen(false);
-  setSelectedArticle(null);
-  switchView("home");
-};
+  const handleJournalFeedbackNoteChange = (article, value) => {
+    const key = getJournalArticleKey(article);
 
-/* =========================================
-   DERIVED DATA
-========================================= */
+    if (!key) return;
 
-const sortedJournalArticles = useMemo(() => {
-  if (!journalArticles?.length) return [];
+    setJournalFeedback((prev) => {
+      const current = prev[key] || {};
 
-  return [...journalArticles].sort((a, b) => {
-    const aId = Number(a?.id || 0);
-    const bId = Number(b?.id || 0);
+      return {
+        ...prev,
+        [key]: {
+          ...current,
+          note: value
+        }
+      };
+    });
+  };
 
-    return bId - aId;
-  });
-}, [journalArticles]);
+  const handleJournalFeedbackSubmit = (article) => {
+    const key = getJournalArticleKey(article);
 
-const latestJournalArticle = sortedJournalArticles?.[0] || null;
+    if (!key) return;
 
-const latestJournalArticleKey = latestJournalArticle?.id
-  ? String(latestJournalArticle.id)
-  : "";
+    const current = journalFeedback[key] || {};
+    const trimmedNote = (current.note || "").trim();
 
-const hasNewJournalArticle =
-  Boolean(latestJournalArticleKey) &&
-  String(seenLatestJournalKey) !== String(latestJournalArticleKey);
+    if (!current.vote || !trimmedNote) return;
 
-const journalUnreadCount = hasNewJournalArticle ? 1 : 0;
+    sendJournalFeedback(article, {
+      vote: current.vote,
+      note: trimmedNote
+    });
 
-const markLatestJournalAsSeen = () => {
-  if (!latestJournalArticleKey) return;
+    setJournalFeedback((prev) => {
+      const prevItem = prev[key] || {};
 
-  const keyToSave = String(latestJournalArticleKey);
+      const nextFeedback = {
+        ...prev,
+        [key]: {
+          ...prevItem,
+          note: "",
+          submittedAt: Date.now()
+        }
+      };
 
-  try {
-    window.localStorage.setItem(JOURNAL_SEEN_KEY, keyToSave);
-  } catch (error) {
-    console.error("Failed to save seen journal article:", error);
-  }
+      try {
+        localStorage.setItem(
+          "playnice_journal_feedback",
+          JSON.stringify(nextFeedback)
+        );
+      } catch (error) {
+        console.error("Journal feedback storage failed:", error);
+      }
 
-  setSeenLatestJournalKey(keyToSave);
-};
+      return nextFeedback;
+    });
 
-const handleJournalOpen = () => {
-  setJournalOpen(true);
-  setSelectedArticle(null);
-  switchView("journal");
-};
+    setJournalFeedbackSubmitted(true);
+    setJournalFeedbackSuccess(true);
 
-const handleJournalArticleOpen = (article) => {
-  if (!article) return;
+    setTimeout(() => {
+      setJournalFeedbackSuccess(false);
+    }, 1200);
+  };
 
-  setJournalOpen(true);
-  setSelectedArticle(article);
+  const handleJournalClose = () => {
+    setJournalOpen(false);
+    setSelectedArticle(null);
+    switchView("home");
+  };
 
-  if (String(article.id) === String(latestJournalArticleKey)) {
-    markLatestJournalAsSeen();
-  }
+  /* =========================================
+     DERIVED DATA
+  ========================================= */
+  const sortedJournalArticles = useMemo(() => {
+    if (!journalArticles?.length) return [];
 
-  switchView("journal");
-};
+    return [...journalArticles].sort((a, b) => {
+      const aId = Number(a?.id || 0);
+      const bId = Number(b?.id || 0);
 
-const announcementItems = useMemo(() => {
-  const latestJournalTitle = latestJournalArticle
-    ? getJournalText(latestJournalArticle.title, lang)
+      return bId - aId;
+    });
+  }, [journalArticles]);
+
+  const latestJournalArticle = sortedJournalArticles?.[0] || null;
+
+  const latestJournalArticleKey = latestJournalArticle?.id
+    ? String(latestJournalArticle.id)
     : "";
 
-  const shopNewAnnouncementItem = hasNewShopProducts
-    ? {
-        id: "new-shop-products-announcement",
-        text:
-          lang === "sr"
-            ? "Novi parfemi su stigli u PlayNice"
-            : "New fragrances just arrived at PlayNice",
-        icon: "→",
-        tone: "new-shop",
-        action: "openShop",
-      }
-    : null;
+  const hasNewJournalArticle =
+    Boolean(latestJournalArticleKey) &&
+    String(seenLatestJournalKey) !== String(latestJournalArticleKey);
 
-  const journalAnnouncementItem =
-    hasNewJournalArticle && latestJournalArticle && latestJournalTitle
+  const journalUnreadCount = hasNewJournalArticle ? 1 : 0;
+
+  const markLatestJournalAsSeen = () => {
+    if (!latestJournalArticleKey) return;
+
+    const keyToSave = String(latestJournalArticleKey);
+
+    try {
+      window.localStorage.setItem(JOURNAL_SEEN_KEY, keyToSave);
+    } catch (error) {
+      console.error("Failed to save seen journal article:", error);
+    }
+
+    setSeenLatestJournalKey(keyToSave);
+  };
+
+  const handleJournalOpen = () => {
+    setJournalOpen(true);
+    setSelectedArticle(null);
+    switchView("journal");
+  };
+
+  const handleJournalArticleOpen = (article) => {
+    if (!article) return;
+
+    setJournalOpen(true);
+    setSelectedArticle(article);
+
+    if (String(article.id) === String(latestJournalArticleKey)) {
+      markLatestJournalAsSeen();
+    }
+
+    switchView("journal");
+  };
+
+  const announcementItems = useMemo(() => {
+    const latestJournalTitle = latestJournalArticle
+      ? getJournalText(latestJournalArticle.title, lang)
+      : "";
+
+    const shopNewAnnouncementItem = hasNewShopProducts
       ? {
-          id: "latest-journal-announcement",
+          id: "new-shop-products-announcement",
           text:
             lang === "sr"
-              ? `Novo u Journalu: ${latestJournalTitle}`
-              : `New in Journal: ${latestJournalTitle}`,
+              ? "Novi parfemi su stigli u PlayNice"
+              : "New fragrances just arrived at PlayNice",
           icon: "→",
-          tone: "journal",
-          action: "openLatestJournalArticle",
+          tone: "new-shop",
+          action: "openShop"
         }
       : null;
 
-  const foreverAnnouncementItem = {
-    id: "forever-announcement-logo",
-    type: "logoLink",
-    text: "Forever Living Products",
-    icon: "★",
-    tone: "forever",
-    href: foreverAloeUrl,
-    logoSrc: "/partners/forever-logo-wide.png",
-    logoAlt: "Forever Living Products",
-    partner: "forever_living",
-    sellerId: "360000920762",
-    campaign: "aloe_drinks",
-  };
+    const journalAnnouncementItem =
+      hasNewJournalArticle && latestJournalArticle && latestJournalTitle
+        ? {
+            id: "latest-journal-announcement",
+            text:
+              lang === "sr"
+                ? `Novo u Journalu: ${latestJournalTitle}`
+                : `New in Journal: ${latestJournalTitle}`,
+            icon: "→",
+            tone: "journal",
+            action: "openLatestJournalArticle"
+          }
+        : null;
 
-  const withPriorityAnnouncements = (items) => [
-    ...(shopNewAnnouncementItem ? [shopNewAnnouncementItem] : []),
-    ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
-    foreverAnnouncementItem,
-    ...items,
-  ];
+    const foreverAnnouncementItem = {
+      id: "forever-announcement-logo",
+      type: "logoLink",
+      text: "Forever Living Products",
+      icon: "★",
+      tone: "forever",
+      href: foreverAloeUrl,
+      logoSrc: "/partners/forever-logo-wide.png",
+      logoAlt: "Forever Living Products",
+      partner: "forever_living",
+      sellerId: "360000920762",
+      campaign: "aloe_drinks"
+    };
 
-  if (cart.length === 0) {
+    const withPriorityAnnouncements = (items) => [
+      ...(shopNewAnnouncementItem ? [shopNewAnnouncementItem] : []),
+      ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
+      foreverAnnouncementItem,
+      ...items
+    ];
+
+    if (cart.length === 0) {
+      return withPriorityAnnouncements([
+        { text: tr.announcementDynamicEmpty1, icon: "🚚" },
+        { text: tr.announcementDynamicEmpty2, icon: "✓" },
+        { text: tr.announcementDynamicEmpty3, icon: "🔥" },
+        { text: tr.announcementDynamicEmpty4, icon: "🔥" },
+        { text: tr.announcementDynamicEmpty5, icon: "🚚" },
+        { text: tr.announcementDynamicEmpty6, icon: "★" }
+      ]);
+    }
+
+    if (subtotal >= FREE_SHIPPING_THRESHOLD) {
+      return withPriorityAnnouncements([
+        { text: tr.announcementDynamicUnlocked, icon: "✓", tone: "success" },
+        { text: tr.announcementDynamicEmpty3, icon: "🔥" },
+        { text: tr.announcementDynamicEmpty4, icon: "🔥" },
+        { text: tr.announcementDynamicEmpty5, icon: "🚚" },
+        { text: tr.announcementDynamicEmpty6, icon: "★" }
+      ]);
+    }
+
     return withPriorityAnnouncements([
-      { text: tr.announcementDynamicEmpty1, icon: "🚚" },
+      {
+        text: tr.announcementDynamicLocked.replace(
+          "{{amount}}",
+          formatPrice(amountLeftForFreeShipping)
+        ),
+        icon: "🚚",
+        tone: "warning"
+      },
       { text: tr.announcementDynamicEmpty2, icon: "✓" },
       { text: tr.announcementDynamicEmpty3, icon: "🔥" },
       { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-      { text: tr.announcementDynamicEmpty5, icon: "🚚" },
-      { text: tr.announcementDynamicEmpty6, icon: "★" },
+      { text: tr.announcementDynamicEmpty6, icon: "★" }
     ]);
-  }
-
-  if (subtotal >= FREE_SHIPPING_THRESHOLD) {
-    return withPriorityAnnouncements([
-      { text: tr.announcementDynamicUnlocked, icon: "✓", tone: "success" },
-      { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-      { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-      { text: tr.announcementDynamicEmpty5, icon: "🚚" },
-      { text: tr.announcementDynamicEmpty6, icon: "★" },
-    ]);
-  }
-
-  return withPriorityAnnouncements([
-    {
-      text: tr.announcementDynamicLocked.replace(
-        "{{amount}}",
-        formatPrice(amountLeftForFreeShipping)
-      ),
-      icon: "🚚",
-      tone: "warning",
-    },
-    { text: tr.announcementDynamicEmpty2, icon: "✓" },
-    { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-    { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-    { text: tr.announcementDynamicEmpty6, icon: "★" },
+  }, [
+    cart.length,
+    subtotal,
+    amountLeftForFreeShipping,
+    tr,
+    lang,
+    hasNewShopProducts,
+    hasNewJournalArticle,
+    latestJournalArticle,
+    latestJournalArticleKey
   ]);
-}, [
-  cart.length,
-  subtotal,
-  amountLeftForFreeShipping,
-  tr,
-  lang,
-  hasNewShopProducts,
-  hasNewJournalArticle,
-  latestJournalArticle,
-  latestJournalArticleKey,
-]);
 
-const handleAnnouncementItemClick = (item) => {
-  if (item?.action === "openShop") {
-    goToShop();
-    return;
-  }
+  const handleAnnouncementItemClick = (item) => {
+    if (item?.action === "openShop") {
+      goToShop();
+      return;
+    }
 
-  if (item?.action === "openLatestJournalArticle") {
-    if (!latestJournalArticle) return;
+    if (item?.action === "openLatestJournalArticle") {
+      if (!latestJournalArticle) return;
 
-    handleJournalArticleOpen(latestJournalArticle);
-  }
-};
-
-const freeShippingProgress = Math.min(
-  100,
-  Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
-);
-
-const activeJournalFeedback = selectedArticle
-  ? getJournalSavedFeedback(selectedArticle)
-  : null;
-
-const selectedCopy = selectedProduct
-  ? getProductCopy(selectedProduct, lang)
-  : {
-      miniTag: fallbackCopy.miniTag[lang],
-      card: fallbackCopy.card[lang],
-      modal: fallbackCopy.modal[lang],
-      scentType: fallbackCopy.scentType[lang],
-      dominantNotes: fallbackCopy.dominantNotes[lang],
-      tags: fallbackCopy.tags[lang]
-    };
-
-const privateSelectionProducts = useMemo(() => {
-  return products.filter((product) => wishlist.includes(product.id));
-}, [wishlist]);
-
-const goToShop = () => {
-  switchView("shop");
-};
-
-const stickyCtaData = useMemo(() => {
-  if (cartCount > 0) {
-    return {
-      label: tr.stickyCheckout,
-      sublabel: `${cartCount} ${
-        cartCount === 1 ? tr.stickyItem : tr.stickyItems
-      } • ${formatPrice(total)}`,
-      onClick: () => {
-        setCartOpen(false);
-        setCheckoutOpen(true);
-      }
-    };
-  }
-
-  if (wishlist.length > 0 && view === "shop") {
-    return {
-      label: tr.stickySaved,
-      sublabel: `${wishlist.length} ${
-        wishlist.length === 1 ? tr.stickyItem : tr.stickyItems
-      }`,
-      onClick: () => setPrivateSelectionOpen(true)
-    };
-  }
-
-  return {
-    label: tr.stickyExplore,
-    sublabel:
-      view === "shop"
-        ? `${filteredProducts.length} ${
-            lang === "sr" ? "parfema" : "fragrances"
-          }`
-        : tr.privateSelection,
-    onClick: goToShop
+      handleJournalArticleOpen(latestJournalArticle);
+    }
   };
-}, [
-  cartCount,
-  total,
-  wishlist.length,
-  view,
-  filteredProducts.length,
-  tr,
-  lang
-]);
 
-const stickyCtaJournalHasNew = journalUnreadCount > 0;
+  const freeShippingProgress = Math.min(
+    100,
+    Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
+  );
 
-const handleStickyCtaJournalClick = (event) => {
-  event.stopPropagation();
-  setJournalOpen(true);
-};
+  const activeJournalFeedback = selectedArticle
+    ? getJournalSavedFeedback(selectedArticle)
+    : null;
+
+  const selectedCopy = selectedProduct
+    ? getProductCopy(selectedProduct, lang)
+    : {
+        miniTag: fallbackCopy.miniTag[lang],
+        card: fallbackCopy.card[lang],
+        modal: fallbackCopy.modal[lang],
+        scentType: fallbackCopy.scentType[lang],
+        dominantNotes: fallbackCopy.dominantNotes[lang],
+        tags: fallbackCopy.tags[lang]
+      };
+
+  const privateSelectionProducts = useMemo(() => {
+    return products.filter((product) => wishlist.includes(product.id));
+  }, [wishlist]);
+
+  const goToShop = () => {
+    switchView("shop");
+  };
+
+  const stickyCtaData = useMemo(() => {
+    if (cartCount > 0) {
+      return {
+        label: tr.stickyCheckout,
+        sublabel: `${cartCount} ${
+          cartCount === 1 ? tr.stickyItem : tr.stickyItems
+        } • ${formatPrice(total)}`,
+        onClick: () => {
+          setCartOpen(false);
+          setCheckoutOpen(true);
+        }
+      };
+    }
+
+    if (wishlist.length > 0 && view === "shop") {
+      return {
+        label: tr.stickySaved,
+        sublabel: `${wishlist.length} ${
+          wishlist.length === 1 ? tr.stickyItem : tr.stickyItems
+        }`,
+        onClick: () => setPrivateSelectionOpen(true)
+      };
+    }
+
+    return {
+      label: tr.stickyExplore,
+      sublabel:
+        view === "shop"
+          ? `${filteredProducts.length} ${
+              lang === "sr" ? "parfema" : "fragrances"
+            }`
+          : tr.privateSelection,
+      onClick: goToShop
+    };
+  }, [
+    cartCount,
+    total,
+    wishlist.length,
+    view,
+    filteredProducts.length,
+    tr,
+    lang
+  ]);
+
+  const stickyCtaJournalHasNew = journalUnreadCount > 0;
+
+  const handleStickyCtaJournalClick = (event) => {
+    event.stopPropagation();
+    setJournalOpen(true);
+  };
 
   /* =========================================
      ACTIONS
   ========================================= */
   const routeForView = (nextView) => {
-  if (nextView === "shop") return "/shop";
-  if (nextView === "journal") return "/journal";
-  return "/";
-};
+    if (nextView === "shop") return "/shop";
+    if (nextView === "journal") return "/journal";
 
-const switchView = (nextView) => {
-  const nextPath = routeForView(nextView);
+    return "/";
+  };
 
-  if (view !== nextView) {
-    setView(nextView);
-  }
+  const switchView = (nextView) => {
+    const nextPath = routeForView(nextView);
 
-  // 👉 PUSH CLEAN URL
-  if (window.location.pathname !== nextPath) {
-    window.history.pushState({}, "", nextPath);
-  }
+    if (view !== nextView) {
+      setView(nextView);
+    }
 
-  // 👉 (opciono) zadrži query za debug ako želiš
-  // window.history.pushState({}, "", `${nextPath}?view=${nextView}`);
+    if (window.location.pathname !== nextPath) {
+      window.history.pushState({}, "", nextPath);
+    }
 
-  trackPageView(nextPath);
-  trackMeta("PageView");
+    trackPageView(nextPath);
+    trackMeta("PageView");
 
-  requestAnimationFrame(() => {
-    smoothScrollToTop();
-  });
-};
+    requestAnimationFrame(() => {
+      smoothScrollToTop();
+    });
+  };
 
-const goHome = () => {
-  switchView("home");
-};
+  const goHome = () => {
+    switchView("home");
+  };
 
-const goToJournal = () => {
-  switchView("journal");
-};
+  const goToJournal = () => {
+    switchView("journal");
+  };
 
   const toggleWishlist = (productId) => {
     const isAdding = !wishlist.includes(productId);
@@ -1812,13 +1820,15 @@ const goToJournal = () => {
       }
 
       try {
-  window.localStorage.setItem("playnice_wishlist", JSON.stringify(updated));
-} catch {}
+        window.localStorage.setItem("playnice_wishlist", JSON.stringify(updated));
+      } catch {}
+
       return updated;
     });
 
     if (isAdding) {
       setSprayingWishlistId(productId);
+
       setTimeout(() => {
         setSprayingWishlistId((current) =>
           current === productId ? null : current
@@ -1837,21 +1847,27 @@ const goToJournal = () => {
 
   const bumpHeroAutoplay = () => {
     setHeroPaused(true);
+
     setTimeout(() => setHeroPaused(false), 220);
   };
 
   const nextHeroSlide = () => {
     bumpHeroAutoplay();
+
     setCurrentHero((prev) => (prev + 1) % heroSlides.length);
   };
 
   const prevHeroSlide = () => {
     bumpHeroAutoplay();
-    setCurrentHero((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+
+    setCurrentHero(
+      (prev) => (prev - 1 + heroSlides.length) % heroSlides.length
+    );
   };
 
   const goToHeroSlide = (index) => {
     if (index === currentHero) return;
+
     bumpHeroAutoplay();
     setCurrentHero(index);
   };
@@ -1860,104 +1876,119 @@ const goToJournal = () => {
     setAddedFeedback(text);
   };
 
-  const addToCart = (
-  product,
-  size,
-  customPrice = null,
-  customLabel = null,
-  options = {}
-) => {
-  const { showToast = true } = options;
+    const addToCart = (
+    product,
+    size,
+    customPrice = null,
+    customLabel = null,
+    options = {}
+  ) => {
+    const { showToast = true } = options;
 
-  const key = `${product.id}-${size}-${customLabel || ""}`;
-  const price = customPrice ?? product.sizes[size];
-  const label = customLabel || size;
+    const key = `${product.id}-${size}-${customLabel || ""}`;
+    const price = customPrice ?? product.sizes[size];
+    const label = customLabel || size;
 
-  trackEvent("add_to_cart", {
-    currency: "EUR",
-    value: Number(price),
-    item_name: `${product.name} ${label}`,
-    item_category: product.category
-  });
+    trackEvent("add_to_cart", {
+      currency: "EUR",
+      value: Number(price),
+      item_name: `${product.name} ${label}`,
+      item_category: product.category
+    });
 
-  trackMeta("AddToCart", {
-    content_name: `${product.name} ${label}`,
-    content_category: product.category,
-    value: Number(price),
-    currency: "EUR"
-  });
+    trackMeta("AddToCart", {
+      content_name: `${product.name} ${label}`,
+      content_category: product.category,
+      value: Number(price),
+      currency: "EUR"
+    });
 
-  setCart((prev) => {
-    const existing = prev.find((item) => item.key === key);
+    setCart((prev) => {
+      const existing = prev.find((item) => item.key === key);
 
-    if (existing) {
-      return prev.map((item) =>
-        item.key === key ? { ...item, quantity: item.quantity + 1 } : item
-      );
-    }
-
-    return [
-      ...prev,
-      {
-        key,
-        id: product.id,
-        name: product.name,
-        size: label,
-        price,
-        quantity: 1
+      if (existing) {
+        return prev.map((item) =>
+          item.key === key
+            ? {
+                ...item,
+                quantity: item.quantity + 1
+              }
+            : item
+        );
       }
-    ];
-  });
 
-  if (showToast) {
-    showFeedback(`${product.name} ${tr.addedToCart}`);
-  }
-};
+      return [
+        ...prev,
+        {
+          key,
+          id: product.id,
+          name: product.name,
+          size: label,
+          price,
+          quantity: 1
+        }
+      ];
+    });
 
-const triggerInlineAddedFeedback = (productId, size) => {
-  const key = `${productId}-${size}`;
-  setInlineAddedKey(key);
-
-  setTimeout(() => {
-    setInlineAddedKey((current) => (current === key ? null : current));
-  }, 1300);
-};
-
-const handleModalAddToCart = (product, size) => {
-  if (!product || !size) return;
-
-  addToCart(product, size);
-
-  const key = `${product.id}-${size}`;
-  setModalAddedKey(key);
-
-  if (modalAddedTimeoutRef.current) {
-    clearTimeout(modalAddedTimeoutRef.current);
-  }
-
-  modalAddedTimeoutRef.current = setTimeout(() => {
-    setModalAddedKey(null);
-  }, 1300);
-};
-
-const addHeroBottleToCart = () => {
-  const heroProduct = {
-    id: 999,
-    name: "Afnan 9PM Rebel",
-    image: "/hero/hero-bottle.png",
-    sizes: { "100ml": 34.9 }
+    if (showToast) {
+      showFeedback(`${product.name} ${tr.addedToCart}`);
+    }
   };
 
-  addToCart(heroProduct, "100ml", 34.9, "100ml Full Bottle");
-  setCartOpen(true);
-  setCheckoutOpen(false);
-};
+  const triggerInlineAddedFeedback = (productId, size) => {
+    const key = `${productId}-${size}`;
+
+    setInlineAddedKey(key);
+
+    setTimeout(() => {
+      setInlineAddedKey((current) => (current === key ? null : current));
+    }, 1300);
+  };
+
+  const handleModalAddToCart = (product, size) => {
+    if (!product || !size) return;
+
+    addToCart(product, size);
+
+    const key = `${product.id}-${size}`;
+
+    setModalAddedKey(key);
+
+    if (modalAddedTimeoutRef.current) {
+      clearTimeout(modalAddedTimeoutRef.current);
+    }
+
+    modalAddedTimeoutRef.current = setTimeout(() => {
+      setModalAddedKey(null);
+    }, 1300);
+  };
+
+  const addHeroBottleToCart = () => {
+    const heroProduct = {
+      id: 999,
+      name: "Afnan 9PM Rebel",
+      image: "/hero/hero-bottle.png",
+      sizes: {
+        "100ml": 34.9
+      }
+    };
+
+    addToCart(heroProduct, "100ml", 34.9, "100ml Full Bottle");
+
+    setCartOpen(true);
+    setCheckoutOpen(false);
+  };
 
   const updateQuantity = (key, delta) => {
     setCart((prev) =>
       prev
         .map((item) =>
-          item.key === key ? { ...item, quantity: item.quantity + delta } : item
+          item.key === key
+            ? {
+                ...item,
+                quantity: item.quantity + delta
+              }
+            : item
         )
         .filter((item) => item.quantity > 0)
     );
@@ -1969,7 +2000,11 @@ const addHeroBottleToCart = () => {
 
   const handleCheckoutInput = (e) => {
     const { name, value } = e.target;
-    setCheckoutForm((prev) => ({ ...prev, [name]: value }));
+
+    setCheckoutForm((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleInternationalEnquiry = async () => {
