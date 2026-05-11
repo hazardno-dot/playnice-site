@@ -3158,336 +3158,482 @@ function App() {
         <div className="added-feedback">{addedFeedback}</div>
       )}
 
-      <main>
-        {view === "home" && (
-          <>
-            <section
-              className="hero hero-carousel"
-              onMouseEnter={() => setHeroPaused(true)}
-              onMouseLeave={() => setHeroPaused(false)}
-              onTouchStart={handleHeroTouchStart}
-              onTouchEnd={handleHeroTouchEnd}
-            >
-              <div className="hero-carousel-track">
-                {heroSlides.map((slide, index) => (
-                  <article
-                    key={slide.id}
-                    className={`hero-slide ${index === currentHero ? "active" : ""}`}
-                    aria-hidden={index !== currentHero}
-                  >
-                    <div className="hero-image-only">
-                      <picture>
-  <source
-    media="(max-width: 768px)"
-    srcSet={slide.mobileImage || slide.image}
-  />
+            {orderSuccessMessage && (
+        <div className="order-success-feedback">
+          {orderSuccessMessage}
+        </div>
+      )}
 
-  <img
-    className={`hero-image-only-img ${
-      index === currentHero ? "is-active" : ""
-    }`}
-    src={slide.desktopImage || slide.image}
-    alt={slide.alt}
-    loading={index === 0 ? "eager" : "lazy"}
-    draggable="false"
-  />
-</picture>
-                    </div>
-                  </article>
-                ))}
-              </div>
-
-              {heroSlides.length > 1 && (
-                <>
-                  <button
-                    type="button"
-                    className="hero-carousel-arrow hero-carousel-arrow-left"
-                    onClick={prevHeroSlide}
-                    aria-label="Previous slide"
-                  />
-
-                  <button
-                    type="button"
-                    className="hero-carousel-arrow hero-carousel-arrow-right"
-                    onClick={nextHeroSlide}
-                    aria-label="Next slide"
-                  />
-
-                  <div
-                    className="hero-carousel-dots"
-                    role="tablist"
-                    aria-label="Hero slides"
-                  >
-                    {heroSlides.map((slide, index) => (
-                      <button
-                        key={slide.id}
-                        type="button"
-                        className={`hero-carousel-dot ${
-                          index === currentHero ? "active" : ""
-                        }`}
-                        onClick={() => goToHeroSlide(index)}
-                        aria-label={`Go to slide ${index + 1}`}
-                        aria-selected={index === currentHero}
-                        role="tab"
-                      >
-                        <span className="hero-carousel-dot-pill" />
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-            </section>
-
-            <section className="value-strip">
-              <div>{tr.valueTry}</div>
-              <div>{tr.valuePremium}</div>
-              <div>{tr.valueDelivery}</div>
-            </section>
-
-            {shouldShowMobileSponsoredAd && (
-  <section
-    className="mobile-sponsored-ad-wrap"
-    aria-label={lang === "sr" ? "Sponzorisani partner" : "Sponsored partner"}
-  >
-    <a
-      className="mobile-sponsored-ad mobile-sponsored-ad-micro"
-      href={mobileSponsoredAd.href}
-      target="_blank"
-      rel="sponsored noopener noreferrer"
-      onClick={() =>
-  handleSponsoredAdClick(mobileSponsoredAd, "mobile_sponsored_bar")
-}
-    >
-      <span className="mobile-sponsored-ad-side mobile-sponsored-ad-side-left">
-        <span className="mobile-sponsored-ad-label">
-          {mobileSponsoredAd.label}
-        </span>
-      </span>
-
-      <span className="mobile-sponsored-ad-textblock">
-        <span className="mobile-sponsored-ad-title-inline">
-          {lang === "sr" ? "Aloe Vera napici" : "Aloe Vera Drinks"}
-        </span>
-
-        <span className="mobile-sponsored-ad-subtitle-inline">
-          {lang === "sr"
-            ? "Istraži Forever Living aloe vera napitke."
-            : "Explore Forever Living aloe vera drinks."}
-        </span>
-      </span>
-
-      <span className="mobile-sponsored-ad-side mobile-sponsored-ad-side-right">
-        {mobileSponsoredAd.logoSrc ? (
-          <img
-            src={mobileSponsoredAd.logoSrc}
-            alt={mobileSponsoredAd.logoAlt || "Forever Living"}
-            className="mobile-sponsored-ad-logo"
-            loading="lazy"
-          />
-        ) : (
-          <span className="mobile-sponsored-ad-icon" aria-hidden="true">
-            {mobileSponsoredAd.icon}
-          </span>
-        )}
-      </span>
-    </a>
-  </section>
-)}
-
-            <section
-              id="how-it-works"
-              className="how-it-works-section section-wrap"
-            >
-              <div className="section-head how-it-works-head">
-                <p className="section-kicker">
-                  {lang === "sr" ? "Kako funkcioniše?" : "How it works"}
-                </p>
-                <h2>
-                  {lang === "sr"
-                    ? "Kako funkcionišu dekanti?"
-                    : "How decants work?"}
-                </h2>
-                <p>
-                  {lang === "sr"
-                    ? "Jednostavan i pametan način da pronađeš pravi parfem pre kupovine pune bočice."
-                    : "A simple and smart way to find the right fragrance before buying a full bottle."}
-                </p>
-              </div>
-
-              <div className="how-it-works-grid">
-                <article className="how-it-works-card">
-                  <span className="how-it-works-number">01</span>
-                  <h3>{lang === "sr" ? "Šta su dekanti?" : "What are decants?"}</h3>
-                  <p>
-                    {lang === "sr"
-                      ? "Manja, pažljivo presuta pakovanja originalnih parfema."
-                      : "Smaller, carefully decanted portions of original fragrances."}
-                  </p>
-                </article>
-
-                <article className="how-it-works-card">
-                  <span className="how-it-works-number">02</span>
-                  <h3>{lang === "sr" ? "Zašto su korisni?" : "Why they matter?"}</h3>
-                  <p>
-                    {lang === "sr"
-                      ? "Možeš da probaš miris na svojoj koži pre kupovine pune bočice."
-                      : "They let you test a fragrance on your skin before committing to a full bottle."}
-                  </p>
-                </article>
-
-                <article className="how-it-works-card">
-                  <span className="how-it-works-number">03</span>
-                  <h3>
-                    {lang === "sr" ? "Zašto je to pametnije?" : "Why it is smarter?"}
-                  </h3>
-                  <p>
-                    {lang === "sr"
-                      ? "Manji rizik, manji trošak i više parfema za rotaciju."
-                      : "Lower risk, lower cost, and more room to build a fragrance rotation."}
-                  </p>
-                </article>
-              </div>
-
-              <div className="how-it-works-cta">
+      {view === "home" && (
+        <>
+          <section
+            className="hero-section hero-section-image"
+            onTouchStart={handleHeroTouchStart}
+            onTouchEnd={handleHeroTouchEnd}
+          >
+            <div className="hero-image-slider">
+              {heroSlides.map((slide, index) => (
                 <button
-                  className="ghost-button"
+                  key={slide.id}
                   type="button"
-                  onClick={() => setHowItWorksOpen(true)}
+                  className={`hero-image-slide ${
+                    index === currentHero ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    if (slide.actionPrimary === "shop") {
+                      goToShop();
+                    }
+                  }}
+                  aria-label={slide.alt}
                 >
-                  {lang === "sr" ? "Saznaj više" : "Learn more"}
-                </button>
-              </div>
-            </section>
+                  <picture>
+                    {slide.mobileImage && (
+                      <source
+                        media="(max-width: 640px)"
+                        srcSet={slide.mobileImage}
+                      />
+                    )}
 
-            <div className="section-divider">
-              <span />
+                    <img
+                      src={slide.desktopImage || slide.image}
+                      alt={slide.alt}
+                      className="hero-slide-img"
+                      loading={index === 0 ? "eager" : "lazy"}
+                    />
+                  </picture>
+                </button>
+              ))}
             </div>
 
-            <section className="featured-section section-wrap impact-split-section">
-              <div className="impact-video-column">
-                <div className="impact-video-frame">
-                  <video
-                    key={currentVideo}
-                    autoPlay
-                    muted
-                    playsInline
-                    onEnded={() => {
-                      setCurrentVideo((prev) => (prev + 1) % heroVideos.length);
+            <button
+              type="button"
+              className="hero-nav hero-nav-prev"
+              onClick={prevHeroSlide}
+              aria-label={lang === "sr" ? "Prethodna slika" : "Previous slide"}
+            >
+              ‹
+            </button>
+
+            <button
+              type="button"
+              className="hero-nav hero-nav-next"
+              onClick={nextHeroSlide}
+              aria-label={lang === "sr" ? "Sledeća slika" : "Next slide"}
+            >
+              ›
+            </button>
+
+            <div className="hero-dots">
+              {heroSlides.map((slide, index) => (
+                <button
+                  key={slide.id}
+                  type="button"
+                  className={`hero-dot ${index === currentHero ? "active" : ""}`}
+                  onClick={() => goToHeroSlide(index)}
+                  aria-label={
+                    lang === "sr"
+                      ? `Idi na hero sliku ${index + 1}`
+                      : `Go to hero slide ${index + 1}`
+                  }
+                />
+              ))}
+            </div>
+          </section>
+
+          {shouldShowMobileSponsoredAd && (
+            <section
+              className="mobile-sponsored-ad-wrap"
+              aria-label={
+                lang === "sr" ? "Sponzorisani partner" : "Sponsored partner"
+              }
+            >
+              <a
+                className="mobile-sponsored-ad mobile-sponsored-ad-micro"
+                href={mobileSponsoredAd.href}
+                target="_blank"
+                rel="sponsored noopener noreferrer"
+                onClick={() =>
+                  handleSponsoredAdClick(mobileSponsoredAd, "mobile_sponsored_banner")
+                }
+              >
+                <span className="mobile-sponsored-ad-side mobile-sponsored-ad-side-left">
+                  <span className="mobile-sponsored-ad-label">
+                    {mobileSponsoredAd.label}
+                  </span>
+                </span>
+
+                <span className="mobile-sponsored-ad-textblock">
+                  <span className="mobile-sponsored-ad-title">
+                    {mobileSponsoredAd.title.replace("\n", " ")}
+                  </span>
+
+                  <span className="mobile-sponsored-ad-copy">
+                    {lang === "sr"
+                      ? "Aloe Vera napici — pogledaj Forever ponudu"
+                      : "Aloe Vera drinks — explore Forever selection"}
+                  </span>
+                </span>
+
+                <span className="mobile-sponsored-ad-cta">
+                  {mobileSponsoredAd.cta}
+                  <span aria-hidden="true">→</span>
+                </span>
+              </a>
+            </section>
+          )}
+
+          <section className="home-intro-section">
+            <div className="section-kicker">{tr.homeKicker}</div>
+
+            <h1>{tr.homeTitle}</h1>
+
+            <p>{tr.homeSubtitle}</p>
+
+            <div className="home-intro-actions">
+              <button
+                type="button"
+                className="primary-button"
+                onClick={goToShop}
+              >
+                {tr.shopNow}
+              </button>
+
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => setHowItWorksOpen(true)}
+              >
+                {tr.howItWorks}
+              </button>
+            </div>
+          </section>
+
+                    <div className="section-divider" aria-hidden="true">
+            <span />
+          </div>
+
+          <section className="impact-section">
+            <div className="section-heading">
+              <div className="section-kicker">{tr.impactKicker}</div>
+
+              <h2>{tr.impactTitle}</h2>
+
+              <p>{tr.impactSubtitle}</p>
+            </div>
+
+            <div className="impact-grid">
+              {impactProducts.map((product) => {
+                const copy = getProductCopy(product, lang);
+
+                return (
+                  <article
+                    key={product.id}
+                    className="impact-card"
+                    onClick={() => openImpactProductModal(product)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        openImpactProductModal(product);
+                      }
                     }}
                   >
-                    <source src={heroVideos[currentVideo]} type="video/mp4" />
-                  </video>
+                    <div className="impact-image-wrap">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="impact-image"
+                        loading="lazy"
+                      />
+                    </div>
 
-                  <div className="impact-video-badge">PLAYNICE FILM</div>
+                    <div className="impact-content">
+                      <span className="impact-category">
+                        {getCategoryLabel(product.category)}
+                      </span>
+
+                      <h3>{product.name}</h3>
+
+                      <p className="impact-copy">{copy.card}</p>
+
+                      <div className="impact-bottom">
+                        <span className="impact-price">
+                          {tr.tryFrom} €{getMinPrice(product)}
+                        </span>
+
+                        <span className="impact-link">
+                          {tr.productCardCta}
+                        </span>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+
+          <div className="section-divider" aria-hidden="true">
+            <span />
+          </div>
+
+          <section className="how-it-works-preview">
+            <div className="section-heading">
+              <div className="section-kicker">{tr.howItWorks}</div>
+
+              <h2>{tr.howItWorksTitle}</h2>
+
+              <p>{tr.howItWorksSubtitle}</p>
+            </div>
+
+            <div className="how-grid">
+              <article className="how-card">
+                <span className="how-number">01</span>
+
+                <h3>{tr.howCard1Title}</h3>
+
+                <p>{tr.howCard1Text}</p>
+              </article>
+
+              <article className="how-card">
+                <span className="how-number">02</span>
+
+                <h3>{tr.howCard2Title}</h3>
+
+                <p>{tr.howCard2Text}</p>
+              </article>
+
+              <article className="how-card">
+                <span className="how-number">03</span>
+
+                <h3>{tr.howCard3Title}</h3>
+
+                <p>{tr.howCard3Text}</p>
+              </article>
+            </div>
+
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={() => setHowItWorksOpen(true)}
+            >
+              {tr.learnMore}
+            </button>
+          </section>
+
+          <div className="section-divider" aria-hidden="true">
+            <span />
+          </div>
+
+          <section className="catalog-section">
+            <div className="section-heading">
+              <div className="section-kicker">{tr.catalogKicker}</div>
+
+              <h2>{tr.catalogTitle}</h2>
+
+              <p>{tr.catalogSubtitle}</p>
+            </div>
+
+            <div className="catalog-grid">
+              <article className="catalog-card">
+                <div className="catalog-card-top">
+                  <span className="catalog-label">PDF</span>
+
+                  <h3>{tr.catalogDesignerTitle}</h3>
+
+                  <p>{tr.catalogDesignerText}</p>
                 </div>
 
-                <div className="impact-video-panel">
-                  <div className="impact-video-panel-content">
-                    <span className="impact-video-eyebrow">
-                      {lang === "sr" ? "PLAYNICE CONCEPT" : "PLAYNICE CONCEPT"}
-                    </span>
+                <div className="catalog-card-actions">
+                  <a
+                    href="/catalogs/playnice-designer.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="catalog-link"
+                  >
+                    {tr.catalogDownload}
+                  </a>
 
-                    <h3>
-                      {lang === "sr"
-                        ? "Probaj pre nego što se odlučiš."
-                        : "Try before you commit."}
-                    </h3>
-
-                    <p>
-                      {lang === "sr"
-                        ? "Isprobaj na koži kroz 5ml ili 10ml dekante. Bez rizika. Samo pravi izbor."
-                        : "Experience it on skin first. 5ml and 10ml decants. No risk. Just the right decision."}
-                    </p>
-
-                    <button
-                      className="impact-video-cta"
-                      type="button"
-                      onClick={goToShop}
-                    >
-                      {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    className="catalog-preview-button"
+                    onClick={() =>
+                      openCatalogPreview("/catalogs/playnice-designer.pdf")
+                    }
+                  >
+                    {tr.catalogPreview}
+                  </button>
                 </div>
+              </article>
+
+              <article className="catalog-card">
+                <div className="catalog-card-top">
+                  <span className="catalog-label">PDF</span>
+
+                  <h3>{tr.catalogArabianTitle}</h3>
+
+                  <p>{tr.catalogArabianText}</p>
+                </div>
+
+                <div className="catalog-card-actions">
+                  <a
+                    href="/catalogs/playnice-arabian.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="catalog-link"
+                  >
+                    {tr.catalogDownload}
+                  </a>
+
+                  <button
+                    type="button"
+                    className="catalog-preview-button"
+                    onClick={() =>
+                      openCatalogPreview("/catalogs/playnice-arabian.pdf")
+                    }
+                  >
+                    {tr.catalogPreview}
+                  </button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+                    <div className="section-divider" aria-hidden="true">
+            <span />
+          </div>
+
+          <section className="featured-section section-wrap impact-split-section">
+            <div className="impact-video-column">
+              <div className="impact-video-frame">
+                <video
+                  key={currentVideo}
+                  autoPlay
+                  muted
+                  playsInline
+                  onEnded={() => {
+                    setCurrentVideo((prev) => (prev + 1) % heroVideos.length);
+                  }}
+                >
+                  <source src={heroVideos[currentVideo]} type="video/mp4" />
+                </video>
+
+                <div className="impact-video-badge">PLAYNICE FILM</div>
               </div>
 
-              <div className="impact-products-column">
-                <div className="section-head impact-head">
-                  <p className="section-kicker">{tr.highlightsKicker}</p>
-                  <h2>{tr.highlightsTitle}</h2>
-                  <p>{tr.highlightsText}</p>
+              <div className="impact-video-panel">
+                <div className="impact-video-panel-content">
+                  <span className="impact-video-eyebrow">
+                    {lang === "sr" ? "PLAYNICE CONCEPT" : "PLAYNICE CONCEPT"}
+                  </span>
+
+                  <h3>
+                    {lang === "sr"
+                      ? "Probaj pre nego što se odlučiš."
+                      : "Try before you commit."}
+                  </h3>
+
+                  <p>
+                    {lang === "sr"
+                      ? "Isprobaj na koži kroz 5ml ili 10ml dekante. Bez rizika. Samo pravi izbor."
+                      : "Experience it on skin first. 5ml and 10ml decants. No risk. Just the right decision."}
+                  </p>
+
+                  <button
+                    className="impact-video-cta"
+                    type="button"
+                    onClick={goToShop}
+                  >
+                    {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
+                  </button>
                 </div>
+              </div>
+            </div>
 
-                <div className="impact-products-panel">
-                  <article className="impact-products-merged-card">
-                    <div className="impact-product-row">
-                      <button
-                        type="button"
-                        className="impact-product-image-button"
-                        onClick={() => openImpactProductModal(impactProducts[0])}
-                        aria-label="Afnan 9PM Rebel"
-                      >
-                        <div className="impact-product-image-wrap">
-                          <img
-                            src="/products/9pm.png"
-                            alt="Afnan 9PM Rebel"
-                            className="impact-product-image"
-                          />
-                        </div>
-                      </button>
+            <div className="impact-products-column">
+              <div className="section-head impact-head">
+                <p className="section-kicker">{tr.highlightsKicker}</p>
+                <h2>{tr.highlightsTitle}</h2>
+                <p>{tr.highlightsText}</p>
+              </div>
 
-                      <div className="impact-product-copy">
-                        <div className="impact-product-topline">
-                          <span className="impact-product-tag">{tr.campaignPick}</span>
-                        </div>
+              <div className="impact-products-panel">
+                <article className="impact-products-merged-card">
+                  <div className="impact-product-row">
+                    <button
+                      type="button"
+                      className="impact-product-image-button"
+                      onClick={() => openImpactProductModal(impactProducts[0])}
+                      aria-label="Afnan 9PM Rebel"
+                    >
+                      <div className="impact-product-image-wrap">
+                        <img
+                          src="/products/9pm.png"
+                          alt="Afnan 9PM Rebel"
+                          className="impact-product-image"
+                        />
+                      </div>
+                    </button>
 
-                        <h3>Afnan 9PM Rebel</h3>
-                        <p>{tr.rebelCardText}</p>
+                    <div className="impact-product-copy">
+                      <div className="impact-product-topline">
+                        <span className="impact-product-tag">
+                          {tr.campaignPick}
+                        </span>
+                      </div>
 
-                        <div className="impact-product-actions">
-                          <button
-                            className="inline-link impact-inline-link"
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              addHeroBottleToCart();
-                            }}
-                          >
-                            {tr.add100ml}
-                          </button>
-                        </div>
+                      <h3>Afnan 9PM Rebel</h3>
+
+                      <p>{tr.rebelCardText}</p>
+
+                      <div className="impact-product-actions">
+                        <button
+                          className="inline-link impact-inline-link"
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            addHeroBottleToCart();
+                          }}
+                        >
+                          {tr.add100ml}
+                        </button>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="impact-product-divider" />
+                  <div className="impact-product-divider" />
 
-                    <div className="impact-product-row">
-                      <button
-                        type="button"
-                        className="impact-product-image-button"
-                        onClick={() => openImpactProductModal(impactProducts[1])}
-                        aria-label="Khadlaj Island Dreams Extrait de Parfum"
-                      >
-                        <div className="impact-product-image-wrap">
-                          <img
-                            src="/products/island.png"
-                            alt="Khadlaj Island Dreams Extrait de Parfum"
-                            className="impact-product-image"
-                          />
-                        </div>
-                      </button>
-
-                      <div className="impact-product-copy">
-                        <div className="impact-product-topline">
-                          <span className="impact-product-tag">{tr.summerHit}</span>
-                        </div>
-
-                        <h3>Khadlaj Island Dreams Extrait de Parfum</h3>
-                        <p>{tr.islandDreamsText}</p>
+                  <div className="impact-product-row">
+                    <button
+                      type="button"
+                      className="impact-product-image-button"
+                      onClick={() => openImpactProductModal(impactProducts[1])}
+                      aria-label="Khadlaj Island Dreams Extrait de Parfum"
+                    >
+                      <div className="impact-product-image-wrap">
+                        <img
+                          src="/products/island.png"
+                          alt="Khadlaj Island Dreams Extrait de Parfum"
+                          className="impact-product-image"
+                        />
                       </div>
-                    </div>
+                    </button>
 
-                    <div className="impact-product-divider" />
+                    <div className="impact-product-copy">
+                      <div className="impact-product-topline">
+                        <span className="impact-product-tag">
+                          {tr.summerHit}
+                        </span>
+                      </div>
+
+                      <h3>Khadlaj Island Dreams Extrait de Parfum</h3>
+
+                      <p>{tr.islandDreamsText}</p>
+                    </div>
+                  </div>
+
+                                      <div className="impact-product-divider" />
 
                     <div className="impact-product-row">
                       <button
@@ -3507,146 +3653,63 @@ function App() {
 
                       <div className="impact-product-copy">
                         <div className="impact-product-topline">
-                          <span className="impact-product-tag">{tr.arabianEdge}</span>
+                          <span className="impact-product-tag">
+                            {tr.signaturePick}
+                          </span>
                         </div>
 
                         <h3>Arabiyat Prestige Marwa</h3>
+
                         <p>{tr.marwaText}</p>
                       </div>
                     </div>
                   </article>
                 </div>
-              </div>
-            </section>
 
-            <div className="section-divider">
-              <span />
-            </div>
-
-            <section className="homepage-shop-preview section-wrap">
-              <div className="section-head">
-                <p className="section-kicker">{tr.privateSelection}</p>
-                <h2>{tr.bestsellersTitle}</h2>
-                <p>{tr.bestsellersText}</p>
-              </div>
-
-              <div className="product-grid">
-                {[5, 21, 48, 49]
-                  .map((id) => products.find((product) => product.id === id))
-                  .filter(Boolean)
-                  .map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      wishlist={wishlist}
-                      toggleWishlist={toggleWishlist}
-                      sprayingWishlistId={sprayingWishlistId}
-                    />
-                  ))}
-              </div>
-
-              <div className="section-cta-center">
-                <button className="gold-button" type="button" onClick={goToShop}>
+                <button
+                  className="ghost-button impact-shop-button"
+                  type="button"
+                  onClick={goToShop}
+                >
                   {tr.viewFullCollection}
                 </button>
               </div>
-            </section>
-
-                        <div className="section-divider">
-              <span />
             </div>
+          </section>
 
-            <section className="catalog-download-section">
-              <div className="catalog-download-card">
-                <div className="catalog-download-copy">
-                  <p className="catalog-download-kicker">
-                    {lang === "sr" ? "PLAYNICE KATALOG" : "PLAYNICE CATALOG"}
-                  </p>
+          <div className="section-divider" aria-hidden="true">
+            <span />
+          </div>
 
-                  <h2>
-                    {lang === "sr" ? "Preuzmi katalog." : "Download the catalog."}
-                  </h2>
+          <section className="closing-section section-wrap">
+            <div className={`closing-card ${closingVisible ? "visible" : ""}`}>
+              <p className="closing-kicker">
+                {lang === "sr" ? "REMEMBER. PLAYNICE." : "REMEMBER. PLAYNICE."}
+              </p>
 
-                  <p>
-                    {lang === "sr"
-                      ? "Brz pregled parfema, dostupnih militraža i cena. Idealno za lako deljenje, brzo pregledanje i poručivanje."
-                      : "A quick overview of fragrances, available sizes, and prices. Perfect for easy sharing, fast browsing, and ordering."}
-                  </p>
-                </div>
+              <h2>
+                {lang === "sr"
+                  ? "Miris ne mora da bude kupovina na slepo."
+                  : "Fragrance does not have to be a blind buy."}
+              </h2>
 
-                <div className="catalog-download-actions">
-                  <a
-                    className="catalog-download-button recommended"
-                    href="/catalog-dark.pdf"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      openCatalogPreview("/catalog-dark.pdf");
-                    }}
-                  >
-                    <span className="recommended-badge">Recommended</span>
-                    {lang === "sr" ? "Premium katalog" : "Premium catalog"}
-                  </a>
+              <p>
+                {lang === "sr"
+                  ? "Uzmi manje pakovanje, nosi ga nekoliko dana i vidi kako stvarno živi na tvojoj koži."
+                  : "Start smaller, wear it for a few days, and see how it truly lives on your skin."}
+              </p>
 
-                  <a
-                    className="catalog-download-button secondary"
-                    href="/catalog-clean.pdf"
-                    download
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {lang === "sr" ? "Brzi cenovnik" : "Quick price list"}
-                  </a>
-
-                  <span className="catalog-download-note">
-                    {lang === "sr" ? "DM / print verzije" : "DM / print versions"}
-                  </span>
-                </div>
-              </div>
-            </section>
-
-            <section
-              className={`closing-section section-wrap ${
-                closingVisible ? "is-visible" : ""
-              }`}
-            >
-              <div className="closing-shell">
-                <p className="closing-kicker">
-                  {lang === "sr" ? "ZAVRŠNI UTISAK" : "FINAL IMPRESSION"}
-                </p>
-
-                <h2 className="closing-title">
-                  {lang === "sr"
-                    ? "Biraj miris koji želiš da pamte."
-                    : "Choose the scent they’ll remember."}
-                </h2>
-
-                <p className="closing-text">
-                  {lang === "sr"
-                    ? "Probaj pre kupovine. Otkrij designer, niche i Arabian parfeme kroz pažljivo birane dekante, pre nego se odlučiš za punu bočicu."
-                    : "Try before you buy. Discover designer, niche and Arabian fragrances through carefully curated decants before committing to a full bottle."}
-                </p>
-
-                <div className="closing-actions">
-                  <button
-                    type="button"
-                    className="gold-button"
-                    onClick={goToShop}
-                  >
-                    {lang === "sr" ? "Istraži kolekciju" : "Explore Collection"}
-                  </button>
-
-                  <button
-                    type="button"
-                    className="ghost-button"
-                    onClick={goToShop}
-                  >
-                    Private Selection
-                  </button>
-                </div>
-              </div>
-            </section>
-          </>
-        )}
+              <button
+                type="button"
+                className="primary-button"
+                onClick={goToShop}
+              >
+                {tr.shopNow}
+              </button>
+            </div>
+          </section>
+        </>
+      )}
 
           {view === "shop" && (
   <>
