@@ -2880,8 +2880,8 @@ main {
   border-radius: 30px;
 
   background:
-    radial-gradient(circle at 20% 20%, rgba(220, 181, 107, 0.10), transparent 30%),
-    radial-gradient(circle at 80% 80%, rgba(220, 181, 107, 0.06), transparent 30%),
+    radial-gradient(circle at 20% 20%, rgba(220, 181, 107, 0.06), transparent 30%),
+    radial-gradient(circle at 80% 80%, rgba(220, 181, 107, 0.035), transparent 30%),
     linear-gradient(180deg, rgba(18, 18, 18, 0.98), rgba(8, 8, 8, 0.98));
 
   box-shadow:
@@ -2897,9 +2897,9 @@ main {
   transform: translate(-50%, -48.5%);
 
   transition:
-    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.42s ease,
-    visibility 0s linear 0.72s;
+    transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.34s ease,
+    visibility 0s linear 0.52s;
 
   will-change: transform, opacity;
 }
@@ -2911,8 +2911,8 @@ main {
   transform: translate(-50%, -50%);
 
   transition:
-    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.42s ease,
+    transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.34s ease,
     visibility 0s linear 0s;
 }
 
@@ -2933,24 +2933,21 @@ main {
 .product-modal .panel-item-anim,
 .product-modal .close-button {
   opacity: 0;
-  transform: translateY(-18px);
-  filter: blur(4px);
-  will-change: transform, opacity, filter;
+  transform: translateY(-12px);
+  will-change: transform, opacity;
 }
 
 .product-modal .panel-anim,
 .product-modal .close-button {
   transition:
-    opacity 0.98s ease,
-    transform 0.98s var(--content-ease),
-    filter 0.98s ease;
+    opacity 0.46s ease,
+    transform 0.46s var(--content-ease);
 }
 
 .product-modal .panel-item-anim {
   transition:
-    opacity 0.88s ease,
-    transform 0.88s var(--content-ease),
-    filter 0.88s ease;
+    opacity 0.42s ease,
+    transform 0.42s var(--content-ease);
 }
 
 .product-modal.open .panel-anim,
@@ -2958,21 +2955,22 @@ main {
 .product-modal.open .close-button {
   opacity: 1;
   transform: translateY(0);
-  filter: blur(0);
 }
 
-.product-modal.open .panel-anim-1 { transition-delay: 0.10s; }
-.product-modal.open .panel-anim-2 { transition-delay: 0.20s; }
-.product-modal.open .panel-anim-3 { transition-delay: 0.30s; }
+.product-modal.open .panel-anim-1 { transition-delay: 0.06s; }
+.product-modal.open .panel-anim-2 { transition-delay: 0.10s; }
+.product-modal.open .panel-anim-3 { transition-delay: 0.14s; }
 
-.product-modal.open .panel-item-1 { transition-delay: 0.14s; }
-.product-modal.open .panel-item-2 { transition-delay: 0.22s; }
-.product-modal.open .panel-item-3 { transition-delay: 0.30s; }
-.product-modal.open .panel-item-4 { transition-delay: 0.38s; }
-.product-modal.open .panel-item-5 { transition-delay: 0.46s; }
-.product-modal.open .panel-item-6 { transition-delay: 0.54s; }
+.product-modal.open .panel-item-1 { transition-delay: 0.06s; }
+.product-modal.open .panel-item-2 { transition-delay: 0.09s; }
+.product-modal.open .panel-item-3 { transition-delay: 0.12s; }
+.product-modal.open .panel-item-4 { transition-delay: 0.15s; }
+.product-modal.open .panel-item-5 { transition-delay: 0.18s; }
+.product-modal.open .panel-item-6 { transition-delay: 0.21s; }
 
-.product-modal.open .close-button { transition-delay: 0.12s; }
+.product-modal.open .close-button {
+  transition-delay: 0.06s;
+}
 
 /* =========================================
    MODAL HEADER
@@ -3352,7 +3350,7 @@ main {
 }
 
 .modal-image:hover {
-  transform: translateY(-4px) scale(1.02);
+  transform: translateY(-2px) scale(1.01);
 }
 
 .modal-monogram {
@@ -3517,11 +3515,12 @@ main {
 
 .modal-info-card:hover {
   transform: translateY(-1px);
-  border-color: rgba(220, 181, 107, 0.22);
+
+  border-color: rgba(220, 181, 107, 0.20);
+
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.015),
-    0 14px 28px rgba(0, 0, 0, 0.22),
-    0 0 18px rgba(220, 181, 107, 0.05);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.012),
+    0 10px 22px rgba(0, 0, 0, 0.20);
 }
 
 .modal-info-card span {
@@ -3595,28 +3594,27 @@ main {
 /* default state */
 .modal-size-helper {
   margin: -2px 0 8px;
+
   color: rgba(255, 255, 255, 0.56);
   font-size: 11.5px;
   line-height: 1.35;
   letter-spacing: 0.04em;
 
   transition:
-    color 0.25s ease,
-    text-shadow 0.25s ease,
-    opacity 0.25s ease;
+    color 0.22s ease,
+    text-shadow 0.22s ease,
+    opacity 0.22s ease;
 }
 
 .modal-size-helper strong {
   color: var(--gold);
 }
 
-/* when hovering ANY size button */
 .modal-size-block:hover .modal-size-helper {
-  color: rgba(240, 215, 163, 0.92);
+  color: rgba(240, 215, 163, 0.88);
 
   text-shadow:
-    0 0 10px rgba(220, 181, 107, 0.18),
-    0 0 22px rgba(220, 181, 107, 0.10);
+    0 0 10px rgba(220, 181, 107, 0.10);
 
   opacity: 1;
 }
@@ -3681,11 +3679,12 @@ main {
 
 .modal-size:hover {
   transform: translateY(-1px);
-  border-color: rgba(220, 181, 107, 0.3);
+
+  border-color: rgba(220, 181, 107, 0.24);
+
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.015),
-    0 14px 28px rgba(0, 0, 0, 0.28),
-    0 0 18px rgba(220, 181, 107, 0.06);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.012),
+    0 10px 22px rgba(0, 0, 0, 0.20);
 }
 
 .modal-size span {
@@ -3810,15 +3809,13 @@ main {
     #f0d7a3 72%,
     #cfa24e 100%
   );
-  background-size: 200% auto;
+
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
   text-shadow:
     0 6px 24px rgba(0, 0, 0, 0.55),
-    0 0 12px rgba(220, 181, 107, 0.08);
-
-  animation: goldShimmer 4.2s linear infinite;
+    0 0 10px rgba(220, 181, 107, 0.05);
 }
 
 .modal-price-box::after {
@@ -3971,25 +3968,15 @@ main {
   position: absolute;
   inset: 0;
   border-radius: inherit;
+
   background: linear-gradient(
     115deg,
     transparent 0%,
-    transparent 36%,
-    rgba(255, 255, 255, 0) 42%,
-    rgba(255, 255, 255, 0.28) 49%,
-    rgba(255, 255, 255, 0.08) 54%,
-    rgba(255, 255, 255, 0) 60%,
     transparent 100%
   );
-  transform: translateX(-135%);
-  animation: modalButtonShine 4.6s ease-in-out infinite;
-  z-index: 0;
-  pointer-events: none;
-}
 
-.modal-add-button > * {
-  position: relative;
-  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
 }
 
 @keyframes modalButtonShine {
@@ -4018,13 +4005,15 @@ main {
 }
 
 .modal-add-button:hover {
-  transform: translateY(-2px);
-  border-color: rgba(220, 181, 107, 0.38);
+  transform: translateY(-1px);
+
+  border-color: rgba(220, 181, 107, 0.32);
+
   box-shadow:
-    0 0 0 1px rgba(220, 181, 107, 0.2),
-    0 22px 44px rgba(220, 181, 107, 0.24),
-    0 0 18px rgba(220, 181, 107, 0.08);
-  filter: brightness(1.02);
+    0 16px 34px rgba(220, 181, 107, 0.18),
+    inset 0 1px 0 rgba(255, 248, 232, 0.22);
+
+  filter: brightness(1.01);
 }
 
 .modal-add-button:active {
@@ -4051,8 +4040,8 @@ main {
   overflow-y: auto;
 
   background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
@@ -4063,12 +4052,10 @@ main {
   pointer-events: none;
 
   transition:
-    opacity 0.26s ease,
-    visibility 0s linear 0.26s,
-    backdrop-filter 0.26s ease,
-    -webkit-backdrop-filter 0.26s ease;
+    opacity 0.24s ease,
+    visibility 0s linear 0.24s;
 
-  will-change: opacity, backdrop-filter;
+  will-change: opacity;
 }
 
 .modal-overlay::before {
@@ -4078,10 +4065,10 @@ main {
   pointer-events: none;
 
   background:
-    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.02), transparent 36%);
+    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.015), transparent 36%);
 
   opacity: 0;
-  transition: opacity 0.26s ease;
+  transition: opacity 0.24s ease;
 }
 
 .modal-overlay .product-modal.open {
@@ -15005,123 +14992,5 @@ body.scrolled .header-system .announcement-bar-system {
 
   .header-system + main {
     padding-top: 7px;
-  }
-}
-
-/* =========================================
-   PRODUCT MODAL — CALMER EFFECTS PATCH
-========================================= */
-
-.product-modal .panel-anim,
-.product-modal .panel-item-anim,
-.product-modal .close-button {
-  filter: none;
-}
-
-.product-modal .panel-anim,
-.product-modal .close-button {
-  transition:
-    opacity 0.46s ease,
-    transform 0.46s var(--content-ease);
-}
-
-.product-modal .panel-item-anim {
-  transition:
-    opacity 0.42s ease,
-    transform 0.42s var(--content-ease);
-}
-
-.product-modal.open .panel-anim-1 { transition-delay: 0.06s; }
-.product-modal.open .panel-anim-2 { transition-delay: 0.10s; }
-.product-modal.open .panel-anim-3 { transition-delay: 0.14s; }
-
-.product-modal.open .panel-item-1 { transition-delay: 0.06s; }
-.product-modal.open .panel-item-2 { transition-delay: 0.09s; }
-.product-modal.open .panel-item-3 { transition-delay: 0.12s; }
-.product-modal.open .panel-item-4 { transition-delay: 0.15s; }
-.product-modal.open .panel-item-5 { transition-delay: 0.18s; }
-.product-modal.open .panel-item-6 { transition-delay: 0.21s; }
-
-.product-modal.open .close-button {
-  transition-delay: 0.06s;
-}
-
-/* Cena bez stalnog shimmer efekta */
-.modal-price-box strong {
-  animation: none;
-  background-size: 100% auto;
-}
-
-/* Dugme bez stalnog shine prolaza */
-.modal-add-button::before {
-  animation: none;
-  opacity: 0;
-}
-
-/* Helper tekst bez shimmer animacije */
-.modal-size-block:hover .modal-size-helper {
-  animation: none;
-  background: none;
-  -webkit-background-clip: initial;
-  -webkit-text-fill-color: rgba(240, 215, 163, 0.88);
-  color: rgba(240, 215, 163, 0.88);
-  text-shadow: 0 0 10px rgba(220, 181, 107, 0.10);
-}
-
-/* Blaži hover efekti */
-.modal-image:hover {
-  transform: translateY(-2px) scale(1.01);
-}
-
-.modal-info-card:hover,
-.modal-size:hover {
-  transform: translateY(-1px);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.012),
-    0 10px 22px rgba(0, 0, 0, 0.20);
-}
-
-.modal-add-button:hover {
-  transform: translateY(-1px);
-  box-shadow:
-    0 16px 34px rgba(220, 181, 107, 0.18),
-    inset 0 1px 0 rgba(255, 248, 232, 0.22);
-}
-
-/* Malo mirnija pozadina modala */
-.product-modal {
-  background:
-    radial-gradient(circle at 20% 20%, rgba(220, 181, 107, 0.06), transparent 30%),
-    radial-gradient(circle at 80% 80%, rgba(220, 181, 107, 0.035), transparent 30%),
-    linear-gradient(180deg, rgba(18, 18, 18, 0.98), rgba(8, 8, 8, 0.98));
-}
-
-/* Mobile ostaje potpuno miran */
-@media (max-width: 768px) {
-  .product-modal,
-  .product-modal.open,
-  .product-modal .panel-anim,
-  .product-modal .panel-item-anim,
-  .product-modal .close-button,
-  .modal-add-button,
-  .modal-size,
-  .modal-info-card,
-  .modal-image {
-    transition: none;
-    animation: none;
-    filter: none;
-  }
-
-  .modal-price-box strong,
-  .modal-add-button::before,
-  .modal-size-block:hover .modal-size-helper {
-    animation: none;
-  }
-
-  .modal-image:hover,
-  .modal-info-card:hover,
-  .modal-size:hover,
-  .modal-add-button:hover {
-    transform: none;
   }
 }
