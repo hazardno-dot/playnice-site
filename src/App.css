@@ -3141,7 +3141,7 @@ main {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 10px;
+  gap: 18px;
   margin-top: 8px;
   min-height: 42px;
 }
@@ -3149,6 +3149,7 @@ main {
 .modal-header-meta > * {
   min-width: 0;
 }
+
 
 /* =========================================
    INSPIRED BY — MINI HEADER VERSION (LOW HEIGHT)
