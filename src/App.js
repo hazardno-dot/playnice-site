@@ -630,6 +630,7 @@ function App() {
   const [seasonMenuOpen, setSeasonMenuOpen] = useState(false);
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState("");
@@ -638,94 +639,104 @@ function App() {
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
+
   const [storyOpen, setStoryOpen] = useState(false);
   const [inlineAddedKey, setInlineAddedKey] = useState(null);
   const [catalogPreview, setCatalogPreview] = useState(null);
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
+
   const [sortBy, setSortBy] = useState("featured");
   const [season, setSeason] = useState("All");
   const [privateSelectionOpen, setPrivateSelectionOpen] = useState(false);
   const [closingVisible, setClosingVisible] = useState(false);
+
   const [currentHero, setCurrentHero] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
+
   const [productModalVisible, setProductModalVisible] = useState(false);
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
 
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
-
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const newProductsSignature = useMemo(() => {
-  return getNewProductsSignature(products);
-}, []);
+    return getNewProductsSignature(products);
+  }, []);
 
-const [hasNewShopProducts, setHasNewShopProducts] = useState(() => {
-  if (typeof window === "undefined") return false;
+  const [hasNewShopProducts, setHasNewShopProducts] = useState(() => {
+    if (typeof window === "undefined") return false;
 
-  const currentSignature = getNewProductsSignature(products);
+    const currentSignature = getNewProductsSignature(products);
 
-  if (!currentSignature) return false;
+    if (!currentSignature) return false;
 
-  return localStorage.getItem(SHOP_NEW_PRODUCTS_SEEN_KEY) !== currentSignature;
-});
+    return (
+      localStorage.getItem(SHOP_NEW_PRODUCTS_SEEN_KEY) !== currentSignature
+    );
+  });
 
   const [wishlist, setWishlist] = useState(() =>
     safeReadLocalStorage("playnice_wishlist", [])
   );
+
   const [sprayingWishlistId, setSprayingWishlistId] = useState(null);
 
   const [checkoutForm, setCheckoutForm] = useState({
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  country: "ME",
-  city: "",
-  address: "",
-  note: ""
-});
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    country: "ME",
+    city: "",
+    address: "",
+    note: ""
+  });
 
-const checkoutCountryOptions = [
-  { value: "ME", sr: "Crna Gora", en: "Montenegro" },
-  { value: "RS", sr: "Srbija", en: "Serbia" },
-  { value: "BA", sr: "Bosna i Hercegovina", en: "Bosnia and Herzegovina" },
-  { value: "HR", sr: "Hrvatska", en: "Croatia" },
-  { value: "SI", sr: "Slovenija", en: "Slovenia" },
-  { value: "MK", sr: "Severna Makedonija", en: "North Macedonia" },
-  { value: "AL", sr: "Albanija", en: "Albania" },
-  { value: "XK", sr: "Kosovo", en: "Kosovo" },
-  { value: "OTHER", sr: "Druga zemlja", en: "Other country" }
-];
+  const checkoutCountryOptions = [
+    { value: "ME", sr: "Crna Gora", en: "Montenegro" },
+    { value: "RS", sr: "Srbija", en: "Serbia" },
+    { value: "BA", sr: "Bosna i Hercegovina", en: "Bosnia and Herzegovina" },
+    { value: "HR", sr: "Hrvatska", en: "Croatia" },
+    { value: "SI", sr: "Slovenija", en: "Slovenia" },
+    { value: "MK", sr: "Severna Makedonija", en: "North Macedonia" },
+    { value: "AL", sr: "Albanija", en: "Albania" },
+    { value: "XK", sr: "Kosovo", en: "Kosovo" },
+    { value: "OTHER", sr: "Druga zemlja", en: "Other country" }
+  ];
 
-const selectedCheckoutCountry =
-  checkoutCountryOptions.find((country) => country.value === checkoutForm.country) ||
-  checkoutCountryOptions[0];
+  const selectedCheckoutCountry =
+    checkoutCountryOptions.find(
+      (country) => country.value === checkoutForm.country
+    ) || checkoutCountryOptions[0];
 
-const selectedCheckoutCountryLabel =
-  lang === "sr" ? selectedCheckoutCountry.sr : selectedCheckoutCountry.en;
+  const selectedCheckoutCountryLabel =
+    lang === "sr" ? selectedCheckoutCountry.sr : selectedCheckoutCountry.en;
 
-const isMontenegroOrder = checkoutForm.country === "ME";
-const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== "ME";
+  const isMontenegroOrder = checkoutForm.country === "ME";
+
+  const isInternationalEnquiry =
+    checkoutForm.country && checkoutForm.country !== "ME";
 
   const [hasUserPickedSize, setHasUserPickedSize] = useState(false);
   const [journalOpen, setJournalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
 
   const [seenLatestJournalKey, setSeenLatestJournalKey] = useState(() => {
-  if (typeof window === "undefined") return "";
+    if (typeof window === "undefined") return "";
 
-  try {
-    return localStorage.getItem(JOURNAL_SEEN_KEY) || "";
-  } catch {
-    return "";
-  }
-});
+    try {
+      return localStorage.getItem(JOURNAL_SEEN_KEY) || "";
+    } catch {
+      return "";
+    }
+  });
 
   const [journalFeedback, setJournalFeedback] = useState({});
-  const [journalFeedbackSubmitted, setJournalFeedbackSubmitted] = useState(false);
+  const [journalFeedbackSubmitted, setJournalFeedbackSubmitted] =
+    useState(false);
   const [journalVoteSuccess, setJournalVoteSuccess] = useState("");
   const [journalFeedbackSuccess, setJournalFeedbackSuccess] = useState(false);
 
@@ -752,10 +763,10 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
   ];
 
   const heroSlides = useMemo(() => {
-  const [fixedFirstSlide, ...randomSlides] = BASE_HERO_SLIDES;
+    const [fixedFirstSlide, ...randomSlides] = BASE_HERO_SLIDES;
 
-  return [fixedFirstSlide, ...shuffleHeroSlides(randomSlides)];
-}, []);
+    return [fixedFirstSlide, ...shuffleHeroSlides(randomSlides)];
+  }, []);
 
   const categories = useMemo(
     () => ["All", "Arabian", "Designer", "Niche"],
@@ -770,217 +781,218 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
     []
   );
 
- const filteredProducts = useMemo(() => {
-  const result = products.filter((product) => {
-    const categoryMatch =
-      category === "All" || product.category === category;
+  const filteredProducts = useMemo(() => {
+    const result = products.filter((product) => {
+      const categoryMatch =
+        category === "All" || product.category === category;
 
-    const searchMatch = product.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
+      const searchMatch = product.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
 
-    const selectedSeason = String(season || "").toLowerCase();
-    const productSeason = String(product.season || "").toLowerCase();
+      const selectedSeason = String(season || "").toLowerCase();
+      const productSeason = String(product.season || "").toLowerCase();
 
-    const seasonMatch =
-      selectedSeason === "all" ||
-      productSeason === "all" ||
-      productSeason === selectedSeason;
+      const seasonMatch =
+        selectedSeason === "all" ||
+        productSeason === "all" ||
+        productSeason === selectedSeason;
 
-    return categoryMatch && searchMatch && seasonMatch;
-  });
+      return categoryMatch && searchMatch && seasonMatch;
+    });
 
-  switch (sortBy) {
-    case "rating":
-      return [...result].sort((a, b) => b.rating - a.rating);
+    switch (sortBy) {
+      case "rating":
+        return [...result].sort((a, b) => b.rating - a.rating);
 
-    case "priceLow":
-      return [...result].sort((a, b) => getMinPrice(a) - getMinPrice(b));
+      case "priceLow":
+        return [...result].sort((a, b) => getMinPrice(a) - getMinPrice(b));
 
-    case "priceHigh":
-      return [...result].sort((a, b) => getMinPrice(b) - getMinPrice(a));
+      case "priceHigh":
+        return [...result].sort((a, b) => getMinPrice(b) - getMinPrice(a));
 
-    case "name":
-      return [...result].sort((a, b) => a.name.localeCompare(b.name));
+      case "name":
+        return [...result].sort((a, b) => a.name.localeCompare(b.name));
 
-    case "featured":
-    default:
-      return result;
-  }
-}, [category, searchTerm, season, sortBy]);
+      case "featured":
+      default:
+        return result;
+    }
+  }, [category, searchTerm, season, sortBy]);
 
   const categoryOptions = [
     {
       value: "All",
-      label: lang === "sr" ? "Sve" : "All",
+      label: lang === "sr" ? "Sve" : "All"
     },
     {
       value: "Arabian",
-      label: lang === "sr" ? "Arapski" : "Arabian",
+      label: lang === "sr" ? "Arapski" : "Arabian"
     },
     {
       value: "Designer",
-      label: lang === "sr" ? "Dizajner" : "Designer",
+      label: lang === "sr" ? "Dizajner" : "Designer"
     },
     {
       value: "Niche",
-      label: "Niche",
-    },
+      label: "Niche"
+    }
   ];
 
   const selectedCategory =
     categoryOptions.find((option) => option.value === category) ||
     categoryOptions[0];
 
-/* =========================================
-   SIDE RAILS ADS
-========================================= */
-const foreverAloeUrl =
-  "https://foreverliving.com/shop/scg/sr-Cyrl-RS/drinks?fboId=360000920762&categoryId=1&title=Napici";
+  /* =========================================
+     SIDE RAILS ADS
+  ========================================= */
+  const foreverAloeUrl =
+    "https://foreverliving.com/shop/scg/sr-Cyrl-RS/drinks?fboId=360000920762&categoryId=1&title=Napici";
 
-const sideRailAds = [
-  {
-  id: "forever-aloe-refresh",
-  side: "left",
-  enabled: true,
-  isSponsored: true,
-  label: "SPONSORED",
-  title: lang === "sr" ? "Aloe Vera\nDrinks" : "Aloe Vera\nDrinks",
-  text:
-    lang === "sr"
-      ? "Napici sa aloe verom iz Forever Living ponude. Pogledaj gel, berry, mango i druge favorite."
-      : "Explore Forever Living aloe vera drinks. Discover gel, berry, mango and other favourites.",
-  cta: lang === "sr" ? "Pogledaj" : "Explore",
-  href: "https://foreverliving.com/shop/scg/sr-Cyrl-RS/drinks?fboId=360000920762&categoryId=1&title=Napici",
-  partner: "forever_living",
-  sellerId: "360000920762",
-  campaign: "aloe_drinks",
-  logoSrc: "/partners/forever-logo.png",
-  logoAlt: "Forever Living",
-},
-  {
-    id: "right-partner-placeholder",
-    side: "right",
-    enabled: true,
-    icon: "♥",
-    label: "FEATURED",
-    title: "Private\nSelection",
-    text:
-      lang === "sr"
-        ? "Sačuvaj favorite i napravi svoju mirisnu shortlistu."
-        : "Save favourites and build your personal scent shortlist.",
-    cta: lang === "sr" ? "Otvori" : "Open",
-    action: "privateSelection",
-  },
-];
+  const sideRailAds = [
+    {
+      id: "forever-aloe-refresh",
+      side: "left",
+      enabled: true,
+      isSponsored: true,
+      label: "SPONSORED",
+      title: lang === "sr" ? "Aloe Vera\nDrinks" : "Aloe Vera\nDrinks",
+      text:
+        lang === "sr"
+          ? "Napici sa aloe verom iz Forever Living ponude. Pogledaj gel, berry, mango i druge favorite."
+          : "Explore Forever Living aloe vera drinks. Discover gel, berry, mango and other favourites.",
+      cta: lang === "sr" ? "Pogledaj" : "Explore",
+      href: foreverAloeUrl,
+      partner: "forever_living",
+      sellerId: "360000920762",
+      campaign: "aloe_drinks",
+      logoSrc: "/partners/forever-logo.png",
+      logoAlt: "Forever Living"
+    },
+    {
+      id: "right-partner-placeholder",
+      side: "right",
+      enabled: true,
+      icon: "♥",
+      label: "FEATURED",
+      title: "Private\nSelection",
+      text:
+        lang === "sr"
+          ? "Sačuvaj favorite i napravi svoju mirisnu shortlistu."
+          : "Save favourites and build your personal scent shortlist.",
+      cta: lang === "sr" ? "Otvori" : "Open",
+      action: "privateSelection"
+    }
+  ];
 
-const sideRailBlocked =
-  cartOpen ||
-  checkoutOpen ||
-  storyOpen ||
-  howItWorksOpen ||
-  privateSelectionOpen ||
-  journalOpen ||
-  Boolean(selectedArticle) ||
-  productModalVisible;
+  const sideRailBlocked =
+    cartOpen ||
+    checkoutOpen ||
+    storyOpen ||
+    howItWorksOpen ||
+    privateSelectionOpen ||
+    journalOpen ||
+    Boolean(selectedArticle) ||
+    productModalVisible;
 
-const shouldShowSideRails =
-  (view === "home" || view === "shop") && !sideRailBlocked;
+  const shouldShowSideRails =
+    (view === "home" || view === "shop") && !sideRailBlocked;
 
   const mobileSponsoredAd = sideRailAds.find(
-  (ad) => ad.id === "forever-aloe-refresh" && ad.enabled
-);
+    (ad) => ad.id === "forever-aloe-refresh" && ad.enabled
+  );
 
-const shouldShowMobileSponsoredAd =
-  Boolean(mobileSponsoredAd) &&
-  (view === "home" || view === "shop") &&
-  !sideRailBlocked;
+  const shouldShowMobileSponsoredAd =
+    Boolean(mobileSponsoredAd) &&
+    (view === "home" || view === "shop") &&
+    !sideRailBlocked;
 
-const handleSideRailAction = (ad) => {
-  if (ad.href) {
-    return;
-  }
+  const handleSideRailAction = (ad) => {
+    if (ad.href) {
+      return;
+    }
 
-  if (ad.action === "shop") {
-    setView("shop");
-    setCurrentPage(1);
+    if (ad.action === "shop") {
+      setView("shop");
+      setCurrentPage(1);
 
-    window.setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 0);
+      window.setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 0);
 
-    return;
-  }
+      return;
+    }
 
-  if (ad.action === "privateSelection") {
-    setPrivateSelectionOpen(true);
-  }
-};
+    if (ad.action === "privateSelection") {
+      setPrivateSelectionOpen(true);
+    }
+  };
 
-const handleSponsoredAdClick = (ad, placement) => {
-  if (typeof trackEvent !== "function") return;
+  const handleSponsoredAdClick = (ad, placement) => {
+    if (typeof trackEvent !== "function") return;
 
-  trackEvent("sponsored_ad_click", {
-    partner: ad?.partner || "forever_living",
-    sellerId: ad?.sellerId || "360000920762",
-    campaign: ad?.campaign || "aloe_drinks",
-    placement,
-    lang,
-    view,
-  });
-};
+    trackEvent("sponsored_ad_click", {
+      partner: ad?.partner || "forever_living",
+      sellerId: ad?.sellerId || "360000920762",
+      campaign: ad?.campaign || "aloe_drinks",
+      placement,
+      lang,
+      view
+    });
+  };
 
-/* =========================================
-   seasonOptions
-========================================= */
-const seasonOptions = [
-  {
-    value: "All",
-    label: tr.seasonAll,
-  },
-  {
-    value: "summer",
-    label: `☀️ ${tr.seasonSummer}`,
-  },
-  {
-    value: "winter",
-    label: `❄️ ${tr.seasonWinter}`,
-  },
-];
+  /* =========================================
+     SEASON / SORT OPTIONS
+  ========================================= */
+  const seasonOptions = [
+    {
+      value: "All",
+      label: tr.seasonAll
+    },
+    {
+      value: "summer",
+      label: `☀️ ${tr.seasonSummer}`
+    },
+    {
+      value: "winter",
+      label: `❄️ ${tr.seasonWinter}`
+    }
+  ];
 
-const sortOptions = [
-  {
-    value: "featured",
-    label: tr.sortFeatured,
-  },
-  {
-    value: "rating",
-    label: `★ ${tr.sortRating}`,
-  },
-  {
-    value: "priceLow",
-    label: `↗ ${tr.sortPriceLow}`,
-  },
-  {
-    value: "priceHigh",
-    label: `↘ ${tr.sortPriceHigh}`,
-  },
-  {
-    value: "name",
-    label: tr.sortName,
-  },
-];
+  const sortOptions = [
+    {
+      value: "featured",
+      label: tr.sortFeatured
+    },
+    {
+      value: "rating",
+      label: `★ ${tr.sortRating}`
+    },
+    {
+      value: "priceLow",
+      label: `↗ ${tr.sortPriceLow}`
+    },
+    {
+      value: "priceHigh",
+      label: `↘ ${tr.sortPriceHigh}`
+    },
+    {
+      value: "name",
+      label: tr.sortName
+    }
+  ];
 
-const selectedSeasonOption =
-  seasonOptions.find((option) => option.value === season) || seasonOptions[0];
+  const selectedSeasonOption =
+    seasonOptions.find((option) => option.value === season) ||
+    seasonOptions[0];
 
-const selectedSortOption =
-  sortOptions.find((option) => option.value === sortBy) || sortOptions[0];
+  const selectedSortOption =
+    sortOptions.find((option) => option.value === sortBy) ||
+    sortOptions[0];
 
-/* =========================================
-   TOTAL PAGES
-========================================= */
-
+  /* =========================================
+     TOTAL PAGES / CART TOTALS
+  ========================================= */
   const totalPages = Math.max(
     1,
     Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)
@@ -988,6 +1000,7 @@ const selectedSortOption =
 
   const paginatedProducts = useMemo(() => {
     const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
+
     return filteredProducts.slice(start, start + PRODUCTS_PER_PAGE);
   }, [filteredProducts, currentPage]);
 
@@ -1002,7 +1015,11 @@ const selectedSortOption =
   );
 
   const shipping =
-    cart.length === 0 ? 0 : subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+    cart.length === 0
+      ? 0
+      : subtotal >= FREE_SHIPPING_THRESHOLD
+      ? 0
+      : SHIPPING_COST;
 
   const total = subtotal + shipping;
 
@@ -1013,69 +1030,70 @@ const selectedSortOption =
 
   const scrollYRef = useRef(0);
 
-/* =========================================
-   EFFECTS
-========================================= */
-useLayoutEffect(() => {
-  const shouldLockScroll =
-    !!selectedProduct ||
-    cartOpen ||
-    checkoutOpen ||
-    storyOpen ||
-    howItWorksOpen ||
-    privateSelectionOpen ||
-    journalOpen ||
-    !!selectedArticle ||
-    !!catalogPreview;
+  /* =========================================
+     EFFECTS
+  ========================================= */
+  useLayoutEffect(() => {
+    const shouldLockScroll =
+      !!selectedProduct ||
+      cartOpen ||
+      checkoutOpen ||
+      storyOpen ||
+      howItWorksOpen ||
+      privateSelectionOpen ||
+      journalOpen ||
+      !!selectedArticle ||
+      !!catalogPreview;
 
-  const body = document.body;
+    const body = document.body;
 
-  if (shouldLockScroll) {
-    const lockY = window.scrollY || window.pageYOffset || 0;
+    if (shouldLockScroll) {
+      const lockY = window.scrollY || window.pageYOffset || 0;
 
-    scrollYRef.current = lockY;
+      scrollYRef.current = lockY;
 
-    body.style.position = "fixed";
-    body.style.top = `-${lockY}px`;
-    body.style.left = "0";
-    body.style.right = "0";
-    body.style.width = "100%";
-    body.style.overflow = "hidden";
-  } else {
-    const savedScrollY = Math.abs(parseInt(body.style.top || "0", 10));
+      body.style.position = "fixed";
+      body.style.top = `-${lockY}px`;
+      body.style.left = "0";
+      body.style.right = "0";
+      body.style.width = "100%";
+      body.style.overflow = "hidden";
+    } else {
+      const savedScrollY = Math.abs(parseInt(body.style.top || "0", 10));
 
-    body.style.position = "";
-    body.style.top = "";
-    body.style.left = "";
-    body.style.right = "";
-    body.style.width = "";
-    body.style.overflow = "";
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = "";
+      body.style.overflow = "";
 
-    window.scrollTo(0, savedScrollY || scrollYRef.current || 0);
-  }
+      window.scrollTo(0, savedScrollY || scrollYRef.current || 0);
+    }
 
-  return () => {
-    body.style.position = "";
-    body.style.top = "";
-    body.style.left = "";
-    body.style.right = "";
-    body.style.width = "";
-    body.style.overflow = "";
-  };
-}, [
-  selectedProduct,
-  cartOpen,
-  checkoutOpen,
-  storyOpen,
-  howItWorksOpen,
-  privateSelectionOpen,
-  journalOpen,
-  selectedArticle,
-  catalogPreview
-]);
+    return () => {
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = "";
+      body.style.overflow = "";
+    };
+  }, [
+    selectedProduct,
+    cartOpen,
+    checkoutOpen,
+    storyOpen,
+    howItWorksOpen,
+    privateSelectionOpen,
+    journalOpen,
+    selectedArticle,
+    catalogPreview
+  ]);
 
   useEffect(() => {
     const section = document.querySelector(".closing-section");
+
     if (!section) return;
 
     const observer = new IntersectionObserver(
@@ -1101,72 +1119,73 @@ useLayoutEffect(() => {
   }, [lang]);
 
   useEffect(() => {
-  if (window.location.pathname.startsWith("/product/")) {
-    return;
-  }
+    if (window.location.pathname.startsWith("/product/")) {
+      return;
+    }
 
-  const params = new URLSearchParams(window.location.search);
-  const urlView = params.get("view");
-  const urlCategory = params.get("category");
-  const urlSearch = params.get("search");
-  const urlPage = params.get("page");
-  const urlSort = params.get("sort");
-  const urlSeason = params.get("season");
+    const params = new URLSearchParams(window.location.search);
+    const urlView = params.get("view");
+    const urlCategory = params.get("category");
+    const urlSearch = params.get("search");
+    const urlPage = params.get("page");
+    const urlSort = params.get("sort");
+    const urlSeason = params.get("season");
 
-  if (urlView && ["home", "shop", "journal"].includes(urlView)) {
-    setView(urlView);
-  }
+    if (urlView && ["home", "shop", "journal"].includes(urlView)) {
+      setView(urlView);
+    }
 
-  if (urlCategory && categories.includes(urlCategory)) {
-    setCategory(urlCategory);
-  }
+    if (urlCategory && categories.includes(urlCategory)) {
+      setCategory(urlCategory);
+    }
 
-  if (urlSearch) {
-    setSearchTerm(urlSearch);
-  }
+    if (urlSearch) {
+      setSearchTerm(urlSearch);
+    }
 
-  if (urlPage && !Number.isNaN(Number(urlPage))) {
-    setCurrentPage(Number(urlPage));
-  }
+    if (urlPage && !Number.isNaN(Number(urlPage))) {
+      setCurrentPage(Number(urlPage));
+    }
 
-  if (
-    urlSort &&
-    ["featured", "rating", "priceLow", "priceHigh", "name"].includes(urlSort)
-  ) {
-    setSortBy(urlSort);
-  }
+    if (
+      urlSort &&
+      ["featured", "rating", "priceLow", "priceHigh", "name"].includes(urlSort)
+    ) {
+      setSortBy(urlSort);
+    }
 
-  if (urlSeason && ["All", "summer", "winter"].includes(urlSeason)) {
-    setSeason(urlSeason);
-  }
-}, [categories]);
+    if (urlSeason && ["All", "summer", "winter"].includes(urlSeason)) {
+      setSeason(urlSeason);
+    }
+  }, [categories]);
 
   useEffect(() => {
-  if (window.location.pathname.startsWith("/product/")) {
-    return;
-  }
+    if (window.location.pathname.startsWith("/product/")) {
+      return;
+    }
 
-  const params = new URLSearchParams();
-  params.set("view", view);
+    const params = new URLSearchParams();
 
-  if (category !== "All") params.set("category", category);
-  if (searchTerm.trim()) params.set("search", searchTerm.trim());
-  if (season !== "All") params.set("season", season);
-  if (sortBy !== "featured") params.set("sort", sortBy);
-  if (currentPage > 1) params.set("page", String(currentPage));
+    params.set("view", view);
 
-  const query = params.toString();
+    if (category !== "All") params.set("category", category);
+    if (searchTerm.trim()) params.set("search", searchTerm.trim());
+    if (season !== "All") params.set("season", season);
+    if (sortBy !== "featured") params.set("sort", sortBy);
+    if (currentPage > 1) params.set("page", String(currentPage));
 
-  const nextUrl = query
-    ? `${window.location.pathname}?${query}`
-    : window.location.pathname;
+    const query = params.toString();
 
-  const currentUrl = `${window.location.pathname}${window.location.search}`;
+    const nextUrl = query
+      ? `${window.location.pathname}?${query}`
+      : window.location.pathname;
 
-  if (currentUrl !== nextUrl) {
-    window.history.replaceState({}, "", nextUrl);
-  }
-}, [view, category, searchTerm, season, sortBy, currentPage]);
+    const currentUrl = `${window.location.pathname}${window.location.search}`;
+
+    if (currentUrl !== nextUrl) {
+      window.history.replaceState({}, "", nextUrl);
+    }
+  }, [view, category, searchTerm, season, sortBy, currentPage]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -1174,19 +1193,24 @@ useLayoutEffect(() => {
 
   useEffect(() => {
     if (!addedFeedback) return;
+
     const timer = setTimeout(() => setAddedFeedback(""), 1200);
+
     return () => clearTimeout(timer);
   }, [addedFeedback]);
 
   useEffect(() => {
     if (!orderSuccessMessage) return;
+
     const timer = setTimeout(() => setOrderSuccessMessage(""), 2200);
+
     return () => clearTimeout(timer);
   }, [orderSuccessMessage]);
 
   useEffect(() => {
     if (selectedProduct) {
       const firstSize = Object.keys(selectedProduct.sizes)[0];
+
       setSelectedSize(firstSize);
     } else {
       setSelectedSize("");
@@ -1204,11 +1228,14 @@ useLayoutEffect(() => {
   }, [heroPaused, heroSlides.length]);
 
   useEffect(() => {
-    if (currentPage > totalPages) setCurrentPage(1);
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
   }, [currentPage, totalPages]);
 
   useEffect(() => {
     const path = window.location.pathname + window.location.search;
+
     trackPageView(path || "/");
   }, []);
 
