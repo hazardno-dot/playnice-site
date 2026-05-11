@@ -3,7 +3,7 @@ import "./App.css";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
-import { productCopy } from "./data/products/productCopy";
+import { productCopy, fallbackCopy } from "./data/products/productCopy";
 import { productWearContext } from "./data/products/productWearContext";
 import { translations } from "./data/translations";
 
@@ -17,37 +17,6 @@ const slugifyProduct = (name = "") =>
     .replace(/&/g, "and")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-
-const fallbackCopy = {
-  miniTag: {
-    sr: "💎 Luxury / Signature",
-    en: "💎 Luxury / Signature"
-  },
-  card: {
-    sr: "Premium miris sa karakterom i pažljivo biranim akordima.",
-    en: "A premium fragrance with character and carefully chosen accords."
-  },
-  modal: {
-    sr: "Pažljivo odabran miris sa upečatljivim stilom, dominantnim akordima i premium PlayNice karakterom.",
-    en: "A carefully selected fragrance with distinctive style, dominant accords and premium PlayNice character."
-  },
-  scentType: {
-    sr: "Signature fragrance",
-    en: "Signature fragrance"
-  },
-  dominantNotes: {
-    sr: ["premium akordi"],
-    en: ["premium accords"]
-  },
-  tags: {
-    sr: ["Signature"],
-    en: ["Signature"]
-  },
-  whyChoose: {
-    sr: "Odličan izbor za otkrivanje mirisa sa karakterom, jasnim identitetom i premium utiskom u decant formatu.",
-    en: "A strong choice for discovering a fragrance with character, clear identity and a premium feel in decant format."
-  }
-};
 
 /* =========================================
    SEO helper
