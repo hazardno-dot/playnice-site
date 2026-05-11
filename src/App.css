@@ -4095,15 +4095,13 @@ main {
   }
 }
 
-@media (max-width: 640px) {
-  /* =========================================
-     MOBILE OVERLAY/BACKDROP CLEANUP
-     Integrated here because overlay/backdrop CSS is above
-  ========================================= */
+/* =========================================
+   PRODUCT MODAL — MOBILE
+========================================= */
 
+@media (max-width: 640px) {
   .modal-overlay,
-  .modal-overlay.show,
-  .modal-overlay:has(.product-modal.open) {
+  .modal-overlay.show {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
 
@@ -4114,34 +4112,8 @@ main {
 
   .modal-overlay::before {
     display: none !important;
-    opacity: 0 !important;
-
-    transition: none !important;
-    animation: none !important;
+    content: none !important;
   }
-
-  .backdrop,
-  .backdrop.show {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-
-    transition: none !important;
-    animation: none !important;
-    will-change: auto !important;
-  }
-
-  .backdrop::before,
-  .backdrop::after {
-    display: none !important;
-    opacity: 0 !important;
-
-    transition: none !important;
-    animation: none !important;
-  }
-
-  /* =========================================
-     PRODUCT MODAL — MOBILE LAYOUT + NO MOTION
-  ========================================= */
 
   .product-modal {
     width: calc(100vw - 16px);
@@ -4198,14 +4170,40 @@ main {
     line-height: 0.98;
   }
 
-  .modal-media {
-    padding: 20px 18px 16px;
+  .modal-header-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
     min-height: 0;
   }
 
-  .modal-content {
-    padding: 18px 18px 18px;
-    gap: 10px;
+  .modal-inspired-mini {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    padding: 8px 11px;
+    min-height: 40px;
+    border-radius: 11px;
+    gap: 8px;
+  }
+
+  .modal-inspired-mini-label {
+    font-size: 0.5rem;
+  }
+
+  .modal-inspired-mini-name {
+    font-size: clamp(0.78rem, 3.2vw, 0.9rem);
+    line-height: 1.08;
+  }
+
+  .modal-inspired-mini-short {
+    font-size: 0.5rem;
+  }
+
+  .modal-media {
+    padding: 20px 18px 16px;
+    min-height: 0;
   }
 
   .modal-image-wrap {
@@ -4233,11 +4231,18 @@ main {
     padding-top: 4px;
   }
 
+  .modal-content {
+    padding: 18px;
+    gap: 10px;
+  }
+
   .modal-description {
     font-size: 1.04rem;
     line-height: 1.28;
+
     min-height: auto;
     max-height: none;
+
     -webkit-line-clamp: unset;
   }
 
@@ -4253,7 +4258,6 @@ main {
     font-size: 1.04rem;
   }
 
-  /* ML dugmad — 3 u jednom redu */
   .modal-sizes,
   .modal-size-grid {
     display: grid;
@@ -4296,6 +4300,12 @@ main {
     line-height: 1;
   }
 
+  .modal-size-block:hover .modal-size-helper {
+    animation: none !important;
+    background: none !important;
+    -webkit-text-fill-color: currentColor;
+  }
+
   .modal-purchase-bar {
     gap: 10px;
   }
@@ -4318,6 +4328,11 @@ main {
   }
 
   .modal-add-button {
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    padding: 0 22px;
+
     transition: none !important;
     transform: none !important;
   }
@@ -4332,52 +4347,29 @@ main {
     opacity: 0 !important;
   }
 
-  .modal-buy-now {
+  .modal-add-button.is-added {
+    background:
+      linear-gradient(135deg, #d9f0df 0%, #8fcf9e 48%, #5f9f73 100%) !important;
+
+    border-color: rgba(160, 220, 175, 0.52) !important;
+    color: #07130b !important;
+
+    box-shadow:
+      0 14px 30px rgba(95, 159, 115, 0.18),
+      0 0 0 1px rgba(160, 220, 175, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+  }
+
+  .modal-add-button.is-added::before {
     animation: none !important;
+    opacity: 0 !important;
+  }
+
+  .modal-buy-now {
     opacity: 1;
     transform: none;
-  }
-
-  .modal-size-block:hover .modal-size-helper {
     animation: none !important;
-    background: none;
-    -webkit-text-fill-color: currentColor;
   }
-
-  .modal-header-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    min-height: 0;
-  }
-
-  .modal-inspired-mini {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-
-  padding: 8px 11px;
-  min-height: 40px;
-  border-radius: 11px;
-  gap: 8px;
-}
-
-.modal-inspired-mini-label {
-  font-size: 0.5rem;
-}
-
-.modal-inspired-mini-name {
-  font-size: clamp(0.78rem, 3.2vw, 0.9rem);
-  line-height: 1.08;
-}
-
-.modal-inspired-mini-short {
-  font-size: 0.5rem;
-}
-
-  /* =========================================
-     PRODUCT MODAL — MOBILE INNER REVEAL OFF
-  ========================================= */
 
   .product-modal .panel-anim,
   .product-modal .panel-item-anim,
@@ -4393,6 +4385,7 @@ main {
 
     transition: none !important;
     transition-delay: 0s !important;
+
     animation: none !important;
     animation-delay: 0s !important;
 
