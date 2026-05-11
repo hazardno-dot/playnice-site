@@ -4063,10 +4063,6 @@ main {
   content: none;
 }
 
-.modal-overlay .product-modal.open {
-  pointer-events: auto;
-}
-
 .modal-overlay.show {
   opacity: 1;
   visibility: visible;
