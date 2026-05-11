@@ -3884,14 +3884,15 @@ main {
 
 .modal-add-button.is-added {
   background:
-    linear-gradient(135deg, rgba(170, 226, 188, 0.98) 0%, rgba(103, 184, 134, 0.98) 48%, rgba(64, 138, 92, 0.98) 100%);
-  border-color: rgba(170, 226, 188, 0.5);
+    linear-gradient(135deg, #d9f0df 0%, #8fcf9e 48%, #5f9f73 100%);
+
+  border-color: rgba(160, 220, 175, 0.52);
   color: #07130b;
 
   box-shadow:
-    0 16px 38px rgba(103, 184, 134, 0.22),
-    0 0 0 1px rgba(170, 226, 188, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    0 14px 30px rgba(95, 159, 115, 0.18),
+    0 0 0 1px rgba(160, 220, 175, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.30);
 
   transform: translateY(-1px) scale(1.01);
 }
