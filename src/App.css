@@ -3312,8 +3312,8 @@ main {
   background: linear-gradient(135deg, #c92525, #f23a3a);
 
   box-shadow:
-    0 8px 20px rgba(215, 38, 38, 0.16),
-    0 0 12px rgba(215, 38, 38, 0.10);
+  0 6px 16px rgba(215, 38, 38, 0.12),
+  0 0 8px rgba(215, 38, 38, 0.08);
 }
 
 .modal-image-wrap {
