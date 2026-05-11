@@ -4028,53 +4028,33 @@ main {
 }
 
 /* =========================================
-   MODAL OVERLAY
+   MODAL OVERLAY — FAST CLOSE
 ========================================= */
+
 .modal-overlay {
-  position: fixed;
-  inset: 0;
+  transition:
+    opacity 0.16s ease,
+    visibility 0s linear 0.16s,
+    backdrop-filter 0s linear 0.16s,
+    -webkit-backdrop-filter 0s linear 0.16s;
+}
 
-  display: block;
-  padding: 8px;
-  overflow-y: auto;
+.modal-overlay:not(.show) {
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+}
 
+.modal-overlay.show {
   background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
-
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-
   transition:
     opacity 0.18s ease,
-    visibility 0s linear 0.18s;
-
-  will-change: opacity;
-}
-
-.modal-overlay::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-
-  background: none;
-  opacity: 0;
-}
-
-.modal-overlay.show {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-
-  transition:
-    opacity 0.18s ease,
-    visibility 0s linear 0s;
+    visibility 0s linear 0s,
+    backdrop-filter 0.18s ease,
+    -webkit-backdrop-filter 0.18s ease;
 }
 
 /* =========================================
