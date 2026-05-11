@@ -2295,7 +2295,7 @@ const closeProductModal = () => {
 
   productModalCloseTimeoutRef.current = setTimeout(() => {
     cleanupProductModal();
-  }, 200);
+  }, 100);
 };
 
 const openImpactProductModal = (product) => {
