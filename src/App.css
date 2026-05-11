@@ -3264,12 +3264,10 @@ main {
 }
 
 .modal-content {
-  padding: 20px 24px 16px;
-
+  padding: 22px 24px 18px;
   display: flex;
   flex-direction: column;
-  gap: 13px;
-
+  gap: 10px;
   min-height: 0;
 
   overflow-y: auto;
