@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState
-} from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
@@ -25,7 +19,7 @@ const slugifyProduct = (name = "") =>
     .replace(/^-+|-+$/g, "");
 
 /* =========================================
-   SEO HELPERS
+   SEO helper
 ========================================= */
 const SITE_BASE_URL = "https://www.playniceshop.me";
 
@@ -35,7 +29,7 @@ const cleanSeoProductName = (name = "") =>
     .replace(/\s+/g, " ")
     .trim();
 
-const getProductSlug = (product) => {
+    const getProductSlug = (product) => {
   if (!product) return "";
 
   if (product.slug) {
@@ -82,8 +76,7 @@ const getProductFromCurrentUrl = () => {
   const slugFromUrl = decodeURIComponent(match[1]);
 
   return (
-    products.find((product) => getProductSlug(product) === slugFromUrl) ||
-    null
+    products.find((product) => getProductSlug(product) === slugFromUrl) || null
   );
 };
 
@@ -158,9 +151,9 @@ const getSeoSeasonText = (season, lang = "sr") => {
 const getSeoProductCopy = (product, lang = "sr") => {
   const cleanName = cleanSeoProductName(product?.name);
   const directCopy = productCopy?.[cleanName];
-  const fallbackProductCopy = productCopy?.[product?.name];
+  const fallbackCopy = productCopy?.[product?.name];
 
-  const copy = directCopy || fallbackProductCopy;
+  const copy = directCopy || fallbackCopy;
 
   if (copy?.modal?.[lang]) return copy.modal[lang];
   if (copy?.card?.[lang]) return copy.card[lang];
@@ -178,26 +171,18 @@ const getProductSeoTitle = (product, lang = "sr") => {
   return `${name} dekanti | Probaj prije kupovine | PlayNice`;
 };
 
-const getProductSeoDescription = (product, lang = "sr") => {
+  const getProductSeoDescription = (product, lang = "sr") => {
   const name = cleanSeoProductName(product?.name);
   const category = getSeoCategoryLabel(product?.category, lang);
   const sizes = getSeoProductSizes(product);
-  const sizeText = sizes.length
-    ? sizes.join(", ")
-    : lang === "en"
-    ? "decants"
-    : "dekantima";
+  const sizeText = sizes.length ? sizes.join(", ") : lang === "en" ? "decants" : "dekantima";
   const lowestPrice = getSeoLowestPrice(product);
   const productCopyText = getSeoProductCopy(product, lang);
   const seasonText = getSeoSeasonText(product?.season, lang);
 
   if (lang === "en") {
     return [
-      `${name} is available at PlayNice as ${getEnglishArticle(
-        category
-      )} ${category} in ${sizeText} sizes${
-        lowestPrice ? ` from €${lowestPrice}` : ""
-      }.`,
+      `${name} is available at PlayNice as ${getEnglishArticle(category)} ${category} in ${sizeText} sizes${lowestPrice ? ` from €${lowestPrice}` : ""}.`,
       productCopyText,
       seasonText,
       "Try before you buy, with delivery across Montenegro and payment on delivery."
@@ -207,9 +192,7 @@ const getProductSeoDescription = (product, lang = "sr") => {
   }
 
   return [
-    `${name} je dostupan u PlayNice ponudi kao ${category} u ${sizeText} dekantima${
-      lowestPrice ? ` već od €${lowestPrice}` : ""
-    }.`,
+    `${name} je dostupan u PlayNice ponudi kao ${category} u ${sizeText} dekantima${lowestPrice ? ` već od €${lowestPrice}` : ""}.`,
     productCopyText,
     seasonText,
     "Probaj parfem prije kupovine cijele bočice, uz dostavu širom Crne Gore i plaćanje pouzećem."
@@ -227,7 +210,7 @@ const getProductMetaDescription = (product, lang = "sr") => {
 };
 
 /* =========================================
-   ARABIAN FRAGRANCE "AN" HELPER
+   Arabian fragrance "AN" HELPER
 ========================================= */
 const getEnglishArticle = (text = "") => {
   const firstLetter = String(text).trim().charAt(0).toLowerCase();
@@ -238,6 +221,7 @@ const getEnglishArticle = (text = "") => {
 /* =========================================
    JSON-LD HELPER
 ========================================= */
+
 const getProductStructuredData = (product, lang = "sr") => {
   if (!product) return null;
 
@@ -365,11 +349,9 @@ function getDefaultLanguage() {
   if (typeof window === "undefined") return "sr";
 
   const savedLang = window.localStorage.getItem("playnice_lang");
-
   if (savedLang === "sr" || savedLang === "en") return savedLang;
 
   const browserLang = (window.navigator.language || "").toLowerCase();
-
   if (
     browserLang.startsWith("sr") ||
     browserLang.startsWith("hr") ||
@@ -433,9 +415,7 @@ function getProductCopy(product, lang) {
 
   return {
     miniTag:
-      copy.miniTag?.[lang] ||
-      copy.miniTag?.en ||
-      fallbackCopy.miniTag[lang],
+      copy.miniTag?.[lang] || copy.miniTag?.en || fallbackCopy.miniTag[lang],
     card: copy.card?.[lang] || copy.card?.en || fallbackCopy.card[lang],
     modal: copy.modal?.[lang] || copy.modal?.en || fallbackCopy.modal[lang],
     scentType:
@@ -484,15 +464,7 @@ const getRelatedJournalProducts = (article) => {
 
 const getJournalArticleKey = (article) => {
   if (!article) return "";
-
-  return (
-    article.id ||
-    article.slug ||
-    article.title?.en ||
-    article.title?.sr ||
-    article.title ||
-    ""
-  );
+  return article.id || article.slug || article.title?.en || article.title?.sr || article.title || "";
 };
 
 const getInitialView = () => {
@@ -593,11 +565,7 @@ const shuffleHeroSlides = (slides) => {
 
   for (let i = shuffled.length - 1; i > 0; i -= 1) {
     const randomIndex = Math.floor(Math.random() * (i + 1));
-
-    [shuffled[i], shuffled[randomIndex]] = [
-      shuffled[randomIndex],
-      shuffled[i]
-    ];
+    [shuffled[i], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[i]];
   }
 
   return shuffled;
@@ -630,7 +598,6 @@ function App() {
   const [seasonMenuOpen, setSeasonMenuOpen] = useState(false);
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState("");
@@ -639,104 +606,94 @@ function App() {
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
-
   const [storyOpen, setStoryOpen] = useState(false);
   const [inlineAddedKey, setInlineAddedKey] = useState(null);
   const [catalogPreview, setCatalogPreview] = useState(null);
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
-
   const [sortBy, setSortBy] = useState("featured");
   const [season, setSeason] = useState("All");
   const [privateSelectionOpen, setPrivateSelectionOpen] = useState(false);
   const [closingVisible, setClosingVisible] = useState(false);
-
   const [currentHero, setCurrentHero] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
-
   const [productModalVisible, setProductModalVisible] = useState(false);
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
 
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const newProductsSignature = useMemo(() => {
-    return getNewProductsSignature(products);
-  }, []);
+  return getNewProductsSignature(products);
+}, []);
 
-  const [hasNewShopProducts, setHasNewShopProducts] = useState(() => {
-    if (typeof window === "undefined") return false;
+const [hasNewShopProducts, setHasNewShopProducts] = useState(() => {
+  if (typeof window === "undefined") return false;
 
-    const currentSignature = getNewProductsSignature(products);
+  const currentSignature = getNewProductsSignature(products);
 
-    if (!currentSignature) return false;
+  if (!currentSignature) return false;
 
-    return (
-      localStorage.getItem(SHOP_NEW_PRODUCTS_SEEN_KEY) !== currentSignature
-    );
-  });
+  return localStorage.getItem(SHOP_NEW_PRODUCTS_SEEN_KEY) !== currentSignature;
+});
 
   const [wishlist, setWishlist] = useState(() =>
     safeReadLocalStorage("playnice_wishlist", [])
   );
-
   const [sprayingWishlistId, setSprayingWishlistId] = useState(null);
 
   const [checkoutForm, setCheckoutForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    country: "ME",
-    city: "",
-    address: "",
-    note: ""
-  });
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  country: "ME",
+  city: "",
+  address: "",
+  note: ""
+});
 
-  const checkoutCountryOptions = [
-    { value: "ME", sr: "Crna Gora", en: "Montenegro" },
-    { value: "RS", sr: "Srbija", en: "Serbia" },
-    { value: "BA", sr: "Bosna i Hercegovina", en: "Bosnia and Herzegovina" },
-    { value: "HR", sr: "Hrvatska", en: "Croatia" },
-    { value: "SI", sr: "Slovenija", en: "Slovenia" },
-    { value: "MK", sr: "Severna Makedonija", en: "North Macedonia" },
-    { value: "AL", sr: "Albanija", en: "Albania" },
-    { value: "XK", sr: "Kosovo", en: "Kosovo" },
-    { value: "OTHER", sr: "Druga zemlja", en: "Other country" }
-  ];
+const checkoutCountryOptions = [
+  { value: "ME", sr: "Crna Gora", en: "Montenegro" },
+  { value: "RS", sr: "Srbija", en: "Serbia" },
+  { value: "BA", sr: "Bosna i Hercegovina", en: "Bosnia and Herzegovina" },
+  { value: "HR", sr: "Hrvatska", en: "Croatia" },
+  { value: "SI", sr: "Slovenija", en: "Slovenia" },
+  { value: "MK", sr: "Severna Makedonija", en: "North Macedonia" },
+  { value: "AL", sr: "Albanija", en: "Albania" },
+  { value: "XK", sr: "Kosovo", en: "Kosovo" },
+  { value: "OTHER", sr: "Druga zemlja", en: "Other country" }
+];
 
-  const selectedCheckoutCountry =
-    checkoutCountryOptions.find(
-      (country) => country.value === checkoutForm.country
-    ) || checkoutCountryOptions[0];
+const selectedCheckoutCountry =
+  checkoutCountryOptions.find((country) => country.value === checkoutForm.country) ||
+  checkoutCountryOptions[0];
 
-  const selectedCheckoutCountryLabel =
-    lang === "sr" ? selectedCheckoutCountry.sr : selectedCheckoutCountry.en;
+const selectedCheckoutCountryLabel =
+  lang === "sr" ? selectedCheckoutCountry.sr : selectedCheckoutCountry.en;
 
-  const isMontenegroOrder = checkoutForm.country === "ME";
-
-  const isInternationalEnquiry =
-    checkoutForm.country && checkoutForm.country !== "ME";
+const isMontenegroOrder = checkoutForm.country === "ME";
+const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== "ME";
 
   const [hasUserPickedSize, setHasUserPickedSize] = useState(false);
   const [journalOpen, setJournalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
 
   const [seenLatestJournalKey, setSeenLatestJournalKey] = useState(() => {
-    if (typeof window === "undefined") return "";
+  if (typeof window === "undefined") return "";
 
-    try {
-      return localStorage.getItem(JOURNAL_SEEN_KEY) || "";
-    } catch {
-      return "";
-    }
-  });
+  try {
+    return localStorage.getItem(JOURNAL_SEEN_KEY) || "";
+  } catch {
+    return "";
+  }
+});
 
   const [journalFeedback, setJournalFeedback] = useState({});
-  const [journalFeedbackSubmitted, setJournalFeedbackSubmitted] =
-    useState(false);
+  const [journalFeedbackSubmitted, setJournalFeedbackSubmitted] = useState(false);
   const [journalVoteSuccess, setJournalVoteSuccess] = useState("");
   const [journalFeedbackSuccess, setJournalFeedbackSuccess] = useState(false);
 
@@ -763,10 +720,10 @@ function App() {
   ];
 
   const heroSlides = useMemo(() => {
-    const [fixedFirstSlide, ...randomSlides] = BASE_HERO_SLIDES;
+  const [fixedFirstSlide, ...randomSlides] = BASE_HERO_SLIDES;
 
-    return [fixedFirstSlide, ...shuffleHeroSlides(randomSlides)];
-  }, []);
+  return [fixedFirstSlide, ...shuffleHeroSlides(randomSlides)];
+}, []);
 
   const categories = useMemo(
     () => ["All", "Arabian", "Designer", "Niche"],
@@ -781,218 +738,217 @@ function App() {
     []
   );
 
-  const filteredProducts = useMemo(() => {
-    const result = products.filter((product) => {
-      const categoryMatch =
-        category === "All" || product.category === category;
+ const filteredProducts = useMemo(() => {
+  const result = products.filter((product) => {
+    const categoryMatch =
+      category === "All" || product.category === category;
 
-      const searchMatch = product.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
+    const searchMatch = product.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
 
-      const selectedSeason = String(season || "").toLowerCase();
-      const productSeason = String(product.season || "").toLowerCase();
+    const selectedSeason = String(season || "").toLowerCase();
+    const productSeason = String(product.season || "").toLowerCase();
 
-      const seasonMatch =
-        selectedSeason === "all" ||
-        productSeason === "all" ||
-        productSeason === selectedSeason;
+    const seasonMatch =
+      selectedSeason === "all" ||
+      productSeason === "all" ||
+      productSeason === selectedSeason;
 
-      return categoryMatch && searchMatch && seasonMatch;
-    });
+    return categoryMatch && searchMatch && seasonMatch;
+  });
 
-    switch (sortBy) {
-      case "rating":
-        return [...result].sort((a, b) => b.rating - a.rating);
+  switch (sortBy) {
+    case "rating":
+      return [...result].sort((a, b) => b.rating - a.rating);
 
-      case "priceLow":
-        return [...result].sort((a, b) => getMinPrice(a) - getMinPrice(b));
+    case "priceLow":
+      return [...result].sort((a, b) => getMinPrice(a) - getMinPrice(b));
 
-      case "priceHigh":
-        return [...result].sort((a, b) => getMinPrice(b) - getMinPrice(a));
+    case "priceHigh":
+      return [...result].sort((a, b) => getMinPrice(b) - getMinPrice(a));
 
-      case "name":
-        return [...result].sort((a, b) => a.name.localeCompare(b.name));
+    case "name":
+      return [...result].sort((a, b) => a.name.localeCompare(b.name));
 
-      case "featured":
-      default:
-        return result;
-    }
-  }, [category, searchTerm, season, sortBy]);
+    case "featured":
+    default:
+      return result;
+  }
+}, [category, searchTerm, season, sortBy]);
 
   const categoryOptions = [
     {
       value: "All",
-      label: lang === "sr" ? "Sve" : "All"
+      label: lang === "sr" ? "Sve" : "All",
     },
     {
       value: "Arabian",
-      label: lang === "sr" ? "Arapski" : "Arabian"
+      label: lang === "sr" ? "Arapski" : "Arabian",
     },
     {
       value: "Designer",
-      label: lang === "sr" ? "Dizajner" : "Designer"
+      label: lang === "sr" ? "Dizajner" : "Designer",
     },
     {
       value: "Niche",
-      label: "Niche"
-    }
+      label: "Niche",
+    },
   ];
 
   const selectedCategory =
     categoryOptions.find((option) => option.value === category) ||
     categoryOptions[0];
 
-  /* =========================================
-     SIDE RAILS ADS
-  ========================================= */
-  const foreverAloeUrl =
-    "https://foreverliving.com/shop/scg/sr-Cyrl-RS/drinks?fboId=360000920762&categoryId=1&title=Napici";
+/* =========================================
+   SIDE RAILS ADS
+========================================= */
+const foreverAloeUrl =
+  "https://foreverliving.com/shop/scg/sr-Cyrl-RS/drinks?fboId=360000920762&categoryId=1&title=Napici";
 
-  const sideRailAds = [
-    {
-      id: "forever-aloe-refresh",
-      side: "left",
-      enabled: true,
-      isSponsored: true,
-      label: "SPONSORED",
-      title: lang === "sr" ? "Aloe Vera\nDrinks" : "Aloe Vera\nDrinks",
-      text:
-        lang === "sr"
-          ? "Napici sa aloe verom iz Forever Living ponude. Pogledaj gel, berry, mango i druge favorite."
-          : "Explore Forever Living aloe vera drinks. Discover gel, berry, mango and other favourites.",
-      cta: lang === "sr" ? "Pogledaj" : "Explore",
-      href: foreverAloeUrl,
-      partner: "forever_living",
-      sellerId: "360000920762",
-      campaign: "aloe_drinks",
-      logoSrc: "/partners/forever-logo.png",
-      logoAlt: "Forever Living"
-    },
-    {
-      id: "right-partner-placeholder",
-      side: "right",
-      enabled: true,
-      icon: "♥",
-      label: "FEATURED",
-      title: "Private\nSelection",
-      text:
-        lang === "sr"
-          ? "Sačuvaj favorite i napravi svoju mirisnu shortlistu."
-          : "Save favourites and build your personal scent shortlist.",
-      cta: lang === "sr" ? "Otvori" : "Open",
-      action: "privateSelection"
-    }
-  ];
+const sideRailAds = [
+  {
+  id: "forever-aloe-refresh",
+  side: "left",
+  enabled: true,
+  isSponsored: true,
+  label: "SPONSORED",
+  title: lang === "sr" ? "Aloe Vera\nDrinks" : "Aloe Vera\nDrinks",
+  text:
+    lang === "sr"
+      ? "Napici sa aloe verom iz Forever Living ponude. Pogledaj gel, berry, mango i druge favorite."
+      : "Explore Forever Living aloe vera drinks. Discover gel, berry, mango and other favourites.",
+  cta: lang === "sr" ? "Pogledaj" : "Explore",
+  href: "https://foreverliving.com/shop/scg/sr-Cyrl-RS/drinks?fboId=360000920762&categoryId=1&title=Napici",
+  partner: "forever_living",
+  sellerId: "360000920762",
+  campaign: "aloe_drinks",
+  logoSrc: "/partners/forever-logo.png",
+  logoAlt: "Forever Living",
+},
+  {
+    id: "right-partner-placeholder",
+    side: "right",
+    enabled: true,
+    icon: "♥",
+    label: "FEATURED",
+    title: "Private\nSelection",
+    text:
+      lang === "sr"
+        ? "Sačuvaj favorite i napravi svoju mirisnu shortlistu."
+        : "Save favourites and build your personal scent shortlist.",
+    cta: lang === "sr" ? "Otvori" : "Open",
+    action: "privateSelection",
+  },
+];
 
-  const sideRailBlocked =
-    cartOpen ||
-    checkoutOpen ||
-    storyOpen ||
-    howItWorksOpen ||
-    privateSelectionOpen ||
-    journalOpen ||
-    Boolean(selectedArticle) ||
-    productModalVisible;
+const sideRailBlocked =
+  cartOpen ||
+  checkoutOpen ||
+  storyOpen ||
+  howItWorksOpen ||
+  privateSelectionOpen ||
+  journalOpen ||
+  Boolean(selectedArticle) ||
+  productModalVisible;
 
-  const shouldShowSideRails =
-    (view === "home" || view === "shop") && !sideRailBlocked;
+const shouldShowSideRails =
+  (view === "home" || view === "shop") && !sideRailBlocked;
 
   const mobileSponsoredAd = sideRailAds.find(
-    (ad) => ad.id === "forever-aloe-refresh" && ad.enabled
-  );
+  (ad) => ad.id === "forever-aloe-refresh" && ad.enabled
+);
 
-  const shouldShowMobileSponsoredAd =
-    Boolean(mobileSponsoredAd) &&
-    (view === "home" || view === "shop") &&
-    !sideRailBlocked;
+const shouldShowMobileSponsoredAd =
+  Boolean(mobileSponsoredAd) &&
+  (view === "home" || view === "shop") &&
+  !sideRailBlocked;
 
-  const handleSideRailAction = (ad) => {
-    if (ad.href) {
-      return;
-    }
+const handleSideRailAction = (ad) => {
+  if (ad.href) {
+    return;
+  }
 
-    if (ad.action === "shop") {
-      setView("shop");
-      setCurrentPage(1);
+  if (ad.action === "shop") {
+    setView("shop");
+    setCurrentPage(1);
 
-      window.setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }, 0);
+    window.setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 0);
 
-      return;
-    }
+    return;
+  }
 
-    if (ad.action === "privateSelection") {
-      setPrivateSelectionOpen(true);
-    }
-  };
+  if (ad.action === "privateSelection") {
+    setPrivateSelectionOpen(true);
+  }
+};
 
-  const handleSponsoredAdClick = (ad, placement) => {
-    if (typeof trackEvent !== "function") return;
+const handleSponsoredAdClick = (ad, placement) => {
+  if (typeof trackEvent !== "function") return;
 
-    trackEvent("sponsored_ad_click", {
-      partner: ad?.partner || "forever_living",
-      sellerId: ad?.sellerId || "360000920762",
-      campaign: ad?.campaign || "aloe_drinks",
-      placement,
-      lang,
-      view
-    });
-  };
+  trackEvent("sponsored_ad_click", {
+    partner: ad?.partner || "forever_living",
+    sellerId: ad?.sellerId || "360000920762",
+    campaign: ad?.campaign || "aloe_drinks",
+    placement,
+    lang,
+    view,
+  });
+};
 
-  /* =========================================
-     SEASON / SORT OPTIONS
-  ========================================= */
-  const seasonOptions = [
-    {
-      value: "All",
-      label: tr.seasonAll
-    },
-    {
-      value: "summer",
-      label: `☀️ ${tr.seasonSummer}`
-    },
-    {
-      value: "winter",
-      label: `❄️ ${tr.seasonWinter}`
-    }
-  ];
+/* =========================================
+   seasonOptions
+========================================= */
+const seasonOptions = [
+  {
+    value: "All",
+    label: tr.seasonAll,
+  },
+  {
+    value: "summer",
+    label: `☀️ ${tr.seasonSummer}`,
+  },
+  {
+    value: "winter",
+    label: `❄️ ${tr.seasonWinter}`,
+  },
+];
 
-  const sortOptions = [
-    {
-      value: "featured",
-      label: tr.sortFeatured
-    },
-    {
-      value: "rating",
-      label: `★ ${tr.sortRating}`
-    },
-    {
-      value: "priceLow",
-      label: `↗ ${tr.sortPriceLow}`
-    },
-    {
-      value: "priceHigh",
-      label: `↘ ${tr.sortPriceHigh}`
-    },
-    {
-      value: "name",
-      label: tr.sortName
-    }
-  ];
+const sortOptions = [
+  {
+    value: "featured",
+    label: tr.sortFeatured,
+  },
+  {
+    value: "rating",
+    label: `★ ${tr.sortRating}`,
+  },
+  {
+    value: "priceLow",
+    label: `↗ ${tr.sortPriceLow}`,
+  },
+  {
+    value: "priceHigh",
+    label: `↘ ${tr.sortPriceHigh}`,
+  },
+  {
+    value: "name",
+    label: tr.sortName,
+  },
+];
 
-  const selectedSeasonOption =
-    seasonOptions.find((option) => option.value === season) ||
-    seasonOptions[0];
+const selectedSeasonOption =
+  seasonOptions.find((option) => option.value === season) || seasonOptions[0];
 
-  const selectedSortOption =
-    sortOptions.find((option) => option.value === sortBy) ||
-    sortOptions[0];
+const selectedSortOption =
+  sortOptions.find((option) => option.value === sortBy) || sortOptions[0];
 
-  /* =========================================
-     TOTAL PAGES / CART TOTALS
-  ========================================= */
+/* =========================================
+   TOTAL PAGES
+========================================= */
+
   const totalPages = Math.max(
     1,
     Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)
@@ -1000,7 +956,6 @@ function App() {
 
   const paginatedProducts = useMemo(() => {
     const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
-
     return filteredProducts.slice(start, start + PRODUCTS_PER_PAGE);
   }, [filteredProducts, currentPage]);
 
@@ -1015,11 +970,7 @@ function App() {
   );
 
   const shipping =
-    cart.length === 0
-      ? 0
-      : subtotal >= FREE_SHIPPING_THRESHOLD
-      ? 0
-      : SHIPPING_COST;
+    cart.length === 0 ? 0 : subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
 
   const total = subtotal + shipping;
 
@@ -1030,70 +981,69 @@ function App() {
 
   const scrollYRef = useRef(0);
 
-  /* =========================================
-     EFFECTS
-  ========================================= */
-  useLayoutEffect(() => {
-    const shouldLockScroll =
-      !!selectedProduct ||
-      cartOpen ||
-      checkoutOpen ||
-      storyOpen ||
-      howItWorksOpen ||
-      privateSelectionOpen ||
-      journalOpen ||
-      !!selectedArticle ||
-      !!catalogPreview;
+/* =========================================
+   EFFECTS
+========================================= */
+useLayoutEffect(() => {
+  const shouldLockScroll =
+    !!selectedProduct ||
+    cartOpen ||
+    checkoutOpen ||
+    storyOpen ||
+    howItWorksOpen ||
+    privateSelectionOpen ||
+    journalOpen ||
+    !!selectedArticle ||
+    !!catalogPreview;
 
-    const body = document.body;
+  const body = document.body;
 
-    if (shouldLockScroll) {
-      const lockY = window.scrollY || window.pageYOffset || 0;
+  if (shouldLockScroll) {
+    const lockY = window.scrollY || window.pageYOffset || 0;
 
-      scrollYRef.current = lockY;
+    scrollYRef.current = lockY;
 
-      body.style.position = "fixed";
-      body.style.top = `-${lockY}px`;
-      body.style.left = "0";
-      body.style.right = "0";
-      body.style.width = "100%";
-      body.style.overflow = "hidden";
-    } else {
-      const savedScrollY = Math.abs(parseInt(body.style.top || "0", 10));
+    body.style.position = "fixed";
+    body.style.top = `-${lockY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+  } else {
+    const savedScrollY = Math.abs(parseInt(body.style.top || "0", 10));
 
-      body.style.position = "";
-      body.style.top = "";
-      body.style.left = "";
-      body.style.right = "";
-      body.style.width = "";
-      body.style.overflow = "";
+    body.style.position = "";
+    body.style.top = "";
+    body.style.left = "";
+    body.style.right = "";
+    body.style.width = "";
+    body.style.overflow = "";
 
-      window.scrollTo(0, savedScrollY || scrollYRef.current || 0);
-    }
+    window.scrollTo(0, savedScrollY || scrollYRef.current || 0);
+  }
 
-    return () => {
-      body.style.position = "";
-      body.style.top = "";
-      body.style.left = "";
-      body.style.right = "";
-      body.style.width = "";
-      body.style.overflow = "";
-    };
-  }, [
-    selectedProduct,
-    cartOpen,
-    checkoutOpen,
-    storyOpen,
-    howItWorksOpen,
-    privateSelectionOpen,
-    journalOpen,
-    selectedArticle,
-    catalogPreview
-  ]);
+  return () => {
+    body.style.position = "";
+    body.style.top = "";
+    body.style.left = "";
+    body.style.right = "";
+    body.style.width = "";
+    body.style.overflow = "";
+  };
+}, [
+  selectedProduct,
+  cartOpen,
+  checkoutOpen,
+  storyOpen,
+  howItWorksOpen,
+  privateSelectionOpen,
+  journalOpen,
+  selectedArticle,
+  catalogPreview
+]);
 
   useEffect(() => {
     const section = document.querySelector(".closing-section");
-
     if (!section) return;
 
     const observer = new IntersectionObserver(
@@ -1119,73 +1069,72 @@ function App() {
   }, [lang]);
 
   useEffect(() => {
-    if (window.location.pathname.startsWith("/product/")) {
-      return;
-    }
+  if (window.location.pathname.startsWith("/product/")) {
+    return;
+  }
 
-    const params = new URLSearchParams(window.location.search);
-    const urlView = params.get("view");
-    const urlCategory = params.get("category");
-    const urlSearch = params.get("search");
-    const urlPage = params.get("page");
-    const urlSort = params.get("sort");
-    const urlSeason = params.get("season");
+  const params = new URLSearchParams(window.location.search);
+  const urlView = params.get("view");
+  const urlCategory = params.get("category");
+  const urlSearch = params.get("search");
+  const urlPage = params.get("page");
+  const urlSort = params.get("sort");
+  const urlSeason = params.get("season");
 
-    if (urlView && ["home", "shop", "journal"].includes(urlView)) {
-      setView(urlView);
-    }
+  if (urlView && ["home", "shop", "journal"].includes(urlView)) {
+    setView(urlView);
+  }
 
-    if (urlCategory && categories.includes(urlCategory)) {
-      setCategory(urlCategory);
-    }
+  if (urlCategory && categories.includes(urlCategory)) {
+    setCategory(urlCategory);
+  }
 
-    if (urlSearch) {
-      setSearchTerm(urlSearch);
-    }
+  if (urlSearch) {
+    setSearchTerm(urlSearch);
+  }
 
-    if (urlPage && !Number.isNaN(Number(urlPage))) {
-      setCurrentPage(Number(urlPage));
-    }
+  if (urlPage && !Number.isNaN(Number(urlPage))) {
+    setCurrentPage(Number(urlPage));
+  }
 
-    if (
-      urlSort &&
-      ["featured", "rating", "priceLow", "priceHigh", "name"].includes(urlSort)
-    ) {
-      setSortBy(urlSort);
-    }
+  if (
+    urlSort &&
+    ["featured", "rating", "priceLow", "priceHigh", "name"].includes(urlSort)
+  ) {
+    setSortBy(urlSort);
+  }
 
-    if (urlSeason && ["All", "summer", "winter"].includes(urlSeason)) {
-      setSeason(urlSeason);
-    }
-  }, [categories]);
+  if (urlSeason && ["All", "summer", "winter"].includes(urlSeason)) {
+    setSeason(urlSeason);
+  }
+}, [categories]);
 
   useEffect(() => {
-    if (window.location.pathname.startsWith("/product/")) {
-      return;
-    }
+  if (window.location.pathname.startsWith("/product/")) {
+    return;
+  }
 
-    const params = new URLSearchParams();
+  const params = new URLSearchParams();
+  params.set("view", view);
 
-    params.set("view", view);
+  if (category !== "All") params.set("category", category);
+  if (searchTerm.trim()) params.set("search", searchTerm.trim());
+  if (season !== "All") params.set("season", season);
+  if (sortBy !== "featured") params.set("sort", sortBy);
+  if (currentPage > 1) params.set("page", String(currentPage));
 
-    if (category !== "All") params.set("category", category);
-    if (searchTerm.trim()) params.set("search", searchTerm.trim());
-    if (season !== "All") params.set("season", season);
-    if (sortBy !== "featured") params.set("sort", sortBy);
-    if (currentPage > 1) params.set("page", String(currentPage));
+  const query = params.toString();
 
-    const query = params.toString();
+  const nextUrl = query
+    ? `${window.location.pathname}?${query}`
+    : window.location.pathname;
 
-    const nextUrl = query
-      ? `${window.location.pathname}?${query}`
-      : window.location.pathname;
+  const currentUrl = `${window.location.pathname}${window.location.search}`;
 
-    const currentUrl = `${window.location.pathname}${window.location.search}`;
-
-    if (currentUrl !== nextUrl) {
-      window.history.replaceState({}, "", nextUrl);
-    }
-  }, [view, category, searchTerm, season, sortBy, currentPage]);
+  if (currentUrl !== nextUrl) {
+    window.history.replaceState({}, "", nextUrl);
+  }
+}, [view, category, searchTerm, season, sortBy, currentPage]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -1193,24 +1142,19 @@ function App() {
 
   useEffect(() => {
     if (!addedFeedback) return;
-
     const timer = setTimeout(() => setAddedFeedback(""), 1200);
-
     return () => clearTimeout(timer);
   }, [addedFeedback]);
 
   useEffect(() => {
     if (!orderSuccessMessage) return;
-
     const timer = setTimeout(() => setOrderSuccessMessage(""), 2200);
-
     return () => clearTimeout(timer);
   }, [orderSuccessMessage]);
 
   useEffect(() => {
     if (selectedProduct) {
       const firstSize = Object.keys(selectedProduct.sizes)[0];
-
       setSelectedSize(firstSize);
     } else {
       setSelectedSize("");
@@ -1228,18 +1172,15 @@ function App() {
   }, [heroPaused, heroSlides.length]);
 
   useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(1);
-    }
+    if (currentPage > totalPages) setCurrentPage(1);
   }, [currentPage, totalPages]);
 
   useEffect(() => {
     const path = window.location.pathname + window.location.search;
-
     trackPageView(path || "/");
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
         document.body.classList.add("scrolled");
@@ -1249,185 +1190,237 @@ function App() {
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    const hasBlockingLayer =
-      !!selectedProduct ||
-      cartOpen ||
-      checkoutOpen ||
-      storyOpen ||
-      howItWorksOpen ||
-      privateSelectionOpen ||
-      journalOpen ||
-      !!selectedArticle ||
-      !!catalogPreview;
+  const hasBlockingLayer =
+    !!selectedProduct ||
+    cartOpen ||
+    checkoutOpen ||
+    storyOpen ||
+    howItWorksOpen ||
+    privateSelectionOpen ||
+    journalOpen ||
+    !!selectedArticle ||
+    !!catalogPreview;
 
-    const shouldShow =
-      !hasBlockingLayer &&
-      (view === "home" ||
-        view === "shop" ||
-        cartCount > 0 ||
-        wishlist.length > 0);
+  const shouldShow =
+    !hasBlockingLayer &&
+    (view === "home" ||
+      view === "shop" ||
+      cartCount > 0 ||
+      wishlist.length > 0);
 
-    setShowStickyCta(shouldShow);
-  }, [
-    view,
-    selectedProduct,
-    cartOpen,
-    checkoutOpen,
-    storyOpen,
-    howItWorksOpen,
-    privateSelectionOpen,
-    journalOpen,
-    selectedArticle,
-    catalogPreview,
-    cartCount,
-    wishlist.length
-  ]);
+  setShowStickyCta(shouldShow);
+}, [
+  view,
+  selectedProduct,
+  cartOpen,
+  checkoutOpen,
+  storyOpen,
+  howItWorksOpen,
+  privateSelectionOpen,
+  journalOpen,
+  selectedArticle,
+  catalogPreview,
+  cartCount,
+  wishlist.length
+]);
 
   useEffect(() => {
-    if (selectedProduct) {
-      const id = requestAnimationFrame(() => {
-        setProductModalVisible(true);
-      });
-
-      return () => cancelAnimationFrame(id);
-    }
-
+  if (selectedProduct) {
+    const id = requestAnimationFrame(() => {
+      setProductModalVisible(true);
+    });
+    return () => cancelAnimationFrame(id);
+  } else {
     setProductModalVisible(false);
-  }, [selectedProduct]);
+  }
+}, [selectedProduct]);
 
-  useEffect(() => {
-    return () => {
-      if (productModalCloseTimeoutRef.current) {
-        clearTimeout(productModalCloseTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("playnice_journal_feedback");
-
-      if (saved) {
-        const parsed = JSON.parse(saved);
-
-        if (parsed && typeof parsed === "object") {
-          setJournalFeedback(parsed);
-        }
-      }
-    } catch (error) {
-      console.error("Failed to restore journal feedback:", error);
+useEffect(() => {
+  return () => {
+    if (productModalCloseTimeoutRef.current) {
+      clearTimeout(productModalCloseTimeoutRef.current);
     }
-  }, []);
+  };
+}, []);
 
-  useEffect(() => {
-    setJournalFeedbackSubmitted(false);
+useEffect(() => {
+  try {
+    const saved = localStorage.getItem("playnice_journal_feedback");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed && typeof parsed === "object") {
+        setJournalFeedback(parsed);
+      }
+    }
+  } catch (error) {
+    console.error("Failed to restore journal feedback:", error);
+  }
+}, []);
+
+useEffect(() => {
+  setJournalFeedbackSubmitted(false);
+  setJournalVoteSuccess("");
+}, [selectedArticle]);
+
+useEffect(() => {
+  return () => {
+    if (modalAddedTimeoutRef.current) {
+      clearTimeout(modalAddedTimeoutRef.current);
+    }
+  };
+}, []);
+
+useEffect(() => {
+  const handlePopState = () => {
+    setView(getInitialView());
+
+    requestAnimationFrame(() => {
+      smoothScrollToTop();
+    });
+  };
+
+  window.addEventListener("popstate", handlePopState);
+
+  return () => {
+    window.removeEventListener("popstate", handlePopState);
+  };
+}, []);
+
+/* feedback helper */
+
+const sendJournalFeedback = (article, override = {}) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return;
+
+  const saved = journalFeedback[key] || {};
+  const vote = override.vote ?? saved.vote ?? "";
+  const note = (override.note ?? saved.note ?? "").trim();
+
+  if (!vote) return;
+
+  try {
+    const payloadToSend = JSON.stringify({
+      timestamp: new Date().toISOString(),
+      article: key,
+      articleTitle: getJournalText(article?.title, lang),
+      vote,
+      note,
+      lang,
+      page: window.location.pathname,
+      source: "journal"
+    });
+
+    const blob = new Blob([payloadToSend], {
+      type: "text/plain;charset=utf-8"
+    });
+
+    navigator.sendBeacon(
+      "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
+      blob
+    );
+  } catch (error) {
+    console.error("Journal feedback submit failed:", error);
+  }
+};
+
+const getJournalSavedFeedback = (article) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return null;
+  return journalFeedback[key] || null;
+};
+
+const triggerJournalVoteSuccess = (vote) => {
+  setJournalVoteSuccess(vote);
+
+  setTimeout(() => {
     setJournalVoteSuccess("");
-  }, [selectedArticle]);
+  }, 1100);
+};
 
-  useEffect(() => {
-    return () => {
-      if (modalAddedTimeoutRef.current) {
-        clearTimeout(modalAddedTimeoutRef.current);
-      }
-    };
-  }, []);
+const handleJournalFeedbackVote = (article, vote) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return;
 
-  useEffect(() => {
-    const handlePopState = () => {
-      setView(getInitialView());
+  setJournalFeedbackSubmitted(false);
 
-      requestAnimationFrame(() => {
-        smoothScrollToTop();
-      });
-    };
+  const current = journalFeedback[key] || {};
+  const nextVote = vote;
 
-    window.addEventListener("popstate", handlePopState);
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, []);
-
-  /* =========================================
-     JOURNAL FEEDBACK HELPERS
-  ========================================= */
-  const sendJournalFeedback = (article, override = {}) => {
-    const key = getJournalArticleKey(article);
-
-    if (!key) return;
-
-    const saved = journalFeedback[key] || {};
-    const vote = override.vote ?? saved.vote ?? "";
-    const note = (override.note ?? saved.note ?? "").trim();
-
-    if (!vote) return;
-
-    try {
-      const payloadToSend = JSON.stringify({
-        timestamp: new Date().toISOString(),
-        article: key,
-        articleTitle: getJournalText(article?.title, lang),
-        vote,
-        note,
-        lang,
-        page: window.location.pathname,
-        source: "journal"
-      });
-
-      const blob = new Blob([payloadToSend], {
-        type: "text/plain;charset=utf-8"
-      });
-
-      navigator.sendBeacon(
-        "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
-        blob
-      );
-    } catch (error) {
-      console.error("Journal feedback submit failed:", error);
+  const nextFeedback = {
+    ...journalFeedback,
+    [key]: {
+      ...current,
+      vote: nextVote,
+      submittedAt: nextVote ? Date.now() : current.submittedAt || null
     }
   };
 
-  const getJournalSavedFeedback = (article) => {
-    const key = getJournalArticleKey(article);
+  setJournalFeedback(nextFeedback);
 
-    if (!key) return null;
+  try {
+    localStorage.setItem(
+      "playnice_journal_feedback",
+      JSON.stringify(nextFeedback)
+    );
+  } catch (error) {
+    console.error("Journal feedback storage failed:", error);
+  }
 
-    return journalFeedback[key] || null;
-  };
+  if (!nextVote) return;
 
-  const triggerJournalVoteSuccess = (vote) => {
-    setJournalVoteSuccess(vote);
+  sendJournalFeedback(article, {
+    vote: nextVote,
+    note: (current.note || "").trim()
+  });
 
-    setTimeout(() => {
-      setJournalVoteSuccess("");
-    }, 1100);
-  };
+  triggerJournalVoteSuccess(nextVote);
+};
 
-  const handleJournalFeedbackVote = (article, vote) => {
-    const key = getJournalArticleKey(article);
+const handleJournalFeedbackNoteChange = (article, value) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return;
 
-    if (!key) return;
-
-    setJournalFeedbackSubmitted(false);
-
-    const current = journalFeedback[key] || {};
-    const nextVote = vote;
-
-    const nextFeedback = {
-      ...journalFeedback,
+  setJournalFeedback((prev) => {
+    const current = prev[key] || {};
+    return {
+      ...prev,
       [key]: {
         ...current,
-        vote: nextVote,
-        submittedAt: nextVote ? Date.now() : current.submittedAt || null
+        note: value
       }
     };
+  });
+};
 
-    setJournalFeedback(nextFeedback);
+const handleJournalFeedbackSubmit = (article) => {
+  const key = getJournalArticleKey(article);
+  if (!key) return;
+
+  const current = journalFeedback[key] || {};
+  const trimmedNote = (current.note || "").trim();
+
+  if (!current.vote || !trimmedNote) return;
+
+  sendJournalFeedback(article, {
+    vote: current.vote,
+    note: trimmedNote
+  });
+
+  setJournalFeedback((prev) => {
+    const prevItem = prev[key] || {};
+
+    const nextFeedback = {
+      ...prev,
+      [key]: {
+        ...prevItem,
+        note: "",
+        submittedAt: Date.now()
+      }
+    };
 
     try {
       localStorage.setItem(
@@ -1438,374 +1431,314 @@ function App() {
       console.error("Journal feedback storage failed:", error);
     }
 
-    if (!nextVote) return;
+    return nextFeedback;
+  });
 
-    sendJournalFeedback(article, {
-      vote: nextVote,
-      note: (current.note || "").trim()
-    });
+  setJournalFeedbackSubmitted(true);
+  setJournalFeedbackSuccess(true);
 
-    triggerJournalVoteSuccess(nextVote);
-  };
+  setTimeout(() => {
+    setJournalFeedbackSuccess(false);
+  }, 1200);
+};
 
-  const handleJournalFeedbackNoteChange = (article, value) => {
-    const key = getJournalArticleKey(article);
+const handleJournalClose = () => {
+  setJournalOpen(false);
+  setSelectedArticle(null);
+  switchView("home");
+};
 
-    if (!key) return;
+/* =========================================
+   DERIVED DATA
+========================================= */
 
-    setJournalFeedback((prev) => {
-      const current = prev[key] || {};
+const sortedJournalArticles = useMemo(() => {
+  if (!journalArticles?.length) return [];
 
-      return {
-        ...prev,
-        [key]: {
-          ...current,
-          note: value
-        }
-      };
-    });
-  };
+  return [...journalArticles].sort((a, b) => {
+    const aId = Number(a?.id || 0);
+    const bId = Number(b?.id || 0);
 
-  const handleJournalFeedbackSubmit = (article) => {
-    const key = getJournalArticleKey(article);
+    return bId - aId;
+  });
+}, [journalArticles]);
 
-    if (!key) return;
+const latestJournalArticle = sortedJournalArticles?.[0] || null;
 
-    const current = journalFeedback[key] || {};
-    const trimmedNote = (current.note || "").trim();
+const latestJournalArticleKey = latestJournalArticle?.id
+  ? String(latestJournalArticle.id)
+  : "";
 
-    if (!current.vote || !trimmedNote) return;
+const hasNewJournalArticle =
+  Boolean(latestJournalArticleKey) &&
+  String(seenLatestJournalKey) !== String(latestJournalArticleKey);
 
-    sendJournalFeedback(article, {
-      vote: current.vote,
-      note: trimmedNote
-    });
+const journalUnreadCount = hasNewJournalArticle ? 1 : 0;
 
-    setJournalFeedback((prev) => {
-      const prevItem = prev[key] || {};
+const markLatestJournalAsSeen = () => {
+  if (!latestJournalArticleKey) return;
 
-      const nextFeedback = {
-        ...prev,
-        [key]: {
-          ...prevItem,
-          note: "",
-          submittedAt: Date.now()
-        }
-      };
+  const keyToSave = String(latestJournalArticleKey);
 
-      try {
-        localStorage.setItem(
-          "playnice_journal_feedback",
-          JSON.stringify(nextFeedback)
-        );
-      } catch (error) {
-        console.error("Journal feedback storage failed:", error);
-      }
+  try {
+    window.localStorage.setItem(JOURNAL_SEEN_KEY, keyToSave);
+  } catch (error) {
+    console.error("Failed to save seen journal article:", error);
+  }
 
-      return nextFeedback;
-    });
+  setSeenLatestJournalKey(keyToSave);
+};
 
-    setJournalFeedbackSubmitted(true);
-    setJournalFeedbackSuccess(true);
+const handleJournalOpen = () => {
+  setJournalOpen(true);
+  setSelectedArticle(null);
+  switchView("journal");
+};
 
-    setTimeout(() => {
-      setJournalFeedbackSuccess(false);
-    }, 1200);
-  };
+const handleJournalArticleOpen = (article) => {
+  if (!article) return;
 
-  const handleJournalClose = () => {
-    setJournalOpen(false);
-    setSelectedArticle(null);
-    switchView("home");
-  };
+  setJournalOpen(true);
+  setSelectedArticle(article);
 
-  /* =========================================
-     DERIVED DATA
-  ========================================= */
-  const sortedJournalArticles = useMemo(() => {
-    if (!journalArticles?.length) return [];
+  if (String(article.id) === String(latestJournalArticleKey)) {
+    markLatestJournalAsSeen();
+  }
 
-    return [...journalArticles].sort((a, b) => {
-      const aId = Number(a?.id || 0);
-      const bId = Number(b?.id || 0);
+  switchView("journal");
+};
 
-      return bId - aId;
-    });
-  }, [journalArticles]);
-
-  const latestJournalArticle = sortedJournalArticles?.[0] || null;
-
-  const latestJournalArticleKey = latestJournalArticle?.id
-    ? String(latestJournalArticle.id)
+const announcementItems = useMemo(() => {
+  const latestJournalTitle = latestJournalArticle
+    ? getJournalText(latestJournalArticle.title, lang)
     : "";
 
-  const hasNewJournalArticle =
-    Boolean(latestJournalArticleKey) &&
-    String(seenLatestJournalKey) !== String(latestJournalArticleKey);
+  const shopNewAnnouncementItem = hasNewShopProducts
+    ? {
+        id: "new-shop-products-announcement",
+        text:
+          lang === "sr"
+            ? "Novi parfemi su stigli u PlayNice"
+            : "New fragrances just arrived at PlayNice",
+        icon: "→",
+        tone: "new-shop",
+        action: "openShop",
+      }
+    : null;
 
-  const journalUnreadCount = hasNewJournalArticle ? 1 : 0;
-
-  const markLatestJournalAsSeen = () => {
-    if (!latestJournalArticleKey) return;
-
-    const keyToSave = String(latestJournalArticleKey);
-
-    try {
-      window.localStorage.setItem(JOURNAL_SEEN_KEY, keyToSave);
-    } catch (error) {
-      console.error("Failed to save seen journal article:", error);
-    }
-
-    setSeenLatestJournalKey(keyToSave);
-  };
-
-  const handleJournalOpen = () => {
-    setJournalOpen(true);
-    setSelectedArticle(null);
-    switchView("journal");
-  };
-
-  const handleJournalArticleOpen = (article) => {
-    if (!article) return;
-
-    setJournalOpen(true);
-    setSelectedArticle(article);
-
-    if (String(article.id) === String(latestJournalArticleKey)) {
-      markLatestJournalAsSeen();
-    }
-
-    switchView("journal");
-  };
-
-  const announcementItems = useMemo(() => {
-    const latestJournalTitle = latestJournalArticle
-      ? getJournalText(latestJournalArticle.title, lang)
-      : "";
-
-    const shopNewAnnouncementItem = hasNewShopProducts
+  const journalAnnouncementItem =
+    hasNewJournalArticle && latestJournalArticle && latestJournalTitle
       ? {
-          id: "new-shop-products-announcement",
+          id: "latest-journal-announcement",
           text:
             lang === "sr"
-              ? "Novi parfemi su stigli u PlayNice"
-              : "New fragrances just arrived at PlayNice",
+              ? `Novo u Journalu: ${latestJournalTitle}`
+              : `New in Journal: ${latestJournalTitle}`,
           icon: "→",
-          tone: "new-shop",
-          action: "openShop"
+          tone: "journal",
+          action: "openLatestJournalArticle",
         }
       : null;
 
-    const journalAnnouncementItem =
-      hasNewJournalArticle && latestJournalArticle && latestJournalTitle
-        ? {
-            id: "latest-journal-announcement",
-            text:
-              lang === "sr"
-                ? `Novo u Journalu: ${latestJournalTitle}`
-                : `New in Journal: ${latestJournalTitle}`,
-            icon: "→",
-            tone: "journal",
-            action: "openLatestJournalArticle"
-          }
-        : null;
+  const foreverAnnouncementItem = {
+    id: "forever-announcement-logo",
+    type: "logoLink",
+    text: "Forever Living Products",
+    icon: "★",
+    tone: "forever",
+    href: foreverAloeUrl,
+    logoSrc: "/partners/forever-logo-wide.png",
+    logoAlt: "Forever Living Products",
+    partner: "forever_living",
+    sellerId: "360000920762",
+    campaign: "aloe_drinks",
+  };
 
-    const foreverAnnouncementItem = {
-      id: "forever-announcement-logo",
-      type: "logoLink",
-      text: "Forever Living Products",
-      icon: "★",
-      tone: "forever",
-      href: foreverAloeUrl,
-      logoSrc: "/partners/forever-logo-wide.png",
-      logoAlt: "Forever Living Products",
-      partner: "forever_living",
-      sellerId: "360000920762",
-      campaign: "aloe_drinks"
-    };
+  const withPriorityAnnouncements = (items) => [
+    ...(shopNewAnnouncementItem ? [shopNewAnnouncementItem] : []),
+    ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
+    foreverAnnouncementItem,
+    ...items,
+  ];
 
-    const withPriorityAnnouncements = (items) => [
-      ...(shopNewAnnouncementItem ? [shopNewAnnouncementItem] : []),
-      ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
-      foreverAnnouncementItem,
-      ...items
-    ];
-
-    if (cart.length === 0) {
-      return withPriorityAnnouncements([
-        { text: tr.announcementDynamicEmpty1, icon: "🚚" },
-        { text: tr.announcementDynamicEmpty2, icon: "✓" },
-        { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-        { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-        { text: tr.announcementDynamicEmpty5, icon: "🚚" },
-        { text: tr.announcementDynamicEmpty6, icon: "★" }
-      ]);
-    }
-
-    if (subtotal >= FREE_SHIPPING_THRESHOLD) {
-      return withPriorityAnnouncements([
-        { text: tr.announcementDynamicUnlocked, icon: "✓", tone: "success" },
-        { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-        { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-        { text: tr.announcementDynamicEmpty5, icon: "🚚" },
-        { text: tr.announcementDynamicEmpty6, icon: "★" }
-      ]);
-    }
-
+  if (cart.length === 0) {
     return withPriorityAnnouncements([
-      {
-        text: tr.announcementDynamicLocked.replace(
-          "{{amount}}",
-          formatPrice(amountLeftForFreeShipping)
-        ),
-        icon: "🚚",
-        tone: "warning"
-      },
+      { text: tr.announcementDynamicEmpty1, icon: "🚚" },
       { text: tr.announcementDynamicEmpty2, icon: "✓" },
       { text: tr.announcementDynamicEmpty3, icon: "🔥" },
       { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-      { text: tr.announcementDynamicEmpty6, icon: "★" }
+      { text: tr.announcementDynamicEmpty5, icon: "🚚" },
+      { text: tr.announcementDynamicEmpty6, icon: "★" },
     ]);
-  }, [
-    cart.length,
-    subtotal,
-    amountLeftForFreeShipping,
-    tr,
-    lang,
-    hasNewShopProducts,
-    hasNewJournalArticle,
-    latestJournalArticle,
-    latestJournalArticleKey
+  }
+
+  if (subtotal >= FREE_SHIPPING_THRESHOLD) {
+    return withPriorityAnnouncements([
+      { text: tr.announcementDynamicUnlocked, icon: "✓", tone: "success" },
+      { text: tr.announcementDynamicEmpty3, icon: "🔥" },
+      { text: tr.announcementDynamicEmpty4, icon: "🔥" },
+      { text: tr.announcementDynamicEmpty5, icon: "🚚" },
+      { text: tr.announcementDynamicEmpty6, icon: "★" },
+    ]);
+  }
+
+  return withPriorityAnnouncements([
+    {
+      text: tr.announcementDynamicLocked.replace(
+        "{{amount}}",
+        formatPrice(amountLeftForFreeShipping)
+      ),
+      icon: "🚚",
+      tone: "warning",
+    },
+    { text: tr.announcementDynamicEmpty2, icon: "✓" },
+    { text: tr.announcementDynamicEmpty3, icon: "🔥" },
+    { text: tr.announcementDynamicEmpty4, icon: "🔥" },
+    { text: tr.announcementDynamicEmpty6, icon: "★" },
   ]);
+}, [
+  cart.length,
+  subtotal,
+  amountLeftForFreeShipping,
+  tr,
+  lang,
+  hasNewShopProducts,
+  hasNewJournalArticle,
+  latestJournalArticle,
+  latestJournalArticleKey,
+]);
 
-  const handleAnnouncementItemClick = (item) => {
-    if (item?.action === "openShop") {
-      goToShop();
-      return;
-    }
+const handleAnnouncementItemClick = (item) => {
+  if (item?.action === "openShop") {
+    goToShop();
+    return;
+  }
 
-    if (item?.action === "openLatestJournalArticle") {
-      if (!latestJournalArticle) return;
+  if (item?.action === "openLatestJournalArticle") {
+    if (!latestJournalArticle) return;
 
-      handleJournalArticleOpen(latestJournalArticle);
-    }
-  };
+    handleJournalArticleOpen(latestJournalArticle);
+  }
+};
 
-  const freeShippingProgress = Math.min(
-    100,
-    Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
-  );
+const freeShippingProgress = Math.min(
+  100,
+  Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
+);
 
-  const activeJournalFeedback = selectedArticle
-    ? getJournalSavedFeedback(selectedArticle)
-    : null;
+const activeJournalFeedback = selectedArticle
+  ? getJournalSavedFeedback(selectedArticle)
+  : null;
 
-  const selectedCopy = selectedProduct
-    ? getProductCopy(selectedProduct, lang)
-    : {
-        miniTag: fallbackCopy.miniTag[lang],
-        card: fallbackCopy.card[lang],
-        modal: fallbackCopy.modal[lang],
-        scentType: fallbackCopy.scentType[lang],
-        dominantNotes: fallbackCopy.dominantNotes[lang],
-        tags: fallbackCopy.tags[lang]
-      };
-
-  const privateSelectionProducts = useMemo(() => {
-    return products.filter((product) => wishlist.includes(product.id));
-  }, [wishlist]);
-
-  const goToShop = () => {
-    switchView("shop");
-  };
-
-  const stickyCtaData = useMemo(() => {
-    if (cartCount > 0) {
-      return {
-        label: tr.stickyCheckout,
-        sublabel: `${cartCount} ${
-          cartCount === 1 ? tr.stickyItem : tr.stickyItems
-        } • ${formatPrice(total)}`,
-        onClick: () => {
-          setCartOpen(false);
-          setCheckoutOpen(true);
-        }
-      };
-    }
-
-    if (wishlist.length > 0 && view === "shop") {
-      return {
-        label: tr.stickySaved,
-        sublabel: `${wishlist.length} ${
-          wishlist.length === 1 ? tr.stickyItem : tr.stickyItems
-        }`,
-        onClick: () => setPrivateSelectionOpen(true)
-      };
-    }
-
-    return {
-      label: tr.stickyExplore,
-      sublabel:
-        view === "shop"
-          ? `${filteredProducts.length} ${
-              lang === "sr" ? "parfema" : "fragrances"
-            }`
-          : tr.privateSelection,
-      onClick: goToShop
+const selectedCopy = selectedProduct
+  ? getProductCopy(selectedProduct, lang)
+  : {
+      miniTag: fallbackCopy.miniTag[lang],
+      card: fallbackCopy.card[lang],
+      modal: fallbackCopy.modal[lang],
+      scentType: fallbackCopy.scentType[lang],
+      dominantNotes: fallbackCopy.dominantNotes[lang],
+      tags: fallbackCopy.tags[lang]
     };
-  }, [
-    cartCount,
-    total,
-    wishlist.length,
-    view,
-    filteredProducts.length,
-    tr,
-    lang
-  ]);
 
-  const stickyCtaJournalHasNew = journalUnreadCount > 0;
+const privateSelectionProducts = useMemo(() => {
+  return products.filter((product) => wishlist.includes(product.id));
+}, [wishlist]);
 
-  const handleStickyCtaJournalClick = (event) => {
-    event.stopPropagation();
-    setJournalOpen(true);
+const goToShop = () => {
+  switchView("shop");
+};
+
+const stickyCtaData = useMemo(() => {
+  if (cartCount > 0) {
+    return {
+      label: tr.stickyCheckout,
+      sublabel: `${cartCount} ${
+        cartCount === 1 ? tr.stickyItem : tr.stickyItems
+      } • ${formatPrice(total)}`,
+      onClick: () => {
+        setCartOpen(false);
+        setCheckoutOpen(true);
+      }
+    };
+  }
+
+  if (wishlist.length > 0 && view === "shop") {
+    return {
+      label: tr.stickySaved,
+      sublabel: `${wishlist.length} ${
+        wishlist.length === 1 ? tr.stickyItem : tr.stickyItems
+      }`,
+      onClick: () => setPrivateSelectionOpen(true)
+    };
+  }
+
+  return {
+    label: tr.stickyExplore,
+    sublabel:
+      view === "shop"
+        ? `${filteredProducts.length} ${
+            lang === "sr" ? "parfema" : "fragrances"
+          }`
+        : tr.privateSelection,
+    onClick: goToShop
   };
+}, [
+  cartCount,
+  total,
+  wishlist.length,
+  view,
+  filteredProducts.length,
+  tr,
+  lang
+]);
+
+const stickyCtaJournalHasNew = journalUnreadCount > 0;
+
+const handleStickyCtaJournalClick = (event) => {
+  event.stopPropagation();
+  setJournalOpen(true);
+};
 
   /* =========================================
      ACTIONS
   ========================================= */
   const routeForView = (nextView) => {
-    if (nextView === "shop") return "/shop";
-    if (nextView === "journal") return "/journal";
+  if (nextView === "shop") return "/shop";
+  if (nextView === "journal") return "/journal";
+  return "/";
+};
 
-    return "/";
-  };
+const switchView = (nextView) => {
+  const nextPath = routeForView(nextView);
 
-  const switchView = (nextView) => {
-    const nextPath = routeForView(nextView);
+  if (view !== nextView) {
+    setView(nextView);
+  }
 
-    if (view !== nextView) {
-      setView(nextView);
-    }
+  // 👉 PUSH CLEAN URL
+  if (window.location.pathname !== nextPath) {
+    window.history.pushState({}, "", nextPath);
+  }
 
-    if (window.location.pathname !== nextPath) {
-      window.history.pushState({}, "", nextPath);
-    }
+  // 👉 (opciono) zadrži query za debug ako želiš
+  // window.history.pushState({}, "", `${nextPath}?view=${nextView}`);
 
-    trackPageView(nextPath);
-    trackMeta("PageView");
+  trackPageView(nextPath);
+  trackMeta("PageView");
 
-    requestAnimationFrame(() => {
-      smoothScrollToTop();
-    });
-  };
+  requestAnimationFrame(() => {
+    smoothScrollToTop();
+  });
+};
 
-  const goHome = () => {
-    switchView("home");
-  };
+const goHome = () => {
+  switchView("home");
+};
 
-  const goToJournal = () => {
-    switchView("journal");
-  };
+const goToJournal = () => {
+  switchView("journal");
+};
 
   const toggleWishlist = (productId) => {
     const isAdding = !wishlist.includes(productId);
@@ -1820,15 +1753,13 @@ function App() {
       }
 
       try {
-        window.localStorage.setItem("playnice_wishlist", JSON.stringify(updated));
-      } catch {}
-
+  window.localStorage.setItem("playnice_wishlist", JSON.stringify(updated));
+} catch {}
       return updated;
     });
 
     if (isAdding) {
       setSprayingWishlistId(productId);
-
       setTimeout(() => {
         setSprayingWishlistId((current) =>
           current === productId ? null : current
@@ -1847,27 +1778,21 @@ function App() {
 
   const bumpHeroAutoplay = () => {
     setHeroPaused(true);
-
     setTimeout(() => setHeroPaused(false), 220);
   };
 
   const nextHeroSlide = () => {
     bumpHeroAutoplay();
-
     setCurrentHero((prev) => (prev + 1) % heroSlides.length);
   };
 
   const prevHeroSlide = () => {
     bumpHeroAutoplay();
-
-    setCurrentHero(
-      (prev) => (prev - 1 + heroSlides.length) % heroSlides.length
-    );
+    setCurrentHero((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
   };
 
   const goToHeroSlide = (index) => {
     if (index === currentHero) return;
-
     bumpHeroAutoplay();
     setCurrentHero(index);
   };
@@ -1876,119 +1801,104 @@ function App() {
     setAddedFeedback(text);
   };
 
-    const addToCart = (
-    product,
-    size,
-    customPrice = null,
-    customLabel = null,
-    options = {}
-  ) => {
-    const { showToast = true } = options;
+  const addToCart = (
+  product,
+  size,
+  customPrice = null,
+  customLabel = null,
+  options = {}
+) => {
+  const { showToast = true } = options;
 
-    const key = `${product.id}-${size}-${customLabel || ""}`;
-    const price = customPrice ?? product.sizes[size];
-    const label = customLabel || size;
+  const key = `${product.id}-${size}-${customLabel || ""}`;
+  const price = customPrice ?? product.sizes[size];
+  const label = customLabel || size;
 
-    trackEvent("add_to_cart", {
-      currency: "EUR",
-      value: Number(price),
-      item_name: `${product.name} ${label}`,
-      item_category: product.category
-    });
+  trackEvent("add_to_cart", {
+    currency: "EUR",
+    value: Number(price),
+    item_name: `${product.name} ${label}`,
+    item_category: product.category
+  });
 
-    trackMeta("AddToCart", {
-      content_name: `${product.name} ${label}`,
-      content_category: product.category,
-      value: Number(price),
-      currency: "EUR"
-    });
+  trackMeta("AddToCart", {
+    content_name: `${product.name} ${label}`,
+    content_category: product.category,
+    value: Number(price),
+    currency: "EUR"
+  });
 
-    setCart((prev) => {
-      const existing = prev.find((item) => item.key === key);
+  setCart((prev) => {
+    const existing = prev.find((item) => item.key === key);
 
-      if (existing) {
-        return prev.map((item) =>
-          item.key === key
-            ? {
-                ...item,
-                quantity: item.quantity + 1
-              }
-            : item
-        );
-      }
-
-      return [
-        ...prev,
-        {
-          key,
-          id: product.id,
-          name: product.name,
-          size: label,
-          price,
-          quantity: 1
-        }
-      ];
-    });
-
-    if (showToast) {
-      showFeedback(`${product.name} ${tr.addedToCart}`);
-    }
-  };
-
-  const triggerInlineAddedFeedback = (productId, size) => {
-    const key = `${productId}-${size}`;
-
-    setInlineAddedKey(key);
-
-    setTimeout(() => {
-      setInlineAddedKey((current) => (current === key ? null : current));
-    }, 1300);
-  };
-
-  const handleModalAddToCart = (product, size) => {
-    if (!product || !size) return;
-
-    addToCart(product, size);
-
-    const key = `${product.id}-${size}`;
-
-    setModalAddedKey(key);
-
-    if (modalAddedTimeoutRef.current) {
-      clearTimeout(modalAddedTimeoutRef.current);
+    if (existing) {
+      return prev.map((item) =>
+        item.key === key ? { ...item, quantity: item.quantity + 1 } : item
+      );
     }
 
-    modalAddedTimeoutRef.current = setTimeout(() => {
-      setModalAddedKey(null);
-    }, 1300);
-  };
-
-  const addHeroBottleToCart = () => {
-    const heroProduct = {
-      id: 999,
-      name: "Afnan 9PM Rebel",
-      image: "/hero/hero-bottle.png",
-      sizes: {
-        "100ml": 34.9
+    return [
+      ...prev,
+      {
+        key,
+        id: product.id,
+        name: product.name,
+        size: label,
+        price,
+        quantity: 1
       }
-    };
+    ];
+  });
 
-    addToCart(heroProduct, "100ml", 34.9, "100ml Full Bottle");
+  if (showToast) {
+    showFeedback(`${product.name} ${tr.addedToCart}`);
+  }
+};
 
-    setCartOpen(true);
-    setCheckoutOpen(false);
+const triggerInlineAddedFeedback = (productId, size) => {
+  const key = `${productId}-${size}`;
+  setInlineAddedKey(key);
+
+  setTimeout(() => {
+    setInlineAddedKey((current) => (current === key ? null : current));
+  }, 1300);
+};
+
+const handleModalAddToCart = (product, size) => {
+  if (!product || !size) return;
+
+  addToCart(product, size);
+
+  const key = `${product.id}-${size}`;
+  setModalAddedKey(key);
+
+  if (modalAddedTimeoutRef.current) {
+    clearTimeout(modalAddedTimeoutRef.current);
+  }
+
+  modalAddedTimeoutRef.current = setTimeout(() => {
+    setModalAddedKey(null);
+  }, 1300);
+};
+
+const addHeroBottleToCart = () => {
+  const heroProduct = {
+    id: 999,
+    name: "Afnan 9PM Rebel",
+    image: "/hero/hero-bottle.png",
+    sizes: { "100ml": 34.9 }
   };
+
+  addToCart(heroProduct, "100ml", 34.9, "100ml Full Bottle");
+  setCartOpen(true);
+  setCheckoutOpen(false);
+};
 
   const updateQuantity = (key, delta) => {
     setCart((prev) =>
       prev
         .map((item) =>
-          item.key === key
-            ? {
-                ...item,
-                quantity: item.quantity + delta
-              }
-            : item
+          item.key === key ? { ...item, quantity: item.quantity + delta } : item
         )
         .filter((item) => item.quantity > 0)
     );
@@ -2000,195 +1910,186 @@ function App() {
 
   const handleCheckoutInput = (e) => {
     const { name, value } = e.target;
-
-    setCheckoutForm((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+    setCheckoutForm((prev) => ({ ...prev, [name]: value }));
   };
 
-    const handleInternationalEnquiry = async () => {
-    if (cart.length === 0) {
-      alert(
-        tr.noItemsCart ||
-          (lang === "sr" ? "Korpa je prazna." : "Your cart is empty.")
-      );
+  const handleInternationalEnquiry = async () => {
+  if (cart.length === 0) {
+    alert(tr.noItemsCart || (lang === "sr" ? "Korpa je prazna." : "Your cart is empty."));
+    return;
+  }
 
-      return;
+  if (
+    !checkoutForm.firstName.trim() ||
+    !checkoutForm.lastName.trim() ||
+    !checkoutForm.email.trim() ||
+    !checkoutForm.phone.trim() ||
+    !checkoutForm.country.trim() ||
+    !checkoutForm.city.trim()
+  ) {
+    alert(
+      lang === "sr"
+        ? "Molimo unesite ime, prezime, email, telefon, zemlju i grad."
+        : "Please enter your first name, last name, email, phone, country and city."
+    );
+    return;
+  }
+
+  setIsSubmittingOrder(true);
+
+  try {
+    const payload = {
+      type: "international_enquiry",
+      customer: {
+        firstName: checkoutForm.firstName.trim(),
+        lastName: checkoutForm.lastName.trim(),
+        email: checkoutForm.email.trim(),
+        phone: checkoutForm.phone.trim(),
+        country: checkoutForm.country,
+        countryLabel: selectedCheckoutCountryLabel,
+        city: checkoutForm.city.trim(),
+        address: checkoutForm.address.trim(),
+        note: checkoutForm.note.trim()
+      },
+      items: cart,
+      subtotal,
+      shippingStatus: "to_be_confirmed",
+      totalStatus: "products_only_not_final",
+      language: lang,
+      source: "checkout_international_enquiry",
+      page: window.location.href,
+      createdAt: new Date().toISOString()
+    };
+
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error("International enquiry request failed");
     }
 
-    if (
-      !checkoutForm.firstName.trim() ||
-      !checkoutForm.lastName.trim() ||
-      !checkoutForm.email.trim() ||
-      !checkoutForm.phone.trim() ||
-      !checkoutForm.country.trim() ||
-      !checkoutForm.city.trim()
-    ) {
-      alert(
-        lang === "sr"
-          ? "Molimo unesite ime, prezime, email, telefon, zemlju i grad."
-          : "Please enter your first name, last name, email, phone, country and city."
-      );
+    setOrderSuccessMessage(
+      lang === "sr"
+        ? "Upit je poslat. Proverićemo mogućnost dostave van Crne Gore i javiti vam se uskoro."
+        : "Your enquiry has been sent. We’ll check delivery outside Montenegro and get back to you soon."
+    );
 
-      return;
-    }
+    setCheckoutForm({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      country: "ME",
+      city: "",
+      address: "",
+      note: ""
+    });
 
-    setIsSubmittingOrder(true);
-
-    try {
-      const payload = {
-        type: "international_enquiry",
-        customer: {
-          firstName: checkoutForm.firstName.trim(),
-          lastName: checkoutForm.lastName.trim(),
-          email: checkoutForm.email.trim(),
-          phone: checkoutForm.phone.trim(),
-          country: checkoutForm.country,
-          countryLabel: selectedCheckoutCountryLabel,
-          city: checkoutForm.city.trim(),
-          address: checkoutForm.address.trim(),
-          note: checkoutForm.note.trim()
-        },
-        items: cart,
-        subtotal,
-        shippingStatus: "to_be_confirmed",
-        totalStatus: "products_only_not_final",
-        language: lang,
-        source: "checkout_international_enquiry",
-        page: window.location.href,
-        createdAt: new Date().toISOString()
-      };
-
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) {
-        throw new Error("International enquiry request failed");
-      }
-
-      setOrderSuccessMessage(
-        lang === "sr"
-          ? "Upit je poslat. Proverićemo mogućnost dostave van Crne Gore i javiti vam se uskoro."
-          : "Your enquiry has been sent. We’ll check delivery outside Montenegro and get back to you soon."
-      );
-
-      setCheckoutForm({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        country: "ME",
-        city: "",
-        address: "",
-        note: ""
-      });
-
-      setTimeout(() => {
-        setCheckoutOpen(false);
-        setCartOpen(false);
-      }, 2200);
-    } catch (error) {
-      alert(
-        lang === "sr"
-          ? "Došlo je do greške pri slanju upita. Molimo pokušajte ponovo ili nas kontaktirajte direktno."
-          : "Something went wrong while sending your enquiry. Please try again or contact us directly."
-      );
-    } finally {
-      setIsSubmittingOrder(false);
-    }
-  };
+    setTimeout(() => {
+      setCheckoutOpen(false);
+      setCartOpen(false);
+    }, 2200);
+  } catch (error) {
+    alert(
+      lang === "sr"
+        ? "Došlo je do greške pri slanju upita. Molimo pokušajte ponovo ili nas kontaktirajte direktno."
+        : "Something went wrong while sending your enquiry. Please try again or contact us directly."
+    );
+  } finally {
+    setIsSubmittingOrder(false);
+  }
+};
 
   const handlePlaceOrder = async () => {
-    if (!isMontenegroOrder) {
-      handleInternationalEnquiry();
-      return;
+  if (!isMontenegroOrder) {
+    handleInternationalEnquiry();
+    return;
+  }
+
+  if (cart.length === 0) {
+    alert(tr.emptyCartAlert);
+    return;
+  }
+
+  if (
+    !checkoutForm.firstName.trim() ||
+    !checkoutForm.lastName.trim() ||
+    !checkoutForm.email.trim() ||
+    !checkoutForm.phone.trim() ||
+    !checkoutForm.city.trim() ||
+    !checkoutForm.address.trim()
+  ) {
+    alert(tr.fillRequired);
+    return;
+  }
+
+  setIsSubmittingOrder(true);
+
+  try {
+    const payload = {
+      type: "order",
+      customer: {
+        firstName: checkoutForm.firstName.trim(),
+        lastName: checkoutForm.lastName.trim(),
+        email: checkoutForm.email.trim(),
+        phone: checkoutForm.phone.trim(),
+        country: checkoutForm.country,
+        countryLabel: selectedCheckoutCountryLabel,
+        city: checkoutForm.city.trim(),
+        address: checkoutForm.address.trim(),
+        note: checkoutForm.note.trim()
+      },
+      items: cart,
+      subtotal,
+      shipping,
+      total,
+      language: lang,
+      source: "checkout_order",
+      page: window.location.href,
+      createdAt: new Date().toISOString()
+    };
+
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error("Checkout request failed");
     }
 
-    if (cart.length === 0) {
-      alert(tr.emptyCartAlert);
-      return;
-    }
+    setOrderSuccessMessage(tr.orderSuccess);
+    setCart([]);
 
-    if (
-      !checkoutForm.firstName.trim() ||
-      !checkoutForm.lastName.trim() ||
-      !checkoutForm.email.trim() ||
-      !checkoutForm.phone.trim() ||
-      !checkoutForm.city.trim() ||
-      !checkoutForm.address.trim()
-    ) {
-      alert(tr.fillRequired);
-      return;
-    }
+    setCheckoutForm({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      country: "ME",
+      city: "",
+      address: "",
+      note: ""
+    });
 
-    setIsSubmittingOrder(true);
-
-    try {
-      const payload = {
-        type: "order",
-        customer: {
-          firstName: checkoutForm.firstName.trim(),
-          lastName: checkoutForm.lastName.trim(),
-          email: checkoutForm.email.trim(),
-          phone: checkoutForm.phone.trim(),
-          country: checkoutForm.country,
-          countryLabel: selectedCheckoutCountryLabel,
-          city: checkoutForm.city.trim(),
-          address: checkoutForm.address.trim(),
-          note: checkoutForm.note.trim()
-        },
-        items: cart,
-        subtotal,
-        shipping,
-        total,
-        language: lang,
-        source: "checkout_order",
-        page: window.location.href,
-        createdAt: new Date().toISOString()
-      };
-
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) {
-        throw new Error("Checkout request failed");
-      }
-
-      setOrderSuccessMessage(tr.orderSuccess);
-      setCart([]);
-
-      setCheckoutForm({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        country: "ME",
-        city: "",
-        address: "",
-        note: ""
-      });
-
-      setTimeout(() => {
-        setCheckoutOpen(false);
-        setCartOpen(false);
-      }, 1800);
-    } catch (error) {
-      alert(tr.orderError);
-    } finally {
-      setIsSubmittingOrder(false);
-    }
-  };
+    setTimeout(() => {
+      setCheckoutOpen(false);
+      setCartOpen(false);
+    }, 1800);
+  } catch (error) {
+    alert(tr.orderError);
+  } finally {
+    setIsSubmittingOrder(false);
+  }
+};
 
   const handleHeroTouchStart = (e) => {
     touchStartX.current = e.changedTouches[0].clientX;
@@ -2209,209 +2110,200 @@ function App() {
     }
   };
 
-    const goToPage = (pageNumber) => {
-    const safePageNumber = Math.min(Math.max(pageNumber, 1), totalPages);
+  const goToPage = (pageNumber) => {
+  const safePageNumber = Math.min(Math.max(pageNumber, 1), totalPages);
 
-    if (safePageNumber === currentPage) return;
+  if (safePageNumber === currentPage) return;
 
-    setCurrentPage(safePageNumber);
+  setCurrentPage(safePageNumber);
 
-    requestAnimationFrame(() => {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    });
-  };
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+};
 
-  const nextPage = () => {
-    goToPage(currentPage + 1);
-  };
+const nextPage = () => {
+  goToPage(currentPage + 1);
+};
 
-  const prevPage = () => {
-    goToPage(currentPage - 1);
-  };
+const prevPage = () => {
+  goToPage(currentPage - 1);
+};
 
-  const renderPagination = (position = "bottom") => {
-    if (totalPages <= 1) return null;
+const renderPagination = (position = "bottom") => {
+  if (totalPages <= 1) return null;
 
-    return (
-      <div className={`pagination-wrap pagination-wrap-${position}`}>
-        <button
-          type="button"
-          className="pagination-nav"
-          onClick={prevPage}
-          disabled={currentPage === 1}
-        >
-          {lang === "sr" ? "Nazad" : "Prev"}
-        </button>
+  return (
+    <div className={`pagination-wrap pagination-wrap-${position}`}>
+      <button
+        type="button"
+        className="pagination-nav"
+        onClick={prevPage}
+        disabled={currentPage === 1}
+      >
+        {lang === "sr" ? "Nazad" : "Prev"}
+      </button>
 
-        <div className="pagination-numbers">
-          {Array.from({ length: totalPages }, (_, index) => {
-            const pageNumber = index + 1;
+      <div className="pagination-numbers">
+        {Array.from({ length: totalPages }, (_, index) => {
+          const pageNumber = index + 1;
 
-            return (
-              <button
-                key={pageNumber}
-                type="button"
-                className={`pagination-number ${
-                  currentPage === pageNumber ? "active" : ""
-                }`}
-                onClick={() => goToPage(pageNumber)}
-                aria-label={
-                  lang === "sr"
-                    ? `Idi na stranicu ${pageNumber}`
-                    : `Go to page ${pageNumber}`
-                }
-                aria-current={
-                  currentPage === pageNumber ? "page" : undefined
-                }
-              >
-                {pageNumber}
-              </button>
-            );
-          })}
-        </div>
-
-        <button
-          type="button"
-          className="pagination-nav"
-          onClick={nextPage}
-          disabled={currentPage === totalPages}
-        >
-          {lang === "sr" ? "Dalje" : "Next"}
-        </button>
+          return (
+            <button
+              key={pageNumber}
+              type="button"
+              className={`pagination-number ${
+                currentPage === pageNumber ? "active" : ""
+              }`}
+              onClick={() => goToPage(pageNumber)}
+              aria-label={
+                lang === "sr"
+                  ? `Idi na stranicu ${pageNumber}`
+                  : `Go to page ${pageNumber}`
+              }
+              aria-current={currentPage === pageNumber ? "page" : undefined}
+            >
+              {pageNumber}
+            </button>
+          );
+        })}
       </div>
-    );
-  };
+
+      <button
+        type="button"
+        className="pagination-nav"
+        onClick={nextPage}
+        disabled={currentPage === totalPages}
+      >
+        {lang === "sr" ? "Dalje" : "Next"}
+      </button>
+    </div>
+  );
+};
 
   const getProductUrl = (product) => {
-    if (!product?.name) return "/shop";
+  if (!product?.name) return "/shop";
 
-    return `/product/${slugifyProduct(product.name)}`;
-  };
+  return `/product/${slugifyProduct(product.name)}`;
+};
 
-  const isMobileProductModal = () =>
-    window.matchMedia("(max-width: 640px)").matches;
+const isMobileProductModal = () =>
+  window.matchMedia("(max-width: 640px)").matches;
 
-  const openProductModal = (product, options = {}) => {
-    if (!product) return;
+const openProductModal = (product, options = {}) => {
+  if (!product) return;
 
-    const { updateUrl = true } = options;
-    const isMobileModal = isMobileProductModal();
+  const { updateUrl = true } = options;
+  const isMobileModal = isMobileProductModal();
 
-    if (productModalCloseTimeoutRef.current) {
-      clearTimeout(productModalCloseTimeoutRef.current);
-      productModalCloseTimeoutRef.current = null;
+  if (productModalCloseTimeoutRef.current) {
+    clearTimeout(productModalCloseTimeoutRef.current);
+    productModalCloseTimeoutRef.current = null;
+  }
+
+  productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
+
+  setView("shop");
+  setSelectedProduct(product);
+  setSelectedSize(Object.keys(product.sizes || {})[0] || "");
+  setHasUserPickedSize(false);
+
+  if (isMobileModal) {
+    setProductModalVisible(true);
+  } else {
+    setProductModalVisible(false);
+  }
+
+  if (updateUrl) {
+    const productUrl = getProductUrl(product);
+
+    if (window.location.pathname !== productUrl) {
+      window.history.pushState({}, "", productUrl);
     }
 
-    productModalScrollYRef.current =
-      window.scrollY || window.pageYOffset || 0;
+    trackPageView(productUrl);
+    trackMeta("PageView");
+  }
 
+  if (!isMobileModal) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setProductModalVisible(true);
+      });
+    });
+  }
+};
+
+const handleProductCardOpen = (product) => {
+  openProductModal(product);
+
+  if (!product?.isNew || !newProductsSignature) return;
+
+  localStorage.setItem(SHOP_NEW_PRODUCTS_SEEN_KEY, newProductsSignature);
+  setHasNewShopProducts(false);
+};
+
+useEffect(() => {
+  const path = window.location.pathname;
+
+  if (!path.startsWith("/product/")) return;
+
+  const slugFromUrl = decodeURIComponent(
+    path.replace("/product/", "").replace(/\/$/, "")
+  );
+
+  const matchedProduct = products.find(
+    (product) => getProductSlug(product) === slugFromUrl
+  );
+
+  if (!matchedProduct) {
     setView("shop");
-    setSelectedProduct(product);
-    setSelectedSize(Object.keys(product.sizes || {})[0] || "");
-    setHasUserPickedSize(false);
+    window.history.replaceState({}, "", "/shop");
+    return;
+  }
 
-    if (isMobileModal) {
-      setProductModalVisible(true);
-    } else {
-      setProductModalVisible(false);
-    }
+  openProductModal(matchedProduct, { updateUrl: false });
+}, []);
 
-    if (updateUrl) {
-      const productUrl = getProductUrl(product);
+const closeProductModal = () => {
+  const isMobileModal = isMobileProductModal();
 
-      if (window.location.pathname !== productUrl) {
-        window.history.pushState({}, "", productUrl);
-      }
+  setProductModalVisible(false);
+  setHasUserPickedSize(false);
 
-      trackPageView(productUrl);
+  if (productModalCloseTimeoutRef.current) {
+    clearTimeout(productModalCloseTimeoutRef.current);
+    productModalCloseTimeoutRef.current = null;
+  }
+
+  const cleanupProductModal = () => {
+    setSelectedProduct(null);
+    setSelectedSize("");
+    productModalCloseTimeoutRef.current = null;
+
+    if (window.location.pathname.startsWith("/product/")) {
+      window.history.pushState({}, "", "/shop");
+      trackPageView("/shop");
       trackMeta("PageView");
     }
-
-    if (!isMobileModal) {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setProductModalVisible(true);
-        });
-      });
-    }
   };
 
-  const handleProductCardOpen = (product) => {
-    openProductModal(product);
+  if (isMobileModal) {
+    cleanupProductModal();
+    return;
+  }
 
-    if (!product?.isNew || !newProductsSignature) return;
+  productModalCloseTimeoutRef.current = setTimeout(() => {
+    cleanupProductModal();
+  }, 200);
+};
 
-    localStorage.setItem(SHOP_NEW_PRODUCTS_SEEN_KEY, newProductsSignature);
-    setHasNewShopProducts(false);
-  };
-
-  useEffect(() => {
-    const path = window.location.pathname;
-
-    if (!path.startsWith("/product/")) return;
-
-    const slugFromUrl = decodeURIComponent(
-      path.replace("/product/", "").replace(/\/$/, "")
-    );
-
-    const matchedProduct = products.find(
-      (product) => getProductSlug(product) === slugFromUrl
-    );
-
-    if (!matchedProduct) {
-      setView("shop");
-      window.history.replaceState({}, "", "/shop");
-      return;
-    }
-
-    openProductModal(matchedProduct, {
-      updateUrl: false
-    });
-  }, []);
-
-    const closeProductModal = () => {
-    const isMobileModal = isMobileProductModal();
-
-    setProductModalVisible(false);
-    setHasUserPickedSize(false);
-
-    if (productModalCloseTimeoutRef.current) {
-      clearTimeout(productModalCloseTimeoutRef.current);
-      productModalCloseTimeoutRef.current = null;
-    }
-
-    const cleanupProductModal = () => {
-      setSelectedProduct(null);
-      setSelectedSize("");
-      productModalCloseTimeoutRef.current = null;
-
-      if (window.location.pathname.startsWith("/product/")) {
-        window.history.pushState({}, "", "/shop");
-        trackPageView("/shop");
-        trackMeta("PageView");
-      }
-    };
-
-    if (isMobileModal) {
-      cleanupProductModal();
-      return;
-    }
-
-    productModalCloseTimeoutRef.current = setTimeout(() => {
-      cleanupProductModal();
-    }, 200);
-  };
-
-  const openImpactProductModal = (product) => {
-    openProductModal(product);
-  };
+const openImpactProductModal = (product) => {
+  openProductModal(product);
+};
 
   const getCategoryLabel = (categoryKey) => {
     if (categoryKey === "All") return tr.all;
-
     return categoryLabels[categoryKey]?.[lang] || categoryKey;
   };
 
@@ -2420,426 +2312,386 @@ function App() {
   };
 
   useEffect(() => {
-    const productFromUrl = getProductFromCurrentUrl();
+  const productFromUrl = getProductFromCurrentUrl();
 
-    if (!productFromUrl) {
-      return;
-    }
+  if (!productFromUrl) {
+    return;
+  }
 
-    setSelectedProduct(productFromUrl);
-    setView("shop");
-  }, []);
+  setSelectedProduct(productFromUrl);
+  setView("shop");
+}, []);
 
-  /* =========================================
-     SEO TITLE / META USEEFFECT
-  ========================================= */
+/* =========================================
+   SEO title/meta useEffect
+========================================= */
   useEffect(() => {
-    const seoTitle = selectedProduct
-      ? getProductSeoTitle(selectedProduct, lang)
-      : view === "shop"
-      ? lang === "en"
-        ? "Shop | Premium fragrances and decants in Montenegro | PlayNice"
-        : "Shop | Premium parfemi i dekanti u Crnoj Gori | PlayNice"
-      : view === "journal"
-      ? lang === "en"
-        ? "Journal | Fragrance stories and recommendations | PlayNice"
-        : "Journal | Mirisne priče i preporuke | PlayNice"
-      : lang === "en"
-      ? "PlayNice | Premium fragrances and decants in Montenegro"
-      : "PlayNice | Premium parfemi i dekanti u Crnoj Gori";
+  const seoTitle = selectedProduct
+    ? getProductSeoTitle(selectedProduct, lang)
+    : view === "shop"
+    ? lang === "en"
+      ? "Shop | Premium fragrances and decants in Montenegro | PlayNice"
+      : "Shop | Premium parfemi i dekanti u Crnoj Gori | PlayNice"
+    : view === "journal"
+    ? lang === "en"
+      ? "Journal | Fragrance stories and recommendations | PlayNice"
+      : "Journal | Mirisne priče i preporuke | PlayNice"
+    : lang === "en"
+    ? "PlayNice | Premium fragrances and decants in Montenegro"
+    : "PlayNice | Premium parfemi i dekanti u Crnoj Gori";
 
-    const seoDescription = selectedProduct
-      ? getProductMetaDescription(selectedProduct, lang)
-      : view === "shop"
-      ? lang === "en"
-        ? "Explore the PlayNice collection of premium fragrance decants in Montenegro. Designer, niche and Arabian fragrances with delivery across Montenegro."
-        : "Istraži PlayNice kolekciju premium parfema i dekanata u Crnoj Gori. Designer, niche i Arabian mirisi, dostava širom Crne Gore."
-      : view === "journal"
-      ? lang === "en"
-        ? "PlayNice Journal brings short fragrance stories, recommendations and guides for choosing the right perfume."
-        : "PlayNice Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
-      : lang === "en"
-      ? "Premium fragrance decants and original perfumes in Montenegro. Try before you buy with PlayNice — designer, niche and Arabian fragrances."
-      : "Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi.";
+  const seoDescription = selectedProduct
+    ? getProductMetaDescription(selectedProduct, lang)
+    : view === "shop"
+    ? lang === "en"
+      ? "Explore the PlayNice collection of premium fragrance decants in Montenegro. Designer, niche and Arabian fragrances with delivery across Montenegro."
+      : "Istraži PlayNice kolekciju premium parfema i dekanata u Crnoj Gori. Designer, niche i Arabian mirisi, dostava širom Crne Gore."
+    : view === "journal"
+    ? lang === "en"
+      ? "PlayNice Journal brings short fragrance stories, recommendations and guides for choosing the right perfume."
+      : "PlayNice Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
+    : lang === "en"
+    ? "Premium fragrance decants and original perfumes in Montenegro. Try before you buy with PlayNice — designer, niche and Arabian fragrances."
+    : "Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi.";
 
-    const seoUrl = selectedProduct
-      ? getSeoProductUrl(selectedProduct)
-      : view === "shop"
-      ? `${SITE_BASE_URL}/shop`
-      : view === "journal"
-      ? `${SITE_BASE_URL}/journal`
-      : `${SITE_BASE_URL}/`;
+  const seoUrl = selectedProduct
+    ? getSeoProductUrl(selectedProduct)
+    : view === "shop"
+    ? `${SITE_BASE_URL}/shop`
+    : view === "journal"
+    ? `${SITE_BASE_URL}/journal`
+    : `${SITE_BASE_URL}/`;
 
-    const seoImage = selectedProduct
-      ? getSeoProductImage(selectedProduct)
-      : `${SITE_BASE_URL}/og-image.jpg`;
+  const seoImage = selectedProduct
+    ? getSeoProductImage(selectedProduct)
+    : `${SITE_BASE_URL}/og-image.jpg`;
 
-    document.title = seoTitle;
+  document.title = seoTitle;
 
-    const setMeta = (selector, attribute, value) => {
-      let element = document.head.querySelector(selector);
+  const setMeta = (selector, attribute, value) => {
+    let element = document.head.querySelector(selector);
 
-      if (!element) {
-        if (selector.startsWith("link")) {
-          element = document.createElement("link");
-          element.setAttribute("rel", "canonical");
-        } else {
-          element = document.createElement("meta");
+    if (!element) {
+      if (selector.startsWith("link")) {
+        element = document.createElement("link");
+        element.setAttribute("rel", "canonical");
+      } else {
+        element = document.createElement("meta");
 
-          const nameMatch = selector.match(/name="([^"]+)"/);
-          const propertyMatch = selector.match(/property="([^"]+)"/);
+        const nameMatch = selector.match(/name="([^"]+)"/);
+        const propertyMatch = selector.match(/property="([^"]+)"/);
 
-          if (nameMatch?.[1]) {
-            element.setAttribute("name", nameMatch[1]);
-          }
-
-          if (propertyMatch?.[1]) {
-            element.setAttribute("property", propertyMatch[1]);
-          }
+        if (nameMatch?.[1]) {
+          element.setAttribute("name", nameMatch[1]);
         }
 
-        document.head.appendChild(element);
+        if (propertyMatch?.[1]) {
+          element.setAttribute("property", propertyMatch[1]);
+        }
       }
 
-      element.setAttribute(attribute, value);
-    };
-
-    setMeta('meta[name="description"]', "content", seoDescription);
-    setMeta('link[rel="canonical"]', "href", seoUrl);
-
-    setMeta('meta[property="og:title"]', "content", seoTitle);
-    setMeta('meta[property="og:description"]', "content", seoDescription);
-    setMeta('meta[property="og:url"]', "content", seoUrl);
-    setMeta('meta[property="og:image"]', "content", seoImage);
-    setMeta(
-      'meta[property="og:type"]',
-      "content",
-      selectedProduct ? "product" : "website"
-    );
-
-    setMeta('meta[name="twitter:title"]', "content", seoTitle);
-    setMeta('meta[name="twitter:description"]', "content", seoDescription);
-    setMeta('meta[name="twitter:image"]', "content", seoImage);
-    setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
-  }, [view, selectedProduct, lang]);
-
-  /* =========================================
-     SEO EXISTING SCHEMA USEEFFECT
-  ========================================= */
-  useEffect(() => {
-    const existingSchema = document.getElementById("playnice-product-schema");
-
-    if (existingSchema) {
-      existingSchema.remove();
+      document.head.appendChild(element);
     }
 
-    if (!selectedProduct) return;
+    element.setAttribute(attribute, value);
+  };
 
-    const schema = getProductStructuredData(selectedProduct, lang);
+  setMeta('meta[name="description"]', "content", seoDescription);
+  setMeta('link[rel="canonical"]', "href", seoUrl);
 
-    if (!schema) return;
+  setMeta('meta[property="og:title"]', "content", seoTitle);
+  setMeta('meta[property="og:description"]', "content", seoDescription);
+  setMeta('meta[property="og:url"]', "content", seoUrl);
+  setMeta('meta[property="og:image"]', "content", seoImage);
+  setMeta('meta[property="og:type"]', "content", selectedProduct ? "product" : "website");
 
-    const script = document.createElement("script");
+  setMeta('meta[name="twitter:title"]', "content", seoTitle);
+  setMeta('meta[name="twitter:description"]', "content", seoDescription);
+  setMeta('meta[name="twitter:image"]', "content", seoImage);
+  setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
+}, [view, selectedProduct, lang]);
 
-    script.id = "playnice-product-schema";
-    script.type = "application/ld+json";
-    script.textContent = JSON.stringify(schema);
+/* =========================================
+   SEO existingSchema useEffect
+========================================= */
+useEffect(() => {
+  const existingSchema = document.getElementById("playnice-product-schema");
 
-    document.head.appendChild(script);
+  if (existingSchema) {
+    existingSchema.remove();
+  }
 
-    return () => {
-      const currentSchema = document.getElementById("playnice-product-schema");
+  if (!selectedProduct) return;
 
-      if (currentSchema) {
-        currentSchema.remove();
-      }
-    };
-  }, [selectedProduct, lang]);
+  const schema = getProductStructuredData(selectedProduct, lang);
 
-  /* =========================================
-     INNER COMPONENTS
-  ========================================= */
-  const ProductCard = ({
-    product,
-    wishlist,
-    toggleWishlist,
-    sprayingWishlistId
-  }) => {
-    const copy = getProductCopy(product, lang);
-    const minPrice = getMinPrice(product);
-    const isWishlisted = wishlist.includes(product.id);
-    const isSpraying = sprayingWishlistId === product.id;
+  if (!schema) return;
 
-    const getBadgeVariant = (miniTag = "") => {
-      const tag = miniTag.toLowerCase();
+  const script = document.createElement("script");
+  script.id = "playnice-product-schema";
+  script.type = "application/ld+json";
+  script.textContent = JSON.stringify(schema);
 
-      if (
-        tag.includes("bestseller") ||
-        tag.includes("top") ||
-        tag.includes("🔥")
-      ) {
-        return "badge-hot";
-      }
+  document.head.appendChild(script);
 
-      if (
-        tag.includes("fresh") ||
-        tag.includes("summer") ||
-        tag.includes("blue") ||
-        tag.includes("❄️")
-      ) {
-        return "badge-fresh";
-      }
+  return () => {
+    const currentSchema = document.getElementById("playnice-product-schema");
 
-      if (
-        tag.includes("sweet") ||
-        tag.includes("date") ||
-        tag.includes("gourmand") ||
-        tag.includes("🍯")
-      ) {
-        return "badge-sweet";
-      }
+    if (currentSchema) {
+      currentSchema.remove();
+    }
+  };
+}, [selectedProduct, lang]);
 
-      if (
-        tag.includes("luxury") ||
-        tag.includes("signature") ||
-        tag.includes("exclusive") ||
-        tag.includes("💎")
-      ) {
-        return "badge-luxury";
-      }
+/* =========================================
+   INNER COMPONENTS
+========================================= */
+const ProductCard = ({
+  product,
+  wishlist,
+  toggleWishlist,
+  sprayingWishlistId
+}) => {
+  const copy = getProductCopy(product, lang);
+  const minPrice = getMinPrice(product);
+  const isWishlisted = wishlist.includes(product.id);
+  const isSpraying = sprayingWishlistId === product.id;
 
-      return "badge-default";
-    };
+  const getBadgeVariant = (miniTag = "") => {
+    const tag = miniTag.toLowerCase();
 
-    const getWearContext = (product, lang) => {
-      return productWearContext[product.name]?.[lang] || "";
-    };
+    if (
+      tag.includes("bestseller") ||
+      tag.includes("top") ||
+      tag.includes("🔥")
+    ) {
+      return "badge-hot";
+    }
 
-    const tr = translations[lang];
+    if (
+      tag.includes("fresh") ||
+      tag.includes("summer") ||
+      tag.includes("blue") ||
+      tag.includes("❄️")
+    ) {
+      return "badge-fresh";
+    }
 
-    const getSizeWearHint = (size) => {
-      if (size === "2ml") return tr.wearHint_2ml;
-      if (size === "5ml") return tr.wearHint_5ml;
-      if (size === "10ml") return tr.wearHint_10ml;
-      if (size === "20ml") return tr.wearHint_20ml;
+    if (
+      tag.includes("sweet") ||
+      tag.includes("date") ||
+      tag.includes("gourmand") ||
+      tag.includes("🍯")
+    ) {
+      return "badge-sweet";
+    }
 
-      return "";
-    };
+    if (
+      tag.includes("luxury") ||
+      tag.includes("signature") ||
+      tag.includes("exclusive") ||
+      tag.includes("💎")
+    ) {
+      return "badge-luxury";
+    }
 
-    const titleLengthClass =
-      product.name.length > 44
-        ? "is-very-long-title"
-        : product.name.length > 32
-        ? "is-long-title"
-        : "";
+    return "badge-default";
+  };
 
-    return (
-      <article className="product-card premium-product-card">
+  const getWearContext = (product, lang) => {
+  return productWearContext[product.name]?.[lang] || "";
+};
+
+  const tr = translations[lang];
+
+const getSizeWearHint = (size) => {
+  if (size === "2ml") return tr.wearHint_2ml;
+  if (size === "5ml") return tr.wearHint_5ml;
+  if (size === "10ml") return tr.wearHint_10ml;
+  if (size === "20ml") return tr.wearHint_20ml;
+  return "";
+};
+
+const titleLengthClass =
+  product.name.length > 44
+    ? "is-very-long-title"
+    : product.name.length > 32
+    ? "is-long-title"
+    : "";
+
+  return (
+  <article className="product-card premium-product-card">
+    <button
+      type="button"
+      className="product-card-media clickable-media"
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={() => handleProductCardOpen(product)}
+      aria-label={product.name}
+    >
+      <img
+        src={product.image || "/placeholder.png"}
+        alt={product.name}
+        className="product-card-image"
+        loading="lazy"
+      />
+
+      {product.isNew && (
+  <span className="product-new-badge">
+    {tr.justIn}
+  </span>
+)}
+    </button>
+
+    <button
+      type="button"
+      className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
+        isSpraying ? "is-spraying" : ""
+      }`}
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleWishlist(product.id);
+    }}
+    aria-label={
+      isWishlisted
+        ? lang === "sr"
+          ? `Ukloni ${product.name} iz wishlist`
+          : `Remove ${product.name} from wishlist`
+        : lang === "sr"
+        ? `Dodaj ${product.name} u wishlist`
+        : `Add ${product.name} to wishlist`
+    }
+  >
+    <span className="heart-icon" aria-hidden="true">
+      ♥
+    </span>
+  </button>
+
+  {copy.miniTag && (
+    <span
+      className={`product-floating-badge ${getBadgeVariant(copy.miniTag)}`}
+    >
+      {copy.miniTag}
+    </span>
+  )}
+
+  <div
+  className="product-meta premium-product-meta"
+  role="button"
+  tabIndex={0}
+  onClick={() => handleProductCardOpen(product)}
+  onKeyDown={(e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleProductCardOpen(product);
+    }
+  }}
+>
+    <div className="product-meta-top">
+      <p className="product-category">{getCategoryLabel(product.category)}</p>
+      <h3 className={`product-card-title ${titleLengthClass}`}>
+  {product.name}
+</h3>
+    </div>
+
+    <div className="product-meta-middle">
+      <div className="product-card-copy-stack">
+        <p className="product-card-copy premium-card-copy">{copy.card}</p>
+
+        <p className="product-card-decant-note">
+          {getWearContext(product, lang)}
+        </p>
+      </div>
+    </div>
+
+    <div className="product-meta-bottom">
+      <div className="product-price-block">
+        <div className="product-price-row">
+          <span className="product-price-from premium-product-price">
+            <span className="price-prefix">{tr.tryFrom}</span>
+            <span className="price-value">€{minPrice}</span>
+          </span>
+        </div>
+      </div>
+
+      <div className="product-preview-line premium-preview-line single-line-preview">
+        <span className="product-card-cta">{tr.productCardCta}</span>
+      </div>
+    </div>
+  </div>
+
+  <div className="size-buttons" onClick={(e) => e.stopPropagation()}>
+    {Object.entries(product.sizes).map(([size, price]) => {
+      const feedbackKey = `${product.id}-${size}`;
+      const isJustAdded = inlineAddedKey === feedbackKey;
+      const isRecommendedSize = size === "5ml";
+      const wearHint = getSizeWearHint(size);
+
+      return (
         <button
+          key={size}
           type="button"
-          className="product-card-media clickable-media"
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => handleProductCardOpen(product)}
-          aria-label={product.name}
-        >
-          <img
-            src={product.image || "/placeholder.png"}
-            alt={product.name}
-            className="product-card-image"
-            loading="lazy"
-          />
-
-          {product.isNew && (
-            <span className="product-new-badge">{tr.justIn}</span>
-          )}
-        </button>
-
-        <button
-          type="button"
-          className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
-            isSpraying ? "is-spraying" : ""
-          }`}
+          className={`size-chip ${isRecommendedSize ? "is-recommended" : ""}`}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            toggleWishlist(product.id);
+            e.currentTarget.blur();
+
+            addToCart(product, size, null, null, { showToast: false });
+            triggerInlineAddedFeedback(product.id, size);
           }}
-          aria-label={
-            isWishlisted
-              ? lang === "sr"
-                ? `Ukloni ${product.name} iz wishlist`
-                : `Remove ${product.name} from wishlist`
-              : lang === "sr"
-              ? `Dodaj ${product.name} u wishlist`
-              : `Add ${product.name} to wishlist`
-          }
         >
-          <span className="heart-icon" aria-hidden="true">
-            ♥
+          <span className="size-chip-main-wrap">
+            <span className="size-chip-main-row">
+              <span className="size-chip-main">{size}</span>
+
+              {isRecommendedSize && (
+                <span className="size-chip-recommended">
+                  {tr.sizeBestChoice}
+                </span>
+              )}
+            </span>
+
+            {wearHint && (
+              <span className="size-chip-wear-hint">{wearHint}</span>
+            )}
+          </span>
+
+          <span className="size-chip-price">{formatPrice(price)}</span>
+
+          <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
+            {tr.justAdded}
           </span>
         </button>
+      );
+    })}
+  </div>
+</article>
+  );
+};
 
-        {copy.miniTag && (
-          <span
-            className={`product-floating-badge ${getBadgeVariant(
-              copy.miniTag
-            )}`}
-          >
-            {copy.miniTag}
-          </span>
-        )}
+/* =========================================
+     DeliveryReturns MINI
+========================================= */
+const DeliveryReturnsMini = ({ surface = "footer" }) => {
+  const isSr = lang === "sr";
 
-        <div
-          className="product-meta premium-product-meta"
-          role="button"
-          tabIndex={0}
-          onClick={() => handleProductCardOpen(product)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              handleProductCardOpen(product);
-            }
-          }}
-        >
-          <div className="product-meta-top">
-            <p className="product-category">
-              {getCategoryLabel(product.category)}
-            </p>
-
-            <h3 className={`product-card-title ${titleLengthClass}`}>
-              {product.name}
-            </h3>
-          </div>
-
-          <div className="product-meta-middle">
-            <div className="product-card-copy-stack">
-              <p className="product-card-copy premium-card-copy">
-                {copy.card}
-              </p>
-
-              <p className="product-card-decant-note">
-                {getWearContext(product, lang)}
-              </p>
-            </div>
-          </div>
-
-          <div className="product-meta-bottom">
-            <div className="product-price-block">
-              <div className="product-price-row">
-                <span className="product-price-from premium-product-price">
-                  <span className="price-prefix">{tr.tryFrom}</span>
-                  <span className="price-value">€{minPrice}</span>
-                </span>
-              </div>
-            </div>
-
-            <div className="product-preview-line premium-preview-line single-line-preview">
-              <span className="product-card-cta">{tr.productCardCta}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="size-buttons" onClick={(e) => e.stopPropagation()}>
-          {Object.entries(product.sizes).map(([size, price]) => {
-            const feedbackKey = `${product.id}-${size}`;
-            const isJustAdded = inlineAddedKey === feedbackKey;
-            const isRecommendedSize = size === "5ml";
-            const wearHint = getSizeWearHint(size);
-
-            return (
-              <button
-                key={size}
-                type="button"
-                className={`size-chip ${
-                  isRecommendedSize ? "is-recommended" : ""
-                }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  e.currentTarget.blur();
-
-                  addToCart(product, size, null, null, {
-                    showToast: false
-                  });
-
-                  triggerInlineAddedFeedback(product.id, size);
-                }}
-              >
-                <span className="size-chip-main-wrap">
-                  <span className="size-chip-main-row">
-                    <span className="size-chip-main">{size}</span>
-
-                    {isRecommendedSize && (
-                      <span className="size-chip-recommended">
-                        {tr.sizeBestChoice}
-                      </span>
-                    )}
-                  </span>
-
-                  {wearHint && (
-                    <span className="size-chip-wear-hint">{wearHint}</span>
-                  )}
-                </span>
-
-                <span className="size-chip-price">{formatPrice(price)}</span>
-
-                <span
-                  className={`size-chip-flash ${isJustAdded ? "show" : ""}`}
-                >
-                  {tr.justAdded}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </article>
-    );
+  const labels = {
+    title: isSr ? "Dostava i povrat" : "Delivery & Returns",
+    delivery: isSr ? "Dostava širom CG" : "Delivery across Montenegro",
+    shipping: isSr ? "Dostava €4" : "Shipping €4",
+    free: isSr ? "Besplatno preko €39" : "Free over €39",
+    cod: isSr ? "Plaćanje pouzećem" : "Cash on delivery",
+    returnNote: isSr
+      ? "Otvoreni dekanti se ne vraćaju iz higijenskih razloga. Povrat je moguć za neotvoreno, nekorišćeno i neoštećeno pakovanje, ili u slučaju greške/oštećenja pri dostavi."
+      : "Opened decants cannot be returned for hygiene reasons. Returns are possible for unopened, unused and undamaged items, or in case of delivery error/damage."
   };
 
-  /* =========================================
-     DELIVERY / RETURNS MINI
-  ========================================= */
-  const DeliveryReturnsMini = ({ surface = "footer" }) => {
-    const isSr = lang === "sr";
-
-    const labels = {
-      title: isSr ? "Dostava i povrat" : "Delivery & Returns",
-      delivery: isSr ? "Dostava širom CG" : "Delivery across Montenegro",
-      shipping: isSr ? "Dostava €4" : "Shipping €4",
-      free: isSr ? "Besplatno preko €39" : "Free over €39",
-      cod: isSr ? "Plaćanje pouzećem" : "Cash on delivery",
-      returnNote: isSr
-        ? "Otvoreni dekanti se ne vraćaju iz higijenskih razloga. Povrat je moguć za neotvoreno, nekorišćeno i neoštećeno pakovanje, ili u slučaju greške/oštećenja pri dostavi."
-        : "Opened decants cannot be returned for hygiene reasons. Returns are possible for unopened, unused and undamaged items, or in case of delivery error/damage."
-    };
-
-    if (surface === "footer") {
-      return (
-        <section
-          id="delivery-returns"
-          className="policy-strip policy-strip--footer"
-          aria-label={labels.title}
-        >
-          <div className="policy-title-row">
-            <span className="policy-dot">✓</span>
-            <strong>{labels.title}</strong>
-          </div>
-
-          <div className="policy-detail-row">
-            <span>{labels.delivery}</span>
-            <span>{labels.shipping}</span>
-            <span>{labels.free}</span>
-            <span>{labels.cod}</span>
-          </div>
-
-          <p>{labels.returnNote}</p>
-        </section>
-      );
-    }
-
+  if (surface === "footer") {
     return (
       <section
-        className={`policy-compact policy-compact--${surface}`}
+        id="delivery-returns"
+        className="policy-strip policy-strip--footer"
         aria-label={labels.title}
       >
         <div className="policy-title-row">
@@ -2857,783 +2709,664 @@ function App() {
         <p>{labels.returnNote}</p>
       </section>
     );
-  };
+  }
+
+  return (
+    <section
+      className={`policy-compact policy-compact--${surface}`}
+      aria-label={labels.title}
+    >
+      <div className="policy-title-row">
+        <span className="policy-dot">✓</span>
+        <strong>{labels.title}</strong>
+      </div>
+
+      <div className="policy-detail-row">
+        <span>{labels.delivery}</span>
+        <span>{labels.shipping}</span>
+        <span>{labels.free}</span>
+        <span>{labels.cod}</span>
+      </div>
+
+      <p>{labels.returnNote}</p>
+    </section>
+  );
+};
 
   /* =========================================
      RENDER
   ========================================= */
   return (
-    <div className="app-shell">
-      {shouldShowSideRails && (
-        <aside
-          className="side-ad-rails"
-          aria-label={
-            lang === "sr"
-              ? "PlayNice istaknuti partneri"
-              : "PlayNice featured partners"
+  <div className="app-shell">
+
+  {shouldShowSideRails && (
+  <aside
+    className="side-ad-rails"
+    aria-label={
+      lang === "sr"
+        ? "PlayNice istaknuti partneri"
+        : "PlayNice featured partners"
+    }
+  >
+    {sideRailAds
+      .filter((ad) => ad.enabled)
+      .map((ad) => {
+        const railClassName = [
+          "side-ad-rail",
+          `side-ad-rail-${ad.side}`,
+          ad.isSponsored ? "side-ad-rail-sponsored" : "",
+        ]
+          .filter(Boolean)
+          .join(" ");
+
+        const railContent = (
+          <>
+            <span className="side-ad-label">{ad.label}</span>
+
+            {ad.logoSrc ? (
+  <span className="side-ad-logo-wrap">
+    <img
+      src={ad.logoSrc}
+      alt={ad.logoAlt || ad.label}
+      className="side-ad-logo"
+      loading="lazy"
+    />
+  </span>
+) : (
+  <span className="side-ad-icon" aria-hidden="true">
+    {ad.icon}
+  </span>
+)}
+
+            <span className="side-ad-title">
+              {ad.title.split("\n").map((line, index) => (
+                <span key={`${ad.id}-${index}`}>{line}</span>
+              ))}
+            </span>
+
+            <span className="side-ad-copy">{ad.text}</span>
+
+            <span className="side-ad-cta">
+              {ad.cta}
+              <span aria-hidden="true">→</span>
+            </span>
+          </>
+        );
+
+        if (ad.href) {
+          return (
+            <a
+              key={ad.id}
+              className={railClassName}
+              href={ad.href}
+              target="_blank"
+              rel="sponsored noopener noreferrer"
+              aria-label={`${ad.label}: ${ad.title.replace("\n", " ")}`}
+              onClick={() =>
+               handleSponsoredAdClick(ad, "desktop_left_side_rail")
+              }
+            >
+              {railContent}
+            </a>
+          );
+        }
+
+        return (
+          <button
+            key={ad.id}
+            type="button"
+            className={railClassName}
+            onClick={() => handleSideRailAction(ad)}
+          >
+            {railContent}
+          </button>
+        );
+      })}
+  </aside>
+)}
+
+<div className="header-system">
+  <header className="topbar topbar-enterprise">
+    <span className="topbar-connector" aria-hidden="true" />
+
+    <button
+      className="brand enterprise-brand"
+      type="button"
+      onClick={() => switchView("home")}
+      aria-label="PlayNice home"
+    >
+      <span className="brand-copy">
+        <strong className="brand-full">PlayNice</strong>
+        <strong className="brand-short" aria-hidden="true">
+          PN
+        </strong>
+        <small>Remember. PlayNice.</small>
+      </span>
+    </button>
+
+    <nav
+  className={`nav-links enterprise-main-nav ${
+    view === "shop" ? "is-shop" : "is-home"
+  } ${hasNewShopProducts ? "has-new-shop-signal" : ""}`}
+  aria-label="Primary navigation"
+    >
+      {hasNewShopProducts && (
+  <span className="shop-orb-ripples" aria-hidden="true">
+    <span></span>
+    <span></span>
+  </span>
+      )}
+      <button
+        className={`nav-link nav-link-home ${
+          view === "home" ? "active" : ""
+        }`}
+        type="button"
+        onClick={() => switchView("home")}
+      >
+        {tr.navHome}
+      </button>
+
+      <button
+        className={`nav-link nav-link-shop nav-shop-link ${
+          view === "shop" ? "active" : ""
+        } ${hasNewShopProducts ? "has-new-shop" : ""}`}
+        type="button"
+        onClick={goToShop}
+        aria-label={
+          hasNewShopProducts
+            ? lang === "sr"
+              ? "Shop, novi parfemi"
+              : "Shop, new fragrances"
+            : "Shop"
+        }
+      >
+        <span className="nav-shop-link-text">{tr.navShop}</span>
+
+        {hasNewShopProducts && <span className="shop-nav-new-badge">NEW</span>}
+      </button>
+    </nav>
+
+    <div className="topbar-right enterprise-utility">
+      <button
+        className="cart-button cart-button--icon-only"
+        type="button"
+        onClick={() => setCartOpen((prev) => !prev)}
+        aria-label={lang === "sr" ? "Korpa" : "Cart"}
+        title={lang === "sr" ? "Korpa" : "Cart"}
+      >
+        <span className="cart-icon" aria-hidden="true">
+          🛒
+        </span>
+        {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+      </button>
+
+      <button
+        className={`header-private-selection-btn ${
+          wishlist.length > 0 ? "has-items" : ""
+        }`}
+        onClick={() => setPrivateSelectionOpen(true)}
+        type="button"
+        aria-label="Private Selection"
+        title="Private Selection"
+      >
+        <span className="ps-heart" aria-hidden="true">
+          {wishlist.length > 0 ? "♥" : "♡"}
+        </span>
+
+        {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
+      </button>
+
+      <div
+        className={`language-compact ${languageMenuOpen ? "open" : ""}`}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) {
+            setLanguageMenuOpen(false);
           }
+        }}
+      >
+        <button
+          className="language-current"
+          type="button"
+          aria-haspopup="menu"
+          aria-expanded={languageMenuOpen}
+          aria-label={lang === "sr" ? "Promeni jezik" : "Change language"}
+          onClick={() => setLanguageMenuOpen((prev) => !prev)}
         >
-          {sideRailAds
-            .filter((ad) => ad.enabled)
-            .map((ad) => {
-              const railClassName = [
-                "side-ad-rail",
-                `side-ad-rail-${ad.side}`,
-                ad.isSponsored ? "side-ad-rail-sponsored" : ""
-              ]
-                .filter(Boolean)
-                .join(" ");
+          {lang.toUpperCase()}
+        </button>
 
-              const railContent = (
-                <>
-                  <span className="side-ad-label">{ad.label}</span>
+        <div className="language-options" role="menu">
+          <button
+            className="language-option"
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              setLang(lang === "sr" ? "en" : "sr");
+              setLanguageMenuOpen(false);
+            }}
+          >
+            {lang === "sr" ? "EN" : "SR"}
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
 
-                  {ad.logoSrc ? (
-                    <span className="side-ad-logo-wrap">
-                      <img
-                        src={ad.logoSrc}
-                        alt={ad.logoAlt || ad.label}
-                        className="side-ad-logo"
-                        loading="lazy"
-                      />
-                    </span>
-                  ) : (
-                    <span className="side-ad-icon" aria-hidden="true">
-                      {ad.icon}
-                    </span>
-                  )}
+  <div
+    className={`announcement-bar announcement-bar-system ${
+      cart.length === 0
+        ? ""
+        : subtotal >= FREE_SHIPPING_THRESHOLD
+        ? "announcement-bar-success"
+        : "announcement-bar-warning"
+    }`}
+  >
+    <div className="announcement-bar-inner">
+      <div className="announcement-marquee">
+        <div className="announcement-track">
+          {[...announcementItems, ...announcementItems].map((item, index) => {
+            const itemClassName = `announcement-text ${
+              item.tone ? `announcement-${item.tone}` : ""
+            }`;
 
-                  <span className="side-ad-title">
-                    {ad.title.split("\n").map((line, index) => (
-                      <span key={`${ad.id}-${index}`}>{line}</span>
-                    ))}
-                  </span>
+            const iconClassName = `announcement-icon ${
+              item.tone ? `announcement-${item.tone}` : ""
+            }`;
 
-                  <span className="side-ad-copy">{ad.text}</span>
+            const key = `${item.id || item.text}-${index}`;
 
-                  <span className="side-ad-cta">
-                    {ad.cta}
-                    <span aria-hidden="true">→</span>
-                  </span>
-                </>
-              );
-
-              if (ad.href) {
-                return (
+            return (
+              <React.Fragment key={key}>
+                {item.type === "logoLink" ? (
                   <a
-                    key={ad.id}
-                    className={railClassName}
-                    href={ad.href}
+                    className="announcement-logo-link announcement-logo-link-forever"
+                    href={item.href}
                     target="_blank"
                     rel="sponsored noopener noreferrer"
-                    aria-label={`${ad.label}: ${ad.title.replace("\n", " ")}`}
+                    aria-label={item.logoAlt || item.text}
                     onClick={() =>
-                      handleSponsoredAdClick(ad, "desktop_left_side_rail")
+                      handleSponsoredAdClick(item, "announcement_bar")
                     }
                   >
-                    {railContent}
+                    <img
+                      src={item.logoSrc}
+                      alt={item.logoAlt || item.text}
+                      className="announcement-logo-img"
+                      loading="lazy"
+                    />
                   </a>
-                );
-              }
-
-              return (
-                <button
-                  key={ad.id}
-                  type="button"
-                  className={railClassName}
-                  onClick={() => handleSideRailAction(ad)}
-                >
-                  {railContent}
-                </button>
-              );
-            })}
-        </aside>
-      )}
-
-      <div className="header-system">
-        <header className="site-header">
-          <div className="header-inner">
-            <button
-              type="button"
-              className="brand-mark brand-mark-button"
-              onClick={goHome}
-              aria-label={lang === "sr" ? "Idi na početnu" : "Go to homepage"}
-            >
-              <span className="brand-mark-main">PlayNice</span>
-              <span className="brand-mark-sub">Remember. PlayNice.</span>
-            </button>
-
-            <nav className="nav-links" aria-label="Primary navigation">
-              <button
-                type="button"
-                className={view === "home" ? "active" : ""}
-                onClick={goHome}
-              >
-                {tr.home}
-              </button>
-
-              <button
-                type="button"
-                className={view === "shop" ? "active" : ""}
-                onClick={goToShop}
-              >
-                {tr.shop}
-              </button>
-
-              <button
-                type="button"
-                className={view === "journal" ? "active" : ""}
-                onClick={handleJournalOpen}
-              >
-                <span
-                  className={`journal-nav-label ${
-                    hasNewJournalArticle ? "has-new-journal" : ""
-                  }`}
-                >
-                  {tr.journal}
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setStoryOpen(true)}
-              >
-                {tr.story}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setHowItWorksOpen(true)}
-              >
-                {tr.howItWorks}
-              </button>
-            </nav>
-
-            <div className="header-actions">
-              <button
-                type="button"
-                className="header-icon-button selection-button"
-                onClick={() => setPrivateSelectionOpen(true)}
-                aria-label={tr.privateSelection}
-              >
-                <span className="selection-heart" aria-hidden="true">
-                  ♥
-                </span>
-
-                {wishlist.length > 0 && (
-                  <span className="header-count-badge">{wishlist.length}</span>
-                )}
-              </button>
-
-              <button
-                type="button"
-                className="header-icon-button cart-button"
-                onClick={() => setCartOpen(true)}
-                aria-label={tr.cart}
-              >
-                <span aria-hidden="true">🛒</span>
-
-                {cartCount > 0 && (
-                  <span className="header-count-badge">{cartCount}</span>
-                )}
-              </button>
-
-              <div className="language-switcher">
-                <button
-                  type="button"
-                  className="language-button"
-                  aria-expanded={languageMenuOpen}
-                  aria-label={
-                    lang === "sr" ? "Promeni jezik" : "Change language"
-                  }
-                  onClick={() => setLanguageMenuOpen((prev) => !prev)}
-                >
-                  {lang.toUpperCase()}
-                </button>
-
-                <div className="language-options" role="menu">
+                ) : item.action ? (
                   <button
-                    className="language-option"
                     type="button"
-                    role="menuitem"
-                    onClick={() => {
-                      setLang(lang === "sr" ? "en" : "sr");
-                      setLanguageMenuOpen(false);
-                    }}
+                    className={`${itemClassName} announcement-action`}
+                    onClick={() => handleAnnouncementItemClick(item)}
+                    aria-label={item.text}
                   >
-                    {lang === "sr" ? "EN" : "SR"}
+                    {item.text}
                   </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <div
-          className={`announcement-bar announcement-bar-system ${
-            cart.length === 0
-              ? ""
-              : subtotal >= FREE_SHIPPING_THRESHOLD
-              ? "announcement-bar-success"
-              : "announcement-bar-warning"
-          }`}
-        >
-          <div className="announcement-bar-inner">
-            <div className="announcement-marquee">
-              <div className="announcement-track">
-                {[...announcementItems, ...announcementItems].map(
-                  (item, index) => {
-                    const itemClassName = `announcement-text ${
-                      item.tone ? `announcement-${item.tone}` : ""
-                    }`;
-
-                    const iconClassName = `announcement-icon ${
-                      item.tone ? `announcement-${item.tone}` : ""
-                    }`;
-
-                    const key = `${item.id || item.text}-${index}`;
-
-                    return (
-                      <React.Fragment key={key}>
-                        {item.type === "logoLink" ? (
-                          <a
-                            className="announcement-logo-link announcement-logo-link-forever"
-                            href={item.href}
-                            target="_blank"
-                            rel="sponsored noopener noreferrer"
-                            aria-label={item.logoAlt || item.text}
-                            onClick={() =>
-                              handleSponsoredAdClick(item, "announcement_bar")
-                            }
-                          >
-                            <img
-                              src={item.logoSrc}
-                              alt={item.logoAlt || item.text}
-                              className="announcement-logo-img"
-                              loading="lazy"
-                            />
-                          </a>
-                        ) : item.action ? (
-                          <button
-                            type="button"
-                            className={`${itemClassName} announcement-action`}
-                            onClick={() => handleAnnouncementItemClick(item)}
-                            aria-label={item.text}
-                          >
-                            {item.text}
-                          </button>
-                        ) : (
-                          <span className={itemClassName}>{item.text}</span>
-                        )}
-
-                        <span className={iconClassName}>{item.icon}</span>
-                      </React.Fragment>
-                    );
-                  }
+                ) : (
+                  <span className={itemClassName}>{item.text}</span>
                 )}
-              </div>
-            </div>
 
-            <div className="announcement-progress-shell">
-              <div className="announcement-progress-bar">
-                <div
-                  className="announcement-progress-fill"
-                  style={{
-                    width:
-                      cart.length === 0
-                        ? "100%"
-                        : `${Math.min(
-                            100,
-                            (subtotal / FREE_SHIPPING_THRESHOLD) * 100
-                          )}%`
-                  }}
-                />
-              </div>
-            </div>
-          </div>
+                <span className={iconClassName}>{item.icon}</span>
+              </React.Fragment>
+            );
+          })}
         </div>
       </div>
 
-      {addedFeedback && (
-        <div className="added-feedback">{addedFeedback}</div>
-      )}
-
-            {orderSuccessMessage && (
-        <div className="order-success-feedback">
-          {orderSuccessMessage}
+      <div className="announcement-progress-shell">
+        <div className="announcement-progress-bar">
+          <div
+            className="announcement-progress-fill"
+            style={{
+              width:
+                cart.length === 0
+                  ? "100%"
+                  : `${Math.min(
+                      100,
+                      (subtotal / FREE_SHIPPING_THRESHOLD) * 100
+                    )}%`
+            }}
+          />
         </div>
-      )}
+      </div>
+    </div>
+  </div>
+</div>
 
-      {view === "home" && (
-        <>
-          <section
-            className="hero-section hero-section-image"
-            onTouchStart={handleHeroTouchStart}
-            onTouchEnd={handleHeroTouchEnd}
-          >
-            <div className="hero-image-slider">
-              {heroSlides.map((slide, index) => (
-                <button
-                  key={slide.id}
-                  type="button"
-                  className={`hero-image-slide ${
-                    index === currentHero ? "active" : ""
-                  }`}
-                  onClick={() => {
-                    if (slide.actionPrimary === "shop") {
-                      goToShop();
-                    }
-                  }}
-                  aria-label={slide.alt}
-                >
-                  <picture>
-                    {slide.mobileImage && (
-                      <source
-                        media="(max-width: 640px)"
-                        srcSet={slide.mobileImage}
-                      />
-                    )}
+{addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
-                    <img
-                      src={slide.desktopImage || slide.image}
-                      alt={slide.alt}
-                      className="hero-slide-img"
-                      loading={index === 0 ? "eager" : "lazy"}
-                    />
-                  </picture>
-                </button>
-              ))}
-            </div>
-
-            <button
-              type="button"
-              className="hero-nav hero-nav-prev"
-              onClick={prevHeroSlide}
-              aria-label={lang === "sr" ? "Prethodna slika" : "Previous slide"}
-            >
-              ‹
-            </button>
-
-            <button
-              type="button"
-              className="hero-nav hero-nav-next"
-              onClick={nextHeroSlide}
-              aria-label={lang === "sr" ? "Sledeća slika" : "Next slide"}
-            >
-              ›
-            </button>
-
-            <div className="hero-dots">
-              {heroSlides.map((slide, index) => (
-                <button
-                  key={slide.id}
-                  type="button"
-                  className={`hero-dot ${index === currentHero ? "active" : ""}`}
-                  onClick={() => goToHeroSlide(index)}
-                  aria-label={
-                    lang === "sr"
-                      ? `Idi na hero sliku ${index + 1}`
-                      : `Go to hero slide ${index + 1}`
-                  }
-                />
-              ))}
-            </div>
-          </section>
-
-          {shouldShowMobileSponsoredAd && (
+      <main>
+        {view === "home" && (
+          <>
             <section
-              className="mobile-sponsored-ad-wrap"
-              aria-label={
-                lang === "sr" ? "Sponzorisani partner" : "Sponsored partner"
-              }
+              className="hero hero-carousel"
+              onMouseEnter={() => setHeroPaused(true)}
+              onMouseLeave={() => setHeroPaused(false)}
+              onTouchStart={handleHeroTouchStart}
+              onTouchEnd={handleHeroTouchEnd}
             >
-              <a
-                className="mobile-sponsored-ad mobile-sponsored-ad-micro"
-                href={mobileSponsoredAd.href}
-                target="_blank"
-                rel="sponsored noopener noreferrer"
-                onClick={() =>
-                  handleSponsoredAdClick(mobileSponsoredAd, "mobile_sponsored_banner")
-                }
-              >
-                <span className="mobile-sponsored-ad-side mobile-sponsored-ad-side-left">
-                  <span className="mobile-sponsored-ad-label">
-                    {mobileSponsoredAd.label}
-                  </span>
-                </span>
-
-                <span className="mobile-sponsored-ad-textblock">
-                  <span className="mobile-sponsored-ad-title">
-                    {mobileSponsoredAd.title.replace("\n", " ")}
-                  </span>
-
-                  <span className="mobile-sponsored-ad-copy">
-                    {lang === "sr"
-                      ? "Aloe Vera napici — pogledaj Forever ponudu"
-                      : "Aloe Vera drinks — explore Forever selection"}
-                  </span>
-                </span>
-
-                <span className="mobile-sponsored-ad-cta">
-                  {mobileSponsoredAd.cta}
-                  <span aria-hidden="true">→</span>
-                </span>
-              </a>
-            </section>
-          )}
-
-          <section className="home-intro-section">
-            <div className="section-kicker">{tr.homeKicker}</div>
-
-            <h1>{tr.homeTitle}</h1>
-
-            <p>{tr.homeSubtitle}</p>
-
-            <div className="home-intro-actions">
-              <button
-                type="button"
-                className="primary-button"
-                onClick={goToShop}
-              >
-                {tr.shopNow}
-              </button>
-
-              <button
-                type="button"
-                className="secondary-button"
-                onClick={() => setHowItWorksOpen(true)}
-              >
-                {tr.howItWorks}
-              </button>
-            </div>
-          </section>
-
-                    <div className="section-divider" aria-hidden="true">
-            <span />
-          </div>
-
-          <section className="impact-section">
-            <div className="section-heading">
-              <div className="section-kicker">{tr.impactKicker}</div>
-
-              <h2>{tr.impactTitle}</h2>
-
-              <p>{tr.impactSubtitle}</p>
-            </div>
-
-            <div className="impact-grid">
-              {impactProducts.map((product) => {
-                const copy = getProductCopy(product, lang);
-
-                return (
+              <div className="hero-carousel-track">
+                {heroSlides.map((slide, index) => (
                   <article
-                    key={product.id}
-                    className="impact-card"
-                    onClick={() => openImpactProductModal(product)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        openImpactProductModal(product);
-                      }
-                    }}
+                    key={slide.id}
+                    className={`hero-slide ${index === currentHero ? "active" : ""}`}
+                    aria-hidden={index !== currentHero}
                   >
-                    <div className="impact-image-wrap">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="impact-image"
-                        loading="lazy"
-                      />
-                    </div>
+                    <div className="hero-image-only">
+                      <picture>
+  <source
+    media="(max-width: 768px)"
+    srcSet={slide.mobileImage || slide.image}
+  />
 
-                    <div className="impact-content">
-                      <span className="impact-category">
-                        {getCategoryLabel(product.category)}
-                      </span>
-
-                      <h3>{product.name}</h3>
-
-                      <p className="impact-copy">{copy.card}</p>
-
-                      <div className="impact-bottom">
-                        <span className="impact-price">
-                          {tr.tryFrom} €{getMinPrice(product)}
-                        </span>
-
-                        <span className="impact-link">
-                          {tr.productCardCta}
-                        </span>
-                      </div>
+  <img
+    className={`hero-image-only-img ${
+      index === currentHero ? "is-active" : ""
+    }`}
+    src={slide.desktopImage || slide.image}
+    alt={slide.alt}
+    loading={index === 0 ? "eager" : "lazy"}
+    draggable="false"
+  />
+</picture>
                     </div>
                   </article>
-                );
-              })}
-            </div>
-          </section>
-
-          <div className="section-divider" aria-hidden="true">
-            <span />
-          </div>
-
-          <section className="how-it-works-preview">
-            <div className="section-heading">
-              <div className="section-kicker">{tr.howItWorks}</div>
-
-              <h2>{tr.howItWorksTitle}</h2>
-
-              <p>{tr.howItWorksSubtitle}</p>
-            </div>
-
-            <div className="how-grid">
-              <article className="how-card">
-                <span className="how-number">01</span>
-
-                <h3>{tr.howCard1Title}</h3>
-
-                <p>{tr.howCard1Text}</p>
-              </article>
-
-              <article className="how-card">
-                <span className="how-number">02</span>
-
-                <h3>{tr.howCard2Title}</h3>
-
-                <p>{tr.howCard2Text}</p>
-              </article>
-
-              <article className="how-card">
-                <span className="how-number">03</span>
-
-                <h3>{tr.howCard3Title}</h3>
-
-                <p>{tr.howCard3Text}</p>
-              </article>
-            </div>
-
-            <button
-              type="button"
-              className="secondary-button"
-              onClick={() => setHowItWorksOpen(true)}
-            >
-              {tr.learnMore}
-            </button>
-          </section>
-
-          <div className="section-divider" aria-hidden="true">
-            <span />
-          </div>
-
-          <section className="catalog-section">
-            <div className="section-heading">
-              <div className="section-kicker">{tr.catalogKicker}</div>
-
-              <h2>{tr.catalogTitle}</h2>
-
-              <p>{tr.catalogSubtitle}</p>
-            </div>
-
-            <div className="catalog-grid">
-              <article className="catalog-card">
-                <div className="catalog-card-top">
-                  <span className="catalog-label">PDF</span>
-
-                  <h3>{tr.catalogDesignerTitle}</h3>
-
-                  <p>{tr.catalogDesignerText}</p>
-                </div>
-
-                <div className="catalog-card-actions">
-                  <a
-                    href="/catalogs/playnice-designer.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="catalog-link"
-                  >
-                    {tr.catalogDownload}
-                  </a>
-
-                  <button
-                    type="button"
-                    className="catalog-preview-button"
-                    onClick={() =>
-                      openCatalogPreview("/catalogs/playnice-designer.pdf")
-                    }
-                  >
-                    {tr.catalogPreview}
-                  </button>
-                </div>
-              </article>
-
-              <article className="catalog-card">
-                <div className="catalog-card-top">
-                  <span className="catalog-label">PDF</span>
-
-                  <h3>{tr.catalogArabianTitle}</h3>
-
-                  <p>{tr.catalogArabianText}</p>
-                </div>
-
-                <div className="catalog-card-actions">
-                  <a
-                    href="/catalogs/playnice-arabian.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="catalog-link"
-                  >
-                    {tr.catalogDownload}
-                  </a>
-
-                  <button
-                    type="button"
-                    className="catalog-preview-button"
-                    onClick={() =>
-                      openCatalogPreview("/catalogs/playnice-arabian.pdf")
-                    }
-                  >
-                    {tr.catalogPreview}
-                  </button>
-                </div>
-              </article>
-            </div>
-          </section>
-
-                    <div className="section-divider" aria-hidden="true">
-            <span />
-          </div>
-
-          <section className="featured-section section-wrap impact-split-section">
-            <div className="impact-video-column">
-              <div className="impact-video-frame">
-                <video
-                  key={currentVideo}
-                  autoPlay
-                  muted
-                  playsInline
-                  onEnded={() => {
-                    setCurrentVideo((prev) => (prev + 1) % heroVideos.length);
-                  }}
-                >
-                  <source src={heroVideos[currentVideo]} type="video/mp4" />
-                </video>
-
-                <div className="impact-video-badge">PLAYNICE FILM</div>
+                ))}
               </div>
 
-              <div className="impact-video-panel">
-                <div className="impact-video-panel-content">
-                  <span className="impact-video-eyebrow">
-                    {lang === "sr" ? "PLAYNICE CONCEPT" : "PLAYNICE CONCEPT"}
-                  </span>
+              {heroSlides.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    className="hero-carousel-arrow hero-carousel-arrow-left"
+                    onClick={prevHeroSlide}
+                    aria-label="Previous slide"
+                  />
 
-                  <h3>
-                    {lang === "sr"
-                      ? "Probaj pre nego što se odlučiš."
-                      : "Try before you commit."}
-                  </h3>
+                  <button
+                    type="button"
+                    className="hero-carousel-arrow hero-carousel-arrow-right"
+                    onClick={nextHeroSlide}
+                    aria-label="Next slide"
+                  />
 
+                  <div
+                    className="hero-carousel-dots"
+                    role="tablist"
+                    aria-label="Hero slides"
+                  >
+                    {heroSlides.map((slide, index) => (
+                      <button
+                        key={slide.id}
+                        type="button"
+                        className={`hero-carousel-dot ${
+                          index === currentHero ? "active" : ""
+                        }`}
+                        onClick={() => goToHeroSlide(index)}
+                        aria-label={`Go to slide ${index + 1}`}
+                        aria-selected={index === currentHero}
+                        role="tab"
+                      >
+                        <span className="hero-carousel-dot-pill" />
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </section>
+
+            <section className="value-strip">
+              <div>{tr.valueTry}</div>
+              <div>{tr.valuePremium}</div>
+              <div>{tr.valueDelivery}</div>
+            </section>
+
+            {shouldShowMobileSponsoredAd && (
+  <section
+    className="mobile-sponsored-ad-wrap"
+    aria-label={lang === "sr" ? "Sponzorisani partner" : "Sponsored partner"}
+  >
+    <a
+      className="mobile-sponsored-ad mobile-sponsored-ad-micro"
+      href={mobileSponsoredAd.href}
+      target="_blank"
+      rel="sponsored noopener noreferrer"
+      onClick={() =>
+  handleSponsoredAdClick(mobileSponsoredAd, "mobile_sponsored_bar")
+}
+    >
+      <span className="mobile-sponsored-ad-side mobile-sponsored-ad-side-left">
+        <span className="mobile-sponsored-ad-label">
+          {mobileSponsoredAd.label}
+        </span>
+      </span>
+
+      <span className="mobile-sponsored-ad-textblock">
+        <span className="mobile-sponsored-ad-title-inline">
+          {lang === "sr" ? "Aloe Vera napici" : "Aloe Vera Drinks"}
+        </span>
+
+        <span className="mobile-sponsored-ad-subtitle-inline">
+          {lang === "sr"
+            ? "Istraži Forever Living aloe vera napitke."
+            : "Explore Forever Living aloe vera drinks."}
+        </span>
+      </span>
+
+      <span className="mobile-sponsored-ad-side mobile-sponsored-ad-side-right">
+        {mobileSponsoredAd.logoSrc ? (
+          <img
+            src={mobileSponsoredAd.logoSrc}
+            alt={mobileSponsoredAd.logoAlt || "Forever Living"}
+            className="mobile-sponsored-ad-logo"
+            loading="lazy"
+          />
+        ) : (
+          <span className="mobile-sponsored-ad-icon" aria-hidden="true">
+            {mobileSponsoredAd.icon}
+          </span>
+        )}
+      </span>
+    </a>
+  </section>
+)}
+
+            <section
+              id="how-it-works"
+              className="how-it-works-section section-wrap"
+            >
+              <div className="section-head how-it-works-head">
+                <p className="section-kicker">
+                  {lang === "sr" ? "Kako funkcioniše?" : "How it works"}
+                </p>
+                <h2>
+                  {lang === "sr"
+                    ? "Kako funkcionišu dekanti?"
+                    : "How decants work?"}
+                </h2>
+                <p>
+                  {lang === "sr"
+                    ? "Jednostavan i pametan način da pronađeš pravi parfem pre kupovine pune bočice."
+                    : "A simple and smart way to find the right fragrance before buying a full bottle."}
+                </p>
+              </div>
+
+              <div className="how-it-works-grid">
+                <article className="how-it-works-card">
+                  <span className="how-it-works-number">01</span>
+                  <h3>{lang === "sr" ? "Šta su dekanti?" : "What are decants?"}</h3>
                   <p>
                     {lang === "sr"
-                      ? "Isprobaj na koži kroz 5ml ili 10ml dekante. Bez rizika. Samo pravi izbor."
-                      : "Experience it on skin first. 5ml and 10ml decants. No risk. Just the right decision."}
+                      ? "Manja, pažljivo presuta pakovanja originalnih parfema."
+                      : "Smaller, carefully decanted portions of original fragrances."}
                   </p>
+                </article>
 
-                  <button
-                    className="impact-video-cta"
-                    type="button"
-                    onClick={goToShop}
-                  >
-                    {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
-                  </button>
-                </div>
+                <article className="how-it-works-card">
+                  <span className="how-it-works-number">02</span>
+                  <h3>{lang === "sr" ? "Zašto su korisni?" : "Why they matter?"}</h3>
+                  <p>
+                    {lang === "sr"
+                      ? "Možeš da probaš miris na svojoj koži pre kupovine pune bočice."
+                      : "They let you test a fragrance on your skin before committing to a full bottle."}
+                  </p>
+                </article>
+
+                <article className="how-it-works-card">
+                  <span className="how-it-works-number">03</span>
+                  <h3>
+                    {lang === "sr" ? "Zašto je to pametnije?" : "Why it is smarter?"}
+                  </h3>
+                  <p>
+                    {lang === "sr"
+                      ? "Manji rizik, manji trošak i više parfema za rotaciju."
+                      : "Lower risk, lower cost, and more room to build a fragrance rotation."}
+                  </p>
+                </article>
               </div>
+
+              <div className="how-it-works-cta">
+                <button
+                  className="ghost-button"
+                  type="button"
+                  onClick={() => setHowItWorksOpen(true)}
+                >
+                  {lang === "sr" ? "Saznaj više" : "Learn more"}
+                </button>
+              </div>
+            </section>
+
+            <div className="section-divider">
+              <span />
             </div>
 
-            <div className="impact-products-column">
-              <div className="section-head impact-head">
-                <p className="section-kicker">{tr.highlightsKicker}</p>
-                <h2>{tr.highlightsTitle}</h2>
-                <p>{tr.highlightsText}</p>
+            <section className="featured-section section-wrap impact-split-section">
+              <div className="impact-video-column">
+                <div className="impact-video-frame">
+                  <video
+                    key={currentVideo}
+                    autoPlay
+                    muted
+                    playsInline
+                    onEnded={() => {
+                      setCurrentVideo((prev) => (prev + 1) % heroVideos.length);
+                    }}
+                  >
+                    <source src={heroVideos[currentVideo]} type="video/mp4" />
+                  </video>
+
+                  <div className="impact-video-badge">PLAYNICE FILM</div>
+                </div>
+
+                <div className="impact-video-panel">
+                  <div className="impact-video-panel-content">
+                    <span className="impact-video-eyebrow">
+                      {lang === "sr" ? "PLAYNICE CONCEPT" : "PLAYNICE CONCEPT"}
+                    </span>
+
+                    <h3>
+                      {lang === "sr"
+                        ? "Probaj pre nego što se odlučiš."
+                        : "Try before you commit."}
+                    </h3>
+
+                    <p>
+                      {lang === "sr"
+                        ? "Isprobaj na koži kroz 5ml ili 10ml dekante. Bez rizika. Samo pravi izbor."
+                        : "Experience it on skin first. 5ml and 10ml decants. No risk. Just the right decision."}
+                    </p>
+
+                    <button
+                      className="impact-video-cta"
+                      type="button"
+                      onClick={goToShop}
+                    >
+                      {lang === "sr" ? "Istraži kolekciju" : "Explore collection"}
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div className="impact-products-panel">
-                <article className="impact-products-merged-card">
-                  <div className="impact-product-row">
-                    <button
-                      type="button"
-                      className="impact-product-image-button"
-                      onClick={() => openImpactProductModal(impactProducts[0])}
-                      aria-label="Afnan 9PM Rebel"
-                    >
-                      <div className="impact-product-image-wrap">
-                        <img
-                          src="/products/9pm.png"
-                          alt="Afnan 9PM Rebel"
-                          className="impact-product-image"
-                        />
-                      </div>
-                    </button>
+              <div className="impact-products-column">
+                <div className="section-head impact-head">
+                  <p className="section-kicker">{tr.highlightsKicker}</p>
+                  <h2>{tr.highlightsTitle}</h2>
+                  <p>{tr.highlightsText}</p>
+                </div>
 
-                    <div className="impact-product-copy">
-                      <div className="impact-product-topline">
-                        <span className="impact-product-tag">
-                          {tr.campaignPick}
-                        </span>
-                      </div>
+                <div className="impact-products-panel">
+                  <article className="impact-products-merged-card">
+                    <div className="impact-product-row">
+                      <button
+                        type="button"
+                        className="impact-product-image-button"
+                        onClick={() => openImpactProductModal(impactProducts[0])}
+                        aria-label="Afnan 9PM Rebel"
+                      >
+                        <div className="impact-product-image-wrap">
+                          <img
+                            src="/products/9pm.png"
+                            alt="Afnan 9PM Rebel"
+                            className="impact-product-image"
+                          />
+                        </div>
+                      </button>
 
-                      <h3>Afnan 9PM Rebel</h3>
+                      <div className="impact-product-copy">
+                        <div className="impact-product-topline">
+                          <span className="impact-product-tag">{tr.campaignPick}</span>
+                        </div>
 
-                      <p>{tr.rebelCardText}</p>
+                        <h3>Afnan 9PM Rebel</h3>
+                        <p>{tr.rebelCardText}</p>
 
-                      <div className="impact-product-actions">
-                        <button
-                          className="inline-link impact-inline-link"
-                          type="button"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            addHeroBottleToCart();
-                          }}
-                        >
-                          {tr.add100ml}
-                        </button>
+                        <div className="impact-product-actions">
+                          <button
+                            className="inline-link impact-inline-link"
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              addHeroBottleToCart();
+                            }}
+                          >
+                            {tr.add100ml}
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="impact-product-divider" />
+                    <div className="impact-product-divider" />
 
-                  <div className="impact-product-row">
-                    <button
-                      type="button"
-                      className="impact-product-image-button"
-                      onClick={() => openImpactProductModal(impactProducts[1])}
-                      aria-label="Khadlaj Island Dreams Extrait de Parfum"
-                    >
-                      <div className="impact-product-image-wrap">
-                        <img
-                          src="/products/island.png"
-                          alt="Khadlaj Island Dreams Extrait de Parfum"
-                          className="impact-product-image"
-                        />
+                    <div className="impact-product-row">
+                      <button
+                        type="button"
+                        className="impact-product-image-button"
+                        onClick={() => openImpactProductModal(impactProducts[1])}
+                        aria-label="Khadlaj Island Dreams Extrait de Parfum"
+                      >
+                        <div className="impact-product-image-wrap">
+                          <img
+                            src="/products/island.png"
+                            alt="Khadlaj Island Dreams Extrait de Parfum"
+                            className="impact-product-image"
+                          />
+                        </div>
+                      </button>
+
+                      <div className="impact-product-copy">
+                        <div className="impact-product-topline">
+                          <span className="impact-product-tag">{tr.summerHit}</span>
+                        </div>
+
+                        <h3>Khadlaj Island Dreams Extrait de Parfum</h3>
+                        <p>{tr.islandDreamsText}</p>
                       </div>
-                    </button>
-
-                    <div className="impact-product-copy">
-                      <div className="impact-product-topline">
-                        <span className="impact-product-tag">
-                          {tr.summerHit}
-                        </span>
-                      </div>
-
-                      <h3>Khadlaj Island Dreams Extrait de Parfum</h3>
-
-                      <p>{tr.islandDreamsText}</p>
                     </div>
-                  </div>
 
-                                      <div className="impact-product-divider" />
+                    <div className="impact-product-divider" />
 
                     <div className="impact-product-row">
                       <button
@@ -3653,63 +3386,146 @@ function App() {
 
                       <div className="impact-product-copy">
                         <div className="impact-product-topline">
-                          <span className="impact-product-tag">
-                            {tr.signaturePick}
-                          </span>
+                          <span className="impact-product-tag">{tr.arabianEdge}</span>
                         </div>
 
                         <h3>Arabiyat Prestige Marwa</h3>
-
                         <p>{tr.marwaText}</p>
                       </div>
                     </div>
                   </article>
                 </div>
+              </div>
+            </section>
 
-                <button
-                  className="ghost-button impact-shop-button"
-                  type="button"
-                  onClick={goToShop}
-                >
+            <div className="section-divider">
+              <span />
+            </div>
+
+            <section className="homepage-shop-preview section-wrap">
+              <div className="section-head">
+                <p className="section-kicker">{tr.privateSelection}</p>
+                <h2>{tr.bestsellersTitle}</h2>
+                <p>{tr.bestsellersText}</p>
+              </div>
+
+              <div className="product-grid">
+                {[5, 21, 48, 49]
+                  .map((id) => products.find((product) => product.id === id))
+                  .filter(Boolean)
+                  .map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      wishlist={wishlist}
+                      toggleWishlist={toggleWishlist}
+                      sprayingWishlistId={sprayingWishlistId}
+                    />
+                  ))}
+              </div>
+
+              <div className="section-cta-center">
+                <button className="gold-button" type="button" onClick={goToShop}>
                   {tr.viewFullCollection}
                 </button>
               </div>
+            </section>
+
+                        <div className="section-divider">
+              <span />
             </div>
-          </section>
 
-          <div className="section-divider" aria-hidden="true">
-            <span />
-          </div>
+            <section className="catalog-download-section">
+              <div className="catalog-download-card">
+                <div className="catalog-download-copy">
+                  <p className="catalog-download-kicker">
+                    {lang === "sr" ? "PLAYNICE KATALOG" : "PLAYNICE CATALOG"}
+                  </p>
 
-          <section className="closing-section section-wrap">
-            <div className={`closing-card ${closingVisible ? "visible" : ""}`}>
-              <p className="closing-kicker">
-                {lang === "sr" ? "REMEMBER. PLAYNICE." : "REMEMBER. PLAYNICE."}
-              </p>
+                  <h2>
+                    {lang === "sr" ? "Preuzmi katalog." : "Download the catalog."}
+                  </h2>
 
-              <h2>
-                {lang === "sr"
-                  ? "Miris ne mora da bude kupovina na slepo."
-                  : "Fragrance does not have to be a blind buy."}
-              </h2>
+                  <p>
+                    {lang === "sr"
+                      ? "Brz pregled parfema, dostupnih militraža i cena. Idealno za lako deljenje, brzo pregledanje i poručivanje."
+                      : "A quick overview of fragrances, available sizes, and prices. Perfect for easy sharing, fast browsing, and ordering."}
+                  </p>
+                </div>
 
-              <p>
-                {lang === "sr"
-                  ? "Uzmi manje pakovanje, nosi ga nekoliko dana i vidi kako stvarno živi na tvojoj koži."
-                  : "Start smaller, wear it for a few days, and see how it truly lives on your skin."}
-              </p>
+                <div className="catalog-download-actions">
+                  <a
+                    className="catalog-download-button recommended"
+                    href="/catalog-dark.pdf"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openCatalogPreview("/catalog-dark.pdf");
+                    }}
+                  >
+                    <span className="recommended-badge">Recommended</span>
+                    {lang === "sr" ? "Premium katalog" : "Premium catalog"}
+                  </a>
 
-              <button
-                type="button"
-                className="primary-button"
-                onClick={goToShop}
-              >
-                {tr.shopNow}
-              </button>
-            </div>
-          </section>
-        </>
-      )}
+                  <a
+                    className="catalog-download-button secondary"
+                    href="/catalog-clean.pdf"
+                    download
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {lang === "sr" ? "Brzi cenovnik" : "Quick price list"}
+                  </a>
+
+                  <span className="catalog-download-note">
+                    {lang === "sr" ? "DM / print verzije" : "DM / print versions"}
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            <section
+              className={`closing-section section-wrap ${
+                closingVisible ? "is-visible" : ""
+              }`}
+            >
+              <div className="closing-shell">
+                <p className="closing-kicker">
+                  {lang === "sr" ? "ZAVRŠNI UTISAK" : "FINAL IMPRESSION"}
+                </p>
+
+                <h2 className="closing-title">
+                  {lang === "sr"
+                    ? "Biraj miris koji želiš da pamte."
+                    : "Choose the scent they’ll remember."}
+                </h2>
+
+                <p className="closing-text">
+                  {lang === "sr"
+                    ? "Probaj pre kupovine. Otkrij designer, niche i Arabian parfeme kroz pažljivo birane dekante, pre nego se odlučiš za punu bočicu."
+                    : "Try before you buy. Discover designer, niche and Arabian fragrances through carefully curated decants before committing to a full bottle."}
+                </p>
+
+                <div className="closing-actions">
+                  <button
+                    type="button"
+                    className="gold-button"
+                    onClick={goToShop}
+                  >
+                    {lang === "sr" ? "Istraži kolekciju" : "Explore Collection"}
+                  </button>
+
+                  <button
+                    type="button"
+                    className="ghost-button"
+                    onClick={goToShop}
+                  >
+                    Private Selection
+                  </button>
+                </div>
+              </div>
+            </section>
+          </>
+        )}
 
           {view === "shop" && (
   <>
