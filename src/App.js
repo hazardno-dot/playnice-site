@@ -627,6 +627,8 @@ function App() {
   const [miniCartPreview, setMiniCartPreview] = useState(null);
   const miniCartTimerRef = useRef(null);
 
+  const [miniCartPreviewId, setMiniCartPreviewId] = useState(0);
+
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -1931,6 +1933,8 @@ const goToJournal = () => {
       size: label,
       price
     });
+
+    setMiniCartPreviewId((prev) => prev + 1);
 
     if (miniCartTimerRef.current) {
       clearTimeout(miniCartTimerRef.current);
@@ -5665,6 +5669,12 @@ closeProductModal();
       )}
 
       {miniCartPreview && (
+        <div
+    key={miniCartPreviewId}
+    className="mini-cart-preview"
+    role="status"
+    aria-live="polite"
+        >
   <div className="mini-cart-preview" role="status" aria-live="polite">
     <div className="mini-cart-preview-orb-text">
   <svg viewBox="0 0 160 160" aria-hidden="true">
