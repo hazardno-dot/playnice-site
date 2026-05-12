@@ -14966,7 +14966,7 @@ body.scrolled .header-system .announcement-bar-system {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
 
-  margin: 22px 0 26px;
+  margin: 22px 0 30px;
 }
 
 .shop-pagination-row .pagination-wrap-top {
