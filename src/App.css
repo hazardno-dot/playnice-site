@@ -2388,6 +2388,64 @@ main {
 }
 
 /* =========================================
+   SCENT MOOD FILTER — MOBILE SCROLL POLISH
+========================================= */
+
+@media (max-width: 768px) {
+  .scent-mood-filter {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scent-mood-scroll {
+    position: relative;
+
+    display: flex;
+    flex-wrap: nowrap;
+
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    gap: 8px;
+    padding: 4px 22px 6px 0;
+
+    scroll-snap-type: x proximity;
+  }
+
+  .scent-mood-chip {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+
+    min-height: 34px;
+    padding: 0 13px;
+
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+  }
+
+  .scent-mood-filter::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 14px;
+
+    width: 48px;
+    height: 42px;
+
+    pointer-events: none;
+
+    background: linear-gradient(
+      90deg,
+      rgba(8, 8, 8, 0),
+      rgba(8, 8, 8, 0.92)
+    );
+  }
+}
+
+/* =========================================
    CART DRAWER
 ========================================= */
 .cart-drawer {
