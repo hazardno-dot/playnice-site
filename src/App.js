@@ -956,23 +956,19 @@ const selectedSortOption =
 /* =========================================
    TOTAL PAGES
 ========================================= */
-
   const totalPages = Math.max(
-    1,
-    Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)
+  1,
+  Math.ceil(filteredProducts.length / productsPerPage)
   );
 
   const paginatedProducts = useMemo(() => {
-    const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
-    return filteredProducts.slice(start, start + PRODUCTS_PER_PAGE);
-  }, [filteredProducts, currentPage]);
+  const start = (currentPage - 1) * productsPerPage;
 
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-
-  const paginatedProducts = filteredProducts.slice(
-  (currentPage - 1) * productsPerPage,
-  currentPage * productsPerPage
+  return filteredProducts.slice(
+    start,
+    start + productsPerPage
   );
+}, [filteredProducts, currentPage, productsPerPage]);
 
   const cartCount = useMemo(
     () => cart.reduce((sum, item) => sum + item.quantity, 0),
