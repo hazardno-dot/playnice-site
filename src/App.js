@@ -315,9 +315,6 @@ const getProductStructuredData = (product, lang = "sr") => {
    GLOBAL CONSTANTS & HELPERS
 ========================================= */
 const PRODUCT_PAGE_SIZE_OPTIONS = [12, 24, 48, 96];
-
-const [productsPerPage, setProductsPerPage] = useState(24);
-
 const SHIPPING_COST = 4.0;
 const FREE_SHIPPING_THRESHOLD = 39;
 
@@ -605,6 +602,7 @@ function App() {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage, setProductsPerPage] = useState(24);
   const [cart, setCart] = useState([]);
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
