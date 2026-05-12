@@ -2224,14 +2224,14 @@ main {
 .scent-mood-filter-header-inline .scent-mood-inline-description {
   flex: 1 1 auto;
   min-width: 0;
-  margin: 0;
+  margin: 0 0 0 auto;
 
   display: flex;
   align-items: baseline;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 8px;
 
-  text-align: center;
+  text-align: right;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -2239,25 +2239,29 @@ main {
 .scent-mood-filter-header-inline .scent-mood-inline-description strong {
   flex: 0 0 auto;
 
-  color: rgba(244, 216, 162, 0.94);
-
+  color: rgba(244, 216, 162, 0.92);
   font-family: "Cormorant Garamond", serif;
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 650;
   line-height: 1;
-  letter-spacing: 0.01em;
+}
+
+.scent-mood-filter-header-inline .scent-mood-inline-description i {
+  flex: 0 0 auto;
+
+  color: rgba(220, 181, 107, 0.45);
+  font-style: normal;
+  font-size: 0.78rem;
 }
 
 .scent-mood-filter-header-inline .scent-mood-inline-description span {
   min-width: 0;
 
-  color: rgba(245, 239, 230, 0.62);
-
+  color: rgba(245, 239, 230, 0.58);
   font-family: "Inter", sans-serif;
-  font-size: 0.73rem;
+  font-size: 0.72rem;
   font-weight: 520;
   line-height: 1.25;
-  letter-spacing: 0.005em;
 
   overflow: hidden;
   text-overflow: ellipsis;
