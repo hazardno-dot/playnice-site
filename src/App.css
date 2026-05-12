@@ -3384,7 +3384,7 @@ main {
   .mini-cart-preview {
     left: 10px;
     right: auto;
-    top: calc(92px + env(safe-area-inset-top));
+    top: calc(78px + env(safe-area-inset-top));
     bottom: auto;
 
     grid-template-columns: 34px minmax(0, 1fr);
