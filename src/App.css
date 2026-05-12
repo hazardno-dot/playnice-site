@@ -2343,6 +2343,51 @@ main {
 }
 
 /* =========================================
+   SCENT MOOD FILTER — ICON DETAIL
+========================================= */
+
+.scent-mood-chip {
+  gap: 7px;
+}
+
+.scent-mood-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 16px;
+  height: 16px;
+
+  font-size: 0.8rem;
+  line-height: 1;
+
+  transform: translateY(-0.5px);
+  filter: saturate(0.95) brightness(1.04);
+}
+
+.scent-mood-label {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.scent-mood-chip.active .scent-mood-icon {
+  filter: saturate(1.05) brightness(0.92);
+}
+
+@media (max-width: 768px) {
+  .scent-mood-chip {
+    gap: 6px;
+  }
+
+  .scent-mood-icon {
+    width: 15px;
+    height: 15px;
+    font-size: 0.76rem;
+  }
+}
+
+/* =========================================
    CART DRAWER
 ========================================= */
 .cart-drawer {

@@ -811,34 +811,48 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
     categoryOptions.find((option) => option.value === category) ||
     categoryOptions[0];
 
-    const scentMoodOptions = [
+  const scentMoodOptions = [
   {
     value: "All",
     label: lang === "sr" ? "Svi moodovi" : "All moods",
+    icon: "✦",
+    hint: lang === "sr" ? "Explore Collection" : "Explore Collection",
   },
   {
     value: "clean",
     label: "Clean Everyday",
+    icon: "❄️",
+    hint: "Fresh / Daily",
   },
   {
     value: "summer",
     label: "Summer Heat",
+    icon: "☀️",
+    hint: "Bright / Warm",
   },
   {
     value: "date",
     label: "Date Night",
+    icon: "🌙",
+    hint: "Close / Seductive",
   },
   {
     value: "rich",
     label: "Rich & Addictive",
+    icon: "🥃",
+    hint: "Deep / Sweet",
   },
   {
     value: "soft",
     label: "Soft Luxury",
+    icon: "🕊️",
+    hint: "Smooth / Elegant",
   },
   {
     value: "signature",
     label: "Signature Energy",
+    icon: "💎",
+    hint: "Memorable",
   },
 ];
 
@@ -3850,24 +3864,34 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div className="scent-mood-filter-header">
     <span>{lang === "sr" ? "Biraj po osećaju" : "Browse by mood"}</span>
     <small>
-      {lang === "sr"
-        ? "Ne traži note. Traži trenutak."
-        : "Don’t search notes. Find the moment."}
-    </small>
+  {scentMood !== "All"
+    ? `${lang === "sr" ? "Popularno za" : "Popular in"} ${
+        selectedScentMood.label
+      }`
+    : lang === "sr"
+      ? "Ne traži note. Traži trenutak."
+      : "Don’t search notes. Find the moment."}
+</small>
   </div>
 
   <div className="scent-mood-scroll" role="list">
     {scentMoodOptions.map((option) => (
       <button
-        key={option.value}
-        type="button"
-        className={`scent-mood-chip ${
-          scentMood === option.value ? "active" : ""
-        }`}
-        onClick={() => setScentMood(option.value)}
-      >
-        {option.label}
-      </button>
+  key={option.value}
+  type="button"
+  className={`scent-mood-chip ${
+    scentMood === option.value ? "active" : ""
+  }`}
+  onClick={() => setScentMood(option.value)}
+>
+  <span className="scent-mood-icon" aria-hidden="true">
+    {option.icon}
+  </span>
+
+  <span className="scent-mood-label">
+    {option.label}
+  </span>
+</button>
     ))}
   </div>
 </div>
