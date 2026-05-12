@@ -5681,12 +5681,12 @@ closeProductModal();
       <path
   id="miniCartTextTop"
   d="M20,80 A60,60 0 0,1 140,80"
-/>
+  />
 
-<path
+      <path
   id="miniCartTextBottom"
   d="M20,82 A60,60 0 0,0 140,82"
-/>
+  />
     </defs>
 
     <text className="mini-cart-text-top">
