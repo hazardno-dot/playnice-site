@@ -2587,7 +2587,7 @@ const titleLengthClass =
   )}
 
   <div className="product-meta premium-product-meta">
-    
+
     <div className="product-meta-top">
       <p className="product-category">{getCategoryLabel(product.category)}</p>
       <h3 className={`product-card-title ${titleLengthClass}`}>
@@ -2616,7 +2616,13 @@ const titleLengthClass =
       </div>
 
       <div className="product-preview-line premium-preview-line single-line-preview">
-        <span className="product-card-cta">{tr.productCardCta}</span>
+  <button
+    type="button"
+    className="product-card-cta"
+    onClick={() => handleProductCardOpen(product)}
+  >
+    {tr.productCardCta}
+  </button>
       </div>
     </div>
   </div>
