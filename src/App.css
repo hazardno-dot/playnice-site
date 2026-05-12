@@ -3212,7 +3212,7 @@ main {
 .mini-cart-preview {
   position: fixed;
   right: 18px;
-  bottom: 34px;
+  bottom: 10px;
   z-index: 99998;
 
   display: grid;
@@ -3380,12 +3380,12 @@ main {
 /* =========================================
    MINI CART PREVIEW — MOBILE
 ========================================= */
-
 @media (max-width: 560px) {
   .mini-cart-preview {
-    left: auto;
-    right: 10px;
-    bottom: calc(92px + env(safe-area-inset-bottom));
+    left: 10px;
+    right: auto;
+    top: calc(92px + env(safe-area-inset-top));
+    bottom: auto;
 
     grid-template-columns: 34px minmax(0, 1fr);
     gap: 8px;
