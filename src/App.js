@@ -3860,81 +3860,82 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 </div>
 
-<div className="scent-mood-filter" aria-label={lang === "sr" ? "Mood filter" : "Scent mood filter"}>
+<div
+  className="scent-mood-filter"
+  aria-label={lang === "sr" ? "Mood filter" : "Scent mood filter"}
+>
   <div className="scent-mood-filter-header">
-  <span>{lang === "sr" ? "Biraj po osećaju" : "Browse by mood"}</span>
+    <span>{lang === "sr" ? "Biraj po osećaju" : "Browse by mood"}</span>
 
-  <small>
-    {scentMood !== "All"
-      ? selectedScentMood.label
-      : lang === "sr"
-        ? "Ne traži note. Traži trenutak."
-        : "Don’t search notes. Find the moment."}
-  </small>
-</div>
-
-{scentMood !== "All" && (
-  <div className="scent-mood-inline-description">
-    <strong>
-      {lang === "sr"
-        ? `Odabrano za ${selectedScentMood.label}`
-        : `Selected for ${selectedScentMood.label}`}
-    </strong>
-
-    <span>
-      {{
-        clean:
-          lang === "sr"
-            ? "Čisti, svakodnevni mirisi sa laganim i urednim karakterom."
-            : "Fresh everyday scents with a clean and effortless feel.",
-
-        summer:
-          lang === "sr"
-            ? "Sveži potpisi koji najbolje rade na višim temperaturama."
-            : "Fresh signatures that work best in high temperatures.",
-
-        date:
-          lang === "sr"
-            ? "Topliji, privlačniji i zavodljiviji parfemi za večernje trenutke."
-            : "Closer, warmer and more seductive signature scents.",
-
-        rich:
-          lang === "sr"
-            ? "Dublji, slađi i intenzivniji mirisi sa jakim karakterom."
-            : "Deeper, sweeter and more intense fragrances with strong presence.",
-
-        soft:
-          lang === "sr"
-            ? "Elegantni i mekši mirisi koji ostavljaju sofisticiran utisak."
-            : "Elegant softer scents with a refined luxury feeling.",
-
-        signature:
-          lang === "sr"
-            ? "Mirisi koje ljudi pamte i povezuju sa tobom."
-            : "Scents people remember after you leave the room.",
-      }[scentMood]}
-    </span>
+    <small>
+      {scentMood !== "All"
+        ? selectedScentMood.label
+        : lang === "sr"
+          ? "Ne traži note. Traži trenutak."
+          : "Don’t search notes. Find the moment."}
+    </small>
   </div>
-)}
+
+  {scentMood !== "All" && (
+    <div className="scent-mood-inline-description">
+      <strong>
+        {lang === "sr"
+          ? `Odabrano za ${selectedScentMood.label}`
+          : `Selected for ${selectedScentMood.label}`}
+      </strong>
+
+      <span>
+        {{
+          clean:
+            lang === "sr"
+              ? "Čisti, svakodnevni mirisi sa laganim i urednim karakterom."
+              : "Fresh everyday scents with a clean and effortless feel.",
+
+          summer:
+            lang === "sr"
+              ? "Sveži potpisi koji najbolje rade na višim temperaturama."
+              : "Fresh signatures that work best in high temperatures.",
+
+          date:
+            lang === "sr"
+              ? "Topliji, privlačniji i zavodljiviji parfemi za večernje trenutke."
+              : "Closer, warmer and more seductive signature scents.",
+
+          rich:
+            lang === "sr"
+              ? "Dublji, slađi i intenzivniji mirisi sa jakim karakterom."
+              : "Deeper, sweeter and more intense fragrances with strong presence.",
+
+          soft:
+            lang === "sr"
+              ? "Elegantni i mekši mirisi koji ostavljaju sofisticiran utisak."
+              : "Elegant softer scents with a refined luxury feeling.",
+
+          signature:
+            lang === "sr"
+              ? "Mirisi koje ljudi pamte i povezuju sa tobom."
+              : "Scents people remember after you leave the room.",
+        }[scentMood]}
+      </span>
+    </div>
+  )}
 
   <div className="scent-mood-scroll" role="list">
     {scentMoodOptions.map((option) => (
       <button
-  key={option.value}
-  type="button"
-  className={`scent-mood-chip ${
-    scentMood === option.value ? "active" : ""
-  }`}
-  onClick={() => setScentMood(option.value)}
->
-  <span className="scent-mood-icon" aria-hidden="true">
-    {option.icon}
-  </span>
+        key={option.value}
+        type="button"
+        className={`scent-mood-chip ${
+          scentMood === option.value ? "active" : ""
+        }`}
+        onClick={() => setScentMood(option.value)}
+      >
+        <span className="scent-mood-icon" aria-hidden="true">
+          {option.icon}
+        </span>
 
-  <span className="scent-mood-label">
-    {option.label}
-  </span>
-</button>
+        <span className="scent-mood-label">{option.label}</span>
+      </button>
     ))}
   </div>
 </div>
@@ -3957,6 +3958,39 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           {selectedSeasonOption.label}
         </span>
       )}
+
+      {scentMood !== "All" && (
+        <span className="active-filter-chip">
+          {selectedScentMood.label}
+        </span>
+      )}
+
+      {sortBy !== "featured" && (
+        <span className="active-filter-chip">
+          {selectedSortOption.label}
+        </span>
+      )}
+
+      {searchTerm.trim() !== "" && (
+        <span className="active-filter-chip">“{searchTerm.trim()}”</span>
+      )}
+    </div>
+
+    <button
+      type="button"
+      className="clear-filters-button"
+      onClick={() => {
+        setCategory("All");
+        setSeason("All");
+        setScentMood("All");
+        setSortBy("featured");
+        setSearchTerm("");
+      }}
+    >
+      {lang === "sr" ? "Obriši" : "Clear"}
+    </button>
+  </div>
+)}
 
 <div className="shop-pagination-row">
   {renderPagination("top")}
