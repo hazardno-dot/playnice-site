@@ -1938,7 +1938,7 @@ const goToJournal = () => {
 
     miniCartTimerRef.current = setTimeout(() => {
       setMiniCartPreview(null);
-    }, 5350);
+    }, 2300);
   }
 
   if (showToast && !showMiniPreview) {
@@ -5666,6 +5666,23 @@ closeProductModal();
 
       {miniCartPreview && (
   <div className="mini-cart-preview" role="status" aria-live="polite">
+    <div className="mini-cart-preview-orb-text">
+      <svg viewBox="0 0 160 160" aria-hidden="true">
+        <defs>
+          <path
+            id="miniCartTextCircle"
+            d="M80,80 m-58,0 a58,58 0 1,1 116,0 a58,58 0 1,1 -116,0"
+          />
+        </defs>
+
+        <text>
+          <textPath href="#miniCartTextCircle" startOffset="50%" textAnchor="middle">
+            {miniCartPreview.name}
+          </textPath>
+        </text>
+      </svg>
+    </div>
+
     <div className="mini-cart-preview-media">
       {miniCartPreview.image && (
         <img src={miniCartPreview.image} alt={miniCartPreview.name} />
