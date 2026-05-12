@@ -5471,11 +5471,11 @@ main {
 }
 
 .pagination-wrap-top {
-  margin: 22px 0 26px;
+  margin: 22px 0 24px;
 }
 
 .pagination-wrap-bottom {
-  margin-top: 30px;
+  margin-top: 24px;
 }
 
 .pagination-numbers {
@@ -14966,7 +14966,7 @@ body.scrolled .header-system .announcement-bar-system {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
 
-  margin: 22px 0 30px;
+  margin: 22px 0 24px;
 }
 
 .shop-pagination-row .pagination-wrap-top {
