@@ -3851,19 +3851,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
+    <div className="shop-pagination-row">
       {renderPagination("top")}
-
-      <div className="product-grid">
-        {paginatedProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            wishlist={wishlist}
-            toggleWishlist={toggleWishlist}
-            sprayingWishlistId={sprayingWishlistId}
-          />
-        ))}
-      </div>
 
       <div className="products-per-page-buttons" aria-label={lang === "sr" ? "Broj proizvoda po strani" : "Products per page"}>
   <span>{lang === "sr" ? "Prikaži" : "Show"}</span>
@@ -3882,6 +3871,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </button>
     ))}
   </div>
+      </div>
+
+      <div className="product-grid">
+        {paginatedProducts.map((product) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            wishlist={wishlist}
+            toggleWishlist={toggleWishlist}
+            sprayingWishlistId={sprayingWishlistId}
+          />
+        ))}
       </div>
 
       <div className="pagination-wrap">
