@@ -3903,9 +3903,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   {scentMood !== "All" ? (
     <div className="scent-mood-inline-description">
       <strong>
-        {lang === "sr"
-          ? `Odabrano za ${selectedScentMood.label}`
-          : `Selected for ${selectedScentMood.label}`}
+       {selectedScentMood.label}
       </strong>
 
       <i aria-hidden="true">—</i>
