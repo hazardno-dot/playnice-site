@@ -5674,8 +5674,8 @@ closeProductModal();
         d="M28,80 A52,52 0 0,1 132,80"
       />
       <path
-        id="miniCartTextBottom"
-        d="M132,82 A52,52 0 0,1 28,82"
+  id="miniCartTextBottom"
+  d="M28,82 A52,52 0 0,0 132,82"
       />
     </defs>
 
