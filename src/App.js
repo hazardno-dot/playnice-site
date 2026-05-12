@@ -624,6 +624,9 @@ function App() {
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
 
+  const [miniCartPreview, setMiniCartPreview] = useState(null);
+  const miniCartTimerRef = useRef(null);
+
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -1876,7 +1879,7 @@ const goToJournal = () => {
   customLabel = null,
   options = {}
 ) => {
-  const { showToast = true } = options;
+  const { showToast = true, showMiniPreview = true } = options;
 
   const key = `${product.id}-${size}-${customLabel || ""}`;
   const price = customPrice ?? product.sizes[size];
@@ -1911,6 +1914,7 @@ const goToJournal = () => {
         key,
         id: product.id,
         name: product.name,
+        image: product.image,
         size: label,
         price,
         quantity: 1
@@ -1918,7 +1922,26 @@ const goToJournal = () => {
     ];
   });
 
-  if (showToast) {
+  if (showMiniPreview) {
+    setMiniCartPreview({
+      key,
+      id: product.id,
+      name: product.name,
+      image: product.image,
+      size: label,
+      price
+    });
+
+    if (miniCartTimerRef.current) {
+      clearTimeout(miniCartTimerRef.current);
+    }
+
+    miniCartTimerRef.current = setTimeout(() => {
+      setMiniCartPreview(null);
+    }, 5200);
+  }
+
+  if (showToast && !showMiniPreview) {
     showFeedback(`${product.name} ${tr.addedToCart}`);
   }
 };
@@ -1935,7 +1958,10 @@ const triggerInlineAddedFeedback = (productId, size) => {
 const handleModalAddToCart = (product, size) => {
   if (!product || !size) return;
 
-  addToCart(product, size);
+  addToCart(product, size, null, null, {
+    showToast: false,
+    showMiniPreview: true
+  });
 
   const key = `${product.id}-${size}`;
   setModalAddedKey(key);
@@ -2703,7 +2729,10 @@ const titleLengthClass =
             e.stopPropagation();
             e.currentTarget.blur();
 
-            addToCart(product, size, null, null, { showToast: false });
+            addToCart(product, size, null, null, {
+  showToast: false,
+  showMiniPreview: true
+});
             triggerInlineAddedFeedback(product.id, size);
           }}
         >
@@ -5299,11 +5328,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                         selectedSize || Object.keys(selectedProduct.sizes)[0];
 
                       addToCart(selectedProduct, activeSize, null, null, {
-                        showToast: false
-                      });
-                      setCartOpen(false);
-                      setCheckoutOpen(true);
-                      closeProductModal();
+  showToast: false,
+  showMiniPreview: false
+});
+setMiniCartPreview(null);
+setCartOpen(false);
+setCheckoutOpen(true);
+closeProductModal();
                     }}
                   >
                     {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
@@ -5632,6 +5663,50 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           </div>
         </div>
       )}
+
+      {miniCartPreview && (
+  <div className="mini-cart-preview" role="status" aria-live="polite">
+    <div className="mini-cart-preview-media">
+      {miniCartPreview.image && (
+        <img src={miniCartPreview.image} alt={miniCartPreview.name} />
+      )}
+    </div>
+
+    <div className="mini-cart-preview-body">
+      <span className="mini-cart-preview-kicker">
+        {lang === "sr" ? "Dodato u korpu" : "Added to cart"}
+      </span>
+
+      <strong>{miniCartPreview.name}</strong>
+
+      <span>
+        {miniCartPreview.size} · {formatPrice(miniCartPreview.price)}
+      </span>
+    </div>
+
+    <div className="mini-cart-preview-actions">
+      <button
+        type="button"
+        className="mini-cart-preview-secondary"
+        onClick={() => setMiniCartPreview(null)}
+      >
+        {lang === "sr" ? "Nastavi" : "Continue"}
+      </button>
+
+      <button
+        type="button"
+        className="mini-cart-preview-primary"
+        onClick={() => {
+          setMiniCartPreview(null);
+          setCartOpen(false);
+          setCheckoutOpen(true);
+        }}
+      >
+        {lang === "sr" ? "Checkout" : "Checkout"}
+      </button>
+    </div>
+  </div>
+)}
 
       {showStickyCta && (
         <div className="sticky-cta-shell" aria-live="polite">
