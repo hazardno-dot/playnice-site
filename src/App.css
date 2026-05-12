@@ -7448,6 +7448,168 @@ main {
 }
 
 /* =========================================
+   PRODUCT CARD — DESKTOP COMPACT PATCH
+   Desktop only / keeps mobile untouched
+========================================= */
+
+@media (min-width: 769px) {
+  .product-grid {
+    gap: 18px;
+  }
+
+  .product-card {
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  .product-card-media {
+    height: 178px;
+    min-height: 178px;
+  }
+
+  .product-card-image {
+    max-width: 145px;
+    max-height: 155px;
+  }
+
+  .product-meta {
+    padding: 11px 12px 10px;
+    gap: 8px;
+  }
+
+  .product-meta-top {
+    gap: 5px;
+  }
+
+  .product-category {
+    margin-bottom: 7px;
+    font-size: 0.66rem;
+  }
+
+  .product-card-title {
+    font-size: clamp(1.08rem, 1.12vw, 1.28rem);
+    line-height: 1.05;
+  }
+
+  .product-card-copy,
+  .product-card-copy.premium-card-copy {
+    font-size: 0.9rem;
+    line-height: 1.32;
+
+    min-height: calc(1.32em * 2);
+    max-height: calc(1.32em * 2);
+  }
+
+  .product-card-decant-note {
+    margin-top: 6px;
+    font-size: 0.78rem;
+    line-height: 1.28;
+
+    min-height: calc(1.28em * 2);
+    max-height: calc(1.28em * 2);
+  }
+
+  .product-card-copy-stack {
+    min-height: 102px;
+    max-height: 102px;
+
+    padding: 9px 11px;
+    border-radius: 11px;
+  }
+
+  .product-price-block,
+  .product-price-row {
+    min-height: 24px;
+  }
+
+  .price-prefix {
+    font-size: 0.88rem;
+  }
+
+  .price-value {
+    font-size: 0.98rem;
+  }
+
+  .product-preview-line,
+  .product-preview-line.premium-preview-line,
+  .product-preview-line.single-line-preview {
+    min-height: 20px;
+  }
+
+  .product-preview-line .product-card-cta,
+  .product-preview-line.premium-preview-line .product-card-cta,
+  .product-preview-line.single-line-preview .product-card-cta {
+    padding: 7px 13px;
+    font-size: 0.69rem;
+    letter-spacing: 0.095em;
+  }
+
+  .size-buttons {
+    margin-top: 8px;
+    padding: 0 12px 12px;
+    gap: 6px;
+  }
+
+  .size-buttons .size-chip {
+    min-height: 34px;
+    padding: 6px 11px;
+    border-radius: 11px;
+  }
+
+  .size-chip-main-wrap {
+    gap: 2px;
+  }
+
+  .size-chip-main-row {
+    gap: 7px;
+  }
+
+  .size-chip-main,
+  .size-chip-price {
+    font-size: 12px;
+  }
+
+  .size-chip-wear-hint {
+    font-size: 0.64rem;
+    line-height: 1.15;
+  }
+
+  .size-chip-recommended {
+    padding: 2px 7px;
+    font-size: 0.54rem;
+  }
+
+  .wishlist-btn {
+    top: 10px;
+    right: 10px;
+
+    width: 34px;
+    height: 34px;
+  }
+
+  .wishlist-btn .heart-icon {
+    font-size: 15px;
+  }
+
+  .product-floating-badge {
+    top: 12px;
+    left: 12px;
+
+    padding: 4px 10px;
+    font-size: 0.58rem;
+  }
+
+  .product-new-badge {
+    right: 9px;
+    bottom: 9px;
+
+    min-height: 25px;
+    padding: 0 9px;
+    font-size: 9px;
+  }
+}
+
+/* =========================================
    CATALOG DOWNLOAD SECTION
 ========================================= */
 
