@@ -2163,7 +2163,7 @@ main {
 }
 
 /* =========================================
-   SCENT MOOD FILTER — PREMIUM
+   SCENT MOOD FILTER — FINAL
 ========================================= */
 
 .scent-mood-filter {
@@ -2181,18 +2181,23 @@ main {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.035),
     0 18px 44px rgba(0, 0, 0, 0.28);
+
+  overflow: hidden;
 }
+
+/* HEADER */
 
 .scent-mood-filter-header {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
+  align-items: center;
+  gap: 18px;
 
   margin-bottom: 12px;
 }
 
-.scent-mood-filter-header span {
+.scent-mood-filter-header > span {
+  flex: 0 0 auto;
+
   color: rgba(255, 248, 235, 0.94);
   font-family: "Cormorant Garamond", serif;
   font-size: 1.22rem;
@@ -2202,15 +2207,64 @@ main {
 }
 
 .scent-mood-filter-header small {
+  margin-left: auto;
+
   color: rgba(220, 181, 107, 0.72);
   font-family: "Inter", sans-serif;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.11em;
   line-height: 1.25;
   text-transform: uppercase;
   text-align: right;
 }
+
+/* INLINE DESCRIPTION */
+
+.scent-mood-filter-header-inline .scent-mood-inline-description {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.scent-mood-filter-header-inline .scent-mood-inline-description strong {
+  flex: 0 0 auto;
+
+  color: rgba(244, 216, 162, 0.94);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+.scent-mood-filter-header-inline .scent-mood-inline-description span {
+  min-width: 0;
+
+  color: rgba(245, 239, 230, 0.62);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.73rem;
+  font-weight: 520;
+  line-height: 1.25;
+  letter-spacing: 0.005em;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* CHIPS */
 
 .scent-mood-scroll {
   display: flex;
@@ -2242,6 +2296,7 @@ main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 7px;
 
   border-radius: 999px;
   border: 1px solid rgba(220, 181, 107, 0.16);
@@ -2256,6 +2311,7 @@ main {
   font-size: 0.72rem;
   font-weight: 750;
   letter-spacing: 0.08em;
+  line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
 
@@ -2281,7 +2337,6 @@ main {
 
 .scent-mood-chip.active {
   color: #111;
-
   border-color: rgba(244, 216, 162, 0.62);
 
   background:
@@ -2299,56 +2354,7 @@ main {
   border-color: rgba(220, 181, 107, 0.42);
 }
 
-/* =========================================
-   SCENT MOOD FILTER — MOBILE
-========================================= */
-
-@media (max-width: 768px) {
-  .scent-mood-filter {
-    margin: 12px 0 16px;
-    padding: 12px 12px 13px;
-    border-radius: 18px;
-  }
-
-  .scent-mood-filter-header {
-    display: block;
-    margin-bottom: 10px;
-  }
-
-  .scent-mood-filter-header span {
-    display: block;
-    font-size: 1.08rem;
-    margin-bottom: 4px;
-  }
-
-  .scent-mood-filter-header small {
-    display: block;
-    text-align: left;
-    font-size: 0.63rem;
-    letter-spacing: 0.09em;
-  }
-
-  .scent-mood-scroll {
-    gap: 7px;
-    margin-right: -12px;
-    padding-right: 12px;
-  }
-
-  .scent-mood-chip {
-    min-height: 32px;
-    padding: 0 12px;
-    font-size: 0.66rem;
-    letter-spacing: 0.065em;
-  }
-}
-
-/* =========================================
-   SCENT MOOD FILTER — ICON DETAIL
-========================================= */
-
-.scent-mood-chip {
-  gap: 7px;
-}
+/* ICONS */
 
 .scent-mood-icon {
   display: inline-flex;
@@ -2375,63 +2381,66 @@ main {
   filter: saturate(1.05) brightness(0.92);
 }
 
-@media (max-width: 768px) {
+/* DESKTOP FIT */
+
+@media (min-width: 769px) {
+  .scent-mood-scroll {
+    gap: 7px;
+  }
+
   .scent-mood-chip {
-    gap: 6px;
-  }
-
-  .scent-mood-icon {
-    width: 15px;
-    height: 15px;
-    font-size: 0.76rem;
+    padding: 0 12px;
+    font-size: 0.68rem;
+    letter-spacing: 0.065em;
   }
 }
 
-/* =========================================
-   SCENT MOOD INLINE DESCRIPTION — COMPACT
-========================================= */
-
-.scent-mood-filter-header-inline {
-  align-items: center;
-}
-
-.scent-mood-filter-header-inline .scent-mood-inline-description {
-  flex: 1;
-  min-width: 0;
-  max-width: none;
-  margin: 0 0 0 18px;
-
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 9px;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-align: center;
-}
-
-.scent-mood-filter-header-inline .scent-mood-inline-description strong {
-  flex: 0 0 auto;
-}
-
-.scent-mood-filter-header-inline .scent-mood-inline-description span {
-  min-width: 0;
-  max-width: none;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* =========================================
-   SCENT MOOD FILTER — MOBILE SCROLL POLISH
-========================================= */
+/* MOBILE */
 
 @media (max-width: 768px) {
   .scent-mood-filter {
     position: relative;
-    overflow: hidden;
+
+    margin: 12px 0 16px;
+    padding: 12px 12px 13px;
+    border-radius: 18px;
+  }
+
+  .scent-mood-filter-header {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .scent-mood-filter-header > span {
+    display: block;
+    margin-bottom: 4px;
+
+    font-size: 1.08rem;
+  }
+
+  .scent-mood-filter-header small {
+    display: block;
+    margin-left: 0;
+
+    text-align: left;
+    font-size: 0.63rem;
+    letter-spacing: 0.09em;
+  }
+
+  .scent-mood-filter-header-inline .scent-mood-inline-description {
+    display: flex;
+    justify-content: flex-start;
+
+    margin-top: 6px;
+    gap: 7px;
+  }
+
+  .scent-mood-filter-header-inline .scent-mood-inline-description strong {
+    font-size: 0.9rem;
+  }
+
+  .scent-mood-filter-header-inline .scent-mood-inline-description span {
+    font-size: 0.7rem;
   }
 
   .scent-mood-scroll {
@@ -2461,6 +2470,13 @@ main {
 
     font-size: 0.68rem;
     letter-spacing: 0.06em;
+    gap: 6px;
+  }
+
+  .scent-mood-icon {
+    width: 15px;
+    height: 15px;
+    font-size: 0.76rem;
   }
 
   .scent-mood-filter::after {
