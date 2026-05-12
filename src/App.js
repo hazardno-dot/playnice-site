@@ -3851,46 +3851,47 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
-    <div className="shop-pagination-row">
-      {renderPagination("top")}
+<div className="shop-pagination-row">
+  {renderPagination("top")}
 
-      <div className="products-per-page-buttons" aria-label={lang === "sr" ? "Broj proizvoda po strani" : "Products per page"}>
-  <span>{lang === "sr" ? "Prikaži" : "Show"}</span>
+  <div
+    className="products-per-page-buttons"
+    aria-label={lang === "sr" ? "Broj proizvoda po strani" : "Products per page"}
+  >
+    <span>{lang === "sr" ? "Prikaži" : "Show"}</span>
 
-  <div className="per-page-button-group">
-    {PRODUCT_PAGE_SIZE_OPTIONS.map((option) => (
-      <button
-        key={option}
-        type="button"
-        className={`per-page-button ${
-          productsPerPage === option ? "is-active" : ""
-        }`}
-        onClick={() => handleProductsPerPageChange(option)}
-      >
-        {option}
-      </button>
-    ))}
+    <div className="per-page-button-group">
+      {PRODUCT_PAGE_SIZE_OPTIONS.map((option) => (
+        <button
+          key={option}
+          type="button"
+          className={`per-page-button ${
+            productsPerPage === option ? "is-active" : ""
+          }`}
+          onClick={() => handleProductsPerPageChange(option)}
+        >
+          {option}
+        </button>
+      ))}
+    </div>
   </div>
-      </div>
+</div>
 
-      <div className="product-grid">
-        {paginatedProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            wishlist={wishlist}
-            toggleWishlist={toggleWishlist}
-            sprayingWishlistId={sprayingWishlistId}
-          />
-        ))}
-      </div>
+<div className="product-grid">
+  {paginatedProducts.map((product) => (
+    <ProductCard
+      key={product.id}
+      product={product}
+      wishlist={wishlist}
+      toggleWishlist={toggleWishlist}
+      sprayingWishlistId={sprayingWishlistId}
+    />
+  ))}
+</div>
 
-      <div className="pagination-wrap">
-        {renderPagination("bottom")}
-      </div>
-    </section>
-  </>
-)}
+<div className="pagination-wrap">
+  {renderPagination("bottom")}
+</div>
 
 <div className="section-divider"></div>
 
