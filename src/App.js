@@ -3851,21 +3851,24 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
-      <div className="products-per-page-control">
+<div className="products-per-page-buttons" aria-label={lang === "sr" ? "Broj proizvoda po strani" : "Products per page"}>
   <span>{lang === "sr" ? "Prikaži" : "Show"}</span>
 
-  <select
-    value={productsPerPage}
-    onChange={(e) => handleProductsPerPageChange(e.target.value)}
-    aria-label={lang === "sr" ? "Broj proizvoda po strani" : "Products per page"}
-  >
+  <div className="per-page-button-group">
     {PRODUCT_PAGE_SIZE_OPTIONS.map((option) => (
-      <option key={option} value={option}>
+      <button
+        key={option}
+        type="button"
+        className={`per-page-button ${
+          productsPerPage === option ? "is-active" : ""
+        }`}
+        onClick={() => handleProductsPerPageChange(option)}
+      >
         {option}
-      </option>
+      </button>
     ))}
-  </select>
-      </div>
+  </div>
+</div>
 
       {renderPagination("top")}
 

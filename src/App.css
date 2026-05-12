@@ -14960,35 +14960,75 @@ body.scrolled .header-system .announcement-bar-system {
 /* =========================================
    PRODUCTS PER PAGE
 ========================================= */
-.products-per-page-control {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
 
-  padding: 6px 10px;
-  border: 1px solid rgba(220, 181, 107, 0.16);
+.products-per-page-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+
+  margin: 12px 0 18px auto;
+  width: fit-content;
+
+  color: rgba(255, 248, 235, 0.58);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.per-page-button-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.per-page-button {
+  width: 34px;
+  height: 34px;
   border-radius: 999px;
 
-  background: rgba(8, 8, 8, 0.72);
-  color: rgba(255, 248, 235, 0.72);
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.055), transparent 58%),
+    rgba(9, 9, 9, 0.78);
 
-  font-size: 0.78rem;
-  font-weight: 600;
-}
-
-.products-per-page-control select {
-  border: 0;
-  outline: none;
-  background: transparent;
-
-  color: rgba(255, 248, 235, 0.9);
-  font: inherit;
-  font-weight: 800;
+  color: rgba(255, 248, 235, 0.68);
+  font-size: 0.72rem;
+  font-weight: 850;
 
   cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
-.products-per-page-control select option {
-  background: #080808;
-  color: #fff8eb;
+.per-page-button:hover {
+  color: rgba(255, 248, 235, 0.92);
+  border-color: rgba(220, 181, 107, 0.32);
+  transform: translateY(-1px);
+}
+
+.per-page-button.is-active {
+  color: #16110a;
+  border-color: rgba(220, 181, 107, 0.72);
+  background: linear-gradient(135deg, #f1d18a, #c99a42);
+  box-shadow: 0 0 22px rgba(220, 181, 107, 0.16);
+}
+
+@media (max-width: 560px) {
+  .products-per-page-buttons {
+    width: 100%;
+    justify-content: flex-end;
+    margin: 10px 0 16px;
+  }
+
+  .per-page-button {
+    width: 31px;
+    height: 31px;
+    font-size: 0.68rem;
+  }
 }
