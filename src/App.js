@@ -3865,16 +3865,22 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   aria-label={lang === "sr" ? "Mood filter" : "Scent mood filter"}
 >
   <div className="scent-mood-filter-header">
+  <div className="scent-mood-title-line">
     <span>{lang === "sr" ? "Biraj po osećaju" : "Browse by mood"}</span>
 
-    <small>
-      {scentMood !== "All"
-        ? selectedScentMood.label
-        : lang === "sr"
-          ? "Ne traži note. Traži trenutak."
-          : "Don’t search notes. Find the moment."}
-    </small>
+    {scentMood !== "All" && (
+      <em>{selectedScentMood.label}</em>
+    )}
   </div>
+
+  {scentMood === "All" && (
+    <small>
+      {lang === "sr"
+        ? "Ne traži note. Traži trenutak."
+        : "Don’t search notes. Find the moment."}
+    </small>
+  )}
+</div>
 
   {scentMood !== "All" && (
     <div className="scent-mood-inline-description">
@@ -3942,7 +3948,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
 {(category !== "All" ||
   season !== "All" ||
-  scentMood !== "All" ||
   sortBy !== "featured" ||
   searchTerm.trim() !== "") && (
   <div className="active-filters-bar active-filters-bar-compact">
@@ -3956,12 +3961,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       {season !== "All" && (
         <span className="active-filter-chip">
           {selectedSeasonOption.label}
-        </span>
-      )}
-
-      {scentMood !== "All" && (
-        <span className="active-filter-chip">
-          {selectedScentMood.label}
         </span>
       )}
 

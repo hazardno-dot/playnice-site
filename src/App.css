@@ -2435,6 +2435,25 @@ main {
   white-space: nowrap;
 }
 
+.scent-mood-title-line {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.scent-mood-title-line em {
+  color: rgba(220, 181, 107, 0.86);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 /* =========================================
    SCENT MOOD FILTER — MOBILE SCROLL POLISH
 ========================================= */
