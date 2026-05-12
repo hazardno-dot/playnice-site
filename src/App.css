@@ -2413,6 +2413,7 @@ main {
   .scent-mood-filter-header {
     display: block;
     margin-bottom: 10px;
+    min-height: 58px;
   }
 
   .scent-mood-filter-header > span {
@@ -2425,6 +2426,8 @@ main {
   .scent-mood-filter-header small {
     display: block;
     margin-left: 0;
+    margin-top: 7px;
+    min-height: calc(0.63rem * 1.25);
 
     text-align: left;
     font-size: 0.63rem;
@@ -2434,6 +2437,7 @@ main {
   .scent-mood-filter-header-inline .scent-mood-inline-description {
     display: flex;
     justify-content: flex-start;
+    min-height: calc(0.76rem * 1.35);
 
     margin-top: 7px;
     gap: 0;
