@@ -3864,14 +3864,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div className="scent-mood-filter-header">
     <span>{lang === "sr" ? "Biraj po osećaju" : "Browse by mood"}</span>
     <small>
-  {scentMood !== "All"
-    ? `${lang === "sr" ? "Popularno za" : "Popular in"} ${
-        selectedScentMood.label
-      }`
-    : lang === "sr"
-      ? "Ne traži note. Traži trenutak."
-      : "Don’t search notes. Find the moment."}
-</small>
+  {lang === "sr"
+    ? "Ne traži note. Traži trenutak."
+    : "Don’t search notes. Find the moment."}
+    </small>
   </div>
 
   <div className="scent-mood-scroll" role="list">
@@ -3947,6 +3943,50 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     >
       {lang === "sr" ? "Obriši" : "Clear"}
     </button>
+  </div>
+)}
+
+{scentMood !== "All" && (
+  <div className="scent-mood-description">
+    <strong>
+      {lang === "sr"
+        ? `Odabrano za ${selectedScentMood.label}`
+        : `Selected for ${selectedScentMood.label}`}
+    </strong>
+
+    <span>
+      {{
+        clean:
+          lang === "sr"
+            ? "Čisti, svakodnevni mirisi sa laganim i urednim karakterom."
+            : "Fresh everyday scents with a clean and effortless feel.",
+
+        summer:
+          lang === "sr"
+            ? "Sveži potpisi koji najbolje rade na višim temperaturama."
+            : "Fresh signatures that work best in high temperatures.",
+
+        date:
+          lang === "sr"
+            ? "Topliji, privlačniji i zavodljiviji parfemi za večernje trenutke."
+            : "Closer, warmer and more seductive signature scents.",
+
+        rich:
+          lang === "sr"
+            ? "Dublji, slađi i intenzivniji mirisi sa jakim karakterom."
+            : "Deeper, sweeter and more intense fragrances with strong presence.",
+
+        soft:
+          lang === "sr"
+            ? "Elegantni i mekši mirisi koji ostavljaju sofisticiran utisak."
+            : "Elegant softer scents with a refined luxury feeling.",
+
+        signature:
+          lang === "sr"
+            ? "Mirisi koje ljudi pamte i povezuju sa tobom."
+            : "Scents people remember after you leave the room.",
+      }[scentMood]}
+    </span>
   </div>
 )}
 

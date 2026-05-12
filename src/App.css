@@ -2343,6 +2343,72 @@ main {
 }
 
 /* =========================================
+   SCENT MOOD DESCRIPTION
+========================================= */
+
+.scent-mood-description {
+  margin-top: 14px;
+  padding-top: 13px;
+
+  border-top: 1px solid rgba(220, 181, 107, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  animation: moodFadeIn 0.28s ease;
+}
+
+.scent-mood-description strong {
+  color: rgba(255, 248, 235, 0.96);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.scent-mood-description span {
+  max-width: 760px;
+
+  color: rgba(245, 239, 230, 0.66);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+@keyframes moodFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .scent-mood-description {
+    margin-top: 12px;
+    padding-top: 11px;
+    gap: 4px;
+  }
+
+  .scent-mood-description strong {
+    font-size: 0.94rem;
+  }
+
+  .scent-mood-description span {
+    font-size: 0.74rem;
+    line-height: 1.45;
+  }
+}
+
+/* =========================================
    SCENT MOOD FILTER — ICON DETAIL
 ========================================= */
 
