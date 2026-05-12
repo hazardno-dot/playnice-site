@@ -3862,92 +3862,19 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
 <div className="scent-mood-filter" aria-label={lang === "sr" ? "Mood filter" : "Scent mood filter"}>
   <div className="scent-mood-filter-header">
-    <span>{lang === "sr" ? "Biraj po osećaju" : "Browse by mood"}</span>
-    <small>
-  {lang === "sr"
-    ? "Ne traži note. Traži trenutak."
-    : "Don’t search notes. Find the moment."}
-    </small>
-  </div>
+  <span>{lang === "sr" ? "Biraj po osećaju" : "Browse by mood"}</span>
 
-  <div className="scent-mood-scroll" role="list">
-    {scentMoodOptions.map((option) => (
-      <button
-  key={option.value}
-  type="button"
-  className={`scent-mood-chip ${
-    scentMood === option.value ? "active" : ""
-  }`}
-  onClick={() => setScentMood(option.value)}
->
-  <span className="scent-mood-icon" aria-hidden="true">
-    {option.icon}
-  </span>
-
-  <span className="scent-mood-label">
-    {option.label}
-  </span>
-</button>
-    ))}
-  </div>
+  <small>
+    {scentMood !== "All"
+      ? selectedScentMood.label
+      : lang === "sr"
+        ? "Ne traži note. Traži trenutak."
+        : "Don’t search notes. Find the moment."}
+  </small>
 </div>
 
-{(category !== "All" ||
-  season !== "All" ||
-  scentMood !== "All" ||
-  sortBy !== "featured" ||
-  searchTerm.trim() !== "") && (
-  <div className="active-filters-bar active-filters-bar-compact">
-    <div className="active-filters-left">
-      {category !== "All" && (
-        <span className="active-filter-chip">
-          {getCategoryLabel(category)}
-        </span>
-      )}
-
-      {season !== "All" && (
-        <span className="active-filter-chip">
-          {selectedSeasonOption.label}
-        </span>
-      )}
-
-      {scentMood !== "All" && (
-        <span className="active-filter-chip">
-          {selectedScentMood.label}
-        </span>
-      )}
-
-      {sortBy !== "featured" && (
-        <span className="active-filter-chip">
-          {selectedSortOption.label}
-        </span>
-      )}
-
-      {searchTerm.trim() !== "" && (
-        <span className="active-filter-chip">
-          “{searchTerm.trim()}”
-        </span>
-      )}
-    </div>
-
-    <button
-      type="button"
-      className="clear-filters-button"
-      onClick={() => {
-  setCategory("All");
-  setSeason("All");
-  setScentMood("All");
-  setSortBy("featured");
-  setSearchTerm("");
-}}
-    >
-      {lang === "sr" ? "Obriši" : "Clear"}
-    </button>
-  </div>
-)}
-
 {scentMood !== "All" && (
-  <div className="scent-mood-description">
+  <div className="scent-mood-inline-description">
     <strong>
       {lang === "sr"
         ? `Odabrano za ${selectedScentMood.label}`
@@ -3989,6 +3916,47 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </span>
   </div>
 )}
+
+  <div className="scent-mood-scroll" role="list">
+    {scentMoodOptions.map((option) => (
+      <button
+  key={option.value}
+  type="button"
+  className={`scent-mood-chip ${
+    scentMood === option.value ? "active" : ""
+  }`}
+  onClick={() => setScentMood(option.value)}
+>
+  <span className="scent-mood-icon" aria-hidden="true">
+    {option.icon}
+  </span>
+
+  <span className="scent-mood-label">
+    {option.label}
+  </span>
+</button>
+    ))}
+  </div>
+</div>
+
+{(category !== "All" ||
+  season !== "All" ||
+  scentMood !== "All" ||
+  sortBy !== "featured" ||
+  searchTerm.trim() !== "") && (
+  <div className="active-filters-bar active-filters-bar-compact">
+    <div className="active-filters-left">
+      {category !== "All" && (
+        <span className="active-filter-chip">
+          {getCategoryLabel(category)}
+        </span>
+      )}
+
+      {season !== "All" && (
+        <span className="active-filter-chip">
+          {selectedSeasonOption.label}
+        </span>
+      )}
 
 <div className="shop-pagination-row">
   {renderPagination("top")}

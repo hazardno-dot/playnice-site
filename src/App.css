@@ -2343,72 +2343,6 @@ main {
 }
 
 /* =========================================
-   SCENT MOOD DESCRIPTION
-========================================= */
-
-.scent-mood-description {
-  margin-top: 14px;
-  padding-top: 13px;
-
-  border-top: 1px solid rgba(220, 181, 107, 0.08);
-
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-
-  animation: moodFadeIn 0.28s ease;
-}
-
-.scent-mood-description strong {
-  color: rgba(255, 248, 235, 0.96);
-
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1rem;
-  font-weight: 650;
-  letter-spacing: 0.01em;
-}
-
-.scent-mood-description span {
-  max-width: 760px;
-
-  color: rgba(245, 239, 230, 0.66);
-
-  font-family: "Inter", sans-serif;
-  font-size: 0.8rem;
-  line-height: 1.5;
-  letter-spacing: 0.01em;
-}
-
-@keyframes moodFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 768px) {
-  .scent-mood-description {
-    margin-top: 12px;
-    padding-top: 11px;
-    gap: 4px;
-  }
-
-  .scent-mood-description strong {
-    font-size: 0.94rem;
-  }
-
-  .scent-mood-description span {
-    font-size: 0.74rem;
-    line-height: 1.45;
-  }
-}
-
-/* =========================================
    SCENT MOOD FILTER — ICON DETAIL
 ========================================= */
 
@@ -2450,6 +2384,62 @@ main {
     width: 15px;
     height: 15px;
     font-size: 0.76rem;
+  }
+}
+
+/* =========================================
+   SCENT MOOD INLINE DESCRIPTION
+========================================= */
+
+.scent-mood-inline-description {
+  margin: -2px auto 13px;
+  max-width: 760px;
+
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  animation: moodFadeIn 0.24s ease;
+}
+
+.scent-mood-inline-description strong {
+  color: rgba(255, 248, 235, 0.96);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.08rem;
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+.scent-mood-inline-description span {
+  max-width: 620px;
+
+  color: rgba(245, 239, 230, 0.68);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.78rem;
+  line-height: 1.42;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 768px) {
+  .scent-mood-inline-description {
+    margin: 2px auto 12px;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .scent-mood-inline-description strong {
+    font-size: 0.98rem;
+  }
+
+  .scent-mood-inline-description span {
+    font-size: 0.73rem;
+    line-height: 1.4;
   }
 }
 
