@@ -2388,39 +2388,6 @@ main {
 }
 
 /* =========================================
-   SCENT MOOD FILTER — DESKTOP FIT TIGHTEN
-========================================= */
-
-@media (min-width: 769px) {
-  .scent-mood-filter {
-    padding: 13px 16px;
-  }
-
-  .scent-mood-scroll {
-    gap: 6px;
-  }
-
-  .scent-mood-chip {
-    min-height: 32px;
-    padding: 0 11px;
-    font-size: 0.67rem;
-    letter-spacing: 0.065em;
-    gap: 6px;
-  }
-
-  .scent-mood-icon {
-    width: 14px;
-    height: 14px;
-    font-size: 0.72rem;
-  }
-
-  .scent-mood-filter-header small {
-    font-size: 0.68rem;
-    letter-spacing: 0.10em;
-  }
-}
-
-/* =========================================
    CART DRAWER
 ========================================= */
 .cart-drawer {
