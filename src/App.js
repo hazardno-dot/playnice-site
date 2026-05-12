@@ -5670,9 +5670,9 @@ closeProductModal();
       <svg viewBox="0 0 160 160" aria-hidden="true">
         <defs>
           <path
-            id="miniCartTextCircle"
-            d="M80,80 m-58,0 a58,58 0 1,1 116,0 a58,58 0 1,1 -116,0"
-          />
+  id="miniCartTextCircle"
+  d="M28,80 A52,52 0 0,1 132,80"
+/>
         </defs>
 
         <text>
