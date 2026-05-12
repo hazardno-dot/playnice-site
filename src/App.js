@@ -613,6 +613,7 @@ function App() {
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const [sortBy, setSortBy] = useState("featured");
   const [season, setSeason] = useState("All");
+  const [scentMood, setScentMood] = useState("All");
   const [privateSelectionOpen, setPrivateSelectionOpen] = useState(false);
   const [closingVisible, setClosingVisible] = useState(false);
   const [currentHero, setCurrentHero] = useState(0);
@@ -756,7 +757,16 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
       productSeason === "all" ||
       productSeason === selectedSeason;
 
-    return categoryMatch && searchMatch && seasonMatch;
+    const selectedMood = String(scentMood || "").toLowerCase();
+
+    const productMoods = Array.isArray(product.moods)
+      ? product.moods.map((mood) => String(mood).toLowerCase())
+      : [];
+
+    const moodMatch =
+      selectedMood === "all" || productMoods.includes(selectedMood);
+
+    return categoryMatch && searchMatch && seasonMatch && moodMatch;
   });
 
   switch (sortBy) {
@@ -776,7 +786,7 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
     default:
       return result;
   }
-}, [category, searchTerm, season, sortBy]);
+}, [category, searchTerm, season, scentMood, sortBy]);
 
   const categoryOptions = [
     {
@@ -800,6 +810,41 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
   const selectedCategory =
     categoryOptions.find((option) => option.value === category) ||
     categoryOptions[0];
+
+    const scentMoodOptions = [
+  {
+    value: "All",
+    label: lang === "sr" ? "Svi moodovi" : "All moods",
+  },
+  {
+    value: "clean",
+    label: "Clean Everyday",
+  },
+  {
+    value: "summer",
+    label: "Summer Heat",
+  },
+  {
+    value: "date",
+    label: "Date Night",
+  },
+  {
+    value: "rich",
+    label: "Rich & Addictive",
+  },
+  {
+    value: "soft",
+    label: "Soft Luxury",
+  },
+  {
+    value: "signature",
+    label: "Signature Energy",
+  },
+];
+
+const selectedScentMood =
+  scentMoodOptions.find((option) => option.value === scentMood) ||
+  scentMoodOptions[0];
 
 /* =========================================
    SIDE RAILS ADS
@@ -3801,8 +3846,35 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 </div>
 
+<div className="scent-mood-filter" aria-label={lang === "sr" ? "Mood filter" : "Scent mood filter"}>
+  <div className="scent-mood-filter-header">
+    <span>{lang === "sr" ? "Biraj po osećaju" : "Browse by mood"}</span>
+    <small>
+      {lang === "sr"
+        ? "Ne traži note. Traži trenutak."
+        : "Don’t search notes. Find the moment."}
+    </small>
+  </div>
+
+  <div className="scent-mood-scroll" role="list">
+    {scentMoodOptions.map((option) => (
+      <button
+        key={option.value}
+        type="button"
+        className={`scent-mood-chip ${
+          scentMood === option.value ? "active" : ""
+        }`}
+        onClick={() => setScentMood(option.value)}
+      >
+        {option.label}
+      </button>
+    ))}
+  </div>
+</div>
+
 {(category !== "All" ||
   season !== "All" ||
+  scentMood !== "All" ||
   sortBy !== "featured" ||
   searchTerm.trim() !== "") && (
   <div className="active-filters-bar active-filters-bar-compact">
@@ -3816,6 +3888,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       {season !== "All" && (
         <span className="active-filter-chip">
           {selectedSeasonOption.label}
+        </span>
+      )}
+
+      {scentMood !== "All" && (
+        <span className="active-filter-chip">
+          {selectedScentMood.label}
         </span>
       )}
 
@@ -3836,11 +3914,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       type="button"
       className="clear-filters-button"
       onClick={() => {
-        setCategory("All");
-        setSeason("All");
-        setSortBy("featured");
-        setSearchTerm("");
-      }}
+  setCategory("All");
+  setSeason("All");
+  setScentMood("All");
+  setSortBy("featured");
+  setSearchTerm("");
+}}
     >
       {lang === "sr" ? "Obriši" : "Clear"}
     </button>
