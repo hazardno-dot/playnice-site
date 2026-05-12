@@ -14956,3 +14956,39 @@ body.scrolled .header-system .announcement-bar-system {
     padding-top: 7px;
   }
 }
+
+/* =========================================
+   PRODUCTS PER PAGE
+========================================= */
+.products-per-page-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 6px 10px;
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  border-radius: 999px;
+
+  background: rgba(8, 8, 8, 0.72);
+  color: rgba(255, 248, 235, 0.72);
+
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.products-per-page-control select {
+  border: 0;
+  outline: none;
+  background: transparent;
+
+  color: rgba(255, 248, 235, 0.9);
+  font: inherit;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.products-per-page-control select option {
+  background: #080808;
+  color: #fff8eb;
+}

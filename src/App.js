@@ -314,7 +314,10 @@ const getProductStructuredData = (product, lang = "sr") => {
 /* =========================================
    GLOBAL CONSTANTS & HELPERS
 ========================================= */
-const PRODUCTS_PER_PAGE = 24;
+const PRODUCT_PAGE_SIZE_OPTIONS = [12, 24, 48, 96];
+
+const [productsPerPage, setProductsPerPage] = useState(24);
+
 const SHIPPING_COST = 4.0;
 const FREE_SHIPPING_THRESHOLD = 39;
 
@@ -898,6 +901,11 @@ const handleSponsoredAdClick = (ad, placement) => {
   });
 };
 
+const handleProductsPerPageChange = (value) => {
+  setProductsPerPage(Number(value));
+  setCurrentPage(1);
+};
+
 /* =========================================
    seasonOptions
 ========================================= */
@@ -958,6 +966,13 @@ const selectedSortOption =
     const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
     return filteredProducts.slice(start, start + PRODUCTS_PER_PAGE);
   }, [filteredProducts, currentPage]);
+
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
+  const paginatedProducts = filteredProducts.slice(
+  (currentPage - 1) * productsPerPage,
+  currentPage * productsPerPage
+  );
 
   const cartCount = useMemo(
     () => cart.reduce((sum, item) => sum + item.quantity, 0),
@@ -3841,6 +3856,22 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </button>
   </div>
 )}
+
+      <div className="products-per-page-control">
+  <span>{lang === "sr" ? "Prikaži" : "Show"}</span>
+
+  <select
+    value={productsPerPage}
+    onChange={(e) => handleProductsPerPageChange(e.target.value)}
+    aria-label={lang === "sr" ? "Broj proizvoda po strani" : "Products per page"}
+  >
+    {PRODUCT_PAGE_SIZE_OPTIONS.map((option) => (
+      <option key={option} value={option}>
+        {option}
+      </option>
+    ))}
+  </select>
+      </div>
 
       {renderPagination("top")}
 
