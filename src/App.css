@@ -14991,36 +14991,36 @@ body.scrolled .header-system .announcement-bar-system {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 9px;
+  gap: 7px;
 
   width: fit-content;
 
-  color: rgba(255, 248, 235, 0.58);
-  font-size: 0.72rem;
+  color: rgba(255, 248, 235, 0.52);
+  font-size: 0.62rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.075em;
   text-transform: uppercase;
 }
 
 .per-page-button-group {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 
 .per-page-button {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   border-radius: 999px;
 
   border: 1px solid rgba(220, 181, 107, 0.16);
   background:
-    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.055), transparent 58%),
-    rgba(9, 9, 9, 0.78);
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05), transparent 58%),
+    rgba(9, 9, 9, 0.76);
 
-  color: rgba(255, 248, 235, 0.68);
-  font-size: 0.72rem;
-  font-weight: 850;
+  color: rgba(255, 248, 235, 0.66);
+  font-size: 0.62rem;
+  font-weight: 820;
 
   cursor: pointer;
   transition:
@@ -15032,16 +15032,16 @@ body.scrolled .header-system .announcement-bar-system {
 }
 
 .per-page-button:hover {
-  color: rgba(255, 248, 235, 0.92);
-  border-color: rgba(220, 181, 107, 0.32);
+  color: rgba(255, 248, 235, 0.9);
+  border-color: rgba(220, 181, 107, 0.3);
   transform: translateY(-1px);
 }
 
 .per-page-button.is-active {
   color: #16110a;
-  border-color: rgba(220, 181, 107, 0.72);
+  border-color: rgba(220, 181, 107, 0.68);
   background: linear-gradient(135deg, #f1d18a, #c99a42);
-  box-shadow: 0 0 22px rgba(220, 181, 107, 0.16);
+  box-shadow: 0 0 16px rgba(220, 181, 107, 0.13);
 }
 
 @media (max-width: 560px) {
@@ -15049,7 +15049,7 @@ body.scrolled .header-system .announcement-bar-system {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 11px;
 
     margin: 18px 0 22px;
   }
@@ -15064,8 +15064,8 @@ body.scrolled .header-system .announcement-bar-system {
   }
 
   .per-page-button {
-    width: 31px;
-    height: 31px;
-    font-size: 0.68rem;
+    width: 28px;
+    height: 28px;
+    font-size: 0.62rem;
   }
 }
