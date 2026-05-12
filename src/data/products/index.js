@@ -32,6 +32,7 @@ export const products = [
     rating: 8.6,
     ratingLabel: "Audience Favorite",
     season: "winter",
+    moods: ["date", "rich", "signature"],
     inspiredBy: {
     name: "Creed Aventus and MFK Baccarat Rouge 540",
     short: "Aventus and Baccarat Rouge 540 DNA"
@@ -47,6 +48,7 @@ export const products = [
     rating: 8.1,
     ratingLabel: "Audience Favorite",
     season: "all",
+    moods: ["signature", "rich", "date"],
     inspiredBy: {
     name: "Creed Absolu Aventus",
     short: "Absolu Aventus DNA"
@@ -61,6 +63,7 @@ export const products = [
     rating: 8.9,
     ratingLabel: "Audience Favorite",
     season: "summer",
+    moods: ["clean", "summer", "signature"],
     inspiredBy: {
     name: "Bvlgari Tygar / Sospiro Perfumes Vibrato",
     short: "Tygar DNA"
@@ -76,6 +79,7 @@ export const products = [
     rating: 8.0,
     ratingLabel: "Audience Favorite",
     season: "summer",
+    moods: ["soft", "date", "rich"],
     inspiredBy: {
     name: "Louis Vuitton Imagination",
     short: "Imagination DNA"
@@ -89,7 +93,8 @@ export const products = [
     sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
     rating: 7.7,
     ratingLabel: "Well Loved",
-    season: "all"
+    season: "all",
+    moods: ["date", "rich", "signature"],
   },
   {
     id: 7,
@@ -101,6 +106,7 @@ export const products = [
     rating: 8.8,
     ratingLabel: "Audience Favorite",
     season: "all",
+    moods: ["signature", "date", "rich"],
     inspiredBy: {
     name: "Creed Aventus",
     short: "Aventus DNA"
@@ -115,6 +121,7 @@ export const products = [
     rating: 8.0,
     ratingLabel: "Audience Favorite",
     season: "summer",
+    moods: ["clean", "signature", "soft"],
     inspiredBy: {
     name: "Creed Silver Mountain Water",
     short: "Silver Mountain Water DNA"
@@ -129,6 +136,7 @@ export const products = [
     rating: 7.9,
     ratingLabel: "Well Loved",
     season: "winter",
+    moods: ["rich", "date", "signature"],
     inspiredBy: {
     name: "Stéphane Humbert Lucas 777 Sand Dance",
     short: "Sand Dance DNA"
@@ -143,6 +151,7 @@ export const products = [
     rating: 7.4,
     ratingLabel: "Popular Pick",
     season: "summer",
+    moods: ["clean", "summer", "signature"],
     inspiredBy: {
     name: "Bleu de Chanel Eau de Parfum",
     short: "Bleu de Chanel DNA"
@@ -158,6 +167,7 @@ export const products = [
     rating: 8.7,
     ratingLabel: "Audience Favorite",
     season: "summer",
+    moods: ["summer", "soft", "date"],
     inspiredBy: {
     name: "Louis Vuitton Symphony",
     short: "Symphony DNA"
@@ -173,6 +183,7 @@ export const products = [
     rating: 8.4,
     ratingLabel: "Audience Favorite",
     season: "winter",
+    moods: ["rich", "date", "signature"],
     inspiredBy: {
     name: "Hugo Boss Bottled Absolute",
     short: "Boss Absolute DNA"
@@ -187,6 +198,7 @@ export const products = [
     rating: 8.0,
     ratingLabel: "Audience Favorite",
     season: "all",
+    moods: ["clean", "signature", "date"],
     inspiredBy: {
     name: "Yves Saint Laurent (YSL) Y EDP",
     short: "YSL Y EDP DNA"
@@ -202,6 +214,7 @@ export const products = [
     rating: 9.0,
     ratingLabel: "Top Rated",
     season: "winter",
+    moods: ["rich", "date", "soft"],
     inspiredBy: {
     name: "By Kilian Angels' Share",
     short: "Angels' Share DNA"
@@ -215,7 +228,8 @@ export const products = [
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     rating: 7.8,
     ratingLabel: "Well Loved",
-    season: "winter"
+    season: "winter",
+    moods: ["rich", "date", "signature"],
   },
   {
     id: 16,
@@ -226,6 +240,7 @@ export const products = [
     rating: 7.5,
     ratingLabel: "Well Loved",
     season: "all",
+    moods: ["summer", "rich", "signature"],
     inspiredBy: {
     name: "Versace Eros Najim",
     short: "Eros Najim DNA"
@@ -240,6 +255,7 @@ export const products = [
     rating: 7.6,
     ratingLabel: "Well Loved",
     season: "summer",
+    moods: ["clean", "summer", "soft"],
     inspiredBy: {
     name: "Roja Dove Elysium Parfum Cologne",
     short: "Elysium DNA"
@@ -254,6 +270,7 @@ export const products = [
     rating: 7.7,
     ratingLabel: "Well Loved",
     season: "winter",
+    moods: ["soft", "clean", "signature"],
     inspiredBy: {
     name: "Xerjoff 1861 Naxos",
     short: "Naxos DNA"
@@ -268,6 +285,7 @@ export const products = [
     rating: 8.1,
     ratingLabel: "Audience Favorite",
     season: "winter",
+    moods: ["rich", "date", "soft"],
     inspiredBy: {
     name: "Maison Francis Kurkdjian Oud Satin Mood",
     short: "Oud Satin Mood DNA"
@@ -282,6 +300,7 @@ export const products = [
     rating: 7.9,
     ratingLabel: "Well Loved",
     season: "winter",
+    moods: ["clean", "summer", "signature"],
     inspiredBy: {
     name: "Parfums de Marly Layton",
     short: "Layton DNA"
@@ -297,6 +316,7 @@ export const products = [
     rating: 7.8,
     ratingLabel: "Well Loved",
     season: "summer",
+    moods: ["clean", "summer", "soft"],
     inspiredBy: {
     name: "Creed Virgin Island Water",
     short: "Virgin Island Water DNA"
@@ -311,6 +331,7 @@ export const products = [
     rating: 7.9,
     ratingLabel: "Well Loved",
     season: "summer",
+    moods: ["clean", "summer", "soft"],
     inspiredBy: {
     name: "Louis Vuitton Pacific Chill",
     short: "Pacific Chill DNA"
@@ -324,7 +345,8 @@ export const products = [
     sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
     rating: 8.5,
     ratingLabel: "Audience Favorite",
-    season: "winter"
+    season: "winter",
+    moods: ["rich", "date", "signature"],
   },
   {
     id: 24,
@@ -334,7 +356,8 @@ export const products = [
     sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
     rating: 8.3,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "summer",
+    moods: ["clean", "summer", "soft"],
   },
   {
     id: 25,
@@ -344,7 +367,8 @@ export const products = [
     sizes: { "2ml": 7, "5ml": 16, "10ml": 29 },
     rating: 8.0,
     ratingLabel: "Audience Favorite",
-    season: "all"
+    season: "all",
+    moods: ["clean", "signature", "soft"],
   },
   {
     id: 26,
@@ -354,18 +378,20 @@ export const products = [
     sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
     rating: 7.8,
     ratingLabel: "Well Loved",
-    season: "summer"
+    season: "summer",
+    moods: ["clean", "summer", "soft"],
   },
   {
     id: 27,
-    name: "BLEU DE CHANEL Eau de Parfum",
+    name: "Bleu De Chanel Eau de Parfum",
     category: "Designer",
     image: "/products/BDC-EdP.png",
     sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
     badge: "BESTSELLER",
     rating: 9.2,
     ratingLabel: "Top Rated",
-    season: "all"
+    season: "all",
+    moods: ["signature", "clean", "date"],
   },
   {
     id: 28,
@@ -376,7 +402,8 @@ export const products = [
     badge: "BESTSELLER",
     rating: 8.9,
     ratingLabel: "Audience Favorite",
-    season: "all"
+    season: "all",
+    moods: ["signature", "clean", "soft"],
   },
   {
     id: 29,
@@ -386,7 +413,8 @@ export const products = [
     sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
     rating: 7.7,
     ratingLabel: "Well Loved",
-    season: "all"
+    season: "all",
+    moods: ["signature", "clean", "date"],
   },
   {
     id: 30,
@@ -396,7 +424,8 @@ export const products = [
     sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
     rating: 8.1,
     ratingLabel: "Audience Favorite",
-    season: "all"
+    season: "all",
+    moods: ["date", "rich", "signature"],
   },
   {
     id: 31,
@@ -406,7 +435,8 @@ export const products = [
     sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
     rating: 7.9,
     ratingLabel: "Well Loved",
-    season: "all"
+    season: "all",
+    moods: ["date", "soft", "rich"],
   },
   {
     id: 32,
@@ -416,7 +446,8 @@ export const products = [
     sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 },
     rating: 7.3,
     ratingLabel: "Popular Pick",
-    season: "summer"
+    season: "summer",
+    moods: ["clean", "summer", "soft"],
   },
   {
     id: 33,
@@ -426,7 +457,8 @@ export const products = [
     sizes: { "2ml": 3, "5ml": 7, "10ml": 12 },
     rating: 7.5,
     ratingLabel: "Well Loved",
-    season: "summer"
+    season: "summer",
+    moods: ["clean", "signature", "summer"],
   },
   {
     id: 34,
@@ -436,7 +468,8 @@ export const products = [
     sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
     rating: 7.6,
     ratingLabel: "Well Loved",
-    season: "all"
+    season: "all",
+    moods: ["signature", "date", "soft"],
   },
   {
     id: 35,
@@ -446,7 +479,8 @@ export const products = [
     sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
     rating: 8.0,
     ratingLabel: "Audience Favorite",
-    season: "winter"
+    season: "winter",
+    moods: ["rich", "date", "signature"],
   },
   {
     id: 36,
@@ -457,7 +491,8 @@ export const products = [
     badge: "BESTSELLER",
     rating: 9.3,
     ratingLabel: "Top Rated",
-    season: "all"
+    season: "all",
+    moods: ["clean", "summer", "signature"],
   },
   {
     id: 37,
@@ -468,7 +503,8 @@ export const products = [
     badge: "BESTSELLER",
     rating: 8.8,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "summer",
+    moods: ["clean", "summer", "signature"],
   },
   {
     id: 38,
@@ -478,7 +514,8 @@ export const products = [
     sizes: { "2ml": 5, "5ml": 11, "10ml": 20 },
     rating: 8.6,
     ratingLabel: "Audience Favorite",
-    season: "winter"
+    season: "winter",
+    moods: ["date", "rich", "signature"],
   },
   {
     id: 39,
@@ -488,7 +525,8 @@ export const products = [
     sizes: { "2ml": 5, "5ml": 12, "10ml": 21 },
     rating: 8.7,
     ratingLabel: "Audience Favorite",
-    season: "winter"
+    season: "winter",
+    moods: ["rich", "date", "soft"],
   },
   {
     id: 40,
@@ -498,7 +536,8 @@ export const products = [
     sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 },
     rating: 7.4,
     ratingLabel: "Popular Pick",
-    season: "summer"
+    season: "summer",
+    moods: ["clean", "summer", "soft"],
   },
   {
     id: 41,
@@ -509,7 +548,8 @@ export const products = [
     badge: "BESTSELLER",
     rating: 8.1,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "summer",
+    moods: ["soft", "date", "signature"],
   },
   {
     id: 42,
@@ -519,7 +559,8 @@ export const products = [
     sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
     rating: 8.4,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "summer",
+    moods: ["soft", "date", "signature"],
   },
   {
     id: 43,
@@ -530,7 +571,8 @@ export const products = [
     badge: "BESTSELLER",
     rating: 9.0,
     ratingLabel: "Top Rated",
-    season: "all"
+    season: "all",
+    moods: ["signature", "summer", "clean"],
   },
   {
     id: 44,
@@ -540,7 +582,8 @@ export const products = [
     sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
     rating: 7.8,
     ratingLabel: "Well Loved",
-    season: "winter"
+    season: "winter",
+    moods: ["signature", "date", "rich"],
   },
   {
     id: 45,
@@ -550,7 +593,8 @@ export const products = [
     sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
     rating: 8.2,
     ratingLabel: "Audience Favorite",
-    season: "all"
+    season: "all",
+    moods: ["soft", "clean", "signature"],
   },
   {
     id: 46,
@@ -561,7 +605,8 @@ export const products = [
     badge: "BESTSELLER",
     rating: 8.9,
     ratingLabel: "Audience Favorite",
-    season: "summer"
+    season: "summer",
+    moods: ["signature", "clean", "soft"],
   },
   {
     id: 47,
@@ -572,7 +617,8 @@ export const products = [
     badge: "BESTSELLER",
     rating: 9.1,
     ratingLabel: "Top Rated",
-    season: "winter"
+    season: "winter",
+    moods: ["rich", "date", "soft"],
   },
   {
     id: 48,
@@ -584,6 +630,7 @@ export const products = [
     rating: 8.6,
     ratingLabel: "Night Beast",
     season: "winter",
+    moods: ["date", "rich", "signature"],
   },
   {
     id: 49,
@@ -595,6 +642,7 @@ export const products = [
     rating: 8.4,
     ratingLabel: "Fresh King",
     season: "summer",
+    moods: ["clean", "summer", "signature"],
     inspiredBy: {
     name: "Paco Rabanne Invictus Aqua",
     short: "Invictus DNA"
@@ -610,6 +658,7 @@ export const products = [
     rating: 9.1,
     ratingLabel: "Top Rated",
     season: "all",
+    moods: ["signature", "rich", "date"],
     inspiredBy: {
     name: "Creed Absolu Aventus",
     short: "Absolu Aventus DNA"
@@ -625,6 +674,7 @@ export const products = [
     rating: 7.9,
     ratingLabel: "Well Loved",
     season: "summer",
+    moods: ["clean", "summer", "soft"],
     inspiredBy: {
     name: "Tales from Zanzibar by Memoirs of a Perfume Collector",
     short: "Tales from Zanzibar DNA"
@@ -640,6 +690,7 @@ export const products = [
     rating: 8.1,
     ratingLabel: "Popular Pick",
     season: "summer",
+    moods: ["signature", "rich", "date"],
     inspiredBy: {
     name: "Clive Christian L Red Tea Vetiver",
     short: "Red Tea Vetiver DNA"
@@ -655,6 +706,7 @@ export const products = [
   rating: 8.7,
   ratingLabel: "Elegant Pick",
   season: "winter",
+  moods: ["date", "soft", "signature"],
 },
 {
   id: 54,
@@ -666,6 +718,7 @@ export const products = [
   rating: 8.3,
   ratingLabel: "Fresh Favorite",
   season: "summer",
+  moods: ["clean", "summer", "soft"],
 },
 {
   id: 55,
@@ -677,6 +730,7 @@ export const products = [
   rating: 8.0,
   ratingLabel: "Fresh Pick",
   season: "summer",
+  moods: ["clean", "summer", "signature"],
   inspiredBy: {
     name: "Xerjoff Torino 21",
     short: "Torino 21 DNA"
@@ -693,6 +747,7 @@ export const products = [
   rating: 8.4,
   ratingLabel: "Bold Choice",
   season: "winter",
+  moods: ["date", "rich", "signature"],
   inspiredBy: {
     name: "Creed Centaurus",
     short: "Centaurus DNA"
@@ -709,6 +764,7 @@ export const products = [
   rating: 8.8,
   ratingLabel: "Top Seller",
   season: "all",
+  moods: ["signature", "date", "rich"],
   inspiredBy: {
     name: "Nishane Hacivat",
     short: "Hacivat DNA"
@@ -725,6 +781,7 @@ export const products = [
   rating: 8.2,
   ratingLabel: "Fresh Spicy",
   season: "all",
+  moods: ["signature", "clean", "date"],
   inspiredBy: {
     name: "Parfums de Marly Castley",
     short: "Castley DNA"
@@ -741,6 +798,7 @@ export const products = [
   rating: 8.4,
   ratingLabel: "Elegant Pick",
   season: "all",
+  moods: ["rich", "date", "signature"],
   inspiredBy: {
     name: "Gucci Guilty Elixir pour Homme",
     short: "Guilty Elixir DNA"
