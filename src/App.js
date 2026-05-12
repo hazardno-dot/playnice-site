@@ -3864,25 +3864,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   className="scent-mood-filter"
   aria-label={lang === "sr" ? "Mood filter" : "Scent mood filter"}
 >
-  <div className="scent-mood-filter-header">
-  <div className="scent-mood-title-line">
-    <span>{lang === "sr" ? "Biraj po osećaju" : "Browse by mood"}</span>
+  <div className="scent-mood-filter-header scent-mood-filter-header-inline">
+  <span>{lang === "sr" ? "Biraj po osećaju" : "Browse by mood"}</span>
 
-    {scentMood !== "All" && (
-      <em>{selectedScentMood.label}</em>
-    )}
-  </div>
-
-  {scentMood === "All" && (
-    <small>
-      {lang === "sr"
-        ? "Ne traži note. Traži trenutak."
-        : "Don’t search notes. Find the moment."}
-    </small>
-  )}
-</div>
-
-  {scentMood !== "All" && (
+  {scentMood !== "All" ? (
     <div className="scent-mood-inline-description">
       <strong>
         {lang === "sr"
@@ -3924,7 +3909,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         }[scentMood]}
       </span>
     </div>
+  ) : (
+    <small>
+      {lang === "sr"
+        ? "Ne traži note. Traži trenutak."
+        : "Don’t search notes. Find the moment."}
+    </small>
   )}
+</div>
 
   <div className="scent-mood-scroll" role="list">
     {scentMoodOptions.map((option) => (

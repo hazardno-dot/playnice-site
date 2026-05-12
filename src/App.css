@@ -2391,67 +2391,37 @@ main {
    SCENT MOOD INLINE DESCRIPTION — COMPACT
 ========================================= */
 
-.scent-mood-inline-description {
-  margin: -2px auto 13px;
-  max-width: 760px;
+.scent-mood-filter-header-inline {
+  align-items: center;
+}
+
+.scent-mood-filter-header-inline .scent-mood-inline-description {
+  flex: 1;
+  min-width: 0;
+  max-width: none;
+  margin: 0 0 0 18px;
 
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: center;
-  gap: 10px;
+  gap: 9px;
 
-  text-align: center;
   white-space: nowrap;
   overflow: hidden;
-
-  animation: moodFadeIn 0.24s ease;
+  text-align: center;
 }
 
-.scent-mood-inline-description strong {
+.scent-mood-filter-header-inline .scent-mood-inline-description strong {
   flex: 0 0 auto;
-
-  color: rgba(255, 248, 235, 0.96);
-
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.08rem;
-  font-weight: 650;
-  line-height: 1.1;
-  letter-spacing: 0.01em;
 }
 
-.scent-mood-inline-description span {
+.scent-mood-filter-header-inline .scent-mood-inline-description span {
   min-width: 0;
-  max-width: 520px;
-
-  color: rgba(245, 239, 230, 0.68);
-
-  font-family: "Inter", sans-serif;
-  font-size: 0.78rem;
-  line-height: 1.3;
-  letter-spacing: 0.01em;
+  max-width: none;
 
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.scent-mood-title-line {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 10px;
-  min-width: 0;
-}
-
-.scent-mood-title-line em {
-  color: rgba(220, 181, 107, 0.86);
-
-  font-family: "Inter", sans-serif;
-  font-size: 0.72rem;
-  font-style: normal;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  line-height: 1;
-  text-transform: uppercase;
 }
 
 /* =========================================
