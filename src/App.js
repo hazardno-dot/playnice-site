@@ -5667,21 +5667,31 @@ closeProductModal();
       {miniCartPreview && (
   <div className="mini-cart-preview" role="status" aria-live="polite">
     <div className="mini-cart-preview-orb-text">
-      <svg viewBox="0 0 160 160" aria-hidden="true">
-        <defs>
-          <path
-  id="miniCartTextCircle"
-  d="M28,80 A52,52 0 0,1 132,80"
-/>
-        </defs>
+  <svg viewBox="0 0 160 160" aria-hidden="true">
+    <defs>
+      <path
+        id="miniCartTextTop"
+        d="M28,80 A52,52 0 0,1 132,80"
+      />
+      <path
+        id="miniCartTextBottom"
+        d="M132,82 A52,52 0 0,1 28,82"
+      />
+    </defs>
 
-        <text>
-          <textPath href="#miniCartTextCircle" startOffset="50%" textAnchor="middle">
-            {miniCartPreview.name}
-          </textPath>
-        </text>
-      </svg>
-    </div>
+    <text className="mini-cart-text-top">
+      <textPath href="#miniCartTextTop" startOffset="50%" textAnchor="middle">
+        {miniCartPreview.name}
+      </textPath>
+    </text>
+
+    <text className="mini-cart-text-bottom">
+      <textPath href="#miniCartTextBottom" startOffset="50%" textAnchor="middle">
+        {lang === "sr" ? "Dodato" : "Added"} · {miniCartPreview.size} · {formatPrice(miniCartPreview.price)}
+      </textPath>
+    </text>
+  </svg>
+</div>
 
     <div className="mini-cart-preview-media">
       {miniCartPreview.image && (
