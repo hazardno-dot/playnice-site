@@ -1938,7 +1938,7 @@ const goToJournal = () => {
 
     miniCartTimerRef.current = setTimeout(() => {
       setMiniCartPreview(null);
-    }, 2300);
+    }, 4300);
   }
 
   if (showToast && !showMiniPreview) {
