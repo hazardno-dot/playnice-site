@@ -2435,16 +2435,27 @@ main {
     display: flex;
     justify-content: flex-start;
 
-    margin-top: 6px;
-    gap: 7px;
+    margin-top: 7px;
+    gap: 0;
   }
 
-  .scent-mood-filter-header-inline .scent-mood-inline-description strong {
-    font-size: 0.9rem;
+  .scent-mood-filter-header-inline .scent-mood-inline-description strong,
+  .scent-mood-filter-header-inline .scent-mood-inline-description i {
+    display: none;
   }
 
   .scent-mood-filter-header-inline .scent-mood-inline-description span {
-    font-size: 0.7rem;
+    display: block;
+
+    max-width: 100%;
+
+    font-size: 0.76rem;
+    line-height: 1.35;
+    color: rgba(245, 239, 230, 0.64);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .scent-mood-scroll {
