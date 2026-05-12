@@ -3906,7 +3906,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
        {selectedScentMood.label}
       </strong>
 
-      <i aria-hidden="true">—</i>
+      <i aria-hidden="true">→</i>
 
       <span>
         {{
