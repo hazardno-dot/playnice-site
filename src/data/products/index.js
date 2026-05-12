@@ -9,15 +9,16 @@ export const categoryLabels = {
 
 export const products = [
   {
-    id: 1,
-    name: "Afnan 9AM",
-    category: "Arabian",
-    image: "/products/afnan-9am.png",
-    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
-    rating: 7.8,
-    ratingLabel: "Well Loved",
-    season: "summer",
-    inspiredBy: {
+  id: 1,
+  name: "Afnan 9AM",
+  category: "Arabian",
+  image: "/products/afnan-9am.png",
+  sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+  rating: 7.8,
+  ratingLabel: "Well Loved",
+  season: "summer",
+  moods: ["clean", "summer", "signature"],
+  inspiredBy: {
     name: "Maison Francis Kurkdjian Aqua Vitae Forte",
     short: "Aqua Vitae Forte DNA"
   }
