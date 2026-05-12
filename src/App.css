@@ -3427,13 +3427,13 @@ main {
   .mini-cart-preview-orb-text text {
   fill: rgba(255, 232, 178, 0.92);
 
-  font-size: 9.8px;
+  font-size: 9.2px;
   font-weight: 850;
-  letter-spacing: 0.035em;
+  letter-spacing: 0.025em;
   text-transform: uppercase;
   }
 
-.mini-cart-text-bottom {
+  .mini-cart-text-bottom {
   fill: rgba(170, 226, 188, 0.94);
 
   font-size: 9.2px;
