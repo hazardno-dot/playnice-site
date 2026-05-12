@@ -5669,13 +5669,12 @@ closeProductModal();
       )}
 
       {miniCartPreview && (
-        <div
+  <div
     key={miniCartPreviewId}
     className="mini-cart-preview"
     role="status"
     aria-live="polite"
-        >
-  <div className="mini-cart-preview" role="status" aria-live="polite">
+  >
     <div className="mini-cart-preview-orb-text">
   <svg viewBox="0 0 160 160" aria-hidden="true">
     <defs>
