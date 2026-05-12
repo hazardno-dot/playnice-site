@@ -2586,18 +2586,8 @@ const titleLengthClass =
     </span>
   )}
 
-  <div
-  className="product-meta premium-product-meta"
-  role="button"
-  tabIndex={0}
-  onClick={() => handleProductCardOpen(product)}
-  onKeyDown={(e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      handleProductCardOpen(product);
-    }
-  }}
->
+  <div className="product-meta premium-product-meta">
+    
     <div className="product-meta-top">
       <p className="product-category">{getCategoryLabel(product.category)}</p>
       <h3 className={`product-card-title ${titleLengthClass}`}>
