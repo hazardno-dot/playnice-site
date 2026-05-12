@@ -14966,18 +14966,21 @@ body.scrolled .header-system .announcement-bar-system {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
 
-  margin: 6px 0 18px;
+  margin: 22px 0 26px;
 }
 
-.shop-pagination-row > .pagination-wrap,
-.shop-pagination-row > .pagination {
+.shop-pagination-row .pagination-wrap-top {
   grid-column: 2;
   justify-self: center;
+
+  margin: 0;
 }
 
 .shop-pagination-row .products-per-page-buttons {
   grid-column: 3;
   justify-self: end;
+
+  margin: 0;
 }
 
 /* =========================================
@@ -14990,7 +14993,6 @@ body.scrolled .header-system .announcement-bar-system {
   justify-content: flex-end;
   gap: 9px;
 
-  margin: 0;
   width: fit-content;
 
   color: rgba(255, 248, 235, 0.58);
@@ -15052,11 +15054,11 @@ body.scrolled .header-system .announcement-bar-system {
     margin: 18px 0 22px;
   }
 
-  .shop-pagination-row .products-per-page-buttons {
-    justify-content: center;
+  .shop-pagination-row .pagination-wrap-top {
+    margin: 0;
   }
 
-  .products-per-page-buttons {
+  .shop-pagination-row .products-per-page-buttons {
     width: 100%;
     justify-content: center;
   }
