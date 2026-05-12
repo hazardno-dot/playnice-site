@@ -2399,6 +2399,248 @@ main {
   }
 }
 
+/* =========================================
+   SCENT MOOD FILTER — FINAL
+========================================= */
+
+.scent-mood-filter {
+  margin: 14px 0 18px;
+  padding: 14px 16px;
+
+  border: 1px solid rgba(220, 181, 107, 0.14);
+  border-radius: 22px;
+
+  background:
+    radial-gradient(circle at 12% 0%, rgba(220, 181, 107, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+    rgba(8, 8, 8, 0.72);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 18px 44px rgba(0, 0, 0, 0.28);
+
+  overflow: hidden;
+}
+
+/* HEADER */
+
+.scent-mood-filter-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  margin-bottom: 12px;
+}
+
+.scent-mood-filter-header > span {
+  flex: 0 0 auto;
+
+  color: rgba(255, 248, 235, 0.94);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.22rem;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: 0.015em;
+}
+
+.scent-mood-filter-header small {
+  margin-left: auto;
+
+  color: rgba(220, 181, 107, 0.72);
+  font-family: "Inter", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.11em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+/* INLINE DESCRIPTION */
+
+.scent-mood-filter-header-inline .scent-mood-inline-description {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0 0 0 auto;
+
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 8px;
+
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.scent-mood-filter-header-inline .scent-mood-inline-description strong {
+  flex: 0 0 auto;
+
+  color: rgba(244, 216, 162, 0.92);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.98rem;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+.scent-mood-filter-header-inline .scent-mood-inline-description i {
+  flex: 0 0 auto;
+
+  color: rgba(220, 181, 107, 0.45);
+  font-style: normal;
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.scent-mood-filter-header-inline .scent-mood-inline-description span {
+  min-width: 0;
+
+  color: rgba(245, 239, 230, 0.58);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 520;
+  line-height: 1.25;
+  letter-spacing: 0.005em;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* CHIPS */
+
+.scent-mood-scroll {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 2px 1px 4px;
+
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scent-mood-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.scent-mood-chip {
+  appearance: none;
+  -webkit-appearance: none;
+
+  flex: 0 0 auto;
+
+  min-height: 34px;
+  padding: 0 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.16);
+
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.032), rgba(255, 255, 255, 0.012)),
+    rgba(14, 14, 14, 0.82);
+
+  color: rgba(255, 248, 235, 0.72);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 8px 18px rgba(0, 0, 0, 0.2);
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.18s ease;
+}
+
+.scent-mood-chip:hover {
+  color: rgba(255, 248, 235, 0.94);
+  border-color: rgba(220, 181, 107, 0.28);
+  transform: translateY(-1px);
+}
+
+.scent-mood-chip.active {
+  color: #111;
+  border-color: rgba(244, 216, 162, 0.62);
+
+  background:
+    linear-gradient(135deg, #f3dfb2 0%, #dcb56b 48%, #b98734 100%);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 10px 28px rgba(220, 181, 107, 0.18),
+    0 0 0 1px rgba(220, 181, 107, 0.08);
+}
+
+.scent-mood-chip:focus,
+.scent-mood-chip:focus-visible {
+  outline: none;
+  border-color: rgba(220, 181, 107, 0.42);
+}
+
+/* ICONS */
+
+.scent-mood-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 16px;
+  height: 16px;
+
+  font-size: 0.8rem;
+  line-height: 1;
+
+  transform: translateY(-0.5px);
+  filter: saturate(0.95) brightness(1.04);
+}
+
+.scent-mood-label {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.scent-mood-chip.active .scent-mood-icon {
+  filter: saturate(1.05) brightness(0.92);
+}
+
+/* DESKTOP FIT */
+
+@media (min-width: 769px) {
+  .scent-mood-scroll {
+    gap: 7px;
+  }
+
+  .scent-mood-chip {
+    padding: 0 12px;
+    font-size: 0.68rem;
+    letter-spacing: 0.065em;
+  }
+}
+
 /* MOBILE */
 
 @media (max-width: 768px) {
@@ -2412,7 +2654,7 @@ main {
 
   .scent-mood-filter-header {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 2px;
     min-height: 58px;
   }
 
@@ -2439,7 +2681,7 @@ main {
     justify-content: flex-start;
     min-height: calc(0.76rem * 1.35);
 
-    margin-top: 7px;
+    margin-top: 3px;
     gap: 0;
   }
 
@@ -2475,7 +2717,7 @@ main {
     overflow-y: hidden;
 
     gap: 8px;
-    padding: 4px 22px 6px 0;
+    padding: 0 22px 6px 0;
 
     scroll-snap-type: x proximity;
   }
@@ -2514,24 +2756,6 @@ main {
       rgba(8, 8, 8, 0),
       rgba(8, 8, 8, 0.92)
     );
-  }
-}
-
-/* =========================================
-   SCENT MOOD — MOBILE GAP TIGHTEN
-========================================= */
-
-@media (max-width: 768px) {
-  .scent-mood-filter-header {
-    margin-bottom: 2px;
-  }
-
-  .scent-mood-filter-header-inline .scent-mood-inline-description {
-    margin-top: 3px;
-  }
-
-  .scent-mood-scroll {
-    padding-top: 0;
   }
 }
 
