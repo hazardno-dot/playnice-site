@@ -2518,6 +2518,24 @@ main {
 }
 
 /* =========================================
+   SCENT MOOD — MOBILE GAP TIGHTEN
+========================================= */
+
+@media (max-width: 768px) {
+  .scent-mood-filter-header {
+    margin-bottom: 6px;
+  }
+
+  .scent-mood-filter-header-inline .scent-mood-inline-description {
+    margin-top: 3px;
+  }
+
+  .scent-mood-scroll {
+    padding-top: 0;
+  }
+}
+
+/* =========================================
    CART DRAWER
 ========================================= */
 .cart-drawer {
