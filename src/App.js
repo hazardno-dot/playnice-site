@@ -602,7 +602,7 @@ function App() {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(12);
+  const [productsPerPage, setProductsPerPage] = useState(24);
   const [cart, setCart] = useState([]);
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
