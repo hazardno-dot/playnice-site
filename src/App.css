@@ -3216,7 +3216,7 @@ main {
   z-index: 99999;
 
   display: grid;
-  grid-template-columns: 58px minmax(0, 1fr) auto;
+  grid-template-columns: 68px minmax(0, 1fr) auto;
   align-items: center;
   gap: 14px;
 
@@ -3254,8 +3254,8 @@ main {
 }
 
 .mini-cart-preview-media {
-  width: 58px;
-  height: 58px;
+  width: 68px;
+  height: 68px;
   border-radius: 16px;
   overflow: hidden;
 
