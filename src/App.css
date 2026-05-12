@@ -7610,6 +7610,43 @@ main {
 }
 
 /* =========================================
+   PRODUCT CARD — PRICE + CTA MICRO TIGHTEN
+   Desktop only
+========================================= */
+
+@media (min-width: 769px) {
+  .product-meta {
+    gap: 7px;
+  }
+
+  .product-meta-middle {
+    padding-top: 0;
+  }
+
+  .product-price-block,
+  .product-price-row {
+    min-height: 22px;
+  }
+
+  .product-preview-line,
+  .product-preview-line.premium-preview-line,
+  .product-preview-line.single-line-preview {
+    min-height: 18px;
+  }
+
+  .product-preview-line .product-card-cta,
+  .product-preview-line.premium-preview-line .product-card-cta,
+  .product-preview-line.single-line-preview .product-card-cta {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .size-buttons {
+    margin-top: 6px;
+  }
+}
+
+/* =========================================
    CATALOG DOWNLOAD SECTION
 ========================================= */
 
