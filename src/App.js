@@ -3893,6 +3893,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   {renderPagination("bottom")}
 </div>
 </section>
+</>
+)}
 
 <div className="section-divider"></div>
 
