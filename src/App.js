@@ -5514,15 +5514,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </button>
 
       <button
-        type="button"
-        className={`sticky-cta-journal-link ${
-          stickyCtaJournalHasNew ? "has-new" : ""
-        }`}
-        onClick={handleStickyCtaJournalClick}
-        aria-label={lang === "sr" ? "Otvori Journal" : "Open Journal"}
-      >
-        Read me
-      </button>
+  type="button"
+  className={`sticky-cta-journal-link ${
+    stickyCtaJournalHasNew ? "has-new" : ""
+  }`}
+  onClick={handleStickyCtaJournalClick}
+  aria-label={lang === "sr" ? "Otvori Journal" : "Open Journal"}
+>
+  {lang === "sr" ? "Pročitaj" : "Read me"}
+</button>
     </div>
   </div>
 )}
