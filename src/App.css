@@ -2163,6 +2163,186 @@ main {
 }
 
 /* =========================================
+   SCENT MOOD FILTER — PREMIUM
+========================================= */
+
+.scent-mood-filter {
+  margin: 14px 0 18px;
+  padding: 14px 16px;
+
+  border: 1px solid rgba(220, 181, 107, 0.14);
+  border-radius: 22px;
+
+  background:
+    radial-gradient(circle at 12% 0%, rgba(220, 181, 107, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+    rgba(8, 8, 8, 0.72);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 18px 44px rgba(0, 0, 0, 0.28);
+}
+
+.scent-mood-filter-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 12px;
+}
+
+.scent-mood-filter-header span {
+  color: rgba(255, 248, 235, 0.94);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.22rem;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: 0.015em;
+}
+
+.scent-mood-filter-header small {
+  color: rgba(220, 181, 107, 0.72);
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.scent-mood-scroll {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 2px 1px 4px;
+
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scent-mood-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.scent-mood-chip {
+  appearance: none;
+  -webkit-appearance: none;
+
+  flex: 0 0 auto;
+
+  min-height: 34px;
+  padding: 0 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.16);
+
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.032), rgba(255, 255, 255, 0.012)),
+    rgba(14, 14, 14, 0.82);
+
+  color: rgba(255, 248, 235, 0.72);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 8px 18px rgba(0, 0, 0, 0.2);
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.18s ease;
+}
+
+.scent-mood-chip:hover {
+  color: rgba(255, 248, 235, 0.94);
+  border-color: rgba(220, 181, 107, 0.28);
+  transform: translateY(-1px);
+}
+
+.scent-mood-chip.active {
+  color: #111;
+
+  border-color: rgba(244, 216, 162, 0.62);
+
+  background:
+    linear-gradient(135deg, #f3dfb2 0%, #dcb56b 48%, #b98734 100%);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 10px 28px rgba(220, 181, 107, 0.18),
+    0 0 0 1px rgba(220, 181, 107, 0.08);
+}
+
+.scent-mood-chip:focus,
+.scent-mood-chip:focus-visible {
+  outline: none;
+  border-color: rgba(220, 181, 107, 0.42);
+}
+
+/* =========================================
+   SCENT MOOD FILTER — MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+  .scent-mood-filter {
+    margin: 12px 0 16px;
+    padding: 12px 12px 13px;
+    border-radius: 18px;
+  }
+
+  .scent-mood-filter-header {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .scent-mood-filter-header span {
+    display: block;
+    font-size: 1.08rem;
+    margin-bottom: 4px;
+  }
+
+  .scent-mood-filter-header small {
+    display: block;
+    text-align: left;
+    font-size: 0.63rem;
+    letter-spacing: 0.09em;
+  }
+
+  .scent-mood-scroll {
+    gap: 7px;
+    margin-right: -12px;
+    padding-right: 12px;
+  }
+
+  .scent-mood-chip {
+    min-height: 32px;
+    padding: 0 12px;
+    font-size: 0.66rem;
+    letter-spacing: 0.065em;
+  }
+}
+
+/* =========================================
    CART DRAWER
 ========================================= */
 .cart-drawer {
