@@ -1938,7 +1938,7 @@ const goToJournal = () => {
 
     miniCartTimerRef.current = setTimeout(() => {
       setMiniCartPreview(null);
-    }, 5200);
+    }, 5350);
   }
 
   if (showToast && !showMiniPreview) {
@@ -5682,28 +5682,6 @@ closeProductModal();
       <span>
         {miniCartPreview.size} · {formatPrice(miniCartPreview.price)}
       </span>
-    </div>
-
-    <div className="mini-cart-preview-actions">
-      <button
-        type="button"
-        className="mini-cart-preview-secondary"
-        onClick={() => setMiniCartPreview(null)}
-      >
-        {lang === "sr" ? "Nastavi" : "Continue"}
-      </button>
-
-      <button
-        type="button"
-        className="mini-cart-preview-primary"
-        onClick={() => {
-          setMiniCartPreview(null);
-          setCartOpen(false);
-          setCheckoutOpen(true);
-        }}
-      >
-        {lang === "sr" ? "Checkout" : "Checkout"}
-      </button>
     </div>
   </div>
 )}
