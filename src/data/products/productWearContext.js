@@ -246,5 +246,10 @@ export const productWearContext = {
   "Arabiyat Prestige Fahad Gaze": {
   sr: "Posao, veče, elegantne prilike.",
   en: "Work, evening, elegant occasions."
+  },
+
+  "Narciso Rodriguez Poudrée Eau de Parfum": {
+  sr: "Elegantne prilike, posao, svaki dan.",
+  en: "Elegant occasions, office, everyday wear."
   }
 };

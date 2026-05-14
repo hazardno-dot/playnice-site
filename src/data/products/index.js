@@ -804,5 +804,21 @@ export const products = [
     short: "Guilty Elixir DNA"
   },
   isNew: true,
-}
+},
+{
+  id: 60,
+  name: "Narciso Rodriguez Poudrée Eau de Parfum",
+  category: "Designer",
+  image: "/products/narciso-rodriguez-poudree.png",
+  sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
+  badge: "NEW",
+  rating: 8.9,
+  ratingLabel: "Elegant Favorite",
+  season: "all",
+  inspiredBy: {
+    name: "Original Narciso Rodriguez creation",
+    short: "Powdery Musk DNA"
+  },
+  isNew: true,
+},
 ];

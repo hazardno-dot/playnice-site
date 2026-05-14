@@ -1175,7 +1175,32 @@ export const productCopy = {
     sr: "Ako želiš elegantan, moderan i ozbiljan miris sa čistim gentleman karakterom.",
     en: "If you want an elegant, modern and refined scent with a clean gentleman character."
   }
-}
+},
+
+"Narciso Rodriguez Poudrée Eau de Parfum": {
+  miniTag: { sr: "🌸 Powdery / Elegant", en: "🌸 Powdery / Elegant" },
+  card: {
+    sr: "Puderast, čist i elegantan mošusni miris sa luksuznim osećajem.",
+    en: "Powdery, clean and elegant musky scent with a luxurious feel."
+  },
+  modal: {
+    sr: "Prepoznatljiv puderasti mošus sa jasminom, ružom i toplim drvenim tonovima daje sofisticiran i ženstven karakter.",
+    en: "Signature powdery musk blended with jasmine, rose and warm woods creates a sophisticated feminine scent."
+  },
+  scentType: { sr: "Powdery musky floral", en: "Powdery musky floral" },
+  dominantNotes: {
+    sr: ["mošus", "jasmin", "ruža", "drvo"],
+    en: ["musk", "jasmine", "rose", "woods"]
+  },
+  tags: {
+    sr: ["Elegant", "Clean", "Powdery"],
+    en: ["Elegant", "Clean", "Powdery"]
+  },
+  whyChoose: {
+    sr: "Ako voliš čist, luksuzan i ženstven miris sa classy vibrom.",
+    en: "If you enjoy clean luxurious feminine scents with classy vibe."
+  }
+},
 };
 
 /* =========================================
