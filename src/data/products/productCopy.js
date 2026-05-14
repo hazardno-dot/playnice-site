@@ -1180,8 +1180,8 @@ export const productCopy = {
 "Narciso Rodriguez Poudrée Eau de Parfum": {
   miniTag: { sr: "🌸 Powdery / Elegant", en: "🌸 Powdery / Elegant" },
   card: {
-    sr: "Puderast, čist, elegantan mošusni miris sa luksuznim vajbom.",
-    en: "Powdery, clean, elegant musky scent with a luxurious feel."
+    sr: "Puderast, čist i elegantan mošusni miris.",
+    en: "Powdery, clean and elegant musky scent."
   },
   modal: {
     sr: "Prepoznatljiv puderasti mošus sa jasminom, ružom i toplim drvenim tonovima daje sofisticiran i ženstven karakter.",
