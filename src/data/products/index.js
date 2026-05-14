@@ -815,10 +815,11 @@ export const products = [
   rating: 8.9,
   ratingLabel: "Elegant Favorite",
   season: "all",
+  scentMood: ["soft", "rich", "signature"],
   inspiredBy: {
     name: "Original Narciso Rodriguez creation",
     short: "Powdery Musk DNA"
   },
   isNew: true,
-},
+}
 ];
