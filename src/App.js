@@ -726,6 +726,32 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
     "/videos/hero5.mp4"
   ];
 
+  const videoRef = useRef(null);
+const [isVideoPaused, setIsVideoPaused] = useState(false);
+
+const goToNextVideo = () => {
+  setCurrentVideo((prev) => (prev + 1) % heroVideos.length);
+};
+
+const goToPrevVideo = () => {
+  setCurrentVideo((prev) =>
+    prev === 0 ? heroVideos.length - 1 : prev - 1
+  );
+};
+
+const toggleVideoPlayback = () => {
+  const video = videoRef.current;
+  if (!video) return;
+
+  if (video.paused) {
+    video.play();
+    setIsVideoPaused(false);
+  } else {
+    video.pause();
+    setIsVideoPaused(true);
+  }
+};
+
   const heroSlides = useMemo(() => {
   const [fixedFirstSlide, ...randomSlides] = BASE_HERO_SLIDES;
 
@@ -3344,20 +3370,47 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             <section className="featured-section section-wrap impact-split-section">
               <div className="impact-video-column">
                 <div className="impact-video-frame">
-                  <video
-                    key={currentVideo}
-                    autoPlay
-                    muted
-                    playsInline
-                    onEnded={() => {
-                      setCurrentVideo((prev) => (prev + 1) % heroVideos.length);
-                    }}
-                  >
-                    <source src={heroVideos[currentVideo]} type="video/mp4" />
-                  </video>
+  <video
+    ref={videoRef}
+    key={currentVideo}
+    autoPlay={!isVideoPaused}
+    muted
+    playsInline
+    onEnded={goToNextVideo}
+    onPlay={() => setIsVideoPaused(false)}
+    onPause={() => setIsVideoPaused(true)}
+  >
+    <source src={heroVideos[currentVideo]} type="video/mp4" />
+  </video>
 
-                  <div className="impact-video-badge">PLAYNICE FILM</div>
-                </div>
+  <div className="impact-video-badge">PLAYNICE FILM</div>
+
+  <div className="impact-video-controls">
+    <button type="button" onClick={goToPrevVideo} aria-label="Previous film">
+      ‹
+    </button>
+
+    <button type="button" onClick={toggleVideoPlayback} aria-label="Play or pause film">
+      {isVideoPaused ? "Play" : "Pause"}
+    </button>
+
+    <button type="button" onClick={goToNextVideo} aria-label="Next film">
+      ›
+    </button>
+  </div>
+
+  <div className="impact-video-dots">
+    {heroVideos.map((_, index) => (
+      <button
+        key={index}
+        type="button"
+        className={index === currentVideo ? "is-active" : ""}
+        onClick={() => setCurrentVideo(index)}
+        aria-label={`Go to film ${index + 1}`}
+      />
+    ))}
+  </div>
+</div>
 
                 <div className="impact-video-panel">
                   <div className="impact-video-panel-content">

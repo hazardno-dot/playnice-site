@@ -6868,6 +6868,105 @@ main {
 }
 
 /* =========================================
+   IMPACT VIDEO CONTROLS
+========================================= */
+.impact-video-controls {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.impact-video-controls button {
+  height: 34px;
+  min-width: 34px;
+  padding: 0 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.22);
+  background: rgba(5, 5, 5, 0.58);
+  color: rgba(255, 248, 235, 0.9);
+
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.impact-video-controls button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(220, 181, 107, 0.38);
+  background: rgba(12, 12, 12, 0.76);
+  color: var(--gold);
+}
+
+.impact-video-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 58px;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  transform: translateX(-50%);
+}
+
+.impact-video-dots button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.3);
+  background: rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  transition:
+    width 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.impact-video-dots button.is-active {
+  width: 22px;
+  background: var(--gold);
+  border-color: rgba(220, 181, 107, 0.75);
+}
+
+@media (max-width: 720px) {
+  .impact-video-controls {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .impact-video-controls button {
+    height: 31px;
+    min-width: 31px;
+    padding: 0 10px;
+    font-size: 0.62rem;
+  }
+
+  .impact-video-dots {
+    bottom: 49px;
+  }
+}
+
+/* =========================================
    Z-INDEX SYSTEM
 ========================================= */
 .cart-drawer {
