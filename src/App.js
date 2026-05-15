@@ -3373,7 +3373,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <video
     ref={videoRef}
     key={currentVideo}
-    autoPlay={!isVideoPaused}
+    autoPlay
     muted
     playsInline
     onEnded={goToNextVideo}
