@@ -97,7 +97,7 @@ export const translations = {
     announcement3: "Premium niche, designer & arabic fragrances",
     announcement4: "Limited stock drops — don’t miss out",
     announcement5: "Delivery across Montenegro",
-    announcement6: "✔ 100+ satisfied customers",
+    announcement6: "✔ 500+ satisfied customers",
     announcementDynamicLocked: "Add {{amount}} more to unlock free shipping",
     announcementDynamicUnlocked: "Free shipping unlocked ✓",
     announcementDynamicEmpty1: "Free shipping over €39",
@@ -106,7 +106,7 @@ export const translations = {
     announcementDynamicEmpty3: "Premium niche, designer & arabic fragrances",
     announcementDynamicEmpty4: "Limited stock drops — don’t miss out",
     announcementDynamicEmpty5: "Delivery across Montenegro",
-    announcementDynamicEmpty6: "✔ 100+ satisfied customers",
+    announcementDynamicEmpty6: "✔ 500+ satisfied customers",
     navStory: "Story",
     heroCampaigns: [
       {
@@ -289,7 +289,7 @@ export const translations = {
     announcement3: "Premium niche, dizajnerski & arapski parfemi",
     announcement4: "Ograničene količine — ne propusti",
     announcement5: "Dostava širom Crne Gore",
-    announcement6: "✔ 100+ zadovoljnih kupaca",
+    announcement6: "✔ 500+ zadovoljnih kupaca",
     announcementDynamicLocked:
       "Dodaj još {{amount}} za besplatnu dostavu",
     announcementDynamicUnlocked: "Besplatna dostava otključana ✓",
@@ -300,7 +300,7 @@ export const translations = {
       "Premium niche, dizajnerski i arapski parfemi",
     announcementDynamicEmpty4: "Ograničene količine — ne propusti",
     announcementDynamicEmpty5: "Dostava širom Crne Gore",
-    announcementDynamicEmpty6: "✔ 100+ zadovoljnih kupaca",
+    announcementDynamicEmpty6: "✔ 500+ zadovoljnih kupaca",
     navStory: "Priča",
     heroCampaigns: [
       {
