@@ -723,7 +723,8 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
     "/videos/hero2.mp4",
     "/videos/hero3.mp4",
     "/videos/hero4.mp4",
-    "/videos/hero5.mp4"
+    "/videos/hero5.mp4",
+    "/videos/hero6.mp4"
   ];
 
   const videoRef = useRef(null);
