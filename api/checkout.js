@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const SHIPPING_PRICE = 4;
 const FREE_SHIPPING_THRESHOLD = 39;
 
-const SHIPPING_PAUSE_ACTIVE = true;
+const SHIPPING_PAUSE_ACTIVE = false;
 const SHIPPING_RESUME_TEXT = "za 10 dana";
 
 function formatPrice(value) {
