@@ -3546,7 +3546,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <div className="how-request-panel scent-request-panel">
       <p className="section-kicker scent-request-kicker">
-        Community requests
+       {lang === "sr" ? "Zahtevi zajednice" : "Community requests"}
       </p>
 
       <h2>
@@ -3591,48 +3591,48 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </form>
 
       {scentRequestStatus && (
-        <p className="scent-request-status">{scentRequestStatus}</p>
-      )}
+  <p className="scent-request-status">{scentRequestStatus}</p>
+)}
 
-      <div className="community-requests-box">
-        <div className="community-requests-head">
-          <span>Live community requests</span>
-          <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
-        </div>
+<div className="community-requests-box">
+  <div className="community-requests-head">
+    <span>
+      {lang === "sr" ? "Zahtevi zajednice" : "Live community requests"}
+    </span>
 
-        <div className="community-request-tags">
-          {communityRequests.map((request) => (
-            <button
-              key={request.name}
-              type="button"
-              onClick={() => {
-  sendScentRequest(request.name);
-
-  setCommunityRequests((prev) =>
-    prev
-      .map((item) =>
-        item.name === request.name
-          ? { ...item, votes: item.votes + 1 }
-          : item
-      )
-      .sort((a, b) => b.votes - a.votes)
-  );
-
-  setScentRequestStatus(
-    lang === "sr"
-      ? `Još jedan glas za ${request.name}.`
-      : `One more vote for ${request.name}.`
-  );
-}}
-            >
-              {request.name} <strong>{request.votes}</strong>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
+    <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
   </div>
-</section>
+
+  <div className="community-request-tags">
+    {communityRequests.map((request) => (
+      <button
+        key={request.name}
+        type="button"
+        onClick={() => {
+          sendScentRequest(request.name);
+
+          setCommunityRequests((prev) =>
+            prev
+              .map((item) =>
+                item.name === request.name
+                  ? { ...item, votes: item.votes + 1 }
+                  : item
+              )
+              .sort((a, b) => b.votes - a.votes)
+          );
+
+          setScentRequestStatus(
+            lang === "sr"
+              ? `Još jedan glas za ${request.name}.`
+              : `One more vote for ${request.name}.`
+          );
+        }}
+      >
+        {request.name} <strong>{request.votes}</strong>
+      </button>
+    ))}
+  </div>
+</div>
 
             <div className="section-divider">
               <span />
