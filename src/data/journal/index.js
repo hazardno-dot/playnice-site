@@ -981,9 +981,7 @@ And then these two write a sketch about a substitute teacher mispronouncing name
 
 Ten years later.
 
-That’s no longer comedy.
-That’s modern cultural archaeology.
-Those are the moments where you imagine that 200 years from now some historian will find a hard drive and conclude:
+That’s no longer comedy, that’s modern cultural archaeology, those are the moments where you imagine that 200 years from now some historian will find a hard drive and conclude:
 
 “Yes… this was obviously a very important tribe.”
 
@@ -1063,9 +1061,7 @@ A onda ova dvojica napišu skeč o nastavniku koji pogrešno izgovara imena i ci
 
 “A-A-Ron.”
 
-To više nije humor.
-To je arheologija moderne kulture.
-To su oni trenuci gde pomisliš da će za 200 godina neki istoričar pronaći hard disk i zaključiti:
+To više nije humor, to je arheologija moderne kulture, to su oni trenuci gde pomisliš da će za 200 godina neki istoričar pronaći hard disk i zaključiti:
 
 “Da… ovo je očigledno bilo veoma važno pleme.”
 
