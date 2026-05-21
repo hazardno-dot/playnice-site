@@ -11411,6 +11411,41 @@ main {
   margin-top: 22px;
 }
 
+.journal-article-links,
+.journal-related-products {
+  margin-top: 22px;
+  padding: 18px 18px 20px;
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top, rgba(220, 181, 107, 0.08), transparent 55%),
+    rgba(255, 255, 255, 0.025);
+  box-shadow:
+    0 18px 55px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+.journal-article-links .journal-related-kicker,
+.journal-related-products .journal-related-kicker {
+  text-align: center;
+  justify-content: center;
+  margin-bottom: 13px;
+}
+
+.journal-article-links .journal-related-links,
+.journal-related-products .journal-related-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+}
+
+.journal-article-links .journal-related-text-link,
+.journal-related-products .journal-related-text-link {
+  width: fit-content;
+  text-align: center;
+}
+
 /* ---------- cards grid ---------- */
 
 .journal-top-sheet,
