@@ -713,6 +713,17 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
   const [journalVoteSuccess, setJournalVoteSuccess] = useState("");
   const [journalFeedbackSuccess, setJournalFeedbackSuccess] = useState(false);
 
+  const [scentRequestValue, setScentRequestValue] = useState("");
+  const [scentRequestStatus, setScentRequestStatus] = useState("");
+  const [scentRequestSubmitting, setScentRequestSubmitting] = useState(false);
+
+  const [communityRequests, setCommunityRequests] = useState([
+  { name: "LV Imagination", votes: 21 },
+  { name: "Xerjoff Naxos", votes: 14 },
+  { name: "Gentle Fluidity Silver", votes: 12 },
+  { name: "Side Effect", votes: 9 }
+]);
+
   /* =========================================
      APP REFS
   ========================================= */
@@ -1556,6 +1567,67 @@ const handleJournalClose = () => {
   setJournalOpen(false);
   setSelectedArticle(null);
   switchView("home");
+};
+
+/* =========================================
+   SCENT REQUEST HENDLER
+========================================= */
+
+const handleScentRequestSubmit = async (event) => {
+  event.preventDefault();
+
+  const fragranceName = scentRequestValue.trim();
+
+  if (!fragranceName) {
+    setScentRequestStatus(
+      lang === "sr"
+        ? "Upiši ime parfema koji želiš da probaš."
+        : "Enter the fragrance you want to try."
+    );
+    return;
+  }
+
+  setScentRequestSubmitting(true);
+  setScentRequestStatus("");
+
+  try {
+    const existingRequest = communityRequests.find(
+      (item) => item.name.toLowerCase() === fragranceName.toLowerCase()
+    );
+
+    if (existingRequest) {
+      setCommunityRequests((prev) =>
+        prev
+          .map((item) =>
+            item.name.toLowerCase() === fragranceName.toLowerCase()
+              ? { ...item, votes: item.votes + 1 }
+              : item
+          )
+          .sort((a, b) => b.votes - a.votes)
+      );
+    } else {
+      setCommunityRequests((prev) =>
+        [{ name: fragranceName, votes: 1 }, ...prev]
+          .sort((a, b) => b.votes - a.votes)
+          .slice(0, 6)
+      );
+    }
+
+    setScentRequestValue("");
+    setScentRequestStatus(
+      lang === "sr"
+        ? "Dodato u community wishlist. Pratimo interesovanje."
+        : "Added to the community wishlist. We’re listening."
+    );
+  } catch {
+    setScentRequestStatus(
+      lang === "sr"
+        ? "Nešto nije prošlo kako treba. Probaj ponovo."
+        : "Something went wrong. Please try again."
+    );
+  } finally {
+    setScentRequestSubmitting(false);
+  }
 };
 
 /* =========================================
@@ -3378,7 +3450,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <div className="how-request-panel scent-request-panel">
       <p className="section-kicker scent-request-kicker">
-        {lang === "sr" ? "Community requests" : "Community requests"}
+        Community requests
       </p>
 
       <h2>
@@ -3393,9 +3465,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           : "Some of our best drops started with a simple request."}
       </p>
 
-      <div className="scent-request-form">
+      <form className="scent-request-form" onSubmit={handleScentRequestSubmit}>
         <input
           type="text"
+          value={scentRequestValue}
+          onChange={(event) => setScentRequestValue(event.target.value)}
           placeholder={
             lang === "sr"
               ? "Npr. Xerjoff Naxos"
@@ -3408,25 +3482,54 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           }
         />
 
-        <button type="button">
-          {lang === "sr" ? "Predloži parfem" : "Request this scent"}
+        <button type="submit" disabled={scentRequestSubmitting}>
+          {scentRequestSubmitting
+            ? lang === "sr"
+              ? "Šaljemo..."
+              : "Sending..."
+            : lang === "sr"
+              ? "Predloži parfem"
+              : "Request this scent"}
           <span>→</span>
         </button>
-      </div>
+      </form>
+
+      {scentRequestStatus && (
+        <p className="scent-request-status">{scentRequestStatus}</p>
+      )}
 
       <div className="community-requests-box">
         <div className="community-requests-head">
-          <span>
-            {lang === "sr" ? "Live community requests" : "Live community requests"}
-          </span>
+          <span>Live community requests</span>
           <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
         </div>
 
         <div className="community-request-tags">
-          <button type="button">LV Imagination <strong>21</strong></button>
-          <button type="button">Xerjoff Naxos <strong>14</strong></button>
-          <button type="button">Side Effect <strong>9</strong></button>
-          <button type="button">Gentle Fluidity Silver <strong>12</strong></button>
+          {communityRequests.map((request) => (
+            <button
+              key={request.name}
+              type="button"
+              onClick={() => {
+                setCommunityRequests((prev) =>
+                  prev
+                    .map((item) =>
+                      item.name === request.name
+                        ? { ...item, votes: item.votes + 1 }
+                        : item
+                    )
+                    .sort((a, b) => b.votes - a.votes)
+                );
+
+                setScentRequestStatus(
+                  lang === "sr"
+                    ? `Još jedan glas za ${request.name}.`
+                    : `One more vote for ${request.name}.`
+                );
+              }}
+            >
+              {request.name} <strong>{request.votes}</strong>
+            </button>
+          ))}
         </div>
       </div>
     </div>

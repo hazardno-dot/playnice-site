@@ -9226,6 +9226,19 @@ main {
   color: rgba(220, 181, 107, 0.9);
 }
 
+.scent-request-form button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.scent-request-status {
+  margin: 11px 6px 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: rgba(220, 181, 107, 0.82);
+}
+
 /* MOBILE */
 
 @media (max-width: 980px) {
