@@ -1,7 +1,7 @@
 export const journalArticles = [
     {
     id: 1,
-    date: "14 Apr",
+    date: "12 Apr",
     image: "/journal/article1.png",
     title: {
       en: "Three new scents that completely ruined our plans",
@@ -124,7 +124,7 @@ Da kažemo stvari normalno. Ljudski. I da usput možda zajedno preživimo još p
   },
   {
     id: 3,
-    date: "12 Apr",
+    date: "14 Apr",
     image: "/journal/article3.png",
     title: {
       en: "9PM Night Out did not ask for attention. Then it got too much of it.",
