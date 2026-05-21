@@ -1570,6 +1570,33 @@ const handleJournalClose = () => {
 };
 
 /* =========================================
+   SEND SCENT REQUEST
+========================================= */
+
+const sendScentRequest = (fragranceName) => {
+  try {
+    const payloadToSend = JSON.stringify({
+      timestamp: new Date().toISOString(),
+      fragrance: fragranceName,
+      lang,
+      page: window.location.pathname,
+      source: "scent_request"
+    });
+
+    const blob = new Blob([payloadToSend], {
+      type: "text/plain;charset=utf-8"
+    });
+
+    navigator.sendBeacon(
+      "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
+      blob
+    );
+  } catch (error) {
+    console.error("Scent request submit failed:", error);
+  }
+};
+
+/* =========================================
    SCENT REQUEST HENDLER
 ========================================= */
 
@@ -1591,22 +1618,7 @@ const handleScentRequestSubmit = async (event) => {
   setScentRequestStatus("");
 
   try {
-    const payloadToSend = JSON.stringify({
-      timestamp: new Date().toISOString(),
-      fragrance: fragranceName,
-      lang,
-      page: window.location.pathname,
-      source: "scent_request"
-    });
-
-    const blob = new Blob([payloadToSend], {
-      type: "text/plain;charset=utf-8"
-    });
-
-    navigator.sendBeacon(
-      "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
-      blob
-    );
+    sendScentRequest(fragranceName);
 
     const existingRequest = communityRequests.find(
       (item) => item.name.toLowerCase() === fragranceName.toLowerCase()
@@ -3529,22 +3541,24 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               key={request.name}
               type="button"
               onClick={() => {
-                setCommunityRequests((prev) =>
-                  prev
-                    .map((item) =>
-                      item.name === request.name
-                        ? { ...item, votes: item.votes + 1 }
-                        : item
-                    )
-                    .sort((a, b) => b.votes - a.votes)
-                );
+  sendScentRequest(request.name);
 
-                setScentRequestStatus(
-                  lang === "sr"
-                    ? `Još jedan glas za ${request.name}.`
-                    : `One more vote for ${request.name}.`
-                );
-              }}
+  setCommunityRequests((prev) =>
+    prev
+      .map((item) =>
+        item.name === request.name
+          ? { ...item, votes: item.votes + 1 }
+          : item
+      )
+      .sort((a, b) => b.votes - a.votes)
+  );
+
+  setScentRequestStatus(
+    lang === "sr"
+      ? `Još jedan glas za ${request.name}.`
+      : `One more vote for ${request.name}.`
+  );
+}}
             >
               {request.name} <strong>{request.votes}</strong>
             </button>
