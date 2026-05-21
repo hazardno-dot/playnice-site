@@ -957,7 +957,7 @@ Remember. PlayNice.`
 {
   id: 11,
   date: "21 Maj",
-  image: "/hero/article11.png",
+  image: "/journal/article11.png",
   title: {
     en: "Doctors.",
     sr: "Doktori."
