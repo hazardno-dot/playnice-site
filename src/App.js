@@ -1591,6 +1591,23 @@ const handleScentRequestSubmit = async (event) => {
   setScentRequestStatus("");
 
   try {
+    const payloadToSend = JSON.stringify({
+      timestamp: new Date().toISOString(),
+      fragrance: fragranceName,
+      lang,
+      page: window.location.pathname,
+      source: "scent_request"
+    });
+
+    const blob = new Blob([payloadToSend], {
+      type: "text/plain;charset=utf-8"
+    });
+
+    navigator.sendBeacon(
+      "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
+      blob
+    );
+
     const existingRequest = communityRequests.find(
       (item) => item.name.toLowerCase() === fragranceName.toLowerCase()
     );
@@ -1619,7 +1636,9 @@ const handleScentRequestSubmit = async (event) => {
         ? "Dodato u community wishlist. Pratimo interesovanje."
         : "Added to the community wishlist. We’re listening."
     );
-  } catch {
+  } catch (error) {
+    console.error("Scent request submit failed:", error);
+
     setScentRequestStatus(
       lang === "sr"
         ? "Nešto nije prošlo kako treba. Probaj ponovo."
