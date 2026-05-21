@@ -982,9 +982,7 @@ And then these two write a sketch about a substitute teacher mispronouncing name
 Ten years later.
 
 That’s no longer comedy.
-
 That’s modern cultural archaeology.
-
 Those are the moments where you imagine that 200 years from now some historian will find a hard drive and conclude:
 
 “Yes… this was obviously a very important tribe.”
@@ -997,14 +995,10 @@ They’d be completely right.
 
 Because Key and Peele aren’t just funny.
 
-They have that rare superpower of taking something completely ordinary and turning it into a universal story about ego, insecurity, pretending, society, men trying to act tougher than they really are and people desperately trying to look cool while emotionally collapsing inside.
-
-And they package all of it in a way that makes you choke from laughing.
-
+They have that rare superpower of taking something completely ordinary and turning it into a universal story about ego, insecurity, pretending, society, men trying to act tougher than they really are and people desperately trying to look cool while emotionally collapsing inside. And they package all of it in a way that makes you choke from laughing.
 That’s a doctorate.
 
 Not internet “genius”.
-
 Not “content creator”.
 
 A doctorate.
@@ -1013,28 +1007,19 @@ A doctorate.
 
 I mean, we already have a few doctors. We have Valentino Rossi, we have Gregory House… and honestly, just look at John Travolta these days.
 
-Doctor.
+DOCTOR.
 
 And then you have two more:
 
 Key & Peele.
 
 Doctors of human behavior.
-
 Doctors of absurdity.
-
 Doctors of life.
 
 —
 
-The other day I rewatched Keanu and kept thinking how unbelievable it is that they managed to make an action movie about a kitten… and somehow make it genuinely good.
-
-Not “funny sometimes”.
-
-Actually good.
-
-That’s serious talent.
-
+The other day I rewatched Keanu and kept thinking how unbelievable it is that they managed to make an action movie about a kitten… and somehow make it genuinely good. Not “funny sometimes”, actually good. That’s serious talent.
 That’s the level where you stop understanding how someone’s brain even works.
 
 And honestly… what a privilege it is to belong to the generation watching all of this while it’s happening.
@@ -1050,11 +1035,8 @@ And honestly, I only want one thing from them:
 Please… just keep going.
 
 Make anything.
-
 A sketch about parking.
-
 A movie about a mailman.
-
 A series about a guy buying watermelon.
 
 Doesn’t matter.
@@ -1131,7 +1113,12 @@ To je skoro nadljudska sposobnost.
 
 I zato imam samo jednu želju kad su njih dvojica u pitanju:
 
-Brate… samo nastavite. Snimajte bilo šta. Skeč o parkingu. Film o poštaru. Seriju o čoveku koji kupuje lubenicu.
+Brate… samo nastavite.
+
+Snimajte bilo šta.
+Skeč o parkingu.
+Film o poštaru.
+Seriju o čoveku koji kupuje lubenicu.
 
 Nije bitno.
 
