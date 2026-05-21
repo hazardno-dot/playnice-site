@@ -953,5 +953,237 @@ Remember. PlayNice.`
     "Khadlaj Onyx Silver",
     "Arabiyat Prestige Fahad Gaze"
   ]
+},
+{
+  id: 11,
+  date: "21 Maj",
+  image: "/hero/article11.png",
+  title: {
+    en: "Doctors.",
+    sr: "Doktori."
+  },
+  excerpt: {
+    en: "Some people make movies. Some people make culture. Key & Peele somehow managed to do both.",
+    sr: "Neki ljudi prave filmove. Neki ljudi prave kulturu. Key & Peele su nekako uspeli da urade oba."
+  },
+  content: {
+    en: `There are actors you like.
+
+And then there are the ones you respect because they’re big, serious, Oscar-level beautiful people with perfect lighting and agents that probably cost as much as a small shopping mall.
+
+And somewhere off to the side stand Keegan-Michael Key and Jordan Peele, two guys who built a bigger cultural legacy through sketches about complete nonsense than half of Hollywood with 200-million-dollar budgets.
+
+And I genuinely think people don’t realize how massive that is, because it’s not easy to create something that stays. The internet is full of content that lasts shorter than yogurt. You watch something. Maybe laugh. Forget it three minutes later.
+
+And then these two write a sketch about a substitute teacher mispronouncing names and civilization is still saying:
+
+“A-A-Ron.”
+
+Ten years later.
+
+That’s no longer comedy.
+
+That’s modern cultural archaeology.
+
+Those are the moments where you imagine that 200 years from now some historian will find a hard drive and conclude:
+
+“Yes… this was obviously a very important tribe.”
+
+And honestly?
+
+They’d be completely right.
+
+—
+
+Because Key and Peele aren’t just funny.
+
+They have that rare superpower of taking something completely ordinary and turning it into a universal story about ego, insecurity, pretending, society, men trying to act tougher than they really are and people desperately trying to look cool while emotionally collapsing inside.
+
+And they package all of it in a way that makes you choke from laughing.
+
+That’s a doctorate.
+
+Not internet “genius”.
+
+Not “content creator”.
+
+A doctorate.
+
+—
+
+I mean, we already have a few doctors. We have Valentino Rossi, we have Gregory House… and honestly, just look at John Travolta these days.
+
+Doctor.
+
+And then you have two more:
+
+Key & Peele.
+
+Doctors of human behavior.
+
+Doctors of absurdity.
+
+Doctors of life.
+
+—
+
+The other day I rewatched Keanu and kept thinking how unbelievable it is that they managed to make an action movie about a kitten… and somehow make it genuinely good.
+
+Not “funny sometimes”.
+
+Actually good.
+
+That’s serious talent.
+
+That’s the level where you stop understanding how someone’s brain even works.
+
+And honestly… what a privilege it is to belong to the generation watching all of this while it’s happening.
+
+Because one day people will talk about them the same way we talk about legendary comedy duos, except these two will have an extra layer: they survived the internet era and stayed relevant without selling their souls to the algorithm.
+
+That’s almost superhuman.
+
+—
+
+And honestly, I only want one thing from them:
+
+Please… just keep going.
+
+Make anything.
+
+A sketch about parking.
+
+A movie about a mailman.
+
+A series about a guy buying watermelon.
+
+Doesn’t matter.
+
+Because when minds like that work together, it makes you feel like culture maybe hasn’t completely collapsed yet.
+
+And that’s a really beautiful feeling.
+
+—
+
+Bravo, doctors.
+
+—
+
+Charlie  
+Remember. PlayNice.`,
+    sr: `Postoje glumci koje voliš.
+
+Postoje i oni koje poštuješ jer su veliki, ozbiljni, oskarovski, lepi ljudi sa savršenim osvetljenjem i agentima koji verovatno koštaju kao manji tržni centar.
+
+I onda negde sa strane stoje Keegan-Michael Key i Jordan Peele, dvojica ljudi koji su napravili veću kulturnu zaostavštinu kroz skečeve o potpunim glupostima nego pola Holivuda kroz budžete od 200 miliona dolara.
+
+I stvarno mislim da ljudi nisu svesni koliko je to veliko, jer nije lako napraviti nešto što ostane. Internet je pun sadržaja koji traje kraće od jogurta. Pogledaš nešto. Nasmeješ se možda. Zaboraviš za tri minuta.
+
+A onda ova dvojica napišu skeč o nastavniku koji pogrešno izgovara imena i civilizacija deset godina kasnije i dalje govori:
+
+“A-A-Ron.”
+
+To više nije humor.
+
+To je arheologija moderne kulture.
+
+To su oni trenuci gde pomisliš da će za 200 godina neki istoričar pronaći hard disk i zaključiti:
+
+“Da… ovo je očigledno bilo veoma važno pleme.”
+
+I iskreno?
+
+Biće potpuno u pravu.
+
+—
+
+Jer Key i Peele nisu samo smešni.
+
+Oni imaju onu retku supermoć da uzmu nešto potpuno banalno i pretvore ga u univerzalnu ljudsku priču o egu, nesigurnosti, glumi, društvu, muškarcima koji pokušavaju da deluju opasnije nego što jesu i ljudima koji očajnički žele da izgledaju cool dok se raspadaju iznutra.
+
+I sve to upakuju tako da se ti bukvalno gušiš od smeha.
+
+To je doktorat.
+
+Ne internet “genije”.
+
+Ne “content creator”.
+
+Doktorat.
+
+—
+
+Mislim, imamo mi već par doktora, imamo Valentina Rossija, imamo i Gregory Housa, šta tek reći za današnji izgled John Travolte.. doktor.
+
+I onda imaš još dvojicu vrhunskih:
+
+Key & Peele.
+
+Doktore za ljudsko ponašanje.
+
+Doktore za apsurd.
+
+Doktore za život.
+
+—
+
+Pre neki dan sam opet gledao Keanu i razmišljao kako je potpuno neverovatno da su uspeli da naprave akcioni film oko mačeta… i da bude dobar.
+
+Ne “smešan na momente”.
+
+Nego stvarno dobar.
+
+To je ozbiljan talenat.
+
+To je onaj nivo kada više ni ne razumeš kako nekome mozak radi.
+
+I uh… kakva je privilegija biti deo generacije koja gleda sve to dok nastaje.
+
+Ozbiljno.
+
+Jer jednog dana će ljudi pričati o njima kao što danas pričamo o legendarnim komičarskim dvojcima, samo što će ovi imati dodatni sloj: uspeli su da prežive internet eru i da ostanu relevantni bez prodavanja duše algoritmu.
+
+To je skoro nadljudska sposobnost.
+
+—
+
+I zato imam samo jednu želju kad su njih dvojica u pitanju:
+
+Brate… samo nastavite.
+
+Snimajte bilo šta.
+
+Skeč o parkingu.
+
+Film o poštaru.
+
+Seriju o čoveku koji kupuje lubenicu.
+
+Nije bitno.
+
+Jer kad dve takve glave rade zajedno, čovek nekako ima osećaj da kultura još uvek nije potpuno propala.
+
+I to je baš lep osećaj.
+
+—
+
+Bravo, doktori.
+
+—
+
+Čarli  
+Remember. PlayNice.`
+  },
+  relatedProducts: [],
+  links: [
+    {
+      label: "Key & Peele — Substitute Teacher",
+      url: "https://www.youtube.com/watch?v=Dd7FixvoKBw"
+    },
+    {
+      label: "Keanu (2016) — IMDb",
+      url: "https://www.imdb.com/title/tt4139124/"
+    }
+  ]
 }
 ];
