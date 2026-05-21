@@ -796,8 +796,8 @@ Remember. PlayNice.`
   date: "10 Maj",
   image: "/journal/article10.png",
   title: {
-    en: "They just have better lighting.",
-    sr: "Samo imaju bolje osvetljenje."
+    en: "They just have better lighting",
+    sr: "Samo imaju bolje osvetljenje"
   },
   excerpt: {
     en: "Maybe the internet didn’t ruin us completely. Maybe it just made ordinary life look less interesting than it really is.",
@@ -959,8 +959,8 @@ Remember. PlayNice.`
   date: "21 Maj",
   image: "/journal/article11.png",
   title: {
-    en: "Doctors.",
-    sr: "Doktori."
+    en: "Doctors",
+    sr: "Doktori"
   },
   excerpt: {
     en: "Some people make movies. Some people make culture. Key & Peele somehow managed to do both.",
