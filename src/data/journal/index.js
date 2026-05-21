@@ -993,10 +993,13 @@ And honestly? They’d be completely right.
 
 Because Key and Peele aren’t just funny.
 
-They have that rare superpower of taking something completely ordinary and turning it into a universal story about ego, insecurity, pretending, society, men trying to act tougher than they really are and people desperately trying to look cool while emotionally collapsing inside. And they package all of it in a way that makes you choke from laughing.
+They have that rare superpower of taking something completely ordinary and turning it into a universal story about ego, insecurity, pretending, society, men trying to act tougher than they really are and people desperately trying to look cool while emotionally collapsing inside.
+And they package all of it in a way that makes you choke from laughing.
+
 That’s a doctorate.
 
 Not internet “genius”.
+
 Not “content creator”.
 
 A doctorate.
@@ -1015,14 +1018,13 @@ Doctors of life.
 
 —
 
-The other day I rewatched Keanu and kept thinking how unbelievable it is that they managed to make an action movie about a kitten… and somehow make it genuinely good. Not “funny sometimes”, actually good. That’s serious talent.
+The other day I rewatched Keanu and kept thinking how unbelievable it is that they managed to make an action movie about a kitten… and somehow make it genuinely good.
+Not “funny sometimes”, actually good. That’s serious talent.
 That’s the level where you stop understanding how someone’s brain even works.
 
 And honestly… what a privilege it is to belong to the generation watching all of this while it’s happening.
 
-Because one day people will talk about them the same way we talk about legendary comedy duos, except these two will have an extra layer: they survived the internet era and stayed relevant without selling their souls to the algorithm.
-
-That’s almost superhuman.
+Because one day people will talk about them the same way we talk about legendary comedy duos, except these two will have an extra layer: they survived the internet era and stayed relevant without selling their souls to the algorithm. That’s almost superhuman.
 
 —
 
@@ -1073,10 +1075,13 @@ I iskreno? Biće potpuno u pravu.
 
 Jer Key i Peele nisu samo smešni.
 
-Oni imaju onu retku supermoć da uzmu nešto potpuno banalno i pretvore ga u univerzalnu ljudsku priču o egu, nesigurnosti, glumi, društvu, muškarcima koji pokušavaju da deluju opasnije nego što jesu i ljudima koji očajnički žele da izgledaju cool dok se raspadaju iznutra. I sve to upakuju tako da se ti bukvalno gušiš od smeha.
+Oni imaju onu retku supermoć da uzmu nešto potpuno banalno i pretvore ga u univerzalnu ljudsku priču o egu, nesigurnosti, glumi, društvu, muškarcima koji pokušavaju da deluju opasnije nego što jesu i ljudima koji očajnički žele da izgledaju cool dok se raspadaju iznutra.
+I sve to upakuju tako da se ti bukvalno gušiš od smeha.
+
 To je doktorat.
 
 Ne internet “genije”.
+
 Ne “content creator”.
 
 Doktorat.
@@ -1095,14 +1100,13 @@ Doktore za život.
 
 —
 
-Pre neki dan sam opet gledao Keanu i razmišljao kako je potpuno neverovatno da su uspeli da naprave akcioni film oko mačeta… i da bude dobar. Ne “smešan na momente”, nego stvarno dobar. To je ozbiljan talenat.
+Pre neki dan sam opet gledao Keanu i razmišljao kako je potpuno neverovatno da su uspeli da naprave akcioni film oko mačeta… i da bude dobar.
+Ne “smešan na momente”, nego stvarno dobar. To je ozbiljan talenat.
 To je onaj nivo kada više ni ne razumeš kako nekome mozak radi.
 
 I uh… kakva je privilegija biti deo generacije koja gleda sve to dok nastaje. Ozbiljno.
 
-Jer jednog dana će ljudi pričati o njima kao što danas pričamo o legendarnim komičarskim dvojcima, samo što će ovi imati dodatni sloj: uspeli su da prežive internet eru i da ostanu relevantni bez prodavanja duše algoritmu.
-
-To je skoro nadljudska sposobnost.
+Jer jednog dana će ljudi pričati o njima kao što danas pričamo o legendarnim komičarskim dvojcima, samo što će ovi imati dodatni sloj: uspeli su da prežive internet eru i da ostanu relevantni bez prodavanja duše algoritmu. To je skoro nadljudska sposobnost.
 
 —
 
