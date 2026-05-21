@@ -987,9 +987,7 @@ Those are the moments where you imagine that 200 years from now some historian w
 
 “Yes… this was obviously a very important tribe.”
 
-And honestly?
-
-They’d be completely right.
+And honestly? They’d be completely right.
 
 —
 
@@ -1005,9 +1003,7 @@ A doctorate.
 
 —
 
-I mean, we already have a few doctors. We have Valentino Rossi, we have Gregory House… and honestly, just look at John Travolta these days.
-
-DOCTOR.
+I mean, we already have a few doctors. We have Valentino Rossi, we have Gregory House… and honestly, just look at John Travolta these days.. DOCTOR.
 
 And then you have two more:
 
@@ -1071,9 +1067,7 @@ To su oni trenuci gde pomisliš da će za 200 godina neki istoričar pronaći ha
 
 “Da… ovo je očigledno bilo veoma važno pleme.”
 
-I iskreno?
-
-Biće potpuno u pravu.
+I iskreno? Biće potpuno u pravu.
 
 —
 
@@ -1089,7 +1083,8 @@ Doktorat.
 
 —
 
-Mislim, imamo mi već par doktora, imamo Valentina Rossija, imamo i Gregory Housa, šta tek reći za današnji izgled John Travolte.. DOKTOR.
+Mislim, imamo mi već par doktora, imamo Valentina Rosija, imamo i Gregori Hausa, šta tek reći za današnji izgled Džon Travolte.. DOKTOR.
+
 I onda imaš još dvojicu vrhunskih:
 
 Key & Peele.
