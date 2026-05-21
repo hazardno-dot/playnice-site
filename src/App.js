@@ -4982,7 +4982,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
         {selectedArticle.links?.length > 0 && (
   <div className="journal-article-links">
-    <div className="journal-related-kicker">
+    <div className="journal-related-kicker journal-links-kicker">
       {lang === "sr" ? "Linkovi iz teksta" : "Story links"}
     </div>
 
