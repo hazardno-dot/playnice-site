@@ -11399,6 +11399,14 @@ main {
     );
 }
 
+/* ---------- journal-article-links ---------- */
+
+.journal-links-kicker {
+  text-align: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
 /* ---------- cards grid ---------- */
 
 .journal-top-sheet,
