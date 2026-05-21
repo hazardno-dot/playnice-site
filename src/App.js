@@ -3628,11 +3628,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           );
         }}
       >
-        {request.name} <strong>{request.votes}</strong>
+                {request.name} <strong>{request.votes}</strong>
       </button>
     ))}
   </div>
 </div>
+</div>
+</div>
+</section>
 
             <div className="section-divider">
               <span />
