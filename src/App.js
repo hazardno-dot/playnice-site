@@ -2717,6 +2717,38 @@ useEffect(() => {
 }, [communityRequests]);
 
 /* =========================================
+   SCENT REQUESTS COUNTER USEEFFECT
+========================================= */
+
+useEffect(() => {
+  let isMounted = true;
+
+  const loadScentRequests = async () => {
+    try {
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec"
+      );
+
+      const data = await response.json();
+
+      if (!isMounted) return;
+
+      if (data.status === "ok" && Array.isArray(data.requests) && data.requests.length > 0) {
+        setCommunityRequests(data.requests);
+      }
+    } catch (error) {
+      console.error("Failed to load scent requests:", error);
+    }
+  };
+
+  loadScentRequests();
+
+  return () => {
+    isMounted = false;
+  };
+}, []);
+
+/* =========================================
    INNER COMPONENTS
 ========================================= */
 const ProductCard = ({
