@@ -1084,9 +1084,7 @@ A onda ova dvojica napišu skeč o nastavniku koji pogrešno izgovara imena i ci
 “A-A-Ron.”
 
 To više nije humor.
-
 To je arheologija moderne kulture.
-
 To su oni trenuci gde pomisliš da će za 200 godina neki istoričar pronaći hard disk i zaključiti:
 
 “Da… ovo je očigledno bilo veoma važno pleme.”
@@ -1101,13 +1099,7 @@ Jer Key i Peele nisu samo smešni.
 
 Oni imaju onu retku supermoć da uzmu nešto potpuno banalno i pretvore ga u univerzalnu ljudsku priču o egu, nesigurnosti, glumi, društvu, muškarcima koji pokušavaju da deluju opasnije nego što jesu i ljudima koji očajnički žele da izgledaju cool dok se raspadaju iznutra.
 
-I sve to upakuju tako da se ti bukvalno gušiš od smeha.
-
-To je doktorat.
-
-Ne internet “genije”.
-
-Ne “content creator”.
+I sve to upakuju tako da se ti bukvalno gušiš od smeha. To je doktorat. Ne internet “genije”. Ne “content creator”.
 
 Doktorat.
 
@@ -1120,26 +1112,15 @@ I onda imaš još dvojicu vrhunskih:
 Key & Peele.
 
 Doktore za ljudsko ponašanje.
-
 Doktore za apsurd.
-
 Doktore za život.
 
 —
 
-Pre neki dan sam opet gledao Keanu i razmišljao kako je potpuno neverovatno da su uspeli da naprave akcioni film oko mačeta… i da bude dobar.
-
-Ne “smešan na momente”.
-
-Nego stvarno dobar.
-
-To je ozbiljan talenat.
-
+Pre neki dan sam opet gledao Keanu i razmišljao kako je potpuno neverovatno da su uspeli da naprave akcioni film oko mačeta… i da bude dobar. Ne “smešan na momente”, nego stvarno dobar. To je ozbiljan talenat.
 To je onaj nivo kada više ni ne razumeš kako nekome mozak radi.
 
-I uh… kakva je privilegija biti deo generacije koja gleda sve to dok nastaje.
-
-Ozbiljno.
+I uh… kakva je privilegija biti deo generacije koja gleda sve to dok nastaje. Ozbiljno.
 
 Jer jednog dana će ljudi pričati o njima kao što danas pričamo o legendarnim komičarskim dvojcima, samo što će ovi imati dodatni sloj: uspeli su da prežive internet eru i da ostanu relevantni bez prodavanja duše algoritmu.
 
@@ -1149,15 +1130,7 @@ To je skoro nadljudska sposobnost.
 
 I zato imam samo jednu želju kad su njih dvojica u pitanju:
 
-Brate… samo nastavite.
-
-Snimajte bilo šta.
-
-Skeč o parkingu.
-
-Film o poštaru.
-
-Seriju o čoveku koji kupuje lubenicu.
+Brate… samo nastavite. Snimajte bilo šta. Skeč o parkingu. Film o poštaru. Seriju o čoveku koji kupuje lubenicu.
 
 Nije bitno.
 
