@@ -3597,7 +3597,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 <div className="community-requests-box">
   <div className="community-requests-head">
     <span>
-      {lang === "sr" ? "Zahtevi zajednice" : "Live community requests"}
+      {lang === "sr" ? "Zahtevi zajednice uživo" : "Live community requests"}
     </span>
 
     <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
@@ -3628,7 +3628,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           );
         }}
       >
-                {request.name} <strong>{request.votes}</strong>
+        {request.name} <strong>{request.votes}</strong>
       </button>
     ))}
   </div>
