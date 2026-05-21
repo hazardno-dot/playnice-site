@@ -1174,7 +1174,7 @@ Bravo, doktori.
 Čarli  
 Remember. PlayNice.`
   },
-  relatedProducts: [],
+  relatedProducts: ["Afnan Supremacy Collector's Edition Pour Homme"],
   links: [
     {
       label: "Key & Peele — Substitute Teacher",
