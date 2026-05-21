@@ -717,12 +717,30 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
   const [scentRequestStatus, setScentRequestStatus] = useState("");
   const [scentRequestSubmitting, setScentRequestSubmitting] = useState(false);
 
-  const [communityRequests, setCommunityRequests] = useState([
-  { name: "LV Imagination", votes: 21 },
-  { name: "Xerjoff Naxos", votes: 14 },
-  { name: "Gentle Fluidity Silver", votes: 12 },
-  { name: "Side Effect", votes: 9 }
-]);
+  const [communityRequests, setCommunityRequests] = useState(() => {
+  const defaultRequests = [
+    { name: "LV Imagination", votes: 21 },
+    { name: "Xerjoff Naxos", votes: 14 },
+    { name: "Gentle Fluidity Silver", votes: 12 },
+    { name: "Side Effect", votes: 9 }
+  ];
+
+  if (typeof window === "undefined") return defaultRequests;
+
+  try {
+    const saved = localStorage.getItem("playnice_scent_requests");
+
+    if (!saved) return defaultRequests;
+
+    const parsed = JSON.parse(saved);
+
+    if (!Array.isArray(parsed)) return defaultRequests;
+
+    return parsed;
+  } catch {
+    return defaultRequests;
+  }
+});
 
   /* =========================================
      APP REFS
@@ -2682,6 +2700,21 @@ useEffect(() => {
     }
   };
 }, [selectedProduct, lang]);
+
+/* =========================================
+   SCENT REQUESTS USEEFFECT
+========================================= */
+
+useEffect(() => {
+  try {
+    localStorage.setItem(
+      "playnice_scent_requests",
+      JSON.stringify(communityRequests)
+    );
+  } catch (error) {
+    console.error("Scent requests storage failed:", error);
+  }
+}, [communityRequests]);
 
 /* =========================================
    INNER COMPONENTS
