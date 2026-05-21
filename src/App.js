@@ -4980,6 +4980,28 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           {getJournalText(selectedArticle.content, lang)}
         </p>
 
+        {selectedArticle.links?.length > 0 && (
+  <div className="journal-article-links">
+    <div className="journal-related-kicker">
+      {lang === "sr" ? "Linkovi iz teksta" : "Story links"}
+    </div>
+
+    <div className="journal-related-links">
+      {selectedArticle.links.map((link) => (
+        <a
+          key={link.url}
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="journal-related-text-link"
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+)}
+
         <div className="journal-inline-feedback-row">
           <div className="journal-inline-feedback-cluster">
             <button
