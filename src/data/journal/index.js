@@ -973,7 +973,11 @@ And then there are the ones you respect because they’re big, serious, Oscar-le
 
 And somewhere off to the side stand Keegan-Michael Key and Jordan Peele, two guys who built a bigger cultural legacy through sketches about complete nonsense than half of Hollywood with 200-million-dollar budgets.
 
-And I genuinely think people don’t realize how massive that is, because it’s not easy to create something that stays. The internet is full of content that lasts shorter than yogurt. You watch something. Maybe laugh. Forget it three minutes later.
+And I genuinely think people don’t realize how massive that is, because it’s not easy to create something that stays.
+The internet is full of content that lasts shorter than yogurt.
+You watch something.
+Maybe laugh.
+Forget it three minutes later.
 
 And then these two write a sketch about a substitute teacher mispronouncing names and civilization is still saying:
 
@@ -1017,7 +1021,9 @@ Doctors of life.
 —
 
 The other day I rewatched Keanu and kept thinking how unbelievable it is that they managed to make an action movie about a kitten… and somehow make it genuinely good.
-Not “funny sometimes”, actually good. That’s serious talent.
+
+Not “funny sometimes”, actually good.
+That’s serious talent.
 That’s the level where you stop understanding how someone’s brain even works.
 
 And honestly… what a privilege it is to belong to the generation watching all of this while it’s happening.
@@ -1031,8 +1037,11 @@ And honestly, I only want one thing from them:
 Please… just keep going.
 
 Make anything.
+
 A sketch about parking.
+
 A movie about a mailman.
+
 A series about a guy buying watermelon.
 
 Doesn’t matter.
@@ -1055,7 +1064,11 @@ Postoje i oni koje poštuješ jer su veliki, ozbiljni, oskarovski, lepi ljudi sa
 
 I onda negde sa strane stoje Keegan-Michael Key i Jordan Peele, dvojica ljudi koji su napravili veću kulturnu zaostavštinu kroz skečeve o potpunim glupostima nego pola Holivuda kroz budžete od 200 miliona dolara.
 
-I stvarno mislim da ljudi nisu svesni koliko je to veliko, jer nije lako napraviti nešto što ostane. Internet je pun sadržaja koji traje kraće od jogurta. Pogledaš nešto. Nasmeješ se možda. Zaboraviš za tri minuta.
+I stvarno mislim da ljudi nisu svesni koliko je to veliko, jer nije lako napraviti nešto što ostane.
+Internet je pun sadržaja koji traje kraće od jogurta.
+Pogledaš nešto.
+Nasmeješ se možda.
+Zaboraviš za tri minuta.
 
 A onda ova dvojica napišu skeč o nastavniku koji pogrešno izgovara imena i civilizacija deset godina kasnije i dalje govori:
 
@@ -1097,7 +1110,9 @@ Doktore za život.
 —
 
 Pre neki dan sam opet gledao Keanu i razmišljao kako je potpuno neverovatno da su uspeli da naprave akcioni film oko mačeta… i da bude dobar.
-Ne “smešan na momente”, nego stvarno dobar. To je ozbiljan talenat.
+
+Ne “smešan na momente”, nego stvarno dobar.
+To je ozbiljan talenat.
 To je onaj nivo kada više ni ne razumeš kako nekome mozak radi.
 
 I uh… kakva je privilegija biti deo generacije koja gleda sve to dok nastaje. Ozbiljno.
@@ -1111,8 +1126,11 @@ I zato imam samo jednu želju kad su njih dvojica u pitanju:
 Brate… samo nastavite.
 
 Snimajte bilo šta.
+
 Skeč o parkingu.
+
 Film o poštaru.
+
 Seriju o čoveku koji kupuje lubenicu.
 
 Nije bitno.
