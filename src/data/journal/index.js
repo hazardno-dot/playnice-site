@@ -1097,16 +1097,17 @@ Biće potpuno u pravu.
 
 Jer Key i Peele nisu samo smešni.
 
-Oni imaju onu retku supermoć da uzmu nešto potpuno banalno i pretvore ga u univerzalnu ljudsku priču o egu, nesigurnosti, glumi, društvu, muškarcima koji pokušavaju da deluju opasnije nego što jesu i ljudima koji očajnički žele da izgledaju cool dok se raspadaju iznutra.
+Oni imaju onu retku supermoć da uzmu nešto potpuno banalno i pretvore ga u univerzalnu ljudsku priču o egu, nesigurnosti, glumi, društvu, muškarcima koji pokušavaju da deluju opasnije nego što jesu i ljudima koji očajnički žele da izgledaju cool dok se raspadaju iznutra. I sve to upakuju tako da se ti bukvalno gušiš od smeha.
+To je doktorat.
 
-I sve to upakuju tako da se ti bukvalno gušiš od smeha. To je doktorat. Ne internet “genije”. Ne “content creator”.
+Ne internet “genije”.
+Ne “content creator”.
 
 Doktorat.
 
 —
 
-Mislim, imamo mi već par doktora, imamo Valentina Rossija, imamo i Gregory Housa, šta tek reći za današnji izgled John Travolte.. doktor.
-
+Mislim, imamo mi već par doktora, imamo Valentina Rossija, imamo i Gregory Housa, šta tek reći za današnji izgled John Travolte.. DOKTOR.
 I onda imaš još dvojicu vrhunskih:
 
 Key & Peele.
