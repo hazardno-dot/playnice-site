@@ -5687,8 +5687,63 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               <div className="modal-monogram">
                 {selectedProduct.name.charAt(0)}
               </div>
-            )}
+               )}
           </div>
+
+              {selectedProduct.recommendations?.length > 0 && (
+  <div className="modal-same-energy panel-item-anim panel-item-3">
+    <span className="modal-same-energy-kicker">
+      {lang === "sr" ? "SLIČNA ENERGIJA" : "SAME ENERGY"}
+    </span>
+
+    <div className="modal-same-energy-list">
+      {selectedProduct.recommendations
+        .map((slug) => products.find((product) => product.slug === slug))
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((product) => {
+          const copy = product.copy?.[lang] || product.copy?.en || {};
+
+          return (
+            <button
+              key={product.slug}
+              type="button"
+              className="modal-same-energy-item"
+              onClick={() => {
+                setSelectedProduct(product);
+                setSelectedSize(Object.keys(product.sizes)[0]);
+                setHasUserPickedSize(false);
+
+                window.history.pushState(
+                  { productSlug: product.slug },
+                  "",
+                  `/product/${product.slug}`
+                );
+              }}
+            >
+              <span className="modal-same-energy-img-wrap">
+                {product.image ? (
+                  <img src={product.image} alt={product.name} />
+                ) : (
+                  <span>{product.name.charAt(0)}</span>
+                )}
+              </span>
+
+              <span className="modal-same-energy-text">
+                <strong>{product.name}</strong>
+                <small>
+                  {copy.card ||
+                    copy.whyChoose ||
+                    copy.dominantNotes?.join(" • ") ||
+                    (lang === "sr" ? "Sličan premium karakter." : "Similar premium character.")}
+                </small>
+              </span>
+            </button>
+          );
+        })}
+    </div>
+  </div>
+)}
 
           <div className="modal-media-meta panel-item-anim panel-item-3">
             <span className="modal-category">
