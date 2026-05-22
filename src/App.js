@@ -3633,185 +3633,147 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
 
     <div className="how-request-panel scent-request-panel">
-      <p className="section-kicker scent-request-kicker">
-       {lang === "sr" ? "Zahtevi zajednice" : "Community requests"}
-      </p>
+  <p className="section-kicker scent-request-kicker">
+    {lang === "sr" ? "Zahtevi zajednice" : "Community requests"}
+  </p>
 
-      <h2>
-        {lang === "sr"
-          ? "Koji parfem bi voleo da probaš?"
-          : "What should we decant next?"}
-      </h2>
+  <h2>
+    {lang === "sr"
+      ? "Koji parfem bi voleo da probaš?"
+      : "What should we decant next?"}
+  </h2>
 
-      <p className="scent-request-copy">
-        {lang === "sr"
-          ? "Najbolji dropovi često krenu od jedne poruke."
-          : "Some of our best drops started with a simple request."}
-      </p>
+  <p className="scent-request-copy">
+    {lang === "sr"
+      ? "Najbolji dropovi često krenu od jedne poruke."
+      : "Some of our best drops started with a simple request."}
+  </p>
 
-      <form className="scent-request-form" onSubmit={handleScentRequestSubmit}>
-        <input
-          type="text"
-          value={scentRequestValue}
-          onChange={(event) => setScentRequestValue(event.target.value)}
-          placeholder={
-            lang === "sr"
-              ? "Npr. Xerjoff Naxos"
-              : "E.g. Xerjoff Naxos"
-          }
-          aria-label={
-            lang === "sr"
-              ? "Ime parfema koji želiš da probaš"
-              : "Name of the fragrance you want to try"
-          }
-        />
+  <form className="scent-request-form" onSubmit={handleScentRequestSubmit}>
+    <input
+      type="text"
+      value={scentRequestValue}
+      onChange={(event) => setScentRequestValue(event.target.value)}
+      placeholder={lang === "sr" ? "Npr. Xerjoff Naxos" : "E.g. Xerjoff Naxos"}
+      aria-label={
+        lang === "sr"
+          ? "Ime parfema koji želiš da probaš"
+          : "Name of the fragrance you want to try"
+      }
+    />
 
-        <button type="submit" disabled={scentRequestSubmitting}>
-          {scentRequestSubmitting
-            ? lang === "sr"
-              ? "Šaljemo..."
-              : "Sending..."
-            : lang === "sr"
-              ? "Predloži parfem"
-              : "Request this scent"}
-          <span>→</span>
-        </button>
-      </form>
+    <button type="submit" disabled={scentRequestSubmitting}>
+      {scentRequestSubmitting
+        ? lang === "sr"
+          ? "Šaljemo..."
+          : "Sending..."
+        : lang === "sr"
+          ? "Predloži parfem"
+          : "Request this scent"}
+      <span>→</span>
+    </button>
+  </form>
 
-      {scentRequestStatus && (
-  <p className="scent-request-status">{scentRequestStatus}</p>
-)}
-
-<div className="community-requests-box">
-  <div className="community-requests-head">
-    <span>
-      {lang === "sr" ? "Zahtevi zajednice uživo" : "Live community requests"}
-    </span>
-
-    <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
-  </div>
-
-  {existingCollectionRequests.length > 0 && (
-  <div className="already-in-collection-strip">
-    <span>
-      {lang === "sr"
-        ? "Već u našoj kolekciji ✦"
-        : "Already in our collection ✦"}
-    </span>
-
-    <div className="already-in-collection-list">
-      {existingCollectionRequests.slice(0, 3).map((item) => (
-        <button
-          key={item.name}
-          type="button"
-          onClick={() => {
-            const existingProduct = findExistingProductByRequest(item.name);
-
-            if (existingProduct) {
-              setSelectedProduct(existingProduct);
-              setProductModalVisible(true);
-            }
-          }}
-        >
-          {item.name}
-        </button>
-      ))}
-
-      {existingCollectionRequests.length > 3 && (
-        <em>+{existingCollectionRequests.length - 3} more</em>
-      )}
-    </div>
-  </div>
-)}
-
-  {existingCollectionRequests.length > 0 && (
-  <div className="already-in-collection-strip">
-    <span>
-      {lang === "sr"
-        ? "Već u našoj kolekciji ✦"
-        : "Already in our collection ✦"}
-    </span>
-
-    <div className="already-in-collection-list">
-      {existingCollectionRequests.slice(0, 3).map((item) => (
-        <button
-          key={item.name}
-          type="button"
-          onClick={() => {
-            const existingProduct = findExistingProductByRequest(item.name);
-
-            if (existingProduct) {
-              setSelectedProduct(existingProduct);
-              setProductModalVisible(true);
-            }
-          }}
-        >
-          {item.name}
-        </button>
-      ))}
-
-      {existingCollectionRequests.length > 3 && (
-        <em>+{existingCollectionRequests.length - 3} more</em>
-      )}
-    </div>
-  </div>
-)}
-
-  <div className="community-request-tags">
-    {communityRequests.slice(0, 5).map((request) => (
-      <button
-        key={request.name}
-        type="button"
-        onClick={() => {
-  const existingProduct = findExistingProductByRequest(request.name);
-
-  if (existingProduct) {
-  addExistingCollectionRequest(existingProduct);
-  sendScentRequest(existingProduct.name, "existing_collection_request");
-
-  setScentRequestStatus(
-    lang === "sr"
-      ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
-      : `Already in our collection ✦ Opening ${existingProduct.name}.`
-  );
-
-  setSelectedProduct(existingProduct);
-  setProductModalVisible(true);
-
-  return;
-}
-
-  sendScentRequest(request.name);
-
-  setCommunityRequests((prev) =>
-    prev
-      .map((item) =>
-        item.name === request.name
-          ? { ...item, votes: item.votes + 1 }
-          : item
-      )
-      .sort((a, b) => b.votes - a.votes)
-  );
-
-  setScentRequestStatus(
-    lang === "sr"
-      ? `Još jedan glas za ${request.name}.`
-      : `One more vote for ${request.name}.`
-  );
-}}
-      >
-        {request.name} <strong>{request.votes}</strong>
-      </button>
-    ))}
-
-    {communityRequests.length > 5 && (
-  <em className="community-request-more">
-    +{communityRequests.length - 5} more
-  </em>
+  {scentRequestStatus && (
+    <p className="scent-request-status">{scentRequestStatus}</p>
   )}
 
+  <div className="community-requests-box">
+    <div className="community-requests-head">
+      <span>
+        {lang === "sr" ? "Zahtevi zajednice uživo" : "Live community requests"}
+      </span>
+
+      <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
+    </div>
+
+    <div className="community-request-tags">
+      {communityRequests.slice(0, 5).map((request) => (
+        <button
+          key={request.name}
+          type="button"
+          onClick={() => {
+            const existingProduct = findExistingProductByRequest(request.name);
+
+            if (existingProduct) {
+              addExistingCollectionRequest(existingProduct);
+              sendScentRequest(existingProduct.name, "existing_collection_request");
+
+              setScentRequestStatus(
+                lang === "sr"
+                  ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+                  : `Already in our collection ✦ Opening ${existingProduct.name}.`
+              );
+
+              setSelectedProduct(existingProduct);
+              setProductModalVisible(true);
+
+              return;
+            }
+
+            sendScentRequest(request.name);
+
+            setCommunityRequests((prev) =>
+              prev
+                .map((item) =>
+                  item.name === request.name
+                    ? { ...item, votes: item.votes + 1 }
+                    : item
+                )
+                .sort((a, b) => b.votes - a.votes)
+            );
+
+            setScentRequestStatus(
+              lang === "sr"
+                ? `Još jedan glas za ${request.name}.`
+                : `One more vote for ${request.name}.`
+            );
+          }}
+        >
+          {request.name} <strong>{request.votes}</strong>
+        </button>
+      ))}
+
+      {communityRequests.length > 5 && (
+        <em className="community-request-more">
+          +{communityRequests.length - 5} more
+        </em>
+      )}
+    </div>
   </div>
-</div>
+
+  {existingCollectionRequests.length > 0 && (
+    <div className="already-in-collection-strip">
+      <span>
+        {lang === "sr"
+          ? "Već u našoj kolekciji ✦"
+          : "Already in our collection ✦"}
+      </span>
+
+      <div className="already-in-collection-list">
+        {existingCollectionRequests.slice(0, 3).map((item) => (
+          <button
+            key={item.name}
+            type="button"
+            onClick={() => {
+              const existingProduct = findExistingProductByRequest(item.name);
+
+              if (existingProduct) {
+                setSelectedProduct(existingProduct);
+                setProductModalVisible(true);
+              }
+            }}
+          >
+            {item.name}
+          </button>
+        ))}
+
+        {existingCollectionRequests.length > 3 && (
+          <em>+{existingCollectionRequests.length - 3} more</em>
+        )}
+      </div>
+    </div>
+  )}
 </div>
 </div>
 </section>
