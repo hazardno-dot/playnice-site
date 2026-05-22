@@ -5693,7 +5693,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               {selectedProduct.recommendations?.length > 0 && (
   <div className="modal-same-energy panel-item-anim panel-item-3">
     <span className="modal-same-energy-kicker">
-      {lang === "sr" ? "SLIČNA ENERGIJA" : "SAME ENERGY"}
+      {lang === "sr" ? "Slična energija" : "Same energy"}
     </span>
 
     <div className="modal-same-energy-list">
