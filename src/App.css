@@ -1410,7 +1410,11 @@ main {
 
 .identity-layer {
   position: relative;
-  margin: 18px auto 18px;
+  margin: 18px auto 10px;
+}
+
+.identity-layer + .how-it-works-section {
+  margin-top: 0;
 }
 
 .identity-layer-inner {
