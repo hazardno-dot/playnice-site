@@ -3550,23 +3550,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </p>
 
         <p className="identity-rhythm">
-  Samo vreme.
-  <br />
-  Koža.
-  <br />
-  Sećanje.
-  <br />
-  I pravi trenutak.
-        </p>
-
-        <p className="identity-rhythm">
-  Just time.
-  <br />
-  Skin.
-  <br />
-  Memory.
-  <br />
-  And the right moment.
+          {lang === "sr"
+            ? "Samo vreme, koža, sećanje i pravi trenutak."
+            : "Just time, skin, memory and the right moment."}
         </p>
 
         <p>

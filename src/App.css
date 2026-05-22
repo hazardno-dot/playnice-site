@@ -1521,8 +1521,8 @@ main {
 }
 
 .identity-rhythm {
-  color: rgba(255, 255, 255, 0.84);
-  line-height: 1.95;
+  color: rgba(255, 255, 255, 0.78);
+  font-style: italic;
 }
 
 /* MOBILE */
