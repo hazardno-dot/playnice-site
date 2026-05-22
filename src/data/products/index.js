@@ -838,7 +838,10 @@ export const products = [
   ratingLabel: "Elegant Favorite",
   season: "all",
   scentMood: ["soft", "rich", "signature"],
-  recommendations: ["Fahad Gaze", "Hawas Black"],
+  recommendations: [
+    "Fahad Gaze",
+    "Hawas Black"
+  ],
   inspiredBy: {
     name: "Original Narciso Rodriguez creation",
     short: "Powdery Musk DNA"
