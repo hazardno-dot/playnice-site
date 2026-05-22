@@ -20,6 +20,10 @@ export const products = [
   ratingLabel: "Well Loved",
   season: "summer",
   moods: ["clean", "summer", "signature"],
+  recommendations: [
+  "rasasi-hawas-ice",
+  "rayhaan-pacific-aura"
+],
   inspiredBy: {
     name: "Maison Francis Kurkdjian Aqua Vitae Forte",
     short: "Aqua Vitae Forte DNA"
@@ -37,6 +41,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "winter",
     moods: ["date", "rich", "signature"],
+    recommendations: [
+    "afnan-9pm-night-out",
+    "lattafa-fakhar-black"
+  ],
     inspiredBy: {
     name: "Creed Aventus and MFK Baccarat Rouge 540",
     short: "Aventus and Baccarat Rouge 540 DNA"
@@ -55,6 +63,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "all",
     moods: ["signature", "rich", "date"],
+    recommendations: [
+    "armaf-club-de-nuit-intense",
+    "creed-aventus-cologne"
+  ],
     inspiredBy: {
     name: "Creed Absolu Aventus",
     short: "Absolu Aventus DNA"
@@ -72,6 +84,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "summer",
     moods: ["clean", "summer", "signature"],
+    recommendations: [
+    "bleu-de-chanel-edp",
+    "rasasi-hawas-ice"
+  ],
     inspiredBy: {
     name: "Bvlgari Tygar / Sospiro Perfumes Vibrato",
     short: "Tygar DNA"
@@ -90,6 +106,9 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "summer",
     moods: ["soft", "date", "rich"],
+    recommendations: [
+    "khadlaj-island-dreams"
+  ],
     inspiredBy: {
     name: "Louis Vuitton Imagination",
     short: "Imagination DNA"
@@ -107,6 +126,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "all",
     moods: ["date", "rich", "signature"],
+    recommendations: [
+    "armaf-club-de-nuit-sillage",
+    "gisada-ambassador-men"
+  ],
   },
   {
     id: 7,
@@ -121,6 +144,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "all",
     moods: ["signature", "date", "rich"],
+    recommendations: [
+    "creed-aventus-cologne",
+    "afnan-supremacy-collectors-edition"
+  ],
     inspiredBy: {
     name: "Creed Aventus",
     short: "Aventus DNA"
@@ -138,6 +165,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "summer",
     moods: ["clean", "signature", "soft"],
+    recommendations: [
+    "bois-imperial-essential-parfums",
+    "acqua-di-parma-colonia-essenza"
+  ],
     inspiredBy: {
     name: "Creed Silver Mountain Water",
     short: "Silver Mountain Water DNA"
@@ -155,6 +186,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "winter",
     moods: ["rich", "date", "signature"],
+    recommendations: [
+    "lattafa-musamam-black-intense",
+    "tom-ford-noir-extreme"
+  ],
     inspiredBy: {
     name: "Stéphane Humbert Lucas 777 Sand Dance",
     short: "Sand Dance DNA"
@@ -172,6 +207,10 @@ export const products = [
     ratingLabel: "Popular Pick",
     season: "summer",
     moods: ["clean", "summer", "signature"],
+    recommendations: [
+    "rasasi-hawas-ice",
+    "rayhaan-pacific-aura"
+  ],
     inspiredBy: {
     name: "Bleu de Chanel Eau de Parfum",
     short: "Bleu de Chanel DNA"
@@ -190,6 +229,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "summer",
     moods: ["summer", "soft", "date"],
+    recommendations: [
+    "arabiyat-prestige-marwa",
+    "rayhaan-aquatica"
+  ],
     inspiredBy: {
     name: "Louis Vuitton Symphony",
     short: "Symphony DNA"
@@ -208,6 +251,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "winter",
     moods: ["rich", "date", "signature"],
+    recommendations: [
+    "boss-the-scent-elixir",
+    "tom-ford-noir-extreme"
+  ],
     inspiredBy: {
     name: "Hugo Boss Bottled Absolute",
     short: "Boss Absolute DNA"
@@ -225,6 +272,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "all",
     moods: ["clean", "signature", "date"],
+    recommendations: [
+    "ysl-lhomme-edp",
+    "afnan-9pm-rebel"
+  ],
     inspiredBy: {
     name: "Yves Saint Laurent (YSL) Y EDP",
     short: "YSL Y EDP DNA"
@@ -243,6 +294,10 @@ export const products = [
     ratingLabel: "Top Rated",
     season: "winter",
     moods: ["rich", "date", "soft"],
+    recommendations: [
+    "swiss-arabian-tobacco-01",
+    "chopard-oud-malaki"
+  ],
     inspiredBy: {
     name: "By Kilian Angels' Share",
     short: "Angels' Share DNA"
@@ -260,6 +315,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "winter",
     moods: ["rich", "date", "signature"],
+    recommendations: [
+    "french-avenue-vulcan-sable",
+    "arabiyat-prestige-fahad-gaze"
+  ],
   },
   {
     id: 16,
@@ -273,6 +332,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "all",
     moods: ["summer", "rich", "signature"],
+    recommendations: [
+    "armaf-club-de-nuit-intense",
+    "afnan-supremacy-collectors-edition"
+  ],
     inspiredBy: {
     name: "Versace Eros Najim",
     short: "Eros Najim DNA"
@@ -290,6 +353,9 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "summer",
     moods: ["clean", "summer", "soft"],
+    recommendations: [
+    "emir-voux-elegante"
+  ],
     inspiredBy: {
     name: "Roja Dove Elysium Parfum Cologne",
     short: "Elysium DNA"
@@ -307,6 +373,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "winter",
     moods: ["soft", "clean", "signature"],
+    recommendations: [
+    "lhomme-ideal-guerlain-edt",
+    "emir-trillium"
+  ],
     inspiredBy: {
     name: "Xerjoff 1861 Naxos",
     short: "Naxos DNA"
@@ -324,6 +394,9 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "winter",
     moods: ["rich", "date", "soft"],
+    recommendations: [
+    "lattafa-khamrah-qahwa"
+  ],
     inspiredBy: {
     name: "Maison Francis Kurkdjian Oud Satin Mood",
     short: "Oud Satin Mood DNA"
@@ -341,6 +414,9 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "winter",
     moods: ["clean", "summer", "signature"],
+    recommendations: [
+    "emir-voux-zingy"
+  ],
     inspiredBy: {
     name: "Parfums de Marly Layton",
     short: "Layton DNA"
@@ -359,6 +435,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "summer",
     moods: ["clean", "summer", "soft"],
+    recommendations: [
+    "rayhaan-pacific-aura",
+    "emir-voux-zingy"
+  ],
     inspiredBy: {
     name: "Creed Virgin Island Water",
     short: "Virgin Island Water DNA"
@@ -376,6 +456,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "summer",
     moods: ["clean", "summer", "soft"],
+    recommendations: [
+    "rasasi-hawas-ice",
+    "french-avenue-safari-breeze"
+  ],
     inspiredBy: {
     name: "Louis Vuitton Pacific Chill",
     short: "Pacific Chill DNA"
@@ -393,6 +477,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "winter",
     moods: ["rich", "date", "signature"],
+    recommendations: [
+    "lattafa-khamrah-qahwa",
+    "chopard-oud-malaki"
+],
   },
   {
     id: 24,
@@ -406,6 +494,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "summer",
     moods: ["clean", "summer", "soft"],
+    recommendations: [
+    "emir-voux-zingy",
+    "french-avenue-safari-breeze"
+  ],
   },
   {
     id: 25,
@@ -419,6 +511,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "all",
     moods: ["clean", "signature", "soft"],
+    recommendations: [
+    "terre-d-hermes-edt",
+    "acqua-di-parma-colonia-pura"
+  ],
   },
   {
     id: 26,
@@ -432,6 +528,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "summer",
     moods: ["clean", "summer", "soft"],
+    recommendations: [
+    "calvin-klein-ck-all",
+    "acqua-di-parma-colonia-essenza"
+  ],
   },
   {
     id: 27,
@@ -446,6 +546,10 @@ export const products = [
     ratingLabel: "Top Rated",
     season: "all",
     moods: ["signature", "clean", "date"],
+    recommendations: [
+    "afnan-turathi-blue",
+    "giorgio-armani-acqua-di-gio-profondo-parfum"
+  ],
   },
   {
     id: 28,
@@ -460,6 +564,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "all",
     moods: ["signature", "clean", "soft"],
+    recommendations: [
+    "armaf-club-de-nuit-sillage",
+    "mancera-cedrat-boise"
+  ],
   },
   {
     id: 29,
@@ -473,6 +581,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "all",
     moods: ["signature", "clean", "date"],
+    recommendations: [
+    "boss-the-scent-elixir",
+    "boss-the-scent-le-parfum"
+  ],
   },
   {
     id: 30,
@@ -486,6 +598,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "all",
     moods: ["date", "rich", "signature"],
+    recommendations: [
+    "boss-the-scent-le-parfum",
+    "tom-ford-noir-extreme"
+  ],
   },
   {
     id: 31,
@@ -499,6 +615,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "all",
     moods: ["date", "soft", "rich"],
+    recommendations: [
+    "boss-the-scent-elixir",
+    "dolce-gabbana-the-one-for-men-edt"
+  ],
   },
   {
     id: 32,
@@ -512,6 +632,9 @@ export const products = [
     ratingLabel: "Popular Pick",
     season: "summer",
     moods: ["clean", "summer", "soft"],
+    recommendations: [
+    "acqua-di-parma-colonia-pura"
+  ],
   },
   {
     id: 33,
@@ -525,6 +648,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "summer",
     moods: ["clean", "signature", "summer"],
+    recommendations: [
+    "calvin-klein-defy-parfum",
+    "montblanc-explorer-extreme"
+  ],
   },
   {
     id: 34,
@@ -538,6 +665,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "all",
     moods: ["signature", "date", "soft"],
+    recommendations: [
+    "calvin-klein-defy-edt",
+    "montblanc-explorer-extreme"
+  ],
   },
   {
     id: 35,
@@ -551,6 +682,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "winter",
     moods: ["rich", "date", "signature"],
+    recommendations: [
+    "swiss-arabian-tobacco-01",
+    "lattafa-khamrah-qahwa"
+  ],
   },
   {
     id: 36,
@@ -565,6 +700,10 @@ export const products = [
     ratingLabel: "Top Rated",
     season: "all",
     moods: ["clean", "summer", "signature"],
+    recommendations: [
+    "armaf-club-de-nuit-intense",
+    "armaf-club-de-nuit-precieux-i"
+  ],
   },
   {
     id: 37,
@@ -579,6 +718,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "summer",
     moods: ["clean", "summer", "signature"],
+    recommendations: [
+    "bleu-de-chanel-edp",
+    "rasasi-hawas-ice"
+  ],
   },
   {
     id: 38,
@@ -592,6 +735,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "winter",
     moods: ["date", "rich", "signature"],
+    recommendations: [
+    "montblanc-explorer-extreme",
+    "armaf-club-de-nuit-bling"
+  ],
   },
   {
     id: 39,
@@ -605,6 +752,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "winter",
     moods: ["rich", "date", "soft"],
+    recommendations: [
+    "lhomme-ideal-guerlain-edt",
+    "tom-ford-noir-extreme"
+  ],
   },
   {
     id: 40,
@@ -618,6 +769,10 @@ export const products = [
     ratingLabel: "Popular Pick",
     season: "summer",
     moods: ["clean", "summer", "soft"],
+    recommendations: [
+    "versace-man-eau-fraiche",
+    "calvin-klein-defy-edt"
+  ],
   },
   {
     id: 41,
@@ -632,6 +787,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "summer",
     moods: ["soft", "date", "signature"],
+    recommendations: [
+    "lattafa-fakhar-black",
+    "narciso-rodriguez-for-him-bleu-noir-edp"
+  ],
   },
   {
     id: 42,
@@ -645,6 +804,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "summer",
     moods: ["soft", "date", "signature"],
+    recommendations: [
+    "givenchy-gentleman-reserve-privee",
+    "emir-voux-elegante"
+  ],
   },
   {
     id: 43,
@@ -659,6 +822,10 @@ export const products = [
     ratingLabel: "Top Rated",
     season: "all",
     moods: ["signature", "summer", "clean"],
+    recommendations: [
+    "bois-imperial-essential-parfums",
+    "montblanc-explorer-extreme"
+  ],
   },
   {
     id: 44,
@@ -672,6 +839,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "winter",
     moods: ["signature", "date", "rich"],
+    recommendations: [
+    "mancera-cedrat-boise",
+    "gisada-ambassador-men"
+  ],
   },
   {
     id: 45,
@@ -685,6 +856,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "all",
     moods: ["soft", "clean", "signature"],
+    recommendations: [
+    "narciso-rodriguez-poudree",
+    "ysl-lhomme-edp"
+  ],
   },
   {
     id: 46,
@@ -699,6 +874,10 @@ export const products = [
     ratingLabel: "Audience Favorite",
     season: "summer",
     moods: ["signature", "clean", "soft"],
+    recommendations: [
+    "acqua-di-parma-colonia-essenza",
+    "bois-imperial-essential-parfums"
+  ],
   },
   {
     id: 47,
@@ -713,6 +892,10 @@ export const products = [
     ratingLabel: "Top Rated",
     season: "winter",
     moods: ["rich", "date", "soft"],
+    recommendations: [
+    "givenchy-gentleman-reserve-privee",
+    "boss-the-scent-elixir"
+  ],
   },
   {
     id: 48,
@@ -727,6 +910,10 @@ export const products = [
     ratingLabel: "Night Beast",
     season: "winter",
     moods: ["date", "rich", "signature"],
+    recommendations: [
+    "afnan-9pm-rebel",
+    "tom-ford-noir-extreme"
+  ],
   },
   {
     id: 49,
@@ -741,6 +928,10 @@ export const products = [
     ratingLabel: "Fresh King",
     season: "summer",
     moods: ["clean", "summer", "signature"],
+    recommendations: [
+    "rayhaan-pacific-aura",
+    "giorgio-armani-acqua-di-gio-profondo-parfum"
+],
     inspiredBy: {
     name: "Paco Rabanne Invictus Aqua",
     short: "Invictus DNA"
@@ -759,6 +950,10 @@ export const products = [
     ratingLabel: "Top Rated",
     season: "all",
     moods: ["signature", "rich", "date"],
+    recommendations: [
+    "creed-aventus-cologne",
+    "armaf-club-de-nuit-intense"
+  ],
     inspiredBy: {
     name: "Creed Absolu Aventus",
     short: "Absolu Aventus DNA"
@@ -777,6 +972,10 @@ export const products = [
     ratingLabel: "Well Loved",
     season: "summer",
     moods: ["clean", "summer", "soft"],
+    recommendations: [
+    "rayhaan-pacific-aura",
+    "acqua-di-parma-fico-di-amalfi"
+  ],
     inspiredBy: {
     name: "Tales from Zanzibar by Memoirs of a Perfume Collector",
     short: "Tales from Zanzibar DNA"
@@ -834,6 +1033,10 @@ export const products = [
   ratingLabel: "Fresh Favorite",
   season: "summer",
   moods: ["clean", "summer", "soft"],
+  recommendations: [
+  "jimmy-choo-man-blue",
+  "acqua-di-parma-fico-di-amalfi"
+],
 },
 {
   id: 55,
@@ -848,6 +1051,10 @@ export const products = [
   ratingLabel: "Fresh Pick",
   season: "summer",
   moods: ["clean", "summer", "signature"],
+  recommendations: [
+  "acqua-di-parma-fico-di-amalfi",
+  "rayhaan-aquatica"
+],
   inspiredBy: {
     name: "Xerjoff Torino 21",
     short: "Torino 21 DNA"
@@ -867,6 +1074,10 @@ export const products = [
   ratingLabel: "Bold Choice",
   season: "winter",
   moods: ["date", "rich", "signature"],
+  recommendations: [
+  "lattafa-asad-elixir",
+  "boss-the-scent-elixir"
+],
   inspiredBy: {
     name: "Creed Centaurus",
     short: "Centaurus DNA"
@@ -886,6 +1097,10 @@ export const products = [
   ratingLabel: "Top Seller",
   season: "all",
   moods: ["signature", "date", "rich"],
+  recommendations: [
+  "afnan-9pm-rebel",
+  "lattafa-fakhar-black"
+],
   inspiredBy: {
     name: "Nishane Hacivat",
     short: "Hacivat DNA"
@@ -905,6 +1120,10 @@ export const products = [
   ratingLabel: "Fresh Spicy",
   season: "all",
   moods: ["signature", "clean", "date"],
+  recommendations: [
+  "afnan-turathi-blue",
+  "bleu-de-chanel-edp"
+],
   inspiredBy: {
     name: "Parfums de Marly Castley",
     short: "Castley DNA"
@@ -924,6 +1143,9 @@ export const products = [
   ratingLabel: "Elegant Pick",
   season: "all",
   moods: ["rich", "date", "signature"],
+  recommendations: [
+  "lattafa-musamam-black-intense"
+],
   inspiredBy: {
     name: "Gucci Guilty Elixir pour Homme",
     short: "Guilty Elixir DNA"
@@ -943,7 +1165,9 @@ export const products = [
   ratingLabel: "Elegant Favorite",
   season: "all",
   scentMood: ["soft", "rich", "signature"],
-  recommendations: ["arabiyat-prestige-fahad-gaze", "rasasi-hawas-black"],
+  recommendations: [
+  "narciso-rodriguez-for-him-bleu-noir-edp"
+  ],
   inspiredBy: {
     name: "Original Narciso Rodriguez creation",
     short: "Powdery Musk DNA"
