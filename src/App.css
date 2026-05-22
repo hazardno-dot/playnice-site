@@ -1405,6 +1405,152 @@ main {
 }
 
 /* =========================================
+   IDENTITY LAYER — WHY PLAYNICE EXISTS
+========================================= */
+
+.identity-layer {
+  position: relative;
+  margin: 18px auto 18px;
+}
+
+.identity-layer-inner {
+  position: relative;
+  padding: 34px 34px 32px;
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  border-radius: 30px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(220, 181, 107, 0.12), transparent 38%),
+    radial-gradient(circle at 82% 70%, rgba(255, 255, 255, 0.045), transparent 42%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+    rgba(7, 7, 7, 0.96);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+  isolation: isolate;
+}
+
+.identity-layer-inner::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 29px;
+  background:
+    linear-gradient(120deg, rgba(220, 181, 107, 0.12), transparent 34%, rgba(255, 255, 255, 0.035));
+  opacity: 0.72;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.identity-kicker {
+  margin-bottom: 18px;
+  color: var(--gold);
+}
+
+.identity-layer-grid {
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 34px;
+  align-items: end;
+}
+
+.identity-layer h2 {
+  max-width: 760px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2.15rem, 4vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.identity-copy {
+  max-width: 430px;
+  justify-self: end;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.identity-copy p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+.identity-signature {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(220, 181, 107, 0.16);
+}
+
+.identity-signature span {
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.identity-signature strong {
+  color: var(--gold);
+  font-family: "Playfair Display", serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .identity-layer {
+    margin: 14px auto 16px;
+  }
+
+  .identity-layer-inner {
+    padding: 26px 20px 24px;
+    border-radius: 24px;
+  }
+
+  .identity-layer-inner::before {
+    border-radius: 23px;
+  }
+
+  .identity-layer-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .identity-layer h2 {
+    font-size: clamp(2rem, 10vw, 3.15rem);
+    line-height: 1;
+  }
+
+  .identity-copy {
+    max-width: 100%;
+    justify-self: start;
+  }
+
+  .identity-copy p {
+    font-size: 0.95rem;
+    line-height: 1.75;
+  }
+}
+
+@media (max-width: 560px) {
+  .identity-layer-inner {
+    padding: 24px 18px 22px;
+  }
+
+  .identity-kicker {
+    margin-bottom: 14px;
+  }
+
+  .identity-signature {
+    margin-top: 20px;
+  }
+}
+
+/* =========================================
    FEATURE SECTION
 ========================================= */
 .feature-grid {

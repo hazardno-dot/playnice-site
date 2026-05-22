@@ -3515,6 +3515,33 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               <div>{tr.valueDelivery}</div>
             </section>
 
+            <section className="identity-layer section-wrap" aria-label="Why PlayNice exists">
+  <div className="identity-layer-inner">
+    <p className="section-kicker identity-kicker">
+      Why PlayNice exists
+    </p>
+
+    <div className="identity-layer-grid">
+      <h2>
+        Luxury should feel personal before it feels expensive.
+      </h2>
+
+      <div className="identity-copy">
+        <p>
+          Some bottles are expensive.
+          <br />
+          Blind buying is worse.
+        </p>
+
+        <div className="identity-signature">
+          <span>Try before you buy.</span>
+          <strong>Remember. PlayNice.</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
             {shouldShowMobileSponsoredAd && (
   <section
     className="mobile-sponsored-ad-wrap"
