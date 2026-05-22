@@ -1615,6 +1615,38 @@ const sendScentRequest = (fragranceName) => {
 };
 
 /* =========================================
+   NORMAL SCENT NAME HELPER
+========================================= */
+
+const normalizeScentName = (value = "") =>
+  value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+
+const findExistingProductByRequest = (requestName) => {
+  const normalizedRequest = normalizeScentName(requestName);
+
+  if (!normalizedRequest) return null;
+
+  return products.find((product) => {
+    const productName = normalizeScentName(product.name || "");
+    const productBrand = normalizeScentName(product.brand || "");
+    const combined = normalizeScentName(`${product.name || ""} ${product.brand || ""}`);
+
+    return (
+      productName.includes(normalizedRequest) ||
+      normalizedRequest.includes(productName) ||
+      combined.includes(normalizedRequest) ||
+      normalizedRequest.includes(combined) ||
+      productBrand.includes(normalizedRequest)
+    );
+  });
+};
+
+/* =========================================
    SCENT REQUEST HENDLER
 ========================================= */
 
@@ -1622,6 +1654,22 @@ const handleScentRequestSubmit = async (event) => {
   event.preventDefault();
 
   const fragranceName = scentRequestValue.trim();
+
+  const existingProduct = findExistingProductByRequest(fragranceName);
+
+if (existingProduct) {
+  setScentRequestValue("");
+  setScentRequestStatus(
+    lang === "sr"
+      ? `${existingProduct.name} već imamo u ponudi — otvaramo detalje.`
+      : `${existingProduct.name} is already available — opening details.`
+  );
+
+  setSelectedProduct(existingProduct);
+  setProductModalVisible(true);
+
+  return;
+}
 
   if (!fragranceName) {
     setScentRequestStatus(
@@ -3609,24 +3657,39 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         key={request.name}
         type="button"
         onClick={() => {
-          sendScentRequest(request.name);
+  const existingProduct = findExistingProductByRequest(request.name);
 
-          setCommunityRequests((prev) =>
-            prev
-              .map((item) =>
-                item.name === request.name
-                  ? { ...item, votes: item.votes + 1 }
-                  : item
-              )
-              .sort((a, b) => b.votes - a.votes)
-          );
+  if (existingProduct) {
+    setScentRequestStatus(
+      lang === "sr"
+        ? `${existingProduct.name} već imamo u ponudi — otvaramo detalje.`
+        : `${existingProduct.name} is already available — opening details.`
+    );
 
-          setScentRequestStatus(
-            lang === "sr"
-              ? `Još jedan glas za ${request.name}.`
-              : `One more vote for ${request.name}.`
-          );
-        }}
+    setSelectedProduct(existingProduct);
+    setProductModalVisible(true);
+
+    return;
+  }
+
+  sendScentRequest(request.name);
+
+  setCommunityRequests((prev) =>
+    prev
+      .map((item) =>
+        item.name === request.name
+          ? { ...item, votes: item.votes + 1 }
+          : item
+      )
+      .sort((a, b) => b.votes - a.votes)
+  );
+
+  setScentRequestStatus(
+    lang === "sr"
+      ? `Još jedan glas za ${request.name}.`
+      : `One more vote for ${request.name}.`
+  );
+}}
       >
         {request.name} <strong>{request.votes}</strong>
       </button>
