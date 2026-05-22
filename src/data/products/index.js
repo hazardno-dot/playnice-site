@@ -650,7 +650,9 @@ export const products = [
   },
   {
     id: 50,
+    slug: "armaf-club-de-nuit-precieux-i",
     name: "Armaf Club de Nuit Precieux I Extrait de Parfum",
+    shortName: "CDN Precieux I",
     category: "Arabian",
     image: "/products/armaf-club-de-nuit-precieux.png",
     sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
@@ -666,7 +668,9 @@ export const products = [
   },
   {
     id: 51,
+    slug: "french-avenue-safari-breeze",
     name: "French Avenue Safari Breeze",
+    shortName: "Safari Breeze",
     category: "Arabian",
     image: "/products/french-avenue-safari-breeze.png",
     sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
@@ -682,7 +686,9 @@ export const products = [
   },
   {
     id: 52,
+    slug: "lattafa-dynasty",
     name: "Lattafa Dynasty",
+    shortName: "Dynasty",
     category: "Arabian",
     image: "/products/lattafa-dynasty.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -698,7 +704,9 @@ export const products = [
   },
   {
   id: 53,
+  slug: "dolce-gabbana-the-one-for-men-edt",
   name: "Dolce & Gabbana The One for Men Eau de Toilette",
+  shortName: "The One for Men",
   category: "Designer",
   image: "/products/dolce-gabbana-the-one-edt.png",
   sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 },
@@ -710,7 +718,9 @@ export const products = [
 },
 {
   id: 54,
+  slug: "versace-man-eau-fraiche",
   name: "Versace Man Eau Fraiche",
+  shortName: "Eau Fraiche",
   category: "Designer",
   image: "/products/versace-man-eau-fraiche.png",
   sizes: { "2ml": 3, "5ml": 7, "10ml": 12 },
@@ -722,7 +732,9 @@ export const products = [
 },
 {
   id: 55,
+  slug: "emir-voux-zingy",
   name: "Emir Voux Zingy by Paris Corner",
+  shortName: "Voux Zingy",
   category: "Arabian",
   image: "/products/emir-voux-zingy.png",
   sizes: { "5ml": 3, "10ml": 5, "20ml": 10 },
@@ -739,7 +751,9 @@ export const products = [
 },
 {
   id: 56,
+  slug: "rayhaan-crimson",
   name: "Rayhaan Crimson Eau de Parfum",
+  shortName: "Rayhaan Crimson",
   category: "Arabian",
   image: "/products/rayhaan-crimson.png",
   sizes: { "5ml": 3.5, "10ml": 6, "20ml": 12 },

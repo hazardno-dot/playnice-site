@@ -5698,7 +5698,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <div className="modal-same-energy-list">
       {selectedProduct.recommendations
-        .map((name) => products.find((product) => product.name === name))
+        .map((slug) => products.find((product) => product.slug === slug))
         .filter(Boolean)
         .slice(0, 2)
         .map((product) => {
@@ -5730,7 +5730,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               </span>
 
               <span className="modal-same-energy-text">
-                <strong>{product.name}</strong>
+                <strong>{product.shortName || product.name}</strong>
                 <small>
                   {copy.card ||
                     copy.whyChoose ||
