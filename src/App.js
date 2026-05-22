@@ -2036,7 +2036,7 @@ return {
   view,
   filteredProducts.length,
   tr,
-  lang
+  lang,
   smartCtaVibe
 ]);
 
