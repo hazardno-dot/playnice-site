@@ -9345,6 +9345,48 @@ main {
   font-weight: 900;
 }
 
+/* + more community-request-more*/
+
+.community-request-more-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.community-request-more {
+  cursor: help;
+}
+
+.community-request-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 9px);
+  z-index: 20;
+  width: max-content;
+  max-width: 260px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  background: rgba(8, 8, 8, 0.96);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+  color: rgba(255, 248, 235, 0.86);
+  font-size: 0.7rem;
+  font-weight: 750;
+  line-height: 1.35;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(4px);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.community-request-more-wrap:hover .community-request-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* + more already-in-collection*/
+
 .already-in-collection-more-wrap {
   position: relative;
   display: inline-flex;

@@ -3735,10 +3735,19 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       ))}
 
       {communityRequests.length > 5 && (
-        <em className="community-request-more">
-          +{communityRequests.length - 5} more
-        </em>
-      )}
+    <span className="community-request-more-wrap">
+    <em className="community-request-more">
+      +{communityRequests.length - 5} more
+    </em>
+
+    <span className="community-request-tooltip">
+      {communityRequests
+        .slice(5)
+        .map((item) => item.name)
+        .join(" • ")}
+    </span>
+  </span>
+)}
     </div>
   </div>
 
