@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
 import "./App.css";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
@@ -1968,14 +1968,6 @@ const [smartCtaStats, setSmartCtaStats] = useState({
   soft: 0,
   signature: 0
 });
-
-const handleSmartStickyClick = (moodId) => {
-  if (moodId) {
-    setSelectedScentMood(moodId);
-  }
-
-  goToShop();
-};
 
 const handleSmartStickyClick = useCallback(
   (moodId) => {
