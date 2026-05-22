@@ -3769,7 +3769,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         ))}
 
         {existingCollectionRequests.length > 3 && (
-          <em>+{existingCollectionRequests.length - 3} more</em>
+          <em
+        className="already-in-collection-more"
+        title={existingCollectionRequests
+        .slice(3)
+        .map((item) => item.name)
+        .join(", ")}
+        >
+        +{existingCollectionRequests.length - 3} more
+        </em>
         )}
       </div>
     </div>
