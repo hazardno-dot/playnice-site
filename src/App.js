@@ -1971,13 +1971,13 @@ const [smartCtaStats, setSmartCtaStats] = useState({
 
 const handleSmartStickyClick = useCallback(
   (moodId) => {
-    if (moodId) {
-      setSelectedScentMood(moodId);
-    }
-
     goToShop();
+
+    if (moodId) {
+      setScentMood(moodId);
+    }
   },
-  [goToShop]
+  [goToShop, setScentMood]
 );
 
 const stickyCtaData = useMemo(() => {
