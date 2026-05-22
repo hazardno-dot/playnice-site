@@ -9393,11 +9393,15 @@ main {
   align-items: center;
 }
 
+.already-in-collection-more {
+  cursor: help;
+}
+
 .already-in-collection-tooltip {
   position: absolute;
   left: 50%;
   bottom: calc(100% + 9px);
-  z-index: 5;
+  z-index: 20;
   width: max-content;
   max-width: 260px;
   padding: 8px 10px;
