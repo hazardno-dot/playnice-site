@@ -2812,9 +2812,18 @@ useEffect(() => {
 
       if (!isMounted) return;
 
-      if (data.status === "ok" && Array.isArray(data.requests) && data.requests.length > 0) {
-        setCommunityRequests(data.requests);
+      if (data.status === "ok") {
+      if (Array.isArray(data.requests) && data.requests.length > 0) {
+      setCommunityRequests(data.requests);
       }
+
+      if (
+      Array.isArray(data.existingRequests) &&
+      data.existingRequests.length > 0
+      )   {
+      setExistingCollectionRequests(data.existingRequests);
+      }
+    }
     } catch (error) {
       console.error("Failed to load scent requests:", error);
     }
