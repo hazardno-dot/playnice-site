@@ -4495,10 +4495,6 @@ main {
   margin: 2px auto 10px;
 }
 
-.modal-same-energy-kicker {
-  display: none;
-}
-
 .modal-same-energy-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

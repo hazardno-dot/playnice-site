@@ -5690,12 +5690,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                )}
           </div>
 
-              {selectedProduct.recommendations?.length > 0 && (
+          {selectedProduct.recommendations?.length > 0 && (
   <div className="modal-same-energy panel-item-anim panel-item-3">
-    <span className="modal-same-energy-kicker">
-      {lang === "sr" ? "Slična energija" : "Same energy"}
-    </span>
-
     <div className="modal-same-energy-list">
       {selectedProduct.recommendations
         .map((slug) => products.find((product) => product.slug === slug))
@@ -5735,7 +5731,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   {copy.card ||
                     copy.whyChoose ||
                     copy.dominantNotes?.join(" • ") ||
-                    (lang === "sr" ? "Sličan premium karakter." : "Similar premium character.")}
+                    (lang === "sr"
+                      ? "Sličan premium karakter."
+                      : "Similar premium character.")}
                 </small>
               </span>
             </button>
