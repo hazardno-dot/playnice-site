@@ -1969,6 +1969,25 @@ const [smartCtaStats, setSmartCtaStats] = useState({
   signature: 0
 });
 
+const handleSmartStickyClick = (moodId) => {
+  if (moodId) {
+    setSelectedScentMood(moodId);
+  }
+
+  goToShop();
+};
+
+const handleSmartStickyClick = useCallback(
+  (moodId) => {
+    if (moodId) {
+      setSelectedScentMood(moodId);
+    }
+
+    goToShop();
+  },
+  [goToShop]
+);
+
 const stickyCtaData = useMemo(() => {
   if (cartCount > 0) {
     return {
@@ -1996,23 +2015,28 @@ const stickyCtaData = useMemo(() => {
   const smartStickyCopy = {
   summer: {
     label: lang === "sr" ? "Treba ti letnji starter?" : "Need a summer starter?",
-    sublabel: lang === "sr" ? "Sveže, lako, za vruće dane" : "Fresh picks for hot days"
+    sublabel: lang === "sr" ? "Otvori Summer Heat izbor" : "Open Summer Heat picks",
+    moodId: "summer"
   },
   clean: {
     label: lang === "sr" ? "Kreni od čistih potpisa" : "Start with clean signatures",
-    sublabel: lang === "sr" ? "Sigurni mirisi za svaki dan" : "Easy luxury for every day"
+    sublabel: lang === "sr" ? "Otvori Clean Everyday izbor" : "Open Clean Everyday picks",
+    moodId: "clean"
   },
   rich: {
     label: lang === "sr" ? "Idi malo dublje" : "Go deeper",
-    sublabel: lang === "sr" ? "Bogati i zavodljivi mirisi" : "Rich & addictive scents"
+    sublabel: lang === "sr" ? "Otvori Rich & Addictive izbor" : "Open Rich & Addictive picks",
+    moodId: "rich"
   },
   date: {
     label: lang === "sr" ? "Nešto za veče?" : "Something for after dark?",
-    sublabel: lang === "sr" ? "Mirisi koji ostaju u sećanju" : "Scents that stay remembered"
+    sublabel: lang === "sr" ? "Otvori Date Night izbor" : "Open Date Night picks",
+    moodId: "date"
   },
   signature: {
     label: lang === "sr" ? "Pronađi svoj potpis" : "Find your signature",
-    sublabel: lang === "sr" ? "Miris koji radi za tebe" : "A scent that works for you"
+    sublabel: lang === "sr" ? "Otvori Signature Energy izbor" : "Open Signature Energy picks",
+    moodId: "signature"
   }
 };
 
@@ -2027,7 +2051,7 @@ return {
           lang === "sr" ? "parfema" : "fragrances"
         }`
       : tr.privateSelection),
-  onClick: goToShop
+  onClick: () => handleSmartStickyClick(smartCopy?.moodId)
 };
 }, [
   cartCount,
@@ -2037,7 +2061,8 @@ return {
   filteredProducts.length,
   tr,
   lang,
-  smartCtaVibe
+  smartCtaVibe,
+  handleSmartStickyClick
 ]);
 
 const stickyCtaJournalHasNew = journalUnreadCount > 0;
