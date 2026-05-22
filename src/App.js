@@ -1959,6 +1959,16 @@ const goToShop = () => {
   switchView("shop");
 };
 
+const [smartCtaVibe, setSmartCtaVibe] = useState(null);
+const [smartCtaStats, setSmartCtaStats] = useState({
+  summer: 0,
+  clean: 0,
+  rich: 0,
+  date: 0,
+  soft: 0,
+  signature: 0
+});
+
 const stickyCtaData = useMemo(() => {
   if (cartCount > 0) {
     return {
@@ -1983,16 +1993,42 @@ const stickyCtaData = useMemo(() => {
     };
   }
 
-  return {
-    label: tr.stickyExplore,
-    sublabel:
-      view === "shop"
-        ? `${filteredProducts.length} ${
-            lang === "sr" ? "parfema" : "fragrances"
-          }`
-        : tr.privateSelection,
-    onClick: goToShop
-  };
+  const smartStickyCopy = {
+  summer: {
+    label: lang === "sr" ? "Treba ti letnji starter?" : "Need a summer starter?",
+    sublabel: lang === "sr" ? "Sveže, lako, za vruće dane" : "Fresh picks for hot days"
+  },
+  clean: {
+    label: lang === "sr" ? "Kreni od čistih potpisa" : "Start with clean signatures",
+    sublabel: lang === "sr" ? "Sigurni mirisi za svaki dan" : "Easy luxury for every day"
+  },
+  rich: {
+    label: lang === "sr" ? "Idi malo dublje" : "Go deeper",
+    sublabel: lang === "sr" ? "Bogati i zavodljivi mirisi" : "Rich & addictive scents"
+  },
+  date: {
+    label: lang === "sr" ? "Nešto za veče?" : "Something for after dark?",
+    sublabel: lang === "sr" ? "Mirisi koji ostaju u sećanju" : "Scents that stay remembered"
+  },
+  signature: {
+    label: lang === "sr" ? "Pronađi svoj potpis" : "Find your signature",
+    sublabel: lang === "sr" ? "Miris koji radi za tebe" : "A scent that works for you"
+  }
+};
+
+const smartCopy = smartCtaVibe ? smartStickyCopy[smartCtaVibe] : null;
+
+return {
+  label: smartCopy?.label || tr.stickyExplore,
+  sublabel:
+    smartCopy?.sublabel ||
+    (view === "shop"
+      ? `${filteredProducts.length} ${
+          lang === "sr" ? "parfema" : "fragrances"
+        }`
+      : tr.privateSelection),
+  onClick: goToShop
+};
 }, [
   cartCount,
   total,
@@ -2001,6 +2037,7 @@ const stickyCtaData = useMemo(() => {
   filteredProducts.length,
   tr,
   lang
+  smartCtaVibe
 ]);
 
 const stickyCtaJournalHasNew = journalUnreadCount > 0;
@@ -2835,6 +2872,56 @@ useEffect(() => {
     isMounted = false;
   };
 }, []);
+
+/* =========================================
+   VIBE TRACKER I RESOLVER
+========================================= */
+
+useEffect(() => {
+  if (!selectedProduct) return;
+
+  const moods = selectedProduct.moods || selectedProduct.scentMoods || [];
+
+  setSmartCtaStats((prev) => {
+    const next = { ...prev };
+
+    moods.forEach((mood) => {
+      if (next[mood] !== undefined) {
+        next[mood] += 1;
+      }
+    });
+
+    return next;
+  });
+}, [selectedProduct]);
+
+useEffect(() => {
+  if (cartCount > 0 || wishlist.length > 0) return;
+
+  if (smartCtaStats.summer >= 3) {
+    setSmartCtaVibe("summer");
+    return;
+  }
+
+  if (smartCtaStats.clean >= 2 || smartCtaStats.soft >= 2) {
+    setSmartCtaVibe("clean");
+    return;
+  }
+
+  if (smartCtaStats.rich >= 2) {
+    setSmartCtaVibe("rich");
+    return;
+  }
+
+  if (smartCtaStats.date >= 2) {
+    setSmartCtaVibe("date");
+    return;
+  }
+
+  if (smartCtaStats.signature >= 2) {
+    setSmartCtaVibe("signature");
+  }
+}, [smartCtaStats, cartCount, wishlist.length]);
 
 /* =========================================
    INNER COMPONENTS
