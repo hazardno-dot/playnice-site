@@ -3549,10 +3549,24 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             : "Not through ads. Not through hype. Not through someone yelling “beast mode” on TikTok."}
         </p>
 
-        <p>
-          {lang === "sr"
-            ? "Samo vreme. Koža. Sećanje. I pravi trenutak."
-            : "Just time. Skin. Memory. And the right moment."}
+        <p className="identity-rhythm">
+  Samo vreme.
+  <br />
+  Koža.
+  <br />
+  Sećanje.
+  <br />
+  I pravi trenutak.
+        </p>
+
+        <p className="identity-rhythm">
+  Just time.
+  <br />
+  Skin.
+  <br />
+  Memory.
+  <br />
+  And the right moment.
         </p>
 
         <p>
