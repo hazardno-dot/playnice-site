@@ -816,6 +816,10 @@ export const products = [
   ratingLabel: "Elegant Favorite",
   season: "all",
   scentMood: ["soft", "rich", "signature"],
+  recommendations: [
+    "Arabiyat Prestige Fahad Gaze",
+    "Rasasi Hawas Black Eau de Parfum"
+  ],
   inspiredBy: {
     name: "Original Narciso Rodriguez creation",
     short: "Powdery Musk DNA"
