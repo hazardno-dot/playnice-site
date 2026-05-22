@@ -681,7 +681,6 @@ const checkoutCountryOptions = [
   { value: "SI", sr: "Slovenija", en: "Slovenia" },
   { value: "MK", sr: "Severna Makedonija", en: "North Macedonia" },
   { value: "AL", sr: "Albanija", en: "Albania" },
-  { value: "XK", sr: "Kosovo", en: "Kosovo" },
   { value: "OTHER", sr: "Druga zemlja", en: "Other country" }
 ];
 
