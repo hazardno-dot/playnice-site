@@ -795,6 +795,9 @@ export const products = [
     ratingLabel: "Popular Pick",
     season: "summer",
     moods: ["signature", "rich", "date"],
+    recommendations: [
+    "gisada-ambassador-men"
+    ],
     inspiredBy: {
     name: "Clive Christian L Red Tea Vetiver",
     short: "Red Tea Vetiver DNA"
@@ -813,6 +816,10 @@ export const products = [
   ratingLabel: "Elegant Pick",
   season: "winter",
   moods: ["date", "soft", "signature"],
+  recommendations: [
+  "boss-the-scent-le-parfum",
+  "givenchy-gentleman-reserve-privee"
+],
 },
 {
   id: 54,
