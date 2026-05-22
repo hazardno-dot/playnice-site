@@ -756,7 +756,9 @@ export const products = [
 },
 {
   id: 57,
+  slug: "rasasi-hawas-black",
   name: "Rasasi Hawas Black Eau de Parfum",
+  shortName: "Hawas Black",
   category: "Arabian",
   image: "/products/rasasi-hawas-black.png",
   sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -773,7 +775,9 @@ export const products = [
 },
 {
   id: 58,
+  slug: "khadlaj-onyx-silver",
   name: "Khadlaj Onyx Silver",
+  shortName: "Onyx Silver",
   category: "Arabian",
   image: "/products/khadlaj-onyx-silver.png",
   sizes: { "5ml": 3.5, "10ml": 6, "20ml": 12 },
@@ -790,7 +794,9 @@ export const products = [
 },
 {
   id: 59,
+  slug: "arabiyat-prestige-fahad-gaze",
   name: "Arabiyat Prestige Fahad Gaze",
+  shortName: "Fahad Gaze",
   category: "Arabian",
   image: "/products/arabiyat-prestige-fahad-gaze.png",
   sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
@@ -807,8 +813,9 @@ export const products = [
 },
 {
   id: 60,
-  name: "Narciso Rodriguez Poudrée Eau de Parfum",
   slug: "narciso-rodriguez-poudree",
+  name: "Narciso Rodriguez Poudrée Eau de Parfum",
+  shortName: "Narciso Poudrée",
   category: "Designer",
   image: "/products/narciso-rodriguez-poudree.png",
   sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
@@ -817,10 +824,7 @@ export const products = [
   ratingLabel: "Elegant Favorite",
   season: "all",
   scentMood: ["soft", "rich", "signature"],
-  recommendations: [
-    "Arabiyat Prestige Fahad Gaze",
-    "Rasasi Hawas Black Eau de Parfum"
-  ],
+  recommendations: ["Fahad Gaze", "Hawas Black"],
   inspiredBy: {
     name: "Original Narciso Rodriguez creation",
     short: "Powdery Musk DNA"
