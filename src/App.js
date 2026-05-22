@@ -5698,7 +5698,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <div className="modal-same-energy-list">
       {selectedProduct.recommendations
-        .map((slug) => products.find((product) => product.slug === slug))
+        .map((name) => products.find((product) => product.name === name))
         .filter(Boolean)
         .slice(0, 2)
         .map((product) => {
@@ -5706,7 +5706,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
           return (
             <button
-              key={product.slug}
+              key={product.id}
               type="button"
               className="modal-same-energy-item"
               onClick={() => {

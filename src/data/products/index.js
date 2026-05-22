@@ -808,6 +808,7 @@ export const products = [
 {
   id: 60,
   name: "Narciso Rodriguez Poudrée Eau de Parfum",
+  slug: "narciso-rodriguez-poudree",
   category: "Designer",
   image: "/products/narciso-rodriguez-poudree.png",
   sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
