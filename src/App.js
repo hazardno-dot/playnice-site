@@ -1970,11 +1970,13 @@ const [smartCtaStats, setSmartCtaStats] = useState({
 
 const handleSmartStickyClick = useCallback(
   (moodId) => {
-    goToShop();
-
     if (moodId) {
       setScentMood(moodId);
     }
+
+    requestAnimationFrame(() => {
+      goToShop();
+    });
   },
   [goToShop, setScentMood]
 );
