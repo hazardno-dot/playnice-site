@@ -3724,8 +3724,41 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
+  {existingCollectionRequests.length > 0 && (
+  <div className="already-in-collection-strip">
+    <span>
+      {lang === "sr"
+        ? "Već u našoj kolekciji ✦"
+        : "Already in our collection ✦"}
+    </span>
+
+    <div className="already-in-collection-list">
+      {existingCollectionRequests.slice(0, 3).map((item) => (
+        <button
+          key={item.name}
+          type="button"
+          onClick={() => {
+            const existingProduct = findExistingProductByRequest(item.name);
+
+            if (existingProduct) {
+              setSelectedProduct(existingProduct);
+              setProductModalVisible(true);
+            }
+          }}
+        >
+          {item.name}
+        </button>
+      ))}
+
+      {existingCollectionRequests.length > 3 && (
+        <em>+{existingCollectionRequests.length - 3} more</em>
+      )}
+    </div>
+  </div>
+)}
+
   <div className="community-request-tags">
-    {communityRequests.map((request) => (
+    {communityRequests.slice(0, 5).map((request) => (
       <button
         key={request.name}
         type="button"
@@ -3770,6 +3803,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         {request.name} <strong>{request.votes}</strong>
       </button>
     ))}
+
+    {communityRequests.length > 5 && (
+  <em className="community-request-more">
+    +{communityRequests.length - 5} more
+  </em>
+  )}
+
   </div>
 </div>
 </div>

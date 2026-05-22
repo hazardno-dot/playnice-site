@@ -9279,22 +9279,31 @@ main {
 
 /* already-in-collection */
 
+.community-request-more {
+  align-self: center;
+  color: rgba(220, 181, 107, 0.66);
+  font-size: 0.74rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
 .already-in-collection-strip {
-  margin-top: 14px;
-  padding: 13px 15px;
+  margin-top: 13px;
+  padding: 13px 15px 14px;
   border-radius: 18px;
-  border: 1px solid rgba(220, 181, 107, 0.1);
+  border: 1px solid rgba(220, 181, 107, 0.11);
   background:
-    linear-gradient(135deg, rgba(220, 181, 107, 0.055), rgba(255, 255, 255, 0.015)),
+    linear-gradient(135deg, rgba(220, 181, 107, 0.055), rgba(255, 255, 255, 0.012)),
     rgba(0, 0, 0, 0.18);
 }
 
 .already-in-collection-strip span {
   display: block;
   margin-bottom: 8px;
-  font-size: 0.66rem;
+  font-size: 0.64rem;
   font-weight: 900;
   letter-spacing: 0.13em;
+  line-height: 1.35;
   text-transform: uppercase;
   color: rgba(220, 181, 107, 0.78);
 }
@@ -9302,7 +9311,7 @@ main {
 .already-in-collection-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 6px 0;
   align-items: center;
 }
 
@@ -9313,12 +9322,14 @@ main {
   background: transparent;
   color: rgba(255, 255, 255, 0.66);
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 750;
+  line-height: 1.45;
+  transition: color 180ms ease, opacity 180ms ease;
 }
 
 .already-in-collection-list button:not(:last-of-type)::after {
   content: "•";
-  margin-left: 7px;
+  margin: 0 8px;
   color: rgba(220, 181, 107, 0.45);
 }
 
@@ -9327,10 +9338,45 @@ main {
 }
 
 .already-in-collection-list em {
+  margin-left: 8px;
   color: rgba(220, 181, 107, 0.66);
   font-size: 0.74rem;
   font-style: normal;
-  font-weight: 800;
+  font-weight: 900;
+}
+
+/* already-in-collection mobile */
+
+@media (max-width: 560px) {
+  .already-in-collection-strip {
+    padding: 12px 13px;
+    border-radius: 16px;
+  }
+
+  .already-in-collection-strip span {
+    text-align: center;
+    line-height: 1.35;
+  }
+
+  .already-in-collection-list {
+    justify-content: center;
+    gap: 5px 0;
+    text-align: center;
+  }
+
+  .already-in-collection-list button {
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .already-in-collection-list button:not(:last-of-type)::after {
+    margin: 0 6px;
+  }
+
+  .already-in-collection-list em {
+    margin-left: 6px;
+    font-size: 0.72rem;
+  }
 }
 
 /* MOBILE */
