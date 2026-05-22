@@ -9277,6 +9277,62 @@ main {
   color: rgba(220, 181, 107, 0.82);
 }
 
+/* already-in-collection */
+
+.already-in-collection-strip {
+  margin-top: 14px;
+  padding: 13px 15px;
+  border-radius: 18px;
+  border: 1px solid rgba(220, 181, 107, 0.1);
+  background:
+    linear-gradient(135deg, rgba(220, 181, 107, 0.055), rgba(255, 255, 255, 0.015)),
+    rgba(0, 0, 0, 0.18);
+}
+
+.already-in-collection-strip span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(220, 181, 107, 0.78);
+}
+
+.already-in-collection-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-items: center;
+}
+
+.already-in-collection-list button {
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.already-in-collection-list button:not(:last-of-type)::after {
+  content: "•";
+  margin-left: 7px;
+  color: rgba(220, 181, 107, 0.45);
+}
+
+.already-in-collection-list button:hover {
+  color: rgba(255, 248, 235, 0.95);
+}
+
+.already-in-collection-list em {
+  color: rgba(220, 181, 107, 0.66);
+  font-size: 0.74rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
 /* MOBILE */
 
 @media (max-width: 980px) {

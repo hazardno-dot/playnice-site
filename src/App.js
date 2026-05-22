@@ -615,6 +615,7 @@ function App() {
   const [cart, setCart] = useState([]);
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
+  const [existingCollectionRequests, setExistingCollectionRequests] = useState([]);
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
   const [storyOpen, setStoryOpen] = useState(false);
   const [inlineAddedKey, setInlineAddedKey] = useState(null);
@@ -1588,7 +1589,7 @@ const handleJournalClose = () => {
 };
 
 /* =========================================
-   SEND SCENT REQUEST
+   SEND SCENT REQUEST HEPLER
 ========================================= */
 
 const sendScentRequest = (fragranceName) => {
@@ -1658,11 +1659,13 @@ const handleScentRequestSubmit = async (event) => {
   const existingProduct = findExistingProductByRequest(fragranceName);
 
 if (existingProduct) {
+  addExistingCollectionRequest(existingProduct);
+
   setScentRequestValue("");
   setScentRequestStatus(
     lang === "sr"
-      ? `${existingProduct.name} već imamo u ponudi — otvaramo detalje.`
-      : `${existingProduct.name} is already available — opening details.`
+      ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+      : `Already in our collection ✦ Opening ${existingProduct.name}.`
   );
 
   setSelectedProduct(existingProduct);
@@ -1725,6 +1728,33 @@ if (existingProduct) {
   } finally {
     setScentRequestSubmitting(false);
   }
+};
+
+/* =========================================
+   EXISTING COLLECTION REQUEST HEPLER
+========================================= */
+
+const addExistingCollectionRequest = (product) => {
+  if (!product?.name) return;
+
+  setExistingCollectionRequests((prev) => {
+    const exists = prev.find(
+      (item) => item.name.toLowerCase() === product.name.toLowerCase()
+    );
+
+    if (exists) {
+      return prev
+        .map((item) =>
+          item.name.toLowerCase() === product.name.toLowerCase()
+            ? { ...item, votes: item.votes + 1 }
+            : item
+        )
+        .sort((a, b) => b.votes - a.votes);
+    }
+
+    return [{ name: product.name, votes: 1 }, ...prev]
+      .sort((a, b) => b.votes - a.votes);
+  });
 };
 
 /* =========================================
@@ -3651,6 +3681,39 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
   </div>
 
+  {existingCollectionRequests.length > 0 && (
+  <div className="already-in-collection-strip">
+    <span>
+      {lang === "sr"
+        ? "Već u našoj kolekciji ✦"
+        : "Already in our collection ✦"}
+    </span>
+
+    <div className="already-in-collection-list">
+      {existingCollectionRequests.slice(0, 3).map((item) => (
+        <button
+          key={item.name}
+          type="button"
+          onClick={() => {
+            const existingProduct = findExistingProductByRequest(item.name);
+
+            if (existingProduct) {
+              setSelectedProduct(existingProduct);
+              setProductModalVisible(true);
+            }
+          }}
+        >
+          {item.name}
+        </button>
+      ))}
+
+      {existingCollectionRequests.length > 3 && (
+        <em>+{existingCollectionRequests.length - 3} more</em>
+      )}
+    </div>
+  </div>
+)}
+
   <div className="community-request-tags">
     {communityRequests.map((request) => (
       <button
@@ -3660,17 +3723,19 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   const existingProduct = findExistingProductByRequest(request.name);
 
   if (existingProduct) {
-    setScentRequestStatus(
-      lang === "sr"
-        ? `${existingProduct.name} već imamo u ponudi — otvaramo detalje.`
-        : `${existingProduct.name} is already available — opening details.`
-    );
+  addExistingCollectionRequest(existingProduct);
 
-    setSelectedProduct(existingProduct);
-    setProductModalVisible(true);
+  setScentRequestStatus(
+    lang === "sr"
+      ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+      : `Already in our collection ✦ Opening ${existingProduct.name}.`
+  );
 
-    return;
-  }
+  setSelectedProduct(existingProduct);
+  setProductModalVisible(true);
+
+  return;
+}
 
   sendScentRequest(request.name);
 
