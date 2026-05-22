@@ -10,7 +10,9 @@ export const categoryLabels = {
 export const products = [
   {
   id: 1,
+  slug: "afnan-9am",
   name: "Afnan 9AM",
+  shortName: "9AM",
   category: "Arabian",
   image: "/products/afnan-9am.png",
   sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -25,7 +27,9 @@ export const products = [
   },
   {
     id: 2,
+    slug: "afnan-9pm-rebel",
     name: "Afnan 9PM Rebel",
+    shortName: "9PM Rebel",
     category: "Arabian",
     image: "/products/9pm.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -40,7 +44,9 @@ export const products = [
   },
   {
     id: 3,
+    slug: "afnan-supremacy-collectors-edition",
     name: "Afnan Supremacy Collector's Edition Pour Homme",
+    shortName: "Supremacy Collector's",
     category: "Arabian",
     image: "/products/afnan-supremacy.png",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
@@ -56,7 +62,9 @@ export const products = [
   },
   {
     id: 4,
+    slug: "afnan-turathi-blue",
     name: "Afnan Turathi Blue",
+    shortName: "Turathi Blue",
     category: "Arabian",
     image: "/products/afnan-turathi-blue.png",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
@@ -71,7 +79,9 @@ export const products = [
   },
   {
     id: 5,
+    slug: "arabiyat-prestige-marwa",
     name: "Arabiyat Prestige Marwa",
+    shortName: "Prestige Marwa",
     category: "Arabian",
     image: "/products/marwa.png",
     sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
@@ -87,7 +97,9 @@ export const products = [
   },
   {
     id: 6,
+    slug: "armaf-club-de-nuit-bling",
     name: "Armaf Club De Nuit Bling",
+    shortName: "CDN Bling",
     category: "Arabian",
     image: "/products/Bling.png",
     sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
@@ -98,7 +110,9 @@ export const products = [
   },
   {
     id: 7,
+    slug: "armaf-club-de-nuit-intense",
     name: "Armaf Club de Nuit Intense",
+    shortName: "CDN Intense",
     category: "Arabian",
     image: "/products/armaf-cdn-intense.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -114,7 +128,9 @@ export const products = [
   },
   {
     id: 8,
+    slug: "armaf-club-de-nuit-sillage",
     name: "Armaf Club de Nuit Sillage",
+    shortName: "CDN Sillage",
     category: "Arabian",
     image: "/products/CDN-Sillage.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -129,7 +145,9 @@ export const products = [
   },
   {
     id: 9,
+    slug: "french-avenue-vulcan-sable",
     name: "French Avenue Vulcan Sable by Fragrance World",
+    shortName: "Vulcan Sable",
     category: "Arabian",
     image: "/products/Vulcan-Sable.png",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
@@ -144,7 +162,9 @@ export const products = [
   },
   {
     id: 10,
+    slug: "haramain-signature-blue",
     name: "Haramain Signature Blue",
+    shortName: "Signature Blue",
     category: "Arabian",
     image: "/products/Haramain-Signature-Blue.png",
     sizes: { "5ml": 3, "10ml": 5, "20ml": 10 },
@@ -159,7 +179,9 @@ export const products = [
   },
   {
     id: 11,
+    slug: "khadlaj-island-dreams",
     name: "Khadlaj Island Dreams Extrait de Parfum",
+    shortName: "Island Dreams",
     category: "Arabian",
     image: "/products/island.png",
     sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
@@ -175,7 +197,9 @@ export const products = [
   },
   {
     id: 12,
+    slug: "lattafa-asad-elixir",
     name: "Lattafa Asad Elixir",
+    shortName: "Asad Elixir",
     category: "Arabian",
     image: "/products/Lattafa-Asad-Elixir.png",
     sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
@@ -191,7 +215,9 @@ export const products = [
   },
   {
     id: 13,
+    slug: "lattafa-fakhar-black",
     name: "Lattafa Fakhar Black",
+    shortName: "Fakhar Black",
     category: "Arabian",
     image: "/products/Lattafa-Fakhar-Black.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -206,7 +232,9 @@ export const products = [
   },
   {
     id: 14,
+    slug: "lattafa-khamrah-qahwa",
     name: "Lattafa Khamrah Qahwa",
+    shortName: "Khamrah Qahwa",
     category: "Arabian",
     image: "/products/Lattafa-Khamrah-Qahwa.png",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
@@ -222,7 +250,9 @@ export const products = [
   },
   {
     id: 15,
+    slug: "lattafa-musamam-black-intense",
     name: "Lattafa Musamam Black Intense",
+    shortName: "Musamam Black",
     category: "Arabian",
     image: "/products/Lattafa-Musamam-Black-Intense.png",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
@@ -233,7 +263,9 @@ export const products = [
   },
   {
     id: 16,
+    slug: "lattafa-qaed-al-fursan-untamed",
     name: "Lattafa Qaed Al Fursan Untamed",
+    shortName: "Qaed Al Fursan",
     category: "Arabian",
     image: "/products/Lattafa-Qaed-Al-Fursan-Untamed.png",
     sizes: { "5ml": 3, "10ml": 5, "20ml": 10 },
@@ -248,7 +280,9 @@ export const products = [
   },
   {
     id: 17,
+    slug: "emir-trillium",
     name: "Paris Corner Emir Trillium",
+    shortName: "Emir Trillium",
     category: "Arabian",
     image: "/products/Emir-Trillium.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -263,7 +297,9 @@ export const products = [
   },
   {
     id: 18,
+    slug: "emir-voux-elegante",
     name: "Paris Corner Emir Voux Elegante",
+    shortName: "Voux Elegante",
     category: "Arabian",
     image: "/products/Emir-Voux-Elegante.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -278,7 +314,9 @@ export const products = [
   },
   {
     id: 19,
+    slug: "ministry-of-oud-oud-satin",
     name: "Paris Corner Ministry of Oud - Oud Satin",
+    shortName: "Oud Satin",
     category: "Arabian",
     image: "/products/Ministry-of-Oud-Oud-Satin.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -293,7 +331,9 @@ export const products = [
   },
   {
     id: 20,
+    slug: "north-stag-expressions-ii-deux",
     name: "Paris Corner Perfumes North Stag Expressions II DEUX",
+    shortName: "North Stag II",
     category: "Arabian",
     image: "/products/II-DEUX.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
