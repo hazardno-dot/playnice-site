@@ -1592,14 +1592,14 @@ const handleJournalClose = () => {
    SEND SCENT REQUEST HEPLER
 ========================================= */
 
-const sendScentRequest = (fragranceName) => {
+const sendScentRequest = (fragranceName, source = "scent_request") => {
   try {
     const payloadToSend = JSON.stringify({
       timestamp: new Date().toISOString(),
       fragrance: fragranceName,
       lang,
       page: window.location.pathname,
-      source: "scent_request"
+      source
     });
 
     const blob = new Blob([payloadToSend], {
@@ -1660,6 +1660,7 @@ const handleScentRequestSubmit = async (event) => {
 
 if (existingProduct) {
   addExistingCollectionRequest(existingProduct);
+  sendScentRequest(existingProduct.name, "existing_collection_request");
 
   setScentRequestValue("");
   setScentRequestStatus(
@@ -3724,6 +3725,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
   if (existingProduct) {
   addExistingCollectionRequest(existingProduct);
+  sendScentRequest(existingProduct.name, "existing_collection_request");
 
   setScentRequestStatus(
     lang === "sr"
