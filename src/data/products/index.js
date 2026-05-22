@@ -308,7 +308,9 @@ export const products = [
   },
   {
     id: 21,
+    slug: "rayhaan-aquatica",
     name: "Rayhaan Aquatica",
+    shortName: "Aquatica",
     category: "Arabian",
     image: "/products/Rayhaan-AQUTICA.png",
     sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
@@ -324,7 +326,9 @@ export const products = [
   },
   {
     id: 22,
+    slug: "rayhaan-pacific-aura",
     name: "Rayhaan Pacific Aura",
+    shortName: "Pacific Aura",
     category: "Arabian",
     image: "/products/Rayhaan-Pacific-Aura.png",
     sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
@@ -339,7 +343,9 @@ export const products = [
   },
   {
     id: 23,
+    slug: "swiss-arabian-tobacco-01",
     name: "Swiss Arabian Tobacco 01 Extrait de Parfum",
+    shortName: "Tobacco 01",
     category: "Arabian",
     image: "/products/Swiss-Arabian-Tobacco01.png",
     sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
@@ -350,7 +356,9 @@ export const products = [
   },
   {
     id: 24,
+    slug: "acqua-di-parma-fico-di-amalfi",
     name: "Acqua di Parma Fico di Amalfi Eau de Toilette",
+    shortName: "Fico di Amalfi",
     category: "Niche",
     image: "/products/AdP-Fico.png",
     sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
@@ -361,7 +369,9 @@ export const products = [
   },
   {
     id: 25,
+    slug: "acqua-di-parma-colonia-essenza",
     name: "Acqua di Parma Colonia Essenza Eau de Cologne",
+    shortName: "Colonia Essenza",
     category: "Niche",
     image: "/products/AdP-Colonia-Essenza.png",
     sizes: { "2ml": 7, "5ml": 16, "10ml": 29 },
@@ -372,7 +382,9 @@ export const products = [
   },
   {
     id: 26,
+    slug: "acqua-di-parma-colonia-pura",
     name: "Acqua di Parma Colonia Pura Eau de Cologne",
+    shortName: "Colonia Pura",
     category: "Niche",
     image: "/products/AdP-Colonia-Pura.png",
     sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
@@ -383,7 +395,9 @@ export const products = [
   },
   {
     id: 27,
+    slug: "bleu-de-chanel-edp",
     name: "Bleu De Chanel Eau de Parfum",
+    shortName: "Bleu De Chanel",
     category: "Designer",
     image: "/products/BDC-EdP.png",
     sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
@@ -395,7 +409,9 @@ export const products = [
   },
   {
     id: 28,
+    slug: "bois-imperial-essential-parfums",
     name: "Bois Impérial by Essential Parfums",
+    shortName: "Bois Impérial",
     category: "Niche",
     image: "/products/Bois-Impérial-by-Essential-Parfums.png",
     sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
@@ -407,7 +423,9 @@ export const products = [
   },
   {
     id: 29,
+    slug: "boss-bottled-beyond",
     name: "BOSS Bottled Beyond Eau de Parfum",
+    shortName: "Bottled Beyond",
     category: "Designer",
     image: "/products/BOSS-Bottled-Beyond.png",
     sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
@@ -418,7 +436,9 @@ export const products = [
   },
   {
     id: 30,
+    slug: "boss-the-scent-elixir",
     name: "BOSS The Scent Elixir Parfum Intense for Him",
+    shortName: "The Scent Elixir",
     category: "Designer",
     image: "/products/BOSS-The-Scent-Elixir.png",
     sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
@@ -429,7 +449,9 @@ export const products = [
   },
   {
     id: 31,
+    slug: "boss-the-scent-le-parfum",
     name: "BOSS The Scent Le Parfum for Him",
+    shortName: "The Scent Le Parfum",
     category: "Designer",
     image: "/products/BOSS-The-Scent-Le-Parfum.png",
     sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
@@ -440,7 +462,9 @@ export const products = [
   },
   {
     id: 32,
+    slug: "calvin-klein-ck-all",
     name: "Calvin Klein CK All Eau de Toilette",
+    shortName: "CK All",
     category: "Designer",
     image: "/products/CK-All.png",
     sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 },
@@ -451,7 +475,9 @@ export const products = [
   },
   {
     id: 33,
+    slug: "calvin-klein-defy-edt",
     name: "Calvin Klein Defy Eau de Toilette",
+    shortName: "Defy EDT",
     category: "Designer",
     image: "/products/CK-Defy-EdT.png",
     sizes: { "2ml": 3, "5ml": 7, "10ml": 12 },
@@ -462,7 +488,9 @@ export const products = [
   },
   {
     id: 34,
+    slug: "calvin-klein-defy-parfum",
     name: "Calvin Klein Defy Parfum",
+    shortName: "Defy Parfum",
     category: "Designer",
     image: "/products/CK-Defy-Parfum.png",
     sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
