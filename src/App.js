@@ -3531,7 +3531,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
         <p className="identity-subline">
           {lang === "sr"
-            ? "Neke bočice su skupe. Kupovina na slepo je gora."
+            ? "Neke bočice su skupe. Kupovina na slepo je skuplja."
             : "Some bottles are expensive. Blind buying is worse."}
         </p>
       </div>
