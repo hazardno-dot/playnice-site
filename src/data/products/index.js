@@ -473,7 +473,9 @@ export const products = [
   },
   {
     id: 35,
+    slug: "chopard-oud-malaki",
     name: "Chopard Oud Malaki Eau de Parfum",
+    shortName: "Oud Malaki",
     category: "Designer",
     image: "/products/Chopard-Oud-Malaki-EdP.png",
     sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
@@ -484,7 +486,9 @@ export const products = [
   },
   {
     id: 36,
+    slug: "creed-aventus-cologne",
     name: "Creed Aventus Cologne",
+    shortName: "Aventus Cologne",
     category: "Niche",
     image: "/products/Creed-Aventus-Cologne.png",
     sizes: { "2ml": 13, "5ml": 29, "10ml": 52 },
@@ -496,7 +500,9 @@ export const products = [
   },
   {
     id: 37,
+    slug: "giorgio-armani-acqua-di-gio-profondo-parfum",
     name: "Giorgio Armani Acqua di Giò Profondo Parfum",
+    shortName: "ADG Profondo",
     category: "Designer",
     image: "/products/AcquadiGiò-Profondo-Parfum.png",
     sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
@@ -508,7 +514,9 @@ export const products = [
   },
   {
     id: 38,
+    slug: "gisada-ambassador-men",
     name: "Gisada Ambassador Men Eau de Parfum",
+    shortName: "Ambassador Men",
     category: "Designer",
     image: "/products/Gisada-Ambassador-Men-EdP.png",
     sizes: { "2ml": 5, "5ml": 11, "10ml": 20 },
@@ -519,7 +527,9 @@ export const products = [
   },
   {
     id: 39,
+    slug: "givenchy-gentleman-reserve-privee",
     name: "Givenchy Gentleman Eau de Parfum Réserve Privée",
+    shortName: "Réserve Privée",
     category: "Designer",
     image: "/products/Givenchy-Gentleman-EdP-Réserve-Privée.png",
     sizes: { "2ml": 5, "5ml": 12, "10ml": 21 },
@@ -530,7 +540,9 @@ export const products = [
   },
   {
     id: 40,
+    slug: "jimmy-choo-man-blue",
     name: "Jimmy Choo Man Blue Eau de Toilette",
+    shortName: "Man Blue",
     category: "Designer",
     image: "/products/Jimmy-Choo-Man-Blue-EdT.png",
     sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 },
@@ -541,7 +553,9 @@ export const products = [
   },
   {
     id: 41,
+    slug: "ysl-lhomme-edp",
     name: "L'Homme Eau de Parfum by Yves Saint Laurent",
+    shortName: "YSL L'Homme",
     category: "Designer",
     image: "/products/L'Homme-EdP-YSL.png",
     sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
@@ -553,7 +567,9 @@ export const products = [
   },
   {
     id: 42,
+    slug: "lhomme-ideal-guerlain-edt",
     name: "L'Homme Idéal De Guerlain Paris Eau De Toilette",
+    shortName: "L'Homme Idéal",
     category: "Designer",
     image: "/products/L'Homme-Idéal-De-Guerlain-Paris-EDT.png",
     sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
@@ -564,7 +580,9 @@ export const products = [
   },
   {
     id: 43,
+    slug: "mancera-cedrat-boise",
     name: "Mancera Cedrat Boise Eau de Parfum",
+    shortName: "Cedrat Boise",
     category: "Niche",
     image: "/products/Mancera-Cedrat-Boise-EdP.png",
     sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
@@ -576,7 +594,9 @@ export const products = [
   },
   {
     id: 44,
+    slug: "montblanc-explorer-extreme",
     name: "Montblanc Explorer Extreme Parfum",
+    shortName: "Explorer Extreme",
     category: "Designer",
     image: "/products/Montblanc-Explorer-Extreme-Parfum.png",
     sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
@@ -587,7 +607,9 @@ export const products = [
   },
   {
     id: 45,
+    slug: "narciso-rodriguez-for-him-bleu-noir-edp",
     name: "Narciso Rodriguez for Him Bleu Noir Eau de Parfum",
+    shortName: "Bleu Noir",
     category: "Designer",
     image: "/products/Narciso-Rodriguez-for-Him-Bleu-Noir-EdP.png",
     sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
@@ -598,7 +620,9 @@ export const products = [
   },
   {
     id: 46,
+    slug: "terre-d-hermes-edt",
     name: "Terre d'Hermès Eau de Toilette",
+    shortName: "Terre d'Hermès",
     category: "Designer",
     image: "/products/Terre-d'Hermès-EdT.png",
     sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
@@ -610,7 +634,9 @@ export const products = [
   },
   {
     id: 47,
+    slug: "tom-ford-noir-extreme",
     name: "Tom Ford Noir Extreme Eau de Parfum",
+    shortName: "Noir Extreme",
     category: "Designer",
     image: "/products/Tom-Ford-Noir-Extreme-EdP.png",
     sizes: { "2ml": 9, "5ml": 21, "10ml": 37 },
@@ -622,7 +648,9 @@ export const products = [
   },
   {
     id: 48,
+    slug: "afnan-9pm-night-out",
     name: "Afnan 9PM Night Out",
+    shortName: "9PM Night Out",
     category: "Arabian",
     image: "/products/9pm-night-out.png",
     sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
@@ -634,7 +662,9 @@ export const products = [
   },
   {
     id: 49,
+    slug: "rasasi-hawas-ice",
     name: "Rasasi Hawas Ice for Him",
+    shortName: "Hawas Ice",
     category: "Arabian",
     image: "/products/rasasi-hawas-ice.png",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
