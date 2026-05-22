@@ -1415,7 +1415,7 @@ main {
 
 .identity-layer-inner {
   position: relative;
-  padding: 34px 34px 32px;
+  padding: 38px 34px 34px;
   border: 1px solid rgba(220, 181, 107, 0.16);
   border-radius: 30px;
   overflow: hidden;
@@ -1447,39 +1447,59 @@ main {
 
 .identity-layer-grid {
   display: grid;
-  grid-template-columns: 1.08fr 0.92fr;
-  gap: 34px;
-  align-items: end;
+  grid-template-columns: 1.03fr 0.97fr;
+  gap: 42px;
+  align-items: start;
+}
+
+.identity-statement {
+  max-width: 760px;
 }
 
 .identity-layer h2 {
-  max-width: 760px;
   margin: 0;
   color: rgba(255, 255, 255, 0.94);
   font-family: "Playfair Display", serif;
-  font-size: clamp(2.15rem, 4vw, 4.4rem);
+  font-size: clamp(2.15rem, 4vw, 4.35rem);
   line-height: 0.98;
   letter-spacing: -0.055em;
 }
 
+.identity-subline {
+  max-width: 440px;
+  margin: 24px 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 1.02rem;
+  line-height: 1.72;
+  letter-spacing: 0.01em;
+}
+
 .identity-copy {
-  max-width: 430px;
+  max-width: 480px;
   justify-self: end;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.68);
 }
 
 .identity-copy p {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.8;
+  margin: 0 0 15px;
+  font-size: 0.98rem;
+  line-height: 1.84;
   letter-spacing: 0.01em;
+}
+
+.identity-copy p:last-of-type {
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.84);
+  font-family: "Playfair Display", serif;
+  font-size: 1.18rem;
+  line-height: 1.45;
 }
 
 .identity-signature {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  margin-top: 22px;
+  margin-top: 24px;
   padding-top: 18px;
   border-top: 1px solid rgba(220, 181, 107, 0.16);
 }
@@ -1507,7 +1527,7 @@ main {
   }
 
   .identity-layer-inner {
-    padding: 26px 20px 24px;
+    padding: 28px 20px 25px;
     border-radius: 24px;
   }
 
@@ -1517,12 +1537,18 @@ main {
 
   .identity-layer-grid {
     grid-template-columns: 1fr;
-    gap: 22px;
+    gap: 24px;
   }
 
   .identity-layer h2 {
-    font-size: clamp(2rem, 10vw, 3.15rem);
+    font-size: clamp(2rem, 10vw, 3.1rem);
     line-height: 1;
+  }
+
+  .identity-subline {
+    margin-top: 18px;
+    font-size: 0.96rem;
+    line-height: 1.7;
   }
 
   .identity-copy {
@@ -1531,8 +1557,13 @@ main {
   }
 
   .identity-copy p {
-    font-size: 0.95rem;
-    line-height: 1.75;
+    margin-bottom: 14px;
+    font-size: 0.94rem;
+    line-height: 1.78;
+  }
+
+  .identity-copy p:last-of-type {
+    font-size: 1.12rem;
   }
 }
 
@@ -1543,6 +1574,14 @@ main {
 
   .identity-kicker {
     margin-bottom: 14px;
+  }
+
+  .identity-layer-grid {
+    gap: 22px;
+  }
+
+  .identity-subline {
+    margin-top: 16px;
   }
 
   .identity-signature {

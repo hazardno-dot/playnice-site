@@ -3518,23 +3518,55 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             <section className="identity-layer section-wrap" aria-label="Why PlayNice exists">
   <div className="identity-layer-inner">
     <p className="section-kicker identity-kicker">
-      Why PlayNice exists
+      {lang === "sr" ? "Zašto PlayNice postoji" : "Why PlayNice exists"}
     </p>
 
     <div className="identity-layer-grid">
-      <h2>
-        Luxury should feel personal before it feels expensive.
-      </h2>
+      <div className="identity-statement">
+        <h2>
+          {lang === "sr"
+            ? "Luksuz treba da deluje lično pre nego što deluje skupo."
+            : "Luxury should feel personal before it feels expensive."}
+        </h2>
+
+        <p className="identity-subline">
+          {lang === "sr"
+            ? "Neke bočice su skupe. Kupovina na slepo je gora."
+            : "Some bottles are expensive. Blind buying is worse."}
+        </p>
+      </div>
 
       <div className="identity-copy">
         <p>
-          Some bottles are expensive.
-          <br />
-          Blind buying is worse.
+          {lang === "sr"
+            ? "PlayNice je nastao za ljude koji žele da osete parfem pre nego što se vežu za celu bočicu."
+            : "PlayNice was built for people who want to feel a fragrance before committing to a bottle."}
+        </p>
+
+        <p>
+          {lang === "sr"
+            ? "Ne kroz reklame. Ne kroz hajp. Ne kroz nekoga ko viče “beast mode” na TikToku."
+            : "Not through ads. Not through hype. Not through someone yelling “beast mode” on TikTok."}
+        </p>
+
+        <p>
+          {lang === "sr"
+            ? "Samo vreme. Koža. Sećanje. I pravi trenutak."
+            : "Just time. Skin. Memory. And the right moment."}
+        </p>
+
+        <p>
+          {lang === "sr"
+            ? "Jer najbolji parfemi ne mirišu skupo."
+            : "Because the best fragrances don’t smell expensive."}
+        </p>
+
+        <p>
+          {lang === "sr" ? "Mirišu poznato." : "They smell familiar."}
         </p>
 
         <div className="identity-signature">
-          <span>Try before you buy.</span>
+          <span>{lang === "sr" ? "Probaj pre kupovine." : "Try before you buy."}</span>
           <strong>Remember. PlayNice.</strong>
         </div>
       </div>
