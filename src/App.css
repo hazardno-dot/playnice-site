@@ -8042,8 +8042,8 @@ main {
 
 .product-card-image {
   width: 100%;
-  max-width: 160px;
-  max-height: 170px;
+  max-width: 136px;
+  max-height: 145px;
   object-fit: contain;
   object-position: center;
 
@@ -8823,8 +8823,8 @@ main {
   }
 
   .product-card-image {
-    max-width: 145px;
-    max-height: 155px;
+    max-width: 120px;
+    max-height: 130px;
   }
 
   .product-meta {
@@ -14995,8 +14995,8 @@ main {
   }
 
   .product-card-image {
-    max-width: 100px;
-    max-height: 112px;
+    max-width: 85px;
+    max-height: 95px;
   }
 
   .product-card:hover .product-card-image {
@@ -15272,8 +15272,8 @@ main {
   }
 
   .product-card-image {
-    max-width: 94px;
-    max-height: 106px;
+    max-width: 80px;
+    max-height: 90px;
   }
 
   .product-meta,
