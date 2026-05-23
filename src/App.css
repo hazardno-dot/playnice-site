@@ -13560,50 +13560,66 @@ main {
    JOURNAL — MOBILE FEATURED + GRID (≤768px)
 ========================================= */
 
+@keyframes journalMobileSheetIn {
+  from {
+    opacity: 0;
+    transform: translateY(38px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 768px) {
   .journal-overlay {
     align-items: flex-end;
-    padding: 0 10px 14px;
+    justify-content: center;
+    padding: 0 8px 10px;
     overflow: hidden;
   }
 
   .journal-top-sheet {
     width: 100%;
     height: auto;
-    max-height: calc(100dvh - 108px);
+    max-height: calc(100dvh - 82px);
     margin-top: auto;
-    border-radius: 28px 28px 24px 24px;
-    animation: journalSheetUp 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    border-radius: 28px 28px 22px 22px;
+    animation: journalMobileSheetIn 0.34s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .journal-body-scroll {
     overflow-y: auto;
-    padding-bottom: 2px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
-  @keyframes journalSheetUp {
-    from {
-      opacity: 0;
-      transform: translateY(28px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .journal-body-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .journal-topbar {
+    border-radius: 22px;
+  }
+
+  .journal-featured {
+    border-radius: 22px;
+  }
+
+  .journal-card {
+    border-radius: 18px;
   }
 
   .journal-featured.journal-featured--split {
     position: relative !important;
-
     display: flex !important;
     flex-direction: column !important;
     gap: 14px !important;
-
     width: 100% !important;
     height: auto !important;
     min-height: 540px !important;
     max-height: none !important;
-
     padding: 12px !important;
     border-radius: 22px !important;
     overflow: hidden !important;
@@ -13613,13 +13629,11 @@ main {
     position: relative !important;
     inset: auto !important;
     order: 1 !important;
-
     width: 100% !important;
     height: 225px !important;
     min-height: 225px !important;
     max-height: 225px !important;
     flex: 0 0 225px !important;
-
     aspect-ratio: auto !important;
     border-radius: 18px !important;
     overflow: hidden !important;
@@ -13629,11 +13643,9 @@ main {
     position: relative !important;
     inset: auto !important;
     display: block !important;
-
     width: 100% !important;
     height: 100% !important;
     min-height: 100% !important;
-
     object-fit: cover !important;
     object-position: center !important;
   }
@@ -13642,24 +13654,20 @@ main {
     position: relative !important;
     inset: auto !important;
     order: 2 !important;
-
     width: 100% !important;
     min-width: 0 !important;
     min-height: 0 !important;
     height: auto !important;
     max-height: none !important;
     flex: 1 1 auto !important;
-
     display: flex !important;
     flex-direction: column !important;
-
-    padding: 14px 14px 14px !important;
+    padding: 14px !important;
     overflow: hidden !important;
   }
 
   .journal-featured.journal-featured--split .journal-featured-meta {
     margin: 0 0 12px !important;
-
     font-size: 11px !important;
     line-height: 1.2 !important;
     letter-spacing: 0.18em !important;
@@ -13668,12 +13676,10 @@ main {
   .journal-featured.journal-featured--split .journal-featured-copy h2 {
     max-width: 100% !important;
     margin: 0 0 14px !important;
-
     font-size: 21px !important;
     line-height: 1.12 !important;
     letter-spacing: -0.03em !important;
     font-weight: 800 !important;
-
     display: -webkit-box !important;
     -webkit-line-clamp: 3 !important;
     -webkit-box-orient: vertical !important;
@@ -13689,7 +13695,6 @@ main {
     width: 44px !important;
     height: 44px !important;
     min-width: 44px !important;
-
     font-size: 17px !important;
   }
 
@@ -13707,10 +13712,8 @@ main {
   .journal-featured.journal-featured--split .journal-featured-copy > p {
     max-width: 100% !important;
     margin: 0 !important;
-
     font-size: 13.5px !important;
     line-height: 1.5 !important;
-
     display: -webkit-box !important;
     -webkit-line-clamp: 3 !important;
     -webkit-box-orient: vertical !important;
@@ -13720,7 +13723,6 @@ main {
   .journal-featured.journal-featured--split .journal-featured-link {
     margin-top: auto !important;
     padding-top: 14px !important;
-
     font-size: 10.5px !important;
     line-height: 1.2 !important;
     letter-spacing: 0.18em !important;
@@ -13820,6 +13822,7 @@ main {
 @media (max-width: 480px) {
   .journal-overlay {
     padding: 0 8px 12px;
+    overflow: hidden;
   }
 
   .journal-top-sheet {
