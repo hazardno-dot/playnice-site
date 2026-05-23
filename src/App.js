@@ -3045,6 +3045,22 @@ useEffect(() => {
 }, [smartCtaStats, cartCount, wishlist.length]);
 
 /* =========================================
+   DiscoveryBuilderOpen LOCK UNDER
+========================================= */
+
+useEffect(() => {
+  if (!discoveryBuilderOpen) return;
+
+  const originalOverflow = document.body.style.overflow;
+
+  document.body.style.overflow = "hidden";
+
+  return () => {
+    document.body.style.overflow = originalOverflow;
+  };
+}, [discoveryBuilderOpen]);
+
+/* =========================================
    INNER COMPONENTS
 ========================================= */
 const ProductCard = ({
