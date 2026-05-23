@@ -17742,4 +17742,29 @@ body.scrolled .header-system .announcement-bar-system {
   .discovery-grid::-webkit-scrollbar {
     display: none;
   }
+
+  .discovery-head {
+    display: block;
+    padding: 26px 22px 18px;
+  }
+
+  .discovery-head-text {
+    font-size: 0.86rem;
+    line-height: 1.58;
+  }
+
+  .discovery-progress {
+    width: fit-content;
+    margin-top: 15px;
+  }
+
+  .discovery-selected-badge {
+    top: 8px;
+    left: 8px;
+    font-size: 0.58rem;
+  }
+
+  .discovery-add-button {
+    min-width: 118px;
+  }
 }
