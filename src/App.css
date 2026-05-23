@@ -17569,7 +17569,6 @@ body.scrolled .header-system .announcement-bar-system {
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   gap: 14px !important;
   padding: 18px 16px 132px !important;
-  padding-bottom: 24px;
 
   scrollbar-width: none;
   -ms-overflow-style: none;
