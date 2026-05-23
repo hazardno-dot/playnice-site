@@ -1405,7 +1405,7 @@ main {
 }
 
 /* =========================================
-   IDENTITY LAYER — STONE NOTE RIGHT SIDE
+   IDENTITY LAYER — STONE SLAB RIGHT SIDE
 ========================================= */
 
 .identity-layer {
@@ -1419,15 +1419,15 @@ main {
 
 .identity-layer-inner {
   position: relative;
-  padding: 38px 34px 34px;
+  padding: 30px 34px 28px;
   border: 1px solid rgba(220, 181, 107, 0.13);
   border-radius: 30px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 16% 42%, rgba(220, 181, 107, 0.08), transparent 34%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.024), rgba(255, 255, 255, 0.008)),
+    radial-gradient(circle at 16% 42%, rgba(220, 181, 107, 0.07), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.007)),
     rgba(7, 7, 7, 0.96);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.44);
+  box-shadow: 0 22px 64px rgba(0, 0, 0, 0.42);
   isolation: isolate;
 }
 
@@ -1437,9 +1437,9 @@ main {
   inset: 1px;
   border-radius: 29px;
   background:
-    radial-gradient(circle at 20% 45%, rgba(220, 181, 107, 0.08), transparent 38%),
-    linear-gradient(90deg, rgba(255,255,255,0.025), transparent 48%);
-  opacity: 0.8;
+    radial-gradient(circle at 20% 45%, rgba(220, 181, 107, 0.07), transparent 38%),
+    linear-gradient(90deg, rgba(255,255,255,0.022), transparent 48%);
+  opacity: 0.74;
   pointer-events: none;
   z-index: -1;
 }
@@ -1447,7 +1447,7 @@ main {
 .identity-kicker {
   position: relative;
   z-index: 2;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   color: var(--gold);
 }
 
@@ -1455,8 +1455,8 @@ main {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 0.94fr 1.06fr;
-  gap: 42px;
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 38px;
   align-items: center;
 }
 
@@ -1466,9 +1466,9 @@ main {
 
 .identity-layer h2 {
   margin: 0;
-  color: rgba(255, 255, 255, 0.94);
+  color: rgba(255, 255, 255, 0.95);
   font-family: "Playfair Display", serif;
-  font-size: clamp(2.15rem, 4vw, 4.35rem);
+  font-size: clamp(2.15rem, 4vw, 4.25rem);
   line-height: 0.98;
   letter-spacing: -0.055em;
   text-shadow: 0 12px 28px rgba(0, 0, 0, 0.58);
@@ -1476,10 +1476,10 @@ main {
 
 .identity-subline {
   max-width: 440px;
-  margin: 24px 0 0;
+  margin: 22px 0 0;
   color: rgba(255, 255, 255, 0.68);
-  font-size: 1.02rem;
-  line-height: 1.72;
+  font-size: 1.01rem;
+  line-height: 1.68;
   letter-spacing: 0.01em;
 }
 
@@ -1488,56 +1488,58 @@ main {
 .identity-copy {
   position: relative;
   justify-self: end;
-  width: min(100%, 620px);
-  max-width: 620px;
-  padding: 34px 40px 32px;
+  width: min(100%, 625px);
+  max-width: 625px;
+  padding: 31px 39px 29px;
   color: rgba(231, 211, 179, 0.78);
 
   background:
-    radial-gradient(circle at 16% 10%, rgba(255,255,255,0.08), transparent 24%),
-    radial-gradient(circle at 88% 86%, rgba(220,181,107,0.08), transparent 30%),
-    linear-gradient(135deg, rgba(71, 61, 47, 0.92), rgba(24, 23, 20, 0.98) 48%, rgba(12, 12, 11, 0.98)),
+    radial-gradient(circle at 18% 14%, rgba(255,255,255,0.11), transparent 18%),
+    radial-gradient(circle at 84% 82%, rgba(220,181,107,0.08), transparent 28%),
+    radial-gradient(circle at 48% 44%, rgba(255,255,255,0.035), transparent 38%),
+    linear-gradient(145deg, rgba(63, 58, 49, 0.96), rgba(26, 25, 22, 0.99) 46%, rgba(10, 10, 9, 0.99)),
     #171614;
 
   border: 1px solid rgba(220, 181, 107, 0.24);
-  border-radius: 22px 26px 20px 24px;
+  border-radius: 24px;
 
   clip-path: polygon(
-    2% 5%,
-    8% 2%,
-    18% 3%,
-    27% 1%,
-    39% 3%,
-    52% 2%,
-    65% 4%,
-    77% 2%,
-    91% 4%,
-    98% 8%,
-    97% 22%,
-    99% 38%,
-    97% 52%,
-    99% 68%,
-    96% 87%,
-    90% 96%,
-    75% 97%,
-    61% 96%,
-    48% 98%,
-    36% 96%,
-    22% 98%,
+    1.5% 7%,
+    7% 3%,
+    16% 4%,
+    26% 1.5%,
+    38% 3.5%,
+    50% 2%,
+    63% 4%,
+    75% 2.5%,
+    88% 4%,
+    97% 8%,
+    98.5% 22%,
+    97% 36%,
+    99% 52%,
+    96.5% 68%,
+    98% 84%,
+    92% 96%,
+    79% 98%,
+    65% 96%,
+    51% 98.5%,
+    37% 96.5%,
+    23% 98%,
     9% 95%,
     3% 88%,
     1% 72%,
-    3% 58%,
+    2.5% 58%,
     1% 43%,
-    3% 28%
+    3% 27%
   );
 
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.12),
-    inset 0 -18px 42px rgba(0,0,0,0.48),
-    inset 18px 0 34px rgba(255,255,255,0.025),
-    0 20px 42px rgba(0,0,0,0.58),
-    0 4px 0 rgba(0,0,0,0.44);
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    inset 0 -20px 44px rgba(0,0,0,0.55),
+    inset 18px 0 36px rgba(255,255,255,0.03),
+    inset -16px 0 34px rgba(0,0,0,0.32),
+    0 22px 46px rgba(0,0,0,0.62),
+    0 5px 0 rgba(0,0,0,0.45);
 }
 
 .identity-copy::before {
@@ -1545,41 +1547,42 @@ main {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.56;
+  opacity: 0.72;
   z-index: 0;
 
   background:
-    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.12) 0 1px, transparent 2px),
-    radial-gradient(circle at 28% 71%, rgba(0,0,0,0.42) 0 1px, transparent 2px),
-    radial-gradient(circle at 64% 36%, rgba(255,255,255,0.08) 0 1px, transparent 2px),
-    radial-gradient(circle at 86% 62%, rgba(0,0,0,0.38) 0 1px, transparent 2px),
+    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.13) 0 1px, transparent 2px),
+    radial-gradient(circle at 20% 74%, rgba(0,0,0,0.48) 0 1px, transparent 2px),
+    radial-gradient(circle at 39% 31%, rgba(255,255,255,0.08) 0 1px, transparent 2px),
+    radial-gradient(circle at 63% 62%, rgba(0,0,0,0.44) 0 1px, transparent 2px),
+    radial-gradient(circle at 88% 44%, rgba(255,255,255,0.09) 0 1px, transparent 2px),
     repeating-linear-gradient(
-      145deg,
-      rgba(255,255,255,0.025) 0px,
-      rgba(255,255,255,0.025) 1px,
+      135deg,
+      rgba(255,255,255,0.035) 0px,
+      rgba(255,255,255,0.035) 1px,
       transparent 1px,
-      transparent 7px
+      transparent 6px
     ),
     repeating-linear-gradient(
-      28deg,
-      rgba(0,0,0,0.18) 0px,
-      rgba(0,0,0,0.18) 1px,
+      33deg,
+      rgba(0,0,0,0.22) 0px,
+      rgba(0,0,0,0.22) 1px,
       transparent 1px,
-      transparent 10px
+      transparent 9px
     );
 }
 
 .identity-copy::after {
   content: "";
   position: absolute;
-  inset: 9px 10px 10px;
+  inset: 8px 9px 10px;
   pointer-events: none;
   z-index: 0;
   border-radius: 18px;
   border: 1px solid rgba(220, 181, 107, 0.08);
   box-shadow:
-    inset 0 0 34px rgba(0,0,0,0.42),
-    inset 0 0 0 1px rgba(255,255,255,0.025);
+    inset 0 0 40px rgba(0,0,0,0.5),
+    inset 0 0 0 1px rgba(255,255,255,0.028);
 }
 
 .identity-copy p,
@@ -1589,28 +1592,28 @@ main {
 }
 
 .identity-copy p {
-  margin: 0 0 15px;
+  margin: 0 0 13px;
   font-family: "Playfair Display", serif;
   font-size: 1.08rem;
-  line-height: 1.72;
+  line-height: 1.68;
   letter-spacing: 0.005em;
-  color: rgba(230, 211, 180, 0.78);
+  color: rgba(232, 213, 181, 0.8);
   text-shadow:
-    0 1px 0 rgba(255,255,255,0.06),
-    0 -1px 1px rgba(0,0,0,0.9),
-    1px 2px 5px rgba(0,0,0,0.72);
+    0 1px 0 rgba(255,255,255,0.07),
+    0 -1px 1px rgba(0,0,0,0.92),
+    1px 2px 5px rgba(0,0,0,0.75);
 }
 
 .identity-copy p:last-of-type {
   margin-bottom: 0;
-  margin-top: 6px;
+  margin-top: 4px;
   color: rgba(239, 219, 184, 0.9);
-  font-size: 1.24rem;
-  line-height: 1.45;
+  font-size: 1.22rem;
+  line-height: 1.4;
 }
 
 .identity-rhythm {
-  color: rgba(225, 197, 151, 0.88) !important;
+  color: rgba(225, 197, 151, 0.9) !important;
   font-style: italic;
 }
 
@@ -1618,23 +1621,23 @@ main {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-top: 24px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(220, 181, 107, 0.34);
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(220, 181, 107, 0.36);
 }
 
 .identity-signature span {
-  color: rgba(220, 181, 107, 0.82);
-  font-size: 0.78rem;
+  color: rgba(220, 181, 107, 0.84);
+  font-size: 0.76rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.72);
 }
 
 .identity-signature strong {
-  color: rgba(220, 181, 107, 0.92);
+  color: rgba(220, 181, 107, 0.93);
   font-family: "Playfair Display", serif;
-  font-size: 1.28rem;
+  font-size: 1.26rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   text-shadow:
@@ -1651,7 +1654,7 @@ main {
   }
 
   .identity-layer-inner {
-    padding: 28px 20px 25px;
+    padding: 26px 20px 24px;
     border-radius: 24px;
   }
 
@@ -1661,7 +1664,7 @@ main {
 
   .identity-layer-grid {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 22px;
     align-items: start;
   }
 
@@ -1673,52 +1676,52 @@ main {
   .identity-subline {
     margin-top: 18px;
     font-size: 0.96rem;
-    line-height: 1.7;
+    line-height: 1.68;
   }
 
   .identity-copy {
     width: 100%;
     max-width: 100%;
     justify-self: start;
-    padding: 28px 24px 26px;
+    padding: 27px 24px 25px;
   }
 
   .identity-copy p {
-    margin-bottom: 14px;
+    margin-bottom: 13px;
     font-size: 1rem;
-    line-height: 1.7;
+    line-height: 1.66;
   }
 
   .identity-copy p:last-of-type {
-    font-size: 1.16rem;
+    font-size: 1.15rem;
   }
 }
 
 @media (max-width: 560px) {
   .identity-layer-inner {
-    padding: 24px 18px 22px;
+    padding: 23px 18px 21px;
   }
 
   .identity-kicker {
-    margin-bottom: 14px;
+    margin-bottom: 13px;
   }
 
   .identity-layer-grid {
-    gap: 22px;
+    gap: 21px;
   }
 
   .identity-subline {
-    margin-top: 16px;
+    margin-top: 15px;
   }
 
   .identity-copy {
-    padding: 25px 21px 24px;
+    padding: 25px 21px 23px;
     clip-path: polygon(
-      3% 5%,
-      14% 2%,
-      31% 4%,
+      3% 6%,
+      13% 2%,
+      30% 4%,
       49% 2%,
-      69% 4%,
+      68% 4%,
       91% 3%,
       98% 10%,
       96% 28%,
@@ -1738,7 +1741,7 @@ main {
   }
 
   .identity-signature {
-    margin-top: 20px;
+    margin-top: 18px;
   }
 }
 
