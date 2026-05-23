@@ -17513,9 +17513,9 @@ body.scrolled .header-system .announcement-bar-system {
   position: relative;
   width: min(1080px, 94vw);
   max-height: 88vh;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   border: 1px solid rgba(220, 181, 107, 0.22);
   border-radius: 28px;
   background:
@@ -17542,11 +17542,25 @@ body.scrolled .header-system .announcement-bar-system {
 }
 
 .discovery-head {
+  position: relative;
   flex: 0 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 26px;
+  padding: 30px 34px 20px;
+  border-bottom: 1px solid rgba(220, 181, 107, 0.12);
+  background:
+    radial-gradient(circle at top left, rgba(220, 181, 107, 0.11), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent);
+}
+
+.discovery-head-copy {
+  max-width: 720px;
 }
 
 .discovery-head h2 {
-  margin: 6px 0 8px;
+  margin: 6px 0 10px;
   font-family: "Playfair Display", serif;
   font-size: clamp(2rem, 4vw, 3.4rem);
   line-height: 0.95;
@@ -17558,24 +17572,51 @@ body.scrolled .header-system .announcement-bar-system {
   color: rgba(247, 240, 223, 0.68);
 }
 
+.discovery-head-text {
+  max-width: 62ch;
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+.discovery-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.14);
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.discovery-progress-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.discovery-progress-dot.active {
+  background: linear-gradient(135deg, #f4dfb0, #b9893f);
+  box-shadow:
+    0 0 0 4px rgba(220, 181, 107, 0.1),
+    0 0 18px rgba(220, 181, 107, 0.42);
+}
+
 .discovery-grid {
   flex: 1 1 auto;
   min-height: 0;
-  height: auto;
-  max-height: none;
   overflow-y: auto;
-
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 14px !important;
-  padding: 18px 16px 132px !important;
-
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+  padding: 24px 28px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(220, 181, 107, 0.62) rgba(255, 255, 255, 0.035);
 }
 
-
 .discovery-product {
+  position: relative;
   min-height: 210px;
   border: 1px solid rgba(220, 181, 107, 0.14);
   border-radius: 20px;
@@ -17599,10 +17640,31 @@ body.scrolled .header-system .announcement-bar-system {
 }
 
 .discovery-product.selected {
-  border-color: rgba(220, 181, 107, 0.75);
+  transform: translateY(-2px);
+  border-color: rgba(220, 181, 107, 0.72);
   background:
-    radial-gradient(circle at top, rgba(220, 181, 107, 0.18), transparent 46%),
-    rgba(220, 181, 107, 0.07);
+    radial-gradient(circle at top, rgba(220, 181, 107, 0.22), transparent 48%),
+    rgba(220, 181, 107, 0.075);
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.38),
+    0 0 28px rgba(220, 181, 107, 0.1),
+    inset 0 0 0 1px rgba(220, 181, 107, 0.08);
+}
+
+.discovery-selected-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  padding: 5px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.25);
+  background: rgba(9, 7, 4, 0.82);
+  color: rgba(244, 223, 176, 0.96);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .discovery-product img {
@@ -17614,7 +17676,7 @@ body.scrolled .header-system .announcement-bar-system {
   filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.42));
 }
 
-.discovery-product span {
+.discovery-product span:not(.discovery-selected-badge) {
   display: block;
   min-height: 34px;
   font-size: 0.78rem;
@@ -17631,19 +17693,33 @@ body.scrolled .header-system .announcement-bar-system {
   text-align: center;
 }
 
-.discovery-bonus-note {
-  margin-top: 6px;
-  color: rgba(244, 223, 176, 0.9);
-  font-size: 0.74rem;
-  letter-spacing: 0.04em;
-}
-
 .discovery-bar {
   position: relative;
   flex: 0 0 auto;
-  left: auto;
-  right: auto;
-  bottom: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 28px;
+  border-top: 1px solid rgba(220, 181, 107, 0.16);
+  background:
+    linear-gradient(90deg, rgba(220, 181, 107, 0.07), transparent 35%, rgba(105, 168, 255, 0.055)),
+    rgba(5, 5, 5, 0.94);
+  backdrop-filter: blur(18px);
+}
+
+.discovery-bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 28px;
+  right: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(220, 181, 107, 0.45), transparent);
+}
+
+.discovery-bar-copy {
+  min-width: 0;
 }
 
 .discovery-bar strong,
@@ -17653,28 +17729,31 @@ body.scrolled .header-system .announcement-bar-system {
 
 .discovery-bar strong {
   color: #f4dfb0;
-  font-size: 0.94rem;
+  font-size: 0.98rem;
 }
 
 .discovery-bar span {
+  max-width: 58ch;
   margin-top: 4px;
   color: rgba(247, 240, 223, 0.62);
   font-size: 0.78rem;
 }
 
+.discovery-bonus-note {
+  margin-top: 6px;
+  color: rgba(244, 223, 176, 0.9);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+}
+
+.discovery-add-button,
+.discovery-bar .gold-button {
+  min-width: 142px;
+}
+
 .discovery-bar .gold-button:disabled {
   opacity: 0.42;
   cursor: not-allowed;
-}
-
-.discovery-grid {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(220, 181, 107, 0.55) rgba(255, 255, 255, 0.04);
-}
-
-.discovery-grid {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(220, 181, 107, 0.62) rgba(255, 255, 255, 0.035);
 }
 
 .discovery-grid::-webkit-scrollbar {
