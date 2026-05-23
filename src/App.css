@@ -17191,3 +17191,43 @@ body.scrolled .header-system .announcement-bar-system {
     display: none;
   }
 }
+
+/* =========================================
+   DISCOVERY SET
+========================================= */
+
+.discovery-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.discovery-modal {
+  width: min(920px, 94vw);
+  max-height: 86vh;
+  overflow: auto;
+  background: #080808;
+  border: 1px solid rgba(220, 181, 107, 0.22);
+  border-radius: 24px;
+  padding: 28px;
+  color: #f7f0df;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
+}
+
+.discovery-close {
+  margin-left: auto;
+  display: block;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.25);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f7f0df;
+  font-size: 24px;
+  cursor: pointer;
+}
