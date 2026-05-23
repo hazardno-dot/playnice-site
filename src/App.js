@@ -4306,7 +4306,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               </div>
 
               <div className="product-grid">
-                {[5, 21, 48, 49]
+                {[27, 30, 36, 47]
                   .map((id) => products.find((product) => product.id === id))
                   .filter(Boolean)
                   .map((product) => (
