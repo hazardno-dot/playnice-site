@@ -3858,35 +3858,45 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <div className="how-it-works-grid how-it-works-grid-compact">
   <article className="how-it-works-card">
-    <span className="how-it-works-number">01</span>
-    <h3>{lang === "sr" ? "Šta su dekanti?" : "What are decants?"}</h3>
-    <p>
-      {lang === "sr"
-        ? "Manja pakovanja originalnih parfema."
-        : "Smaller portions of original fragrances."}
-    </p>
-  </article>
+  <span className="how-it-works-number">01</span>
+  <h3>{lang === "sr" ? "Šta su dekanti?" : "What are decants?"}</h3>
+  <p>
+    {lang === "sr"
+      ? "Manja, pažljivo presuta pakovanja originalnih parfema."
+      : "Smaller, carefully decanted portions of original fragrances."}
+  </p>
+</article>
 
-  <article className="how-it-works-card">
-    <span className="how-it-works-number">02</span>
-    <h3>{lang === "sr" ? "Zašto su korisni?" : "Why they matter?"}</h3>
-    <p>
-      {lang === "sr"
-        ? "Probaš miris na svojoj koži."
-        : "You test the scent on your skin."}
-    </p>
-  </article>
+<article className="how-it-works-card">
+  <span className="how-it-works-number">02</span>
+  <h3>{lang === "sr" ? "Zašto su korisni?" : "Why they matter?"}</h3>
+  <p>
+    {lang === "sr"
+      ? "Možeš da probaš miris na svojoj koži pre kupovine pune bočice."
+      : "They let you test a fragrance on your skin before committing to a full bottle."}
+  </p>
+</article>
 
-  <article className="how-it-works-card">
-    <span className="how-it-works-number">03</span>
-    <h3>{lang === "sr" ? "Pametniji izbor" : "Smarter choice"}</h3>
-    <p>
-      {lang === "sr"
-        ? "Manji rizik pre pune bočice."
-        : "Less risk before the full bottle."}
-    </p>
-  </article>
+<article className="how-it-works-card">
+  <span className="how-it-works-number">03</span>
+  <h3>{lang === "sr" ? "Zašto je pametnije?" : "Why is it smarter?"}</h3>
+  <p>
+    {lang === "sr"
+      ? "Manji rizik, manji trošak i više parfema za rotaciju."
+      : "Lower risk, lower cost, and more room to build a fragrance rotation."}
+  </p>
+</article>
 </div>
+
+<div className="how-it-works-cta">
+  <button
+    className="ghost-button"
+    type="button"
+    onClick={() => setHowItWorksOpen(true)}
+  >
+    {lang === "sr" ? "Saznaj više" : "Learn more"}
+  </button>
+ </div>
 
 <div className="how-discovery-inline">
   <div className="how-discovery-copy">
@@ -3911,16 +3921,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     onClick={() => setDiscoveryBuilderOpen(true)}
   >
     {lang === "sr" ? "Napravi set" : "Build set"}
-  </button>
-</div>
-
-<div className="how-it-works-cta">
-  <button
-    className="ghost-button"
-    type="button"
-    onClick={() => setHowItWorksOpen(true)}
-  >
-    {lang === "sr" ? "Saznaj više" : "Learn more"}
   </button>
  </div>
 </div>

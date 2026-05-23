@@ -9420,6 +9420,8 @@ main {
 }
 
 .how-discovery-inline {
+  position: relative;
+  overflow: hidden;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
@@ -9506,6 +9508,53 @@ main {
   .how-discovery-button {
     width: 100%;
   }
+}
+
+.how-it-works-head > p:not(.section-kicker) {
+  max-width: 52ch;
+  line-height: 1.6;
+}
+
+.how-it-works-grid-compact .how-it-works-card {
+  min-height: 132px;
+}
+
+.how-it-works-grid-compact .how-it-works-card h3 {
+  min-height: 40px;
+}
+
+.how-it-works-grid-compact .how-it-works-card p {
+  font-size: 0.82rem;
+  line-height: 1.42;
+}
+
+.how-it-works-cta-compact {
+  justify-content: center;
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.how-discovery-inline {
+  background:
+    radial-gradient(circle at top right, rgba(105, 168, 255, 0.12), transparent 35%),
+    radial-gradient(circle at bottom left, rgba(220, 181, 107, 0.16), transparent 42%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.038), rgba(255, 255, 255, 0.012)),
+    rgba(7, 8, 10, 0.98);
+}
+
+.how-discovery-inline::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, transparent 0%, rgba(220, 181, 107, 0.16) 42%, transparent 72%);
+  opacity: 0.5;
+}
+
+.how-discovery-inline > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* SCENT REQUEST */
