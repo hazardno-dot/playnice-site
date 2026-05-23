@@ -639,7 +639,7 @@ const [discoverySelected, setDiscoverySelected] = useState([]);
 
 const DISCOVERY_REQUIRED_COUNT = 5;
 const DISCOVERY_SIZE = "2ml";
-const DISCOVERY_DISCOUNT = 0.12;
+const DISCOVERY_DISCOUNT = 0.10;
 
   const [miniCartPreview, setMiniCartPreview] = useState(null);
   const miniCartTimerRef = useRef(null);
@@ -5040,15 +5040,32 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <div className="discovery-bar">
         <div>
-          <strong>
-            {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
-              ? lang === "sr"
-                ? "Discovery Set otključan"
-                : "Discovery Set unlocked"
-              : lang === "sr"
-                ? "Izaberi još mirisa"
-                : "Choose more scents"}
-          </strong>
+  <strong>
+    {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
+      ? lang === "sr"
+        ? "Discovery Set otključan"
+        : "Discovery Set unlocked"
+      : lang === "sr"
+        ? "Izaberi još mirisa"
+        : "Choose more scents"}
+  </strong>
+
+  <span>
+    {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
+      ? `${discoveryBundlePrice}€ · ${
+          lang === "sr"
+            ? `ušteda ${discoverySavings}€`
+            : `save ${discoverySavings}€`
+        }`
+      : `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT}`}
+  </span>
+
+  {discoverySelected.length === DISCOVERY_REQUIRED_COUNT && (
+    <div className="discovery-bonus-note">
+      ✦ Complimentary surprise sample included
+    </div>
+  )}
+</div>
 
           <span>
             {discoverySelected.length === DISCOVERY_REQUIRED_COUNT

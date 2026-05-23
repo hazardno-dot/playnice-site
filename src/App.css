@@ -17324,6 +17324,13 @@ body.scrolled .header-system .announcement-bar-system {
   text-align: center;
 }
 
+.discovery-bonus-note {
+  margin-top: 6px;
+  color: rgba(244, 223, 176, 0.9);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+}
+
 .discovery-bar {
   position: absolute;
   left: 0;
