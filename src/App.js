@@ -5004,7 +5004,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           <p className="section-kicker">Discovery Set</p>
 
           <h2>
-            {lang === "sr" ? "Napravi svojih prvih 5." : "Build your first five."}
+            {lang === "sr" ? "Napravi svojih prvih 5" : "Build your first five"}
           </h2>
 
           <p className="discovery-head-text">
