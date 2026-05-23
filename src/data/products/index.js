@@ -1164,7 +1164,7 @@ export const products = [
   rating: 8.9,
   ratingLabel: "Elegant Favorite",
   season: "all",
-  scentMood: ["soft", "rich", "signature"],
+  moods: ["soft", "rich", "signature"],
   recommendations: [
   "narciso-rodriguez-for-him-bleu-noir-edp"
   ],
