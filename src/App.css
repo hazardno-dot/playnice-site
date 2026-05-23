@@ -17542,8 +17542,7 @@ body.scrolled .header-system .announcement-bar-system {
 }
 
 .discovery-head {
-  padding: 30px 34px 18px;
-  border-bottom: 1px solid rgba(220, 181, 107, 0.12);
+  flex: 0 0 auto;
 }
 
 .discovery-head h2 {
@@ -17560,12 +17559,12 @@ body.scrolled .header-system .announcement-bar-system {
 }
 
 .discovery-grid {
-  padding: 24px 28px 110px;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 14px;
+  padding-bottom: 24px;
 }
+
 
 .discovery-product {
   min-height: 210px;
@@ -17631,18 +17630,11 @@ body.scrolled .header-system .announcement-bar-system {
 }
 
 .discovery-bar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 18px 28px;
-  border-top: 1px solid rgba(220, 181, 107, 0.16);
-  background: rgba(5, 5, 5, 0.92);
-  backdrop-filter: blur(18px);
+  position: relative;
+  flex: 0 0 auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
 }
 
 .discovery-bar strong,
@@ -17681,7 +17673,7 @@ body.scrolled .header-system .announcement-bar-system {
 }
 
 .discovery-grid::-webkit-scrollbar-track {
-  margin: 10px 0 104px;
+  margin: 10px 0;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.035);
 }
