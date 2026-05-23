@@ -5039,50 +5039,43 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="discovery-bar">
-        <div>
-  <strong>
-    {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
-      ? lang === "sr"
-        ? "Discovery Set otključan"
-        : "Discovery Set unlocked"
-      : lang === "sr"
-        ? "Izaberi još mirisa"
-        : "Choose more scents"}
-  </strong>
+  <div>
+    <strong>
+      {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
+        ? lang === "sr"
+          ? "Discovery Set otključan"
+          : "Discovery Set unlocked"
+        : lang === "sr"
+          ? "Izaberi još mirisa"
+          : "Choose more scents"}
+    </strong>
 
-  <span>
-    {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
-      ? `${discoveryBundlePrice}€ · ${
-          lang === "sr"
-            ? `ušteda ${discoverySavings}€`
-            : `save ${discoverySavings}€`
-        }`
-      : `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT}`}
-  </span>
+    <span>
+      {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
+        ? `${discoveryBundlePrice}€ · ${
+            lang === "sr"
+              ? `ušteda ${discoverySavings}€`
+              : `save ${discoverySavings}€`
+          }`
+        : `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT}`}
+    </span>
 
-  {discoverySelected.length === DISCOVERY_REQUIRED_COUNT && (
-    <div className="discovery-bonus-note">
-      ✦ Complimentary surprise sample included
-    </div>
-  )}
-</div>
-
-          <span>
-            {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
-              ? `${discoveryBundlePrice}€ · ${lang === "sr" ? "uštedа" : "save"} ${discoverySavings}€`
-              : `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT}`}
-          </span>
-        </div>
-
-        <button
-          type="button"
-          className="gold-button"
-          disabled={discoverySelected.length !== DISCOVERY_REQUIRED_COUNT}
-          onClick={addDiscoverySetToCart}
-        >
-          {lang === "sr" ? "Dodaj set" : "Add set"}
-        </button>
+    {discoverySelected.length === DISCOVERY_REQUIRED_COUNT && (
+      <div className="discovery-bonus-note">
+        ✦ Complimentary surprise sample included
       </div>
+    )}
+  </div>
+
+  <button
+    type="button"
+    className="gold-button"
+    disabled={discoverySelected.length !== DISCOVERY_REQUIRED_COUNT}
+    onClick={addDiscoverySetToCart}
+  >
+    {lang === "sr" ? "Dodaj set" : "Add set"}
+  </button>
+</div>
     </div>
   </div>
 )}
