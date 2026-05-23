@@ -17752,3 +17752,17 @@ body.scrolled .header-system .announcement-bar-system {
     min-width: 118px;
   }
 }
+
+@media (max-width: 560px) {
+  .discovery-overlay {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 12px !important;
+  }
+
+  .discovery-modal {
+    width: 100% !important;
+    max-height: calc(100dvh - 92px) !important;
+    transform: translateY(-52px) !important;
+  }
+}
