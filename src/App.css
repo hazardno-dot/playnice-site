@@ -1483,106 +1483,62 @@ main {
   letter-spacing: 0.01em;
 }
 
-/* RIGHT STONE SLAB */
+/* RIGHT SIDE — DARK LUXURY SCROLL / PERGAMENT */
 
 .identity-copy {
   position: relative;
   justify-self: end;
-  width: min(100%, 625px);
-  max-width: 625px;
-  padding: 31px 39px 29px;
-  color: rgba(231, 211, 179, 0.78);
+  width: min(100%, 610px);
+  max-width: 610px;
+  padding: 46px 46px 44px;
+  color: rgba(235, 218, 188, 0.82);
 
   background:
-    radial-gradient(circle at 18% 14%, rgba(255,255,255,0.11), transparent 18%),
-    radial-gradient(circle at 84% 82%, rgba(220,181,107,0.08), transparent 28%),
-    radial-gradient(circle at 48% 44%, rgba(255,255,255,0.035), transparent 38%),
-    linear-gradient(145deg, rgba(63, 58, 49, 0.96), rgba(26, 25, 22, 0.99) 46%, rgba(10, 10, 9, 0.99)),
-    #171614;
+    radial-gradient(circle at 18% 18%, rgba(220, 181, 107, 0.12), transparent 32%),
+    radial-gradient(circle at 78% 78%, rgba(255, 255, 255, 0.05), transparent 34%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.42), transparent 13%, transparent 87%, rgba(0, 0, 0, 0.42)),
+    linear-gradient(135deg, rgba(48, 39, 27, 0.98), rgba(22, 19, 15, 0.99) 46%, rgba(10, 10, 9, 0.99));
 
-  border: 1px solid rgba(220, 181, 107, 0.24);
-  border-radius: 24px;
-
-  clip-path: polygon(
-    1.5% 7%,
-    7% 3%,
-    16% 4%,
-    26% 1.5%,
-    38% 3.5%,
-    50% 2%,
-    63% 4%,
-    75% 2.5%,
-    88% 4%,
-    97% 8%,
-    98.5% 22%,
-    97% 36%,
-    99% 52%,
-    96.5% 68%,
-    98% 84%,
-    92% 96%,
-    79% 98%,
-    65% 96%,
-    51% 98.5%,
-    37% 96.5%,
-    23% 98%,
-    9% 95%,
-    3% 88%,
-    1% 72%,
-    2.5% 58%,
-    1% 43%,
-    3% 27%
-  );
+  border-left: 1px solid rgba(220, 181, 107, 0.32);
+  border-right: 1px solid rgba(220, 181, 107, 0.32);
+  border-radius: 18px;
 
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.15),
-    inset 0 -20px 44px rgba(0,0,0,0.55),
-    inset 18px 0 36px rgba(255,255,255,0.03),
-    inset -16px 0 34px rgba(0,0,0,0.32),
-    0 22px 46px rgba(0,0,0,0.62),
-    0 5px 0 rgba(0,0,0,0.45);
+    inset 18px 0 28px rgba(0, 0, 0, 0.42),
+    inset -18px 0 28px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 22px 48px rgba(0, 0, 0, 0.52);
 }
 
-.identity-copy::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.72;
-  z-index: 0;
-
-  background:
-    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.13) 0 1px, transparent 2px),
-    radial-gradient(circle at 20% 74%, rgba(0,0,0,0.48) 0 1px, transparent 2px),
-    radial-gradient(circle at 39% 31%, rgba(255,255,255,0.08) 0 1px, transparent 2px),
-    radial-gradient(circle at 63% 62%, rgba(0,0,0,0.44) 0 1px, transparent 2px),
-    radial-gradient(circle at 88% 44%, rgba(255,255,255,0.09) 0 1px, transparent 2px),
-    repeating-linear-gradient(
-      135deg,
-      rgba(255,255,255,0.035) 0px,
-      rgba(255,255,255,0.035) 1px,
-      transparent 1px,
-      transparent 6px
-    ),
-    repeating-linear-gradient(
-      33deg,
-      rgba(0,0,0,0.22) 0px,
-      rgba(0,0,0,0.22) 1px,
-      transparent 1px,
-      transparent 9px
-    );
-}
-
+.identity-copy::before,
 .identity-copy::after {
   content: "";
   position: absolute;
-  inset: 8px 9px 10px;
+  left: 18px;
+  right: 18px;
+  height: 30px;
   pointer-events: none;
   z-index: 0;
-  border-radius: 18px;
-  border: 1px solid rgba(220, 181, 107, 0.08);
+
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.5), transparent 12%, transparent 88%, rgba(0,0,0,0.5)),
+    radial-gradient(ellipse at center, rgba(220, 181, 107, 0.22), transparent 68%),
+    linear-gradient(180deg, rgba(77, 58, 34, 0.96), rgba(20, 17, 13, 0.98));
+
+  border: 1px solid rgba(220, 181, 107, 0.28);
+  border-radius: 999px;
   box-shadow:
-    inset 0 0 40px rgba(0,0,0,0.5),
-    inset 0 0 0 1px rgba(255,255,255,0.028);
+    inset 0 5px 8px rgba(255,255,255,0.06),
+    inset 0 -8px 14px rgba(0,0,0,0.58),
+    0 8px 18px rgba(0,0,0,0.48);
+}
+
+.identity-copy::before {
+  top: -15px;
+}
+
+.identity-copy::after {
+  bottom: -15px;
 }
 
 .identity-copy p,
@@ -1592,28 +1548,25 @@ main {
 }
 
 .identity-copy p {
-  margin: 0 0 13px;
+  margin: 0 0 14px;
   font-family: "Playfair Display", serif;
   font-size: 1.08rem;
-  line-height: 1.68;
+  line-height: 1.72;
   letter-spacing: 0.005em;
-  color: rgba(232, 213, 181, 0.8);
-  text-shadow:
-    0 1px 0 rgba(255,255,255,0.07),
-    0 -1px 1px rgba(0,0,0,0.92),
-    1px 2px 5px rgba(0,0,0,0.75);
+  color: rgba(232, 213, 181, 0.82);
+  text-shadow: 0 2px 5px rgba(0,0,0,0.78);
 }
 
 .identity-copy p:last-of-type {
   margin-bottom: 0;
   margin-top: 4px;
-  color: rgba(239, 219, 184, 0.9);
+  color: rgba(245, 225, 190, 0.92);
   font-size: 1.22rem;
   line-height: 1.4;
 }
 
 .identity-rhythm {
-  color: rgba(225, 197, 151, 0.9) !important;
+  color: rgba(220, 181, 107, 0.88) !important;
   font-style: italic;
 }
 
@@ -1621,9 +1574,9 @@ main {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(220, 181, 107, 0.36);
+  margin-top: 22px;
+  padding-top: 17px;
+  border-top: 1px solid rgba(220, 181, 107, 0.32);
 }
 
 .identity-signature span {
@@ -1631,19 +1584,14 @@ main {
   font-size: 0.76rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.72);
 }
 
 .identity-signature strong {
-  color: rgba(220, 181, 107, 0.93);
+  color: rgba(220, 181, 107, 0.94);
   font-family: "Playfair Display", serif;
   font-size: 1.26rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  text-shadow:
-    0 1px 0 rgba(255,255,255,0.08),
-    0 -1px 1px rgba(0,0,0,0.92),
-    0 8px 18px rgba(0,0,0,0.55);
 }
 
 /* MOBILE */
