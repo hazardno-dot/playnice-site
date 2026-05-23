@@ -9571,7 +9571,7 @@ main {
 
 .scent-request-panel h2 {
   margin: 0;
-  max-width: 12ch;
+  max-width: 16ch;
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(2.2rem, 3vw, 3.6rem);
   line-height: 0.92;
