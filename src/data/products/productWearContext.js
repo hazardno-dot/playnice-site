@@ -251,5 +251,10 @@ export const productWearContext = {
   "Narciso Rodriguez Poudrée Eau de Parfum": {
   sr: "Elegantne prilike, posao, svaki dan.",
   en: "Elegant occasions, office, everyday wear."
-  }
+  },
+
+  "Yves Saint Laurent Black Opium Le Parfum": {
+  sr: "Veče, dejt, hladnije vreme.",
+  en: "Evening, date night, colder weather."
+}
 };

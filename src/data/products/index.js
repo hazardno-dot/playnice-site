@@ -1173,5 +1173,27 @@ export const products = [
     short: "Powdery Musk DNA"
   },
   isNew: true,
+},
+{
+  id: 61,
+  slug: "ysl-black-opium-le-parfum",
+  name: "Yves Saint Laurent Black Opium Le Parfum",
+  shortName: "YSL Black Opium Le Parfum",
+  category: "Designer",
+  image: "/products/ysl-black-opium-le-parfum.png",
+  sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
+  badge: "NEW",
+  rating: 9.0,
+  ratingLabel: "Iconic Pick",
+  season: "winter",
+  moods: ["rich", "date", "signature"],
+  recommendations: [
+    "narciso-rodriguez-poudree"
+  ],
+  inspiredBy: {
+    name: "Original Yves Saint Laurent creation",
+    short: "Vanilla Coffee DNA"
+  },
+  isNew: true,
 }
 ];

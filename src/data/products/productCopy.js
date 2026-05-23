@@ -1201,6 +1201,31 @@ export const productCopy = {
     en: "If you enjoy clean luxurious feminine scents with classy vibe."
   }
 },
+
+"Yves Saint Laurent Black Opium Le Parfum": {
+  miniTag: { sr: "☕ Vanilla / Coffee", en: "☕ Vanilla / Coffee" },
+  card: {
+    sr: "Topla vanila, kafa i beli cvetovi u zavodljivom profilu.",
+    en: "Warm vanilla, coffee and white flowers in a seductive profile."
+  },
+  modal: {
+    sr: "Intenzivnija Black Opium interpretacija sa bogatom vanilom, kafom, belim cvetovima i toplom amber bazom.",
+    en: "A more intense Black Opium interpretation with rich vanilla, coffee, white florals and a warm amber base."
+  },
+  scentType: { sr: "Vanilla coffee floral", en: "Vanilla coffee floral" },
+  dominantNotes: {
+    sr: ["vanila", "kafa", "beli cvetovi", "ambra"],
+    en: ["vanilla", "coffee", "white florals", "amber"]
+  },
+  tags: {
+    sr: ["Sweet", "Date Night", "Iconic"],
+    en: ["Sweet", "Date Night", "Iconic"]
+  },
+  whyChoose: {
+    sr: "Ako želiš sladak, zavodljiv i prepoznatljiv večernji miris.",
+    en: "If you want a sweet, seductive and instantly recognizable evening scent."
+  }
+},
 };
 
 /* =========================================
