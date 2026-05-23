@@ -17712,13 +17712,16 @@ body.scrolled .header-system .announcement-bar-system {
 
 @media (max-width: 768px) {
   .discovery-overlay {
-    align-items: flex-end;
-    padding: 92px 12px 12px;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    padding: 92px 12px 12px !important;
   }
 
   .discovery-modal {
-    width: 100%;
-    max-height: calc(100dvh - 104px);
+    width: 100% !important;
+    max-height: calc(100dvh - 104px) !important;
+    margin-top: auto !important;
     border-radius: 24px 24px 18px 18px;
   }
 
