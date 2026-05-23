@@ -13574,37 +13574,34 @@ main {
 
 @media (max-width: 768px) {
   .journal-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
     align-items: flex-end;
-    justify-content: flex-end;
-    padding: 0 10px 10px;
+    justify-content: center;
+    padding: 12px 10px 10px;
     overflow: hidden;
   }
 
   .journal-top-sheet {
     width: 100%;
-    height: auto;
-    max-height: calc(100dvh - 88px);
+    height: calc(100dvh - 22px);
+    max-height: calc(100dvh - 22px);
     margin: 0;
     border-radius: 28px 28px 22px 22px;
     overflow: hidden;
   }
 
-  .journal-top-sheet-inner {
-    max-height: calc(100dvh - 112px);
-    overflow-y: auto;
-    scrollbar-width: none;
-  }
-
-  .journal-top-sheet-inner::-webkit-scrollbar {
-    display: none;
-  }
-
+  .journal-top-sheet-inner,
   .journal-body-scroll {
+    height: 100%;
+    max-height: 100%;
     overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
 
+  .journal-top-sheet-inner::-webkit-scrollbar,
   .journal-body-scroll::-webkit-scrollbar {
     display: none;
   }
@@ -13831,12 +13828,13 @@ main {
 
 @media (max-width: 480px) {
   .journal-overlay {
-    padding: 0 8px 12px;
+    padding: 10px 8px 10px;
     overflow: hidden;
   }
 
   .journal-top-sheet {
-    max-height: calc(100dvh - 96px);
+    height: calc(100dvh - 20px);
+    max-height: calc(100dvh - 20px);
     border-radius: 26px 26px 22px 22px;
   }
 
