@@ -3832,34 +3832,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </section>
 )}
 
-<section className="discovery-builder-section section-wrap">
-  <div className="discovery-builder-card">
-    <p className="section-kicker">
-      {lang === "sr" ? "Za prvi PlayNice izbor" : "For your first PlayNice pick"}
-    </p>
-
-    <h2>
-      {lang === "sr"
-        ? "Napravi svojih prvih 5 mirisa."
-        : "Build your first 5 scents."}
-    </h2>
-
-    <p>
-      {lang === "sr"
-        ? "Izaberi 5 parfema u 2ml formatu i otključaj Discovery Set cenu. Manje rizika, više karaktera."
-        : "Choose 5 fragrances in 2ml and unlock Discovery Set pricing. Less risk, more character."}
-    </p>
-
-    <button
-      type="button"
-      className="gold-button"
-      onClick={() => setDiscoveryBuilderOpen(true)}
-    >
-      {lang === "sr" ? "Napravi set" : "Build my set"}
-    </button>
-  </div>
-</section>
-
 <section
   id="how-it-works"
   className="how-it-works-section section-wrap"
@@ -3884,48 +3856,73 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </p>
       </div>
 
-      <div className="how-it-works-grid">
-        <article className="how-it-works-card">
-          <span className="how-it-works-number">01</span>
-          <h3>{lang === "sr" ? "Šta su dekanti?" : "What are decants?"}</h3>
-          <p>
-            {lang === "sr"
-              ? "Manja, pažljivo presuta pakovanja originalnih parfema."
-              : "Smaller, carefully decanted portions of original fragrances."}
-          </p>
-        </article>
+      <div className="how-it-works-grid how-it-works-grid-compact">
+  <article className="how-it-works-card">
+    <span className="how-it-works-number">01</span>
+    <h3>{lang === "sr" ? "Šta su dekanti?" : "What are decants?"}</h3>
+    <p>
+      {lang === "sr"
+        ? "Manja pakovanja originalnih parfema."
+        : "Smaller portions of original fragrances."}
+    </p>
+  </article>
 
-        <article className="how-it-works-card">
-          <span className="how-it-works-number">02</span>
-          <h3>{lang === "sr" ? "Zašto su korisni?" : "Why they matter?"}</h3>
-          <p>
-            {lang === "sr"
-              ? "Možeš da probaš miris na svojoj koži pre kupovine pune bočice."
-              : "They let you test a fragrance on your skin before committing to a full bottle."}
-          </p>
-        </article>
+  <article className="how-it-works-card">
+    <span className="how-it-works-number">02</span>
+    <h3>{lang === "sr" ? "Zašto su korisni?" : "Why they matter?"}</h3>
+    <p>
+      {lang === "sr"
+        ? "Probaš miris na svojoj koži."
+        : "You test the scent on your skin."}
+    </p>
+  </article>
 
-        <article className="how-it-works-card">
-          <span className="how-it-works-number">03</span>
-          <h3>{lang === "sr" ? "Zašto je pametnije?" : "Why is it smarter?"}</h3>
-          <p>
-            {lang === "sr"
-              ? "Manji rizik, manji trošak i više parfema za rotaciju."
-              : "Lower risk, lower cost, and more room to build a fragrance rotation."}
-          </p>
-        </article>
-      </div>
+  <article className="how-it-works-card">
+    <span className="how-it-works-number">03</span>
+    <h3>{lang === "sr" ? "Pametniji izbor" : "Smarter choice"}</h3>
+    <p>
+      {lang === "sr"
+        ? "Manji rizik pre pune bočice."
+        : "Less risk before the full bottle."}
+    </p>
+  </article>
+</div>
 
-      <div className="how-it-works-cta">
-        <button
-          className="ghost-button"
-          type="button"
-          onClick={() => setHowItWorksOpen(true)}
-        >
-          {lang === "sr" ? "Saznaj više" : "Learn more"}
-        </button>
-      </div>
-    </div>
+<div className="how-discovery-inline">
+  <div className="how-discovery-copy">
+    <span className="how-discovery-kicker">Discovery Set</span>
+
+    <h3>
+      {lang === "sr"
+        ? "Napravi svoj prvi set."
+        : "Build your first set."}
+    </h3>
+
+    <p>
+      {lang === "sr"
+        ? "Izaberi 5 designer ili niche parfema u 2ml formatu, dobijaš 10% popusta i complimentary surprise sample."
+        : "Choose 5 designer or niche fragrances in 2ml, get 10% off and a complimentary surprise sample."}
+    </p>
+  </div>
+
+  <button
+    type="button"
+    className="gold-button how-discovery-button"
+    onClick={() => setDiscoveryBuilderOpen(true)}
+  >
+    {lang === "sr" ? "Napravi set" : "Build set"}
+  </button>
+</div>
+
+<div className="how-it-works-cta">
+  <button
+    className="ghost-button"
+    type="button"
+    onClick={() => setHowItWorksOpen(true)}
+  >
+    {lang === "sr" ? "Saznaj više" : "Learn more"}
+  </button>
+</div>
 
     <div className="how-request-panel scent-request-panel">
   <p className="section-kicker scent-request-kicker">
