@@ -17360,6 +17360,40 @@ body.scrolled .header-system .announcement-bar-system {
   cursor: not-allowed;
 }
 
+.discovery-grid {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(220, 181, 107, 0.55) rgba(255, 255, 255, 0.04);
+}
+
+.discovery-grid::-webkit-scrollbar {
+  width: 7px;
+}
+
+.discovery-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.035);
+  border-radius: 999px;
+}
+
+.discovery-grid::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(8, 8, 8, 0.95);
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(244, 223, 176, 0.85),
+      rgba(220, 181, 107, 0.42)
+    );
+}
+
+.discovery-grid::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(244, 223, 176, 1),
+      rgba(220, 181, 107, 0.68)
+    );
+}
+
 /* MOBILE */
 
 @media (max-width: 768px) {
