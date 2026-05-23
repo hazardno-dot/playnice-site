@@ -4989,6 +4989,86 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </div>
 </footer>
+
+{discoveryBuilderOpen && (
+  <div className="discovery-overlay" onClick={() => setDiscoveryBuilderOpen(false)}>
+    <div className="discovery-modal" onClick={(e) => e.stopPropagation()}>
+      <button
+        type="button"
+        className="discovery-close"
+        onClick={() => setDiscoveryBuilderOpen(false)}
+      >
+        ×
+      </button>
+
+      <div className="discovery-head">
+        <p className="section-kicker">Discovery Set</p>
+
+        <h2>
+          {lang === "sr"
+            ? "Izaberi 5 parfema"
+            : "Choose 5 fragrances"}
+        </h2>
+
+        <p>
+          {lang === "sr"
+            ? `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT} izabrano`
+            : `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT} selected`}
+        </p>
+      </div>
+
+      <div className="discovery-grid">
+        {discoveryProducts.map((product) => {
+          const selected = discoverySelected.some((item) => item.id === product.id);
+
+          return (
+            <button
+              key={product.id}
+              type="button"
+              className={`discovery-product ${selected ? "selected" : ""}`}
+              onClick={() => toggleDiscoveryProduct(product)}
+            >
+              <img src={product.image} alt={product.name} />
+
+              <span>{product.shortName || product.name}</span>
+
+              <small>{product.sizes[DISCOVERY_SIZE]}€ / {DISCOVERY_SIZE}</small>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="discovery-bar">
+        <div>
+          <strong>
+            {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
+              ? lang === "sr"
+                ? "Discovery Set otključan"
+                : "Discovery Set unlocked"
+              : lang === "sr"
+                ? "Izaberi još mirisa"
+                : "Choose more scents"}
+          </strong>
+
+          <span>
+            {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
+              ? `${discoveryBundlePrice}€ · ${lang === "sr" ? "uštedа" : "save"} ${discoverySavings}€`
+              : `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT}`}
+          </span>
+        </div>
+
+        <button
+          type="button"
+          className="gold-button"
+          disabled={discoverySelected.length !== DISCOVERY_REQUIRED_COUNT}
+          onClick={addDiscoverySetToCart}
+        >
+          {lang === "sr" ? "Dodaj set" : "Add set"}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
       </main>
 
       <div
@@ -5826,86 +5906,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </div>
 )}
-      </div>
-    </div>
-  </div>
-)}
-
-{discoveryBuilderOpen && (
-  <div className="discovery-overlay" onClick={() => setDiscoveryBuilderOpen(false)}>
-    <div className="discovery-modal" onClick={(e) => e.stopPropagation()}>
-      <button
-        type="button"
-        className="discovery-close"
-        onClick={() => setDiscoveryBuilderOpen(false)}
-      >
-        ×
-      </button>
-
-      <div className="discovery-head">
-        <p className="section-kicker">Discovery Set</p>
-
-        <h2>
-          {lang === "sr"
-            ? "Izaberi 5 parfema"
-            : "Choose 5 fragrances"}
-        </h2>
-
-        <p>
-          {lang === "sr"
-            ? `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT} izabrano`
-            : `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT} selected`}
-        </p>
-      </div>
-
-      <div className="discovery-grid">
-        {discoveryProducts.map((product) => {
-          const selected = discoverySelected.some((item) => item.id === product.id);
-
-          return (
-            <button
-              key={product.id}
-              type="button"
-              className={`discovery-product ${selected ? "selected" : ""}`}
-              onClick={() => toggleDiscoveryProduct(product)}
-            >
-              <img src={product.image} alt={product.name} />
-
-              <span>{product.shortName || product.name}</span>
-
-              <small>{product.sizes[DISCOVERY_SIZE]}€ / {DISCOVERY_SIZE}</small>
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="discovery-bar">
-        <div>
-          <strong>
-            {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
-              ? lang === "sr"
-                ? "Discovery Set otključan"
-                : "Discovery Set unlocked"
-              : lang === "sr"
-                ? "Izaberi još mirisa"
-                : "Choose more scents"}
-          </strong>
-
-          <span>
-            {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
-              ? `${discoveryBundlePrice}€ · ${lang === "sr" ? "uštedа" : "save"} ${discoverySavings}€`
-              : `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT}`}
-          </span>
-        </div>
-
-        <button
-          type="button"
-          className="gold-button"
-          disabled={discoverySelected.length !== DISCOVERY_REQUIRED_COUNT}
-          onClick={addDiscoverySetToCart}
-        >
-          {lang === "sr" ? "Dodaj set" : "Add set"}
-        </button>
       </div>
     </div>
   </div>
