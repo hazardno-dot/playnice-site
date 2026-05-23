@@ -3888,7 +3888,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </article>
 </div>
 
-<div className="how-it-works-cta">
+<div className="how-it-works-cta how-it-works-cta-compact">
   <button
     className="ghost-button"
     type="button"
