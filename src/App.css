@@ -9539,6 +9539,154 @@ main {
   }
 }
 
+/* discovery-head */
+
+.discovery-head {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 26px;
+  padding: 30px 34px 20px;
+  border-bottom: 1px solid rgba(220, 181, 107, 0.12);
+  background:
+    radial-gradient(circle at top left, rgba(220, 181, 107, 0.11), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent);
+}
+
+.discovery-head-copy {
+  max-width: 720px;
+}
+
+.discovery-head h2 {
+  margin: 6px 0 10px;
+}
+
+.discovery-head-text {
+  max-width: 62ch;
+  margin: 0;
+  color: rgba(247, 240, 223, 0.68);
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+.discovery-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.14);
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.discovery-progress-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.discovery-progress-dot.active {
+  background: linear-gradient(135deg, #f4dfb0, #b9893f);
+  box-shadow:
+    0 0 0 4px rgba(220, 181, 107, 0.1),
+    0 0 18px rgba(220, 181, 107, 0.42);
+}
+
+.discovery-product {
+  position: relative;
+}
+
+.discovery-selected-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  padding: 5px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.25);
+  background: rgba(9, 7, 4, 0.82);
+  color: rgba(244, 223, 176, 0.96);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.discovery-product.selected {
+  transform: translateY(-2px);
+  border-color: rgba(220, 181, 107, 0.72);
+  background:
+    radial-gradient(circle at top, rgba(220, 181, 107, 0.22), transparent 48%),
+    rgba(220, 181, 107, 0.075);
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.38),
+    0 0 28px rgba(220, 181, 107, 0.1),
+    inset 0 0 0 1px rgba(220, 181, 107, 0.08);
+}
+
+.discovery-bar {
+  background:
+    linear-gradient(90deg, rgba(220, 181, 107, 0.07), transparent 35%, rgba(105, 168, 255, 0.055)),
+    rgba(5, 5, 5, 0.94);
+}
+
+.discovery-bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 28px;
+  right: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(220, 181, 107, 0.45), transparent);
+}
+
+.discovery-bar-copy {
+  min-width: 0;
+}
+
+.discovery-bar-copy strong {
+  color: #f4dfb0;
+  font-size: 0.98rem;
+}
+
+.discovery-bar-copy span {
+  max-width: 58ch;
+}
+
+.discovery-add-button {
+  min-width: 142px;
+}
+
+@media (max-width: 768px) {
+  .discovery-head {
+    display: block;
+    padding: 26px 22px 18px;
+  }
+
+  .discovery-head-text {
+    font-size: 0.86rem;
+    line-height: 1.58;
+  }
+
+  .discovery-progress {
+    width: fit-content;
+    margin-top: 15px;
+  }
+
+  .discovery-selected-badge {
+    top: 8px;
+    left: 8px;
+    font-size: 0.58rem;
+  }
+
+  .discovery-add-button {
+    min-width: 118px;
+  }
+}
+
 /* SCENT REQUEST */
 
 .scent-request-panel {

@@ -5000,17 +5000,30 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </button>
 
       <div className="discovery-head">
-        <p className="section-kicker">Discovery Set</p>
+        <div className="discovery-head-copy">
+          <p className="section-kicker">Discovery Set</p>
 
-        <h2>
-          {lang === "sr" ? "Izaberi 5 parfema" : "Choose 5 fragrances"}
-        </h2>
+          <h2>
+            {lang === "sr" ? "Napravi svojih prvih 5." : "Build your first five."}
+          </h2>
 
-        <p>
-          {lang === "sr"
-            ? `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT} izabrano`
-            : `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT} selected`}
-        </p>
+          <p className="discovery-head-text">
+            {lang === "sr"
+              ? "Izaberi pet designer ili niche mirisa koji ti deluju zanimljivo. Set se otključava kada izabereš svih pet."
+              : "Choose five designer or niche scents that match your mood, season or curiosity. The set unlocks when all five are selected."}
+          </p>
+        </div>
+
+        <div className="discovery-progress" aria-label="Discovery Set progress">
+          {Array.from({ length: DISCOVERY_REQUIRED_COUNT }).map((_, index) => (
+            <span
+              key={index}
+              className={`discovery-progress-dot ${
+                index < discoverySelected.length ? "active" : ""
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
       <div className="discovery-grid">
@@ -5024,6 +5037,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               className={`discovery-product ${selected ? "selected" : ""}`}
               onClick={() => toggleDiscoveryProduct(product)}
             >
+              {selected && (
+                <span className="discovery-selected-badge">
+                  ✓ {lang === "sr" ? "Izabrano" : "Selected"}
+                </span>
+              )}
+
               <img src={product.image} alt={product.name} />
 
               <span>{product.shortName || product.name}</span>
@@ -5037,15 +5056,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="discovery-bar">
-        <div>
+        <div className="discovery-bar-copy">
           <strong>
             {discoverySelected.length === DISCOVERY_REQUIRED_COUNT
               ? lang === "sr"
                 ? "Discovery Set otključan"
                 : "Discovery Set unlocked"
               : lang === "sr"
-                ? "Izaberi još mirisa"
-                : "Choose more scents"}
+                ? `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT} izabrano`
+                : `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT} selected`}
           </strong>
 
           <span>
@@ -5055,7 +5074,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     ? `ušteda ${discoverySavings}€`
                     : `save ${discoverySavings}€`
                 }`
-              : `${discoverySelected.length}/${DISCOVERY_REQUIRED_COUNT}`}
+              : lang === "sr"
+                ? "Set cena, 10% popusta i bonus se otključavaju na petom mirisu."
+                : "Bundle price, 10% off and bonus unlock with the fifth scent."}
           </span>
 
           {discoverySelected.length === DISCOVERY_REQUIRED_COUNT && (
@@ -5067,7 +5088,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
         <button
           type="button"
-          className="gold-button"
+          className="gold-button discovery-add-button"
           disabled={discoverySelected.length !== DISCOVERY_REQUIRED_COUNT}
           onClick={addDiscoverySetToCart}
         >
