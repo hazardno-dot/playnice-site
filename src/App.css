@@ -13561,19 +13561,14 @@ main {
 ========================================= */
 
 @keyframes journalMobileSheetIn {
-  0% {
+  from {
     opacity: 0;
-    transform: translateY(42px) scale(0.985);
+    transform: translateY(38px);
   }
 
-  70% {
+  to {
     opacity: 1;
-    transform: translateY(-4px) scale(1.002);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
