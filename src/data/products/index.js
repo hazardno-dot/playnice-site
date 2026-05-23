@@ -1166,7 +1166,8 @@ export const products = [
   season: "all",
   moods: ["soft", "rich", "signature"],
   recommendations: [
-  "narciso-rodriguez-for-him-bleu-noir-edp"
+  "narciso-rodriguez-for-him-bleu-noir-edp",
+  "ysl-black-opium-le-parfum"
   ],
   inspiredBy: {
     name: "Original Narciso Rodriguez creation",
