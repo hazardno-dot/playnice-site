@@ -17752,3 +17752,16 @@ body.scrolled .header-system .announcement-bar-system {
     min-width: 118px;
   }
 }
+
+@media (max-width: 560px) {
+  .discovery-overlay {
+    align-items: flex-end !important;
+    padding: 86px 10px 10px !important;
+  }
+
+  .discovery-modal {
+    width: 100% !important;
+    max-height: calc(100dvh - 96px) !important;
+    border-radius: 24px 24px 18px 18px;
+  }
+}
