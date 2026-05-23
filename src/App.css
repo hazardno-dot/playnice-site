@@ -17193,41 +17193,211 @@ body.scrolled .header-system .announcement-bar-system {
 }
 
 /* =========================================
-   DISCOVERY SET
+   DISCOVERY SET BUILDER
 ========================================= */
 
 .discovery-overlay {
   position: fixed;
   inset: 0;
   z-index: 999999;
-  background: rgba(0, 0, 0, 0.82);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 24px;
+  background:
+    radial-gradient(circle at top, rgba(220, 181, 107, 0.13), transparent 34%),
+    rgba(0, 0, 0, 0.84);
+  backdrop-filter: blur(18px);
 }
 
 .discovery-modal {
-  width: min(920px, 94vw);
-  max-height: 86vh;
-  overflow: auto;
-  background: #080808;
+  position: relative;
+  width: min(1080px, 94vw);
+  max-height: 88vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   border: 1px solid rgba(220, 181, 107, 0.22);
-  border-radius: 24px;
-  padding: 28px;
+  border-radius: 28px;
+  background:
+    linear-gradient(145deg, rgba(15, 13, 10, 0.98), rgba(3, 3, 3, 0.98)),
+    #070707;
   color: #f7f0df;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 34px 110px rgba(0, 0, 0, 0.72);
 }
 
 .discovery-close {
-  margin-left: auto;
-  display: block;
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 5;
   width: 38px;
   height: 38px;
   border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.25);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(220, 181, 107, 0.24);
+  background: rgba(255, 255, 255, 0.055);
   color: #f7f0df;
   font-size: 24px;
+  line-height: 1;
   cursor: pointer;
+}
+
+.discovery-head {
+  padding: 30px 34px 18px;
+  border-bottom: 1px solid rgba(220, 181, 107, 0.12);
+}
+
+.discovery-head h2 {
+  margin: 6px 0 8px;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 0.95;
+  color: #f4dfb0;
+}
+
+.discovery-head p {
+  margin: 0;
+  color: rgba(247, 240, 223, 0.68);
+}
+
+.discovery-grid {
+  padding: 24px 28px 110px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.discovery-product {
+  min-height: 210px;
+  border: 1px solid rgba(220, 181, 107, 0.14);
+  border-radius: 20px;
+  padding: 14px 12px;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.07), transparent 42%),
+    rgba(255, 255, 255, 0.035);
+  color: #f7f0df;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.discovery-product:hover {
+  transform: translateY(-3px);
+  border-color: rgba(220, 181, 107, 0.38);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.35);
+}
+
+.discovery-product.selected {
+  border-color: rgba(220, 181, 107, 0.75);
+  background:
+    radial-gradient(circle at top, rgba(220, 181, 107, 0.18), transparent 46%),
+    rgba(220, 181, 107, 0.07);
+}
+
+.discovery-product img {
+  width: 100%;
+  height: 118px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 12px;
+  filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.42));
+}
+
+.discovery-product span {
+  display: block;
+  min-height: 34px;
+  font-size: 0.78rem;
+  line-height: 1.25;
+  font-weight: 700;
+  text-align: center;
+}
+
+.discovery-product small {
+  display: block;
+  margin-top: 8px;
+  color: rgba(220, 181, 107, 0.92);
+  font-size: 0.72rem;
+  text-align: center;
+}
+
+.discovery-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 28px;
+  border-top: 1px solid rgba(220, 181, 107, 0.16);
+  background: rgba(5, 5, 5, 0.92);
+  backdrop-filter: blur(18px);
+}
+
+.discovery-bar strong,
+.discovery-bar span {
+  display: block;
+}
+
+.discovery-bar strong {
+  color: #f4dfb0;
+  font-size: 0.94rem;
+}
+
+.discovery-bar span {
+  margin-top: 4px;
+  color: rgba(247, 240, 223, 0.62);
+  font-size: 0.78rem;
+}
+
+.discovery-bar .gold-button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .discovery-overlay {
+    align-items: flex-end;
+    padding: 12px;
+  }
+
+  .discovery-modal {
+    width: 100%;
+    max-height: 88vh;
+    border-radius: 24px 24px 18px 18px;
+  }
+
+  .discovery-head {
+    padding: 26px 22px 16px;
+  }
+
+  .discovery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 18px 16px 112px;
+    gap: 12px;
+  }
+
+  .discovery-product {
+    min-height: 190px;
+    border-radius: 18px;
+  }
+
+  .discovery-product img {
+    height: 104px;
+  }
+
+  .discovery-bar {
+    padding: 14px 16px;
+  }
+
+  .discovery-bar .gold-button {
+    min-width: 118px;
+  }
 }
