@@ -1180,7 +1180,7 @@ Remember. PlayNice.`
   content: {
     en: `I don’t know if this was the best night of my life… but so far — very possible.
 
-It was one of those evenings where you feel something big is coming. Not drama. Just that rare warm energy when the city somehow looks better than usual, music in the distance sounds promising… you’re already moving slightly to the rhythm, and for the first time in a while you’re not thinking about work, responsibilities or any of the random nonsense life throws at you.
+It was one of those evenings where you feel something big is coming. Not drama. Just that rare warm energy when the city somehow looks better than usual, music in the distance sounds promising… and you’re already moving slightly to the rhythm, and for the first time in a while you’re not thinking about work, responsibilities or any of the random nonsense life throws at you.
 
 Just stress free, baby.
 
@@ -1284,7 +1284,7 @@ Charlie
 Remember. PlayNice.`,
     sr: `Ne znam da li je ovo bio najbolji izlazak u mom životu… ali do sada — vrlo moguće.
 
-To je jedan od onih dana, tačnije večeri, kad osećaš da se nešto veliko sprema. Ne drama. Samo ona neka retko predivna i topla energija kada i grad izgleda lepše nego inače, muzika negde u daljini zvuči obećavajuće… već lagano igraš u ritmu, i prvi put posle dužeg vremena ne razmišljaš niti o poslu, niti o obavezama… jednostavno stress free bejbi.
+To je jedan od onih dana, tačnije večeri, kad osećaš da se nešto veliko sprema. Ne drama. Samo ona neka retko predivna i topla energija kada i grad izgleda lepše nego inače, muzika negde u daljini zvuči obećavajuće… i već lagano igraš u ritmu, i prvi put posle dužeg vremena ne razmišljaš niti o poslu, niti o obavezama… jednostavno stress free bejbi.
 
 Te večeri sam stvarno očekivao dobar izlazak.
 
@@ -1338,7 +1338,7 @@ Pamtiš kako si se osećao.
 
 Pamtiš trenutak kada pogledaš oko sebe i pomisliš:
 
-“Uh… život stvarno ume da bude brutalno dobar.”
+“Vau… život stvarno ume da bude brutalno dobar.”
 
 —
 
