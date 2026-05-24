@@ -1168,7 +1168,7 @@ Remember. PlayNice.`
   {
   id: 12,
   date: "25 Maj",
-  image: "/hero/slide-1-9pm-night-out.jpg",
+  image: "/journal/article12.png",
   title: {
     en: "When you’re living your best life",
     sr: "Ono kad živiš svoj najbolji život"
