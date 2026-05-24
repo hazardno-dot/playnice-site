@@ -1378,9 +1378,9 @@ Hvala ti, živote.
 
 Čarli  
 Remember. PlayNice.`
-  }
+  },
   relatedProducts: ["Narciso Rodriguez Poudrée Eau de Parfum",
     "Yves Saint Laurent Black Opium Le Parfum"
-  ],
+  ]
 }
 ];
