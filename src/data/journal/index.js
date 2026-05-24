@@ -61,6 +61,7 @@ A mi smo od običnog “da vidimo šta ima” opet napravili ono što uvek napra
       "Lattafa Dynasty"
     ]
   },
+
   {
     id: 2,
     date: "13 Apr",
@@ -122,6 +123,7 @@ Da kažemo stvari normalno. Ljudski. I da usput možda zajedno preživimo još p
 — Čarli`,
     },
   },
+
   {
     id: 3,
     date: "14 Apr",
@@ -954,6 +956,7 @@ Remember. PlayNice.`
     "Arabiyat Prestige Fahad Gaze"
   ]
 },
+
 {
   id: 11,
   date: "21 Maj",
@@ -1147,7 +1150,228 @@ Bravo, doktori.
 
 Čarli  
 Remember. PlayNice.`
+  }
   },
+
+  {
+  id: 12,
+  date: "25 Maj",
+  image: "/hero/slide-1-9pm-night-out.jpg",
+  title: {
+    en: "When you’re living your best life",
+    sr: "Ono kad živiš svoj najbolji život"
+  },
+  excerpt: {
+    en: "Some nights stay with you forever. Not because of what happened, but because of how alive you felt while it was happening.",
+    sr: "Neke noći ostanu sa tobom zauvek. Ne zbog onoga što se desilo, nego zbog toga koliko si se živo osećao dok se dešavalo."
+  },
+  content: {
+    en: `I don’t know if this was the best night of my life… but so far — very possible.
+
+It was one of those evenings where you feel something big is coming. Not drama. Just that rare warm energy when the city somehow looks better than usual, music in the distance sounds promising… you’re already moving slightly to the rhythm, and for the first time in a while you’re not thinking about work, responsibilities or any of the random nonsense life throws at you.
+
+Just stress free, baby.
+
+That night, I genuinely expected a great night out.
+
+—
+
+And somehow, everything was perfectly aligned.
+
+The club was packed, but not with that exhausting crowd where everyone is pretending to be someone else. This was real nightlife. Incredible music. Loud enough that serious conversation became impossible, but good enough that nobody even wanted serious conversation.
+
+A drink at the bar.
+
+Then another one.
+
+Then that dangerous confidence a man gets somewhere between the second song and the third whiskey when he suddenly thinks:
+
+“Damn… I actually look good tonight.”
+
+And honestly… maybe the worst part is that I was completely right.
+
+I was fully ready for a dangerously good night.
+
+—
+
+Around two in the morning, the two of them appeared.
+
+A blonde and a brunette.
+
+Good Lord.
+
+The blonde had the kind of smile that makes you instantly forget what you were about to say, while the brunette had that look that says she knows exactly what she wants and exactly how much trouble she could cause… and she’s perfectly calm about it.
+
+Some women look beautiful.
+
+Others bring atmosphere with them.
+
+They walked into the club like they owned the night.
+
+And honestly, nobody disagreed.
+
+—
+
+At some point we ended up at the bar together, and eventually we weren’t really “at” the bar anymore as much as around it, on it, beside it, while the music somehow kept getting better as the night moved forward.
+
+And that’s what people forget about truly good nights out.
+
+You don’t remember the exact songs.
+
+You don’t remember how much you drank.
+
+You remember the energy.
+
+You remember how you felt.
+
+You remember that exact moment when you look around and think:
+
+“Damn… life can actually be unbelievably good.”
+
+—
+
+We ended up back at my place, that much I know. I also remember my neighbor yelling something at four in the morning, but… honestly, who cares.
+
+At that moment I was living my best life and I didn’t want it to end.
+
+A lot of that night stayed blurry.
+
+But those two fragrances?
+
+I never forgot them.
+
+Hers.
+
+And hers.
+
+One warm, soft and dangerous enough to make a man take a terrible decision without a second of regret.
+
+The other colder, cleaner, but with that kind of confidence that makes you move closer even when you know perfectly well you won’t walk away completely calm from the whole story.
+
+And maybe that’s the most beautiful thing about great fragrances.
+
+Years pass.
+
+People leave.
+
+Cities change.
+
+But certain scents stay locked somewhere inside your memory like a private time machine waiting to take you back to moments you never really wanted to leave.
+
+—
+
+What a night.
+
+What fragrances.
+
+Thank you, life.
+
+—
+
+Charlie  
+Remember. PlayNice.`,
+    sr: `Ne znam da li je ovo bio najbolji izlazak u mom životu… ali do sada — vrlo moguće.
+
+To je jedan od onih dana, tačnije večeri, kad osećaš da se nešto veliko sprema. Ne drama. Samo ona neka retko predivna i topla energija kada i grad izgleda lepše nego inače, muzika negde u daljini zvuči obećavajuće… već lagano igraš u ritmu, i prvi put posle dužeg vremena ne razmišljaš niti o poslu, niti o obavezama… jednostavno stress free bejbi.
+
+Te večeri sam stvarno očekivao dobar izlazak.
+
+—
+
+I sve je nekako bilo namešteno kako treba.
+
+Diskoteka je bila prepuna, ali ne ona naporna gužva gde svi nešto glumataju, nego prava noćna atmosfera. Muzika brutalna. Dovoljno glasna da ne možeš da vodiš ozbiljan razgovor, a opet taman toliko dobra da ti ni ne treba razgovor.
+
+Piće za šankom.
+
+Pa još jedno.
+
+Pa ono opasno samopouzdanje koje čovek dobije negde između druge pesme i trećeg viskija kad pomisli:
+
+“Stvarno večeras izgledam dobro.”
+
+Baš sam bio raspoložen za problematično dobru noć.
+
+—
+
+Negde oko dva ujutru pojavile su se njih dve.
+
+Plavuša i crnka.
+
+Bože dragi.
+
+Plavuša je imala onaj osmeh zbog kog potpuno zaboraviš šta si hteo da kažeš, a crnka pogled koji izgleda kao da tačno zna šta želi i koliko problema može da ti napravi, i potpuno je mirna zbog toga.
+
+Postoje žene koje lepo izgledaju.
+
+A postoje i one koje donesu atmosferu sa sobom.
+
+Ušle su u klub kao da su vlasnice noći.
+
+I ne, niko se nije bunio.
+
+—
+
+U nekom trenutku završili smo za šankom zajedno, pa onda više nismo bili baš “za” šankom koliko… oko njega, na njemu, pored njega, uz muziku koja je postajala sve bolja što je noć više odmicala.
+
+I to je ono što ljudi zaboravljaju o dobrim izlascima.
+
+Ne pamtiš tačno pesme.
+
+Ne pamtiš ni koliko si popio.
+
+Pamtiš energiju.
+
+Pamtiš kako si se osećao.
+
+Pamtiš trenutak kada pogledaš oko sebe i pomisliš:
+
+“Uh… život stvarno ume da bude brutalno dobar.”
+
+—
+
+Bili smo kod mene, to znam. Sećam se i da mi je komšinica nešto dobacivala u četiri ujutro, ali… hej, koga briga. Trenutno živim svoj najbolji život i ne želim da završi.
+
+Dosta toga iz te večeri mi je ostalo mutno.
+
+Ali ta dva mirisa nikad nisam zaboravio.
+
+Njen.
+
+I njen.
+
+Jedan topao, mekan i opasan taman toliko da čovek napravi lošu odluku bez trunke kajanja.
+
+Drugi hladniji, čistiji, ali sa onom vrstom samopouzdanja koja te natera da priđeš bliže iako vrlo dobro znaš da nećeš izaći potpuno miran iz cele priče.
+
+I možda je baš to najlepše kod dobrih mirisa.
+
+Godine prođu.
+
+Ljudi odu.
+
+Gradovi se promene.
+
+Ali neki mirisi ostanu zaključani negde u glavi kao privatna vremenska mašina za sve te predivne uspomene koje samo čekaju da ih ponovo posetiš.
+
+—
+
+Kakva noć.
+
+Kakvi mirisi.
+
+Hvala ti, živote.
+
+—
+
+Čarli  
+Remember. PlayNice.`
+  },
+  relatedProducts: ["Narciso Rodriguez Poudrée Eau de Parfum",
+    "Yves Saint Laurent Black Opium Le Parfum"
+  ]
+},
+
   relatedProducts: ["Afnan Supremacy Collector's Edition Pour Homme"],
   links: [
     {
@@ -1159,5 +1383,4 @@ Remember. PlayNice.`
       url: "https://www.imdb.com/title/tt4139124/"
     }
   ]
-}
 ];
