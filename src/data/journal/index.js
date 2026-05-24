@@ -1150,7 +1150,19 @@ Bravo, doktori.
 
 Čarli  
 Remember. PlayNice.`
-  }
+  },
+  relatedProducts: ["Afnan Supremacy Collector's Edition Pour Homme"],
+
+  links: [
+    {
+      label: "Key & Peele — Substitute Teacher",
+      url: "https://www.youtube.com/watch?v=Dd7FixvoKBw"
+    },
+    {
+      label: "Keanu (2016) — IMDb",
+      url: "https://www.imdb.com/title/tt4139124/"
+    }
+  ]
   },
 
   {
@@ -1366,21 +1378,9 @@ Hvala ti, živote.
 
 Čarli  
 Remember. PlayNice.`
-  },
+  }
   relatedProducts: ["Narciso Rodriguez Poudrée Eau de Parfum",
     "Yves Saint Laurent Black Opium Le Parfum"
-  ]
-},
-
-  relatedProducts: ["Afnan Supremacy Collector's Edition Pour Homme"],
-  links: [
-    {
-      label: "Key & Peele — Substitute Teacher",
-      url: "https://www.youtube.com/watch?v=Dd7FixvoKBw"
-    },
-    {
-      label: "Keanu (2016) — IMDb",
-      url: "https://www.imdb.com/title/tt4139124/"
-    }
-  ]
+  ],
+}
 ];
