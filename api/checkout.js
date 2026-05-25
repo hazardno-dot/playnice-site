@@ -611,6 +611,52 @@ Final total: biće potvrđen naknadno
 Remember. PlayNice.`;
 }
 
+async function saveOrderToGoogleSheets(orderData) {
+  const url = process.env.GOOGLE_SCRIPT_ORDERS_URL;
+
+  if (!url) {
+    console.warn("Missing GOOGLE_SCRIPT_ORDERS_URL");
+    return {
+      saved: false,
+      error: "Missing GOOGLE_SCRIPT_ORDERS_URL"
+    };
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        source: "order",
+        ...orderData
+      })
+    });
+
+    const text = await response.text();
+
+    if (!response.ok) {
+      console.error("Google Sheets order save failed:", text);
+      return {
+        saved: false,
+        error: text
+      };
+    }
+
+    return {
+      saved: true,
+      response: text
+    };
+  } catch (error) {
+    console.error("Google Sheets order save error:", error);
+    return {
+      saved: false,
+      error: error?.message || "Unknown Google Sheets error"
+    };
+  }
+}
+
 export default async function handler(req, res) {
   res.setHeader("Allow", ["POST"]);
 
@@ -754,19 +800,33 @@ export default async function handler(req, res) {
         console.error("Customer enquiry email failed:", customerError);
       }
 
-      return res.status(200).json({
-        success: true,
-        enquiryReceived: true,
-        orderPlaced: false,
-        adminEmailSent: true,
-        customerEmailSent,
-        warning: customerEmailSent
-          ? null
-          : "Enquiry received, but customer email was not sent",
-        adminMessageId: adminSendResult?.data?.id || null,
-        customerEmailError,
-        enquiryId: orderId
-      });
+      const googleSheetsResult = await saveOrderToGoogleSheets({
+  orderId,
+  fullName,
+  email,
+  phone,
+  city,
+  address,
+  note,
+  items,
+  subtotal,
+  shipping,
+  total
+});
+
+return res.status(200).json({
+  success: true,
+  orderPlaced: true,
+  enquiryReceived: false,
+  adminEmailSent: true,
+  customerEmailSent,
+  warning: customerEmailSent ? null : "Order placed, but customer email was not sent",
+  adminMessageId: adminSendResult?.data?.id || null,
+  customerEmailError,
+  googleSheetsOrderSaved: googleSheetsResult.saved,
+  googleSheetsOrderError: googleSheetsResult.error || null,
+  orderId
+});
     }
 
     const shipping = getShipping(subtotal);
