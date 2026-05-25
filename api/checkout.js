@@ -800,32 +800,18 @@ export default async function handler(req, res) {
         console.error("Customer enquiry email failed:", customerError);
       }
 
-      const googleSheetsResult = await saveOrderToGoogleSheets({
-  orderId,
-  fullName,
-  email,
-  phone,
-  city,
-  address,
-  note,
-  items,
-  subtotal,
-  shipping,
-  total
-});
-
-return res.status(200).json({
+      return res.status(200).json({
   success: true,
-  orderPlaced: true,
-  enquiryReceived: false,
+  enquiryReceived: true,
+  orderPlaced: false,
   adminEmailSent: true,
   customerEmailSent,
-  warning: customerEmailSent ? null : "Order placed, but customer email was not sent",
+  warning: customerEmailSent
+    ? null
+    : "Enquiry received, but customer email was not sent",
   adminMessageId: adminSendResult?.data?.id || null,
   customerEmailError,
-  googleSheetsOrderSaved: googleSheetsResult.saved,
-  googleSheetsOrderError: googleSheetsResult.error || null,
-  orderId
+  enquiryId: orderId
 });
     }
 
@@ -913,17 +899,33 @@ return res.status(200).json({
       console.error("Customer email failed:", customerError);
     }
 
-    return res.status(200).json({
-      success: true,
-      orderPlaced: true,
-      enquiryReceived: false,
-      adminEmailSent: true,
-      customerEmailSent,
-      warning: customerEmailSent ? null : "Order placed, but customer email was not sent",
-      adminMessageId: adminSendResult?.data?.id || null,
-      customerEmailError,
-      orderId
-    });
+    const googleSheetsResult = await saveOrderToGoogleSheets({
+  orderId,
+  fullName,
+  email,
+  phone,
+  city,
+  address,
+  note,
+  items,
+  subtotal,
+  shipping,
+  total
+});
+
+return res.status(200).json({
+  success: true,
+  orderPlaced: true,
+  enquiryReceived: false,
+  adminEmailSent: true,
+  customerEmailSent,
+  warning: customerEmailSent ? null : "Order placed, but customer email was not sent",
+  adminMessageId: adminSendResult?.data?.id || null,
+  customerEmailError,
+  googleSheetsOrderSaved: googleSheetsResult.saved,
+  googleSheetsOrderError: googleSheetsResult.error || null,
+  orderId
+});
   } catch (error) {
     console.error("Checkout error:", error);
     return res.status(500).json({
