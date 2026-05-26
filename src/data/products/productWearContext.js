@@ -256,5 +256,20 @@ export const productWearContext = {
   "Yves Saint Laurent Black Opium Le Parfum": {
   sr: "Veče, dejt, hladnije vreme.",
   en: "Evening, date night, colder weather."
-}
+  },
+
+  "French Avenue Pinnace Oryn Eau De Parfum": {
+  sr: "Leto, dnevno, luksuzne fresh prilike.",
+  en: "Summer, daytime, luxury fresh situations."
+  },
+
+"Riiffs Freeze Extrait De Parfum": {
+  sr: "Plaža, leto, dnevni izlazak.",
+  en: "Beach, summer, daytime outings."
+  },
+
+"Lattafa Maahir Legacy Eau De Parfum": {
+  sr: "Posao, leto, svakodnevno nošenje.",
+  en: "Work, summer, everyday wear."
+  }
 };

@@ -1226,6 +1226,81 @@ export const productCopy = {
     en: "If you want a sweet, seductive and instantly recognizable evening scent."
   }
 },
+
+"French Avenue Pinnace Oryn Eau De Parfum": {
+  miniTag: { sr: "🍊 Citrus / Luxury", en: "🍊 Citrus / Luxury" },
+  card: {
+    sr: "Luksuzni citrusni miris sa ultra svežim karakterom.",
+    en: "Luxury citrus scent with ultra fresh character."
+  },
+  modal: {
+    sr: "Sočni citrusi i lagani morski tonovi daju luksuzan, čist i energičan letnji profil.",
+    en: "Juicy citrus and soft marine notes create a luxurious clean energetic summer profile."
+  },
+  scentType: { sr: "Fresh citrus aquatic", en: "Fresh citrus aquatic" },
+  dominantNotes: {
+    sr: ["citrusi", "morski tonovi", "ambra"],
+    en: ["citrus", "marine notes", "amber"]
+  },
+  tags: {
+    sr: ["Luxury", "Fresh", "Summer"],
+    en: ["Luxury", "Fresh", "Summer"]
+  },
+  whyChoose: {
+    sr: "Ako želiš luksuzan i ultra svež letnji miris.",
+    en: "If you want a luxurious ultra fresh summer scent."
+  }
+},
+
+"Riiffs Freeze Extrait De Parfum": {
+  miniTag: { sr: "🧊 Tropical / Fresh", en: "🧊 Tropical / Fresh" },
+  card: {
+    sr: "Tropski, svež i moderan letnji miris.",
+    en: "Tropical, fresh and modern summer scent."
+  },
+  modal: {
+    sr: "Sveže zelene i tropske note sa kremastim završetkom daju moderan i opušten letnji karakter.",
+    en: "Fresh green tropical notes with creamy finish create a modern relaxed summer vibe."
+  },
+  scentType: { sr: "Fresh tropical green", en: "Fresh tropical green" },
+  dominantNotes: {
+    sr: ["kokos", "zelene note", "citrusi"],
+    en: ["coconut", "green notes", "citrus"]
+  },
+  tags: {
+    sr: ["Fresh", "Tropical", "Summer"],
+    en: ["Fresh", "Tropical", "Summer"]
+  },
+  whyChoose: {
+    sr: "Ako voliš tropske i moderne fresh parfeme.",
+    en: "If you enjoy tropical modern fresh fragrances."
+  }
+},
+
+"Lattafa Maahir Legacy Eau De Parfum": {
+  miniTag: { sr: "🌿 Fresh / Signature", en: "🌿 Fresh / Signature" },
+  card: {
+    sr: "Svež citrusno-zeleni profil sa elegantnim karakterom.",
+    en: "Fresh citrus-green profile with elegant character."
+  },
+  modal: {
+    sr: "Mentolasto-citrusni početak prelazi u čist, aromatičan i drvenast završetak sa modernim signature osećajem.",
+    en: "Minty citrus opening settles into a clean aromatic woody finish with modern signature feel."
+  },
+  scentType: { sr: "Fresh aromatic woody", en: "Fresh aromatic woody" },
+  dominantNotes: {
+    sr: ["menta", "citrusi", "lavanda", "drvo"],
+    en: ["mint", "citrus", "lavender", "woods"]
+  },
+  tags: {
+    sr: ["Fresh", "Signature", "Elegant"],
+    en: ["Fresh", "Signature", "Elegant"]
+  },
+  whyChoose: {
+    sr: "Ako želiš čist i luksuzan svakodnevni signature miris.",
+    en: "If you want a clean luxurious everyday signature scent."
+  }
+},
 };
 
 /* =========================================

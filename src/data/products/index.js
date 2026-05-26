@@ -1196,5 +1196,71 @@ export const products = [
     short: "Vanilla Coffee DNA"
   },
   isNew: true,
-}
+},
+{
+  id: 62,
+  slug: "french-avenue-pinnace-oryn",
+  name: "French Avenue Pinnace Oryn Eau De Parfum",
+  shortName: "Pinnace Oryn",
+  category: "Arabian",
+  image: "/products/french-avenue-pinnace-oryn.png",
+  sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+  badge: "NEW",
+  rating: 8.7,
+  ratingLabel: "Luxury Fresh",
+  season: "summer",
+  moods: ["clean", "signature", "summer"],
+  recommendations: [
+    "versace-man-eau-fraiche"
+  ],
+  inspiredBy: {
+    name: "Louis Vuitton Afternoon Swim",
+    short: "Afternoon Swim DNA"
+  },
+  isNew: true,
+},
+{
+  id: 63,
+  slug: "riiffs-freeze-extrait",
+  name: "Riiffs Freeze Extrait De Parfum",
+  shortName: "Riiffs Freeze",
+  category: "Arabian",
+  image: "/products/riiffs-freeze-extrait.png",
+  sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+  badge: "NEW",
+  rating: 8.3,
+  ratingLabel: "Fresh Favorite",
+  season: "summer",
+  moods: ["clean", "summer"],
+  recommendations: [
+    "afnan-9am"
+  ],
+  inspiredBy: {
+    name: "Jean Paul Gaultier Le Beau Paradise Garden",
+    short: "Paradise Garden DNA"
+  },
+  isNew: true,
+},
+{
+  id: 64,
+  slug: "lattafa-maahir-legacy",
+  name: "Lattafa Maahir Legacy Eau De Parfum",
+  shortName: "Maahir Legacy",
+  category: "Arabian",
+  image: "/products/lattafa-maahir-legacy.png",
+  sizes: { "5ml": 3.5, "10ml": 6, "20ml": 12 },
+  badge: "NEW",
+  rating: 8.5,
+  ratingLabel: "Fresh Signature",
+  season: "summer",
+  moods: ["clean", "signature", "summer"],
+  recommendations: [
+    "afnan-turathi-blue"
+  ],
+  inspiredBy: {
+    name: "Parfums de Marly Sedley",
+    short: "Sedley DNA"
+  },
+  isNew: true,
+},
 ];
