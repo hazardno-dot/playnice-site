@@ -611,6 +611,36 @@ Final total: biće potvrđen naknadno
 Remember. PlayNice.`;
 }
 
+async function reserveOrderIdFromGoogleSheets() {
+  const url = process.env.GOOGLE_SCRIPT_ORDERS_URL;
+
+  if (!url) {
+    throw new Error("Missing GOOGLE_SCRIPT_ORDERS_URL");
+  }
+
+  const response = await fetch(url, {
+    method: "POST",
+    redirect: "follow",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify({
+      source: "reserve_order_id"
+    })
+  });
+
+  const data = await response.json();
+
+  if (!response.ok || data.status !== "ok") {
+    throw new Error(data.message || "Failed to reserve order ID");
+  }
+
+  return {
+    orderId: data.orderId,
+    trackingNumber: data.trackingNumber
+  };
+}
+
 async function saveOrderToGoogleSheets(orderData) {
   const url = process.env.GOOGLE_SCRIPT_ORDERS_URL;
 
@@ -717,9 +747,15 @@ export default async function handler(req, res) {
     }
 
     const subtotal = getSubtotal(items);
-    const orderId = isInternationalEnquiry
-      ? generateOrderId().replace("PN-", "PN-INT-")
-      : generateOrderId();
+    const reservedOrder = isInternationalEnquiry
+  ? null
+  : await reserveOrderIdFromGoogleSheets();
+
+const orderId = isInternationalEnquiry
+  ? generateOrderId().replace("PN-", "PN-INT-")
+  : reservedOrder.orderId;
+
+const trackingNumber = reservedOrder?.trackingNumber || "";
 
     const fromEmail = process.env.RESEND_FROM_EMAIL || "noreply@playniceshop.me";
     const adminEmail = process.env.ADMIN_ORDER_EMAIL || "order@playniceshop.me";
@@ -910,6 +946,7 @@ export default async function handler(req, res) {
   items,
   subtotal,
   shipping,
+  trackingNumber,
   total
 });
 
