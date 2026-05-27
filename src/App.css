@@ -8830,9 +8830,8 @@ main {
   }
 
   .product-card-image {
-  height: 124px;
-  max-width: 76%;
-  max-height: 124px;
+    max-width: 120px;
+    max-height: 130px;
   }
 
   .product-meta {
