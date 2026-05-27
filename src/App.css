@@ -8062,27 +8062,18 @@ main {
   max-height: 132px;
   object-fit: contain;
   object-position: center;
-
   display: block;
   position: relative;
   z-index: 1;
-
-  transform: translateY(0) scale(var(--bottle-scale, 1));
-
+  transform: translateY(0);
   transition:
     opacity 0.22s ease,
     transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.45s ease;
 }
 
-/* HOVER */
 .product-card:hover .product-card-image {
-  transform: translateY(-4px) scale(calc(var(--bottle-scale, 1) * 1.035));
-
-  filter:
-    drop-shadow(0 22px 40px rgba(0, 0, 0, 0.45))
-    brightness(1.06)
-    contrast(1.04);
+  transform: translateY(-4px) scale(1.035);
 }
 
 @media (max-width: 768px) {
