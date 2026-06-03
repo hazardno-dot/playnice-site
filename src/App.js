@@ -566,6 +566,15 @@ const BASE_HERO_SLIDES = [
     mobileImage: "/hero/mobile/slide-8-mobile.jpg",
     alt: "Optional: special action, drop ili limited stock",
     actionPrimary: "shop"
+  },
+  {
+    id: 9,
+    kind: "imageOnly",
+    image: "/hero/slide-9.jpg",
+    desktopImage: "/hero/slide-9.jpg",
+    mobileImage: "/hero/mobile/slide-9-mobile.jpg",
+    alt: "Optional: special action, drop ili limited stock",
+    actionPrimary: "shop"
   }
 ];
 
