@@ -1263,4 +1263,48 @@ export const products = [
   },
   isNew: true,
 },
+{
+  id: 65,
+  slug: "ysl-y-iced-cologne",
+  name: "Yves Saint Laurent Y Iced Cologne",
+  shortName: "Y YSL Iced",
+  category: "Designer",
+  image: "/products/ysl-y-iced-cologne.png",
+  sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
+  badge: "NEW",
+  rating: 8.8,
+  ratingLabel: "Summer Hit",
+  season: "summer",
+  moods: ["clean", "summer", "signature"],
+  recommendations: [
+    "acqua-di-gio-profondo-parfum"
+  ],
+  inspiredBy: {
+    name: "Original Yves Saint Laurent creation",
+    short: "Y DNA"
+  },
+  isNew: true,
+},
+{
+  id: 66,
+  slug: "valentino-uomo-born-in-roma-coral-fantasy",
+  name: "Valentino Uomo Born In Roma Coral Fantasy",
+  shortName: "Coral Fantasy",
+  category: "Designer",
+  image: "/products/valentino-coral-fantasy.png",
+  sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
+  badge: "NEW",
+  rating: 9.1,
+  ratingLabel: "Crowd Favorite",
+  season: "all",
+  moods: ["date", "rich", "signature"],
+  recommendations: [
+    "afnan-9pm-rebel"
+  ],
+  inspiredBy: {
+    name: "Original Valentino creation",
+    short: "Red Apple Tobacco DNA"
+  },
+  isNew: true,
+},
 ];

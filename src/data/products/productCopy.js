@@ -1301,6 +1301,57 @@ export const productCopy = {
     en: "If you want a clean luxurious everyday signature scent."
   }
 },
+
+"Yves Saint Laurent Y Iced Cologne": {
+  miniTag: { sr: "🧊 Fresh / Clean", en: "🧊 Fresh / Clean" },
+
+  card: {
+    sr: "Ledeno svež i čist miris za tople dane.",
+    en: "Icy fresh and clean scent for warm days."
+  },
+  modal: {
+    sr: "Osvežavajući spoj citrusa, đumbira i aromatičnih nota daje moderan i energičan letnji karakter.",
+    en: "Refreshing citrus, ginger and aromatic notes create a modern energetic summer scent."
+  },
+  scentType: { sr: "Fresh aromatic citrus", en: "Fresh aromatic citrus" },
+  dominantNotes: {
+    sr: ["citrusi", "đumbir", "aromatične note"],
+    en: ["citrus", "ginger", "aromatic notes"]
+  },
+  tags: {
+    sr: ["Fresh", "Summer", "Clean"],
+    en: ["Fresh", "Summer", "Clean"]
+  },
+  whyChoose: {
+    sr: "Ako želiš ultra svež i moderan letnji miris.",
+    en: "If you want an ultra fresh modern summer scent."
+  }
+},
+
+"Valentino Uomo Born In Roma Coral Fantasy": {
+  miniTag: { sr: "🍎 Date / Signature", en: "🍎 Date / Signature" },
+  card: {
+    sr: "Sočna jabuka i duvan u modernom zavodljivom spoju.",
+    en: "Juicy apple and tobacco in a modern seductive blend."
+  },
+  modal: {
+    sr: "Crvena jabuka, aromatične note i duvan stvaraju topao, privlačan i veoma nosiv signature miris.",
+    en: "Red apple, aromatic notes and tobacco create a warm attractive signature scent."
+  },
+  scentType: { sr: "Fruity tobacco aromatic", en: "Fruity tobacco aromatic" },
+  dominantNotes: {
+    sr: ["crvena jabuka", "duvan", "aromatične note"],
+    en: ["red apple", "tobacco", "aromatic notes"]
+  },
+  tags: {
+    sr: ["Date Night", "Signature", "Compliment"],
+    en: ["Date Night", "Signature", "Compliment"]
+  },
+  whyChoose: {
+    sr: "Ako želiš moderan kompliment magnet sa karakterom.",
+    en: "If you want a modern compliment magnet with character."
+  }
+},
 };
 
 /* =========================================

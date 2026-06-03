@@ -271,5 +271,15 @@ export const productWearContext = {
 "Lattafa Maahir Legacy Eau De Parfum": {
   sr: "Posao, leto, svakodnevno nošenje.",
   en: "Work, summer, everyday wear."
-  }
+  },
+
+"Yves Saint Laurent Y Iced Cologne": {
+  sr: "Leto, dnevno, visoke temperature.",
+  en: "Summer, daytime, hot weather."
+},
+
+"Valentino Uomo Born In Roma Coral Fantasy": {
+  sr: "Veče, dejt, izlazak.",
+  en: "Evening, date night, going out."
+}
 };
