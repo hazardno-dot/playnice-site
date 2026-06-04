@@ -1277,7 +1277,7 @@ export const products = [
   season: "summer",
   moods: ["clean", "summer", "signature"],
   recommendations: [
-    "acqua-di-gio-profondo-parfum"
+    "giorgio-armani-acqua-di-gio-profondo-parfum"
   ],
   inspiredBy: {
     name: "Original Yves Saint Laurent creation",
