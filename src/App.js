@@ -4170,7 +4170,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 )}
 </div>
 
-{requestsNowInCollection.length > 0 && (
+{existingCollectionRequests.length > 0 && (
   <div className="already-in-collection-strip">
     <span>
       {lang === "sr"
