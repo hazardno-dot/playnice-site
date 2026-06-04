@@ -1672,92 +1672,17 @@ const findExistingProductByRequest = (requestName) => {
 };
 
 /* =========================================
-   SCENT REQUEST HENDLER
+   SCENT REQUEST HELPERS
 ========================================= */
 
-const handleScentRequestSubmit = async (event) => {
-  event.preventDefault();
+const openProductFromRequest = (product) => {
+  if (!product?.sizes) return;
 
-  const fragranceName = scentRequestValue.trim();
-
-  const existingProduct = findExistingProductByRequest(fragranceName);
-
-if (existingProduct) {
-  addExistingCollectionRequest(existingProduct);
-  sendScentRequest(existingProduct.name, "existing_collection_request");
-
-  setScentRequestValue("");
-  setScentRequestStatus(
-    lang === "sr"
-      ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
-      : `Already in our collection ✦ Opening ${existingProduct.name}.`
-  );
-
-  setSelectedProduct(existingProduct);
+  setSelectedProduct(product);
+  setSelectedSize(Object.keys(product.sizes)[0]);
+  setHasUserPickedSize(false);
   setProductModalVisible(true);
-
-  return;
-}
-
-  if (!fragranceName) {
-    setScentRequestStatus(
-      lang === "sr"
-        ? "Upiši ime parfema koji želiš da probaš."
-        : "Enter the fragrance you want to try."
-    );
-    return;
-  }
-
-  setScentRequestSubmitting(true);
-  setScentRequestStatus("");
-
-  try {
-    sendScentRequest(fragranceName);
-
-    const existingRequest = communityRequests.find(
-      (item) => item.name.toLowerCase() === fragranceName.toLowerCase()
-    );
-
-    if (existingRequest) {
-      setCommunityRequests((prev) =>
-        prev
-          .map((item) =>
-            item.name.toLowerCase() === fragranceName.toLowerCase()
-              ? { ...item, votes: item.votes + 1 }
-              : item
-          )
-          .sort((a, b) => b.votes - a.votes)
-      );
-    } else {
-      setCommunityRequests((prev) =>
-        [{ name: fragranceName, votes: 1 }, ...prev]
-          .sort((a, b) => b.votes - a.votes)
-          .slice(0, 6)
-      );
-    }
-
-    setScentRequestValue("");
-    setScentRequestStatus(
-      lang === "sr"
-        ? "Dodato u community wishlist. Pratimo interesovanje."
-        : "Added to the community wishlist. We’re listening."
-    );
-  } catch (error) {
-    console.error("Scent request submit failed:", error);
-
-    setScentRequestStatus(
-      lang === "sr"
-        ? "Nešto nije prošlo kako treba. Probaj ponovo."
-        : "Something went wrong. Please try again."
-    );
-  } finally {
-    setScentRequestSubmitting(false);
-  }
 };
-
-/* =========================================
-   EXISTING COLLECTION REQUEST HEPLER
-========================================= */
 
 const addExistingCollectionRequest = (product) => {
   if (!product?.name) return;
@@ -1771,15 +1696,56 @@ const addExistingCollectionRequest = (product) => {
       return prev
         .map((item) =>
           item.name.toLowerCase() === product.name.toLowerCase()
-            ? { ...item, votes: item.votes + 1 }
+            ? { ...item, votes: item.votes + 1, product }
             : item
         )
         .sort((a, b) => b.votes - a.votes);
     }
 
-    return [{ name: product.name, votes: 1 }, ...prev]
-      .sort((a, b) => b.votes - a.votes);
+    return [{ name: product.name, votes: 1, product }, ...prev].sort(
+      (a, b) => b.votes - a.votes
+    );
   });
+};
+
+const handleCommunityRequestVote = (requestName) => {
+  const existingProduct = findExistingProductByRequest(requestName);
+
+  if (existingProduct) {
+    addExistingCollectionRequest(existingProduct);
+
+    sendScentRequest(
+      existingProduct.name,
+      "existing_collection_request"
+    );
+
+    setScentRequestStatus(
+      lang === "sr"
+        ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+        : `Already in our collection ✦ Opening ${existingProduct.name}.`
+    );
+
+    openProductFromRequest(existingProduct);
+    return;
+  }
+
+  sendScentRequest(requestName);
+
+  setCommunityRequests((prev) =>
+    prev
+      .map((item) =>
+        item.name === requestName
+          ? { ...item, votes: item.votes + 1 }
+          : item
+      )
+      .sort((a, b) => b.votes - a.votes)
+  );
+
+  setScentRequestStatus(
+    lang === "sr"
+      ? `Još jedan glas za ${requestName}.`
+      : `One more vote for ${requestName}.`
+  );
 };
 
 /* =========================================
@@ -4069,87 +4035,30 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
 
     <div className="community-request-tags">
-      {communityRequests.slice(0, 5).map((request) => (
-        <button
-          key={request.name}
-          type="button"
-          onClick={() => {
-            const existingProduct = findExistingProductByRequest(request.name);
+  {communityRequests.slice(0, 5).map((request) => (
+    <button
+      key={request.name}
+      type="button"
+      onClick={() => handleCommunityRequestVote(request.name)}
+    >
+      {request.name} <strong>{request.votes}</strong>
+    </button>
+  ))}
+</div>
 
-            if (existingProduct) {
-              addExistingCollectionRequest(existingProduct);
-              sendScentRequest(existingProduct.name, "existing_collection_request");
-
-              setScentRequestStatus(
-                lang === "sr"
-                  ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
-                  : `Already in our collection ✦ Opening ${existingProduct.name}.`
-              );
-
-              setSelectedProduct(existingProduct);
-              setProductModalVisible(true);
-
-              return;
-            }
-
-            sendScentRequest(request.name);
-
-            setCommunityRequests((prev) =>
-              prev
-                .map((item) =>
-                  item.name === request.name
-                    ? { ...item, votes: item.votes + 1 }
-                    : item
-                )
-                .sort((a, b) => b.votes - a.votes)
-            );
-
-            setScentRequestStatus(
-              lang === "sr"
-                ? `Još jedan glas za ${request.name}.`
-                : `One more vote for ${request.name}.`
-            );
-          }}
-        >
-          {request.name} <strong>{request.votes}</strong>
-        </button>
-      ))}
-    </div>
-
-    {communityRequests.length > 5 && (
+{communityRequests.length > 5 && (
   <div className="community-request-secondary">
     {communityRequests.slice(5).map((request) => (
       <button
         key={request.name}
         type="button"
-        onClick={() => {
-  const existingProduct = findExistingProductByRequest(item.name);
-
-  if (!existingProduct) return;
-
-  setSelectedProduct(existingProduct);
-  setProductModalVisible(true);
-
-  sendScentRequest(
-    existingProduct.name,
-    "existing_collection_request"
-  );
-
-  addExistingCollectionRequest(existingProduct);
-
-  setScentRequestStatus(
-    lang === "sr"
-      ? `+1 glas za ${existingProduct.name}. Već je deo PlayNice kolekcije.`
-      : `+1 vote for ${existingProduct.name}. Already in our collection.`
-  );
-}}
+        onClick={() => handleCommunityRequestVote(request.name)}
       >
-        {request.name}
+        {request.name} <strong>{request.votes}</strong>
       </button>
     ))}
   </div>
 )}
-</div>
 
 {existingCollectionRequests.length > 0 && (
   <div className="already-in-collection-strip">
@@ -4165,24 +4074,28 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           key={item.name}
           type="button"
           onClick={() => {
-            setSelectedProduct(item.product);
-            setProductModalVisible(true);
+            const product =
+              item.product || findExistingProductByRequest(item.name);
+
+            if (!product) return;
 
             sendScentRequest(
-              item.product.name,
+              product.name,
               "existing_collection_request"
             );
 
-            addExistingCollectionRequest(item.product);
+            addExistingCollectionRequest(product);
 
             setScentRequestStatus(
               lang === "sr"
-                ? `+1 glas za ${item.product.name}. Već je deo PlayNice kolekcije.`
-                : `+1 vote for ${item.product.name}. Already in our collection.`
+                ? `+1 glas za ${product.name}. Već je deo PlayNice kolekcije.`
+                : `+1 vote for ${product.name}. Already in our collection.`
             );
+
+            openProductFromRequest(product);
           }}
         >
-          {item.name}
+          {item.name} <strong>{item.votes}</strong>
         </button>
       ))}
 
