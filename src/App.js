@@ -652,10 +652,6 @@ function App() {
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
 
-  const visibleCommunityRequests = communityRequests.filter(
-  (request) => !findExistingProductByRequest(request.name)
-);
-
   const [discoveryBuilderOpen, setDiscoveryBuilderOpen] = useState(false);
   const [discoverySelected, setDiscoverySelected] = useState([]);
 
@@ -4122,7 +4118,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
 
     <div className="community-request-tags">
-  {visibleCommunityRequests.slice(0, 5).map((request) => (
+  {communityRequests.slice(0, 5).map((request) => (
     <button
       key={request.name}
       type="button"
@@ -4133,9 +4129,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   ))}
 </div>
 
-{visibleCommunityRequests.length > 5 && (
+{communityRequests.length > 5 && (
   <div className="community-request-secondary">
-    {visibleCommunityRequests.slice(5).map((request) => (
+    {communityRequests.slice(5).map((request) => (
       <button
   key={request.name}
   type="button"
