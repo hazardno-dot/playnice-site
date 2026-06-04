@@ -4168,6 +4168,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     ))}
   </div>
 )}
+</div>
 
   {existingCollectionRequests.length > 0 && (
     <div className="already-in-collection-strip">
