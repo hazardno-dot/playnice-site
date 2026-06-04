@@ -3742,7 +3742,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       setHasUserPickedSize(true);
     }}
   >
-    Discover the Drop
+    CLAIM THE DROP
   </button>
 )}
                   </article>
