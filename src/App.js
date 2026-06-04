@@ -4117,38 +4117,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
     </div>
 
-<div className="community-request-tags">
+<div className="community-request-tags community-request-tags-compact">
   {communityRequests
     .filter((request) => !findExistingProductByRequest(request.name))
-    .slice(0, 5)
     .map((request) => (
       <button
         key={request.name}
         type="button"
         onClick={() => handleCommunityRequestVote(request.name)}
       >
-        {request.name} <strong>{request.votes}</strong>
+        <span>{request.name}</span>
+        <strong>{request.votes}</strong>
       </button>
     ))}
 </div>
-
-{communityRequests.filter((request) => !findExistingProductByRequest(request.name)).length > 5 && (
-  <div className="community-request-secondary">
-    {communityRequests
-      .filter((request) => !findExistingProductByRequest(request.name))
-      .slice(5)
-      .map((request) => (
-        <button
-          key={request.name}
-          type="button"
-          onClick={() => handleCommunityRequestVote(request.name)}
-        >
-          <span>{request.name}</span>
-          <strong>{request.votes}</strong>
-        </button>
-      ))}
-  </div>
-)}
 
 {existingCollectionRequests.length > 0 && (
   <div className="already-in-collection-strip">
@@ -4174,12 +4156,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               "existing_collection_request"
             );
 
-            addExistingCollectionRequest(product);
-
             setScentRequestStatus(
               lang === "sr"
-                ? `+1 glas za ${product.name}. Već je deo PlayNice kolekcije.`
-                : `+1 vote for ${product.name}. Already in our collection.`
+                ? `Otvaramo ${product.name}. Već je deo PlayNice kolekcije.`
+                : `Opening ${product.name}. Already in our collection.`
             );
 
             openProductFromRequest(product);
