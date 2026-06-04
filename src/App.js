@@ -3742,7 +3742,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       setHasUserPickedSize(true);
     }}
   >
-    {lang === "sr" ? "OSVOJI DROP" : "CLAIM THE DROP"}
+    {tr.heroYslCta}
   </button>
 )}
                   </article>

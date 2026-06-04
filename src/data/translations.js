@@ -188,6 +188,7 @@ export const translations = {
     journalClose: "Close Journal",
     journalCloseArticle: "Close article",
     justIn: "JUST IN",
+    heroYslCta: "CLAIM THE DROP",
   },
 
   sr: {
@@ -382,5 +383,6 @@ export const translations = {
     journalClose: "Zatvori Journal",
     journalCloseArticle: "Zatvori članak",
     justIn: "NOVO",
+    heroYslCta: "OSVOJI DROP",
   }
 };
