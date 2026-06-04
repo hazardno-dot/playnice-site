@@ -3705,24 +3705,45 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     className={`hero-slide ${index === currentHero ? "active" : ""}`}
                     aria-hidden={index !== currentHero}
                   >
-                    <div className="hero-image-only">
-                      <picture>
-  <source
-    media="(max-width: 768px)"
-    srcSet={slide.mobileImage || slide.image}
-  />
+                  <div className="hero-image-only">
+  <picture>
+    <source
+      media="(max-width: 768px)"
+      srcSet={slide.mobileImage || slide.image}
+    />
 
-  <img
-    className={`hero-image-only-img ${
-      index === currentHero ? "is-active" : ""
-    }`}
-    src={slide.desktopImage || slide.image}
-    alt={slide.alt}
-    loading={index === 0 ? "eager" : "lazy"}
-    draggable="false"
-  />
-</picture>
-                    </div>
+    <img
+      className={`hero-image-only-img ${
+        index === currentHero ? "is-active" : ""
+      }`}
+      src={slide.desktopImage || slide.image}
+      alt={slide.alt}
+      loading={index === 0 ? "eager" : "lazy"}
+      draggable="false"
+    />
+  </picture>
+</div>
+
+{slide.id === "slide-1-fix" && (
+  <button
+    type="button"
+    className="hero-campaign-btn"
+    onClick={() => {
+      const product = products.find(
+        (p) => p.slug === "ysl-y-iced-cologne"
+      );
+
+      if (!product) return;
+
+      setView("shop");
+      setSelectedProduct(product);
+      setSelectedSize("10ml");
+      setHasUserPickedSize(true);
+    }}
+  >
+    Discover the Drop
+  </button>
+)}
                   </article>
                 ))}
               </div>
