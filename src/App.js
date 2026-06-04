@@ -3724,7 +3724,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </picture>
 </div>
 
-{slide.id === "slide-1-fix" && (
+{(slide.image === "/hero/slide-1-fix.jpg" ||
+  slide.desktopImage === "/hero/slide-1-fix.jpg") && (
   <button
     type="button"
     className="hero-campaign-btn"
