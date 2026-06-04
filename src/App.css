@@ -17998,3 +17998,56 @@ body.scrolled .header-system .announcement-bar-system {
     0 8px 22px rgba(0, 0, 0, 0.24),
     0 0 18px rgba(220, 181, 107, 0.12);
 }
+
+/* =========================================
+   PRODUCT MODAL SAMPLE PROMO
+========================================= */
+
+.modal-sample-promo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin: 18px 0 12px;
+
+  padding: 12px 14px;
+
+  border-radius: 18px;
+
+  border: 1px solid rgba(220, 181, 107, 0.18);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(220, 181, 107, 0.10),
+      rgba(220, 181, 107, 0.04)
+    );
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.modal-sample-promo-icon {
+  flex-shrink: 0;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: rgba(220,181,107,0.12);
+
+  font-size: 1.2rem;
+}
+
+.modal-sample-promo-text {
+  color: rgba(255,255,255,0.82);
+
+  font-size: 0.78rem;
+  line-height: 1.45;
+}

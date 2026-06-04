@@ -6100,6 +6100,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             </span>
           )}
 
+          {selectedProduct.slug === "ysl-y-iced-cologne" && (
+    <div className="modal-sample-promo panel-item-anim">
+      <span className="modal-sample-promo-icon">🎁</span>
+
+      <span className="modal-sample-promo-text">
+        {lang === "sr"
+          ? "10ml uključuje complimentary mystery designer uzorak od 2ml. Limited stock."
+          : "10ml includes a complimentary 2ml mystery designer sample. Limited stock."}
+      </span>
+    </div>
+  )}
+
           <div className="modal-image-wrap panel-item-anim panel-item-2">
             {selectedProduct.image ? (
               <img
