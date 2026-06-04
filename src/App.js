@@ -6101,16 +6101,24 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           )}
 
           {selectedProduct.slug === "ysl-y-iced-cologne" && (
-    <div className="modal-sample-promo panel-item-anim">
-      <span className="modal-sample-promo-icon">🎁</span>
+  <div className="modal-sample-promo panel-item-anim">
+    <span className="modal-sample-promo-icon">🎁</span>
 
-      <span className="modal-sample-promo-text">
+    <span className="modal-sample-promo-copy">
+      <strong>
+        {lang === "sr" ? "COMPLIMENTARY" : "COMPLIMENTARY"}
+        <br />
+        {lang === "sr" ? "MYSTERY SAMPLE" : "MYSTERY SAMPLE"}
+      </strong>
+
+      <small>
         {lang === "sr"
-          ? "10ml uključuje complimentary mystery designer uzorak od 2ml. Limited stock."
-          : "10ml includes a complimentary 2ml mystery designer sample. Limited stock."}
-      </span>
-    </div>
-  )}
+          ? "Uz svaki 10ml. Limited stock."
+          : "Included with every 10ml. Limited stock."}
+      </small>
+    </span>
+  </div>
+)}
 
           <div className="modal-image-wrap panel-item-anim panel-item-2">
             {selectedProduct.image ? (

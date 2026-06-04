@@ -18006,48 +18006,47 @@ body.scrolled .header-system .announcement-bar-system {
 .modal-sample-promo {
   display: flex;
   align-items: center;
-  gap: 12px;
-
+  gap: 14px;
   margin: 18px 0 12px;
-
-  padding: 12px 14px;
-
-  border-radius: 18px;
-
-  border: 1px solid rgba(220, 181, 107, 0.18);
-
+  padding: 13px 15px;
+  border-radius: 20px;
+  border: 1px solid rgba(220, 181, 107, 0.24);
   background:
-    linear-gradient(
-      180deg,
-      rgba(220, 181, 107, 0.10),
-      rgba(220, 181, 107, 0.04)
-    );
-
+    linear-gradient(180deg, rgba(220, 181, 107, 0.13), rgba(220, 181, 107, 0.045)),
+    rgba(12, 10, 7, 0.72);
   box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255,255,255,0.04);
+    0 12px 28px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 .modal-sample-promo-icon {
   flex-shrink: 0;
-
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 12px;
-
-  background: rgba(220,181,107,0.12);
-
-  font-size: 1.2rem;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(220,181,107,0.18), rgba(220,181,107,0.07));
+  font-size: 1.55rem;
 }
 
-.modal-sample-promo-text {
-  color: rgba(255,255,255,0.82);
+.modal-sample-promo-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-  font-size: 0.78rem;
-  line-height: 1.45;
+.modal-sample-promo-copy strong {
+  color: #dcb56b;
+  font-size: 0.72rem;
+  line-height: 1.15;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.modal-sample-promo-copy small {
+  color: rgba(255,255,255,0.68);
+  font-size: 0.72rem;
+  line-height: 1.35;
 }
