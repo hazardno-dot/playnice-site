@@ -4205,14 +4205,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </button>
       ))}
 
-      {requestsNowInCollection.length > 5 && (
+      {existingCollectionRequests.length > 5 && (
         <span className="already-in-collection-more-wrap">
           <em className="already-in-collection-more">
-            +{requestsNowInCollection.length - 5} more
+            +{existingCollectionRequests.length - 5} more
           </em>
 
           <span className="already-in-collection-tooltip">
-            {requestsNowInCollection
+            {existingCollectionRequests
               .slice(5)
               .map((item) => item.name)
               .join(" • ")}
