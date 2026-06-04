@@ -1838,6 +1838,18 @@ const announcementItems = useMemo(() => {
     ? getJournalText(latestJournalArticle.title, lang)
     : "";
 
+  const yslIcedAnnouncementItem = {
+  id: "ysl-y-iced-cologne-announcement",
+  text:
+    lang === "sr"
+      ? "❄️ NOVO: YSL Y Iced Cologne 10ml + Mystery Designer Sample • Limited Stock"
+      : "❄️ NEW ARRIVAL: YSL Y Iced Cologne 10ml + Mystery Designer Sample • Limited Stock",
+  icon: "→",
+  tone: "new-shop",
+  action: "openProduct",
+  slug: "ysl-y-iced-cologne",
+};
+
   const shopNewAnnouncementItem = hasNewShopProducts
     ? {
         id: "new-shop-products-announcement",
@@ -1880,10 +1892,11 @@ const announcementItems = useMemo(() => {
   };
 
   const withPriorityAnnouncements = (items) => [
-    ...(shopNewAnnouncementItem ? [shopNewAnnouncementItem] : []),
-    ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
-    foreverAnnouncementItem,
-    ...items,
+  yslIcedAnnouncementItem,
+  ...(shopNewAnnouncementItem ? [shopNewAnnouncementItem] : []),
+  ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
+  foreverAnnouncementItem,
+  ...items,
   ];
 
   if (cart.length === 0) {
@@ -1934,6 +1947,19 @@ const announcementItems = useMemo(() => {
 ]);
 
 const handleAnnouncementItemClick = (item) => {
+  if (item?.action === "openProduct" && item?.slug) {
+    const product = products.find((p) => p.slug === item.slug);
+
+    if (product) {
+      setSelectedProduct(product);
+      setSelectedSize(Object.keys(product.sizes)[0]);
+      setHasUserPickedSize(false);
+      setView("shop");
+    }
+
+    return;
+  }
+
   if (item?.action === "openShop") {
     goToShop();
     return;
