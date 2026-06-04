@@ -1676,7 +1676,7 @@ const findExistingProductByRequest = (requestName) => {
 ========================================= */
 
 const openProductFromRequest = (product) => {
-  if (!product?.sizes) return;
+  if (!product) return;
 
   setSelectedProduct(product);
   setProductModalVisible(true);
@@ -1744,6 +1744,91 @@ const handleCommunityRequestVote = (requestName) => {
       ? `Još jedan glas za ${requestName}.`
       : `One more vote for ${requestName}.`
   );
+};
+
+const handleScentRequestSubmit = async (event) => {
+  event.preventDefault();
+
+  const fragranceName = scentRequestValue.trim();
+
+  if (!fragranceName) {
+    setScentRequestStatus(
+      lang === "sr"
+        ? "Upiši ime parfema koji želiš da probaš."
+        : "Enter the fragrance you want to try."
+    );
+    return;
+  }
+
+  const existingProduct = findExistingProductByRequest(fragranceName);
+
+  if (existingProduct) {
+    addExistingCollectionRequest(existingProduct);
+
+    sendScentRequest(
+      existingProduct.name,
+      "existing_collection_request"
+    );
+
+    setScentRequestValue("");
+
+    setScentRequestStatus(
+      lang === "sr"
+        ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+        : `Already in our collection ✦ Opening ${existingProduct.name}.`
+    );
+
+    openProductFromRequest(existingProduct);
+    return;
+  }
+
+  setScentRequestSubmitting(true);
+  setScentRequestStatus("");
+
+  try {
+    sendScentRequest(fragranceName);
+
+    const existingRequest = communityRequests.find(
+      (item) =>
+        item.name.toLowerCase() === fragranceName.toLowerCase()
+    );
+
+    if (existingRequest) {
+      setCommunityRequests((prev) =>
+        prev
+          .map((item) =>
+            item.name.toLowerCase() === fragranceName.toLowerCase()
+              ? { ...item, votes: item.votes + 1 }
+              : item
+          )
+          .sort((a, b) => b.votes - a.votes)
+      );
+    } else {
+      setCommunityRequests((prev) =>
+        [{ name: fragranceName, votes: 1 }, ...prev].sort(
+          (a, b) => b.votes - a.votes
+        )
+      );
+    }
+
+    setScentRequestValue("");
+
+    setScentRequestStatus(
+      lang === "sr"
+        ? "Dodato u community wishlist. Pratimo interesovanje."
+        : "Added to the community wishlist. We’re listening."
+    );
+  } catch (error) {
+    console.error("Scent request submit failed:", error);
+
+    setScentRequestStatus(
+      lang === "sr"
+        ? "Nešto nije prošlo kako treba. Probaj ponovo."
+        : "Something went wrong. Please try again."
+    );
+  } finally {
+    setScentRequestSubmitting(false);
+  }
 };
 
 /* =========================================
