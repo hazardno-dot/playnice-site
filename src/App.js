@@ -4185,16 +4185,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               openProductFromRequest(product);
             }}
           >
-            <span className="already-in-collection-name">{item.name}</span>
+            <span className="already-in-collection-name">
+  {item.name}
+</span>
 
-            <span
-              className={`already-in-collection-votes ${
-                isAlreadyIn ? "already-in-collection-votes-blue" : ""
-              }`}
-            >
-              {lockedVotes}
-              <em>{tooltipText}</em>
-            </span>
+<span
+  className={`already-in-collection-score ${
+    isAlreadyIn ? "already-in-collection-score-blue" : ""
+  }`}
+>
+  → {lockedVotes}
+  <em>{tooltipText}</em>
+</span>
           </button>
         );
       })}
