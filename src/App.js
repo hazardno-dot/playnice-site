@@ -4179,7 +4179,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </span>
 
     <div className="already-in-collection-list">
-      {requestsNowInCollection.slice(0, 5).map((item) => (
+      {existingCollectionRequests.slice(0, 5).map((item) => (
         <button
           key={item.name}
           type="button"
