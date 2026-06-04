@@ -10070,44 +10070,58 @@ main {
   font-weight: 900;
 }
 
-/* + more community-request-more*/
+/*community-request-secondary*/
 
-.community-request-more-wrap {
-  position: relative;
-  display: inline-flex;
+.community-request-secondary {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 12px;
   align-items: center;
 }
 
-.community-request-more {
-  cursor: help;
-}
-
-.community-request-tooltip {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 9px);
-  z-index: 20;
-  width: max-content;
-  max-width: 260px;
-  padding: 8px 10px;
-  border-radius: 12px;
-  border: 1px solid rgba(220, 181, 107, 0.18);
-  background: rgba(8, 8, 8, 0.96);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
-  color: rgba(255, 248, 235, 0.86);
-  font-size: 0.7rem;
-  font-weight: 750;
+.community-request-secondary button {
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.71rem;
+  font-weight: 800;
   line-height: 1.35;
-  text-align: center;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-50%) translateY(4px);
-  transition: opacity 160ms ease, transform 160ms ease;
+  opacity: 0.78;
+  transition:
+    color 180ms ease,
+    opacity 180ms ease,
+    transform 180ms ease;
 }
 
-.community-request-more-wrap:hover .community-request-tooltip {
+.community-request-secondary button:not(:last-child)::after {
+  content: "•";
+  margin-left: 12px;
+  color: rgba(220, 181, 107, 0.38);
+}
+
+.community-request-secondary button:hover {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  color: rgba(220, 181, 107, 0.92);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 560px) {
+  .community-request-secondary {
+    justify-content: center;
+    text-align: center;
+    gap: 6px 10px;
+  }
+
+  .community-request-secondary button {
+    font-size: 0.68rem;
+  }
+
+  .community-request-secondary button:not(:last-child)::after {
+    margin-left: 10px;
+  }
 }
 
 /* + more already-in-collection*/

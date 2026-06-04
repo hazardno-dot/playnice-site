@@ -4114,23 +4114,60 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           {request.name} <strong>{request.votes}</strong>
         </button>
       ))}
-
-      {communityRequests.length > 5 && (
-    <span className="community-request-more-wrap">
-    <em className="community-request-more">
-      +{communityRequests.length - 5} more
-    </em>
-
-    <span className="community-request-tooltip">
-      {communityRequests
-        .slice(5)
-        .map((item) => item.name)
-        .join(" • ")}
-    </span>
-  </span>
-)}
     </div>
+
+    {communityRequests.length > 5 && (
+  <div className="community-request-secondary">
+    {communityRequests.slice(5).map((request) => (
+      <button
+        key={request.name}
+        type="button"
+        onClick={() => {
+          const existingProduct = findExistingProductByRequest(request.name);
+
+          if (existingProduct) {
+            addExistingCollectionRequest(existingProduct);
+            sendScentRequest(
+              existingProduct.name,
+              "existing_collection_request"
+            );
+
+            setScentRequestStatus(
+              lang === "sr"
+                ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+                : `Already in our collection ✦ Opening ${existingProduct.name}.`
+            );
+
+            setSelectedProduct(existingProduct);
+            setProductModalVisible(true);
+
+            return;
+          }
+
+          sendScentRequest(request.name);
+
+          setCommunityRequests((prev) =>
+            prev
+              .map((item) =>
+                item.name === request.name
+                  ? { ...item, votes: item.votes + 1 }
+                  : item
+              )
+              .sort((a, b) => b.votes - a.votes)
+          );
+
+          setScentRequestStatus(
+            lang === "sr"
+              ? `Još jedan glas za ${request.name}.`
+              : `One more vote for ${request.name}.`
+          );
+        }}
+      >
+        {request.name}
+      </button>
+    ))}
   </div>
+)}
 
   {existingCollectionRequests.length > 0 && (
     <div className="already-in-collection-strip">
