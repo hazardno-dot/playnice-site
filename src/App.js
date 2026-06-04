@@ -4123,45 +4123,26 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         key={request.name}
         type="button"
         onClick={() => {
-          const existingProduct = findExistingProductByRequest(request.name);
+  const existingProduct = findExistingProductByRequest(item.name);
 
-          if (existingProduct) {
-            addExistingCollectionRequest(existingProduct);
-            sendScentRequest(
-              existingProduct.name,
-              "existing_collection_request"
-            );
+  if (!existingProduct) return;
 
-            setScentRequestStatus(
-              lang === "sr"
-                ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
-                : `Already in our collection ✦ Opening ${existingProduct.name}.`
-            );
+  setSelectedProduct(existingProduct);
+  setProductModalVisible(true);
 
-            setSelectedProduct(existingProduct);
-            setProductModalVisible(true);
+  sendScentRequest(
+    existingProduct.name,
+    "existing_collection_request"
+  );
 
-            return;
-          }
+  addExistingCollectionRequest(existingProduct);
 
-          sendScentRequest(request.name);
-
-          setCommunityRequests((prev) =>
-            prev
-              .map((item) =>
-                item.name === request.name
-                  ? { ...item, votes: item.votes + 1 }
-                  : item
-              )
-              .sort((a, b) => b.votes - a.votes)
-          );
-
-          setScentRequestStatus(
-            lang === "sr"
-              ? `Još jedan glas za ${request.name}.`
-              : `One more vote for ${request.name}.`
-          );
-        }}
+  setScentRequestStatus(
+    lang === "sr"
+      ? `+1 glas za ${existingProduct.name}. Već je deo PlayNice kolekcije.`
+      : `+1 vote for ${existingProduct.name}. Already in our collection.`
+  );
+}}
       >
         {request.name}
       </button>
