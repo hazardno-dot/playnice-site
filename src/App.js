@@ -652,12 +652,16 @@ function App() {
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
 
-  const [discoveryBuilderOpen, setDiscoveryBuilderOpen] = useState(false);
-const [discoverySelected, setDiscoverySelected] = useState([]);
+  const visibleCommunityRequests = communityRequests.filter(
+  (request) => !findExistingProductByRequest(request.name)
+);
 
-const DISCOVERY_REQUIRED_COUNT = 5;
-const DISCOVERY_SIZE = "2ml";
-const DISCOVERY_DISCOUNT = 0.10;
+  const [discoveryBuilderOpen, setDiscoveryBuilderOpen] = useState(false);
+  const [discoverySelected, setDiscoverySelected] = useState([]);
+
+  const DISCOVERY_REQUIRED_COUNT = 5;
+  const DISCOVERY_SIZE = "2ml";
+  const DISCOVERY_DISCOUNT = 0.10;
 
   const [miniCartPreview, setMiniCartPreview] = useState(null);
   const miniCartTimerRef = useRef(null);
@@ -4118,7 +4122,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
 
     <div className="community-request-tags">
-  {communityRequests.slice(0, 5).map((request) => (
+  {visibleCommunityRequests.slice(0, 5).map((request) => (
     <button
       key={request.name}
       type="button"
@@ -4129,9 +4133,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   ))}
 </div>
 
-{communityRequests.length > 5 && (
+{visibleCommunityRequests.length > 5 && (
   <div className="community-request-secondary">
-    {communityRequests.slice(5).map((request) => (
+    {visibleCommunityRequests.slice(5).map((request) => (
       <button
   key={request.name}
   type="button"
