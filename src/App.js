@@ -4141,33 +4141,63 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </span>
 
     <div className="already-in-collection-list">
-      {existingCollectionRequests.slice(0, 5).map((item) => (
-        <button
-          key={item.name}
-          type="button"
-          onClick={() => {
-            const product =
-              item.product || findExistingProductByRequest(item.name);
+      {existingCollectionRequests.slice(0, 5).map((item) => {
+        const product =
+          item.product || findExistingProductByRequest(item.name);
 
-            if (!product) return;
+        const lockedVotesByName = {
+          "Yves Saint Laurent Y Iced Cologne": 27,
+          "Valentino Uomo Born In Roma Coral Fantasy": 16,
+          "Bois Impérial by Essential Parfums": 1,
+        };
 
-            sendScentRequest(
-              product.name,
-              "existing_collection_request"
-            );
+        const lockedVotes = lockedVotesByName[item.name] || item.lockedVotes || 1;
+        const isAlreadyIn = lockedVotes === 1;
 
-            setScentRequestStatus(
-              lang === "sr"
-                ? `Otvaramo ${product.name}. Već je deo PlayNice kolekcije.`
-                : `Opening ${product.name}. Already in our collection.`
-            );
+        const tooltipText =
+          lang === "sr"
+            ? isAlreadyIn
+              ? "Već je bio deo PlayNice kolekcije."
+              : `${lockedVotes} glasova je bilo dovoljno. Sada je deo PlayNice kolekcije.`
+            : isAlreadyIn
+              ? "It's already in. Available in the PlayNice collection."
+              : `${lockedVotes} votes was all it took. Now part of the PlayNice collection.`;
 
-            openProductFromRequest(product);
-          }}
-        >
-          {item.name}
-        </button>
-      ))}
+        return (
+          <button
+            key={item.name}
+            type="button"
+            className="already-in-collection-item"
+            onClick={() => {
+              if (!product) return;
+
+              sendScentRequest(
+                product.name,
+                "existing_collection_request"
+              );
+
+              setScentRequestStatus(
+                lang === "sr"
+                  ? `Otvaramo ${product.name}. Već je deo PlayNice kolekcije.`
+                  : `Opening ${product.name}. Already in our collection.`
+              );
+
+              openProductFromRequest(product);
+            }}
+          >
+            <span className="already-in-collection-name">{item.name}</span>
+
+            <span
+              className={`already-in-collection-votes ${
+                isAlreadyIn ? "already-in-collection-votes-blue" : ""
+              }`}
+            >
+              {lockedVotes}
+              <em>{tooltipText}</em>
+            </span>
+          </button>
+        );
+      })}
 
       {existingCollectionRequests.length > 5 && (
         <span className="already-in-collection-more-wrap">
