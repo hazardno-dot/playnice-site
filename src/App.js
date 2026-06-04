@@ -767,6 +767,64 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
   }
 });
 
+/* =========================================
+     activeCommunityRequests
+  ========================================= */
+
+const activeCommunityRequests = useMemo(() => {
+  return communityRequests
+    .filter((request) => !findExistingProductByRequest(request.name))
+    .sort((a, b) => b.votes - a.votes);
+}, [communityRequests]);
+
+const requestsNowInCollection = useMemo(() => {
+  const fromCommunity = communityRequests
+    .map((request) => {
+      const product = findExistingProductByRequest(request.name);
+
+      if (!product) return null;
+
+      return {
+        name: product.name,
+        votes: request.votes,
+        product
+      };
+    })
+    .filter(Boolean);
+
+  const fromExisting = existingCollectionRequests
+    .map((request) => {
+      const product = findExistingProductByRequest(request.name);
+
+      if (!product) return null;
+
+      return {
+        name: product.name,
+        votes: request.votes,
+        product
+      };
+    })
+    .filter(Boolean);
+
+  const merged = [...fromCommunity, ...fromExisting].reduce((acc, item) => {
+    const key = item.name.toLowerCase();
+
+    if (!acc[key]) {
+      acc[key] = {
+        name: item.name,
+        votes: 0,
+        product: item.product
+      };
+    }
+
+    acc[key].votes += Number(item.votes || 0);
+
+    return acc;
+  }, {});
+
+  return Object.values(merged).sort((a, b) => b.votes - a.votes);
+}, [communityRequests, existingCollectionRequests]);
+
   /* =========================================
      APP REFS
   ========================================= */
@@ -4069,7 +4127,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
 
     <div className="community-request-tags">
-      {communityRequests.slice(0, 5).map((request) => (
+      {activeCommunityRequests.slice(0, 5).map((request) => (
         <button
           key={request.name}
           type="button"
@@ -4116,9 +4174,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       ))}
     </div>
 
-    {communityRequests.length > 5 && (
+    {activeCommunityRequests.length > 5 && (
   <div className="community-request-secondary">
-    {communityRequests.slice(5).map((request) => (
+    {activeCommunityRequests.slice(5).map((request) => (
       <button
         key={request.name}
         type="button"
@@ -4170,49 +4228,58 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 )}
 </div>
 
-  {existingCollectionRequests.length > 0 && (
-    <div className="already-in-collection-strip">
-      <span>
-        {lang === "sr"
-          ? "Već u našoj kolekciji ✦"
-          : "Already in our collection ✦"}
-      </span>
+{requestsNowInCollection.length > 0 && (
+  <div className="already-in-collection-strip">
+    <span>
+      {lang === "sr"
+        ? "Od zahteva do kolekcije ✦"
+        : "From request to collection ✦"}
+    </span>
 
-      <div className="already-in-collection-list">
-        {existingCollectionRequests.slice(0, 3).map((item) => (
-          <button
-            key={item.name}
-            type="button"
-            onClick={() => {
-              const existingProduct = findExistingProductByRequest(item.name);
+    <div className="already-in-collection-list">
+      {requestsNowInCollection.slice(0, 5).map((item) => (
+        <button
+          key={item.name}
+          type="button"
+          onClick={() => {
+            setSelectedProduct(item.product);
+            setProductModalVisible(true);
 
-              if (existingProduct) {
-                setSelectedProduct(existingProduct);
-                setProductModalVisible(true);
-              }
-            }}
-          >
-            {item.name}
-          </button>
-        ))}
+            sendScentRequest(
+              item.product.name,
+              "existing_collection_request"
+            );
 
-        {existingCollectionRequests.length > 3 && (
-    <span className="already-in-collection-more-wrap">
-  <em className="already-in-collection-more">
-    +{existingCollectionRequests.length - 3} more
-  </em>
+            addExistingCollectionRequest(item.product);
 
-  <span className="already-in-collection-tooltip">
-    {existingCollectionRequests
-      .slice(3)
-      .map((item) => item.name)
-      .join(" • ")}
-  </span>
-</span>
-)}
-      </div>
+            setScentRequestStatus(
+              lang === "sr"
+                ? `+1 glas za ${item.product.name}. Već je deo PlayNice kolekcije.`
+                : `+1 vote for ${item.product.name}. Already in our collection.`
+            );
+          }}
+        >
+          {item.name}
+        </button>
+      ))}
+
+      {requestsNowInCollection.length > 5 && (
+        <span className="already-in-collection-more-wrap">
+          <em className="already-in-collection-more">
+            +{requestsNowInCollection.length - 5} more
+          </em>
+
+          <span className="already-in-collection-tooltip">
+            {requestsNowInCollection
+              .slice(5)
+              .map((item) => item.name)
+              .join(" • ")}
+          </span>
+        </span>
+      )}
     </div>
-  )}
+  </div>
+)}
 </div>
 </div>
 </section>
