@@ -6122,18 +6122,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </div>
       )}
     </div>
-            {selectedProduct.image ? (
-              <img
-                src={selectedProduct.image}
-                alt={selectedProduct.name}
-                className="modal-image"
-              />
-            ) : (
-              <div className="modal-monogram">
-                {selectedProduct.name.charAt(0)}
-              </div>
-               )}
-          </div>
 
           {selectedProduct.recommendations?.length > 0 && (
   <div className="modal-same-energy panel-item-anim panel-item-3">
