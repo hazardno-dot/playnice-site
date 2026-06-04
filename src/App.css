@@ -971,8 +971,8 @@ main {
 
 .hero-campaign-btn {
   position: absolute;
-  right: 90px;
-  bottom: 30px;
+  right: 40px;
+  bottom: 10px;
   z-index: 22;
 
   padding: 13px 30px;
