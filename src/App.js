@@ -4069,7 +4069,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
 
     <div className="community-request-tags">
-      {activeCommunityRequests.slice(0, 5).map((request) => (
+      {communityRequests.slice(0, 5).map((request) => (
         <button
           key={request.name}
           type="button"
@@ -4116,9 +4116,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       ))}
     </div>
 
-    {activeCommunityRequests.length > 5 && (
+    {communityRequests.length > 5 && (
   <div className="community-request-secondary">
-    {activeCommunityRequests.slice(5).map((request) => (
+    {communityRequests.slice(5).map((request) => (
       <button
         key={request.name}
         type="button"
