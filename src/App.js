@@ -767,64 +767,6 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
   }
 });
 
-/* =========================================
-     activeCommunityRequests
-  ========================================= */
-
-const activeCommunityRequests = useMemo(() => {
-  return communityRequests
-    .filter((request) => !findExistingProductByRequest(request.name))
-    .sort((a, b) => b.votes - a.votes);
-}, [communityRequests]);
-
-const requestsNowInCollection = useMemo(() => {
-  const fromCommunity = communityRequests
-    .map((request) => {
-      const product = findExistingProductByRequest(request.name);
-
-      if (!product) return null;
-
-      return {
-        name: product.name,
-        votes: request.votes,
-        product
-      };
-    })
-    .filter(Boolean);
-
-  const fromExisting = existingCollectionRequests
-    .map((request) => {
-      const product = findExistingProductByRequest(request.name);
-
-      if (!product) return null;
-
-      return {
-        name: product.name,
-        votes: request.votes,
-        product
-      };
-    })
-    .filter(Boolean);
-
-  const merged = [...fromCommunity, ...fromExisting].reduce((acc, item) => {
-    const key = item.name.toLowerCase();
-
-    if (!acc[key]) {
-      acc[key] = {
-        name: item.name,
-        votes: 0,
-        product: item.product
-      };
-    }
-
-    acc[key].votes += Number(item.votes || 0);
-
-    return acc;
-  }, {});
-
-  return Object.values(merged).sort((a, b) => b.votes - a.votes);
-}, [communityRequests, existingCollectionRequests]);
-
   /* =========================================
      APP REFS
   ========================================= */
