@@ -3192,12 +3192,6 @@ const titleLengthClass =
     {tr.justIn}
   </span>
 )}
-
-{product.slug === "ysl-y-iced-cologne" && (
-  <span className="product-sample-badge">
-    🎁 {lang === "sr" ? "POKLON UZORAK" : "FREE SAMPLE"}
-  </span>
-)}
     </button>
 
     <button
@@ -3303,10 +3297,16 @@ const titleLengthClass =
               <span className="size-chip-main">{size}</span>
 
               {isRecommendedSize && (
-                <span className="size-chip-recommended">
-                  {tr.sizeBestChoice}
-                </span>
-              )}
+  <span className="size-chip-recommended">
+    {tr.sizeBestChoice}
+  </span>
+)}
+
+{product.slug === "ysl-y-iced-cologne" && size === "10ml" && (
+  <span className="size-chip-recommended">
+    {lang === "sr" ? "+ UZORAK" : "+ FREE SAMPLE"}
+  </span>
+)}
             </span>
 
             {wearHint && (
