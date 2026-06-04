@@ -17969,3 +17969,32 @@ body.scrolled .header-system .announcement-bar-system {
     min-width: 118px;
   }
 }
+
+/* =========================================
+   PRODUCT SAMPLE BADGE
+========================================= */
+
+.product-sample-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  padding: 6px 10px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(220, 181, 107, 0.5);
+  background:
+    linear-gradient(180deg, rgba(220, 181, 107, 0.18), rgba(220, 181, 107, 0.08)),
+    rgba(10, 8, 5, 0.72);
+
+  color: #f3d28a;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.24),
+    0 0 18px rgba(220, 181, 107, 0.12);
+}

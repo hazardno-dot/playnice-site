@@ -3192,6 +3192,12 @@ const titleLengthClass =
     {tr.justIn}
   </span>
 )}
+
+{product.slug === "ysl-y-iced-cologne" && (
+  <span className="product-sample-badge">
+    🎁 {lang === "sr" ? "POKLON UZORAK" : "FREE SAMPLE"}
+  </span>
+)}
     </button>
 
     <button
