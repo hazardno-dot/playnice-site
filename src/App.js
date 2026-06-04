@@ -6093,35 +6093,35 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="modal-body">
-        <div className="modal-media panel-anim panel-anim-2">
-          {selectedProduct.badge && (
-            <span className="modal-badge panel-item-anim panel-item-1">
-              {selectedProduct.badge}
-            </span>
-          )}
+  <div className="modal-media panel-anim panel-anim-2">
+    {selectedProduct.badge && (
+      <span className="modal-badge panel-item-anim panel-item-1">
+        {selectedProduct.badge}
+      </span>
+    )}
 
-          <div className="modal-image-wrap panel-item-anim panel-item-2">
-            {selectedProduct.slug === "ysl-y-iced-cologne" && (
-    <div className="modal-sample-mini">
-      <span>🎁</span>
-      <strong>
-        {lang === "sr" ? "FREE UZORAK" : "FREE SAMPLE"}
-      </strong>
-    </div>
-  )}
+    <div className="modal-image-wrap panel-item-anim panel-item-2">
+      {selectedProduct.slug === "ysl-y-iced-cologne" && (
+        <div className="modal-sample-mini">
+          <span>🎁</span>
+          <strong>
+            {lang === "sr" ? "FREE UZORAK" : "FREE SAMPLE"}
+          </strong>
+        </div>
+      )}
 
-  {selectedProduct.image ? (
-    <img
-      src={selectedProduct.image}
-      alt={selectedProduct.name}
-      className="modal-image"
-    />
-  ) : (
-    <div className="modal-monogram">
-      {selectedProduct.name.charAt(0)}
+      {selectedProduct.image ? (
+        <img
+          src={selectedProduct.image}
+          alt={selectedProduct.name}
+          className="modal-image"
+        />
+      ) : (
+        <div className="modal-monogram">
+          {selectedProduct.name.charAt(0)}
+        </div>
+      )}
     </div>
-  )}
-</div>
             {selectedProduct.image ? (
               <img
                 src={selectedProduct.image}
