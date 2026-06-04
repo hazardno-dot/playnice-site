@@ -4013,7 +4013,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
  </div>
 </div>
 
-    <div className="how-request-panel scent-request-panel">
+<div className="how-request-panel scent-request-panel">
   <p className="section-kicker scent-request-kicker">
     {lang === "sr" ? "Zahtevi zajednice" : "Community requests"}
   </p>
@@ -4123,26 +4123,45 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         key={request.name}
         type="button"
         onClick={() => {
-  const existingProduct = findExistingProductByRequest(item.name);
+          const existingProduct = findExistingProductByRequest(request.name);
 
-  if (!existingProduct) return;
+          if (existingProduct) {
+            addExistingCollectionRequest(existingProduct);
+            sendScentRequest(
+              existingProduct.name,
+              "existing_collection_request"
+            );
 
-  setSelectedProduct(existingProduct);
-  setProductModalVisible(true);
+            setScentRequestStatus(
+              lang === "sr"
+                ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+                : `Already in our collection ✦ Opening ${existingProduct.name}.`
+            );
 
-  sendScentRequest(
-    existingProduct.name,
-    "existing_collection_request"
-  );
+            setSelectedProduct(existingProduct);
+            setProductModalVisible(true);
 
-  addExistingCollectionRequest(existingProduct);
+            return;
+          }
 
-  setScentRequestStatus(
-    lang === "sr"
-      ? `+1 glas za ${existingProduct.name}. Već je deo PlayNice kolekcije.`
-      : `+1 vote for ${existingProduct.name}. Already in our collection.`
-  );
-}}
+          sendScentRequest(request.name);
+
+          setCommunityRequests((prev) =>
+            prev
+              .map((item) =>
+                item.name === request.name
+                  ? { ...item, votes: item.votes + 1 }
+                  : item
+              )
+              .sort((a, b) => b.votes - a.votes)
+          );
+
+          setScentRequestStatus(
+            lang === "sr"
+              ? `Još jedan glas za ${request.name}.`
+              : `One more vote for ${request.name}.`
+          );
+        }}
       >
         {request.name}
       </button>
