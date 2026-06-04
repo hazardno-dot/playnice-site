@@ -18003,50 +18003,35 @@ body.scrolled .header-system .announcement-bar-system {
    PRODUCT MODAL SAMPLE PROMO
 ========================================= */
 
-.modal-sample-promo {
-  display: flex;
+.modal-image-wrap {
+  position: relative;
+}
+
+.modal-sample-mini {
+  position: absolute;
+  top: 10px;
+  right: 18px;
+  z-index: 6;
+
+  display: inline-flex;
   align-items: center;
-  gap: 14px;
-  margin: 18px 0 12px;
-  padding: 13px 15px;
-  border-radius: 20px;
-  border: 1px solid rgba(220, 181, 107, 0.24);
-  background:
-    linear-gradient(180deg, rgba(220, 181, 107, 0.13), rgba(220, 181, 107, 0.045)),
-    rgba(12, 10, 7, 0.72);
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255,255,255,0.05);
-}
+  gap: 6px;
 
-.modal-sample-promo-icon {
-  flex-shrink: 0;
-  width: 54px;
-  height: 54px;
-  display: grid;
-  place-items: center;
-  border-radius: 16px;
-  background:
-    linear-gradient(180deg, rgba(220,181,107,0.18), rgba(220,181,107,0.07));
-  font-size: 1.55rem;
-}
+  padding: 7px 10px;
+  border-radius: 999px;
 
-.modal-sample-promo-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.modal-sample-promo-copy strong {
+  background: rgba(22, 18, 12, 0.78);
   color: #dcb56b;
-  font-size: 0.72rem;
-  line-height: 1.15;
-  letter-spacing: 0.16em;
+
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
 }
 
-.modal-sample-promo-copy small {
-  color: rgba(255,255,255,0.68);
-  font-size: 0.72rem;
-  line-height: 1.35;
+.modal-sample-mini span {
+  font-size: 0.8rem;
+  line-height: 1;
 }

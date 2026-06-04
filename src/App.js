@@ -6100,27 +6100,28 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             </span>
           )}
 
-          {selectedProduct.slug === "ysl-y-iced-cologne" && (
-  <div className="modal-sample-promo panel-item-anim">
-    <span className="modal-sample-promo-icon">🎁</span>
-
-    <span className="modal-sample-promo-copy">
-      <strong>
-        {lang === "sr" ? "COMPLIMENTARY" : "COMPLIMENTARY"}
-        <br />
-        {lang === "sr" ? "MYSTERY SAMPLE" : "MYSTERY SAMPLE"}
-      </strong>
-
-      <small>
-        {lang === "sr"
-          ? "Uz svaki 10ml. Limited stock."
-          : "Included with every 10ml. Limited stock."}
-      </small>
-    </span>
-  </div>
-)}
-
           <div className="modal-image-wrap panel-item-anim panel-item-2">
+            {selectedProduct.slug === "ysl-y-iced-cologne" && (
+    <div className="modal-sample-mini">
+      <span>🎁</span>
+      <strong>
+        {lang === "sr" ? "FREE UZORAK" : "FREE SAMPLE"}
+      </strong>
+    </div>
+  )}
+
+  {selectedProduct.image ? (
+    <img
+      src={selectedProduct.image}
+      alt={selectedProduct.name}
+      className="modal-image"
+    />
+  ) : (
+    <div className="modal-monogram">
+      {selectedProduct.name.charAt(0)}
+    </div>
+  )}
+</div>
             {selectedProduct.image ? (
               <img
                 src={selectedProduct.image}
