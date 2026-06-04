@@ -4133,11 +4133,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div className="community-request-secondary">
     {communityRequests.slice(5).map((request) => (
       <button
-        key={request.name}
-        type="button"
-        onClick={() => handleCommunityRequestVote(request.name)}
-      >
-        {request.name} <strong>{request.votes}</strong>
+  key={request.name}
+  type="button"
+  onClick={() => handleCommunityRequestVote(request.name)}
+>
+  <span>{request.name}</span>
+  <strong>{request.votes}</strong>
       </button>
     ))}
   </div>
@@ -4178,7 +4179,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             openProductFromRequest(product);
           }}
         >
-          {item.name} <strong>{item.votes}</strong>
+          {item.name}
         </button>
       ))}
 
