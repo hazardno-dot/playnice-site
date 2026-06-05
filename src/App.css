@@ -10137,56 +10137,57 @@ main {
 .already-in-collection-list {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 6px;
+  align-items: flex-start;
+  gap: 2px;
 }
 
 .already-in-collection-item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  width: 100%;
-  padding: 1px 0;
+  gap: 5px;
+  width: auto;
+  padding: 0;
+  min-height: 0;
 }
 
 .already-in-collection-name {
-  color: rgba(220, 181, 107, 0.86);
-  font-size: 0.67rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  line-height: 1.25;
-  text-transform: uppercase;
+  color: rgba(202, 180, 255, 0.78);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.3;
+  text-transform: none;
 }
 
 .already-in-collection-score {
   position: relative;
   flex: 0 0 auto;
-  color: rgba(220, 181, 107, 0.9);
-  font-size: 0.68rem;
-  font-weight: 950;
-  letter-spacing: 0.04em;
+  color: rgba(220, 181, 107, 0.82);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1;
 }
 
 .already-in-collection-score-blue {
-  color: rgba(150, 205, 255, 0.95);
+  color: rgba(150, 205, 255, 0.9);
 }
 
 .already-in-collection-score em {
   position: absolute;
   right: 0;
-  bottom: calc(100% + 7px);
+  bottom: calc(100% + 6px);
   z-index: 30;
-  width: 145px;
-  padding: 7px 8px;
-  border-radius: 10px;
-  border: 1px solid rgba(220, 181, 107, 0.16);
+  width: 135px;
+  padding: 6px 7px;
+  border-radius: 9px;
+  border: 1px solid rgba(220, 181, 107, 0.14);
   background: rgba(8, 8, 8, 0.96);
-  color: rgba(255, 248, 235, 0.84);
-  font-size: 0.55rem;
+  color: rgba(255, 248, 235, 0.82);
+  font-size: 0.53rem;
   font-style: normal;
-  font-weight: 800;
-  line-height: 1.28;
+  font-weight: 700;
+  line-height: 1.25;
   text-align: center;
   opacity: 0;
   pointer-events: none;
