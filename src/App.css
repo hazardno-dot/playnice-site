@@ -7650,6 +7650,15 @@ main {
   .story-drawer-signature {
     font-size: 1.3rem;
   }
+
+  .story-drawer .close-button {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+
+    padding: 0;
+    border-radius: 50%;
+  }
 }
 
 /* =========================================
