@@ -130,6 +130,10 @@ export const products = [
     "armaf-club-de-nuit-sillage",
     "gisada-ambassador-men"
   ],
+    inspiredBy: {
+    name: "Original Armaf creation",
+    short: "Fruity Floral DNA"
+  }
   },
   {
     id: 7,
@@ -319,6 +323,10 @@ export const products = [
     "french-avenue-vulcan-sable",
     "arabiyat-prestige-fahad-gaze"
   ],
+    inspiredBy: {
+    name: "Original Lattafa creation",
+    short: "Spicy Woody DNA"
+  }
   },
   {
     id: 16,
@@ -480,7 +488,11 @@ export const products = [
     recommendations: [
     "lattafa-khamrah-qahwa",
     "chopard-oud-malaki"
-],
+  ],
+    inspiredBy: {
+    name: "Original Swiss Arabian creation",
+    short: "Tobacco Vanilla DNA"
+  }
   },
   {
     id: 24,
@@ -498,6 +510,10 @@ export const products = [
     "emir-voux-zingy",
     "french-avenue-safari-breeze"
   ],
+    inspiredBy: {
+    name: "Original Acqua di Parma creation",
+    short: "Mediterranean Citrus DNA"
+  }
   },
   {
     id: 25,
@@ -515,6 +531,10 @@ export const products = [
     "terre-d-hermes-edt",
     "acqua-di-parma-colonia-pura"
   ],
+    inspiredBy: {
+    name: "Original Acqua di Parma creation",
+    short: "Classic Italian Cologne DNA"
+  }
   },
   {
     id: 26,
@@ -532,6 +552,10 @@ export const products = [
     "calvin-klein-ck-all",
     "acqua-di-parma-colonia-essenza"
   ],
+    inspiredBy: {
+    name: "Original Acqua di Parma creation",
+    short: "Fresh Citrus Musk DNA"
+  }
   },
   {
     id: 27,
@@ -550,6 +574,10 @@ export const products = [
     "afnan-turathi-blue",
     "giorgio-armani-acqua-di-gio-profondo-parfum"
   ],
+    inspiredBy: {
+    name: "Original Chanel creation",
+    short: "Blue Aromatic DNA"
+  }
   },
   {
     id: 28,
@@ -568,6 +596,10 @@ export const products = [
     "armaf-club-de-nuit-sillage",
     "mancera-cedrat-boise"
   ],
+    inspiredBy: {
+    name: "Original Essential Parfums creation",
+    short: "Modern Woody Spice DNA"
+  }
   },
   {
     id: 29,
@@ -585,6 +617,10 @@ export const products = [
     "boss-the-scent-elixir",
     "boss-the-scent-le-parfum"
   ],
+    inspiredBy: {
+    name: "Original BOSS creation",
+    short: "Woody Aromatic DNA"
+  }
   },
   {
     id: 30,
@@ -602,6 +638,10 @@ export const products = [
     "boss-the-scent-le-parfum",
     "tom-ford-noir-extreme"
   ],
+    inspiredBy: {
+    name: "Original BOSS creation",
+    short: "Amber Leather DNA"
+  }
   },
   {
     id: 31,
@@ -619,6 +659,10 @@ export const products = [
     "boss-the-scent-elixir",
     "dolce-gabbana-the-one-for-men-edt"
   ],
+    inspiredBy: {
+    name: "Original BOSS creation",
+    short: "Spicy Leather DNA"
+  }
   },
   {
     id: 32,
@@ -635,6 +679,10 @@ export const products = [
     recommendations: [
     "acqua-di-parma-colonia-pura"
   ],
+    inspiredBy: {
+    name: "Original Calvin Klein creation",
+    short: "Fresh Citrus Musk DNA"
+  }
   },
   {
     id: 33,
@@ -652,6 +700,10 @@ export const products = [
     "calvin-klein-defy-parfum",
     "montblanc-explorer-extreme"
   ],
+    inspiredBy: {
+    name: "Original Calvin Klein creation",
+    short: "Fresh Woody DNA"
+  }
   },
   {
     id: 34,
@@ -669,6 +721,10 @@ export const products = [
     "calvin-klein-defy-edt",
     "montblanc-explorer-extreme"
   ],
+    inspiredBy: {
+    name: "Original Calvin Klein creation",
+    short: "Woody Leather DNA"
+  }
   },
   {
     id: 35,
@@ -686,6 +742,10 @@ export const products = [
     "swiss-arabian-tobacco-01",
     "lattafa-khamrah-qahwa"
   ],
+    inspiredBy: {
+    name: "Original Chopard creation",
+    short: "Oud Tobacco DNA"
+  }
   },
   {
     id: 36,
@@ -704,6 +764,10 @@ export const products = [
     "armaf-club-de-nuit-intense",
     "armaf-club-de-nuit-precieux-i"
   ],
+    inspiredBy: {
+    name: "Original Creed creation",
+    short: "Fresh Aventus DNA"
+  }
   },
   {
     id: 37,
@@ -722,6 +786,10 @@ export const products = [
     "bleu-de-chanel-edp",
     "rasasi-hawas-ice"
   ],
+    inspiredBy: {
+    name: "Original Giorgio Armani creation",
+    short: "Marine Aromatic DNA"
+  }
   },
   {
     id: 38,
@@ -739,6 +807,10 @@ export const products = [
     "montblanc-explorer-extreme",
     "armaf-club-de-nuit-bling"
   ],
+    inspiredBy: {
+    name: "Original Gisada creation",
+    short: "Sweet Fruity DNA"
+  }
   },
   {
     id: 39,
@@ -756,6 +828,10 @@ export const products = [
     "lhomme-ideal-guerlain-edt",
     "tom-ford-noir-extreme"
   ],
+    inspiredBy: {
+    name: "Original Givenchy creation",
+    short: "Whiskey Iris DNA"
+  }
   },
   {
     id: 40,
@@ -773,6 +849,10 @@ export const products = [
     "versace-man-eau-fraiche",
     "calvin-klein-defy-edt"
   ],
+    inspiredBy: {
+    name: "Original Jimmy Choo creation",
+    short: "Fresh Leather DNA"
+  }
   },
   {
     id: 41,
@@ -791,6 +871,10 @@ export const products = [
     "lattafa-fakhar-black",
     "narciso-rodriguez-for-him-bleu-noir-edp"
   ],
+    inspiredBy: {
+    name: "Original Yves Saint Laurent creation",
+    short: "Woody Amber DNA"
+  }
   },
   {
     id: 42,
@@ -808,6 +892,10 @@ export const products = [
     "givenchy-gentleman-reserve-privee",
     "emir-voux-elegante"
   ],
+    inspiredBy: {
+    name: "Original Guerlain creation",
+    short: "Almond Woody DNA"
+  }
   },
   {
     id: 43,
@@ -826,6 +914,10 @@ export const products = [
     "bois-imperial-essential-parfums",
     "montblanc-explorer-extreme"
   ],
+    inspiredBy: {
+    name: "Original Mancera creation",
+    short: "Citrus Woody DNA"
+  }
   },
   {
     id: 44,
@@ -843,6 +935,10 @@ export const products = [
     "mancera-cedrat-boise",
     "gisada-ambassador-men"
   ],
+    inspiredBy: {
+    name: "Original Montblanc creation",
+    short: "Woody Adventure DNA"
+  }
   },
   {
     id: 45,
@@ -860,6 +956,10 @@ export const products = [
     "narciso-rodriguez-poudree",
     "ysl-lhomme-edp"
   ],
+    inspiredBy: {
+    name: "Original Narciso Rodriguez creation",
+    short: "Dark Musk DNA"
+  }
   },
   {
     id: 46,
@@ -878,6 +978,10 @@ export const products = [
     "acqua-di-parma-colonia-essenza",
     "bois-imperial-essential-parfums"
   ],
+    inspiredBy: {
+    name: "Original Hermès creation",
+    short: "Citrus Vetiver DNA"
+  }
   },
   {
     id: 47,
@@ -896,6 +1000,10 @@ export const products = [
     "givenchy-gentleman-reserve-privee",
     "boss-the-scent-elixir"
   ],
+    inspiredBy: {
+    name: "Original Tom Ford creation",
+    short: "Amber Kulfi DNA"
+  }
   },
   {
     id: 48,
@@ -914,6 +1022,10 @@ export const products = [
     "afnan-9pm-rebel",
     "tom-ford-noir-extreme"
   ],
+    inspiredBy: {
+    name: "Original Afnan creation",
+    short: "Sweet Nightlife DNA"
+  }
   },
   {
     id: 49,
@@ -1019,6 +1131,10 @@ export const products = [
   "boss-the-scent-le-parfum",
   "givenchy-gentleman-reserve-privee"
 ],
+  inspiredBy: {
+  name: "Original Dolce & Gabbana creation",
+  short: "Spicy Tobacco DNA"
+}
 },
 {
   id: 54,
@@ -1037,6 +1153,10 @@ export const products = [
   "jimmy-choo-man-blue",
   "acqua-di-parma-fico-di-amalfi"
 ],
+  inspiredBy: {
+  name: "Original Versace creation",
+  short: "Fresh Mediterranean DNA"
+}
 },
 {
   id: 55,
