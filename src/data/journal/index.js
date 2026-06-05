@@ -1561,7 +1561,7 @@ Remember. PlayNice.
     url: "scent-request",
   },
 ],
-  products: [
+  relatedProducts: [
     "valentino-uomo-born-in-roma-coral-fantasy",
     "ysl-y-iced-cologne",
   ],
