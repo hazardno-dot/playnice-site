@@ -3797,22 +3797,26 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </picture>
 </div>
 
-{(slide.image === "/hero/slide-1-fix.jpg" ||
+      {(slide.image === "/hero/slide-1-fix.jpg" ||
   slide.desktopImage === "/hero/slide-1-fix.jpg") && (
   <button
     type="button"
     className="hero-campaign-btn"
-    onClick={() => {
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
       const product = products.find(
         (p) => p.slug === "ysl-y-iced-cologne"
       );
 
       if (!product) return;
 
-      setView("shop");
-      setSelectedProduct(product);
-      setSelectedSize("10ml");
-      setHasUserPickedSize(true);
+      openProductModal(product, {
+        preferredSize: "10ml",
+        userPickedSize: true,
+        changeView: true,
+      });
     }}
   >
     {tr.heroYslCta}
