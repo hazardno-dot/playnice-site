@@ -10100,6 +10100,20 @@ main {
     box-shadow 180ms ease;
 }
 
+.community-most-wanted-item.is-numbered .community-most-wanted-rank {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  background: rgba(220, 181, 107, 0.07);
+  color: rgba(220, 181, 107, 0.82);
+  font-size: 0.64rem;
+  font-weight: 900;
+}
+
 .community-most-wanted-item:hover {
   transform: translateY(-1px);
   border-color: rgba(220, 181, 107, 0.26);

@@ -4138,75 +4138,45 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <div className="community-most-wanted-board">
   <div className="community-most-wanted-top">
-    <span>
-      {lang === "sr" ? "Community Most Wanted" : "Community Most Wanted"}
-    </span>
+    <span>Community Most Wanted</span>
 
     <small>
       {lang === "sr"
-        ? "Mirisi koje zajednica trenutno najviše traži"
-        : "The scents our community wants most"}
+        ? "Klik dodaje još jedan glas"
+        : "Tap to add one more vote"}
     </small>
   </div>
 
   <div className="community-most-wanted-list">
-    <button
-      type="button"
-      className="community-most-wanted-item is-leading"
-      onClick={() => handleCommunityRequestVote("Prada Paradigme")}
-    >
-      <span className="community-most-wanted-rank">🥇</span>
+    {communityRequests
+      .filter((request) => !findExistingProductByRequest(request.name))
+      .sort((a, b) => b.votes - a.votes)
+      .map((request, index) => {
+        const rankIcon =
+          index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}`;
 
-      <span className="community-most-wanted-name">
-        Prada Paradigme
-      </span>
+        return (
+          <button
+            key={request.name}
+            type="button"
+            className={`community-most-wanted-item ${
+              index === 0 ? "is-leading" : ""
+            } ${index > 2 ? "is-numbered" : ""}`}
+            onClick={() => handleCommunityRequestVote(request.name)}
+          >
+            <span className="community-most-wanted-rank">
+              {rankIcon}
+            </span>
 
-      <strong>34</strong>
-    </button>
+            <span className="community-most-wanted-name">
+              {request.name}
+            </span>
 
-    <button
-      type="button"
-      className="community-most-wanted-item"
-      onClick={() => handleCommunityRequestVote("Dior Homme Sport")}
-    >
-      <span className="community-most-wanted-rank">🥈</span>
-
-      <span className="community-most-wanted-name">
-        Dior Homme Sport
-      </span>
-
-      <strong>19</strong>
-    </button>
-
-    <button
-      type="button"
-      className="community-most-wanted-item"
-      onClick={() => handleCommunityRequestVote("Jean Paul Gaultier Le Beau Le Parfum")}
-    >
-      <span className="community-most-wanted-rank">🥉</span>
-
-      <span className="community-most-wanted-name">
-        JPG Le Beau Le Parfum
-      </span>
-
-      <strong>14</strong>
-    </button>
+            <strong>{request.votes}</strong>
+          </button>
+        );
+      })}
   </div>
-</div>
-
-<div className="community-request-tags community-request-tags-compact">
-  {communityRequests
-    .filter((request) => !findExistingProductByRequest(request.name))
-    .map((request) => (
-      <button
-        key={request.name}
-        type="button"
-        onClick={() => handleCommunityRequestVote(request.name)}
-      >
-        <span>{request.name}</span>
-        <strong>{request.votes}</strong>
-      </button>
-    ))}
 </div>
 
 {existingCollectionRequests.length > 0 && (
