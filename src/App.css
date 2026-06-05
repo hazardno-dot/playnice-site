@@ -10500,13 +10500,17 @@ main {
 
   .how-it-works-drawer-header {
     position: relative;
-    padding-right: 48px;
+    padding-right: 54px;
   }
 
-  .how-it-works-drawer-header .close-button {
+  .how-it-works-drawer-header > .close-button {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 14px;
+    right: 14px;
+
+    width: 36px;
+    min-width: 36px;
+    padding: 0;
     margin: 0;
   }
 }
