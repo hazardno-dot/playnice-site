@@ -4185,8 +4185,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               openProductFromRequest(product);
             }}
           >
-            <span className="already-in-collection-name">
+          <span className="already-in-collection-name">
   {item.name}
+  <span className="already-in-collection-arrow">→</span>
 </span>
 
 <span
@@ -4194,7 +4195,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     isAlreadyIn ? "already-in-collection-score-blue" : ""
   }`}
 >
-  → {lockedVotes}
+  {lockedVotes}
   <em>{tooltipText}</em>
 </span>
           </button>
