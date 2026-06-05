@@ -10498,20 +10498,26 @@ main {
     width: 100%;
   }
 
+  .how-it-works-drawer {
+    position: fixed;
+  }
+
   .how-it-works-drawer-header {
-    position: relative;
-    padding-right: 54px;
+    position: static;
+    padding-right: 18px;
   }
 
   .how-it-works-drawer-header > .close-button {
-    position: absolute;
-    top: 14px;
-    right: 14px;
+    position: fixed;
+    top: 96px;
+    right: 24px;
 
     width: 36px;
     min-width: 36px;
+    height: 36px;
     padding: 0;
-    margin: 0;
+
+    z-index: 1425;
   }
 }
 
