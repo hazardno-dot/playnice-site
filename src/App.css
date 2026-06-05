@@ -10025,7 +10025,9 @@ main {
   color: rgba(220, 181, 107, 0.82);
 }
 
-/* already-in-collection */
+/* =========================================
+   FROM REQUEST TO COLLECTION
+========================================= */
 
 .community-request-more {
   align-self: center;
@@ -10045,7 +10047,7 @@ main {
     rgba(0, 0, 0, 0.18);
 }
 
-.already-in-collection-strip span {
+.already-in-collection-strip > span {
   display: block;
   margin-bottom: 8px;
   font-size: 0.64rem;
@@ -10060,39 +10062,85 @@ main {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 1px;
+}
+
+.already-in-collection-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  width: 100%;
   gap: 8px;
-}
-
-.already-in-collection-list button {
-  border: 0;
-  cursor: pointer;
   padding: 0;
+  border: 0;
   background: transparent;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 0.78rem;
-  font-weight: 800;
-  line-height: 1.5;
+  cursor: pointer;
   text-align: left;
-  transition: color 180ms ease;
 }
 
-.already-in-collection-list button::after {
-  content: none;
+.already-in-collection-name {
+  display: inline;
+  min-width: 0;
+  color: rgba(202, 180, 255, 0.84);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.25;
+  text-transform: none;
 }
 
-.already-in-collection-list button:hover {
-  color: rgba(255, 248, 235, 0.95);
+.already-in-collection-arrow {
+  display: inline;
+  margin-left: 4px;
+  color: rgba(220, 181, 107, 0.72);
+  font-size: 0.72rem;
 }
 
-.already-in-collection-list em {
-  margin-left: 8px;
-  color: rgba(220, 181, 107, 0.66);
-  font-size: 0.74rem;
+.already-in-collection-score {
+  position: relative;
+  justify-self: end;
+  color: rgba(220, 181, 107, 0.88);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.already-in-collection-score-blue {
+  color: rgba(150, 205, 255, 0.9);
+}
+
+.already-in-collection-item:hover .already-in-collection-name {
+  color: rgba(222, 205, 255, 0.96);
+}
+
+.already-in-collection-score em {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 7px);
+  z-index: 50;
+  width: 150px;
+  padding: 7px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  background: rgba(8, 8, 8, 0.97);
+  color: rgba(255, 248, 235, 0.84);
+  font-size: 0.55rem;
   font-style: normal;
-  font-weight: 900;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(3px);
+  transition: opacity 150ms ease, transform 150ms ease;
 }
 
-/* + more already-in-collection*/
+.already-in-collection-score:hover em {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* + more */
 
 .already-in-collection-more-wrap {
   position: relative;
@@ -10102,6 +10150,11 @@ main {
 
 .already-in-collection-more {
   cursor: help;
+  margin-left: 0;
+  color: rgba(220, 181, 107, 0.66);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 900;
 }
 
 .already-in-collection-tooltip {
@@ -10132,198 +10185,7 @@ main {
   transform: translateX(-50%) translateY(0);
 }
 
-/* =========================================
-   FROM REQUEST TO COLLECTION
-========================================= */
-
-.already-in-collection-strip {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(220, 181, 107, 0.08);
-}
-
-.already-in-collection-strip > span {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 0.64rem;
-  font-weight: 900;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: rgba(220, 181, 107, 0.78);
-}
-
-.already-in-collection-list {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.already-in-collection-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-  padding: 2px 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  text-align: left;
-}
-
-.already-in-collection-item:hover .already-in-collection-name {
-  color: rgba(222, 205, 255, 0.96);
-}
-
-.already-in-collection-name {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 4px !important;
-
-  color: rgba(202, 180, 255, 0.84) !important;
-  font-size: 0.78rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0 !important;
-  line-height: 1.25 !important;
-  text-transform: none !important;
-
-  white-space: nowrap !important;
-}
-
-.already-in-collection-arrow {
-  color: rgba(220, 181, 107, 0.72);
-  font-size: 0.72rem;
-  flex-shrink: 0;
-}
-
-.already-in-collection-arrow {
-  display: inline-block;
-  margin-left: 2px;
-  flex-shrink: 0;
-}
-
-.already-in-collection-score {
-  position: relative;
-  flex-shrink: 0;
-
-  color: rgba(220, 181, 107, 0.9);
-  font-size: 0.74rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
-
-.already-in-collection-score-blue {
-  color: rgba(150, 205, 255, 0.92);
-}
-
-/* Tooltip */
-
-.already-in-collection-score em {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 8px);
-  z-index: 50;
-
-  width: 180px;
-  padding: 8px 10px;
-
-  border-radius: 10px;
-  border: 1px solid rgba(220, 181, 107, 0.15);
-
-  background: rgba(8, 8, 8, 0.97);
-  backdrop-filter: blur(10px);
-
-  color: rgba(255, 248, 235, 0.86);
-  font-size: 0.58rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 1.35;
-  text-align: center;
-
-  opacity: 0;
-  pointer-events: none;
-
-  transform: translateY(4px);
-  transition:
-    opacity 160ms ease,
-    transform 160ms ease;
-}
-
-.already-in-collection-score:hover em {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.already-in-collection-list .already-in-collection-item {
-  display: grid !important;
-  grid-template-columns: minmax(0, auto) auto !important;
-  justify-content: start !important;
-  align-items: center !important;
-  column-gap: 10px !important;
-  width: auto !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: 0 !important;
-}
-
-.already-in-collection-list .already-in-collection-name {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 4px !important;
-  color: rgba(202, 180, 255, 0.84) !important;
-  font-size: 0.78rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0 !important;
-  line-height: 1.35 !important;
-  text-transform: none !important;
-  white-space: normal !important;
-}
-
-.already-in-collection-list .already-in-collection-arrow {
-  color: rgba(220, 181, 107, 0.72) !important;
-  font-size: 0.72rem !important;
-}
-
-.already-in-collection-list .already-in-collection-score {
-  position: relative !important;
-  color: rgba(220, 181, 107, 0.88) !important;
-  font-size: 0.72rem !important;
-  font-weight: 800 !important;
-  line-height: 1 !important;
-}
-
-.already-in-collection-list .already-in-collection-score-blue {
-  color: rgba(150, 205, 255, 0.9) !important;
-}
-
-.already-in-collection-list .already-in-collection-score em {
-  position: absolute !important;
-  right: 0 !important;
-  bottom: calc(100% + 7px) !important;
-  z-index: 50 !important;
-  width: 150px !important;
-  padding: 7px 8px !important;
-  border-radius: 10px !important;
-  border: 1px solid rgba(220, 181, 107, 0.16) !important;
-  background: rgba(8, 8, 8, 0.97) !important;
-  color: rgba(255, 248, 235, 0.84) !important;
-  font-size: 0.55rem !important;
-  font-style: normal !important;
-  font-weight: 700 !important;
-  line-height: 1.25 !important;
-  text-align: center !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transform: translateY(3px) !important;
-  transition: opacity 150ms ease, transform 150ms ease !important;
-}
-
-.already-in-collection-list .already-in-collection-score:hover em {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* already-in-collection mobile */
+/* Mobile */
 
 @media (max-width: 560px) {
   .already-in-collection-strip {
@@ -10331,25 +10193,20 @@ main {
     border-radius: 16px;
   }
 
-  .already-in-collection-strip span {
+  .already-in-collection-strip > span {
     text-align: center;
-    line-height: 1.35;
   }
 
   .already-in-collection-list {
-    justify-content: center;
-    gap: 5px 0;
-    text-align: center;
+    gap: 3px;
   }
 
-  .already-in-collection-list button {
+  .already-in-collection-name {
     font-size: 0.72rem;
-    line-height: 1.5;
   }
 
-  .already-in-collection-list em {
-    margin-left: 6px;
-    font-size: 0.72rem;
+  .already-in-collection-score {
+    font-size: 0.68rem;
   }
 }
 
