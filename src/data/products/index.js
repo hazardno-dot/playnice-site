@@ -23,7 +23,7 @@ export const products = [
   recommendations: [
   "rasasi-hawas-ice",
   "rayhaan-pacific-aura"
-],
+  ],
   inspiredBy: {
     name: "Maison Francis Kurkdjian Aqua Vitae Forte",
     short: "Aqua Vitae Forte DNA"
@@ -1013,7 +1013,7 @@ export const products = [
     category: "Arabian",
     image: "/products/9pm-night-out.png",
     sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
-    badge: "NEW",
+    badge: "BESTSELLER",
     rating: 8.6,
     ratingLabel: "Night Beast",
     season: "winter",
@@ -1391,7 +1391,7 @@ export const products = [
   category: "Designer",
   image: "/products/ysl-y-iced-cologne.png",
   sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
-  badge: "NEW",
+  badge: "PLAYNICE PICK",
   rating: 8.8,
   ratingLabel: "Summer Hit",
   season: "summer",
@@ -1413,7 +1413,7 @@ export const products = [
   category: "Designer",
   image: "/products/valentino-coral-fantasy.png",
   sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
-  badge: "NEW",
+  badge: "PLAYNICE PICK",
   rating: 9.1,
   ratingLabel: "Crowd Favorite",
   season: "all",
