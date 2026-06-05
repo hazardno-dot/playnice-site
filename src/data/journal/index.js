@@ -1562,8 +1562,8 @@ Remember. PlayNice.
   },
 ],
   relatedProducts: [
-    "valentino-uomo-born-in-roma-coral-fantasy",
-    "ysl-y-iced-cologne",
+    "Valentino Uomo Born In Roma Coral Fantasy",
+    "Yves Saint Laurent Y Iced Cologne",
   ],
 },
 ];
