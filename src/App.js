@@ -5799,17 +5799,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     className="journal-featured journal-featured--split"
     onClick={() => handleJournalArticleOpen(sortedJournalArticles[0])}
   >
-    <div className="journal-featured-copy">
+  <div className="journal-featured-copy">
       <div className="journal-featured-meta">
         <span>{sortedJournalArticles[0].date}</span>
-        <span>{tr.journalReadingTime}</span>
-      </div>
 
-        {sortedJournalArticles[0].series && (
-         <div className="journal-series-badge">
-         {getJournalText(sortedJournalArticles[0].series, lang)}
-         </div>
-        )}
+        <span>{tr.journalReadingTime}</span>
+
+  {sortedJournalArticles[0].series && (
+    <span className="journal-series-inline">
+      {getJournalText(sortedJournalArticles[0].series, lang)}
+    </span>
+  )}
+</div>
 
       <h2>{getJournalText(sortedJournalArticles[0].title, lang)}</h2>
 

@@ -14435,18 +14435,18 @@ main {
    journal-series-badge
 ========================================= */
 
-.journal-series-badge {
+.journal-series-inline {
   display: inline-flex;
   align-items: center;
-  margin-bottom: 10px;
-  padding: 6px 12px;
+  justify-content: center;
+  padding: 2px 8px;
   border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.22);
-  background: rgba(220, 181, 107, 0.08);
-  color: rgba(220, 181, 107, 0.92);
-  font-size: 0.66rem;
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  background: rgba(220, 181, 107, 0.06);
+  color: rgba(220, 181, 107, 0.85);
+  font-size: 0.58rem;
   font-weight: 800;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
