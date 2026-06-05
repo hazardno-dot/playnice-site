@@ -6040,15 +6040,29 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <div className="journal-related-links">
       {selectedArticle.links.map((link) => (
-        <a
-          key={link.url}
-          href={link.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="journal-related-text-link"
-        >
-          {link.label}
-        </a>
+        <button
+  key={link.url}
+  type="button"
+  className="journal-related-text-link"
+  onClick={() => {
+    setSelectedArticle(null);
+    setJournalOpen(false);
+    setView("home");
+
+    window.setTimeout(() => {
+      const requestSection = document.querySelector(".scent-request-panel");
+
+      if (requestSection) {
+        requestSection.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }, 120);
+  }}
+>
+  {getJournalText(link.label, lang) || link.label}
+        </button>
       ))}
     </div>
   </div>

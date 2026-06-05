@@ -1553,11 +1553,14 @@ Remember. PlayNice.
 `,
   },
   links: [
-    {
-      label: "Request the next scent",
-      url: "/?view=shop#scent-request",
+  {
+    label: {
+      en: "Request the next scent",
+      sr: "Predloži sledeći parfem",
     },
-  ],
+    url: "scent-request",
+  },
+],
   products: [
     "valentino-uomo-born-in-roma-coral-fantasy",
     "ysl-y-iced-cologne",
