@@ -2010,9 +2010,20 @@ const handleAnnouncementItemClick = (item) => {
 
     if (product) {
       setSelectedProduct(product);
-      setSelectedSize(Object.keys(product.sizes)[0]);
-      setHasUserPickedSize(false);
-      setView("shop");
+
+      setSelectedSize(
+        product.sizes["10ml"]
+          ? "10ml"
+          : Object.keys(product.sizes)[0]
+      );
+
+      setHasUserPickedSize(true);
+
+      window.history.pushState(
+        { productSlug: product.slug },
+        "",
+        `/product/${product.slug}`
+      );
     }
 
     return;
