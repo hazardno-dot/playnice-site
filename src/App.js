@@ -2009,21 +2009,10 @@ const handleAnnouncementItemClick = (item) => {
     const product = products.find((p) => p.slug === item.slug);
 
     if (product) {
-      setSelectedProduct(product);
-
-      setSelectedSize(
-        product.sizes["10ml"]
-          ? "10ml"
-          : Object.keys(product.sizes)[0]
-      );
-
-      setHasUserPickedSize(true);
-
-      window.history.pushState(
-        { productSlug: product.slug },
-        "",
-        `/product/${product.slug}`
-      );
+      openProductModal(product, {
+        preferredSize: "10ml",
+        userPickedSize: true,
+      });
     }
 
     return;
@@ -2790,7 +2779,12 @@ const isMobileProductModal = () =>
 const openProductModal = (product, options = {}) => {
   if (!product) return;
 
-  const { updateUrl = true } = options;
+  const {
+    updateUrl = true,
+    preferredSize = "",
+    userPickedSize = false,
+  } = options;
+
   const isMobileModal = isMobileProductModal();
 
   if (productModalCloseTimeoutRef.current) {
@@ -2800,10 +2794,15 @@ const openProductModal = (product, options = {}) => {
 
   productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
 
-  setView("shop");
-  setSelectedProduct(product);
-  setSelectedSize(Object.keys(product.sizes || {})[0] || "");
-  setHasUserPickedSize(false);
+  const initialSize =
+    preferredSize && product.sizes?.[preferredSize]
+    ? preferredSize
+    : Object.keys(product.sizes || {})[0] || "";
+
+    setView("shop");
+    setSelectedProduct(product);
+    setSelectedSize(initialSize);
+    setHasUserPickedSize(userPickedSize);
 
   if (isMobileModal) {
     setProductModalVisible(true);
