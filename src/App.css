@@ -10250,6 +10250,75 @@ main {
   transform: translateY(0);
 }
 
+.already-in-collection-list .already-in-collection-item {
+  display: grid !important;
+  grid-template-columns: minmax(0, auto) auto !important;
+  justify-content: start !important;
+  align-items: center !important;
+  column-gap: 10px !important;
+  width: auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.already-in-collection-list .already-in-collection-name {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  color: rgba(202, 180, 255, 0.84) !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-transform: none !important;
+  white-space: normal !important;
+}
+
+.already-in-collection-list .already-in-collection-arrow {
+  color: rgba(220, 181, 107, 0.72) !important;
+  font-size: 0.72rem !important;
+}
+
+.already-in-collection-list .already-in-collection-score {
+  position: relative !important;
+  color: rgba(220, 181, 107, 0.88) !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+}
+
+.already-in-collection-list .already-in-collection-score-blue {
+  color: rgba(150, 205, 255, 0.9) !important;
+}
+
+.already-in-collection-list .already-in-collection-score em {
+  position: absolute !important;
+  right: 0 !important;
+  bottom: calc(100% + 7px) !important;
+  z-index: 50 !important;
+  width: 150px !important;
+  padding: 7px 8px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(220, 181, 107, 0.16) !important;
+  background: rgba(8, 8, 8, 0.97) !important;
+  color: rgba(255, 248, 235, 0.84) !important;
+  font-size: 0.55rem !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  text-align: center !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(3px) !important;
+  transition: opacity 150ms ease, transform 150ms ease !important;
+}
+
+.already-in-collection-list .already-in-collection-score:hover em {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
 /* already-in-collection mobile */
 
 @media (max-width: 560px) {
