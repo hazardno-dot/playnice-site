@@ -1317,15 +1317,6 @@ useLayoutEffect(() => {
   }, [orderSuccessMessage]);
 
   useEffect(() => {
-    if (selectedProduct) {
-      const firstSize = Object.keys(selectedProduct.sizes)[0];
-      setSelectedSize(firstSize);
-    } else {
-      setSelectedSize("");
-    }
-  }, [selectedProduct]);
-
-  useEffect(() => {
     if (heroPaused || heroSlides.length <= 1) return;
 
     const interval = setInterval(() => {
