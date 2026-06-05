@@ -14432,6 +14432,41 @@ main {
 }
 
 /* =========================================
+   journal-series-badge
+========================================= */
+
+.journal-series-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.22);
+  background: rgba(220, 181, 107, 0.08);
+  color: rgba(220, 181, 107, 0.92);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.journal-article-series-badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  margin: 14px 0 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.24);
+  background: rgba(220, 181, 107, 0.08);
+  color: rgba(220, 181, 107, 0.94);
+  font-size: 0.66rem;
+  font-weight: 850;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* =========================================
    OVERLAY STACK FIX
 ========================================= */
 

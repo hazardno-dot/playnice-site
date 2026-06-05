@@ -5805,6 +5805,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <span>{tr.journalReadingTime}</span>
       </div>
 
+        {sortedJournalArticles[0].series && (
+         <div className="journal-series-badge">
+         {getJournalText(sortedJournalArticles[0].series, lang)}
+         </div>
+        )}
+
       <h2>{getJournalText(sortedJournalArticles[0].title, lang)}</h2>
 
       <div className="journal-author-signature">
@@ -5864,6 +5870,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             {tr.journalReadingTime}
           </span>
         </div>
+
+        {article.series && (
+          <div className="journal-series-badge">
+          {getJournalText(article.series, lang)}
+          </div>
+        )}
 
         <h3 className="journal-card-title">
           {getJournalText(article.title, lang)}
@@ -5927,6 +5939,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             ×
           </button>
         </div>
+
+        {selectedArticle.series && (
+          <div className="journal-article-series-badge">
+          {getJournalText(selectedArticle.series, lang)}
+          </div>
+        )}
 
         <h2 className="journal-article-title">
           {getJournalText(selectedArticle.title, lang)}

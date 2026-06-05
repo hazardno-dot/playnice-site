@@ -1382,5 +1382,193 @@ Remember. PlayNice.`
   relatedProducts: ["Narciso Rodriguez Poudrée Eau de Parfum",
     "Yves Saint Laurent Black Opium Le Parfum"
   ]
+},
+
+{
+  id: "community-most-wanted-drop-01",
+  title: {
+    en: "You asked. We listened.",
+    sr: "You asked. We listened.",
+  },
+  subtitle: {
+    en: "Community Most Wanted Drop #01",
+    sr: "Community Most Wanted Drop #01",
+  },
+  series: {
+    en: "COMMUNITY SERIES",
+    sr: "SERIJAL ZAJEDNICE",
+  },
+  category: "Community",
+  date: "2026-06-05",
+  readTime: "3 min",
+  image: "/journal/community-most-wanted-drop-01.jpg",
+  excerpt: {
+    en: "Valentino Coral Fantasy and YSL Y Iced joined the collection because the community asked. Prada Paradigme is currently leading.",
+    sr: "Valentino Coral Fantasy i YSL Y Iced stigli su jer ih je zajednica tražila. Sledeći na listi vodi Prada Paradigme.",
+  },
+  body: {
+    en: `
+Some of the best additions to our collection did not start with a big marketing plan.
+
+They started with one message.
+
+Then another.
+
+Then ten more.
+
+Over the past months, we received many suggestions, messages and requests about fragrances you wanted to see in the PlayNice collection.
+
+Two names clearly stood out.
+
+**Valentino Uomo Born In Roma Coral Fantasy**  
+— 16 community requests
+
+**Yves Saint Laurent Y Iced Cologne**  
+— 27 community requests
+
+And that is why they are now part of our collection.
+
+Not because they are everywhere.
+
+Not because everyone is selling them.
+
+But because you asked for them.
+
+---
+
+PlayNice was never meant to be a random catalogue with hundreds of fragrances.
+
+We want a collection that makes sense.
+
+A collection our community actually wants to wear, explore and recommend.
+
+That is why we read every request.
+
+Some scents we manage to find quickly.
+
+Some take more time.
+
+And some surprise us with the number of votes they receive.
+
+---
+
+If you follow the request section on our site, you have probably already noticed the next name appearing again and again.
+
+**Prada Paradigme.**
+
+And if everything goes as planned...
+
+it could very soon become the next member of the PlayNice collection.
+
+---
+
+**Community Most Wanted Leaderboard**
+
+🥇 Yves Saint Laurent Y Iced Cologne — 27 requests ✓ Added  
+🥈 Valentino Uomo Born In Roma Coral Fantasy — 16 requests ✓ Added  
+🥉 Prada Paradigme — Currently leading ⏳
+
+---
+
+Maybe your suggestion is the next fragrance we add.
+
+So keep voting, requesting and sharing your favorites.
+
+Because some of our best drops did not start in the office.
+
+They started in the messages from our community.
+
+**You asked. We listened.**
+
+Remember. PlayNice.
+`,
+sr: `
+Neki od najboljih dodataka kolekciji nisu počeli velikim marketinškim planom.
+
+Počeli su jednom porukom.
+
+Pa još jednom.
+
+Pa još deset njih.
+
+Tokom poslednjih meseci primili smo veliki broj predloga, poruka i pitanja o parfemima koje biste voleli da vidite u PlayNice kolekciji.
+
+Dva imena su se posebno izdvojila.
+
+**Valentino Uomo Born In Roma Coral Fantasy**  
+— 16 zahteva zajednice
+
+**Yves Saint Laurent Y Iced Cologne**  
+— 27 zahteva zajednice
+
+I zato su danas deo naše kolekcije.
+
+Ne zato što su trenutno popularni.
+
+Ne zato što ih svi prodaju.
+
+Već zato što ste ih upravo vi tražili.
+
+---
+
+PlayNice nikada nije zamišljen kao katalog sa stotinama nasumično dodatih parfema.
+
+Želimo kolekciju koja ima smisla.
+
+Kolekciju koju zajednica zaista želi da nosi, istražuje i preporučuje.
+
+Zbog toga svaki zahtev čitamo.
+
+Neke mirise uspemo da pronađemo odmah.
+
+Neki zahtevaju više vremena.
+
+A neki nas iznenade brojem glasova koje dobiju.
+
+---
+
+Ako pratite sekciju za zahteve na sajtu, verovatno ste već primetili sledeće ime koje se stalno pojavljuje.
+
+**Prada Paradigme.**
+
+I ako sve bude po planu...
+
+mogao bi vrlo uskoro da postane sledeći član PlayNice kolekcije.
+
+---
+
+**Community Most Wanted Leaderboard**
+
+🥇 Yves Saint Laurent Y Iced Cologne — 27 requests ✓ Added  
+🥈 Valentino Uomo Born In Roma Coral Fantasy — 16 requests ✓ Added  
+🥉 Prada Paradigme — Currently leading ⏳
+
+---
+
+Možda je upravo vaš predlog sledeći parfem koji ćemo dodati.
+
+Zato nastavite da glasate, predlažete i delite svoje favorite.
+
+Jer neki od naših najboljih dropova nisu počeli u kancelariji.
+
+Počeli su u porukama naše zajednice.
+
+**You asked. We listened.**
+
+Remember. PlayNice.
+`,
+  },
+  links: [
+    {
+      label: "Predloži sledeći parfem",
+      url: "/?view=shop#scent-request",
+    },
+  ],
+  products: [
+    "valentino-uomo-born-in-roma-coral-fantasy",
+    "ysl-y-iced-cologne",
+  ],
+  featured: true,
+  isNew: true,
 }
 ];
