@@ -4138,15 +4138,26 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <div className="community-most-wanted-board">
   <div className="community-most-wanted-top">
-    <a
-      href="/?view=journal"
-      className="community-most-wanted-journal-link"
-    >
-      {lang === "sr"
-        ? "Pročitaj priču u Journalu"
-        : "Read all about it in Journal"}
-      <span>→</span>
-    </a>
+    <button
+  type="button"
+  className="community-most-wanted-journal-link"
+  onClick={() => {
+    setJournalOpen(true);
+
+    const communityArticle = journalArticles.find(
+      (article) => article.id === 13
+    );
+
+    if (communityArticle) {
+      setSelectedArticle(communityArticle);
+    }
+  }}
+>
+  {lang === "sr"
+    ? "Pročitaj priču u Journalu"
+    : "Read all about it in Journal"}
+  <span>→</span>
+  </button>
 
     <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
   </div>

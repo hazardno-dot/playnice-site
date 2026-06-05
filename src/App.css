@@ -10063,6 +10063,11 @@ main {
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
   color: rgba(220, 181, 107, 0.92);
   font-size: 0.62rem;
   font-weight: 900;
