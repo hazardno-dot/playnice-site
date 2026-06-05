@@ -10497,6 +10497,17 @@ main {
   .how-it-works-drawer-footer .gold-button {
     width: 100%;
   }
+
+  .how-it-works-drawer .close-button {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 5;
+  }
+
+  .how-it-works-drawer-header {
+    padding-right: 52px;
+  }
 }
 
 /* =========================================
