@@ -10176,25 +10176,29 @@ main {
 }
 
 .already-in-collection-name {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
 
   color: rgba(202, 180, 255, 0.84) !important;
   font-size: 0.78rem !important;
   font-weight: 700 !important;
   letter-spacing: 0 !important;
-  line-height: 1.35 !important;
+  line-height: 1.25 !important;
   text-transform: none !important;
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap !important;
 }
 
 .already-in-collection-arrow {
   color: rgba(220, 181, 107, 0.72);
   font-size: 0.72rem;
+  flex-shrink: 0;
+}
+
+.already-in-collection-arrow {
+  display: inline-block;
+  margin-left: 2px;
   flex-shrink: 0;
 }
 
