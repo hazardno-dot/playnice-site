@@ -7613,7 +7613,7 @@ main {
 
   .story-drawer-header h3 {
     font-size: clamp(1.75rem, 7vw, 2.25rem);
-    max-width: 100%;
+    max-width: 290px;
   }
 
   .story-drawer-body p {
