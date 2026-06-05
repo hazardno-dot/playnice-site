@@ -10509,8 +10509,8 @@ main {
 
   .how-it-works-drawer-header > .close-button {
     position: absolute !important;
-    top: 18px !important;
-    right: 18px !important;
+    top: 8px !important;
+    right: 8px !important;
 
     width: 36px;
     min-width: 36px;
