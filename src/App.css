@@ -7652,9 +7652,9 @@ main {
   }
 
   .story-drawer .close-button {
-    width: 42px;
-    min-width: 42px;
-    height: 42px;
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
 
     padding: 0;
     border-radius: 50%;
