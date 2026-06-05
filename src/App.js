@@ -5985,27 +5985,29 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <div className="journal-article-sticky-head">
         <div className="journal-article-head">
           <div className="journal-card-meta">
-            <span className="journal-card-date">{selectedArticle.date}</span>
-            <span className="journal-reading-time">
-              {tr.journalReadingTime}
-            </span>
-          </div>
+  <span className="journal-card-date">
+    {selectedArticle.date}
+  </span>
 
-          {selectedArticle.series && (
-          <div className="journal-article-series-badge">
-          {getJournalText(selectedArticle.series, lang)}
-          </div>
-          )}
+  <span className="journal-reading-time">
+    {tr.journalReadingTime}
+  </span>
 
-          <button
-            type="button"
-            className="journal-close-btn"
-            onClick={() => setSelectedArticle(null)}
-            aria-label={tr.journalCloseArticle}
-          >
-            ×
-          </button>
-        </div>
+  {selectedArticle.series && (
+    <span className="journal-series-inline">
+      {getJournalText(selectedArticle.series, lang)}
+    </span>
+  )}
+</div>
+
+<button
+  type="button"
+  className="journal-close-btn"
+  onClick={() => setSelectedArticle(null)}
+  aria-label={tr.journalCloseArticle}
+>
+  ×
+</button>
 
         <h2 className="journal-article-title">
           {getJournalText(selectedArticle.title, lang)}
