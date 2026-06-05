@@ -4136,15 +4136,19 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
     </div>
 
-      <div className="community-most-wanted-board">
+    <div className="community-most-wanted-board">
   <div className="community-most-wanted-top">
-    <span>Community Most Wanted</span>
-
-    <small>
+    <a
+      href="/?view=journal"
+      className="community-most-wanted-journal-link"
+    >
       {lang === "sr"
-        ? "Klik dodaje još jedan glas"
-        : "Tap to add one more vote"}
-    </small>
+        ? "Pročitaj priču u Journalu"
+        : "Read all about it in Journal"}
+      <span>→</span>
+    </a>
+
+    <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
   </div>
 
   <div className="community-most-wanted-list">
@@ -4152,8 +4156,16 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       .filter((request) => !findExistingProductByRequest(request.name))
       .sort((a, b) => b.votes - a.votes)
       .map((request, index) => {
-        const rankIcon =
-          index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}`;
+        const medalIcon =
+          index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : null;
+
+        const trendByName = {
+          "Tom Ford Ombre leather": "up",
+          "LV Ombre Nomade": "down",
+          "Side Effect": "same",
+        };
+
+        const trend = trendByName[request.name] || "same";
 
         return (
           <button
@@ -4161,11 +4173,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             type="button"
             className={`community-most-wanted-item ${
               index === 0 ? "is-leading" : ""
-            } ${index > 2 ? "is-numbered" : ""}`}
+            }`}
             onClick={() => handleCommunityRequestVote(request.name)}
           >
             <span className="community-most-wanted-rank">
-              {rankIcon}
+              {medalIcon ? (
+                medalIcon
+              ) : (
+                <span
+                  className={`community-most-wanted-trend trend-${trend}`}
+                  aria-hidden="true"
+                >
+                  {trend === "up" ? "↗" : trend === "down" ? "↘" : "—"}
+                </span>
+              )}
             </span>
 
             <span className="community-most-wanted-name">
