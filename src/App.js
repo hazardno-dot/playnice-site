@@ -6090,7 +6090,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     className={`modal-overlay product-modal-layer ${
       productModalVisible ? "show" : ""
     }`}
-    onClick={closeProductModal}
+    onClick={(e) => {
+  e.preventDefault();
+  e.stopPropagation();
+}}
   >
     <div
       className={`product-modal ${productModalVisible ? "open panel-open" : ""}`}
