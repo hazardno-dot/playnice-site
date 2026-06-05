@@ -17506,6 +17506,20 @@ body.scrolled .header-system .announcement-bar-system {
 }
 
 /* =========================================
+   HIDE HEADER WHEN OVERLAY IS OPEN
+========================================= */
+
+body.overlay-lock .header-system {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+/* =========================================
    SHOP PAGINATION ROW + PRODUCTS PER PAGE
 ========================================= */
 

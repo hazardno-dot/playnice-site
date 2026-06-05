@@ -1148,7 +1148,7 @@ const selectedSortOption =
 /* =========================================
    EFFECTS
 ========================================= */
-useLayoutEffect(() => {
+  useLayoutEffect(() => {
   const shouldLockScroll =
     !!selectedProduct ||
     cartOpen ||
@@ -1163,6 +1163,8 @@ useLayoutEffect(() => {
   const body = document.body;
 
   if (shouldLockScroll) {
+    body.classList.add("overlay-lock");
+
     const lockY = window.scrollY || window.pageYOffset || 0;
 
     scrollYRef.current = lockY;
@@ -1174,6 +1176,8 @@ useLayoutEffect(() => {
     body.style.width = "100%";
     body.style.overflow = "hidden";
   } else {
+    body.classList.remove("overlay-lock");
+
     const savedScrollY = Math.abs(parseInt(body.style.top || "0", 10));
 
     body.style.position = "";
@@ -1187,6 +1191,8 @@ useLayoutEffect(() => {
   }
 
   return () => {
+    body.classList.remove("overlay-lock");
+
     body.style.position = "";
     body.style.top = "";
     body.style.left = "";
