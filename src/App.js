@@ -1392,14 +1392,17 @@ useLayoutEffect(() => {
   wishlist.length
 ]);
 
-  useEffect(() => {
+useEffect(() => {
   if (selectedProduct) {
-    const id = requestAnimationFrame(() => {
-      setProductModalVisible(true);
+    setSelectedSize((currentSize) => {
+      if (currentSize && selectedProduct.sizes?.[currentSize]) {
+        return currentSize;
+      }
+
+      return Object.keys(selectedProduct.sizes || {})[0] || "";
     });
-    return () => cancelAnimationFrame(id);
   } else {
-    setProductModalVisible(false);
+    setSelectedSize("");
   }
 }, [selectedProduct]);
 
