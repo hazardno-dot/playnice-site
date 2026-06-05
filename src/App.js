@@ -2006,17 +2006,18 @@ const announcementItems = useMemo(() => {
 
 const handleAnnouncementItemClick = (item) => {
   if (item?.action === "openProduct" && item?.slug) {
-    const product = products.find((p) => p.slug === item.slug);
+  const product = products.find((p) => p.slug === item.slug);
 
-    if (product) {
-      openProductModal(product, {
-        preferredSize: "10ml",
-        userPickedSize: true,
-      });
-    }
-
-    return;
+  if (product) {
+    openProductModal(product, {
+      preferredSize: "10ml",
+      userPickedSize: true,
+      changeView: false,
+    });
   }
+
+  return;
+}
 
   if (item?.action === "openShop") {
     goToShop();
@@ -2780,10 +2781,11 @@ const openProductModal = (product, options = {}) => {
   if (!product) return;
 
   const {
-    updateUrl = true,
-    preferredSize = "",
-    userPickedSize = false,
-  } = options;
+  updateUrl = true,
+  preferredSize = "",
+  userPickedSize = false,
+  changeView = true,
+} = options;
 
   const isMobileModal = isMobileProductModal();
 
@@ -2794,15 +2796,18 @@ const openProductModal = (product, options = {}) => {
 
   productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
 
-    const initialSize =
-    preferredSize && product.sizes?.[preferredSize]
+  const initialSize =
+  preferredSize && product.sizes?.[preferredSize]
     ? preferredSize
     : Object.keys(product.sizes || {})[0] || "";
 
-    setView("shop");
-    setSelectedProduct(product);
-    setSelectedSize(initialSize);
-    setHasUserPickedSize(userPickedSize);
+if (changeView) {
+  setView("shop");
+}
+
+setSelectedProduct(product);
+setSelectedSize(initialSize);
+setHasUserPickedSize(userPickedSize);
 
   if (isMobileModal) {
     setProductModalVisible(true);
