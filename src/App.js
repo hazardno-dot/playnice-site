@@ -2794,7 +2794,7 @@ const openProductModal = (product, options = {}) => {
 
   productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
 
-  const initialSize =
+    const initialSize =
     preferredSize && product.sizes?.[preferredSize]
     ? preferredSize
     : Object.keys(product.sizes || {})[0] || "";
