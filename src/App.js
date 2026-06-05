@@ -4136,6 +4136,64 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
     </div>
 
+      <div className="community-most-wanted-board">
+  <div className="community-most-wanted-top">
+    <span>
+      {lang === "sr" ? "Community Most Wanted" : "Community Most Wanted"}
+    </span>
+
+    <small>
+      {lang === "sr"
+        ? "Mirisi koje zajednica trenutno najviše traži"
+        : "The scents our community wants most"}
+    </small>
+  </div>
+
+  <div className="community-most-wanted-list">
+    <button
+      type="button"
+      className="community-most-wanted-item is-leading"
+      onClick={() => handleCommunityRequestVote("Prada Paradigme")}
+    >
+      <span className="community-most-wanted-rank">🥇</span>
+
+      <span className="community-most-wanted-name">
+        Prada Paradigme
+      </span>
+
+      <strong>34</strong>
+    </button>
+
+    <button
+      type="button"
+      className="community-most-wanted-item"
+      onClick={() => handleCommunityRequestVote("Dior Homme Sport")}
+    >
+      <span className="community-most-wanted-rank">🥈</span>
+
+      <span className="community-most-wanted-name">
+        Dior Homme Sport
+      </span>
+
+      <strong>19</strong>
+    </button>
+
+    <button
+      type="button"
+      className="community-most-wanted-item"
+      onClick={() => handleCommunityRequestVote("Jean Paul Gaultier Le Beau Le Parfum")}
+    >
+      <span className="community-most-wanted-rank">🥉</span>
+
+      <span className="community-most-wanted-name">
+        JPG Le Beau Le Parfum
+      </span>
+
+      <strong>14</strong>
+    </button>
+  </div>
+</div>
+
 <div className="community-request-tags community-request-tags-compact">
   {communityRequests
     .filter((request) => !findExistingProductByRequest(request.name))
