@@ -4224,9 +4224,17 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   {medalIcon || ""}
 </span>
 
-<span className="community-most-wanted-name">
-  {request.name}
-</span>
+<div className="community-most-wanted-name-wrap">
+  <span className="community-most-wanted-name">
+    {request.name}
+  </span>
+
+  {request.votes === 1 && (
+    <span className="community-request-new-badge">
+      NEW
+    </span>
+  )}
+</div>
 
 <span
   className={`community-most-wanted-trend trend-${trend}`}
