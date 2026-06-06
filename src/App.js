@@ -769,6 +769,8 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
 
 const [communityRequestTrends, setCommunityRequestTrends] = useState({});
 
+const [communityTopThreeEntries, setCommunityTopThreeEntries] = useState({});
+
 const isNewRequest = (request) => {
   if (request.votes > 1) return false;
 
@@ -1781,7 +1783,22 @@ const handleCommunityRequestVote = (requestName) => {
       return acc;
     }, {});
 
+    const nextTopThreeEntries = afterSorted.reduce((acc, item, index) => {
+  const previousIndex = beforeRanks[item.name];
+
+  if (
+    previousIndex !== undefined &&
+    previousIndex > 2 &&
+    index <= 2
+  ) {
+    acc[item.name] = true;
+  }
+
+  return acc;
+    }, {});
+
     setCommunityRequestTrends(nextTrends);
+    setCommunityTopThreeEntries(nextTopThreeEntries);
 
     return next;
   });
@@ -4244,6 +4261,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   {isNewRequest(request) && (
   <span className="community-request-new-badge">
     NEW
+  </span>
+)}
+
+{communityTopThreeEntries[request.name] && (
+  <span className="community-request-top3-badge">
+    NEW TOP 3
   </span>
 )}
 </div>

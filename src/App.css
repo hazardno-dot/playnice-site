@@ -10239,6 +10239,23 @@ main {
   text-transform: uppercase;
 }
 
+.community-request-top3-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(220, 181, 107, 0.24);
+  background: rgba(220, 181, 107, 0.1);
+  color: rgba(220, 181, 107, 0.94);
+  font-size: 0.52rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .community-most-wanted-item strong {
   min-width: 26px;
   height: 22px;
