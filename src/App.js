@@ -4269,7 +4269,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </span>
   ) : communityTopThreeEntries[request.name] ? (
     <span className="community-request-top3-badge">
-      NEW TOP 3
+      🥉 TOP 3
     </span>
   ) : request.votes >= 3 && index > 2 ? (
     <span className="community-request-heating-badge">

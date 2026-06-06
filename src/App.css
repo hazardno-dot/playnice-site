@@ -10035,7 +10035,7 @@ main {
   color: rgba(220, 181, 107, 0.82);
 }
 
-/* heating badge */
+/* heating & wanted badge */
 
 .community-request-heating-badge {
   flex-shrink: 0;
@@ -10051,6 +10051,27 @@ main {
   background: rgba(255, 145, 64, 0.08);
 
   color: rgba(255, 183, 105, 0.96);
+
+  font-size: 0.52rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.community-request-most-wanted-badge {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2px 7px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(220, 181, 107, 0.22);
+  background: rgba(220, 181, 107, 0.10);
+
+  color: rgba(220, 181, 107, 0.96);
 
   font-size: 0.52rem;
   font-weight: 900;
