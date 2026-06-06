@@ -4263,9 +4263,23 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </span>
 )}
 
+{request.votes >= 3 &&
+  index > 2 &&
+  !communityTopThreeEntries[request.name] && (
+    <span className="community-request-heating-badge">
+      🔥 HEATING UP
+    </span>
+)}
+
 {communityTopThreeEntries[request.name] && (
   <span className="community-request-top3-badge">
     NEW TOP 3
+  </span>
+)}
+
+{index === 0 && (
+  <span className="community-request-most-wanted-badge">
+    👑 MOST WANTED
   </span>
 )}
 </div>
