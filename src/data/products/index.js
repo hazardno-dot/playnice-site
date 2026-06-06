@@ -1334,7 +1334,7 @@ export const products = [
   shortName: "YSL Black Opium Le Parfum",
   category: "Designer",
   image: "/products/ysl-black-opium-le-parfum.png",
-  sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
+  sizes: { "2ml": 8, "5ml": 18, "10ml": 32 },
   badge: "SIGNATURE",
   rating: 9.0,
   ratingLabel: "Iconic Pick",
