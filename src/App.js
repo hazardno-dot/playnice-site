@@ -769,6 +769,18 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
 
 const [communityRequestTrends, setCommunityRequestTrends] = useState({});
 
+const isNewRequest = (request) => {
+  if (request.votes > 1) return false;
+
+  if (!request.firstSeen) return false;
+
+  const ageInDays =
+    (Date.now() - new Date(request.firstSeen).getTime()) /
+    (1000 * 60 * 60 * 24);
+
+  return ageInDays <= 7;
+};
+
   /* =========================================
      APP REFS
   ========================================= */
@@ -4229,11 +4241,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     {request.name}
   </span>
 
-  {request.votes === 1 && (
-    <span className="community-request-new-badge">
-      NEW
-    </span>
-  )}
+  {isNewRequest(request) && (
+  <span className="community-request-new-badge">
+    NEW
+  </span>
+)}
 </div>
 
 <span
