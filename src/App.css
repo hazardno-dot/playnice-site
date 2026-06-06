@@ -10082,11 +10082,11 @@ main {
 }
 
 .community-most-wanted-top small {
-  color: rgba(220, 181, 107, 0.8);
-  font-size: 0.6rem;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  color: rgba(220, 181, 107, 0.72);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: none;
   white-space: nowrap;
 }
 

@@ -4161,8 +4161,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <small>
   {lang === "sr"
-    ? "Klik dodaje još jedan glas"
-    : "Tap to add one more vote"}
+    ? "Klik dodaje još jedan glas!"
+    : "Tap to add one more vote!"}
 </small>
   </div>
 
