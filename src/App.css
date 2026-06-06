@@ -10037,6 +10037,12 @@ main {
 
 /* MOBILE */
 
+@media (max-width: 980px) {
+  .how-request-split {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 560px) {
   .how-request-panel-left,
   .scent-request-panel {
@@ -10326,7 +10332,8 @@ main {
   }
 
   .community-most-wanted-item {
-    grid-template-columns: 24px 1fr auto;
+    grid-template-columns: 22px minmax(0, 1fr) 16px auto;
+    gap: 6px;
     padding: 8px;
   }
 
