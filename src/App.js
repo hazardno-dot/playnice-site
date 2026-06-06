@@ -4159,7 +4159,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <span>→</span>
   </button>
 
-    <small>{lang === "sr" ? "Najtraženije" : "Most wanted"}</small>
+    <small>
+  {lang === "sr"
+    ? "Klik dodaje još jedan glas"
+    : "Tap to add one more vote"}
+</small>
   </div>
 
   <div className="community-most-wanted-list">
