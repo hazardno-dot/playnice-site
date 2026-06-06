@@ -767,6 +767,8 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
   }
 });
 
+const [communityRequestTrends, setCommunityRequestTrends] = useState({});
+
   /* =========================================
      APP REFS
   ========================================= */
@@ -1706,6 +1708,11 @@ const addExistingCollectionRequest = (product) => {
   });
 };
 
+const getVisibleCommunityRequests = (requests) =>
+  requests
+    .filter((request) => !findExistingProductByRequest(request.name))
+    .sort((a, b) => b.votes - a.votes);
+
 const handleCommunityRequestVote = (requestName) => {
   const existingProduct = findExistingProductByRequest(requestName);
 
@@ -1729,15 +1736,43 @@ const handleCommunityRequestVote = (requestName) => {
 
   sendScentRequest(requestName);
 
-  setCommunityRequests((prev) =>
-    prev
+  setCommunityRequests((prev) => {
+    const beforeSorted = getVisibleCommunityRequests(prev);
+    const beforeRanks = beforeSorted.reduce((acc, item, index) => {
+      acc[item.name] = index;
+      return acc;
+    }, {});
+
+    const next = prev
       .map((item) =>
         item.name === requestName
           ? { ...item, votes: item.votes + 1 }
           : item
       )
-      .sort((a, b) => b.votes - a.votes)
-  );
+      .sort((a, b) => b.votes - a.votes);
+
+    const afterSorted = getVisibleCommunityRequests(next);
+
+    const nextTrends = afterSorted.reduce((acc, item, index) => {
+      const previousIndex = beforeRanks[item.name];
+
+      if (previousIndex === undefined) {
+        acc[item.name] = "same";
+      } else if (index < previousIndex) {
+        acc[item.name] = "up";
+      } else if (index > previousIndex) {
+        acc[item.name] = "down";
+      } else {
+        acc[item.name] = "same";
+      }
+
+      return acc;
+    }, {});
+
+    setCommunityRequestTrends(nextTrends);
+
+    return next;
+  });
 
   setScentRequestStatus(
     lang === "sr"
@@ -4174,13 +4209,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         const medalIcon =
           index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : null;
 
-        const trendByName = {
-          "Tom Ford Ombre leather": "up",
-          "LV Ombre Nomade": "down",
-          "Side Effect": "same",
-        };
-
-        const trend = trendByName[request.name] || "same";
+        const trend = communityRequestTrends[request.name] || "same";
 
         return (
           <button
