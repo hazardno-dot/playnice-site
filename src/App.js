@@ -4221,23 +4221,21 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             onClick={() => handleCommunityRequestVote(request.name)}
           >
             <span className="community-most-wanted-rank">
-              {medalIcon ? (
-                medalIcon
-              ) : (
-                <span
-                  className={`community-most-wanted-trend trend-${trend}`}
-                  aria-hidden="true"
-                >
-                  {trend === "up" ? "↗" : trend === "down" ? "↘" : "—"}
-                </span>
-              )}
-            </span>
+  {medalIcon || ""}
+</span>
 
-            <span className="community-most-wanted-name">
-              {request.name}
-            </span>
+<span className="community-most-wanted-name">
+  {request.name}
+</span>
 
-            <strong>{request.votes}</strong>
+<span
+  className={`community-most-wanted-trend trend-${trend}`}
+  aria-hidden="true"
+>
+  {trend === "up" ? "↗" : trend === "down" ? "↘" : "—"}
+</span>
+
+<strong>{request.votes}</strong>
           </button>
         );
       })}

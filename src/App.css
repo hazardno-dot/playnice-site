@@ -10156,7 +10156,7 @@ main {
 .community-most-wanted-item {
   width: 100%;
   display: grid;
-  grid-template-columns: 28px 1fr auto;
+  grid-template-columns: 24px 1fr 20px auto;
   align-items: center;
   gap: 8px;
   padding: 8px 9px;
