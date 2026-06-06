@@ -768,7 +768,6 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
 });
 
 const [communityRequestTrends, setCommunityRequestTrends] = useState({});
-
 const [communityTopThreeEntries, setCommunityTopThreeEntries] = useState({});
 
 const isNewRequest = (request) => {
