@@ -10100,17 +10100,6 @@ main {
   }
 }
 
-@media (max-width: 560px) {
-  .how-request-split {
-    align-items: start;
-  }
-
-  .scent-request-panel {
-    justify-self: stretch;
-    align-self: start;
-  }
-}
-
 /* =========================================
    community-most-wanted-board
 ========================================= */
