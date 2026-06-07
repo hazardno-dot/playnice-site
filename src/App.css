@@ -16789,7 +16789,7 @@ main {
 }
 
 /* =========================================
-   HEADER — LANGUAGE MENU
+   HEADER — LANGUAGE TOGGLE
 ========================================= */
 
 .header-system .language-compact {
@@ -16802,73 +16802,48 @@ main {
 }
 
 .header-system .language-current {
+  position: relative;
+  overflow: hidden;
+
   font-family: inherit;
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.06em;
   line-height: 1;
   text-transform: uppercase;
+
+  color: var(--gold, #dcb56b);
 }
 
-.header-system .language-options {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  z-index: 30;
-
-  min-width: 44px;
-  padding: 5px;
-
-  border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.16);
-
-  background:
-    linear-gradient(180deg, rgba(18, 18, 18, 0.96), rgba(8, 8, 8, 0.92)),
-    rgba(8, 8, 8, 0.94);
-
-  box-shadow:
-    0 14px 26px rgba(0, 0, 0, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.025);
-
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-5px) scale(0.96);
-
-  transition:
-    opacity 0.18s ease,
-    transform 0.18s ease;
-}
-
-.header-system .language-compact.open .language-options {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-}
-
-.header-system .language-option {
-  width: 34px;
-  height: 34px;
-  padding: 0;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 999px;
-  border: 1px solid rgba(220, 181, 107, 0.2);
-  background: rgba(220, 181, 107, 0.06);
+.header-system .language-current span {
+  display: inline-block;
   color: var(--gold, #dcb56b);
 
-  font-family: inherit;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  line-height: 1;
-
-  cursor: pointer;
+  animation: languageTransform 0.28s ease both;
 }
 
-.header-system .language-option:focus,
-.header-system .language-option:focus-visible {
+@keyframes languageTransform {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.42);
+    filter: blur(2px);
+  }
+
+  55% {
+    opacity: 1;
+    transform: scaleX(1.08);
+    filter: blur(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+    filter: blur(0);
+  }
+}
+
+.header-system .language-current:focus,
+.header-system .language-current:focus-visible {
   outline: none;
 }
 

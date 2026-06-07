@@ -664,8 +664,6 @@ function App() {
 
   const [miniCartPreviewId, setMiniCartPreviewId] = useState(0);
 
-  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
-
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const newProductsSignature = useMemo(() => {
@@ -3709,39 +3707,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         {wishlist.length > 0 && <span className="ps-count">{wishlist.length}</span>}
       </button>
 
-      <div
-        className={`language-compact ${languageMenuOpen ? "open" : ""}`}
-        onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) {
-            setLanguageMenuOpen(false);
-          }
-        }}
-      >
-        <button
-          className="language-current"
-          type="button"
-          aria-haspopup="menu"
-          aria-expanded={languageMenuOpen}
-          aria-label={lang === "sr" ? "Promeni jezik" : "Change language"}
-          onClick={() => setLanguageMenuOpen((prev) => !prev)}
-        >
-          {lang.toUpperCase()}
-        </button>
-
-        <div className="language-options" role="menu">
-          <button
-            className="language-option"
-            type="button"
-            role="menuitem"
-            onClick={() => {
-              setLang(lang === "sr" ? "en" : "sr");
-              setLanguageMenuOpen(false);
-            }}
-          >
-            {lang === "sr" ? "EN" : "SR"}
-          </button>
-        </div>
-      </div>
+      <div className="language-compact">
+  <button
+    className="language-current"
+    type="button"
+    aria-label={lang === "sr" ? "Promeni jezik" : "Change language"}
+    onClick={() => {
+      setLang(lang === "sr" ? "en" : "sr");
+    }}
+  >
+    <span key={lang}>{lang.toUpperCase()}</span>
+  </button>
+</div>
     </div>
   </header>
 
