@@ -18625,6 +18625,13 @@ body.overlay-lock .header-system {
   letter-spacing: 0.08em;
 }
 
+.story-drawer.manifesto-drawer .story-drawer-footer .gold-button.small {
+  min-width: 210px;
+  min-height: 40px;
+  padding: 9px 16px;
+  font-size: 0.74rem;
+}
+
 .manifesto-drawer .close-button {
   position: absolute;
   top: 20px;
