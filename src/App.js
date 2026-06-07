@@ -538,7 +538,15 @@ const BASE_HERO_SLIDES = [
     desktopImage: "/hero/slide-5.jpg",
     mobileImage: "/hero/mobile/slide-5-mobile.jpg",
     alt: "Try before you buy / dekanti",
-    actionPrimary: "shop"
+    actionPrimary: "shop",
+    actionCollection: [
+    "arabiyat-prestige-fahad-gaze",
+    "emir-voux-zingy",
+    "khadlaj-onyx-silver",
+    "rasasi-hawas-black",
+    "rayhaan-crimson"
+  ],
+    collectionTitle: "Best of the Best"
   },
   {
     id: 6,
@@ -648,6 +656,8 @@ function App() {
   const [closingVisible, setClosingVisible] = useState(false);
   const [currentHero, setCurrentHero] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
+  const [heroCollectionFilter, setHeroCollectionFilter] = useState(null);
+  const [heroCollectionTitle, setHeroCollectionTitle] = useState("");
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
   const [productModalVisible, setProductModalVisible] = useState(false);
@@ -3828,25 +3838,37 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   >
                   <div
   className={`hero-image-only ${
-    slide.actionProductSlug ? "hero-image-clickable" : ""
-  }`}
+  slide.actionProductSlug || slide.actionCollection?.length
+    ? "hero-image-clickable"
+    : ""
+}`}
   role={slide.actionProductSlug ? "button" : undefined}
   tabIndex={slide.actionProductSlug ? 0 : undefined}
   onClick={() => {
-    if (!slide.actionProductSlug) return;
+  if (slide.actionCollection?.length) {
+    setView("shop");
+    setSearchTerm("");
+    setSelectedCategory("All");
+    setSelectedSeason("all");
+    setHeroCollectionFilter(slide.actionCollection);
+    setHeroCollectionTitle(slide.collectionTitle || "");
+    return;
+  }
 
-    const product = products.find(
-      (p) => p.slug === slide.actionProductSlug
-    );
+  if (!slide.actionProductSlug) return;
 
-    if (!product) return;
+  const product = products.find(
+    (p) => p.slug === slide.actionProductSlug
+  );
 
-    openProductModal(product, {
-      preferredSize: slide.preferredSize || "10ml",
-      userPickedSize: true,
-      changeView: true,
-    });
-  }}
+  if (!product) return;
+
+  openProductModal(product, {
+    preferredSize: slide.preferredSize || "10ml",
+    userPickedSize: true,
+    changeView: true,
+  });
+}}
   onKeyDown={(e) => {
     if (!slide.actionProductSlug) return;
     if (e.key !== "Enter" && e.key !== " ") return;
