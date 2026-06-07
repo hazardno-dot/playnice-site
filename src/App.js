@@ -520,7 +520,6 @@ const BASE_HERO_SLIDES = [
     desktopImage: "/hero/slide-3.jpg",
     mobileImage: "/hero/mobile/slide-3-mobile.jpg",
     alt: "Proleće-leto sezona",
-    actionPrimary: "shop"
     actionPrimary: "product",
     actionProductSlug: "ysl-y-iced-cologne",
     preferredSize: "10ml"
