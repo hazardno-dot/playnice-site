@@ -5313,9 +5313,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </div>
 
 {heroCollectionTitle && (
-  <p className="shop-collection-title">
-    {heroCollectionTitle}
-  </p>
+  <div className="shop-collection-heading">
+    <p className="section-kicker">
+      {lang === "sr" ? "IZBOR SA HERO SLIKE" : "FEATURED HERO SELECTION"}
+    </p>
+
+    <h2>{heroCollectionTitle}</h2>
+  </div>
 )}
 
 <div className="product-grid">
