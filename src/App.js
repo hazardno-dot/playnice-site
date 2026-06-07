@@ -595,7 +595,7 @@ const BASE_HERO_SLIDES = [
     alt: "Optional: special action, drop ili limited stock",
     actionPrimary: "collection",
     actionCollection: [
-    "ysl-black-opium-eau-de-parfum",
+    "ysl-black-opium-le-parfum",
     "narciso-rodriguez-poudree"
   ],
     collectionTitle: "Signature Energy izbor"
