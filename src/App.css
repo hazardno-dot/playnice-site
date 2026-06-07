@@ -1278,6 +1278,191 @@ main {
 }
 
 /* =========================================
+   MANIFESTO DRAWER
+========================================= */
+
+.manifesto-drawer {
+  position: fixed;
+
+  top: 50%;
+  left: 50%;
+
+  width: min(430px, calc(100vw - 32px));
+  max-height: calc(100vh - 40px);
+
+  z-index: 1250;
+
+  transform:
+    translateY(-50%)
+    translateX(calc(-50% - 80px));
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.42s ease,
+    visibility 0s linear 0.72s;
+
+  border-radius: 34px;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(220, 181, 107, 0.10),
+      transparent 45%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(18, 18, 18, 0.72),
+      rgba(8, 8, 8, 0.88)
+    );
+
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  border: 1px solid rgba(220, 181, 107, 0.14);
+
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+
+  overflow-y: auto;
+}
+
+.manifesto-drawer.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transform:
+    translateY(-50%)
+    translateX(-50%);
+
+  transition:
+    transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.42s ease,
+    visibility 0s linear 0s;
+}
+
+.manifesto-drawer .story-drawer-header {
+  padding: 28px 28px 14px;
+  border-bottom: none;
+  text-align: center;
+  justify-content: center;
+}
+
+.manifesto-drawer .story-drawer-header h3 {
+  max-width: none;
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  line-height: 0.92;
+}
+
+.manifesto-drawer .section-kicker {
+  margin-bottom: 10px;
+  letter-spacing: 0.18em;
+}
+
+.manifesto-drawer-body {
+  padding: 0 28px 26px;
+  text-align: center;
+}
+
+.manifesto-line {
+  margin: 0 0 18px;
+
+  color: rgba(255,248,235,0.72);
+
+  font-size: 0.92rem;
+  line-height: 1.75;
+}
+
+.manifesto-line-1 {
+  color: rgba(255,248,235,0.82);
+}
+
+.manifesto-line-3,
+.manifesto-line-4 {
+  color: #f2e1b3;
+  font-weight: 700;
+  font-size: 0.98rem;
+}
+
+.manifesto-drawer-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  margin-top: 12px;
+}
+
+.manifesto-drawer-footer .story-drawer-signature {
+  font-size: 1.75rem;
+}
+
+.manifesto-drawer-footer .gold-button.small {
+  min-width: 250px;
+
+  min-height: 46px;
+
+  padding: 12px 20px;
+
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+}
+
+.manifesto-drawer .close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 640px) {
+
+  .manifesto-drawer {
+    width: calc(100vw - 20px);
+    border-radius: 28px;
+  }
+
+  .manifesto-drawer .story-drawer-header {
+    padding: 22px 20px 10px;
+  }
+
+  .manifesto-drawer-body {
+    padding: 0 20px 20px;
+  }
+
+  .manifesto-drawer .story-drawer-header h3 {
+    font-size: clamp(1.8rem, 7vw, 2.2rem);
+  }
+
+  .manifesto-line {
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+
+  .manifesto-drawer-footer .story-drawer-signature {
+    font-size: 1.45rem;
+  }
+
+  .manifesto-drawer-footer .gold-button.small {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+/* =========================================
    RESPONSIVE
 ========================================= */
 
@@ -1405,40 +1590,6 @@ main {
   .hero-campaign-btn:active {
     transform: translateX(50%) scale(0.98);
   }
-}
-
-/* =========================================
-   MANIFESTO DRAWER
-========================================= */
-
-.manifesto-drawer {
-  width: min(600px, calc(100vw - 32px));
-}
-
-.manifesto-drawer-body {
-  padding-top: 20px;
-}
-
-.manifesto-line {
-  color: rgba(255, 248, 235, 0.8);
-  font-size: 1rem;
-  line-height: 1.7;
-}
-
-.manifesto-line-1 {
-  color: rgba(255, 248, 235, 0.92);
-  font-size: 1.05rem;
-}
-
-.manifesto-line-3,
-.manifesto-line-4 {
-  color: var(--gold);
-  font-weight: 800;
-  letter-spacing: 0.04em;
-}
-
-.manifesto-drawer-footer {
-  margin-top: 22px;
 }
 
 /* =========================================
