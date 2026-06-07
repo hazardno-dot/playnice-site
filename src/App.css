@@ -965,6 +965,23 @@ main {
   filter: saturate(1.02);
 }
 
+/* hero-image-clickable */
+
+.hero-image-clickable {
+  cursor: pointer;
+}
+
+.hero-image-clickable .hero-image-only-img {
+  transition:
+    transform 0.45s ease,
+    filter 0.45s ease;
+}
+
+.hero-image-clickable:hover .hero-image-only-img {
+  transform: scale(1.012);
+  filter: brightness(1.04);
+}
+
 /* =========================================
    HERO CAMPAIGN CTA
 ========================================= */

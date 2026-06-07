@@ -556,7 +556,9 @@ const BASE_HERO_SLIDES = [
     desktopImage: "/hero/slide-7.jpg",
     mobileImage: "/hero/mobile/slide-7-mobile.jpg",
     alt: "Optional: special action, drop ili limited stock",
-    actionPrimary: "shop"
+    actionPrimary: "shop",
+    actionProductSlug: "afnan-9pm-night-out",
+    preferredSize: "10ml",
   },
   {
     id: 8,
@@ -3824,7 +3826,46 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     className={`hero-slide ${index === currentHero ? "active" : ""}`}
                     aria-hidden={index !== currentHero}
                   >
-                  <div className="hero-image-only">
+                  <div
+  className={`hero-image-only ${
+    slide.actionProductSlug ? "hero-image-clickable" : ""
+  }`}
+  role={slide.actionProductSlug ? "button" : undefined}
+  tabIndex={slide.actionProductSlug ? 0 : undefined}
+  onClick={() => {
+    if (!slide.actionProductSlug) return;
+
+    const product = products.find(
+      (p) => p.slug === slide.actionProductSlug
+    );
+
+    if (!product) return;
+
+    openProductModal(product, {
+      preferredSize: slide.preferredSize || "10ml",
+      userPickedSize: true,
+      changeView: true,
+    });
+  }}
+  onKeyDown={(e) => {
+    if (!slide.actionProductSlug) return;
+    if (e.key !== "Enter" && e.key !== " ") return;
+
+    e.preventDefault();
+
+    const product = products.find(
+      (p) => p.slug === slide.actionProductSlug
+    );
+
+    if (!product) return;
+
+    openProductModal(product, {
+      preferredSize: slide.preferredSize || "10ml",
+      userPickedSize: true,
+      changeView: true,
+    });
+  }}
+>
   <picture>
     <source
       media="(max-width: 768px)"
