@@ -654,6 +654,8 @@ function App() {
   const [inlineAddedKey, setInlineAddedKey] = useState(null);
   const [catalogPreview, setCatalogPreview] = useState(null);
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
+  const [faqOpen, setFaqOpen] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
   const [sortBy, setSortBy] = useState("featured");
   const [season, setSeason] = useState("All");
   const [scentMood, setScentMood] = useState("All");
@@ -5278,6 +5280,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         {lang === "sr" ? "Kako funkcioniše?" : "How it works"}
       </button>
 
+      <button type="button" className="footer-link" onClick={() => setFaqOpen(true)}>
+        FAQ
+      </button>
+
       <button type="button" className="footer-link" onClick={() => setPrivateSelectionOpen(true)}>
         Private Selection
       </button>
@@ -5552,6 +5558,106 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           </div>
         </div>
       </aside>
+
+      <aside className={`story-drawer faq-drawer ${faqOpen ? "open panel-open" : ""}`}>
+  <div className="story-drawer-header panel-anim panel-anim-1">
+    <div>
+      <p className="section-kicker">
+        {lang === "sr" ? "FAQ" : "FAQ"}
+      </p>
+
+      <h3>
+        {lang === "sr"
+          ? "Sve što treba da znaš pre prve porudžbine."
+          : "Everything to know before your first order."}
+      </h3>
+    </div>
+
+    <button
+      className="close-button"
+      type="button"
+      onClick={() => {
+        setFaqOpen(false);
+        setOpenFaqIndex(null);
+      }}
+      aria-label={lang === "sr" ? "Zatvori FAQ panel" : "Close FAQ panel"}
+    >
+      ×
+    </button>
+  </div>
+
+  <div className="story-drawer-body faq-drawer-body">
+    {[
+      {
+        q: lang === "sr" ? "Da li su parfemi originalni?" : "Are the perfumes authentic?",
+        a: lang === "sr"
+          ? "Da. Svi parfemi u PlayNice kolekciji su originalni, a dekanti se pune iz originalnih bočica."
+          : "Yes. All fragrances in the PlayNice collection are authentic, and decants are filled from original bottles."
+      },
+      {
+        q: lang === "sr" ? "Šta je dekant?" : "What is a decant?",
+        a: lang === "sr"
+          ? "Dekant je manja količina originalnog parfema pretočena u kvalitetnu atomizer bočicu. Dobijaš isti miris, bez kupovine cele bočice."
+          : "A decant is a smaller amount of original perfume transferred into a quality atomizer bottle."
+      },
+      {
+        q: lang === "sr" ? "Koliko dugo traje 5ml?" : "How long does 5ml last?",
+        a: lang === "sr"
+          ? "U proseku oko 60–80 prskanja, zavisno od atomizera i načina korišćenja."
+          : "On average, around 60–80 sprays, depending on the atomizer and how you use it."
+      },
+      {
+        q: lang === "sr" ? "Koju veličinu da izaberem?" : "Which size should I choose?",
+        a: lang === "sr"
+          ? "2ml je za prvo upoznavanje, 5ml za nekoliko dana testiranja, 10ml za redovno nošenje, a 20ml za parfeme koje već voliš."
+          : "2ml is for a first impression, 5ml for testing, 10ml for regular wear, and 20ml for fragrances you already love."
+      },
+      {
+        q: lang === "sr" ? "Da li dostavljate širom Crne Gore?" : "Do you deliver across Montenegro?",
+        a: lang === "sr"
+          ? "Da. Dostava je dostupna širom Crne Gore."
+          : "Yes. Delivery is available across Montenegro."
+      },
+      {
+        q: lang === "sr" ? "Kako se plaća?" : "How do I pay?",
+        a: lang === "sr"
+          ? "Plaćanje se vrši pouzećem prilikom preuzimanja pošiljke."
+          : "Payment is made by cash on delivery when the package arrives."
+      },
+      {
+        q: lang === "sr" ? "Da li mogu da vratim parfem?" : "Can I return a perfume?",
+        a: lang === "sr"
+          ? "Zbog higijenskih razloga otvoreni dekanti i parfemi se ne vraćaju. Ako pošiljka stigne oštećena ili dođe do greške, kontaktiraj nas i pronaći ćemo rešenje."
+          : "For hygiene reasons, opened decants and perfumes cannot be returned. If the package arrives damaged or there is an error, contact us and we will find a solution."
+      },
+      {
+        q: lang === "sr" ? "Zašto PlayNice?" : "Why PlayNice?",
+        a: lang === "sr"
+          ? "Zato što verujemo da parfem treba prvo doživeti, a tek onda kupiti. PlayNice ti omogućava da pronađeš svoj sledeći potpis bez rizika kupovine pune bočice."
+          : "Because we believe a fragrance should be experienced before it is bought. PlayNice helps you find your next signature without the risk of buying a full bottle first."
+      }
+    ].map((item, index) => {
+      const isOpen = openFaqIndex === index;
+
+      return (
+        <div className={`faq-item ${isOpen ? "open" : ""}`} key={item.q}>
+          <button
+            type="button"
+            className="faq-question"
+            onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+          >
+            <span>✦ {item.q}</span>
+            <strong>{isOpen ? "−" : "+"}</strong>
+          </button>
+
+          <div className="faq-answer">
+            <p>{item.a}</p>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</aside>
 
       <aside className={`how-it-works-drawer ${howItWorksOpen ? "open panel-open" : ""}`}>
   <div className="how-it-works-drawer-header panel-anim panel-anim-1">
