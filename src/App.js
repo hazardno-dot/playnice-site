@@ -538,7 +538,7 @@ const BASE_HERO_SLIDES = [
     desktopImage: "/hero/slide-5.jpg",
     mobileImage: "/hero/mobile/slide-5-mobile.jpg",
     alt: "Try before you buy / dekanti",
-    actionPrimary: "shop",
+    actionPrimary: "collection",
     actionCollection: [
     "arabiyat-prestige-fahad-gaze",
     "emir-voux-zingy",
