@@ -3854,8 +3854,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   if (slide.actionCollection?.length) {
     setView("shop");
     setSearchTerm("");
-    setSelectedCategory("All");
-    setSelectedSeason("all");
+    setCategory("All");
+    setSeason("all");
     setHeroCollectionFilter(slide.actionCollection);
     setHeroCollectionTitle(slide.collectionTitle || "");
     return;
