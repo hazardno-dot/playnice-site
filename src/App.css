@@ -18634,13 +18634,13 @@ body.overlay-lock .header-system {
 
 .manifesto-drawer .close-button {
   position: absolute;
-  top: 18px;
-  right: 18px;
+  top: 14px;
+  right: 14px;
 
-  width: 36px;
-  height: 36px;
+  width: 46px;
+  height: 34px;
 
-  border-radius: 50%;
+  border-radius: 999px;
 }
 
 /* =========================================
@@ -18678,5 +18678,13 @@ body.overlay-lock .header-system {
   .manifesto-drawer-footer .gold-button.small {
     width: 100%;
     min-width: auto;
+  }
+
+  .manifesto-drawer .close-button {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+
+    border-radius: 50%;
   }
 }
