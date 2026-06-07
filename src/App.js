@@ -511,7 +511,8 @@ const BASE_HERO_SLIDES = [
     desktopImage: "/hero/slide-2.jpg",
     mobileImage: "/hero/mobile/slide-2-mobile.jpg",
     alt: "PlayNice – luxury fragrance experience and trust",
-    actionPrimary: "shop"
+    actionPrimary: "manifesto",
+    manifestoType: "confidence"
   },
   {
     id: 3,
@@ -3162,7 +3163,35 @@ const HERO_MANIFESTOS = {
           ],
     cta: lang === "sr" ? "Otkrij kolekciju" : "Explore collection",
     action: "shop"
-  }
+  },
+
+  confidence: {
+  kicker: "PLAYNICE CONFIDENCE",
+  title:
+    lang === "sr"
+      ? "Neki parfemi mirišu dobro."
+      : "Some fragrances smell good.",
+  body:
+    lang === "sr"
+      ? [
+          "Neki menjaju način na koji ulaziš u prostoriju.",
+          "Ne kupujemo mirise samo zbog nota. Kupujemo ih zbog osećaja koji ostavljaju iza sebe.",
+          "Samopouzdanje. Prisustvo. Karakter.",
+          "Zato u PlayNice kolekciji nema stotine nasumičnih parfema.",
+          "Samo oni koji ostavljaju utisak.",
+          "Pronađi svoj potpis."
+        ]
+      : [
+          "Some change the way you enter a room.",
+          "We do not choose fragrances only for their notes. We choose them for the feeling they leave behind.",
+          "Confidence. Presence. Character.",
+          "That is why the PlayNice collection is not filled with hundreds of random perfumes.",
+          "Only the ones that leave an impression.",
+          "Find your signature."
+        ],
+  cta: lang === "sr" ? "Pronađi svoj potpis" : "Find your signature",
+  action: "shop"
+}
 };
 
 /* =========================================
