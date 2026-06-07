@@ -578,7 +578,8 @@ const BASE_HERO_SLIDES = [
     desktopImage: "/hero/slide-8.jpg",
     mobileImage: "/hero/mobile/slide-8-mobile.jpg",
     alt: "Optional: special action, drop ili limited stock",
-    actionPrimary: "shop"
+    actionPrimary: "manifesto",
+    manifestoType: "details"
   },
   {
     id: 9,
@@ -3135,6 +3136,32 @@ const HERO_MANIFESTOS = {
           ],
     cta: lang === "sr" ? "Napravi svoj Discovery Set" : "Build your Discovery Set",
     action: "discovery"
+  }
+
+  details: {
+    kicker: "PLAYNICE DETAILS",
+    title:
+      lang === "sr"
+        ? "Ne šaljemo samo pakete."
+        : "We do not just send packages.",
+    body:
+      lang === "sr"
+        ? [
+            "Svaka porudžbina prolazi kroz iste ruke koje biraju parfeme za kolekciju.",
+            "Premium bočice. Poklon uzorci. Kartica zahvalnosti. Pakovanje koje izgleda kao poklon — čak i kada ga kupuješ sebi.",
+            "Verujemo da luksuz ne počinje kada otvoriš parfem.",
+            "Počinje kada otvoriš kutiju.",
+            "Hvala što si deo PlayNice priče."
+          ]
+        : [
+            "Every order passes through the same hands that choose the fragrances for the collection.",
+            "Premium bottles. Gift samples. A thank-you card. Packaging that feels like a gift — even when you are buying it for yourself.",
+            "We believe luxury does not begin when you open the fragrance.",
+            "It begins when you open the box.",
+            "Thank you for being part of the PlayNice story."
+          ],
+    cta: lang === "sr" ? "Otkrij kolekciju" : "Explore collection",
+    action: "shop"
   }
 };
 
@@ -5786,10 +5813,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             className="gold-button small"
             type="button"
             onClick={() => {
-              setManifestoOpen(false);
-              setActiveManifesto(null);
-              setDiscoveryBuilderOpen(true);
-            }}
+  const action = HERO_MANIFESTOS[activeManifesto].action;
+
+  setManifestoOpen(false);
+  setActiveManifesto(null);
+
+  if (action === "discovery") {
+    setDiscoveryBuilderOpen(true);
+    return;
+  }
+
+  if (action === "shop") {
+    goToShop();
+  }
+}}
           >
             {HERO_MANIFESTOS[activeManifesto].cta}
           </button>

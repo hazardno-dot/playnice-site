@@ -18632,6 +18632,15 @@ body.overlay-lock .header-system {
   font-size: 0.74rem;
 }
 
+.manifesto-highlight {
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 1.08rem;
+}
+
 .manifesto-drawer .close-button {
   position: absolute;
   top: 14px;
