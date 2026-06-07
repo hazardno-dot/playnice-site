@@ -862,6 +862,12 @@ const toggleVideoPlayback = () => {
   );
 
  const filteredProducts = useMemo(() => {
+    if (heroCollectionFilter?.length) {
+    return products.filter((product) =>
+      heroCollectionFilter.includes(product.slug)
+    );
+  }
+
   const result = products.filter((product) => {
     const categoryMatch =
       category === "All" || product.category === category;
@@ -907,7 +913,7 @@ const toggleVideoPlayback = () => {
     default:
       return result;
   }
-}, [category, searchTerm, season, scentMood, sortBy]);
+}, [category, searchTerm, season, scentMood, sortBy, heroCollectionFilter]);
 
   const categoryOptions = [
     {
@@ -4817,7 +4823,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         type="text"
         placeholder={tr.searchPlaceholder}
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={(e) => {
+  setSearchTerm(e.target.value);
+  setHeroCollectionFilter(null);
+  setHeroCollectionTitle("");
+}}
       />
     </div>
   </div>
@@ -5155,6 +5165,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </div>
 </div>
+
+{heroCollectionTitle && (
+  <p className="shop-collection-title">
+    {heroCollectionTitle}
+  </p>
+)}
 
 <div className="product-grid">
   {paginatedProducts.map((product) => (
