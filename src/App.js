@@ -531,7 +531,8 @@ const BASE_HERO_SLIDES = [
     desktopImage: "/hero/slide-4.jpg",
     mobileImage: "/hero/mobile/slide-4-mobile.jpg",
     alt: "PlayNice Private Selection – trusted premium decants",
-    actionPrimary: "shop"
+    actionPrimary: "manifesto",
+    manifestoType: "playnice-mission"
   },
   {
     id: 5,
@@ -674,6 +675,9 @@ function App() {
   const [productModalVisible, setProductModalVisible] = useState(false);
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
+
+  const [manifestoOpen, setManifestoOpen] = useState(false);
+  const [activeManifesto, setActiveManifesto] = useState(null);
 
   const [discoveryBuilderOpen, setDiscoveryBuilderOpen] = useState(false);
   const [discoverySelected, setDiscoverySelected] = useState([]);
@@ -3105,6 +3109,36 @@ const openImpactProductModal = (product) => {
 }, [view, selectedProduct, lang]);
 
 /* =========================================
+   HERO_MANIFESTOS
+========================================= */
+
+const HERO_MANIFESTOS = {
+  "playnice-mission": {
+    kicker: lang === "sr" ? "PLAYNICE MISSION" : "PLAYNICE MISSION",
+    title:
+      lang === "sr"
+        ? "Ne prodajemo samo mirise."
+        : "We do not just sell fragrances.",
+    body:
+      lang === "sr"
+        ? [
+            "Biramo trenutke koji ostaju na koži, u sećanju i u načinu na koji ulaziš u prostoriju.",
+            "PlayNice postoji zbog jedne jednostavne ideje: da luksuz treba prvo doživeti — a tek onda kupiti.",
+            "Try before you buy.",
+            "Remember. PlayNice."
+          ]
+        : [
+            "We choose moments that stay on the skin, in memory, and in the way you enter a room.",
+            "PlayNice exists because of one simple idea: luxury should be experienced first — and bought after.",
+            "Try before you buy.",
+            "Remember. PlayNice."
+          ],
+    cta: lang === "sr" ? "Napravi svoj Discovery Set" : "Build your Discovery Set",
+    action: "discovery"
+  }
+};
+
+/* =========================================
    SEO existingSchema useEffect
 ========================================= */
 useEffect(() => {
@@ -3855,42 +3889,87 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   >
                   <div
   className={`hero-image-only ${
-  slide.actionProductSlug || slide.actionCollection?.length
-    ? "hero-image-clickable"
-    : ""
-}`}
-  role={slide.actionProductSlug ? "button" : undefined}
-  tabIndex={slide.actionProductSlug ? 0 : undefined}
-  onClick={() => {
-  if (slide.actionCollection?.length) {
-    setView("shop");
-    setSearchTerm("");
-    setCategory("All");
-    setSeason("all");
-    setHeroCollectionFilter(slide.actionCollection);
-    setHeroCollectionTitle(slide.collectionTitle || "");
-    return;
+    slide.actionProductSlug ||
+    slide.actionCollection?.length ||
+    slide.actionPrimary === "manifesto"
+      ? "hero-image-clickable"
+      : ""
+  }`}
+  role={
+    slide.actionProductSlug ||
+    slide.actionCollection?.length ||
+    slide.actionPrimary === "manifesto"
+      ? "button"
+      : undefined
   }
+  tabIndex={
+    slide.actionProductSlug ||
+    slide.actionCollection?.length ||
+    slide.actionPrimary === "manifesto"
+      ? 0
+      : undefined
+  }
+  onClick={() => {
+    if (slide.actionCollection?.length) {
+      setView("shop");
+      setSearchTerm("");
+      setCategory("All");
+      setSeason("all");
+      setHeroCollectionFilter(slide.actionCollection);
+      setHeroCollectionTitle(slide.collectionTitle || "");
+      return;
+    }
 
-  if (!slide.actionProductSlug) return;
+    if (slide.actionPrimary === "manifesto" && slide.manifestoType) {
+      setActiveManifesto(slide.manifestoType);
+      setManifestoOpen(true);
+      return;
+    }
 
-  const product = products.find(
-    (p) => p.slug === slide.actionProductSlug
-  );
-
-  if (!product) return;
-
-  openProductModal(product, {
-    preferredSize: slide.preferredSize || "10ml",
-    userPickedSize: true,
-    changeView: false,
-  });
-}}
-  onKeyDown={(e) => {
     if (!slide.actionProductSlug) return;
+
+    const product = products.find(
+      (p) => p.slug === slide.actionProductSlug
+    );
+
+    if (!product) return;
+
+    openProductModal(product, {
+      preferredSize: slide.preferredSize || "10ml",
+      userPickedSize: true,
+      changeView: false,
+    });
+  }}
+  onKeyDown={(e) => {
+    if (
+      !slide.actionProductSlug &&
+      !slide.actionCollection?.length &&
+      slide.actionPrimary !== "manifesto"
+    ) {
+      return;
+    }
+
     if (e.key !== "Enter" && e.key !== " ") return;
 
     e.preventDefault();
+
+    if (slide.actionCollection?.length) {
+      setView("shop");
+      setSearchTerm("");
+      setCategory("All");
+      setSeason("all");
+      setHeroCollectionFilter(slide.actionCollection);
+      setHeroCollectionTitle(slide.collectionTitle || "");
+      return;
+    }
+
+    if (slide.actionPrimary === "manifesto" && slide.manifestoType) {
+      setActiveManifesto(slide.manifestoType);
+      setManifestoOpen(true);
+      return;
+    }
+
+    if (!slide.actionProductSlug) return;
 
     const product = products.find(
       (p) => p.slug === slide.actionProductSlug
@@ -5661,6 +5740,63 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       );
     })}
   </div>
+</aside>
+
+<aside className={`story-drawer manifesto-drawer ${manifestoOpen ? "open panel-open" : ""}`}>
+  {activeManifesto && HERO_MANIFESTOS[activeManifesto] && (
+    <>
+      <div className="story-drawer-header panel-anim panel-anim-1">
+        <div>
+          <p className="section-kicker">
+            {HERO_MANIFESTOS[activeManifesto].kicker}
+          </p>
+
+          <h3>
+            {HERO_MANIFESTOS[activeManifesto].title}
+          </h3>
+        </div>
+
+        <button
+          className="close-button"
+          type="button"
+          onClick={() => {
+            setManifestoOpen(false);
+            setActiveManifesto(null);
+          }}
+          aria-label={lang === "sr" ? "Zatvori PlayNice prozor" : "Close PlayNice window"}
+        >
+          ×
+        </button>
+      </div>
+
+      <div className="story-drawer-body manifesto-drawer-body">
+        {HERO_MANIFESTOS[activeManifesto].body.map((paragraph, index) => (
+          <p
+            key={paragraph}
+            className={`manifesto-line manifesto-line-${index + 1}`}
+          >
+            {paragraph}
+          </p>
+        ))}
+
+        <div className="story-drawer-footer manifesto-drawer-footer">
+          <span className="story-drawer-signature">Remember. PlayNice.</span>
+
+          <button
+            className="gold-button small"
+            type="button"
+            onClick={() => {
+              setManifestoOpen(false);
+              setActiveManifesto(null);
+              setDiscoveryBuilderOpen(true);
+            }}
+          >
+            {HERO_MANIFESTOS[activeManifesto].cta}
+          </button>
+        </div>
+      </div>
+    </>
+  )}
 </aside>
 
       <aside className={`how-it-works-drawer ${howItWorksOpen ? "open panel-open" : ""}`}>

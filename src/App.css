@@ -1408,6 +1408,40 @@ main {
 }
 
 /* =========================================
+   MANIFESTO DRAWER
+========================================= */
+
+.manifesto-drawer {
+  width: min(600px, calc(100vw - 32px));
+}
+
+.manifesto-drawer-body {
+  padding-top: 20px;
+}
+
+.manifesto-line {
+  color: rgba(255, 248, 235, 0.8);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.manifesto-line-1 {
+  color: rgba(255, 248, 235, 0.92);
+  font-size: 1.05rem;
+}
+
+.manifesto-line-3,
+.manifesto-line-4 {
+  color: var(--gold);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.manifesto-drawer-footer {
+  margin-top: 22px;
+}
+
+/* =========================================
    VALUE STRIP
 ========================================= */
 .value-strip {
