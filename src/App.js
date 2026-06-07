@@ -3136,7 +3136,7 @@ const HERO_MANIFESTOS = {
           ],
     cta: lang === "sr" ? "Napravi svoj Discovery Set" : "Build your Discovery Set",
     action: "discovery"
-  }
+  },
 
   details: {
     kicker: "PLAYNICE DETAILS",
