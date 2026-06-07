@@ -18637,8 +18637,9 @@ body.overlay-lock .header-system {
   top: 14px;
   right: 14px;
 
-  width: 46px;
-  height: 34px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 14px;
 
   border-radius: 999px;
 }
@@ -18684,6 +18685,7 @@ body.overlay-lock .header-system {
     width: 36px;
     min-width: 36px;
     height: 36px;
+    padding: 0;
 
     border-radius: 50%;
   }
