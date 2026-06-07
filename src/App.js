@@ -586,7 +586,9 @@ const BASE_HERO_SLIDES = [
     desktopImage: "/hero/slide-9.jpg",
     mobileImage: "/hero/mobile/slide-9-mobile.jpg",
     alt: "Optional: special action, drop ili limited stock",
-    actionPrimary: "shop"
+    actionPrimary: "product",
+    actionProductSlug: "valentino-uomo-born-in-roma-coral-fantasy",
+    preferredSize: "10ml"
   },
   {
     id: 10,
