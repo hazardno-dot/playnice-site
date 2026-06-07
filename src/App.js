@@ -566,7 +566,7 @@ const BASE_HERO_SLIDES = [
     desktopImage: "/hero/slide-7.jpg",
     mobileImage: "/hero/mobile/slide-7-mobile.jpg",
     alt: "Optional: special action, drop ili limited stock",
-    actionPrimary: "shop",
+    actionPrimary: "product",
     actionProductSlug: "afnan-9pm-night-out",
     preferredSize: "10ml",
   },
@@ -2874,7 +2874,7 @@ const openProductModal = (product, options = {}) => {
   updateUrl = true,
   preferredSize = "",
   userPickedSize = false,
-  changeView = true,
+  changeView = true
 } = options;
 
   const isMobileModal = isMobileProductModal();
@@ -3883,7 +3883,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   openProductModal(product, {
     preferredSize: slide.preferredSize || "10ml",
     userPickedSize: true,
-    changeView: true,
+    changeView: false,
   });
 }}
   onKeyDown={(e) => {
@@ -3901,7 +3901,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     openProductModal(product, {
       preferredSize: slide.preferredSize || "10ml",
       userPickedSize: true,
-      changeView: true,
+      changeView: false,
     });
   }}
 >
@@ -3941,7 +3941,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       openProductModal(product, {
         preferredSize: "10ml",
         userPickedSize: true,
-        changeView: true,
+        changeView: false,
       });
     }}
   >
