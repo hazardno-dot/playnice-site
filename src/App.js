@@ -593,7 +593,12 @@ const BASE_HERO_SLIDES = [
     desktopImage: "/hero/slide-10.jpg",
     mobileImage: "/hero/mobile/slide-10-mobile.jpg",
     alt: "Optional: special action, drop ili limited stock",
-    actionPrimary: "shop"
+    actionPrimary: "collection",
+    actionCollection: [
+    "ysl-black-opium-eau-de-parfum",
+    "narciso-rodriguez-poudree"
+  ],
+    collectionTitle: "Signature Energy izbor"
   }
 ];
 
