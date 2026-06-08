@@ -6997,8 +6997,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               </p>
 
               <div className="modal-sizes">
-  {Object.entries(selectedProduct.sizes).map(
-    ([size, price], index) => (
+  {Object.entries(selectedProduct.sizes).map(([size, price], index) => {
+    const discount = getProductDiscountForSize(selectedProduct, size);
+
+    const finalPrice = discount
+      ? getDiscountedPrice(price, discount.percent)
+      : price;
+
+    return (
       <button
         key={size}
         type="button"
@@ -7013,48 +7019,31 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <span className="modal-size-top">
           <span>{size}</span>
 
-        {discount && (
-          <span className="modal-size-sale-badge">
-          -{discount.percent}%
-          </span>
-        )}
-      </span>
+          {discount && (
+            <span className="modal-size-sale-badge">
+              -{discount.percent}%
+            </span>
+          )}
+        </span>
 
-        {(() => {
-          const discount = getProductDiscountForSize(
-            selectedProduct,
-            size
-          );
+        <strong className={`modal-size-price ${discount ? "has-discount" : ""}`}>
+          {discount ? (
+            <>
+              <span className="modal-size-old-price">
+                {formatPrice(price)}
+              </span>
 
-          const finalPrice = discount
-            ? getDiscountedPrice(price, discount.percent)
-            : price;
-
-          return (
-            <strong
-              className={`modal-size-price ${
-                discount ? "has-discount" : ""
-              }`}
-            >
-              {discount ? (
-                <>
-                  <span className="modal-size-old-price">
-                    {formatPrice(price)}
-                  </span>
-
-                  <span className="modal-size-new-price">
-                    {formatPrice(finalPrice)}
-                  </span>
-                </>
-              ) : (
-                formatPrice(price)
-              )}
-            </strong>
-          );
-        })()}
+              <span className="modal-size-new-price">
+                {formatPrice(finalPrice)}
+              </span>
+            </>
+          ) : (
+            formatPrice(price)
+          )}
+        </strong>
       </button>
-    )
-  )}
+    );
+  })}
 </div>
     </div>
 
