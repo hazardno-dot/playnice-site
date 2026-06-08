@@ -9098,8 +9098,33 @@ main {
 }
 
 /* =========================================
-   product-sale-badge
+   PRODUCT DISCOUNT / SALE BADGES
 ========================================= */
+
+.size-chip-discount-best {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3px 8px;
+  border-radius: 999px;
+
+  font-size: 0.56rem;
+  font-weight: 850;
+  letter-spacing: 0.07em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  color: #f6ddb0;
+  border: 1px solid rgba(220, 181, 107, 0.28);
+  background:
+    linear-gradient(135deg, rgba(128, 25, 30, 0.95), rgba(35, 12, 12, 0.96));
+
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
 
 .product-sale-badge {
   position: absolute;
@@ -9143,25 +9168,6 @@ main {
   font-size: 0.86rem;
   font-weight: 900;
   line-height: 1;
-}
-
-.size-chip-sale-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-
-  padding: 3px 7px;
-  border-radius: 999px;
-
-  font-size: 0.56rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  color: #f6ddb0;
-
-  border: 1px solid rgba(220, 181, 107, 0.24);
-  background: rgba(120, 24, 28, 0.82);
 }
 
 .size-chip-price.has-discount {

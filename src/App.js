@@ -3593,17 +3593,17 @@ const titleLengthClass =
           <span className="size-chip-main-row">
             <span className="size-chip-main">{size}</span>
 
-            {isRecommendedSize && (
-              <span className="size-chip-recommended">
-                {tr.sizeBestChoice}
-              </span>
-            )}
-
-            {discount && (
-              <span className="size-chip-sale-badge">
-                -{discount.percent}%
-              </span>
-            )}
+            {discount ? (
+            <span className="size-chip-discount-best">
+           -{discount.percent}% {tr.sizeBestChoice}
+            </span>
+            ) : (
+            isRecommendedSize && (
+            <span className="size-chip-recommended">
+            {tr.sizeBestChoice}
+            </span>
+            )
+          )}
 
             {product.slug === "ysl-y-iced-cologne" && size === "10ml" && (
               <span className="size-chip-recommended">
