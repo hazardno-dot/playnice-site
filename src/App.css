@@ -9149,6 +9149,7 @@ main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 
   padding: 3px 7px;
   border-radius: 999px;

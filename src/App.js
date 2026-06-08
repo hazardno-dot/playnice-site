@@ -3593,15 +3593,15 @@ const titleLengthClass =
           <span className="size-chip-main-row">
             <span className="size-chip-main">{size}</span>
 
-            {discount && (
-              <span className="size-chip-sale-badge">
-                -{discount.percent}%
-              </span>
-            )}
-
             {isRecommendedSize && (
               <span className="size-chip-recommended">
                 {tr.sizeBestChoice}
+              </span>
+            )}
+
+            {discount && (
+              <span className="size-chip-sale-badge">
+                -{discount.percent}%
               </span>
             )}
 
