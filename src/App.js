@@ -7067,19 +7067,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     : activePrice;
 
   return (
-    <strong className={`modal-selected-price ${discount ? "has-discount" : ""}`}>
-      {discount ? (
-        <>
-          <span className="modal-selected-old-price">
-            {formatPrice(activePrice)}
-          </span>
-          <span className="modal-selected-new-price">
-            {formatPrice(finalPrice)}
-          </span>
-        </>
-      ) : (
-        formatPrice(finalPrice)
-      )}
+    <strong className="modal-selected-price">
+     {formatPrice(finalPrice)}
     </strong>
   );
 })()}
