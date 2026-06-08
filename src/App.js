@@ -6997,51 +6997,75 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               </p>
 
               <div className="modal-sizes">
-                {Object.entries(selectedProduct.sizes).map(
-                  ([size, price], index) => (
-                    <button
-                      key={size}
-                      type="button"
-                      className={`modal-size ${
-                        selectedSize === size ? "active" : ""
-                      } panel-item-anim panel-item-${Math.min(index + 1, 6)}`}
-                      onClick={() => {
-                        setSelectedSize(size);
-                        setHasUserPickedSize(true);
-                      }}
-                    >
-                      <span>{size}</span>
-                      {(() => {
-  const discount = getProductDiscountForSize(selectedProduct, size);
-  const finalPrice = discount
-    ? getDiscountedPrice(price, discount.percent)
-    : price;
+  {Object.entries(selectedProduct.sizes).map(
+    ([size, price], index) => (
+      <button
+        key={size}
+        type="button"
+        className={`modal-size ${
+          selectedSize === size ? "active" : ""
+        } panel-item-anim panel-item-${Math.min(index + 1, 6)}`}
+        onClick={() => {
+          setSelectedSize(size);
+          setHasUserPickedSize(true);
+        }}
+      >
+        <span className="modal-size-top">
+          <span>{size}</span>
 
-  return (
-    <strong className={`modal-size-price ${discount ? "has-discount" : ""}`}>
-      {discount ? (
-        <>
-          <span className="modal-size-sale-badge">
-            -{discount.percent}%
-          </span>
-          <span className="modal-size-old-price">
-            {formatPrice(price)}
-          </span>
-          <span className="modal-size-new-price">
-            {formatPrice(finalPrice)}
-          </span>
-        </>
-      ) : (
-        formatPrice(price)
-      )}
-    </strong>
-  );
-})()}
-                    </button>
-                  )
-                )}
-              </div>
-            </div>
+          {(() => {
+            const discount = getProductDiscountForSize(
+              selectedProduct,
+              size
+            );
+
+            return (
+              discount && (
+                <span className="modal-size-sale-badge">
+                  -{discount.percent}%
+                </span>
+              )
+            );
+          })()}
+        </span>
+
+        {(() => {
+          const discount = getProductDiscountForSize(
+            selectedProduct,
+            size
+          );
+
+          const finalPrice = discount
+            ? getDiscountedPrice(price, discount.percent)
+            : price;
+
+          return (
+            <strong
+              className={`modal-size-price ${
+                discount ? "has-discount" : ""
+              }`}
+            >
+              {discount ? (
+                <>
+                  <span className="modal-size-old-price">
+                    {formatPrice(price)}
+                  </span>
+
+                  <span className="modal-size-new-price">
+                    {formatPrice(finalPrice)}
+                  </span>
+                </>
+              ) : (
+                formatPrice(price)
+              )}
+            </strong>
+          );
+        })()}
+      </button>
+    )
+  )}
+</div>
+    </div>
 
             <div className="modal-purchase-bar panel-anim panel-anim-3">
               <div className="modal-price-box">
