@@ -3549,7 +3549,9 @@ const titleLengthClass =
   {Object.entries(product.sizes).map(([size, price]) => {
     const feedbackKey = `${product.id}-${size}`;
     const isJustAdded = inlineAddedKey === feedbackKey;
-    const isRecommendedSize = size === "5ml";
+    const isRecommendedSize = product.discount
+    ? size === product.discount.size
+    : size === "5ml";
     const wearHint = getSizeWearHint(size);
 
     const discount = getProductDiscountForSize(product, size);
