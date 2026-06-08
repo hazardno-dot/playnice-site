@@ -7013,11 +7013,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <span className="modal-size-top">
           <span>{size}</span>
 
-          {(() => {
-            const discount = getProductDiscountForSize(
-              selectedProduct,
-              size
-            );
+        {discount && (
+          <span className="modal-size-sale-badge">
+          -{discount.percent}%
+          </span>
+        )}
+      </span>
 
             return (
               discount && (
