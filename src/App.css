@@ -9189,6 +9189,49 @@ main {
 }
 
 /* =========================================
+   MODAL DISCOUNT / SALE BADGES
+========================================= */
+
+.modal-size-price.has-discount {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.modal-size-sale-badge {
+  padding: 2px 6px;
+  border-radius: 999px;
+
+  font-size: 0.58rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  line-height: 1;
+
+  color: #f6ddb0;
+  border: 1px solid rgba(220, 181, 107, 0.26);
+  background: rgba(120, 24, 28, 0.88);
+}
+
+.modal-size-old-price,
+.modal-selected-old-price {
+  color: rgba(245, 239, 230, 0.45);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.modal-size-new-price,
+.modal-selected-new-price {
+  color: #f0c978;
+  font-weight: 850;
+}
+
+.modal-selected-price.has-discount {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+/* =========================================
    CATALOG DOWNLOAD SECTION
 ========================================= */
 

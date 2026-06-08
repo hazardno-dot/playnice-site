@@ -7011,7 +7011,32 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       }}
                     >
                       <span>{size}</span>
-                      <strong>{formatPrice(price)}</strong>
+                      {(() => {
+  const discount = getProductDiscountForSize(selectedProduct, size);
+  const finalPrice = discount
+    ? getDiscountedPrice(price, discount.percent)
+    : price;
+
+  return (
+    <strong className={`modal-size-price ${discount ? "has-discount" : ""}`}>
+      {discount ? (
+        <>
+          <span className="modal-size-sale-badge">
+            -{discount.percent}%
+          </span>
+          <span className="modal-size-old-price">
+            {formatPrice(price)}
+          </span>
+          <span className="modal-size-new-price">
+            {formatPrice(finalPrice)}
+          </span>
+        </>
+      ) : (
+        formatPrice(price)
+      )}
+    </strong>
+  );
+})()}
                     </button>
                   )
                 )}
@@ -7023,12 +7048,37 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 <span>
                   {lang === "sr" ? "IZABRANA CENA" : "SELECTED PRICE"}
                 </span>
-                <strong>
-                  {formatPrice(
-                    selectedProduct.sizes[selectedSize] ??
-                      Object.values(selectedProduct.sizes)[0]
-                  )}
-                </strong>
+                {(() => {
+  const activeSize =
+    selectedSize || Object.keys(selectedProduct.sizes)[0];
+
+  const activePrice =
+    selectedProduct.sizes[activeSize] ??
+    Object.values(selectedProduct.sizes)[0];
+
+  const discount = getProductDiscountForSize(selectedProduct, activeSize);
+
+  const finalPrice = discount
+    ? getDiscountedPrice(activePrice, discount.percent)
+    : activePrice;
+
+  return (
+    <strong className={`modal-selected-price ${discount ? "has-discount" : ""}`}>
+      {discount ? (
+        <>
+          <span className="modal-selected-old-price">
+            {formatPrice(activePrice)}
+          </span>
+          <span className="modal-selected-new-price">
+            {formatPrice(finalPrice)}
+          </span>
+        </>
+      ) : (
+        formatPrice(finalPrice)
+      )}
+    </strong>
+  );
+})()}
               </div>
 
               <div className="modal-cta-group">
@@ -7044,8 +7094,25 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       type="button"
       className={`modal-add-button ${isModalAdded ? "is-added" : ""}`}
       onClick={() => {
-        handleModalAddToCart(selectedProduct, activeSize);
-      }}
+  const activePrice = selectedProduct.sizes[activeSize];
+  const discount = getProductDiscountForSize(selectedProduct, activeSize);
+
+  const finalPrice = discount
+    ? getDiscountedPrice(activePrice, discount.percent)
+    : activePrice;
+
+  const productForCart = discount
+    ? {
+        ...selectedProduct,
+        sizes: {
+          ...selectedProduct.sizes,
+          [activeSize]: finalPrice,
+        },
+      }
+    : selectedProduct;
+
+  handleModalAddToCart(productForCart, activeSize);
+}}
       aria-live="polite"
     >
       <span>
