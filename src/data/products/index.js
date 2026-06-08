@@ -903,7 +903,11 @@ export const products = [
     inspiredBy: {
     name: "Original Yves Saint Laurent creation",
     short: "Woody Amber DNA"
-  }
+  },
+    discount: {
+    size: "10ml",
+    percent: 20
+  },
   },
   {
     id: 42,
