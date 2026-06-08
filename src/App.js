@@ -1928,6 +1928,23 @@ const handleScentRequestSubmit = async (event) => {
 };
 
 /* =========================================
+   getDiscountedPrice
+========================================= */
+
+const getDiscountedPrice = (price, percent) =>
+  Number((price * (1 - percent / 100)).toFixed(2));
+
+const getProductDiscountForSize = (product, size) => {
+  if (!product?.discount) return null;
+  return product.discount.size === size ? product.discount : null;
+};
+
+const getDisplayPriceForSize = (product, size, price) => {
+  const discount = getProductDiscountForSize(product, size);
+  return discount ? getDiscountedPrice(price, discount.percent) : price;
+};
+
+/* =========================================
    DERIVED DATA
 ========================================= */
 
@@ -3440,6 +3457,13 @@ const titleLengthClass =
         loading="lazy"
       />
 
+      {product.discount && (
+  <span className="product-sale-badge">
+    <span>SALE</span>
+    <strong>-{product.discount.percent}%</strong>
+  </span>
+)}
+
       {product.isNew && (
   <span className="product-new-badge">
     {tr.justIn}
@@ -3473,12 +3497,12 @@ const titleLengthClass =
   </button>
 
   {copy.miniTag && (
-    <span
-      className={`product-floating-badge ${getBadgeVariant(copy.miniTag)}`}
-    >
-      {copy.miniTag}
-    </span>
-  )}
+  <span
+    className={`product-floating-badge ${getBadgeVariant(copy.miniTag)}`}
+  >
+    {copy.miniTag}
+  </span>
+)}
 
   <div className="product-meta premium-product-meta">
 
@@ -3522,60 +3546,95 @@ const titleLengthClass =
   </div>
 
   <div className="size-buttons" onClick={(e) => e.stopPropagation()}>
-    {Object.entries(product.sizes).map(([size, price]) => {
-      const feedbackKey = `${product.id}-${size}`;
-      const isJustAdded = inlineAddedKey === feedbackKey;
-      const isRecommendedSize = size === "5ml";
-      const wearHint = getSizeWearHint(size);
+  {Object.entries(product.sizes).map(([size, price]) => {
+    const feedbackKey = `${product.id}-${size}`;
+    const isJustAdded = inlineAddedKey === feedbackKey;
+    const isRecommendedSize = size === "5ml";
+    const wearHint = getSizeWearHint(size);
 
-      return (
-        <button
-          key={size}
-          type="button"
-          className={`size-chip ${isRecommendedSize ? "is-recommended" : ""}`}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            e.currentTarget.blur();
+    const discount = getProductDiscountForSize(product, size);
+    const finalPrice = discount
+      ? getDiscountedPrice(price, discount.percent)
+      : price;
 
-            addToCart(product, size, null, null, {
-  showToast: false,
-  showMiniPreview: true
-});
-            triggerInlineAddedFeedback(product.id, size);
-          }}
-        >
-          <span className="size-chip-main-wrap">
-            <span className="size-chip-main-row">
-              <span className="size-chip-main">{size}</span>
+    const productForCart = discount
+      ? {
+          ...product,
+          sizes: {
+            ...product.sizes,
+            [size]: finalPrice,
+          },
+        }
+      : product;
 
-              {isRecommendedSize && (
-  <span className="size-chip-recommended">
-    {tr.sizeBestChoice}
-  </span>
-)}
+    return (
+      <button
+        key={size}
+        type="button"
+        className={`size-chip ${isRecommendedSize ? "is-recommended" : ""} ${
+          discount ? "has-discount" : ""
+        }`}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          e.currentTarget.blur();
 
-{product.slug === "ysl-y-iced-cologne" && size === "10ml" && (
-  <span className="size-chip-recommended">
-    {lang === "sr" ? "+ UZORAK" : "+ FREE SAMPLE"}
-  </span>
-)}
-            </span>
+          addToCart(productForCart, size, null, null, {
+            showToast: false,
+            showMiniPreview: true,
+          });
 
-            {wearHint && (
-              <span className="size-chip-wear-hint">{wearHint}</span>
+          triggerInlineAddedFeedback(product.id, size);
+        }}
+      >
+        <span className="size-chip-main-wrap">
+          <span className="size-chip-main-row">
+            <span className="size-chip-main">{size}</span>
+
+            {isRecommendedSize && (
+              <span className="size-chip-recommended">
+                {tr.sizeBestChoice}
+              </span>
+            )}
+
+            {discount && (
+              <span className="size-chip-sale-badge">
+                -{discount.percent}%
+              </span>
+            )}
+
+            {product.slug === "ysl-y-iced-cologne" && size === "10ml" && (
+              <span className="size-chip-recommended">
+                {lang === "sr" ? "+ UZORAK" : "+ FREE SAMPLE"}
+              </span>
             )}
           </span>
 
-          <span className="size-chip-price">{formatPrice(price)}</span>
+          {wearHint && (
+            <span className="size-chip-wear-hint">{wearHint}</span>
+          )}
+        </span>
 
-          <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
-            {tr.justAdded}
-          </span>
-        </button>
-      );
-    })}
-  </div>
+        <span className={`size-chip-price ${discount ? "has-discount" : ""}`}>
+          {discount ? (
+            <>
+              <span className="size-chip-old-price">{formatPrice(price)}</span>
+              <span className="size-chip-new-price">
+                {formatPrice(finalPrice)}
+              </span>
+            </>
+          ) : (
+            formatPrice(price)
+          )}
+        </span>
+
+        <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
+          {tr.justAdded}
+        </span>
+      </button>
+    );
+  })}
+</div>
 </article>
   );
 };

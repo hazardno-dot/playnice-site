@@ -8329,26 +8329,10 @@ main {
   display: inline-flex;
   align-items: baseline;
   gap: 4px;
-  font-family: "Inter", sans-serif;
-  font-weight: 640;
-
-  background: linear-gradient(
-    90deg,
-    #e6c88f 0%,
-    #dcb56b 35%,
-    #f0d7a3 60%,
-    #cfa24e 100%
-  );
-
-  .product-price-from,
-.premium-product-price {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 4px;
 
   font-family: "Inter", sans-serif;
-  font-weight: 680; /* ⬅️ malo jače od 640 */
-  letter-spacing: 0.02em; /* ⬅️ micro premium feel */
+  font-weight: 680;
+  letter-spacing: 0.02em;
 
   background: linear-gradient(
     90deg,
@@ -8361,15 +8345,7 @@ main {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  text-shadow:
-    0 0 8px rgba(220, 181, 107, 0.18); /* ⬅️ subtle glow */
-}
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  letter-spacing: 0.01em;
-  text-shadow: 0 0 10px rgba(220, 181, 107, 0.12);
+  text-shadow: 0 0 8px rgba(220, 181, 107, 0.18);
 }
 
 .price-prefix {
@@ -9119,6 +9095,90 @@ main {
   .size-buttons {
     margin-top: 6px;
   }
+}
+
+/* =========================================
+   product-sale-badge
+========================================= */
+
+.product-sale-badge {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 5;
+
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+
+  border: 1px solid rgba(220, 181, 107, 0.38);
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 232, 176, 0.22), transparent 34%),
+    linear-gradient(135deg, rgba(112, 20, 24, 0.96), rgba(26, 10, 10, 0.94));
+
+  color: #f6ddb0;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.38),
+    0 0 18px rgba(160, 38, 38, 0.22);
+
+  pointer-events: none;
+}
+
+.product-sale-badge span {
+  font-family: "Inter", sans-serif;
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1;
+}
+
+.product-sale-badge strong {
+  font-family: "Inter", sans-serif;
+  font-size: 0.86rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.size-chip-sale-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3px 7px;
+  border-radius: 999px;
+
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  color: #f6ddb0;
+
+  border: 1px solid rgba(220, 181, 107, 0.24);
+  background: rgba(120, 24, 28, 0.82);
+}
+
+.size-chip-price.has-discount {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.size-chip-old-price {
+  color: rgba(245, 239, 230, 0.45);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.size-chip-new-price {
+  color: #f0c978;
+  font-weight: 850;
+  text-shadow: 0 0 10px rgba(220, 181, 107, 0.16);
 }
 
 /* =========================================
