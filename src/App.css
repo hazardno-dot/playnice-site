@@ -8767,9 +8767,9 @@ main {
 .size-chip-main-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .size-chip-main,
