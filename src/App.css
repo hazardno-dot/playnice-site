@@ -9245,6 +9245,42 @@ main {
   white-space: nowrap;
 }
 
+.modal-size .modal-size-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+}
+
+.modal-size .modal-size-top > span:first-child {
+  width: auto;
+  flex: 0 0 auto;
+}
+
+.modal-size .modal-size-sale-badge {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: max-content;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: auto;
+  flex: 0 0 auto;
+  align-self: center;
+
+  padding: 2px 6px;
+  border-radius: 999px;
+
+  font-size: 0.54rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 /* =========================================
    CATALOG DOWNLOAD SECTION
 ========================================= */
