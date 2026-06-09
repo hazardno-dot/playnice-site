@@ -347,10 +347,19 @@ function smoothScrollToTop() {
 
 const scrollToProductGrid = () => {
   requestAnimationFrame(() => {
-    productGridRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+    setTimeout(() => {
+      if (!productGridRef.current) return;
+
+      const y =
+        productGridRef.current.getBoundingClientRect().top +
+        window.scrollY -
+        160;
+
+      window.scrollTo({
+        top: y,
+        behavior: "smooth"
+      });
+    }, 0);
   });
 };
 
@@ -2828,7 +2837,6 @@ const goToPage = (pageNumber) => {
   if (safePageNumber === currentPage) return;
 
   setCurrentPage(safePageNumber);
-
   scrollToProductGrid();
 };
 
