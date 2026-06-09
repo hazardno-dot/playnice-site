@@ -9232,6 +9232,49 @@ main {
 }
 
 /* =========================================
+   DISCOUNT BADGES — COMPACT PATCH
+========================================= */
+
+.product-sale-badge {
+  width: 46px;
+  height: 46px;
+  left: 12px;
+  bottom: 12px;
+}
+
+.product-sale-badge span {
+  font-size: 0.46rem;
+}
+
+.product-sale-badge strong {
+  font-size: 0.76rem;
+}
+
+@media (max-width: 768px) {
+  .product-sale-badge {
+    width: 42px;
+    height: 42px;
+    left: 10px;
+    bottom: 10px;
+  }
+
+  .product-sale-badge span {
+    font-size: 0.42rem;
+    letter-spacing: 0.1em;
+  }
+
+  .product-sale-badge strong {
+    font-size: 0.7rem;
+  }
+
+  .size-chip-discount-best {
+    padding: 2px 6px;
+    font-size: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+}
+
+/* =========================================
    MODAL DISCOUNT / SALE BADGES
 ========================================= */
 
@@ -9322,6 +9365,51 @@ main {
   letter-spacing: 0.06em;
   line-height: 1;
   white-space: nowrap;
+}
+
+/* =========================================
+   MODAL DISCOUNT — MOBILE COMPACT
+========================================= */
+
+.modal-size .size-chip-old-price {
+  font-size: 0.72em;
+}
+
+.modal-size .size-chip-new-price {
+  font-size: 0.82em;
+}
+
+.modal-size .size-chip-discount-best,
+.modal-size .size-chip-sale-badge {
+  padding: 2px 6px;
+  font-size: 0.48rem;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+  .modal-size {
+    overflow: hidden;
+  }
+
+  .modal-size .size-chip-price.has-discount {
+    gap: 5px;
+    max-width: 100%;
+  }
+
+  .modal-size .size-chip-old-price {
+    font-size: 0.62em;
+  }
+
+  .modal-size .size-chip-new-price {
+    font-size: 0.74em;
+  }
+
+  .modal-size .size-chip-discount-best,
+  .modal-size .size-chip-sale-badge {
+    padding: 2px 5px;
+    font-size: 0.42rem;
+    letter-spacing: 0.04em;
+  }
 }
 
 /* =========================================
