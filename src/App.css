@@ -9385,7 +9385,7 @@ main {
     position: absolute;
 
     top: 12px;
-    right: 28px;
+    right: 35px;
 
     padding: 1px 6px;
 
@@ -9393,7 +9393,7 @@ main {
     line-height: 1;
     letter-spacing: 0.04em;
 
-    transform: scale(0.82);
+    transform: scale(0.72);
     transform-origin: top right;
   }
 
