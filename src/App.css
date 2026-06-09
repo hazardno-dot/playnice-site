@@ -9381,7 +9381,7 @@ main {
     position: absolute;
 
     top: 12px;
-    right: 35px;
+    right: 28px;
 
     padding: 1px 6px;
 
@@ -9394,12 +9394,12 @@ main {
   }
 
   .modal-size .modal-size-old-price {
-    font-size: 0.52rem;
+    font-size: 0.62rem;
     opacity: 0.42;
   }
 
   .modal-size .modal-size-new-price {
-    font-size: 0.62rem;
+    font-size: 0.72rem;
     font-weight: 850;
   }
 
