@@ -9372,16 +9372,12 @@ main {
 ========================================= */
 
 @media (max-width: 768px) {
-
   .modal-size {
     position: relative;
     overflow: hidden;
   }
 
-  /* -20% badge */
-
-  .modal-size .size-chip-sale-badge,
-  .modal-size .size-chip-discount-best {
+  .modal-size .modal-size-sale-badge {
     position: absolute;
 
     top: 12px;
@@ -9397,21 +9393,17 @@ main {
     transform-origin: top right;
   }
 
-  /* stara cena */
-
-  .modal-size .size-chip-old-price {
+  .modal-size .modal-size-old-price {
     font-size: 0.62rem;
     opacity: 0.42;
   }
 
-  /* nova cena */
-
-  .modal-size .size-chip-new-price {
+  .modal-size .modal-size-new-price {
     font-size: 0.62rem;
     font-weight: 850;
   }
 
-  .modal-size .size-chip-price.has-discount {
+  .modal-size .modal-size-price.has-discount {
     gap: 5px;
   }
 }
