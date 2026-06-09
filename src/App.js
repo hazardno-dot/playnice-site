@@ -7047,6 +7047,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </button>
     );
   })}
+ </div>
 </div>
 
             <div className="modal-purchase-bar panel-anim panel-anim-3">
@@ -7128,18 +7129,36 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     type="button"
                     className="modal-buy-now"
                     onClick={() => {
-                      const activeSize =
-                        selectedSize || Object.keys(selectedProduct.sizes)[0];
+  const activeSize =
+    selectedSize || Object.keys(selectedProduct.sizes)[0];
 
-                      addToCart(selectedProduct, activeSize, null, null, {
-  showToast: false,
-  showMiniPreview: false
-});
-setMiniCartPreview(null);
-setCartOpen(false);
-setCheckoutOpen(true);
-closeProductModal();
-                    }}
+  const activePrice = selectedProduct.sizes[activeSize];
+  const discount = getProductDiscountForSize(selectedProduct, activeSize);
+
+  const finalPrice = discount
+    ? getDiscountedPrice(activePrice, discount.percent)
+    : activePrice;
+
+  const productForCart = discount
+    ? {
+        ...selectedProduct,
+        sizes: {
+          ...selectedProduct.sizes,
+          [activeSize]: finalPrice,
+        },
+      }
+    : selectedProduct;
+
+  addToCart(productForCart, activeSize, null, null, {
+    showToast: false,
+    showMiniPreview: false,
+  });
+
+  setMiniCartPreview(null);
+  setCartOpen(false);
+  setCheckoutOpen(true);
+  closeProductModal();
+}}
                   >
                     {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
                   </button>
