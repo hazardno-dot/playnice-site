@@ -9372,33 +9372,25 @@ main {
 ========================================= */
 
 @media (max-width: 768px) {
-
-  /* badge više unutra */
-  .modal-size .size-chip-sale-badge,
-  .modal-size .size-chip-discount-best {
+  .modal-size .modal-size-sale-badge {
     padding: 1px 5px;
-    font-size: 0.38rem;
+    font-size: 0.42rem;
     letter-spacing: 0.04em;
-
-    position: relative;
-    top: -1px;
-    right: -2px;
+    transform: translate(-6px, -1px) scale(0.88);
+    transform-origin: top right;
   }
 
-  /* stara cena manja */
-  .modal-size .size-chip-old-price {
-    font-size: 0.52rem;
-    opacity: 0.4;
+  .modal-size .modal-size-old-price {
+    font-size: 0.62rem;
+    opacity: 0.38;
   }
 
-  /* nova cena malo manja */
-  .modal-size .size-chip-new-price {
+  .modal-size .modal-size-new-price {
     font-size: 0.78rem;
     font-weight: 800;
   }
 
-  /* manji razmak između cena */
-  .modal-size .size-chip-price.has-discount {
+  .modal-size .modal-size-price.has-discount {
     gap: 4px;
   }
 }
