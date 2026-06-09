@@ -9408,8 +9408,9 @@ main {
 
   .modal-size .size-chip-sale-badge,
   .modal-size .size-chip-discount-best {
-    transform: scale(0.78);
-    transform-origin: top right;
+    padding: 1px 5px;
+    font-size: 0.42rem;
+    line-height: 1;
   }
 }
 
