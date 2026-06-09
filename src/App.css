@@ -9371,21 +9371,6 @@ main {
    MODAL DISCOUNT — MOBILE COMPACT
 ========================================= */
 
-.modal-size .size-chip-old-price {
-  font-size: 0.72em;
-}
-
-.modal-size .size-chip-new-price {
-  font-size: 0.82em;
-}
-
-.modal-size .size-chip-discount-best,
-.modal-size .size-chip-sale-badge {
-  padding: 2px 6px;
-  font-size: 0.48rem;
-  letter-spacing: 0.05em;
-}
-
 @media (max-width: 768px) {
 
   /* badge više unutra */
