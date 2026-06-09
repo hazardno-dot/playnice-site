@@ -345,20 +345,6 @@ function smoothScrollToTop() {
   });
 }
 
-const scrollToProductGrid = () => {
-  if (!productGridRef.current) return;
-
-  const y =
-    productGridRef.current.getBoundingClientRect().top +
-    window.scrollY -
-    160;
-
-  window.scrollTo({
-    top: y,
-    behavior: "smooth"
-  });
-};
-
 function getDefaultLanguage() {
   if (typeof window === "undefined") return "sr";
 
@@ -693,6 +679,7 @@ function App() {
   const modalAddedTimeoutRef = useRef(null);
 
   const [modalDiscountFlashKey, setModalDiscountFlashKey] = useState(null);
+  const [shouldScrollToGrid, setShouldScrollToGrid] = useState(false);
 
   const [manifestoOpen, setManifestoOpen] = useState(false);
   const [activeManifesto, setActiveManifesto] = useState(null);
@@ -2832,11 +2819,10 @@ const goToPage = (pageNumber) => {
 
   if (safePageNumber === currentPage) return;
 
-  setCurrentPage(safePageNumber);
+  document.activeElement?.blur();
 
-  setTimeout(() => {
-    scrollToProductGrid();
-  }, 80);
+  setCurrentPage(safePageNumber);
+  setShouldScrollToGrid(true);
 };
 
 const nextPage = () => {
@@ -3054,6 +3040,32 @@ const openImpactProductModal = (product) => {
   setSelectedProduct(productFromUrl);
   setView("shop");
 }, []);
+
+/* =========================================
+   shouldScrollToGrid
+========================================= */
+
+useEffect(() => {
+  if (!shouldScrollToGrid) return;
+
+  const timer = setTimeout(() => {
+    if (!productGridRef.current) return;
+
+    const y =
+      productGridRef.current.getBoundingClientRect().top +
+      window.scrollY -
+      160;
+
+    window.scrollTo({
+      top: y,
+      behavior: "smooth"
+    });
+
+    setShouldScrollToGrid(false);
+  }, 100);
+
+  return () => clearTimeout(timer);
+}, [currentPage, shouldScrollToGrid]);
 
 /* =========================================
    SEO title/meta useEffect
