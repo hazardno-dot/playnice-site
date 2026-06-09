@@ -7033,18 +7033,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           }
         }}
       >
-        <span>{size}</span>
+  {isDiscountFlashing ? (
+    <span className="modal-size-discount-flash">
+      -{discount.percent}%
+    </span>
+  ) : (
+    <>
+      <span>{size}</span>
 
-        <strong>
-          {isDiscountFlashing ? (
-            <span className="modal-size-discount-flash">
-              -{discount.percent}%
-            </span>
-          ) : (
-            formatPrice(discount && selectedSize === size ? finalPrice : price)
-          )}
-        </strong>
-      </button>
+      <strong>
+        {formatPrice(discount && selectedSize === size ? finalPrice : price)}
+      </strong>
+    </>
+  )}
+</button>
     );
   })}
  </div>
