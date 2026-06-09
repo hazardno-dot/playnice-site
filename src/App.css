@@ -9380,8 +9380,8 @@ main {
   .modal-size .modal-size-sale-badge {
     position: absolute;
 
-    top: 12px;
-    right: 28px;
+    top: 22px;
+    right: 24px;
 
     padding: 1px 6px;
 
@@ -9394,7 +9394,7 @@ main {
   }
 
   .modal-size .modal-size-old-price {
-    font-size: 0.62rem;
+    font-size: 0.52rem;
     opacity: 0.42;
   }
 
