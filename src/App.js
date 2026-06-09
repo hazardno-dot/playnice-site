@@ -2168,10 +2168,10 @@ const selectedCopy = selectedProduct
 
 const privateSelectionProducts = useMemo(() => {
   return products.filter((product) => wishlist.includes(product.id));
-}, [wishlist]);
+}, [products, wishlist]);
 
 const goToShop = () => {
-  switchView("shop");
+  switchView("shop", { scrollTop: view !== "shop" });
 };
 
 const [smartCtaVibe, setSmartCtaVibe] = useState(null);
