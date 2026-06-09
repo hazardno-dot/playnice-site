@@ -9397,18 +9397,19 @@ main {
   }
 
   .modal-size .size-chip-old-price {
-    font-size: 0.62em;
+    font-size: 0.58rem;
+    opacity: 0.45;
   }
 
   .modal-size .size-chip-new-price {
-    font-size: 0.74em;
+    font-size: 0.9rem;
+    font-weight: 800;
   }
 
-  .modal-size .size-chip-discount-best,
-  .modal-size .size-chip-sale-badge {
-    padding: 2px 5px;
-    font-size: 0.42rem;
-    letter-spacing: 0.04em;
+  .modal-size .size-chip-sale-badge,
+  .modal-size .size-chip-discount-best {
+    transform: scale(0.78);
+    transform-origin: top right;
   }
 }
 
