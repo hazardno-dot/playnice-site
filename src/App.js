@@ -3047,22 +3047,28 @@ const openImpactProductModal = (product) => {
 
 useEffect(() => {
   if (!shouldScrollToGrid) return;
+  if (!productGridRef.current) return;
 
+  const y =
+    productGridRef.current.getBoundingClientRect().top +
+    window.scrollY -
+    160;
+
+  // prvo odmah prebaci poziciju da nema pada na dno
+  window.scrollTo({
+    top: y,
+    behavior: "auto"
+  });
+
+  // pa mali elegantni smooth adjustment
   const timer = setTimeout(() => {
-    if (!productGridRef.current) return;
-
-    const y =
-      productGridRef.current.getBoundingClientRect().top +
-      window.scrollY -
-      160;
-
     window.scrollTo({
       top: y,
       behavior: "smooth"
     });
 
     setShouldScrollToGrid(false);
-  }, 0);
+  }, 30);
 
   return () => clearTimeout(timer);
 }, [currentPage, shouldScrollToGrid]);
