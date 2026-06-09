@@ -9380,6 +9380,16 @@ main {
     max-width: 100%;
   }
 
+  .modal-size {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .modal-size .size-chip-sale-badge,
+  .modal-size .size-chip-discount-best {
+    position: absolute;
+  }
+
   .modal-size .size-chip-old-price {
     display: none;
   }
