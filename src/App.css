@@ -9246,13 +9246,13 @@ main {
   font-size: 1rem;
 }
 
+/* OVDE povećavamo -20% */
+
 .modal-size.discount-flashing .modal-size-discount-flash {
   display: inline-block;
   transform: scale(2.0);
   transform-origin: center;
 }
-
-/* OVDE povećavamo -20% */
 
 .modal-size-discount-flash {
   display: block;
@@ -9277,6 +9277,8 @@ main {
   .modal-size-discount-flash {
     font-size: 2rem;
   }
+
+  /* OVDE povećavamo -20% */
 
   .modal-size.discount-flashing .modal-size-discount-flash {
     transform: scale(1.5);
