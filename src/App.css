@@ -9372,44 +9372,47 @@ main {
 ========================================= */
 
 @media (max-width: 768px) {
-  .modal-size .size-chip-price.has-discount {
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0;
-    max-width: 100%;
-  }
 
   .modal-size {
     position: relative;
     overflow: hidden;
   }
 
+  /* -20% badge */
+
   .modal-size .size-chip-sale-badge,
   .modal-size .size-chip-discount-best {
     position: absolute;
+
+    top: 12px;
+    right: 22px;
+
+    padding: 1px 6px;
+
+    font-size: 0.38rem;
+    line-height: 1;
+    letter-spacing: 0.04em;
+
+    transform: scale(0.88);
+    transform-origin: top right;
   }
+
+  /* stara cena */
 
   .modal-size .size-chip-old-price {
-    display: none;
+    font-size: 0.62rem;
+    opacity: 0.42;
   }
+
+  /* nova cena */
 
   .modal-size .size-chip-new-price {
-    font-size: 0.86rem;
+    font-size: 0.84rem;
     font-weight: 850;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
   }
 
-  .modal-size .size-chip-sale-badge,
-  .modal-size .size-chip-discount-best {
-    right: 12px;
-    top: 11px;
-    padding: 1px 7px;
-    font-size: 0.4rem;
-    letter-spacing: 0.05em;
-    transform: scale(0.9);
-    transform-origin: top right;
+  .modal-size .size-chip-price.has-discount {
+    gap: 5px;
   }
 }
 
