@@ -9277,6 +9277,10 @@ main {
   .modal-size-discount-flash {
     font-size: 2rem;
   }
+
+  .modal-size.discount-flashing .modal-size-discount-flash {
+    transform: scale(1.7);
+  }
 }
 
 /* =========================================
