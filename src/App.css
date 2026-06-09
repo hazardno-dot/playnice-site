@@ -9275,136 +9275,41 @@ main {
 }
 
 /* =========================================
-   MODAL DISCOUNT / SALE BADGES
+   MODAL SIZE DISCOUNT FLASH
 ========================================= */
 
 .modal-size {
   overflow: hidden;
 }
 
-.modal-size-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: 8px;
+.modal-size.discount-flashing {
+  border-color: rgba(220, 82, 82, 0.72);
+  background:
+    linear-gradient(135deg, rgba(128, 25, 30, 0.92), rgba(35, 12, 12, 0.96));
+  box-shadow:
+    0 0 0 1px rgba(220, 181, 107, 0.12),
+    0 0 18px rgba(160, 38, 38, 0.2);
 }
 
-.modal-size-sale-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: auto;
-  flex-shrink: 0;
-
-  padding: 2px 6px;
-  border-radius: 999px;
-
-  font-size: 0.54rem;
-  font-weight: 850;
-  letter-spacing: 0.06em;
-  line-height: 1;
-
+.modal-size-discount-flash {
   color: #f6ddb0;
-  border: 1px solid rgba(220, 181, 107, 0.24);
-  background: rgba(120, 24, 28, 0.86);
-}
-
-.modal-size-price.has-discount {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
-}
-
-.modal-size-old-price {
-  font-size: 0.82rem;
-  color: rgba(245, 239, 230, 0.45);
-  text-decoration: line-through;
-  text-decoration-thickness: 1px;
-}
-
-.modal-size-new-price {
-  font-size: 0.95rem;
-  color: #f0c978;
-  font-weight: 850;
-  white-space: nowrap;
-}
-
-.modal-size .modal-size-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: 8px;
-}
-
-.modal-size .modal-size-top > span:first-child {
-  width: auto;
-  flex: 0 0 auto;
-}
-
-.modal-size .modal-size-sale-badge {
-  width: auto !important;
-  min-width: 0 !important;
-  max-width: max-content;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-left: auto;
-  flex: 0 0 auto;
-  align-self: center;
-
-  padding: 2px 6px;
-  border-radius: 999px;
-
-  font-size: 0.54rem;
-  font-weight: 850;
-  letter-spacing: 0.06em;
+  font-size: 0.9em;
+  font-weight: 900;
+  letter-spacing: 0.08em;
   line-height: 1;
   white-space: nowrap;
 }
-
-/* =========================================
-   MODAL DISCOUNT — MOBILE COMPACT
-========================================= */
 
 @media (max-width: 768px) {
-  .modal-size {
-    position: relative;
-    overflow: hidden;
+  .modal-size.discount-flashing {
+    box-shadow:
+      0 0 0 1px rgba(220, 181, 107, 0.14),
+      0 0 14px rgba(160, 38, 38, 0.18);
   }
 
-  .modal-size .modal-size-sale-badge {
-    position: absolute;
-
-    top: 16px;
-    right: 24px;
-
-    padding: 1px 6px;
-
-    font-size: 0.38rem;
-    line-height: 1;
-    letter-spacing: 0.04em;
-
-    transform: scale(1.02);
-    transform-origin: top right;
-  }
-
-  .modal-size .modal-size-old-price {
-    font-size: 0.52rem;
-    opacity: 0.42;
-  }
-
-  .modal-size .modal-size-new-price {
-    font-size: 0.62rem;
-    font-weight: 850;
-  }
-
-  .modal-size .modal-size-price.has-discount {
-    gap: 5px;
+  .modal-size-discount-flash {
+    font-size: 0.82em;
+    letter-spacing: 0.06em;
   }
 }
 

@@ -678,6 +678,8 @@ function App() {
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
 
+  const [modalDiscountFlashKey, setModalDiscountFlashKey] = useState(null);
+
   const [manifestoOpen, setManifestoOpen] = useState(false);
   const [activeManifesto, setActiveManifesto] = useState(null);
 
@@ -6997,24 +6999,54 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               </p>
 
               <div className="modal-sizes">
-  {Object.entries(selectedProduct.sizes).map(([size, price], index) => {
-    const discount = getProductDiscountForSize(selectedProduct, size);
+                {Object.entries(selectedProduct.sizes).map(([size, price], index) => {
+  const discount = getProductDiscountForSize(selectedProduct, size);
 
-    const finalPrice = discount
-      ? getDiscountedPrice(price, discount.percent)
-      : price;
+  const finalPrice = discount
+    ? getDiscountedPrice(price, discount.percent)
+    : price;
 
-    return (
-      <button
-        key={size}
-        type="button"
-        className={`modal-size ${
-          selectedSize === size ? "active" : ""
-        } panel-item-anim panel-item-${Math.min(index + 1, 6)}`}
-        onClick={() => {
-          setSelectedSize(size);
-          setHasUserPickedSize(true);
-        }}
+  const flashKey = `${selectedProduct.id}-${size}`;
+  const isDiscountFlashing = modalDiscountFlashKey === flashKey;
+
+  return (
+    <button
+      key={size}
+      type="button"
+      className={`modal-size ${
+        selectedSize === size ? "active" : ""
+      } ${
+        isDiscountFlashing ? "discount-flashing" : ""
+      } panel-item-anim panel-item-${Math.min(index + 1, 6)}`}
+      onClick={() => {
+        setSelectedSize(size);
+        setHasUserPickedSize(true);
+
+        if (discount) {
+          setModalDiscountFlashKey(flashKey);
+
+          setTimeout(() => {
+            setModalDiscountFlashKey((currentKey) =>
+              currentKey === flashKey ? null : currentKey
+            );
+          }, 1500);
+        }
+      }}
+    >
+      <span>{size}</span>
+
+      <strong>
+        {isDiscountFlashing ? (
+          <span className="modal-size-discount-flash">
+            -{discount.percent}%
+          </span>
+        ) : (
+          formatPrice(discount && selectedSize === size ? finalPrice : price)
+        )}
+      </strong>
+    </button>
+  );
+})}
       >
         <span className="modal-size-top">
           <span>{size}</span>
