@@ -9389,12 +9389,12 @@ main {
     line-height: 1;
     letter-spacing: 0.04em;
 
-    transform: scale(0.72);
+    transform: scale(0.82);
     transform-origin: top right;
   }
 
   .modal-size .modal-size-old-price {
-    font-size: 0.62rem;
+    font-size: 0.52rem;
     opacity: 0.42;
   }
 
