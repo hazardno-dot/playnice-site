@@ -9302,19 +9302,33 @@ main {
     0 0 18px rgba(160, 38, 38, 0.2);
 }
 
-.modal-size-discount-flash {
-  position: static;
+/* sakrij 10ML label dok traje flash */
 
-  display: inline-flex;
+.modal-size.discount-flashing > span:first-child {
+  display: none;
+}
+
+/* centriraj sadržaj */
+
+.modal-size.discount-flashing strong {
+  display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+}
+
+/* OVDE povećavamo -20% */
+
+.modal-size-discount-flash {
+  display: block;
 
   color: #f6ddb0;
 
-  font-size: 2rem;
+  font-size: 2.8rem;
   font-weight: 900;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.08em;
   line-height: 1;
+
   white-space: nowrap;
 }
 
@@ -9326,7 +9340,7 @@ main {
   }
 
   .modal-size-discount-flash {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 }
 
