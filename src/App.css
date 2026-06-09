@@ -5740,49 +5740,6 @@ main {
 }
 
 /* =========================================
-   DISCOUNT BADGES — COMPACT PATCH
-========================================= */
-
-.product-sale-badge {
-  width: 46px;
-  height: 46px;
-  left: 12px;
-  bottom: 12px;
-}
-
-.product-sale-badge span {
-  font-size: 0.46rem;
-}
-
-.product-sale-badge strong {
-  font-size: 0.76rem;
-}
-
-@media (max-width: 768px) {
-  .product-sale-badge {
-    width: 42px;
-    height: 42px;
-    left: 10px;
-    bottom: 10px;
-  }
-
-  .product-sale-badge span {
-    font-size: 0.42rem;
-    letter-spacing: 0.1em;
-  }
-
-  .product-sale-badge strong {
-    font-size: 0.7rem;
-  }
-
-  .size-chip-discount-best {
-    padding: 2px 6px;
-    font-size: 0.5rem;
-    letter-spacing: 0.05em;
-  }
-}
-
-/* =========================================
    CHECKOUT MODAL
 ========================================= */
 
@@ -9171,12 +9128,12 @@ main {
 
 .product-sale-badge {
   position: absolute;
-  left: 10px;
-  bottom: 10px;
+  left: 12px;
+  bottom: 12px;
   z-index: 5;
 
-  width: 54px;
-  height: 54px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
 
   display: inline-flex;
@@ -9200,7 +9157,7 @@ main {
 
 .product-sale-badge span {
   font-family: "Inter", sans-serif;
-  font-size: 0.5rem;
+  font-size: 0.46rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   line-height: 1;
@@ -9208,7 +9165,7 @@ main {
 
 .product-sale-badge strong {
   font-family: "Inter", sans-serif;
-  font-size: 0.86rem;
+  font-size: 0.76rem;
   font-weight: 900;
   line-height: 1;
 }
@@ -9231,40 +9188,21 @@ main {
   text-shadow: 0 0 10px rgba(220, 181, 107, 0.16);
 }
 
-/* =========================================
-   DISCOUNT BADGES — COMPACT PATCH
-========================================= */
-
-.product-sale-badge {
-  width: 46px;
-  height: 46px;
-  left: 12px;
-  bottom: 12px;
-}
-
-.product-sale-badge span {
-  font-size: 0.46rem;
-}
-
-.product-sale-badge strong {
-  font-size: 0.76rem;
-}
-
 @media (max-width: 768px) {
   .product-sale-badge {
-    width: 42px;
-    height: 42px;
-    left: 10px;
-    bottom: 10px;
+    width: 38px;
+    height: 38px;
+    left: 8px;
+    bottom: 8px;
   }
 
   .product-sale-badge span {
-    font-size: 0.42rem;
+    font-size: 0.38rem;
     letter-spacing: 0.1em;
   }
 
   .product-sale-badge strong {
-    font-size: 0.7rem;
+    font-size: 0.62rem;
   }
 
   .size-chip-discount-best {
