@@ -2290,27 +2290,27 @@ const handleStickyCtaJournalClick = (event) => {
   return "/";
 };
 
-const switchView = (nextView) => {
+const switchView = (nextView, options = {}) => {
+  const { scrollTop = true } = options;
   const nextPath = routeForView(nextView);
+  const isSameView = view === nextView;
 
-  if (view !== nextView) {
+  if (!isSameView) {
     setView(nextView);
   }
 
-  // 👉 PUSH CLEAN URL
   if (window.location.pathname !== nextPath) {
     window.history.pushState({}, "", nextPath);
   }
 
-  // 👉 (opciono) zadrži query za debug ako želiš
-  // window.history.pushState({}, "", `${nextPath}?view=${nextView}`);
-
   trackPageView(nextPath);
   trackMeta("PageView");
 
-  requestAnimationFrame(() => {
-    smoothScrollToTop();
-  });
+  if (scrollTop && !isSameView) {
+    requestAnimationFrame(() => {
+      smoothScrollToTop();
+    });
+  }
 };
 
 const goHome = () => {
@@ -3473,30 +3473,37 @@ const titleLengthClass =
 )}
     </button>
 
-    <button
-      type="button"
-      className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
-        isSpraying ? "is-spraying" : ""
-      }`}
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleWishlist(product.id);
-    }}
-    aria-label={
-      isWishlisted
-        ? lang === "sr"
-          ? `Ukloni ${product.name} iz wishlist`
-          : `Remove ${product.name} from wishlist`
-        : lang === "sr"
-        ? `Dodaj ${product.name} u wishlist`
-        : `Add ${product.name} to wishlist`
-    }
-  >
-    <span className="heart-icon" aria-hidden="true">
-      ♥
-    </span>
-  </button>
+     <button
+  type="button"
+  className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
+    isSpraying ? "is-spraying" : ""
+  }`}
+  onMouseDown={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }}
+  onPointerDown={(e) => {
+    e.stopPropagation();
+  }}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product.id);
+  }}
+  aria-label={
+    isWishlisted
+      ? lang === "sr"
+        ? `Ukloni ${product.name} iz Private Selection`
+        : `Remove ${product.name} from Private Selection`
+      : lang === "sr"
+      ? `Dodaj ${product.name} u Private Selection`
+      : `Add ${product.name} to Private Selection`
+  }
+>
+  <span className="heart-icon" aria-hidden="true">
+    ♥
+  </span>
+</button>
 
   {copy.miniTag && (
   <span
