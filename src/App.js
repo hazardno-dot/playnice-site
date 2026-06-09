@@ -345,6 +345,15 @@ function smoothScrollToTop() {
   });
 }
 
+const scrollToProductGrid = () => {
+  requestAnimationFrame(() => {
+    productGridRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  });
+};
+
 function getDefaultLanguage() {
   if (typeof window === "undefined") return "sr";
 
@@ -818,6 +827,7 @@ const isNewRequest = (request) => {
   const touchEndX = useRef(0);
   const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
+  const productGridRef = useRef(null);
 
   /* =========================================
      DERIVED TRANSLATIONS / STATIC ARRAYS
@@ -2284,7 +2294,7 @@ const handleStickyCtaJournalClick = (event) => {
   /* =========================================
      ACTIONS
   ========================================= */
-  const routeForView = (nextView) => {
+const routeForView = (nextView) => {
   if (nextView === "shop") return "/shop";
   if (nextView === "journal") return "/journal";
   return "/";
@@ -2812,16 +2822,14 @@ const addHeroBottleToCart = () => {
     }
   };
 
-  const goToPage = (pageNumber) => {
+const goToPage = (pageNumber) => {
   const safePageNumber = Math.min(Math.max(pageNumber, 1), totalPages);
 
   if (safePageNumber === currentPage) return;
 
   setCurrentPage(safePageNumber);
 
-  requestAnimationFrame(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+  scrollToProductGrid();
 };
 
 const nextPage = () => {
@@ -4843,6 +4851,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 <h2>{tr.bestsellersTitle}</h2>
                 <p>{tr.bestsellersText}</p>
               </div>
+
+              <div className="product-grid-anchor" ref={productGridRef}>
 
               <div className="product-grid">
                 {[27, 30, 36, 47]
