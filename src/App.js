@@ -679,7 +679,6 @@ function App() {
   const modalAddedTimeoutRef = useRef(null);
 
   const [modalDiscountFlashKey, setModalDiscountFlashKey] = useState(null);
-  const [shouldScrollToGrid, setShouldScrollToGrid] = useState(false);
 
   const [manifestoOpen, setManifestoOpen] = useState(false);
   const [activeManifesto, setActiveManifesto] = useState(null);
@@ -820,6 +819,7 @@ const isNewRequest = (request) => {
   const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
   const productGridRef = useRef(null);
+  const [shouldScrollToGrid, setShouldScrollToGrid] = useState(false);
 
   /* =========================================
      DERIVED TRANSLATIONS / STATIC ARRAYS

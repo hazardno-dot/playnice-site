@@ -8093,10 +8093,6 @@ main {
    PRODUCT CARD — FINAL CLEAN V2
 ========================================= */
 
-.product-grid-anchor {
-  scroll-margin-top: 160px;
-}
-
 .product-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
