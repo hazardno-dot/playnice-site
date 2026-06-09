@@ -3058,7 +3058,7 @@ useEffect(() => {
 
     window.scrollTo({
       top: y,
-      behavior: "auto"
+      behavior: "smooth"
     });
 
     setShouldScrollToGrid(false);
