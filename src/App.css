@@ -9284,7 +9284,11 @@ main {
 
 .modal-size.discount-flashing {
   position: relative;
-  
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border-color: rgba(220, 82, 82, 0.72);
   background:
     linear-gradient(
@@ -9299,10 +9303,9 @@ main {
 }
 
 .modal-size-discount-flash {
-  position: absolute;
-  inset: 0;
+  position: static;
 
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 
@@ -9313,18 +9316,6 @@ main {
   letter-spacing: -0.02em;
   line-height: 1;
   white-space: nowrap;
-
-  animation: salePulse 0.7s ease-in-out infinite alternate;
-}
-
-@keyframes salePulse {
-  from {
-    transform: scale(1);
-  }
-
-  to {
-    transform: scale(1.08);
-  }
 }
 
 @media (max-width: 768px) {
