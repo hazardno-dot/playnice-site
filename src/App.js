@@ -3058,11 +3058,11 @@ useEffect(() => {
 
     window.scrollTo({
       top: y,
-      behavior: "smooth"
+      behavior: "auto"
     });
 
     setShouldScrollToGrid(false);
-  }, 30);
+  }, 0);
 
   return () => clearTimeout(timer);
 }, [currentPage, shouldScrollToGrid]);
