@@ -3062,7 +3062,7 @@ useEffect(() => {
     });
 
     setShouldScrollToGrid(false);
-  }, 100);
+  }, 30);
 
   return () => clearTimeout(timer);
 }, [currentPage, shouldScrollToGrid]);
