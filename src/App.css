@@ -9387,29 +9387,34 @@ main {
 }
 
 @media (max-width: 768px) {
-  .modal-size {
-    overflow: hidden;
+
+  /* badge više unutra */
+  .modal-size .size-chip-sale-badge,
+  .modal-size .size-chip-discount-best {
+    padding: 1px 5px;
+    font-size: 0.38rem;
+    letter-spacing: 0.04em;
+
+    position: relative;
+    top: -1px;
+    right: -2px;
   }
 
-  .modal-size .size-chip-price.has-discount {
-    gap: 5px;
-    max-width: 100%;
-  }
-
+  /* stara cena manja */
   .modal-size .size-chip-old-price {
-    font-size: 0.58rem;
-    opacity: 0.45;
+    font-size: 0.52rem;
+    opacity: 0.4;
   }
 
+  /* nova cena malo manja */
   .modal-size .size-chip-new-price {
-    font-size: 0.9rem;
+    font-size: 0.78rem;
     font-weight: 800;
   }
 
-  .modal-size .size-chip-sale-badge,
-  .modal-size .size-chip-discount-best {
-    transform: scale(0.78);
-    transform-origin: top right;
+  /* manji razmak između cena */
+  .modal-size .size-chip-price.has-discount {
+    gap: 4px;
   }
 }
 
