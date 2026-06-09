@@ -9389,7 +9389,7 @@ main {
     line-height: 1;
     letter-spacing: 0.04em;
 
-    transform: scale(0.82);
+    transform: scale(1.02);
     transform-origin: top right;
   }
 
@@ -9399,7 +9399,7 @@ main {
   }
 
   .modal-size .modal-size-new-price {
-    font-size: 0.72rem;
+    font-size: 0.62rem;
     font-weight: 850;
   }
 
