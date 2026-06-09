@@ -9248,7 +9248,7 @@ main {
 
 .modal-size.discount-flashing .modal-size-discount-flash {
   display: inline-block;
-  transform: scale(2.2);
+  transform: scale(2.0);
   transform-origin: center;
 }
 
@@ -9279,7 +9279,7 @@ main {
   }
 
   .modal-size.discount-flashing .modal-size-discount-flash {
-    transform: scale(1.7);
+    transform: scale(1.5);
   }
 }
 
