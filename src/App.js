@@ -4852,8 +4852,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 <p>{tr.bestsellersText}</p>
               </div>
 
-              <div className="product-grid-anchor" ref={productGridRef}>
-
+            <div className="product-grid-anchor" ref={productGridRef}>
               <div className="product-grid">
                 {[27, 30, 36, 47]
                   .map((id) => products.find((product) => product.id === id))
@@ -4868,6 +4867,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     />
                   ))}
               </div>
+            </div>
 
               <div className="section-cta-center">
                 <button className="gold-button" type="button" onClick={goToShop}>
