@@ -2316,6 +2316,11 @@ const switchView = (nextView, options = {}) => {
 };
 
 const goHome = () => {
+  if (view === "home") {
+    smoothScrollToTop();
+    return;
+  }
+
   switchView("home");
 };
 
@@ -3839,7 +3844,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <button
       className="brand enterprise-brand"
       type="button"
-      onClick={() => switchView("home")}
+      onClick={goHome}
       aria-label="PlayNice home"
     >
       <span className="brand-copy">
@@ -3865,10 +3870,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       )}
       <button
         className={`nav-link nav-link-home ${
-          view === "home" ? "active" : ""
-        }`}
+        view === "home" ? "active" : ""
+      }`}
         type="button"
-        onClick={() => switchView("home")}
+        onClick={goHome}
       >
         {tr.navHome}
       </button>
