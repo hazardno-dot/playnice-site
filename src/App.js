@@ -1815,7 +1815,7 @@ const handleCommunityRequestVote = async (requestName) => {
 
     if (result?.status === "blocked") {
       setScentRequestStatus(
-  getVoteCooldownMessage(existingProduct.name, result.remainingDays)
+        getVoteCooldownMessage(existingProduct.name, result.remainingDays)
       );
 
       openProductFromRequest(existingProduct);
@@ -1848,7 +1848,7 @@ const handleCommunityRequestVote = async (requestName) => {
 
   if (result?.status === "blocked") {
     setScentRequestStatus(
-  getVoteCooldownMessage(existingProduct.name, result.remainingDays)
+      getVoteCooldownMessage(requestName, result.remainingDays)
     );
 
     return;
@@ -1952,7 +1952,7 @@ const handleScentRequestSubmit = async (event) => {
 
       if (result?.status === "blocked") {
         setScentRequestStatus(
-    getVoteCooldownMessage(existingProduct.name, result.remainingDays)
+          getVoteCooldownMessage(fragranceName, result.remainingDays)
         );
 
         setScentRequestValue("");
