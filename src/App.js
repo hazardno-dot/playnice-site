@@ -1810,10 +1810,10 @@ const handleCommunityRequestVote = async (requestName) => {
 
     if (result?.status === "blocked") {
       setScentRequestStatus(
-        lang === "sr"
-          ? `Već si glasao za ${existingProduct.name}. Možeš ponovo za ${result.remainingDays} dana.`
-          : `You already voted for ${existingProduct.name}. You can vote again in ${result.remainingDays} days.`
-      );
+    lang === "sr"
+    ? `Hvala na podršci za ${requestName} ✦ Novi glas možeš dodati za ${result.remainingDays} dana.`
+    : `Thanks for supporting ${requestName} ✦ You can vote for it again in ${result.remainingDays} days.`
+    );
 
       openProductFromRequest(existingProduct);
       return;
@@ -1845,9 +1845,9 @@ const handleCommunityRequestVote = async (requestName) => {
 
   if (result?.status === "blocked") {
     setScentRequestStatus(
-      lang === "sr"
-        ? `Već si glasao za ${requestName}. Možeš ponovo za ${result.remainingDays} dana.`
-        : `You already voted for ${requestName}. You can vote again in ${result.remainingDays} days.`
+    lang === "sr"
+    ? `Hvala na podršci za ${requestName} ✦ Novi glas možeš dodati za ${result.remainingDays} dana.`
+    : `Thanks for supporting ${requestName} ✦ You can vote for it again in ${result.remainingDays} days.`
     );
 
     return;
@@ -1951,10 +1951,10 @@ const handleScentRequestSubmit = async (event) => {
 
       if (result?.status === "blocked") {
         setScentRequestStatus(
-          lang === "sr"
-            ? `Već si glasao za ${existingProduct.name}. Možeš ponovo za ${result.remainingDays} dana.`
-            : `You already voted for ${existingProduct.name}. You can vote again in ${result.remainingDays} days.`
-        );
+    lang === "sr"
+    ? `Hvala na podršci za ${requestName} ✦ Novi glas možeš dodati za ${result.remainingDays} dana.`
+    : `Thanks for supporting ${requestName} ✦ You can vote for it again in ${result.remainingDays} days.`
+    );
 
         setScentRequestValue("");
         openProductFromRequest(existingProduct);
@@ -4637,9 +4637,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <small>
   {lang === "sr"
-    ? "Klik dodaje još jedan glas!"
-    : "Tap to add one more vote!"}
-</small>
+    ? "Jedan glas po parfemu na svakih 7 dana"
+    : "One vote per fragrance every 7 days"}
+    </small>
   </div>
 
   <div className="community-most-wanted-list">
