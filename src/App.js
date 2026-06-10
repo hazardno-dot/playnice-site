@@ -1665,29 +1665,65 @@ const handleJournalClose = () => {
 };
 
 /* =========================================
+   getPlayNiceDeviceId
+========================================= */
+
+const getPlayNiceDeviceId = () => {
+  const storageKey = "playnice_device_id";
+
+  try {
+    const existingId = localStorage.getItem(storageKey);
+
+    if (existingId) return existingId;
+
+    const newId =
+      window.crypto?.randomUUID?.() ||
+      `pn_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+
+    localStorage.setItem(storageKey, newId);
+
+    return newId;
+  } catch (error) {
+    return `pn_fallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+  }
+};
+
+/* =========================================
    SEND SCENT REQUEST HEPLER
 ========================================= */
 
-const sendScentRequest = (fragranceName, source = "scent_request") => {
+const sendScentRequest = async (
+  fragranceName,
+  source = "scent_request"
+) => {
   try {
-    const payloadToSend = JSON.stringify({
-      timestamp: new Date().toISOString(),
-      fragrance: fragranceName,
-      lang,
-      page: window.location.pathname,
-      source
-    });
-
-    const blob = new Blob([payloadToSend], {
-      type: "text/plain;charset=utf-8"
-    });
-
-    navigator.sendBeacon(
+    const response = await fetch(
       "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
-      blob
+      {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({
+          timestamp: new Date().toISOString(),
+          fragrance: fragranceName,
+          lang,
+          page: window.location.pathname,
+          source,
+          deviceId: getPlayNiceDeviceId()
+        })
+      }
     );
+
+    return await response.json();
   } catch (error) {
     console.error("Scent request submit failed:", error);
+
+    return {
+      status: "error",
+      message: String(error)
+    };
   }
 };
 
@@ -1784,7 +1820,29 @@ const handleCommunityRequestVote = (requestName) => {
     return;
   }
 
-  sendScentRequest(requestName);
+  const handleCommunityRequestVote = async (requestName) => {
+
+    const result = await sendScentRequest(requestName);
+
+if (result?.status === "blocked") {
+  setScentRequestStatus(
+    lang === "sr"
+      ? `Već si glasao za ${requestName}. Možeš ponovo za ${result.remainingDays} dana.`
+      : `You already voted for ${requestName}. You can vote again in ${result.remainingDays} days.`
+  );
+
+  return;
+}
+
+if (result?.status !== "ok") {
+  setScentRequestStatus(
+    lang === "sr"
+      ? "Glas nije prošao. Probaj ponovo."
+      : "Vote was not saved. Please try again."
+  );
+
+  return;
+}
 
   setCommunityRequests((prev) => {
     const beforeSorted = getVisibleCommunityRequests(prev);
@@ -1886,7 +1944,27 @@ const handleScentRequestSubmit = async (event) => {
   setScentRequestStatus("");
 
   try {
-    sendScentRequest(fragranceName);
+    const result = await sendScentRequest(fragranceName);
+
+if (result?.status === "blocked") {
+  setScentRequestStatus(
+    lang === "sr"
+      ? `Već si predložio ${fragranceName}. Možeš ponovo za ${result.remainingDays} dana.`
+      : `You already requested ${fragranceName}. You can request it again in ${result.remainingDays} days.`
+  );
+
+  return;
+}
+
+if (result?.status !== "ok") {
+  setScentRequestStatus(
+    lang === "sr"
+      ? "Predlog nije sačuvan. Probaj ponovo."
+      : "Request was not saved. Please try again."
+  );
+
+  return;
+}
 
     const existingRequest = communityRequests.find(
       (item) =>
