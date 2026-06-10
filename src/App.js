@@ -1799,6 +1799,11 @@ const getVisibleCommunityRequests = (requests) =>
     .filter((request) => !findExistingProductByRequest(request.name))
     .sort((a, b) => b.votes - a.votes);
 
+const getVoteCooldownMessage = (fragranceName, remainingDays) =>
+  lang === "sr"
+    ? `Hvala na podršci za ${fragranceName} ✦ Novi glas možeš dodati za ${remainingDays} dana.`
+    : `Thanks for supporting ${fragranceName} ✦ You can vote for it again in ${remainingDays} days.`;
+
 const handleCommunityRequestVote = async (requestName) => {
   const existingProduct = findExistingProductByRequest(requestName);
 
@@ -1810,10 +1815,8 @@ const handleCommunityRequestVote = async (requestName) => {
 
     if (result?.status === "blocked") {
       setScentRequestStatus(
-    lang === "sr"
-    ? `Hvala na podršci za ${requestName} ✦ Novi glas možeš dodati za ${result.remainingDays} dana.`
-    : `Thanks for supporting ${requestName} ✦ You can vote for it again in ${result.remainingDays} days.`
-    );
+  getVoteCooldownMessage(existingProduct.name, result.remainingDays)
+      );
 
       openProductFromRequest(existingProduct);
       return;
@@ -1845,9 +1848,7 @@ const handleCommunityRequestVote = async (requestName) => {
 
   if (result?.status === "blocked") {
     setScentRequestStatus(
-    lang === "sr"
-    ? `Hvala na podršci za ${requestName} ✦ Novi glas možeš dodati za ${result.remainingDays} dana.`
-    : `Thanks for supporting ${requestName} ✦ You can vote for it again in ${result.remainingDays} days.`
+  getVoteCooldownMessage(existingProduct.name, result.remainingDays)
     );
 
     return;
@@ -1951,10 +1952,8 @@ const handleScentRequestSubmit = async (event) => {
 
       if (result?.status === "blocked") {
         setScentRequestStatus(
-    lang === "sr"
-    ? `Hvala na podršci za ${requestName} ✦ Novi glas možeš dodati za ${result.remainingDays} dana.`
-    : `Thanks for supporting ${requestName} ✦ You can vote for it again in ${result.remainingDays} days.`
-    );
+    getVoteCooldownMessage(existingProduct.name, result.remainingDays)
+        );
 
         setScentRequestValue("");
         openProductFromRequest(existingProduct);
