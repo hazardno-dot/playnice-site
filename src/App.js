@@ -1799,16 +1799,37 @@ const getVisibleCommunityRequests = (requests) =>
     .filter((request) => !findExistingProductByRequest(request.name))
     .sort((a, b) => b.votes - a.votes);
 
-const handleCommunityRequestVote = (requestName) => {
+const handleCommunityRequestVote = async (requestName) => {
   const existingProduct = findExistingProductByRequest(requestName);
 
   if (existingProduct) {
-    addExistingCollectionRequest(existingProduct);
-
-    sendScentRequest(
+    const result = await sendScentRequest(
       existingProduct.name,
       "existing_collection_request"
     );
+
+    if (result?.status === "blocked") {
+      setScentRequestStatus(
+        lang === "sr"
+          ? `Već si glasao za ${existingProduct.name}. Možeš ponovo za ${result.remainingDays} dana.`
+          : `You already voted for ${existingProduct.name}. You can vote again in ${result.remainingDays} days.`
+      );
+
+      openProductFromRequest(existingProduct);
+      return;
+    }
+
+    if (result?.status !== "ok") {
+      setScentRequestStatus(
+        lang === "sr"
+          ? "Glas nije prošao. Probaj ponovo."
+          : "Vote was not saved. Please try again."
+      );
+
+      return;
+    }
+
+    addExistingCollectionRequest(existingProduct);
 
     setScentRequestStatus(
       lang === "sr"
@@ -1820,29 +1841,27 @@ const handleCommunityRequestVote = (requestName) => {
     return;
   }
 
-  const handleCommunityRequestVote = async (requestName) => {
+  const result = await sendScentRequest(requestName);
 
-    const result = await sendScentRequest(requestName);
+  if (result?.status === "blocked") {
+    setScentRequestStatus(
+      lang === "sr"
+        ? `Već si glasao za ${requestName}. Možeš ponovo za ${result.remainingDays} dana.`
+        : `You already voted for ${requestName}. You can vote again in ${result.remainingDays} days.`
+    );
 
-if (result?.status === "blocked") {
-  setScentRequestStatus(
-    lang === "sr"
-      ? `Već si glasao za ${requestName}. Možeš ponovo za ${result.remainingDays} dana.`
-      : `You already voted for ${requestName}. You can vote again in ${result.remainingDays} days.`
-  );
+    return;
+  }
 
-  return;
-}
+  if (result?.status !== "ok") {
+    setScentRequestStatus(
+      lang === "sr"
+        ? "Glas nije prošao. Probaj ponovo."
+        : "Vote was not saved. Please try again."
+    );
 
-if (result?.status !== "ok") {
-  setScentRequestStatus(
-    lang === "sr"
-      ? "Glas nije prošao. Probaj ponovo."
-      : "Vote was not saved. Please try again."
-  );
-
-  return;
-}
+    return;
+  }
 
   setCommunityRequests((prev) => {
     const beforeSorted = getVisibleCommunityRequests(prev);
@@ -1878,17 +1897,17 @@ if (result?.status !== "ok") {
     }, {});
 
     const nextTopThreeEntries = afterSorted.reduce((acc, item, index) => {
-  const previousIndex = beforeRanks[item.name];
+      const previousIndex = beforeRanks[item.name];
 
-  if (
-    previousIndex !== undefined &&
-    previousIndex > 2 &&
-    index <= 2
-  ) {
-    acc[item.name] = true;
-  }
+      if (
+        previousIndex !== undefined &&
+        previousIndex > 2 &&
+        index <= 2
+      ) {
+        acc[item.name] = true;
+      }
 
-  return acc;
+      return acc;
     }, {});
 
     setCommunityRequestTrends(nextTrends);
@@ -1918,53 +1937,75 @@ const handleScentRequestSubmit = async (event) => {
     return;
   }
 
-  const existingProduct = findExistingProductByRequest(fragranceName);
-
-  if (existingProduct) {
-    addExistingCollectionRequest(existingProduct);
-
-    sendScentRequest(
-      existingProduct.name,
-      "existing_collection_request"
-    );
-
-    setScentRequestValue("");
-
-    setScentRequestStatus(
-      lang === "sr"
-        ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
-        : `Already in our collection ✦ Opening ${existingProduct.name}.`
-    );
-
-    openProductFromRequest(existingProduct);
-    return;
-  }
-
   setScentRequestSubmitting(true);
   setScentRequestStatus("");
 
   try {
+    const existingProduct = findExistingProductByRequest(fragranceName);
+
+    if (existingProduct) {
+      const result = await sendScentRequest(
+        existingProduct.name,
+        "existing_collection_request"
+      );
+
+      if (result?.status === "blocked") {
+        setScentRequestStatus(
+          lang === "sr"
+            ? `Već si glasao za ${existingProduct.name}. Možeš ponovo za ${result.remainingDays} dana.`
+            : `You already voted for ${existingProduct.name}. You can vote again in ${result.remainingDays} days.`
+        );
+
+        setScentRequestValue("");
+        openProductFromRequest(existingProduct);
+        return;
+      }
+
+      if (result?.status !== "ok") {
+        setScentRequestStatus(
+          lang === "sr"
+            ? "Glas nije prošao. Probaj ponovo."
+            : "Vote was not saved. Please try again."
+        );
+
+        return;
+      }
+
+      addExistingCollectionRequest(existingProduct);
+
+      setScentRequestValue("");
+
+      setScentRequestStatus(
+        lang === "sr"
+          ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+          : `Already in our collection ✦ Opening ${existingProduct.name}.`
+      );
+
+      openProductFromRequest(existingProduct);
+      return;
+    }
+
     const result = await sendScentRequest(fragranceName);
 
-if (result?.status === "blocked") {
-  setScentRequestStatus(
-    lang === "sr"
-      ? `Već si predložio ${fragranceName}. Možeš ponovo za ${result.remainingDays} dana.`
-      : `You already requested ${fragranceName}. You can request it again in ${result.remainingDays} days.`
-  );
+    if (result?.status === "blocked") {
+      setScentRequestStatus(
+        lang === "sr"
+          ? `Već si predložio ${fragranceName}. Možeš ponovo za ${result.remainingDays} dana.`
+          : `You already requested ${fragranceName}. You can request it again in ${result.remainingDays} days.`
+      );
 
-  return;
-}
+      return;
+    }
 
-if (result?.status !== "ok") {
-  setScentRequestStatus(
-    lang === "sr"
-      ? "Predlog nije sačuvan. Probaj ponovo."
-      : "Request was not saved. Please try again."
-  );
+    if (result?.status !== "ok") {
+      setScentRequestStatus(
+        lang === "sr"
+          ? "Predlog nije sačuvan. Probaj ponovo."
+          : "Request was not saved. Please try again."
+      );
 
-  return;
-}
+      return;
+    }
 
     const existingRequest = communityRequests.find(
       (item) =>
