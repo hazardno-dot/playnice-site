@@ -640,6 +640,10 @@ export const products = [
     inspiredBy: {
     name: "Original BOSS creation",
     short: "Woody Aromatic DNA"
+  },
+    discount: {
+    size: "10ml",
+    percent: 15
   }
   },
   {
