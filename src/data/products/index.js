@@ -552,7 +552,11 @@ export const products = [
     inspiredBy: {
     name: "Original Acqua di Parma creation",
     short: "Classic Italian Cologne DNA"
-  }
+  },
+    discount: {
+    size: "5ml",
+    percent: 15
+  },
   },
   {
     id: 26,
