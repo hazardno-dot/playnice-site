@@ -1047,7 +1047,11 @@ export const products = [
     inspiredBy: {
     name: "Original Tom Ford creation",
     short: "Amber Kulfi DNA"
-  }
+  },
+    discount: {
+    size: "5ml",
+    percent: 10
+}
   },
   {
     id: 48,
