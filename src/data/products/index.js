@@ -1214,8 +1214,7 @@ export const products = [
   inspiredBy: {
     name: "Xerjoff Torino 21",
     short: "Torino 21 DNA"
-  },
-  isNew: true,
+  }
 },
 {
   id: 56,
@@ -1237,8 +1236,7 @@ export const products = [
   inspiredBy: {
     name: "Creed Centaurus",
     short: "Centaurus DNA"
-  },
-  isNew: true,
+  }
 },
 {
   id: 57,
@@ -1260,8 +1258,7 @@ export const products = [
   inspiredBy: {
     name: "Nishane Hacivat",
     short: "Hacivat DNA"
-  },
-  isNew: true,
+  }
 },
 {
   id: 58,
@@ -1283,8 +1280,7 @@ export const products = [
   inspiredBy: {
     name: "Parfums de Marly Castley",
     short: "Castley DNA"
-  },
-  isNew: true,
+  }
 },
 {
   id: 59,
@@ -1305,8 +1301,7 @@ export const products = [
   inspiredBy: {
     name: "Gucci Guilty Elixir pour Homme",
     short: "Guilty Elixir DNA"
-  },
-  isNew: true,
+  }
 },
 {
   id: 60,
