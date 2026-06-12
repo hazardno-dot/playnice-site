@@ -48,7 +48,7 @@ html {
 }
 
 body {
-  padding-bottom: 0;
+  padding-bottom: var(--sticky-cta-safe);
 }
 
 /* REMOVE MOBILE BLUE TAP HIGHLIGHT */
@@ -121,7 +121,7 @@ main {
 
 .app-shell.world-cup-theme::before {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
