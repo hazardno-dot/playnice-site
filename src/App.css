@@ -48,7 +48,7 @@ html {
 }
 
 body {
-  padding-bottom: var(--sticky-cta-safe);
+  padding-bottom: 0;
 }
 
 /* REMOVE MOBILE BLUE TAP HIGHLIGHT */
