@@ -3867,12 +3867,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
      RENDER
   ========================================= */
   return (
-  <div
-  className="app-shell world-cup-theme"
-  style={{
-    "--world-cup-overlay": `url(${process.env.PUBLIC_URL}/world-cup-2026-overlay.webp)`,
-  }}
->
+  <div className="app-shell">
 
   {shouldShowSideRails && (
   <aside

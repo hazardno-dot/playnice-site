@@ -110,39 +110,6 @@ main {
     var(--bg);
 }
 
-/* =========================================
-   WORLD CUP 2026 BACKGROUND THEME
-========================================= */
-
-.app-shell.world-cup-theme {
-  position: relative;
-  isolation: isolate;
-}
-
-.app-shell.world-cup-theme::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-
-  background-image: var(--world-cup-overlay);
-  background-position: center top;
-  background-size: cover;
-  background-repeat: no-repeat;
-
-  opacity: 0.42;
-}
-
-.app-shell.world-cup-theme > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* =========================================
-   WORLD CUP 2026 BACKGROUND THEME
-========================================= */
-
 .section-wrap {
   width: min(calc(100% - 32px), var(--max));
   margin: 0 auto;
