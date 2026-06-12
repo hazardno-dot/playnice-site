@@ -110,6 +110,17 @@ main {
     var(--bg);
 }
 
+.section-wrap {
+  width: min(calc(100% - 32px), var(--max));
+  margin: 0 auto;
+}
+
+.homepage-shop-preview,
+.featured-section,
+.shop-section {
+  padding-bottom: 8px;
+}
+
 /* =========================================
    WORLD CUP 2026 BACKGROUND THEME
 ========================================= */
@@ -135,17 +146,6 @@ main {
 .app-shell.world-cup-theme > * {
   position: relative;
   z-index: 1;
-}
-
-.section-wrap {
-  width: min(calc(100% - 32px), var(--max));
-  margin: 0 auto;
-}
-
-.homepage-shop-preview,
-.featured-section,
-.shop-section {
-  padding-bottom: 8px;
 }
 
 /* =========================================
