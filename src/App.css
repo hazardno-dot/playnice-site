@@ -137,8 +137,10 @@ main {
   z-index: 0;
   pointer-events: none;
 
-  background:
-    url("/world-cup-2026-overlay.webp") center top / cover no-repeat;
+  background-image: url("/world-cup-2026-overlay.webp");
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   opacity: 0.42;
 }
