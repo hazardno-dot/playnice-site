@@ -3867,7 +3867,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
      RENDER
   ========================================= */
   return (
-  <div className="app-shell">
+  <div className="app-shell world-cup-theme">
 
   {shouldShowSideRails && (
   <aside
