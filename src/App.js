@@ -606,7 +606,24 @@ const BASE_HERO_SLIDES = [
     "narciso-rodriguez-poudree"
   ],
     collectionTitle: "Signature Energy izbor"
-  }
+  },
+  {
+  id: 11,
+  kind: "imageOnly",
+  image: "/hero/slide-light-blue-2025.jpg",
+  desktopImage: "/hero/slide-light-blue-2025.jpg",
+  mobileImage: "/hero/mobile/slide-light-blue-2025-mobile.jpg",
+  alt: "Summer Essentials",
+  actionPrimary: "collection",
+  actionCollection: [
+    "dolce-gabbana-light-blue-pour-homme-2025",
+    "acqua-di-gio-profondo-parfum",
+    "versace-man-eau-fraiche",
+    "ysl-y-iced-cologne",
+    "mancera-cedrat-boise"
+  ],
+  collectionTitle: "Summer Essentials"
+},
 ];
 
 const shuffleHeroSlides = (slides) => {
