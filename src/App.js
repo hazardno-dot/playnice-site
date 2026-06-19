@@ -545,7 +545,7 @@ const BASE_HERO_SLIDES = [
   actionPrimary: "collection",
   actionCollection: [
     "dolce-gabbana-light-blue-pour-homme-2025",
-    "acqua-di-gio-profondo-parfum",
+    "giorgio-armani-acqua-di-gio-profondo-parfum",
     "versace-man-eau-fraiche",
     "ysl-y-iced-cologne",
     "acqua-di-parma-fico-di-amalfi"
