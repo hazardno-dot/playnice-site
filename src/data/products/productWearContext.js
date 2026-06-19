@@ -281,5 +281,10 @@ export const productWearContext = {
 "Valentino Uomo Born In Roma Coral Fantasy": {
   sr: "Veče, dejt, izlazak.",
   en: "Evening, date night, going out."
+},
+
+"Dolce & Gabbana Light Blue Pour Homme Eau de Toilette 2025": {
+  sr: "Leto, more, svakodnevno nošenje.",
+  en: "Summer, seaside, everyday wear."
 }
 };

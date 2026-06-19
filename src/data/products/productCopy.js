@@ -1352,6 +1352,31 @@ export const productCopy = {
     en: "If you want a modern compliment magnet with character."
   }
 },
+
+"Dolce & Gabbana Light Blue Pour Homme Eau de Toilette 2025": {
+  miniTag: { sr: "🌊 Citrus / Summer", en: "🌊 Citrus / Summer" },
+  card: {
+    sr: "Mediteranska svežina sa citrusnim karakterom.",
+    en: "Mediterranean freshness with citrus character."
+  },
+  modal: {
+    sr: "Grejpfrut, citrusi i aromatične note stvaraju čist, energičan i bezvremenski letnji miris.",
+    en: "Grapefruit, citrus and aromatic notes create a clean energetic timeless summer scent."
+  },
+  scentType: { sr: "Fresh citrus aromatic", en: "Fresh citrus aromatic" },
+  dominantNotes: {
+    sr: ["grejpfrut", "citrusi", "aromatične note"],
+    en: ["grapefruit", "citrus", "aromatic notes"]
+  },
+  tags: {
+    sr: ["Fresh", "Summer", "Clean"],
+    en: ["Fresh", "Summer", "Clean"]
+  },
+  whyChoose: {
+    sr: "Ako želiš klasičan letnji miris koji nikad ne izlazi iz mode.",
+    en: "If you want a classic summer scent that never goes out of style."
+  }
+},
 };
 
 /* =========================================

@@ -1470,4 +1470,26 @@ export const products = [
   },
   isNew: true,
 },
+{
+  id: 67,
+  slug: "dolce-gabbana-light-blue-pour-homme-2025",
+  name: "Dolce & Gabbana Light Blue Pour Homme Eau de Toilette 2025",
+  shortName: "Light Blue 2025",
+  category: "Designer",
+  image: "/products/dolce-gabbana-light-blue-2025.png",
+  sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
+  badge: "NEW",
+  rating: 8.8,
+  ratingLabel: "Summer Icon",
+  season: "summer",
+  moods: ["clean", "summer", "signature"],
+  recommendations: [
+    "ysl-y-iced-cologne"
+  ],
+  inspiredBy: {
+    name: "Original Dolce & Gabbana creation",
+    short: "Mediterranean Citrus DNA"
+  },
+  isNew: true,
+},
 ];
