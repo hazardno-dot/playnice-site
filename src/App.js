@@ -536,21 +536,21 @@ const BASE_HERO_SLIDES = [
     manifestoType: "playnice-mission"
   },
   {
-    id: 5,
-    kind: "imageOnly",
-    image: "/hero/slide-5.jpg",
-    desktopImage: "/hero/slide-5.jpg",
-    mobileImage: "/hero/mobile/slide-5-mobile.jpg",
-    alt: "Try before you buy / dekanti",
-    actionPrimary: "collection",
-    actionCollection: [
-    "arabiyat-prestige-fahad-gaze",
-    "emir-voux-zingy",
-    "khadlaj-onyx-silver",
-    "rasasi-hawas-black",
-    "rayhaan-crimson"
+  id: 5,
+  kind: "imageOnly",
+  image: "/hero/slide-5.jpg",
+  desktopImage: "/hero/slide-5.jpg",
+  mobileImage: "/hero/mobile/slide-5-mobile.jpg",
+  alt: "Summer Bangers",
+  actionPrimary: "collection",
+  actionCollection: [
+    "dolce-gabbana-light-blue-pour-homme-2025",
+    "acqua-di-gio-profondo-parfum",
+    "versace-man-eau-fraiche",
+    "ysl-y-iced-cologne",
+    "acqua-di-parma-fico-di-amalfi"
   ],
-    collectionTitle: "Best of the Best"
+  collectionTitle: "Summer Bangers"
   },
   {
     id: 6,
