@@ -1761,4 +1761,227 @@ Remember. PlayNice.
     "Carolina Herrera Bad Boy Cobalt Eau de Parfum",
   ],
 },
+
+{
+  id: 15,
+  date: "28 Jun",
+  image: "/journal/four-new-signatures.jpg",
+  series: {
+    en: "PLAYNICE SELECTION",
+    sr: "PLAYNICE SELECTION",
+  },
+  title: {
+    en: "Four new signatures.",
+    sr: "Četiri nova potpisa.",
+  },
+  excerpt: {
+    en: "Four carefully selected fragrances. Four completely different personalities. One philosophy — never add bottles just to fill the shelf.",
+    sr: "Četiri pažljivo odabrana parfema. Četiri potpuno različita karaktera. Jedna filozofija — ne dodajemo bočice da bismo popunili policu.",
+  },
+  content: {
+    en: `
+Some collections grow by numbers.
+
+Ours grows by decisions.
+
+Every fragrance we add has to deserve its place.
+
+Not because it is trending.
+
+Because it offers something unique.
+
+This month, four very different signatures joined PlayNice.
+
+---
+
+Bvlgari Man In Black Eau de Parfum
+
+Warm.
+
+Elegant.
+
+Confident.
+
+A fragrance made for evenings, formal occasions and moments when presence matters more than volume.
+
+---
+
+Mancera Aoud Lemon Mint Eau de Parfum
+
+Fresh citrus.
+
+Dark woods.
+
+Unexpected depth.
+
+One of those rare fragrances that feels energetic while remaining unmistakably niche.
+
+---
+
+Yves Saint Laurent MYSLF Eau de Parfum
+
+Modern.
+
+Clean.
+
+Versatile.
+
+The kind of fragrance that effortlessly moves from office mornings to late dinners without ever feeling out of place.
+
+---
+
+Prada Luna Rossa Ocean Eau de Toilette
+
+Fresh air.
+
+Blue elegance.
+
+Everyday confidence.
+
+Comfortable enough for daily wear, refined enough to become someone's signature scent.
+
+---
+
+Different seasons.
+
+Different personalities.
+
+Different occasions.
+
+The same reason they were selected.
+
+They bring something our collection didn't have yesterday.
+
+That is how PlayNice grows.
+
+Slowly.
+
+Carefully.
+
+Intentionally.
+
+We believe discovering a fragrance should feel exciting, not overwhelming.
+
+That is why we continue building a collection where every bottle earns its place.
+
+Try them.
+
+Wear them.
+
+Find the one that feels like yours.
+
+Remember. PlayNice.
+`,
+    sr: `
+Neke kolekcije rastu brojem parfema.
+
+Naša raste odlukama.
+
+Svaki miris koji dodamo mora da zasluži svoje mesto.
+
+Ne zato što je trenutno popularan.
+
+Već zato što donosi nešto posebno.
+
+Ovog puta u PlayNice stižu četiri potpuno različita karaktera.
+
+---
+
+Bvlgari Man In Black Eau de Parfum
+
+Topao.
+
+Elegantan.
+
+Samouveren.
+
+Parfem za večeri, posebne prilike i trenutke kada prisustvo govori više od glasnih reči.
+
+---
+
+Mancera Aoud Lemon Mint Eau de Parfum
+
+Eksplozija citrusa.
+
+Dubina drveta i ouda.
+
+Neočekivana svežina.
+
+Jedan od onih niche parfema koji uspeva da bude energičan, a potpuno drugačiji od svega što ga okružuje.
+
+---
+
+Yves Saint Laurent MYSLF Eau de Parfum
+
+Moderan.
+
+Čist.
+
+Svestran.
+
+Podjednako prirodan uz jutarnju kafu, poslovni sastanak ili večernji izlazak.
+
+Jedan parfem.
+
+Bezbroj prilika.
+
+---
+
+Prada Luna Rossa Ocean Eau de Toilette
+
+Miris svežeg vazduha.
+
+Plava elegancija.
+
+Samopouzdanje bez napora.
+
+Parfem koji lako može postati nečiji svakodnevni potpis.
+
+---
+
+Četiri godišnja doba.
+
+Četiri različite ličnosti.
+
+Četiri potpuno različita razloga da ih nosite.
+
+Ali jedan razlog zbog kojeg su danas deo PlayNice kolekcije.
+
+Pažljivo su odabrani.
+
+U PlayNice ne jurimo broj parfema.
+
+Gradimo kolekciju u kojoj svaka bočica ima svoje mesto.
+
+Zato istražujemo.
+
+Probamo.
+
+Upoređujemo.
+
+Biramo samo ono iza čega možemo da stanemo.
+
+Ako još nisi pronašao svoj sledeći omiljeni miris...
+
+Možda se upravo nalazi među ova četiri nova potpisa.
+
+Remember. PlayNice.
+`,
+  },
+  links: [
+    {
+      label: {
+        en: "Explore the collection",
+        sr: "Istraži kolekciju",
+      },
+      url: "shop",
+    },
+  ],
+  relatedProducts: [
+    "Bvlgari Man In Black Eau de Parfum",
+    "Mancera Aoud Lemon Mint Eau de Parfum",
+    "Yves Saint Laurent MYSLF Eau de Parfum",
+    "Prada Luna Rossa Ocean Eau de Toilette",
+  ],
+},
 ];
