@@ -1377,6 +1377,138 @@ export const productCopy = {
     en: "If you want a classic summer scent that never goes out of style."
   }
 },
+
+"Bvlgari Man In Black Eau de Parfum": {
+  miniTag: { sr: "🥃 Rum / Leather", en: "🥃 Rum / Leather" },
+  card: {
+    sr: "Tamni rum, začini i koža u moćnom večernjem profilu.",
+    en: "Dark rum, spices and leather in a bold evening profile."
+  },
+  modal: {
+    sr: "Rum, začini i duvan prelaze u kožu, iris i toplu drveno-amber bazu.",
+    en: "Rum, spices and tobacco settle into leather, iris and a warm woody-amber base."
+  },
+  scentType: { sr: "Warm spicy leather amber", en: "Warm spicy leather amber" },
+  dominantNotes: {
+    sr: ["rum", "začini", "duvan", "koža"],
+    en: ["rum", "spices", "tobacco", "leather"]
+  },
+  tags: { sr: ["Dark", "Elegant", "Evening"], en: ["Dark", "Elegant", "Evening"] },
+  whyChoose: {
+    sr: "Ako želiš ozbiljan, muževan i zavodljiv večernji miris.",
+    en: "If you want a serious masculine seductive evening scent."
+  }
+},
+
+"Mancera Aoud Lemon Mint Eau de Parfum": {
+  miniTag: { sr: "🍋 Oud / Mint", en: "🍋 Oud / Mint" },
+  card: {
+    sr: "Limun, menta i oud u svežem nišnom spoju.",
+    en: "Lemon, mint and oud in a fresh niche blend."
+  },
+  modal: {
+    sr: "Limun, badem i začini otvaraju miris sveže, dok oud, menta i vanila daju bogat nišni završetak.",
+    en: "Lemon, almond and spices open fresh, while oud, mint and vanilla create a rich niche finish."
+  },
+  scentType: { sr: "Fresh oud aromatic", en: "Fresh oud aromatic" },
+  dominantNotes: {
+    sr: ["limun", "menta", "oud", "vanila"],
+    en: ["lemon", "mint", "oud", "vanilla"]
+  },
+  tags: { sr: ["Niche", "Fresh", "Unisex"], en: ["Niche", "Fresh", "Unisex"] },
+  whyChoose: {
+    sr: "Ako želiš svež, neobičan i luksuzan niche miris.",
+    en: "If you want a fresh unusual luxury niche scent."
+  }
+},
+
+"Prada Paradigme Eau de Parfum": {
+  miniTag: { sr: "🟢 Amber / Modern", en: "🟢 Amber / Modern" },
+  card: {
+    sr: "Moderan amber-drveni Prada miris sa svežim startom.",
+    en: "Modern amber-woody Prada scent with fresh opening."
+  },
+  modal: {
+    sr: "Bergamot i geranijum donose svežinu, dok amber-drvena baza daje sofisticiran Prada karakter.",
+    en: "Bergamot and geranium bring freshness, while amber woods create a refined Prada character."
+  },
+  scentType: { sr: "Ambery woody aromatic", en: "Ambery woody aromatic" },
+  dominantNotes: {
+    sr: ["bergamot", "geranijum", "amber", "drvo"],
+    en: ["bergamot", "geranium", "amber", "woods"]
+  },
+  tags: { sr: ["Modern", "Luxury", "Signature"], en: ["Modern", "Luxury", "Signature"] },
+  whyChoose: {
+    sr: "Ako želiš moderan, čist i luksuzan signature miris.",
+    en: "If you want a modern clean luxury signature scent."
+  }
+},
+
+"Yves Saint Laurent MYSLF Eau de Parfum": {
+  miniTag: { sr: "⚪ Clean / Woods", en: "⚪ Clean / Woods" },
+  card: {
+    sr: "Čist, moderan i drvenast miris sa cvetnim obrtom.",
+    en: "Clean modern woody scent with a floral twist."
+  },
+  modal: {
+    sr: "Svež bergamot, cvet narandže i topla drvena baza daju čist, moderan i nosiv karakter.",
+    en: "Fresh bergamot, orange blossom and warm woods create a clean modern wearable character."
+  },
+  scentType: { sr: "Fresh woody floral", en: "Fresh woody floral" },
+  dominantNotes: {
+    sr: ["bergamot", "cvet narandže", "drvo", "pačuli"],
+    en: ["bergamot", "orange blossom", "woods", "patchouli"]
+  },
+  tags: { sr: ["Clean", "Modern", "Signature"], en: ["Clean", "Modern", "Signature"] },
+  whyChoose: {
+    sr: "Ako želiš siguran moderan miris za svaki dan i izlazak.",
+    en: "If you want a safe modern scent for daily wear and going out."
+  }
+},
+
+"Carolina Herrera Bad Boy Cobalt Eau de Parfum": {
+  miniTag: { sr: "⚡ Plum / Aromatic", en: "⚡ Plum / Aromatic" },
+  card: {
+    sr: "Svež začinski start sa šljivom i drvenom bazom.",
+    en: "Fresh spicy opening with plum and woody base."
+  },
+  modal: {
+    sr: "Lavanda i roze biber otvaraju miris sveže, zatim šljiva i geranijum vode ka drvenom završetku.",
+    en: "Lavender and pink pepper open fresh, then plum and geranium lead into a woody finish."
+  },
+  scentType: { sr: "Woody aromatic fruity", en: "Woody aromatic fruity" },
+  dominantNotes: {
+    sr: ["lavanda", "roze biber", "šljiva", "drvo"],
+    en: ["lavender", "pink pepper", "plum", "woods"]
+  },
+  tags: { sr: ["Fresh", "Bold", "Modern"], en: ["Fresh", "Bold", "Modern"] },
+  whyChoose: {
+    sr: "Ako želiš moderan, privlačan i lako nosiv dizajnerski miris.",
+    en: "If you want a modern attractive easy-to-wear designer scent."
+  }
+},
+
+"Prada Luna Rossa Ocean Eau de Toilette": {
+  miniTag: { sr: "🌊 Ocean / Clean", en: "🌊 Ocean / Clean" },
+  card: {
+    sr: "Čist aquatic-fresh Prada miris za tople dane.",
+    en: "Clean aquatic-fresh Prada scent for warm days."
+  },
+  modal: {
+    sr: "Bergamot, iris i vetiver daju svež, čist i elegantan oceanic profil.",
+    en: "Bergamot, iris and vetiver create a fresh clean elegant oceanic profile."
+  },
+  scentType: { sr: "Fresh aquatic aromatic", en: "Fresh aquatic aromatic" },
+  dominantNotes: {
+    sr: ["bergamot", "iris", "vetiver", "mošus"],
+    en: ["bergamot", "iris", "vetiver", "musk"]
+  },
+  tags: { sr: ["Clean", "Fresh", "Summer"], en: ["Clean", "Fresh", "Summer"] },
+  whyChoose: {
+    sr: "Ako želiš čist, elegantan i bezbedan letnji miris.",
+    en: "If you want a clean elegant safe summer scent."
+  }
+},
 };
 
 /* =========================================

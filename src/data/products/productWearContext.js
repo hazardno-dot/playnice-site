@@ -286,5 +286,35 @@ export const productWearContext = {
 "Dolce & Gabbana Light Blue Pour Homme Eau de Toilette 2025": {
   sr: "Leto, more, svakodnevno nošenje.",
   en: "Summer, seaside, everyday wear."
+},
+
+"Bvlgari Man In Black Eau de Parfum": {
+  sr: "Veče, dejt, hladnije vreme.",
+  en: "Evening, date night, colder weather."
+},
+
+"Mancera Aoud Lemon Mint Eau de Parfum": {
+  sr: "Topli dani, niche utisak, izlazak.",
+  en: "Warm days, niche impression, going out."
+},
+
+"Prada Paradigme Eau de Parfum": {
+  sr: "Posao, izlazak, signature nošenje.",
+  en: "Work, going out, signature wear."
+},
+
+"Yves Saint Laurent MYSLF Eau de Parfum": {
+  sr: "Svaki dan, posao, večernji izlazak.",
+  en: "Daily wear, work, evening out."
+},
+
+"Carolina Herrera Bad Boy Cobalt Eau de Parfum": {
+  sr: "Izlazak, dejt, moderne prilike.",
+  en: "Going out, date night, modern occasions."
+},
+
+"Prada Luna Rossa Ocean Eau de Toilette": {
+  sr: "Leto, posao, dnevno nošenje.",
+  en: "Summer, work, daytime wear."
 }
 };
