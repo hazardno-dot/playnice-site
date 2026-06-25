@@ -560,7 +560,7 @@ const BASE_HERO_SLIDES = [
   mobileImage: "/hero/mobile/slide-6-mobile.jpg",
   alt: "Prada Paradigme Eau de Parfum",
   actionPrimary: "product",
-  actionProductSlug: "prada-paradigme-eau-de-parfum",
+  actionProductSlug: "prada-paradigme-edp",
   preferredSize: "10ml"
   },
   {
