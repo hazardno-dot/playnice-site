@@ -609,6 +609,24 @@ const BASE_HERO_SLIDES = [
   ],
     collectionTitle: "Signature Energy izbor"
   },
+  {
+  id: 11,
+  kind: "imageOnly",
+  image: "/hero/slide-11.jpg",
+  desktopImage: "/hero/slide-11.jpg",
+  mobileImage: "/hero/mobile/slide-11-mobile.jpg",
+  alt: "Od sada u PlayNice kolekciji – 6 ikoničnih mirisa",
+  actionPrimary: "collection",
+  actionCollection: [
+    "bvlgari-man-in-black-eau-de-parfum",
+    "carolina-herrera-bad-boy-cobalt-eau-de-parfum",
+    "prada-luna-rossa-ocean-eau-de-toilette",
+    "mancera-aoud-lemon-mint-eau-de-parfum",
+    "prada-paradigme-eau-de-parfum",
+    "yves-saint-laurent-myslf-eau-de-parfum"
+  ],
+  collectionTitle: "Od sada u PlayNice kolekciji"
+  },
 ];
 
 const shuffleHeroSlides = (slides) => {
