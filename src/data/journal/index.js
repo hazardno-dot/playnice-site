@@ -1566,4 +1566,199 @@ Remember. PlayNice.
     "Yves Saint Laurent Y Iced Cologne",
   ],
 },
+
+{
+  id: 14,
+  date: "26 Jun",
+  image: "/journal/community-most-wanted-drop-02.jpg",
+  series: {
+    en: "COMMUNITY SERIES",
+    sr: "SERIJAL ZAJEDNICE",
+  },
+  title: {
+    en: "Votes become collection.",
+    sr: "Glasovi postaju kolekcija.",
+  },
+  excerpt: {
+    en: "Prada Paradigme and Bad Boy Cobalt are the newest community picks to join the PlayNice collection.",
+    sr: "Prada Paradigme i Bad Boy Cobalt postali su novi članovi PlayNice kolekcije zahvaljujući glasovima zajednice.",
+  },
+  content: {
+    en: `
+Some thought Valentino Coral Fantasy and YSL Y Iced Cologne were a one-time story.
+
+They were not.
+
+They were only the beginning.
+
+From day one, we promised to build this collection together with the community.
+
+Today we can welcome two more fragrances that arrived for one simple reason.
+
+You asked for them.
+
+---
+
+Prada Paradigme Eau de Parfum
+
+— now part of the PlayNice collection
+
+Carolina Herrera Bad Boy Cobalt Eau de Parfum
+
+— now part of the PlayNice collection
+
+---
+
+If you keep an eye on the Community Requests section, you already know how quickly things change.
+
+Votes grow.
+
+New names appear.
+
+Some stay around for weeks.
+
+Some suddenly climb to the top.
+
+And some eventually become reality.
+
+That is how the PlayNice collection grows.
+
+Not by adding random bottles.
+
+But by listening to the people who actually wear them.
+
+---
+
+A few months ago there were only two community winners.
+
+Today there are already four.
+
+That may be the clearest proof that the system works.
+
+Every vote leaves a mark.
+
+Every request has a chance to become the next drop.
+
+---
+
+COMMUNITY SERIES
+
+✓ Yves Saint Laurent Y Iced Cologne
+
+✓ Valentino Uomo Born In Roma Coral Fantasy
+
+✓ Prada Paradigme Eau de Parfum
+
+✓ Carolina Herrera Bad Boy Cobalt Eau de Parfum
+
+---
+
+And the story is far from over.
+
+New names are already climbing the leaderboard.
+
+Maybe the next article will be about the fragrance you voted for.
+
+Because the best ideas still don't start in meetings.
+
+They start with our community.
+
+Remember. PlayNice.
+`,
+    sr: `
+Neki su mislili da su Valentino Coral Fantasy i YSL Y Iced Cologne bili izuzetak.
+
+Nisu.
+
+Bili su tek početak.
+
+Od prvog dana obećali smo da ćemo ovu kolekciju graditi zajedno sa zajednicom.
+
+Danas možemo da poželimo dobrodošlicu još dva mirisa koja su stigla iz jednog jednostavnog razloga.
+
+Tražili ste ih.
+
+---
+
+Prada Paradigme Eau de Parfum
+
+— novi član PlayNice kolekcije
+
+Carolina Herrera Bad Boy Cobalt Eau de Parfum
+
+— novi član PlayNice kolekcije
+
+---
+
+Ako pratite Community Requests sekciju, već znate koliko brzo stvari mogu da se promene.
+
+Glasovi rastu.
+
+Nova imena se pojavljuju.
+
+Neka ostanu nedeljama.
+
+Neka iznenada preuzmu vrh liste.
+
+A neka na kraju postanu stvarnost.
+
+Tako raste PlayNice kolekcija.
+
+Ne dodavanjem nasumičnih bočica.
+
+Već slušanjem ljudi koji će te parfeme zaista nositi.
+
+---
+
+Pre samo nekoliko meseci imali smo dva pobednika zajednice.
+
+Danas ih već imamo četiri.
+
+To je možda najbolji dokaz da ovaj sistem funkcioniše.
+
+Svaki glas ostavlja trag.
+
+Svaki zahtev ima priliku da postane sledeći drop.
+
+---
+
+COMMUNITY SERIES
+
+✓ Yves Saint Laurent Y Iced Cologne
+
+✓ Valentino Uomo Born In Roma Coral Fantasy
+
+✓ Prada Paradigme Eau de Parfum
+
+✓ Carolina Herrera Bad Boy Cobalt Eau de Parfum
+
+---
+
+A priča se ovde ne završava.
+
+Nova imena već polako osvajaju vrh liste.
+
+Možda će sledeći članak biti upravo o parfemu za koji ste vi prvi glasali.
+
+Jer najbolje ideje i dalje ne nastaju na sastancima.
+
+Nastaju u našoj zajednici.
+
+Remember. PlayNice.
+`,
+  },
+  links: [
+    {
+      label: {
+        en: "Request the next scent",
+        sr: "Predloži sledeći parfem",
+      },
+      url: "scent-request",
+    },
+  ],
+  relatedProducts: [
+    "Prada Paradigme Eau de Parfum",
+    "Carolina Herrera Bad Boy Cobalt Eau de Parfum",
+  ],
+},
 ];
