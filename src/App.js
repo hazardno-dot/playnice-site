@@ -4721,6 +4721,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           "Yves Saint Laurent Y Iced Cologne": 27,
           "Valentino Uomo Born In Roma Coral Fantasy": 16,
           "Bois Impérial by Essential Parfums": 1,
+          "Prada Paradigme Eau de Parfum": 25,
+          "Carolina Herrera Bad Boy Cobalt Eau de Parfum": 5,
         };
 
         const lockedVotes = lockedVotesByName[item.name] || item.lockedVotes || 1;
