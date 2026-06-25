@@ -553,13 +553,15 @@ const BASE_HERO_SLIDES = [
   collectionTitle: "Summer Bangers"
   },
   {
-    id: 6,
-    kind: "imageOnly",
-    image: "/hero/slide-6.jpg",
-    desktopImage: "/hero/slide-6.jpg",
-    mobileImage: "/hero/mobile/slide-6-mobile.jpg",
-    alt: "PlayNice – Try it first",
-    actionPrimary: "shop"
+  id: 6,
+  kind: "imageOnly",
+  image: "/hero/slide-6.jpg",
+  desktopImage: "/hero/slide-6.jpg",
+  mobileImage: "/hero/mobile/slide-6-mobile.jpg",
+  alt: "Prada Paradigme Eau de Parfum",
+  actionPrimary: "product",
+  actionProductSlug: "prada-paradigme-eau-de-parfum",
+  preferredSize: "10ml"
   },
   {
     id: 7,
