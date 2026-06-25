@@ -1629,7 +1629,7 @@ But by listening to the people who actually wear them.
 
 ---
 
-A few months ago there were only two community winners.
+A few weeks ago there were only two community winners.
 
 Today there are already four.
 
@@ -1710,7 +1710,7 @@ Već slušanjem ljudi koji će te parfeme zaista nositi.
 
 ---
 
-Pre samo nekoliko meseci imali smo dva pobednika zajednice.
+Pre samo nekoliko sedmica imali smo dva pobednika zajednice.
 
 Danas ih već imamo četiri.
 
