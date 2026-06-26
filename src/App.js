@@ -618,12 +618,12 @@ const BASE_HERO_SLIDES = [
   alt: "Od sada u PlayNice kolekciji – 6 ikoničnih mirisa",
   actionPrimary: "collection",
   actionCollection: [
-    "bvlgari-man-in-black-eau-de-parfum",
-    "carolina-herrera-bad-boy-cobalt-eau-de-parfum",
-    "prada-luna-rossa-ocean-eau-de-toilette",
-    "mancera-aoud-lemon-mint-eau-de-parfum",
-    "prada-paradigme-eau-de-parfum",
-    "yves-saint-laurent-myslf-eau-de-parfum"
+    "bvlgari-man-in-black-edp",
+    "carolina-herrera-bad-boy-cobalt-edp",
+    "prada-luna-rossa-ocean-edt",
+    "mancera-aoud-lemon-mint",
+    "prada-paradigme-edp",
+    "ysl-myslf-edp"
   ],
   collectionTitle: "Od sada u PlayNice kolekciji"
   },
