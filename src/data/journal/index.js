@@ -1569,7 +1569,7 @@ Remember. PlayNice.
 
 {
   id: 14,
-  date: "26 Jun",
+  date: "25 Jun",
   image: "/journal/community-most-wanted-drop-02.jpg",
   series: {
     en: "COMMUNITY SERIES",
@@ -1764,7 +1764,7 @@ Remember. PlayNice.
 
 {
   id: 15,
-  date: "28 Jun",
+  date: "26 Jun",
   image: "/journal/four-new-signatures.jpg",
   series: {
     en: "PLAYNICE SELECTION",
