@@ -1988,7 +1988,7 @@ Remember. PlayNice.
 {
   id: 16,
   date: "10 Jul",
-  image: "/hero/thomas-kosmala-le-sel-de-la-terre.jpg",
+  image: "/journal/thomas-kosmala-le-sel-de-la-terre.jpg",
   title: {
     en: "How do you create a man who smells like this?",
     sr: "Kako se pravi čovek koji miriše ovako?"
