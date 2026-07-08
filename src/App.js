@@ -515,15 +515,15 @@ const BASE_HERO_SLIDES = [
     manifestoType: "confidence"
   },
   {
-  id: 3,
-  kind: "imageOnly",
-  image: "/hero/slide-light-blue-2025.jpg",
-  desktopImage: "/hero/slide-light-blue-2025.jpg",
-  mobileImage: "/hero/mobile/slide-light-blue-2025-mobile.jpg",
-  alt: "Dolce & Gabbana Light Blue Pour Homme 2025",
-  actionPrimary: "product",
-  actionProductSlug: "dolce-gabbana-light-blue-pour-homme-2025",
-  preferredSize: "10ml"
+    id: 3,
+    kind: "imageOnly",
+    image: "/hero/slide-light-blue-2025.jpg",
+    desktopImage: "/hero/slide-light-blue-2025.jpg",
+    mobileImage: "/hero/mobile/slide-light-blue-2025-mobile.jpg",
+    alt: "Dolce & Gabbana Light Blue Pour Homme 2025",
+    actionPrimary: "product",
+    actionProductSlug: "dolce-gabbana-light-blue-pour-homme-2025",
+    preferredSize: "10ml"
   },
   {
     id: 4,
@@ -536,32 +536,32 @@ const BASE_HERO_SLIDES = [
     manifestoType: "playnice-mission"
   },
   {
-  id: 5,
-  kind: "imageOnly",
-  image: "/hero/slide-5.jpg",
-  desktopImage: "/hero/slide-5.jpg",
-  mobileImage: "/hero/mobile/slide-5-mobile.jpg",
-  alt: "Summer Bangers",
-  actionPrimary: "collection",
-  actionCollection: [
-    "dolce-gabbana-light-blue-pour-homme-2025",
-    "giorgio-armani-acqua-di-gio-profondo-parfum",
-    "versace-man-eau-fraiche",
-    "ysl-y-iced-cologne",
-    "acqua-di-parma-fico-di-amalfi"
-  ],
-  collectionTitle: "Summer Bangers"
+    id: 5,
+    kind: "imageOnly",
+    image: "/hero/slide-5.jpg",
+    desktopImage: "/hero/slide-5.jpg",
+    mobileImage: "/hero/mobile/slide-5-mobile.jpg",
+    alt: "Summer Bangers",
+    actionPrimary: "collection",
+    actionCollection: [
+      "dolce-gabbana-light-blue-pour-homme-2025",
+      "giorgio-armani-acqua-di-gio-profondo-parfum",
+      "versace-man-eau-fraiche",
+      "ysl-y-iced-cologne",
+      "acqua-di-parma-fico-di-amalfi"
+    ],
+    collectionTitle: "Summer Bangers"
   },
   {
-  id: 6,
-  kind: "imageOnly",
-  image: "/hero/slide-6.jpg",
-  desktopImage: "/hero/slide-6.jpg",
-  mobileImage: "/hero/mobile/slide-6-mobile.jpg",
-  alt: "Prada Paradigme Eau de Parfum",
-  actionPrimary: "product",
-  actionProductSlug: "prada-paradigme-edp",
-  preferredSize: "10ml"
+    id: 6,
+    kind: "imageOnly",
+    image: "/hero/slide-6.jpg",
+    desktopImage: "/hero/slide-6.jpg",
+    mobileImage: "/hero/mobile/slide-6-mobile.jpg",
+    alt: "Prada Paradigme Eau de Parfum",
+    actionPrimary: "product",
+    actionProductSlug: "prada-paradigme-edp",
+    preferredSize: "10ml"
   },
   {
     id: 7,
@@ -610,22 +610,33 @@ const BASE_HERO_SLIDES = [
     collectionTitle: "Signature Energy izbor"
   },
   {
-  id: 11,
-  kind: "imageOnly",
-  image: "/hero/slide-11.jpg",
-  desktopImage: "/hero/slide-11.jpg",
-  mobileImage: "/hero/mobile/slide-11-mobile.jpg",
-  alt: "Od sada u PlayNice kolekciji – 6 ikoničnih mirisa",
-  actionPrimary: "collection",
-  actionCollection: [
-    "bvlgari-man-in-black-edp",
-    "carolina-herrera-bad-boy-cobalt-edp",
-    "prada-luna-rossa-ocean-edt",
-    "mancera-aoud-lemon-mint",
-    "prada-paradigme-edp",
-    "ysl-myslf-edp"
-  ],
-  collectionTitle: "Od sada u PlayNice kolekciji"
+    id: 11,
+    kind: "imageOnly",
+    image: "/hero/slide-11.jpg",
+    desktopImage: "/hero/slide-11.jpg",
+    mobileImage: "/hero/mobile/slide-11-mobile.jpg",
+    alt: "Od sada u PlayNice kolekciji – 6 ikoničnih mirisa",
+    actionPrimary: "collection",
+    actionCollection: [
+      "bvlgari-man-in-black-edp",
+      "carolina-herrera-bad-boy-cobalt-edp",
+      "prada-luna-rossa-ocean-edt",
+      "mancera-aoud-lemon-mint",
+      "prada-paradigme-edp",
+      "ysl-myslf-edp"
+    ],
+    collectionTitle: "Od sada u PlayNice kolekciji"
+  },
+  {
+    id: 12,
+    kind: "imageOnly",
+    image: "/hero/slide-12.jpg",
+    desktopImage: "/hero/slide-12.jpg",
+    mobileImage: "/hero/mobile/slide-12-mobile.jpg",
+    alt: "Thomas Kosmala No. 7 Le Sel de la Terre",
+    actionPrimary: "product",
+    actionProductSlug: "thomas-kosmala-no-7-le-sel-de-la-terre",
+    preferredSize: "10ml"
   },
 ];
 
