@@ -1509,6 +1509,34 @@ export const productCopy = {
     en: "If you want a clean elegant safe summer scent."
   }
 },
+
+"Thomas Kosmala No. 7 Le Sel de la Terre": {
+  miniTag: { sr: "🌊 Marine / Niche", en: "🌊 Marine / Niche" },
+  card: {
+    sr: "Morska so, citrusi i mineralna elegancija.",
+    en: "Sea salt, citrus and mineral elegance."
+  },
+  modal: {
+    sr: "Spoj morske soli, citrusa i drvenasto-mošusne baze stvara svež, sofisticiran i upečatljiv niche miris.",
+    en: "Sea salt, citrus and a woody musky base create a fresh, sophisticated and distinctive niche scent."
+  },
+  scentType: {
+    sr: "Marine citrus woody",
+    en: "Marine citrus woody"
+  },
+  dominantNotes: {
+    sr: ["morska so", "citrusi", "drvo", "mošus"],
+    en: ["sea salt", "citrus", "woods", "musk"]
+  },
+  tags: {
+    sr: ["Marine", "Niche", "Summer"],
+    en: ["Marine", "Niche", "Summer"]
+  },
+  whyChoose: {
+    sr: "Ako želiš jedinstven letnji niche miris sa morskim karakterom.",
+    en: "If you want a unique summer niche scent with a marine character."
+  }
+},
 };
 
 /* =========================================

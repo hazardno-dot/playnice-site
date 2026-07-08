@@ -1612,4 +1612,27 @@ export const products = [
   },
   isNew: true,
 },
+{
+  id: 74,
+  slug: "thomas-kosmala-no7-le-sel-de-la-terre",
+  name: "Thomas Kosmala No. 7 Le Sel de la Terre",
+  shortName: "Le Sel de la Terre",
+  category: "Niche",
+  image: "/products/thomas-kosmala-no7-le-sel-de-la-terre.png",
+  sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
+  badge: "NEW",
+  rating: 9.2,
+  ratingLabel: "Niche Masterpiece",
+  season: "summer",
+  moods: ["summer", "signature", "clean"],
+  recommendations: [
+    "dolce-gabbana-light-blue-pour-homme-2025",
+    "acqua-di-gio-profondo-parfum"
+  ],
+  inspiredBy: {
+    name: "Original Thomas Kosmala creation",
+    short: "Marine Salt DNA"
+  },
+  isNew: true,
+},
 ];

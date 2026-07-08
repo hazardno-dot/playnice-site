@@ -316,5 +316,10 @@ export const productWearContext = {
 "Prada Luna Rossa Ocean Eau de Toilette": {
   sr: "Leto, posao, dnevno nošenje.",
   en: "Summer, work, daytime wear."
-}
+},
+
+"Thomas Kosmala No. 7 Le Sel de la Terre": {
+  sr: "Leto, more, signature nošenje.",
+  en: "Summer, seaside, signature wear."
+},
 };
