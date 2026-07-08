@@ -1984,4 +1984,195 @@ Remember. PlayNice.
     "Prada Luna Rossa Ocean Eau de Toilette",
   ],
 },
+
+{
+  id: 16,
+  date: "10 Jul",
+  image: "/hero/thomas-kosmala-le-sel-de-la-terre.jpg",
+  title: {
+    en: "How do you create a man who smells like this?",
+    sr: "Kako se pravi čovek koji miriše ovako?"
+  },
+  excerpt: {
+    en: "Sometimes a fragrance tells you more about its creator than any biography ever could. This is not a story about perfume. It's a story about the man behind it.",
+    sr: "Ponekad ti jedan parfem kaže više o svom autoru nego bilo koja biografija. Ovo nije priča o parfemu. Ovo je priča o čoveku koji ga je stvorio."
+  },
+  content: {
+    en: `Sometimes I pick up a fragrance and completely forget about the fragrance itself.
+
+Instead, I start thinking about the person who created it.
+
+That's exactly what happened with Le Sel de la Terre.
+
+I found myself staring at the bottle, trying to imagine what Thomas Kosmala's journey really looked like. Not the official version that fits into a few lines of biography, but the real one. The one nobody ever writes about.
+
+In my head, it always starts like a film.
+
+One day, a young man from Poland packs a suitcase and heads to France. Not because it would be easier there, but because it wouldn't. Instead of choosing the shortest road, he chooses the slowest one. He spends years learning perfumery directly from a master perfumer, one-on-one, without shortcuts, without glamour, without trying to rush the process.
+
+That alone already tells me something about his character.
+
+Today everyone wants to master something in three months.
+
+Apparently, Thomas had a different plan.
+
+The next scene takes us to the south of France, where he opens his own laboratory and begins creating what the world now knows as Thomas Kosmala fragrances. It sounds simple when you write it in one sentence, but I have a feeling there are ten invisible years hidden between those two moments.
+
+I imagine him unlocking the lab early in the morning. Bottles everywhere. Formulas. Notes covered with corrections. Mixing, testing, smelling, starting over again.
+
+Then silence.
+
+He puts the bottle down and quietly says:
+
+"Not yet."
+
+Not once.
+
+Probably hundreds of times.
+
+That's the part of the story that fascinates me far more than success itself.
+
+I don't know what music he listens to while he works.
+
+I don't know if he drinks espresso or tea.
+
+I don't know if he ever forgets his keys or gets annoyed when the internet freezes at exactly the wrong moment.
+
+And honestly... I'm glad I don't know.
+
+Maybe that's why I enjoy leaving room for imagination. Whenever there's a little empty space, the mind starts filling it with stories.
+
+I like believing that people who create extraordinary things still live wonderfully ordinary lives.
+
+Maybe that's why his fragrances feel different.
+
+They don't seem desperate to impress anyone.
+
+They don't shout.
+
+They don't ask for attention.
+
+They simply exist with quiet confidence.
+
+I've always admired people like that.
+
+The first time I smelled Le Sel de la Terre, I didn't think:
+
+"What an incredible fragrance."
+
+Instead I thought:
+
+"Who on earth is the man who imagined this?"
+
+That doesn't happen very often.
+
+Usually you discover a perfume through its notes.
+
+This time, I wanted to discover its creator.
+
+If I ever have the chance to sit down with Thomas Kosmala over a cup of coffee, I probably won't ask him how he made Le Sel de la Terre.
+
+Thousands of people have probably asked him that already.
+
+I'd ask him something much simpler.
+
+"How many times did you almost give up... and how many times did you quietly say: 'Not yet'?"
+
+For some reason, I have a feeling the answer smells even better than the fragrance itself.
+
+—
+
+Charlie
+
+Remember. PlayNice.`,
+    sr: `Ponekad uzmem neki parfem u ruku i potpuno zaboravim da razmišljam o parfemu.
+
+Počnem da razmišljam o čoveku koji ga je napravio.
+
+Tako je bilo i sa Le Sel de la Terre.
+
+Gledam bočicu i pokušavam da zamislim kako je uopšte izgledao put Thomasa Kosmale do tog trenutka. Ne onaj zvanični, koji stane u nekoliko redova biografije, nego onaj pravi. Onaj koji se nikad ne piše.
+
+U mojoj glavi to uvek počne kao film.
+
+Jednog dana jedan mladić iz Poljske spakuje kofer i krene put Francuske. Ne zato što je tamo lakše, nego upravo zato što nije. Umesto da bira najkraći put, bira najsporiji. Godinama uči parfimerstvo direktno od jednog učitelja, jedan na jedan, bez velike škole, bez pompe i bez prečica. Samo čovek, zanat i vreme.
+
+Već tu mi postane zanimljiv.
+
+Danas svi žele da nauče sve za tri meseca.
+
+On je očigledno imao drugačiji plan.
+
+Posle dolazi sledeća scena. Negde na jugu Francuske otvara svoju laboratoriju i počinje da radi ono zbog čega ga danas poznajemo. To zvuči jednostavno kada pročitaš u jednoj rečenici, ali imam osećaj da između te dve tačke postoji deset godina koje niko nikada neće moći da ispriča kako treba.
+
+Zamišljam ga kako rano ujutru otključava laboratoriju. Na stolu su bočice, formule, papir pun ispravki. Meša, zapisuje, vraća se nekoliko koraka unazad, ponovo pokušava. Pomiriše. Ćuti. Onda samo odloži bočicu i kaže:
+
+"Ne... još nije to."
+
+Ne jednom.
+
+Nego verovatno stotinama puta.
+
+I upravo taj deo priče me fascinira mnogo više od samog uspeha.
+
+Ne znam kakvu muziku sluša dok radi.
+
+Ne znam da li pije espresso ili čaj.
+
+Ne znam da li kasni na sastanke, zaboravlja ključeve ili se iznervira kada mu internet uspori baš onda kada traži novu ideju.
+
+I iskreno... drago mi je što to ne znam.
+
+Možda baš zato i volim da ne znam sve o ljudima. Čim ostane malo praznog prostora, mašta odmah krene da radi svoje.
+
+Volim da verujem da ljudi koji naprave nešto veliko i dalje vode sasvim običan život. Da odu po hleb, zaborave gde su parkirali auto i da ponekad sede ispred formule sat vremena, potpuno nemoćni, jer znaju da su blizu, ali još uvek nisu stigli tamo gde žele.
+
+Možda baš zato njegovi parfemi deluju drugačije.
+
+Nemam osećaj da pokušavaju da mi se svide.
+
+Ne guraju se.
+
+Ne viču.
+
+Ne mole za pažnju.
+
+Ponašaju se kao ljudi koji odavno više nemaju potrebu da bilo kome dokazuju ko su.
+
+A takvi ljudi su mi oduvek bili najzanimljiviji.
+
+Kad sam prvi put pomirisao Le Sel de la Terre, nisam pomislio:
+
+"Kako dobar parfem."
+
+Pomislio sam:
+
+"Ko je, dođavola, čovek koji je ovo uspeo da zamisli?"
+
+I to mi se retko dešava.
+
+Parfem obično upoznaješ kroz note.
+
+Ovoga puta sam poželeo da upoznam autora.
+
+Ako ikada budem imao priliku da sednem sa Thomasom Kosmalom na kafu, verovatno ga uopšte neću pitati kako je napravio Le Sel de la Terre. To pitanje će mu postaviti još hiljadu ljudi.
+
+Ja bih ga pitao nešto sasvim drugo.
+
+Koliko si puta pomislio da odustaneš... i koliko si puta izgovorio:
+
+"Ne... još nije to."
+
+Imam osećaj da odgovor na to pitanje miriše mnogo više od bilo koje note koja se danas nalazi u ovoj bočici.
+
+—
+
+Čarli
+
+Remember. PlayNice.`
+  },
+  relatedProducts: [
+    "Thomas Kosmala No. 7 Le Sel de la Terre"
+  ]
+}
 ];
