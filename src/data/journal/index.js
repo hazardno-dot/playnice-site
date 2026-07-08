@@ -1987,7 +1987,7 @@ Remember. PlayNice.
 
 {
   id: 16,
-  date: "10 Jul",
+  date: "09 Jul",
   image: "/journal/thomas-kosmala-le-sel-de-la-terre.jpg",
   title: {
     en: "How do you create a man who smells like this?",
@@ -2174,5 +2174,367 @@ Remember. PlayNice.`
   relatedProducts: [
     "Thomas Kosmala No. 7 Le Sel de la Terre"
   ]
+},
+
+{
+  id: 17,
+  date: "11 Jul",
+  image: "/journal/world-cup-var.jpg",
+  title: {
+    en: "Once, it was enough for the ball to cross the line.",
+    sr: "Nekad je bilo dovoljno da lopta pređe gol-liniju."
+  },
+  excerpt: {
+    en: "Technology keeps getting smarter. Football... somehow keeps getting more complicated.",
+    sr: "Tehnologija je sve pametnija. Fudbal... nekako sve komplikovaniji."
+  },
+  content: {
+    en: `Last night I sat down to watch a football match.
+
+Or at least I think I did.
+
+At one point I wasn't even sure whether I was watching football or the latest crime series where every character carries a whistle.
+
+Football used to be simple.
+
+One ball.
+
+Two goals.
+
+Twenty-two players.
+
+One referee.
+
+If your team got robbed, you'd yell at the TV for five minutes, go outside for some fresh air and move on with your life.
+
+Today...
+
+The ball has sensors.
+
+The referee has an earpiece.
+
+VAR has its own room.
+
+The VAR room practically needs another VAR room.
+
+At this rate, even the grass will have a lawyer.
+
+I read that technology can detect whether a player touched the ball with a single hair.
+
+A single hair.
+
+Come on...
+
+This morning I couldn't even find my glasses while they were sitting on top of my head, yet someone expects me to believe the ball felt one hair on a boot.
+
+Next year they'll probably measure whether the striker was emotionally ready to score.
+
+Impressive.
+
+Seriously.
+
+—
+
+Then you read that one referee never even made it to the tournament.
+
+Another one is under investigation.
+
+A third missed a penalty.
+
+A fourth somehow saw something nobody else on Earth managed to see.
+
+And then comes the kind of headline no screenwriter would dare hand to a producer: Donald Trump reportedly stepped in to have an American player's red card overturned.
+
+At that point I honestly gave up trying to understand what I was watching.
+
+Because when presidents start dealing with red cards, you're no longer sure whether you're watching the World Cup or a United Nations session with a football.
+
+—
+
+And one more thing.
+
+At this pace, football academies will soon teach falling before passing.
+
+Players used to train volleys, first touch and free kicks.
+
+Now some of them seem to practice facial expressions.
+
+A defender brushes their shoulder.
+
+They grab their face.
+
+They fall.
+
+They roll around.
+
+They peek through their fingers to see whether the referee bought it.
+
+Thirty seconds later they're sprinting sixty metres like nothing ever happened.
+
+If acting counted toward the Ballon d'Or...
+
+Some forwards would have more trophies than Messi.
+
+—
+
+Infantino?
+
+Of course he's smiling.
+
+The man looks like he could sell snow to Norwegians, sand to the Sahara and convince everyone they got a fantastic deal.
+
+I'll give him one thing.
+
+He actually managed it.
+
+He turned the simplest game in the world into the most complicated one.
+
+And after a while you start thinking...
+
+Maybe only the ball knows what really happened.
+
+And that little rascal has kept quiet for a century and a half.
+
+—
+
+What I miss the most is the time when you could argue with your friends about an offside and nobody could be completely certain.
+
+Now we wait for animations.
+
+Lines.
+
+Graphics.
+
+Three camera angles.
+
+Five slow-motion replays.
+
+Reports.
+
+Statements.
+
+Committees.
+
+Appeals.
+
+Only then do we celebrate the goal.
+
+If we're even allowed to celebrate it.
+
+—
+
+Maybe I'm old-fashioned...
+
+But I'd rather technology helped football.
+
+Not the other way around.
+
+Because when the match lasts ninety minutes but the debate lasts three days, you start wondering what you actually watched.
+
+Football.
+
+Or a software presentation.
+
+—
+
+Anyway.
+
+Next time I see a referee waiting for confirmation from three cities, two server rooms and one satellite before pointing to the centre circle...
+
+I'll do exactly what I've always done.
+
+Get up from the couch.
+
+Complain.
+
+Open a beer.
+
+And look forward to the next match.
+
+Because it seems that we, the fans, are the only technology football still hasn't managed to break.
+
+And honestly...
+
+I hope it stays that way.
+
+—
+
+Charlie
+
+Remember. PlayNice.`,
+    sr: `Sedim sinoć i gledam utakmicu.
+
+Bar mislim da gledam utakmicu.
+
+U jednom trenutku više nisam bio siguran da li pratim fudbal ili novu sezonu neke kriminalističke serije u kojoj svaki lik nosi pištaljku.
+
+Nekad je fudbal bio prilično jednostavna igra.
+
+Lopta.
+
+Dva gola.
+
+Dvadeset dva čoveka.
+
+Jedan sudija.
+
+Ako te pokradu, psuješ televizor pet minuta, izađeš napolje da prošetaš i sutra nastaviš da živiš.
+
+Danas...
+
+Danas lopta ima senzore.
+
+Sudija ima slušalicu.
+
+VAR ima svoju sobu.
+
+VAR soba ima svoju VAR sobu.
+
+Još malo pa će i trava imati advokata.
+
+Čitam da tehnologija može da izmeri da li je igrač dodirnuo loptu jednom dlakom na nozi.
+
+Jednom dlakom.
+
+Brate...
+
+Ja jutros nisam mogao da pronađem naočare koje su mi sve vreme bile na glavi, a neko će meni objasniti da je lopta osetila jednu dlaku na kopački.
+
+Sledeće godine će, verovatno, meriti i da li je napadač u trenutku šuta bio emotivno spreman da postigne gol.
+
+Svaka čast.
+
+Ozbiljno.
+
+—
+
+Onda pročitaš da jedan sudija nije ni stigao na prvenstvo.
+
+Drugi je pod istragom.
+
+Treći nije video penal.
+
+Četvrti je video nešto što niko drugi na planeti nije video.
+
+A onda dolazi vest koju ni najbolji scenarista ne bi smeo da preda producentu. Donald Tramp se umešao kako bi američkom reprezentativcu bio poništen crveni karton.
+
+E, tu sam već odustao od pokušaja da shvatim šta gledam.
+
+Jer kad predsednici država počnu da rešavaju kartone, više nisi siguran da li pratiš Svetsko prvenstvo ili sednicu Ujedinjenih nacija sa loptom.
+
+—
+
+I još nešto.
+
+Ako ovako nastavimo, uskoro će se na fudbalskim akademijama prvo učiti padanje, pa tek onda dodavanje.
+
+Nekad su ljudi trenirali volej, prijem lopte i slobodne udarce.
+
+Danas pojedini treniraju izraz lica.
+
+Dodirne ga protivnik po ramenu.
+
+Ovaj se uhvati za lice.
+
+Padne.
+
+Previja se.
+
+Gleda sudiju kroz prste kao dete koje proverava da li je mama videla da je palo.
+
+Posle trideset sekundi ustane i sprinta šezdeset metara kao da se ništa nije dogodilo.
+
+Kad bi gluma ulazila u tabelu za Zlatnu loptu...
+
+Mislim da bi neki napadači imali više trofeja od Mesija.
+
+—
+
+Infantino?
+
+On se, naravno, smeška.
+
+Čovek izgleda kao da bi mogao da proda sneg Norvežanima, pesak Sahari i još da ih ubedi kako su napravili odličan posao.
+
+Moram da mu priznam jednu stvar.
+
+Uspeo je.
+
+Od najjednostavnije igre na svetu napravio je najkomplikovaniju.
+
+I u jednom trenutku počneš da razmišljaš...
+
+Možda jedino lopta zna šta se stvarno dogodilo.
+
+A ona, bezobraznica, ćuti već vek i po.
+
+—
+
+Najviše mi nedostaje ono vreme kada si mogao da se posvađaš sa društvom oko ofsajda i da niko nije bio potpuno siguran.
+
+Danas svi čekamo animaciju.
+
+Linije.
+
+Grafiku.
+
+Tri ugla.
+
+Pet usporenih snimaka.
+
+Izveštaj.
+
+Saopštenje.
+
+Komisiju.
+
+Žalbu.
+
+Pa tek onda proslavimo gol.
+
+Ako ga uopšte smemo proslaviti.
+
+—
+
+I možda sam staromodan...
+
+Ali voleo bih da tehnologija pomaže fudbalu.
+
+Ne da fudbal pomaže tehnologiji.
+
+Jer kad utakmica traje devedeset minuta, a rasprava o njoj naredna tri dana, čovek počne da se pita šta je zapravo gledao.
+
+Fudbal.
+
+Ili prezentaciju softvera.
+
+—
+
+Ali dobro.
+
+Kad sledeći put budem video da sudija čeka potvrdu iz tri različita grada, dve server sobe i jednog satelita pre nego što pokaže na centar...
+
+Ja ću i dalje uraditi isto što radim ceo život.
+
+Ustaću sa kauča.
+
+Opsovati.
+
+Otvoriti pivo.
+
+I jedva čekati sledeću utakmicu.
+
+Jer izgleda da smo mi navijači jedina tehnologija koju fudbal još uvek nije uspeo da pokvari.
+
+I iskreno...
+
+Nadam se da će tako i ostati.
+
+—
+
+Čarli
+
+Remember. PlayNice.`
+  }
 }
 ];
