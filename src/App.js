@@ -635,7 +635,7 @@ const BASE_HERO_SLIDES = [
     mobileImage: "/hero/mobile/slide-12-mobile.jpg",
     alt: "Thomas Kosmala No. 7 Le Sel de la Terre",
     actionPrimary: "product",
-    actionProductSlug: "thomas-kosmala-no-7-le-sel-de-la-terre",
+    actionProductSlug: "thomas-kosmala-no7-le-sel-de-la-terre",
     preferredSize: "10ml"
   },
 ];
