@@ -2543,8 +2543,8 @@ Remember. PlayNice.`
   date: "12 Jul",
   image: "/journal/fifty-one-day.jpg",
   title: {
-    en: "50. And one day.",
-    sr: "50. I jedan dan."
+    en: "50 and one day.",
+    sr: "50 i jedan dan."
   },
   excerpt: {
     en: "One morning you wake up and realize nothing has changed. Except the questions you ask yourself.",
