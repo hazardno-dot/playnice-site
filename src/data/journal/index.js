@@ -2547,8 +2547,8 @@ Remember. PlayNice.`
     sr: "50... I jedan dan."
   },
   excerpt: {
-    en: "One morning you wake up and realize nothing has changed. Except the questions you ask yourself.",
-    sr: "Jednog jutra probudiš se i shvatiš da se nije promenilo ništa. Osim pitanja koja počneš da postavljaš sebi."
+    en: "One morning you wake up and realize nothing has changed. Except the questions you finally dare to ask yourself.",
+    sr: "Jednog jutra probudiš se i shvatiš da se nije promenilo ništa. Osim pitanja koja se konačno usudiš da postaviš sebi."
   },
   content: {
     en: `Fifty.
@@ -2561,7 +2561,7 @@ Seriously.
 
 When did this happen?
 
-When you're twenty, fifty feels like another planet. That's where other people go. Serious people. Proper adults.
+When you're twenty, fifty feels like some distant planet. That's where other people go. Serious people. Proper adults.
 
 You stay here.
 
@@ -2575,23 +2575,21 @@ And one day.
 
 And you realize nothing spectacular has happened.
 
-The sun came up just like yesterday.
-
-Coffee tastes exactly the same.
+The sun came up just like yesterday. Coffee tastes exactly the same.
 
 But inside your head...
 
-Inside your head someone finally dares to ask the question you've been avoiding for years.
+Inside your head someone finally dares to ask the question you've been successfully avoiding for years.
 
 **Was that it?**
 
-You no longer wonder what you'll become when you grow up.
+You no longer wonder what you'll be when you grow up.
 
-Now you wonder who you actually became.
+Now you wonder who you've actually become.
 
-You flip through your life like an old photo album. Some memories deserve a frame. Others belong in a fire.
+You flip through your life like an old photo album. Some pictures deserve a frame. Others deserve a fire.
 
-In a few of them, you barely recognize the person who's smiling.
+In some of them you barely recognize the man who's smiling.
 
 You wonder what would've happened if you'd said "yes."
 
@@ -2613,31 +2611,21 @@ Turned down the other one.
 
 Called that person.
 
-Walked down the road that scared you.
+If you'd walked down the road that scared you.
 
-How many lives can disappear because of a single decision?
+How many lives can disappear because of one single decision?
 
-Nobody knows.
+You don't know.
 
-Maybe you could've been a great athlete.
+Nobody does.
 
-A doctor.
+Maybe you could've been a world-class athlete. Maybe a doctor. A pilot. A musician. Maybe the kind of person who flies from continent to continent and has dinner with people whose names appear on the news.
 
-A pilot.
-
-A musician.
-
-Maybe someone who flies across continents and has dinner with people whose names appear in the news.
-
-Maybe you could've been rich.
-
-Maybe famous.
-
-Maybe someone completely different.
+Maybe you could've been rich. Maybe famous. Maybe someone completely different.
 
 But you weren't.
 
-You became the person sitting here today, quietly trying to calculate how much time is left.
+You became the man sitting here today, alone with his thoughts, trying to calculate how much time is left.
 
 Is there enough?
 
@@ -2653,13 +2641,13 @@ Maybe much less.
 
 For the first time, the mathematics of life no longer feels abstract.
 
-Every year becomes more valuable than the one before.
+Every year suddenly becomes more valuable than the one before.
 
 And yes...
 
 It scares you.
 
-Not the number itself.
+Not the number.
 
 The speed.
 
@@ -2667,57 +2655,53 @@ Years don't pass anymore.
 
 They disappear.
 
-You finally get used to writing a new year...
+You finally get used to writing the new year...
 
 It's already July.
 
 You blink.
 
-December.
-
-You blink again.
-
-The child you once carried now drives a car.
+It's December again.
 
 You blink.
 
-Your parents grow old.
+The child you once held in your arms is driving a car.
 
-Friends begin to leave.
+You blink.
 
-And for the first time you understand that time is not infinite.
+Your parents grow old. Friends begin to leave.
 
-That realization hurts everyone differently.
+And for the first time you realize time isn't infinite.
 
-Some because they never built the family they dreamed about.
+That hurts.
 
-Some because they've lost the people they loved.
+Everyone differently.
 
-Some because they suddenly look around and realize the world kept moving while they weren't paying attention.
+Some because they never had a family.
 
-And there you are.
+Some because they lost the one they had.
+
+Some because one day they look around and realize the world kept changing while they weren't paying attention.
+
+There's only you.
 
 A few trips.
 
 A handful of friends.
 
-An apartment that may not even be yours.
+An apartment that might not even be yours.
 
 **Am I too late?**
 
 I don't know.
 
-Maybe that's the wrong question.
+I think that's the wrong question. Maybe it doesn't matter whether you're late. Maybe what matters is whether you've stopped.
 
-Maybe it doesn't matter whether you're late.
-
-Maybe what matters is whether you've stopped.
-
-Because there's a difference.
+Because there's a big difference.
 
 If you've stopped...
 
-Then time really is winning.
+Then the years really are winning.
 
 But if a song can still make you smile...
 
@@ -2725,65 +2709,57 @@ If you still want to see Iceland.
 
 Learn to fly a small airplane.
 
-Run your first half marathon.
+Run a half marathon.
 
 Write a book.
 
 Fall in love.
 
-Build something that's yours.
+Build something of your own.
 
 Then you're not finished.
 
 Not even close.
 
-People imagine life as a straight line.
+People often imagine life as a straight line.
 
-School.
+School. Work. Marriage. Kids. Retirement.
 
-Work.
-
-Marriage.
-
-Kids.
-
-Retirement.
-
-Real life almost never follows that script.
+But life rarely follows the schedule.
 
 Some people find love at twenty.
 
 Some at sixty.
 
-Some succeed at twenty-five.
+Some succeed at twenty-five, while others only succeed after everyone else has stopped believing in them.
 
-Others only after everyone else stopped believing in them.
-
-There is no law that says your best years are behind you.
+There's no law saying your best years are already behind you.
 
 Only fear says that.
 
-Fear is rarely honest.
+Fear rarely tells the truth.
 
 Will medicine help us live longer?
 
 Probably.
 
-Will technology make seventy feel like today's fifty?
+Will technology one day make seventy feel like today's fifty?
 
 Maybe.
 
-Artificial intelligence is already changing the world faster than most of us imagined.
+Artificial intelligence is already changing the world faster than any of us imagined.
 
 Maybe we'll live longer.
 
-Healthier.
+Maybe healthier.
 
-More actively.
+Maybe more actively.
 
 I don't know.
 
-But I hope we do.
+But I know one thing.
+
+I hope we do.
 
 Because I need more time.
 
@@ -2793,11 +2769,11 @@ Not to become younger.
 
 But to become the man I always believed I could be.
 
-Maybe that's the answer.
+And maybe that's the answer.
 
-At fifty... and one day... you shouldn't count how much time is left.
+At fifty... and one day... you shouldn't think about how much time is left.
 
-You should decide what you'll never postpone again.
+You should think about what you'll never postpone again.
 
 Who you'll call.
 
@@ -2817,13 +2793,11 @@ Maybe life doesn't begin at twenty.
 
 Maybe not even at thirty.
 
-Maybe for some people...
+Maybe for some people it only begins the day they honestly admit to themselves that time isn't infinite.
 
-It only begins the day they finally admit that time isn't infinite.
+And that often happens...
 
-And for many of us...
-
-That happens at fifty.
+At fifty.
 
 And one day.
 
@@ -2856,9 +2830,7 @@ I jedan dan.
 
 I shvatiš da se ništa spektakularno nije dogodilo.
 
-Sunce je izašlo kao i juče.
-
-Kafa ima isti ukus.
+Sunce je izašlo kao i juče. Kafa ima isti ukus.
 
 Ali u glavi...
 
@@ -2904,11 +2876,7 @@ Niko ne zna.
 
 Možda si mogao biti vrhunski sportista. Možda doktor. Pilot. Muzičar. Možda čovek koji leti sa kontinenta na kontinent i večera sa ljudima čija se imena pojavljuju u vestima.
 
-Možda si mogao biti bogat.
-
-Možda poznat.
-
-Možda potpuno neko drugi.
+Možda si mogao biti bogat. Možda poznat. Možda potpuno neko drugi.
 
 Ali nisi.
 
@@ -2980,17 +2948,13 @@ Stan koji možda i nije tvoj.
 
 Ne znam.
 
-Mislim da je to pogrešno pitanje.
-
-Možda nije važno da li si zakasnio.
-
-Možda je važnije da li si stao.
+Mislim da je to pogrešno pitanje. Možda nije važno da li si zakasnio. Možda je važnije da li si stao.
 
 Jer postoji velika razlika.
 
 Ako si stao...
 
-Onda godine stvarno pobeđuju.
+onda godine stvarno pobeđuju.
 
 Ali ako se još uvek raduješ nekoj pesmi...
 
@@ -3012,15 +2976,7 @@ Nisi ni blizu.
 
 Ljudi često zamišljaju život kao pravu liniju.
 
-Škola.
-
-Posao.
-
-Brak.
-
-Deca.
-
-Penzija.
+Škola. Posao. Brak. Deca. Penzija.
 
 Ali život retko poštuje raspored.
 
