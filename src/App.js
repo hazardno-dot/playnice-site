@@ -865,7 +865,8 @@ const isNewRequest = (request) => {
     "/videos/hero4.mp4",
     "/videos/hero5.mp4",
     "/videos/hero6.mp4",
-    "/videos/hero7.mp4"
+    "/videos/hero7.mp4",
+    "/videos/hero8.mp4"
   ];
 
   const videoRef = useRef(null);
