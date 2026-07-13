@@ -1643,7 +1643,7 @@ export const products = [
   category: "Designer",
   image: "/products/jean-paul-gaultier-le-beau-edt.png",
   sizes: { "2ml": 5, "5ml": 12, "10ml": 21 },
-  badge: "NEW",
+  badge: "MOST WANTED",
   rating: 9.2,
   ratingLabel: "Summer Icon",
   season: "summer",
