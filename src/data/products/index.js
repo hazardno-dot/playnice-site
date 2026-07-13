@@ -1635,4 +1635,27 @@ export const products = [
   },
   isNew: true,
 },
+{
+  id: 75,
+  slug: "jean-paul-gaultier-le-beau-edt",
+  name: "Jean Paul Gaultier Le Beau Eau de Toilette",
+  shortName: "JPG Le Beau",
+  category: "Designer",
+  image: "/products/jean-paul-gaultier-le-beau-edt.png",
+  sizes: { "2ml": 5, "5ml": 12, "10ml": 21 },
+  badge: "NEW",
+  rating: 9.2,
+  ratingLabel: "Summer Icon",
+  season: "summer",
+  moods: ["summer", "date", "signature"],
+  recommendations: [
+    "riiffs-freeze-extrait",
+    "ysl-y-iced-cologne"
+  ],
+  inspiredBy: {
+    name: "Original Jean Paul Gaultier creation",
+    short: "Coconut Tonka DNA"
+  },
+  isNew: true,
+},
 ];

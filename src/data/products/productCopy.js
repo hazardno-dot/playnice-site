@@ -1537,6 +1537,34 @@ export const productCopy = {
     en: "If you want a unique summer niche scent with a marine character."
   }
 },
+
+"Jean Paul Gaultier Le Beau Eau de Toilette": {
+  miniTag: { sr: "🥥 Tropical / Date", en: "🥥 Tropical / Date" },
+  card: {
+    sr: "Kokos, tonka i tropska svežina u zavodljivom spoju.",
+    en: "Coconut, tonka and tropical freshness in a seductive blend."
+  },
+  modal: {
+    sr: "Bergamot otvara miris sveže, dok kokos, tonka i drvenaste note stvaraju topao i zavodljiv tropski karakter.",
+    en: "Bergamot opens fresh, while coconut, tonka and woods create a warm, seductive tropical character."
+  },
+  scentType: {
+    sr: "Tropical woody gourmand",
+    en: "Tropical woody gourmand"
+  },
+  dominantNotes: {
+    sr: ["kokos", "bergamot", "tonka", "drvo"],
+    en: ["coconut", "bergamot", "tonka", "woods"]
+  },
+  tags: {
+    sr: ["Summer", "Date Night", "Compliment"],
+    en: ["Summer", "Date Night", "Compliment"]
+  },
+  whyChoose: {
+    sr: "Ako želiš tropski miris koji privlači komplimente.",
+    en: "If you want a tropical scent that gets compliments."
+  }
+},
 };
 
 /* =========================================

@@ -322,4 +322,9 @@ export const productWearContext = {
   sr: "Leto, more, signature nošenje.",
   en: "Summer, seaside, signature wear."
 },
+
+"Jean Paul Gaultier Le Beau Eau de Toilette": {
+  sr: "Leto, dejt, večernji izlazak.",
+  en: "Summer, date night, evening out."
+}
 };
