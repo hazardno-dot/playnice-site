@@ -4788,14 +4788,12 @@ main {
   line-height: 1.48;
   color: rgba(255, 248, 235, 0.94);
 
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: block;
+  overflow: visible;
+  text-overflow: clip;
 
   min-height: 3.3rem;
-  max-height: 3.3rem;
+  max-height: none;
 }
 
 .product-modal-anchor {
