@@ -326,5 +326,25 @@ export const productWearContext = {
 "Jean Paul Gaultier Le Beau Eau de Toilette": {
   sr: "Leto, dejt, večernji izlazak.",
   en: "Summer, date night, evening out."
-}
+},
+
+"Rayhaan Azul Eau de Parfum": {
+  sr: "Posao, leto, svaki dan.",
+  en: "Work, summer, everyday wear."
+},
+
+"The Lattafa Suqraat Eau de Parfum": {
+  sr: "Leto, more, dnevno nošenje.",
+  en: "Summer, seaside, daytime wear."
+},
+
+"Khadlaj Shiyaaka Snow Eau de Parfum": {
+  sr: "Posao, elegantne prilike, svaki dan.",
+  en: "Work, elegant occasions, everyday wear."
+},
+
+"The French Avenue Ravine Ginger Eau de Parfum": {
+  sr: "Izlazak, leto, signature nošenje.",
+  en: "Going out, summer, signature wear."
+},
 };

@@ -1658,4 +1658,92 @@ export const products = [
   },
   isNew: true,
 },
+{
+  id: 76,
+  slug: "rayhaan-azul-edp",
+  name: "Rayhaan Azul Eau de Parfum",
+  shortName: "Rayhaan Azul",
+  category: "Arabian",
+  image: "/products/rayhaan-azul.png",
+  sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+  badge: "SUMMER HIT",
+  rating: 8.8,
+  ratingLabel: "Summer Favorite",
+  season: "summer",
+  moods: ["summer", "clean", "signature"],
+  recommendations: [
+    "ysl-y-iced-cologne"
+  ],
+  inspiredBy: {
+  name: "Dior Homme Cologne",
+  short: "Dior Homme Cologne DNA"
+  },
+  isNew: true,
+},
+{
+  id: 77,
+  slug: "lattafa-suqraat-edp",
+  name: "The Lattafa Suqraat Eau de Parfum",
+  shortName: "Lattafa Suqraat",
+  category: "Arabian",
+  image: "/products/lattafa-suqraat.png",
+  sizes: { "5ml": 3.5, "10ml": 6, "20ml": 12 },
+  badge: "HIDDEN GEM",
+  rating: 8.5,
+  ratingLabel: "Fresh Classic",
+  season: "summer",
+  moods: ["summer", "clean"],
+  recommendations: [
+    "dolce-gabbana-light-blue-pour-homme-2025"
+  ],
+  inspiredBy: {
+  name: "Giorgio Armani Acqua di Giò Profumo",
+  short: "Acqua di Giò Profumo DNA"
+  },
+  isNew: true,
+},
+{
+  id: 78,
+  slug: "khadlaj-shiyaaka-snow-edp",
+  name: "Khadlaj Shiyaaka Snow Eau de Parfum",
+  shortName: "Shiyaaka Snow",
+  category: "Arabian",
+  image: "/products/khadlaj-shiyaaka-snow.png",
+  sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+  badge: "MOST WANTED",
+  rating: 8.8,
+  ratingLabel: "Luxury Fresh",
+  season: "summer",
+  moods: ["clean", "signature", "summer"],
+  recommendations: [
+    "lattafa-maahir-legacy"
+  ],
+  inspiredBy: {
+  name: "Louis Vuitton Météore",
+  short: "Météore DNA"
+  },
+  isNew: true,
+},
+{
+  id: 79,
+  slug: "french-avenue-ravine-ginger-edp",
+  name: "The French Avenue Ravine Ginger Eau de Parfum",
+  shortName: "Ravine Ginger",
+  category: "Arabian",
+  image: "/products/french-avenue-ravine-ginger.png",
+  sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+  badge: "ARABIAN GEM",
+  rating: 8.9,
+  ratingLabel: "Signature Pick",
+  season: "summer",
+  moods: ["signature", "summer", "rich"],
+  recommendations: [
+    "french-avenue-pinnace-oryn"
+  ],
+  inspiredBy: {
+  name: "Goldfield & Banks Ingenious Ginger",
+  short: "Ingenious Ginger DNA"
+  },
+  isNew: true,
+},
 ];

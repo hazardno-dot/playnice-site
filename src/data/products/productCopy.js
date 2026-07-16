@@ -1565,6 +1565,106 @@ export const productCopy = {
     en: "If you want a tropical scent that gets compliments."
   }
 },
+
+"Rayhaan Azul Eau de Parfum": {
+  miniTag: { sr: "🔵 Fresh / Blue", en: "🔵 Fresh / Blue" },
+  card: {
+    sr: "Moderan blue miris sa čistim karakterom.",
+    en: "Modern blue fragrance with a clean character."
+  },
+  modal: {
+    sr: "Citrusi, đumbir i drvenasta baza stvaraju svež i elegantan svakodnevni miris.",
+    en: "Citrus, ginger and a woody base create a fresh and elegant everyday scent."
+  },
+  scentType: { sr: "Fresh woody aromatic", en: "Fresh woody aromatic" },
+  dominantNotes: {
+    sr: ["citrusi", "đumbir", "drvo"],
+    en: ["citrus", "ginger", "woods"]
+  },
+  tags: {
+    sr: ["Blue", "Fresh", "Daily"],
+    en: ["Blue", "Fresh", "Daily"]
+  },
+  whyChoose: {
+    sr: "Ako voliš čist i moderan blue parfem.",
+    en: "If you enjoy clean modern blue fragrances."
+  }
+},
+
+"The Lattafa Suqraat Eau de Parfum": {
+  miniTag: { sr: "🌊 Marine / Fresh", en: "🌊 Marine / Fresh" },
+  card: {
+    sr: "Morska svežina sa elegantnom aromatikom.",
+    en: "Marine freshness with elegant aromatics."
+  },
+  modal: {
+    sr: "Morske note, aromatično bilje i drvenasta baza daju čist i osvežavajući karakter.",
+    en: "Marine notes, aromatics and a woody base deliver a clean refreshing profile."
+  },
+  scentType: { sr: "Marine aromatic woody", en: "Marine aromatic woody" },
+  dominantNotes: {
+    sr: ["morske note", "lavanda", "drvo"],
+    en: ["marine notes", "lavender", "woods"]
+  },
+  tags: {
+    sr: ["Marine", "Summer", "Fresh"],
+    en: ["Marine", "Summer", "Fresh"]
+  },
+  whyChoose: {
+    sr: "Ako želiš lagan i osvežavajući letnji miris.",
+    en: "If you want a light refreshing summer fragrance."
+  }
+},
+
+"Khadlaj Shiyaaka Snow Eau de Parfum": {
+  miniTag: { sr: "❄️ Clean / Elegant", en: "❄️ Clean / Elegant" },
+  card: {
+    sr: "Čist, luksuzan i elegantan svakodnevni miris.",
+    en: "Clean luxurious fragrance for everyday elegance."
+  },
+  modal: {
+    sr: "Cvetne i drvenaste note daju sofisticiran, čist i veoma nosiv karakter.",
+    en: "Floral and woody notes create a sophisticated clean wearable scent."
+  },
+  scentType: { sr: "Floral woody musky", en: "Floral woody musky" },
+  dominantNotes: {
+    sr: ["cvetne note", "drvo", "mošus"],
+    en: ["florals", "woods", "musk"]
+  },
+  tags: {
+    sr: ["Elegant", "Clean", "Signature"],
+    en: ["Elegant", "Clean", "Signature"]
+  },
+  whyChoose: {
+    sr: "Ako želiš luksuzan clean signature miris.",
+    en: "If you want a luxurious clean signature scent."
+  }
+},
+
+"The French Avenue Ravine Ginger Eau de Parfum": {
+  miniTag: { sr: "🫚 Ginger / Citrus", en: "🫚 Ginger / Citrus" },
+  card: {
+    sr: "Đumbir i citrusi u modernom signature spoju.",
+    en: "Ginger and citrus in a modern signature blend."
+  },
+  modal: {
+    sr: "Đumbir, citrusi i amber daju energičan, moderan i upečatljiv karakter.",
+    en: "Ginger, citrus and amber create an energetic modern signature scent."
+  },
+  scentType: { sr: "Citrus spicy amber", en: "Citrus spicy amber" },
+  dominantNotes: {
+    sr: ["đumbir", "citrusi", "ambra"],
+    en: ["ginger", "citrus", "amber"]
+  },
+  tags: {
+    sr: ["Signature", "Fresh", "Modern"],
+    en: ["Signature", "Fresh", "Modern"]
+  },
+  whyChoose: {
+    sr: "Ako želiš svež miris sa karakterom.",
+    en: "If you want a fresh scent with character."
+  }
+},
 };
 
 /* =========================================
