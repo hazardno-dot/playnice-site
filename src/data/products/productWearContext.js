@@ -347,4 +347,9 @@ export const productWearContext = {
   sr: "Izlazak, leto, signature nošenje.",
   en: "Going out, summer, signature wear."
 },
+
+"Lattafa Khamrah Waha Eau de Parfum": {
+  sr: "Veče, dejt, opušten izlazak.",
+  en: "Evening, date night, casual nights out."
+}
 };

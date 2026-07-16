@@ -1665,6 +1665,34 @@ export const productCopy = {
     en: "If you want a fresh scent with character."
   }
 },
+
+"Lattafa Khamrah Waha Eau de Parfum": {
+  miniTag: { sr: "🥥 Gourmand / Tropical", en: "🥥 Gourmand / Tropical" },
+  card: {
+    sr: "Kokos, vanila i začini u bogatom gourmand spoju.",
+    en: "Coconut, vanilla and spices in a rich gourmand blend."
+  },
+  modal: {
+    sr: "Kremasti kokos, slatka vanila i topli začini stvaraju bogat, moderan i veoma privlačan gourmand miris.",
+    en: "Creamy coconut, sweet vanilla and warm spices create a rich, modern and highly addictive gourmand scent."
+  },
+  scentType: {
+    sr: "Tropical gourmand amber",
+    en: "Tropical gourmand amber"
+  },
+  dominantNotes: {
+    sr: ["kokos", "vanila", "začini", "ambar"],
+    en: ["coconut", "vanilla", "spices", "amber"]
+  },
+  tags: {
+    sr: ["Gourmand", "Date Night", "Sweet"],
+    en: ["Gourmand", "Date Night", "Sweet"]
+  },
+  whyChoose: {
+    sr: "Ako voliš bogate, slatke i tropske mirise.",
+    en: "If you enjoy rich, sweet and tropical fragrances."
+  }
+},
 };
 
 /* =========================================

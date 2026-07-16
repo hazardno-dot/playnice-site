@@ -1746,4 +1746,26 @@ export const products = [
   },
   isNew: true,
 },
+{
+  id: 80,
+  slug: "lattafa-khamrah-waha-edp",
+  name: "Lattafa Khamrah Waha Eau de Parfum",
+  shortName: "Khamrah Waha",
+  category: "Arabian",
+  image: "/products/lattafa-khamrah-waha.png",
+  sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
+  badge: "TRENDING",
+  rating: 9.0,
+  ratingLabel: "Gourmand Star",
+  season: "all",
+  moods: ["rich", "date", "signature"],
+  recommendations: [
+    "jean-paul-gaultier-le-beau-edt"
+  ],
+  inspiredBy: {
+    name: "Original Lattafa creation",
+    short: "Tropical Gourmand DNA"
+  },
+  isNew: true,
+},
 ];
