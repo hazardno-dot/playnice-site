@@ -4745,7 +4745,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </span>
 
     <div className="already-in-collection-list">
-      {existingCollectionRequests.slice(0, 5).map((item) => {
+      {existingCollectionRequests.slice(0, 10).map((item) => {
         const product =
           item.product || findExistingProductByRequest(item.name);
 
