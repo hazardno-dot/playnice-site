@@ -1727,7 +1727,7 @@ export const products = [
 {
   id: 79,
   slug: "french-avenue-ravine-ginger-edp",
-  name: "The French Avenue Ravine Ginger Eau de Parfum",
+  name: "The French Avenue Ravine Ginger Extrait de Parfum",
   shortName: "Ravine Ginger",
   category: "Arabian",
   image: "/products/french-avenue-ravine-ginger.png",
