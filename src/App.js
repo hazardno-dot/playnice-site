@@ -4756,6 +4756,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           "Prada Paradigme Eau de Parfum": 25,
           "Carolina Herrera Bad Boy Cobalt Eau de Parfum": 5,
           "Lattafa Khamrah Waha Eau de Parfum": 13,
+          "Rayhaan Azul Eau de Parfum": 5,
         };
 
         const lockedVotes = lockedVotesByName[item.name] || item.lockedVotes || 1;
