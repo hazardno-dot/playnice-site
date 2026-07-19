@@ -4745,7 +4745,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </span>
 
     <div className="already-in-collection-list">
-      {existingCollectionRequests.slice(0, 10).map((item) => {
+      {existingCollectionRequests.slice(0, 6).map((item) => {
         const product =
           item.product || findExistingProductByRequest(item.name);
 
@@ -4809,20 +4809,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         );
       })}
 
-      {existingCollectionRequests.length > 5 && (
-        <span className="already-in-collection-more-wrap">
-          <em className="already-in-collection-more">
-            +{existingCollectionRequests.length - 5} more
-          </em>
+      {existingCollectionRequests.length > 6 && (
+       <span className="already-in-collection-more-wrap">
+       <em className="already-in-collection-more">
+        +{existingCollectionRequests.length - 6} more
+       </em>
 
-          <span className="already-in-collection-tooltip">
-            {existingCollectionRequests
-              .slice(5)
-              .map((item) => item.name)
-              .join(" • ")}
-          </span>
-        </span>
-      )}
+      <span className="already-in-collection-tooltip">
+       {existingCollectionRequests
+        .slice(6)
+        .map((item) => item.name)
+        .join(" • ")}
+      </span>
+     </span>
+    )}
     </div>
   </div>
 )}
