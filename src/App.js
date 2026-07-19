@@ -4745,7 +4745,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </span>
 
     <div className="already-in-collection-list">
-      {existingCollectionRequests.slice(0, 6).map((item) => {
+      {existingCollectionRequests.slice(0, 10).map((item) => {
         const product =
           item.product || findExistingProductByRequest(item.name);
 
@@ -4755,7 +4755,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           "Bois Impérial by Essential Parfums": 1,
           "Prada Paradigme Eau de Parfum": 25,
           "Carolina Herrera Bad Boy Cobalt Eau de Parfum": 5,
-          "Lattafa Khamrah Waha Eau de Parfum": 13,
+          "Lattafa Khamrah Waha Eau de Parfum": 2,
         };
 
         const lockedVotes = lockedVotesByName[item.name] || item.lockedVotes || 1;
@@ -4809,15 +4809,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         );
       })}
 
-      {existingCollectionRequests.length > 6 && (
+      {existingCollectionRequests.length > 10 && (
        <span className="already-in-collection-more-wrap">
        <em className="already-in-collection-more">
-        +{existingCollectionRequests.length - 6} more
+        +{existingCollectionRequests.length - 10} more
        </em>
 
       <span className="already-in-collection-tooltip">
        {existingCollectionRequests
-        .slice(6)
+        .slice(10)
         .map((item) => item.name)
         .join(" • ")}
       </span>
