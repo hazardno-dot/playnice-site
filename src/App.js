@@ -4755,7 +4755,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           "Bois Impérial by Essential Parfums": 1,
           "Prada Paradigme Eau de Parfum": 25,
           "Carolina Herrera Bad Boy Cobalt Eau de Parfum": 5,
-          "Lattafa Khamrah Waha Eau de Parfum": 2,
+          "Lattafa Khamrah Waha Eau de Parfum": 13,
         };
 
         const lockedVotes = lockedVotesByName[item.name] || item.lockedVotes || 1;
