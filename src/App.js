@@ -964,7 +964,7 @@ const toggleVideoPlayback = () => {
 
     case "featured":
     default:
-      return [...items].reverse();
+     return items;
   }
 }, [category, searchTerm, season, scentMood, sortBy, heroCollectionFilter]);
 
