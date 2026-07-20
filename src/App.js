@@ -1093,9 +1093,12 @@ useEffect(() => {
 
       if (!groupWidth) return;
 
-      if (marquee.scrollLeft <= 1) {
+      const leftLimit = groupWidth * 0.25;
+const rightLimit = groupWidth * 1.75;
+
+      if (marquee.scrollLeft < leftLimit) {
         marquee.scrollLeft += groupWidth;
-      } else if (marquee.scrollLeft >= groupWidth * 2) {
+      } else if (marquee.scrollLeft > rightLimit) {
         marquee.scrollLeft -= groupWidth;
       }
     });
