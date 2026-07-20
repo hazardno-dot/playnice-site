@@ -1336,7 +1336,6 @@ export const products = [
     name: "Original Narciso Rodriguez creation",
     short: "Powdery Musk DNA"
   },
-  isNew: true,
 },
 {
   id: 61,
@@ -1358,7 +1357,6 @@ export const products = [
     name: "Original Yves Saint Laurent creation",
     short: "Vanilla Coffee DNA"
   },
-  isNew: true,
 },
 {
   id: 62,
@@ -1380,7 +1378,6 @@ export const products = [
     name: "Louis Vuitton Afternoon Swim",
     short: "Afternoon Swim DNA"
   },
-  isNew: true,
 },
 {
   id: 63,
@@ -1402,7 +1399,6 @@ export const products = [
     name: "Jean Paul Gaultier Le Beau Paradise Garden",
     short: "Paradise Garden DNA"
   },
-  isNew: true,
 },
 {
   id: 64,
@@ -1424,7 +1420,6 @@ export const products = [
     name: "Parfums de Marly Sedley",
     short: "Sedley DNA"
   },
-  isNew: true,
 },
 {
   id: 65,
