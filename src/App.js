@@ -1051,79 +1051,6 @@ const newArrivalProducts = [...products]
   .reverse();
 
 /* =========================================
-   newArrivalsMarqueeRef
-========================================= */
-
-const newArrivalsMarqueeRef = useRef(null);
-const newArrivalsCount = newArrivalProducts.length;
-
-useEffect(() => {
-  const marquee = newArrivalsMarqueeRef.current;
-
-  if (!marquee || newArrivalsCount === 0) return;
-
-  const mobileQuery = window.matchMedia("(max-width: 640px)");
-  let scrollFrame;
-
-  const getGroupWidth = () => {
-    const group = marquee.querySelector(".new-arrivals-group");
-    return group?.offsetWidth || 0;
-  };
-
-  const setInitialPosition = () => {
-    if (!mobileQuery.matches) {
-      marquee.scrollLeft = 0;
-      return;
-    }
-
-    const groupWidth = getGroupWidth();
-
-    if (groupWidth > 0) {
-      marquee.scrollLeft = groupWidth;
-    }
-  };
-
-  const handleScroll = () => {
-    if (!mobileQuery.matches) return;
-
-    cancelAnimationFrame(scrollFrame);
-
-    scrollFrame = requestAnimationFrame(() => {
-      const groupWidth = getGroupWidth();
-
-      if (!groupWidth) return;
-
-      const leftLimit = groupWidth * 0.25;
-const rightLimit = groupWidth * 1.75;
-
-      if (marquee.scrollLeft < leftLimit) {
-        marquee.scrollLeft += groupWidth;
-      } else if (marquee.scrollLeft > rightLimit) {
-        marquee.scrollLeft -= groupWidth;
-      }
-    });
-  };
-
-  const initialFrame = requestAnimationFrame(setInitialPosition);
-
-  marquee.addEventListener("scroll", handleScroll, {
-    passive: true,
-  });
-
-  window.addEventListener("resize", setInitialPosition);
-  mobileQuery.addEventListener("change", setInitialPosition);
-
-  return () => {
-    cancelAnimationFrame(initialFrame);
-    cancelAnimationFrame(scrollFrame);
-
-    marquee.removeEventListener("scroll", handleScroll);
-    window.removeEventListener("resize", setInitialPosition);
-    mobileQuery.removeEventListener("change", setInitialPosition);
-  };
-}, [newArrivalsCount]);
-
-/* =========================================
    SIDE RAILS ADS
 ========================================= */
 const foreverAloeUrl =
@@ -4494,12 +4421,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </div>
 
 {newArrivalProducts.length > 0 && (
-  <div
-    ref={newArrivalsMarqueeRef}
-    className="new-arrivals-marquee"
-  >
+  <div className="new-arrivals-marquee">
     <div className="new-arrivals-track">
-      {[true, false, true].map((isClone, groupIndex) => (
+      {[false, true].map((isClone, groupIndex) => (
         <div
           key={groupIndex}
           className="new-arrivals-group"
