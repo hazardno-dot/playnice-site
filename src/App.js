@@ -659,72 +659,6 @@ const newArrivalProducts = [...products]
   .filter((product) => product.isNew === true)
   .reverse();
 
-  const newArrivalsMarqueeRef = useRef(null);
-const newArrivalsCount = newArrivalProducts.length;
-
-useEffect(() => {
-  const marquee = newArrivalsMarqueeRef.current;
-
-  if (!marquee || newArrivalsCount === 0) return;
-
-  const mobileQuery = window.matchMedia("(max-width: 640px)");
-  let scrollFrame;
-
-  const getGroupWidth = () => {
-    const group = marquee.querySelector(".new-arrivals-group");
-    return group?.offsetWidth || 0;
-  };
-
-  const setInitialPosition = () => {
-    if (!mobileQuery.matches) {
-      marquee.scrollLeft = 0;
-      return;
-    }
-
-    const groupWidth = getGroupWidth();
-
-    if (groupWidth > 0) {
-      marquee.scrollLeft = groupWidth;
-    }
-  };
-
-  const handleScroll = () => {
-    if (!mobileQuery.matches) return;
-
-    cancelAnimationFrame(scrollFrame);
-
-    scrollFrame = requestAnimationFrame(() => {
-      const groupWidth = getGroupWidth();
-
-      if (!groupWidth) return;
-
-      if (marquee.scrollLeft <= 1) {
-        marquee.scrollLeft += groupWidth;
-      } else if (marquee.scrollLeft >= groupWidth * 2) {
-        marquee.scrollLeft -= groupWidth;
-      }
-    });
-  };
-
-  const initialFrame = requestAnimationFrame(setInitialPosition);
-
-  marquee.addEventListener("scroll", handleScroll, {
-    passive: true,
-  });
-
-  window.addEventListener("resize", setInitialPosition);
-  mobileQuery.addEventListener("change", setInitialPosition);
-
-  return () => {
-    cancelAnimationFrame(initialFrame);
-    cancelAnimationFrame(scrollFrame);
-
-    marquee.removeEventListener("scroll", handleScroll);
-    window.removeEventListener("resize", setInitialPosition);
-    mobileQuery.removeEventListener("change", setInitialPosition);
-  };
-}, [newArrivalsCount]);
-
 /* =========================================
    SHOP_NEW_PRODUCTS_SEEN_KEY
 ========================================= */
@@ -1115,6 +1049,76 @@ const toggleVideoPlayback = () => {
 const selectedScentMood =
   scentMoodOptions.find((option) => option.value === scentMood) ||
   scentMoodOptions[0];
+
+/* =========================================
+   newArrivalsMarqueeRef
+========================================= */
+
+const newArrivalsMarqueeRef = useRef(null);
+const newArrivalsCount = newArrivalProducts.length;
+
+useEffect(() => {
+  const marquee = newArrivalsMarqueeRef.current;
+
+  if (!marquee || newArrivalsCount === 0) return;
+
+  const mobileQuery = window.matchMedia("(max-width: 640px)");
+  let scrollFrame;
+
+  const getGroupWidth = () => {
+    const group = marquee.querySelector(".new-arrivals-group");
+    return group?.offsetWidth || 0;
+  };
+
+  const setInitialPosition = () => {
+    if (!mobileQuery.matches) {
+      marquee.scrollLeft = 0;
+      return;
+    }
+
+    const groupWidth = getGroupWidth();
+
+    if (groupWidth > 0) {
+      marquee.scrollLeft = groupWidth;
+    }
+  };
+
+  const handleScroll = () => {
+    if (!mobileQuery.matches) return;
+
+    cancelAnimationFrame(scrollFrame);
+
+    scrollFrame = requestAnimationFrame(() => {
+      const groupWidth = getGroupWidth();
+
+      if (!groupWidth) return;
+
+      if (marquee.scrollLeft <= 1) {
+        marquee.scrollLeft += groupWidth;
+      } else if (marquee.scrollLeft >= groupWidth * 2) {
+        marquee.scrollLeft -= groupWidth;
+      }
+    });
+  };
+
+  const initialFrame = requestAnimationFrame(setInitialPosition);
+
+  marquee.addEventListener("scroll", handleScroll, {
+    passive: true,
+  });
+
+  window.addEventListener("resize", setInitialPosition);
+  mobileQuery.addEventListener("change", setInitialPosition);
+
+  return () => {
+    cancelAnimationFrame(initialFrame);
+    cancelAnimationFrame(scrollFrame);
+
+    marquee.removeEventListener("scroll", handleScroll);
+    window.removeEventListener("resize", setInitialPosition);
+    mobileQuery.removeEventListener("change", setInitialPosition);
+  };
+}, [newArrivalsCount]);
 
 /* =========================================
    SIDE RAILS ADS
