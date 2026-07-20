@@ -19036,11 +19036,11 @@ body.overlay-lock .header-system {
 
 @keyframes new-arrivals-scroll {
   from {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(-33.333333%, 0, 0);
   }
 
   to {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-66.666667%, 0, 0);
   }
 }
 
@@ -19277,19 +19277,23 @@ body.overlay-lock .header-system {
   }
 
   .new-arrivals-marquee {
-    width: calc(100% + 20px);
-    margin-left: -10px;
-    padding: 5px 10px 14px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x proximity;
-    scroll-behavior: smooth;
-    overscroll-behavior-x: contain;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
-    -webkit-mask-image: none;
-    mask-image: none;
-    scrollbar-width: none;
+  width: 100%;
+  margin-left: 0;
+  padding: 5px 0 14px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+
+  -webkit-mask-image: none;
+  mask-image: none;
+
+  scrollbar-width: none;
   }
 
   .new-arrivals-marquee::-webkit-scrollbar {
@@ -19301,10 +19305,6 @@ body.overlay-lock .header-system {
     animation: none;
     transform: none;
     will-change: auto;
-  }
-
-  .new-arrivals-group[aria-hidden="true"] {
-    display: none;
   }
 
   .new-arrivals-group {

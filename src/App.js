@@ -659,6 +659,72 @@ const newArrivalProducts = [...products]
   .filter((product) => product.isNew === true)
   .reverse();
 
+  const newArrivalsMarqueeRef = useRef(null);
+const newArrivalsCount = newArrivalProducts.length;
+
+useEffect(() => {
+  const marquee = newArrivalsMarqueeRef.current;
+
+  if (!marquee || newArrivalsCount === 0) return;
+
+  const mobileQuery = window.matchMedia("(max-width: 640px)");
+  let scrollFrame;
+
+  const getGroupWidth = () => {
+    const group = marquee.querySelector(".new-arrivals-group");
+    return group?.offsetWidth || 0;
+  };
+
+  const setInitialPosition = () => {
+    if (!mobileQuery.matches) {
+      marquee.scrollLeft = 0;
+      return;
+    }
+
+    const groupWidth = getGroupWidth();
+
+    if (groupWidth > 0) {
+      marquee.scrollLeft = groupWidth;
+    }
+  };
+
+  const handleScroll = () => {
+    if (!mobileQuery.matches) return;
+
+    cancelAnimationFrame(scrollFrame);
+
+    scrollFrame = requestAnimationFrame(() => {
+      const groupWidth = getGroupWidth();
+
+      if (!groupWidth) return;
+
+      if (marquee.scrollLeft <= 1) {
+        marquee.scrollLeft += groupWidth;
+      } else if (marquee.scrollLeft >= groupWidth * 2) {
+        marquee.scrollLeft -= groupWidth;
+      }
+    });
+  };
+
+  const initialFrame = requestAnimationFrame(setInitialPosition);
+
+  marquee.addEventListener("scroll", handleScroll, {
+    passive: true,
+  });
+
+  window.addEventListener("resize", setInitialPosition);
+  mobileQuery.addEventListener("change", setInitialPosition);
+
+  return () => {
+    cancelAnimationFrame(initialFrame);
+    cancelAnimationFrame(scrollFrame);
+
+    marquee.removeEventListener("scroll", handleScroll);
+    window.removeEventListener("resize", setInitialPosition);
+    mobileQuery.removeEventListener("change", setInitialPosition);
+  };
+}, [newArrivalsCount]);
+
 /* =========================================
    SHOP_NEW_PRODUCTS_SEEN_KEY
 ========================================= */
@@ -4420,66 +4486,69 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </button>
 </div>
 
-  {newArrivalProducts.length > 0 && (
-    <div className="new-arrivals-marquee">
-      <div className="new-arrivals-track">
-        {[false, true].map((isClone, groupIndex) => (
-          <div
-            key={groupIndex}
-            className="new-arrivals-group"
-            aria-hidden={isClone ? "true" : undefined}
-          >
-            {newArrivalProducts.map((product) => {
-              const minPrice = getMinPrice(product);
+{newArrivalProducts.length > 0 && (
+  <div
+    ref={newArrivalsMarqueeRef}
+    className="new-arrivals-marquee"
+  >
+    <div className="new-arrivals-track">
+      {[true, false, true].map((isClone, groupIndex) => (
+        <div
+          key={groupIndex}
+          className="new-arrivals-group"
+          aria-hidden={isClone ? "true" : undefined}
+        >
+          {newArrivalProducts.map((product) => {
+            const minPrice = getMinPrice(product);
 
-              return (
-                <button
-                  key={`${groupIndex}-${product.id}`}
-                  type="button"
-                  className="new-arrival-card"
-                  tabIndex={isClone ? -1 : 0}
-                  onClick={() =>
-                    openProductModal(product, {
-                      changeView: false,
-                    })
-                  }
-                  aria-label={
-                    isClone
-                      ? undefined
-                      : lang === "sr"
-                        ? `Otvori ${product.name}`
-                        : `Open ${product.name}`
-                  }
-                >
-                  <span className="new-arrival-card-badge">
-                    JUST IN
-                  </span>
+            return (
+              <button
+                key={`${groupIndex}-${product.id}`}
+                type="button"
+                className="new-arrival-card"
+                tabIndex={isClone ? -1 : 0}
+                onClick={() =>
+                  openProductModal(product, {
+                    changeView: false,
+                  })
+                }
+                aria-label={
+                  isClone
+                    ? undefined
+                    : lang === "sr"
+                      ? `Otvori ${product.name}`
+                      : `Open ${product.name}`
+                }
+              >
+                <span className="new-arrival-card-badge">
+                  JUST IN
+                </span>
 
-                  <span className="new-arrival-card-image-wrap">
-                    <img
-                      src={product.image}
-                      alt={isClone ? "" : product.name}
-                      className="new-arrival-card-image"
-                      loading="lazy"
-                      draggable="false"
-                    />
-                  </span>
+                <span className="new-arrival-card-image-wrap">
+                  <img
+                    src={product.image}
+                    alt={isClone ? "" : product.name}
+                    className="new-arrival-card-image"
+                    loading="lazy"
+                    draggable="false"
+                  />
+                </span>
 
-                  <span className="new-arrival-card-name">
-                    {product.name}
-                  </span>
+                <span className="new-arrival-card-name">
+                  {product.name}
+                </span>
 
-                  <span className="new-arrival-card-price">
-                    {lang === "sr" ? "Već od" : "From"} €{minPrice}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        ))}
-      </div>
+                <span className="new-arrival-card-price">
+                  {lang === "sr" ? "Već od" : "From"} €{minPrice}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      ))}
     </div>
-  )}
+  </div>
+)}
 </section>
 
             <section className="homepage-shop-preview section-wrap">
