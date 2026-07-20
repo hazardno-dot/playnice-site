@@ -19644,3 +19644,54 @@ body.overlay-lock .header-system {
     padding-top: 28px;
   }
 }
+
+/* =========================================
+   HOME BESTSELLERS — CENTERED HEADER
+========================================= */
+
+.homepage-shop-preview > .section-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  max-width: 920px;
+  margin: 0 auto 38px;
+
+  text-align: center;
+}
+
+.homepage-shop-preview > .section-head .section-kicker {
+  margin-bottom: 12px;
+}
+
+.homepage-shop-preview > .section-head h2 {
+  max-width: 900px;
+  margin-bottom: 14px;
+  text-wrap: balance;
+}
+
+.homepage-shop-preview > .section-head > p:last-child {
+  max-width: 760px;
+  margin: 0 auto;
+
+  line-height: 1.65;
+  text-wrap: balance;
+}
+
+@media (max-width: 640px) {
+  .homepage-shop-preview > .section-head {
+    max-width: 100%;
+    margin-bottom: 26px;
+    padding: 0 8px;
+  }
+
+  .homepage-shop-preview > .section-head h2 {
+    font-size: clamp(2.2rem, 11vw, 3rem);
+  }
+
+  .homepage-shop-preview > .section-head > p:last-child {
+    max-width: 520px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+}
