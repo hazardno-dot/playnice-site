@@ -343,7 +343,7 @@ export const productWearContext = {
   en: "Work, elegant occasions, everyday wear."
 },
 
-"The French Avenue Ravine Ginger Eau de Parfum": {
+"The French Avenue Ravine Ginger Extrait de Parfum": {
   sr: "Izlazak, leto, signature nošenje.",
   en: "Going out, summer, signature wear."
 },

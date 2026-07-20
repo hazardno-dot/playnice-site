@@ -1641,7 +1641,7 @@ export const productCopy = {
   }
 },
 
-"The French Avenue Ravine Ginger Eau de Parfum": {
+"The French Avenue Ravine Ginger Extrait de Parfum": {
   miniTag: { sr: "🫚 Ginger / Citrus", en: "🫚 Ginger / Citrus" },
   card: {
     sr: "Đumbir i citrusi u modernom signature spoju.",
