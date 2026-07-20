@@ -4401,33 +4401,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   aria-labelledby="new-arrivals-title"
 >
   <div className="new-arrivals-head">
-    <div>
-      <p className="section-kicker">
-        {lang === "sr" ? "Upravo stiglo" : "Just in"}
-      </p>
+  <h2 id="new-arrivals-title">New Arrivals</h2>
 
-      <h2 id="new-arrivals-title">
-        {lang === "sr" ? "New Arrivals" : "New Arrivals"}
-      </h2>
+  <button
+    type="button"
+    className="new-arrivals-view-all"
+    onClick={goToShop}
+  >
+    {lang === "sr"
+      ? "Pogledaj sve novitete"
+      : "Explore new arrivals"}
 
-      <p>
-        {lang === "sr"
-          ? "Najnoviji mirisi u PlayNice kolekciji."
-          : "The latest fragrances in the PlayNice collection."}
-      </p>
-    </div>
-
-    <button
-      type="button"
-      className="new-arrivals-view-all"
-      onClick={goToShop}
-    >
-      {lang === "sr"
-        ? "Pogledaj sve novitete"
-        : "Explore new arrivals"}
-      <span aria-hidden="true">→</span>
-    </button>
-  </div>
+    <span aria-hidden="true">→</span>
+  </button>
+</div>
 
   {newArrivalProducts.length > 0 && (
     <div className="new-arrivals-marquee">

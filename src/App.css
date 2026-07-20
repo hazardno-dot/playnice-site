@@ -19440,3 +19440,164 @@ body.overlay-lock .header-system {
     transition: none;
   }
 }
+
+/* =========================================
+   NEW ARRIVALS — COMPACT VERSION
+========================================= */
+
+.new-arrivals-section {
+  padding-top: 30px;
+  padding-bottom: 44px;
+}
+
+.new-arrivals-head {
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.new-arrivals-head h2 {
+  font-size: clamp(1.8rem, 2.6vw, 2.5rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+
+.new-arrivals-view-all {
+  min-height: 38px;
+  padding: 0 15px;
+  font-size: 0.67rem;
+}
+
+/* Malo sporije zbog manjih kartica */
+
+.new-arrivals-track {
+  animation-duration: 54s;
+}
+
+.new-arrivals-group {
+  gap: 12px;
+  padding-right: 12px;
+}
+
+/* Kartice smanjene približno 27% */
+
+.new-arrival-card {
+  flex-basis: 142px;
+  min-height: 198px;
+  padding: 9px 10px 11px;
+  border-radius: 16px;
+}
+
+.new-arrival-card-badge {
+  top: 8px;
+  left: 8px;
+
+  min-height: 18px;
+  padding: 0 6px;
+
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+}
+
+.new-arrival-card-image-wrap {
+  height: 104px;
+  margin-bottom: 7px;
+}
+
+.new-arrival-card-image {
+  max-width: 88px;
+  height: 88px;
+}
+
+.new-arrival-card-name {
+  min-height: 34px;
+
+  font-size: 0.8rem;
+  line-height: 1.12;
+}
+
+.new-arrival-card-price {
+  padding-top: 9px;
+
+  font-size: 0.67rem;
+}
+
+/* Suptilniji hover za male kartice */
+
+.new-arrival-card:hover {
+  transform: translateY(-3px);
+}
+
+.new-arrival-card:hover .new-arrival-card-image {
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* =========================================
+   NEW ARRIVALS — COMPACT MOBILE
+========================================= */
+
+@media (max-width: 640px) {
+  .new-arrivals-section {
+    padding-top: 26px;
+    padding-bottom: 36px;
+  }
+
+  .new-arrivals-head {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+
+    margin-bottom: 15px;
+  }
+
+  .new-arrivals-head h2 {
+    font-size: 1.65rem;
+    white-space: nowrap;
+  }
+
+  .new-arrivals-view-all {
+    min-height: 34px;
+    padding: 0 11px;
+
+    font-size: 0.58rem;
+    letter-spacing: 0.055em;
+  }
+
+  .new-arrivals-view-all span {
+    font-size: 0.8rem;
+  }
+
+  .new-arrivals-group {
+    gap: 9px;
+    padding-right: 9px;
+  }
+
+  .new-arrival-card {
+    flex-basis: 126px;
+    min-height: 184px;
+    padding: 8px 9px 10px;
+    border-radius: 15px;
+  }
+
+  .new-arrival-card-image-wrap {
+    height: 94px;
+    margin-bottom: 6px;
+  }
+
+  .new-arrival-card-image {
+    max-width: 77px;
+    height: 77px;
+  }
+
+  .new-arrival-card-name {
+    min-height: 31px;
+
+    font-size: 0.73rem;
+    line-height: 1.1;
+  }
+
+  .new-arrival-card-price {
+    padding-top: 8px;
+    font-size: 0.62rem;
+  }
+}
