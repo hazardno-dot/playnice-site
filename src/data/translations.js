@@ -224,7 +224,7 @@ export const translations = {
     privateSelection: "Private Selection",
     bestsellersTitle: "Bestseleri koji ostavljaju trag.",
     bestsellersText:
-      "The most wanted PlayNice decants and signature picks — for those who want a scent people remember.",
+      "Najtraženiji PlayNice dekanti i signature izbori — za one koji žele miris po kojem će ih pamtiti.",
     viewFullCollection: "Pogledaj celu kolekciju",
     discoverTitle: "Pronađi svoj signature miris",
     discoverText:
