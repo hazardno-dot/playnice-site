@@ -19277,23 +19277,22 @@ body.overlay-lock .header-system {
   }
 
   .new-arrivals-marquee {
-  width: 100%;
-  margin-left: 0;
-  padding: 5px 0 14px;
+    width: 100%;
+    margin-left: 0;
+    padding: 5px 0 14px;
 
-  overflow-x: auto;
-  overflow-y: hidden;
+    overflow-x: auto;
+    verflow-y: hidden;
 
-  scroll-snap-type: x proximity;
-  overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    overscroll-behavior-x: contain;
 
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
 
-  -webkit-mask-image: none;
-  mask-image: none;
+    -webkit-mask-image: none;
+    mask-image: none;
 
-  scrollbar-width: none;
+    scrollbar-width: none;
   }
 
   .new-arrivals-marquee::-webkit-scrollbar {
