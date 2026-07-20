@@ -4401,11 +4401,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   aria-labelledby="new-arrivals-title"
 >
   <div className="new-arrivals-head">
-  <h2 id="new-arrivals-title">
+    <h2 id="new-arrivals-title">
   {lang === "sr"
     ? "Upravo stiglo. Tvoj sledeći signature miris je možda baš ovde."
     : "Just landed. Your next signature scent is waiting."}
-</h2>
+    </h2>
 
   <button
     type="button"
@@ -4482,11 +4482,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   )}
 </section>
 
-<div className="section-divider">
-  <span />
-</div>
-
-<section className="homepage-shop-preview section-wrap">
+            <section className="homepage-shop-preview section-wrap">
               <div className="section-head">
                 <p className="section-kicker">{tr.privateSelection}</p>
                 <h2>{tr.bestsellersTitle}</h2>
