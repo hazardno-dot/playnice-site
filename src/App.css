@@ -19695,3 +19695,58 @@ body.overlay-lock .header-system {
     line-height: 1.5;
   }
 }
+
+/* =========================================
+   NEW ARRIVALS — MOBILE MANUAL SCROLL
+========================================= */
+
+@media (max-width: 640px) {
+  .new-arrivals-marquee {
+    width: calc(100% + 20px);
+    margin-left: -10px;
+    padding: 5px 10px 14px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scroll-snap-type: x proximity;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+
+    -webkit-mask-image: none;
+    mask-image: none;
+
+    scrollbar-width: none;
+  }
+
+  .new-arrivals-marquee::-webkit-scrollbar {
+    display: none;
+  }
+
+  .new-arrivals-track {
+    width: max-content;
+
+    animation: none;
+    transform: none;
+    will-change: auto;
+  }
+
+  /* Druga kopija je potrebna samo za desktop animaciju */
+
+  .new-arrivals-group[aria-hidden="true"] {
+    display: none;
+  }
+
+  .new-arrivals-group {
+    gap: 9px;
+    padding-right: 10px;
+  }
+
+  .new-arrival-card {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+}
