@@ -652,6 +652,18 @@ const shuffleHeroSlides = (slides) => {
 };
 
 /* =========================================
+   newArrivalProducts
+========================================= */
+
+const newArrivalProducts = [...products]
+  .filter((product) =>
+    ["NEW", "JUST IN"].includes(
+      String(product.badge || "").trim().toUpperCase()
+    )
+  )
+  .reverse();
+
+/* =========================================
    SHOP_NEW_PRODUCTS_SEEN_KEY
 ========================================= */
 const SHOP_NEW_PRODUCTS_SEEN_KEY = "playnice_seen_new_products_signature";
@@ -4388,6 +4400,138 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               <div>{tr.valueDelivery}</div>
             </section>
 
+            <section
+  className="new-arrivals-section section-wrap"
+  aria-labelledby="new-arrivals-title"
+>
+  <div className="new-arrivals-head">
+    <div>
+      <p className="section-kicker">
+        {lang === "sr" ? "Upravo stiglo" : "Just in"}
+      </p>
+
+      <h2 id="new-arrivals-title">
+        {lang === "sr" ? "New Arrivals" : "New Arrivals"}
+      </h2>
+
+      <p>
+        {lang === "sr"
+          ? "Najnoviji mirisi u PlayNice kolekciji."
+          : "The latest fragrances in the PlayNice collection."}
+      </p>
+    </div>
+
+    <button
+      type="button"
+      className="new-arrivals-view-all"
+      onClick={goToShop}
+    >
+      {lang === "sr"
+        ? "Pogledaj sve novitete"
+        : "Explore new arrivals"}
+      <span aria-hidden="true">→</span>
+    </button>
+  </div>
+
+  {newArrivalProducts.length > 0 && (
+    <div className="new-arrivals-marquee">
+      <div className="new-arrivals-track">
+        {[false, true].map((isClone, groupIndex) => (
+          <div
+            key={groupIndex}
+            className="new-arrivals-group"
+            aria-hidden={isClone ? "true" : undefined}
+          >
+            {newArrivalProducts.map((product) => {
+              const minPrice = getMinPrice(product);
+
+              return (
+                <button
+                  key={`${groupIndex}-${product.id}`}
+                  type="button"
+                  className="new-arrival-card"
+                  tabIndex={isClone ? -1 : 0}
+                  onClick={() =>
+                    openProductModal(product, {
+                      changeView: false,
+                    })
+                  }
+                  aria-label={
+                    isClone
+                      ? undefined
+                      : lang === "sr"
+                        ? `Otvori ${product.name}`
+                        : `Open ${product.name}`
+                  }
+                >
+                  <span className="new-arrival-card-badge">
+                    JUST IN
+                  </span>
+
+                  <span className="new-arrival-card-image-wrap">
+                    <img
+                      src={product.image}
+                      alt={isClone ? "" : product.name}
+                      className="new-arrival-card-image"
+                      loading="lazy"
+                      draggable="false"
+                    />
+                  </span>
+
+                  <span className="new-arrival-card-name">
+                    {product.name}
+                  </span>
+
+                  <span className="new-arrival-card-price">
+                    {lang === "sr" ? "Već od" : "From"} €{minPrice}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+</section>
+
+<div className="section-divider">
+  <span />
+</div>
+
+<section className="homepage-shop-preview section-wrap">
+              <div className="section-head">
+                <p className="section-kicker">{tr.privateSelection}</p>
+                <h2>{tr.bestsellersTitle}</h2>
+                <p>{tr.bestsellersText}</p>
+              </div>
+
+              <div className="product-grid">
+                {[27, 30, 36, 47]
+                  .map((id) => products.find((product) => product.id === id))
+                  .filter(Boolean)
+                  .map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      wishlist={wishlist}
+                      toggleWishlist={toggleWishlist}
+                      sprayingWishlistId={sprayingWishlistId}
+                    />
+                  ))}
+              </div>
+
+              <div className="section-cta-center">
+                <button className="gold-button" type="button" onClick={goToShop}>
+                  {tr.viewFullCollection}
+                </button>
+              </div>
+            </section>
+
+                        <div className="section-divider">
+              <span />
+            </div>
+
             <section className="identity-layer section-wrap" aria-label="Why PlayNice exists">
   <div className="identity-layer-inner">
     <p className="section-kicker identity-kicker">
@@ -5022,39 +5166,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             </section>
 
             <div className="section-divider">
-              <span />
-            </div>
-
-            <section className="homepage-shop-preview section-wrap">
-              <div className="section-head">
-                <p className="section-kicker">{tr.privateSelection}</p>
-                <h2>{tr.bestsellersTitle}</h2>
-                <p>{tr.bestsellersText}</p>
-              </div>
-
-              <div className="product-grid">
-                {[27, 30, 36, 47]
-                  .map((id) => products.find((product) => product.id === id))
-                  .filter(Boolean)
-                  .map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      wishlist={wishlist}
-                      toggleWishlist={toggleWishlist}
-                      sprayingWishlistId={sprayingWishlistId}
-                    />
-                  ))}
-              </div>
-
-              <div className="section-cta-center">
-                <button className="gold-button" type="button" onClick={goToShop}>
-                  {tr.viewFullCollection}
-                </button>
-              </div>
-            </section>
-
-                        <div className="section-divider">
               <span />
             </div>
 
