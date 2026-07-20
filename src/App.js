@@ -4401,7 +4401,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   aria-labelledby="new-arrivals-title"
 >
   <div className="new-arrivals-head">
-  <h2 id="new-arrivals-title">New Arrivals</h2>
+  <h2 id="new-arrivals-title">
+  {lang === "sr"
+    ? "Upravo stiglo. Tvoj sledeći signature miris je možda baš ovde."
+    : "Just landed. Your next signature scent is waiting."}
+</h2>
 
   <button
     type="button"

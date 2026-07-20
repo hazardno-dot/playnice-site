@@ -19601,3 +19601,12 @@ body.overlay-lock .header-system {
     font-size: 0.62rem;
   }
 }
+
+.new-arrivals-head h2 {
+  flex: 1;
+  max-width: 980px;
+
+  font-size: clamp(1.65rem, 2.35vw, 2.35rem);
+  line-height: 1.08;
+  text-wrap: balance;
+}
