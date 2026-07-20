@@ -950,22 +950,24 @@ const toggleVideoPlayback = () => {
   });
 
   switch (sortBy) {
-    case "rating":
-      return [...result].sort((a, b) => b.rating - a.rating);
+  case "rating":
+    return [...result].sort((a, b) => b.rating - a.rating);
 
-    case "priceLow":
-      return [...result].sort((a, b) => getMinPrice(a) - getMinPrice(b));
+  case "priceLow":
+    return [...result].sort((a, b) => getMinPrice(a) - getMinPrice(b));
 
-    case "priceHigh":
-      return [...result].sort((a, b) => getMinPrice(b) - getMinPrice(a));
+  case "priceHigh":
+    return [...result].sort((a, b) => getMinPrice(b) - getMinPrice(a));
 
-    case "name":
-      return [...result].sort((a, b) => a.name.localeCompare(b.name));
+  case "name":
+    return [...result].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
 
-    case "featured":
-    default:
-     return items;
-  }
+  case "featured":
+  default:
+    return [...result].reverse();
+}
 }, [category, searchTerm, season, scentMood, sortBy, heroCollectionFilter]);
 
   const categoryOptions = [
