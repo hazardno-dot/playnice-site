@@ -652,14 +652,6 @@ const shuffleHeroSlides = (slides) => {
 };
 
 /* =========================================
-   newArrivalProducts
-========================================= */
-
-const newArrivalProducts = [...products]
-  .filter((product) => product.isNew === true)
-  .reverse();
-
-/* =========================================
    SHOP_NEW_PRODUCTS_SEEN_KEY
 ========================================= */
 const SHOP_NEW_PRODUCTS_SEEN_KEY = "playnice_seen_new_products_signature";
@@ -1049,6 +1041,14 @@ const toggleVideoPlayback = () => {
 const selectedScentMood =
   scentMoodOptions.find((option) => option.value === scentMood) ||
   scentMoodOptions[0];
+
+/* =========================================
+   newArrivalProducts
+========================================= */
+
+const newArrivalProducts = [...products]
+  .filter((product) => product.isNew === true)
+  .reverse();
 
 /* =========================================
    newArrivalsMarqueeRef
