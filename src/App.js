@@ -656,11 +656,7 @@ const shuffleHeroSlides = (slides) => {
 ========================================= */
 
 const newArrivalProducts = [...products]
-  .filter((product) =>
-    ["NEW", "JUST IN"].includes(
-      String(product.badge || "").trim().toUpperCase()
-    )
-  )
+  .filter((product) => product.isNew === true)
   .reverse();
 
 /* =========================================
