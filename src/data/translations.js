@@ -33,9 +33,9 @@ export const translations = {
       "Smooth character, strong identity and standout value in decant format.",
     add100ml: "Add 100ml for €34.90",
     privateSelection: "Private Selection",
-    bestsellersTitle: "Best sellers & signature picks",
+    bestsellersTitle: "Bestsellers that leave a mark.",
     bestsellersText:
-      "Premium decants that let customers discover the right fragrance before committing to a full bottle.",
+      "The most wanted PlayNice decants and signature picks — for those who want a scent people remember.",
     viewFullCollection: "View Full Collection",
     discoverTitle: "Discover Your Signature",
     discoverText: "Test before you commit. Find what truly fits you.",
@@ -222,9 +222,9 @@ export const translations = {
       "Uglađen karakter, snažan identitet i odlična vrednost u decant formatu.",
     add100ml: "Dodaj 100ml za €34.90",
     privateSelection: "Private Selection",
-    bestsellersTitle: "Bestseleri i signature izbor",
+    bestsellersTitle: "Bestseleri koji ostavljaju trag.",
     bestsellersText:
-      "Premium dekanti koji kupcima omogućuju da pronađu pravi parfem pre nego što se odluče za punu bočicu.",
+      "The most wanted PlayNice decants and signature picks — for those who want a scent people remember.",
     viewFullCollection: "Pogledaj celu kolekciju",
     discoverTitle: "Pronađi svoj signature miris",
     discoverText:
