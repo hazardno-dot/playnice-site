@@ -19610,3 +19610,37 @@ body.overlay-lock .header-system {
   line-height: 1.08;
   text-wrap: balance;
 }
+
+/* Približi Best Sellers sekciju New Arrivals traci */
+
+.new-arrivals-section {
+  padding-bottom: 18px;
+}
+
+.new-arrivals-section + .homepage-shop-preview {
+  margin-top: 0;
+  padding-top: 34px;
+}
+
+@media (max-width: 640px) {
+  .new-arrivals-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .new-arrivals-head h2 {
+    max-width: 100%;
+
+    font-size: 1.5rem;
+    line-height: 1.15;
+  }
+
+  .new-arrivals-section {
+    padding-bottom: 12px;
+  }
+
+  .new-arrivals-section + .homepage-shop-preview {
+    padding-top: 28px;
+  }
+}
