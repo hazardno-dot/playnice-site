@@ -18886,26 +18886,22 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   HOME — NEW ARRIVALS MARQUEE
+   HOME — NEW ARRIVALS
 ========================================= */
 
 .new-arrivals-section {
   position: relative;
   overflow: hidden;
-  padding-top: clamp(48px, 5vw, 72px);
-  padding-bottom: clamp(54px, 6vw, 84px);
+  padding-top: 30px;
+  padding-bottom: 18px;
 }
-
-/* =========================================
-   SECTION HEADER
-========================================= */
 
 .new-arrivals-head {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 32px;
-  margin-bottom: 30px;
+  margin-bottom: 18px;
 }
 
 .new-arrivals-head > div {
@@ -18922,48 +18918,32 @@ body.overlay-lock .header-system {
 }
 
 .new-arrivals-head h2 {
+  flex: 1;
+  max-width: 980px;
   margin: 0;
-
   color: rgba(249, 239, 217, 0.98);
-  font-family: var(
-    --font-display,
-    "Cormorant Garamond",
-    Georgia,
-    serif
-  );
-  font-size: clamp(2.35rem, 4.5vw, 4.1rem);
-  line-height: 0.95;
+  font-family: var(--font-display, "Cormorant Garamond", Georgia, serif);
+  font-size: clamp(1.65rem, 2.35vw, 2.35rem);
   font-weight: 700;
-  letter-spacing: -0.025em;
-}
-
-.new-arrivals-head p {
-  max-width: 600px;
-  margin: 16px 0 0;
-
-  color: rgba(235, 229, 216, 0.66);
-  font-size: 1rem;
-  line-height: 1.65;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
 /* =========================================
-   VIEW ALL BUTTON
+   NEW ARRIVALS — VIEW ALL BUTTON
 ========================================= */
 
 .new-arrivals-view-all {
   flex: 0 0 auto;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-
-  min-height: 44px;
-  padding: 0 19px;
-
+  min-height: 38px;
+  padding: 0 15px;
   border: 1px solid rgba(220, 181, 107, 0.28);
   border-radius: 999px;
-
   background:
     linear-gradient(
       180deg,
@@ -18971,20 +18951,16 @@ body.overlay-lock .header-system {
       rgba(220, 181, 107, 0.025)
     ),
     rgba(16, 14, 11, 0.88);
-
   color: rgba(240, 215, 163, 0.95);
   font: inherit;
-  font-size: 0.76rem;
+  font-size: 0.67rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-
   cursor: pointer;
-
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.012),
     0 12px 28px rgba(0, 0, 0, 0.16);
-
   transition:
     transform 180ms ease,
     border-color 180ms ease,
@@ -19000,7 +18976,6 @@ body.overlay-lock .header-system {
 .new-arrivals-view-all:hover {
   transform: translateY(-2px);
   border-color: rgba(220, 181, 107, 0.6);
-
   background:
     linear-gradient(
       180deg,
@@ -19008,7 +18983,6 @@ body.overlay-lock .header-system {
       rgba(220, 181, 107, 0.055)
     ),
     rgba(18, 15, 11, 0.94);
-
   color: #f4d896;
 }
 
@@ -19017,16 +18991,14 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   MARQUEE
+   NEW ARRIVALS — MARQUEE
 ========================================= */
 
 .new-arrivals-marquee {
   position: relative;
-  overflow: hidden;
-
   width: 100%;
   padding: 6px 0 14px;
-
+  overflow: hidden;
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0%,
@@ -19034,7 +19006,6 @@ body.overlay-lock .header-system {
     #000 96%,
     transparent 100%
   );
-
   mask-image: linear-gradient(
     90deg,
     transparent 0%,
@@ -19047,19 +19018,16 @@ body.overlay-lock .header-system {
 .new-arrivals-track {
   display: flex;
   width: max-content;
-
-  animation: new-arrivals-scroll 46s linear infinite;
+  animation: new-arrivals-scroll 54s linear infinite;
   will-change: transform;
 }
 
 .new-arrivals-group {
   display: flex;
   flex: 0 0 auto;
-  gap: 16px;
-  padding-right: 16px;
+  gap: 12px;
+  padding-right: 12px;
 }
-
-/* Zaustavljanje cijele trake */
 
 .new-arrivals-marquee:hover .new-arrivals-track,
 .new-arrivals-marquee:focus-within .new-arrivals-track {
@@ -19077,26 +19045,21 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   SMALL PRODUCT CARD
+   NEW ARRIVALS — PRODUCT CARD
 ========================================= */
 
 .new-arrival-card {
   position: relative;
-  flex: 0 0 196px;
-
+  flex: 0 0 142px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-
   min-width: 0;
-  min-height: 270px;
-  padding: 14px 14px 16px;
-
+  min-height: 198px;
+  padding: 9px 10px 11px;
   overflow: hidden;
-
   border: 1px solid rgba(220, 181, 107, 0.14);
-  border-radius: 22px;
-
+  border-radius: 16px;
   background:
     radial-gradient(
       circle at 50% 23%,
@@ -19108,17 +19071,13 @@ body.overlay-lock .header-system {
       rgba(24, 22, 18, 0.98),
       rgba(12, 12, 11, 0.99)
     );
-
   color: rgba(247, 240, 225, 0.95);
   font: inherit;
   text-align: left;
-
   cursor: pointer;
-
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.008),
     0 15px 34px rgba(0, 0, 0, 0.2);
-
   transition:
     transform 220ms ease,
     border-color 220ms ease,
@@ -19131,24 +19090,20 @@ body.overlay-lock .header-system {
   position: absolute;
   inset: auto 14px 0;
   height: 1px;
-
   background: linear-gradient(
     90deg,
     transparent,
     rgba(220, 181, 107, 0.45),
     transparent
   );
-
   opacity: 0;
   transition: opacity 220ms ease;
 }
 
 .new-arrival-card:hover {
   z-index: 2;
-  transform: translateY(-5px);
-
+  transform: translateY(-3px);
   border-color: rgba(220, 181, 107, 0.42);
-
   background:
     radial-gradient(
       circle at 50% 23%,
@@ -19160,7 +19115,6 @@ body.overlay-lock .header-system {
       rgba(28, 25, 20, 0.99),
       rgba(13, 12, 11, 1)
     );
-
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.32),
     0 0 24px rgba(220, 181, 107, 0.06);
@@ -19170,96 +19124,65 @@ body.overlay-lock .header-system {
   opacity: 1;
 }
 
-/* =========================================
-   JUST IN BADGE
-========================================= */
-
 .new-arrival-card-badge {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 8px;
+  left: 8px;
   z-index: 2;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  min-height: 23px;
-  padding: 0 9px;
-
+  min-height: 18px;
+  padding: 0 6px;
   border: 1px solid rgba(220, 83, 83, 0.35);
   border-radius: 999px;
-
   background: rgba(35, 11, 12, 0.88);
   color: rgba(255, 112, 112, 0.96);
-
-  font-size: 0.61rem;
-  line-height: 1;
+  font-size: 0.48rem;
   font-weight: 900;
-  letter-spacing: 0.13em;
+  line-height: 1;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-
   box-shadow: 0 7px 16px rgba(0, 0, 0, 0.22);
 }
-
-/* =========================================
-   PRODUCT IMAGE
-========================================= */
 
 .new-arrival-card-image-wrap {
   display: grid;
   place-items: center;
-
   width: 100%;
-  height: 154px;
-  margin-bottom: 10px;
+  height: 104px;
+  margin-bottom: 7px;
 }
 
 .new-arrival-card-image {
   display: block;
-
   width: 100%;
-  max-width: 132px;
-  height: 132px;
-
+  max-width: 88px;
+  height: 88px;
   object-fit: contain;
   object-position: center;
-
   filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.28));
-
   transition:
     transform 240ms ease,
     filter 240ms ease;
 }
 
 .new-arrival-card:hover .new-arrival-card-image {
-  transform: translateY(-3px) scale(1.045);
-
+  transform: translateY(-2px) scale(1.04);
   filter:
     drop-shadow(0 17px 22px rgba(0, 0, 0, 0.36))
     drop-shadow(0 0 12px rgba(220, 181, 107, 0.08));
 }
 
-/* =========================================
-   PRODUCT NAME & PRICE
-========================================= */
-
 .new-arrival-card-name {
   display: -webkit-box;
-  min-height: 42px;
+  min-height: 34px;
   overflow: hidden;
-
   color: rgba(248, 241, 227, 0.96);
-  font-family: var(
-    --font-display,
-    "Cormorant Garamond",
-    Georgia,
-    serif
-  );
-  font-size: 1.04rem;
-  line-height: 1.18;
+  font-family: var(--font-display, "Cormorant Garamond", Georgia, serif);
+  font-size: 0.8rem;
   font-weight: 700;
-
+  line-height: 1.12;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
@@ -19267,20 +19190,14 @@ body.overlay-lock .header-system {
 .new-arrival-card-price {
   display: block;
   margin-top: auto;
-  padding-top: 13px;
-
+  padding-top: 9px;
   border-top: 1px solid rgba(220, 181, 107, 0.1);
-
   color: rgba(220, 181, 107, 0.94);
-  font-size: 0.8rem;
-  line-height: 1;
+  font-size: 0.67rem;
   font-weight: 800;
+  line-height: 1;
   letter-spacing: 0.025em;
 }
-
-/* =========================================
-   KEYBOARD FOCUS
-========================================= */
 
 .new-arrival-card:focus-visible,
 .new-arrivals-view-all:focus-visible {
@@ -19288,375 +19205,23 @@ body.overlay-lock .header-system {
   outline-offset: 3px;
 }
 
-/* =========================================
-   TABLET
-========================================= */
-
-@media (max-width: 900px) {
-  .new-arrivals-head {
-    align-items: flex-start;
-  }
-
-  .new-arrival-card {
-    flex-basis: 176px;
-    min-height: 250px;
-  }
-
-  .new-arrival-card-image-wrap {
-    height: 138px;
-  }
-
-  .new-arrival-card-image {
-    max-width: 118px;
-    height: 118px;
-  }
-}
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media (max-width: 640px) {
-  .new-arrivals-section {
-    padding-top: 42px;
-    padding-bottom: 52px;
-  }
-
-  .new-arrivals-head {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-    margin-bottom: 24px;
-  }
-
-  .new-arrivals-head h2 {
-    font-size: clamp(2.35rem, 11vw, 3.15rem);
-  }
-
-  .new-arrivals-head p {
-    margin-top: 11px;
-    font-size: 0.91rem;
-    line-height: 1.5;
-  }
-
-  .new-arrivals-view-all {
-    min-height: 40px;
-    padding: 0 15px;
-    font-size: 0.68rem;
-  }
-
-  .new-arrivals-marquee {
-    width: calc(100% + 12px);
-    margin-left: -6px;
-    padding: 5px 6px 12px;
-
-    -webkit-mask-image: linear-gradient(
-      90deg,
-      transparent,
-      #000 5%,
-      #000 95%,
-      transparent
-    );
-
-    mask-image: linear-gradient(
-      90deg,
-      transparent,
-      #000 5%,
-      #000 95%,
-      transparent
-    );
-  }
-
-  .new-arrivals-track {
-    animation-duration: 40s;
-  }
-
-  .new-arrivals-group {
-    gap: 10px;
-    padding-right: 10px;
-  }
-
-  .new-arrival-card {
-    flex-basis: 150px;
-    min-height: 222px;
-    padding: 11px 11px 13px;
-    border-radius: 18px;
-  }
-
-  .new-arrival-card-badge {
-    top: 9px;
-    left: 9px;
-
-    min-height: 20px;
-    padding: 0 7px;
-
-    font-size: 0.54rem;
-  }
-
-  .new-arrival-card-image-wrap {
-    height: 118px;
-    margin-bottom: 8px;
-  }
-
-  .new-arrival-card-image {
-    max-width: 98px;
-    height: 98px;
-  }
-
-  .new-arrival-card-name {
-    min-height: 36px;
-    font-size: 0.91rem;
-    line-height: 1.15;
-  }
-
-  .new-arrival-card-price {
-    padding-top: 10px;
-    font-size: 0.71rem;
-  }
-}
-
-/* =========================================
-   REDUCED MOTION
-========================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .new-arrivals-marquee {
-    overflow-x: auto;
-
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-
-  .new-arrivals-track {
-    animation: none;
-  }
-
-  .new-arrivals-group[aria-hidden="true"] {
-    display: none;
-  }
-
-  .new-arrival-card,
-  .new-arrival-card-image {
-    transition: none;
-  }
-}
-
-/* =========================================
-   NEW ARRIVALS — COMPACT VERSION
-========================================= */
-
-.new-arrivals-section {
-  padding-top: 30px;
-  padding-bottom: 44px;
-}
-
-.new-arrivals-head {
-  align-items: center;
-  margin-bottom: 18px;
-}
-
-.new-arrivals-head h2 {
-  font-size: clamp(1.8rem, 2.6vw, 2.5rem);
-  line-height: 1;
-  letter-spacing: -0.015em;
-}
-
-.new-arrivals-view-all {
-  min-height: 38px;
-  padding: 0 15px;
-  font-size: 0.67rem;
-}
-
-/* Malo sporije zbog manjih kartica */
-
-.new-arrivals-track {
-  animation-duration: 54s;
-}
-
-.new-arrivals-group {
-  gap: 12px;
-  padding-right: 12px;
-}
-
-/* Kartice smanjene približno 27% */
-
-.new-arrival-card {
-  flex-basis: 142px;
-  min-height: 198px;
-  padding: 9px 10px 11px;
-  border-radius: 16px;
-}
-
-.new-arrival-card-badge {
-  top: 8px;
-  left: 8px;
-
-  min-height: 18px;
-  padding: 0 6px;
-
-  font-size: 0.48rem;
-  letter-spacing: 0.1em;
-}
-
-.new-arrival-card-image-wrap {
-  height: 104px;
-  margin-bottom: 7px;
-}
-
-.new-arrival-card-image {
-  max-width: 88px;
-  height: 88px;
-}
-
-.new-arrival-card-name {
-  min-height: 34px;
-
-  font-size: 0.8rem;
-  line-height: 1.12;
-}
-
-.new-arrival-card-price {
-  padding-top: 9px;
-
-  font-size: 0.67rem;
-}
-
-/* Suptilniji hover za male kartice */
-
-.new-arrival-card:hover {
-  transform: translateY(-3px);
-}
-
-.new-arrival-card:hover .new-arrival-card-image {
-  transform: translateY(-2px) scale(1.04);
-}
-
-/* =========================================
-   NEW ARRIVALS — COMPACT MOBILE
-========================================= */
-
-@media (max-width: 640px) {
-  .new-arrivals-section {
-    padding-top: 26px;
-    padding-bottom: 36px;
-  }
-
-  .new-arrivals-head {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-
-    margin-bottom: 15px;
-  }
-
-  .new-arrivals-head h2 {
-    font-size: 1.65rem;
-    white-space: nowrap;
-  }
-
-  .new-arrivals-view-all {
-    min-height: 34px;
-    padding: 0 11px;
-
-    font-size: 0.58rem;
-    letter-spacing: 0.055em;
-  }
-
-  .new-arrivals-view-all span {
-    font-size: 0.8rem;
-  }
-
-  .new-arrivals-group {
-    gap: 9px;
-    padding-right: 9px;
-  }
-
-  .new-arrival-card {
-    flex-basis: 126px;
-    min-height: 184px;
-    padding: 8px 9px 10px;
-    border-radius: 15px;
-  }
-
-  .new-arrival-card-image-wrap {
-    height: 94px;
-    margin-bottom: 6px;
-  }
-
-  .new-arrival-card-image {
-    max-width: 77px;
-    height: 77px;
-  }
-
-  .new-arrival-card-name {
-    min-height: 31px;
-
-    font-size: 0.73rem;
-    line-height: 1.1;
-  }
-
-  .new-arrival-card-price {
-    padding-top: 8px;
-    font-size: 0.62rem;
-  }
-}
-
-.new-arrivals-head h2 {
-  flex: 1;
-  max-width: 980px;
-
-  font-size: clamp(1.65rem, 2.35vw, 2.35rem);
-  line-height: 1.08;
-  text-wrap: balance;
-}
-
-/* Približi Best Sellers sekciju New Arrivals traci */
-
-.new-arrivals-section {
-  padding-bottom: 18px;
-}
+/* Bring Best Sellers closer to New Arrivals. */
 
 .new-arrivals-section + .homepage-shop-preview {
   margin-top: 0;
   padding-top: 34px;
 }
 
-@media (max-width: 640px) {
-  .new-arrivals-head {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-  }
-
-  .new-arrivals-head h2 {
-    max-width: 100%;
-
-    font-size: 1.5rem;
-    line-height: 1.15;
-  }
-
-  .new-arrivals-section {
-    padding-bottom: 12px;
-  }
-
-  .new-arrivals-section + .homepage-shop-preview {
-    padding-top: 28px;
-  }
-}
-
 /* =========================================
-   HOME BESTSELLERS — CENTERED HEADER
+   HOME BEST SELLERS — CENTERED HEADER
 ========================================= */
 
 .homepage-shop-preview > .section-head {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   max-width: 920px;
   margin: 0 auto 38px;
-
   text-align: center;
 }
 
@@ -19673,12 +19238,114 @@ body.overlay-lock .header-system {
 .homepage-shop-preview > .section-head > p:last-child {
   max-width: 760px;
   margin: 0 auto;
-
   line-height: 1.65;
   text-wrap: balance;
 }
 
+/* =========================================
+   MOBILE
+========================================= */
+
 @media (max-width: 640px) {
+  .new-arrivals-section {
+    padding-top: 26px;
+    padding-bottom: 12px;
+  }
+
+  .new-arrivals-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 15px;
+  }
+
+  .new-arrivals-head h2 {
+    max-width: 100%;
+    font-size: 1.5rem;
+    line-height: 1.15;
+  }
+
+  .new-arrivals-view-all {
+    min-height: 34px;
+    padding: 0 11px;
+    font-size: 0.58rem;
+    letter-spacing: 0.055em;
+  }
+
+  .new-arrivals-view-all span {
+    font-size: 0.8rem;
+  }
+
+  .new-arrivals-marquee {
+    width: calc(100% + 20px);
+    margin-left: -10px;
+    padding: 5px 10px 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    -webkit-mask-image: none;
+    mask-image: none;
+    scrollbar-width: none;
+  }
+
+  .new-arrivals-marquee::-webkit-scrollbar {
+    display: none;
+  }
+
+  .new-arrivals-track {
+    width: max-content;
+    animation: none;
+    transform: none;
+    will-change: auto;
+  }
+
+  .new-arrivals-group[aria-hidden="true"] {
+    display: none;
+  }
+
+  .new-arrivals-group {
+    gap: 9px;
+    padding-right: 10px;
+  }
+
+  .new-arrival-card {
+    flex-basis: 126px;
+    min-height: 184px;
+    padding: 8px 9px 10px;
+    border-radius: 15px;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+
+  .new-arrival-card-image-wrap {
+    height: 94px;
+    margin-bottom: 6px;
+  }
+
+  .new-arrival-card-image {
+    max-width: 77px;
+    height: 77px;
+  }
+
+  .new-arrival-card-name {
+    min-height: 31px;
+    font-size: 0.73rem;
+    line-height: 1.1;
+  }
+
+  .new-arrival-card-price {
+    padding-top: 8px;
+    font-size: 0.62rem;
+  }
+
+  .new-arrivals-section + .homepage-shop-preview {
+    padding-top: 28px;
+  }
+
   .homepage-shop-preview > .section-head {
     max-width: 100%;
     margin-bottom: 26px;
@@ -19697,28 +19364,14 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   NEW ARRIVALS — MOBILE MANUAL SCROLL
+   ACCESSIBILITY — REDUCED MOTION
 ========================================= */
 
-@media (max-width: 640px) {
+@media (prefers-reduced-motion: reduce) {
   .new-arrivals-marquee {
-    width: calc(100% + 20px);
-    margin-left: -10px;
-    padding: 5px 10px 14px;
-
     overflow-x: auto;
-    overflow-y: hidden;
-
-    scroll-snap-type: x proximity;
-    scroll-behavior: smooth;
-    overscroll-behavior-x: contain;
-
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
-
     -webkit-mask-image: none;
     mask-image: none;
-
     scrollbar-width: none;
   }
 
@@ -19727,26 +19380,19 @@ body.overlay-lock .header-system {
   }
 
   .new-arrivals-track {
-    width: max-content;
-
     animation: none;
     transform: none;
     will-change: auto;
   }
 
-  /* Druga kopija je potrebna samo za desktop animaciju */
-
   .new-arrivals-group[aria-hidden="true"] {
     display: none;
   }
 
-  .new-arrivals-group {
-    gap: 9px;
-    padding-right: 10px;
-  }
-
-  .new-arrival-card {
-    scroll-snap-align: start;
-    scroll-snap-stop: normal;
+  .new-arrival-card,
+  .new-arrival-card-image,
+  .new-arrivals-view-all,
+  .new-arrivals-view-all span {
+    transition: none;
   }
 }
