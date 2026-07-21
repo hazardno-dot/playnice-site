@@ -496,13 +496,12 @@ const createProductSlug = (name = "") => {
 
 const BASE_HERO_SLIDES = [
   {
-    id: 1,
+    id: 6,
     kind: "imageOnly",
-    image: "/hero/slide-1-fix.jpg",
-    desktopImage: "/hero/slide-1-fix.jpg",
-    mobileImage: "/hero/mobile/slide-1-mobile.jpg",
-    alt: "New In / Best of the Best",
-    actionPrimary: "shop"
+    image: "/hero/slide-6.jpg",
+    desktopImage: "/hero/slide-6.jpg",
+    mobileImage: "/hero/mobile/slide-6-mobile.jpg",
+    alt: "Armaf Club de Nuit Intense Overdose – uskoro u PlayNice kolekciji"
   },
   {
     id: 2,
@@ -553,12 +552,15 @@ const BASE_HERO_SLIDES = [
     collectionTitle: "Summer Bangers"
   },
   {
-    id: 6,
+    id: 1,
     kind: "imageOnly",
-    image: "/hero/slide-6.jpg",
-    desktopImage: "/hero/slide-6.jpg",
-    mobileImage: "/hero/mobile/slide-6-mobile.jpg",
-    alt: "Armaf Club de Nuit Intense Overdose – uskoro u PlayNice kolekciji"
+    image: "/hero/slide-1-fix.jpg",
+    desktopImage: "/hero/slide-1-fix.jpg",
+    mobileImage: "/hero/mobile/slide-1-mobile.jpg",
+    alt: "Yves Saint Laurent Y Iced Cologne",
+    actionPrimary: "product",
+    actionProductSlug: "ysl-y-iced-cologne",
+    preferredSize: "10ml"
   },
   {
     id: 7,
@@ -2957,6 +2959,80 @@ const addHeroBottleToCart = () => {
   }
 };
 
+const handleHeroSlideAction = (slide) => {
+  if (!slide?.actionPrimary) return;
+
+  /* =========================================
+     SHOP
+  ========================================= */
+
+  if (slide.actionPrimary === "shop") {
+    setSearchTerm("");
+    setCategory("All");
+    setSeason("all");
+    setHeroCollectionFilter([]);
+    setHeroCollectionTitle("");
+    setView("shop");
+    return;
+  }
+
+  /* =========================================
+     COLLECTION
+  ========================================= */
+
+  if (
+    slide.actionPrimary === "collection" &&
+    slide.actionCollection?.length
+  ) {
+    setSearchTerm("");
+    setCategory("All");
+    setSeason("all");
+    setHeroCollectionFilter(slide.actionCollection);
+    setHeroCollectionTitle(slide.collectionTitle || "");
+    setView("shop");
+    return;
+  }
+
+  /* =========================================
+     MANIFESTO
+  ========================================= */
+
+  if (
+    slide.actionPrimary === "manifesto" &&
+    slide.manifestoType
+  ) {
+    setActiveManifesto(slide.manifestoType);
+    setManifestoOpen(true);
+    return;
+  }
+
+  /* =========================================
+     PRODUCT
+  ========================================= */
+
+  if (
+    slide.actionPrimary === "product" &&
+    slide.actionProductSlug
+  ) {
+    const product = products.find(
+      (item) => item.slug === slide.actionProductSlug
+    );
+
+    if (!product) {
+      console.warn(
+        `Hero product not found: ${slide.actionProductSlug}`
+      );
+      return;
+    }
+
+    openProductModal(product, {
+      preferredSize: slide.preferredSize || "10ml",
+      userPickedSize: true,
+      changeView: false,
+    });
+  }
+};
+
   const handleHeroTouchStart = (e) => {
     touchStartX.current = e.changedTouches[0].clientX;
   };
@@ -4189,203 +4265,134 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         {view === "home" && (
           <>
             <section
-              className="hero hero-carousel"
-              onMouseEnter={() => setHeroPaused(true)}
-              onMouseLeave={() => setHeroPaused(false)}
-              onTouchStart={handleHeroTouchStart}
-              onTouchEnd={handleHeroTouchEnd}
-            >
-              <div className="hero-carousel-track">
-                {heroSlides.map((slide, index) => (
-                  <article
-                    key={slide.id}
-                    className={`hero-slide ${index === currentHero ? "active" : ""}`}
-                    aria-hidden={index !== currentHero}
-                  >
-                  <div
-  className={`hero-image-only ${
-    slide.actionProductSlug ||
-    slide.actionCollection?.length ||
-    slide.actionPrimary === "manifesto"
-      ? "hero-image-clickable"
-      : ""
-  }`}
-  role={
-    slide.actionProductSlug ||
-    slide.actionCollection?.length ||
-    slide.actionPrimary === "manifesto"
-      ? "button"
-      : undefined
-  }
-  tabIndex={
-    slide.actionProductSlug ||
-    slide.actionCollection?.length ||
-    slide.actionPrimary === "manifesto"
-      ? 0
-      : undefined
-  }
-  onClick={() => {
-    if (slide.actionCollection?.length) {
-      setView("shop");
-      setSearchTerm("");
-      setCategory("All");
-      setSeason("all");
-      setHeroCollectionFilter(slide.actionCollection);
-      setHeroCollectionTitle(slide.collectionTitle || "");
-      return;
-    }
-
-    if (slide.actionPrimary === "manifesto" && slide.manifestoType) {
-      setActiveManifesto(slide.manifestoType);
-      setManifestoOpen(true);
-      return;
-    }
-
-    if (!slide.actionProductSlug) return;
-
-    const product = products.find(
-      (p) => p.slug === slide.actionProductSlug
-    );
-
-    if (!product) return;
-
-    openProductModal(product, {
-      preferredSize: slide.preferredSize || "10ml",
-      userPickedSize: true,
-      changeView: false,
-    });
-  }}
-  onKeyDown={(e) => {
-    if (
-      !slide.actionProductSlug &&
-      !slide.actionCollection?.length &&
-      slide.actionPrimary !== "manifesto"
-    ) {
-      return;
-    }
-
-    if (e.key !== "Enter" && e.key !== " ") return;
-
-    e.preventDefault();
-
-    if (slide.actionCollection?.length) {
-      setView("shop");
-      setSearchTerm("");
-      setCategory("All");
-      setSeason("all");
-      setHeroCollectionFilter(slide.actionCollection);
-      setHeroCollectionTitle(slide.collectionTitle || "");
-      return;
-    }
-
-    if (slide.actionPrimary === "manifesto" && slide.manifestoType) {
-      setActiveManifesto(slide.manifestoType);
-      setManifestoOpen(true);
-      return;
-    }
-
-    if (!slide.actionProductSlug) return;
-
-    const product = products.find(
-      (p) => p.slug === slide.actionProductSlug
-    );
-
-    if (!product) return;
-
-    openProductModal(product, {
-      preferredSize: slide.preferredSize || "10ml",
-      userPickedSize: true,
-      changeView: false,
-    });
-  }}
+  className="hero hero-carousel"
+  onMouseEnter={() => setHeroPaused(true)}
+  onMouseLeave={() => setHeroPaused(false)}
+  onTouchStart={handleHeroTouchStart}
+  onTouchEnd={handleHeroTouchEnd}
 >
-  <picture>
-    <source
-      media="(max-width: 768px)"
-      srcSet={slide.mobileImage || slide.image}
-    />
+  <div className="hero-carousel-track">
+    {heroSlides.map((slide, index) => {
+      const isActive = index === currentHero;
 
-    <img
-      className={`hero-image-only-img ${
-        index === currentHero ? "is-active" : ""
-      }`}
-      src={slide.desktopImage || slide.image}
-      alt={slide.alt}
-      loading={index === 0 ? "eager" : "lazy"}
-      draggable="false"
-    />
-  </picture>
-</div>
+      const isActionable =
+        slide.actionPrimary === "shop" ||
+        (
+          slide.actionPrimary === "product" &&
+          Boolean(slide.actionProductSlug)
+        ) ||
+        (
+          slide.actionPrimary === "collection" &&
+          Boolean(slide.actionCollection?.length)
+        ) ||
+        (
+          slide.actionPrimary === "manifesto" &&
+          Boolean(slide.manifestoType)
+        );
 
-      {(slide.image === "/hero/slide-1-fix.jpg" ||
-  slide.desktopImage === "/hero/slide-1-fix.jpg") && (
-  <button
-    type="button"
-    className="hero-campaign-btn"
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
+      return (
+        <article
+          key={slide.id}
+          className={`hero-slide ${isActive ? "active" : ""}`}
+          aria-hidden={!isActive}
+        >
+          <div
+            className={`hero-image-only ${
+              isActionable ? "hero-image-clickable" : ""
+            }`}
+            role={isActionable ? "button" : undefined}
+            tabIndex={isActionable && isActive ? 0 : undefined}
+            aria-label={
+              isActionable
+                ? slide.actionLabel || slide.alt
+                : undefined
+            }
+            onClick={() => {
+              if (!isActionable || !isActive) return;
 
-      const product = products.find(
-        (p) => p.slug === "ysl-y-iced-cologne"
+              handleHeroSlideAction(slide);
+            }}
+            onKeyDown={(event) => {
+              if (!isActionable || !isActive) return;
+
+              if (
+                event.key !== "Enter" &&
+                event.key !== " "
+              ) {
+                return;
+              }
+
+              event.preventDefault();
+              handleHeroSlideAction(slide);
+            }}
+          >
+            <picture>
+              <source
+                media="(max-width: 768px)"
+                srcSet={slide.mobileImage || slide.image}
+              />
+
+              <img
+                className={`hero-image-only-img ${
+                  isActive ? "is-active" : ""
+                }`}
+                src={slide.desktopImage || slide.image}
+                alt={slide.alt || ""}
+                loading={index === 0 ? "eager" : "lazy"}
+                fetchPriority={index === 0 ? "high" : "auto"}
+                draggable="false"
+              />
+            </picture>
+          </div>
+        </article>
       );
+    })}
+  </div>
 
-      if (!product) return;
+  {heroSlides.length > 1 && (
+    <>
+      <button
+        type="button"
+        className="hero-carousel-arrow hero-carousel-arrow-left"
+        onClick={prevHeroSlide}
+        aria-label="Previous slide"
+      />
 
-      openProductModal(product, {
-        preferredSize: "10ml",
-        userPickedSize: true,
-        changeView: false,
-      });
-    }}
-  >
-    {tr.heroYslCta}
-  </button>
-)}
-                  </article>
-                ))}
-              </div>
+      <button
+        type="button"
+        className="hero-carousel-arrow hero-carousel-arrow-right"
+        onClick={nextHeroSlide}
+        aria-label="Next slide"
+      />
 
-              {heroSlides.length > 1 && (
-                <>
-                  <button
-                    type="button"
-                    className="hero-carousel-arrow hero-carousel-arrow-left"
-                    onClick={prevHeroSlide}
-                    aria-label="Previous slide"
-                  />
+      <div
+        className="hero-carousel-dots"
+        role="tablist"
+        aria-label="Hero slides"
+      >
+        {heroSlides.map((slide, index) => {
+          const isActive = index === currentHero;
 
-                  <button
-                    type="button"
-                    className="hero-carousel-arrow hero-carousel-arrow-right"
-                    onClick={nextHeroSlide}
-                    aria-label="Next slide"
-                  />
-
-                  <div
-                    className="hero-carousel-dots"
-                    role="tablist"
-                    aria-label="Hero slides"
-                  >
-                    {heroSlides.map((slide, index) => (
-                      <button
-                        key={slide.id}
-                        type="button"
-                        className={`hero-carousel-dot ${
-                          index === currentHero ? "active" : ""
-                        }`}
-                        onClick={() => goToHeroSlide(index)}
-                        aria-label={`Go to slide ${index + 1}`}
-                        aria-selected={index === currentHero}
-                        role="tab"
-                      >
-                        <span className="hero-carousel-dot-pill" />
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-            </section>
+          return (
+            <button
+              key={slide.id}
+              type="button"
+              className={`hero-carousel-dot ${
+                isActive ? "active" : ""
+              }`}
+              onClick={() => goToHeroSlide(index)}
+              aria-label={`Go to slide ${index + 1}`}
+              aria-selected={isActive}
+              role="tab"
+            >
+              <span className="hero-carousel-dot-pill" />
+            </button>
+          );
+        })}
+      </div>
+    </>
+  )}
+</section>
 
             <section className="value-strip">
               <div>{tr.valueTry}</div>
