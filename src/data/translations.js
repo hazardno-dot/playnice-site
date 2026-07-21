@@ -178,14 +178,14 @@ export const translations = {
     wearHint_20ml: "20+ wears",
 
     journalKicker: "So what’s new?",
-    journalTitle: "Journal",
+    journalTitle: "Le Journal",
     journalSubtitle:
      "Stories, updates, little chaos and big scents — from the point of view of a house that lives fragrance every day.",
     journalReadArticle: "Read article",
     journalReadingTime: "2 min read",
     journalAuthorName: "Charlie",
     journalAuthorRole: "PlayNice Editorial",
-    journalClose: "Close Journal",
+    journalClose: "Close Le Journal",
     journalCloseArticle: "Close article",
     justIn: "JUST IN",
     heroYslCta: "CLAIM THE DROP",
@@ -373,14 +373,14 @@ export const translations = {
     wearHint_20ml: "20+ nošenja",
 
     journalKicker: "Šta je novo?",
-    journalTitle: "Journal",
+    journalTitle: "Le Journal",
     journalSubtitle:
       "Priče, noviteti, mali haosi i veliki mirisi — iz ugla kuće koja živi parfeme svaki dan.",
     journalReadArticle: "Pročitaj članak",
     journalReadingTime: "2 min čitanja",
     journalAuthorName: "Čarli",
     journalAuthorRole: "PlayNice Editorial",
-    journalClose: "Zatvori Journal",
+    journalClose: "Zatvori Le Journal",
     journalCloseArticle: "Zatvori članak",
     justIn: "NOVO",
     heroYslCta: "OSVOJI DROP",
