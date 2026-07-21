@@ -19167,14 +19167,14 @@ body.overlay-lock .header-system {
 
 .new-arrival-card-name {
   display: -webkit-box;
-  min-height: 34px;
+  min-height: 44px;
   overflow: hidden;
   color: rgba(248, 241, 227, 0.96);
   font-family: var(--font-display, "Cormorant Garamond", Georgia, serif);
   font-size: 0.8rem;
   font-weight: 700;
   line-height: 1.12;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 

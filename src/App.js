@@ -4466,7 +4466,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 </span>
 
                 <span className="new-arrival-card-name">
-                  {product.shortName || product.name}
+                  {product.name}
                 </span>
 
                 <span className="new-arrival-card-price">
