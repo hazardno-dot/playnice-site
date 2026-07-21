@@ -18924,7 +18924,7 @@ body.overlay-lock .header-system {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 7px;
   min-height: 38px;
   padding: 0 15px;
   border: 1px solid rgba(220, 181, 107, 0.28);
@@ -18954,7 +18954,15 @@ body.overlay-lock .header-system {
 }
 
 .new-arrivals-view-all span {
-  font-size: 1rem;
+  position: relative;
+  top: -1px;
+
+  display: inline-flex;
+  align-items: center;
+
+  font-size: 0.95rem;
+  line-height: 1;
+
   transition: transform 180ms ease;
 }
 
