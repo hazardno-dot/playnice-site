@@ -4452,7 +4452,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 }
               >
                 <span className="new-arrival-card-badge">
-                  JUST IN
+                  {lang === "sr" ? "NOVO" : "JUST IN"}
                 </span>
 
                 <span className="new-arrival-card-image-wrap">
