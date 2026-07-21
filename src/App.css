@@ -19331,9 +19331,10 @@ body.overlay-lock .header-system {
   }
 
   .new-arrival-card-name {
-    min-height: 31px;
+    min-height: 39px;
     font-size: 0.73rem;
     line-height: 1.1;
+    -webkit-line-clamp: 3;
   }
 
   .new-arrival-card-price {
