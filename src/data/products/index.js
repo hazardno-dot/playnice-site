@@ -1763,4 +1763,70 @@ export const products = [
   },
   isNew: true,
 },
+{
+  id: 81,
+  slug: "rayhaan-nocturno-elixir",
+  name: "Rayhaan Nocturno Elixir Eau de Parfum",
+  shortName: "Nocturno Elixir",
+  category: "Arabian",
+  image: "/products/rayhaan-nocturno-elixir.png",
+  sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+  badge: "NEW",
+  rating: 8.9,
+  ratingLabel: "Blue Favorite",
+  season: "all",
+  moods: ["clean", "signature", "date"],
+  recommendations: [
+    "rayhaan-azul-edp"
+  ],
+  inspiredBy: {
+    name: "Bleu de Chanel Parfum",
+    short: "Bleu de Chanel Parfum DNA"
+  },
+  isNew: true,
+},
+{
+  id: 82,
+  slug: "french-avenue-ravine-ice",
+  name: "French Avenue Ravine Ice Extrait de Parfum",
+  shortName: "Ravine Ice",
+  category: "Arabian",
+  image: "/products/french-avenue-ravine-ice.png",
+  sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+  badge: "NEW",
+  rating: 9.0,
+  ratingLabel: "Summer Star",
+  season: "summer",
+  moods: ["summer", "clean", "signature"],
+  recommendations: [
+    "french-avenue-pinnace-oryn"
+  ],
+  inspiredBy: {
+    name: "Goldfield & Banks Pacific Rock Moss",
+    short: "Pacific Rock Moss DNA"
+  },
+  isNew: true,
+},
+{
+  id: 83,
+  slug: "mawj-moscow-mule",
+  name: "The Paris Corner Mawj Moscow Mule Eau de Parfum",
+  shortName: "Mawj Moscow Mule",
+  category: "Arabian",
+  image: "/products/mawj-moscow-mule.png",
+  sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+  badge: "NEW",
+  rating: 8.8,
+  ratingLabel: "Fresh Pick",
+  season: "summer",
+  moods: ["summer", "clean", "signature"],
+  recommendations: [
+    "french-avenue-ravine-ginger-edp"
+  ],
+  inspiredBy: {
+    name: "Kilian Blue Moon Ginger Dash",
+    short: "Blue Moon Ginger Dash DNA"
+  },
+  isNew: true,
+},
 ];

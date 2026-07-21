@@ -1693,6 +1693,82 @@ export const productCopy = {
     en: "If you enjoy rich, sweet and tropical fragrances."
   }
 },
+
+"Rayhaan Nocturno Elixir Eau de Parfum": {
+  miniTag: { sr: "🔵 Blue / Woody", en: "🔵 Blue / Woody" },
+  card: {
+    sr: "Dubok blue miris sa elegantnom drvenom bazom.",
+    en: "Deep blue fragrance with elegant woody base."
+  },
+  modal: {
+    sr: "Citrusi, nana i lavanda prelaze u toplu drvenastu bazu sa amber notama.",
+    en: "Citrus, mint and lavender settle into a warm woody amber base."
+  },
+  scentType: { sr: "Woody aromatic blue", en: "Woody aromatic blue" },
+  dominantNotes: {
+    sr: ["bergamot", "nana", "lavanda", "drvo"],
+    en: ["bergamot", "mint", "lavender", "woods"]
+  },
+  tags: {
+    sr: ["Blue", "Signature", "Elegant"],
+    en: ["Blue", "Signature", "Elegant"]
+  },
+  whyChoose: {
+    sr: "Ako voliš elegantne blue parfeme sa karakterom.",
+    en: "If you enjoy elegant blue fragrances with character."
+  }
+},
+
+"French Avenue Ravine Ice Extrait de Parfum": {
+  miniTag: { sr: "🌊 Marine / Fresh", en: "🌊 Marine / Fresh" },
+
+  card: {
+    sr: "Morska svežina sa mineralnim karakterom.",
+    en: "Marine freshness with mineral character."
+  },
+  modal: {
+    sr: "Morski akordi, citrusi i mahovina stvaraju čist, osvežavajući i prirodan letnji miris.",
+    en: "Marine notes, citrus and moss create a clean refreshing summer scent."
+  },
+  scentType: { sr: "Marine citrus woody", en: "Marine citrus woody" },
+  dominantNotes: {
+    sr: ["morski akordi", "citrusi", "mahovina"],
+    en: ["marine notes", "citrus", "moss"]
+  },
+  tags: {
+    sr: ["Marine", "Fresh", "Summer"],
+    en: ["Marine", "Fresh", "Summer"]
+  },
+  whyChoose: {
+    sr: "Ako želiš prirodnu morsku svežinu.",
+    en: "If you want natural marine freshness."
+  }
+},
+
+"The Paris Corner Mawj Moscow Mule Eau de Parfum": {
+  miniTag: { sr: "🍋 Ginger / Fresh", en: "🍋 Ginger / Fresh" },
+  card: {
+    sr: "Limun, nana i đumbir u koktel inspiraciji.",
+    en: "Lemon, mint and ginger cocktail inspiration."
+  },
+  modal: {
+    sr: "Svež limun, nana i đumbir daju energičan i moderan letnji karakter.",
+    en: "Fresh lemon, mint and ginger create an energetic modern summer scent."
+  },
+  scentType: { sr: "Fresh citrus ginger", en: "Fresh citrus ginger" },
+  dominantNotes: {
+    sr: ["limun", "đumbir", "nana"],
+    en: ["lemon", "ginger", "mint"]
+  },
+  tags: {
+    sr: ["Fresh", "Summer", "Citrus"],
+    en: ["Fresh", "Summer", "Citrus"]
+  },
+  whyChoose: {
+    sr: "Ako voliš citrusne mirise sa đumbirom.",
+    en: "If you enjoy citrus fragrances with ginger."
+  }
+},
 };
 
 /* =========================================

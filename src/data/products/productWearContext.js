@@ -351,5 +351,20 @@ export const productWearContext = {
 "Lattafa Khamrah Waha Eau de Parfum": {
   sr: "Veče, dejt, opušten izlazak.",
   en: "Evening, date night, casual nights out."
-}
+},
+
+"Rayhaan Nocturno Elixir Eau de Parfum": {
+  sr: "Posao, izlazak, svaki dan.",
+  en: "Work, going out, everyday wear."
+},
+
+"French Avenue Ravine Ice Extrait de Parfum": {
+  sr: "More, leto, dnevno nošenje.",
+  en: "Seaside, summer, daytime wear."
+},
+
+"The Paris Corner Mawj Moscow Mule Eau de Parfum": {
+  sr: "Leto, dnevni izlazak, vrućine.",
+  en: "Summer, daytime outings, hot weather."
+},
 };
