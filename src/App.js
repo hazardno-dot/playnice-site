@@ -558,10 +558,7 @@ const BASE_HERO_SLIDES = [
     image: "/hero/slide-6.jpg",
     desktopImage: "/hero/slide-6.jpg",
     mobileImage: "/hero/mobile/slide-6-mobile.jpg",
-    alt: "Prada Paradigme Eau de Parfum",
-    actionPrimary: "product",
-    actionProductSlug: "prada-paradigme-edp",
-    preferredSize: "10ml"
+    alt: "Armaf Club de Nuit Intense Overdose – uskoro u PlayNice kolekciji"
   },
   {
     id: 7,
