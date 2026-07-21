@@ -19245,18 +19245,23 @@ body.overlay-lock .header-system {
 
   .new-arrivals-head {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 14px;
+    width: 100%;
     margin-bottom: 15px;
+    text-align: center;
   }
 
   .new-arrivals-head h2 {
     max-width: 100%;
+    margin: 0 auto;
     font-size: 1.5rem;
     line-height: 1.15;
+    text-align: center;
   }
 
   .new-arrivals-view-all {
+    align-self: center;
     min-height: 34px;
     padding: 0 11px;
     font-size: 0.58rem;
