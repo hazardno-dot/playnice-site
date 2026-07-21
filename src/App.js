@@ -7854,15 +7854,25 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </button>
 
       <button
-  type="button"
-  className={`sticky-cta-journal-link ${
-    stickyCtaJournalHasNew ? "has-new" : ""
-  }`}
-  onClick={handleStickyCtaJournalClick}
-  aria-label={lang === "sr" ? "Otvori Journal" : "Open Journal"}
->
-  {lang === "sr" ? "Pročitaj" : "Read me"}
-</button>
+        type="button"
+        className={`sticky-cta-journal-link ${
+        stickyCtaJournalHasNew ? "has-new" : ""
+      }`}
+        onClick={handleStickyCtaJournalClick}
+        aria-label={lang === "sr" ? "Otvori Le Journal" : "Open Le Journal"}
+      >
+      <span className="sticky-cta-journal-action">
+        {lang === "sr" ? "Pročitaj" : "Read"}
+     </span>
+
+     <span className="sticky-cta-journal-separator" aria-hidden="true">
+       ·
+     </span>
+
+      <span className="sticky-cta-journal-name">
+        Le Journal
+      </span>
+      </button>
     </div>
   </div>
 )}
