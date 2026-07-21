@@ -7847,10 +7847,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           <strong>{stickyCtaData.label}</strong>
           <small>{stickyCtaData.sublabel}</small>
         </span>
-
-        <span className="sticky-cta-arrow" aria-hidden="true">
-          →
-        </span>
       </button>
 
       <button
@@ -7863,14 +7859,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       >
       <span className="sticky-cta-journal-action">
         {lang === "sr" ? "Pročitaj" : "Read"}
-     </span>
+      </span>
 
-     <span className="sticky-cta-journal-separator" aria-hidden="true">
-       ·
-     </span>
+      <span className="sticky-cta-journal-separator" aria-hidden="true">
+        ·
+      </span>
 
       <span className="sticky-cta-journal-name">
         Le Journal
+      </span>
+
+      <span className="sticky-cta-journal-arrow" aria-hidden="true">
+        →
       </span>
       </button>
     </div>
