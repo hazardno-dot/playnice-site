@@ -30,9 +30,9 @@ export const products = [
     short: "Aqua Vitae Forte DNA"
   },
   noteMap: {
-  top: ["mandarin", "cedrat", "cardamom"],
-  heart: ["lavender", "orange-blossom", "rose"],
-  base: ["cedarwood", "moss", "patchouli"]
+    top: ["mandarin", "cedrat", "cardamom"],
+    heart: ["lavender", "orange-blossom", "rose"],
+    base: ["cedarwood", "moss", "patchouli"]
   },
   },
   {
@@ -57,9 +57,9 @@ export const products = [
     short: "Aventus and Baccarat Rouge 540 DNA"
   },
   noteMap: {
-  top: ["mandarin", "pineapple", "green-apple"],
-  heart: ["cedarwood", "oakmoss", "vanilla"],
-  base: ["caramel", "dry-woods", "ambergris"]
+    top: ["mandarin", "pineapple", "green-apple"],
+    heart: ["cedarwood", "oakmoss", "vanilla"],
+    base: ["caramel", "dry-woods", "ambergris"]
   },
   },
   {
@@ -84,9 +84,9 @@ export const products = [
     short: "Absolu Aventus DNA"
   },
   noteMap: {
-  top: ["pineapple", "bergamot", "apple"],
-  heart: ["orange-blossom", "birch", "amber"],
-  base: ["oakmoss", "musk", "ambergris"]
+    top: ["pineapple", "bergamot", "apple"],
+    heart: ["orange-blossom", "birch", "amber"],
+    base: ["oakmoss", "musk", "ambergris"]
   },
   },
   {
@@ -111,9 +111,9 @@ export const products = [
     short: "Tygar DNA"
   },
   noteMap: {
-  top: ["bergamot", "mandarin"],
-  heart: ["amber", "woody-notes"],
-  base: ["musk", "patchouli", "fresh-spices"]
+    top: ["bergamot", "mandarin"],
+    heart: ["amber", "woody-notes"],
+    base: ["musk", "patchouli", "fresh-spices"]
   },
   },
   {
@@ -137,9 +137,9 @@ export const products = [
     short: "Imagination DNA"
   },
   noteMap: {
-  top: ["bergamot", "lemon", "orange"],
-  heart: ["ginger", "cinnamon", "neroli"],
-  base: ["ambroxan", "black-tea", "guaiac-wood"]
+    top: ["bergamot", "lemon", "orange"],
+    heart: ["ginger", "cinnamon", "neroli"],
+    base: ["ambroxan", "black-tea", "guaiac-wood"]
   },
   },
   {
@@ -164,9 +164,9 @@ export const products = [
     short: "Fruity Floral DNA"
   },
   noteMap: {
-  top: ["citruses"],
-  heart: ["flower-prism", "stardust"],
-  base: ["vanilla", "velvet-wood"]
+    top: ["citruses"],
+    heart: ["flower-prism", "stardust"],
+    base: ["vanilla", "velvet-wood"]
   },
   },
   {
@@ -191,9 +191,9 @@ export const products = [
     short: "Aventus DNA"
   },
   noteMap: {
-  top: ["lemon", "pineapple", "bergamot"],
-  heart: ["rose", "birch", "jasmine"],
-  base: ["musk", "ambergris", "patchouli"]
+    top: ["lemon", "pineapple", "bergamot"],
+    heart: ["rose", "birch", "jasmine"],
+    base: ["musk", "ambergris", "patchouli"]
   },
   },
   {
@@ -218,9 +218,9 @@ export const products = [
     short: "Silver Mountain Water DNA"
   },
   noteMap: {
-  top: ["bergamot", "lemon", "lime"],
-  heart: ["jasmine", "iris", "rose"],
-  base: ["sandalwood", "musk", "ambroxan"]
+    top: ["bergamot", "lemon", "lime"],
+    heart: ["jasmine", "iris", "rose"],
+    base: ["sandalwood", "musk", "ambroxan"]
   },
   },
   {
@@ -245,9 +245,9 @@ export const products = [
     short: "Sand Dance DNA"
   },
   noteMap: {
-  top: ["whiskey", "orange", "mandarin"],
-  heart: ["tonka-bean", "cashmeran", "styrax"],
-  base: ["vanilla", "benzoin", "patchouli"]
+    top: ["whiskey", "orange", "mandarin"],
+    heart: ["tonka-bean", "cashmeran", "styrax"],
+    base: ["vanilla", "benzoin", "patchouli"]
   },
   },
   {
@@ -272,9 +272,9 @@ export const products = [
     short: "Bleu de Chanel DNA"
   },
   noteMap: {
-  top: ["lemon", "bergamot", "grapefruit"],
-  heart: ["geranium"],
-  base: ["cedarwood", "vetiver", "patchouli"]
+    top: ["lemon", "bergamot", "grapefruit"],
+    heart: ["geranium"],
+    base: ["cedarwood", "vetiver", "patchouli"]
   },
   },
   {
