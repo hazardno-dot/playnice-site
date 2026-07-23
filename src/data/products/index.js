@@ -52,7 +52,7 @@ export const products = [
     "afnan-9pm-night-out",
     "lattafa-fakhar-black"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Creed Aventus and MFK Baccarat Rouge 540",
     short: "Aventus and Baccarat Rouge 540 DNA"
   },
@@ -79,7 +79,7 @@ export const products = [
     "armaf-club-de-nuit-intense",
     "creed-aventus-cologne"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Creed Absolu Aventus",
     short: "Absolu Aventus DNA"
   },
@@ -106,7 +106,7 @@ export const products = [
     "bleu-de-chanel-edp",
     "rasasi-hawas-ice"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Bvlgari Tygar / Sospiro Perfumes Vibrato",
     short: "Tygar DNA"
   },
@@ -132,7 +132,7 @@ export const products = [
     recommendations: [
     "khadlaj-island-dreams"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Louis Vuitton Imagination",
     short: "Imagination DNA"
   },
@@ -159,7 +159,7 @@ export const products = [
     "armaf-club-de-nuit-sillage",
     "gisada-ambassador-men"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Original Armaf creation",
     short: "Fruity Floral DNA"
   },
@@ -186,7 +186,7 @@ export const products = [
     "creed-aventus-cologne",
     "afnan-supremacy-collectors-edition"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Creed Aventus",
     short: "Aventus DNA"
   },
@@ -213,7 +213,7 @@ export const products = [
     "bois-imperial-essential-parfums",
     "acqua-di-parma-colonia-essenza"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Creed Silver Mountain Water",
     short: "Silver Mountain Water DNA"
   },
@@ -240,7 +240,7 @@ export const products = [
     "lattafa-musamam-black-intense",
     "tom-ford-noir-extreme"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Stéphane Humbert Lucas 777 Sand Dance",
     short: "Sand Dance DNA"
   },
@@ -267,7 +267,7 @@ export const products = [
     "rasasi-hawas-ice",
     "rayhaan-pacific-aura"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Bleu de Chanel Eau de Parfum",
     short: "Bleu de Chanel DNA"
   },
