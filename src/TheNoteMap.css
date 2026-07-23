@@ -617,3 +617,49 @@
     line-height: 1.05;
   }
 }
+
+/* =========================================
+   THE NOTE MAP — RESPONSIVE TRIGGER
+========================================= */
+
+/* Desktop: sakrij trigger i savršeno centriraj note */
+
+@media (min-width: 641px) {
+  .the-note-map__trigger {
+    display: none;
+  }
+
+  .the-note-map__panel {
+    padding: 10px;
+  }
+}
+
+/* Mobile: trigger ostaje, ali je oko 30% manji */
+
+@media (max-width: 640px) {
+  .the-note-map__trigger {
+    bottom: 6px;
+
+    min-height: 24px;
+    padding: 0 8px;
+    gap: 6px;
+
+    font-size: 0.37rem;
+    letter-spacing: 0.12em;
+
+    border-width: 1px;
+  }
+
+  .the-note-map__trigger strong {
+    font-size: 0.68rem;
+  }
+
+  /*
+    Manjem triggeru ostavljamo manje prostora,
+    pa su note bolje centrirane.
+  */
+
+  .the-note-map__panel {
+    padding: 8px 8px 36px;
+  }
+}
