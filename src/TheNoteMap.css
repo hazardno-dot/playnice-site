@@ -1,0 +1,364 @@
+/* =========================================
+   THE NOTE MAP
+========================================= */
+
+.modal-image-wrap.has-note-map {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.modal-image-wrap.has-note-map::after {
+  pointer-events: none;
+}
+
+.modal-image-wrap.has-note-map .modal-image {
+  transition:
+    opacity 0.24s ease,
+    transform 0.24s ease,
+    filter 0.24s ease;
+}
+
+.the-note-map {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.the-note-map__trigger {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  z-index: 5;
+
+  transform: translateX(-50%);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  min-height: 34px;
+  padding: 0 14px;
+
+  border: 1px solid rgba(220, 181, 107, 0.3);
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(28, 24, 18, 0.94),
+      rgba(10, 10, 10, 0.96)
+    );
+
+  color: rgba(240, 215, 163, 0.96);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.58rem;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+  pointer-events: auto;
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.the-note-map__trigger strong {
+  font-size: 0.95rem;
+  line-height: 1;
+  font-weight: 400;
+  color: #dcb56b;
+}
+
+.the-note-map__trigger:hover,
+.the-note-map__trigger:focus-visible {
+  border-color: rgba(220, 181, 107, 0.58);
+  color: #fff4dc;
+  outline: none;
+}
+
+.the-note-map__panel {
+  position: absolute;
+  inset: 3px;
+  z-index: 4;
+
+  padding: 12px 12px 50px;
+
+  border: 1px solid rgba(220, 181, 107, 0.2);
+  border-radius: 22px;
+
+  background:
+    radial-gradient(
+      circle at 50% 10%,
+      rgba(220, 181, 107, 0.12),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(19, 18, 16, 0.97),
+      rgba(7, 7, 7, 0.985)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 40px rgba(0, 0, 0, 0.32);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translateY(6px) scale(0.985);
+  transform-origin: center;
+
+  transition:
+    opacity 0.22s ease,
+    transform 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0.24s;
+}
+
+.the-note-map.is-open .the-note-map__panel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transform: translateY(0) scale(1);
+
+  transition:
+    opacity 0.22s ease,
+    transform 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0s;
+}
+
+.modal-image-wrap.note-map-open .modal-image {
+  opacity: 0.1;
+  transform: scale(0.95);
+  filter: blur(2px);
+}
+
+.the-note-map__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+
+  padding: 1px 2px 8px;
+}
+
+.the-note-map__header span {
+  color: rgba(240, 215, 163, 0.98);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.the-note-map__header small {
+  color: rgba(255, 255, 255, 0.42);
+
+  font-size: 0.5rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.the-note-map__levels {
+  display: grid;
+}
+
+.the-note-map__level {
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+
+  min-height: 56px;
+  padding: 5px 0;
+
+  border-top: 1px solid rgba(220, 181, 107, 0.1);
+}
+
+.the-note-map__level-title {
+  color: rgba(220, 181, 107, 0.68);
+
+  font-size: 0.48rem;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.the-note-map__notes {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.the-note-map__note {
+  width: 52px;
+  min-width: 0;
+
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+
+  text-align: center;
+}
+
+.the-note-map__thumb {
+  position: relative;
+
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.015)
+    ),
+    rgba(20, 20, 20, 0.96);
+}
+
+.the-note-map__fallback {
+  position: relative;
+  z-index: 0;
+  font-size: 1.05rem;
+}
+
+.the-note-map__thumb img {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.the-note-map__name {
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 0.5rem;
+  line-height: 1.1;
+  font-weight: 600;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .modal-image-wrap.has-note-map:hover .the-note-map__panel {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateY(0) scale(1);
+
+    transition:
+      opacity 0.22s ease,
+      transform 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s linear 0s;
+  }
+
+  .modal-image-wrap.has-note-map:hover .modal-image {
+    opacity: 0.1;
+    transform: scale(0.95);
+    filter: blur(2px);
+  }
+}
+
+@media (max-width: 640px) {
+  .modal-image-wrap.has-note-map {
+    min-height: 244px;
+  }
+
+  .the-note-map__panel {
+    inset: 2px;
+    padding: 9px 9px 48px;
+    border-radius: 19px;
+  }
+
+  .the-note-map__header {
+    padding-bottom: 6px;
+  }
+
+  .the-note-map__header span {
+    font-size: 0.88rem;
+  }
+
+  .the-note-map__level {
+    grid-template-columns: 53px minmax(0, 1fr);
+    gap: 5px;
+    min-height: 52px;
+    padding: 3px 0;
+  }
+
+  .the-note-map__level-title {
+    font-size: 0.43rem;
+    letter-spacing: 0.09em;
+  }
+
+  .the-note-map__notes {
+    gap: 5px;
+  }
+
+  .the-note-map__note {
+    width: 46px;
+  }
+
+  .the-note-map__thumb {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+  }
+
+  .the-note-map__fallback {
+    font-size: 0.9rem;
+  }
+
+  .the-note-map__name {
+    font-size: 0.44rem;
+  }
+
+  .the-note-map__trigger {
+    bottom: 8px;
+    min-height: 32px;
+    padding: 0 12px;
+    font-size: 0.53rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .the-note-map__panel,
+  .the-note-map__trigger,
+  .modal-image-wrap.has-note-map .modal-image {
+    transition: none !important;
+  }
+}

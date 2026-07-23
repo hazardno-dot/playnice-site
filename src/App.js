@@ -6,6 +6,7 @@ import { categoryLabels, products } from "./data/products";
 import { productCopy, fallbackCopy } from "./data/products/productCopy";
 import { productWearContext } from "./data/products/productWearContext";
 import { translations } from "./data/translations";
+import TheNoteMap from "./TheNoteMap";
 
 const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 
@@ -705,6 +706,7 @@ function App() {
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
   const [productModalVisible, setProductModalVisible] = useState(false);
+  const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
 
@@ -1495,6 +1497,10 @@ useEffect(() => {
     setSelectedSize("");
   }
 }, [selectedProduct]);
+
+useEffect(() => {
+  setNoteMapOpen(false);
+}, [selectedProduct?.slug]);
 
 useEffect(() => {
   return () => {
@@ -3225,6 +3231,7 @@ const PRODUCT_MODAL_CLOSE_DELAY = 80;
 const closeProductModal = () => {
   const isMobileModal = isMobileProductModal();
 
+  setNoteMapOpen(false);
   setProductModalVisible(false);
   setHasUserPickedSize(false);
 
@@ -7091,7 +7098,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
-  <div className="modal-image-wrap panel-item-anim panel-item-2">
+  <div
+  className={`modal-image-wrap panel-item-anim panel-item-2 ${
+    selectedProduct.noteMap ? "has-note-map" : ""
+  } ${noteMapOpen ? "note-map-open" : ""}`}
+>
   {selectedProduct.image ? (
     <img
       src={selectedProduct.image}
@@ -7102,6 +7113,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <div className="modal-monogram">
       {selectedProduct.name.charAt(0)}
     </div>
+  )}
+
+  {selectedProduct.noteMap && (
+    <TheNoteMap
+      notes={selectedProduct.noteMap}
+      lang={lang}
+      open={noteMapOpen}
+      onToggle={() => setNoteMapOpen((current) => !current)}
+    />
   )}
 </div>
 
@@ -7208,16 +7228,19 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             )}
           </p>
 
-          <div className="modal-info-grid">
+        <div className="modal-info-grid">
             <div className="modal-info-card panel-item-anim panel-item-4">
-              <span>
-                {lang === "sr" ? "DOMINANTNE NOTE" : "DOMINANT NOTES"}
-              </span>
-              <strong>
-                {selectedCopy.dominantNotes?.join(" • ") ||
-                  (lang === "sr" ? "premium akordi" : "premium accords")}
-              </strong>
-            </div>
+          <span>
+            {lang === "sr" ? "MIRISNI PROFIL" : "SCENT PROFILE"}
+          </span>
+
+          <strong>
+            {selectedCopy.scentType ||
+            (lang === "sr"
+            ? "Svjež, citrusno-aromatičan karakter."
+            : "Fresh citrus-aromatic character.")}
+          </strong>
+        </div>
 
             <div className="modal-info-card panel-item-anim panel-item-5">
               <span>
