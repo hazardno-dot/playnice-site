@@ -1,5 +1,6 @@
 /* =========================================
-   THE NOTE MAP — TRANSPARENT WAVE
+   THE NOTE MAP
+   Transparent image-to-notes transition
 ========================================= */
 
 .modal-image-wrap.has-note-map {
@@ -12,10 +13,22 @@
 }
 
 .modal-image-wrap.has-note-map .modal-image {
+  transform-origin: center;
+
   transition:
-    opacity 0.3s ease,
-    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.3s ease;
+    opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.78s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.68s ease;
+}
+
+.modal-image-wrap.note-map-open .modal-image {
+  opacity: 0;
+  transform: scale(0.96);
+
+  filter:
+    blur(2px)
+    saturate(0.78)
+    brightness(0.8);
 }
 
 /* =========================================
@@ -26,77 +39,18 @@
   position: absolute;
   inset: 0;
   z-index: 3;
+
   pointer-events: none;
 }
 
-/* =========================================
-   TRIGGER
-========================================= */
+/*
+  The old trigger inside the image is no longer
+  used. Mobile uses the external trigger below.
+*/
 
 .the-note-map__trigger {
-  position: absolute;
-  left: 50%;
-  bottom: 10px;
-  z-index: 5;
-
-  transform: translateX(-50%);
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-
-  min-height: 34px;
-  padding: 0 14px;
-
-  border: 1px solid rgba(235, 213, 170, 0.24);
-  border-radius: 999px;
-
-  background: rgba(18, 16, 13, 0.42);
-
-  backdrop-filter: blur(10px) saturate(115%);
-  -webkit-backdrop-filter: blur(10px) saturate(115%);
-
-  color: rgba(244, 222, 180, 0.92);
-
-  font-family: "Inter", sans-serif;
-  font-size: 0.58rem;
-  line-height: 1;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-
-  cursor: pointer;
-  pointer-events: auto;
-
-  box-shadow:
-    0 8px 22px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    color 0.2s ease;
+  display: none !important;
 }
-
-.the-note-map__trigger strong {
-  color: rgba(237, 200, 128, 0.9);
-  font-size: 0.95rem;
-  line-height: 1;
-  font-weight: 400;
-}
-
-.the-note-map__trigger:hover,
-.the-note-map__trigger:focus-visible {
-  border-color: rgba(240, 215, 163, 0.5);
-  background: rgba(26, 22, 16, 0.58);
-  color: #fff2d7;
-  outline: none;
-}
-
-/* =========================================
-   TRANSPARENT PANEL
-========================================= */
 
 .the-note-map__panel {
   position: absolute;
@@ -106,10 +60,12 @@
   display: grid;
   place-items: center;
 
-  padding: 18px 18px 54px;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
 
-  background: transparent;
   border: 0;
+  background: transparent;
   box-shadow: none;
 
   opacity: 0;
@@ -117,8 +73,8 @@
   pointer-events: none;
 
   transition:
-    opacity 0.16s ease,
-    visibility 0s linear 0.75s;
+    opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.68s;
 }
 
 .the-note-map.is-open .the-note-map__panel {
@@ -126,39 +82,50 @@
   visibility: visible;
 
   transition:
-    opacity 0.16s ease,
+    opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0s linear 0s;
 }
 
 /* =========================================
-   THREE NOTE WAVES
+   CENTERED NOTE GRID
 ========================================= */
 
 .the-note-map__levels {
   display: grid;
   justify-items: center;
-  gap: 14px;
+  gap: 10px;
+
+  width: auto;
 }
 
 .the-note-map__level {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  gap: 13px;
-}
+  gap: 10px;
 
-/* Individual transparent note */
+  width: auto;
+}
 
 .the-note-map__note {
   position: relative;
 
-  width: 56px;
-  height: 56px;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
 
+  width: 54px;
+  height: auto;
+
+  text-align: center;
   opacity: 0;
   transform: translate3d(-34px, 8px, 0) scale(0.74);
 
   pointer-events: auto;
+
+  transition:
+    opacity 0.36s ease,
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .the-note-map__thumb {
@@ -167,13 +134,12 @@
   display: grid;
   place-items: center;
 
-  width: 100%;
-  height: 100%;
-
+  width: 48px;
+  height: 48px;
   overflow: hidden;
 
   border: 1px solid rgba(246, 229, 195, 0.24);
-  border-radius: 16px;
+  border-radius: 14px;
 
   background: rgba(235, 220, 190, 0.075);
 
@@ -189,14 +155,6 @@
     background 0.2s ease,
     transform 0.22s ease,
     box-shadow 0.22s ease;
-}
-
-.the-note-map__fallback {
-  position: relative;
-  z-index: 0;
-
-  font-size: 1.15rem;
-  opacity: 0.72;
 }
 
 .the-note-map__thumb img {
@@ -224,9 +182,45 @@
     filter 0.22s ease;
 }
 
+.the-note-map__fallback {
+  position: relative;
+  z-index: 0;
+
+  font-size: 1.15rem;
+  opacity: 0 !important;
+
+  transition: opacity 0.2s ease;
+}
+
+.the-note-map__fallback.is-visible {
+  opacity: 0.72 !important;
+}
+
+.the-note-map__name {
+  display: -webkit-box;
+  width: 54px;
+  min-height: 12px;
+  overflow: hidden;
+
+  color: rgba(255, 248, 233, 0.8);
+
+  font-family: "Inter", sans-serif;
+  font-size: 0.48rem;
+  line-height: 1.08;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: center;
+
+  text-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.94),
+    0 0 8px rgba(0, 0, 0, 0.62);
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .the-note-map__note:hover .the-note-map__thumb {
   border-color: rgba(246, 225, 180, 0.48);
-
   background: rgba(240, 220, 180, 0.12);
 
   transform: translateY(-2px);
@@ -237,7 +231,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
-.the-note-map__note:hover img {
+.the-note-map__note:hover .the-note-map__thumb img {
   opacity: 0.94;
   transform: scale(1.08);
 
@@ -248,14 +242,13 @@
 }
 
 /* =========================================
-   WAVE ANIMATION
+   NOTE WAVE
 ========================================= */
 
 .the-note-map.is-open .the-note-map__note {
-  animation: noteMapWaveIn 0.58s
-    cubic-bezier(0.16, 1, 0.3, 1) both;
-
-  animation-delay: var(--note-delay);
+  animation: noteMapWaveIn 0.92s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--note-delay) + 70ms);
 }
 
 @keyframes noteMapWaveIn {
@@ -280,17 +273,6 @@
   }
 }
 
-/* Bottle remains visible below the notes */
-
-.modal-image-wrap.note-map-open .modal-image {
-  opacity: 0.44;
-  transform: scale(0.98);
-
-  filter:
-    saturate(0.78)
-    brightness(0.76);
-}
-
 /* =========================================
    DESKTOP HOVER
 ========================================= */
@@ -301,484 +283,18 @@
     visibility: visible;
 
     transition:
-      opacity 0.16s ease,
-      visibility 0s linear 0s;
-  }
-
-  .modal-image-wrap.has-note-map:hover .the-note-map__note {
-    animation: noteMapWaveIn 0.58s
-      cubic-bezier(0.16, 1, 0.3, 1) both;
-
-    animation-delay: var(--note-delay);
-  }
-
-  .modal-image-wrap.has-note-map:hover .modal-image {
-    opacity: 0.44;
-    transform: scale(0.98);
-
-    filter:
-      saturate(0.78)
-      brightness(0.76);
-  }
-}
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media (max-width: 640px) {
-  .modal-image-wrap.has-note-map {
-    min-height: 244px;
-  }
-
-  .the-note-map__panel {
-    padding: 12px 10px 50px;
-  }
-
-  .the-note-map__levels {
-    gap: 11px;
-  }
-
-  .the-note-map__level {
-    gap: 10px;
-  }
-
-  .the-note-map__note {
-    width: 48px;
-    height: 48px;
-  }
-
-  .the-note-map__thumb {
-    border-radius: 14px;
-  }
-
-  .the-note-map__trigger {
-    bottom: 8px;
-
-    min-height: 32px;
-    padding: 0 12px;
-
-    font-size: 0.53rem;
-  }
-}
-
-/* =========================================
-   REDUCED MOTION
-========================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .the-note-map__note,
-  .the-note-map__panel,
-  .the-note-map__trigger,
-  .modal-image-wrap.has-note-map .modal-image {
-    transition: none !important;
-    animation: none !important;
-  }
-
-  .the-note-map.is-open .the-note-map__note {
-    opacity: 1;
-    transform: none;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .modal-image-wrap.has-note-map:hover .the-note-map__note {
-      opacity: 1;
-      transform: none;
-    }
-  }
-}
-
-/* =========================================
-   THE NOTE MAP — CENTER IMAGE SWAP
-========================================= */
-
-.modal-image-wrap.has-note-map {
-  overflow: hidden;
-}
-
-/*
-  Sporiji i mekši fade slike u oba smera.
-*/
-
-.modal-image-wrap.has-note-map .modal-image {
-  transition:
-    opacity 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.58s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.52s ease;
-}
-
-/*
-  Panel zauzima isto mesto kao fotografija.
-*/
-
-.the-note-map__panel {
-  inset: 0;
-
-  top: auto;
-  right: auto;
-  bottom: auto;
-  left: auto;
-
-  display: grid;
-: auto;
-  right: auto;
-  bottom: auto;
-  left: auto;
-
-  display: grid;
-  place-items: center;
-
-  width: 100%;
-  height: 100%;
-
-  padding: 10px 10px 50px;
-
-  transition:
-    opacity 0.34s ease,
-    visibility 0s linear 0.5s;
-}
-
-.the-note-map.is-open .the-note-map__panel {
-  transition:
-    opacity 0.34s ease,
-    visibility 0s linear 0s;
-}
-
-/* =========================================
-   CENTERED NOTE GRID
-========================================= */
-
-.the-note-map__levels {
-  width: auto;
-
-  display: grid;
-  justify-items: center;
-  gap: 9px;
-
-  transform: translateY(0);
-}
-
-.the-note-map__level {
-  width: auto;
-
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 9px;
-}
-
-/* =========================================
-   NOTE — ORIGINAL LARGER SIZE
-========================================= */
-
-.the-note-map__note {
-  width: 48px;
-  height: auto;
-
-  display: grid;
-  justify-items: center;
-  gap: 4px;
-
-  text-align: center;
-
-  transition:
-    opacity 0.26s ease,
-    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.the-note-map__thumb {
-  width: 42px;
-  height: 42px;
-
-  border-radius: 13px;
-}
-
-/* =========================================
-   NOTE NAME
-========================================= */
-
-.the-note-map__name {
-  width: 48px;
-  min-height: 11px;
-
-  color: rgba(255, 248, 233, 0.8);
-
-  font-family: "Inter", sans-serif;
-  font-size: 0.45rem;
-  line-height: 1.08;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-
-  text-align: center;
-
-  text-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.94),
-    0 0 8px rgba(0, 0, 0, 0.62);
-
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-
-/* =========================================
-   SLOWER WAVE
-========================================= */
-
-.the-note-map.is-open .the-note-map__note {
-  animation-duration: 0.82s;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* =========================================
-   IMAGE FADE OUT — CLICK / MOBILE
-========================================= */
-
-.modal-image-wrap.note-map-open .modal-image {
-  opacity: 0;
-
-  transform: scale(0.95);
-
-  filter:
-    blur(3px)
-    saturate(0.72)
-    brightness(0.74);
-}
-
-/* =========================================
-   DESKTOP HOVER
-========================================= */
-
-@media (hover: hover) and (pointer: fine) {
-  .modal-image-wrap.has-note-map:hover .the-note-map__panel {
-    transition:
-      opacity 0.34s ease,
-      visibility 0s linear 0s;
-  }
-
-  .modal-image-wrap.has-note-map:hover .the-note-map__note {
-    animation-duration: 0.82s;
-    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .modal-image-wrap.has-note-map:hover .modal-image {
-    opacity: 0;
-
-    transform: scale(0.95);
-
-    filter:
-      blur(3px)
-      saturate(0.72)
-      brightness(0.74);
-  }
-}
-
-/* =========================================
-   MOBILE CENTERED VERSION
-========================================= */
-
-@media (max-width: 640px) {
-  .the-note-map__panel {
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    padding: 8px 8px 46px;
-  }
-
-  .the-note-map__levels {
-    gap: 7px;
-
-    transform: translateY(0);
-  }
-
-  .the-note-map__level {
-    gap: 7px;
-  }
-
-  .the-note-map__note {
-    width: 44px;
-    gap: 3px;
-  }
-
-  .the-note-map__thumb {
-    width: 36px;
-    height: 36px;
-
-    border-radius: 11px;
-  }
-
-  .the-note-map__name {
-    width: 44px;
-    min-height: 10px;
-
-    font-size: 0.4rem;
-    line-height: 1.05;
-  }
-}
-
-/* =========================================
-   THE NOTE MAP — RESPONSIVE TRIGGER
-========================================= */
-
-/* Desktop: sakrij trigger i savršeno centriraj note */
-
-@media (min-width: 641px) {
-  .the-note-map__trigger {
-    display: none;
-  }
-
-  .the-note-map__panel {
-    padding: 10px;
-  }
-}
-
-/* Mobile: trigger ostaje, ali je oko 30% manji */
-
-@media (max-width: 640px) {
-  .the-note-map__trigger {
-    bottom: 6px;
-
-    min-height: 24px;
-    padding: 0 8px;
-    gap: 6px;
-
-    font-size: 0.37rem;
-    letter-spacing: 0.12em;
-
-    border-width: 1px;
-  }
-
-  .the-note-map__trigger strong {
-    font-size: 0.68rem;
-  }
-
-  /*
-    Manjem triggeru ostavljamo manje prostora,
-    pa su note bolje centrirane.
-  */
-
-  .the-note-map__panel {
-    padding: 8px 8px 36px;
-  }
-}
-
-/* =========================================
-   THE NOTE MAP — FINAL POLISH
-========================================= */
-
-/*
-  Stari trigger unutar fotografije više
-  ne koristimo ni na desktopu ni na mobilnom.
-*/
-
-.the-note-map__trigger {
-  display: none !important;
-}
-
-/* =========================================
-   SMOOTHER IMAGE CROSSFADE
-========================================= */
-
-.modal-image-wrap.has-note-map .modal-image {
-  transition:
-    opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.78s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.68s ease;
-}
-
-.the-note-map__panel {
-  padding: 10px;
-
-  transition:
-    opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 0.68s;
-}
-
-.the-note-map.is-open .the-note-map__panel {
-  transition:
-    opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 0s;
-}
-
-.modal-image-wrap.note-map-open .modal-image {
-  opacity: 0;
-
-  transform: scale(0.96);
-
-  filter:
-    blur(2px)
-    saturate(0.78)
-    brightness(0.8);
-}
-
-/* =========================================
-   LARGER NOTES
-========================================= */
-
-.the-note-map__levels {
-  gap: 10px;
-}
-
-.the-note-map__level {
-  gap: 10px;
-}
-
-.the-note-map__note {
-  width: 54px;
-  gap: 4px;
-
-  transition:
-    opacity 0.36s ease,
-    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.the-note-map__thumb {
-  width: 48px;
-  height: 48px;
-
-  border-radius: 14px;
-}
-
-.the-note-map__name {
-  width: 54px;
-  min-height: 12px;
-
-  font-size: 0.48rem;
-  line-height: 1.08;
-}
-
-/* =========================================
-   SMOOTHER WAVE
-========================================= */
-
-.the-note-map.is-open .the-note-map__note {
-  animation-duration: 0.92s;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  animation-delay: calc(var(--note-delay) + 70ms);
-}
-
-/* =========================================
-   DESKTOP HOVER
-========================================= */
-
-@media (hover: hover) and (pointer: fine) {
-  .modal-image-wrap.has-note-map:hover .the-note-map__panel {
-    transition:
       opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
       visibility 0s linear 0s;
   }
 
   .modal-image-wrap.has-note-map:hover .the-note-map__note {
-    animation-duration: 0.92s;
-    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation: noteMapWaveIn 0.92s
+      cubic-bezier(0.22, 1, 0.36, 1) both;
     animation-delay: calc(var(--note-delay) + 70ms);
   }
 
   .modal-image-wrap.has-note-map:hover .modal-image {
     opacity: 0;
-
     transform: scale(0.96);
 
     filter:
@@ -789,7 +305,7 @@
 }
 
 /* =========================================
-   MOBILE TRIGGER — BOTTOM RIGHT
+   MOBILE
 ========================================= */
 
 .the-note-map__mobile-trigger {
@@ -797,12 +313,21 @@
 }
 
 @media (max-width: 640px) {
+  .modal-image-wrap.has-note-map {
+    min-height: 244px;
+  }
+
   /*
-    Trigger je sada izvan fotografije, pa Note Map
-    ponovo može biti centriran bez donjeg paddinga.
+    Equal padding on every side plus place-items:center
+    keeps the complete grid mathematically centered over
+    the product image.
   */
 
   .the-note-map__panel {
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
     padding: 8px;
   }
 
@@ -822,7 +347,6 @@
   .the-note-map__thumb {
     width: 40px;
     height: 40px;
-
     border-radius: 12px;
   }
 
@@ -834,181 +358,176 @@
     line-height: 1.05;
   }
 
-  /* =========================================
-   MOBILE META — CENTERED COPY + RIGHT TRIGGER
-========================================= */
+  /*
+    App.css disables image transitions on mobile.
+    Important is limited to this component so the
+    smooth image-to-notes swap remains active.
+  */
 
-.modal-media-meta.has-note-map {
-  position: relative;
+  .modal-image-wrap.has-note-map .modal-image {
+    transition:
+      opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.78s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.68s ease !important;
+  }
 
-  display: block;
+  .modal-image-wrap.note-map-open .modal-image {
+    opacity: 0 !important;
+    transform: scale(0.96) !important;
 
-  width: 100%;
-  min-height: 46px;
-  padding-top: 6px;
-}
+    filter:
+      blur(2px)
+      saturate(0.78)
+      brightness(0.8) !important;
+  }
 
-.modal-media-meta-copy {
-  width: 100%;
-  min-width: 0;
+  /* Centered category/copy with an independent right trigger. */
 
-  text-align: center;
-}
+  .modal-media-meta.has-note-map {
+    position: relative;
 
-.modal-media-meta-copy .modal-category {
-  text-align: center;
-}
+    display: block;
+    width: 100%;
+    min-height: 46px;
+    padding-top: 6px;
+  }
 
-.modal-media-meta-copy p {
-  text-align: center;
-}
+  .modal-media-meta-copy {
+    width: 100%;
+    min-width: 0;
 
-/*
-  Trigger je nezavisan od teksta,
-  pa ARABIAN ostaje u pravoj sredini.
-*/
+    text-align: center;
+  }
 
-.the-note-map__mobile-trigger {
-  position: absolute;
-  right: 0;
-  bottom: 1px;
-  z-index: 2;
+  .modal-media-meta-copy .modal-category,
+  .modal-media-meta-copy p {
+    text-align: center;
+  }
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
+  .the-note-map__mobile-trigger {
+    position: absolute;
+    right: 0;
+    bottom: 1px;
+    z-index: 2;
 
-  min-height: 20px;
-  padding: 0 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
 
-  border: 1px solid rgba(235, 213, 170, 0.22);
-  border-radius: 999px;
+    min-height: 20px;
+    padding: 0 6px;
 
-  background: rgba(18, 16, 13, 0.4);
+    border: 1px solid rgba(235, 213, 170, 0.22);
+    border-radius: 999px;
 
-  backdrop-filter: blur(8px) saturate(115%);
-  -webkit-backdrop-filter: blur(8px) saturate(115%);
+    background: rgba(18, 16, 13, 0.4);
 
-  color: rgba(244, 222, 180, 0.88);
+    backdrop-filter: blur(8px) saturate(115%);
+    -webkit-backdrop-filter: blur(8px) saturate(115%);
 
-  font-family: "Inter", sans-serif;
-  font-size: 0.31rem;
-  line-height: 1;
-  font-weight: 800;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+    color: rgba(244, 222, 180, 0.88);
 
-  white-space: nowrap;
-  cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 0.31rem;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    white-space: nowrap;
 
-  box-shadow:
-    0 6px 14px rgba(0, 0, 0, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
+    cursor: pointer;
+    overflow: visible;
 
-/*
-  Nevidljivo povećava prostor za dodir,
-  bez vizuelnog povećavanja dugmeta.
-*/
+    box-shadow:
+      0 6px 14px rgba(0, 0, 0, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
-.the-note-map__mobile-trigger::after {
-  content: "";
-  position: absolute;
-  inset: -6px;
-}
+    transition:
+      color 0.32s ease,
+      border-color 0.32s ease,
+      background 0.32s ease,
+      box-shadow 0.42s ease;
+  }
 
-.the-note-map__mobile-trigger strong {
-  color: rgba(237, 200, 128, 0.9);
+  /*
+    Enlarges the touch target without visually
+    increasing the button.
+  */
 
-  font-size: 0.56rem;
-  line-height: 1;
-  font-weight: 400;
-}
-}
+  .the-note-map__mobile-trigger::after {
+    content: "";
 
-/* =========================================
-   MOBILE NOTE MAP — OPEN INDICATOR
-========================================= */
+    position: absolute;
+    inset: -6px;
+  }
 
-.the-note-map__mobile-trigger {
-  overflow: visible;
+  .the-note-map__mobile-trigger::before {
+    content: "";
 
-  transition:
-    color 0.32s ease,
-    border-color 0.32s ease,
-    background 0.32s ease,
-    box-shadow 0.42s ease;
-}
+    width: 4px;
+    height: 4px;
+    flex: 0 0 4px;
 
-/*
-  Mala statusna lampica.
-*/
+    border-radius: 999px;
+    background: rgba(220, 181, 107, 0.34);
 
-.the-note-map__mobile-trigger::before {
-  content: "";
+    box-shadow: 0 0 0 0 rgba(220, 181, 107, 0);
 
-  width: 4px;
-  height: 4px;
-  flex: 0 0 4px;
+    transition:
+      background 0.3s ease,
+      box-shadow 0.4s ease,
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
 
-  border-radius: 999px;
+  .the-note-map__mobile-trigger strong {
+    display: inline-block;
 
-  background: rgba(220, 181, 107, 0.34);
+    color: rgba(237, 200, 128, 0.9);
 
-  box-shadow:
-    0 0 0 0 rgba(220, 181, 107, 0);
+    font-size: 0.56rem;
+    line-height: 1;
+    font-weight: 400;
 
-  transition:
-    background 0.3s ease,
-    box-shadow 0.4s ease,
-    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
+    transition:
+      color 0.3s ease,
+      transform 0.46s cubic-bezier(0.22, 1, 0.36, 1);
+  }
 
-/*
-  Plus prelazi u X mekšim pokretom.
-*/
+  .the-note-map__mobile-trigger:hover,
+  .the-note-map__mobile-trigger:focus-visible {
+    border-color: rgba(240, 215, 163, 0.5);
+    color: #fff2d7;
+    outline: none;
+  }
 
-.the-note-map__mobile-trigger strong {
-  display: inline-block;
+  .the-note-map__mobile-trigger.is-open {
+    color: rgba(255, 239, 207, 0.98);
+    border-color: rgba(235, 204, 143, 0.5);
 
-  transition:
-    color 0.3s ease,
-    transform 0.46s cubic-bezier(0.22, 1, 0.36, 1);
-}
+    background:
+      linear-gradient(
+        180deg,
+        rgba(220, 181, 107, 0.13),
+        rgba(24, 19, 13, 0.55)
+      );
 
-/*
-  Aktivno stanje.
-*/
+    animation: noteMapTriggerBreath 2.2s ease-in-out infinite;
+  }
 
-.the-note-map__mobile-trigger.is-open {
-  color: rgba(255, 239, 207, 0.98);
+  .the-note-map__mobile-trigger.is-open::before {
+    background: #e4bf76;
+    transform: scale(1.12);
 
-  border-color: rgba(235, 204, 143, 0.5);
+    box-shadow:
+      0 0 0 3px rgba(220, 181, 107, 0.1),
+      0 0 9px rgba(220, 181, 107, 0.52);
+  }
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(220, 181, 107, 0.13),
-      rgba(24, 19, 13, 0.55)
-    );
-
-  animation: noteMapTriggerBreath 2.2s ease-in-out infinite;
-}
-
-.the-note-map__mobile-trigger.is-open::before {
-  background: #e4bf76;
-
-  transform: scale(1.12);
-
-  box-shadow:
-    0 0 0 3px rgba(220, 181, 107, 0.1),
-    0 0 9px rgba(220, 181, 107, 0.52);
-}
-
-.the-note-map__mobile-trigger.is-open strong {
-  color: #f1d79f;
-  transform: rotate(180deg);
+  .the-note-map__mobile-trigger.is-open strong {
+    color: #f1d79f;
+    transform: rotate(180deg);
+  }
 }
 
 @keyframes noteMapTriggerBreath {
@@ -1029,88 +548,33 @@
 }
 
 /* =========================================
-   MOBILE IMAGE ↔ NOTES SMOOTH TRANSITION
-========================================= */
-
-@media (max-width: 640px) {
-  /*
-    Ovo pregazi transition:none !important
-    koji već postoji za .modal-image u App.css.
-  */
-
-  .modal-image-wrap.has-note-map .modal-image {
-    transform-origin: center;
-
-    transition:
-      opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.78s cubic-bezier(0.22, 1, 0.36, 1),
-      filter 0.68s ease !important;
-  }
-
-  /*
-    Otvaranje nota: slika nestaje kroz fade-out.
-  */
-
-  .modal-image-wrap.note-map-open .modal-image {
-    opacity: 0 !important;
-
-    transform: scale(0.96) !important;
-
-    filter:
-      blur(2px)
-      saturate(0.78)
-      brightness(0.8) !important;
-  }
-
-  /*
-    Note dobijaju isti mekani panel fade kao desktop.
-  */
-
-  .the-note-map__panel {
-    transition:
-      opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 0s linear 0.68s;
-  }
-
-  .the-note-map.is-open .the-note-map__panel {
-    transition:
-      opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 0s linear 0s;
-  }
-
-  .the-note-map__note {
-    transition:
-      opacity 0.36s ease,
-      transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-}
-
-/* =========================================
    REDUCED MOTION
 ========================================= */
 
 @media (prefers-reduced-motion: reduce) {
+  .the-note-map__note,
+  .the-note-map__panel,
+  .the-note-map__mobile-trigger,
+  .the-note-map__mobile-trigger::before,
+  .the-note-map__mobile-trigger strong,
+  .modal-image-wrap.has-note-map .modal-image {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .the-note-map.is-open .the-note-map__note {
+    opacity: 1;
+    transform: none;
+  }
+
   .the-note-map__mobile-trigger.is-open {
     animation: none !important;
   }
 
-  .the-note-map__mobile-trigger,
-  .the-note-map__mobile-trigger::before,
-  .the-note-map__mobile-trigger strong {
-    transition: none !important;
+  @media (hover: hover) and (pointer: fine) {
+    .modal-image-wrap.has-note-map:hover .the-note-map__note {
+      opacity: 1;
+      transform: none;
+    }
   }
-}
-
-/* =========================================
-   NOTE IMAGE FALLBACK
-========================================= */
-
-.the-note-map__fallback {
-  opacity: 0 !important;
-
-  transition: opacity 0.2s ease;
-}
-
-.the-note-map__fallback.is-visible {
-  opacity: 0.72 !important;
 }
