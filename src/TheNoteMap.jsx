@@ -142,26 +142,35 @@ export default function TheNoteMap({
                     }}
                   >
                     <span className="the-note-map__thumb">
-                      <span className="the-note-map__fallback">
-                        {note.fallback}
-                      </span>
+  <span
+    className={`the-note-map__fallback ${
+      note.image ? "" : "is-visible"
+    }`}
+  >
+    {note.fallback}
+  </span>
 
-                      {note.image && (
-                        <img
-                          src={note.image}
-                          alt=""
-                          loading="lazy"
-                          onError={(event) => {
-                            event.currentTarget.style.display = "none";
-                          }}
-                        />
-                      )}
-                    </span>
+  {note.image && (
+    <img
+      src={note.image}
+      alt=""
+      loading="lazy"
+      onError={(event) => {
+        event.currentTarget.style.display = "none";
+
+        const fallback =
+          event.currentTarget.previousElementSibling;
+
+        fallback?.classList.add("is-visible");
+      }}
+    />
+  )}
+</span>
 
                     <span className="the-note-map__name">
                       {noteLabel}
                     </span>
-                    
+
                   </span>
                 );
               })}

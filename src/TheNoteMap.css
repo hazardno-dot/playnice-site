@@ -1100,3 +1100,17 @@
     transition: none !important;
   }
 }
+
+/* =========================================
+   NOTE IMAGE FALLBACK
+========================================= */
+
+.the-note-map__fallback {
+  opacity: 0 !important;
+
+  transition: opacity 0.2s ease;
+}
+
+.the-note-map__fallback.is-visible {
+  opacity: 0.72 !important;
+}
