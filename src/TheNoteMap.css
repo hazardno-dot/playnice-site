@@ -389,58 +389,65 @@
 }
 
 /* =========================================
-   THE NOTE MAP — COMPACT TOP RIGHT POSITION
+   THE NOTE MAP — CENTER IMAGE SWAP
 ========================================= */
 
 /*
-  Omogućavamo notama da izađu malo iznad
-  granice image-wrap elementa.
+  Note ostaju unutar prostora fotografije.
 */
 
 .modal-image-wrap.has-note-map {
-  overflow: visible;
+  overflow: hidden;
 }
 
 /*
-  Kompletna grupa nota ide gore desno.
+  Panel zauzima potpuno isti prostor kao slika
+  i centrira note horizontalno i vertikalno.
 */
 
 .the-note-map__panel {
-  inset: auto;
+  inset: 0;
 
-  top: -52px;
-  right: -14px;
+  top: auto;
+  right: auto;
   bottom: auto;
   left: auto;
 
-  display: block;
-  place-items: initial;
+  display: grid;
+  place-items: center;
 
-  width: 158px;
-  height: auto;
+  width: 100%;
+  height: 100%;
 
-  padding: 0;
+  padding: 10px 10px 50px;
 }
 
-/*
-  Kompaktniji razmak između tri reda.
-*/
+/* =========================================
+   CENTERED NOTE GRID
+========================================= */
 
 .the-note-map__levels {
-  width: 100%;
+  width: auto;
+
+  display: grid;
+  justify-items: center;
   gap: 7px;
-  justify-items: end;
+
+  transform: translateY(0);
 }
 
 .the-note-map__level {
-  width: 100%;
+  width: auto;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   gap: 7px;
-  justify-content: flex-end;
 }
 
-/*
-  Manja nota sa nazivom ispod.
-*/
+/* =========================================
+   COMPACT NOTE
+========================================= */
 
 .the-note-map__note {
   width: 43px;
@@ -451,6 +458,10 @@
   gap: 3px;
 
   text-align: center;
+
+  transition:
+    opacity 0.16s ease,
+    transform 0.2s ease;
 }
 
 .the-note-map__thumb {
@@ -460,15 +471,15 @@
   border-radius: 12px;
 }
 
-/*
-  Naziv note.
-*/
+/* =========================================
+   NOTE NAME
+========================================= */
 
 .the-note-map__name {
   width: 43px;
   min-height: 10px;
 
-  color: rgba(255, 248, 233, 0.74);
+  color: rgba(255, 248, 233, 0.78);
 
   font-family: "Inter", sans-serif;
   font-size: 0.42rem;
@@ -479,8 +490,8 @@
   text-align: center;
 
   text-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.9),
-    0 0 8px rgba(0, 0, 0, 0.55);
+    0 2px 6px rgba(0, 0, 0, 0.94),
+    0 0 8px rgba(0, 0, 0, 0.62);
 
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -488,50 +499,66 @@
   overflow: hidden;
 }
 
-/*
-  Bočica ostaje vidljiva ispod nota.
-*/
+/* =========================================
+   IMAGE FADE OUT — CLICK / MOBILE
+========================================= */
 
 .modal-image-wrap.note-map-open .modal-image {
-  opacity: 0.62;
+  opacity: 0;
 
-  transform: scale(0.99);
+  transform: scale(0.94);
 
   filter:
-    saturate(0.86)
-    brightness(0.84);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .modal-image-wrap.has-note-map:hover .modal-image {
-    opacity: 0.62;
-
-    transform: scale(0.99);
-
-    filter:
-      saturate(0.86)
-      brightness(0.84);
-  }
+    blur(3px)
+    saturate(0.72)
+    brightness(0.74);
 }
 
 /* =========================================
-   MOBILE COMPACT POSITION
+   IMAGE FADE OUT — DESKTOP HOVER
+========================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  .modal-image-wrap.has-note-map:hover .modal-image {
+    opacity: 0;
+
+    transform: scale(0.94);
+
+    filter:
+      blur(3px)
+      saturate(0.72)
+      brightness(0.74);
+  }
+}
+
+/*
+  Kada se kursor skloni, hover pravilo prestaje
+  i postojeći transition na .modal-image vraća
+  sliku kroz fade-in.
+*/
+
+/* =========================================
+   MOBILE CENTERED VERSION
 ========================================= */
 
 @media (max-width: 640px) {
   .the-note-map__panel {
-    top: 4px;
-    right: -4px;
+    inset: 0;
 
-    width: 142px;
+    width: 100%;
+    height: 100%;
+
+    padding: 8px 8px 46px;
   }
 
   .the-note-map__levels {
     gap: 6px;
+
+    transform: translateY(0);
   }
 
   .the-note-map__level {
-    gap: 5px;
+    gap: 6px;
   }
 
   .the-note-map__note {
@@ -540,8 +567,8 @@
   }
 
   .the-note-map__thumb {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
 
     border-radius: 10px;
   }
