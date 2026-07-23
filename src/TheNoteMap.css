@@ -663,3 +663,240 @@
     padding: 8px 8px 36px;
   }
 }
+
+/* =========================================
+   THE NOTE MAP — FINAL POLISH
+========================================= */
+
+/*
+  Stari trigger unutar fotografije više
+  ne koristimo ni na desktopu ni na mobilnom.
+*/
+
+.the-note-map__trigger {
+  display: none !important;
+}
+
+/* =========================================
+   SMOOTHER IMAGE CROSSFADE
+========================================= */
+
+.modal-image-wrap.has-note-map .modal-image {
+  transition:
+    opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.78s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.68s ease;
+}
+
+.the-note-map__panel {
+  padding: 10px;
+
+  transition:
+    opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.68s;
+}
+
+.the-note-map.is-open .the-note-map__panel {
+  transition:
+    opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0s;
+}
+
+.modal-image-wrap.note-map-open .modal-image {
+  opacity: 0;
+
+  transform: scale(0.96);
+
+  filter:
+    blur(2px)
+    saturate(0.78)
+    brightness(0.8);
+}
+
+/* =========================================
+   LARGER NOTES
+========================================= */
+
+.the-note-map__levels {
+  gap: 10px;
+}
+
+.the-note-map__level {
+  gap: 10px;
+}
+
+.the-note-map__note {
+  width: 54px;
+  gap: 4px;
+
+  transition:
+    opacity 0.36s ease,
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.the-note-map__thumb {
+  width: 48px;
+  height: 48px;
+
+  border-radius: 14px;
+}
+
+.the-note-map__name {
+  width: 54px;
+  min-height: 12px;
+
+  font-size: 0.48rem;
+  line-height: 1.08;
+}
+
+/* =========================================
+   SMOOTHER WAVE
+========================================= */
+
+.the-note-map.is-open .the-note-map__note {
+  animation-duration: 0.92s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-delay: calc(var(--note-delay) + 70ms);
+}
+
+/* =========================================
+   DESKTOP HOVER
+========================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  .modal-image-wrap.has-note-map:hover .the-note-map__panel {
+    transition:
+      opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 0s;
+  }
+
+  .modal-image-wrap.has-note-map:hover .the-note-map__note {
+    animation-duration: 0.92s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-delay: calc(var(--note-delay) + 70ms);
+  }
+
+  .modal-image-wrap.has-note-map:hover .modal-image {
+    opacity: 0;
+
+    transform: scale(0.96);
+
+    filter:
+      blur(2px)
+      saturate(0.78)
+      brightness(0.8);
+  }
+}
+
+/* =========================================
+   MOBILE TRIGGER — BOTTOM RIGHT
+========================================= */
+
+.the-note-map__mobile-trigger {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  /*
+    Trigger je sada izvan fotografije, pa Note Map
+    ponovo može biti centriran bez donjeg paddinga.
+  */
+
+  .the-note-map__panel {
+    padding: 8px;
+  }
+
+  .the-note-map__levels {
+    gap: 8px;
+  }
+
+  .the-note-map__level {
+    gap: 7px;
+  }
+
+  .the-note-map__note {
+    width: 48px;
+    gap: 3px;
+  }
+
+  .the-note-map__thumb {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 12px;
+  }
+
+  .the-note-map__name {
+    width: 48px;
+    min-height: 10px;
+
+    font-size: 0.42rem;
+    line-height: 1.05;
+  }
+
+  /*
+    Donja sekcija: tekst levo/sredina,
+    Note Map trigger u desnom uglu.
+  */
+
+  .modal-media-meta.has-note-map {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 8px;
+
+    width: 100%;
+    padding-top: 6px;
+  }
+
+  .modal-media-meta-copy {
+    min-width: 0;
+    text-align: center;
+  }
+
+  .the-note-map__mobile-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    align-self: end;
+    justify-self: end;
+
+    min-height: 24px;
+    padding: 0 8px;
+    margin-bottom: 1px;
+
+    border: 1px solid rgba(235, 213, 170, 0.24);
+    border-radius: 999px;
+
+    background: rgba(18, 16, 13, 0.42);
+
+    backdrop-filter: blur(9px) saturate(115%);
+    -webkit-backdrop-filter: blur(9px) saturate(115%);
+
+    color: rgba(244, 222, 180, 0.9);
+
+    font-family: "Inter", sans-serif;
+    font-size: 0.37rem;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+
+    white-space: nowrap;
+    cursor: pointer;
+
+    box-shadow:
+      0 7px 18px rgba(0, 0, 0, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .the-note-map__mobile-trigger strong {
+    color: rgba(237, 200, 128, 0.92);
+
+    font-size: 0.68rem;
+    line-height: 1;
+    font-weight: 400;
+  }
+}

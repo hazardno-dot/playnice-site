@@ -7178,27 +7178,51 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
-          <div className="modal-media-meta panel-item-anim panel-item-3">
-            <span className="modal-category">
-              {lang === "sr"
-                ? selectedProduct.category === "Arabian"
-                  ? "ARAPSKI"
-                  : selectedProduct.category === "Designer"
-                  ? "DIZAJNERSKI"
-                  : selectedProduct.category === "Niche"
-                  ? "NICHE"
-                  : selectedProduct.category.toUpperCase()
-                : selectedProduct.category.toUpperCase()}
-            </span>
+          <div
+  className={`modal-media-meta panel-item-anim panel-item-3 ${
+    selectedProduct.noteMap ? "has-note-map" : ""
+  }`}
+>
+  <div className="modal-media-meta-copy">
+    <span className="modal-category">
+      {lang === "sr"
+        ? selectedProduct.category === "Arabian"
+          ? "ARAPSKI"
+          : selectedProduct.category === "Designer"
+          ? "DIZAJNERSKI"
+          : selectedProduct.category === "Niche"
+          ? "NICHE"
+          : selectedProduct.category.toUpperCase()
+        : selectedProduct.category.toUpperCase()}
+    </span>
 
-            <p>
-              {selectedCopy.dominantNotes?.join(" • ") ||
-                (lang === "sr"
-                  ? "Premium mirisna selekcija"
-                  : "Premium fragrance selection")}
-            </p>
-          </div>
-        </div>
+    <p>
+      {selectedCopy.dominantNotes?.join(" • ") ||
+        (lang === "sr"
+          ? "Premium mirisna selekcija"
+          : "Premium fragrance selection")}
+    </p>
+  </div>
+
+  {selectedProduct.noteMap && (
+    <button
+      type="button"
+      className="the-note-map__mobile-trigger"
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        setNoteMapOpen((current) => !current);
+      }}
+      aria-expanded={noteMapOpen}
+    >
+      <span>THE NOTE MAP</span>
+      <strong aria-hidden="true">
+        {noteMapOpen ? "×" : "+"}
+      </strong>
+    </button>
+  )}
+</div>
 
         <div className="modal-content panel-anim panel-anim-3">
           {selectedCopy.miniTag && (
