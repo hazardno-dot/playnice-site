@@ -7223,7 +7223,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </button>
   )}
 </div>
-</div>
+          </div>
 
         <div className="modal-content panel-anim panel-anim-3">
           {selectedCopy.miniTag && (
