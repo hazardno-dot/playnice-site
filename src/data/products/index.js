@@ -28,7 +28,12 @@ export const products = [
   inspiredBy: {
     name: "Maison Francis Kurkdjian Aqua Vitae Forte",
     short: "Aqua Vitae Forte DNA"
-  }
+  },
+  noteMap: {
+  top: ["mandarin", "cedrat", "cardamom"],
+  heart: ["lavender", "orange-blossom", "rose"],
+  base: ["cedarwood", "moss", "patchouli"]
+  },
   },
   {
     id: 2,
@@ -50,7 +55,12 @@ export const products = [
     inspiredBy: {
     name: "Creed Aventus and MFK Baccarat Rouge 540",
     short: "Aventus and Baccarat Rouge 540 DNA"
-  }
+  },
+  noteMap: {
+  top: ["mandarin", "pineapple", "green-apple"],
+  heart: ["cedarwood", "oakmoss", "vanilla"],
+  base: ["caramel", "dry-woods", "ambergris"]
+  },
   },
   {
     id: 3,
@@ -72,7 +82,12 @@ export const products = [
     inspiredBy: {
     name: "Creed Absolu Aventus",
     short: "Absolu Aventus DNA"
-  }
+  },
+  noteMap: {
+  top: ["pineapple", "bergamot", "apple"],
+  heart: ["orange-blossom", "birch", "amber"],
+  base: ["oakmoss", "musk", "ambergris"]
+  },
   },
   {
     id: 4,
@@ -94,7 +109,12 @@ export const products = [
     inspiredBy: {
     name: "Bvlgari Tygar / Sospiro Perfumes Vibrato",
     short: "Tygar DNA"
-  }
+  },
+  noteMap: {
+  top: ["bergamot", "mandarin"],
+  heart: ["amber", "woody-notes"],
+  base: ["musk", "patchouli", "fresh-spices"]
+  },
   },
   {
     id: 5,
@@ -115,7 +135,12 @@ export const products = [
     inspiredBy: {
     name: "Louis Vuitton Imagination",
     short: "Imagination DNA"
-  }
+  },
+  noteMap: {
+  top: ["bergamot", "lemon", "orange"],
+  heart: ["ginger", "cinnamon", "neroli"],
+  base: ["ambroxan", "black-tea", "guaiac-wood"]
+  },
   },
   {
     id: 6,
@@ -137,7 +162,12 @@ export const products = [
     inspiredBy: {
     name: "Original Armaf creation",
     short: "Fruity Floral DNA"
-  }
+  },
+  noteMap: {
+  top: ["citruses"],
+  heart: ["flower-prism", "stardust"],
+  base: ["vanilla", "velvet-wood"]
+  },
   },
   {
     id: 7,
@@ -159,7 +189,12 @@ export const products = [
     inspiredBy: {
     name: "Creed Aventus",
     short: "Aventus DNA"
-  }
+  },
+  noteMap: {
+  top: ["lemon", "pineapple", "bergamot"],
+  heart: ["rose", "birch", "jasmine"],
+  base: ["musk", "ambergris", "patchouli"]
+  },
   },
   {
     id: 8,
@@ -181,7 +216,12 @@ export const products = [
     inspiredBy: {
     name: "Creed Silver Mountain Water",
     short: "Silver Mountain Water DNA"
-  }
+  },
+  noteMap: {
+  top: ["bergamot", "lemon", "lime"],
+  heart: ["jasmine", "iris", "rose"],
+  base: ["sandalwood", "musk", "ambroxan"]
+  },
   },
   {
     id: 9,
@@ -203,7 +243,12 @@ export const products = [
     inspiredBy: {
     name: "Stéphane Humbert Lucas 777 Sand Dance",
     short: "Sand Dance DNA"
-  }
+  },
+  noteMap: {
+  top: ["whiskey", "orange", "mandarin"],
+  heart: ["tonka-bean", "cashmeran", "styrax"],
+  base: ["vanilla", "benzoin", "patchouli"]
+  },
   },
   {
     id: 10,
@@ -225,7 +270,12 @@ export const products = [
     inspiredBy: {
     name: "Bleu de Chanel Eau de Parfum",
     short: "Bleu de Chanel DNA"
-  }
+  },
+  noteMap: {
+  top: ["lemon", "bergamot", "grapefruit"],
+  heart: ["geranium"],
+  base: ["cedarwood", "vetiver", "patchouli"]
+  },
   },
   {
     id: 11,
