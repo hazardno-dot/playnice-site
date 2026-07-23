@@ -363,7 +363,7 @@ export const productWearContext = {
   en: "Seaside, summer, daytime wear."
 },
 
-"The Paris Corner Mawj Moscow Mule Eau de Parfum": {
+"Paris Corner Mawj Moscow Mule Eau de Parfum": {
   sr: "Leto, dnevni izlazak, vrućine.",
   en: "Summer, daytime outings, hot weather."
 },

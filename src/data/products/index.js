@@ -1810,7 +1810,7 @@ export const products = [
 {
   id: 83,
   slug: "mawj-moscow-mule",
-  name: "The Paris Corner Mawj Moscow Mule Eau de Parfum",
+  name: "Paris Corner Mawj Moscow Mule Eau de Parfum",
   shortName: "Mawj Moscow Mule",
   category: "Arabian",
   image: "/products/mawj-moscow-mule.png",

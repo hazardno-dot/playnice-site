@@ -1745,7 +1745,7 @@ export const productCopy = {
   }
 },
 
-"The Paris Corner Mawj Moscow Mule Eau de Parfum": {
+"Paris Corner Mawj Moscow Mule Eau de Parfum": {
   miniTag: { sr: "🍋 Ginger / Fresh", en: "🍋 Ginger / Fresh" },
   card: {
     sr: "Limun, nana i đumbir u koktel inspiraciji.",
