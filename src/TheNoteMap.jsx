@@ -96,92 +96,75 @@ export default function TheNoteMap({
   if (!hasNotes) return null;
 
   return (
-    <div className={`the-note-map ${open ? "is-open" : ""}`}>
-      <button
-        type="button"
-        className="the-note-map__trigger"
-        onClick={(event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          onToggle?.();
-        }}
-        aria-expanded={open}
-        aria-controls="product-note-map-panel"
-      >
-        <span>
-          {open
-            ? lang === "sr"
-              ? "ZATVORI MAPU"
-              : "CLOSE MAP"
-            : "THE NOTE MAP"}
-        </span>
+  <div className={`the-note-map ${open ? "is-open" : ""}`}>
+    <button
+      type="button"
+      className="the-note-map__trigger"
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        onToggle?.();
+      }}
+      aria-expanded={open}
+      aria-controls="product-note-map-panel"
+    >
+      <span>THE NOTE MAP</span>
+      <strong aria-hidden="true">{open ? "×" : "+"}</strong>
+    </button>
 
-        <strong aria-hidden="true">{open ? "×" : "+"}</strong>
-      </button>
+    <div
+      id="product-note-map-panel"
+      className="the-note-map__panel"
+      onClick={(event) => event.stopPropagation()}
+    >
+      <div className="the-note-map__levels">
+        {NOTE_LEVELS.map((level, rowIndex) => {
+          const levelNotes = notes?.[level.key] || [];
 
-      <div
-        id="product-note-map-panel"
-        className="the-note-map__panel"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="the-note-map__header">
-          <span>THE NOTE MAP</span>
-          <small>
-            {lang === "sr" ? "Mirisna piramida" : "Fragrance pyramid"}
-          </small>
-        </div>
+          if (!levelNotes.length) return null;
 
-        <div className="the-note-map__levels">
-          {NOTE_LEVELS.map((level) => {
-            const levelNotes = notes?.[level.key] || [];
+          return (
+            <div className="the-note-map__level" key={level.key}>
+              {levelNotes.map((noteKey, noteIndex) => {
+                const note = getNoteData(noteKey);
+                const noteLabel = note[lang] || note.en;
 
-            if (!levelNotes.length) return null;
+                return (
+                  <span
+                    className="the-note-map__note"
+                    key={noteKey}
+                    role="img"
+                    aria-label={noteLabel}
+                    style={{
+                      "--note-delay": `${
+                        rowIndex * 220 + noteIndex * 75
+                      }ms`,
+                    }}
+                  >
+                    <span className="the-note-map__thumb">
+                      <span className="the-note-map__fallback">
+                        {note.fallback}
+                      </span>
 
-            return (
-              <div className="the-note-map__level" key={level.key}>
-                <span className="the-note-map__level-title">
-                  {level[lang] || level.en}
-                </span>
-
-                <div className="the-note-map__notes">
-                  {levelNotes.map((noteKey) => {
-                    const note = getNoteData(noteKey);
-                    const noteLabel = note[lang] || note.en;
-
-                    return (
-                      <div className="the-note-map__note" key={noteKey}>
-                        <span
-                          className="the-note-map__thumb"
-                          aria-hidden="true"
-                        >
-                          <span className="the-note-map__fallback">
-                            {note.fallback}
-                          </span>
-
-                          {note.image && (
-                            <img
-                              src={note.image}
-                              alt=""
-                              loading="lazy"
-                              onError={(event) => {
-                                event.currentTarget.style.display = "none";
-                              }}
-                            />
-                          )}
-                        </span>
-
-                        <span className="the-note-map__name">
-                          {noteLabel}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                      {note.image && (
+                        <img
+                          src={note.image}
+                          alt=""
+                          loading="lazy"
+                          onError={(event) => {
+                            event.currentTarget.style.display = "none";
+                          }}
+                        />
+                      )}
+                    </span>
+                  </span>
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
     </div>
-  );
+  </div>
+);
 }
