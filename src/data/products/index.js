@@ -1678,7 +1678,7 @@ export const products = [
 {
   id: 77,
   slug: "lattafa-suqraat-edp",
-  name: "The Lattafa Suqraat Eau de Parfum",
+  name: "Lattafa Suqraat Eau de Parfum",
   shortName: "Lattafa Suqraat",
   category: "Arabian",
   image: "/products/lattafa-suqraat.png",

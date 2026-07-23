@@ -1591,7 +1591,7 @@ export const productCopy = {
   }
 },
 
-"The Lattafa Suqraat Eau de Parfum": {
+"Lattafa Suqraat Eau de Parfum": {
   miniTag: { sr: "🌊 Marine / Fresh", en: "🌊 Marine / Fresh" },
   card: {
     sr: "Morska svežina sa elegantnom aromatikom.",

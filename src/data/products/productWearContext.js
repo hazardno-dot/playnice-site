@@ -333,7 +333,7 @@ export const productWearContext = {
   en: "Work, summer, everyday wear."
 },
 
-"The Lattafa Suqraat Eau de Parfum": {
+"Lattafa Suqraat Eau de Parfum": {
   sr: "Leto, more, dnevno nošenje.",
   en: "Summer, seaside, daytime wear."
 },
