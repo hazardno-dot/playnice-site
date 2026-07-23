@@ -157,6 +157,11 @@ export default function TheNoteMap({
                         />
                       )}
                     </span>
+
+                    <span className="the-note-map__name">
+                      {noteLabel}
+                    </span>
+                    
                   </span>
                 );
               })}
