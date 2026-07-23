@@ -926,3 +926,177 @@
   font-weight: 400;
 }
 }
+
+/* =========================================
+   MOBILE NOTE MAP — OPEN INDICATOR
+========================================= */
+
+.the-note-map__mobile-trigger {
+  overflow: visible;
+
+  transition:
+    color 0.32s ease,
+    border-color 0.32s ease,
+    background 0.32s ease,
+    box-shadow 0.42s ease;
+}
+
+/*
+  Mala statusna lampica.
+*/
+
+.the-note-map__mobile-trigger::before {
+  content: "";
+
+  width: 4px;
+  height: 4px;
+  flex: 0 0 4px;
+
+  border-radius: 999px;
+
+  background: rgba(220, 181, 107, 0.34);
+
+  box-shadow:
+    0 0 0 0 rgba(220, 181, 107, 0);
+
+  transition:
+    background 0.3s ease,
+    box-shadow 0.4s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/*
+  Plus prelazi u X mekšim pokretom.
+*/
+
+.the-note-map__mobile-trigger strong {
+  display: inline-block;
+
+  transition:
+    color 0.3s ease,
+    transform 0.46s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/*
+  Aktivno stanje.
+*/
+
+.the-note-map__mobile-trigger.is-open {
+  color: rgba(255, 239, 207, 0.98);
+
+  border-color: rgba(235, 204, 143, 0.5);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(220, 181, 107, 0.13),
+      rgba(24, 19, 13, 0.55)
+    );
+
+  animation: noteMapTriggerBreath 2.2s ease-in-out infinite;
+}
+
+.the-note-map__mobile-trigger.is-open::before {
+  background: #e4bf76;
+
+  transform: scale(1.12);
+
+  box-shadow:
+    0 0 0 3px rgba(220, 181, 107, 0.1),
+    0 0 9px rgba(220, 181, 107, 0.52);
+}
+
+.the-note-map__mobile-trigger.is-open strong {
+  color: #f1d79f;
+  transform: rotate(180deg);
+}
+
+@keyframes noteMapTriggerBreath {
+  0%,
+  100% {
+    box-shadow:
+      0 6px 14px rgba(0, 0, 0, 0.16),
+      0 0 0 rgba(220, 181, 107, 0),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  50% {
+    box-shadow:
+      0 8px 18px rgba(0, 0, 0, 0.2),
+      0 0 12px rgba(220, 181, 107, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* =========================================
+   MOBILE IMAGE ↔ NOTES SMOOTH TRANSITION
+========================================= */
+
+@media (max-width: 640px) {
+  /*
+    Ovo pregazi transition:none !important
+    koji već postoji za .modal-image u App.css.
+  */
+
+  .modal-image-wrap.has-note-map .modal-image {
+    transform-origin: center;
+
+    transition:
+      opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.78s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.68s ease !important;
+  }
+
+  /*
+    Otvaranje nota: slika nestaje kroz fade-out.
+  */
+
+  .modal-image-wrap.note-map-open .modal-image {
+    opacity: 0 !important;
+
+    transform: scale(0.96) !important;
+
+    filter:
+      blur(2px)
+      saturate(0.78)
+      brightness(0.8) !important;
+  }
+
+  /*
+    Note dobijaju isti mekani panel fade kao desktop.
+  */
+
+  .the-note-map__panel {
+    transition:
+      opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 0.68s;
+  }
+
+  .the-note-map.is-open .the-note-map__panel {
+    transition:
+      opacity 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 0s;
+  }
+
+  .the-note-map__note {
+    transition:
+      opacity 0.36s ease,
+      transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .the-note-map__mobile-trigger.is-open {
+    animation: none !important;
+  }
+
+  .the-note-map__mobile-trigger,
+  .the-note-map__mobile-trigger::before,
+  .the-note-map__mobile-trigger strong {
+    transition: none !important;
+  }
+}

@@ -7207,7 +7207,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   {selectedProduct.noteMap && (
     <button
       type="button"
-      className="the-note-map__mobile-trigger"
+      className={`the-note-map__mobile-trigger ${
+      noteMapOpen ? "is-open" : ""
+    }`}
       onClick={(event) => {
         event.preventDefault();
         event.stopPropagation();
