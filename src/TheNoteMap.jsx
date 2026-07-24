@@ -75,13 +75,16 @@ const NOTE_LEVELS = [
   },
 ];
 
-const getNoteData = (noteKey) =>
-  NOTE_LIBRARY[noteKey] || {
-    sr: noteKey,
-    en: noteKey,
-    image: "",
-    fallback: "✦",
+const getNoteData = (noteKey) => {
+  const savedNote = NOTE_LIBRARY[noteKey];
+
+  return {
+    sr: savedNote?.sr || noteKey.replaceAll("-", " "),
+    en: savedNote?.en || noteKey.replaceAll("-", " "),
+    image: savedNote?.image || `/note-map/${noteKey}.webp`,
+    fallback: savedNote?.fallback || "✦",
   };
+};
 
 export default function TheNoteMap({
   notes,
