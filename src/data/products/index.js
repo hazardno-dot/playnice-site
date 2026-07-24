@@ -2047,7 +2047,12 @@ export const products = [
   inspiredBy: {
   name: "Dior Homme Cologne",
   short: "Dior Homme Cologne DNA"
-  },
+},
+  noteMap: {
+  top: ["bergamot", "lemon"],
+  heart: ["grapefruit-blossom"],
+  base: ["calone", "sandalwood"]
+},
   isNew: true,
 },
 {
@@ -2069,7 +2074,12 @@ export const products = [
   inspiredBy: {
   name: "Giorgio Armani Acqua di Giò Profumo",
   short: "Acqua di Giò Profumo DNA"
-  },
+},
+  noteMap: {
+  top: ["bergamot", "ginger"],
+  heart: ["lavender", "violet-leaf"],
+  base: ["musk", "sandalwood", "amber"]
+},
   isNew: true,
 },
 {
@@ -2091,7 +2101,12 @@ export const products = [
   inspiredBy: {
   name: "Louis Vuitton Météore",
   short: "Météore DNA"
-  },
+},
+  noteMap: {
+  top: ["mandarin", "citruses", "bergamot"],
+  heart: ["neroli", "nutmeg", "pink-pepper"],
+  base: ["vetiver", "cardamom"]
+},
   isNew: true,
 },
 {
@@ -2113,7 +2128,12 @@ export const products = [
   inspiredBy: {
   name: "Goldfield & Banks Ingenious Ginger",
   short: "Ingenious Ginger DNA"
-  },
+},
+  noteMap: {
+  top: ["ginger", "lemon", "bergamot"],
+  heart: ["orange-blossom", "magnolia", "jasmine"],
+  base: ["vanilla", "sandalwood", "musk"]
+},
   isNew: true,
 },
 {
@@ -2133,9 +2153,14 @@ export const products = [
     "jean-paul-gaultier-le-beau-edt"
   ],
   inspiredBy: {
-    name: "Original Lattafa creation",
-    short: "Fresh Woody Aromatic DNA"
-  },
+  name: "Original Lattafa creation",
+  short: "Fresh Woody Aromatic DNA"
+},
+  noteMap: {
+  top: ["bergamot", "juniper-berries", "yuzu"],
+  heart: ["iris", "cucumber", "sea-salt"],
+  base: ["akigalawood", "tonka-bean", "ambrofix"]
+},
   isNew: true,
 },
 {
@@ -2155,9 +2180,14 @@ export const products = [
     "rayhaan-azul-edp"
   ],
   inspiredBy: {
-    name: "Bleu de Chanel Parfum",
-    short: "Bleu de Chanel Parfum DNA"
-  },
+  name: "Bleu de Chanel Parfum",
+  short: "Bleu de Chanel Parfum DNA"
+},
+  noteMap: {
+  top: ["sandalwood"],
+  heart: ["amber"],
+  base: ["woody-notes", "labdanum"]
+},
   isNew: true,
 },
 {
@@ -2177,9 +2207,14 @@ export const products = [
     "french-avenue-pinnace-oryn"
   ],
   inspiredBy: {
-    name: "Goldfield & Banks Pacific Rock Moss",
-    short: "Pacific Rock Moss DNA"
-  },
+  name: "Goldfield & Banks Pacific Rock Moss",
+  short: "Pacific Rock Moss DNA"
+},
+  noteMap: {
+  top: ["lemon", "geranium"],
+  heart: ["sage", "lavender", "sea-salt"],
+  base: ["moss", "cedarwood", "ambroxan"]
+},
   isNew: true,
 },
 {
