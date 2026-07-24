@@ -1,3 +1,4 @@
+import { useId, useState } from "react";
 import "./TheNoteMap.css";
 
 const NOTE_LIBRARY = {
@@ -242,9 +243,19 @@ const NOTE_LEVELS = [
   },
 ];
 
+const normalizeNoteKeys = (value) => {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .filter((noteKey) => typeof noteKey === "string")
+    .map((noteKey) => noteKey.trim())
+    .filter(Boolean);
+};
+
 const formatNoteLabel = (noteKey) =>
   noteKey
     .split("-")
+    .filter(Boolean)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
@@ -260,102 +271,113 @@ const getNoteData = (noteKey) => {
   };
 };
 
+function NoteMapItem({ noteKey, lang, delay }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  const note = getNoteData(noteKey);
+  const noteLabel = note[lang] || note.en;
+  const showImage = Boolean(note.image) && !imageFailed;
+
+  return (
+    <span
+      className="the-note-map__note"
+      role="listitem"
+      style={{ "--note-delay": `${delay}ms` }}
+    >
+      <span className="the-note-map__thumb" aria-hidden="true">
+        <span
+          className={`the-note-map__fallback ${
+            showImage ? "" : "is-visible"
+          }`}
+        >
+          {note.fallback}
+        </span>
+
+        {showImage && (
+          <img
+            src={note.image}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            draggable="false"
+            onError={() => setImageFailed(true)}
+          />
+        )}
+      </span>
+
+      <span className="the-note-map__name">{noteLabel}</span>
+    </span>
+  );
+}
+
 export default function TheNoteMap({
   notes,
   lang = "sr",
   open = false,
   onToggle,
 }) {
+  const componentId = useId().replace(/:/g, "");
+  const triggerId = `product-note-map-trigger-${componentId}`;
+  const panelId = `product-note-map-panel-${componentId}`;
+  const activeLang = lang === "sr" ? "sr" : "en";
+
   const hasNotes = NOTE_LEVELS.some(
-    ({ key }) => Array.isArray(notes?.[key]) && notes[key].length > 0
+    ({ key }) => normalizeNoteKeys(notes?.[key]).length > 0
   );
 
   if (!hasNotes) return null;
 
   return (
-  <div className={`the-note-map ${open ? "is-open" : ""}`}>
-    <button
-      type="button"
-      className="the-note-map__trigger"
-      onClick={(event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        onToggle?.();
-      }}
-      aria-expanded={open}
-      aria-controls="product-note-map-panel"
-    >
-      <span>THE NOTE MAP</span>
-      <strong aria-hidden="true">{open ? "×" : "+"}</strong>
-    </button>
+    <div className={`the-note-map ${open ? "is-open" : ""}`}>
+      <button
+        id={triggerId}
+        type="button"
+        className="the-note-map__trigger"
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          onToggle?.();
+        }}
+        aria-expanded={Boolean(open)}
+        aria-controls={panelId}
+      >
+        <span>THE NOTE MAP</span>
+        <strong aria-hidden="true">{open ? "×" : "+"}</strong>
+      </button>
 
-    <div
-      id="product-note-map-panel"
-      className="the-note-map__panel"
-      onClick={(event) => event.stopPropagation()}
-    >
-      <div className="the-note-map__levels">
-        {NOTE_LEVELS.map((level, rowIndex) => {
-          const levelNotes = notes?.[level.key] || [];
+      <div
+        id={panelId}
+        className="the-note-map__panel"
+        role="region"
+        aria-labelledby={triggerId}
+        aria-hidden={!open}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="the-note-map__levels">
+          {NOTE_LEVELS.map((level, rowIndex) => {
+            const levelNotes = normalizeNoteKeys(notes?.[level.key]);
 
-          if (!levelNotes.length) return null;
+            if (!levelNotes.length) return null;
 
-          return (
-            <div className="the-note-map__level" key={level.key}>
-              {levelNotes.map((noteKey, noteIndex) => {
-                const note = getNoteData(noteKey);
-                const noteLabel = note[lang] || note.en;
-
-                return (
-                  <span
-                    className="the-note-map__note"
-                    key={noteKey}
-                    role="img"
-                    aria-label={noteLabel}
-                    style={{
-                      "--note-delay": `${
-                        rowIndex * 220 + noteIndex * 75
-                      }ms`,
-                    }}
-                  >
-                    <span className="the-note-map__thumb">
-  <span
-    className={`the-note-map__fallback ${
-      note.image ? "" : "is-visible"
-    }`}
-  >
-    {note.fallback}
-  </span>
-
-  {note.image && (
-    <img
-      src={note.image}
-      alt=""
-      loading="lazy"
-      onError={(event) => {
-        event.currentTarget.style.display = "none";
-
-        const fallback =
-          event.currentTarget.previousElementSibling;
-
-        fallback?.classList.add("is-visible");
-      }}
-    />
-  )}
-</span>
-
-                    <span className="the-note-map__name">
-                      {noteLabel}
-                    </span>
-
-                  </span>
-                );
-              })}
-            </div>
-          );
-        })}
+            return (
+              <div
+                className="the-note-map__level"
+                key={level.key}
+                role="list"
+                aria-label={level[activeLang]}
+              >
+                {levelNotes.map((noteKey, noteIndex) => (
+                  <NoteMapItem
+                    key={`${level.key}-${noteKey}-${noteIndex}`}
+                    noteKey={noteKey}
+                    lang={activeLang}
+                    delay={rowIndex * 220 + noteIndex * 75}
+                  />
+                ))}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 }
