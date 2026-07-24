@@ -217,6 +217,11 @@ const NOTE_SR = {
   "fresh-florals": "Sveže cvetne note",
   "fresh-woods": "Sveže drvene note",
   "coconut-wood": "Kokosovo drvo",
+  calone: "Calone",
+  magnolia: "Magnolija",
+  yuzu: "Juzu",
+  cucumber: "Krastavac",
+  "sea-salt": "Morska so",
 };
 
 const NOTE_LEVELS = [
