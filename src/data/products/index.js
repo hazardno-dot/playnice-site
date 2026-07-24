@@ -432,7 +432,12 @@ export const products = [
     inspiredBy: {
     name: "Versace Eros Najim",
     short: "Eros Najim DNA"
-  }
+  },
+    noteMap: {
+    top: ["nutmeg", "cardamom", "mandarin"],
+    heart: ["lavender", "clary-sage", "caramel"],
+    base: ["cedarwood", "olibanum", "labdanum"]
+  },
   },
   {
     id: 17,
@@ -453,7 +458,12 @@ export const products = [
     inspiredBy: {
     name: "Roja Dove Elysium Parfum Cologne",
     short: "Elysium DNA"
-  }
+  },
+    noteMap: {
+    top: ["grapefruit", "bergamot", "thyme"],
+    heart: ["vetiver", "juniper-berries", "black-currant"],
+    base: ["ambergris", "leather", "vanilla"]
+  },
   },
   {
     id: 18,
@@ -475,7 +485,12 @@ export const products = [
     inspiredBy: {
     name: "Xerjoff 1861 Naxos",
     short: "Naxos DNA"
-  }
+  },
+    noteMap: {
+    top: ["lavender", "bergamot", "lemon"],
+    heart: ["honey", "cinnamon", "cashmeran"],
+    base: ["tobacco", "tonka-bean", "vanilla"]
+  },
   },
   {
     id: 19,
@@ -496,7 +511,12 @@ export const products = [
     inspiredBy: {
     name: "Maison Francis Kurkdjian Oud Satin Mood",
     short: "Oud Satin Mood DNA"
-  }
+  },
+    noteMap: {
+    top: ["oud", "rose"],
+    heart: ["benzoin", "rose"],
+    base: ["violet", "vanilla"]
+  },
   },
   {
     id: 20,
@@ -517,7 +537,12 @@ export const products = [
     inspiredBy: {
     name: "Parfums de Marly Layton",
     short: "Layton DNA"
-  }
+  },
+    noteMap: {
+    top: ["apple", "lavender", "bergamot"],
+    heart: ["geranium", "violet", "jasmine"],
+    base: ["vanilla", "cardamom", "sandalwood"]
+  },
   },
   {
     id: 21,
@@ -539,7 +564,12 @@ export const products = [
     inspiredBy: {
     name: "Creed Virgin Island Water",
     short: "Virgin Island Water DNA"
-  }
+  },
+    noteMap: {
+    top: ["coconut", "lime", "bergamot"],
+    heart: ["ginger", "ylang-ylang", "hibiscus"],
+    base: ["white-rum", "sugar-cane", "musk"]
+  },
   },
   {
     id: 22,
@@ -561,7 +591,12 @@ export const products = [
     inspiredBy: {
     name: "Louis Vuitton Pacific Chill",
     short: "Pacific Chill DNA"
-  }
+  },
+    noteMap: {
+    top: ["cedrat", "mint", "black-currant"],
+    heart: ["apricot", "basil", "carrot-seeds"],
+    base: ["fig", "dates", "ambrette"]
+  },
   },
   {
     id: 23,
@@ -583,7 +618,12 @@ export const products = [
     inspiredBy: {
     name: "Original Swiss Arabian creation",
     short: "Tobacco Vanilla DNA"
-  }
+  },
+    noteMap: {
+    top: ["plum", "apple", "pink-pepper"],
+    heart: ["labdanum", "amber", "ylang-ylang"],
+    base: ["tobacco", "honey", "vanilla"]
+  },
   },
   {
     id: 24,
@@ -605,7 +645,12 @@ export const products = [
     inspiredBy: {
     name: "Original Acqua di Parma creation",
     short: "Mediterranean Citrus DNA"
-  }
+  },
+    noteMap: {
+    top: ["lemon", "bergamot", "grapefruit"],
+    heart: ["fig", "pink-pepper", "jasmine"],
+    base: ["fig-wood", "cedarwood", "benzoin"]
+  },
   },
   {
     id: 25,
@@ -627,6 +672,11 @@ export const products = [
     inspiredBy: {
     name: "Original Acqua di Parma creation",
     short: "Classic Italian Cologne DNA"
+  },
+    noteMap: {
+    top: ["lemon", "neroli", "petitgrain"],
+    heart: ["rosemary", "lily-of-the-valley", "cloves"],
+    base: ["vetiver", "musk", "amber"]
   },
     discount: {
     size: "5ml",
@@ -653,7 +703,12 @@ export const products = [
     inspiredBy: {
     name: "Original Acqua di Parma creation",
     short: "Fresh Citrus Musk DNA"
-  }
+  },
+    noteMap: {
+    top: ["bergamot", "orange", "petitgrain"],
+    heart: ["coriander", "jasmine", "narcissus"],
+    base: ["cedarwood", "patchouli", "musk"]
+  },
   },
   {
     id: 27,
@@ -675,7 +730,12 @@ export const products = [
     inspiredBy: {
     name: "Original Chanel creation",
     short: "Blue Aromatic DNA"
-  }
+  },
+    noteMap: {
+    top: ["grapefruit", "lemon", "mint"],
+    heart: ["ginger", "nutmeg", "jasmine"],
+    base: ["incense", "cedarwood", "sandalwood"]
+  },
   },
   {
     id: 28,
@@ -697,7 +757,12 @@ export const products = [
     inspiredBy: {
     name: "Original Essential Parfums creation",
     short: "Modern Woody Spice DNA"
-  }
+  },
+    noteMap: {
+    top: ["grapefruit", "thai-basil", "timut-pepper"],
+    heart: ["vetiver", "georgywood", "petalia"],
+    base: ["akigalawood", "patchouli", "ambrofix"]
+  },
   },
   {
     id: 29,
@@ -719,6 +784,11 @@ export const products = [
     inspiredBy: {
     name: "Original BOSS creation",
     short: "Woody Aromatic DNA"
+  },
+    noteMap: {
+    top: ["ginger"],
+    heart: ["leather"],
+    base: ["woody-notes"]
   },
     discount: {
     size: "10ml",
@@ -745,7 +815,12 @@ export const products = [
     inspiredBy: {
     name: "Original BOSS creation",
     short: "Amber Leather DNA"
-  }
+  },
+    noteMap: {
+    top: ["pimento"],
+    heart: ["lavandin"],
+    base: ["sandalwood"]
+  },
   },
   {
     id: 31,
