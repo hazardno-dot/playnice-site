@@ -1654,9 +1654,14 @@ export const products = [
     "narciso-rodriguez-poudree"
   ],
   inspiredBy: {
-    name: "Original Yves Saint Laurent creation",
-    short: "Vanilla Coffee DNA"
-  },
+  name: "Original Yves Saint Laurent creation",
+  short: "Vanilla Coffee DNA"
+},
+  noteMap: {
+  top: ["cinnamon", "pear", "green-mandarin"],
+  heart: ["solar-notes", "jasmine-sambac", "orange-blossom"],
+  base: ["vanilla", "black-coffee", "vanilla-orchid"]
+},
 },
 {
   id: 62,
@@ -1675,9 +1680,14 @@ export const products = [
     "versace-man-eau-fraiche"
   ],
   inspiredBy: {
-    name: "Louis Vuitton Afternoon Swim",
-    short: "Afternoon Swim DNA"
-  },
+  name: "Louis Vuitton Afternoon Swim",
+  short: "Afternoon Swim DNA"
+},
+  noteMap: {
+  top: ["bergamot", "mandarin", "orange"],
+  heart: ["ginger"],
+  base: ["amber", "ambergris"]
+},
 },
 {
   id: 63,
@@ -1696,9 +1706,14 @@ export const products = [
     "afnan-9am"
   ],
   inspiredBy: {
-    name: "Jean Paul Gaultier Le Beau Paradise Garden",
-    short: "Paradise Garden DNA"
-  },
+  name: "Jean Paul Gaultier Le Beau Paradise Garden",
+  short: "Paradise Garden DNA"
+},
+  noteMap: {
+  top: ["spearmint", "bergamot", "snow"],
+  heart: ["ice", "ginger", "tea"],
+  base: ["peony", "ambermax", "cedarwood"]
+},
 },
 {
   id: 64,
@@ -1717,9 +1732,14 @@ export const products = [
     "afnan-turathi-blue"
   ],
   inspiredBy: {
-    name: "Parfums de Marly Sedley",
-    short: "Sedley DNA"
-  },
+  name: "Parfums de Marly Sedley",
+  short: "Sedley DNA"
+},
+  noteMap: {
+  top: ["lime", "mint", "grapefruit"],
+  heart: ["black-pepper", "juniper-berries", "rosemary"],
+  base: ["ambroxan", "oakmoss", "vetiver"]
+},
 },
 {
   id: 65,
@@ -1738,9 +1758,14 @@ export const products = [
     "giorgio-armani-acqua-di-gio-profondo-parfum"
   ],
   inspiredBy: {
-    name: "Original Yves Saint Laurent creation",
-    short: "Y DNA"
-  },
+  name: "Original Yves Saint Laurent creation",
+  short: "Y DNA"
+},
+  noteMap: {
+  top: ["iced-mint"],
+  heart: ["mint", "sage"],
+  base: ["ambroxan", "patchouli"]
+},
   isNew: true,
 },
 {
@@ -1760,9 +1785,14 @@ export const products = [
     "afnan-9pm-rebel"
   ],
   inspiredBy: {
-    name: "Original Valentino creation",
-    short: "Red Apple Tobacco DNA"
-  },
+  name: "Original Valentino creation",
+  short: "Red Apple Tobacco DNA"
+},
+  noteMap: {
+  top: ["red-apple"],
+  heart: ["sage"],
+  base: ["tobacco"]
+},
   isNew: true,
 },
 {
@@ -1782,9 +1812,14 @@ export const products = [
     "ysl-y-iced-cologne"
   ],
   inspiredBy: {
-    name: "Original Dolce & Gabbana creation",
-    short: "Mediterranean Citrus DNA"
-  },
+  name: "Original Dolce & Gabbana creation",
+  short: "Mediterranean Citrus DNA"
+},
+  noteMap: {
+  top: ["lemon"],
+  heart: ["rosemary"],
+  base: ["patchouli"]
+},
   isNew: true,
 },
 {
@@ -1802,9 +1837,14 @@ export const products = [
   moods: ["date", "rich", "signature"],
   recommendations: ["tom-ford-noir-extreme-edp"],
   inspiredBy: {
-    name: "Original Bvlgari creation",
-    short: "Rum Leather DNA"
-  },
+  name: "Original Bvlgari creation",
+  short: "Rum Leather DNA"
+},
+  noteMap: {
+  top: ["spices", "rum", "tobacco"],
+  heart: ["leather", "iris", "tuberose"],
+  base: ["tonka-bean", "guaiac-wood", "benzoin"]
+},
   isNew: true,
 },
 {
@@ -1822,9 +1862,14 @@ export const products = [
   moods: ["summer", "rich", "signature"],
   recommendations: ["mancera-cedrat-boise-edp"],
   inspiredBy: {
-    name: "Original Mancera creation",
-    short: "Lemon Oud Mint DNA"
-  },
+  name: "Original Mancera creation",
+  short: "Lemon Oud Mint DNA"
+},
+  noteMap: {
+  top: ["lemon", "coriander", "almond"],
+  heart: ["oud", "jasmine", "mint"],
+  base: ["leather", "amber", "vanilla"]
+},
   isNew: true,
 },
 {
@@ -1842,9 +1887,14 @@ export const products = [
   moods: ["signature", "rich", "clean"],
   recommendations: ["prada-luna-rossa-ocean-edt"],
   inspiredBy: {
-    name: "Original Prada creation",
-    short: "Amber Woods DNA"
-  },
+  name: "Original Prada creation",
+  short: "Amber Woods DNA"
+},
+  noteMap: {
+  top: ["bergamot", "musk"],
+  heart: ["geranium"],
+  base: ["peru-balsam", "benzoin", "guaiac-wood"]
+},
   isNew: true,
 },
 {
@@ -1862,9 +1912,14 @@ export const products = [
   moods: ["clean", "signature", "date"],
   recommendations: ["ysl-y-iced-cologne"],
   inspiredBy: {
-    name: "Original Yves Saint Laurent creation",
-    short: "Orange Blossom Woods DNA"
-  },
+  name: "Original Yves Saint Laurent creation",
+  short: "Orange Blossom Woods DNA"
+},
+  noteMap: {
+  top: ["bergamot"],
+  heart: ["orange-blossom"],
+  base: ["warm-woods", "patchouli", "ambrofix"]
+},
   isNew: true,
 },
 {
@@ -1882,9 +1937,14 @@ export const products = [
   moods: ["date", "signature", "clean"],
   recommendations: ["valentino-uomo-born-in-roma-coral-fantasy"],
   inspiredBy: {
-    name: "Original Carolina Herrera creation",
-    short: "Plum Aromatic DNA"
-  },
+  name: "Original Carolina Herrera creation",
+  short: "Plum Aromatic DNA"
+},
+  noteMap: {
+  top: ["pink-pepper", "lavender"],
+  heart: ["geranium", "black-plum"],
+  base: ["truffle", "vetiver", "cedarwood"]
+},
   isNew: true,
 },
 {
@@ -1902,9 +1962,14 @@ export const products = [
   moods: ["clean", "summer", "signature"],
   recommendations: ["ysl-myslf-edp"],
   inspiredBy: {
-    name: "Original Prada creation",
-    short: "Neo Fresh Ocean DNA"
-  },
+  name: "Original Prada creation",
+  short: "Neo Fresh Ocean DNA"
+},
+  noteMap: {
+  top: ["bergamot"],
+  heart: ["lavender", "sage", "iris"],
+  base: ["vetiver", "tonka-bean"]
+},
   isNew: true,
 },
 {
@@ -1925,9 +1990,14 @@ export const products = [
     "acqua-di-gio-profondo-parfum"
   ],
   inspiredBy: {
-    name: "Original Thomas Kosmala creation",
-    short: "Marine Salt DNA"
-  },
+  name: "Original Thomas Kosmala creation",
+  short: "Marine Salt DNA"
+},
+  noteMap: {
+  top: ["bergamot", "lemon", "marine-notes"],
+  heart: ["watery-notes", "fresh-florals"],
+  base: ["fresh-woods", "musk"]
+},
   isNew: true,
 },
 {
@@ -1948,9 +2018,14 @@ export const products = [
     "ysl-y-iced-cologne"
   ],
   inspiredBy: {
-    name: "Original Jean Paul Gaultier creation",
-    short: "Coconut Tonka DNA"
-  },
+  name: "Original Jean Paul Gaultier creation",
+  short: "Coconut Tonka DNA"
+},
+  noteMap: {
+  top: ["bergamot"],
+  heart: ["coconut-wood"],
+  base: ["tonka-bean"]
+},
   isNew: true,
 },
 {
