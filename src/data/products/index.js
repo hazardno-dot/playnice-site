@@ -2134,7 +2134,7 @@ export const products = [
   ],
   inspiredBy: {
     name: "Original Lattafa creation",
-    short: "Tropical Gourmand DNA"
+    short: "Fresh Woody Aromatic DNA"
   },
   isNew: true,
 },
