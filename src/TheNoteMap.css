@@ -406,8 +406,8 @@
 
   .the-note-map__mobile-trigger {
     position: absolute;
-    right: 6px;
-    bottom: 6px;
+    right: 0px;
+    bottom: 0px;
     z-index: 6;
 
     display: inline-flex;
