@@ -9,27 +9,27 @@ export const categoryLabels = {
 
 export const products = [
   {
-  id: 1,
-  slug: "afnan-9am",
-  name: "Afnan 9AM",
-  shortName: "9AM",
-  category: "Arabian",
-  image: "/products/afnan-9am.png",
-  sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
-  badge: "FRESH DROP",
-  rating: 7.8,
-  ratingLabel: "Well Loved",
-  season: "summer",
-  moods: ["clean", "summer", "signature"],
-  recommendations: [
-  "rasasi-hawas-ice",
-  "rayhaan-pacific-aura"
+    id: 1,
+    slug: "afnan-9am",
+    name: "Afnan 9AM",
+    shortName: "9AM",
+    category: "Arabian",
+    image: "/products/afnan-9am.png",
+    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+    badge: "FRESH DROP",
+    rating: 7.8,
+    ratingLabel: "Well Loved",
+    season: "summer",
+    moods: ["clean", "summer", "signature"],
+    recommendations: [
+    "rasasi-hawas-ice",
+    "rayhaan-pacific-aura"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Maison Francis Kurkdjian Aqua Vitae Forte",
     short: "Aqua Vitae Forte DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["mandarin", "cedrat", "cardamom"],
     heart: ["lavender", "orange-blossom", "rose"],
     base: ["cedarwood", "moss", "patchouli"]
@@ -52,11 +52,11 @@ export const products = [
     "afnan-9pm-night-out",
     "lattafa-fakhar-black"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Creed Aventus and MFK Baccarat Rouge 540",
     short: "Aventus and Baccarat Rouge 540 DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["mandarin", "pineapple", "green-apple"],
     heart: ["cedarwood", "oakmoss", "vanilla"],
     base: ["caramel", "dry-woods", "ambergris"]
@@ -79,11 +79,11 @@ export const products = [
     "armaf-club-de-nuit-intense",
     "creed-aventus-cologne"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Creed Absolu Aventus",
     short: "Absolu Aventus DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["pineapple", "bergamot", "apple"],
     heart: ["orange-blossom", "birch", "amber"],
     base: ["oakmoss", "musk", "ambergris"]
@@ -106,11 +106,11 @@ export const products = [
     "bleu-de-chanel-edp",
     "rasasi-hawas-ice"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Bvlgari Tygar / Sospiro Perfumes Vibrato",
     short: "Tygar DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["bergamot", "mandarin"],
     heart: ["amber", "woody-notes"],
     base: ["musk", "patchouli", "fresh-spices"]
@@ -132,11 +132,11 @@ export const products = [
     recommendations: [
     "khadlaj-island-dreams"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Louis Vuitton Imagination",
     short: "Imagination DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["bergamot", "lemon", "orange"],
     heart: ["ginger", "cinnamon", "neroli"],
     base: ["ambroxan", "black-tea", "guaiac-wood"]
@@ -159,11 +159,11 @@ export const products = [
     "armaf-club-de-nuit-sillage",
     "gisada-ambassador-men"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Original Armaf creation",
     short: "Fruity Floral DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["citruses"],
     heart: ["flower-prism", "stardust"],
     base: ["vanilla", "velvet-wood"]
@@ -186,11 +186,11 @@ export const products = [
     "creed-aventus-cologne",
     "afnan-supremacy-collectors-edition"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Creed Aventus",
     short: "Aventus DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["lemon", "pineapple", "bergamot"],
     heart: ["rose", "birch", "jasmine"],
     base: ["musk", "ambergris", "patchouli"]
@@ -213,11 +213,11 @@ export const products = [
     "bois-imperial-essential-parfums",
     "acqua-di-parma-colonia-essenza"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Creed Silver Mountain Water",
     short: "Silver Mountain Water DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["bergamot", "lemon", "lime"],
     heart: ["jasmine", "iris", "rose"],
     base: ["sandalwood", "musk", "ambroxan"]
@@ -240,11 +240,11 @@ export const products = [
     "lattafa-musamam-black-intense",
     "tom-ford-noir-extreme"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Stéphane Humbert Lucas 777 Sand Dance",
     short: "Sand Dance DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["whiskey", "orange", "mandarin"],
     heart: ["tonka-bean", "cashmeran", "styrax"],
     base: ["vanilla", "benzoin", "patchouli"]
@@ -267,11 +267,11 @@ export const products = [
     "rasasi-hawas-ice",
     "rayhaan-pacific-aura"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Bleu de Chanel Eau de Parfum",
     short: "Bleu de Chanel DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["lemon", "bergamot", "grapefruit"],
     heart: ["geranium"],
     base: ["cedarwood", "vetiver", "patchouli"]
@@ -294,11 +294,11 @@ export const products = [
     "arabiyat-prestige-marwa",
     "rayhaan-aquatica"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Louis Vuitton Symphony",
     short: "Symphony DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["bergamot", "ginger"],
     heart: ["grapefruit"],
     base: ["ambroxan", "musk"]
@@ -321,11 +321,11 @@ export const products = [
     "boss-the-scent-elixir",
     "tom-ford-noir-extreme"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Hugo Boss Bottled Absolute",
     short: "Boss Absolute DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["pink-pepper", "saffron", "grapefruit"],
     heart: ["tobacco", "cedarwood", "vanilla"],
     base: ["patchouli", "olibanum", "cashmeran"]
@@ -348,11 +348,11 @@ export const products = [
     "ysl-lhomme-edp",
     "afnan-9pm-rebel"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Yves Saint Laurent (YSL) Y EDP",
     short: "YSL Y EDP DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["apple", "bergamot", "ginger"],
     heart: ["lavender", "sage", "juniper-berries"],
     base: ["tonka-bean", "cedarwood", "amberwood"]
@@ -375,11 +375,11 @@ export const products = [
     "swiss-arabian-tobacco-01",
     "chopard-oud-malaki"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "By Kilian Angels' Share",
     short: "Angels' Share DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["ginger", "cinnamon", "cardamom"],
     heart: ["praline", "candied-fruits", "white-flowers"],
     base: ["coffee-arabica", "tonka-bean", "musk"]
@@ -402,11 +402,11 @@ export const products = [
     "french-avenue-vulcan-sable",
     "arabiyat-prestige-fahad-gaze"
   ],
-  inspiredBy: {
+    inspiredBy: {
     name: "Original Lattafa creation",
     short: "Spicy Woody DNA"
   },
-  noteMap: {
+    noteMap: {
     top: ["lavender", "nutmeg", "bergamot"],
     heart: ["geranium", "rosyfolia", "mahonial"],
     base: ["maple-wood", "cocoapulse", "ambrofix"]
