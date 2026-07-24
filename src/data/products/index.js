@@ -2232,14 +2232,14 @@ export const products = [
   moods: ["summer", "clean", "signature"],
   recommendations: ["french-avenue-ravine-ginger-edp"],
   inspiredBy: {
-    name: "Kilian Blue Moon Ginger Dash",
-    short: "Blue Moon Ginger Dash DNA"
-  },
+  name: "Kilian Blue Moon Ginger Dash",
+  short: "Blue Moon Ginger Dash DNA"
+},
   noteMap: {
-    top: ["lemon", "ginger", "bergamot"],
-    heart: ["herbal-notes", "cypress", "mint"],
-    base: ["ozonic-notes", "amber", "moss"]
-  },
+  top: ["lemon", "ginger", "bergamot"],
+  heart: ["herbal-notes", "cypress", "mint"],
+  base: ["ozonic-notes", "amber", "moss"]
+},
   isNew: true,
 },
 ];
