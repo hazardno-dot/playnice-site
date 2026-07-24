@@ -1250,7 +1250,12 @@ export const products = [
     inspiredBy: {
     name: "Original Hermès creation",
     short: "Citrus Vetiver DNA"
-  }
+  },
+    noteMap: {
+    top: ["grapefruit"],
+    heart: ["flint"],
+    base: ["cedarwood"]
+  },
   },
   {
     id: 47,
@@ -1272,6 +1277,11 @@ export const products = [
     inspiredBy: {
     name: "Original Tom Ford creation",
     short: "Amber Kulfi DNA"
+  },
+    noteMap: {
+    top: ["neroli", "saffron", "cardamom"],
+    heart: ["kulfi", "rose", "jasmine"],
+    base: ["sandalwood", "vanilla", "amber"]
   },
     discount: {
     size: "5ml",
@@ -1298,7 +1308,12 @@ export const products = [
     inspiredBy: {
     name: "Original Afnan creation",
     short: "Sweet Nightlife DNA"
-  }
+  },
+    noteMap: {
+    top: ["dragon-fruit", "bergamot", "cognac"],
+    heart: ["cardamom", "suede", "toffee"],
+    base: ["tonka-bean", "akigalawood", "ambrofix"]
+  },
   },
   {
     id: 49,
@@ -1316,10 +1331,15 @@ export const products = [
     recommendations: [
     "rayhaan-pacific-aura",
     "giorgio-armani-acqua-di-gio-profondo-parfum"
-],
+  ],
     inspiredBy: {
     name: "Paco Rabanne Invictus Aqua",
     short: "Invictus DNA"
+  },
+    noteMap: {
+    top: ["frozen-apple", "bergamot", "lemon"],
+    heart: ["orange-blossom", "plum", "cardamom"],
+    base: ["moss", "driftwood", "musk"]
   },
   },
   {
@@ -1343,6 +1363,11 @@ export const products = [
     name: "Creed Absolu Aventus",
     short: "Absolu Aventus DNA"
   },
+    noteMap: {
+    top: ["pineapple", "caramel", "pear"],
+    heart: ["anise", "lily-of-the-valley", "oakmoss"],
+    base: ["ambroxan", "leather", "vanilla"]
+  },
   },
   {
     id: 51,
@@ -1365,6 +1390,11 @@ export const products = [
     name: "Tales from Zanzibar by Memoirs of a Perfume Collector",
     short: "Tales from Zanzibar DNA"
   },
+    noteMap: {
+    top: ["black-currant", "coconut", "grapefruit"],
+    heart: ["spearmint", "jasmine"],
+    base: ["vetiver", "amber", "oakmoss"]
+  },
   },
   {
     id: 52,
@@ -1381,10 +1411,15 @@ export const products = [
     moods: ["signature", "rich", "date"],
     recommendations: [
     "gisada-ambassador-men"
-    ],
+  ],
     inspiredBy: {
     name: "Clive Christian L Red Tea Vetiver",
     short: "Red Tea Vetiver DNA"
+  },
+    noteMap: {
+    top: ["bergamot", "ginger", "clary-sage"],
+    heart: ["rooibos-tea", "suede"],
+    base: ["amberwood", "cedarwood", "cashmeran"]
   },
   },
   {
@@ -1407,7 +1442,12 @@ export const products = [
   inspiredBy: {
   name: "Original Dolce & Gabbana creation",
   short: "Spicy Tobacco DNA"
-}
+},
+  noteMap: {
+  top: ["grapefruit", "coriander", "basil"],
+  heart: ["cardamom", "ginger", "orange-blossom"],
+  base: ["amber", "tobacco", "cedarwood"]
+},
 },
 {
   id: 54,
@@ -1429,7 +1469,12 @@ export const products = [
   inspiredBy: {
   name: "Original Versace creation",
   short: "Fresh Mediterranean DNA"
-}
+},
+  noteMap: {
+  top: ["lemon", "rosewood", "carambola"],
+  heart: ["tarragon", "cedar-leaf", "clary-sage"],
+  base: ["musk", "amber", "sycamore-wood"]
+},
 },
 {
   id: 55,
@@ -1449,9 +1494,14 @@ export const products = [
   "rayhaan-aquatica"
 ],
   inspiredBy: {
-    name: "Xerjoff Torino 21",
-    short: "Torino 21 DNA"
-  }
+  name: "Xerjoff Torino 21",
+  short: "Torino 21 DNA"
+},
+  noteMap: {
+  top: ["basil", "cedrat", "lemon"],
+  heart: ["jasmine", "ambrettolide", "verbena"],
+  base: ["musk"]
+},
 },
 {
   id: 56,
@@ -1471,9 +1521,14 @@ export const products = [
   "boss-the-scent-elixir"
 ],
   inspiredBy: {
-    name: "Creed Centaurus",
-    short: "Centaurus DNA"
-  }
+  name: "Creed Centaurus",
+  short: "Centaurus DNA"
+},
+  noteMap: {
+  top: ["cinnamon", "cardamom", "pink-pepper"],
+  heart: ["patchouli", "heliotropin"],
+  base: ["benzoin", "vanilla", "tonka-bean"]
+},
 },
 {
   id: 57,
@@ -1493,9 +1548,14 @@ export const products = [
   "lattafa-fakhar-black"
 ],
   inspiredBy: {
-    name: "Nishane Hacivat",
-    short: "Hacivat DNA"
-  }
+  name: "Nishane Hacivat",
+  short: "Hacivat DNA"
+},
+  noteMap: {
+  top: ["bergamot", "pineapple", "grapefruit"],
+  heart: ["patchouli", "cedarwood", "jasmine"],
+  base: ["oakmoss", "woody-notes", "amber"]
+},
 },
 {
   id: 58,
@@ -1515,9 +1575,14 @@ export const products = [
   "bleu-de-chanel-edp"
 ],
   inspiredBy: {
-    name: "Parfums de Marly Castley",
-    short: "Castley DNA"
-  }
+  name: "Parfums de Marly Castley",
+  short: "Castley DNA"
+},
+  noteMap: {
+  top: ["bergamot", "ginger", "black-pepper"],
+  heart: ["petitgrain", "cardamom"],
+  base: ["patchouli", "labdanum", "benzoin"]
+},
 },
 {
   id: 59,
@@ -1536,9 +1601,14 @@ export const products = [
   "lattafa-musamam-black-intense"
 ],
   inspiredBy: {
-    name: "Gucci Guilty Elixir pour Homme",
-    short: "Guilty Elixir DNA"
-  }
+  name: "Gucci Guilty Elixir pour Homme",
+  short: "Guilty Elixir DNA"
+},
+  noteMap: {
+  top: ["spices", "elemi", "metallic-notes"],
+  heart: ["orange-blossom", "incense", "patchouli"],
+  base: ["ambergris", "vanilla", "moss"]
+},
 },
 {
   id: 60,
@@ -1558,9 +1628,14 @@ export const products = [
   "ysl-black-opium-le-parfum"
   ],
   inspiredBy: {
-    name: "Original Narciso Rodriguez creation",
-    short: "Powdery Musk DNA"
-  },
+  name: "Original Narciso Rodriguez creation",
+  short: "Powdery Musk DNA"
+},
+  noteMap: {
+  top: ["jasmine", "rose"],
+  heart: ["musk"],
+  base: ["vetiver", "cedarwood"]
+},
 },
 {
   id: 61,
