@@ -7123,6 +7123,26 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       onToggle={() => setNoteMapOpen((current) => !current)}
     />
   )}
+  {selectedProduct.noteMap && (
+    <button
+      type="button"
+      className={`the-note-map__mobile-trigger ${
+      noteMapOpen ? "is-open" : ""
+    }`}
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        setNoteMapOpen((current) => !current);
+      }}
+      aria-expanded={noteMapOpen}
+    >
+      <span>THE NOTE MAP</span>
+      <strong aria-hidden="true">
+        {noteMapOpen ? "×" : "+"}
+      </strong>
+    </button>
+  )}
 </div>
 
           {selectedProduct.recommendations?.length > 0 && (
@@ -7202,30 +7222,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           ? "Premium mirisna selekcija"
           : "Premium fragrance selection")}
     </p>
+    </div>
   </div>
-
-  {selectedProduct.noteMap && (
-    <button
-      type="button"
-      className={`the-note-map__mobile-trigger ${
-      noteMapOpen ? "is-open" : ""
-    }`}
-      onClick={(event) => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        setNoteMapOpen((current) => !current);
-      }}
-      aria-expanded={noteMapOpen}
-    >
-      <span>THE NOTE MAP</span>
-      <strong aria-hidden="true">
-        {noteMapOpen ? "×" : "+"}
-      </strong>
-    </button>
-  )}
 </div>
-          </div>
 
         <div className="modal-content panel-anim panel-anim-3">
           {selectedCopy.miniTag && (
