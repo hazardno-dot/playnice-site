@@ -6888,13 +6888,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
-  {getJournalText(link.label, lang) || link.label}
-        </button>
-      ))}
-    </div>
-  </div>
-)}
-
         <div className="journal-inline-feedback-row">
           <div className="journal-inline-feedback-cluster">
             <button
