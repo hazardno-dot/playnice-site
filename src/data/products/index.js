@@ -294,10 +294,15 @@ export const products = [
     "arabiyat-prestige-marwa",
     "rayhaan-aquatica"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Louis Vuitton Symphony",
     short: "Symphony DNA"
-  }
+  },
+  noteMap: {
+    top: ["bergamot", "ginger"],
+    heart: ["grapefruit"],
+    base: ["ambroxan", "musk"]
+  },
   },
   {
     id: 12,
@@ -316,10 +321,15 @@ export const products = [
     "boss-the-scent-elixir",
     "tom-ford-noir-extreme"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Hugo Boss Bottled Absolute",
     short: "Boss Absolute DNA"
-  }
+  },
+  noteMap: {
+    top: ["pink-pepper", "saffron", "grapefruit"],
+    heart: ["tobacco", "cedarwood", "vanilla"],
+    base: ["patchouli", "olibanum", "cashmeran"]
+  },
   },
   {
     id: 13,
@@ -338,10 +348,15 @@ export const products = [
     "ysl-lhomme-edp",
     "afnan-9pm-rebel"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Yves Saint Laurent (YSL) Y EDP",
     short: "YSL Y EDP DNA"
-  }
+  },
+  noteMap: {
+    top: ["apple", "bergamot", "ginger"],
+    heart: ["lavender", "sage", "juniper-berries"],
+    base: ["tonka-bean", "cedarwood", "amberwood"]
+  },
   },
   {
     id: 14,
@@ -360,10 +375,15 @@ export const products = [
     "swiss-arabian-tobacco-01",
     "chopard-oud-malaki"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "By Kilian Angels' Share",
     short: "Angels' Share DNA"
-  }
+  },
+  noteMap: {
+    top: ["ginger", "cinnamon", "cardamom"],
+    heart: ["praline", "candied-fruits", "white-flowers"],
+    base: ["coffee-arabica", "tonka-bean", "musk"]
+  },
   },
   {
     id: 15,
@@ -382,10 +402,15 @@ export const products = [
     "french-avenue-vulcan-sable",
     "arabiyat-prestige-fahad-gaze"
   ],
-    inspiredBy: {
+  inspiredBy: {
     name: "Original Lattafa creation",
     short: "Spicy Woody DNA"
-  }
+  },
+  noteMap: {
+    top: ["lavender", "nutmeg", "bergamot"],
+    heart: ["geranium", "rosyfolia", "mahonial"],
+    base: ["maple-wood", "cocoapulse", "ambrofix"]
+  },
   },
   {
     id: 16,
