@@ -404,20 +404,19 @@
     text-align: center;
   }
 
-  @media (max-width: 640px) {
   .the-note-map__mobile-trigger {
     position: absolute;
-    right: 12px;
-    bottom: 12px;
+    right: 6px;
+    bottom: 6px;
     z-index: 6;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 4px;
 
-    min-height: 26px;
-    padding: 0 8px;
+    min-height: 23px;
+    padding: 0 7px;
 
     border: 1px solid rgba(235, 213, 170, 0.28);
     border-radius: 999px;
@@ -430,7 +429,7 @@
     color: rgba(244, 222, 180, 0.92);
 
     font-family: "Inter", sans-serif;
-    font-size: 0.4rem;
+    font-size: 0.36rem;
     line-height: 1;
     font-weight: 800;
     letter-spacing: 0.09em;
@@ -453,15 +452,14 @@
   }
 
   .the-note-map__mobile-trigger::before {
-    width: 5px;
-    height: 5px;
-    flex-basis: 5px;
+    width: 4.5px;
+    height: 4.5px;
+    flex-basis: 4.5px;
   }
 
   .the-note-map__mobile-trigger strong {
-    font-size: 0.73rem;
+    font-size: 0.66rem;
   }
-}
 
   /*
     Enlarges the touch target without visually
