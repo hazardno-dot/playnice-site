@@ -57,6 +57,68 @@ const NOTE_LIBRARY = {
   },
 };
 
+const NOTE_SR = {
+  mandarin: "Mandarina",
+  cedrat: "Cedrat",
+  cardamom: "Kardamom",
+  lavender: "Lavanda",
+  "orange-blossom": "Cvet narandže",
+  rose: "Ruža",
+  cedarwood: "Kedar",
+  patchouli: "Pačuli",
+  pineapple: "Ananas",
+  "green-apple": "Zelena jabuka",
+  oakmoss: "Hrastova mahovina",
+  vanilla: "Vanila",
+  caramel: "Karamela",
+  "dry-woods": "Suve drvene note",
+  ambergris: "Siva ambra",
+  apple: "Jabuka",
+  birch: "Breza",
+  musk: "Mošus",
+  "woody-notes": "Drvene note",
+  "fresh-spices": "Sveži začini",
+  orange: "Narandža",
+  cinnamon: "Cimet",
+  neroli: "Neroli",
+  ambroxan: "Ambroksan",
+  "black-tea": "Crni čaj",
+  "guaiac-wood": "Gvajakovo drvo",
+  citruses: "Citrusne note",
+  "flower-prism": "Cvetna prizma",
+  stardust: "Zvezdana prašina",
+  "velvet-wood": "Baršunasto drvo",
+  jasmine: "Jasmin",
+  lime: "Limeta",
+  iris: "Iris",
+  sandalwood: "Sandalovina",
+  whiskey: "Viski",
+  "tonka-bean": "Tonka",
+  cashmeran: "Kašmeran",
+  styrax: "Stiraks",
+  benzoin: "Benzoinska smola",
+  grapefruit: "Grejpfrut",
+  geranium: "Geranijum",
+  vetiver: "Vetiver",
+  "pink-pepper": "Ružičasti biber",
+  saffron: "Šafran",
+  tobacco: "Duvan",
+  olibanum: "Tamjan",
+  sage: "Žalfija",
+  "juniper-berries": "Bobice kleke",
+  amberwood: "Amberwood",
+  praline: "Pralina",
+  "candied-fruits": "Kandirano voće",
+  "white-flowers": "Belo cveće",
+  "coffee-arabica": "Arabika kafa",
+  nutmeg: "Muškatni oraščić",
+  rosyfolia: "Rosyfolia",
+  mahonial: "Mahonial",
+  "maple-wood": "Javorovo drvo",
+  cocoapulse: "Cocoapulse",
+  ambrofix: "Ambrofix",
+};
+
 const NOTE_LEVELS = [
   {
     key: "top",
@@ -75,12 +137,19 @@ const NOTE_LEVELS = [
   },
 ];
 
+const formatNoteLabel = (noteKey) =>
+  noteKey
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
 const getNoteData = (noteKey) => {
   const savedNote = NOTE_LIBRARY[noteKey];
+  const defaultLabel = formatNoteLabel(noteKey);
 
   return {
-    sr: savedNote?.sr || noteKey.replaceAll("-", " "),
-    en: savedNote?.en || noteKey.replaceAll("-", " "),
+    sr: savedNote?.sr || NOTE_SR[noteKey] || defaultLabel,
+    en: savedNote?.en || defaultLabel,
     image: savedNote?.image || `/note-map/${noteKey}.webp`,
     fallback: savedNote?.fallback || "✦",
   };
