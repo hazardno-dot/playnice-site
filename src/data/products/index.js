@@ -842,7 +842,12 @@ export const products = [
     inspiredBy: {
     name: "Original BOSS creation",
     short: "Spicy Leather DNA"
-  }
+  },
+    noteMap: {
+    top: ["maninka"],
+    heart: ["iris"],
+    base: ["leather"]
+  },
   },
   {
     id: 32,
@@ -863,7 +868,12 @@ export const products = [
     inspiredBy: {
     name: "Original Calvin Klein creation",
     short: "Fresh Citrus Musk DNA"
-  }
+  },
+    noteMap: {
+    top: ["bergamot", "mandarin", "grapefruit-blossom"],
+    heart: ["jasmine", "rhubarb", "freesia"],
+    base: ["musk", "amber", "vetiver"]
+  },
   },
   {
     id: 33,
@@ -885,7 +895,12 @@ export const products = [
     inspiredBy: {
     name: "Original Calvin Klein creation",
     short: "Fresh Woody DNA"
-  }
+  },
+    noteMap: {
+    top: ["bergamot", "mandarin", "cedar-leaf"],
+    heart: ["lavender", "clary-sage", "violet-leaf"],
+    base: ["vetiver", "amber", "musk"]
+  },
   },
   {
     id: 34,
@@ -907,7 +922,12 @@ export const products = [
     inspiredBy: {
     name: "Original Calvin Klein creation",
     short: "Woody Leather DNA"
-  }
+  },
+    noteMap: {
+    top: ["mandarin", "pink-pepper", "cardamom"],
+    heart: ["lavender", "geranium", "ginger"],
+    base: ["cocoa-shell", "vetiver", "sandalwood"]
+  },
   },
   {
     id: 35,
@@ -929,7 +949,12 @@ export const products = [
     inspiredBy: {
     name: "Original Chopard creation",
     short: "Oud Tobacco DNA"
-  }
+  },
+    noteMap: {
+    top: ["grapefruit", "lavender", "artemisia"],
+    heart: ["tobacco", "spices", "leather"],
+    base: ["oud", "dark-woods", "ambergris"]
+  },
   },
   {
     id: 36,
@@ -951,7 +976,12 @@ export const products = [
     inspiredBy: {
     name: "Original Creed creation",
     short: "Fresh Aventus DNA"
-  }
+  },
+    noteMap: {
+    top: ["bergamot", "mandarin", "marine-notes"],
+    heart: ["ginger", "pineapple", "pink-pepper"],
+    base: ["musk", "patchouli", "birch"]
+  },
   },
   {
     id: 37,
@@ -973,7 +1003,12 @@ export const products = [
     inspiredBy: {
     name: "Original Giorgio Armani creation",
     short: "Marine Aromatic DNA"
-  }
+  },
+    noteMap: {
+    top: ["marine-notes", "green-mandarin"],
+    heart: ["mimosa"],
+    base: ["patchouli", "labdanum"]
+  },
   },
   {
     id: 38,
@@ -995,7 +1030,12 @@ export const products = [
     inspiredBy: {
     name: "Original Gisada creation",
     short: "Sweet Fruity DNA"
-  }
+  },
+    noteMap: {
+    top: ["green-mandarin", "apple", "cardamom"],
+    heart: ["mango", "black-pepper", "lavender"],
+    base: ["vanilla", "amber", "vetiver"]
+  },
   },
   {
     id: 39,
@@ -1017,7 +1057,12 @@ export const products = [
     inspiredBy: {
     name: "Original Givenchy creation",
     short: "Whiskey Iris DNA"
-  }
+  },
+    noteMap: {
+    top: ["bergamot", "whiskey"],
+    heart: ["chestnut", "iris", "benzoin"],
+    base: ["cedarwood", "vetiver", "patchouli"]
+  },
   },
   {
     id: 40,
@@ -1039,7 +1084,12 @@ export const products = [
     inspiredBy: {
     name: "Original Jimmy Choo creation",
     short: "Fresh Leather DNA"
-  }
+  },
+    noteMap: {
+    top: ["lavender", "black-pepper", "clary-sage"],
+    heart: ["leather", "cypress", "ambergris"],
+    base: ["vanilla", "sandalwood", "vetiver"]
+  },
   },
   {
     id: 41,
@@ -1061,6 +1111,11 @@ export const products = [
     inspiredBy: {
     name: "Original Yves Saint Laurent creation",
     short: "Woody Amber DNA"
+  },
+    noteMap: {
+    top: ["bitter-orange"],
+    heart: ["oakwood"],
+    base: ["vetiver"]
   },
     discount: {
     size: "10ml",
@@ -1087,7 +1142,12 @@ export const products = [
     inspiredBy: {
     name: "Original Guerlain creation",
     short: "Almond Woody DNA"
-  }
+  },
+    noteMap: {
+    top: ["citruses", "rosemary", "orange-blossom"],
+    heart: ["almond", "tonka-bean"],
+    base: ["vetiver", "cedarwood", "leather"]
+  },
   },
   {
     id: 43,
@@ -1109,7 +1169,12 @@ export const products = [
     inspiredBy: {
     name: "Original Mancera creation",
     short: "Citrus Woody DNA"
-  }
+  },
+    noteMap: {
+    top: ["citruses", "black-currant", "cold-spices"],
+    heart: ["aquatic-jasmine", "patchouli"],
+    base: ["woody-notes", "leather", "oakmoss"]
+  },
   },
   {
     id: 44,
@@ -1131,7 +1196,12 @@ export const products = [
     inspiredBy: {
     name: "Original Montblanc creation",
     short: "Woody Adventure DNA"
-  }
+  },
+    noteMap: {
+    top: ["bergamot", "cardamom", "clary-sage"],
+    heart: ["lavender", "patchouli", "ambrofix"],
+    base: ["warm-woods", "leather", "vetiver"]
+  },
   },
   {
     id: 45,
@@ -1153,7 +1223,12 @@ export const products = [
     inspiredBy: {
     name: "Original Narciso Rodriguez creation",
     short: "Dark Musk DNA"
-  }
+  },
+    noteMap: {
+    top: ["bergamot", "black-pepper"],
+    heart: ["musk"],
+    base: ["blue-cedar", "ebony", "vetiver"]
+  },
   },
   {
     id: 46,
