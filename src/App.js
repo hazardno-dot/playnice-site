@@ -6865,26 +6865,29 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <div className="journal-related-links">
       {selectedArticle.links.map((link) => (
         <button
-  key={link.url}
-  type="button"
-  className="journal-related-text-link"
-  onClick={() => {
-    setSelectedArticle(null);
-    setJournalOpen(false);
-    setView("home");
+          key={link.url}
+          type="button"
+          className="journal-related-text-link"
+          onClick={() => {
+            setSelectedArticle(null);
+            setJournalOpen(false);
+            switchView(link.url);
 
-    window.setTimeout(() => {
-      const requestSection = document.querySelector(".scent-request-panel");
+            window.setTimeout(() => {
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            }, 120);
+          }}
+        >
+          {link.label?.[lang] || link.label?.en}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
 
-      if (requestSection) {
-        requestSection.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }
-    }, 120);
-  }}
->
   {getJournalText(link.label, lang) || link.label}
         </button>
       ))}
