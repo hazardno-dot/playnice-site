@@ -3323,7 +3323,7 @@ Remember. PlayNice.`
   ],
   relatedProducts: [
     "Rayhaan Nocturno Elixir Eau de Parfum",
-    "Bvlgari Man In Black Eau de Parfum",
+    "Yves Saint Laurent MYSLF Eau de Parfum",
     "French Avenue Ravine Ice Extrait de Parfum",
     "Lattafa Khamrah Waha Eau de Parfum",
   ],
