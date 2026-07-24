@@ -3060,5 +3060,272 @@ I jednim danom.
 
 Remember. PlayNice.`
   }
+},
+
+{
+  id: 19,
+  date: "25 Jul",
+  image: "/journal/scent-has-no-navigation.jpg",
+  title: {
+    en: "Scent Has No Navigation.",
+    sr: "Miris nema navigaciju."
+  },
+  excerpt: {
+    en: "It's good to have a map. Except people rarely get lost among notes. They get lost trying to smell like someone else.",
+    sr: "Lepo je imati mapu. Samo što ljudi uglavnom ne zalutaju među notama. Zalutaju pokušavajući da mirišu kao neko drugi."
+  },
+  content: {
+    en: `While we were creating **The Note Map**, I watched them carefully arrange lemon, leather, tobacco, vanilla and ambroxan.
+
+Every note found its place.
+
+Every fragrance family got its color.
+
+Everything was neat, clear and logical.
+
+And then I thought:
+
+**It's good to have a map.  
+Except people rarely get lost among notes.  
+They get lost trying to smell like someone else.**
+
+I'm not exactly sure when that happened.
+
+Maybe when we started asking what a fragrance smells similar to before checking whether we actually liked it.
+
+Maybe when we began believing that there are scents for successful people, scents for serious men and scents for women who enter a room two minutes before the door opens.
+
+And, of course, fragrances for compliments.
+
+That special category of perfume which, according to the internet, should make a complete stranger stop you in the street, forget where they were going and ask for the exact name, batch code and purchase link.
+
+That has never happened to me.
+
+A man did stop me in the street once.
+
+He asked where the post office was.
+
+I smelled good, though.
+
+Today, a fragrance rarely arrives alone.
+
+Before it come the rating, the review, the season, the recommended occasion, the longevity measured in hours and a man on the internet claiming that its projection is "nuclear."
+
+By the time the fragrance finally reaches the skin, we already know so much about it that there's almost no room left to actually smell it.
+
+We expect lemon.
+
+We wait for leather.
+
+We search for vanilla.
+
+We count the hours.
+
+And sometimes we become so focused on what we're supposed to notice that we miss what actually happened to us.
+
+Maybe that fragrance didn't take you to the coast of Sicily.
+
+Maybe it reminded you of a hotel hallway where you were once happy.
+
+Maybe it isn't "confident and dominant."
+
+Maybe it simply made you feel calm.
+
+That isn't the wrong answer.
+
+Your nose is under no obligation to read the product description.
+
+That's why The Note Map wasn't created to tell you who you should be.
+
+It doesn't know what kind of shirt you're wearing.
+
+It doesn't know whether you're going out tonight or staying home.
+
+It doesn't even know whether you'll wear a fresh citrus fragrance in the middle of winter simply because you were missing the sun that morning.
+
+The map shows you the terrain.
+
+Here is bergamot.
+
+Over there is tobacco.
+
+A little farther away, leather, pepper, iris or vanilla.
+
+You can see where the fragrance begins, where it might go and what may be waiting around the next corner.
+
+But the map doesn't choose the direction.
+
+And it shouldn't.
+
+Because the most interesting part of a fragrance begins exactly where the explanation ends.
+
+On the skin.
+
+In time.
+
+On some perfectly ordinary Tuesday that, for reasons you can't quite explain, you'll remember by its scent.
+
+Maybe you'll choose a fragrance that doesn't "belong" to you.
+
+Too dark.
+
+Too sweet.
+
+Too young.
+
+Too serious.
+
+The internet will certainly have an opinion about it.
+
+The internet always has an opinion.
+
+But if you bring your wrist closer to your nose several times during the day, just to check once more whether it's still there, you've probably arrived exactly where you needed to be.
+
+Not because you followed the perfect route.
+
+But because somewhere along the way, you stopped trying to smell like someone else.
+
+**The map is here.  
+The direction is yours.**
+
+—
+
+Charlie
+
+Remember. PlayNice.`,
+    sr: `Dok smo pravili **The Note Map**, gledao sam ih kako pažljivo raspoređuju limun, kožu, duvan, vanilu i ambroksan.
+
+Svaka nota dobila je svoje mesto.
+
+Svaka porodica svoju boju.
+
+Sve uredno, pregledno i logično.
+
+A onda sam pomislio:
+
+**Lepo je imati mapu.  
+Samo što ljudi uglavnom ne zalutaju među notama.  
+Zalutaju pokušavajući da mirišu kao neko drugi.**
+
+Ne znam tačno kada se to dogodilo.
+
+Možda onda kada smo počeli da pitamo na šta neki parfem liči, pre nego što smo proverili da li nam se uopšte dopada.
+
+Možda kada smo poverovali da postoje mirisi za uspešne ljude, mirisi za ozbiljne muškarce, mirisi za žene koje ulaze u prostoriju dva minuta pre nego što se vrata otvore.
+
+I, naravno, mirisi za komplimente.
+
+Ta posebna kategorija parfema koji bi, prema internetu, trebalo da natera potpunog stranca da vas zaustavi na ulici, zaboravi gde je krenuo i zatraži tačan naziv, batch code i link za kupovinu.
+
+Meni se to nikada nije dogodilo.
+
+Jednom me je zaustavio čovek na ulici.
+
+Pitao me je gde je pošta.
+
+Ipak, lepo sam mirisao.
+
+Danas parfem retko dolazi sam.
+
+Pre njega stignu ocena, recenzija, godišnje doba, preporučena prilika, trajnost izražena u satima i čovek sa interneta koji tvrdi da je projekcija „nuklearna“.
+
+Dok parfem konačno stigne do kože, o njemu već znamo toliko da gotovo nema prostora da ga zaista pomirišemo.
+
+Očekujemo limun.
+
+Čekamo kožu.
+
+Tražimo vanilu.
+
+Brojimo sate.
+
+A ponekad se toliko skoncentrišemo na ono što bi trebalo da osetimo da propustimo ono što nam se stvarno dogodilo.
+
+Možda vas taj parfem nije odveo na obalu Sicilije.
+
+Možda vas je podsetio na hodnik hotela u kojem ste nekada bili srećni.
+
+Možda nije „samouveren i dominantan“.
+
+Možda vas je samo smirio.
+
+To nije pogrešan odgovor.
+
+Nos nema obavezu da pročita opis proizvoda.
+
+Zato The Note Map nije napravljena da vam kaže ko treba da budete.
+
+Ona ne zna kakvu košulju nosite.
+
+Ne zna da li izlazite večeras ili ostajete kod kuće.
+
+Ne zna ni da li ćete staviti svež citrusni parfem usred zime samo zato što vam je tog jutra nedostajalo sunce.
+
+Mapa vam pokazuje teren.
+
+Ovde je bergamot.
+
+Tamo je duvan.
+
+Malo dalje koža, biber, iris ili vanila.
+
+Možete da vidite odakle miris polazi, kuda bi mogao da ode i šta vas možda čeka iza sledećeg ugla.
+
+Ali mapa ne bira pravac.
+
+I ne bi trebalo.
+
+Jer najzanimljiviji deo parfema počinje upravo tamo gde se objašnjenje završava.
+
+Na koži.
+
+U vremenu.
+
+U nekom sasvim običnom utorku koji ćete, iz razloga koje ne možete lepo da objasnite, zapamtiti po mirisu.
+
+Možda ćete izabrati parfem koji vam „ne pripada“.
+
+Previše je taman.
+
+Previše sladak.
+
+Previše mlad.
+
+Previše ozbiljan.
+
+Internet će sigurno imati mišljenje o tome.
+
+Internet uvek ima mišljenje.
+
+Ali ako nekoliko puta tokom dana približite zglob nosu, samo da još jednom proverite da li je i dalje tu — verovatno ste stigli gde treba.
+
+Ne zato što ste pratili savršenu rutu.
+
+Nego zato što ste, negde usput, prestali da pokušavate da mirišete kao neko drugi.
+
+**Mapa je tu.  
+Pravac je vaš.**
+
+—
+
+Čarli
+
+Remember. PlayNice.`
+  },
+  links: [
+  {
+    label: {
+      en: "Choose your direction",
+      sr: "Izaberi svoj pravac",
+    },
+    url: "shop",
+  },
+  ],
+  relatedProducts: [
+    "Rayhaan Nocturno Elixir Eau de Parfum",
+    "Bvlgari Man In Black Eau de Parfum",
+    "French Avenue Ravine Ice Extrait de Parfum",
+    "Lattafa Khamrah Waha Eau de Parfum",
+  ],
 }
 ];
