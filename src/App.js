@@ -373,33 +373,6 @@ function getDefaultLanguage() {
   return "en";
 }
 
-function getFallbackDescription(product, lang) {
-  const map = {
-    sr: {
-      Arabian:
-        "Pažljivo odabran arapski parfem sa izraženim karakterom, odličnim odnosom cene i utiska, i idealan za otkrivanje kroz decant format.",
-      Designer:
-        "Pažljivo odabran dizajnerski parfem sa premium karakterom, elegantnim nastupom i odličnom prilikom da ga prvo testiraš kroz decant format.",
-      Niche:
-        "Pažljivo odabran niche parfem sa luksuznim karakterom, dubinom i izraženim signature potencijalom.",
-      Summer:
-        "Svetao, svež i dopadljiv parfem idealan za toplije dane, odmor i lagano nošenje."
-    },
-    en: {
-      Arabian:
-        "A carefully selected Arabian fragrance with strong character, excellent value and an ideal profile for discovery through decant format.",
-      Designer:
-        "A carefully selected designer fragrance with premium character, refined presence and a perfect profile to discover through decant format.",
-      Niche:
-        "A carefully selected niche fragrance with luxurious character, depth and strong signature potential.",
-      Summer:
-        "A bright, fresh and easy-to-love fragrance ideal for warm weather, holidays and effortless wear."
-    }
-  };
-
-  return map[lang]?.[product.category] || map.en.Designer;
-}
-
 function getFallbackVibe(product, lang) {
   const map = {
     sr: {
