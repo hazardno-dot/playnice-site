@@ -1417,7 +1417,7 @@ const selectedSortOption =
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [category, searchTerm, season, sortBy]);
+  }, [category, searchTerm, season, scentMood, sortBy]);
 
   useEffect(() => {
     if (!addedFeedback) return;
