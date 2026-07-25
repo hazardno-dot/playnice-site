@@ -11828,12 +11828,7 @@ main {
 @media (max-width: 768px) {
   .site-footer {
     width: min(calc(100% - 24px), var(--max));
-
-    /*
-      Omogućava da se poslednji sadržaj izvuče
-      iznad fiksnog sticky CTA panela.
-    */
-    margin-bottom: calc(104px + env(safe-area-inset-bottom));
+    margin-bottom: 18px;
   }
 
   /* Benefits prelaze u urednu 2 × 2 mrežu */
@@ -12101,8 +12096,9 @@ main {
   }
 
   .footer-bottom {
-    gap: 7px;
-    padding-top: 12px;
+    gap: 6px;
+    padding-top: 11px;
+    padding-bottom: 0;
   }
 
   .footer-bottom p,
@@ -12112,7 +12108,7 @@ main {
   }
 
   .footer-bottom-links {
-    gap: 7px 13px;
+    gap: 6px 13px;
   }
 }
 
