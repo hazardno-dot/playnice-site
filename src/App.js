@@ -373,25 +373,6 @@ function getDefaultLanguage() {
   return "en";
 }
 
-function getFallbackVibe(product, lang) {
-  const map = {
-    sr: {
-      Arabian: "Karakter • Value • Upečatljiv trag",
-      Designer: "Elegantno • Dopadljivo • Premium osećaj",
-      Niche: "Luksuz • Dubina • Signature potencijal",
-      Summer: "Sveže • Svetlo • Letnji vajb"
-    },
-    en: {
-      Arabian: "Character • Value • Strong trail",
-      Designer: "Elegant • Appealing • Premium feel",
-      Niche: "Luxury • Depth • Signature potential",
-      Summer: "Fresh • Bright • Summer mood"
-    }
-  };
-
-  return map[lang]?.[product.category] || map.en.Designer;
-}
-
 function getProductCopy(product, lang) {
   const copy = productCopy[product.name] || fallbackCopy;
 
