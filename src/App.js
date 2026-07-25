@@ -493,16 +493,6 @@ const getInitialView = () => {
     : "home";
 };
 
-const createProductSlug = (name = "") => {
-  return String(name)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-};
-
 const BASE_HERO_SLIDES = [
   {
     id: 6,
