@@ -673,6 +673,70 @@ const getNewProductsSignature = (items = []) => {
 };
 
 /* =========================================
+   getInitialShopState
+========================================= */
+
+const getInitialShopState = () => {
+  const defaults = {
+    category: "All",
+    searchTerm: "",
+    currentPage: 1,
+    sortBy: "featured",
+    season: "All",
+    scentMood: "All"
+  };
+
+  if (typeof window === "undefined") return defaults;
+
+  const params = new URLSearchParams(window.location.search);
+
+  const category = params.get("category");
+  const searchTerm = params.get("search") || "";
+  const sortBy = params.get("sort");
+  const season = params.get("season");
+  const scentMood = params.get("mood");
+  const parsedPage = Number(params.get("page"));
+
+  return {
+    category: ["All", "Arabian", "Designer", "Niche"].includes(category)
+      ? category
+      : defaults.category,
+
+    searchTerm,
+
+    currentPage:
+      Number.isInteger(parsedPage) && parsedPage > 0
+        ? parsedPage
+        : defaults.currentPage,
+
+    sortBy: [
+      "featured",
+      "rating",
+      "priceLow",
+      "priceHigh",
+      "name"
+    ].includes(sortBy)
+      ? sortBy
+      : defaults.sortBy,
+
+    season: ["All", "summer", "winter"].includes(season)
+      ? season
+      : defaults.season,
+
+    scentMood: [
+      "clean",
+      "summer",
+      "date",
+      "rich",
+      "soft",
+      "signature"
+    ].includes(scentMood)
+      ? scentMood
+      : defaults.scentMood
+  };
+};
+
+/* =========================================
    APP
 ========================================= */
 function App() {
@@ -681,15 +745,17 @@ function App() {
   ========================================= */
   const [lang, setLang] = useState(() => getDefaultLanguage());
   const [view, setView] = useState(() => getInitialView());
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState(initialShopState.category);
   const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
   const [seasonMenuOpen, setSeasonMenuOpen] = useState(false);
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(initialShopState.searchTerm);
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(
+    initialShopState.currentPage
+  );
   const [productsPerPage, setProductsPerPage] = useState(24);
   const [cart, setCart] = useState([]);
   const [selectedSize, setSelectedSize] = useState("");
@@ -702,9 +768,9 @@ function App() {
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const [faqOpen, setFaqOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
-  const [sortBy, setSortBy] = useState("featured");
-  const [season, setSeason] = useState("All");
-  const [scentMood, setScentMood] = useState("All");
+  const [sortBy, setSortBy] = useState(initialShopState.sortBy);
+  const [season, setSeason] = useState(initialShopState.season);
+  const [scentMood, setScentMood] = useState(initialShopState.scentMood);
   const [privateSelectionOpen, setPrivateSelectionOpen] = useState(false);
   const [closingVisible, setClosingVisible] = useState(false);
   const [currentHero, setCurrentHero] = useState(0);
@@ -738,18 +804,26 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const newProductsSignature = useMemo(() => {
-  return getNewProductsSignature(products);
-}, []);
+    return getNewProductsSignature(products);
+  }, []);
 
-const [hasNewShopProducts, setHasNewShopProducts] = useState(() => {
-  if (typeof window === "undefined") return false;
+  const initialShopStateRef = useRef(null);
 
-  const currentSignature = getNewProductsSignature(products);
+  if (initialShopStateRef.current === null) {
+    initialShopStateRef.current = getInitialShopState();
+  }
 
-  if (!currentSignature) return false;
+  const initialShopState = initialShopStateRef.current;
 
-  return localStorage.getItem(SHOP_NEW_PRODUCTS_SEEN_KEY) !== currentSignature;
-});
+  const [hasNewShopProducts, setHasNewShopProducts] = useState(() => {
+    if (typeof window === "undefined") return false;
+
+    const currentSignature = getNewProductsSignature(products);
+
+    if (!currentSignature) return false;
+
+    return localStorage.getItem(SHOP_NEW_PRODUCTS_SEEN_KEY) !== currentSignature;
+  });
 
   const [wishlist, setWishlist] = useState(() =>
     safeReadLocalStorage("playnice_wishlist", [])
@@ -859,7 +933,7 @@ const isNewRequest = (request) => {
   const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
   const productGridRef = useRef(null);
-  const isInitialShopFilterHydrationRef = useRef(true);
+  const hasMountedShopFiltersRef = useRef(false);
   const [shouldScrollToGrid, setShouldScrollToGrid] = useState(false);
 
   /* =========================================
@@ -1356,56 +1430,6 @@ const selectedSortOption =
     return;
   }
 
-  const params = new URLSearchParams(window.location.search);
-  const urlView = params.get("view");
-  const urlCategory = params.get("category");
-  const urlSearch = params.get("search");
-  const urlPage = params.get("page");
-  const urlSort = params.get("sort");
-  const urlSeason = params.get("season");
-  const urlMood = params.get("mood");
-
-  if (urlView && ["home", "shop", "journal"].includes(urlView)) {
-    setView(urlView);
-  }
-
-  if (urlCategory && categories.includes(urlCategory)) {
-    setCategory(urlCategory);
-  }
-
-  if (urlSearch) {
-    setSearchTerm(urlSearch);
-  }
-
-  if (urlPage && !Number.isNaN(Number(urlPage))) {
-    setCurrentPage(Number(urlPage));
-  }
-
-  if (
-    urlSort &&
-    ["featured", "rating", "priceLow", "priceHigh", "name"].includes(urlSort)
-  ) {
-    setSortBy(urlSort);
-  }
-
-  if (urlSeason && ["All", "summer", "winter"].includes(urlSeason)) {
-    setSeason(urlSeason);
-  }
-
-  if (
-    urlMood &&
-    ["clean", "summer", "date", "rich", "soft", "signature"].includes(urlMood)
-  ) {
-    setScentMood(urlMood);
-  }
-
-}, [categories]);
-
-  useEffect(() => {
-  if (window.location.pathname.startsWith("/product/")) {
-    return;
-  }
-
   const params = new URLSearchParams();
   params.set("view", view);
 
@@ -1438,12 +1462,9 @@ const selectedSortOption =
   ]);
 
   useEffect(() => {
-    if (isInitialShopFilterHydrationRef.current) {
-      const timer = window.setTimeout(() => {
-        isInitialShopFilterHydrationRef.current = false;
-      }, 0);
-
-      return () => window.clearTimeout(timer);
+    if (!hasMountedShopFiltersRef.current) {
+      hasMountedShopFiltersRef.current = true;
+      return;
     }
 
     setCurrentPage(1);
