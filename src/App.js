@@ -930,11 +930,6 @@ const toggleVideoPlayback = () => {
   return [fixedFirstSlide, ...shuffleHeroSlides(randomSlides)];
 }, []);
 
-  const categories = useMemo(
-    () => ["All", "Arabian", "Designer", "Niche"],
-    []
-  );
-
   const impactProducts = useMemo(
     () =>
       [2, 11, 5]
