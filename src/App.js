@@ -5620,6 +5620,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
 {(category !== "All" ||
   season !== "All" ||
+  scentMood !== "All" ||
   sortBy !== "featured" ||
   searchTerm.trim() !== "") && (
   <div className="active-filters-bar active-filters-bar-compact">
@@ -5633,6 +5634,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       {season !== "All" && (
         <span className="active-filter-chip">
           {selectedSeasonOption.label}
+        </span>
+      )}
+
+      {scentMood !== "All" && (
+        <span className="active-filter-chip">
+          {selectedScentMood.label}
         </span>
       )}
 
