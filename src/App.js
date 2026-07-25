@@ -19,6 +19,14 @@ const slugifyProduct = (name = "") =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
+const normalizeShopSearch = (value = "") =>
+  String(value)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
 /* =========================================
    SEO helper
 ========================================= */
@@ -922,13 +930,19 @@ const toggleVideoPlayback = () => {
     );
   }
 
-  const result = products.filter((product) => {
-    const categoryMatch =
-      category === "All" || product.category === category;
+  const normalizedSearchTerm = normalizeShopSearch(searchTerm);
 
-    const searchMatch = product.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
+  const result = products.filter((product) => {
+  const categoryMatch =
+    category === "All" || product.category === category;
+
+  const searchableProductText = normalizeShopSearch(
+    [product.brand, product.name].filter(Boolean).join(" ")
+  );
+
+  const searchMatch =
+    normalizedSearchTerm === "" ||
+    searchableProductText.includes(normalizedSearchTerm);
 
     const selectedSeason = String(season || "").toLowerCase();
     const productSeason = String(product.season || "").toLowerCase();
@@ -5320,7 +5334,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <div className="shop-toolbar shop-toolbar-compact">
   <div className="toolbar-group toolbar-group-search">
-    <label htmlFor="shop-search">{tr.searchLabel}</label>
+    <label htmlFor="shop-search">
+      {lang === "sr" ? "Brend ili parfem" : "Brand or fragrance"}
+    </label>
 
     <div className="compact-search-shell">
       <span className="compact-search-icon" aria-hidden="true">
@@ -5330,7 +5346,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <input
         id="shop-search"
         type="text"
-        placeholder={tr.searchPlaceholder}
+        placeholder={
+          lang === "sr"
+            ? "Npr. Prada, Mancera, Lattafa..."
+            : "E.g. Prada, Mancera, Lattafa..."
+        }
         value={searchTerm}
         onChange={(e) => {
   setSearchTerm(e.target.value);
