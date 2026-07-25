@@ -938,15 +938,17 @@ const toggleVideoPlayback = () => {
   );
 
  const filteredProducts = useMemo(() => {
-    if (heroCollectionFilter?.length) {
-    return products.filter((product) =>
-      heroCollectionFilter.includes(product.slug)
-    );
-  }
+    const sourceProducts = heroCollectionFilter?.length
+      ? heroCollectionFilter
+          .map((slug) =>
+            products.find((product) => product.slug === slug)
+          )
+          .filter(Boolean)
+      : products;
 
   const normalizedSearchTerm = normalizeShopSearch(searchTerm);
 
-  const result = products.filter((product) => {
+  const result = sourceProducts.filter((product) => {
   const categoryMatch =
     category === "All" || product.category === category;
 
@@ -3025,7 +3027,7 @@ const handleHeroSlideAction = (slide) => {
   ) {
     setSearchTerm("");
     setCategory("All");
-    setSeason("all");
+    setSeason("All");
     setHeroCollectionFilter(slide.actionCollection);
     setHeroCollectionTitle(slide.collectionTitle || "");
     setView("shop");
