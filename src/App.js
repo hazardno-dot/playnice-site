@@ -2527,10 +2527,6 @@ const goHome = () => {
   switchView("home");
 };
 
-const goToJournal = () => {
-  switchView("journal");
-};
-
   const toggleWishlist = (productId) => {
     const isAdding = !wishlist.includes(productId);
 
