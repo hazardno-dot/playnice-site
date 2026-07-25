@@ -859,6 +859,7 @@ const isNewRequest = (request) => {
   const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
   const productGridRef = useRef(null);
+  const isInitialShopFilterHydrationRef = useRef(true);
   const [shouldScrollToGrid, setShouldScrollToGrid] = useState(false);
 
   /* =========================================
@@ -1437,6 +1438,14 @@ const selectedSortOption =
   ]);
 
   useEffect(() => {
+    if (isInitialShopFilterHydrationRef.current) {
+      const timer = window.setTimeout(() => {
+        isInitialShopFilterHydrationRef.current = false;
+      }, 0);
+
+      return () => window.clearTimeout(timer);
+    }
+
     setCurrentPage(1);
   }, [category, searchTerm, season, scentMood, sortBy]);
 
