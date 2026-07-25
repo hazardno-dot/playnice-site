@@ -11346,10 +11346,19 @@ main {
 .footer-contact,
 .footer-mini-link {
   appearance: none;
+  -webkit-appearance: none;
+
+  width: auto;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+
+  margin: 0;
+  padding: 0;
+
   border: 0;
   background: transparent;
-
-  padding: 0;
+  box-shadow: none;
 
   color: rgba(255, 248, 235, 0.58);
   font: inherit;
@@ -11788,17 +11797,22 @@ main {
 }
 
 /* =========================================
-   RESPONSIVE — FOOTER
+   RESPONSIVE — FOOTER — FINAL
 ========================================= */
 
 @media (max-width: 1024px) {
   .footer-benefits {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     padding: 16px 0;
   }
 
   .site-footer-inner {
-    grid-template-columns: 1.1fr 0.8fr 0.8fr 0.9fr;
+    grid-template-columns:
+      minmax(0, 1.1fr)
+      minmax(0, 0.8fr)
+      minmax(0, 0.8fr)
+      minmax(0, 0.9fr);
+
     gap: 22px;
   }
 
@@ -11807,33 +11821,60 @@ main {
   }
 }
 
+/* =========================================
+   TABLET
+========================================= */
+
 @media (max-width: 768px) {
   .site-footer {
     width: min(calc(100% - 24px), var(--max));
+
+    /*
+      Omogućava da se poslednji sadržaj izvuče
+      iznad fiksnog sticky CTA panela.
+    */
+    margin-bottom: calc(104px + env(safe-area-inset-bottom));
   }
 
+  /* Benefits prelaze u urednu 2 × 2 mrežu */
+
   .footer-benefits {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     padding: 0;
   }
 
   .footer-benefit {
-    padding: 15px 10px;
+    min-width: 0;
+    padding: 14px 10px;
   }
 
-  .footer-benefit:nth-child(2) {
+  .footer-benefit:not(:last-child) {
     border-right: 0;
   }
 
-  .footer-benefit:nth-child(1),
-  .footer-benefit:nth-child(2) {
+  .footer-benefit:nth-child(odd) {
+    border-right: 1px solid rgba(220, 181, 107, 0.08);
+  }
+
+  .footer-benefit:nth-child(-n + 2) {
     border-bottom: 1px solid rgba(220, 181, 107, 0.08);
   }
 
+  /*
+    Brand ide preko cele širine.
+    Navigation i Service ostaju u dve kolone.
+    Contact ide preko cele širine ispod njih.
+  */
+
   .site-footer-inner {
-    grid-template-columns: 1fr 1fr;
-    gap: 26px 22px;
-    padding: 24px 0 20px;
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+
+    column-gap: 22px;
+    row-gap: 24px;
+
+    padding: 23px 0 19px;
   }
 
   .footer-brand {
@@ -11844,60 +11885,234 @@ main {
     max-width: 100%;
   }
 
+  .footer-contact-column {
+    grid-column: 1 / -1;
+
+    padding-top: 18px;
+
+    border-top: 1px solid rgba(220, 181, 107, 0.07);
+  }
+
+  .footer-column {
+    min-width: 0;
+  }
+
   .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
+    gap: 9px;
   }
 
   .footer-bottom-links {
-    gap: 14px;
     flex-wrap: wrap;
+    gap: 8px 14px;
+  }
+
+  #delivery-returns {
+    scroll-margin-top: 120px;
   }
 }
 
+/* =========================================
+   MOBILE
+========================================= */
+
 @media (max-width: 560px) {
-  .footer-benefits {
-    grid-template-columns: 1fr 1fr;
-  }
+  /*
+    Benefits postaju horizontalno organizovani
+    unutar svake ćelije, pa zauzimaju manje visine.
+  */
 
   .footer-benefit {
-    padding: 13px 8px;
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-items: center;
+
+    column-gap: 8px;
+    row-gap: 2px;
+
+    padding: 11px 8px;
+
+    text-align: left;
   }
 
   .footer-benefit i {
-    font-size: 1rem;
+    grid-column: 1;
+    grid-row: 1 / 3;
+
+    margin: 0;
+
+    font-size: 0.94rem;
+    text-align: center;
   }
 
   .footer-benefit strong {
-    font-size: 0.76rem;
+    grid-column: 2;
+    grid-row: 1;
+
+    min-width: 0;
+
+    font-size: 0.69rem;
+    line-height: 1.16;
   }
 
   .footer-benefit span {
-    font-size: 0.7rem;
+    grid-column: 2;
+    grid-row: 2;
+
+    min-width: 0;
+
+    font-size: 0.63rem;
+    line-height: 1.18;
   }
 
+  /*
+    Važno: ostaju dve kolone.
+    Ne vraćamo grid na 1fr.
+  */
+
   .site-footer-inner {
-    grid-template-columns: 1fr;
-    gap: 22px;
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+
+    column-gap: 16px;
+    row-gap: 20px;
+
+    padding: 21px 0 17px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .footer-contact-column {
+    grid-column: 1 / -1;
+
+    padding-top: 15px;
   }
 
   .footer-logo {
     font-size: 2.05rem;
   }
 
+  .footer-tagline {
+    margin-top: 5px;
+
+    font-size: 0.57rem;
+    letter-spacing: 0.2em;
+  }
+
   .footer-brand-text {
-    font-size: 0.82rem;
-    line-height: 1.55;
+    margin-top: 11px;
+
+    font-size: 0.79rem;
+    line-height: 1.48;
+  }
+
+  .social-links {
+    margin-top: 11px;
+  }
+
+  .social-links a {
+    width: 32px;
+    height: 32px;
+  }
+
+  .footer-column {
+    gap: 7px;
+  }
+
+  .footer-column h4 {
+    margin-bottom: 3px;
+
+    font-size: 0.61rem;
+    letter-spacing: 0.17em;
   }
 
   .footer-link,
   .footer-contact {
-    font-size: 0.84rem;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+
+    margin: 0;
+    padding: 0;
+
+    font-size: 0.8rem;
+    line-height: 1.3;
+  }
+
+  .footer-contact {
+    overflow-wrap: anywhere;
+  }
+
+  .footer-contact-column p {
+    margin-top: 1px;
+
+    font-size: 0.76rem;
+    line-height: 1.38;
+  }
+
+  /* Delivery & Returns blok unutar footera */
+
+  #delivery-returns .policy-strip,
+  #delivery-returns .policy-compact {
+    margin: 0 0 12px;
+    padding: 11px 12px;
+
+    border-radius: 15px;
+  }
+
+  #delivery-returns .policy-title-row {
+    gap: 7px;
+  }
+
+  #delivery-returns .policy-title-row strong {
+    font-size: 0.98rem;
+  }
+
+  #delivery-returns .policy-detail-row {
+    gap: 6px 9px;
+
+    margin-top: 7px;
+
+    font-size: 0.7rem;
+    line-height: 1.35;
+  }
+
+  #delivery-returns .policy-detail-row span {
+    white-space: normal;
+  }
+
+  #delivery-returns .policy-detail-row span:not(:last-child)::after {
+    margin-left: 9px;
+  }
+
+  #delivery-returns .policy-strip p,
+  #delivery-returns .policy-compact p {
+    margin-top: 7px;
+    padding-top: 7px;
+
+    font-size: 0.69rem;
+    line-height: 1.42;
+  }
+
+  .footer-bottom {
+    gap: 7px;
+    padding-top: 12px;
   }
 
   .footer-bottom p,
   .footer-mini-link {
-    font-size: 0.78rem;
+    font-size: 0.71rem;
+    line-height: 1.4;
+  }
+
+  .footer-bottom-links {
+    gap: 7px 13px;
   }
 }
 
