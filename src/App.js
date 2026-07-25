@@ -5781,17 +5781,48 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 )}
 
 <div className="product-grid-anchor" ref={productGridRef}>
- <div className="product-grid">
-  {paginatedProducts.map((product) => (
-    <ProductCard
-      key={product.id}
-      product={product}
-      wishlist={wishlist}
-      toggleWishlist={toggleWishlist}
-      sprayingWishlistId={sprayingWishlistId}
-    />
-  ))}
- </div>
+  <div className="product-grid">
+  {paginatedProducts.length > 0 ? (
+    paginatedProducts.map((product) => (
+      <ProductCard
+        key={product.id}
+        product={product}
+        wishlist={wishlist}
+        toggleWishlist={toggleWishlist}
+        sprayingWishlistId={sprayingWishlistId}
+      />
+    ))
+  ) : (
+    <div className="shop-empty-state" role="status">
+      <strong>
+        {lang === "sr"
+          ? "Nema pronađenih parfema."
+          : "No fragrances found."}
+      </strong>
+
+      <span>
+        {lang === "sr"
+          ? "Probaj drugi brend ili ukloni neki od aktivnih filtera."
+          : "Try another brand or remove one of the active filters."}
+      </span>
+
+      <button
+        type="button"
+        className="clear-filters-button"
+        onClick={() => {
+          setCategory("All");
+          setSeason("All");
+          setScentMood("All");
+          setSortBy("featured");
+          setSearchTerm("");
+          setCurrentPage(1);
+        }}
+      >
+        {lang === "sr" ? "Obriši filtere" : "Clear filters"}
+      </button>
+    </div>
+  )}
+</div>
 </div>
 
 <div className="pagination-wrap">
