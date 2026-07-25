@@ -10,15 +10,6 @@ import TheNoteMap from "./TheNoteMap";
 
 const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 
-const slugifyProduct = (name = "") =>
-  name
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
 const normalizeShopSearch = (value = "") =>
   String(value)
     .toLowerCase()
