@@ -1040,18 +1040,33 @@ const toggleVideoPlayback = () => {
     return categoryMatch && searchMatch && seasonMatch && moodMatch;
   });
 
+  const newestFirstTieBreak = (a, b) =>
+    Number(b.id || 0) - Number(a.id || 0);
+
   switch (sortBy) {
   case "rating":
-    return [...result].sort(
-      (a, b) =>
-        Number(b.rating || 0) - Number(a.rating || 0)
-    );
+  return [...result].sort((a, b) => {
+    const ratingDifference =
+      Number(b.rating || 0) - Number(a.rating || 0);
+
+    return ratingDifference || newestFirstTieBreak(a, b);
+  });
 
   case "priceLow":
-    return [...result].sort((a, b) => getMinPrice(a) - getMinPrice(b));
+  return [...result].sort((a, b) => {
+    const priceDifference =
+      getMinPrice(a) - getMinPrice(b);
+
+    return priceDifference || newestFirstTieBreak(a, b);
+  });
 
   case "priceHigh":
-    return [...result].sort((a, b) => getMinPrice(b) - getMinPrice(a));
+  return [...result].sort((a, b) => {
+    const priceDifference =
+      getMinPrice(b) - getMinPrice(a);
+
+    return priceDifference || newestFirstTieBreak(a, b);
+  });
 
   case "name":
     return [...result].sort((a, b) =>
