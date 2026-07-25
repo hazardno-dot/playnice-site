@@ -739,7 +739,16 @@ const getInitialShopState = () => {
 /* =========================================
    APP
 ========================================= */
-function App() {
+  function App() {
+
+    const initialShopStateRef = useRef(null);
+
+  if (initialShopStateRef.current === null) {
+    initialShopStateRef.current = getInitialShopState();
+  }
+
+  const initialShopState = initialShopStateRef.current;
+
   /* =========================================
      APP STATE
   ========================================= */
@@ -806,14 +815,6 @@ function App() {
   const newProductsSignature = useMemo(() => {
     return getNewProductsSignature(products);
   }, []);
-
-  const initialShopStateRef = useRef(null);
-
-  if (initialShopStateRef.current === null) {
-    initialShopStateRef.current = getInitialShopState();
-  }
-
-  const initialShopState = initialShopStateRef.current;
 
   const [hasNewShopProducts, setHasNewShopProducts] = useState(() => {
     if (typeof window === "undefined") return false;
