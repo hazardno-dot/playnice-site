@@ -1581,12 +1581,21 @@ useEffect(() => {
       return;
     }
 
-    setNoteMapOpen(false);
-    setProductModalVisible(false);
-    setSelectedProduct(null);
-    setSelectedSize("");
-    setHasUserPickedSize(false);
-    setView(getInitialView());
+    const nextView = getInitialView();
+
+  setNoteMapOpen(false);
+  setProductModalVisible(false);
+  setSelectedProduct(null);
+  setSelectedSize("");
+  setHasUserPickedSize(false);
+
+  setJournalOpen(nextView === "journal");
+
+  if (nextView !== "journal") {
+    setSelectedArticle(null);
+  }
+
+  setView(nextView);
   };
 
   window.addEventListener("popstate", handlePopState);
