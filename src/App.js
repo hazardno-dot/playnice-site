@@ -2151,11 +2151,6 @@ const getProductDiscountForSize = (product, size) => {
   return product.discount.size === size ? product.discount : null;
 };
 
-const getDisplayPriceForSize = (product, size, price) => {
-  const discount = getProductDiscountForSize(product, size);
-  return discount ? getDiscountedPrice(price, discount.percent) : price;
-};
-
 /* =========================================
    DERIVED DATA
 ========================================= */
