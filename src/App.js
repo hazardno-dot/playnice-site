@@ -822,7 +822,6 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
 });
 
   const [journalFeedback, setJournalFeedback] = useState({});
-  const [journalFeedbackSubmitted, setJournalFeedbackSubmitted] = useState(false);
   const [journalVoteSuccess, setJournalVoteSuccess] = useState("");
   const [journalFeedbackSuccess, setJournalFeedbackSuccess] = useState(false);
 
@@ -1550,7 +1549,6 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
-  setJournalFeedbackSubmitted(false);
   setJournalVoteSuccess("");
 }, [selectedArticle]);
 
@@ -1655,8 +1653,6 @@ const handleJournalFeedbackVote = (article, vote) => {
   const key = getJournalArticleKey(article);
   if (!key) return;
 
-  setJournalFeedbackSubmitted(false);
-
   const current = journalFeedback[key] || {};
   const nextVote = vote;
 
@@ -1744,7 +1740,6 @@ const handleJournalFeedbackSubmit = (article) => {
     return nextFeedback;
   });
 
-  setJournalFeedbackSubmitted(true);
   setJournalFeedbackSuccess(true);
 
   setTimeout(() => {
