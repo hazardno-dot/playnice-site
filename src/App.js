@@ -966,7 +966,10 @@ const toggleVideoPlayback = () => {
 
   switch (sortBy) {
   case "rating":
-    return [...result].sort((a, b) => b.rating - a.rating);
+    return [...result].sort(
+      (a, b) =>
+        Number(b.rating || 0) - Number(a.rating || 0)
+    );
 
   case "priceLow":
     return [...result].sort((a, b) => getMinPrice(a) - getMinPrice(b));
