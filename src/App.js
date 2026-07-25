@@ -3314,17 +3314,6 @@ const openImpactProductModal = (product) => {
     toggleWishlist(productId);
   };
 
-  useEffect(() => {
-  const productFromUrl = getProductFromCurrentUrl();
-
-  if (!productFromUrl) {
-    return;
-  }
-
-  setSelectedProduct(productFromUrl);
-  setView("shop");
-}, []);
-
 /* =========================================
    shouldScrollToGrid
 ========================================= */
