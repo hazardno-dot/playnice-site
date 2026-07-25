@@ -3221,7 +3221,14 @@ setHasUserPickedSize(userPickedSize);
     const productUrl = getProductUrl(product);
 
     if (window.location.pathname !== productUrl) {
-      window.history.pushState({}, "", productUrl);
+      window.history.pushState(
+        {
+        playniceProductModal: true,
+        productSlug: getProductSlug(product)
+    },
+    "",
+    productUrl
+  );
     }
 
     trackPageView(productUrl);
@@ -3288,10 +3295,18 @@ const closeProductModal = () => {
     productModalCloseTimeoutRef.current = null;
 
     if (window.location.pathname.startsWith("/product/")) {
-      window.history.pushState({}, "", "/shop");
+      const openedInsidePlayNice =
+      window.history.state?.playniceProductModal === true;
+
+    if (openedInsidePlayNice) {
+      window.history.back();
+    } else {
+      window.history.replaceState({}, "", "/shop");
+      setView("shop");
       trackPageView("/shop");
       trackMeta("PageView");
     }
+  }
   };
 
   if (isMobileModal) {
@@ -7205,8 +7220,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 setSelectedSize(Object.keys(product.sizes)[0]);
                 setHasUserPickedSize(false);
 
-                window.history.pushState(
-                  { productSlug: product.slug },
+                window.history.replaceState(
+                  {
+                  ...(window.history.state || {}),
+                  productSlug: product.slug
+                  },
                   "",
                   `/product/${product.slug}`
                 );
