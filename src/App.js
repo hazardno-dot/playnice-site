@@ -1571,11 +1571,24 @@ useEffect(() => {
 
 useEffect(() => {
   const handlePopState = () => {
-    setView(getInitialView());
+    const productFromUrl = getProductFromCurrentUrl();
 
-    requestAnimationFrame(() => {
-      smoothScrollToTop();
-    });
+    if (productFromUrl) {
+      setView("shop");
+
+      openProductModal(productFromUrl, {
+        updateUrl: false
+      });
+
+      return;
+    }
+
+    setNoteMapOpen(false);
+    setProductModalVisible(false);
+    setSelectedProduct(null);
+    setSelectedSize("");
+    setHasUserPickedSize(false);
+    setView(getInitialView());
   };
 
   window.addEventListener("popstate", handlePopState);
