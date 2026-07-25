@@ -1059,8 +1059,13 @@ const toggleVideoPlayback = () => {
     );
 
   case "featured":
-  default:
-    return [...result].reverse();
+    default:
+      return heroCollectionFilter?.length
+        ? result
+        : [...result].sort(
+            (a, b) =>
+              Number(b.id || 0) - Number(a.id || 0)
+          );
 }
 }, [category, searchTerm, season, scentMood, sortBy, heroCollectionFilter]);
 
