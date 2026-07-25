@@ -3011,6 +3011,9 @@ const handleHeroSlideAction = (slide) => {
     setSearchTerm("");
     setCategory("All");
     setSeason("All");
+    setScentMood("All");
+    setSortBy("featured");
+    setCurrentPage(1);
     setHeroCollectionFilter([]);
     setHeroCollectionTitle("");
     setView("shop");
@@ -3028,6 +3031,9 @@ const handleHeroSlideAction = (slide) => {
     setSearchTerm("");
     setCategory("All");
     setSeason("All");
+    setScentMood("All");
+    setSortBy("featured");
+    setCurrentPage(1);
     setHeroCollectionFilter(slide.actionCollection);
     setHeroCollectionTitle(slide.collectionTitle || "");
     setView("shop");
