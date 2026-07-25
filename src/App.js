@@ -1359,6 +1359,7 @@ const selectedSortOption =
   const urlPage = params.get("page");
   const urlSort = params.get("sort");
   const urlSeason = params.get("season");
+  const urlMood = params.get("mood");
 
   if (urlView && ["home", "shop", "journal"].includes(urlView)) {
     setView(urlView);
@@ -1386,6 +1387,14 @@ const selectedSortOption =
   if (urlSeason && ["All", "summer", "winter"].includes(urlSeason)) {
     setSeason(urlSeason);
   }
+
+  if (
+    urlMood &&
+    ["clean", "summer", "date", "rich", "soft", "signature"].includes(urlMood)
+  ) {
+    setScentMood(urlMood);
+  }
+
 }, [categories]);
 
   useEffect(() => {
@@ -1399,6 +1408,7 @@ const selectedSortOption =
   if (category !== "All") params.set("category", category);
   if (searchTerm.trim()) params.set("search", searchTerm.trim());
   if (season !== "All") params.set("season", season);
+  if (scentMood !== "All") params.set("mood", scentMood);
   if (sortBy !== "featured") params.set("sort", sortBy);
   if (currentPage > 1) params.set("page", String(currentPage));
 
@@ -1413,7 +1423,15 @@ const selectedSortOption =
   if (currentUrl !== nextUrl) {
     window.history.replaceState({}, "", nextUrl);
   }
-}, [view, category, searchTerm, season, sortBy, currentPage]);
+  }, [
+    view,
+    category,
+    searchTerm,
+    season,
+    scentMood,
+    sortBy,
+    currentPage
+  ]);
 
   useEffect(() => {
     setCurrentPage(1);
