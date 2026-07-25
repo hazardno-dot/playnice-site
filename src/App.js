@@ -2989,7 +2989,7 @@ const handleHeroSlideAction = (slide) => {
   if (slide.actionPrimary === "shop") {
     setSearchTerm("");
     setCategory("All");
-    setSeason("all");
+    setSeason("All");
     setHeroCollectionFilter([]);
     setHeroCollectionTitle("");
     setView("shop");
@@ -3140,12 +3140,6 @@ const renderPagination = (position = "bottom") => {
       </button>
     </div>
   );
-};
-
-  const getProductUrl = (product) => {
-  if (!product?.name) return "/shop";
-
-  return `/product/${slugifyProduct(product.name)}`;
 };
 
 const isMobileProductModal = () =>
