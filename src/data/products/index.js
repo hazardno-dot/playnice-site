@@ -884,7 +884,7 @@ export const products = [
       base: ["sandalwood"]
     }
   },
-  {
+    {
     id: 31,
     slug: "boss-the-scent-le-parfum",
     name: "BOSS The Scent Le Parfum for Him",
@@ -895,21 +895,22 @@ export const products = [
     badge: "HIDDEN GEM",
     rating: 7.9,
     ratingLabel: "Well Loved",
-    season: "all",
+    season: "winter",
     moods: ["date", "soft", "rich"],
     recommendations: [
-    "boss-the-scent-elixir",
-    "dolce-gabbana-the-one-for-men-edt"
-  ],
+      "boss-the-scent-elixir",
+      "dolce-gabbana-the-one-for-men-edt",
+      "givenchy-gentleman-reserve-privee"
+    ],
     inspiredBy: {
-    name: "Original BOSS creation",
-    short: "Spicy Leather DNA"
-  },
+      name: "Original BOSS creation",
+      short: "Ambery Iris Leather DNA"
+    },
     noteMap: {
-    top: ["maninka"],
-    heart: ["iris"],
-    base: ["leather"]
-  },
+      top: ["maninka"],
+      heart: ["iris"],
+      base: ["leather"]
+    }
   },
   {
     id: 32,
@@ -925,17 +926,19 @@ export const products = [
     season: "summer",
     moods: ["clean", "summer", "soft"],
     recommendations: [
-    "acqua-di-parma-colonia-pura"
-  ],
+      "acqua-di-parma-colonia-pura",
+      "essential-parfums-nice-bergamote",
+      "rayhaan-azul-edp"
+    ],
     inspiredBy: {
-    name: "Original Calvin Klein creation",
-    short: "Fresh Citrus Musk DNA"
-  },
+      name: "Original Calvin Klein creation",
+      short: "Fresh Citrus Musk DNA"
+    },
     noteMap: {
-    top: ["bergamot", "mandarin", "grapefruit-blossom"],
-    heart: ["jasmine", "rhubarb", "freesia"],
-    base: ["musk", "amber", "vetiver"]
-  },
+      top: ["bergamot", "mandarin", "grapefruit-blossom"],
+      heart: ["jasmine", "rhubarb", "freesia", "lily"],
+      base: ["musk", "amber", "vetiver"]
+    }
   },
   {
     id: 33,
@@ -951,18 +954,19 @@ export const products = [
     season: "summer",
     moods: ["clean", "signature", "summer"],
     recommendations: [
-    "calvin-klein-defy-parfum",
-    "montblanc-explorer-extreme"
-  ],
+      "calvin-klein-defy-parfum",
+      "prada-luna-rossa-ocean-edt",
+      "jimmy-choo-man-blue"
+    ],
     inspiredBy: {
-    name: "Original Calvin Klein creation",
-    short: "Fresh Woody DNA"
-  },
+      name: "Original Calvin Klein creation",
+      short: "Fresh Aromatic Woods DNA"
+    },
     noteMap: {
-    top: ["bergamot", "mandarin", "cedar-leaf"],
-    heart: ["lavender", "clary-sage", "violet-leaf"],
-    base: ["vetiver", "amber", "musk"]
-  },
+      top: ["bergamot", "mandarin", "cedar-leaf"],
+      heart: ["lavender", "clary-sage", "violet-leaf"],
+      base: ["vetiver", "amber", "musk"]
+    }
   },
   {
     id: 34,
@@ -975,21 +979,22 @@ export const products = [
     badge: "HIDDEN GEM",
     rating: 7.6,
     ratingLabel: "Well Loved",
-    season: "all",
+    season: "winter",
     moods: ["signature", "date", "soft"],
     recommendations: [
-    "calvin-klein-defy-edt",
-    "montblanc-explorer-extreme"
-  ],
+      "calvin-klein-defy-edt",
+      "prada-paradigme-edp",
+      "narciso-rodriguez-for-him-bleu-noir-edp"
+    ],
     inspiredBy: {
-    name: "Original Calvin Klein creation",
-    short: "Woody Leather DNA"
-  },
+      name: "Original Calvin Klein creation",
+      short: "Aromatic Sandalwood DNA"
+    },
     noteMap: {
-    top: ["mandarin", "pink-pepper", "cardamom"],
-    heart: ["lavender", "geranium", "ginger"],
-    base: ["cocoa-shell", "vetiver", "sandalwood"]
-  },
+      top: ["mandarin", "pink-pepper", "cardamom"],
+      heart: ["lavender", "geranium", "ginger"],
+      base: ["cocoa-shell", "vetiver", "sandalwood"]
+    }
   },
   {
     id: 35,
@@ -1005,23 +1010,24 @@ export const products = [
     season: "winter",
     moods: ["rich", "date", "signature"],
     recommendations: [
-    "swiss-arabian-tobacco-01",
-    "lattafa-khamrah-qahwa"
-  ],
+      "swiss-arabian-tobacco-01",
+      "emir-voux-elegante",
+      "bvlgari-man-in-black-edp"
+    ],
     inspiredBy: {
-    name: "Original Chopard creation",
-    short: "Oud Tobacco DNA"
-  },
+      name: "Original Chopard creation",
+      short: "Oud Tobacco Leather DNA"
+    },
     noteMap: {
-    top: ["grapefruit", "lavender", "artemisia"],
-    heart: ["tobacco", "spices", "leather"],
-    base: ["oud", "dark-woods", "ambergris"]
-  },
+      top: ["grapefruit", "lavender", "artemisia"],
+      heart: ["tobacco", "spices", "leather"],
+      base: ["oud", "dark-woods", "ambergris"]
+    }
   },
   {
     id: 36,
     slug: "creed-aventus-cologne",
-    name: "Creed Aventus Cologne",
+    name: "Creed Aventus Cologne Eau de Parfum",
     shortName: "Aventus Cologne",
     category: "Niche",
     image: "/products/Creed-Aventus-Cologne.png",
@@ -1029,27 +1035,32 @@ export const products = [
     badge: "LUXURY PICK",
     rating: 9.3,
     ratingLabel: "Top Rated",
-    season: "all",
+    season: "summer",
     moods: ["clean", "summer", "signature"],
     recommendations: [
-    "armaf-club-de-nuit-intense",
-    "armaf-club-de-nuit-precieux-i"
-  ],
+      "armaf-club-de-nuit-intense",
+      "mancera-cedrat-boise",
+      "afnan-supremacy-collectors-edition"
+    ],
     inspiredBy: {
-    name: "Original Creed creation",
-    short: "Fresh Aventus DNA"
-  },
+      name: "Original Creed creation",
+      short: "Fresh Aventus DNA"
+    },
     noteMap: {
-    top: ["bergamot", "mandarin", "marine-notes"],
-    heart: ["ginger", "pineapple", "pink-pepper"],
-    base: ["musk", "patchouli", "birch"]
-  },
+      top: [
+        "calabrian-bergamot",
+        "mandarin",
+        "salty-marine-accord"
+      ],
+      heart: ["ginger", "pineapple", "pink-pepper"],
+      base: ["musk", "patchouli", "birch"]
+    }
   },
   {
     id: 37,
     slug: "giorgio-armani-acqua-di-gio-profondo-parfum",
     name: "Giorgio Armani Acqua di Giò Profondo Parfum",
-    shortName: "ADG Profondo",
+    shortName: "ADG Profondo Parfum",
     category: "Designer",
     image: "/products/AcquadiGiò-Profondo-Parfum.png",
     sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
@@ -1059,18 +1070,19 @@ export const products = [
     season: "summer",
     moods: ["clean", "summer", "signature"],
     recommendations: [
-    "bleu-de-chanel-edp",
-    "rasasi-hawas-ice"
-  ],
+      "lattafa-suqraat-edp",
+      "rasasi-hawas-ice",
+      "thomas-kosmala-no7-le-sel-de-la-terre"
+    ],
     inspiredBy: {
-    name: "Original Giorgio Armani creation",
-    short: "Marine Aromatic DNA"
-  },
+      name: "Original Giorgio Armani creation",
+      short: "Deep Marine Aromatic DNA"
+    },
     noteMap: {
-    top: ["marine-notes", "green-mandarin"],
-    heart: ["mimosa"],
-    base: ["patchouli", "labdanum"]
-  },
+      top: ["marine-notes", "green-mandarin"],
+      heart: ["mimosa"],
+      base: ["patchouli", "labdanum"]
+    }
   },
   {
     id: 38,
@@ -1086,24 +1098,42 @@ export const products = [
     season: "winter",
     moods: ["date", "rich", "signature"],
     recommendations: [
-    "montblanc-explorer-extreme",
-    "armaf-club-de-nuit-bling"
-  ],
+      "montblanc-explorer-extreme",
+      "armaf-club-de-nuit-bling",
+      "afnan-9pm-rebel"
+    ],
     inspiredBy: {
-    name: "Original Gisada creation",
-    short: "Sweet Fruity DNA"
-  },
+      name: "Original Gisada creation",
+      short: "Sweet Fruity Aromatic DNA"
+    },
     noteMap: {
-    top: ["green-mandarin", "apple", "cardamom"],
-    heart: ["mango", "black-pepper", "lavender"],
-    base: ["vanilla", "amber", "vetiver"]
-  },
+      top: [
+        "green-mandarin",
+        "apple",
+        "cardamom",
+        "violet"
+      ],
+      heart: [
+        "mango",
+        "lavender",
+        "black-pepper",
+        "patchouli",
+        "peony"
+      ],
+      base: [
+        "vanilla",
+        "amber",
+        "teak-wood",
+        "vetiver",
+        "moss"
+      ]
+    }
   },
   {
     id: 39,
     slug: "givenchy-gentleman-reserve-privee",
-    name: "Givenchy Gentleman Eau de Parfum Réserve Privée",
-    shortName: "Réserve Privée",
+    name: "Givenchy Gentleman Réserve Privée Eau de Parfum",
+    shortName: "Gentleman Réserve Privée",
     category: "Designer",
     image: "/products/Givenchy-Gentleman-EdP-Réserve-Privée.png",
     sizes: { "2ml": 5, "5ml": 12, "10ml": 21 },
@@ -1113,18 +1143,19 @@ export const products = [
     season: "winter",
     moods: ["rich", "date", "soft"],
     recommendations: [
-    "lhomme-ideal-guerlain-edt",
-    "tom-ford-noir-extreme"
-  ],
+      "lhomme-ideal-guerlain-edt",
+      "tom-ford-noir-extreme",
+      "boss-the-scent-le-parfum"
+    ],
     inspiredBy: {
-    name: "Original Givenchy creation",
-    short: "Whiskey Iris DNA"
-  },
+      name: "Original Givenchy creation",
+      short: "Whisky Iris Amber DNA"
+    },
     noteMap: {
-    top: ["bergamot", "whiskey"],
-    heart: ["chestnut", "iris", "benzoin"],
-    base: ["cedarwood", "vetiver", "patchouli"]
-  },
+      top: ["bergamot", "whisky"],
+      heart: ["chestnut", "orris", "benzoin"],
+      base: ["cedarwood", "vetiver", "patchouli"]
+    }
   },
   {
     id: 40,
@@ -1140,18 +1171,19 @@ export const products = [
     season: "summer",
     moods: ["clean", "summer", "soft"],
     recommendations: [
-    "versace-man-eau-fraiche",
-    "calvin-klein-defy-edt"
-  ],
+      "versace-man-eau-fraiche",
+      "calvin-klein-defy-edt",
+      "prada-luna-rossa-ocean-edt"
+    ],
     inspiredBy: {
-    name: "Original Jimmy Choo creation",
-    short: "Fresh Leather DNA"
-  },
+      name: "Original Jimmy Choo creation",
+      short: "Fresh Aromatic Leather DNA"
+    },
     noteMap: {
-    top: ["lavender", "black-pepper", "clary-sage"],
-    heart: ["leather", "cypress", "ambergris"],
-    base: ["vanilla", "sandalwood", "vetiver"]
-  },
+      top: ["lavender", "black-pepper", "clary-sage", "bergamot"],
+      heart: ["ambergris", "leather", "cypress", "apple", "pineapple"],
+      base: ["vanilla", "sandalwood", "vetiver", "patchouli"]
+    }
   },
   {
     id: 41,
