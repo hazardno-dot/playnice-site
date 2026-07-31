@@ -8,11 +8,11 @@ export const categoryLabels = {
 };
 
 export const products = [
-  {
+    {
     id: 1,
     slug: "afnan-9am",
-    name: "Afnan 9AM",
-    shortName: "9AM",
+    name: "Afnan 9 AM Eau de Parfum",
+    shortName: "9 AM",
     category: "Arabian",
     image: "/products/afnan-9am.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -22,24 +22,25 @@ export const products = [
     season: "summer",
     moods: ["clean", "summer", "signature"],
     recommendations: [
-    "rasasi-hawas-ice",
-    "rayhaan-pacific-aura"
-  ],
+      "rasasi-hawas-ice",
+      "lattafa-maahir-legacy",
+      "french-avenue-ravine-ice"
+    ],
     inspiredBy: {
-    name: "Maison Francis Kurkdjian Aqua Vitae Forte",
-    short: "Aqua Vitae Forte DNA"
-  },
+      name: "Maison Francis Kurkdjian Aqua Vitae Forte",
+      short: "Aqua Vitae Forte DNA"
+    },
     noteMap: {
-    top: ["mandarin", "cedrat", "cardamom"],
-    heart: ["lavender", "orange-blossom", "rose"],
-    base: ["cedarwood", "moss", "patchouli"]
-  },
+      top: ["mandarin", "cedrat", "cardamom"],
+      heart: ["lavender", "orange-blossom", "rose"],
+      base: ["cedarwood", "moss", "patchouli"]
+    }
   },
   {
     id: 2,
     slug: "afnan-9pm-rebel",
-    name: "Afnan 9PM Rebel",
-    shortName: "9PM Rebel",
+    name: "Afnan 9 PM Rebel Eau de Parfum",
+    shortName: "9 PM Rebel",
     category: "Arabian",
     image: "/products/9pm.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -49,23 +50,24 @@ export const products = [
     season: "winter",
     moods: ["date", "rich", "signature"],
     recommendations: [
-    "afnan-9pm-night-out",
-    "lattafa-fakhar-black"
-  ],
+      "afnan-supremacy-collectors-edition",
+      "armaf-club-de-nuit-intense",
+      "lattafa-khamrah-qahwa"
+    ],
     inspiredBy: {
-    name: "Creed Aventus and MFK Baccarat Rouge 540",
-    short: "Aventus and Baccarat Rouge 540 DNA"
-  },
+      name: "Creed Aventus and Maison Francis Kurkdjian Baccarat Rouge 540",
+      short: "Aventus / BR540 DNA"
+    },
     noteMap: {
-    top: ["mandarin", "pineapple", "green-apple"],
-    heart: ["cedarwood", "oakmoss", "vanilla"],
-    base: ["caramel", "dry-woods", "ambergris"]
-  },
+      top: ["mandarin", "pineapple", "green-apple"],
+      heart: ["cedarwood", "oakmoss", "vanilla"],
+      base: ["caramel", "dry-woods", "ambergris"]
+    }
   },
   {
     id: 3,
     slug: "afnan-supremacy-collectors-edition",
-    name: "Afnan Supremacy Collector's Edition Pour Homme",
+    name: "Afnan Supremacy Collector's Edition Pour Homme Eau de Parfum",
     shortName: "Supremacy Collector's",
     category: "Arabian",
     image: "/products/afnan-supremacy.png",
@@ -76,23 +78,24 @@ export const products = [
     season: "all",
     moods: ["signature", "rich", "date"],
     recommendations: [
-    "armaf-club-de-nuit-intense",
-    "creed-aventus-cologne"
-  ],
+      "armaf-club-de-nuit-intense",
+      "armaf-club-de-nuit-precieux-i",
+      "creed-aventus-cologne"
+    ],
     inspiredBy: {
-    name: "Creed Absolu Aventus",
-    short: "Absolu Aventus DNA"
-  },
+      name: "Creed Absolu Aventus",
+      short: "Absolu Aventus DNA"
+    },
     noteMap: {
-    top: ["pineapple", "bergamot", "apple"],
-    heart: ["orange-blossom", "birch", "amber"],
-    base: ["oakmoss", "musk", "ambergris"]
-  },
+      top: ["pineapple", "bergamot", "apple"],
+      heart: ["orange-blossom", "birch", "amber"],
+      base: ["oakmoss", "musk", "ambergris"]
+    }
   },
   {
     id: 4,
     slug: "afnan-turathi-blue",
-    name: "Afnan Turathi Blue",
+    name: "Afnan Turathi Blue Homme Eau de Parfum",
     shortName: "Turathi Blue",
     category: "Arabian",
     image: "/products/afnan-turathi-blue.png",
@@ -103,23 +106,24 @@ export const products = [
     season: "summer",
     moods: ["clean", "summer", "signature"],
     recommendations: [
-    "bleu-de-chanel-edp",
-    "rasasi-hawas-ice"
-  ],
+      "bleu-de-chanel-edp",
+      "khadlaj-onyx-silver",
+      "essential-parfums-nice-bergamote"
+    ],
     inspiredBy: {
-    name: "Bvlgari Tygar / Sospiro Perfumes Vibrato",
-    short: "Tygar DNA"
-  },
+      name: "Bvlgari Tygar",
+      short: "Tygar DNA"
+    },
     noteMap: {
-    top: ["bergamot", "mandarin"],
-    heart: ["amber", "woody-notes"],
-    base: ["musk", "patchouli", "fresh-spices"]
-  },
+      top: ["bergamot", "mandarin"],
+      heart: ["amber", "woody-notes"],
+      base: ["musk", "patchouli", "fresh-spices"]
+    }
   },
   {
     id: 5,
     slug: "arabiyat-prestige-marwa",
-    name: "Arabiyat Prestige Marwa",
+    name: "Arabiyat Prestige Marwa Eau de Parfum",
     shortName: "Prestige Marwa",
     category: "Arabian",
     image: "/products/marwa.png",
@@ -128,24 +132,26 @@ export const products = [
     rating: 8.0,
     ratingLabel: "Audience Favorite",
     season: "summer",
-    moods: ["soft", "date", "rich"],
+    moods: ["clean", "summer", "signature"],
     recommendations: [
-    "khadlaj-island-dreams"
-  ],
+      "khadlaj-island-dreams",
+      "mawj-moscow-mule",
+      "khadlaj-shiyaaka-snow-edp"
+    ],
     inspiredBy: {
-    name: "Louis Vuitton Imagination",
-    short: "Imagination DNA"
-  },
+      name: "Louis Vuitton Imagination",
+      short: "Imagination DNA"
+    },
     noteMap: {
-    top: ["bergamot", "lemon", "orange"],
-    heart: ["ginger", "cinnamon", "neroli"],
-    base: ["ambroxan", "black-tea", "guaiac-wood"]
-  },
+      top: ["bergamot", "petitgrain", "ginger"],
+      heart: ["geranium", "black-tea", "incense"],
+      base: ["guaiac-wood", "ambroxan", "musk"]
+    }
   },
   {
     id: 6,
     slug: "armaf-club-de-nuit-bling",
-    name: "Armaf Club De Nuit Bling",
+    name: "Armaf Club de Nuit Bling Eau de Parfum",
     shortName: "CDN Bling",
     category: "Arabian",
     image: "/products/Bling.png",
@@ -153,27 +159,28 @@ export const products = [
     badge: "ARABIAN GEM",
     rating: 7.7,
     ratingLabel: "Well Loved",
-    season: "all",
+    season: "winter",
     moods: ["date", "rich", "signature"],
     recommendations: [
-    "armaf-club-de-nuit-sillage",
-    "gisada-ambassador-men"
-  ],
+      "ysl-myslf-edp",
+      "gisada-ambassador-men",
+      "armaf-club-de-nuit-sillage"
+    ],
     inspiredBy: {
-    name: "Original Armaf creation",
-    short: "Fruity Floral DNA"
-  },
+      name: "Original Armaf creation",
+      short: "Fruity Floral DNA"
+    },
     noteMap: {
-    top: ["citruses"],
-    heart: ["flower-prism", "stardust"],
-    base: ["vanilla", "velvet-wood"]
-  },
+      top: ["citruses"],
+      heart: ["flower-prism", "stardust"],
+      base: ["vanilla", "velvet-wood"]
+    }
   },
   {
     id: 7,
     slug: "armaf-club-de-nuit-intense",
-    name: "Armaf Club de Nuit Intense",
-    shortName: "CDN Intense",
+    name: "Armaf Club de Nuit Intense Man Eau de Toilette",
+    shortName: "CDN Intense Man",
     category: "Arabian",
     image: "/products/armaf-cdn-intense.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -183,23 +190,24 @@ export const products = [
     season: "all",
     moods: ["signature", "date", "rich"],
     recommendations: [
-    "creed-aventus-cologne",
-    "afnan-supremacy-collectors-edition"
-  ],
+      "creed-aventus-cologne",
+      "afnan-supremacy-collectors-edition",
+      "armaf-club-de-nuit-precieux-i"
+    ],
     inspiredBy: {
-    name: "Creed Aventus",
-    short: "Aventus DNA"
-  },
+      name: "Creed Aventus",
+      short: "Aventus DNA"
+    },
     noteMap: {
-    top: ["lemon", "pineapple", "bergamot"],
-    heart: ["rose", "birch", "jasmine"],
-    base: ["musk", "ambergris", "patchouli"]
-  },
+      top: ["lemon", "pineapple", "bergamot"],
+      heart: ["rose", "birch", "jasmine"],
+      base: ["musk", "ambergris", "patchouli"]
+    }
   },
   {
     id: 8,
     slug: "armaf-club-de-nuit-sillage",
-    name: "Armaf Club de Nuit Sillage",
+    name: "Armaf Club de Nuit Sillage Eau de Parfum",
     shortName: "CDN Sillage",
     category: "Arabian",
     image: "/products/CDN-Sillage.png",
@@ -208,25 +216,26 @@ export const products = [
     rating: 8.0,
     ratingLabel: "Audience Favorite",
     season: "summer",
-    moods: ["clean", "signature", "soft"],
+    moods: ["clean", "summer", "signature"],
     recommendations: [
-    "bois-imperial-essential-parfums",
-    "acqua-di-parma-colonia-essenza"
-  ],
+      "acqua-di-parma-colonia-essenza",
+      "bois-imperial-essential-parfums",
+      "armaf-club-de-nuit-bling"
+    ],
     inspiredBy: {
-    name: "Creed Silver Mountain Water",
-    short: "Silver Mountain Water DNA"
-  },
+      name: "Creed Silver Mountain Water",
+      short: "Silver Mountain Water DNA"
+    },
     noteMap: {
-    top: ["bergamot", "lemon", "lime"],
-    heart: ["jasmine", "iris", "rose"],
-    base: ["sandalwood", "musk", "ambroxan"]
-  },
+      top: ["bergamot", "lemon", "lime"],
+      heart: ["jasmine", "iris", "rose"],
+      base: ["sandalwood", "musk", "ambroxan"]
+    }
   },
   {
     id: 9,
     slug: "french-avenue-vulcan-sable",
-    name: "French Avenue Vulcan Sable by Fragrance World",
+    name: "French Avenue Vulcan Sable Eau de Parfum",
     shortName: "Vulcan Sable",
     category: "Arabian",
     image: "/products/Vulcan-Sable.png",
@@ -237,23 +246,24 @@ export const products = [
     season: "winter",
     moods: ["rich", "date", "signature"],
     recommendations: [
-    "lattafa-musamam-black-intense",
-    "tom-ford-noir-extreme"
-  ],
+      "tom-ford-noir-extreme",
+      "lattafa-musamam-black-intense",
+      "lattafa-khamrah-qahwa"
+    ],
     inspiredBy: {
-    name: "Stéphane Humbert Lucas 777 Sand Dance",
-    short: "Sand Dance DNA"
-  },
+      name: "Stéphane Humbert Lucas 777 Sand Dance",
+      short: "Sand Dance DNA"
+    },
     noteMap: {
-    top: ["whiskey", "orange", "mandarin"],
-    heart: ["tonka-bean", "cashmeran", "styrax"],
-    base: ["vanilla", "benzoin", "patchouli"]
-  },
+      top: ["whiskey", "coriander", "mandarin"],
+      heart: ["sandalwood", "cashmeran"],
+      base: ["tonka-bean", "benzoin", "vanilla"]
+    }
   },
   {
     id: 10,
     slug: "haramain-signature-blue",
-    name: "Haramain Signature Blue",
+    name: "Haramain Signature Blue Eau de Parfum",
     shortName: "Signature Blue",
     category: "Arabian",
     image: "/products/Haramain-Signature-Blue.png",
@@ -264,18 +274,19 @@ export const products = [
     season: "summer",
     moods: ["clean", "summer", "signature"],
     recommendations: [
-    "rasasi-hawas-ice",
-    "rayhaan-pacific-aura"
-  ],
+      "bleu-de-chanel-edp",
+      "rayhaan-nocturno-elixir",
+      "lattafa-fakhar-black"
+    ],
     inspiredBy: {
-    name: "Bleu de Chanel Eau de Parfum",
-    short: "Bleu de Chanel DNA"
-  },
+      name: "Bleu de Chanel Eau de Toilette",
+      short: "Bleu de Chanel EDT DNA"
+    },
     noteMap: {
-    top: ["lemon", "bergamot", "grapefruit"],
-    heart: ["geranium"],
-    base: ["cedarwood", "vetiver", "patchouli"]
-  },
+      top: ["lemon", "bergamot", "grapefruit"],
+      heart: ["geranium"],
+      base: ["cedarwood", "vetiver", "patchouli"]
+    }
   },
   {
     id: 11,
