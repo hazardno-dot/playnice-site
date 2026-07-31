@@ -1962,271 +1962,283 @@ export const productCopy = {
     },
   },
 
-  "Yves Saint Laurent MYSLF Eau de Parfum": {
-    miniTag: { sr: "⚪ Čist / Drvenast", en: "⚪ Clean / Woods" },
+    "Yves Saint Laurent MYSLF Eau de Parfum": {
+    miniTag: { sr: "🌼 Cvet narandže / Drvo", en: "🌼 Orange Blossom / Woods" },
     card: {
-      sr: "Čist, moderan i drvenast miris sa cvetnim obrtom.",
-      en: "Clean modern woody scent with a floral twist.",
+      sr: "Kalabrijski bergamot, cvet narandže i toplo drvo u modernom mirisu.",
+      en: "Calabrian bergamot, orange blossom and warm woods in a modern scent.",
     },
     modal: {
-      sr: "Svež bergamot, cvet narandže i topla drvena baza daju čist, moderan i nosiv karakter.",
-      en: "Fresh bergamot, orange blossom and warm woods create a clean modern wearable character.",
+      sr: "Kalabrijski bergamot otvara miris čisto i blistavo, apsolut tuniskog cveta narandže daje cvetno srce, a toplo drvo, pačuli i Ambrofix moderan trag.",
+      en: "Calabrian bergamot opens cleanly and brightly, Tunisian orange blossom absolute forms the floral heart, while warm woods, patchouli and Ambrofix leave a modern trail.",
     },
-    scentType: { sr: "Svež, drvenast i cvetni", en: "Fresh woody floral" },
+    scentType: {
+      sr: "Citrusni, cvetni i drvenast",
+      en: "Citrus floral woody",
+    },
     dominantNotes: {
-      sr: ["bergamot", "cvet narandže", "drvo", "pačuli"],
-      en: ["bergamot", "orange blossom", "woods", "patchouli"],
+      sr: ["kalabrijski bergamot", "cvet narandže", "toplo drvo", "pačuli"],
+      en: ["Calabrian bergamot", "orange blossom", "warm woods", "patchouli"],
     },
     tags: {
-      sr: ["Čist", "Moderan", "Prepoznatljiv"],
-      en: ["Clean", "Modern", "Signature"],
+      sr: ["Čist", "Prepoznatljiv", "Večernji"],
+      en: ["Clean", "Signature", "Night"],
     },
     whyChoose: {
-      sr: "Ako želiš siguran moderan miris za svaki dan i izlazak.",
-      en: "If you want a safe modern scent for daily wear and going out.",
+      sr: "Ako želiš čist, privlačan i veoma nosiv moderan parfem za dan i izlazak.",
+      en: "If you want a clean attractive and highly wearable modern fragrance for day and night.",
     },
   },
 
-  "Carolina Herrera Bad Boy Cobalt Eau de Parfum": {
-    miniTag: { sr: "⚡ Šljiva / Aromatičan", en: "⚡ Plum / Aromatic" },
+  "Carolina Herrera Bad Boy Cobalt Eau de Parfum Électrique": {
+    miniTag: { sr: "🫐 Crna šljiva / Aromatičan", en: "🫐 Black Plum / Aromatic" },
     card: {
-      sr: "Svež začinski start sa šljivom i drvenom bazom.",
-      en: "Fresh spicy opening with plum and woody base.",
+      sr: "Crna šljiva, ružičasti biber i vetiver u smelom modernom mirisu.",
+      en: "Black plum, pink pepper and vetiver in a bold modern fragrance.",
     },
     modal: {
-      sr: "Lavanda i roze biber otvaraju miris sveže, zatim šljiva i geranijum vode ka drvenom završetku.",
-      en: "Lavender and pink pepper open fresh, then plum and geranium lead into a woody finish.",
+      sr: "Ružičasti biber i lavanda daju energičan početak, geranijum i crna šljiva sočno aromatično srce, a tartuf, vetiver i kedar tamnu dubinu.",
+      en: "Pink pepper and lavender create an energetic opening, geranium and black plum form a juicy aromatic heart, while truffle, vetiver and cedarwood add dark depth.",
     },
     scentType: {
-      sr: "Drvenast, aromatičan i voćni",
-      en: "Woody aromatic fruity",
+      sr: "Voćni, aromatičan i drvenast",
+      en: "Fruity aromatic woody",
     },
     dominantNotes: {
-      sr: ["lavanda", "roze biber", "šljiva", "drvo"],
-      en: ["lavender", "pink pepper", "plum", "woods"],
+      sr: ["crna šljiva", "ružičasti biber", "lavanda", "vetiver"],
+      en: ["black plum", "pink pepper", "lavender", "vetiver"],
     },
     tags: {
-      sr: ["Svež", "Snažan", "Moderan"],
-      en: ["Fresh", "Bold", "Modern"],
+      sr: ["Večernji", "Prepoznatljiv", "Čist"],
+      en: ["Night", "Signature", "Clean"],
     },
     whyChoose: {
-      sr: "Ako želiš moderan, privlačan i lako nosiv dizajnerski miris.",
-      en: "If you want a modern attractive easy-to-wear designer scent.",
+      sr: "Ako želiš mladalački, privlačan i lako nosiv miris sa neobičnom notom šljive.",
+      en: "If you want a youthful attractive easy-to-wear scent with an unusual plum note.",
     },
   },
 
   "Prada Luna Rossa Ocean Eau de Toilette": {
-    miniTag: { sr: "🌊 Okeanski / Čist", en: "🌊 Ocean / Clean" },
+    miniTag: { sr: "💙 Lavanda / Iris", en: "💙 Lavender / Iris" },
     card: {
-      sr: "Čist i vodeno-svež Prada miris za tople dane.",
-      en: "Clean aquatic-fresh Prada scent for warm days.",
+      sr: "Bergamot, lavanda i iris u čistom, elegantnom Prada mirisu.",
+      en: "Bergamot, lavender and iris in a clean elegant Prada fragrance.",
     },
     modal: {
-      sr: "Bergamot, iris i vetiver daju svež, čist i elegantan oceanic profil.",
-      en: "Bergamot, iris and vetiver create a fresh clean elegant oceanic profile.",
+      sr: "Bergamot daje blistav početak, lavanda, žalfija i iris grade uglađeno aromatično srce, a vetiver i tonka mekan i moderan završetak.",
+      en: "Bergamot creates a bright opening, lavender, sage and iris form a polished aromatic heart, while vetiver and tonka provide a soft modern finish.",
     },
     scentType: {
-      sr: "Svež, vodeni i aromatičan",
-      en: "Fresh aquatic aromatic",
+      sr: "Citrusni, aromatičan i puderast",
+      en: "Citrus aromatic powdery",
     },
     dominantNotes: {
-      sr: ["bergamot", "iris", "vetiver", "mošus"],
-      en: ["bergamot", "iris", "vetiver", "musk"],
+      sr: ["bergamot", "lavanda", "iris", "vetiver"],
+      en: ["bergamot", "lavender", "iris", "vetiver"],
     },
-    tags: { sr: ["Čist", "Svež", "Letnji"], en: ["Clean", "Fresh", "Summer"] },
+    tags: {
+      sr: ["Čist", "Letnji", "Prepoznatljiv"],
+      en: ["Clean", "Summer", "Signature"],
+    },
     whyChoose: {
-      sr: "Ako želiš čist, elegantan i bezbedan letnji miris.",
-      en: "If you want a clean elegant safe summer scent.",
+      sr: "Ako želiš besprekoran i nenametljiv dnevni parfem sa prepoznatljivom Prada čistoćom.",
+      en: "If you want an impeccable effortless daytime scent with signature Prada cleanliness.",
     },
   },
 
-  "Thomas Kosmala No. 7 Le Sel de la Terre": {
-    miniTag: { sr: "🌊 Morski / Nišni", en: "🌊 Marine / Niche" },
+  "Thomas Kosmala No. 7 Le Sel de la Terre Eau de Parfum": {
+    miniTag: { sr: "🌊 Morski / Citrusni", en: "🌊 Marine / Citrus" },
     card: {
-      sr: "Morska so, citrusi i mineralna elegancija.",
-      en: "Sea salt, citrus and mineral elegance.",
+      sr: "Italijanski limun, morske note i mošus u prozračnom niche mirisu.",
+      en: "Italian lemon, marine notes and musk in an airy niche fragrance.",
     },
     modal: {
-      sr: "Spoj morske soli, citrusa i drvenasto-mošusne baze stvara svež, sofisticiran i upečatljiv nišni miris.",
-      en: "Sea salt, citrus and a woody musky base create a fresh, sophisticated and distinctive niche scent.",
+      sr: "Bergamot, italijanski limun i sveže morske note otvaraju miris blistavo, vodeni akord i cveće daju prozračnost, a drvo i mošus čist trag.",
+      en: "Bergamot, Italian lemon and fresh marine notes open brightly, an aquatic accord and florals add airiness, while woods and musk leave a clean trail.",
     },
     scentType: {
-      sr: "Morski, citrusni i drvenast",
-      en: "Marine citrus woody",
+      sr: "Morski, citrusni i mošusni",
+      en: "Marine citrus musky",
     },
     dominantNotes: {
-      sr: ["morska so", "citrusi", "drvo", "mošus"],
-      en: ["sea salt", "citrus", "woods", "musk"],
+      sr: ["italijanski limun", "morske note", "vodeni akord", "mošus"],
+      en: ["Italian lemon", "marine notes", "aquatic accord", "musk"],
     },
     tags: {
-      sr: ["Morski", "Nišni", "Letnji"],
-      en: ["Marine", "Niche", "Summer"],
+      sr: ["Letnji", "Prepoznatljiv", "Čist"],
+      en: ["Summer", "Signature", "Clean"],
     },
     whyChoose: {
-      sr: "Ako želiš jedinstven letnji nišni miris sa morskim karakterom.",
-      en: "If you want a unique summer niche scent with a marine character.",
+      sr: "Ako želiš luksuzan i upečatljiv morski parfem sa svetlim citrusnim karakterom.",
+      en: "If you want a luxurious distinctive marine fragrance with bright citrus character.",
     },
   },
 
   "Jean Paul Gaultier Le Beau Eau de Toilette": {
-    miniTag: { sr: "🥥 Tropski / Za izlazak", en: "🥥 Tropical / Date" },
+    miniTag: { sr: "🥥 Kokos / Tonka", en: "🥥 Coconut / Tonka" },
     card: {
-      sr: "Kokos, tonka i tropska svežina u zavodljivom spoju.",
-      en: "Coconut, tonka and tropical freshness in a seductive blend.",
+      sr: "Bergamot, kokosovo drvo i tonka u zavodljivom tropskom mirisu.",
+      en: "Bergamot, coconut wood and tonka in a seductive tropical fragrance.",
     },
     modal: {
-      sr: "Bergamot otvara miris sveže, dok kokos, tonka i drvenaste note stvaraju topao i zavodljiv tropski karakter.",
-      en: "Bergamot opens fresh, while coconut, tonka and woods create a warm, seductive tropical character.",
+      sr: "Bergamot otvara miris blistavom svežinom, kokosovo drvo donosi kremasti tropski karakter, a tonka ostavlja topao, sladak i privlačan trag.",
+      en: "Bergamot opens with radiant freshness, coconut wood brings creamy tropical character, and tonka leaves a warm sweet attractive trail.",
     },
     scentType: {
       sr: "Tropski, drvenast i gurmanski",
       en: "Tropical woody gourmand",
     },
     dominantNotes: {
-      sr: ["kokos", "bergamot", "tonka", "drvo"],
-      en: ["coconut", "bergamot", "tonka", "woods"],
+      sr: ["bergamot", "kokosovo drvo", "tonka"],
+      en: ["bergamot", "coconut wood", "tonka bean"],
     },
     tags: {
-      sr: ["Letnji", "Večernji izlazak", "Za komplimente"],
-      en: ["Summer", "Date Night", "Compliment"],
+      sr: ["Letnji", "Večernji", "Prepoznatljiv"],
+      en: ["Summer", "Night", "Signature"],
     },
     whyChoose: {
-      sr: "Ako želiš tropski miris koji privlači komplimente.",
-      en: "If you want a tropical scent that gets compliments.",
+      sr: "Ako želiš jednostavan, zavodljiv i veoma privlačan tropski parfem za leto.",
+      en: "If you want a simple seductive and highly attractive tropical fragrance for summer.",
     },
   },
 
   "Rayhaan Azul Eau de Parfum": {
-    miniTag: { sr: "🔵 Svež / Plavi", en: "🔵 Fresh / Blue" },
+    miniTag: { sr: "🍋 Citrusni / Kalon", en: "🍋 Citrus / Calone" },
     card: {
-      sr: "Moderan plavi miris sa čistim karakterom.",
-      en: "Modern blue fragrance with a clean character.",
+      sr: "Bergamot, limun i cvet grejpa u čistom svetlom letnjem mirisu.",
+      en: "Bergamot, lemon and grapefruit blossom in a clean bright summer scent.",
     },
     modal: {
-      sr: "Citrusi, đumbir i drvenasta baza stvaraju svež i elegantan svakodnevni miris.",
-      en: "Citrus, ginger and a woody base create a fresh and elegant everyday scent.",
+      sr: "Bergamot i limun otvaraju miris blistavo, cvet grejpa daje prozračno cvetno srce, a kalon i sandalovina čist, hladan i gladak završetak.",
+      en: "Bergamot and lemon open brightly, grapefruit blossom creates an airy floral heart, while calone and sandalwood provide a clean cool smooth finish.",
     },
     scentType: {
-      sr: "Svež, drvenast i aromatičan",
-      en: "Fresh woody aromatic",
+      sr: "Citrusni, cvetni i drvenast",
+      en: "Citrus floral woody",
     },
     dominantNotes: {
-      sr: ["citrusi", "đumbir", "drvo"],
-      en: ["citrus", "ginger", "woods"],
+      sr: ["bergamot", "limun", "cvet grejpa", "kalon"],
+      en: ["bergamot", "lemon", "grapefruit blossom", "calone"],
     },
     tags: {
-      sr: ["Plavi", "Svež", "Svakodnevni"],
-      en: ["Blue", "Fresh", "Daily"],
+      sr: ["Letnji", "Čist", "Prepoznatljiv"],
+      en: ["Summer", "Clean", "Signature"],
     },
     whyChoose: {
-      sr: "Ako voliš čist i moderan plavi parfem.",
-      en: "If you enjoy clean modern blue fragrances.",
+      sr: "Ako želiš laganu i elegantnu citrusnu svežinu za najtoplije dane.",
+      en: "If you want light elegant citrus freshness for the hottest days.",
     },
   },
 
   "Lattafa Suqraat Eau de Parfum": {
-    miniTag: { sr: "🌊 Morski / Svež", en: "🌊 Marine / Fresh" },
+    miniTag: { sr: "🫚 Đumbir / Lavanda", en: "🫚 Ginger / Lavender" },
     card: {
-      sr: "Morska svežina sa elegantnom aromatikom.",
-      en: "Marine freshness with elegant aromatics.",
+      sr: "Bergamot, đumbir i lavanda u čistom aromatično-drvenastom mirisu.",
+      en: "Bergamot, ginger and lavender in a clean aromatic-woody scent.",
     },
     modal: {
-      sr: "Morske note, aromatično bilje i drvenasta baza daju čist i osvežavajući karakter.",
-      en: "Marine notes, aromatics and a woody base deliver a clean refreshing profile.",
+      sr: "Bergamot i đumbir daju svetao i začinski početak, lavanda i list ljubičice aromatično srce, a mošus, sandalovina i amber mekanu dubinu.",
+      en: "Bergamot and ginger create a bright spicy opening, lavender and violet leaf form an aromatic heart, while musk, sandalwood and amber provide soft depth.",
     },
     scentType: {
-      sr: "Morski, aromatičan i drvenast",
-      en: "Marine aromatic woody",
+      sr: "Citrusni, aromatičan i drvenast",
+      en: "Citrus aromatic woody",
     },
     dominantNotes: {
-      sr: ["morske note", "lavanda", "drvo"],
-      en: ["marine notes", "lavender", "woods"],
+      sr: ["bergamot", "đumbir", "lavanda", "sandalovina"],
+      en: ["bergamot", "ginger", "lavender", "sandalwood"],
     },
     tags: {
-      sr: ["Morski", "Letnji", "Svež"],
-      en: ["Marine", "Summer", "Fresh"],
+      sr: ["Letnji", "Čist", "Prepoznatljiv"],
+      en: ["Summer", "Clean", "Signature"],
     },
     whyChoose: {
-      sr: "Ako želiš lagan i osvežavajući letnji miris.",
-      en: "If you want a light refreshing summer fragrance.",
+      sr: "Ako želiš pristupačan i elegantan aromatičan miris za svakodnevno nošenje po toplom vremenu.",
+      en: "If you want an accessible elegant aromatic fragrance for everyday wear in warm weather.",
     },
   },
 
-  "Khadlaj Shiyaaka Snow Eau de Parfum": {
-    miniTag: { sr: "❄️ Čist / Elegantan", en: "❄️ Clean / Elegant" },
+  "Khadlaj Special Edition Shiyaaka Snow Eau de Parfum": {
+    miniTag: { sr: "🍊 Citrusi / Neroli", en: "🍊 Citrus / Neroli" },
     card: {
-      sr: "Čist, luksuzan i elegantan svakodnevni miris.",
-      en: "Clean luxurious fragrance for everyday elegance.",
+      sr: "Mandarina, neroli i vetiver u luksuznoj začinskoj svežini.",
+      en: "Mandarin, neroli and vetiver in luxurious spicy freshness.",
     },
     modal: {
-      sr: "Cvetne i drvenaste note daju sofisticiran, čist i veoma nosiv karakter.",
-      en: "Floral and woody notes create a sophisticated clean wearable scent.",
+      sr: "Mandarina, bergamot i citrusi daju blistav početak, neroli, muškatni oraščić i ružičasti biber karakter, a vetiver i kardamom suv elegantan trag.",
+      en: "Mandarin, bergamot and citrus create a radiant opening, neroli, nutmeg and pink pepper add character, while vetiver and cardamom leave a dry elegant trail.",
     },
-    scentType: { sr: "Cvetni, drvenast i mošusni", en: "Floral woody musky" },
+    scentType: {
+      sr: "Citrusni, začinski i vetiverski",
+      en: "Citrus spicy vetiver",
+    },
     dominantNotes: {
-      sr: ["cvetne note", "drvo", "mošus"],
-      en: ["florals", "woods", "musk"],
+      sr: ["mandarina", "neroli", "muškatni oraščić", "vetiver"],
+      en: ["mandarin", "neroli", "nutmeg", "vetiver"],
     },
     tags: {
-      sr: ["Elegantan", "Čist", "Prepoznatljiv"],
-      en: ["Elegant", "Clean", "Signature"],
+      sr: ["Čist", "Prepoznatljiv", "Letnji"],
+      en: ["Clean", "Signature", "Summer"],
     },
     whyChoose: {
-      sr: "Ako želiš luksuzan, čist i prepoznatljiv miris.",
-      en: "If you want a luxurious clean signature scent.",
+      sr: "Ako želiš luksuznu, čistu i začinjenu svežinu sa elegantnim suvim završetkom.",
+      en: "If you want luxurious clean spicy freshness with an elegant dry finish.",
     },
   },
 
-  "The French Avenue Ravine Ginger Extrait de Parfum": {
-    miniTag: { sr: "🫚 Đumbir / Citrusni", en: "🫚 Ginger / Citrus" },
+  "French Avenue Ravine Ginger Extrait de Parfum": {
+    miniTag: { sr: "🫚 Đumbir / Cvetni", en: "🫚 Ginger / Floral" },
     card: {
-      sr: "Đumbir i citrusi u modernom i prepoznatljivom spoju.",
-      en: "Ginger and citrus in a modern signature blend.",
+      sr: "Đumbir, limun i belo cveće u bogatom, svetlom letnjem mirisu.",
+      en: "Ginger, lemon and white florals in a rich bright summer fragrance.",
     },
     modal: {
-      sr: "Đumbir, citrusi i amber daju energičan, moderan i upečatljiv karakter.",
-      en: "Ginger, citrus and amber create an energetic modern signature scent.",
+      sr: "Đumbir, limun i bergamot otvaraju miris energično, cvet narandže, magnolija, jasmin i ruža daju raskoš, a vanila, amber i sandalovina toplu dubinu.",
+      en: "Ginger, lemon and bergamot open with energy, orange blossom, magnolia, jasmine and rose add opulence, while vanilla, amber and sandalwood bring warm depth.",
     },
-    scentType: { sr: "Citrusni, začinski i ambrast", en: "Citrus spicy amber" },
+    scentType: {
+      sr: "Citrusni, cvetni i ambrast",
+      en: "Citrus floral amber",
+    },
     dominantNotes: {
-      sr: ["đumbir", "citrusi", "ambra"],
-      en: ["ginger", "citrus", "amber"],
+      sr: ["đumbir", "limun", "cvet narandže", "vanila"],
+      en: ["ginger", "lemon", "orange blossom", "vanilla"],
     },
     tags: {
-      sr: ["Prepoznatljiv", "Svež", "Moderan"],
-      en: ["Signature", "Fresh", "Modern"],
+      sr: ["Prepoznatljiv", "Letnji", "Bogat"],
+      en: ["Signature", "Summer", "Rich"],
     },
     whyChoose: {
-      sr: "Ako želiš svež miris sa karakterom.",
-      en: "If you want a fresh scent with character.",
+      sr: "Ako želiš sofisticiran spoj blistavog đumbira, raskošnog cveća i tople baze.",
+      en: "If you want a sophisticated blend of sparkling ginger, opulent florals and a warm base.",
     },
   },
 
   "Lattafa Khamrah Waha Eau de Parfum": {
-    miniTag: { sr: "🥥 Gurmanski / Tropski", en: "🥥 Gourmand / Tropical" },
+    miniTag: { sr: "🥒 Yuzu / Krastavac", en: "🥒 Yuzu / Cucumber" },
     card: {
-      sr: "Kokos, vanila i začini u bogatom gurmanskom spoju.",
-      en: "Coconut, vanilla and spices in a rich gourmand blend.",
+      sr: "Yuzu, krastavac i morska so u modernom drvenasto-aromatičnom mirisu.",
+      en: "Yuzu, cucumber and sea salt in a modern woody-aromatic fragrance.",
     },
     modal: {
-      sr: "Kremasti kokos, slatka vanila i topli začini stvaraju bogat, moderan i veoma privlačan gurmanski miris.",
-      en: "Creamy coconut, sweet vanilla and warm spices create a rich, modern and highly addictive gourmand scent.",
+      sr: "Bergamot, kleka, yuzu i đumbir daju živahan početak, iris, krastavac, žalfija i morska so sveže srce, a Akigalawood, tonka, mošus i Ambrofix bogatu bazu.",
+      en: "Bergamot, juniper, yuzu and ginger create a lively opening, iris, cucumber, sage and sea salt form a fresh heart, while Akigalawood, tonka, musk and Ambrofix build a rich base.",
     },
     scentType: {
-      sr: "Tropski, gurmanski i ambrast",
-      en: "Tropical gourmand amber",
+      sr: "Citrusni, aromatičan i drvenast",
+      en: "Citrus aromatic woody",
     },
     dominantNotes: {
-      sr: ["kokos", "vanila", "začini", "ambar"],
-      en: ["coconut", "vanilla", "spices", "amber"],
+      sr: ["yuzu", "krastavac", "morska so", "Akigalawood"],
+      en: ["yuzu", "cucumber", "sea salt", "Akigalawood"],
     },
     tags: {
-      sr: ["Gurmanski", "Večernji izlazak", "Sladak"],
-      en: ["Gourmand", "Date Night", "Sweet"],
+      sr: ["Prepoznatljiv", "Bogat", "Večernji"],
+      en: ["Signature", "Rich", "Night"],
     },
     whyChoose: {
-      sr: "Ako voliš bogate, slatke i tropske mirise.",
-      en: "If you enjoy rich, sweet and tropical fragrances.",
+      sr: "Ako želiš neobičan i moderan miris koji spaja sveže zelene note i bogatu drvenastu bazu.",
+      en: "If you want an unusual modern fragrance combining fresh green notes with a rich woody base.",
     },
   },
 
