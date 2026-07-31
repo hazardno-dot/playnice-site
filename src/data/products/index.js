@@ -1976,7 +1976,7 @@ export const products = [
       short: "Iced Mint Y DNA"
     },
     noteMap: {
-      top: ["iced-mint", "arcticle-accord"],
+      top: ["iced-mint", "arctical"],
       heart: ["living-mint", "blue-sage"],
       base: ["ambroxan", "patchouli"]
     },
