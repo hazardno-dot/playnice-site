@@ -1822,266 +1822,311 @@ export const products = [
       base: ["vetiver", "black-cedar", "white-cedar"]
     }
   },
-{
-  id: 61,
-  slug: "ysl-black-opium-le-parfum",
-  name: "Yves Saint Laurent Black Opium Le Parfum",
-  shortName: "YSL Black Opium Le Parfum",
-  category: "Designer",
-  image: "/products/ysl-black-opium-le-parfum.png",
-  sizes: { "2ml": 8, "5ml": 18, "10ml": 32 },
-  badge: "SIGNATURE",
-  rating: 9.0,
-  ratingLabel: "Iconic Pick",
-  season: "winter",
-  moods: ["rich", "date", "signature"],
-  recommendations: [
-    "narciso-rodriguez-poudree"
-  ],
-  inspiredBy: {
-  name: "Original Yves Saint Laurent creation",
-  short: "Vanilla Coffee DNA"
-},
-  noteMap: {
-  top: ["cinnamon", "pear", "green-mandarin"],
-  heart: ["solar-notes", "jasmine-sambac", "orange-blossom"],
-  base: ["vanilla", "black-coffee", "vanilla-orchid"]
-},
-},
-{
-  id: 62,
-  slug: "french-avenue-pinnace-oryn",
-  name: "French Avenue Pinnace Oryn Eau De Parfum",
-  shortName: "Pinnace Oryn",
-  category: "Arabian",
-  image: "/products/french-avenue-pinnace-oryn.png",
-  sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-  badge: "ARABIAN GEM",
-  rating: 8.7,
-  ratingLabel: "Luxury Fresh",
-  season: "summer",
-  moods: ["clean", "signature", "summer"],
-  recommendations: [
-    "versace-man-eau-fraiche"
-  ],
-  inspiredBy: {
-  name: "Louis Vuitton Afternoon Swim",
-  short: "Afternoon Swim DNA"
-},
-  noteMap: {
-  top: ["bergamot", "mandarin", "orange"],
-  heart: ["ginger"],
-  base: ["amber", "ambergris"]
-},
-},
-{
-  id: 63,
-  slug: "riiffs-freeze-extrait",
-  name: "Riiffs Freeze Extrait De Parfum",
-  shortName: "Riiffs Freeze",
-  category: "Arabian",
-  image: "/products/riiffs-freeze-extrait.png",
-  sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
-  badge: "MOST WANTED",
-  rating: 8.3,
-  ratingLabel: "Fresh Favorite",
-  season: "summer",
-  moods: ["clean", "summer"],
-  recommendations: [
-    "afnan-9am"
-  ],
-  inspiredBy: {
-  name: "Jean Paul Gaultier Le Beau Paradise Garden",
-  short: "Paradise Garden DNA"
-},
-  noteMap: {
-  top: ["spearmint", "bergamot", "snow"],
-  heart: ["ice", "ginger", "tea"],
-  base: ["peony", "ambermax", "cedarwood"]
-},
-},
-{
-  id: 64,
-  slug: "lattafa-maahir-legacy",
-  name: "Lattafa Maahir Legacy Eau De Parfum",
-  shortName: "Maahir Legacy",
-  category: "Arabian",
-  image: "/products/lattafa-maahir-legacy.png",
-  sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
-  badge: "FRESH DROP",
-  rating: 8.5,
-  ratingLabel: "Fresh Signature",
-  season: "summer",
-  moods: ["clean", "signature", "summer"],
-  recommendations: [
-    "afnan-turathi-blue"
-  ],
-  inspiredBy: {
-  name: "Parfums de Marly Sedley",
-  short: "Sedley DNA"
-},
-  noteMap: {
-  top: ["lime", "mint", "grapefruit"],
-  heart: ["black-pepper", "juniper-berries", "rosemary"],
-  base: ["ambroxan", "oakmoss", "vetiver"]
-},
-},
-{
-  id: 65,
-  slug: "ysl-y-iced-cologne",
-  name: "Yves Saint Laurent Y Iced Cologne",
-  shortName: "Y YSL Iced",
-  category: "Designer",
-  image: "/products/ysl-y-iced-cologne.png",
-  sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
-  badge: "PLAYNICE PICK",
-  rating: 8.8,
-  ratingLabel: "Summer Hit",
-  season: "summer",
-  moods: ["clean", "summer", "signature"],
-  recommendations: [
-    "giorgio-armani-acqua-di-gio-profondo-parfum"
-  ],
-  inspiredBy: {
-  name: "Original Yves Saint Laurent creation",
-  short: "Y DNA"
-},
-  noteMap: {
-  top: ["iced-mint"],
-  heart: ["mint", "sage"],
-  base: ["ambroxan", "patchouli"]
-},
-  isNew: true,
-},
-{
-  id: 66,
-  slug: "valentino-uomo-born-in-roma-coral-fantasy",
-  name: "Valentino Uomo Born In Roma Coral Fantasy",
-  shortName: "Coral Fantasy",
-  category: "Designer",
-  image: "/products/valentino-coral-fantasy.png",
-  sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
-  badge: "PLAYNICE PICK",
-  rating: 9.1,
-  ratingLabel: "Crowd Favorite",
-  season: "all",
-  moods: ["date", "rich", "signature"],
-  recommendations: [
-    "afnan-9pm-rebel"
-  ],
-  inspiredBy: {
-  name: "Original Valentino creation",
-  short: "Red Apple Tobacco DNA"
-},
-  noteMap: {
-  top: ["red-apple"],
-  heart: ["sage"],
-  base: ["tobacco"]
-},
-  isNew: true,
-},
-{
-  id: 67,
-  slug: "dolce-gabbana-light-blue-pour-homme-2025",
-  name: "Dolce & Gabbana Light Blue Pour Homme Eau de Toilette 2025",
-  shortName: "Light Blue 2025",
-  category: "Designer",
-  image: "/products/dolce-gabbana-light-blue-2025.png",
-  sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
-  badge: "SUMMER HIT",
-  rating: 8.8,
-  ratingLabel: "Summer Icon",
-  season: "summer",
-  moods: ["clean", "summer", "signature"],
-  recommendations: [
-    "ysl-y-iced-cologne"
-  ],
-  inspiredBy: {
-  name: "Original Dolce & Gabbana creation",
-  short: "Mediterranean Citrus DNA"
-},
-  noteMap: {
-  top: ["lemon"],
-  heart: ["rosemary"],
-  base: ["patchouli"]
-},
-  isNew: true,
-},
-{
-  id: 68,
-  slug: "bvlgari-man-in-black-edp",
-  name: "Bvlgari Man In Black Eau de Parfum",
-  shortName: "Bvlgari Man In Black",
-  category: "Designer",
-  image: "/products/bvlgari-man-in-black-edp.png",
-  sizes: { "2ml": 5, "5ml": 12, "10ml": 21 },
-  badge: "DATE NIGHT",
-  rating: 8.9,
-  ratingLabel: "Bold Classic",
-  season: "winter",
-  moods: ["date", "rich", "signature"],
-  recommendations: ["tom-ford-noir-extreme-edp"],
-  inspiredBy: {
-  name: "Original Bvlgari creation",
-  short: "Rum Leather DNA"
-},
-  noteMap: {
-  top: ["spices", "rum", "tobacco"],
-  heart: ["leather", "iris", "tuberose"],
-  base: ["tonka-bean", "guaiac-wood", "benzoin"]
-},
-  isNew: true,
-},
-{
-  id: 69,
-  slug: "mancera-aoud-lemon-mint",
-  name: "Mancera Aoud Lemon Mint Eau de Parfum",
-  shortName: "Aoud Lemon Mint",
-  category: "Niche",
-  image: "/products/mancera-aoud-lemon-mint.png",
-  sizes: { "2ml": 5, "5ml": 11, "10ml": 20 },
-  badge: "EDITOR'S CHOICE",
-  rating: 8.7,
-  ratingLabel: "Niche Favorite",
-  season: "all",
-  moods: ["summer", "rich", "signature"],
-  recommendations: ["mancera-cedrat-boise-edp"],
-  inspiredBy: {
-  name: "Original Mancera creation",
-  short: "Lemon Oud Mint DNA"
-},
-  noteMap: {
-  top: ["lemon", "coriander", "almond"],
-  heart: ["oud", "jasmine", "mint"],
-  base: ["leather", "amber", "vanilla"]
-},
-  isNew: true,
-},
-{
-  id: 70,
-  slug: "prada-paradigme-edp",
-  name: "Prada Paradigme Eau de Parfum",
-  shortName: "Prada Paradigme",
-  category: "Designer",
-  image: "/products/prada-paradigme-edp.png",
-  sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
-  badge: "BESTSELLER",
-  rating: 9.0,
-  ratingLabel: "Luxury Pick",
-  season: "all",
-  moods: ["signature", "rich", "clean"],
-  recommendations: ["prada-luna-rossa-ocean-edt"],
-  inspiredBy: {
-  name: "Original Prada creation",
-  short: "Amber Woods DNA"
-},
-  noteMap: {
-  top: ["bergamot", "musk"],
-  heart: ["geranium"],
-  base: ["peru-balsam", "benzoin", "guaiac-wood"]
-},
-  isNew: true,
-},
+    {
+    id: 61,
+    slug: "ysl-black-opium-le-parfum",
+    name: "Yves Saint Laurent Black Opium Le Parfum",
+    shortName: "Black Opium Le Parfum",
+    category: "Designer",
+    image: "/products/ysl-black-opium-le-parfum.png",
+    sizes: { "2ml": 8, "5ml": 18, "10ml": 32 },
+    badge: "SIGNATURE",
+    rating: 9.0,
+    ratingLabel: "Iconic Pick",
+    season: "winter",
+    moods: ["rich", "date", "signature"],
+    recommendations: [
+      "lattafa-khamrah-qahwa",
+      "tom-ford-noir-extreme",
+      "narciso-rodriguez-poudree"
+    ],
+    inspiredBy: {
+      name: "Original Yves Saint Laurent creation",
+      short: "Vanilla Coffee DNA"
+    },
+    noteMap: {
+      top: ["pear", "cinnamon", "green-mandarin"],
+      heart: ["jasmine-sambac", "solar-notes", "orange-blossom"],
+      base: [
+        "madagascar-vanilla",
+        "bourbon-vanilla",
+        "vanilla-absolute",
+        "black-coffee",
+        "vanilla-orchid",
+        "patchouli"
+      ]
+    }
+  },
+  {
+    id: 62,
+    slug: "french-avenue-pinnace-oryn",
+    name: "French Avenue Pinnace Oryn Eau de Parfum",
+    shortName: "Pinnace Oryn",
+    category: "Arabian",
+    image: "/products/french-avenue-pinnace-oryn.png",
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+    badge: "ARABIAN GEM",
+    rating: 8.7,
+    ratingLabel: "Luxury Fresh",
+    season: "summer",
+    moods: ["clean", "signature", "summer"],
+    recommendations: [
+      "khadlaj-island-dreams",
+      "acqua-di-parma-colonia-pura",
+      "dolce-gabbana-light-blue-pour-homme-2025"
+    ],
+    inspiredBy: {
+      name: "Louis Vuitton Afternoon Swim",
+      short: "Afternoon Swim DNA"
+    },
+    noteMap: {
+      top: ["bergamot", "orange", "mandarin"],
+      heart: ["ginger"],
+      base: ["ambergris"]
+    }
+  },
+  {
+    id: 63,
+    slug: "riiffs-freeze-extrait",
+    name: "RiiFFS Freeze Extrait de Parfum",
+    shortName: "RiiFFS Freeze",
+    category: "Arabian",
+    image: "/products/riiffs-freeze-extrait.png",
+    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    badge: "MOST WANTED",
+    rating: 8.3,
+    ratingLabel: "Fresh Favorite",
+    season: "summer",
+    moods: ["clean", "summer", "signature"],
+    recommendations: [
+      "ysl-y-iced-cologne",
+      "french-avenue-ravine-ice",
+      "lattafa-maahir-legacy"
+    ],
+    inspiredBy: {
+      name: "Original RiiFFS creation",
+      short: "Icy Citrus Mint DNA"
+    },
+    noteMap: {
+      top: [
+        "spearmint",
+        "calabrian-bergamot",
+        "lemon-zest",
+        "grapefruit",
+        "snow-accord"
+      ],
+      heart: ["ice-accord", "ginger", "tea", "sage"],
+      base: ["peony", "ambermax", "cedarwood"]
+    }
+  },
+  {
+    id: 64,
+    slug: "lattafa-maahir-legacy",
+    name: "Lattafa Maahir Legacy Eau de Parfum",
+    shortName: "Maahir Legacy",
+    category: "Arabian",
+    image: "/products/lattafa-maahir-legacy.png",
+    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+    badge: "FRESH DROP",
+    rating: 8.5,
+    ratingLabel: "Fresh Signature",
+    season: "summer",
+    moods: ["clean", "signature", "summer"],
+    recommendations: [
+      "emir-voux-zingy",
+      "prada-luna-rossa-ocean-edt",
+      "ysl-y-iced-cologne"
+    ],
+    inspiredBy: {
+      name: "Parfums de Marly Sedley",
+      short: "Sedley DNA"
+    },
+    noteMap: {
+      top: ["lime", "grapefruit", "lavender", "spearmint", "pineapple"],
+      heart: [
+        "juniper-berries",
+        "rosemary",
+        "olibanum",
+        "geranium",
+        "black-pepper"
+      ],
+      base: ["vetiver", "cashmeran", "ambroxan", "oakmoss", "tonka-bean"]
+    }
+  },
+  {
+    id: 65,
+    slug: "ysl-y-iced-cologne",
+    name: "Yves Saint Laurent Y Iced Cologne Eau de Toilette Intense",
+    shortName: "Y Iced Cologne",
+    category: "Designer",
+    image: "/products/ysl-y-iced-cologne.png",
+    sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
+    badge: "PLAYNICE PICK",
+    rating: 8.8,
+    ratingLabel: "Summer Hit",
+    season: "summer",
+    moods: ["clean", "summer", "signature"],
+    recommendations: [
+      "riiffs-freeze-extrait",
+      "lattafa-maahir-legacy",
+      "prada-luna-rossa-ocean-edt"
+    ],
+    inspiredBy: {
+      name: "Original Yves Saint Laurent creation",
+      short: "Iced Mint Y DNA"
+    },
+    noteMap: {
+      top: ["iced-mint", "arcticle-accord"],
+      heart: ["living-mint", "blue-sage"],
+      base: ["ambroxan", "patchouli"]
+    },
+    isNew: true
+  },
+  {
+    id: 66,
+    slug: "valentino-uomo-born-in-roma-coral-fantasy",
+    name: "Valentino Uomo Born in Roma Coral Fantasy Eau de Toilette",
+    shortName: "Coral Fantasy",
+    category: "Designer",
+    image: "/products/valentino-coral-fantasy.png",
+    sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
+    badge: "PLAYNICE PICK",
+    rating: 9.1,
+    ratingLabel: "Crowd Favorite",
+    season: "all",
+    moods: ["date", "rich", "signature"],
+    recommendations: [
+      "afnan-9pm-rebel",
+      "dolce-gabbana-the-one-for-men-edt",
+      "gisada-ambassador-men"
+    ],
+    inspiredBy: {
+      name: "Original Valentino creation",
+      short: "Red Apple Tobacco DNA"
+    },
+    noteMap: {
+      top: ["red-apple", "cardamom", "calabrian-bergamot"],
+      heart: ["lavender", "bourbon-geranium", "clary-sage"],
+      base: ["tobacco-leaf", "patchouli", "haitian-vetiver"]
+    },
+    isNew: true
+  },
+  {
+    id: 67,
+    slug: "dolce-gabbana-light-blue-pour-homme-2025",
+    name: "Dolce&Gabbana Light Blue Pour Homme Eau de Toilette (2025)",
+    shortName: "Light Blue Pour Homme",
+    category: "Designer",
+    image: "/products/dolce-gabbana-light-blue-2025.png",
+    sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
+    badge: "SUMMER HIT",
+    rating: 8.8,
+    ratingLabel: "Summer Icon",
+    season: "summer",
+    moods: ["clean", "summer", "signature"],
+    recommendations: [
+      "versace-man-eau-fraiche",
+      "ysl-y-iced-cologne",
+      "acqua-di-parma-fico-di-amalfi"
+    ],
+    inspiredBy: {
+      name: "Original Dolce&Gabbana creation",
+      short: "Mediterranean Citrus DNA"
+    },
+    noteMap: {
+      top: ["lemon"],
+      heart: ["rosemary"],
+      base: ["patchouli"]
+    },
+    isNew: true
+  },
+  {
+    id: 68,
+    slug: "bvlgari-man-in-black-edp",
+    name: "BVLGARI Man in Black Eau de Parfum",
+    shortName: "Man in Black",
+    category: "Designer",
+    image: "/products/bvlgari-man-in-black-edp.png",
+    sizes: { "2ml": 5, "5ml": 12, "10ml": 21 },
+    badge: "DATE NIGHT",
+    rating: 8.9,
+    ratingLabel: "Bold Classic",
+    season: "winter",
+    moods: ["date", "rich", "signature"],
+    recommendations: [
+      "tom-ford-noir-extreme",
+      "givenchy-gentleman-reserve-privee",
+      "dolce-gabbana-the-one-for-men-edt"
+    ],
+    inspiredBy: {
+      name: "Original BVLGARI creation",
+      short: "Rum Leather DNA"
+    },
+    noteMap: {
+      top: ["spices", "rum", "tobacco"],
+      heart: ["leather", "iris", "tuberose"],
+      base: ["tonka-bean", "guaiac-wood", "benzoin"]
+    },
+    isNew: true
+  },
+  {
+    id: 69,
+    slug: "mancera-aoud-lemon-mint",
+    name: "Mancera Aoud Lemon Mint Eau de Parfum",
+    shortName: "Aoud Lemon Mint",
+    category: "Niche",
+    image: "/products/mancera-aoud-lemon-mint.png",
+    sizes: { "2ml": 5, "5ml": 11, "10ml": 20 },
+    badge: "EDITOR'S CHOICE",
+    rating: 8.7,
+    ratingLabel: "Niche Favorite",
+    season: "all",
+    moods: ["summer", "rich", "signature"],
+    recommendations: [
+      "mancera-cedrat-boise",
+      "north-stag-expressions-ii-deux",
+      "chopard-oud-malaki"
+    ],
+    inspiredBy: {
+      name: "Original Mancera creation",
+      short: "Lemon Oud Mint DNA"
+    },
+    noteMap: {
+      top: ["sicilian-lemon", "coriander", "black-pepper", "almond"],
+      heart: ["oud", "jasmine", "patchouli-leaves", "fresh-mint"],
+      base: ["leather", "amber", "vanilla", "haitian-vetiver", "white-musk"]
+    },
+    isNew: true
+  },
+  {
+    id: 70,
+    slug: "prada-paradigme-edp",
+    name: "Prada Paradigme Eau de Parfum",
+    shortName: "Paradigme",
+    category: "Designer",
+    image: "/products/prada-paradigme-edp.png",
+    sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
+    badge: "BESTSELLER",
+    rating: 9.0,
+    ratingLabel: "Luxury Pick",
+    season: "all",
+    moods: ["signature", "rich", "clean"],
+    recommendations: [
+      "prada-luna-rossa-ocean-edt",
+      "ysl-lhomme-edp",
+      "narciso-rodriguez-for-him-bleu-noir-edp"
+    ],
+    inspiredBy: {
+      name: "Original Prada creation",
+      short: "Amber Woods DNA"
+    },
+    noteMap: {
+      top: ["calabrian-bergamot", "musk"],
+      heart: ["bourbon-geranium", "rose-geranium"],
+      base: ["peru-balsam", "benzoin", "guaiac-wood"]
+    },
+    isNew: true
+  },
 {
   id: 71,
   slug: "ysl-myslf-edp",
