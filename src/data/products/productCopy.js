@@ -1402,262 +1402,283 @@ export const productCopy = {
     },
   },
 
-  "French Avenue Safari Breeze": {
-    miniTag: { sr: "🌴 Svež / Letnji", en: "🌴 Fresh / Summer" },
+    "French Avenue Safari Breeze Eau de Parfum": {
+    miniTag: { sr: "🥥 Kokos / Crna ribizla", en: "🥥 Coconut / Black Currant" },
     card: {
-      sr: "Lagano, sveže i letnje — idealno za tople dane.",
-      en: "Light, fresh and summery — perfect for warm days.",
+      sr: "Kokos, crna ribizla i grejp u zelenom, tropskom letnjem mirisu.",
+      en: "Coconut, black currant and grapefruit in a green tropical summer scent.",
     },
     modal: {
-      sr: "Čist i osvežavajući miris sa laganim voćnim i aromatičnim tonovima — nenametljiv ali prijatan.",
-      en: "Clean and refreshing scent with soft fruity and aromatic tones — subtle yet enjoyable.",
-    },
-    scentType: { sr: "Svež, voćni i aromatičan", en: "Fresh fruity aromatic" },
-    dominantNotes: {
-      sr: ["voće", "citrusi", "zeleni tonovi"],
-      en: ["fruits", "citrus", "green notes"],
-    },
-    tags: {
-      sr: ["Svež", "Letnji", "Svakodnevni"],
-      en: ["Fresh", "Summer", "Daily"],
-    },
-    whyChoose: {
-      sr: "Savršen za dnevno nošenje i letnju opuštenu vibru.",
-      en: "Perfect for daily wear and relaxed summer vibe.",
-    },
-  },
-
-  "Lattafa Dynasty": {
-    miniTag: { sr: "🌿 Svež / Začinski čaj", en: "🌿 Fresh / Spicy Tea" },
-    card: {
-      sr: "Začinjeni crni čaj sa citrusima i čistim drvenim završetkom.",
-      en: "Spiced black tea with citrus and a clean woody finish.",
-    },
-    modal: {
-      sr: "Dinamično otvaranje sa citrusima i začinjenim crnim čajem prelazi u čistu, drvenastu i mošusnu bazu. Svež, ali karakteran miris sa izraženim prisustvom.",
-      en: "A vibrant opening of citrus and spiced black tea settles into a clean woody-musky base. Fresh yet distinctive with strong presence.",
+      sr: "Crna ribizla, kokos i grejp daju sočan početak, nana i jasmin unose zelenu svežinu, a vetiver, amber i hrastova mahovina prirodnu dubinu.",
+      en: "Black currant, coconut and grapefruit create a juicy opening, mint and jasmine add green freshness, while vetiver, amber and oakmoss bring natural depth.",
     },
     scentType: {
-      sr: "Čajni, začinski, drvenast i mošusni",
-      en: "Spicy tea woody musky",
+      sr: "Voćni, zeleni i drvenast",
+      en: "Fruity green woody",
     },
     dominantNotes: {
-      sr: ["crni čaj", "citrusi", "drvo", "mošus"],
-      en: ["black tea", "citrus", "woods", "musk"],
+      sr: ["kokos", "crna ribizla", "grejp", "nana"],
+      en: ["coconut", "black currant", "grapefruit", "spearmint"],
     },
     tags: {
-      sr: ["Svež", "Začinski", "Uniseks"],
-      en: ["Fresh", "Spicy", "Unisex"],
+      sr: ["Čist", "Letnji", "Mekan"],
+      en: ["Clean", "Summer", "Soft"],
     },
     whyChoose: {
-      sr: "Ako želiš svež, ali drugačiji miris sa karakterom.",
-      en: "If you want a fresh scent with a unique twist.",
+      sr: "Ako želiš opušten tropski parfem koji spaja voćnu slatkoću i zelenu svežinu.",
+      en: "If you want a relaxed tropical fragrance blending fruity sweetness with green freshness.",
     },
   },
 
-  "Dolce & Gabbana The One for Men Eau de Toilette": {
-    miniTag: {
-      sr: "🖤 Elegantan / Večernji izlazak",
-      en: "🖤 Elegant / Date Night",
-    },
+  "Lattafa Dynasty Eau de Parfum": {
+    miniTag: { sr: "🍵 Rooibos / Antilop", en: "🍵 Rooibos / Suede" },
     card: {
-      sr: "Topao, začinjen i zavodljiv — klasik za večernje prilike.",
-      en: "Warm, spicy and seductive — a timeless evening classic.",
+      sr: "Rooibos čaj, antilop i toplo drvo u neobičnom elegantnom mirisu.",
+      en: "Rooibos tea, suede and warm woods in an unusual elegant fragrance.",
     },
     modal: {
-      sr: "Kombinacija duvana, začina i toplih amber tonova daje elegantan i zavodljiv karakter.",
-      en: "A blend of tobacco, spices and warm amber creates an elegant and seductive scent.",
+      sr: "Bergamot, đumbir, žalfija i malina otvaraju miris živahno, rooibos čaj i antilop grade posebno srce, a amber drvo, kedar i kašmeran toplu bazu.",
+      en: "Bergamot, ginger, clary sage and raspberry open with vibrancy, rooibos tea and suede form a distinctive heart, while amberwood, cedarwood and cashmeran create a warm base.",
     },
-    scentType: { sr: "Topao, začinski i ambrast", en: "Warm spicy amber" },
+    scentType: {
+      sr: "Čajni, kožni i drvenast",
+      en: "Tea leather woody",
+    },
     dominantNotes: {
-      sr: ["duvan", "začini", "ambra"],
-      en: ["tobacco", "spices", "amber"],
+      sr: ["rooibos čaj", "đumbir", "antilop", "amber drvo"],
+      en: ["rooibos tea", "ginger", "suede", "amberwood"],
     },
     tags: {
-      sr: ["Elegantan", "Večernji izlazak", "Klasičan"],
-      en: ["Elegant", "Date Night", "Classic"],
+      sr: ["Prepoznatljiv", "Bogat", "Večernji"],
+      en: ["Signature", "Rich", "Night"],
     },
     whyChoose: {
-      sr: "Ako želiš sofisticiran i zavodljiv večernji miris.",
-      en: "If you want a refined and seductive evening scent.",
+      sr: "Ako želiš originalan i sofisticiran miris koji se izdvaja rooibos čajem i antilopom.",
+      en: "If you want an original sophisticated fragrance distinguished by rooibos tea and suede.",
+    },
+  },
+
+  "Dolce&Gabbana The One for Men Eau de Toilette": {
+    miniTag: { sr: "🚬 Duvan / Začinski", en: "🚬 Tobacco / Spicy" },
+    card: {
+      sr: "Kardamom, duvan i amber u toplom klasiku za večernje prilike.",
+      en: "Cardamom, tobacco and amber in a warm classic for evening occasions.",
+    },
+    modal: {
+      sr: "Grejp, korijander i bosiljak daju elegantan početak, kardamom i đumbir toplinu, a duvan, amber i kedar mekan i zavodljiv završetak.",
+      en: "Grapefruit, coriander and basil create an elegant opening, cardamom and ginger add warmth, while tobacco, amber and cedarwood leave a soft seductive finish.",
+    },
+    scentType: {
+      sr: "Začinski, duvanski i ambrast",
+      en: "Spicy tobacco amber",
+    },
+    dominantNotes: {
+      sr: ["kardamom", "duvan", "amber", "đumbir"],
+      en: ["cardamom", "tobacco", "amber", "ginger"],
+    },
+    tags: {
+      sr: ["Večernji", "Mekan", "Prepoznatljiv"],
+      en: ["Night", "Soft", "Signature"],
+    },
+    whyChoose: {
+      sr: "Ako želiš topao, elegantan i nenametljivo zavodljiv miris za bliske večernje prilike.",
+      en: "If you want a warm elegant and quietly seductive fragrance for intimate evenings.",
     },
   },
 
   "Versace Man Eau Fraîche Eau de Toilette": {
-    miniTag: { sr: "💧 Svež / Letnji", en: "💧 Fresh / Summer" },
+    miniTag: { sr: "⭐ Karambola / Citrusni", en: "⭐ Starfruit / Citrus" },
     card: {
-      sr: "Ultra svež, lagan i čist — savršen za letnje dane.",
-      en: "Ultra fresh, light and clean — perfect for summer days.",
+      sr: "Beli limun, karambola i aromatično drvo u laganom letnjem mirisu.",
+      en: "White lemon, starfruit and aromatic woods in a light summer scent.",
     },
     modal: {
-      sr: "Citrusi, morski tonovi i lagano drvo čine ga jednim od najlakših i najnosivijih letnjih parfema. Diskretan, ali vrlo prijatan.",
-      en: "Citrus, marine notes and soft woods make it one of the easiest summer fragrances to wear. Light yet very pleasant.",
+      sr: "Beli limun, ružino drvo i karambola otvaraju miris blistavo, estragon i žalfija daju aromatično srce, a mošus, amber i drvo sikamore meku bazu.",
+      en: "White lemon, rosewood and starfruit open brightly, tarragon and clary sage create an aromatic heart, while musk, amber and sycamore wood form a soft base.",
     },
-    scentType: { sr: "Svež, vodeni i citrusni", en: "Fresh aquatic citrus" },
+    scentType: {
+      sr: "Citrusni, voćni i aromatičan",
+      en: "Citrus fruity aromatic",
+    },
     dominantNotes: {
-      sr: ["citrusi", "morski tonovi", "drvo"],
-      en: ["citrus", "marine notes", "woods"],
+      sr: ["beli limun", "karambola", "estragon", "mošus"],
+      en: ["white lemon", "starfruit", "tarragon", "musk"],
     },
     tags: {
-      sr: ["Svež", "Letnji", "Svakodnevni"],
-      en: ["Fresh", "Summer", "Daily"],
+      sr: ["Čist", "Letnji", "Mekan"],
+      en: ["Clean", "Summer", "Soft"],
     },
     whyChoose: {
-      sr: "Ako želiš siguran, čist i nenametljiv letnji miris.",
-      en: "If you want a safe, clean and easy summer scent.",
+      sr: "Ako želiš bezbrižan, lagan i izuzetno prijatan parfem za najtoplije dane.",
+      en: "If you want a carefree light and highly pleasant fragrance for the hottest days.",
     },
   },
 
-  "Emir Voux Zingy by Paris Corner": {
-    miniTag: { sr: "🍋 Citrusni / Svež", en: "🍋 Citrus / Fresh" },
+  "Paris Corner Emir Voux Zingy Eau de Parfum": {
+    miniTag: { sr: "🌿 Bosiljak / Citrusni", en: "🌿 Basil / Citrus" },
     card: {
-      sr: "Sočan citrusni start sa čistim modernim karakterom.",
-      en: "Juicy citrus opening with a clean modern character.",
+      sr: "Bosiljak, italijanski citron i limun u oštroj zelenoj svežini.",
+      en: "Basil, Italian citron and lemon in sharp green freshness.",
     },
     modal: {
-      sr: "Osvežavajuća citrusna kompozicija sa laganim aromatičnim i drvenim tonovima. Energičan i lako nosiv miris za toplije dane.",
-      en: "Refreshing citrus composition with soft aromatic and woody tones. Energetic and easy to wear in warm weather.",
+      sr: "Bosiljak, bergamot, citron i limun daju energičan početak, jasmin i verbena unose čisto zelenilo, a Ambrettolide i mošus mekan trag.",
+      en: "Basil, bergamot, citron and lemon create an energetic opening, jasmine and verbena add clean greenery, while Ambrettolide and musk leave a soft trail.",
     },
-    scentType: { sr: "Svež, citrusni i drvenast", en: "Fresh citrus woody" },
+    scentType: {
+      sr: "Citrusni, zeleni i mošusni",
+      en: "Citrus green musky",
+    },
     dominantNotes: {
-      sr: ["citrusi", "aromatične note", "drvo"],
-      en: ["citrus", "aromatic notes", "woods"],
+      sr: ["bosiljak", "italijanski citron", "limun", "verbena"],
+      en: ["basil", "Italian citron", "lemon", "verbena"],
     },
     tags: {
-      sr: ["Svež", "Letnji", "Svakodnevni"],
-      en: ["Fresh", "Summer", "Daily"],
+      sr: ["Čist", "Letnji", "Prepoznatljiv"],
+      en: ["Clean", "Summer", "Signature"],
     },
     whyChoose: {
-      sr: "Ako želiš čist i energičan letnji miris.",
-      en: "If you want a clean energetic summer scent.",
+      sr: "Ako želiš energičan citrusni parfem sa izrazito zelenim i aromatičnim karakterom.",
+      en: "If you want an energetic citrus fragrance with a distinctly green aromatic character.",
     },
   },
 
   "Rayhaan Crimson Eau de Parfum": {
-    miniTag: { sr: "🔥 Topao / Začinski", en: "🔥 Warm / Spicy" },
+    miniTag: { sr: "🔥 Cimet / Vanila", en: "🔥 Cinnamon / Vanilla" },
     card: {
-      sr: "Topao, začinjen i intenzivan sa modernim karakterom.",
-      en: "Warm, spicy and intense with a modern edge.",
+      sr: "Cimet, kardamom i vanila u toplom, raskošnom večernjem mirisu.",
+      en: "Cinnamon, cardamom and vanilla in a warm opulent evening scent.",
     },
     modal: {
-      sr: "Bogata kombinacija začina, toplih amber tonova i drveta daje ozbiljan i upečatljiv karakter. Idealan za veče i hladnije vreme.",
-      en: "A rich blend of spices, warm amber and woods creates a bold and memorable scent. Perfect for evenings and colder weather.",
+      sr: "Cimet, kardamom i ružičasti biber otvaraju miris vatreno, pačuli i heliotropin daju tamnu mekoću, a benzoin, vanila i tonka bogat završetak.",
+      en: "Cinnamon, cardamom and pink pepper open with fiery warmth, patchouli and heliotropin add dark softness, while benzoin, vanilla and tonka create a rich finish.",
     },
-    scentType: { sr: "Topao, začinski i ambrast", en: "Warm spicy amber" },
+    scentType: {
+      sr: "Začinski, vanilast i ambrast",
+      en: "Spicy vanilla amber",
+    },
     dominantNotes: {
-      sr: ["začini", "ambra", "drvo"],
-      en: ["spices", "amber", "woods"],
+      sr: ["cimet", "kardamom", "vanila", "benzoin"],
+      en: ["cinnamon", "cardamom", "vanilla", "benzoin"],
     },
     tags: {
-      sr: ["Topao", "Večernji", "Snažan"],
-      en: ["Warm", "Evening", "Strong"],
+      sr: ["Večernji", "Bogat", "Prepoznatljiv"],
+      en: ["Night", "Rich", "Signature"],
     },
     whyChoose: {
-      sr: "Ako voliš intenzivne i moderne večernje mirise.",
-      en: "If you enjoy bold modern evening scents.",
+      sr: "Ako voliš intenzivne začinsko-vanilaste parfeme sa toplim i zavodljivim tragom.",
+      en: "If you enjoy intense spicy-vanilla fragrances with a warm seductive trail.",
     },
   },
 
   "Rasasi Hawas Black Eau de Parfum": {
-    miniTag: { sr: "🖤 Taman / Svež", en: "🖤 Dark / Fresh" },
+    miniTag: { sr: "🍍 Ananas / Mahovina", en: "🍍 Pineapple / Oakmoss" },
     card: {
-      sr: "Tamna Hawas interpretacija sa jačim i ozbiljnijim karakterom.",
-      en: "A darker Hawas interpretation with stronger character.",
+      sr: "Ananas, bergamot i hrastova mahovina u snažnom voćno-drvenastom mirisu.",
+      en: "Pineapple, bergamot and oakmoss in a powerful fruity-woody fragrance.",
     },
     modal: {
-      sr: "Sveža otvaranja spojena sa tamnijim drvenim i ambroxan tonovima daju moderan, muževan i vrlo upečatljiv profil.",
-      en: "Fresh openings blended with darker woody and ambroxan tones create a modern masculine and highly noticeable scent.",
+      sr: "Ananas, grejp i bergamot daju blistav voćni početak, kedar, pačuli i jasmin grade srce, a hrastova mahovina, drvo i amber snažnu bazu.",
+      en: "Pineapple, grapefruit and bergamot create a bright fruity opening, cedarwood, patchouli and jasmine form the heart, while oakmoss, woods and amber build a powerful base.",
     },
     scentType: {
-      sr: "Svež i drvenast sa ambroksanom",
-      en: "Fresh woody ambroxan",
+      sr: "Voćni, mahovinast i drvenast",
+      en: "Fruity mossy woody",
     },
     dominantNotes: {
-      sr: ["ambroxan", "drvo", "sveže note"],
-      en: ["ambroxan", "woods", "fresh notes"],
+      sr: ["ananas", "bergamot", "pačuli", "hrastova mahovina"],
+      en: ["pineapple", "bergamot", "patchouli", "oakmoss"],
     },
     tags: {
-      sr: ["Svež", "Snažan", "Za komplimente"],
-      en: ["Fresh", "Strong", "Compliment"],
+      sr: ["Prepoznatljiv", "Večernji", "Bogat"],
+      en: ["Signature", "Night", "Rich"],
     },
     whyChoose: {
-      sr: "Ako želiš moderan compliment magnet sa jačim karakterom.",
-      en: "If you want a modern compliment magnet with stronger presence.",
+      sr: "Ako želiš snažan i ozbiljan ananas–mahovina profil sa odličnim prisustvom.",
+      en: "If you want a powerful serious pineapple-oakmoss profile with excellent presence.",
     },
   },
 
-  "Khadlaj Onyx Silver": {
-    miniTag: { sr: "✨ Svež / Začinski", en: "✨ Fresh / Spicy" },
+  "Khadlaj Onyx Silver Eau de Parfum": {
+    miniTag: { sr: "🫚 Đumbir / Kardamom", en: "🫚 Ginger / Cardamom" },
     card: {
-      sr: "Svež, začinjen i moderan miris sa čistim citrusnim otvaranjem.",
-      en: "Fresh, spicy and modern with a clean citrus opening.",
+      sr: "Bergamot, đumbir i kardamom u čistom začinsko-smolastom mirisu.",
+      en: "Bergamot, ginger and cardamom in a clean spicy-resinous scent.",
     },
     modal: {
-      sr: "Bergamot, đumbir i crni biber otvaraju miris sveže i začinjeno, uz toplu tonka-drvenu bazu.",
-      en: "Bergamot, ginger and black pepper open fresh and spicy, with a warm tonka-woody base.",
+      sr: "Bergamot, đumbir i crni biber otvaraju miris energično, petitgrain i kardamom daju aromatičnu živost, a pačuli, labdanum, benzoin i tonka toplinu.",
+      en: "Bergamot, ginger and black pepper open with energy, petitgrain and cardamom add aromatic vibrancy, while patchouli, labdanum, benzoin and tonka bring warmth.",
     },
-    scentType: { sr: "Svež, začinski i smolast", en: "Fresh spicy resinous" },
+    scentType: {
+      sr: "Citrusni, začinski i smolast",
+      en: "Citrus spicy resinous",
+    },
     dominantNotes: {
-      sr: ["bergamot", "đumbir", "crni biber", "tonka"],
-      en: ["bergamot", "ginger", "black pepper", "tonka"],
+      sr: ["bergamot", "đumbir", "kardamom", "labdanum"],
+      en: ["bergamot", "ginger", "cardamom", "labdanum"],
     },
     tags: {
-      sr: ["Svež", "Začinski", "Moderan"],
-      en: ["Fresh", "Spicy", "Modern"],
+      sr: ["Prepoznatljiv", "Čist", "Večernji"],
+      en: ["Signature", "Clean", "Night"],
     },
     whyChoose: {
-      sr: "Ako želiš svež, čist i začinjen miris koji radi tokom cele godine.",
-      en: "If you want a fresh, clean and spicy scent that works year-round.",
+      sr: "Ako želiš svestran i moderan parfem koji spaja svežinu, začine i toplu bazu.",
+      en: "If you want a versatile modern fragrance combining freshness, spice and a warm base.",
     },
   },
 
-  "Arabiyat Prestige Fahad Gaze": {
-    miniTag: { sr: "🪞 Elegantan / Začinski", en: "🪞 Elegant / Spicy" },
+  "Arabiyat Prestige Fahad Gaze Eau de Parfum": {
+    miniTag: { sr: "🪞 Metalni / Tamjan", en: "🪞 Metallic / Incense" },
     card: {
-      sr: "Metalno-svež začinski start sa divnom amber-drvenom bazom.",
-      en: "Metallic-fresh spicy opening with a lovely amber-woody base.",
+      sr: "Metalne note, elemi i tamjan u elegantnom, intenzivnom mirisu.",
+      en: "Metallic notes, elemi and incense in an elegant intense fragrance.",
     },
     modal: {
-      sr: "Začinske i metalne note sa elemi smolom prelaze u elegantnu amber-drvenu bazu sa tamjanom i vanilom.",
-      en: "Spicy metallic notes and elemi settle into an elegant amber-woody base with incense and vanilla.",
+      sr: "Začini, elemi i metalne note stvaraju oštar početak, cvet narandže, tamjan i pačuli daju dubinu, a ambergris, vanila i mahovina bogat završetak.",
+      en: "Spices, elemi and metallic notes create a sharp opening, orange blossom, incense and patchouli add depth, while ambergris, vanilla and moss form a rich finish.",
     },
-    scentType: { sr: "Drvenast, začinski i ambrast", en: "Woody spicy amber" },
+    scentType: {
+      sr: "Začinski, smolast i ambrast",
+      en: "Spicy resinous amber",
+    },
     dominantNotes: {
-      sr: ["začini", "elemi", "cvet narandže", "tamjan"],
-      en: ["spices", "elemi", "orange blossom", "incense"],
+      sr: ["elemi", "metalne note", "tamjan", "vanila"],
+      en: ["elemi", "metallic notes", "incense", "vanilla"],
     },
     tags: {
-      sr: ["Elegantan", "Začinski", "Večernji"],
-      en: ["Elegant", "Spicy", "Evening"],
+      sr: ["Bogat", "Večernji", "Prepoznatljiv"],
+      en: ["Rich", "Night", "Signature"],
     },
     whyChoose: {
-      sr: "Ako želiš elegantan, moderan i ozbiljan miris sa čistim gentleman karakterom.",
-      en: "If you want an elegant, modern and refined scent with a clean gentleman character.",
+      sr: "Ako želiš elegantan i ozbiljan parfem sa neobičnim metalno-smolastim karakterom.",
+      en: "If you want an elegant serious fragrance with an unusual metallic-resinous character.",
     },
   },
 
-  "Narciso Rodriguez Poudrée Eau de Parfum": {
-    miniTag: { sr: "🌸 Puderast / Elegantan", en: "🌸 Powdery / Elegant" },
+  "Narciso Rodriguez NARCISO Poudrée Eau de Parfum": {
+    miniTag: { sr: "🌸 Puderasti mošus / Cvetni", en: "🌸 Powdery Musk / Floral" },
     card: {
-      sr: "Puderast, čist i elegantan mošusni miris.",
-      en: "Powdery, clean and elegant musky scent.",
+      sr: "Beli jasmin, bugarska ruža i puderasti mošus u elegantnom mirisu.",
+      en: "White jasmine, Bulgarian rose and powdery musk in an elegant fragrance.",
     },
     modal: {
-      sr: "Prepoznatljiv puderasti mošus sa jasminom, ružom i toplim drvenim tonovima daje sofisticiran i ženstven karakter.",
-      en: "Signature powdery musk blended with jasmine, rose and warm woods creates a sophisticated feminine scent.",
+      sr: "Beli jasmin i bugarska ruža otvaraju miris nežno, puderasti mošus stvara njegov prepoznatljiv oblak, a vetiver i crni i beli kedar daju toplu dubinu.",
+      en: "White jasmine and Bulgarian rose open gently, powdery musk creates its signature cloud, while vetiver with black and white cedar provides warm depth.",
     },
-    scentType: { sr: "Puderast, mošusni i cvetni", en: "Powdery musky floral" },
+    scentType: {
+      sr: "Puderast, mošusni i cvetni",
+      en: "Powdery musky floral",
+    },
     dominantNotes: {
-      sr: ["mošus", "jasmin", "ruža", "drvo"],
-      en: ["musk", "jasmine", "rose", "woods"],
+      sr: ["puderasti mošus", "beli jasmin", "bugarska ruža", "kedar"],
+      en: ["powdery musk", "white jasmine", "Bulgarian rose", "cedarwood"],
     },
     tags: {
-      sr: ["Elegantan", "Čist", "Puderast"],
-      en: ["Elegant", "Clean", "Powdery"],
+      sr: ["Mekan", "Bogat", "Prepoznatljiv"],
+      en: ["Soft", "Rich", "Signature"],
     },
     whyChoose: {
-      sr: "Ako voliš čist, luksuzan i ženstven miris sa classy vibrom.",
-      en: "If you enjoy clean luxurious feminine scents with classy vibe.",
+      sr: "Ako želiš čist, ženstven i sofisticiran puderasti miris sa luksuznim mošusnim tragom.",
+      en: "If you want a clean feminine sophisticated powdery scent with a luxurious musky trail.",
     },
   },
 
