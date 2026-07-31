@@ -842,183 +842,283 @@ export const productCopy = {
     },
   },
 
-  "BOSS The Scent Le Parfum for Him": {
-    miniTag: { sr: "🍯 Sladak / Elegantan", en: "🍯 Sweet / Elegant" },
+    "BOSS The Scent Le Parfum for Him": {
+    miniTag: { sr: "🖤 Iris / Koža", en: "🖤 Iris / Leather" },
     card: {
-      sr: "Sladak i sofisticiran profil.",
-      en: "Sweet sophisticated profile.",
+      sr: "Egzotična maninka, puderasti iris i glatka koža u senzualnom spoju.",
+      en: "Exotic maninka, powdery iris and smooth leather in a sensual blend.",
     },
     modal: {
-      sr: "Topao i elegantan miris sa zavodljivim karakterom.",
-      en: "Warm elegant and seductive scent.",
+      sr: "Voćna toplina maninke vodi u elegantno puderasti iris, dok kožni akord daje mirisu meku dubinu i zavodljiv večernji karakter.",
+      en: "The fruity warmth of maninka leads into elegantly powdery iris, while a leather accord gives the scent soft depth and a seductive evening character.",
     },
-    scentType: { sr: "Sladak i začinski", en: "Sweet spicy" },
+    scentType: {
+      sr: "Voćni, puderast i kožni",
+      en: "Fruity powdery leather",
+    },
     dominantNotes: {
-      sr: ["vanila", "đumbir", "drvo"],
-      en: ["vanilla", "ginger", "woods"],
+      sr: ["maninka", "iris", "koža"],
+      en: ["maninka", "iris", "leather"],
     },
-    tags: { sr: ["Elegantan"], en: ["Elegant"] },
+    tags: {
+      sr: ["Večernji", "Mekan", "Bogat"],
+      en: ["Night", "Soft", "Rich"],
+    },
     whyChoose: {
-      sr: "Za suptilnu zavodljivost.",
-      en: "For subtle seduction.",
+      sr: "Ako želiš uglađen i intiman večernji parfem sa puderasto-kožnim potpisom.",
+      en: "If you want a polished intimate evening fragrance with a powdery-leather signature.",
     },
   },
 
   "Calvin Klein CK All Eau de Toilette": {
-    miniTag: { sr: "❄️ Svež / Svakodnevni", en: "❄️ Fresh / Daily" },
-    card: { sr: "Čista uniseks svežina.", en: "Clean unisex freshness." },
+    miniTag: { sr: "🍊 Citrusni / Mošusni", en: "🍊 Citrus / Musky" },
+    card: {
+      sr: "Bergamot, cvet grejpa i beli mošus u laganom uniseks mirisu.",
+      en: "Bergamot, grapefruit blossom and white musk in a light unisex scent.",
+    },
     modal: {
-      sr: "Lagano, čisto i nenametljivo.",
-      en: "Light clean and effortless.",
+      sr: "Bergamot i mandarina otvaraju miris blistavo, jasmin, rabarbara i frezija daju prozračnu svežinu, a mošus, amber i vetiver čist završetak.",
+      en: "Bergamot and mandarin open brightly, jasmine, rhubarb and freesia add airy freshness, while musk, amber and vetiver create a clean finish.",
     },
-    scentType: { sr: "Svež i citrusni", en: "Fresh citrus" },
+    scentType: {
+      sr: "Citrusni, cvetni i mošusni",
+      en: "Citrus floral musky",
+    },
     dominantNotes: {
-      sr: ["citrusi", "mošus", "drvo"],
-      en: ["citrus", "musk", "woods"],
+      sr: ["bergamot", "cvet grejpa", "jasmin", "mošus"],
+      en: ["bergamot", "grapefruit blossom", "jasmine", "musk"],
     },
-    tags: { sr: ["Svakodnevni"], en: ["Daily"] },
+    tags: {
+      sr: ["Čist", "Letnji", "Mekan"],
+      en: ["Clean", "Summer", "Soft"],
+    },
     whyChoose: {
-      sr: "Za svakodnevnu lakoću.",
-      en: "For everyday ease.",
+      sr: "Ako želiš lagan, nenametljiv i pristupačan miris za svaki topli dan.",
+      en: "If you want a light, effortless and accessible fragrance for everyday warm weather.",
     },
   },
 
   "Calvin Klein Defy Eau de Toilette": {
-    miniTag: { sr: "❄️ Svež / Moderan", en: "❄️ Fresh / Modern" },
-    card: { sr: "Svež i urban miris.", en: "Fresh urban scent." },
+    miniTag: { sr: "🌿 Aromatičan / Svež", en: "🌿 Aromatic / Fresh" },
+    card: {
+      sr: "Bergamot, lavanda i vetiver u čistom, urbanom dnevnom mirisu.",
+      en: "Bergamot, lavender and vetiver in a clean urban daytime scent.",
+    },
     modal: {
-      sr: "Moderan, čist i energičan profil.",
-      en: "Modern clean energetic profile.",
+      sr: "Bergamot, mandarina i list kedra daju vedar početak, lavanda, žalfija i list ljubičice aromatično srce, a vetiver, amber i mošus moderan trag.",
+      en: "Bergamot, mandarin and cedar leaf create a bright opening, lavender, clary sage and violet leaf form an aromatic heart, while vetiver, amber and musk leave a modern trail.",
     },
-    scentType: { sr: "Svež i drvenast", en: "Fresh woody" },
+    scentType: {
+      sr: "Citrusni, aromatičan i drvenast",
+      en: "Citrus aromatic woody",
+    },
     dominantNotes: {
-      sr: ["citrusi", "lavanda", "drvo"],
-      en: ["citrus", "lavender", "woods"],
+      sr: ["bergamot", "lavanda", "žalfija", "vetiver"],
+      en: ["bergamot", "lavender", "clary sage", "vetiver"],
     },
-    tags: { sr: ["Svež"], en: ["Fresh"] },
+    tags: {
+      sr: ["Čist", "Letnji", "Prepoznatljiv"],
+      en: ["Clean", "Summer", "Signature"],
+    },
     whyChoose: {
-      sr: "Za moderan dnevni stil.",
-      en: "For modern daily style.",
+      sr: "Ako želiš pouzdan i moderan parfem za posao, grad i svakodnevne obaveze.",
+      en: "If you want a dependable modern fragrance for work, the city and daily wear.",
     },
   },
 
   "Calvin Klein Defy Parfum": {
-    miniTag: { sr: "🍯 Sladak / Snažan", en: "🍯 Sweet / Bold" },
-    card: { sr: "Jača i toplija verzija Defy.", en: "Stronger warmer Defy." },
+    miniTag: { sr: "🍫 Kakao / Sandalovina", en: "🍫 Cocoa / Sandalwood" },
+    card: {
+      sr: "Topli začini, ljuska kakaa i sandalovina u glatkom modernom parfemu.",
+      en: "Warm spices, cocoa shell and sandalwood in a smooth modern fragrance.",
+    },
     modal: {
-      sr: "Bogata i senzualna interpretacija sa više dubine.",
-      en: "Richer deeper sensual version.",
+      sr: "Mandarina, ružičasti biber i kardamom otvaraju miris toplinom, lavanda i đumbir daju živost, a ljuska kakaa, vetiver i sandalovina meku dubinu.",
+      en: "Mandarin, pink pepper and cardamom open with warmth, lavender and ginger add vibrancy, while cocoa shell, vetiver and sandalwood provide soft depth.",
     },
-    scentType: { sr: "Sladak i drvenast", en: "Sweet woody" },
+    scentType: {
+      sr: "Začinski, aromatičan i drvenast",
+      en: "Spicy aromatic woody",
+    },
     dominantNotes: {
-      sr: ["vanila", "drvo", "amber"],
-      en: ["vanilla", "woods", "amber"],
+      sr: ["kardamom", "lavanda", "ljuska kakaa", "sandalovina"],
+      en: ["cardamom", "lavender", "cocoa shell", "sandalwood"],
     },
-    tags: { sr: ["Snažan"], en: ["Bold"] },
+    tags: {
+      sr: ["Prepoznatljiv", "Večernji", "Mekan"],
+      en: ["Signature", "Night", "Soft"],
+    },
     whyChoose: {
-      sr: "Za intenzivniji efekat.",
-      en: "For stronger impact.",
+      sr: "Ako želiš topliju i sofisticiraniju verziju modernog aromatičnog parfema.",
+      en: "If you want a warmer, more sophisticated take on a modern aromatic fragrance.",
     },
   },
 
   "Chopard Oud Malaki Eau de Parfum": {
-    miniTag: { sr: "💎 Oud / Luksuzan", en: "💎 Oud / Luxury" },
-    card: { sr: "Oud sa toplim začinima.", en: "Oud with warm spices." },
+    miniTag: { sr: "🚬 Oud / Duvan", en: "🚬 Oud / Tobacco" },
+    card: {
+      sr: "Duvan, koža i oud u ozbiljnom, raskošnom večernjem mirisu.",
+      en: "Tobacco, leather and oud in a serious opulent evening scent.",
+    },
     modal: {
-      sr: "Bogata orijentalna kompozicija sa dubinom.",
-      en: "Rich oriental composition.",
+      sr: "Grejp, lavanda i artemizija otvaraju miris aromatično, duvan, začini i koža grade tamno srce, a oud, duboko drvo i ambergris snažnu bazu.",
+      en: "Grapefruit, lavender and artemisia create an aromatic opening, tobacco, spices and leather form a dark heart, while oud, deep woods and ambergris build a powerful base.",
     },
-    scentType: { sr: "Oud i začinski", en: "Oud spicy" },
+    scentType: {
+      sr: "Aromatičan, duvanski i drvenast",
+      en: "Aromatic tobacco woody",
+    },
     dominantNotes: {
-      sr: ["oud", "začini", "duvan"],
-      en: ["oud", "spices", "tobacco"],
+      sr: ["duvan", "koža", "oud", "tamno drvo"],
+      en: ["tobacco", "leather", "oud", "dark woods"],
     },
-    tags: { sr: ["Luksuzan"], en: ["Luxury"] },
+    tags: {
+      sr: ["Bogat", "Večernji", "Prepoznatljiv"],
+      en: ["Rich", "Night", "Signature"],
+    },
     whyChoose: {
-      sr: "Za ljubitelje ouda.",
-      en: "For oud lovers.",
+      sr: "Ako želiš ozbiljan i muževan oud parfem sa kožnim i duvanskim karakterom.",
+      en: "If you want a serious masculine oud fragrance with leather and tobacco character.",
+    },
+  },
+
+  "Creed Aventus Cologne Eau de Parfum": {
+    miniTag: { sr: "🍊 Citrusni / Mineralni", en: "🍊 Citrus / Mineral" },
+    card: {
+      sr: "Kalabrijski bergamot, mandarina i đumbir u luksuznoj svežini.",
+      en: "Calabrian bergamot, mandarin and ginger in luxurious freshness.",
+    },
+    modal: {
+      sr: "Bergamot, mandarina i slani morski akord otvaraju miris blistavo, đumbir, ananas i ružičasti biber daju energiju, a mošus, pačuli i breza dubinu.",
+      en: "Bergamot, mandarin and a salty marine accord open brightly, ginger, pineapple and pink pepper add energy, while musk, patchouli and birch provide depth.",
+    },
+    scentType: {
+      sr: "Citrusni, začinski i drvenast",
+      en: "Citrus spicy woody",
+    },
+    dominantNotes: {
+      sr: ["kalabrijski bergamot", "mandarina", "đumbir", "breza"],
+      en: ["Calabrian bergamot", "mandarin", "ginger", "birch"],
+    },
+    tags: {
+      sr: ["Čist", "Letnji", "Prepoznatljiv"],
+      en: ["Clean", "Summer", "Signature"],
+    },
+    whyChoose: {
+      sr: "Ako želiš vedriju i elegantniju interpretaciju Aventus karaktera za toplo vreme.",
+      en: "If you want a brighter, more elegant interpretation of the Aventus character for warm weather.",
     },
   },
 
   "Giorgio Armani Acqua di Giò Profondo Parfum": {
-    miniTag: { sr: "🔥 Bestseler", en: "🔥 Bestseller" },
-    card: { sr: "Duboka morska svežina.", en: "Deep marine freshness." },
+    miniTag: { sr: "🌊 Morski / Dubok", en: "🌊 Marine / Deep" },
+    card: {
+      sr: "Morske note, zelena mandarina i labdanum u dubokoj svežini.",
+      en: "Marine notes, green mandarin and labdanum in deep freshness.",
+    },
     modal: {
-      sr: "Intenzivna i moderna interpretacija klasika.",
-      en: "Intense modern take on a classic.",
+      sr: "Morske note i zelena mandarina daju čist, slan početak, nežna mimoza omekšava srce, a pačuli i labdanum donose toplu i ozbiljnu dubinu.",
+      en: "Marine notes and green mandarin create a clean salty opening, delicate mimosa softens the heart, while patchouli and labdanum bring warm, serious depth.",
     },
-    scentType: { sr: "Vodeni i aromatičan", en: "Aquatic aromatic" },
+    scentType: {
+      sr: "Morski, aromatičan i ambrast",
+      en: "Marine aromatic amber",
+    },
     dominantNotes: {
-      sr: ["more", "bergamot", "minerali"],
-      en: ["marine", "bergamot", "minerals"],
+      sr: ["morske note", "zelena mandarina", "mimoza", "labdanum"],
+      en: ["marine notes", "green mandarin", "mimosa", "labdanum"],
     },
-    tags: { sr: ["Svež"], en: ["Fresh"] },
+    tags: {
+      sr: ["Čist", "Letnji", "Prepoznatljiv"],
+      en: ["Clean", "Summer", "Signature"],
+    },
     whyChoose: {
-      sr: "Za svežinu sa snagom.",
-      en: "Freshness with depth.",
+      sr: "Ako želiš morsku svežinu sa više dubine, topline i večernjeg karaktera.",
+      en: "If you want marine freshness with greater depth, warmth and evening character.",
     },
   },
 
   "Gisada Ambassador Men Eau de Parfum": {
-    miniTag: { sr: "🔥 Bestseler", en: "🔥 Bestseller" },
+    miniTag: { sr: "🥭 Mango / Ambrast", en: "🥭 Mango / Amber" },
     card: {
-      sr: "Voćno-sladak crowd pleaser.",
-      en: "Fruity sweet crowd pleaser.",
+      sr: "Mango, jabuka i vanila u snažnom voćno-ambrastom mirisu.",
+      en: "Mango, apple and vanilla in a powerful fruity-amber fragrance.",
     },
     modal: {
-      sr: "Moderan, upečatljiv i vrlo primetan miris.",
-      en: "Modern noticeable compliment magnet.",
+      sr: "Zelena mandarina, jabuka i kardamom vode u upečatljiv mango, lavandu i crni biber, dok vanila, amber, tikovina i vetiver grade bogat trag.",
+      en: "Green mandarin, apple and cardamom lead into striking mango, lavender and black pepper, while vanilla, amber, teak wood and vetiver build a rich trail.",
     },
-    scentType: { sr: "Sladak i voćni", en: "Sweet fruity" },
+    scentType: {
+      sr: "Voćni, aromatičan i ambrast",
+      en: "Fruity aromatic amber",
+    },
     dominantNotes: {
-      sr: ["jabuka", "vanila", "amber"],
-      en: ["apple", "vanilla", "amber"],
+      sr: ["mango", "jabuka", "vanila", "amber"],
+      en: ["mango", "apple", "vanilla", "amber"],
     },
-    tags: { sr: ["Sladak"], en: ["Sweet"] },
+    tags: {
+      sr: ["Večernji", "Bogat", "Prepoznatljiv"],
+      en: ["Night", "Rich", "Signature"],
+    },
     whyChoose: {
-      sr: "Za maksimalne komplimente.",
-      en: "For maximum compliments.",
+      sr: "Ako želiš sladak i izuzetno primetan parfem napravljen da privuče pažnju.",
+      en: "If you want a sweet, highly noticeable fragrance designed to draw attention.",
     },
   },
 
-  "Givenchy Gentleman Eau de Parfum Réserve Privée": {
-    miniTag: { sr: "💎 Luksuzan / Večernji", en: "💎 Luxury / Night" },
-    card: { sr: "Whiskey i iris elegancija.", en: "Whiskey iris elegance." },
+  "Givenchy Gentleman Réserve Privée Eau de Parfum": {
+    miniTag: { sr: "🥃 Viski / Iris", en: "🥃 Whisky / Iris" },
+    card: {
+      sr: "Viski, iris i kesten u toplom, elegantnom večernjem mirisu.",
+      en: "Whisky, iris and chestnut in a warm elegant evening scent.",
+    },
     modal: {
-      sr: "Topao, kremast i sofisticiran miris.",
-      en: "Warm creamy sophisticated scent.",
+      sr: "Bergamot i viski otvaraju miris toplinom, kesten, iris i benzoin stvaraju kremasto-puderasto srce, a kedar, vetiver i pačuli daju profinjenu bazu.",
+      en: "Bergamot and whisky open with warmth, chestnut, iris and benzoin form a creamy powdery heart, while cedarwood, vetiver and patchouli create a refined base.",
     },
-    scentType: { sr: "Sladak i drvenast", en: "Sweet woody" },
+    scentType: {
+      sr: "Puderast, ambrast i drvenast",
+      en: "Powdery amber woody",
+    },
     dominantNotes: {
-      sr: ["whiskey", "iris", "drvo"],
-      en: ["whiskey", "iris", "woods"],
+      sr: ["viski", "iris", "kesten", "benzoin"],
+      en: ["whisky", "iris", "chestnut", "benzoin"],
     },
-    tags: { sr: ["Luksuzan"], en: ["Luxury"] },
+    tags: {
+      sr: ["Bogat", "Večernji", "Mekan"],
+      en: ["Rich", "Night", "Soft"],
+    },
     whyChoose: {
-      sr: "Za elegantne večeri.",
-      en: "For elegant evenings.",
+      sr: "Ako želiš topao i sofisticiran miris za elegantne večeri i posebne prilike.",
+      en: "If you want a warm sophisticated fragrance for elegant evenings and special occasions.",
     },
   },
 
   "Jimmy Choo Man Blue Eau de Toilette": {
-    miniTag: { sr: "❄️ Svež / Ležeran", en: "❄️ Fresh / Casual" },
+    miniTag: { sr: "💙 Lavanda / Koža", en: "💙 Lavender / Leather" },
     card: {
-      sr: "Ležerna svežina sa modernim obrtom.",
-      en: "Casual fresh with modern twist.",
+      sr: "Lavanda, crni biber i meka koža u opuštenom modernom mirisu.",
+      en: "Lavender, black pepper and soft leather in a relaxed modern scent.",
     },
     modal: {
-      sr: "Opušten i prijatan miris za svaki dan.",
-      en: "Relaxed easy everyday scent.",
+      sr: "Lavanda, crni biber i bergamot daju aromatičan početak, koža, čempres i voćne note unose karakter, a sandalovina, vetiver i pačuli meku dubinu.",
+      en: "Lavender, black pepper and bergamot create an aromatic opening, leather, cypress and fruity notes add character, while sandalwood, vetiver and patchouli bring soft depth.",
     },
-    scentType: { sr: "Svež i aromatičan", en: "Fresh aromatic" },
+    scentType: {
+      sr: "Aromatičan, kožni i drvenast",
+      en: "Aromatic leather woody",
+    },
     dominantNotes: {
-      sr: ["citrusi", "lavanda", "drvo"],
-      en: ["citrus", "lavender", "woods"],
+      sr: ["lavanda", "crni biber", "koža", "sandalovina"],
+      en: ["lavender", "black pepper", "leather", "sandalwood"],
     },
-    tags: { sr: ["Svakodnevni"], en: ["Daily"] },
+    tags: {
+      sr: ["Čist", "Letnji", "Mekan"],
+      en: ["Clean", "Summer", "Soft"],
+    },
     whyChoose: {
-      sr: "Za opušten stil.",
-      en: "For relaxed style.",
+      sr: "Ako želiš ležeran, prijatan i lako nosiv miris za svaki dan.",
+      en: "If you want a relaxed, pleasant and easy-to-wear everyday fragrance.",
     },
   },
 
