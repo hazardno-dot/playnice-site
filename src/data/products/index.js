@@ -2424,149 +2424,178 @@ export const products = [
     },
     isNew: true
   },
-{
-  id: 81,
-  slug: "rayhaan-nocturno-elixir",
-  name: "Rayhaan Nocturno Elixir Eau de Parfum",
-  shortName: "Nocturno Elixir",
-  category: "Arabian",
-  image: "/products/rayhaan-nocturno-elixir.png",
-  sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
-  badge: "SIGNATURE",
-  rating: 8.9,
-  ratingLabel: "Blue Favorite",
-  season: "all",
-  moods: ["clean", "signature", "date"],
-  recommendations: [
-    "rayhaan-azul-edp"
-  ],
-  inspiredBy: {
-  name: "Bleu de Chanel Parfum",
-  short: "Bleu de Chanel Parfum DNA"
-},
-  noteMap: {
-  top: ["sandalwood"],
-  heart: ["amber"],
-  base: ["woody-notes", "labdanum"]
-},
-  isNew: true,
-},
-{
-  id: 82,
-  slug: "french-avenue-ravine-ice",
-  name: "French Avenue Ravine Ice Extrait de Parfum",
-  shortName: "Ravine Ice",
-  category: "Arabian",
-  image: "/products/french-avenue-ravine-ice.png",
-  sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-  badge: "SUMMER HIT",
-  rating: 9.0,
-  ratingLabel: "Summer Star",
-  season: "summer",
-  moods: ["summer", "clean", "signature"],
-  recommendations: [
-    "french-avenue-pinnace-oryn"
-  ],
-  inspiredBy: {
-  name: "Goldfield & Banks Pacific Rock Moss",
-  short: "Pacific Rock Moss DNA"
-},
-  noteMap: {
-  top: ["lemon", "geranium"],
-  heart: ["sage", "lavender", "sea-salt"],
-  base: ["moss", "cedarwood", "ambroxan"]
-},
-  isNew: true,
-},
-{
-  id: 83,
-  slug: "mawj-moscow-mule",
-  name: "Paris Corner Mawj Moscow Mule Eau de Parfum",
-  shortName: "Mawj Moscow Mule",
-  category: "Arabian",
-  image: "/products/mawj-moscow-mule.png",
-  sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
-  badge: "FRESH DROP",
-  rating: 8.8,
-  ratingLabel: "Fresh Pick",
-  season: "summer",
-  moods: ["summer", "clean", "signature"],
-  recommendations: ["french-avenue-ravine-ginger-edp"],
-  inspiredBy: {
-  name: "Kilian Blue Moon Ginger Dash",
-  short: "Blue Moon Ginger Dash DNA"
-},
-  noteMap: {
-  top: ["lemon", "ginger", "bergamot"],
-  heart: ["herbal-notes", "cypress", "mint"],
-  base: ["ozonic-notes", "amber", "moss"]
-},
-  isNew: true,
-},
-{
-  id: 84,
-  slug: "my-geisha-jasmine-in-the-sun",
-  name: "My Geisha Jasmine in the Sun Eau de Parfum",
-  shortName: "Jasmine in the Sun",
-  category: "Niche",
-  image: "/products/my-geisha-jasmine-in-the-sun.png",
-  sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
-  badge: "NEW",
-  rating: 9.1,
-  ratingLabel: "Summer Bloom",
-  season: "summer",
-  moods: ["summer", "soft", "signature"],
-  recommendations: [
-    "narciso-rodriguez-poudree"
-  ],
-  inspiredBy: {
-    name: "Original My Geisha creation",
-    short: "Solar Jasmine DNA"
+    {
+    id: 81,
+    slug: "rayhaan-nocturno-elixir",
+    name: "Rayhaan Nocturno Elixir Eau de Parfum",
+    shortName: "Nocturno Elixir",
+    category: "Arabian",
+    image: "/products/rayhaan-nocturno-elixir.png",
+    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    badge: "SIGNATURE",
+    rating: 8.9,
+    ratingLabel: "Blue Favorite",
+    season: "all",
+    moods: ["clean", "signature", "date"],
+    recommendations: [
+      "bleu-de-chanel-edp",
+      "prada-paradigme-edp",
+      "ysl-myslf-edp"
+    ],
+    inspiredBy: {
+      name: "Bleu de Chanel L’Exclusif",
+      short: "Bleu de Chanel L’Exclusif DNA"
+    },
+    noteMap: {
+      top: ["sandalwood"],
+      heart: ["amber"],
+      base: ["woody-notes", "labdanum"]
+    },
+    isNew: true
   },
-  isNew: true,
-},
-{
-  id: 85,
-  slug: "essential-parfums-nice-bergamote",
-  name: "Essential Parfums Nice Bergamote Eau de Parfum",
-  shortName: "Nice Bergamote",
-  category: "Niche",
-  image: "/products/essential-parfums-nice-bergamote.png",
-  sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
-  badge: "NEW",
-  rating: 8.9,
-  ratingLabel: "Citrus Icon",
-  season: "summer",
-  moods: ["clean", "summer", "signature"],
-  recommendations: [
-    "dolce-gabbana-light-blue-pour-homme-2025"
-  ],
-  inspiredBy: {
-    name: "Original Essential Parfums creation",
-    short: "Natural Bergamot DNA"
+  {
+    id: 82,
+    slug: "french-avenue-ravine-ice",
+    name: "French Avenue Ravine Ice Extrait de Parfum",
+    shortName: "Ravine Ice",
+    category: "Arabian",
+    image: "/products/french-avenue-ravine-ice.png",
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+    badge: "SUMMER HIT",
+    rating: 9,
+    ratingLabel: "Summer Star",
+    season: "summer",
+    moods: ["summer", "clean", "signature"],
+    recommendations: [
+      "thomas-kosmala-no7-le-sel-de-la-terre",
+      "rayhaan-azul-edp",
+      "dolce-gabbana-light-blue-pour-homme-2025"
+    ],
+    inspiredBy: {
+      name: "Goldfield & Banks Pacific Rock Moss",
+      short: "Pacific Rock Moss DNA"
+    },
+    noteMap: {
+      top: ["lemon", "geranium"],
+      heart: ["sage", "lavender", "sea-salt"],
+      base: ["moss", "cedarwood", "ambroxan"]
+    },
+    isNew: true
   },
-  isNew: true,
-},
-{
-  id: 86,
-  slug: "essential-parfums-orange-x-santal",
-  name: "Essential Parfums Orange X Santal Eau de Parfum",
-  shortName: "Orange X Santal",
-  category: "Niche",
-  image: "/products/essential-parfums-orange-x-santal.png",
-  sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
-  badge: "NEW",
-  rating: 9.0,
-  ratingLabel: "Modern Niche",
-  season: "all",
-  moods: ["signature", "clean", "rich"],
-  recommendations: [
-    "nice-bergamote"
-  ],
-  inspiredBy: {
-    name: "Original Essential Parfums creation",
-    short: "Orange Sandalwood DNA"
+  {
+    id: 83,
+    slug: "mawj-moscow-mule",
+    name: "Paris Corner Mawj Moscow Mule Eau de Parfum",
+    shortName: "Mawj Moscow Mule",
+    category: "Arabian",
+    image: "/products/mawj-moscow-mule.png",
+    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+    badge: "FRESH DROP",
+    rating: 8.8,
+    ratingLabel: "Fresh Pick",
+    season: "summer",
+    moods: ["summer", "clean", "signature"],
+    recommendations: [
+      "french-avenue-ravine-ginger-edp",
+      "emir-voux-zingy",
+      "ysl-y-iced-cologne"
+    ],
+    inspiredBy: {
+      name: "Kilian Blue Moon Ginger Dash",
+      short: "Blue Moon Ginger Dash DNA"
+    },
+    noteMap: {
+      top: ["lemon", "ginger", "bergamot"],
+      heart: ["herbal-notes", "cypress", "mint"],
+      base: ["ozonic-notes", "amber", "moss"]
+    },
+    isNew: true
   },
-  isNew: true,
-},
+  {
+    id: 84,
+    slug: "my-geisha-jasmine-in-the-sun",
+    name: "my Geisha Jasmine in the Sun Extrait de Parfum",
+    shortName: "Jasmine in the Sun",
+    category: "Niche",
+    image: "/products/my-geisha-jasmine-in-the-sun.png",
+    sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
+    badge: "NEW",
+    rating: 9.1,
+    ratingLabel: "Summer Bloom",
+    season: "summer",
+    moods: ["summer", "soft", "signature"],
+    recommendations: [
+      "narciso-rodriguez-poudree",
+      "ysl-black-opium-le-parfum",
+      "essential-parfums-nice-bergamote"
+    ],
+    inspiredBy: {
+      name: "Original my Geisha creation",
+      short: "Solar Jasmine DNA"
+    },
+    noteMap: {
+      top: ["bergamot", "cloves", "clary-sage"],
+      heart: ["jasmine", "orange-blossom", "ylang-ylang"],
+      base: ["amber", "patchouli", "cedarwood", "vanilla"]
+    },
+    isNew: true
+  },
+  {
+    id: 85,
+    slug: "essential-parfums-nice-bergamote",
+    name: "Essential Parfums Nice Bergamote Eau de Parfum",
+    shortName: "Nice Bergamote",
+    category: "Niche",
+    image: "/products/essential-parfums-nice-bergamote.png",
+    sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
+    badge: "NEW",
+    rating: 8.9,
+    ratingLabel: "Citrus Icon",
+    season: "summer",
+    moods: ["clean", "summer", "signature"],
+    recommendations: [
+      "essential-parfums-orange-x-santal",
+      "acqua-di-parma-colonia-pura",
+      "dolce-gabbana-light-blue-pour-homme-2025"
+    ],
+    inspiredBy: {
+      name: "Original Essential Parfums creation",
+      short: "Natural Bergamot DNA"
+    },
+    noteMap: {
+      top: ["bergamot"],
+      heart: ["jasmine", "ylang-ylang", "rose"],
+      base: ["cedarwood", "tonka-bean"]
+    },
+    isNew: true
+  },
+  {
+    id: 86,
+    slug: "essential-parfums-orange-x-santal",
+    name: "Essential Parfums Orange X Santal Eau de Parfum",
+    shortName: "Orange X Santal",
+    category: "Niche",
+    image: "/products/essential-parfums-orange-x-santal.png",
+    sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
+    badge: "NEW",
+    rating: 9,
+    ratingLabel: "Modern Niche",
+    season: "all",
+    moods: ["signature", "clean", "soft"],
+    recommendations: [
+      "essential-parfums-nice-bergamote",
+      "terre-d-hermes-edt",
+      "bois-imperial-essential-parfums"
+    ],
+    inspiredBy: {
+      name: "Original Essential Parfums creation",
+      short: "Orange Sandalwood DNA"
+    },
+    noteMap: {
+      top: ["bitter-orange", "orange"],
+      heart: ["basil", "cypress"],
+      base: ["oakmoss", "sandalwood"]
+    },
+    isNew: true
+  },
 ];
