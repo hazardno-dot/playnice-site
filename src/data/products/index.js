@@ -2127,272 +2127,303 @@ export const products = [
     },
     isNew: true
   },
-{
-  id: 71,
-  slug: "ysl-myslf-edp",
-  name: "Yves Saint Laurent MYSLF Eau de Parfum",
-  shortName: "YSL MYSLF",
-  category: "Designer",
-  image: "/products/ysl-myslf-edp.png",
-  sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
-  badge: "TOP RATED",
-  rating: 8.8,
-  ratingLabel: "Modern Signature",
-  season: "all",
-  moods: ["clean", "signature", "date"],
-  recommendations: ["ysl-y-iced-cologne"],
-  inspiredBy: {
-  name: "Original Yves Saint Laurent creation",
-  short: "Orange Blossom Woods DNA"
-},
-  noteMap: {
-  top: ["bergamot"],
-  heart: ["orange-blossom"],
-  base: ["warm-woods", "patchouli", "ambrofix"]
-},
-  isNew: true,
-},
-{
-  id: 72,
-  slug: "carolina-herrera-bad-boy-cobalt-edp",
-  name: "Carolina Herrera Bad Boy Cobalt Eau de Parfum",
-  shortName: "Bad Boy Cobalt",
-  category: "Designer",
-  image: "/products/ch-bad-boy-cobalt-edp.png",
-  sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
-  badge: "PLAYNICE PICK",
-  rating: 8.6,
-  ratingLabel: "Fresh Bold",
-  season: "all",
-  moods: ["date", "signature", "clean"],
-  recommendations: ["valentino-uomo-born-in-roma-coral-fantasy"],
-  inspiredBy: {
-  name: "Original Carolina Herrera creation",
-  short: "Plum Aromatic DNA"
-},
-  noteMap: {
-  top: ["pink-pepper", "lavender"],
-  heart: ["geranium", "black-plum"],
-  base: ["truffle", "vetiver", "cedarwood"]
-},
-  isNew: true,
-},
-{
-  id: 73,
-  slug: "prada-luna-rossa-ocean-edt",
-  name: "Prada Luna Rossa Ocean Eau de Toilette",
-  shortName: "Luna Rossa Ocean",
-  category: "Designer",
-  image: "/products/prada-luna-rossa-ocean-edt.png",
-  sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
-  badge: "SIGNATURE",
-  rating: 8.5,
-  ratingLabel: "Clean Favorite",
-  season: "summer",
-  moods: ["clean", "summer", "signature"],
-  recommendations: ["ysl-myslf-edp"],
-  inspiredBy: {
-  name: "Original Prada creation",
-  short: "Neo Fresh Ocean DNA"
-},
-  noteMap: {
-  top: ["bergamot"],
-  heart: ["lavender", "sage", "iris"],
-  base: ["vetiver", "tonka-bean"]
-},
-  isNew: true,
-},
-{
-  id: 74,
-  slug: "thomas-kosmala-no7-le-sel-de-la-terre",
-  name: "Thomas Kosmala No. 7 Le Sel de la Terre",
-  shortName: "Le Sel de la Terre",
-  category: "Niche",
-  image: "/products/thomas-kosmala-no7-le-sel-de-la-terre.png",
-  sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
-  badge: "LUXURY PICK",
-  rating: 9.2,
-  ratingLabel: "Niche Masterpiece",
-  season: "summer",
-  moods: ["summer", "signature", "clean"],
-  recommendations: [
-    "dolce-gabbana-light-blue-pour-homme-2025",
-    "acqua-di-gio-profondo-parfum"
-  ],
-  inspiredBy: {
-  name: "Original Thomas Kosmala creation",
-  short: "Marine Salt DNA"
-},
-  noteMap: {
-  top: ["bergamot", "lemon", "marine-notes"],
-  heart: ["watery-notes", "fresh-florals"],
-  base: ["fresh-woods", "musk"]
-},
-  isNew: true,
-},
-{
-  id: 75,
-  slug: "jean-paul-gaultier-le-beau-edt",
-  name: "Jean Paul Gaultier Le Beau Eau de Toilette",
-  shortName: "JPG Le Beau",
-  category: "Designer",
-  image: "/products/jean-paul-gaultier-le-beau-edt.png",
-  sizes: { "2ml": 5, "5ml": 12, "10ml": 21 },
-  badge: "MOST WANTED",
-  rating: 9.2,
-  ratingLabel: "Summer Icon",
-  season: "summer",
-  moods: ["summer", "date", "signature"],
-  recommendations: [
-    "riiffs-freeze-extrait",
-    "ysl-y-iced-cologne"
-  ],
-  inspiredBy: {
-  name: "Original Jean Paul Gaultier creation",
-  short: "Coconut Tonka DNA"
-},
-  noteMap: {
-  top: ["bergamot"],
-  heart: ["coconut-wood"],
-  base: ["tonka-bean"]
-},
-  isNew: true,
-},
-{
-  id: 76,
-  slug: "rayhaan-azul-edp",
-  name: "Rayhaan Azul Eau de Parfum",
-  shortName: "Rayhaan Azul",
-  category: "Arabian",
-  image: "/products/rayhaan-azul.png",
-  sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
-  badge: "SUMMER HIT",
-  rating: 8.8,
-  ratingLabel: "Summer Favorite",
-  season: "summer",
-  moods: ["summer", "clean", "signature"],
-  recommendations: [
-    "ysl-y-iced-cologne"
-  ],
-  inspiredBy: {
-  name: "Dior Homme Cologne",
-  short: "Dior Homme Cologne DNA"
-},
-  noteMap: {
-  top: ["bergamot", "lemon"],
-  heart: ["grapefruit-blossom"],
-  base: ["calone", "sandalwood"]
-},
-  isNew: true,
-},
-{
-  id: 77,
-  slug: "lattafa-suqraat-edp",
-  name: "Lattafa Suqraat Eau de Parfum",
-  shortName: "Lattafa Suqraat",
-  category: "Arabian",
-  image: "/products/lattafa-suqraat.png",
-  sizes: { "5ml": 3.5, "10ml": 6, "20ml": 12 },
-  badge: "HIDDEN GEM",
-  rating: 8.5,
-  ratingLabel: "Fresh Classic",
-  season: "summer",
-  moods: ["summer", "clean"],
-  recommendations: [
-    "dolce-gabbana-light-blue-pour-homme-2025"
-  ],
-  inspiredBy: {
-  name: "Giorgio Armani Acqua di Giò Profumo",
-  short: "Acqua di Giò Profumo DNA"
-},
-  noteMap: {
-  top: ["bergamot", "ginger"],
-  heart: ["lavender", "violet-leaf"],
-  base: ["musk", "sandalwood", "amber"]
-},
-  isNew: true,
-},
-{
-  id: 78,
-  slug: "khadlaj-shiyaaka-snow-edp",
-  name: "Khadlaj Shiyaaka Snow Eau de Parfum",
-  shortName: "Shiyaaka Snow",
-  category: "Arabian",
-  image: "/products/khadlaj-shiyaaka-snow.png",
-  sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
-  badge: "MOST WANTED",
-  rating: 8.8,
-  ratingLabel: "Luxury Fresh",
-  season: "summer",
-  moods: ["clean", "signature", "summer"],
-  recommendations: [
-    "lattafa-maahir-legacy"
-  ],
-  inspiredBy: {
-  name: "Louis Vuitton Météore",
-  short: "Météore DNA"
-},
-  noteMap: {
-  top: ["mandarin", "citruses", "bergamot"],
-  heart: ["neroli", "nutmeg", "pink-pepper"],
-  base: ["vetiver", "cardamom"]
-},
-  isNew: true,
-},
-{
-  id: 79,
-  slug: "french-avenue-ravine-ginger-edp",
-  name: "French Avenue Ravine Ginger Extrait de Parfum",
-  shortName: "Ravine Ginger",
-  category: "Arabian",
-  image: "/products/french-avenue-ravine-ginger.png",
-  sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
-  badge: "ARABIAN GEM",
-  rating: 8.9,
-  ratingLabel: "Signature Pick",
-  season: "summer",
-  moods: ["signature", "summer", "rich"],
-  recommendations: [
-    "french-avenue-pinnace-oryn"
-  ],
-  inspiredBy: {
-  name: "Goldfield & Banks Ingenious Ginger",
-  short: "Ingenious Ginger DNA"
-},
-  noteMap: {
-  top: ["ginger", "lemon", "bergamot"],
-  heart: ["orange-blossom", "magnolia", "jasmine"],
-  base: ["vanilla", "sandalwood", "musk"]
-},
-  isNew: true,
-},
-{
-  id: 80,
-  slug: "lattafa-khamrah-waha-edp",
-  name: "Lattafa Khamrah Waha Eau de Parfum",
-  shortName: "Khamrah Waha",
-  category: "Arabian",
-  image: "/products/lattafa-khamrah-waha.png",
-  sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
-  badge: "TRENDING",
-  rating: 9.0,
-  ratingLabel: "Gourmand Star",
-  season: "all",
-  moods: ["rich", "date", "signature"],
-  recommendations: [
-    "jean-paul-gaultier-le-beau-edt"
-  ],
-  inspiredBy: {
-  name: "Original Lattafa creation",
-  short: "Fresh Woody Aromatic DNA"
-},
-  noteMap: {
-  top: ["bergamot", "juniper-berries", "yuzu"],
-  heart: ["iris", "cucumber", "sea-salt"],
-  base: ["akigalawood", "tonka-bean", "ambrofix"]
-},
-  isNew: true,
-},
+    {
+    id: 71,
+    slug: "ysl-myslf-edp",
+    name: "Yves Saint Laurent MYSLF Eau de Parfum",
+    shortName: "MYSLF",
+    category: "Designer",
+    image: "/products/ysl-myslf-edp.png",
+    sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
+    badge: "TOP RATED",
+    rating: 8.8,
+    ratingLabel: "Modern Signature",
+    season: "all",
+    moods: ["clean", "signature", "date"],
+    recommendations: [
+      "prada-paradigme-edp",
+      "bleu-de-chanel-edp",
+      "prada-luna-rossa-ocean-edt"
+    ],
+    inspiredBy: {
+      name: "Original Yves Saint Laurent creation",
+      short: "Orange Blossom Woods DNA"
+    },
+    noteMap: {
+      top: ["calabrian-bergamot"],
+      heart: ["tunisian-orange-blossom-absolute"],
+      base: ["warm-woods", "patchouli", "ambrofix"]
+    },
+    isNew: true
+  },
+  {
+    id: 72,
+    slug: "carolina-herrera-bad-boy-cobalt-edp",
+    name: "Carolina Herrera Bad Boy Cobalt Eau de Parfum Électrique",
+    shortName: "Bad Boy Cobalt",
+    category: "Designer",
+    image: "/products/ch-bad-boy-cobalt-edp.png",
+    sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
+    badge: "PLAYNICE PICK",
+    rating: 8.6,
+    ratingLabel: "Fresh Bold",
+    season: "all",
+    moods: ["date", "signature", "clean"],
+    recommendations: [
+      "valentino-uomo-born-in-roma-coral-fantasy",
+      "calvin-klein-defy-parfum",
+      "gisada-ambassador-men"
+    ],
+    inspiredBy: {
+      name: "Original Carolina Herrera creation",
+      short: "Plum Aromatic DNA"
+    },
+    noteMap: {
+      top: ["pink-pepper", "lavender"],
+      heart: ["geranium", "black-plum"],
+      base: ["truffle-accord", "vetiver", "cedarwood"]
+    },
+    isNew: true
+  },
+  {
+    id: 73,
+    slug: "prada-luna-rossa-ocean-edt",
+    name: "Prada Luna Rossa Ocean Eau de Toilette",
+    shortName: "Luna Rossa Ocean",
+    category: "Designer",
+    image: "/products/prada-luna-rossa-ocean-edt.png",
+    sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
+    badge: "SIGNATURE",
+    rating: 8.5,
+    ratingLabel: "Clean Favorite",
+    season: "summer",
+    moods: ["clean", "summer", "signature"],
+    recommendations: [
+      "ysl-myslf-edp",
+      "ysl-y-iced-cologne",
+      "giorgio-armani-acqua-di-gio-profondo-parfum"
+    ],
+    inspiredBy: {
+      name: "Original Prada creation",
+      short: "Neo Fresh Ocean DNA"
+    },
+    noteMap: {
+      top: ["bergamot"],
+      heart: ["lavender", "sage", "iris"],
+      base: ["vetiver", "tonka-bean"]
+    },
+    isNew: true
+  },
+  {
+    id: 74,
+    slug: "thomas-kosmala-no7-le-sel-de-la-terre",
+    name: "Thomas Kosmala No. 7 Le Sel de la Terre Eau de Parfum",
+    shortName: "No. 7 Le Sel de la Terre",
+    category: "Niche",
+    image: "/products/thomas-kosmala-no7-le-sel-de-la-terre.png",
+    sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
+    badge: "LUXURY PICK",
+    rating: 9.2,
+    ratingLabel: "Niche Masterpiece",
+    season: "summer",
+    moods: ["summer", "signature", "clean"],
+    recommendations: [
+      "giorgio-armani-acqua-di-gio-profondo-parfum",
+      "rayhaan-azul-edp",
+      "dolce-gabbana-light-blue-pour-homme-2025"
+    ],
+    inspiredBy: {
+      name: "Original Thomas Kosmala creation",
+      short: "Marine Salt DNA"
+    },
+    noteMap: {
+      top: ["bergamot", "italian-lemon", "fresh-marine-notes"],
+      heart: ["aqua-accord", "fresh-florals"],
+      base: ["fresh-woods", "musk"]
+    },
+    isNew: true
+  },
+  {
+    id: 75,
+    slug: "jean-paul-gaultier-le-beau-edt",
+    name: "Jean Paul Gaultier Le Beau Eau de Toilette",
+    shortName: "Le Beau",
+    category: "Designer",
+    image: "/products/jean-paul-gaultier-le-beau-edt.png",
+    sizes: { "2ml": 5, "5ml": 12, "10ml": 21 },
+    badge: "MOST WANTED",
+    rating: 9.2,
+    ratingLabel: "Summer Icon",
+    season: "summer",
+    moods: ["summer", "date", "signature"],
+    recommendations: [
+      "rayhaan-aquatica",
+      "french-avenue-safari-breeze",
+      "khadlaj-island-dreams"
+    ],
+    inspiredBy: {
+      name: "Original Jean Paul Gaultier creation",
+      short: "Coconut Tonka DNA"
+    },
+    noteMap: {
+      top: ["bergamot"],
+      heart: ["coconut-wood"],
+      base: ["tonka-bean"]
+    },
+    isNew: true
+  },
+  {
+    id: 76,
+    slug: "rayhaan-azul-edp",
+    name: "Rayhaan Azul Eau de Parfum",
+    shortName: "Azul",
+    category: "Arabian",
+    image: "/products/rayhaan-azul.png",
+    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    badge: "SUMMER HIT",
+    rating: 8.8,
+    ratingLabel: "Summer Favorite",
+    season: "summer",
+    moods: ["summer", "clean", "signature"],
+    recommendations: [
+      "thomas-kosmala-no7-le-sel-de-la-terre",
+      "acqua-di-parma-colonia-pura",
+      "dolce-gabbana-light-blue-pour-homme-2025"
+    ],
+    inspiredBy: {
+      name: "Dior Homme Cologne",
+      short: "Dior Homme Cologne DNA"
+    },
+    noteMap: {
+      top: ["bergamot", "lemon"],
+      heart: ["grapefruit-blossom"],
+      base: ["calone", "sandalwood"]
+    },
+    isNew: true
+  },
+  {
+    id: 77,
+    slug: "lattafa-suqraat-edp",
+    name: "Lattafa Suqraat Eau de Parfum",
+    shortName: "Suqraat",
+    category: "Arabian",
+    image: "/products/lattafa-suqraat.png",
+    sizes: { "5ml": 3.5, "10ml": 6, "20ml": 12 },
+    badge: "HIDDEN GEM",
+    rating: 8.5,
+    ratingLabel: "Fresh Classic",
+    season: "summer",
+    moods: ["summer", "clean", "signature"],
+    recommendations: [
+      "giorgio-armani-acqua-di-gio-profondo-parfum",
+      "bleu-de-chanel-edp",
+      "prada-luna-rossa-ocean-edt"
+    ],
+    inspiredBy: {
+      name: "Giorgio Armani Acqua di Giò Profumo",
+      short: "Acqua di Giò Profumo DNA"
+    },
+    noteMap: {
+      top: ["bergamot", "ginger"],
+      heart: ["lavender", "violet-leaf"],
+      base: ["musk", "sandalwood", "amber"]
+    },
+    isNew: true
+  },
+  {
+    id: 78,
+    slug: "khadlaj-shiyaaka-snow-edp",
+    name: "Khadlaj Special Edition Shiyaaka Snow Eau de Parfum",
+    shortName: "Shiyaaka Snow",
+    category: "Arabian",
+    image: "/products/khadlaj-shiyaaka-snow.png",
+    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    badge: "MOST WANTED",
+    rating: 8.8,
+    ratingLabel: "Luxury Fresh",
+    season: "summer",
+    moods: ["clean", "signature", "summer"],
+    recommendations: [
+      "khadlaj-onyx-silver",
+      "ysl-y-iced-cologne",
+      "lattafa-maahir-legacy"
+    ],
+    inspiredBy: {
+      name: "Louis Vuitton Météore",
+      short: "Météore DNA"
+    },
+    noteMap: {
+      top: ["mandarin-orange", "citrus-notes", "bergamot"],
+      heart: ["neroli", "nutmeg", "pink-pepper"],
+      base: ["indonesian-vetiver-oil", "cardamom"]
+    },
+    isNew: true
+  },
+  {
+    id: 79,
+    slug: "french-avenue-ravine-ginger-edp",
+    name: "French Avenue Ravine Ginger Extrait de Parfum",
+    shortName: "Ravine Ginger",
+    category: "Arabian",
+    image: "/products/french-avenue-ravine-ginger.png",
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+    badge: "ARABIAN GEM",
+    rating: 8.9,
+    ratingLabel: "Signature Pick",
+    season: "summer",
+    moods: ["signature", "summer", "rich"],
+    recommendations: [
+      "french-avenue-pinnace-oryn",
+      "khadlaj-island-dreams",
+      "lattafa-dynasty"
+    ],
+    inspiredBy: {
+      name: "Goldfield & Banks Ingenious Ginger",
+      short: "Ingenious Ginger DNA"
+    },
+    noteMap: {
+      top: ["ginger", "lemon", "bergamot"],
+      heart: ["orange-blossom", "magnolia", "jasmine", "rose"],
+      base: [
+        "vanilla",
+        "amber",
+        "sandalwood",
+        "cashmeran",
+        "patchouli",
+        "musk"
+      ]
+    },
+    isNew: true
+  },
+  {
+    id: 80,
+    slug: "lattafa-khamrah-waha-edp",
+    name: "Lattafa Khamrah Waha Eau de Parfum",
+    shortName: "Khamrah Waha",
+    category: "Arabian",
+    image: "/products/lattafa-khamrah-waha.png",
+    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
+    badge: "TRENDING",
+    rating: 9.0,
+    ratingLabel: "Gourmand Star",
+    season: "all",
+    moods: ["rich", "date", "signature"],
+    recommendations: [
+      "bois-imperial-essential-parfums",
+      "prada-luna-rossa-ocean-edt",
+      "ysl-y-iced-cologne"
+    ],
+    inspiredBy: {
+      name: "Original Lattafa creation",
+      short: "Fresh Woody Aromatic DNA"
+    },
+    noteMap: {
+      top: ["bergamot", "juniper-berries", "yuzu", "ginger"],
+      heart: ["iris", "cucumber", "sage", "sea-salt-accord"],
+      base: ["akigalawood", "tonka-bean", "vanilla", "musk", "ambrofix"]
+    },
+    isNew: true
+  },
 {
   id: 81,
   slug: "rayhaan-nocturno-elixir",
