@@ -5315,8 +5315,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
         <p className="shop-value-anchor-text">
           {lang === "sr"
-            ? "Designer i niche parfemi često koštaju €80–€200+. Kod PlayNice možeš da ih upoznaš već od €4."
-            : "Designer and niche bottles often cost €80–€200+. With PlayNice, you can get to know them from €4."}
+            ? "Designer i niche parfemi često koštaju €80–€200+. Kod PlayNice možeš da ih upoznaš već od €3."
+            : "Designer and niche bottles often cost €80–€200+. With PlayNice, you can get to know them from €3."}
         </p>
       </div>
 
