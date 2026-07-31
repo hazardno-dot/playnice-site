@@ -568,10 +568,10 @@ export const products = [
       base: ["vanilla", "cardamom", "sandalwood"]
     }
   },
-  {
+    {
     id: 21,
     slug: "rayhaan-aquatica",
-    name: "Rayhaan Aquatica",
+    name: "Rayhaan Aquatica Eau de Parfum",
     shortName: "Aquatica",
     category: "Arabian",
     image: "/products/Rayhaan-AQUTICA.png",
@@ -582,23 +582,24 @@ export const products = [
     season: "summer",
     moods: ["clean", "summer", "soft"],
     recommendations: [
-    "rayhaan-pacific-aura",
-    "emir-voux-zingy"
-  ],
+      "jean-paul-gaultier-le-beau-edt",
+      "rayhaan-pacific-aura",
+      "khadlaj-island-dreams"
+    ],
     inspiredBy: {
-    name: "Creed Virgin Island Water",
-    short: "Virgin Island Water DNA"
-  },
+      name: "Creed Virgin Island Water",
+      short: "Virgin Island Water DNA"
+    },
     noteMap: {
-    top: ["coconut", "lime", "bergamot"],
-    heart: ["ginger", "ylang-ylang", "hibiscus"],
-    base: ["white-rum", "sugar-cane", "musk"]
-  },
+      top: ["coconut", "lime", "bergamot", "mandarin"],
+      heart: ["ginger", "ylang-ylang", "jasmine", "hibiscus"],
+      base: ["white-rum", "sugar-cane", "musk"]
+    }
   },
   {
     id: 22,
     slug: "rayhaan-pacific-aura",
-    name: "Rayhaan Pacific Aura",
+    name: "Rayhaan Pacific Aura Eau de Parfum",
     shortName: "Pacific Aura",
     category: "Arabian",
     image: "/products/Rayhaan-Pacific-Aura.png",
@@ -609,18 +610,26 @@ export const products = [
     season: "summer",
     moods: ["clean", "summer", "soft"],
     recommendations: [
-    "rasasi-hawas-ice",
-    "french-avenue-safari-breeze"
-  ],
+      "french-avenue-safari-breeze",
+      "rasasi-hawas-ice",
+      "acqua-di-parma-fico-di-amalfi"
+    ],
     inspiredBy: {
-    name: "Louis Vuitton Pacific Chill",
-    short: "Pacific Chill DNA"
-  },
+      name: "Louis Vuitton Pacific Chill",
+      short: "Pacific Chill DNA"
+    },
     noteMap: {
-    top: ["cedrat", "mint", "black-currant"],
-    heart: ["apricot", "basil", "carrot-seeds"],
-    base: ["fig", "dates", "ambrette"]
-  },
+      top: [
+        "citron",
+        "mint",
+        "orange",
+        "lemon",
+        "black-currant",
+        "coriander"
+      ],
+      heart: ["apricot", "basil", "carrot-seeds", "may-rose"],
+      base: ["fig", "dates", "ambrette"]
+    }
   },
   {
     id: 23,
@@ -636,23 +645,31 @@ export const products = [
     season: "winter",
     moods: ["rich", "date", "signature"],
     recommendations: [
-    "lattafa-khamrah-qahwa",
-    "chopard-oud-malaki"
-  ],
+      "emir-voux-elegante",
+      "chopard-oud-malaki",
+      "tom-ford-noir-extreme"
+    ],
     inspiredBy: {
-    name: "Original Swiss Arabian creation",
-    short: "Tobacco Vanilla DNA"
-  },
+      name: "Original Swiss Arabian creation",
+      short: "Sweet Spicy Tobacco DNA"
+    },
     noteMap: {
-    top: ["plum", "apple", "pink-pepper"],
-    heart: ["labdanum", "amber", "ylang-ylang"],
-    base: ["tobacco", "honey", "vanilla"]
-  },
+      top: ["plum", "apple", "cumin", "pink-pepper", "licorice"],
+      heart: ["labdanum", "amber", "ylang-ylang", "patchouli"],
+      base: [
+        "musk",
+        "cashmere",
+        "honey",
+        "vanilla",
+        "sandalwood",
+        "tobacco"
+      ]
+    }
   },
   {
     id: 24,
     slug: "acqua-di-parma-fico-di-amalfi",
-    name: "Acqua di Parma Fico di Amalfi Eau de Toilette",
+    name: "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette",
     shortName: "Fico di Amalfi",
     category: "Niche",
     image: "/products/AdP-Fico.png",
@@ -663,18 +680,19 @@ export const products = [
     season: "summer",
     moods: ["clean", "summer", "soft"],
     recommendations: [
-    "emir-voux-zingy",
-    "french-avenue-safari-breeze"
-  ],
+      "emir-voux-zingy",
+      "essential-parfums-nice-bergamote",
+      "french-avenue-safari-breeze"
+    ],
     inspiredBy: {
-    name: "Original Acqua di Parma creation",
-    short: "Mediterranean Citrus DNA"
-  },
+      name: "Original Acqua di Parma creation",
+      short: "Mediterranean Fig Citrus DNA"
+    },
     noteMap: {
-    top: ["lemon", "bergamot", "grapefruit"],
-    heart: ["fig", "pink-pepper", "jasmine"],
-    base: ["fig-wood", "cedarwood", "benzoin"]
-  },
+      top: ["italian-lemon", "italian-bergamot", "grapefruit"],
+      heart: ["fig-nectar", "pink-pepper", "jasmine-petals"],
+      base: ["fig-wood", "cedarwood", "benzoin"]
+    }
   },
   {
     id: 25,
@@ -687,25 +705,40 @@ export const products = [
     badge: "LUXURY PICK",
     rating: 8.0,
     ratingLabel: "Audience Favorite",
-    season: "all",
-    moods: ["clean", "signature", "soft"],
+    season: "summer",
+    moods: ["clean", "summer", "signature"],
     recommendations: [
-    "terre-d-hermes-edt",
-    "acqua-di-parma-colonia-pura"
-  ],
+      "acqua-di-parma-colonia-pura",
+      "terre-d-hermes-edt",
+      "essential-parfums-nice-bergamote"
+    ],
     inspiredBy: {
-    name: "Original Acqua di Parma creation",
-    short: "Classic Italian Cologne DNA"
-  },
+      name: "Original Acqua di Parma creation",
+      short: "Citrus Woody Cologne DNA"
+    },
     noteMap: {
-    top: ["lemon", "neroli", "petitgrain"],
-    heart: ["rosemary", "lily-of-the-valley", "cloves"],
-    base: ["vetiver", "musk", "amber"]
-  },
+      top: [
+        "lemon",
+        "orange",
+        "bergamot",
+        "mandarin",
+        "grapefruit",
+        "neroli",
+        "petitgrain"
+      ],
+      heart: [
+        "rosemary",
+        "lily-of-the-valley",
+        "rose",
+        "jasmine",
+        "cloves"
+      ],
+      base: ["vetiver", "patchouli", "white-musk", "amber"]
+    },
     discount: {
-    size: "5ml",
-    percent: 15
-  },
+      size: "5ml",
+      percent: 15
+    }
   },
   {
     id: 26,
@@ -721,24 +754,25 @@ export const products = [
     season: "summer",
     moods: ["clean", "summer", "soft"],
     recommendations: [
-    "calvin-klein-ck-all",
-    "acqua-di-parma-colonia-essenza"
-  ],
+      "acqua-di-parma-colonia-essenza",
+      "calvin-klein-ck-all",
+      "essential-parfums-nice-bergamote"
+    ],
     inspiredBy: {
-    name: "Original Acqua di Parma creation",
-    short: "Fresh Citrus Musk DNA"
-  },
+      name: "Original Acqua di Parma creation",
+      short: "Fresh Citrus Musk DNA"
+    },
     noteMap: {
-    top: ["bergamot", "orange", "petitgrain"],
-    heart: ["coriander", "jasmine", "narcissus"],
-    base: ["cedarwood", "patchouli", "musk"]
-  },
+      top: ["italian-bergamot", "italian-orange", "petitgrain"],
+      heart: ["coriander-oil", "jasmine-sambac", "narcissus"],
+      base: ["cedarwood", "patchouli", "musk"]
+    }
   },
   {
     id: 27,
     slug: "bleu-de-chanel-edp",
-    name: "Bleu De Chanel Eau de Parfum",
-    shortName: "Bleu De Chanel",
+    name: "Bleu de Chanel Eau de Parfum",
+    shortName: "Bleu de Chanel",
     category: "Designer",
     image: "/products/BDC-EdP.png",
     sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
@@ -748,23 +782,24 @@ export const products = [
     season: "all",
     moods: ["signature", "clean", "date"],
     recommendations: [
-    "afnan-turathi-blue",
-    "giorgio-armani-acqua-di-gio-profondo-parfum"
-  ],
+      "rayhaan-nocturno-elixir",
+      "afnan-turathi-blue",
+      "prada-luna-rossa-ocean-edt"
+    ],
     inspiredBy: {
-    name: "Original Chanel creation",
-    short: "Blue Aromatic DNA"
-  },
+      name: "Original Chanel creation",
+      short: "Blue Aromatic Woody DNA"
+    },
     noteMap: {
-    top: ["grapefruit", "lemon", "mint"],
-    heart: ["ginger", "nutmeg", "jasmine"],
-    base: ["incense", "cedarwood", "sandalwood"]
-  },
+      top: ["grapefruit", "lemon", "mint"],
+      heart: ["ginger", "nutmeg", "jasmine"],
+      base: ["incense", "cedarwood", "sandalwood"]
+    }
   },
   {
     id: 28,
     slug: "bois-imperial-essential-parfums",
-    name: "Bois Impérial by Essential Parfums",
+    name: "Essential Parfums Bois Impérial Eau de Parfum",
     shortName: "Bois Impérial",
     category: "Niche",
     image: "/products/Bois-Impérial-by-Essential-Parfums.png",
@@ -773,20 +808,21 @@ export const products = [
     rating: 8.9,
     ratingLabel: "Audience Favorite",
     season: "all",
-    moods: ["signature", "clean", "soft"],
+    moods: ["signature", "clean", "rich"],
     recommendations: [
-    "armaf-club-de-nuit-sillage",
-    "mancera-cedrat-boise"
-  ],
+      "khadlaj-onyx-silver",
+      "mancera-cedrat-boise",
+      "essential-parfums-orange-x-santal"
+    ],
     inspiredBy: {
-    name: "Original Essential Parfums creation",
-    short: "Modern Woody Spice DNA"
-  },
+      name: "Original Essential Parfums creation",
+      short: "Modern Woody Spice DNA"
+    },
     noteMap: {
-    top: ["grapefruit", "thai-basil", "timut-pepper"],
-    heart: ["vetiver", "georgywood", "petalia"],
-    base: ["akigalawood", "patchouli", "ambrofix"]
-  },
+      top: ["thai-basil", "timut-pepper"],
+      heart: ["haitian-vetiver", "georgywood", "petalia"],
+      base: ["akigalawood", "indonesian-patchouli", "ambrofix"]
+    }
   },
   {
     id: 29,
@@ -800,24 +836,25 @@ export const products = [
     rating: 7.7,
     ratingLabel: "Well Loved",
     season: "all",
-    moods: ["signature", "clean", "date"],
+    moods: ["signature", "date", "rich"],
     recommendations: [
-    "boss-the-scent-elixir",
-    "boss-the-scent-le-parfum"
-  ],
+      "boss-the-scent-elixir",
+      "boss-the-scent-le-parfum",
+      "ysl-lhomme-edp"
+    ],
     inspiredBy: {
-    name: "Original BOSS creation",
-    short: "Woody Aromatic DNA"
-  },
+      name: "Original BOSS creation",
+      short: "Ginger Leather DNA"
+    },
     noteMap: {
-    top: ["ginger"],
-    heart: ["leather"],
-    base: ["woody-notes"]
-  },
+      top: ["ginger"],
+      heart: ["leather"],
+      base: ["woody-notes"]
+    },
     discount: {
-    size: "10ml",
-    percent: 15
-  }
+      size: "10ml",
+      percent: 15
+    }
   },
   {
     id: 30,
@@ -830,21 +867,22 @@ export const products = [
     badge: "LUXURY PICK",
     rating: 8.1,
     ratingLabel: "Audience Favorite",
-    season: "all",
+    season: "winter",
     moods: ["date", "rich", "signature"],
     recommendations: [
-    "boss-the-scent-le-parfum",
-    "tom-ford-noir-extreme"
-  ],
+      "boss-the-scent-le-parfum",
+      "lattafa-asad-elixir",
+      "rayhaan-crimson"
+    ],
     inspiredBy: {
-    name: "Original BOSS creation",
-    short: "Amber Leather DNA"
-  },
+      name: "Original BOSS creation",
+      short: "Spicy Ambery Woods DNA"
+    },
     noteMap: {
-    top: ["pimento"],
-    heart: ["lavandin"],
-    base: ["sandalwood"]
-  },
+      top: ["pimento"],
+      heart: ["lavandin"],
+      base: ["sandalwood"]
+    }
   },
   {
     id: 31,
