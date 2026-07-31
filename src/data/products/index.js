@@ -1185,10 +1185,10 @@ export const products = [
       base: ["vanilla", "sandalwood", "vetiver", "patchouli"]
     }
   },
-  {
+    {
     id: 41,
     slug: "ysl-lhomme-edp",
-    name: "L'Homme Eau de Parfum by Yves Saint Laurent",
+    name: "Yves Saint Laurent L'Homme Eau de Parfum",
     shortName: "YSL L'Homme",
     category: "Designer",
     image: "/products/L'Homme-EdP-YSL.png",
@@ -1196,30 +1196,31 @@ export const products = [
     badge: "BESTSELLER",
     rating: 8.1,
     ratingLabel: "Audience Favorite",
-    season: "summer",
+    season: "all",
     moods: ["soft", "date", "signature"],
     recommendations: [
-    "lattafa-fakhar-black",
-    "narciso-rodriguez-for-him-bleu-noir-edp"
-  ],
+      "narciso-rodriguez-for-him-bleu-noir-edp",
+      "terre-d-hermes-edt",
+      "calvin-klein-defy-parfum"
+    ],
     inspiredBy: {
-    name: "Original Yves Saint Laurent creation",
-    short: "Woody Amber DNA"
-  },
+      name: "Original Yves Saint Laurent creation",
+      short: "Citrus Woody Amber DNA"
+    },
     noteMap: {
-    top: ["bitter-orange"],
-    heart: ["oakwood"],
-    base: ["vetiver"]
-  },
+      top: ["bitter-orange"],
+      heart: ["oakwood"],
+      base: ["vetiver"]
+    },
     discount: {
-    size: "10ml",
-    percent: 20
-  },
+      size: "10ml",
+      percent: 20
+    }
   },
   {
     id: 42,
     slug: "lhomme-ideal-guerlain-edt",
-    name: "L'Homme Idéal De Guerlain Paris Eau De Toilette",
+    name: "L'Homme Idéal de Guerlain Paris Eau de Toilette",
     shortName: "L'Homme Idéal",
     category: "Designer",
     image: "/products/L'Homme-Idéal-De-Guerlain-Paris-EDT.png",
@@ -1227,21 +1228,22 @@ export const products = [
     badge: "TOP RATED",
     rating: 8.4,
     ratingLabel: "Audience Favorite",
-    season: "summer",
+    season: "all",
     moods: ["soft", "date", "signature"],
     recommendations: [
-    "givenchy-gentleman-reserve-privee",
-    "emir-voux-elegante"
-  ],
+      "givenchy-gentleman-reserve-privee",
+      "tom-ford-noir-extreme",
+      "bvlgari-man-in-black-edp"
+    ],
     inspiredBy: {
-    name: "Original Guerlain creation",
-    short: "Almond Woody DNA"
-  },
+      name: "Original Guerlain creation",
+      short: "Almond Amaretto Woods DNA"
+    },
     noteMap: {
-    top: ["citruses", "rosemary", "orange-blossom"],
-    heart: ["almond", "tonka-bean"],
-    base: ["vetiver", "cedarwood", "leather"]
-  },
+      top: ["citruses", "rosemary", "orange-blossom"],
+      heart: ["almond", "tonka-bean"],
+      base: ["vetiver", "cedarwood", "leather"]
+    }
   },
   {
     id: 43,
@@ -1257,18 +1259,28 @@ export const products = [
     season: "all",
     moods: ["signature", "summer", "clean"],
     recommendations: [
-    "bois-imperial-essential-parfums",
-    "montblanc-explorer-extreme"
-  ],
+      "creed-aventus-cologne",
+      "bois-imperial-essential-parfums",
+      "montblanc-explorer-extreme"
+    ],
     inspiredBy: {
-    name: "Original Mancera creation",
-    short: "Citrus Woody DNA"
-  },
+      name: "Original Mancera creation",
+      short: "Citrus Woody Leather DNA"
+    },
     noteMap: {
-    top: ["citruses", "black-currant", "cold-spices"],
-    heart: ["aquatic-jasmine", "patchouli"],
-    base: ["woody-notes", "leather", "oakmoss"]
-  },
+      top: [
+        "sicilian-citruses",
+        "black-currant",
+        "cold-spices"
+      ],
+      heart: ["aquatic-jasmine", "patchouli-leaves"],
+      base: [
+        "woody-notes",
+        "leather",
+        "oakmoss",
+        "vanilla"
+      ]
+    }
   },
   {
     id: 44,
@@ -1284,18 +1296,19 @@ export const products = [
     season: "winter",
     moods: ["signature", "date", "rich"],
     recommendations: [
-    "mancera-cedrat-boise",
-    "gisada-ambassador-men"
-  ],
+      "mancera-cedrat-boise",
+      "armaf-club-de-nuit-precieux-i",
+      "gisada-ambassador-men"
+    ],
     inspiredBy: {
-    name: "Original Montblanc creation",
-    short: "Woody Adventure DNA"
-  },
+      name: "Original Montblanc creation",
+      short: "Amber Leather Adventure DNA"
+    },
     noteMap: {
-    top: ["bergamot", "cardamom", "clary-sage"],
-    heart: ["lavender", "patchouli", "ambrofix"],
-    base: ["warm-woods", "leather", "vetiver"]
-  },
+      top: ["bergamot"],
+      heart: ["patchouli"],
+      base: ["amber"]
+    }
   },
   {
     id: 45,
@@ -1311,18 +1324,19 @@ export const products = [
     season: "all",
     moods: ["soft", "clean", "signature"],
     recommendations: [
-    "narciso-rodriguez-poudree",
-    "ysl-lhomme-edp"
-  ],
+      "ysl-lhomme-edp",
+      "narciso-rodriguez-poudree",
+      "calvin-klein-defy-parfum"
+    ],
     inspiredBy: {
-    name: "Original Narciso Rodriguez creation",
-    short: "Dark Musk DNA"
-  },
+      name: "Original Narciso Rodriguez creation",
+      short: "Dark Musky Woods DNA"
+    },
     noteMap: {
-    top: ["bergamot", "black-pepper"],
-    heart: ["musk"],
-    base: ["blue-cedar", "ebony", "vetiver"]
-  },
+      top: ["bergamot", "black-pepper"],
+      heart: ["musk", "blue-cedar", "black-ebony"],
+      base: ["vetiver", "amber"]
+    }
   },
   {
     id: 46,
@@ -1338,18 +1352,19 @@ export const products = [
     season: "summer",
     moods: ["signature", "clean", "soft"],
     recommendations: [
-    "acqua-di-parma-colonia-essenza",
-    "bois-imperial-essential-parfums"
-  ],
+      "acqua-di-parma-colonia-essenza",
+      "essential-parfums-orange-x-santal",
+      "bois-imperial-essential-parfums"
+    ],
     inspiredBy: {
-    name: "Original Hermès creation",
-    short: "Citrus Vetiver DNA"
-  },
+      name: "Original Hermès creation",
+      short: "Mineral Citrus Woods DNA"
+    },
     noteMap: {
-    top: ["grapefruit"],
-    heart: ["flint"],
-    base: ["cedarwood"]
-  },
+      top: ["grapefruit"],
+      heart: ["flint"],
+      base: ["cedarwood"]
+    }
   },
   {
     id: 47,
@@ -1365,27 +1380,44 @@ export const products = [
     season: "winter",
     moods: ["rich", "date", "soft"],
     recommendations: [
-    "givenchy-gentleman-reserve-privee",
-    "boss-the-scent-elixir"
-  ],
+      "givenchy-gentleman-reserve-privee",
+      "boss-the-scent-elixir",
+      "bvlgari-man-in-black-edp"
+    ],
     inspiredBy: {
-    name: "Original Tom Ford creation",
-    short: "Amber Kulfi DNA"
-  },
+      name: "Original Tom Ford creation",
+      short: "Amber Kulfi DNA"
+    },
     noteMap: {
-    top: ["neroli", "saffron", "cardamom"],
-    heart: ["kulfi", "rose", "jasmine"],
-    base: ["sandalwood", "vanilla", "amber"]
-  },
+      top: [
+        "neroli",
+        "saffron",
+        "cardamom",
+        "mandarin",
+        "nutmeg"
+      ],
+      heart: [
+        "kulfi",
+        "rose",
+        "jasmine",
+        "orange-blossom"
+      ],
+      base: [
+        "sandalwood",
+        "vanilla",
+        "amber",
+        "woody-notes"
+      ]
+    },
     discount: {
-    size: "5ml",
-    percent: 10
-}
+      size: "5ml",
+      percent: 10
+    }
   },
   {
     id: 48,
     slug: "afnan-9pm-night-out",
-    name: "Afnan 9PM Night Out",
+    name: "Afnan 9PM Night Out Extrait de Parfum",
     shortName: "9PM Night Out",
     category: "Arabian",
     image: "/products/9pm-night-out.png",
@@ -1396,23 +1428,41 @@ export const products = [
     season: "winter",
     moods: ["date", "rich", "signature"],
     recommendations: [
-    "afnan-9pm-rebel",
-    "tom-ford-noir-extreme"
-  ],
+      "afnan-9pm-rebel",
+      "tom-ford-noir-extreme",
+      "lattafa-khamrah-qahwa"
+    ],
     inspiredBy: {
-    name: "Original Afnan creation",
-    short: "Sweet Nightlife DNA"
-  },
+      name: "Original Afnan creation",
+      short: "Sweet Boozy Nightlife DNA"
+    },
     noteMap: {
-    top: ["dragon-fruit", "bergamot", "cognac"],
-    heart: ["cardamom", "suede", "toffee"],
-    base: ["tonka-bean", "akigalawood", "ambrofix"]
-  },
+      top: [
+        "dragon-fruit",
+        "bergamot",
+        "cognac",
+        "lavender",
+        "apple"
+      ],
+      heart: [
+        "cardamom",
+        "mahonial",
+        "suede",
+        "toffee",
+        "cedarwood"
+      ],
+      base: [
+        "tonka-bean",
+        "akigalawood",
+        "ambrofix",
+        "patchouli"
+      ]
+    }
   },
   {
     id: 49,
     slug: "rasasi-hawas-ice",
-    name: "Rasasi Hawas Ice for Him",
+    name: "Rasasi Hawas Ice for Him Eau de Parfum",
     shortName: "Hawas Ice",
     category: "Arabian",
     image: "/products/rasasi-hawas-ice.png",
@@ -1423,45 +1473,74 @@ export const products = [
     season: "summer",
     moods: ["clean", "summer", "signature"],
     recommendations: [
-    "rayhaan-pacific-aura",
-    "giorgio-armani-acqua-di-gio-profondo-parfum"
-  ],
+      "rayhaan-pacific-aura",
+      "giorgio-armani-acqua-di-gio-profondo-parfum",
+      "ysl-y-iced-cologne"
+    ],
     inspiredBy: {
-    name: "Paco Rabanne Invictus Aqua",
-    short: "Invictus DNA"
-  },
+      name: "Paco Rabanne Invictus Aqua",
+      short: "Invictus Aqua DNA"
+    },
     noteMap: {
-    top: ["frozen-apple", "bergamot", "lemon"],
-    heart: ["orange-blossom", "plum", "cardamom"],
-    base: ["moss", "driftwood", "musk"]
-  },
+      top: [
+        "frozen-apple",
+        "italian-lemon",
+        "sicilian-bergamot",
+        "star-anise"
+      ],
+      heart: ["plum", "orange-blossom", "cardamom"],
+      base: ["musk", "amber", "driftwood", "moss"]
+    }
   },
   {
     id: 50,
     slug: "armaf-club-de-nuit-precieux-i",
-    name: "Armaf Club de Nuit Precieux I Extrait de Parfum",
-    shortName: "CDN Precieux I",
+    name: "Armaf Club de Nuit Precieux 1 Extrait de Parfum",
+    shortName: "CDN Precieux 1",
     category: "Arabian",
     image: "/products/armaf-club-de-nuit-precieux.png",
     sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
     badge: "TOP RATED",
     rating: 9.1,
     ratingLabel: "Top Rated",
-    season: "all",
+    season: "winter",
     moods: ["signature", "rich", "date"],
     recommendations: [
-    "creed-aventus-cologne",
-    "armaf-club-de-nuit-intense"
-  ],
+      "afnan-supremacy-collectors-edition",
+      "armaf-club-de-nuit-intense",
+      "creed-aventus-cologne"
+    ],
     inspiredBy: {
-    name: "Creed Absolu Aventus",
-    short: "Absolu Aventus DNA"
-  },
+      name: "Creed Absolu Aventus",
+      short: "Absolu Aventus DNA"
+    },
     noteMap: {
-    top: ["pineapple", "caramel", "pear"],
-    heart: ["anise", "lily-of-the-valley", "oakmoss"],
-    base: ["ambroxan", "leather", "vanilla"]
-  },
+      top: [
+        "pineapple",
+        "lemon",
+        "bergamot",
+        "caramel",
+        "pink-pepper",
+        "pear",
+        "black-pepper"
+      ],
+      heart: [
+        "oakmoss",
+        "white-woods",
+        "jasmine",
+        "lily-of-the-valley",
+        "anise"
+      ],
+      base: [
+        "ambroxan",
+        "white-musk",
+        "cedarwood",
+        "patchouli",
+        "amber",
+        "leather",
+        "vanilla"
+      ]
+    }
   },
   {
     id: 51,
