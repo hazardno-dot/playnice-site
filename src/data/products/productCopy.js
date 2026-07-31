@@ -1122,204 +1122,283 @@ export const productCopy = {
     },
   },
 
-  "L'Homme Eau de Parfum by Yves Saint Laurent": {
-    miniTag: { sr: "💎 Elegantan", en: "💎 Elegant" },
-    card: { sr: "Topao i uglađen profil.", en: "Warm refined profile." },
+    "Yves Saint Laurent L'Homme Eau de Parfum": {
+    miniTag: { sr: "🍊 Gorka narandža / Drvo", en: "🍊 Bitter Orange / Woods" },
+    card: {
+      sr: "Gorka narandža, hrastovo drvo i vetiver u svedenom elegantnom mirisu.",
+      en: "Bitter orange, oakwood and vetiver in a refined elegant fragrance.",
+    },
     modal: {
-      sr: "Sofisticiran i moderan miris za posebne prilike.",
-      en: "Sophisticated modern scent.",
+      sr: "Gorka narandža daje svetao i blago opor početak, hrastovo drvo gradi glatko srce, a vetiver ostavlja suv, uglađen i diskretno topao trag.",
+      en: "Bitter orange creates a bright slightly tart opening, oakwood forms a smooth heart, and vetiver leaves a dry, polished and subtly warm trail.",
     },
-    scentType: { sr: "Drvenast i začinski", en: "Woody spicy" },
+    scentType: {
+      sr: "Citrusni, drvenast i vetiverski",
+      en: "Citrus woody vetiver",
+    },
     dominantNotes: {
-      sr: ["začini", "drvo", "amber"],
-      en: ["spices", "woods", "amber"],
+      sr: ["gorka narandža", "hrastovo drvo", "vetiver"],
+      en: ["bitter orange", "oakwood", "vetiver"],
     },
-    tags: { sr: ["Elegantan"], en: ["Elegant"] },
+    tags: {
+      sr: ["Mekan", "Večernji", "Prepoznatljiv"],
+      en: ["Soft", "Night", "Signature"],
+    },
     whyChoose: {
-      sr: "Za classy utisak.",
-      en: "For classy impression.",
+      sr: "Ako želiš diskretan, uglađen i zreo drvenasti parfem za različite prilike.",
+      en: "If you want a discreet, polished and mature woody fragrance for different occasions.",
     },
   },
 
-  "L'Homme Idéal De Guerlain Paris Eau De Toilette": {
-    miniTag: { sr: "🍯 Sladak / Jedinstven", en: "🍯 Sweet / Unique" },
-    card: { sr: "Badem i slatki tonovi.", en: "Almond sweet profile." },
+  "L'Homme Idéal de Guerlain Paris Eau de Toilette": {
+    miniTag: { sr: "🌰 Badem / Koža", en: "🌰 Almond / Leather" },
+    card: {
+      sr: "Badem, tonka i koža u toplom, prepoznatljivom Guerlain mirisu.",
+      en: "Almond, tonka and leather in a warm distinctive Guerlain fragrance.",
+    },
     modal: {
-      sr: "Topao i drugačiji miris sa karakterom.",
-      en: "Warm unique scent with character.",
+      sr: "Citrusi, ruzmarin i cvet narandže otvaraju miris vedro, badem i tonka daju kremastu slatkoću, a vetiver, kedar i koža elegantnu dubinu.",
+      en: "Citrus, rosemary and orange blossom open brightly, almond and tonka add creamy sweetness, while vetiver, cedarwood and leather bring elegant depth.",
     },
-    scentType: { sr: "Sladak i orašast", en: "Sweet nutty" },
+    scentType: {
+      sr: "Citrusni, orašast i drvenast",
+      en: "Citrus nutty woody",
+    },
     dominantNotes: {
-      sr: ["badem", "vanila", "drvo"],
-      en: ["almond", "vanilla", "woods"],
+      sr: ["badem", "tonka", "koža", "vetiver"],
+      en: ["almond", "tonka bean", "leather", "vetiver"],
     },
-    tags: { sr: ["Jedinstven"], en: ["Unique"] },
+    tags: {
+      sr: ["Mekan", "Večernji", "Prepoznatljiv"],
+      en: ["Soft", "Night", "Signature"],
+    },
     whyChoose: {
-      sr: "Za drugačiji stil.",
-      en: "For unique style.",
+      sr: "Ako želiš originalan i elegantan miris u kojem badem daje poseban karakter.",
+      en: "If you want an original elegant fragrance where almond creates a distinctive character.",
     },
   },
 
   "Mancera Cedrat Boise Eau de Parfum": {
-    miniTag: { sr: "🔥 Bestseler", en: "🔥 Bestseller" },
+    miniTag: { sr: "🍋 Citrusni / Kožni", en: "🍋 Citrus / Leather" },
     card: {
-      sr: "Citrus i drvo u savršenom balansu.",
-      en: "Citrus and woods balance.",
+      sr: "Sicilijanski citrusi, crna ribizla i koža u moćnom svestranom mirisu.",
+      en: "Sicilian citrus, black currant and leather in a powerful versatile scent.",
     },
     modal: {
-      sr: "Svež, luksuzan i izuzetno nosiv miris.",
-      en: "Fresh luxurious versatile scent.",
+      sr: "Sicilijanski citrusi, crna ribizla i hladni začini vode u jasmin i pačuli, dok drvo, koža, hrastova mahovina i vanila grade bogat trag.",
+      en: "Sicilian citrus, black currant and cool spices lead into jasmine and patchouli, while woods, leather, oakmoss and vanilla build a rich trail.",
     },
-    scentType: { sr: "Svež, drvenast i voćni", en: "Fresh woody fruity" },
+    scentType: {
+      sr: "Citrusni, voćni i drvenast",
+      en: "Citrus fruity woody",
+    },
     dominantNotes: {
-      sr: ["limun", "crna ribizla", "drvo"],
-      en: ["lemon", "blackcurrant", "woods"],
+      sr: ["sicilijanski citrusi", "crna ribizla", "koža", "hrastova mahovina"],
+      en: ["Sicilian citrus", "black currant", "leather", "oakmoss"],
     },
-    tags: { sr: ["Luksuzan"], en: ["Luxury"] },
+    tags: {
+      sr: ["Prepoznatljiv", "Letnji", "Čist"],
+      en: ["Signature", "Summer", "Clean"],
+    },
     whyChoose: {
-      sr: "Jedan od najboljih all-roundera.",
-      en: "One of the best all-rounders.",
+      sr: "Ako želiš snažan i luksuzan parfem koji se lako prilagođava skoro svakoj prilici.",
+      en: "If you want a powerful luxurious fragrance that adapts easily to almost any occasion.",
     },
   },
 
   "Montblanc Explorer Extreme Parfum": {
-    miniTag: { sr: "💎 Snažan", en: "💎 Bold" },
-    card: { sr: "Intenzivan drveni profil.", en: "Intense woody profile." },
+    miniTag: { sr: "🟤 Pačuli / Amber", en: "🟤 Patchouli / Amber" },
+    card: {
+      sr: "Bergamot, pačuli i amber u dubokom, koncentrisanom drvenastom mirisu.",
+      en: "Bergamot, patchouli and amber in a deep concentrated woody scent.",
+    },
     modal: {
-      sr: "Jača i dublja verzija Explorer DNA.",
-      en: "Stronger deeper Explorer DNA.",
+      sr: "Bergamot unosi kratku citrusnu svetlost, pačuli gradi tamno i zemljano srce, a amber ostavlja topao, snažan i dugotrajan završetak.",
+      en: "Bergamot brings a flash of citrus brightness, patchouli forms a dark earthy heart, and amber leaves a warm, powerful and lasting finish.",
     },
-    scentType: { sr: "Drvenast i aromatičan", en: "Woody aromatic" },
+    scentType: {
+      sr: "Citrusni, zemljani i ambrast",
+      en: "Citrus earthy amber",
+    },
     dominantNotes: {
-      sr: ["vetiver", "drvo", "amber"],
-      en: ["vetiver", "woods", "amber"],
+      sr: ["bergamot", "pačuli", "amber"],
+      en: ["bergamot", "patchouli", "amber"],
     },
-    tags: { sr: ["Snažan"], en: ["Bold"] },
+    tags: {
+      sr: ["Prepoznatljiv", "Večernji", "Bogat"],
+      en: ["Signature", "Night", "Rich"],
+    },
     whyChoose: {
-      sr: "Za snažan karakter.",
-      en: "For strong presence.",
+      sr: "Ako želiš taman i intenzivan parfem sa jasnim pačuli–amber potpisom.",
+      en: "If you want a dark intense fragrance with a clear patchouli-amber signature.",
     },
   },
 
   "Narciso Rodriguez for Him Bleu Noir Eau de Parfum": {
-    miniTag: { sr: "💎 Elegantan / Čist", en: "💎 Elegant / Clean" },
-    card: { sr: "Mošusna elegancija.", en: "Musky elegance." },
+    miniTag: { sr: "🖤 Mošus / Tamno drvo", en: "🖤 Musk / Dark Woods" },
+    card: {
+      sr: "Mošus, plavi kedar i crna ebanovina u tiho elegantnom mirisu.",
+      en: "Musk, blue cedar and black ebony in a quietly elegant fragrance.",
+    },
     modal: {
-      sr: "Čist, elegantan i sofisticiran miris.",
-      en: "Clean elegant sophisticated scent.",
+      sr: "Bergamot i crni biber otvaraju miris čisto, mošus, plavi kedar i crna ebanovina daju tamnu mekoću, a vetiver i amber uglađen završetak.",
+      en: "Bergamot and black pepper open cleanly, musk, blue cedar and black ebony provide dark softness, while vetiver and amber create a polished finish.",
     },
-    scentType: { sr: "Mošusni i drvenast", en: "Musky woody" },
+    scentType: {
+      sr: "Mošusni, začinski i drvenast",
+      en: "Musky spicy woody",
+    },
     dominantNotes: {
-      sr: ["mošus", "drvo", "vetiver"],
-      en: ["musk", "woods", "vetiver"],
+      sr: ["mošus", "crni biber", "plavi kedar", "crna ebanovina"],
+      en: ["musk", "black pepper", "blue cedar", "black ebony"],
     },
-    tags: { sr: ["Elegantan"], en: ["Elegant"] },
+    tags: {
+      sr: ["Mekan", "Čist", "Prepoznatljiv"],
+      en: ["Soft", "Clean", "Signature"],
+    },
     whyChoose: {
-      sr: "Za suptilnu eleganciju.",
-      en: "For subtle elegance.",
+      sr: "Ako želiš suptilan, čist i sofisticiran mošusno-drvenasti parfem.",
+      en: "If you want a subtle, clean and sophisticated musky-woody fragrance.",
     },
   },
 
   "Terre d'Hermès Eau de Toilette": {
-    miniTag: { sr: "💎 Prepoznatljiv", en: "💎 Signature" },
-    card: { sr: "Zemljani citrus klasik.", en: "Earthy citrus classic." },
+    miniTag: { sr: "🪨 Grejp / Kremen", en: "🪨 Grapefruit / Flint" },
+    card: {
+      sr: "Grejp, mineralni kremen i kedar u ikoničnom zemljano-citrusnom mirisu.",
+      en: "Grapefruit, mineral flint and cedarwood in an iconic earthy-citrus scent.",
+    },
     modal: {
-      sr: "Ikoničan, sofisticiran i prepoznatljiv miris.",
-      en: "Iconic sophisticated recognizable scent.",
+      sr: "Opori grejp otvara miris svetlo, kremen donosi suv mineralni karakter, a kedar zaokružuje kompoziciju čvrstim i elegantnim drvenastim tragom.",
+      en: "Tart grapefruit opens brightly, flint adds a dry mineral character, and cedarwood completes the composition with a firm elegant woody trail.",
     },
-    scentType: { sr: "Drvenast i citrusni", en: "Woody citrus" },
+    scentType: {
+      sr: "Citrusni, mineralni i drvenast",
+      en: "Citrus mineral woody",
+    },
     dominantNotes: {
-      sr: ["narandža", "vetiver", "kremen"],
-      en: ["orange", "vetiver", "flint"],
+      sr: ["grejp", "kremen", "kedar"],
+      en: ["grapefruit", "flint", "cedarwood"],
     },
-    tags: { sr: ["Prepoznatljiv"], en: ["Signature"] },
+    tags: {
+      sr: ["Prepoznatljiv", "Čist", "Mekan"],
+      en: ["Signature", "Clean", "Soft"],
+    },
     whyChoose: {
-      sr: "Bezvremenski izbor.",
-      en: "Timeless choice.",
+      sr: "Ako želiš bezvremenski i zreo parfem sa jedinstvenim mineralnim karakterom.",
+      en: "If you want a timeless mature fragrance with a unique mineral character.",
     },
   },
 
-  "Afnan 9PM Night Out": {
-    miniTag: { sr: "🌙 Večernji / Sladak", en: "🌙 Night / Sweet" },
+  "Tom Ford Noir Extreme Eau de Parfum": {
+    miniTag: { sr: "🍨 Kulfi / Začinski", en: "🍨 Kulfi / Spicy" },
     card: {
-      sr: "Mračan, razigran i vrlo primetan miris stvoren za noćne izlaske.",
-      en: "Dark, playful and attention-grabbing scent made for nights out.",
+      sr: "Kardamom, kulfi i vanila u raskošnom, kremastom večernjem mirisu.",
+      en: "Cardamom, kulfi and vanilla in an opulent creamy evening scent.",
     },
     modal: {
-      sr: "Odvažan večernji parfem sa slatkom toplinom, zavodljivom dubinom i jakom klabing energijom. Odličan izbor ako želiš nešto moderno, lako nosivo i vrlo primetno posle mraka.",
-      en: "A bold evening fragrance with sweet warmth, seductive depth and strong clubbing energy. Great choice if you want something modern, easy to wear and highly noticeable after dark.",
+      sr: "Šafran, kardamom i muškatni oraščić otvaraju miris toplinom, kremasti kulfi i cveće daju raskoš, a sandalovina, vanila i amber senzualnu dubinu.",
+      en: "Saffron, cardamom and nutmeg open with warmth, creamy kulfi and florals add opulence, while sandalwood, vanilla and amber provide sensual depth.",
     },
     scentType: {
-      sr: "Sladak / Ambrast / Večernji",
-      en: "Sweet / Amber / Night Out",
+      sr: "Začinski, kremast i ambrast",
+      en: "Spicy creamy amber",
     },
     dominantNotes: {
-      sr: ["slatki začini", "amber", "vanila", "drvo"],
-      en: ["sweet spices", "amber", "vanilla", "woods"],
+      sr: ["kardamom", "kulfi", "vanila", "sandalovina"],
+      en: ["cardamom", "kulfi", "vanilla", "sandalwood"],
     },
     tags: {
-      sr: ["Večernji izlazak", "Komplimenti", "Hladnije vreme"],
-      en: ["Night out", "Compliment getter", "Cool weather"],
+      sr: ["Bogat", "Večernji", "Mekan"],
+      en: ["Rich", "Night", "Soft"],
     },
     whyChoose: {
-      sr: "Ako želiš pristupačan večernji parfem sa jakim mass-appeal efektom i nightlife karakterom.",
-      en: "If you want an affordable evening scent with strong mass appeal and nightlife character.",
+      sr: "Ako želiš luksuzan i zavodljiv gurmanski parfem za elegantne hladne večeri.",
+      en: "If you want a luxurious seductive gourmand fragrance for elegant cool evenings.",
     },
   },
 
-  "Rasasi Hawas Ice for Him": {
-    miniTag: { sr: "❄️ Svež / Letnji", en: "❄️ Fresh / Summer" },
+  "Afnan 9PM Night Out Extrait de Parfum": {
+    miniTag: { sr: "🥃 Konjak / Karamela", en: "🥃 Cognac / Toffee" },
     card: {
-      sr: "Svež, sladak i leden letnji miris.",
-      en: "Fresh, sweet and icy summer scent.",
+      sr: "Zmajevo voće, konjak i karamela u snažnom parfemu za noćni izlazak.",
+      en: "Dragon fruit, cognac and toffee in a powerful night-out fragrance.",
     },
     modal: {
-      sr: "Hladan, čist i energičan — miris koji ostavlja svež i upečatljiv trag.",
-      en: "Cool, clean and energetic — a scent that leaves a fresh, striking trail.",
+      sr: "Zmajevo voće, bergamot, konjak i jabuka daju razigran početak, kardamom, antilop i karamela grade zavodljivo srce, a tonka i tamno drvo snažan trag.",
+      en: "Dragon fruit, bergamot, cognac and apple create a playful opening, cardamom, suede and toffee form a seductive heart, while tonka and dark woods leave a powerful trail.",
     },
     scentType: {
-      sr: "Svež / Vodeni / Sladak",
-      en: "Fresh / Aquatic / Sweet",
+      sr: "Voćni, gurmanski i drvenast",
+      en: "Fruity gourmand woody",
     },
     dominantNotes: {
-      sr: ["vodene note", "voće", "ambergris", "mošus"],
-      en: ["aquatic notes", "fruits", "ambergris", "musk"],
+      sr: ["zmajevo voće", "konjak", "karamela", "antilop"],
+      en: ["dragon fruit", "cognac", "toffee", "suede"],
     },
     tags: {
-      sr: ["Letnji", "Svakodnevni", "Svež", "Komplimenti"],
-      en: ["Summer", "Daily", "Fresh", "Compliment getter"],
+      sr: ["Večernji", "Bogat", "Prepoznatljiv"],
+      en: ["Night", "Rich", "Signature"],
     },
     whyChoose: {
-      sr: "Ako želiš svež, ali primetan letnji parfem koji se izdvaja od tipičnih citrusnih mirisa.",
-      en: "If you want a fresh but noticeable summer scent that stands out from typical citrus fragrances.",
+      sr: "Ako želiš sladak, odvažan i veoma primetan miris sa pravom klabing energijom.",
+      en: "If you want a sweet, bold and highly noticeable fragrance with true clubbing energy.",
     },
   },
 
-  "Armaf Club de Nuit Precieux I Extrait de Parfum": {
-    miniTag: { sr: "💎 Luksuzan / Prepoznatljiv", en: "💎 Luxury / Signature" },
+  "Rasasi Hawas Ice for Him Eau de Parfum": {
+    miniTag: { sr: "🧊 Jabuka / Citrusni", en: "🧊 Apple / Citrus" },
     card: {
-      sr: "Dubok, elegantan i moćan — luksuzan i prepoznatljiv miris.",
-      en: "Deep, elegant and powerful — a true luxury signature scent.",
+      sr: "Zaleđena jabuka, italijanski limun i šljiva u živahnom letnjem mirisu.",
+      en: "Frozen apple, Italian lemon and plum in a vibrant summer fragrance.",
     },
     modal: {
-      sr: "Bogata, sofisticirana kompozicija sa jakim prisustvom — miris koji ostavlja utisak i traje satima.",
-      en: "Rich and sophisticated composition with strong presence — a scent that leaves a lasting impression.",
+      sr: "Zaleđena jabuka, limun, bergamot i zvezdasti anis daju leden početak, šljiva i kardamom unose slatkoću, a mošus, amber, drvo i mahovina dubinu.",
+      en: "Frozen apple, lemon, bergamot and star anise create an icy opening, plum and cardamom add sweetness, while musk, amber, woods and moss provide depth.",
     },
     scentType: {
-      sr: "Drvenast, ambrast i orijentalan",
-      en: "Woody amber oriental",
+      sr: "Voćni, citrusni i drvenast",
+      en: "Fruity citrus woody",
     },
     dominantNotes: {
-      sr: ["drvo", "ambra", "začini"],
-      en: ["woods", "amber", "spices"],
+      sr: ["zaleđena jabuka", "italijanski limun", "šljiva", "mošus"],
+      en: ["frozen apple", "Italian lemon", "plum", "musk"],
     },
     tags: {
-      sr: ["Luksuzan", "Snažan", "Večernji"],
-      en: ["Luxury", "Strong", "Evening"],
+      sr: ["Čist", "Letnji", "Prepoznatljiv"],
+      en: ["Clean", "Summer", "Signature"],
     },
     whyChoose: {
-      sr: "Ako želiš ozbiljan, skup i upečatljiv miris.",
-      en: "If you want a bold, expensive-smelling signature scent.",
+      sr: "Ako želiš osvežavajući, sladak i primetan letnji parfem sa odličnim karakterom.",
+      en: "If you want a refreshing, sweet and noticeable summer fragrance with strong character.",
+    },
+  },
+
+  "Armaf Club de Nuit Precieux 1 Extrait de Parfum": {
+    miniTag: { sr: "🍍 Ananas / Začinski", en: "🍍 Pineapple / Spicy" },
+    card: {
+      sr: "Ananas, karamela i začini u moćnom voćno-drvenastom parfemu.",
+      en: "Pineapple, caramel and spices in a powerful fruity-woody fragrance.",
+    },
+    modal: {
+      sr: "Ananas, limun, bergamot, karamela i biber stvaraju bogat početak, mahovina i belo drvo grade srce, a ambroksan, koža, amber i vanila duboku bazu.",
+      en: "Pineapple, lemon, bergamot, caramel and pepper create a rich opening, oakmoss and white woods form the heart, while ambroxan, leather, amber and vanilla build a deep base.",
+    },
+    scentType: {
+      sr: "Voćni, začinski i drvenast",
+      en: "Fruity spicy woody",
+    },
+    dominantNotes: {
+      sr: ["ananas", "karamela", "hrastova mahovina", "ambroksan"],
+      en: ["pineapple", "caramel", "oakmoss", "ambroxan"],
+    },
+    tags: {
+      sr: ["Prepoznatljiv", "Bogat", "Večernji"],
+      en: ["Signature", "Rich", "Night"],
+    },
+    whyChoose: {
+      sr: "Ako želiš raskošnu i intenzivnu interpretaciju modernog voćno-drvenastog profila.",
+      en: "If you want an opulent intense interpretation of a modern fruity-woody profile.",
     },
   },
 
