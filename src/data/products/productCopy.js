@@ -2,235 +2,283 @@
    PRODUCT COPY
 ========================================= */
 export const productCopy = {
-  "Afnan 9AM": {
-    miniTag: { sr: "❄️ Svež / Svakodnevni", en: "❄️ Fresh / Daily" },
+    "Afnan 9 AM Eau de Parfum": {
+    miniTag: { sr: "🍊 Citrusni / Čist", en: "🍊 Citrus / Clean" },
     card: {
-      sr: "Svež citrusni start sa čistim aromatičnim profilom.",
-      en: "Fresh citrus opening with clean aromatic profile.",
+      sr: "Vedri citrusi i kardamom u čistom, energičnom dnevnom mirisu.",
+      en: "Bright citrus and cardamom in a clean, energetic daytime scent.",
     },
     modal: {
-      sr: "Lagano, čisto i energično — savršen dnevni miris sa urednim karakterom.",
-      en: "Light, clean and energetic — perfect daily scent.",
+      sr: "Mandarina i citron otvaraju miris sveže i vedro, dok lavanda, cvet narandže i suvo drvo daju uredan aromatičan karakter.",
+      en: "Mandarin and cedrat open with bright freshness, while lavender, orange blossom and dry woods create a polished aromatic character.",
     },
     scentType: {
-      sr: "Svež, citrusni i aromatičan",
-      en: "Fresh citrus aromatic",
+      sr: "Citrusni, aromatičan i drvenast",
+      en: "Citrus aromatic woody",
     },
     dominantNotes: {
-      sr: ["citrusi", "lavanda", "drvo"],
-      en: ["citrus", "lavender", "woods"],
-    },
-    tags: { sr: ["Svež", "Svakodnevni"], en: ["Fresh", "Daily"] },
-    whyChoose: {
-      sr: "Idealan za svakodnevno nošenje i uredan svež utisak.",
-      en: "Ideal for daily wear and a clean fresh impression.",
-    },
-  },
-
-  "Afnan 9PM Rebel": {
-    miniTag: { sr: "🔥 Bestseler", en: "🔥 Bestseller" },
-    card: {
-      sr: "Sladak i zavodljiv — vanila i amber dominiraju.",
-      en: "Sweet and seductive — vanilla and amber dominate.",
-    },
-    modal: {
-      sr: "Noćni magnet — gust, sladak i upečatljiv sa toplim tragom.",
-      en: "A night magnet — rich, sweet and highly noticeable.",
-    },
-    scentType: { sr: "Sladak i ambrast", en: "Sweet amber" },
-    dominantNotes: {
-      sr: ["vanila", "amber", "voćne note"],
-      en: ["vanilla", "amber", "fruity notes"],
-    },
-    tags: { sr: ["Sladak", "Večernji"], en: ["Sweet", "Night"] },
-    whyChoose: {
-      sr: "Savršen za komplimente i večernje izlaske.",
-      en: "Perfect for compliments and nights out.",
-    },
-  },
-
-  "Afnan Supremacy Collector's Edition Pour Homme": {
-    miniTag: { sr: "💎 Luksuzan / Prepoznatljiv", en: "💎 Luxury / Signature" },
-    card: {
-      sr: "Voćno-dimni luksuz sa snažnim karakterom.",
-      en: "Fruity smoky luxury with strong character.",
-    },
-    modal: {
-      sr: "Moćan i upečatljiv miris koji ostavlja dubok trag.",
-      en: "Powerful and memorable scent with depth.",
-    },
-    scentType: { sr: "Voćni i dimni", en: "Fruity smoky" },
-    dominantNotes: {
-      sr: ["voće", "dim", "drvo"],
-      en: ["fruit", "smoke", "woods"],
-    },
-    tags: { sr: ["Luksuzan"], en: ["Luxury"] },
-    whyChoose: {
-      sr: "Za one koji žele ozbiljan i prepoznatljiv miris.",
-      en: "For those who want a strong signature scent.",
-    },
-  },
-
-  "Afnan Turathi Blue": {
-    miniTag: { sr: "🔥 Bestseler", en: "🔥 Bestseller" },
-    card: {
-      sr: "Elegantna citrusno-drvena svežina.",
-      en: "Elegant citrus-woody freshness.",
-    },
-    modal: {
-      sr: "Moderan, luksuzan i veoma nosiv miris.",
-      en: "Modern, luxurious and very wearable scent.",
-    },
-    scentType: { sr: "Svež, drvenast i citrusni", en: "Fresh woody citrus" },
-    dominantNotes: {
-      sr: ["citrusi", "ambra", "drvo"],
-      en: ["citrus", "amber", "woods"],
-    },
-    tags: { sr: ["Svež", "Luksuzan"], en: ["Fresh", "Luxury"] },
-    whyChoose: {
-      sr: "Perfektan balans svežine i elegancije.",
-      en: "Perfect balance of freshness and elegance.",
-    },
-  },
-
-  "Arabiyat Prestige Marwa": {
-    miniTag: { sr: "🍋 Svež / Prepoznatljiv", en: "🍋 Fresh / Signature" },
-    card: {
-      sr: "Svež citrusni miris sa modernom drvenastom bazom.",
-      en: "Fresh citrus scent with a modern woody base.",
-    },
-    modal: {
-      sr: "Citrusi, đumbir i crni čaj u čistom, elegantnom i modernom mirisu.",
-      en: "Citrus, ginger and black tea in a clean, elegant modern scent.",
-    },
-    scentType: {
-      sr: "Svež, citrusni i aromatičan",
-      en: "Fresh citrus aromatic",
-    },
-    dominantNotes: {
-      sr: ["bergamot", "đumbir", "crni čaj"],
-      en: ["bergamot", "ginger", "black tea"],
+      sr: ["mandarina", "citron", "lavanda", "kedar"],
+      en: ["mandarin", "cedrat", "lavender", "cedarwood"],
     },
     tags: {
-      sr: ["Svež", "Čist"],
-      en: ["Fresh", "Clean"],
+      sr: ["Svež", "Letnji", "Svakodnevni"],
+      en: ["Fresh", "Summer", "Daily"],
     },
     whyChoose: {
-      sr: "Ako želiš čist i luksuzan svakodnevni miris.",
-      en: "If you want a clean, luxurious everyday scent.",
+      sr: "Ako želiš nenametljiv, uredan i energičan parfem za tople dane.",
+      en: "If you want an effortless, polished and energetic fragrance for warm days.",
     },
   },
 
-  "Armaf Club De Nuit Bling": {
-    miniTag: {
-      sr: "🍯 Sladak / Večernji izlazak",
-      en: "🍯 Sweet / Date Night",
-    },
+  "Afnan 9 PM Rebel Eau de Parfum": {
+    miniTag: { sr: "🍍 Voćni / Večernji", en: "🍍 Fruity / Night" },
     card: {
-      sr: "Sladak i glamurozan miris pun energije.",
-      en: "Sweet glamorous scent full of energy.",
+      sr: "Sočni ananas i zelena jabuka prelaze u vanilu i karamelizovano drvo.",
+      en: "Juicy pineapple and green apple melt into vanilla and caramelized woods.",
     },
     modal: {
-      sr: "Upadljiv i zavodljiv — pravi miris za izlazak.",
-      en: "Bold and seductive — perfect party scent.",
+      sr: "Voćni početak donosi ananas, mandarinu i zelenu jabuku, a vanila, karamela i suvo drvo grade sladak, moderan i upečatljiv trag.",
+      en: "Pineapple, mandarin and green apple lead into vanilla, caramel and dry woods, creating a sweet, modern and attention-grabbing trail.",
     },
-    scentType: { sr: "Sladak i voćni", en: "Sweet fruity" },
+    scentType: {
+      sr: "Voćni, drvenast i ambrast",
+      en: "Fruity woody amber",
+    },
     dominantNotes: {
-      sr: ["voće", "vanila", "slatki tonovi"],
-      en: ["fruit", "vanilla", "sweet accords"],
+      sr: ["ananas", "zelena jabuka", "vanila", "karamela"],
+      en: ["pineapple", "green apple", "vanilla", "caramel"],
     },
-    tags: { sr: ["Sladak"], en: ["Sweet"] },
+    tags: {
+      sr: ["Sladak", "Večernji", "Prepoznatljiv"],
+      en: ["Sweet", "Night", "Signature"],
+    },
     whyChoose: {
-      sr: "Ako želiš da budeš primećen — ovo radi.",
-      en: "If you want attention — this delivers.",
+      sr: "Ako želiš moderan voćno-sladak parfem koji lako privlači pažnju.",
+      en: "If you want a modern fruity-sweet fragrance that easily draws attention.",
     },
   },
 
-  "Armaf Club de Nuit Intense": {
-    miniTag: { sr: "🔥 Bestseler", en: "🔥 Bestseller" },
+  "Afnan Supremacy Collector's Edition Pour Homme Eau de Parfum": {
+    miniTag: { sr: "🍍 Voćni / Snažan", en: "🍍 Fruity / Bold" },
     card: {
-      sr: "Dimni citrus sa jakim karakterom.",
-      en: "Smoky citrus with strong character.",
+      sr: "Ananas, bergamot i breza u bogatom voćno-drvenastom profilu.",
+      en: "Pineapple, bergamot and birch in a rich fruity-woody profile.",
     },
     modal: {
-      sr: "Snažan i prepoznatljiv — miris koji ostavlja utisak.",
-      en: "Strong and recognizable statement scent.",
+      sr: "Sočan spoj ananasa, bergamota i jabuke prelazi u brezu, amber i hrastovu mahovinu, ostavljajući snažan i elegantan trag.",
+      en: "A juicy blend of pineapple, bergamot and apple develops into birch, amber and oakmoss, leaving a bold and elegant trail.",
     },
-    scentType: { sr: "Dimni, citrusni i drvenast", en: "Smoky citrus woody" },
+    scentType: {
+      sr: "Voćni, drvenast i mahovinast",
+      en: "Fruity woody mossy",
+    },
     dominantNotes: {
-      sr: ["limun", "dim", "drvo"],
-      en: ["lemon", "smoke", "woods"],
+      sr: ["ananas", "bergamot", "breza", "hrastova mahovina"],
+      en: ["pineapple", "bergamot", "birch", "oakmoss"],
     },
-    tags: { sr: ["Snažan"], en: ["Bold"] },
+    tags: {
+      sr: ["Snažan", "Prepoznatljiv", "Svestran"],
+      en: ["Bold", "Signature", "Versatile"],
+    },
     whyChoose: {
-      sr: "Za snažan prvi utisak.",
-      en: "For a strong first impression.",
+      sr: "Ako voliš moćne voćno-drvenaste mirise sa ozbiljnim i luksuznim utiskom.",
+      en: "If you enjoy powerful fruity-woody scents with a refined, luxurious presence.",
     },
   },
 
-  "Armaf Club de Nuit Sillage": {
-    miniTag: { sr: "❄️ Svež / Svakodnevni", en: "❄️ Fresh / Daily" },
+  "Afnan Turathi Blue Homme Eau de Parfum": {
+    miniTag: { sr: "🍋 Citrusni / Drvenast", en: "🍋 Citrus / Woody" },
     card: {
-      sr: "Metalna svežina sa citrusnim sjajem.",
-      en: "Metallic freshness with citrus shine.",
+      sr: "Bergamot i mandarina iznad čiste, ambrasto-drvenaste baze.",
+      en: "Bergamot and mandarin over a clean amber-woody base.",
     },
     modal: {
-      sr: "Čist, drugačiji i vrlo elegantan miris.",
-      en: "Clean, unique and elegant scent.",
+      sr: "Svetli citrusi otvaraju miris energično, dok amber, mošus, pačuli i sveži začini donose uglađen i prepoznatljiv završetak.",
+      en: "Bright citrus opens with energy, while amber, musk, patchouli and fresh spices create a polished, distinctive finish.",
     },
-    scentType: { sr: "Svež, metalni i citrusni", en: "Fresh metallic citrus" },
+    scentType: {
+      sr: "Citrusni, ambrast i drvenast",
+      en: "Citrus amber woody",
+    },
     dominantNotes: {
-      sr: ["citrusi", "metalne note", "mošus"],
-      en: ["citrus", "metallic notes", "musk"],
+      sr: ["bergamot", "mandarina", "amber", "mošus"],
+      en: ["bergamot", "mandarin", "amber", "musk"],
     },
-    tags: { sr: ["Svež"], en: ["Fresh"] },
+    tags: {
+      sr: ["Svež", "Letnji", "Prepoznatljiv"],
+      en: ["Fresh", "Summer", "Signature"],
+    },
     whyChoose: {
-      sr: "Za drugačiju svežinu.",
-      en: "For a different kind of freshness.",
+      sr: "Ako želiš luksuznu citrusnu svežinu sa dovoljno karaktera i postojanosti.",
+      en: "If you want luxurious citrus freshness with character and lasting presence.",
     },
   },
 
-  "French Avenue Vulcan Sable by Fragrance World": {
-    miniTag: { sr: "💎 Luksuzan / Večernji", en: "💎 Luxury / Night" },
+  "Arabiyat Prestige Marwa Eau de Parfum": {
+    miniTag: { sr: "🍵 Citrusni / Čajni", en: "🍵 Citrus / Tea" },
     card: {
-      sr: "Taman, bogat i zavodljiv profil.",
-      en: "Dark rich seductive profile.",
+      sr: "Bergamot, đumbir i crni čaj u čistom, modernom spoju.",
+      en: "Bergamot, ginger and black tea in a clean, modern blend.",
     },
     modal: {
-      sr: "Dubok i luksuzan miris za večernji nastup.",
-      en: "Deep luxurious evening scent.",
+      sr: "Bergamot i đumbir donose blistav početak, dok crni čaj, tamjan, ambroksan i gvajak grade elegantan i prozračan drvenasti trag.",
+      en: "Bergamot and ginger create a radiant opening, while black tea, incense, ambroxan and guaiac wood form an elegant, airy woody trail.",
     },
-    scentType: { sr: "Taman i orijentalan", en: "Dark oriental" },
+    scentType: {
+      sr: "Citrusni, čajni i drvenast",
+      en: "Citrus tea woody",
+    },
     dominantNotes: {
-      sr: ["oud", "začini", "amber"],
-      en: ["oud", "spices", "amber"],
+      sr: ["bergamot", "đumbir", "crni čaj", "ambroksan"],
+      en: ["bergamot", "ginger", "black tea", "ambroxan"],
     },
-    tags: { sr: ["Večernji"], en: ["Night"] },
+    tags: {
+      sr: ["Svež", "Čist", "Prepoznatljiv"],
+      en: ["Fresh", "Clean", "Signature"],
+    },
     whyChoose: {
-      sr: "Za ozbiljan večernji utisak.",
-      en: "For strong evening presence.",
+      sr: "Ako želiš čist, luksuzan i veoma nosiv parfem za tople dane.",
+      en: "If you want a clean, luxurious and highly wearable fragrance for warm days.",
     },
   },
 
-  "Haramain Signature Blue": {
-    miniTag: { sr: "❄️ Svež / Svakodnevni", en: "❄️ Fresh / Daily" },
+  "Armaf Club de Nuit Bling Eau de Parfum": {
+    miniTag: { sr: "✨ Cvetni / Sladak", en: "✨ Floral / Sweet" },
     card: {
-      sr: "Čista i lagana svakodnevna svežina.",
-      en: "Clean light everyday freshness.",
+      sr: "Svetlucavi citrusi, cvetni akordi i meka vanila u razigranom spoju.",
+      en: "Sparkling citrus, floral accords and soft vanilla in a playful blend.",
     },
     modal: {
-      sr: "Jednostavan i prijatan miris za svaki dan.",
-      en: "Simple and pleasant daily scent.",
+      sr: "Vedri citrusi prelaze u blistavo cvetno srce, dok vanila i baršunasto drvo daju topao, zavodljiv i moderan završetak.",
+      en: "Bright citrus moves into a luminous floral heart, while vanilla and velvety woods create a warm, seductive and modern finish.",
     },
-    scentType: { sr: "Svež i vodeni", en: "Fresh aquatic" },
+    scentType: {
+      sr: "Citrusni, cvetni i vanilast",
+      en: "Citrus floral vanilla",
+    },
     dominantNotes: {
-      sr: ["citrusi", "voda", "mošus"],
-      en: ["citrus", "water", "musk"],
+      sr: ["citrusi", "cvetni akordi", "vanila", "baršunasto drvo"],
+      en: ["citrus", "floral accords", "vanilla", "velvety woods"],
     },
-    tags: { sr: ["Svakodnevni"], en: ["Daily"] },
+    tags: {
+      sr: ["Sladak", "Cvetni", "Večernji"],
+      en: ["Sweet", "Floral", "Night"],
+    },
     whyChoose: {
-      sr: "Lagano i bez razmišljanja.",
-      en: "Easy and effortless.",
+      sr: "Ako želiš razigran i upečatljiv miris sa slatkim, glamuroznim karakterom.",
+      en: "If you want a playful statement scent with a sweet, glamorous character.",
+    },
+  },
+
+  "Armaf Club de Nuit Intense Man Eau de Toilette": {
+    miniTag: { sr: "🍋 Dimni / Snažan", en: "🍋 Smoky / Bold" },
+    card: {
+      sr: "Oštar citrusni početak sa tamnom brezom i snažnom drvenastom bazom.",
+      en: "A sharp citrus opening with dark birch and a powerful woody base.",
+    },
+    modal: {
+      sr: "Limun, ananas i bergamot otvaraju miris intenzivno, dok breza, mošus, ambergris i pačuli grade prepoznatljiv dimno-drvenasti trag.",
+      en: "Lemon, pineapple and bergamot open with intensity, while birch, musk, ambergris and patchouli build its signature smoky-woody trail.",
+    },
+    scentType: {
+      sr: "Citrusni, dimni i drvenast",
+      en: "Citrus smoky woody",
+    },
+    dominantNotes: {
+      sr: ["limun", "ananas", "breza", "ambergris"],
+      en: ["lemon", "pineapple", "birch", "ambergris"],
+    },
+    tags: {
+      sr: ["Snažan", "Prepoznatljiv", "Svestran"],
+      en: ["Bold", "Signature", "Versatile"],
+    },
+    whyChoose: {
+      sr: "Ako želiš snažan prvi utisak i miris koji ostaje prepoznatljiv tokom dana.",
+      en: "If you want a strong first impression and a scent that stays distinctive throughout the day.",
+    },
+  },
+
+  "Armaf Club de Nuit Sillage Eau de Parfum": {
+    miniTag: { sr: "🧊 Mineralni / Svež", en: "🧊 Mineral / Fresh" },
+    card: {
+      sr: "Hladni citrusi, iris i mošus u čistom mineralnom profilu.",
+      en: "Icy citrus, iris and musk in a clean mineral profile.",
+    },
+    modal: {
+      sr: "Bergamot, limun i limeta daju oštar, blistav početak, a iris, ruža, sandalovina i mošus stvaraju hladan i elegantan trag.",
+      en: "Bergamot, lemon and lime create a sharp, luminous opening, while iris, rose, sandalwood and musk leave a cool, elegant trail.",
+    },
+    scentType: {
+      sr: "Citrusni, cvetni i mošusni",
+      en: "Citrus floral musky",
+    },
+    dominantNotes: {
+      sr: ["bergamot", "limun", "iris", "mošus"],
+      en: ["bergamot", "lemon", "iris", "musk"],
+    },
+    tags: {
+      sr: ["Svež", "Čist", "Letnji"],
+      en: ["Fresh", "Clean", "Summer"],
+    },
+    whyChoose: {
+      sr: "Ako voliš hladnu, mineralnu svežinu koja se razlikuje od klasičnih plavih parfema.",
+      en: "If you enjoy cool mineral freshness that stands apart from typical blue fragrances.",
+    },
+  },
+
+  "French Avenue Vulcan Sable Eau de Parfum": {
+    miniTag: { sr: "🥃 Začinski / Topao", en: "🥃 Spicy / Warm" },
+    card: {
+      sr: "Viskij, korijander i kremasta sandalovina u bogatom večernjem mirisu.",
+      en: "Whiskey, coriander and creamy sandalwood in a rich evening scent.",
+    },
+    modal: {
+      sr: "Topao viski i začinski korijander prelaze u sandalovinu i kašmeran, dok tonka, benzoin i vanila grade gust i zavodljiv završetak.",
+      en: "Warm whiskey and spicy coriander develop into sandalwood and cashmeran, while tonka, benzoin and vanilla create a dense, seductive finish.",
+    },
+    scentType: {
+      sr: "Začinski, drvenast i gurmanski",
+      en: "Spicy woody gourmand",
+    },
+    dominantNotes: {
+      sr: ["viski", "korijander", "sandalovina", "vanila"],
+      en: ["whiskey", "coriander", "sandalwood", "vanilla"],
+    },
+    tags: {
+      sr: ["Bogat", "Večernji", "Gurmanski"],
+      en: ["Rich", "Night", "Gourmand"],
+    },
+    whyChoose: {
+      sr: "Ako želiš topao, luksuzan i zavodljiv parfem za hladnije večeri.",
+      en: "If you want a warm, luxurious and seductive fragrance for cooler evenings.",
+    },
+  },
+
+  "Haramain Signature Blue Eau de Parfum": {
+    miniTag: { sr: "🔵 Citrusni / Aromatičan", en: "🔵 Citrus / Aromatic" },
+    card: {
+      sr: "Limun, bergamot i grejp u čistom aromatično-drvenastom profilu.",
+      en: "Lemon, bergamot and grapefruit in a clean aromatic-woody profile.",
+    },
+    modal: {
+      sr: "Svetli citrusi i aromatični geranijum prelaze u kedar, vetiver i pačuli, stvarajući uredan i svestran svakodnevni miris.",
+      en: "Bright citrus and aromatic geranium settle into cedarwood, vetiver and patchouli, creating a polished and versatile everyday scent.",
+    },
+    scentType: {
+      sr: "Citrusni, aromatičan i drvenast",
+      en: "Citrus aromatic woody",
+    },
+    dominantNotes: {
+      sr: ["limun", "grejp", "geranijum", "kedar"],
+      en: ["lemon", "grapefruit", "geranium", "cedarwood"],
+    },
+    tags: {
+      sr: ["Svež", "Svakodnevni", "Letnji"],
+      en: ["Fresh", "Daily", "Summer"],
+    },
+    whyChoose: {
+      sr: "Ako želiš čist i pouzdan parfem za posao, dnevne obaveze i toplo vreme.",
+      en: "If you want a clean, dependable fragrance for work, daily wear and warm weather.",
     },
   },
 
