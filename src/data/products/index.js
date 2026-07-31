@@ -1542,10 +1542,10 @@ export const products = [
       ]
     }
   },
-  {
+    {
     id: 51,
     slug: "french-avenue-safari-breeze",
-    name: "French Avenue Safari Breeze",
+    name: "French Avenue Safari Breeze Eau de Parfum",
     shortName: "Safari Breeze",
     category: "Arabian",
     image: "/products/french-avenue-safari-breeze.png",
@@ -1556,23 +1556,24 @@ export const products = [
     season: "summer",
     moods: ["clean", "summer", "soft"],
     recommendations: [
-    "rayhaan-pacific-aura",
-    "acqua-di-parma-fico-di-amalfi"
-  ],
+      "rayhaan-pacific-aura",
+      "acqua-di-parma-fico-di-amalfi",
+      "rayhaan-aquatica"
+    ],
     inspiredBy: {
-    name: "Tales from Zanzibar by Memoirs of a Perfume Collector",
-    short: "Tales from Zanzibar DNA"
-  },
+      name: "Tales from Zanzibar by Memoirs of a Perfume Collector",
+      short: "Tales from Zanzibar DNA"
+    },
     noteMap: {
-    top: ["black-currant", "coconut", "grapefruit"],
-    heart: ["spearmint", "jasmine"],
-    base: ["vetiver", "amber", "oakmoss"]
-  },
+      top: ["black-currant", "coconut", "grapefruit"],
+      heart: ["spearmint", "jasmine"],
+      base: ["vetiver", "amber", "oakmoss"]
+    }
   },
   {
     id: 52,
     slug: "lattafa-dynasty",
-    name: "Lattafa Dynasty",
+    name: "Lattafa Dynasty Eau de Parfum",
     shortName: "Dynasty",
     category: "Arabian",
     image: "/products/lattafa-dynasty.png",
@@ -1580,236 +1581,247 @@ export const products = [
     badge: "CROWD FAVORITE",
     rating: 8.1,
     ratingLabel: "Popular Pick",
-    season: "summer",
+    season: "all",
     moods: ["signature", "rich", "date"],
     recommendations: [
-    "gisada-ambassador-men"
-  ],
+      "khadlaj-onyx-silver",
+      "calvin-klein-defy-parfum",
+      "gisada-ambassador-men"
+    ],
     inspiredBy: {
-    name: "Clive Christian L Red Tea Vetiver",
-    short: "Red Tea Vetiver DNA"
-  },
+      name: "Clive Christian L Red Tea Vetiver",
+      short: "Red Tea Vetiver DNA"
+    },
     noteMap: {
-    top: ["bergamot", "ginger", "clary-sage"],
-    heart: ["rooibos-tea", "suede"],
-    base: ["amberwood", "cedarwood", "cashmeran"]
-  },
+      top: ["bergamot", "ginger", "clary-sage", "nutmeg", "raspberry"],
+      heart: ["rooibos-tea", "suede"],
+      base: ["amberwood", "cedarwood", "cashmeran"]
+    }
   },
   {
-  id: 53,
-  slug: "dolce-gabbana-the-one-for-men-edt",
-  name: "Dolce & Gabbana The One for Men Eau de Toilette",
-  shortName: "The One for Men",
-  category: "Designer",
-  image: "/products/dolce-gabbana-the-one-edt.png",
-  sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 },
-  badge: "DATE NIGHT",
-  rating: 8.7,
-  ratingLabel: "Elegant Pick",
-  season: "winter",
-  moods: ["date", "soft", "signature"],
-  recommendations: [
-  "boss-the-scent-le-parfum",
-  "givenchy-gentleman-reserve-privee"
-],
-  inspiredBy: {
-  name: "Original Dolce & Gabbana creation",
-  short: "Spicy Tobacco DNA"
-},
-  noteMap: {
-  top: ["grapefruit", "coriander", "basil"],
-  heart: ["cardamom", "ginger", "orange-blossom"],
-  base: ["amber", "tobacco", "cedarwood"]
-},
-},
-{
-  id: 54,
-  slug: "versace-man-eau-fraiche",
-  name: "Versace Man Eau Fraîche Eau de Toilette",
-  shortName: "Eau Fraiche",
-  category: "Designer",
-  image: "/products/versace-man-eau-fraiche.png",
-  sizes: { "2ml": 3, "5ml": 7, "10ml": 12 },
-  badge: "BESTSELLER",
-  rating: 8.3,
-  ratingLabel: "Fresh Favorite",
-  season: "summer",
-  moods: ["clean", "summer", "soft"],
-  recommendations: [
-  "jimmy-choo-man-blue",
-  "acqua-di-parma-fico-di-amalfi"
-],
-  inspiredBy: {
-  name: "Original Versace creation",
-  short: "Fresh Mediterranean DNA"
-},
-  noteMap: {
-  top: ["lemon", "rosewood", "carambola"],
-  heart: ["tarragon", "cedar-leaf", "clary-sage"],
-  base: ["musk", "amber", "sycamore-wood"]
-},
-},
-{
-  id: 55,
-  slug: "emir-voux-zingy",
-  name: "Emir Voux Zingy by Paris Corner",
-  shortName: "Voux Zingy",
-  category: "Arabian",
-  image: "/products/emir-voux-zingy.png",
-  sizes: { "5ml": 3.5, "10ml": 6, "20ml": 12 },
-  badge: "SUMMER HIT",
-  rating: 8.0,
-  ratingLabel: "Fresh Pick",
-  season: "summer",
-  moods: ["clean", "summer", "signature"],
-  recommendations: [
-  "acqua-di-parma-fico-di-amalfi",
-  "rayhaan-aquatica"
-],
-  inspiredBy: {
-  name: "Xerjoff Torino 21",
-  short: "Torino 21 DNA"
-},
-  noteMap: {
-  top: ["basil", "cedrat", "lemon"],
-  heart: ["jasmine", "ambrettolide", "verbena"],
-  base: ["musk"]
-},
-},
-{
-  id: 56,
-  slug: "rayhaan-crimson",
-  name: "Rayhaan Crimson Eau de Parfum",
-  shortName: "Rayhaan Crimson",
-  category: "Arabian",
-  image: "/products/rayhaan-crimson.png",
-  sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
-  badge: "HIDDEN GEM",
-  rating: 8.4,
-  ratingLabel: "Bold Choice",
-  season: "winter",
-  moods: ["date", "rich", "signature"],
-  recommendations: [
-  "lattafa-asad-elixir",
-  "boss-the-scent-elixir"
-],
-  inspiredBy: {
-  name: "Creed Centaurus",
-  short: "Centaurus DNA"
-},
-  noteMap: {
-  top: ["cinnamon", "cardamom", "pink-pepper"],
-  heart: ["patchouli", "heliotropin"],
-  base: ["benzoin", "vanilla", "tonka-bean"]
-},
-},
-{
-  id: 57,
-  slug: "rasasi-hawas-black",
-  name: "Rasasi Hawas Black Eau de Parfum",
-  shortName: "Hawas Black",
-  category: "Arabian",
-  image: "/products/rasasi-hawas-black.png",
-  sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
-  badge: "STAFF PICK",
-  rating: 8.8,
-  ratingLabel: "Top Seller",
-  season: "all",
-  moods: ["signature", "date", "rich"],
-  recommendations: [
-  "afnan-9pm-rebel",
-  "lattafa-fakhar-black"
-],
-  inspiredBy: {
-  name: "Nishane Hacivat",
-  short: "Hacivat DNA"
-},
-  noteMap: {
-  top: ["bergamot", "pineapple", "grapefruit"],
-  heart: ["patchouli", "cedarwood", "jasmine"],
-  base: ["oakmoss", "woody-notes", "amber"]
-},
-},
-{
-  id: 58,
-  slug: "khadlaj-onyx-silver",
-  name: "Khadlaj Onyx Silver",
-  shortName: "Onyx Silver",
-  category: "Arabian",
-  image: "/products/khadlaj-onyx-silver.png",
-  sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
-  badge: "EDITOR'S CHOICE",
-  rating: 8.2,
-  ratingLabel: "Fresh Spicy",
-  season: "all",
-  moods: ["signature", "clean", "date"],
-  recommendations: [
-  "afnan-turathi-blue",
-  "bleu-de-chanel-edp"
-],
-  inspiredBy: {
-  name: "Parfums de Marly Castley",
-  short: "Castley DNA"
-},
-  noteMap: {
-  top: ["bergamot", "ginger", "black-pepper"],
-  heart: ["petitgrain", "cardamom"],
-  base: ["patchouli", "labdanum", "benzoin"]
-},
-},
-{
-  id: 59,
-  slug: "arabiyat-prestige-fahad-gaze",
-  name: "Arabiyat Prestige Fahad Gaze",
-  shortName: "Fahad Gaze",
-  category: "Arabian",
-  image: "/products/arabiyat-prestige-fahad-gaze.png",
-  sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
-  badge: "HIDDEN GEM",
-  rating: 8.4,
-  ratingLabel: "Elegant Pick",
-  season: "all",
-  moods: ["rich", "date", "signature"],
-  recommendations: [
-  "lattafa-musamam-black-intense"
-],
-  inspiredBy: {
-  name: "Gucci Guilty Elixir pour Homme",
-  short: "Guilty Elixir DNA"
-},
-  noteMap: {
-  top: ["spices", "elemi", "metallic-notes"],
-  heart: ["orange-blossom", "incense", "patchouli"],
-  base: ["ambergris", "vanilla", "moss"]
-},
-},
-{
-  id: 60,
-  slug: "narciso-rodriguez-poudree",
-  name: "Narciso Rodriguez Poudrée Eau de Parfum",
-  shortName: "Narciso Poudrée",
-  category: "Designer",
-  image: "/products/narciso-rodriguez-poudree.png",
-  sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
-  badge: "SIGNATURE",
-  rating: 8.9,
-  ratingLabel: "Elegant Favorite",
-  season: "all",
-  moods: ["soft", "rich", "signature"],
-  recommendations: [
-  "narciso-rodriguez-for-him-bleu-noir-edp",
-  "ysl-black-opium-le-parfum"
-  ],
-  inspiredBy: {
-  name: "Original Narciso Rodriguez creation",
-  short: "Powdery Musk DNA"
-},
-  noteMap: {
-  top: ["jasmine", "rose"],
-  heart: ["musk"],
-  base: ["vetiver", "cedarwood"]
-},
-},
+    id: 53,
+    slug: "dolce-gabbana-the-one-for-men-edt",
+    name: "Dolce&Gabbana The One for Men Eau de Toilette",
+    shortName: "The One for Men",
+    category: "Designer",
+    image: "/products/dolce-gabbana-the-one-edt.png",
+    sizes: { "2ml": 3.5, "5ml": 8, "10ml": 14 },
+    badge: "DATE NIGHT",
+    rating: 8.7,
+    ratingLabel: "Elegant Pick",
+    season: "winter",
+    moods: ["date", "soft", "signature"],
+    recommendations: [
+      "boss-the-scent-le-parfum",
+      "givenchy-gentleman-reserve-privee",
+      "tom-ford-noir-extreme"
+    ],
+    inspiredBy: {
+      name: "Original Dolce&Gabbana creation",
+      short: "Spicy Tobacco DNA"
+    },
+    noteMap: {
+      top: ["grapefruit", "coriander", "basil"],
+      heart: ["cardamom", "ginger", "orange-blossom"],
+      base: ["amber", "tobacco", "cedarwood"]
+    }
+  },
+  {
+    id: 54,
+    slug: "versace-man-eau-fraiche",
+    name: "Versace Man Eau Fraîche Eau de Toilette",
+    shortName: "Man Eau Fraîche",
+    category: "Designer",
+    image: "/products/versace-man-eau-fraiche.png",
+    sizes: { "2ml": 3, "5ml": 7, "10ml": 12 },
+    badge: "BESTSELLER",
+    rating: 8.3,
+    ratingLabel: "Fresh Favorite",
+    season: "summer",
+    moods: ["clean", "summer", "soft"],
+    recommendations: [
+      "jimmy-choo-man-blue",
+      "acqua-di-parma-fico-di-amalfi",
+      "dolce-gabbana-light-blue-pour-homme-2025"
+    ],
+    inspiredBy: {
+      name: "Original Versace creation",
+      short: "Fresh Mediterranean DNA"
+    },
+    noteMap: {
+      top: ["white-lemon", "rosewood", "carambola"],
+      heart: ["tarragon", "cedar-leaves", "clary-sage"],
+      base: ["musk", "amber", "sycamore-wood"]
+    }
+  },
+  {
+    id: 55,
+    slug: "emir-voux-zingy",
+    name: "Paris Corner Emir Voux Zingy Eau de Parfum",
+    shortName: "Voux Zingy",
+    category: "Arabian",
+    image: "/products/emir-voux-zingy.png",
+    sizes: { "5ml": 3.5, "10ml": 6, "20ml": 12 },
+    badge: "SUMMER HIT",
+    rating: 8.0,
+    ratingLabel: "Fresh Pick",
+    season: "summer",
+    moods: ["clean", "summer", "signature"],
+    recommendations: [
+      "lattafa-maahir-legacy",
+      "essential-parfums-nice-bergamote",
+      "acqua-di-parma-fico-di-amalfi"
+    ],
+    inspiredBy: {
+      name: "Xerjoff Torino 21",
+      short: "Torino 21 DNA"
+    },
+    noteMap: {
+      top: ["basil", "bergamot", "italian-citron", "lemon"],
+      heart: ["jasmine", "ambrettolide", "verbena"],
+      base: ["musk"]
+    }
+  },
+  {
+    id: 56,
+    slug: "rayhaan-crimson",
+    name: "Rayhaan Crimson Eau de Parfum",
+    shortName: "Crimson",
+    category: "Arabian",
+    image: "/products/rayhaan-crimson.png",
+    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+    badge: "HIDDEN GEM",
+    rating: 8.4,
+    ratingLabel: "Bold Choice",
+    season: "winter",
+    moods: ["date", "rich", "signature"],
+    recommendations: [
+      "lattafa-asad-elixir",
+      "lattafa-qaed-al-fursan-untamed",
+      "tom-ford-noir-extreme"
+    ],
+    inspiredBy: {
+      name: "Creed Centaurus",
+      short: "Centaurus DNA"
+    },
+    noteMap: {
+      top: ["cinnamon", "cardamom", "pink-pepper"],
+      heart: ["patchouli", "heliotropin"],
+      base: ["benzoin", "vanilla", "tonka-bean"]
+    }
+  },
+  {
+    id: 57,
+    slug: "rasasi-hawas-black",
+    name: "Rasasi Hawas Black Eau de Parfum",
+    shortName: "Hawas Black",
+    category: "Arabian",
+    image: "/products/rasasi-hawas-black.png",
+    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    badge: "STAFF PICK",
+    rating: 8.8,
+    ratingLabel: "Top Seller",
+    season: "all",
+    moods: ["signature", "date", "rich"],
+    recommendations: [
+      "afnan-supremacy-collectors-edition",
+      "armaf-club-de-nuit-intense",
+      "mancera-cedrat-boise"
+    ],
+    inspiredBy: {
+      name: "Nishane Hacivat",
+      short: "Hacivat DNA"
+    },
+    noteMap: {
+      top: ["pineapple", "grapefruit", "bergamot"],
+      heart: ["cedarwood", "patchouli", "jasmine"],
+      base: ["oakmoss", "woody-notes", "amber"]
+    }
+  },
+  {
+    id: 58,
+    slug: "khadlaj-onyx-silver",
+    name: "Khadlaj Onyx Silver Eau de Parfum",
+    shortName: "Onyx Silver",
+    category: "Arabian",
+    image: "/products/khadlaj-onyx-silver.png",
+    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+    badge: "EDITOR'S CHOICE",
+    rating: 8.2,
+    ratingLabel: "Fresh Spicy",
+    season: "all",
+    moods: ["signature", "clean", "date"],
+    recommendations: [
+      "bois-imperial-essential-parfums",
+      "khadlaj-shiyaaka-snow-edp",
+      "calvin-klein-defy-parfum"
+    ],
+    inspiredBy: {
+      name: "Parfums de Marly Castley",
+      short: "Castley DNA"
+    },
+    noteMap: {
+      top: ["bergamot", "ginger", "black-pepper"],
+      heart: ["petitgrain", "cardamom"],
+      base: ["patchouli", "labdanum", "benzoin", "tonka-bean"]
+    }
+  },
+  {
+    id: 59,
+    slug: "arabiyat-prestige-fahad-gaze",
+    name: "Arabiyat Prestige Fahad Gaze Eau de Parfum",
+    shortName: "Fahad Gaze",
+    category: "Arabian",
+    image: "/products/arabiyat-prestige-fahad-gaze.png",
+    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    badge: "HIDDEN GEM",
+    rating: 8.4,
+    ratingLabel: "Elegant Pick",
+    season: "winter",
+    moods: ["rich", "date", "signature"],
+    recommendations: [
+      "ysl-myslf-edp",
+      "tom-ford-noir-extreme",
+      "boss-the-scent-elixir"
+    ],
+    inspiredBy: {
+      name: "Gucci Guilty Elixir de Parfum pour Homme",
+      short: "Guilty Elixir DNA"
+    },
+    noteMap: {
+      top: ["spices", "elemi", "metallic-notes"],
+      heart: ["orange-blossom", "incense", "patchouli"],
+      base: ["ambergris", "vanilla", "moss"]
+    }
+  },
+  {
+    id: 60,
+    slug: "narciso-rodriguez-poudree",
+    name: "Narciso Rodriguez NARCISO Poudrée Eau de Parfum",
+    shortName: "NARCISO Poudrée",
+    category: "Designer",
+    image: "/products/narciso-rodriguez-poudree.png",
+    sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
+    badge: "SIGNATURE",
+    rating: 8.9,
+    ratingLabel: "Elegant Favorite",
+    season: "all",
+    moods: ["soft", "rich", "signature"],
+    recommendations: [
+      "narciso-rodriguez-for-him-bleu-noir-edp",
+      "my-geisha-jasmine-in-the-sun",
+      "ministry-of-oud-oud-satin"
+    ],
+    inspiredBy: {
+      name: "Original Narciso Rodriguez creation",
+      short: "Powdery Musk DNA"
+    },
+    noteMap: {
+      top: ["white-jasmine", "bulgarian-rose"],
+      heart: ["powdery-musk"],
+      base: ["vetiver", "black-cedar", "white-cedar"]
+    }
+  },
 {
   id: 61,
   slug: "ysl-black-opium-le-parfum",
