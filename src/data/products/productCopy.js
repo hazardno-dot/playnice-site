@@ -562,222 +562,283 @@ export const productCopy = {
     },
   },
 
-  "Rayhaan Aquatica": {
-    miniTag: { sr: "❄️ Letnji", en: "❄️ Summer" },
-    card: { sr: "Morska svežina.", en: "Marine freshness." },
-    modal: { sr: "Lagano i prozračno.", en: "Light airy scent." },
-    scentType: { sr: "Vodeni", en: "Aquatic" },
-    dominantNotes: {
-      sr: ["more", "citrusi"],
-      en: ["marine", "citrus"],
+    "Rayhaan Aquatica Eau de Parfum": {
+    miniTag: { sr: "🥥 Tropski / Svež", en: "🥥 Tropical / Fresh" },
+    card: {
+      sr: "Kokos, limeta i beli rum u vedrom tropskom letnjem mirisu.",
+      en: "Coconut, lime and white rum in a bright tropical summer scent.",
     },
-    tags: { sr: ["Letnji"], en: ["Summer"] },
+    modal: {
+      sr: "Kokos, limeta i bergamot otvaraju miris sočno, đumbir i egzotično cveće daju mu živost, a beli rum, šećerna trska i mošus zaokružuju tropski karakter.",
+      en: "Coconut, lime and bergamot open with juicy freshness, ginger and exotic florals add vibrancy, while white rum, sugar cane and musk complete its tropical character.",
+    },
+    scentType: {
+      sr: "Tropski, citrusni i mošusni",
+      en: "Tropical citrus musky",
+    },
+    dominantNotes: {
+      sr: ["kokos", "limeta", "beli rum", "šećerna trska"],
+      en: ["coconut", "lime", "white rum", "sugar cane"],
+    },
+    tags: {
+      sr: ["Svež", "Letnji", "Mekan"],
+      en: ["Fresh", "Summer", "Soft"],
+    },
     whyChoose: {
-      sr: "Idealno za leto.",
-      en: "Perfect for summer.",
+      sr: "Ako želiš opušten tropski miris koji spaja citrusnu svežinu i blagu slatkoću.",
+      en: "If you want a relaxed tropical fragrance blending citrus freshness with gentle sweetness.",
     },
   },
 
-  "Rayhaan Pacific Aura": {
-    miniTag: { sr: "❄️ Letnji", en: "❄️ Summer" },
-    card: { sr: "Lagana letnja svežina.", en: "Light summer freshness." },
-    modal: { sr: "Čist i vedar miris.", en: "Clean bright scent." },
-    scentType: { sr: "Svež i vodeni", en: "Fresh aquatic" },
-    dominantNotes: {
-      sr: ["citrusi", "more"],
-      en: ["citrus", "marine"],
+  "Rayhaan Pacific Aura Eau de Parfum": {
+    miniTag: { sr: "🌿 Voćni / Zeleni", en: "🌿 Fruity / Green" },
+    card: {
+      sr: "Citron, nana i kajsija u zelenom, osvežavajućem letnjem spoju.",
+      en: "Citron, mint and apricot in a green refreshing summer blend.",
     },
-    tags: { sr: ["Letnji"], en: ["Summer"] },
+    modal: {
+      sr: "Citron, limun, narandža i nana daju blistav početak, kajsija, bosiljak i ruža unose voćno-zelenu mekoću, a smokva, urme i ambreta zaokružuju miris.",
+      en: "Citron, lemon, orange and mint create a radiant opening, apricot, basil and rose add fruity-green softness, while fig, dates and ambrette round out the scent.",
+    },
+    scentType: {
+      sr: "Citrusni, voćni i zeleni",
+      en: "Citrus fruity green",
+    },
+    dominantNotes: {
+      sr: ["citron", "nana", "kajsija", "smokva"],
+      en: ["citron", "mint", "apricot", "fig"],
+    },
+    tags: {
+      sr: ["Svež", "Letnji", "Mekan"],
+      en: ["Fresh", "Summer", "Soft"],
+    },
     whyChoose: {
-      sr: "Za lagane dane.",
-      en: "For easy days.",
+      sr: "Ako voliš prirodnu, voćno-zelenu svežinu koja deluje vedro i nenametljivo.",
+      en: "If you enjoy natural fruity-green freshness that feels bright and effortless.",
     },
   },
 
   "Swiss Arabian Tobacco 01 Extrait de Parfum": {
-    miniTag: { sr: "💎 Luksuzan / Duvan", en: "💎 Luxury / Tobacco" },
-    card: { sr: "Duvan i med.", en: "Tobacco and honey." },
-    modal: { sr: "Topao, bogat i luksuzan.", en: "Warm rich luxurious." },
-    scentType: { sr: "Duvanski i sladak", en: "Tobacco sweet" },
-    dominantNotes: {
-      sr: ["duvan", "med", "začini"],
-      en: ["tobacco", "honey", "spices"],
-    },
-    tags: { sr: ["Luksuzan"], en: ["Luxury"] },
-    whyChoose: {
-      sr: "Za ljubitelje duvana.",
-      en: "For tobacco lovers.",
-    },
-  },
-
-  "Acqua di Parma Fico di Amalfi Eau de Toilette": {
-    miniTag: { sr: "❄️ Svež / Luksuzan", en: "❄️ Fresh / Luxury" },
+    miniTag: { sr: "🚬 Duvan / Med", en: "🚬 Tobacco / Honey" },
     card: {
-      sr: "Smokva i mediteranska svežina.",
-      en: "Fig and mediterranean freshness.",
+      sr: "Šljiva, med i duvan u raskošnom začinsko-ambrastom mirisu.",
+      en: "Plum, honey and tobacco in an opulent spicy-amber fragrance.",
     },
-    modal: { sr: "Prirodan, lagan i elegantan.", en: "Natural light elegant." },
-    scentType: { sr: "Svež i voćni", en: "Fresh fruity" },
+    modal: {
+      sr: "Šljiva, jabuka i ružičasti biber vode u bogato srce od labdanuma, ambera i pačulija, dok duvan, med, vanila i sandalovina ostavljaju gust i luksuzan trag.",
+      en: "Plum, apple and pink pepper lead into a rich heart of labdanum, amber and patchouli, while tobacco, honey, vanilla and sandalwood leave a dense luxurious trail.",
+    },
+    scentType: {
+      sr: "Voćni, ambrast i duvanski",
+      en: "Fruity amber tobacco",
+    },
     dominantNotes: {
-      sr: ["smokva", "citrusi"],
-      en: ["fig", "citrus"],
+      sr: ["šljiva", "duvan", "med", "vanila"],
+      en: ["plum", "tobacco", "honey", "vanilla"],
     },
-    tags: { sr: ["Luksuzan"], en: ["Luxury"] },
+    tags: {
+      sr: ["Bogat", "Večernji", "Prepoznatljiv"],
+      en: ["Rich", "Night", "Signature"],
+    },
     whyChoose: {
-      sr: "Za prirodan luksuz.",
-      en: "For natural luxury.",
+      sr: "Ako želiš ozbiljan duvanski parfem sa voćnom slatkoćom i raskošnom dubinom.",
+      en: "If you want a serious tobacco fragrance with fruity sweetness and opulent depth.",
     },
   },
 
-  "BLEU DE CHANEL Eau de Parfum": {
-    miniTag: { sr: "💎 Prepoznatljiv", en: "💎 Signature" },
-    card: { sr: "Elegantna klasika.", en: "Elegant classic." },
-    modal: { sr: "Bezvremenski izbor.", en: "Timeless choice." },
-    scentType: { sr: "Svež i drvenast", en: "Fresh woody" },
+  "Acqua di Parma Blu Mediterraneo Fico di Amalfi Eau de Toilette": {
+    miniTag: { sr: "🌿 Smokva / Citrusni", en: "🌿 Fig / Citrus" },
+    card: {
+      sr: "Sočna smokva i italijanski citrusi u mediteranski vedrom mirisu.",
+      en: "Juicy fig and Italian citrus in a bright Mediterranean scent.",
+    },
+    modal: {
+      sr: "Italijanski limun, bergamot i grejp otvaraju miris blistavo, nektar smokve i jasmin donose mekoću, a drvo smokve, kedar i benzoin toplinu.",
+      en: "Italian lemon, bergamot and grapefruit create a radiant opening, fig nectar and jasmine add softness, while fig wood, cedarwood and benzoin bring warmth.",
+    },
+    scentType: {
+      sr: "Citrusni, voćni i drvenast",
+      en: "Citrus fruity woody",
+    },
     dominantNotes: {
-      sr: ["citrusi", "tamjan", "drvo"],
-      en: ["citrus", "incense", "woods"],
+      sr: ["italijanski limun", "nektar smokve", "drvo smokve", "kedar"],
+      en: ["Italian lemon", "fig nectar", "fig wood", "cedarwood"],
     },
-    tags: { sr: ["Prepoznatljiv"], en: ["Signature"] },
+    tags: {
+      sr: ["Svež", "Letnji", "Mekan"],
+      en: ["Fresh", "Summer", "Soft"],
+    },
     whyChoose: {
-      sr: "Sigurna kupovina.",
-      en: "Safe buy.",
-    },
-  },
-
-  "Bois Impérial by Essential Parfums": {
-    miniTag: { sr: "💎 Nišni", en: "💎 Niche" },
-    card: { sr: "Zeleno-drveni nišni profil.", en: "Green woody niche." },
-    modal: { sr: "Moderan i drugačiji.", en: "Modern unique." },
-    scentType: { sr: "Zeleni i drvenast", en: "Green woody" },
-    dominantNotes: {
-      sr: ["vetiver", "drvo"],
-      en: ["vetiver", "woods"],
-    },
-    tags: { sr: ["Nišni"], en: ["Niche"] },
-    whyChoose: {
-      sr: "Za moderan nišni karakter.",
-      en: "For niche feel.",
-    },
-  },
-
-  "Creed Aventus Cologne": {
-    miniTag: { sr: "💎 Luksuzan", en: "💎 Luxury" },
-    card: { sr: "Luksuzna svežina.", en: "Luxury freshness." },
-    modal: { sr: "Tihi luksuz.", en: "Quiet luxury." },
-    scentType: { sr: "Svež i voćni", en: "Fresh fruity" },
-    dominantNotes: {
-      sr: ["ananas", "citrusi"],
-      en: ["pineapple", "citrus"],
-    },
-    tags: { sr: ["Luksuzan"], en: ["Luxury"] },
-    whyChoose: {
-      sr: "Premium izbor.",
-      en: "Premium choice.",
-    },
-  },
-
-  "Tom Ford Noir Extreme Eau de Parfum": {
-    miniTag: { sr: "🍯 Luksuzno veče", en: "🍯 Luxury Night" },
-    card: { sr: "Kremast i sladak.", en: "Creamy sweet." },
-    modal: { sr: "Topao i zavodljiv.", en: "Warm seductive." },
-    scentType: { sr: "Gurmanski", en: "Gourmand" },
-    dominantNotes: {
-      sr: ["vanila", "kardamom"],
-      en: ["vanilla", "cardamom"],
-    },
-    tags: { sr: ["Večernji"], en: ["Night"] },
-    whyChoose: {
-      sr: "Za luksuzne večeri.",
-      en: "For luxury nights.",
+      sr: "Ako želiš prirodan, elegantan i bezbrižan miris mediteranskog ljeta.",
+      en: "If you want a natural, elegant and carefree scent of a Mediterranean summer.",
     },
   },
 
   "Acqua di Parma Colonia Essenza Eau de Cologne": {
-    miniTag: { sr: "❄️ Svež / Luksuzan", en: "❄️ Fresh / Luxury" },
+    miniTag: { sr: "🍋 Citrusni / Klasičan", en: "🍋 Citrus / Classic" },
     card: {
-      sr: "Klasična citrusna elegancija.",
-      en: "Classic citrus elegance.",
+      sr: "Neroli, limun i vetiver u preciznoj italijanskoj kolonjskoj eleganciji.",
+      en: "Neroli, lemon and vetiver in precise Italian cologne elegance.",
     },
     modal: {
-      sr: "Bezvremenska svežina sa sofisticiranim karakterom.",
-      en: "Timeless freshness with refined character.",
+      sr: "Bogat spoj limuna, narandže, bergamota i nerolija prelazi u aromatično-cvetno srce, dok vetiver, pačuli, beli mošus i amber daju profinjen završetak.",
+      en: "A rich blend of lemon, orange, bergamot and neroli develops into an aromatic floral heart, while vetiver, patchouli, white musk and amber create a refined finish.",
     },
     scentType: {
-      sr: "Svež, citrusni i aromatičan",
-      en: "Fresh citrus aromatic",
+      sr: "Citrusni, aromatičan i mošusni",
+      en: "Citrus aromatic musky",
     },
     dominantNotes: {
-      sr: ["citrusi", "bergamot", "drvo"],
-      en: ["citrus", "bergamot", "woods"],
+      sr: ["neroli", "limun", "ruzmarin", "vetiver"],
+      en: ["neroli", "lemon", "rosemary", "vetiver"],
     },
-    tags: { sr: ["Luksuzan"], en: ["Luxury"] },
+    tags: {
+      sr: ["Čist", "Letnji", "Prepoznatljiv"],
+      en: ["Clean", "Summer", "Signature"],
+    },
     whyChoose: {
-      sr: "Za klasičnu eleganciju.",
-      en: "For classic elegance.",
+      sr: "Ako tražiš besprekoran, klasičan i luksuzan citrusni miris za toplo vreme.",
+      en: "If you seek an impeccable, classic and luxurious citrus fragrance for warm weather.",
     },
   },
 
   "Acqua di Parma Colonia Pura Eau de Cologne": {
-    miniTag: { sr: "❄️ Svež / Čist", en: "❄️ Fresh / Clean" },
+    miniTag: { sr: "🍊 Citrusni / Mošusni", en: "🍊 Citrus / Musky" },
     card: {
-      sr: "Čista i moderna citrusna svežina.",
-      en: "Clean modern citrus freshness.",
+      sr: "Italijanski citrusi, jasmin i mošus u čistom, modernom spoju.",
+      en: "Italian citrus, jasmine and musk in a clean modern blend.",
     },
     modal: {
-      sr: "Minimalistički i svetao miris za svaki dan.",
-      en: "Minimal bright scent for everyday.",
+      sr: "Bergamot, narandža i petitgrain otvaraju miris svetlo, korijander, jasmin sambak i narcis daju karakter, a kedar, pačuli i mošus mekanu dubinu.",
+      en: "Bergamot, orange and petitgrain open brightly, coriander, jasmine sambac and narcissus add character, while cedarwood, patchouli and musk bring soft depth.",
     },
-    scentType: { sr: "Svež i citrusni", en: "Fresh citrus" },
+    scentType: {
+      sr: "Citrusni, cvetni i mošusni",
+      en: "Citrus floral musky",
+    },
     dominantNotes: {
-      sr: ["citrusi", "mošus", "drvo"],
-      en: ["citrus", "musk", "woods"],
+      sr: ["bergamot", "italijanska narandža", "jasmin sambak", "mošus"],
+      en: ["bergamot", "Italian orange", "jasmine sambac", "musk"],
     },
-    tags: { sr: ["Svež"], en: ["Fresh"] },
+    tags: {
+      sr: ["Čist", "Letnji", "Mekan"],
+      en: ["Clean", "Summer", "Soft"],
+    },
     whyChoose: {
-      sr: "Za čist i lagan stil.",
-      en: "For clean easy vibe.",
+      sr: "Ako želiš savremenu italijansku kolonjsku svežinu sa mekim i elegantnim tragom.",
+      en: "If you want contemporary Italian cologne freshness with a soft elegant trail.",
+    },
+  },
+
+  "Bleu de Chanel Eau de Parfum": {
+    miniTag: { sr: "🔵 Aromatičan / Drvenast", en: "🔵 Aromatic / Woody" },
+    card: {
+      sr: "Grejp, nana i tamjan u bezvremenski elegantnom plavom mirisu.",
+      en: "Grapefruit, mint and incense in a timelessly elegant blue fragrance.",
+    },
+    modal: {
+      sr: "Grejp, limun i nana otvaraju miris čistom energijom, đumbir i muškatni oraščić daju dubinu, a tamjan, kedar i sandalovina njegov prepoznatljiv trag.",
+      en: "Grapefruit, lemon and mint open with clean energy, ginger and nutmeg add depth, while incense, cedarwood and sandalwood form its unmistakable trail.",
+    },
+    scentType: {
+      sr: "Citrusni, aromatičan i drvenast",
+      en: "Citrus aromatic woody",
+    },
+    dominantNotes: {
+      sr: ["grejp", "nana", "tamjan", "sandalovina"],
+      en: ["grapefruit", "mint", "incense", "sandalwood"],
+    },
+    tags: {
+      sr: ["Prepoznatljiv", "Čist", "Večernji"],
+      en: ["Signature", "Clean", "Night"],
+    },
+    whyChoose: {
+      sr: "Ako želiš jedan istinski svestran parfem koji jednako dobro radi danju i uveče.",
+      en: "If you want a truly versatile fragrance that works equally well by day and at night.",
+    },
+  },
+
+  "Essential Parfums Bois Impérial Eau de Parfum": {
+    miniTag: { sr: "🌿 Začinski / Drvenast", en: "🌿 Spicy / Woody" },
+    card: {
+      sr: "Tajlandski bosiljak, Timut biber i vetiver u modernom drvenastom mirisu.",
+      en: "Thai basil, Timut pepper and vetiver in a modern woody fragrance.",
+    },
+    modal: {
+      sr: "Zeleni bosiljak i iskričavi Timut biber vode u vetiver i Georgywood, dok Akigalawood, pačuli i Ambrofix daju suv, snažan i savremen trag.",
+      en: "Green basil and sparkling Timut pepper lead into vetiver and Georgywood, while Akigalawood, patchouli and Ambrofix create a dry, powerful and contemporary trail.",
+    },
+    scentType: {
+      sr: "Zeleni, začinski i drvenast",
+      en: "Green spicy woody",
+    },
+    dominantNotes: {
+      sr: ["tajlandski bosiljak", "Timut biber", "vetiver", "Akigalawood"],
+      en: ["Thai basil", "Timut pepper", "vetiver", "Akigalawood"],
+    },
+    tags: {
+      sr: ["Prepoznatljiv", "Čist", "Bogat"],
+      en: ["Signature", "Clean", "Rich"],
+    },
+    whyChoose: {
+      sr: "Ako želiš originalan, moderan i izuzetno prepoznatljiv drvenasti parfem.",
+      en: "If you want an original, modern and highly distinctive woody fragrance.",
     },
   },
 
   "BOSS Bottled Beyond Eau de Parfum": {
-    miniTag: { sr: "🍯 Sladak / Moderan", en: "🍯 Sweet / Modern" },
+    miniTag: { sr: "🫚 Đumbir / Koža", en: "🫚 Ginger / Leather" },
     card: {
-      sr: "Topao i moderan muški profil.",
-      en: "Warm modern masculine profile.",
+      sr: "Svež đumbir i glatka koža iznad moderne drvenaste baze.",
+      en: "Fresh ginger and smooth leather over a modern woody base.",
     },
     modal: {
-      sr: "Savremen, uglađen i prijatan za nošenje.",
-      en: "Modern smooth and easy to wear.",
+      sr: "Prodoran đumbir donosi energiju, kožni akord daje uglađenu dubinu, a čiste drvenaste note ostavljaju moderan i samouveren trag.",
+      en: "Vibrant ginger brings energy, a leather accord adds polished depth, and clean woody notes leave a modern, confident trail.",
     },
-    scentType: { sr: "Sladak i drvenast", en: "Sweet woody" },
+    scentType: {
+      sr: "Začinski, kožni i drvenast",
+      en: "Spicy leather woody",
+    },
     dominantNotes: {
-      sr: ["vanila", "drvo", "začini"],
-      en: ["vanilla", "woods", "spices"],
+      sr: ["đumbir", "koža", "drvenaste note"],
+      en: ["ginger", "leather", "woody notes"],
     },
-    tags: { sr: ["Moderan"], en: ["Modern"] },
+    tags: {
+      sr: ["Prepoznatljiv", "Večernji", "Bogat"],
+      en: ["Signature", "Night", "Rich"],
+    },
     whyChoose: {
-      sr: "Siguran moderan izbor.",
-      en: "Safe modern pick.",
+      sr: "Ako želiš čist i moderan kožni parfem bez suvišne težine.",
+      en: "If you want a clean modern leather fragrance without unnecessary heaviness.",
     },
   },
 
   "BOSS The Scent Elixir Parfum Intense for Him": {
-    miniTag: { sr: "🔥 Večernji / Intenzivan", en: "🔥 Night / Intense" },
-    card: { sr: "Tamna, začinska senzualnost.", en: "Dark spicy sensuality." },
+    miniTag: { sr: "🌶️ Začinski / Drvenast", en: "🌶️ Spicy / Woody" },
+    card: {
+      sr: "Pimento, lavandin i sandalovina u intenzivnom večernjem mirisu.",
+      en: "Pimento, lavandin and sandalwood in an intense evening scent.",
+    },
     modal: {
-      sr: "Intenzivan i zavodljiv miris za večernje prilike.",
-      en: "Intense seductive evening scent.",
+      sr: "Vatreni pimento otvara miris snažno, aromatični lavandin unosi kontrast, a kremasta sandalovina gradi topao, senzualan i dugotrajan završetak.",
+      en: "Fiery pimento opens with force, aromatic lavandin adds contrast, and creamy sandalwood creates a warm, sensual and lasting finish.",
     },
-    scentType: { sr: "Začinski i sladak", en: "Spicy sweet" },
+    scentType: {
+      sr: "Začinski, aromatičan i drvenast",
+      en: "Spicy aromatic woody",
+    },
     dominantNotes: {
-      sr: ["začini", "amber", "drvo"],
-      en: ["spices", "amber", "woods"],
+      sr: ["pimento", "lavandin", "sandalovina"],
+      en: ["pimento", "lavandin", "sandalwood"],
     },
-    tags: { sr: ["Večernji"], en: ["Night"] },
+    tags: {
+      sr: ["Večernji", "Bogat", "Prepoznatljiv"],
+      en: ["Night", "Rich", "Signature"],
+    },
     whyChoose: {
-      sr: "Za snažan večernji utisak.",
-      en: "For strong evening impact.",
+      sr: "Ako želiš intenzivan i senzualan parfem sa jasnim začinsko-drvenastim potpisom.",
+      en: "If you want an intense sensual fragrance with a clear spicy-woody signature.",
     },
   },
 
