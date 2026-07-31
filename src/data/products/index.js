@@ -288,7 +288,7 @@ export const products = [
       base: ["cedarwood", "vetiver", "patchouli"]
     }
   },
-  {
+    {
     id: 11,
     slug: "khadlaj-island-dreams",
     name: "Khadlaj Island Dreams Extrait de Parfum",
@@ -300,25 +300,26 @@ export const products = [
     rating: 8.7,
     ratingLabel: "Audience Favorite",
     season: "summer",
-    moods: ["summer", "soft", "date"],
+    moods: ["clean", "summer", "signature"],
     recommendations: [
-    "arabiyat-prestige-marwa",
-    "rayhaan-aquatica"
-  ],
+      "arabiyat-prestige-marwa",
+      "french-avenue-pinnace-oryn",
+      "khadlaj-shiyaaka-snow-edp"
+    ],
     inspiredBy: {
-    name: "Louis Vuitton Symphony",
-    short: "Symphony DNA"
-  },
+      name: "Louis Vuitton Symphony",
+      short: "Symphony DNA"
+    },
     noteMap: {
-    top: ["bergamot", "ginger"],
-    heart: ["grapefruit"],
-    base: ["ambroxan", "musk"]
-  },
+      top: ["bergamot", "ginger"],
+      heart: ["grapefruit"],
+      base: ["ambroxan", "musk"]
+    }
   },
   {
     id: 12,
     slug: "lattafa-asad-elixir",
-    name: "Lattafa Asad Elixir",
+    name: "Lattafa Asad Elixir Eau de Parfum",
     shortName: "Asad Elixir",
     category: "Arabian",
     image: "/products/Lattafa-Asad-Elixir.png",
@@ -329,23 +330,24 @@ export const products = [
     season: "winter",
     moods: ["rich", "date", "signature"],
     recommendations: [
-    "boss-the-scent-elixir",
-    "tom-ford-noir-extreme"
-  ],
+      "boss-the-scent-elixir",
+      "tom-ford-noir-extreme",
+      "rayhaan-crimson"
+    ],
     inspiredBy: {
-    name: "Hugo Boss Bottled Absolute",
-    short: "Boss Absolute DNA"
-  },
+      name: "BOSS Bottled Absolu Parfum Intense",
+      short: "Bottled Absolu DNA"
+    },
     noteMap: {
-    top: ["pink-pepper", "saffron", "grapefruit"],
-    heart: ["tobacco", "cedarwood", "vanilla"],
-    base: ["patchouli", "olibanum", "cashmeran"]
-  },
+      top: ["pink-pepper", "saffron", "grapefruit"],
+      heart: ["tobacco", "cedarwood", "vanilla"],
+      base: ["patchouli", "olibanum", "cashmeran"]
+    }
   },
   {
     id: 13,
     slug: "lattafa-fakhar-black",
-    name: "Lattafa Fakhar Black",
+    name: "Lattafa Fakhar Black Eau de Parfum",
     shortName: "Fakhar Black",
     category: "Arabian",
     image: "/products/Lattafa-Fakhar-Black.png",
@@ -356,23 +358,24 @@ export const products = [
     season: "all",
     moods: ["clean", "signature", "date"],
     recommendations: [
-    "ysl-lhomme-edp",
-    "afnan-9pm-rebel"
-  ],
+      "bleu-de-chanel-edp",
+      "rayhaan-nocturno-elixir",
+      "rasasi-hawas-ice"
+    ],
     inspiredBy: {
-    name: "Yves Saint Laurent (YSL) Y EDP",
-    short: "YSL Y EDP DNA"
-  },
+      name: "Yves Saint Laurent Y Eau de Parfum",
+      short: "Y Eau de Parfum DNA"
+    },
     noteMap: {
-    top: ["apple", "bergamot", "ginger"],
-    heart: ["lavender", "sage", "juniper-berries"],
-    base: ["tonka-bean", "cedarwood", "amberwood"]
-  },
+      top: ["apple", "bergamot", "ginger"],
+      heart: ["lavender", "sage", "juniper-berries"],
+      base: ["tonka-bean", "cedarwood", "amberwood"]
+    }
   },
   {
     id: 14,
     slug: "lattafa-khamrah-qahwa",
-    name: "Lattafa Khamrah Qahwa",
+    name: "Lattafa Khamrah Qahwa Eau de Parfum",
     shortName: "Khamrah Qahwa",
     category: "Arabian",
     image: "/products/Lattafa-Khamrah-Qahwa.png",
@@ -383,24 +386,25 @@ export const products = [
     season: "winter",
     moods: ["rich", "date", "soft"],
     recommendations: [
-    "swiss-arabian-tobacco-01",
-    "chopard-oud-malaki"
-  ],
+      "afnan-9pm-night-out",
+      "tom-ford-noir-extreme",
+      "swiss-arabian-tobacco-01"
+    ],
     inspiredBy: {
-    name: "By Kilian Angels' Share",
-    short: "Angels' Share DNA"
-  },
+      name: "Original Lattafa creation",
+      short: "Coffee Gourmand DNA"
+    },
     noteMap: {
-    top: ["ginger", "cinnamon", "cardamom"],
-    heart: ["praline", "candied-fruits", "white-flowers"],
-    base: ["coffee-arabica", "tonka-bean", "musk"]
-  },
+      top: ["ginger", "cinnamon", "cardamom"],
+      heart: ["praline", "candied-fruits", "white-flowers"],
+      base: ["coffee-arabica", "tonka-bean", "musk"]
+    }
   },
   {
     id: 15,
     slug: "lattafa-musamam-black-intense",
-    name: "Lattafa Musamam Black Intense",
-    shortName: "Musamam Black",
+    name: "Lattafa Musamam Black Intense Eau de Parfum",
+    shortName: "Musamam Black Intense",
     category: "Arabian",
     image: "/products/Lattafa-Musamam-Black-Intense.png",
     sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
@@ -410,24 +414,25 @@ export const products = [
     season: "winter",
     moods: ["rich", "date", "signature"],
     recommendations: [
-    "french-avenue-vulcan-sable",
-    "arabiyat-prestige-fahad-gaze"
-  ],
+      "french-avenue-vulcan-sable",
+      "arabiyat-prestige-fahad-gaze",
+      "lattafa-asad-elixir"
+    ],
     inspiredBy: {
-    name: "Original Lattafa creation",
-    short: "Spicy Woody DNA"
-  },
+      name: "Original Lattafa creation",
+      short: "Spicy Woody DNA"
+    },
     noteMap: {
-    top: ["lavender", "nutmeg", "bergamot"],
-    heart: ["geranium", "rosyfolia", "mahonial"],
-    base: ["maple-wood", "cocoapulse", "ambrofix"]
-  },
+      top: ["lavender", "nutmeg", "bergamot"],
+      heart: ["geranium", "rosyfolia", "mahonial"],
+      base: ["maple-wood", "cocoapulse", "ambrofix"]
+    }
   },
   {
     id: 16,
     slug: "lattafa-qaed-al-fursan-untamed",
-    name: "Lattafa Qaed Al Fursan Untamed",
-    shortName: "Qaed Al Fursan",
+    name: "Lattafa Qaed Al Fursan Untamed Eau de Parfum",
+    shortName: "Qaed Al Fursan Untamed",
     category: "Arabian",
     image: "/products/Lattafa-Qaed-Al-Fursan-Untamed.png",
     sizes: { "5ml": 3, "10ml": 5, "20ml": 10 },
@@ -435,25 +440,26 @@ export const products = [
     rating: 7.5,
     ratingLabel: "Well Loved",
     season: "all",
-    moods: ["summer", "rich", "signature"],
+    moods: ["signature", "date", "rich"],
     recommendations: [
-    "armaf-club-de-nuit-intense",
-    "afnan-supremacy-collectors-edition"
-  ],
+      "valentino-uomo-born-in-roma-coral-fantasy",
+      "afnan-9pm-rebel",
+      "rayhaan-crimson"
+    ],
     inspiredBy: {
-    name: "Versace Eros Najim",
-    short: "Eros Najim DNA"
-  },
+      name: "Versace Eros Najim Parfum",
+      short: "Eros Najim DNA"
+    },
     noteMap: {
-    top: ["nutmeg", "cardamom", "mandarin"],
-    heart: ["lavender", "clary-sage", "caramel"],
-    base: ["cedarwood", "olibanum", "labdanum"]
-  },
+      top: ["nutmeg", "cardamom", "mandarin"],
+      heart: ["lavender", "clary-sage", "caramel"],
+      base: ["cedarwood", "olibanum", "labdanum"]
+    }
   },
   {
     id: 17,
     slug: "emir-trillium",
-    name: "Paris Corner Emir Trillium",
+    name: "Paris Corner Emir Trillium Eau de Parfum",
     shortName: "Emir Trillium",
     category: "Arabian",
     image: "/products/Emir-Trillium.png",
@@ -462,24 +468,26 @@ export const products = [
     rating: 7.6,
     ratingLabel: "Well Loved",
     season: "summer",
-    moods: ["clean", "summer", "soft"],
+    moods: ["clean", "summer", "signature"],
     recommendations: [
-    "emir-voux-elegante"
-  ],
+      "emir-voux-zingy",
+      "creed-aventus-cologne",
+      "acqua-di-parma-colonia-essenza"
+    ],
     inspiredBy: {
-    name: "Roja Dove Elysium Parfum Cologne",
-    short: "Elysium DNA"
-  },
+      name: "Roja Parfums Elysium Pour Homme Parfum Cologne",
+      short: "Elysium DNA"
+    },
     noteMap: {
-    top: ["grapefruit", "bergamot", "thyme"],
-    heart: ["vetiver", "juniper-berries", "black-currant"],
-    base: ["ambergris", "leather", "vanilla"]
-  },
+      top: ["grapefruit", "bergamot", "thyme"],
+      heart: ["vetiver", "juniper-berries", "black-currant"],
+      base: ["ambergris", "leather", "vanilla"]
+    }
   },
   {
     id: 18,
     slug: "emir-voux-elegante",
-    name: "Paris Corner Emir Voux Elegante",
+    name: "Paris Corner Emir Voux Elegante Eau de Parfum",
     shortName: "Voux Elegante",
     category: "Arabian",
     image: "/products/Emir-Voux-Elegante.png",
@@ -488,25 +496,26 @@ export const products = [
     rating: 7.7,
     ratingLabel: "Well Loved",
     season: "winter",
-    moods: ["soft", "clean", "signature"],
+    moods: ["rich", "date", "signature"],
     recommendations: [
-    "lhomme-ideal-guerlain-edt",
-    "emir-trillium"
-  ],
+      "swiss-arabian-tobacco-01",
+      "tom-ford-noir-extreme",
+      "givenchy-gentleman-reserve-privee"
+    ],
     inspiredBy: {
-    name: "Xerjoff 1861 Naxos",
-    short: "Naxos DNA"
-  },
+      name: "Xerjoff Naxos",
+      short: "Naxos DNA"
+    },
     noteMap: {
-    top: ["lavender", "bergamot", "lemon"],
-    heart: ["honey", "cinnamon", "cashmeran"],
-    base: ["tobacco", "tonka-bean", "vanilla"]
-  },
+      top: ["lavender", "bergamot"],
+      heart: ["honey", "cashmeran", "cinnamon"],
+      base: ["tobacco", "tonka-bean", "vanilla"]
+    }
   },
   {
     id: 19,
     slug: "ministry-of-oud-oud-satin",
-    name: "Paris Corner Ministry of Oud - Oud Satin",
+    name: "Paris Corner Ministry of Oud Oud Satin Extrait de Parfum",
     shortName: "Oud Satin",
     category: "Arabian",
     image: "/products/Ministry-of-Oud-Oud-Satin.png",
@@ -517,23 +526,25 @@ export const products = [
     season: "winter",
     moods: ["rich", "date", "soft"],
     recommendations: [
-    "lattafa-khamrah-qahwa"
-  ],
+      "narciso-rodriguez-poudree",
+      "ysl-black-opium-le-parfum",
+      "chopard-oud-malaki"
+    ],
     inspiredBy: {
-    name: "Maison Francis Kurkdjian Oud Satin Mood",
-    short: "Oud Satin Mood DNA"
-  },
+      name: "Maison Francis Kurkdjian Oud Satin Mood Eau de Parfum",
+      short: "Oud Satin Mood DNA"
+    },
     noteMap: {
-    top: ["oud", "rose"],
-    heart: ["benzoin", "rose"],
-    base: ["violet", "vanilla"]
-  },
+      top: ["oud", "rose"],
+      heart: ["benzoin", "rose"],
+      base: ["violet", "vanilla"]
+    }
   },
   {
     id: 20,
     slug: "north-stag-expressions-ii-deux",
-    name: "Paris Corner Perfumes North Stag Expressions II DEUX",
-    shortName: "North Stag II",
+    name: "Paris Corner North Stag Expressions II Deux Extrait de Parfum",
+    shortName: "North Stag II Deux",
     category: "Arabian",
     image: "/products/II-DEUX.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
@@ -541,19 +552,21 @@ export const products = [
     rating: 7.9,
     ratingLabel: "Well Loved",
     season: "winter",
-    moods: ["clean", "summer", "signature"],
+    moods: ["rich", "date", "signature"],
     recommendations: [
-    "emir-voux-zingy"
-  ],
+      "valentino-uomo-born-in-roma-coral-fantasy",
+      "boss-the-scent-le-parfum",
+      "afnan-9pm-night-out"
+    ],
     inspiredBy: {
-    name: "Parfums de Marly Layton",
-    short: "Layton DNA"
-  },
+      name: "Parfums de Marly Layton",
+      short: "Layton DNA"
+    },
     noteMap: {
-    top: ["apple", "lavender", "bergamot"],
-    heart: ["geranium", "violet", "jasmine"],
-    base: ["vanilla", "cardamom", "sandalwood"]
-  },
+      top: ["apple", "lavender", "bergamot"],
+      heart: ["geranium", "violet", "jasmine"],
+      base: ["vanilla", "cardamom", "sandalwood"]
+    }
   },
   {
     id: 21,
