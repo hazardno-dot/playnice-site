@@ -1892,6 +1892,99 @@ export const productCopy = {
       en: "If you enjoy citrus fragrances with ginger.",
     },
   },
+
+  "My Geisha Jasmine in the Sun Eau de Parfum": {
+  miniTag: { sr: "☀️ Jasmine / Solar", en: "☀️ Jasmine / Solar" },
+
+  card: {
+    sr: "Sunčani jasmin sa nežnim cvetnim karakterom.",
+    en: "Solar jasmine with a soft floral character."
+  },
+
+  modal: {
+    sr: "Jasmin, beli cvetovi i nežni mošus stvaraju svetao, elegantan i veoma ženstven miris.",
+    en: "Jasmine, white florals and soft musk create a radiant, elegant and feminine fragrance."
+  },
+
+  scentType: { sr: "Solar floral musky", en: "Solar floral musky" },
+
+  dominantNotes: {
+    sr: ["jasmin", "beli cvetovi", "mošus"],
+    en: ["jasmine", "white florals", "musk"]
+  },
+
+  tags: {
+    sr: ["Floral", "Summer", "Elegant"],
+    en: ["Floral", "Summer", "Elegant"]
+  },
+
+  whyChoose: {
+    sr: "Ako voliš prirodan jasmin i elegantne cvetne mirise.",
+    en: "If you enjoy natural jasmine and elegant floral fragrances."
+  }
+},
+
+"Essential Parfums Nice Bergamote Eau de Parfum": {
+  miniTag: { sr: "🍋 Citrus / Natural", en: "🍋 Citrus / Natural" },
+
+  card: {
+    sr: "Prirodni bergamot sa čistom citrusnom svežinom.",
+    en: "Natural bergamot with clean citrus freshness."
+  },
+
+  modal: {
+    sr: "Kalabrijski bergamot, cvetne note i vetiver daju prirodan, svetao i elegantan citrusni karakter.",
+    en: "Calabrian bergamot, florals and vetiver create a natural bright elegant citrus profile."
+  },
+
+  scentType: { sr: "Fresh citrus woody", en: "Fresh citrus woody" },
+
+  dominantNotes: {
+    sr: ["bergamot", "jasmin", "vetiver"],
+    en: ["bergamot", "jasmine", "vetiver"]
+  },
+
+  tags: {
+    sr: ["Citrus", "Fresh", "Natural"],
+    en: ["Citrus", "Fresh", "Natural"]
+  },
+
+  whyChoose: {
+    sr: "Ako voliš prirodne i luksuzne citrusne mirise.",
+    en: "If you enjoy natural luxurious citrus fragrances."
+  }
+},
+
+"Essential Parfums Orange X Santal Eau de Parfum": {
+  miniTag: { sr: "🍊 Orange / Sandalwood", en: "🍊 Orange / Sandalwood" },
+
+  card: {
+    sr: "Sočna narandža i sandalovina u modernom spoju.",
+    en: "Juicy orange and sandalwood in a modern blend."
+  },
+
+  modal: {
+    sr: "Prirodna narandža i kremasta sandalovina daju topao, elegantan i moderan niche karakter.",
+    en: "Natural orange and creamy sandalwood create a warm elegant modern niche scent."
+  },
+
+  scentType: { sr: "Citrus woody", en: "Citrus woody" },
+
+  dominantNotes: {
+    sr: ["narandža", "sandalovina", "bosiljak"],
+    en: ["orange", "sandalwood", "basil"]
+  },
+
+  tags: {
+    sr: ["Citrus", "Woody", "Signature"],
+    en: ["Citrus", "Woody", "Signature"]
+  },
+
+  whyChoose: {
+    sr: "Ako želiš moderan citrusni niche miris sa dubinom.",
+    en: "If you want a modern citrus niche fragrance with depth."
+  }
+},
 };
 
 /* =========================================

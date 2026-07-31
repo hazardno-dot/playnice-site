@@ -2112,7 +2112,7 @@ export const products = [
 {
   id: 79,
   slug: "french-avenue-ravine-ginger-edp",
-  name: "The French Avenue Ravine Ginger Extrait de Parfum",
+  name: "French Avenue Ravine Ginger Extrait de Parfum",
   shortName: "Ravine Ginger",
   category: "Arabian",
   image: "/products/french-avenue-ravine-ginger.png",
@@ -2240,6 +2240,72 @@ export const products = [
   heart: ["herbal-notes", "cypress", "mint"],
   base: ["ozonic-notes", "amber", "moss"]
 },
+  isNew: true,
+},
+{
+  id: 84,
+  slug: "my-geisha-jasmine-in-the-sun",
+  name: "My Geisha Jasmine in the Sun Eau de Parfum",
+  shortName: "Jasmine in the Sun",
+  category: "Niche",
+  image: "/products/my-geisha-jasmine-in-the-sun.png",
+  sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
+  badge: "NEW",
+  rating: 9.1,
+  ratingLabel: "Summer Bloom",
+  season: "summer",
+  moods: ["summer", "soft", "signature"],
+  recommendations: [
+    "narciso-rodriguez-poudree"
+  ],
+  inspiredBy: {
+    name: "Original My Geisha creation",
+    short: "Solar Jasmine DNA"
+  },
+  isNew: true,
+},
+{
+  id: 85,
+  slug: "essential-parfums-nice-bergamote",
+  name: "Essential Parfums Nice Bergamote Eau de Parfum",
+  shortName: "Nice Bergamote",
+  category: "Niche",
+  image: "/products/essential-parfums-nice-bergamote.png",
+  sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
+  badge: "NEW",
+  rating: 8.9,
+  ratingLabel: "Citrus Icon",
+  season: "summer",
+  moods: ["clean", "summer", "signature"],
+  recommendations: [
+    "dolce-gabbana-light-blue-pour-homme-2025"
+  ],
+  inspiredBy: {
+    name: "Original Essential Parfums creation",
+    short: "Natural Bergamot DNA"
+  },
+  isNew: true,
+},
+{
+  id: 86,
+  slug: "essential-parfums-orange-x-santal",
+  name: "Essential Parfums Orange X Santal Eau de Parfum",
+  shortName: "Orange X Santal",
+  category: "Niche",
+  image: "/products/essential-parfums-orange-x-santal.png",
+  sizes: { "2ml": 4, "5ml": 9, "10ml": 16 },
+  badge: "NEW",
+  rating: 9.0,
+  ratingLabel: "Modern Niche",
+  season: "all",
+  moods: ["signature", "clean", "rich"],
+  recommendations: [
+    "nice-bergamote"
+  ],
+  inspiredBy: {
+    name: "Original Essential Parfums creation",
+    short: "Orange Sandalwood DNA"
+  },
   isNew: true,
 },
 ];

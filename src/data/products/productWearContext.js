@@ -343,7 +343,7 @@ export const productWearContext = {
   en: "Work, elegant occasions, everyday wear."
 },
 
-"The French Avenue Ravine Ginger Extrait de Parfum": {
+"French Avenue Ravine Ginger Extrait de Parfum": {
   sr: "Izlazak, leto, signature nošenje.",
   en: "Going out, summer, signature wear."
 },
@@ -367,4 +367,19 @@ export const productWearContext = {
   sr: "Leto, dnevni izlazak, vrućine.",
   en: "Summer, daytime outings, hot weather."
 },
+
+"My Geisha Jasmine in the Sun Eau de Parfum": {
+  sr: "Leto, svaki dan, elegantne prilike.",
+  en: "Summer, everyday wear, elegant occasions."
+},
+
+"Essential Parfums Nice Bergamote Eau de Parfum": {
+  sr: "Topli dani, posao, svakodnevno nošenje.",
+  en: "Warm days, work, everyday wear."
+},
+
+"Essential Parfums Orange X Santal Eau de Parfum": {
+  sr: "Posao, izlazak, signature nošenje.",
+  en: "Work, going out, signature wear."
+}
 };
