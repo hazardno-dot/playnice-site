@@ -174,208 +174,176 @@ export const productWearContext = {
     sr: "Svaki dan, putovanja i nošenje od jutra do večeri.",
     en: "Everyday wear, travel and easy transitions from morning to evening.",
   },
-  "Montblanc Explorer Extreme Parfum": {
-    sr: "Za snažniji dnevno-noćni stil.",
-    en: "For a stronger day-to-night style."
+    "Montblanc Explorer Extreme Parfum": {
+    sr: "Hladnije vreme, večernji izlazak i posebne prilike.",
+    en: "Colder weather, evenings out and special occasions.",
   },
   "Narciso Rodriguez for Him Bleu Noir Eau de Parfum": {
-    sr: "Za tihu, čistu eleganciju.",
-    en: "For quiet clean elegance."
+    sr: "Posao, svaki dan i nenametljive večernje prilike.",
+    en: "Work, everyday wear and understated evening occasions.",
   },
   "Terre d'Hermès Eau de Toilette": {
-    sr: "Za bezvremenski signature utisak.",
-    en: "For a timeless signature impression."
+    sr: "Posao, topli dani i elegantne dnevne prilike.",
+    en: "Work, warm days and elegant daytime occasions.",
   },
-  "Afnan 9PM Night Out": {
-    sr: "Pravljen za noćni izlazak.",
-    en: "Built for a night out."
+  "Tom Ford Noir Extreme Eau de Parfum": {
+    sr: "Posebno veče, dejt i hladnije vreme.",
+    en: "Special evenings, date night and colder weather.",
   },
-  "Rasasi Hawas Ice for Him": {
-    sr: "Za vruće dane i noći.",
-    en: "For hot days and nights."
+  "Afnan 9PM Night Out Extrait de Parfum": {
+    sr: "Noćni izlazak, dejt i hladne večeri.",
+    en: "Nights out, date night and cold evenings.",
   },
-  "Armaf Club de Nuit Precieux I Extrait de Parfum": {
-  sr: "Veče, izlazak, specijalne prilike.",
-  en: "Evening, nights out, special occasions."
+  "Rasasi Hawas Ice for Him Eau de Parfum": {
+    sr: "Leto, dnevni izlazak i visoke temperature.",
+    en: "Summer, daytime outings and hot weather.",
   },
-
-  "French Avenue Safari Breeze": {
-  sr: "Dnevno, leto, opuštene prilike.",
-  en: "Daily wear, summer, casual moments."
+  "Armaf Club de Nuit Precieux 1 Extrait de Parfum": {
+    sr: "Posebne prilike, večernji izlazak i snažan utisak.",
+    en: "Special occasions, evenings out and a strong impression.",
   },
-
-  "Lattafa Dynasty": {
-  sr: "Toplo vreme, dnevno, unisex nošenje.",
-  en: "Warm weather, daily wear, unisex use."
+  "French Avenue Safari Breeze Eau de Parfum": {
+    sr: "Leto, odmor i opušteni dani na otvorenom.",
+    en: "Summer, holidays and relaxed days outdoors.",
   },
-
-  "Dolce & Gabbana The One for Men Eau de Toilette": {
-  sr: "Veče, dejt, bliži kontakt.",
-  en: "Evening, date night, close encounters."
+  "Lattafa Dynasty Eau de Parfum": {
+    sr: "Izlazak, posebne prilike i prepoznatljivo celodnevno nošenje.",
+    en: "Nights out, special occasions and distinctive all-day wear.",
   },
-
-  "Versace Man Eau Fraiche": {
-  sr: "Dnevno, leto, vrućine.",
-  en: "Daily wear, summer, hot weather."
+  "Dolce&Gabbana The One for Men Eau de Toilette": {
+    sr: "Dejt, intimno veče i elegantan izlazak.",
+    en: "Date night, intimate evenings and elegant nights out.",
   },
-
-  "Emir Voux Zingy by Paris Corner": {
-  sr: "Leto, dnevno, sveže prilike.",
-  en: "Summer, daytime, fresh situations."
+  "Versace Man Eau Fraîche Eau de Toilette": {
+    sr: "Leto, odmor i lagano svakodnevno nošenje.",
+    en: "Summer, holidays and easy everyday wear.",
   },
-
+  "Paris Corner Emir Voux Zingy Eau de Parfum": {
+    sr: "Topli dani, posao i energičan dnevni izlazak.",
+    en: "Warm days, work and energetic daytime outings.",
+  },
   "Rayhaan Crimson Eau de Parfum": {
-  sr: "Veče, hladnije vreme, izlazak.",
-  en: "Evening, colder weather, nights out."
+    sr: "Hladne večeri, dejt i noćni izlazak.",
+    en: "Cold evenings, date night and nights out.",
   },
-
   "Rasasi Hawas Black Eau de Parfum": {
-  sr: "Izlazak, večernji izlazak, komplimenti.",
-  en: "Going out, nightlife, compliments."
+    sr: "Izlazak, dejt i prilike kada želiš upečatljiv utisak.",
+    en: "Nights out, date night and occasions that call for a striking impression.",
   },
-
-  "Khadlaj Onyx Silver": {
-  sr: "Dnevno, posao, sveže prilike.",
-  en: "Daily wear, work, fresh situations."
+  "Khadlaj Onyx Silver Eau de Parfum": {
+    sr: "Posao, svakodnevno nošenje i opušten večernji izlazak.",
+    en: "Work, everyday wear and relaxed evenings out.",
   },
-
-  "Arabiyat Prestige Fahad Gaze": {
-  sr: "Posao, veče, elegantne prilike.",
-  en: "Work, evening, elegant occasions."
+  "Arabiyat Prestige Fahad Gaze Eau de Parfum": {
+    sr: "Elegantne večeri, dejt i hladnije vreme.",
+    en: "Elegant evenings, date night and colder weather.",
   },
-
-  "Narciso Rodriguez Poudrée Eau de Parfum": {
-  sr: "Elegantne prilike, posao, svaki dan.",
-  en: "Elegant occasions, office, everyday wear."
+  "Narciso Rodriguez NARCISO Poudrée Eau de Parfum": {
+    sr: "Elegantno svakodnevno nošenje, posebne prilike i mirne večeri.",
+    en: "Elegant everyday wear, special occasions and quiet evenings.",
   },
-
   "Yves Saint Laurent Black Opium Le Parfum": {
-  sr: "Veče, dejt, hladnije vreme.",
-  en: "Evening, date night, colder weather."
+    sr: "Dejt, noćni izlazak i hladne večeri.",
+    en: "Date night, nights out and cold evenings.",
   },
-
-  "French Avenue Pinnace Oryn Eau De Parfum": {
-  sr: "Leto, dnevno, luksuzne fresh prilike.",
-  en: "Summer, daytime, luxury fresh situations."
+  "French Avenue Pinnace Oryn Eau de Parfum": {
+    sr: "Leto, posao i čisto svakodnevno nošenje.",
+    en: "Summer, work and clean everyday wear.",
   },
-
-"Riiffs Freeze Extrait De Parfum": {
-  sr: "Plaža, leto, dnevni izlazak.",
-  en: "Beach, summer, daytime outings."
+  "RiiFFS Freeze Extrait de Parfum": {
+    sr: "Plaža, leto i dnevni izlazak.",
+    en: "The beach, summer and daytime outings.",
   },
-
-"Lattafa Maahir Legacy Eau De Parfum": {
-  sr: "Posao, leto, svakodnevno nošenje.",
-  en: "Work, summer, everyday wear."
+  "Lattafa Maahir Legacy Eau de Parfum": {
+    sr: "Posao, leto i svakodnevno nošenje.",
+    en: "Work, summer and everyday wear.",
   },
-
-"Yves Saint Laurent Y Iced Cologne": {
-  sr: "Leto, dnevno, visoke temperature.",
-  en: "Summer, daytime, hot weather."
-},
-
-"Valentino Uomo Born In Roma Coral Fantasy": {
-  sr: "Veče, dejt, izlazak.",
-  en: "Evening, date night, going out."
-},
-
-"Dolce & Gabbana Light Blue Pour Homme Eau de Toilette 2025": {
-  sr: "Leto, more, svakodnevno nošenje.",
-  en: "Summer, seaside, everyday wear."
-},
-
-"Bvlgari Man In Black Eau de Parfum": {
-  sr: "Veče, dejt, hladnije vreme.",
-  en: "Evening, date night, colder weather."
-},
-
-"Mancera Aoud Lemon Mint Eau de Parfum": {
-  sr: "Topli dani, niche utisak, izlazak.",
-  en: "Warm days, niche impression, going out."
-},
-
-"Prada Paradigme Eau de Parfum": {
-  sr: "Posao, izlazak, signature nošenje.",
-  en: "Work, going out, signature wear."
-},
-
-"Yves Saint Laurent MYSLF Eau de Parfum": {
-  sr: "Svaki dan, posao, večernji izlazak.",
-  en: "Daily wear, work, evening out."
-},
-
-"Carolina Herrera Bad Boy Cobalt Eau de Parfum": {
-  sr: "Izlazak, dejt, moderne prilike.",
-  en: "Going out, date night, modern occasions."
-},
-
-"Prada Luna Rossa Ocean Eau de Toilette": {
-  sr: "Leto, posao, dnevno nošenje.",
-  en: "Summer, work, daytime wear."
-},
-
-"Thomas Kosmala No. 7 Le Sel de la Terre": {
-  sr: "Leto, more, signature nošenje.",
-  en: "Summer, seaside, signature wear."
-},
-
-"Jean Paul Gaultier Le Beau Eau de Toilette": {
-  sr: "Leto, dejt, večernji izlazak.",
-  en: "Summer, date night, evening out."
-},
-
-"Rayhaan Azul Eau de Parfum": {
-  sr: "Posao, leto, svaki dan.",
-  en: "Work, summer, everyday wear."
-},
-
-"Lattafa Suqraat Eau de Parfum": {
-  sr: "Leto, more, dnevno nošenje.",
-  en: "Summer, seaside, daytime wear."
-},
-
-"Khadlaj Shiyaaka Snow Eau de Parfum": {
-  sr: "Posao, elegantne prilike, svaki dan.",
-  en: "Work, elegant occasions, everyday wear."
-},
-
-"French Avenue Ravine Ginger Extrait de Parfum": {
-  sr: "Izlazak, leto, signature nošenje.",
-  en: "Going out, summer, signature wear."
-},
-
-"Lattafa Khamrah Waha Eau de Parfum": {
-  sr: "Veče, dejt, opušten izlazak.",
-  en: "Evening, date night, casual nights out."
-},
-
-"Rayhaan Nocturno Elixir Eau de Parfum": {
-  sr: "Posao, izlazak, svaki dan.",
-  en: "Work, going out, everyday wear."
-},
-
-"French Avenue Ravine Ice Extrait de Parfum": {
-  sr: "More, leto, dnevno nošenje.",
-  en: "Seaside, summer, daytime wear."
-},
-
-"Paris Corner Mawj Moscow Mule Eau de Parfum": {
-  sr: "Leto, dnevni izlazak, vrućine.",
-  en: "Summer, daytime outings, hot weather."
-},
-
-"My Geisha Jasmine in the Sun Eau de Parfum": {
-  sr: "Leto, svaki dan, elegantne prilike.",
-  en: "Summer, everyday wear, elegant occasions."
-},
-
-"Essential Parfums Nice Bergamote Eau de Parfum": {
-  sr: "Topli dani, posao, svakodnevno nošenje.",
-  en: "Warm days, work, everyday wear."
-},
-
-"Essential Parfums Orange X Santal Eau de Parfum": {
-  sr: "Posao, izlazak, signature nošenje.",
-  en: "Work, going out, signature wear."
-}
+  "Yves Saint Laurent Y Iced Cologne Eau de Toilette Intense": {
+    sr: "Leto, dnevno nošenje i visoke temperature.",
+    en: "Summer, daytime wear and hot weather.",
+  },
+  "Valentino Uomo Born in Roma Coral Fantasy Eau de Toilette": {
+    sr: "Dejt, večernji izlazak i posebne prilike.",
+    en: "Date night, evenings out and special occasions.",
+  },
+  "Dolce&Gabbana Light Blue Pour Homme Eau de Toilette (2025)": {
+    sr: "Leto, more i svakodnevno nošenje.",
+    en: "Summer, the seaside and everyday wear.",
+  },
+  "BVLGARI Man in Black Eau de Parfum": {
+    sr: "Hladnije vreme, dejt i elegantan večernji izlazak.",
+    en: "Colder weather, date night and elegant evenings out.",
+  },
+  "Mancera Aoud Lemon Mint Eau de Parfum": {
+    sr: "Topli dani, izlazak i prilike za upečatljiv utisak.",
+    en: "Warm days, nights out and occasions that call for a striking impression.",
+  },
+  "Prada Paradigme Eau de Parfum": {
+    sr: "Posao, izlazak i prepoznatljivo celodnevno nošenje.",
+    en: "Work, evenings out and distinctive all-day wear.",
+  },
+  "Yves Saint Laurent MYSLF Eau de Parfum": {
+    sr: "Svaki dan, posao i večernji izlazak.",
+    en: "Everyday wear, work and evenings out.",
+  },
+  "Carolina Herrera Bad Boy Cobalt Eau de Parfum Électrique": {
+    sr: "Izlazak, dejt i moderan svakodnevni stil.",
+    en: "Nights out, date night and modern everyday wear.",
+  },
+  "Prada Luna Rossa Ocean Eau de Toilette": {
+    sr: "Leto, posao i čisto dnevno nošenje.",
+    en: "Summer, work and clean daytime wear.",
+  },
+  "Thomas Kosmala No. 7 Le Sel de la Terre Eau de Parfum": {
+    sr: "Leto, more i upečatljivo svakodnevno nošenje.",
+    en: "Summer, the seaside and distinctive everyday wear.",
+  },
+  "Jean Paul Gaultier Le Beau Eau de Toilette": {
+    sr: "Leto, dejt i večernji izlazak.",
+    en: "Summer, date night and evenings out.",
+  },
+  "Rayhaan Azul Eau de Parfum": {
+    sr: "Posao, leto i svakodnevno nošenje.",
+    en: "Work, summer and everyday wear.",
+  },
+  "Lattafa Suqraat Eau de Parfum": {
+    sr: "Leto, more i dnevno nošenje.",
+    en: "Summer, the seaside and daytime wear.",
+  },
+  "Khadlaj Special Edition Shiyaaka Snow Eau de Parfum": {
+    sr: "Posao, elegantne dnevne prilike i toplo vreme.",
+    en: "Work, elegant daytime occasions and warm weather.",
+  },
+  "French Avenue Ravine Ginger Extrait de Parfum": {
+    sr: "Letnji izlazak, posebne prilike i upečatljivo večernje nošenje.",
+    en: "Summer nights out, special occasions and distinctive evening wear.",
+  },
+  "Lattafa Khamrah Waha Eau de Parfum": {
+    sr: "Topli dani, dejt i opušten večernji izlazak.",
+    en: "Warm days, date night and relaxed evenings out.",
+  },
+  "Rayhaan Nocturno Elixir Eau de Parfum": {
+    sr: "Posao, svakodnevno nošenje i večernji izlazak.",
+    en: "Work, everyday wear and evenings out.",
+  },
+  "French Avenue Ravine Ice Extrait de Parfum": {
+    sr: "More, leto i dnevno nošenje.",
+    en: "The seaside, summer and daytime wear.",
+  },
+  "Paris Corner Mawj Moscow Mule Eau de Parfum": {
+    sr: "Leto, dnevni izlazak i najveće vrućine.",
+    en: "Summer, daytime outings and the hottest weather.",
+  },
+  "my Geisha Jasmine in the Sun Extrait de Parfum": {
+    sr: "Leto, svakodnevno nošenje i elegantne dnevne prilike.",
+    en: "Summer, everyday wear and elegant daytime occasions.",
+  },
+  "Essential Parfums Nice Bergamote Eau de Parfum": {
+    sr: "Topli dani, posao i svakodnevno nošenje.",
+    en: "Warm days, work and everyday wear.",
+  },
+  "Essential Parfums Orange X Santal Eau de Parfum": {
+    sr: "Posao, svaki dan i opuštene večernje prilike.",
+    en: "Work, everyday wear and relaxed evening occasions.",
+  },
 };
