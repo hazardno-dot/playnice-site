@@ -2242,174 +2242,173 @@ export const productCopy = {
     },
   },
 
-  "Rayhaan Nocturno Elixir Eau de Parfum": {
-    miniTag: { sr: "🔵 Plavi / Drvenast", en: "🔵 Blue / Woody" },
+    "Rayhaan Nocturno Elixir Eau de Parfum": {
+    miniTag: { sr: "🪵 Sandalovina / Amber", en: "🪵 Sandalwood / Amber" },
     card: {
-      sr: "Dubok plavi miris sa elegantnom drvenom bazom.",
-      en: "Deep blue fragrance with elegant woody base.",
+      sr: "Sandalovina, amber i labdanum u glatkom tamnom drvenastom mirisu.",
+      en: "Sandalwood, amber and labdanum in a smooth dark woody fragrance.",
     },
     modal: {
-      sr: "Citrusi, nana i lavanda prelaze u toplu drvenastu bazu sa amber notama.",
-      en: "Citrus, mint and lavender settle into a warm woody amber base.",
+      sr: "Sandalovina daje gladak drvenasti početak, amber gradi toplo srce, a drvenaste note i labdanum ostavljaju dubok, smolast i elegantan trag.",
+      en: "Sandalwood creates a smooth woody opening, amber builds a warm heart, while woody notes and labdanum leave a deep resinous elegant trail.",
     },
-    scentType: { sr: "Drvenast, aromatičan i svež", en: "Woody aromatic blue" },
+    scentType: {
+      sr: "Drvenast, ambrast i smolast",
+      en: "Woody amber resinous",
+    },
     dominantNotes: {
-      sr: ["bergamot", "nana", "lavanda", "drvo"],
-      en: ["bergamot", "mint", "lavender", "woods"],
+      sr: ["sandalovina", "amber", "drvenaste note", "labdanum"],
+      en: ["sandalwood", "amber", "woody notes", "labdanum"],
     },
     tags: {
-      sr: ["Plavi", "Prepoznatljiv", "Elegantan"],
-      en: ["Blue", "Signature", "Elegant"],
+      sr: ["Čist", "Prepoznatljiv", "Večernji"],
+      en: ["Clean", "Signature", "Night"],
     },
     whyChoose: {
-      sr: "Ako voliš elegantne plave parfeme sa karakterom.",
-      en: "If you enjoy elegant blue fragrances with character.",
+      sr: "Ako želiš uglađen, dubok i moderan drvenasto-ambrasti miris za svaki dan i izlazak.",
+      en: "If you want a polished deep modern woody-amber fragrance for everyday wear and nights out.",
     },
   },
 
   "French Avenue Ravine Ice Extrait de Parfum": {
-    miniTag: { sr: "🌊 Morski / Svež", en: "🌊 Marine / Fresh" },
-
+    miniTag: { sr: "🍋 Limun / Morska so", en: "🍋 Lemon / Sea Salt" },
     card: {
-      sr: "Morska svežina sa mineralnim karakterom.",
-      en: "Marine freshness with mineral character.",
+      sr: "Limun, morska so i mahovina u čistom osvežavajućem letnjem mirisu.",
+      en: "Lemon, sea salt and moss in a clean refreshing summer fragrance.",
     },
     modal: {
-      sr: "Morski akordi, citrusi i mahovina stvaraju čist, osvežavajući i prirodan letnji miris.",
-      en: "Marine notes, citrus and moss create a clean refreshing summer scent.",
+      sr: "Limun i geranijum daju svetao početak, žalfija, lavanda i morska so aromatičnu svežinu, a mahovina, kedar i ambroksan čist drvenasti završetak.",
+      en: "Lemon and geranium create a bright opening, sage, lavender and sea salt bring aromatic freshness, while moss, cedarwood and ambroxan provide a clean woody finish.",
     },
-    scentType: { sr: "Morski, citrusni i drvenast", en: "Marine citrus woody" },
+    scentType: {
+      sr: "Citrusni, aromatičan i morski",
+      en: "Citrus aromatic marine",
+    },
     dominantNotes: {
-      sr: ["morski akordi", "citrusi", "mahovina"],
-      en: ["marine notes", "citrus", "moss"],
+      sr: ["limun", "morska so", "mahovina", "ambroksan"],
+      en: ["lemon", "sea salt", "moss", "ambroxan"],
     },
     tags: {
-      sr: ["Morski", "Svež", "Letnji"],
-      en: ["Marine", "Fresh", "Summer"],
+      sr: ["Letnji", "Čist", "Prepoznatljiv"],
+      en: ["Summer", "Clean", "Signature"],
     },
     whyChoose: {
-      sr: "Ako želiš prirodnu morsku svežinu.",
-      en: "If you want natural marine freshness.",
+      sr: "Ako želiš vedru morsko-citrusnu svežinu sa prirodnom zelenom i drvenastom dubinom.",
+      en: "If you want bright marine-citrus freshness with natural green and woody depth.",
     },
   },
 
   "Paris Corner Mawj Moscow Mule Eau de Parfum": {
-    miniTag: { sr: "🍋 Đumbir / Svež", en: "🍋 Ginger / Fresh" },
+    miniTag: { sr: "🍹 Đumbir / Nana", en: "🍹 Ginger / Mint" },
     card: {
-      sr: "Limun, nana i đumbir u koktel inspiraciji.",
-      en: "Lemon, mint and ginger cocktail inspiration.",
+      sr: "Limun, đumbir i nana u energičnom mirisu inspirisanom koktelom.",
+      en: "Lemon, ginger and mint in an energetic cocktail-inspired fragrance.",
     },
     modal: {
-      sr: "Svež limun, nana i đumbir daju energičan i moderan letnji karakter.",
-      en: "Fresh lemon, mint and ginger create an energetic modern summer scent.",
+      sr: "Limun, đumbir i bergamot daju blistav početak, biljne note, čempres i nana hladno aromatično srce, a ozonske note, amber i mahovina prozračan završetak.",
+      en: "Lemon, ginger and bergamot create a sparkling opening, herbal notes, cypress and mint form a cool aromatic heart, while ozonic notes, amber and moss provide an airy finish.",
     },
-    scentType: { sr: "Svež, citrusni i začinski", en: "Fresh citrus ginger" },
+    scentType: {
+      sr: "Citrusni, začinski i aromatičan",
+      en: "Citrus spicy aromatic",
+    },
     dominantNotes: {
-      sr: ["limun", "đumbir", "nana"],
-      en: ["lemon", "ginger", "mint"],
+      sr: ["limun", "đumbir", "nana", "čempres"],
+      en: ["lemon", "ginger", "mint", "cypress"],
     },
     tags: {
-      sr: ["Svež", "Letnji", "Citrusni"],
-      en: ["Fresh", "Summer", "Citrus"],
+      sr: ["Letnji", "Čist", "Prepoznatljiv"],
+      en: ["Summer", "Clean", "Signature"],
     },
     whyChoose: {
-      sr: "Ako voliš citrusne mirise sa đumbirom.",
-      en: "If you enjoy citrus fragrances with ginger.",
+      sr: "Ako želiš živahan i moderan letnji miris sa hladnim đumbirom i nanom.",
+      en: "If you want a lively modern summer fragrance with cooling ginger and mint.",
     },
   },
 
-  "My Geisha Jasmine in the Sun Eau de Parfum": {
-  miniTag: { sr: "☀️ Jasmine / Solar", en: "☀️ Jasmine / Solar" },
-
-  card: {
-    sr: "Sunčani jasmin sa nežnim cvetnim karakterom.",
-    en: "Solar jasmine with a soft floral character."
+  "my Geisha Jasmine in the Sun Extrait de Parfum": {
+    miniTag: { sr: "☀️ Jasmin / Sunčan", en: "☀️ Jasmine / Solar" },
+    card: {
+      sr: "Jasmin, cvet narandže i vanila u blistavom sunčanom cvetnom mirisu.",
+      en: "Jasmine, orange blossom and vanilla in a radiant solar floral fragrance.",
+    },
+    modal: {
+      sr: "Bergamot, karanfilić i muškatna žalfija daju svetao začinski početak, jasmin, cvet narandže i ilang-ilang raskošno cvetno srce, a amber, pačuli, kedar i vanila toplu dubinu.",
+      en: "Bergamot, clove and clary sage create a bright spicy opening, jasmine, orange blossom and ylang-ylang form a lush floral heart, while amber, patchouli, cedarwood and vanilla add warm depth.",
+    },
+    scentType: {
+      sr: "Cvetni, začinski i ambrast",
+      en: "Floral spicy amber",
+    },
+    dominantNotes: {
+      sr: ["jasmin", "cvet narandže", "ilang-ilang", "vanila"],
+      en: ["jasmine", "orange blossom", "ylang-ylang", "vanilla"],
+    },
+    tags: {
+      sr: ["Letnji", "Nežan", "Prepoznatljiv"],
+      en: ["Summer", "Soft", "Signature"],
+    },
+    whyChoose: {
+      sr: "Ako želiš blistav, ženstven i topao cvetni parfem sa jasminom u glavnoj ulozi.",
+      en: "If you want a radiant feminine warm floral fragrance with jasmine at its center.",
+    },
   },
 
-  modal: {
-    sr: "Jasmin, beli cvetovi i nežni mošus stvaraju svetao, elegantan i veoma ženstven miris.",
-    en: "Jasmine, white florals and soft musk create a radiant, elegant and feminine fragrance."
+  "Essential Parfums Nice Bergamote Eau de Parfum": {
+    miniTag: { sr: "🍋 Bergamot / Cvetni", en: "🍋 Bergamot / Floral" },
+    card: {
+      sr: "Bergamot, ilang-ilang i kedar u prirodnom svetlom citrusnom mirisu.",
+      en: "Bergamot, ylang-ylang and cedarwood in a natural bright citrus fragrance.",
+    },
+    modal: {
+      sr: "Bergamot otvara miris blistavo i sočno, jasmin, ilang-ilang i ruža grade elegantno cvetno srce, a kedar i tonka ostavljaju mekan i topao trag.",
+      en: "Bergamot opens brightly and juicily, jasmine, ylang-ylang and rose form an elegant floral heart, while cedarwood and tonka bean leave a soft warm trail.",
+    },
+    scentType: {
+      sr: "Citrusni, cvetni i drvenast",
+      en: "Citrus floral woody",
+    },
+    dominantNotes: {
+      sr: ["bergamot", "jasmin", "ilang-ilang", "kedar"],
+      en: ["bergamot", "jasmine", "ylang-ylang", "cedarwood"],
+    },
+    tags: {
+      sr: ["Čist", "Letnji", "Prepoznatljiv"],
+      en: ["Clean", "Summer", "Signature"],
+    },
+    whyChoose: {
+      sr: "Ako želiš prirodnu i profinjenu citrusnu svežinu sa mekim cvetnim karakterom.",
+      en: "If you want natural refined citrus freshness with a soft floral character.",
+    },
   },
 
-  scentType: { sr: "Solar floral musky", en: "Solar floral musky" },
-
-  dominantNotes: {
-    sr: ["jasmin", "beli cvetovi", "mošus"],
-    en: ["jasmine", "white florals", "musk"]
+  "Essential Parfums Orange X Santal Eau de Parfum": {
+    miniTag: { sr: "🍊 Gorka narandža / Sandalovina", en: "🍊 Bitter Orange / Sandalwood" },
+    card: {
+      sr: "Gorka narandža, bosiljak i sandalovina u modernom citrusno-drvenastom mirisu.",
+      en: "Bitter orange, basil and sandalwood in a modern citrus-woody fragrance.",
+    },
+    modal: {
+      sr: "Gorka i slatka narandža daju sočan početak, bosiljak i čempres aromatičnu zelenu sredinu, a hrastova mahovina i sandalovina mekanu drvenastu dubinu.",
+      en: "Bitter and sweet orange create a juicy opening, basil and cypress bring an aromatic green heart, while oakmoss and sandalwood add soft woody depth.",
+    },
+    scentType: {
+      sr: "Citrusni, aromatičan i drvenast",
+      en: "Citrus aromatic woody",
+    },
+    dominantNotes: {
+      sr: ["gorka narandža", "bosiljak", "sandalovina", "hrastova mahovina"],
+      en: ["bitter orange", "basil", "sandalwood", "oakmoss"],
+    },
+    tags: {
+      sr: ["Prepoznatljiv", "Čist", "Nežan"],
+      en: ["Signature", "Clean", "Soft"],
+    },
+    whyChoose: {
+      sr: "Ako želiš moderan niche citrus sa zelenom svežinom i kremastom drvenastom bazom.",
+      en: "If you want a modern niche citrus with green freshness and a creamy woody base.",
+    },
   },
-
-  tags: {
-    sr: ["Floral", "Summer", "Elegant"],
-    en: ["Floral", "Summer", "Elegant"]
-  },
-
-  whyChoose: {
-    sr: "Ako voliš prirodan jasmin i elegantne cvetne mirise.",
-    en: "If you enjoy natural jasmine and elegant floral fragrances."
-  }
-},
-
-"Essential Parfums Nice Bergamote Eau de Parfum": {
-  miniTag: { sr: "🍋 Citrus / Natural", en: "🍋 Citrus / Natural" },
-
-  card: {
-    sr: "Prirodni bergamot sa čistom citrusnom svežinom.",
-    en: "Natural bergamot with clean citrus freshness."
-  },
-
-  modal: {
-    sr: "Kalabrijski bergamot, cvetne note i vetiver daju prirodan, svetao i elegantan citrusni karakter.",
-    en: "Calabrian bergamot, florals and vetiver create a natural bright elegant citrus profile."
-  },
-
-  scentType: { sr: "Fresh citrus woody", en: "Fresh citrus woody" },
-
-  dominantNotes: {
-    sr: ["bergamot", "jasmin", "vetiver"],
-    en: ["bergamot", "jasmine", "vetiver"]
-  },
-
-  tags: {
-    sr: ["Citrus", "Fresh", "Natural"],
-    en: ["Citrus", "Fresh", "Natural"]
-  },
-
-  whyChoose: {
-    sr: "Ako voliš prirodne i luksuzne citrusne mirise.",
-    en: "If you enjoy natural luxurious citrus fragrances."
-  }
-},
-
-"Essential Parfums Orange X Santal Eau de Parfum": {
-  miniTag: { sr: "🍊 Orange / Sandalwood", en: "🍊 Orange / Sandalwood" },
-
-  card: {
-    sr: "Sočna narandža i sandalovina u modernom spoju.",
-    en: "Juicy orange and sandalwood in a modern blend."
-  },
-
-  modal: {
-    sr: "Prirodna narandža i kremasta sandalovina daju topao, elegantan i moderan niche karakter.",
-    en: "Natural orange and creamy sandalwood create a warm elegant modern niche scent."
-  },
-
-  scentType: { sr: "Citrus woody", en: "Citrus woody" },
-
-  dominantNotes: {
-    sr: ["narandža", "sandalovina", "bosiljak"],
-    en: ["orange", "sandalwood", "basil"]
-  },
-
-  tags: {
-    sr: ["Citrus", "Woody", "Signature"],
-    en: ["Citrus", "Woody", "Signature"]
-  },
-
-  whyChoose: {
-    sr: "Ako želiš moderan citrusni niche miris sa dubinom.",
-    en: "If you want a modern citrus niche fragrance with depth."
-  }
-},
 };
 
 /* =========================================
