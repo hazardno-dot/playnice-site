@@ -1682,275 +1682,283 @@ export const productCopy = {
     },
   },
 
-  "Yves Saint Laurent Black Opium Le Parfum": {
+    "Yves Saint Laurent Black Opium Le Parfum": {
     miniTag: { sr: "☕ Vanila / Kafa", en: "☕ Vanilla / Coffee" },
     card: {
-      sr: "Topla vanila, kafa i beli cvetovi u zavodljivom profilu.",
-      en: "Warm vanilla, coffee and white flowers in a seductive profile.",
+      sr: "Više vrsta vanile, crna kafa i beli cvetovi u bogatom zavodljivom mirisu.",
+      en: "Multiple vanillas, black coffee and white florals in a rich seductive scent.",
     },
     modal: {
-      sr: "Intenzivnija Black Opium interpretacija sa bogatom vanilom, kafom, belim cvetovima i toplom amber bazom.",
-      en: "A more intense Black Opium interpretation with rich vanilla, coffee, white florals and a warm amber base.",
+      sr: "Kruška, cimet i zelena mandarina vode u jasmin i cvet narandže, dok tri raskošne vanile, crna kafa, vanila-orhideja i pačuli grade intenzivnu bazu.",
+      en: "Pear, cinnamon and green mandarin lead into jasmine and orange blossom, while three opulent vanillas, black coffee, vanilla orchid and patchouli build an intense base.",
     },
     scentType: {
-      sr: "Vanila, kafa i cvetne note",
+      sr: "Vanilast, kafeni i cvetni",
       en: "Vanilla coffee floral",
     },
     dominantNotes: {
-      sr: ["vanila", "kafa", "beli cvetovi", "ambra"],
-      en: ["vanilla", "coffee", "white florals", "amber"],
+      sr: ["vanila sa Madagaskara", "crna kafa", "jasmin sambak", "kruška"],
+      en: ["Madagascar vanilla", "black coffee", "jasmine sambac", "pear"],
     },
     tags: {
-      sr: ["Sladak", "Večernji izlazak", "Kultni"],
-      en: ["Sweet", "Date Night", "Iconic"],
+      sr: ["Bogat", "Večernji", "Prepoznatljiv"],
+      en: ["Rich", "Night", "Signature"],
     },
     whyChoose: {
-      sr: "Ako želiš sladak, zavodljiv i prepoznatljiv večernji miris.",
-      en: "If you want a sweet, seductive and instantly recognizable evening scent.",
+      sr: "Ako želiš intenzivan, ženstven i prepoznatljiv parfem u kojem vanila vodi glavnu reč.",
+      en: "If you want an intense feminine signature fragrance where vanilla takes center stage.",
     },
   },
 
-  "French Avenue Pinnace Oryn Eau De Parfum": {
-    miniTag: { sr: "🍊 Citrusni / Luksuzan", en: "🍊 Citrus / Luxury" },
+  "French Avenue Pinnace Oryn Eau de Parfum": {
+    miniTag: { sr: "🍊 Narandža / Đumbir", en: "🍊 Orange / Ginger" },
     card: {
-      sr: "Luksuzni citrusni miris sa ultra svežim karakterom.",
-      en: "Luxury citrus scent with ultra fresh character.",
+      sr: "Narandža, mandarina i đumbir u blistavom luksuznom letnjem mirisu.",
+      en: "Orange, mandarin and ginger in a radiant luxurious summer scent.",
     },
     modal: {
-      sr: "Sočni citrusi i lagani morski tonovi daju luksuzan, čist i energičan letnji profil.",
-      en: "Juicy citrus and soft marine notes create a luxurious clean energetic summer profile.",
-    },
-    scentType: { sr: "Svež, citrusni i vodeni", en: "Fresh citrus aquatic" },
-    dominantNotes: {
-      sr: ["citrusi", "morski tonovi", "ambra"],
-      en: ["citrus", "marine notes", "amber"],
-    },
-    tags: {
-      sr: ["Luksuzan", "Svež", "Letnji"],
-      en: ["Luxury", "Fresh", "Summer"],
-    },
-    whyChoose: {
-      sr: "Ako želiš luksuzan i ultra svež letnji miris.",
-      en: "If you want a luxurious ultra fresh summer scent.",
-    },
-  },
-
-  "Riiffs Freeze Extrait De Parfum": {
-    miniTag: { sr: "🧊 Tropski / Svež", en: "🧊 Tropical / Fresh" },
-    card: {
-      sr: "Tropski, svež i moderan letnji miris.",
-      en: "Tropical, fresh and modern summer scent.",
-    },
-    modal: {
-      sr: "Sveže zelene i tropske note sa kremastim završetkom daju moderan i opušten letnji karakter.",
-      en: "Fresh green tropical notes with creamy finish create a modern relaxed summer vibe.",
-    },
-    scentType: { sr: "Svež, tropski i zelen", en: "Fresh tropical green" },
-    dominantNotes: {
-      sr: ["kokos", "zelene note", "citrusi"],
-      en: ["coconut", "green notes", "citrus"],
-    },
-    tags: {
-      sr: ["Svež", "Tropski", "Letnji"],
-      en: ["Fresh", "Tropical", "Summer"],
-    },
-    whyChoose: {
-      sr: "Ako voliš moderne i sveže tropske parfeme.",
-      en: "If you enjoy tropical modern fresh fragrances.",
-    },
-  },
-
-  "Lattafa Maahir Legacy Eau De Parfum": {
-    miniTag: { sr: "🌿 Svež / Prepoznatljiv", en: "🌿 Fresh / Signature" },
-    card: {
-      sr: "Svež citrusno-zeleni profil sa elegantnim karakterom.",
-      en: "Fresh citrus-green profile with elegant character.",
-    },
-    modal: {
-      sr: "Mentolasto-citrusni početak prelazi u čist, aromatičan i drvenast završetak sa modernim i prepoznatljivim karakterom.",
-      en: "Minty citrus opening settles into a clean aromatic woody finish with modern signature feel.",
+      sr: "Bergamot, narandža i mandarina stvaraju sočan i blistav početak, đumbir dodaje energiju, a ambergris ostavlja čist, mineralan i dugotrajan trag.",
+      en: "Bergamot, orange and mandarin create a juicy radiant opening, ginger adds energy, and ambergris leaves a clean mineral and lasting trail.",
     },
     scentType: {
-      sr: "Svež, aromatičan i drvenast",
-      en: "Fresh aromatic woody",
+      sr: "Citrusni, začinski i ambrast",
+      en: "Citrus spicy amber",
     },
     dominantNotes: {
-      sr: ["menta", "citrusi", "lavanda", "drvo"],
-      en: ["mint", "citrus", "lavender", "woods"],
+      sr: ["narandža", "mandarina", "đumbir", "ambergris"],
+      en: ["orange", "mandarin", "ginger", "ambergris"],
     },
     tags: {
-      sr: ["Svež", "Prepoznatljiv", "Elegantan"],
-      en: ["Fresh", "Signature", "Elegant"],
+      sr: ["Čist", "Prepoznatljiv", "Letnji"],
+      en: ["Clean", "Signature", "Summer"],
     },
     whyChoose: {
-      sr: "Ako želiš čist, luksuzan i prepoznatljiv svakodnevni miris.",
-      en: "If you want a clean luxurious everyday signature scent.",
+      sr: "Ako želiš luksuznu citrusnu svežinu koja je jednostavna, energična i upečatljiva.",
+      en: "If you want luxurious citrus freshness that feels simple, energetic and distinctive.",
     },
   },
 
-  "Yves Saint Laurent Y Iced Cologne": {
-    miniTag: { sr: "🧊 Svež / Čist", en: "🧊 Fresh / Clean" },
-
+  "RiiFFS Freeze Extrait de Parfum": {
+    miniTag: { sr: "🧊 Led / Nana", en: "🧊 Ice / Mint" },
     card: {
-      sr: "Ledeno svež i čist miris za tople dane.",
-      en: "Icy fresh and clean scent for warm days.",
+      sr: "Nana, citrusi i ledeni akordi u izrazito osvežavajućem mirisu.",
+      en: "Mint, citrus and icy accords in an intensely refreshing fragrance.",
     },
     modal: {
-      sr: "Osvežavajući spoj citrusa, đumbira i aromatičnih nota daje moderan i energičan letnji karakter.",
-      en: "Refreshing citrus, ginger and aromatic notes create a modern energetic summer scent.",
+      sr: "Nana, kalabrijski bergamot, limun i grejp vode kroz snežni akord, led, đumbir, čaj i žalfiju, dok Ambermax i kedar daju moderan završetak.",
+      en: "Mint, Calabrian bergamot, lemon and grapefruit move through snow, ice, ginger, tea and sage accords, while Ambermax and cedarwood create a modern finish.",
     },
     scentType: {
-      sr: "Svež, aromatičan i citrusni",
-      en: "Fresh aromatic citrus",
+      sr: "Ledeni, citrusni i aromatičan",
+      en: "Icy citrus aromatic",
     },
     dominantNotes: {
-      sr: ["citrusi", "đumbir", "aromatične note"],
-      en: ["citrus", "ginger", "aromatic notes"],
+      sr: ["nana", "ledeni akord", "đumbir", "čaj"],
+      en: ["spearmint", "ice accord", "ginger", "tea"],
     },
     tags: {
-      sr: ["Svež", "Letnji", "Čist"],
-      en: ["Fresh", "Summer", "Clean"],
+      sr: ["Čist", "Letnji", "Prepoznatljiv"],
+      en: ["Clean", "Summer", "Signature"],
     },
     whyChoose: {
-      sr: "Ako želiš ultra svež i moderan letnji miris.",
-      en: "If you want an ultra fresh modern summer scent.",
+      sr: "Ako želiš zaista leden i energičan parfem za vrele letnje dane.",
+      en: "If you want a genuinely icy energetic fragrance for hot summer days.",
     },
   },
 
-  "Valentino Uomo Born In Roma Coral Fantasy": {
-    miniTag: { sr: "🍎 Za izlazak / Prepoznatljiv", en: "🍎 Date / Signature" },
+  "Lattafa Maahir Legacy Eau de Parfum": {
+    miniTag: { sr: "🌿 Nana / Aromatičan", en: "🌿 Mint / Aromatic" },
     card: {
-      sr: "Sočna jabuka i duvan u modernom zavodljivom spoju.",
-      en: "Juicy apple and tobacco in a modern seductive blend.",
+      sr: "Limeta, nana i lavanda u čistom, kompleksnom aromatičnom mirisu.",
+      en: "Lime, mint and lavender in a clean complex aromatic fragrance.",
     },
     modal: {
-      sr: "Crvena jabuka, aromatične note i duvan stvaraju topao, privlačan i veoma nosiv miris sa prepoznatljivim karakterom.",
-      en: "Red apple, aromatic notes and tobacco create a warm attractive signature scent.",
+      sr: "Limeta, grejp, lavanda, nana i ananas daju živahan početak, kleka, ruzmarin i biber aromatičnu dubinu, a vetiver, kašmeran i ambroksan čvrstu bazu.",
+      en: "Lime, grapefruit, lavender, mint and pineapple create a lively opening, juniper, rosemary and pepper add aromatic depth, while vetiver, cashmeran and ambroxan form a solid base.",
     },
     scentType: {
-      sr: "Voćni, duvanski i aromatičan",
-      en: "Fruity tobacco aromatic",
+      sr: "Citrusni, aromatičan i drvenast",
+      en: "Citrus aromatic woody",
     },
     dominantNotes: {
-      sr: ["crvena jabuka", "duvan", "aromatične note"],
-      en: ["red apple", "tobacco", "aromatic notes"],
+      sr: ["limeta", "nana", "lavanda", "vetiver"],
+      en: ["lime", "spearmint", "lavender", "vetiver"],
     },
     tags: {
-      sr: ["Večernji izlazak", "Prepoznatljiv", "Za komplimente"],
-      en: ["Date Night", "Signature", "Compliment"],
+      sr: ["Čist", "Prepoznatljiv", "Letnji"],
+      en: ["Clean", "Signature", "Summer"],
     },
     whyChoose: {
-      sr: "Ako želiš moderan kompliment magnet sa karakterom.",
-      en: "If you want a modern compliment magnet with character.",
+      sr: "Ako želiš svež i kompleksan svakodnevni miris sa ozbiljnim aromatičnim karakterom.",
+      en: "If you want a fresh complex everyday scent with serious aromatic character.",
     },
   },
 
-  "Dolce & Gabbana Light Blue Pour Homme Eau de Toilette 2025": {
-    miniTag: { sr: "🌊 Citrusni / Letnji", en: "🌊 Citrus / Summer" },
+  "Yves Saint Laurent Y Iced Cologne Eau de Toilette Intense": {
+    miniTag: { sr: "🧊 Ledena nana / Žalfija", en: "🧊 Iced Mint / Sage" },
     card: {
-      sr: "Mediteranska svežina sa citrusnim karakterom.",
-      en: "Mediterranean freshness with citrus character.",
+      sr: "Ledena nana, plava žalfija i ambroksan u modernoj hladnoj svežini.",
+      en: "Iced mint, blue sage and ambroxan in modern cooling freshness.",
     },
     modal: {
-      sr: "Grejpfrut, citrusi i aromatične note stvaraju čist, energičan i bezvremenski letnji miris.",
-      en: "Grapefruit, citrus and aromatic notes create a clean energetic timeless summer scent.",
+      sr: "Ledena i živa nana daju snažan rashlađujući početak, plava žalfija donosi aromatičnu čistoću, a ambroksan i pačuli moderan i postojan trag.",
+      en: "Iced and living mint create a powerful cooling opening, blue sage adds aromatic clarity, while ambroxan and patchouli leave a modern lasting trail.",
     },
     scentType: {
-      sr: "Svež, citrusni i aromatičan",
-      en: "Fresh citrus aromatic",
+      sr: "Ledeni, aromatičan i drvenast",
+      en: "Icy aromatic woody",
     },
     dominantNotes: {
-      sr: ["grejpfrut", "citrusi", "aromatične note"],
-      en: ["grapefruit", "citrus", "aromatic notes"],
+      sr: ["ledena nana", "plava žalfija", "ambroksan", "pačuli"],
+      en: ["iced mint", "blue sage", "ambroxan", "patchouli"],
     },
     tags: {
-      sr: ["Svež", "Letnji", "Čist"],
-      en: ["Fresh", "Summer", "Clean"],
+      sr: ["Čist", "Letnji", "Prepoznatljiv"],
+      en: ["Clean", "Summer", "Signature"],
     },
     whyChoose: {
-      sr: "Ako želiš klasičan letnji miris koji nikad ne izlazi iz mode.",
-      en: "If you want a classic summer scent that never goes out of style.",
+      sr: "Ako želiš moderan i izrazito hladan letnji miris koji se razlikuje od običnih citrusa.",
+      en: "If you want a modern distinctly cooling summer scent that differs from typical citrus fragrances.",
     },
   },
 
-  "Bvlgari Man In Black Eau de Parfum": {
+  "Valentino Uomo Born in Roma Coral Fantasy Eau de Toilette": {
+    miniTag: { sr: "🍎 Crvena jabuka / Duvan", en: "🍎 Red Apple / Tobacco" },
+    card: {
+      sr: "Crvena jabuka, kardamom i duvan u modernom zavodljivom mirisu.",
+      en: "Red apple, cardamom and tobacco in a modern seductive fragrance.",
+    },
+    modal: {
+      sr: "Crvena jabuka, kardamom i bergamot daju sočan početak, lavanda i žalfija aromatično srce, a list duvana, pačuli i vetiver topao trag.",
+      en: "Red apple, cardamom and bergamot create a juicy opening, lavender and clary sage form an aromatic heart, while tobacco leaf, patchouli and vetiver leave a warm trail.",
+    },
+    scentType: {
+      sr: "Voćni, aromatičan i duvanski",
+      en: "Fruity aromatic tobacco",
+    },
+    dominantNotes: {
+      sr: ["crvena jabuka", "kardamom", "lavanda", "list duvana"],
+      en: ["red apple", "cardamom", "lavender", "tobacco leaf"],
+    },
+    tags: {
+      sr: ["Večernji", "Bogat", "Prepoznatljiv"],
+      en: ["Night", "Rich", "Signature"],
+    },
+    whyChoose: {
+      sr: "Ako želiš privlačan i veoma nosiv parfem koji spaja sočnu jabuku i topao duvan.",
+      en: "If you want an attractive highly wearable fragrance combining juicy apple with warm tobacco.",
+    },
+  },
+
+  "Dolce&Gabbana Light Blue Pour Homme Eau de Toilette (2025)": {
+    miniTag: { sr: "🍋 Limun / Ruzmarin", en: "🍋 Lemon / Rosemary" },
+    card: {
+      sr: "Limun, ruzmarin i pačuli u čistom mediteranskom letnjem mirisu.",
+      en: "Lemon, rosemary and patchouli in a clean Mediterranean summer scent.",
+    },
+    modal: {
+      sr: "Blistavi limun daje vedar i energičan početak, aromatični ruzmarin donosi mediteranski karakter, a pačuli ostavlja čist i diskretno zemljan trag.",
+      en: "Bright lemon creates a lively energetic opening, aromatic rosemary brings Mediterranean character, and patchouli leaves a clean subtly earthy trail.",
+    },
+    scentType: {
+      sr: "Citrusni, aromatičan i zemljani",
+      en: "Citrus aromatic earthy",
+    },
+    dominantNotes: {
+      sr: ["limun", "ruzmarin", "pačuli"],
+      en: ["lemon", "rosemary", "patchouli"],
+    },
+    tags: {
+      sr: ["Čist", "Letnji", "Prepoznatljiv"],
+      en: ["Clean", "Summer", "Signature"],
+    },
+    whyChoose: {
+      sr: "Ako želiš jednostavnu, elegantnu i bezvremensku mediteransku svežinu.",
+      en: "If you want simple elegant and timeless Mediterranean freshness.",
+    },
+  },
+
+  "BVLGARI Man in Black Eau de Parfum": {
     miniTag: { sr: "🥃 Rum / Koža", en: "🥃 Rum / Leather" },
     card: {
-      sr: "Tamni rum, začini i koža u moćnom večernjem profilu.",
-      en: "Dark rum, spices and leather in a bold evening profile.",
+      sr: "Rum, duvan i koža u tamnom, moćnom večernjem mirisu.",
+      en: "Rum, tobacco and leather in a dark powerful evening scent.",
     },
     modal: {
-      sr: "Rum, začini i duvan prelaze u kožu, iris i toplu drveno-amber bazu.",
-      en: "Rum, spices and tobacco settle into leather, iris and a warm woody-amber base.",
+      sr: "Začini, rum i duvan otvaraju miris toplinom, koža, iris i tuberoza daju raskošno srce, a tonka, gvajak i benzoin duboku smolastu bazu.",
+      en: "Spices, rum and tobacco open with warmth, leather, iris and tuberose create an opulent heart, while tonka, guaiac wood and benzoin form a deep resinous base.",
     },
     scentType: {
-      sr: "Topao, začinski, kožni i ambrast",
-      en: "Warm spicy leather amber",
+      sr: "Začinski, kožni i ambrast",
+      en: "Spicy leather amber",
     },
     dominantNotes: {
-      sr: ["rum", "začini", "duvan", "koža"],
-      en: ["rum", "spices", "tobacco", "leather"],
+      sr: ["rum", "duvan", "koža", "benzoin"],
+      en: ["rum", "tobacco", "leather", "benzoin"],
     },
     tags: {
-      sr: ["Taman", "Elegantan", "Večernji"],
-      en: ["Dark", "Elegant", "Evening"],
+      sr: ["Večernji", "Bogat", "Prepoznatljiv"],
+      en: ["Night", "Rich", "Signature"],
     },
     whyChoose: {
-      sr: "Ako želiš ozbiljan, muževan i zavodljiv večernji miris.",
-      en: "If you want a serious masculine seductive evening scent.",
+      sr: "Ako želiš ozbiljan, muževan i zavodljiv parfem za hladne večeri.",
+      en: "If you want a serious masculine seductive fragrance for cold evenings.",
     },
   },
 
   "Mancera Aoud Lemon Mint Eau de Parfum": {
-    miniTag: { sr: "🍋 Oud / Nana", en: "🍋 Oud / Mint" },
+    miniTag: { sr: "🍋 Limun / Oud", en: "🍋 Lemon / Oud" },
     card: {
-      sr: "Limun, menta i oud u svežem nišnom spoju.",
-      en: "Lemon, mint and oud in a fresh niche blend.",
+      sr: "Sicilijanski limun, oud i sveža nana u odvažnom niche mirisu.",
+      en: "Sicilian lemon, oud and fresh mint in a bold niche fragrance.",
     },
     modal: {
-      sr: "Limun, badem i začini otvaraju miris sveže, dok oud, menta i vanila daju bogat nišni završetak.",
-      en: "Lemon, almond and spices open fresh, while oud, mint and vanilla create a rich niche finish.",
+      sr: "Limun, korijander, crni biber i badem otvaraju miris snažno, oud, jasmin, pačuli i nana grade srce, a koža, amber, vanila i vetiver bogatu bazu.",
+      en: "Lemon, coriander, black pepper and almond open powerfully, oud, jasmine, patchouli and mint form the heart, while leather, amber, vanilla and vetiver build a rich base.",
     },
-    scentType: { sr: "Svež, oud i aromatičan", en: "Fresh oud aromatic" },
+    scentType: {
+      sr: "Citrusni, drvenast i kožni",
+      en: "Citrus woody leather",
+    },
     dominantNotes: {
-      sr: ["limun", "menta", "oud", "vanila"],
-      en: ["lemon", "mint", "oud", "vanilla"],
+      sr: ["sicilijanski limun", "oud", "sveža nana", "koža"],
+      en: ["Sicilian lemon", "oud", "fresh mint", "leather"],
     },
     tags: {
-      sr: ["Nišni", "Svež", "Uniseks"],
-      en: ["Niche", "Fresh", "Unisex"],
+      sr: ["Letnji", "Bogat", "Prepoznatljiv"],
+      en: ["Summer", "Rich", "Signature"],
     },
     whyChoose: {
-      sr: "Ako želiš svež, neobičan i luksuzan nišni miris.",
-      en: "If you want a fresh unusual luxury niche scent.",
+      sr: "Ako želiš snažan i neobičan niche parfem koji spaja svetle citruse i tamni oud.",
+      en: "If you want a powerful unusual niche fragrance combining bright citrus with dark oud.",
     },
   },
 
   "Prada Paradigme Eau de Parfum": {
-    miniTag: { sr: "🟢 Ambra / Moderan", en: "🟢 Amber / Modern" },
+    miniTag: { sr: "🟢 Geranijum / Balzami", en: "🟢 Geranium / Balsams" },
     card: {
-      sr: "Moderan amber-drveni Prada miris sa svežim startom.",
-      en: "Modern amber-woody Prada scent with fresh opening.",
+      sr: "Bergamot, geranijum i topli balzami u modernom Prada mirisu.",
+      en: "Bergamot, geranium and warm balsams in a modern Prada fragrance.",
     },
     modal: {
-      sr: "Bergamot i geranijum donose svežinu, dok amber-drvena baza daje sofisticiran Prada karakter.",
-      en: "Bergamot and geranium bring freshness, while amber woods create a refined Prada character.",
+      sr: "Kalabrijski bergamot i mošus otvaraju miris čisto, dve vrste geranijuma daju zeleno-cvetno srce, a peruanski balzam, benzoin i gvajak toplu dubinu.",
+      en: "Calabrian bergamot and musk open cleanly, two geranium varieties create a green floral heart, while Peru balsam, benzoin and guaiac wood bring warm depth.",
     },
     scentType: {
-      sr: "Ambrast, drvenast i aromatičan",
-      en: "Ambery woody aromatic",
+      sr: "Aromatičan, balzamičan i drvenast",
+      en: "Aromatic balsamic woody",
     },
     dominantNotes: {
-      sr: ["bergamot", "geranijum", "amber", "drvo"],
-      en: ["bergamot", "geranium", "amber", "woods"],
+      sr: ["kalabrijski bergamot", "geranijum", "peruanski balzam", "benzoin"],
+      en: ["Calabrian bergamot", "geranium", "Peru balsam", "benzoin"],
     },
     tags: {
-      sr: ["Moderan", "Luksuzan", "Prepoznatljiv"],
-      en: ["Modern", "Luxury", "Signature"],
+      sr: ["Prepoznatljiv", "Bogat", "Čist"],
+      en: ["Signature", "Rich", "Clean"],
     },
     whyChoose: {
-      sr: "Ako želiš moderan, čist, luksuzan i prepoznatljiv miris.",
-      en: "If you want a modern clean luxury signature scent.",
+      sr: "Ako želiš moderan i luksuzan Prada potpis koji spaja čistu aromatičnost i toplu bazu.",
+      en: "If you want a modern luxurious Prada signature combining clean aromatics with a warm base.",
     },
   },
 
