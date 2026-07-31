@@ -1099,7 +1099,7 @@ export const productCopy = {
     },
   },
 
-  "Versace Man Eau Fraiche": {
+  "Versace Man Eau Fraîche Eau de Toilette": {
     miniTag: { sr: "💧 Svež / Letnji", en: "💧 Fresh / Summer" },
     card: {
       sr: "Ultra svež, lagan i čist — savršen za letnje dane.",

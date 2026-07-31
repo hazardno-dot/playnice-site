@@ -1452,7 +1452,7 @@ export const products = [
 {
   id: 54,
   slug: "versace-man-eau-fraiche",
-  name: "Versace Man Eau Fraiche",
+  name: "Versace Man Eau Fraîche Eau de Toilette",
   shortName: "Eau Fraiche",
   category: "Designer",
   image: "/products/versace-man-eau-fraiche.png",
