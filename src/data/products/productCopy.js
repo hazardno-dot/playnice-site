@@ -282,187 +282,283 @@ export const productCopy = {
     },
   },
 
-  "Khadlaj Island Dreams Extrait de Parfum": {
-    miniTag: { sr: "🔥 Bestseler", en: "🔥 Bestseller" },
+    "Khadlaj Island Dreams Extrait de Parfum": {
+    miniTag: { sr: "🍊 Citrusni / Blistav", en: "🍊 Citrus / Radiant" },
     card: {
-      sr: "Tropski, sladak i letnji karakter.",
-      en: "Tropical sweet summer vibe.",
+      sr: "Grejp, bergamot i đumbir u blistavom, modernom letnjem mirisu.",
+      en: "Grapefruit, bergamot and ginger in a radiant modern summer scent.",
     },
     modal: {
-      sr: "Egzotičan i vedar miris koji diže raspoloženje.",
-      en: "Exotic uplifting scent.",
+      sr: "Bergamot i đumbir otvaraju miris živahno, sočni grejp ostaje u centru, a ambroksan i mošus daju čist, elegantan i dugotrajan trag.",
+      en: "Bergamot and ginger create a lively opening, juicy grapefruit stays at the center, and ambroxan with musk leaves a clean, elegant and lasting trail.",
     },
-    scentType: { sr: "Tropski i sladak", en: "Tropical sweet" },
+    scentType: {
+      sr: "Citrusni, mošusni i ambrast",
+      en: "Citrus musky amber",
+    },
     dominantNotes: {
-      sr: ["kokos", "voće", "slatko"],
-      en: ["coconut", "fruit", "sweet"],
+      sr: ["grejp", "bergamot", "đumbir", "ambroksan"],
+      en: ["grapefruit", "bergamot", "ginger", "ambroxan"],
     },
-    tags: { sr: ["Letnji"], en: ["Summer"] },
+    tags: {
+      sr: ["Svež", "Letnji", "Prepoznatljiv"],
+      en: ["Fresh", "Summer", "Signature"],
+    },
     whyChoose: {
-      sr: "Savršen letnji izbor.",
-      en: "Perfect summer choice.",
+      sr: "Ako želiš vedar i luksuzan citrusni miris koji ostaje čist i moderan.",
+      en: "If you want a bright, luxurious citrus fragrance that stays clean and modern.",
     },
   },
 
-  "Lattafa Asad Elixir": {
-    miniTag: { sr: "🔥 Bestseler", en: "🔥 Bestseller" },
-    card: { sr: "Topao, sladak i snažan.", en: "Warm sweet powerful." },
-    modal: {
-      sr: "Bogata i zavodljiva kompozicija sa dubinom.",
-      en: "Rich seductive composition.",
-    },
-    scentType: { sr: "Sladak i začinski", en: "Sweet spicy" },
-    dominantNotes: {
-      sr: ["vanila", "začini", "amber"],
-      en: ["vanilla", "spices", "amber"],
-    },
-    tags: { sr: ["Večernji"], en: ["Night"] },
-    whyChoose: {
-      sr: "Za snažan večernji efekat.",
-      en: "For strong evening impact.",
-    },
-  },
-
-  "Lattafa Fakhar Black": {
-    miniTag: { sr: "❄️ Svež / Svakodnevni", en: "❄️ Fresh / Daily" },
-    card: { sr: "Moderan, čist i svestran.", en: "Modern clean versatile." },
-    modal: {
-      sr: "Jednostavan ali efektan svakodnevni miris.",
-      en: "Simple yet effective daily scent.",
-    },
-    scentType: { sr: "Svež i aromatičan", en: "Fresh aromatic" },
-    dominantNotes: {
-      sr: ["lavanda", "jabuka", "drvo"],
-      en: ["lavender", "apple", "woods"],
-    },
-    tags: { sr: ["Svakodnevni"], en: ["Daily"] },
-    whyChoose: {
-      sr: "Siguran izbor za svaki dan.",
-      en: "Safe everyday pick.",
-    },
-  },
-
-  "Lattafa Khamrah Qahwa": {
-    miniTag: { sr: "🍯 Sladak / Večernji", en: "🍯 Sweet / Night" },
+  "Lattafa Asad Elixir Eau de Parfum": {
+    miniTag: { sr: "🚬 Duvanski / Začinski", en: "🚬 Tobacco / Spicy" },
     card: {
-      sr: "Kafa, cimet i slatka toplina.",
-      en: "Coffee cinnamon sweetness.",
+      sr: "Šafran, duvan i vanila u dubokom začinsko-drvenastom spoju.",
+      en: "Saffron, tobacco and vanilla in a deep spicy-woody blend.",
     },
     modal: {
-      sr: "Gurmanski, gust i zavodljiv miris.",
-      en: "Gourmand rich seductive scent.",
+      sr: "Ružičasti biber, šafran i grejp otvaraju miris intenzivno, dok duvan, kedar, vanila i tamjan grade taman, topao i autoritativan trag.",
+      en: "Pink pepper, saffron and grapefruit open with intensity, while tobacco, cedarwood, vanilla and olibanum build a dark, warm and commanding trail.",
     },
-    scentType: { sr: "Gurmanski", en: "Gourmand" },
+    scentType: {
+      sr: "Začinski, duvanski i drvenast",
+      en: "Spicy tobacco woody",
+    },
     dominantNotes: {
-      sr: ["kafa", "cimet", "vanila"],
-      en: ["coffee", "cinnamon", "vanilla"],
+      sr: ["šafran", "duvan", "vanila", "tamjan"],
+      en: ["saffron", "tobacco", "vanilla", "olibanum"],
     },
-    tags: { sr: ["Sladak"], en: ["Sweet"] },
+    tags: {
+      sr: ["Bogat", "Večernji", "Prepoznatljiv"],
+      en: ["Rich", "Night", "Signature"],
+    },
     whyChoose: {
-      sr: "Za ljubitelje slatkih parfema.",
-      en: "For lovers of sweet scents.",
+      sr: "Ako želiš snažan, ozbiljan i zavodljiv parfem za hladnije večeri.",
+      en: "If you want a powerful, serious and seductive fragrance for cooler evenings.",
     },
   },
 
-  "Lattafa Musamam Black Intense": {
-    miniTag: { sr: "💎 Luksuzan / Taman", en: "💎 Luxury / Dark" },
-    card: { sr: "Tamni začinski luksuz.", en: "Dark spicy luxury." },
+  "Lattafa Fakhar Black Eau de Parfum": {
+    miniTag: { sr: "🍏 Aromatičan / Svež", en: "🍏 Aromatic / Fresh" },
+    card: {
+      sr: "Jabuka, đumbir i lavanda u čistom, modernom aromatičnom profilu.",
+      en: "Apple, ginger and lavender in a clean modern aromatic profile.",
+    },
     modal: {
-      sr: "Dubok i ozbiljan orijentalni miris.",
-      en: "Deep oriental scent.",
+      sr: "Hrskava jabuka, bergamot i đumbir prelaze u lavandu, žalfiju i kleku, dok tonka, kedar i amber drvo daju gladak i svestran završetak.",
+      en: "Crisp apple, bergamot and ginger develop into lavender, sage and juniper, while tonka, cedarwood and amberwood create a smooth, versatile finish.",
     },
-    scentType: { sr: "Začinski i orijentalan", en: "Spicy oriental" },
+    scentType: {
+      sr: "Voćni, aromatičan i drvenast",
+      en: "Fruity aromatic woody",
+    },
     dominantNotes: {
-      sr: ["začini", "oud", "amber"],
-      en: ["spices", "oud", "amber"],
+      sr: ["jabuka", "đumbir", "lavanda", "amber drvo"],
+      en: ["apple", "ginger", "lavender", "amberwood"],
     },
-    tags: { sr: ["Luksuzan"], en: ["Luxury"] },
+    tags: {
+      sr: ["Čist", "Svestran", "Prepoznatljiv"],
+      en: ["Clean", "Versatile", "Signature"],
+    },
     whyChoose: {
-      sr: "Za ozbiljan karakter.",
-      en: "For strong character.",
+      sr: "Ako želiš moderan i siguran izbor koji radi od dnevnih obaveza do večernjeg izlaska.",
+      en: "If you want a modern, dependable choice that works from daily wear to an evening out.",
     },
   },
 
-  "Lattafa Qaed Al Fursan Untamed": {
-    miniTag: { sr: "🍯 Sladak / Egzotičan", en: "🍯 Sweet / Exotic" },
-    card: { sr: "Egzotičan voćni profil.", en: "Exotic fruity profile." },
+  "Lattafa Khamrah Qahwa Eau de Parfum": {
+    miniTag: { sr: "☕ Kafa / Gurmanski", en: "☕ Coffee / Gourmand" },
+    card: {
+      sr: "Arapska kafa, praline i topli začini u bogatom gurmanskom mirisu.",
+      en: "Arabica coffee, praline and warm spices in a rich gourmand scent.",
+    },
     modal: {
-      sr: "Smel i drugačiji miris sa snagom.",
-      en: "Bold unique scent.",
+      sr: "Đumbir, cimet i kardamom otvaraju miris toplinom, praline i kandirano voće donose slatkoću, a arapska kafa, tonka i mošus ostavljaju gust i zavodljiv trag.",
+      en: "Ginger, cinnamon and cardamom open with warmth, praline and candied fruits add sweetness, while Arabica coffee, tonka and musk leave a dense, seductive trail.",
     },
-    scentType: { sr: "Voćni i začinski", en: "Fruity spicy" },
+    scentType: {
+      sr: "Začinski, kafeni i gurmanski",
+      en: "Spicy coffee gourmand",
+    },
     dominantNotes: {
-      sr: ["ananas", "začini", "drvo"],
-      en: ["pineapple", "spices", "woods"],
+      sr: ["arapska kafa", "cimet", "praline", "tonka"],
+      en: ["Arabica coffee", "cinnamon", "praline", "tonka bean"],
     },
-    tags: { sr: ["Snažan"], en: ["Bold"] },
+    tags: {
+      sr: ["Sladak", "Bogat", "Večernji"],
+      en: ["Sweet", "Rich", "Night"],
+    },
     whyChoose: {
-      sr: "Za drugačiji stil.",
-      en: "For unique style.",
+      sr: "Ako voliš raskošne gurmanske parfeme u kojima kafa zaista ima glavnu ulogu.",
+      en: "If you enjoy opulent gourmand fragrances where coffee truly takes center stage.",
     },
   },
 
-  "Paris Corner Emir Trillium": {
-    miniTag: { sr: "❄️ Svež / Čist", en: "❄️ Fresh / Clean" },
-    card: { sr: "Čist i moderan minimalizam.", en: "Clean modern minimalism." },
-    modal: { sr: "Lagano, čisto i lako nosivo.", en: "Light clean wearable." },
-    scentType: { sr: "Svež i čist", en: "Fresh clean" },
-    dominantNotes: {
-      sr: ["citrusi", "mošus", "drvo"],
-      en: ["citrus", "musk", "woods"],
+  "Lattafa Musamam Black Intense Eau de Parfum": {
+    miniTag: { sr: "🌑 Začinski / Drvenast", en: "🌑 Spicy / Woody" },
+    card: {
+      sr: "Lavanda, muškatni oraščić i tamno drvo u modernom intenzivnom spoju.",
+      en: "Lavender, nutmeg and dark woods in a modern intense blend.",
     },
-    tags: { sr: ["Svakodnevni"], en: ["Daily"] },
+    modal: {
+      sr: "Lavanda, muškatni oraščić i bergamot vode u aromatično cvetno srce, dok javorovo drvo, kakao akord i Ambrofix daju taman, gladak i savremen trag.",
+      en: "Lavender, nutmeg and bergamot lead into an aromatic floral heart, while maple wood, a cocoa accord and Ambrofix create a dark, smooth and contemporary trail.",
+    },
+    scentType: {
+      sr: "Aromatičan, začinski i drvenast",
+      en: "Aromatic spicy woody",
+    },
+    dominantNotes: {
+      sr: ["lavanda", "muškatni oraščić", "javorovo drvo", "kakao akord"],
+      en: ["lavender", "nutmeg", "maple wood", "cocoa accord"],
+    },
+    tags: {
+      sr: ["Bogat", "Večernji", "Prepoznatljiv"],
+      en: ["Rich", "Night", "Signature"],
+    },
     whyChoose: {
-      sr: "Za čist i nenametljiv stil.",
-      en: "For clean vibe.",
+      sr: "Ako želiš taman i sofisticiran miris bez klasične oud težine.",
+      en: "If you want a dark, sophisticated scent without the usual heaviness of oud.",
     },
   },
 
-  "Paris Corner Emir Voux Elegante": {
-    miniTag: { sr: "💎 Elegantan", en: "💎 Elegant" },
-    card: { sr: "Uglađen i luksuzan profil.", en: "Smooth luxurious profile." },
-    modal: { sr: "Mek i sofisticiran miris.", en: "Soft sophisticated scent." },
-    scentType: { sr: "Elegantan i drvenast", en: "Elegant woody" },
-    dominantNotes: {
-      sr: ["drvo", "mošus", "amber"],
-      en: ["woods", "musk", "amber"],
+  "Lattafa Qaed Al Fursan Untamed Eau de Parfum": {
+    miniTag: { sr: "🔥 Začinski / Ambrast", en: "🔥 Spicy / Amber" },
+    card: {
+      sr: "Kardamom, karamela i smolasto drvo u toplom, upečatljivom mirisu.",
+      en: "Cardamom, caramel and resinous woods in a warm statement scent.",
     },
-    tags: { sr: ["Luksuzan"], en: ["Luxury"] },
+    modal: {
+      sr: "Muškatni oraščić, kardamom i mandarina prelaze u lavandu, žalfiju i karamelu, dok kedar, tamjan i labdanum grade topao smolasti završetak.",
+      en: "Nutmeg, cardamom and mandarin develop into lavender, clary sage and caramel, while cedarwood, olibanum and labdanum create a warm resinous finish.",
+    },
+    scentType: {
+      sr: "Začinski, karamelni i smolast",
+      en: "Spicy caramel resinous",
+    },
+    dominantNotes: {
+      sr: ["kardamom", "karamela", "tamjan", "labdanum"],
+      en: ["cardamom", "caramel", "olibanum", "labdanum"],
+    },
+    tags: {
+      sr: ["Bogat", "Večernji", "Prepoznatljiv"],
+      en: ["Rich", "Night", "Signature"],
+    },
     whyChoose: {
-      sr: "Za eleganciju bez napora.",
-      en: "Effortless elegance.",
+      sr: "Ako želiš neobičan spoj toplih začina, karamele i tamnih smola.",
+      en: "If you want an unusual blend of warm spices, caramel and dark resins.",
     },
   },
 
-  "Paris Corner Ministry of Oud - Oud Satin": {
-    miniTag: { sr: "💎 Luksuzan / Oud", en: "💎 Luxury / Oud" },
-    card: { sr: "Oud i ruža u raskošnom spoju.", en: "Oud and rose luxury." },
-    modal: { sr: "Dubok, bogat i zavodljiv.", en: "Deep rich seductive." },
-    scentType: { sr: "Oud i cvetni", en: "Oud floral" },
-    dominantNotes: {
-      sr: ["oud", "ruža", "vanila"],
-      en: ["oud", "rose", "vanilla"],
+  "Paris Corner Emir Trillium Eau de Parfum": {
+    miniTag: { sr: "🍊 Citrusni / Vetiverski", en: "🍊 Citrus / Vetiver" },
+    card: {
+      sr: "Grejp, bergamot i vetiver u živahnom, elegantnom letnjem mirisu.",
+      en: "Grapefruit, bergamot and vetiver in a vibrant elegant summer scent.",
     },
-    tags: { sr: ["Luksuzan"], en: ["Luxury"] },
+    modal: {
+      sr: "Grejp i bergamot blistaju uz aromatičnu majčinu dušicu, dok vetiver, kleka, crna ribizla i ambergris daju čist ali karakteran završetak.",
+      en: "Grapefruit and bergamot shine beside aromatic thyme, while vetiver, juniper, black currant and ambergris create a clean yet distinctive finish.",
+    },
+    scentType: {
+      sr: "Citrusni, aromatičan i drvenast",
+      en: "Citrus aromatic woody",
+    },
+    dominantNotes: {
+      sr: ["grejp", "bergamot", "vetiver", "kleka"],
+      en: ["grapefruit", "bergamot", "vetiver", "juniper"],
+    },
+    tags: {
+      sr: ["Svež", "Letnji", "Prepoznatljiv"],
+      en: ["Fresh", "Summer", "Signature"],
+    },
     whyChoose: {
-      sr: "Za ljubitelje ouda.",
-      en: "For oud lovers.",
+      sr: "Ako želiš ozbiljniju citrusnu svežinu sa vetiverom i elegantnom dubinom.",
+      en: "If you want refined citrus freshness with vetiver and elegant depth.",
     },
   },
 
-  "Paris Corner Perfumes North Stag Expressions II DEUX": {
-    miniTag: { sr: "❄️ Svež / Svetao", en: "❄️ Fresh / Bright" },
-    card: { sr: "Svetao i energičan.", en: "Bright energetic." },
-    modal: { sr: "Čist i živ miris.", en: "Clean lively scent." },
-    scentType: { sr: "Svež i citrusni", en: "Fresh citrus" },
-    dominantNotes: {
-      sr: ["citrusi", "drvo"],
-      en: ["citrus", "woods"],
+  "Paris Corner Emir Voux Elegante Eau de Parfum": {
+    miniTag: { sr: "🍯 Medni / Duvanski", en: "🍯 Honey / Tobacco" },
+    card: {
+      sr: "Lavanda, med i duvan u toplom, raskošnom večernjem mirisu.",
+      en: "Lavender, honey and tobacco in a warm opulent evening scent.",
     },
-    tags: { sr: ["Svež"], en: ["Fresh"] },
+    modal: {
+      sr: "Aromatična lavanda i bergamot vode u bogato srce od meda, cimeta i kašmerana, dok duvan, tonka i vanila ostavljaju mekan i zavodljiv trag.",
+      en: "Aromatic lavender and bergamot lead into a rich heart of honey, cinnamon and cashmeran, while tobacco, tonka and vanilla leave a smooth, seductive trail.",
+    },
+    scentType: {
+      sr: "Aromatičan, medni i duvanski",
+      en: "Aromatic honey tobacco",
+    },
+    dominantNotes: {
+      sr: ["lavanda", "med", "duvan", "vanila"],
+      en: ["lavender", "honey", "tobacco", "vanilla"],
+    },
+    tags: {
+      sr: ["Bogat", "Večernji", "Prepoznatljiv"],
+      en: ["Rich", "Night", "Signature"],
+    },
     whyChoose: {
-      sr: "Za energiju i svežinu.",
-      en: "For energy and freshness.",
+      sr: "Ako voliš raskošne medno-duvanske parfeme sa slatkom, elegantnom toplinom.",
+      en: "If you enjoy opulent honey-tobacco fragrances with sweet, elegant warmth.",
+    },
+  },
+
+  "Paris Corner Ministry of Oud Oud Satin Extrait de Parfum": {
+    miniTag: { sr: "🌹 Ruža / Oud", en: "🌹 Rose / Oud" },
+    card: {
+      sr: "Oud, ruža i vanila u raskošnom, baršunastom spoju.",
+      en: "Oud, rose and vanilla in an opulent velvety blend.",
+    },
+    modal: {
+      sr: "Duboki oud i raskošna ruža susreću se sa toplim benzoinom, puderastom ljubičicom i vanilom, stvarajući gust i senzualan trag.",
+      en: "Deep oud and opulent rose meet warm benzoin, powdery violet and vanilla, creating a dense and sensual trail.",
+    },
+    scentType: {
+      sr: "Cvetni, oud i vanilast",
+      en: "Floral oud vanilla",
+    },
+    dominantNotes: {
+      sr: ["oud", "ruža", "benzoin", "vanila"],
+      en: ["oud", "rose", "benzoin", "vanilla"],
+    },
+    tags: {
+      sr: ["Bogat", "Mekan", "Večernji"],
+      en: ["Rich", "Soft", "Night"],
+    },
+    whyChoose: {
+      sr: "Ako želiš raskošan spoj ouda i ruže sa mekanom, puderasto-slatkom bazom.",
+      en: "If you want an opulent oud-and-rose blend with a soft powdery-sweet base.",
+    },
+  },
+
+  "Paris Corner North Stag Expressions II Deux Extrait de Parfum": {
+    miniTag: { sr: "🍏 Aromatičan / Začinski", en: "🍏 Aromatic / Spicy" },
+    card: {
+      sr: "Jabuka, lavanda i kardamom u toplom, elegantnom večernjem mirisu.",
+      en: "Apple, lavender and cardamom in a warm elegant evening scent.",
+    },
+    modal: {
+      sr: "Jabuka, lavanda i bergamot otvaraju miris sveže, a geranijum, ljubičica, kardamom, sandalovina i vanila razvijaju njegov topao i zavodljiv karakter.",
+      en: "Apple, lavender and bergamot open with freshness, while geranium, violet, cardamom, sandalwood and vanilla develop its warm, seductive character.",
+    },
+    scentType: {
+      sr: "Voćni, aromatičan i začinski",
+      en: "Fruity aromatic spicy",
+    },
+    dominantNotes: {
+      sr: ["jabuka", "lavanda", "kardamom", "vanila"],
+      en: ["apple", "lavender", "cardamom", "vanilla"],
+    },
+    tags: {
+      sr: ["Bogat", "Večernji", "Prepoznatljiv"],
+      en: ["Rich", "Night", "Signature"],
+    },
+    whyChoose: {
+      sr: "Ako želiš svestran, elegantan i zavodljiv parfem za hladnije dane i večeri.",
+      en: "If you want a versatile, elegant and seductive fragrance for cooler days and evenings.",
     },
   },
 
