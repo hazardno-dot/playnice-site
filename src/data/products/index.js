@@ -619,14 +619,7 @@ export const products = [
       short: "Pacific Chill DNA"
     },
     noteMap: {
-      top: [
-        "citron",
-        "mint",
-        "orange",
-        "lemon",
-        "black-currant",
-        "coriander"
-      ],
+      top: ["citron", "mint", "orange", "black-currant", "coriander"],
       heart: ["apricot", "basil", "carrot-seeds", "may-rose"],
       base: ["fig", "dates", "ambrette"]
     }
@@ -656,14 +649,7 @@ export const products = [
     noteMap: {
       top: ["plum", "apple", "cumin", "pink-pepper", "licorice"],
       heart: ["labdanum", "amber", "ylang-ylang", "patchouli"],
-      base: [
-        "musk",
-        "cashmere",
-        "honey",
-        "vanilla",
-        "sandalwood",
-        "tobacco"
-      ]
+      base: ["cashmere", "honey", "vanilla", "sandalwood", "tobacco"]
     }
   },
   {
@@ -717,22 +703,8 @@ export const products = [
       short: "Citrus Woody Cologne DNA"
     },
     noteMap: {
-      top: [
-        "lemon",
-        "orange",
-        "bergamot",
-        "mandarin",
-        "grapefruit",
-        "neroli",
-        "petitgrain"
-      ],
-      heart: [
-        "rosemary",
-        "lily-of-the-valley",
-        "rose",
-        "jasmine",
-        "cloves"
-      ],
+      top: ["lemon", "orange", "bergamot", "grapefruit", "petitgrain"],
+      heart: ["rosemary", "lily-of-the-valley", "rose", "jasmine", "cloves"],
       base: ["vetiver", "patchouli", "white-musk", "amber"]
     },
     discount: {
@@ -1515,31 +1487,9 @@ export const products = [
       short: "Absolu Aventus DNA"
     },
     noteMap: {
-      top: [
-        "pineapple",
-        "lemon",
-        "bergamot",
-        "caramel",
-        "pink-pepper",
-        "pear",
-        "black-pepper"
-      ],
-      heart: [
-        "oakmoss",
-        "white-woods",
-        "jasmine",
-        "lily-of-the-valley",
-        "anise"
-      ],
-      base: [
-        "ambroxan",
-        "white-musk",
-        "cedarwood",
-        "patchouli",
-        "amber",
-        "leather",
-        "vanilla"
-      ]
+      top: ["pineapple", "bergamot", "caramel", "pink-pepper", "pear"],
+      heart: ["oakmoss", "white-woods", "jasmine", "lily-of-the-valley", "anise"],
+      base: ["ambroxan", "cedarwood", "amber", "leather", "vanilla"]
     }
   },
     {
