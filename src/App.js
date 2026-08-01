@@ -554,7 +554,7 @@ const BASE_HERO_SLIDES = [
     "essential-parfums-orange-x-santal",
     "bois-imperial-essential-parfums"
   ],
-    collectionTitle: "Three parfumers. Three icons. One house. Essential Parfums"
+    collectionTitle: "Three parfumers. Three icons. One house."
   },
   {
     id: 11,
