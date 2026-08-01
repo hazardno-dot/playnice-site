@@ -1025,11 +1025,7 @@ export const products = [
       short: "Fresh Aventus DNA"
     },
     noteMap: {
-      top: [
-        "calabrian-bergamot",
-        "mandarin",
-        "salty-marine-accord"
-      ],
+      top: ["calabrian-bergamot", "mandarin", "salty-marine-accord"],
       heart: ["ginger", "pineapple", "pink-pepper"],
       base: ["musk", "patchouli", "birch"]
     }
