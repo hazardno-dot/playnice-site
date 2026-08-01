@@ -3738,10 +3738,12 @@ const getSizeWearHint = (size) => {
   return "";
 };
 
+const displayedCardName = product.cardName || product.name;
+
 const titleLengthClass =
-  product.name.length > 44
+  displayedCardName.length > 44
     ? "is-very-long-title"
-    : product.name.length > 32
+    : displayedCardName.length > 32
     ? "is-long-title"
     : "";
 
@@ -3820,8 +3822,8 @@ const titleLengthClass =
     <div className="product-meta-top">
       <p className="product-category">{getCategoryLabel(product.category)}</p>
       <h3 className={`product-card-title ${titleLengthClass}`}>
-  {product.name}
-</h3>
+        {displayedCardName}
+      </h3>
     </div>
 
     <div className="product-meta-middle">
