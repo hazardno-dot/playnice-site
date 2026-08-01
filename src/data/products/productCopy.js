@@ -2158,7 +2158,7 @@ export const productCopy = {
     },
   },
 
-  "Khadlaj Special Edition Shiyaaka Snow Eau de Parfum": {
+  "Khadlaj Shiyaaka Snow Eau de Parfum": {
     miniTag: { sr: "🍊 Citrusi / Neroli", en: "🍊 Citrus / Neroli" },
     card: {
       sr: "Mandarina, neroli i vetiver u luksuznoj začinskoj svežini.",

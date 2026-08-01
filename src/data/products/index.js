@@ -2283,7 +2283,7 @@ export const products = [
   {
     id: 78,
     slug: "khadlaj-shiyaaka-snow-edp",
-    name: "Khadlaj Special Edition Shiyaaka Snow Eau de Parfum",
+    name: "Khadlaj Shiyaaka Snow Eau de Parfum",
     shortName: "Shiyaaka Snow",
     category: "Arabian",
     image: "/products/khadlaj-shiyaaka-snow.png",

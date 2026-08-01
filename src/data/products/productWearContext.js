@@ -310,7 +310,7 @@ export const productWearContext = {
     sr: "Leto, more i dnevno nošenje.",
     en: "Summer, the seaside and daytime wear.",
   },
-  "Khadlaj Special Edition Shiyaaka Snow Eau de Parfum": {
+  "Khadlaj Shiyaaka Snow Eau de Parfum": {
     sr: "Posao, elegantne dnevne prilike i toplo vreme.",
     en: "Work, elegant daytime occasions and warm weather.",
   },
