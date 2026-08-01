@@ -7097,7 +7097,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <div className="modal-header panel-anim panel-anim-1">
         <span className="modal-eyebrow">PRIVATE DETAIL</span>
-        <h2>{selectedProduct.name}</h2>
+        <h2>{selectedProduct.modalName || selectedProduct.name}</h2>
 
         <div className="modal-header-meta">
           {selectedProduct.rating ? (
