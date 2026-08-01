@@ -445,7 +445,10 @@ const BASE_HERO_SLIDES = [
     image: "/hero/slide-6.jpg",
     desktopImage: "/hero/slide-6.jpg",
     mobileImage: "/hero/mobile/slide-6-mobile.jpg",
-    alt: "Armaf Club de Nuit Intense Overdose – uskoro u PlayNice kolekciji"
+    alt: "JASMINE IN THE SUN Now at PlayNice",
+    actionPrimary: "product",
+    actionProductSlug: "my-geisha-jasmine-in-the-sun",
+    preferredSize: "10ml"
   },
   {
     id: 2,
