@@ -550,10 +550,11 @@ const BASE_HERO_SLIDES = [
     alt: "Optional: special action, drop ili limited stock",
     actionPrimary: "collection",
     actionCollection: [
-    "ysl-black-opium-le-parfum",
-    "narciso-rodriguez-poudree"
+    "essential-parfums-nice-bergamote",
+    "essential-parfums-orange-x-santal",
+    "bois-imperial-essential-parfums"
   ],
-    collectionTitle: "Signature Energy izbor"
+    collectionTitle: "THREE PERFUMERS. THREE ICONS. ONE HOUSE. Essential Parfums"
   },
   {
     id: 11,
