@@ -1085,26 +1085,9 @@ export const products = [
       short: "Sweet Fruity Aromatic DNA"
     },
     noteMap: {
-      top: [
-        "green-mandarin",
-        "apple",
-        "cardamom",
-        "violet"
-      ],
-      heart: [
-        "mango",
-        "lavender",
-        "black-pepper",
-        "patchouli",
-        "peony"
-      ],
-      base: [
-        "vanilla",
-        "amber",
-        "teak-wood",
-        "vetiver",
-        "moss"
-      ]
+      top: ["green-mandarin", "apple", "cardamom", "violet"],
+      heart: ["mango", "lavender", "black-pepper", "patchouli", "peony"],
+      base: ["vanilla", "amber", "teak-wood", "vetiver", "moss"]
     }
   },
   {
@@ -1247,18 +1230,9 @@ export const products = [
       short: "Citrus Woody Leather DNA"
     },
     noteMap: {
-      top: [
-        "sicilian-citruses",
-        "black-currant",
-        "cold-spices"
-      ],
+      top: ["sicilian-citruses", "black-currant", "cold-spices"],
       heart: ["aquatic-jasmine", "patchouli-leaves"],
-      base: [
-        "woody-notes",
-        "leather",
-        "oakmoss",
-        "vanilla"
-      ]
+      base: ["woody-notes", "leather", "oakmoss", "vanilla"]
     }
   },
   {
@@ -1369,25 +1343,9 @@ export const products = [
       short: "Amber Kulfi DNA"
     },
     noteMap: {
-      top: [
-        "neroli",
-        "saffron",
-        "cardamom",
-        "mandarin",
-        "nutmeg"
-      ],
-      heart: [
-        "kulfi",
-        "rose",
-        "jasmine",
-        "orange-blossom"
-      ],
-      base: [
-        "sandalwood",
-        "vanilla",
-        "amber",
-        "woody-notes"
-      ]
+      top: ["neroli", "saffron", "cardamom", "mandarin", "nutmeg"],
+      heart: ["kulfi", "rose", "jasmine", "orange-blossom"],
+      base: ["sandalwood", "vanilla", "amber", "woody-notes"]
     },
     discount: {
       size: "5ml",
@@ -1417,26 +1375,9 @@ export const products = [
       short: "Sweet Boozy Nightlife DNA"
     },
     noteMap: {
-      top: [
-        "dragon-fruit",
-        "bergamot",
-        "cognac",
-        "lavender",
-        "apple"
-      ],
-      heart: [
-        "cardamom",
-        "mahonial",
-        "suede",
-        "toffee",
-        "cedarwood"
-      ],
-      base: [
-        "tonka-bean",
-        "akigalawood",
-        "ambrofix",
-        "patchouli"
-      ]
+      top: ["dragon-fruit", "bergamot", "cognac", "lavender", "apple"],
+      heart: ["cardamom", "mahonial", "suede", "toffee", "cedarwood"],
+      base: ["tonka-bean", "akigalawood", "ambrofix","patchouli"]
     }
   },
   {
@@ -1462,12 +1403,7 @@ export const products = [
       short: "Invictus Aqua DNA"
     },
     noteMap: {
-      top: [
-        "frozen-apple",
-        "italian-lemon",
-        "sicilian-bergamot",
-        "star-anise"
-      ],
+      top: ["frozen-apple", "italian-lemon", "sicilian-bergamot", "star-anise"],
       heart: ["plum", "orange-blossom", "cardamom"],
       base: ["musk", "amber", "driftwood", "moss"]
     }
@@ -1807,14 +1743,7 @@ export const products = [
     noteMap: {
       top: ["pear", "cinnamon", "green-mandarin"],
       heart: ["jasmine-sambac", "solar-notes", "orange-blossom"],
-      base: [
-        "madagascar-vanilla",
-        "bourbon-vanilla",
-        "vanilla-absolute",
-        "black-coffee",
-        "vanilla-orchid",
-        "patchouli"
-      ]
+      base: ["madagascar-vanilla", "bourbon-vanilla", "vanilla-absolute", "black-coffee", "vanilla-orchid", "patchouli"]
     }
   },
   {
@@ -1868,13 +1797,7 @@ export const products = [
       short: "Icy Citrus Mint DNA"
     },
     noteMap: {
-      top: [
-        "spearmint",
-        "calabrian-bergamot",
-        "lemon-zest",
-        "grapefruit",
-        "snow-accord"
-      ],
+      top: ["spearmint", "calabrian-bergamot", "lemon-zest", "grapefruit", "snow-accord"],
       heart: ["ice-accord", "ginger", "tea", "sage"],
       base: ["peony", "ambermax", "cedarwood"]
     }
@@ -1903,13 +1826,7 @@ export const products = [
     },
     noteMap: {
       top: ["lime", "grapefruit", "lavender", "spearmint", "pineapple"],
-      heart: [
-        "juniper-berries",
-        "rosemary",
-        "olibanum",
-        "geranium",
-        "black-pepper"
-      ],
+      heart: ["juniper-berries", "rosemary", "olibanum", "geranium", "black-pepper"],
       base: ["vetiver", "cashmeran", "ambroxan", "oakmoss", "tonka-bean"]
     }
   },
@@ -2349,14 +2266,7 @@ export const products = [
     noteMap: {
       top: ["ginger", "lemon", "bergamot"],
       heart: ["orange-blossom", "magnolia", "jasmine", "rose"],
-      base: [
-        "vanilla",
-        "amber",
-        "sandalwood",
-        "cashmeran",
-        "patchouli",
-        "musk"
-      ]
+      base: ["vanilla", "amber", "sandalwood", "cashmeran", "patchouli", "musk"]
     },
     isNew: true
   },
