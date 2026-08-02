@@ -7193,18 +7193,19 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       type="button"
       className="modal-image-button"
       onClick={(event) => {
-        const isTouchDevice = window.matchMedia(
-          "(max-width: 768px), (hover: none), (pointer: coarse)"
-        ).matches;
+  const isMobileOrTouch =
+    window.innerWidth <= 900 ||
+    window.matchMedia("(hover: none)").matches ||
+    window.matchMedia("(pointer: coarse)").matches;
 
-        if (!isTouchDevice) return;
+  if (!isMobileOrTouch) return;
 
-        event.preventDefault();
-        event.stopPropagation();
+  event.preventDefault();
+  event.stopPropagation();
 
-        setNoteMapOpen(false);
-        setMobileImageZoomed((current) => !current);
-      }}
+  setNoteMapOpen(false);
+  setMobileImageZoomed((current) => !current);
+}}
       aria-label={
         mobileImageZoomed
           ? lang === "sr"
@@ -7220,7 +7221,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         src={selectedProduct.image}
         alt={selectedProduct.name}
         className="modal-image"
-      />
+        draggable="false"
+    />
 
       <span className="modal-image-zoom-hint" aria-hidden="true">
         <svg

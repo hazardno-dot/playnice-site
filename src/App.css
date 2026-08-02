@@ -4565,7 +4565,7 @@ main {
 
 .modal-image-button {
   position: relative;
-  z-index: 2;
+  z-index: 20;
 
   display: inline-flex;
   align-items: center;
@@ -4584,7 +4584,16 @@ main {
   font: inherit;
   line-height: 0;
 
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+
+  transform-origin: center center;
+
+  transition:
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 320ms ease;
 }
 
 .modal-image {
@@ -4595,20 +4604,17 @@ main {
 
   object-fit: contain;
 
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+
   filter:
     drop-shadow(0 24px 38px rgba(0, 0, 0, 0.40));
 
-  transform-origin: center center;
-
   transition:
-    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
     filter 320ms ease;
 }
-
-@media (hover: hover) and (pointer: fine) {
-  .modal-image-button {
-    cursor: zoom-in;
-  }
 
   .modal-image-wrap.has-note-map:hover .modal-image,
   .modal-image-wrap.has-note-map.note-map-open .modal-image {
@@ -4711,11 +4717,6 @@ main {
     opacity 220ms ease,
     transform 220ms ease;
 }
-
-@media (max-width: 768px), (hover: none), (pointer: coarse) {
-  .modal-image-button {
-    cursor: pointer;
-  }
 
   .modal-image-zoom-hint {
     display: none;
@@ -19897,4 +19898,136 @@ body.overlay-lock .header-system {
 
 .shop-empty-state .clear-filters-button {
   margin-top: 8px;
+}
+
+/* =========================================
+   PRODUCT IMAGE ZOOM — FINAL OVERRIDES
+========================================= */
+
+.modal-image-wrap > .modal-image-button {
+  position: relative;
+  z-index: 20 !important;
+
+  pointer-events: auto !important;
+  touch-action: manipulation;
+
+  transform-origin: center center;
+
+  transition:
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 320ms ease;
+}
+
+.modal-image-wrap > .modal-image-button .modal-image {
+  width: auto;
+  height: auto;
+
+  max-width: 100%;
+  max-height: 280px;
+
+  opacity: 1 !important;
+  transform: none !important;
+
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+
+/* DESKTOP */
+
+@media (hover: hover) and (pointer: fine) {
+  .modal-image-button {
+    cursor: default;
+  }
+
+  .modal-image-wrap.has-note-map:hover
+    > .modal-image-button,
+  .modal-image-wrap.has-note-map.note-map-open
+    > .modal-image-button {
+    z-index: 30 !important;
+
+    transform:
+      translateX(-62px)
+      translateY(-2px)
+      scale(1.3);
+
+    filter:
+      drop-shadow(0 30px 46px rgba(0, 0, 0, 0.52));
+  }
+
+  .modal-image-wrap.has-note-map:hover
+    > .modal-image-button
+    .modal-image,
+  .modal-image-wrap.has-note-map.note-map-open
+    > .modal-image-button
+    .modal-image {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .modal-image-wrap.has-note-map:hover
+    .modal-image-zoom-hint,
+  .modal-image-wrap.has-note-map.note-map-open
+    .modal-image-zoom-hint {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+
+  .modal-image-wrap:not(.has-note-map)
+    > .modal-image-button:hover {
+    transform:
+      translateY(-3px)
+      scale(1.08);
+  }
+}
+
+
+/* MOBILE / TOUCH */
+
+@media (max-width: 900px), (hover: none), (pointer: coarse) {
+  .modal-image-button {
+    z-index: 30 !important;
+    cursor: pointer;
+  }
+
+  .modal-image-zoom-hint {
+    display: none;
+  }
+
+  .modal-image-wrap.is-mobile-image-zoomed {
+    z-index: 40;
+  }
+
+  .modal-image-wrap.is-mobile-image-zoomed::after {
+    width: 270px;
+    height: 270px;
+    opacity: 1;
+  }
+
+  .modal-image-wrap.is-mobile-image-zoomed
+    > .modal-image-button {
+    z-index: 50 !important;
+
+    transform:
+      translateY(-4px)
+      scale(1.42);
+
+    filter:
+      drop-shadow(0 30px 48px rgba(0, 0, 0, 0.56));
+  }
+
+  .modal-image-wrap.is-mobile-image-zoomed
+    > .modal-image-button
+    .modal-image {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .modal-image-wrap.note-map-open
+    > .modal-image-button {
+    z-index: 1 !important;
+    pointer-events: none !important;
+  }
 }
