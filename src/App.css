@@ -19767,11 +19767,11 @@ body.overlay-lock .header-system {
 ========================================= */
 
 @media (max-width: 768px) {
-  .modal-image-wrap {
+  .product-modal .modal-image-wrap {
     min-height: 280px;
   }
 
-  .modal-image {
+  .product-modal .modal-image {
     max-width: 92%;
     max-height: 330px;
   }
