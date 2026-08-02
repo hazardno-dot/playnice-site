@@ -19761,18 +19761,3 @@ body.overlay-lock .header-system {
 .shop-empty-state .clear-filters-button {
   margin-top: 8px;
 }
-
-/* =========================================
-   MOBILE — LARGER PRODUCT IMAGE
-========================================= */
-
-@media (max-width: 768px) {
-  .modal-image-wrap {
-    min-height: 270px;
-  }
-
-  .modal-image {
-    max-width: 89%;
-    max-height: 320px;
-  }
-}
