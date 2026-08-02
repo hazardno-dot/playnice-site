@@ -729,6 +729,7 @@ const getInitialShopState = () => {
   const [currentVideo, setCurrentVideo] = useState(0);
   const [productModalVisible, setProductModalVisible] = useState(false);
   const [noteMapOpen, setNoteMapOpen] = useState(false);
+  const [mobileImageZoomed, setMobileImageZoomed] = useState(false);
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
 
@@ -1594,6 +1595,12 @@ useEffect(() => {
     window.removeEventListener("popstate", handlePopState);
   };
 }, []);
+
+/* MobileImageZoomed */
+
+useEffect(() => {
+  setMobileImageZoomed(false);
+}, [selectedProduct?.id]);
 
 /* feedback helper */
 
@@ -7174,17 +7181,65 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
-  <div
+<div
   className={`modal-image-wrap panel-item-anim panel-item-2 ${
     selectedProduct.noteMap ? "has-note-map" : ""
-  } ${noteMapOpen ? "note-map-open" : ""}`}
+  } ${noteMapOpen ? "note-map-open" : ""} ${
+    mobileImageZoomed ? "is-mobile-image-zoomed" : ""
+  }`}
 >
   {selectedProduct.image ? (
-    <img
-      src={selectedProduct.image}
-      alt={selectedProduct.name}
-      className="modal-image"
-    />
+    <button
+      type="button"
+      className="modal-image-button"
+      onClick={(event) => {
+        const isTouchDevice = window.matchMedia(
+          "(max-width: 768px), (hover: none), (pointer: coarse)"
+        ).matches;
+
+        if (!isTouchDevice) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        setNoteMapOpen(false);
+        setMobileImageZoomed((current) => !current);
+      }}
+      aria-label={
+        mobileImageZoomed
+          ? lang === "sr"
+            ? "Smanji sliku parfema"
+            : "Reduce fragrance image"
+          : lang === "sr"
+          ? "Uvećaj sliku parfema"
+          : "Enlarge fragrance image"
+      }
+      aria-pressed={mobileImageZoomed}
+    >
+      <img
+        src={selectedProduct.image}
+        alt={selectedProduct.name}
+        className="modal-image"
+      />
+
+      <span className="modal-image-zoom-hint" aria-hidden="true">
+        <svg
+          viewBox="0 0 24 24"
+          width="17"
+          height="17"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="6.5" />
+          <path d="M16 16l4 4" />
+          <path d="M11 8v6" />
+          <path d="M8 11h6" />
+        </svg>
+      </span>
+    </button>
   ) : (
     <div className="modal-monogram">
       {selectedProduct.name.charAt(0)}
@@ -7196,24 +7251,30 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       notes={selectedProduct.noteMap}
       lang={lang}
       open={noteMapOpen}
-      onToggle={() => setNoteMapOpen((current) => !current)}
+      onToggle={() => {
+        setMobileImageZoomed(false);
+        setNoteMapOpen((current) => !current);
+      }}
     />
   )}
+
   {selectedProduct.noteMap && (
     <button
       type="button"
       className={`the-note-map__mobile-trigger ${
-      noteMapOpen ? "is-open" : ""
-    }`}
+        noteMapOpen ? "is-open" : ""
+      }`}
       onClick={(event) => {
         event.preventDefault();
         event.stopPropagation();
 
+        setMobileImageZoomed(false);
         setNoteMapOpen((current) => !current);
       }}
       aria-expanded={noteMapOpen}
     >
       <span>THE NOTE MAP</span>
+
       <strong aria-hidden="true">
         {noteMapOpen ? "×" : "+"}
       </strong>
