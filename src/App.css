@@ -19763,16 +19763,13 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   MOBILE — LARGER PRODUCT IMAGE
+   MOBILE — PRODUCT IMAGE +10%
 ========================================= */
 
 @media (max-width: 768px) {
-  .modal-image-wrap {
-    min-height: 275px;
-  }
-
-  .modal-image {
-    max-width: 86%;
-    max-height: 308px;
+  .modal-image-wrap > .modal-image,
+  .modal-image-wrap > .modal-image-button {
+    scale: 1.1;
+    transform-origin: center;
   }
 }
