@@ -4548,6 +4548,7 @@ main {
   justify-content: center;
 
   padding: 6px 0 4px;
+  overflow: visible;
 }
 
 .modal-image-wrap::after {
@@ -4606,12 +4607,53 @@ main {
   touch-action: manipulation;
 
   transform-origin: center center;
+  overflow: visible;
 
   transition:
     transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
     filter 320ms ease;
 
   -webkit-tap-highlight-color: transparent;
+}
+
+.modal-image-button::before {
+  content: "";
+
+  position: absolute;
+  inset: 12% 10% 10% 10%;
+  z-index: -1;
+
+  border-radius: 999px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(220, 181, 107, 0.20) 0%,
+      rgba(220, 181, 107, 0.10) 34%,
+      rgba(220, 181, 107, 0.04) 56%,
+      transparent 76%
+    );
+
+  filter: blur(24px);
+  opacity: 0;
+
+  transform: scale(0.88);
+
+  transition:
+    opacity 320ms ease,
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 320ms ease;
+
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .modal-image-wrap.has-note-map:hover > .modal-image-button::before,
+  .modal-image-wrap.has-note-map.note-map-open > .modal-image-button::before {
+    opacity: 1;
+    transform: scale(1.18) translateX(-10px);
+    filter: blur(30px);
+  }
 }
 
 .modal-image-button:focus-visible {
@@ -20046,44 +20088,37 @@ body.overlay-lock .header-system {
 
 @media (hover: hover) and (pointer: fine) {
   .modal-image-button {
-    cursor: default;
+    cursor: zoom-in;
   }
 
-  .modal-image-wrap.has-note-map:hover
-    > .modal-image-button,
-  .modal-image-wrap.has-note-map.note-map-open
-    > .modal-image-button {
-    z-index: 30 !important;
-
+  .modal-image-wrap.has-note-map:hover > .modal-image-button,
+  .modal-image-wrap.has-note-map.note-map-open > .modal-image-button {
     transform:
-      translateX(-62px)
-      translateY(-2px)
-      scale(1.3);
+      translateX(-96px)
+      translateY(-4px)
+      scale(1.34);
 
     filter:
-      drop-shadow(0 30px 46px rgba(0, 0, 0, 0.52));
+      drop-shadow(0 24px 28px rgba(0, 0, 0, 0.36))
+      drop-shadow(0 44px 68px rgba(0, 0, 0, 0.48))
+      drop-shadow(-18px 0 36px rgba(220, 181, 107, 0.18));
   }
 
-  .modal-image-wrap.has-note-map:hover
-    > .modal-image-button
-    .modal-image,
-  .modal-image-wrap.has-note-map.note-map-open
-    > .modal-image-button
-    .modal-image {
-    opacity: 1 !important;
-    transform: none !important;
+  .modal-image-wrap.has-note-map:hover > .modal-image-button .modal-image,
+  .modal-image-wrap.has-note-map.note-map-open > .modal-image-button .modal-image {
+    filter:
+      drop-shadow(0 24px 28px rgba(0, 0, 0, 0.36))
+      drop-shadow(0 44px 68px rgba(0, 0, 0, 0.48))
+      drop-shadow(-18px 0 36px rgba(220, 181, 107, 0.18));
   }
 
-  .modal-image-wrap.has-note-map:hover
-    .modal-image-zoom-hint,
-  .modal-image-wrap.has-note-map.note-map-open
-    .modal-image-zoom-hint {
+  .modal-image-wrap.has-note-map:hover .modal-image-zoom-hint,
+  .modal-image-wrap.has-note-map.note-map-open .modal-image-zoom-hint {
     opacity: 0;
     transform: scale(0.82);
   }
 
-  .modal-image-wrap:not(.has-note-map)
-    > .modal-image-button:hover {
+  .modal-image-wrap:not(.has-note-map) > .modal-image-button:hover {
     transform:
       translateY(-3px)
       scale(1.08);
