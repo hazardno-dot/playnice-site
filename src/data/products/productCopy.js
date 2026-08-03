@@ -2409,6 +2409,43 @@ export const productCopy = {
       en: "If you want a modern niche citrus with green freshness and a creamy woody base.",
     },
   },
+
+  "Armaf Club de Nuit Intense Overdose Eau de Parfum": {
+  miniTag: {
+    sr: "💎 Fruity / Intense",
+    en: "💎 Fruity / Intense"
+  },
+
+  card: {
+    sr: "Sočan ananas, mahovina i amber u snažnom modernom profilu.",
+    en: "Juicy pineapple, oakmoss and amber in a bold modern profile."
+  },
+
+  modal: {
+    sr: "Ananas, citrusi i kristalna svežina prelaze u šljivu, mahovinu i toplu amber-tonka bazu.",
+    en: "Pineapple, citrus and crystalline freshness settle into plum, oakmoss and a warm amber-tonka base."
+  },
+
+  scentType: {
+    sr: "Fruity woody amber",
+    en: "Fruity woody amber"
+  },
+
+  dominantNotes: {
+    sr: ["ananas", "hrastova mahovina", "šljiva", "tonka"],
+    en: ["pineapple", "oakmoss", "plum", "tonka bean"]
+  },
+
+  tags: {
+    sr: ["Intense", "Signature", "Modern"],
+    en: ["Intense", "Signature", "Modern"]
+  },
+
+  whyChoose: {
+    sr: "Ako želiš snažan, upečatljiv i dugotrajan signature miris.",
+    en: "If you want a bold, distinctive and long-lasting signature scent."
+  }
+},
 };
 
 /* =========================================

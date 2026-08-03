@@ -2469,4 +2469,33 @@ export const products = [
     },
     isNew: true
   },
+  {
+  id: 87,
+  slug: "armaf-club-de-nuit-intense-overdose",
+  name: "Armaf Club de Nuit Intense Overdose Eau de Parfum",
+  shortName: "CDN Intense Overdose",
+  category: "Arabian",
+  image: "/products/armaf-club-de-nuit-intense-overdose.png",
+  sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
+  badge: "NEW",
+  rating: 9.0,
+  ratingLabel: "New Icon",
+  season: "all",
+  moods: ["signature", "rich", "date"],
+  recommendations: [
+    "armaf-club-de-nuit-precieux-i",
+    "afnan-supremacy-collectors-edition",
+    "rasasi-hawas-black"
+  ],
+  inspiredBy: {
+    name: "Original Armaf creation",
+    short: "Intense Overdose DNA"
+  },
+  noteMap: {
+    top: ["bergamot", "mandarin", "pineapple", "crystal-notes"],
+    heart: ["oakmoss", "vanilla-flower", "plum"],
+    base: ["amber", "patchouli", "tonka-bean", "powdery-notes"]
+  },
+  isNew: true,
+},
 ];

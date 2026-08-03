@@ -346,4 +346,8 @@ export const productWearContext = {
     sr: "Posao, svaki dan i opuštene večernje prilike.",
     en: "Work, everyday wear and relaxed evening occasions.",
   },
+  "Armaf Club de Nuit Intense Overdose Eau de Parfum": {
+  sr: "Izlazak, veče, posebne prilike.",
+  en: "Going out, evenings, special occasions."
+}
 };
