@@ -517,7 +517,7 @@ const BASE_HERO_SLIDES = [
     mobileImage: "/hero/mobile/slide-7-mobile.jpg",
     alt: "Optional: special action, drop ili limited stock",
     actionPrimary: "product",
-    actionProductSlug: "afnan-9pm-night-out",
+    actionProductSlug: "armaf-club-de-nuit-intense-overdose",
     preferredSize: "10ml",
   },
   {
