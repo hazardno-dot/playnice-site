@@ -4510,12 +4510,16 @@ main {
    LEFT SIDE
 ========================================= */
 .modal-badge {
+  align-self: flex-start;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  min-width: 128px;
-  padding: 13px 22px;
+  width: 150px;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 13px 18px;
 
   color: #fff;
   background: linear-gradient(135deg, #ff3b3f 0%, #d9162c 100%);
