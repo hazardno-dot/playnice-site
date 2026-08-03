@@ -4510,30 +4510,7 @@ main {
    LEFT SIDE
 ========================================= */
 .modal-badge {
-  align-self: flex-start;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 150px;
-  min-width: 0;
-  box-sizing: border-box;
-  padding: 13px 18px;
-
-  color: #fff;
-  background: linear-gradient(135deg, #ff3b3f 0%, #d9162c 100%);
-
-  font-size: 13px;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-
-  border: 0;
-  border-radius: 0;
-
-  clip-path: polygon(
+  --badge-shape: polygon(
     0% 50%,
     7% 40%,
     3% 27%,
@@ -4564,7 +4541,49 @@ main {
     7% 59%
   );
 
-  filter: drop-shadow(0 7px 14px rgba(224, 24, 43, 0.24));
+  position: relative;
+  isolation: isolate;
+  align-self: flex-start;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 140px;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 12px 16px;
+
+  color: #fff;
+  background: #cda85e;
+
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+
+  border: 0;
+  border-radius: 0;
+
+  clip-path: var(--badge-shape);
+
+  filter: drop-shadow(0 7px 14px rgba(224, 24, 43, 0.22));
+}
+
+.modal-badge::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 1.5px;
+
+  background: linear-gradient(
+    135deg,
+    #ff3b3f 0%,
+    #d9162c 100%
+  );
+
+  clip-path: var(--badge-shape);
 }
 
 .modal-image-wrap {
