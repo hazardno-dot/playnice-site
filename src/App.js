@@ -729,7 +729,23 @@ function ProductJustInBadge({ label = "JUST IN" }) {
       </span>
 
       <span className="product-new-comet">
-        <span className="product-new-star">✦</span>
+        <span className="product-new-star">
+  <svg
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path
+      className="product-new-star-glow"
+      d="M12 1.5 14.8 8.4 22.2 8.9 16.5 13.6 18.3 20.8 12 16.8 5.7 20.8 7.5 13.6 1.8 8.9 9.2 8.4Z"
+    />
+
+    <path
+      className="product-new-star-line"
+      d="M12 1.5 14.8 8.4 22.2 8.9 16.5 13.6 18.3 20.8 12 16.8 5.7 20.8 7.5 13.6 1.8 8.9 9.2 8.4Z"
+    />
+  </svg>
+</span>
 
         <i className="product-new-dust dust-1" />
         <i className="product-new-dust dust-2" />

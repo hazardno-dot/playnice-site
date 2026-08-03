@@ -20341,8 +20341,21 @@ body.overlay-lock .header-system {
   width: 14px;
   height: 14px;
 
+  offset-path: path(
+    "M 70 27
+     C 78 18, 74 8, 63 5
+     C 49 0, 30 5, 18 14
+     C 9 21, 9 27, 14 29
+     C 18 32, 23 28, 28 25
+     C 42 21, 57 23, 73 25"
+  );
+
+  offset-distance: 0%;
+  offset-rotate: 0deg;
+  offset-anchor: center;
+
   opacity: 0;
-  transform: translate3d(68px, 25px, 0) scale(0.35);
+  transform: scale(0.35);
 
   backface-visibility: hidden;
   pointer-events: none;
@@ -20357,13 +20370,32 @@ body.overlay-lock .header-system {
   display: grid;
   place-items: center;
 
-  color: #e6c27a;
-  font-size: 14px;
-  line-height: 1;
+  width: 14px;
+  height: 14px;
 
-  text-shadow:
-    0 0 5px rgba(230, 194, 122, 0.68),
-    0 0 11px rgba(220, 181, 107, 0.36);
+  color: rgba(220, 82, 82, 0.98);
+}
+
+.product-new-star svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.product-new-star-glow {
+  fill: none;
+  stroke: rgba(220, 82, 82, 0.2);
+  stroke-width: 4;
+  stroke-linejoin: round;
+}
+
+.product-new-star-line {
+  fill: transparent;
+  stroke: rgba(230, 88, 88, 0.98);
+  stroke-width: 1.7;
+  stroke-linejoin: round;
+  stroke-linecap: round;
 }
 
 /* Zvjezdana prašina */
@@ -20432,11 +20464,11 @@ body.overlay-lock .header-system {
 .product-new-badge.is-drawing .product-new-comet {
   animation:
     productJustInComet 1.55s
-    cubic-bezier(0.4, 0, 0.2, 1)
+    linear
     var(--just-in-delay)
     both;
 
-  will-change: transform, opacity;
+  will-change: offset-distance, transform, opacity;
 }
 
 .product-new-badge.is-drawing .product-new-badge-shell {
@@ -20453,7 +20485,7 @@ body.overlay-lock .header-system {
   animation:
     productJustInWrite 0.76s
     cubic-bezier(0.22, 1, 0.36, 1)
-    calc(var(--just-in-delay) + 0.86s)
+    calc(var(--just-in-delay) + 1s)
     both;
 
   will-change: clip-path, opacity;
@@ -20491,86 +20523,39 @@ body.overlay-lock .header-system {
 
 @keyframes productJustInComet {
   0% {
+    offset-distance: 0%;
     opacity: 0;
-    transform:
-      translate3d(68px, 25px, 0)
-      rotate(0deg)
-      scale(0.35);
+    transform: scale(0.35);
   }
 
   6% {
+    offset-distance: 6%;
     opacity: 1;
-    transform:
-      translate3d(70px, 23px, 0)
-      rotate(-8deg)
-      scale(0.8);
+    transform: scale(0.8);
   }
 
-  18% {
+  12% {
+    offset-distance: 12%;
     opacity: 1;
-    transform:
-      translate3d(74px, 14px, 0)
-      rotate(-18deg)
-      scale(1);
+    transform: scale(1);
   }
 
-  32% {
-    transform:
-      translate3d(64px, 3px, 0)
-      rotate(-24deg)
-      scale(1.05);
-  }
-
-  45% {
-    transform:
-      translate3d(43px, 5px, 0)
-      rotate(-12deg)
-      scale(1);
-  }
-
-  58% {
-    transform:
-      translate3d(12px, 24px, 0)
-      rotate(4deg)
-      scale(0.94);
-  }
-
-  63% {
-    transform:
-      translate3d(16px, 24px, 0)
-      rotate(0deg)
-      scale(0.96);
-  }
-
-  76% {
-    transform:
-      translate3d(34px, 24px, 0)
-      rotate(0deg)
-      scale(1);
-  }
-
-  88% {
+  90% {
+    offset-distance: 90%;
     opacity: 1;
-    transform:
-      translate3d(53px, 24px, 0)
-      rotate(0deg)
-      scale(1);
+    transform: scale(1);
   }
 
-  96% {
+  97% {
+    offset-distance: 97%;
     opacity: 1;
-    transform:
-      translate3d(70px, 24px, 0)
-      rotate(0deg)
-      scale(0.9);
+    transform: scale(0.88);
   }
 
   100% {
+    offset-distance: 100%;
     opacity: 0;
-    transform:
-      translate3d(74px, 24px, 0)
-      rotate(0deg)
-      scale(0.55);
+    transform: scale(0.55);
   }
 }
 
