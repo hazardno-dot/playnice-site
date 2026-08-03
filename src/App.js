@@ -676,87 +676,6 @@ const getInitialShopState = () => {
 };
 
 /* =========================================
-   JustInBadge
-========================================= */
-
-function ProductJustInBadge({ label = "JUST IN" }) {
-  const badgeRef = useRef(null);
-  const [isInView, setIsInView] = useState(false);
-
-  useEffect(() => {
-    const badge = badgeRef.current;
-
-    if (!badge) return undefined;
-
-    if (
-      typeof window === "undefined" ||
-      !("IntersectionObserver" in window)
-    ) {
-      setIsInView(true);
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-
-        setIsInView(true);
-        observer.disconnect();
-      },
-      {
-        threshold: 0.55,
-        rootMargin: "0px 0px -6% 0px"
-      }
-    );
-
-    observer.observe(badge);
-
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <span
-      ref={badgeRef}
-      className={`product-new-badge ${
-        isInView ? "is-drawing" : ""
-      }`}
-      aria-hidden="true"
-    >
-      <span className="product-new-badge-shell" />
-
-      <span className="product-new-badge-text">
-        {label}
-      </span>
-
-      <span className="product-new-comet">
-        <span className="product-new-star">
-  <svg
-    viewBox="0 0 24 24"
-    aria-hidden="true"
-    focusable="false"
-  >
-    <path
-      className="product-new-star-glow"
-      d="M12 1.5 14.8 8.4 22.2 8.9 16.5 13.6 18.3 20.8 12 16.8 5.7 20.8 7.5 13.6 1.8 8.9 9.2 8.4Z"
-    />
-
-    <path
-      className="product-new-star-line"
-      d="M12 1.5 14.8 8.4 22.2 8.9 16.5 13.6 18.3 20.8 12 16.8 5.7 20.8 7.5 13.6 1.8 8.9 9.2 8.4Z"
-    />
-  </svg>
-</span>
-
-        <i className="product-new-dust dust-1" />
-        <i className="product-new-dust dust-2" />
-        <i className="product-new-dust dust-3" />
-        <i className="product-new-dust dust-4" />
-      </span>
-    </span>
-  );
-}
-
-/* =========================================
    APP
 ========================================= */
   function App() {
@@ -3856,7 +3775,9 @@ const titleLengthClass =
 )}
 
       {product.isNew && (
-  <ProductJustInBadge label="JUST IN" />
+  <span className="product-new-badge">
+    {tr.justIn}
+  </span>
 )}
     </button>
 
