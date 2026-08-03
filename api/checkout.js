@@ -811,6 +811,7 @@ const trackingNumber = reservedOrder?.trackingNumber || "";
         await resend.emails.send({
           from: `PlayNice <${fromEmail}>`,
           to: email,
+          replyTo: "info@playniceshop.me",
           subject: `PlayNice Delivery Enquiry Received • ${orderId}`,
           html: internationalCustomerEmailHtml({
             enquiryId: orderId,
@@ -904,6 +905,7 @@ const trackingNumber = reservedOrder?.trackingNumber || "";
       await resend.emails.send({
         from: `PlayNice <${fromEmail}>`,
         to: email,
+        replyTo: "info@playniceshop.me",
         subject: `PlayNice Order Confirmation • ${orderId}`,
         html: customerEmailHtml({
           orderId,
