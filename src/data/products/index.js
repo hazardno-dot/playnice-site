@@ -2477,7 +2477,7 @@ export const products = [
   category: "Arabian",
   image: "/products/armaf-club-de-nuit-intense-overdose.png",
   sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
-  badge: "NEW",
+  badge: "TRENDING",
   rating: 9.0,
   ratingLabel: "New Icon",
   season: "all",

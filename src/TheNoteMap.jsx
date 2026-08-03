@@ -285,6 +285,9 @@ const NOTE_SR = {
   "white-lemon": "Beli limun",
   "white-musk": "Beli mošus",
   "white-woods": "Bele drvene note",
+  "crystal-notes": "Kristalne note",
+  "vanilla-flower": "Cvet vanile",
+  "powdery-notes": "Puderaste note",
 };
 
 const NOTE_LEVELS = [
