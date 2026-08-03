@@ -7157,10 +7157,34 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <div className="modal-body">
   <div className="modal-media panel-anim panel-anim-2">
     {selectedProduct.badge && (
-      <span className="modal-badge panel-item-anim panel-item-1">
-        {selectedProduct.badge}
-      </span>
-    )}
+  <div
+    className="modal-badge-stage panel-item-anim panel-item-1"
+    role="img"
+    aria-label={selectedProduct.badge}
+  >
+    <div
+      className={`modal-badge-letters ${
+        selectedProduct.badge.length >= 14
+          ? "is-extra-long"
+          : selectedProduct.badge.length >= 11
+          ? "is-long"
+          : ""
+      }`}
+      aria-hidden="true"
+    >
+      {Array.from(selectedProduct.badge).map((character, index) => (
+        <span
+          key={`${selectedProduct.id}-${selectedProduct.badge}-${index}`}
+          className={`modal-badge-letter${
+            character === " " ? " is-space" : ""
+          }`}
+        >
+          {character === " " ? "\u00A0" : character}
+        </span>
+      ))}
+    </div>
+  </div>
+)}
 
     {selectedProduct.slug === "ysl-y-iced-cologne" && (
   <div className="modal-sample-mini">
