@@ -2473,6 +2473,7 @@ export const products = [
   id: 87,
   slug: "armaf-club-de-nuit-intense-overdose",
   name: "Armaf Club de Nuit Intense Overdose Eau de Parfum",
+  modalName: "Armaf Club de Nuit Intense Overdose EDP",
   shortName: "CDN Intense Overdose",
   category: "Arabian",
   image: "/products/armaf-club-de-nuit-intense-overdose.png",
