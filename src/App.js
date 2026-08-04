@@ -4933,6 +4933,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           "Carolina Herrera Bad Boy Cobalt Eau de Parfum": 5,
           "Rayhaan Azul Eau de Parfum": 3,
           "Bois Impérial by Essential Parfums": 1,
+          "Club De Nuit Intense Overdose": 12,
         };
 
         const lockedVotes = lockedVotesByName[item.name] || item.lockedVotes || 1;
