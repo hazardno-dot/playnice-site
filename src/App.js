@@ -2950,7 +2950,7 @@ const addHeroBottleToCart = () => {
   }
 };
 
-  const handlePlaceOrder = async () => {
+const handlePlaceOrder = async () => {
   if (!isMontenegroOrder) {
     handleInternationalEnquiry();
     return;
@@ -3010,6 +3010,30 @@ const addHeroBottleToCart = () => {
     if (!response.ok) {
       throw new Error("Checkout request failed");
     }
+
+    const result = await response.json();
+
+    if (
+      !result?.success ||
+      !result?.orderPlaced ||
+      !result?.orderId
+    ) {
+      throw new Error("Order was not confirmed by checkout API");
+    }
+
+    trackEvent("purchase", {
+      transaction_id: String(result.orderId),
+      currency: "EUR",
+      value: Number(subtotal),
+      shipping: Number(shipping),
+      items: cart.map((item) => ({
+        item_id: String(item.id ?? item.key),
+        item_name: item.name,
+        item_variant: item.size,
+        price: Number(item.price),
+        quantity: Number(item.quantity || 1)
+      }))
+    });
 
     setOrderSuccessMessage(tr.orderSuccess);
     setCart([]);
