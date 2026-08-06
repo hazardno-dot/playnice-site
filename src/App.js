@@ -3267,11 +3267,11 @@ const openProductModal = (product, options = {}) => {
   if (!product) return;
 
   const {
-  updateUrl = true,
-  preferredSize = "",
-  userPickedSize = false,
-  changeView = true
-} = options;
+    updateUrl = true,
+    preferredSize = "",
+    userPickedSize = false,
+    changeView = true
+  } = options;
 
   const isMobileModal = isMobileProductModal();
 
@@ -3280,20 +3280,23 @@ const openProductModal = (product, options = {}) => {
     productModalCloseTimeoutRef.current = null;
   }
 
-  productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;
+  productModalScrollYRef.current =
+    window.scrollY || window.pageYOffset || 0;
 
   const initialSize =
-  preferredSize && product.sizes?.[preferredSize]
-    ? preferredSize
-    : Object.keys(product.sizes || {})[0] || "";
+    preferredSize && product.sizes?.[preferredSize]
+      ? preferredSize
+      : Object.keys(product.sizes || {})[0] || "";
 
-if (changeView) {
-  setView("shop");
-}
+  const initialPrice = Number(product.sizes?.[initialSize] ?? 0);
 
-setSelectedProduct(product);
-setSelectedSize(initialSize);
-setHasUserPickedSize(userPickedSize);
+  if (changeView) {
+    setView("shop");
+  }
+
+  setSelectedProduct(product);
+  setSelectedSize(initialSize);
+  setHasUserPickedSize(userPickedSize);
 
   if (isMobileModal) {
     setProductModalVisible(true);
@@ -3302,23 +3305,38 @@ setHasUserPickedSize(userPickedSize);
   }
 
   if (updateUrl) {
-  const productUrl = getProductUrl(product);
-  const hasRouteChanged = window.location.pathname !== productUrl;
+    const productUrl = getProductUrl(product);
+    const hasRouteChanged = window.location.pathname !== productUrl;
 
-  if (hasRouteChanged) {
-    window.history.pushState(
-      {
-        playniceProductModal: true,
-        productSlug: getProductSlug(product)
-      },
-      "",
-      productUrl
-    );
+    if (hasRouteChanged) {
+      window.history.pushState(
+        {
+          playniceProductModal: true,
+          productSlug: getProductSlug(product)
+        },
+        "",
+        productUrl
+      );
 
-    trackPageView(productUrl);
-    trackMeta("PageView");
+      trackPageView(productUrl);
+      trackMeta("PageView");
+    }
   }
-}
+
+  trackEvent("view_item", {
+    currency: "EUR",
+    value: initialPrice,
+    items: [
+      {
+        item_id: String(product.id),
+        item_name: product.name,
+        item_variant: initialSize,
+        item_category: product.category,
+        price: initialPrice,
+        quantity: 1
+      }
+    ]
+  });
 
   if (!isMobileModal) {
     requestAnimationFrame(() => {
