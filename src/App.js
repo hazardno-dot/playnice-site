@@ -3207,22 +3207,23 @@ setHasUserPickedSize(userPickedSize);
   }
 
   if (updateUrl) {
-    const productUrl = getProductUrl(product);
+  const productUrl = getProductUrl(product);
+  const hasRouteChanged = window.location.pathname !== productUrl;
 
-    if (window.location.pathname !== productUrl) {
-      window.history.pushState(
-        {
+  if (hasRouteChanged) {
+    window.history.pushState(
+      {
         playniceProductModal: true,
         productSlug: getProductSlug(product)
-    },
-    "",
-    productUrl
-  );
-    }
+      },
+      "",
+      productUrl
+    );
 
     trackPageView(productUrl);
     trackMeta("PageView");
   }
+}
 
   if (!isMobileModal) {
     requestAnimationFrame(() => {
