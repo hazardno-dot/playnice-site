@@ -1559,6 +1559,9 @@ useEffect(() => {
 
 useEffect(() => {
   const handlePopState = () => {
+    const pagePath =
+      window.location.pathname + window.location.search;
+
     const productFromUrl = getProductFromCurrentUrl();
 
     if (productFromUrl) {
@@ -1568,24 +1571,30 @@ useEffect(() => {
         updateUrl: false
       });
 
+      trackPageView(pagePath || "/");
+      trackMeta("PageView");
+
       return;
     }
 
     const nextView = getInitialView();
 
-  setNoteMapOpen(false);
-  setProductModalVisible(false);
-  setSelectedProduct(null);
-  setSelectedSize("");
-  setHasUserPickedSize(false);
+    setNoteMapOpen(false);
+    setProductModalVisible(false);
+    setSelectedProduct(null);
+    setSelectedSize("");
+    setHasUserPickedSize(false);
 
-  setJournalOpen(nextView === "journal");
+    setJournalOpen(nextView === "journal");
 
-  if (nextView !== "journal") {
-    setSelectedArticle(null);
-  }
+    if (nextView !== "journal") {
+      setSelectedArticle(null);
+    }
 
-  setView(nextView);
+    setView(nextView);
+
+    trackPageView(pagePath || "/");
+    trackMeta("PageView");
   };
 
   window.addEventListener("popstate", handlePopState);
