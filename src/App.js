@@ -2495,17 +2495,18 @@ const switchView = (nextView, options = {}) => {
   const { scrollTop = true } = options;
   const nextPath = routeForView(nextView);
   const isSameView = view === nextView;
+  const hasRouteChanged = window.location.pathname !== nextPath;
 
   if (!isSameView) {
     setView(nextView);
   }
 
-  if (window.location.pathname !== nextPath) {
+  if (hasRouteChanged) {
     window.history.pushState({}, "", nextPath);
-  }
 
-  trackPageView(nextPath);
-  trackMeta("PageView");
+    trackPageView(nextPath);
+    trackMeta("PageView");
+  }
 
   if (scrollTop && !isSameView) {
     requestAnimationFrame(() => {
