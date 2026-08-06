@@ -2641,8 +2641,16 @@ const goHome = () => {
   trackEvent("add_to_cart", {
     currency: "EUR",
     value: Number(price),
-    item_name: `${product.name} ${label}`,
-    item_category: product.category
+    items: [
+      {
+        item_id: String(product.id),
+        item_name: product.name,
+        item_variant: label,
+        item_category: product.category,
+        price: Number(price),
+        quantity: 1
+      }
+    ]
   });
 
   trackMeta("AddToCart", {
@@ -2657,7 +2665,9 @@ const goHome = () => {
 
     if (existing) {
       return prev.map((item) =>
-        item.key === key ? { ...item, quantity: item.quantity + 1 } : item
+        item.key === key
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
       );
     }
 
