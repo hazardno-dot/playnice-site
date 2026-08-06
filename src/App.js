@@ -7265,18 +7265,27 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               type="button"
               className="modal-same-energy-item"
               onClick={() => {
+                const productUrl = getProductUrl(product);
+                const productSlug = getProductSlug(product);
+                const hasRouteChanged = window.location.pathname !== productUrl;
+
                 setSelectedProduct(product);
                 setSelectedSize(Object.keys(product.sizes)[0]);
                 setHasUserPickedSize(false);
 
-                window.history.replaceState(
-                  {
-                  ...(window.history.state || {}),
-                  productSlug: product.slug
-                  },
-                  "",
-                  `/product/${product.slug}`
+                if (hasRouteChanged) {
+                  window.history.replaceState(
+                    {
+                    ...(window.history.state || {}),
+                    productSlug
+                    },
+                    "",
+                  productUrl
                 );
+
+                trackPageView(productUrl);
+                trackMeta("PageView");
+                }
               }}
             >
               <span className="modal-same-energy-img-wrap">
