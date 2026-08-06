@@ -2756,13 +2756,15 @@ const addDiscoverySetToCart = () => {
     .sort((a, b) => a - b)
     .join("-")}`;
 
+  const bundleSize = `${DISCOVERY_REQUIRED_COUNT} × ${DISCOVERY_SIZE}`;
+
   const bundleItem = {
     key: bundleKey,
     id: bundleKey,
     type: "bundle",
-    name: lang === "sr" ? "PlayNice Discovery Set" : "PlayNice Discovery Set",
+    name: "PlayNice Discovery Set",
     image: discoverySelected[0]?.image,
-    size: `${DISCOVERY_REQUIRED_COUNT} × ${DISCOVERY_SIZE}`,
+    size: bundleSize,
     price: discoveryBundlePrice,
     quantity: 1,
     bundleItems: discoverySelected.map((product) => ({
@@ -2770,22 +2772,30 @@ const addDiscoverySetToCart = () => {
       name: product.name,
       image: product.image,
       size: DISCOVERY_SIZE,
-      price: product.sizes[DISCOVERY_SIZE],
-    })),
+      price: product.sizes[DISCOVERY_SIZE]
+    }))
   };
 
   trackEvent("add_to_cart", {
     currency: "EUR",
-    value: discoveryBundlePrice,
-    item_name: "PlayNice Discovery Set",
-    item_category: "Discovery Set",
+    value: Number(discoveryBundlePrice),
+    items: [
+      {
+        item_id: bundleKey,
+        item_name: "PlayNice Discovery Set",
+        item_variant: bundleSize,
+        item_category: "Discovery Set",
+        price: Number(discoveryBundlePrice),
+        quantity: 1
+      }
+    ]
   });
 
   trackMeta("AddToCart", {
     content_name: "PlayNice Discovery Set",
     content_category: "Discovery Set",
-    value: discoveryBundlePrice,
-    currency: "EUR",
+    value: Number(discoveryBundlePrice),
+    currency: "EUR"
   });
 
   setCart((prev) => {
