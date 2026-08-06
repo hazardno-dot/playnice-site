@@ -1386,7 +1386,18 @@ const selectedSortOption =
     return;
   }
 
-  const params = new URLSearchParams();
+  const params = new URLSearchParams(window.location.search);
+
+  // Ukloni samo PlayNice parametre koje ovaj blok kontroliše.
+  // UTM, gclid, fbclid i ostali attribution parametri ostaju sačuvani.
+  params.delete("view");
+  params.delete("category");
+  params.delete("search");
+  params.delete("season");
+  params.delete("mood");
+  params.delete("sort");
+  params.delete("page");
+
   params.set("view", view);
 
   if (category !== "All") params.set("category", category);
@@ -1405,17 +1416,17 @@ const selectedSortOption =
   const currentUrl = `${window.location.pathname}${window.location.search}`;
 
   if (currentUrl !== nextUrl) {
-    window.history.replaceState({}, "", nextUrl);
+    window.history.replaceState(window.history.state || {}, "", nextUrl);
   }
-  }, [
-    view,
-    category,
-    searchTerm,
-    season,
-    scentMood,
-    sortBy,
-    currentPage
-  ]);
+}, [
+  view,
+  category,
+  searchTerm,
+  season,
+  scentMood,
+  sortBy,
+  currentPage
+]);
 
   useEffect(() => {
     if (!hasMountedShopFiltersRef.current) {
