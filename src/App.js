@@ -1432,11 +1432,42 @@ const selectedSortOption =
     return () => clearTimeout(timer);
   }, [addedFeedback]);
 
-  useEffect(() => {
-    if (!orderSuccessMessage) return;
-    const timer = setTimeout(() => setOrderSuccessMessage(""), 2200);
-    return () => clearTimeout(timer);
-  }, [orderSuccessMessage]);
+  const checkoutTrackedRef = useRef(false);
+
+useEffect(() => {
+  if (!orderSuccessMessage) return;
+
+  const timer = setTimeout(() => {
+    setOrderSuccessMessage("");
+  }, 2200);
+
+  return () => clearTimeout(timer);
+}, [orderSuccessMessage]);
+
+useEffect(() => {
+  if (!checkoutOpen) {
+    checkoutTrackedRef.current = false;
+    return;
+  }
+
+  if (checkoutTrackedRef.current || cart.length === 0) {
+    return;
+  }
+
+  checkoutTrackedRef.current = true;
+
+  trackEvent("begin_checkout", {
+    currency: "EUR",
+    value: Number(subtotal),
+    items: cart.map((item) => ({
+      item_id: String(item.id ?? item.key),
+      item_name: item.name,
+      item_variant: item.size,
+      price: Number(item.price),
+      quantity: Number(item.quantity || 1)
+    }))
+  });
+}, [checkoutOpen, cart, subtotal]);
 
   useEffect(() => {
     if (heroPaused || heroSlides.length <= 1) return;
