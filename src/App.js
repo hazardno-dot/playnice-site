@@ -1478,6 +1478,19 @@ useEffect(() => {
       quantity: Number(item.quantity || 1)
     }))
   });
+
+  trackMeta("InitiateCheckout", {
+    content_ids: cart.map((item) =>
+      String(item.id ?? item.key)
+    ),
+    content_type: "product",
+    num_items: cart.reduce(
+      (total, item) => total + Number(item.quantity || 1),
+      0
+    ),
+    value: Number(subtotal),
+    currency: "EUR"
+  });
 }, [checkoutOpen, cart, subtotal]);
 
   useEffect(() => {
@@ -3066,6 +3079,24 @@ const handlePlaceOrder = async () => {
       }))
     });
 
+    trackMeta("Purchase", {
+      content_ids: cart.map((item) =>
+        String(item.id ?? item.key)
+      ),
+      content_type: "product",
+      contents: cart.map((item) => ({
+        id: String(item.id ?? item.key),
+        quantity: Number(item.quantity || 1)
+      })),
+      num_items: cart.reduce(
+        (totalItems, item) =>
+          totalItems + Number(item.quantity || 1),
+        0
+      ),
+      value: Number(subtotal),
+      currency: "EUR"
+    });
+
     setOrderSuccessMessage(tr.orderSuccess);
     setCart([]);
 
@@ -3288,7 +3319,7 @@ const openProductModal = (product, options = {}) => {
       ? preferredSize
       : Object.keys(product.sizes || {})[0] || "";
 
-  const initialPrice = Number(product.sizes?.[initialSize] ?? 0);
+  const initialPrice = Number(product.sizes?.[initialSize] || 0);
 
   if (changeView) {
     setView("shop");
@@ -3297,6 +3328,30 @@ const openProductModal = (product, options = {}) => {
   setSelectedProduct(product);
   setSelectedSize(initialSize);
   setHasUserPickedSize(userPickedSize);
+
+  trackEvent("view_item", {
+    currency: "EUR",
+    value: initialPrice,
+    items: [
+      {
+        item_id: String(product.id),
+        item_name: product.name,
+        item_variant: initialSize,
+        item_category: product.category,
+        price: initialPrice,
+        quantity: 1
+      }
+    ]
+  });
+
+  trackMeta("ViewContent", {
+    content_ids: [String(product.id)],
+    content_name: product.name,
+    content_category: product.category,
+    content_type: "product",
+    value: initialPrice,
+    currency: "EUR"
+  });
 
   if (isMobileModal) {
     setProductModalVisible(true);
@@ -3322,21 +3377,6 @@ const openProductModal = (product, options = {}) => {
       trackMeta("PageView");
     }
   }
-
-  trackEvent("view_item", {
-    currency: "EUR",
-    value: initialPrice,
-    items: [
-      {
-        item_id: String(product.id),
-        item_name: product.name,
-        item_variant: initialSize,
-        item_category: product.category,
-        price: initialPrice,
-        quantity: 1
-      }
-    ]
-  });
 
   if (!isMobileModal) {
     requestAnimationFrame(() => {
