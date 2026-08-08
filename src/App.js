@@ -440,6 +440,20 @@ const getInitialView = () => {
 
 const BASE_HERO_SLIDES = [
   {
+    id: 9,
+    kind: "imageOnly",
+    image: "/hero/slide-9.jpg",
+    desktopImage: "/hero/slide-9.jpg",
+    mobileImage: "/hero/mobile/slide-9-mobile.jpg",
+    alt: "Optional: special action, drop ili limited stock",
+    actionPrimary: "collection",
+    actionCollection: [
+    "swiss-arabian-musk-01",
+    "gisada-luxury-collection-royal"
+  ],
+    collectionTitle: "SOFT. BOLD. LUXURY."
+  },
+  {
     id: 6,
     kind: "imageOnly",
     image: "/hero/slide-6.jpg",
@@ -529,20 +543,6 @@ const BASE_HERO_SLIDES = [
     alt: "Optional: special action, drop ili limited stock",
     actionPrimary: "manifesto",
     manifestoType: "details"
-  },
-  {
-    id: 9,
-    kind: "imageOnly",
-    image: "/hero/slide-9.jpg",
-    desktopImage: "/hero/slide-9.jpg",
-    mobileImage: "/hero/mobile/slide-9-mobile.jpg",
-    alt: "Optional: special action, drop ili limited stock",
-    actionPrimary: "collection",
-    actionCollection: [
-    "swiss-arabian-musk-01",
-    "gisada-luxury-collection-royal"
-  ],
-    collectionTitle: "SOFT. BOLD. LUXURY."
   },
   {
     id: 10,
