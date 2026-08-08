@@ -2491,8 +2491,8 @@ export const productCopy = {
   },
 
   card: {
-    sr: "Čist mošus, bergamot i beli cvetovi u nežnom luksuznom spoju.",
-    en: "Clean musk, bergamot and white florals in a soft luxurious blend."
+    sr: "Mošus, bergamot i beli cvetovi u nežnom luksuznom spoju.",
+    en: "Musk, bergamot and white florals in a soft luxurious blend."
   },
 
   modal: {
