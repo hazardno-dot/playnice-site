@@ -636,7 +636,7 @@ export const products = [
     shortName: "Tobacco 01",
     category: "Arabian",
     image: "/products/Swiss-Arabian-Tobacco01.png",
-    sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
+    sizes: { "2ml": 5, "5ml": 12, "10ml": 21.5 },
     badge: "TOP RATED",
     rating: 8.5,
     ratingLabel: "Audience Favorite",
