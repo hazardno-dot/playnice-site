@@ -537,9 +537,12 @@ const BASE_HERO_SLIDES = [
     desktopImage: "/hero/slide-9.jpg",
     mobileImage: "/hero/mobile/slide-9-mobile.jpg",
     alt: "Optional: special action, drop ili limited stock",
-    actionPrimary: "product",
-    actionProductSlug: "valentino-uomo-born-in-roma-coral-fantasy",
-    preferredSize: "10ml"
+    actionPrimary: "collection",
+    actionCollection: [
+    "swiss-arabian-musk-01",
+    "gisada-luxury-collection-royal"
+  ],
+    collectionTitle: "SOFT. BOLD. LUXURY."
   },
   {
     id: 10,
