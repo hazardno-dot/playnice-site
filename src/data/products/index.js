@@ -2499,4 +2499,62 @@ export const products = [
   },
   isNew: true,
 },
+{
+  id: 88,
+  slug: "gisada-luxury-collection-royal",
+  name: "Gisada Luxury Collection Royal Parfum",
+  shortName: "Gisada Royal",
+  category: "Niche",
+  image: "/products/gisada-luxury-collection-royal.png",
+  sizes: { "2ml": 9, "5ml": 20, "10ml": 36 },
+  badge: "NEW",
+  rating: 8.7,
+  ratingLabel: "Luxury Pick",
+  season: "all",
+  moods: ["rich", "date", "signature"],
+  recommendations: [
+    "givenchy-gentleman-reserve-privee",
+    "tom-ford-noir-extreme",
+    "swiss-arabian-tobacco-01"
+  ],
+  inspiredBy: {
+    name: "Original Gisada creation",
+    short: "Floral Leather Oud DNA"
+  },
+  noteMap: {
+    top: ["leather", "jasmine"],
+    heart: ["freesia", "violet", "oud"],
+    base: ["amber", "musk", "vanilla"]
+  },
+  isNew: true,
+},
+{
+  id: 89,
+  slug: "swiss-arabian-musk-01",
+  name: "Swiss Arabian Musk 01 Extrait de Parfum",
+  shortName: "Musk 01",
+  category: "Arabian",
+  image: "/products/swiss-arabian-musk-01.png",
+  sizes: { "2ml": 5, "5ml": 12, "10ml": 21.5 },
+  badge: "NEW",
+  rating: 8.6,
+  ratingLabel: "Clean Luxury",
+  season: "all",
+  moods: ["soft", "clean", "signature"],
+  recommendations: [
+    "narciso-rodriguez-poudree",
+    "narciso-rodriguez-for-him-bleu-noir-edp",
+    "acqua-di-parma-colonia-pura"
+  ],
+  inspiredBy: {
+    name: "Original Swiss Arabian creation",
+    short: "Floral Musk DNA"
+  },
+  noteMap: {
+    top: ["bergamot", "pink-pepper", "elemi"],
+    heart: ["orange-blossom", "lily", "musk"],
+    base: ["musk", "tonka-bean", "vanilla", "sandalwood"]
+  },
+  isNew: true,
+},
 ];

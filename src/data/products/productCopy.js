@@ -2446,6 +2446,80 @@ export const productCopy = {
     en: "If you want a bold, distinctive and long-lasting signature scent."
   }
 },
+
+"Gisada Luxury Collection Royal Parfum": {
+  miniTag: {
+    sr: "👑 Koža / Cvetni",
+    en: "👑 Leather / Floral"
+  },
+
+  card: {
+    sr: "Koža, jasmin i oud u raskošnom uniseks spoju.",
+    en: "Leather, jasmine and oud in a luxurious unisex blend."
+  },
+
+  modal: {
+    sr: "Koža i jasmin otvaraju miris elegantno, dok ljubičica, frezija i oud prelaze u toplu bazu ambera, mošusa i vanile.",
+    en: "Leather and jasmine open elegantly, while violet, freesia and oud settle into a warm amber, musk and vanilla base."
+  },
+
+  scentType: {
+    sr: "Cvetno-kožni amber",
+    en: "Floral leather amber"
+  },
+
+  dominantNotes: {
+    sr: ["koža", "jasmin", "oud", "mošus"],
+    en: ["leather", "jasmine", "oud", "musk"]
+  },
+
+  tags: {
+    sr: ["Luksuzan", "Elegantan", "Uniseks"],
+    en: ["Luxury", "Elegant", "Unisex"]
+  },
+
+  whyChoose: {
+    sr: "Ako želiš sofisticiran i upečatljiv luksuzni miris.",
+    en: "If you want a sophisticated and distinctive luxury fragrance."
+  }
+},
+
+"Swiss Arabian Musk 01 Extrait de Parfum": {
+  miniTag: {
+    sr: "🤍 Mošus / Čist",
+    en: "🤍 Musk / Clean"
+  },
+
+  card: {
+    sr: "Čist mošus, bergamot i beli cvetovi u nežnom luksuznom spoju.",
+    en: "Clean musk, bergamot and white florals in a soft luxurious blend."
+  },
+
+  modal: {
+    sr: "Bergamot, roze biber i elemi vode ka belim cvetovima i mošusu, uz kremastu bazu vanile, tonke i sandalovine.",
+    en: "Bergamot, pink pepper and elemi lead into white florals and musk, with a creamy vanilla, tonka and sandalwood base."
+  },
+
+  scentType: {
+    sr: "Cvetno-mošusni",
+    en: "Floral musky"
+  },
+
+  dominantNotes: {
+    sr: ["mošus", "bergamot", "cvet narandže", "sandalovina"],
+    en: ["musk", "bergamot", "orange blossom", "sandalwood"]
+  },
+
+  tags: {
+    sr: ["Čist", "Nežan", "Uniseks"],
+    en: ["Clean", "Soft", "Unisex"]
+  },
+
+  whyChoose: {
+    sr: "Ako voliš čist, mekan i sofisticiran mošusni miris.",
+    en: "If you enjoy a clean, soft and sophisticated musky fragrance."
+  }
+},
 };
 
 /* =========================================

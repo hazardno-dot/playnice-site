@@ -347,7 +347,16 @@ export const productWearContext = {
     en: "Work, everyday wear and relaxed evening occasions.",
   },
   "Armaf Club de Nuit Intense Overdose Eau de Parfum": {
-  sr: "Izlazak, veče, posebne prilike.",
-  en: "Going out, evenings, special occasions."
-}
+    sr: "Izlazak, veče, posebne prilike.",
+    en: "Going out, evenings, special occasions."
+  },
+  "Gisada Luxury Collection Royal Parfum": {
+    sr: "Veče, posebne prilike, elegantan izlazak.",
+    en: "Evening, special occasions, elegant outings."
+  },
+
+  "Swiss Arabian Musk 01 Extrait de Parfum": {
+    sr: "Svaki dan, posao, elegantne prilike.",
+    en: "Everyday wear, work, elegant occasions."
+  }
 };
