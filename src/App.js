@@ -740,12 +740,34 @@ const getInitialShopState = () => {
   const [manifestoOpen, setManifestoOpen] = useState(false);
   const [activeManifesto, setActiveManifesto] = useState(null);
 
+  /* DISCOVERY SET */
+
   const [discoveryBuilderOpen, setDiscoveryBuilderOpen] = useState(false);
+  const [discoveryType, setDiscoveryType] = useState("designerNiche");
   const [discoverySelected, setDiscoverySelected] = useState([]);
 
   const DISCOVERY_REQUIRED_COUNT = 5;
-  const DISCOVERY_SIZE = "2ml";
   const DISCOVERY_DISCOUNT = 0.10;
+
+  const DISCOVERY_CONFIGS = {
+    designerNiche: {
+      key: "designer-niche",
+      size: "2ml",
+      categories: ["Designer", "Niche"],
+      cartName: "PlayNice Designer & Niche Discovery Set"
+    },
+
+    arabian: {
+      key: "arabian",
+      size: "5ml",
+      categories: ["Arabian"],
+      cartName: "PlayNice Arabian Discovery Set"
+    }
+  };
+
+  const activeDiscoveryConfig = DISCOVERY_CONFIGS[discoveryType];
+
+  /* DISCOVERY SET END */
 
   const [miniCartPreview, setMiniCartPreview] = useState(null);
   const miniCartTimerRef = useRef(null);
@@ -2743,11 +2765,14 @@ const goHome = () => {
 ========================================= */
 
 const discoveryProducts = products.filter(
-  (product) => product.sizes?.[DISCOVERY_SIZE]
+  (product) =>
+    activeDiscoveryConfig.categories.includes(product.category) &&
+    product.sizes?.[activeDiscoveryConfig.size]
 );
 
 const discoverySubtotal = discoverySelected.reduce(
-  (sum, product) => sum + Number(product.sizes[DISCOVERY_SIZE] || 0),
+  (sum, product) =>
+    sum + Number(product.sizes[activeDiscoveryConfig.size] || 0),
   0
 );
 
@@ -2758,6 +2783,14 @@ const discoveryBundlePrice = Number(
 const discoverySavings = Number(
   (discoverySubtotal - discoveryBundlePrice).toFixed(2)
 );
+
+const openDiscoveryBuilder = (type = "designerNiche") => {
+  if (!DISCOVERY_CONFIGS[type]) return;
+
+  setDiscoveryType(type);
+  setDiscoverySelected([]);
+  setDiscoveryBuilderOpen(true);
+};
 
 const toggleDiscoveryProduct = (product) => {
   setDiscoverySelected((prev) => {
@@ -2778,38 +2811,44 @@ const toggleDiscoveryProduct = (product) => {
 const addDiscoverySetToCart = () => {
   if (discoverySelected.length !== DISCOVERY_REQUIRED_COUNT) return;
 
-  const bundleKey = `discovery-set-${discoverySelected
-    .map((product) => product.id)
-    .sort((a, b) => a - b)
-    .join("-")}`;
+  const bundleKey =
+    `discovery-set-${activeDiscoveryConfig.key}-${discoverySelected
+      .map((product) => product.id)
+      .sort((a, b) => a - b)
+      .join("-")}`;
 
-  const bundleSize = `${DISCOVERY_REQUIRED_COUNT} × ${DISCOVERY_SIZE}`;
+  const bundleSize =
+    `${DISCOVERY_REQUIRED_COUNT} × ${activeDiscoveryConfig.size}`;
+
+  const bundleName = activeDiscoveryConfig.cartName;
 
   const bundleItem = {
     key: bundleKey,
     id: bundleKey,
     type: "bundle",
-    name: "PlayNice Discovery Set",
+    name: bundleName,
     image: discoverySelected[0]?.image,
     size: bundleSize,
     price: discoveryBundlePrice,
     quantity: 1,
+
     bundleItems: discoverySelected.map((product) => ({
       id: product.id,
       name: product.name,
       image: product.image,
-      size: DISCOVERY_SIZE,
-      price: product.sizes[DISCOVERY_SIZE]
+      size: activeDiscoveryConfig.size,
+      price: product.sizes[activeDiscoveryConfig.size]
     }))
   };
 
   trackEvent("add_to_cart", {
     currency: "EUR",
     value: Number(discoveryBundlePrice),
+
     items: [
       {
         item_id: bundleKey,
-        item_name: "PlayNice Discovery Set",
+        item_name: bundleName,
         item_variant: bundleSize,
         item_category: "Discovery Set",
         price: Number(discoveryBundlePrice),
@@ -2819,7 +2858,7 @@ const addDiscoverySetToCart = () => {
   });
 
   trackMeta("AddToCart", {
-    content_name: "PlayNice Discovery Set",
+    content_name: bundleName,
     content_category: "Discovery Set",
     value: Number(discoveryBundlePrice),
     currency: "EUR"
@@ -4687,6 +4726,85 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 )}
 </section>
 
+<section
+  className="discovery-showcase section-wrap"
+  aria-labelledby="discovery-showcase-title"
+>
+  <div className="discovery-showcase-head">
+    <p className="section-kicker">Discovery Sets</p>
+
+    <h2 id="discovery-showcase-title">
+      {lang === "sr"
+        ? "Izaberi svoj Discovery Set."
+        : "Choose your Discovery Set."}
+    </h2>
+
+    <p>
+      {lang === "sr"
+        ? "Pet mirisa. Jedan set. Bez kupovine na slepo."
+        : "Five fragrances. One set. No blind buying."}
+    </p>
+  </div>
+
+  <div className="discovery-showcase-grid">
+    <article className="discovery-showcase-card discovery-showcase-card-designer">
+      <div className="discovery-showcase-copy">
+        <span className="discovery-showcase-type">
+          Designer &amp; Niche
+        </span>
+
+        <h3>
+          {lang === "sr"
+            ? "Napravi svoj signature set."
+            : "Build your signature set."}
+        </h3>
+
+        <p>
+          {lang === "sr"
+            ? "5 × 2ml · 10% popusta · surprise sample"
+            : "5 × 2ml · 10% off · surprise sample"}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        className="gold-button discovery-showcase-button discovery-pulse-button"
+        onClick={() => openDiscoveryBuilder("designerNiche")}
+      >
+        {lang === "sr" ? "Napravi set" : "Build set"}
+      </button>
+    </article>
+
+    <article className="discovery-showcase-card discovery-showcase-card-arabian">
+      <div className="discovery-showcase-copy">
+        <span className="discovery-showcase-type">
+          Arabian
+        </span>
+
+        <h3>
+          {lang === "sr"
+            ? "Otkrij svet Arabian parfema."
+            : "Discover Arabian perfumery."}
+        </h3>
+
+        <p>
+          {lang === "sr"
+            ? "5 × 5ml · 10% popusta · surprise sample"
+            : "5 × 5ml · 10% off · surprise sample"}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        className="gold-button discovery-showcase-button discovery-pulse-button discovery-pulse-button-delayed"
+        onClick={() => openDiscoveryBuilder("arabian")}
+      >
+        {lang === "sr" ? "Napravi set" : "Build set"}
+      </button>
+    </article>
+  </div>
+</section>
+
             <section className="homepage-shop-preview section-wrap">
               <div className="section-head">
                 <p className="section-kicker">{tr.privateSelection}</p>
@@ -4895,30 +5013,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </button>
  </div>
 
-<div className="how-discovery-inline">
-  <div className="how-discovery-copy">
-    <span className="how-discovery-kicker">Discovery Set</span>
-
-    <h3>
-      {lang === "sr"
-        ? "Napravi svoj prvi set."
-        : "Build your first set."}
-    </h3>
-
-    <p>
-      {lang === "sr"
-        ? "Izaberi 5 designer ili niche parfema u 2ml formatu, dobijaš 10% popusta i complimentary surprise sample."
-        : "Choose 5 designer or niche fragrances in 2ml, get 10% off and a complimentary surprise sample."}
-    </p>
-  </div>
-
-  <button
-    type="button"
-    className="gold-button how-discovery-button"
-    onClick={() => setDiscoveryBuilderOpen(true)}
-  >
-    {lang === "sr" ? "Napravi set" : "Build set"}
-  </button>
  </div>
 </div>
 
@@ -6107,31 +6201,42 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </button>
 
       <div className="discovery-head">
-        <div className="discovery-head-copy">
-          <p className="section-kicker">Discovery Set</p>
+  <div className="discovery-head-copy">
+    <p className="section-kicker">
+      {discoveryType === "arabian"
+        ? "Arabian Discovery Set"
+        : "Designer & Niche Discovery Set"}
+    </p>
 
-          <h2>
-            {lang === "sr" ? "Napravi svojih prvih 5" : "Build your first five"}
-          </h2>
+    <h2>
+      {lang === "sr" ? "Izaberi svojih pet" : "Choose your five"}
+    </h2>
 
-          <p className="discovery-head-text">
-            {lang === "sr"
-              ? "Izaberi pet designer ili niche mirisa koji ti deluju zanimljivo. Set se otključava kada izabereš svih pet."
-              : "Choose five designer or niche scents that match your mood, season or curiosity. The set unlocks when all five are selected."}
-          </p>
-        </div>
+    <p className="discovery-head-text">
+      {discoveryType === "arabian"
+        ? lang === "sr"
+          ? "Izaberi pet Arabian mirisa u 5ml formatu. Set se otključava kada izabereš svih pet."
+          : "Choose five Arabian fragrances in 5ml. The set unlocks when all five are selected."
+        : lang === "sr"
+          ? "Izaberi pet designer ili niche mirisa u 2ml formatu. Set se otključava kada izabereš svih pet."
+          : "Choose five designer or niche fragrances in 2ml. The set unlocks when all five are selected."}
+    </p>
+  </div>
 
-        <div className="discovery-progress" aria-label="Discovery Set progress">
-          {Array.from({ length: DISCOVERY_REQUIRED_COUNT }).map((_, index) => (
-            <span
-              key={index}
-              className={`discovery-progress-dot ${
-                index < discoverySelected.length ? "active" : ""
-              }`}
-            />
-          ))}
-        </div>
-      </div>
+  <div
+    className="discovery-progress"
+    aria-label="Discovery Set progress"
+  >
+    {Array.from({ length: DISCOVERY_REQUIRED_COUNT }).map((_, index) => (
+      <span
+        key={index}
+        className={`discovery-progress-dot ${
+          index < discoverySelected.length ? "active" : ""
+        }`}
+      />
+    ))}
+  </div>
+</div>
 
       <div className="discovery-grid">
         {discoveryProducts.map((product) => {
@@ -6155,7 +6260,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               <span>{product.shortName || product.name}</span>
 
               <small>
-                {product.sizes[DISCOVERY_SIZE]}€ / {DISCOVERY_SIZE}
+                {product.sizes[activeDiscoveryConfig.size]}€ /{" "}
+                {activeDiscoveryConfig.size}
               </small>
             </button>
           );
@@ -6456,7 +6562,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   setActiveManifesto(null);
 
   if (action === "discovery") {
-    setDiscoveryBuilderOpen(true);
+    openDiscoveryBuilder("designerNiche");
     return;
   }
 
