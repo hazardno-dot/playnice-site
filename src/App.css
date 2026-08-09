@@ -20962,3 +20962,38 @@ body.overlay-lock .header-system {
     padding-top: 0;
   }
 }
+
+/* =========================================
+   HOW IT WORKS — LEARN MORE IN HEADER
+========================================= */
+
+@media (min-width: 981px) {
+  .why-how-card-how {
+    position: relative;
+  }
+
+  .why-how-card-how .how-it-works-head h2 {
+    padding-right: 165px;
+  }
+
+  .why-how-card-how .how-it-works-cta {
+    position: absolute;
+    top: 68px;
+    right: 24px;
+    z-index: 2;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  .why-how-card-how
+    .how-it-works-cta
+    .ghost-button {
+    min-width: 145px;
+    min-height: 42px;
+    padding: 10px 17px;
+
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+}
