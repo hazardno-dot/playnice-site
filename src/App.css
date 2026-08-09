@@ -21043,24 +21043,54 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   HOME — COMPACT SECTION DIVIDERS
+   HOME — UNIFORM SECTION DIVIDERS
 ========================================= */
 
-.section-divider {
-  height: 24px;
-  margin: 18px auto;
+/*
+ * Uklanjamo dodatne razmake okolnih sekcija.
+ * Razmak između njih sada kontroliše samo divider.
+ */
+
+.homepage-shop-preview,
+.featured-section,
+.shop-section,
+.community-requests-section {
+  padding-bottom: 0;
 }
+
+.closing-section {
+  margin-bottom: 0;
+}
+
+.section-divider + .why-how-section {
+  margin-top: 0;
+}
+
+.section-divider + .catalog-download-section {
+  padding-top: 0;
+}
+
+/* Jednaki divideri na desktopu */
+
+.section-divider {
+  height: 36px;
+  margin: 30px auto;
+}
+
+/* Tablet */
 
 @media (max-width: 768px) {
   .section-divider {
-    height: 20px;
-    margin: 14px auto;
+    height: 30px;
+    margin: 24px auto;
   }
 }
 
+/* Telefon */
+
 @media (max-width: 560px) {
   .section-divider {
-    height: 18px;
-    margin: 12px auto;
+    height: 24px;
+    margin: 20px auto;
   }
 }
