@@ -5271,10 +5271,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </div>
 )}
-</div>
-</div>
-</div>
-</section>
+  </div>
+    </div>
+      </section>
 
             <div className="section-divider">
               <span />
