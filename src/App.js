@@ -5012,8 +5012,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     {lang === "sr" ? "Saznaj više" : "Learn more"}
   </button>
  </div>
-
- </div>
 </div>
 
 <div className="how-request-panel scent-request-panel">
