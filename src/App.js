@@ -4838,63 +4838,146 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               <span />
             </div>
 
-            <section className="identity-layer section-wrap" aria-label="Why PlayNice exists">
-  <div className="identity-layer-inner">
-    <p className="section-kicker identity-kicker">
-      {lang === "sr" ? "Zašto PlayNice postoji" : "Why PlayNice exists"}
-    </p>
+            <section
+  id="how-it-works"
+  className="why-how-section section-wrap"
+  aria-label={
+    lang === "sr"
+      ? "Zašto PlayNice postoji i kako funkcionišu dekanti"
+      : "Why PlayNice exists and how decants work"
+  }
+>
+  <article className="why-how-card why-how-card-identity identity-layer">
+    <div className="identity-layer-inner">
+      <p className="section-kicker identity-kicker">
+        {lang === "sr"
+          ? "Zašto PlayNice postoji"
+          : "Why PlayNice exists"}
+      </p>
 
-    <div className="identity-layer-grid">
-      <div className="identity-statement">
-        <h2>
-          {lang === "sr"
-            ? "Luksuz treba da deluje lično pre nego što deluje skupo."
-            : "Luxury should feel personal before it feels expensive."}
-        </h2>
+      <div className="identity-layer-grid">
+        <div className="identity-statement">
+          <h2>
+            {lang === "sr"
+              ? "Luksuz treba da deluje lično pre nego što deluje skupo."
+              : "Luxury should feel personal before it feels expensive."}
+          </h2>
 
-        <p className="identity-subline">
-          {lang === "sr"
-            ? "Neke bočice su skupe. Kupovina na slepo je skuplja."
-            : "Some bottles are expensive. Blind buying is worse."}
-        </p>
-      </div>
+          <p className="identity-subline">
+            {lang === "sr"
+              ? "Neke bočice su skupe. Kupovina na slepo je skuplja."
+              : "Some bottles are expensive. Blind buying is worse."}
+          </p>
+        </div>
 
-      <div className="identity-copy">
-        <p>
-          {lang === "sr"
-            ? "PlayNice je nastao za ljude koji žele da osete parfem pre nego što se vežu za celu bočicu."
-            : "PlayNice was built for people who want to feel a fragrance before committing to a bottle."}
-        </p>
+        <div className="identity-copy">
+          <p>
+            {lang === "sr"
+              ? "PlayNice je nastao za ljude koji žele da osete parfem pre nego što se vežu za celu bočicu."
+              : "PlayNice was built for people who want to feel a fragrance before committing to a bottle."}
+          </p>
 
-        <p>
-          {lang === "sr"
-            ? "Ne kroz reklame. Ne kroz hajp. Ne kroz nekoga ko viče “beast mode” na TikToku."
-            : "Not through ads. Not through hype. Not through someone yelling “beast mode” on TikTok."}
-        </p>
+          <p>
+            {lang === "sr"
+              ? "Ne kroz reklame ni hajp — već kroz vreme, kožu, sećanje i pravi trenutak."
+              : "Not through ads or hype — through time, skin, memory and the right moment."}
+          </p>
 
-        <p className="identity-rhythm">
-          {lang === "sr"
-            ? "Samo vreme, koža, sećanje i pravi trenutak."
-            : "Just time, skin, memory and the right moment."}
-        </p>
+          <p className="identity-rhythm">
+            {lang === "sr"
+              ? "Jer najbolji parfemi ne mirišu skupo. Mirišu poznato."
+              : "Because the best fragrances don’t smell expensive. They smell familiar."}
+          </p>
 
-        <p>
-          {lang === "sr"
-            ? "Jer najbolji parfemi ne mirišu skupo."
-            : "Because the best fragrances don’t smell expensive."}
-        </p>
+          <div className="identity-signature">
+            <span>
+              {lang === "sr"
+                ? "Probaj pre kupovine."
+                : "Try before you buy."}
+            </span>
 
-        <p>
-          {lang === "sr" ? "Mirišu poznato." : "They smell familiar."}
-        </p>
-
-        <div className="identity-signature">
-          <span>{lang === "sr" ? "Probaj pre kupovine." : "Try before you buy."}</span>
-          <strong>Remember. PlayNice.</strong>
+            <strong>Remember. PlayNice.</strong>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </article>
+
+  <article className="why-how-card why-how-card-how how-request-panel how-request-panel-left">
+    <div className="section-head how-it-works-head">
+      <p className="section-kicker">
+        {lang === "sr" ? "Kako funkcioniše?" : "How it works"}
+      </p>
+
+      <h2>
+        {lang === "sr"
+          ? "Kako funkcionišu dekanti?"
+          : "How decants work?"}
+      </h2>
+
+      <p>
+        {lang === "sr"
+          ? "Jednostavan i pametan način da pronađeš pravi parfem pre kupovine pune bočice."
+          : "A simple and smart way to find the right fragrance before buying a full bottle."}
+      </p>
+    </div>
+
+    <div className="how-it-works-grid how-it-works-grid-compact">
+      <article className="how-it-works-card">
+        <span className="how-it-works-number">01</span>
+
+        <h3>
+          {lang === "sr" ? "Šta su dekanti?" : "What are decants?"}
+        </h3>
+
+        <p>
+          {lang === "sr"
+            ? "Manja, pažljivo presuta pakovanja originalnih parfema."
+            : "Smaller, carefully decanted portions of original fragrances."}
+        </p>
+      </article>
+
+      <article className="how-it-works-card">
+        <span className="how-it-works-number">02</span>
+
+        <h3>
+          {lang === "sr" ? "Zašto su korisni?" : "Why they matter?"}
+        </h3>
+
+        <p>
+          {lang === "sr"
+            ? "Možeš da probaš miris na svojoj koži pre kupovine pune bočice."
+            : "They let you test a fragrance on your skin before committing to a full bottle."}
+        </p>
+      </article>
+
+      <article className="how-it-works-card">
+        <span className="how-it-works-number">03</span>
+
+        <h3>
+          {lang === "sr"
+            ? "Zašto je pametnije?"
+            : "Why is it smarter?"}
+        </h3>
+
+        <p>
+          {lang === "sr"
+            ? "Manji rizik, manji trošak i više parfema za rotaciju."
+            : "Lower risk, lower cost, and more room to build a fragrance rotation."}
+        </p>
+      </article>
+    </div>
+
+    <div className="how-it-works-cta how-it-works-cta-compact">
+      <button
+        className="ghost-button"
+        type="button"
+        onClick={() => setHowItWorksOpen(true)}
+      >
+        {lang === "sr" ? "Saznaj više" : "Learn more"}
+      </button>
+    </div>
+  </article>
 </section>
 
             {shouldShowMobileSponsoredAd && (
@@ -4947,74 +5030,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </section>
 )}
 
-<section
-  id="how-it-works"
-  className="how-it-works-section section-wrap"
->
-  <div className="how-request-split">
-    <div className="how-request-panel how-request-panel-left">
-      <div className="section-head how-it-works-head">
-        <p className="section-kicker">
-          {lang === "sr" ? "Kako funkcioniše?" : "How it works"}
-        </p>
-
-        <h2>
-          {lang === "sr"
-            ? "Kako funkcionišu dekanti?"
-            : "How decants work?"}
-        </h2>
-
-        <p>
-          {lang === "sr"
-            ? "Jednostavan i pametan način da pronađeš pravi parfem pre kupovine pune bočice."
-            : "A simple and smart way to find the right fragrance before buying a full bottle."}
-        </p>
-      </div>
-
-      <div className="how-it-works-grid how-it-works-grid-compact">
-  <article className="how-it-works-card">
-  <span className="how-it-works-number">01</span>
-  <h3>{lang === "sr" ? "Šta su dekanti?" : "What are decants?"}</h3>
-  <p>
-    {lang === "sr"
-      ? "Manja, pažljivo presuta pakovanja originalnih parfema."
-      : "Smaller, carefully decanted portions of original fragrances."}
-  </p>
-</article>
-
-<article className="how-it-works-card">
-  <span className="how-it-works-number">02</span>
-  <h3>{lang === "sr" ? "Zašto su korisni?" : "Why they matter?"}</h3>
-  <p>
-    {lang === "sr"
-      ? "Možeš da probaš miris na svojoj koži pre kupovine pune bočice."
-      : "They let you test a fragrance on your skin before committing to a full bottle."}
-  </p>
-</article>
-
-<article className="how-it-works-card">
-  <span className="how-it-works-number">03</span>
-  <h3>{lang === "sr" ? "Zašto je pametnije?" : "Why is it smarter?"}</h3>
-  <p>
-    {lang === "sr"
-      ? "Manji rizik, manji trošak i više parfema za rotaciju."
-      : "Lower risk, lower cost, and more room to build a fragrance rotation."}
-  </p>
-</article>
-</div>
-
-<div className="how-it-works-cta how-it-works-cta-compact">
-  <button
-    className="ghost-button"
-    type="button"
-    onClick={() => setHowItWorksOpen(true)}
-  >
-    {lang === "sr" ? "Saznaj više" : "Learn more"}
-  </button>
- </div>
-</div>
-
-<div className="how-request-panel scent-request-panel">
+<section className="community-requests-section section-wrap">
+  <div className="how-request-panel scent-request-panel community-request-panel-full">
   <p className="section-kicker scent-request-kicker">
     {lang === "sr" ? "Zahtevi zajednice" : "Community requests"}
   </p>
