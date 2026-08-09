@@ -20900,3 +20900,65 @@ body.overlay-lock .header-system {
     padding-top: 4px;
   }
 }
+
+/* =========================================
+   WHY + HOW — DESKTOP COMPACT OVERRIDE
+========================================= */
+
+@media (min-width: 981px) {
+  .why-how-card {
+    min-height: 0;
+    height: auto;
+  }
+
+  .why-how-card-identity .identity-layer-inner,
+  .why-how-card-how {
+    padding: 23px 24px;
+  }
+
+  .why-how-section .section-kicker {
+    margin-bottom: 11px;
+  }
+
+  .why-how-section .why-how-card h2 {
+    min-height: 0;
+  }
+
+  .why-how-card-identity .identity-subline,
+  .why-how-card-how
+    .how-it-works-head
+    > p:not(.section-kicker) {
+    min-height: 0;
+    margin-top: 11px;
+  }
+
+  .why-how-card-how .how-it-works-head {
+    margin-bottom: 13px;
+  }
+
+  .why-how-card-identity .identity-layer-grid {
+    gap: 13px;
+  }
+
+  .why-how-card-identity .identity-copy p {
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .why-how-card-identity .identity-signature {
+    margin-top: 11px;
+    padding-top: 12px;
+  }
+
+  .why-how-card-how
+    .how-it-works-grid-compact
+    .how-it-works-card {
+    min-height: 142px;
+    padding: 12px 11px 11px;
+  }
+
+  .why-how-card-how .how-it-works-cta {
+    margin-top: 12px;
+    padding-top: 0;
+  }
+}
