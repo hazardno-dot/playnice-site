@@ -20771,16 +20771,19 @@ body.overlay-lock .header-system {
 ========================================= */
 
 @media (min-width: 981px) {
+  .why-how-card-how {
+    position: relative;
+  }
+
   .why-how-card-how .how-it-works-head h2 {
-    padding-right: 165px;
+    padding-right: 0;
   }
 
   .why-how-card-how .how-it-works-cta {
     position: absolute;
-    top: 68px;
+    top: 23px;
     right: 24px;
     z-index: 2;
-
     margin: 0;
     padding: 0;
   }
@@ -20791,7 +20794,6 @@ body.overlay-lock .header-system {
     min-width: 145px;
     min-height: 42px;
     padding: 10px 17px;
-
     font-size: 0.72rem;
     white-space: nowrap;
   }
