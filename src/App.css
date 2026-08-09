@@ -20922,3 +20922,120 @@ body.overlay-lock .header-system {
     padding-top: 4px;
   }
 }
+
+/* =========================================
+   HOME — COMMUNITY REQUESTS COMPACT
+========================================= */
+
+@media (min-width: 981px) {
+  .community-request-panel-full {
+    padding: 20px 22px 22px;
+  }
+
+  /* Naslov u jednom redu */
+  .community-request-panel-full h2 {
+    max-width: none;
+    white-space: nowrap;
+    font-size: clamp(2.2rem, 2.65vw, 3.15rem);
+    line-height: 0.96;
+  }
+
+  .community-request-panel-full .scent-request-copy {
+    margin: 8px 0 12px;
+  }
+
+  /* Dvije jednake kolone unutar istog prozora */
+  .community-request-panel-full .community-requests-box {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "live-head collection-head"
+      "live-board collection-list";
+    column-gap: 14px;
+    row-gap: 8px;
+    align-items: stretch;
+
+    margin-top: 12px;
+    padding: 12px;
+  }
+
+  /* Lijevo zaglavlje */
+  .community-request-panel-full .community-requests-head {
+    grid-area: live-head;
+    align-self: center;
+    margin: 0;
+    padding: 0 2px;
+  }
+
+  /* Lijeva lista */
+  .community-request-panel-full .community-most-wanted-board {
+    grid-area: live-board;
+    height: 100%;
+    margin: 0;
+    padding: 10px;
+  }
+
+  /*
+   * Omogućava da naslov i lista desne strane
+   * postanu zasebne ćelije glavnog grida.
+   */
+  .community-request-panel-full .already-in-collection-strip {
+    display: contents;
+  }
+
+  /* Desno zaglavlje */
+  .community-request-panel-full
+    .already-in-collection-strip
+    > span {
+    grid-area: collection-head;
+    align-self: center;
+    margin: 0;
+    padding: 0 2px;
+  }
+
+  /* Desna lista */
+  .community-request-panel-full .already-in-collection-list {
+    grid-area: collection-list;
+    align-self: stretch;
+    justify-content: center;
+    gap: 2px;
+
+    padding: 10px 12px;
+    border: 1px solid rgba(220, 181, 107, 0.11);
+    border-radius: 17px;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(220, 181, 107, 0.055),
+        rgba(255, 255, 255, 0.012)
+      ),
+      rgba(0, 0, 0, 0.18);
+  }
+
+  .community-request-panel-full .already-in-collection-item {
+    min-height: 30px;
+    padding: 5px 3px;
+    border-bottom: 1px solid rgba(220, 181, 107, 0.07);
+  }
+
+  .community-request-panel-full
+    .already-in-collection-item:last-of-type {
+    border-bottom: 0;
+  }
+
+  /* Ako desna lista nekada bude prazna */
+  .community-request-panel-full
+    .community-requests-box:not(:has(.already-in-collection-strip)) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "live-head"
+      "live-board";
+  }
+}
+
+/* Tablet i telefon ostaju u jednoj čitljivoj koloni */
+@media (max-width: 980px) {
+  .community-request-panel-full h2 {
+    max-width: none;
+  }
+}
