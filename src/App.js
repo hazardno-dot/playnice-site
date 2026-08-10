@@ -734,8 +734,6 @@ const getInitialShopState = () => {
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
-  const [cartBumpActive, setCartBumpActive] = useState(false);
-  const cartBumpTimeoutRef = useRef(null);
 
   const [modalDiscountFlashKey, setModalDiscountFlashKey] = useState(null);
 
@@ -1635,10 +1633,6 @@ useEffect(() => {
   return () => {
     if (modalAddedTimeoutRef.current) {
       clearTimeout(modalAddedTimeoutRef.current);
-    }
-
-    if (cartBumpTimeoutRef.current) {
-      clearTimeout(cartBumpTimeoutRef.current);
     }
   };
 }, []);
@@ -2898,25 +2892,6 @@ const triggerInlineAddedFeedback = (productId, size) => {
   }, 1300);
 };
 
-const triggerCartBump = () => {
-  if (cartBumpTimeoutRef.current) {
-    clearTimeout(cartBumpTimeoutRef.current);
-  }
-
-  setCartBumpActive(false);
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      setCartBumpActive(true);
-
-      cartBumpTimeoutRef.current = setTimeout(() => {
-        setCartBumpActive(false);
-        cartBumpTimeoutRef.current = null;
-      }, 420);
-    });
-  });
-};
-
 const handleModalAddToCart = (product, size) => {
   if (!product || !size) return;
 
@@ -2935,9 +2910,6 @@ const handleModalAddToCart = (product, size) => {
   modalAddedTimeoutRef.current = setTimeout(() => {
     setModalAddedKey(null);
   }, 1300);
-
-  triggerCartBump();
-  closeProductModal();
 };
 
 const addHeroBottleToCart = () => {
@@ -4401,9 +4373,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <div className="topbar-right enterprise-utility">
       <button
-        className={`cart-button cart-button--icon-only ${
-          cartBumpActive ? "is-cart-bumping" : ""
-        }`}
+        className="cart-button cart-button--icon-only"
         type="button"
         onClick={() => setCartOpen((prev) => !prev)}
         aria-label={lang === "sr" ? "Korpa" : "Cart"}
