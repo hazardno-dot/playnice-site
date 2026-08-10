@@ -734,7 +734,8 @@ const getInitialShopState = () => {
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
-  const [productCartFlight, setProductCartFlight] = useState(null);
+  const [cartBumpActive, setCartBumpActive] = useState(false);
+  const cartBumpTimeoutRef = useRef(null);
 
   const [modalDiscountFlashKey, setModalDiscountFlashKey] = useState(null);
 
@@ -897,10 +898,6 @@ const isNewRequest = (request) => {
   const touchEndX = useRef(0);
   const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
-  const productCartFlightTimeoutRef = useRef(null);
-  const productCartFlightActiveRef = useRef(false);
-  const productModalRef = useRef(null);
-  const cartButtonRef = useRef(null);
   const productGridRef = useRef(null);
   const hasMountedShopFiltersRef = useRef(false);
   const [shouldScrollToGrid, setShouldScrollToGrid] = useState(false);
@@ -1613,10 +1610,6 @@ useEffect(() => {
     if (productModalCloseTimeoutRef.current) {
       clearTimeout(productModalCloseTimeoutRef.current);
     }
-
-    if (productCartFlightTimeoutRef.current) {
-      clearTimeout(productCartFlightTimeoutRef.current);
-    }
   };
 }, []);
 
@@ -1642,6 +1635,10 @@ useEffect(() => {
   return () => {
     if (modalAddedTimeoutRef.current) {
       clearTimeout(modalAddedTimeoutRef.current);
+    }
+
+    if (cartBumpTimeoutRef.current) {
+      clearTimeout(cartBumpTimeoutRef.current);
     }
   };
 }, []);
@@ -2901,6 +2898,48 @@ const triggerInlineAddedFeedback = (productId, size) => {
   }, 1300);
 };
 
+const triggerCartBump = () => {
+  if (cartBumpTimeoutRef.current) {
+    clearTimeout(cartBumpTimeoutRef.current);
+  }
+
+  setCartBumpActive(false);
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      setCartBumpActive(true);
+
+      cartBumpTimeoutRef.current = setTimeout(() => {
+        setCartBumpActive(false);
+        cartBumpTimeoutRef.current = null;
+      }, 420);
+    });
+  });
+};
+
+const handleModalAddToCart = (product, size) => {
+  if (!product || !size) return;
+
+  addToCart(product, size, null, null, {
+    showToast: false,
+    showMiniPreview: true
+  });
+
+  const key = `${product.id}-${size}`;
+  setModalAddedKey(key);
+
+  if (modalAddedTimeoutRef.current) {
+    clearTimeout(modalAddedTimeoutRef.current);
+  }
+
+  modalAddedTimeoutRef.current = setTimeout(() => {
+    setModalAddedKey(null);
+  }, 1300);
+
+  triggerCartBump();
+  closeProductModal();
+};
+
 const addHeroBottleToCart = () => {
   const heroProduct = {
     id: 999,
@@ -3342,14 +3381,6 @@ const openProductModal = (product, options = {}) => {
     productModalCloseTimeoutRef.current = null;
   }
 
-  if (productCartFlightTimeoutRef.current) {
-    clearTimeout(productCartFlightTimeoutRef.current);
-    productCartFlightTimeoutRef.current = null;
-  }
-
-  productCartFlightActiveRef.current = false;
-  setProductCartFlight(null);
-
   productModalScrollYRef.current =
     window.scrollY || window.pageYOffset || 0;
 
@@ -3458,7 +3489,6 @@ useEffect(() => {
 }, []);
 
 const PRODUCT_MODAL_CLOSE_DELAY = 80;
-const PRODUCT_CART_FLIGHT_DURATION = 1650;
 
 const closeProductModal = () => {
   const isMobileModal = isMobileProductModal();
@@ -3466,13 +3496,6 @@ const closeProductModal = () => {
   setNoteMapOpen(false);
   setProductModalVisible(false);
   setHasUserPickedSize(false);
-  setProductCartFlight(null);
-  productCartFlightActiveRef.current = false;
-
-  if (productCartFlightTimeoutRef.current) {
-    clearTimeout(productCartFlightTimeoutRef.current);
-    productCartFlightTimeoutRef.current = null;
-  }
 
   if (productModalCloseTimeoutRef.current) {
     clearTimeout(productModalCloseTimeoutRef.current);
@@ -3486,17 +3509,17 @@ const closeProductModal = () => {
 
     if (window.location.pathname.startsWith("/product/")) {
       const openedInsidePlayNice =
-        window.history.state?.playniceProductModal === true;
+      window.history.state?.playniceProductModal === true;
 
-      if (openedInsidePlayNice) {
-        window.history.back();
-      } else {
-        window.history.replaceState({}, "", "/shop");
-        setView("shop");
-        trackPageView("/shop");
-        trackMeta("PageView");
-      }
+    if (openedInsidePlayNice) {
+      window.history.back();
+    } else {
+      window.history.replaceState({}, "", "/shop");
+      setView("shop");
+      trackPageView("/shop");
+      trackMeta("PageView");
     }
+  }
   };
 
   if (isMobileModal) {
@@ -3507,106 +3530,6 @@ const closeProductModal = () => {
   productModalCloseTimeoutRef.current = setTimeout(() => {
     cleanupProductModal();
   }, PRODUCT_MODAL_CLOSE_DELAY);
-};
-
-const finishProductCartFlight = () => {
-  if (!productCartFlightActiveRef.current) return;
-  closeProductModal();
-};
-
-const launchProductModalToCart = () => {
-  if (productCartFlightActiveRef.current) return;
-
-  const modalElement = productModalRef.current;
-
-  if (!modalElement) {
-    closeProductModal();
-    return;
-  }
-
-  const reducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
-  if (reducedMotion) {
-    closeProductModal();
-    return;
-  }
-
-  const modalRect = modalElement.getBoundingClientRect();
-  const cartRect = cartButtonRef.current?.getBoundingClientRect();
-
-  const modalCenterX = modalRect.left + modalRect.width / 2;
-  const modalCenterY = modalRect.top + modalRect.height / 2;
-
-  const cartCenterX =
-    cartRect && cartRect.width > 0
-      ? cartRect.left + cartRect.width / 2
-      : window.innerWidth - 34;
-
-  const cartCenterY =
-    cartRect && cartRect.height > 0
-      ? cartRect.top + cartRect.height / 2
-      : 34;
-
-  const x = cartCenterX - modalCenterX;
-  const y = cartCenterY - modalCenterY;
-  const distance = Math.hypot(x, y);
-  const arc = Math.min(42, Math.max(16, distance * 0.045));
-
-  const travelAngle = Math.atan2(y, x) * (180 / Math.PI);
-  const finalRotate = Math.max(-18, Math.min(18, travelAngle * 0.42));
-
-  setNoteMapOpen(false);
-  productCartFlightActiveRef.current = true;
-
-  setProductCartFlight({
-    x1: x * 0.02,
-    y1: y * 0.01 + 5,
-    x2: x * 0.11,
-    y2: y * 0.07 - arc * 0.25,
-    x3: x * 0.38,
-    y3: y * 0.30 - arc,
-    x4: x * 0.72,
-    y4: y * 0.67 - arc * 0.55,
-    x,
-    y,
-    r1: finalRotate * -0.08,
-    r2: finalRotate * 0.24,
-    r3: finalRotate * 0.55,
-    r4: finalRotate * 0.82,
-    r5: finalRotate
-  });
-
-  if (productCartFlightTimeoutRef.current) {
-    clearTimeout(productCartFlightTimeoutRef.current);
-  }
-
-  productCartFlightTimeoutRef.current = setTimeout(() => {
-    finishProductCartFlight();
-  }, PRODUCT_CART_FLIGHT_DURATION + 180);
-};
-
-const handleModalAddToCart = (product, size) => {
-  if (!product || !size || productCartFlightActiveRef.current) return;
-
-  addToCart(product, size, null, null, {
-    showToast: false,
-    showMiniPreview: true
-  });
-
-  const key = `${product.id}-${size}`;
-  setModalAddedKey(key);
-
-  if (modalAddedTimeoutRef.current) {
-    clearTimeout(modalAddedTimeoutRef.current);
-  }
-
-  modalAddedTimeoutRef.current = setTimeout(() => {
-    setModalAddedKey(null);
-  }, 1300);
-
-  launchProductModalToCart();
 };
 
 const openImpactProductModal = (product) => {
@@ -4478,8 +4401,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <div className="topbar-right enterprise-utility">
       <button
-        ref={cartButtonRef}
-        className="cart-button cart-button--icon-only"
+        className={`cart-button cart-button--icon-only ${
+          cartBumpActive ? "is-cart-bumping" : ""
+        }`}
         type="button"
         onClick={() => setCartOpen((prev) => !prev)}
         aria-label={lang === "sr" ? "Korpa" : "Cart"}
@@ -7467,46 +7391,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div
     className={`modal-overlay product-modal-layer ${
       productModalVisible ? "show" : ""
-    } ${productCartFlight ? "is-cart-launching" : ""}`}
+    }`}
     onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    }}
+  e.preventDefault();
+  e.stopPropagation();
+}}
   >
     <div
-      ref={productModalRef}
-      className={`product-modal ${productModalVisible ? "open panel-open" : ""} ${
-        productCartFlight ? "is-cart-launching" : ""
-      }`}
-      style={
-        productCartFlight
-          ? {
-              "--cart-flight-x1": `${productCartFlight.x1}px`,
-              "--cart-flight-y1": `${productCartFlight.y1}px`,
-              "--cart-flight-x2": `${productCartFlight.x2}px`,
-              "--cart-flight-y2": `${productCartFlight.y2}px`,
-              "--cart-flight-x3": `${productCartFlight.x3}px`,
-              "--cart-flight-y3": `${productCartFlight.y3}px`,
-              "--cart-flight-x4": `${productCartFlight.x4}px`,
-              "--cart-flight-y4": `${productCartFlight.y4}px`,
-              "--cart-flight-x": `${productCartFlight.x}px`,
-              "--cart-flight-y": `${productCartFlight.y}px`,
-              "--cart-flight-r1": `${productCartFlight.r1}deg`,
-              "--cart-flight-r2": `${productCartFlight.r2}deg`,
-              "--cart-flight-r3": `${productCartFlight.r3}deg`,
-              "--cart-flight-r4": `${productCartFlight.r4}deg`,
-              "--cart-flight-r5": `${productCartFlight.r5}deg`
-            }
-          : undefined
-      }
-      onAnimationEnd={(event) => {
-        if (
-          event.target === event.currentTarget &&
-          event.animationName === "productModalCartFlight"
-        ) {
-          finishProductCartFlight();
-        }
-      }}
+      className={`product-modal ${productModalVisible ? "open panel-open" : ""}`}
       onClick={(e) => e.stopPropagation()}
     >
       <button
@@ -7965,7 +7857,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <button
       type="button"
       className={`modal-add-button ${isModalAdded ? "is-added" : ""}`}
-      disabled={Boolean(productCartFlight)}
       onClick={() => {
   const activePrice = selectedProduct.sizes[activeSize];
   const discount = getProductDiscountForSize(selectedProduct, activeSize);

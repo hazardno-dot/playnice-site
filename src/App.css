@@ -546,6 +546,38 @@ main {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.28);
 }
 
+/* Cart confirmation micro-feedback */
+.cart-button--icon-only.is-cart-bumping .cart-count {
+  animation: cartCountBump 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, box-shadow;
+}
+
+@keyframes cartCountBump {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.28);
+  }
+
+  42% {
+    transform: scale(1.28);
+    box-shadow:
+      0 7px 18px rgba(0, 0, 0, 0.34),
+      0 0 0 5px rgba(220, 181, 107, 0.10),
+      0 0 18px rgba(220, 181, 107, 0.26);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.28);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-button--icon-only.is-cart-bumping .cart-count {
+    animation: none;
+  }
+}
+
 .gold-button,
 .cta-section button {
   padding: 14px 24px;
@@ -15909,98 +15941,6 @@ main {
 .product-modal-layer::-webkit-scrollbar,
 .product-modal-layer .product-modal::-webkit-scrollbar {
   display: none;
-}
-
-/* =========================================
-   PRODUCT MODAL — ADD TO CART FLIGHT
-   Paper-rocket close animation
-========================================= */
-
-.product-modal-layer.is-cart-launching {
-  pointer-events: none !important;
-  background: rgba(0, 0, 0, 0) !important;
-  transition: background 0.24s ease !important;
-}
-
-.product-modal.is-cart-launching {
-  pointer-events: none !important;
-  transform-origin: center center;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-
-  transition: none !important;
-  animation: productModalCartFlight 1.65s linear forwards !important;
-
-  will-change: translate, scale, rotate, opacity !important;
-}
-
-@keyframes productModalCartFlight {
-  0% {
-    opacity: 1;
-    translate: 0 0;
-    rotate: 0deg;
-    scale: 1 1;
-    animation-timing-function: cubic-bezier(0.22, 0.78, 0.28, 1);
-  }
-
-  16% {
-    opacity: 1;
-    translate: var(--cart-flight-x1) var(--cart-flight-y1);
-    rotate: var(--cart-flight-r1);
-    scale: 0.985 0.92;
-    animation-timing-function: cubic-bezier(0.22, 0.78, 0.28, 1);
-  }
-
-  31% {
-    opacity: 1;
-    translate: var(--cart-flight-x2) var(--cart-flight-y2);
-    rotate: var(--cart-flight-r2);
-    scale: 0.88 0.62;
-    animation-timing-function: cubic-bezier(0.38, 0.02, 0.74, 0.32);
-  }
-
-  52% {
-    opacity: 1;
-    translate: var(--cart-flight-x3) var(--cart-flight-y3);
-    rotate: var(--cart-flight-r3);
-    scale: 0.58 0.30;
-    animation-timing-function: cubic-bezier(0.42, 0.02, 0.88, 0.46);
-  }
-
-  76% {
-    opacity: 0.96;
-    translate: var(--cart-flight-x4) var(--cart-flight-y4);
-    rotate: var(--cart-flight-r4);
-    scale: 0.24 0.115;
-    animation-timing-function: cubic-bezier(0.52, 0.02, 0.96, 0.58);
-  }
-
-  100% {
-    opacity: 0;
-    translate: var(--cart-flight-x) var(--cart-flight-y);
-    rotate: var(--cart-flight-r5);
-    scale: 0.035 0.035;
-  }
-}
-
-@media (max-width: 640px) {
-  .modal-overlay.product-modal-layer.is-cart-launching {
-    transition: background 0.24s ease !important;
-  }
-
-  .product-modal.is-cart-launching,
-  .product-modal.open.is-cart-launching {
-    transition: none !important;
-    animation: productModalCartFlight 1.65s linear forwards !important;
-    will-change: translate, scale, rotate, opacity !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .product-modal.is-cart-launching,
-  .product-modal.open.is-cart-launching {
-    animation-duration: 1ms !important;
-  }
 }
 
 /* =========================================
