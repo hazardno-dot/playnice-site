@@ -11,7 +11,7 @@ export const translations = {
     heroTitleLine2: "in the dark.",
     heroText:
       "Discover designer, niche and Arabian fragrances through a premium decant experience. Test on skin. Wear with intent. Own the moment.",
-    heroNow: "Now €34.90",
+    heroNow: "Now €39.50",
     heroOffer: "Afnan 9PM Rebel 100ml full bottle",
     exploreCollection: "Explore Collection",
     claimOffer: "Claim the Offer",
@@ -31,7 +31,7 @@ export const translations = {
       "Bright, addictive and made for warm weather. Easy reach, high reward.",
     marwaText:
       "Smooth character, strong identity and standout value in decant format.",
-    add100ml: "Add 100ml for €34.90",
+    add100ml: "Add 100ml for €39.50",
     privateSelection: "Private Selection",
     bestsellersTitle: "Bestsellers that leave a mark.",
     bestsellersText:
@@ -200,7 +200,7 @@ export const translations = {
     heroTitleLine2: "u tami.",
     heroText:
       "Otkrij dizajnerske, niche i arapske parfeme kroz premium decant iskustvo. Isprobaj na koži. Nosi sa stavom. Osvoji trenutak.",
-    heroNow: "Sada €34.90",
+    heroNow: "Sada €39.50",
     heroOffer: "Afnan 9PM Rebel 100ml puna bočica",
     exploreCollection: "Pogledaj kolekciju",
     claimOffer: "Uzmi ponudu",
@@ -220,7 +220,7 @@ export const translations = {
       "Svetao, zarazan i stvoren za toplo vreme. Lak izbor, jak efekat.",
     marwaText:
       "Uglađen karakter, snažan identitet i odlična vrednost u decant formatu.",
-    add100ml: "Dodaj 100ml za €34.90",
+    add100ml: "Dodaj 100ml za €39.50",
     privateSelection: "Private Selection",
     bestsellersTitle: "Bestseleri koji ostavljaju trag.",
     bestsellersText:

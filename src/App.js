@@ -2917,10 +2917,10 @@ const addHeroBottleToCart = () => {
     id: 999,
     name: "Afnan 9PM Rebel",
     image: "/hero/hero-bottle.png",
-    sizes: { "100ml": 34.9 }
+    sizes: { "100ml": 39.5 }
   };
 
-  addToCart(heroProduct, "100ml", 34.9, "100ml Full Bottle");
+  addToCart(heroProduct, "100ml", 39.5, "100ml Full Bottle");
   setCartOpen(true);
   setCheckoutOpen(false);
 };
