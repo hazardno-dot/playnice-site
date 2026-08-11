@@ -1,7 +1,7 @@
 export const journalArticles = [
     {
     id: 1,
-    date: "12 Apr",
+    date: { en: "12 Apr", sr: "12 Apr" },
     image: "/journal/article1.png",
     title: {
       en: "Three new scents that completely ruined our plans",
@@ -56,15 +56,15 @@ A mi smo od običnog “da vidimo šta ima” opet napravili ono što uvek napra
 — Čarli`,
     },
     relatedProducts: [
-      "Armaf Club de Nuit Precieux I Extrait de Parfum",
-      "French Avenue Safari Breeze",
-      "Lattafa Dynasty"
+      "armaf-club-de-nuit-precieux-i",
+      "french-avenue-safari-breeze",
+      "lattafa-dynasty"
     ]
   },
 
   {
     id: 2,
-    date: "13 Apr",
+    date: { en: "13 Apr", sr: "13 Apr" },
     image: "/journal/article2.png",
     title: {
       en: "Delivery is now €4, and we handled it like adults. Almost.",
@@ -126,7 +126,7 @@ Da kažemo stvari normalno. Ljudski. I da usput možda zajedno preživimo još p
 
   {
     id: 3,
-    date: "14 Apr",
+    date: { en: "14 Apr", sr: "14 Apr" },
     image: "/journal/article3.png",
     title: {
       en: "9PM Night Out did not ask for attention. Then it got too much of it.",
@@ -188,12 +188,12 @@ A za sve ostalo, kao i obično, kriv je grad.
 
 — Čarli`,
     },
-    relatedProducts: ["Afnan 9PM Night Out"]
+    relatedProducts: ["afnan-9pm-night-out"]
   },
 
   {
   id: 4,
-  date: "17 Apr",
+  date: { en: "17 Apr", sr: "17 Apr" },
   image: "/journal/article4.png",
   title: {
     en: "I did not fail the day. I just entered it wrong.",
@@ -261,12 +261,12 @@ Arabiyat Prestige Marwa
 Čarli  
 Remember. PlayNice.`,
   },
-  relatedProducts: ["Arabiyat Prestige Marwa"]
+  relatedProducts: ["arabiyat-prestige-marwa"]
 },
 
 {
   id: 5,
-  date: "18 Apr",
+  date: { en: "18 Apr", sr: "18 Apr" },
   image: "/journal/article5.png",
   title: {
     en: "Open passage",
@@ -350,12 +350,12 @@ Staviću malo Creed Aventus Cologne, dam sebi otvoren prolaz 👍 i biće bolje.
 Čarli  
 Remember. PlayNice.`,
   },
-  relatedProducts: ["Creed Aventus Cologne"]
+  relatedProducts: ["creed-aventus-cologne"]
 },
 
 {
   id: 6,
-  date: "18 Apr",
+  date: { en: "18 Apr", sr: "18 Apr" },
   image: "/journal/article6.png",
   title: {
     en: "That was not the plan",
@@ -423,7 +423,7 @@ And sometimes - it works out.
 
 So if you ask me whether it was worth it?
 
-No, i do not have a birdhouse.
+No, I do not have a birdhouse.
 But I do seem to have a reason they keep coming back. 😉
 
 —
@@ -490,12 +490,12 @@ Ali izgleda da ipak imam razlog zašto se stalno vraćaju. 😉
 Čarli  
 Remember. PlayNice.`,
   },
-  relatedProducts: ["Rasasi Hawas Ice for Him"]
+  relatedProducts: ["rasasi-hawas-ice"]
 },
 
 {
   id: 7,
-  date: "19 Apr",
+  date: { en: "19 Apr", sr: "19 Apr" },
   image: "/journal/article7.png",
   title: {
     en: "No one knows where they are looking",
@@ -570,7 +570,7 @@ Remember. PlayNice.`,
 
 {
   id: 8,
-  date: "26 Apr",
+  date: { en: "26 Apr", sr: "26 Apr" },
   image: "/journal/article8.png",
   title: {
     en: "The bus as destiny",
@@ -652,12 +652,12 @@ I da, sve ovo i nije ispalo tako loše. 🙂
 Čarli
 Remember. PlayNice.`,
   },
-  relatedProducts: ["BOSS The Scent Elixir Parfum Intense for Him"]
+  relatedProducts: ["boss-the-scent-elixir"]
 },
 
 {
   id: 9,
-  date: "03 Maj",
+  date: { en: "03 May", sr: "03 Maj" },
   image: "/journal/article9.png",
   title: {
     en: "Special Edition: Fragrances Tonight",
@@ -788,14 +788,14 @@ Laku noć.
 Remember. PlayNice.`
   },
   relatedProducts: [
-    "Dolce & Gabbana The One for Men Eau de Toilette",
-    "Versace Man Eau Fraiche"
+    "dolce-gabbana-the-one-for-men-edt",
+    "versace-man-eau-fraiche"
   ]
 },
 
 {
   id: 10,
-  date: "10 Maj",
+  date: { en: "10 May", sr: "10 Maj" },
   image: "/journal/article10.png",
   title: {
     en: "They just have better lighting",
@@ -949,17 +949,17 @@ Nema na čemu.
 Remember. PlayNice.`
   },
   relatedProducts: [
-    "Emir Voux Zingy by Paris Corner",
-    "Rayhaan Crimson Eau de Parfum",
-    "Rasasi Hawas Black Eau de Parfum",
-    "Khadlaj Onyx Silver",
-    "Arabiyat Prestige Fahad Gaze"
+    "emir-voux-zingy",
+    "rayhaan-crimson",
+    "rasasi-hawas-black",
+    "khadlaj-onyx-silver",
+    "arabiyat-prestige-fahad-gaze"
   ]
 },
 
 {
   id: 11,
-  date: "21 Maj",
+  date: { en: "21 May", sr: "21 Maj" },
   image: "/journal/article11.png",
   title: {
     en: "Doctors",
@@ -1151,23 +1151,31 @@ Bravo, doktori.
 Čarli  
 Remember. PlayNice.`
   },
-  relatedProducts: ["Afnan Supremacy Collector's Edition Pour Homme"],
+  relatedProducts: ["afnan-supremacy-collectors-edition"],
 
   links: [
     {
-      label: "Key & Peele — Substitute Teacher",
-      url: "https://www.youtube.com/watch?v=Dd7FixvoKBw"
+      label: {
+        en: "Key & Peele — Substitute Teacher",
+        sr: "Key & Peele — Substitute Teacher",
+      },
+      url: "https://www.youtube.com/watch?v=Dd7FixvoKBw",
+      external: true
     },
     {
-      label: "Keanu (2016) — IMDb",
-      url: "https://www.imdb.com/title/tt4139124/"
+      label: {
+        en: "Keanu (2016) — IMDb",
+        sr: "Keanu (2016) — IMDb",
+      },
+      url: "https://www.imdb.com/title/tt4139124/",
+      external: true
     }
   ]
   },
 
   {
   id: 12,
-  date: "25 Maj",
+  date: { en: "25 May", sr: "25 Maj" },
   image: "/journal/article12.png",
   title: {
     en: "When you’re living your best life",
@@ -1379,14 +1387,14 @@ Hvala ti, živote.
 Čarli  
 Remember. PlayNice.`
   },
-  relatedProducts: ["Narciso Rodriguez Poudrée Eau de Parfum",
-    "Yves Saint Laurent Black Opium Le Parfum"
+  relatedProducts: ["narciso-rodriguez-poudree",
+    "ysl-black-opium-le-parfum"
   ]
 },
 
 {
   id: 13,
-  date: "06 Jun",
+  date: { en: "06 Jun", sr: "06 Jun" },
   image: "/journal/community-most-wanted-drop-01.jpg",
   series: {
     en: "COMMUNITY SERIES",
@@ -1558,18 +1566,18 @@ Remember. PlayNice.
       en: "Request the next scent",
       sr: "Predloži sledeći parfem",
     },
-    url: "scent-request",
+    action: "scent-request",
   },
 ],
   relatedProducts: [
-    "Valentino Uomo Born In Roma Coral Fantasy",
-    "Yves Saint Laurent Y Iced Cologne",
+    "valentino-uomo-born-in-roma-coral-fantasy",
+    "ysl-y-iced-cologne",
   ],
 },
 
 {
   id: 14,
-  date: "25 Jun",
+  date: { en: "25 Jun", sr: "25 Jun" },
   image: "/journal/community-most-wanted-drop-02.jpg",
   series: {
     en: "COMMUNITY SERIES",
@@ -1753,18 +1761,18 @@ Remember. PlayNice.
         en: "Request the next scent",
         sr: "Predloži sledeći parfem",
       },
-      url: "scent-request",
+      action: "scent-request",
     },
   ],
   relatedProducts: [
-    "Prada Paradigme Eau de Parfum",
-    "Carolina Herrera Bad Boy Cobalt Eau de Parfum",
+    "prada-paradigme-edp",
+    "carolina-herrera-bad-boy-cobalt-edp",
   ],
 },
 
 {
   id: 15,
-  date: "26 Jun",
+  date: { en: "26 Jun", sr: "26 Jun" },
   image: "/journal/four-new-signatures.jpg",
   series: {
     en: "PLAYNICE SELECTION",
@@ -1974,20 +1982,20 @@ Remember. PlayNice.
         en: "Explore the collection",
         sr: "Istraži kolekciju",
       },
-      url: "shop",
+      action: "shop",
     },
   ],
   relatedProducts: [
-    "Bvlgari Man In Black Eau de Parfum",
-    "Mancera Aoud Lemon Mint Eau de Parfum",
-    "Yves Saint Laurent MYSLF Eau de Parfum",
-    "Prada Luna Rossa Ocean Eau de Toilette",
+    "bvlgari-man-in-black-edp",
+    "mancera-aoud-lemon-mint",
+    "ysl-myslf-edp",
+    "prada-luna-rossa-ocean-edt",
   ],
 },
 
 {
   id: 16,
-  date: "09 Jul",
+  date: { en: "09 Jul", sr: "09 Jul" },
   image: "/journal/thomas-kosmala-le-sel-de-la-terre.jpg",
   title: {
     en: "How do you create a man who smells like this?",
@@ -2172,13 +2180,13 @@ Imam osećaj da odgovor na to pitanje miriše mnogo više od bilo koje note koja
 Remember. PlayNice.`
   },
   relatedProducts: [
-    "Thomas Kosmala No. 7 Le Sel de la Terre"
+    "thomas-kosmala-no7-le-sel-de-la-terre"
   ]
 },
 
 {
   id: 17,
-  date: "11 Jul",
+  date: { en: "11 Jul", sr: "11 Jul" },
   image: "/journal/world-cup-var.jpg",
   title: {
     en: "Once, it was enough for the ball to cross the line.",
@@ -2540,7 +2548,7 @@ Remember. PlayNice.`
 
 {
   id: 18,
-  date: "12 Jul",
+  date: { en: "12 Jul", sr: "12 Jul" },
   image: "/journal/fifty-one-day.jpg",
   title: {
     en: "50... And one day.",
@@ -3059,12 +3067,27 @@ I jednim danom.
 Čarli
 
 Remember. PlayNice.`
-  }
+  },
+  links: [
+    {
+      label: {
+        en: "Explore the collection",
+        sr: "Istraži kolekciju",
+      },
+      action: "shop",
+    },
+  ],
+  relatedProducts: [
+    "bvlgari-man-in-black-edp",
+    "mancera-aoud-lemon-mint",
+    "ysl-myslf-edp",
+    "prada-luna-rossa-ocean-edt",
+  ],
 },
 
 {
   id: 19,
-  date: "25 Jul",
+  date: { en: "25 Jul", sr: "25 Jul" },
   image: "/journal/scent-has-no-navigation.jpg",
   title: {
     en: "Scent Has No Navigation.",
@@ -3318,20 +3341,20 @@ Remember. PlayNice.`
       en: "Choose your direction",
       sr: "Izaberi svoj pravac",
     },
-    url: "shop",
+    action: "shop",
   },
   ],
   relatedProducts: [
-    "Rayhaan Nocturno Elixir Eau de Parfum",
-    "Yves Saint Laurent MYSLF Eau de Parfum",
-    "French Avenue Ravine Ice Extrait de Parfum",
-    "Lattafa Khamrah Waha Eau de Parfum",
+    "rayhaan-nocturno-elixir",
+    "ysl-myslf-edp",
+    "french-avenue-ravine-ice",
+    "lattafa-khamrah-waha-edp",
   ],
 },
 
 {
   id: 20,
-  date: "11 Avg",
+  date: { en: "11 Aug", sr: "11 Avg" },
   image: "/journal/article20.png",
   title: {
     en: "The Honey Badger Doesn't Read the Comments.",
@@ -3571,14 +3594,15 @@ I još nešto: da tvorovi i medojedni jazavci ispuštaju Swiss Arabian Musk 01, 
 Čarli
 Remember. PlayNice.`
   },
-  relatedProducts: ["Swiss Arabian Musk 01 Extrait De Parfum"],
+  relatedProducts: ["swiss-arabian-musk-01"],
   links: [
     {
       label: {
         en: "Watch the honey badger in action",
         sr: "Pogledaj medojednog jazavca na delu"
       },
-      url: "https://www.youtube.com/watch?v=Fp77XYj0Wx4"
+      url: "https://www.youtube.com/watch?v=Fp77XYj0Wx4",
+      external: true
     }
   ]
 },
