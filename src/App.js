@@ -2650,7 +2650,17 @@ const handleJournalLinkClick = (link) => {
     url === "journal" ||
     url === "home"
   ) {
-    switchView(url);
+    switchView(url, { scrollTop: false });
+
+    window.setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    }, 120);
+
+    return;
   }
 };
 
