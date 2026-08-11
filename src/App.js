@@ -2619,11 +2619,19 @@ const handleJournalLinkClick = (link) => {
 
   const url = String(link.url || "").trim();
 
+  if (!url) return;
+
   // External link — YouTube, IMDb itd.
+  // Journal ostaje otvoren, link ide u novi tab.
   if (/^https?:\/\//i.test(url)) {
     window.open(url, "_blank", "noopener,noreferrer");
     return;
   }
+
+  // Važno:
+  // Journal overlay inače vraća scroll poziciju sa koje je otvoren.
+  // Kod navigacije na drugi deo sajta to NE želimo.
+  scrollYRef.current = 0;
 
   setSelectedArticle(null);
   setJournalOpen(false);
@@ -2633,33 +2641,22 @@ const handleJournalLinkClick = (link) => {
     switchView("home", { scrollTop: false });
 
     window.setTimeout(() => {
-      document
-        .querySelector(".scent-request-panel")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-    }, 160);
+      const target = document.querySelector(".scent-request-panel");
+
+      if (!target) return;
+
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 220);
 
     return;
   }
 
-  // Standard internal views
-  if (
-    url === "shop" ||
-    url === "journal" ||
-    url === "home"
-  ) {
-    switchView(url, { scrollTop: false });
-
-    window.setTimeout(() => {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    }, 120);
-
+  // Shop / Home
+  if (url === "shop" || url === "home") {
+    switchView(url);
     return;
   }
 };
