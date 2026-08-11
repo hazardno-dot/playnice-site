@@ -7093,7 +7093,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   >
   <div className="journal-featured-copy">
       <div className="journal-featured-meta">
-        <span>{sortedJournalArticles[0].date}</span>
+        <span>
+          {getJournalText(sortedJournalArticles[0].date, lang)}
+        </span>
 
         <span>{tr.journalReadingTime}</span>
 
