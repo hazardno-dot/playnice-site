@@ -7228,21 +7228,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           type="button"
           className="journal-related-text-link"
           onClick={() => {
-            const isExternalLink = /^https?:\/\//i.test(link.url);
-
-            if (isExternalLink) {
-              window.open(link.url, "_blank", "noopener,noreferrer");
-              return;
-            }
-
             setSelectedArticle(null);
             setJournalOpen(false);
             switchView(link.url);
 
             window.setTimeout(() => {
               window.scrollTo({
-               top: 0,
-               behavior: "smooth",
+              top: 0,
+              behavior: "smooth",
               });
             }, 120);
           }}

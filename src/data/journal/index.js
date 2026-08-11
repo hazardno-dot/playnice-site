@@ -3327,5 +3327,259 @@ Remember. PlayNice.`
     "French Avenue Ravine Ice Extrait de Parfum",
     "Lattafa Khamrah Waha Eau de Parfum",
   ],
-}
+},
+
+{
+  id: 20,
+  date: "11 Avg",
+  image: "/journal/article20.png",
+  title: {
+    en: "The Honey Badger Doesn't Read the Comments.",
+    sr: "Medojedni jazavac ne čita komentare."
+  },
+  excerpt: {
+    en: "Everyone wants to be themselves—as soon as everyone else confirms it's a good idea. The honey badger doesn't have that problem.",
+    sr: "Svi žele da budu svoji — čim im ostali potvrde da je to dobra ideja. Medojedni jazavac nema taj problem."
+  },
+  content: {
+    en: `Everyone wants to be different.
+Just not so different that they have to be alone in it.
+We want to be noticed, but not enough for someone in the comments to write: “This just isn't for me.”
+We like authenticity best when it comes with a return policy, an average rating of 4.8 and several influencers who have already tested it safely.
+In other words: be yourself. But keep the receipt.
+—
+The honey badger doesn't have that problem.
+It doesn't walk into the savannah asking:
+“Excuse me, is it still fashionable to be short, stocky and unpleasantly confident?”
+It doesn't care.
+It wears the same black-and-white coat its entire life, with no seasonal collections, no stylist and no post saying: “So many of you have been asking where it's from.”
+No one asked.
+Everyone was busy running away.
+The honey badger may be nature's finest example of authenticity. Not because it's the prettiest, strongest or largest. The lion is bigger. The cheetah is faster. The peacock has done a better job with personal branding.
+But none of them looks as if it has just received a restraining order from three national parks.
+That is its advantage.
+—
+We, on the other hand, can spend three days choosing a fragrance that will represent our unique personality and then type:
+“Do women like this fragrance?”
+That is usually where the unique personality dies.
+It didn't even make it to the base notes.
+We want a signature scent, provided the internet signs it first. We want a fragrance people will remember us by, preferably the same one they already remember another seven million people by.
+The honey badger doesn't look for a signature.
+It is the signature.
+Black underneath. A grey stripe across its back. Short legs. Long claws. The expression of a man you have just told that complaints can only be submitted through the online form.
+A complete identity.
+No consultant required.
+It also has its own scent signature. When things get serious, it can release an extremely unpleasant smell from its anal glands, rather like a skunk.
+That may not be the fragrance I would recommend for a first date.
+But you have to admit it has projection.
+And a very clearly defined target audience:
+everyone who needs to leave immediately.
+The honey badger doesn't ask whether its scent is “mass appealing”. Its approach is more “mass leaving”.
+—
+And this is where we get to our problem.
+We have grown so used to measuring ourselves through other people's reactions that we have turned taste into a survey. We no longer choose what we like. We choose what we expect others will approve of us liking.
+That is already serious administration.
+A man puts on a fragrance, leaves the house and, instead of living, keeps a mental spreadsheet:
+First compliment — colleague, 09:42.
+Second compliment — delivery driver, possibly just being polite.
+Third compliment — wasn't a compliment; he asked whether there was a petrol leak nearby.
+The honey badger doesn't have Excel.
+It has claws.
+That makes meetings considerably shorter.
+Of course, the point is not that we should live like one. When someone disapproves of your choice of shoes, you shouldn't dig a tunnel under their house and eat their poultry.
+That would be excessive.
+Even for LinkedIn.
+—
+Still, we could learn something from an animal that a venomous snakebite sometimes doesn't stop permanently—it merely disrupts its schedule.
+The honey badger is not completely immune to every venom, nor is it indestructible. The internet has turned it into an action hero, but nature was more nuanced. Its body developed resistance to certain snake neurotoxins. Thick, loose skin offers additional protection, and if a predator grabs it, the honey badger can turn around inside its own skin and bite back.
+Read that again.
+It can turn around inside its own skin.
+Most people cannot even turn around their own axis, let alone inside an opinion once they have posted it online.
+One comment bites us and we spend three days emotionally paralysed.
+A cobra bites the honey badger, it gathers itself and carries on dealing with the cobra.
+Not because the venom has no effect.
+It does. The honey badger simply doesn't let it decide what happens next.
+Perhaps that is authenticity.
+It doesn't mean never doubting yourself, ignoring every piece of advice or entering every conflict simply to prove that you can.
+You can listen to someone else's opinion. You just don't have to give it the keys, the alarm code and permission to choose your fragrance.
+The honey badger doesn't hold a press conference every time it survives. It doesn't post a black-and-white photograph with the caption:
+“They underestimated me. Now they watch me succeed.”
+It simply carries on.
+Probably towards the next beehive.
+—
+Authenticity isn't loudly explaining to everyone who you are. It is when you stop changing the answer every time somebody raises an eyebrow.
+Wear the fragrance you love.
+If someone else likes it — lovely.
+If nobody likes it — check the dosage.
+We do live in society, after all, not in the Kalahari.
+But don't immediately start changing yourself. Maybe you sprayed too much. Maybe it was the wrong occasion. Or perhaps everyone around you has spent so long wearing safe choices that something genuinely personal simply surprised them.
+The honey badger knows the difference between adapting and surrendering.
+It isn't stupid. Although its biography sounds as if it was written by a man who sells energy drinks, the animal doesn't attack everything it sees. It is independent, resourceful and persistent. It digs, hunts, searches for food and generally minds its own business.
+The problem begins when its business decides to fight back.
+That is when negotiations end.
+We may not need its aggression.
+But a little of its internal organisation would do us good.
+It doesn't ask:
+“Am I brave enough?”
+It asks:
+“Where is the beehive?”
+It doesn't ask:
+“What if they judge me?”
+Probably because those judging it tend to do so from a safe distance and from behind a tree.
+It doesn't ask whether its black-and-white appearance sends the wrong message, either.
+The message is perfectly clear.
+—
+What we lack may not be more advice on how to find ourselves. We have enough advice. Every morning the internet offers us seventeen ways to be authentic, twelve habits of successful people and one fragrance that will supposedly change our lives.
+It won't.
+A fragrance can change your mood, awaken a memory, start a conversation or make an ordinary Tuesday feel as though it has a better budget.
+But it cannot decide for you.
+You have to do that yourself.
+Preferably without a survey.
+—
+So the next time you choose something of your own — a fragrance, an opinion, a shirt or a life that doesn't look particularly impressive on someone else's screen — remember the honey badger.
+You don't have to eat a cobra.
+It is enough not to let every venomous comment convince you that you were wrong.
+You don't have to attack a lion.
+It is enough to stop behaving like prey whenever someone fails to understand your choice.
+And you don't have to release a defensive odour.
+Several very serious fragrances from the eighties have already taken care of that.
+Be yourself.
+Not because it is currently fashionable.
+Not because it sounds good in a profile description.
+And not because I told you to.
+Be yourself because the alternative is rather exhausting: spending your life wearing someone else's taste while waiting for a compliment from people who borrowed theirs as well.
+The honey badger would never do that.
+It has its own coat, its own scent and its own direction.
+And if a king cobra happens to be standing in that direction — let us just say that royal titles do not mean very much in that forest.
+—
+And one more thing: if skunks and honey badgers released Swiss Arabian Musk 01, the world would be just a tiny bit more beautiful. Both they and everyone around them… would live muuuch better.
+—
+Charlie
+Remember. PlayNice.`,
+    sr: `Danas svi žele da budu drugačiji.
+Samo ne toliko drugačiji da u tome ostanu sami.
+Želimo da se primetimo, ali ne toliko da neko u komentarima napiše: „Meni ovo ipak nije leglo.“
+Autentičnost nam se najviše dopada kada dolazi sa garancijom povrata novca, prosečnom ocenom 4,8 i nekoliko influensera koji su je već bezbedno isprobali.
+Drugim rečima: budite svoji. Ali sačuvajte račun.
+—
+Medojedni jazavac nema taj problem.
+On ne ulazi u savanu pitajući:
+„Izvinite, da li je danas još uvek moderno biti nizak, zdepast i neprijatno samouveren?“
+Ne zanima ga.
+Ima crno-beli kaput koji nosi čitavog života, bez sezonskih kolekcija, bez stiliste i bez objave: „Mnogi ste me pitali odakle je.“
+Niko ga nije pitao.
+Svi su bili zauzeti bežanjem.
+Medojedni jazavac je možda najbolji primer autentičnosti u prirodi. Ne zato što je najlepši, najjači ili najveći. Lav je veći. Gepard je brži. Paun je bolje rešio lični brending.
+Ali nijedna od tih životinja ne izgleda kao da je upravo dobila zabranu prilaska u tri nacionalna parka.
+To je njegova prednost.
+—
+Mi, s druge strane, možemo provesti tri dana birajući parfem koji će predstavljati našu jedinstvenu ličnost, a onda ukucati:
+„Da li žene vole ovaj parfem?“
+Tu obično umre jedinstvena ličnost.
+Nije čak ni stigla do baze.
+Tražimo signature scent, ali pod uslovom da ga internet prethodno potpiše. Želimo miris po kojem će nas pamtiti, ali najradije onaj po kojem već pamte još sedam miliona ljudi.
+Medojedni jazavac ne traži signature.
+On jeste signature.
+Crna donja polovina. Siva pruga preko leđa. Kratke noge. Dugačke kandže. Izraz lica čoveka kome ste upravo rekli da reklamaciju može podneti isključivo putem formulara.
+Kompletan identitet.
+Bez konsultanta.
+A ima i sopstveni mirisni potpis. Kada situacija postane ozbiljna, može da ispusti veoma neprijatan miris iz analnih žlezda, slično tvoru.
+To možda nije parfem koji bih preporučio za prvi sastanak.
+Ali se mora priznati da ima projekciju.
+I vrlo jasnu ciljnu grupu:
+svi koji treba odmah da odu.
+Medojedni jazavac ne pita da li je njegov miris „mass appealing“. Njegov pristup je više „mass leaving“.
+—
+I tu dolazimo do problema sa nama.
+Toliko smo navikli da merimo sebe reakcijama drugih da smo ukus pretvorili u anketu. Više ne biramo ono što nam se dopada. Biramo ono za šta očekujemo da će drugi odobriti da nam se dopada.
+To je već ozbiljna administracija.
+Čovek stavi parfem, izađe iz kuće i umesto da živi, mentalno vodi Excel tabelu:
+Prvi kompliment — koleginica, 09:42.
+Drugi kompliment — dostavljač, možda samo ljubazan.
+Treći kompliment — nije bio kompliment, pitao je da li negde curi benzin.
+Medojedni jazavac nema Excel.
+Ima kandže.
+To značajno skraćuje sastanke.
+Naravno, nije poenta da živimo kao on. Kada vam neko ne odobri izbor cipela, ne treba da mu iskopate tunel ispod kuće i pojedete živinu.
+To bi bilo preterano.
+Čak i za LinkedIn.
+—
+Ali nešto bismo mogli da naučimo od životinje koju ugriz otrovne zmije ponekad ne zaustavi trajno, već joj samo poremeti raspored.
+Medojedni jazavac nije potpuno imun na svaki otrov i nije neuništiv. Internet je od njega napravio akcionog heroja, ali priroda je bila nijansiranija. Njegovo telo je razvilo otpornost na određene zmijske neurotoksine. Debela, labava koža dodatno ga štiti, a ako ga grabljivica uhvati, on može da se okrene unutar sopstvene kože i ugrize je.
+Pročitajte to ponovo.
+Može da se okrene unutar sopstvene kože.
+Većina ljudi ne može da se okrene ni oko sopstvene ose, a kamoli unutar sopstvenog mišljenja kada ga jednom objavi na internetu.
+Nas ugrize jedan komentar i tri dana ležimo emotivno paralizovani.
+Njega ugrize kobra, on se malo sabere i nastavi da rešava problem sa kobrom.
+Ne zato što otrov ne deluje.
+Deluje. Samo mu nije prepustio odluku šta će dalje.
+Možda je upravo to autentičnost.
+To ne znači da nikada ne sumnjate, da ignorišete svaki savet ili da ulazite u svaki sukob samo da biste dokazali da možete.
+Možete saslušati tuđe mišljenje. Samo mu ne morate dati ključeve, šifru alarma i pravo da vam bira parfem.
+Medojedni jazavac ne organizuje konferenciju za medije svaki put kada preživi. Ne objavljuje crno-belu fotografiju sa tekstom:
+„Potcenili su me. Sada gledaju moj uspeh.“
+On samo nastavi dalje.
+Verovatno prema sledećoj košnici.
+—
+Autentičnost nije da svima glasno objašnjavate ko ste. To je kada prestanete da menjate odgovor svaki put kada neko podigne obrvu.
+Nosite miris koji volite.
+Ako se nekome dopadne — lepo.
+Ako se nikome ne dopadne — proverite dozu.
+Ipak živimo u društvu, ne u Kalahariju.
+Ali nemojte odmah menjati sebe. Možda ste stavili previše. Možda je pogrešna prilika. A možda su svi oko vas proveli toliko vremena noseći bezbedne izbore da ih je nešto stvarno lično jednostavno iznenadilo.
+Medojedni jazavac zna razliku između prilagođavanja i predaje.
+On nije glup. Iako njegova biografija zvuči kao da ju je pisao čovek koji prodaje energetska pića, životinja ne napada sve što vidi. Samostalna je, snalažljiva i uporna. Kopa, lovi, traži hranu i uglavnom gleda svoja posla.
+Problem nastaje kada njegova posla odluče da uzvrate.
+Tada se pregovori završavaju.
+Možda nam ne treba njegova agresija.
+Ali dobro bi nam došao deo njegove unutrašnje organizacije.
+On ne pita:
+„Da li sam dovoljno hrabar?“
+On pita:
+„Gde je košnica?“
+Ne pita:
+„Šta ako me osuđuju?“
+Verovatno zato što oni koji ga osuđuju obično to rade sa bezbedne udaljenosti i iza drveta.
+Ne pita ni da li njegov crno-beli izgled šalje pogrešnu poruku.
+Poruka je sasvim jasna.
+—
+Ono što nam nedostaje možda nije još saveta o tome kako da pronađemo sebe. Saveta imamo dovoljno. Svakog jutra internet nam ponudi sedamnaest načina da budemo autentični, dvanaest navika uspešnih ljudi i jedan parfem koji će navodno promeniti naš život.
+Neće.
+Parfem može da promeni raspoloženje, probudi uspomenu, otvori razgovor ili učini da vam običan utorak deluje kao da ima bolji budžet.
+Ali ne može da odluči umesto vas.
+To morate sami.
+Po mogućnosti bez ankete.
+—
+Zato sledeći put kada birate nešto svoje — miris, mišljenje, košulju ili život koji ne izgleda naročito dobro na tuđem ekranu — setite se medojednog jazavca.
+Ne morate pojesti kobru.
+Dovoljno je da ne dozvolite svakom otrovnom komentaru da vas ubedi da ste pogrešili.
+Ne morate napasti lava.
+Dovoljno je da prestanete da se ponašate kao plen svaki put kada neko ne razume vaš izbor.
+I ne morate ispustiti odbrambeni miris.
+Za to već postoji nekoliko veoma ozbiljnih parfema iz osamdesetih.
+Budite svoji.
+Ne zato što je to trenutno popularno.
+Ne zato što dobro zvuči u opisu profila.
+I ne zato što vam to ja rekao.
+Budite svoji zato što je alternativa prilično zamorna: provesti život noseći tuđi ukus, čekajući kompliment od ljudi koji su svoj takođe pozajmili.
+Medojedni jazavac to nikada ne bi uradio.
+On ima svoj kaput, svoj miris i svoj pravac.
+A ako mu se na tom pravcu nađe kraljevska kobra — recimo samo da kraljevske titule u toj šumi ne znače mnogo.
+—
+I još nešto: da tvorovi i medojedni jazavci ispuštaju Swiss Arabian Musk 01, svet bi bio za trunku lepše mesto. I oni, a i okolina.. bi živeli mnooogo kvalitetnije.
+—
+Čarli
+Remember. PlayNice.`
+  },
+  relatedProducts: ["Swiss Arabian Musk 01 Extrait De Parfum"],
+  links: [
+    {
+      label: {
+        en: "Watch the honey badger in action",
+        sr: "Pogledaj medojednog jazavca na delu"
+      },
+      url: "https://www.youtube.com/watch?v=Fp77XYj0Wx4"
+    }
+  ]
+},
 ];
