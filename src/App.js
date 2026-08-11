@@ -406,13 +406,23 @@ const getRelatedJournalProducts = (article) => {
   if (!article?.relatedProducts?.length) return [];
 
   return article.relatedProducts
-    .map((relatedName) =>
-      products.find(
-        (product) =>
-          product.name?.trim().toLowerCase() ===
-          relatedName.trim().toLowerCase()
-      )
-    )
+    .map((relatedRef) => {
+      const normalizedRef = String(relatedRef || "").trim();
+
+      if (!normalizedRef) return null;
+
+      return (
+        products.find(
+          (product) => getProductSlug(product) === normalizedRef
+        ) ||
+        products.find(
+          (product) =>
+            product.name?.trim().toLowerCase() ===
+            normalizedRef.toLowerCase()
+        ) ||
+        null
+      );
+    })
     .filter(Boolean);
 };
 
@@ -2601,6 +2611,46 @@ const switchView = (nextView, options = {}) => {
     requestAnimationFrame(() => {
       smoothScrollToTop();
     });
+  }
+};
+
+const handleJournalLinkClick = (link) => {
+  if (!link) return;
+
+  const url = String(link.url || "").trim();
+
+  // External link — YouTube, IMDb itd.
+  if (/^https?:\/\//i.test(url)) {
+    window.open(url, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  setSelectedArticle(null);
+  setJournalOpen(false);
+
+  // Community / Scent Request
+  if (url === "scent-request") {
+    switchView("home", { scrollTop: false });
+
+    window.setTimeout(() => {
+      document
+        .querySelector(".scent-request-panel")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+    }, 160);
+
+    return;
+  }
+
+  // Standard internal views
+  if (
+    url === "shop" ||
+    url === "journal" ||
+    url === "home"
+  ) {
+    switchView(url);
   }
 };
 
@@ -7108,7 +7158,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         )}
 
         <div className="journal-card-meta">
-          <span className="journal-card-date">{article.date}</span>
+          <span className="journal-card-date">
+            {getJournalText(article.date, lang)}
+          </span>
           <span className="journal-reading-time">
             {tr.journalReadingTime}
           </span>
@@ -7167,7 +7219,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <div className="journal-article-sticky-head">
         <div className="journal-article-head">
           <div className="journal-card-meta">
-            <span className="journal-card-date">{selectedArticle.date}</span>
+            <span className="journal-card-date">
+              {getJournalText(selectedArticle.date, lang)}
+            </span>
 
     <span className="journal-reading-time">
       {tr.journalReadingTime}
@@ -7222,32 +7276,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
 
     <div className="journal-related-links">
-      {selectedArticle.links.map((link) => (
+      {selectedArticle.links.map((link, index) => (
         <button
-          key={link.url}
+          key={link.url || `journal-link-${index}`}
           type="button"
           className="journal-related-text-link"
-          onClick={() => {
-            const isExternalLink = /^https?:\/\//i.test(link.url);
-
-            if (isExternalLink) {
-              window.open(link.url, "_blank", "noopener,noreferrer");
-              return;
-            }
-
-            setSelectedArticle(null);
-            setJournalOpen(false);
-            switchView(link.url);
-
-            window.setTimeout(() => {
-              window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
-          }, 120);
-        }}
+          onClick={() => handleJournalLinkClick(link)}
         >
-          {link.label?.[lang] || link.label?.en}
+          {getJournalText(link.label, lang)}
         </button>
       ))}
     </div>
