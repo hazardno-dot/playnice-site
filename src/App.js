@@ -2617,46 +2617,45 @@ const switchView = (nextView, options = {}) => {
 const handleJournalLinkClick = (link) => {
   if (!link) return;
 
+  const action = String(link.action || "").trim();
   const url = String(link.url || "").trim();
 
-  if (!url) return;
-
   // External link — YouTube, IMDb itd.
-  // Journal ostaje otvoren, link ide u novi tab.
-  if (/^https?:\/\//i.test(url)) {
+  if (url && /^https?:\/\//i.test(url)) {
     window.open(url, "_blank", "noopener,noreferrer");
     return;
   }
 
-  // Važno:
-  // Journal overlay inače vraća scroll poziciju sa koje je otvoren.
-  // Kod navigacije na drugi deo sajta to NE želimo.
+  // Interni Journal link može koristiti action ili stari url format
+  const target = action || url;
+
+  if (!target) return;
+
+  // Kod navigacije iz Journala ne vraćamo staru scroll poziciju
   scrollYRef.current = 0;
 
   setSelectedArticle(null);
   setJournalOpen(false);
 
   // Community / Scent Request
-  if (url === "scent-request") {
+  if (target === "scent-request") {
     switchView("home", { scrollTop: false });
 
     window.setTimeout(() => {
-      const target = document.querySelector(".scent-request-panel");
-
-      if (!target) return;
-
-      target.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+      document
+        .querySelector(".scent-request-panel")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
     }, 220);
 
     return;
   }
 
   // Shop / Home
-  if (url === "shop" || url === "home") {
-    switchView(url);
+  if (target === "shop" || target === "home") {
+    switchView(target);
     return;
   }
 };
