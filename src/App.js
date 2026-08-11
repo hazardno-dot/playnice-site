@@ -7228,6 +7228,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           type="button"
           className="journal-related-text-link"
           onClick={() => {
+            const isExternalLink = /^https?:\/\//i.test(link.url);
+
+            if (isExternalLink) {
+              window.open(link.url, "_blank", "noopener,noreferrer");
+              return;
+            }
+
             setSelectedArticle(null);
             setJournalOpen(false);
             switchView(link.url);
@@ -7236,9 +7243,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               window.scrollTo({
               top: 0,
               behavior: "smooth",
-              });
-            }, 120);
-          }}
+            });
+          }, 120);
+        }}
         >
           {link.label?.[lang] || link.label?.en}
         </button>
