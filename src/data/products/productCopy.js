@@ -2520,6 +2520,117 @@ export const productCopy = {
     en: "If you enjoy a clean, soft and sophisticated musky fragrance."
   }
 },
+
+"Afnan Turathi Electric Eau de Parfum": {
+  miniTag: {
+    sr: "⚡ Voćni / Svež",
+    en: "⚡ Fruity / Fresh"
+  },
+
+  card: {
+    sr: "Sočna kruška i citrusi u blistavom modernom profilu.",
+    en: "Juicy pear and citrus in a bright modern profile."
+  },
+
+  modal: {
+    sr: "Kruška, grejpfrut i mandarina prelaze u jabuku i cvet narandže, uz čistu mošusno-amber bazu.",
+    en: "Pear, grapefruit and mandarin lead into apple and orange blossom over a clean musky-amber base."
+  },
+
+  scentType: {
+    sr: "Voćno-cvetni mošusni",
+    en: "Fruity floral musky"
+  },
+
+  dominantNotes: {
+    sr: ["kruška", "grejpfrut", "jabuka", "mošus"],
+    en: ["pear", "grapefruit", "apple", "musk"]
+  },
+
+  tags: {
+    sr: ["Svež", "Letnji", "Moderan"],
+    en: ["Fresh", "Summer", "Modern"]
+  },
+
+  whyChoose: {
+    sr: "Ako želiš blistav, moderan i lako nosiv letnji miris.",
+    en: "If you want a bright, modern and easy-to-wear summer scent."
+  }
+},
+
+"Jil Sander Sun Eau de Toilette": {
+  miniTag: {
+    sr: "☀️ Sunčan / Kremast",
+    en: "☀️ Solar / Creamy"
+  },
+
+  card: {
+    sr: "Sunčano cveće, vanila i sandalovina u toplom klasiku.",
+    en: "Solar florals, vanilla and sandalwood in a warm classic."
+  },
+
+  modal: {
+    sr: "Citrusi i cvet narandže prelaze u bogato cvetno srce, uz toplu bazu vanile, ambera i sandalovine.",
+    en: "Citrus and orange blossom lead into a rich floral heart over warm vanilla, amber and sandalwood."
+  },
+
+  scentType: {
+    sr: "Topli cvetno-amberni",
+    en: "Warm floral amber"
+  },
+
+  dominantNotes: {
+    sr: ["cvet narandže", "ylang-ylang", "vanila", "sandalovina"],
+    en: ["orange blossom", "ylang-ylang", "vanilla", "sandalwood"]
+  },
+
+  tags: {
+    sr: ["Topao", "Cvetni", "Kremast"],
+    en: ["Warm", "Floral", "Creamy"]
+  },
+
+  whyChoose: {
+    sr: "Ako voliš tople, kremaste i prepoznatljive mirisne klasike.",
+    en: "If you enjoy warm, creamy and distinctive fragrance classics."
+  }
+},
+
+"Mancera Cosmic Pepper Eau de Parfum": {
+  miniTag: {
+    sr: "🌶️ Biber / Drvenast",
+    en: "🌶️ Pepper / Woody"
+  },
+
+  card: {
+    sr: "Biber, citrusi i oud u energičnom nišnom spoju.",
+    en: "Pepper, citrus and oud in an energetic niche blend."
+  },
+
+  modal: {
+    sr: "Roze i crni biber sa citrusima vode ka ruži i oudu, uz toplu bazu tonke, ambera i labdanuma.",
+    en: "Pink and black pepper with citrus lead into rose and oud over a warm tonka, amber and labdanum base."
+  },
+
+  scentType: {
+    sr: "Začinski drvenasto-amberni",
+    en: "Spicy woody amber"
+  },
+
+  dominantNotes: {
+    sr: ["crni biber", "limun", "oud", "tonka"],
+    en: ["black pepper", "lemon", "oud", "tonka bean"]
+  },
+
+  tags: {
+    sr: ["Začinski", "Drvenast", "Upečatljiv"],
+    en: ["Spicy", "Woody", "Bold"]
+  },
+
+  whyChoose: {
+    sr: "Ako želiš energičan i sofisticiran nišni miris sa izraženim biberom.",
+    en: "If you want an energetic sophisticated niche scent with a pronounced pepper character."
+  }
+},
 };
 
 /* =========================================

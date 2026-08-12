@@ -2557,4 +2557,93 @@ export const products = [
   },
   isNew: true,
 },
+{
+  id: 90,
+  slug: "afnan-turathi-electric",
+  name: "Afnan Turathi Electric Eau de Parfum",
+  shortName: "Turathi Electric",
+  category: "Arabian",
+  image: "/products/afnan-turathi-electric.png",
+  sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+  badge: "NEW",
+  rating: 8.8,
+  ratingLabel: "Fresh Favorite",
+  season: "summer",
+  moods: ["clean", "summer", "signature"],
+  recommendations: [
+    "rayhaan-pacific-aura",
+    "french-avenue-pinnace-oryn",
+    "afnan-turathi-blue"
+  ],
+  inspiredBy: {
+    name: "Ex Nihilo Blue Talisman",
+    short: "Blue Talisman DNA"
+  },
+  noteMap: {
+    top: ["bergamot", "pink-grapefruit", "pear", "mandarin"],
+    heart: ["apple", "cedarwood", "orange-blossom"],
+    base: ["vanilla", "amber", "musk", "ambroxan"]
+  },
+  isNew: true,
+},
+
+{
+  id: 91,
+  slug: "jil-sander-sun-edt",
+  name: "Jil Sander Sun Eau de Toilette",
+  shortName: "Jil Sander Sun",
+  category: "Designer",
+  image: "/products/jil-sander-sun-edt.png",
+  sizes: { "5ml": 4, "10ml": 7, "20ml": 13.5 },
+  badge: "NEW",
+  rating: 8.2,
+  ratingLabel: "Timeless Favorite",
+  season: "summer",
+  moods: ["soft", "summer", "rich"],
+  recommendations: [
+    "narciso-rodriguez-poudree",
+    "my-geisha-jasmine-in-the-sun",
+    "essential-parfums-orange-x-santal"
+  ],
+  inspiredBy: {
+    name: "Original Jil Sander creation",
+    short: "Solar Floral Vanilla DNA"
+  },
+  noteMap: {
+    top: ["orange-blossom", "lemon", "bergamot", "black-currant", "rosewood"],
+    heart: ["ylang-ylang", "heliotrope", "carnation", "orris", "rose"],
+    base: ["vanilla", "sandalwood", "amber", "tonka-bean", "musk"]
+  },
+  isNew: true,
+},
+
+{
+  id: 92,
+  slug: "mancera-cosmic-pepper",
+  name: "Mancera Cosmic Pepper Eau de Parfum",
+  shortName: "Cosmic Pepper",
+  category: "Niche",
+  image: "/products/mancera-cosmic-pepper.png",
+  sizes: { "2ml": 5, "5ml": 11, "10ml": 20 },
+  badge: "NEW",
+  rating: 8.8,
+  ratingLabel: "Spicy Niche",
+  season: "all",
+  moods: ["signature", "date", "rich"],
+  recommendations: [
+    "bvlgari-man-in-black-edp",
+    "bois-imperial-essential-parfums",
+    "prada-paradigme-edp"
+  ],
+  inspiredBy: {
+    name: "Original Mancera creation",
+    short: "Pepper Woody DNA"
+  },
+  noteMap: {
+    top: ["pink-pepper", "black-pepper", "lemon", "mandarin", "clary-sage"],
+    heart: ["black-pepper", "damask-rose", "oud"],
+    base: ["tonka-bean", "amber", "oakmoss", "white-musk", "labdanum"]
+  },
+  isNew: true,
+},
 ];

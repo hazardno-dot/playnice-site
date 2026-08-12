@@ -2,7 +2,7 @@
    DECANT SITUATION NOTE
 ========================================= */
 export const productWearContext = {
-    "Afnan 9 AM Eau de Parfum": {
+  "Afnan 9 AM Eau de Parfum": {
     sr: "Svaki dan, posao i toplo vreme.",
     en: "Everyday wear, work and warm weather.",
   },
@@ -354,9 +354,20 @@ export const productWearContext = {
     sr: "Veče, posebne prilike, elegantan izlazak.",
     en: "Evening, special occasions, elegant outings."
   },
-
   "Swiss Arabian Musk 01 Extrait de Parfum": {
     sr: "Svaki dan, posao, elegantne prilike.",
     en: "Everyday wear, work, elegant occasions."
+  },
+  "Afnan Turathi Electric Eau de Parfum": {
+    sr: "Leto, posao, svakodnevno nošenje.",
+    en: "Summer, work, everyday wear."
+  },
+  "Jil Sander Sun Eau de Toilette": {
+    sr: "Topli dani, odmor, opuštene prilike.",
+    en: "Warm days, holidays, relaxed occasions."
+  },
+  "Mancera Cosmic Pepper Eau de Parfum": {
+    sr: "Izlazak, veče, upečatljivo svakodnevno nošenje.",
+    en: "Going out, evenings, bold everyday wear."
   }
 };
