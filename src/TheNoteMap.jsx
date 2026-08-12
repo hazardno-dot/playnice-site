@@ -288,6 +288,10 @@ const NOTE_SR = {
   "crystal-notes": "Kristalne note",
   "vanilla-flower": "Cvet vanile",
   "powdery-notes": "Puderaste note",
+  "pink-grapefruit": "Ružičasti grejpfrut",
+  heliotrope: "Heliotrop",
+  carnation: "Karanfil",
+  "damask-rose": "Damaščanska ruža",
 };
 
 const NOTE_LEVELS = [
