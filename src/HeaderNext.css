@@ -220,6 +220,23 @@
   color: #9ee5ff;
 }
 
+.header-next-link.has-unread-journal {
+  color: #7edb95;
+
+  text-shadow:
+    0 0 10px rgba(126, 219, 149, 0.22),
+    0 0 18px rgba(126, 219, 149, 0.12);
+}
+
+.header-next-link.has-unread-journal:hover,
+.header-next-link.has-unread-journal:focus-visible {
+  color: #a8efba;
+
+  text-shadow:
+    0 0 12px rgba(126, 219, 149, 0.28),
+    0 0 22px rgba(126, 219, 149, 0.14);
+}
+
 .header-next-new {
   min-width: 24px;
   height: 13px;

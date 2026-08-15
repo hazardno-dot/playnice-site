@@ -27,6 +27,7 @@ function HeaderNext({
   lang,
   view,
   hasNewShopProducts,
+  hasNewJournalArticle,
   cartCount,
   wishlistCount,
   onHome,
@@ -98,16 +99,20 @@ function HeaderNext({
     () => [
       { key: "home", label: copy.home, action: onHome },
       { key: "shop", label: copy.shop, action: onShop, isNew: hasNewShopProducts },
-      { key: "journal", label: copy.journal, action: onJournal },
+      { key: "journal", label: copy.journal, action: onJournal, hasUnread: hasNewJournalArticle },
       { key: "community", label: copy.community, action: onCommunity },
-      {
-        key: "exhibition",
-        label: copy.exhibition,
-        note: copy.exhibitionNote,
-        action: onExhibition
-      }
+      { key: "exhibition", label: copy.exhibition, note: copy.exhibitionNote, action: onExhibition }
     ],
-    [copy, hasNewShopProducts, onCommunity, onExhibition, onHome, onJournal, onShop]
+    [
+      copy,
+      hasNewJournalArticle,
+      hasNewShopProducts,
+      onCommunity,
+      onExhibition,
+      onHome,
+      onJournal,
+      onShop
+    ]
   );
 
   const discoverItems = useMemo(
@@ -208,7 +213,7 @@ function HeaderNext({
       }}
       className={`header-next-link ${activeKey === item.key ? "is-active" : ""} ${
         item.isNew ? "has-new" : ""
-      }`}
+      } ${item.hasUnread ? "has-unread-journal" : ""}`}
       type="button"
       onClick={() => runAction(item.action)}
       onPointerEnter={mobile ? undefined : () => {

@@ -4426,6 +4426,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       lang={lang}
       view={view}
       hasNewShopProducts={hasNewShopProducts}
+      hasNewJournalArticle={hasNewJournalArticle}
       cartCount={cartCount}
       wishlistCount={wishlist.length}
       onHome={goHome}
