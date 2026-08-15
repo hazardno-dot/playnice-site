@@ -1669,6 +1669,11 @@ useEffect(() => {
 
     const nextView = getInitialView();
 
+    if (nextView !== "shop") {
+      setHeroCollectionFilter(null);
+      setHeroCollectionTitle("");
+    }
+
     setNoteMapOpen(false);
     setProductModalVisible(false);
     setSelectedProduct(null);
@@ -2471,7 +2476,25 @@ const privateSelectionProducts = useMemo(() => {
 }, [products, wishlist]);
 
 const goToShop = () => {
-  switchView("shop", { scrollTop: view !== "shop" });
+  const heroSelectionActive = Boolean(
+    heroCollectionFilter?.length || heroCollectionTitle
+  );
+
+  if (heroSelectionActive) {
+    setHeroCollectionFilter(null);
+    setHeroCollectionTitle("");
+    setCurrentPage(1);
+  }
+
+  switchView("shop", {
+    scrollTop: view !== "shop"
+  });
+
+  if (view === "shop" && heroSelectionActive) {
+    requestAnimationFrame(() => {
+      smoothScrollToTop();
+    });
+  }
 };
 
 const [smartCtaVibe, setSmartCtaVibe] = useState(null);
@@ -2595,6 +2618,11 @@ const switchView = (nextView, options = {}) => {
   const nextPath = routeForView(nextView);
   const isSameView = view === nextView;
   const hasRouteChanged = window.location.pathname !== nextPath;
+
+  if (nextView !== "shop") {
+    setHeroCollectionFilter(null);
+    setHeroCollectionTitle("");
+  }
 
   if (!isSameView) {
     setView(nextView);
