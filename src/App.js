@@ -2356,8 +2356,8 @@ const announcementItems = useMemo(() => {
           id: "latest-journal-announcement",
           text:
             lang === "sr"
-              ? `Novo u Journalu: ${latestJournalTitle}`
-              : `New in Journal: ${latestJournalTitle}`,
+              ? `Novo u rubrici Le Journal: ${latestJournalTitle}`
+              : `New in Le Journal: ${latestJournalTitle}`,
           icon: "→",
           tone: "journal",
           action: "openLatestJournalArticle",
@@ -3661,8 +3661,8 @@ useEffect(() => {
       : "Shop | Premium parfemi i dekanti u Crnoj Gori | PlayNice"
     : view === "journal"
     ? lang === "en"
-      ? "Journal | Fragrance stories and recommendations | PlayNice"
-      : "Journal | Mirisne priče i preporuke | PlayNice"
+      ? "Le Journal | Fragrance stories and recommendations | PlayNice"
+      : "Le Journal | Mirisne priče i preporuke | PlayNice"
     : lang === "en"
     ? "PlayNice | Premium fragrances and decants in Montenegro"
     : "PlayNice | Premium parfemi i dekanti u Crnoj Gori";
@@ -3675,8 +3675,8 @@ useEffect(() => {
       : "Istraži PlayNice kolekciju premium parfema i dekanata u Crnoj Gori. Designer, niche i Arabian mirisi, dostava širom Crne Gore."
     : view === "journal"
     ? lang === "en"
-      ? "PlayNice Journal brings short fragrance stories, recommendations and guides for choosing the right perfume."
-      : "PlayNice Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
+      ? "Le Journal by PlayNice brings short fragrance stories, recommendations and guides for choosing the right perfume."
+      : "PlayNice rubrika Le Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
     : lang === "en"
     ? "Premium fragrance decants and original perfumes in Montenegro. Try before you buy with PlayNice — designer, niche and Arabian fragrances."
     : "Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi.";
@@ -5236,8 +5236,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   }}
 >
   {lang === "sr"
-    ? "Pročitaj priču u Journalu"
-    : "Read all about it in Journal"}
+    ? "Pročitaj priču u rubrici Le Journal"
+    : "Read the story in Le Journal"}
   <span>→</span>
   </button>
 
@@ -6252,7 +6252,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </button>
 
       <button type="button" className="footer-link" onClick={handleJournalOpen}>
-        Journal
+        Le Journal
       </button>
 
       <button type="button" className="footer-link" onClick={() => setStoryOpen(true)}>

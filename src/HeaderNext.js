@@ -56,15 +56,15 @@ function HeaderNext({
     () =>
       lang === "sr"
         ? {
-            home: "Home",
+            home: "Početna",
             shop: "Shop",
-            journal: "Journal",
-            community: "Community",
-            exhibition: "Exhibition",
-            exhibitionNote: "Still Great Ideas",
-            discover: "Discover",
+            journal: "Le Journal",
+            community: "Zajednica",
+            exhibition: "Izložba",
+            exhibitionNote: "Ideje koje traju",
+            discover: "Otkrij",
             how: "Kako funkcioniše",
-            sets: "Discovery Sets",
+            sets: "Discovery setovi",
             why: "Zašto PlayNice",
             scent: "Predloži parfem",
             menu: "Meni",
@@ -76,7 +76,7 @@ function HeaderNext({
         : {
             home: "Home",
             shop: "Shop",
-            journal: "Journal",
+            journal: "Le Journal",
             community: "Community",
             exhibition: "Exhibition",
             exhibitionNote: "Still Great Ideas",
