@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
 import "./App.css";
+import HeaderNext from "./HeaderNext";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
@@ -692,6 +693,14 @@ const getInitialShopState = () => {
    APP
 ========================================= */
   function App() {
+
+  const headerVariant = useMemo(() => {
+    if (typeof window === "undefined") return "next";
+
+    return new URLSearchParams(window.location.search).get("header") === "classic"
+      ? "classic"
+      : "next";
+  }, []);
 
     const initialShopStateRef = useRef(null);
 
@@ -2697,6 +2706,19 @@ const goHome = () => {
   switchView("home");
 };
 
+const goToHomeSection = (selector, block = "start") => {
+  const isAlreadyHome = view === "home";
+
+  switchView("home", { scrollTop: false });
+
+  window.setTimeout(() => {
+    document.querySelector(selector)?.scrollIntoView({
+      behavior: "smooth",
+      block
+    });
+  }, isAlreadyHome ? 0 : 220);
+};
+
   const toggleWishlist = (productId) => {
     const isAdding = !wishlist.includes(productId);
 
@@ -4394,7 +4416,32 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </aside>
 )}
 
-<div className="header-system">
+<div
+  className={`header-system ${
+    headerVariant === "next" ? "header-next-system" : ""
+  }`}
+>
+  {headerVariant === "next" ? (
+    <HeaderNext
+      lang={lang}
+      view={view}
+      hasNewShopProducts={hasNewShopProducts}
+      cartCount={cartCount}
+      wishlistCount={wishlist.length}
+      onHome={goHome}
+      onShop={goToShop}
+      onJournal={handleJournalOpen}
+      onCommunity={() => goToHomeSection(".community-requests-section")}
+      onExhibition={() => goToHomeSection(".hero")}
+      onCart={() => setCartOpen((prev) => !prev)}
+      onWishlist={() => setPrivateSelectionOpen(true)}
+      onLanguage={() => setLang(lang === "sr" ? "en" : "sr")}
+      onHowItWorks={() => setHowItWorksOpen(true)}
+      onDiscoverySets={() => goToHomeSection(".discovery-showcase", "center")}
+      onWhyPlayNice={() => setStoryOpen(true)}
+      onScentRequest={() => goToHomeSection(".scent-request-panel", "center")}
+    />
+  ) : (
   <header className="topbar topbar-enterprise">
     <span className="topbar-connector" aria-hidden="true" />
 
@@ -4499,6 +4546,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </div>
     </div>
   </header>
+  )}
 
   <div
     className={`announcement-bar announcement-bar-system ${
