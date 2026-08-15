@@ -275,7 +275,7 @@ function HeaderNext({
               onClick={() => setDiscoverOpen((current) => !current)}
             >
               <span>{copy.discover}</span>
-              <i aria-hidden="true">+</i>
+              <i className="header-next-discover-chevron" aria-hidden="true" />
             </button>
 
             <div
