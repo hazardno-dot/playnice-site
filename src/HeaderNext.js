@@ -8,17 +8,16 @@ import React, {
 } from "react";
 import "./HeaderNext.css";
 
-const BagIcon = () => (
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M6.8 8.2h10.4l.8 11H6l.8-11Z" />
-    <path d="M9.1 8.2V6.5a2.9 2.9 0 0 1 5.8 0v1.7" />
-  </svg>
+const CartIcon = () => (
+  <span className="header-next-cart-icon" aria-hidden="true">
+    🛒
+  </span>
 );
 
 const HeartIcon = ({ filled = false }) => (
   <svg viewBox="0 0 24 24" aria-hidden="true">
     <path
-      className={filled ? "is-filled" : ""}
+      className={filled ? "is-filled" : "is-outline"}
       d="M20.8 5.9c-1.8-2.1-5.1-2.2-7-.3L12 7.4l-1.8-1.8c-1.9-1.9-5.2-1.8-7 .3-1.7 2-1.4 5 .5 6.9L12 21l8.3-8.2c1.9-1.9 2.2-4.9.5-6.9Z"
     />
   </svg>
@@ -307,23 +306,43 @@ function HeaderNext({
         </div>
 
         <div className="header-next-utility">
-          <button type="button" onClick={onWishlist} aria-label={copy.wishlist} title={copy.wishlist}>
-            <HeartIcon filled={wishlistCount > 0} />
-            {wishlistCount > 0 && <span className="header-next-count is-heart">{wishlistCount}</span>}
-          </button>
-          <button type="button" onClick={onCart} aria-label={copy.cart} title={copy.cart}>
-            <BagIcon />
-            {cartCount > 0 && <span className="header-next-count">{cartCount}</span>}
-          </button>
-          <button
-            className="header-next-language"
-            type="button"
-            onClick={onLanguage}
-            aria-label={copy.language}
-          >
-            {lang.toUpperCase()}
-          </button>
-        </div>
+  <button
+    className="header-next-language"
+    type="button"
+    onClick={onLanguage}
+    aria-label={copy.language}
+  >
+    {lang.toUpperCase()}
+  </button>
+
+  <button
+    type="button"
+    onClick={onWishlist}
+    aria-label={copy.wishlist}
+    title={copy.wishlist}
+  >
+    <HeartIcon filled={wishlistCount > 0} />
+    {wishlistCount > 0 && (
+      <span className="header-next-count is-heart">
+        {wishlistCount}
+      </span>
+    )}
+  </button>
+
+  <button
+    type="button"
+    onClick={onCart}
+    aria-label={copy.cart}
+    title={copy.cart}
+  >
+    <CartIcon />
+    {cartCount > 0 && (
+      <span className="header-next-count">
+        {cartCount}
+      </span>
+    )}
+  </button>
+</div>
 
         <div className="header-next-mobile-actions">
           <button
@@ -335,7 +354,7 @@ function HeaderNext({
             {wishlistCount > 0 && <span className="header-next-count is-heart">{wishlistCount}</span>}
           </button>
           <button type="button" onClick={() => runAction(onCart)} aria-label={copy.cart}>
-            <BagIcon />
+            <CartIcon />
             {cartCount > 0 && <span className="header-next-count">{cartCount}</span>}
           </button>
           <button

@@ -462,6 +462,29 @@
   stroke: #cf3e4d;
 }
 
+.header-next-utility .is-outline,
+.header-next-mobile-actions .is-outline {
+  fill: none;
+  stroke: #cf3e4d;
+}
+
+.header-next-cart-icon {
+  width: 18px;
+  height: 18px;
+
+  display: grid;
+  place-items: center;
+
+  font-family:
+    "Segoe UI Emoji",
+    "Apple Color Emoji",
+    sans-serif;
+  font-size: 16px;
+  line-height: 1;
+
+  transform: translateY(-1px);
+}
+
 .header-next-utility .header-next-language {
   color: #dcb56b;
   font-size: 9px;
