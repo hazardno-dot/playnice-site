@@ -1428,6 +1428,7 @@ const selectedSortOption =
 
   useEffect(() => {
     window.localStorage.setItem("playnice_lang", lang);
+    document.documentElement.lang = lang;
   }, [lang]);
 
   useEffect(() => {
