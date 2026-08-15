@@ -4769,6 +4769,17 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     {heroSlides.map((slide, index) => {
       const isActive = index === currentHero;
 
+      const previousHeroIndex =
+        (currentHero - 1 + heroSlides.length) % heroSlides.length;
+
+      const nextHeroIndex =
+        (currentHero + 1) % heroSlides.length;
+
+      const shouldLoadHeroImage =
+        isActive ||
+        index === previousHeroIndex ||
+        index === nextHeroIndex;
+
       const isActionable =
         slide.actionPrimary === "shop" ||
         (
@@ -4820,23 +4831,25 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               handleHeroSlideAction(slide);
             }}
           >
-            <picture>
-              <source
-                media="(max-width: 768px)"
-                srcSet={slide.mobileImage || slide.image}
-              />
+            {shouldLoadHeroImage && (
+              <picture>
+                <source
+                  media="(max-width: 768px)"
+                  srcSet={slide.mobileImage || slide.image}
+                />
 
-              <img
-                className={`hero-image-only-img ${
+                <img
+                  className={`hero-image-only-img ${
                   isActive ? "is-active" : ""
                 }`}
-                src={slide.desktopImage || slide.image}
-                alt={slide.alt || ""}
-                loading={index === 0 ? "eager" : "lazy"}
-                fetchPriority={index === 0 ? "high" : "auto"}
-                draggable="false"
-              />
-            </picture>
+                  src={slide.desktopImage || slide.image}
+                  alt={slide.alt || ""}
+                  loading={isActive ? "eager" : "lazy"}
+                  fetchPriority={isActive ? "high" : "auto"}
+                  draggable="false"
+                />
+             </picture>
+            )}
           </div>
         </article>
       );
