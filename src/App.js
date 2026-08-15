@@ -4844,7 +4844,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 }`}
                   src={slide.desktopImage || slide.image}
                   alt={slide.alt || ""}
-                  loading={isActive ? "eager" : "lazy"}
+                  loading="eager"
                   fetchPriority={isActive ? "high" : "auto"}
                   draggable="false"
                 />
