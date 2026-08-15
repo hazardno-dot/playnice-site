@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
 import "./App.css";
+import HeaderNext from "./HeaderNext";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
@@ -338,10 +339,14 @@ function safeReadLocalStorage(key, fallback) {
 }
 
 function smoothScrollToTop() {
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
   window.scrollTo({
     top: 0,
     left: 0,
-    behavior: "smooth"
+    behavior: reduceMotion ? "auto" : "smooth"
   });
 }
 
@@ -693,6 +698,14 @@ const getInitialShopState = () => {
 ========================================= */
   function App() {
 
+  const headerVariant = useMemo(() => {
+    if (typeof window === "undefined") return "next";
+
+    return new URLSearchParams(window.location.search).get("header") === "classic"
+      ? "classic"
+      : "next";
+  }, []);
+
     const initialShopStateRef = useRef(null);
 
   if (initialShopStateRef.current === null) {
@@ -739,6 +752,7 @@ const getInitialShopState = () => {
   const [heroCollectionFilter, setHeroCollectionFilter] = useState(null);
   const [heroCollectionTitle, setHeroCollectionTitle] = useState("");
   const [showStickyCta, setShowStickyCta] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
   const [productModalVisible, setProductModalVisible] = useState(false);
   const [noteMapOpen, setNoteMapOpen] = useState(false);
@@ -1414,6 +1428,7 @@ const selectedSortOption =
 
   useEffect(() => {
     window.localStorage.setItem("playnice_lang", lang);
+    document.documentElement.lang = lang;
   }, [lang]);
 
   useEffect(() => {
@@ -1548,16 +1563,34 @@ useEffect(() => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        document.body.classList.add("scrolled");
-      } else {
-        document.body.classList.remove("scrolled");
-      }
-    };
+  let scrollEndTimer;
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+  const handleScroll = () => {
+    const scrollY = window.scrollY;
+
+    document.body.classList.toggle("scrolled", scrollY > 20);
+    document.body.classList.add("is-scrolling");
+
+    setShowBackToTop(scrollY > 600);
+
+    window.clearTimeout(scrollEndTimer);
+
+    scrollEndTimer = window.setTimeout(() => {
+      document.body.classList.remove("is-scrolling");
+    }, 180);
+  };
+
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true
+    });
+
+    return () => {
+      window.clearTimeout(scrollEndTimer);
+      window.removeEventListener("scroll", handleScroll);
+      document.body.classList.remove("is-scrolling");
+    };
   }, []);
 
   useEffect(() => {
@@ -2347,8 +2380,8 @@ const announcementItems = useMemo(() => {
           id: "latest-journal-announcement",
           text:
             lang === "sr"
-              ? `Novo u Journalu: ${latestJournalTitle}`
-              : `New in Journal: ${latestJournalTitle}`,
+              ? `Novo u rubrici Le Journal: ${latestJournalTitle}`
+              : `New in Le Journal: ${latestJournalTitle}`,
           icon: "→",
           tone: "journal",
           action: "openLatestJournalArticle",
@@ -2695,6 +2728,19 @@ const goHome = () => {
   }
 
   switchView("home");
+};
+
+const goToHomeSection = (selector, block = "start") => {
+  const isAlreadyHome = view === "home";
+
+  switchView("home", { scrollTop: false });
+
+  window.setTimeout(() => {
+    document.querySelector(selector)?.scrollIntoView({
+      behavior: "smooth",
+      block
+    });
+  }, isAlreadyHome ? 0 : 220);
 };
 
   const toggleWishlist = (productId) => {
@@ -3639,8 +3685,8 @@ useEffect(() => {
       : "Shop | Premium parfemi i dekanti u Crnoj Gori | PlayNice"
     : view === "journal"
     ? lang === "en"
-      ? "Journal | Fragrance stories and recommendations | PlayNice"
-      : "Journal | Mirisne priče i preporuke | PlayNice"
+      ? "Le Journal | Fragrance stories and recommendations | PlayNice"
+      : "Le Journal | Mirisne priče i preporuke | PlayNice"
     : lang === "en"
     ? "PlayNice | Premium fragrances and decants in Montenegro"
     : "PlayNice | Premium parfemi i dekanti u Crnoj Gori";
@@ -3653,8 +3699,8 @@ useEffect(() => {
       : "Istraži PlayNice kolekciju premium parfema i dekanata u Crnoj Gori. Designer, niche i Arabian mirisi, dostava širom Crne Gore."
     : view === "journal"
     ? lang === "en"
-      ? "PlayNice Journal brings short fragrance stories, recommendations and guides for choosing the right perfume."
-      : "PlayNice Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
+      ? "Le Journal by PlayNice brings short fragrance stories, recommendations and guides for choosing the right perfume."
+      : "PlayNice rubrika Le Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
     : lang === "en"
     ? "Premium fragrance decants and original perfumes in Montenegro. Try before you buy with PlayNice — designer, niche and Arabian fragrances."
     : "Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi.";
@@ -4394,7 +4440,33 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </aside>
 )}
 
-<div className="header-system">
+<div
+  className={`header-system ${
+    headerVariant === "next" ? "header-next-system" : ""
+  }`}
+>
+  {headerVariant === "next" ? (
+    <HeaderNext
+      lang={lang}
+      view={view}
+      hasNewShopProducts={hasNewShopProducts}
+      hasNewJournalArticle={hasNewJournalArticle}
+      cartCount={cartCount}
+      wishlistCount={wishlist.length}
+      onHome={goHome}
+      onShop={goToShop}
+      onJournal={handleJournalOpen}
+      onCommunity={() => goToHomeSection(".community-requests-section")}
+      onExhibition={() => goToHomeSection(".hero")}
+      onCart={() => setCartOpen((prev) => !prev)}
+      onWishlist={() => setPrivateSelectionOpen(true)}
+      onLanguage={() => setLang(lang === "sr" ? "en" : "sr")}
+      onHowItWorks={() => setHowItWorksOpen(true)}
+      onDiscoverySets={() => goToHomeSection(".discovery-showcase", "center")}
+      onWhyPlayNice={() => setStoryOpen(true)}
+      onScentRequest={() => goToHomeSection(".scent-request-panel", "center")}
+    />
+  ) : (
   <header className="topbar topbar-enterprise">
     <span className="topbar-connector" aria-hidden="true" />
 
@@ -4499,6 +4571,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </div>
     </div>
   </header>
+  )}
 
   <div
     className={`announcement-bar announcement-bar-system ${
@@ -5188,8 +5261,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   }}
 >
   {lang === "sr"
-    ? "Pročitaj priču u Journalu"
-    : "Read all about it in Journal"}
+    ? "Pročitaj priču u rubrici Le Journal"
+    : "Read the story in Le Journal"}
   <span>→</span>
   </button>
 
@@ -6204,7 +6277,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </button>
 
       <button type="button" className="footer-link" onClick={handleJournalOpen}>
-        Journal
+        Le Journal
       </button>
 
       <button type="button" className="footer-link" onClick={() => setStoryOpen(true)}>
@@ -8357,6 +8430,23 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </span>
     </div>
   </div>
+)}
+
+{showBackToTop && !sideRailBlocked && (
+  <button
+    type="button"
+    className="back-to-top"
+    onClick={smoothScrollToTop}
+    aria-label={
+      lang === "sr"
+        ? "Povratak na vrh stranice"
+        : "Back to top"
+    }
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 19V5M6.5 10.5 12 5l5.5 5.5" />
+    </svg>
+  </button>
 )}
 
       {showStickyCta && (
