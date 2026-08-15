@@ -754,6 +754,8 @@ const getInitialShopState = () => {
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [isVideoInView, setIsVideoInView] = useState(false);
   const [productModalVisible, setProductModalVisible] = useState(false);
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [modalAddedKey, setModalAddedKey] = useState(null);
@@ -941,29 +943,57 @@ const isNewRequest = (request) => {
     "/videos/hero8.mp4"
   ];
 
-  const videoRef = useRef(null);
+  const videoFrameRef = useRef(null);
+const videoRef = useRef(null);
+const userPausedVideoRef = useRef(false);
 const [isVideoPaused, setIsVideoPaused] = useState(false);
 
 const goToNextVideo = () => {
+  userPausedVideoRef.current = false;
+  setIsVideoPaused(false);
+  setShouldLoadVideo(true);
   setCurrentVideo((prev) => (prev + 1) % heroVideos.length);
 };
 
 const goToPrevVideo = () => {
+  userPausedVideoRef.current = false;
+  setIsVideoPaused(false);
+  setShouldLoadVideo(true);
+
   setCurrentVideo((prev) =>
     prev === 0 ? heroVideos.length - 1 : prev - 1
   );
 };
 
+const selectVideo = (index) => {
+  userPausedVideoRef.current = false;
+  setIsVideoPaused(false);
+  setShouldLoadVideo(true);
+  setCurrentVideo(index);
+};
+
 const toggleVideoPlayback = () => {
+  if (!shouldLoadVideo) {
+    userPausedVideoRef.current = false;
+    setShouldLoadVideo(true);
+    setIsVideoPaused(false);
+    return;
+  }
+
   const video = videoRef.current;
   if (!video) return;
 
   if (video.paused) {
-    video.play();
-    setIsVideoPaused(false);
+    userPausedVideoRef.current = false;
+
+    const playPromise = video.play();
+
+    if (playPromise?.catch) {
+      playPromise.catch(() => setIsVideoPaused(true));
+    }
   } else {
+    userPausedVideoRef.current = true;
     video.pause();
-    setIsVideoPaused(true);
   }
 };
 
@@ -1425,6 +1455,73 @@ const selectedSortOption =
 
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+  if (view !== "home") {
+    videoRef.current?.pause();
+    setShouldLoadVideo(false);
+    setIsVideoInView(false);
+    return;
+  }
+
+  const videoFrame = videoFrameRef.current;
+  if (!videoFrame) return;
+
+  if (typeof IntersectionObserver === "undefined") {
+    setShouldLoadVideo(true);
+    setIsVideoInView(true);
+    return;
+  }
+
+  const loadObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) return;
+
+      setShouldLoadVideo(true);
+      loadObserver.disconnect();
+    },
+    {
+      threshold: 0.01,
+      rootMargin: "320px 0px"
+    }
+  );
+
+  const playbackObserver = new IntersectionObserver(
+    ([entry]) => {
+      setIsVideoInView(
+        entry.isIntersecting && entry.intersectionRatio >= 0.12
+      );
+    },
+    {
+      threshold: [0, 0.12]
+    }
+  );
+
+  loadObserver.observe(videoFrame);
+  playbackObserver.observe(videoFrame);
+
+  return () => {
+    loadObserver.disconnect();
+    playbackObserver.disconnect();
+    videoRef.current?.pause();
+  };
+}, [view]);
+
+useEffect(() => {
+  const video = videoRef.current;
+  if (!video || !shouldLoadVideo) return;
+
+  if (!isVideoInView || userPausedVideoRef.current) {
+    video.pause();
+    return;
+  }
+
+  const playPromise = video.play();
+
+  if (playPromise?.catch) {
+    playPromise.catch(() => setIsVideoPaused(true));
+  }
+}, [currentVideo, isVideoInView, shouldLoadVideo]);
 
   useEffect(() => {
     window.localStorage.setItem("playnice_lang", lang);
@@ -5438,18 +5535,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
             <section className="featured-section section-wrap impact-split-section">
               <div className="impact-video-column">
-                <div className="impact-video-frame">
+                <div className="impact-video-frame" ref={videoFrameRef}>
   <video
     ref={videoRef}
     key={currentVideo}
-    autoPlay
     muted
     playsInline
+    preload={shouldLoadVideo ? "metadata" : "none"}
     onEnded={goToNextVideo}
     onPlay={() => setIsVideoPaused(false)}
     onPause={() => setIsVideoPaused(true)}
   >
-    <source src={heroVideos[currentVideo]} type="video/mp4" />
+    {shouldLoadVideo && (
+      <source src={heroVideos[currentVideo]} type="video/mp4" />
+    )}
   </video>
 
   <div className="impact-video-badge">PLAYNICE FILM</div>
@@ -5474,7 +5573,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         key={index}
         type="button"
         className={index === currentVideo ? "is-active" : ""}
-        onClick={() => setCurrentVideo(index)}
+        onClick={() => selectVideo(index)}
         aria-label={`Go to film ${index + 1}`}
       />
     ))}
