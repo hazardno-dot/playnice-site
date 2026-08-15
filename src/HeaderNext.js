@@ -290,8 +290,16 @@ function HeaderNext({
                   style={{ "--discover-index": index }}
                   onClick={() => runAction(item.action)}
                 >
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  {item.label}
+                  <span className="header-next-discover-label">
+                    {item.label}
+                  </span>
+
+                  <span
+                    className="header-next-discover-arrow"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
                 </button>
               ))}
             </div>
