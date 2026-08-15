@@ -748,6 +748,7 @@ const getInitialShopState = () => {
   const [privateSelectionOpen, setPrivateSelectionOpen] = useState(false);
   const [closingVisible, setClosingVisible] = useState(false);
   const [currentHero, setCurrentHero] = useState(0);
+  const heroNavigationRequestRef = useRef(0);
   const [heroPaused, setHeroPaused] = useState(false);
   const [heroCollectionFilter, setHeroCollectionFilter] = useState(null);
   const [heroCollectionTitle, setHeroCollectionTitle] = useState("");
@@ -1002,6 +1003,41 @@ const toggleVideoPlayback = () => {
 
   return [fixedFirstSlide, ...shuffleHeroSlides(randomSlides)];
 }, []);
+
+const showHeroSlideWhenReady = useCallback(
+  (index) => {
+    if (index === currentHero) return;
+
+    const slide = heroSlides[index];
+    if (!slide) return;
+
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+    const imageSource = isMobile
+      ? slide.mobileImage || slide.image
+      : slide.desktopImage || slide.image;
+
+    const requestId = ++heroNavigationRequestRef.current;
+    const preloader = new Image();
+
+    preloader.fetchPriority = "high";
+
+    preloader.onload = async () => {
+      try {
+        await preloader.decode();
+      } catch {
+        // Slika je učitana; nastavljamo i ako decode nije podržan.
+      }
+
+      if (heroNavigationRequestRef.current !== requestId) return;
+
+      setCurrentHero(index);
+    };
+
+    preloader.src = imageSource;
+  },
+  [currentHero, heroSlides]
+);
 
   const impactProducts = useMemo(
     () =>
@@ -1641,14 +1677,20 @@ useEffect(() => {
 }, [checkoutOpen, cart, subtotal]);
 
   useEffect(() => {
-    if (heroPaused || heroSlides.length <= 1) return;
+  if (heroPaused || heroSlides.length <= 1) return;
 
-    const interval = setInterval(() => {
-      setCurrentHero((prev) => (prev + 1) % heroSlides.length);
-    }, 6000);
+  const interval = setInterval(() => {
+    const nextHeroIndex = (currentHero + 1) % heroSlides.length;
+    showHeroSlideWhenReady(nextHeroIndex);
+  }, 6000);
 
-    return () => clearInterval(interval);
-  }, [heroPaused, heroSlides.length]);
+  return () => clearInterval(interval);
+}, [
+  heroPaused,
+  heroSlides.length,
+  currentHero,
+  showHeroSlideWhenReady,
+]);
 
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(1);
@@ -2883,18 +2925,25 @@ const goToHomeSection = (selector, block = "start") => {
 
   const nextHeroSlide = () => {
     bumpHeroAutoplay();
-    setCurrentHero((prev) => (prev + 1) % heroSlides.length);
+
+    const nextHeroIndex = (currentHero + 1) % heroSlides.length;
+    showHeroSlideWhenReady(nextHeroIndex);
   };
 
   const prevHeroSlide = () => {
     bumpHeroAutoplay();
-    setCurrentHero((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+
+    const previousHeroIndex =
+      (currentHero - 1 + heroSlides.length) % heroSlides.length;
+
+    showHeroSlideWhenReady(previousHeroIndex);
   };
 
   const goToHeroSlide = (index) => {
     if (index === currentHero) return;
+
     bumpHeroAutoplay();
-    setCurrentHero(index);
+    showHeroSlideWhenReady(index);
   };
 
   const showFeedback = (text) => {
