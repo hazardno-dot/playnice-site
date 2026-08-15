@@ -19469,3 +19469,12 @@ body.overlay-lock .header-system {
 .section-divider + .catalog-download-section {
   padding-top: 0;
 }
+
+/* HOME PRODUCT GRID — TABLET */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .homepage-shop-preview .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px;
+    align-items: stretch;
+  }
+}
