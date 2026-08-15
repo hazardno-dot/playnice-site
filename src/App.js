@@ -339,10 +339,14 @@ function safeReadLocalStorage(key, fallback) {
 }
 
 function smoothScrollToTop() {
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
   window.scrollTo({
     top: 0,
     left: 0,
-    behavior: "smooth"
+    behavior: reduceMotion ? "auto" : "smooth"
   });
 }
 
@@ -748,6 +752,7 @@ const getInitialShopState = () => {
   const [heroCollectionFilter, setHeroCollectionFilter] = useState(null);
   const [heroCollectionTitle, setHeroCollectionTitle] = useState("");
   const [showStickyCta, setShowStickyCta] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
   const [productModalVisible, setProductModalVisible] = useState(false);
   const [noteMapOpen, setNoteMapOpen] = useState(false);
@@ -1558,15 +1563,21 @@ useEffect(() => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        document.body.classList.add("scrolled");
-      } else {
-        document.body.classList.remove("scrolled");
-      }
+      const scrollY = window.scrollY;
+
+      document.body.classList.toggle("scrolled", scrollY > 20);
+      setShowBackToTop(scrollY > 600);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -8406,6 +8417,23 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </span>
     </div>
   </div>
+)}
+
+{showBackToTop && !sideRailBlocked && (
+  <button
+    type="button"
+    className="back-to-top"
+    onClick={smoothScrollToTop}
+    aria-label={
+      lang === "sr"
+        ? "Povratak na vrh stranice"
+        : "Back to top"
+    }
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 19V5M6.5 10.5 12 5l5.5 5.5" />
+    </svg>
+  </button>
 )}
 
       {showStickyCta && (

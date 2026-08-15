@@ -19478,3 +19478,125 @@ body.overlay-lock .header-system {
     align-items: stretch;
   }
 }
+
+/* =========================================
+   BACK TO TOP — GLOBAL GLASS BUTTON
+========================================= */
+
+.back-to-top {
+  position: fixed;
+  right: 22px;
+  bottom: 82px;
+  z-index: 139;
+
+  width: 48px;
+  height: 48px;
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(220, 181, 107, 0.26);
+  border-radius: 50%;
+
+  color: #e2bf7a;
+
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      rgba(255, 255, 255, 0.12),
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(24, 22, 18, 0.86),
+      rgba(8, 8, 8, 0.76)
+    );
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.34),
+    0 0 20px rgba(220, 181, 107, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  cursor: pointer;
+
+  animation: backToTopReveal 0.28s
+    cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.back-to-top:focus-visible {
+  outline: 2px solid rgba(226, 191, 122, 0.7);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .back-to-top:hover {
+    transform: translateY(-3px);
+
+    color: #f1d79e;
+    border-color: rgba(220, 181, 107, 0.46);
+
+    box-shadow:
+      0 16px 34px rgba(0, 0, 0, 0.4),
+      0 0 24px rgba(220, 181, 107, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+}
+
+.back-to-top:active {
+  transform: translateY(0) scale(0.96);
+}
+
+@keyframes backToTopReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    right: 12px;
+    bottom: 78px;
+
+    width: 44px;
+    height: 44px;
+  }
+
+  .back-to-top svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top {
+    animation: none;
+    transition: none;
+  }
+}
