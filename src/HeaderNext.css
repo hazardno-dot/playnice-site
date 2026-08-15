@@ -511,35 +511,6 @@
   padding-top: 12px;
 }
 
-body.scrolled .header-next-system {
-  top: 5px;
-  height: 96px;
-  min-height: 96px;
-}
-
-body.scrolled .header-next-bar {
-  height: 60px;
-}
-
-body.scrolled .header-next-brand,
-body.scrolled .header-next-utility {
-  height: 52px;
-}
-
-body.scrolled .header-next-rail,
-body.scrolled .header-next-discover-trigger {
-  height: 50px;
-}
-
-body.scrolled .header-next-lens,
-body.scrolled .header-next-link {
-  height: 38px;
-}
-
-body.scrolled .header-next-system .announcement-bar-system {
-  top: 64px;
-}
-
 @media (max-width: 1180px) {
   .header-next-bar {
     grid-template-columns: 160px minmax(0, 1fr) 150px;
