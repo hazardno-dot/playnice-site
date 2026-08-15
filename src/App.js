@@ -1562,12 +1562,22 @@ useEffect(() => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
+  let scrollEndTimer;
 
-      document.body.classList.toggle("scrolled", scrollY > 20);
-      setShowBackToTop(scrollY > 600);
-    };
+  const handleScroll = () => {
+    const scrollY = window.scrollY;
+
+    document.body.classList.toggle("scrolled", scrollY > 20);
+    document.body.classList.add("is-scrolling");
+
+    setShowBackToTop(scrollY > 600);
+
+    window.clearTimeout(scrollEndTimer);
+
+    scrollEndTimer = window.setTimeout(() => {
+      document.body.classList.remove("is-scrolling");
+    }, 180);
+  };
 
     handleScroll();
 
@@ -1576,7 +1586,9 @@ useEffect(() => {
     });
 
     return () => {
+      window.clearTimeout(scrollEndTimer);
       window.removeEventListener("scroll", handleScroll);
+      document.body.classList.remove("is-scrolling");
     };
   }, []);
 

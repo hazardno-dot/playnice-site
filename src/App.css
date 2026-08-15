@@ -19521,13 +19521,19 @@ body.overlay-lock .header-system {
     0 0 20px rgba(220, 181, 107, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: none;
+
   cursor: pointer;
 
   animation: backToTopReveal 0.28s
-    cubic-bezier(0.16, 1, 0.3, 1) both;
+    cubic-bezier(0.16, 1, 0.3, 1);
 
   transition:
-    transform 0.2s ease,
+    opacity 0.28s ease,
+    transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.28s ease,
     color 0.2s ease,
     border-color 0.2s ease,
     box-shadow 0.2s ease;
@@ -19565,6 +19571,16 @@ body.overlay-lock .header-system {
 
 .back-to-top:active {
   transform: translateY(0) scale(0.96);
+}
+
+body.is-scrolling .back-to-top,
+body.is-scrolling .back-to-top:hover,
+body.is-scrolling .back-to-top:active {
+  opacity: 0.14;
+  transform: translateY(5px) scale(0.86);
+  filter: saturate(0.35);
+
+  pointer-events: none;
 }
 
 @keyframes backToTopReveal {
