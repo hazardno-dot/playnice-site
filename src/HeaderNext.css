@@ -736,6 +736,32 @@
     color: #f3d89c;
   }
 
+  .header-next-mobile-primary
+  .header-next-link.has-new:not(.is-active) {
+  color: #9ee5ff;
+}
+
+.header-next-mobile-primary
+  .header-next-link.has-unread-journal {
+  color: #7edb95;
+
+  text-shadow:
+    0 0 10px rgba(126, 219, 149, 0.22),
+    0 0 18px rgba(126, 219, 149, 0.12);
+}
+
+.header-next-mobile-primary .header-next-new {
+  min-width: 22px;
+  height: 12px;
+  padding-inline: 4px;
+  margin-left: 2px;
+
+  display: inline-flex;
+  flex: 0 0 auto;
+
+  font-size: 5.5px;
+}
+
   .header-next-mobile-primary > div:last-child {
     grid-column: 1 / -1;
   }

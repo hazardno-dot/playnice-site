@@ -192,6 +192,17 @@ function HeaderNext({
     return () => document.removeEventListener("pointerdown", handleOutsidePointer);
   }, []);
 
+  useEffect(() => {
+    if (!mobileOpen) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileOpen]);
+
   useEffect(
     () => () => {
       window.clearTimeout(motionTimerRef.current);
