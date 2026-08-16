@@ -1,0 +1,414 @@
+.exhibition-page {
+  --exhibition-bg: #080808;
+  --exhibition-fg: #f4f1ea;
+  --exhibition-muted: rgba(244, 241, 234, 0.58);
+  --exhibition-line: rgba(244, 241, 234, 0.14);
+  min-height: 100vh;
+  background: var(--exhibition-bg);
+  color: var(--exhibition-fg);
+  padding: clamp(120px, 14vw, 190px) clamp(20px, 4vw, 68px) 96px;
+}
+
+.exhibition-intro {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.exhibition-eyebrow {
+  margin: 0 0 28px;
+  color: var(--exhibition-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+}
+
+.exhibition-intro h1 {
+  max-width: 1100px;
+  margin: 0;
+  font-size: clamp(54px, 10.5vw, 168px);
+  font-weight: 700;
+  line-height: 0.84;
+  letter-spacing: -0.065em;
+}
+
+.exhibition-manifesto {
+  display: flex;
+  flex-direction: column;
+  margin: clamp(34px, 5vw, 72px) 0 0;
+  font-size: clamp(18px, 2.2vw, 32px);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+.exhibition-manifesto span:last-child {
+  color: var(--exhibition-muted);
+}
+
+.exhibition-index {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: clamp(64px, 9vw, 132px);
+  padding-top: 16px;
+  border-top: 1px solid var(--exhibition-line);
+  color: var(--exhibition-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.exhibition-wall {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  gap: clamp(12px, 1.4vw, 24px);
+  max-width: 1440px;
+  margin: clamp(38px, 6vw, 86px) auto 0;
+}
+
+.exhibition-tile {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  min-height: 280px;
+  padding: 0;
+  border: 0;
+  background: #111;
+  color: inherit;
+  cursor: zoom-in;
+  text-align: left;
+}
+
+.exhibition-tile--1 {
+  grid-column: span 8;
+  aspect-ratio: 16 / 9;
+}
+
+.exhibition-tile--2 {
+  grid-column: span 4;
+  aspect-ratio: 4 / 5;
+}
+
+.exhibition-tile--3 {
+  grid-column: 3 / span 8;
+  aspect-ratio: 16 / 9;
+}
+
+.exhibition-tile--4 {
+  grid-column: span 5;
+  aspect-ratio: 4 / 5;
+}
+
+.exhibition-tile--5 {
+  grid-column: span 7;
+  aspect-ratio: 16 / 10;
+}
+
+.exhibition-tile img,
+.exhibition-tile video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 650ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    filter 400ms ease;
+}
+
+.exhibition-tile-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.02) 45%,
+    rgba(0, 0, 0, 0.72) 100%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.exhibition-tile-meta {
+  position: absolute;
+  right: 20px;
+  bottom: 18px;
+  left: 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.exhibition-tile-meta > span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.exhibition-tile-meta strong {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.exhibition-tile-meta small {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.exhibition-tile:hover img,
+.exhibition-tile:hover video {
+  transform: scale(1.018);
+  filter: saturate(1.04);
+}
+
+.exhibition-tile:hover .exhibition-tile-shade,
+.exhibition-tile:hover .exhibition-tile-meta,
+.exhibition-tile:focus-visible .exhibition-tile-shade,
+.exhibition-tile:focus-visible .exhibition-tile-meta {
+  opacity: 1;
+}
+
+.exhibition-tile:hover .exhibition-tile-meta,
+.exhibition-tile:focus-visible .exhibition-tile-meta {
+  transform: translateY(0);
+}
+
+.exhibition-tile:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.88);
+  outline-offset: 4px;
+}
+
+.exhibition-viewer {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) 72px;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: center;
+  background: rgba(3, 3, 3, 0.98);
+  color: #f7f4ed;
+  animation: exhibitionViewerIn 220ms ease both;
+}
+
+.exhibition-viewer-close {
+  position: absolute;
+  z-index: 2;
+  top: 22px;
+  right: 28px;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 32px;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+.exhibition-viewer-stage {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  padding: 70px 20px 28px;
+}
+
+.exhibition-viewer-stage img,
+.exhibition-viewer-stage video {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 190px);
+  object-fit: contain;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+}
+
+.exhibition-viewer-nav {
+  align-self: stretch;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 26px;
+  cursor: pointer;
+  transition: color 200ms ease, background 200ms ease;
+}
+
+.exhibition-viewer-nav:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.exhibition-viewer-nav--prev {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.exhibition-viewer-nav--next {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.exhibition-viewer-footer {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 30px;
+  min-height: 118px;
+  padding: 22px clamp(24px, 4vw, 64px) 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.exhibition-viewer-footer > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exhibition-viewer-footer strong {
+  font-size: 14px;
+}
+
+.exhibition-viewer-footer span,
+.exhibition-viewer-footer em,
+.exhibition-viewer-counter {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.exhibition-viewer-footer em {
+  margin-top: 5px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.exhibition-viewer-footer a {
+  justify-self: end;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.exhibition-viewer-footer a:hover {
+  color: #fff;
+}
+
+@keyframes exhibitionViewerIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 800px) {
+  .exhibition-page {
+    padding: 112px 16px 64px;
+  }
+
+  .exhibition-intro h1 {
+    font-size: clamp(52px, 17vw, 90px);
+    line-height: 0.86;
+  }
+
+  .exhibition-index {
+    margin-top: 72px;
+  }
+
+  .exhibition-wall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .exhibition-tile,
+  .exhibition-tile--1,
+  .exhibition-tile--2,
+  .exhibition-tile--3,
+  .exhibition-tile--4,
+  .exhibition-tile--5 {
+    grid-column: span 1;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+
+  .exhibition-tile:nth-child(3n + 1) {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 10;
+  }
+
+  .exhibition-tile-shade {
+    opacity: 1;
+  }
+
+  .exhibition-tile-meta {
+    right: 12px;
+    bottom: 11px;
+    left: 12px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .exhibition-tile-meta strong {
+    font-size: 12px;
+  }
+
+  .exhibition-viewer {
+    grid-template-columns: 48px minmax(0, 1fr) 48px;
+  }
+
+  .exhibition-viewer-close {
+    top: 12px;
+    right: 12px;
+  }
+
+  .exhibition-viewer-stage {
+    padding: 62px 4px 18px;
+  }
+
+  .exhibition-viewer-stage img,
+  .exhibition-viewer-stage video {
+    max-height: calc(100vh - 190px);
+  }
+
+  .exhibition-viewer-footer {
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+    min-height: 126px;
+    padding: 18px;
+  }
+
+  .exhibition-viewer-counter {
+    justify-self: end;
+  }
+
+  .exhibition-viewer-footer a {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .exhibition-tile img,
+  .exhibition-tile video,
+  .exhibition-tile-shade,
+  .exhibition-tile-meta,
+  .exhibition-viewer {
+    transition: none;
+    animation: none;
+  }
+}
