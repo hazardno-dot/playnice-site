@@ -1592,7 +1592,9 @@ useEffect(() => {
   params.delete("sort");
   params.delete("page");
 
-  params.set("view", view);
+  if (view !== "home" && view !== "exhibition") {
+    params.set("view", view);
+  }
 
   if (category !== "All") params.set("category", category);
   if (searchTerm.trim()) params.set("search", searchTerm.trim());
@@ -4731,8 +4733,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </header>
   )}
 
-  <div
-    className={`announcement-bar announcement-bar-system ${
+  {view !== "exhibition" && (
+    <div
+      className={`announcement-bar announcement-bar-system ${
       cart.length === 0
         ? ""
         : subtotal >= FREE_SHIPPING_THRESHOLD
@@ -4813,6 +4816,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </div>
 </div>
+)}
 
 {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
