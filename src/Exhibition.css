@@ -436,7 +436,7 @@
   min-height: clamp(320px, 42vw, 560px);
   margin: clamp(90px, 12vw, 180px) auto 0;
   padding-bottom: clamp(80px, 10vw, 140px);
-  border-top: 1px solid var(--exhibition-line);
+  border-top: 0;
   background: #080808;
   text-align: center;
 }
