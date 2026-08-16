@@ -4815,7 +4815,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
     </div>
   </div>
-</div>
 )}
 
 {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
