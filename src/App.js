@@ -599,9 +599,13 @@ const BASE_HERO_SLIDES = [
     desktopImage: "/hero/slide-12.jpg",
     mobileImage: "/hero/mobile/slide-12-mobile.jpg",
     alt: "Thomas Kosmala No. 7 Le Sel de la Terre",
-    actionPrimary: "product",
-    actionProductSlug: "thomas-kosmala-no7-le-sel-de-la-terre",
-    preferredSize: "5ml"
+    actionPrimary: "collection",
+    actionCollection: [
+      "thomas-kosmala-no-1-tonic-blanc",
+      "thomas-kosmala-no-4-apres-lamour",
+      "thomas-kosmala-no7-le-sel-de-la-terre",
+    ],
+    collectionTitle: "THOMAS KOSMALA, THREE TIMES."
   },
 ];
 
