@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
 import "./App.css";
 import HeaderNext from "./HeaderNext";
+import Exhibition from "./Exhibition";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
@@ -443,12 +444,13 @@ const getInitialView = () => {
 
   if (path === "/shop") return "shop";
   if (path === "/journal") return "journal";
+  if (path === "/exhibition") return "exhibition";
   if (path.startsWith("/product/")) return "shop";
 
   const params = new URLSearchParams(window.location.search);
   const urlView = params.get("view");
 
-  return ["home", "shop", "journal"].includes(urlView)
+  return ["home", "shop", "journal", "exhibition"].includes(urlView)
     ? urlView
     : "home";
 };
@@ -1590,7 +1592,9 @@ useEffect(() => {
   params.delete("sort");
   params.delete("page");
 
-  params.set("view", view);
+  if (view !== "home" && view !== "exhibition") {
+    params.set("view", view);
+  }
 
   if (category !== "All") params.set("category", category);
   if (searchTerm.trim()) params.set("search", searchTerm.trim());
@@ -2791,6 +2795,7 @@ const handleStickyCtaJournalClick = (event) => {
 const routeForView = (nextView) => {
   if (nextView === "shop") return "/shop";
   if (nextView === "journal") return "/journal";
+  if (nextView === "exhibition") return "/exhibition";
   return "/";
 };
 
@@ -4507,7 +4512,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
      RENDER
   ========================================= */
   return (
-  <div className="app-shell">
+  <div
+    className={`app-shell ${
+      view === "exhibition" ? "app-shell--exhibition" : ""
+    }`}
+  >
 
   {shouldShowSideRails && (
   <aside
@@ -4612,7 +4621,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       onShop={goToShop}
       onJournal={handleJournalOpen}
       onCommunity={() => goToHomeSection(".community-requests-section")}
-      onExhibition={() => goToHomeSection(".hero")}
+      onExhibition={() => switchView("exhibition")}
       onCart={() => setCartOpen((prev) => !prev)}
       onWishlist={() => setPrivateSelectionOpen(true)}
       onLanguage={() => setLang(lang === "sr" ? "en" : "sr")}
@@ -4728,8 +4737,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </header>
   )}
 
-  <div
-    className={`announcement-bar announcement-bar-system ${
+  {view !== "exhibition" && (
+    <div
+      className={`announcement-bar announcement-bar-system ${
       cart.length === 0
         ? ""
         : subtotal >= FREE_SHIPPING_THRESHOLD
@@ -4809,22 +4819,41 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
     </div>
   </div>
+  )}
 </div>
 
 {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
       <main>
-        {view === "home" && (
-          <>
-            <section
-  className="hero hero-carousel"
-  onMouseEnter={() => setHeroPaused(true)}
-  onMouseLeave={() => setHeroPaused(false)}
-  onTouchStart={handleHeroTouchStart}
-  onTouchEnd={handleHeroTouchEnd}
->
-  <div className="hero-carousel-track">
-    {heroSlides.map((slide, index) => {
+        {view === "exhibition" && (
+        <Exhibition
+          lang={lang}
+          onSeeLive={() => {
+            switchView("home");
+
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              });
+            });
+          }}
+        />
+      )}
+
+      {view === "home" && (
+        <>
+          <section
+            className="hero hero-carousel"
+            onMouseEnter={() => setHeroPaused(true)}
+            onMouseLeave={() => setHeroPaused(false)}
+            onTouchStart={handleHeroTouchStart}
+            onTouchEnd={handleHeroTouchEnd}
+          >
+            <div className="hero-carousel-track">
+             {heroSlides.map((slide, index) => {
       const isActive = index === currentHero;
 
       const previousHeroIndex =
@@ -6390,6 +6419,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
 <div className="section-divider"></div>
 
+{view !== "exhibition" && (
+
 <footer className="site-footer">
   <div className="footer-benefits">
     <div className="footer-benefit">
@@ -6537,6 +6568,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </div>
 </footer>
+)}
 
         {discoveryBuilderOpen && (
   <div className="discovery-overlay" onClick={() => setDiscoveryBuilderOpen(false)}>
