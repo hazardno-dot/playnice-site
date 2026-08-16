@@ -39,20 +39,24 @@ function Exhibition({ lang = "en" }) {
         };
 
   const exhibits = useMemo(
-    () =>
-      exhibitionItems.flatMap((item) =>
+  () =>
+    exhibitionItems
+      .filter((item) => item.published !== false && item.status !== "active")
+      .flatMap((item) =>
         item.assets.map((asset) => ({
           ...asset,
           campaignId: item.id,
           title: item.title,
           year: item.year,
           kind: item.kind,
+          status: item.status,
           label: getText(item.label, lang),
           line: getText(item.line, lang),
         }))
       ),
-    [lang]
-  );
+  [lang]
+);
+
 
   const active = activeIndex === null ? null : exhibits[activeIndex];
 
