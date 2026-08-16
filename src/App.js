@@ -4828,7 +4828,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         {view === "exhibition" && (
         <Exhibition
           lang={lang}
-          onSeeLive={() => goToHomeSection(".hero")}
+          onSeeLive={() => {
+            switchView("home");
+
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              });
+            });
+          }}
         />
       )}
 

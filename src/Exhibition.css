@@ -7,6 +7,7 @@
   background: var(--exhibition-bg);
   color: var(--exhibition-fg);
   padding: clamp(120px, 14vw, 190px) clamp(20px, 4vw, 68px) 96px;
+  padding-bottom: 0;
 }
 
 .exhibition-intro {
@@ -433,8 +434,10 @@
   gap: 22px;
   max-width: 1440px;
   min-height: clamp(320px, 42vw, 560px);
-  margin: clamp(90px, 12vw, 180px) auto 0;
+  margin: clamp(90px, 12vw, 180px) auto;
+  padding-bottom: clamp(80px, 10vw, 140px);
   border-top: 1px solid var(--exhibition-line);
+  background: #080808;
   text-align: center;
 }
 
