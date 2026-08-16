@@ -125,7 +125,14 @@ function HeaderNext({
     [copy, onDiscoverySets, onHowItWorks, onScentRequest, onWhyPlayNice]
   );
 
-  const activeKey = view === "shop" ? "shop" : view === "journal" ? "journal" : "home";
+  const activeKey =
+    view === "shop"
+      ? "shop"
+      : view === "journal"
+      ? "journal"
+      : view === "exhibition"
+      ? "exhibition"
+      : "home";
   const lensTarget = hoveredKey || activeKey;
 
   const positionLens = useCallback((key, animate = true) => {
