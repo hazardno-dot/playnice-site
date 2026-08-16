@@ -8,7 +8,7 @@ const getText = (value, lang) => {
   return value[lang] || value.en || value.sr || "";
 };
 
-function Exhibition({ lang = "en" }) {
+function Exhibition({ lang = "en", onSeeLive }) {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const copy =
@@ -132,6 +132,21 @@ function Exhibition({ lang = "en" }) {
           </button>
         ))}
       </section>
+
+        <section className="exhibition-outro">
+          <span className="exhibition-outro-kicker">
+            {lang === "sr" ? "KRAJ IZLOŽBE" : "END OF EXHIBITION"}
+          </span>
+
+          <button
+            type="button"
+            className="exhibition-outro-link"
+            onClick={onSeeLive}
+          >
+            {lang === "sr" ? "Pogledaj šta je sada aktuelno" : "See what’s live now"}
+            <span aria-hidden="true">→</span>
+          </button>
+        </section>
 
       {active && (
         <div

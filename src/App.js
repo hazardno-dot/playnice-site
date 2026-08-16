@@ -4826,7 +4826,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <main>
         {view === "exhibition" && (
-        <Exhibition lang={lang} />
+        <Exhibition
+          lang={lang}
+          onSeeLive={() => goToHomeSection(".hero")}
+        />
       )}
 
       {view === "home" && (
@@ -6405,6 +6408,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
 <div className="section-divider"></div>
 
+{view !== "exhibition" && (
+
 <footer className="site-footer">
   <div className="footer-benefits">
     <div className="footer-benefit">
@@ -6552,6 +6557,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </div>
 </footer>
+)}
 
         {discoveryBuilderOpen && (
   <div className="discovery-overlay" onClick={() => setDiscoveryBuilderOpen(false)}>

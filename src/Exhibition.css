@@ -424,3 +424,63 @@
     background: #080808;
   }
 }
+
+.exhibition-outro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  max-width: 1440px;
+  min-height: clamp(320px, 42vw, 560px);
+  margin: clamp(90px, 12vw, 180px) auto 0;
+  border-top: 1px solid var(--exhibition-line);
+  text-align: center;
+}
+
+.exhibition-outro-kicker {
+  color: var(--exhibition-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+}
+
+.exhibition-outro-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--exhibition-fg);
+  font: inherit;
+  font-size: clamp(24px, 3.4vw, 50px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  cursor: pointer;
+  transition: opacity 220ms ease;
+}
+
+.exhibition-outro-link span {
+  transition: transform 220ms ease;
+}
+
+.exhibition-outro-link:hover {
+  opacity: 0.72;
+}
+
+.exhibition-outro-link:hover span {
+  transform: translateX(6px);
+}
+
+@media (max-width: 800px) {
+  .exhibition-outro {
+    min-height: 300px;
+    margin-top: 90px;
+    padding: 0 18px;
+  }
+
+  .exhibition-outro-link {
+    font-size: clamp(24px, 8vw, 34px);
+  }
+}
