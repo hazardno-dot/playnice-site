@@ -374,7 +374,6 @@ export const productWearContext = {
     sr: "Izlazak, dejt, svakodnevno nošenje.",
     en: "Going out, date night, everyday wear."
   },
-
   "Thomas Kosmala No. 1 Tonic Blanc Eau de Parfum": {
     sr: "Leto, posao, dnevno nošenje.",
     en: "Summer, work, daytime wear."
