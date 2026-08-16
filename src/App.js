@@ -1214,6 +1214,11 @@ const newArrivalProducts = [...products]
   .filter((product) => product.isNew === true)
   .reverse();
 
+const getProductThumbnail = (image = "") =>
+  image
+    .replace("/products/", "/products/thumbs/")
+    .replace(/\.png$/i, ".webp");
+
 /* =========================================
    SIDE RAILS ADS
 ========================================= */
@@ -5017,12 +5022,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
                 <span className="new-arrival-card-image-wrap">
                   <img
-                    src={product.image}
+                    src={getProductThumbnail(product.image)}
                     alt={isClone ? "" : product.name}
                     className="new-arrival-card-image"
                     loading="lazy"
+                    decoding="async"
                     draggable="false"
-                  />
+                    onError={(event) => {
+                      const image = event.currentTarget;
+
+                      if (image.src.endsWith(".webp")) {
+                        image.src = product.image;
+                      }
+                    }}
+                 />
                 </span>
 
                 <span className="new-arrival-card-name">
