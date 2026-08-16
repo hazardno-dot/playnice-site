@@ -292,6 +292,9 @@ const NOTE_SR = {
   heliotrope: "Heliotrop",
   carnation: "Karanfil",
   "damask-rose": "Damaščanska ruža",
+  "aromatic-notes": "Aromatične note",
+  "bergamot-blossom": "Cvet bergamota",
+  "mock-orange": "Pajasmin",
 };
 
 const NOTE_LEVELS = [
