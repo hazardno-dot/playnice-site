@@ -487,3 +487,8 @@
     font-size: clamp(24px, 8vw, 34px);
   }
 }
+
+body.exhibition-active {
+  padding-bottom: 0;
+  background: #080808;
+}

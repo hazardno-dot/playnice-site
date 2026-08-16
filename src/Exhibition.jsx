@@ -57,6 +57,14 @@ function Exhibition({ lang = "en", onSeeLive }) {
   [lang]
 );
 
+useEffect(() => {
+  document.body.classList.add("exhibition-active");
+
+  return () => {
+    document.body.classList.remove("exhibition-active");
+  };
+}, []);
+
 
   const active = activeIndex === null ? null : exhibits[activeIndex];
 
