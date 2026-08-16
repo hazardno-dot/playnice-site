@@ -4512,7 +4512,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
      RENDER
   ========================================= */
   return (
-  <div className="app-shell">
+  <div
+    className={`app-shell ${
+      view === "exhibition" ? "app-shell--exhibition" : ""
+    }`}
+  >
 
   {shouldShowSideRails && (
   <aside
