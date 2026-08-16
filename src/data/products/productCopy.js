@@ -2631,6 +2631,80 @@ export const productCopy = {
     en: "If you want an energetic sophisticated niche scent with a pronounced pepper character."
   }
 },
+
+"Thomas Kosmala No. 4 Après l'Amour Eau de Parfum": {
+  miniTag: {
+    sr: "🟠 Amber / Mošus",
+    en: "🟠 Amber / Musk"
+  },
+
+  card: {
+    sr: "Citrusi, suvo drvo i mošus u senzualnom modernom spoju.",
+    en: "Citrus, dry woods and musk in a sensual modern blend."
+  },
+
+  modal: {
+    sr: "Gorka narandža i korica limuna otvaraju miris sveže, pre prelaska u aromatično srce i toplu bazu suvog drveta, ambera i mošusa.",
+    en: "Bitter orange and lemon zest open brightly before settling into an aromatic heart and a warm base of dry woods, amber and musk."
+  },
+
+  scentType: {
+    sr: "Aromatični drvenasto-amberni",
+    en: "Aromatic woody amber"
+  },
+
+  dominantNotes: {
+    sr: ["gorka narandža", "suvo drvo", "amber", "mošus"],
+    en: ["bitter orange", "dry woods", "amber", "musk"]
+  },
+
+  tags: {
+    sr: ["Moderan", "Senzualan", "Upečatljiv"],
+    en: ["Modern", "Sensual", "Distinctive"]
+  },
+
+  whyChoose: {
+    sr: "Ako želiš minimalistički, moderan miris sa snažnim mošusno-ambernim potpisom.",
+    en: "If you want a minimalist modern scent with a strong musky-amber signature."
+  }
+},
+
+"Thomas Kosmala No. 1 Tonic Blanc Eau de Parfum": {
+  miniTag: {
+    sr: "🍊 Neroli / Citrus",
+    en: "🍊 Neroli / Citrus"
+  },
+
+  card: {
+    sr: "Neroli, citrusi i čiste drvene note u elegantnom svežem spoju.",
+    en: "Neroli, citrus and clean woods in an elegant fresh blend."
+  },
+
+  modal: {
+    sr: "Bergamot, mandarina, narandža i neroli prelaze u blago cvetno srce, uz suvu bazu mahovine, sandalovine, kedra i mošusa.",
+    en: "Bergamot, mandarin, orange and neroli lead into a soft floral heart over a dry base of oakmoss, sandalwood, cedar and musk."
+  },
+
+  scentType: {
+    sr: "Citrusno-aromatični",
+    en: "Citrus aromatic"
+  },
+
+  dominantNotes: {
+    sr: ["neroli", "bergamot", "cvet narandže", "sandalovina"],
+    en: ["neroli", "bergamot", "orange blossom", "sandalwood"]
+  },
+
+  tags: {
+    sr: ["Svež", "Čist", "Elegantan"],
+    en: ["Fresh", "Clean", "Elegant"]
+  },
+
+  whyChoose: {
+    sr: "Ako voliš prirodnu citrusnu svežinu, neroli i čist mediteranski karakter.",
+    en: "If you enjoy natural citrus freshness, neroli and a clean Mediterranean character."
+  }
+},
 };
 
 /* =========================================

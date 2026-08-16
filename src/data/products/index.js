@@ -2646,4 +2646,64 @@ export const products = [
   },
   isNew: true,
 },
+
+{
+  id: 93,
+  slug: "thomas-kosmala-no-4-apres-lamour",
+  name: "Thomas Kosmala No. 4 Après l'Amour Eau de Parfum",
+  shortName: "No. 4 Après l'Amour",
+  category: "Niche",
+  image: "/products/thomas-kosmala-no-4-apres-lamour.png",
+  sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
+  badge: "NEW",
+  rating: 9.0,
+  ratingLabel: "Signature Favorite",
+  season: "all",
+  moods: ["signature", "date", "clean"],
+  recommendations: [
+    "bois-imperial-essential-parfums",
+    "mancera-cosmic-pepper",
+    "thomas-kosmala-no-7-le-sel-de-la-terre"
+  ],
+  inspiredBy: {
+    name: "Original Thomas Kosmala creation",
+    short: "Amber Musk DNA"
+  },
+  noteMap: {
+    top: ["bitter-orange", "lemon-zest"],
+    heart: ["aromatic-notes", "fresh-spices"],
+    base: ["dry-woods", "amber", "musk"]
+  },
+  isNew: true,
+},
+
+{
+  id: 94,
+  slug: "thomas-kosmala-no-1-tonic-blanc",
+  name: "Thomas Kosmala No. 1 Tonic Blanc Eau de Parfum",
+  shortName: "No. 1 Tonic Blanc",
+  category: "Niche",
+  image: "/products/thomas-kosmala-no-1-tonic-blanc.png",
+  sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
+  badge: "NEW",
+  rating: 8.7,
+  ratingLabel: "Fresh Niche",
+  season: "summer",
+  moods: ["clean", "summer", "soft"],
+  recommendations: [
+    "essential-parfums-nice-bergamote",
+    "acqua-di-parma-colonia-essenza",
+    "acqua-di-parma-colonia-pura"
+  ],
+  inspiredBy: {
+    name: "Original Thomas Kosmala creation",
+    short: "Neroli Citrus DNA"
+  },
+  noteMap: {
+    top: ["bergamot", "mandarin", "orange", "neroli"],
+    heart: ["orange-blossom", "bergamot-blossom", "mock-orange"],
+    base: ["oakmoss", "sandalwood", "cedarwood", "musk"]
+  },
+  isNew: true,
+},
 ];

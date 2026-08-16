@@ -369,5 +369,14 @@ export const productWearContext = {
   "Mancera Cosmic Pepper Eau de Parfum": {
     sr: "Izlazak, veče, upečatljivo svakodnevno nošenje.",
     en: "Going out, evenings, bold everyday wear."
+  },
+  "Thomas Kosmala No. 4 Après l'Amour Eau de Parfum": {
+    sr: "Izlazak, dejt, svakodnevno nošenje.",
+    en: "Going out, date night, everyday wear."
+  },
+
+  "Thomas Kosmala No. 1 Tonic Blanc Eau de Parfum": {
+    sr: "Leto, posao, dnevno nošenje.",
+    en: "Summer, work, daytime wear."
   }
 };
