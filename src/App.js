@@ -6568,6 +6568,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </div>
 </footer>
+</>
 )}
 
         {discoveryBuilderOpen && (
