@@ -605,7 +605,7 @@ const BASE_HERO_SLIDES = [
       "thomas-kosmala-no-4-apres-lamour",
       "thomas-kosmala-no7-le-sel-de-la-terre",
     ],
-    collectionTitle: "THOMAS KOSMALA, THREE TIMES."
+    collectionTitle: "Thomas Kosmala, three times."
   },
 ];
 
