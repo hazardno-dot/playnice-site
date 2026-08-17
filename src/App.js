@@ -5042,7 +5042,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div>{tr.valueDelivery}</div>
 </section>
 
-{/* PLAYNICE SMART SCENT — COLLAPSED PORTAL */}
+{/* PLAYNICE FRAGRANCE INTELLIGENCE — COLLAPSED PORTAL */}
 <section
   className="playnice-discovery-portal section-wrap"
   aria-labelledby="playnice-discovery-trigger-label"
@@ -5059,7 +5059,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </span>
 
     <span id="playnice-discovery-trigger-label">
-      PLAYNICE SMART SCENT
+      PLAYNICE FRAGRANCE INTELLIGENCE
     </span>
 
     <span className="playnice-discovery-trigger-arrow" aria-hidden="true">
@@ -5092,7 +5092,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           type="button"
           className="playnice-discovery-close"
           onClick={() => setDiscoveryOpen(false)}
-          aria-label={lang === "sr" ? "Zatvori Smart Scent" : "Close Smart Scent"}
+          aria-label={
+            lang === "sr"
+              ? "Zatvori Fragrance Intelligence"
+              : "Close Fragrance Intelligence"
+          }
         >
           ×
         </button>
@@ -5102,7 +5106,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             <span className="playnice-discovery-orbit" aria-hidden="true">
               <span />
             </span>
-            PLAYNICE SMART SCENT
+            PLAYNICE FRAGRANCE INTELLIGENCE
           </div>
 
           <h2 id="playnice-discovery-title">
@@ -5257,6 +5261,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     )}`
                   : "";
 
+                const rawReason = (result.reason || "").trim();
+                const shortReason =
+                  rawReason.length > 74
+                    ? `${rawReason.slice(0, 71).trim()}…`
+                    : rawReason;
+
                 return (
                   <article
                     key={result.product.id}
@@ -5266,8 +5276,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       type="button"
                       className="playnice-discovery-card-main"
                       onClick={() => {
-                        setDiscoveryOpen(false);
-
                         openProductModal(result.product, {
                           changeView: false,
                           preferredSize: sizeLabel,
@@ -5315,7 +5323,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                         <h4>{result.product.name}</h4>
 
                         <p className="playnice-discovery-why">
-                          {result.reason}
+                          {shortReason}
                         </p>
                       </div>
 
@@ -5341,7 +5349,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   )}
 </section>
-{/* PLAYNICE SMART SCENT — COLLAPSED PORTAL END */}
+{/* PLAYNICE FRAGRANCE INTELLIGENCE — COLLAPSED PORTAL END */}
 
 <section
   className="new-arrivals-section section-wrap"
