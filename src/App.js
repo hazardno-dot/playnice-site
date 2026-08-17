@@ -9,6 +9,7 @@ import { productCopy, fallbackCopy } from "./data/products/productCopy";
 import { productWearContext } from "./data/products/productWearContext";
 import { translations } from "./data/translations";
 import TheNoteMap from "./TheNoteMap";
+import { discoverFragrances } from "./lib/discoveryEngine";
 
 const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 
