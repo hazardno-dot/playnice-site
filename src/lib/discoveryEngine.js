@@ -1,5 +1,5 @@
 /* =========================================
-   PLAYNICE DISCOVERY ENGINE — V1
+   PLAYNICE DISCOVERY ENGINE — V1.1
    Deterministic, local, zero-API-cost ranking.
 ========================================= */
 
@@ -184,7 +184,7 @@ const buildProductProfile = (product) => {
 const QUERY_DICTIONARY = {
   season: {
     summer: ["leto", "ljeto", "letnji", "ljetnji", "letnje", "ljetnje", "summer", "vrucina", "vruce", "hot weather", "more", "plaza", "beach"],
-    winter: ["zima", "zimski", "winter", "hladno", "cold weather"],
+    winter: ["zima", "zimu", "zime", "zimski", "zimsko", "winter", "hladno", "cold weather"],
     spring: ["prolece", "proljece", "spring"],
     autumn: ["jesen", "autumn", "fall"],
   },
@@ -196,7 +196,7 @@ const QUERY_DICTIONARY = {
   mood: {
     clean: ["clean", "cisto", "cist", "cista", "cistoca", "fresh laundry", "uredno"],
     summer: ["summer", "leto", "ljeto", "letnji", "ljetnji", "more", "plaza", "beach"],
-    date: ["date", "dejt", "izlazak", "vecernji izlazak", "night out", "romantic", "romanticno"],
+    date: ["date", "dejt", "izlazak", "vecernji izlazak", "vecernje", "vece", "uvece", "evening", "night out", "romantic", "romanticno"],
     rich: ["rich", "bogato", "luksuzno", "luxury", "opulent", "mocno", "powerful", "jako", "strong"],
     soft: ["soft", "nezan", "nezno", "blag", "blago", "subtle", "diskretno", "nenapadno", "not loud"],
     signature: ["signature", "svaki dan", "everyday", "daily", "versatile", "univerzalno"],
@@ -329,6 +329,7 @@ const parseQuery = (rawQuery, products = []) => {
     negativeTraits: [],
     requiredNotes: [],
     excludedNotes: [],
+    contexts: [],
     referenceProduct: null,
   };
 
@@ -352,6 +353,25 @@ const parseQuery = (rawQuery, products = []) => {
     }
   });
 
+  if (includesAny(text, ["office", "posao", "kancelarija", "work", "workplace"])) intent.contexts.push("office");
+  if (includesAny(text, ["elegantno", "elegantan", "elegantna", "elegant", "classy", "sofisticirano", "sophisticated"])) intent.contexts.push("elegant");
+  if (includesAny(text, ["vece", "uvece", "vecernji", "vecernje", "evening", "night"])) intent.contexts.push("evening");
+
+  // Phrases such as "slatko ali ne previše" mean "some sweetness, but controlled".
+  Object.entries(QUERY_DICTIONARY.trait).forEach(([key, aliases]) => {
+    for (const alias of aliases) {
+      const a = normalizeText(alias);
+      const idx = text.indexOf(a);
+      if (idx === -1) continue;
+      const after = text.slice(idx + a.length, idx + a.length + 24);
+      if (/(ali )?(ne previse|not too)/.test(after)) {
+        intent.positiveTraits = intent.positiveTraits.filter((item) => item.key !== key);
+        intent.negativeTraits = intent.negativeTraits.filter((item) => item.key !== key);
+        intent.positiveTraits.push({ key, strength: "moderate" });
+      }
+    }
+  });
+
   Object.entries(NOTE_ALIASES).forEach(([aliasKey, aliases]) => {
     if (!includesAny(text, aliases)) return;
     const keys = noteAliasToKeys[aliasKey] || [aliasKey];
@@ -364,33 +384,36 @@ const parseQuery = (rawQuery, products = []) => {
   });
 
   // Reference matching activates only when the query actually expresses
-  // similarity/liking intent, preventing generic scent words from becoming anchors.
+  // similarity/liking intent. Exact catalogue names/short names outrank inspired-by DNA.
   let bestReference = null;
-  let bestReferenceLength = 0;
+  let bestReferenceScore = 0;
   const wantsReference = REFERENCE_CUES.some((cue) => text.includes(cue));
 
   if (wantsReference) {
     products.forEach((product) => {
       const candidates = [
-        product?.name,
-        product?.shortName,
-        product?.inspiredBy?.name,
-        product?.inspiredBy?.short,
-      ]
-        .map(normalizeText)
-        .filter((value) => value.length >= 4);
+        { value: product?.name, weight: 120 },
+        { value: product?.shortName, weight: 140 },
+        { value: product?.inspiredBy?.name, weight: 90 },
+        { value: product?.inspiredBy?.short, weight: 80 },
+      ];
 
-      candidates.forEach((candidate) => {
+      candidates.forEach(({ value, weight }) => {
+        const candidate = normalizeText(value);
+        if (candidate.length < 4) return;
+
         const tokens = candidate
           .split(" ")
           .filter((token) => token.length >= 5 && !REFERENCE_STOPWORDS.has(token));
 
-        const exactCandidate = candidate.length >= 5 && text.includes(candidate);
-        const tokenMatch = tokens.some((token) => text.includes(token));
+        const exactCandidate = text.includes(candidate);
+        const matchedTokens = tokens.filter((token) => text.includes(token)).length;
+        if (!exactCandidate && matchedTokens === 0) return;
 
-        if ((exactCandidate || tokenMatch) && candidate.length > bestReferenceLength) {
+        const score = weight + (exactCandidate ? 60 : 0) + matchedTokens * 8 + Math.min(candidate.length, 40) * 0.1;
+        if (score > bestReferenceScore) {
           bestReference = product;
-          bestReferenceLength = candidate.length;
+          bestReferenceScore = score;
         }
       });
     });
@@ -402,6 +425,7 @@ const parseQuery = (rawQuery, products = []) => {
   intent.moods = unique(intent.moods);
   intent.requiredNotes = unique(intent.requiredNotes);
   intent.excludedNotes = unique(intent.excludedNotes);
+  intent.contexts = unique(intent.contexts);
 
   return intent;
 };
@@ -470,6 +494,15 @@ const scoreProduct = (product, intent) => {
 
   intent.positiveTraits.forEach(({ key, strength }) => {
     const value = profile[key] || 0;
+
+    if (strength === "moderate") {
+      // Reward a noticeable amount of the trait, but penalize excess.
+      score += Math.min(value, 6.5) * 1.4;
+      if (value > 7) score -= (value - 7) * 7;
+      if (value >= 3.5 && value <= 7) reasons.push(`balanced:${key}`);
+      return;
+    }
+
     const targetWeight = strength === "high" ? 1.8 : 1.35;
     score += value * targetWeight;
     if (value >= 5.5) reasons.push(`trait:${key}`);
@@ -508,6 +541,29 @@ const scoreProduct = (product, intent) => {
     }
   }
 
+  if (intent.contexts.includes("office")) {
+    score += profile.clean * 1.25 + profile.freshness * 0.7;
+    if (product?.moods?.includes("soft")) score += 8;
+    if (product?.moods?.includes("clean")) score += 8;
+    if (product?.moods?.includes("rich")) score -= 10;
+    if (profile.warm > 7) score -= 8;
+    reasons.push("context:office");
+  }
+
+  if (intent.contexts.includes("elegant")) {
+    score += profile.woody * 0.55 + profile.clean * 0.55 + profile.aromatic * 0.35;
+    if (product?.moods?.includes("signature")) score += 6;
+    if (profile.gourmand > 7.5) score -= 5;
+    reasons.push("context:elegant");
+  }
+
+  if (intent.contexts.includes("evening")) {
+    if (product?.moods?.includes("date")) score += 10;
+    if (product?.moods?.includes("rich")) score += 5;
+    score += profile.warm * 0.45 + profile.woody * 0.25;
+    reasons.push("context:evening");
+  }
+
   if (intent.referenceProduct) {
     const anchor = intent.referenceProduct;
     const anchorProfile = buildProductProfile(anchor);
@@ -521,9 +577,9 @@ const scoreProduct = (product, intent) => {
     score += scentSimilarity * 18;
 
     if (isAnchor) {
-      // If catalogue already contains an inspired-by/exact analogue, it should lead,
-      // but alternatives still remain visible underneath it.
-      score += 24;
+      // When the user asks for something like a fragrance, prioritize alternatives
+      // rather than simply returning the anchor itself as the first answer.
+      score -= 18;
       reasons.push("reference-anchor");
     } else if (noteSimilarity >= 0.22 || moodSimilarity >= 0.65) {
       reasons.push("similar-profile");
@@ -575,6 +631,9 @@ const humanReason = (product, result, intent, lang = "sr") => {
   if (reasonSet.has("mood:date")) pieces.push(lang === "sr" ? "Dobar izbor za veče i izlazak." : "Well suited to evenings and dates.");
   if (reasonSet.has("mood:clean")) pieces.push(lang === "sr" ? "Čist, uredan karakter." : "Clean, polished character.");
   if (reasonSet.has("mood:soft")) pieces.push(lang === "sr" ? "Ne ide u agresivnom smeru." : "Keeps the profile restrained rather than loud.");
+  if (reasonSet.has("context:office")) pieces.push(lang === "sr" ? "Uredan profil za posao i zatvoren prostor." : "A polished profile for work and indoor wear.");
+  if (reasonSet.has("context:elegant")) pieces.push(lang === "sr" ? "Deluje elegantno i sređeno." : "Reads polished and elegant.");
+  if (reasonSet.has("context:evening")) pieces.push(lang === "sr" ? "Ima više prisustva za večernje nošenje." : "Carries more presence for evening wear.");
   if (reasonSet.has("trait:freshness")) pieces.push(lang === "sr" ? "Visoka svežina." : "Strong freshness.");
   if (reasonSet.has("trait:woody")) pieces.push(lang === "sr" ? "Izražen drvenasti karakter." : "A clear woody character.");
   if (reasonSet.has("trait:aquatic")) pieces.push(lang === "sr" ? "Vodeno/morski karakter." : "Aquatic/marine character.");
