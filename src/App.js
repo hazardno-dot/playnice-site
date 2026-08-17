@@ -5042,7 +5042,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div>{tr.valueDelivery}</div>
 </section>
 
-{/* PLAYNICE DISCOVERY — COLLAPSED PORTAL */}
+{/* PLAYNICE SMART SCENT — COLLAPSED PORTAL */}
 <section
   className="playnice-discovery-portal section-wrap"
   aria-labelledby="playnice-discovery-trigger-label"
@@ -5059,7 +5059,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </span>
 
     <span id="playnice-discovery-trigger-label">
-      PLAYNICE DISCOVERY
+      PLAYNICE SMART SCENT
     </span>
 
     <span className="playnice-discovery-trigger-arrow" aria-hidden="true">
@@ -5092,7 +5092,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           type="button"
           className="playnice-discovery-close"
           onClick={() => setDiscoveryOpen(false)}
-          aria-label={lang === "sr" ? "Zatvori Discovery" : "Close Discovery"}
+          aria-label={lang === "sr" ? "Zatvori Smart Scent" : "Close Smart Scent"}
         >
           ×
         </button>
@@ -5102,7 +5102,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             <span className="playnice-discovery-orbit" aria-hidden="true">
               <span />
             </span>
-            PLAYNICE DISCOVERY
+            PLAYNICE SMART SCENT
           </div>
 
           <h2 id="playnice-discovery-title">
@@ -5341,7 +5341,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   )}
 </section>
-{/* PLAYNICE DISCOVERY — COLLAPSED PORTAL END */}
+{/* PLAYNICE SMART SCENT — COLLAPSED PORTAL END */}
 
 <section
   className="new-arrivals-section section-wrap"
