@@ -982,6 +982,55 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
   };
 };
 
+
+const DISCOVERY_DOMAIN_CUES = [
+  "parfem", "parfema", "parfemi", "miris", "mirisa", "mirisi",
+  "fragrance", "fragrances", "perfume", "perfumes", "scent", "scents",
+  "muski", "muški", "zenski", "ženski", "unisex", "za njega", "za nju",
+  "poklon", "gift", "signature", "projekcija", "projection", "trajnost",
+  "longevity", "dejt", "date", "office", "posao", "summer", "leto",
+  "zima", "winter", "fresh", "svez", "svež", "slatko", "sweet",
+  "elegant", "elegantno", "strong", "jako", "rich", "bogato"
+];
+
+const hasDiscoveryIntent = (intent) => {
+  if (!intent) return false;
+
+  return Boolean(
+    intent.referenceProduct ||
+    intent.maxPrice != null ||
+    intent.seasons?.length ||
+    intent.categories?.length ||
+    intent.moods?.length ||
+    intent.positiveTraits?.length ||
+    intent.negativeTraits?.length ||
+    intent.requiredNotes?.length ||
+    intent.excludedNotes?.length ||
+    intent.hardExcludedNotes?.length ||
+    intent.contexts?.length ||
+    intent.referenceModifiers?.length
+  );
+};
+
+const discoveryQueryFeedback = (rawQuery, intent, lang = "sr") => {
+  const text = normalizeText(rawQuery);
+  const trimmed = String(rawQuery || "").trim();
+
+  if (trimmed.length < 3) {
+    return lang === "sr"
+      ? "Napiši malo više — stil, priliku, budžet, note ili miris koji voliš."
+      : "Tell us a little more — style, occasion, budget, notes, or a scent you love.";
+  }
+
+  if (hasDiscoveryIntent(intent) || includesAny(text, DISCOVERY_DOMAIN_CUES)) {
+    return "";
+  }
+
+  return lang === "sr"
+    ? "Ovo ne liči na zahtev za parfem. Probaj: prilika, stil, budžet, note ili miris koji već voliš."
+    : "That doesn't look like a fragrance request. Try an occasion, style, budget, notes, or a scent you already love.";
+};
+
 const humanReason = (product, result, intent, lang = "sr", rankIndex = 0) => {
   const p = result.profile || {};
   const reasonSet = new Set(result.reasons || []);
