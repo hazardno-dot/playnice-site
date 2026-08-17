@@ -1,6 +1,7 @@
 /* =========================================
-   PLAYNICE DISCOVERY ENGINE — V1.1
+   PLAYNICE DISCOVERY ENGINE — V2
    Deterministic, local, zero-API-cost ranking.
+   Uses products + productCopy + productWearContext.
 ========================================= */
 
 const normalizeText = (value = "") =>
@@ -41,7 +42,6 @@ const getAvailableSizes = (product) =>
 const chooseSizeForBudget = (product, maxPrice) => {
   const sizes = getAvailableSizes(product);
   if (!sizes.length) return null;
-
   if (!Number.isFinite(maxPrice)) return sizes[0];
 
   const affordable = sizes.filter((item) => item.price <= maxPrice);
@@ -127,14 +127,52 @@ const noteGroupScore = (notes, group) => {
   if (!notes.length) return 0;
   const set = NOTE_GROUPS[group];
   if (!set) return 0;
-
   const matches = notes.filter((note) => set.has(note)).length;
   return clamp((matches / Math.max(2, notes.length)) * 24, 0, 10);
 };
 
-const buildProductProfile = (product) => {
+const TEXT_SIGNALS = {
+  fresh: ["fresh", "svez", "sveze", "bright", "radiant", "cool", "icy", "refreshing", "blistav", "vedar", "hladan", "osvez"],
+  clean: ["clean", "polished", "uredan", "cist", "cisto", "refined", "prozrac", "airy", "smooth"],
+  sweet: ["sweet", "slad", "gourmand", "gurman", "caramel", "karamel", "praline", "pralina", "vanilla", "vanila", "honey", "med"],
+  warm: ["warm", "topao", "topla", "toplo", "dense", "gust", "resinous", "smol", "cozy", "creamy", "kremast"],
+  rich: ["rich", "bogat", "raskos", "opulent", "luxurious", "luksuz", "deep", "dubok"],
+  soft: ["soft", "mekan", "meko", "gentle", "nezan", "nezno", "light", "lagan", "subtle", "diskret", "understated", "effortless", "nenametljiv"],
+  bold: ["bold", "powerful", "strong", "intense", "snaž", "snaz", "mocan", "moćan", "upečat", "upecat", "attention grabbing", "striking", "commanding"],
+  elegant: ["elegant", "eleganc", "refined", "profinjen", "ugladjen", "uglađen", "polished", "sophisticated", "sofistic", "classy", "mature", "zreo"],
+  modern: ["modern", "moderan", "savremen", "contemporary", "urban"],
+  versatile: ["versatile", "svestran", "everyday", "svaki dan", "daily", "all day", "celodnev", "dependable", "pouzdan"],
+  seductive: ["seductive", "zavodljiv", "sensual", "senzual", "attractive", "privlacan", "privlačan", "intimate", "intim"],
+};
+
+const signalCount = (text, aliases = []) =>
+  aliases.reduce((sum, alias) => sum + (text.includes(normalizeText(alias)) ? 1 : 0), 0);
+
+const getCopyText = (product, productCopy = {}) => {
+  const copy = productCopy?.[product?.name] || {};
+  const values = [
+    copy?.miniTag?.sr, copy?.miniTag?.en,
+    copy?.card?.sr, copy?.card?.en,
+    copy?.modal?.sr, copy?.modal?.en,
+    copy?.scentType?.sr, copy?.scentType?.en,
+    ...(copy?.dominantNotes?.sr || []), ...(copy?.dominantNotes?.en || []),
+    ...(copy?.tags?.sr || []), ...(copy?.tags?.en || []),
+    copy?.whyChoose?.sr, copy?.whyChoose?.en,
+  ];
+  return normalizeText(values.filter(Boolean).join(" "));
+};
+
+const getWearText = (product, productWearContext = {}) => {
+  const wear = productWearContext?.[product?.name] || {};
+  return normalizeText([wear?.sr, wear?.en].filter(Boolean).join(" "));
+};
+
+const buildProductProfile = (product, productCopy = {}, productWearContext = {}) => {
   const notes = flattenNotes(product);
   const moods = new Set(product?.moods || []);
+  const copyText = getCopyText(product, productCopy);
+  const wearText = getWearText(product, productWearContext);
+  const semanticText = `${copyText} ${wearText}`.trim();
 
   const profile = {
     citrus: noteGroupScore(notes, "citrus"),
@@ -150,7 +188,7 @@ const buildProductProfile = (product) => {
     powdery: noteGroupScore(notes, "powdery"),
   };
 
-  // Existing curated PlayNice moods are strong signals and should outweigh raw note inference.
+  // Existing curated PlayNice moods remain high-confidence signals.
   if (moods.has("clean")) profile.clean = Math.max(profile.clean, 8);
   if (moods.has("summer")) {
     profile.aquatic = Math.max(profile.aquatic, 4);
@@ -165,19 +203,84 @@ const buildProductProfile = (product) => {
     profile.warm = Math.min(profile.warm, 6);
   }
 
+  // Product copy enriches the raw note-map fingerprint.
+  if (signalCount(semanticText, TEXT_SIGNALS.clean) > 0) profile.clean = Math.max(profile.clean, 7.2);
+  if (signalCount(semanticText, TEXT_SIGNALS.sweet) > 0) profile.sweet = Math.max(profile.sweet, 6.4);
+  if (signalCount(semanticText, TEXT_SIGNALS.warm) > 0) profile.warm = Math.max(profile.warm, 6.6);
+  if (signalCount(semanticText, TEXT_SIGNALS.rich) > 0) profile.warm = Math.max(profile.warm, 7.2);
+
   const freshness = clamp(
-    profile.citrus * 0.34 +
-      profile.aquatic * 0.28 +
-      profile.aromatic * 0.18 +
-      profile.clean * 0.2 -
-      profile.gourmand * 0.14 -
-      profile.warm * 0.08
+    profile.citrus * 0.30 +
+      profile.aquatic * 0.24 +
+      profile.aromatic * 0.16 +
+      profile.clean * 0.22 -
+      profile.gourmand * 0.12 -
+      profile.warm * 0.08 +
+      Math.min(signalCount(semanticText, TEXT_SIGNALS.fresh) * 0.9, 2.2)
+  );
+
+  const elegance = clamp(
+    3.2 +
+      profile.woody * 0.18 +
+      profile.clean * 0.18 +
+      profile.aromatic * 0.10 +
+      Math.min(signalCount(semanticText, TEXT_SIGNALS.elegant) * 1.25, 4.2) -
+      Math.max(0, profile.gourmand - 7) * 0.18
+  );
+
+  const intensity = clamp(
+    4.5 +
+      profile.warm * 0.22 +
+      profile.woody * 0.08 +
+      Math.min(signalCount(semanticText, TEXT_SIGNALS.bold) * 1.0, 3.8) -
+      Math.min(signalCount(semanticText, TEXT_SIGNALS.soft) * 0.9, 3.0)
+  );
+
+  const versatility = clamp(
+    4.2 +
+      profile.clean * 0.18 +
+      freshness * 0.14 +
+      Math.min(signalCount(semanticText, TEXT_SIGNALS.versatile) * 1.1, 3.8) -
+      Math.max(0, profile.warm - 8) * 0.25
+  );
+
+  const seduction = clamp(
+    2.8 +
+      profile.warm * 0.22 +
+      profile.sweet * 0.14 +
+      Math.min(signalCount(semanticText, TEXT_SIGNALS.seductive) * 1.25, 4.0)
+  );
+
+  const office = clamp(
+    3.0 +
+      profile.clean * 0.32 +
+      freshness * 0.18 +
+      versatility * 0.20 +
+      (includesAny(wearText, ["work", "posao", "office", "kancelarija", "meeting", "sastanak"]) ? 3.2 : 0) -
+      Math.max(0, intensity - 7.2) * 0.55 -
+      Math.max(0, profile.gourmand - 6.5) * 0.35
+  );
+
+  const evening = clamp(
+    2.8 +
+      profile.warm * 0.24 +
+      intensity * 0.20 +
+      seduction * 0.20 +
+      (includesAny(wearText, ["evening", "night", "vece", "vecer", "izlazak", "dejt", "date"]) ? 2.8 : 0)
   );
 
   return {
     ...profile,
     freshness,
+    elegance,
+    intensity,
+    versatility,
+    seduction,
+    office,
+    evening,
     notes,
+    semanticText,
+    wearText,
   };
 };
 
@@ -196,13 +299,13 @@ const QUERY_DICTIONARY = {
   mood: {
     clean: ["clean", "cisto", "cist", "cista", "cistoca", "fresh laundry", "uredno"],
     summer: ["summer", "leto", "ljeto", "letnji", "ljetnji", "more", "plaza", "beach"],
-    date: ["date", "dejt", "izlazak", "vecernji izlazak", "vecernje", "vece", "uvece", "evening", "night out", "romantic", "romanticno"],
-    rich: ["rich", "bogato", "luksuzno", "luxury", "opulent", "mocno", "powerful", "jako", "strong"],
+    date: ["date", "dejt", "romantic", "romanticno"],
+    rich: ["rich", "bogato", "raskosno", "luksuzno", "opulent"],
     soft: ["soft", "nezan", "nezno", "blag", "blago", "subtle", "diskretno", "nenapadno", "not loud"],
     signature: ["signature", "svaki dan", "everyday", "daily", "versatile", "univerzalno"],
   },
   trait: {
-    freshness: ["fresh", "sveze", "svez", "sveza", "osvezavajuce", "refreshing"],
+    freshness: ["fresh", "sveze", "svez", "sveza", "osvezavajuce", "refreshing", "hladnije", "fresher"],
     citrus: ["citrus", "citrusno", "citrusni"],
     aquatic: ["aquatic", "vodeno", "vodeni", "marine", "morski", "more", "ozonic"],
     sweet: ["sweet", "slatko", "sladak", "slatka"],
@@ -214,6 +317,10 @@ const QUERY_DICTIONARY = {
     gourmand: ["gourmand", "gurmanski", "jestivo", "dessert", "desert"],
     clean: ["clean", "cisto", "cist", "cista", "sapunski", "soapy"],
     powdery: ["powdery", "puderast", "puderasto", "puderasti"],
+    elegance: ["elegant", "elegantno", "elegantan", "elegantna", "classy", "sofisticirano", "sophisticated", "ugladjeno", "uglađeno"],
+    intensity: ["jako", "snazno", "snažno", "powerful", "strong", "intense", "upečatljivo", "upecatljivo"],
+    versatility: ["svestran", "svestrano", "versatile", "za sve", "all round"],
+    seduction: ["zavodljiv", "zavodljivo", "seductive", "sensual", "sexy", "privlacan", "privlačan"],
   },
 };
 
@@ -221,6 +328,11 @@ const NEGATION_MARKERS = [
   "ne previse", "ne previše", "nije previse", "nije previše", "not too",
   "bez", "without", "izbegni", "izbjegni", "avoid", "ne volim", "dont like",
   "do not like", "nikako", "no ", "ne bude", "da ne bude", "nije", "not"
+].map(normalizeText);
+
+const HARD_NEGATION_MARKERS = [
+  "bez", "without", "izbegni", "izbjegni", "avoid", "ne volim", "dont like",
+  "do not like", "nikako", "no "
 ].map(normalizeText);
 
 const INTENSIFIERS = ["veoma", "bas", "baš", "jako", "very", "really", "extra"].map(normalizeText);
@@ -236,7 +348,6 @@ const parseBudget = (text) => {
     const match = text.match(pattern);
     if (match?.[1]) return Number(match[1].replace(",", "."));
   }
-
   return null;
 };
 
@@ -245,9 +356,19 @@ const detectNegativeTrait = (text, aliases) => {
     const normalizedAlias = normalizeText(alias);
     const index = text.indexOf(normalizedAlias);
     if (index === -1) continue;
-
-    const before = text.slice(0, index).trim().split(" ").slice(-2).join(" ");
+    const before = text.slice(Math.max(0, index - 28), index).trim();
     if (NEGATION_MARKERS.some((marker) => before.includes(marker))) return true;
+  }
+  return false;
+};
+
+const detectHardNegative = (text, aliases) => {
+  for (const alias of aliases) {
+    const normalizedAlias = normalizeText(alias);
+    const index = text.indexOf(normalizedAlias);
+    if (index === -1) continue;
+    const before = text.slice(Math.max(0, index - 28), index).trim();
+    if (HARD_NEGATION_MARKERS.some((marker) => before.includes(marker))) return true;
   }
   return false;
 };
@@ -329,8 +450,10 @@ const parseQuery = (rawQuery, products = []) => {
     negativeTraits: [],
     requiredNotes: [],
     excludedNotes: [],
+    hardExcludedNotes: [],
     contexts: [],
     referenceProduct: null,
+    referenceModifiers: [],
   };
 
   Object.entries(QUERY_DICTIONARY.season).forEach(([key, aliases]) => {
@@ -353,17 +476,19 @@ const parseQuery = (rawQuery, products = []) => {
     }
   });
 
-  if (includesAny(text, ["office", "posao", "kancelarija", "work", "workplace"])) intent.contexts.push("office");
+  if (includesAny(text, ["office", "posao", "kancelarija", "work", "workplace", "sastanak", "meeting"])) intent.contexts.push("office");
   if (includesAny(text, ["elegantno", "elegantan", "elegantna", "elegant", "classy", "sofisticirano", "sophisticated"])) intent.contexts.push("elegant");
-  if (includesAny(text, ["vece", "uvece", "vecernji", "vecernje", "evening", "night"])) intent.contexts.push("evening");
+  if (includesAny(text, ["vece", "uvece", "vecernji", "vecernje", "evening", "night", "izlazak"])) intent.contexts.push("evening");
+  if (includesAny(text, ["dejt", "date", "romantic", "romanticno"])) intent.contexts.push("date");
+  if (includesAny(text, ["svaki dan", "everyday", "daily", "celodnevno", "all day"])) intent.contexts.push("everyday");
 
-  // Phrases such as "slatko ali ne previše" mean "some sweetness, but controlled".
+  // "slatko ali ne previše" = moderate target, not negative sweetness.
   Object.entries(QUERY_DICTIONARY.trait).forEach(([key, aliases]) => {
     for (const alias of aliases) {
       const a = normalizeText(alias);
       const idx = text.indexOf(a);
       if (idx === -1) continue;
-      const after = text.slice(idx + a.length, idx + a.length + 24);
+      const after = text.slice(idx + a.length, idx + a.length + 28);
       if (/(ali )?(ne previse|not too)/.test(after)) {
         intent.positiveTraits = intent.positiveTraits.filter((item) => item.key !== key);
         intent.negativeTraits = intent.negativeTraits.filter((item) => item.key !== key);
@@ -376,6 +501,11 @@ const parseQuery = (rawQuery, products = []) => {
     if (!includesAny(text, aliases)) return;
     const keys = noteAliasToKeys[aliasKey] || [aliasKey];
 
+    if (detectHardNegative(text, aliases)) {
+      intent.hardExcludedNotes.push(...keys);
+      return;
+    }
+
     if (detectNegativeTrait(text, aliases)) {
       intent.excludedNotes.push(...keys);
     } else {
@@ -383,8 +513,6 @@ const parseQuery = (rawQuery, products = []) => {
     }
   });
 
-  // Reference matching activates only when the query actually expresses
-  // similarity/liking intent. Exact catalogue names/short names outrank inspired-by DNA.
   let bestReference = null;
   let bestReferenceScore = 0;
   const wantsReference = REFERENCE_CUES.some((cue) => text.includes(cue));
@@ -420,12 +548,23 @@ const parseQuery = (rawQuery, products = []) => {
   }
 
   intent.referenceProduct = bestReference;
+
+  if (bestReference) {
+    if (includesAny(text, ["svezije", "svežije", "fresher"])) intent.referenceModifiers.push("fresher");
+    if (includesAny(text, ["manje slatko", "less sweet", "not as sweet"])) intent.referenceModifiers.push("less-sweet");
+    if (includesAny(text, ["lakse", "lakše", "lighter", "manje tesko", "manje teško"])) intent.referenceModifiers.push("lighter");
+    if (includesAny(text, ["jace", "jače", "stronger", "more powerful"])) intent.referenceModifiers.push("stronger");
+    if (includesAny(text, ["elegantnije", "more elegant", "classier"])) intent.referenceModifiers.push("more-elegant");
+  }
+
   intent.seasons = unique(intent.seasons);
   intent.categories = unique(intent.categories);
   intent.moods = unique(intent.moods);
   intent.requiredNotes = unique(intent.requiredNotes);
   intent.excludedNotes = unique(intent.excludedNotes);
+  intent.hardExcludedNotes = unique(intent.hardExcludedNotes);
   intent.contexts = unique(intent.contexts);
+  intent.referenceModifiers = unique(intent.referenceModifiers);
 
   return intent;
 };
@@ -440,21 +579,30 @@ const setSimilarity = (a = [], b = []) => {
 };
 
 const profileSimilarity = (a, b) => {
-  const keys = ["freshness", "citrus", "aquatic", "sweet", "woody", "spicy", "aromatic", "floral", "warm", "gourmand", "clean", "powdery"];
+  const keys = [
+    "freshness", "citrus", "aquatic", "sweet", "woody", "spicy", "aromatic",
+    "floral", "warm", "gourmand", "clean", "powdery", "elegance", "intensity",
+    "versatility", "seduction"
+  ];
   const distance = keys.reduce((sum, key) => sum + Math.abs((a[key] || 0) - (b[key] || 0)), 0);
   return clamp(10 - distance / keys.length, 0, 10) / 10;
 };
 
-const scoreProduct = (product, intent) => {
-  const profile = buildProductProfile(product);
+const scoreProduct = (product, intent, productCopy, productWearContext) => {
+  const profile = buildProductProfile(product, productCopy, productWearContext);
   const notes = profile.notes;
   const reasons = [];
   const penalties = [];
-  let score = 42;
+  let score = 38;
 
   const selectedSize = chooseSizeForBudget(product, intent.maxPrice);
   if (Number.isFinite(intent.maxPrice) && !selectedSize) {
     return { score: -Infinity, selectedSize: null, profile, reasons: [], penalties: ["over-budget"] };
+  }
+
+  // Explicit hard note exclusions are truly hard.
+  if (intent.hardExcludedNotes.some((note) => notes.includes(note))) {
+    return { score: -Infinity, selectedSize: null, profile, reasons: [], penalties: ["hard-excluded-note"] };
   }
 
   if (Number.isFinite(intent.maxPrice)) {
@@ -464,10 +612,10 @@ const scoreProduct = (product, intent) => {
 
   if (intent.categories.length) {
     if (intent.categories.includes(product.category)) {
-      score += 16;
+      score += 18;
       reasons.push("category");
     } else {
-      score -= 18;
+      score -= 24;
       penalties.push("category");
     }
   }
@@ -475,17 +623,17 @@ const scoreProduct = (product, intent) => {
   if (intent.seasons.length) {
     const seasonMatch = intent.seasons.includes(product.season) || product.season === "all";
     if (seasonMatch) {
-      score += product.season === "all" ? 10 : 15;
+      score += product.season === "all" ? 9 : 16;
       reasons.push("season");
     } else {
-      score -= 20;
+      score -= 24;
       penalties.push("season");
     }
   }
 
   intent.moods.forEach((mood) => {
     if (product?.moods?.includes(mood)) {
-      score += 11;
+      score += 12;
       reasons.push(`mood:${mood}`);
     } else {
       score -= 3;
@@ -496,108 +644,141 @@ const scoreProduct = (product, intent) => {
     const value = profile[key] || 0;
 
     if (strength === "moderate") {
-      // Reward a noticeable amount of the trait, but penalize excess.
-      score += Math.min(value, 6.5) * 1.4;
-      if (value > 7) score -= (value - 7) * 7;
-      if (value >= 3.5 && value <= 7) reasons.push(`balanced:${key}`);
+      // Bell-ish target around 5.5: too little and too much both lose points.
+      const distance = Math.abs(value - 5.5);
+      score += Math.max(0, 12 - distance * 3.0);
+      if (value >= 3.8 && value <= 7.0) reasons.push(`balanced:${key}`);
       return;
     }
 
-    const targetWeight = strength === "high" ? 1.8 : 1.35;
+    const targetWeight = strength === "high" ? 2.15 : 1.55;
     score += value * targetWeight;
     if (value >= 5.5) reasons.push(`trait:${key}`);
   });
 
   intent.negativeTraits.forEach(({ key }) => {
     const value = profile[key] || 0;
-    // "not too X" is a soft ceiling, not a hard exclusion.
-    if (value > 6.0) {
-      score -= (value - 6.0) * 7;
+    if (value > 5.5) {
+      score -= (value - 5.5) * 9;
       penalties.push(`too:${key}`);
     } else {
-      score += 4;
+      score += 5;
       reasons.push(`balanced:${key}`);
     }
-
-    // Existing curated mood data is a stronger signal than raw note counts.
-    if (key === "warm" && product?.moods?.includes("rich")) score -= 14;
-    if (key === "sweet" && product?.moods?.includes("rich") && value >= 5) score -= 7;
   });
 
   if (intent.requiredNotes.length) {
     const matches = notes.filter((note) => intent.requiredNotes.includes(note)).length;
-    score += matches * 8;
+    score += matches * 10;
     if (matches) reasons.push("notes");
   }
 
   if (intent.excludedNotes.length) {
     const matches = notes.filter((note) => intent.excludedNotes.includes(note)).length;
     if (matches) {
-      score -= matches * 28;
+      score -= matches * 34;
       penalties.push("excluded-note");
     } else {
-      score += 5;
+      score += 6;
       reasons.push("avoids-note");
     }
   }
 
+  // Wear-context is now a first-class signal, not an inferred afterthought.
   if (intent.contexts.includes("office")) {
-    score += profile.clean * 1.25 + profile.freshness * 0.7;
-    if (product?.moods?.includes("soft")) score += 8;
-    if (product?.moods?.includes("clean")) score += 8;
-    if (product?.moods?.includes("rich")) score -= 10;
-    if (profile.warm > 7) score -= 8;
+    score += profile.office * 3.0;
+    if (includesAny(profile.wearText, ["work", "posao", "office", "meeting", "sastanak"])) score += 12;
+    if (profile.intensity > 8.3) score -= 10;
     reasons.push("context:office");
   }
 
   if (intent.contexts.includes("elegant")) {
-    score += profile.woody * 0.55 + profile.clean * 0.55 + profile.aromatic * 0.35;
-    if (product?.moods?.includes("signature")) score += 6;
-    if (profile.gourmand > 7.5) score -= 5;
+    score += profile.elegance * 2.6;
+    if (includesAny(profile.semanticText, TEXT_SIGNALS.elegant)) score += 8;
     reasons.push("context:elegant");
   }
 
   if (intent.contexts.includes("evening")) {
-    if (product?.moods?.includes("date")) score += 10;
-    if (product?.moods?.includes("rich")) score += 5;
-    score += profile.warm * 0.45 + profile.woody * 0.25;
+    score += profile.evening * 2.4;
+    if (includesAny(profile.wearText, ["evening", "night", "vece", "vecer", "izlazak"])) score += 8;
     reasons.push("context:evening");
+  }
+
+  if (intent.contexts.includes("date")) {
+    score += profile.seduction * 2.7 + profile.evening * 1.0;
+    if (includesAny(profile.wearText, ["date", "dejt", "romantic"])) score += 12;
+    reasons.push("context:date");
+  }
+
+  if (intent.contexts.includes("everyday")) {
+    score += profile.versatility * 2.5;
+    if (includesAny(profile.wearText, ["everyday", "svaki dan", "daily", "all day", "celodnev"])) score += 10;
+    reasons.push("context:everyday");
   }
 
   if (intent.referenceProduct) {
     const anchor = intent.referenceProduct;
-    const anchorProfile = buildProductProfile(anchor);
+    const anchorProfile = buildProductProfile(anchor, productCopy, productWearContext);
     const noteSimilarity = setSimilarity(notes, anchorProfile.notes);
     const moodSimilarity = setSimilarity(product?.moods || [], anchor?.moods || []);
     const scentSimilarity = profileSimilarity(profile, anchorProfile);
     const isAnchor = product.id === anchor.id;
 
-    score += noteSimilarity * 34;
-    score += moodSimilarity * 20;
-    score += scentSimilarity * 18;
+    score += noteSimilarity * 30;
+    score += moodSimilarity * 16;
+    score += scentSimilarity * 19;
 
     if (isAnchor) {
-      // When the user asks for something like a fragrance, prioritize alternatives
-      // rather than simply returning the anchor itself as the first answer.
-      score -= 18;
+      score -= 22;
       reasons.push("reference-anchor");
-    } else if (noteSimilarity >= 0.22 || moodSimilarity >= 0.65) {
+    } else if (noteSimilarity >= 0.20 || moodSimilarity >= 0.60 || scentSimilarity >= 0.80) {
       reasons.push("similar-profile");
     }
 
     if (anchor?.recommendations?.includes(product.slug)) {
-      score += 18;
+      score += 12;
       reasons.push("curated-related");
     }
+    if (product?.recommendations?.includes(anchor.slug)) score += 6;
 
-    if (product?.recommendations?.includes(anchor.slug)) {
-      score += 8;
+    // Relative modifiers are constraints against the anchor, not generic bonuses.
+    if (intent.referenceModifiers.includes("fresher")) {
+      const delta = profile.freshness - anchorProfile.freshness;
+      if (delta >= 1.0) {
+        score += Math.min(delta * 5.5, 22);
+        reasons.push("modifier:fresher");
+      } else {
+        score -= Math.min((1.0 - delta) * 10, 24);
+      }
+    }
+
+    if (intent.referenceModifiers.includes("less-sweet")) {
+      const delta = anchorProfile.sweet - profile.sweet;
+      if (delta >= 1.0) score += Math.min(delta * 5.0, 20);
+      else score -= Math.min((1.0 - delta) * 9, 20);
+    }
+
+    if (intent.referenceModifiers.includes("lighter")) {
+      const delta = anchorProfile.intensity - profile.intensity;
+      if (delta >= 0.8) score += Math.min(delta * 5.0, 18);
+      else score -= Math.min((0.8 - delta) * 8, 18);
+    }
+
+    if (intent.referenceModifiers.includes("stronger")) {
+      const delta = profile.intensity - anchorProfile.intensity;
+      if (delta >= 0.8) score += Math.min(delta * 5.0, 18);
+      else score -= Math.min((0.8 - delta) * 8, 18);
+    }
+
+    if (intent.referenceModifiers.includes("more-elegant")) {
+      const delta = profile.elegance - anchorProfile.elegance;
+      if (delta >= 0.6) score += Math.min(delta * 5.0, 18);
+      else score -= Math.min((0.6 - delta) * 8, 18);
     }
   }
 
-  // Rating is only a tie-breaker; it must never overpower scent fit.
   if (Number.isFinite(Number(product.rating))) {
-    score += (Number(product.rating) - 7) * 1.6;
+    score += (Number(product.rating) - 7) * 1.2;
   }
 
   return {
@@ -614,26 +795,18 @@ const humanReason = (product, result, intent, lang = "sr") => {
   const reasonSet = new Set(result.reasons);
   const pieces = [];
 
-  if (reasonSet.has("reference-anchor")) {
-    pieces.push(
-      lang === "sr"
-        ? `Najdirektnija veza sa ${intent.referenceProduct?.inspiredBy?.name || intent.referenceProduct?.shortName || intent.referenceProduct?.name}.`
-        : `The closest direct link to ${intent.referenceProduct?.inspiredBy?.name || intent.referenceProduct?.shortName || intent.referenceProduct?.name}.`
-    );
-  } else if (reasonSet.has("similar-profile")) {
-    pieces.push(lang === "sr" ? "Vrlo sličan mirisni karakter traženom profilu." : "A closely related scent profile.");
+  if (reasonSet.has("similar-profile")) {
+    pieces.push(lang === "sr" ? "Blizak je traženom mirisnom profilu." : "It stays close to the requested scent profile.");
   }
-
-  if (reasonSet.has("season")) {
-    pieces.push(lang === "sr" ? "Odgovara traženoj sezoni." : "Fits the requested season.");
+  if (reasonSet.has("modifier:fresher")) {
+    pieces.push(lang === "sr" ? "Zadržava deo sličnog karaktera, ali ide primetno svežije." : "Keeps part of the same character while moving noticeably fresher.");
   }
-
-  if (reasonSet.has("mood:date")) pieces.push(lang === "sr" ? "Dobar izbor za veče i izlazak." : "Well suited to evenings and dates.");
-  if (reasonSet.has("mood:clean")) pieces.push(lang === "sr" ? "Čist, uredan karakter." : "Clean, polished character.");
-  if (reasonSet.has("mood:soft")) pieces.push(lang === "sr" ? "Ne ide u agresivnom smeru." : "Keeps the profile restrained rather than loud.");
-  if (reasonSet.has("context:office")) pieces.push(lang === "sr" ? "Uredan profil za posao i zatvoren prostor." : "A polished profile for work and indoor wear.");
-  if (reasonSet.has("context:elegant")) pieces.push(lang === "sr" ? "Deluje elegantno i sređeno." : "Reads polished and elegant.");
-  if (reasonSet.has("context:evening")) pieces.push(lang === "sr" ? "Ima više prisustva za večernje nošenje." : "Carries more presence for evening wear.");
+  if (reasonSet.has("season")) pieces.push(lang === "sr" ? "Odgovara traženoj sezoni." : "Fits the requested season.");
+  if (reasonSet.has("context:office")) pieces.push(lang === "sr" ? "Profil i kontekst nošenja dobro odgovaraju poslu." : "Its profile and wear context suit work well.");
+  if (reasonSet.has("context:elegant")) pieces.push(lang === "sr" ? "Ima elegantan, sređen karakter." : "It has a polished, elegant character.");
+  if (reasonSet.has("context:evening")) pieces.push(lang === "sr" ? "Dobro radi u večernjem nošenju." : "It is well suited to evening wear.");
+  if (reasonSet.has("context:date")) pieces.push(lang === "sr" ? "Ima dobar profil za dejt i blizak kontakt." : "It has a strong date-night profile.");
+  if (reasonSet.has("context:everyday")) pieces.push(lang === "sr" ? "Svestran je za svakodnevno nošenje." : "It is versatile for everyday wear.");
   if (reasonSet.has("trait:freshness")) pieces.push(lang === "sr" ? "Visoka svežina." : "Strong freshness.");
   if (reasonSet.has("trait:woody")) pieces.push(lang === "sr" ? "Izražen drvenasti karakter." : "A clear woody character.");
   if (reasonSet.has("trait:aquatic")) pieces.push(lang === "sr" ? "Vodeno/morski karakter." : "Aquatic/marine character.");
@@ -645,18 +818,18 @@ const humanReason = (product, result, intent, lang = "sr") => {
 
   if (!pieces.length) {
     const dominant = [
-      ["freshness", p.freshness], ["clean", p.clean], ["woody", p.woody],
-      ["aromatic", p.aromatic], ["warm", p.warm], ["sweet", p.sweet]
+      ["freshness", p.freshness], ["clean", p.clean], ["elegance", p.elegance],
+      ["woody", p.woody], ["warm", p.warm], ["sweet", p.sweet]
     ].sort((a, b) => b[1] - a[1])[0]?.[0];
 
     const fallback = {
       sr: {
-        freshness: "Svež i lako nosiv profil.", clean: "Čist i uredan profil.", woody: "Drvenast i stabilan karakter.",
-        aromatic: "Aromatičan i nosiv karakter.", warm: "Topao i bogat karakter.", sweet: "Mekši, slađi karakter."
+        freshness: "Svež i lako nosiv profil.", clean: "Čist i uredan profil.", elegance: "Uglađen i elegantan profil.",
+        woody: "Drvenast i stabilan karakter.", warm: "Topao i bogat karakter.", sweet: "Mekši, slađi karakter."
       },
       en: {
-        freshness: "Fresh and easy-wearing profile.", clean: "Clean and polished profile.", woody: "A grounded woody character.",
-        aromatic: "Aromatic and wearable character.", warm: "Warm, rich character.", sweet: "A softer, sweeter character."
+        freshness: "Fresh and easy-wearing profile.", clean: "Clean and polished profile.", elegance: "Polished and elegant profile.",
+        woody: "A grounded woody character.", warm: "Warm, rich character.", sweet: "A softer, sweeter character."
       }
     };
     pieces.push(fallback[lang]?.[dominant] || fallback.en[dominant] || "Strong overall match.");
@@ -668,6 +841,8 @@ const humanReason = (product, result, intent, lang = "sr") => {
 export const discoverFragrances = ({
   query,
   products,
+  productCopy = {},
+  productWearContext = {},
   lang = "sr",
   limit = 5,
 }) => {
@@ -675,7 +850,7 @@ export const discoverFragrances = ({
 
   const ranked = products
     .map((product) => {
-      const result = scoreProduct(product, intent);
+      const result = scoreProduct(product, intent, productCopy, productWearContext);
       return { product, ...result };
     })
     .filter((item) => Number.isFinite(item.score))

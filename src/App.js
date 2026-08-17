@@ -3727,6 +3727,8 @@ const handleDiscoveryTest = () => {
   const discovery = discoverFragrances({
     query: discoveryQuery,
     products,
+    productCopy,
+    productWearContext,
     lang,
     limit: 5,
   });
