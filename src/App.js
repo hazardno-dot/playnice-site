@@ -5001,13 +5001,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   )}
 </section>
 
-            <section className="value-strip">
-              <div>{tr.valueTry}</div>
-              <div>{tr.valuePremium}</div>
-              <div>{tr.valueDelivery}</div>
-            </section>
-
-            <section className="value-strip">
+<section className="value-strip">
   <div>{tr.valueTry}</div>
   <div>{tr.valuePremium}</div>
   <div>{tr.valueDelivery}</div>
@@ -5096,11 +5090,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 {/* DISCOVERY ENGINE TEST END */}
 
 <section
-  className="new-arrivals-section section-wrap"
-  aria-labelledby="new-arrivals-title"
->
-
-            <section
   className="new-arrivals-section section-wrap"
   aria-labelledby="new-arrivals-title"
 >
