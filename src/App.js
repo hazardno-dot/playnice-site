@@ -810,6 +810,9 @@ const getInitialShopState = () => {
 
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  const [discoveryQuery, setDiscoveryQuery] = useState("");
+  const [discoveryResults, setDiscoveryResults] = useState([]);
+
   const newProductsSignature = useMemo(() => {
     return getNewProductsSignature(products);
   }, []);
@@ -3720,6 +3723,15 @@ const openProductModal = (product, options = {}) => {
   }
 };
 
+const handleDiscoveryTest = () => {
+  const results = discoverFragrances(products, discoveryQuery, {
+    lang,
+    limit: 5,
+  });
+
+  setDiscoveryResults(results);
+};
+
 const handleProductCardOpen = (product) => {
   openProductModal(product);
 
@@ -4994,6 +5006,99 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               <div>{tr.valuePremium}</div>
               <div>{tr.valueDelivery}</div>
             </section>
+
+            <section className="value-strip">
+  <div>{tr.valueTry}</div>
+  <div>{tr.valuePremium}</div>
+  <div>{tr.valueDelivery}</div>
+</section>
+
+{/* DISCOVERY ENGINE TEST */}
+<section className="section-wrap" style={{ padding: "32px 0" }}>
+  <div
+    style={{
+      border: "1px solid rgba(220,181,107,0.25)",
+      borderRadius: "20px",
+      padding: "24px",
+    }}
+  >
+    <p className="section-kicker">DISCOVERY ENGINE TEST</p>
+
+    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+      <input
+        type="text"
+        value={discoveryQuery}
+        onChange={(e) => setDiscoveryQuery(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleDiscoveryTest();
+        }}
+        placeholder="Treba mi nešto sveže za leto do 15 €..."
+        style={{
+          flex: "1 1 420px",
+          minHeight: "48px",
+          borderRadius: "999px",
+          border: "1px solid rgba(220,181,107,0.25)",
+          background: "#111",
+          color: "#fff",
+          padding: "0 18px",
+        }}
+      />
+
+      <button
+        type="button"
+        className="gold-button"
+        onClick={handleDiscoveryTest}
+      >
+        Test
+      </button>
+    </div>
+
+    {discoveryResults.length > 0 && (
+      <div style={{ marginTop: "24px", display: "grid", gap: "12px" }}>
+        {discoveryResults.map((result, index) => (
+          <button
+            key={result.product.id}
+            type="button"
+            onClick={() =>
+              openProductModal(result.product, {
+                changeView: false,
+              })
+            }
+            style={{
+              width: "100%",
+              textAlign: "left",
+              border: "1px solid rgba(255,255,255,0.08)",
+              background: "rgba(255,255,255,0.03)",
+              color: "#fff",
+              padding: "16px",
+              borderRadius: "14px",
+            }}
+          >
+            <strong>
+              {index + 1}. {result.product.name}
+            </strong>
+
+            <div style={{ marginTop: "6px", opacity: 0.7 }}>
+              Score: {result.score}
+            </div>
+
+            {result.reasons?.length > 0 && (
+              <div style={{ marginTop: "6px", opacity: 0.85 }}>
+                {result.reasons.join(" · ")}
+              </div>
+            )}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+{/* DISCOVERY ENGINE TEST END */}
+
+<section
+  className="new-arrivals-section section-wrap"
+  aria-labelledby="new-arrivals-title"
+>
 
             <section
   className="new-arrivals-section section-wrap"
