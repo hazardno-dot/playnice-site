@@ -5042,7 +5042,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div>{tr.valueDelivery}</div>
 </section>
 
-{/* PLAYNICE FRAGRANCE INTELLIGENCE — COLLAPSED PORTAL */}
+{/* PLAYNICE FRAGRANCE INTELLIGENCE — V5 */}
 <section
   className="playnice-discovery-portal section-wrap"
   aria-labelledby="playnice-discovery-trigger-label"
@@ -5087,6 +5087,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         aria-labelledby="playnice-discovery-title"
       >
         <div className="playnice-discovery-panel-glow" aria-hidden="true" />
+        <div className="playnice-discovery-panel-glow-secondary" aria-hidden="true" />
 
         <button
           type="button"
@@ -5107,6 +5108,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               <span />
             </span>
             PLAYNICE FRAGRANCE INTELLIGENCE
+
+            <span className="playnice-discovery-fi-badge" aria-hidden="true">
+              FI
+            </span>
           </div>
 
           <h2 id="playnice-discovery-title">
@@ -5120,6 +5125,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               ? "Ne trebaju ti filteri ni parfemski termini. Napiši priliku, budžet, stil, parfem koji voliš — ili ono što ne želiš."
               : "No filters or fragrance vocabulary required. Tell us the occasion, budget, style, a scent you love — or what you want to avoid."}
           </p>
+
+          <div className="playnice-discovery-ai-note">
+            <span className="playnice-discovery-ai-dot" aria-hidden="true" />
+            <span>
+              {lang === "sr"
+                ? "FI analizira stil, budžet, atmosferu i kontekst nošenja."
+                : "FI reads style, budget, mood, and wear context in one pass."}
+            </span>
+          </div>
         </div>
 
         <form
@@ -5261,11 +5275,44 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     )}`
                   : "";
 
-                const rawReason = (result.reason || "").trim();
-                const shortReason =
-                  rawReason.length > 74
-                    ? `${rawReason.slice(0, 71).trim()}…`
-                    : rawReason;
+                const rawReason = (result.reason || "").trim().toLowerCase();
+                const refinedReason = (() => {
+                  if (lang === "sr") {
+                    if (rawReason.includes("work") || rawReason.includes("office") || rawReason.includes("posao")) {
+                      return "Čist, uglađen i veoma lak za nošenje tokom dana.";
+                    }
+                    if (rawReason.includes("summer") || rawReason.includes("fresh") || rawReason.includes("svež")) {
+                      return "Svež, svetao i prirodno uklopljen u toplije dane.";
+                    }
+                    if (rawReason.includes("date") || rawReason.includes("night") || rawReason.includes("dejt")) {
+                      return "Dopadljiv i elegantan, sa dovoljno karaktera za bliži susret.";
+                    }
+                    if (rawReason.includes("winter") || rawReason.includes("rich") || rawReason.includes("warm")) {
+                      return "Topliji i bogatiji profil, sa prijatnim luksuznim tragom.";
+                    }
+                    if (rawReason.includes("budget")) {
+                      return "Ispunjava tvoj brief bez izlaska iz željenog budžeta.";
+                    }
+                    return "Profil i atmosfera mirisa vrlo lepo prate tvoj upit.";
+                  }
+
+                  if (rawReason.includes("work") || rawReason.includes("office")) {
+                    return "Clean, polished, and effortless through the day.";
+                  }
+                  if (rawReason.includes("summer") || rawReason.includes("fresh")) {
+                    return "Fresh, bright, and naturally suited to warmer days.";
+                  }
+                  if (rawReason.includes("date") || rawReason.includes("night")) {
+                    return "Refined and appealing, with just enough character for closer moments.";
+                  }
+                  if (rawReason.includes("winter") || rawReason.includes("rich") || rawReason.includes("warm")) {
+                    return "A richer, warmer profile with a quietly luxurious trail.";
+                  }
+                  if (rawReason.includes("budget")) {
+                    return "A strong fit for the brief while staying inside budget.";
+                  }
+                  return "Its profile and overall mood align beautifully with your brief.";
+                })();
 
                 return (
                   <article
@@ -5323,7 +5370,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                         <h4>{result.product.name}</h4>
 
                         <p className="playnice-discovery-why">
-                          {shortReason}
+                          {refinedReason}
                         </p>
                       </div>
 
@@ -5349,7 +5396,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   )}
 </section>
-{/* PLAYNICE FRAGRANCE INTELLIGENCE — COLLAPSED PORTAL END */}
+{/* PLAYNICE FRAGRANCE INTELLIGENCE — V5 END */}
 
 <section
   className="new-arrivals-section section-wrap"
