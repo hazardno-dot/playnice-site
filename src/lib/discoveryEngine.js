@@ -1,5 +1,5 @@
 /* =========================================
-   PLAYNICE DISCOVERY ENGINE — V2.3
+   PLAYNICE DISCOVERY ENGINE — V3.0
    Deterministic, local, zero-API-cost ranking.
    Uses products + productCopy + productWearContext.
 ========================================= */
@@ -302,6 +302,12 @@ const buildProductProfile = (product, productCopy = {}, productWearContext = {},
     ...manual,
     ...(Number.isFinite(manual.sweetness) ? { sweet: manual.sweetness } : {}),
     ...(Number.isFinite(manual.warmth) ? { warm: manual.warmth } : {}),
+    ...(Number.isFinite(manual.woodiness) ? { woody: manual.woodiness } : {}),
+    ...(Number.isFinite(manual.spiciness) ? { spicy: manual.spiciness } : {}),
+    ...(Number.isFinite(manual.aromaticity) ? { aromatic: manual.aromaticity } : {}),
+    ...(Number.isFinite(manual.florality) ? { floral: manual.florality } : {}),
+    ...(Number.isFinite(manual.gourmandness) ? { gourmand: manual.gourmandness } : {}),
+    ...(Number.isFinite(manual.cleanliness) ? { clean: manual.cleanliness } : {}),
     ...(Number.isFinite(manual.projection)
       ? { intensity: manual.projection, projection: manual.projection }
       : {}),
@@ -611,16 +617,100 @@ const setSimilarity = (a = [], b = []) => {
   return intersection / union.size;
 };
 
-const profileSimilarity = (a, b) => {
-  const keys = [
-    "freshness", "citrus", "aquatic", "sweet", "woody", "spicy", "aromatic",
-    "floral", "warm", "gourmand", "clean", "powdery", "elegance", "intensity",
-    "versatility", "seduction", "office", "casual", "date", "evening",
-    "projection", "longevity", "masculine", "feminine", "unisex"
-  ];
-  const distance = keys.reduce((sum, key) => sum + Math.abs((a[key] || 0) - (b[key] || 0)), 0);
-  return clamp(10 - distance / keys.length, 0, 10) / 10;
+const VECTOR_KEYS = [
+  "freshness", "sweetness", "warmth", "darkness", "airiness", "cleanliness",
+  "creaminess", "dryness", "fruitiness", "spiciness", "woodiness",
+  "aromaticity", "florality", "gourmandness", "citrus", "aquatic", "powdery",
+  "projection", "longevity", "office", "casual", "date", "evening",
+  "elegance", "versatility"
+];
+
+const getVectorValue = (profile, key) => {
+  const aliases = {
+    sweetness: "sweet",
+    warmth: "warm",
+    cleanliness: "clean",
+    woodiness: "woody",
+    spiciness: "spicy",
+    aromaticity: "aromatic",
+    florality: "floral",
+    gourmandness: "gourmand",
+  };
+  const direct = profile?.[key];
+  if (Number.isFinite(direct)) return direct;
+  const alias = aliases[key];
+  return alias && Number.isFinite(profile?.[alias]) ? profile[alias] : 0;
 };
+
+const vectorSimilarity = (a, b, keys = VECTOR_KEYS) => {
+  if (!keys.length) return 0;
+  let squared = 0;
+  let weightTotal = 0;
+
+  const weights = {
+    freshness: 1.35, sweetness: 1.20, warmth: 1.15,
+    darkness: 0.95, airiness: 0.90, cleanliness: 1.05,
+    creaminess: 0.75, dryness: 0.75, fruitiness: 0.80,
+    spiciness: 0.85, woodiness: 1.00, aromaticity: 1.10,
+    florality: 0.80, gourmandness: 0.95, citrus: 0.90, aquatic: 0.85,
+    powdery: 0.65, projection: 0.70, longevity: 0.55,
+    office: 0.55, casual: 0.45, date: 0.55, evening: 0.55,
+    elegance: 0.75, versatility: 0.60,
+  };
+
+  keys.forEach((key) => {
+    const weight = weights[key] || 1;
+    const diff = getVectorValue(a, key) - getVectorValue(b, key);
+    squared += diff * diff * weight;
+    weightTotal += weight;
+  });
+
+  const rms = Math.sqrt(squared / Math.max(weightTotal, 1));
+  return clamp(1 - rms / 7.2, 0, 1);
+};
+
+const buildReferenceTarget = (anchorProfile, modifiers = []) => {
+  const target = {};
+  VECTOR_KEYS.forEach((key) => {
+    target[key] = getVectorValue(anchorProfile, key);
+  });
+
+  if (modifiers.includes("fresher")) {
+    target.freshness = clamp(target.freshness + 3.0);
+    target.airiness = clamp(target.airiness + 1.8);
+    target.cleanliness = clamp(target.cleanliness + 1.3);
+    target.warmth = clamp(target.warmth - 1.7);
+    target.sweetness = clamp(target.sweetness - 1.2);
+    target.darkness = clamp(target.darkness - 1.4);
+  }
+
+  if (modifiers.includes("less-sweet")) {
+    target.sweetness = clamp(target.sweetness - 2.4);
+    target.gourmandness = clamp(target.gourmandness - 1.5);
+    target.airiness = clamp(target.airiness + 0.7);
+  }
+
+  if (modifiers.includes("lighter")) {
+    target.projection = clamp(target.projection - 1.8);
+    target.darkness = clamp(target.darkness - 1.2);
+    target.airiness = clamp(target.airiness + 1.2);
+  }
+
+  if (modifiers.includes("stronger")) {
+    target.projection = clamp(target.projection + 1.8);
+    target.longevity = clamp(target.longevity + 1.2);
+  }
+
+  if (modifiers.includes("more-elegant")) {
+    target.elegance = clamp(target.elegance + 1.8);
+    target.cleanliness = clamp(target.cleanliness + 0.8);
+    target.versatility = clamp(target.versatility + 0.5);
+  }
+
+  return target;
+};
+
+const profileSimilarity = (a, b) => vectorSimilarity(a, b);
 
 const scoreProduct = (product, intent, productCopy, productWearContext, discoveryProfiles) => {
   const profile = buildProductProfile(product, productCopy, productWearContext, discoveryProfiles);
@@ -775,6 +865,8 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
     const noteSimilarity = setSimilarity(notes, anchorProfile.notes);
     const moodSimilarity = setSimilarity(product?.moods || [], anchor?.moods || []);
     const scentSimilarity = profileSimilarity(profile, anchorProfile);
+    const referenceTarget = buildReferenceTarget(anchorProfile, intent.referenceModifiers);
+    const targetSimilarity = vectorSimilarity(profile, referenceTarget);
     const isAnchor = product.id === anchor.id;
 
     // The reference is the measuring stick, not a recommendation.
@@ -792,17 +884,17 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
     const curatedForward = anchor?.recommendations?.includes(product.slug);
     const curatedReverse = product?.recommendations?.includes(anchor.slug);
 
-    // When the user modifies a reference ("like X, but fresher"), preserving
-    // the reference DNA matters more than merely sharing the same use-case.
-    // Mood similarity alone is not enough: require tangible note overlap or
-    // an explicit curated relationship.
+    // V3: similarity is measured as a fragrance vector, while note overlap and
+    // curated relationships preserve recognizable DNA. Relative modifiers are
+    // applied to the reference vector itself (e.g. Naxos -> fresher target).
     if (intent.referenceModifiers.length > 0) {
-      const hasAnchorRetention =
-        curatedForward ||
-        curatedReverse ||
-        noteSimilarity >= 0.16;
+      const anchorRetention = Math.max(
+        scentSimilarity,
+        noteSimilarity * 1.15,
+        curatedForward || curatedReverse ? 0.72 : 0
+      );
 
-      if (!hasAnchorRetention) {
+      if (anchorRetention < 0.44) {
         return {
           score: -Infinity,
           selectedSize: null,
@@ -813,9 +905,10 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
       }
     }
 
-    score += noteSimilarity * 34;
-    score += moodSimilarity * 12;
-    score += scentSimilarity * 18;
+    score += noteSimilarity * 24;
+    score += moodSimilarity * 7;
+    score += scentSimilarity * (intent.referenceModifiers.length ? 20 : 36);
+    score += targetSimilarity * (intent.referenceModifiers.length ? 54 : 8);
 
     if (noteSimilarity >= 0.16 || curatedForward || curatedReverse) {
       reasons.push("similar-profile");
@@ -827,68 +920,52 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
     }
     if (curatedReverse) score += 8;
 
-    // Relative modifiers are constraints against the anchor, not generic bonuses.
+    // Relative modifiers are now target-vector transformations.
     if (intent.referenceModifiers.includes("fresher")) {
       const delta = profile.freshness - anchorProfile.freshness;
+      const targetFreshness = referenceTarget.freshness;
 
-      const explicitFreshEvidence =
-        product?.moods?.includes("clean") ||
-        product?.moods?.includes("summer") ||
-        signalCount(profile.semanticText, TEXT_SIGNALS.fresh) > 0 ||
-        includesAny(profile.wearText, [
-          "summer", "leto", "ljeto", "warm days", "topli dani",
-          "hot weather", "visoke temperature", "more", "seaside",
-          "daytime", "dnevno"
-        ]);
-
-      // A computed freshness number alone is not sufficient. The product must
-      // also carry explicit fresh/daytime/warm-weather evidence in PlayNice data.
-      if (delta < 0.65 || !explicitFreshEvidence) {
+      if (delta < 0.75) {
         return {
           score: -Infinity,
           selectedSize: null,
           profile,
           reasons: [],
-          penalties: [
-            delta < 0.65
-              ? "not-fresher-than-reference"
-              : "no-explicit-fresh-evidence"
-          ],
+          penalties: ["not-fresher-than-reference"],
         };
       }
 
-      score += Math.min(10 + delta * 7.0, 30);
+      // Reward being near the transformed target, not simply being maximally fresh.
+      const freshDistance = Math.abs(profile.freshness - targetFreshness);
+      score += Math.max(0, 18 - freshDistance * 4.0);
       reasons.push("modifier:fresher");
 
-      // Prefer a genuinely cleaner/lighter direction and suppress candidates
-      // that become even warmer or sweeter than the anchor.
-      score += Math.min(profile.clean * 1.1, 8);
-      if (profile.warm > anchorProfile.warm + 0.25) score -= 12;
-      if (profile.sweet > anchorProfile.sweet + 0.25) score -= 12;
+      if (getVectorValue(profile, "warmth") > getVectorValue(anchorProfile, "warmth") + 0.25) score -= 14;
+      if (getVectorValue(profile, "sweetness") > getVectorValue(anchorProfile, "sweetness") + 0.25) score -= 14;
     }
 
     if (intent.referenceModifiers.includes("less-sweet")) {
-      const delta = anchorProfile.sweet - profile.sweet;
-      if (delta >= 1.0) score += Math.min(delta * 5.0, 20);
-      else score -= Math.min((1.0 - delta) * 9, 20);
+      const delta = getVectorValue(anchorProfile, "sweetness") - getVectorValue(profile, "sweetness");
+      if (delta < 0.8) score -= 16;
+      else score += Math.min(delta * 3.5, 14);
     }
 
     if (intent.referenceModifiers.includes("lighter")) {
-      const delta = anchorProfile.intensity - profile.intensity;
-      if (delta >= 0.8) score += Math.min(delta * 5.0, 18);
-      else score -= Math.min((0.8 - delta) * 8, 18);
+      const delta = getVectorValue(anchorProfile, "projection") - getVectorValue(profile, "projection");
+      if (delta < 0.6) score -= 14;
+      else score += Math.min(delta * 3.5, 14);
     }
 
     if (intent.referenceModifiers.includes("stronger")) {
-      const delta = profile.intensity - anchorProfile.intensity;
-      if (delta >= 0.8) score += Math.min(delta * 5.0, 18);
-      else score -= Math.min((0.8 - delta) * 8, 18);
+      const delta = getVectorValue(profile, "projection") - getVectorValue(anchorProfile, "projection");
+      if (delta < 0.6) score -= 14;
+      else score += Math.min(delta * 3.5, 14);
     }
 
     if (intent.referenceModifiers.includes("more-elegant")) {
       const delta = profile.elegance - anchorProfile.elegance;
-      if (delta >= 0.6) score += Math.min(delta * 5.0, 18);
-      else score -= Math.min((0.6 - delta) * 8, 18);
+      if (delta < 0.5) score -= 12;
+      else score += Math.min(delta * 3.5, 12);
     }
   }
 
