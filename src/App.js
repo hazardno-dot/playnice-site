@@ -813,6 +813,7 @@ const getInitialShopState = () => {
 
   const [discoveryQuery, setDiscoveryQuery] = useState("");
   const [discoveryResults, setDiscoveryResults] = useState([]);
+  const [discoveryFeedback, setDiscoveryFeedback] = useState("");
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
 
   useEffect(() => {
@@ -3750,6 +3751,7 @@ const handleDiscoverySearch = (queryOverride = discoveryQuery) => {
 
   if (!nextQuery) {
     setDiscoveryResults([]);
+    setDiscoveryFeedback("");
     return;
   }
 
@@ -3765,6 +3767,7 @@ const handleDiscoverySearch = (queryOverride = discoveryQuery) => {
 
   setDiscoveryQuery(nextQuery);
   setDiscoveryResults(discovery.results);
+  setDiscoveryFeedback(discovery.feedback || "");
 };
 
 const handleProductCardOpen = (product) => {
@@ -5042,7 +5045,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div>{tr.valueDelivery}</div>
 </section>
 
-{/* PLAYNICE FRAGRANCE INTELLIGENCE — V5 */}
+{/* PLAYNICE FRAGRANCE INTELLIGENCE — V6 */}
 <section
   className="playnice-discovery-portal section-wrap"
   aria-labelledby="playnice-discovery-trigger-label"
@@ -5108,10 +5111,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               <span />
             </span>
             PLAYNICE FRAGRANCE INTELLIGENCE
-
-            <span className="playnice-discovery-fi-badge" aria-hidden="true">
-              FI
-            </span>
           </div>
 
           <h2 id="playnice-discovery-title">
@@ -5130,8 +5129,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             <span className="playnice-discovery-ai-dot" aria-hidden="true" />
             <span>
               {lang === "sr"
-                ? "FI analizira stil, budžet, atmosferu i kontekst nošenja."
-                : "FI reads style, budget, mood, and wear context in one pass."}
+                ? "PlayNice Fragrance Intelligence analizira stil, budžet, atmosferu i kontekst nošenja."
+                : "PlayNice Fragrance Intelligence reads style, budget, mood, and wear context in one pass."}
             </span>
           </div>
         </div>
@@ -5225,6 +5224,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           })}
         </div>
 
+        {discoveryFeedback && (
+          <div className="playnice-discovery-feedback" role="status">
+            <span aria-hidden="true">✦</span>
+            <p>{discoveryFeedback}</p>
+          </div>
+        )}
+
         {discoveryResults.length > 0 && (
           <div className="playnice-discovery-results">
             <div className="playnice-discovery-results-head">
@@ -5274,45 +5280,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       Number(result.selectedSize.price) % 1 === 0 ? 0 : 1
                     )}`
                   : "";
-
-                const rawReason = (result.reason || "").trim().toLowerCase();
-                const refinedReason = (() => {
-                  if (lang === "sr") {
-                    if (rawReason.includes("work") || rawReason.includes("office") || rawReason.includes("posao")) {
-                      return "Čist, uglađen i veoma lak za nošenje tokom dana.";
-                    }
-                    if (rawReason.includes("summer") || rawReason.includes("fresh") || rawReason.includes("svež")) {
-                      return "Svež, svetao i prirodno uklopljen u toplije dane.";
-                    }
-                    if (rawReason.includes("date") || rawReason.includes("night") || rawReason.includes("dejt")) {
-                      return "Dopadljiv i elegantan, sa dovoljno karaktera za bliži susret.";
-                    }
-                    if (rawReason.includes("winter") || rawReason.includes("rich") || rawReason.includes("warm")) {
-                      return "Topliji i bogatiji profil, sa prijatnim luksuznim tragom.";
-                    }
-                    if (rawReason.includes("budget")) {
-                      return "Ispunjava tvoj brief bez izlaska iz željenog budžeta.";
-                    }
-                    return "Profil i atmosfera mirisa vrlo lepo prate tvoj upit.";
-                  }
-
-                  if (rawReason.includes("work") || rawReason.includes("office")) {
-                    return "Clean, polished, and effortless through the day.";
-                  }
-                  if (rawReason.includes("summer") || rawReason.includes("fresh")) {
-                    return "Fresh, bright, and naturally suited to warmer days.";
-                  }
-                  if (rawReason.includes("date") || rawReason.includes("night")) {
-                    return "Refined and appealing, with just enough character for closer moments.";
-                  }
-                  if (rawReason.includes("winter") || rawReason.includes("rich") || rawReason.includes("warm")) {
-                    return "A richer, warmer profile with a quietly luxurious trail.";
-                  }
-                  if (rawReason.includes("budget")) {
-                    return "A strong fit for the brief while staying inside budget.";
-                  }
-                  return "Its profile and overall mood align beautifully with your brief.";
-                })();
+                const refinedReason = result.reason || "";
 
                 return (
                   <article
@@ -5396,7 +5364,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   )}
 </section>
-{/* PLAYNICE FRAGRANCE INTELLIGENCE — V5 END */}
+{/* PLAYNICE FRAGRANCE INTELLIGENCE — V6 END */}
 
 <section
   className="new-arrivals-section section-wrap"

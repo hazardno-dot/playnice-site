@@ -982,52 +982,140 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
   };
 };
 
-const humanReason = (product, result, intent, lang = "sr") => {
-  const p = result.profile;
-  const reasonSet = new Set(result.reasons);
-  const pieces = [];
+const humanReason = (product, result, intent, lang = "sr", rankIndex = 0) => {
+  const p = result.profile || {};
+  const reasonSet = new Set(result.reasons || []);
 
-  if (reasonSet.has("similar-profile")) {
-    pieces.push(lang === "sr" ? "Blizak je traženom mirisnom profilu." : "It stays close to the requested scent profile.");
-  }
+  const traits = [
+    ["freshness", p.freshness],
+    ["clean", p.clean ?? p.cleanliness],
+    ["elegance", p.elegance],
+    ["woody", p.woody ?? p.woodiness],
+    ["aromatic", p.aromatic ?? p.aromaticity],
+    ["aquatic", p.aquatic],
+    ["warm", p.warm ?? p.warmth],
+    ["sweet", p.sweet ?? p.sweetness],
+    ["projection", p.projection ?? p.intensity],
+    ["versatility", p.versatility],
+  ]
+    .filter(([, value]) => Number.isFinite(value))
+    .sort((a, b) => b[1] - a[1]);
+
+  const primary = traits[0]?.[0] || "versatility";
+  const secondary = traits.find(([key]) => key !== primary)?.[0] || "elegance";
+
+  const traitLine = {
+    sr: {
+      freshness: "Svežiji profil daje mu lakoću i energiju.",
+      clean: "Čist, uredan karakter čini ga vrlo lakim za nošenje.",
+      elegance: "Uglađen karakter mu daje ozbiljniji, premium utisak.",
+      woody: "Drvenasta osnova daje mu stabilnost i karakter.",
+      aromatic: "Aromatični profil ga čini modernim i prepoznatljivim.",
+      aquatic: "Vodena svežina daje mu prozračan, čist utisak.",
+      warm: "Topliji profil daje mu dubinu i prisutnost.",
+      sweet: "Kontrolisana slatkoća donosi dopadljivost bez preterivanja.",
+      projection: "Ima dovoljno prisutnosti da se primeti bez grubosti.",
+      versatility: "Svestran profil ga čini sigurnim izborom u više situacija.",
+    },
+    en: {
+      freshness: "Its fresher profile brings lift and energy.",
+      clean: "A clean, polished character keeps it effortless to wear.",
+      elegance: "Its refined character gives it a more premium presence.",
+      woody: "A woody backbone gives it structure and character.",
+      aromatic: "Its aromatic profile feels modern and distinctive.",
+      aquatic: "Aquatic freshness keeps it airy and clean.",
+      warm: "A warmer profile adds depth and presence.",
+      sweet: "Controlled sweetness adds appeal without becoming heavy.",
+      projection: "It has enough presence to be noticed without feeling loud.",
+      versatility: "Its versatility makes it an easy choice across different settings.",
+    },
+  };
+
+  const contextLine = [];
   if (reasonSet.has("modifier:fresher")) {
-    pieces.push(lang === "sr" ? "Zadržava deo sličnog karaktera, ali ide primetno svežije." : "Keeps part of the same character while moving noticeably fresher.");
+    contextLine.push(
+      lang === "sr"
+        ? "Čuva deo karaktera reference, ali ide primetno svežije."
+        : "It keeps part of the reference DNA while moving noticeably fresher."
+    );
   }
-  if (reasonSet.has("season")) pieces.push(lang === "sr" ? "Odgovara traženoj sezoni." : "Fits the requested season.");
-  if (reasonSet.has("context:office")) pieces.push(lang === "sr" ? "Profil i kontekst nošenja dobro odgovaraju poslu." : "Its profile and wear context suit work well.");
-  if (reasonSet.has("context:elegant")) pieces.push(lang === "sr" ? "Ima elegantan, sređen karakter." : "It has a polished, elegant character.");
-  if (reasonSet.has("context:evening")) pieces.push(lang === "sr" ? "Dobro radi u večernjem nošenju." : "It is well suited to evening wear.");
-  if (reasonSet.has("context:date")) pieces.push(lang === "sr" ? "Ima dobar profil za dejt i blizak kontakt." : "It has a strong date-night profile.");
-  if (reasonSet.has("context:everyday")) pieces.push(lang === "sr" ? "Svestran je za svakodnevno nošenje." : "It is versatile for everyday wear.");
-  if (reasonSet.has("trait:freshness")) pieces.push(lang === "sr" ? "Visoka svežina." : "Strong freshness.");
-  if (reasonSet.has("trait:woody")) pieces.push(lang === "sr" ? "Izražen drvenasti karakter." : "A clear woody character.");
-  if (reasonSet.has("trait:aquatic")) pieces.push(lang === "sr" ? "Vodeno/morski karakter." : "Aquatic/marine character.");
-  if (reasonSet.has("balanced:citrus")) pieces.push(lang === "sr" ? "Svež bez preterane citrusnosti." : "Fresh without becoming overly citrus-driven.");
-  if (reasonSet.has("balanced:sweet")) pieces.push(lang === "sr" ? "Slatkoća ostaje pod kontrolom." : "Sweetness stays under control.");
-  if (reasonSet.has("avoids-note")) pieces.push(lang === "sr" ? "Izbegava notu koju si isključio." : "Avoids the note you excluded.");
-  if (reasonSet.has("category")) pieces.push(lang === "sr" ? `Pogađa traženu ${product.category} kategoriju.` : `Matches the requested ${product.category} category.`);
-  if (reasonSet.has("budget") && result.selectedSize) pieces.push(lang === "sr" ? `${result.selectedSize.size} ostaje unutar budžeta.` : `${result.selectedSize.size} stays within budget.`);
-
-  if (!pieces.length) {
-    const dominant = [
-      ["freshness", p.freshness], ["clean", p.clean], ["elegance", p.elegance],
-      ["woody", p.woody], ["warm", p.warm], ["sweet", p.sweet]
-    ].sort((a, b) => b[1] - a[1])[0]?.[0];
-
-    const fallback = {
-      sr: {
-        freshness: "Svež i lako nosiv profil.", clean: "Čist i uredan profil.", elegance: "Uglađen i elegantan profil.",
-        woody: "Drvenast i stabilan karakter.", warm: "Topao i bogat karakter.", sweet: "Mekši, slađi karakter."
-      },
-      en: {
-        freshness: "Fresh and easy-wearing profile.", clean: "Clean and polished profile.", elegance: "Polished and elegant profile.",
-        woody: "A grounded woody character.", warm: "Warm, rich character.", sweet: "A softer, sweeter character."
-      }
-    };
-    pieces.push(fallback[lang]?.[dominant] || fallback.en[dominant] || "Strong overall match.");
+  if (reasonSet.has("similar-profile")) {
+    contextLine.push(
+      lang === "sr"
+        ? "Mirisni profil ostaje blizak onome što tražiš."
+        : "Its scent profile stays close to what you asked for."
+    );
+  }
+  if (reasonSet.has("context:office")) {
+    contextLine.push(
+      lang === "sr"
+        ? "Odlično se uklapa u posao i dnevno nošenje."
+        : "It fits work and daytime wear especially well."
+    );
+  }
+  if (reasonSet.has("context:date")) {
+    contextLine.push(
+      lang === "sr"
+        ? "Ima dobar balans privlačnosti i elegancije za dejt."
+        : "It balances attraction and polish nicely for a date."
+    );
+  }
+  if (reasonSet.has("context:evening")) {
+    contextLine.push(
+      lang === "sr"
+        ? "Ima dovoljno dubine i prisutnosti za večernje nošenje."
+        : "It has enough depth and presence for evening wear."
+    );
+  }
+  if (reasonSet.has("context:elegant")) {
+    contextLine.push(
+      lang === "sr"
+        ? "Uglađeniji karakter odgovara elegantnijem briefu."
+        : "Its polished character suits a more elegant brief."
+    );
+  }
+  if (reasonSet.has("season")) {
+    contextLine.push(
+      lang === "sr"
+        ? "Profil dobro odgovara traženoj sezoni."
+        : "Its profile suits the requested season well."
+    );
+  }
+  if (reasonSet.has("balanced:citrus")) {
+    contextLine.push(
+      lang === "sr"
+        ? "Ostaje svež bez preterane citrusnosti."
+        : "It stays fresh without leaning too citrus-heavy."
+    );
+  }
+  if (reasonSet.has("balanced:sweet")) {
+    contextLine.push(
+      lang === "sr"
+        ? "Slatkoća ostaje pod kontrolom."
+        : "Its sweetness stays nicely controlled."
+    );
+  }
+  if (reasonSet.has("avoids-note")) {
+    contextLine.push(
+      lang === "sr"
+        ? "Izbegava notu koju si isključio."
+        : "It avoids the note you excluded."
+    );
+  }
+  if (reasonSet.has("budget") && result.selectedSize) {
+    contextLine.push(
+      lang === "sr"
+        ? `${result.selectedSize.size} ostaje unutar budžeta.`
+        : `${result.selectedSize.size} stays inside your budget.`
+    );
   }
 
-  return pieces.slice(0, 3).join(" ");
+  const context = contextLine[rankIndex % Math.max(contextLine.length, 1)] || "";
+  const trait = traitLine[lang]?.[primary] || traitLine.en[primary];
+  const trait2 = traitLine[lang]?.[secondary] || traitLine.en[secondary];
+
+  const lines = [context, trait, trait2].filter(Boolean);
+  return lines.slice(0, 2).join(" ");
 };
 
 export const discoverFragrances = ({
@@ -1040,6 +1128,17 @@ export const discoverFragrances = ({
   limit = 5,
 }) => {
   const intent = parseQuery(query, products);
+  const feedback = discoveryQueryFeedback(query, intent, lang);
+
+  if (feedback) {
+    return {
+      query,
+      intent,
+      results: [],
+      feedback,
+      isRelevant: false,
+    };
+  }
 
   const ranked = products
     .map((product) => {
@@ -1062,7 +1161,7 @@ export const discoverFragrances = ({
         score: Number(item.score.toFixed(2)),
         match: Math.round(normalizedMatch),
         selectedSize: item.selectedSize,
-        reason: humanReason(item.product, item, intent, lang),
+        reason: humanReason(item.product, item, intent, lang, index),
         profile: item.profile,
         signals: item.reasons,
       };
@@ -1072,6 +1171,8 @@ export const discoverFragrances = ({
     query,
     intent,
     results: ranked,
+    feedback: "",
+    isRelevant: true,
   };
 };
 

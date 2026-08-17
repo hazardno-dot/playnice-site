@@ -19616,7 +19616,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   PLAYNICE FRAGRANCE INTELLIGENCE — V5
+   PLAYNICE FRAGRANCE INTELLIGENCE — V6
 ========================================= */
 
 .playnice-discovery-portal {
@@ -19820,22 +19820,6 @@ body.overlay-lock .header-system {
   letter-spacing: 0.22em;
 }
 
-.playnice-discovery-fi-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 22px;
-  height: 18px;
-  padding: 0 6px;
-  border: 1px solid rgba(83, 121, 255, 0.26);
-  border-radius: 999px;
-  background: rgba(83, 121, 255, 0.08);
-  color: #b7c8ff;
-  font-size: 7px;
-  font-weight: 900;
-  letter-spacing: 0.18em;
-  box-shadow: 0 0 12px rgba(83, 121, 255, 0.08);
-}
 
 .playnice-discovery-panel-head h2 {
   margin: 0;
@@ -20257,6 +20241,34 @@ body.overlay-lock .header-system {
   font-size: 6.2px;
   font-weight: 700;
   white-space: nowrap;
+}
+
+
+
+.playnice-discovery-feedback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 720px;
+  margin: 12px auto 0;
+  padding: 9px 12px;
+  border: 1px solid rgba(83, 121, 255, 0.14);
+  border-radius: 14px;
+  background: rgba(83, 121, 255, 0.045);
+  color: rgba(210, 220, 255, 0.72);
+  text-align: center;
+}
+
+.playnice-discovery-feedback > span {
+  color: #9eb4ff;
+  font-size: 9px;
+}
+
+.playnice-discovery-feedback p {
+  margin: 0;
+  font-size: 9px;
+  line-height: 1.45;
 }
 
 @keyframes playniceDiscoveryOrbit {
