@@ -7,6 +7,7 @@ import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
 import { productCopy, fallbackCopy } from "./data/products/productCopy";
 import { productWearContext } from "./data/products/productWearContext";
+import { discoveryProfiles } from "./data/products/discoveryProfiles";
 import { translations } from "./data/translations";
 import TheNoteMap from "./TheNoteMap";
 import { discoverFragrances } from "./lib/discoveryEngine";
@@ -3729,6 +3730,7 @@ const handleDiscoveryTest = () => {
     products,
     productCopy,
     productWearContext,
+    discoveryProfiles,
     lang,
     limit: 5,
   });

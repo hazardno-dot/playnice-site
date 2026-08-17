@@ -1,5 +1,5 @@
 /* =========================================
-   PLAYNICE DISCOVERY ENGINE — V2.2
+   PLAYNICE DISCOVERY ENGINE — V2.3
    Deterministic, local, zero-API-cost ranking.
    Uses products + productCopy + productWearContext.
 ========================================= */
@@ -167,7 +167,7 @@ const getWearText = (product, productWearContext = {}) => {
   return normalizeText([wear?.sr, wear?.en].filter(Boolean).join(" "));
 };
 
-const buildProductProfile = (product, productCopy = {}, productWearContext = {}) => {
+const buildProductProfile = (product, productCopy = {}, productWearContext = {}, discoveryProfiles = {}) => {
   const notes = flattenNotes(product);
   const moods = new Set(product?.moods || []);
   const copyText = getCopyText(product, productCopy);
@@ -269,18 +269,51 @@ const buildProductProfile = (product, productCopy = {}, productWearContext = {})
       (includesAny(wearText, ["evening", "night", "vece", "vecer", "izlazak", "dejt", "date"]) ? 2.8 : 0)
   );
 
-  return {
+  const automaticProfile = {
     ...profile,
     freshness,
     elegance,
     intensity,
+    projection: intensity,
+    longevity: 5.5,
     versatility,
     seduction,
     office,
+    casual: versatility,
+    date: clamp(seduction * 0.72 + evening * 0.28),
     evening,
+    masculine: 5,
+    feminine: 5,
+    unisex: 5,
     notes,
     semanticText,
     wearText,
+  };
+
+  const manual = discoveryProfiles?.[product?.slug] || {};
+
+  if (!manual || !Object.keys(manual).length) {
+    return automaticProfile;
+  }
+
+  // Manual profiles are selective overrides, never full replacements.
+  // Friendly schema aliases are normalized to the engine's internal fields.
+  const normalizedManual = {
+    ...manual,
+    ...(Number.isFinite(manual.sweetness) ? { sweet: manual.sweetness } : {}),
+    ...(Number.isFinite(manual.warmth) ? { warm: manual.warmth } : {}),
+    ...(Number.isFinite(manual.projection)
+      ? { intensity: manual.projection, projection: manual.projection }
+      : {}),
+  };
+
+  return {
+    ...automaticProfile,
+    ...normalizedManual,
+    notes,
+    semanticText,
+    wearText,
+    hasManualProfile: true,
   };
 };
 
@@ -582,14 +615,15 @@ const profileSimilarity = (a, b) => {
   const keys = [
     "freshness", "citrus", "aquatic", "sweet", "woody", "spicy", "aromatic",
     "floral", "warm", "gourmand", "clean", "powdery", "elegance", "intensity",
-    "versatility", "seduction"
+    "versatility", "seduction", "office", "casual", "date", "evening",
+    "projection", "longevity", "masculine", "feminine", "unisex"
   ];
   const distance = keys.reduce((sum, key) => sum + Math.abs((a[key] || 0) - (b[key] || 0)), 0);
   return clamp(10 - distance / keys.length, 0, 10) / 10;
 };
 
-const scoreProduct = (product, intent, productCopy, productWearContext) => {
-  const profile = buildProductProfile(product, productCopy, productWearContext);
+const scoreProduct = (product, intent, productCopy, productWearContext, discoveryProfiles) => {
+  const profile = buildProductProfile(product, productCopy, productWearContext, discoveryProfiles);
   const notes = profile.notes;
   const reasons = [];
   const penalties = [];
@@ -724,20 +758,20 @@ const scoreProduct = (product, intent, productCopy, productWearContext) => {
   }
 
   if (intent.contexts.includes("date")) {
-    score += profile.seduction * 2.7 + profile.evening * 1.0;
+    score += (profile.date ?? profile.seduction) * 2.4 + profile.seduction * 0.8 + profile.evening * 0.7;
     if (includesAny(profile.wearText, ["date", "dejt", "romantic"])) score += 12;
     reasons.push("context:date");
   }
 
   if (intent.contexts.includes("everyday")) {
-    score += profile.versatility * 2.5;
+    score += profile.versatility * 1.7 + (profile.casual ?? profile.versatility) * 0.9;
     if (includesAny(profile.wearText, ["everyday", "svaki dan", "daily", "all day", "celodnev"])) score += 10;
     reasons.push("context:everyday");
   }
 
   if (intent.referenceProduct) {
     const anchor = intent.referenceProduct;
-    const anchorProfile = buildProductProfile(anchor, productCopy, productWearContext);
+    const anchorProfile = buildProductProfile(anchor, productCopy, productWearContext, discoveryProfiles);
     const noteSimilarity = setSimilarity(notes, anchorProfile.notes);
     const moodSimilarity = setSimilarity(product?.moods || [], anchor?.moods || []);
     const scentSimilarity = profileSimilarity(profile, anchorProfile);
@@ -924,6 +958,7 @@ export const discoverFragrances = ({
   products,
   productCopy = {},
   productWearContext = {},
+  discoveryProfiles = {},
   lang = "sr",
   limit = 5,
 }) => {
@@ -931,7 +966,7 @@ export const discoverFragrances = ({
 
   const ranked = products
     .map((product) => {
-      const result = scoreProduct(product, intent, productCopy, productWearContext);
+      const result = scoreProduct(product, intent, productCopy, productWearContext, discoveryProfiles);
       return { product, ...result };
     })
     .filter((item) => Number.isFinite(item.score))
