@@ -3724,12 +3724,14 @@ const openProductModal = (product, options = {}) => {
 };
 
 const handleDiscoveryTest = () => {
-  const results = discoverFragrances(products, discoveryQuery, {
+  const discovery = discoverFragrances({
+    query: discoveryQuery,
+    products,
     lang,
     limit: 5,
   });
 
-  setDiscoveryResults(results);
+  setDiscoveryResults(discovery.results);
 };
 
 const handleProductCardOpen = (product) => {
