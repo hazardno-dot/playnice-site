@@ -1,5 +1,5 @@
 /* =========================================
-   PLAYNICE DISCOVERY ENGINE — V2.1
+   PLAYNICE DISCOVERY ENGINE — V2.2
    Deterministic, local, zero-API-cost ranking.
    Uses products + productCopy + productWearContext.
 ========================================= */
@@ -755,44 +755,82 @@ const scoreProduct = (product, intent, productCopy, productWearContext) => {
       };
     }
 
-    score += noteSimilarity * 30;
-    score += moodSimilarity * 16;
-    score += scentSimilarity * 19;
+    const curatedForward = anchor?.recommendations?.includes(product.slug);
+    const curatedReverse = product?.recommendations?.includes(anchor.slug);
 
-    if (noteSimilarity >= 0.20 || moodSimilarity >= 0.60 || scentSimilarity >= 0.80) {
-      reasons.push("similar-profile");
-    }
+    // When the user modifies a reference ("like X, but fresher"), preserving
+    // the reference DNA matters more than merely sharing the same use-case.
+    // Mood similarity alone is not enough: require tangible note overlap or
+    // an explicit curated relationship.
+    if (intent.referenceModifiers.length > 0) {
+      const hasAnchorRetention =
+        curatedForward ||
+        curatedReverse ||
+        noteSimilarity >= 0.16;
 
-    if (anchor?.recommendations?.includes(product.slug)) {
-      score += 12;
-      reasons.push("curated-related");
-    }
-    if (product?.recommendations?.includes(anchor.slug)) score += 6;
-
-    // Relative modifiers are constraints against the anchor, not generic bonuses.
-    if (intent.referenceModifiers.includes("fresher")) {
-      const delta = profile.freshness - anchorProfile.freshness;
-
-      // Relative modifiers are gates. "Like Naxos, but fresher" means the
-      // candidate must actually move fresher, not merely resemble Naxos.
-      if (delta < 0.65) {
+      if (!hasAnchorRetention) {
         return {
           score: -Infinity,
           selectedSize: null,
           profile,
           reasons: [],
-          penalties: ["not-fresher-than-reference"],
+          penalties: ["weak-reference-retention"],
+        };
+      }
+    }
+
+    score += noteSimilarity * 34;
+    score += moodSimilarity * 12;
+    score += scentSimilarity * 18;
+
+    if (noteSimilarity >= 0.16 || curatedForward || curatedReverse) {
+      reasons.push("similar-profile");
+    }
+
+    if (curatedForward) {
+      score += 14;
+      reasons.push("curated-related");
+    }
+    if (curatedReverse) score += 8;
+
+    // Relative modifiers are constraints against the anchor, not generic bonuses.
+    if (intent.referenceModifiers.includes("fresher")) {
+      const delta = profile.freshness - anchorProfile.freshness;
+
+      const explicitFreshEvidence =
+        product?.moods?.includes("clean") ||
+        product?.moods?.includes("summer") ||
+        signalCount(profile.semanticText, TEXT_SIGNALS.fresh) > 0 ||
+        includesAny(profile.wearText, [
+          "summer", "leto", "ljeto", "warm days", "topli dani",
+          "hot weather", "visoke temperature", "more", "seaside",
+          "daytime", "dnevno"
+        ]);
+
+      // A computed freshness number alone is not sufficient. The product must
+      // also carry explicit fresh/daytime/warm-weather evidence in PlayNice data.
+      if (delta < 0.65 || !explicitFreshEvidence) {
+        return {
+          score: -Infinity,
+          selectedSize: null,
+          profile,
+          reasons: [],
+          penalties: [
+            delta < 0.65
+              ? "not-fresher-than-reference"
+              : "no-explicit-fresh-evidence"
+          ],
         };
       }
 
-      score += Math.min(8 + delta * 6.5, 28);
+      score += Math.min(10 + delta * 7.0, 30);
       reasons.push("modifier:fresher");
 
-      // Reward candidates that preserve some anchor DNA while genuinely
-      // moving toward a cleaner/fresher direction.
-      score += Math.min(profile.clean * 0.9, 7);
-      if (profile.warm > anchorProfile.warm + 0.5) score -= 8;
-      if (profile.sweet > anchorProfile.sweet + 0.5) score -= 8;
+      // Prefer a genuinely cleaner/lighter direction and suppress candidates
+      // that become even warmer or sweeter than the anchor.
+      score += Math.min(profile.clean * 1.1, 8);
+      if (profile.warm > anchorProfile.warm + 0.25) score -= 12;
+      if (profile.sweet > anchorProfile.sweet + 0.25) score -= 12;
     }
 
     if (intent.referenceModifiers.includes("less-sweet")) {
