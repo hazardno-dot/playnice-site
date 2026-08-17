@@ -1,5 +1,5 @@
 /* =========================================
-   PLAYNICE DISCOVERY ENGINE — V2
+   PLAYNICE DISCOVERY ENGINE — V2.1
    Deterministic, local, zero-API-cost ranking.
    Uses products + productCopy + productWearContext.
 ========================================= */
@@ -644,8 +644,27 @@ const scoreProduct = (product, intent, productCopy, productWearContext) => {
     const value = profile[key] || 0;
 
     if (strength === "moderate") {
-      // Bell-ish target around 5.5: too little and too much both lose points.
-      const distance = Math.abs(value - 5.5);
+      // "Sweet, but not too sweet" needs a real target band rather than
+      // a generic middle-of-the-road bonus. Too dry and too sugary both lose.
+      if (key === "sweet") {
+        const target = 5.2;
+        const distance = Math.abs(value - target);
+        score += Math.max(0, 18 - distance * 4.2);
+
+        if (value < 3.6) {
+          score -= (3.6 - value) * 7.0;
+          penalties.push("not-sweet-enough");
+        } else if (value > 6.4) {
+          score -= (value - 6.4) * 10.0;
+          penalties.push("too-sweet");
+        } else {
+          reasons.push(`balanced:${key}`);
+        }
+        return;
+      }
+
+      const target = 5.5;
+      const distance = Math.abs(value - target);
       score += Math.max(0, 12 - distance * 3.0);
       if (value >= 3.8 && value <= 7.0) reasons.push(`balanced:${key}`);
       return;
@@ -724,14 +743,23 @@ const scoreProduct = (product, intent, productCopy, productWearContext) => {
     const scentSimilarity = profileSimilarity(profile, anchorProfile);
     const isAnchor = product.id === anchor.id;
 
+    // The reference is the measuring stick, not a recommendation.
+    // If the user asks for "something like X", X itself must never appear.
+    if (isAnchor) {
+      return {
+        score: -Infinity,
+        selectedSize: null,
+        profile,
+        reasons: [],
+        penalties: ["reference-anchor"],
+      };
+    }
+
     score += noteSimilarity * 30;
     score += moodSimilarity * 16;
     score += scentSimilarity * 19;
 
-    if (isAnchor) {
-      score -= 22;
-      reasons.push("reference-anchor");
-    } else if (noteSimilarity >= 0.20 || moodSimilarity >= 0.60 || scentSimilarity >= 0.80) {
+    if (noteSimilarity >= 0.20 || moodSimilarity >= 0.60 || scentSimilarity >= 0.80) {
       reasons.push("similar-profile");
     }
 
@@ -744,12 +772,27 @@ const scoreProduct = (product, intent, productCopy, productWearContext) => {
     // Relative modifiers are constraints against the anchor, not generic bonuses.
     if (intent.referenceModifiers.includes("fresher")) {
       const delta = profile.freshness - anchorProfile.freshness;
-      if (delta >= 1.0) {
-        score += Math.min(delta * 5.5, 22);
-        reasons.push("modifier:fresher");
-      } else {
-        score -= Math.min((1.0 - delta) * 10, 24);
+
+      // Relative modifiers are gates. "Like Naxos, but fresher" means the
+      // candidate must actually move fresher, not merely resemble Naxos.
+      if (delta < 0.65) {
+        return {
+          score: -Infinity,
+          selectedSize: null,
+          profile,
+          reasons: [],
+          penalties: ["not-fresher-than-reference"],
+        };
       }
+
+      score += Math.min(8 + delta * 6.5, 28);
+      reasons.push("modifier:fresher");
+
+      // Reward candidates that preserve some anchor DNA while genuinely
+      // moving toward a cleaner/fresher direction.
+      score += Math.min(profile.clean * 0.9, 7);
+      if (profile.warm > anchorProfile.warm + 0.5) score -= 8;
+      if (profile.sweet > anchorProfile.sweet + 0.5) score -= 8;
     }
 
     if (intent.referenceModifiers.includes("less-sweet")) {
