@@ -3724,9 +3724,16 @@ const openProductModal = (product, options = {}) => {
   }
 };
 
-const handleDiscoveryTest = () => {
+const handleDiscoverySearch = (queryOverride = discoveryQuery) => {
+  const nextQuery = String(queryOverride || "").trim();
+
+  if (!nextQuery) {
+    setDiscoveryResults([]);
+    return;
+  }
+
   const discovery = discoverFragrances({
-    query: discoveryQuery,
+    query: nextQuery,
     products,
     productCopy,
     productWearContext,
@@ -3735,6 +3742,7 @@ const handleDiscoveryTest = () => {
     limit: 5,
   });
 
+  setDiscoveryQuery(nextQuery);
   setDiscoveryResults(discovery.results);
 };
 
@@ -5013,87 +5021,261 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div>{tr.valueDelivery}</div>
 </section>
 
-{/* DISCOVERY ENGINE TEST */}
-<section className="section-wrap" style={{ padding: "32px 0" }}>
-  <div
-    style={{
-      border: "1px solid rgba(220,181,107,0.25)",
-      borderRadius: "20px",
-      padding: "24px",
-    }}
-  >
-    <p className="section-kicker">DISCOVERY ENGINE TEST</p>
+{/* PLAYNICE DISCOVERY */}
+<section
+  className={`playnice-discovery section-wrap ${
+    discoveryResults.length > 0 ? "has-results" : ""
+  }`}
+  aria-labelledby="playnice-discovery-title"
+>
+  <div className="playnice-discovery-shell">
+    <div className="playnice-discovery-glow" aria-hidden="true" />
 
-    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-      <input
-        type="text"
-        value={discoveryQuery}
-        onChange={(e) => setDiscoveryQuery(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") handleDiscoveryTest();
-        }}
-        placeholder="Treba mi nešto sveže za leto do 15 €..."
-        style={{
-          flex: "1 1 420px",
-          minHeight: "48px",
-          borderRadius: "999px",
-          border: "1px solid rgba(220,181,107,0.25)",
-          background: "#111",
-          color: "#fff",
-          padding: "0 18px",
-        }}
-      />
+    <div className="playnice-discovery-head">
+      <div className="playnice-discovery-eyebrow">
+        <span className="playnice-discovery-orbit" aria-hidden="true">
+          <span />
+        </span>
+        {lang === "sr" ? "PLAYNICE DISCOVERY" : "PLAYNICE DISCOVERY"}
+      </div>
+
+      <h2 id="playnice-discovery-title">
+        {lang === "sr"
+          ? "Reci nam šta želiš. Pronaći ćemo miris."
+          : "Tell us what you want. We'll find the scent."}
+      </h2>
+
+      <p>
+        {lang === "sr"
+          ? "Ne trebaju ti filteri ni parfemski termini. Napiši priliku, budžet, stil, parfem koji voliš — ili ono što ne želiš."
+          : "No filters or fragrance vocabulary required. Tell us the occasion, budget, style, a scent you love — or what you want to avoid."}
+      </p>
+    </div>
+
+    <form
+      className="playnice-discovery-search"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleDiscoverySearch();
+      }}
+    >
+      <div className="playnice-discovery-input-wrap">
+        <span className="playnice-discovery-search-icon" aria-hidden="true">
+          ✦
+        </span>
+
+        <input
+          type="text"
+          value={discoveryQuery}
+          onChange={(e) => setDiscoveryQuery(e.target.value)}
+          placeholder={
+            lang === "sr"
+              ? "Npr. nešto sveže za leto do 15 €, ali ne previše citrusno..."
+              : "E.g. something fresh for summer under €15, but not too citrusy..."
+          }
+          aria-label={
+            lang === "sr"
+              ? "Opiši kakav parfem tražiš"
+              : "Describe the fragrance you are looking for"
+          }
+        />
+
+        {discoveryQuery && (
+          <button
+            type="button"
+            className="playnice-discovery-clear"
+            onClick={() => {
+              setDiscoveryQuery("");
+              setDiscoveryResults([]);
+            }}
+            aria-label={lang === "sr" ? "Obriši upit" : "Clear query"}
+          >
+            ×
+          </button>
+        )}
+      </div>
 
       <button
-        type="button"
-        className="gold-button"
-        onClick={handleDiscoveryTest}
+        type="submit"
+        className="playnice-discovery-submit"
+        disabled={!discoveryQuery.trim()}
       >
-        Test
+        <span>{lang === "sr" ? "Pronađi miris" : "Find my scent"}</span>
+        <span aria-hidden="true">→</span>
       </button>
+    </form>
+
+    <div className="playnice-discovery-prompts" aria-label="Discovery examples">
+      {[
+        {
+          sr: "Sveže za leto do 15 €",
+          en: "Fresh for summer under €15",
+        },
+        {
+          sr: "Nešto kao Naxos",
+          en: "Something like Naxos",
+        },
+        {
+          sr: "Čisto i elegantno za posao",
+          en: "Clean and elegant for work",
+        },
+        {
+          sr: "Za dejt, ali ne previše slatko",
+          en: "Date night, not too sweet",
+        },
+      ].map((prompt) => {
+        const promptText = lang === "sr" ? prompt.sr : prompt.en;
+
+        return (
+          <button
+            key={prompt.en}
+            type="button"
+            className="playnice-discovery-prompt"
+            onClick={() => handleDiscoverySearch(promptText)}
+          >
+            <span>{promptText}</span>
+            <span aria-hidden="true">↗</span>
+          </button>
+        );
+      })}
     </div>
 
     {discoveryResults.length > 0 && (
-      <div style={{ marginTop: "24px", display: "grid", gap: "12px" }}>
-        {discoveryResults.map((result, index) => (
+      <div className="playnice-discovery-results">
+        <div className="playnice-discovery-results-head">
+          <div>
+            <span className="playnice-discovery-results-kicker">
+              {lang === "sr" ? "ODABRANO ZA TEBE" : "SELECTED FOR YOU"}
+            </span>
+            <h3>
+              {lang === "sr"
+                ? "Ovih pet imaju najviše smisla."
+                : "These five make the most sense."}
+            </h3>
+          </div>
+
           <button
-            key={result.product.id}
             type="button"
-            onClick={() =>
-              openProductModal(result.product, {
-                changeView: false,
-              })
-            }
-            style={{
-              width: "100%",
-              textAlign: "left",
-              border: "1px solid rgba(255,255,255,0.08)",
-              background: "rgba(255,255,255,0.03)",
-              color: "#fff",
-              padding: "16px",
-              borderRadius: "14px",
+            className="playnice-discovery-reset"
+            onClick={() => {
+              setDiscoveryQuery("");
+              setDiscoveryResults([]);
             }}
           >
-            <strong>
-              {index + 1}. {result.product.name}
-            </strong>
-
-            <div style={{ marginTop: "6px", opacity: 0.7 }}>
-              Score: {result.score}
-            </div>
-
-            {result.reasons?.length > 0 && (
-              <div style={{ marginTop: "6px", opacity: 0.85 }}>
-                {result.reasons.join(" · ")}
-              </div>
-            )}
+            {lang === "sr" ? "Nova pretraga" : "New search"}
+            <span aria-hidden="true">↻</span>
           </button>
-        ))}
+        </div>
+
+        <div className="playnice-discovery-grid">
+          {discoveryResults.map((result, index) => {
+            const matchLabel =
+              result.match >= 92
+                ? lang === "sr"
+                  ? "Najbolji izbor"
+                  : "Best match"
+                : result.match >= 86
+                  ? lang === "sr"
+                    ? "Odličan izbor"
+                    : "Excellent match"
+                  : lang === "sr"
+                    ? "Dobar izbor"
+                    : "Good match";
+
+            const sizeLabel = result.selectedSize?.size || "";
+            const priceLabel = Number.isFinite(result.selectedSize?.price)
+              ? `€${Number(result.selectedSize.price).toFixed(
+                  Number(result.selectedSize.price) % 1 === 0 ? 0 : 1
+                )}`
+              : "";
+
+            return (
+              <article
+                key={result.product.id}
+                className="playnice-discovery-card"
+              >
+                <button
+                  type="button"
+                  className="playnice-discovery-card-main"
+                  onClick={() =>
+                    openProductModal(result.product, {
+                      changeView: false,
+                      preferredSize: sizeLabel,
+                    })
+                  }
+                  aria-label={
+                    lang === "sr"
+                      ? `Otvori ${result.product.name}`
+                      : `Open ${result.product.name}`
+                  }
+                >
+                  <div className="playnice-discovery-card-topline">
+                    <span className="playnice-discovery-rank">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    <span
+                      className={`playnice-discovery-match ${
+                        index === 0 ? "is-best" : ""
+                      }`}
+                    >
+                      <span aria-hidden="true" />
+                      {matchLabel}
+                    </span>
+                  </div>
+
+                  <div className="playnice-discovery-image">
+                    <img
+                      src={getProductThumbnail(result.product.image)}
+                      alt={result.product.name}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span className="playnice-discovery-image-aura" aria-hidden="true" />
+                  </div>
+
+                  <div className="playnice-discovery-card-copy">
+                    <span className="playnice-discovery-category">
+                      {result.product.category}
+                    </span>
+
+                    <h4>{result.product.name}</h4>
+
+                    <p className="playnice-discovery-why">
+                      {result.reason}
+                    </p>
+                  </div>
+
+                  <div className="playnice-discovery-card-foot">
+                    <div className="playnice-discovery-price">
+                      {sizeLabel && <strong>{sizeLabel}</strong>}
+                      {priceLabel && <span>{priceLabel}</span>}
+                    </div>
+
+                    <span className="playnice-discovery-view">
+                      {lang === "sr" ? "Pogledaj miris" : "View scent"}
+                      <span aria-hidden="true">→</span>
+                    </span>
+                  </div>
+                </button>
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="playnice-discovery-after">
+          <span aria-hidden="true">✦</span>
+          <p>
+            {lang === "sr"
+              ? "Nisi još siguran? Otvori mirise, uporedi note i probaj ih kao dekante pre pune bočice."
+              : "Still deciding? Open the scents, compare their notes and try them as decants before committing to a full bottle."}
+          </p>
+        </div>
       </div>
     )}
   </div>
 </section>
-{/* DISCOVERY ENGINE TEST END */}
+{/* PLAYNICE DISCOVERY END */}
 
 <section
   className="new-arrivals-section section-wrap"
