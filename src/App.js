@@ -5314,7 +5314,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   ? "Npr. nešto sveže za leto do 15 €, ali ne previše citrusno..."
                   : "E.g. something fresh for summer under €15, but not too citrusy..."
               }
-              autoFocus
+              autoFocus={
+                typeof window !== "undefined" &&
+                !window.matchMedia("(max-width: 680px)").matches
+              }
               aria-label={
                 lang === "sr"
                   ? "Opiši kakav parfem tražiš"
