@@ -18219,7 +18219,7 @@ body.overlay-lock .header-system {
 .new-arrivals-section {
   position: relative;
   overflow: hidden;
-  padding-top: 30px;
+  padding-top: 12px;
   padding-bottom: 18px;
 }
 
@@ -18589,7 +18589,7 @@ body.overlay-lock .header-system {
 
 @media (max-width: 640px) {
   .new-arrivals-section {
-    padding-top: 26px;
+    padding-top: 10px;
     padding-bottom: 12px;
   }
 
