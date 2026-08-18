@@ -5089,11 +5089,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <span />
     </span>
 
-    <span
-      id="playnice-discovery-trigger-label"
-      className="playnice-discovery-trigger-text"
-    >
-      <span>PLAYNICE FRAGRANCE INTELLIGENCE</span>
+    <span id="playnice-discovery-trigger-label">
+      PLAYNICE FRAGRANCE INTELLIGENCE
     </span>
 
     <span className="playnice-discovery-trigger-arrow" aria-hidden="true">
