@@ -1094,7 +1094,7 @@ const NON_FRAGRANCE_CUES = [
   "greece", "grcka", "grčka",
   "srbija", "serbia",
   "trava", "grass",
-  "car", "auto", "automobil"
+  "car", "auto", "automobil",
   "tyre", "tyres", "tire", "tires", "guma", "gume",
 ];
 
