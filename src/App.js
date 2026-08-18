@@ -815,6 +815,8 @@ const getInitialShopState = () => {
   const [discoveryResults, setDiscoveryResults] = useState([]);
   const [discoveryFeedback, setDiscoveryFeedback] = useState("");
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
+  const discoveryTriggerRef = useRef(null);
+  const [discoveryTriggerVisible, setDiscoveryTriggerVisible] = useState(false);
 
   useEffect(() => {
     if (!discoveryOpen) return undefined;
@@ -4212,6 +4214,29 @@ useEffect(() => {
 }, [discoveryBuilderOpen]);
 
 /* =========================================
+   discoveryTriggerRef
+========================================= */
+
+useEffect(() => {
+  const trigger = discoveryTriggerRef.current;
+
+  if (!trigger) return undefined;
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      setDiscoveryTriggerVisible(entry.isIntersecting);
+    },
+    {
+      threshold: 0.55,
+    }
+  );
+
+  observer.observe(trigger);
+
+  return () => observer.disconnect();
+}, []);
+
+/* =========================================
    INNER COMPONENTS
 ========================================= */
 const ProductCard = ({
@@ -5051,8 +5076,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   aria-labelledby="playnice-discovery-trigger-label"
 >
   <button
+    ref={discoveryTriggerRef}
     type="button"
-    className="playnice-discovery-trigger"
+    className={`playnice-discovery-trigger ${
+      discoveryTriggerVisible ? "is-visible" : ""
+    }`}
     onClick={() => setDiscoveryOpen(true)}
     aria-expanded={discoveryOpen}
     aria-controls="playnice-discovery-panel"
@@ -5061,8 +5089,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <span />
     </span>
 
-    <span id="playnice-discovery-trigger-label">
-      PLAYNICE FRAGRANCE INTELLIGENCE
+    <span
+      id="playnice-discovery-trigger-label"
+      className="playnice-discovery-trigger-text"
+    >
+      <span>PLAYNICE FRAGRANCE INTELLIGENCE</span>
     </span>
 
     <span className="playnice-discovery-trigger-arrow" aria-hidden="true">

@@ -19627,24 +19627,23 @@ body.overlay-lock .header-system {
   padding-bottom: 14px;
 }
 
-.playnice-discovery-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  padding: 8px 4px;
-  border: 0;
-  background: transparent;
-  color: #dcb56b;
-  cursor: pointer;
-  font: inherit;
-  font-size: 10px;
-  font-weight: 850;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  transition:
-    color 180ms ease,
-    text-shadow 180ms ease,
-    transform 180ms ease;
+.playnice-discovery-trigger-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.playnice-discovery-trigger-text > span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-14px);
+  clip-path: inset(0 100% 0 0);
+}
+
+.playnice-discovery-trigger.is-visible
+  .playnice-discovery-trigger-text > span {
+  animation: playniceFragranceIntelligenceReveal 900ms
+    cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .playnice-discovery-trigger:hover {
@@ -20271,6 +20270,24 @@ body.overlay-lock .header-system {
   line-height: 1.45;
 }
 
+@keyframes playniceFragranceIntelligenceReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-14px);
+    clip-path: inset(0 100% 0 0);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
 @keyframes playniceDiscoveryOrbit {
   from {
     transform: rotate(0deg) translateX(8px) rotate(0deg);
@@ -20547,5 +20564,14 @@ body.overlay-lock .header-system {
   .playnice-discovery-prompt,
   .playnice-discovery-submit {
     transition: none;
+  }
+
+  .playnice-discovery-trigger-text > span,
+  .playnice-discovery-trigger.is-visible
+    .playnice-discovery-trigger-text > span {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    clip-path: none;
   }
 }
