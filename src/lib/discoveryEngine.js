@@ -491,6 +491,7 @@ const parseQuery = (rawQuery, products = []) => {
     excludedNotes: [],
     hardExcludedNotes: [],
     contexts: [],
+    gender: null,
     referenceProduct: null,
     referenceModifiers: [],
   };
@@ -520,6 +521,33 @@ const parseQuery = (rawQuery, products = []) => {
   if (includesAny(text, ["vece", "uvece", "vecernji", "vecernje", "evening", "night", "izlazak"])) intent.contexts.push("evening");
   if (includesAny(text, ["dejt", "date", "romantic", "romanticno"])) intent.contexts.push("date");
   if (includesAny(text, ["svaki dan", "everyday", "daily", "celodnevno", "all day"])) intent.contexts.push("everyday");
+  if (
+  includesAny(text, [
+    "muski",
+    "muški",
+    "masculine",
+    "for him",
+    "za njega"
+  ])
+) {
+  intent.gender = "masculine";
+} else if (
+  includesAny(text, [
+    "zenski",
+    "ženski",
+    "feminine",
+    "for her",
+    "za nju"
+  ])
+) {
+  intent.gender = "feminine";
+} else if (
+  includesAny(text, [
+    "unisex"
+  ])
+) {
+  intent.gender = "unisex";
+}
 
   // "slatko ali ne previše" = moderate target, not negative sweetness.
   Object.entries(QUERY_DICTIONARY.trait).forEach(([key, aliases]) => {
@@ -859,6 +887,44 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
     reasons.push("context:everyday");
   }
 
+  if (intent.gender === "masculine") {
+  const masculine = profile.masculine ?? 5;
+  const feminine = profile.feminine ?? 5;
+
+  score += masculine * 3.4;
+  score -= feminine * 1.5;
+
+  if (masculine >= feminine) {
+    reasons.push("gender:masculine");
+  }
+}
+
+if (intent.gender === "feminine") {
+  const masculine = profile.masculine ?? 5;
+  const feminine = profile.feminine ?? 5;
+
+  score += feminine * 3.4;
+  score -= masculine * 1.5;
+
+  if (feminine >= masculine) {
+    reasons.push("gender:feminine");
+  }
+}
+
+if (intent.gender === "unisex") {
+  const masculine = profile.masculine ?? 5;
+  const feminine = profile.feminine ?? 5;
+  const unisex = profile.unisex ?? 5;
+  const genderGap = Math.abs(masculine - feminine);
+
+  score += unisex * 3.0;
+  score -= genderGap * 3.0;
+
+  if (genderGap <= 3.5) {
+    reasons.push("gender:unisex");
+  }
+}
+
   if (intent.referenceProduct) {
     const anchor = intent.referenceProduct;
     const anchorProfile = buildProductProfile(anchor, productCopy, productWearContext, discoveryProfiles);
@@ -1029,6 +1095,7 @@ const NON_FRAGRANCE_CUES = [
   "srbija", "serbia",
   "trava", "grass",
   "car", "auto", "automobil"
+  "tyre", "tyres", "tire", "tires", "guma", "gume",
 ];
 
 const includesWholeCue = (text, values = []) =>
@@ -1048,6 +1115,7 @@ const hasDiscoveryIntent = (intent) => {
 
   return Boolean(
     intent.referenceProduct ||
+    intent.gender ||
     intent.maxPrice != null ||
     intent.seasons?.length ||
     intent.categories?.length ||
