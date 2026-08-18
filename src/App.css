@@ -19627,6 +19627,34 @@ body.overlay-lock .header-system {
   padding-bottom: 14px;
 }
 
+.playnice-discovery-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 4px;
+  border: 0;
+  outline: 0;
+  appearance: none;
+  -webkit-appearance: none;
+
+  background: transparent;
+  color: #dcb56b;
+
+  cursor: pointer;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+
+  box-shadow: none;
+
+  transition:
+    color 180ms ease,
+    text-shadow 180ms ease,
+    transform 180ms ease;
+}
+
 .playnice-discovery-trigger:hover {
   color: #f0cf83;
   text-shadow: 0 0 18px rgba(220, 181, 107, 0.25);
