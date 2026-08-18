@@ -983,14 +983,52 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
 };
 
 
-const DISCOVERY_DOMAIN_CUES = [
+// ============================================================
+// PLAYNICE FRAGRANCE INTELLIGENCE — INTENT GUARD V2
+// Replace the current block from:
+//   const DISCOVERY_DOMAIN_CUES = [
+// through the end of:
+//   const discoveryQueryFeedback = (...)
+// Keep humanReason(...) immediately after this block.
+// ============================================================
+
+const EXPLICIT_FRAGRANCE_CUES = [
   "parfem", "parfema", "parfemi", "miris", "mirisa", "mirisi",
   "fragrance", "fragrances", "perfume", "perfumes", "scent", "scents",
-  "muski", "muški", "zenski", "ženski", "unisex", "za njega", "za nju",
-  "poklon", "gift", "signature", "projekcija", "projection", "trajnost",
-  "longevity", "dejt", "date", "office", "posao", "summer", "leto",
-  "zima", "winter", "fresh", "svez", "svež", "slatko", "sweet",
-  "elegant", "elegantno", "strong", "jako", "rich", "bogato"
+  "dekant", "dekanti", "decant", "decants"
+];
+
+const TECHNICAL_FRAGRANCE_CUES = [
+  "projekcija", "projection", "trajnost", "longevity",
+  "signature scent", "signature miris", "sillage"
+];
+
+const GENDER_DISCOVERY_CUES = [
+  "muski", "muški", "zenski", "ženski", "unisex",
+  "za njega", "za nju", "for him", "for her"
+];
+
+const GIFT_DISCOVERY_CUES = [
+  "poklon", "gift"
+];
+
+// These are not blanket-banned words. They only lower confidence when the
+// query has no strong fragrance anchor. So "perfume for a summer vacation"
+// still works, while "summer vacation in Greece" does not.
+const NON_FRAGRANCE_CUES = [
+  "chair", "stolica", "sto", "table",
+  "laptop", "telefon", "phone", "mobile", "tablet",
+  "tv", "televizor", "monitor",
+  "patike", "cipele", "shoes", "majica", "shirt",
+  "hotel", "restaurant", "restoran",
+  "weather", "vreme", "vrijeme", "forecast", "prognoza",
+  "football", "fudbal", "soccer", "basketball", "kosarka", "košarka",
+  "recipe", "recept", "palacinke", "palačinke",
+  "vacation", "odmor", "letovanje", "ljetovanje",
+  "greece", "grcka", "grčka",
+  "srbija", "serbia",
+  "trava", "grass",
+  "car", "auto", "automobil"
 ];
 
 const hasDiscoveryIntent = (intent) => {
@@ -1012,8 +1050,62 @@ const hasDiscoveryIntent = (intent) => {
   );
 };
 
-const discoveryQueryFeedback = (rawQuery, intent, lang = "sr") => {
+const getDiscoveryIntentConfidence = (rawQuery, intent) => {
   const text = normalizeText(rawQuery);
+  let score = 0;
+
+  const hasExplicitFragranceCue = includesAny(text, EXPLICIT_FRAGRANCE_CUES);
+  const hasTechnicalCue = includesAny(text, TECHNICAL_FRAGRANCE_CUES);
+  const hasGenderCue = includesAny(text, GENDER_DISCOVERY_CUES);
+  const hasGiftCue = includesAny(text, GIFT_DISCOVERY_CUES);
+  const hasNonFragranceCue = includesAny(text, NON_FRAGRANCE_CUES);
+
+  const traitCount =
+    (intent?.positiveTraits?.length || 0) +
+    (intent?.negativeTraits?.length || 0);
+
+  const noteCount =
+    (intent?.requiredNotes?.length || 0) +
+    (intent?.excludedNotes?.length || 0) +
+    (intent?.hardExcludedNotes?.length || 0);
+
+  if (hasExplicitFragranceCue) score += 5;
+  if (intent?.referenceProduct) score += 5;
+  if (noteCount) score += 3;
+  if (intent?.categories?.length) score += 3;
+
+  score += Math.min(4, traitCount * 1.8);
+  score += Math.min(3, (intent?.moods?.length || 0) * 1.5);
+  score += Math.min(3, (intent?.contexts?.length || 0) * 1.5);
+  score += Math.min(2, (intent?.seasons?.length || 0) * 1.0);
+
+  if (intent?.maxPrice != null) score += 0.8;
+  if (intent?.referenceModifiers?.length) score += 1.5;
+  if (hasTechnicalCue) score += 2.2;
+  if (hasGenderCue) score += 1.5;
+  if (hasGiftCue) score += 1.3;
+
+  const hasStrongFragranceAnchor = Boolean(
+    hasExplicitFragranceCue ||
+    intent?.referenceProduct ||
+    noteCount ||
+    intent?.categories?.length ||
+    hasTechnicalCue
+  );
+
+  if (hasNonFragranceCue) {
+    score -= hasStrongFragranceAnchor ? 0.5 : 5.5;
+  }
+
+  return {
+    score,
+    isRelevant: score >= 1.5,
+    hasExplicitFragranceCue,
+    hasNonFragranceCue,
+  };
+};
+
+const discoveryQueryFeedback = (rawQuery, intent, lang = "sr") => {
   const trimmed = String(rawQuery || "").trim();
 
   if (trimmed.length < 3) {
@@ -1022,7 +1114,15 @@ const discoveryQueryFeedback = (rawQuery, intent, lang = "sr") => {
       : "Tell us a little more — style, occasion, budget, notes, or a scent you love.";
   }
 
-  if (hasDiscoveryIntent(intent) || includesAny(text, DISCOVERY_DOMAIN_CUES)) {
+  const confidence = getDiscoveryIntentConfidence(rawQuery, intent);
+
+  if (hasDiscoveryIntent(intent) && confidence.isRelevant) {
+    return "";
+  }
+
+  // Explicit fragrance language is also enough even when the parser does not
+  // recognize a more specific scoring signal.
+  if (confidence.hasExplicitFragranceCue && !confidence.hasNonFragranceCue) {
     return "";
   }
 
