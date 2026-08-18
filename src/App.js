@@ -815,6 +815,7 @@ const getInitialShopState = () => {
   const [discoveryResults, setDiscoveryResults] = useState([]);
   const [discoveryFeedback, setDiscoveryFeedback] = useState("");
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
+  const discoveryAttributionRef = useRef(null);
 
   useEffect(() => {
     if (!discoveryOpen) return undefined;
@@ -3004,6 +3005,25 @@ const goToHomeSection = (selector, block = "start") => {
   const price = customPrice ?? product.sizes[size];
   const label = customLabel || size;
 
+  const discoveryAttribution = discoveryAttributionRef.current;
+
+  const isDiscoveryAttributed =
+    discoveryAttribution?.productId === product.id &&
+    Date.now() - discoveryAttribution.clickedAt <= 30 * 60 * 1000;
+
+  if (isDiscoveryAttributed) {
+    trackEvent("discovery_add_to_cart", {
+      lang,
+      product_id: String(product.id),
+      product_slug: product.slug || "",
+      product_name: product.name,
+      rank: discoveryAttribution.rank,
+      match: discoveryAttribution.match,
+      selected_size: label,
+      selected_price: Number(price),
+    });
+  }
+
   trackEvent("add_to_cart", {
     currency: "EUR",
     value: Number(price),
@@ -3746,7 +3766,37 @@ const openProductModal = (product, options = {}) => {
   }
 };
 
-const handleDiscoverySearch = (queryOverride = discoveryQuery) => {
+const getDiscoveryAnalyticsParams = (discovery, source = "manual") => {
+  const intent = discovery?.intent || {};
+
+  return {
+    lang,
+    search_source: source,
+    result_count: discovery?.results?.length || 0,
+    is_relevant: discovery?.isRelevant ? "yes" : "no",
+    has_budget: intent.maxPrice != null ? "yes" : "no",
+    has_reference: intent.referenceProduct ? "yes" : "no",
+    category: intent.categories?.[0] || "none",
+    gender: intent.gender || "none",
+    contexts: intent.contexts?.length
+      ? intent.contexts.join("|")
+      : "none",
+    modifiers: intent.referenceModifiers?.length
+      ? intent.referenceModifiers.join("|")
+      : "none",
+    has_exclusions:
+      intent.negativeTraits?.length ||
+      intent.excludedNotes?.length ||
+      intent.hardExcludedNotes?.length
+        ? "yes"
+        : "no",
+  };
+};
+
+const handleDiscoverySearch = (
+  queryOverride = discoveryQuery,
+  source = "manual"
+) => {
   const nextQuery = String(queryOverride || "").trim();
 
   if (!nextQuery) {
@@ -3764,6 +3814,17 @@ const handleDiscoverySearch = (queryOverride = discoveryQuery) => {
     lang,
     limit: 5,
   });
+
+  const analyticsParams = getDiscoveryAnalyticsParams(
+    discovery,
+    source
+  );
+
+  trackEvent("discovery_search", analyticsParams);
+
+  if (!discovery.results?.length) {
+    trackEvent("discovery_no_results", analyticsParams);
+  }
 
   setDiscoveryQuery(nextQuery);
   setDiscoveryResults(discovery.results);
@@ -5053,7 +5114,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <button
     type="button"
     className="playnice-discovery-trigger"
-    onClick={() => setDiscoveryOpen(true)}
+    onClick={() => {
+      trackEvent("discovery_open", {
+        lang,
+        view,
+      });
+
+      setDiscoveryOpen(true);
+    }}
     aria-expanded={discoveryOpen}
     aria-controls="playnice-discovery-panel"
   >
@@ -5215,7 +5283,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 key={prompt.en}
                 type="button"
                 className="playnice-discovery-prompt"
-                onClick={() => handleDiscoverySearch(promptText)}
+                onClick={() =>
+                  handleDiscoverySearch(promptText, "prompt")
+                }
               >
                 <span>{promptText}</span>
                 <span aria-hidden="true">↗</span>
@@ -5291,6 +5361,25 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       type="button"
                       className="playnice-discovery-card-main"
                       onClick={() => {
+                        trackEvent("discovery_result_click", {
+                          lang,
+                          rank: index + 1,
+                          product_id: String(result.product.id),
+                          product_slug: result.product.slug || "",
+                          product_name: result.product.name,
+                          match: Number(result.match || 0),
+                          selected_size: sizeLabel || "none",
+                          selected_price: Number(result.selectedSize?.price || 0),
+                        });
+
+                        discoveryAttributionRef.current = {
+                          productId: result.product.id,
+                          rank: index + 1,
+                          match: Number(result.match || 0),
+                          selectedSize: sizeLabel || "",
+                          clickedAt: Date.now(),
+                        };
+
                         openProductModal(result.product, {
                           changeView: false,
                           preferredSize: sizeLabel,
