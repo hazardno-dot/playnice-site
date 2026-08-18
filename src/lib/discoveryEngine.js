@@ -1031,6 +1031,18 @@ const NON_FRAGRANCE_CUES = [
   "car", "auto", "automobil"
 ];
 
+const includesWholeCue = (text, values = []) =>
+  values.some((value) => {
+    const cue = normalizeText(value);
+
+    return (
+      text === cue ||
+      text.startsWith(`${cue} `) ||
+      text.endsWith(` ${cue}`) ||
+      text.includes(` ${cue} `)
+    );
+  });
+
 const hasDiscoveryIntent = (intent) => {
   if (!intent) return false;
 
@@ -1058,7 +1070,7 @@ const getDiscoveryIntentConfidence = (rawQuery, intent) => {
   const hasTechnicalCue = includesAny(text, TECHNICAL_FRAGRANCE_CUES);
   const hasGenderCue = includesAny(text, GENDER_DISCOVERY_CUES);
   const hasGiftCue = includesAny(text, GIFT_DISCOVERY_CUES);
-  const hasNonFragranceCue = includesAny(text, NON_FRAGRANCE_CUES);
+  const hasNonFragranceCue = includesWholeCue(text, NON_FRAGRANCE_CUES);
 
   const traitCount =
     (intent?.positiveTraits?.length || 0) +
