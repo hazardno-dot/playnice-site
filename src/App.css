@@ -19627,28 +19627,6 @@ body.overlay-lock .header-system {
   padding-bottom: 14px;
 }
 
-.playnice-discovery-trigger-text {
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-
-  max-width: 0;
-  opacity: 0;
-  transform: translateX(-8px);
-
-  transition:
-    max-width 900ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 280ms ease,
-    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.playnice-discovery-trigger.is-visible
-  .playnice-discovery-trigger-text {
-  max-width: 290px;
-  opacity: 1;
-  transform: translateX(0);
-}
-
 .playnice-discovery-trigger:hover {
   color: #f0cf83;
   text-shadow: 0 0 18px rgba(220, 181, 107, 0.25);

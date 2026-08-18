@@ -815,8 +815,6 @@ const getInitialShopState = () => {
   const [discoveryResults, setDiscoveryResults] = useState([]);
   const [discoveryFeedback, setDiscoveryFeedback] = useState("");
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
-  const discoveryTriggerRef = useRef(null);
-  const [discoveryTriggerVisible, setDiscoveryTriggerVisible] = useState(false);
 
   useEffect(() => {
     if (!discoveryOpen) return undefined;
@@ -4214,29 +4212,6 @@ useEffect(() => {
 }, [discoveryBuilderOpen]);
 
 /* =========================================
-   discoveryTriggerRef
-========================================= */
-
-useEffect(() => {
-  const trigger = discoveryTriggerRef.current;
-
-  if (!trigger) return undefined;
-
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      setDiscoveryTriggerVisible(entry.isIntersecting);
-    },
-    {
-      threshold: 0.55,
-    }
-  );
-
-  observer.observe(trigger);
-
-  return () => observer.disconnect();
-}, []);
-
-/* =========================================
    INNER COMPONENTS
 ========================================= */
 const ProductCard = ({
@@ -5076,11 +5051,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   aria-labelledby="playnice-discovery-trigger-label"
 >
   <button
-    ref={discoveryTriggerRef}
     type="button"
-    className={`playnice-discovery-trigger ${
-      discoveryTriggerVisible ? "is-visible" : ""
-    }`}
+    className="playnice-discovery-trigger"
     onClick={() => setDiscoveryOpen(true)}
     aria-expanded={discoveryOpen}
     aria-controls="playnice-discovery-panel"
