@@ -3501,6 +3501,34 @@ const handlePlaceOrder = async () => {
       });
     }
 
+    discoveryPurchasedItems.forEach((item) => {
+      const product = products.find(
+        (candidate) => candidate.id === item.id
+      );
+
+      trackEvent("discovery_purchase_item", {
+        transaction_id: String(result.orderId),
+        currency: "EUR",
+
+        product_id: String(item.id),
+        product_slug: product?.slug || String(item.id),
+        product_name: item.name,
+
+        rank: Number(item.discoveryRank || 0),
+        match: Number(item.discoveryMatch || 0),
+
+        selected_size: item.size || "none",
+        selected_price: Number(item.price),
+
+        quantity: Number(item.quantity || 1),
+        item_value:
+          Number(item.price) * Number(item.quantity || 1),
+
+        search_source:
+          item.discoverySearchSource || "unknown",
+      });
+    });
+
     trackEvent("purchase", {
       transaction_id: String(result.orderId),
       currency: "EUR",
