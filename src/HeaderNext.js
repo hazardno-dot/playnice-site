@@ -367,31 +367,43 @@ function HeaderNext({
   </button>
 </div>
 
-        <div className="header-next-mobile-actions">
-          <button
-            type="button"
-            onClick={() => runAction(onWishlist)}
-            aria-label={copy.wishlist}
-          >
-            <HeartIcon filled={wishlistCount > 0} />
-            {wishlistCount > 0 && <span className="header-next-count is-heart">{wishlistCount}</span>}
-          </button>
-          <button type="button" onClick={() => runAction(onCart)} aria-label={copy.cart}>
-            <CartIcon />
-            {cartCount > 0 && <span className="header-next-count">{cartCount}</span>}
-          </button>
-          <button
-            className={`header-next-menu-trigger ${mobileOpen ? "is-open" : ""}`}
-            type="button"
-            onClick={() => setMobileOpen((current) => !current)}
-            aria-expanded={mobileOpen}
-            aria-controls="header-next-mobile-panel"
-            aria-label={mobileOpen ? copy.close : copy.menu}
-          >
-            <span />
-            <span />
-          </button>
-        </div>
+    <div className="header-next-mobile-menu">
+      <button
+        className={`header-next-menu-trigger ${mobileOpen ? "is-open" : ""}`}
+        type="button"
+        onClick={() => setMobileOpen((current) => !current)}
+        aria-expanded={mobileOpen}
+        aria-controls="header-next-mobile-panel"
+        aria-label={mobileOpen ? copy.close : copy.menu}
+      >
+        <span />
+        <span />
+      </button>
+    </div>
+
+    <div className="header-next-mobile-actions">
+      <button
+        type="button"
+        onClick={() => runAction(onWishlist)}
+        aria-label={copy.wishlist}
+      >
+        <HeartIcon filled={wishlistCount > 0} />
+        {wishlistCount > 0 && (
+          <span className="header-next-count is-heart">{wishlistCount}</span>
+        )}
+      </button>
+
+      <button
+        type="button"
+        onClick={() => runAction(onCart)}
+        aria-label={copy.cart}
+      >
+        <CartIcon />
+        {cartCount > 0 && (
+          <span className="header-next-count">{cartCount}</span>
+        )}
+      </button>
+    </div>
       </div>
 
       <div
