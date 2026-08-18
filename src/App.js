@@ -816,6 +816,7 @@ const getInitialShopState = () => {
   const [discoveryFeedback, setDiscoveryFeedback] = useState("");
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
   const discoveryAttributionRef = useRef(null);
+  const discoverySearchContextRef = useRef(null);
 
   useEffect(() => {
     if (!discoveryOpen) return undefined;
@@ -3021,6 +3022,12 @@ const goToHomeSection = (selector, block = "start") => {
       match: discoveryAttribution.match,
       selected_size: label,
       selected_price: Number(price),
+      search_source: discoveryAttribution.searchSource || "unknown",
+      category: discoveryAttribution.category || "none",
+      gender: discoveryAttribution.gender || "none",
+      has_budget: discoveryAttribution.hasBudget || "no",
+      has_reference: discoveryAttribution.hasReference || "no",
+      has_exclusions: discoveryAttribution.hasExclusions || "no",
     });
   }
 
@@ -3066,7 +3073,23 @@ const goToHomeSection = (selector, block = "start") => {
         image: product.image,
         size: label,
         price,
-        quantity: 1
+        quantity: 1,
+
+        analyticsSource: isDiscoveryAttributed
+          ? "fragrance_intelligence"
+          : "standard",
+
+        discoveryRank: isDiscoveryAttributed
+          ? discoveryAttribution.rank
+          : null,
+
+        discoveryMatch: isDiscoveryAttributed
+          ? discoveryAttribution.match
+          : null,
+
+        discoverySearchSource: isDiscoveryAttributed
+          ? discoveryAttribution.searchSource
+          : null,
       }
     ];
   });
@@ -3444,6 +3467,40 @@ const handlePlaceOrder = async () => {
       throw new Error("Order was not confirmed by checkout API");
     }
 
+    const discoveryPurchasedItems = cart.filter(
+      (item) => item.analyticsSource === "fragrance_intelligence"
+    );
+
+    if (discoveryPurchasedItems.length > 0) {
+      const discoveryPurchaseValue = discoveryPurchasedItems.reduce(
+        (sum, item) =>
+          sum + Number(item.price) * Number(item.quantity || 1),
+        0
+      );
+
+      trackEvent("discovery_purchase", {
+        transaction_id: String(result.orderId),
+        currency: "EUR",
+        discovery_item_count: discoveryPurchasedItems.reduce(
+          (sum, item) => sum + Number(item.quantity || 1),
+          0
+        ),
+        discovery_value: Number(discoveryPurchaseValue.toFixed(2)),
+        total_order_value: Number(subtotal),
+        search_source:
+          discoveryPurchasedItems[0]?.discoverySearchSource || "unknown",
+        product_slugs: discoveryPurchasedItems
+          .map((item) => {
+            const product = products.find(
+              (candidate) => candidate.id === item.id
+            );
+
+            return product?.slug || String(item.id);
+          })
+          .join("|"),
+      });
+    }
+
     trackEvent("purchase", {
       transaction_id: String(result.orderId),
       currency: "EUR",
@@ -3819,6 +3876,11 @@ const handleDiscoverySearch = (
     discovery,
     source
   );
+
+  discoverySearchContextRef.current = {
+    ...analyticsParams,
+    searchedAt: Date.now(),
+  };
 
   trackEvent("discovery_search", analyticsParams);
 
@@ -5370,6 +5432,23 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                           match: Number(result.match || 0),
                           selected_size: sizeLabel || "none",
                           selected_price: Number(result.selectedSize?.price || 0),
+                          search_source:
+                            discoverySearchContextRef.current?.search_source || "unknown",
+
+                          has_budget:
+                            discoverySearchContextRef.current?.has_budget || "no",
+
+                          has_reference:
+                            discoverySearchContextRef.current?.has_reference || "no",
+
+                          category:
+                            discoverySearchContextRef.current?.category || "none",
+
+                          gender:
+                            discoverySearchContextRef.current?.gender || "none",
+
+                          has_exclusions:
+                            discoverySearchContextRef.current?.has_exclusions || "no",
                         });
 
                         discoveryAttributionRef.current = {
@@ -5378,6 +5457,23 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                           match: Number(result.match || 0),
                           selectedSize: sizeLabel || "",
                           clickedAt: Date.now(),
+                          searchSource:
+                            discoverySearchContextRef.current?.search_source || "unknown",
+
+                          category:
+                            discoverySearchContextRef.current?.category || "none",
+
+                          gender:
+                            discoverySearchContextRef.current?.gender || "none",
+
+                          hasBudget:
+                            discoverySearchContextRef.current?.has_budget || "no",
+
+                          hasReference:
+                            discoverySearchContextRef.current?.has_reference || "no",
+
+                          hasExclusions:
+                            discoverySearchContextRef.current?.has_exclusions || "no",
                         };
 
                         openProductModal(result.product, {
