@@ -77,19 +77,17 @@ function Exhibition({ lang = "en", onSeeLive }) {
       publishedItems
         .filter((item) => (item.period || DEFAULT_PERIOD) === activePeriod)
         .flatMap((item) =>
-          item.assets
-            .filter((asset) => asset.id !== "hawas-ice-square")
-            .map((asset) => ({
-              ...asset,
-              campaignId: item.id,
-              title: item.title,
-              year: item.year,
-              kind: item.kind,
-              status: item.status,
-              label: getText(item.label, lang),
-              line: getText(item.line, lang),
-            }))
-        ),
+          item.assets.map((asset) => ({
+          ...asset,
+          campaignId: item.id,
+          title: item.title,
+          year: item.year,
+          kind: item.kind,
+          status: item.status,
+          label: getText(item.label, lang),
+          line: getText(item.line, lang),
+        }))
+      ),
     [activePeriod, lang, publishedItems]
   );
 

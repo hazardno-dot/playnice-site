@@ -2,6 +2,7 @@ export const exhibitionItems = [
   {
     id: "community-most-wanted-drop-01",
     year: 2026,
+    period: "may-aug-2026",
     title: "Community Most Wanted — Drop #01",
     kind: "campaign",
     status: "archived",
@@ -25,6 +26,7 @@ export const exhibitionItems = [
   {
     id: "50-and-one-day",
     year: 2026,
+    period: "may-aug-2026",
     title: "50... And One Day",
     kind: "story",
     status: "archived",
@@ -48,6 +50,7 @@ export const exhibitionItems = [
   {
     id: "four-new-signatures",
     year: 2026,
+    period: "may-aug-2026",
     title: "Four New Signatures",
     kind: "campaign",
     status: "archived",
@@ -71,6 +74,7 @@ export const exhibitionItems = [
   {
     id: "honey-badger",
     year: 2026,
+    period: "may-aug-2026",
     title: "Honey Badger Doesn't Read Comments",
     kind: "story",
     status: "archived",
@@ -94,6 +98,7 @@ export const exhibitionItems = [
   {
     id: "try-before-you-buy-tv",
     year: 2026,
+    period: "may-aug-2026",
     title: "Try Before You Buy — TV",
     kind: "film",
     status: "archived",
@@ -117,6 +122,7 @@ export const exhibitionItems = [
   {
     id: "confidence-inside",
     year: 2026,
+    period: "may-aug-2026",
     title: "Open Carefully. Confidence Inside.",
     kind: "brand",
     status: "archived",
@@ -140,6 +146,7 @@ export const exhibitionItems = [
   {
     id: "autobus-kao-sudbina",
     year: 2026,
+    period: "may-aug-2026",
     title: "Autobus kao sudbina",
     kind: "story",
     status: "archived",
@@ -163,6 +170,7 @@ export const exhibitionItems = [
   {
     id: "community-most-wanted-drop-02",
     year: 2026,
+    period: "may-aug-2026",
     title: "Community Most Wanted — Drop #02",
     kind: "campaign",
     status: "archived",
@@ -186,6 +194,7 @@ export const exhibitionItems = [
   {
     id: "hawas-ice",
     year: 2026,
+    period: "may-aug-2026",
     title: "Hawas Ice",
     kind: "campaign",
     status: "archived",
@@ -202,13 +211,6 @@ export const exhibitionItems = [
         src: "/exhibition/2026/social/hawas-ice-wide.webp",
         format: "wide",
         alt: "Hawas Ice PlayNice wide campaign"
-      },
-      {
-        id: "hawas-ice-square",
-        type: "image",
-        src: "/exhibition/2026/social/hawas-ice-square.webp",
-        format: "square",
-        alt: "Hawas Ice PlayNice square campaign"
       }
     ]
   },
@@ -216,6 +218,7 @@ export const exhibitionItems = [
   {
     id: "miris-nema-navigaciju",
     year: 2026,
+    period: "may-aug-2026",
     title: "Miris nema navigaciju",
     kind: "story",
     status: "archived",
@@ -239,6 +242,7 @@ export const exhibitionItems = [
   {
     id: "warning-compliments",
     year: 2026,
+    period: "may-aug-2026",
     title: "Warning: Too Many Compliments",
     kind: "film",
     status: "archived",
@@ -262,6 +266,7 @@ export const exhibitionItems = [
   {
     id: "dva-klasika-dve-energije",
     year: 2026,
+    period: "may-aug-2026",
     title: "Dva klasika. Dve različite energije.",
     kind: "campaign",
     status: "archived",
@@ -285,6 +290,7 @@ export const exhibitionItems = [
   {
     id: "kucica-za-ptice",
     year: 2026,
+    period: "may-aug-2026",
     title: "Kućica za ptice",
     kind: "story",
     status: "archived",
@@ -308,6 +314,7 @@ export const exhibitionItems = [
   {
     id: "9pm-own-the-night",
     year: 2026,
+    period: "may-aug-2026",
     title: "9PM — Own the Night",
     kind: "campaign",
     status: "archived",
@@ -331,6 +338,7 @@ export const exhibitionItems = [
   {
     id: "great-perfumes",
     year: 2026,
+    period: "may-aug-2026",
     title: "Great Perfumes",
     kind: "film",
     status: "archived",
@@ -354,6 +362,7 @@ export const exhibitionItems = [
   {
     id: "thomas-kosmala-story",
     year: 2026,
+    period: "may-aug-2026",
     title: "Thomas Kosmala",
     kind: "story",
     status: "archived",
@@ -377,6 +386,7 @@ export const exhibitionItems = [
   {
     id: "imas-mogucnost-da-probas",
     year: 2026,
+    period: "may-aug-2026",
     title: "Imaš mogućnost da probaš",
     kind: "campaign",
     status: "archived",
@@ -400,6 +410,7 @@ export const exhibitionItems = [
   {
     id: "playnice-energy-film",
     year: 2026,
+    period: "may-aug-2026",
     title: "PlayNice Energy",
     kind: "film",
     status: "archived",
