@@ -1,245 +1,421 @@
 export const exhibitionItems = [
   {
-    id: "ysl-y-iced-cologne",
+    id: "community-most-wanted-drop-01",
     year: 2026,
-    title: "YSL Y Iced Cologne",
+    title: "Community Most Wanted — Drop #01",
     kind: "campaign",
     status: "archived",
     published: true,
-    label: { sr: "Hero kampanja", en: "Homepage Hero" },
+    label: { sr: "Community kampanja", en: "Community Campaign" },
     line: {
-      sr: "Ledena svežina. Bez hladnog utiska.",
-      en: "Icy freshness. Nothing cold about it."
+      sr: "Birali ste. Mi smo slušali.",
+      en: "You chose. We listened."
     },
     assets: [
       {
-        id: "ysl-y-iced-cologne-desktop",
+        id: "community-most-wanted-drop-01-square",
         type: "image",
-        src: "/hero/slide-1-fix.jpg",
-        format: "wide",
-        alt: "YSL Y Iced Cologne PlayNice campaign"
+        src: "/exhibition/2026/social/community-most-wanted-drop-01.webp",
+        format: "square",
+        alt: "PlayNice Community Most Wanted Drop 01 campaign"
       }
     ]
   },
+
   {
-    id: "essential-parfums-trio",
+    id: "50-and-one-day",
     year: 2026,
-    title: "Three Perfumers. Three Masterpieces.",
-    kind: "campaign",
+    title: "50... And One Day",
+    kind: "story",
     status: "archived",
     published: true,
-    label: { sr: "Hero kampanja", en: "Homepage Hero" },
+    label: { sr: "Le Journal", en: "Le Journal" },
     line: {
-      sr: "Tri parfimera. Tri potpisa. Jedna kuća.",
-      en: "Three perfumers. Three signatures. One house."
+      sr: "Neke slike ostanu i kada tekst završi.",
+      en: "Some images stay after the story ends."
     },
     assets: [
       {
-        id: "essential-parfums-trio-desktop",
+        id: "50-and-one-day-visual",
         type: "image",
-        src: "/hero/slide-10.jpg",
-        format: "wide",
-        alt: "Essential Parfums trio PlayNice campaign"
+        src: "/exhibition/2026/stories/50-and-one-day.webp",
+        format: "square",
+        alt: "50 And One Day PlayNice Journal visual"
       }
     ]
   },
+
   {
-    id: "playnice-collection-six",
+    id: "four-new-signatures",
     year: 2026,
-    title: "Now in the PlayNice Collection",
-    kind: "campaign",
-    status: "archived",
-    published: true,
-    label: { sr: "Hero kampanja", en: "Homepage Hero" },
-    line: {
-      sr: "Šest novih razloga da ne kupuješ na slepo.",
-      en: "Six new reasons not to blind buy."
-    },
-    assets: [
-      {
-        id: "playnice-collection-six-desktop",
-        type: "image",
-        src: "/hero/slide-11.jpg",
-        format: "wide",
-        alt: "New fragrances in the PlayNice collection"
-      }
-    ]
-  },
-  {
-    id: "thomas-kosmala-three-ways",
-    year: 2026,
-    title: "Three Ways to Wear Thomas Kosmala",
-    kind: "campaign",
-    status: "archived",
-    published: true,
-    label: { sr: "Hero kampanja", en: "Homepage Hero" },
-    line: {
-      sr: "Tri Kosmale. Tri potpuno različita raspoloženja.",
-      en: "Three Kosmalas. Three entirely different moods."
-    },
-    assets: [
-      {
-        id: "thomas-kosmala-three-ways-desktop",
-        type: "image",
-        src: "/hero/slide-12.jpg",
-        format: "wide",
-        alt: "Thomas Kosmala trio PlayNice campaign"
-      }
-    ]
-  },
-  {
-    id: "summer-bangers",
-    year: 2026,
-    title: "Summer Bangers",
-    kind: "campaign",
-    status: "archived",
-    published: true,
-    label: { sr: "Hero kolekcija", en: "Homepage Collection" },
-    line: {
-      sr: "Leto prođe. Dobri izbori ostanu.",
-      en: "Summer ends. Good choices don't."
-    },
-    assets: [
-      {
-        id: "summer-bangers-desktop",
-        type: "image",
-        src: "/hero/slide-5.jpg",
-        format: "wide",
-        alt: "Summer Bangers PlayNice campaign"
-      }
-    ]
-  },
-  {
-    id: "light-blue-2025",
-    year: 2025,
-    title: "Light Blue",
+    title: "Four New Signatures",
     kind: "campaign",
     status: "archived",
     published: true,
     label: { sr: "Kampanja", en: "Campaign" },
     line: {
-      sr: "Mediteran u bočici.",
-      en: "The Mediterranean in a bottle."
+      sr: "Četiri nova potpisa. Četiri različita karaktera.",
+      en: "Four new signatures. Four different characters."
     },
     assets: [
       {
-        id: "light-blue-2025-desktop",
+        id: "four-new-signatures-square",
         type: "image",
-        src: "/hero/slide-light-blue-2025.jpg",
-        format: "wide",
-        alt: "Dolce & Gabbana Light Blue Pour Homme 2025 PlayNice campaign"
+        src: "/exhibition/2026/social/four-new-signatures.webp",
+        format: "square",
+        alt: "Four New Signatures PlayNice campaign"
       }
     ]
   },
+
   {
-    id: "club-de-nuit-intense-overdose",
+    id: "honey-badger",
     year: 2026,
-    title: "Club de Nuit Intense Overdose",
-    kind: "campaign",
+    title: "Honey Badger Doesn't Read Comments",
+    kind: "story",
     status: "archived",
     published: true,
-    label: { sr: "Hero kampanja", en: "Homepage Hero" },
+    label: { sr: "Le Journal", en: "Le Journal" },
+    line: {
+      sr: "On je uradio svoje. Tvoja priča počinje sada.",
+      en: "He did it. Your story starts now."
+    },
     assets: [
       {
-        id: "club-de-nuit-intense-overdose-desktop",
+        id: "honey-badger-visual",
         type: "image",
-        src: "/hero/slide-7.jpg",
-        format: "wide",
-        alt: "Club de Nuit Intense Overdose PlayNice campaign"
+        src: "/exhibition/2026/stories/honey-badger.webp",
+        format: "square",
+        alt: "Honey Badger PlayNice Journal visual"
       }
     ]
   },
+
   {
-    id: "soft-bold-luxury",
+    id: "try-before-you-buy-tv",
     year: 2026,
-    title: "Soft. Bold. Luxury.",
-    kind: "campaign",
-    status: "archived",
-    published: true,
-    label: { sr: "Hero kolekcija", en: "Homepage Collection" },
-    assets: [
-      {
-        id: "soft-bold-luxury-desktop",
-        type: "image",
-        src: "/hero/slide-9.jpg",
-        format: "wide",
-        alt: "Soft Bold Luxury PlayNice campaign"
-      }
-    ]
-  },
-  {
-    id: "jasmine-in-the-sun",
-    year: 2026,
-    title: "Jasmine in the Sun",
-    kind: "campaign",
-    status: "archived",
-    published: true,
-    label: { sr: "Hero kampanja", en: "Homepage Hero" },
-    assets: [
-      {
-        id: "jasmine-in-the-sun-desktop",
-        type: "image",
-        src: "/hero/slide-6.jpg",
-        format: "wide",
-        alt: "Jasmine in the Sun PlayNice campaign"
-      }
-    ]
-  },
-  {
-    id: "private-selection",
-    year: 2026,
-    title: "Private Selection",
-    kind: "brand",
-    status: "archived",
-    published: true,
-    label: { sr: "PlayNice priča", en: "PlayNice Story" },
-    assets: [
-      {
-        id: "private-selection-desktop",
-        type: "image",
-        src: "/hero/slide-4.jpg",
-        format: "wide",
-        alt: "PlayNice Private Selection visual"
-      }
-    ]
-  },
-  {
-    id: "details-matter",
-    year: 2026,
-    title: "Details Matter",
-    kind: "brand",
-    status: "archived",
-    published: true,
-    label: { sr: "PlayNice priča", en: "PlayNice Story" },
-    assets: [
-      {
-        id: "details-matter-desktop",
-        type: "image",
-        src: "/hero/slide-8.jpg",
-        format: "wide",
-        alt: "PlayNice details campaign visual"
-      }
-    ]
-  },
-  {
-    id: "playnice-film-01",
-    year: 2026,
-    title: "PlayNice Film 01",
+    title: "Try Before You Buy — TV",
     kind: "film",
     status: "archived",
     published: true,
     label: { sr: "PlayNice film", en: "PlayNice Film" },
     line: {
-      sr: "Neke kampanje se ne gledaju. Puštaju se.",
-      en: "Some campaigns aren't viewed. They're played."
+      sr: "Probaj pre nego što odlučiš.",
+      en: "Try before you decide."
     },
     assets: [
       {
-        id: "playnice-film-01-video",
+        id: "try-before-you-buy-tv-video",
         type: "video",
-        src: "/videos/hero.mp4",
+        src: "/exhibition/2026/film/try-before-you-buy-tv.mp4",
         format: "video",
-        alt: "PlayNice campaign film"
+        alt: "Try Before You Buy PlayNice film"
+      }
+    ]
+  },
+
+  {
+    id: "confidence-inside",
+    year: 2026,
+    title: "Open Carefully. Confidence Inside.",
+    kind: "brand",
+    status: "archived",
+    published: true,
+    label: { sr: "PlayNice brend", en: "PlayNice Brand" },
+    line: {
+      sr: "Nekad je dovoljno samo otvoriti paket.",
+      en: "Sometimes all it takes is opening the package."
+    },
+    assets: [
+      {
+        id: "confidence-inside-square",
+        type: "image",
+        src: "/exhibition/2026/social/confidence-inside.webp",
+        format: "square",
+        alt: "Open Carefully Confidence Inside PlayNice campaign"
+      }
+    ]
+  },
+
+  {
+    id: "autobus-kao-sudbina",
+    year: 2026,
+    title: "Autobus kao sudbina",
+    kind: "story",
+    status: "archived",
+    published: true,
+    label: { sr: "Le Journal", en: "Le Journal" },
+    line: {
+      sr: "Neke priče jednostavno ne traže dozvolu.",
+      en: "Some stories simply don't ask permission."
+    },
+    assets: [
+      {
+        id: "autobus-kao-sudbina-visual",
+        type: "image",
+        src: "/exhibition/2026/stories/autobus-kao-sudbina.webp",
+        format: "square",
+        alt: "Autobus kao sudbina PlayNice Journal visual"
+      }
+    ]
+  },
+
+  {
+    id: "community-most-wanted-drop-02",
+    year: 2026,
+    title: "Community Most Wanted — Drop #02",
+    kind: "campaign",
+    status: "archived",
+    published: true,
+    label: { sr: "Community kampanja", en: "Community Campaign" },
+    line: {
+      sr: "Drugi drop. I dalje po vašem izboru.",
+      en: "Second drop. Still chosen by you."
+    },
+    assets: [
+      {
+        id: "community-most-wanted-drop-02-square",
+        type: "image",
+        src: "/exhibition/2026/social/community-most-wanted-drop-02.webp",
+        format: "square",
+        alt: "PlayNice Community Most Wanted Drop 02 campaign"
+      }
+    ]
+  },
+
+  {
+    id: "hawas-ice",
+    year: 2026,
+    title: "Hawas Ice",
+    kind: "campaign",
+    status: "archived",
+    published: true,
+    label: { sr: "Kampanja", en: "Campaign" },
+    line: {
+      sr: "Hladan kadar. Vruć izbor.",
+      en: "Cold frame. Hot choice."
+    },
+    assets: [
+      {
+        id: "hawas-ice-wide",
+        type: "image",
+        src: "/exhibition/2026/social/hawas-ice-wide.webp",
+        format: "wide",
+        alt: "Hawas Ice PlayNice wide campaign"
+      },
+      {
+        id: "hawas-ice-square",
+        type: "image",
+        src: "/exhibition/2026/social/hawas-ice-square.webp",
+        format: "square",
+        alt: "Hawas Ice PlayNice square campaign"
+      }
+    ]
+  },
+
+  {
+    id: "miris-nema-navigaciju",
+    year: 2026,
+    title: "Miris nema navigaciju",
+    kind: "story",
+    status: "archived",
+    published: true,
+    label: { sr: "Le Journal", en: "Le Journal" },
+    line: {
+      sr: "Neke stvari ne vode tamo gde si planirao.",
+      en: "Some things don't take you where you planned."
+    },
+    assets: [
+      {
+        id: "miris-nema-navigaciju-visual",
+        type: "image",
+        src: "/exhibition/2026/stories/miris-nema-navigaciju.webp",
+        format: "square",
+        alt: "Miris nema navigaciju PlayNice Journal visual"
+      }
+    ]
+  },
+
+  {
+    id: "warning-compliments",
+    year: 2026,
+    title: "Warning: Too Many Compliments",
+    kind: "film",
+    status: "archived",
+    published: true,
+    label: { sr: "PlayNice film", en: "PlayNice Film" },
+    line: {
+      sr: "Upozorenje koje niko zapravo ne želi da posluša.",
+      en: "A warning nobody really wants to follow."
+    },
+    assets: [
+      {
+        id: "warning-compliments-video",
+        type: "video",
+        src: "/exhibition/2026/film/warning-compliments.mp4",
+        format: "video",
+        alt: "Warning Too Many Compliments PlayNice film"
+      }
+    ]
+  },
+
+  {
+    id: "dva-klasika-dve-energije",
+    year: 2026,
+    title: "Dva klasika. Dve različite energije.",
+    kind: "campaign",
+    status: "archived",
+    published: true,
+    label: { sr: "Kampanja", en: "Campaign" },
+    line: {
+      sr: "Isti status. Potpuno drugačiji utisak.",
+      en: "Same status. Completely different energy."
+    },
+    assets: [
+      {
+        id: "dva-klasika-dve-energije-square",
+        type: "image",
+        src: "/exhibition/2026/social/dva-klasika-dve-energije.webp",
+        format: "square",
+        alt: "Dva klasika dve energije PlayNice campaign"
+      }
+    ]
+  },
+
+  {
+    id: "kucica-za-ptice",
+    year: 2026,
+    title: "Kućica za ptice",
+    kind: "story",
+    status: "archived",
+    published: true,
+    label: { sr: "Le Journal", en: "Le Journal" },
+    line: {
+      sr: "Mala kućica. Velika priča.",
+      en: "Small house. Big story."
+    },
+    assets: [
+      {
+        id: "kucica-za-ptice-visual",
+        type: "image",
+        src: "/exhibition/2026/stories/kucica-za-ptice.webp",
+        format: "square",
+        alt: "Kucica za ptice PlayNice Journal visual"
+      }
+    ]
+  },
+
+  {
+    id: "9pm-own-the-night",
+    year: 2026,
+    title: "9PM — Own the Night",
+    kind: "campaign",
+    status: "archived",
+    published: true,
+    label: { sr: "Kampanja", en: "Campaign" },
+    line: {
+      sr: "Noć je tvoja.",
+      en: "Own the night."
+    },
+    assets: [
+      {
+        id: "9pm-own-the-night-square",
+        type: "image",
+        src: "/exhibition/2026/social/9pm-own-the-night.webp",
+        format: "square",
+        alt: "9PM Own the Night PlayNice campaign"
+      }
+    ]
+  },
+
+  {
+    id: "great-perfumes",
+    year: 2026,
+    title: "Great Perfumes",
+    kind: "film",
+    status: "archived",
+    published: true,
+    label: { sr: "PlayNice film", en: "PlayNice Film" },
+    line: {
+      sr: "Dobri parfemi zaslužuju dobar kadar.",
+      en: "Great perfumes deserve a great frame."
+    },
+    assets: [
+      {
+        id: "great-perfumes-video",
+        type: "video",
+        src: "/exhibition/2026/film/great-perfumes.mp4",
+        format: "video",
+        alt: "Great Perfumes PlayNice film"
+      }
+    ]
+  },
+
+  {
+    id: "thomas-kosmala-story",
+    year: 2026,
+    title: "Thomas Kosmala",
+    kind: "story",
+    status: "archived",
+    published: true,
+    label: { sr: "PlayNice priča", en: "PlayNice Story" },
+    line: {
+      sr: "Jedan parfimer. Više potpuno različitih karaktera.",
+      en: "One perfumer. Several completely different characters."
+    },
+    assets: [
+      {
+        id: "thomas-kosmala-story-visual",
+        type: "image",
+        src: "/exhibition/2026/stories/thomas-kosmala-story.webp",
+        format: "square",
+        alt: "Thomas Kosmala PlayNice story visual"
+      }
+    ]
+  },
+
+  {
+    id: "imas-mogucnost-da-probas",
+    year: 2026,
+    title: "Imaš mogućnost da probaš",
+    kind: "campaign",
+    status: "archived",
+    published: true,
+    label: { sr: "PlayNice kampanja", en: "PlayNice Campaign" },
+    line: {
+      sr: "Ne nagađaj. Probaj.",
+      en: "Don't guess. Try it."
+    },
+    assets: [
+      {
+        id: "imas-mogucnost-da-probas-square",
+        type: "image",
+        src: "/exhibition/2026/social/imas-mogucnost-da-probas.webp",
+        format: "square",
+        alt: "Imaš mogućnost da probaš PlayNice campaign"
+      }
+    ]
+  },
+
+  {
+    id: "playnice-energy-film",
+    year: 2026,
+    title: "PlayNice Energy",
+    kind: "film",
+    status: "archived",
+    published: true,
+    label: { sr: "PlayNice film", en: "PlayNice Film" },
+    line: {
+      sr: "Neke kampanje završe. Energija ostane.",
+      en: "Some campaigns end. The energy stays."
+    },
+    assets: [
+      {
+        id: "playnice-energy-film-video",
+        type: "video",
+        src: "/exhibition/2026/film/playnice-energy-film.mp4",
+        format: "video",
+        alt: "PlayNice Energy campaign film"
       }
     ]
   }
