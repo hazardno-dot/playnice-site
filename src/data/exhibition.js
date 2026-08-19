@@ -1,4 +1,8 @@
 export const exhibitionItems = [
+  /* =========================================================
+     MAY — AUG 2026
+     ========================================================= */
+
   {
     id: "community-most-wanted-drop-01",
     year: 2026,
@@ -429,9 +433,354 @@ export const exhibitionItems = [
         alt: "PlayNice Energy campaign film"
       }
     ]
+  },
+
+  /* =========================================================
+     FEB — APR 2026
+     ========================================================= */
+
+  {
+    id: "zasto-dekanti",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "Zašto dekanti?",
+    kind: "brand",
+    status: "archived",
+    published: true,
+    label: { sr: "PlayNice ideja", en: "PlayNice Idea" },
+    line: {
+      sr: "Početak je bio jednostavan: probaj pre pune boce.",
+      en: "The idea was simple: try before the full bottle."
+    },
+    assets: [
+      {
+        id: "zasto-dekanti-visual",
+        type: "image",
+        src: "/exhibition/2026/social/zasto-dekanti.webp",
+        format: "square",
+        alt: "Zašto dekanti PlayNice campaign"
+      }
+    ]
+  },
+
+  {
+    id: "doktori",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "Doktori",
+    kind: "story",
+    status: "archived",
+    published: true,
+    label: { sr: "Le Journal", en: "Le Journal" },
+    line: {
+      sr: "Čarli je već tada imao svoje mišljenje.",
+      en: "Charlie already had an opinion."
+    },
+    assets: [
+      {
+        id: "doktori-visual",
+        type: "image",
+        src: "/exhibition/2026/stories/doktori.webp",
+        format: "square",
+        alt: "Doktori PlayNice Journal visual"
+      }
+    ]
+  },
+
+  {
+    id: "probaj-bitno-je",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "Probaj. Bitno je.",
+    kind: "brand",
+    status: "archived",
+    published: true,
+    label: { sr: "PlayNice poruka", en: "PlayNice Message" },
+    line: {
+      sr: "Prije izbora dolazi proba.",
+      en: "Trying comes before choosing."
+    },
+    assets: [
+      {
+        id: "probaj-bitno-je-visual",
+        type: "image",
+        src: "/exhibition/2026/social/probaj-bitno-je.webp",
+        format: "square",
+        alt: "Probaj bitno je PlayNice campaign"
+      }
+    ]
+  },
+
+  {
+    id: "kad-promasis-dan",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "Kad promašiš dan",
+    kind: "story",
+    status: "archived",
+    published: true,
+    label: { sr: "Le Journal", en: "Le Journal" },
+    line: {
+      sr: "Nije svaki plan napravljen da uspije.",
+      en: "Not every plan is meant to work."
+    },
+    assets: [
+      {
+        id: "kad-promasis-dan-visual",
+        type: "image",
+        src: "/exhibition/2026/stories/kad-promasis-dan.webp",
+        format: "square",
+        alt: "Kad promašiš dan PlayNice Journal visual"
+      }
+    ]
+  },
+
+  {
+    id: "another-playnice-scent",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "Another PlayNice Scent",
+    kind: "film",
+    status: "archived",
+    published: true,
+    label: { sr: "PlayNice film", en: "PlayNice Film" },
+    line: {
+      sr: "Još jedan miris. Još jedan razlog da probaš.",
+      en: "Another scent. Another reason to try."
+    },
+    assets: [
+      {
+        id: "another-playnice-scent-video",
+        type: "video",
+        src: "/exhibition/2026/film/another-playnice-scent.mp4",
+        format: "video",
+        alt: "Another PlayNice Scent film"
+      }
+    ]
+  },
+
+  {
+    id: "ne-kupujes-parfem",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "Ne kupuješ parfem",
+    kind: "campaign",
+    status: "archived",
+    published: true,
+    label: { sr: "PlayNice kampanja", en: "PlayNice Campaign" },
+    line: {
+      sr: "Kupuješ odluku koju si već probao.",
+      en: "You're buying a decision you've already tried."
+    },
+    assets: [
+      {
+        id: "ne-kupujes-parfem-visual",
+        type: "image",
+        src: "/exhibition/2026/social/ne-kupujes-parfem.webp",
+        format: "square",
+        alt: "Ne kupuješ parfem PlayNice campaign"
+      }
+    ]
+  },
+
+  {
+    id: "otvoren-prolaz",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "Otvoren prolaz",
+    kind: "story",
+    status: "archived",
+    published: true,
+    label: { sr: "Le Journal", en: "Le Journal" },
+    line: {
+      sr: "Nekad je dovoljno da se put samo pojavi.",
+      en: "Sometimes the path simply appears."
+    },
+    assets: [
+      {
+        id: "otvoren-prolaz-visual",
+        type: "image",
+        src: "/exhibition/2026/stories/otvoren-prolaz.webp",
+        format: "square",
+        alt: "Otvoren prolaz PlayNice Journal visual"
+      }
+    ]
+  },
+
+  {
+    id: "prolece-leto-sezona",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "Proljeće / Ljeto",
+    kind: "campaign",
+    status: "archived",
+    published: true,
+    label: { sr: "Sezonska kampanja", en: "Seasonal Campaign" },
+    line: {
+      sr: "Nova sezona. Novi razlozi za probu.",
+      en: "New season. New reasons to try."
+    },
+    assets: [
+      {
+        id: "prolece-leto-sezona-visual",
+        type: "image",
+        src: "/exhibition/2026/social/prolece-leto-sezona.webp",
+        format: "square",
+        alt: "PlayNice spring summer campaign"
+      }
+    ]
+  },
+
+  {
+    id: "plavusa-i-crnka",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "Plavuša i crnka",
+    kind: "story",
+    status: "archived",
+    published: true,
+    label: { sr: "Le Journal", en: "Le Journal" },
+    line: {
+      sr: "Dva karaktera. Jedna priča.",
+      en: "Two characters. One story."
+    },
+    assets: [
+      {
+        id: "plavusa-i-crnka-visual",
+        type: "image",
+        src: "/exhibition/2026/stories/plavusa-i-crnka.webp",
+        format: "square",
+        alt: "Plavuša i crnka PlayNice Journal visual"
+      }
+    ]
+  },
+
+  {
+    id: "tri-mirisa-tri-sveta",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "3 mirisa. 3 svijeta.",
+    kind: "campaign",
+    status: "archived",
+    published: true,
+    label: { sr: "Kampanja", en: "Campaign" },
+    line: {
+      sr: "Tri potpuno različita pravca.",
+      en: "Three completely different directions."
+    },
+    assets: [
+      {
+        id: "tri-mirisa-tri-sveta-visual",
+        type: "image",
+        src: "/exhibition/2026/social/tri-mirisa-tri-sveta.webp",
+        format: "square",
+        alt: "Tri mirisa tri sveta PlayNice campaign"
+      }
+    ]
+  },
+
+  {
+    id: "tu-a-nigde",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "Tu, a nigde",
+    kind: "story",
+    status: "archived",
+    published: true,
+    label: { sr: "Le Journal", en: "Le Journal" },
+    line: {
+      sr: "Prisutan. I potpuno negdje drugo.",
+      en: "Present. And somewhere else entirely."
+    },
+    assets: [
+      {
+        id: "tu-a-nigde-visual",
+        type: "image",
+        src: "/exhibition/2026/stories/tu-a-nigde.webp",
+        format: "square",
+        alt: "Tu a nigde PlayNice Journal visual"
+      }
+    ]
+  },
+
+  {
+    id: "za-zene-koje-ne-traze-paznju",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "Za žene koje ne traže pažnju",
+    kind: "campaign",
+    status: "archived",
+    published: true,
+    label: { sr: "Kampanja", en: "Campaign" },
+    line: {
+      sr: "Pa je ipak dobiju.",
+      en: "And get it anyway."
+    },
+    assets: [
+      {
+        id: "za-zene-koje-ne-traze-paznju-visual",
+        type: "image",
+        src: "/exhibition/2026/social/za-zene-koje-ne-traze-paznju.webp",
+        format: "square",
+        alt: "Za žene koje ne traže pažnju PlayNice campaign"
+      }
+    ]
+  },
+
+  {
+    id: "var-soba",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "VAR soba",
+    kind: "story",
+    status: "archived",
+    published: true,
+    label: { sr: "Le Journal", en: "Le Journal" },
+    line: {
+      sr: "Neke odluke očigledno traže usporeni snimak.",
+      en: "Some decisions clearly need slow motion."
+    },
+    assets: [
+      {
+        id: "var-soba-visual",
+        type: "image",
+        src: "/exhibition/2026/stories/var-soba.webp",
+        format: "square",
+        alt: "VAR soba PlayNice Journal visual"
+      }
+    ]
+  },
+
+  {
+    id: "order-playnice",
+    year: 2026,
+    period: "feb-apr-2026",
+    title: "Order PlayNice",
+    kind: "film",
+    status: "archived",
+    published: true,
+    label: { sr: "PlayNice film", en: "PlayNice Film" },
+    line: {
+      sr: "Jedna od ranih PlayNice filmskih poruka.",
+      en: "One of the early PlayNice film messages."
+    },
+    assets: [
+      {
+        id: "order-playnice-video",
+        type: "video",
+        src: "/exhibition/2026/film/order-playnice.mp4",
+        format: "video",
+        alt: "Order PlayNice film"
+      }
+    ]
   }
 
   /*
+   * ARCHIVE RESERVE — not currently shown:
+   *
+   * /exhibition/2026/social/dostava-pouzdani-saradnici.webp
+   * /exhibition/2026/stories/9pm-night-out-carli.webp
+   *
    * ACTIVE CAMPAIGN TEMPLATE
    *
    * status: "active",
