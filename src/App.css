@@ -20056,10 +20056,25 @@ body.overlay-lock .header-system {
 }
 
 .playnice-discovery-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 6px;
-  align-items: stretch;
+  display: flex;
+  gap: 7px;
+
+  width: 100%;
+  margin: 0;
+  padding: 0 3px 8px 0;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: none;
+}
+
+.playnice-discovery-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .playnice-discovery-card {
@@ -20371,6 +20386,7 @@ body.overlay-lock .header-system {
     max-height: 84vh;
     padding: 22px 13px 16px;
     border-radius: 22px;
+    overflow-x: hidden;
   }
 
   .playnice-discovery-close {
@@ -20413,8 +20429,8 @@ body.overlay-lock .header-system {
 
   .playnice-discovery-ai-note {
     margin-top: 8px;
-    font-size: 7.5px;
     padding: 5px 8px;
+    font-size: 7.5px;
   }
 
   .playnice-discovery-search {
@@ -20461,14 +20477,10 @@ body.overlay-lock .header-system {
     text-align: center;
   }
 
-  .playnice-discovery-panel,
-  .playnice-discovery-panel.has-results {
-    overflow-x: hidden;
-  }
-
   .playnice-discovery-results {
     margin-top: 12px;
     padding-top: 12px;
+    overflow: hidden;
   }
 
   .playnice-discovery-results-head {
@@ -20492,20 +20504,20 @@ body.overlay-lock .header-system {
   }
 
   .playnice-discovery-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 6px;
+    display: flex;
+    gap: 7px;
 
     width: 100%;
-    max-height: min(430px, 48vh);
-
     margin: 0;
     padding: 0 3px 8px 0;
 
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
 
-    overscroll-behavior: contain;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+
     scrollbar-width: none;
   }
 
@@ -20514,8 +20526,11 @@ body.overlay-lock .header-system {
   }
 
   .playnice-discovery-card {
+    flex: 0 0 78%;
     min-width: 0;
-    width: 100%;
+    width: auto;
+
+    scroll-snap-align: start;
   }
 
   .playnice-discovery-card-main {
