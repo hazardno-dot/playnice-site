@@ -9,9 +9,9 @@ const getText = (value, lang) => {
 };
 
 const EXHIBITION_PERIODS = [
-  { id: "sep-dec-2026", label: "SEP — DEC", year: 2026 },
-  { id: "may-aug-2026", label: "MAY — AUG", year: 2026 },
   { id: "feb-apr-2026", label: "FEB — APR", year: 2026 },
+  { id: "may-aug-2026", label: "MAY — AUG", year: 2026 },
+  { id: "sep-dec-2026", label: "SEP — DEC", year: 2026 },
 ];
 
 const DEFAULT_PERIOD = "may-aug-2026";
@@ -36,12 +36,17 @@ function Exhibition({ lang = "en", onSeeLive }) {
   }, [publishedItems]);
 
   const [activePeriod, setActivePeriod] = useState(
-    () => availablePeriods[0]?.id || DEFAULT_PERIOD
+    () =>
+      availablePeriods[availablePeriods.length - 1]?.id ||
+      DEFAULT_PERIOD
   );
 
   useEffect(() => {
     if (!availablePeriods.some((period) => period.id === activePeriod)) {
-      setActivePeriod(availablePeriods[0]?.id || DEFAULT_PERIOD);
+      setActivePeriod(
+        availablePeriods[availablePeriods.length - 1]?.id ||
+          DEFAULT_PERIOD
+      );
     }
   }, [activePeriod, availablePeriods]);
 
