@@ -186,7 +186,13 @@ function Exhibition({ lang = "en", onSeeLive }) {
             aria-label={`${copy.open}: ${item.title}`}
           >
             {item.type === "video" ? (
-              <video src={item.src} muted playsInline preload="metadata" />
+              <video
+                src={item.src}
+                poster={item.poster || undefined}
+                muted
+                playsInline
+                preload="metadata"
+              />
             ) : (
               <img src={item.src} alt={item.alt || item.title} loading="lazy" />
             )}
@@ -246,7 +252,13 @@ function Exhibition({ lang = "en", onSeeLive }) {
 
           <div className="exhibition-viewer-stage">
             {active.type === "video" ? (
-              <video src={active.src} controls autoPlay playsInline />
+              <video
+                src={active.src}
+                poster={active.poster || undefined}
+                controls
+                autoPlay
+                playsInline
+              />
             ) : (
               <img src={active.src} alt={active.alt || active.title} />
             )}

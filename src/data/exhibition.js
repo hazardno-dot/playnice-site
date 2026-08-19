@@ -769,6 +769,7 @@ export const exhibitionItems = [
         id: "order-playnice-video",
         type: "video",
         src: "/exhibition/2026/film/order-playnice.mp4",
+        poster: "/exhibition/2026/film/order-playnice-poster.webp",
         format: "video",
         alt: "Order PlayNice film"
       }
