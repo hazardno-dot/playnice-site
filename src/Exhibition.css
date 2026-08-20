@@ -492,3 +492,94 @@ body.exhibition-active {
   padding-bottom: 0;
   background: #080808;
 }
+
+/* =========================================
+    ExhibitionPeriods
+========================================= */
+
+.exhibition-index--periods {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.exhibition-index--periods>span:last-child {
+  justify-self: end;
+}
+
+.exhibition-periods {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.exhibition-period {
+  position: relative;
+  padding: 0 0 7px;
+  border: 0;
+  background: transparent;
+  color: rgba(244, 241, 234, 0.38);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.exhibition-period::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: rgba(197, 157, 79, 0.82);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 180ms ease;
+}
+
+.exhibition-period:hover {
+  color: rgba(244, 241, 234, 0.72);
+}
+
+.exhibition-period.is-active {
+  color: #f4f1ea;
+}
+
+.exhibition-period.is-active::after {
+  transform: scaleX(1);
+}
+
+.exhibition-period:focus-visible {
+  outline: 1px solid rgba(244, 241, 234, 0.7);
+  outline-offset: 5px;
+}
+
+@media (max-width: 800px) {
+  .exhibition-index--periods {
+    grid-template-columns: 1fr auto;
+    row-gap: 14px;
+  }
+
+  .exhibition-periods {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: flex-start;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .exhibition-periods::-webkit-scrollbar {
+    display: none;
+  }
+
+  .exhibition-period {
+    flex: 0 0 auto;
+  }
+}

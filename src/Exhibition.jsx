@@ -8,8 +8,47 @@ const getText = (value, lang) => {
   return value[lang] || value.en || value.sr || "";
 };
 
+const EXHIBITION_PERIODS = [
+  { id: "feb-apr-2026", label: "FEB — APR", year: 2026 },
+  { id: "may-aug-2026", label: "MAY — AUG", year: 2026 },
+  { id: "sep-dec-2026", label: "SEP — DEC", year: 2026 },
+];
+
+const DEFAULT_PERIOD = "may-aug-2026";
+
 function Exhibition({ lang = "en", onSeeLive }) {
   const [activeIndex, setActiveIndex] = useState(null);
+
+  const publishedItems = useMemo(
+    () =>
+      exhibitionItems.filter(
+        (item) => item.published !== false && item.status !== "active"
+      ),
+    []
+  );
+
+  const availablePeriods = useMemo(() => {
+    const periodIds = new Set(
+      publishedItems.map((item) => item.period || DEFAULT_PERIOD)
+    );
+
+    return EXHIBITION_PERIODS.filter((period) => periodIds.has(period.id));
+  }, [publishedItems]);
+
+  const [activePeriod, setActivePeriod] = useState(
+    () =>
+      availablePeriods[availablePeriods.length - 1]?.id ||
+      DEFAULT_PERIOD
+  );
+
+  useEffect(() => {
+    if (!availablePeriods.some((period) => period.id === activePeriod)) {
+      setActivePeriod(
+        availablePeriods[availablePeriods.length - 1]?.id ||
+          DEFAULT_PERIOD
+      );
+    }
+  }, [activePeriod, availablePeriods]);
 
   const copy =
     lang === "sr"
@@ -39,11 +78,11 @@ function Exhibition({ lang = "en", onSeeLive }) {
         };
 
   const exhibits = useMemo(
-  () =>
-    exhibitionItems
-      .filter((item) => item.published !== false && item.status !== "active")
-      .flatMap((item) =>
-        item.assets.map((asset) => ({
+    () =>
+      publishedItems
+        .filter((item) => (item.period || DEFAULT_PERIOD) === activePeriod)
+        .flatMap((item) =>
+          item.assets.map((asset) => ({
           ...asset,
           campaignId: item.id,
           title: item.title,
@@ -54,17 +93,24 @@ function Exhibition({ lang = "en", onSeeLive }) {
           line: getText(item.line, lang),
         }))
       ),
-  [lang]
-);
+    [activePeriod, lang, publishedItems]
+  );
 
-useEffect(() => {
-  document.body.classList.add("exhibition-active");
+  const activePeriodMeta =
+    availablePeriods.find((period) => period.id === activePeriod) ||
+    EXHIBITION_PERIODS.find((period) => period.id === DEFAULT_PERIOD);
 
-  return () => {
-    document.body.classList.remove("exhibition-active");
-  };
-}, []);
+  useEffect(() => {
+    setActiveIndex(null);
+  }, [activePeriod]);
 
+  useEffect(() => {
+    document.body.classList.add("exhibition-active");
+
+    return () => {
+      document.body.classList.remove("exhibition-active");
+    };
+  }, []);
 
   const active = activeIndex === null ? null : exhibits[activeIndex];
 
@@ -107,9 +153,26 @@ useEffect(() => {
           <span>{copy.line2}</span>
         </p>
 
-        <div className="exhibition-index">
+        <div className="exhibition-index exhibition-index--periods">
           <span>{copy.archive}</span>
-          <span>2025 — 2026</span>
+
+          <div className="exhibition-periods" aria-label="Exhibition period">
+            {availablePeriods.map((period) => (
+              <button
+                key={period.id}
+                type="button"
+                className={`exhibition-period${
+                  period.id === activePeriod ? " is-active" : ""
+                }`}
+                onClick={() => setActivePeriod(period.id)}
+                aria-pressed={period.id === activePeriod}
+              >
+                {period.label}
+              </button>
+            ))}
+          </div>
+
+          <span>{activePeriodMeta?.year || 2026}</span>
         </div>
       </section>
 
@@ -123,7 +186,13 @@ useEffect(() => {
             aria-label={`${copy.open}: ${item.title}`}
           >
             {item.type === "video" ? (
-              <video src={item.src} muted playsInline preload="metadata" />
+              <video
+                src={item.src}
+                poster={item.poster || undefined}
+                muted
+                playsInline
+                preload="metadata"
+              />
             ) : (
               <img src={item.src} alt={item.alt || item.title} loading="lazy" />
             )}
@@ -141,20 +210,20 @@ useEffect(() => {
         ))}
       </section>
 
-        <section className="exhibition-outro">
-          <span className="exhibition-outro-kicker">
-            {lang === "sr" ? "KRAJ IZLOŽBE" : "END OF EXHIBITION"}
-          </span>
+      <section className="exhibition-outro">
+        <span className="exhibition-outro-kicker">
+          {lang === "sr" ? "KRAJ IZLOŽBE" : "END OF EXHIBITION"}
+        </span>
 
-          <button
-            type="button"
-            className="exhibition-outro-link"
-            onClick={onSeeLive}
-          >
-            {lang === "sr" ? "Pogledaj šta je sada aktuelno" : "See what’s live now"}
-            <span aria-hidden="true">→</span>
-          </button>
-        </section>
+        <button
+          type="button"
+          className="exhibition-outro-link"
+          onClick={onSeeLive}
+        >
+          {lang === "sr" ? "Pogledaj šta je sada aktuelno" : "See what’s live now"}
+          <span aria-hidden="true">→</span>
+        </button>
+      </section>
 
       {active && (
         <div
@@ -183,7 +252,13 @@ useEffect(() => {
 
           <div className="exhibition-viewer-stage">
             {active.type === "video" ? (
-              <video src={active.src} controls autoPlay playsInline />
+              <video
+                src={active.src}
+                poster={active.poster || undefined}
+                controls
+                autoPlay
+                playsInline
+              />
             ) : (
               <img src={active.src} alt={active.alt || active.title} />
             )}
