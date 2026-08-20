@@ -2,7 +2,8 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallba
 import "./App.css";
 import HeaderNext from "./HeaderNext";
 import Exhibition from "./Exhibition";
-import JournalPage from "./JournalPage";
+import JournalPage, { getJournalArticleSlug } from "./JournalPage";
+import JournalArticlePage from "./JournalArticlePage";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
@@ -440,13 +441,31 @@ const getJournalArticleKey = (article) => {
   return article.id || article.slug || article.title?.en || article.title?.sr || article.title || "";
 };
 
+const getJournalArticleFromCurrentUrl = () => {
+  if (typeof window === "undefined") return null;
+
+  const path = window.location.pathname;
+
+  const match = path.match(/^\/journal\/([^/]+)$/);
+
+  if (!match?.[1]) return null;
+
+  const slugFromUrl = decodeURIComponent(match[1]);
+
+  return (
+    journalArticles.find(
+      (article) => getJournalArticleSlug(article) === slugFromUrl
+    ) || null
+  );
+};
+
 const getInitialView = () => {
   if (typeof window === "undefined") return "home";
 
   const path = window.location.pathname;
 
   if (path === "/shop") return "shop";
-  if (path === "/journal") return "journal";
+  if (path === "/journal" || path.startsWith("/journal/")) return "journal";
   if (path === "/exhibition") return "exhibition";
   if (path.startsWith("/product/")) return "shop";
 
@@ -893,6 +912,10 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
   const [hasUserPickedSize, setHasUserPickedSize] = useState(false);
   const [journalOpen, setJournalOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
+
+  const [journalPageArticle, setJournalPageArticle] = useState(
+    () => getJournalArticleFromCurrentUrl()
+  );
 
   const [seenLatestJournalKey, setSeenLatestJournalKey] = useState(() => {
   if (typeof window === "undefined") return "";
@@ -1606,9 +1629,12 @@ useEffect(() => {
   }, [lang]);
 
   useEffect(() => {
-  if (window.location.pathname.startsWith("/product/")) {
-    return;
-  }
+    if (
+      window.location.pathname.startsWith("/product/") ||
+      window.location.pathname.startsWith("/journal/")
+    ) {
+      return;
+    }
 
   const params = new URLSearchParams(window.location.search);
 
@@ -1622,7 +1648,10 @@ useEffect(() => {
   params.delete("sort");
   params.delete("page");
 
-  if (view !== "home" && view !== "exhibition") {
+  if (
+    window.location.pathname === "/" &&
+    view !== "home"
+  ) {
     params.set("view", view);
   }
 
@@ -1882,6 +1911,29 @@ useEffect(() => {
       return;
     }
 
+const journalArticleFromUrl =
+  getJournalArticleFromCurrentUrl();
+
+if (journalArticleFromUrl) {
+  setView("journal");
+
+  setJournalPageArticle(journalArticleFromUrl);
+
+  setJournalOpen(false);
+  setSelectedArticle(null);
+
+  setNoteMapOpen(false);
+  setProductModalVisible(false);
+  setSelectedProduct(null);
+  setSelectedSize("");
+  setHasUserPickedSize(false);
+
+  trackPageView(pagePath || "/");
+  trackMeta("PageView");
+
+  return;
+}
+
     const nextView = getInitialView();
 
     if (nextView !== "shop") {
@@ -1896,6 +1948,7 @@ useEffect(() => {
     setHasUserPickedSize(false);
 
     setJournalOpen(false);
+    setJournalPageArticle(null);
 
     if (nextView !== "journal") {
     setSelectedArticle(null);
@@ -2481,6 +2534,27 @@ const sortedJournalArticles = useMemo(() => {
   });
 }, [journalArticles]);
 
+const activeJournalArticleIndex = journalPageArticle
+  ? sortedJournalArticles.findIndex(
+      (article) =>
+        String(article.id) === String(journalPageArticle.id)
+    )
+  : -1;
+
+const previousJournalArticle =
+  activeJournalArticleIndex >= 0
+    ? sortedJournalArticles[activeJournalArticleIndex + 1] || null
+    : null;
+
+const nextJournalArticle =
+  activeJournalArticleIndex > 0
+    ? sortedJournalArticles[activeJournalArticleIndex - 1] || null
+    : null;
+
+const journalPageRelatedProducts = journalPageArticle
+  ? getRelatedJournalProducts(journalPageArticle)
+  : [];
+
 const latestJournalArticle = sortedJournalArticles?.[0] || null;
 
 const latestJournalArticleKey = latestJournalArticle?.id
@@ -2519,14 +2593,54 @@ const handleJournalOpen = () => {
 const handleJournalArticleOpen = (article) => {
   if (!article) return;
 
-  setJournalOpen(true);
-  setSelectedArticle(article);
+  const slug = getJournalArticleSlug(article);
+
+  if (!slug) return;
+
+  setJournalOpen(false);
+  setSelectedArticle(null);
+  setJournalPageArticle(article);
 
   if (String(article.id) === String(latestJournalArticleKey)) {
     markLatestJournalAsSeen();
   }
 
-  switchView("journal");
+  setView("journal");
+
+  const nextPath = `/journal/${slug}`;
+
+  const currentPath =
+    window.location.pathname + window.location.search;
+
+  if (currentPath !== nextPath) {
+    window.history.pushState({}, "", nextPath);
+
+    trackPageView(nextPath);
+    trackMeta("PageView");
+  }
+
+  requestAnimationFrame(() => {
+    smoothScrollToTop();
+  });
+};
+
+const handleJournalPageBack = () => {
+  setJournalPageArticle(null);
+  setJournalOpen(false);
+  setSelectedArticle(null);
+
+  setView("journal");
+
+  if (window.location.pathname !== "/journal") {
+    window.history.pushState({}, "", "/journal");
+
+    trackPageView("/journal");
+    trackMeta("PageView");
+  }
+
+  requestAnimationFrame(() => {
+    smoothScrollToTop();
+  });
 };
 
 const announcementItems = useMemo(() => {
@@ -5031,11 +5145,28 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
       <main>
-        {view === "journal" && (
+        {view === "journal" && !journalPageArticle && (
           <JournalPage
             lang={lang}
             articles={journalArticles}
             onOpenArticle={handleJournalArticleOpen}
+          />
+        )}
+
+        {view === "journal" && journalPageArticle && (
+          <JournalArticlePage
+            lang={lang}
+            article={journalPageArticle}
+            previousArticle={previousJournalArticle}
+            nextArticle={nextJournalArticle}
+            relatedProducts={journalPageRelatedProducts}
+            onBackToJournal={handleJournalPageBack}
+            onOpenArticle={handleJournalArticleOpen}
+            onOpenProduct={(product) => {
+              openProductModal(product, {
+                changeView: false,
+              });
+            }}
           />
         )}
 
