@@ -5162,6 +5162,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             relatedProducts={journalPageRelatedProducts}
             onBackToJournal={handleJournalPageBack}
             onOpenArticle={handleJournalArticleOpen}
+            onArticleLink={handleJournalLinkClick}
             onOpenProduct={(product) => {
               openProductModal(product, {
                 changeView: false,

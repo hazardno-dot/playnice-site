@@ -93,7 +93,10 @@ function JournalPage({
           <span className="journal-page-eyebrow">{copy.eyebrow}</span>
           <h1>
   <span>Le</span>
-  <span className="journal-page-title-word">Journal</span>
+
+  <span className="journal-page-title-word">
+    <span className="journal-page-title-j">J</span>ournal
+  </span>
 </h1>
           <p>{copy.empty}</p>
         </section>
@@ -132,7 +135,9 @@ function JournalPage({
             lang
           )}`}
         >
-          <div className="journal-page-featured-media">
+          <div
+            className={`journal-page-featured-media journal-page-featured-media--${featuredArticle.id}`}
+          >
             {featuredArticle.image && (
               <img
                 src={featuredArticle.image}

@@ -31,6 +31,7 @@ function JournalArticlePage({
   onBackToJournal,
   onOpenArticle,
   onOpenProduct,
+  onArticleLink,
 }) {
   const title = getJournalText(article?.title, lang);
   const excerpt = getJournalText(article?.excerpt, lang);
@@ -195,6 +196,47 @@ function JournalArticlePage({
             })}
           </div>
         </div>
+
+        {article.links?.length > 0 && (
+            <section className="journal-article-links">
+                <div className="journal-article-links-inner">
+                {article.links.map((link, index) => {
+                    const label = getJournalText(link.label, lang);
+
+                    const isExternal =
+                    Boolean(link.url) &&
+                    /^https?:\/\//i.test(link.url);
+
+                    if (isExternal) {
+                    return (
+                        <a
+                        key={`${label}-${index}`}
+                        className="journal-article-link"
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >
+                        <span>{label}</span>
+                        <span aria-hidden="true">↗</span>
+                        </a>
+                    );
+                    }
+
+                    return (
+                    <button
+                        key={`${label}-${index}`}
+                        type="button"
+                        className="journal-article-link"
+                        onClick={() => onArticleLink?.(link)}
+                    >
+                        <span>{label}</span>
+                        <span aria-hidden="true">→</span>
+                    </button>
+                    );
+                })}
+                </div>
+            </section>
+            )}
 
         {relatedProducts.length > 0 && (
           <section className="journal-article-related">
