@@ -449,6 +449,133 @@
     text-transform: uppercase;
 }
 
+/* ---------- editorial story links ---------- */
+
+.journal-article-story-link-card {
+    min-width: 0;
+    min-height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 0;
+
+    border: 1px solid rgba(220, 181, 107, 0.1);
+    border-radius: 18px;
+
+    background:
+        radial-gradient(circle at 85% 10%,
+            rgba(220, 181, 107, 0.075),
+            transparent 38%),
+        rgba(15, 13, 10, 0.74);
+
+    color: inherit;
+    text-align: left;
+    text-decoration: none;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.22);
+
+    transition:
+        transform 0.35s var(--content-ease),
+        border-color 0.35s ease,
+        background 0.35s ease;
+}
+
+.journal-article-story-link-card:hover {
+    transform: translateY(-4px);
+
+    border-color: rgba(220, 181, 107, 0.24);
+
+    background:
+        radial-gradient(circle at 85% 10%,
+            rgba(220, 181, 107, 0.12),
+            transparent 42%),
+        rgba(19, 16, 12, 0.92);
+}
+
+.journal-article-story-link-mark {
+    height: 260px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 26px;
+
+    border-bottom: 1px solid rgba(220, 181, 107, 0.08);
+
+    background:
+        linear-gradient(145deg,
+            rgba(220, 181, 107, 0.035),
+            transparent);
+}
+
+.journal-article-story-link-mark>span {
+    color: rgba(220, 181, 107, 0.72);
+
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.journal-article-story-link-mark>strong {
+    align-self: flex-end;
+
+    color: rgba(220, 181, 107, 0.55);
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 54px;
+    line-height: 1;
+    font-weight: 400;
+}
+
+.journal-article-story-link-copy {
+    padding: 20px 20px 22px;
+}
+
+.journal-article-story-link-copy>span {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: rgba(220, 181, 107, 0.66);
+
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.journal-article-story-link-copy h3 {
+    margin: 0;
+
+    color: #f5ecdc;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 29px;
+    line-height: 1;
+    font-weight: 500;
+}
+
+.journal-article-story-link-copy small {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 22px;
+
+    color: var(--gold);
+
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
 
 /* =========================================
    ARTICLE NAVIGATION
@@ -743,6 +870,15 @@
     }
 }
 
+    .journal-article-story-link-mark {
+        height: 180px;
+        padding: 22px;
+    }
+
+    .journal-article-story-link-mark>strong {
+        font-size: 44px;
+    }
+
 
 /* =========================================
    REDUCED MOTION
@@ -765,96 +901,5 @@
 
     .journal-article-related-card:hover .journal-article-related-media img {
         transform: none;
-    }
-}
-
-/* =========================================
-   ARTICLE LINKS
-========================================= */
-
-.journal-article-links {
-    width: min(100%, 920px);
-
-    margin: -28px auto 72px;
-}
-
-.journal-article-links-inner {
-    width: min(100%, 760px);
-
-    margin: 0 auto;
-    padding-top: 28px;
-
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-
-    border-top: 1px solid rgba(220, 181, 107, 0.12);
-}
-
-.journal-article-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 11px;
-
-    padding: 12px 17px;
-
-    border: 1px solid rgba(220, 181, 107, 0.2);
-    border-radius: 999px;
-
-    background: rgba(220, 181, 107, 0.035);
-
-    color: rgba(244, 234, 216, 0.72);
-
-    font-size: 9px;
-    line-height: 1;
-    font-weight: 600;
-    letter-spacing: 0.13em;
-    text-decoration: none;
-    text-transform: uppercase;
-
-    transition:
-        border-color 0.25s ease,
-        background 0.25s ease,
-        color 0.25s ease,
-        transform 0.25s ease;
-}
-
-.journal-article-link:hover {
-    border-color: rgba(220, 181, 107, 0.42);
-
-    background: rgba(220, 181, 107, 0.075);
-
-    color: var(--gold);
-
-    transform: translateY(-2px);
-}
-
-.journal-article-link>span:last-child {
-    transition: transform 0.25s ease;
-}
-
-.journal-article-link:hover>span:last-child {
-    transform: translate(2px, -1px);
-}
-
-@media (max-width: 680px) {
-    .journal-article-links {
-        margin-top: -14px;
-        margin-bottom: 54px;
-    }
-
-    .journal-article-links-inner {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .journal-article-link {
-        justify-content: space-between;
-
-        width: 100%;
-
-        padding: 13px 15px;
-
-        font-size: 8px;
     }
 }

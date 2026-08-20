@@ -197,27 +197,119 @@ function JournalArticlePage({
           </div>
         </div>
 
-        {article.links?.length > 0 && (
-            <section className="journal-article-links">
-                <div className="journal-article-links-inner">
-                {article.links.map((link, index) => {
+        {(relatedProducts.length > 0 || article.links?.length > 0) && (
+            <section className="journal-article-related">
+                <div className="journal-article-section-head">
+                <span>
+                    {relatedProducts.length > 0
+                    ? copy.related
+                    : lang === "sr"
+                    ? "Iz priče"
+                    : "From the Story"}
+                </span>
+
+                <i aria-hidden="true" />
+                </div>
+
+                <div className="journal-article-related-grid">
+                {relatedProducts.map((product) => (
+                    <button
+                    key={product.id || product.slug || product.name}
+                    type="button"
+                    className="journal-article-related-card"
+                    onClick={() => onOpenProduct?.(product)}
+                    >
+                    <div className="journal-article-related-media">
+                        <img
+                        src={product.image}
+                        alt={product.name}
+                        loading="lazy"
+                        />
+                    </div>
+
+                    <div className="journal-article-related-copy">
+                        <span>
+                        {product.category || "Fragrance"}
+                        </span>
+
+                        <h3>
+                        {product.cardName || product.name}
+                        </h3>
+
+                        <small>
+                        {copy.explore}
+                        <span aria-hidden="true">→</span>
+                        </small>
+                    </div>
+                    </button>
+                ))}
+
+                {article.links?.map((link, index) => {
                     const label = getJournalText(link.label, lang);
 
                     const isExternal =
                     Boolean(link.url) &&
                     /^https?:\/\//i.test(link.url);
 
+                    let sourceLabel =
+                    lang === "sr" ? "Iz priče" : "From the Story";
+
+                    if (link.url?.includes("youtube.com")) {
+                    sourceLabel = "YouTube";
+                    } else if (link.url?.includes("imdb.com")) {
+                    sourceLabel = "IMDb";
+                    } else if (link.action === "shop") {
+                    sourceLabel = "PlayNice";
+                    } else if (link.action === "scent-request") {
+                    sourceLabel =
+                        lang === "sr" ? "Zajednica" : "Community";
+                    }
+
+                    const linkContent = (
+                    <>
+                        <div className="journal-article-story-link-mark">
+                        <span>{sourceLabel}</span>
+                        <strong aria-hidden="true">
+                            {isExternal ? "↗" : "→"}
+                        </strong>
+                        </div>
+
+                        <div className="journal-article-story-link-copy">
+                        <span>
+                            {lang === "sr"
+                            ? "POVEZANO SA PRIČOM"
+                            : "FROM THE STORY"}
+                        </span>
+
+                        <h3>{label}</h3>
+
+                        <small>
+                            {isExternal
+                            ? lang === "sr"
+                                ? "Otvori link"
+                                : "Open link"
+                            : lang === "sr"
+                            ? "Nastavi"
+                            : "Continue"}
+
+                            <span aria-hidden="true">
+                            {isExternal ? "↗" : "→"}
+                            </span>
+                        </small>
+                        </div>
+                    </>
+                    );
+
                     if (isExternal) {
                     return (
                         <a
                         key={`${label}-${index}`}
-                        className="journal-article-link"
+                        className="journal-article-story-link-card"
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         >
-                        <span>{label}</span>
-                        <span aria-hidden="true">↗</span>
+                        {linkContent}
                         </a>
                     );
                     }
@@ -226,60 +318,16 @@ function JournalArticlePage({
                     <button
                         key={`${label}-${index}`}
                         type="button"
-                        className="journal-article-link"
+                        className="journal-article-story-link-card"
                         onClick={() => onArticleLink?.(link)}
                     >
-                        <span>{label}</span>
-                        <span aria-hidden="true">→</span>
+                        {linkContent}
                     </button>
                     );
                 })}
                 </div>
             </section>
             )}
-
-        {relatedProducts.length > 0 && (
-          <section className="journal-article-related">
-            <div className="journal-article-section-head">
-              <span>{copy.related}</span>
-              <i aria-hidden="true" />
-            </div>
-
-            <div className="journal-article-related-grid">
-              {relatedProducts.map((product) => (
-                <button
-                  key={product.id || product.slug || product.name}
-                  type="button"
-                  className="journal-article-related-card"
-                  onClick={() => onOpenProduct?.(product)}
-                >
-                  <div className="journal-article-related-media">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      loading="lazy"
-                    />
-                  </div>
-
-                  <div className="journal-article-related-copy">
-                    <span>
-                      {product.category || "Fragrance"}
-                    </span>
-
-                    <h3>
-                      {product.cardName || product.name}
-                    </h3>
-
-                    <small>
-                      {copy.explore}
-                      <span aria-hidden="true">→</span>
-                    </small>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
 
         <nav
           className="journal-article-navigation"
