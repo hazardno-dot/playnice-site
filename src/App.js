@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallba
 import "./App.css";
 import HeaderNext from "./HeaderNext";
 import Exhibition from "./Exhibition";
+import JournalPage from "./JournalPage";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
@@ -1894,10 +1895,10 @@ useEffect(() => {
     setSelectedSize("");
     setHasUserPickedSize(false);
 
-    setJournalOpen(nextView === "journal");
+    setJournalOpen(false);
 
     if (nextView !== "journal") {
-      setSelectedArticle(null);
+    setSelectedArticle(null);
     }
 
     setView(nextView);
@@ -2507,8 +2508,11 @@ const markLatestJournalAsSeen = () => {
 };
 
 const handleJournalOpen = () => {
-  setJournalOpen(true);
+  setJournalOpen(false);
   setSelectedArticle(null);
+
+  markLatestJournalAsSeen();
+
   switchView("journal");
 };
 
@@ -5027,10 +5031,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
       <main>
+        {view === "journal" && (
+          <JournalPage
+            lang={lang}
+            articles={journalArticles}
+            onOpenArticle={handleJournalArticleOpen}
+          />
+        )}
+
         {view === "exhibition" && (
-        <Exhibition
-          lang={lang}
-          onSeeLive={() => {
+          <Exhibition
+            lang={lang}
+            onSeeLive={() => {
             switchView("home");
 
             requestAnimationFrame(() => {
