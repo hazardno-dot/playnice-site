@@ -2660,6 +2660,7 @@ const markLatestJournalAsSeen = () => {
 
 const handleJournalOpen = () => {
   markLatestJournalAsSeen();
+  setJournalPageArticle(null);
   switchView("journal");
 };
 
