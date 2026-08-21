@@ -2,13 +2,7 @@
    LE JOURNAL — PAGE
 ========================================= */
 
-.journal-page {
-    position: relative;
-    min-height: 100vh;
-
-    padding:
-        calc(var(--announcement-height) + 40px) 0 52px;
-
+.app-shell--journal {
     background:
         radial-gradient(circle at 50% -10%,
             rgba(220, 181, 107, 0.08),
@@ -17,6 +11,16 @@
             rgba(255, 255, 255, 0.015) 0%,
             transparent 18%),
         var(--bg);
+}
+
+.journal-page {
+    position: relative;
+    min-height: 100vh;
+
+    padding:
+        calc(var(--announcement-height) + 40px) 0 52px;
+
+    background: transparent;
 
     overflow: hidden;
 }
