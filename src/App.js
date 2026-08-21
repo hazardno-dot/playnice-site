@@ -7151,7 +7151,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
 <div className="section-divider"></div>
 
-{view !== "exhibition" && (
+{view !== "exhibition" && view !== "journal" && (
 
 <footer className="site-footer">
   <div className="footer-benefits">
