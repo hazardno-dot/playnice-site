@@ -115,7 +115,10 @@ function JournalPage({
         <div className="journal-page-intro-inner">
           <span className="journal-page-eyebrow">{copy.eyebrow}</span>
 
-          <h1>{copy.title}</h1>
+          <h1>
+            <span>Le</span>
+            <span className="journal-page-title-journal">Journal</span>
+          </h1>
 
           <p>{copy.intro}</p>
         </div>
