@@ -358,7 +358,7 @@ useEffect(() => {
 
                 <h2>
                     {lang === "sr"
-                    ? "Da li vredi još ovakvih?"
+                    ? "Da pišemo dalje?"
                     : "Should we write more like this?"}
                 </h2>
                 </div>
