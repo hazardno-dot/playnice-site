@@ -15421,7 +15421,7 @@ body.scrolled .header-system .announcement-bar-system {
   }
 
   .header-system + main {
-    padding-top: 7px;
+    padding-top: 0px;
   }
 }
 
