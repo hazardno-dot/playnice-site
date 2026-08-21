@@ -6491,8 +6491,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   }}
 >
   {lang === "sr"
-    ? "Pročitaj priču u rubrici Le Journal"
-    : "Read the story in Le Journal"}
+    ? "Priča iza Community Requests"
+    : "The story behind Community Requests"}
   <span>→</span>
   </button>
 
@@ -6508,10 +6508,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       .filter((request) => !findExistingProductByRequest(request.name))
       .sort((a, b) => b.votes - a.votes)
       .map((request, index) => {
-        const medalIcon =
-          index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : null;
 
         const trend = communityRequestTrends[request.name] || "same";
+        const rank = String(index + 1).padStart(2, "0");
 
         return (
           <button
@@ -6523,8 +6522,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             onClick={() => handleCommunityRequestVote(request.name)}
           >
             <span className="community-most-wanted-rank">
-  {medalIcon || ""}
-</span>
+              {rank}
+            </span>
 
 <div className="community-most-wanted-name-wrap">
   <span className="community-most-wanted-name">
