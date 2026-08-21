@@ -28,10 +28,19 @@ function JournalArticlePage({
   previousArticle = null,
   nextArticle = null,
   relatedProducts = [],
+
+  feedback = null,
+  voteSuccess = "",
+  feedbackSuccess = false,
+
   onBackToJournal,
   onOpenArticle,
   onOpenProduct,
   onArticleLink,
+
+  onFeedbackVote,
+  onFeedbackNoteChange,
+  onFeedbackSubmit,
 }) {
   const title = getJournalText(article?.title, lang);
   const excerpt = getJournalText(article?.excerpt, lang);
@@ -328,6 +337,107 @@ function JournalArticlePage({
                 </div>
             </section>
             )}
+
+        <section className="journal-article-feedback">
+            <div className="journal-article-feedback-inner">
+                <div className="journal-article-feedback-heading">
+                <span>
+                    {lang === "sr"
+                    ? "KAKVA JE BILA PRIČA?"
+                    : "HOW WAS THE STORY?"}
+                </span>
+
+                <h2>
+                    {lang === "sr"
+                    ? "Da li vredi još ovakvih?"
+                    : "Should we write more like this?"}
+                </h2>
+                </div>
+
+                <div className="journal-article-feedback-actions">
+                <button
+                    type="button"
+                    className={`journal-article-feedback-vote ${
+                    feedback?.vote === "up" ? "active" : ""
+                    }`}
+                    onClick={() => onFeedbackVote?.("up")}
+                    aria-label={
+                    lang === "sr"
+                        ? "Svidela mi se priča"
+                        : "I liked this story"
+                    }
+                >
+                    <span aria-hidden="true">↑</span>
+
+                    <strong>
+                    {voteSuccess === "up"
+                        ? lang === "sr"
+                        ? "Hvala"
+                        : "Thanks"
+                        : lang === "sr"
+                        ? "Da"
+                        : "Yes"}
+                    </strong>
+                </button>
+
+                <button
+                    type="button"
+                    className={`journal-article-feedback-vote ${
+                    feedback?.vote === "down" ? "active" : ""
+                    }`}
+                    onClick={() => onFeedbackVote?.("down")}
+                    aria-label={
+                    lang === "sr"
+                        ? "Nije mi legla priča"
+                        : "I didn't like this story"
+                    }
+                >
+                    <span aria-hidden="true">↓</span>
+
+                    <strong>
+                    {voteSuccess === "down"
+                        ? lang === "sr"
+                        ? "Primljeno"
+                        : "Got it"
+                        : lang === "sr"
+                        ? "Ne baš"
+                        : "Not really"}
+                    </strong>
+                </button>
+                </div>
+
+                {feedback?.vote && (
+                <div className="journal-article-feedback-note">
+                    <textarea
+                    value={feedback?.note || ""}
+                    onChange={(event) =>
+                        onFeedbackNoteChange?.(event.target.value)
+                    }
+                    placeholder={
+                        lang === "sr"
+                        ? "Ako želiš, reci nam i zašto..."
+                        : "If you want, tell us why..."
+                    }
+                    rows={3}
+                    />
+
+                    <button
+                    type="button"
+                    onClick={onFeedbackSubmit}
+                    disabled={!feedback?.note?.trim()}
+                    >
+                    {feedbackSuccess
+                        ? lang === "sr"
+                        ? "Poslato ✓"
+                        : "Sent ✓"
+                        : lang === "sr"
+                        ? "Pošalji"
+                        : "Send"}
+                    </button>
+                </div>
+                )}
+            </div>
+            </section>
 
         <nav
           className="journal-article-navigation"

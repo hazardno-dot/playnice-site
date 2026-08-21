@@ -2788,8 +2788,11 @@ const freeShippingProgress = Math.min(
   Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
 );
 
-const activeJournalFeedback = selectedArticle
-  ? getJournalSavedFeedback(selectedArticle)
+const activeJournalFeedbackArticle =
+  journalPageArticle || selectedArticle;
+
+const activeJournalFeedback = activeJournalFeedbackArticle
+  ? getJournalSavedFeedback(activeJournalFeedbackArticle)
   : null;
 
 const selectedCopy = selectedProduct
@@ -5163,6 +5166,21 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             onBackToJournal={handleJournalPageBack}
             onOpenArticle={handleJournalArticleOpen}
             onArticleLink={handleJournalLinkClick}
+            feedback={activeJournalFeedback}
+            voteSuccess={journalVoteSuccess}
+            feedbackSuccess={journalFeedbackSuccess}
+
+            onFeedbackVote={(vote) =>
+              handleJournalFeedbackVote(journalPageArticle, vote)
+            }
+
+            onFeedbackNoteChange={(value) =>
+              handleJournalFeedbackNoteChange(journalPageArticle, value)
+            }
+
+            onFeedbackSubmit={() =>
+              handleJournalFeedbackSubmit(journalPageArticle)
+            }
             onOpenProduct={(product) => {
               openProductModal(product, {
                 changeView: false,
