@@ -2334,6 +2334,38 @@ const getVisibleCommunityRequests = (requests) =>
     .filter((request) => !findExistingProductByRequest(request.name))
     .sort((a, b) => b.votes - a.votes);
 
+const EXISTING_COLLECTION_LOCKED_VOTES = {
+  "Yves Saint Laurent Y Iced Cologne": 27,
+  "Prada Paradigme Eau de Parfum": 25,
+  "Valentino Uomo Born In Roma Coral Fantasy": 16,
+  "Lattafa Khamrah Waha Eau de Parfum": 13,
+  "Club De Nuit Intense Overdose": 12,
+  "Carolina Herrera Bad Boy Cobalt Eau de Parfum": 5,
+  "Rayhaan Azul Eau de Parfum": 3,
+  "Bois Impérial by Essential Parfums": 1,
+};
+
+const sortedExistingCollectionRequests = useMemo(
+  () =>
+    existingCollectionRequests
+      .map((item) => ({
+        ...item,
+        displayVotes:
+          EXISTING_COLLECTION_LOCKED_VOTES[item.name] ??
+          item.lockedVotes ??
+          item.votes ??
+          1,
+      }))
+      .sort((a, b) => {
+        if (b.displayVotes !== a.displayVotes) {
+          return b.displayVotes - a.displayVotes;
+        }
+
+        return String(a.name).localeCompare(String(b.name));
+      }),
+  [existingCollectionRequests]
+);
+
 const getVoteCooldownMessage = (fragranceName, remainingDays) =>
   lang === "sr"
     ? `Hvala na podršci za ${fragranceName} ✦ Novi glas možeš dodati za ${remainingDays} dana.`
@@ -6534,7 +6566,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 </div>
 
-{existingCollectionRequests.length > 0 && (
+{sortedExistingCollectionRequests.length > 0 && (
   <div className="already-in-collection-strip">
     <span>
       {lang === "sr"
@@ -6543,22 +6575,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </span>
 
     <div className="already-in-collection-list">
-      {existingCollectionRequests.slice(0, 10).map((item) => {
+      {sortedExistingCollectionRequests.slice(0, 10).map((item) => {
         const product =
           item.product || findExistingProductByRequest(item.name);
 
-        const lockedVotesByName = {
-          "Yves Saint Laurent Y Iced Cologne": 27,
-          "Prada Paradigme Eau de Parfum": 25,
-          "Valentino Uomo Born In Roma Coral Fantasy": 16,
-          "Lattafa Khamrah Waha Eau de Parfum": 13,
-          "Carolina Herrera Bad Boy Cobalt Eau de Parfum": 5,
-          "Rayhaan Azul Eau de Parfum": 3,
-          "Bois Impérial by Essential Parfums": 1,
-          "Club De Nuit Intense Overdose": 12,
-        };
-
-        const lockedVotes = lockedVotesByName[item.name] || item.lockedVotes || 1;
+        const lockedVotes = item.displayVotes;
         const isAlreadyIn = lockedVotes === 1;
 
         const tooltipText =
@@ -6568,7 +6589,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               : `${lockedVotes} glasova je bilo dovoljno. Sada je deo PlayNice kolekcije.`
             : isAlreadyIn
               ? "It's already in. Available in the PlayNice collection."
-              : `${lockedVotes} votes was all it took. Now part of the PlayNice collection.`;
+              : `${lockedVotes} requests were enough. Now part of the PlayNice collection.`;
 
         return (
           <button
@@ -6577,11 +6598,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             className="already-in-collection-item"
             onClick={() => {
               if (!product) return;
-
-              sendScentRequest(
-                product.name,
-                "existing_collection_request"
-              );
 
               setScentRequestStatus(
                 lang === "sr"
@@ -6592,37 +6608,37 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               openProductFromRequest(product);
             }}
           >
-          <span className="already-in-collection-name">
-  {item.name}
-  <span className="already-in-collection-arrow">→</span>
-</span>
+            <span className="already-in-collection-name">
+              {item.name}
+              <span className="already-in-collection-arrow">→</span>
+            </span>
 
-<span
-  className={`already-in-collection-score ${
-    isAlreadyIn ? "already-in-collection-score-blue" : ""
-  }`}
->
-  {lockedVotes}
-  <em>{tooltipText}</em>
-</span>
+            <span
+              className={`already-in-collection-score ${
+                isAlreadyIn ? "already-in-collection-score-blue" : ""
+              }`}
+            >
+              {lockedVotes}
+              <em>{tooltipText}</em>
+            </span>
           </button>
         );
       })}
 
-      {existingCollectionRequests.length > 10 && (
-       <span className="already-in-collection-more-wrap">
-       <em className="already-in-collection-more">
-        +{existingCollectionRequests.length - 10} more
-       </em>
+      {sortedExistingCollectionRequests.length > 10 && (
+        <span className="already-in-collection-more-wrap">
+          <em className="already-in-collection-more">
+            +{sortedExistingCollectionRequests.length - 10} more
+          </em>
 
-      <span className="already-in-collection-tooltip">
-       {existingCollectionRequests
-        .slice(10)
-        .map((item) => item.name)
-        .join(" • ")}
-      </span>
-     </span>
-    )}
+          <span className="already-in-collection-tooltip">
+            {sortedExistingCollectionRequests
+              .slice(10)
+              .map((item) => item.name)
+              .join(" • ")}
+          </span>
+        </span>
+      )}
     </div>
   </div>
 )}
