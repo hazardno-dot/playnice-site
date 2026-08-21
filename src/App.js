@@ -2861,10 +2861,6 @@ const activeJournalFeedback = journalPageArticle
   ? getJournalSavedFeedback(journalPageArticle)
   : null;
 
-const activeJournalFeedback = activeJournalFeedbackArticle
-  ? getJournalSavedFeedback(activeJournalFeedbackArticle)
-  : null;
-
 const selectedCopy = selectedProduct
   ? getProductCopy(selectedProduct, lang)
   : {
