@@ -2662,6 +2662,10 @@ const handleJournalOpen = () => {
   markLatestJournalAsSeen();
   setJournalPageArticle(null);
   switchView("journal");
+
+  requestAnimationFrame(() => {
+    smoothScrollToTop();
+  });
 };
 
 const handleJournalArticleOpen = (article) => {
