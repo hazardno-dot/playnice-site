@@ -887,8 +887,8 @@
 @media (max-width: 980px) {
 
     .journal-article-page {
-        padding-top:
-            calc(var(--announcement-height) + 84px);
+        padding:
+            calc(var(--announcement-height) + 32px) 0 44px;
     }
 
     .journal-article-heading h1 {
