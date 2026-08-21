@@ -6301,15 +6301,10 @@ main {
 ========================================= */
 
 @media (max-width: 768px) {
-  .header-system+main>.hero:first-child {
-    margin-top: -4px;
-  }
-
   .hero {
     width: calc(100vw - 24px);
     max-width: calc(100vw - 24px);
     margin: 0 auto 14px;
-
     padding: 8px;
     border-radius: 22px;
     overflow: hidden;
@@ -15343,7 +15338,7 @@ body.scrolled .header-system .announcement-bar-system {
   }
 
   .header-system + main {
-    padding-top: 0px;
+    padding-top: 8px;
   }
 }
 
@@ -15421,7 +15416,7 @@ body.scrolled .header-system .announcement-bar-system {
   }
 
   .header-system + main {
-    padding-top: 0px;
+    padding-top: 7px;
   }
 }
 
