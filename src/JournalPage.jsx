@@ -99,13 +99,7 @@ function JournalPage({
       <main className="journal-page">
         <section className="journal-page-empty">
           <span className="journal-page-eyebrow">{copy.eyebrow}</span>
-          <h1>
-  <span>Le</span>
-
-  <span className="journal-page-title-word">
-    <span className="journal-page-title-j">J</span>ournal
-  </span>
-</h1>
+          <h1>{copy.title}</h1>
           <p>{copy.empty}</p>
         </section>
       </main>
@@ -256,6 +250,11 @@ function JournalPage({
           </div>
         </section>
       )}
+        <footer className="journal-page-editorial-footer">
+          <span>PlayNice Editorial</span>
+          <i aria-hidden="true" />
+          <strong>Remember. PlayNice.</strong>
+        </footer>
     </main>
   );
 }
