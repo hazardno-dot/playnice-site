@@ -6301,11 +6301,15 @@ main {
 ========================================= */
 
 @media (max-width: 768px) {
+  .header-system+main>.hero:first-child {
+    margin-top: 0;
+  }
+
   .hero {
     width: calc(100vw - 24px);
     max-width: calc(100vw - 24px);
 
-    margin: 2px auto 14px;
+    margin: 0 auto 14px;
 
     padding: 8px;
     border-radius: 22px;
