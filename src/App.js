@@ -2,6 +2,8 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallba
 import "./App.css";
 import HeaderNext from "./HeaderNext";
 import Exhibition from "./Exhibition";
+import JournalPage, { getJournalArticleSlug } from "./JournalPage";
+import JournalArticlePage from "./JournalArticlePage";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
@@ -211,6 +213,112 @@ const getProductMetaDescription = (product, lang = "sr") => {
   if (description.length <= 160) return description;
 
   return `${description.slice(0, 157).trim()}...`;
+};
+
+/* =========================================
+   JOURNAL SEO HELPERS
+========================================= */
+
+const getJournalSeoUrl = (article = null) => {
+  if (!article) {
+    return `${SITE_BASE_URL}/journal`;
+  }
+
+  const slug = getJournalArticleSlug(article);
+
+  return slug
+    ? `${SITE_BASE_URL}/journal/${slug}`
+    : `${SITE_BASE_URL}/journal`;
+};
+
+const getJournalSeoImage = (article = null) => {
+  const image = article?.image;
+
+  if (!image) {
+    return `${SITE_BASE_URL}/og-image.jpg`;
+  }
+
+  if (/^https?:\/\//i.test(image)) {
+    return image;
+  }
+
+  return `${SITE_BASE_URL}${image.startsWith("/") ? "" : "/"}${image}`;
+};
+
+const getJournalSeoTitle = (article, lang = "sr") => {
+  if (!article) {
+    return lang === "en"
+      ? "Le Journal | Stories, fragrance & culture | PlayNice"
+      : "Le Journal | Priče, parfemi i kultura | PlayNice";
+  }
+
+  const title = getJournalText(article.title, lang);
+
+  return `${title} | Le Journal | PlayNice`;
+};
+
+const getJournalSeoDescription = (article, lang = "sr") => {
+  if (!article) {
+    return lang === "en"
+      ? "Le Journal by PlayNice — stories about fragrance, people, culture, questionable decisions and everything that somehow connects them."
+      : "Le Journal by PlayNice — priče o parfemima, ljudima, kulturi, sumnjivim odlukama i svemu što ih nekako povezuje.";
+  }
+
+  const excerpt = getJournalText(article.excerpt, lang).trim();
+
+  if (!excerpt) {
+    return lang === "en"
+      ? "Read the latest story from Le Journal by PlayNice."
+      : "Pročitaj priču iz PlayNice Le Journala.";
+  }
+
+  if (excerpt.length <= 160) {
+    return excerpt;
+  }
+
+  return `${excerpt.slice(0, 157).trim()}...`;
+};
+
+const getJournalStructuredData = (article, lang = "sr") => {
+  if (!article) return null;
+
+  const title = getJournalText(article.title, lang);
+  const description = getJournalSeoDescription(article, lang);
+  const url = getJournalSeoUrl(article);
+  const image = getJournalSeoImage(article);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+
+    headline: title,
+    description,
+    image: [image],
+    url,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": url
+    },
+
+    author: {
+      "@type": "Person",
+      name: lang === "sr" ? "Čarli" : "Charlie"
+    },
+
+    publisher: {
+      "@type": "Organization",
+      name: "PlayNice",
+      url: SITE_BASE_URL
+    },
+
+    inLanguage: lang === "sr" ? "sr" : "en",
+
+    isPartOf: {
+      "@type": "Blog",
+      name: "Le Journal",
+      url: `${SITE_BASE_URL}/journal`
+    }
+  };
 };
 
 /* =========================================
@@ -439,13 +547,31 @@ const getJournalArticleKey = (article) => {
   return article.id || article.slug || article.title?.en || article.title?.sr || article.title || "";
 };
 
+const getJournalArticleFromCurrentUrl = () => {
+  if (typeof window === "undefined") return null;
+
+  const path = window.location.pathname;
+
+  const match = path.match(/^\/journal\/([^/]+)$/);
+
+  if (!match?.[1]) return null;
+
+  const slugFromUrl = decodeURIComponent(match[1]);
+
+  return (
+    journalArticles.find(
+      (article) => getJournalArticleSlug(article) === slugFromUrl
+    ) || null
+  );
+};
+
 const getInitialView = () => {
   if (typeof window === "undefined") return "home";
 
   const path = window.location.pathname;
 
   if (path === "/shop") return "shop";
-  if (path === "/journal") return "journal";
+  if (path === "/journal" || path.startsWith("/journal/")) return "journal";
   if (path === "/exhibition") return "exhibition";
   if (path.startsWith("/product/")) return "shop";
 
@@ -890,8 +1016,10 @@ const isMontenegroOrder = checkoutForm.country === "ME";
 const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== "ME";
 
   const [hasUserPickedSize, setHasUserPickedSize] = useState(false);
-  const [journalOpen, setJournalOpen] = useState(false);
-  const [selectedArticle, setSelectedArticle] = useState(null);
+
+  const [journalPageArticle, setJournalPageArticle] = useState(
+    () => getJournalArticleFromCurrentUrl()
+  );
 
   const [seenLatestJournalKey, setSeenLatestJournalKey] = useState(() => {
   if (typeof window === "undefined") return "";
@@ -1302,8 +1430,6 @@ const sideRailBlocked =
   storyOpen ||
   howItWorksOpen ||
   privateSelectionOpen ||
-  journalOpen ||
-  Boolean(selectedArticle) ||
   productModalVisible;
 
 const shouldShowSideRails =
@@ -1454,8 +1580,6 @@ const selectedSortOption =
     storyOpen ||
     howItWorksOpen ||
     privateSelectionOpen ||
-    journalOpen ||
-    !!selectedArticle ||
     !!catalogPreview;
 
   const body = document.body;
@@ -1505,8 +1629,6 @@ const selectedSortOption =
   storyOpen,
   howItWorksOpen,
   privateSelectionOpen,
-  journalOpen,
-  selectedArticle,
   catalogPreview
 ]);
 
@@ -1605,9 +1727,12 @@ useEffect(() => {
   }, [lang]);
 
   useEffect(() => {
-  if (window.location.pathname.startsWith("/product/")) {
-    return;
-  }
+    if (
+      window.location.pathname.startsWith("/product/") ||
+      window.location.pathname.startsWith("/journal/")
+    ) {
+      return;
+    }
 
   const params = new URLSearchParams(window.location.search);
 
@@ -1621,7 +1746,10 @@ useEffect(() => {
   params.delete("sort");
   params.delete("page");
 
-  if (view !== "home" && view !== "exhibition") {
+  if (
+    window.location.pathname === "/" &&
+    view !== "home"
+  ) {
     params.set("view", view);
   }
 
@@ -1782,16 +1910,11 @@ useEffect(() => {
     storyOpen ||
     howItWorksOpen ||
     privateSelectionOpen ||
-    journalOpen ||
-    !!selectedArticle ||
     !!catalogPreview;
 
   const shouldShow =
     !hasBlockingLayer &&
-    (view === "home" ||
-      view === "shop" ||
-      cartCount > 0 ||
-      wishlist.length > 0);
+    (view === "home" || view === "shop");
 
   setShowStickyCta(shouldShow);
 }, [
@@ -1802,8 +1925,6 @@ useEffect(() => {
   storyOpen,
   howItWorksOpen,
   privateSelectionOpen,
-  journalOpen,
-  selectedArticle,
   catalogPreview,
   cartCount,
   wishlist.length
@@ -1851,7 +1972,7 @@ useEffect(() => {
 
 useEffect(() => {
   setJournalVoteSuccess("");
-}, [selectedArticle]);
+}, [journalPageArticle]);
 
 useEffect(() => {
   return () => {
@@ -1881,6 +2002,26 @@ useEffect(() => {
       return;
     }
 
+const journalArticleFromUrl =
+  getJournalArticleFromCurrentUrl();
+
+if (journalArticleFromUrl) {
+  setView("journal");
+
+  setJournalPageArticle(journalArticleFromUrl);
+
+  setNoteMapOpen(false);
+  setProductModalVisible(false);
+  setSelectedProduct(null);
+  setSelectedSize("");
+  setHasUserPickedSize(false);
+
+  trackPageView(pagePath || "/");
+  trackMeta("PageView");
+
+  return;
+}
+
     const nextView = getInitialView();
 
     if (nextView !== "shop") {
@@ -1894,11 +2035,7 @@ useEffect(() => {
     setSelectedSize("");
     setHasUserPickedSize(false);
 
-    setJournalOpen(nextView === "journal");
-
-    if (nextView !== "journal") {
-      setSelectedArticle(null);
-    }
+    setJournalPageArticle(null);
 
     setView(nextView);
 
@@ -2060,12 +2197,6 @@ const handleJournalFeedbackSubmit = (article) => {
   setTimeout(() => {
     setJournalFeedbackSuccess(false);
   }, 1200);
-};
-
-const handleJournalClose = () => {
-  setJournalOpen(false);
-  setSelectedArticle(null);
-  switchView("home");
 };
 
 /* =========================================
@@ -2480,6 +2611,27 @@ const sortedJournalArticles = useMemo(() => {
   });
 }, [journalArticles]);
 
+const activeJournalArticleIndex = journalPageArticle
+  ? sortedJournalArticles.findIndex(
+      (article) =>
+        String(article.id) === String(journalPageArticle.id)
+    )
+  : -1;
+
+const previousJournalArticle =
+  activeJournalArticleIndex >= 0
+    ? sortedJournalArticles[activeJournalArticleIndex + 1] || null
+    : null;
+
+const nextJournalArticle =
+  activeJournalArticleIndex > 0
+    ? sortedJournalArticles[activeJournalArticleIndex - 1] || null
+    : null;
+
+const journalPageRelatedProducts = journalPageArticle
+  ? getRelatedJournalProducts(journalPageArticle)
+  : [];
+
 const latestJournalArticle = sortedJournalArticles?.[0] || null;
 
 const latestJournalArticleKey = latestJournalArticle?.id
@@ -2507,22 +2659,62 @@ const markLatestJournalAsSeen = () => {
 };
 
 const handleJournalOpen = () => {
-  setJournalOpen(true);
-  setSelectedArticle(null);
+  markLatestJournalAsSeen();
+  setJournalPageArticle(null);
   switchView("journal");
+
+  requestAnimationFrame(() => {
+    smoothScrollToTop();
+  });
 };
 
 const handleJournalArticleOpen = (article) => {
   if (!article) return;
 
-  setJournalOpen(true);
-  setSelectedArticle(article);
+  const slug = getJournalArticleSlug(article);
+
+  if (!slug) return;
+
+  setJournalPageArticle(article);
 
   if (String(article.id) === String(latestJournalArticleKey)) {
     markLatestJournalAsSeen();
   }
 
-  switchView("journal");
+  setView("journal");
+
+  const nextPath = `/journal/${slug}`;
+
+  const currentPath =
+    window.location.pathname + window.location.search;
+
+  if (currentPath !== nextPath) {
+    window.history.pushState({}, "", nextPath);
+
+    trackPageView(nextPath);
+    trackMeta("PageView");
+  }
+
+  requestAnimationFrame(() => {
+    smoothScrollToTop();
+  });
+};
+
+const handleJournalPageBack = () => {
+  setJournalPageArticle(null);
+
+  setView("journal");
+
+  if (window.location.pathname !== "/journal") {
+    window.history.pushState({}, "", "/journal");
+
+    trackPageView("/journal");
+    trackMeta("PageView");
+  }
+
+  requestAnimationFrame(() => {
+    smoothScrollToTop();
+  });
 };
 
 const announcementItems = useMemo(() => {
@@ -2670,8 +2862,8 @@ const freeShippingProgress = Math.min(
   Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
 );
 
-const activeJournalFeedback = selectedArticle
-  ? getJournalSavedFeedback(selectedArticle)
+const activeJournalFeedback = journalPageArticle
+  ? getJournalSavedFeedback(journalPageArticle)
   : null;
 
 const selectedCopy = selectedProduct
@@ -2815,7 +3007,7 @@ const stickyCtaJournalHasNew = journalUnreadCount > 0;
 
 const handleStickyCtaJournalClick = (event) => {
   event.stopPropagation();
-  setJournalOpen(true);
+  handleJournalOpen();
 };
 
   /* =========================================
@@ -2876,9 +3068,6 @@ const handleJournalLinkClick = (link) => {
 
   // Kod navigacije iz Journala ne vraćamo staru scroll poziciju
   scrollYRef.current = 0;
-
-  setSelectedArticle(null);
-  setJournalOpen(false);
 
   // Community / Scent Request
   if (target === "scent-request") {
@@ -4241,6 +4430,185 @@ useEffect(() => {
 }, [selectedProduct, lang]);
 
 /* =========================================
+   JOURNAL SEO
+========================================= */
+
+useEffect(() => {
+  if (view !== "journal") {
+    return undefined;
+  }
+
+  const article = journalPageArticle || null;
+
+  const title = getJournalSeoTitle(article, lang);
+  const description = getJournalSeoDescription(article, lang);
+  const canonicalUrl = getJournalSeoUrl(article);
+  const imageUrl = getJournalSeoImage(article);
+
+  const previousTitle = document.title;
+
+  document.title = title;
+
+  const upsertMeta = (selector, attributes) => {
+    let element = document.head.querySelector(selector);
+
+    const created = !element;
+
+    if (!element) {
+      element = document.createElement("meta");
+      document.head.appendChild(element);
+    }
+
+    Object.entries(attributes).forEach(([key, value]) => {
+      element.setAttribute(key, value);
+    });
+
+    return {
+      element,
+      created
+    };
+  };
+
+  const managedElements = [];
+
+  managedElements.push(
+    upsertMeta('meta[name="description"]', {
+      name: "description",
+      content: description
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[property="og:title"]', {
+      property: "og:title",
+      content: title
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[property="og:description"]', {
+      property: "og:description",
+      content: description
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[property="og:image"]', {
+      property: "og:image",
+      content: imageUrl
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[property="og:url"]', {
+      property: "og:url",
+      content: canonicalUrl
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[property="og:type"]', {
+      property: "og:type",
+      content: article ? "article" : "website"
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[name="twitter:card"]', {
+      name: "twitter:card",
+      content: "summary_large_image"
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[name="twitter:title"]', {
+      name: "twitter:title",
+      content: title
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[name="twitter:description"]', {
+      name: "twitter:description",
+      content: description
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[name="twitter:image"]', {
+      name: "twitter:image",
+      content: imageUrl
+    })
+  );
+
+  let canonical = document.head.querySelector(
+    'link[rel="canonical"]'
+  );
+
+  const canonicalCreated = !canonical;
+
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.setAttribute("rel", "canonical");
+    document.head.appendChild(canonical);
+  }
+
+  const previousCanonical =
+    canonical.getAttribute("href") || "";
+
+  canonical.setAttribute("href", canonicalUrl);
+
+  const existingSchema = document.getElementById(
+    "playnice-journal-schema"
+  );
+
+  if (existingSchema) {
+    existingSchema.remove();
+  }
+
+  if (article) {
+    const structuredData =
+      getJournalStructuredData(article, lang);
+
+    if (structuredData) {
+      const script = document.createElement("script");
+
+      script.id = "playnice-journal-schema";
+      script.type = "application/ld+json";
+      script.textContent =
+        JSON.stringify(structuredData);
+
+      document.head.appendChild(script);
+    }
+  }
+
+  return () => {
+    document.title = previousTitle;
+
+    const schema = document.getElementById(
+      "playnice-journal-schema"
+    );
+
+    schema?.remove();
+
+    managedElements.forEach(({ element, created }) => {
+      if (created) {
+        element.remove();
+      }
+    });
+
+    if (canonicalCreated) {
+      canonical.remove();
+    } else {
+      canonical.setAttribute(
+        "href",
+        previousCanonical
+      );
+    }
+  };
+}, [view, journalPageArticle, lang]);
+
+/* =========================================
    SCENT REQUESTS USEEFFECT
 ========================================= */
 
@@ -4715,9 +5083,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   ========================================= */
   return (
   <div
-    className={`app-shell ${
-      view === "exhibition" ? "app-shell--exhibition" : ""
-    }`}
+    className="app-shell"
   >
 
   {shouldShowSideRails && (
@@ -5027,10 +5393,51 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
       <main>
+        {view === "journal" && !journalPageArticle && (
+          <JournalPage
+            lang={lang}
+            articles={journalArticles}
+            onOpenArticle={handleJournalArticleOpen}
+          />
+        )}
+
+        {view === "journal" && journalPageArticle && (
+          <JournalArticlePage
+            lang={lang}
+            article={journalPageArticle}
+            previousArticle={previousJournalArticle}
+            nextArticle={nextJournalArticle}
+            relatedProducts={journalPageRelatedProducts}
+            onBackToJournal={handleJournalPageBack}
+            onOpenArticle={handleJournalArticleOpen}
+            onArticleLink={handleJournalLinkClick}
+            feedback={activeJournalFeedback}
+            voteSuccess={journalVoteSuccess}
+            feedbackSuccess={journalFeedbackSuccess}
+
+            onFeedbackVote={(vote) =>
+              handleJournalFeedbackVote(journalPageArticle, vote)
+            }
+
+            onFeedbackNoteChange={(value) =>
+              handleJournalFeedbackNoteChange(journalPageArticle, value)
+            }
+
+            onFeedbackSubmit={() =>
+              handleJournalFeedbackSubmit(journalPageArticle)
+            }
+            onOpenProduct={(product) => {
+              openProductModal(product, {
+                changeView: false,
+              });
+            }}
+          />
+        )}
+
         {view === "exhibition" && (
-        <Exhibition
-          lang={lang}
-          onSeeLive={() => {
+          <Exhibition
+            lang={lang}
+            onSeeLive={() => {
             switchView("home");
 
             requestAnimationFrame(() => {
@@ -6041,15 +6448,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <button
   type="button"
   className="community-most-wanted-journal-link"
-  onClick={() => {
-    setJournalOpen(true);
-
+    onClick={() => {
     const communityArticle = journalArticles.find(
       (article) => article.id === 13
     );
 
     if (communityArticle) {
-      setSelectedArticle(communityArticle);
+      handleJournalArticleOpen(communityArticle);
     }
   }}
 >
@@ -7005,9 +7410,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </>
 )}
 
-<div className="section-divider"></div>
-
-{view !== "exhibition" && (
+{view !== "exhibition" && view !== "journal" && (
+  <>
+    <div className="section-divider"></div>
 
 <footer className="site-footer">
   <div className="footer-benefits">
@@ -7156,6 +7561,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </div>
 </footer>
+</>
 )}
 
         {discoveryBuilderOpen && (
@@ -7289,7 +7695,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     selectedProduct ||
     storyOpen ||
     howItWorksOpen ||
-    journalOpen ||
     privateSelectionOpen ||
     catalogPreview
       ? "show"
@@ -7955,367 +8360,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   )}
 </aside>
 
-      {journalOpen && (
-  <div
-    className="journal-overlay"
-    onClick={handleJournalClose}
-  >    
-  <section
-      className="journal-top-sheet"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="journal-topbar">
-        <div className="journal-topbar-copy">
-          <div className="journal-kicker">{tr.journalKicker}</div>
-          <h2 className="journal-heading">{tr.journalTitle}</h2>
-          <p className="journal-subheading">{tr.journalSubtitle}</p>
-        </div>
-
-        <div className="journal-topbar-side">
-          <div className="journal-topbar-quote">
-            {lang === "sr"
-              ? "Ne pišemo o parfemima. Pišemo o trenucima koje ostavljaju."
-              : "We don’t write about perfumes. We write about moments they leave behind."}
-          </div>
-        </div>
-
-        <button
-  type="button"
-  className="journal-close-btn"
-  onClick={handleJournalClose}
-  aria-label={tr.journalClose}
->
-  ×
-</button>
-
-   </div>
-      <div className="journal-body-scroll">
-
-        {sortedJournalArticles?.[0] && (
-  <article
-    className="journal-featured journal-featured--split"
-    onClick={() => handleJournalArticleOpen(sortedJournalArticles[0])}
-  >
-  <div className="journal-featured-copy">
-      <div className="journal-featured-meta">
-        <span>
-          {getJournalText(sortedJournalArticles[0].date, lang)}
-        </span>
-
-        <span>{tr.journalReadingTime}</span>
-
-  {sortedJournalArticles[0].series && (
-    <span className="journal-series-inline">
-      {getJournalText(sortedJournalArticles[0].series, lang)}
-    </span>
-  )}
-</div>
-
-      <h2>{getJournalText(sortedJournalArticles[0].title, lang)}</h2>
-
-      <div className="journal-author-signature">
-        <div className="journal-author-avatar">
-          {getJournalAvatarLetter(lang)}
-        </div>
-
-        <div className="journal-author-meta">
-          <div className="journal-author-name">
-            {tr.journalAuthorName}
-          </div>
-          <div className="journal-author-role">
-            {tr.journalAuthorRole}
-          </div>
-        </div>
-      </div>
-
-      <p>{getJournalText(sortedJournalArticles[0].excerpt, lang)}</p>
-
-      <div className="journal-featured-link">
-        {tr.journalReadArticle}
-      </div>
-    </div>
-
-    {sortedJournalArticles[0].image && (
-      <div className="journal-featured-image-wrap">
-        <img
-          src={sortedJournalArticles[0].image}
-          alt={getJournalText(sortedJournalArticles[0].title, lang)}
-          className="journal-featured-image"
-        />
-      </div>
-    )}
-  </article>
-)}
-
-      {sortedJournalArticles.length > 1 && (
-  <div className="journal-grid">
-    {sortedJournalArticles.slice(1).map((article) => (
-      <article
-  key={article.id}
-  className="journal-card"
-  onClick={() => handleJournalArticleOpen(article)}
-      >
-        {article.image && (
-          <div className="journal-card-media">
-            <div
-              className="journal-card-bg"
-              style={{ backgroundImage: `url(${article.image})` }}
-            />
-          </div>
-        )}
-
-        <div className="journal-card-meta">
-          <span className="journal-card-date">
-            {getJournalText(article.date, lang)}
-          </span>
-          <span className="journal-reading-time">
-            {tr.journalReadingTime}
-          </span>
-        </div>
-
-        {article.series && (
-          <div className="journal-series-badge">
-          {getJournalText(article.series, lang)}
-          </div>
-        )}
-
-        <h3 className="journal-card-title">
-          {getJournalText(article.title, lang)}
-        </h3>
-
-        <div className="journal-author-signature small">
-          <div className="journal-author-avatar">
-            {getJournalAvatarLetter(lang)}
-          </div>
-
-          <div className="journal-author-meta">
-            <div className="journal-author-name">
-              {tr.journalAuthorName}
-            </div>
-            <div className="journal-author-role">
-              {tr.journalAuthorRole}
-            </div>
-          </div>
-        </div>
-
-        <p className="journal-card-excerpt">
-          {getJournalText(article.excerpt, lang)}
-        </p>
-
-        <div className="journal-card-link">
-          {tr.journalReadArticle}
-        </div>
-      </article>
-    ))}
-  </div>
-)}
-      </div>
-    </section>
-  </div>
-)}
-
-{selectedArticle && (
-  <div
-    className="journal-article-overlay"
-    onClick={() => setSelectedArticle(null)}
-  >
-    <div
-      className="journal-article-modal"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="journal-article-sticky-head">
-        <div className="journal-article-head">
-          <div className="journal-card-meta">
-            <span className="journal-card-date">
-              {getJournalText(selectedArticle.date, lang)}
-            </span>
-
-    <span className="journal-reading-time">
-      {tr.journalReadingTime}
-    </span>
-
-    {selectedArticle.series && (
-      <span className="journal-series-inline">
-        {getJournalText(selectedArticle.series, lang)}
-      </span>
-    )}
-  </div>
-
-  <button
-    type="button"
-    className="journal-close-btn"
-    onClick={() => setSelectedArticle(null)}
-    aria-label={tr.journalCloseArticle}
-  >
-    ×
-  </button>
-</div>
-
-        <h2 className="journal-article-title">
-          {getJournalText(selectedArticle.title, lang)}
-        </h2>
-
-        <div className="journal-author-signature">
-          <div className="journal-author-avatar">
-            {getJournalAvatarLetter(lang)}
-          </div>
-
-          <div className="journal-author-meta">
-            <div className="journal-author-name">
-              {tr.journalAuthorName}
-            </div>
-            <div className="journal-author-role">
-              {tr.journalAuthorRole}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="journal-article-scroll">
-        <p className="journal-article-body">
-          {getJournalText(selectedArticle.content, lang)}
-        </p>
-
-        {selectedArticle.links?.length > 0 && (
-  <div className="journal-article-links">
-    <div className="journal-related-kicker journal-links-kicker">
-      {lang === "sr" ? "Linkovi iz teksta" : "Story links"}
-    </div>
-
-    <div className="journal-related-links">
-      {selectedArticle.links.map((link, index) => (
-        <button
-          key={link.url || `journal-link-${index}`}
-          type="button"
-          className="journal-related-text-link"
-          onClick={() => handleJournalLinkClick(link)}
-        >
-          {getJournalText(link.label, lang)}
-        </button>
-      ))}
-    </div>
-  </div>
-)}
-
-        <div className="journal-inline-feedback-row">
-          <div className="journal-inline-feedback-cluster">
-            <button
-  type="button"
-  className={`jf-btn jf-up ${
-    activeJournalFeedback?.vote === "up" ? "active" : ""
-  }`}
-  onClick={() => handleJournalFeedbackVote(selectedArticle, "up")}
-  aria-label={lang === "sr" ? "Pozitivan feedback" : "Positive feedback"}
->
-  <span className="jf-icon">👍</span>
-  {journalVoteSuccess === "up" && (
-    <span className="jf-check" aria-hidden="true">
-      ✓
-    </span>
-  )}
-</button>
-
-            <div className="journal-feedback-inline-shell">
-  <div className="journal-feedback-inline-inner">
-    <input
-      type="text"
-      maxLength={180}
-      value={activeJournalFeedback?.note || ""}
-      onChange={(e) =>
-        handleJournalFeedbackNoteChange(
-          selectedArticle,
-          e.target.value
-        )
-      }
-      placeholder={
-        lang === "sr"
-          ? "Feedback u jednoj rečenici..."
-          : "Feedback in one sentence..."
-      }
-      className="journal-feedback-inline-input"
-    />
-
-    {(activeJournalFeedback?.note || "").length > 0 && (
-      <span className="journal-feedback-inline-count">
-        {(activeJournalFeedback?.note || "").length}/180
-      </span>
-    )}
-
-    <button
-      type="button"
-      className={`journal-feedback-inline-send ${
-        journalFeedbackSuccess ? "is-success" : ""
-      }`}
-      onClick={() => handleJournalFeedbackSubmit(selectedArticle)}
-      disabled={!activeJournalFeedback?.vote}
-    >
-      <span className="jf-send-label">
-        {lang === "sr" ? "Pošalji" : "Send"}
-      </span>
-
-      <span className="jf-send-check" aria-hidden="true">
-        ✓
-      </span>
-    </button>
-  </div>
-</div>
-
-<button
-  type="button"
-  className={`jf-btn jf-down ${
-    activeJournalFeedback?.vote === "down" ? "active" : ""
-  }`}
-  onClick={() => handleJournalFeedbackVote(selectedArticle, "down")}
-  aria-label={lang === "sr" ? "Negativan feedback" : "Negative feedback"}
->
-  <span className="jf-icon">👎</span>
-  {journalVoteSuccess === "down" && (
-  <span className="jf-cross" aria-hidden="true">
-    ✕
-  </span>
-)}
-</button>
-          </div>
-        </div>
-
-        {getRelatedJournalProducts(selectedArticle).length > 0 && (
-  <div className="journal-related-products">
-    <div className="journal-related-kicker">
-      {lang === "sr"
-        ? "Mirisi iz ove priče"
-        : "Featured in this story"}
-    </div>
-
-    <div className="journal-related-links">
-      {getRelatedJournalProducts(selectedArticle).map((product) => (
-        <button
-          key={product.id}
-          type="button"
-          className="journal-related-text-link"
-          onClick={() => {
-            openProductModal(product);
-          }}
-        >
-          {product.name}
-        </button>
-      ))}
-    </div>
-  </div>
-)}
-      </div>
-    </div>
-  </div>
-)}
-
-      {selectedProduct && (
+{selectedProduct && (
   <div
     className={`modal-overlay product-modal-layer ${
       productModalVisible ? "show" : ""
     }`}
     onClick={(e) => {
-  e.preventDefault();
-  e.stopPropagation();
-}}
+      e.preventDefault();
+      e.stopPropagation();
+    }}
   >
     <div
       className={`product-modal ${productModalVisible ? "open panel-open" : ""}`}
