@@ -78,6 +78,18 @@
         0 0 34px rgba(220, 181, 107, 0.06);
 }
 
+.journal-page-intro h1 {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.14em;
+}
+
+.journal-page-title-journal {
+    font-family: Georgia, "Times New Roman", serif;
+    letter-spacing: -0.045em;
+}
+
 .journal-page-intro p,
 .journal-page-empty p {
     max-width: 620px;

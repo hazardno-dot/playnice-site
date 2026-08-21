@@ -99,7 +99,10 @@ function JournalPage({
       <main className="journal-page">
         <section className="journal-page-empty">
           <span className="journal-page-eyebrow">{copy.eyebrow}</span>
-          <h1>{copy.title}</h1>
+          <h1>
+            <span>Le</span>
+            <span className="journal-page-title-journal">Journal</span>
+          </h1>
           <p>{copy.empty}</p>
         </section>
       </main>
