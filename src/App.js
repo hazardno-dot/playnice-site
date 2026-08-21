@@ -216,6 +216,112 @@ const getProductMetaDescription = (product, lang = "sr") => {
 };
 
 /* =========================================
+   JOURNAL SEO HELPERS
+========================================= */
+
+const getJournalSeoUrl = (article = null) => {
+  if (!article) {
+    return `${SITE_BASE_URL}/journal`;
+  }
+
+  const slug = getJournalArticleSlug(article);
+
+  return slug
+    ? `${SITE_BASE_URL}/journal/${slug}`
+    : `${SITE_BASE_URL}/journal`;
+};
+
+const getJournalSeoImage = (article = null) => {
+  const image = article?.image;
+
+  if (!image) {
+    return `${SITE_BASE_URL}/og-image.jpg`;
+  }
+
+  if (/^https?:\/\//i.test(image)) {
+    return image;
+  }
+
+  return `${SITE_BASE_URL}${image.startsWith("/") ? "" : "/"}${image}`;
+};
+
+const getJournalSeoTitle = (article, lang = "sr") => {
+  if (!article) {
+    return lang === "en"
+      ? "Le Journal | Stories, fragrance & culture | PlayNice"
+      : "Le Journal | Priče, parfemi i kultura | PlayNice";
+  }
+
+  const title = getJournalText(article.title, lang);
+
+  return `${title} | Le Journal | PlayNice`;
+};
+
+const getJournalSeoDescription = (article, lang = "sr") => {
+  if (!article) {
+    return lang === "en"
+      ? "Le Journal by PlayNice — stories about fragrance, people, culture, questionable decisions and everything that somehow connects them."
+      : "Le Journal by PlayNice — priče o parfemima, ljudima, kulturi, sumnjivim odlukama i svemu što ih nekako povezuje.";
+  }
+
+  const excerpt = getJournalText(article.excerpt, lang).trim();
+
+  if (!excerpt) {
+    return lang === "en"
+      ? "Read the latest story from Le Journal by PlayNice."
+      : "Pročitaj priču iz PlayNice Le Journala.";
+  }
+
+  if (excerpt.length <= 160) {
+    return excerpt;
+  }
+
+  return `${excerpt.slice(0, 157).trim()}...`;
+};
+
+const getJournalStructuredData = (article, lang = "sr") => {
+  if (!article) return null;
+
+  const title = getJournalText(article.title, lang);
+  const description = getJournalSeoDescription(article, lang);
+  const url = getJournalSeoUrl(article);
+  const image = getJournalSeoImage(article);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+
+    headline: title,
+    description,
+    image: [image],
+    url,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": url
+    },
+
+    author: {
+      "@type": "Person",
+      name: lang === "sr" ? "Čarli" : "Charlie"
+    },
+
+    publisher: {
+      "@type": "Organization",
+      name: "PlayNice",
+      url: SITE_BASE_URL
+    },
+
+    inLanguage: lang === "sr" ? "sr" : "en",
+
+    isPartOf: {
+      "@type": "Blog",
+      name: "Le Journal",
+      url: `${SITE_BASE_URL}/journal`
+    }
+  };
+};
+
+/* =========================================
    Arabian fragrance "AN" HELPER
 ========================================= */
 const getEnglishArticle = (text = "") => {
@@ -4360,6 +4466,185 @@ useEffect(() => {
     }
   };
 }, [selectedProduct, lang]);
+
+/* =========================================
+   JOURNAL SEO
+========================================= */
+
+useEffect(() => {
+  if (view !== "journal") {
+    return undefined;
+  }
+
+  const article = journalPageArticle || null;
+
+  const title = getJournalSeoTitle(article, lang);
+  const description = getJournalSeoDescription(article, lang);
+  const canonicalUrl = getJournalSeoUrl(article);
+  const imageUrl = getJournalSeoImage(article);
+
+  const previousTitle = document.title;
+
+  document.title = title;
+
+  const upsertMeta = (selector, attributes) => {
+    let element = document.head.querySelector(selector);
+
+    const created = !element;
+
+    if (!element) {
+      element = document.createElement("meta");
+      document.head.appendChild(element);
+    }
+
+    Object.entries(attributes).forEach(([key, value]) => {
+      element.setAttribute(key, value);
+    });
+
+    return {
+      element,
+      created
+    };
+  };
+
+  const managedElements = [];
+
+  managedElements.push(
+    upsertMeta('meta[name="description"]', {
+      name: "description",
+      content: description
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[property="og:title"]', {
+      property: "og:title",
+      content: title
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[property="og:description"]', {
+      property: "og:description",
+      content: description
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[property="og:image"]', {
+      property: "og:image",
+      content: imageUrl
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[property="og:url"]', {
+      property: "og:url",
+      content: canonicalUrl
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[property="og:type"]', {
+      property: "og:type",
+      content: article ? "article" : "website"
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[name="twitter:card"]', {
+      name: "twitter:card",
+      content: "summary_large_image"
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[name="twitter:title"]', {
+      name: "twitter:title",
+      content: title
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[name="twitter:description"]', {
+      name: "twitter:description",
+      content: description
+    })
+  );
+
+  managedElements.push(
+    upsertMeta('meta[name="twitter:image"]', {
+      name: "twitter:image",
+      content: imageUrl
+    })
+  );
+
+  let canonical = document.head.querySelector(
+    'link[rel="canonical"]'
+  );
+
+  const canonicalCreated = !canonical;
+
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.setAttribute("rel", "canonical");
+    document.head.appendChild(canonical);
+  }
+
+  const previousCanonical =
+    canonical.getAttribute("href") || "";
+
+  canonical.setAttribute("href", canonicalUrl);
+
+  const existingSchema = document.getElementById(
+    "playnice-journal-schema"
+  );
+
+  if (existingSchema) {
+    existingSchema.remove();
+  }
+
+  if (article) {
+    const structuredData =
+      getJournalStructuredData(article, lang);
+
+    if (structuredData) {
+      const script = document.createElement("script");
+
+      script.id = "playnice-journal-schema";
+      script.type = "application/ld+json";
+      script.textContent =
+        JSON.stringify(structuredData);
+
+      document.head.appendChild(script);
+    }
+  }
+
+  return () => {
+    document.title = previousTitle;
+
+    const schema = document.getElementById(
+      "playnice-journal-schema"
+    );
+
+    schema?.remove();
+
+    managedElements.forEach(({ element, created }) => {
+      if (created) {
+        element.remove();
+      }
+    });
+
+    if (canonicalCreated) {
+      canonical.remove();
+    } else {
+      canonical.setAttribute(
+        "href",
+        previousCanonical
+      );
+    }
+  };
+}, [view, journalPageArticle, lang]);
 
 /* =========================================
    SCENT REQUESTS USEEFFECT
