@@ -9611,7 +9611,7 @@ main {
   justify-content: flex-start;
 
   font-family: "Cormorant Garamond", serif;
-  color: rgba(220, 181, 107, 0.34);
+  color: rgba(220, 181, 107, 0.44);
   font-size: 1.08rem;
   font-weight: 600;
   line-height: 1;
@@ -9628,7 +9628,7 @@ main {
 }
 
 .community-most-wanted-item.is-leading .community-most-wanted-rank {
-  color: rgba(220, 181, 107, 0.82);
+  color: rgba(220, 181, 107, 0.88);
   font-size: 1.18rem;
 }
 
