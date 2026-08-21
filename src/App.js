@@ -1016,8 +1016,6 @@ const isMontenegroOrder = checkoutForm.country === "ME";
 const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== "ME";
 
   const [hasUserPickedSize, setHasUserPickedSize] = useState(false);
-  const [journalOpen, setJournalOpen] = useState(false);
-  const [selectedArticle, setSelectedArticle] = useState(null);
 
   const [journalPageArticle, setJournalPageArticle] = useState(
     () => getJournalArticleFromCurrentUrl()
@@ -1432,8 +1430,6 @@ const sideRailBlocked =
   storyOpen ||
   howItWorksOpen ||
   privateSelectionOpen ||
-  journalOpen ||
-  Boolean(selectedArticle) ||
   productModalVisible;
 
 const shouldShowSideRails =
@@ -1584,8 +1580,6 @@ const selectedSortOption =
     storyOpen ||
     howItWorksOpen ||
     privateSelectionOpen ||
-    journalOpen ||
-    !!selectedArticle ||
     !!catalogPreview;
 
   const body = document.body;
@@ -1635,8 +1629,6 @@ const selectedSortOption =
   storyOpen,
   howItWorksOpen,
   privateSelectionOpen,
-  journalOpen,
-  selectedArticle,
   catalogPreview
 ]);
 
@@ -1918,16 +1910,11 @@ useEffect(() => {
     storyOpen ||
     howItWorksOpen ||
     privateSelectionOpen ||
-    journalOpen ||
-    !!selectedArticle ||
     !!catalogPreview;
 
   const shouldShow =
     !hasBlockingLayer &&
-    (view === "home" ||
-      view === "shop" ||
-      cartCount > 0 ||
-      wishlist.length > 0);
+    (view === "home" || view === "shop");
 
   setShowStickyCta(shouldShow);
 }, [
@@ -1938,8 +1925,6 @@ useEffect(() => {
   storyOpen,
   howItWorksOpen,
   privateSelectionOpen,
-  journalOpen,
-  selectedArticle,
   catalogPreview,
   cartCount,
   wishlist.length
@@ -1987,7 +1972,7 @@ useEffect(() => {
 
 useEffect(() => {
   setJournalVoteSuccess("");
-}, [selectedArticle]);
+}, [journalPageArticle]);
 
 useEffect(() => {
   return () => {
@@ -2025,9 +2010,6 @@ if (journalArticleFromUrl) {
 
   setJournalPageArticle(journalArticleFromUrl);
 
-  setJournalOpen(false);
-  setSelectedArticle(null);
-
   setNoteMapOpen(false);
   setProductModalVisible(false);
   setSelectedProduct(null);
@@ -2053,12 +2035,7 @@ if (journalArticleFromUrl) {
     setSelectedSize("");
     setHasUserPickedSize(false);
 
-    setJournalOpen(false);
     setJournalPageArticle(null);
-
-    if (nextView !== "journal") {
-    setSelectedArticle(null);
-    }
 
     setView(nextView);
 
@@ -2220,12 +2197,6 @@ const handleJournalFeedbackSubmit = (article) => {
   setTimeout(() => {
     setJournalFeedbackSuccess(false);
   }, 1200);
-};
-
-const handleJournalClose = () => {
-  setJournalOpen(false);
-  setSelectedArticle(null);
-  switchView("home");
 };
 
 /* =========================================
@@ -2688,11 +2659,7 @@ const markLatestJournalAsSeen = () => {
 };
 
 const handleJournalOpen = () => {
-  setJournalOpen(false);
-  setSelectedArticle(null);
-
   markLatestJournalAsSeen();
-
   switchView("journal");
 };
 
@@ -2703,8 +2670,6 @@ const handleJournalArticleOpen = (article) => {
 
   if (!slug) return;
 
-  setJournalOpen(false);
-  setSelectedArticle(null);
   setJournalPageArticle(article);
 
   if (String(article.id) === String(latestJournalArticleKey)) {
@@ -2732,8 +2697,6 @@ const handleJournalArticleOpen = (article) => {
 
 const handleJournalPageBack = () => {
   setJournalPageArticle(null);
-  setJournalOpen(false);
-  setSelectedArticle(null);
 
   setView("journal");
 
@@ -2894,8 +2857,9 @@ const freeShippingProgress = Math.min(
   Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
 );
 
-const activeJournalFeedbackArticle =
-  journalPageArticle || selectedArticle;
+const activeJournalFeedback = journalPageArticle
+  ? getJournalSavedFeedback(journalPageArticle)
+  : null;
 
 const activeJournalFeedback = activeJournalFeedbackArticle
   ? getJournalSavedFeedback(activeJournalFeedbackArticle)
@@ -3103,9 +3067,6 @@ const handleJournalLinkClick = (link) => {
 
   // Kod navigacije iz Journala ne vraćamo staru scroll poziciju
   scrollYRef.current = 0;
-
-  setSelectedArticle(null);
-  setJournalOpen(false);
 
   // Community / Scent Request
   if (target === "scent-request") {
@@ -6486,15 +6447,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <button
   type="button"
   className="community-most-wanted-journal-link"
-  onClick={() => {
-    setJournalOpen(true);
-
+    onClick={() => {
     const communityArticle = journalArticles.find(
       (article) => article.id === 13
     );
 
     if (communityArticle) {
-      setSelectedArticle(communityArticle);
+      handleJournalArticleOpen(communityArticle);
     }
   }}
 >
@@ -7734,7 +7693,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     selectedProduct ||
     storyOpen ||
     howItWorksOpen ||
-    journalOpen ||
     privateSelectionOpen ||
     catalogPreview
       ? "show"
