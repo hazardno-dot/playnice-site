@@ -9735,27 +9735,66 @@ main {
   }
 
   .community-most-wanted-top {
-    gap: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 6px;
+    margin-bottom: 9px;
   }
 
   .community-most-wanted-journal-link {
-    font-size: 0.56rem;
-    letter-spacing: 0.12em;
+    font-size: 0.58rem;
+    line-height: 1.25;
+    letter-spacing: 0.11em;
   }
 
   .community-most-wanted-top small {
-    font-size: 0.54rem;
-    letter-spacing: 0.12em;
+    font-size: 0.56rem;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+    white-space: normal;
+  }
+
+  .community-most-wanted-list {
+    gap: 5px;
   }
 
   .community-most-wanted-item {
-    grid-template-columns: 22px minmax(0, 1fr) 16px auto;
+    grid-template-columns: 26px minmax(0, 1fr) 16px auto;
     gap: 6px;
-    padding: 8px;
+    padding: 9px 8px;
+  }
+
+  .community-most-wanted-rank {
+    font-size: 0.98rem;
+  }
+
+  .community-most-wanted-item.is-leading .community-most-wanted-rank {
+    font-size: 1.06rem;
   }
 
   .community-most-wanted-name {
-    font-size: 0.66rem;
+    font-size: 0.68rem;
+  }
+
+  .community-request-most-wanted-badge,
+  .community-request-heating-badge,
+  .community-request-top3-badge,
+  .community-request-new-badge {
+    padding: 2px 5px;
+    font-size: 0.46rem;
+  }
+
+  .community-most-wanted-item strong {
+    min-width: 24px;
+    height: 21px;
+    font-size: 0.61rem;
+  }
+
+  .community-most-wanted-trend {
+    width: 16px;
+    height: 16px;
+    font-size: 0.7rem;
   }
 }
 
@@ -10048,42 +10087,95 @@ main {
   }
 
   .already-in-collection-head {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     text-align: center;
   }
 
+  .already-in-collection-kicker {
+    font-size: 0.59rem;
+    line-height: 1.35;
+    letter-spacing: 0.12em;
+  }
+
   .already-in-collection-intro {
-    font-size: 0.92rem;
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+
+  .already-in-collection-list {
+    gap: 0;
   }
 
   .already-in-collection-item {
-    grid-template-columns: 30px minmax(0, 1fr) 18px;
-    gap: 8px;
-    min-height: 45px;
+    grid-template-columns: 27px minmax(0, 1fr) 18px;
+    gap: 7px;
+
+    min-height: 48px;
     padding: 8px 4px;
   }
 
   .already-in-collection-rank {
-    font-size: 1.25rem;
+    font-size: 1.18rem;
+  }
+
+  .already-in-collection-item.is-featured {
+    min-height: 50px;
+  }
+
+  .already-in-collection-item.is-featured:first-child {
+    min-height: 52px;
   }
 
   .already-in-collection-item.is-featured:first-child .already-in-collection-rank {
-    font-size: 1.4rem;
+    font-size: 1.32rem;
+  }
+
+  .already-in-collection-copy {
+    gap: 3px;
   }
 
   .already-in-collection-name {
-    font-size: 0.7rem;
+    font-size: 0.69rem;
+    line-height: 1.2;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .already-in-collection-meta {
-    gap: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 7px;
   }
 
   .already-in-collection-meta strong {
-    font-size: 0.58rem;
+    flex-shrink: 0;
+    font-size: 0.57rem;
   }
 
   .already-in-collection-meta em {
+    flex-basis: 100%;
+
+    font-size: 0.63rem;
+    line-height: 1.15;
+
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  .already-in-collection-arrow {
+    font-size: 0.78rem;
+  }
+
+  .already-in-collection-more-wrap {
+    margin-top: 6px;
+  }
+
+  .already-in-collection-more {
     font-size: 0.64rem;
   }
 }
