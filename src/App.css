@@ -15344,7 +15344,7 @@ body.scrolled .header-system .announcement-bar-system {
   }
 
   .header-system + main {
-    padding-top: 8px;
+    padding-top: 0px;
   }
 }
 
