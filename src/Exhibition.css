@@ -415,16 +415,14 @@
   }
 }
 
-.app-shell--exhibition,
-.app-shell--exhibition .header-system,
-.app-shell--exhibition .header-next-system {
+.app-shell--exhibition {
   background: #080808;
 }
 
 @media (max-width: 800px) {
+
   .app-shell--exhibition,
-  .app-shell--exhibition .header-system,
-  .app-shell--exhibition .header-next-system {
+  .app-shell--exhibition .header-system {
     background: #080808;
   }
 }
