@@ -756,3 +756,8 @@
         transform: none;
     }
 }
+
+body.journal-active {
+    padding-bottom: 0;
+    background: #080808;
+}

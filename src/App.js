@@ -5121,9 +5121,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   ========================================= */
   return (
   <div
-    className={`app-shell ${
-      view === "exhibition" ? "app-shell--exhibition" : ""
-    }`}
+    className="app-shell"
   >
 
   {shouldShowSideRails && (

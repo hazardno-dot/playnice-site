@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import "./JournalArticlePage.css";
 
 const getJournalText = (field, lang = "sr") => {
@@ -42,6 +42,15 @@ function JournalArticlePage({
   onFeedbackNoteChange,
   onFeedbackSubmit,
 }) {
+
+useEffect(() => {
+  document.body.classList.add("journal-active");
+
+  return () => {
+    document.body.classList.remove("journal-active");
+  };
+}, []);
+
   const title = getJournalText(article?.title, lang);
   const excerpt = getJournalText(article?.excerpt, lang);
   const content = getJournalText(article?.content, lang);

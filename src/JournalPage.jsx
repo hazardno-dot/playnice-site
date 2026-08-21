@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import "./JournalPage.css";
 
 const getJournalText = (field, lang = "sr") => {
@@ -37,6 +37,14 @@ function JournalPage({
   articles = [],
   onOpenArticle,
 }) {
+
+    useEffect(() => {
+        document.body.classList.add("journal-active");
+
+        return () => {
+            document.body.classList.remove("journal-active");
+        };
+        }, []);
   const sortedArticles = useMemo(() => {
     if (!Array.isArray(articles)) return [];
 
