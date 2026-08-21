@@ -563,7 +563,7 @@
 
     .journal-page {
         padding:
-            calc(var(--announcement-height) + 24px) 0 36px;
+            calc(var(--announcement-height) + 14px) 0 36px;
     }
 
     .journal-page-intro,
