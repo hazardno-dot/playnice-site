@@ -17597,7 +17597,8 @@ body.overlay-lock .header-system {
   position: relative;
   display: flex;
   justify-content: center;
-  padding-top: 14px;
+
+  padding-top: 26px;
   padding-bottom: 14px;
 }
 
