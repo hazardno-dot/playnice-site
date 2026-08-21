@@ -9756,7 +9756,7 @@ main {
   }
 
   .community-most-wanted-list {
-    gap: 5px;
+    gap: 6px;
   }
 
   .community-most-wanted-item {
@@ -10107,13 +10107,13 @@ main {
     gap: 0;
   }
 
-  .already-in-collection-item {
-    grid-template-columns: 27px minmax(0, 1fr) 18px;
-    gap: 7px;
-
-    min-height: 48px;
-    padding: 8px 4px;
-  }
+    .already-in-collection-item {
+      grid-template-columns: 27px minmax(0, 1fr) 18px;
+      gap: 7px;
+  
+      min-height: 49px;
+      padding: 8px 4px;
+    }
 
   .already-in-collection-rank {
     font-size: 1.18rem;
