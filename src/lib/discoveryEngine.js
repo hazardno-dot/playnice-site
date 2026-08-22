@@ -1384,14 +1384,14 @@ export const discoverFragrances = ({
     .filter((item) => Number.isFinite(item.score))
     .sort((a, b) => b.score - a.score);
 
-  const bestScore = scored[0]?.score ?? 0;
+  const topScore = scored[0]?.score ?? 0;
 
   const relevanceFloor = Math.max(
     42,
-    bestScore * 0.72
+    topScore * 0.72
   );
 
-  cconst relevant = scored.filter(
+  const relevant = scored.filter(
     (item, index) =>
       index < 5 ||
       item.score >= relevanceFloor
@@ -1401,6 +1401,7 @@ export const discoverFragrances = ({
     .slice(0, Math.max(1, limit))
     .map((item, index, all) => {
       const bestScore = all[0]?.score || item.score;
+
       const normalizedMatch = clamp(
         72 + (item.score / Math.max(bestScore, 1)) * 24 - index * 1.5,
         58,
@@ -1412,7 +1413,13 @@ export const discoverFragrances = ({
         score: Number(item.score.toFixed(2)),
         match: Math.round(normalizedMatch),
         selectedSize: item.selectedSize,
-        reason: humanReason(item.product, item, intent, lang, index),
+        reason: humanReason(
+          item.product,
+          item,
+          intent,
+          lang,
+          index
+        ),
         profile: item.profile,
         signals: item.reasons,
       };
