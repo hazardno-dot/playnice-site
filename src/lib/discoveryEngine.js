@@ -935,9 +935,17 @@ if (intent.gender === "unisex") {
     const scentSimilarity = profileSimilarity(profile, anchorProfile);
     const referenceTarget = buildReferenceTarget(anchorProfile, intent.referenceModifiers);
     const targetSimilarity = vectorSimilarity(profile, referenceTarget);
-    const isAnchor =
+    const isDirectAnchor =
       product.id === anchor.id &&
       intent.referenceSource === "product";
+
+    const isInspiredByProxy =
+      product.id === anchor.id &&
+      intent.referenceSource === "inspiredBy";
+
+    const isAnchor =
+      isDirectAnchor ||
+      (isInspiredByProxy && intent.referenceModifiers.length > 0);
 
     // The reference is the measuring stick, not a recommendation.
     // If the user asks for "something like X", X itself must never appear.
