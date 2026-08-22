@@ -6070,10 +6070,17 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   className="playnice-discovery-page-status"
                   aria-live="polite"
                 >
-                  {`${discoveryPageStart + 1}–${Math.min(
-                    discoveryPageStart + DISCOVERY_RESULTS_PER_PAGE,
-                    discoveryResults.length
-                  )} / ${discoveryResults.length}`}
+                  <strong>
+                    {discoveryPageStart + 1}–
+                    {Math.min(
+                      discoveryPageStart + DISCOVERY_RESULTS_PER_PAGE,
+                      discoveryResults.length
+                    )}
+                  </strong>
+
+                  <span>/</span>
+
+                  <span>{discoveryResults.length}</span>
                 </span>
 
                 <button

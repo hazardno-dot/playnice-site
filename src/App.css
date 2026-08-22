@@ -18112,7 +18112,7 @@ body.overlay-lock .header-system {
   align-items: center;
   gap: 4px;
   color: rgba(255, 255, 255, 0.42);
-  font-size: 7.1px;
+  font-size: 7.4px;
   font-weight: 850;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -18177,7 +18177,7 @@ body.overlay-lock .header-system {
 .playnice-discovery-category {
   margin-bottom: 3px;
   color: rgba(220, 181, 107, 0.58);
-  font-size: 7px;
+  font-size: 7.3px;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -18197,8 +18197,8 @@ body.overlay-lock .header-system {
   overflow: hidden;
   margin: 4px 0 0;
   color: rgba(255, 255, 255, 0.42);
-  font-size: 7.5px;
-  line-height: 1.28;
+  font-size: 7.8px;
+  line-height: 1.32;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
@@ -18287,14 +18287,21 @@ body.overlay-lock .header-system {
 }
 
 .playnice-discovery-page-status {
-  min-width: 44px;
+  min-width: 62px;
   display: inline-flex;
   align-items: baseline;
   justify-content: center;
   gap: 5px;
   color: rgba(255, 255, 255, 0.34);
-  font-size: 7.5px;
-  letter-spacing: 0.08em;
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.playnice-discovery-page-status strong {
+  color: #e8c97f;
+  font-size: 9px;
+  font-weight: 850;
 }
 
 .playnice-discovery-feedback {
