@@ -932,12 +932,19 @@ if (intent.gender === "unisex") {
   const unisex = profile.unisex ?? 5;
   const genderGap = Math.abs(masculine - feminine);
 
+  if (genderGap > 4) {
+    return {
+      score: -Infinity,
+      selectedSize: null,
+      profile,
+      reasons: [],
+      penalties: ["too-gendered-for-unisex"],
+    };
+  }
+
   score += unisex * 3.0;
   score -= genderGap * 3.0;
-
-  if (genderGap <= 3.5) {
-    reasons.push("gender:unisex");
-  }
+  reasons.push("gender:unisex");
 }
 
   if (intent.referenceProduct) {
