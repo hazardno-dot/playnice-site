@@ -456,22 +456,139 @@ const detectIntensity = (text, aliases) => {
 };
 
 const NOTE_ALIASES = {
-  vanilla: ["vanila", "vanilu", "vanile", "vanilla"],
-  oud: ["oud", "agarwood"],
-  tobacco: ["duvan", "tobacco"],
-  honey: ["med", "honey"],
-  lavender: ["lavanda", "lavender"],
-  rose: ["ruza", "ruža", "rose"],
-  jasmine: ["jasmin", "jasmine"],
-  coconut: ["kokos", "coconut"],
-  leather: ["koza", "koža", "leather"],
-  coffee: ["kafa", "coffee"],
-  iris: ["iris", "orris"],
-  musk: ["mosus", "mošus", "musk"],
-  bergamot: ["bergamot"],
-  lemon: ["limun", "lemon"],
-  grapefruit: ["grejp", "grejpfrut", "grapefruit"],
-  sandalwood: ["sandalovina", "sandalwood"],
+  vanilla: [
+    "vanila",
+    "vanile",
+    "vanilu",
+    "vanilom",
+    "vanilija",
+    "vanilije",
+    "vaniliju",
+    "vanilijom",
+    "vanilla",
+  ],
+
+  oud: [
+    "oud",
+    "ouda",
+    "oudom",
+    "agarwood",
+  ],
+
+  tobacco: [
+    "duvan",
+    "duvana",
+    "duvanu",
+    "duvanom",
+    "tobacco",
+  ],
+
+  honey: [
+    "med",
+    "meda",
+    "medu",
+    "medom",
+    "honey",
+  ],
+
+  lavender: [
+    "lavanda",
+    "lavande",
+    "lavandu",
+    "lavandom",
+    "lavender",
+  ],
+
+  rose: [
+    "ruza",
+    "ruže",
+    "ruzu",
+    "ružom",
+    "rose",
+  ],
+
+  jasmine: [
+    "jasmin",
+    "jasmina",
+    "jasminu",
+    "jasminom",
+    "jasmine",
+  ],
+
+  coconut: [
+    "kokos",
+    "kokosa",
+    "kokosu",
+    "kokosom",
+    "coconut",
+  ],
+
+  leather: [
+    "koza",
+    "kože",
+    "kozu",
+    "kožom",
+    "leather",
+  ],
+
+  coffee: [
+    "kafa",
+    "kafe",
+    "kafu",
+    "kafom",
+    "coffee",
+  ],
+
+  iris: [
+    "iris",
+    "irisa",
+    "irisu",
+    "irisom",
+    "orris",
+  ],
+
+  musk: [
+    "mosus",
+    "mošus",
+    "mosusa",
+    "mošusa",
+    "mosusom",
+    "mošusom",
+    "musk",
+  ],
+
+  bergamot: [
+    "bergamot",
+    "bergamota",
+    "bergamotu",
+    "bergamotom",
+  ],
+
+  lemon: [
+    "limun",
+    "limuna",
+    "limunu",
+    "limunom",
+    "lemon",
+  ],
+
+  grapefruit: [
+    "grejp",
+    "grejpa",
+    "grejpom",
+    "grejpfrut",
+    "grejpfruta",
+    "grejpfrutom",
+    "grapefruit",
+  ],
+
+  sandalwood: [
+    "sandalovina",
+    "sandalovine",
+    "sandalovinu",
+    "sandalovinom",
+    "sandalwood",
+  ],
 };
 
 const noteAliasToKeys = {
