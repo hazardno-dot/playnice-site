@@ -493,6 +493,7 @@ const parseQuery = (rawQuery, products = []) => {
     contexts: [],
     gender: null,
     referenceProduct: null,
+    referenceSource: null,
     referenceModifiers: [],
   };
 
@@ -587,13 +588,13 @@ const parseQuery = (rawQuery, products = []) => {
   if (wantsReference) {
     products.forEach((product) => {
       const candidates = [
-        { value: product?.name, weight: 120 },
-        { value: product?.shortName, weight: 140 },
-        { value: product?.inspiredBy?.name, weight: 90 },
-        { value: product?.inspiredBy?.short, weight: 80 },
+        { value: product?.name, weight: 120, source: "product" },
+        { value: product?.shortName, weight: 140, source: "product" },
+        { value: product?.inspiredBy?.name, weight: 90, source: "inspiredBy" },
+        { value: product?.inspiredBy?.short, weight: 80, source: "inspiredBy" },
       ];
 
-      candidates.forEach(({ value, weight }) => {
+      candidates.forEach(({ value, weight, source }) => {
         const candidate = normalizeText(value);
         if (candidate.length < 4) return;
 
@@ -609,6 +610,7 @@ const parseQuery = (rawQuery, products = []) => {
         if (score > bestReferenceScore) {
           bestReference = product;
           bestReferenceScore = score;
+          intent.referenceSource = source;
         }
       });
     });
@@ -933,7 +935,9 @@ if (intent.gender === "unisex") {
     const scentSimilarity = profileSimilarity(profile, anchorProfile);
     const referenceTarget = buildReferenceTarget(anchorProfile, intent.referenceModifiers);
     const targetSimilarity = vectorSimilarity(profile, referenceTarget);
-    const isAnchor = product.id === anchor.id;
+    const isAnchor =
+      product.id === anchor.id &&
+      intent.referenceSource === "product";
 
     // The reference is the measuring stick, not a recommendation.
     // If the user asks for "something like X", X itself must never appear.
