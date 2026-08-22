@@ -14,9 +14,6 @@ const normalizeText = (value = "") =>
     .replace(/[^a-z0-9€]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-    .replace(/[^a-z0-9€]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
 
 const includesAny = (text, values = []) =>
   values.some((value) => text.includes(normalizeText(value)));
