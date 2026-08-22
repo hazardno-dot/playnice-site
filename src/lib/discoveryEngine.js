@@ -9,6 +9,7 @@ const normalizeText = (value = "") =>
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "dj")
     .replace(/[’']/g, "")
     .replace(/[^a-z0-9€]+/g, " ")
     .replace(/\s+/g, " ")
@@ -390,14 +391,34 @@ const parseBudget = (text) => {
   return null;
 };
 
+const hasNegationMarker = (text, markers = []) =>
+  markers.some((marker) => {
+    const normalizedMarker = normalizeText(marker);
+    if (!normalizedMarker) return false;
+
+    return (
+      text === normalizedMarker ||
+      text.startsWith(`${normalizedMarker} `) ||
+      text.endsWith(` ${normalizedMarker}`) ||
+      text.includes(` ${normalizedMarker} `)
+    );
+  });
+
 const detectNegativeTrait = (text, aliases) => {
   for (const alias of aliases) {
     const normalizedAlias = normalizeText(alias);
     const index = text.indexOf(normalizedAlias);
     if (index === -1) continue;
-    const before = text.slice(Math.max(0, index - 28), index).trim();
-    if (NEGATION_MARKERS.some((marker) => before.includes(marker))) return true;
+
+    const before = text
+      .slice(Math.max(0, index - 28), index)
+      .trim();
+
+    if (hasNegationMarker(before, NEGATION_MARKERS)) {
+      return true;
+    }
   }
+
   return false;
 };
 
@@ -406,9 +427,16 @@ const detectHardNegative = (text, aliases) => {
     const normalizedAlias = normalizeText(alias);
     const index = text.indexOf(normalizedAlias);
     if (index === -1) continue;
-    const before = text.slice(Math.max(0, index - 28), index).trim();
-    if (HARD_NEGATION_MARKERS.some((marker) => before.includes(marker))) return true;
+
+    const before = text
+      .slice(Math.max(0, index - 28), index)
+      .trim();
+
+    if (hasNegationMarker(before, HARD_NEGATION_MARKERS)) {
+      return true;
+    }
   }
+
   return false;
 };
 
@@ -429,41 +457,344 @@ const detectIntensity = (text, aliases) => {
 };
 
 const NOTE_ALIASES = {
-  vanilla: ["vanila", "vanilu", "vanile", "vanilla"],
-  oud: ["oud", "agarwood"],
-  tobacco: ["duvan", "tobacco"],
-  honey: ["med", "honey"],
-  lavender: ["lavanda", "lavender"],
-  rose: ["ruza", "ruža", "rose"],
-  jasmine: ["jasmin", "jasmine"],
-  coconut: ["kokos", "coconut"],
-  leather: ["koza", "koža", "leather"],
-  coffee: ["kafa", "coffee"],
-  iris: ["iris", "orris"],
-  musk: ["mosus", "mošus", "musk"],
-  bergamot: ["bergamot"],
-  lemon: ["limun", "lemon"],
-  grapefruit: ["grejp", "grejpfrut", "grapefruit"],
-  sandalwood: ["sandalovina", "sandalwood"],
+  vanilla: [
+    "vanila", "vanile", "vanilu", "vanilom",
+    "vanilija", "vanilije", "vaniliju", "vanilijom",
+    "vanilla",
+  ],
+
+  oud: [
+    "oud", "ouda", "oudu", "oudom",
+    "agarwood",
+  ],
+
+  tobacco: [
+    "duvan", "duvana", "duvanu", "duvanom",
+    "tobacco",
+  ],
+
+  honey: [
+    "med", "meda", "medu", "medom",
+    "honey",
+  ],
+
+  lavender: [
+    "lavanda", "lavande", "lavandu", "lavandom",
+    "lavender",
+  ],
+
+  rose: [
+    "ruza", "ruze", "ruzu", "ruzom",
+    "rose",
+  ],
+
+  jasmine: [
+    "jasmin", "jasmina", "jasminu", "jasminom",
+    "jasmine",
+  ],
+
+  coconut: [
+    "kokos", "kokosa", "kokosu", "kokosom",
+    "coconut",
+  ],
+
+  leather: [
+    "koza", "koze", "kozu", "kozom",
+    "leather",
+  ],
+
+  coffee: [
+    "kafa", "kafe", "kafu", "kafom",
+    "coffee",
+  ],
+
+  iris: [
+    "iris", "irisa", "irisu", "irisom",
+    "orris",
+  ],
+
+  musk: [
+    "mosus", "mosusa", "mosusu", "mosusom",
+    "musk",
+  ],
+
+  bergamot: [
+    "bergamot", "bergamota", "bergamotu", "bergamotom",
+  ],
+
+  lemon: [
+    "limun", "limuna", "limunu", "limunom",
+    "lemon",
+  ],
+
+  grapefruit: [
+    "grejp", "grejpa", "grejpom",
+    "grejpfrut", "grejpfruta", "grejpfrutu", "grejpfrutom",
+    "grapefruit",
+  ],
+
+  sandalwood: [
+    "sandalovina", "sandalovine", "sandalovinu", "sandalovinom",
+    "sandalwood",
+  ],
+
+  cardamom: [
+    "kardamom", "kardamoma", "kardamomu", "kardamomom",
+    "cardamom",
+  ],
+
+  cinnamon: [
+    "cimet", "cimeta", "cimetu", "cimetom",
+    "cinnamon",
+  ],
+
+  ginger: [
+    "djumbir", "djumbira", "djumbiru", "djumbirom",
+    "ginger",
+  ],
+
+  vetiver: [
+    "vetiver", "vetivera", "vetiveru", "vetiverom",
+  ],
+
+  patchouli: [
+    "paculi", "paculija", "paculiju", "paculijem",
+    "patchouli",
+  ],
+
+  amber: [
+    "amber", "ambera", "amberu", "amberom",
+    "jantar", "jantaru", "jantarom",
+  ],
+
+  incense: [
+    "tamjan", "tamjana", "tamjanu", "tamjanom",
+    "incense", "olibanum",
+  ],
+
+  cedar: [
+    "kedar", "kedra", "kedru", "kedrom",
+    "cedar",
+  ],
+
+  mint: [
+    "nana", "nane", "nanu", "nanom",
+    "menta", "mente", "mentu", "mentom",
+    "mint",
+  ],
+
+  neroli: [
+    "neroli", "nerolija", "nerolijem",
+  ],
+
+  "orange-blossom": [
+    "cvet narandze",
+    "cvijet narandze",
+    "cvetom narandze",
+    "cvijetom narandze",
+    "orange blossom",
+  ],
+
+  violet: [
+    "ljubicica", "ljubicice", "ljubicicu", "ljubicom",
+    "violet",
+  ],
+
+  heliotrope: [
+    "heliotrop", "heliotropa", "heliotropom",
+    "heliotrope",
+  ],
+
+  almond: [
+    "badem", "badema", "bademu", "bademom",
+    "almond",
+  ],
+
+  tonka: [
+    "tonka", "tonke", "tonku", "tonkom",
+    "tonka bean",
+  ],
+
+  tea: [
+    "caj", "caja", "caju", "cajem",
+    "tea",
+  ],
 };
 
 const noteAliasToKeys = {
-  vanilla: ["vanilla", "bourbon-vanilla", "madagascar-vanilla", "vanilla-absolute", "vanilla-orchid", "vanilla-flower"],
-  oud: ["oud"],
-  tobacco: ["tobacco", "tobacco-leaf"],
-  honey: ["honey"],
-  lavender: ["lavender", "lavandin"],
-  rose: ["rose", "bulgarian-rose", "may-rose", "damask-rose"],
-  jasmine: ["jasmine", "white-jasmine", "jasmine-sambac", "jasmine-petals", "aquatic-jasmine"],
-  coconut: ["coconut", "coconut-wood"],
-  leather: ["leather", "suede"],
-  coffee: ["coffee-arabica", "black-coffee"],
-  iris: ["iris", "orris"],
-  musk: ["musk", "white-musk", "powdery-musk"],
-  bergamot: ["bergamot", "calabrian-bergamot", "italian-bergamot", "sicilian-bergamot", "bergamot-blossom"],
-  lemon: ["lemon", "italian-lemon", "sicilian-lemon", "white-lemon", "lemon-zest"],
-  grapefruit: ["grapefruit", "pink-grapefruit", "grapefruit-blossom"],
-  sandalwood: ["sandalwood"],
+  vanilla: [
+    "vanilla",
+    "bourbon-vanilla",
+    "madagascar-vanilla",
+    "vanilla-absolute",
+    "vanilla-orchid",
+    "vanilla-flower",
+  ],
+
+  oud: [
+    "oud",
+  ],
+
+  tobacco: [
+    "tobacco",
+    "tobacco-leaf",
+  ],
+
+  honey: [
+    "honey",
+  ],
+
+  lavender: [
+    "lavender",
+    "lavandin",
+  ],
+
+  rose: [
+    "rose",
+    "bulgarian-rose",
+    "may-rose",
+    "damask-rose",
+  ],
+
+  jasmine: [
+    "jasmine",
+    "white-jasmine",
+    "jasmine-sambac",
+    "jasmine-petals",
+    "aquatic-jasmine",
+  ],
+
+  coconut: [
+    "coconut",
+    "coconut-wood",
+  ],
+
+  leather: [
+    "leather",
+    "suede",
+  ],
+
+  coffee: [
+    "coffee-arabica",
+    "black-coffee",
+  ],
+
+  iris: [
+    "iris",
+    "orris",
+  ],
+
+  musk: [
+    "musk",
+    "white-musk",
+    "powdery-musk",
+  ],
+
+  bergamot: [
+    "bergamot",
+    "calabrian-bergamot",
+    "italian-bergamot",
+    "sicilian-bergamot",
+    "bergamot-blossom",
+  ],
+
+  lemon: [
+    "lemon",
+    "italian-lemon",
+    "sicilian-lemon",
+    "white-lemon",
+    "lemon-zest",
+  ],
+
+  grapefruit: [
+    "grapefruit",
+    "pink-grapefruit",
+    "grapefruit-blossom",
+  ],
+
+  sandalwood: [
+    "sandalwood",
+  ],
+
+  cardamom: [
+    "cardamom",
+  ],
+
+  cinnamon: [
+    "cinnamon",
+  ],
+
+  ginger: [
+    "ginger",
+  ],
+
+  vetiver: [
+    "vetiver",
+  ],
+
+  patchouli: [
+    "patchouli",
+  ],
+
+  amber: [
+    "amber",
+    "amberwood",
+    "ambergris",
+    "ambermax",
+  ],
+
+  incense: [
+    "incense",
+    "olibanum",
+  ],
+
+  cedar: [
+    "cedarwood",
+    "cedar-leaf",
+    "cedar-leaves",
+    "white-cedar",
+    "black-cedar",
+    "blue-cedar",
+  ],
+
+  mint: [
+    "mint",
+    "fresh-mint",
+    "living-mint",
+    "iced-mint",
+    "spearmint",
+  ],
+
+  neroli: [
+    "neroli",
+  ],
+
+  "orange-blossom": [
+    "orange-blossom",
+  ],
+
+  violet: [
+    "violet",
+    "violet-leaf",
+  ],
+
+  heliotrope: [
+    "heliotrope",
+    "heliotropin",
+  ],
+
+  almond: [
+    "almond",
+  ],
+
+  tonka: [
+    "tonka-bean",
+  ],
+
+  tea: [
+    "tea",
+    "black-tea",
+  ],
 };
 
 const REFERENCE_CUES = [
@@ -488,11 +819,13 @@ const parseQuery = (rawQuery, products = []) => {
     positiveTraits: [],
     negativeTraits: [],
     requiredNotes: [],
+    requiredNoteGroups: [],
     excludedNotes: [],
     hardExcludedNotes: [],
     contexts: [],
     gender: null,
     referenceProduct: null,
+    referenceSource: null,
     referenceModifiers: [],
   };
 
@@ -577,6 +910,7 @@ const parseQuery = (rawQuery, products = []) => {
       intent.excludedNotes.push(...keys);
     } else {
       intent.requiredNotes.push(...keys);
+      intent.requiredNoteGroups.push(keys);
     }
   });
 
@@ -587,13 +921,13 @@ const parseQuery = (rawQuery, products = []) => {
   if (wantsReference) {
     products.forEach((product) => {
       const candidates = [
-        { value: product?.name, weight: 120 },
-        { value: product?.shortName, weight: 140 },
-        { value: product?.inspiredBy?.name, weight: 90 },
-        { value: product?.inspiredBy?.short, weight: 80 },
+        { value: product?.name, weight: 120, source: "product" },
+        { value: product?.shortName, weight: 140, source: "product" },
+        { value: product?.inspiredBy?.name, weight: 90, source: "inspiredBy" },
+        { value: product?.inspiredBy?.short, weight: 80, source: "inspiredBy" },
       ];
 
-      candidates.forEach(({ value, weight }) => {
+      candidates.forEach(({ value, weight, source }) => {
         const candidate = normalizeText(value);
         if (candidate.length < 4) return;
 
@@ -609,6 +943,7 @@ const parseQuery = (rawQuery, products = []) => {
         if (score > bestReferenceScore) {
           bestReference = product;
           bestReferenceScore = score;
+          intent.referenceSource = source;
         }
       });
     });
@@ -628,6 +963,14 @@ const parseQuery = (rawQuery, products = []) => {
   intent.categories = unique(intent.categories);
   intent.moods = unique(intent.moods);
   intent.requiredNotes = unique(intent.requiredNotes);
+  intent.requiredNoteGroups = intent.requiredNoteGroups.filter(
+    (group, index, all) =>
+      index ===
+      all.findIndex(
+        (candidate) =>
+          candidate.join("|") === group.join("|")
+      )
+  );
   intent.excludedNotes = unique(intent.excludedNotes);
   intent.hardExcludedNotes = unique(intent.hardExcludedNotes);
   intent.contexts = unique(intent.contexts);
@@ -838,10 +1181,23 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
     }
   });
 
-  if (intent.requiredNotes.length) {
-    const matches = notes.filter((note) => intent.requiredNotes.includes(note)).length;
-    score += matches * 10;
-    if (matches) reasons.push("notes");
+  if (intent.requiredNoteGroups.length) {
+    const matchedGroups = intent.requiredNoteGroups.filter((group) =>
+      group.some((note) => notes.includes(note))
+    );
+
+    if (matchedGroups.length !== intent.requiredNoteGroups.length) {
+      return {
+        score: -Infinity,
+        selectedSize: null,
+        profile,
+        reasons: [],
+        penalties: ["missing-required-note"],
+      };
+    }
+
+    score += matchedGroups.length * 14;
+    reasons.push("notes");
   }
 
   if (intent.excludedNotes.length) {
@@ -917,12 +1273,19 @@ if (intent.gender === "unisex") {
   const unisex = profile.unisex ?? 5;
   const genderGap = Math.abs(masculine - feminine);
 
+  if (genderGap > 4) {
+    return {
+      score: -Infinity,
+      selectedSize: null,
+      profile,
+      reasons: [],
+      penalties: ["too-gendered-for-unisex"],
+    };
+  }
+
   score += unisex * 3.0;
   score -= genderGap * 3.0;
-
-  if (genderGap <= 3.5) {
-    reasons.push("gender:unisex");
-  }
+  reasons.push("gender:unisex");
 }
 
   if (intent.referenceProduct) {
@@ -933,7 +1296,17 @@ if (intent.gender === "unisex") {
     const scentSimilarity = profileSimilarity(profile, anchorProfile);
     const referenceTarget = buildReferenceTarget(anchorProfile, intent.referenceModifiers);
     const targetSimilarity = vectorSimilarity(profile, referenceTarget);
-    const isAnchor = product.id === anchor.id;
+    const isDirectAnchor =
+      product.id === anchor.id &&
+      intent.referenceSource === "product";
+
+    const isInspiredByProxy =
+      product.id === anchor.id &&
+      intent.referenceSource === "inspiredBy";
+
+    const isAnchor =
+      isDirectAnchor ||
+      (isInspiredByProxy && intent.referenceModifiers.length > 0);
 
     // The reference is the measuring stick, not a recommendation.
     // If the user asks for "something like X", X itself must never appear.
@@ -1369,16 +1742,41 @@ export const discoverFragrances = ({
     };
   }
 
-  const ranked = products
+  const scored = products
     .map((product) => {
-      const result = scoreProduct(product, intent, productCopy, productWearContext, discoveryProfiles);
+      const result = scoreProduct(
+        product,
+        intent,
+        productCopy,
+        productWearContext,
+        discoveryProfiles
+      );
+
       return { product, ...result };
     })
     .filter((item) => Number.isFinite(item.score))
-    .sort((a, b) => b.score - a.score)
+    .sort((a, b) => b.score - a.score);
+
+  const topScore = scored[0]?.score ?? 0;
+  const isReferenceSearch = Boolean(intent.referenceProduct);
+
+  const relevanceFloor = isReferenceSearch
+    ? Math.max(55, topScore * 0.9)
+    : Math.max(48, topScore * 0.82);
+
+  const relevant = scored
+    .filter((item, index) =>
+      isReferenceSearch
+        ? item.score >= relevanceFloor
+        : index < 5 || item.score >= relevanceFloor
+    )
+    .slice(0, isReferenceSearch ? 8 : scored.length);
+
+  const ranked = relevant
     .slice(0, Math.max(1, limit))
     .map((item, index, all) => {
       const bestScore = all[0]?.score || item.score;
+
       const normalizedMatch = clamp(
         72 + (item.score / Math.max(bestScore, 1)) * 24 - index * 1.5,
         58,
@@ -1390,7 +1788,13 @@ export const discoverFragrances = ({
         score: Number(item.score.toFixed(2)),
         match: Math.round(normalizedMatch),
         selectedSize: item.selectedSize,
-        reason: humanReason(item.product, item, intent, lang, index),
+        reason: humanReason(
+          item.product,
+          item,
+          intent,
+          lang,
+          index
+        ),
         profile: item.profile,
         signals: item.reasons,
       };

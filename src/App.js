@@ -427,6 +427,7 @@ const getProductStructuredData = (product, lang = "sr") => {
    GLOBAL CONSTANTS & HELPERS
 ========================================= */
 const PRODUCT_PAGE_SIZE_OPTIONS = [12, 24, 48, 96];
+const DISCOVERY_RESULTS_PER_PAGE = 5;
 const SHIPPING_COST = 4.0;
 const FREE_SHIPPING_THRESHOLD = 39;
 
@@ -940,9 +941,23 @@ const getInitialShopState = () => {
   const [discoveryQuery, setDiscoveryQuery] = useState("");
   const [discoveryResults, setDiscoveryResults] = useState([]);
   const [discoveryFeedback, setDiscoveryFeedback] = useState("");
+  const [discoveryPage, setDiscoveryPage] = useState(1);
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
   const discoveryAttributionRef = useRef(null);
   const discoverySearchContextRef = useRef(null);
+
+  const discoveryTotalPages = Math.max(
+    1,
+    Math.ceil(discoveryResults.length / DISCOVERY_RESULTS_PER_PAGE)
+  );
+
+  const discoveryPageStart =
+    (discoveryPage - 1) * DISCOVERY_RESULTS_PER_PAGE;
+
+  const visibleDiscoveryResults = discoveryResults.slice(
+    discoveryPageStart,
+    discoveryPageStart + DISCOVERY_RESULTS_PER_PAGE
+  );
 
   useEffect(() => {
     if (!discoveryOpen) return undefined;
@@ -4108,6 +4123,7 @@ const handleDiscoverySearch = (
   if (!nextQuery) {
     setDiscoveryResults([]);
     setDiscoveryFeedback("");
+    setDiscoveryPage(1);
     return;
   }
 
@@ -4118,7 +4134,7 @@ const handleDiscoverySearch = (
     productWearContext,
     discoveryProfiles,
     lang,
-    limit: 5,
+    limit: products.length,
   });
 
   const analyticsParams = getDiscoveryAnalyticsParams(
@@ -4140,6 +4156,7 @@ const handleDiscoverySearch = (
   setDiscoveryQuery(nextQuery);
   setDiscoveryResults(discovery.results);
   setDiscoveryFeedback(discovery.feedback || "");
+  setDiscoveryPage(1);
 };
 
 const handleProductCardOpen = (product) => {
@@ -5775,9 +5792,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 type="button"
                 className="playnice-discovery-clear"
                 onClick={() => {
-                  setDiscoveryQuery("");
-                  setDiscoveryResults([]);
-                }}
+                    setDiscoveryQuery("");
+                    setDiscoveryResults([]);
+                    setDiscoveryPage(1);
+                  }}
                 aria-label={lang === "sr" ? "Obriši upit" : "Clear query"}
               >
                 ×
@@ -5849,8 +5867,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
                 <h3>
                   {lang === "sr"
-                    ? "Pet mirisa koji imaju najviše smisla."
-                    : "Five scents that make the most sense."}
+                    ? "Najbolje rangirani mirisi za tvoj upit."
+                    : "The best-ranked scents for your search."}
                 </h3>
               </div>
 
@@ -5860,6 +5878,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 onClick={() => {
                   setDiscoveryQuery("");
                   setDiscoveryResults([]);
+                  setDiscoveryPage(1);
                 }}
               >
                 {lang === "sr" ? "Nova pretraga" : "New search"}
@@ -5867,8 +5886,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               </button>
             </div>
 
-            <div className="playnice-discovery-grid">
-              {discoveryResults.map((result, index) => {
+            <div
+              key={discoveryPage}
+              className="playnice-discovery-grid"
+            >
+              {visibleDiscoveryResults.map((result, index) => {
+                const globalRank = discoveryPageStart + index + 1;
                 const matchLabel =
                   result.match >= 92
                     ? lang === "sr"
@@ -5901,7 +5924,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       onClick={() => {
                         trackEvent("discovery_result_click", {
                           lang,
-                          rank: index + 1,
+                          rank: globalRank,
                           product_id: String(result.product.id),
                           product_slug: result.product.slug || "",
                           product_name: result.product.name,
@@ -5929,7 +5952,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
                         discoveryAttributionRef.current = {
                           productId: result.product.id,
-                          rank: index + 1,
+                          rank: globalRank,
                           match: Number(result.match || 0),
                           selectedSize: sizeLabel || "",
                           clickedAt: Date.now(),
@@ -5965,12 +5988,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     >
                       <div className="playnice-discovery-card-topline">
                         <span className="playnice-discovery-rank">
-                          {String(index + 1).padStart(2, "0")}
+                          {String(globalRank).padStart(2, "0")}
                         </span>
 
                         <span
                           className={`playnice-discovery-match ${
-                            index === 0 ? "is-best" : ""
+                            globalRank === 1 ? "is-best" : ""
                           }`}
                         >
                           <span aria-hidden="true" />
@@ -6019,6 +6042,62 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 );
               })}
             </div>
+
+            {discoveryTotalPages > 1 && (
+              <div
+                className="playnice-discovery-pagination"
+                aria-label={
+                  lang === "sr"
+                    ? "Stranice rezultata Fragrance Intelligence"
+                    : "Fragrance Intelligence result pages"
+                }
+              >
+                <button
+                  type="button"
+                  className="playnice-discovery-page-button"
+                  disabled={discoveryPage === 1}
+                  onClick={() =>
+                    setDiscoveryPage((current) =>
+                      Math.max(1, current - 1)
+                    )
+                  }
+                >
+                  <span aria-hidden="true">←</span>
+                  {lang === "sr" ? "Prethodno" : "Previous"}
+                </button>
+
+                <span
+                  className="playnice-discovery-page-status"
+                  aria-live="polite"
+                >
+                  <strong>
+                    {discoveryPageStart + 1}–
+                    {Math.min(
+                      discoveryPageStart + DISCOVERY_RESULTS_PER_PAGE,
+                      discoveryResults.length
+                    )}
+                  </strong>
+
+                  <span>/</span>
+
+                  <span>{discoveryResults.length}</span>
+                </span>
+
+                <button
+                  type="button"
+                  className="playnice-discovery-page-button"
+                  disabled={discoveryPage === discoveryTotalPages}
+                  onClick={() =>
+                    setDiscoveryPage((current) =>
+                      Math.min(discoveryTotalPages, current + 1)
+                    )
+                  }
+                >
+                  {lang === "sr" ? "Sledeće" : "Next"}
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
