@@ -1369,13 +1369,35 @@ export const discoverFragrances = ({
     };
   }
 
-  const ranked = products
+  const scored = products
     .map((product) => {
-      const result = scoreProduct(product, intent, productCopy, productWearContext, discoveryProfiles);
+      const result = scoreProduct(
+        product,
+        intent,
+        productCopy,
+        productWearContext,
+        discoveryProfiles
+      );
+
       return { product, ...result };
     })
     .filter((item) => Number.isFinite(item.score))
-    .sort((a, b) => b.score - a.score)
+    .sort((a, b) => b.score - a.score);
+
+  const bestScore = scored[0]?.score ?? 0;
+
+  const relevanceFloor = Math.max(
+    42,
+    bestScore * 0.72
+  );
+
+  cconst relevant = scored.filter(
+    (item, index) =>
+      index < 5 ||
+      item.score >= relevanceFloor
+  );
+
+  const ranked = relevant
     .slice(0, Math.max(1, limit))
     .map((item, index, all) => {
       const bestScore = all[0]?.score || item.score;
