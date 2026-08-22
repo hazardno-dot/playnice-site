@@ -18241,7 +18241,66 @@ body.overlay-lock .header-system {
   white-space: nowrap;
 }
 
+.playnice-discovery-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 5px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.045);
+}
 
+.playnice-discovery-page-button {
+  min-width: 92px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 11px;
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.018);
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 7.5px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease,
+    background 150ms ease,
+    opacity 150ms ease;
+}
+
+.playnice-discovery-page-button:hover:not(:disabled) {
+  color: #e8c97f;
+  border-color: rgba(220, 181, 107, 0.3);
+  background: rgba(220, 181, 107, 0.055);
+}
+
+.playnice-discovery-page-button:disabled {
+  opacity: 0.24;
+  cursor: default;
+}
+
+.playnice-discovery-page-status {
+  min-width: 44px;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  color: rgba(255, 255, 255, 0.34);
+  font-size: 7.5px;
+  letter-spacing: 0.08em;
+}
+
+.playnice-discovery-page-status strong {
+  color: #e8c97f;
+  font-size: 9px;
+  font-weight: 850;
+}
 
 .playnice-discovery-feedback {
   display: flex;
@@ -18556,6 +18615,25 @@ body.overlay-lock .header-system {
   .playnice-discovery-view {
     font-size: 6.6px;
   }
+
+  .playnice-discovery-pagination {
+    gap: 8px;
+    margin-top: 3px;
+    padding-top: 7px;
+  }
+
+  .playnice-discovery-page-button {
+    min-width: 86px;
+    min-height: 30px;
+    padding: 6px 9px;
+    font-size: 7px;
+  }
+
+  .playnice-discovery-page-status {
+    min-width: 36px;
+    gap: 4px;
+    font-size: 7px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -18570,7 +18648,8 @@ body.overlay-lock .header-system {
   .playnice-discovery-card,
   .playnice-discovery-image img,
   .playnice-discovery-prompt,
-  .playnice-discovery-submit {
+  .playnice-discovery-submit,
+  .playnice-discovery-page-button {
     transition: none;
   }
 
