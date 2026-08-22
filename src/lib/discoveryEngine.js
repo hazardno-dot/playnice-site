@@ -390,14 +390,34 @@ const parseBudget = (text) => {
   return null;
 };
 
+const hasNegationMarker = (text, markers = []) =>
+  markers.some((marker) => {
+    const normalizedMarker = normalizeText(marker);
+    if (!normalizedMarker) return false;
+
+    return (
+      text === normalizedMarker ||
+      text.startsWith(`${normalizedMarker} `) ||
+      text.endsWith(` ${normalizedMarker}`) ||
+      text.includes(` ${normalizedMarker} `)
+    );
+  });
+
 const detectNegativeTrait = (text, aliases) => {
   for (const alias of aliases) {
     const normalizedAlias = normalizeText(alias);
     const index = text.indexOf(normalizedAlias);
     if (index === -1) continue;
-    const before = text.slice(Math.max(0, index - 28), index).trim();
-    if (NEGATION_MARKERS.some((marker) => before.includes(marker))) return true;
+
+    const before = text
+      .slice(Math.max(0, index - 28), index)
+      .trim();
+
+    if (hasNegationMarker(before, NEGATION_MARKERS)) {
+      return true;
+    }
   }
+
   return false;
 };
 
@@ -406,9 +426,16 @@ const detectHardNegative = (text, aliases) => {
     const normalizedAlias = normalizeText(alias);
     const index = text.indexOf(normalizedAlias);
     if (index === -1) continue;
-    const before = text.slice(Math.max(0, index - 28), index).trim();
-    if (HARD_NEGATION_MARKERS.some((marker) => before.includes(marker))) return true;
+
+    const before = text
+      .slice(Math.max(0, index - 28), index)
+      .trim();
+
+    if (hasNegationMarker(before, HARD_NEGATION_MARKERS)) {
+      return true;
+    }
   }
+
   return false;
 };
 
