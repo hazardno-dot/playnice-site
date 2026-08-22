@@ -805,15 +805,25 @@ main {
 .hero {
   position: relative;
   width: min(calc(100% - 32px), var(--max));
-  margin: 10px auto 14px;
+
+  margin: 0 auto 24px;
+
   padding: 10px;
+
   border: 1px solid var(--line);
   border-radius: 30px;
+
   background:
-    radial-gradient(circle at 50% 38%, rgba(220, 181, 107, 0.07), transparent 56%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+    radial-gradient(circle at 50% 38%,
+      rgba(220, 181, 107, 0.07),
+      transparent 56%),
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(255, 255, 255, 0.01)),
     rgba(8, 8, 8, 0.96);
+
   box-shadow: var(--shadow-heavy);
+
   overflow: hidden;
   isolation: isolate;
 }
@@ -1192,7 +1202,9 @@ main {
 ========================================= */
 .value-strip {
   width: min(calc(100% - 32px), var(--max));
-  margin: 0 auto 16px;
+
+  margin: 0 auto 18px;
+
   padding: 14px 20px;
 
   display: flex;
@@ -1203,7 +1215,9 @@ main {
   border-top: 1px solid rgba(215, 179, 98, 0.15);
   border-bottom: 1px solid rgba(215, 179, 98, 0.15);
   border-radius: 18px;
+
   background: rgba(255, 255, 255, 0.02);
+
   color: rgba(255, 255, 255, 0.7);
   font-size: 13px;
 }
@@ -6290,7 +6304,7 @@ main {
   .hero {
     width: calc(100vw - 24px);
     max-width: calc(100vw - 24px);
-    margin: 0 auto 14px;
+    margin: 0 auto 22px;
     padding: 8px;
     border-radius: 22px;
     overflow: hidden;
@@ -14830,16 +14844,16 @@ body.scrolled .header-system .announcement-bar-system {
 
 /* =========================================
    MAIN SPACING AFTER HEADER
+   Home opening sequence
 ========================================= */
 
-.header-system + main {
+.header-system+main {
   padding-top: 26px;
   margin-top: 0;
 }
 
-.header-system + main .hero:first-child,
-.header-system + main > .hero:first-child {
-  margin-top: 0;
+.header-system+main>.hero:first-child {
+  margin-top: 8px;
 }
 
 /* =========================================
@@ -17583,7 +17597,8 @@ body.overlay-lock .header-system {
   position: relative;
   display: flex;
   justify-content: center;
-  padding-top: 14px;
+
+  padding-top: 26px;
   padding-bottom: 14px;
 }
 
@@ -18318,7 +18333,7 @@ body.overlay-lock .header-system {
 
 @media (max-width: 680px) {
   .playnice-discovery-portal {
-    padding-top: 12px;
+    padding-top: 22px;
     padding-bottom: 12px;
   }
 
