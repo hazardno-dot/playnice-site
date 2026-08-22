@@ -6070,9 +6070,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   className="playnice-discovery-page-status"
                   aria-live="polite"
                 >
-                  <strong>{discoveryPage}</strong>
-                  <span>/</span>
-                  {discoveryTotalPages}
+                  {`${discoveryPageStart + 1}–${Math.min(
+                    discoveryPageStart + DISCOVERY_RESULTS_PER_PAGE,
+                    discoveryResults.length
+                  )} / ${discoveryResults.length}`}
                 </span>
 
                 <button

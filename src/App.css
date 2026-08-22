@@ -18297,12 +18297,6 @@ body.overlay-lock .header-system {
   letter-spacing: 0.08em;
 }
 
-.playnice-discovery-page-status strong {
-  color: #e8c97f;
-  font-size: 9px;
-  font-weight: 850;
-}
-
 .playnice-discovery-feedback {
   display: flex;
   align-items: center;
