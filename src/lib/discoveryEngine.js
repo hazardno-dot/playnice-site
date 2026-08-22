@@ -841,9 +841,22 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
   });
 
   if (intent.requiredNotes.length) {
-    const matches = notes.filter((note) => intent.requiredNotes.includes(note)).length;
-    score += matches * 10;
-    if (matches) reasons.push("notes");
+    const matches = notes.filter((note) =>
+      intent.requiredNotes.includes(note)
+    ).length;
+
+    if (!matches) {
+      return {
+        score: -Infinity,
+        selectedSize: null,
+        profile,
+        reasons: [],
+        penalties: ["missing-required-note"],
+      };
+    }
+
+    score += matches * 14;
+    reasons.push("notes");
   }
 
   if (intent.excludedNotes.length) {
