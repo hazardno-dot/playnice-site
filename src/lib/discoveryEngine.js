@@ -457,157 +457,343 @@ const detectIntensity = (text, aliases) => {
 
 const NOTE_ALIASES = {
   vanilla: [
-    "vanila",
-    "vanile",
-    "vanilu",
-    "vanilom",
-    "vanilija",
-    "vanilije",
-    "vaniliju",
-    "vanilijom",
+    "vanila", "vanile", "vanilu", "vanilom",
+    "vanilija", "vanilije", "vaniliju", "vanilijom",
     "vanilla",
   ],
 
   oud: [
-    "oud",
-    "ouda",
-    "oudom",
+    "oud", "ouda", "oudu", "oudom",
     "agarwood",
   ],
 
   tobacco: [
-    "duvan",
-    "duvana",
-    "duvanu",
-    "duvanom",
+    "duvan", "duvana", "duvanu", "duvanom",
     "tobacco",
   ],
 
   honey: [
-    "med",
-    "meda",
-    "medu",
-    "medom",
+    "med", "meda", "medu", "medom",
     "honey",
   ],
 
   lavender: [
-    "lavanda",
-    "lavande",
-    "lavandu",
-    "lavandom",
+    "lavanda", "lavande", "lavandu", "lavandom",
     "lavender",
   ],
 
   rose: [
-    "ruza",
-    "ruže",
-    "ruzu",
-    "ružom",
+    "ruza", "ruze", "ruzu", "ruzom",
     "rose",
   ],
 
   jasmine: [
-    "jasmin",
-    "jasmina",
-    "jasminu",
-    "jasminom",
+    "jasmin", "jasmina", "jasminu", "jasminom",
     "jasmine",
   ],
 
   coconut: [
-    "kokos",
-    "kokosa",
-    "kokosu",
-    "kokosom",
+    "kokos", "kokosa", "kokosu", "kokosom",
     "coconut",
   ],
 
   leather: [
-    "koza",
-    "kože",
-    "kozu",
-    "kožom",
+    "koza", "koze", "kozu", "kozom",
     "leather",
   ],
 
   coffee: [
-    "kafa",
-    "kafe",
-    "kafu",
-    "kafom",
+    "kafa", "kafe", "kafu", "kafom",
     "coffee",
   ],
 
   iris: [
-    "iris",
-    "irisa",
-    "irisu",
-    "irisom",
+    "iris", "irisa", "irisu", "irisom",
     "orris",
   ],
 
   musk: [
-    "mosus",
-    "mošus",
-    "mosusa",
-    "mošusa",
-    "mosusom",
-    "mošusom",
+    "mosus", "mosusa", "mosusu", "mosusom",
     "musk",
   ],
 
   bergamot: [
-    "bergamot",
-    "bergamota",
-    "bergamotu",
-    "bergamotom",
+    "bergamot", "bergamota", "bergamotu", "bergamotom",
   ],
 
   lemon: [
-    "limun",
-    "limuna",
-    "limunu",
-    "limunom",
+    "limun", "limuna", "limunu", "limunom",
     "lemon",
   ],
 
   grapefruit: [
-    "grejp",
-    "grejpa",
-    "grejpom",
-    "grejpfrut",
-    "grejpfruta",
-    "grejpfrutom",
+    "grejp", "grejpa", "grejpom",
+    "grejpfrut", "grejpfruta", "grejpfrutu", "grejpfrutom",
     "grapefruit",
   ],
 
   sandalwood: [
-    "sandalovina",
-    "sandalovine",
-    "sandalovinu",
-    "sandalovinom",
+    "sandalovina", "sandalovine", "sandalovinu", "sandalovinom",
     "sandalwood",
+  ],
+
+  cardamom: [
+    "kardamom", "kardamoma", "kardamomu", "kardamomom",
+    "cardamom",
+  ],
+
+  cinnamon: [
+    "cimet", "cimeta", "cimetu", "cimetom",
+    "cinnamon",
+  ],
+
+  ginger: [
+    "djumbir", "djumbira", "djumbiru", "djumbirom",
+    "ginger",
+  ],
+
+  vetiver: [
+    "vetiver", "vetivera", "vetiveru", "vetiverom",
+  ],
+
+  patchouli: [
+    "paculi", "paculija", "paculiju", "paculijem",
+    "patchouli",
+  ],
+
+  amber: [
+    "amber", "ambera", "amberu", "amberom",
+    "jantar", "jantaru", "jantarom",
+  ],
+
+  incense: [
+    "tamjan", "tamjana", "tamjanu", "tamjanom",
+    "incense", "olibanum",
+  ],
+
+  cedar: [
+    "kedar", "kedra", "kedru", "kedrom",
+    "cedar",
+  ],
+
+  mint: [
+    "nana", "nane", "nanu", "nanom",
+    "menta", "mente", "mentu", "mentom",
+    "mint",
+  ],
+
+  neroli: [
+    "neroli", "nerolija", "nerolijem",
+  ],
+
+  "orange-blossom": [
+    "cvet narandze",
+    "cvijet narandze",
+    "cvetom narandze",
+    "cvijetom narandze",
+    "orange blossom",
+  ],
+
+  violet: [
+    "ljubicica", "ljubicice", "ljubicicu", "ljubicom",
+    "violet",
+  ],
+
+  heliotrope: [
+    "heliotrop", "heliotropa", "heliotropom",
+    "heliotrope",
+  ],
+
+  almond: [
+    "badem", "badema", "bademu", "bademom",
+    "almond",
+  ],
+
+  tonka: [
+    "tonka", "tonke", "tonku", "tonkom",
+    "tonka bean",
+  ],
+
+  tea: [
+    "caj", "caja", "caju", "cajem",
+    "tea",
   ],
 };
 
 const noteAliasToKeys = {
-  vanilla: ["vanilla", "bourbon-vanilla", "madagascar-vanilla", "vanilla-absolute", "vanilla-orchid", "vanilla-flower"],
-  oud: ["oud"],
-  tobacco: ["tobacco", "tobacco-leaf"],
-  honey: ["honey"],
-  lavender: ["lavender", "lavandin"],
-  rose: ["rose", "bulgarian-rose", "may-rose", "damask-rose"],
-  jasmine: ["jasmine", "white-jasmine", "jasmine-sambac", "jasmine-petals", "aquatic-jasmine"],
-  coconut: ["coconut", "coconut-wood"],
-  leather: ["leather", "suede"],
-  coffee: ["coffee-arabica", "black-coffee"],
-  iris: ["iris", "orris"],
-  musk: ["musk", "white-musk", "powdery-musk"],
-  bergamot: ["bergamot", "calabrian-bergamot", "italian-bergamot", "sicilian-bergamot", "bergamot-blossom"],
-  lemon: ["lemon", "italian-lemon", "sicilian-lemon", "white-lemon", "lemon-zest"],
-  grapefruit: ["grapefruit", "pink-grapefruit", "grapefruit-blossom"],
-  sandalwood: ["sandalwood"],
+  vanilla: [
+    "vanilla",
+    "bourbon-vanilla",
+    "madagascar-vanilla",
+    "vanilla-absolute",
+    "vanilla-orchid",
+    "vanilla-flower",
+  ],
+
+  oud: [
+    "oud",
+  ],
+
+  tobacco: [
+    "tobacco",
+    "tobacco-leaf",
+  ],
+
+  honey: [
+    "honey",
+  ],
+
+  lavender: [
+    "lavender",
+    "lavandin",
+  ],
+
+  rose: [
+    "rose",
+    "bulgarian-rose",
+    "may-rose",
+    "damask-rose",
+  ],
+
+  jasmine: [
+    "jasmine",
+    "white-jasmine",
+    "jasmine-sambac",
+    "jasmine-petals",
+    "aquatic-jasmine",
+  ],
+
+  coconut: [
+    "coconut",
+    "coconut-wood",
+  ],
+
+  leather: [
+    "leather",
+    "suede",
+  ],
+
+  coffee: [
+    "coffee-arabica",
+    "black-coffee",
+  ],
+
+  iris: [
+    "iris",
+    "orris",
+  ],
+
+  musk: [
+    "musk",
+    "white-musk",
+    "powdery-musk",
+  ],
+
+  bergamot: [
+    "bergamot",
+    "calabrian-bergamot",
+    "italian-bergamot",
+    "sicilian-bergamot",
+    "bergamot-blossom",
+  ],
+
+  lemon: [
+    "lemon",
+    "italian-lemon",
+    "sicilian-lemon",
+    "white-lemon",
+    "lemon-zest",
+  ],
+
+  grapefruit: [
+    "grapefruit",
+    "pink-grapefruit",
+    "grapefruit-blossom",
+  ],
+
+  sandalwood: [
+    "sandalwood",
+  ],
+
+  cardamom: [
+    "cardamom",
+  ],
+
+  cinnamon: [
+    "cinnamon",
+  ],
+
+  ginger: [
+    "ginger",
+  ],
+
+  vetiver: [
+    "vetiver",
+  ],
+
+  patchouli: [
+    "patchouli",
+  ],
+
+  amber: [
+    "amber",
+    "amberwood",
+    "ambergris",
+    "ambermax",
+  ],
+
+  incense: [
+    "incense",
+    "olibanum",
+  ],
+
+  cedar: [
+    "cedarwood",
+    "cedar-leaf",
+    "cedar-leaves",
+    "white-cedar",
+    "black-cedar",
+    "blue-cedar",
+  ],
+
+  mint: [
+    "mint",
+    "fresh-mint",
+    "living-mint",
+    "iced-mint",
+    "spearmint",
+  ],
+
+  neroli: [
+    "neroli",
+  ],
+
+  "orange-blossom": [
+    "orange-blossom",
+  ],
+
+  violet: [
+    "violet",
+    "violet-leaf",
+  ],
+
+  heliotrope: [
+    "heliotrope",
+    "heliotropin",
+  ],
+
+  almond: [
+    "almond",
+  ],
+
+  tonka: [
+    "tonka-bean",
+  ],
+
+  tea: [
+    "tea",
+    "black-tea",
+  ],
 };
 
 const REFERENCE_CUES = [
