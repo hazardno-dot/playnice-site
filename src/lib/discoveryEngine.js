@@ -1385,17 +1385,19 @@ export const discoverFragrances = ({
     .sort((a, b) => b.score - a.score);
 
   const topScore = scored[0]?.score ?? 0;
+  const isReferenceSearch = Boolean(intent.referenceProduct);
 
-  const relevanceFloor = Math.max(
-    42,
-    topScore * 0.72
-  );
+  const relevanceFloor = isReferenceSearch
+    ? Math.max(55, topScore * 0.9)
+    : Math.max(48, topScore * 0.82);
 
-  const relevant = scored.filter(
-    (item, index) =>
-      index < 5 ||
-      item.score >= relevanceFloor
-  );
+  const relevant = scored
+    .filter((item, index) =>
+      isReferenceSearch
+        ? item.score >= relevanceFloor
+        : index < 5 || item.score >= relevanceFloor
+    )
+    .slice(0, isReferenceSearch ? 8 : scored.length);
 
   const ranked = relevant
     .slice(0, Math.max(1, limit))
