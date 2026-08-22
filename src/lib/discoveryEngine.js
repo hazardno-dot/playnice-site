@@ -9,7 +9,11 @@ const normalizeText = (value = "") =>
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "dj")
     .replace(/[’']/g, "")
+    .replace(/[^a-z0-9€]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
     .replace(/[^a-z0-9€]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -818,6 +822,7 @@ const parseQuery = (rawQuery, products = []) => {
     positiveTraits: [],
     negativeTraits: [],
     requiredNotes: [],
+    requiredNoteGroups: [],
     excludedNotes: [],
     hardExcludedNotes: [],
     contexts: [],
@@ -908,6 +913,7 @@ const parseQuery = (rawQuery, products = []) => {
       intent.excludedNotes.push(...keys);
     } else {
       intent.requiredNotes.push(...keys);
+      intent.requiredNoteGroups.push(keys);
     }
   });
 
@@ -960,6 +966,14 @@ const parseQuery = (rawQuery, products = []) => {
   intent.categories = unique(intent.categories);
   intent.moods = unique(intent.moods);
   intent.requiredNotes = unique(intent.requiredNotes);
+  intent.requiredNoteGroups = intent.requiredNoteGroups.filter(
+    (group, index, all) =>
+      index ===
+      all.findIndex(
+        (candidate) =>
+          candidate.join("|") === group.join("|")
+      )
+  );
   intent.excludedNotes = unique(intent.excludedNotes);
   intent.hardExcludedNotes = unique(intent.hardExcludedNotes);
   intent.contexts = unique(intent.contexts);
@@ -1170,12 +1184,12 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
     }
   });
 
-  if (intent.requiredNotes.length) {
-    const matches = notes.filter((note) =>
-      intent.requiredNotes.includes(note)
-    ).length;
+  if (intent.requiredNoteGroups.length) {
+    const matchedGroups = intent.requiredNoteGroups.filter((group) =>
+      group.some((note) => notes.includes(note))
+    );
 
-    if (!matches) {
+    if (matchedGroups.length !== intent.requiredNoteGroups.length) {
       return {
         score: -Infinity,
         selectedSize: null,
@@ -1185,7 +1199,7 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
       };
     }
 
-    score += matches * 14;
+    score += matchedGroups.length * 14;
     reasons.push("notes");
   }
 
