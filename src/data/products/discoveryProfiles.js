@@ -2828,7 +2828,37 @@ export const discoveryProfiles = {
     "masculine": 5.5,
     "feminine": 5,
     "unisex": 9
-  }
+  },
+  "narciso-rodriguez-for-him-bleu-noir-extreme-edt": {
+    "freshness": 8.6,
+    "sweetness": 1.2,
+    "warmth": 2.8,
+    "darkness": 5.8,
+    "airiness": 6.9,
+    "cleanliness": 9.1,
+    "creaminess": 1.5,
+    "dryness": 6.2,
+    "fruitiness": 2.2,
+    "spiciness": 3.4,
+    "woodiness": 7.2,
+    "aromaticity": 7.8,
+    "florality": 0.8,
+    "gourmandness": 0,
+    "citrus": 6.7,
+    "aquatic": 1.5,
+    "powdery": 2.1,
+    "projection": 6.6,
+    "longevity": 7.1,
+    "office": 9.1,
+    "casual": 8.8,
+    "date": 7.2,
+    "evening": 7,
+    "elegance": 8.6,
+    "versatility": 8.8,
+    "masculine": 8.3,
+    "feminine": 2.6,
+    "unisex": 5.1
+  },
 };
 
 export default discoveryProfiles;
