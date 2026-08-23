@@ -2715,7 +2715,7 @@ export const products = [
   category: "Designer",
   image: "/products/narciso-rodriguez-bleu-noir-extreme-edt.png",
   sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
-  badge: "NEW",
+  badge: "PLAYNICE PICK",
   rating: 8.5,
   ratingLabel: "Fresh Dark",
   season: "summer",
