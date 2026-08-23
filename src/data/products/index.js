@@ -2713,7 +2713,7 @@ export const products = [
   id: 95,
   slug: "narciso-rodriguez-for-him-bleu-noir-extreme-edt",
   name: "Narciso Rodriguez for Him Bleu Noir Eau de Toilette Extreme",
-  modalName: "Narciso Rodriguez for Him Bleu Noir EDT Extreme",
+  modalName: "Narciso Rodriguez for Him Bleu Noir Extreme",
   shortName: "Bleu Noir Extreme",
   category: "Designer",
   image: "/products/narciso-rodriguez-bleu-noir-extreme-edt.png",
