@@ -2326,7 +2326,7 @@ export const productCopy = {
     },
   },
 
-  "my Geisha Jasmine in the Sun Extrait de Parfum": {
+  "My Geisha Jasmine in the Sun Extrait de Parfum": {
     miniTag: { sr: "☀️ Jasmin / Sunčan", en: "☀️ Jasmine / Solar" },
     card: {
       sr: "Jasmin, cvet narandže i vanila u blistavom sunčanom cvetnom mirisu.",
@@ -2703,6 +2703,43 @@ export const productCopy = {
   whyChoose: {
     sr: "Ako voliš prirodnu citrusnu svežinu, neroli i čist mediteranski karakter.",
     en: "If you enjoy natural citrus freshness, neroli and a clean Mediterranean character."
+  }
+},
+
+"Narciso Rodriguez for Him Bleu Noir Eau de Toilette Extreme": {
+  miniTag: {
+    sr: "❄️ Svež / Mošusni",
+    en: "❄️ Fresh / Musky"
+  },
+
+  card: {
+    sr: "Ledeni citrusi, zeleni bosiljak i tamne drvene note.",
+    en: "Icy citrus, green basil and dark woods."
+  },
+
+  modal: {
+    sr: "Zelena mandarina, bosiljak i hladni citrusi vode ka čistom mošusu, uz tamnu bazu kedra, ebanovine i labdanuma.",
+    en: "Green mandarin, basil and icy citrus lead into clean musk over a dark cedar, ebony and labdanum base."
+  },
+
+  scentType: {
+    sr: "Sveži drvenasto-mošusni",
+    en: "Fresh woody musky"
+  },
+
+  dominantNotes: {
+    sr: ["zelena mandarina", "bosiljak", "mošus", "ebonovina"],
+    en: ["green mandarin", "basil", "musk", "ebony"]
+  },
+
+  tags: {
+    sr: ["Svež", "Čist", "Moderan"],
+    en: ["Fresh", "Clean", "Modern"]
+  },
+
+  whyChoose: {
+    sr: "Ako želiš hladan, čist i elegantan miris sa tamnom drvenastom bazom.",
+    en: "If you want a cool, clean and elegant fragrance with a dark woody base."
   }
 },
 };

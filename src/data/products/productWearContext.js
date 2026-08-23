@@ -334,7 +334,7 @@ export const productWearContext = {
     sr: "Leto, dnevni izlazak i najveće vrućine.",
     en: "Summer, daytime outings and the hottest weather.",
   },
-  "my Geisha Jasmine in the Sun Extrait de Parfum": {
+  "My Geisha Jasmine in the Sun Extrait de Parfum": {
     sr: "Leto, svakodnevno nošenje i elegantne dnevne prilike.",
     en: "Summer, everyday wear and elegant daytime occasions.",
   },
@@ -377,5 +377,9 @@ export const productWearContext = {
   "Thomas Kosmala No. 1 Tonic Blanc Eau de Parfum": {
     sr: "Leto, posao, dnevno nošenje.",
     en: "Summer, work, daytime wear."
+  },
+  "Narciso Rodriguez for Him Bleu Noir Eau de Toilette Extreme": {
+    sr: "Topli dani, posao, svakodnevno nošenje.",
+    en: "Warm days, work, everyday wear."
   }
 };

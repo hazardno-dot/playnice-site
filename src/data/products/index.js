@@ -2385,7 +2385,7 @@ export const products = [
   {
     id: 84,
     slug: "my-geisha-jasmine-in-the-sun",
-    name: "my Geisha Jasmine in the Sun Extrait de Parfum",
+    name: "My Geisha Jasmine in the Sun Extrait de Parfum",
     shortName: "Jasmine in the Sun",
     category: "Niche",
     image: "/products/my-geisha-jasmine-in-the-sun.png",
@@ -2401,7 +2401,7 @@ export const products = [
       "essential-parfums-nice-bergamote"
     ],
     inspiredBy: {
-      name: "Original my Geisha creation",
+      name: "Original My Geisha creation",
       short: "Solar Jasmine DNA"
     },
     noteMap: {
@@ -2703,6 +2703,36 @@ export const products = [
     top: ["bergamot", "mandarin", "orange", "neroli"],
     heart: ["orange-blossom", "bergamot-blossom", "mock-orange"],
     base: ["oakmoss", "sandalwood", "cedarwood", "musk"]
+  },
+  isNew: true,
+},
+
+{
+  id: 95,
+  slug: "narciso-rodriguez-for-him-bleu-noir-extreme-edt",
+  name: "Narciso Rodriguez for Him Bleu Noir Eau de Toilette Extreme",
+  shortName: "Bleu Noir Extreme",
+  category: "Designer",
+  image: "/products/narciso-rodriguez-bleu-noir-extreme-edt.png",
+  sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
+  badge: "NEW",
+  rating: 8.5,
+  ratingLabel: "Fresh Dark",
+  season: "summer",
+  moods: ["clean", "summer", "signature"],
+  recommendations: [
+    "narciso-rodriguez-for-him-bleu-noir-edp",
+    "calvin-klein-defy-edt",
+    "bleu-de-chanel-edp"
+  ],
+  inspiredBy: {
+    name: "Original Narciso Rodriguez creation",
+    short: "Icy Musk Woods DNA"
+  },
+  noteMap: {
+    top: ["green-mandarin", "basil", "citruses", "ice-accord"],
+    heart: ["musk"],
+    base: ["blue-cedar", "black-ebony", "labdanum"]
   },
   isNew: true,
 },
