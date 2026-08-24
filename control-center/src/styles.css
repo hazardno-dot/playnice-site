@@ -42,7 +42,7 @@ h1 { margin-bottom: 0; font-size: clamp(32px, 4vw, 52px); }
 
 .products-layout { display: grid; grid-template-columns: minmax(320px, .75fr) minmax(420px, 1.25fr); gap: 18px; min-height: calc(100vh - 130px); }
 .catalog-panel, .detail-panel, .placeholder-panel { border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.025); border-radius: 18px; overflow: hidden; }
-.catalog-panel { display: grid; grid-template-rows: auto auto minmax(0, 1fr); min-height: 0; }
+.catalog-panel { display: grid; grid-template-rows: auto auto auto minmax(0, 1fr); min-height: 0; }
 .catalog-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 22px 15px; }
 .catalog-head h2 { margin: 4px 0 0; font-size: 24px; }
 .catalog-count { min-width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,.09); display: grid; place-items: center; color: #9da8a2; font-size: 12px; }
@@ -153,6 +153,8 @@ h1 { margin-bottom: 0; font-size: clamp(32px, 4vw, 52px); }
   .detail-hero { grid-template-columns: 1fr 100px; }
   .detail-hero img { width: 100px; height: 100px; }
   .detail-grid { grid-template-columns: repeat(2, 1fr); }
+  .coverage-panel { grid-template-columns: 1fr; }
+  .coverage-checks { grid-column: auto; }
   .two-col, .copy-grid, .discovery-grid { grid-template-columns: 1fr; }
   .copy-grid .copy-wide { grid-column: auto; }
 }
