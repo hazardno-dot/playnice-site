@@ -49,11 +49,13 @@ function buildChanges(live, draft) {
 function groupChanges(changes) { return changes.reduce((acc, change) => { (acc[change.section] ||= []).push(change); return acc; }, {}); }
 function displayValue(value) { const text = String(value ?? ""); return text.length ? text : "—"; }
 
+const workflowLabel = (status) => status === "approved" ? "APPROVED" : status === "ready" ? "READY FOR REVIEW" : "DRAFT";
+
 export default function DraftManager() {
-  const [open, setOpen] = useState(false), [drafts, setDrafts] = useState([]), [loading, setLoading] = useState(true), [expanded, setExpanded] = useState(null), [error, setError] = useState("");
+  const [open, setOpen] = useState(false), [drafts, setDrafts] = useState([]), [loading, setLoading] = useState(true), [expanded, setExpanded] = useState(null), [error, setError] = useState(""), [acting, setActing] = useState("");
   const load = async () => {
     setLoading(true); setError("");
-    const { data, error: loadError } = await supabase.from("product_drafts").select("product_slug,payload,updated_at").order("updated_at", { ascending: false });
+    const { data, error: loadError } = await supabase.from("product_drafts").select("product_slug,payload,updated_at,review_status,reviewed_at,reviewed_by").order("updated_at", { ascending: false });
     if (loadError) setError(loadError.message || "Could not load drafts.");
     setDrafts(data || []); setLoading(false);
   };
@@ -70,6 +72,27 @@ export default function DraftManager() {
     const { error: deleteError } = await supabase.from("product_drafts").delete().eq("product_slug", slug);
     if (deleteError) { setError(deleteError.message || "Could not discard draft."); return; }
     await load(); setExpanded(null); window.setTimeout(() => window.location.reload(), 250);
+  };
+
+  const setWorkflowStatus = async (row, nextStatus) => {
+    if (row.validation.status === "blocked" && nextStatus !== "draft") {
+      setError("Blocked drafts cannot move forward. Fix validation errors first.");
+      return;
+    }
+    setActing(`${row.product_slug}:${nextStatus}`); setError("");
+    const patch = { review_status: nextStatus };
+    if (nextStatus === "approved") {
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError || !user) { setError(userError?.message || "No authenticated admin session."); setActing(""); return; }
+      patch.reviewed_at = new Date().toISOString();
+      patch.reviewed_by = user.id;
+    } else {
+      patch.reviewed_at = null;
+      patch.reviewed_by = null;
+    }
+    const { error: updateError } = await supabase.from("product_drafts").update(patch).eq("product_slug", row.product_slug);
+    if (updateError) setError(updateError.message || "Could not update review status.");
+    await load(); setActing("");
   };
 
   const openProduct = (row) => {
@@ -92,16 +115,18 @@ export default function DraftManager() {
     {open ? <div className="draft-manager-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
       <aside className="draft-manager-panel">
         <header className="draft-manager-head"><div><span className="eyebrow">SUPABASE / UNPUBLISHED</span><h2>Draft management</h2><p>{count} persistent draft{count === 1 ? "" : "s"}</p></div><button className="draft-manager-close" onClick={() => setOpen(false)}>×</button></header>
-        <div className="draft-manager-notice">NO PUBLISH · Draft actions cannot change the live Shop.</div>
+        <div className="draft-manager-notice">NO PUBLISH · Approval is internal only and cannot change the live Shop.</div>
         {error ? <div className="draft-manager-error">{error}</div> : null}
         <div className="draft-manager-list">
           {loading ? <div className="draft-manager-empty">Loading drafts…</div> : !draftRows.length ? <div className="draft-manager-empty">No unpublished drafts.</div> : draftRows.map((row) => {
             const title = row.payload?.core?.name || row.live?.name || row.product_slug, isExpanded = expanded === row.product_slug;
             const blocked = row.validation.status === "blocked";
+            const status = row.review_status || "draft";
+            const busy = acting.startsWith(`${row.product_slug}:`);
             return <article className="draft-manager-card" key={row.product_slug}>
               <div className="draft-manager-card-top">
-                <div><strong>{title}</strong><span>{row.product_slug}</span><small>Updated {formatDate(row.updated_at)}</small></div>
-                <div className="draft-card-badges"><span className={`draft-validation-badge ${blocked ? "blocked" : "ready"}`}>{blocked ? `BLOCKED · ${row.validation.errors.length}` : "READY FOR REVIEW"}</span><span className="draft-manager-change-count">{row.changes.length} change{row.changes.length === 1 ? "" : "s"}</span></div>
+                <div><strong>{title}</strong><span>{row.product_slug}</span><small>Updated {formatDate(row.updated_at)}</small>{row.reviewed_at ? <small>Approved {formatDate(row.reviewed_at)}</small> : null}</div>
+                <div className="draft-card-badges"><span className={`draft-workflow-badge ${status}`}>{workflowLabel(status)}</span><span className={`draft-validation-badge ${blocked ? "blocked" : "ready"}`}>{blocked ? `BLOCKED · ${row.validation.errors.length}` : "VALID"}</span><span className="draft-manager-change-count">{row.changes.length} change{row.changes.length === 1 ? "" : "s"}</span></div>
               </div>
               {isExpanded ? <div className="draft-manager-review full-diff">
                 <section className={`draft-validation-panel ${blocked ? "blocked" : "ready"}`}>
@@ -113,7 +138,14 @@ export default function DraftManager() {
                   <div className="draft-review-section-body">{items.map((change) => <div className="draft-change" key={`${section}-${change.label}`}><span>{change.label}</span><div><small>LIVE</small><p>{displayValue(change.liveValue)}</p></div><div><small>DRAFT</small><p>{displayValue(change.draftValue)}</p></div></div>)}</div>
                 </section>)}
               </div> : null}
-              <div className="draft-manager-actions"><button onClick={() => setExpanded(isExpanded ? null : row.product_slug)}>{isExpanded ? "Hide review" : "Review changes"}</button><button onClick={() => openProduct(row)}>Open product</button><button className="danger" onClick={() => discard(row.product_slug)}>Discard draft</button></div>
+              <div className="draft-manager-actions">
+                <button onClick={() => setExpanded(isExpanded ? null : row.product_slug)}>{isExpanded ? "Hide review" : "Review changes"}</button>
+                <button onClick={() => openProduct(row)}>Open product</button>
+                {status === "draft" ? <button className="workflow" disabled={blocked || busy} onClick={() => setWorkflowStatus(row, "ready")}>{busy ? "Updating…" : "Mark ready for review"}</button> : null}
+                {status === "ready" ? <button className="workflow approve" disabled={blocked || busy} onClick={() => setWorkflowStatus(row, "approved")}>{busy ? "Updating…" : "Approve"}</button> : null}
+                {status !== "draft" ? <button className="workflow secondary" disabled={busy} onClick={() => setWorkflowStatus(row, "draft")}>Return to draft</button> : null}
+                <button className="danger" onClick={() => discard(row.product_slug)}>Discard draft</button>
+              </div>
             </article>;
           })}
         </div>
