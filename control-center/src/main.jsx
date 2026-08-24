@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import AuthGate from "./AuthGate";
 import DraftManager from "./DraftManager";
+import InlineValidationBridge from "./InlineValidationBridge";
 import "./styles.css";
 
 createRoot(document.getElementById("root")).render(
@@ -10,6 +11,7 @@ createRoot(document.getElementById("root")).render(
     <AuthGate>
       <App />
       <DraftManager />
+      <InlineValidationBridge />
     </AuthGate>
   </React.StrictMode>
 );
