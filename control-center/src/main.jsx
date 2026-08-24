@@ -5,6 +5,7 @@ import AuthGate from "./AuthGate";
 import DraftManager from "./DraftManager";
 import InlineValidationBridge from "./InlineValidationBridge";
 import "./styles.css";
+import "./review-workflow.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
