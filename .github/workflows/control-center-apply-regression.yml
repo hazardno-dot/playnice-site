@@ -1,0 +1,34 @@
+name: Control Center Apply Regression
+
+on:
+  push:
+    branches:
+      - control-center-controlled-apply-v2
+    paths:
+      - "control-center/api/create-apply.js"
+      - "control-center/tests/**"
+      - "src/data/products/index.js"
+      - "src/data/products/productCopy.js"
+      - "src/data/products/productWearContext.js"
+      - "src/data/products/discoveryProfiles.js"
+      - ".github/workflows/control-center-apply-regression.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  controlled-apply-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run Controlled Apply regression suite
+        run: node control-center/tests/controlled-apply-regression.mjs
