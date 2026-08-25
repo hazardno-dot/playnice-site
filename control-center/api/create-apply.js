@@ -81,11 +81,21 @@ export default async function handler(req, res) {
     const slug = String(req.body?.product_slug || "").trim();
     if (!slug) return json(res, 400, { error: "product_slug is required." });
 
-    const draftRes = await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}&select=product_slug,payload,approved_payload,review_status,prepared_at,baseline_snapshot&limit=1`, token);
+    const draftRes = await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}&select=product_slug,payload,approved_payload,review_status,prepared_at,baseline_snapshot,apply_branch,apply_pr_number&limit=1`, token);
     if (!draftRes.ok) return json(res, 400, { error: "Could not load prepared draft." });
     const [draft] = await draftRes.json();
     if (!draft) return json(res, 404, { error: "Prepared draft not found." });
     if (draft.review_status !== "approved" || !draft.prepared_at) return json(res, 409, { error: "Draft must be APPROVED and READY TO APPLY first." });
+
+    if (draft.apply_branch && draft.apply_pr_number) {
+      return json(res, 200, {
+        ok: true,
+        existing: true,
+        branch: draft.apply_branch,
+        pr_number: draft.apply_pr_number,
+        pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}`,
+      });
+    }
 
     const approved = draft.approved_payload || draft.payload;
     const baseline = draft.baseline_snapshot;
@@ -93,7 +103,6 @@ export default async function handler(req, res) {
     const draftRating = approved?.core?.rating;
     if (baselineRating == null || draftRating == null) return json(res, 409, { error: "Rating baseline is incomplete." });
 
-    // Controlled Apply v1 is deliberately narrow: one verified Core/Rating change only.
     const baselineCore = baseline?.core || {};
     const approvedCore = approved?.core || {};
     const approvedNoteMap = {
@@ -172,6 +181,18 @@ export default async function handler(req, res) {
           "- Source: approved + prepared Supabase draft",
           "- Safety: draft PR only; no automatic merge",
         ].join("\n"),
+      }),
+    });
+
+    await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, {
+      method: "PATCH",
+      body: JSON.stringify({
+        apply_branch: branch,
+        apply_pr_number: pr.number,
+        apply_created_at: new Date().toISOString(),
+        apply_created_by: user.id,
+        preview_verified_at: null,
+        preview_verified_by: null,
       }),
     });
 
