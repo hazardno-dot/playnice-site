@@ -26,6 +26,7 @@ for (const field of fields) {
   const child = h.findChildObjectBlock(located.block, field).block;
   baseline[field] = { sr: read(child, "sr"), en: read(child, "en") };
 }
+const beforeMini = h.findChildObjectBlock(located.block, "miniTag").block;
 const approved = structuredClone(baseline);
 approved.miniTag.en = `${approved.miniTag.en} TEST`;
 const beforeLines = located.block.split(/\r?\n/).length;
@@ -34,6 +35,7 @@ const nextMini = h.findChildObjectBlock(next, "miniTag").block;
 if (read(nextMini, "en") !== approved.miniTag.en) throw new Error("Inline miniTag EN did not patch.");
 if (read(nextMini, "sr") !== baseline.miniTag.sr) throw new Error("Inline miniTag SR changed unexpectedly.");
 if (next.split(/\r?\n/).length !== beforeLines) throw new Error("Inline miniTag patch changed line structure.");
-if (!/^\{\s*sr:\s*["'].*?["'],\s*en:\s*["'].*?["']\s*\}$/s.test(nextMini)) throw new Error("Inline miniTag object structure was not preserved.");
+const maskStrings = (value) => value.replace(/(["'])(?:\\.|(?!\1).)*\1/g, '"VALUE"');
+if (maskStrings(nextMini) !== maskStrings(beforeMini)) throw new Error("Inline miniTag punctuation or whitespace structure changed.");
 console.log("PASS  inline miniTag patches safely and preserves inline structure");
 console.log("Production untouched: yes (in-memory regression only)");
