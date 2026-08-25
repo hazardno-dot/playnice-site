@@ -47,6 +47,19 @@ function patchRatingOnly(source, slug, baselineRating, draftRating) {
   return source.replace(blockRegex, `$1${Number(draftRating)}`);
 }
 
+const normalizeCsv = (v) => Array.isArray(v) ? v.map(String).map(s => s.trim()).filter(Boolean) : String(v ?? "").split(",").map(s => s.trim()).filter(Boolean);
+const stable = (value) => {
+  const normalize = (v) => {
+    if (Array.isArray(v)) return v.map(normalize);
+    if (v && typeof v === "object") return Object.keys(v).sort().reduce((out, key) => {
+      out[key] = normalize(v[key]);
+      return out;
+    }, {});
+    return v;
+  };
+  return JSON.stringify(normalize(value ?? null));
+};
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
   if (!SUPABASE_URL || !SUPABASE_KEY) return json(res, 500, { error: "Supabase server configuration is missing." });
@@ -83,29 +96,39 @@ export default async function handler(req, res) {
     // Controlled Apply v1 is deliberately narrow: one verified Core/Rating change only.
     const baselineCore = baseline?.core || {};
     const approvedCore = approved?.core || {};
-    const normalizeCsv = (v) => Array.isArray(v) ? v.join(", ") : String(v ?? "");
+    const approvedNoteMap = {
+      top: normalizeCsv(approvedCore.noteMap?.top),
+      heart: normalizeCsv(approvedCore.noteMap?.heart),
+      base: normalizeCsv(approvedCore.noteMap?.base),
+    };
+    const baselineNoteMap = {
+      top: normalizeCsv(baselineCore.noteMap?.top),
+      heart: normalizeCsv(baselineCore.noteMap?.heart),
+      base: normalizeCsv(baselineCore.noteMap?.base),
+    };
+
     const coreChecks = [
-      ["name", baselineCore.name, approvedCore.name],
-      ["shortName", baselineCore.shortName, approvedCore.shortName],
-      ["category", baselineCore.category, approvedCore.category],
-      ["badge", baselineCore.badge, approvedCore.badge],
-      ["ratingLabel", baselineCore.ratingLabel, approvedCore.ratingLabel],
-      ["season", baselineCore.season, approvedCore.season],
-      ["moods", normalizeCsv(baselineCore.moods), normalizeCsv(approvedCore.moods)],
-      ["sizes", JSON.stringify(baselineCore.sizes || {}), JSON.stringify(approvedCore.sizes || {})],
-      ["noteMap", JSON.stringify(baselineCore.noteMap || {}), JSON.stringify({
-        top: String(approvedCore.noteMap?.top || "").split(",").map(s => s.trim()).filter(Boolean),
-        heart: String(approvedCore.noteMap?.heart || "").split(",").map(s => s.trim()).filter(Boolean),
-        base: String(approvedCore.noteMap?.base || "").split(",").map(s => s.trim()).filter(Boolean),
-      })],
-      ["recommendations", normalizeCsv(baselineCore.recommendations), normalizeCsv(approvedCore.recommendations)],
+      ["name", String(baselineCore.name ?? ""), String(approvedCore.name ?? "")],
+      ["shortName", String(baselineCore.shortName ?? ""), String(approvedCore.shortName ?? "")],
+      ["category", String(baselineCore.category ?? ""), String(approvedCore.category ?? "")],
+      ["badge", String(baselineCore.badge ?? ""), String(approvedCore.badge ?? "")],
+      ["ratingLabel", String(baselineCore.ratingLabel ?? ""), String(approvedCore.ratingLabel ?? "")],
+      ["season", String(baselineCore.season ?? ""), String(approvedCore.season ?? "")],
+      ["moods", stable(normalizeCsv(baselineCore.moods)), stable(normalizeCsv(approvedCore.moods))],
+      ["sizes", stable(baselineCore.sizes || {}), stable(approvedCore.sizes || {})],
+      ["noteMap", stable(baselineNoteMap), stable(approvedNoteMap)],
+      ["recommendations", stable(normalizeCsv(baselineCore.recommendations)), stable(normalizeCsv(approvedCore.recommendations))],
     ];
-    const unexpectedCore = coreChecks.filter(([, a, b]) => String(a ?? "") !== String(b ?? ""));
-    const nonCoreChanged = JSON.stringify(baseline.copy || {}) !== JSON.stringify(approved.copy || {}) ||
-      JSON.stringify(baseline.wear || {}) !== JSON.stringify(approved.wear || {}) ||
-      JSON.stringify(baseline.discovery || {}) !== JSON.stringify(approved.discovery || {});
+    const unexpectedCore = coreChecks.filter(([, a, b]) => a !== b);
+    const nonCoreChanged = stable(baseline.copy || {}) !== stable(approved.copy || {}) ||
+      stable(baseline.wear || {}) !== stable(approved.wear || {}) ||
+      stable(baseline.discovery || {}) !== stable(approved.discovery || {});
     if (unexpectedCore.length || nonCoreChanged) {
-      return json(res, 409, { error: "Controlled Apply v1 supports a single Core/Rating change only. Other changes must remain in draft for a later apply version." });
+      return json(res, 409, {
+        error: "Controlled Apply v1 supports a single Core/Rating change only. Other changes must remain in draft for a later apply version.",
+        unexpected_core: unexpectedCore.map(([name]) => name),
+        non_core_changed: nonCoreChanged,
+      });
     }
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
