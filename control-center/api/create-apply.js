@@ -35,19 +35,16 @@ async function github(path, options = {}) {
   return data;
 }
 
-function patchRatingOnly(source, slug, baselineRating, draftRating) {
-  const slugEscaped = slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const blockRegex = new RegExp(`(slug\\s*:\\s*["']${slugEscaped}["'][\\s\\S]{0,2600}?\\brating\\s*:\\s*)([0-9]+(?:\\.[0-9]+)?)`);
-  const match = source.match(blockRegex);
-  if (!match) throw new Error(`Could not locate rating for ${slug} in main catalog.`);
-  const liveRating = Number(match[2]);
-  if (Number(liveRating) !== Number(baselineRating)) {
-    throw new Error(`LIVE DRIFT: main currently has rating ${liveRating}, preparation baseline expected ${baselineRating}.`);
-  }
-  return source.replace(blockRegex, `$1${Number(draftRating)}`);
-}
+const normalizeCsv = (v) => Array.isArray(v)
+  ? v.map(String).map((s) => s.trim()).filter(Boolean)
+  : String(v ?? "").split(",").map((s) => s.trim()).filter(Boolean);
 
-const normalizeCsv = (v) => Array.isArray(v) ? v.map(String).map(s => s.trim()).filter(Boolean) : String(v ?? "").split(",").map(s => s.trim()).filter(Boolean);
+const normalizeSizes = (value) => Object.keys(value || {}).sort().reduce((out, key) => {
+  const n = Number(value[key]);
+  out[key] = Number.isFinite(n) ? n : value[key];
+  return out;
+}, {});
+
 const stable = (value) => {
   const normalize = (v) => {
     if (Array.isArray(v)) return v.map(normalize);
@@ -59,6 +56,113 @@ const stable = (value) => {
   };
   return JSON.stringify(normalize(value ?? null));
 };
+
+const valueForField = (field, core) => {
+  if (field === "rating") return Number(core?.rating);
+  if (field === "moods") return normalizeCsv(core?.moods);
+  if (field === "sizes") return normalizeSizes(core?.sizes || {});
+  return String(core?.[field] ?? "");
+};
+
+const displayValue = (value) => typeof value === "string" ? value : JSON.stringify(value);
+
+function findProductBlock(source, slug) {
+  const escaped = slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const slugRegex = new RegExp(`\\bslug\\s*:\\s*["']${escaped}["']`);
+  const slugMatch = slugRegex.exec(source);
+  if (!slugMatch) throw new Error(`Could not locate ${slug} in main catalog.`);
+
+  let start = source.lastIndexOf("\n  {", slugMatch.index);
+  if (start < 0) start = source.lastIndexOf("{", slugMatch.index);
+  else start += 3;
+  if (start < 0) throw new Error(`Could not locate product object for ${slug}.`);
+
+  let depth = 0;
+  let quote = "";
+  let escapedChar = false;
+  for (let i = start; i < source.length; i += 1) {
+    const ch = source[i];
+    if (quote) {
+      if (escapedChar) escapedChar = false;
+      else if (ch === "\\") escapedChar = true;
+      else if (ch === quote) quote = "";
+      continue;
+    }
+    if (ch === '"' || ch === "'" || ch === "`") { quote = ch; continue; }
+    if (ch === "{") depth += 1;
+    else if (ch === "}") {
+      depth -= 1;
+      if (depth === 0) return { start, end: i + 1, block: source.slice(start, i + 1) };
+    }
+  }
+  throw new Error(`Could not determine product object boundary for ${slug}.`);
+}
+
+function locatePropertyValue(block, property) {
+  const escaped = property.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const re = new RegExp(`\\n\\s{4}${escaped}\\s*:\\s*`);
+  const match = re.exec(block);
+  if (!match) throw new Error(`Could not locate ${property} in product object.`);
+  const start = match.index + match[0].length;
+
+  let square = 0;
+  let curly = 0;
+  let paren = 0;
+  let quote = "";
+  let escapedChar = false;
+  for (let i = start; i < block.length; i += 1) {
+    const ch = block[i];
+    if (quote) {
+      if (escapedChar) escapedChar = false;
+      else if (ch === "\\") escapedChar = true;
+      else if (ch === quote) quote = "";
+      continue;
+    }
+    if (ch === '"' || ch === "'" || ch === "`") { quote = ch; continue; }
+    if (ch === "[") square += 1;
+    else if (ch === "]") square -= 1;
+    else if (ch === "{") curly += 1;
+    else if (ch === "}") {
+      if (curly > 0) curly -= 1;
+      else if (square === 0 && paren === 0) return { start, end: i };
+    } else if (ch === "(") paren += 1;
+    else if (ch === ")") paren -= 1;
+    else if (ch === "," && square === 0 && curly === 0 && paren === 0) return { start, end: i };
+  }
+  throw new Error(`Could not read ${property} value.`);
+}
+
+function parseJsLiteral(raw) {
+  const text = raw.trim();
+  if (!text.length) return "";
+  if (/^-?\d+(?:\.\d+)?$/.test(text)) return Number(text);
+  try { return JSON.parse(text); } catch {
+    if ((text.startsWith("'") && text.endsWith("'")) || (text.startsWith('"') && text.endsWith('"'))) {
+      return text.slice(1, -1);
+    }
+  }
+  throw new Error(`Unsupported catalog value syntax: ${text.slice(0, 80)}`);
+}
+
+function serializeField(field, value) {
+  if (field === "rating") return String(Number(value));
+  return JSON.stringify(value);
+}
+
+function patchProperty(block, field, baselineValue, draftValue) {
+  const range = locatePropertyValue(block, field);
+  const liveRaw = block.slice(range.start, range.end);
+  const liveValue = parseJsLiteral(liveRaw);
+  const liveNormalized = field === "moods" ? normalizeCsv(liveValue)
+    : field === "sizes" ? normalizeSizes(liveValue)
+    : field === "rating" ? Number(liveValue)
+    : String(liveValue ?? "");
+
+  if (stable(liveNormalized) !== stable(baselineValue)) {
+    throw new Error(`LIVE DRIFT: main ${field} is ${displayValue(liveNormalized)}, preparation baseline expected ${displayValue(baselineValue)}.`);
+  }
+  return block.slice(0, range.start) + serializeField(field, draftValue) + block.slice(range.end);
+}
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
@@ -99,46 +203,50 @@ export default async function handler(req, res) {
 
     const approved = draft.approved_payload || draft.payload;
     const baseline = draft.baseline_snapshot;
-    const baselineRating = baseline?.core?.rating;
-    const draftRating = approved?.core?.rating;
-    if (baselineRating == null || draftRating == null) return json(res, 409, { error: "Rating baseline is incomplete." });
+    if (!baseline?.core || !approved?.core) return json(res, 409, { error: "Preparation baseline is incomplete." });
 
-    const baselineCore = baseline?.core || {};
-    const approvedCore = approved?.core || {};
-    const approvedNoteMap = {
-      top: normalizeCsv(approvedCore.noteMap?.top),
-      heart: normalizeCsv(approvedCore.noteMap?.heart),
-      base: normalizeCsv(approvedCore.noteMap?.base),
-    };
-    const baselineNoteMap = {
-      top: normalizeCsv(baselineCore.noteMap?.top),
-      heart: normalizeCsv(baselineCore.noteMap?.heart),
-      base: normalizeCsv(baselineCore.noteMap?.base),
-    };
+    const baselineCore = baseline.core;
+    const approvedCore = approved.core;
+    const supportedFields = ["rating", "ratingLabel", "badge", "season", "moods", "sizes"];
+    const protectedFields = ["name", "shortName", "category", "noteMap", "recommendations"];
 
-    const coreChecks = [
-      ["name", String(baselineCore.name ?? ""), String(approvedCore.name ?? "")],
-      ["shortName", String(baselineCore.shortName ?? ""), String(approvedCore.shortName ?? "")],
-      ["category", String(baselineCore.category ?? ""), String(approvedCore.category ?? "")],
-      ["badge", String(baselineCore.badge ?? ""), String(approvedCore.badge ?? "")],
-      ["ratingLabel", String(baselineCore.ratingLabel ?? ""), String(approvedCore.ratingLabel ?? "")],
-      ["season", String(baselineCore.season ?? ""), String(approvedCore.season ?? "")],
-      ["moods", stable(normalizeCsv(baselineCore.moods)), stable(normalizeCsv(approvedCore.moods))],
-      ["sizes", stable(baselineCore.sizes || {}), stable(approvedCore.sizes || {})],
-      ["noteMap", stable(baselineNoteMap), stable(approvedNoteMap)],
-      ["recommendations", stable(normalizeCsv(baselineCore.recommendations)), stable(normalizeCsv(approvedCore.recommendations))],
-    ];
-    const unexpectedCore = coreChecks.filter(([, a, b]) => a !== b);
+    const unsupportedCore = protectedFields.filter((field) => {
+      if (field === "noteMap") {
+        const a = {
+          top: normalizeCsv(baselineCore.noteMap?.top),
+          heart: normalizeCsv(baselineCore.noteMap?.heart),
+          base: normalizeCsv(baselineCore.noteMap?.base),
+        };
+        const b = {
+          top: normalizeCsv(approvedCore.noteMap?.top),
+          heart: normalizeCsv(approvedCore.noteMap?.heart),
+          base: normalizeCsv(approvedCore.noteMap?.base),
+        };
+        return stable(a) !== stable(b);
+      }
+      if (field === "recommendations") return stable(normalizeCsv(baselineCore.recommendations)) !== stable(normalizeCsv(approvedCore.recommendations));
+      return String(baselineCore[field] ?? "") !== String(approvedCore[field] ?? "");
+    });
+
     const nonCoreChanged = stable(baseline.copy || {}) !== stable(approved.copy || {}) ||
       stable(baseline.wear || {}) !== stable(approved.wear || {}) ||
       stable(baseline.discovery || {}) !== stable(approved.discovery || {});
-    if (unexpectedCore.length || nonCoreChanged) {
+
+    if (unsupportedCore.length || nonCoreChanged) {
       return json(res, 409, {
-        error: "Controlled Apply v1 supports a single Core/Rating change only. Other changes must remain in draft for a later apply version.",
-        unexpected_core: unexpectedCore.map(([name]) => name),
+        error: "Controlled Apply v2 currently supports Rating, Rating label, Badge, Season, Moods and Sizes/prices only. Other changes must remain in draft.",
+        unsupported_core: unsupportedCore,
         non_core_changed: nonCoreChanged,
       });
     }
+
+    const changes = supportedFields.map((field) => {
+      const live = valueForField(field, baselineCore);
+      const next = valueForField(field, approvedCore);
+      return { field, live, next, changed: stable(live) !== stable(next) };
+    }).filter((item) => item.changed);
+
+    if (!changes.length) return json(res, 409, { error: "No supported approved changes remain to apply." });
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
     const baseSha = mainRef.object.sha;
@@ -154,30 +262,35 @@ export default async function handler(req, res) {
     const filePath = "src/data/products/index.js";
     const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
     const source = Buffer.from(file.content, "base64").toString("utf8");
-    const nextSource = patchRatingOnly(source, slug, baselineRating, draftRating);
+    const located = findProductBlock(source, slug);
+    let nextBlock = located.block;
+    for (const change of changes) nextBlock = patchProperty(nextBlock, change.field, change.live, change.next);
+    const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
 
+    const summary = changes.map((c) => c.field).join(", ");
     await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, {
       method: "PUT",
       body: JSON.stringify({
-        message: `Control Center apply: ${slug} rating ${baselineRating} -> ${draftRating}`,
+        message: `Control Center apply: ${slug} (${summary})`,
         content: Buffer.from(nextSource, "utf8").toString("base64"),
         sha: file.sha,
         branch,
       }),
     });
 
+    const changeLines = changes.map((c) => `- ${c.field}: ${displayValue(c.live)} → ${displayValue(c.next)}`);
     const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, {
       method: "POST",
       body: JSON.stringify({
-        title: `Control Center: ${slug} rating ${baselineRating} → ${draftRating}`,
+        title: `Control Center: ${slug} · ${changes.length} approved change${changes.length === 1 ? "" : "s"}`,
         head: branch,
         base: "main",
         draft: true,
         body: [
-          "Generated by PlayNice Control Center controlled apply v1.",
+          "Generated by PlayNice Control Center controlled apply v2.",
           "",
           `- Product: ${slug}`,
-          `- Rating: ${baselineRating} → ${draftRating}`,
+          ...changeLines,
           "- Source: approved + prepared Supabase draft",
           "- Safety: draft PR only; no automatic merge",
         ].join("\n"),
@@ -198,10 +311,29 @@ export default async function handler(req, res) {
 
     await supabaseFetch("/rest/v1/draft_audit_log", token, {
       method: "POST",
-      body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "apply_branch_created", details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha } }),
+      body: JSON.stringify({
+        product_slug: slug,
+        actor_id: user.id,
+        action: "apply_branch_created",
+        details: {
+          branch,
+          pr_number: pr.number,
+          pr_url: pr.html_url,
+          base_sha: baseSha,
+          version: 2,
+          fields: changes.map((c) => c.field),
+        },
+      }),
     });
 
-    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url });
+    return json(res, 200, {
+      ok: true,
+      branch,
+      pr_number: pr.number,
+      pr_url: pr.html_url,
+      version: 2,
+      fields: changes.map((c) => c.field),
+    });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Controlled apply failed." });
   }
