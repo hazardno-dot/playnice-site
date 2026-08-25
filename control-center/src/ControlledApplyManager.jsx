@@ -60,6 +60,11 @@ export default function ControlledApplyManager() {
       const after = await readData();
       setDrafts(after.draftRows);
       setHistory(after.historyRows);
+
+      // App, DraftManager and ControlledApplyManager keep independent local state.
+      // Once a merged PR is archived and its draft is deleted, reload exactly once
+      // so every draft counter reflects the same authoritative Supabase state.
+      window.setTimeout(() => window.location.reload(), 120);
     }
   };
 
