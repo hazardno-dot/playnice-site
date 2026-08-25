@@ -10,7 +10,7 @@
 
 export const discoveryProfiles = {
   "afnan-9am": {
-    "freshness": 7.4,
+    "freshness": 7.5,
     "sweetness": 0,
     "warmth": 3.8,
     "darkness": 0,
@@ -29,7 +29,7 @@ export const discoveryProfiles = {
     "powdery": 0,
     "projection": 4.2,
     "longevity": 7.5,
-    "office": 10,
+    "office": 9.9,
     "casual": 9.8,
     "date": 5,
     "evening": 4.3,
