@@ -28,7 +28,20 @@ export function makeLiveSnapshot(product) {
   };
 }
 
-const stable = (value) => JSON.stringify(value ?? null);
+function canonicalize(value) {
+  if (Array.isArray(value)) return value.map(canonicalize);
+  if (value && typeof value === "object") {
+    return Object.keys(value)
+      .sort()
+      .reduce((out, key) => {
+        out[key] = canonicalize(value[key]);
+        return out;
+      }, {});
+  }
+  return value ?? null;
+}
+
+const stable = (value) => JSON.stringify(canonicalize(value));
 export const snapshotsEqual = (a, b) => stable(a) === stable(b);
 
 export function buildPatchPlan(changes) {
