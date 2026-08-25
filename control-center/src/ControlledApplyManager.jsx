@@ -7,15 +7,60 @@ import "./controlled-apply.css";
 
 export default function ControlledApplyManager() {
   const [drafts, setDrafts] = useState([]);
+  const [history, setHistory] = useState([]);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
 
-  const load = async () => {
-    const { data } = await supabase
-      .from("product_drafts")
-      .select("product_slug,payload,review_status,prepared_at,baseline_snapshot,apply_branch,apply_pr_number,apply_created_at,preview_verified_at,preview_verified_by")
-      .order("updated_at", { ascending: false });
-    setDrafts(data || []);
+  const readData = async () => {
+    const [{ data: draftRows }, { data: historyRows }] = await Promise.all([
+      supabase
+        .from("product_drafts")
+        .select("product_slug,payload,review_status,prepared_at,baseline_snapshot,apply_branch,apply_pr_number,apply_created_at,preview_verified_at,preview_verified_by")
+        .order("updated_at", { ascending: false }),
+      supabase
+        .from("publish_history")
+        .select("product_slug,apply_branch,apply_pr_number,published_at,published_commit_sha")
+        .order("published_at", { ascending: false })
+        .limit(5),
+    ]);
+    return { draftRows: draftRows || [], historyRows: historyRows || [] };
+  };
+
+  const load = async ({ sync = true } = {}) => {
+    const first = await readData();
+    setDrafts(first.draftRows);
+    setHistory(first.historyRows);
+
+    if (!sync) return;
+    const candidates = first.draftRows.filter((row) => row.apply_pr_number && row.preview_verified_at);
+    if (!candidates.length) return;
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.access_token) return;
+
+    let publishedAny = false;
+    for (const row of candidates) {
+      try {
+        const response = await fetch("/api/sync-publish-status", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ product_slug: row.product_slug }),
+        });
+        const body = await response.json();
+        if (response.ok && body?.status === "published") publishedAny = true;
+      } catch {
+        // A transient GitHub/Vercel sync failure must never block Control Center rendering.
+      }
+    }
+
+    if (publishedAny) {
+      const after = await readData();
+      setDrafts(after.draftRows);
+      setHistory(after.historyRows);
+    }
   };
 
   useEffect(() => { load(); }, []);
@@ -44,7 +89,7 @@ export default function ControlledApplyManager() {
       });
       const body = await response.json();
       if (!response.ok) throw new Error(body?.error || "Could not create controlled apply branch.");
-      await load();
+      await load({ sync: false });
     } catch (e) {
       setError(e?.message || "Controlled apply failed.");
     } finally {
@@ -71,7 +116,7 @@ export default function ControlledApplyManager() {
         action: "preview_verified",
         details: { branch: row.apply_branch, pr_number: row.apply_pr_number },
       });
-      await load();
+      await load({ sync: false });
     } catch (e) {
       setError(e?.message || "Could not verify preview.");
     } finally {
@@ -79,11 +124,11 @@ export default function ControlledApplyManager() {
     }
   };
 
-  if (!readyRows.length && !error) return null;
+  if (!readyRows.length && !history.length && !error) return null;
 
   return <div className="controlled-apply-box">
     <div className="controlled-apply-head">
-      <div><span>CONTROLLED APPLY</span><strong>{readyRows.length} ready</strong></div>
+      <div><span>CONTROLLED APPLY</span><strong>{readyRows.length} active</strong></div>
       <small>Manual verification required · never merges automatically</small>
     </div>
 
@@ -108,11 +153,22 @@ export default function ControlledApplyManager() {
           <strong>{verified ? "Ready to merge" : "Preview branch created"}</strong>
           <span>{row.apply_branch}</span>
           <a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">
-            Open draft PR #{row.apply_pr_number}
+            Open PR #{row.apply_pr_number}
           </a>
         </div> : null}
       </div>;
     })}
+
+    {history.length ? <div className="controlled-published-history">
+      <div className="controlled-published-title"><span>RECENTLY PUBLISHED</span><strong>PUBLISHED · LIVE</strong></div>
+      {history.slice(0, 3).map((row) => <div className="controlled-published-row" key={`${row.apply_pr_number}-${row.product_slug}`}>
+        <div><strong>{row.product_slug}</strong><span>{new Date(row.published_at).toLocaleString()}</span></div>
+        <div className="controlled-published-meta">
+          <span>LIVE</span>
+          <a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">PR #{row.apply_pr_number}</a>
+        </div>
+      </div>)}
+    </div> : null}
 
     {error ? <div className="controlled-apply-error">{error}</div> : null}
   </div>;
