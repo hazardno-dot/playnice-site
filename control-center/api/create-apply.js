@@ -109,7 +109,7 @@ function findNamedObjectBlock(source, objectKey, label = "data object") {
 }
 
 function findChildObjectBlock(block, property) {
-  const re = new RegExp(`(?:^|\\n)\\s*(?:["']${escapeRegex(property)}["']|${escapeRegex(property)})\\s*:\\s*\\{`);
+  const re = new RegExp(`(?:^|\\n|\\{)\\s*(?:["']${escapeRegex(property)}["']|${escapeRegex(property)})\\s*:\\s*\\{`);
   const match = re.exec(block);
   if (!match) throw new Error(`Could not locate nested ${property} object.`);
   const braceStart = block.indexOf("{", match.index);
@@ -117,7 +117,7 @@ function findChildObjectBlock(block, property) {
 }
 
 function locatePropertyValue(block, property) {
-  const re = new RegExp(`(?:^|\\n)\\s*(?:["']${escapeRegex(property)}["']|${escapeRegex(property)})\\s*:\\s*`);
+  const re = new RegExp(`(?:^|\\n|\\{)\\s*(?:["']${escapeRegex(property)}["']|${escapeRegex(property)})\\s*:\\s*`);
   const match = re.exec(block);
   if (!match) throw new Error(`Could not locate ${property} in object.`);
   const start = match.index + match[0].length;
