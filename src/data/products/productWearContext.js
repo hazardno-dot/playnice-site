@@ -4,7 +4,7 @@
 export const productWearContext = {
   "Afnan 9 AM Eau de Parfum": {
     sr: "Svaki dan, posao i toplo vreme.",
-    en: "Everyday wear, work and warm weather.",
+    en: "Everyday wear, work and warm days.",
   },
   "Afnan 9 PM Rebel Eau de Parfum": {
     sr: "Večernji izlazak, dejt i hladnije vreme.",
