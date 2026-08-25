@@ -93,7 +93,6 @@ function findProductBlock(source, slug) {
   const slugRegex = new RegExp(`\\bslug\\s*:\\s*["']${escapeRegex(slug)}["']`);
   const slugMatch = slugRegex.exec(source);
   if (!slugMatch) throw new Error(`Could not locate ${slug} in main catalog.`);
-
   let start = source.lastIndexOf("\n  {", slugMatch.index);
   if (start < 0) start = source.lastIndexOf("{", slugMatch.index);
   else start += 3;
@@ -110,7 +109,7 @@ function findNamedObjectBlock(source, objectKey, label = "data object") {
 }
 
 function findChildObjectBlock(block, property) {
-  const re = new RegExp(`(?:^|\\n)\\s*${escapeRegex(property)}\\s*:\\s*\\{`);
+  const re = new RegExp(`(?:^|\\n)\\s*(?:["']${escapeRegex(property)}["']|${escapeRegex(property)})\\s*:\\s*\\{`);
   const match = re.exec(block);
   if (!match) throw new Error(`Could not locate nested ${property} object.`);
   const braceStart = block.indexOf("{", match.index);
@@ -122,7 +121,6 @@ function locatePropertyValue(block, property) {
   const match = re.exec(block);
   if (!match) throw new Error(`Could not locate ${property} in object.`);
   const start = match.index + match[0].length;
-
   let square = 0;
   let curly = 0;
   let paren = 0;
@@ -155,9 +153,7 @@ function parseJsLiteral(raw) {
   if (!text.length) return "";
   if (/^-?\d+(?:\.\d+)?$/.test(text)) return Number(text);
   try { return JSON.parse(text); } catch {
-    if ((text.startsWith("'") && text.endsWith("'")) || (text.startsWith('"') && text.endsWith('"'))) {
-      return text.slice(1, -1);
-    }
+    if ((text.startsWith("'") && text.endsWith("'")) || (text.startsWith('"') && text.endsWith('"'))) return text.slice(1, -1);
   }
   throw new Error(`Unsupported catalog value syntax: ${text.slice(0, 80)}`);
 }
@@ -172,13 +168,8 @@ function patchStringArrayRaw(raw, baselineValue, draftValue, label) {
   const liveNormalized = normalizeCsv(liveValue);
   const baselineNormalized = normalizeCsv(baselineValue);
   const draftNormalized = normalizeCsv(draftValue);
-  if (stable(liveNormalized) !== stable(baselineNormalized)) {
-    throw new Error(`LIVE DRIFT: ${label} changed after preparation.`);
-  }
-  if (liveNormalized.length !== draftNormalized.length) {
-    throw new Error(`Controlled Apply can replace existing ${label} slots, but cannot add or remove slots yet.`);
-  }
-
+  if (stable(liveNormalized) !== stable(baselineNormalized)) throw new Error(`LIVE DRIFT: ${label} changed after preparation.`);
+  if (liveNormalized.length !== draftNormalized.length) throw new Error(`Controlled Apply can replace existing ${label} slots, but cannot add or remove slots yet.`);
   let index = 0;
   const nextRaw = raw.replace(/(["'])([^"']*)\1/g, (match, quote) => {
     if (index >= draftNormalized.length) return match;
@@ -191,23 +182,15 @@ function patchStringArrayRaw(raw, baselineValue, draftValue, label) {
   return nextRaw;
 }
 
-function patchMoodsRaw(raw, baselineValue, draftValue) {
-  return patchStringArrayRaw(raw, baselineValue, draftValue, "moods");
-}
+function patchMoodsRaw(raw, baselineValue, draftValue) { return patchStringArrayRaw(raw, baselineValue, draftValue, "moods"); }
 
 function patchSizesRaw(raw, baselineValue, draftValue) {
   const liveValue = parseJsLiteral(raw);
   const liveNormalized = normalizeSizes(liveValue);
-  if (stable(liveNormalized) !== stable(baselineValue)) {
-    throw new Error(`LIVE DRIFT: main sizes are ${displayValue(liveNormalized)}, preparation baseline expected ${displayValue(baselineValue)}.`);
-  }
-
+  if (stable(liveNormalized) !== stable(baselineValue)) throw new Error(`LIVE DRIFT: main sizes are ${displayValue(liveNormalized)}, preparation baseline expected ${displayValue(baselineValue)}.`);
   const liveKeys = Object.keys(liveValue || {}).sort();
   const draftKeys = Object.keys(draftValue || {}).sort();
-  if (stable(liveKeys) !== stable(draftKeys)) {
-    throw new Error("Controlled Apply v2 can change existing size prices, but cannot add or remove sizes yet.");
-  }
-
+  if (stable(liveKeys) !== stable(draftKeys)) throw new Error("Controlled Apply v2 can change existing size prices, but cannot add or remove sizes yet.");
   let nextRaw = raw;
   for (const key of liveKeys) {
     const before = Number(liveValue[key]);
@@ -224,21 +207,11 @@ function patchSizesRaw(raw, baselineValue, draftValue) {
 function patchProperty(block, field, baselineValue, draftValue) {
   const range = locatePropertyValue(block, field);
   const liveRaw = block.slice(range.start, range.end);
-
-  if (field === "sizes") {
-    const nextRaw = patchSizesRaw(liveRaw, baselineValue, draftValue);
-    return block.slice(0, range.start) + nextRaw + block.slice(range.end);
-  }
-  if (field === "moods") {
-    const nextRaw = patchMoodsRaw(liveRaw, baselineValue, draftValue);
-    return block.slice(0, range.start) + nextRaw + block.slice(range.end);
-  }
-
+  if (field === "sizes") return block.slice(0, range.start) + patchSizesRaw(liveRaw, baselineValue, draftValue) + block.slice(range.end);
+  if (field === "moods") return block.slice(0, range.start) + patchMoodsRaw(liveRaw, baselineValue, draftValue) + block.slice(range.end);
   const liveValue = parseJsLiteral(liveRaw);
   const liveNormalized = field === "rating" ? Number(liveValue) : String(liveValue ?? "");
-  if (stable(liveNormalized) !== stable(baselineValue)) {
-    throw new Error(`LIVE DRIFT: main ${field} is ${displayValue(liveNormalized)}, preparation baseline expected ${displayValue(baselineValue)}.`);
-  }
+  if (stable(liveNormalized) !== stable(baselineValue)) throw new Error(`LIVE DRIFT: main ${field} is ${displayValue(liveNormalized)}, preparation baseline expected ${displayValue(baselineValue)}.`);
   return block.slice(0, range.start) + serializeField(field, draftValue) + block.slice(range.end);
 }
 
@@ -254,10 +227,7 @@ function readWearBlock(block) {
 function patchWearBlock(block, baselineWear, approvedWear) {
   const liveWear = readWearBlock(block);
   const baseline = { sr: String(baselineWear?.sr ?? ""), en: String(baselineWear?.en ?? "") };
-  if (stable(liveWear) !== stable(baseline)) {
-    throw new Error(`LIVE DRIFT: Wear Context changed after preparation. Main is ${displayValue(liveWear)}, baseline expected ${displayValue(baseline)}.`);
-  }
-
+  if (stable(liveWear) !== stable(baseline)) throw new Error(`LIVE DRIFT: Wear Context changed after preparation. Main is ${displayValue(liveWear)}, baseline expected ${displayValue(baseline)}.`);
   let nextBlock = block;
   for (const lang of ["sr", "en"]) {
     const before = String(baselineWear?.[lang] ?? "");
@@ -290,7 +260,6 @@ function patchCopyBlock(block, baselineCopy = {}, approvedCopy = {}) {
     const beforeGroup = baselineCopy?.[field] || {};
     const afterGroup = approvedCopy?.[field] || {};
     if (stable(beforeGroup) === stable(afterGroup)) continue;
-
     const located = findChildObjectBlock(nextBlock, field);
     let child = located.block;
     for (const lang of ["sr", "en"]) {
@@ -300,8 +269,7 @@ function patchCopyBlock(block, baselineCopy = {}, approvedCopy = {}) {
       const range = locatePropertyValue(child, lang);
       const liveRaw = child.slice(range.start, range.end);
       if (COPY_ARRAY_FIELDS.has(field)) {
-        const patched = patchStringArrayRaw(liveRaw, before, after, `copy.${field}.${lang}`);
-        child = child.slice(0, range.start) + patched + child.slice(range.end);
+        child = child.slice(0, range.start) + patchStringArrayRaw(liveRaw, before, after, `copy.${field}.${lang}`) + child.slice(range.end);
       } else {
         const liveValue = String(parseJsLiteral(liveRaw) ?? "");
         if (liveValue !== String(before ?? "")) throw new Error(`LIVE DRIFT: copy.${field}.${lang} changed after preparation.`);
@@ -320,12 +288,10 @@ function discoveryChangesBetween(baselineDiscovery = {}, approvedDiscovery = {})
 
 function patchDiscoveryBlock(block, baselineDiscovery = {}, approvedDiscovery = {}) {
   let nextBlock = block;
-  const changes = discoveryChangesBetween(baselineDiscovery, approvedDiscovery);
-  for (const change of changes) {
+  for (const change of discoveryChangesBetween(baselineDiscovery, approvedDiscovery)) {
     if (!Number.isFinite(change.live) || !Number.isFinite(change.next)) throw new Error(`Discovery field ${change.field} must remain numeric.`);
     const range = locatePropertyValue(nextBlock, change.field);
-    const liveRaw = nextBlock.slice(range.start, range.end);
-    const liveValue = Number(parseJsLiteral(liveRaw));
+    const liveValue = Number(parseJsLiteral(nextBlock.slice(range.start, range.end)));
     if (liveValue !== change.live) throw new Error(`LIVE DRIFT: discovery.${change.field} changed after preparation.`);
     nextBlock = nextBlock.slice(0, range.start) + String(change.next) + nextBlock.slice(range.end);
   }
@@ -336,40 +302,33 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
   if (!SUPABASE_URL || !SUPABASE_KEY) return json(res, 500, { error: "Supabase server configuration is missing." });
   if (!GITHUB_TOKEN) return json(res, 500, { error: "GITHUB_TOKEN is not configured on the Control Center project." });
-
   try {
     const authHeader = req.headers.authorization || "";
     const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
     if (!token) return json(res, 401, { error: "Missing admin session." });
-
     const userRes = await supabaseFetch("/auth/v1/user", token);
     if (!userRes.ok) return json(res, 401, { error: "Invalid admin session." });
     const user = await userRes.json();
-
     const adminRes = await supabaseFetch(`/rest/v1/admin_users?user_id=eq.${encodeURIComponent(user.id)}&select=user_id&limit=1`, token);
     const admins = adminRes.ok ? await adminRes.json() : [];
     if (!admins.length) return json(res, 403, { error: "This account is not authorized for controlled apply." });
 
     const slug = String(req.body?.product_slug || "").trim();
     if (!slug) return json(res, 400, { error: "product_slug is required." });
-
     const draftRes = await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}&select=product_slug,payload,approved_payload,review_status,prepared_at,baseline_snapshot,apply_branch,apply_pr_number&limit=1`, token);
     if (!draftRes.ok) return json(res, 400, { error: "Could not load prepared draft." });
     const [draft] = await draftRes.json();
     if (!draft) return json(res, 404, { error: "Prepared draft not found." });
     if (draft.review_status !== "approved" || !draft.prepared_at) return json(res, 409, { error: "Draft must be APPROVED and READY TO APPLY first." });
-
     if (draft.apply_branch && draft.apply_pr_number) return json(res, 200, { ok: true, existing: true, branch: draft.apply_branch, pr_number: draft.apply_pr_number, pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}` });
 
     const approved = draft.approved_payload || draft.payload;
     const baseline = draft.baseline_snapshot;
     if (!baseline?.core || !approved?.core) return json(res, 409, { error: "Preparation baseline is incomplete." });
-
     const baselineCore = baseline.core;
     const approvedCore = approved.core;
     const supportedFields = ["rating", "ratingLabel", "badge", "season", "moods", "sizes"];
     const protectedFields = ["name", "shortName", "category", "noteMap", "recommendations"];
-
     const unsupportedCore = protectedFields.filter((field) => {
       if (field === "noteMap") {
         const a = { top: normalizeCsv(baselineCore.noteMap?.top), heart: normalizeCsv(baselineCore.noteMap?.heart), base: normalizeCsv(baselineCore.noteMap?.base) };
@@ -379,7 +338,6 @@ export default async function handler(req, res) {
       if (field === "recommendations") return stable(normalizeCsv(baselineCore.recommendations)) !== stable(normalizeCsv(approvedCore.recommendations));
       return String(baselineCore[field] ?? "") !== String(approvedCore[field] ?? "");
     });
-
     if (unsupportedCore.length) return json(res, 409, { error: "Controlled Apply supports Core, Wear, Copy and Discovery. Notes, Recommendations, Name, Short name and Category remain protected.", unsupported_core: unsupportedCore });
 
     const coreChanges = supportedFields.map((field) => {
@@ -387,7 +345,6 @@ export default async function handler(req, res) {
       const next = valueForField(field, approvedCore);
       return { section: "Core", field, live, next, changed: stable(live) !== stable(next) };
     }).filter((item) => item.changed);
-
     const baselineWear = baseline.wear || {};
     const approvedWear = approved.wear || {};
     const wearChanges = ["sr", "en"].map((lang) => ({ section: "Wear", field: lang, live: String(baselineWear?.[lang] ?? ""), next: String(approvedWear?.[lang] ?? ""), changed: String(baselineWear?.[lang] ?? "") !== String(approvedWear?.[lang] ?? "") })).filter((item) => item.changed);
@@ -402,7 +359,6 @@ export default async function handler(req, res) {
     const safeSlug = slug.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
     const branch = `cc-apply-${safeSlug}-${stamp}`;
     await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, { method: "POST", body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }) });
-
     const changedFiles = [];
 
     if (coreChanges.length) {
@@ -417,7 +373,6 @@ export default async function handler(req, res) {
       await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
       changedFiles.push(filePath);
     }
-
     if (wearChanges.length) {
       const filePath = "src/data/products/productWearContext.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
@@ -431,7 +386,6 @@ export default async function handler(req, res) {
       await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
       changedFiles.push(filePath);
     }
-
     if (copyChanges.length) {
       const filePath = "src/data/products/productCopy.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
@@ -445,7 +399,6 @@ export default async function handler(req, res) {
       await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
       changedFiles.push(filePath);
     }
-
     if (discoveryChanges.length) {
       const filePath = "src/data/products/discoveryProfiles.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
@@ -459,14 +412,9 @@ export default async function handler(req, res) {
     }
 
     const changeLines = changes.map((c) => `- ${c.section} · ${String(c.field).toUpperCase()}: ${displayValue(c.live)} → ${displayValue(c.next)}`);
-    const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, {
-      method: "POST",
-      body: JSON.stringify({ title: `Control Center: ${slug} · ${changes.length} approved change${changes.length === 1 ? "" : "s"}`, head: branch, base: "main", draft: true, body: ["Generated by PlayNice Control Center controlled apply v2.2.", "", `- Product: ${slug}`, ...changeLines, `- Files: ${changedFiles.join(", ")}`, "- Source: approved + prepared Supabase draft", "- Safety: draft PR only; no automatic merge"].join("\n") }),
-    });
-
+    const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, { method: "POST", body: JSON.stringify({ title: `Control Center: ${slug} · ${changes.length} approved change${changes.length === 1 ? "" : "s"}`, head: branch, base: "main", draft: true, body: ["Generated by PlayNice Control Center controlled apply v2.2.", "", `- Product: ${slug}`, ...changeLines, `- Files: ${changedFiles.join(", ")}`, "- Source: approved + prepared Supabase draft", "- Safety: draft PR only; no automatic merge"].join("\n") }) });
     await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, { method: "PATCH", body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id, preview_verified_at: null, preview_verified_by: null }) });
     await supabaseFetch("/rest/v1/draft_audit_log", token, { method: "POST", body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "apply_branch_created", details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha, version: "2.2", fields: changes.map((c) => `${c.section.toLowerCase()}.${c.field}`), files: changedFiles } }) });
-
     return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "2.2", fields: changes.map((c) => `${c.section.toLowerCase()}.${c.field}`), files: changedFiles });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Controlled apply failed." });
