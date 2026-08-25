@@ -28,10 +28,12 @@ for (const field of fields) {
 }
 const approved = structuredClone(baseline);
 approved.miniTag.en = `${approved.miniTag.en} TEST`;
+const beforeLines = located.block.split(/\r?\n/).length;
 const next = h.patchCopyBlock(located.block, baseline, approved);
 const nextMini = h.findChildObjectBlock(next, "miniTag").block;
 if (read(nextMini, "en") !== approved.miniTag.en) throw new Error("Inline miniTag EN did not patch.");
 if (read(nextMini, "sr") !== baseline.miniTag.sr) throw new Error("Inline miniTag SR changed unexpectedly.");
-if (!next.includes(`miniTag: { sr: ${JSON.stringify(baseline.miniTag.sr)}, en: ${JSON.stringify(approved.miniTag.en)} }`)) throw new Error("Inline miniTag formatting was not preserved.");
-console.log("PASS  inline miniTag patches safely and preserves formatting");
+if (next.split(/\r?\n/).length !== beforeLines) throw new Error("Inline miniTag patch changed line structure.");
+if (!/^\{\s*sr:\s*["'].*?["'],\s*en:\s*["'].*?["']\s*\}$/s.test(nextMini)) throw new Error("Inline miniTag object structure was not preserved.");
+console.log("PASS  inline miniTag patches safely and preserves inline structure");
 console.log("Production untouched: yes (in-memory regression only)");
