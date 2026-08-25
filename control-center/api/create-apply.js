@@ -118,7 +118,7 @@ function findChildObjectBlock(block, property) {
 }
 
 function locatePropertyValue(block, property) {
-  const re = new RegExp(`(?:^|\\n)\\s*${escapeRegex(property)}\\s*:\\s*`);
+  const re = new RegExp(`(?:^|\\n)\\s*(?:["']${escapeRegex(property)}["']|${escapeRegex(property)})\\s*:\\s*`);
   const match = re.exec(block);
   if (!match) throw new Error(`Could not locate ${property} in object.`);
   const start = match.index + match[0].length;
@@ -278,9 +278,7 @@ function copyChangesBetween(baselineCopy = {}, approvedCopy = {}) {
     for (const lang of ["sr", "en"]) {
       const live = baselineCopy?.[field]?.[lang];
       const next = approvedCopy?.[field]?.[lang];
-      if (stable(live) !== stable(next)) {
-        changes.push({ section: "Copy", field: `${field}.${lang}`, group: field, lang, live, next });
-      }
+      if (stable(live) !== stable(next)) changes.push({ section: "Copy", field: `${field}.${lang}`, group: field, lang, live, next });
     }
   }
   return changes;
@@ -317,12 +315,7 @@ function patchCopyBlock(block, baselineCopy = {}, approvedCopy = {}) {
 
 function discoveryChangesBetween(baselineDiscovery = {}, approvedDiscovery = {}) {
   const keys = Array.from(new Set([...Object.keys(baselineDiscovery || {}), ...Object.keys(approvedDiscovery || {})])).sort();
-  return keys.filter((field) => stable(baselineDiscovery?.[field]) !== stable(approvedDiscovery?.[field])).map((field) => ({
-    section: "Discovery",
-    field,
-    live: Number(baselineDiscovery?.[field]),
-    next: Number(approvedDiscovery?.[field]),
-  }));
+  return keys.filter((field) => stable(baselineDiscovery?.[field]) !== stable(approvedDiscovery?.[field])).map((field) => ({ section: "Discovery", field, live: Number(baselineDiscovery?.[field]), next: Number(approvedDiscovery?.[field]) }));
 }
 
 function patchDiscoveryBlock(block, baselineDiscovery = {}, approvedDiscovery = {}) {
@@ -330,7 +323,7 @@ function patchDiscoveryBlock(block, baselineDiscovery = {}, approvedDiscovery = 
   const changes = discoveryChangesBetween(baselineDiscovery, approvedDiscovery);
   for (const change of changes) {
     if (!Number.isFinite(change.live) || !Number.isFinite(change.next)) throw new Error(`Discovery field ${change.field} must remain numeric.`);
-    const range = locatePropertyValue(nextBlock, `"${change.field}"`);
+    const range = locatePropertyValue(nextBlock, change.field);
     const liveRaw = nextBlock.slice(range.start, range.end);
     const liveValue = Number(parseJsLiteral(liveRaw));
     if (liveValue !== change.live) throw new Error(`LIVE DRIFT: discovery.${change.field} changed after preparation.`);
@@ -366,9 +359,7 @@ export default async function handler(req, res) {
     if (!draft) return json(res, 404, { error: "Prepared draft not found." });
     if (draft.review_status !== "approved" || !draft.prepared_at) return json(res, 409, { error: "Draft must be APPROVED and READY TO APPLY first." });
 
-    if (draft.apply_branch && draft.apply_pr_number) {
-      return json(res, 200, { ok: true, existing: true, branch: draft.apply_branch, pr_number: draft.apply_pr_number, pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}` });
-    }
+    if (draft.apply_branch && draft.apply_pr_number) return json(res, 200, { ok: true, existing: true, branch: draft.apply_branch, pr_number: draft.apply_pr_number, pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}` });
 
     const approved = draft.approved_payload || draft.payload;
     const baseline = draft.baseline_snapshot;
@@ -389,12 +380,7 @@ export default async function handler(req, res) {
       return String(baselineCore[field] ?? "") !== String(approvedCore[field] ?? "");
     });
 
-    if (unsupportedCore.length) {
-      return json(res, 409, {
-        error: "Controlled Apply supports Core, Wear, Copy and Discovery. Notes, Recommendations, Name, Short name and Category remain protected.",
-        unsupported_core: unsupportedCore,
-      });
-    }
+    if (unsupportedCore.length) return json(res, 409, { error: "Controlled Apply supports Core, Wear, Copy and Discovery. Notes, Recommendations, Name, Short name and Category remain protected.", unsupported_core: unsupportedCore });
 
     const coreChanges = supportedFields.map((field) => {
       const live = valueForField(field, baselineCore);
@@ -405,7 +391,6 @@ export default async function handler(req, res) {
     const baselineWear = baseline.wear || {};
     const approvedWear = approved.wear || {};
     const wearChanges = ["sr", "en"].map((lang) => ({ section: "Wear", field: lang, live: String(baselineWear?.[lang] ?? ""), next: String(approvedWear?.[lang] ?? ""), changed: String(baselineWear?.[lang] ?? "") !== String(approvedWear?.[lang] ?? "") })).filter((item) => item.changed);
-
     const copyChanges = copyChangesBetween(baseline.copy || {}, approved.copy || {});
     const discoveryChanges = discoveryChangesBetween(baseline.discovery || {}, approved.discovery || {});
     const changes = [...coreChanges, ...wearChanges, ...copyChanges, ...discoveryChanges];
@@ -416,7 +401,6 @@ export default async function handler(req, res) {
     const stamp = new Date().toISOString().replace(/[-:TZ.]/g, "").slice(0, 12);
     const safeSlug = slug.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
     const branch = `cc-apply-${safeSlug}-${stamp}`;
-
     await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, { method: "POST", body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }) });
 
     const changedFiles = [];
@@ -477,29 +461,11 @@ export default async function handler(req, res) {
     const changeLines = changes.map((c) => `- ${c.section} · ${String(c.field).toUpperCase()}: ${displayValue(c.live)} → ${displayValue(c.next)}`);
     const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, {
       method: "POST",
-      body: JSON.stringify({
-        title: `Control Center: ${slug} · ${changes.length} approved change${changes.length === 1 ? "" : "s"}`,
-        head: branch,
-        base: "main",
-        draft: true,
-        body: [
-          "Generated by PlayNice Control Center controlled apply v2.2.",
-          "",
-          `- Product: ${slug}`,
-          ...changeLines,
-          `- Files: ${changedFiles.join(", ")}`,
-          "- Source: approved + prepared Supabase draft",
-          "- Safety: draft PR only; no automatic merge",
-        ].join("\n"),
-      }),
+      body: JSON.stringify({ title: `Control Center: ${slug} · ${changes.length} approved change${changes.length === 1 ? "" : "s"}`, head: branch, base: "main", draft: true, body: ["Generated by PlayNice Control Center controlled apply v2.2.", "", `- Product: ${slug}`, ...changeLines, `- Files: ${changedFiles.join(", ")}`, "- Source: approved + prepared Supabase draft", "- Safety: draft PR only; no automatic merge"].join("\n") }),
     });
 
     await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, { method: "PATCH", body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id, preview_verified_at: null, preview_verified_by: null }) });
-
-    await supabaseFetch("/rest/v1/draft_audit_log", token, {
-      method: "POST",
-      body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "apply_branch_created", details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha, version: "2.2", fields: changes.map((c) => `${c.section.toLowerCase()}.${c.field}`), files: changedFiles } }),
-    });
+    await supabaseFetch("/rest/v1/draft_audit_log", token, { method: "POST", body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "apply_branch_created", details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha, version: "2.2", fields: changes.map((c) => `${c.section.toLowerCase()}.${c.field}`), files: changedFiles } }) });
 
     return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "2.2", fields: changes.map((c) => `${c.section.toLowerCase()}.${c.field}`), files: changedFiles });
   } catch (error) {
