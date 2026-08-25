@@ -101,16 +101,24 @@ function findProductBlock(source, slug) {
   return scanObject(source, start, slug);
 }
 
-function findNamedObjectBlock(source, objectKey) {
+function findNamedObjectBlock(source, objectKey, label = "data object") {
   const re = new RegExp(`(["'])${escapeRegex(objectKey)}\\1\\s*:\\s*\\{`);
   const match = re.exec(source);
-  if (!match) throw new Error(`Could not locate ${objectKey} in Wear Context.`);
+  if (!match) throw new Error(`Could not locate ${objectKey} in ${label}.`);
   const braceStart = source.indexOf("{", match.index);
   return scanObject(source, braceStart, objectKey);
 }
 
+function findChildObjectBlock(block, property) {
+  const re = new RegExp(`(?:^|\\n)\\s*${escapeRegex(property)}\\s*:\\s*\\{`);
+  const match = re.exec(block);
+  if (!match) throw new Error(`Could not locate nested ${property} object.`);
+  const braceStart = block.indexOf("{", match.index);
+  return scanObject(block, braceStart, property);
+}
+
 function locatePropertyValue(block, property) {
-  const re = new RegExp(`\\n\\s{4}${escapeRegex(property)}\\s*:\\s*`);
+  const re = new RegExp(`(?:^|\\n)\\s*${escapeRegex(property)}\\s*:\\s*`);
   const match = re.exec(block);
   if (!match) throw new Error(`Could not locate ${property} in object.`);
   const start = match.index + match[0].length;
@@ -159,26 +167,32 @@ function serializeField(field, value) {
   return JSON.stringify(value);
 }
 
-function patchMoodsRaw(raw, baselineValue, draftValue) {
+function patchStringArrayRaw(raw, baselineValue, draftValue, label) {
   const liveValue = parseJsLiteral(raw);
   const liveNormalized = normalizeCsv(liveValue);
-  if (stable(liveNormalized) !== stable(baselineValue)) {
-    throw new Error(`LIVE DRIFT: main moods are ${displayValue(liveNormalized)}, preparation baseline expected ${displayValue(baselineValue)}.`);
+  const baselineNormalized = normalizeCsv(baselineValue);
+  const draftNormalized = normalizeCsv(draftValue);
+  if (stable(liveNormalized) !== stable(baselineNormalized)) {
+    throw new Error(`LIVE DRIFT: ${label} changed after preparation.`);
   }
-  if (liveNormalized.length !== draftValue.length) {
-    throw new Error("Controlled Apply v2 can replace existing moods, but cannot add or remove mood slots yet.");
+  if (liveNormalized.length !== draftNormalized.length) {
+    throw new Error(`Controlled Apply can replace existing ${label} slots, but cannot add or remove slots yet.`);
   }
 
   let index = 0;
   const nextRaw = raw.replace(/(["'])([^"']*)\1/g, (match, quote) => {
-    if (index >= draftValue.length) return match;
-    const next = String(draftValue[index]);
+    if (index >= draftNormalized.length) return match;
+    const next = String(draftNormalized[index]);
     index += 1;
     const escaped = next.replace(/\\/g, "\\\\").replace(new RegExp(quote, "g"), `\\${quote}`);
     return `${quote}${escaped}${quote}`;
   });
-  if (index !== draftValue.length) throw new Error("Could not preserve moods array formatting safely.");
+  if (index !== draftNormalized.length) throw new Error(`Could not preserve ${label} array formatting safely.`);
   return nextRaw;
+}
+
+function patchMoodsRaw(raw, baselineValue, draftValue) {
+  return patchStringArrayRaw(raw, baselineValue, draftValue, "moods");
 }
 
 function patchSizesRaw(raw, baselineValue, draftValue) {
@@ -255,6 +269,76 @@ function patchWearBlock(block, baselineWear, approvedWear) {
   return nextBlock;
 }
 
+const COPY_FIELDS = ["miniTag", "card", "modal", "scentType", "dominantNotes", "tags", "whyChoose"];
+const COPY_ARRAY_FIELDS = new Set(["dominantNotes", "tags"]);
+
+function copyChangesBetween(baselineCopy = {}, approvedCopy = {}) {
+  const changes = [];
+  for (const field of COPY_FIELDS) {
+    for (const lang of ["sr", "en"]) {
+      const live = baselineCopy?.[field]?.[lang];
+      const next = approvedCopy?.[field]?.[lang];
+      if (stable(live) !== stable(next)) {
+        changes.push({ section: "Copy", field: `${field}.${lang}`, group: field, lang, live, next });
+      }
+    }
+  }
+  return changes;
+}
+
+function patchCopyBlock(block, baselineCopy = {}, approvedCopy = {}) {
+  let nextBlock = block;
+  for (const field of COPY_FIELDS) {
+    const beforeGroup = baselineCopy?.[field] || {};
+    const afterGroup = approvedCopy?.[field] || {};
+    if (stable(beforeGroup) === stable(afterGroup)) continue;
+
+    const located = findChildObjectBlock(nextBlock, field);
+    let child = located.block;
+    for (const lang of ["sr", "en"]) {
+      const before = beforeGroup?.[lang];
+      const after = afterGroup?.[lang];
+      if (stable(before) === stable(after)) continue;
+      const range = locatePropertyValue(child, lang);
+      const liveRaw = child.slice(range.start, range.end);
+      if (COPY_ARRAY_FIELDS.has(field)) {
+        const patched = patchStringArrayRaw(liveRaw, before, after, `copy.${field}.${lang}`);
+        child = child.slice(0, range.start) + patched + child.slice(range.end);
+      } else {
+        const liveValue = String(parseJsLiteral(liveRaw) ?? "");
+        if (liveValue !== String(before ?? "")) throw new Error(`LIVE DRIFT: copy.${field}.${lang} changed after preparation.`);
+        child = child.slice(0, range.start) + JSON.stringify(String(after ?? "")) + child.slice(range.end);
+      }
+    }
+    nextBlock = nextBlock.slice(0, located.start) + child + nextBlock.slice(located.end);
+  }
+  return nextBlock;
+}
+
+function discoveryChangesBetween(baselineDiscovery = {}, approvedDiscovery = {}) {
+  const keys = Array.from(new Set([...Object.keys(baselineDiscovery || {}), ...Object.keys(approvedDiscovery || {})])).sort();
+  return keys.filter((field) => stable(baselineDiscovery?.[field]) !== stable(approvedDiscovery?.[field])).map((field) => ({
+    section: "Discovery",
+    field,
+    live: Number(baselineDiscovery?.[field]),
+    next: Number(approvedDiscovery?.[field]),
+  }));
+}
+
+function patchDiscoveryBlock(block, baselineDiscovery = {}, approvedDiscovery = {}) {
+  let nextBlock = block;
+  const changes = discoveryChangesBetween(baselineDiscovery, approvedDiscovery);
+  for (const change of changes) {
+    if (!Number.isFinite(change.live) || !Number.isFinite(change.next)) throw new Error(`Discovery field ${change.field} must remain numeric.`);
+    const range = locatePropertyValue(nextBlock, `"${change.field}"`);
+    const liveRaw = nextBlock.slice(range.start, range.end);
+    const liveValue = Number(parseJsLiteral(liveRaw));
+    if (liveValue !== change.live) throw new Error(`LIVE DRIFT: discovery.${change.field} changed after preparation.`);
+    nextBlock = nextBlock.slice(0, range.start) + String(change.next) + nextBlock.slice(range.end);
+  }
+  return nextBlock;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
   if (!SUPABASE_URL || !SUPABASE_KEY) return json(res, 500, { error: "Supabase server configuration is missing." });
@@ -283,13 +367,7 @@ export default async function handler(req, res) {
     if (draft.review_status !== "approved" || !draft.prepared_at) return json(res, 409, { error: "Draft must be APPROVED and READY TO APPLY first." });
 
     if (draft.apply_branch && draft.apply_pr_number) {
-      return json(res, 200, {
-        ok: true,
-        existing: true,
-        branch: draft.apply_branch,
-        pr_number: draft.apply_pr_number,
-        pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}`,
-      });
+      return json(res, 200, { ok: true, existing: true, branch: draft.apply_branch, pr_number: draft.apply_pr_number, pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}` });
     }
 
     const approved = draft.approved_payload || draft.payload;
@@ -311,14 +389,10 @@ export default async function handler(req, res) {
       return String(baselineCore[field] ?? "") !== String(approvedCore[field] ?? "");
     });
 
-    const copyChanged = stable(baseline.copy || {}) !== stable(approved.copy || {});
-    const discoveryChanged = stable(baseline.discovery || {}) !== stable(approved.discovery || {});
-    if (unsupportedCore.length || copyChanged || discoveryChanged) {
+    if (unsupportedCore.length) {
       return json(res, 409, {
-        error: "Controlled Apply currently supports Core fields plus Wear Context. Copy, Discovery, Notes, Recommendations, Name, Short name and Category remain protected.",
+        error: "Controlled Apply supports Core, Wear, Copy and Discovery. Notes, Recommendations, Name, Short name and Category remain protected.",
         unsupported_core: unsupportedCore,
-        copy_changed: copyChanged,
-        discovery_changed: discoveryChanged,
       });
     }
 
@@ -330,15 +404,11 @@ export default async function handler(req, res) {
 
     const baselineWear = baseline.wear || {};
     const approvedWear = approved.wear || {};
-    const wearChanges = ["sr", "en"].map((lang) => ({
-      section: "Wear",
-      field: lang,
-      live: String(baselineWear?.[lang] ?? ""),
-      next: String(approvedWear?.[lang] ?? ""),
-      changed: String(baselineWear?.[lang] ?? "") !== String(approvedWear?.[lang] ?? ""),
-    })).filter((item) => item.changed);
+    const wearChanges = ["sr", "en"].map((lang) => ({ section: "Wear", field: lang, live: String(baselineWear?.[lang] ?? ""), next: String(approvedWear?.[lang] ?? ""), changed: String(baselineWear?.[lang] ?? "") !== String(approvedWear?.[lang] ?? "") })).filter((item) => item.changed);
 
-    const changes = [...coreChanges, ...wearChanges];
+    const copyChanges = copyChangesBetween(baseline.copy || {}, approved.copy || {});
+    const discoveryChanges = discoveryChangesBetween(baseline.discovery || {}, approved.discovery || {});
+    const changes = [...coreChanges, ...wearChanges, ...copyChanges, ...discoveryChanges];
     if (!changes.length) return json(res, 409, { error: "No supported approved changes remain to apply." });
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
@@ -347,10 +417,7 @@ export default async function handler(req, res) {
     const safeSlug = slug.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
     const branch = `cc-apply-${safeSlug}-${stamp}`;
 
-    await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, {
-      method: "POST",
-      body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }),
-    });
+    await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, { method: "POST", body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }) });
 
     const changedFiles = [];
 
@@ -363,10 +430,7 @@ export default async function handler(req, res) {
       for (const change of coreChanges) nextBlock = patchProperty(nextBlock, change.field, change.live, change.next);
       const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
       const summary = coreChanges.map((c) => c.field).join(", ");
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, {
-        method: "PUT",
-        body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }),
-      });
+      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
       changedFiles.push(filePath);
     }
 
@@ -376,18 +440,41 @@ export default async function handler(req, res) {
       const source = Buffer.from(file.content, "base64").toString("utf8");
       const productName = String(baselineCore.name || approvedCore.name || "");
       if (!productName) throw new Error("Wear Context apply requires a stable product name.");
-      const located = findNamedObjectBlock(source, productName);
+      const located = findNamedObjectBlock(source, productName, "Wear Context");
       const nextBlock = patchWearBlock(located.block, baselineWear, approvedWear);
       const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
       const summary = wearChanges.map((c) => `wear.${c.field}`).join(", ");
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, {
-        method: "PUT",
-        body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }),
-      });
+      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
       changedFiles.push(filePath);
     }
 
-    const changeLines = changes.map((c) => `- ${c.section}${c.section === "Wear" ? ` · ${c.field.toUpperCase()}` : ""}${c.section === "Core" ? ` · ${c.field}` : ""}: ${displayValue(c.live)} → ${displayValue(c.next)}`);
+    if (copyChanges.length) {
+      const filePath = "src/data/products/productCopy.js";
+      const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
+      const source = Buffer.from(file.content, "base64").toString("utf8");
+      const productName = String(baselineCore.name || approvedCore.name || "");
+      if (!productName) throw new Error("Copy apply requires a stable product name.");
+      const located = findNamedObjectBlock(source, productName, "Product Copy");
+      const nextBlock = patchCopyBlock(located.block, baseline.copy || {}, approved.copy || {});
+      const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
+      const summary = copyChanges.map((c) => `copy.${c.field}`).join(", ");
+      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
+      changedFiles.push(filePath);
+    }
+
+    if (discoveryChanges.length) {
+      const filePath = "src/data/products/discoveryProfiles.js";
+      const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
+      const source = Buffer.from(file.content, "base64").toString("utf8");
+      const located = findNamedObjectBlock(source, slug, "Discovery Profiles");
+      const nextBlock = patchDiscoveryBlock(located.block, baseline.discovery || {}, approved.discovery || {});
+      const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
+      const summary = discoveryChanges.map((c) => `discovery.${c.field}`).join(", ");
+      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
+      changedFiles.push(filePath);
+    }
+
+    const changeLines = changes.map((c) => `- ${c.section} · ${String(c.field).toUpperCase()}: ${displayValue(c.live)} → ${displayValue(c.next)}`);
     const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, {
       method: "POST",
       body: JSON.stringify({
@@ -396,7 +483,7 @@ export default async function handler(req, res) {
         base: "main",
         draft: true,
         body: [
-          "Generated by PlayNice Control Center controlled apply v2.1.",
+          "Generated by PlayNice Control Center controlled apply v2.2.",
           "",
           `- Product: ${slug}`,
           ...changeLines,
@@ -407,22 +494,14 @@ export default async function handler(req, res) {
       }),
     });
 
-    await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, {
-      method: "PATCH",
-      body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id, preview_verified_at: null, preview_verified_by: null }),
-    });
+    await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, { method: "PATCH", body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id, preview_verified_at: null, preview_verified_by: null }) });
 
     await supabaseFetch("/rest/v1/draft_audit_log", token, {
       method: "POST",
-      body: JSON.stringify({
-        product_slug: slug,
-        actor_id: user.id,
-        action: "apply_branch_created",
-        details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha, version: "2.1", fields: changes.map((c) => `${c.section.toLowerCase()}.${c.field}`), files: changedFiles },
-      }),
+      body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "apply_branch_created", details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha, version: "2.2", fields: changes.map((c) => `${c.section.toLowerCase()}.${c.field}`), files: changedFiles } }),
     });
 
-    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "2.1", fields: changes.map((c) => `${c.section.toLowerCase()}.${c.field}`), files: changedFiles });
+    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "2.2", fields: changes.map((c) => `${c.section.toLowerCase()}.${c.field}`), files: changedFiles });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Controlled apply failed." });
   }
