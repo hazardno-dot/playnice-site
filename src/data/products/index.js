@@ -17,7 +17,7 @@ export const products = [
     image: "/products/afnan-9am.png",
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     badge: "FRESH DROP",
-    rating: 7.8,
+    rating: 7.7,
     ratingLabel: "Well Loved",
     season: "summer",
     moods: ["clean", "summer", "signature"],
