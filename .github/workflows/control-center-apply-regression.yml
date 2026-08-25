@@ -28,7 +28,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Run Controlled Apply regression suite
-        run: node control-center/tests/controlled-apply-regression.mjs
+        run: |
+          node control-center/tests/controlled-apply-regression.mjs
+          node control-center/tests/controlled-apply-inline-copy.mjs
