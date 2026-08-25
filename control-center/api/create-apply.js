@@ -149,6 +149,31 @@ function serializeField(field, value) {
   return JSON.stringify(value);
 }
 
+function patchMoodsRaw(raw, baselineValue, draftValue) {
+  const liveValue = parseJsLiteral(raw);
+  const liveNormalized = normalizeCsv(liveValue);
+  if (stable(liveNormalized) !== stable(baselineValue)) {
+    throw new Error(`LIVE DRIFT: main moods are ${displayValue(liveNormalized)}, preparation baseline expected ${displayValue(baselineValue)}.`);
+  }
+  if (liveNormalized.length !== draftValue.length) {
+    throw new Error("Controlled Apply v2 can replace existing moods, but cannot add or remove mood slots yet.");
+  }
+
+  let index = 0;
+  const nextRaw = raw.replace(/(["'])([^"']*)\1/g, (match, quote) => {
+    if (index >= draftValue.length) return match;
+    const next = String(draftValue[index]);
+    index += 1;
+    const escaped = next.replace(/\\/g, "\\\\").replace(new RegExp(quote, "g"), `\\${quote}`);
+    return `${quote}${escaped}${quote}`;
+  });
+
+  if (index !== draftValue.length) {
+    throw new Error("Could not preserve moods array formatting safely.");
+  }
+  return nextRaw;
+}
+
 function patchSizesRaw(raw, baselineValue, draftValue) {
   const liveValue = parseJsLiteral(raw);
   const liveNormalized = normalizeSizes(liveValue);
@@ -184,11 +209,13 @@ function patchProperty(block, field, baselineValue, draftValue) {
     const nextRaw = patchSizesRaw(liveRaw, baselineValue, draftValue);
     return block.slice(0, range.start) + nextRaw + block.slice(range.end);
   }
+  if (field === "moods") {
+    const nextRaw = patchMoodsRaw(liveRaw, baselineValue, draftValue);
+    return block.slice(0, range.start) + nextRaw + block.slice(range.end);
+  }
 
   const liveValue = parseJsLiteral(liveRaw);
-  const liveNormalized = field === "moods" ? normalizeCsv(liveValue)
-    : field === "rating" ? Number(liveValue)
-    : String(liveValue ?? "");
+  const liveNormalized = field === "rating" ? Number(liveValue) : String(liveValue ?? "");
 
   if (stable(liveNormalized) !== stable(baselineValue)) {
     throw new Error(`LIVE DRIFT: main ${field} is ${displayValue(liveNormalized)}, preparation baseline expected ${displayValue(baselineValue)}.`);
