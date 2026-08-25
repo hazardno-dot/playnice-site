@@ -18,7 +18,7 @@ export const products = [
     sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
     badge: "FRESH DROP",
     rating: 7.8,
-    ratingLabel: "Well Loved",
+    ratingLabel: "Popular Pick",
     season: "all",
     moods: ["clean", "casual", "signature"],
     recommendations: [
