@@ -30,3 +30,5 @@ The intended deployment is a separate Vercel project using `control-center` as i
 ## Safety rule
 
 No edit or publish action is enabled in the foundation build. Database migration and write access will be introduced only after catalog parity validation.
+
+Pre-publish preparation build checkpoint.
