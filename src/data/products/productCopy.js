@@ -6,11 +6,11 @@ export const productCopy = {
     miniTag: { sr: "🍊 Citrusni / Čist", en: "🍊 Citrus / Clean" },
     card: {
       sr: "Vedri citrusi i kardamom u čistom, energičnom dnevnom mirisu.",
-      en: "Bright citrus and cardamom in a clean, energetic daytime scent.",
+      en: "Bright citrus and cardamom in a clean, energetic daily scent.",
     },
     modal: {
       sr: "Mandarina i citron otvaraju miris sveže i vedro, dok lavanda, cvet narandže i suvo drvo daju uredan aromatičan karakter.",
-      en: "Mandarin and cedrat open with bright freshness, while lavender, orange blossom and dry woods create a polished aromatic character.",
+      en: "Mandarin and cedrat open with bright freshness, while lavender, orange blossom and dry woods create a polished aromatic profile.",
     },
     scentType: {
       sr: "Citrusni, aromatičan i drvenast",
