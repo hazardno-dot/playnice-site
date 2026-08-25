@@ -5,6 +5,7 @@ const REPO = "hazardno-dot/playnice-site";
 const [OWNER, REPO_NAME] = REPO.split("/");
 
 const json = (res, status, body) => res.status(status).json(body);
+const escapeRegex = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 async function supabaseFetch(path, token, options = {}) {
   return fetch(`${SUPABASE_URL}${path}`, {
@@ -66,21 +67,11 @@ const valueForField = (field, core) => {
 
 const displayValue = (value) => typeof value === "string" ? value : JSON.stringify(value);
 
-function findProductBlock(source, slug) {
-  const escaped = slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const slugRegex = new RegExp(`\\bslug\\s*:\\s*["']${escaped}["']`);
-  const slugMatch = slugRegex.exec(source);
-  if (!slugMatch) throw new Error(`Could not locate ${slug} in main catalog.`);
-
-  let start = source.lastIndexOf("\n  {", slugMatch.index);
-  if (start < 0) start = source.lastIndexOf("{", slugMatch.index);
-  else start += 3;
-  if (start < 0) throw new Error(`Could not locate product object for ${slug}.`);
-
+function scanObject(source, braceStart, label) {
   let depth = 0;
   let quote = "";
   let escapedChar = false;
-  for (let i = start; i < source.length; i += 1) {
+  for (let i = braceStart; i < source.length; i += 1) {
     const ch = source[i];
     if (quote) {
       if (escapedChar) escapedChar = false;
@@ -92,17 +83,36 @@ function findProductBlock(source, slug) {
     if (ch === "{") depth += 1;
     else if (ch === "}") {
       depth -= 1;
-      if (depth === 0) return { start, end: i + 1, block: source.slice(start, i + 1) };
+      if (depth === 0) return { start: braceStart, end: i + 1, block: source.slice(braceStart, i + 1) };
     }
   }
-  throw new Error(`Could not determine product object boundary for ${slug}.`);
+  throw new Error(`Could not determine object boundary for ${label}.`);
+}
+
+function findProductBlock(source, slug) {
+  const slugRegex = new RegExp(`\\bslug\\s*:\\s*["']${escapeRegex(slug)}["']`);
+  const slugMatch = slugRegex.exec(source);
+  if (!slugMatch) throw new Error(`Could not locate ${slug} in main catalog.`);
+
+  let start = source.lastIndexOf("\n  {", slugMatch.index);
+  if (start < 0) start = source.lastIndexOf("{", slugMatch.index);
+  else start += 3;
+  if (start < 0) throw new Error(`Could not locate product object for ${slug}.`);
+  return scanObject(source, start, slug);
+}
+
+function findNamedObjectBlock(source, objectKey) {
+  const re = new RegExp(`(["'])${escapeRegex(objectKey)}\\1\\s*:\\s*\\{`);
+  const match = re.exec(source);
+  if (!match) throw new Error(`Could not locate ${objectKey} in Wear Context.`);
+  const braceStart = source.indexOf("{", match.index);
+  return scanObject(source, braceStart, objectKey);
 }
 
 function locatePropertyValue(block, property) {
-  const escaped = property.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const re = new RegExp(`\\n\\s{4}${escaped}\\s*:\\s*`);
+  const re = new RegExp(`\\n\\s{4}${escapeRegex(property)}\\s*:\\s*`);
   const match = re.exec(block);
-  if (!match) throw new Error(`Could not locate ${property} in product object.`);
+  if (!match) throw new Error(`Could not locate ${property} in object.`);
   const start = match.index + match[0].length;
 
   let square = 0;
@@ -167,10 +177,7 @@ function patchMoodsRaw(raw, baselineValue, draftValue) {
     const escaped = next.replace(/\\/g, "\\\\").replace(new RegExp(quote, "g"), `\\${quote}`);
     return `${quote}${escaped}${quote}`;
   });
-
-  if (index !== draftValue.length) {
-    throw new Error("Could not preserve moods array formatting safely.");
-  }
+  if (index !== draftValue.length) throw new Error("Could not preserve moods array formatting safely.");
   return nextRaw;
 }
 
@@ -193,8 +200,7 @@ function patchSizesRaw(raw, baselineValue, draftValue) {
     const after = Number(draftValue[key]);
     if (before === after) continue;
     if (!Number.isFinite(after)) throw new Error(`Invalid price for ${key}.`);
-    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const re = new RegExp(`(["']${escapedKey}["']\\s*:\\s*)-?\\d+(?:\\.\\d+)?`);
+    const re = new RegExp(`(["']${escapeRegex(key)}["']\\s*:\\s*)-?\\d+(?:\\.\\d+)?`);
     if (!re.test(nextRaw)) throw new Error(`Could not locate ${key} price inside sizes object.`);
     nextRaw = nextRaw.replace(re, `$1${after}`);
   }
@@ -216,11 +222,37 @@ function patchProperty(block, field, baselineValue, draftValue) {
 
   const liveValue = parseJsLiteral(liveRaw);
   const liveNormalized = field === "rating" ? Number(liveValue) : String(liveValue ?? "");
-
   if (stable(liveNormalized) !== stable(baselineValue)) {
     throw new Error(`LIVE DRIFT: main ${field} is ${displayValue(liveNormalized)}, preparation baseline expected ${displayValue(baselineValue)}.`);
   }
   return block.slice(0, range.start) + serializeField(field, draftValue) + block.slice(range.end);
+}
+
+function readWearBlock(block) {
+  const out = {};
+  for (const lang of ["sr", "en"]) {
+    const range = locatePropertyValue(block, lang);
+    out[lang] = String(parseJsLiteral(block.slice(range.start, range.end)) ?? "");
+  }
+  return out;
+}
+
+function patchWearBlock(block, baselineWear, approvedWear) {
+  const liveWear = readWearBlock(block);
+  const baseline = { sr: String(baselineWear?.sr ?? ""), en: String(baselineWear?.en ?? "") };
+  if (stable(liveWear) !== stable(baseline)) {
+    throw new Error(`LIVE DRIFT: Wear Context changed after preparation. Main is ${displayValue(liveWear)}, baseline expected ${displayValue(baseline)}.`);
+  }
+
+  let nextBlock = block;
+  for (const lang of ["sr", "en"]) {
+    const before = String(baselineWear?.[lang] ?? "");
+    const after = String(approvedWear?.[lang] ?? "");
+    if (before === after) continue;
+    const range = locatePropertyValue(nextBlock, lang);
+    nextBlock = nextBlock.slice(0, range.start) + JSON.stringify(after) + nextBlock.slice(range.end);
+  }
+  return nextBlock;
 }
 
 export default async function handler(req, res) {
@@ -271,40 +303,42 @@ export default async function handler(req, res) {
 
     const unsupportedCore = protectedFields.filter((field) => {
       if (field === "noteMap") {
-        const a = {
-          top: normalizeCsv(baselineCore.noteMap?.top),
-          heart: normalizeCsv(baselineCore.noteMap?.heart),
-          base: normalizeCsv(baselineCore.noteMap?.base),
-        };
-        const b = {
-          top: normalizeCsv(approvedCore.noteMap?.top),
-          heart: normalizeCsv(approvedCore.noteMap?.heart),
-          base: normalizeCsv(approvedCore.noteMap?.base),
-        };
+        const a = { top: normalizeCsv(baselineCore.noteMap?.top), heart: normalizeCsv(baselineCore.noteMap?.heart), base: normalizeCsv(baselineCore.noteMap?.base) };
+        const b = { top: normalizeCsv(approvedCore.noteMap?.top), heart: normalizeCsv(approvedCore.noteMap?.heart), base: normalizeCsv(approvedCore.noteMap?.base) };
         return stable(a) !== stable(b);
       }
       if (field === "recommendations") return stable(normalizeCsv(baselineCore.recommendations)) !== stable(normalizeCsv(approvedCore.recommendations));
       return String(baselineCore[field] ?? "") !== String(approvedCore[field] ?? "");
     });
 
-    const nonCoreChanged = stable(baseline.copy || {}) !== stable(approved.copy || {}) ||
-      stable(baseline.wear || {}) !== stable(approved.wear || {}) ||
-      stable(baseline.discovery || {}) !== stable(approved.discovery || {});
-
-    if (unsupportedCore.length || nonCoreChanged) {
+    const copyChanged = stable(baseline.copy || {}) !== stable(approved.copy || {});
+    const discoveryChanged = stable(baseline.discovery || {}) !== stable(approved.discovery || {});
+    if (unsupportedCore.length || copyChanged || discoveryChanged) {
       return json(res, 409, {
-        error: "Controlled Apply v2 currently supports Rating, Rating label, Badge, Season, Moods and Sizes/prices only. Other changes must remain in draft.",
+        error: "Controlled Apply currently supports Core fields plus Wear Context. Copy, Discovery, Notes, Recommendations, Name, Short name and Category remain protected.",
         unsupported_core: unsupportedCore,
-        non_core_changed: nonCoreChanged,
+        copy_changed: copyChanged,
+        discovery_changed: discoveryChanged,
       });
     }
 
-    const changes = supportedFields.map((field) => {
+    const coreChanges = supportedFields.map((field) => {
       const live = valueForField(field, baselineCore);
       const next = valueForField(field, approvedCore);
-      return { field, live, next, changed: stable(live) !== stable(next) };
+      return { section: "Core", field, live, next, changed: stable(live) !== stable(next) };
     }).filter((item) => item.changed);
 
+    const baselineWear = baseline.wear || {};
+    const approvedWear = approved.wear || {};
+    const wearChanges = ["sr", "en"].map((lang) => ({
+      section: "Wear",
+      field: lang,
+      live: String(baselineWear?.[lang] ?? ""),
+      next: String(approvedWear?.[lang] ?? ""),
+      changed: String(baselineWear?.[lang] ?? "") !== String(approvedWear?.[lang] ?? ""),
+    })).filter((item) => item.changed);
+
+    const changes = [...coreChanges, ...wearChanges];
     if (!changes.length) return json(res, 409, { error: "No supported approved changes remain to apply." });
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
@@ -318,26 +352,42 @@ export default async function handler(req, res) {
       body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }),
     });
 
-    const filePath = "src/data/products/index.js";
-    const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
-    const source = Buffer.from(file.content, "base64").toString("utf8");
-    const located = findProductBlock(source, slug);
-    let nextBlock = located.block;
-    for (const change of changes) nextBlock = patchProperty(nextBlock, change.field, change.live, change.next);
-    const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
+    const changedFiles = [];
 
-    const summary = changes.map((c) => c.field).join(", ");
-    await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        message: `Control Center apply: ${slug} (${summary})`,
-        content: Buffer.from(nextSource, "utf8").toString("base64"),
-        sha: file.sha,
-        branch,
-      }),
-    });
+    if (coreChanges.length) {
+      const filePath = "src/data/products/index.js";
+      const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
+      const source = Buffer.from(file.content, "base64").toString("utf8");
+      const located = findProductBlock(source, slug);
+      let nextBlock = located.block;
+      for (const change of coreChanges) nextBlock = patchProperty(nextBlock, change.field, change.live, change.next);
+      const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
+      const summary = coreChanges.map((c) => c.field).join(", ");
+      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, {
+        method: "PUT",
+        body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }),
+      });
+      changedFiles.push(filePath);
+    }
 
-    const changeLines = changes.map((c) => `- ${c.field}: ${displayValue(c.live)} → ${displayValue(c.next)}`);
+    if (wearChanges.length) {
+      const filePath = "src/data/products/productWearContext.js";
+      const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
+      const source = Buffer.from(file.content, "base64").toString("utf8");
+      const productName = String(baselineCore.name || approvedCore.name || "");
+      if (!productName) throw new Error("Wear Context apply requires a stable product name.");
+      const located = findNamedObjectBlock(source, productName);
+      const nextBlock = patchWearBlock(located.block, baselineWear, approvedWear);
+      const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
+      const summary = wearChanges.map((c) => `wear.${c.field}`).join(", ");
+      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, {
+        method: "PUT",
+        body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }),
+      });
+      changedFiles.push(filePath);
+    }
+
+    const changeLines = changes.map((c) => `- ${c.section}${c.section === "Wear" ? ` · ${c.field.toUpperCase()}` : ""}${c.section === "Core" ? ` · ${c.field}` : ""}: ${displayValue(c.live)} → ${displayValue(c.next)}`);
     const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, {
       method: "POST",
       body: JSON.stringify({
@@ -346,10 +396,11 @@ export default async function handler(req, res) {
         base: "main",
         draft: true,
         body: [
-          "Generated by PlayNice Control Center controlled apply v2.",
+          "Generated by PlayNice Control Center controlled apply v2.1.",
           "",
           `- Product: ${slug}`,
           ...changeLines,
+          `- Files: ${changedFiles.join(", ")}`,
           "- Source: approved + prepared Supabase draft",
           "- Safety: draft PR only; no automatic merge",
         ].join("\n"),
@@ -358,14 +409,7 @@ export default async function handler(req, res) {
 
     await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, {
       method: "PATCH",
-      body: JSON.stringify({
-        apply_branch: branch,
-        apply_pr_number: pr.number,
-        apply_created_at: new Date().toISOString(),
-        apply_created_by: user.id,
-        preview_verified_at: null,
-        preview_verified_by: null,
-      }),
+      body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id, preview_verified_at: null, preview_verified_by: null }),
     });
 
     await supabaseFetch("/rest/v1/draft_audit_log", token, {
@@ -374,25 +418,11 @@ export default async function handler(req, res) {
         product_slug: slug,
         actor_id: user.id,
         action: "apply_branch_created",
-        details: {
-          branch,
-          pr_number: pr.number,
-          pr_url: pr.html_url,
-          base_sha: baseSha,
-          version: 2,
-          fields: changes.map((c) => c.field),
-        },
+        details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha, version: "2.1", fields: changes.map((c) => `${c.section.toLowerCase()}.${c.field}`), files: changedFiles },
       }),
     });
 
-    return json(res, 200, {
-      ok: true,
-      branch,
-      pr_number: pr.number,
-      pr_url: pr.html_url,
-      version: 2,
-      fields: changes.map((c) => c.field),
-    });
+    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "2.1", fields: changes.map((c) => `${c.section.toLowerCase()}.${c.field}`), files: changedFiles });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Controlled apply failed." });
   }
