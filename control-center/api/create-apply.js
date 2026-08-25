@@ -149,12 +149,44 @@ function serializeField(field, value) {
   return JSON.stringify(value);
 }
 
+function patchSizesRaw(raw, baselineValue, draftValue) {
+  const liveValue = parseJsLiteral(raw);
+  const liveNormalized = normalizeSizes(liveValue);
+  if (stable(liveNormalized) !== stable(baselineValue)) {
+    throw new Error(`LIVE DRIFT: main sizes are ${displayValue(liveNormalized)}, preparation baseline expected ${displayValue(baselineValue)}.`);
+  }
+
+  const liveKeys = Object.keys(liveValue || {}).sort();
+  const draftKeys = Object.keys(draftValue || {}).sort();
+  if (stable(liveKeys) !== stable(draftKeys)) {
+    throw new Error("Controlled Apply v2 can change existing size prices, but cannot add or remove sizes yet.");
+  }
+
+  let nextRaw = raw;
+  for (const key of liveKeys) {
+    const before = Number(liveValue[key]);
+    const after = Number(draftValue[key]);
+    if (before === after) continue;
+    if (!Number.isFinite(after)) throw new Error(`Invalid price for ${key}.`);
+    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const re = new RegExp(`(["']${escapedKey}["']\\s*:\\s*)-?\\d+(?:\\.\\d+)?`);
+    if (!re.test(nextRaw)) throw new Error(`Could not locate ${key} price inside sizes object.`);
+    nextRaw = nextRaw.replace(re, `$1${after}`);
+  }
+  return nextRaw;
+}
+
 function patchProperty(block, field, baselineValue, draftValue) {
   const range = locatePropertyValue(block, field);
   const liveRaw = block.slice(range.start, range.end);
+
+  if (field === "sizes") {
+    const nextRaw = patchSizesRaw(liveRaw, baselineValue, draftValue);
+    return block.slice(0, range.start) + nextRaw + block.slice(range.end);
+  }
+
   const liveValue = parseJsLiteral(liveRaw);
   const liveNormalized = field === "moods" ? normalizeCsv(liveValue)
-    : field === "sizes" ? normalizeSizes(liveValue)
     : field === "rating" ? Number(liveValue)
     : String(liveValue ?? "");
 
