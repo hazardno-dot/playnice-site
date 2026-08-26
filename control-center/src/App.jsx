@@ -21,8 +21,9 @@ const metricKeys = [["category","Category"],["season","Season"],["rating","Ratin
 const titleCase = (value) => String(value || "").replace(/[-_]/g," ").replace(/\b\w/g,(l)=>l.toUpperCase());
 
 function getCoverage(product){
-  const copy=productCopy[product.name]; const wear=productWearContext[product.name]; const discovery=discoveryProfiles[product.slug];
-  const checks=[["Core",Boolean(product)],["Copy",Boolean(copy)],["Wear",Boolean(wear)],["Discovery",Boolean(discovery)],["Note map",Boolean(product.noteMap)],["Recommendations",(product.recommendations||[]).length===3]];
+  const draftPayload=product?.__draftPayload;
+  const copy=draftPayload?.copy||productCopy[product.name]; const wear=draftPayload?.wear||productWearContext[product.name]; const discovery=draftPayload?.discovery||discoveryProfiles[product.slug];
+  const checks=[["Core",Boolean(product)],["Copy",Boolean(copy&&Object.keys(copy).length)],["Wear",Boolean(wear&&Object.keys(wear).length)],["Discovery",Boolean(discovery&&Object.keys(discovery).length)],["Note map",Boolean(product.noteMap)],["Recommendations",(product.recommendations||[]).length===3]];
   const complete=checks.filter(([,ok])=>ok).length; return {copy,wear,discovery,checks,complete,total:checks.length};
 }
 function matchesCoverageFilter(product,filter){
@@ -45,6 +46,12 @@ function makeBlankDraft(){
     copy:{miniTag:{sr:"",en:""},scentType:{sr:"",en:""},card:{sr:"",en:""},modal:{sr:"",en:""},dominantNotes:{sr:"",en:""},tags:{sr:"",en:""},whyChoose:{sr:"",en:""}},
     wear:{sr:"",en:""},discovery:Object.fromEntries(discoveryKeys.map((key)=>[key,0])),savedAt:null
   };
+}
+
+const csvList=(value)=>Array.isArray(value)?value:String(value||"").split(",").map((item)=>item.trim()).filter(Boolean);
+function draftProductFromPayload(slug,payload){
+  const core=payload?.core||{};
+  return {slug,__new:true,__draftPayload:payload,name:core.name||slug,shortName:core.shortName||core.name||slug,category:core.category||"Arabian",image:core.image||"",badge:core.badge||"",rating:core.rating??"",ratingLabel:core.ratingLabel||"",season:core.season||"",moods:csvList(core.moods),inspiredBy:core.inspiredBy||{},sizes:{...(core.sizes||{})},noteMap:{top:csvList(core.noteMap?.top),heart:csvList(core.noteMap?.heart),base:csvList(core.noteMap?.base)},recommendations:csvList(core.recommendations)};
 }
 
 function ProductList({items,selectedSlug,onSelect,drafts}){
@@ -103,7 +110,8 @@ function Overview({audit,draftCount,draftsLoading}){const layers=[["Copy",audit.
 export default function App(){
   const [active,setActive]=useState("Overview"),[query,setQuery]=useState(""),[coverageFilter,setCoverageFilter]=useState("all"),[selected,setSelected]=useState(products[0]||null),[editing,setEditing]=useState(false),[drafts,setDrafts]=useState({}),[draftsLoading,setDraftsLoading]=useState(true);
   const audit=useMemo(()=>{const cs=products.map(getCoverage),layerCounts={};cs.forEach((c)=>c.checks.forEach(([l,ok])=>{layerCounts[l]=(layerCounts[l]||0)+(ok?1:0)}));return {complete:cs.filter((c)=>c.complete===c.total).length,layerCounts};},[]);
-  const filtered=useMemo(()=>{const q=query.trim().toLowerCase();return products.filter((p)=>(!q||[p.name,p.shortName,p.slug,p.category,p.badge].filter(Boolean).some((v)=>String(v).toLowerCase().includes(q)))&&matchesCoverageFilter(p,coverageFilter));},[query,coverageFilter]);
+  const catalogProducts=useMemo(()=>{const draftOnly=Object.entries(drafts).filter(([slug])=>!products.some((p)=>p.slug===slug)).map(([slug,payload])=>draftProductFromPayload(slug,payload));return [...products,...draftOnly];},[drafts]);
+  const filtered=useMemo(()=>{const q=query.trim().toLowerCase();return catalogProducts.filter((p)=>(!q||[p.name,p.shortName,p.slug,p.category,p.badge].filter(Boolean).some((v)=>String(v).toLowerCase().includes(q)))&&matchesCoverageFilter(p,coverageFilter));},[query,coverageFilter,catalogProducts]);
   useEffect(()=>{
     let cancelled=false;
     const load=async({quiet=false}={})=>{
@@ -134,9 +142,8 @@ export default function App(){
       if(live){setSelected(live);setEditing(false);return;}
       const savedDraft=drafts[slug];
       if(!savedDraft)return;
-      const core=savedDraft.core||{};
-      setSelected({slug,__new:true,name:core.name||"",shortName:core.shortName||core.name||"",category:core.category||"Arabian",image:core.image||"/products/",sizes:{},moods:[],noteMap:{top:[],heart:[],base:[]},recommendations:[]});
-      setEditing(true);
+      setSelected(draftProductFromPayload(slug,savedDraft));
+      setEditing(false);
     };
     window.addEventListener(OPEN_PRODUCT_EVENT,handleOpenProduct);
     return()=>window.removeEventListener(OPEN_PRODUCT_EVENT,handleOpenProduct);
@@ -150,6 +157,7 @@ export default function App(){
     if(error)throw error;
     const saved={...(data.payload||draft),savedAt:data.updated_at||draft.savedAt};
     setDrafts((current)=>({...current,[selected.slug]:saved}));
+    if(selected.__new)setSelected(draftProductFromPayload(selected.slug,saved));
     setEditing(false);
   };
   return <div className="app-shell"><aside className="sidebar"><div className="brand-block"><div><strong>PlayNice</strong><span>Control Center</span></div></div><nav>{NAV.map((g,i)=><div className="nav-group" key={g.section||i}>{g.section?<span className="nav-label">{g.section}</span>:null}{g.items.map((item)=><button key={item} className={active===item?"active":""} onClick={()=>{setActive(item);setEditing(false)}}><span className="nav-dot"/>{item}</button>)}</div>)}</nav><div className="sidebar-footer"><span className="status-dot"/><div><strong>Supabase draft build</strong><span>Shop remains read only</span></div></div></aside>

@@ -54,5 +54,6 @@ jobs:
           node control-center/tests/approval-payload-safety.mjs
           node control-center/tests/draft-realtime-contract.mjs
           node control-center/tests/product-navigation-contract.mjs
+          node control-center/tests/draft-only-product-lifecycle.mjs
 
-# v2.13 explicit Products navigation + draft-state realtime guards
+# v2.14 explicit navigation + draft-only save/reopen lifecycle guards
