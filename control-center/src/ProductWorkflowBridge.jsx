@@ -1,6 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
+import {
+  getProductWorkflowActionLabel,
+  getProductWorkflowHistoryLabel,
+  getProductWorkflowState,
+} from "./productWorkflowState.mjs";
 import "./product-workflow-bridge.css";
 
 const getSelectedSlug = () => {
@@ -9,42 +14,6 @@ const getSelectedSlug = () => {
   return String(slugNode.textContent || "").split(" · ")[0].trim();
 };
 
-const getWorkflowLabel = (row) => {
-  if (!row) return { label: "LIVE ONLY", tone: "live", detail: "No unpublished draft for this product." };
-  if (row.preview_verified_at) return { label: "PREVIEW VERIFIED", tone: "verified", detail: "Preview was manually verified. Merge remains manual." };
-  if (row.apply_pr_number) return { label: "PREVIEW CREATED", tone: "preview", detail: `PR #${row.apply_pr_number} is waiting for manual Preview verification.` };
-  if (row.review_status === "approved" && row.prepared_at) return { label: "READY TO APPLY", tone: "ready", detail: "Approved and prepared. Controlled Apply can create a Preview branch." };
-  if (row.review_status === "approved") return { label: "APPROVED", tone: "approved", detail: "Approved draft. Pre-publish preparation is still required." };
-  if (row.review_status === "ready") return { label: "READY FOR REVIEW", tone: "review", detail: "Draft is ready for manual review." };
-  return { label: "DRAFT", tone: "draft", detail: "Unpublished Supabase draft." };
-};
-
-const getWorkflowActionLabel = (row) => {
-  if (!row) return "";
-  if (row.preview_verified_at) return "Open verified draft";
-  if (row.apply_pr_number) return "Open draft";
-  if (row.review_status === "approved" && row.prepared_at) return "Review apply";
-  if (row.review_status === "approved") return "Prepare in Drafts";
-  if (row.review_status === "ready") return "Review & approve";
-  return "Review draft";
-};
-
-const ACTION_LABELS = {
-  created: "Draft created",
-  saved: "Draft saved",
-  updated: "Draft updated",
-  marked_ready: "Ready for review",
-  approved: "Approved",
-  returned_to_draft: "Returned to draft",
-  prepared: "Prepared for apply",
-  apply_created: "Preview branch created",
-  preview_created: "Preview branch created",
-  preview_verified: "Preview verified",
-  published: "Published live",
-  discarded: "Draft discarded",
-};
-
-const actionLabel = (action) => ACTION_LABELS[action] || String(action || "Workflow event").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 const formatHistoryDate = (value) => {
   if (!value) return "";
   try {
@@ -163,8 +132,8 @@ export default function ProductWorkflowBridge() {
     setHistoryOpen(false);
   }, [slug]);
 
-  const state = useMemo(() => getWorkflowLabel(row), [row]);
-  const actionLabelText = useMemo(() => getWorkflowActionLabel(row), [row]);
+  const state = useMemo(() => getProductWorkflowState(row), [row]);
+  const actionLabelText = useMemo(() => getProductWorkflowActionLabel(row), [row]);
   if (!slot || !slug) return null;
 
   const openDraftWorkflow = () => {
@@ -206,7 +175,7 @@ export default function ProductWorkflowBridge() {
         {historyLoading ? <div className="product-workflow-history-empty">Loading history…</div> : !history.length ? <div className="product-workflow-history-empty">No recorded workflow events for this product yet.</div> : <div className="product-workflow-history-list">
           {history.map((item) => <div className="product-workflow-history-item" key={item.id}>
             <span className="workflow-history-dot" />
-            <div><strong>{actionLabel(item.action)}</strong><small>{formatHistoryDate(item.created_at)}</small></div>
+            <div><strong>{getProductWorkflowHistoryLabel(item.action)}</strong><small>{formatHistoryDate(item.created_at)}</small></div>
           </div>)}
         </div>}
       </div> : null}

@@ -8,6 +8,7 @@ on:
       - "control-center/api/create-apply.js"
       - "control-center/api/create-new-product.js"
       - "control-center/api/create-new-product-engine.js"
+      - "control-center/src/productWorkflowState.mjs"
       - "control-center/tests/**"
       - "src/data/products/index.js"
       - "src/data/products/productCopy.js"
@@ -41,5 +42,6 @@ jobs:
           node control-center/tests/controlled-apply-identity.mjs
           node control-center/tests/controlled-apply-new-product.mjs
           node control-center/tests/controlled-apply-new-product-structure.mjs
+          node control-center/tests/product-workflow-state.mjs
 
-# v2.9 create-new-product engine + structural guards
+# v2.9 create-new-product engine + Products lifecycle guards
