@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "ignoreCommand": "git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- . ':(exclude)control-center/**'",
+  "ignoreCommand": "PREV=\"${VERCEL_GIT_PREVIOUS_SHA:-}\"; if [ -n \"$PREV\" ] && git cat-file -e \"$PREV^{commit}\" 2>/dev/null; then BASE=\"$PREV\"; elif git rev-parse --verify HEAD^ >/dev/null 2>&1; then BASE=HEAD^; else exit 1; fi; git diff --quiet \"$BASE\" HEAD -- . ':(exclude)control-center/**'",
   "rewrites": [
     {
       "source": "/(.*)",
