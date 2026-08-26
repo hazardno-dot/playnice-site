@@ -11,10 +11,12 @@ import "./review-workflow.css";
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthGate>
+      <div className="control-center-apply-top">
+        <ControlledApplyManager />
+      </div>
       <App />
       <DraftManager />
       <InlineValidationBridge />
-      <ControlledApplyManager />
     </AuthGate>
   </React.StrictMode>
 );
