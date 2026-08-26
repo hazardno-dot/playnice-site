@@ -5,6 +5,7 @@ import InlineValidationBridge from "./InlineValidationBridge";
 import ControlledApplyManager from "./ControlledApplyManager";
 import ProductWorkflowBridge from "./ProductWorkflowBridge";
 import JournalManager from "./JournalManager";
+import JournalApplyManager from "./JournalApplyManager";
 import { supabase } from "./supabase";
 import "./header-layout.css";
 
@@ -123,6 +124,7 @@ export default function ControlCenterManagers() {
     <InlineValidationBridge />
     <ProductWorkflowBridge />
     <JournalManager />
+    <JournalApplyManager />
     {slots.apply ? createPortal(<ControlledApplyManager />, slots.apply) : <ControlledApplyManager />}
   </>;
 }
