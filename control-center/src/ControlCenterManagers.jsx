@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import DraftManager from "./DraftManager";
 import InlineValidationBridge from "./InlineValidationBridge";
 import ControlledApplyManager from "./ControlledApplyManager";
+import ProductWorkflowBridge from "./ProductWorkflowBridge";
 import { supabase } from "./supabase";
 import "./header-layout.css";
 
@@ -113,6 +114,7 @@ export default function ControlCenterManagers() {
   return <>
     {slots.draft ? createPortal(<DraftManager />, slots.draft) : <DraftManager />}
     <InlineValidationBridge />
+    <ProductWorkflowBridge />
     {slots.apply ? createPortal(<ControlledApplyManager />, slots.apply) : <ControlledApplyManager />}
   </>;
 }
