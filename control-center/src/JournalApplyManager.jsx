@@ -75,7 +75,7 @@ export default function JournalApplyManager() {
       const response = await fetch("/api/create-journal-apply", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionData.session.access_token}` },
-        body: JSON.stringify({ article_id: articleId, action, ...(action === "prepare" ? { live_payload: normalizeJournalDraftPayload(liveArticle) } : {}) }),
+        body: JSON.stringify({ article_id: articleId, action, ...(action === "prepare" && liveArticle ? { live_payload: normalizeJournalDraftPayload(liveArticle) } : {}) }),
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Journal Controlled Apply failed (${response.status}).`);
@@ -86,11 +86,11 @@ export default function JournalApplyManager() {
     finally { setBusy(false); }
   };
 
-  const prepared = Boolean(row.prepared_at && row.baseline_snapshot?.source_block);
+  const prepared = Boolean(row.prepared_at && (row.baseline_snapshot?.source_block || row.baseline_snapshot?.mode === "insert"));
   const hasPr = Boolean(row.apply_branch && row.apply_pr_number);
 
   return createPortal(<section className={`journal-controlled-apply ${hasPr ? "pr" : prepared ? "prepared" : "approved"}`}>
-    <div className="journal-controlled-copy"><span>JOURNAL CONTROLLED APPLY</span><strong>{hasPr ? `DRAFT PR #${row.apply_pr_number}` : prepared ? "READY TO CREATE DRAFT PR" : noChanges ? "NO LIVE CHANGES" : "APPROVED · PREPARE BASELINE"}</strong><small>Existing article only · exact source-block drift guard · no automatic merge.</small></div>
+    <div className="journal-controlled-copy"><span>JOURNAL CONTROLLED APPLY</span><strong>{hasPr ? `DRAFT PR #${row.apply_pr_number}` : prepared ? "READY TO CREATE DRAFT PR" : noChanges ? "NO LIVE CHANGES" : liveArticle ? "APPROVED · PREPARE BASELINE" : "NEW ARTICLE · PREPARE INSERT"}</strong><small>{liveArticle ? "Existing article · exact source-block drift guard" : "New article · sequential ID + exact Journal source SHA guard"} · no automatic merge.</small></div>
     <div className="journal-controlled-actions">
       {error ? <span className="journal-controlled-error">{error}</span> : null}
       {hasPr ? <a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">Open draft PR ↗</a> : prepared ? <button className="primary" disabled={busy} onClick={() => callApply("apply")}>{busy ? "Creating…" : "Create draft PR"}</button> : <button className="primary" disabled={busy || noChanges} onClick={() => callApply("prepare")}>{busy ? "Preparing…" : noChanges ? "No changes to apply" : "Prepare apply"}</button>}

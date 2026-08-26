@@ -51,6 +51,7 @@ export default function JournalManager() {
   const [selectedId, setSelectedId] = useState(sorted[0]?.id || null);
   const [draftRows, setDraftRows] = useState({});
   const [editing, setEditing] = useState(false);
+  const [newArticleSeed, setNewArticleSeed] = useState(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const audit = useMemo(() => auditJournalArticles(journalArticles, productSlugs), []);
@@ -91,7 +92,18 @@ export default function JournalManager() {
     return () => { cancelled = true; supabase.removeChannel(channel); };
   }, []);
 
-  const workingArticles = useMemo(() => sorted.map((article) => draftRows[article.id]?.payload || article), [sorted, draftRows]);
+  const workingArticles = useMemo(() => {
+    const liveIds = new Set(sorted.map((article) => Number(article.id)));
+    const merged = sorted.map((article) => draftRows[article.id]?.payload || article);
+    const draftOnly = Object.values(draftRows)
+      .filter((row) => !liveIds.has(Number(row.article_id)) && row?.payload)
+      .map((row) => row.payload);
+    return [...merged, ...draftOnly].sort((a, b) => Number(b?.id || 0) - Number(a?.id || 0));
+  }, [sorted, draftRows]);
+  const nextArticleId = useMemo(() => {
+    const ids = [...journalArticles.map((article) => Number(article.id)), ...Object.keys(draftRows).map(Number)].filter(Number.isFinite);
+    return (ids.length ? Math.max(...ids) : 0) + 1;
+  }, [draftRows]);
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
     if (!needle) return workingArticles;
@@ -99,14 +111,15 @@ export default function JournalManager() {
   }, [query, workingArticles]);
 
   useEffect(() => {
+    if (newArticleSeed?.id === selectedId) return;
     if (filtered.length && !filtered.some((article) => article.id === selectedId)) setSelectedId(filtered[0].id);
-  }, [filtered, selectedId]);
+  }, [filtered, selectedId, newArticleSeed]);
 
   if (!slot) return null;
 
   const liveSelected = journalArticles.find((article) => article.id === selectedId) || null;
   const selectedRow = draftRows[selectedId] || null;
-  const selected = selectedRow?.payload || liveSelected || filtered[0] || sorted[0] || null;
+  const selected = selectedRow?.payload || liveSelected || (newArticleSeed?.id === selectedId ? newArticleSeed : null) || filtered[0] || sorted[0] || null;
   const selectedAudit = selected ? auditJournalArticles([selected], productSlugs).rows[0] : null;
   const workflow = getJournalDraftState(selectedRow);
 
@@ -117,9 +130,17 @@ export default function JournalManager() {
       if (validation.errors.length) throw new Error("Journal draft has validation errors.");
       const { data: authData, error: authError } = await supabase.auth.getUser();
       if (authError || !authData?.user?.id) throw authError || new Error("Authenticated user is required.");
-      const { data, error: saveError } = await supabase.from("journal_drafts").upsert({ article_id: Number(payload.id), payload, created_by: authData.user.id }, { onConflict: "article_id" }).select("article_id,payload,review_status,reviewed_at,updated_at,approved_payload").single();
+      const articleId = Number(payload.id);
+      const liveExists = journalArticles.some((article) => Number(article.id) === articleId);
+      const rowExists = Boolean(draftRows[articleId]);
+      const query = !liveExists && !rowExists
+        ? supabase.from("journal_drafts").insert({ article_id: articleId, payload, created_by: authData.user.id })
+        : supabase.from("journal_drafts").upsert({ article_id: articleId, payload, created_by: authData.user.id }, { onConflict: "article_id" });
+      const { data, error: saveError } = await query.select("article_id,payload,review_status,reviewed_at,updated_at,approved_payload").single();
       if (saveError) throw saveError;
       setDraftRows((current) => ({ ...current, [Number(data.article_id)]: data }));
+      setNewArticleSeed(null);
+      setSelectedId(Number(data.article_id));
       setEditing(false);
     } catch (saveError) { setError(saveError.message || String(saveError)); }
     finally { setSaving(false); }
@@ -147,7 +168,25 @@ export default function JournalManager() {
     const { error: deleteError } = await supabase.from("journal_drafts").delete().eq("article_id", selectedId);
     if (deleteError) { setError(deleteError.message); return; }
     setDraftRows((current) => { const next = { ...current }; delete next[selectedId]; return next; });
+    setNewArticleSeed(null);
     setEditing(false);
+  };
+
+  const createNewArticle = () => {
+    const seed = {
+      id: nextArticleId,
+      date: { sr: "", en: "" },
+      image: "",
+      title: { sr: "", en: "" },
+      excerpt: { sr: "", en: "" },
+      content: { sr: "", en: "" },
+      relatedProducts: [],
+    };
+    setError("");
+    setQuery("");
+    setSelectedId(nextArticleId);
+    setNewArticleSeed(seed);
+    setEditing(true);
   };
 
   return createPortal(<section className="journal-manager">
@@ -160,12 +199,12 @@ export default function JournalManager() {
 
     <div className="journal-manager-grid">
       <aside className="journal-catalog">
-        <div className="journal-catalog-head"><div><span>EDITORIAL LIBRARY</span><strong>{journalArticles.length} articles</strong></div><span>{filtered.length}</span></div>
+        <div className="journal-catalog-head"><div><span>EDITORIAL LIBRARY</span><strong>{journalArticles.length} live · {workingArticles.length - journalArticles.length} draft-only</strong></div><div className="journal-catalog-actions"><span>{filtered.length}</span><button className="journal-new-button" onClick={createNewArticle}>+ New article</button></div></div>
         <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search id, title, date…" />
         <div className="journal-list">{filtered.map((article) => {
           const row = draftRows[article.id];
           const structural = auditJournalArticles([article], productSlugs).rows[0];
-          return <button key={article.id} className={article.id === selected?.id ? "active" : ""} onClick={() => { setSelectedId(article.id); setEditing(false); }}>
+          return <button key={article.id} className={article.id === selected?.id ? "active" : ""} onClick={() => { setSelectedId(article.id); setNewArticleSeed(null); setEditing(false); }}>
             <span className={`journal-status-dot ${structural?.complete ? "ok" : "warn"}`} />
             <div><strong>#{article.id} · {getJournalAuditText(article.title, "sr") || getJournalAuditText(article.title, "en") || "Untitled"}</strong><small>{getJournalAuditText(article.date, "sr") || "No date"}{row ? ` · ${getJournalDraftState(row).label}` : ""}</small></div>
           </button>;
@@ -173,9 +212,9 @@ export default function JournalManager() {
       </aside>
 
       <article className="journal-detail">
-        {!selected ? <div className="journal-empty">No Journal articles.</div> : editing ? <JournalEditor key={`${selected.id}-${selectedRow?.updated_at || "live"}`} initial={selected} onCancel={() => setEditing(false)} onSave={saveDraft} saving={saving} /> : <>
+        {!selected ? <div className="journal-empty">No Journal articles.</div> : editing ? <JournalEditor key={`${selected.id}-${selectedRow?.updated_at || (newArticleSeed ? "new" : "live")}`} initial={selected} onCancel={() => { setNewArticleSeed(null); setEditing(false); }} onSave={saveDraft} saving={saving} /> : <>
           <div className="journal-detail-hero">
-            <div><span>ARTICLE / {selectedRow ? "DRAFT PREVIEW" : "READ ONLY"}</span><h2>{getJournalAuditText(selected.title, "sr") || getJournalAuditText(selected.title, "en")}</h2><p>#{selected.id} · {getJournalAuditText(selected.date, "sr")}</p><div className="journal-detail-actions"><button onClick={() => setEditing(true)}>{selectedRow ? "Edit draft" : "Create draft"}</button>{selectedRow ? <button className="danger" onClick={discardDraft}>Discard draft</button> : null}</div></div>
+            <div><span>ARTICLE / {selectedRow ? (liveSelected ? "DRAFT PREVIEW" : "NEW ARTICLE DRAFT") : "READ ONLY"}</span><h2>{getJournalAuditText(selected.title, "sr") || getJournalAuditText(selected.title, "en")}</h2><p>#{selected.id} · {getJournalAuditText(selected.date, "sr")}</p><div className="journal-detail-actions"><button onClick={() => setEditing(true)}>{selectedRow ? "Edit draft" : "Create draft"}</button>{selectedRow ? <button className="danger" onClick={discardDraft}>Discard draft</button> : null}</div></div>
             {selected.image && !selected.image.endsWith("/") ? <img src={`${SHOP_ORIGIN}${selected.image}`} alt="" /> : null}
           </div>
 

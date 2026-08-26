@@ -28,7 +28,11 @@ assert.equal(journalPayloadEquals(normalized, { ...normalized, image: "/journal/
 for (const contract of [
   'from("journal_drafts")',
   'on("postgres_changes", { event: "*", schema: "public", table: "journal_drafts" }',
-  'upsert({ article_id: Number(payload.id), payload, created_by: authData.user.id }',
+  'const articleId = Number(payload.id)',
+  'const liveExists = journalArticles.some',
+  'const rowExists = Boolean(draftRows[articleId])',
+  '.insert({ article_id: articleId, payload, created_by: authData.user.id })',
+  '.upsert({ article_id: articleId, payload, created_by: authData.user.id }, { onConflict: "article_id" })',
   'review_status: "ready"',
   'review_status: "approved"',
   'approved_payload: selectedRow.payload',
@@ -40,6 +44,7 @@ assert.ok(css.includes(".journal-editor"), "Journal editor styles missing");
 assert.ok(css.includes(".journal-workflow.approved"), "Approved workflow styling missing");
 
 console.log("PASS  Journal drafts persist in Supabase and refresh in realtime");
+console.log("PASS  new Journal drafts use collision-safe INSERT while saved/live drafts use UPSERT");
 console.log("PASS  Journal validation gates save/review workflow");
 console.log("PASS  Journal review states cover draft → ready → approved");
 console.log("PASS  approved Journal payload is snapshotted for later Controlled Apply");

@@ -69,6 +69,6 @@ jobs:
           node control-center/tests/journal-controlled-apply.mjs
           node control-center/tests/journal-controlled-apply-contract.mjs
           node control-center/tests/journal-apply-ui-contract.mjs
-          node control-center/tests/journal-controlled-apply-schema-contract.mjs
+          node control-center/tests/journal-new-article.mjs
 
-# v2.17 adds existing-article Journal Controlled Apply with exact source drift guard
+# v2.18 adds draft-only new Journal article creation + safe sequential insert

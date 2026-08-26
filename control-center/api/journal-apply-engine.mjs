@@ -116,3 +116,35 @@ export function replaceJournalArticle(source, articleId, expectedSourceBlock, ap
     after: rendered,
   };
 }
+
+export function getJournalArticleIds(source) {
+  const ids = [];
+  const pattern = /\n\s{4}id\s*:\s*(\d+)\s*,/g;
+  for (const match of source.matchAll(pattern)) ids.push(Number(match[1]));
+  return ids;
+}
+
+export function getNextJournalArticleId(source) {
+  const ids = getJournalArticleIds(source);
+  return (ids.length ? Math.max(...ids) : 0) + 1;
+}
+
+export function journalArticleExists(source, articleId) {
+  return getJournalArticleIds(source).includes(Number(articleId));
+}
+
+export function insertJournalArticle(source, approvedArticle) {
+  const value = normalizeJournalArticle(approvedArticle);
+  const nextId = getNextJournalArticleId(source);
+  if (!Number.isInteger(value.id) || value.id <= 0) throw new Error("New Journal article requires a positive integer id.");
+  if (journalArticleExists(source, value.id)) throw new Error(`Journal article #${value.id} already exists.`);
+  if (value.id !== nextId) throw new Error(`New Journal article id must be the next sequential id (${nextId}).`);
+  const closeIndex = source.lastIndexOf("\n];");
+  if (closeIndex < 0) throw new Error("Could not locate journalArticles array boundary.");
+  const rendered = renderJournalArticle(value);
+  return {
+    source: source.slice(0, closeIndex) + ",\n  " + rendered + source.slice(closeIndex),
+    after: rendered,
+    articleId: value.id,
+  };
+}
