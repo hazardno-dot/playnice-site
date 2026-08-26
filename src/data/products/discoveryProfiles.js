@@ -2859,6 +2859,37 @@ export const discoveryProfiles = {
     "feminine": 2.6,
     "unisex": 5.1
   },
+
+  "playnice-test-product": {
+    "date": 6,
+    "casual": 9,
+    "citrus": 8,
+    "office": 9.2,
+    "unisex": 7.5,
+    "warmth": 3.4,
+    "aquatic": 1.5,
+    "dryness": 5.7,
+    "evening": 5.2,
+    "powdery": 1.8,
+    "airiness": 7.5,
+    "darkness": 1.2,
+    "elegance": 7.4,
+    "feminine": 4.5,
+    "florality": 3,
+    "freshness": 8.2,
+    "longevity": 7.1,
+    "masculine": 5.5,
+    "spiciness": 3.8,
+    "sweetness": 2.1,
+    "woodiness": 6.4,
+    "creaminess": 2,
+    "fruitiness": 3.1,
+    "projection": 6.3,
+    "aromaticity": 7.2,
+    "cleanliness": 8.8,
+    "versatility": 9.1,
+    "gourmandness": 0
+  }
 };
 
 export default discoveryProfiles;
