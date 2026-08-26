@@ -101,12 +101,18 @@ export default function ControlCenterManagers() {
     const observer = new MutationObserver(() => decorateCloudDraftCard());
     observer.observe(mainStage, { childList: true, subtree: true });
 
+    const draftChannel = supabase
+      .channel("control-center-draft-count")
+      .on("postgres_changes", { event: "*", schema: "public", table: "product_drafts" }, refreshDraftCount)
+      .subscribe();
+
     const onFocus = () => refreshDraftCount();
     window.addEventListener("focus", onFocus);
 
     return () => {
       cancelled = true;
       observer.disconnect();
+      supabase.removeChannel(draftChannel);
       window.removeEventListener("focus", onFocus);
     };
   }, []);

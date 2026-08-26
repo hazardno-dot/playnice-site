@@ -61,15 +61,24 @@ export default function ControlledApplyManager() {
       const after = await readData();
       setDrafts(after.draftRows);
       setHistory(after.historyRows);
-
-      // App, DraftManager and ControlledApplyManager keep independent local state.
-      // Once a merged PR is archived and its draft is deleted, reload exactly once
-      // so every draft counter reflects the same authoritative Supabase state.
-      window.setTimeout(() => window.location.reload(), 120);
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    const draftChannel = supabase
+      .channel("controlled-apply-drafts")
+      .on("postgres_changes", { event: "*", schema: "public", table: "product_drafts" }, () => load({ sync: false }))
+      .subscribe();
+    const publishChannel = supabase
+      .channel("controlled-apply-history")
+      .on("postgres_changes", { event: "*", schema: "public", table: "publish_history" }, () => load({ sync: false }))
+      .subscribe();
+    return () => {
+      supabase.removeChannel(draftChannel);
+      supabase.removeChannel(publishChannel);
+    };
+  }, []);
 
   const preparedRows = useMemo(() => drafts.filter((row) =>
     row.review_status === "approved" && Boolean(row.prepared_at)
