@@ -1,4 +1,5 @@
 import fs from "node:fs";
+// Final Products audit regression coverage.
 const app=fs.readFileSync("control-center/src/App.jsx","utf8");
 if(!app.includes("function draftProductFromPayload(slug,payload)"))throw new Error("Draft-only product materializer missing.");
 if(!app.includes("const catalogProducts=useMemo"))throw new Error("Draft-only products are not included in catalog state.");
