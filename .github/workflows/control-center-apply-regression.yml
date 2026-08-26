@@ -67,5 +67,6 @@ jobs:
           node control-center/tests/journal-audit-contract.mjs
           node control-center/tests/journal-draft-workflow.mjs
           node control-center/tests/journal-controlled-apply.mjs
+          node control-center/tests/journal-controlled-apply-contract.mjs
 
 # v2.17 adds existing-article Journal Controlled Apply with exact source drift guard
