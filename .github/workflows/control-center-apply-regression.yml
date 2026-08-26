@@ -11,6 +11,8 @@ on:
       - "control-center/src/approvalSafety.mjs"
       - "control-center/src/inlineValidationRules.mjs"
       - "control-center/src/productWorkflowState.mjs"
+      - "control-center/src/App.jsx"
+      - "control-center/src/DraftManager.jsx"
       - "control-center/src/ControlCenterManagers.jsx"
       - "control-center/src/ControlledApplyManager.jsx"
       - "control-center/tests/**"
@@ -51,4 +53,4 @@ jobs:
           node control-center/tests/approval-payload-safety.mjs
           node control-center/tests/draft-realtime-contract.mjs
 
-# v2.11 approval + realtime synchronization guards
+# v2.12 approval + full draft-state realtime synchronization guards

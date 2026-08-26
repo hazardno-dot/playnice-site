@@ -57,13 +57,22 @@ const workflowLabel = (status) => status === "approved" ? "APPROVED" : status ==
 
 export default function DraftManager() {
   const [open, setOpen] = useState(false), [drafts, setDrafts] = useState([]), [loading, setLoading] = useState(true), [expanded, setExpanded] = useState(null), [error, setError] = useState(""), [acting, setActing] = useState("");
-  const load = async () => {
-    setLoading(true); setError("");
+  const load = async ({ quiet = false } = {}) => {
+    if (!quiet) { setLoading(true); setError(""); }
     const { data, error: loadError } = await supabase.from("product_drafts").select("product_slug,payload,updated_at,review_status,reviewed_at,reviewed_by,baseline_snapshot,approved_payload,prepared_at,prepared_by").order("updated_at", { ascending: false });
-    if (loadError) setError(loadError.message || "Could not load drafts.");
+    if (loadError) { setError(loadError.message || "Could not load drafts."); if (!quiet) setLoading(false); return; }
     setDrafts(data || []); setLoading(false);
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    let cancelled = false;
+    load();
+    const channel = supabase.channel("draft-manager-product-drafts").on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "product_drafts" },
+      () => { if (!cancelled) load({ quiet: true }); }
+    ).subscribe();
+    return () => { cancelled = true; supabase.removeChannel(channel); };
+  }, []);
 
   const count = drafts.length;
   const draftRows = useMemo(() => drafts.map((row) => {
@@ -86,7 +95,7 @@ export default function DraftManager() {
     await audit(slug, "discarded");
     const { error: deleteError } = await supabase.from("product_drafts").delete().eq("product_slug", slug);
     if (deleteError) { setError(deleteError.message || "Could not discard draft."); return; }
-    await load(); setExpanded(null); window.setTimeout(() => window.location.reload(), 250);
+    setDrafts((current) => current.filter((row) => row.product_slug !== slug)); setExpanded(null);
   };
 
   const setWorkflowStatus = async (row, nextStatus) => {
@@ -109,7 +118,7 @@ export default function DraftManager() {
     const { error: updateError } = await supabase.from("product_drafts").update(patch).eq("product_slug", row.product_slug);
     if (updateError) setError(updateError.message || "Could not update review status.");
     else await audit(row.product_slug, nextStatus === "approved" ? "approved" : nextStatus === "ready" ? "marked_ready" : "returned_to_draft", { change_count: row.changes.length });
-    await load(); setActing("");
+    await load({ quiet: true }); setActing("");
   };
 
   const prepareApply = async (row) => {
@@ -127,7 +136,7 @@ export default function DraftManager() {
     const { error: updateError } = await supabase.from("product_drafts").update({ baseline_snapshot: baseline, prepared_at: now, prepared_by: user.id, approved_payload: row.payload }).eq("product_slug", row.product_slug);
     if (updateError) setError(updateError.message || "Could not prepare approved draft.");
     else await audit(row.product_slug, "prepared", { files: row.patchPlan.map((p) => p.file), change_count: row.changes.length });
-    await load(); setActing("");
+    await load({ quiet: true }); setActing("");
   };
 
   const openProduct = (row) => {

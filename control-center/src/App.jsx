@@ -105,17 +105,22 @@ export default function App(){
   const filtered=useMemo(()=>{const q=query.trim().toLowerCase();return products.filter((p)=>(!q||[p.name,p.shortName,p.slug,p.category,p.badge].filter(Boolean).some((v)=>String(v).toLowerCase().includes(q)))&&matchesCoverageFilter(p,coverageFilter));},[query,coverageFilter]);
   useEffect(()=>{
     let cancelled=false;
-    const load=async()=>{
-      setDraftsLoading(true);
+    const load=async({quiet=false}={})=>{
+      if(!quiet)setDraftsLoading(true);
       const {data,error}=await supabase.from("product_drafts").select("product_slug,payload,updated_at").order("updated_at",{ascending:false});
       if(cancelled)return;
-      if(error){console.error("Failed to load product drafts",error);setDraftsLoading(false);return;}
+      if(error){console.error("Failed to load product drafts",error);if(!quiet)setDraftsLoading(false);return;}
       const mapped={};
       (data||[]).forEach((row)=>{mapped[row.product_slug]={...(row.payload||{}),savedAt:row.updated_at||row.payload?.savedAt||null};});
       setDrafts(mapped);setDraftsLoading(false);
     };
     load();
-    return()=>{cancelled=true};
+    const channel=supabase.channel("app-product-drafts").on(
+      "postgres_changes",
+      {event:"*",schema:"public",table:"product_drafts"},
+      ()=>load({quiet:true})
+    ).subscribe();
+    return()=>{cancelled=true;supabase.removeChannel(channel)};
   },[]);
   const choose=(p)=>{setSelected(p);setEditing(false)};
   const createNew=()=>{const raw=window.prompt("New product slug (lowercase kebab-case)");const slug=String(raw||"").trim();if(!slug)return;if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)){window.alert("Slug must be lowercase kebab-case.");return;}if(products.some((p)=>p.slug===slug)||drafts[slug]){window.alert("That slug already exists.");return;}setSelected({slug,__new:true,name:"",shortName:"",category:"Arabian",image:"/products/",sizes:{},moods:[],noteMap:{top:[],heart:[],base:[]},recommendations:[]});setEditing(true);};
