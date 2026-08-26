@@ -12,6 +12,9 @@ on:
       - "control-center/src/inlineValidationRules.mjs"
       - "control-center/src/productWorkflowState.mjs"
       - "control-center/src/productNavigation.mjs"
+      - "control-center/src/journalAudit.mjs"
+      - "control-center/src/JournalManager.jsx"
+      - "control-center/src/journal-manager.css"
       - "control-center/src/App.jsx"
       - "control-center/src/DraftManager.jsx"
       - "control-center/src/ControlCenterManagers.jsx"
@@ -21,6 +24,7 @@ on:
       - "src/data/products/productCopy.js"
       - "src/data/products/productWearContext.js"
       - "src/data/products/discoveryProfiles.js"
+      - "src/data/journal/index.js"
       - ".github/workflows/control-center-apply-regression.yml"
   workflow_dispatch:
 
@@ -55,5 +59,6 @@ jobs:
           node control-center/tests/draft-realtime-contract.mjs
           node control-center/tests/product-navigation-contract.mjs
           node control-center/tests/draft-only-product-lifecycle.mjs
+          node control-center/tests/journal-audit-contract.mjs
 
-# v2.14 explicit navigation + draft-only save/reopen lifecycle guards
+# v2.15 adds read-only Journal structural audit coverage
