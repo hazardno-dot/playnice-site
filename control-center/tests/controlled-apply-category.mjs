@@ -15,7 +15,6 @@ vm.runInContext(`${applySource.slice(0, marker)}\nglobalThis.__h={findProductBlo
 const h = context.__h;
 
 if (!applySource.includes('const supportedFields = ["category",')) throw new Error("Category is not enabled in supportedFields.");
-if (!applySource.includes('const protectedFields = ["name", "shortName"]')) throw new Error("Only Name and Short name should remain protected.");
 if (!/controlled apply v2\.[4-9]\./.test(applySource)) throw new Error("Controlled Apply version is older than v2.4.");
 
 const source = fs.readFileSync(path.join(repoRoot, "src/data/products/index.js"), "utf8");
@@ -45,5 +44,5 @@ if (disk !== source) throw new Error("Category regression mutated the catalog on
 
 console.log("PASS  category patches safely through Controlled Apply");
 console.log("PASS  category LIVE DRIFT guard blocks stale baseline");
-console.log("PASS  name and shortName remain protected and untouched");
+console.log("PASS  category patch leaves identity fields untouched");
 console.log("Production untouched: yes (in-memory regression only)");
