@@ -19,6 +19,16 @@ const getWorkflowLabel = (row) => {
   return { label: "DRAFT", tone: "draft", detail: "Unpublished Supabase draft." };
 };
 
+const getWorkflowActionLabel = (row) => {
+  if (!row) return "";
+  if (row.preview_verified_at) return "Open verified draft";
+  if (row.apply_pr_number) return "Open draft";
+  if (row.review_status === "approved" && row.prepared_at) return "Review apply";
+  if (row.review_status === "approved") return "Prepare in Drafts";
+  if (row.review_status === "ready") return "Review & approve";
+  return "Review draft";
+};
+
 export default function ProductWorkflowBridge() {
   const [slot, setSlot] = useState(null);
   const [slug, setSlug] = useState("");
@@ -84,9 +94,24 @@ export default function ProductWorkflowBridge() {
   }, [slug]);
 
   const state = useMemo(() => getWorkflowLabel(row), [row]);
+  const actionLabel = useMemo(() => getWorkflowActionLabel(row), [row]);
   if (!slot || !slug) return null;
 
-  const openDrafts = () => document.querySelector(".draft-manager-trigger")?.click();
+  const openDraftWorkflow = () => {
+    document.querySelector(".draft-manager-trigger")?.click();
+    window.setTimeout(() => {
+      const card = [...document.querySelectorAll(".draft-manager-card")].find((item) =>
+        String(item.textContent || "").includes(slug)
+      );
+      if (!card) return;
+      const reviewButton = [...card.querySelectorAll("button")].find((button) =>
+        button.textContent?.trim() === "Review changes"
+      );
+      reviewButton?.click();
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 180);
+  };
+
   const openPr = row?.apply_pr_number
     ? () => window.open(`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`, "_blank", "noopener,noreferrer")
     : null;
@@ -98,7 +123,7 @@ export default function ProductWorkflowBridge() {
         <div><strong>{loading ? "CHECKING…" : state.label}</strong><small>{loading ? "Reading Supabase draft state." : state.detail}</small></div>
       </div>
       <div className="product-workflow-actions">
-        {row ? <button type="button" onClick={openDrafts}>Open draft</button> : null}
+        {row ? <button type="button" onClick={openDraftWorkflow}>{actionLabel}</button> : null}
         {openPr ? <button type="button" onClick={openPr}>Open PR #{row.apply_pr_number}</button> : null}
       </div>
     </section>,
