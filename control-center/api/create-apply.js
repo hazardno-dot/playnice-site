@@ -364,6 +364,22 @@ function patchCopyBlock(block, baselineCopy = {}, approvedCopy = {}) {
   return nextBlock;
 }
 
+function renameNamedObjectKey(source, oldKey, newKey, label = "data object") {
+  const before = String(oldKey || "");
+  const after = String(newKey || "");
+  if (!before || !after) throw new Error(`${label} rename requires non-empty names.`);
+  if (before === after) return source;
+  const oldRe = new RegExp(`(["'])${escapeRegex(before)}\\1(\\s*:\\s*\\{)`);
+  const oldMatch = oldRe.exec(source);
+  if (!oldMatch) throw new Error(`Could not locate ${before} in ${label}.`);
+  const duplicateRe = new RegExp(`(["'])${escapeRegex(after)}\\1\\s*:\\s*\\{`);
+  if (duplicateRe.test(source)) throw new Error(`${label} already contains ${after}; rename would create a duplicate key.`);
+  const quote = oldMatch[1];
+  const escaped = after.replace(/\\/g, "\\\\").replace(new RegExp(quote, "g"), `\\${quote}`);
+  const replacement = `${quote}${escaped}${quote}${oldMatch[2]}`;
+  return source.slice(0, oldMatch.index) + replacement + source.slice(oldMatch.index + oldMatch[0].length);
+}
+
 function discoveryChangesBetween(baselineDiscovery = {}, approvedDiscovery = {}) {
   const keys = Array.from(new Set([...Object.keys(baselineDiscovery || {}), ...Object.keys(approvedDiscovery || {})])).sort();
   return keys.filter((field) => stable(baselineDiscovery?.[field]) !== stable(approvedDiscovery?.[field])).map((field) => ({ section: "Discovery", field, live: Number(baselineDiscovery?.[field]), next: Number(approvedDiscovery?.[field]) }));
@@ -411,9 +427,12 @@ export default async function handler(req, res) {
     const baselineCore = baseline.core;
     const approvedCore = approved.core;
     const supportedFields = ["category", "image", "rating", "ratingLabel", "badge", "season", "moods", "sizes"];
-    const protectedFields = ["name", "shortName"];
-    const unsupportedCore = protectedFields.filter((field) => String(baselineCore[field] ?? "") !== String(approvedCore[field] ?? ""));
-    if (unsupportedCore.length) return json(res, 409, { error: "Controlled Apply supports Core, Note Map, Recommendations, Wear, Copy and Discovery. Name and Short name remain protected.", unsupported_core: unsupportedCore });
+    const identityChanges = ["name", "shortName"].map((field) => {
+      const live = String(baselineCore?.[field] ?? "");
+      const next = String(approvedCore?.[field] ?? "");
+      return { section: "Identity", field, live, next, changed: live !== next };
+    }).filter((item) => item.changed);
+    if (identityChanges.some((c) => !c.next.trim())) return json(res, 409, { error: "Name and Short name cannot be empty." });
 
     const coreChanges = supportedFields.map((field) => {
       const live = valueForField(field, baselineCore);
@@ -428,7 +447,7 @@ export default async function handler(req, res) {
     const wearChanges = ["sr", "en"].map((lang) => ({ section: "Wear", field: lang, live: String(baselineWear?.[lang] ?? ""), next: String(approvedWear?.[lang] ?? ""), changed: String(baselineWear?.[lang] ?? "") !== String(approvedWear?.[lang] ?? "") })).filter((item) => item.changed);
     const copyChanges = copyChangesBetween(baseline.copy || {}, approved.copy || {});
     const discoveryChanges = discoveryChangesBetween(baseline.discovery || {}, approved.discovery || {});
-    const changes = [...coreChanges, ...inspiredByChanges, ...noteMapChanges, ...recommendationChanges, ...wearChanges, ...copyChanges, ...discoveryChanges];
+    const changes = [...identityChanges, ...coreChanges, ...inspiredByChanges, ...noteMapChanges, ...recommendationChanges, ...wearChanges, ...copyChanges, ...discoveryChanges];
     if (!changes.length) return json(res, 409, { error: "No supported approved changes remain to apply." });
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
@@ -439,18 +458,20 @@ export default async function handler(req, res) {
     await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, { method: "POST", body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }) });
     const changedFiles = [];
 
-    if (coreChanges.length || inspiredByChanges.length || noteMapChanges.length || recommendationChanges.length) {
+    if (identityChanges.length || coreChanges.length || inspiredByChanges.length || noteMapChanges.length || recommendationChanges.length) {
       const filePath = "src/data/products/index.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
       const source = Buffer.from(file.content, "base64").toString("utf8");
       const located = findProductBlock(source, slug);
       let nextBlock = located.block;
+      for (const change of identityChanges) nextBlock = patchProperty(nextBlock, change.field, change.live, change.next);
       for (const change of coreChanges) nextBlock = patchProperty(nextBlock, change.field, change.live, change.next);
       if (inspiredByChanges.length) nextBlock = patchInspiredBy(nextBlock, baselineCore.inspiredBy || {}, approvedCore.inspiredBy || {});
       if (noteMapChanges.length) nextBlock = patchNoteMap(nextBlock, baselineCore.noteMap || {}, approvedCore.noteMap || {});
       if (recommendationChanges.length) nextBlock = patchRecommendations(nextBlock, baselineCore.recommendations, approvedCore.recommendations);
       const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
       const summary = [
+        ...identityChanges.map((c) => c.field),
         ...coreChanges.map((c) => c.field),
         ...inspiredByChanges.map((c) => `inspiredBy.${c.field}`),
         ...noteMapChanges.map((c) => `noteMap.${c.field}`),
@@ -459,29 +480,33 @@ export default async function handler(req, res) {
       await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
       changedFiles.push(filePath);
     }
-    if (wearChanges.length) {
+    const oldProductName = String(baselineCore.name || "");
+    const newProductName = String(approvedCore.name || oldProductName);
+    const nameChanged = oldProductName !== newProductName;
+
+    if (wearChanges.length || nameChanged) {
       const filePath = "src/data/products/productWearContext.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
       const source = Buffer.from(file.content, "base64").toString("utf8");
-      const productName = String(baselineCore.name || approvedCore.name || "");
-      if (!productName) throw new Error("Wear Context apply requires a stable product name.");
-      const located = findNamedObjectBlock(source, productName, "Wear Context");
-      const nextBlock = patchWearBlock(located.block, baselineWear, approvedWear);
-      const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
-      const summary = wearChanges.map((c) => `wear.${c.field}`).join(", ");
+      if (!oldProductName) throw new Error("Wear Context apply requires a stable product name.");
+      const located = findNamedObjectBlock(source, oldProductName, "Wear Context");
+      const nextBlock = wearChanges.length ? patchWearBlock(located.block, baselineWear, approvedWear) : located.block;
+      let nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
+      if (nameChanged) nextSource = renameNamedObjectKey(nextSource, oldProductName, newProductName, "Wear Context");
+      const summary = [...(nameChanged ? ["identity.name"] : []), ...wearChanges.map((c) => `wear.${c.field}`)].join(", ");
       await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
       changedFiles.push(filePath);
     }
-    if (copyChanges.length) {
+    if (copyChanges.length || nameChanged) {
       const filePath = "src/data/products/productCopy.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
       const source = Buffer.from(file.content, "base64").toString("utf8");
-      const productName = String(baselineCore.name || approvedCore.name || "");
-      if (!productName) throw new Error("Copy apply requires a stable product name.");
-      const located = findNamedObjectBlock(source, productName, "Product Copy");
-      const nextBlock = patchCopyBlock(located.block, baseline.copy || {}, approved.copy || {});
-      const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
-      const summary = copyChanges.map((c) => `copy.${c.field}`).join(", ");
+      if (!oldProductName) throw new Error("Copy apply requires a stable product name.");
+      const located = findNamedObjectBlock(source, oldProductName, "Product Copy");
+      const nextBlock = copyChanges.length ? patchCopyBlock(located.block, baseline.copy || {}, approved.copy || {}) : located.block;
+      let nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
+      if (nameChanged) nextSource = renameNamedObjectKey(nextSource, oldProductName, newProductName, "Product Copy");
+      const summary = [...(nameChanged ? ["identity.name"] : []), ...copyChanges.map((c) => `copy.${c.field}`)].join(", ");
       await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
       changedFiles.push(filePath);
     }
@@ -498,10 +523,10 @@ export default async function handler(req, res) {
     }
 
     const changeLines = changes.map((c) => `- ${c.section} · ${String(c.field).toUpperCase()}: ${displayValue(c.live)} → ${displayValue(c.next)}`);
-    const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, { method: "POST", body: JSON.stringify({ title: `Control Center: ${slug} · ${changes.length} approved change${changes.length === 1 ? "" : "s"}`, head: branch, base: "main", draft: true, body: ["Generated by PlayNice Control Center controlled apply v2.6.", "", `- Product: ${slug}`, ...changeLines, `- Files: ${changedFiles.join(", ")}`, "- Source: approved + prepared Supabase draft", "- Safety: draft PR only; no automatic merge"].join("\n") }) });
+    const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, { method: "POST", body: JSON.stringify({ title: `Control Center: ${slug} · ${changes.length} approved change${changes.length === 1 ? "" : "s"}`, head: branch, base: "main", draft: true, body: ["Generated by PlayNice Control Center controlled apply v2.7.", "", `- Product: ${slug}`, ...changeLines, `- Files: ${changedFiles.join(", ")}`, "- Source: approved + prepared Supabase draft", "- Safety: draft PR only; no automatic merge"].join("\n") }) });
     await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, { method: "PATCH", body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id, preview_verified_at: null, preview_verified_by: null }) });
-    await supabaseFetch("/rest/v1/draft_audit_log", token, { method: "POST", body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "apply_branch_created", details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha, version: "2.6", fields: changes.map((c) => `${c.section.toLowerCase().replace(/ /g, "_")}.${c.field}`), files: changedFiles } }) });
-    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "2.6", fields: changes.map((c) => `${c.section.toLowerCase().replace(/ /g, "_")}.${c.field}`), files: changedFiles });
+    await supabaseFetch("/rest/v1/draft_audit_log", token, { method: "POST", body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "apply_branch_created", details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha, version: "2.7", fields: changes.map((c) => `${c.section.toLowerCase().replace(/ /g, "_")}.${c.field}`), files: changedFiles } }) });
+    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "2.7", fields: changes.map((c) => `${c.section.toLowerCase().replace(/ /g, "_")}.${c.field}`), files: changedFiles });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Controlled apply failed." });
   }
