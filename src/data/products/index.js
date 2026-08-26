@@ -2738,5 +2738,26 @@ export const products = [
     base: ["blue-cedar", "black-ebony", "labdanum"]
   },
   isNew: true,
-},
+},,
+  {
+    id: 96,
+    slug: "playnice-test-product",
+    name: "PlayNice Test Product",
+    shortName: "PN Test",
+    category: "Arabian",
+    image: "/products/playnice-test-product.png",
+    sizes: {"5ml":4,"10ml":7,"20ml":13},
+    badge: "TEST",
+    rating: 8,
+    ratingLabel: "Test Product",
+    season: "all",
+    moods: ["clean","casual","signature"],
+    recommendations: ["afnan-9am","afnan-9pm-rebel","afnan-turathi-blue"],
+    noteMap: {
+      top: ["mandarin","bergamot","cardamom"],
+      heart: ["lavender","orange-blossom","rose"],
+      base: ["cedarwood","moss","patchouli"]
+    }
+  }
+
 ];
