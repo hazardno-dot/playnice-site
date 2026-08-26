@@ -15,7 +15,7 @@ vm.runInContext(`${applySource.slice(0, marker)}\nglobalThis.__h={findProductBlo
 const h = context.__h;
 
 if (!applySource.includes('const supportedFields = ["category", "image",')) throw new Error("Image path is not enabled in supportedFields.");
-if (!applySource.includes('controlled apply v2.5.')) throw new Error("Controlled Apply version was not bumped to v2.5.");
+if (!applySource.includes("patchInspiredBy")) throw new Error("Inspired-by metadata support is missing.");
 
 const source = fs.readFileSync(path.join(repoRoot, "src/data/products/index.js"), "utf8");
 const located = h.findProductBlock(source, "afnan-9am");
