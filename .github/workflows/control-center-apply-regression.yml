@@ -36,5 +36,6 @@ jobs:
           node control-center/tests/controlled-apply-inline-copy.mjs
           node control-center/tests/controlled-apply-category.mjs
           node control-center/tests/controlled-apply-metadata.mjs
+          node control-center/tests/controlled-apply-identity.mjs
 
-# v2.6 structural sizes + notes
+# v2.7 identity-safe renames
