@@ -31,7 +31,7 @@ function normalizePayload(payload, slug) {
       moods: csv(core.moods), recommendations: csv(core.recommendations), inspiredBy: { name: String(core.inspiredBy?.name || "").trim(), short: String(core.inspiredBy?.short || "").trim() },
       noteMap: { top: csv(core.noteMap?.top), heart: csv(core.noteMap?.heart), base: csv(core.noteMap?.base) }
     },
-    copy: payload?.copy || {}, wear: payload?.wear || {}, discovery
+    copy: { ...(payload?.copy || {}), dominantNotes: { sr: csv(payload?.copy?.dominantNotes?.sr), en: csv(payload?.copy?.dominantNotes?.en) }, tags: { sr: csv(payload?.copy?.tags?.sr), en: csv(payload?.copy?.tags?.en) } }, wear: payload?.wear || {}, discovery
   };
 }
 
@@ -45,6 +45,7 @@ function validateNewProduct(p) {
   if (p.core.recommendations.length !== 3 || new Set(p.core.recommendations).size !== 3) errors.push("Exactly 3 unique recommendations are required.");
   for (const level of ["top","heart","base"]) if (!p.core.noteMap[level].length) errors.push(`${level} notes are required.`);
   for (const field of ["miniTag","scentType","card","modal","whyChoose"]) for (const lang of ["sr","en"]) if (!String(p.copy?.[field]?.[lang] || "").trim()) errors.push(`copy.${field}.${lang} is required.`);
+  for (const field of ["dominantNotes","tags"]) for (const lang of ["sr","en"]) if (!csv(p.copy?.[field]?.[lang]).length) errors.push(`copy.${field}.${lang} is required.`);
   for (const lang of ["sr","en"]) if (!String(p.wear?.[lang] || "").trim()) errors.push(`wear.${lang} is required.`);
   if (!Object.keys(p.discovery).length || Object.values(p.discovery).some((v)=>!Number.isFinite(v)||v<0||v>10)) errors.push("Discovery profile must contain numeric 0–10 values.");
   return errors;

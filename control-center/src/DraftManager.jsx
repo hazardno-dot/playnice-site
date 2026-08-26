@@ -22,7 +22,8 @@ const same = (a, b) => normalize(a) === normalize(b);
 const pushChange = (arr, section, label, liveValue, draftValue) => { if (!same(liveValue, draftValue)) arr.push({ section, label, liveValue, draftValue }); };
 
 function buildChanges(live, draft) {
-  if (!live || !draft) return [];
+  if (!draft) return [];
+  live = live || { name:"", shortName:"", category:"", image:"", inspiredBy:{}, badge:"", rating:"", ratingLabel:"", season:"", moods:[], sizes:{}, noteMap:{top:[],heart:[],base:[]}, recommendations:[], slug:"" };
   const changes = []; const core = draft.core || {};
   pushChange(changes, "Core", "Name", live.name, core.name);
   pushChange(changes, "Core", "Short name", live.shortName, core.shortName);
@@ -67,7 +68,7 @@ export default function DraftManager() {
   const count = drafts.length;
   const draftRows = useMemo(() => drafts.map((row) => {
     const live = getLiveProduct(row.product_slug), changes = buildChanges(live, row.payload), validation = validateProductDraft(live, row.payload);
-    const currentSnapshot = makeLiveSnapshot(live);
+    const currentSnapshot = live ? makeLiveSnapshot(live) : { kind: "new_product", product_slug: row.product_slug };
     const drifted = Boolean(row.baseline_snapshot) && !snapshotsEqual(row.baseline_snapshot, currentSnapshot);
     const patchPlan = buildPatchPlan(changes);
     const readyToApply = row.review_status === "approved" && !drifted && validation.status !== "blocked" && Boolean(row.prepared_at);

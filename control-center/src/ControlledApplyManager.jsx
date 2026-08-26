@@ -72,9 +72,9 @@ export default function ControlledApplyManager() {
 
   const readyRows = useMemo(() => drafts.filter((row) => {
     const live = products.find((p) => p.slug === row.product_slug);
-    if (!live || row.review_status !== "approved" || !row.prepared_at) return false;
-    const validation = validateProductDraft(live, row.payload);
-    const current = makeLiveSnapshot(live);
+    if (row.review_status !== "approved" || !row.prepared_at) return false;
+    const validation = validateProductDraft(live || null, row.payload);
+    const current = live ? makeLiveSnapshot(live) : { kind: "new_product", product_slug: row.product_slug };
     return validation.status !== "blocked" && row.baseline_snapshot && snapshotsEqual(row.baseline_snapshot, current);
   }), [drafts]);
 
@@ -84,7 +84,8 @@ export default function ControlledApplyManager() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
-      const response = await fetch("/api/create-apply", {
+      const endpoint = row.baseline_snapshot?.kind === "new_product" ? "/api/create-new-product" : "/api/create-apply";
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

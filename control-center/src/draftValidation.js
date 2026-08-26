@@ -11,6 +11,7 @@ const KNOWN_NOTE_KEYS = new Set(
   products.flatMap((product) => ["top", "heart", "base"].flatMap((level) => product.noteMap?.[level] || []))
 );
 const PRODUCT_SLUGS = new Set(products.map((product) => product.slug));
+const DISCOVERY_KEYS = Object.keys(discoveryProfiles[products[0]?.slug] || {});
 
 function issue(level, section, field, message) {
   return { level, section, field, message };
@@ -56,7 +57,7 @@ export function validateProductDraft(live, draft) {
   });
 
   const copy = draft?.copy || {};
-  ["miniTag", "scentType", "card", "modal", "whyChoose"].forEach((field) => {
+  ["miniTag", "scentType", "card", "modal", "dominantNotes", "tags", "whyChoose"].forEach((field) => {
     ["sr", "en"].forEach((lang) => {
       if (empty(copy?.[field]?.[lang])) issues.push(issue("error", "Copy", `${field} · ${lang.toUpperCase()}`, "Required bilingual copy is missing."));
     });
@@ -69,7 +70,8 @@ export function validateProductDraft(live, draft) {
 
   const liveDiscovery = discoveryProfiles[live?.slug] || {};
   const discovery = draft?.discovery || {};
-  Object.keys(liveDiscovery).forEach((key) => {
+  const discoveryKeys = live ? Object.keys(liveDiscovery) : DISCOVERY_KEYS;
+  discoveryKeys.forEach((key) => {
     const value = discovery[key];
     if (!finite(value) || Number(value) < 0 || Number(value) > 10) {
       issues.push(issue("error", "Discovery", key, `${key} must be a number from 0 to 10.`));
