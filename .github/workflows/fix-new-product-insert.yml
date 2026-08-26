@@ -20,3 +20,4 @@ jobs:
           git diff --cached --quiet && exit 0
           git commit -m "Fix new-product insertion targets and separators"
           git push origin HEAD:control-center-controlled-apply-v2
+# trigger
