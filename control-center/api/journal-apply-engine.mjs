@@ -49,6 +49,16 @@ export function findJournalArticleBlock(source, articleId) {
 
 const pair = (value) => ({ sr: String(value?.sr || ""), en: String(value?.en || "") });
 
+const normalizeLink = (link = {}) => {
+  const result = { label: pair(link?.label) };
+  const action = String(link?.action || "").trim();
+  const url = String(link?.url || "").trim();
+  if (action) result.action = action;
+  if (url) result.url = url;
+  if (link?.external != null) result.external = Boolean(link.external);
+  return result;
+};
+
 export function normalizeJournalArticle(article = {}) {
   const result = {
     id: Number(article.id),
@@ -62,11 +72,46 @@ export function normalizeJournalArticle(article = {}) {
   if (article.relatedProducts != null) result.relatedProducts = Array.isArray(article.relatedProducts)
     ? article.relatedProducts.map((slug) => String(slug || "").trim()).filter(Boolean)
     : [];
+  if (article.links != null) result.links = Array.isArray(article.links)
+    ? article.links.map(normalizeLink)
+    : [];
   return result;
 }
 
 const indentMultiline = (value, spaces) => String(value).replace(/\n/g, `\n${" ".repeat(spaces)}`);
 const templateLiteral = (value) => `\`${String(value || "").replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${")}\``;
+
+const appendSection = (lines, section) => {
+  lines[lines.length - 1] += ",";
+  lines.push(...section);
+};
+
+const renderJournalLinks = (links) => {
+  const lines = ["    links: ["];
+  links.forEach((link, linkIndex) => {
+    const properties = [
+      ["label", [
+        "        label: {",
+        `          en: ${JSON.stringify(link.label?.en || "")},`,
+        `          sr: ${JSON.stringify(link.label?.sr || "")}`,
+        "        }",
+      ]],
+    ];
+    if (link.action) properties.push(["action", [`        action: ${JSON.stringify(link.action)}`]]);
+    if (link.url) properties.push(["url", [`        url: ${JSON.stringify(link.url)}`]]);
+    if (link.external != null) properties.push(["external", [`        external: ${link.external ? "true" : "false"}`]]);
+
+    lines.push("      {");
+    properties.forEach(([, propertyLines], propertyIndex) => {
+      const rendered = [...propertyLines];
+      if (propertyIndex < properties.length - 1) rendered[rendered.length - 1] += ",";
+      lines.push(...rendered);
+    });
+    lines.push(`      }${linkIndex === links.length - 1 ? "" : ","}`);
+  });
+  lines.push("    ]");
+  return lines;
+};
 
 export function renderJournalArticle(article) {
   const value = normalizeJournalArticle(article);
@@ -91,16 +136,14 @@ export function renderJournalArticle(article) {
     `      sr: ${indentMultiline(templateLiteral(value.content.sr), 6)}`,
     "    }",
   ];
-  if (value.series) {
-    lines[lines.length - 1] += ",";
-    lines.push("    series: {", `      en: ${JSON.stringify(value.series.en)},`, `      sr: ${JSON.stringify(value.series.sr)}`, "    }");
-  }
+  if (value.series) appendSection(lines, ["    series: {", `      en: ${JSON.stringify(value.series.en)},`, `      sr: ${JSON.stringify(value.series.sr)}`, "    }"]);
   if (Array.isArray(value.relatedProducts)) {
-    lines[lines.length - 1] += ",";
-    lines.push("    relatedProducts: [");
-    value.relatedProducts.forEach((slug, index) => lines.push(`      ${JSON.stringify(slug)}${index === value.relatedProducts.length - 1 ? "" : ","}`));
-    lines.push("    ]");
+    const section = ["    relatedProducts: ["];
+    value.relatedProducts.forEach((slug, index) => section.push(`      ${JSON.stringify(slug)}${index === value.relatedProducts.length - 1 ? "" : ","}`));
+    section.push("    ]");
+    appendSection(lines, section);
   }
+  if (Array.isArray(value.links)) appendSection(lines, renderJournalLinks(value.links));
   lines.push("  }");
   return lines.join("\n");
 }

@@ -70,5 +70,6 @@ jobs:
           node control-center/tests/journal-controlled-apply-contract.mjs
           node control-center/tests/journal-apply-ui-contract.mjs
           node control-center/tests/journal-new-article.mjs
+          node control-center/tests/journal-final-workflow-audit.mjs
 
-# v2.18 adds draft-only new Journal article creation + safe sequential insert
+# v2.19 final Journal workflow audit preserves CTA/external link metadata end-to-end

@@ -50,6 +50,30 @@ export function auditJournalArticles(articles = [], knownProductSlugs = []) {
       }
     }
 
+    if (article?.links != null) {
+      if (!Array.isArray(article.links)) add("error", "links", "links must be an array.");
+      else {
+        const seenDestinations = new Set();
+        article.links.forEach((link, linkIndex) => {
+          const field = `links[${linkIndex}]`;
+          if (!link || typeof link !== "object" || Array.isArray(link)) {
+            add("error", field, "Journal link must be an object.");
+            return;
+          }
+          if (!text(link.label, "sr")) add("error", `${field}.label.sr`, "Link label.sr is required.");
+          if (!text(link.label, "en")) add("error", `${field}.label.en`, "Link label.en is required.");
+          const action = String(link.action || "").trim();
+          const url = String(link.url || "").trim();
+          if (Boolean(action) === Boolean(url)) add("error", field, "Journal link requires exactly one destination: action or url.");
+          if (url && !/^https?:\/\//i.test(url)) add("error", `${field}.url`, "External Journal link must use http:// or https://.");
+          if (link.external === true && !url) add("error", `${field}.external`, "external=true requires a url destination.");
+          const destination = action ? `action:${action}` : url ? `url:${url}` : "";
+          if (destination && seenDestinations.has(destination)) add("warning", field, `Duplicate Journal link destination: ${destination}.`);
+          else if (destination) seenDestinations.add(destination);
+        });
+      }
+    }
+
     return {
       id: articleId,
       article,
