@@ -8,6 +8,7 @@ on:
       - "control-center/api/create-apply.js"
       - "control-center/api/create-new-product.js"
       - "control-center/api/create-new-product-engine.js"
+      - "control-center/src/inlineValidationRules.mjs"
       - "control-center/src/productWorkflowState.mjs"
       - "control-center/tests/**"
       - "src/data/products/index.js"
@@ -43,5 +44,6 @@ jobs:
           node control-center/tests/controlled-apply-new-product.mjs
           node control-center/tests/controlled-apply-new-product-structure.mjs
           node control-center/tests/product-workflow-state.mjs
+          node control-center/tests/inline-validation-contract.mjs
 
-# v2.9 create-new-product engine + Products lifecycle guards
+# v2.10 workflow + inline validation guards
