@@ -31,3 +31,5 @@ jobs:
           git diff --cached --quiet && exit 0
           git commit -m "Extend Controlled Apply v2.6 to structural sizes and notes"
           git push origin HEAD:control-center-controlled-apply-v2
+
+# retry after robust patch script
