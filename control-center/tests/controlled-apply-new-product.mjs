@@ -26,12 +26,12 @@ if(!nextIndex.includes('name: "PlayNice Test Fragrance Eau de Parfum"')) throw n
 const ids=[...files.index.matchAll(/\bid\s*:\s*(\d+)/g)].map(m=>Number(m[1]));
 const expected=Math.max(...ids)+1;
 if(!nextIndex.includes(`id: ${expected},`)) throw new Error("New product id is not max+1.");
-for(const [source,render,label,key] of [
-  [files.copy,__test.renderCopy(p),"Product Copy",p.core.name],
-  [files.wear,__test.renderWear(p),"Wear Context",p.core.name],
-  [files.discovery,__test.renderDiscovery(p),"Discovery Profiles",p.slug],
+for(const [source,render,label,key,exportName] of [
+  [files.copy,__test.renderCopy(p),"Product Copy",p.core.name,"productCopy"],
+  [files.wear,__test.renderWear(p),"Wear Context",p.core.name,"productWearContext"],
+  [files.discovery,__test.renderDiscovery(p),"Discovery Profiles",p.slug,"discoveryProfiles"],
 ]){
-  const next=__test.insertObjectEntry(source,render,label);
+  const next=__test.insertObjectEntry(source,render,label,exportName);
   if(!next.includes(JSON.stringify(key))) throw new Error(`${label} key missing after insert.`);
 }
 let duplicate=false; try{__test.insertProduct(nextIndex,p)}catch(e){duplicate=String(e.message).includes("already exists")} if(!duplicate) throw new Error("Duplicate product guard failed.");
