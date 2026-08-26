@@ -2776,5 +2776,55 @@ export const fallbackCopy = {
   whyChoose: {
     sr: "Odličan izbor za otkrivanje mirisa sa karakterom, jasnim identitetom i premium utiskom u formatu dekanta.",
     en: "A strong choice for discovering a fragrance with character, clear identity and a premium feel in decant format.",
-  },
+  },,
+
+  "PlayNice Test Product": {
+    "miniTag": {
+      "en": "🍊 Citrus / Clean",
+      "sr": "🍊 Citrusni / Čist"
+    },
+    "card": {
+      "en": "Bright citrus and cardamom in a clean, energetic daytime scent.",
+      "sr": "Vedri citrusi i kardamom u čistom, energičnom dnevnom mirisu."
+    },
+    "modal": {
+      "en": "Mandarin and bergamot open with bright freshness, while lavender and dry woods create a polished aromatic character.",
+      "sr": "Mandarina i bergamot otvaraju miris vedro, dok lavanda i suvo drvo daju uredan aromatičan karakter."
+    },
+    "scentType": {
+      "en": "Citrus aromatic woody",
+      "sr": "Citrusni, aromatičan i drvenast"
+    },
+    "dominantNotes": {
+      "sr": [
+        "mandarina",
+        "bergamot",
+        "lavanda",
+        "kedar"
+      ],
+      "en": [
+        "mandarin",
+        "bergamot",
+        "lavender",
+        "cedarwood"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Svež",
+        "Svakodnevni",
+        "Svestran"
+      ],
+      "en": [
+        "Fresh",
+        "Daily",
+        "Versatile"
+      ]
+    },
+    "whyChoose": {
+      "en": "If you want a clean, easy and highly wearable fragrance for everyday use.",
+      "sr": "Ako želiš čist, jednostavan i veoma nosiv parfem za svaki dan."
+    }
+  }
+
 };
