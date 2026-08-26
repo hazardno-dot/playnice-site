@@ -35,3 +35,4 @@ jobs:
           node control-center/tests/controlled-apply-regression.mjs
           node control-center/tests/controlled-apply-inline-copy.mjs
           node control-center/tests/controlled-apply-category.mjs
+          node control-center/tests/controlled-apply-metadata.mjs
