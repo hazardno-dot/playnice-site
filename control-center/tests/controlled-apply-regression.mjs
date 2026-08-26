@@ -19,7 +19,7 @@ const context = {
   fetch: async () => { throw new Error("Network calls are disabled in regression tests."); },
 };
 vm.createContext(context);
-vm.runInContext(`${prefix}\nglobalThis.__helpers = {\n  normalizeCsv, normalizeSizes, stable, findProductBlock, findNamedObjectBlock, findChildObjectBlock, locatePropertyValue, parseJsLiteral, patchStringArrayRaw, patchProperty, noteMapChangesBetween, patchNoteMap, recommendationsChangeBetween, patchRecommendations, patchWearBlock, patchCopyBlock, patchDiscoveryBlock\n};`, context);
+vm.runInContext(`${prefix}\nglobalThis.__helpers = {\n  normalizeCsv, normalizeSizes, stable, findProductBlock, findNamedObjectBlock, findChildObjectBlock, locatePropertyValue, parseJsLiteral, patchStringArrayRaw, patchFlexibleStringArrayRaw, patchProperty, noteMapChangesBetween, patchNoteMap, recommendationsChangeBetween, patchRecommendations, patchWearBlock, patchCopyBlock, patchDiscoveryBlock\n};`, context);
 const h = context.__helpers;
 
 const files = {
@@ -137,6 +137,18 @@ check("size price patches only requested size", () => {
   for (const other of Object.keys(liveSizes).filter((k) => k !== key)) assert(nextSizes[other] === liveSizes[other], `${other} changed unexpectedly.`);
 });
 
+check("sizes support structural add/remove", () => {
+  const liveSizes = h.normalizeSizes(readProp(catalogBlock, "sizes"));
+  const entries = Object.entries(liveSizes);
+  const removedKey = entries[0][0];
+  const draft = Object.fromEntries(entries.slice(1));
+  draft["2ml"] = 2.5;
+  const next = h.patchProperty(catalogBlock, "sizes", liveSizes, draft);
+  const nextSizes = h.normalizeSizes(readProp(next, "sizes"));
+  assert(!(removedKey in nextSizes), "Removed size is still present.");
+  assert(nextSizes["2ml"] === 2.5, "Added size is missing.");
+});
+
 const noteMapLocated = h.findChildObjectBlock(catalogBlock, "noteMap");
 const noteBaseline = {
   top: h.normalizeCsv(readProp(noteMapLocated.block, "top")),
@@ -161,10 +173,14 @@ check("note map heart slot patches in place", () => {
   assert(h.normalizeCsv(readProp(child, "heart"))[2] === draft.heart[2], "Heart note did not update.");
 });
 
-check("note map slot-count guard blocks structural edits", () => {
+check("note map supports structural add/remove", () => {
   const draft = structuredClone(noteBaseline);
-  draft.top.push("extra-note");
-  expectThrow(() => h.patchNoteMap(catalogBlock, noteBaseline, draft), "cannot add or remove slots");
+  draft.top = [...draft.top, "bergamot"];
+  draft.base = draft.base.slice(0, -1);
+  const next = h.patchNoteMap(catalogBlock, noteBaseline, draft);
+  const child = h.findChildObjectBlock(next, "noteMap").block;
+  assert(JSON.stringify(h.normalizeCsv(readProp(child, "top"))) === JSON.stringify(draft.top), "Top-note addition failed.");
+  assert(JSON.stringify(h.normalizeCsv(readProp(child, "base"))) === JSON.stringify(draft.base), "Base-note removal failed.");
 });
 
 const liveRecommendations = h.normalizeCsv(readProp(catalogBlock, "recommendations"));
