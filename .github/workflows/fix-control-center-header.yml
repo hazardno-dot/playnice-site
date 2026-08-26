@@ -1,0 +1,26 @@
+name: Fix Control Center Header
+
+on:
+  push:
+    branches: [control-center-controlled-apply-v2]
+    paths: [".github/workflows/fix-control-center-header.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: control-center-controlled-apply-v2
+      - run: python control-center/tests/fix_control_center_header_once.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add control-center/src/App.jsx control-center/src/main.jsx control-center/src/ControlledApplyManager.jsx control-center/src/DraftManager.jsx control-center/src/controlled-apply.css control-center/src/draft-manager.css control-center/src/styles.css
+          git diff --cached --quiet && exit 0
+          git commit -m "Align Controlled Apply and topbar actions"
+          git push origin HEAD:control-center-controlled-apply-v2
