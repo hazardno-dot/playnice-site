@@ -381,5 +381,11 @@ export const productWearContext = {
   "Narciso Rodriguez for Him Bleu Noir Eau de Toilette Extreme": {
     sr: "Topli dani, posao, svakodnevno nošenje.",
     en: "Warm days, work, everyday wear."
+  },
+
+  "PlayNice Test Product": {
+    "sr": "Svakodnevno nošenje, posao i toplo vreme.",
+    "en": "Everyday wear, work and warm weather."
   }
+
 };
