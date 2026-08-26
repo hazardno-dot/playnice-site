@@ -40,4 +40,4 @@ jobs:
           node control-center/tests/controlled-apply-identity.mjs
           node control-center/tests/controlled-apply-new-product.mjs
 
-# v2.8 create-new-product engine
+# v2.8 create-new-product engine + Control Center integration
