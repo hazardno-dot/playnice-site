@@ -71,5 +71,6 @@ jobs:
           node control-center/tests/journal-apply-ui-contract.mjs
           node control-center/tests/journal-new-article.mjs
           node control-center/tests/journal-final-workflow-audit.mjs
+          node control-center/tests/journal-link-editor.mjs
 
-# v2.19 final Journal workflow audit preserves CTA/external link metadata end-to-end
+# v2.20 Journal editor can safely create and edit bilingual CTA links
