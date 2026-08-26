@@ -8,6 +8,8 @@ on:
       - "control-center/api/create-apply.js"
       - "control-center/api/create-new-product.js"
       - "control-center/api/create-new-product-engine.js"
+      - "control-center/api/create-journal-apply.js"
+      - "control-center/api/journal-apply-engine.mjs"
       - "control-center/src/approvalSafety.mjs"
       - "control-center/src/inlineValidationRules.mjs"
       - "control-center/src/productWorkflowState.mjs"
@@ -15,7 +17,9 @@ on:
       - "control-center/src/journalAudit.mjs"
       - "control-center/src/journalDraft.mjs"
       - "control-center/src/JournalManager.jsx"
+      - "control-center/src/JournalApplyManager.jsx"
       - "control-center/src/journal-manager.css"
+      - "control-center/src/journal-apply.css"
       - "control-center/src/App.jsx"
       - "control-center/src/DraftManager.jsx"
       - "control-center/src/ControlCenterManagers.jsx"
@@ -62,5 +66,6 @@ jobs:
           node control-center/tests/draft-only-product-lifecycle.mjs
           node control-center/tests/journal-audit-contract.mjs
           node control-center/tests/journal-draft-workflow.mjs
+          node control-center/tests/journal-controlled-apply.mjs
 
-# v2.16 adds persistent Journal draft + review workflow guards
+# v2.17 adds existing-article Journal Controlled Apply with exact source drift guard
