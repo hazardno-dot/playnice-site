@@ -20,7 +20,7 @@ export function validateProductDraft(live, draft) {
   const issues = [];
   const core = draft?.core || {};
 
-  [["Name", core.name], ["Short name", core.shortName], ["Category", core.category], ["Season", core.season], ["Rating label", core.ratingLabel]].forEach(([field, value]) => {
+  [["Name", core.name], ["Short name", core.shortName], ["Category", core.category], ["Image path", core.image], ["Season", core.season], ["Rating label", core.ratingLabel]].forEach(([field, value]) => {
     if (empty(value)) issues.push(issue("error", "Core", field, `${field} is required.`));
   });
 
@@ -29,6 +29,9 @@ export function validateProductDraft(live, draft) {
   }
 
   if (!csv(core.moods).length) issues.push(issue("error", "Core", "Moods", "At least one mood is required."));
+
+  if (!String(core.image || "").startsWith("/products/")) issues.push(issue("warning", "Core", "Image path", "Product images normally live under /products/."));
+  if (core.inspiredBy && (!empty(core.inspiredBy.name) || !empty(core.inspiredBy.short)) && (empty(core.inspiredBy.name) || empty(core.inspiredBy.short))) issues.push(issue("warning", "Core", "Inspired by", "Use both inspired-by name and short label, or leave both empty."));
 
   const sizes = core.sizes || {};
   if (!Object.keys(sizes).length) issues.push(issue("error", "Prices", "Sizes", "At least one size and price is required."));

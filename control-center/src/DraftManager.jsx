@@ -27,6 +27,9 @@ function buildChanges(live, draft) {
   pushChange(changes, "Core", "Name", live.name, core.name);
   pushChange(changes, "Core", "Short name", live.shortName, core.shortName);
   pushChange(changes, "Core", "Category", live.category, core.category);
+  pushChange(changes, "Core", "Image path", live.image, core.image);
+  pushChange(changes, "Core", "Inspired by · name", live.inspiredBy?.name || "", core.inspiredBy?.name || "");
+  pushChange(changes, "Core", "Inspired by · short", live.inspiredBy?.short || "", core.inspiredBy?.short || "");
   pushChange(changes, "Core", "Badge", live.badge, core.badge);
   pushChange(changes, "Core", "Rating", String(live.rating ?? ""), String(core.rating ?? ""));
   pushChange(changes, "Core", "Rating label", live.ratingLabel, core.ratingLabel);

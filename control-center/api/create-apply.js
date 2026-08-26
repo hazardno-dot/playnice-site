@@ -235,6 +235,31 @@ function patchNoteMap(block, baselineNoteMap = {}, approvedNoteMap = {}) {
   return block.slice(0, located.start) + child + block.slice(located.end);
 }
 
+function inspiredByChangesBetween(baselineCore = {}, approvedCore = {}) {
+  const changes = [];
+  for (const field of ["name", "short"]) {
+    const live = String(baselineCore?.inspiredBy?.[field] ?? "");
+    const next = String(approvedCore?.inspiredBy?.[field] ?? "");
+    if (live !== next) changes.push({ section: "Inspired By", field, live, next });
+  }
+  return changes;
+}
+
+function patchInspiredBy(block, baselineValue = {}, approvedValue = {}) {
+  const located = findChildObjectBlock(block, "inspiredBy");
+  let child = located.block;
+  for (const field of ["name", "short"]) {
+    const before = String(baselineValue?.[field] ?? "");
+    const after = String(approvedValue?.[field] ?? "");
+    if (before === after) continue;
+    const range = locatePropertyValue(child, field);
+    const live = String(parseJsLiteral(child.slice(range.start, range.end)) ?? "");
+    if (live !== before) throw new Error(`LIVE DRIFT: inspiredBy.${field} changed after preparation.`);
+    child = child.slice(0, range.start) + JSON.stringify(after) + child.slice(range.end);
+  }
+  return block.slice(0, located.start) + child + block.slice(located.end);
+}
+
 function recommendationsChangeBetween(baselineCore = {}, approvedCore = {}) {
   const live = normalizeCsv(baselineCore.recommendations);
   const next = normalizeCsv(approvedCore.recommendations);
@@ -359,7 +384,7 @@ export default async function handler(req, res) {
     if (!baseline?.core || !approved?.core) return json(res, 409, { error: "Preparation baseline is incomplete." });
     const baselineCore = baseline.core;
     const approvedCore = approved.core;
-    const supportedFields = ["category", "rating", "ratingLabel", "badge", "season", "moods", "sizes"];
+    const supportedFields = ["category", "image", "rating", "ratingLabel", "badge", "season", "moods", "sizes"];
     const protectedFields = ["name", "shortName"];
     const unsupportedCore = protectedFields.filter((field) => String(baselineCore[field] ?? "") !== String(approvedCore[field] ?? ""));
     if (unsupportedCore.length) return json(res, 409, { error: "Controlled Apply supports Core, Note Map, Recommendations, Wear, Copy and Discovery. Name and Short name remain protected.", unsupported_core: unsupportedCore });
@@ -371,12 +396,13 @@ export default async function handler(req, res) {
     }).filter((item) => item.changed);
     const noteMapChanges = noteMapChangesBetween(baselineCore.noteMap || {}, approvedCore.noteMap || {});
     const recommendationChanges = recommendationsChangeBetween(baselineCore, approvedCore);
+    const inspiredByChanges = inspiredByChangesBetween(baselineCore, approvedCore);
     const baselineWear = baseline.wear || {};
     const approvedWear = approved.wear || {};
     const wearChanges = ["sr", "en"].map((lang) => ({ section: "Wear", field: lang, live: String(baselineWear?.[lang] ?? ""), next: String(approvedWear?.[lang] ?? ""), changed: String(baselineWear?.[lang] ?? "") !== String(approvedWear?.[lang] ?? "") })).filter((item) => item.changed);
     const copyChanges = copyChangesBetween(baseline.copy || {}, approved.copy || {});
     const discoveryChanges = discoveryChangesBetween(baseline.discovery || {}, approved.discovery || {});
-    const changes = [...coreChanges, ...noteMapChanges, ...recommendationChanges, ...wearChanges, ...copyChanges, ...discoveryChanges];
+    const changes = [...coreChanges, ...inspiredByChanges, ...noteMapChanges, ...recommendationChanges, ...wearChanges, ...copyChanges, ...discoveryChanges];
     if (!changes.length) return json(res, 409, { error: "No supported approved changes remain to apply." });
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
@@ -387,18 +413,20 @@ export default async function handler(req, res) {
     await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, { method: "POST", body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }) });
     const changedFiles = [];
 
-    if (coreChanges.length || noteMapChanges.length || recommendationChanges.length) {
+    if (coreChanges.length || inspiredByChanges.length || noteMapChanges.length || recommendationChanges.length) {
       const filePath = "src/data/products/index.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
       const source = Buffer.from(file.content, "base64").toString("utf8");
       const located = findProductBlock(source, slug);
       let nextBlock = located.block;
       for (const change of coreChanges) nextBlock = patchProperty(nextBlock, change.field, change.live, change.next);
+      if (inspiredByChanges.length) nextBlock = patchInspiredBy(nextBlock, baselineCore.inspiredBy || {}, approvedCore.inspiredBy || {});
       if (noteMapChanges.length) nextBlock = patchNoteMap(nextBlock, baselineCore.noteMap || {}, approvedCore.noteMap || {});
       if (recommendationChanges.length) nextBlock = patchRecommendations(nextBlock, baselineCore.recommendations, approvedCore.recommendations);
       const nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
       const summary = [
         ...coreChanges.map((c) => c.field),
+        ...inspiredByChanges.map((c) => `inspiredBy.${c.field}`),
         ...noteMapChanges.map((c) => `noteMap.${c.field}`),
         ...recommendationChanges.map(() => "recommendations"),
       ].join(", ");
@@ -444,10 +472,10 @@ export default async function handler(req, res) {
     }
 
     const changeLines = changes.map((c) => `- ${c.section} · ${String(c.field).toUpperCase()}: ${displayValue(c.live)} → ${displayValue(c.next)}`);
-    const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, { method: "POST", body: JSON.stringify({ title: `Control Center: ${slug} · ${changes.length} approved change${changes.length === 1 ? "" : "s"}`, head: branch, base: "main", draft: true, body: ["Generated by PlayNice Control Center controlled apply v2.4.", "", `- Product: ${slug}`, ...changeLines, `- Files: ${changedFiles.join(", ")}`, "- Source: approved + prepared Supabase draft", "- Safety: draft PR only; no automatic merge"].join("\n") }) });
+    const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, { method: "POST", body: JSON.stringify({ title: `Control Center: ${slug} · ${changes.length} approved change${changes.length === 1 ? "" : "s"}`, head: branch, base: "main", draft: true, body: ["Generated by PlayNice Control Center controlled apply v2.5.", "", `- Product: ${slug}`, ...changeLines, `- Files: ${changedFiles.join(", ")}`, "- Source: approved + prepared Supabase draft", "- Safety: draft PR only; no automatic merge"].join("\n") }) });
     await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, { method: "PATCH", body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id, preview_verified_at: null, preview_verified_by: null }) });
-    await supabaseFetch("/rest/v1/draft_audit_log", token, { method: "POST", body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "apply_branch_created", details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha, version: "2.4", fields: changes.map((c) => `${c.section.toLowerCase().replace(/ /g, "_")}.${c.field}`), files: changedFiles } }) });
-    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "2.4", fields: changes.map((c) => `${c.section.toLowerCase().replace(/ /g, "_")}.${c.field}`), files: changedFiles });
+    await supabaseFetch("/rest/v1/draft_audit_log", token, { method: "POST", body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "apply_branch_created", details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha, version: "2.5", fields: changes.map((c) => `${c.section.toLowerCase().replace(/ /g, "_")}.${c.field}`), files: changedFiles } }) });
+    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "2.5", fields: changes.map((c) => `${c.section.toLowerCase().replace(/ /g, "_")}.${c.field}`), files: changedFiles });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Controlled apply failed." });
   }

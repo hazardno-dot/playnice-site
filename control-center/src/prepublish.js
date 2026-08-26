@@ -9,6 +9,8 @@ export function makeLiveSnapshot(product) {
       name: product.name || "",
       shortName: product.shortName || "",
       category: product.category || "",
+      image: product.image || "",
+      inspiredBy: { name: product.inspiredBy?.name || "", short: product.inspiredBy?.short || "" },
       badge: product.badge || "",
       rating: product.rating ?? "",
       ratingLabel: product.ratingLabel || "",
