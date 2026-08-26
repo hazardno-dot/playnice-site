@@ -115,6 +115,23 @@ export default function ProductWorkflowBridge() {
       setLoading(false);
     };
 
+    loadDraft();
+
+    const draftChannel = supabase
+      .channel(`control-center-product-workflow-${slug}`)
+      .on("postgres_changes", { event: "*", schema: "public", table: "product_drafts", filter: `product_slug=eq.${slug}` }, loadDraft)
+      .subscribe();
+
+    return () => {
+      cancelled = true;
+      supabase.removeChannel(draftChannel);
+    };
+  }, [slug]);
+
+  useEffect(() => {
+    if (!slug || !historyOpen) return;
+    let cancelled = false;
+
     const loadHistory = async () => {
       setHistoryLoading(true);
       const { data, error } = await supabase
@@ -128,13 +145,7 @@ export default function ProductWorkflowBridge() {
       setHistoryLoading(false);
     };
 
-    loadDraft();
     loadHistory();
-
-    const draftChannel = supabase
-      .channel(`control-center-product-workflow-${slug}`)
-      .on("postgres_changes", { event: "*", schema: "public", table: "product_drafts", filter: `product_slug=eq.${slug}` }, loadDraft)
-      .subscribe();
 
     const auditChannel = supabase
       .channel(`control-center-product-history-${slug}`)
@@ -143,9 +154,13 @@ export default function ProductWorkflowBridge() {
 
     return () => {
       cancelled = true;
-      supabase.removeChannel(draftChannel);
       supabase.removeChannel(auditChannel);
     };
+  }, [slug, historyOpen]);
+
+  useEffect(() => {
+    setHistory([]);
+    setHistoryOpen(false);
   }, [slug]);
 
   const state = useMemo(() => getWorkflowLabel(row), [row]);
