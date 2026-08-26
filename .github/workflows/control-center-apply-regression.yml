@@ -6,6 +6,7 @@ on:
       - control-center-controlled-apply-v2
     paths:
       - "control-center/api/create-apply.js"
+      - "control-center/api/create-new-product.js"
       - "control-center/tests/**"
       - "src/data/products/index.js"
       - "src/data/products/productCopy.js"
@@ -37,5 +38,6 @@ jobs:
           node control-center/tests/controlled-apply-category.mjs
           node control-center/tests/controlled-apply-metadata.mjs
           node control-center/tests/controlled-apply-identity.mjs
+          node control-center/tests/controlled-apply-new-product.mjs
 
-# v2.7 identity-safe renames
+# v2.8 create-new-product engine
