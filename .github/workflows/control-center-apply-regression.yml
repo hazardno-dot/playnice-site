@@ -36,3 +36,5 @@ jobs:
           node control-center/tests/controlled-apply-inline-copy.mjs
           node control-center/tests/controlled-apply-category.mjs
           node control-center/tests/controlled-apply-metadata.mjs
+
+# v2.6 structural sizes + notes
