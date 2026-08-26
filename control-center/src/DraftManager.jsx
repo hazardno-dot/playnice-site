@@ -6,6 +6,7 @@ import { productWearContext } from "@shop/data/products/productWearContext.js";
 import discoveryProfiles from "@shop/data/products/discoveryProfiles.js";
 import { validateProductDraft } from "./draftValidation";
 import { makeLiveSnapshot, snapshotsEqual, buildPatchPlan } from "./prepublish";
+import { requestOpenProduct } from "./productNavigation.mjs";
 import "./draft-manager.css";
 
 const formatDate = (value) => {
@@ -141,17 +142,7 @@ export default function DraftManager() {
 
   const openProduct = (row) => {
     setOpen(false);
-    const productsButton = [...document.querySelectorAll(".sidebar nav button")].find((b) => b.textContent.trim() === "Products");
-    productsButton?.click();
-    window.setTimeout(() => {
-      const search = document.querySelector(".search-wrap input");
-      if (search) {
-        const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
-        setter?.call(search, row.product_slug);
-        search.dispatchEvent(new Event("input", { bubbles: true })); search.dispatchEvent(new Event("change", { bubbles: true }));
-      }
-      window.setTimeout(() => document.querySelector(".product-row")?.click(), 120);
-    }, 80);
+    requestOpenProduct(row.product_slug);
   };
 
   return <>

@@ -5,6 +5,7 @@ import { productWearContext } from "@shop/data/products/productWearContext.js";
 import discoveryProfiles from "@shop/data/products/discoveryProfiles.js";
 import { journalArticles } from "@shop/data/journal/index.js";
 import { supabase } from "./supabase";
+import { OPEN_PRODUCT_EVENT } from "./productNavigation.mjs";
 import "./audit.css";
 import "./editor.css";
 
@@ -122,6 +123,24 @@ export default function App(){
     ).subscribe();
     return()=>{cancelled=true;supabase.removeChannel(channel)};
   },[]);
+  useEffect(()=>{
+    const handleOpenProduct=(event)=>{
+      const slug=String(event.detail?.slug||"").trim();
+      if(!slug)return;
+      setActive("Products");
+      setCoverageFilter("all");
+      setQuery(slug);
+      const live=products.find((p)=>p.slug===slug);
+      if(live){setSelected(live);setEditing(false);return;}
+      const savedDraft=drafts[slug];
+      if(!savedDraft)return;
+      const core=savedDraft.core||{};
+      setSelected({slug,__new:true,name:core.name||"",shortName:core.shortName||core.name||"",category:core.category||"Arabian",image:core.image||"/products/",sizes:{},moods:[],noteMap:{top:[],heart:[],base:[]},recommendations:[]});
+      setEditing(true);
+    };
+    window.addEventListener(OPEN_PRODUCT_EVENT,handleOpenProduct);
+    return()=>window.removeEventListener(OPEN_PRODUCT_EVENT,handleOpenProduct);
+  },[drafts]);
   const choose=(p)=>{setSelected(p);setEditing(false)};
   const createNew=()=>{const raw=window.prompt("New product slug (lowercase kebab-case)");const slug=String(raw||"").trim();if(!slug)return;if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)){window.alert("Slug must be lowercase kebab-case.");return;}if(products.some((p)=>p.slug===slug)||drafts[slug]){window.alert("That slug already exists.");return;}setSelected({slug,__new:true,name:"",shortName:"",category:"Arabian",image:"/products/",sizes:{},moods:[],noteMap:{top:[],heart:[],base:[]},recommendations:[]});setEditing(true);};
   const saveDraft=async(draft)=>{
