@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { products } from "@shop/data/products/index.js";
 import { validateProductDraft } from "./draftValidation";
 import { makeLiveSnapshot, snapshotsEqual } from "./prepublish";
+import { getApprovalPayloadState } from "./approvalSafety.mjs";
 import { supabase } from "./supabase";
 import "./controlled-apply.css";
 
@@ -15,7 +16,7 @@ export default function ControlledApplyManager() {
     const [{ data: draftRows }, { data: historyRows }] = await Promise.all([
       supabase
         .from("product_drafts")
-        .select("product_slug,payload,review_status,prepared_at,baseline_snapshot,apply_branch,apply_pr_number,apply_created_at,preview_verified_at,preview_verified_by")
+        .select("product_slug,payload,approved_payload,review_status,prepared_at,baseline_snapshot,apply_branch,apply_pr_number,apply_created_at,preview_verified_at,preview_verified_by")
         .order("updated_at", { ascending: false }),
       supabase
         .from("publish_history")
@@ -70,18 +71,28 @@ export default function ControlledApplyManager() {
 
   useEffect(() => { load(); }, []);
 
-  const readyRows = useMemo(() => drafts.filter((row) => {
+  const preparedRows = useMemo(() => drafts.filter((row) =>
+    row.review_status === "approved" && Boolean(row.prepared_at)
+  ), [drafts]);
+
+  const staleApprovalRows = useMemo(() => preparedRows.filter((row) =>
+    !getApprovalPayloadState(row).safe
+  ), [preparedRows]);
+
+  const readyRows = useMemo(() => preparedRows.filter((row) => {
+    if (!getApprovalPayloadState(row).safe) return false;
     const live = products.find((p) => p.slug === row.product_slug);
-    if (row.review_status !== "approved" || !row.prepared_at) return false;
     const validation = validateProductDraft(live || null, row.payload);
     const current = live ? makeLiveSnapshot(live) : { kind: "new_product", product_slug: row.product_slug };
     return validation.status !== "blocked" && row.baseline_snapshot && snapshotsEqual(row.baseline_snapshot, current);
-  }), [drafts]);
+  }), [preparedRows]);
 
   const createApply = async (row) => {
     setBusy(`create:${row.product_slug}`);
     setError("");
     try {
+      const approvalState = getApprovalPayloadState(row);
+      if (!approvalState.safe) throw new Error("Approved payload no longer matches the current draft. Review and approve the draft again before Controlled Apply.");
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
       const endpoint = row.baseline_snapshot?.kind === "new_product" ? "/api/create-new-product" : "/api/create-apply";
@@ -130,13 +141,30 @@ export default function ControlledApplyManager() {
     }
   };
 
-  if (!readyRows.length && !history.length && !error) return null;
+  if (!readyRows.length && !staleApprovalRows.length && !history.length && !error) return null;
 
   return <div className="controlled-apply-box">
     <div className="controlled-apply-head">
-      <div><span>CONTROLLED APPLY</span><strong>{readyRows.length} active</strong></div>
+      <div><span>CONTROLLED APPLY</span><strong>{readyRows.length} active{staleApprovalRows.length ? ` · ${staleApprovalRows.length} blocked` : ""}</strong></div>
       <small>Manual verification required · never merges automatically</small>
     </div>
+
+    {staleApprovalRows.map((row) => {
+      const approvalState = getApprovalPayloadState(row);
+      return <div className="controlled-apply-row controlled-apply-row-stack" key={`blocked:${row.product_slug}`}>
+        <div className="controlled-apply-primary">
+          <div>
+            <strong>{row.product_slug}</strong>
+            <span>APPROVAL SAFETY BLOCK · REVIEW AGAIN</span>
+          </div>
+        </div>
+        <div className="controlled-apply-error">
+          {approvalState.status === "missing-approved-payload"
+            ? "Approved snapshot is missing. Return this item to Drafts, review it and approve again before apply."
+            : "Current draft payload differs from the approved snapshot. Return this item to Drafts, review the latest changes and approve again before apply."}
+        </div>
+      </div>;
+    })}
 
     {readyRows.map((row) => {
       const hasApply = Boolean(row.apply_branch && row.apply_pr_number);

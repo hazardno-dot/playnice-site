@@ -8,6 +8,7 @@ on:
       - "control-center/api/create-apply.js"
       - "control-center/api/create-new-product.js"
       - "control-center/api/create-new-product-engine.js"
+      - "control-center/src/approvalSafety.mjs"
       - "control-center/src/inlineValidationRules.mjs"
       - "control-center/src/productWorkflowState.mjs"
       - "control-center/tests/**"
@@ -45,5 +46,6 @@ jobs:
           node control-center/tests/controlled-apply-new-product-structure.mjs
           node control-center/tests/product-workflow-state.mjs
           node control-center/tests/inline-validation-contract.mjs
+          node control-center/tests/approval-payload-safety.mjs
 
-# v2.10 workflow + inline validation guards
+# v2.11 approval-payload safety guard
