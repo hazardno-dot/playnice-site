@@ -1,0 +1,57 @@
+name: Extend Controlled Apply Category
+
+on:
+  push:
+    branches:
+      - control-center-controlled-apply-v2
+    paths:
+      - ".github/workflows/extend-control-center-category.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  extend-category:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: control-center-controlled-apply-v2
+
+      - name: Extend safe Core support
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("control-center/api/create-apply.js")
+          text = path.read_text()
+
+          replacements = [
+              ('const supportedFields = ["rating", "ratingLabel", "badge", "season", "moods", "sizes"];',
+               'const supportedFields = ["category", "rating", "ratingLabel", "badge", "season", "moods", "sizes"];'),
+              ('const protectedFields = ["name", "shortName", "category"];',
+               'const protectedFields = ["name", "shortName"];'),
+              ('Name, Short name and Category remain protected.',
+               'Name and Short name remain protected.'),
+              ('controlled apply v2.3.', 'controlled apply v2.4.'),
+              ('version: "2.3"', 'version: "2.4"'),
+          ]
+
+          for old, new in replacements:
+              count = text.count(old)
+              if count < 1:
+                  raise SystemExit(f"Expected to find: {old}")
+              text = text.replace(old, new)
+
+          path.write_text(text)
+          PY
+
+      - name: Commit category support
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add control-center/api/create-apply.js
+          git diff --cached --quiet && exit 0
+          git commit -m "Extend Controlled Apply v2.4 to category"
+          git push origin HEAD:control-center-controlled-apply-v2
