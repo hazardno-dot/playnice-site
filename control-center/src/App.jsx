@@ -57,7 +57,7 @@ function draftProductFromPayload(slug,payload){
 function ProductList({items,selectedSlug,onSelect,drafts}){
   if(!items.length)return <div className="empty-filter">No products match this audit filter.</div>;
   return <div className="product-list">{items.map((p)=>{const c=getCoverage(p);return <button key={p.slug} className={`product-row ${selectedSlug===p.slug?"is-active":""}`} onClick={()=>onSelect(p)}>
-    <div className="product-thumb-wrap"><img className="product-thumb" src={`${SHOP_ORIGIN}${p.image}`} alt="" loading="lazy"/></div>
+    <div className="product-thumb-wrap">{p.image&&!p.image.endsWith("/")?<img className="product-thumb" src={`${SHOP_ORIGIN}${p.image}`} alt="" loading="lazy"/>:null}</div>
     <div className="product-row-copy"><strong>{p.shortName||p.name}</strong><span>{p.category} · {Object.keys(p.sizes||{}).join(" / ")}</span></div>
     <div className="row-flags">{drafts[p.slug]?<span className="draft-dot" title="Supabase draft saved"/>:null}<span className={`coverage-dot ${c.complete===c.total?"ok":"warn"}`}/>{p.isNew?<span className="new-pill">NEW</span>:null}</div>
   </button>;})}</div>;
@@ -93,7 +93,7 @@ function DraftEditor({product,initial,onCancel,onSave}){
 
 function ProductDetail({product,draft,onEdit}){
   if(!product)return <div className="empty-detail"><h2>Select a fragrance</h2></div>; const c=getCoverage(product); const {copy,wear,discovery}=c;
-  return <article className="product-detail"><div className="detail-hero"><div><div className="detail-title-row"><span className="eyebrow">PRODUCT / READ ONLY</span>{draft?<span className="draft-badge">DRAFT SAVED</span>:null}</div><h2>{product.name}</h2><p className="slug">{product.slug}</p><button className="edit-btn" onClick={onEdit}>Edit product</button></div><img src={`${SHOP_ORIGIN}${product.image}`} alt={product.name}/></div>
+  return <article className="product-detail"><div className="detail-hero"><div><div className="detail-title-row"><span className="eyebrow">PRODUCT / READ ONLY</span>{draft?<span className="draft-badge">DRAFT SAVED</span>:null}</div><h2>{product.name}</h2><p className="slug">{product.slug}</p><button className="edit-btn" onClick={onEdit}>Edit product</button></div>{product.image&&!product.image.endsWith("/")?<img src={`${SHOP_ORIGIN}${product.image}`} alt={product.name}/>:null}</div>
     <CoveragePanel coverage={c}/><div className="detail-grid">{metricKeys.map(([k,l])=><div className="metric" key={k}><span>{l}</span><strong>{product[k]??"—"}</strong></div>)}</div>
     <section className="detail-section"><div className="section-heading"><span>COMMERCE</span><h3>Sizes & prices</h3></div><div className="price-grid">{Object.entries(product.sizes||{}).map(([s,p])=><div className="price-chip" key={s}><span>{s}</span><strong>€{Number(p).toFixed(2).replace(".00","")}</strong></div>)}</div></section>
     <section className="detail-section"><div className="section-heading"><span>CLASSIFICATION</span><h3>Moods</h3></div><div className="tag-row">{(product.moods||[]).map((m)=><span key={m}>{m}</span>)}</div></section>

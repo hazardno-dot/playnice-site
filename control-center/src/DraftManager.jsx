@@ -81,7 +81,7 @@ export default function DraftManager() {
     const currentSnapshot = live ? makeLiveSnapshot(live) : { kind: "new_product", product_slug: row.product_slug };
     const drifted = Boolean(row.baseline_snapshot) && !snapshotsEqual(row.baseline_snapshot, currentSnapshot);
     const patchPlan = buildPatchPlan(changes);
-    const readyToApply = row.review_status === "approved" && !drifted && validation.status !== "blocked" && Boolean(row.prepared_at);
+    const readyToApply = row.review_status === "approved" && !drifted && validation.status !== "blocked" && Boolean(row.prepared_at) && changes.length > 0;
     return { ...row, live, changes, groupedChanges: groupChanges(changes), validation, currentSnapshot, drifted, patchPlan, readyToApply };
   }), [drafts]);
 
@@ -100,6 +100,9 @@ export default function DraftManager() {
   };
 
   const setWorkflowStatus = async (row, nextStatus) => {
+    if (!row.changes.length && nextStatus !== "draft") {
+      setError("This draft matches live data. Make at least one change before review."); return;
+    }
     if (row.validation.status === "blocked" && nextStatus !== "draft") {
       setError("Blocked drafts cannot move forward. Fix validation errors first."); return;
     }
@@ -124,6 +127,7 @@ export default function DraftManager() {
 
   const prepareApply = async (row) => {
     if (row.review_status !== "approved" || row.validation.status === "blocked") return;
+    if (!row.changes.length) { setError("This draft matches live data. There is nothing to prepare or apply."); return; }
     setActing(`${row.product_slug}:prepare`); setError("");
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) { setError(userError?.message || "No authenticated admin session."); setActing(""); return; }

@@ -31,7 +31,8 @@ export function validateProductDraft(live, draft) {
 
   if (!csv(core.moods).length) issues.push(issue("error", "Core", "Moods", "At least one mood is required."));
 
-  if (!String(core.image || "").startsWith("/products/")) issues.push(issue("warning", "Core", "Image path", "Product images normally live under /products/."));
+  const imagePath = String(core.image || "").trim();
+  if (!imagePath.startsWith("/products/") || imagePath === "/products/" || imagePath.endsWith("/")) issues.push(issue("error", "Core", "Image path", "Use a specific product image file under /products/, not a directory placeholder."));
   if (core.inspiredBy && (!empty(core.inspiredBy.name) || !empty(core.inspiredBy.short)) && (empty(core.inspiredBy.name) || empty(core.inspiredBy.short))) issues.push(issue("warning", "Core", "Inspired by", "Use both inspired-by name and short label, or leave both empty."));
 
   const sizes = core.sizes || {};

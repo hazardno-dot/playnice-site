@@ -41,6 +41,7 @@ function validateNewProduct(p) {
   const errors = [];
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.slug)) errors.push("Slug must be lowercase kebab-case.");
   for (const [label, value] of [["Name",p.core.name],["Short name",p.core.shortName],["Category",p.core.category],["Image",p.core.image],["Rating label",p.core.ratingLabel],["Season",p.core.season]]) if (!value) errors.push(`${label} is required.`);
+  if (!p.core.image.startsWith("/products/") || p.core.image === "/products/" || p.core.image.endsWith("/")) errors.push("Image must be a specific product file under /products/.");
   if (!Number.isFinite(p.core.rating) || p.core.rating < 0 || p.core.rating > 10) errors.push("Rating must be 0–10.");
   if (!Object.keys(p.core.sizes).length || Object.values(p.core.sizes).some((v)=>!Number.isFinite(v)||v<=0)) errors.push("At least one valid size is required.");
   if (!p.core.moods.length) errors.push("At least one mood is required.");

@@ -95,6 +95,10 @@ export function validateInlineFields(rawFields, options = {}) {
       add(field, `${field.name} is required.`);
     }
 
+    if (name === "image path" && value && (!value.startsWith("/products/") || value === "/products/" || value.endsWith("/"))) {
+      add(field, "Use a specific product image file under /products/, not a directory placeholder.");
+    }
+
     if (name.startsWith("wear ·") && !value) {
       add(field, "Wear context is required in both languages.");
     }

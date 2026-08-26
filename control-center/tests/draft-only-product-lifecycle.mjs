@@ -11,3 +11,16 @@ if(!app.includes("draftPayload?.discovery||discoveryProfiles[product.slug]"))thr
 console.log("PASS  first save refreshes draft-only selected product");
 console.log("PASS  draft-only products remain reopenable from catalog and Draft Manager");
 console.log("PASS  draft-only preview uses saved payload layers");
+
+const draftManager=fs.readFileSync("control-center/src/DraftManager.jsx","utf8");
+const validation=fs.readFileSync("control-center/src/draftValidation.js","utf8");
+const inline=fs.readFileSync("control-center/src/inlineValidationRules.mjs","utf8");
+const engine=fs.readFileSync("control-center/api/create-new-product-engine.js","utf8");
+if(!draftManager.includes("changes.length > 0"))throw new Error("READY TO APPLY does not require an actual change.");
+if(!draftManager.includes("This draft matches live data. Make at least one change before review."))throw new Error("No-change review guard missing.");
+if(!validation.includes("Use a specific product image file under /products/"))throw new Error("Authoritative image placeholder guard missing.");
+if(!inline.includes("name === \"image path\""))throw new Error("Inline image placeholder guard missing.");
+if(!engine.includes("Image must be a specific product file under /products/."))throw new Error("Server-side new-product image guard missing.");
+if(!app.includes('p.image&&!p.image.endsWith("/")'))throw new Error("Draft-only image rendering guard missing.");
+console.log("PASS  no-change drafts cannot enter apply lifecycle");
+console.log("PASS  image directory placeholders are blocked end-to-end");
