@@ -33,24 +33,76 @@ const TARGETS = [
   { key: "sitemap", label: "sitemap.xml", path: "/sitemap.xml", kind: "asset" },
 ];
 
+function validateContract(target, text, contentType, finalUrl) {
+  const issues = [];
+  const warnings = [];
+  const normalizedType = String(contentType || "").toLowerCase();
+  const final = new URL(finalUrl || `${ORIGIN}${target.path}`);
+  const allowedHosts = new Set(["playniceshop.me", "www.playniceshop.me"]);
+
+  if (!allowedHosts.has(final.hostname)) issues.push(`Unexpected final host: ${final.hostname}`);
+  if (final.pathname !== target.path) warnings.push(`Redirected to ${final.pathname}`);
+
+  if (target.kind === "page") {
+    if (!normalizedType.includes("text/html")) issues.push(`Expected HTML, received ${contentType || "unknown content type"}`);
+    if (!/PlayNice/i.test(text)) issues.push("PlayNice HTML shell marker is missing");
+  }
+
+  if (target.key === "robots") {
+    if (!/User-agent:\s*\*/i.test(text)) issues.push("robots.txt is missing User-agent: *");
+    if (!/Allow:\s*\//i.test(text)) issues.push("robots.txt is missing Allow: /");
+    if (!/Sitemap:\s*https:\/\/(?:www\.)?playniceshop\.me\/sitemap\.xml/i.test(text)) issues.push("robots.txt is missing the canonical sitemap declaration");
+  }
+
+  if (target.key === "sitemap") {
+    if (!/<urlset\b/i.test(text)) issues.push("sitemap.xml is missing <urlset>");
+    if (!/https:\/\/(?:www\.)?playniceshop\.me\//i.test(text)) issues.push("sitemap.xml has no PlayNice URLs");
+    if (!/https:\/\/(?:www\.)?playniceshop\.me\/shop(?:<|\/|\s)/i.test(text)) warnings.push("sitemap.xml has no explicit /shop URL");
+    if (!/https:\/\/(?:www\.)?playniceshop\.me\/journal(?:<|\/|\s)/i.test(text)) warnings.push("sitemap.xml has no explicit /journal URL");
+  }
+
+  return { contractOk: issues.length === 0, issues, warnings };
+}
+
 async function probe(target) {
   const started = Date.now();
   try {
     const response = await fetch(`${ORIGIN}${target.path}`, {
       method: "GET",
       redirect: "follow",
-      headers: { "User-Agent": "PlayNice-Control-Center-Site-Health/1.0", "Cache-Control": "no-cache" },
+      headers: { "User-Agent": "PlayNice-Control-Center-Site-Health/1.1", "Cache-Control": "no-cache" },
       signal: AbortSignal.timeout(8000),
     });
     const responseMs = Date.now() - started;
     const contentType = response.headers.get("content-type") || "";
     const text = await response.text();
-    const htmlOk = target.kind !== "page" || contentType.includes("text/html");
-    const shellOk = target.kind !== "page" || /PlayNice/i.test(text);
-    const ok = response.ok && htmlOk && shellOk;
-    return { ...target, ok, status: response.status, responseMs, contentType, shellOk, finalUrl: response.url };
+    const contract = validateContract(target, text, contentType, response.url);
+    const ok = response.ok && contract.contractOk;
+    return {
+      ...target,
+      ok,
+      status: response.status,
+      responseMs,
+      latency: responseMs > 2500 ? "slow" : "normal",
+      contentType,
+      finalUrl: response.url,
+      contractOk: contract.contractOk,
+      issues: contract.issues,
+      warnings: contract.warnings,
+    };
   } catch (error) {
-    return { ...target, ok: false, status: 0, responseMs: Date.now() - started, contentType: "", shellOk: false, error: error?.name === "TimeoutError" ? "Timed out after 8s" : (error?.message || String(error)) };
+    return {
+      ...target,
+      ok: false,
+      status: 0,
+      responseMs: Date.now() - started,
+      latency: "failed",
+      contentType: "",
+      finalUrl: "",
+      contractOk: false,
+      issues: [error?.name === "TimeoutError" ? "Timed out after 8s" : (error?.message || String(error))],
+      warnings: [],
+    };
   }
 }
 
@@ -65,14 +117,28 @@ export default async function handler(req, res) {
   const checks = await Promise.all(TARGETS.map(probe));
   const failed = checks.filter((item) => !item.ok);
   const slow = checks.filter((item) => item.ok && item.responseMs > 2500);
-  const overall = failed.length ? "error" : slow.length ? "warning" : "healthy";
+  const semanticFailures = checks.filter((item) => !item.contractOk);
+  const warnings = checks.flatMap((item) => item.warnings || []);
+  const timings = checks.filter((item) => item.status > 0).map((item) => item.responseMs);
+  const avgResponseMs = timings.length ? Math.round(timings.reduce((sum, value) => sum + value, 0) / timings.length) : 0;
+  const maxResponseMs = timings.length ? Math.max(...timings) : 0;
+  const overall = failed.length ? "error" : (slow.length || warnings.length) ? "warning" : "healthy";
 
   res.setHeader("Cache-Control", "no-store");
   return json(res, 200, {
     overall,
     checkedAt,
     origin: ORIGIN,
-    summary: { total: checks.length, healthy: checks.length - failed.length, failed: failed.length, slow: slow.length },
+    summary: {
+      total: checks.length,
+      healthy: checks.length - failed.length,
+      failed: failed.length,
+      slow: slow.length,
+      semanticFailures: semanticFailures.length,
+      warnings: warnings.length,
+      avgResponseMs,
+      maxResponseMs,
+    },
     checks,
   });
 }
