@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
 import { journalArticles } from "@shop/data/journal/index.js";
 import { auditProductNotes } from "./noteAudit.mjs";
+import { summarizeHealthIncidents } from "./siteHealthIncidents.mjs";
 import { supabase } from "./supabase";
 import "./site-health-manager.css";
 
@@ -120,6 +121,8 @@ export default function SiteHealthManager() {
   const previousRun = history.find((row) => row.checked_at !== report?.checkedAt) || null;
   const latencyDelta = report && previousRun ? (report.summary?.avgResponseMs || 0) - (previousRun.avg_response_ms || 0) : null;
   const latencyTrend = latencyDelta == null ? "—" : latencyDelta === 0 ? "FLAT" : latencyDelta < 0 ? `${Math.abs(latencyDelta)} ms faster` : `${latencyDelta} ms slower`;
+  const incidentSummary = useMemo(() => summarizeHealthIncidents(history), [history]);
+  const incidentRows = incidentSummary.incidents.slice(0, 8);
 
   const CheckRows = ({ items, empty }) => <div className="health-check-list">{items.length ? items.map((item) => <div className="health-check-row" key={item.key}>
     <span className={`health-dot ${item.ok ? (item.warnings?.length ? "warn" : "ok") : "bad"}`}/>
@@ -166,12 +169,21 @@ export default function SiteHealthManager() {
       <div className="health-history-meta"><span>Newest check: <strong>{history[0] ? fmtTime(history[0].checked_at) : "—"}</strong></span><span>Last incident: <strong>{lastIncident ? `${lastIncident.overall.toUpperCase()} · ${fmtTime(lastIncident.checked_at)}` : history.length ? "none in retained history" : "—"}</strong></span></div>
     </article>
 
+    <article className="site-health-panel site-health-incidents"><div className="site-health-panel-head"><div><span>INCIDENT INTELLIGENCE</span><h3>Incident timeline</h3></div><small>{history.length ? `${incidentSummary.active.length} active · ${incidentSummary.recovered.length} recovered` : "Waiting for retained history"}</small></div>
+      <div className="health-incident-kpis"><div><span>ACTIVE ERRORS</span><strong>{history.length ? incidentSummary.activeErrors : "—"}</strong><small>blocking health failures</small></div><div><span>ACTIVE WARNINGS</span><strong>{history.length ? incidentSummary.activeWarnings : "—"}</strong><small>degraded but reachable</small></div><div><span>RECOVERED</span><strong>{history.length ? incidentSummary.recovered.length : "—"}</strong><small>resolved episodes retained</small></div><div><span>LAST RECOVERY</span><strong className="incident-recovery-time">{incidentSummary.lastRecovered?.recoveredAt ? fmtTime(incidentSummary.lastRecovered.recoveredAt) : "—"}</strong><small>first healthy run after incident</small></div></div>
+      <div className="health-incident-list">{incidentRows.length ? incidentRows.map((incident) => <div className={`health-incident-row ${incident.severity} ${incident.status}`} key={`${incident.id}-${incident.firstSeen}`}>
+        <span className={`health-incident-badge ${incident.status}`}>{incident.status === "active" ? "ACTIVE" : "RECOVERED"}</span>
+        <div><strong>{incident.label}</strong><small>{incident.path || incident.checkKey}</small><p>{incident.diagnostic}</p></div>
+        <div className="health-incident-times"><span>First seen <strong>{fmtTime(incident.firstSeen)}</strong></span><span>Last seen <strong>{fmtTime(incident.lastSeen)}</strong></span><span>{incident.status === "recovered" ? "Recovered" : "Occurrences"} <strong>{incident.status === "recovered" ? fmtTime(incident.recoveredAt) : incident.occurrences}</strong></span></div>
+      </div>) : <div className="health-empty">{history.length ? "No incidents detected in retained health history." : "Incident intelligence starts after health history is recorded."}</div>}</div>
+    </article>
+
     <article className="site-health-panel site-health-build"><div className="site-health-panel-head"><div><span>BUILD INTEGRITY</span><h3>Control Center source contract</h3></div><small>Current branch</small></div>
       <div className="health-build-grid"><div><span>PRODUCTS</span><strong>{products.length}</strong><small>catalog entries imported</small></div><div><span>JOURNAL</span><strong>{journalArticles.length}</strong><small>articles imported</small></div><div><span>NOTES</span><strong>{noteAudit.uniqueNotes}</strong><small>{noteAudit.placements} placements mapped</small></div><div><span>MAX RESPONSE</span><strong>{report?.summary?.maxResponseMs ?? "—"}</strong><small>milliseconds this run</small></div></div>
     </article>
 
     <article className="site-health-panel site-health-contract"><div className="site-health-panel-head"><div><span>WHAT THIS PROVES</span><h3>Health contract</h3></div><small>Production remains read only</small></div>
-      <div className="health-contract-grid"><div><strong>HTTP availability</strong><span>Home, Shop, Journal, Community and Exhibition return a successful PlayNice HTML shell.</span></div><div><strong>Semantic SEO</strong><span>robots.txt declares crawler access + sitemap, while sitemap.xml keeps a valid PlayNice URL contract.</span></div><div><strong>Runtime delivery</strong><span>The application JavaScript bundle discovered from production Home is reachable with the expected content type; stylesheet delivery is checked when present.</span></div><div><strong>Persistent telemetry</strong><span>Each successful admin probe records its health result separately so regressions and latency drift become visible over time.</span></div></div>
+      <div className="health-contract-grid"><div><strong>HTTP availability</strong><span>Home, Shop, Journal, Community and Exhibition return a successful PlayNice HTML shell.</span></div><div><strong>Semantic SEO</strong><span>robots.txt declares crawler access + sitemap, while sitemap.xml keeps a valid PlayNice URL contract.</span></div><div><strong>Runtime delivery</strong><span>The application JavaScript bundle discovered from production Home is reachable with the expected content type; stylesheet delivery is checked when present.</span></div><div><strong>Persistent telemetry</strong><span>Each successful admin probe records its health result separately so regressions, recoveries and latency drift become visible over time.</span></div></div>
     </article>
   </section>, slot);
 }
