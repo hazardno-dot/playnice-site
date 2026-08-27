@@ -18,7 +18,14 @@ for (const token of [
   'BUILD INTEGRITY',
   'Semantic SEO',
   'AVG RESPONSE',
-  'Not browser QA',
+  'PERSISTENT HISTORY',
+  'Health trend',
+  'site_health_history',
+  'HEALTHY RUNS',
+  'WARNING RUNS',
+  'ERROR RUNS',
+  'LATENCY TREND',
+  'Persistent telemetry',
 ]) if (!manager.includes(token)) throw new Error(`Site Health manager contract missing: ${token}`);
 
 for (const token of [
@@ -46,15 +53,26 @@ for (const token of [
   'bundleChecks',
 ]) if (!api.includes(token)) throw new Error(`Site Health API contract missing: ${token}`);
 
+for (const token of [
+  '.from("site_health_history")',
+  '.insert({',
+  'created_by: userId',
+  '.limit(30)',
+  'postgres_changes',
+  'event: "INSERT"',
+  'compactChecks',
+]) if (!manager.includes(token)) throw new Error(`Site Health history contract missing: ${token}`);
+
 if (!mount.includes('import SiteHealthManager from "./SiteHealthManager"')) throw new Error("Site Health manager is not imported.");
 if (!mount.includes("<SiteHealthManager />")) throw new Error("Site Health manager is not mounted.");
-if (/method:\s*["']POST["']/.test(api)) throw new Error("Site Health endpoint must remain read-only.");
+if (/method:\s*["']POST["']/.test(api)) throw new Error("Site Health probe endpoint must remain read-only.");
 if (!api.includes('allowedHosts = new Set(["playniceshop.me", "www.playniceshop.me"])')) throw new Error("Site Health must guard production host drift.");
 
-console.log("PASS  Site Health replaces the reserved module with a live read-only probe");
+console.log("PASS  Site Health replaces the reserved module with a live read-only production probe");
 console.log("PASS  core routes and SEO endpoints are covered by the production health contract");
 console.log("PASS  robots and sitemap semantics are validated, not only HTTP status");
 console.log("PASS  production JavaScript/CSS delivery is discovered from live Home HTML and probed");
 console.log("PASS  response latency and contract drift are surfaced separately");
-console.log("PASS  health probe requires an authenticated Control Center admin session");
-console.log("PASS  Site Health endpoint has no write/publish operation");
+console.log("PASS  successful admin probes persist separate operational telemetry history");
+console.log("PASS  the latest 30 health checks feed realtime trend and incident context");
+console.log("PASS  Site Health probe endpoint itself has no write/publish operation");
