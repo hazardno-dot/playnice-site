@@ -33,8 +33,10 @@ on:
       - "control-center/src/AnalyticsManager.jsx"
       - "control-center/src/analytics-manager.css"
       - "control-center/src/SiteHealthManager.jsx"
+      - "control-center/src/SiteHealthOverviewBridge.jsx"
       - "control-center/src/siteHealthIncidents.mjs"
       - "control-center/src/site-health-manager.css"
+      - "control-center/src/site-health-overview.css"
       - "control-center/src/App.jsx"
       - "control-center/src/DraftManager.jsx"
       - "control-center/src/ControlCenterManagers.jsx"
@@ -96,5 +98,6 @@ jobs:
           node control-center/tests/analytics-manager-contract.mjs
           node control-center/tests/site-health-contract.mjs
           node control-center/tests/site-health-incidents.mjs
+          node control-center/tests/site-health-overview-contract.mjs
 
-# v2.27 Site Health adds persistent incident intelligence and recovery context
+# v2.28 Site Health surfaces latest production health on Overview
