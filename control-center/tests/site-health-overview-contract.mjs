@@ -20,6 +20,11 @@ for (const token of [
   'setInterval(() => setNow(Date.now()), 60000)',
   '24h+ stale',
   'refresh health check required',
+  'role="status"',
+  'aria-live="polite"',
+  'aria-atomic="true"',
+  'aria-label={statusLabel}',
+  'dateTime={latest?.checked_at || undefined}',
 ]) if (!bridge.includes(token)) throw new Error(`Site Health Overview bridge contract missing: ${token}`);
 
 if (!mount.includes('import SiteHealthOverviewBridge from "./SiteHealthOverviewBridge"')) throw new Error("Site Health Overview bridge is not imported.");
@@ -29,4 +34,5 @@ if (/\.insert\(|\.update\(|\.delete\(/.test(bridge)) throw new Error("Site Healt
 console.log("PASS  Overview surfaces the latest persistent Site Health state");
 console.log("PASS  Overview health status updates from realtime history inserts");
 console.log("PASS  Overview ages health state locally and exposes 24h stale checks");
+console.log("PASS  Overview announces health state accessibly with a machine-readable timestamp");
 console.log("PASS  Overview Site Health integration is read only");
