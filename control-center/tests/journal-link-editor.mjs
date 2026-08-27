@@ -5,6 +5,7 @@ import { normalizeJournalDraftPayload } from "../src/journalDraft.mjs";
 
 const manager = fs.readFileSync("control-center/src/JournalManager.jsx", "utf8");
 const css = fs.readFileSync("control-center/src/journal-manager.css", "utf8");
+const vercelConfig = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
 
 for (const contract of [
   "CTA LINKS",
@@ -23,6 +24,12 @@ assert.ok(manager.includes('links: []'), "New Journal article should initialize 
 assert.ok(css.includes(".journal-link-editor"), "CTA editor styling missing.");
 assert.ok(css.includes(".journal-link-card"), "CTA card styling missing.");
 assert.ok(css.includes(".journal-cta-preview"), "CTA read-only preview styling missing.");
+
+assert.equal(
+  vercelConfig.ignoreCommand,
+  "git diff --quiet HEAD^ HEAD -- . ':(exclude)control-center/**'",
+  "Shop Vercel project must use the immediate parent commit and ignore Control Center-only changes.",
+);
 
 const internal = normalizeJournalDraftPayload({
   id: 1,
@@ -52,4 +59,5 @@ assert.ok(invalidAudit.errors.some((issue) => issue.field === "links[0]"), "CTA 
 console.log("PASS  Journal editor can add/remove bilingual CTA links");
 console.log("PASS  Journal editor switches between internal action and external URL destinations");
 console.log("PASS  CTA changes remain gated by Journal link validation");
+console.log("PASS  Shop Vercel scope ignores Control Center-only commits via HEAD^ diff");
 console.log("Production untouched: yes (static/pure regression only)");
