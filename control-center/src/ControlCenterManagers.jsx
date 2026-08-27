@@ -4,6 +4,7 @@ import DraftManager from "./DraftManager";
 import InlineValidationBridge from "./InlineValidationBridge";
 import ControlledApplyManager from "./ControlledApplyManager";
 import ProductWorkflowBridge from "./ProductWorkflowBridge";
+import ProductCatalogCountBridge from "./ProductCatalogCountBridge";
 import JournalManager from "./JournalManager";
 import JournalApplyManager from "./JournalApplyManager";
 import NotesManager from "./NotesManager";
@@ -128,6 +129,7 @@ export default function ControlCenterManagers() {
     {slots.draft ? createPortal(<DraftManager />, slots.draft) : <DraftManager />}
     <InlineValidationBridge />
     <ProductWorkflowBridge />
+    <ProductCatalogCountBridge />
     <JournalManager />
     <JournalApplyManager />
     <NotesManager />
