@@ -6,6 +6,7 @@ import ControlledApplyManager from "./ControlledApplyManager";
 import ProductWorkflowBridge from "./ProductWorkflowBridge";
 import JournalManager from "./JournalManager";
 import JournalApplyManager from "./JournalApplyManager";
+import NotesManager from "./NotesManager";
 import { supabase } from "./supabase";
 import "./header-layout.css";
 
@@ -125,6 +126,7 @@ export default function ControlCenterManagers() {
     <ProductWorkflowBridge />
     <JournalManager />
     <JournalApplyManager />
+    <NotesManager />
     {slots.apply ? createPortal(<ControlledApplyManager />, slots.apply) : <ControlledApplyManager />}
   </>;
 }
