@@ -80,6 +80,12 @@ for (const token of [
   'occurrences',
 ]) if (!incidents.includes(token)) throw new Error(`Site Health incident engine contract missing: ${token}`);
 
+const earlyReturnIndex = manager.indexOf("if (!slot) return null;");
+const incidentMemoIndex = manager.indexOf("const incidentSummary = useMemo");
+if (earlyReturnIndex < 0 || incidentMemoIndex < 0 || incidentMemoIndex > earlyReturnIndex) {
+  throw new Error("Site Health hooks must execute before the conditional slot return.");
+}
+
 if (!mount.includes('import SiteHealthManager from "./SiteHealthManager"')) throw new Error("Site Health manager is not imported.");
 if (!mount.includes("<SiteHealthManager />")) throw new Error("Site Health manager is not mounted.");
 if (/method:\s*["']POST["']/.test(api)) throw new Error("Site Health probe endpoint must remain read-only.");
@@ -93,4 +99,5 @@ console.log("PASS  response latency and contract drift are surfaced separately")
 console.log("PASS  successful admin probes persist separate operational telemetry history");
 console.log("PASS  the latest 30 health checks feed realtime trend and incident context");
 console.log("PASS  incident intelligence distinguishes active and recovered error/warning episodes");
+console.log("PASS  Site Health hooks remain stable across slot mount transitions");
 console.log("PASS  Site Health probe endpoint itself has no write/publish operation");
