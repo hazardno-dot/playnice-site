@@ -16,9 +16,9 @@ export function getOverviewHealthState(latest, error, now = Date.now()) {
   if (error) return { state: "error", stale: false, freshness: null };
   if (!latest) return { state: "stale", stale: true, freshness: getSiteHealthFreshness(null, now) };
   const freshness = getSiteHealthFreshness(latest.checked_at, now);
-  return {
-    state: freshness.stale ? "stale" : (latest.overall || "unknown"),
-    stale: freshness.stale,
-    freshness,
-  };
+  const underlying = latest.overall || "unknown";
+  const state = underlying === "error" || underlying === "warning"
+    ? underlying
+    : freshness.stale ? "stale" : underlying;
+  return { state, stale: freshness.stale, freshness };
 }
