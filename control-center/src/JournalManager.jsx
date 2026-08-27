@@ -56,7 +56,7 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
 
     <section className="journal-editor-section"><span>OPTIONAL METADATA</span><div className="journal-editor-grid"><label><span>Series · SR</span><input value={draft.series?.sr || ""} onChange={(event) => setSeries("sr", event.target.value)} /></label><label><span>Series · EN</span><input value={draft.series?.en || ""} onChange={(event) => setSeries("en", event.target.value)} /></label><label className="wide"><span>Related product slugs · comma separated</span><input value={(draft.relatedProducts || []).join(", ")} onChange={(event) => setSimple("relatedProducts", csvList(event.target.value))} /></label></div></section>
 
-    <section className="journal-editor-section journal-link-editor"><div className="journal-link-editor-head"><span>CTA LINKS</span><button type="button" onClick={addLink}>+ Add CTA</button></div><p>Internal actions trigger a Journal/Shop workflow. External URLs open a web destination. SR and EN labels are required for every CTA.</p>
+    <section className="journal-editor-section journal-link-editor"><div className="journal-link-editor-head"><span>CTA LINKS</span><button type="button" onClick={addLink}>+ Add CTA</button></div><p>Internal actions trigger PlayNice workflows such as shop or scent-request. External URLs open a web destination. SR and EN labels are required for every CTA.</p>
       {Array.isArray(draft.links) && draft.links.length ? <div className="journal-link-list">{draft.links.map((link, index) => {
         const mode = linkMode(link);
         return <div className="journal-link-card" key={`link-${index}`}>
