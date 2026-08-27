@@ -90,6 +90,7 @@ jobs:
           node control-center/tests/journal-draft-workflow.mjs
           node control-center/tests/journal-controlled-apply.mjs
           node control-center/tests/journal-controlled-apply-contract.mjs
+          node control-center/tests/journal-controlled-apply-schema-contract.mjs
           node control-center/tests/journal-apply-ui-contract.mjs
           node control-center/tests/journal-new-article.mjs
           node control-center/tests/journal-final-workflow-audit.mjs
@@ -104,4 +105,4 @@ jobs:
           node control-center/tests/site-health-overview-contract.mjs
           node control-center/tests/site-health-freshness.mjs
 
-# v2.30 Products catalog count distinguishes live and draft-only records
+# v2.31 Journal schema contract included in final regression suite
