@@ -19,6 +19,7 @@ export default function SiteHealthManager() {
   const [error, setError] = useState("");
   const [historyError, setHistoryError] = useState("");
   const noteAudit = useMemo(() => auditProductNotes(products), []);
+  const incidentSummary = useMemo(() => summarizeHealthIncidents(history), [history]);
 
   useEffect(() => {
     const mainStage = document.querySelector(".main-stage");
@@ -121,7 +122,6 @@ export default function SiteHealthManager() {
   const previousRun = history.find((row) => row.checked_at !== report?.checkedAt) || null;
   const latencyDelta = report && previousRun ? (report.summary?.avgResponseMs || 0) - (previousRun.avg_response_ms || 0) : null;
   const latencyTrend = latencyDelta == null ? "—" : latencyDelta === 0 ? "FLAT" : latencyDelta < 0 ? `${Math.abs(latencyDelta)} ms faster` : `${latencyDelta} ms slower`;
-  const incidentSummary = useMemo(() => summarizeHealthIncidents(history), [history]);
   const incidentRows = incidentSummary.incidents.slice(0, 8);
 
   const CheckRows = ({ items, empty }) => <div className="health-check-list">{items.length ? items.map((item) => <div className="health-check-row" key={item.key}>
