@@ -22,6 +22,7 @@ on:
       - "control-center/src/journal-apply.css"
       - "control-center/src/noteAudit.mjs"
       - "control-center/src/noteLabelAudit.mjs"
+      - "control-center/src/noteDraft.mjs"
       - "control-center/src/NotesManager.jsx"
       - "control-center/src/notes-manager.css"
       - "control-center/src/App.jsx"
@@ -80,5 +81,6 @@ jobs:
           node control-center/tests/journal-link-editor.mjs
           node control-center/tests/notes-audit-contract.mjs
           node control-center/tests/notes-label-audit.mjs
+          node control-center/tests/note-draft-workflow.mjs
 
-# v2.22 Notes audit covers assets plus SR/EN label contracts
+# v2.23 Notes supports persistent draft/review workflow without touching Shop source
