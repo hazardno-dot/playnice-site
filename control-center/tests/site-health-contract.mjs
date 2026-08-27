@@ -13,6 +13,8 @@ for (const token of [
   'Run health check',
   'PRODUCTION ROUTES',
   'SEO essentials',
+  'RUNTIME DELIVERY',
+  'Production bundles',
   'BUILD INTEGRITY',
   'Semantic SEO',
   'AVG RESPONSE',
@@ -37,6 +39,11 @@ for (const token of [
   'semanticFailures',
   'avgResponseMs',
   'maxResponseMs',
+  'discoverBundleTargets',
+  'bundle-js',
+  'Application JavaScript',
+  'Unexpected bundle content type',
+  'bundleChecks',
 ]) if (!api.includes(token)) throw new Error(`Site Health API contract missing: ${token}`);
 
 if (!mount.includes('import SiteHealthManager from "./SiteHealthManager"')) throw new Error("Site Health manager is not imported.");
@@ -47,6 +54,7 @@ if (!api.includes('allowedHosts = new Set(["playniceshop.me", "www.playniceshop.
 console.log("PASS  Site Health replaces the reserved module with a live read-only probe");
 console.log("PASS  core routes and SEO endpoints are covered by the production health contract");
 console.log("PASS  robots and sitemap semantics are validated, not only HTTP status");
+console.log("PASS  production JavaScript/CSS delivery is discovered from live Home HTML and probed");
 console.log("PASS  response latency and contract drift are surfaced separately");
 console.log("PASS  health probe requires an authenticated Control Center admin session");
 console.log("PASS  Site Health endpoint has no write/publish operation");
