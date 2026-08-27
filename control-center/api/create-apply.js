@@ -419,9 +419,11 @@ export default async function handler(req, res) {
     const [draft] = await draftRes.json();
     if (!draft) return json(res, 404, { error: "Prepared draft not found." });
     if (draft.review_status !== "approved" || !draft.prepared_at) return json(res, 409, { error: "Draft must be APPROVED and READY TO APPLY first." });
+    if (!draft.approved_payload) return json(res, 409, { error: "Approved snapshot is missing. Review and approve the product draft again." });
+    if (stable(draft.payload) !== stable(draft.approved_payload)) return json(res, 409, { error: "Approved payload no longer matches the current product draft. Review and approve again." });
     if (draft.apply_branch && draft.apply_pr_number) return json(res, 200, { ok: true, existing: true, branch: draft.apply_branch, pr_number: draft.apply_pr_number, pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}` });
 
-    const approved = draft.approved_payload || draft.payload;
+    const approved = draft.approved_payload;
     const baseline = draft.baseline_snapshot;
     if (!baseline?.core || !approved?.core) return json(res, 409, { error: "Preparation baseline is incomplete." });
     const baselineCore = baseline.core;
