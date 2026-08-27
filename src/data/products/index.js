@@ -19,8 +19,8 @@ export const products = [
     badge: "FRESH DROP",
     rating: 7.8,
     ratingLabel: "Well Loved",
-    season: "summer",
-    moods: ["clean", "summer", "signature"],
+    season: "all",
+    moods: ["clean", "casual", "signature"],
     recommendations: [
       "rasasi-hawas-ice",
       "lattafa-maahir-legacy",
