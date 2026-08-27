@@ -7,6 +7,7 @@ import { supabase } from "./supabase";
 import "./site-health-manager.css";
 
 const fmtTime = (value) => value ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date(value)) : "—";
+const firstDiagnostic = (item) => item?.issues?.[0] || item?.warnings?.[0] || (item?.contractOk ? "Contract verified" : "Waiting for contract result");
 
 export default function SiteHealthManager() {
   const [slot, setSlot] = useState(null);
@@ -70,35 +71,46 @@ export default function SiteHealthManager() {
   const pageChecks = checks.filter((item) => item.kind === "page");
   const assetChecks = checks.filter((item) => item.kind === "asset");
 
+  const CheckRows = ({ items, empty }) => <div className="health-check-list">{items.length ? items.map((item) => <div className="health-check-row" key={item.key}>
+    <span className={`health-dot ${item.ok ? (item.warnings?.length ? "warn" : "ok") : "bad"}`}/>
+    <div><strong>{item.label}</strong><small>{item.path}</small><small className={`health-diagnostic ${item.ok ? (item.warnings?.length ? "warn" : "ok") : "bad"}`}>{firstDiagnostic(item)}</small></div>
+    <em>{item.status || "ERR"}</em>
+    <time className={item.latency === "slow" ? "slow" : ""}>{item.responseMs} ms</time>
+  </div>) : <div className="health-empty">{empty}</div>}</div>;
+
   return createPortal(<section className="site-health-manager">
     <div className="site-health-head">
-      <div><span>SYSTEM / LIVE PROBE</span><h2>PlayNice Site Health</h2><p>Read-only production availability checks. No requests here can change Shop data or publish code.</p></div>
+      <div><span>SYSTEM / LIVE PROBE</span><h2>PlayNice Site Health</h2><p>Read-only production availability + semantic contract checks. No request here can change Shop data or publish code.</p></div>
       <div className="site-health-head-actions"><span className={`site-health-state ${overall}`}>{loading ? "CHECKING" : overall.toUpperCase()}</span><button onClick={runCheck} disabled={loading}>{loading ? "Checking…" : "Run health check"}</button></div>
     </div>
 
     {error ? <div className="site-health-error">{error}</div> : null}
 
     <div className="site-health-kpis">
-      <div><span>ENDPOINTS</span><strong>{report?.summary?.healthy ?? "—"}/{report?.summary?.total ?? "—"}</strong><small>responding correctly</small></div>
-      <div><span>FAILED</span><strong>{report?.summary?.failed ?? "—"}</strong><small>live probe failures</small></div>
-      <div><span>SLOW</span><strong>{report?.summary?.slow ?? "—"}</strong><small>&gt; 2.5s server response</small></div>
+      <div><span>ENDPOINTS</span><strong>{report?.summary?.healthy ?? "—"}/{report?.summary?.total ?? "—"}</strong><small>healthy contracts</small></div>
+      <div><span>FAILED</span><strong>{report?.summary?.failed ?? "—"}</strong><small>HTTP or contract failures</small></div>
+      <div><span>WARNINGS</span><strong>{report?.summary?.warnings ?? "—"}</strong><small>non-blocking drift</small></div>
+      <div><span>AVG RESPONSE</span><strong>{report?.summary?.avgResponseMs ?? "—"}</strong><small>milliseconds</small></div>
       <div><span>PRODUCTS</span><strong>{products.length}</strong><small>catalog loaded in build</small></div>
-      <div><span>JOURNAL</span><strong>{journalArticles.length}</strong><small>articles loaded in build</small></div>
       <div><span>NOTE MAP</span><strong>{noteAudit.uniqueNotes}</strong><small>{noteAudit.placements} placements</small></div>
     </div>
 
     <div className="site-health-grid">
       <article className="site-health-panel"><div className="site-health-panel-head"><div><span>PRODUCTION ROUTES</span><h3>Core pages</h3></div><small>{report ? `Checked ${fmtTime(report.checkedAt)}` : "Waiting for probe"}</small></div>
-        <div className="health-check-list">{pageChecks.length ? pageChecks.map((item) => <div className="health-check-row" key={item.key}><span className={`health-dot ${item.ok ? "ok" : "bad"}`}/><div><strong>{item.label}</strong><small>{item.path}</small></div><em>{item.status || "ERR"}</em><time>{item.responseMs} ms</time></div>) : <div className="health-empty">{loading ? "Checking production routes…" : "No route report yet."}</div>}</div>
+        <CheckRows items={pageChecks} empty={loading ? "Checking production routes…" : "No route report yet."}/>
       </article>
 
-      <article className="site-health-panel"><div className="site-health-panel-head"><div><span>PUBLIC CONTRACT</span><h3>SEO essentials</h3></div><small>Production</small></div>
-        <div className="health-check-list">{assetChecks.length ? assetChecks.map((item) => <div className="health-check-row" key={item.key}><span className={`health-dot ${item.ok ? "ok" : "bad"}`}/><div><strong>{item.label}</strong><small>{item.path}</small></div><em>{item.status || "ERR"}</em><time>{item.responseMs} ms</time></div>) : <div className="health-empty">{loading ? "Checking public assets…" : "No public asset report yet."}</div>}</div>
+      <article className="site-health-panel"><div className="site-health-panel-head"><div><span>PUBLIC CONTRACT</span><h3>SEO essentials</h3></div><small>{report ? `${report.summary?.semanticFailures || 0} semantic failures` : "Production"}</small></div>
+        <CheckRows items={assetChecks} empty={loading ? "Checking public assets…" : "No public asset report yet."}/>
       </article>
     </div>
 
+    <article className="site-health-panel site-health-build"><div className="site-health-panel-head"><div><span>BUILD INTEGRITY</span><h3>Control Center source contract</h3></div><small>Current branch</small></div>
+      <div className="health-build-grid"><div><span>PRODUCTS</span><strong>{products.length}</strong><small>catalog entries imported</small></div><div><span>JOURNAL</span><strong>{journalArticles.length}</strong><small>articles imported</small></div><div><span>NOTES</span><strong>{noteAudit.uniqueNotes}</strong><small>{noteAudit.placements} placements mapped</small></div><div><span>MAX RESPONSE</span><strong>{report?.summary?.maxResponseMs ?? "—"}</strong><small>milliseconds this run</small></div></div>
+    </article>
+
     <article className="site-health-panel site-health-contract"><div className="site-health-panel-head"><div><span>WHAT THIS PROVES</span><h3>Health contract</h3></div><small>Read only</small></div>
-      <div className="health-contract-grid"><div><strong>HTTP availability</strong><span>Home, Shop, Journal, Community and Exhibition return a healthy HTML shell.</span></div><div><strong>SEO endpoints</strong><span>robots.txt and sitemap.xml remain publicly reachable.</span></div><div><strong>Build integrity</strong><span>Current Control Center build imports Products, Journal and Note Map data without structural failure.</span></div><div><strong>Not browser QA</strong><span>Clicks, drawers, checkout and console errors still require the scheduled full browser workflow test.</span></div></div>
+      <div className="health-contract-grid"><div><strong>HTTP availability</strong><span>Home, Shop, Journal, Community and Exhibition return a successful PlayNice HTML shell.</span></div><div><strong>Semantic SEO</strong><span>robots.txt declares crawler access + sitemap, while sitemap.xml keeps a valid PlayNice URL contract.</span></div><div><strong>Build integrity</strong><span>Current Control Center build imports Products, Journal and Note Map data without structural failure.</span></div><div><strong>Not browser QA</strong><span>Clicks, drawers, checkout and console errors still require the scheduled full browser workflow test.</span></div></div>
     </article>
   </section>, slot);
 }
