@@ -37,12 +37,19 @@ export default function JournalApplyManager() {
         nextSlot.className = "journal-apply-slot";
         workflow.insertAdjacentElement("afterend", nextSlot);
       }
-      setSlot(nextSlot);
+      setSlot((current) => current === nextSlot ? current : nextSlot);
     };
     sync();
     const observer = new MutationObserver(sync);
     observer.observe(mainStage, { childList: true, subtree: true, characterData: true });
-    return () => observer.disconnect();
+    const interval = window.setInterval(sync, 500);
+    const onFocus = () => sync();
+    window.addEventListener("focus", onFocus);
+    return () => {
+      observer.disconnect();
+      window.clearInterval(interval);
+      window.removeEventListener("focus", onFocus);
+    };
   }, []);
 
   useEffect(() => {
@@ -52,11 +59,14 @@ export default function JournalApplyManager() {
       const { data, error: loadError } = await supabase.from("journal_drafts").select(SELECT).eq("article_id", articleId).maybeSingle();
       if (cancelled) return;
       if (loadError) { setError(loadError.message); return; }
+      setError("");
       setRow(data || null);
     };
     load();
     const channel = supabase.channel(`journal-apply-${articleId}`).on("postgres_changes", { event: "*", schema: "public", table: "journal_drafts", filter: `article_id=eq.${articleId}` }, load).subscribe();
-    return () => { cancelled = true; supabase.removeChannel(channel); };
+    const onFocus = () => load();
+    window.addEventListener("focus", onFocus);
+    return () => { cancelled = true; supabase.removeChannel(channel); window.removeEventListener("focus", onFocus); };
   }, [articleId]);
 
   const liveArticle = useMemo(() => journalArticles.find((article) => Number(article.id) === Number(articleId)) || null, [articleId]);
