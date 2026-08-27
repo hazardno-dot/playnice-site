@@ -27,8 +27,8 @@ assert.ok(css.includes(".journal-cta-preview"), "CTA read-only preview styling m
 
 assert.equal(
   vercelConfig.ignoreCommand,
-  "git diff --quiet HEAD^ HEAD -- . ':(exclude)control-center/**'",
-  "Shop Vercel project must use the immediate parent commit and ignore Control Center-only changes.",
+  "git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- . ':(exclude)control-center/**'",
+  "Shop Vercel project must use the previous deployment SHA when available and ignore Control Center-only changes.",
 );
 
 const internal = normalizeJournalDraftPayload({
@@ -59,5 +59,5 @@ assert.ok(invalidAudit.errors.some((issue) => issue.field === "links[0]"), "CTA 
 console.log("PASS  Journal editor can add/remove bilingual CTA links");
 console.log("PASS  Journal editor switches between internal action and external URL destinations");
 console.log("PASS  CTA changes remain gated by Journal link validation");
-console.log("PASS  Shop Vercel scope ignores Control Center-only commits via HEAD^ diff");
+console.log("PASS  Shop Vercel scope uses previous deployment SHA with HEAD^ fallback");
 console.log("Production untouched: yes (static/pure regression only)");
