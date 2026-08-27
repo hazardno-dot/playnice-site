@@ -8,6 +8,17 @@ const json = (res, status, body) => res.status(status).json(body);
 const escapeRegex = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const csv = (value) => Array.isArray(value) ? value.map(String).map((s)=>s.trim()).filter(Boolean) : String(value ?? "").split(",").map((s)=>s.trim()).filter(Boolean);
 const js = (value) => JSON.stringify(value);
+const stableJson = (value) => {
+  const normalize = (v) => {
+    if (Array.isArray(v)) return v.map(normalize);
+    if (v && typeof v === "object") return Object.keys(v).sort().reduce((out, key) => {
+      out[key] = normalize(v[key]);
+      return out;
+    }, {});
+    return v;
+  };
+  return JSON.stringify(normalize(value ?? null));
+};
 
 async function supabaseFetch(path, token, options = {}) {
   return fetch(`${SUPABASE_URL}${path}`, { ...options, headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}`, "Content-Type": "application/json", Prefer: "return=representation", ...(options.headers || {}) } });
@@ -111,7 +122,7 @@ function insertObjectEntry(source, rendered, label, exportName) {
   return `${before}${appendSeparator(before)}\n\n${rendered}\n${after}`;
 }
 
-export const __test = { normalizePayload, validateNewProduct, nextProductId, renderProductObject, insertProduct, insertObjectEntry, renderCopy, renderWear, renderDiscovery, findExportObjectEnd, appendSeparator };
+export const __test = { normalizePayload, validateNewProduct, nextProductId, renderProductObject, insertProduct, insertObjectEntry, renderCopy, renderWear, renderDiscovery, findExportObjectEnd, appendSeparator, stableJson };
 
 export default async function handler(req,res){
   if(req.method!=="POST") return json(res,405,{error:"Method not allowed"});
@@ -132,8 +143,10 @@ export default async function handler(req,res){
     const [draft]=draftRes.ok?await draftRes.json():[];
     if(!draft)return json(res,404,{error:"Prepared draft not found."});
     if(draft.review_status!=="approved"||!draft.prepared_at||draft.baseline_snapshot?.kind!=="new_product") return json(res,409,{error:"New product draft must be APPROVED and prepared as new_product first."});
+    if(!draft.approved_payload)return json(res,409,{error:"Approved snapshot is missing. Review and approve the new product draft again."});
+    if(stableJson(draft.payload)!==stableJson(draft.approved_payload))return json(res,409,{error:"Approved payload no longer matches the current new product draft. Review and approve again."});
     if(draft.apply_branch&&draft.apply_pr_number)return json(res,200,{ok:true,existing:true,branch:draft.apply_branch,pr_number:draft.apply_pr_number,pr_url:`https://github.com/${REPO}/pull/${draft.apply_pr_number}`});
-    const p=normalizePayload(draft.approved_payload||draft.payload,slug);
+    const p=normalizePayload(draft.approved_payload,slug);
     const errors=validateNewProduct(p);
     if(errors.length)return json(res,409,{error:"New product validation failed.",errors});
     const mainRef=await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
