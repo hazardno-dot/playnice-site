@@ -35,6 +35,7 @@ on:
       - "control-center/src/SiteHealthManager.jsx"
       - "control-center/src/SiteHealthOverviewBridge.jsx"
       - "control-center/src/siteHealthIncidents.mjs"
+      - "control-center/src/siteHealthFreshness.mjs"
       - "control-center/src/site-health-manager.css"
       - "control-center/src/site-health-overview.css"
       - "control-center/src/App.jsx"
@@ -99,5 +100,6 @@ jobs:
           node control-center/tests/site-health-contract.mjs
           node control-center/tests/site-health-incidents.mjs
           node control-center/tests/site-health-overview-contract.mjs
+          node control-center/tests/site-health-freshness.mjs
 
-# v2.28 Site Health surfaces latest production health on Overview
+# v2.29 Site Health marks health telemetry stale after 24 hours
