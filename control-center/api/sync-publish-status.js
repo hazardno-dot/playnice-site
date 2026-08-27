@@ -56,9 +56,11 @@ export default async function handler(req, res) {
     if (!draftRes.ok) return json(res, 400, { error: "Could not load draft." });
     const [draft] = await draftRes.json();
     if (!draft) return json(res, 200, { ok: true, status: "no_active_draft" });
-    if (!draft.apply_pr_number || !draft.preview_verified_at) return json(res, 200, { ok: true, status: "not_ready" });
+    if (!draft.apply_pr_number || !draft.apply_branch || !draft.preview_verified_at) return json(res, 200, { ok: true, status: "not_ready" });
 
     const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls/${draft.apply_pr_number}`);
+    if (pr.base?.ref !== "main") return json(res, 409, { error: "Tracked apply PR does not target main." });
+    if (pr.head?.ref !== draft.apply_branch) return json(res, 409, { error: "Tracked apply PR head no longer matches the stored apply branch." });
     if (!pr.merged_at) return json(res, 200, { ok: true, status: "not_merged", pr_number: draft.apply_pr_number });
 
     const existingRes = await supabaseFetch(`/rest/v1/publish_history?apply_pr_number=eq.${draft.apply_pr_number}&select=id&limit=1`, token);
