@@ -11,9 +11,11 @@ import "./note-apply.css";
 const SELECT = "note_key,payload,approved_payload,review_status,baseline_snapshot,prepared_at,apply_branch,apply_pr_number,apply_created_at,updated_at";
 
 const selectedNoteKeyFromDom = () => {
-  const heading = document.querySelector(".main-stage .topbar h1")?.textContent?.trim();
-  if (heading !== "Notes") return null;
-  return document.querySelector(".notes-detail-hero code")?.textContent?.trim() || null;
+  const detailKey = document.querySelector(".main-stage .notes-detail-hero code")?.textContent?.trim();
+  if (detailKey) return detailKey;
+  const activeMeta = document.querySelector(".main-stage .notes-list button.active small")?.textContent || "";
+  const match = activeMeta.match(/^([^·]+)\s*·/);
+  return match ? match[1].trim() : null;
 };
 
 const stable = (value) => JSON.stringify(Object.keys(value || {}).sort().reduce((out, key) => { out[key] = value[key]; return out; }, {}));
@@ -51,7 +53,7 @@ export default function NoteApplyManager() {
     sync();
     const observer = new MutationObserver(sync);
     observer.observe(mainStage, { childList: true, subtree: true, characterData: true });
-    const interval = window.setInterval(sync, 500);
+    const interval = window.setInterval(sync, 350);
     const onFocus = () => sync();
     window.addEventListener("focus", onFocus);
     return () => { observer.disconnect(); window.clearInterval(interval); window.removeEventListener("focus", onFocus); };
@@ -63,7 +65,7 @@ export default function NoteApplyManager() {
     const load = async () => {
       const { data, error: loadError } = await supabase.from("note_drafts").select(SELECT).eq("note_key", noteKey).maybeSingle();
       if (cancelled) return;
-      if (loadError) { setError(loadError.message); return; }
+      if (loadError) { setError(loadError.message); setRow(null); return; }
       setError("");
       setRow(data || null);
     };
@@ -80,7 +82,10 @@ export default function NoteApplyManager() {
     return stable(livePayload) === stable(normalizeNoteDraftPayload(row.payload));
   }, [liveNote, row]);
 
-  if (!slot || !noteKey || !row || row.review_status !== "approved") return null;
+  if (!slot || !noteKey) return null;
+  if (!row || row.review_status !== "approved") {
+    return error ? createPortal(<section className="note-controlled-apply approved"><div className="note-controlled-copy"><span>NOTES CONTROLLED APPLY</span><strong>APPLY STATE UNAVAILABLE</strong><small>{error}</small></div></section>, slot) : null;
+  }
 
   const callApply = async (action) => {
     setBusy(true); setError("");
