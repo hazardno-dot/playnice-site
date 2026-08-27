@@ -21,6 +21,7 @@ on:
       - "control-center/src/journal-manager.css"
       - "control-center/src/journal-apply.css"
       - "control-center/src/noteAudit.mjs"
+      - "control-center/src/noteLabelAudit.mjs"
       - "control-center/src/NotesManager.jsx"
       - "control-center/src/notes-manager.css"
       - "control-center/src/App.jsx"
@@ -33,6 +34,7 @@ on:
       - "src/data/products/productWearContext.js"
       - "src/data/products/discoveryProfiles.js"
       - "src/data/journal/index.js"
+      - "src/TheNoteMap.jsx"
       - "public/note-map/**"
       - ".github/workflows/control-center-apply-regression.yml"
   workflow_dispatch:
@@ -77,5 +79,6 @@ jobs:
           node control-center/tests/journal-final-workflow-audit.mjs
           node control-center/tests/journal-link-editor.mjs
           node control-center/tests/notes-audit-contract.mjs
+          node control-center/tests/notes-label-audit.mjs
 
-# v2.21 Notes audit verifies product note usage and note-map asset coverage
+# v2.22 Notes audit covers assets plus SR/EN label contracts
