@@ -90,9 +90,18 @@ export default function SiteHealthOverviewBridge() {
       : health.stale
         ? `last known: ${(latest.overall || "unknown").toUpperCase()} · refresh health check required`
         : `${latest.healthy_checks}/${latest.total_checks} contracts · ${latest.avg_response_ms || 0} ms avg`;
+  const age = fmtAge(latest?.checked_at);
+  const statusLabel = `Site Health ${state.toUpperCase()}. ${detail}. ${latest?.failed_checks || 0} failed, ${latest?.warning_checks || 0} warnings. Last check ${age}.`;
 
   return createPortal(
-    <article className={`overview-card site-health-overview-card ${state}`}>
+    <article
+      className={`overview-card site-health-overview-card ${state}`}
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      aria-label={statusLabel}
+      title={health.stale ? "Site Health telemetry is stale. Run a fresh health check." : "Latest Site Health telemetry"}
+    >
       <span>SITE HEALTH</span>
       <strong>{state.toUpperCase()}</strong>
       <small>{detail}</small>
@@ -100,7 +109,7 @@ export default function SiteHealthOverviewBridge() {
         <em>{latest?.failed_checks || 0} failed</em>
         <em>{latest?.warning_checks || 0} warnings</em>
         {health.stale ? <em className="stale-pill">24h+ stale</em> : null}
-        <time>{fmtAge(latest?.checked_at)}</time>
+        <time dateTime={latest?.checked_at || undefined}>{age}</time>
       </div>
     </article>,
     slot,
