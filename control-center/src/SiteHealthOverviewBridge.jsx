@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
+import { getOverviewHealthState } from "./siteHealthFreshness.mjs";
 import "./site-health-overview.css";
 
 const fmtAge = (value) => {
@@ -18,6 +19,7 @@ export default function SiteHealthOverviewBridge() {
   const [slot, setSlot] = useState(null);
   const [latest, setLatest] = useState(null);
   const [error, setError] = useState("");
+  const [now, setNow] = useState(() => Date.now());
 
   const loadLatest = useCallback(async () => {
     const { data, error: loadError } = await supabase
@@ -32,6 +34,7 @@ export default function SiteHealthOverviewBridge() {
     }
     setError("");
     setLatest(data || null);
+    setNow(Date.now());
   }, []);
 
   useEffect(() => {
@@ -66,17 +69,27 @@ export default function SiteHealthOverviewBridge() {
       .channel("site-health-overview-latest")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "site_health_history" }, loadLatest)
       .subscribe();
-    return () => supabase.removeChannel(channel);
+    const timer = window.setInterval(() => setNow(Date.now()), 60000);
+    const onFocus = () => { setNow(Date.now()); loadLatest(); };
+    window.addEventListener("focus", onFocus);
+    return () => {
+      supabase.removeChannel(channel);
+      window.clearInterval(timer);
+      window.removeEventListener("focus", onFocus);
+    };
   }, [slot, loadLatest]);
 
   if (!slot) return null;
 
-  const state = latest?.overall || (error ? "error" : "unknown");
+  const health = getOverviewHealthState(latest, error, now);
+  const state = health.state;
   const detail = error
     ? "health history unavailable"
-    : latest
-      ? `${latest.healthy_checks}/${latest.total_checks} contracts · ${latest.avg_response_ms || 0} ms avg`
-      : "run Site Health to establish baseline";
+    : !latest
+      ? "run Site Health to establish baseline"
+      : health.stale
+        ? `last known: ${(latest.overall || "unknown").toUpperCase()} · refresh health check required`
+        : `${latest.healthy_checks}/${latest.total_checks} contracts · ${latest.avg_response_ms || 0} ms avg`;
 
   return createPortal(
     <article className={`overview-card site-health-overview-card ${state}`}>
@@ -86,6 +99,7 @@ export default function SiteHealthOverviewBridge() {
       <div className="site-health-overview-meta">
         <em>{latest?.failed_checks || 0} failed</em>
         <em>{latest?.warning_checks || 0} warnings</em>
+        {health.stale ? <em className="stale-pill">24h+ stale</em> : null}
         <time>{fmtAge(latest?.checked_at)}</time>
       </div>
     </article>,
