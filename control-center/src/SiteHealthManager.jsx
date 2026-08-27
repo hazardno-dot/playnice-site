@@ -70,6 +70,7 @@ export default function SiteHealthManager() {
   const checks = report?.checks || [];
   const pageChecks = checks.filter((item) => item.kind === "page");
   const assetChecks = checks.filter((item) => item.kind === "asset");
+  const bundleChecks = checks.filter((item) => item.kind === "bundle");
 
   const CheckRows = ({ items, empty }) => <div className="health-check-list">{items.length ? items.map((item) => <div className="health-check-row" key={item.key}>
     <span className={`health-dot ${item.ok ? (item.warnings?.length ? "warn" : "ok") : "bad"}`}/>
@@ -80,14 +81,14 @@ export default function SiteHealthManager() {
 
   return createPortal(<section className="site-health-manager">
     <div className="site-health-head">
-      <div><span>SYSTEM / LIVE PROBE</span><h2>PlayNice Site Health</h2><p>Read-only production availability + semantic contract checks. No request here can change Shop data or publish code.</p></div>
+      <div><span>SYSTEM / LIVE PROBE</span><h2>PlayNice Site Health</h2><p>Read-only production availability + semantic + runtime asset checks. No request here can change Shop data or publish code.</p></div>
       <div className="site-health-head-actions"><span className={`site-health-state ${overall}`}>{loading ? "CHECKING" : overall.toUpperCase()}</span><button onClick={runCheck} disabled={loading}>{loading ? "Checking…" : "Run health check"}</button></div>
     </div>
 
     {error ? <div className="site-health-error">{error}</div> : null}
 
     <div className="site-health-kpis">
-      <div><span>ENDPOINTS</span><strong>{report?.summary?.healthy ?? "—"}/{report?.summary?.total ?? "—"}</strong><small>healthy contracts</small></div>
+      <div><span>CHECKS</span><strong>{report?.summary?.healthy ?? "—"}/{report?.summary?.total ?? "—"}</strong><small>healthy contracts</small></div>
       <div><span>FAILED</span><strong>{report?.summary?.failed ?? "—"}</strong><small>HTTP or contract failures</small></div>
       <div><span>WARNINGS</span><strong>{report?.summary?.warnings ?? "—"}</strong><small>non-blocking drift</small></div>
       <div><span>AVG RESPONSE</span><strong>{report?.summary?.avgResponseMs ?? "—"}</strong><small>milliseconds</small></div>
@@ -105,12 +106,16 @@ export default function SiteHealthManager() {
       </article>
     </div>
 
+    <article className="site-health-panel"><div className="site-health-panel-head"><div><span>RUNTIME DELIVERY</span><h3>Production bundles</h3></div><small>{report ? `${report.summary?.bundleChecks || 0} discovered assets` : "From Home HTML"}</small></div>
+      <CheckRows items={bundleChecks} empty={loading ? "Discovering production bundles…" : "No production bundle report yet."}/>
+    </article>
+
     <article className="site-health-panel site-health-build"><div className="site-health-panel-head"><div><span>BUILD INTEGRITY</span><h3>Control Center source contract</h3></div><small>Current branch</small></div>
       <div className="health-build-grid"><div><span>PRODUCTS</span><strong>{products.length}</strong><small>catalog entries imported</small></div><div><span>JOURNAL</span><strong>{journalArticles.length}</strong><small>articles imported</small></div><div><span>NOTES</span><strong>{noteAudit.uniqueNotes}</strong><small>{noteAudit.placements} placements mapped</small></div><div><span>MAX RESPONSE</span><strong>{report?.summary?.maxResponseMs ?? "—"}</strong><small>milliseconds this run</small></div></div>
     </article>
 
     <article className="site-health-panel site-health-contract"><div className="site-health-panel-head"><div><span>WHAT THIS PROVES</span><h3>Health contract</h3></div><small>Read only</small></div>
-      <div className="health-contract-grid"><div><strong>HTTP availability</strong><span>Home, Shop, Journal, Community and Exhibition return a successful PlayNice HTML shell.</span></div><div><strong>Semantic SEO</strong><span>robots.txt declares crawler access + sitemap, while sitemap.xml keeps a valid PlayNice URL contract.</span></div><div><strong>Build integrity</strong><span>Current Control Center build imports Products, Journal and Note Map data without structural failure.</span></div><div><strong>Not browser QA</strong><span>Clicks, drawers, checkout and console errors still require the scheduled full browser workflow test.</span></div></div>
+      <div className="health-contract-grid"><div><strong>HTTP availability</strong><span>Home, Shop, Journal, Community and Exhibition return a successful PlayNice HTML shell.</span></div><div><strong>Semantic SEO</strong><span>robots.txt declares crawler access + sitemap, while sitemap.xml keeps a valid PlayNice URL contract.</span></div><div><strong>Runtime delivery</strong><span>The application JavaScript bundle discovered from production Home is reachable with the expected content type; stylesheet delivery is checked when present.</span></div><div><strong>Not browser QA</strong><span>Clicks, drawers, checkout and console errors still require the scheduled full browser workflow test.</span></div></div>
     </article>
   </section>, slot);
 }
