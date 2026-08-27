@@ -29,6 +29,8 @@ on:
       - "control-center/src/NoteApplyManager.jsx"
       - "control-center/src/notes-manager.css"
       - "control-center/src/note-apply.css"
+      - "control-center/src/AnalyticsManager.jsx"
+      - "control-center/src/analytics-manager.css"
       - "control-center/src/App.jsx"
       - "control-center/src/DraftManager.jsx"
       - "control-center/src/ControlCenterManagers.jsx"
@@ -87,5 +89,6 @@ jobs:
           node control-center/tests/notes-label-audit.mjs
           node control-center/tests/note-draft-workflow.mjs
           node control-center/tests/note-controlled-apply.mjs
+          node control-center/tests/analytics-manager-contract.mjs
 
-# v2.24 Notes Controlled Apply uses approved payload + asset + exact source SHA guards
+# v2.25 Analytics adds read-only operational intelligence across managed modules
