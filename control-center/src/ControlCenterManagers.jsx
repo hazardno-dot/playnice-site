@@ -8,6 +8,7 @@ import JournalManager from "./JournalManager";
 import JournalApplyManager from "./JournalApplyManager";
 import NotesManager from "./NotesManager";
 import NoteApplyManager from "./NoteApplyManager";
+import AnalyticsManager from "./AnalyticsManager";
 import { supabase } from "./supabase";
 import "./header-layout.css";
 
@@ -129,6 +130,7 @@ export default function ControlCenterManagers() {
     <JournalApplyManager />
     <NotesManager />
     <NoteApplyManager />
+    <AnalyticsManager />
     {slots.apply ? createPortal(<ControlledApplyManager />, slots.apply) : <ControlledApplyManager />}
   </>;
 }
