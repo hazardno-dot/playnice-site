@@ -85,6 +85,10 @@ const incidentMemoIndex = manager.indexOf("const incidentSummary = useMemo");
 if (earlyReturnIndex < 0 || incidentMemoIndex < 0 || incidentMemoIndex > earlyReturnIndex) {
   throw new Error("Site Health hooks must execute before the conditional slot return.");
 }
+const afterSlotReturn = manager.slice(earlyReturnIndex + "if (!slot) return null;".length);
+if (/\buse(?:State|Effect|Memo|Callback|Ref|Reducer|Context|LayoutEffect)\s*\(/.test(afterSlotReturn)) {
+  throw new Error("Site Health must not declare React hooks after the conditional slot return.");
+}
 
 if (!mount.includes('import SiteHealthManager from "./SiteHealthManager"')) throw new Error("Site Health manager is not imported.");
 if (!mount.includes("<SiteHealthManager />")) throw new Error("Site Health manager is not mounted.");
@@ -100,4 +104,5 @@ console.log("PASS  successful admin probes persist separate operational telemetr
 console.log("PASS  the latest 30 health checks feed realtime trend and incident context");
 console.log("PASS  incident intelligence distinguishes active and recovered error/warning episodes");
 console.log("PASS  Site Health hooks remain stable across slot mount transitions");
+console.log("PASS  no Site Health React hook can be declared after the conditional slot return");
 console.log("PASS  Site Health probe endpoint itself has no write/publish operation");
