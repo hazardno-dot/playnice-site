@@ -50,7 +50,7 @@ export default function AnalyticsManager() {
         supabase.from("product_drafts").select("product_slug,review_status,updated_at,apply_pr_number,published_at").order("updated_at", { ascending: false }),
         supabase.from("journal_drafts").select("article_id,review_status,updated_at,apply_pr_number").order("updated_at", { ascending: false }),
         supabase.from("note_drafts").select("note_key,review_status,updated_at,apply_pr_number").order("updated_at", { ascending: false }),
-        supabase.from("publish_history").select("product_slug,published_at,published_pr_number,published_commit_sha").gte("published_at", since).order("published_at", { ascending: false }).limit(30),
+        supabase.from("publish_history").select("product_slug,published_at,apply_pr_number,published_commit_sha").gte("published_at", since).order("published_at", { ascending: false }).limit(30),
         supabase.from("draft_audit_log").select("id,product_slug,action,created_at").gte("created_at", since).order("created_at", { ascending: false }).limit(30),
       ]);
       if (cancelled) return;
@@ -87,7 +87,7 @@ export default function AnalyticsManager() {
   const openPrs = [...data.productDrafts, ...data.journalDrafts, ...data.noteDrafts].filter((row) => row.apply_pr_number).length;
 
   const recent = useMemo(() => [
-    ...data.publishHistory.map((row) => ({ type: "PUBLISH", subject: row.product_slug, detail: row.published_pr_number ? `PR #${row.published_pr_number}` : "published", at: row.published_at })),
+    ...data.publishHistory.map((row) => ({ type: "PUBLISH", subject: row.product_slug, detail: row.apply_pr_number ? `PR #${row.apply_pr_number}` : "published", at: row.published_at })),
     ...data.auditLog.map((row) => ({ type: "PRODUCT", subject: row.product_slug, detail: String(row.action || "activity").replace(/_/g, " "), at: row.created_at })),
   ].sort((a, b) => new Date(b.at) - new Date(a.at)).slice(0, 12), [data.publishHistory, data.auditLog]);
 
