@@ -17,6 +17,7 @@ on:
       - "control-center/src/inlineValidationRules.mjs"
       - "control-center/src/productWorkflowState.mjs"
       - "control-center/src/productNavigation.mjs"
+      - "control-center/src/ProductCatalogCountBridge.jsx"
       - "control-center/src/journalAudit.mjs"
       - "control-center/src/journalDraft.mjs"
       - "control-center/src/JournalManager.jsx"
@@ -84,6 +85,7 @@ jobs:
           node control-center/tests/draft-realtime-contract.mjs
           node control-center/tests/product-navigation-contract.mjs
           node control-center/tests/draft-only-product-lifecycle.mjs
+          node control-center/tests/product-catalog-count-contract.mjs
           node control-center/tests/journal-audit-contract.mjs
           node control-center/tests/journal-draft-workflow.mjs
           node control-center/tests/journal-controlled-apply.mjs
@@ -102,4 +104,4 @@ jobs:
           node control-center/tests/site-health-overview-contract.mjs
           node control-center/tests/site-health-freshness.mjs
 
-# v2.29 Site Health marks health telemetry stale after 24 hours
+# v2.30 Products catalog count distinguishes live and draft-only records
