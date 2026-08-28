@@ -102,7 +102,7 @@ function sanitizeRecommendations(recommendations) {
       seen.add(item.slug);
       return true;
     })
-    .slice(0, 3);
+    .slice(0, 6);
 }
 
 function getEmailCopy(language = "sr") {
@@ -180,56 +180,74 @@ function getEmailCopy(language = "sr") {
 }
 
 function buildRecommendationsHtml(recommendations, language = "sr") {
-  if (!recommendations?.length) return "";
+  const items = Array.isArray(recommendations)
+    ? recommendations.slice(0, 3)
+    : [];
+
+  if (!items.length) return "";
 
   const c = getEmailCopy(language);
   const baseUrl = "https://www.playniceshop.me";
 
-  const rows = recommendations.map((item, index) => {
+  const cells = items.map((item, index) => {
     const productUrl = `${baseUrl}/product/${encodeURIComponent(item.slug)}`;
     const imageUrl = item.image
-      ? (item.image.startsWith("http") ? item.image : `${baseUrl}${item.image.startsWith("/") ? "" : "/"}${item.image}`)
+      ? (
+          item.image.startsWith("http")
+            ? item.image
+            : `${baseUrl}${item.image.startsWith("/") ? "" : "/"}${item.image}`
+        )
       : "";
 
     return `
-      <tr>
-        <td style="padding:${index === 0 ? "0" : "14px 0 0"};">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-            <tr>
-              ${imageUrl ? `
-              <td width="72" valign="middle" style="padding-right:14px;">
-                <a href="${productUrl}" style="text-decoration:none;">
-                  <img src="${escapeHtml(imageUrl)}" width="64" height="64" alt="${escapeHtml(item.name)}" style="display:block;width:64px;height:64px;object-fit:contain;border-radius:14px;background:#111915;border:1px solid rgba(72,126,94,0.24);">
-                </a>
-              </td>` : ""}
-              <td valign="middle">
-                <div style="font-size:14px;font-weight:700;line-height:1.4;color:#f7f2e8;">
-                  ${escapeHtml(item.shortName || item.name)}
-                </div>
-                ${item.category ? `<div style="margin-top:4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(159,207,154,0.72);">${escapeHtml(item.category)}</div>` : ""}
-                <div style="margin-top:7px;">
-                  <a href="${productUrl}" style="font-size:12px;color:#9fcf9a;text-decoration:none;font-weight:700;">
-                    ${c.viewFragrance} →
-                  </a>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
+      <td width="33.33%" valign="top" style="padding:${index === 0 ? "0 8px 0 0" : index === 2 ? "0 0 0 8px" : "0 8px"};">
+        <div style="text-align:center;">
+          ${imageUrl ? `
+            <a href="${productUrl}" style="text-decoration:none;">
+              <img
+                src="${escapeHtml(imageUrl)}"
+                width="82"
+                height="82"
+                alt="${escapeHtml(item.name)}"
+                style="display:block;width:82px;height:82px;object-fit:contain;margin:0 auto 10px;border-radius:14px;background:#111111;border:1px solid rgba(220,181,107,0.14);"
+              >
+            </a>
+          ` : ""}
+
+          <div style="font-size:13px;font-weight:600;line-height:1.35;color:#f7f2e8;">
+            ${escapeHtml(item.shortName || item.name)}
+          </div>
+
+          ${item.category ? `
+            <div style="margin-top:4px;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:rgba(247,242,232,0.42);font-weight:400;">
+              ${escapeHtml(item.category)}
+            </div>
+          ` : ""}
+
+          <div style="margin-top:7px;">
+            <a href="${productUrl}" style="font-size:11px;color:#edcf88;text-decoration:none;font-weight:600;">
+              ${c.viewFragrance} →
+            </a>
+          </div>
+        </div>
+      </td>
     `;
   }).join("");
 
   return `
-    <div style="margin-top:22px;padding:20px;border-radius:20px;background:linear-gradient(180deg,rgba(12,32,24,0.78),rgba(7,20,15,0.84));border:1px solid rgba(72,126,94,0.30);box-shadow:inset 0 1px 0 rgba(255,255,255,0.035);">
-      <div style="font-size:11px;letter-spacing:.18em;font-weight:800;color:#9fcf9a;">
+    <div style="margin-top:22px;padding:18px;border-radius:20px;background:rgba(255,255,255,0.018);border:1px solid rgba(220,181,107,0.11);">
+      <div style="font-size:11px;letter-spacing:.18em;font-weight:700;color:#9fcf9a;">
         ${c.recommendationsTitle}
       </div>
-      <div style="margin-top:7px;color:rgba(247,242,232,0.68);font-size:13px;line-height:1.6;">
+
+      <div style="margin-top:7px;color:rgba(247,242,232,0.62);font-size:12px;line-height:1.55;font-weight:400;">
         ${c.recommendationsKicker}
       </div>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:18px;border-collapse:collapse;">
-        ${rows}
+
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:16px;border-collapse:collapse;table-layout:fixed;">
+        <tr>
+          ${cells}
+        </tr>
       </table>
     </div>
   `;
@@ -306,6 +324,47 @@ function buildItemsHtml(items) {
       `;
     })
     .join("");
+}
+
+function buildCustomerItemsHtml(items) {
+  if (!items || items.length === 0) {
+    return `<div style="color:rgba(247,242,232,0.66);font-weight:400;">No items available.</div>`;
+  }
+
+  return items.map((item, index) => {
+    const bundleHtml =
+      item.bundleItems?.length > 0
+        ? `
+          <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(220,181,107,0.10);">
+            ${item.bundleItems
+              .map(
+                (bundleItem) => `
+                  <div style="font-size:12px;color:rgba(247,242,232,0.58);line-height:1.7;font-weight:400;">
+                    ✦ ${escapeHtml(bundleItem.name)} (${escapeHtml(bundleItem.size)})
+                  </div>
+                `
+              )
+              .join("")}
+          </div>
+        `
+        : "";
+
+    return `
+      <div style="padding:12px 0;border-top:${index === 0 ? "0" : "1px solid rgba(220,181,107,0.10)"};">
+        <div style="color:#f7f2e8;font-weight:500;line-height:1.55;">
+          ${index + 1}. ${escapeHtml(item.name)} ${item.size ? `— ${escapeHtml(item.size)}` : ""}
+        </div>
+        <div style="margin-top:6px;color:rgba(247,242,232,0.60);font-size:13px;font-weight:400;">
+          Qty: ${Number(item.quantity)}
+          &nbsp;·&nbsp;
+          Price: ${formatPrice(Number(item.price))}
+          &nbsp;·&nbsp;
+          Total: ${formatPrice(Number(item.price) * Number(item.quantity))}
+        </div>
+        ${bundleHtml}
+      </div>
+    `;
+  }).join("");
 }
 
 function buildItemsText(items) {
@@ -450,7 +509,7 @@ function customerEmailHtml({
           ${shippingPauseHtml(language)}
 
           <div style="padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.025);border:1px solid rgba(220,181,107,0.11);margin-bottom:20px;">
-            <div style="color:#edcf88;font-size:14px;font-weight:600;margin-bottom:8px;">${c.summary}</div>
+            <div style="color:#edcf88;font-size:14px;font-weight:600;margin-bottom:8px;">${language === "en" ? "Order details" : "Detalji porudžbine"}</div>
             <div style="color:rgba(247,242,232,0.68);line-height:1.8;font-size:14px;font-weight:400;">${c.orderId}: ${escapeHtml(orderId)}</div>
             <div style="color:rgba(247,242,232,0.68);line-height:1.8;font-size:14px;font-weight:400;">${c.customer}: ${escapeHtml(fullName)}</div>
             <div style="color:rgba(247,242,232,0.68);line-height:1.8;font-size:14px;font-weight:400;">${c.city}: ${escapeHtml(city)}</div>
@@ -458,20 +517,10 @@ function customerEmailHtml({
             ${note ? `<div style="color:rgba(247,242,232,0.68);line-height:1.8;font-size:14px;font-weight:400;">${c.note}: ${escapeHtml(note)}</div>` : ""}
           </div>
 
-          <table style="width:100%;border-collapse:collapse;border-spacing:0;margin-bottom:22px;background:rgba(255,255,255,0.018);border-radius:18px;overflow:hidden;">
-            <thead>
-              <tr>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;font-size:12px;font-weight:600;">${c.fragrance}</th>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;font-size:12px;font-weight:600;">${c.size}</th>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;font-size:12px;font-weight:600;">${c.qty}</th>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;font-size:12px;font-weight:600;">${c.price}</th>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;font-size:12px;font-weight:600;">${c.total}</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${buildItemsHtml(items)}
-            </tbody>
-          </table>
+          <div style="padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.025);border:1px solid rgba(220,181,107,0.11);margin-bottom:22px;">
+            <div style="color:#edcf88;font-size:14px;font-weight:600;margin-bottom:8px;">${c.summary}</div>
+            ${buildCustomerItemsHtml(items)}
+          </div>
 
           <div style="padding:18px;border-radius:18px;background:rgba(255,255,255,0.025);border:1px solid rgba(220,181,107,0.11);">
             <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.72);font-weight:400;">
