@@ -102,7 +102,7 @@ function sanitizeRecommendations(recommendations) {
       seen.add(item.slug);
       return true;
     })
-    .slice(0, 6);
+    .slice(0, 3);
 }
 
 function getEmailCopy(language = "sr") {
@@ -447,11 +447,9 @@ function buildOrderProgressHtml(activeStep = 1, language = "sr") {
             const isDone = stepNumber < activeStep;
             const isActive = stepNumber === activeStep;
             const marker = isDone ? "✓" : isActive ? "●" : "○";
-            const color = isDone
+            const color = isDone || isActive
               ? "#9fcf9a"
-              : isActive
-                ? "#edcf88"
-                : "rgba(247,242,232,0.38)";
+              : "rgba(247,242,232,0.38)";
 
             return `
               <td width="33.33%" valign="middle" style="padding:${index === 0 ? "0 8px 0 0" : index === 2 ? "0 0 0 8px" : "0 8px"};${index > 0 ? "border-left:1px solid rgba(220,181,107,0.10);" : ""}">

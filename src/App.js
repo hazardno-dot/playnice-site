@@ -3671,43 +3671,38 @@ const handlePlaceOrder = async () => {
 
     const recommendationSlugs = [];
 
-    const addRecommendationSlug = (slug) => {
-      if (
-        slug &&
-        !purchasedProductSlugs.has(slug) &&
-        !recommendationSlugs.includes(slug)
-      ) {
-        recommendationSlugs.push(slug);
-      }
-    };
-
-    // 1. Prvo direktne preporuke kupljenog parfema
     cart.forEach((item) => {
       const sourceProduct = products.find(
         (product) => String(product.id) === String(item.id)
       );
 
-      (sourceProduct?.recommendations || []).forEach(
-        addRecommendationSlug
-      );
-    });
-
-    // 2. Ako nema dovoljno, proširi još jedan nivo
-    [...recommendationSlugs].forEach((slug) => {
-      if (recommendationSlugs.length >= 6) return;
-
-      const recommendedProduct = products.find(
-        (product) => product.slug === slug
-      );
-
-      (recommendedProduct?.recommendations || []).forEach(
-        (nestedSlug) => {
-          if (recommendationSlugs.length < 6) {
-            addRecommendationSlug(nestedSlug);
-          }
+      (sourceProduct?.recommendations || []).forEach((slug) => {
+        if (
+          slug &&
+          !purchasedProductSlugs.has(slug) &&
+          !recommendationSlugs.includes(slug)
+        ) {
+          recommendationSlugs.push(slug);
         }
-      );
+      });
     });
+
+    const emailRecommendations = recommendationSlugs
+      .slice(0, 3)
+      .map((slug) =>
+        products.find((product) => product.slug === slug)
+      )
+      .filter(Boolean)
+      .map((product) => ({
+        name: product.name,
+        shortName:
+          product.shortName ||
+          product.cardName ||
+          product.name,
+        slug: product.slug,
+        image: product.image,
+        category: product.category
+      }));
 
     const emailRecommendations = recommendationSlugs
       .slice(0, 6)
