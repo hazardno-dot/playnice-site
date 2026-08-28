@@ -83,6 +83,183 @@ function sanitizeItems(items) {
     );
 }
 
+
+function sanitizeRecommendations(recommendations) {
+  if (!Array.isArray(recommendations)) return [];
+
+  const seen = new Set();
+
+  return recommendations
+    .map((item) => ({
+      name: normalizeText(item?.name),
+      shortName: normalizeText(item?.shortName),
+      slug: normalizeText(item?.slug),
+      image: normalizeText(item?.image),
+      category: normalizeText(item?.category)
+    }))
+    .filter((item) => {
+      if (!item.name || !item.slug || seen.has(item.slug)) return false;
+      seen.add(item.slug);
+      return true;
+    })
+    .slice(0, 3);
+}
+
+function getEmailCopy(language = "sr") {
+  const isEn = language === "en";
+
+  return isEn
+    ? {
+        title: "Order received",
+        intro: (fullName, orderId) =>
+          `${escapeHtml(fullName)}, thank you for choosing PlayNice. Your order <strong style="color:#edcf88;">${escapeHtml(orderId)}</strong> is safely with us. We’ll take care of the details and let you know as soon as it is ready for the courier.`,
+        progress: ["ORDER RECEIVED", "PREPARING", "WITH COURIER"],
+        summary: "Order summary",
+        orderId: "Order ID",
+        customer: "Customer",
+        city: "City",
+        address: "Address",
+        note: "Note",
+        fragrance: "Fragrance",
+        size: "Size",
+        qty: "Qty",
+        price: "Price",
+        total: "Total",
+        subtotal: "Subtotal",
+        shipping: "Shipping",
+        free: "Free",
+        nextTitle: "What happens next",
+        nextText: "It’s over to us now. We’ll check the details and prepare your order with care. As soon as it is handed to the courier, we’ll send you another email with delivery information.",
+        payment: "Payment on delivery",
+        recommendationsTitle: "YOU MAY ALSO LIKE",
+        recommendationsKicker: "A few scents worth discovering next.",
+        viewFragrance: "View fragrance",
+        explore: "Explore PlayNice",
+        instagram: "Instagram",
+        journal: "Le Journal",
+        contact: "Contact",
+        pauseTitle: "Important delivery update",
+        pause1: "We are currently taking a short pause from shipping. Your order has been received successfully and will be prepared as soon as deliveries resume.",
+        pause2: "Deliveries resume",
+        pause3: "Payment is on delivery, so nothing is charged in advance."
+      }
+    : {
+        title: "Porudžbina je primljena",
+        intro: (fullName, orderId) =>
+          `${escapeHtml(fullName)}, hvala Vam što ste izabrali PlayNice. Vaša porudžbina <strong style="color:#edcf88;">${escapeHtml(orderId)}</strong> je uspešno primljena. Mi ćemo se pobrinuti za detalje i javiti Vam se čim bude spremna za kurira.`,
+        progress: ["PORUDŽBINA PRIMLJENA", "PRIPREMA", "KOD KURIRA"],
+        summary: "Pregled porudžbine",
+        orderId: "Broj porudžbine",
+        customer: "Kupac",
+        city: "Grad",
+        address: "Adresa",
+        note: "Napomena",
+        fragrance: "Parfem",
+        size: "Veličina",
+        qty: "Kol.",
+        price: "Cena",
+        total: "Ukupno",
+        subtotal: "Međuzbir",
+        shipping: "Dostava",
+        free: "Besplatna",
+        nextTitle: "Šta sledi",
+        nextText: "Sada je red na nama. Proverićemo sve detalje i pažljivo pripremiti Vašu porudžbinu. Čim je predamo kuriru, stići će Vam novi mejl sa informacijama o isporuci.",
+        payment: "Plaćanje pouzećem",
+        recommendationsTitle: "MOŽDA ĆE VAM SE DOPASTI",
+        recommendationsKicker: "Još nekoliko mirisa koje vredi otkriti.",
+        viewFragrance: "Pogledajte parfem",
+        explore: "Istražite PlayNice",
+        instagram: "Instagram",
+        journal: "Le Journal",
+        contact: "Kontakt",
+        pauseTitle: "Važno obaveštenje o isporuci",
+        pause1: "Trenutno imamo kratku pauzu u slanju. Vaša porudžbina je uspešno primljena i biće pripremljena čim ponovo krenemo sa isporukama.",
+        pause2: "Isporuke nastavljamo",
+        pause3: "Plaćanje je pouzećem, tako da ništa ne plaćate unapred."
+      };
+}
+
+function buildRecommendationsHtml(recommendations, language = "sr") {
+  if (!recommendations?.length) return "";
+
+  const c = getEmailCopy(language);
+  const baseUrl = "https://www.playniceshop.me";
+
+  const rows = recommendations.map((item, index) => {
+    const productUrl = `${baseUrl}/product/${encodeURIComponent(item.slug)}`;
+    const imageUrl = item.image
+      ? (item.image.startsWith("http") ? item.image : `${baseUrl}${item.image.startsWith("/") ? "" : "/"}${item.image}`)
+      : "";
+
+    return `
+      <tr>
+        <td style="padding:${index === 0 ? "0" : "14px 0 0"};">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+            <tr>
+              ${imageUrl ? `
+              <td width="72" valign="middle" style="padding-right:14px;">
+                <a href="${productUrl}" style="text-decoration:none;">
+                  <img src="${escapeHtml(imageUrl)}" width="64" height="64" alt="${escapeHtml(item.name)}" style="display:block;width:64px;height:64px;object-fit:contain;border-radius:14px;background:#111915;border:1px solid rgba(72,126,94,0.24);">
+                </a>
+              </td>` : ""}
+              <td valign="middle">
+                <div style="font-size:14px;font-weight:700;line-height:1.4;color:#f7f2e8;">
+                  ${escapeHtml(item.shortName || item.name)}
+                </div>
+                ${item.category ? `<div style="margin-top:4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(159,207,154,0.72);">${escapeHtml(item.category)}</div>` : ""}
+                <div style="margin-top:7px;">
+                  <a href="${productUrl}" style="font-size:12px;color:#9fcf9a;text-decoration:none;font-weight:700;">
+                    ${c.viewFragrance} →
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  return `
+    <div style="margin-top:22px;padding:20px;border-radius:20px;background:linear-gradient(180deg,rgba(12,32,24,0.78),rgba(7,20,15,0.84));border:1px solid rgba(72,126,94,0.30);box-shadow:inset 0 1px 0 rgba(255,255,255,0.035);">
+      <div style="font-size:11px;letter-spacing:.18em;font-weight:800;color:#9fcf9a;">
+        ${c.recommendationsTitle}
+      </div>
+      <div style="margin-top:7px;color:rgba(247,242,232,0.68);font-size:13px;line-height:1.6;">
+        ${c.recommendationsKicker}
+      </div>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:18px;border-collapse:collapse;">
+        ${rows}
+      </table>
+    </div>
+  `;
+}
+
+function buildEmailFooterHtml(language = "sr") {
+  const c = getEmailCopy(language);
+
+  return `
+    <div style="margin-top:22px;text-align:center;">
+      <a href="https://www.playniceshop.me/shop"
+         style="display:inline-block;padding:12px 20px;border-radius:999px;background:linear-gradient(180deg,rgba(12,32,24,0.98),rgba(5,17,13,0.99));border:1px solid rgba(226,190,112,0.48);color:#edcf88;text-decoration:none;font-size:13px;font-weight:800;letter-spacing:.06em;">
+        ${c.explore} →
+      </a>
+
+      <div style="margin-top:18px;font-size:12px;color:rgba(247,242,232,0.52);">
+        <a href="https://www.instagram.com/playnice.me/" style="color:rgba(247,242,232,0.66);text-decoration:none;">${c.instagram}</a>
+        <span style="padding:0 8px;color:rgba(159,207,154,0.42);">·</span>
+        <a href="https://www.playniceshop.me/journal" style="color:rgba(247,242,232,0.66);text-decoration:none;">${c.journal}</a>
+        <span style="padding:0 8px;color:rgba(159,207,154,0.42);">·</span>
+        <a href="mailto:info@playniceshop.me" style="color:rgba(247,242,232,0.66);text-decoration:none;">${c.contact}</a>
+      </div>
+
+      <div style="margin-top:18px;color:#edcf88;font-size:12px;font-weight:700;letter-spacing:.04em;">
+        Remember. PlayNice.
+      </div>
+    </div>
+  `;
+}
+
 function buildItemsHtml(items) {
   return items
     .map((item, index) => {
@@ -153,68 +330,69 @@ Ukupno: ${formatPrice(Number(item.price) * Number(item.quantity))}${bundleText}`
     .join("\n\n");
 }
 
-function shippingPauseHtml() {
+function shippingPauseHtml(language = "sr") {
   if (!SHIPPING_PAUSE_ACTIVE) return "";
+
+  const c = getEmailCopy(language);
 
   return `
     <div style="padding:16px 18px;border-radius:18px;background:rgba(220,181,107,0.08);border:1px solid rgba(220,181,107,0.22);margin:0 0 20px;">
       <div style="color:#f3d69b;font-weight:700;margin-bottom:8px;">
-        Važno obaveštenje o isporuci
+        ${c.pauseTitle}
       </div>
 
       <div style="color:rgba(247,242,232,0.82);line-height:1.8;">
-        Trenutno ne šaljemo pošiljke zbog kratke pauze u radu.
-        Tvoja porudžbina je uspešno primljena i biće pripremljena za slanje čim ponovo krenemo sa isporukama.
+        ${c.pause1}
       </div>
 
       <div style="color:rgba(247,242,232,0.82);line-height:1.8;margin-top:8px;">
-        Isporuke nastavljamo ${escapeHtml(SHIPPING_RESUME_TEXT)}.
+        ${c.pause2} ${escapeHtml(SHIPPING_RESUME_TEXT)}.
       </div>
 
       <div style="color:rgba(247,242,232,0.68);line-height:1.8;margin-top:8px;font-size:14px;">
-        Plaćanje je pouzećem, tako da ništa ne plaćaš unapred.
+        ${c.pause3}
       </div>
     </div>
   `;
 }
 
-function shippingPauseText() {
+function shippingPauseText(language = "sr") {
   if (!SHIPPING_PAUSE_ACTIVE) return "";
 
-  return `VAŽNO OBAVEŠTENJE O ISPORUCI
+  const c = getEmailCopy(language);
 
-Trenutno ne šaljemo pošiljke zbog kratke pauze u radu.
-Tvoja porudžbina je uspešno primljena i biće pripremljena za slanje čim ponovo krenemo sa isporukama.
+  return `${c.pauseTitle.toUpperCase()}
 
-Isporuke nastavljamo ${SHIPPING_RESUME_TEXT}.
+${c.pause1}
 
-Plaćanje je pouzećem, tako da ništa ne plaćaš unapred.`;
+${c.pause2} ${SHIPPING_RESUME_TEXT}.
+
+${c.pause3}`;
 }
 
-function buildOrderProgressHtml(activeStep = 1) {
+function buildOrderProgressHtml(activeStep = 1, language = "sr") {
+  const c = getEmailCopy(language);
   const steps = [
-    { number: "01", label: "ORDER RECEIVED" },
-    { number: "02", label: "PREPARING" },
-    { number: "03", label: "WITH COURIER" }
+    { number: "01", label: c.progress[0] },
+    { number: "02", label: c.progress[1] },
+    { number: "03", label: c.progress[2] }
   ];
 
   return `
-    <div style="margin:0 0 24px;padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.035);border:1px solid rgba(220,181,107,0.12);">
+    <div style="margin:0 0 24px;padding:16px 18px;border-radius:18px;background:linear-gradient(180deg,rgba(12,32,24,0.52),rgba(9,22,17,0.48));border:1px solid rgba(72,126,94,0.24);">
       <div style="display:flex;gap:14px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;">
         ${steps.map((step, index) => {
           const isDone = index + 1 < activeStep;
           const isActive = index + 1 === activeStep;
           const marker = isDone ? "✓" : isActive ? "●" : "○";
-          const color = isDone || isActive
-            ? "#f3d69b"
-            : "rgba(247,242,232,0.42)";
+          const color = isDone || isActive ? "#9fcf9a" : "rgba(247,242,232,0.38)";
 
           return `
             <div style="flex:1 1 150px;min-width:130px;">
-              <div style="font-size:11px;letter-spacing:.14em;color:${color};font-weight:700;">
+              <div style="font-size:11px;letter-spacing:.14em;color:${color};font-weight:800;">
                 ${step.number} &nbsp; ${marker}
               </div>
-              <div style="margin-top:6px;font-size:12px;letter-spacing:.08em;color:${color};font-weight:700;">
+              <div style="margin-top:6px;font-size:11px;letter-spacing:.07em;color:${color};font-weight:800;">
                 ${step.label}
               </div>
             </div>
@@ -234,49 +412,50 @@ function customerEmailHtml({
   total,
   note,
   city,
-  address
+  address,
+  language = "sr",
+  recommendations = []
 }) {
+  const c = getEmailCopy(language);
+
   return `
   <div style="margin:0;padding:0;background:#0b0b0b;font-family:Inter,Arial,sans-serif;color:#f7f2e8;">
     <div style="max-width:720px;margin:0 auto;padding:32px 20px;">
-      <div style="background:linear-gradient(180deg,#171717,#0f0f0f);border:1px solid rgba(220,181,107,0.22);border-radius:24px;overflow:hidden;">
-        <div style="padding:28px 28px 18px;border-bottom:1px solid rgba(220,181,107,0.14);">
-          <div style="letter-spacing:.35rem;font-weight:700;color:#f3d69b;font-size:18px;">PLAYNICE</div>
-          <div style="color:rgba(247,242,232,0.65);font-size:12px;margin-top:8px;">Remember. PlayNice.</div>
+      <div style="background:linear-gradient(180deg,#171717,#0f0f0f);border:1px solid rgba(220,181,107,0.22);border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.28);">
+        <div style="padding:28px 28px 18px;border-bottom:1px solid rgba(72,126,94,0.20);background:radial-gradient(circle at 12% -30%,rgba(72,126,94,0.18),transparent 48%);">
+          <div style="letter-spacing:.35rem;font-weight:700;color:#edcf88;font-size:18px;">PLAYNICE</div>
+          <div style="color:rgba(247,242,232,0.62);font-size:12px;margin-top:8px;">Remember. PlayNice.</div>
         </div>
 
         <div style="padding:28px;">
-          <h1 style="margin:0 0 14px;font-family:Georgia,serif;font-size:34px;line-height:1;color:#f3d69b;font-weight:600;">
-            Order received
+          <h1 style="margin:0 0 14px;font-family:Georgia,serif;font-size:34px;line-height:1.08;color:#edcf88;font-weight:600;">
+            ${c.title}
           </h1>
 
-          <p style="margin:0 0 18px;color:rgba(247,242,232,0.82);line-height:1.8;">
-            Zdravo ${escapeHtml(fullName)}, hvala na kupovini. Tvoja porudžbina
-            <strong style="color:#f3d69b;">${escapeHtml(orderId)}</strong> je stigla do nas.
-            Proverićemo je i javiti ti čim bude spremna za kurira.
+          <p style="margin:0 0 20px;color:rgba(247,242,232,0.84);line-height:1.85;font-size:15px;">
+            ${c.intro(fullName, orderId)}
           </p>
 
-          ${buildOrderProgressHtml(1)}
+          ${buildOrderProgressHtml(1, language)}
+          ${shippingPauseHtml(language)}
 
-          ${shippingPauseHtml()}
-
-          <div style="padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(220,181,107,0.12);margin-bottom:20px;">
-            <div style="color:#f3d69b;font-weight:700;margin-bottom:8px;">Order summary</div>
-            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Order ID: ${escapeHtml(orderId)}</div>
-            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Kupac: ${escapeHtml(fullName)}</div>
-            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Grad: ${escapeHtml(city)}</div>
-            <div style="color:rgba(247,242,232,0.78);line-height:1.8;">Adresa: ${escapeHtml(address)}</div>
-            ${note ? `<div style="color:rgba(247,242,232,0.78);line-height:1.8;">Napomena: ${escapeHtml(note)}</div>` : ""}
+          <div style="padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.035);border:1px solid rgba(220,181,107,0.12);margin-bottom:20px;">
+            <div style="color:#edcf88;font-weight:700;margin-bottom:8px;">${c.summary}</div>
+            <div style="color:rgba(247,242,232,0.76);line-height:1.8;">${c.orderId}: ${escapeHtml(orderId)}</div>
+            <div style="color:rgba(247,242,232,0.76);line-height:1.8;">${c.customer}: ${escapeHtml(fullName)}</div>
+            <div style="color:rgba(247,242,232,0.76);line-height:1.8;">${c.city}: ${escapeHtml(city)}</div>
+            <div style="color:rgba(247,242,232,0.76);line-height:1.8;">${c.address}: ${escapeHtml(address)}</div>
+            ${note ? `<div style="color:rgba(247,242,232,0.76);line-height:1.8;">${c.note}: ${escapeHtml(note)}</div>` : ""}
           </div>
 
           <table style="width:100%;border-collapse:collapse;border-spacing:0;margin-bottom:22px;background:rgba(255,255,255,0.02);border-radius:18px;overflow:hidden;">
             <thead>
               <tr>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Fragrance</th>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Size</th>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Qty</th>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Price</th>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#f3d69b;">Total</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;">${c.fragrance}</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;">${c.size}</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;">${c.qty}</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;">${c.price}</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;">${c.total}</th>
               </tr>
             </thead>
             <tbody>
@@ -284,32 +463,34 @@ function customerEmailHtml({
             </tbody>
           </table>
 
-          <div style="padding:18px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(220,181,107,0.12);">
-            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.82);">
-              <span>Subtotal</span>
+          <div style="padding:18px;border-radius:18px;background:rgba(255,255,255,0.035);border:1px solid rgba(220,181,107,0.12);">
+            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.80);">
+              <span>${c.subtotal}</span>
               <strong style="color:#f7f2e8;">${formatPrice(subtotal)}</strong>
             </div>
-            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.82);">
-              <span>Shipping</span>
-              <strong style="color:#f7f2e8;">${shipping === 0 ? "Free" : formatPrice(shipping)}</strong>
+            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.80);">
+              <span>${c.shipping}</span>
+              <strong style="color:#f7f2e8;">${shipping === 0 ? c.free : formatPrice(shipping)}</strong>
             </div>
-            <div style="display:flex;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px solid #2c2c2c;color:#f3d69b;">
-              <span style="font-weight:700;">Total</span>
-              <strong style="font-size:18px;color:#f3d69b;">${formatPrice(total)}</strong>
-            </div>
-          </div>
-
-          <div style="margin-top:20px;padding:18px;border-radius:18px;background:rgba(220,181,107,0.06);border:1px solid rgba(220,181,107,0.16);">
-            <div style="color:#f3d69b;font-weight:700;margin-bottom:8px;">What happens next</div>
-            <div style="color:rgba(247,242,232,0.8);line-height:1.8;font-size:14px;">
-              Proveravamo porudžbinu i pripremamo je za slanje. Kada je kurir preuzme,
-              dobićeš novi email sa detaljima isporuke.
+            <div style="display:flex;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px solid #2c2c2c;color:#edcf88;">
+              <span style="font-weight:700;">${c.total}</span>
+              <strong style="font-size:18px;color:#edcf88;">${formatPrice(total)}</strong>
             </div>
           </div>
 
-          <p style="margin:22px 0 0;color:rgba(247,242,232,0.7);line-height:1.8;font-size:14px;">
-            Payment method: Cash on delivery
+          <div style="margin-top:20px;padding:18px;border-radius:18px;background:linear-gradient(180deg,rgba(12,32,24,0.58),rgba(7,20,15,0.60));border:1px solid rgba(72,126,94,0.26);">
+            <div style="color:#9fcf9a;font-weight:700;margin-bottom:8px;">${c.nextTitle}</div>
+            <div style="color:rgba(247,242,232,0.80);line-height:1.85;font-size:14px;">
+              ${c.nextText}
+            </div>
+          </div>
+
+          <p style="margin:20px 0 0;color:rgba(247,242,232,0.66);line-height:1.8;font-size:14px;">
+            ${c.payment}
           </p>
+
+          ${buildRecommendationsHtml(recommendations, language)}
+          ${buildEmailFooterHtml(language)}
         </div>
       </div>
     </div>
@@ -400,40 +581,60 @@ function customerEmailText({
   items,
   subtotal,
   shipping,
-  total
+  total,
+  language = "sr",
+  recommendations = []
 }) {
+  const c = getEmailCopy(language);
+
+  const recommendationText = recommendations.length
+    ? `
+
+${c.recommendationsTitle}
+${recommendations.map((item) =>
+  `• ${item.shortName || item.name} — https://www.playniceshop.me/product/${item.slug}`
+).join("\n")}
+
+${c.explore}: https://www.playniceshop.me/shop`
+    : "";
+
   return `PLAYNICE
 Remember. PlayNice.
 
-ORDER RECEIVED
+${c.title.toUpperCase()}
 
-Zdravo ${fullName}, hvala na kupovini.
-Tvoja porudžbina ${orderId} je stigla do nas.
-Proverićemo je i javiti ti čim bude spremna za kurira.
+${language === "en"
+  ? `${fullName}, thank you for choosing PlayNice.
+Your order ${orderId} is safely with us. We’ll take care of the details and let you know as soon as it is ready for the courier.`
+  : `${fullName}, hvala Vam što ste izabrali PlayNice.
+Vaša porudžbina ${orderId} je uspešno primljena. Mi ćemo se pobrinuti za detalje i javiti Vam se čim bude spremna za kurira.`}
 
-01 — ORDER RECEIVED ●
-02 — PREPARING ○
-03 — WITH COURIER ○
+01 — ${c.progress[0]} ●
+02 — ${c.progress[1]} ○
+03 — ${c.progress[2]} ○
 
-${shippingPauseText() ? `${shippingPauseText()}\n\n` : ""}ORDER SUMMARY
-Order ID: ${orderId}
-Kupac: ${fullName}
-Grad: ${city}
-Adresa: ${address}
-Napomena: ${note || "Nema"}
+${shippingPauseText(language) ? `${shippingPauseText(language)}\n\n` : ""}${c.summary.toUpperCase()}
+${c.orderId}: ${orderId}
+${c.customer}: ${fullName}
+${c.city}: ${city}
+${c.address}: ${address}
+${c.note}: ${note || (language === "en" ? "None" : "Nema")}
 
-STAVKE
+${language === "en" ? "ITEMS" : "STAVKE"}
 ${buildItemsText(items)}
 
-Subtotal: ${formatPrice(subtotal)}
-Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
-Ukupno: ${formatPrice(total)}
+${c.subtotal}: ${formatPrice(subtotal)}
+${c.shipping}: ${shipping === 0 ? c.free : formatPrice(shipping)}
+${c.total}: ${formatPrice(total)}
 
-WHAT HAPPENS NEXT
-Proveravamo porudžbinu i pripremamo je za slanje.
-Kada je kurir preuzme, dobićeš novi email sa detaljima isporuke.
+${c.nextTitle.toUpperCase()}
+${c.nextText}
 
-Plaćanje: Pouzećem
+${c.payment}${recommendationText}
+
+Instagram: https://www.instagram.com/playnice.me/
+Le Journal: https://www.playniceshop.me/journal
+${c.contact}: info@playniceshop.me
 
 Remember. PlayNice.`;
 }
@@ -749,7 +950,9 @@ export default async function handler(req, res) {
     const address = normalizeText(customer.address);
     const note = normalizeText(customer.note);
     const page = normalizeText(body.page);
+    const language = normalizeText(body.language) === "en" ? "en" : "sr";
     const items = sanitizeItems(body.items);
+    const recommendations = sanitizeRecommendations(body.recommendations);
 
     const isInternationalEnquiry =
       requestType === "international_enquiry" || country !== "ME";
@@ -894,7 +1097,8 @@ let trackingNumber = "";
       subtotal,
       shipping,
       total,
-      orderSource: "website"
+      orderSource: "website",
+      language
     });
 
     orderId = googleSheetsResult.orderId;
@@ -951,7 +1155,9 @@ let trackingNumber = "";
         from: `PlayNice <${fromEmail}>`,
         to: email,
         replyTo: "info@playniceshop.me",
-        subject: `PlayNice Order Confirmation • ${orderId}`,
+        subject: language === "en"
+          ? `PlayNice Order Confirmation • ${orderId}`
+          : `PlayNice potvrda porudžbine • ${orderId}`,
         html: customerEmailHtml({
           orderId,
           fullName,
@@ -961,7 +1167,9 @@ let trackingNumber = "";
           items,
           subtotal,
           shipping,
-          total
+          total,
+          language,
+          recommendations
         }),
         text: customerEmailText({
           orderId,
@@ -972,7 +1180,9 @@ let trackingNumber = "";
           items,
           subtotal,
           shipping,
-          total
+          total,
+          language,
+          recommendations
         })
       });
 
