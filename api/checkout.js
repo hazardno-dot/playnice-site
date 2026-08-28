@@ -1098,7 +1098,8 @@ let trackingNumber = "";
       shipping,
       total,
       orderSource: "website",
-      language
+      language,
+      recommendations
     });
 
     orderId = googleSheetsResult.orderId;
