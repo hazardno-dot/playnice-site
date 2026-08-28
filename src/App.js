@@ -3704,22 +3704,6 @@ const handlePlaceOrder = async () => {
         category: product.category
       }));
 
-    const emailRecommendations = recommendationSlugs
-      .slice(0, 6)
-      .map((slug) =>
-        products.find((product) => product.slug === slug)
-      )
-      .filter(Boolean)
-      .map((product) => ({
-        name: product.name,
-        shortName:
-          product.shortName ||
-          product.cardName ||
-          product.name,
-        slug: product.slug,
-        image: product.image,
-        category: product.category
-      }));
     const payload = {
       type: "order",
       customer: {
