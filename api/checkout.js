@@ -260,6 +260,116 @@ function buildEmailFooterHtml(language = "sr") {
   `;
 }
 
+function buildItemsHtml(items) {
+  return items
+    .map((item, index) => {
+      const bundleHtml =
+        item.bundleItems?.length > 0
+          ? `
+            <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(220,181,107,0.12);">
+              ${item.bundleItems
+                .map(
+                  (bundleItem) => `
+                    <div style="font-size:12px;color:rgba(247,242,232,0.68);line-height:1.7;">
+                      ✦ ${escapeHtml(bundleItem.name)} (${escapeHtml(bundleItem.size)})
+                    </div>
+                  `
+                )
+                .join("")}
+            </div>
+          `
+          : "";
+
+      return `
+        <tr>
+          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">
+            ${index + 1}. ${escapeHtml(item.name)}
+            ${bundleHtml}
+          </td>
+
+          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#dcb56b;">
+            ${escapeHtml(item.size)}
+          </td>
+
+          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">
+            ${Number(item.quantity)}
+          </td>
+
+          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">
+            ${formatPrice(Number(item.price))}
+          </td>
+
+          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#dcb56b;font-weight:700;">
+            ${formatPrice(Number(item.price) * Number(item.quantity))}
+          </td>
+        </tr>
+      `;
+    })
+    .join("");
+}
+
+function buildItemsText(items) {
+  return items
+    .map((item, index) => {
+      const bundleText =
+        item.bundleItems?.length > 0
+          ? `\nDiscovery set:\n${item.bundleItems
+              .map(
+                (bundleItem) =>
+                  `   ✦ ${bundleItem.name} (${bundleItem.size})`
+              )
+              .join("\n")}`
+          : "";
+
+      return `${index + 1}. ${item.name}
+Veličina: ${item.size}
+Količina: ${Number(item.quantity)}
+Cena: ${formatPrice(Number(item.price))}
+Ukupno: ${formatPrice(Number(item.price) * Number(item.quantity))}${bundleText}`;
+    })
+    .join("\n\n");
+}
+
+function shippingPauseHtml(language = "sr") {
+  if (!SHIPPING_PAUSE_ACTIVE) return "";
+
+  const c = getEmailCopy(language);
+
+  return `
+    <div style="padding:16px 18px;border-radius:18px;background:rgba(220,181,107,0.08);border:1px solid rgba(220,181,107,0.22);margin:0 0 20px;">
+      <div style="color:#f3d69b;font-weight:700;margin-bottom:8px;">
+        ${c.pauseTitle}
+      </div>
+
+      <div style="color:rgba(247,242,232,0.82);line-height:1.8;">
+        ${c.pause1}
+      </div>
+
+      <div style="color:rgba(247,242,232,0.82);line-height:1.8;margin-top:8px;">
+        ${c.pause2} ${escapeHtml(SHIPPING_RESUME_TEXT)}.
+      </div>
+
+      <div style="color:rgba(247,242,232,0.68);line-height:1.8;margin-top:8px;font-size:14px;">
+        ${c.pause3}
+      </div>
+    </div>
+  `;
+}
+
+function shippingPauseText(language = "sr") {
+  if (!SHIPPING_PAUSE_ACTIVE) return "";
+
+  const c = getEmailCopy(language);
+
+  return `${c.pauseTitle.toUpperCase()}
+
+${c.pause1}
+
+${c.pause2} ${SHIPPING_RESUME_TEXT}.
+
+${c.pause3}`;
+}
+
 function buildOrderProgressHtml(activeStep = 1, language = "sr") {
   const c = getEmailCopy(language);
 
