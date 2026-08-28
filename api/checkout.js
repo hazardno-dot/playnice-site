@@ -1,4 +1,4 @@
-import { Resend } from "resend";
+const { Resend } = require("resend");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -191,7 +191,6 @@ Isporuke nastavljamo ${SHIPPING_RESUME_TEXT}.
 Plaćanje je pouzećem, tako da ništa ne plaćaš unapred.`;
 }
 
-
 function buildOrderProgressHtml(activeStep = 1) {
   const steps = [
     { number: "01", label: "ORDER RECEIVED" },
@@ -206,7 +205,10 @@ function buildOrderProgressHtml(activeStep = 1) {
           const isDone = index + 1 < activeStep;
           const isActive = index + 1 === activeStep;
           const marker = isDone ? "✓" : isActive ? "●" : "○";
-          const color = isDone || isActive ? "#f3d69b" : "rgba(247,242,232,0.42)";
+          const color = isDone || isActive
+            ? "#f3d69b"
+            : "rgba(247,242,232,0.42)";
+
           return `
             <div style="flex:1 1 150px;min-width:130px;">
               <div style="font-size:11px;letter-spacing:.14em;color:${color};font-weight:700;">
@@ -315,53 +317,6 @@ function customerEmailHtml({
   `;
 }
 
-function customerEmailText({
-  orderId,
-  fullName,
-  city,
-  address,
-  note,
-  items,
-  subtotal,
-  shipping,
-  total
-}) {
-  return `PLAYNICE
-Remember. PlayNice.
-
-ORDER RECEIVED
-
-Zdravo ${fullName}, hvala na kupovini.
-Tvoja porudžbina ${orderId} je stigla do nas.
-Proverićemo je i javiti ti čim bude spremna za kurira.
-
-01 — ORDER RECEIVED ●
-02 — PREPARING ○
-03 — WITH COURIER ○
-
-${shippingPauseText() ? `${shippingPauseText()}\n\n` : ""}ORDER SUMMARY
-Order ID: ${orderId}
-Kupac: ${fullName}
-Grad: ${city}
-Adresa: ${address}
-Napomena: ${note || "Nema"}
-
-STAVKE
-${buildItemsText(items)}
-
-Subtotal: ${formatPrice(subtotal)}
-Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
-Ukupno: ${formatPrice(total)}
-
-WHAT HAPPENS NEXT
-Proveravamo porudžbinu i pripremamo je za slanje.
-Kada je kurir preuzme, dobićeš novi email sa detaljima isporuke.
-
-Plaćanje: Pouzećem
-
-Remember. PlayNice.`;
-}
-
 function adminEmailHtml({
   orderId,
   fullName,
@@ -448,13 +403,21 @@ function customerEmailText({
   total
 }) {
   return `PLAYNICE
+Remember. PlayNice.
 
-Order ID: ${orderId}
+ORDER RECEIVED
 
 Zdravo ${fullName}, hvala na kupovini.
-Primili smo tvoju porudžbinu i uskoro ćemo ti se javiti sa potvrdom i detaljima isporuke.
+Tvoja porudžbina ${orderId} je stigla do nas.
+Proverićemo je i javiti ti čim bude spremna za kurira.
 
-${shippingPauseText() ? `${shippingPauseText()}\n\n` : ""}Kupac: ${fullName}
+01 — ORDER RECEIVED ●
+02 — PREPARING ○
+03 — WITH COURIER ○
+
+${shippingPauseText() ? `${shippingPauseText()}\n\n` : ""}ORDER SUMMARY
+Order ID: ${orderId}
+Kupac: ${fullName}
 Grad: ${city}
 Adresa: ${address}
 Napomena: ${note || "Nema"}
@@ -465,6 +428,10 @@ ${buildItemsText(items)}
 Subtotal: ${formatPrice(subtotal)}
 Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
 Ukupno: ${formatPrice(total)}
+
+WHAT HAPPENS NEXT
+Proveravamo porudžbinu i pripremamo je za slanje.
+Kada je kurir preuzme, dobićeš novi email sa detaljima isporuke.
 
 Plaćanje: Pouzećem
 
