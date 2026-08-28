@@ -241,137 +241,28 @@ function buildEmailFooterHtml(language = "sr") {
   return `
     <div style="margin-top:22px;text-align:center;">
       <a href="https://www.playniceshop.me/shop"
-         style="display:inline-block;padding:12px 20px;border-radius:999px;background:linear-gradient(180deg,rgba(12,32,24,0.98),rgba(5,17,13,0.99));border:1px solid rgba(226,190,112,0.48);color:#edcf88;text-decoration:none;font-size:13px;font-weight:800;letter-spacing:.06em;">
+         style="display:inline-block;padding:12px 20px;border-radius:999px;background:#121212;border:1px solid rgba(226,190,112,0.40);color:#edcf88;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.04em;">
         ${c.explore} →
       </a>
 
       <div style="margin-top:18px;font-size:12px;color:rgba(247,242,232,0.52);">
         <a href="https://www.instagram.com/playnice.me/" style="color:rgba(247,242,232,0.66);text-decoration:none;">${c.instagram}</a>
-        <span style="padding:0 8px;color:rgba(159,207,154,0.42);">·</span>
+        <span style="padding:0 8px;color:rgba(220,181,107,0.30);">·</span>
         <a href="https://www.playniceshop.me/journal" style="color:rgba(247,242,232,0.66);text-decoration:none;">${c.journal}</a>
-        <span style="padding:0 8px;color:rgba(159,207,154,0.42);">·</span>
+        <span style="padding:0 8px;color:rgba(220,181,107,0.30);">·</span>
         <a href="mailto:info@playniceshop.me" style="color:rgba(247,242,232,0.66);text-decoration:none;">${c.contact}</a>
       </div>
 
-      <div style="margin-top:18px;color:#edcf88;font-size:12px;font-weight:700;letter-spacing:.04em;">
+      <div style="margin-top:18px;color:#edcf88;font-size:12px;font-weight:600;letter-spacing:.04em;">
         Remember. PlayNice.
       </div>
     </div>
   `;
 }
 
-function buildItemsHtml(items) {
-  return items
-    .map((item, index) => {
-      const bundleHtml =
-        item.bundleItems?.length > 0
-          ? `
-            <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(220,181,107,0.12);">
-              ${item.bundleItems
-                .map(
-                  (bundleItem) => `
-                    <div style="font-size:12px;color:rgba(247,242,232,0.68);line-height:1.7;">
-                      ✦ ${escapeHtml(bundleItem.name)} (${escapeHtml(bundleItem.size)})
-                    </div>
-                  `
-                )
-                .join("")}
-            </div>
-          `
-          : "";
-
-      return `
-        <tr>
-          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">
-            ${index + 1}. ${escapeHtml(item.name)}
-            ${bundleHtml}
-          </td>
-
-          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#dcb56b;">
-            ${escapeHtml(item.size)}
-          </td>
-
-          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">
-            ${Number(item.quantity)}
-          </td>
-
-          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#f7f2e8;">
-            ${formatPrice(Number(item.price))}
-          </td>
-
-          <td style="padding:12px;border-bottom:1px solid #2c2c2c;color:#dcb56b;font-weight:700;">
-            ${formatPrice(Number(item.price) * Number(item.quantity))}
-          </td>
-        </tr>
-      `;
-    })
-    .join("");
-}
-
-function buildItemsText(items) {
-  return items
-    .map((item, index) => {
-      const bundleText =
-        item.bundleItems?.length > 0
-          ? `\nDiscovery set:\n${item.bundleItems
-              .map(
-                (bundleItem) =>
-                  `   ✦ ${bundleItem.name} (${bundleItem.size})`
-              )
-              .join("\n")}`
-          : "";
-
-      return `${index + 1}. ${item.name}
-Veličina: ${item.size}
-Količina: ${Number(item.quantity)}
-Cena: ${formatPrice(Number(item.price))}
-Ukupno: ${formatPrice(Number(item.price) * Number(item.quantity))}${bundleText}`;
-    })
-    .join("\n\n");
-}
-
-function shippingPauseHtml(language = "sr") {
-  if (!SHIPPING_PAUSE_ACTIVE) return "";
-
-  const c = getEmailCopy(language);
-
-  return `
-    <div style="padding:16px 18px;border-radius:18px;background:rgba(220,181,107,0.08);border:1px solid rgba(220,181,107,0.22);margin:0 0 20px;">
-      <div style="color:#f3d69b;font-weight:700;margin-bottom:8px;">
-        ${c.pauseTitle}
-      </div>
-
-      <div style="color:rgba(247,242,232,0.82);line-height:1.8;">
-        ${c.pause1}
-      </div>
-
-      <div style="color:rgba(247,242,232,0.82);line-height:1.8;margin-top:8px;">
-        ${c.pause2} ${escapeHtml(SHIPPING_RESUME_TEXT)}.
-      </div>
-
-      <div style="color:rgba(247,242,232,0.68);line-height:1.8;margin-top:8px;font-size:14px;">
-        ${c.pause3}
-      </div>
-    </div>
-  `;
-}
-
-function shippingPauseText(language = "sr") {
-  if (!SHIPPING_PAUSE_ACTIVE) return "";
-
-  const c = getEmailCopy(language);
-
-  return `${c.pauseTitle.toUpperCase()}
-
-${c.pause1}
-
-${c.pause2} ${SHIPPING_RESUME_TEXT}.
-
-${c.pause3}`;
-}
-
 function buildOrderProgressHtml(activeStep = 1, language = "sr") {
   const c = getEmailCopy(language);
+
   const steps = [
     { number: "01", label: c.progress[0] },
     { number: "02", label: c.progress[1] },
@@ -379,26 +270,31 @@ function buildOrderProgressHtml(activeStep = 1, language = "sr") {
   ];
 
   return `
-    <div style="margin:0 0 24px;padding:16px 18px;border-radius:18px;background:linear-gradient(180deg,rgba(12,32,24,0.52),rgba(9,22,17,0.48));border:1px solid rgba(72,126,94,0.24);">
-      <div style="display:flex;gap:14px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;">
-        ${steps.map((step, index) => {
-          const isDone = index + 1 < activeStep;
-          const isActive = index + 1 === activeStep;
-          const marker = isDone ? "✓" : isActive ? "●" : "○";
-          const color = isDone || isActive ? "#9fcf9a" : "rgba(247,242,232,0.38)";
+    <div style="margin:0 0 20px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,0.025);border:1px solid rgba(220,181,107,0.13);">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;table-layout:fixed;">
+        <tr>
+          ${steps.map((step, index) => {
+            const stepNumber = index + 1;
+            const isDone = stepNumber < activeStep;
+            const isActive = stepNumber === activeStep;
+            const marker = isDone ? "✓" : isActive ? "●" : "○";
+            const color = isDone
+              ? "#9fcf9a"
+              : isActive
+                ? "#edcf88"
+                : "rgba(247,242,232,0.38)";
 
-          return `
-            <div style="flex:1 1 150px;min-width:130px;">
-              <div style="font-size:11px;letter-spacing:.14em;color:${color};font-weight:800;">
-                ${step.number} &nbsp; ${marker}
-              </div>
-              <div style="margin-top:6px;font-size:11px;letter-spacing:.07em;color:${color};font-weight:800;">
-                ${step.label}
-              </div>
-            </div>
-          `;
-        }).join("")}
-      </div>
+            return `
+              <td width="33.33%" valign="middle" style="padding:${index === 0 ? "0 8px 0 0" : index === 2 ? "0 0 0 8px" : "0 8px"};${index > 0 ? "border-left:1px solid rgba(220,181,107,0.10);" : ""}">
+                <div style="font-size:10px;line-height:1.35;letter-spacing:.07em;color:${color};white-space:normal;">
+                  <span style="font-weight:700;">${step.number} ${marker}</span>
+                  <span style="margin-left:4px;">${step.label}</span>
+                </div>
+              </td>
+            `;
+          }).join("")}
+        </tr>
+      </table>
     </div>
   `;
 }
@@ -422,40 +318,44 @@ function customerEmailHtml({
   <div style="margin:0;padding:0;background:#0b0b0b;font-family:Inter,Arial,sans-serif;color:#f7f2e8;">
     <div style="max-width:720px;margin:0 auto;padding:32px 20px;">
       <div style="background:linear-gradient(180deg,#171717,#0f0f0f);border:1px solid rgba(220,181,107,0.22);border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.28);">
-        <div style="padding:28px 28px 18px;border-bottom:1px solid rgba(72,126,94,0.20);background:radial-gradient(circle at 12% -30%,rgba(72,126,94,0.18),transparent 48%);">
+        <div style="padding:28px 28px 18px;border-bottom:1px solid rgba(220,181,107,0.14);">
           <div style="letter-spacing:.35rem;font-weight:700;color:#edcf88;font-size:18px;">PLAYNICE</div>
-          <div style="color:rgba(247,242,232,0.62);font-size:12px;margin-top:8px;">Remember. PlayNice.</div>
+          <div style="color:rgba(247,242,232,0.58);font-size:12px;margin-top:8px;">Remember. PlayNice.</div>
         </div>
 
         <div style="padding:28px;">
-          <h1 style="margin:0 0 14px;font-family:Georgia,serif;font-size:34px;line-height:1.08;color:#edcf88;font-weight:600;">
+          <div style="font-size:11px;letter-spacing:.18em;font-weight:600;color:rgba(247,242,232,0.52);margin-bottom:10px;">
+            ${language === "en" ? "ORDER UPDATE" : "PORUDŽBINA"}
+          </div>
+
+          <h1 style="margin:0 0 14px;font-family:Georgia,serif;font-size:36px;line-height:1.04;color:#edcf88;font-weight:600;">
             ${c.title}
           </h1>
 
-          <p style="margin:0 0 20px;color:rgba(247,242,232,0.84);line-height:1.85;font-size:15px;">
+          <p style="margin:0 0 20px;color:rgba(247,242,232,0.82);line-height:1.85;font-size:15px;font-weight:400;">
             ${c.intro(fullName, orderId)}
           </p>
 
           ${buildOrderProgressHtml(1, language)}
           ${shippingPauseHtml(language)}
 
-          <div style="padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.035);border:1px solid rgba(220,181,107,0.12);margin-bottom:20px;">
-            <div style="color:#edcf88;font-weight:700;margin-bottom:8px;">${c.summary}</div>
-            <div style="color:rgba(247,242,232,0.76);line-height:1.8;">${c.orderId}: ${escapeHtml(orderId)}</div>
-            <div style="color:rgba(247,242,232,0.76);line-height:1.8;">${c.customer}: ${escapeHtml(fullName)}</div>
-            <div style="color:rgba(247,242,232,0.76);line-height:1.8;">${c.city}: ${escapeHtml(city)}</div>
-            <div style="color:rgba(247,242,232,0.76);line-height:1.8;">${c.address}: ${escapeHtml(address)}</div>
-            ${note ? `<div style="color:rgba(247,242,232,0.76);line-height:1.8;">${c.note}: ${escapeHtml(note)}</div>` : ""}
+          <div style="padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.025);border:1px solid rgba(220,181,107,0.11);margin-bottom:20px;">
+            <div style="color:#edcf88;font-size:14px;font-weight:600;margin-bottom:8px;">${c.summary}</div>
+            <div style="color:rgba(247,242,232,0.68);line-height:1.8;font-size:14px;font-weight:400;">${c.orderId}: ${escapeHtml(orderId)}</div>
+            <div style="color:rgba(247,242,232,0.68);line-height:1.8;font-size:14px;font-weight:400;">${c.customer}: ${escapeHtml(fullName)}</div>
+            <div style="color:rgba(247,242,232,0.68);line-height:1.8;font-size:14px;font-weight:400;">${c.city}: ${escapeHtml(city)}</div>
+            <div style="color:rgba(247,242,232,0.68);line-height:1.8;font-size:14px;font-weight:400;">${c.address}: ${escapeHtml(address)}</div>
+            ${note ? `<div style="color:rgba(247,242,232,0.68);line-height:1.8;font-size:14px;font-weight:400;">${c.note}: ${escapeHtml(note)}</div>` : ""}
           </div>
 
-          <table style="width:100%;border-collapse:collapse;border-spacing:0;margin-bottom:22px;background:rgba(255,255,255,0.02);border-radius:18px;overflow:hidden;">
+          <table style="width:100%;border-collapse:collapse;border-spacing:0;margin-bottom:22px;background:rgba(255,255,255,0.018);border-radius:18px;overflow:hidden;">
             <thead>
               <tr>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;">${c.fragrance}</th>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;">${c.size}</th>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;">${c.qty}</th>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;">${c.price}</th>
-                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;">${c.total}</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;font-size:12px;font-weight:600;">${c.fragrance}</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;font-size:12px;font-weight:600;">${c.size}</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;font-size:12px;font-weight:600;">${c.qty}</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;font-size:12px;font-weight:600;">${c.price}</th>
+                <th style="text-align:left;padding:12px;border-bottom:1px solid #2c2c2c;color:#edcf88;font-size:12px;font-weight:600;">${c.total}</th>
               </tr>
             </thead>
             <tbody>
@@ -463,29 +363,29 @@ function customerEmailHtml({
             </tbody>
           </table>
 
-          <div style="padding:18px;border-radius:18px;background:rgba(255,255,255,0.035);border:1px solid rgba(220,181,107,0.12);">
-            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.80);">
+          <div style="padding:18px;border-radius:18px;background:rgba(255,255,255,0.025);border:1px solid rgba(220,181,107,0.11);">
+            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.72);font-weight:400;">
               <span>${c.subtotal}</span>
-              <strong style="color:#f7f2e8;">${formatPrice(subtotal)}</strong>
+              <span>${formatPrice(subtotal)}</span>
             </div>
-            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.80);">
+            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;color:rgba(247,242,232,0.72);font-weight:400;">
               <span>${c.shipping}</span>
-              <strong style="color:#f7f2e8;">${shipping === 0 ? c.free : formatPrice(shipping)}</strong>
+              <span>${shipping === 0 ? c.free : formatPrice(shipping)}</span>
             </div>
             <div style="display:flex;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px solid #2c2c2c;color:#edcf88;">
-              <span style="font-weight:700;">${c.total}</span>
-              <strong style="font-size:18px;color:#edcf88;">${formatPrice(total)}</strong>
+              <span style="font-weight:600;">${c.total}</span>
+              <strong style="font-size:18px;color:#edcf88;font-weight:700;">${formatPrice(total)}</strong>
             </div>
           </div>
 
-          <div style="margin-top:20px;padding:18px;border-radius:18px;background:linear-gradient(180deg,rgba(12,32,24,0.58),rgba(7,20,15,0.60));border:1px solid rgba(72,126,94,0.26);">
-            <div style="color:#9fcf9a;font-weight:700;margin-bottom:8px;">${c.nextTitle}</div>
-            <div style="color:rgba(247,242,232,0.80);line-height:1.85;font-size:14px;">
+          <div style="margin-top:20px;padding:18px;border-radius:18px;background:rgba(255,255,255,0.020);border:1px solid rgba(220,181,107,0.10);">
+            <div style="color:#edcf88;font-size:14px;font-weight:600;margin-bottom:8px;">${c.nextTitle}</div>
+            <div style="color:rgba(247,242,232,0.76);line-height:1.85;font-size:14px;font-weight:400;">
               ${c.nextText}
             </div>
           </div>
 
-          <p style="margin:20px 0 0;color:rgba(247,242,232,0.66);line-height:1.8;font-size:14px;">
+          <p style="margin:20px 0 0;color:rgba(247,242,232,0.62);line-height:1.8;font-size:14px;font-weight:400;">
             ${c.payment}
           </p>
 
