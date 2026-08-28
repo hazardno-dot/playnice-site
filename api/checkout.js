@@ -191,6 +191,38 @@ Isporuke nastavljamo ${SHIPPING_RESUME_TEXT}.
 Plaćanje je pouzećem, tako da ništa ne plaćaš unapred.`;
 }
 
+
+function buildOrderProgressHtml(activeStep = 1) {
+  const steps = [
+    { number: "01", label: "ORDER RECEIVED" },
+    { number: "02", label: "PREPARING" },
+    { number: "03", label: "WITH COURIER" }
+  ];
+
+  return `
+    <div style="margin:0 0 24px;padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.035);border:1px solid rgba(220,181,107,0.12);">
+      <div style="display:flex;gap:14px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;">
+        ${steps.map((step, index) => {
+          const isDone = index + 1 < activeStep;
+          const isActive = index + 1 === activeStep;
+          const marker = isDone ? "✓" : isActive ? "●" : "○";
+          const color = isDone || isActive ? "#f3d69b" : "rgba(247,242,232,0.42)";
+          return `
+            <div style="flex:1 1 150px;min-width:130px;">
+              <div style="font-size:11px;letter-spacing:.14em;color:${color};font-weight:700;">
+                ${step.number} &nbsp; ${marker}
+              </div>
+              <div style="margin-top:6px;font-size:12px;letter-spacing:.08em;color:${color};font-weight:700;">
+                ${step.label}
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+  `;
+}
+
 function customerEmailHtml({
   orderId,
   fullName,
@@ -217,8 +249,12 @@ function customerEmailHtml({
           </h1>
 
           <p style="margin:0 0 18px;color:rgba(247,242,232,0.82);line-height:1.8;">
-            Zdravo ${escapeHtml(fullName)}, hvala na kupovini. Primili smo tvoju porudžbinu i uskoro ćemo ti se javiti sa potvrdom i detaljima isporuke.
+            Zdravo ${escapeHtml(fullName)}, hvala na kupovini. Tvoja porudžbina
+            <strong style="color:#f3d69b;">${escapeHtml(orderId)}</strong> je stigla do nas.
+            Proverićemo je i javiti ti čim bude spremna za kurira.
           </p>
+
+          ${buildOrderProgressHtml(1)}
 
           ${shippingPauseHtml()}
 
@@ -261,6 +297,14 @@ function customerEmailHtml({
             </div>
           </div>
 
+          <div style="margin-top:20px;padding:18px;border-radius:18px;background:rgba(220,181,107,0.06);border:1px solid rgba(220,181,107,0.16);">
+            <div style="color:#f3d69b;font-weight:700;margin-bottom:8px;">What happens next</div>
+            <div style="color:rgba(247,242,232,0.8);line-height:1.8;font-size:14px;">
+              Proveravamo porudžbinu i pripremamo je za slanje. Kada je kurir preuzme,
+              dobićeš novi email sa detaljima isporuke.
+            </div>
+          </div>
+
           <p style="margin:22px 0 0;color:rgba(247,242,232,0.7);line-height:1.8;font-size:14px;">
             Payment method: Cash on delivery
           </p>
@@ -269,6 +313,53 @@ function customerEmailHtml({
     </div>
   </div>
   `;
+}
+
+function customerEmailText({
+  orderId,
+  fullName,
+  city,
+  address,
+  note,
+  items,
+  subtotal,
+  shipping,
+  total
+}) {
+  return `PLAYNICE
+Remember. PlayNice.
+
+ORDER RECEIVED
+
+Zdravo ${fullName}, hvala na kupovini.
+Tvoja porudžbina ${orderId} je stigla do nas.
+Proverićemo je i javiti ti čim bude spremna za kurira.
+
+01 — ORDER RECEIVED ●
+02 — PREPARING ○
+03 — WITH COURIER ○
+
+${shippingPauseText() ? `${shippingPauseText()}\n\n` : ""}ORDER SUMMARY
+Order ID: ${orderId}
+Kupac: ${fullName}
+Grad: ${city}
+Adresa: ${address}
+Napomena: ${note || "Nema"}
+
+STAVKE
+${buildItemsText(items)}
+
+Subtotal: ${formatPrice(subtotal)}
+Dostava: ${shipping === 0 ? "Besplatna" : formatPrice(shipping)}
+Ukupno: ${formatPrice(total)}
+
+WHAT HAPPENS NEXT
+Proveravamo porudžbinu i pripremamo je za slanje.
+Kada je kurir preuzme, dobićeš novi email sa detaljima isporuke.
+
+Plaćanje: Pouzećem
+
+Remember. PlayNice.`;
 }
 
 function adminEmailHtml({
