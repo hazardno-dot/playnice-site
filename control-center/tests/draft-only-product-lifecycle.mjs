@@ -1,0 +1,27 @@
+import fs from "node:fs";
+// Final Products audit regression coverage.
+const app=fs.readFileSync("control-center/src/App.jsx","utf8");
+if(!app.includes("function draftProductFromPayload(slug,payload)"))throw new Error("Draft-only product materializer missing.");
+if(!app.includes("const catalogProducts=useMemo"))throw new Error("Draft-only products are not included in catalog state.");
+if(!app.includes("!products.some((p)=>p.slug===slug)"))throw new Error("Live products are not protected from duplicate draft-only rows.");
+if(!app.includes("setSelected(draftProductFromPayload(slug,savedDraft))"))throw new Error("Reopening draft-only product does not restore draft-backed preview.");
+if(!app.includes("if(selected.__new)setSelected(draftProductFromPayload(selected.slug,saved))"))throw new Error("First Save Draft does not refresh selected draft-only product.");
+if(!app.includes("draftPayload?.copy||productCopy[product.name]"))throw new Error("Draft-only preview does not use draft copy coverage.");
+if(!app.includes("draftPayload?.wear||productWearContext[product.name]"))throw new Error("Draft-only preview does not use draft wear coverage.");
+if(!app.includes("draftPayload?.discovery||discoveryProfiles[product.slug]"))throw new Error("Draft-only preview does not use draft discovery coverage.");
+console.log("PASS  first save refreshes draft-only selected product");
+console.log("PASS  draft-only products remain reopenable from catalog and Draft Manager");
+console.log("PASS  draft-only preview uses saved payload layers");
+
+const draftManager=fs.readFileSync("control-center/src/DraftManager.jsx","utf8");
+const validation=fs.readFileSync("control-center/src/draftValidation.js","utf8");
+const inline=fs.readFileSync("control-center/src/inlineValidationRules.mjs","utf8");
+const engine=fs.readFileSync("control-center/api/create-new-product-engine.js","utf8");
+if(!draftManager.includes("changes.length > 0"))throw new Error("READY TO APPLY does not require an actual change.");
+if(!draftManager.includes("This draft matches live data. Make at least one change before review."))throw new Error("No-change review guard missing.");
+if(!validation.includes("Use a specific product image file under /products/"))throw new Error("Authoritative image placeholder guard missing.");
+if(!inline.includes("name === \"image path\""))throw new Error("Inline image placeholder guard missing.");
+if(!engine.includes("Image must be a specific product file under /products/."))throw new Error("Server-side new-product image guard missing.");
+if(!app.includes('p.image&&!p.image.endsWith("/")'))throw new Error("Draft-only image rendering guard missing.");
+console.log("PASS  no-change drafts cannot enter apply lifecycle");
+console.log("PASS  image directory placeholders are blocked end-to-end");

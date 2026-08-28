@@ -1,0 +1,108 @@
+name: Control Center Apply Regression
+
+on:
+  push:
+    branches:
+      - control-center-controlled-apply-v2
+    paths:
+      - "control-center/api/create-apply.js"
+      - "control-center/api/create-new-product.js"
+      - "control-center/api/create-new-product-engine.js"
+      - "control-center/api/create-journal-apply.js"
+      - "control-center/api/journal-apply-engine.mjs"
+      - "control-center/api/create-note-apply.js"
+      - "control-center/api/note-apply-engine.mjs"
+      - "control-center/api/site-health.js"
+      - "control-center/src/approvalSafety.mjs"
+      - "control-center/src/inlineValidationRules.mjs"
+      - "control-center/src/productWorkflowState.mjs"
+      - "control-center/src/productNavigation.mjs"
+      - "control-center/src/ProductCatalogCountBridge.jsx"
+      - "control-center/src/journalAudit.mjs"
+      - "control-center/src/journalDraft.mjs"
+      - "control-center/src/JournalManager.jsx"
+      - "control-center/src/JournalApplyManager.jsx"
+      - "control-center/src/journal-manager.css"
+      - "control-center/src/journal-apply.css"
+      - "control-center/src/noteAudit.mjs"
+      - "control-center/src/noteLabelAudit.mjs"
+      - "control-center/src/noteDraft.mjs"
+      - "control-center/src/NotesManager.jsx"
+      - "control-center/src/NoteApplyManager.jsx"
+      - "control-center/src/notes-manager.css"
+      - "control-center/src/note-apply.css"
+      - "control-center/src/AnalyticsManager.jsx"
+      - "control-center/src/analytics-manager.css"
+      - "control-center/src/SiteHealthManager.jsx"
+      - "control-center/src/SiteHealthOverviewBridge.jsx"
+      - "control-center/src/siteHealthIncidents.mjs"
+      - "control-center/src/siteHealthFreshness.mjs"
+      - "control-center/src/site-health-manager.css"
+      - "control-center/src/site-health-overview.css"
+      - "control-center/src/App.jsx"
+      - "control-center/src/DraftManager.jsx"
+      - "control-center/src/ControlCenterManagers.jsx"
+      - "control-center/src/ControlledApplyManager.jsx"
+      - "control-center/tests/**"
+      - "src/data/products/index.js"
+      - "src/data/products/productCopy.js"
+      - "src/data/products/productWearContext.js"
+      - "src/data/products/discoveryProfiles.js"
+      - "src/data/journal/index.js"
+      - "src/TheNoteMap.jsx"
+      - "public/note-map/**"
+      - ".github/workflows/control-center-apply-regression.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  controlled-apply-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Run Controlled Apply regression suite
+        run: |
+          node control-center/tests/controlled-apply-regression.mjs
+          node control-center/tests/controlled-apply-inline-copy.mjs
+          node control-center/tests/controlled-apply-category.mjs
+          node control-center/tests/controlled-apply-metadata.mjs
+          node control-center/tests/controlled-apply-identity.mjs
+          node control-center/tests/controlled-apply-new-product.mjs
+          node control-center/tests/controlled-apply-new-product-structure.mjs
+          node control-center/tests/product-workflow-state.mjs
+          node control-center/tests/inline-validation-contract.mjs
+          node control-center/tests/approval-payload-safety.mjs
+          node control-center/tests/draft-realtime-contract.mjs
+          node control-center/tests/product-navigation-contract.mjs
+          node control-center/tests/draft-only-product-lifecycle.mjs
+          node control-center/tests/product-catalog-count-contract.mjs
+          node control-center/tests/journal-audit-contract.mjs
+          node control-center/tests/journal-draft-workflow.mjs
+          node control-center/tests/journal-controlled-apply.mjs
+          node control-center/tests/journal-controlled-apply-contract.mjs
+          node control-center/tests/journal-controlled-apply-schema-contract.mjs
+          node control-center/tests/journal-apply-ui-contract.mjs
+          node control-center/tests/journal-new-article.mjs
+          node control-center/tests/journal-final-workflow-audit.mjs
+          node control-center/tests/journal-link-editor.mjs
+          node control-center/tests/notes-audit-contract.mjs
+          node control-center/tests/notes-label-audit.mjs
+          node control-center/tests/note-draft-workflow.mjs
+          node control-center/tests/note-controlled-apply.mjs
+          node control-center/tests/analytics-manager-contract.mjs
+          node control-center/tests/site-health-contract.mjs
+          node control-center/tests/site-health-incidents.mjs
+          node control-center/tests/site-health-overview-contract.mjs
+          node control-center/tests/site-health-freshness.mjs
+
+# v2.31 Journal schema contract included in final regression suite
