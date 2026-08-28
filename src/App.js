@@ -3658,6 +3658,52 @@ const handlePlaceOrder = async () => {
   setIsSubmittingOrder(true);
 
   try {
+    const purchasedProductSlugs = new Set(
+      cart
+        .map((item) =>
+          products.find(
+            (product) => String(product.id) === String(item.id)
+          )
+        )
+        .filter(Boolean)
+        .map((product) => product.slug)
+    );
+
+    const recommendationSlugs = [];
+
+    cart.forEach((item) => {
+      const sourceProduct = products.find(
+        (product) => String(product.id) === String(item.id)
+      );
+
+      (sourceProduct?.recommendations || []).forEach((slug) => {
+        if (
+          slug &&
+          !purchasedProductSlugs.has(slug) &&
+          !recommendationSlugs.includes(slug)
+        ) {
+          recommendationSlugs.push(slug);
+        }
+      });
+    });
+
+    const emailRecommendations = recommendationSlugs
+      .slice(0, 3)
+      .map((slug) =>
+        products.find((product) => product.slug === slug)
+      )
+      .filter(Boolean)
+      .map((product) => ({
+        name: product.name,
+        shortName:
+          product.shortName ||
+          product.cardName ||
+          product.name,
+        slug: product.slug,
+        image: product.image,
+        category: product.category
+      }));
+
     const payload = {
       type: "order",
       customer: {
@@ -3672,6 +3718,7 @@ const handlePlaceOrder = async () => {
         note: checkoutForm.note.trim()
       },
       items: cart,
+      recommendations: emailRecommendations,
       subtotal,
       shipping,
       total,
