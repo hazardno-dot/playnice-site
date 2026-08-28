@@ -611,7 +611,7 @@ Final total: biće potvrđen naknadno
 Remember. PlayNice.`;
 }
 
-async function reserveOrderIdFromGoogleSheets() {async function saveOrderToGoogleSheets(orderData) {
+async function saveOrderToGoogleSheets(orderData) {
   const url = process.env.GOOGLE_SCRIPT_ORDERS_URL;
 
   if (!url) {
@@ -659,52 +659,6 @@ async function reserveOrderIdFromGoogleSheets() {async function saveOrderToGoogl
     trackingNumber: data.trackingNumber || "",
     duplicate: Boolean(data.duplicate)
   };
-}
-
-async function saveOrderToGoogleSheets(orderData) {
-  const url = process.env.GOOGLE_SCRIPT_ORDERS_URL;
-
-  if (!url) {
-    console.warn("Missing GOOGLE_SCRIPT_ORDERS_URL");
-    return {
-      saved: false,
-      error: "Missing GOOGLE_SCRIPT_ORDERS_URL"
-    };
-  }
-
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
-      body: JSON.stringify({
-        source: "order",
-        ...orderData
-      })
-    });
-
-    const text = await response.text();
-
-    if (!response.ok) {
-      console.error("Google Sheets order save failed:", text);
-      return {
-        saved: false,
-        error: text
-      };
-    }
-
-    return {
-      saved: true,
-      response: text
-    };
-  } catch (error) {
-    console.error("Google Sheets order save error:", error);
-    return {
-      saved: false,
-      error: error?.message || "Unknown Google Sheets error"
-    };
-  }
 }
 
 export default async function handler(req, res) {
