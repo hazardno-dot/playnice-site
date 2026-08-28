@@ -611,7 +611,7 @@ Final total: biće potvrđen naknadno
 Remember. PlayNice.`;
 }
 
-async function reserveOrderIdFromGoogleSheets() {
+async function reserveOrderIdFromGoogleSheets() {async function saveOrderToGoogleSheets(orderData) {
   const url = process.env.GOOGLE_SCRIPT_ORDERS_URL;
 
   if (!url) {
@@ -625,19 +625,39 @@ async function reserveOrderIdFromGoogleSheets() {
       "Content-Type": "text/plain;charset=utf-8"
     },
     body: JSON.stringify({
-      source: "reserve_order_id"
+      source: "order",
+      ...orderData
     })
   });
 
-  const data = await response.json();
+  const text = await response.text();
 
-  if (!response.ok || data.status !== "ok") {
-    throw new Error(data.message || "Failed to reserve order ID");
+  let data;
+
+  try {
+    data = JSON.parse(text);
+  } catch {
+    throw new Error(
+      "Google Sheets returned invalid JSON: " + text
+    );
+  }
+
+  if (
+    !response.ok ||
+    data.status !== "ok" ||
+    !data.orderId
+  ) {
+    throw new Error(
+      data.message ||
+      "Failed to save order to Google Sheets"
+    );
   }
 
   return {
+    saved: true,
     orderId: data.orderId,
-    trackingNumber: data.trackingNumber
+    trackingNumber: data.trackingNumber || "",
+    duplicate: Boolean(data.duplicate)
   };
 }
 
@@ -747,15 +767,11 @@ export default async function handler(req, res) {
     }
 
     const subtotal = getSubtotal(items);
-    const reservedOrder = isInternationalEnquiry
-  ? null
-  : await reserveOrderIdFromGoogleSheets();
-
-const orderId = isInternationalEnquiry
+    let orderId = isInternationalEnquiry
   ? generateOrderId().replace("PN-", "PN-INT-")
-  : reservedOrder.orderId;
+  : "";
 
-const trackingNumber = reservedOrder?.trackingNumber || "";
+let trackingNumber = "";
 
     const fromEmail = process.env.RESEND_FROM_EMAIL || "noreply@playniceshop.me";
     const adminEmail = process.env.ADMIN_ORDER_EMAIL || "order@playniceshop.me";
@@ -855,6 +871,23 @@ const trackingNumber = reservedOrder?.trackingNumber || "";
     const shipping = getShipping(subtotal);
     const total = subtotal + shipping;
 
+    const googleSheetsResult = await saveOrderToGoogleSheets({
+      fullName,
+      email,
+      phone,
+      city,
+      address,
+      note,
+      items,
+      subtotal,
+      shipping,
+      total,
+      orderSource: "website"
+    });
+
+    orderId = googleSheetsResult.orderId;
+    trackingNumber = googleSheetsResult.trackingNumber;
+
     let adminSendResult;
 
     try {
@@ -936,21 +969,6 @@ const trackingNumber = reservedOrder?.trackingNumber || "";
       customerEmailError = customerError?.message || "Customer email failed";
       console.error("Customer email failed:", customerError);
     }
-
-    const googleSheetsResult = await saveOrderToGoogleSheets({
-  orderId,
-  fullName,
-  email,
-  phone,
-  city,
-  address,
-  note,
-  items,
-  subtotal,
-  shipping,
-  trackingNumber,
-  total
-});
 
 return res.status(200).json({
   success: true,
