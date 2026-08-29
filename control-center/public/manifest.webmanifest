@@ -1,0 +1,19 @@
+{
+  "name": "PlayNice Control Center",
+  "short_name": "PlayNice CC",
+  "description": "Internal PlayNice operations and catalog control center.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#07110d",
+  "theme_color": "#07110d",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/pwa-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
