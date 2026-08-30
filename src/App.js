@@ -8516,32 +8516,26 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             </strong>
           </div>
 
-          <div
-            className={`shipping-progress-card cart-shipping-note ${
-              subtotal >= FREE_SHIPPING_THRESHOLD
-                ? "shipping-note-unlocked"
-                : "shipping-note-locked"
-            }`}
-          >
-            <div className="shipping-note">
-              {subtotal >= FREE_SHIPPING_THRESHOLD
-                ? `${tr.freeShippingUnlocked} ✓`
-                : lang === "sr"
-                ? `Još ${formatPrice(
-                    amountLeftForFreeShipping
-                  )} do besplatne dostave`
-                : `${formatPrice(
-                    amountLeftForFreeShipping
-                  )} away from free shipping`}
-            </div>
+          {subtotal < FREE_SHIPPING_THRESHOLD && (
+            <div className="shipping-progress-card cart-shipping-note shipping-note-locked">
+              <div className="shipping-note">
+                {lang === "sr"
+                  ? `Još ${formatPrice(
+                      amountLeftForFreeShipping
+                    )} do besplatne dostave`
+                  : `${formatPrice(
+                      amountLeftForFreeShipping
+                    )} away from free shipping`}
+              </div>
 
-            <div className="shipping-progress-bar">
-              <div
-                className="shipping-progress-fill"
-                style={{ width: `${freeShippingProgress}%` }}
-              />
+              <div className="shipping-progress-bar">
+                <div
+                  className="shipping-progress-fill"
+                  style={{ width: `${freeShippingProgress}%` }}
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="cart-trust-block">
             <div className="cart-trust-item">
