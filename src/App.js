@@ -5131,7 +5131,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   if (surface === "footer") {
     return (
       <section
-        id="delivery-returns"
         className="policy-strip policy-strip--footer"
         aria-label={labels.title}
       >
