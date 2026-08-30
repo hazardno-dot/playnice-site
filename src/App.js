@@ -4239,7 +4239,8 @@ useEffect(() => {
   openProductModal(matchedProduct, { updateUrl: false });
 }, []);
 
-const PRODUCT_MODAL_CLOSE_DELAY = 380;
+const PRODUCT_MODAL_CLOSE_DELAY = 180;
+const PRODUCT_MODAL_CART_CLOSE_DELAY = 380;
 
 const restoreProductModalScroll = () => {
   const targetScrollY = productModalScrollYRef.current;
@@ -4301,6 +4302,17 @@ const closeProductModal = () => {
   productModalCloseTimeoutRef.current = setTimeout(() => {
     cleanupProductModal();
   }, PRODUCT_MODAL_CLOSE_DELAY);
+};
+
+const closeProductModalAfterCartAdd = () => {
+  setNoteMapOpen(false);
+  setProductModalVisible(false);
+  setHasUserPickedSize(false);
+
+  productModalCloseTimeoutRef.current = setTimeout(() => {
+    setSelectedProduct(null);
+    restoreProductModalScroll();
+  }, PRODUCT_MODAL_CART_CLOSE_DELAY);
 };
 
 const openImpactProductModal = (product) => {
@@ -9093,9 +9105,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   handleModalAddToCart(productForCart, activeSize);
 
   setTimeout(() => {
-    closeProductModal();
+    closeProductModalAfterCartAdd();
   }, 950);
-  }}
+    }}
       aria-live="polite"
     >
       <span>
