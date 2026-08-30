@@ -3812,8 +3812,21 @@ main {
     font-size: 13px;
   }
 
+  .cart-trust-block {
+    grid-template-columns: auto auto auto;
+    gap: 3px;
+    padding: 7px 5px;
+  }
+
   .cart-trust-item {
-    font-size: 8px;
+    gap: 0;
+    font-size: 7.2px;
+    letter-spacing: -0.015em;
+    white-space: nowrap;
+  }
+
+  .cart-trust-item span:first-child {
+    display: none;
   }
 }
 
