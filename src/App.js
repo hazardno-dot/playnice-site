@@ -3062,6 +3062,17 @@ const handleSmartStickyClick = useCallback(
   [goToShop, setScentMood]
 );
 
+const openCheckout = () => {
+  if (checkoutAutoCloseTimeoutRef.current) {
+    clearTimeout(checkoutAutoCloseTimeoutRef.current);
+    checkoutAutoCloseTimeoutRef.current = null;
+  }
+
+  setOrderSuccessMessage("");
+  setCartOpen(false);
+  setCheckoutOpen(true);
+};
+
 const stickyCtaData = useMemo(() => {
   if (cartCount > 0) {
     return {
@@ -3629,17 +3640,6 @@ const addHeroBottleToCart = () => {
   const handleCheckoutInput = (e) => {
     const { name, value } = e.target;
     setCheckoutForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const openCheckout = () => {
-    if (checkoutAutoCloseTimeoutRef.current) {
-      clearTimeout(checkoutAutoCloseTimeoutRef.current);
-      checkoutAutoCloseTimeoutRef.current = null;
-    }
-
-    setOrderSuccessMessage("");
-    setCartOpen(false);
-    setCheckoutOpen(true);
   };
 
   const handleInternationalEnquiry = async () => {
