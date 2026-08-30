@@ -1099,7 +1099,10 @@ const isNewRequest = (request) => {
   const productModalCloseTimeoutRef = useRef(null);
   const productGridRef = useRef(null);
   const hasMountedShopFiltersRef = useRef(false);
+  const isRestoringShopHistoryRef = useRef(false);
   const [shouldScrollToGrid, setShouldScrollToGrid] = useState(false);
+  const journalVoteSuccessTimeoutRef = useRef(null);
+  const journalFeedbackSuccessTimeoutRef = useRef(null);
 
   /* =========================================
      DERIVED TRANSLATIONS / STATIC ARRAYS
@@ -1796,6 +1799,11 @@ useEffect(() => {
       return;
     }
 
+    if (isRestoringShopHistoryRef.current) {
+      isRestoringShopHistoryRef.current = false;
+      return;
+    }
+
     setCurrentPage(1);
   }, [category, searchTerm, season, scentMood, sortBy]);
 
@@ -1977,6 +1985,18 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
+  return () => {
+    if (journalVoteSuccessTimeoutRef.current) {
+      clearTimeout(journalVoteSuccessTimeoutRef.current);
+    }
+
+    if (journalFeedbackSuccessTimeoutRef.current) {
+      clearTimeout(journalFeedbackSuccessTimeoutRef.current);
+    }
+  };
+}, []);
+
+useEffect(() => {
   const handlePopState = () => {
     const pagePath =
       window.location.pathname + window.location.search;
@@ -2018,6 +2038,19 @@ if (journalArticleFromUrl) {
 
     const nextView = getInitialView();
 
+    if (nextView === "shop") {
+      const restoredShopState = getInitialShopState();
+
+      isRestoringShopHistoryRef.current = true;
+
+      setCategory(restoredShopState.category);
+      setSearchTerm(restoredShopState.searchTerm);
+      setSeason(restoredShopState.season);
+      setScentMood(restoredShopState.scentMood);
+      setSortBy(restoredShopState.sortBy);
+      setCurrentPage(restoredShopState.currentPage);
+    }
+
     if (nextView !== "shop") {
       setHeroCollectionFilter(null);
       setHeroCollectionTitle("");
@@ -2056,9 +2089,14 @@ const sendJournalFeedback = (article, override = {}) => {
 
   if (!vote) return;
 
+  const deviceId = getPlayNiceDeviceId();
+  const feedbackId = `journal_${deviceId}_${key}`;
+
   try {
     const payloadToSend = JSON.stringify({
       timestamp: new Date().toISOString(),
+      feedbackId,
+      deviceId,
       article: key,
       articleTitle: getJournalText(article?.title, lang),
       vote,
@@ -2090,8 +2128,13 @@ const getJournalSavedFeedback = (article) => {
 const triggerJournalVoteSuccess = (vote) => {
   setJournalVoteSuccess(vote);
 
-  setTimeout(() => {
+  if (journalVoteSuccessTimeoutRef.current) {
+    clearTimeout(journalVoteSuccessTimeoutRef.current);
+  }
+
+  journalVoteSuccessTimeoutRef.current = setTimeout(() => {
     setJournalVoteSuccess("");
+    journalVoteSuccessTimeoutRef.current = null;
   }, 1100);
 };
 
@@ -2188,8 +2231,13 @@ const handleJournalFeedbackSubmit = (article) => {
 
   setJournalFeedbackSuccess(true);
 
-  setTimeout(() => {
+  if (journalFeedbackSuccessTimeoutRef.current) {
+    clearTimeout(journalFeedbackSuccessTimeoutRef.current);
+  }
+
+  journalFeedbackSuccessTimeoutRef.current = setTimeout(() => {
     setJournalFeedbackSuccess(false);
+    journalFeedbackSuccessTimeoutRef.current = null;
   }, 1200);
 };
 
@@ -4329,6 +4377,10 @@ useEffect(() => {
    SEO title/meta useEffect
 ========================================= */
   useEffect(() => {
+  if (view === "journal" && !selectedProduct) {
+    return;
+  }
+
   const seoTitle = selectedProduct
     ? getProductSeoTitle(selectedProduct, lang)
     : view === "shop"
@@ -4535,7 +4587,7 @@ useEffect(() => {
 ========================================= */
 
 useEffect(() => {
-  if (view !== "journal") {
+  if (view !== "journal" || selectedProduct) {
     return undefined;
   }
 
@@ -4707,7 +4759,7 @@ useEffect(() => {
       );
     }
   };
-}, [view, journalPageArticle, lang]);
+}, [view, journalPageArticle, lang, selectedProduct]);
 
 /* =========================================
    SCENT REQUESTS USEEFFECT
