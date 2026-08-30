@@ -3487,7 +3487,7 @@ main {
 .cart-drawer.has-items {
   width: min(480px, calc(100vw - 20px));
   height: auto;
-  max-height: calc(100vh - 36px);
+  max-height: calc(100vh - 20px);
 }
 
 /* HEADER */
