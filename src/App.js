@@ -4256,7 +4256,9 @@ const restoreProductModalScroll = () => {
   });
 };
 
-const closeProductModal = () => {
+const closeProductModal = (
+  cleanupDelay = PRODUCT_MODAL_CLOSE_DELAY
+) => {
   const isMobileModal = isMobileProductModal();
 
   setNoteMapOpen(false);
@@ -4275,23 +4277,26 @@ const closeProductModal = () => {
 
     if (window.location.pathname.startsWith("/product/")) {
       const openedInsidePlayNice =
-      window.history.state?.playniceProductModal === true;
+        window.history.state?.playniceProductModal === true;
 
-    if (openedInsidePlayNice) {
-      window.addEventListener("popstate", restoreProductModalScroll, {
-        once: true
-      });
-      window.history.back();
+      if (openedInsidePlayNice) {
+        window.addEventListener(
+          "popstate",
+          restoreProductModalScroll,
+          { once: true }
+        );
+
+        window.history.back();
+      } else {
+        window.history.replaceState({}, "", "/shop");
+        setView("shop");
+        trackPageView("/shop");
+        trackMeta("PageView");
+        restoreProductModalScroll();
+      }
     } else {
-      window.history.replaceState({}, "", "/shop");
-      setView("shop");
-      trackPageView("/shop");
-      trackMeta("PageView");
       restoreProductModalScroll();
     }
-  } else {
-    restoreProductModalScroll();
-  }
   };
 
   if (isMobileModal) {
@@ -4301,18 +4306,7 @@ const closeProductModal = () => {
 
   productModalCloseTimeoutRef.current = setTimeout(() => {
     cleanupProductModal();
-  }, PRODUCT_MODAL_CLOSE_DELAY);
-};
-
-const closeProductModalAfterCartAdd = () => {
-  setNoteMapOpen(false);
-  setProductModalVisible(false);
-  setHasUserPickedSize(false);
-
-  productModalCloseTimeoutRef.current = setTimeout(() => {
-    setSelectedProduct(null);
-    restoreProductModalScroll();
-  }, PRODUCT_MODAL_CART_CLOSE_DELAY);
+  }, cleanupDelay);
 };
 
 const openImpactProductModal = (product) => {
@@ -9105,7 +9099,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   handleModalAddToCart(productForCart, activeSize);
 
   setTimeout(() => {
-    closeProductModalAfterCartAdd();
+    closeProductModal(PRODUCT_MODAL_CART_CLOSE_DELAY);
   }, 950);
     }}
       aria-live="polite"
