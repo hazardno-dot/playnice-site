@@ -8659,8 +8659,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       {tr.selectedItems}
       <span className="cart-selected-count"> · {cart.length}</span>
     </h3>
-      <span className="cart-selected-count"> · {cart.length}</span>
-    </h3>
   </div>
 
     <button
