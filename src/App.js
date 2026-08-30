@@ -4239,7 +4239,7 @@ useEffect(() => {
   openProductModal(matchedProduct, { updateUrl: false });
 }, []);
 
-const PRODUCT_MODAL_CLOSE_DELAY = 80;
+const PRODUCT_MODAL_CLOSE_DELAY = 380;
 
 const restoreProductModalScroll = () => {
   const targetScrollY = productModalScrollYRef.current;
@@ -9091,7 +9091,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     : selectedProduct;
 
   handleModalAddToCart(productForCart, activeSize);
-  closeProductModal();
+
+  setTimeout(() => {
+    closeProductModal();
+  }, 950);
   }}
       aria-live="polite"
     >
