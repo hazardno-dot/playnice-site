@@ -8158,27 +8158,24 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </div>
 )}
-      </main>
+  </main>
 
-      <div
-  className={`backdrop ${
-    cartOpen ||
-    checkoutOpen ||
-    selectedProduct ||
-    storyOpen ||
-    howItWorksOpen ||
-    faqOpen ||
-    privateSelectionOpen ||
-    catalogPreview ||
-    manifestoOpen
-      ? "show"
-      : ""
-  }`}
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  }}
-/>
+    <div
+      className={`backdrop ${
+        cartOpen ||
+        checkoutOpen ||
+        selectedProduct ||
+        storyOpen ||
+        howItWorksOpen ||
+        privateSelectionOpen
+          ? "show"
+          : ""
+      }`}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    />
 
       <aside
         className={`story-drawer ${storyOpen ? "open panel-open" : ""}`}
