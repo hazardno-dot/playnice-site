@@ -2158,12 +2158,13 @@ const sendJournalFeedback = (article, override = {}) => {
       type: "text/plain;charset=utf-8"
     });
 
-    navigator.sendBeacon(
+    return navigator.sendBeacon(
       "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
       blob
     );
   } catch (error) {
     console.error("Journal feedback submit failed:", error);
+    return false;
   }
 };
 
@@ -2215,12 +2216,16 @@ const handleJournalFeedbackVote = (article, vote) => {
 
   if (!nextVote) return;
 
-  sendJournalFeedback(article, {
+  const feedbackQueued = sendJournalFeedback(article, {
     vote: nextVote,
     note: (current.note || "").trim()
   });
 
-  triggerJournalVoteSuccess(nextVote);
+  if (feedbackQueued) {
+    triggerJournalVoteSuccess(nextVote);
+  } else {
+    console.error("Journal vote feedback was not queued.");
+  }
 };
 
 const handleJournalFeedbackNoteChange = (article, value) => {
@@ -2248,10 +2253,15 @@ const handleJournalFeedbackSubmit = (article) => {
 
   if (!current.vote || !trimmedNote) return;
 
-  sendJournalFeedback(article, {
+  const feedbackQueued = sendJournalFeedback(article, {
     vote: current.vote,
     note: trimmedNote
   });
+
+  if (!feedbackQueued) {
+    console.error("Journal note feedback was not queued.");
+    return;
+  }
 
   setJournalFeedback((prev) => {
     const prevItem = prev[key] || {};
@@ -3716,6 +3726,16 @@ const addHeroBottleToCart = () => {
 
     if (!response.ok) {
       throw new Error("International enquiry request failed");
+    }
+
+    const result = await response.json();
+
+    if (
+      !result?.success ||
+      !result?.enquiryReceived ||
+      !result?.enquiryId
+    ) {
+      throw new Error("International enquiry was not confirmed by checkout API");
     }
 
     setOrderSuccessMessage(
@@ -8189,7 +8209,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               {lang === "sr" ? "NAŠA PRIČA" : "OUR STORY"}
             </p>
 
-            <h3> id="story-drawer-title"
+            <h3 id="story-drawer-title">
               {lang === "sr"
                 ? "Stvoreno da se pamti."
                 : "Curated to be remembered."}
