@@ -9818,49 +9818,23 @@ main {
 }
 
 .catalog-modal-close {
-  flex: 0 0 34px;
-
   width: 34px;
   height: 34px;
   padding: 0;
 
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
 
   color: #fff;
   font-size: 20px;
   line-height: 1;
 
   cursor: pointer;
-}
-
-.catalog-modal-close {
-  position: relative;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-.catalog-modal-close::before {
-  content: "×";
-
-  position: absolute;
-  inset: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 20px;
-  line-height: 1;
-  color: #fff;
-
-  pointer-events: none;
 }
 
 .catalog-modal-download {

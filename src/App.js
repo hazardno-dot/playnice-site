@@ -9816,7 +9816,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     ? "Zatvori pregled kataloga"
                     : "Close catalog preview"
                 }
-              />
+              >
+                ×
+              </button>
             </div>
 
             <iframe
