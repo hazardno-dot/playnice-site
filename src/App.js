@@ -9091,7 +9091,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     : selectedProduct;
 
   handleModalAddToCart(productForCart, activeSize);
-}}
+  closeProductModal();
+  }}
       aria-live="polite"
     >
       <span>
