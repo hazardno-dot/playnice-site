@@ -4239,6 +4239,20 @@ useEffect(() => {
 
 const PRODUCT_MODAL_CLOSE_DELAY = 80;
 
+const restoreProductModalScroll = () => {
+  const targetScrollY = productModalScrollYRef.current;
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top: targetScrollY,
+        left: 0,
+        behavior: "auto"
+      });
+    });
+  });
+};
+
 const closeProductModal = () => {
   const isMobileModal = isMobileProductModal();
 
@@ -4261,13 +4275,19 @@ const closeProductModal = () => {
       window.history.state?.playniceProductModal === true;
 
     if (openedInsidePlayNice) {
+      window.addEventListener("popstate", restoreProductModalScroll, {
+        once: true
+      });
       window.history.back();
     } else {
       window.history.replaceState({}, "", "/shop");
       setView("shop");
       trackPageView("/shop");
       trackMeta("PageView");
+      restoreProductModalScroll();
     }
+  } else {
+    restoreProductModalScroll();
   }
   };
 
