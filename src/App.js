@@ -9117,13 +9117,21 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div className="checkout-grid">
     <div className="checkout-form panel-anim panel-anim-2">
       <div className="form-row two panel-item-anim panel-item-1">
+        <label className="visually-hidden" htmlFor="checkout-first-name">
+          {tr.firstName}
+        </label>
         <input
+          id="checkout-first-name"
           name="firstName"
           placeholder={tr.firstName}
           value={checkoutForm.firstName}
           onChange={handleCheckoutInput}
         />
+        <label className="visually-hidden" htmlFor="checkout-last-name">
+          {tr.lastName}
+        </label>
         <input
+          id="checkout-last-name"
           name="lastName"
           placeholder={tr.lastName}
           value={checkoutForm.lastName}
@@ -9132,14 +9140,22 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="form-row two panel-item-anim panel-item-2">
+        <label className="visually-hidden" htmlFor="checkout-email">
+          {tr.email}
+        </label>
         <input
+          id="checkout-email"
           name="email"
           type="email"
           placeholder={tr.email}
           value={checkoutForm.email}
           onChange={handleCheckoutInput}
         />
+        <label className="visually-hidden" htmlFor="checkout-phone">
+          {tr.phone}
+        </label>
         <input
+          id="checkout-phone"
           name="phone"
           placeholder={tr.phone}
           value={checkoutForm.phone}
@@ -9148,11 +9164,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="form-row two panel-item-anim panel-item-3">
+  <label className="visually-hidden" htmlFor="checkout-country">
+    {lang === "sr" ? "Zemlja dostave" : "Delivery country"}
+  </label>
   <select
+    id="checkout-country"
     name="country"
     value={checkoutForm.country}
     onChange={handleCheckoutInput}
-    aria-label={lang === "sr" ? "Zemlja dostave" : "Delivery country"}
   >
     {checkoutCountryOptions.map((country) => (
       <option key={country.value} value={country.value}>
@@ -9161,7 +9180,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     ))}
   </select>
 
+  <label className="visually-hidden" htmlFor="checkout-city">
+    {tr.city}
+  </label>
   <input
+    id="checkout-city"
     name="city"
     placeholder={tr.city}
     value={checkoutForm.city}
@@ -9170,7 +9193,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </div>
 
 <div className="form-row panel-item-anim panel-item-4">
+  <label className="visually-hidden" htmlFor="checkout-address">
+    {tr.address}
+  </label>
   <input
+    id="checkout-address"
     name="address"
     placeholder={tr.address}
     value={checkoutForm.address}
@@ -9194,7 +9221,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 )}
 
       <div className="form-row panel-item-anim panel-item-4">
+        <label className="visually-hidden" htmlFor="checkout-note">
+          {tr.note}
+        </label>
         <textarea
+          id="checkout-note"
           name="note"
           placeholder={tr.note}
           rows="4"
