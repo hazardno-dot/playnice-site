@@ -3173,11 +3173,6 @@ main {
 }
 
 @media (max-width: 768px) {
-  .cart-drawer.has-items {
-    height: calc(100vh - 20px);
-    max-height: calc(100vh - 20px);
-  }
-
   .cart-fixed-footer {
     padding: 12px 18px 18px;
   }
