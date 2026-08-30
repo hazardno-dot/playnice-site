@@ -5100,7 +5100,10 @@ const titleLengthClass =
           )}
         </span>
 
-        <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
+        <span
+          className={`size-chip-flash ${isJustAdded ? "show" : ""}`}
+          aria-hidden="true"
+        >
           {tr.justAdded}
         </span>
       </button>
