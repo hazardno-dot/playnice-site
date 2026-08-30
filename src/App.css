@@ -10975,7 +10975,7 @@ main {
 }
 
 .policy-detail-row span:not(:last-child)::after {
-  content: "â€¢";
+  content: "\2022";
   margin-left: 13px;
   color: rgba(220, 181, 107, 0.44);
 }
