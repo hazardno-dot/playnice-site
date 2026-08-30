@@ -707,6 +707,18 @@ main {
   scrollbar-color: rgba(220, 181, 107, 0.35) transparent;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* WebKit */
 .cart-items::-webkit-scrollbar,
 .private-selection-items::-webkit-scrollbar,
