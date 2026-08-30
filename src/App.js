@@ -4822,7 +4822,8 @@ const ProductCard = ({
   product,
   wishlist,
   toggleWishlist,
-  sprayingWishlistId
+  sprayingWishlistId,
+  changeViewOnOpen = true
 }) => {
   const copy = getProductCopy(product, lang);
   const minPrice = getMinPrice(product);
@@ -4899,7 +4900,11 @@ const titleLengthClass =
       type="button"
       className="product-card-media clickable-media"
       onMouseDown={(e) => e.preventDefault()}
-      onClick={() => handleProductCardOpen(product)}
+      onClick={() =>
+        changeViewOnOpen
+          ? handleProductCardOpen(product)
+          : openProductModal(product, { changeView: false })
+      }
       aria-label={product.name}
     >
       <img
@@ -4996,7 +5001,11 @@ const titleLengthClass =
   <button
     type="button"
     className="product-card-cta"
-    onClick={() => handleProductCardOpen(product)}
+    onClick={() =>
+      changeViewOnOpen
+        ? handleProductCardOpen(product)
+        : openProductModal(product, { changeView: false })
+    }
   >
     {tr.productCardCta}
   </button>
@@ -6335,6 +6344,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       wishlist={wishlist}
                       toggleWishlist={toggleWishlist}
                       sprayingWishlistId={sprayingWishlistId}
+                      changeViewOnOpen={false}
                     />
                   ))}
               </div>
