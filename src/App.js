@@ -8434,12 +8434,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <div className="cart-scroll-area panel-anim panel-anim-2">
         <div className="cart-items">
           {cart.map((item, index) => {
-            const cartProduct = products.find((product) => product.id === item.id);
-
-            const displayName =
-              cartProduct?.shortName ||
-              cartProduct?.cardName ||
-              item.name;
+            const displayName = item.name;
 
             return (
               <div
