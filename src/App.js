@@ -4240,7 +4240,7 @@ useEffect(() => {
 }, []);
 
 const PRODUCT_MODAL_CLOSE_DELAY = 180;
-const PRODUCT_MODAL_CART_CLOSE_DELAY = 380;
+const PRODUCT_MODAL_CART_CLOSE_DELAY = 280;
 
 const restoreProductModalScroll = () => {
   const targetScrollY = productModalScrollYRef.current;
