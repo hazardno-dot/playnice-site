@@ -1768,12 +1768,14 @@ useEffect(() => {
     params.set("view", view);
   }
 
-  if (category !== "All") params.set("category", category);
-  if (searchTerm.trim()) params.set("search", searchTerm.trim());
-  if (season !== "All") params.set("season", season);
-  if (scentMood !== "All") params.set("mood", scentMood);
-  if (sortBy !== "featured") params.set("sort", sortBy);
-  if (currentPage > 1) params.set("page", String(currentPage));
+  if (view === "shop") {
+    if (category !== "All") params.set("category", category);
+    if (searchTerm.trim()) params.set("search", searchTerm.trim());
+    if (season !== "All") params.set("season", season);
+    if (scentMood !== "All") params.set("mood", scentMood);
+    if (sortBy !== "featured") params.set("sort", sortBy);
+    if (currentPage > 1) params.set("page", String(currentPage));
+  }
 
   const query = params.toString();
 
