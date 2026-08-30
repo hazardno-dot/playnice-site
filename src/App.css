@@ -3486,7 +3486,7 @@ main {
 
 .cart-drawer.has-items {
   width: min(480px, calc(100vw - 20px));
-  height: min(760px, calc(100vh - 36px));
+  height: auto;
   max-height: calc(100vh - 36px);
 }
 
@@ -3715,7 +3715,7 @@ main {
 @media (max-width: 768px) {
   .cart-drawer.has-items {
     width: calc(100vw - 20px);
-    height: calc(100vh - 20px);
+    height: auto;
     max-height: calc(100vh - 20px);
   }
 
