@@ -6024,7 +6024,7 @@ main {
   visibility: visible;
   pointer-events: auto;
 
-  transform: translate(50%, 0);
+  transform: translate(50%, -50%);
 
   transition:
     transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
@@ -6486,10 +6486,17 @@ main {
 ========================================= */
 
 .checkout-modal {
-  inset: auto 50% 18px auto;
+  top: 50%;
+  right: 50%;
+  bottom: auto;
+  left: auto;
+
   width: min(990px, calc(100vw - 28px));
   max-height: calc(100vh - 36px);
+
   border-radius: 26px;
+
+  transform: translate(50%, calc(-50% + 28px));
 }
 
 /* HEADER */
