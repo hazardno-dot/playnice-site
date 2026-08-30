@@ -9806,14 +9806,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             aria-label={lang === "sr" ? "Pregled kataloga" : "Catalog preview"}
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              className="catalog-modal-close"
-              type="button"
-              onClick={closeCatalogPreview}
-              aria-label={lang === "sr" ? "Zatvori pregled kataloga" : "Close catalog preview"}
-            >
-              ×
-            </button>
+            <div className="catalog-modal-toolbar">
+              <button
+                className="catalog-modal-close"
+                type="button"
+                onClick={closeCatalogPreview}
+                aria-label={
+                  lang === "sr"
+                    ? "Zatvori pregled kataloga"
+                    : "Close catalog preview"
+                }
+              >
+                ×
+              </button>
+            </div>
 
             <iframe
               src={catalogPreview}

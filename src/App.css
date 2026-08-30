@@ -9784,26 +9784,41 @@ main {
   width: min(900px, 92vw);
   height: 85vh;
 
+  display: flex;
+  flex-direction: column;
+
   border-radius: 22px;
   overflow: hidden;
 
   background: #0a0a0a;
-  border: 1px solid rgba(220,181,107,0.2);
+  border: 1px solid rgba(220, 181, 107, 0.2);
 
-  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+.catalog-modal-toolbar {
+  flex: 0 0 46px;
+  min-height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  padding: 0 10px;
+
+  background: #0a0a0a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .catalog-modal-frame {
+  flex: 1 1 auto;
   width: 100%;
-  height: 100%;
+  min-height: 0;
   border: none;
 }
 
 .catalog-modal-close {
-  position: absolute;
-  top: 10px;
-  right: 14px;
-  z-index: 10;
+  flex: 0 0 34px;
 
   width: 34px;
   height: 34px;
@@ -9813,7 +9828,7 @@ main {
   align-items: center;
   justify-content: center;
 
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
 
