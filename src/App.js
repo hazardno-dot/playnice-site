@@ -7672,7 +7672,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <div className="footer-column">
       <h4>{lang === "sr" ? "Navigacija" : "Navigation"}</h4>
 
-      <button type="button" className="footer-link" onClick={goHome}>
+      <button
+        type="button"
+        className="footer-link"
+        onClick={(event) => {
+          event.currentTarget.blur();
+          goHome();
+        }}
+      >
         {lang === "sr" ? "Početna" : "Home"}
       </button>
 
