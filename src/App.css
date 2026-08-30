@@ -310,7 +310,7 @@ main {
 }
 
 /* =========================================
-   SHOP COLLECTION INTRO â€” RESPONSIVE
+   SHOP COLLECTION INTRO — RESPONSIVE
 ========================================= */
 
 @media (max-width: 900px) {
@@ -397,7 +397,7 @@ main {
 }
 
 /* =========================================
-   PANEL STAGGER SYSTEM â€” BALANCED (FINAL)
+   PANEL STAGGER SYSTEM — BALANCED (FINAL)
 ========================================= */
 
 .panel-open .panel-anim-1 { transition-delay: 0.10s; }
@@ -695,7 +695,7 @@ main {
 }
 
 /* =========================================
-   PLAYNICE SCROLLBAR â€” PREMIUM DARK GOLD
+   PLAYNICE SCROLLBAR — PREMIUM DARK GOLD
 ========================================= */
 
 /* Target scrollable areas */
@@ -811,7 +811,7 @@ main {
 }
 
 /* =========================================
-   HERO + HERO CAROUSEL â€” IMAGE ONLY FINAL
+   HERO + HERO CAROUSEL — IMAGE ONLY FINAL
 ========================================= */
 
 .hero {
@@ -912,7 +912,7 @@ main {
 }
 
 /* =========================================
-   HERO â€” IMAGE ONLY SLIDES
+   HERO — IMAGE ONLY SLIDES
 ========================================= */
 
 .hero-image-only {
@@ -982,7 +982,7 @@ main {
 }
 
 /* =========================================
-   ARROWS â€” ULTRA PREMIUM V2
+   ARROWS — ULTRA PREMIUM V2
 ========================================= */
 
 .hero-carousel-arrow {
@@ -1283,7 +1283,7 @@ main {
 }
 
 /* =========================================
-   VALUE STRIP â€” MOBILE FINAL
+   VALUE STRIP — MOBILE FINAL
 ========================================= */
 @media (max-width: 768px) {
   .value-strip {
@@ -1315,7 +1315,7 @@ main {
 }
 
 /* =========================================
-   IDENTITY LAYER â€” WHY PLAYNICE EXISTS
+   IDENTITY LAYER — WHY PLAYNICE EXISTS
 ========================================= */
 
 .identity-layer {
@@ -1530,7 +1530,7 @@ main {
 }
 
 /* =========================================
-   SHOP TOOLBAR â€” PREMIUM COMPACT
+   SHOP TOOLBAR — PREMIUM COMPACT
 ========================================= */
 
 .shop-toolbar-compact {
@@ -1649,7 +1649,7 @@ main {
 }
 
 /* =========================================
-   CATEGORY SELECT â€” COMPACT
+   CATEGORY SELECT — COMPACT
 ========================================= */
 
 .toolbar-group-category {
@@ -1833,7 +1833,7 @@ main {
 }
 
 /* =========================================
-   PREMIUM FILTER SELECTS â€” SEASON / SORT
+   PREMIUM FILTER SELECTS — SEASON / SORT
    Uses same visual language as Category
 ========================================= */
 
@@ -1884,7 +1884,7 @@ main {
 }
 
 /* =========================================
-   ACTIVE FILTERS BAR â€” COMPACT
+   ACTIVE FILTERS BAR — COMPACT
 ========================================= */
 
 .active-filters-bar-compact {
@@ -1995,7 +1995,7 @@ main {
 }
 
 /* =========================================
-   RESPONSIVE â€” COMPACT TOOLBAR
+   RESPONSIVE — COMPACT TOOLBAR
 ========================================= */
 
 @media (max-width: 1100px) {
@@ -2059,7 +2059,7 @@ main {
 }
 
 /* =========================================
-   BACKDROP â€” PANEL-SYNC POLISH
+   BACKDROP — PANEL-SYNC POLISH
 ========================================= */
 .backdrop {
   position: fixed;
@@ -2136,7 +2136,7 @@ main {
 }
 
 /* =========================================
-   SCENT MOOD FILTER â€” FINAL
+   SCENT MOOD FILTER — FINAL
 ========================================= */
 
 .scent-mood-filter {
@@ -2640,32 +2640,162 @@ main {
 
 .cart-item {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
   padding: 18px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.cart-item-main {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+}
+
+.cart-item-thumb {
+  width: 64px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(220, 181, 107, 0.09);
+
+  background:
+    radial-gradient(circle at 50% 30%,
+      rgba(220, 181, 107, 0.08),
+      transparent 65%),
+    rgba(255, 255, 255, 0.018);
+}
+
+.cart-item-thumb img {
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.34));
+}
+
+.cart-item-thumb span {
+  color: var(--gold);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.5rem;
+}
+
+.cart-item-info {
+  min-width: 0;
+}
+
+.cart-item-brand {
+  display: block;
+  margin-bottom: 3px;
+  color: rgba(220, 181, 107, 0.74);
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .cart-item-info h4 {
   margin: 0 0 6px;
-  font-size: 16px;
+  color: rgba(255, 248, 235, 0.94);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 18px;
+  line-height: 1.08;
+  font-weight: 600;
 }
 
-.cart-item-info p {
-  margin: 0 0 6px;
+.cart-item-info .cart-item-meta {
+  margin: 0;
   color: var(--text-soft);
-  font-size: 14px;
-}
-
-.cart-item-info strong {
-  color: var(--gold);
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .cart-item-actions {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: center;
   gap: 10px;
+}
+
+.cart-selected-count {
+  color: rgba(255, 248, 235, 0.42);
+  font-family: "Inter", sans-serif;
+  font-size: 0.72em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.remove-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 248, 235, 0.42);
+  font-size: 12px;
+  line-height: 1.2;
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.remove-link:hover {
+  color: rgba(220, 181, 107, 0.9);
+}
+
+.cart-footer-shipping-status {
+  margin: -2px 0 12px;
+  color: rgba(255, 248, 235, 0.58);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.cart-footer-shipping-status.is-unlocked {
+  color: var(--success);
+}
+
+.cart-selected-count {
+  color: rgba(255, 248, 235, 0.42);
+  font-family: "Inter", sans-serif;
+  font-size: 0.72em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.remove-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 248, 235, 0.42);
+  font-size: 12px;
+  line-height: 1.2;
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.remove-link:hover {
+  color: rgba(220, 181, 107, 0.9);
+}
+
+.cart-footer-shipping-status {
+  margin: -2px 0 12px;
+  color: rgba(255, 248, 235, 0.58);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.cart-footer-shipping-status.is-unlocked {
+  color: var(--success);
 }
 
 .qty-control {
@@ -2784,7 +2914,7 @@ main {
 }
 
 /* =========================================
-   CART DRAWER â€” SUMMARY / TRUST / CTA OVERRIDES
+   CART DRAWER — SUMMARY / TRUST / CTA OVERRIDES
 ========================================= */
 
 .cart-total-row {
@@ -2908,7 +3038,7 @@ main {
 }
 
 /* =========================================
-   CART DRAWER â€” SCROLL AREA + FIXED FOOTER
+   CART DRAWER — SCROLL AREA + FIXED FOOTER
 ========================================= */
 
 .cart-drawer-header {
@@ -2986,7 +3116,7 @@ main {
 }
 
 /* =========================================
-   SHIPPING PROGRESS â€” COMPACT PREMIUM
+   SHIPPING PROGRESS — COMPACT PREMIUM
 ========================================= */
 
 .shipping-progress-card {
@@ -3177,7 +3307,7 @@ main {
 }
 
 /* =========================================
-   MINI CART PREVIEW â€” MICRO CONFIRMATION
+   MINI CART PREVIEW — MICRO CONFIRMATION
 ========================================= */
 
 .mini-cart-preview {
@@ -3349,7 +3479,138 @@ main {
 }
 
 /* =========================================
-   MINI CART PREVIEW â€” MOBILE ORB
+   CART PREMIUM POLISH — RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+  .cart-item {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: start;
+    padding: 14px 0;
+  }
+
+  .cart-item-main {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+  }
+
+  .cart-item-thumb {
+    width: 48px;
+    height: 60px;
+    border-radius: 11px;
+  }
+
+  .cart-item-thumb img {
+    padding: 4px;
+  }
+
+  .cart-item-brand {
+    margin-bottom: 2px;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+  }
+
+  .cart-item-info h4 {
+    margin-bottom: 4px;
+    font-size: 15px;
+    line-height: 1.06;
+  }
+
+  .cart-item-info .cart-item-meta {
+    font-size: 12px;
+  }
+
+  .cart-item-actions {
+    gap: 7px;
+  }
+
+  .cart-item-actions .qty-control {
+    flex-shrink: 0;
+  }
+
+  .cart-item-actions .remove-link {
+    font-size: 11px;
+  }
+
+  .cart-footer-shipping-status {
+    margin-bottom: 10px;
+    font-size: 11px;
+  }
+
+  .cart-selected-count {
+    font-size: 0.64em;
+  }
+}
+
+@media (max-width: 400px) {
+  .cart-items {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .cart-item {
+    gap: 8px;
+  }
+
+  .cart-item-main {
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .cart-item-thumb {
+    width: 46px;
+    height: 58px;
+  }
+
+  .cart-item-info h4 {
+    font-size: 14px;
+  }
+
+  .cart-item-info .cart-item-meta {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .cart-item {
+    gap: 6px;
+  }
+
+  .cart-item-main {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 7px;
+  }
+
+  .cart-item-thumb {
+    width: 42px;
+    height: 54px;
+  }
+
+  .cart-item-brand {
+    font-size: 7px;
+  }
+
+  .cart-item-info h4 {
+    font-size: 13px;
+  }
+
+  .cart-item-info .cart-item-meta {
+    font-size: 10.5px;
+  }
+
+  .cart-item-actions {
+    gap: 5px;
+  }
+
+  .cart-item-actions .remove-link {
+    font-size: 10px;
+  }
+}
+
+/* =========================================
+   MINI CART PREVIEW — MOBILE ORB
 ========================================= */
 
 .mini-cart-preview-orb-text {
@@ -3526,7 +3787,7 @@ main {
 }
 
 /* =========================================
-   PRODUCT MODAL â€” CLOSE BUTTON POSITION
+   PRODUCT MODAL — CLOSE BUTTON POSITION
 ========================================= */
 .product-modal .close-button {
   position: absolute;
@@ -3536,7 +3797,7 @@ main {
 }
 
 /* =========================================
-   PRODUCT MODAL â€” CONTENT REVEAL
+   PRODUCT MODAL — CONTENT REVEAL
 ========================================= */
 .product-modal .panel-anim,
 .product-modal .panel-item-anim,
@@ -3639,7 +3900,7 @@ main {
 }
 
 /* =========================================
-   PRODUCT MODAL â€” EYEBROW
+   PRODUCT MODAL — EYEBROW
 ========================================= */
 .modal-eyebrow {
   position: relative;
@@ -3760,7 +4021,7 @@ main {
 }
 
 /* =========================================
-   INSPIRED BY â€” MINI HEADER VERSION
+   INSPIRED BY — MINI HEADER VERSION
 ========================================= */
 .modal-inspired-mini {
   flex: 1.45;
@@ -3851,7 +4112,7 @@ main {
 }
 
 /* =========================================
-   PRODUCT MODAL â€” LAYOUT
+   PRODUCT MODAL — LAYOUT
 ========================================= */
 .modal-body {
   display: grid;
@@ -4357,7 +4618,7 @@ main {
 }
 
 /* =========================================
-   FALLING BADGE LETTERS â€” MOBILE
+   FALLING BADGE LETTERS — MOBILE
 ========================================= */
 
 @media (max-width: 640px) {
@@ -4473,7 +4734,7 @@ main {
 }
 
 /* =========================================
-   MODAL â€” SAME ENERGY RECOMMENDATIONS
+   MODAL — SAME ENERGY RECOMMENDATIONS
 ========================================= */
 
 .modal-same-energy {
@@ -4802,7 +5063,7 @@ main {
 }
 
 /* =========================================
-   SIZE HELPER â€” INTERACTION UPGRADE
+   SIZE HELPER — INTERACTION UPGRADE
 ========================================= */
 
 /* default state */
@@ -5085,7 +5346,7 @@ main {
 }
 
 /* =========================================
-   MODAL ADD TO CART â€” ADDED STATE
+   MODAL ADD TO CART — ADDED STATE
 ========================================= */
 
 .modal-add-button.is-added {
@@ -5260,7 +5521,7 @@ main {
 }
 
 /* =========================================
-   PRODUCT MODAL â€” RESPONSIVE
+   PRODUCT MODAL — RESPONSIVE
 ========================================= */
 
 @media (max-width: 980px) {
@@ -5302,7 +5563,7 @@ main {
 }
 
 /* =========================================
-   PRODUCT MODAL â€” MOBILE
+   PRODUCT MODAL — MOBILE
 ========================================= */
 
 @media (max-width: 640px) {
@@ -5914,7 +6175,7 @@ main {
 }
 
 /* =========================================
-   CHECKOUT â€” INTERNATIONAL NOTE TONE PATCH
+   CHECKOUT — INTERNATIONAL NOTE TONE PATCH
 ========================================= */
 
 .checkout-international-note,
@@ -6179,7 +6440,7 @@ main {
 }
 
 /* =========================================
-   RESPONSIVE â€” CLEANED
+   RESPONSIVE — CLEANED
    Non-header / non-announcement responsive rules only
 ========================================= */
 
@@ -6192,7 +6453,7 @@ main {
 }
 
 /* =========================================
-   HERO â€” RESPONSIVE FINAL
+   HERO — RESPONSIVE FINAL
    Real carousel structure, no mobile 2.4:1 forcing
 ========================================= */
 
@@ -6309,7 +6570,7 @@ main {
 }
 
 /* =========================================
-   HERO â€” MOBILE CAROUSEL 4:3
+   HERO — MOBILE CAROUSEL 4:3
 ========================================= */
 
 @media (max-width: 768px) {
@@ -6509,7 +6770,7 @@ main {
 }
 
 /* =========================================
-   PAGINATION â€” PREMIUM COMPACT
+   PAGINATION — PREMIUM COMPACT
 ========================================= */
 
 .pagination-wrap {
@@ -7154,7 +7415,7 @@ main {
 }
 
 /* =========================================
-   STORY DRAWER â€” FINAL COMPACT FIT
+   STORY DRAWER — FINAL COMPACT FIT
 ========================================= */
 .story-drawer {
   position: fixed;
@@ -7304,7 +7565,7 @@ main {
 }
 
 /* =========================================
-   STORY DRAWER â€” MOBILE
+   STORY DRAWER — MOBILE
 ========================================= */
 @media (max-width: 640px) {
   .story-drawer {
@@ -7726,7 +7987,7 @@ main {
 }
 
 /* =========================================
-   PRODUCT CARD â€” FINAL CLEAN V2
+   PRODUCT CARD — FINAL CLEAN V2
 ========================================= */
 
 .product-grid {
@@ -7766,7 +8027,7 @@ main {
 }
 
 /* =========================================
-   PRODUCT CARD â€” MEDIA
+   PRODUCT CARD — MEDIA
 ========================================= */
 
 .product-card-media {
@@ -7828,7 +8089,7 @@ main {
 }
 
 /* =========================================
-   PRODUCT CARD â€” CONTENT
+   PRODUCT CARD — CONTENT
 ========================================= */
 
 .product-meta {
@@ -8514,7 +8775,7 @@ main {
 }
 
 /* =========================================
-   PRODUCT CARD â€” DESKTOP COMPACT PATCH
+   PRODUCT CARD — DESKTOP COMPACT PATCH
    Desktop only / keeps mobile untouched
 ========================================= */
 
@@ -9027,7 +9288,7 @@ main {
 }
 
 /* =========================================
-   CATALOG DOWNLOAD â€” ENTRANCE ANIMATION
+   CATALOG DOWNLOAD — ENTRANCE ANIMATION
 ========================================= */
 
 @keyframes catalogFadeRise {
@@ -9238,7 +9499,7 @@ main {
 }
 
 /* =========================================
-   HOW IT WORKS â€” COMPACT + DISCOVERY INLINE
+   HOW IT WORKS — COMPACT + DISCOVERY INLINE
 ========================================= */
 
 .how-it-works-head > p:not(.section-kicker) {
@@ -10207,7 +10468,7 @@ main {
 }
 
 /* =========================================
-   HOW IT WORKS DRAWER â€” STORY PATTERN
+   HOW IT WORKS DRAWER — STORY PATTERN
 ========================================= */
 .how-it-works-drawer {
   position: fixed;
@@ -10476,7 +10737,7 @@ main {
 }
 
 /* =========================================
-   HEADER â€” PRIVATE SELECTION ICON BUTTON
+   HEADER — PRIVATE SELECTION ICON BUTTON
 ========================================= */
 
 .header-private-selection-btn {
@@ -10692,7 +10953,7 @@ main {
 }
 
 /* =========================================
-   FOOTER â€” E-COMMERCE LUXURY
+   FOOTER — E-COMMERCE LUXURY
 ========================================= */
 
 .site-footer {
@@ -10911,7 +11172,7 @@ main {
 }
 
 /* =========================================
-   POLICY STRIP â€” FOOTER / CHECKOUT
+   POLICY STRIP — FOOTER / CHECKOUT
 ========================================= */
 
 .policy-dot {
@@ -11129,7 +11390,7 @@ main {
 }
 
 /* =========================================
-   CHECKOUT POLICY â€” RETURN NOTE ONLY
+   CHECKOUT POLICY — RETURN NOTE ONLY
 ========================================= */
 
 .policy-compact--checkout {
@@ -11197,7 +11458,7 @@ main {
 }
 
 /* =========================================
-   RESPONSIVE â€” FOOTER â€” FINAL
+   RESPONSIVE — FOOTER — FINAL
 ========================================= */
 
 @media (max-width: 1024px) {
@@ -11513,7 +11774,7 @@ main {
 }
 
 /* =========================================
-   STICKY CTA â€” FINAL COMPACT GLOBAL
+   STICKY CTA — FINAL COMPACT GLOBAL
    Same CTA for homepage + shop, with Journal link
 ========================================= */
 
@@ -11765,7 +12026,7 @@ main {
   border-radius: 4px;
 }
 
-/* Journal â€” new/unread article */
+/* Journal — new/unread article */
 
 .sticky-cta-journal-link.has-new {
   color: #7edb95;
@@ -11798,7 +12059,7 @@ main {
 }
 
 /* =========================================
-   STICKY CTA â€” MOBILE
+   STICKY CTA — MOBILE
    Same width rhythm as mobile sections
 ========================================= */
 
@@ -11867,7 +12128,7 @@ main {
 }
 
 /* =========================================
-   STICKY CTA â€” ELECTRIC TEXT EFFECT
+   STICKY CTA — ELECTRIC TEXT EFFECT
 ========================================= */
 
 @keyframes stickyElectricPulse {
@@ -12106,7 +12367,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   SHOP VALUE ANCHOR â€” COMPACT
+   SHOP VALUE ANCHOR — COMPACT
 ========================================= */
 
 .shop-value-anchor {
@@ -12567,7 +12828,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   PRODUCT MODAL â€” HIDE MOBILE SCROLLBAR
+   PRODUCT MODAL — HIDE MOBILE SCROLLBAR
 ========================================= */
 
 .product-modal-layer,
@@ -12582,7 +12843,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   SIDE AD RAILS â€” PREMIUM PARTNER PLACEMENT
+   SIDE AD RAILS — PREMIUM PARTNER PLACEMENT
 ========================================= */
 
 .side-ad-rails {
@@ -12894,7 +13155,7 @@ body.is-scrolling .back-to-top:active {
     transform: translateX(2px);
   }
 
-    /* SIDE AD TITLE â€” smaller, centered, same on both banners */
+    /* SIDE AD TITLE — smaller, centered, same on both banners */
   .side-ad-title,
   .side-ad-rail-left .side-ad-title,
   .side-ad-rail-right .side-ad-title {
@@ -12923,7 +13184,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   FOREVER SPONSORED RAIL â€” BRAND PATCH
+   FOREVER SPONSORED RAIL — BRAND PATCH
 ========================================= */
 
 .side-ad-rail,
@@ -13005,7 +13266,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   MOBILE SPONSORED AD â€” FINAL MICRO BAR
+   MOBILE SPONSORED AD — FINAL MICRO BAR
 ========================================= */
 
 .mobile-sponsored-ad-wrap {
@@ -13323,7 +13584,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   MOBILE PRODUCT GRID â€” COMPACT PREMIUM CATALOG
+   MOBILE PRODUCT GRID — COMPACT PREMIUM CATALOG
    Image + centered title + note + why choose + from price
 ========================================= */
 
@@ -13710,7 +13971,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   HEADER SYSTEM â€” PLAYNICE FINAL CLEAN
+   HEADER SYSTEM — PLAYNICE FINAL CLEAN
    Desktop + mobile header + announcement
 ========================================= */
 
@@ -13764,7 +14025,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   HEADER â€” BRAND
+   HEADER — BRAND
 ========================================= */
 
 .header-system .brand {
@@ -13867,7 +14128,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   HEADER â€” CENTER HOME / SHOP CIRCLE
+   HEADER — CENTER HOME / SHOP CIRCLE
 ========================================= */
 
 .header-system .nav-links {
@@ -14083,7 +14344,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   SHOP ORB â€” NEW PRODUCT SIGNAL + SHAKE
+   SHOP ORB — NEW PRODUCT SIGNAL + SHAKE
 ========================================= */
 
 .header-system .nav-links.has-new-shop-signal {
@@ -14228,7 +14489,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   HEADER â€” RIGHT UTILITY PILL
+   HEADER — RIGHT UTILITY PILL
 ========================================= */
 
 .header-system .topbar-right {
@@ -14406,7 +14667,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   HEADER â€” LANGUAGE TOGGLE
+   HEADER — LANGUAGE TOGGLE
 ========================================= */
 
 .header-system .language-compact {
@@ -14465,7 +14726,7 @@ body.is-scrolling .back-to-top:active {
 }
 
 /* =========================================
-   ANNOUNCEMENT BAR â€” SYSTEM CONNECTOR
+   ANNOUNCEMENT BAR — SYSTEM CONNECTOR
 ========================================= */
 
 .header-system .announcement-bar-system {
@@ -14754,7 +15015,7 @@ body.scrolled .header-system .announcement-bar-system {
 }
 
 /* =========================================
-   ANNOUNCEMENT BAR â€” FOREVER LOGO LINK
+   ANNOUNCEMENT BAR — FOREVER LOGO LINK
 ========================================= */
 
 .header-system .announcement-logo-link {
@@ -14811,7 +15072,7 @@ body.scrolled .header-system .announcement-bar-system {
 }
 
 /* =========================================
-   SHOP NEW STATE â€” SKY BLUE REFINED
+   SHOP NEW STATE — SKY BLUE REFINED
 ========================================= */
 
 .header-system .announcement-text.announcement-new-shop,
@@ -14921,7 +15182,7 @@ body.scrolled .header-system .announcement-bar-system {
     letter-spacing: 0.18em;
   }
 
-  /* CENTER NAV â€” two separate round buttons */
+  /* CENTER NAV — two separate round buttons */
   .header-system .nav-links {
     grid-column: 2;
     justify-self: center;
@@ -16221,7 +16482,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   HOME â€” NEW ARRIVALS
+   HOME — NEW ARRIVALS
 ========================================= */
 
 .new-arrivals-section {
@@ -16266,7 +16527,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   NEW ARRIVALS â€” VIEW ALL BUTTON
+   NEW ARRIVALS — VIEW ALL BUTTON
 ========================================= */
 
 .new-arrivals-view-all {
@@ -16334,7 +16595,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   NEW ARRIVALS â€” MARQUEE
+   NEW ARRIVALS — MARQUEE
 ========================================= */
 
 .new-arrivals-marquee {
@@ -16388,7 +16649,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   NEW ARRIVALS â€” PRODUCT CARD
+   NEW ARRIVALS — PRODUCT CARD
 ========================================= */
 
 .new-arrival-card {
@@ -16562,7 +16823,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   HOME BEST SELLERS â€” CENTERED HEADER
+   HOME BEST SELLERS — CENTERED HEADER
 ========================================= */
 
 .homepage-shop-preview > .section-head {
@@ -16722,7 +16983,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   ACCESSIBILITY â€” REDUCED MOTION
+   ACCESSIBILITY — REDUCED MOTION
 ========================================= */
 
 @media (prefers-reduced-motion: reduce) {
@@ -16792,7 +17053,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   MOBILE â€” PRODUCT IMAGE +10%
+   MOBILE — PRODUCT IMAGE +10%
 ========================================= */
 
 @media (max-width: 768px) {
@@ -16803,7 +17064,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   HOME â€” DISCOVERY SETS
+   HOME — DISCOVERY SETS
 ========================================= */
 
 .discovery-showcase {
@@ -17063,7 +17324,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   MOBILE â€” TWO CARDS SIDE BY SIDE
+   MOBILE — TWO CARDS SIDE BY SIDE
 ========================================= */
 
 @media (max-width: 640px) {
@@ -17179,7 +17440,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   HOME â€” HOW IT WORKS + WHY PLAYNICE
+   HOME — HOW IT WORKS + WHY PLAYNICE
 ========================================= */
 
 .why-how-section {
@@ -17483,7 +17744,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   HOME â€” COMMUNITY REQUESTS COMPACT
+   HOME — COMMUNITY REQUESTS COMPACT
 ========================================= */
 
 @media (min-width: 981px) {
@@ -17578,7 +17839,7 @@ body.overlay-lock .header-system {
 }
 
 /* =========================================
-   HOME â€” UNIFORM SECTION DIVIDERS
+   HOME — UNIFORM SECTION DIVIDERS
 ========================================= */
 
 /*

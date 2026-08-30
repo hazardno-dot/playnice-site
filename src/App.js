@@ -8398,9 +8398,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 >
   <div className="cart-drawer-header panel-anim panel-anim-1">
     <div>
-      <p className="section-kicker">{tr.yourCart}</p>
-      <h3>{tr.selectedItems}</h3>
-    </div>
+  <p className="section-kicker">{tr.yourCart}</p>
+    <h3>
+      {tr.selectedItems}
+      <span className="cart-selected-count"> · {cart.length}</span>
+    </h3>
+  </div>
 
     <button
       className="close-button"
@@ -8430,49 +8433,89 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <>
       <div className="cart-scroll-area panel-anim panel-anim-2">
         <div className="cart-items">
-          {cart.map((item, index) => (
-            <div
-              className={`cart-item panel-item-anim panel-item-${Math.min(
-                index + 1,
-                6
-              )}`}
-              key={item.key}
-            >
-              <div className="cart-item-info">
-                <h4>{item.name}</h4>
-                <p>{item.size}</p>
-                <strong>{formatPrice(item.price)}</strong>
-              </div>
+          {cart.map((item, index) => {
+            const cartProduct = products.find((product) => product.id === item.id);
 
-              <div className="cart-item-actions">
-                <div className="qty-control">
-                  <button
-                    type="button"
-                    onClick={() => updateQuantity(item.key, -1)}
-                  >
-                    -
-                  </button>
+            const displayName =
+              cartProduct?.shortName ||
+              cartProduct?.cardName ||
+              item.name;
 
-                  <span>{item.quantity}</span>
+            const brand =
+              cartProduct?.name && displayName
+                ? cartProduct.name
+                    .replace(displayName, "")
+                    .replace(
+                      /Eau de Parfum|Eau de Toilette|Extrait de Parfum|Parfum/gi,
+                      ""
+                    )
+                    .trim()
+                : "";
 
-                  <button
-                    type="button"
-                    onClick={() => updateQuantity(item.key, 1)}
-                  >
-                    +
-                  </button>
+            return (
+              <div
+                className={`cart-item panel-item-anim panel-item-${Math.min(
+                  index + 1,
+                  6
+                )}`}
+                key={item.key}
+              >
+                <div className="cart-item-main">
+                  <div className="cart-item-thumb">
+                    {item.image ? (
+                      <img src={item.image} alt="" />
+                    ) : (
+                      <span aria-hidden="true">
+                        {displayName?.charAt(0)}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="cart-item-info">
+                    {brand && (
+                      <span className="cart-item-brand">
+                        {brand}
+                      </span>
+                    )}
+
+                    <h4>{displayName}</h4>
+
+                    <p className="cart-item-meta">
+                      {item.size} · {formatPrice(item.price)}
+                    </p>
+                  </div>
                 </div>
 
-                <button
-                  className="remove-link"
-                  type="button"
-                  onClick={() => removeFromCart(item.key)}
-                >
-                  {tr.remove}
-                </button>
+                <div className="cart-item-actions">
+                  <div className="qty-control">
+                    <button
+                      type="button"
+                      onClick={() => updateQuantity(item.key, -1)}
+                    >
+                      -
+                    </button>
+
+                    <span>{item.quantity}</span>
+
+                    <button
+                      type="button"
+                      onClick={() => updateQuantity(item.key, 1)}
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <button
+                    className="remove-link"
+                    type="button"
+                    onClick={() => removeFromCart(item.key)}
+                  >
+                    {tr.remove}
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="cart-summary">
@@ -8529,17 +8572,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               <span>✔</span>
               <span>
                 {lang === "sr"
-                  ? "Potvrda i detalji stižu na email"
-                  : "Confirmation and details sent by email"}
+                  ? "Dostava za 1–2 radna dana"
+                  : "Delivery in 1–2 working days"}
               </span>
             </div>
 
             <div className="cart-trust-item">
               <span>✔</span>
               <span>
-                {lang === "sr"
-                  ? "Dostava širom Crne Gore"
-                  : "Delivery across Montenegro"}
+                {lang === "sr" ? "Širom Crne Gore" : "Across Montenegro"}
               </span>
             </div>
           </div>
@@ -8550,6 +8591,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <div className="cart-total-row cart-grand-total">
           <span>{tr.total}</span>
           <strong>{formatPrice(total)}</strong>
+        </div>
+
+        <div
+          className={`cart-footer-shipping-status ${
+            shipping === 0 ? "is-unlocked" : ""
+          }`}
+        >
+          {shipping === 0
+            ? lang === "sr"
+              ? "✓ Besplatna dostava otključana"
+              : "✓ Free delivery unlocked"
+            : lang === "sr"
+            ? `Uključuje ${formatPrice(shipping)} dostavu`
+            : `Includes ${formatPrice(shipping)} delivery`}
         </div>
 
         <button
