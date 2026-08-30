@@ -2689,17 +2689,6 @@ main {
   min-width: 0;
 }
 
-.cart-item-brand {
-  display: block;
-  margin-bottom: 3px;
-  color: rgba(220, 181, 107, 0.74);
-  font-size: 10px;
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
 .cart-item-info h4 {
   margin: 0 0 6px;
   color: rgba(255, 248, 235, 0.94);
@@ -2722,80 +2711,6 @@ main {
   align-items: flex-end;
   justify-content: center;
   gap: 10px;
-}
-
-.cart-selected-count {
-  color: rgba(255, 248, 235, 0.42);
-  font-family: "Inter", sans-serif;
-  font-size: 0.72em;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
-
-.remove-link {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: rgba(255, 248, 235, 0.42);
-  font-size: 12px;
-  line-height: 1.2;
-  text-decoration: none;
-
-  transition:
-    color 0.2s ease,
-    opacity 0.2s ease;
-}
-
-.remove-link:hover {
-  color: rgba(220, 181, 107, 0.9);
-}
-
-.cart-footer-shipping-status {
-  margin: -2px 0 12px;
-  color: rgba(255, 248, 235, 0.58);
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.cart-footer-shipping-status.is-unlocked {
-  color: var(--success);
-}
-
-.cart-selected-count {
-  color: rgba(255, 248, 235, 0.42);
-  font-family: "Inter", sans-serif;
-  font-size: 0.72em;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
-
-.remove-link {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: rgba(255, 248, 235, 0.42);
-  font-size: 12px;
-  line-height: 1.2;
-  text-decoration: none;
-
-  transition:
-    color 0.2s ease,
-    opacity 0.2s ease;
-}
-
-.remove-link:hover {
-  color: rgba(220, 181, 107, 0.9);
-}
-
-.cart-footer-shipping-status {
-  margin: -2px 0 12px;
-  color: rgba(255, 248, 235, 0.58);
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.cart-footer-shipping-status.is-unlocked {
-  color: var(--success);
 }
 
 .qty-control {
@@ -2822,12 +2737,8 @@ main {
   text-align: center;
 }
 
-.remove-link {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: #c97f7f;
-  font-size: 13px;
+.cart-footer-shipping-status.is-unlocked {
+  color: var(--success);
 }
 
 .cart-summary {
