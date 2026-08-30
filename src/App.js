@@ -1768,12 +1768,14 @@ useEffect(() => {
     params.set("view", view);
   }
 
-  if (category !== "All") params.set("category", category);
-  if (searchTerm.trim()) params.set("search", searchTerm.trim());
-  if (season !== "All") params.set("season", season);
-  if (scentMood !== "All") params.set("mood", scentMood);
-  if (sortBy !== "featured") params.set("sort", sortBy);
-  if (currentPage > 1) params.set("page", String(currentPage));
+  if (view === "shop") {
+    if (category !== "All") params.set("category", category);
+    if (searchTerm.trim()) params.set("search", searchTerm.trim());
+    if (season !== "All") params.set("season", season);
+    if (scentMood !== "All") params.set("mood", scentMood);
+    if (sortBy !== "featured") params.set("sort", sortBy);
+    if (currentPage > 1) params.set("page", String(currentPage));
+  }
 
   const query = params.toString();
 
@@ -4239,6 +4241,20 @@ useEffect(() => {
 
 const PRODUCT_MODAL_CLOSE_DELAY = 80;
 
+const restoreProductModalScroll = () => {
+  const targetScrollY = productModalScrollYRef.current;
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top: targetScrollY,
+        left: 0,
+        behavior: "auto"
+      });
+    });
+  });
+};
+
 const closeProductModal = () => {
   const isMobileModal = isMobileProductModal();
 
@@ -4261,13 +4277,19 @@ const closeProductModal = () => {
       window.history.state?.playniceProductModal === true;
 
     if (openedInsidePlayNice) {
+      window.addEventListener("popstate", restoreProductModalScroll, {
+        once: true
+      });
       window.history.back();
     } else {
       window.history.replaceState({}, "", "/shop");
       setView("shop");
       trackPageView("/shop");
       trackMeta("PageView");
+      restoreProductModalScroll();
     }
+  } else {
+    restoreProductModalScroll();
   }
   };
 
@@ -5100,7 +5122,10 @@ const titleLengthClass =
           )}
         </span>
 
-        <span className={`size-chip-flash ${isJustAdded ? "show" : ""}`}>
+        <span
+          className={`size-chip-flash ${isJustAdded ? "show" : ""}`}
+          aria-hidden="true"
+        >
           {tr.justAdded}
         </span>
       </button>
@@ -5131,7 +5156,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   if (surface === "footer") {
     return (
       <section
-        id="delivery-returns"
         className="policy-strip policy-strip--footer"
         aria-label={labels.title}
       >
@@ -7648,7 +7672,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <div className="footer-column">
       <h4>{lang === "sr" ? "Navigacija" : "Navigation"}</h4>
 
-      <button type="button" className="footer-link" onClick={() => switchView("home")}>
+      <button
+        type="button"
+        className="footer-link"
+        onClick={(event) => {
+          event.currentTarget.blur();
+
+          if (view === "home") {
+            window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+            return;
+          }
+
+          goHome();
+        }}
+      >
         {lang === "sr" ? "Početna" : "Home"}
       </button>
 
@@ -7733,7 +7770,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         {lang === "sr" ? "Dostava i povrat" : "Delivery & Returns"}
       </button>
 
-      <a href="mailto:order@playniceshop.me" className="footer-mini-link">
+      <a href="mailto:info@playniceshop.me" className="footer-mini-link">
         {lang === "sr" ? "Kontakt" : "Contact"}
       </a>
     </div>
@@ -9115,13 +9152,21 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div className="checkout-grid">
     <div className="checkout-form panel-anim panel-anim-2">
       <div className="form-row two panel-item-anim panel-item-1">
+        <label className="visually-hidden" htmlFor="checkout-first-name">
+          {tr.firstName}
+        </label>
         <input
+          id="checkout-first-name"
           name="firstName"
           placeholder={tr.firstName}
           value={checkoutForm.firstName}
           onChange={handleCheckoutInput}
         />
+        <label className="visually-hidden" htmlFor="checkout-last-name">
+          {tr.lastName}
+        </label>
         <input
+          id="checkout-last-name"
           name="lastName"
           placeholder={tr.lastName}
           value={checkoutForm.lastName}
@@ -9130,14 +9175,22 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="form-row two panel-item-anim panel-item-2">
+        <label className="visually-hidden" htmlFor="checkout-email">
+          {tr.email}
+        </label>
         <input
+          id="checkout-email"
           name="email"
           type="email"
           placeholder={tr.email}
           value={checkoutForm.email}
           onChange={handleCheckoutInput}
         />
+        <label className="visually-hidden" htmlFor="checkout-phone">
+          {tr.phone}
+        </label>
         <input
+          id="checkout-phone"
           name="phone"
           placeholder={tr.phone}
           value={checkoutForm.phone}
@@ -9146,11 +9199,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="form-row two panel-item-anim panel-item-3">
+  <label className="visually-hidden" htmlFor="checkout-country">
+    {lang === "sr" ? "Zemlja dostave" : "Delivery country"}
+  </label>
   <select
+    id="checkout-country"
     name="country"
     value={checkoutForm.country}
     onChange={handleCheckoutInput}
-    aria-label={lang === "sr" ? "Zemlja dostave" : "Delivery country"}
   >
     {checkoutCountryOptions.map((country) => (
       <option key={country.value} value={country.value}>
@@ -9159,7 +9215,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     ))}
   </select>
 
+  <label className="visually-hidden" htmlFor="checkout-city">
+    {tr.city}
+  </label>
   <input
+    id="checkout-city"
     name="city"
     placeholder={tr.city}
     value={checkoutForm.city}
@@ -9168,7 +9228,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </div>
 
 <div className="form-row panel-item-anim panel-item-4">
+  <label className="visually-hidden" htmlFor="checkout-address">
+    {tr.address}
+  </label>
   <input
+    id="checkout-address"
     name="address"
     placeholder={tr.address}
     value={checkoutForm.address}
@@ -9192,7 +9256,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 )}
 
       <div className="form-row panel-item-anim panel-item-4">
+        <label className="visually-hidden" htmlFor="checkout-note">
+          {tr.note}
+        </label>
         <textarea
+          id="checkout-note"
           name="note"
           placeholder={tr.note}
           rows="4"
