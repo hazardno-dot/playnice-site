@@ -8174,19 +8174,24 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   }}
 />
 
-      <aside className={`story-drawer ${storyOpen ? "open panel-open" : ""}`}>
+      <aside
+        className={`story-drawer ${storyOpen ? "open panel-open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="story-drawer-title"
+      >
         <div className="story-drawer-header panel-anim panel-anim-1">
           <div>
-  <p className="section-kicker">
-    {lang === "sr" ? "NAŠA PRIČA" : "OUR STORY"}
-  </p>
+            <p className="section-kicker">
+              {lang === "sr" ? "NAŠA PRIČA" : "OUR STORY"}
+            </p>
 
-  <h3>
-    {lang === "sr"
-      ? "Stvoreno da se pamti."
-      : "Curated to be remembered."}
-  </h3>
-</div>
+            <h3> id="story-drawer-title"
+              {lang === "sr"
+                ? "Stvoreno da se pamti."
+                : "Curated to be remembered."}
+            </h3>
+          </div>
 
           <button
             className="close-button"
@@ -8254,14 +8259,19 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </div>
       </aside>
 
-      <aside className={`story-drawer faq-drawer ${faqOpen ? "open panel-open" : ""}`}>
+      <aside
+        className={`story-drawer faq-drawer ${faqOpen ? "open panel-open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="faq-drawer-title"
+      >
   <div className="story-drawer-header panel-anim panel-anim-1">
     <div>
       <p className="section-kicker">
         {lang === "sr" ? "FAQ" : "FAQ"}
       </p>
 
-      <h3>
+      <h3 id="faq-drawer-title">
         {lang === "sr"
           ? "Sve što treba da znaš pre prve porudžbine."
           : "Everything to know before your first order."}
@@ -8421,11 +8431,16 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   )}
 </aside>
 
-      <aside className={`how-it-works-drawer ${howItWorksOpen ? "open panel-open" : ""}`}>
+      <aside
+        className={`how-it-works-drawer ${howItWorksOpen ? "open panel-open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="how-it-works-drawer-title"
+      >
   <div className="how-it-works-drawer-header panel-anim panel-anim-1">
     <div>
       <p className="section-kicker">HOW IT WORKS</p>
-      <h3>
+      <h3 id="how-it-works-drawer-title">
         {lang === "sr"
           ? "Šta su dekanti i zašto imaju smisla?"
           : "What decants are and why they matter?"}
