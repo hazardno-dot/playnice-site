@@ -3248,8 +3248,8 @@ main {
   pointer-events: none;
 
   animation:
-    miniCartMaterialize 0.38s cubic-bezier(0.2, 0.85, 0.22, 1) both,
-    miniCartBlackHole 0.42s cubic-bezier(0.7, 0, 0.84, 0) 4.75s forwards;
+    miniCartMaterialize 0.34s cubic-bezier(0.2, 0.85, 0.22, 1) both,
+    miniCartBlackHole 0.34s cubic-bezier(0.7, 0, 0.84, 0) 1.25s forwards;
 }
 
 @keyframes miniCartMaterialize {
@@ -3276,19 +3276,11 @@ main {
   0% {
     opacity: 1;
     transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
-
-  45% {
-    opacity: 0.82;
-    transform: translateY(2px) scale(0.96);
-    filter: blur(1px);
   }
 
   100% {
     opacity: 0;
-    transform: translateY(9px) scale(0.7);
-    filter: blur(10px);
+    transform: translateY(5px) scale(0.97);
   }
 }
 
@@ -3764,8 +3756,8 @@ main {
     transform: translate(-50%, -50%);
 
     animation:
-      miniCartOrbIn 0.34s cubic-bezier(0.2, 0.85, 0.22, 1) both,
-      miniCartOrbOut 0.42s cubic-bezier(0.7, 0, 0.84, 0) 1.75s forwards;
+      miniCartOrbIn 0.32s cubic-bezier(0.2, 0.85, 0.22, 1) both,
+      miniCartOrbOut 0.34s cubic-bezier(0.7, 0, 0.84, 0) 1.15s forwards;
   }
 
   .mini-cart-preview-orb-text {
@@ -3894,9 +3886,9 @@ main {
   transform: translate(-50%, -48.5%);
 
   transition:
-    transform 0.34s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.26s ease,
-    visibility 0s linear 0.34s;
+    transform 0.20s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.18s ease,
+    visibility 0s linear 0.20s;
 
   will-change: transform, opacity;
 }
@@ -3937,11 +3929,24 @@ main {
 .product-modal .panel-anim,
 .product-modal .close-button {
   transition:
+    opacity 0.16s ease,
+    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-modal .panel-item-anim {
+  transition:
+    opacity 0.14s ease,
+    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-modal.open .panel-anim,
+.product-modal.open .close-button {
+  transition:
     opacity 0.46s ease,
     transform 0.46s var(--content-ease);
 }
 
-.product-modal .panel-item-anim {
+.product-modal.open .panel-item-anim {
   transition:
     opacity 0.42s ease,
     transform 0.42s var(--content-ease);
@@ -5679,8 +5684,32 @@ main {
   }
 
   .modal-purchase-bar {
+    display: grid;
+    grid-template-columns: minmax(108px, 0.42fr) minmax(0, 0.58fr);
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .modal-price-box {
+    min-width: 0;
+    min-height: 0;
+    padding: 12px 13px;
+  }
+
+  .modal-cta-group {
+    min-width: 0;
+    width: 100%;
+    display: flex;
     flex-direction: column;
     align-items: stretch;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .modal-cta-group .modal-add-button,
+  .modal-cta-group .modal-buy-now {
+    width: 100%;
+    margin: 0;
   }
 
   .modal-add-button {
@@ -5901,7 +5930,6 @@ main {
   }
 
   .modal-selected-price {
-    min-height: 66px;
     padding: 13px 16px;
     border-radius: 18px;
   }
@@ -5978,6 +6006,26 @@ main {
     animation-delay: 0s !important;
 
     will-change: auto !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .modal-purchase-bar {
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .modal-price-box {
+    padding: 10px 10px;
+  }
+
+  .modal-price-box span {
+    font-size: 0.54rem;
+    letter-spacing: 0.1em;
+  }
+
+  .modal-price-box strong {
+    font-size: 1.34rem;
   }
 }
 

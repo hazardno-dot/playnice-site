@@ -3350,7 +3350,7 @@ const goToHomeSection = (selector, block = "start") => {
 
     miniCartTimerRef.current = setTimeout(() => {
       setMiniCartPreview(null);
-    }, 4300);
+    }, 1700);
   }
 
   if (showToast && !showMiniPreview) {
@@ -8986,58 +8986,58 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               </p>
 
               <div className="modal-sizes">
-  {Object.entries(selectedProduct.sizes).map(([size, price], index) => {
-    const discount = getProductDiscountForSize(selectedProduct, size);
+                {Object.entries(selectedProduct.sizes).map(([size, price], index) => {
+                  const discount = getProductDiscountForSize(selectedProduct, size);
 
-    const finalPrice = discount
-      ? getDiscountedPrice(price, discount.percent)
-      : price;
+                  const finalPrice = discount
+                    ? getDiscountedPrice(price, discount.percent)
+                    : price;
 
-    const flashKey = `${selectedProduct.id}-${size}`;
-    const isDiscountFlashing = modalDiscountFlashKey === flashKey;
+                  const flashKey = `${selectedProduct.id}-${size}`;
+                  const isDiscountFlashing = modalDiscountFlashKey === flashKey;
 
-    return (
-      <button
-        key={size}
-        type="button"
-        className={`modal-size ${
-          selectedSize === size ? "active" : ""
-        } ${
-          isDiscountFlashing ? "discount-flashing" : ""
-        } panel-item-anim panel-item-${Math.min(index + 1, 6)}`}
-        onClick={() => {
-          setSelectedSize(size);
-          setHasUserPickedSize(true);
+                  return (
+                    <button
+                      key={size}
+                      type="button"
+                      className={`modal-size ${
+                        selectedSize === size ? "active" : ""
+                      } ${
+                        isDiscountFlashing ? "discount-flashing" : ""
+                      } panel-item-anim panel-item-${Math.min(index + 1, 6)}`}
+                      onClick={() => {
+                        setSelectedSize(size);
+                        setHasUserPickedSize(true);
 
-          if (discount) {
-            setModalDiscountFlashKey(flashKey);
+                        if (discount) {
+                          setModalDiscountFlashKey(flashKey);
 
-            setTimeout(() => {
-              setModalDiscountFlashKey((currentKey) =>
-                currentKey === flashKey ? null : currentKey
-              );
-            }, 1500);
-          }
-        }}
-      >
-  {isDiscountFlashing ? (
-    <span className="modal-size-discount-flash">
-      -{discount.percent}%
-    </span>
-  ) : (
-    <>
-      <span>{size}</span>
+                          setTimeout(() => {
+                            setModalDiscountFlashKey((currentKey) =>
+                              currentKey === flashKey ? null : currentKey
+                            );
+                          }, 1500);
+                        }
+                      }}
+                    >
+                {isDiscountFlashing ? (
+                  <span className="modal-size-discount-flash">
+                    -{discount.percent}%
+                  </span>
+                ) : (
+                  <>
+                    <span>{size}</span>
 
-      <strong>
-        {formatPrice(discount && selectedSize === size ? finalPrice : price)}
-      </strong>
-    </>
-  )}
-</button>
-    );
-  })}
- </div>
-</div>
+                    <strong>
+                      {formatPrice(discount && selectedSize === size ? finalPrice : price)}
+                    </strong>
+                  </>
+                )}
+              </button>
+                  );
+                })}
+              </div>
+            </div>
 
             <div className="modal-purchase-bar panel-anim panel-anim-3">
               <div className="modal-price-box">
@@ -9045,125 +9045,125 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   {lang === "sr" ? "IZABRANA CENA" : "SELECTED PRICE"}
                 </span>
                 {(() => {
-  const activeSize =
-    selectedSize || Object.keys(selectedProduct.sizes)[0];
+                  const activeSize =
+                    selectedSize || Object.keys(selectedProduct.sizes)[0];
 
-  const activePrice =
-    selectedProduct.sizes[activeSize] ??
-    Object.values(selectedProduct.sizes)[0];
+                  const activePrice =
+                    selectedProduct.sizes[activeSize] ??
+                    Object.values(selectedProduct.sizes)[0];
 
-  const discount = getProductDiscountForSize(selectedProduct, activeSize);
+                  const discount = getProductDiscountForSize(selectedProduct, activeSize);
 
-  const finalPrice = discount
-    ? getDiscountedPrice(activePrice, discount.percent)
-    : activePrice;
+                  const finalPrice = discount
+                    ? getDiscountedPrice(activePrice, discount.percent)
+                    : activePrice;
 
-  return (
-    <strong className="modal-selected-price">
-     {formatPrice(finalPrice)}
-    </strong>
-  );
-})()}
+                  return (
+                    <strong className="modal-selected-price">
+                    {formatPrice(finalPrice)}
+                    </strong>
+                  );
+                })()}
               </div>
 
               <div className="modal-cta-group">
                 {(() => {
-  const activeSize =
-    selectedSize || Object.keys(selectedProduct.sizes)[0];
+              const activeSize =
+                selectedSize || Object.keys(selectedProduct.sizes)[0];
 
-  const modalKey = `${selectedProduct.id}-${activeSize}`;
-  const isModalAdded = modalAddedKey === modalKey;
+              const modalKey = `${selectedProduct.id}-${activeSize}`;
+              const isModalAdded = modalAddedKey === modalKey;
 
-  return (
-    <button
-      type="button"
-      className={`modal-add-button ${isModalAdded ? "is-added" : ""}`}
-      onClick={() => {
-  const activePrice = selectedProduct.sizes[activeSize];
-  const discount = getProductDiscountForSize(selectedProduct, activeSize);
+              return (
+                <button
+                  type="button"
+                  className={`modal-add-button ${isModalAdded ? "is-added" : ""}`}
+                  onClick={() => {
+              const activePrice = selectedProduct.sizes[activeSize];
+              const discount = getProductDiscountForSize(selectedProduct, activeSize);
 
-  const finalPrice = discount
-    ? getDiscountedPrice(activePrice, discount.percent)
-    : activePrice;
+              const finalPrice = discount
+                ? getDiscountedPrice(activePrice, discount.percent)
+                : activePrice;
 
-  const productForCart = discount
-    ? {
-        ...selectedProduct,
-        sizes: {
-          ...selectedProduct.sizes,
-          [activeSize]: finalPrice,
-        },
-      }
-    : selectedProduct;
+              const productForCart = discount
+                ? {
+                    ...selectedProduct,
+                    sizes: {
+                      ...selectedProduct.sizes,
+                      [activeSize]: finalPrice,
+                    },
+                  }
+                : selectedProduct;
 
-  handleModalAddToCart(productForCart, activeSize);
+              handleModalAddToCart(productForCart, activeSize);
 
-  setTimeout(() => {
-    closeProductModal(PRODUCT_MODAL_CART_CLOSE_DELAY);
-  }, 950);
-    }}
-      aria-live="polite"
-    >
-      <span>
-        {isModalAdded
-          ? lang === "sr"
-            ? "DODATO ✓"
-            : "ADDED ✓"
-          : lang === "sr"
-            ? "DODAJ U KORPU"
-            : "ADD TO CART"}
-      </span>
-    </button>
-  );
-})()}
+              setTimeout(() => {
+                closeProductModal(PRODUCT_MODAL_CART_CLOSE_DELAY);
+              }, 950);
+                }}
+                  aria-live="polite"
+                >
+                  <span>
+                    {isModalAdded
+                      ? lang === "sr"
+                        ? "DODATO ✓"
+                        : "ADDED ✓"
+                      : lang === "sr"
+                        ? "DODAJ U KORPU"
+                        : "ADD TO CART"}
+                  </span>
+                </button>
+              );
+            })()}
 
                 {hasUserPickedSize && (
                   <button
                     type="button"
                     className="modal-buy-now"
                     onClick={() => {
-  const activeSize =
-    selectedSize || Object.keys(selectedProduct.sizes)[0];
+                      const activeSize =
+                        selectedSize || Object.keys(selectedProduct.sizes)[0];
 
-  const activePrice = selectedProduct.sizes[activeSize];
-  const discount = getProductDiscountForSize(selectedProduct, activeSize);
+                      const activePrice = selectedProduct.sizes[activeSize];
+                      const discount = getProductDiscountForSize(selectedProduct, activeSize);
 
-  const finalPrice = discount
-    ? getDiscountedPrice(activePrice, discount.percent)
-    : activePrice;
+                      const finalPrice = discount
+                        ? getDiscountedPrice(activePrice, discount.percent)
+                        : activePrice;
 
-  const productForCart = discount
-    ? {
-        ...selectedProduct,
-        sizes: {
-          ...selectedProduct.sizes,
-          [activeSize]: finalPrice,
-        },
-      }
-    : selectedProduct;
+                      const productForCart = discount
+                        ? {
+                            ...selectedProduct,
+                            sizes: {
+                              ...selectedProduct.sizes,
+                              [activeSize]: finalPrice,
+                            },
+                          }
+                        : selectedProduct;
 
-  addToCart(productForCart, activeSize, null, null, {
-    showToast: false,
-    showMiniPreview: false,
-  });
+                      addToCart(productForCart, activeSize, null, null, {
+                        showToast: false,
+                        showMiniPreview: false,
+                      });
 
-  setMiniCartPreview(null);
-  setCartOpen(false);
-  setCheckoutOpen(true);
-  closeProductModal();
-}}
+                      setMiniCartPreview(null);
+                      setCartOpen(false);
+                      setCheckoutOpen(true);
+                      closeProductModal();
+                    }}
                   >
                     {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
                   </button>
                 )}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-)}
+  )}
 
       <div className={`checkout-modal ${checkoutOpen ? "open panel-open" : ""}`}>
   <div className="checkout-header panel-anim panel-anim-1">
