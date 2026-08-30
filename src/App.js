@@ -8032,7 +8032,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
         {discoveryBuilderOpen && (
   <div className="discovery-overlay" onClick={() => setDiscoveryBuilderOpen(false)}>
-    <div className="discovery-modal" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="discovery-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="discovery-builder-title"
+      onClick={(e) => e.stopPropagation()}
+    >
       <button
         type="button"
         className="discovery-close"
@@ -8049,7 +8055,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         : "Designer & Niche Discovery Set"}
     </p>
 
-    <h2>
+    <h2 id="discovery-builder-title">
       {lang === "sr" ? "Izaberi svojih pet" : "Choose your five"}
     </h2>
 
@@ -8364,7 +8370,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 </aside>
 
-<aside className={`story-drawer manifesto-drawer ${manifestoOpen ? "open panel-open" : ""}`}>
+<aside
+  className={`story-drawer manifesto-drawer ${manifestoOpen ? "open panel-open" : ""}`}
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="manifesto-drawer-title"
+>
   {activeManifesto && HERO_MANIFESTOS[activeManifesto] && (
     <>
       <div className="story-drawer-header panel-anim panel-anim-1">
@@ -8373,7 +8384,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             {HERO_MANIFESTOS[activeManifesto].kicker}
           </p>
 
-          <h3>
+          <h3 id="manifesto-drawer-title">
             {HERO_MANIFESTOS[activeManifesto].title}
           </h3>
         </div>
@@ -8523,13 +8534,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         className={`private-selection-drawer ${
           privateSelectionOpen ? "open panel-open" : ""
         }`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="private-selection-title"
       >
         <div className="private-selection-header panel-anim panel-anim-1">
           <div>
             <p className="section-kicker">
               {lang === "sr" ? "PRIVATE SELECTION" : "PRIVATE SELECTION"}
             </p>
-            <h3>{lang === "sr" ? "Sačuvani parfemi" : "Saved fragrances"}</h3>
+            <h3 id="private-selection-title">
+              {lang === "sr" ? "Sačuvani parfemi" : "Saved fragrances"}
+            </h3>
           </div>
 
           <button
@@ -9786,10 +9802,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       {catalogPreview && (
         <div className="catalog-modal-overlay" onClick={closeCatalogPreview}>
-          <div className="catalog-modal" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="catalog-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={lang === "sr" ? "Pregled kataloga" : "Catalog preview"}
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               className="catalog-modal-close"
+              type="button"
               onClick={closeCatalogPreview}
+              aria-label={lang === "sr" ? "Zatvori pregled kataloga" : "Close catalog preview"}
             >
               ×
             </button>
