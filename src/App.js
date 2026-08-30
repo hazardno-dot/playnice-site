@@ -7677,6 +7677,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         className="footer-link"
         onClick={(event) => {
           event.currentTarget.blur();
+
+          if (view === "home") {
+            window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+            return;
+          }
+
           goHome();
         }}
       >
