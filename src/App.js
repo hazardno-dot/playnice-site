@@ -962,19 +962,15 @@ const getInitialShopState = () => {
   useEffect(() => {
     if (!discoveryOpen) return undefined;
 
-    const previousOverflow = document.body.style.overflow;
-
     const handleDiscoveryKeyDown = (event) => {
       if (event.key === "Escape") {
         setDiscoveryOpen(false);
       }
     };
 
-    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", handleDiscoveryKeyDown);
 
     return () => {
-      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleDiscoveryKeyDown);
     };
   }, [discoveryOpen]);
@@ -1582,24 +1578,28 @@ const selectedSortOption =
     FREE_SHIPPING_THRESHOLD - subtotal
   );
 
+  const hasBlockingOverlay =
+  !!selectedProduct ||
+  cartOpen ||
+  checkoutOpen ||
+  storyOpen ||
+  howItWorksOpen ||
+  faqOpen ||
+  privateSelectionOpen ||
+  !!catalogPreview ||
+  manifestoOpen ||
+  discoveryOpen ||
+  discoveryBuilderOpen;
+
   const scrollYRef = useRef(0);
 
 /* =========================================
    EFFECTS
 ========================================= */
   useLayoutEffect(() => {
-  const shouldLockScroll =
-    !!selectedProduct ||
-    cartOpen ||
-    checkoutOpen ||
-    storyOpen ||
-    howItWorksOpen ||
-    privateSelectionOpen ||
-    !!catalogPreview;
-
   const body = document.body;
 
-  if (shouldLockScroll) {
+  if (hasBlockingOverlay) {
     body.classList.add("overlay-lock");
 
     const lockY = window.scrollY || window.pageYOffset || 0;
@@ -1637,15 +1637,7 @@ const selectedSortOption =
     body.style.width = "";
     body.style.overflow = "";
   };
-}, [
-  selectedProduct,
-  cartOpen,
-  checkoutOpen,
-  storyOpen,
-  howItWorksOpen,
-  privateSelectionOpen,
-  catalogPreview
-]);
+}, [hasBlockingOverlay]);
 
   useEffect(() => {
     const section = document.querySelector(".closing-section");
@@ -1920,32 +1912,17 @@ useEffect(() => {
   }, []);
 
   useEffect(() => {
-  const hasBlockingLayer =
-    !!selectedProduct ||
-    cartOpen ||
-    checkoutOpen ||
-    storyOpen ||
-    howItWorksOpen ||
-    privateSelectionOpen ||
-    !!catalogPreview;
-
   const shouldShow =
-    !hasBlockingLayer &&
+    !hasBlockingOverlay &&
     (view === "home" || view === "shop");
 
   setShowStickyCta(shouldShow);
-}, [
-  view,
-  selectedProduct,
-  cartOpen,
-  checkoutOpen,
-  storyOpen,
-  howItWorksOpen,
-  privateSelectionOpen,
-  catalogPreview,
-  cartCount,
-  wishlist.length
-]);
+  }, [
+    view,
+    hasBlockingOverlay,
+    cartCount,
+    wishlist.length
+  ]);
 
 useEffect(() => {
   if (selectedProduct) {
@@ -4837,22 +4814,6 @@ useEffect(() => {
     setSmartCtaVibe("signature");
   }
 }, [smartCtaStats, cartCount, wishlist.length]);
-
-/* =========================================
-   DiscoveryBuilderOpen LOCK UNDER
-========================================= */
-
-useEffect(() => {
-  if (!discoveryBuilderOpen) return;
-
-  const originalOverflow = document.body.style.overflow;
-
-  document.body.style.overflow = "hidden";
-
-  return () => {
-    document.body.style.overflow = originalOverflow;
-  };
-}, [discoveryBuilderOpen]);
 
 /* =========================================
    INNER COMPONENTS
@@ -7916,8 +7877,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     selectedProduct ||
     storyOpen ||
     howItWorksOpen ||
+    faqOpen ||
     privateSelectionOpen ||
-    catalogPreview
+    catalogPreview ||
+    manifestoOpen
       ? "show"
       : ""
   }`}
