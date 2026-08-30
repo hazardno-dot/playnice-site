@@ -9810,7 +9810,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               <button
                 className="catalog-modal-close"
                 type="button"
-                onClick={closeCatalogPreview}
+                onPointerDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  closeCatalogPreview();
+                }}
                 aria-label={
                   lang === "sr"
                     ? "Zatvori pregled kataloga"
