@@ -4239,7 +4239,8 @@ useEffect(() => {
   openProductModal(matchedProduct, { updateUrl: false });
 }, []);
 
-const PRODUCT_MODAL_CLOSE_DELAY = 80;
+const PRODUCT_MODAL_CLOSE_DELAY = 180;
+const PRODUCT_MODAL_CART_CLOSE_DELAY = 240;
 
 const restoreProductModalScroll = () => {
   const targetScrollY = productModalScrollYRef.current;
@@ -4255,7 +4256,9 @@ const restoreProductModalScroll = () => {
   });
 };
 
-const closeProductModal = () => {
+const closeProductModal = (
+  cleanupDelay = PRODUCT_MODAL_CLOSE_DELAY
+) => {
   const isMobileModal = isMobileProductModal();
 
   setNoteMapOpen(false);
@@ -4274,23 +4277,26 @@ const closeProductModal = () => {
 
     if (window.location.pathname.startsWith("/product/")) {
       const openedInsidePlayNice =
-      window.history.state?.playniceProductModal === true;
+        window.history.state?.playniceProductModal === true;
 
-    if (openedInsidePlayNice) {
-      window.addEventListener("popstate", restoreProductModalScroll, {
-        once: true
-      });
-      window.history.back();
+      if (openedInsidePlayNice) {
+        window.addEventListener(
+          "popstate",
+          restoreProductModalScroll,
+          { once: true }
+        );
+
+        window.history.back();
+      } else {
+        window.history.replaceState({}, "", "/shop");
+        setView("shop");
+        trackPageView("/shop");
+        trackMeta("PageView");
+        restoreProductModalScroll();
+      }
     } else {
-      window.history.replaceState({}, "", "/shop");
-      setView("shop");
-      trackPageView("/shop");
-      trackMeta("PageView");
       restoreProductModalScroll();
     }
-  } else {
-    restoreProductModalScroll();
-  }
   };
 
   if (isMobileModal) {
@@ -4300,7 +4306,7 @@ const closeProductModal = () => {
 
   productModalCloseTimeoutRef.current = setTimeout(() => {
     cleanupProductModal();
-  }, PRODUCT_MODAL_CLOSE_DELAY);
+  }, cleanupDelay);
 };
 
 const openImpactProductModal = (product) => {
@@ -8398,9 +8404,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 >
   <div className="cart-drawer-header panel-anim panel-anim-1">
     <div>
-      <p className="section-kicker">{tr.yourCart}</p>
-      <h3>{tr.selectedItems}</h3>
-    </div>
+  <p className="section-kicker">{tr.yourCart}</p>
+    <h3>
+      {tr.selectedItems}
+      <span className="cart-selected-count"> · {cart.length}</span>
+    </h3>
+  </div>
 
     <button
       className="close-button"
@@ -8430,49 +8439,67 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <>
       <div className="cart-scroll-area panel-anim panel-anim-2">
         <div className="cart-items">
-          {cart.map((item, index) => (
-            <div
-              className={`cart-item panel-item-anim panel-item-${Math.min(
-                index + 1,
-                6
-              )}`}
-              key={item.key}
-            >
-              <div className="cart-item-info">
-                <h4>{item.name}</h4>
-                <p>{item.size}</p>
-                <strong>{formatPrice(item.price)}</strong>
-              </div>
+          {cart.map((item, index) => {
+            const displayName = item.name;
 
-              <div className="cart-item-actions">
-                <div className="qty-control">
-                  <button
-                    type="button"
-                    onClick={() => updateQuantity(item.key, -1)}
-                  >
-                    -
-                  </button>
+            return (
+              <div
+                className={`cart-item panel-item-anim panel-item-${Math.min(
+                  index + 1,
+                  6
+                )}`}
+                key={item.key}
+              >
+                <div className="cart-item-main">
+                  <div className="cart-item-thumb">
+                    {item.image ? (
+                      <img src={item.image} alt="" />
+                    ) : (
+                      <span aria-hidden="true">
+                        {displayName?.charAt(0)}
+                      </span>
+                    )}
+                  </div>
 
-                  <span>{item.quantity}</span>
+                  <div className="cart-item-info">
+                    <h4>{displayName}</h4>
 
-                  <button
-                    type="button"
-                    onClick={() => updateQuantity(item.key, 1)}
-                  >
-                    +
-                  </button>
+                    <p className="cart-item-meta">
+                      {item.size} · {formatPrice(item.price)}
+                    </p>
+                  </div>
                 </div>
 
-                <button
-                  className="remove-link"
-                  type="button"
-                  onClick={() => removeFromCart(item.key)}
-                >
-                  {tr.remove}
-                </button>
+                <div className="cart-item-actions">
+                  <div className="qty-control">
+                    <button
+                      type="button"
+                      onClick={() => updateQuantity(item.key, -1)}
+                    >
+                      -
+                    </button>
+
+                    <span>{item.quantity}</span>
+
+                    <button
+                      type="button"
+                      onClick={() => updateQuantity(item.key, 1)}
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <button
+                    className="remove-link"
+                    type="button"
+                    onClick={() => removeFromCart(item.key)}
+                  >
+                    {tr.remove}
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="cart-summary">
@@ -8490,32 +8517,26 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             </strong>
           </div>
 
-          <div
-            className={`shipping-progress-card cart-shipping-note ${
-              subtotal >= FREE_SHIPPING_THRESHOLD
-                ? "shipping-note-unlocked"
-                : "shipping-note-locked"
-            }`}
-          >
-            <div className="shipping-note">
-              {subtotal >= FREE_SHIPPING_THRESHOLD
-                ? `${tr.freeShippingUnlocked} ✓`
-                : lang === "sr"
-                ? `Još ${formatPrice(
-                    amountLeftForFreeShipping
-                  )} do besplatne dostave`
-                : `${formatPrice(
-                    amountLeftForFreeShipping
-                  )} away from free shipping`}
-            </div>
+          {subtotal < FREE_SHIPPING_THRESHOLD && (
+            <div className="shipping-progress-card cart-shipping-note shipping-note-locked">
+              <div className="shipping-note">
+                {lang === "sr"
+                  ? `Još ${formatPrice(
+                      amountLeftForFreeShipping
+                    )} do besplatne dostave`
+                  : `${formatPrice(
+                      amountLeftForFreeShipping
+                    )} away from free shipping`}
+              </div>
 
-            <div className="shipping-progress-bar">
-              <div
-                className="shipping-progress-fill"
-                style={{ width: `${freeShippingProgress}%` }}
-              />
+              <div className="shipping-progress-bar">
+                <div
+                  className="shipping-progress-fill"
+                  style={{ width: `${freeShippingProgress}%` }}
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="cart-trust-block">
             <div className="cart-trust-item">
@@ -8529,17 +8550,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               <span>✔</span>
               <span>
                 {lang === "sr"
-                  ? "Potvrda i detalji stižu na email"
-                  : "Confirmation and details sent by email"}
+                  ? "Dostava za 1–2 radna dana"
+                  : "Delivery in 1–2 working days"}
               </span>
             </div>
 
             <div className="cart-trust-item">
               <span>✔</span>
               <span>
-                {lang === "sr"
-                  ? "Dostava širom Crne Gore"
-                  : "Delivery across Montenegro"}
+                {lang === "sr" ? "Širom Crne Gore" : "Across Montenegro"}
               </span>
             </div>
           </div>
@@ -8550,6 +8569,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <div className="cart-total-row cart-grand-total">
           <span>{tr.total}</span>
           <strong>{formatPrice(total)}</strong>
+        </div>
+
+        <div
+          className={`cart-footer-shipping-status ${
+            shipping === 0 ? "is-unlocked" : ""
+          }`}
+        >
+          {shipping === 0
+            ? lang === "sr"
+              ? "✓ Besplatna dostava otključana"
+              : "✓ Free delivery unlocked"
+            : lang === "sr"
+            ? `Uključuje ${formatPrice(shipping)} dostavu`
+            : `Includes ${formatPrice(shipping)} delivery`}
         </div>
 
         <button
@@ -9064,7 +9097,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     : selectedProduct;
 
   handleModalAddToCart(productForCart, activeSize);
-}}
+
+  setTimeout(() => {
+    closeProductModal(PRODUCT_MODAL_CART_CLOSE_DELAY);
+  }, 950);
+    }}
       aria-live="polite"
     >
       <span>
