@@ -8441,17 +8441,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               cartProduct?.cardName ||
               item.name;
 
-            const brand =
-              cartProduct?.name && displayName
-                ? cartProduct.name
-                    .replace(displayName, "")
-                    .replace(
-                      /Eau de Parfum|Eau de Toilette|Extrait de Parfum|Parfum/gi,
-                      ""
-                    )
-                    .trim()
-                : "";
-
             return (
               <div
                 className={`cart-item panel-item-anim panel-item-${Math.min(
@@ -8472,12 +8461,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   </div>
 
                   <div className="cart-item-info">
-                    {brand && (
-                      <span className="cart-item-brand">
-                        {brand}
-                      </span>
-                    )}
-
                     <h4>{displayName}</h4>
 
                     <p className="cart-item-meta">
