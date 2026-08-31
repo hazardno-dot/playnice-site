@@ -10,7 +10,6 @@ permissions:
 
 jobs:
   patch:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,8 +17,8 @@ jobs:
           ref: just-in-image-scale
 
       - name: Patch App.js
-        shell: python
         run: |
+          python3 <<'PY'
           from pathlib import Path
           import re
 
@@ -145,6 +144,7 @@ jobs:
           text = text[:match.start()] + replacement + text[match.end():]
           path.write_text(text, encoding="utf-8")
           print("Patched modal and Just In wishlist actions.")
+          PY
 
       - name: Commit patch
         run: |
