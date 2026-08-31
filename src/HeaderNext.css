@@ -725,10 +725,14 @@
 }
 
 .header-next-utility .header-next-language {
-  color: #dcb56b;
+  color: #9ee5ff;
   font-size: 9px;
   font-weight: 900;
   letter-spacing: 0.06em;
+
+  text-shadow:
+    0 0 10px rgba(158, 229, 255, 0.18),
+    0 0 18px rgba(158, 229, 255, 0.08);
 }
 
 .header-next-count {
