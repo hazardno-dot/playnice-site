@@ -9257,7 +9257,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </button>
 
   {selectedProduct.image ? (
-  {selectedProduct.image ? (
     <img
       src={selectedProduct.image}
       alt={selectedProduct.name}
