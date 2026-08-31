@@ -17,7 +17,7 @@
 
 .modal-media > .modal-wishlist-btn {
   position: absolute;
-  top: 16px;
+  top: 8px;
   right: 16px;
   z-index: 12;
   width: 42px;
@@ -80,7 +80,7 @@
   }
 
   .modal-media > .modal-wishlist-btn {
-    top: 12px;
+    top: 8px;
     right: 12px;
     width: 38px;
     height: 36px;
