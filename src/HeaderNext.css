@@ -622,14 +622,14 @@
 
 .header-next-utility .is-filled,
 .header-next-mobile-actions .is-filled {
-  fill: #b72a38;
-  stroke: #cf3e4d;
+  fill: #dcb56b;
+  stroke: #e2bd72;
 }
 
 .header-next-utility .is-outline,
 .header-next-mobile-actions .is-outline {
   fill: none;
-  stroke: #cf3e4d;
+  stroke: rgba(220, 181, 107, 0.88);
 }
 
 .header-next-cart-icon {
@@ -674,8 +674,8 @@
 }
 
 .header-next-count.is-heart {
-  background: linear-gradient(180deg, #c73544, #861a24);
-  color: #fff;
+  background: linear-gradient(180deg, #e2bd72, #c9964d);
+  color: #111;
 }
 
 .header-next-mobile-menu,

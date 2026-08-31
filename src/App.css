@@ -17153,6 +17153,10 @@ body.overlay-lock .header-system {
   }
 }
 
+.new-arrivals-marquee.is-product-modal-open .new-arrivals-track {
+  animation-play-state: paused;
+}
+
 @keyframes new-arrivals-scroll {
   from {
     transform: translate3d(0, 0, 0);
