@@ -636,20 +636,21 @@
 
 .header-next-heart-count {
   position: absolute;
-  inset: 0;
+  inset: -11px;
 
   display: grid;
   place-items: center;
 
-  padding-top: 1px;
-
-  color: #15110a;
-  font-size: 7px;
+  color: #171108;
+  font-size: 10px;
   font-weight: 950;
   line-height: 1;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.04em;
+
+  text-align: center;
 
   pointer-events: none;
+  z-index: 2;
 }
 
 .header-next-utility .is-filled,
