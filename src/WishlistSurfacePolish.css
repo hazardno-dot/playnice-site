@@ -10,10 +10,10 @@
   transform-origin: center;
 }
 
-/* Product modal: floating action inside the image pane. */
+/* Product modal: visually anchor the action to the upper-right corner of the image pane. */
 .modal-image-wrap > .modal-wishlist-btn {
   position: absolute;
-  top: 10px;
+  top: -82px;
   right: 10px;
   z-index: 8;
   width: 42px;
@@ -76,7 +76,7 @@
   }
 
   .modal-image-wrap > .modal-wishlist-btn {
-    top: 6px;
+    top: -68px;
     right: 6px;
     width: 38px;
     height: 36px;
