@@ -1665,6 +1665,8 @@ const selectedSortOption =
 }, [hasBlockingOverlay]);
 
   useEffect(() => {
+    if (view !== "home" || closingVisible) return;
+
     const section = document.querySelector(".closing-section");
     if (!section) return;
 
@@ -1684,7 +1686,7 @@ const selectedSortOption =
     observer.observe(section);
 
     return () => observer.disconnect();
-  }, []);
+  }, [view, closingVisible]);
 
   useEffect(() => {
   if (view !== "home") {
