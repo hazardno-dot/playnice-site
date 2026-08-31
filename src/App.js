@@ -9176,267 +9176,258 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="modal-body">
-  <div className="modal-media panel-anim panel-anim-2">
-    {selectedProduct.badge && (
-  <div
-    className="modal-badge-stage panel-item-anim panel-item-1"
-    role="img"
-    aria-label={selectedProduct.badge}
-  >
-    <div
-      className={`modal-badge-letters ${
-        selectedProduct.badge.length >= 14
-          ? "is-extra-long"
-          : selectedProduct.badge.length >= 11
-          ? "is-long"
-          : ""
-      }`}
-      aria-hidden="true"
-    >
-      {Array.from(selectedProduct.badge).map((character, index) => (
-        <span
-          key={`${selectedProduct.id}-${selectedProduct.badge}-${index}`}
-          className={`modal-badge-letter${
-            character === " " ? " is-space" : ""
-          }`}
-        >
-          {character === " " ? "\u00A0" : character}
-        </span>
-      ))}
-    </div>
-  </div>
-)}
+        <div className="modal-media panel-anim panel-anim-2">
 
-    {selectedProduct.slug === "ysl-y-iced-cologne" && (
-  <div className="modal-sample-mini">
-    <strong>🎁 {lang === "sr" ? "FREE UZORAK" : "FREE SAMPLE"}</strong>
-
-    <small>
-      {lang === "sr"
-        ? "Uz svaki 10ml. Limited stock."
-        : "Included with every 10ml. Limited stock."}
-    </small>
-  </div>
-)}
-
-<div className="modal-media panel-anim panel-anim-2">
-  <button
-    type="button"
-    className={`wishlist-btn modal-wishlist-btn ${
-      wishlist.includes(selectedProduct.id) ? "active" : ""
-    }`}
-    onMouseDown={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    }}
-    onPointerDown={(e) => {
-      e.stopPropagation();
-    }}
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleWishlist(selectedProduct.id);
-    }}
-    aria-label={
-      wishlist.includes(selectedProduct.id)
-        ? lang === "sr"
-          ? `Ukloni ${selectedProduct.name} iz Private Selection`
-          : `Remove ${selectedProduct.name} from Private Selection`
-        : lang === "sr"
-        ? `Dodaj ${selectedProduct.name} u Private Selection`
-        : `Add ${selectedProduct.name} to Private Selection`
-    }
-  >
-    <span className="heart-icon" aria-hidden="true">
-      ♥
-    </span>
-  </button>
-
-  {selectedProduct.badge && (
-    <div
-      className="modal-badge-stage panel-item-anim panel-item-1"
-      role="img"
-      aria-label={selectedProduct.badge}
-    >
-      <div
-        className={`modal-badge-letters ${
-          selectedProduct.badge.length >= 14
-            ? "is-extra-long"
-            : selectedProduct.badge.length >= 11
-            ? "is-long"
-            : ""
-        }`}
-        aria-hidden="true"
-      >
-        {Array.from(selectedProduct.badge).map((character, index) => (
-          <span
-            key={`${selectedProduct.id}-${selectedProduct.badge}-${index}`}
-            className={`modal-badge-letter${
-              character === " " ? " is-space" : ""
+          <button
+            type="button"
+            className={`wishlist-btn modal-wishlist-btn ${
+              wishlist.includes(selectedProduct.id) ? "active" : ""
             }`}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleWishlist(selectedProduct.id);
+            }}
+            aria-label={
+              wishlist.includes(selectedProduct.id)
+                ? lang === "sr"
+                  ? `Ukloni ${selectedProduct.name} iz Private Selection`
+                  : `Remove ${selectedProduct.name} from Private Selection`
+                : lang === "sr"
+                ? `Dodaj ${selectedProduct.name} u Private Selection`
+                : `Add ${selectedProduct.name} to Private Selection`
+            }
           >
-            {character === " " ? "\u00A0" : character}
-          </span>
-        ))}
-      </div>
-    </div>
-  )}
+            <span className="heart-icon" aria-hidden="true">
+              ♥
+            </span>
+          </button>
 
-  {selectedProduct.slug === "ysl-y-iced-cologne" && (
-    <div className="modal-sample-mini">
-      <strong>
-        🎁 {lang === "sr" ? "FREE UZORAK" : "FREE SAMPLE"}
-      </strong>
-
-      <small>
-        {lang === "sr"
-          ? "Uz svaki 10ml. Limited stock."
-          : "Included with every 10ml. Limited stock."}
-      </small>
-    </div>
-  )}
-
-  <div
-    className={`modal-image-wrap panel-item-anim panel-item-2 ${
-      selectedProduct.noteMap ? "has-note-map" : ""
-    } ${noteMapOpen ? "note-map-open" : ""}`}
-  >
-    {selectedProduct.image ? (
-      <img
-        src={selectedProduct.image}
-        alt={selectedProduct.name}
-        className="modal-image"
-      />
-    ) : (
-      <div className="modal-monogram">
-        {selectedProduct.name.charAt(0)}
-      </div>
-    )}
-
-    {selectedProduct.noteMap && (
-      <TheNoteMap
-        notes={selectedProduct.noteMap}
-        lang={lang}
-        open={noteMapOpen}
-        onToggle={() => setNoteMapOpen((current) => !current)}
-      />
-    )}
-
-    {selectedProduct.noteMap && (
-      <button
-        type="button"
-        className={`the-note-map__mobile-trigger ${
-          noteMapOpen ? "is-open" : ""
-        }`}
-        onClick={(event) => {
-          event.preventDefault();
-          event.stopPropagation();
-
-          setNoteMapOpen((current) => !current);
-        }}
-        aria-expanded={noteMapOpen}
-      >
-        <span>THE NOTE MAP</span>
-        <strong aria-hidden="true">
-          {noteMapOpen ? "×" : "+"}
-        </strong>
-      </button>
-    )}
-  </div>
-</div>
-
-{selectedProduct.recommendations?.length > 0 && (
-  <div className="modal-same-energy panel-item-anim panel-item-3">
-    <div className="modal-same-energy-list">
-      {selectedProduct.recommendations
-        .map((slug) => products.find((product) => product.slug === slug))
-        .filter(Boolean)
-        .slice(0, 2)
-        .map((product) => {
-          const copy = product.copy?.[lang] || product.copy?.en || {};
-
-          return (
-            <button
-              key={product.id}
-              type="button"
-              className="modal-same-energy-item"
-              onClick={() => {
-                const productUrl = getProductUrl(product);
-                const productSlug = getProductSlug(product);
-                const hasRouteChanged = window.location.pathname !== productUrl;
-
-                setSelectedProduct(product);
-                setSelectedSize(Object.keys(product.sizes)[0]);
-                setHasUserPickedSize(false);
-
-                if (hasRouteChanged) {
-                  window.history.replaceState(
-                    {
-                    ...(window.history.state || {}),
-                    productSlug
-                    },
-                    "",
-                  productUrl
-                );
-
-                trackPageView(productUrl);
-                trackMeta("PageView");
-                }
-              }}
+          {selectedProduct.badge && (
+            <div
+              className="modal-badge-stage panel-item-anim panel-item-1"
+              role="img"
+              aria-label={selectedProduct.badge}
             >
-              <span className="modal-same-energy-img-wrap">
-                {product.image ? (
-                  <img src={product.image} alt={product.name} />
-                ) : (
-                  <span>{product.name.charAt(0)}</span>
-                )}
-              </span>
+              <div
+                className={`modal-badge-letters ${
+                  selectedProduct.badge.length >= 14
+                    ? "is-extra-long"
+                    : selectedProduct.badge.length >= 11
+                    ? "is-long"
+                    : ""
+                }`}
+                aria-hidden="true"
+              >
+                {Array.from(selectedProduct.badge).map((character, index) => (
+                  <span
+                    key={`${selectedProduct.id}-${selectedProduct.badge}-${index}`}
+                    className={`modal-badge-letter${
+                      character === " " ? " is-space" : ""
+                    }`}
+                  >
+                    {character === " " ? "\u00A0" : character}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
 
-              <span className="modal-same-energy-text">
-                <strong>{product.shortName || product.name}</strong>
-                <small>
-                  {copy.card ||
-                    copy.whyChoose ||
-                    copy.dominantNotes?.join(" • ") ||
-                    (lang === "sr"
-                      ? "Sličan premium karakter."
-                      : "Similar premium character.")}
-                </small>
-              </span>
-            </button>
-          );
-        })}
-    </div>
-  </div>
-)}
+          {selectedProduct.slug === "ysl-y-iced-cologne" && (
+            <div className="modal-sample-mini">
+              <strong>
+                🎁 {lang === "sr" ? "FREE UZORAK" : "FREE SAMPLE"}
+              </strong>
+
+              <small>
+                {lang === "sr"
+                  ? "Uz svaki 10ml. Limited stock."
+                  : "Included with every 10ml. Limited stock."}
+              </small>
+            </div>
+          )}
 
           <div
-  className={`modal-media-meta panel-item-anim panel-item-3 ${
-    selectedProduct.noteMap ? "has-note-map" : ""
-  }`}
->
-  <div className="modal-media-meta-copy">
-    <span className="modal-category">
-      {lang === "sr"
-        ? selectedProduct.category === "Arabian"
-          ? "ARAPSKI"
-          : selectedProduct.category === "Designer"
-          ? "DIZAJNERSKI"
-          : selectedProduct.category === "Niche"
-          ? "NICHE"
-          : selectedProduct.category.toUpperCase()
-        : selectedProduct.category.toUpperCase()}
-    </span>
+            className={`modal-image-wrap panel-item-anim panel-item-2 ${
+              selectedProduct.noteMap ? "has-note-map" : ""
+            } ${noteMapOpen ? "note-map-open" : ""}`}
+          >
+            {selectedProduct.image ? (
+              <img
+                src={selectedProduct.image}
+                alt={selectedProduct.name}
+                className="modal-image"
+              />
+            ) : (
+              <div className="modal-monogram">
+                {selectedProduct.name.charAt(0)}
+              </div>
+            )}
 
-    <p>
-      {selectedCopy.dominantNotes?.join(" • ") ||
-        (lang === "sr"
-          ? "Premium mirisna selekcija"
-          : "Premium fragrance selection")}
-    </p>
-    </div>
-  </div>
-</div>
+            {selectedProduct.noteMap && (
+              <TheNoteMap
+                notes={selectedProduct.noteMap}
+                lang={lang}
+                open={noteMapOpen}
+                onToggle={() => setNoteMapOpen((current) => !current)}
+              />
+            )}
+
+            {selectedProduct.noteMap && (
+              <button
+                type="button"
+                className={`the-note-map__mobile-trigger ${
+                  noteMapOpen ? "is-open" : ""
+                }`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setNoteMapOpen((current) => !current);
+                }}
+                aria-expanded={noteMapOpen}
+              >
+                <span>THE NOTE MAP</span>
+                <strong aria-hidden="true">
+                  {noteMapOpen ? "×" : "+"}
+                </strong>
+              </button>
+            )}
+          </div>
+
+          {selectedProduct.recommendations?.length > 0 && (
+            <div className="modal-same-energy panel-item-anim panel-item-3">
+              <div className="modal-same-energy-list">
+                {selectedProduct.recommendations
+                  .map((slug) =>
+                    products.find((product) => product.slug === slug)
+                  )
+                  .filter(Boolean)
+                  .slice(0, 2)
+                  .map((product) => {
+                    const copy =
+                      product.copy?.[lang] || product.copy?.en || {};
+
+                    return (
+                      <button
+                        key={product.id}
+                        type="button"
+                        className="modal-same-energy-item"
+                        onClick={() => {
+                          const productUrl = getProductUrl(product);
+                          const productSlug = getProductSlug(product);
+                          const hasRouteChanged =
+                            window.location.pathname !== productUrl;
+
+                          setSelectedProduct(product);
+                          setSelectedSize(Object.keys(product.sizes)[0]);
+                          setHasUserPickedSize(false);
+
+                          if (hasRouteChanged) {
+                            window.history.replaceState(
+                              {
+                                ...(window.history.state || {}),
+                                productSlug,
+                              },
+                              "",
+                              productUrl
+                            );
+
+                            trackPageView(productUrl);
+                            trackMeta("PageView");
+                          }
+                        }}
+                      >
+                        <span className="modal-same-energy-img-wrap">
+                          {product.image ? (
+                            <img src={product.image} alt={product.name} />
+                          ) : (
+                            <span>{product.name.charAt(0)}</span>
+                          )}
+                        </span>
+
+                        <span className="modal-same-energy-text">
+                          <strong>
+                            {product.shortName || product.name}
+                          </strong>
+
+                          <small>
+                            {copy.card ||
+                              copy.whyChoose ||
+                              copy.dominantNotes?.join(" • ") ||
+                              (lang === "sr"
+                                ? "Sličan premium karakter."
+                                : "Similar premium character.")}
+                          </small>
+                        </span>
+                      </button>
+                    );
+                  })}
+              </div>
+            </div>
+          )}
+
+          <div
+            className={`modal-media-meta panel-item-anim panel-item-3 ${
+              selectedProduct.noteMap ? "has-note-map" : ""
+            }`}
+          >
+            <div className="modal-media-meta-copy">
+              <span className="modal-category">
+                {lang === "sr"
+                  ? selectedProduct.category === "Arabian"
+                    ? "ARAPSKI"
+                    : selectedProduct.category === "Designer"
+                    ? "DIZAJNERSKI"
+                    : selectedProduct.category === "Niche"
+                    ? "NICHE"
+                    : selectedProduct.category.toUpperCase()
+                  : selectedProduct.category.toUpperCase()}
+              </span>
+
+              <p>
+                {selectedCopy.dominantNotes?.join(" • ") ||
+                  (lang === "sr"
+                    ? "Premium mirisna selekcija"
+                    : "Premium fragrance selection")}
+              </p>
+            </div>
+          </div>
+        </div>
+
+          <div
+            className={`modal-media-meta panel-item-anim panel-item-3 ${
+              selectedProduct.noteMap ? "has-note-map" : ""
+            }`}
+          >
+            <div className="modal-media-meta-copy">
+              <span className="modal-category">
+                {lang === "sr"
+                  ? selectedProduct.category === "Arabian"
+                    ? "ARAPSKI"
+                    : selectedProduct.category === "Designer"
+                    ? "DIZAJNERSKI"
+                    : selectedProduct.category === "Niche"
+                    ? "NICHE"
+                    : selectedProduct.category.toUpperCase()
+                  : selectedProduct.category.toUpperCase()}
+              </span>
+
+              <p>
+                {selectedCopy.dominantNotes?.join(" • ") ||
+                  (lang === "sr"
+                    ? "Premium mirisna selekcija"
+                    : "Premium fragrance selection")}
+              </p>
+              </div>
+            </div>
+          </div>
 
         <div className="modal-content panel-anim panel-anim-3">
           {selectedCopy.miniTag && (
