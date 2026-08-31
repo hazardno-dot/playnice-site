@@ -5,6 +5,7 @@ import App from "./App";
 import PrivateSelectionEnhancer from "./PrivateSelectionEnhancer";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
+import "./NewArrivalsScale.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
