@@ -4512,6 +4512,8 @@ useEffect(() => {
     }
 
     if (checkoutOpen) {
+      if (isSubmittingOrder) return;
+
       setCheckoutOpen(false);
       return;
     }
@@ -4570,7 +4572,8 @@ useEffect(() => {
   howItWorksOpen,
   storyOpen,
   privateSelectionOpen,
-  discoveryOpen
+  discoveryOpen,
+  isSubmittingOrder
 ]);
 
 const openImpactProductModal = (product) => {
@@ -9493,7 +9496,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <button
       className="close-button"
       type="button"
-      onClick={() => setCheckoutOpen(false)}
+      onClick={() => {
+        if (isSubmittingOrder) return;
+        setCheckoutOpen(false);
+      }}
+      disabled={isSubmittingOrder}
       aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
     >
       ×
