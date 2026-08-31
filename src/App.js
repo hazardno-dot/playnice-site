@@ -9221,40 +9221,40 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
 <div
   className={`modal-image-wrap panel-item-anim panel-item-2 ${
+    <button
+      type="button"
+      className={`wishlist-btn modal-wishlist-btn ${
+        wishlist.includes(selectedProduct.id) ? "active" : ""
+      }`}
+      onMouseDown={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      onPointerDown={(e) => {
+        e.stopPropagation();
+      }}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleWishlist(selectedProduct.id);
+      }}
+      aria-label={
+        wishlist.includes(selectedProduct.id)
+          ? lang === "sr"
+            ? `Ukloni ${selectedProduct.name} iz Private Selection`
+            : `Remove ${selectedProduct.name} from Private Selection`
+          : lang === "sr"
+          ? `Dodaj ${selectedProduct.name} u Private Selection`
+          : `Add ${selectedProduct.name} to Private Selection`
+      }
+    >
+      <span className="heart-icon" aria-hidden="true">
+        ♥
+      </span>
+    </button>
     selectedProduct.noteMap ? "has-note-map" : ""
   } ${noteMapOpen ? "note-map-open" : ""}`}
 >
-  <button
-    type="button"
-    className={`wishlist-btn modal-wishlist-btn ${
-      wishlist.includes(selectedProduct.id) ? "active" : ""
-    }`}
-    onMouseDown={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    }}
-    onPointerDown={(e) => {
-      e.stopPropagation();
-    }}
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleWishlist(selectedProduct.id);
-    }}
-    aria-label={
-      wishlist.includes(selectedProduct.id)
-        ? lang === "sr"
-          ? `Ukloni ${selectedProduct.name} iz Private Selection`
-          : `Remove ${selectedProduct.name} from Private Selection`
-        : lang === "sr"
-        ? `Dodaj ${selectedProduct.name} u Private Selection`
-        : `Add ${selectedProduct.name} to Private Selection`
-    }
-  >
-    <span className="heart-icon" aria-hidden="true">
-      ♥
-    </span>
-  </button>
 
   {selectedProduct.image ? (
     <img
