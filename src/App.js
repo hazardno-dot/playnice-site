@@ -9943,7 +9943,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     : lang === "sr"
     ? "Pošalji upit za dostavu"
     : "Send delivery enquiry"}
-</button>
+      </button>
 
       <div className="checkout-safe-note panel-anim panel-anim-5">
         {isMontenegroOrder
