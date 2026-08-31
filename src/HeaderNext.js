@@ -73,7 +73,7 @@ function HeaderNext({
             community: "Zajednica",
             exhibition: "Izložba",
             exhibitionNote: "Ideje koje traju",
-            discover: "Otkrij",
+            discover: "Istraži",
             how: "Kako funkcioniše",
             sets: "Discovery setovi",
             why: "Zašto PlayNice",
