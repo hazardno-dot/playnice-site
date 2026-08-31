@@ -2349,10 +2349,14 @@ main {
     0 0 0 1px rgba(220, 181, 107, 0.08);
 }
 
-.scent-mood-chip:focus,
-.scent-mood-chip:focus-visible {
+.scent-mood-chip:focus {
   outline: none;
-  border-color: rgba(220, 181, 107, 0.42);
+}
+
+.scent-mood-chip:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.68);
+  outline-offset: 2px;
+  border-color: rgba(220, 181, 107, 0.5);
 }
 
 /* ICONS */
@@ -7291,9 +7295,14 @@ main {
   transform: translateY(0) scale(0.985);
 }
 
-.pagination-wrap button:focus,
-.pagination-wrap button:focus-visible {
+.pagination-wrap button:focus {
   outline: none;
+}
+
+.pagination-wrap button:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.72);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px rgba(220, 181, 107, 0.07);
 }
 
 .pagination-wrap button:disabled {
@@ -8873,10 +8882,14 @@ main {
 }
 
 /* FIX: uklanja focus outline */
-.wishlist-btn:focus,
-.wishlist-btn:focus-visible {
+.wishlist-btn:focus {
   outline: none;
-  box-shadow: none;
+}
+
+.wishlist-btn:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.72);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px rgba(220, 181, 107, 0.07);
 }
 
 .wishlist-btn:hover {
@@ -9050,10 +9063,14 @@ main {
     rgba(19,19,19,0.94);
 }
 
-.size-buttons .size-chip:focus,
-.size-buttons .size-chip:focus-visible {
+.size-buttons .size-chip:focus {
   outline: none;
-  border-color: rgba(220, 181, 107, 0.26);
+}
+
+.size-buttons .size-chip:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.68);
+  outline-offset: 2px;
+  border-color: rgba(220, 181, 107, 0.42);
 }
 
 .size-buttons .size-chip:active {
@@ -11250,9 +11267,14 @@ main {
   transform: translateY(0) scale(0.985);
 }
 
-.header-private-selection-btn:focus,
-.header-private-selection-btn:focus-visible {
+.header-private-selection-btn:focus {
   outline: none;
+}
+
+.header-private-selection-btn:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.72);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px rgba(220, 181, 107, 0.07);
 }
 
 /* heart base */
@@ -12325,9 +12347,14 @@ main {
   -webkit-tap-highlight-color: transparent;
 }
 
-.sticky-cta-main:focus,
-.sticky-cta-main:focus-visible {
+.sticky-cta-main:focus {
   outline: none;
+}
+
+.sticky-cta-main:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.72);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px rgba(220, 181, 107, 0.07);
 }
 
 /* Copy */
@@ -14533,9 +14560,14 @@ body.is-scrolling .back-to-top:active {
     #0b0b0b;
 }
 
-.header-system .brand:focus,
-.header-system .brand:focus-visible {
+.header-system .brand:focus {
   outline: none;
+}
+
+.header-system .brand:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.72);
+  outline-offset: 4px;
+  border-radius: 8px;
 }
 
 .header-system .brand-copy {
@@ -14729,9 +14761,14 @@ body.is-scrolling .back-to-top:active {
   transform: none;
 }
 
-.header-system .nav-links button:focus,
-.header-system .nav-links button:focus-visible {
+.header-system .nav-links button:focus {
   outline: none;
+}
+
+.header-system .nav-links button:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.72);
+  outline-offset: 4px;
+  border-radius: 6px;
 }
 
 .header-system .nav-links.is-home .nav-link-home {
@@ -15036,12 +15073,16 @@ body.is-scrolling .back-to-top:active {
 }
 
 .header-system .cart-button--icon-only:focus,
-.header-system .cart-button--icon-only:focus-visible,
 .header-system .header-private-selection-btn:focus,
-.header-system .header-private-selection-btn:focus-visible,
-.header-system .language-current:focus,
-.header-system .language-current:focus-visible {
+.header-system .language-current:focus {
   outline: none;
+}
+
+.header-system .cart-button--icon-only:focus-visible,
+.header-system .header-private-selection-btn:focus-visible,
+.header-system .language-current:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.72);
+  outline-offset: 3px;
 }
 
 .header-system .cart-icon {
@@ -15397,9 +15438,14 @@ body.scrolled .header-system .announcement-bar-system {
   text-shadow: 0 0 12px rgba(220, 181, 107, 0.18);
 }
 
-.header-system .announcement-action:focus,
-.header-system .announcement-action:focus-visible {
+.header-system .announcement-action:focus {
   outline: none;
+}
+
+.header-system .announcement-action:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.72);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 .header-system .announcement-icon {

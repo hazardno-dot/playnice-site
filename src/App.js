@@ -1099,6 +1099,7 @@ const isNewRequest = (request) => {
   const touchEndX = useRef(0);
   const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
+  const productModalCloseButtonRef = useRef(null);
   const checkoutAutoCloseTimeoutRef = useRef(null);
   const fallbackDeviceIdRef = useRef(null);
   const communityVoteInFlightRef = useRef(new Set());
@@ -1978,6 +1979,18 @@ useEffect(() => {
 useEffect(() => {
   setNoteMapOpen(false);
 }, [selectedProduct?.slug]);
+
+useEffect(() => {
+  if (!selectedProduct || !productModalVisible) return;
+
+  const frame = requestAnimationFrame(() => {
+    productModalCloseButtonRef.current?.focus({
+      preventScroll: true
+    });
+  });
+
+  return () => cancelAnimationFrame(frame);
+}, [selectedProduct, productModalVisible]);
 
 useEffect(() => {
   return () => {
@@ -8973,6 +8986,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       onClick={(e) => e.stopPropagation()}
     >
       <button
+        ref={productModalCloseButtonRef}
         className="close-button"
         type="button"
         onClick={closeProductModal}
