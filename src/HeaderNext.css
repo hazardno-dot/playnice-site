@@ -1,6 +1,7 @@
 /* =========================================
    PLAYNICE HEADERNEXT — ISOLATED PROTOTYPE
 ========================================= */
+
 .header-next-system {
   top: 8px;
   height: 108px;
@@ -541,6 +542,11 @@
     box-shadow 180ms ease;
 }
 
+.header-next-discover.is-open .header-next-discover-panel button {
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
+}
+
 .header-next-discover-panel button:hover,
 .header-next-discover-panel button:focus-visible {
   border-color: rgba(220, 181, 107, 0.28);
@@ -684,7 +690,7 @@
   place-items: center;
 
   color: #dcb56b;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.05em;
