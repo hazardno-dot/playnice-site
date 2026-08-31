@@ -4459,6 +4459,7 @@ const closeProductModal = (
   setNoteMapOpen(false);
   setProductModalVisible(false);
   setHasUserPickedSize(false);
+  setModalDiscountFlashKey(null);
 
   if (productModalAutoCloseTimeoutRef.current) {
     clearTimeout(productModalAutoCloseTimeoutRef.current);
