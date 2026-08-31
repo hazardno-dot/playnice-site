@@ -898,7 +898,6 @@ const getInitialShopState = () => {
   const [heroPaused, setHeroPaused] = useState(false);
   const [heroCollectionFilter, setHeroCollectionFilter] = useState(null);
   const [heroCollectionTitle, setHeroCollectionTitle] = useState("");
-  const [showStickyCta, setShowStickyCta] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
@@ -1621,6 +1620,10 @@ const selectedSortOption =
   discoveryOpen ||
   discoveryBuilderOpen;
 
+  const showStickyCta =
+  !hasBlockingOverlay &&
+  (view === "home" || view === "shop");
+
   const scrollYRef = useRef(0);
 
 /* =========================================
@@ -1921,24 +1924,33 @@ useEffect(() => {
   }, []);
 
   useEffect(() => {
-  let scrollEndTimer;
+    let scrollEndTimer;
+    let scrollFrame = null;
 
-  const handleScroll = () => {
-    const scrollY = window.scrollY;
+    const updateScrollState = () => {
+      scrollFrame = null;
 
-    document.body.classList.toggle("scrolled", scrollY > 20);
-    document.body.classList.add("is-scrolling");
+      const scrollY = window.scrollY;
 
-    setShowBackToTop(scrollY > 600);
+      document.body.classList.toggle("scrolled", scrollY > 20);
+      document.body.classList.add("is-scrolling");
 
-    window.clearTimeout(scrollEndTimer);
+      setShowBackToTop(scrollY > 600);
 
-    scrollEndTimer = window.setTimeout(() => {
-      document.body.classList.remove("is-scrolling");
-    }, 180);
-  };
+      window.clearTimeout(scrollEndTimer);
 
-    handleScroll();
+      scrollEndTimer = window.setTimeout(() => {
+        document.body.classList.remove("is-scrolling");
+      }, 180);
+    };
+
+    const handleScroll = () => {
+      if (scrollFrame !== null) return;
+
+      scrollFrame = window.requestAnimationFrame(updateScrollState);
+    };
+
+    updateScrollState();
 
     window.addEventListener("scroll", handleScroll, {
       passive: true
@@ -1946,23 +1958,16 @@ useEffect(() => {
 
     return () => {
       window.clearTimeout(scrollEndTimer);
+
+      if (scrollFrame !== null) {
+        window.cancelAnimationFrame(scrollFrame);
+      }
+
       window.removeEventListener("scroll", handleScroll);
+
       document.body.classList.remove("is-scrolling");
     };
   }, []);
-
-  useEffect(() => {
-  const shouldShow =
-    !hasBlockingOverlay &&
-    (view === "home" || view === "shop");
-
-  setShowStickyCta(shouldShow);
-  }, [
-    view,
-    hasBlockingOverlay,
-    cartCount,
-    wishlist.length
-  ]);
 
 useEffect(() => {
   if (selectedProduct) {

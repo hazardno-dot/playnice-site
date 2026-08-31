@@ -2819,8 +2819,9 @@ main {
   }
 
   .cart-drawer.is-empty {
-  max-height: 440px;
-  height: auto;
+    max-height: min(440px, calc(100vh - 20px));
+    max-height: min(440px, calc(100dvh - 20px));
+    height: auto;
   }
 
   .cart-drawer-header,
@@ -3638,6 +3639,7 @@ main {
     width: calc(100vw - 20px);
     height: auto;
     max-height: calc(100vh - 20px);
+    max-height: calc(100dvh - 20px);
   }
 
   .cart-drawer-header {
@@ -5764,6 +5766,7 @@ main {
   .product-modal {
     width: calc(100vw - 16px);
     max-height: calc(100vh - 16px);
+    max-height: calc(100dvh - 16px);
     border-radius: 24px;
 
     overflow-y: auto;
@@ -6793,6 +6796,7 @@ main {
     inset: 10px 10px auto 10px;
     width: auto;
     max-height: calc(100vh - 20px);
+    max-height: calc(100dvh - 20px);
 
     display: block;
 
@@ -8014,6 +8018,7 @@ main {
     left: 10px;
     width: calc(100vw - 20px);
     max-height: calc(100vh - 20px);
+    max-height: calc(100dvh - 20px);
     border-radius: 26px;
     transform: translateY(-50%) translateX(calc(-100% - 28px));
   }
@@ -8393,6 +8398,7 @@ main {
     right: 10px;
     width: calc(100vw - 20px);
     max-height: calc(100vh - 20px);
+    max-height: calc(100dvh - 20px);
     padding: 20px 16px 16px;
     border-radius: 24px;
     transform: translateX(calc(100% + 24px));
@@ -15218,9 +15224,13 @@ body.is-scrolling .back-to-top:active {
   }
 }
 
-.header-system .language-current:focus,
-.header-system .language-current:focus-visible {
+.header-system .language-current:focus {
   outline: none;
+}
+
+.header-system .language-current:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.72);
+  outline-offset: 3px;
 }
 
 /* =========================================
@@ -16762,6 +16772,7 @@ body.overlay-lock .header-system {
 
   width: min(430px, calc(100vw - 32px));
   max-height: calc(100vh - 40px);
+  max-height: calc(100dvh - 40px);
 
   z-index: 1250;
 
@@ -19196,6 +19207,7 @@ body.overlay-lock .header-system {
   .playnice-discovery-panel.has-results {
     width: 100%;
     max-height: 84vh;
+    max-height: 84dvh;
     padding: 22px 13px 16px;
     border-radius: 22px;
     overflow-x: hidden;
