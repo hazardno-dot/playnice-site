@@ -483,7 +483,6 @@
   opacity: 0;
   visibility: hidden;
 
-  clip-path: inset(0 0 100% 0);
   transform: translateY(-5px);
   transform-origin: top right;
 
@@ -492,7 +491,6 @@
   transition:
     opacity 215ms ease,
     visibility 215ms ease,
-    clip-path 625ms cubic-bezier(0.16, 1, 0.3, 1),
     transform 505ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -500,7 +498,6 @@
   opacity: 1;
   visibility: visible;
 
-  clip-path: inset(0 0 0 0);
   transform: translateY(0);
 
   pointer-events: auto;
@@ -669,12 +666,13 @@
 .header-next-heart-wrap:has(.header-next-heart-count) svg {
   width: 32px;
   height: 32px;
+  opacity: 0.92;
+}
 
+.header-next-heart-wrap:has(.header-next-heart-count) .is-filled {
   fill: none !important;
   stroke: #dcb56b !important;
   stroke-width: 1.45;
-
-  opacity: 0.9;
 }
 
 /* Broj zauzima cijeli kružni button */
@@ -685,8 +683,8 @@
   display: grid;
   place-items: center;
 
-  color: #e49a42;
-  font-size: 24px;
+  color: #dcb56b;
+  font-size: 20px;
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.05em;
