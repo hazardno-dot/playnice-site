@@ -1100,6 +1100,7 @@ const isNewRequest = (request) => {
   const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
   const productModalCloseButtonRef = useRef(null);
+  const productModalTriggerRef = useRef(null);
   const checkoutAutoCloseTimeoutRef = useRef(null);
   const fallbackDeviceIdRef = useRef(null);
   const communityVoteInFlightRef = useRef(new Set());
@@ -4242,6 +4243,14 @@ const isMobileProductModal = () =>
 const openProductModal = (product, options = {}) => {
   if (!product) return;
 
+  const activeElement = document.activeElement;
+
+    productModalTriggerRef.current =
+      activeElement instanceof HTMLElement &&
+      activeElement !== document.body
+        ? activeElement
+        : null;
+
   const {
     updateUrl = true,
     preferredSize = "",
@@ -4502,6 +4511,20 @@ const closeProductModal = (
     setSelectedProduct(null);
     setSelectedSize("");
     productModalCloseTimeoutRef.current = null;
+
+    const triggerElement = productModalTriggerRef.current;
+      productModalTriggerRef.current = null;
+
+      requestAnimationFrame(() => {
+        if (
+          triggerElement &&
+          document.contains(triggerElement)
+        ) {
+          triggerElement.focus({
+            preventScroll: true
+          });
+        }
+      });
 
     if (window.location.pathname.startsWith("/product/")) {
       const openedInsidePlayNice =
