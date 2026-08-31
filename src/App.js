@@ -435,6 +435,10 @@ function formatPrice(value) {
   return `€${Number(value).toFixed(2)}`;
 }
 
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
+}
+
 function getMinPrice(product) {
   return Math.min(...Object.values(product.sizes));
 }
@@ -465,7 +469,12 @@ function smoothScrollToTop() {
 function getDefaultLanguage() {
   if (typeof window === "undefined") return "sr";
 
-  const savedLang = window.localStorage.getItem("playnice_lang");
+  let savedLang = null;
+
+  try {
+    savedLang = window.localStorage.getItem("playnice_lang");
+  } catch {}
+
   if (savedLang === "sr" || savedLang === "en") return savedLang;
 
   const browserLang = (window.navigator.language || "").toLowerCase();
@@ -884,10 +893,11 @@ const getInitialShopState = () => {
   const [closingVisible, setClosingVisible] = useState(false);
   const [currentHero, setCurrentHero] = useState(0);
   const heroNavigationRequestRef = useRef(0);
+  const heroHoveredRef = useRef(false);
+  const heroAutoplayResumeTimeoutRef = useRef(null);
   const [heroPaused, setHeroPaused] = useState(false);
   const [heroCollectionFilter, setHeroCollectionFilter] = useState(null);
   const [heroCollectionTitle, setHeroCollectionTitle] = useState("");
-  const [showStickyCta, setShowStickyCta] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(0);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
@@ -959,26 +969,6 @@ const getInitialShopState = () => {
     discoveryPageStart + DISCOVERY_RESULTS_PER_PAGE
   );
 
-  useEffect(() => {
-    if (!discoveryOpen) return undefined;
-
-    const previousOverflow = document.body.style.overflow;
-
-    const handleDiscoveryKeyDown = (event) => {
-      if (event.key === "Escape") {
-        setDiscoveryOpen(false);
-      }
-    };
-
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleDiscoveryKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleDiscoveryKeyDown);
-    };
-  }, [discoveryOpen]);
-
   const newProductsSignature = useMemo(() => {
     return getNewProductsSignature(products);
   }, []);
@@ -990,7 +980,13 @@ const getInitialShopState = () => {
 
     if (!currentSignature) return false;
 
-    return localStorage.getItem(SHOP_NEW_PRODUCTS_SEEN_KEY) !== currentSignature;
+    try {
+      return (
+        localStorage.getItem(SHOP_NEW_PRODUCTS_SEEN_KEY) !== currentSignature
+      );
+    } catch {
+      return false;
+    }
   });
 
   const [wishlist, setWishlist] = useState(() =>
@@ -999,15 +995,16 @@ const getInitialShopState = () => {
   const [sprayingWishlistId, setSprayingWishlistId] = useState(null);
 
   const [checkoutForm, setCheckoutForm] = useState({
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  country: "ME",
-  city: "",
-  address: "",
-  note: ""
-});
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    country: "ME",
+    otherCountry: "",
+    city: "",
+    address: "",
+    note: ""
+  });
 
 const checkoutCountryOptions = [
   { value: "ME", sr: "Crna Gora", en: "Montenegro" },
@@ -1101,9 +1098,36 @@ const isNewRequest = (request) => {
   const touchEndX = useRef(0);
   const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
+  const productModalRef = useRef(null);
+  const productModalCloseButtonRef = useRef(null);
+  const productModalTriggerRef = useRef(null);
+  const checkoutAutoCloseTimeoutRef = useRef(null);
+  const fallbackDeviceIdRef = useRef(null);
+  const communityVoteInFlightRef = useRef(new Set());
+  const productModalAutoCloseTimeoutRef = useRef(null);
   const productGridRef = useRef(null);
   const hasMountedShopFiltersRef = useRef(false);
+  const isRestoringShopHistoryRef = useRef(false);
+  const shopFilterStateRef = useRef({
+    category,
+    searchTerm,
+    season,
+    scentMood,
+    sortBy
+  });
   const [shouldScrollToGrid, setShouldScrollToGrid] = useState(false);
+  const journalVoteSuccessTimeoutRef = useRef(null);
+  const journalFeedbackSuccessTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    shopFilterStateRef.current = {
+      category,
+      searchTerm,
+      season,
+      scentMood,
+      sortBy
+    };
+  }, [category, searchTerm, season, scentMood, sortBy]);
 
   /* =========================================
      DERIVED TRANSLATIONS / STATIC ARRAYS
@@ -1122,7 +1146,7 @@ const isNewRequest = (request) => {
     "/videos/hero8.mp4"
   ];
 
-  const videoFrameRef = useRef(null);
+const videoFrameRef = useRef(null);
 const videoRef = useRef(null);
 const userPausedVideoRef = useRef(false);
 const [isVideoPaused, setIsVideoPaused] = useState(false);
@@ -1445,7 +1469,8 @@ const sideRailBlocked =
   storyOpen ||
   howItWorksOpen ||
   privateSelectionOpen ||
-  productModalVisible;
+  productModalVisible ||
+  !!catalogPreview;
 
 const shouldShowSideRails =
   (view === "home" || view === "shop") && !sideRailBlocked;
@@ -1582,24 +1607,32 @@ const selectedSortOption =
     FREE_SHIPPING_THRESHOLD - subtotal
   );
 
+  const hasBlockingOverlay =
+  !!selectedProduct ||
+  cartOpen ||
+  checkoutOpen ||
+  storyOpen ||
+  howItWorksOpen ||
+  faqOpen ||
+  privateSelectionOpen ||
+  !!catalogPreview ||
+  manifestoOpen ||
+  discoveryOpen ||
+  discoveryBuilderOpen;
+
+  const showStickyCta =
+  !hasBlockingOverlay &&
+  (view === "home" || view === "shop");
+
   const scrollYRef = useRef(0);
 
 /* =========================================
    EFFECTS
 ========================================= */
   useLayoutEffect(() => {
-  const shouldLockScroll =
-    !!selectedProduct ||
-    cartOpen ||
-    checkoutOpen ||
-    storyOpen ||
-    howItWorksOpen ||
-    privateSelectionOpen ||
-    !!catalogPreview;
-
   const body = document.body;
 
-  if (shouldLockScroll) {
+  if (hasBlockingOverlay) {
     body.classList.add("overlay-lock");
 
     const lockY = window.scrollY || window.pageYOffset || 0;
@@ -1637,17 +1670,11 @@ const selectedSortOption =
     body.style.width = "";
     body.style.overflow = "";
   };
-}, [
-  selectedProduct,
-  cartOpen,
-  checkoutOpen,
-  storyOpen,
-  howItWorksOpen,
-  privateSelectionOpen,
-  catalogPreview
-]);
+}, [hasBlockingOverlay]);
 
   useEffect(() => {
+    if (view !== "home" || closingVisible) return;
+
     const section = document.querySelector(".closing-section");
     if (!section) return;
 
@@ -1667,7 +1694,7 @@ const selectedSortOption =
     observer.observe(section);
 
     return () => observer.disconnect();
-  }, []);
+  }, [view, closingVisible]);
 
   useEffect(() => {
   if (view !== "home") {
@@ -1737,7 +1764,10 @@ useEffect(() => {
 }, [currentVideo, isVideoInView, shouldLoadVideo]);
 
   useEffect(() => {
-    window.localStorage.setItem("playnice_lang", lang);
+    try {
+      window.localStorage.setItem("playnice_lang", lang);
+    } catch {}
+
     document.documentElement.lang = lang;
   }, [lang]);
 
@@ -1801,6 +1831,11 @@ useEffect(() => {
   useEffect(() => {
     if (!hasMountedShopFiltersRef.current) {
       hasMountedShopFiltersRef.current = true;
+      return;
+    }
+
+    if (isRestoringShopHistoryRef.current) {
+      isRestoringShopHistoryRef.current = false;
       return;
     }
 
@@ -1889,24 +1924,33 @@ useEffect(() => {
   }, []);
 
   useEffect(() => {
-  let scrollEndTimer;
+    let scrollEndTimer;
+    let scrollFrame = null;
 
-  const handleScroll = () => {
-    const scrollY = window.scrollY;
+    const updateScrollState = () => {
+      scrollFrame = null;
 
-    document.body.classList.toggle("scrolled", scrollY > 20);
-    document.body.classList.add("is-scrolling");
+      const scrollY = window.scrollY;
 
-    setShowBackToTop(scrollY > 600);
+      document.body.classList.toggle("scrolled", scrollY > 20);
+      document.body.classList.add("is-scrolling");
 
-    window.clearTimeout(scrollEndTimer);
+      setShowBackToTop(scrollY > 600);
 
-    scrollEndTimer = window.setTimeout(() => {
-      document.body.classList.remove("is-scrolling");
-    }, 180);
-  };
+      window.clearTimeout(scrollEndTimer);
 
-    handleScroll();
+      scrollEndTimer = window.setTimeout(() => {
+        document.body.classList.remove("is-scrolling");
+      }, 180);
+    };
+
+    const handleScroll = () => {
+      if (scrollFrame !== null) return;
+
+      scrollFrame = window.requestAnimationFrame(updateScrollState);
+    };
+
+    updateScrollState();
 
     window.addEventListener("scroll", handleScroll, {
       passive: true
@@ -1914,38 +1958,16 @@ useEffect(() => {
 
     return () => {
       window.clearTimeout(scrollEndTimer);
+
+      if (scrollFrame !== null) {
+        window.cancelAnimationFrame(scrollFrame);
+      }
+
       window.removeEventListener("scroll", handleScroll);
+
       document.body.classList.remove("is-scrolling");
     };
   }, []);
-
-  useEffect(() => {
-  const hasBlockingLayer =
-    !!selectedProduct ||
-    cartOpen ||
-    checkoutOpen ||
-    storyOpen ||
-    howItWorksOpen ||
-    privateSelectionOpen ||
-    !!catalogPreview;
-
-  const shouldShow =
-    !hasBlockingLayer &&
-    (view === "home" || view === "shop");
-
-  setShowStickyCta(shouldShow);
-}, [
-  view,
-  selectedProduct,
-  cartOpen,
-  checkoutOpen,
-  storyOpen,
-  howItWorksOpen,
-  privateSelectionOpen,
-  catalogPreview,
-  cartCount,
-  wishlist.length
-]);
 
 useEffect(() => {
   if (selectedProduct) {
@@ -1964,6 +1986,75 @@ useEffect(() => {
 useEffect(() => {
   setNoteMapOpen(false);
 }, [selectedProduct?.slug]);
+
+useEffect(() => {
+  if (!selectedProduct || !productModalVisible) return;
+
+  const frame = requestAnimationFrame(() => {
+    productModalCloseButtonRef.current?.focus({
+      preventScroll: true
+    });
+  });
+
+  return () => cancelAnimationFrame(frame);
+}, [selectedProduct, productModalVisible]);
+
+useEffect(() => {
+  if (!selectedProduct || !productModalVisible) return;
+
+  const modal = productModalRef.current;
+  if (!modal) return;
+
+  const handleProductModalTab = (event) => {
+    if (event.key !== "Tab") return;
+
+    const focusableElements = Array.from(
+      modal.querySelectorAll(
+        'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter(
+      (element) =>
+        element instanceof HTMLElement &&
+        element.getAttribute("aria-hidden") !== "true" &&
+        element.offsetParent !== null
+    );
+
+    if (focusableElements.length === 0) {
+      event.preventDefault();
+      return;
+    }
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+    const activeElement = document.activeElement;
+
+    if (event.shiftKey) {
+      if (
+        activeElement === firstElement ||
+        !modal.contains(activeElement)
+      ) {
+        event.preventDefault();
+        lastElement.focus();
+      }
+
+      return;
+    }
+
+    if (
+      activeElement === lastElement ||
+      !modal.contains(activeElement)
+    ) {
+      event.preventDefault();
+      firstElement.focus();
+    }
+  };
+
+  document.addEventListener("keydown", handleProductModalTab);
+
+  return () => {
+    document.removeEventListener("keydown", handleProductModalTab);
+  };
+}, [selectedProduct, productModalVisible]);
 
 useEffect(() => {
   return () => {
@@ -1993,8 +2084,40 @@ useEffect(() => {
 
 useEffect(() => {
   return () => {
+    if (miniCartTimerRef.current) {
+      clearTimeout(miniCartTimerRef.current);
+    }
+  };
+}, []);
+
+useEffect(() => {
+  return () => {
     if (modalAddedTimeoutRef.current) {
       clearTimeout(modalAddedTimeoutRef.current);
+    }
+  };
+}, []);
+
+useEffect(() => {
+  return () => {
+    if (heroAutoplayResumeTimeoutRef.current) {
+      clearTimeout(heroAutoplayResumeTimeoutRef.current);
+    }
+  };
+}, []);
+
+useEffect(() => {
+  return () => {
+    if (journalVoteSuccessTimeoutRef.current) {
+      clearTimeout(journalVoteSuccessTimeoutRef.current);
+    }
+
+    if (journalFeedbackSuccessTimeoutRef.current) {
+      clearTimeout(journalFeedbackSuccessTimeoutRef.current);
+    }
+
+    if (productModalAutoCloseTimeoutRef.current) {
+      clearTimeout(productModalAutoCloseTimeoutRef.current);
     }
   };
 }, []);
@@ -2007,10 +2130,21 @@ useEffect(() => {
     const productFromUrl = getProductFromCurrentUrl();
 
     if (productFromUrl) {
-      setView("shop");
+      const originView = window.history.state?.productOriginView;
+
+      const validOriginView =
+        originView === "home" ||
+        originView === "shop" ||
+        originView === "journal" ||
+        originView === "exhibition"
+          ? originView
+          : "shop";
+
+      setView(validOriginView);
 
       openProductModal(productFromUrl, {
-        updateUrl: false
+        updateUrl: false,
+        changeView: false
       });
 
       trackPageView(pagePath || "/");
@@ -2040,6 +2174,27 @@ if (journalArticleFromUrl) {
 }
 
     const nextView = getInitialView();
+
+    if (nextView === "shop") {
+      const restoredShopState = getInitialShopState();
+      const currentShopFilters = shopFilterStateRef.current;
+
+      const filtersWillChange =
+        currentShopFilters.category !== restoredShopState.category ||
+        currentShopFilters.searchTerm !== restoredShopState.searchTerm ||
+        currentShopFilters.season !== restoredShopState.season ||
+        currentShopFilters.scentMood !== restoredShopState.scentMood ||
+        currentShopFilters.sortBy !== restoredShopState.sortBy;
+
+      isRestoringShopHistoryRef.current = filtersWillChange;
+
+      setCategory(restoredShopState.category);
+      setSearchTerm(restoredShopState.searchTerm);
+      setSeason(restoredShopState.season);
+      setScentMood(restoredShopState.scentMood);
+      setSortBy(restoredShopState.sortBy);
+      setCurrentPage(restoredShopState.currentPage);
+    }
 
     if (nextView !== "shop") {
       setHeroCollectionFilter(null);
@@ -2079,9 +2234,14 @@ const sendJournalFeedback = (article, override = {}) => {
 
   if (!vote) return;
 
+  const deviceId = getPlayNiceDeviceId();
+  const feedbackId = `journal_${deviceId}_${key}`;
+
   try {
     const payloadToSend = JSON.stringify({
       timestamp: new Date().toISOString(),
+      feedbackId,
+      deviceId,
       article: key,
       articleTitle: getJournalText(article?.title, lang),
       vote,
@@ -2095,12 +2255,13 @@ const sendJournalFeedback = (article, override = {}) => {
       type: "text/plain;charset=utf-8"
     });
 
-    navigator.sendBeacon(
+    return navigator.sendBeacon(
       "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
       blob
     );
   } catch (error) {
     console.error("Journal feedback submit failed:", error);
+    return false;
   }
 };
 
@@ -2113,8 +2274,13 @@ const getJournalSavedFeedback = (article) => {
 const triggerJournalVoteSuccess = (vote) => {
   setJournalVoteSuccess(vote);
 
-  setTimeout(() => {
+  if (journalVoteSuccessTimeoutRef.current) {
+    clearTimeout(journalVoteSuccessTimeoutRef.current);
+  }
+
+  journalVoteSuccessTimeoutRef.current = setTimeout(() => {
     setJournalVoteSuccess("");
+    journalVoteSuccessTimeoutRef.current = null;
   }, 1100);
 };
 
@@ -2147,12 +2313,16 @@ const handleJournalFeedbackVote = (article, vote) => {
 
   if (!nextVote) return;
 
-  sendJournalFeedback(article, {
+  const feedbackQueued = sendJournalFeedback(article, {
     vote: nextVote,
     note: (current.note || "").trim()
   });
 
-  triggerJournalVoteSuccess(nextVote);
+  if (feedbackQueued) {
+    triggerJournalVoteSuccess(nextVote);
+  } else {
+    console.error("Journal vote feedback was not queued.");
+  }
 };
 
 const handleJournalFeedbackNoteChange = (article, value) => {
@@ -2180,10 +2350,15 @@ const handleJournalFeedbackSubmit = (article) => {
 
   if (!current.vote || !trimmedNote) return;
 
-  sendJournalFeedback(article, {
+  const feedbackQueued = sendJournalFeedback(article, {
     vote: current.vote,
     note: trimmedNote
   });
+
+  if (!feedbackQueued) {
+    console.error("Journal note feedback was not queued.");
+    return;
+  }
 
   setJournalFeedback((prev) => {
     const prevItem = prev[key] || {};
@@ -2211,8 +2386,13 @@ const handleJournalFeedbackSubmit = (article) => {
 
   setJournalFeedbackSuccess(true);
 
-  setTimeout(() => {
+  if (journalFeedbackSuccessTimeoutRef.current) {
+    clearTimeout(journalFeedbackSuccessTimeoutRef.current);
+  }
+
+  journalFeedbackSuccessTimeoutRef.current = setTimeout(() => {
     setJournalFeedbackSuccess(false);
+    journalFeedbackSuccessTimeoutRef.current = null;
   }, 1200);
 };
 
@@ -2236,7 +2416,13 @@ const getPlayNiceDeviceId = () => {
 
     return newId;
   } catch (error) {
-    return `pn_fallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    if (!fallbackDeviceIdRef.current) {
+      fallbackDeviceIdRef.current =
+        window.crypto?.randomUUID?.() ||
+        `pn_fallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    }
+
+    return fallbackDeviceIdRef.current;
   }
 };
 
@@ -2389,7 +2575,12 @@ const getVoteCooldownMessage = (fragranceName, remainingDays) =>
     : `Thanks for supporting ${fragranceName} ✦ You can vote for it again in ${remainingDays} days.`;
 
 const handleCommunityRequestVote = async (requestName) => {
-  const existingProduct = findExistingProductByRequest(requestName);
+  if (communityVoteInFlightRef.current.has(requestName)) return;
+
+  communityVoteInFlightRef.current.add(requestName);
+
+  try {
+    const existingProduct = findExistingProductByRequest(requestName);
 
   if (existingProduct) {
     const result = await sendScentRequest(
@@ -2506,7 +2697,10 @@ const handleCommunityRequestVote = async (requestName) => {
       ? `Još jedan glas za ${requestName}.`
       : `One more vote for ${requestName}.`
   );
-};
+    } finally {
+      communityVoteInFlightRef.current.delete(requestName);
+    }
+  };
 
 const handleScentRequestSubmit = async (event) => {
   event.preventDefault();
@@ -2975,6 +3169,17 @@ const handleSmartStickyClick = useCallback(
   [goToShop, setScentMood]
 );
 
+const openCheckout = () => {
+  if (checkoutAutoCloseTimeoutRef.current) {
+    clearTimeout(checkoutAutoCloseTimeoutRef.current);
+    checkoutAutoCloseTimeoutRef.current = null;
+  }
+
+  setOrderSuccessMessage("");
+  setCartOpen(false);
+  setCheckoutOpen(true);
+};
+
 const stickyCtaData = useMemo(() => {
   if (cartCount > 0) {
     return {
@@ -2982,10 +3187,7 @@ const stickyCtaData = useMemo(() => {
       sublabel: `${cartCount} ${
         cartCount === 1 ? tr.stickyItem : tr.stickyItems
       } • ${formatPrice(total)}`,
-      onClick: () => {
-        setCartOpen(false);
-        setCheckoutOpen(true);
-      }
+      onClick: openCheckout
     };
   }
 
@@ -3201,7 +3403,18 @@ const goToHomeSection = (selector, block = "start") => {
 
   const bumpHeroAutoplay = () => {
     setHeroPaused(true);
-    setTimeout(() => setHeroPaused(false), 220);
+
+    if (heroAutoplayResumeTimeoutRef.current) {
+      clearTimeout(heroAutoplayResumeTimeoutRef.current);
+    }
+
+    heroAutoplayResumeTimeoutRef.current = setTimeout(() => {
+      if (!heroHoveredRef.current) {
+        setHeroPaused(false);
+      }
+
+      heroAutoplayResumeTimeoutRef.current = null;
+    }, 220);
   };
 
   const nextHeroSlide = () => {
@@ -3350,6 +3563,7 @@ const goToHomeSection = (selector, block = "start") => {
 
     miniCartTimerRef.current = setTimeout(() => {
       setMiniCartPreview(null);
+      miniCartTimerRef.current = null;
     }, 1700);
   }
 
@@ -3554,12 +3768,25 @@ const addHeroBottleToCart = () => {
     !checkoutForm.email.trim() ||
     !checkoutForm.phone.trim() ||
     !checkoutForm.country.trim() ||
-    !checkoutForm.city.trim()
+    !checkoutForm.city.trim() ||
+    (
+      checkoutForm.country === "OTHER" &&
+      !checkoutForm.otherCountry?.trim()
+    )
   ) {
     alert(
       lang === "sr"
         ? "Molimo unesite ime, prezime, email, telefon, zemlju i grad."
         : "Please enter your first name, last name, email, phone, country and city."
+    );
+    return;
+  }
+
+  if (!isValidEmail(checkoutForm.email)) {
+    alert(
+      lang === "sr"
+        ? "Molimo unesite ispravnu email adresu."
+        : "Please enter a valid email address."
     );
     return;
   }
@@ -3575,7 +3802,10 @@ const addHeroBottleToCart = () => {
         email: checkoutForm.email.trim(),
         phone: checkoutForm.phone.trim(),
         country: checkoutForm.country,
-        countryLabel: selectedCheckoutCountryLabel,
+        countryLabel:
+          checkoutForm.country === "OTHER"
+            ? checkoutForm.otherCountry.trim()
+            : selectedCheckoutCountryLabel,
         city: checkoutForm.city.trim(),
         address: checkoutForm.address.trim(),
         note: checkoutForm.note.trim()
@@ -3602,26 +3832,42 @@ const addHeroBottleToCart = () => {
       throw new Error("International enquiry request failed");
     }
 
+    const result = await response.json();
+
+    if (
+      !result?.success ||
+      !result?.enquiryReceived ||
+      !result?.enquiryId
+    ) {
+      throw new Error("International enquiry was not confirmed by checkout API");
+    }
+
     setOrderSuccessMessage(
       lang === "sr"
         ? "Upit je poslat. Proverićemo mogućnost dostave van Crne Gore i javiti vam se uskoro."
         : "Your enquiry has been sent. We’ll check delivery outside Montenegro and get back to you soon."
     );
 
-    setCheckoutForm({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      country: "ME",
-      city: "",
-      address: "",
-      note: ""
-    });
+    if (checkoutAutoCloseTimeoutRef.current) {
+      clearTimeout(checkoutAutoCloseTimeoutRef.current);
+    }
 
-    setTimeout(() => {
+    checkoutAutoCloseTimeoutRef.current = setTimeout(() => {
       setCheckoutOpen(false);
-      setCartOpen(false);
+
+      setCheckoutForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        country: "ME",
+        otherCountry: "",
+        city: "",
+        address: "",
+        note: ""
+      });
+
+      checkoutAutoCloseTimeoutRef.current = null;
     }, 2200);
   } catch (error) {
     alert(
@@ -3654,6 +3900,15 @@ const handlePlaceOrder = async () => {
     !checkoutForm.address.trim()
   ) {
     alert(tr.fillRequired);
+    return;
+  }
+
+  if (!isValidEmail(checkoutForm.email)) {
+    alert(
+      lang === "sr"
+        ? "Molimo unesite ispravnu email adresu."
+        : "Please enter a valid email address."
+    );
     return;
   }
 
@@ -3855,14 +4110,19 @@ const handlePlaceOrder = async () => {
       email: "",
       phone: "",
       country: "ME",
+      otherCountry: "",
       city: "",
       address: "",
       note: ""
     });
 
-    setTimeout(() => {
+    if (checkoutAutoCloseTimeoutRef.current) {
+      clearTimeout(checkoutAutoCloseTimeoutRef.current);
+    }
+
+    checkoutAutoCloseTimeoutRef.current = setTimeout(() => {
       setCheckoutOpen(false);
-      setCartOpen(false);
+      checkoutAutoCloseTimeoutRef.current = null;
     }, 1800);
   } catch (error) {
     alert(tr.orderError);
@@ -4046,6 +4306,14 @@ const isMobileProductModal = () =>
 const openProductModal = (product, options = {}) => {
   if (!product) return;
 
+  const activeElement = document.activeElement;
+
+    productModalTriggerRef.current =
+      activeElement instanceof HTMLElement &&
+      activeElement !== document.body
+        ? activeElement
+        : null;
+
   const {
     updateUrl = true,
     preferredSize = "",
@@ -4058,6 +4326,11 @@ const openProductModal = (product, options = {}) => {
   if (productModalCloseTimeoutRef.current) {
     clearTimeout(productModalCloseTimeoutRef.current);
     productModalCloseTimeoutRef.current = null;
+  }
+
+  if (productModalAutoCloseTimeoutRef.current) {
+    clearTimeout(productModalAutoCloseTimeoutRef.current);
+    productModalAutoCloseTimeoutRef.current = null;
   }
 
   productModalScrollYRef.current =
@@ -4116,7 +4389,8 @@ const openProductModal = (product, options = {}) => {
       window.history.pushState(
         {
           playniceProductModal: true,
-          productSlug: getProductSlug(product)
+          productSlug: getProductSlug(product),
+          productOriginView: changeView ? "shop" : view
         },
         "",
         productUrl
@@ -4213,7 +4487,13 @@ const handleProductCardOpen = (product) => {
 
   if (!product?.isNew || !newProductsSignature) return;
 
-  localStorage.setItem(SHOP_NEW_PRODUCTS_SEEN_KEY, newProductsSignature);
+  try {
+    localStorage.setItem(
+      SHOP_NEW_PRODUCTS_SEEN_KEY,
+      newProductsSignature
+    );
+  } catch {}
+
   setHasNewShopProducts(false);
 };
 
@@ -4237,6 +4517,20 @@ useEffect(() => {
   }
 
   openProductModal(matchedProduct, { updateUrl: false });
+}, []);
+
+useEffect(() => {
+  const path = window.location.pathname;
+
+  if (!path.startsWith("/journal/")) return;
+
+  const matchedArticle = getJournalArticleFromCurrentUrl();
+
+  if (matchedArticle) return;
+
+  setJournalPageArticle(null);
+  setView("journal");
+  window.history.replaceState({}, "", "/journal");
 }, []);
 
 const PRODUCT_MODAL_CLOSE_DELAY = 180;
@@ -4264,6 +4558,12 @@ const closeProductModal = (
   setNoteMapOpen(false);
   setProductModalVisible(false);
   setHasUserPickedSize(false);
+  setModalDiscountFlashKey(null);
+
+  if (productModalAutoCloseTimeoutRef.current) {
+    clearTimeout(productModalAutoCloseTimeoutRef.current);
+    productModalAutoCloseTimeoutRef.current = null;
+  }
 
   if (productModalCloseTimeoutRef.current) {
     clearTimeout(productModalCloseTimeoutRef.current);
@@ -4274,6 +4574,20 @@ const closeProductModal = (
     setSelectedProduct(null);
     setSelectedSize("");
     productModalCloseTimeoutRef.current = null;
+
+    const triggerElement = productModalTriggerRef.current;
+      productModalTriggerRef.current = null;
+
+      requestAnimationFrame(() => {
+        if (
+          triggerElement &&
+          document.contains(triggerElement)
+        ) {
+          triggerElement.focus({
+            preventScroll: true
+          });
+        }
+      });
 
     if (window.location.pathname.startsWith("/product/")) {
       const openedInsidePlayNice =
@@ -4308,6 +4622,97 @@ const closeProductModal = (
     cleanupProductModal();
   }, cleanupDelay);
 };
+
+useEffect(() => {
+  const handleGlobalEscape = (event) => {
+    if (event.key !== "Escape") return;
+
+    // Nested layer inside Product modal
+    if (noteMapOpen) {
+      setNoteMapOpen(false);
+      return;
+    }
+
+    // Product modal is the highest regular layer
+    if (selectedProduct) {
+      closeProductModal();
+      return;
+    }
+
+    if (discoveryBuilderOpen) {
+      setDiscoveryBuilderOpen(false);
+      return;
+    }
+
+    if (catalogPreview) {
+      closeCatalogPreview();
+      return;
+    }
+
+    if (checkoutOpen) {
+      if (isSubmittingOrder) return;
+
+      setCheckoutOpen(false);
+      return;
+    }
+
+    if (cartOpen) {
+      setCartOpen(false);
+      return;
+    }
+
+    if (manifestoOpen) {
+      setManifestoOpen(false);
+      setActiveManifesto(null);
+      return;
+    }
+
+    if (faqOpen) {
+      setFaqOpen(false);
+      setOpenFaqIndex(null);
+      return;
+    }
+
+    if (howItWorksOpen) {
+      setHowItWorksOpen(false);
+      return;
+    }
+
+    if (storyOpen) {
+      setStoryOpen(false);
+      return;
+    }
+
+    if (privateSelectionOpen) {
+      setPrivateSelectionOpen(false);
+      return;
+    }
+
+    if (discoveryOpen) {
+      setDiscoveryOpen(false);
+    }
+  };
+
+  window.addEventListener("keydown", handleGlobalEscape);
+
+  return () => {
+    window.removeEventListener("keydown", handleGlobalEscape);
+  };
+}, [
+  noteMapOpen,
+  selectedProduct,
+  discoveryBuilderOpen,
+  catalogPreview,
+  checkoutOpen,
+  cartOpen,
+  manifestoOpen,
+  faqOpen,
+  howItWorksOpen,
+  storyOpen,
+  privateSelectionOpen,
+  discoveryOpen,
+  isSubmittingOrder
+]);
 
 const openImpactProductModal = (product) => {
   openProductModal(product);
@@ -4352,6 +4757,10 @@ useEffect(() => {
    SEO title/meta useEffect
 ========================================= */
   useEffect(() => {
+  if (view === "journal" && !selectedProduct) {
+    return;
+  }
+
   const seoTitle = selectedProduct
     ? getProductSeoTitle(selectedProduct, lang)
     : view === "shop"
@@ -4558,7 +4967,7 @@ useEffect(() => {
 ========================================= */
 
 useEffect(() => {
-  if (view !== "journal") {
+  if (view !== "journal" || selectedProduct) {
     return undefined;
   }
 
@@ -4730,7 +5139,7 @@ useEffect(() => {
       );
     }
   };
-}, [view, journalPageArticle, lang]);
+}, [view, journalPageArticle, lang, selectedProduct]);
 
 /* =========================================
    SCENT REQUESTS USEEFFECT
@@ -4839,29 +5248,14 @@ useEffect(() => {
 }, [smartCtaStats, cartCount, wishlist.length]);
 
 /* =========================================
-   DiscoveryBuilderOpen LOCK UNDER
-========================================= */
-
-useEffect(() => {
-  if (!discoveryBuilderOpen) return;
-
-  const originalOverflow = document.body.style.overflow;
-
-  document.body.style.overflow = "hidden";
-
-  return () => {
-    document.body.style.overflow = originalOverflow;
-  };
-}, [discoveryBuilderOpen]);
-
-/* =========================================
    INNER COMPONENTS
 ========================================= */
 const ProductCard = ({
   product,
   wishlist,
   toggleWishlist,
-  sprayingWishlistId
+  sprayingWishlistId,
+  changeViewOnOpen = true
 }) => {
   const copy = getProductCopy(product, lang);
   const minPrice = getMinPrice(product);
@@ -4938,7 +5332,11 @@ const titleLengthClass =
       type="button"
       className="product-card-media clickable-media"
       onMouseDown={(e) => e.preventDefault()}
-      onClick={() => handleProductCardOpen(product)}
+      onClick={() =>
+        changeViewOnOpen
+          ? handleProductCardOpen(product)
+          : openProductModal(product, { changeView: false })
+      }
       aria-label={product.name}
     >
       <img
@@ -5035,7 +5433,11 @@ const titleLengthClass =
   <button
     type="button"
     className="product-card-cta"
-    onClick={() => handleProductCardOpen(product)}
+    onClick={() =>
+      changeViewOnOpen
+        ? handleProductCardOpen(product)
+        : openProductModal(product, { changeView: false })
+    }
   >
     {tr.productCardCta}
   </button>
@@ -5588,8 +5990,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <>
           <section
             className="hero hero-carousel"
-            onMouseEnter={() => setHeroPaused(true)}
-            onMouseLeave={() => setHeroPaused(false)}
+            onMouseEnter={() => {
+              heroHoveredRef.current = true;
+              setHeroPaused(true);
+            }}
+            onMouseLeave={() => {
+              heroHoveredRef.current = false;
+              setHeroPaused(false);
+            }}
             onTouchStart={handleHeroTouchStart}
             onTouchEnd={handleHeroTouchEnd}
           >
@@ -6374,6 +6782,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       wishlist={wishlist}
                       toggleWishlist={toggleWishlist}
                       sprayingWishlistId={sprayingWishlistId}
+                      changeViewOnOpen={false}
                     />
                   ))}
               </div>
@@ -6602,6 +7011,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <form className="scent-request-form" onSubmit={handleScentRequestSubmit}>
     <input
       type="text"
+      maxLength={120}
       value={scentRequestValue}
       onChange={(event) => setScentRequestValue(event.target.value)}
       placeholder={lang === "sr" ? "Npr. Xerjoff Naxos" : "E.g. Xerjoff Naxos"}
@@ -7787,11 +8197,22 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
         {discoveryBuilderOpen && (
   <div className="discovery-overlay" onClick={() => setDiscoveryBuilderOpen(false)}>
-    <div className="discovery-modal" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="discovery-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="discovery-builder-title"
+      onClick={(e) => e.stopPropagation()}
+    >
       <button
         type="button"
         className="discovery-close"
         onClick={() => setDiscoveryBuilderOpen(false)}
+        aria-label={
+          lang === "sr"
+            ? "Zatvori Discovery Builder"
+            : "Close Discovery Builder"
+        }
       >
         ×
       </button>
@@ -7804,7 +8225,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         : "Designer & Niche Discovery Set"}
     </p>
 
-    <h2>
+    <h2 id="discovery-builder-title">
       {lang === "sr" ? "Izaberi svojih pet" : "Choose your five"}
     </h2>
 
@@ -7907,39 +8328,43 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   </div>
 )}
-      </main>
+  </main>
 
-      <div
-  className={`backdrop ${
-    cartOpen ||
-    checkoutOpen ||
-    selectedProduct ||
-    storyOpen ||
-    howItWorksOpen ||
-    privateSelectionOpen ||
-    catalogPreview
-      ? "show"
-      : ""
-  }`}
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  }}
-/>
+    <div
+      className={`backdrop ${
+        cartOpen ||
+        checkoutOpen ||
+        selectedProduct ||
+        storyOpen ||
+        howItWorksOpen ||
+        privateSelectionOpen
+          ? "show"
+          : ""
+      }`}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    />
 
-      <aside className={`story-drawer ${storyOpen ? "open panel-open" : ""}`}>
+      <aside
+        className={`story-drawer ${storyOpen ? "open panel-open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="story-drawer-title"
+      >
         <div className="story-drawer-header panel-anim panel-anim-1">
           <div>
-  <p className="section-kicker">
-    {lang === "sr" ? "NAŠA PRIČA" : "OUR STORY"}
-  </p>
+            <p className="section-kicker">
+              {lang === "sr" ? "NAŠA PRIČA" : "OUR STORY"}
+            </p>
 
-  <h3>
-    {lang === "sr"
-      ? "Stvoreno da se pamti."
-      : "Curated to be remembered."}
-  </h3>
-</div>
+            <h3 id="story-drawer-title">
+              {lang === "sr"
+                ? "Stvoreno da se pamti."
+                : "Curated to be remembered."}
+            </h3>
+          </div>
 
           <button
             className="close-button"
@@ -8007,14 +8432,19 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </div>
       </aside>
 
-      <aside className={`story-drawer faq-drawer ${faqOpen ? "open panel-open" : ""}`}>
+      <aside
+        className={`story-drawer faq-drawer ${faqOpen ? "open panel-open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="faq-drawer-title"
+      >
   <div className="story-drawer-header panel-anim panel-anim-1">
     <div>
       <p className="section-kicker">
         {lang === "sr" ? "FAQ" : "FAQ"}
       </p>
 
-      <h3>
+      <h3 id="faq-drawer-title">
         {lang === "sr"
           ? "Sve što treba da znaš pre prve porudžbine."
           : "Everything to know before your first order."}
@@ -8107,7 +8537,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 </aside>
 
-<aside className={`story-drawer manifesto-drawer ${manifestoOpen ? "open panel-open" : ""}`}>
+<aside
+  className={`story-drawer manifesto-drawer ${manifestoOpen ? "open panel-open" : ""}`}
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="manifesto-drawer-title"
+>
   {activeManifesto && HERO_MANIFESTOS[activeManifesto] && (
     <>
       <div className="story-drawer-header panel-anim panel-anim-1">
@@ -8116,7 +8551,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             {HERO_MANIFESTOS[activeManifesto].kicker}
           </p>
 
-          <h3>
+          <h3 id="manifesto-drawer-title">
             {HERO_MANIFESTOS[activeManifesto].title}
           </h3>
         </div>
@@ -8174,11 +8609,16 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   )}
 </aside>
 
-      <aside className={`how-it-works-drawer ${howItWorksOpen ? "open panel-open" : ""}`}>
+      <aside
+        className={`how-it-works-drawer ${howItWorksOpen ? "open panel-open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="how-it-works-drawer-title"
+      >
   <div className="how-it-works-drawer-header panel-anim panel-anim-1">
     <div>
       <p className="section-kicker">HOW IT WORKS</p>
-      <h3>
+      <h3 id="how-it-works-drawer-title">
         {lang === "sr"
           ? "Šta su dekanti i zašto imaju smisla?"
           : "What decants are and why they matter?"}
@@ -8261,13 +8701,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         className={`private-selection-drawer ${
           privateSelectionOpen ? "open panel-open" : ""
         }`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="private-selection-title"
       >
         <div className="private-selection-header panel-anim panel-anim-1">
           <div>
             <p className="section-kicker">
               {lang === "sr" ? "PRIVATE SELECTION" : "PRIVATE SELECTION"}
             </p>
-            <h3>{lang === "sr" ? "Sačuvani parfemi" : "Saved fragrances"}</h3>
+            <h3 id="private-selection-title">
+              {lang === "sr" ? "Sačuvani parfemi" : "Saved fragrances"}
+            </h3>
           </div>
 
           <button
@@ -8398,14 +8843,17 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </aside>
 
       <aside
-  className={`cart-drawer ${cartOpen ? "open panel-open" : ""} ${
-    cart.length === 0 ? "is-empty" : "has-items"
-  }`}
->
+        className={`cart-drawer ${cartOpen ? "open panel-open" : ""} ${
+          cart.length === 0 ? "is-empty" : "has-items"
+        }`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cart-drawer-title"
+      >
   <div className="cart-drawer-header panel-anim panel-anim-1">
     <div>
   <p className="section-kicker">{tr.yourCart}</p>
-    <h3>
+    <h3 id="cart-drawer-title">
       {tr.selectedItems}
       <span className="cart-selected-count"> · {cart.length}</span>
     </h3>
@@ -8415,6 +8863,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       className="close-button"
       type="button"
       onClick={() => setCartOpen(false)}
+      aria-label={lang === "sr" ? "Zatvori korpu" : "Close cart"}
     >
       ×
     </button>
@@ -8588,10 +9037,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <button
           className="gold-button checkout-button cart-checkout-button"
           type="button"
-          onClick={() => {
-            setCartOpen(false);
-            setCheckoutOpen(true);
-          }}
+          onClick={openCheckout}
         >
           {lang === "sr"
             ? "Dalje do podataka za dostavu"
@@ -8619,10 +9065,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     }}
   >
     <div
+      ref={productModalRef}
       className={`product-modal ${productModalVisible ? "open panel-open" : ""}`}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="product-modal-title"
       onClick={(e) => e.stopPropagation()}
     >
       <button
+        ref={productModalCloseButtonRef}
         className="close-button"
         type="button"
         onClick={closeProductModal}
@@ -8633,7 +9084,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <div className="modal-header panel-anim panel-anim-1">
         <span className="modal-eyebrow">PRIVATE DETAIL</span>
-        <h2>{selectedProduct.modalName || selectedProduct.name}</h2>
+        <h2 id="product-modal-title">
+          {selectedProduct.modalName || selectedProduct.name}
+        </h2>
 
         <div className="modal-header-meta">
           {selectedProduct.rating ? (
@@ -9098,7 +9551,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
               handleModalAddToCart(productForCart, activeSize);
 
-              setTimeout(() => {
+              productModalAutoCloseTimeoutRef.current = setTimeout(() => {
+                productModalAutoCloseTimeoutRef.current = null;
                 closeProductModal(PRODUCT_MODAL_CART_CLOSE_DELAY);
               }, 950);
                 }}
@@ -9148,8 +9602,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       });
 
                       setMiniCartPreview(null);
-                      setCartOpen(false);
-                      setCheckoutOpen(true);
+                      openCheckout();
                       closeProductModal();
                     }}
                   >
@@ -9165,11 +9618,16 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
   )}
 
-      <div className={`checkout-modal ${checkoutOpen ? "open panel-open" : ""}`}>
+      <div
+        className={`checkout-modal ${checkoutOpen ? "open panel-open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="checkout-modal-title"
+      >
   <div className="checkout-header panel-anim panel-anim-1">
     <div>
       <p className="section-kicker">{tr.checkoutKicker}</p>
-      <h3>{tr.checkoutTitle}</h3>
+      <h3 id="checkout-modal-title">{tr.checkoutTitle}</h3>
       <p className="checkout-subnote">
         {lang === "sr"
           ? "Plaćanje pouzećem — potvrda narudžbine i detalji stižu na email."
@@ -9179,7 +9637,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <button
       className="close-button"
       type="button"
-      onClick={() => setCheckoutOpen(false)}
+      onClick={() => {
+        if (isSubmittingOrder) return;
+        setCheckoutOpen(false);
+      }}
+      disabled={isSubmittingOrder}
       aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"}
     >
       ×
@@ -9195,6 +9657,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <input
           id="checkout-first-name"
           name="firstName"
+          autoComplete="given-name"
+          maxLength={80}
           placeholder={tr.firstName}
           value={checkoutForm.firstName}
           onChange={handleCheckoutInput}
@@ -9205,6 +9669,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <input
           id="checkout-last-name"
           name="lastName"
+          autoComplete="family-name"
+          maxLength={80}
           placeholder={tr.lastName}
           value={checkoutForm.lastName}
           onChange={handleCheckoutInput}
@@ -9219,6 +9685,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           id="checkout-email"
           name="email"
           type="email"
+          autoComplete="email"
+          maxLength={254}
           placeholder={tr.email}
           value={checkoutForm.email}
           onChange={handleCheckoutInput}
@@ -9229,6 +9697,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <input
           id="checkout-phone"
           name="phone"
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
+          maxLength={40}
           placeholder={tr.phone}
           value={checkoutForm.phone}
           onChange={handleCheckoutInput}
@@ -9258,11 +9730,34 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <input
     id="checkout-city"
     name="city"
+    autoComplete="address-level2"
+    maxLength={100}
     placeholder={tr.city}
     value={checkoutForm.city}
     onChange={handleCheckoutInput}
   />
 </div>
+
+{checkoutForm.country === "OTHER" && (
+  <div className="form-row panel-item-anim panel-item-3">
+    <label className="visually-hidden" htmlFor="checkout-other-country">
+      {lang === "sr" ? "Naziv zemlje" : "Country name"}
+    </label>
+
+    <input
+      id="checkout-other-country"
+      name="otherCountry"
+      maxLength={100}
+      placeholder={
+        lang === "sr"
+          ? "Unesite zemlju dostave"
+          : "Enter delivery country"
+      }
+      value={checkoutForm.otherCountry || ""}
+      onChange={handleCheckoutInput}
+    />
+  </div>
+)}
 
 <div className="form-row panel-item-anim panel-item-4">
   <label className="visually-hidden" htmlFor="checkout-address">
@@ -9271,6 +9766,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <input
     id="checkout-address"
     name="address"
+    autoComplete="street-address"
+    maxLength={200}
     placeholder={tr.address}
     value={checkoutForm.address}
     onChange={handleCheckoutInput}
@@ -9299,6 +9796,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <textarea
           id="checkout-note"
           name="note"
+          maxLength={500}
           placeholder={tr.note}
           rows="4"
           value={checkoutForm.note}
@@ -9335,12 +9833,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           <span>✔</span>
           <span>
             {isMontenegroOrder
-  ? lang === "sr"
-    ? "Dostava širom Crne Gore"
-    : "Delivery across Montenegro"
-  : lang === "sr"
-  ? "Za dostavu van Crne Gore šaljete upit — bez automatske porudžbine"
-  : "For delivery outside Montenegro, you send an enquiry — not an automatic order"}
+              ? lang === "sr"
+                ? "Dostava širom Crne Gore"
+                : "Delivery across Montenegro"
+              : lang === "sr"
+              ? "Za dostavu van Crne Gore šaljete upit — bez automatske porudžbine"
+              : "For delivery outside Montenegro, you send an enquiry — not an automatic order"}
           </span>
         </div>
       </div>
@@ -9369,14 +9867,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </button>
 
       <div className="checkout-safe-note panel-anim panel-anim-5">
-  {isMontenegroOrder
-    ? lang === "sr"
-      ? "Bez online plaćanja — nakon narudžbine dobijate potvrdu i sve informacije na email."
-      : "No online payment — after placing your order, you will receive confirmation and all details by email."
-    : lang === "sr"
-    ? "Ovo nije automatska porudžbina — šaljete upit za dostavu van Crne Gore."
-    : "This is not an automatic order — you are sending a delivery enquiry outside Montenegro."}
-</div>
+        {isMontenegroOrder
+          ? lang === "sr"
+            ? "Bez online plaćanja — nakon narudžbine dobijate potvrdu i sve informacije na email."
+            : "No online payment — after placing your order, you will receive confirmation and all details by email."
+          : lang === "sr"
+          ? "Ovo nije automatska porudžbina — šaljete upit za dostavu van Crne Gore."
+          : "This is not an automatic order — you are sending a delivery enquiry outside Montenegro."}
+      </div>
     </div>
 
     <div className="checkout-summary panel-anim panel-anim-3">
@@ -9486,13 +9984,27 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       {catalogPreview && (
         <div className="catalog-modal-overlay" onClick={closeCatalogPreview}>
-          <div className="catalog-modal" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="catalog-modal-close"
-              onClick={closeCatalogPreview}
-            >
-              ×
-            </button>
+          <div
+            className="catalog-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={lang === "sr" ? "Pregled kataloga" : "Catalog preview"}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="catalog-modal-toolbar">
+              <button
+                className="catalog-modal-close"
+                type="button"
+                onClick={closeCatalogPreview}
+                aria-label={
+                  lang === "sr"
+                    ? "Zatvori pregled kataloga"
+                    : "Close catalog preview"
+                }
+              >
+                ×
+              </button>
+            </div>
 
             <iframe
               src={catalogPreview}
