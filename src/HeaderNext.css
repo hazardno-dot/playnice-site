@@ -735,14 +735,116 @@
 }
 
 .header-next-utility .header-next-language {
+  position: relative;
+
   color: #9ee5ff;
   font-size: 9px;
   font-weight: 900;
   letter-spacing: 0.06em;
 
+  perspective: 520px;
+  transform-style: preserve-3d;
+  will-change: transform;
+
   text-shadow:
     0 0 10px rgba(158, 229, 255, 0.18),
     0 0 18px rgba(158, 229, 255, 0.08);
+}
+
+.header-next-utility .header-next-language>span {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  place-items: center;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.header-next-utility .header-next-language.is-spinning {
+  animation:
+    header-language-transform 620ms cubic-bezier(0.18, 0.72, 0.18, 1) both;
+
+  pointer-events: none;
+}
+
+@keyframes header-language-transform {
+  0% {
+    transform:
+      perspective(520px) rotateY(0deg) scale(1);
+  }
+
+  18% {
+    transform:
+      perspective(520px) rotateY(82deg) scale(0.97);
+  }
+
+  45% {
+    transform:
+      perspective(520px) rotateY(165deg) scale(0.94);
+  }
+
+  60% {
+    transform:
+      perspective(520px) rotateY(238deg) scale(0.955);
+  }
+
+  82% {
+    transform:
+      perspective(520px) rotateY(326deg) scale(0.99);
+  }
+
+  100% {
+    transform:
+      perspective(520px) rotateY(360deg) scale(1);
+  }
+}
+
+.header-next-utility .header-next-language::after {
+  content: "";
+
+  position: absolute;
+  inset: 3px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(105deg,
+      transparent 28%,
+      rgba(158, 229, 255, 0.02) 40%,
+      rgba(237, 207, 136, 0.22) 50%,
+      rgba(158, 229, 255, 0.04) 60%,
+      transparent 72%);
+
+  opacity: 0;
+  transform: translateX(-35%) rotate(12deg);
+
+  pointer-events: none;
+}
+
+.header-next-utility .header-next-language.is-spinning::after {
+  animation: header-language-glint 620ms ease both;
+}
+
+@keyframes header-language-glint {
+  0% {
+    opacity: 0;
+    transform: translateX(-40%) rotate(12deg);
+  }
+
+  28% {
+    opacity: 0.55;
+  }
+
+  62% {
+    opacity: 0.22;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(40%) rotate(12deg);
+  }
 }
 
 .header-next-count {

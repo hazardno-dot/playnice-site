@@ -55,6 +55,8 @@ function HeaderNext({
   const motionTimerRef = useRef(null);
   const brandFlipTimerRef = useRef(null);
   const brandFlipResetRef = useRef(null);
+  const languageSpinTimerRef = useRef(null);
+  const languageSwitchTimerRef = useRef(null);
   const [hoveredKey, setHoveredKey] = useState("");
   const [lensStyle, setLensStyle] = useState({ opacity: 0 });
   const [lensMoving, setLensMoving] = useState(false);
@@ -62,6 +64,7 @@ function HeaderNext({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [brandTaglineIndex, setBrandTaglineIndex] = useState(0);
   const [brandTaglinePhase, setBrandTaglinePhase] = useState("idle");
+  const [languageSpinning, setLanguageSpinning] = useState(false);
 
   const copy = useMemo(
     () =>
@@ -167,6 +170,23 @@ function HeaderNext({
     motionTimerRef.current = window.setTimeout(() => setLensMoving(false), 420);
   }, []);
 
+  const handleLanguageSpin = () => {
+    if (languageSpinning) return;
+
+    setLanguageSpinning(true);
+
+    window.clearTimeout(languageSwitchTimerRef.current);
+    window.clearTimeout(languageSpinTimerRef.current);
+
+    languageSwitchTimerRef.current = window.setTimeout(() => {
+      onLanguage?.();
+    }, 290);
+
+    languageSpinTimerRef.current = window.setTimeout(() => {
+      setLanguageSpinning(false);
+    }, 620);
+  };
+
   useLayoutEffect(() => {
     positionLens(lensTarget, false);
   }, [lensTarget, positionLens]);
@@ -223,6 +243,8 @@ function HeaderNext({
   useEffect(
     () => () => {
       window.clearTimeout(motionTimerRef.current);
+      window.clearTimeout(languageSwitchTimerRef.current);
+      window.clearTimeout(languageSpinTimerRef.current);
     },
     []
   );
@@ -376,12 +398,16 @@ function HeaderNext({
 
         <div className="header-next-utility">
   <button
-    className="header-next-language"
+    className={`header-next-language ${
+      languageSpinning ? "is-spinning" : ""
+    }`}
     type="button"
-    onClick={onLanguage}
+    onClick={handleLanguageSpin}
     aria-label={copy.language}
+    aria-busy={languageSpinning}
+    disabled={languageSpinning}
   >
-    {lang.toUpperCase()}
+    <span>{lang.toUpperCase()}</span>
   </button>
 
   <button
