@@ -6626,56 +6626,94 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         >
           {newArrivalProducts.map((product) => {
             const minPrice = getMinPrice(product);
+            const isWishlisted = wishlist.includes(product.id);
 
             return (
-              <button
+              <div
                 key={`${groupIndex}-${product.id}`}
-                type="button"
-                className="new-arrival-card"
-                tabIndex={isClone ? -1 : 0}
-                onClick={() =>
-                  openProductModal(product, {
-                    changeView: false,
-                  })
-                }
-                aria-label={
-                  isClone
-                    ? undefined
-                    : lang === "sr"
+                className="new-arrival-card-shell"
+              >
+                <button
+                  type="button"
+                  className="new-arrival-card"
+                  tabIndex={isClone ? -1 : 0}
+                  onClick={() =>
+                    openProductModal(product, {
+                      changeView: false,
+                    })
+                  }
+                  aria-label={
+                    isClone
+                      ? undefined
+                      : lang === "sr"
                       ? `Otvori ${product.name}`
                       : `Open ${product.name}`
-                }
-              >
-                <span className="new-arrival-card-badge">
-                  {lang === "sr" ? "NOVO" : "JUST IN"}
-                </span>
+                  }
+                >
+                  <span className="new-arrival-card-badge">
+                    {lang === "sr" ? "NOVO" : "JUST IN"}
+                  </span>
 
-                <span className="new-arrival-card-image-wrap">
-                  <img
-                    src={getProductThumbnail(product.image)}
-                    alt={isClone ? "" : product.name}
-                    className="new-arrival-card-image"
-                    loading="lazy"
-                    decoding="async"
-                    draggable="false"
-                    onError={(event) => {
-                      const image = event.currentTarget;
+                  <span className="new-arrival-card-image-wrap">
+                    <img
+                      src={getProductThumbnail(product.image)}
+                      alt={isClone ? "" : product.name}
+                      className="new-arrival-card-image"
+                      loading="lazy"
+                      decoding="async"
+                      draggable="false"
+                      onError={(event) => {
+                        const image = event.currentTarget;
 
-                      if (image.src.endsWith(".webp")) {
-                        image.src = product.image;
-                      }
-                    }}
-                 />
-                </span>
+                        if (image.src.endsWith(".webp")) {
+                          image.src = product.image;
+                        }
+                      }}
+                    />
+                  </span>
 
-                <span className="new-arrival-card-name">
-                  {product.name}
-                </span>
+                  <span className="new-arrival-card-name">
+                    {product.name}
+                  </span>
 
-                <span className="new-arrival-card-price">
-                  {lang === "sr" ? "Već od" : "From"} €{minPrice}
-                </span>
-              </button>
+                  <span className="new-arrival-card-price">
+                    {lang === "sr" ? "Već od" : "From"} €{minPrice}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  className={`wishlist-btn new-arrival-wishlist-btn ${
+                    isWishlisted ? "active" : ""
+                  }`}
+                  tabIndex={isClone ? -1 : 0}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  onPointerDown={(e) => {
+                    e.stopPropagation();
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleWishlist(product.id);
+                  }}
+                  aria-label={
+                    isWishlisted
+                      ? lang === "sr"
+                        ? `Ukloni ${product.name} iz Private Selection`
+                        : `Remove ${product.name} from Private Selection`
+                      : lang === "sr"
+                      ? `Dodaj ${product.name} u Private Selection`
+                      : `Add ${product.name} to Private Selection`
+                  }
+                >
+                  <span className="heart-icon" aria-hidden="true">
+                    ♥
+                  </span>
+                </button>
+              </div>
             );
           })}
         </div>
@@ -9186,6 +9224,39 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     selectedProduct.noteMap ? "has-note-map" : ""
   } ${noteMapOpen ? "note-map-open" : ""}`}
 >
+  <button
+    type="button"
+    className={`wishlist-btn modal-wishlist-btn ${
+      wishlist.includes(selectedProduct.id) ? "active" : ""
+    }`}
+    onMouseDown={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    }}
+    onPointerDown={(e) => {
+      e.stopPropagation();
+    }}
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleWishlist(selectedProduct.id);
+    }}
+    aria-label={
+      wishlist.includes(selectedProduct.id)
+        ? lang === "sr"
+          ? `Ukloni ${selectedProduct.name} iz Private Selection`
+          : `Remove ${selectedProduct.name} from Private Selection`
+        : lang === "sr"
+        ? `Dodaj ${selectedProduct.name} u Private Selection`
+        : `Add ${selectedProduct.name} to Private Selection`
+    }
+  >
+    <span className="heart-icon" aria-hidden="true">
+      ♥
+    </span>
+  </button>
+
+  {selectedProduct.image ? (
   {selectedProduct.image ? (
     <img
       src={selectedProduct.image}
