@@ -490,10 +490,10 @@
   pointer-events: none;
 
   transition:
-    opacity 180ms ease,
-    visibility 180ms ease,
-    clip-path 520ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 215ms ease,
+    visibility 215ms ease,
+    clip-path 625ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 505ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .header-next-discover.is-open .header-next-discover-panel {
@@ -536,17 +536,12 @@
   transform-origin: top center;
 
   transition:
-    opacity 280ms ease calc(110ms + var(--discover-index) * 95ms),
-    transform 440ms cubic-bezier(0.16, 1, 0.3, 1) calc(110ms + var(--discover-index) * 95ms),
+    opacity 335ms ease calc(132ms + var(--discover-index) * 114ms),
+    transform 530ms cubic-bezier(0.16, 1, 0.3, 1) calc(132ms + var(--discover-index) * 114ms),
     border-color 180ms ease,
     color 180ms ease,
     background 180ms ease,
     box-shadow 180ms ease;
-}
-
-.header-next-discover.is-open .header-next-discover-panel button {
-  opacity: 1;
-  transform: translateY(0) scaleY(1);
 }
 
 .header-next-discover-panel button:hover,
@@ -555,14 +550,14 @@
 
   background:
     linear-gradient(180deg,
-      rgba(220, 181, 107, 0.09),
-      rgba(220, 181, 107, 0.035));
+      rgba(24, 22, 19, 0.99),
+      rgba(8, 8, 8, 0.98));
 
   color: #f3d89c;
 
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.035),
-    0 7px 18px rgba(0, 0, 0, 0.16);
+    0 14px 28px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
 
   outline: none;
 }
@@ -659,9 +654,8 @@
 
 .header-next-heart-wrap {
   position: relative;
-  width: 18px;
-  height: 18px;
-
+  width: 100%;
+  height: 100%;
   display: grid;
   place-items: center;
 }
@@ -671,9 +665,22 @@
   height: 18px;
 }
 
+/* Kada postoji broj: veliko outline srce */
+.header-next-heart-wrap:has(.header-next-heart-count) svg {
+  width: 32px;
+  height: 32px;
+
+  fill: none !important;
+  stroke: #dcb56b !important;
+  stroke-width: 1.45;
+
+  opacity: 0.9;
+}
+
+/* Broj zauzima cijeli kružni button */
 .header-next-heart-count {
   position: absolute;
-  inset: -11px;
+  inset: 0;
 
   display: grid;
   place-items: center;
@@ -692,11 +699,6 @@
 
   pointer-events: none;
   z-index: 3;
-}
-
-.header-next-heart-wrap svg.is-filled,
-.header-next-heart-wrap .is-filled {
-  opacity: 0.58;
 }
 
 .header-next-utility .is-filled,
