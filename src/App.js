@@ -9397,34 +9397,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     ? "Premium mirisna selekcija"
                     : "Premium fragrance selection")}
               </p>
-            </div>
-          </div>
-        </div>
-
-          <div
-            className={`modal-media-meta panel-item-anim panel-item-3 ${
-              selectedProduct.noteMap ? "has-note-map" : ""
-            }`}
-          >
-            <div className="modal-media-meta-copy">
-              <span className="modal-category">
-                {lang === "sr"
-                  ? selectedProduct.category === "Arabian"
-                    ? "ARAPSKI"
-                    : selectedProduct.category === "Designer"
-                    ? "DIZAJNERSKI"
-                    : selectedProduct.category === "Niche"
-                    ? "NICHE"
-                    : selectedProduct.category.toUpperCase()
-                  : selectedProduct.category.toUpperCase()}
-              </span>
-
-              <p>
-                {selectedCopy.dominantNotes?.join(" • ") ||
-                  (lang === "sr"
-                    ? "Premium mirisna selekcija"
-                    : "Premium fragrance selection")}
-              </p>
               </div>
             </div>
           </div>
