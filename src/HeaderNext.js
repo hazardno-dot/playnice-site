@@ -390,12 +390,15 @@ function HeaderNext({
     aria-label={copy.wishlist}
     title={copy.wishlist}
   >
-    <HeartIcon filled={wishlistCount > 0} />
-    {wishlistCount > 0 && (
-      <span className="header-next-count is-heart">
-        {wishlistCount}
-      </span>
-    )}
+    <span className="header-next-heart-wrap">
+      <HeartIcon filled={wishlistCount > 0} />
+
+      {wishlistCount > 0 && (
+        <span className="header-next-heart-count">
+          {wishlistCount}
+        </span>
+      )}
+    </span>
   </button>
 
   <button
@@ -433,10 +436,15 @@ function HeaderNext({
         onClick={() => runAction(onWishlist)}
         aria-label={copy.wishlist}
       >
-        <HeartIcon filled={wishlistCount > 0} />
-        {wishlistCount > 0 && (
-          <span className="header-next-count is-heart">{wishlistCount}</span>
-        )}
+        <span className="header-next-heart-wrap">
+          <HeartIcon filled={wishlistCount > 0} />
+
+          {wishlistCount > 0 && (
+            <span className="header-next-heart-count">
+              {wishlistCount}
+            </span>
+          )}
+        </span>
       </button>
 
       <button

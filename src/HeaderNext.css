@@ -620,6 +620,38 @@
   stroke-linejoin: round;
 }
 
+.header-next-heart-wrap {
+  position: relative;
+  width: 18px;
+  height: 18px;
+
+  display: grid;
+  place-items: center;
+}
+
+.header-next-heart-wrap svg {
+  width: 18px;
+  height: 18px;
+}
+
+.header-next-heart-count {
+  position: absolute;
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+
+  padding-top: 1px;
+
+  color: #15110a;
+  font-size: 7px;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -0.06em;
+
+  pointer-events: none;
+}
+
 .header-next-utility .is-filled,
 .header-next-mobile-actions .is-filled {
   fill: #dcb56b;
@@ -671,11 +703,6 @@
   font-size: 9px;
   font-weight: 900;
   box-shadow: 0 5px 12px rgba(0, 0, 0, 0.34);
-}
-
-.header-next-count.is-heart {
-  background: linear-gradient(180deg, #e2bd72, #c9964d);
-  color: #111;
 }
 
 .header-next-mobile-menu,
