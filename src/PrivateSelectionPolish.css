@@ -1,0 +1,22 @@
+.private-selection-header .close-button {
+  transform: translate(8px, -1px);
+}
+
+.private-selection-profile-line strong {
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.private-selection-personal-head > small {
+  color: rgba(255, 255, 255, 0.31);
+}
+
+.private-selection-recommendations .private-selection-personal-head > span {
+  color: rgba(213, 173, 86, 0.78);
+}
+
+@media (max-width: 768px) {
+  .private-selection-header .close-button {
+    transform: translate(6px, -1px);
+  }
+}
