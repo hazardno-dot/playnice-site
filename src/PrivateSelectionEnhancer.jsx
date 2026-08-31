@@ -119,6 +119,34 @@ const getRecommendations = (selected, wishlistIds, profile) => {
     .slice(0, 2);
 };
 
+const getRecommendationReason = (direct, sharedMoods, lang) => {
+  const labels = sharedMoods
+    .slice(0, 2)
+    .map((mood) => MOOD_LABELS[mood]?.[lang] || mood);
+
+  if (direct && labels.length) {
+    return lang === "sr"
+      ? `Direktan pogodak za tvoj ${labels.join(" / ")} pravac.`
+      : `A direct match for your ${labels.join(" / ")} side.`;
+  }
+
+  if (direct) {
+    return lang === "sr"
+      ? "Jaka veza sa parfemima koje već čuvaš."
+      : "A strong link from fragrances you already keep.";
+  }
+
+  if (labels.length) {
+    return lang === "sr"
+      ? `Nastavlja tvoj ${labels.join(" / ")} pravac.`
+      : `Extends your ${labels.join(" / ")} direction.`;
+  }
+
+  return lang === "sr"
+    ? "Blizak karakter tvojoj selekciji."
+    : "Close to the character of your selection.";
+};
+
 function PrivateSelectionEnhancer() {
   const [drawer, setDrawer] = useState(null);
   const [wishlistIds, setWishlistIds] = useState(() => readWishlist());
@@ -148,6 +176,14 @@ function PrivateSelectionEnhancer() {
       window.removeEventListener("storage", sync);
     };
   }, []);
+
+  useEffect(() => {
+    if (!drawer) return;
+    const heading = drawer.querySelector(".private-selection-header h3");
+    if (!heading) return;
+    const nextTitle = lang === "sr" ? "Tvoja selekcija" : "Your Private Selection";
+    if (heading.textContent !== nextTitle) heading.textContent = nextTitle;
+  }, [drawer, lang]);
 
   const selectedProducts = useMemo(
     () => products.filter((product) => wishlistIds.includes(product.id)),
@@ -201,8 +237,8 @@ function PrivateSelectionEnhancer() {
 
         <p>
           {lang === "sr"
-            ? "Tvoj izbor se razvija dok čuvaš parfeme — PlayNice koristi samo karakteristike mirisa iz tvoje selekcije."
-            : "Your profile evolves as you save fragrances — PlayNice only uses fragrance traits from your selection."}
+            ? "Tvoj profil se razvija sa svakim parfemom koji zadržiš."
+            : "Your profile evolves with every fragrance you keep."}
         </p>
       </div>
 
@@ -210,28 +246,13 @@ function PrivateSelectionEnhancer() {
         <div className="private-selection-recommendations">
           <div className="private-selection-personal-head">
             <span>{lang === "sr" ? "NA OSNOVU TVOG IZBORA" : "BASED ON YOUR SELECTION"}</span>
-            <small>{lang === "sr" ? "2 predloga" : "2 picks"}</small>
+            <small>{recommendations.length} {lang === "sr" ? "predloga" : "picks"}</small>
           </div>
 
           <div className="private-selection-recommendation-list">
             {recommendations.map(({ product, direct, sharedMoods }) => {
               const minPrice = getMinPrice(product);
-              const sharedLabel = sharedMoods
-                .slice(0, 2)
-                .map((mood) => MOOD_LABELS[mood]?.[lang] || mood)
-                .join(" / ");
-
-              const reason = direct
-                ? lang === "sr"
-                  ? "Povezan sa parfemima koje si sačuvao."
-                  : "Connected to fragrances you saved."
-                : sharedLabel
-                  ? lang === "sr"
-                    ? `Prati tvoj ${sharedLabel} pravac.`
-                    : `Matches your ${sharedLabel} direction.`
-                  : lang === "sr"
-                    ? "Blizak karakter tvojoj selekciji."
-                    : "Close to the character of your selection.";
+              const reason = getRecommendationReason(direct, sharedMoods, lang);
 
               return (
                 <button
