@@ -894,6 +894,7 @@ const getInitialShopState = () => {
   const [currentHero, setCurrentHero] = useState(0);
   const heroNavigationRequestRef = useRef(0);
   const heroHoveredRef = useRef(false);
+  const heroAutoplayResumeTimeoutRef = useRef(null);
   const [heroPaused, setHeroPaused] = useState(false);
   const [heroCollectionFilter, setHeroCollectionFilter] = useState(null);
   const [heroCollectionTitle, setHeroCollectionTitle] = useState("");
@@ -2006,8 +2007,24 @@ useEffect(() => {
 
 useEffect(() => {
   return () => {
+    if (miniCartTimerRef.current) {
+      clearTimeout(miniCartTimerRef.current);
+    }
+  };
+}, []);
+
+useEffect(() => {
+  return () => {
     if (modalAddedTimeoutRef.current) {
       clearTimeout(modalAddedTimeoutRef.current);
+    }
+  };
+}, []);
+
+useEffect(() => {
+  return () => {
+    if (heroAutoplayResumeTimeoutRef.current) {
+      clearTimeout(heroAutoplayResumeTimeoutRef.current);
     }
   };
 }, []);
@@ -3310,10 +3327,16 @@ const goToHomeSection = (selector, block = "start") => {
   const bumpHeroAutoplay = () => {
     setHeroPaused(true);
 
-    setTimeout(() => {
+    if (heroAutoplayResumeTimeoutRef.current) {
+      clearTimeout(heroAutoplayResumeTimeoutRef.current);
+    }
+
+    heroAutoplayResumeTimeoutRef.current = setTimeout(() => {
       if (!heroHoveredRef.current) {
         setHeroPaused(false);
       }
+
+      heroAutoplayResumeTimeoutRef.current = null;
     }, 220);
   };
 
@@ -3463,6 +3486,7 @@ const goToHomeSection = (selector, block = "start") => {
 
     miniCartTimerRef.current = setTimeout(() => {
       setMiniCartPreview(null);
+      miniCartTimerRef.current = null;
     }, 1700);
   }
 
