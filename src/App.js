@@ -4434,6 +4434,20 @@ useEffect(() => {
   openProductModal(matchedProduct, { updateUrl: false });
 }, []);
 
+useEffect(() => {
+  const path = window.location.pathname;
+
+  if (!path.startsWith("/journal/")) return;
+
+  const matchedArticle = getJournalArticleFromCurrentUrl();
+
+  if (matchedArticle) return;
+
+  setJournalPageArticle(null);
+  setView("journal");
+  window.history.replaceState({}, "", "/journal");
+}, []);
+
 const PRODUCT_MODAL_CLOSE_DELAY = 180;
 const PRODUCT_MODAL_CART_CLOSE_DELAY = 240;
 
@@ -6898,6 +6912,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <form className="scent-request-form" onSubmit={handleScentRequestSubmit}>
     <input
       type="text"
+      maxLength={120}
       value={scentRequestValue}
       onChange={(event) => setScentRequestValue(event.target.value)}
       placeholder={lang === "sr" ? "Npr. Xerjoff Naxos" : "E.g. Xerjoff Naxos"}
@@ -9542,6 +9557,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           id="checkout-first-name"
           name="firstName"
           autoComplete="given-name"
+          maxLength={80}
           placeholder={tr.firstName}
           value={checkoutForm.firstName}
           onChange={handleCheckoutInput}
@@ -9553,6 +9569,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           id="checkout-last-name"
           name="lastName"
           autoComplete="family-name"
+          maxLength={80}
           placeholder={tr.lastName}
           value={checkoutForm.lastName}
           onChange={handleCheckoutInput}
@@ -9568,6 +9585,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           name="email"
           type="email"
           autoComplete="email"
+          maxLength={254}
           placeholder={tr.email}
           value={checkoutForm.email}
           onChange={handleCheckoutInput}
@@ -9581,6 +9599,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           type="tel"
           inputMode="tel"
           autoComplete="tel"
+          maxLength={40}
           placeholder={tr.phone}
           value={checkoutForm.phone}
           onChange={handleCheckoutInput}
@@ -9611,6 +9630,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     id="checkout-city"
     name="city"
     autoComplete="address-level2"
+    maxLength={100}
     placeholder={tr.city}
     value={checkoutForm.city}
     onChange={handleCheckoutInput}
@@ -9626,6 +9646,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <input
       id="checkout-other-country"
       name="otherCountry"
+      maxLength={100}
       placeholder={
         lang === "sr"
           ? "Unesite zemlju dostave"
@@ -9645,6 +9666,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     id="checkout-address"
     name="address"
     autoComplete="street-address"
+    maxLength={200}
     placeholder={tr.address}
     value={checkoutForm.address}
     onChange={handleCheckoutInput}
@@ -9673,6 +9695,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <textarea
           id="checkout-note"
           name="note"
+          maxLength={500}
           placeholder={tr.note}
           rows="4"
           value={checkoutForm.note}
@@ -9709,12 +9732,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           <span>✔</span>
           <span>
             {isMontenegroOrder
-  ? lang === "sr"
-    ? "Dostava širom Crne Gore"
-    : "Delivery across Montenegro"
-  : lang === "sr"
-  ? "Za dostavu van Crne Gore šaljete upit — bez automatske porudžbine"
-  : "For delivery outside Montenegro, you send an enquiry — not an automatic order"}
+              ? lang === "sr"
+                ? "Dostava širom Crne Gore"
+                : "Delivery across Montenegro"
+              : lang === "sr"
+              ? "Za dostavu van Crne Gore šaljete upit — bez automatske porudžbine"
+              : "For delivery outside Montenegro, you send an enquiry — not an automatic order"}
           </span>
         </div>
       </div>
@@ -9743,14 +9766,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </button>
 
       <div className="checkout-safe-note panel-anim panel-anim-5">
-  {isMontenegroOrder
-    ? lang === "sr"
-      ? "Bez online plaćanja — nakon narudžbine dobijate potvrdu i sve informacije na email."
-      : "No online payment — after placing your order, you will receive confirmation and all details by email."
-    : lang === "sr"
-    ? "Ovo nije automatska porudžbina — šaljete upit za dostavu van Crne Gore."
-    : "This is not an automatic order — you are sending a delivery enquiry outside Montenegro."}
-</div>
+        {isMontenegroOrder
+          ? lang === "sr"
+            ? "Bez online plaćanja — nakon narudžbine dobijate potvrdu i sve informacije na email."
+            : "No online payment — after placing your order, you will receive confirmation and all details by email."
+          : lang === "sr"
+          ? "Ovo nije automatska porudžbina — šaljete upit za dostavu van Crne Gore."
+          : "This is not an automatic order — you are sending a delivery enquiry outside Montenegro."}
+      </div>
     </div>
 
     <div className="checkout-summary panel-anim panel-anim-3">
