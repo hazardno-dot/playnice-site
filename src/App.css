@@ -17147,9 +17147,10 @@ body.overlay-lock .header-system {
   padding-right: 12px;
 }
 
-.new-arrivals-marquee:hover .new-arrivals-track,
-.new-arrivals-marquee:focus-within .new-arrivals-track {
-  animation-play-state: paused;
+@media (hover: hover) and (pointer: fine) {
+  .new-arrivals-marquee:hover .new-arrivals-track {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes new-arrivals-scroll {
