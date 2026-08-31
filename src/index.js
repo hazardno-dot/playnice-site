@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import PrivateSelectionEnhancer from "./PrivateSelectionEnhancer";
 import "./PrivateSelectionV1.css";
+import "./PrivateSelectionPolish.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
