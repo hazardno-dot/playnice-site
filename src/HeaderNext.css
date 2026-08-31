@@ -519,9 +519,9 @@
   border-radius: 14px;
 
   background:
-    linear-gradient(180deg,
-      rgba(255, 255, 255, 0.025),
-      rgba(255, 255, 255, 0.01));
+      linear-gradient(180deg,
+        rgba(18, 17, 15, 0.96),
+        rgba(8, 8, 8, 0.94));
 
   color: rgba(255, 248, 235, 0.72);
 
@@ -679,19 +679,24 @@
   place-items: center;
 
   color: #e49a42;
-  font-size: 13px;
-  font-weight: 900;
+  font-size: 24px;
+  font-weight: 800;
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
 
   text-align: center;
 
   text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.9),
-    0 0 7px rgba(228, 154, 66, 0.22);
+    0 1px 3px rgba(0, 0, 0, 0.95),
+    0 0 9px rgba(228, 154, 66, 0.2);
 
   pointer-events: none;
   z-index: 3;
+}
+
+.header-next-heart-wrap svg.is-filled,
+.header-next-heart-wrap .is-filled {
+  opacity: 0.58;
 }
 
 .header-next-utility .is-filled,
