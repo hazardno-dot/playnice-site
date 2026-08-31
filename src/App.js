@@ -1099,6 +1099,7 @@ const isNewRequest = (request) => {
   const touchEndX = useRef(0);
   const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
+  const productModalRef = useRef(null);
   const productModalCloseButtonRef = useRef(null);
   const productModalTriggerRef = useRef(null);
   const checkoutAutoCloseTimeoutRef = useRef(null);
@@ -1991,6 +1992,63 @@ useEffect(() => {
   });
 
   return () => cancelAnimationFrame(frame);
+}, [selectedProduct, productModalVisible]);
+
+useEffect(() => {
+  if (!selectedProduct || !productModalVisible) return;
+
+  const modal = productModalRef.current;
+  if (!modal) return;
+
+  const handleProductModalTab = (event) => {
+    if (event.key !== "Tab") return;
+
+    const focusableElements = Array.from(
+      modal.querySelectorAll(
+        'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter(
+      (element) =>
+        element instanceof HTMLElement &&
+        element.getAttribute("aria-hidden") !== "true" &&
+        element.offsetParent !== null
+    );
+
+    if (focusableElements.length === 0) {
+      event.preventDefault();
+      return;
+    }
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+    const activeElement = document.activeElement;
+
+    if (event.shiftKey) {
+      if (
+        activeElement === firstElement ||
+        !modal.contains(activeElement)
+      ) {
+        event.preventDefault();
+        lastElement.focus();
+      }
+
+      return;
+    }
+
+    if (
+      activeElement === lastElement ||
+      !modal.contains(activeElement)
+    ) {
+      event.preventDefault();
+      firstElement.focus();
+    }
+  };
+
+  document.addEventListener("keydown", handleProductModalTab);
+
+  return () => {
+    document.removeEventListener("keydown", handleProductModalTab);
+  };
 }, [selectedProduct, productModalVisible]);
 
 useEffect(() => {
@@ -9002,6 +9060,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     }}
   >
     <div
+      ref={productModalRef}
       className={`product-modal ${productModalVisible ? "open panel-open" : ""}`}
       role="dialog"
       aria-modal="true"
