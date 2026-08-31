@@ -9787,15 +9787,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="form-row two panel-item-anim panel-item-3">
-  <label className="visually-hidden" htmlFor="checkout-country">
-    {lang === "sr" ? "Zemlja dostave" : "Delivery country"}
-  </label>
-  <select
-    id="checkout-country"
-    name="country"
-    value={checkoutForm.country}
-    onChange={handleCheckoutInput}
-  >
+      <label className="visually-hidden" htmlFor="checkout-country">
+        {lang === "sr" ? "Zemlja dostave" : "Delivery country"}
+      </label>
+      <select
+        id="checkout-country"
+        name="country"
+        value={checkoutForm.country}
+        onChange={handleCheckoutInput}
+      >
     {checkoutCountryOptions.map((country) => (
       <option key={country.value} value={country.value}>
         {lang === "sr" ? country.sr : country.en}
