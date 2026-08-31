@@ -6,6 +6,7 @@ import PrivateSelectionEnhancer from "./PrivateSelectionEnhancer";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
 import "./NewArrivalsScale.css";
+import "./WishlistSurfacePolish.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
