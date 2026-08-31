@@ -1466,7 +1466,8 @@ const sideRailBlocked =
   storyOpen ||
   howItWorksOpen ||
   privateSelectionOpen ||
-  productModalVisible;
+  productModalVisible ||
+  !!catalogPreview;
 
 const shouldShowSideRails =
   (view === "home" || view === "shop") && !sideRailBlocked;
@@ -8065,6 +8066,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         type="button"
         className="discovery-close"
         onClick={() => setDiscoveryBuilderOpen(false)}
+        aria-label={
+          lang === "sr"
+            ? "Zatvori Discovery Builder"
+            : "Close Discovery Builder"
+        }
       >
         ×
       </button>
@@ -8715,6 +8721,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       className="close-button"
       type="button"
       onClick={() => setCartOpen(false)}
+      aria-label={lang === "sr" ? "Zatvori korpu" : "Close cart"}
     >
       ×
     </button>
