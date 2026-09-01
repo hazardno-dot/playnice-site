@@ -8,9 +8,28 @@ import React, {
 } from "react";
 import "./HeaderNext.css";
 
-const CartIcon = () => (
-  <span className="header-next-cart-icon" aria-hidden="true">
-    🛒
+const CartIcon = ({ filled = false }) => (
+  <span className={`header-next-cart-icon ${filled ? "is-full" : ""}`}>
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        className="cart-outline"
+        d="M3.5 4.5h2.2l1.5 9.2h10.9l2-6.8H6.3"
+      />
+      <path
+        className="cart-handle"
+        d="M7.3 13.7h10.5"
+      />
+      <circle cx="9" cy="18.2" r="1.15" />
+      <circle cx="17" cy="18.2" r="1.15" />
+
+      {filled && (
+        <>
+          <rect x="8.2" y="8.1" width="3.4" height="3.5" rx="0.5" />
+          <rect x="12.4" y="7.3" width="3.5" height="4.3" rx="0.5" />
+          <rect x="16.3" y="8.6" width="2.4" height="3" rx="0.45" />
+        </>
+      )}
+    </svg>
   </span>
 );
 
@@ -55,6 +74,12 @@ function HeaderNext({
   const motionTimerRef = useRef(null);
   const brandFlipTimerRef = useRef(null);
   const brandFlipResetRef = useRef(null);
+  const languageSpinTimerRef = useRef(null);
+  const languageSwitchTimerRef = useRef(null);
+  const previousCartCountRef = useRef(cartCount);
+  const cartSpinTimerRef = useRef(null);
+  const cartSwitchTimerRef = useRef(null);
+  const cartSpinStartTimerRef = useRef(null);
   const [hoveredKey, setHoveredKey] = useState("");
   const [lensStyle, setLensStyle] = useState({ opacity: 0 });
   const [lensMoving, setLensMoving] = useState(false);
@@ -62,6 +87,9 @@ function HeaderNext({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [brandTaglineIndex, setBrandTaglineIndex] = useState(0);
   const [brandTaglinePhase, setBrandTaglinePhase] = useState("idle");
+  const [languageSpinning, setLanguageSpinning] = useState(false);
+  const [cartSpinning, setCartSpinning] = useState(false);
+  const [cartFeedbackCount, setCartFeedbackCount] = useState(null);
 
   const copy = useMemo(
     () =>
@@ -167,6 +195,23 @@ function HeaderNext({
     motionTimerRef.current = window.setTimeout(() => setLensMoving(false), 420);
   }, []);
 
+  const handleLanguageSpin = () => {
+    if (languageSpinning) return;
+
+    setLanguageSpinning(true);
+
+    window.clearTimeout(languageSwitchTimerRef.current);
+    window.clearTimeout(languageSpinTimerRef.current);
+
+    languageSwitchTimerRef.current = window.setTimeout(() => {
+      onLanguage?.();
+    }, 290);
+
+    languageSpinTimerRef.current = window.setTimeout(() => {
+      setLanguageSpinning(false);
+    }, 620);
+  };
+
   useLayoutEffect(() => {
     positionLens(lensTarget, false);
   }, [lensTarget, positionLens]);
@@ -223,6 +268,11 @@ function HeaderNext({
   useEffect(
     () => () => {
       window.clearTimeout(motionTimerRef.current);
+      window.clearTimeout(languageSwitchTimerRef.current);
+      window.clearTimeout(languageSpinTimerRef.current);
+      window.clearTimeout(cartSwitchTimerRef.current);
+      window.clearTimeout(cartSpinTimerRef.current);
+      window.clearTimeout(cartSpinStartTimerRef.current);
     },
     []
   );
@@ -252,6 +302,37 @@ function HeaderNext({
       window.clearTimeout(brandFlipResetRef.current);
     };
   }, []);
+
+  useEffect(() => {
+  const previousCount = previousCartCountRef.current;
+
+  if (cartCount > previousCount) {
+    window.clearTimeout(cartSpinStartTimerRef.current);
+    window.clearTimeout(cartSwitchTimerRef.current);
+    window.clearTimeout(cartSpinTimerRef.current);
+
+    // 1. Odmah pokaži novi broj
+    setCartFeedbackCount(cartCount);
+    setCartSpinning(false);
+
+    // 2. Daj broju 320ms da se jasno vidi
+    cartSpinStartTimerRef.current = window.setTimeout(() => {
+      setCartSpinning(true);
+    }, 320);
+
+    // 3. Tokom skrivene polovine spina broj postaje puna kolica
+    cartSwitchTimerRef.current = window.setTimeout(() => {
+      setCartFeedbackCount(null);
+    }, 600);
+
+    // 4. Završetak cijele sekvence
+    cartSpinTimerRef.current = window.setTimeout(() => {
+      setCartSpinning(false);
+    }, 920);
+  }
+
+  previousCartCountRef.current = cartCount;
+}, [cartCount]);
 
   const runAction = (action) => {
     setDiscoverOpen(false);
@@ -376,12 +457,16 @@ function HeaderNext({
 
         <div className="header-next-utility">
   <button
-    className="header-next-language"
+    className={`header-next-language ${
+      languageSpinning ? "is-spinning" : ""
+    }`}
     type="button"
-    onClick={onLanguage}
+    onClick={handleLanguageSpin}
     aria-label={copy.language}
+    aria-busy={languageSpinning}
+    disabled={languageSpinning}
   >
-    {lang.toUpperCase()}
+    <span>{lang.toUpperCase()}</span>
   </button>
 
   <button
@@ -390,25 +475,32 @@ function HeaderNext({
     aria-label={copy.wishlist}
     title={copy.wishlist}
   >
-    <HeartIcon filled={wishlistCount > 0} />
-    {wishlistCount > 0 && (
-      <span className="header-next-count is-heart">
-        {wishlistCount}
-      </span>
-    )}
+    <span className="header-next-heart-wrap">
+      <HeartIcon filled={wishlistCount > 0} />
+
+      {wishlistCount > 0 && (
+        <span className="header-next-heart-count">
+          {wishlistCount}
+        </span>
+      )}
+    </span>
   </button>
 
   <button
+    className={`header-next-cart-button ${
+      cartSpinning ? "is-spinning" : ""
+    }`}
     type="button"
     onClick={onCart}
     aria-label={copy.cart}
     title={copy.cart}
   >
-    <CartIcon />
-    {cartCount > 0 && (
-      <span className="header-next-count">
-        {cartCount}
+    {cartFeedbackCount !== null ? (
+      <span className="header-next-cart-feedback">
+        {cartFeedbackCount}
       </span>
+    ) : (
+      <CartIcon filled={cartCount > 0} />
     )}
   </button>
 </div>
@@ -433,20 +525,31 @@ function HeaderNext({
         onClick={() => runAction(onWishlist)}
         aria-label={copy.wishlist}
       >
-        <HeartIcon filled={wishlistCount > 0} />
-        {wishlistCount > 0 && (
-          <span className="header-next-count is-heart">{wishlistCount}</span>
-        )}
+        <span className="header-next-heart-wrap">
+          <HeartIcon filled={wishlistCount > 0} />
+
+          {wishlistCount > 0 && (
+            <span className="header-next-heart-count">
+              {wishlistCount}
+            </span>
+          )}
+        </span>
       </button>
 
       <button
+        className={`header-next-cart-button ${
+          cartSpinning ? "is-spinning" : ""
+        }`}
         type="button"
         onClick={() => runAction(onCart)}
         aria-label={copy.cart}
       >
-        <CartIcon />
-        {cartCount > 0 && (
-          <span className="header-next-count">{cartCount}</span>
+        {cartFeedbackCount !== null ? (
+          <span className="header-next-cart-feedback">
+            {cartFeedbackCount}
+          </span>
+        ) : (
+          <CartIcon filled={cartCount > 0} />
         )}
       </button>
     </div>

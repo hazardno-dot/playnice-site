@@ -6616,7 +6616,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </div>
 
 {newArrivalProducts.length > 0 && (
-  <div className="new-arrivals-marquee">
+  <div
+    className={`new-arrivals-marquee ${
+      productModalVisible ? "is-product-modal-open" : ""
+    }`}
+  >
     <div className="new-arrivals-track">
       {[false, true].map((isClone, groupIndex) => (
         <div
@@ -6626,56 +6630,94 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         >
           {newArrivalProducts.map((product) => {
             const minPrice = getMinPrice(product);
+            const isWishlisted = wishlist.includes(product.id);
 
             return (
-              <button
+              <div
                 key={`${groupIndex}-${product.id}`}
-                type="button"
-                className="new-arrival-card"
-                tabIndex={isClone ? -1 : 0}
-                onClick={() =>
-                  openProductModal(product, {
-                    changeView: false,
-                  })
-                }
-                aria-label={
-                  isClone
-                    ? undefined
-                    : lang === "sr"
+                className="new-arrival-card-shell"
+              >
+                <button
+                  type="button"
+                  className="new-arrival-card"
+                  tabIndex={isClone ? -1 : 0}
+                  onClick={() =>
+                    openProductModal(product, {
+                      changeView: false,
+                    })
+                  }
+                  aria-label={
+                    isClone
+                      ? undefined
+                      : lang === "sr"
                       ? `Otvori ${product.name}`
                       : `Open ${product.name}`
-                }
-              >
-                <span className="new-arrival-card-badge">
-                  {lang === "sr" ? "NOVO" : "JUST IN"}
-                </span>
+                  }
+                >
+                  <span className="new-arrival-card-badge">
+                    {lang === "sr" ? "NOVO" : "JUST IN"}
+                  </span>
 
-                <span className="new-arrival-card-image-wrap">
-                  <img
-                    src={getProductThumbnail(product.image)}
-                    alt={isClone ? "" : product.name}
-                    className="new-arrival-card-image"
-                    loading="lazy"
-                    decoding="async"
-                    draggable="false"
-                    onError={(event) => {
-                      const image = event.currentTarget;
+                  <span className="new-arrival-card-image-wrap">
+                    <img
+                      src={getProductThumbnail(product.image)}
+                      alt={isClone ? "" : product.name}
+                      className="new-arrival-card-image"
+                      loading="lazy"
+                      decoding="async"
+                      draggable="false"
+                      onError={(event) => {
+                        const image = event.currentTarget;
 
-                      if (image.src.endsWith(".webp")) {
-                        image.src = product.image;
-                      }
-                    }}
-                 />
-                </span>
+                        if (image.src.endsWith(".webp")) {
+                          image.src = product.image;
+                        }
+                      }}
+                    />
+                  </span>
 
-                <span className="new-arrival-card-name">
-                  {product.name}
-                </span>
+                  <span className="new-arrival-card-name">
+                    {product.name}
+                  </span>
 
-                <span className="new-arrival-card-price">
-                  {lang === "sr" ? "Već od" : "From"} €{minPrice}
-                </span>
-              </button>
+                  <span className="new-arrival-card-price">
+                    {lang === "sr" ? "Već od" : "From"} €{minPrice}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  className={`wishlist-btn new-arrival-wishlist-btn ${
+                    isWishlisted ? "active" : ""
+                  }`}
+                  tabIndex={isClone ? -1 : 0}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  onPointerDown={(e) => {
+                    e.stopPropagation();
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleWishlist(product.id);
+                  }}
+                  aria-label={
+                    isWishlisted
+                      ? lang === "sr"
+                        ? `Ukloni ${product.name} iz Private Selection`
+                        : `Remove ${product.name} from Private Selection`
+                      : lang === "sr"
+                      ? `Dodaj ${product.name} u Private Selection`
+                      : `Add ${product.name} to Private Selection`
+                  }
+                >
+                  <span className="heart-icon" aria-hidden="true">
+                    ♥
+                  </span>
+                </button>
+              </div>
             );
           })}
         </div>
@@ -9138,189 +9180,230 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="modal-body">
-  <div className="modal-media panel-anim panel-anim-2">
-    {selectedProduct.badge && (
-  <div
-    className="modal-badge-stage panel-item-anim panel-item-1"
-    role="img"
-    aria-label={selectedProduct.badge}
-  >
-    <div
-      className={`modal-badge-letters ${
-        selectedProduct.badge.length >= 14
-          ? "is-extra-long"
-          : selectedProduct.badge.length >= 11
-          ? "is-long"
-          : ""
-      }`}
-      aria-hidden="true"
-    >
-      {Array.from(selectedProduct.badge).map((character, index) => (
-        <span
-          key={`${selectedProduct.id}-${selectedProduct.badge}-${index}`}
-          className={`modal-badge-letter${
-            character === " " ? " is-space" : ""
-          }`}
-        >
-          {character === " " ? "\u00A0" : character}
-        </span>
-      ))}
-    </div>
-  </div>
-)}
+        <div className="modal-media panel-anim panel-anim-2">
 
-    {selectedProduct.slug === "ysl-y-iced-cologne" && (
-  <div className="modal-sample-mini">
-    <strong>🎁 {lang === "sr" ? "FREE UZORAK" : "FREE SAMPLE"}</strong>
+          <button
+            type="button"
+            className={`wishlist-btn modal-wishlist-btn ${
+              wishlist.includes(selectedProduct.id) ? "active" : ""
+            }`}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleWishlist(selectedProduct.id);
+            }}
+            aria-label={
+              wishlist.includes(selectedProduct.id)
+                ? lang === "sr"
+                  ? `Ukloni ${selectedProduct.name} iz Private Selection`
+                  : `Remove ${selectedProduct.name} from Private Selection`
+                : lang === "sr"
+                ? `Dodaj ${selectedProduct.name} u Private Selection`
+                : `Add ${selectedProduct.name} to Private Selection`
+            }
+          >
+            <span className="heart-icon" aria-hidden="true">
+              ♥
+            </span>
+          </button>
 
-    <small>
-      {lang === "sr"
-        ? "Uz svaki 10ml. Limited stock."
-        : "Included with every 10ml. Limited stock."}
-    </small>
-  </div>
-)}
-
-<div
-  className={`modal-image-wrap panel-item-anim panel-item-2 ${
-    selectedProduct.noteMap ? "has-note-map" : ""
-  } ${noteMapOpen ? "note-map-open" : ""}`}
->
-  {selectedProduct.image ? (
-    <img
-      src={selectedProduct.image}
-      alt={selectedProduct.name}
-      className="modal-image"
-    />
-  ) : (
-    <div className="modal-monogram">
-      {selectedProduct.name.charAt(0)}
-    </div>
-  )}
-
-  {selectedProduct.noteMap && (
-    <TheNoteMap
-      notes={selectedProduct.noteMap}
-      lang={lang}
-      open={noteMapOpen}
-      onToggle={() => setNoteMapOpen((current) => !current)}
-    />
-  )}
-  {selectedProduct.noteMap && (
-    <button
-      type="button"
-      className={`the-note-map__mobile-trigger ${
-      noteMapOpen ? "is-open" : ""
-    }`}
-      onClick={(event) => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        setNoteMapOpen((current) => !current);
-      }}
-      aria-expanded={noteMapOpen}
-    >
-      <span>THE NOTE MAP</span>
-      <strong aria-hidden="true">
-        {noteMapOpen ? "×" : "+"}
-      </strong>
-    </button>
-  )}
-</div>
-
-
-          {selectedProduct.recommendations?.length > 0 && (
-  <div className="modal-same-energy panel-item-anim panel-item-3">
-    <div className="modal-same-energy-list">
-      {selectedProduct.recommendations
-        .map((slug) => products.find((product) => product.slug === slug))
-        .filter(Boolean)
-        .slice(0, 2)
-        .map((product) => {
-          const copy = product.copy?.[lang] || product.copy?.en || {};
-
-          return (
-            <button
-              key={product.id}
-              type="button"
-              className="modal-same-energy-item"
-              onClick={() => {
-                const productUrl = getProductUrl(product);
-                const productSlug = getProductSlug(product);
-                const hasRouteChanged = window.location.pathname !== productUrl;
-
-                setSelectedProduct(product);
-                setSelectedSize(Object.keys(product.sizes)[0]);
-                setHasUserPickedSize(false);
-
-                if (hasRouteChanged) {
-                  window.history.replaceState(
-                    {
-                    ...(window.history.state || {}),
-                    productSlug
-                    },
-                    "",
-                  productUrl
-                );
-
-                trackPageView(productUrl);
-                trackMeta("PageView");
-                }
-              }}
+          {selectedProduct.badge && (
+            <div
+              className="modal-badge-stage panel-item-anim panel-item-1"
+              role="img"
+              aria-label={selectedProduct.badge}
             >
-              <span className="modal-same-energy-img-wrap">
-                {product.image ? (
-                  <img src={product.image} alt={product.name} />
-                ) : (
-                  <span>{product.name.charAt(0)}</span>
-                )}
-              </span>
+              <div
+                className={`modal-badge-letters ${
+                  selectedProduct.badge.length >= 14
+                    ? "is-extra-long"
+                    : selectedProduct.badge.length >= 11
+                    ? "is-long"
+                    : ""
+                }`}
+                aria-hidden="true"
+              >
+                {Array.from(selectedProduct.badge).map((character, index) => (
+                  <span
+                    key={`${selectedProduct.id}-${selectedProduct.badge}-${index}`}
+                    className={`modal-badge-letter${
+                      character === " " ? " is-space" : ""
+                    }`}
+                  >
+                    {character === " " ? "\u00A0" : character}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
 
-              <span className="modal-same-energy-text">
-                <strong>{product.shortName || product.name}</strong>
-                <small>
-                  {copy.card ||
-                    copy.whyChoose ||
-                    copy.dominantNotes?.join(" • ") ||
-                    (lang === "sr"
-                      ? "Sličan premium karakter."
-                      : "Similar premium character.")}
-                </small>
-              </span>
-            </button>
-          );
-        })}
-    </div>
-  </div>
-)}
+          {selectedProduct.slug === "ysl-y-iced-cologne" && (
+            <div className="modal-sample-mini">
+              <strong>
+                🎁 {lang === "sr" ? "FREE UZORAK" : "FREE SAMPLE"}
+              </strong>
+
+              <small>
+                {lang === "sr"
+                  ? "Uz svaki 10ml. Limited stock."
+                  : "Included with every 10ml. Limited stock."}
+              </small>
+            </div>
+          )}
 
           <div
-  className={`modal-media-meta panel-item-anim panel-item-3 ${
-    selectedProduct.noteMap ? "has-note-map" : ""
-  }`}
->
-  <div className="modal-media-meta-copy">
-    <span className="modal-category">
-      {lang === "sr"
-        ? selectedProduct.category === "Arabian"
-          ? "ARAPSKI"
-          : selectedProduct.category === "Designer"
-          ? "DIZAJNERSKI"
-          : selectedProduct.category === "Niche"
-          ? "NICHE"
-          : selectedProduct.category.toUpperCase()
-        : selectedProduct.category.toUpperCase()}
-    </span>
+            className={`modal-image-wrap panel-item-anim panel-item-2 ${
+              selectedProduct.noteMap ? "has-note-map" : ""
+            } ${noteMapOpen ? "note-map-open" : ""}`}
+          >
+            {selectedProduct.image ? (
+              <img
+                src={selectedProduct.image}
+                alt={selectedProduct.name}
+                className="modal-image"
+              />
+            ) : (
+              <div className="modal-monogram">
+                {selectedProduct.name.charAt(0)}
+              </div>
+            )}
 
-    <p>
-      {selectedCopy.dominantNotes?.join(" • ") ||
-        (lang === "sr"
-          ? "Premium mirisna selekcija"
-          : "Premium fragrance selection")}
-    </p>
-    </div>
-  </div>
-</div>
+            {selectedProduct.noteMap && (
+              <TheNoteMap
+                notes={selectedProduct.noteMap}
+                lang={lang}
+                open={noteMapOpen}
+                onToggle={() => setNoteMapOpen((current) => !current)}
+              />
+            )}
+
+            {selectedProduct.noteMap && (
+              <button
+                type="button"
+                className={`the-note-map__mobile-trigger ${
+                  noteMapOpen ? "is-open" : ""
+                }`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setNoteMapOpen((current) => !current);
+                }}
+                aria-expanded={noteMapOpen}
+              >
+                <span>THE NOTE MAP</span>
+                <strong aria-hidden="true">
+                  {noteMapOpen ? "×" : "+"}
+                </strong>
+              </button>
+            )}
+          </div>
+
+          {selectedProduct.recommendations?.length > 0 && (
+            <div className="modal-same-energy panel-item-anim panel-item-3">
+              <div className="modal-same-energy-list">
+                {selectedProduct.recommendations
+                  .map((slug) =>
+                    products.find((product) => product.slug === slug)
+                  )
+                  .filter(Boolean)
+                  .slice(0, 2)
+                  .map((product) => {
+                    const copy =
+                      product.copy?.[lang] || product.copy?.en || {};
+
+                    return (
+                      <button
+                        key={product.id}
+                        type="button"
+                        className="modal-same-energy-item"
+                        onClick={() => {
+                          const productUrl = getProductUrl(product);
+                          const productSlug = getProductSlug(product);
+                          const hasRouteChanged =
+                            window.location.pathname !== productUrl;
+
+                          setSelectedProduct(product);
+                          setSelectedSize(Object.keys(product.sizes)[0]);
+                          setHasUserPickedSize(false);
+
+                          if (hasRouteChanged) {
+                            window.history.replaceState(
+                              {
+                                ...(window.history.state || {}),
+                                productSlug,
+                              },
+                              "",
+                              productUrl
+                            );
+
+                            trackPageView(productUrl);
+                            trackMeta("PageView");
+                          }
+                        }}
+                      >
+                        <span className="modal-same-energy-img-wrap">
+                          {product.image ? (
+                            <img src={product.image} alt={product.name} />
+                          ) : (
+                            <span>{product.name.charAt(0)}</span>
+                          )}
+                        </span>
+
+                        <span className="modal-same-energy-text">
+                          <strong>
+                            {product.shortName || product.name}
+                          </strong>
+
+                          <small>
+                            {copy.card ||
+                              copy.whyChoose ||
+                              copy.dominantNotes?.join(" • ") ||
+                              (lang === "sr"
+                                ? "Sličan premium karakter."
+                                : "Similar premium character.")}
+                          </small>
+                        </span>
+                      </button>
+                    );
+                  })}
+              </div>
+            </div>
+          )}
+
+          <div
+            className={`modal-media-meta panel-item-anim panel-item-3 ${
+              selectedProduct.noteMap ? "has-note-map" : ""
+            }`}
+          >
+            <div className="modal-media-meta-copy">
+              <span className="modal-category">
+                {lang === "sr"
+                  ? selectedProduct.category === "Arabian"
+                    ? "ARAPSKI"
+                    : selectedProduct.category === "Designer"
+                    ? "DIZAJNERSKI"
+                    : selectedProduct.category === "Niche"
+                    ? "NICHE"
+                    : selectedProduct.category.toUpperCase()
+                  : selectedProduct.category.toUpperCase()}
+              </span>
+
+              <p>
+                {selectedCopy.dominantNotes?.join(" • ") ||
+                  (lang === "sr"
+                    ? "Premium mirisna selekcija"
+                    : "Premium fragrance selection")}
+              </p>
+              </div>
+            </div>
+          </div>
 
         <div className="modal-content panel-anim panel-anim-3">
           {selectedCopy.miniTag && (
@@ -9708,15 +9791,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       </div>
 
       <div className="form-row two panel-item-anim panel-item-3">
-  <label className="visually-hidden" htmlFor="checkout-country">
-    {lang === "sr" ? "Zemlja dostave" : "Delivery country"}
-  </label>
-  <select
-    id="checkout-country"
-    name="country"
-    value={checkoutForm.country}
-    onChange={handleCheckoutInput}
-  >
+      <label className="visually-hidden" htmlFor="checkout-country">
+        {lang === "sr" ? "Zemlja dostave" : "Delivery country"}
+      </label>
+      <select
+        id="checkout-country"
+        name="country"
+        value={checkoutForm.country}
+        onChange={handleCheckoutInput}
+      >
     {checkoutCountryOptions.map((country) => (
       <option key={country.value} value={country.value}>
         {lang === "sr" ? country.sr : country.en}
@@ -9864,7 +9947,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     : lang === "sr"
     ? "Pošalji upit za dostavu"
     : "Send delivery enquiry"}
-</button>
+      </button>
 
       <div className="checkout-safe-note panel-anim panel-anim-5">
         {isMontenegroOrder
