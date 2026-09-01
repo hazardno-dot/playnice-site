@@ -15,6 +15,7 @@ import SiteHealthOverviewBridge from "./SiteHealthOverviewBridge";
 import BrowserQaSiteHealthBridge from "./BrowserQaSiteHealthBridge";
 import BrowserQaOverviewBridge from "./BrowserQaOverviewBridge";
 import HeroManager from "./HeroManager";
+import HeroReviewBridge from "./HeroReviewBridge";
 import { supabase } from "./supabase";
 import "./header-layout.css";
 
@@ -134,6 +135,7 @@ export default function ControlCenterManagers() {
     <ProductWorkflowBridge />
     <ProductCatalogCountBridge />
     <HeroManager />
+    <HeroReviewBridge />
     <JournalManager />
     <JournalApplyManager />
     <NotesManager />
