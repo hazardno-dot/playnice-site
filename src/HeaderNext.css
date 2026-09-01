@@ -717,68 +717,102 @@
   stroke: rgba(220, 181, 107, 0.88);
 }
 
-.header-next-cart-wrap {
-  position: relative;
-
-  width: 26px;
-  height: 26px;
-
-  display: grid;
-  place-items: center;
+.header-next-cart-button {
+  perspective: 520px;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .header-next-cart-icon {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
 
   display: grid;
   place-items: center;
 
-  font-family:
-    "Segoe UI Emoji",
-    "Apple Color Emoji",
-    sans-serif;
-
-  font-size: 16px;
-  line-height: 1;
-
-  transform: translateY(-1px);
-
-  transition:
-    transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
-    filter 260ms ease;
+  color: rgba(255, 248, 235, 0.72);
 }
 
-.header-next-cart-wrap.has-items .header-next-cart-icon {
-  font-size: 16px;
+.header-next-cart-icon svg {
+  width: 22px;
+  height: 22px;
 
-  transform: translateY(4px);
+  display: block;
 
-  filter:
-    sepia(0.18) saturate(1.08);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.45;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  overflow: visible;
 }
 
-.header-next-cart-inline-count {
-  position: absolute;
+.header-next-cart-icon.is-full {
+  color: #7edb95;
+}
 
-  left: 50%;
-  top: 4px;
+.header-next-cart-icon.is-full rect {
+  fill: rgba(126, 219, 149, 0.12);
+  stroke: #a8efba;
+}
 
-  transform: translateX(-50%);
+.header-next-cart-feedback {
+  display: grid;
+  place-items: center;
 
   color: #a8efba;
 
-  font-size: 10px;
+  font-size: 18px;
   font-weight: 850;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.05em;
 
   text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.95),
-    0 0 7px rgba(126, 219, 149, 0.26);
+    0 1px 3px rgba(0, 0, 0, 0.92),
+    0 0 10px rgba(126, 219, 149, 0.26);
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.header-next-cart-button.is-spinning {
+  animation:
+    header-cart-transform 600ms cubic-bezier(0.18, 0.72, 0.18, 1) both;
 
   pointer-events: none;
-  z-index: 2;
+}
+
+@keyframes header-cart-transform {
+  0% {
+    transform:
+      perspective(520px) rotateY(0deg) scale(1);
+  }
+
+  18% {
+    transform:
+      perspective(520px) rotateY(82deg) scale(0.97);
+  }
+
+  45% {
+    transform:
+      perspective(520px) rotateY(165deg) scale(0.94);
+  }
+
+  60% {
+    transform:
+      perspective(520px) rotateY(238deg) scale(0.955);
+  }
+
+  82% {
+    transform:
+      perspective(520px) rotateY(326deg) scale(0.99);
+  }
+
+  100% {
+    transform:
+      perspective(520px) rotateY(360deg) scale(1);
+  }
 }
 
 .header-next-utility .header-next-language {
