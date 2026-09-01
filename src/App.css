@@ -9811,14 +9811,18 @@ main {
 .catalog-modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 120;
+  z-index: 2000;
 
   background: rgba(0,0,0,0.75);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  pointer-events: auto;
+  isolation: isolate;
 
   animation: fadeIn 0.25s ease forwards;
 }
@@ -9827,6 +9831,8 @@ main {
   position: relative;
   width: min(900px, 92vw);
   height: 85vh;
+  z-index: 1;
+  pointer-events: auto;
 
   display: flex;
   flex-direction: column;
@@ -9843,6 +9849,9 @@ main {
 .catalog-modal-toolbar {
   flex: 0 0 46px;
   min-height: 46px;
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
 
   display: flex;
   align-items: center;
@@ -9865,6 +9874,9 @@ main {
   width: 34px;
   height: 34px;
   padding: 0;
+  position: relative;
+  z-index: 4;
+  pointer-events: auto;
 
   display: inline-flex;
   align-items: center;

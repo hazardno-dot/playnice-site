@@ -8379,6 +8379,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         selectedProduct ||
         storyOpen ||
         howItWorksOpen ||
+        manifestoOpen ||
         privateSelectionOpen
           ? "show"
           : ""
@@ -8753,7 +8754,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               {lang === "sr" ? "PRIVATE SELECTION" : "PRIVATE SELECTION"}
             </p>
             <h3 id="private-selection-title">
-              {lang === "sr" ? "Sačuvani parfemi" : "Saved fragrances"}
+              {lang === "sr" ? "Tvoja selekcija" : "Your Private Selection"}
+              {privateSelectionProducts.length > 0 && (
+                <span className="private-selection-header-count">
+                  {" · "}{privateSelectionProducts.length}
+                </span>
+              )}
             </h3>
           </div>
 

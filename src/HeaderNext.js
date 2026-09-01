@@ -80,6 +80,9 @@ function HeaderNext({
   const cartSpinTimerRef = useRef(null);
   const cartSwitchTimerRef = useRef(null);
   const cartSpinStartTimerRef = useRef(null);
+  const previousWishlistCountRef = useRef(wishlistCount);
+  const wishlistBeatTimerRef = useRef(null);
+  const wishlistFeedbackTimerRef = useRef(null);
   const [hoveredKey, setHoveredKey] = useState("");
   const [lensStyle, setLensStyle] = useState({ opacity: 0 });
   const [lensMoving, setLensMoving] = useState(false);
@@ -90,6 +93,8 @@ function HeaderNext({
   const [languageSpinning, setLanguageSpinning] = useState(false);
   const [cartSpinning, setCartSpinning] = useState(false);
   const [cartFeedbackCount, setCartFeedbackCount] = useState(null);
+  const [wishlistBeating, setWishlistBeating] = useState(false);
+  const [wishlistFeedbackCount, setWishlistFeedbackCount] = useState(null);
 
   const copy = useMemo(
     () =>
@@ -273,6 +278,8 @@ function HeaderNext({
       window.clearTimeout(cartSwitchTimerRef.current);
       window.clearTimeout(cartSpinTimerRef.current);
       window.clearTimeout(cartSpinStartTimerRef.current);
+      window.clearTimeout(wishlistBeatTimerRef.current);
+      window.clearTimeout(wishlistFeedbackTimerRef.current);
     },
     []
   );
@@ -333,6 +340,32 @@ function HeaderNext({
 
   previousCartCountRef.current = cartCount;
 }, [cartCount]);
+
+  useEffect(() => {
+    const previousCount = previousWishlistCountRef.current;
+
+    if (wishlistCount > previousCount) {
+      window.clearTimeout(wishlistBeatTimerRef.current);
+      window.clearTimeout(wishlistFeedbackTimerRef.current);
+
+      setWishlistFeedbackCount(wishlistCount);
+      setWishlistBeating(false);
+
+      requestAnimationFrame(() => {
+        setWishlistBeating(true);
+      });
+
+      wishlistFeedbackTimerRef.current = window.setTimeout(() => {
+        setWishlistFeedbackCount(null);
+      }, 540);
+
+      wishlistBeatTimerRef.current = window.setTimeout(() => {
+        setWishlistBeating(false);
+      }, 700);
+    }
+
+    previousWishlistCountRef.current = wishlistCount;
+  }, [wishlistCount]);
 
   const runAction = (action) => {
     setDiscoverOpen(false);
@@ -470,17 +503,24 @@ function HeaderNext({
   </button>
 
   <button
+    className={`header-next-wishlist-button ${
+      wishlistBeating ? "is-beating" : ""
+    }`}
     type="button"
     onClick={onWishlist}
     aria-label={copy.wishlist}
     title={copy.wishlist}
   >
-    <span className="header-next-heart-wrap">
+    <span
+      className={`header-next-heart-wrap ${
+        wishlistFeedbackCount !== null ? "is-feedback" : ""
+      }`}
+    >
       <HeartIcon filled={wishlistCount > 0} />
 
-      {wishlistCount > 0 && (
-        <span className="header-next-heart-count">
-          {wishlistCount}
+      {wishlistFeedbackCount !== null && (
+        <span className="header-next-heart-feedback">
+          {wishlistFeedbackCount}
         </span>
       )}
     </span>
@@ -521,16 +561,24 @@ function HeaderNext({
 
     <div className="header-next-mobile-actions">
       <button
+        className={`header-next-wishlist-button ${
+          wishlistBeating ? "is-beating" : ""
+        }`}
         type="button"
         onClick={() => runAction(onWishlist)}
         aria-label={copy.wishlist}
+        title={copy.wishlist}
       >
-        <span className="header-next-heart-wrap">
+        <span
+          className={`header-next-heart-wrap ${
+            wishlistFeedbackCount !== null ? "is-feedback" : ""
+          }`}
+        >
           <HeartIcon filled={wishlistCount > 0} />
 
-          {wishlistCount > 0 && (
-            <span className="header-next-heart-count">
-              {wishlistCount}
+          {wishlistFeedbackCount !== null && (
+            <span className="header-next-heart-feedback">
+              {wishlistFeedbackCount}
             </span>
           )}
         </span>
