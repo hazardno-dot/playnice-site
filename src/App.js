@@ -1884,6 +1884,29 @@ useEffect(() => {
     }))
   });
 
+  const alertPayload = {
+    subtotal: Number(subtotal),
+    shipping: Number(shipping),
+    total: Number(total),
+    language: lang,
+    source: "shop",
+    items: cart.map((item) => ({
+      name: item.name,
+      size: item.size,
+      quantity: Number(item.quantity || 1)
+    }))
+  };
+
+  fetch("/api/checkout-alert", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(alertPayload)
+  }).catch((error) => {
+    console.warn("Checkout alert failed:", error);
+  });
+
   trackMeta("InitiateCheckout", {
     content_ids: cart.map((item) =>
       String(item.id ?? item.key)
@@ -1896,7 +1919,7 @@ useEffect(() => {
     value: Number(subtotal),
     currency: "EUR"
   });
-}, [checkoutOpen, cart, subtotal]);
+}, [checkoutOpen, cart, subtotal, shipping, total, lang]);
 
   useEffect(() => {
   if (heroPaused || heroSlides.length <= 1) return;
