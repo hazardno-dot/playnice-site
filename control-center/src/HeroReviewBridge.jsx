@@ -146,5 +146,6 @@ export default function HeroReviewBridge() {
       {approvedLocked ? <button disabled={working} onClick={() => setReviewStatus("draft")}>Return to draft</button> : null}
     </div>
     {status === "approved" && row.reviewed_at ? <div className="hero-review-meta">Approved {new Date(row.reviewed_at).toLocaleString()} · approved snapshot stored in Supabase</div> : null}
+    <div id="hero-apply-anchor" />
   </section>, slot);
 }
