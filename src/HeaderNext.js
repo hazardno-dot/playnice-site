@@ -8,9 +8,20 @@ import React, {
 } from "react";
 import "./HeaderNext.css";
 
-const CartIcon = () => (
-  <span className="header-next-cart-icon" aria-hidden="true">
-    🛒
+const CartIcon = ({ count = 0 }) => (
+  <span
+    className={`header-next-cart-wrap ${
+      count > 0 ? "has-items" : ""
+    }`}
+    aria-hidden="true"
+  >
+    <span className="header-next-cart-icon">🛒</span>
+
+    {count > 0 && (
+      <span className="header-next-cart-inline-count">
+        {count}
+      </span>
+    )}
   </span>
 );
 
@@ -433,12 +444,7 @@ function HeaderNext({
     aria-label={copy.cart}
     title={copy.cart}
   >
-    <CartIcon />
-    {cartCount > 0 && (
-      <span className="header-next-count">
-        {cartCount}
-      </span>
-    )}
+    <CartIcon count={cartCount} />
   </button>
 </div>
 
@@ -478,10 +484,7 @@ function HeaderNext({
         onClick={() => runAction(onCart)}
         aria-label={copy.cart}
       >
-        <CartIcon />
-        {cartCount > 0 && (
-          <span className="header-next-count">{cartCount}</span>
-        )}
+        <CartIcon count={cartCount} />
       </button>
     </div>
       </div>
