@@ -79,6 +79,7 @@ function HeaderNext({
   const previousCartCountRef = useRef(cartCount);
   const cartSpinTimerRef = useRef(null);
   const cartSwitchTimerRef = useRef(null);
+  const cartSpinStartTimerRef = useRef(null);
   const [hoveredKey, setHoveredKey] = useState("");
   const [lensStyle, setLensStyle] = useState({ opacity: 0 });
   const [lensMoving, setLensMoving] = useState(false);
@@ -271,6 +272,7 @@ function HeaderNext({
       window.clearTimeout(languageSpinTimerRef.current);
       window.clearTimeout(cartSwitchTimerRef.current);
       window.clearTimeout(cartSpinTimerRef.current);
+      window.clearTimeout(cartSpinStartTimerRef.current);
     },
     []
   );
@@ -302,23 +304,32 @@ function HeaderNext({
   }, []);
 
   useEffect(() => {
-    const previousCount = previousCartCountRef.current;
+  const previousCount = previousCartCountRef.current;
 
-    if (cartCount > previousCount) {
-      window.clearTimeout(cartSwitchTimerRef.current);
-      window.clearTimeout(cartSpinTimerRef.current);
+  if (cartCount > previousCount) {
+    window.clearTimeout(cartSpinStartTimerRef.current);
+    window.clearTimeout(cartSwitchTimerRef.current);
+    window.clearTimeout(cartSpinTimerRef.current);
 
-      setCartFeedbackCount(cartCount);
+    // 1. Odmah pokaži novi broj
+    setCartFeedbackCount(cartCount);
+    setCartSpinning(false);
+
+    // 2. Daj broju 320ms da se jasno vidi
+    cartSpinStartTimerRef.current = window.setTimeout(() => {
       setCartSpinning(true);
+    }, 320);
 
-      cartSwitchTimerRef.current = window.setTimeout(() => {
-        setCartFeedbackCount(null);
-      }, 280);
+    // 3. Tokom skrivene polovine spina broj postaje puna kolica
+    cartSwitchTimerRef.current = window.setTimeout(() => {
+      setCartFeedbackCount(null);
+    }, 600);
 
-      cartSpinTimerRef.current = window.setTimeout(() => {
-        setCartSpinning(false);
-      }, 600);
-    }
+    // 4. Završetak cijele sekvence
+    cartSpinTimerRef.current = window.setTimeout(() => {
+      setCartSpinning(false);
+    }, 920);
+  }
 
   previousCartCountRef.current = cartCount;
 }, [cartCount]);
