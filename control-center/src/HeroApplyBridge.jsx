@@ -26,30 +26,29 @@ export default function HeroApplyBridge() {
     const mainStage = document.querySelector(".main-stage");
     if (!mainStage) return;
     let raf = 0;
+
     const sync = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const heading = mainStage.querySelector(".topbar h1");
-        const detail = mainStage.querySelector(".hero-manager-detail");
         const active = mainStage.querySelector(".hero-slide-row.is-active");
-        if (heading?.textContent?.trim() !== "Hero" || !detail || !active) {
-          setSlot(null); setHeroKey(""); return;
+        const applyAnchor = mainStage.querySelector("#hero-apply-anchor");
+        if (heading?.textContent?.trim() !== "Hero" || !active || !applyAnchor) {
+          setSlot(null);
+          return;
         }
+
+        setSlot(applyAnchor);
         const id = Number(active.textContent?.match(/#(\d+)/)?.[1]);
         if (!id) return;
-        let applySlot = detail.querySelector("#hero-apply-slot");
-        if (!applySlot) {
-          applySlot = document.createElement("div");
-          applySlot.id = "hero-apply-slot";
-          detail.appendChild(applySlot);
-        }
-        setSlot(applySlot);
-        supabase.from("hero_slides").select("hero_key").eq("id", id).maybeSingle().then(({ data }) => {
+        supabase.from("hero_slides").select("hero_key").eq("id", id).maybeSingle().then(({ data, error: keyError }) => {
+          if (keyError) { setError(keyError.message || String(keyError)); return; }
           const key = data?.hero_key || "";
           setHeroKey((current) => current === key ? current : key);
         });
       });
     };
+
     sync();
     const observer = new MutationObserver(sync);
     observer.observe(mainStage, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["class"] });
