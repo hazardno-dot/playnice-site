@@ -1,0 +1,105 @@
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
+import { supabase } from "./supabase";
+import "./browser-qa.css";
+
+const fmtAge = (value) => {
+  if (!value) return "no runs yet";
+  const delta = Math.max(0, Date.now() - new Date(value).getTime());
+  const minutes = Math.floor(delta / 60000);
+  if (minutes < 1) return "just now";
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  return `${Math.floor(hours / 24)}d ago`;
+};
+
+export default function BrowserQaOverviewBridge() {
+  const [slot, setSlot] = useState(null);
+  const [rows, setRows] = useState([]);
+  const [error, setError] = useState("");
+  const [, setNow] = useState(() => Date.now());
+
+  const load = useCallback(async () => {
+    const { data, error: loadError } = await supabase
+      .from("browser_qa_history")
+      .select("id,checked_at,check_type,overall,failed_checks,warning_checks,summary")
+      .order("checked_at", { ascending: false })
+      .limit(20);
+    if (loadError) {
+      setError(loadError.message);
+      return;
+    }
+    setError("");
+    setRows(data || []);
+    setNow(Date.now());
+  }, []);
+
+  useEffect(() => {
+    const mainStage = document.querySelector(".main-stage");
+    if (!mainStage) return;
+    const sync = () => {
+      const heading = mainStage.querySelector(".topbar h1")?.textContent?.trim();
+      if (heading !== "Overview") { setSlot(null); return; }
+      const firstCard = mainStage.querySelector(".overview-card");
+      const grid = firstCard?.parentElement;
+      if (!grid) { setSlot(null); return; }
+      let node = grid.querySelector("#browser-qa-overview-slot");
+      if (!node) {
+        node = document.createElement("div");
+        node.id = "browser-qa-overview-slot";
+        node.className = "browser-qa-overview-slot";
+        grid.appendChild(node);
+      }
+      setSlot(node);
+    };
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(mainStage, { childList: true, subtree: true, characterData: true });
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!slot) return;
+    load();
+    const channel = supabase
+      .channel("browser-qa-overview")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "browser_qa_history" }, load)
+      .subscribe();
+    const timer = window.setInterval(() => setNow(Date.now()), 60000);
+    const onFocus = () => load();
+    window.addEventListener("focus", onFocus);
+    return () => {
+      supabase.removeChannel(channel);
+      window.clearInterval(timer);
+      window.removeEventListener("focus", onFocus);
+    };
+  }, [slot, load]);
+
+  const latest = rows[0] || null;
+  const daily = useMemo(() => rows.find((row) => row.check_type === "daily") || null, [rows]);
+  const full = useMemo(() => rows.find((row) => row.check_type === "full") || null, [rows]);
+
+  if (!slot) return null;
+
+  const state = error ? "warning" : (latest?.overall || "unknown");
+  const detail = error
+    ? "QA history unavailable"
+    : !latest
+      ? "waiting for first automated browser QA run"
+      : `Daily ${daily?.overall?.toUpperCase() || "—"} · Full ${full?.overall?.toUpperCase() || "—"}`;
+
+  return createPortal(
+    <article className={`overview-card browser-qa-overview-card ${state}`} role="status" aria-live="polite">
+      <span>PRODUCTION QA</span>
+      <strong>{error ? "WARNING" : latest?.overall?.toUpperCase() || "NO DATA"}</strong>
+      <small>{detail}</small>
+      <div className="browser-qa-overview-meta">
+        <em>{latest?.failed_checks || 0} failed</em>
+        <em>{latest?.warning_checks || 0} warnings</em>
+        <time dateTime={latest?.checked_at || undefined}>{fmtAge(latest?.checked_at)}</time>
+      </div>
+    </article>,
+    slot,
+  );
+}

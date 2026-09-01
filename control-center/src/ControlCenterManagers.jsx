@@ -12,6 +12,8 @@ import NoteApplyManager from "./NoteApplyManager";
 import AnalyticsManager from "./AnalyticsManager";
 import SiteHealthManager from "./SiteHealthManager";
 import SiteHealthOverviewBridge from "./SiteHealthOverviewBridge";
+import BrowserQaSiteHealthBridge from "./BrowserQaSiteHealthBridge";
+import BrowserQaOverviewBridge from "./BrowserQaOverviewBridge";
 import { supabase } from "./supabase";
 import "./header-layout.css";
 
@@ -137,6 +139,8 @@ export default function ControlCenterManagers() {
     <AnalyticsManager />
     <SiteHealthManager />
     <SiteHealthOverviewBridge />
+    <BrowserQaSiteHealthBridge />
+    <BrowserQaOverviewBridge />
     {slots.apply ? createPortal(<ControlledApplyManager />, slots.apply) : <ControlledApplyManager />}
   </>;
 }
