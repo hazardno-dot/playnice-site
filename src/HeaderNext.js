@@ -537,11 +537,20 @@ function HeaderNext({
       </button>
 
       <button
+        className={`header-next-cart-button ${
+          cartSpinning ? "is-spinning" : ""
+        }`}
         type="button"
         onClick={() => runAction(onCart)}
         aria-label={copy.cart}
       >
-        <CartIcon count={cartCount} />
+        {cartFeedbackCount !== null ? (
+          <span className="header-next-cart-feedback">
+            {cartFeedbackCount}
+          </span>
+        ) : (
+          <CartIcon filled={cartCount > 0} />
+        )}
       </button>
     </div>
       </div>
