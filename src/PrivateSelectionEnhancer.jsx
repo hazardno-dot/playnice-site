@@ -179,11 +179,22 @@ function PrivateSelectionEnhancer() {
 
   useEffect(() => {
     if (!drawer) return;
+
     const heading = drawer.querySelector(".private-selection-header h3");
     if (!heading) return;
-    const nextTitle = lang === "sr" ? "Tvoja selekcija" : "Your Private Selection";
-    if (heading.textContent !== nextTitle) heading.textContent = nextTitle;
-  }, [drawer, lang]);
+
+    const baseTitle =
+      lang === "sr" ? "Tvoja selekcija" : "Your Private Selection";
+
+    const nextTitle =
+      wishlistIds.length > 0
+        ? `${baseTitle} · ${wishlistIds.length}`
+        : baseTitle;
+
+    if (heading.textContent !== nextTitle) {
+      heading.textContent = nextTitle;
+    }
+  }, [drawer, lang, wishlistIds.length]);
 
   const selectedProducts = useMemo(
     () => products.filter((product) => wishlistIds.includes(product.id)),

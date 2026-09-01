@@ -655,19 +655,6 @@
   stroke-linejoin: round;
 }
 
-.header-next-heart-wrap {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-}
-
-.header-next-heart-wrap svg {
-  width: 18px;
-  height: 18px;
-}
-
 .header-next-wishlist-button {
   overflow: visible;
 }
