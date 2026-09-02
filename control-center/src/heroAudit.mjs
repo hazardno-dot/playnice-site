@@ -38,7 +38,7 @@ const parityShape = (slide) => ({
   manifestoType: slide.manifestoType || ""
 });
 
-export function auditHeroSlides(slides, { productSlugs = [], baseline = [] } = {}) {
+export function auditHeroSlides(slides, { productSlugs = [], baseline = [], compareBaseline = false } = {}) {
   const issues = [];
   const productSet = new Set(productSlugs);
   const ids = new Set();
@@ -70,18 +70,18 @@ export function auditHeroSlides(slides, { productSlugs = [], baseline = [] } = {
   const pinned = slides.filter((slide) => slide.pinnedFirst);
   if (pinned.length !== 1) issues.push({ level: "error", field: "pinnedFirst", message: `Exactly one slide must be pinned first; found ${pinned.length}.` });
 
-  if (baseline.length) {
+  if (compareBaseline && baseline.length) {
     const baselineMap = new Map(baseline.map((slide) => [Number(slide.id), parityShape(slide)]));
     slides.forEach((slide) => {
       const expected = baselineMap.get(Number(slide.id));
       if (!expected) {
-        issues.push({ level: "warning", field: `#${slide.id}.parity`, message: "Supabase slide does not exist in the current live snapshot." });
+        issues.push({ level: "warning", field: `#${slide.id}.parity`, message: "Supabase slide does not exist in the comparison snapshot." });
         return;
       }
-      if (JSON.stringify(parityShape(slide)) !== JSON.stringify(expected)) issues.push({ level: "warning", field: `#${slide.id}.parity`, message: "Supabase data differs from the current live Hero snapshot." });
+      if (JSON.stringify(parityShape(slide)) !== JSON.stringify(expected)) issues.push({ level: "warning", field: `#${slide.id}.parity`, message: "Supabase data differs from the comparison snapshot." });
     });
     baseline.forEach((slide) => {
-      if (!slides.some((item) => Number(item.id) === Number(slide.id))) issues.push({ level: "warning", field: `#${slide.id}.parity`, message: "Live snapshot slide is missing from Supabase." });
+      if (!slides.some((item) => Number(item.id) === Number(slide.id))) issues.push({ level: "warning", field: `#${slide.id}.parity`, message: "Comparison snapshot slide is missing from Supabase." });
     });
   }
 
