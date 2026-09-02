@@ -5,7 +5,7 @@ import { normalizeJournalDraftPayload } from "../src/journalDraft.mjs";
 
 const manager = fs.readFileSync("control-center/src/JournalManager.jsx", "utf8");
 const css = fs.readFileSync("control-center/src/journal-manager.css", "utf8");
-const vercelConfig = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
+const vercelConfig = JSON.parse(fs.readFileSync("playnice-site/vercel.json", "utf8"));
 
 for (const contract of [
   "CTA LINKS",
@@ -27,8 +27,8 @@ assert.ok(css.includes(".journal-cta-preview"), "CTA read-only preview styling m
 
 assert.equal(
   vercelConfig.ignoreCommand,
-  "git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- . ':(exclude)control-center/**'",
-  "Shop Vercel project must use the previous deployment SHA when available and ignore Control Center-only changes.",
+  "test -z \"$(git show -m --first-parent --pretty='' --name-only HEAD | grep -v '^control-center/' | sed '/^$/d')\"",
+  "Canonical Shop Vercel config must preserve the merge-safe Control Center-only skip guard.",
 );
 
 const internal = normalizeJournalDraftPayload({
@@ -59,5 +59,5 @@ assert.ok(invalidAudit.errors.some((issue) => issue.field === "links[0]"), "CTA 
 console.log("PASS  Journal editor can add/remove bilingual CTA links");
 console.log("PASS  Journal editor switches between internal action and external URL destinations");
 console.log("PASS  CTA changes remain gated by Journal link validation");
-console.log("PASS  Shop Vercel scope uses previous deployment SHA with HEAD^ fallback");
+console.log("PASS  Shop Vercel contract is read from canonical playnice-site root");
 console.log("Production untouched: yes (static/pure regression only)");
