@@ -1,5 +1,5 @@
-import { journalArticles } from "../../src/data/journal/index.js";
-import { products } from "../../src/data/products/index.js";
+import { journalArticles } from "../../playnice-site/src/data/journal/index.js";
+import { products } from "../../playnice-site/src/data/products/index.js";
 import { auditJournalArticles } from "../src/journalAudit.mjs";
 
 const audit = auditJournalArticles(journalArticles, products.map((product) => product.slug));
