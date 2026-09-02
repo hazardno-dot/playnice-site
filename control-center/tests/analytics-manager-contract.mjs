@@ -16,7 +16,7 @@ for (const token of [
   'Operational analytics',
   'ACTIVE DRAFTS',
   'Draft PR metadata',
-  'Traffic and conversion analytics are intentionally separate',
+  'Traffic and conversion analytics remain a separate source',
   'product_slug,published_at,apply_pr_number,published_commit_sha',
   'row.apply_pr_number ? `PR #${row.apply_pr_number}` : "published"',
 ]) {
