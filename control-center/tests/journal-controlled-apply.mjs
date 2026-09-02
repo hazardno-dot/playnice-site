@@ -2,11 +2,11 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { journalArticles } from "../../src/data/journal/index.js";
+import { journalArticles } from "../../playnice-site/src/data/journal/index.js";
 import { findJournalArticleBlock, normalizeJournalArticle, renderJournalArticle, replaceJournalArticle, stableJson } from "../api/journal-apply-engine.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const journalPath = path.resolve(here, "../../src/data/journal/index.js");
+const journalPath = path.resolve(here, "../../playnice-site/src/data/journal/index.js");
 const source = fs.readFileSync(journalPath, "utf8");
 const beforeDisk = Buffer.from(source);
 const article = journalArticles.find((item) => Number(item.id) === 20) || journalArticles[journalArticles.length - 1];
