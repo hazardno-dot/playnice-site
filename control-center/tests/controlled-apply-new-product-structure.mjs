@@ -37,10 +37,10 @@ const payload = {
 };
 
 const p = __test.normalizePayload(payload, "playnice-structural-test");
-const index = read("src/data/products/index.js");
-const copy = read("src/data/products/productCopy.js");
-const wear = read("src/data/products/productWearContext.js");
-const discovery = read("src/data/products/discoveryProfiles.js");
+const index = read("playnice-site/src/data/products/index.js");
+const copy = read("playnice-site/src/data/products/productCopy.js");
+const wear = read("playnice-site/src/data/products/productWearContext.js");
+const discovery = read("playnice-site/src/data/products/discoveryProfiles.js");
 
 const nextIndex = __test.insertProduct(index, p);
 if (nextIndex.includes("},,")) throw new Error("Catalog insertion created a double comma.");
