@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { journalArticles } from "../../src/data/journal/index.js";
+import { journalArticles } from "../../playnice-site/src/data/journal/index.js";
 import { auditJournalArticles } from "../src/journalAudit.mjs";
 import { normalizeJournalDraftPayload } from "../src/journalDraft.mjs";
 import {
@@ -10,7 +10,7 @@ import {
   replaceJournalArticle,
 } from "../api/journal-apply-engine.mjs";
 
-const journalPath = new URL("../../src/data/journal/index.js", import.meta.url);
+const journalPath = new URL("../../playnice-site/src/data/journal/index.js", import.meta.url);
 const source = fs.readFileSync(journalPath, "utf8");
 const beforeDisk = Buffer.from(source);
 
