@@ -5,7 +5,7 @@ const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO = "hazardno-dot/playnice-site";
 const [OWNER, REPO_NAME] = REPO.split("/");
-const JOURNAL_PATH = "src/data/journal/index.js";
+const JOURNAL_PATH = "playnice-site/src/data/journal/index.js";
 
 const json = (res, status, body) => res.status(status).json(body);
 
