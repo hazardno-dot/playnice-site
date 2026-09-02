@@ -56,9 +56,9 @@ export const BASE_HERO_SLIDES = [
   {
     "id": 3,
     "kind": "imageOnly",
-    "image": "/hero/slide-light-blue-2025.jpg",
+    "image": "/hero/slide-3.jpg",
     "desktopImage": "/hero/slide-light-blue-2025.jpg",
-    "mobileImage": "/hero/mobile/slide-light-blue-2025-mobile.jpg",
+    "mobileImage": "/hero/mobile/slide-3-mobile.jpg",
     "alt": "Dolce & Gabbana Light Blue Pour Homme 2025",
     "actionPrimary": "product",
     "actionProductSlug": "dolce-gabbana-light-blue-pour-homme-2025",
