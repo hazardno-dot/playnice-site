@@ -7,18 +7,31 @@ import { mergeHeroDrafts } from "./heroDraft.mjs";
 import "./hero-review.css";
 
 const productSlugs = products.map((product) => product.slug);
+
 const statusLabel = (status) => status === "approved" ? "APPROVED" : status === "ready" ? "READY FOR REVIEW" : "DRAFT";
 
-function ensureWorkflowSlot(detail) {
-  let workflowSlot = detail.querySelector("#hero-workflow-slot");
-  if (!workflowSlot) {
-    workflowSlot = document.createElement("div");
-    workflowSlot.id = "hero-workflow-slot";
+function ensureWorkflowStack(detail) {
+  let stack = detail.querySelector("#hero-workflow-stack");
+  if (!stack) {
+    stack = document.createElement("div");
+    stack.id = "hero-workflow-stack";
+    stack.className = "hero-workflow-stack";
     const footer = detail.querySelector(".hero-draft-footer");
-    if (footer) detail.insertBefore(workflowSlot, footer);
-    else detail.appendChild(workflowSlot);
+    detail.insertBefore(stack, footer || null);
   }
-  return workflowSlot;
+  let reviewSlot = stack.querySelector("#hero-review-slot");
+  if (!reviewSlot) {
+    reviewSlot = document.createElement("div");
+    reviewSlot.id = "hero-review-slot";
+    stack.appendChild(reviewSlot);
+  }
+  let applySlot = stack.querySelector("#hero-controlled-apply-slot");
+  if (!applySlot) {
+    applySlot = document.createElement("div");
+    applySlot.id = "hero-controlled-apply-slot";
+    stack.appendChild(applySlot);
+  }
+  return reviewSlot;
 }
 
 export default function HeroReviewBridge() {
@@ -50,29 +63,16 @@ export default function HeroReviewBridge() {
       raf = requestAnimationFrame(() => {
         const heading = mainStage.querySelector(".topbar h1");
         const detail = mainStage.querySelector(".hero-manager-detail");
-        const detailHead = detail?.querySelector(".hero-manager-detail-head");
         const active = mainStage.querySelector(".hero-slide-row.is-active");
-        if (heading?.textContent?.trim() !== "Hero" || !detail || !detailHead || !active) {
+        if (heading?.textContent?.trim() !== "Hero" || !detail || !active) {
           setSlot(null);
           setHeroKey("");
           return;
         }
 
+        setSlot(ensureWorkflowStack(detail));
         const id = Number(active.textContent?.match(/#(\d+)/)?.[1]);
-        if (!id) {
-          setHeroKey("");
-          return;
-        }
-
-        const workflowSlot = ensureWorkflowSlot(detail);
-        let reviewSlot = workflowSlot.querySelector("#hero-review-slot");
-        if (!reviewSlot) {
-          reviewSlot = document.createElement("div");
-          reviewSlot.id = "hero-review-slot";
-          workflowSlot.insertBefore(reviewSlot, workflowSlot.firstChild);
-        }
-        setSlot(reviewSlot);
-
+        if (!id) return;
         supabase.from("hero_slides").select("hero_key").eq("id", id).maybeSingle().then(({ data }) => {
           const key = data?.hero_key || "";
           setHeroKey((current) => current === key ? current : key);
