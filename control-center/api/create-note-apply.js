@@ -5,7 +5,8 @@ const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO = "hazardno-dot/playnice-site";
 const [OWNER, REPO_NAME] = REPO.split("/");
-const NOTE_SOURCE_PATH = "src/TheNoteMap.jsx";
+const NOTE_SOURCE_PATH = "playnice-site/src/TheNoteMap.jsx";
+const NOTE_ASSET_ROOT = "playnice-site/public/note-map";
 
 const json = (res, status, body) => res.status(status).json(body);
 
@@ -84,9 +85,9 @@ export default async function handler(req, res) {
     if (stableJson(draft.payload) !== stableJson(draft.approved_payload)) return json(res, 409, { error: "Approved payload no longer matches the current Notes draft. Review and approve again." });
     const approved = validateNote(draft.approved_payload, noteKey);
 
-    const assetPath = `/repos/${OWNER}/${REPO_NAME}/contents/public/note-map/${encodeURIComponent(noteKey)}.webp?ref=main`;
+    const assetPath = `/repos/${OWNER}/${REPO_NAME}/contents/${NOTE_ASSET_ROOT}/${encodeURIComponent(noteKey)}.webp?ref=main`;
     const assetExists = await githubExists(assetPath);
-    if (!assetExists) return json(res, 409, { error: `Missing note asset on main: /public/note-map/${noteKey}.webp` });
+    if (!assetExists) return json(res, 409, { error: `Missing note asset on main: /${NOTE_ASSET_ROOT}/${noteKey}.webp` });
 
     if (action === "prepare") {
       if (draft.apply_branch && draft.apply_pr_number) return json(res, 409, { error: "A Notes apply PR already exists for this draft." });
@@ -141,7 +142,7 @@ export default async function handler(req, res) {
           `- SR: ${approved.srLabel}`,
           `- EN: ${approved.enLabel}`,
           `- Source: ${NOTE_SOURCE_PATH}`,
-          `- Asset verified on main: /public/note-map/${noteKey}.webp`,
+          `- Asset verified on main: /${NOTE_ASSET_ROOT}/${noteKey}.webp`,
           `- Operation: ${mode === "insert" ? "insert new NOTE_LIBRARY entry" : "replace/promote existing note metadata"}`,
           "- Safety: exact TheNoteMap.jsx SHA drift guard",
           "- Safety: approved payload equality guard",
