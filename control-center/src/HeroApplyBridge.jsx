@@ -41,16 +41,27 @@ export default function HeroApplyBridge() {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const heading = mainStage.querySelector(".topbar h1");
+        const detail = mainStage.querySelector(".hero-manager-detail");
         const active = mainStage.querySelector(".hero-slide-row.is-active");
-        const applyAnchor = mainStage.querySelector("#hero-apply-anchor");
-        if (heading?.textContent?.trim() !== "Hero" || !active || !applyAnchor) {
+        if (heading?.textContent?.trim() !== "Hero" || !detail || !active) {
           setSlot(null);
+          setHeroKey("");
           return;
         }
 
-        setSlot(applyAnchor);
+        let applySlot = detail.querySelector("#hero-controlled-apply-slot");
+        if (!applySlot) {
+          applySlot = document.createElement("div");
+          applySlot.id = "hero-controlled-apply-slot";
+          detail.appendChild(applySlot);
+        }
+        setSlot(applySlot);
+
         const id = Number(active.textContent?.match(/#(\d+)/)?.[1]);
-        if (!id) return;
+        if (!id) {
+          setHeroKey("");
+          return;
+        }
         supabase.from("hero_slides").select("hero_key").eq("id", id).maybeSingle().then(({ data, error: keyError }) => {
           if (keyError) { setError(keyError.message || String(keyError)); return; }
           const key = data?.hero_key || "";
