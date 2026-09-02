@@ -5,6 +5,7 @@ import AuthGate from "./AuthGate";
 import ControlCenterManagers from "./ControlCenterManagers";
 import "./styles.css";
 import "./review-workflow.css";
+import "./foundation-v2.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

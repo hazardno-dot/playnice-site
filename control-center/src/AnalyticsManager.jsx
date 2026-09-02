@@ -15,7 +15,7 @@ export default function AnalyticsManager() {
   const [slot, setSlot] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [data, setData] = useState({ productDrafts: [], journalDrafts: [], noteDrafts: [], publishHistory: [], auditLog: [] });
+  const [data, setData] = useState({ productDrafts: [], heroDrafts: [], journalDrafts: [], noteDrafts: [], publishHistory: [], auditLog: [], heroSlides: 0 });
   const noteAudit = useMemo(() => auditProductNotes(products), []);
 
   useEffect(() => {
@@ -46,28 +46,31 @@ export default function AnalyticsManager() {
     const load = async () => {
       setLoading(true);
       const since = thirtyDaysAgo();
-      const [productDrafts, journalDrafts, noteDrafts, publishHistory, auditLog] = await Promise.all([
+      const [productDrafts, heroDrafts, journalDrafts, noteDrafts, publishHistory, auditLog, heroSlides] = await Promise.all([
         supabase.from("product_drafts").select("product_slug,review_status,updated_at,apply_pr_number,published_at").order("updated_at", { ascending: false }),
+        supabase.from("hero_drafts").select("hero_key,review_status,updated_at,apply_pr_number,preview_verified_at").order("updated_at", { ascending: false }),
         supabase.from("journal_drafts").select("article_id,review_status,updated_at,apply_pr_number").order("updated_at", { ascending: false }),
         supabase.from("note_drafts").select("note_key,review_status,updated_at,apply_pr_number").order("updated_at", { ascending: false }),
         supabase.from("publish_history").select("product_slug,published_at,apply_pr_number,published_commit_sha").gte("published_at", since).order("published_at", { ascending: false }).limit(30),
         supabase.from("draft_audit_log").select("id,product_slug,action,created_at").gte("created_at", since).order("created_at", { ascending: false }).limit(30),
+        supabase.from("hero_slides").select("hero_key", { count: "exact", head: true }).eq("enabled", true),
       ]);
       if (cancelled) return;
-      const firstError = [productDrafts, journalDrafts, noteDrafts, publishHistory, auditLog].find((result) => result.error)?.error;
-      if (firstError) setError(firstError.message);
-      else setError("");
+      const firstError = [productDrafts, heroDrafts, journalDrafts, noteDrafts, publishHistory, auditLog, heroSlides].find((result) => result.error)?.error;
+      if (firstError) setError(firstError.message); else setError("");
       setData({
         productDrafts: productDrafts.data || [],
+        heroDrafts: heroDrafts.data || [],
         journalDrafts: journalDrafts.data || [],
         noteDrafts: noteDrafts.data || [],
         publishHistory: publishHistory.data || [],
         auditLog: auditLog.data || [],
+        heroSlides: heroSlides.count || 0,
       });
       setLoading(false);
     };
     load();
-    const channels = ["product_drafts", "journal_drafts", "note_drafts", "publish_history", "draft_audit_log"].map((table) =>
+    const channels = ["product_drafts", "hero_drafts", "journal_drafts", "note_drafts", "publish_history", "draft_audit_log"].map((table) =>
       supabase.channel(`analytics-${table}`).on("postgres_changes", { event: "*", schema: "public", table }, load).subscribe()
     );
     const onFocus = () => load();
@@ -80,49 +83,58 @@ export default function AnalyticsManager() {
   }, []);
 
   const productStatus = useMemo(() => countStatuses(data.productDrafts), [data.productDrafts]);
+  const heroStatus = useMemo(() => countStatuses(data.heroDrafts), [data.heroDrafts]);
   const journalStatus = useMemo(() => countStatuses(data.journalDrafts), [data.journalDrafts]);
   const noteStatus = useMemo(() => countStatuses(data.noteDrafts), [data.noteDrafts]);
-  const totalDrafts = data.productDrafts.length + data.journalDrafts.length + data.noteDrafts.length;
-  const totalApproved = productStatus.approved + journalStatus.approved + noteStatus.approved;
-  const openPrs = [...data.productDrafts, ...data.journalDrafts, ...data.noteDrafts].filter((row) => row.apply_pr_number).length;
+  const allManaged = [...data.productDrafts, ...data.heroDrafts, ...data.journalDrafts, ...data.noteDrafts];
+  const totalDrafts = allManaged.length;
+  const totalApproved = productStatus.approved + heroStatus.approved + journalStatus.approved + noteStatus.approved;
+  const openPrs = allManaged.filter((row) => row.apply_pr_number).length;
+  const verifiedHeroPreviews = data.heroDrafts.filter((row) => row.preview_verified_at).length;
 
   const recent = useMemo(() => [
     ...data.publishHistory.map((row) => ({ type: "PUBLISH", subject: row.product_slug, detail: row.apply_pr_number ? `PR #${row.apply_pr_number}` : "published", at: row.published_at })),
     ...data.auditLog.map((row) => ({ type: "PRODUCT", subject: row.product_slug, detail: String(row.action || "activity").replace(/_/g, " "), at: row.created_at })),
-  ].sort((a, b) => new Date(b.at) - new Date(a.at)).slice(0, 12), [data.publishHistory, data.auditLog]);
+    ...data.heroDrafts.filter((row) => row.updated_at).map((row) => ({ type: "HERO", subject: row.hero_key, detail: row.preview_verified_at ? "preview verified" : String(row.review_status || "draft"), at: row.updated_at })),
+  ].sort((a, b) => new Date(b.at) - new Date(a.at)).slice(0, 12), [data.publishHistory, data.auditLog, data.heroDrafts]);
 
   if (!slot) return null;
   return createPortal(<section className="analytics-manager">
     <div className="analytics-head">
-      <div><span>CONTROL CENTER INTELLIGENCE</span><h2>Operational analytics</h2><p>Live catalog + Supabase workflow telemetry. Traffic and conversion analytics are intentionally separate until a web analytics source is connected.</p></div>
+      <div><span>CONTROL CENTER INTELLIGENCE</span><h2>Operational analytics</h2><p>Live catalog + Supabase workflow telemetry across Products, Hero, Journal and Notes. Traffic and conversion analytics remain a separate source.</p></div>
       <div className={`analytics-live ${loading ? "loading" : error ? "error" : "ok"}`}>{loading ? "SYNCING" : error ? "PARTIAL DATA" : "LIVE"}</div>
     </div>
     {error ? <div className="analytics-error">{error}</div> : null}
 
     <div className="analytics-kpis">
       <div><span>PRODUCTS</span><strong>{products.length}</strong><small>live catalog</small></div>
+      <div><span>HERO</span><strong>{data.heroSlides}</strong><small>managed live slides</small></div>
       <div><span>JOURNAL</span><strong>{journalArticles.length}</strong><small>live articles</small></div>
       <div><span>NOTES</span><strong>{noteAudit.uniqueNotes}</strong><small>{noteAudit.placements} placements</small></div>
       <div><span>ACTIVE DRAFTS</span><strong>{totalDrafts}</strong><small>all managed modules</small></div>
       <div><span>APPROVED</span><strong>{totalApproved}</strong><small>awaiting next step</small></div>
-      <div><span>DRAFT PRS</span><strong>{openPrs}</strong><small>apply metadata present</small></div>
     </div>
 
     <div className="analytics-grid">
       <article className="analytics-panel workflow-panel"><div className="analytics-panel-head"><div><span>WORKFLOW</span><h3>Draft state by module</h3></div><small>Realtime</small></div>
         <div className="workflow-table">
-          {[{name:"Products", total:data.productDrafts.length, status:productStatus},{name:"Journal", total:data.journalDrafts.length, status:journalStatus},{name:"Notes", total:data.noteDrafts.length, status:noteStatus}].map((row) => <div className="workflow-row" key={row.name}><strong>{row.name}</strong><span>{row.total}</span><em className="draft">D {row.status.draft}</em><em className="ready">R {row.status.ready}</em><em className="approved">A {row.status.approved}</em></div>)}
+          {[
+            {name:"Products", total:data.productDrafts.length, status:productStatus},
+            {name:"Hero", total:data.heroDrafts.length, status:heroStatus},
+            {name:"Journal", total:data.journalDrafts.length, status:journalStatus},
+            {name:"Notes", total:data.noteDrafts.length, status:noteStatus}
+          ].map((row) => <div className="workflow-row" key={row.name}><strong>{row.name}</strong><span>{row.total}</span><em className="draft">D {row.status.draft}</em><em className="ready">R {row.status.ready}</em><em className="approved">A {row.status.approved}</em></div>)}
         </div>
       </article>
 
-      <article className="analytics-panel"><div className="analytics-panel-head"><div><span>30 DAYS</span><h3>Publishing activity</h3></div><strong>{data.publishHistory.length}</strong></div>
-        <div className="analytics-summary"><div><span>Published products</span><strong>{new Set(data.publishHistory.map((row) => row.product_slug)).size}</strong></div><div><span>Logged product actions</span><strong>{data.auditLog.length}</strong></div></div>
-        <p className="analytics-note">This is Control Center operational history, not customer traffic. GA/Vercel traffic metrics can be connected as a separate source without changing the draft workflow.</p>
+      <article className="analytics-panel"><div className="analytics-panel-head"><div><span>CONTROLLED APPLY</span><h3>Release queue</h3></div><strong>{openPrs}</strong></div>
+        <div className="analytics-summary"><div><span>Draft PR metadata</span><strong>{openPrs}</strong></div><div><span>Hero previews verified</span><strong>{verifiedHeroPreviews}</strong></div></div>
+        <p className="analytics-note">Apply metadata is operational state only. Merge remains manual and Production is never changed from this analytics surface.</p>
       </article>
     </div>
 
     <article className="analytics-panel activity-panel"><div className="analytics-panel-head"><div><span>RECENT ACTIVITY</span><h3>Latest workflow events</h3></div><small>Newest first</small></div>
-      <div className="activity-list">{recent.length ? recent.map((item, index) => <div className="activity-row" key={`${item.type}-${item.subject}-${item.at}-${index}`}><span className={item.type === "PUBLISH" ? "publish" : "product"}>{item.type}</span><strong>{item.subject || "—"}</strong><small>{item.detail}</small><time>{fmtDate(item.at)}</time></div>) : <div className="activity-empty">No workflow activity recorded in the last 30 days.</div>}</div>
+      <div className="activity-list">{recent.length ? recent.map((item, index) => <div className="activity-row" key={`${item.type}-${item.subject}-${item.at}-${index}`}><span className={item.type.toLowerCase()}>{item.type}</span><strong>{item.subject || "—"}</strong><small>{item.detail}</small><time>{fmtDate(item.at)}</time></div>) : <div className="activity-empty">No workflow activity recorded in the last 30 days.</div>}</div>
     </article>
   </section>, slot);
 }
