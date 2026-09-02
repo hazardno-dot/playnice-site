@@ -12,6 +12,18 @@ async function readResponse(response) {
   }
 }
 
+function ensureWorkflowSlot(detail) {
+  let workflowSlot = detail.querySelector("#hero-workflow-slot");
+  if (!workflowSlot) {
+    workflowSlot = document.createElement("div");
+    workflowSlot.id = "hero-workflow-slot";
+    const footer = detail.querySelector(".hero-draft-footer");
+    if (footer) detail.insertBefore(workflowSlot, footer);
+    else detail.appendChild(workflowSlot);
+  }
+  return workflowSlot;
+}
+
 export default function HeroApplyBridge() {
   const [slot, setSlot] = useState(null);
   const [heroKey, setHeroKey] = useState("");
@@ -49,11 +61,12 @@ export default function HeroApplyBridge() {
           return;
         }
 
-        let applySlot = detail.querySelector("#hero-controlled-apply-slot");
+        const workflowSlot = ensureWorkflowSlot(detail);
+        let applySlot = workflowSlot.querySelector("#hero-controlled-apply-slot");
         if (!applySlot) {
           applySlot = document.createElement("div");
           applySlot.id = "hero-controlled-apply-slot";
-          detail.appendChild(applySlot);
+          workflowSlot.appendChild(applySlot);
         }
         setSlot(applySlot);
 
