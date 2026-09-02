@@ -10,26 +10,21 @@ const productSlugs = products.map((product) => product.slug);
 
 const statusLabel = (status) => status === "approved" ? "APPROVED" : status === "ready" ? "READY FOR REVIEW" : "DRAFT";
 
-function ensureWorkflowStack(detail) {
-  let stack = detail.querySelector("#hero-workflow-stack");
-  if (!stack) {
-    stack = document.createElement("div");
-    stack.id = "hero-workflow-stack";
-    stack.className = "hero-workflow-stack";
+function ensureWorkflowSlot(detail) {
+  let workflowSlot = detail.querySelector("#hero-workflow-slot");
+  if (!workflowSlot) {
+    workflowSlot = document.createElement("div");
+    workflowSlot.id = "hero-workflow-slot";
+    workflowSlot.className = "hero-workflow-stack";
     const footer = detail.querySelector(".hero-draft-footer");
-    detail.insertBefore(stack, footer || null);
+    detail.insertBefore(workflowSlot, footer || null);
   }
-  let reviewSlot = stack.querySelector("#hero-review-slot");
+  let reviewSlot = workflowSlot.querySelector("#hero-review-slot");
   if (!reviewSlot) {
     reviewSlot = document.createElement("div");
     reviewSlot.id = "hero-review-slot";
-    stack.appendChild(reviewSlot);
-  }
-  let applySlot = stack.querySelector("#hero-controlled-apply-slot");
-  if (!applySlot) {
-    applySlot = document.createElement("div");
-    applySlot.id = "hero-controlled-apply-slot";
-    stack.appendChild(applySlot);
+    const applySlot = workflowSlot.querySelector("#hero-controlled-apply-slot");
+    workflowSlot.insertBefore(reviewSlot, applySlot || null);
   }
   return reviewSlot;
 }
@@ -70,7 +65,7 @@ export default function HeroReviewBridge() {
           return;
         }
 
-        setSlot(ensureWorkflowStack(detail));
+        setSlot(ensureWorkflowSlot(detail));
         const id = Number(active.textContent?.match(/#(\d+)/)?.[1]);
         if (!id) return;
         supabase.from("hero_slides").select("hero_key").eq("id", id).maybeSingle().then(({ data }) => {
