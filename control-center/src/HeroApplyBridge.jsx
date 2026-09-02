@@ -3,12 +3,22 @@ import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
 import "./hero-apply.css";
 
+async function readResponse(response) {
+  const text = await response.text();
+  try {
+    return text ? JSON.parse(text) : null;
+  } catch {
+    throw new Error(`Server returned ${response.status}: ${text || response.statusText}`);
+  }
+}
+
 export default function HeroApplyBridge() {
   const [slot, setSlot] = useState(null);
   const [heroKey, setHeroKey] = useState("");
   const [row, setRow] = useState(null);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
+  const [finalized, setFinalized] = useState("");
 
   const loadRow = useCallback(async (key) => {
     if (!key) { setRow(null); return; }
@@ -92,7 +102,7 @@ export default function HeroApplyBridge() {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ hero_key: heroKey }),
       });
-      const body = await response.json();
+      const body = await readResponse(response);
       if (!response.ok) throw new Error(body?.error || "Could not create Hero preview branch.");
       await loadRow(heroKey);
     } catch (applyError) {
@@ -121,21 +131,48 @@ export default function HeroApplyBridge() {
     }
   };
 
-  if (!slot || !row || row.review_status !== "approved") return null;
+  const finalizeApply = async () => {
+    if (!row || !heroKey) return;
+    setBusy("finalize"); setError(""); setFinalized("");
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
+      const response = await fetch("/api/finalize-hero-apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ hero_key: heroKey }),
+      });
+      const body = await readResponse(response);
+      if (!response.ok) throw new Error(body?.error || "Could not finalize Hero apply.");
+      setFinalized(`Hero baseline finalized from PR #${body.pr_number}.`);
+      await loadRow(heroKey);
+      window.setTimeout(() => window.location.reload(), 700);
+    } catch (finalizeError) {
+      setError(finalizeError.message || String(finalizeError));
+    } finally {
+      setBusy("");
+    }
+  };
 
-  const hasApply = Boolean(row.apply_branch && row.apply_pr_number);
-  const verified = Boolean(row.preview_verified_at);
+  if (!slot || (!row && !finalized) || (row && row.review_status !== "approved")) return null;
+
+  const hasApply = Boolean(row?.apply_branch && row?.apply_pr_number);
+  const verified = Boolean(row?.preview_verified_at);
 
   return createPortal(<section className={`hero-apply-panel ${verified ? "verified" : hasApply ? "preview" : "approved"}`}>
     <div className="hero-apply-head">
       <div><span>CONTROLLED APPLY</span><strong>{verified ? "PREVIEW VERIFIED" : hasApply ? "PREVIEW CREATED" : "APPROVED · READY TO APPLY"}</strong></div>
-      <small>approved_payload only · draft PR · never auto-merges</small>
+      <small>approved_payload only · draft PR · manual merge · post-merge finalize</small>
     </div>
     {error ? <div className="hero-apply-error">{error}</div> : null}
+    {finalized ? <div className="hero-apply-ready">{finalized}</div> : null}
     {!hasApply ? <div className="hero-apply-actions"><button className="primary" disabled={busy === "create"} onClick={createPreview}>{busy === "create" ? "Creating…" : "Create preview branch"}</button></div> : <div className="hero-apply-result">
       <div><span>BRANCH</span><code>{row.apply_branch}</code></div>
       <div><span>PR</span><a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">Open PR #{row.apply_pr_number}</a></div>
-      {verified ? <div className="hero-apply-ready">READY TO MERGE · manual merge only</div> : <button className="primary" disabled={busy === "verify"} onClick={verifyPreview}>{busy === "verify" ? "Saving…" : "Mark preview verified"}</button>}
+      {!verified ? <button className="primary" disabled={busy === "verify"} onClick={verifyPreview}>{busy === "verify" ? "Saving…" : "Mark preview verified"}</button> : <>
+        <div className="hero-apply-ready">READY TO MERGE · manual merge only</div>
+        <button className="primary" disabled={busy === "finalize"} onClick={finalizeApply}>{busy === "finalize" ? "Checking merge…" : "Finalize after merge"}</button>
+      </>}
     </div>}
   </section>, slot);
 }
