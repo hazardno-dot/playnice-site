@@ -3,6 +3,8 @@ import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
 import "./hero-apply.css";
 
+const HERO_WORKFLOW_UPDATED_EVENT = "playnice:hero-workflow-updated";
+
 async function readResponse(response) {
   const text = await response.text();
   try {
@@ -90,6 +92,17 @@ export default function HeroApplyBridge() {
   }, []);
 
   useEffect(() => { loadRow(heroKey); }, [heroKey, loadRow]);
+
+  useEffect(() => {
+    const onWorkflowUpdated = (event) => {
+      const key = event?.detail?.heroKey;
+      if (!key) return;
+      setHeroKey(key);
+      loadRow(key);
+    };
+    window.addEventListener(HERO_WORKFLOW_UPDATED_EVENT, onWorkflowUpdated);
+    return () => window.removeEventListener(HERO_WORKFLOW_UPDATED_EVENT, onWorkflowUpdated);
+  }, [loadRow]);
 
   useEffect(() => {
     if (!heroKey) return;
