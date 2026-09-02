@@ -52,7 +52,8 @@ export default function ControlCenterManagers() {
 
   useEffect(() => {
     const nav = document.querySelector(".sidebar nav");
-    if (!nav) return;
+    const mainStage = document.querySelector(".main-stage");
+    if (!nav || !mainStage) return;
 
     const rememberModule = (event) => {
       const button = event.target.closest("button");
@@ -63,29 +64,25 @@ export default function ControlCenterManagers() {
     nav.addEventListener("click", rememberModule);
 
     const persisted = window.sessionStorage.getItem(ACTIVE_MODULE_KEY);
-    let restoreObserver = null;
-    let restoreRaf = 0;
+    let restoreTimer = null;
     if (persisted === "Hero") {
-      const restoreHero = () => {
-        cancelAnimationFrame(restoreRaf);
-        restoreRaf = requestAnimationFrame(() => {
-          const heroButton = nav.querySelector("[data-hero-manager-nav='true']");
-          if (!heroButton) return;
-          restoreObserver?.disconnect();
-          heroButton.click();
-        });
-      };
-      restoreHero();
-      if (!nav.querySelector("[data-hero-manager-nav='true']")) {
-        restoreObserver = new MutationObserver(restoreHero);
-        restoreObserver.observe(nav, { childList: true, subtree: true });
-      }
+      let attempts = 0;
+      restoreTimer = window.setInterval(() => {
+        attempts += 1;
+        const heading = mainStage.querySelector(".topbar h1");
+        if (heading?.textContent?.trim() === "Hero") {
+          window.clearInterval(restoreTimer);
+          return;
+        }
+        const heroButton = nav.querySelector("[data-hero-manager-nav='true']");
+        if (heroButton) heroButton.click();
+        if (attempts >= 40) window.clearInterval(restoreTimer);
+      }, 50);
     }
 
     return () => {
       nav.removeEventListener("click", rememberModule);
-      cancelAnimationFrame(restoreRaf);
-      restoreObserver?.disconnect();
+      if (restoreTimer) window.clearInterval(restoreTimer);
     };
   }, []);
 
