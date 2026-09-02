@@ -1,18 +1,21 @@
 name: Control Center Apply Regression
 
 on:
-  push:
+  pull_request:
     branches:
-      - control-center-controlled-apply-v2
+      - main
     paths:
       - "control-center/api/create-apply.js"
       - "control-center/api/create-new-product.js"
       - "control-center/api/create-new-product-engine.js"
+      - "control-center/api/create-hero-apply.js"
+      - "control-center/api/finalize-hero-apply.js"
       - "control-center/api/create-journal-apply.js"
       - "control-center/api/journal-apply-engine.mjs"
       - "control-center/api/create-note-apply.js"
       - "control-center/api/note-apply-engine.mjs"
       - "control-center/api/site-health.js"
+      - "control-center/vite.config.js"
       - "control-center/src/approvalSafety.mjs"
       - "control-center/src/inlineValidationRules.mjs"
       - "control-center/src/productWorkflowState.mjs"
@@ -44,13 +47,14 @@ on:
       - "control-center/src/ControlCenterManagers.jsx"
       - "control-center/src/ControlledApplyManager.jsx"
       - "control-center/tests/**"
-      - "src/data/products/index.js"
-      - "src/data/products/productCopy.js"
-      - "src/data/products/productWearContext.js"
-      - "src/data/products/discoveryProfiles.js"
-      - "src/data/journal/index.js"
-      - "src/TheNoteMap.jsx"
-      - "public/note-map/**"
+      - "playnice-site/src/data/products/index.js"
+      - "playnice-site/src/data/products/productCopy.js"
+      - "playnice-site/src/data/products/productWearContext.js"
+      - "playnice-site/src/data/products/discoveryProfiles.js"
+      - "playnice-site/src/data/heroSlides.generated.js"
+      - "playnice-site/src/data/journal/index.js"
+      - "playnice-site/src/TheNoteMap.jsx"
+      - "playnice-site/public/note-map/**"
       - ".github/workflows/control-center-apply-regression.yml"
   workflow_dispatch:
 
