@@ -8,7 +8,7 @@ import {
   journalArticleExists,
 } from "../api/journal-apply-engine.mjs";
 
-const source = await readFile(new URL("../../src/data/journal/index.js", import.meta.url), "utf8");
+const source = await readFile(new URL("../../playnice-site/src/data/journal/index.js", import.meta.url), "utf8");
 const ids = getJournalArticleIds(source);
 assert.ok(ids.length >= 20, "expected current Journal catalog");
 assert.equal(new Set(ids).size, ids.length, "Journal ids must be unique");

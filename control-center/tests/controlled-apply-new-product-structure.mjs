@@ -1,10 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { __test } from "../api/create-new-product.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "../..");
+const engineSource = fs.readFileSync(path.join(root, "control-center/api/create-new-product-engine.js"), "utf8");
+const engineModule = await import(`data:text/javascript;base64,${Buffer.from(engineSource, "utf8").toString("base64")}`);
+const { __test } = engineModule;
 const read = (p) => fs.readFileSync(path.join(root, p), "utf8");
 
 const payload = {
@@ -37,10 +39,10 @@ const payload = {
 };
 
 const p = __test.normalizePayload(payload, "playnice-structural-test");
-const index = read("src/data/products/index.js");
-const copy = read("src/data/products/productCopy.js");
-const wear = read("src/data/products/productWearContext.js");
-const discovery = read("src/data/products/discoveryProfiles.js");
+const index = read("playnice-site/src/data/products/index.js");
+const copy = read("playnice-site/src/data/products/productCopy.js");
+const wear = read("playnice-site/src/data/products/productWearContext.js");
+const discovery = read("playnice-site/src/data/products/discoveryProfiles.js");
 
 const nextIndex = __test.insertProduct(index, p);
 if (nextIndex.includes("},,")) throw new Error("Catalog insertion created a double comma.");

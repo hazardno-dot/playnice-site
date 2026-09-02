@@ -461,7 +461,7 @@ export default async function handler(req, res) {
     const changedFiles = [];
 
     if (identityChanges.length || coreChanges.length || inspiredByChanges.length || noteMapChanges.length || recommendationChanges.length) {
-      const filePath = "src/data/products/index.js";
+      const filePath = "playnice-site/src/data/products/index.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
       const source = Buffer.from(file.content, "base64").toString("utf8");
       const located = findProductBlock(source, slug);
@@ -487,7 +487,7 @@ export default async function handler(req, res) {
     const nameChanged = oldProductName !== newProductName;
 
     if (wearChanges.length || nameChanged) {
-      const filePath = "src/data/products/productWearContext.js";
+      const filePath = "playnice-site/src/data/products/productWearContext.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
       const source = Buffer.from(file.content, "base64").toString("utf8");
       if (!oldProductName) throw new Error("Wear Context apply requires a stable product name.");
@@ -500,7 +500,7 @@ export default async function handler(req, res) {
       changedFiles.push(filePath);
     }
     if (copyChanges.length || nameChanged) {
-      const filePath = "src/data/products/productCopy.js";
+      const filePath = "playnice-site/src/data/products/productCopy.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
       const source = Buffer.from(file.content, "base64").toString("utf8");
       if (!oldProductName) throw new Error("Copy apply requires a stable product name.");
@@ -513,7 +513,7 @@ export default async function handler(req, res) {
       changedFiles.push(filePath);
     }
     if (discoveryChanges.length) {
-      const filePath = "src/data/products/discoveryProfiles.js";
+      const filePath = "playnice-site/src/data/products/discoveryProfiles.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
       const source = Buffer.from(file.content, "base64").toString("utf8");
       const located = findNamedObjectBlock(source, slug, "Discovery Profiles");

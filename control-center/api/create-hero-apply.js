@@ -3,8 +3,8 @@ const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO = "hazardno-dot/playnice-site";
 const [OWNER, REPO_NAME] = REPO.split("/");
-const APP_PATH = "src/App.js";
-const CONFIG_PATH = "src/data/heroSlides.generated.js";
+const APP_PATH = "playnice-site/src/App.js";
+const CONFIG_PATH = "playnice-site/src/data/heroSlides.generated.js";
 
 const json = (res, status, body) => res.status(status).json(body);
 

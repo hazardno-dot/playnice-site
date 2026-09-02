@@ -10,7 +10,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@shop": path.resolve(__dirname, "../src")
+      "@shop": path.resolve(__dirname, "../playnice-site/src")
     }
   },
   server: {

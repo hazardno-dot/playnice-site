@@ -155,10 +155,10 @@ export default async function handler(req,res){
     const branch=`cc-create-${slug}-${stamp}`;
     await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`,{method:"POST",body:JSON.stringify({ref:`refs/heads/${branch}`,sha:baseSha})});
     const specs=[
-      ["src/data/products/index.js",(s)=>insertProduct(s,p)],
-      ["src/data/products/productCopy.js",(s)=>insertObjectEntry(s,renderCopy(p),"Product Copy","productCopy")],
-      ["src/data/products/productWearContext.js",(s)=>insertObjectEntry(s,renderWear(p),"Wear Context","productWearContext")],
-      ["src/data/products/discoveryProfiles.js",(s)=>insertObjectEntry(s,renderDiscovery(p),"Discovery Profiles","discoveryProfiles")],
+      ["playnice-site/src/data/products/index.js",(s)=>insertProduct(s,p)],
+      ["playnice-site/src/data/products/productCopy.js",(s)=>insertObjectEntry(s,renderCopy(p),"Product Copy","productCopy")],
+      ["playnice-site/src/data/products/productWearContext.js",(s)=>insertObjectEntry(s,renderWear(p),"Wear Context","productWearContext")],
+      ["playnice-site/src/data/products/discoveryProfiles.js",(s)=>insertObjectEntry(s,renderDiscovery(p),"Discovery Profiles","discoveryProfiles")],
     ];
     const files=[];
     for(const [filePath,transform] of specs){
