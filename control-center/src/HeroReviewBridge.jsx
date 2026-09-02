@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
 import { supabase } from "./supabase";
@@ -36,6 +36,7 @@ export default function HeroReviewBridge() {
   const [row, setRow] = useState(null);
   const [working, setWorking] = useState(false);
   const [error, setError] = useState("");
+  const lastDraftSignature = useRef("");
 
   const loadSelectedRow = useCallback(async (key) => {
     if (!key) { setRow(null); return; }
@@ -63,6 +64,8 @@ export default function HeroReviewBridge() {
         if (heading?.textContent?.trim() !== "Hero" || !detail || !active) {
           setSlot(null);
           setHeroKey("");
+          setRow(null);
+          lastDraftSignature.current = "";
           return;
         }
 
@@ -72,6 +75,12 @@ export default function HeroReviewBridge() {
         supabase.from("hero_slides").select("hero_key").eq("id", id).maybeSingle().then(({ data }) => {
           const key = data?.hero_key || "";
           setHeroKey((current) => current === key ? current : key);
+          const hasDraftUi = Boolean(detail.querySelector(".hero-draft-footer"));
+          const signature = `${key}:${hasDraftUi ? "draft" : "baseline"}`;
+          if (key && signature !== lastDraftSignature.current) {
+            lastDraftSignature.current = signature;
+            loadSelectedRow(key);
+          }
         });
       });
     };
@@ -80,7 +89,7 @@ export default function HeroReviewBridge() {
     const observer = new MutationObserver(sync);
     observer.observe(mainStage, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["class"] });
     return () => { cancelAnimationFrame(raf); observer.disconnect(); };
-  }, []);
+  }, [loadSelectedRow]);
 
   useEffect(() => { loadSelectedRow(heroKey); }, [heroKey, loadSelectedRow]);
 
