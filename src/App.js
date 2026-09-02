@@ -28,7 +28,6 @@ const normalizeShopSearch = (value = "") =>
 /* =========================================
    SEO helper
 ========================================= */
-
 const SITE_BASE_URL = "https://www.playniceshop.me";
 
 const cleanSeoProductName = (name = "") =>
