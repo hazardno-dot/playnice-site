@@ -7,10 +7,10 @@ const here=path.dirname(fileURLToPath(import.meta.url));
 const root=path.resolve(here,"../..");
 const read=(p)=>fs.readFileSync(path.join(root,p),"utf8");
 const files={
-  index:read("src/data/products/index.js"),
-  copy:read("src/data/products/productCopy.js"),
-  wear:read("src/data/products/productWearContext.js"),
-  discovery:read("src/data/products/discoveryProfiles.js"),
+  index:read("playnice-site/src/data/products/index.js"),
+  copy:read("playnice-site/src/data/products/productCopy.js"),
+  wear:read("playnice-site/src/data/products/productWearContext.js"),
+  discovery:read("playnice-site/src/data/products/discoveryProfiles.js"),
 };
 const payload={
   core:{name:"PlayNice Test Fragrance Eau de Parfum",shortName:"PN Test",category:"Niche",image:"/products/playnice-test.png",sizes:{"2ml":4,"5ml":9},badge:"NEW",rating:8.4,ratingLabel:"Test Pick",season:"all",moods:"clean, signature",recommendations:"afnan-9am, afnan-9pm-rebel, afnan-turathi-blue",inspiredBy:{name:"",short:""},noteMap:{top:"bergamot, mandarin",heart:"lavender",base:"cedarwood, musk"}},
@@ -35,7 +35,7 @@ for(const [source,render,label,key,exportName] of [
   if(!next.includes(JSON.stringify(key))) throw new Error(`${label} key missing after insert.`);
 }
 let duplicate=false; try{__test.insertProduct(nextIndex,p)}catch(e){duplicate=String(e.message).includes("already exists")} if(!duplicate) throw new Error("Duplicate product guard failed.");
-for(const [k,content] of Object.entries(files)){const actual={index:read("src/data/products/index.js"),copy:read("src/data/products/productCopy.js"),wear:read("src/data/products/productWearContext.js"),discovery:read("src/data/products/discoveryProfiles.js")}[k];if(actual!==content)throw new Error(`${k} mutated on disk.`)}
+for(const [k,content] of Object.entries(files)){const actual={index:read("playnice-site/src/data/products/index.js"),copy:read("playnice-site/src/data/products/productCopy.js"),wear:read("playnice-site/src/data/products/productWearContext.js"),discovery:read("playnice-site/src/data/products/discoveryProfiles.js")}[k];if(actual!==content)throw new Error(`${k} mutated on disk.`)}
 console.log("PASS  new product payload validates");
 console.log("PASS  catalog insertion assigns max+1 id");
 console.log("PASS  Copy, Wear and Discovery entries render and insert");
