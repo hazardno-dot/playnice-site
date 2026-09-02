@@ -17,7 +17,7 @@ const h = context.__h;
 if (!applySource.includes('const supportedFields = ["category", "image",')) throw new Error("Image path is not enabled in supportedFields.");
 if (!applySource.includes("patchInspiredBy")) throw new Error("Inspired-by metadata support is missing.");
 
-const source = fs.readFileSync(path.join(repoRoot, "src/data/products/index.js"), "utf8");
+const source = fs.readFileSync(path.join(repoRoot, "playnice-site/src/data/products/index.js"), "utf8");
 const located = h.findProductBlock(source, "afnan-9am");
 const read = (block, key) => {
   const range = h.locatePropertyValue(block, key);
@@ -45,7 +45,7 @@ try {
 }
 if (!driftBlocked) throw new Error("Inspired-by LIVE DRIFT guard did not block stale baseline.");
 
-const disk = fs.readFileSync(path.join(repoRoot, "src/data/products/index.js"), "utf8");
+const disk = fs.readFileSync(path.join(repoRoot, "playnice-site/src/data/products/index.js"), "utf8");
 if (disk !== source) throw new Error("Metadata regression mutated catalog on disk.");
 
 console.log("PASS  image path patches safely");

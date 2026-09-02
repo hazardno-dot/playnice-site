@@ -14,9 +14,9 @@ vm.runInContext(`${source.slice(0, marker)}\nglobalThis.__h={findProductBlock,fi
 const h = context.__h;
 const read = (block, key) => { const r=h.locatePropertyValue(block,key); return h.parseJsLiteral(block.slice(r.start,r.end)); };
 
-const catalogPath = path.join(repoRoot, "src/data/products/index.js");
-const copyPath = path.join(repoRoot, "src/data/products/productCopy.js");
-const wearPath = path.join(repoRoot, "src/data/products/productWearContext.js");
+const catalogPath = path.join(repoRoot, "playnice-site/src/data/products/index.js");
+const copyPath = path.join(repoRoot, "playnice-site/src/data/products/productCopy.js");
+const wearPath = path.join(repoRoot, "playnice-site/src/data/products/productWearContext.js");
 const catalog = fs.readFileSync(catalogPath, "utf8");
 const copy = fs.readFileSync(copyPath, "utf8");
 const wear = fs.readFileSync(wearPath, "utf8");

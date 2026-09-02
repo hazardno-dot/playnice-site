@@ -17,7 +17,7 @@ const h = context.__h;
 if (!applySource.includes('const supportedFields = ["category",')) throw new Error("Category is not enabled in supportedFields.");
 if (!/controlled apply v2\.[4-9]\./.test(applySource)) throw new Error("Controlled Apply version is older than v2.4.");
 
-const source = fs.readFileSync(path.join(repoRoot, "src/data/products/index.js"), "utf8");
+const source = fs.readFileSync(path.join(repoRoot, "playnice-site/src/data/products/index.js"), "utf8");
 const located = h.findProductBlock(source, "afnan-9am");
 const read = (block, key) => {
   const range = h.locatePropertyValue(block, key);
@@ -39,7 +39,7 @@ try {
 }
 if (!driftBlocked) throw new Error("Category LIVE DRIFT guard did not block stale baseline.");
 
-const disk = fs.readFileSync(path.join(repoRoot, "src/data/products/index.js"), "utf8");
+const disk = fs.readFileSync(path.join(repoRoot, "playnice-site/src/data/products/index.js"), "utf8");
 if (disk !== source) throw new Error("Category regression mutated the catalog on disk.");
 
 console.log("PASS  category patches safely through Controlled Apply");

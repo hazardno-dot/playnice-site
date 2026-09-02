@@ -13,7 +13,7 @@ const context = { process: { env: {} }, Buffer, console, fetch: async () => { th
 vm.createContext(context);
 vm.runInContext(`${applySource.slice(0, marker)}\nglobalThis.__h={findNamedObjectBlock,findChildObjectBlock,locatePropertyValue,parseJsLiteral,patchCopyBlock};`, context);
 const h = context.__h;
-const source = fs.readFileSync(path.join(repoRoot, "src/data/products/productCopy.js"), "utf8");
+const source = fs.readFileSync(path.join(repoRoot, "playnice-site/src/data/products/productCopy.js"), "utf8");
 const productName = "Afnan 9 AM Eau de Parfum";
 const located = h.findNamedObjectBlock(source, productName, "Product Copy");
 const fields = ["miniTag", "card", "modal", "scentType", "dominantNotes", "tags", "whyChoose"];
