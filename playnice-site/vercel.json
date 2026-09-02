@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "ignoreCommand": "test -z \"$(git show -m --first-parent --pretty='' --name-only HEAD | grep -v '^control-center/' | sed '/^$/d')\"",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}
