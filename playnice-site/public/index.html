@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="sr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap"
+    />
+
+    <link rel="icon" href="/playnice-favicon-32.svg" type="image/svg+xml" sizes="32x32" />
+    <link rel="icon" href="/playnice-favicon-64.svg" type="image/svg+xml" sizes="64x64" />
+    <link rel="apple-touch-icon" href="/playnice-icon-192.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0D3D34" />
+
+    <script>
+      (function () {
+        var view = new URLSearchParams(window.location.search).get("view");
+        var isHome =
+          window.location.pathname === "/" &&
+          (!view || view === "home");
+
+        if (!isHome) return;
+
+        var preload = document.createElement("link");
+        preload.rel = "preload";
+        preload.as = "image";
+        preload.href = window.matchMedia("(max-width: 768px)").matches
+          ? "/hero/mobile/slide-9-mobile.jpg"
+          : "/hero/slide-9.jpg";
+        preload.setAttribute("fetchpriority", "high");
+        document.head.appendChild(preload);
+      })();
+    </script>
+
+    <title>PlayNice | Premium parfemi i dekanti u Crnoj Gori</title>
+
+    <meta
+      name="description"
+      content="Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi, dostava širom Crne Gore i plaćanje pouzećem."
+    />
+    <meta
+      name="keywords"
+      content="parfemi Crna Gora, dekanti parfema, niche parfemi, Arabian parfemi, PlayNice, parfemi Podgorica"
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.playniceshop.me/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="sr_ME" />
+    <meta property="og:url" content="https://www.playniceshop.me/" />
+    <meta property="og:title" content="PlayNice | Premium parfemi i dekanti u Crnoj Gori" />
+    <meta
+      property="og:description"
+      content="Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi, dostava širom Crne Gore."
+    />
+    <meta property="og:image" content="https://www.playniceshop.me/og-image.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="PlayNice | Premium parfemi i dekanti u Crnoj Gori" />
+    <meta
+      name="twitter:description"
+      content="Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi, dostava širom Crne Gore."
+    />
+    <meta name="twitter:image" content="https://www.playniceshop.me/og-image.jpg" />
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0E81945BBL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', 'G-0E81945BBL', { send_page_view: false });
+    </script>
+
+    <script>
+  !(function(f,b,e,v,n,t,s){
+    if(f.fbq)return;n=f.fbq=function(){
+      n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments)
+    };
+    if(!f._fbq)f._fbq=n;
+    n.push=n;
+    n.loaded=true;
+    n.version='2.0';
+    n.queue=[];
+    t=b.createElement(e);
+    t.async=true;
+    t.src=v;
+    s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)
+  })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+  fbq('set', 'autoConfig', false, '27742218555461978');
+  fbq('init', '27742218555461978');
+  fbq('track', 'PageView');
+    </script>
+
+    <noscript>
+  <img
+    height="1"
+    width="1"
+    style="display:none"
+    src="https://www.facebook.com/tr?id=27742218555461978&ev=PageView&noscript=1"
+  />
+    </noscript>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      media="print"
+      onload="this.onload=null;this.media='all'"
+    />
+
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      />
+    </noscript>
+  </head>
+
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
