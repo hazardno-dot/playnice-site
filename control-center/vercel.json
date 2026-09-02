@@ -1,0 +1,4 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "ignoreCommand": "test -z \"$(git show --pretty='' --name-only HEAD | grep '^control-center/' | sed '/^$/d')\""
+}

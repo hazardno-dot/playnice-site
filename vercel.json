@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "ignoreCommand": "git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- . ':(exclude)control-center/**'",
+  "ignoreCommand": "test -z \"$(git show --pretty='' --name-only HEAD | grep -v '^control-center/' | sed '/^$/d')\"",
   "rewrites": [
     {
       "source": "/(.*)",
