@@ -15,7 +15,7 @@ for (const token of [
   'postgres_changes',
   'Operational analytics',
   'ACTIVE DRAFTS',
-  'DRAFT PRS',
+  'Draft PR metadata',
   'Traffic and conversion analytics are intentionally separate',
   'product_slug,published_at,apply_pr_number,published_commit_sha',
   'row.apply_pr_number ? `PR #${row.apply_pr_number}` : "published"',
