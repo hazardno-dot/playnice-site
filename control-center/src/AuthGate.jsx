@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { supabase } from "./supabase";
 import "./auth.css";
 
@@ -10,35 +10,78 @@ export default function AuthGate({ children }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const activeUserIdRef = useRef(null);
+  const authorizedRef = useRef(false);
 
   useEffect(() => {
     let mounted = true;
-    const resolveSession = async (nextSession) => {
+
+    const resolveSession = async (nextSession, { forceCheck = false } = {}) => {
       if (!mounted) return;
+
+      const nextUserId = nextSession?.user?.id || null;
+      const sameAuthorizedUser = Boolean(
+        nextUserId &&
+        !forceCheck &&
+        activeUserIdRef.current === nextUserId &&
+        authorizedRef.current
+      );
+
       setSession(nextSession || null);
-      setAuthorized(nextSession ? null : false);
-      if (!nextSession?.user?.id) { setLoading(false); return; }
+
+      // Supabase may emit SIGNED_IN / TOKEN_REFRESHED again when the browser or
+      // installed app regains focus. For the same already-authorized user, keep
+      // the Control Center mounted so unsaved editor state is preserved.
+      if (sameAuthorizedUser) {
+        setLoading(false);
+        return;
+      }
+
+      if (!nextUserId) {
+        activeUserIdRef.current = null;
+        authorizedRef.current = false;
+        setAuthorized(false);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setAuthorized(null);
+
       const { data, error: adminError } = await supabase
         .from("admin_users")
         .select("user_id")
-        .eq("user_id", nextSession.user.id)
+        .eq("user_id", nextUserId)
         .maybeSingle();
+
       if (!mounted) return;
+
+      let isAuthorized;
       if (adminError) {
         console.warn("Control Center admin verification failed; server-side write guards remain authoritative.", adminError);
-        setAuthorized(true);
+        isAuthorized = true;
       } else {
-        setAuthorized(Boolean(data?.user_id));
+        isAuthorized = Boolean(data?.user_id);
       }
+
+      activeUserIdRef.current = nextUserId;
+      authorizedRef.current = isAuthorized;
+      setAuthorized(isAuthorized);
       setLoading(false);
     };
 
-    supabase.auth.getSession().then(({ data }) => resolveSession(data.session || null));
+    supabase.auth.getSession().then(({ data }) => resolveSession(data.session || null, { forceCheck: true }));
+
     const { data: subscription } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      setLoading(true);
+      // Defer any Supabase query out of the auth callback. resolveSession itself
+      // decides whether this is a silent same-user refresh or a real auth change.
       window.setTimeout(() => resolveSession(nextSession || null), 0);
     });
-    return () => { mounted = false; subscription.subscription.unsubscribe(); };
+
+    return () => {
+      mounted = false;
+      subscription.subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async (event) => {
