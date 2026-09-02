@@ -3,7 +3,7 @@ import path from "node:path";
 import { noteExists, normalizeNotePayload, resolveLiveNote, stableJson, upsertLibraryNote } from "../api/note-apply-engine.mjs";
 
 const root = process.cwd();
-const sourcePath = path.join(root, "src/TheNoteMap.jsx");
+const sourcePath = path.join(root, "playnice-site/src/TheNoteMap.jsx");
 const source = fs.readFileSync(sourcePath, "utf8");
 const api = fs.readFileSync(path.join(root, "control-center/api/create-note-apply.js"), "utf8");
 const manager = fs.readFileSync(path.join(root, "control-center/src/NoteApplyManager.jsx"), "utf8");
@@ -26,7 +26,7 @@ const inserted = upsertLibraryNote(source, { key: testKey, srLabel: "Test nota",
 if (!noteExists(inserted.source, testKey)) throw new Error("New NOTE_LIBRARY insertion failed.");
 if (stableJson(normalizeNotePayload({ key: testKey, srLabel: "Test nota", enLabel: "Control Center Note Test" })) !== stableJson(resolveLiveNote(inserted.source, testKey).payload)) throw new Error("Inserted note payload does not round-trip.");
 
-for (const token of ["approved_payload", "source_sha", "LIVE DRIFT", "public/note-map", "draft: true", "apply_branch", "apply_pr_number"]) {
+for (const token of ["approved_payload", "source_sha", "LIVE DRIFT", "playnice-site/public/note-map", "draft: true", "apply_branch", "apply_pr_number"]) {
   if (!api.includes(token)) throw new Error(`Notes apply API contract missing: ${token}`);
 }
 for (const token of ["NOTES CONTROLLED APPLY", "/api/create-note-apply", "Prepare apply", "Create draft PR", "NO LIVE CHANGES", "postgres_changes"]) {
