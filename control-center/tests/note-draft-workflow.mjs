@@ -4,7 +4,7 @@ import { auditNoteDraftPayload, getNoteDraftState, normalizeNoteDraftPayload } f
 
 const root = process.cwd();
 const manager = fs.readFileSync(path.join(root, "control-center/src/NotesManager.jsx"), "utf8");
-const source = fs.readFileSync(path.join(root, "src/TheNoteMap.jsx"), "utf8");
+const source = fs.readFileSync(path.join(root, "playnice-site/src/TheNoteMap.jsx"), "utf8");
 
 const valid = auditNoteDraftPayload({ key: "pink-grapefruit", srLabel: "Ružičasti grejpfrut", enLabel: "Pink Grapefruit", assetPath: "/note-map/pink-grapefruit.webp" }, ["bergamot"]);
 if (valid.errors.length) throw new Error("Valid note draft payload failed validation.");
