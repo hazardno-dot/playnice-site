@@ -23,10 +23,10 @@ vm.runInContext(`${prefix}\nglobalThis.__helpers = {\n  normalizeCsv, normalizeS
 const h = context.__helpers;
 
 const files = {
-  index: fs.readFileSync(path.join(repoRoot, "src/data/products/index.js"), "utf8"),
-  copy: fs.readFileSync(path.join(repoRoot, "src/data/products/productCopy.js"), "utf8"),
-  wear: fs.readFileSync(path.join(repoRoot, "src/data/products/productWearContext.js"), "utf8"),
-  discovery: fs.readFileSync(path.join(repoRoot, "src/data/products/discoveryProfiles.js"), "utf8"),
+  index: fs.readFileSync(path.join(repoRoot, "playnice-site/src/data/products/index.js"), "utf8"),
+  copy: fs.readFileSync(path.join(repoRoot, "playnice-site/src/data/products/productCopy.js"), "utf8"),
+  wear: fs.readFileSync(path.join(repoRoot, "playnice-site/src/data/products/productWearContext.js"), "utf8"),
+  discovery: fs.readFileSync(path.join(repoRoot, "playnice-site/src/data/products/discoveryProfiles.js"), "utf8"),
 };
 
 const tests = [];
@@ -275,7 +275,7 @@ check("discovery live-drift guard blocks stale baseline", () => {
 
 check("all four target source files remain byte-identical on disk", () => {
   for (const [key, content] of Object.entries(files)) {
-    const disk = fs.readFileSync({ index: path.join(repoRoot, "src/data/products/index.js"), copy: path.join(repoRoot, "src/data/products/productCopy.js"), wear: path.join(repoRoot, "src/data/products/productWearContext.js"), discovery: path.join(repoRoot, "src/data/products/discoveryProfiles.js") }[key], "utf8");
+    const disk = fs.readFileSync({ index: path.join(repoRoot, "playnice-site/src/data/products/index.js"), copy: path.join(repoRoot, "playnice-site/src/data/products/productCopy.js"), wear: path.join(repoRoot, "playnice-site/src/data/products/productWearContext.js"), discovery: path.join(repoRoot, "playnice-site/src/data/products/discoveryProfiles.js") }[key], "utf8");
     assert(disk === content, `${key} source was mutated by the suite.`);
   }
 });
