@@ -252,7 +252,8 @@ module.exports = async function handler(req, res) {
     } else {
       if (!generatedFile) return json(res, 409, { error: "Hero runtime source is neither hardcoded nor generated; manual review required." });
       const generatedSource = Buffer.from(generatedFile.content, "base64").toString("utf8");
-      if (stable(parseGeneratedConfig(generatedSource)) !== stable(baselineRuntime)) return json(res, 409, { error: "LIVE DRIFT: generated Hero config does not match the verified Supabase baseline." });
+      const generatedRuntime = parseGeneratedConfig(generatedSource).map(runtimeObject);
+      if (stable(generatedRuntime) !== stable(baselineRuntime)) return json(res, 409, { error: "LIVE DRIFT: generated Hero config does not match the verified Supabase baseline." });
     }
 
     const approvedSlide = normalizeApproved(draft.approved_payload, baseline);
