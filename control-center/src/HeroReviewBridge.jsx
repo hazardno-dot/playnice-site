@@ -7,8 +7,19 @@ import { mergeHeroDrafts } from "./heroDraft.mjs";
 import "./hero-review.css";
 
 const productSlugs = products.map((product) => product.slug);
-
 const statusLabel = (status) => status === "approved" ? "APPROVED" : status === "ready" ? "READY FOR REVIEW" : "DRAFT";
+
+function ensureWorkflowSlot(detail) {
+  let workflowSlot = detail.querySelector("#hero-workflow-slot");
+  if (!workflowSlot) {
+    workflowSlot = document.createElement("div");
+    workflowSlot.id = "hero-workflow-slot";
+    const footer = detail.querySelector(".hero-draft-footer");
+    if (footer) detail.insertBefore(workflowSlot, footer);
+    else detail.appendChild(workflowSlot);
+  }
+  return workflowSlot;
+}
 
 export default function HeroReviewBridge() {
   const [slot, setSlot] = useState(null);
@@ -47,15 +58,18 @@ export default function HeroReviewBridge() {
           return;
         }
 
-        const idMatch = active.textContent?.match(/#(\d+)/);
-        const id = Number(idMatch?.[1]);
-        if (!id) return;
+        const id = Number(active.textContent?.match(/#(\d+)/)?.[1]);
+        if (!id) {
+          setHeroKey("");
+          return;
+        }
 
-        let reviewSlot = detail.querySelector("#hero-review-slot");
+        const workflowSlot = ensureWorkflowSlot(detail);
+        let reviewSlot = workflowSlot.querySelector("#hero-review-slot");
         if (!reviewSlot) {
           reviewSlot = document.createElement("div");
           reviewSlot.id = "hero-review-slot";
-          detail.appendChild(reviewSlot);
+          workflowSlot.insertBefore(reviewSlot, workflowSlot.firstChild);
         }
         setSlot(reviewSlot);
 
@@ -146,6 +160,5 @@ export default function HeroReviewBridge() {
       {approvedLocked ? <button disabled={working} onClick={() => setReviewStatus("draft")}>Return to draft</button> : null}
     </div>
     {status === "approved" && row.reviewed_at ? <div className="hero-review-meta">Approved {new Date(row.reviewed_at).toLocaleString()} · approved snapshot stored in Supabase</div> : null}
-    <div id="hero-apply-anchor" />
   </section>, slot);
 }
