@@ -7,6 +7,7 @@ import { mergeHeroDrafts } from "./heroDraft.mjs";
 import "./hero-review.css";
 
 const productSlugs = products.map((product) => product.slug);
+const HERO_WORKFLOW_UPDATED_EVENT = "playnice:hero-workflow-updated";
 
 const statusLabel = (status) => status === "approved" ? "APPROVED" : status === "ready" ? "READY FOR REVIEW" : "DRAFT";
 
@@ -126,6 +127,7 @@ export default function HeroReviewBridge() {
         .single();
       if (updateError) throw updateError;
       setRow(data);
+      window.dispatchEvent(new CustomEvent(HERO_WORKFLOW_UPDATED_EVENT, { detail: { heroKey, reviewStatus: data.review_status } }));
     } catch (reviewError) {
       setError(reviewError.message || String(reviewError));
     } finally {
