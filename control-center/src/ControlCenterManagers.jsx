@@ -19,6 +19,8 @@ import HeroReviewBridge from "./HeroReviewBridge";
 import HeroApplyBridge from "./HeroApplyBridge";
 import "./header-layout.css";
 
+const ACTIVE_MODULE_KEY = "playnice_cc_active_module";
+
 export default function ControlCenterManagers() {
   const [slots, setSlots] = useState({ draft: null, apply: null });
 
@@ -46,6 +48,45 @@ export default function ControlCenterManagers() {
     }
 
     setSlots({ draft: draftSlot, apply: applySlot });
+  }, []);
+
+  useEffect(() => {
+    const nav = document.querySelector(".sidebar nav");
+    if (!nav) return;
+
+    const rememberModule = (event) => {
+      const button = event.target.closest("button");
+      if (!button || !nav.contains(button)) return;
+      const moduleName = button.textContent?.trim();
+      if (moduleName) window.sessionStorage.setItem(ACTIVE_MODULE_KEY, moduleName);
+    };
+    nav.addEventListener("click", rememberModule);
+
+    const persisted = window.sessionStorage.getItem(ACTIVE_MODULE_KEY);
+    let restoreObserver = null;
+    let restoreRaf = 0;
+    if (persisted === "Hero") {
+      const restoreHero = () => {
+        cancelAnimationFrame(restoreRaf);
+        restoreRaf = requestAnimationFrame(() => {
+          const heroButton = nav.querySelector("[data-hero-manager-nav='true']");
+          if (!heroButton) return;
+          restoreObserver?.disconnect();
+          heroButton.click();
+        });
+      };
+      restoreHero();
+      if (!nav.querySelector("[data-hero-manager-nav='true']")) {
+        restoreObserver = new MutationObserver(restoreHero);
+        restoreObserver.observe(nav, { childList: true, subtree: true });
+      }
+    }
+
+    return () => {
+      nav.removeEventListener("click", rememberModule);
+      cancelAnimationFrame(restoreRaf);
+      restoreObserver?.disconnect();
+    };
   }, []);
 
   return <>
