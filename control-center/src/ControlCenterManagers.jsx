@@ -17,12 +17,7 @@ import BrowserQaOverviewBridge from "./BrowserQaOverviewBridge";
 import HeroManager from "./HeroManager";
 import HeroReviewBridge from "./HeroReviewBridge";
 import HeroApplyBridge from "./HeroApplyBridge";
-import { supabase } from "./supabase";
 import "./header-layout.css";
-
-const getCloudDraftCard = () => [...document.querySelectorAll(".overview-card")].find((card) =>
-  card.querySelector("span")?.textContent?.trim().toLowerCase() === "cloud drafts"
-);
 
 export default function ControlCenterManagers() {
   const [slots, setSlots] = useState({ draft: null, apply: null });
@@ -30,16 +25,9 @@ export default function ControlCenterManagers() {
   useEffect(() => {
     const topbar = document.querySelector(".main-stage .topbar");
     const mainStage = document.querySelector(".main-stage");
-    const noPublish = topbar?.querySelector(".read-only-badge");
-    if (!topbar || !mainStage || !noPublish) return;
-
-    let actions = topbar.querySelector(".topbar-actions");
-    if (!actions) {
-      actions = document.createElement("div");
-      actions.className = "topbar-actions";
-      topbar.appendChild(actions);
-      actions.appendChild(noPublish);
-    }
+    const actions = topbar?.querySelector(".topbar-actions");
+    const noPublish = actions?.querySelector(".read-only-badge") || topbar?.querySelector(".read-only-badge");
+    if (!topbar || !mainStage || !actions || !noPublish) return;
 
     let draftSlot = actions.querySelector("#draft-manager-trigger-slot");
     if (!draftSlot) {
@@ -58,76 +46,6 @@ export default function ControlCenterManagers() {
     }
 
     setSlots({ draft: draftSlot, apply: applySlot });
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-    let authoritativeCount = null;
-    const mainStage = document.querySelector(".main-stage");
-    if (!mainStage) return;
-
-    const openDraftManager = () => {
-      document.querySelector(".draft-manager-trigger")?.click();
-    };
-
-    const decorateCloudDraftCard = () => {
-      const card = getCloudDraftCard();
-      if (!card) return;
-
-      card.setAttribute("role", "button");
-      card.setAttribute("tabindex", "0");
-      card.setAttribute("title", "Open Draft management");
-      card.style.cursor = "pointer";
-      card.style.transition = "border-color .18s ease, background .18s ease, transform .18s ease";
-
-      card.onclick = openDraftManager;
-      card.onkeydown = (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          openDraftManager();
-        }
-      };
-
-      if (authoritativeCount == null) return;
-      const value = card.querySelector("strong");
-      const detail = card.querySelector("small");
-      const text = String(authoritativeCount);
-      if (value && value.textContent !== text) value.textContent = text;
-      const detailText = authoritativeCount ? "persistent unpublished drafts" : "no unpublished drafts";
-      if (detail && detail.textContent !== detailText) detail.textContent = detailText;
-      card.classList.toggle("warn", authoritativeCount > 0);
-      card.classList.toggle("good", authoritativeCount === 0);
-    };
-
-    const refreshDraftCount = async () => {
-      const { count, error } = await supabase
-        .from("product_drafts")
-        .select("product_slug", { count: "exact", head: true });
-      if (cancelled || error) return;
-      authoritativeCount = count || 0;
-      decorateCloudDraftCard();
-    };
-
-    decorateCloudDraftCard();
-    refreshDraftCount();
-
-    const observer = new MutationObserver(() => decorateCloudDraftCard());
-    observer.observe(mainStage, { childList: true, subtree: true });
-
-    const draftChannel = supabase
-      .channel("control-center-draft-count")
-      .on("postgres_changes", { event: "*", schema: "public", table: "product_drafts" }, refreshDraftCount)
-      .subscribe();
-
-    const onFocus = () => refreshDraftCount();
-    window.addEventListener("focus", onFocus);
-
-    return () => {
-      cancelled = true;
-      observer.disconnect();
-      supabase.removeChannel(draftChannel);
-      window.removeEventListener("focus", onFocus);
-    };
   }, []);
 
   return <>
