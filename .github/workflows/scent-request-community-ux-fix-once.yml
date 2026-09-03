@@ -1,0 +1,147 @@
+name: Patch community modal scroll and fallback once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/scent-request-community-ux-fix-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: scent-request-vote-guardrails
+          fetch-depth: 1
+
+      - name: Patch App.js
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('playnice-site/src/App.js')
+          text = path.read_text(encoding='utf-8')
+
+          old_scroll = '  productModalReturnScrollRef.current = window.scrollY;\n'
+          new_scroll = (
+              '  productModalReturnScrollRef.current = window.scrollY;\n'
+              '  productModalScrollYRef.current = window.scrollY || window.pageYOffset || 0;\n'
+          )
+          if new_scroll not in text:
+              if old_scroll not in text:
+                  raise SystemExit('openProductFromRequest scroll marker not found')
+              text = text.replace(old_scroll, new_scroll, 1)
+
+          pattern = re.compile(
+              r'      if \(\s*Array\.isArray\(data\.existingRequests\) &&\s*data\.existingRequests\.length > 0\s*\)\s*\{\s*setExistingCollectionRequests\(data\.existingRequests\);\s*\}',
+              re.MULTILINE,
+          )
+          replacement = '''      if (
+        Array.isArray(data.existingRequests) &&
+        data.existingRequests.length > 0
+      ) {
+        setExistingCollectionRequests(data.existingRequests);
+
+        try {
+          localStorage.setItem(
+            "playnice_existing_collection_requests_v1",
+            JSON.stringify(data.existingRequests)
+          );
+        } catch {}
+      } else {
+        try {
+          const cachedExistingRequests = JSON.parse(
+            localStorage.getItem("playnice_existing_collection_requests_v1") || "[]"
+          );
+
+          if (Array.isArray(cachedExistingRequests) && cachedExistingRequests.length > 0) {
+            setExistingCollectionRequests(cachedExistingRequests);
+          } else {
+            setExistingCollectionRequests(
+              Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).map(([name, votes]) => ({
+                name,
+                votes,
+                lockedVotes: votes,
+              }))
+            );
+          }
+        } catch {
+          setExistingCollectionRequests(
+            Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).map(([name, votes]) => ({
+              name,
+              votes,
+              lockedVotes: votes,
+            }))
+          );
+        }
+      }'''
+
+          if 'playnice_existing_collection_requests_v1' not in text:
+              text, count = pattern.subn(replacement, text, count=1)
+              if count != 1:
+                  raise SystemExit(f'existingRequests block replace count={count}')
+
+          catch_old = '    } catch (error) {\n      console.error("Failed to load scent requests:", error);\n    }\n'
+          catch_new = '''    } catch (error) {
+      console.error("Failed to load scent requests:", error);
+
+      try {
+        const cachedExistingRequests = JSON.parse(
+          localStorage.getItem("playnice_existing_collection_requests_v1") || "[]"
+        );
+
+        setExistingCollectionRequests(
+          Array.isArray(cachedExistingRequests) && cachedExistingRequests.length > 0
+            ? cachedExistingRequests
+            : Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).map(([name, votes]) => ({
+                name,
+                votes,
+                lockedVotes: votes,
+              }))
+        );
+      } catch {
+        setExistingCollectionRequests(
+          Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).map(([name, votes]) => ({
+            name,
+            votes,
+            lockedVotes: votes,
+          }))
+        );
+      }
+    }
+'''
+          if 'cachedExistingRequests' in text and catch_new not in text:
+              if catch_old not in text:
+                  raise SystemExit('loadScentRequests catch marker not found')
+              text = text.replace(catch_old, catch_new, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Install and test
+        working-directory: playnice-site
+        run: |
+          npm install --package-lock=false
+          npm test -- --watchAll=false
+
+      - name: Production build
+        working-directory: playnice-site
+        env:
+          DISABLE_ESLINT_PLUGIN: 'true'
+        run: npx react-scripts build
+
+      - name: Commit patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add playnice-site/src/App.js
+          if git diff --cached --quiet; then
+            echo 'No App.js changes to commit.'
+            exit 0
+          fi
+          git commit -m 'fix: preserve community scroll and existing collection'
+          git push origin HEAD:scent-request-vote-guardrails
