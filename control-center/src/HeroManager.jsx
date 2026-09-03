@@ -6,6 +6,7 @@ import { HERO_SNAPSHOT } from "./heroSnapshot.mjs";
 import { auditHeroSlides, heroRowToSlide } from "./heroAudit.mjs";
 import { cloneHeroSlide, mergeHeroDrafts, normalizeHeroDraftPayload } from "./heroDraft.mjs";
 import "./hero-manager.css";
+import "./hero-collection-picker.css";
 
 const SHOP_ORIGIN = "https://www.playniceshop.me";
 const productSlugs = products.map((product) => product.slug);
@@ -27,6 +28,46 @@ function getSummary(slides) {
     collection: slides.filter((slide) => slide.actionPrimary === "collection").length,
     manifesto: slides.filter((slide) => slide.actionPrimary === "manifesto").length
   };
+}
+
+function CollectionPicker({ value = [], onChange }) {
+  const [search, setSearch] = useState("");
+  const selected = products.filter((product) => value.includes(product.slug));
+  const query = search.trim().toLocaleLowerCase();
+  const filtered = query
+    ? products.filter((product) => `${product.name} ${product.shortName || ""} ${product.slug}`.toLocaleLowerCase().includes(query))
+    : products;
+
+  const toggle = (slug) => {
+    onChange(value.includes(slug) ? value.filter((item) => item !== slug) : [...value, slug]);
+  };
+
+  return <div className="hero-collection-field wide">
+    <div className="hero-collection-selected-head">
+      <span>Products</span>
+      <strong>{value.length} selected</strong>
+    </div>
+    {selected.length ? <div className="hero-collection-selected">{selected.map((product) => <button type="button" key={product.slug} onClick={() => toggle(product.slug)} title="Remove from collection"><span>{product.name}</span><b>×</b></button>)}</div> : <div className="hero-collection-empty">No products selected yet.</div>}
+    <details className="hero-collection-picker">
+      <summary><span>Choose products</span><strong>{value.length ? `${value.length} selected` : "Open picker"}</strong></summary>
+      <div className="hero-collection-picker-body">
+        <div className="hero-collection-search-row">
+          <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search by perfume, brand or slug…" autoComplete="off" />
+          {value.length ? <button type="button" onClick={() => onChange([])}>Clear all</button> : null}
+        </div>
+        <div className="hero-collection-results-head"><span>{filtered.length} results</span><small>Click a perfume to add or remove it.</small></div>
+        <div className="hero-collection-results">{filtered.map((product) => {
+          const checked = value.includes(product.slug);
+          return <button type="button" key={product.slug} className={checked ? "selected" : ""} onClick={() => toggle(product.slug)} aria-pressed={checked}>
+            <span className="hero-collection-check">{checked ? "✓" : "+"}</span>
+            <span className="hero-collection-product-copy"><strong>{product.name}</strong><small>{product.slug}</small></span>
+            {checked ? <b>SELECTED</b> : null}
+          </button>;
+        })}</div>
+        {!filtered.length ? <div className="hero-collection-no-results">No perfumes match “{search}”.</div> : null}
+      </div>
+    </details>
+  </div>;
 }
 
 function HeroEditor({ baseline, initial, allSlides, onCancel, onSave, saving }) {
@@ -65,7 +106,7 @@ function HeroEditor({ baseline, initial, allSlides, onCancel, onSave, saving }) 
 
       {draft.actionPrimary === "collection" ? <>
         <label className="wide"><span>Collection title</span><input value={draft.collectionTitle || ""} onChange={(event) => set("collectionTitle", event.target.value)} /></label>
-        <label className="wide"><span>Products · Ctrl/Cmd + click for multiple</span><select multiple size="10" value={draft.actionCollection || []} onChange={(event) => set("actionCollection", [...event.target.selectedOptions].map((option) => option.value))}>{products.map((product) => <option key={product.slug} value={product.slug}>{product.name}</option>)}</select></label>
+        <CollectionPicker value={draft.actionCollection || []} onChange={(next) => set("actionCollection", next)} />
       </> : null}
 
       {draft.actionPrimary === "manifesto" ? <label className="wide"><span>Manifesto</span><select value={draft.manifestoType || ""} onChange={(event) => set("manifestoType", event.target.value)}><option value="">Select manifesto…</option>{MANIFESTOS.map((type) => <option key={type} value={type}>{type}</option>)}</select></label> : null}
