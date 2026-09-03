@@ -24,7 +24,7 @@ jobs:
         run: |
           git diff --ignore-space-at-eol origin/main scent-request-vote-guardrails -- playnice-site/src/App.js > /tmp/scent-request.patch
           git checkout origin/main -- playnice-site/src/App.js
-          git apply --whitespace=nowarn /tmp/scent-request.patch
+          git apply --ignore-space-change --ignore-whitespace --whitespace=nowarn /tmp/scent-request.patch
 
       - name: Install dependencies
         working-directory: playnice-site
