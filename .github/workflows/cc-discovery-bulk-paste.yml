@@ -1,0 +1,103 @@
+name: CC Discovery Bulk Paste Patch
+
+on:
+  push:
+    branches:
+      - cc-product-editor-ux-patch
+    paths:
+      - ".github/workflows/cc-discovery-bulk-paste.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: cc-product-editor-ux-patch
+
+      - name: Patch Discovery bulk paste UX
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          app = Path('control-center/src/App.jsx')
+          text = app.read_text()
+
+          old = '  const [sizeError,setSizeError]=useState("");\n'
+          new = old + '  const [discoveryBulk,setDiscoveryBulk]=useState("");\n  const [discoveryBulkMessage,setDiscoveryBulkMessage]=useState("");\n'
+          if old not in text:
+              raise SystemExit('state anchor not found')
+          text = text.replace(old, new, 1)
+
+          old = '  const setCopy=(key,val)=>setDraft((d)=>({...d,copy:{...d.copy,[key]:val}}));\n  const save=async()=>{setSaving(true);try{await onSave({...draft,savedAt:new Date().toISOString()});}finally{setSaving(false)}};\n'
+          new = '''  const setCopy=(key,val)=>setDraft((d)=>({...d,copy:{...d.copy,[key]:val}}));
+  const applyDiscoveryBulk=()=>{
+    const allowed=new Set(Object.keys(draft.discovery||{}));
+    const next={...(draft.discovery||{})};
+    const unknown=[];const invalid=[];let applied=0;
+    const put=(rawKey,rawValue)=>{
+      const key=String(rawKey||"").trim().toLowerCase().replace(/[\\s-]+/g,"_");
+      if(!key)return;
+      if(!allowed.has(key)){unknown.push(key);return;}
+      const value=Number(rawValue);
+      if(!Number.isFinite(value)||value<0||value>10){invalid.push(key);return;}
+      next[key]=value;applied+=1;
+    };
+    const source=discoveryBulk.trim();
+    if(!source){setDiscoveryBulkMessage("Paste Discovery values first.");return;}
+    try{
+      if(source.startsWith("{")){
+        const parsed=JSON.parse(source);
+        Object.entries(parsed).forEach(([key,value])=>put(key,value));
+      }else{
+        source.split(/\\r?\\n/).forEach((line)=>{
+          const clean=line.trim();if(!clean)return;
+          const match=clean.match(/^([^:=]+)\\s*[:=]\\s*(-?\\d+(?:\\.\\d+)?)\\s*,?$/);
+          if(!match){invalid.push(clean);return;}
+          put(match[1],match[2]);
+        });
+      }
+    }catch{setDiscoveryBulkMessage("Could not parse this block. Use key: value lines or a JSON object.");return;}
+    if(!applied){setDiscoveryBulkMessage(`Nothing applied${unknown.length?` · unknown: ${unknown.join(", ")}`:""}${invalid.length?` · invalid: ${invalid.join(", ")}`:""}.`);return;}
+    setDraft((d)=>({...d,discovery:next}));
+    setDiscoveryBulkMessage(`${applied} values applied${unknown.length?` · ${unknown.length} unknown`:""}${invalid.length?` · ${invalid.length} invalid`:""}. Review below, then Save Draft.`);
+  };
+  const save=async()=>{setSaving(true);try{await onSave({...draft,savedAt:new Date().toISOString()});}finally{setSaving(false)}};
+'''
+          if old not in text:
+              raise SystemExit('function anchor not found')
+          text = text.replace(old, new, 1)
+
+          old = '    <section className="edit-section"><div className="section-heading"><span>DISCOVERY INTELLIGENCE</span><h3>Scent profile</h3></div><div className="discovery-edit-grid">{Object.entries(draft.discovery||{}).map(([k,v])=><Field key={k} label={titleCase(k)} type="number" step="0.1" value={v} onChange={(x)=>setDraft((d)=>({...d,discovery:{...d.discovery,[k]:x}}))}/>)}</div></section>\n'
+          new = '''    <section className="edit-section"><div className="section-heading"><span>DISCOVERY INTELLIGENCE</span><h3>Scent profile</h3></div><div className="discovery-bulk"><div className="discovery-bulk-head"><div><strong>Bulk paste</strong><span>Paste all Discovery values at once · key: value or JSON</span></div><button type="button" className="secondary-btn" onClick={applyDiscoveryBulk}>Apply values</button></div><textarea value={discoveryBulk} onChange={(e)=>{setDiscoveryBulk(e.target.value);setDiscoveryBulkMessage("");}} placeholder={"date: 5.0\\ncasual: 9.3\\ncitrus: 9.3\\noffice: 9.0\\n..."}/>{discoveryBulkMessage?<div className="discovery-bulk-message">{discoveryBulkMessage}</div>:null}</div><div className="discovery-edit-grid">{Object.entries(draft.discovery||{}).map(([k,v])=><Field key={k} label={titleCase(k)} type="number" step="0.1" value={v} onChange={(x)=>setDraft((d)=>({...d,discovery:{...d.discovery,[k]:x}}))}/>)}</div></section>
+'''
+          if old not in text:
+              raise SystemExit('discovery section anchor not found')
+          text = text.replace(old, new, 1)
+          app.write_text(text)
+
+          css = Path('control-center/src/editor.css')
+          c = css.read_text().rstrip('\n')
+          addon = '.discovery-bulk{display:grid;gap:10px;margin-bottom:16px;padding:14px;border:1px solid rgba(73,185,129,.16);border-radius:12px;background:rgba(73,185,129,.025)}.discovery-bulk-head{display:flex;align-items:center;justify-content:space-between;gap:16px}.discovery-bulk-head>div{display:grid;gap:3px}.discovery-bulk-head strong{font-size:12px;color:#dce8e0}.discovery-bulk-head span{font-size:10px;color:#738078}.discovery-bulk textarea{width:100%;min-height:150px;resize:vertical;border:1px solid rgba(255,255,255,.09);background:#09100c;color:#f4f3ed;border-radius:9px;padding:11px 12px;outline:none;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}.discovery-bulk textarea:focus{border-color:rgba(73,185,129,.55);box-shadow:0 0 0 3px rgba(73,185,129,.07)}.discovery-bulk-message{font-size:10px;color:#aeb8b2}.discovery-bulk-message:not(:empty){padding-top:1px}@media(max-width:720px){.discovery-bulk-head{align-items:flex-start;flex-direction:column}.discovery-bulk-head button{width:100%}}'
+          if '.discovery-bulk{' not in c:
+              c += addon
+          css.write_text(c+'\n')
+          PY
+
+      - name: Build Control Center
+        run: |
+          cd control-center
+          npm ci
+          npm run build
+
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add control-center/src/App.jsx control-center/src/editor.css
+          git commit -m "feat: add Discovery bulk paste" || exit 0
+          git push origin HEAD:cc-product-editor-ux-patch
