@@ -2,14 +2,26 @@ import { products } from "@shop/data/products/index.js";
 import { productCopy } from "@shop/data/products/productCopy.js";
 import { productWearContext } from "@shop/data/products/productWearContext.js";
 import discoveryProfiles from "@shop/data/products/discoveryProfiles.js";
+import noteMapSource from "@shop/TheNoteMap.jsx?raw";
 
 const csv = (value) => String(value ?? "").split(",").map((v) => v.trim()).filter(Boolean);
 const empty = (value) => value == null || String(value).trim() === "";
 const finite = (value) => Number.isFinite(Number(value));
 
-const KNOWN_NOTE_KEYS = new Set(
-  products.flatMap((product) => ["top", "heart", "base"].flatMap((level) => product.noteMap?.[level] || []))
-);
+function noteLibraryKeys(source) {
+  const start = source.indexOf("const NOTE_LIBRARY = {");
+  const end = source.indexOf("const NOTE_SR = {", start);
+  if (start < 0 || end < 0) return [];
+  const section = source.slice(start, end);
+  return [...section.matchAll(/^  (?:(?:"([^"]+)")|(?:'([^']+)')|([A-Za-z0-9_-]+))\s*:\s*\{/gm)]
+    .map((match) => match[1] || match[2] || match[3])
+    .filter(Boolean);
+}
+
+const KNOWN_NOTE_KEYS = new Set([
+  ...products.flatMap((product) => ["top", "heart", "base"].flatMap((level) => product.noteMap?.[level] || [])),
+  ...noteLibraryKeys(noteMapSource),
+]);
 const PRODUCT_SLUGS = new Set(products.map((product) => product.slug));
 const DISCOVERY_KEYS = Object.keys(discoveryProfiles[products[0]?.slug] || {});
 
