@@ -1,4 +1,120 @@
-import { noteExists, normalizeNotePayload, resolveLiveNote, stableJson, upsertLibraryNote } from "./note-apply-engine.mjs";
+const escapeRegex = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const stableJson = (value) => {
+  const normalize = (item) => {
+    if (Array.isArray(item)) return item.map(normalize);
+    if (item && typeof item === "object") return Object.keys(item).sort().reduce((out, key) => {
+      if (typeof item[key] !== "undefined") out[key] = normalize(item[key]);
+      return out;
+    }, {});
+    return item;
+  };
+  return JSON.stringify(normalize(value ?? null));
+};
+
+const formatNoteKey = (value) => String(value || "")
+  .split("-")
+  .filter(Boolean)
+  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(" ");
+
+const normalizeNotePayload = (value = {}) => {
+  const key = String(value.key || value.note_key || "").trim().toLowerCase();
+  return {
+    key,
+    srLabel: String(value.srLabel || value.sr || "").trim(),
+    enLabel: String(value.enLabel || value.en || formatNoteKey(key)).trim(),
+    assetPath: String(value.assetPath || (key ? `/note-map/${key}.webp` : "")).trim(),
+  };
+};
+
+const extractSection = (source, startMarker, endMarker) => {
+  const start = source.indexOf(startMarker);
+  if (start < 0) throw new Error(`Could not locate ${startMarker}.`);
+  const end = source.indexOf(endMarker, start + startMarker.length);
+  if (end < 0) throw new Error(`Could not locate ${endMarker}.`);
+  return { start, end, text: source.slice(start, end) };
+};
+
+const unescapeValue = (value) => String(value || "")
+  .replace(/\\"/g, '"')
+  .replace(/\\n/g, "\n")
+  .replace(/\\'/g, "'")
+  .replace(/\\\\/g, "\\");
+
+function findLibraryEntry(source, key) {
+  const section = extractSection(source, "const NOTE_LIBRARY = {", "const NOTE_SR = {");
+  const escaped = escapeRegex(key);
+  const pattern = new RegExp(`(?:^|\\n)(\\s*)(?:${escaped}|[\"']${escaped}[\"'])\\s*:\\s*\\{([\\s\\S]*?)\\n\\1\\},?`, "m");
+  const match = pattern.exec(section.text);
+  if (!match) return null;
+  const relativeStart = match.index + (match[0].startsWith("\n") ? 1 : 0);
+  const block = match[0].startsWith("\n") ? match[0].slice(1) : match[0];
+  return { start: section.start + relativeStart, end: section.start + relativeStart + block.length, block, body: match[2] };
+}
+
+function findSrEntry(source, key) {
+  const section = extractSection(source, "const NOTE_SR = {", "const NOTE_LEVELS = [");
+  const escaped = escapeRegex(key);
+  const pattern = new RegExp(`(?:^|\\n)(\\s*)(?:${escaped}|[\"']${escaped}[\"'])\\s*:\\s*\"((?:\\\\.|[^\"])*)\"\\s*,?`, "m");
+  const match = pattern.exec(section.text);
+  if (!match) return null;
+  const relativeStart = match.index + (match[0].startsWith("\n") ? 1 : 0);
+  const block = match[0].startsWith("\n") ? match[0].slice(1) : match[0];
+  return { start: section.start + relativeStart, end: section.start + relativeStart + block.length, block, value: unescapeValue(match[2]) };
+}
+
+function resolveLiveNote(source, key) {
+  const library = findLibraryEntry(source, key);
+  if (library) {
+    const sr = library.body.match(/\bsr\s*:\s*"((?:\\.|[^"])*)"/);
+    const en = library.body.match(/\ben\s*:\s*"((?:\\.|[^"])*)"/);
+    const image = library.body.match(/\bimage\s*:\s*"((?:\\.|[^"])*)"/);
+    const fallback = library.body.match(/\bfallback\s*:\s*"((?:\\.|[^"])*)"/);
+    return {
+      payload: normalizeNotePayload({ key, srLabel: sr ? unescapeValue(sr[1]) : "", enLabel: en ? unescapeValue(en[1]) : formatNoteKey(key), assetPath: image ? unescapeValue(image[1]) : `/note-map/${key}.webp` }),
+      fallback: fallback ? unescapeValue(fallback[1]) : "•",
+      block: library.block,
+    };
+  }
+  const sr = findSrEntry(source, key);
+  if (!sr) return null;
+  return { payload: normalizeNotePayload({ key, srLabel: sr.value, enLabel: formatNoteKey(key), assetPath: `/note-map/${key}.webp` }), fallback: "•", block: sr.block };
+}
+
+function noteExists(source, key) {
+  return Boolean(findLibraryEntry(source, key) || findSrEntry(source, key));
+}
+
+function renderLibraryEntry(payload, fallback = "•") {
+  const value = normalizeNotePayload(payload);
+  return [
+    `  ${JSON.stringify(value.key)}: {`,
+    `    sr: ${JSON.stringify(value.srLabel)},`,
+    `    en: ${JSON.stringify(value.enLabel)},`,
+    `    image: ${JSON.stringify(value.assetPath)},`,
+    `    fallback: ${JSON.stringify(fallback || "•")},`,
+    "  },",
+  ].join("\n");
+}
+
+function upsertLibraryNote(source, payload) {
+  const value = normalizeNotePayload(payload);
+  const existing = findLibraryEntry(source, value.key);
+  const live = resolveLiveNote(source, value.key);
+  const rendered = renderLibraryEntry(value, live?.fallback || "•");
+  if (existing) {
+    return { source: source.slice(0, existing.start) + rendered + source.slice(existing.end) };
+  }
+  const marker = "const NOTE_SR = {";
+  const sectionEnd = source.indexOf(marker);
+  if (sectionEnd < 0) throw new Error("Could not locate NOTE_LIBRARY boundary.");
+  const close = source.lastIndexOf("};", sectionEnd);
+  if (close < 0) throw new Error("Could not locate NOTE_LIBRARY closing brace.");
+  const prefix = source.slice(0, close).replace(/\s*$/, "");
+  const suffix = source.slice(close);
+  return { source: `${prefix}\n${rendered}\n${suffix}` };
+}
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -66,7 +182,7 @@ async function loadDraft(noteKey, token) {
   return draft || null;
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
   if (!SUPABASE_URL || !SUPABASE_KEY) return json(res, 500, { error: "Supabase server configuration is missing." });
   if (!GITHUB_TOKEN) return json(res, 500, { error: "GITHUB_TOKEN is not configured on the Control Center project." });
@@ -156,8 +272,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id }),
     });
     if (!update.ok) throw new Error("Notes PR was created, but its draft metadata could not be persisted.");
-    return json(res, 200, { ok: true, note_key: noteKey, branch, pr_number: pr.number, pr_url: pr.html_url, file: NOTE_SOURCE_PATH, version: "notes-v1" });
+    return json(res, 200, { ok: true, note_key: noteKey, branch, pr_number: pr.number, pr_url: pr.html_url, file: NOTE_SOURCE_PATH, version: "notes-v1-inline-cjs" });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Notes Controlled Apply failed." });
   }
-}
+};
