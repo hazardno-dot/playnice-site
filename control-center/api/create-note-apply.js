@@ -1,4 +1,4 @@
-import { noteExists, normalizeNotePayload, resolveLiveNote, stableJson, upsertLibraryNote } from "./note-apply-engine.js";
+import { noteExists, normalizeNotePayload, resolveLiveNote, stableJson, upsertLibraryNote } from "../lib/note-apply-engine.js";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
