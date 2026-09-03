@@ -100,7 +100,7 @@ export default function AuthGate({ children }) {
   };
 
   if (loading || (session && authorized == null)) {
-    return <div className="auth-shell"><div className="auth-card"><span>PLAYNICE / INTERNAL</span><h1>Control Center</h1><p>Checking secure admin session…</p></div></div>;
+    return <div className="auth-boot" aria-label="Checking secure admin session"><span className="auth-boot-dot" /></div>;
   }
 
   if (!session) {
