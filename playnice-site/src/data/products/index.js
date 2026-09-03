@@ -2724,4 +2724,26 @@ export const products = [
     base: ["blue-cedar", "black-ebony", "labdanum"]
   },
 },
+  {
+    id: 96,
+    addedAt: "2026-09-03T23:54:19.862Z",
+    slug: "thomas-kosmala-no-8-tonic-vert",
+    name: "Thomas Kosmala No. 8 Tonic Vert Eau de Parfum",
+    shortName: "No. 8 Tonic Vert",
+    category: "Niche",
+    image: "/products/thomas-kosmala-no-8-tonic-vert.webp",
+    sizes: {"2ml":6.5,"5ml":15,"10ml":27},
+    badge: "",
+    rating: 8.2,
+    ratingLabel: "Fresh Pick",
+    season: "summer",
+    moods: ["clean","summer","signature"],
+    recommendations: ["thomas-kosmala-no-1-tonic-blanc","essential-parfums-nice-bergamote","essential-parfums-orange-x-santal"],
+    noteMap: {
+      top: ["bergamot","lemon","mandarin","lime"],
+      heart: ["mint","geranium","pomelo"],
+      base: ["vetiver","musk","oakmoss"]
+    }
+  }
+
 ];
