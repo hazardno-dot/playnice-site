@@ -19,7 +19,7 @@ const getSelectedSlug = (root) => {
 function collectIssues(root) {
   const domFields = [...root.querySelectorAll(".edit-field")].map((label) => {
     const name = label.querySelector(":scope > span")?.textContent?.trim() || "Field";
-    const control = label.querySelector("input, textarea");
+    const control = label.querySelector("input, textarea, select");
     return { label, name, control, value: control?.value ?? "", type: control?.type || "text" };
   });
 
