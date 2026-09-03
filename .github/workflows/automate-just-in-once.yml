@@ -1,0 +1,71 @@
+name: Automate Just In once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/automate-just-in-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: automate-just-in
+          fetch-depth: 1
+
+      - name: Patch Just In logic
+        run: python .github/scripts/automate-just-in.py
+
+      - name: Verify Just In contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          products = Path('playnice-site/src/data/products/index.js').read_text(encoding='utf-8')
+          app = Path('playnice-site/src/App.js').read_text(encoding='utf-8')
+          ids = [int(x) for x in re.findall(r'\bid:\s*(\d+),\s*\n\s*addedAt:', products)]
+          assert ids == list(range(80, 96)), ids
+          assert 'isNew: true' not in products
+          assert 'const JUST_IN_LIMIT = 16;' in app
+          assert 'const newArrivalProducts = getJustInProducts(products);' in app
+          assert 'product.isNew' not in app and 'product?.isNew' not in app
+          print('PASS Just In is derived from addedAt and capped at 16')
+          print('PASS bootstrap ids are 80 through 95')
+          PY
+
+      - name: Control Center new-product contract
+        run: node control-center/tests/controlled-apply-new-product.mjs
+
+      - name: Install storefront dependencies
+        working-directory: playnice-site
+        run: npm install --package-lock=false
+
+      - name: Storefront tests
+        working-directory: playnice-site
+        run: npm test -- --watchAll=false
+
+      - name: Storefront production build
+        working-directory: playnice-site
+        env:
+          DISABLE_ESLINT_PLUGIN: 'true'
+        run: npx react-scripts build
+
+      - name: Install Control Center dependencies
+        working-directory: control-center
+        run: npm install --package-lock=false
+
+      - name: Control Center production build
+        working-directory: control-center
+        run: npm run build
+
+      - name: Commit implementation
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add playnice-site/src/App.js playnice-site/src/data/products/index.js control-center/api/create-new-product-engine.js control-center/tests/controlled-apply-new-product.mjs
+          git commit -m 'feat: automate Just In rotation'
+          git push origin HEAD:automate-just-in
