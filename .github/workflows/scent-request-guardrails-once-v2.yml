@@ -1,0 +1,280 @@
+name: Apply scent request guardrails once v2
+
+on:
+  push:
+    branches:
+      - scent-request-vote-guardrails
+    paths:
+      - .github/workflows/scent-request-guardrails-once-v2.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: scent-request-vote-guardrails
+
+      - name: Patch App.js
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+
+          path = Path("playnice-site/src/App.js")
+          raw = path.read_bytes().decode("utf-8")
+          line_ending = "\r\n" if "\r\n" in raw else "\n"
+          source = raw.replace("\r\n", "\n")
+
+          matcher_start = source.index('const normalizeScentName = (value = "") =>')
+          matcher_end = source.index('/* =========================================\n   SCENT REQUEST HELPERS', matcher_start)
+          matcher = '''const SCENT_NAME_NOISE_WORDS = new Set([
+            "eau", "de", "parfum", "perfume", "edp", "edt", "cologne",
+            "extrait", "extract", "spray",
+          ]);
+
+          const normalizeScentName = (value = "") =>
+            String(value || "")
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\\u0300-\\u036f]/g, "")
+              .replace(/&/g, " and ")
+              .replace(/[^a-z0-9]+/g, " ")
+              .split(/\\s+/)
+              .filter(Boolean)
+              .filter((token) => !SCENT_NAME_NOISE_WORDS.has(token))
+              .join(" ")
+              .trim();
+
+          const getScentNameTokens = (value = "") =>
+            normalizeScentName(value).split(" ").filter(Boolean);
+
+          const getScentTokenDistance = (left = "", right = "") => {
+            if (left === right) return 0;
+            if (!left || !right) return Math.max(left.length, right.length);
+
+            const previous = Array.from({ length: right.length + 1 }, (_, index) => index);
+
+            for (let i = 1; i <= left.length; i += 1) {
+              let diagonal = previous[0];
+              previous[0] = i;
+
+              for (let j = 1; j <= right.length; j += 1) {
+                const above = previous[j];
+                const substitutionCost = left[i - 1] === right[j - 1] ? 0 : 1;
+                previous[j] = Math.min(
+                  previous[j] + 1,
+                  previous[j - 1] + 1,
+                  diagonal + substitutionCost
+                );
+                diagonal = above;
+              }
+            }
+
+            return previous[right.length];
+          };
+
+          const scentTokensMatch = (requestToken, candidateToken) => {
+            if (requestToken === candidateToken) return true;
+            if (Math.min(requestToken.length, candidateToken.length) < 5) return false;
+            return getScentTokenDistance(requestToken, candidateToken) <= 1;
+          };
+
+          const getProductRequestNames = (product) =>
+            [
+              product.shortName,
+              product.cardName,
+              product.name,
+              product.brand && product.shortName ? `${product.brand} ${product.shortName}` : "",
+              product.slug,
+              ...(Array.isArray(product.aliases) ? product.aliases : []),
+            ]
+              .map(normalizeScentName)
+              .filter(Boolean);
+
+          const getScentRequestMatchScore = (requestName, product) => {
+            const normalizedRequest = normalizeScentName(requestName);
+            if (!normalizedRequest) return 0;
+
+            const requestTokens = getScentNameTokens(normalizedRequest);
+            const candidates = getProductRequestNames(product);
+            let bestScore = 0;
+
+            candidates.forEach((candidate) => {
+              if (candidate === normalizedRequest) {
+                bestScore = Math.max(bestScore, 100);
+                return;
+              }
+
+              if (
+                normalizedRequest.length >= 4 &&
+                (candidate.includes(normalizedRequest) || normalizedRequest.includes(candidate))
+              ) {
+                bestScore = Math.max(bestScore, 90);
+              }
+
+              const candidateTokens = getScentNameTokens(candidate);
+              const allMatch = requestTokens.length > 0 && requestTokens.every((requestToken) =>
+                candidateTokens.some((candidateToken) => scentTokensMatch(requestToken, candidateToken))
+              );
+
+              if (!allMatch) return;
+              bestScore = Math.max(
+                bestScore,
+                requestTokens.length === 1 ? 60 : 70 + Math.min(requestTokens.length, 9)
+              );
+            });
+
+            return bestScore;
+          };
+
+          const findExistingProductByRequest = (requestName) => {
+            const rankedMatches = products
+              .map((product) => ({ product, score: getScentRequestMatchScore(requestName, product) }))
+              .filter((item) => item.score > 0)
+              .sort((a, b) => b.score - a.score);
+
+            if (!rankedMatches.length) return null;
+            const [bestMatch, secondMatch] = rankedMatches;
+
+            // Do not guess when a short request matches multiple variants equally well.
+            if (secondMatch && secondMatch.score === bestMatch.score) return null;
+            return bestMatch.product;
+          };
+
+          '''
+          source = source[:matcher_start] + matcher + source[matcher_end:]
+
+          legacy_writer_start = source.index('const addExistingCollectionRequest = (product) => {')
+          legacy_writer_end = source.index('const getVisibleCommunityRequests', legacy_writer_start)
+          source = source[:legacy_writer_start] + source[legacy_writer_end:]
+
+          vote_start = source.index('const handleCommunityRequestVote = async (requestName) => {')
+          vote_end = source.index('const handleScentRequestSubmit = async (event) => {', vote_start)
+          vote = source[vote_start:vote_end]
+          existing_start = vote.index('  if (existingProduct) {')
+          request_start = vote.index('  const result = await sendScentRequest(requestName);', existing_start)
+          vote = vote[:existing_start] + '''  if (existingProduct) {
+            setScentRequestStatus(
+              lang === "sr"
+                ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+                : `Already in our collection ✦ Opening ${existingProduct.name}.`
+            );
+
+            openProductFromRequest(existingProduct);
+            return;
+          }
+
+          ''' + vote[request_start:]
+          old = '''  if (result?.status === "blocked") {
+            setScentRequestStatus(
+              getVoteCooldownMessage(requestName, result.remainingDays)
+            );
+
+            return;
+          }'''
+          new = '''  if (result?.status === "blocked") {
+            setScentRequestStatus(
+              result.blockReason === "daily_limit"
+                ? lang === "sr"
+                  ? `Iskoristio si 3 glasa u poslednja 24 sata. Novi glas možeš dodati za ${result.remainingHours || 1} h.`
+                  : `You've used 3 votes in the last 24 hours. You can vote again in ${result.remainingHours || 1}h.`
+                : getVoteCooldownMessage(requestName, result.remainingDays)
+            );
+
+            return;
+          }'''
+          if old not in vote: raise SystemExit("community blocked block not found")
+          vote = vote.replace(old, new, 1)
+          source = source[:vote_start] + vote + source[vote_end:]
+
+          submit_start = source.index('const handleScentRequestSubmit = async (event) => {')
+          submit_end = source.index('/* =========================================\n   getDiscountedPrice', submit_start)
+          submit = source[submit_start:submit_end]
+          existing_start = submit.index('    if (existingProduct) {')
+          request_start = submit.index('    const result = await sendScentRequest(fragranceName);', existing_start)
+          submit = submit[:existing_start] + '''    if (existingProduct) {
+              setScentRequestValue("");
+
+              setScentRequestStatus(
+                lang === "sr"
+                  ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+                  : `Already in our collection ✦ Opening ${existingProduct.name}.`
+              );
+
+              openProductFromRequest(existingProduct);
+              return;
+            }
+
+          ''' + submit[request_start:]
+          old = '''    if (result?.status === "blocked") {
+              setScentRequestStatus(
+                lang === "sr"
+                  ? `Već si predložio ${fragranceName}. Možeš ponovo za ${result.remainingDays} dana.`
+                  : `You already requested ${fragranceName}. You can request it again in ${result.remainingDays} days.`
+              );
+
+              return;
+            }'''
+          new = '''    if (result?.status === "blocked") {
+              setScentRequestStatus(
+                result.blockReason === "daily_limit"
+                  ? lang === "sr"
+                    ? `Iskoristio si 3 glasa u poslednja 24 sata. Novi glas možeš dodati za ${result.remainingHours || 1} h.`
+                    : `You've used 3 votes in the last 24 hours. You can vote again in ${result.remainingHours || 1}h.`
+                  : lang === "sr"
+                    ? `Već si predložio ${fragranceName}. Možeš ponovo za ${result.remainingDays} dana.`
+                    : `You already requested ${fragranceName}. You can request it again in ${result.remainingDays} days.`
+              );
+
+              return;
+            }'''
+          if old not in submit: raise SystemExit("submit blocked block not found")
+          submit = submit.replace(old, new, 1)
+          submit = submit.replace(
+            '''    const existingRequest = communityRequests.find(
+              (item) =>
+                item.name.toLowerCase() === fragranceName.toLowerCase()
+            );''',
+            '''    const normalizedFragranceName = normalizeScentName(fragranceName);
+            const existingRequest = communityRequests.find(
+              (item) => normalizeScentName(item.name) === normalizedFragranceName
+            );''',
+            1,
+          )
+          needle = 'item.name.toLowerCase() === fragranceName.toLowerCase()'
+          if needle not in submit: raise SystemExit("request dedupe update not found")
+          submit = submit.replace(needle, 'normalizeScentName(item.name) === normalizedFragranceName', 1)
+          source = source[:submit_start] + submit + source[submit_end:]
+
+          label_old = '''? "Jedan glas po parfemu na svakih 7 dana"
+              : "One vote per fragrance every 7 days"'''
+          label_new = '''? "Do 3 glasa u 24h · isti parfem ponovo nakon 3 dana"
+              : "Up to 3 votes in 24h · same fragrance again after 3 days"'''
+          if label_old not in source: raise SystemExit("community limit label not found")
+          source = source.replace(label_old, label_new, 1)
+
+          if "existing_collection_request" in source:
+            raise SystemExit("legacy existing_collection_request call still present")
+
+          path.write_bytes(source.replace("\n", line_ending).encode("utf-8"))
+          PY
+
+      - name: Build
+        working-directory: playnice-site
+        run: |
+          npm ci
+          npm run build
+
+      - name: Commit App.js changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add playnice-site/src/App.js
+          git diff --cached --quiet && exit 0
+          git commit -m "feat: tighten scent request voting"
+          git push origin scent-request-vote-guardrails
