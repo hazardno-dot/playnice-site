@@ -2337,32 +2337,118 @@ const sendScentRequest = async (
    NORMAL SCENT NAME HELPER
 ========================================= */
 
+const SCENT_NAME_NOISE_WORDS = new Set([
+  "eau", "de", "parfum", "perfume", "edp", "edt", "cologne",
+  "extrait", "extract", "spray",
+]);
+
 const normalizeScentName = (value = "") =>
-  value
+  String(value || "")
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, " and ")
     .replace(/[^a-z0-9]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .filter((token) => !SCENT_NAME_NOISE_WORDS.has(token))
+    .join(" ")
     .trim();
 
-const findExistingProductByRequest = (requestName) => {
+const getScentNameTokens = (value = "") =>
+  normalizeScentName(value).split(" ").filter(Boolean);
+
+const getScentTokenDistance = (left = "", right = "") => {
+  if (left === right) return 0;
+  if (!left || !right) return Math.max(left.length, right.length);
+
+  const previous = Array.from({ length: right.length + 1 }, (_, index) => index);
+
+  for (let i = 1; i <= left.length; i += 1) {
+    let diagonal = previous[0];
+    previous[0] = i;
+
+    for (let j = 1; j <= right.length; j += 1) {
+      const above = previous[j];
+      const substitutionCost = left[i - 1] === right[j - 1] ? 0 : 1;
+      previous[j] = Math.min(
+        previous[j] + 1,
+        previous[j - 1] + 1,
+        diagonal + substitutionCost
+      );
+      diagonal = above;
+    }
+  }
+
+  return previous[right.length];
+};
+
+const scentTokensMatch = (requestToken, candidateToken) => {
+  if (requestToken === candidateToken) return true;
+  if (Math.min(requestToken.length, candidateToken.length) < 5) return false;
+  return getScentTokenDistance(requestToken, candidateToken) <= 1;
+};
+
+const getProductRequestNames = (product) =>
+  [
+    product.shortName,
+    product.cardName,
+    product.name,
+    product.brand && product.shortName ? `${product.brand} ${product.shortName}` : "",
+    product.slug,
+    ...(Array.isArray(product.aliases) ? product.aliases : []),
+  ]
+    .map(normalizeScentName)
+    .filter(Boolean);
+
+const getScentRequestMatchScore = (requestName, product) => {
   const normalizedRequest = normalizeScentName(requestName);
+  if (!normalizedRequest) return 0;
 
-  if (!normalizedRequest) return null;
+  const requestTokens = getScentNameTokens(normalizedRequest);
+  const candidates = getProductRequestNames(product);
+  let bestScore = 0;
 
-  return products.find((product) => {
-    const productName = normalizeScentName(product.name || "");
-    const productBrand = normalizeScentName(product.brand || "");
-    const combined = normalizeScentName(`${product.name || ""} ${product.brand || ""}`);
+  candidates.forEach((candidate) => {
+    if (candidate === normalizedRequest) {
+      bestScore = Math.max(bestScore, 100);
+      return;
+    }
 
-    return (
-      productName.includes(normalizedRequest) ||
-      normalizedRequest.includes(productName) ||
-      combined.includes(normalizedRequest) ||
-      normalizedRequest.includes(combined) ||
-      productBrand.includes(normalizedRequest)
+    if (
+      normalizedRequest.length >= 4 &&
+      (candidate.includes(normalizedRequest) || normalizedRequest.includes(candidate))
+    ) {
+      bestScore = Math.max(bestScore, 90);
+    }
+
+    const candidateTokens = getScentNameTokens(candidate);
+    const allMatch = requestTokens.length > 0 && requestTokens.every((requestToken) =>
+      candidateTokens.some((candidateToken) => scentTokensMatch(requestToken, candidateToken))
+    );
+
+    if (!allMatch) return;
+    bestScore = Math.max(
+      bestScore,
+      requestTokens.length === 1 ? 60 : 70 + Math.min(requestTokens.length, 9)
     );
   });
+
+  return bestScore;
+};
+
+const findExistingProductByRequest = (requestName) => {
+  const rankedMatches = products
+    .map((product) => ({ product, score: getScentRequestMatchScore(requestName, product) }))
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  if (!rankedMatches.length) return null;
+  const [bestMatch, secondMatch] = rankedMatches;
+
+  // Do not guess when a short request matches multiple variants equally well.
+  if (secondMatch && secondMatch.score === bestMatch.score) return null;
+  return bestMatch.product;
 };
 
 /* =========================================
@@ -2374,30 +2460,6 @@ const openProductFromRequest = (product) => {
 
   setSelectedProduct(product);
   setProductModalVisible(true);
-};
-
-const addExistingCollectionRequest = (product) => {
-  if (!product?.name) return;
-
-  setExistingCollectionRequests((prev) => {
-    const exists = prev.find(
-      (item) => item.name.toLowerCase() === product.name.toLowerCase()
-    );
-
-    if (exists) {
-      return prev
-        .map((item) =>
-          item.name.toLowerCase() === product.name.toLowerCase()
-            ? { ...item, votes: item.votes + 1, product }
-            : item
-        )
-        .sort((a, b) => b.votes - a.votes);
-    }
-
-    return [{ name: product.name, votes: 1, product }, ...prev].sort(
-      (a, b) => b.votes - a.votes
-    );
-  });
 };
 
 const getVisibleCommunityRequests = (requests) =>
@@ -2451,51 +2513,29 @@ const handleCommunityRequestVote = async (requestName) => {
     const existingProduct = findExistingProductByRequest(requestName);
 
   if (existingProduct) {
-    const result = await sendScentRequest(
-      existingProduct.name,
-      "existing_collection_request"
-    );
+  setScentRequestStatus(
+    lang === "sr"
+      ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+      : `Already in our collection ✦ Opening ${existingProduct.name}.`
+  );
 
-    if (result?.status === "blocked") {
-      setScentRequestStatus(
-        getVoteCooldownMessage(existingProduct.name, result.remainingDays)
-      );
-
-      openProductFromRequest(existingProduct);
-      return;
-    }
-
-    if (result?.status !== "ok") {
-      setScentRequestStatus(
-        lang === "sr"
-          ? "Glas nije prošao. Probaj ponovo."
-          : "Vote was not saved. Please try again."
-      );
-
-      return;
-    }
-
-    addExistingCollectionRequest(existingProduct);
-
-    setScentRequestStatus(
-      lang === "sr"
-        ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
-        : `Already in our collection ✦ Opening ${existingProduct.name}.`
-    );
-
-    openProductFromRequest(existingProduct);
-    return;
-  }
+  openProductFromRequest(existingProduct);
+  return;
+}
 
   const result = await sendScentRequest(requestName);
 
   if (result?.status === "blocked") {
-    setScentRequestStatus(
-      getVoteCooldownMessage(requestName, result.remainingDays)
-    );
+  setScentRequestStatus(
+    result.blockReason === "daily_limit"
+      ? lang === "sr"
+        ? `Iskoristio si 3 glasa u poslednja 24 sata. Novi glas možeš dodati za ${result.remainingHours || 1} h.`
+        : `You've used 3 votes in the last 24 hours. You can vote again in ${result.remainingHours || 1}h.`
+      : getVoteCooldownMessage(requestName, result.remainingDays)
+  );
 
-    return;
-  }
+  return;
+}
 
   if (result?.status !== "ok") {
     setScentRequestStatus(
@@ -2591,56 +2631,33 @@ const handleScentRequestSubmit = async (event) => {
     const existingProduct = findExistingProductByRequest(fragranceName);
 
     if (existingProduct) {
-      const result = await sendScentRequest(
-        existingProduct.name,
-        "existing_collection_request"
-      );
+    setScentRequestValue("");
 
-      if (result?.status === "blocked") {
-        setScentRequestStatus(
-          getVoteCooldownMessage(fragranceName, result.remainingDays)
-        );
+    setScentRequestStatus(
+      lang === "sr"
+        ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+        : `Already in our collection ✦ Opening ${existingProduct.name}.`
+    );
 
-        setScentRequestValue("");
-        openProductFromRequest(existingProduct);
-        return;
-      }
-
-      if (result?.status !== "ok") {
-        setScentRequestStatus(
-          lang === "sr"
-            ? "Glas nije prošao. Probaj ponovo."
-            : "Vote was not saved. Please try again."
-        );
-
-        return;
-      }
-
-      addExistingCollectionRequest(existingProduct);
-
-      setScentRequestValue("");
-
-      setScentRequestStatus(
-        lang === "sr"
-          ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
-          : `Already in our collection ✦ Opening ${existingProduct.name}.`
-      );
-
-      openProductFromRequest(existingProduct);
-      return;
-    }
+    openProductFromRequest(existingProduct);
+    return;
+  }
 
     const result = await sendScentRequest(fragranceName);
 
     if (result?.status === "blocked") {
-      setScentRequestStatus(
-        lang === "sr"
+    setScentRequestStatus(
+      result.blockReason === "daily_limit"
+        ? lang === "sr"
+          ? `Iskoristio si 3 glasa u poslednja 24 sata. Novi glas možeš dodati za ${result.remainingHours || 1} h.`
+          : `You've used 3 votes in the last 24 hours. You can vote again in ${result.remainingHours || 1}h.`
+        : lang === "sr"
           ? `Već si predložio ${fragranceName}. Možeš ponovo za ${result.remainingDays} dana.`
           : `You already requested ${fragranceName}. You can request it again in ${result.remainingDays} days.`
-      );
+    );
 
-      return;
-    }
+    return;
+  }
 
     if (result?.status !== "ok") {
       setScentRequestStatus(
@@ -2652,16 +2669,16 @@ const handleScentRequestSubmit = async (event) => {
       return;
     }
 
-    const existingRequest = communityRequests.find(
-      (item) =>
-        item.name.toLowerCase() === fragranceName.toLowerCase()
-    );
+    const normalizedFragranceName = normalizeScentName(fragranceName);
+  const existingRequest = communityRequests.find(
+    (item) => normalizeScentName(item.name) === normalizedFragranceName
+  );
 
     if (existingRequest) {
       setCommunityRequests((prev) =>
         prev
           .map((item) =>
-            item.name.toLowerCase() === fragranceName.toLowerCase()
+            normalizeScentName(item.name) === normalizedFragranceName
               ? { ...item, votes: item.votes + 1 }
               : item
           )
@@ -6980,8 +6997,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <small>
   {lang === "sr"
-    ? "Jedan glas po parfemu na svakih 7 dana"
-    : "One vote per fragrance every 7 days"}
+    ? "Do 3 glasa u 24h · isti parfem ponovo nakon 3 dana"
+    : "Up to 3 votes in 24h · same fragrance again after 3 days"}
     </small>
   </div>
 
