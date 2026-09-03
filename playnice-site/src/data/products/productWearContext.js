@@ -381,5 +381,10 @@ export const productWearContext = {
   "Narciso Rodriguez for Him Bleu Noir Eau de Toilette Extreme": {
     sr: "Topli dani, posao, svakodnevno nošenje.",
     en: "Warm days, work, everyday wear."
+  },
+
+  "Thomas Kosmala No. 8 Tonic Vert Eau de Parfum": {
+    "sr": "Najbolji je tokom toplijih dana, za kancelariju, dnevne obaveze i situacije kada želiš čist, svjež i nenametljiv miris sa malo više karaktera.",
+    "en": "Best suited to warmer days, the office, everyday wear and situations where you want a clean, fresh and understated scent with a little more character."
   }
 };
