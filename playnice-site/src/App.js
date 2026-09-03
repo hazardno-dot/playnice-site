@@ -2646,113 +2646,128 @@ const handleCommunityRequestVote = async (requestName) => {
 
   communityVoteInFlightRef.current.add(requestName);
 
+  const rollbackOptimisticVote = () => {
+    setCommunityRequests((prev) =>
+      prev
+        .map((item) =>
+          item.name === requestName
+            ? { ...item, votes: Math.max(0, Number(item.votes || 0) - 1) }
+            : item
+        )
+        .sort((a, b) => b.votes - a.votes)
+    );
+  };
+
   try {
     const existingProduct = findExistingProductByRequest(requestName);
 
-  if (existingProduct) {
-  setScentRequestStatus(
-    lang === "sr"
-      ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
-      : `Already in our collection ✦ Opening ${existingProduct.name}.`
-  );
+    if (existingProduct) {
+      setScentRequestStatus(
+        lang === "sr"
+          ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+          : `Already in our collection ✦ Opening ${existingProduct.name}.`
+      );
 
-  openProductFromRequest(existingProduct);
-  return;
-}
+      openProductFromRequest(existingProduct);
+      return;
+    }
 
-  if (isAmbiguousScentRequest(requestName)) {
-    setScentRequestStatus(getAmbiguousScentRequestMessage());
-    return;
-  }
+    if (isAmbiguousScentRequest(requestName)) {
+      setScentRequestStatus(getAmbiguousScentRequestMessage());
+      return;
+    }
 
-  const result = await sendScentRequest(requestName);
+    // List voting is optimistic: the vote appears instantly in the UI while
+    // Apps Script confirms it in the background. If the backend blocks or
+    // rejects it, we roll the local count back and show the real reason.
+    setCommunityRequests((prev) => {
+      const beforeSorted = getVisibleCommunityRequests(prev);
+      const beforeRanks = beforeSorted.reduce((acc, item, index) => {
+        acc[item.name] = index;
+        return acc;
+      }, {});
 
-  if (result?.status === "blocked") {
-  setScentRequestStatus(
-    result.blockReason === "daily_limit"
-      ? lang === "sr"
-        ? `Iskoristio si 3 glasa u poslednja 24 sata. Novi glas možeš dodati za ${result.remainingHours || 1} h.`
-        : `You've used 3 votes in the last 24 hours. You can vote again in ${result.remainingHours || 1}h.`
-      : getVoteCooldownMessage(requestName, result.remainingDays)
-  );
+      const next = prev
+        .map((item) =>
+          item.name === requestName
+            ? { ...item, votes: Number(item.votes || 0) + 1 }
+            : item
+        )
+        .sort((a, b) => b.votes - a.votes);
 
-  return;
-}
+      const afterSorted = getVisibleCommunityRequests(next);
 
-  if (result?.status !== "ok") {
+      const nextTrends = afterSorted.reduce((acc, item, index) => {
+        const previousIndex = beforeRanks[item.name];
+
+        if (previousIndex === undefined) {
+          acc[item.name] = "same";
+        } else if (index < previousIndex) {
+          acc[item.name] = "up";
+        } else if (index > previousIndex) {
+          acc[item.name] = "down";
+        } else {
+          acc[item.name] = "same";
+        }
+
+        return acc;
+      }, {});
+
+      const nextTopThreeEntries = afterSorted.reduce((acc, item, index) => {
+        const previousIndex = beforeRanks[item.name];
+
+        if (
+          previousIndex !== undefined &&
+          previousIndex > 2 &&
+          index <= 2
+        ) {
+          acc[item.name] = true;
+        }
+
+        return acc;
+      }, {});
+
+      setCommunityRequestTrends(nextTrends);
+      setCommunityTopThreeEntries(nextTopThreeEntries);
+
+      return next;
+    });
+
     setScentRequestStatus(
       lang === "sr"
-        ? "Glas nije prošao. Probaj ponovo."
-        : "Vote was not saved. Please try again."
+        ? `Glas za ${requestName} je primljen ✦`
+        : `Your vote for ${requestName} was received ✦`
     );
 
-    return;
-  }
+    const result = await sendScentRequest(requestName);
 
-  setScentRequestValue("");
-
-  setCommunityRequests((prev) => {
-    const beforeSorted = getVisibleCommunityRequests(prev);
-    const beforeRanks = beforeSorted.reduce((acc, item, index) => {
-      acc[item.name] = index;
-      return acc;
-    }, {});
-
-    const next = prev
-      .map((item) =>
-        item.name === requestName
-          ? { ...item, votes: item.votes + 1 }
-          : item
-      )
-      .sort((a, b) => b.votes - a.votes);
-
-    const afterSorted = getVisibleCommunityRequests(next);
-
-    const nextTrends = afterSorted.reduce((acc, item, index) => {
-      const previousIndex = beforeRanks[item.name];
-
-      if (previousIndex === undefined) {
-        acc[item.name] = "same";
-      } else if (index < previousIndex) {
-        acc[item.name] = "up";
-      } else if (index > previousIndex) {
-        acc[item.name] = "down";
-      } else {
-        acc[item.name] = "same";
-      }
-
-      return acc;
-    }, {});
-
-    const nextTopThreeEntries = afterSorted.reduce((acc, item, index) => {
-      const previousIndex = beforeRanks[item.name];
-
-      if (
-        previousIndex !== undefined &&
-        previousIndex > 2 &&
-        index <= 2
-      ) {
-        acc[item.name] = true;
-      }
-
-      return acc;
-    }, {});
-
-    setCommunityRequestTrends(nextTrends);
-    setCommunityTopThreeEntries(nextTopThreeEntries);
-
-    return next;
-  });
-
-  setScentRequestStatus(
-    lang === "sr"
-      ? `Još jedan glas za ${requestName}.`
-      : `One more vote for ${requestName}.`
-  );
-    } finally {
-      communityVoteInFlightRef.current.delete(requestName);
+    if (result?.status === "blocked") {
+      rollbackOptimisticVote();
+      setScentRequestStatus(
+        result.blockReason === "daily_limit"
+          ? lang === "sr"
+            ? `Iskoristio si 3 glasa u poslednja 24 sata. Novi glas možeš dodati za ${result.remainingHours || 1} h.`
+            : `You've used 3 votes in the last 24 hours. You can vote again in ${result.remainingHours || 1}h.`
+          : getVoteCooldownMessage(requestName, result.remainingDays)
+      );
+      return;
     }
-  };
+
+    if (result?.status !== "ok") {
+      rollbackOptimisticVote();
+      setScentRequestStatus(
+        lang === "sr"
+          ? "Glas nije prošao. Probaj ponovo."
+          : "Vote was not saved. Please try again."
+      );
+      return;
+    }
+
+    setScentRequestValue("");
+  } finally {
+    communityVoteInFlightRef.current.delete(requestName);
+  }
+};
 
 const handleScentRequestSubmit = async (event) => {
   event.preventDefault();
