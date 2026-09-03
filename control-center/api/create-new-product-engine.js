@@ -73,10 +73,10 @@ function assertUnique(source, p) {
   if (new RegExp(`\\bslug\\s*:\\s*["']${escapeRegex(p.slug)}["']`).test(source)) throw new Error(`Product slug already exists: ${p.slug}`);
   if (new RegExp(`\\bname\\s*:\\s*["']${escapeRegex(p.core.name)}["']`).test(source)) throw new Error(`Product name already exists: ${p.core.name}`);
 }
-function renderProductObject(p, id) {
+function renderProductObject(p, id, addedAt = new Date().toISOString()) {
   const c=p.core;
   const inspired = c.inspiredBy.name || c.inspiredBy.short ? `,\n    inspiredBy: {\n      name: ${js(c.inspiredBy.name)},\n      short: ${js(c.inspiredBy.short)}\n    }` : "";
-  return `  {\n    id: ${id},\n    slug: ${js(p.slug)},\n    name: ${js(c.name)},\n    shortName: ${js(c.shortName)},\n    category: ${js(c.category)},\n    image: ${js(c.image)},\n    sizes: ${js(c.sizes)},\n    badge: ${js(c.badge)},\n    rating: ${c.rating},\n    ratingLabel: ${js(c.ratingLabel)},\n    season: ${js(c.season)},\n    moods: ${js(c.moods)},\n    recommendations: ${js(c.recommendations)}${inspired},\n    noteMap: {\n      top: ${js(c.noteMap.top)},\n      heart: ${js(c.noteMap.heart)},\n      base: ${js(c.noteMap.base)}\n    }\n  }`;
+  return `  {\n    id: ${id},\n    addedAt: ${js(addedAt)},\n    slug: ${js(p.slug)},\n    name: ${js(c.name)},\n    shortName: ${js(c.shortName)},\n    category: ${js(c.category)},\n    image: ${js(c.image)},\n    sizes: ${js(c.sizes)},\n    badge: ${js(c.badge)},\n    rating: ${c.rating},\n    ratingLabel: ${js(c.ratingLabel)},\n    season: ${js(c.season)},\n    moods: ${js(c.moods)},\n    recommendations: ${js(c.recommendations)}${inspired},\n    noteMap: {\n      top: ${js(c.noteMap.top)},\n      heart: ${js(c.noteMap.heart)},\n      base: ${js(c.noteMap.base)}\n    }\n  }`;
 }
 function appendSeparator(before) { return /,\s*$/.test(before) ? "" : ","; }
 function insertProduct(source, p) {

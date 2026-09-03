@@ -1854,7 +1854,6 @@ export const products = [
       heart: ["living-mint", "blue-sage"],
       base: ["ambroxan", "patchouli"]
     },
-    isNew: true
   },
   {
     id: 66,
@@ -1884,7 +1883,6 @@ export const products = [
       heart: ["lavender", "bourbon-geranium", "clary-sage"],
       base: ["tobacco-leaf", "patchouli", "haitian-vetiver"]
     },
-    isNew: true
   },
   {
     id: 67,
@@ -1914,7 +1912,6 @@ export const products = [
       heart: ["rosemary"],
       base: ["patchouli"]
     },
-    isNew: true
   },
   {
     id: 68,
@@ -1943,7 +1940,6 @@ export const products = [
       heart: ["leather", "iris", "tuberose"],
       base: ["tonka-bean", "guaiac-wood", "benzoin"]
     },
-    isNew: true
   },
   {
     id: 69,
@@ -1972,7 +1968,6 @@ export const products = [
       heart: ["oud", "jasmine", "patchouli-leaves", "fresh-mint"],
       base: ["leather", "amber", "vanilla", "haitian-vetiver", "white-musk"]
     },
-    isNew: true
   },
   {
     id: 70,
@@ -2001,7 +1996,6 @@ export const products = [
       heart: ["bourbon-geranium", "rose-geranium"],
       base: ["peru-balsam", "benzoin", "guaiac-wood"]
     },
-    isNew: true
   },
     {
     id: 71,
@@ -2030,7 +2024,6 @@ export const products = [
       heart: ["tunisian-orange-blossom-absolute"],
       base: ["warm-woods", "patchouli", "ambrofix"]
     },
-    isNew: true
   },
   {
     id: 72,
@@ -2060,7 +2053,6 @@ export const products = [
       heart: ["geranium", "black-plum"],
       base: ["truffle-accord", "vetiver", "cedarwood"]
     },
-    isNew: true
   },
   {
     id: 73,
@@ -2089,7 +2081,6 @@ export const products = [
       heart: ["lavender", "sage", "iris"],
       base: ["vetiver", "tonka-bean"]
     },
-    isNew: true
   },
   {
     id: 74,
@@ -2119,7 +2110,6 @@ export const products = [
       heart: ["aqua-accord", "fresh-florals"],
       base: ["fresh-woods", "musk"]
     },
-    isNew: true
   },
   {
     id: 75,
@@ -2148,7 +2138,6 @@ export const products = [
       heart: ["coconut-wood"],
       base: ["tonka-bean"]
     },
-    isNew: true
   },
   {
     id: 76,
@@ -2177,7 +2166,6 @@ export const products = [
       heart: ["grapefruit-blossom"],
       base: ["calone", "sandalwood"]
     },
-    isNew: true
   },
   {
     id: 77,
@@ -2206,7 +2194,6 @@ export const products = [
       heart: ["lavender", "violet-leaf"],
       base: ["musk", "sandalwood", "amber"]
     },
-    isNew: true
   },
   {
     id: 78,
@@ -2235,7 +2222,6 @@ export const products = [
       heart: ["neroli", "nutmeg", "pink-pepper"],
       base: ["indonesian-vetiver-oil", "cardamom"]
     },
-    isNew: true
   },
   {
     id: 79,
@@ -2264,10 +2250,10 @@ export const products = [
       heart: ["orange-blossom", "magnolia", "jasmine", "rose"],
       base: ["vanilla", "amber", "sandalwood", "cashmeran", "patchouli", "musk"]
     },
-    isNew: true
   },
   {
     id: 80,
+    addedAt: "2026-09-03T00:00:00.000Z",
     slug: "lattafa-khamrah-waha-edp",
     name: "Lattafa Khamrah Waha Eau de Parfum",
     shortName: "Khamrah Waha",
@@ -2293,10 +2279,10 @@ export const products = [
       heart: ["iris", "cucumber", "sage", "sea-salt-accord"],
       base: ["akigalawood", "tonka-bean", "vanilla", "musk", "ambrofix"]
     },
-    isNew: true
   },
     {
     id: 81,
+    addedAt: "2026-09-03T00:00:01.000Z",
     slug: "rayhaan-nocturno-elixir",
     name: "Rayhaan Nocturno Elixir Eau de Parfum",
     shortName: "Nocturno Elixir",
@@ -2322,10 +2308,10 @@ export const products = [
       heart: ["amber"],
       base: ["woody-notes", "labdanum"]
     },
-    isNew: true
   },
   {
     id: 82,
+    addedAt: "2026-09-03T00:00:02.000Z",
     slug: "french-avenue-ravine-ice",
     name: "French Avenue Ravine Ice Extrait de Parfum",
     shortName: "Ravine Ice",
@@ -2351,10 +2337,10 @@ export const products = [
       heart: ["sage", "lavender", "sea-salt"],
       base: ["moss", "cedarwood", "ambroxan"]
     },
-    isNew: true
   },
   {
     id: 83,
+    addedAt: "2026-09-03T00:00:03.000Z",
     slug: "mawj-moscow-mule",
     name: "Paris Corner Mawj Moscow Mule Eau de Parfum",
     shortName: "Mawj Moscow Mule",
@@ -2380,10 +2366,10 @@ export const products = [
       heart: ["herbal-notes", "cypress", "mint"],
       base: ["ozonic-notes", "amber", "moss"]
     },
-    isNew: true
   },
   {
     id: 84,
+    addedAt: "2026-09-03T00:00:04.000Z",
     slug: "my-geisha-jasmine-in-the-sun",
     name: "My Geisha Jasmine in the Sun Extrait de Parfum",
     shortName: "Jasmine in the Sun",
@@ -2409,10 +2395,10 @@ export const products = [
       heart: ["jasmine", "orange-blossom", "ylang-ylang"],
       base: ["amber", "patchouli", "cedarwood", "vanilla"]
     },
-    isNew: true
   },
   {
     id: 85,
+    addedAt: "2026-09-03T00:00:05.000Z",
     slug: "essential-parfums-nice-bergamote",
     name: "Essential Parfums Nice Bergamote Eau de Parfum",
     shortName: "Nice Bergamote",
@@ -2438,10 +2424,10 @@ export const products = [
       heart: ["jasmine", "ylang-ylang", "rose"],
       base: ["cedarwood", "tonka-bean"]
     },
-    isNew: true
   },
   {
     id: 86,
+    addedAt: "2026-09-03T00:00:06.000Z",
     slug: "essential-parfums-orange-x-santal",
     name: "Essential Parfums Orange X Santal Eau de Parfum",
     shortName: "Orange X Santal",
@@ -2467,10 +2453,10 @@ export const products = [
       heart: ["basil", "cypress"],
       base: ["oakmoss", "sandalwood"]
     },
-    isNew: true
   },
   {
   id: 87,
+  addedAt: "2026-09-03T00:00:07.000Z",
   slug: "armaf-club-de-nuit-intense-overdose",
   name: "Armaf Club de Nuit Intense Overdose Eau de Parfum",
   modalName: "Armaf Club de Nuit Intense Overdose EDP",
@@ -2497,10 +2483,10 @@ export const products = [
     heart: ["oakmoss", "vanilla-flower", "plum"],
     base: ["amber", "patchouli", "tonka-bean", "powdery-notes"]
   },
-  isNew: true,
 },
 {
   id: 88,
+  addedAt: "2026-09-03T00:00:08.000Z",
   slug: "gisada-luxury-collection-royal",
   name: "Gisada Luxury Collection Royal Parfum",
   shortName: "Gisada Royal",
@@ -2526,10 +2512,10 @@ export const products = [
     heart: ["freesia", "violet", "oud"],
     base: ["amber", "musk", "vanilla"]
   },
-  isNew: true,
 },
 {
   id: 89,
+  addedAt: "2026-09-03T00:00:09.000Z",
   slug: "swiss-arabian-musk-01",
   name: "Swiss Arabian Musk 01 Extrait de Parfum",
   shortName: "Musk 01",
@@ -2555,10 +2541,10 @@ export const products = [
     heart: ["orange-blossom", "lily", "musk"],
     base: ["musk", "tonka-bean", "vanilla", "sandalwood"]
   },
-  isNew: true,
 },
 {
   id: 90,
+  addedAt: "2026-09-03T00:00:10.000Z",
   slug: "afnan-turathi-electric",
   name: "Afnan Turathi Electric Eau de Parfum",
   shortName: "Turathi Electric",
@@ -2584,11 +2570,11 @@ export const products = [
     heart: ["apple", "cedarwood", "orange-blossom"],
     base: ["vanilla", "amber", "musk", "ambroxan"]
   },
-  isNew: true,
 },
 
 {
   id: 91,
+  addedAt: "2026-09-03T00:00:11.000Z",
   slug: "jil-sander-sun-edt",
   name: "Jil Sander Sun Eau de Toilette",
   shortName: "Jil Sander Sun",
@@ -2614,11 +2600,11 @@ export const products = [
     heart: ["ylang-ylang", "heliotrope", "carnation", "orris", "rose"],
     base: ["vanilla", "sandalwood", "amber", "tonka-bean", "musk"]
   },
-  isNew: true,
 },
 
 {
   id: 92,
+  addedAt: "2026-09-03T00:00:12.000Z",
   slug: "mancera-cosmic-pepper",
   name: "Mancera Cosmic Pepper Eau de Parfum",
   shortName: "Cosmic Pepper",
@@ -2644,11 +2630,11 @@ export const products = [
     heart: ["black-pepper", "damask-rose", "oud"],
     base: ["tonka-bean", "amber", "oakmoss", "white-musk", "labdanum"]
   },
-  isNew: true,
 },
 
 {
   id: 93,
+  addedAt: "2026-09-03T00:00:13.000Z",
   slug: "thomas-kosmala-no-4-apres-lamour",
   name: "Thomas Kosmala No. 4 Après l'Amour Eau de Parfum",
   modalName: "Thomas Kosmala No. 4 Après l'Amour EDP",
@@ -2675,11 +2661,11 @@ export const products = [
     heart: ["aromatic-notes", "fresh-spices"],
     base: ["dry-woods", "amber", "musk"]
   },
-  isNew: true,
 },
 
 {
   id: 94,
+  addedAt: "2026-09-03T00:00:14.000Z",
   slug: "thomas-kosmala-no-1-tonic-blanc",
   name: "Thomas Kosmala No. 1 Tonic Blanc Eau de Parfum",
   modalName: "Thomas Kosmala No. 1 Tonic Blanc EDP",
@@ -2706,11 +2692,11 @@ export const products = [
     heart: ["orange-blossom", "bergamot-blossom", "mock-orange"],
     base: ["oakmoss", "sandalwood", "cedarwood", "musk"]
   },
-  isNew: true,
 },
 
 {
   id: 95,
+  addedAt: "2026-09-03T00:00:15.000Z",
   slug: "narciso-rodriguez-for-him-bleu-noir-extreme-edt",
   name: "Narciso Rodriguez for Him Bleu Noir Eau de Toilette Extreme",
   modalName: "Narciso Rodriguez for Him Bleu Noir Extreme",
@@ -2737,6 +2723,5 @@ export const products = [
     heart: ["musk"],
     base: ["blue-cedar", "black-ebony", "labdanum"]
   },
-  isNew: true,
 },
 ];

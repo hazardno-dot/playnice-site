@@ -610,13 +610,29 @@ const shuffleHeroSlides = (slides) => {
 ========================================= */
 const SHOP_NEW_PRODUCTS_SEEN_KEY = "playnice_seen_new_products_signature";
 
-const getNewProductsSignature = (items = []) => {
-  return items
-    .filter((product) => product.isNew)
+const JUST_IN_LIMIT = 16;
+
+const getJustInProducts = (items = []) =>
+  [...items]
+    .filter((product) => Boolean(product?.addedAt))
+    .sort((a, b) => {
+      const dateDifference =
+        new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime();
+      return dateDifference || Number(b.id || 0) - Number(a.id || 0);
+    })
+    .slice(0, JUST_IN_LIMIT);
+
+const JUST_IN_PRODUCT_IDS = new Set(
+  getJustInProducts(products).map((product) => String(product.id))
+);
+
+const isJustInProduct = (product) =>
+  JUST_IN_PRODUCT_IDS.has(String(product?.id ?? ""));
+
+const getNewProductsSignature = (items = []) =>
+  getJustInProducts(items)
     .map((product) => String(product.id))
-    .sort()
     .join("|");
-};
 
 /* =========================================
    getInitialShopState
@@ -1282,9 +1298,7 @@ const selectedScentMood =
    newArrivalProducts
 ========================================= */
 
-const newArrivalProducts = [...products]
-  .filter((product) => product.isNew === true)
-  .reverse();
+const newArrivalProducts = getJustInProducts(products);
 
 const getProductThumbnail = (image = "") =>
   image
@@ -4534,7 +4548,7 @@ const handleDiscoverySearch = (
 const handleProductCardOpen = (product) => {
   openProductModal(product);
 
-  if (!product?.isNew || !newProductsSignature) return;
+  if (!isJustInProduct(product) || !newProductsSignature) return;
 
   try {
     localStorage.setItem(
@@ -5448,7 +5462,7 @@ const titleLengthClass =
   </span>
 )}
 
-      {product.isNew && (
+      {isJustInProduct(product) && (
   <span className="product-new-badge">
     {tr.justIn}
   </span>
