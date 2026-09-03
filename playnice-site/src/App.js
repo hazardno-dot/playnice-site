@@ -2464,7 +2464,9 @@ const findExistingProductByRequest = (requestName) => {
 const openProductFromRequest = (product) => {
   if (!product) return;
 
-  productModalReturnScrollRef.current = window.scrollY;
+  const requestScrollY = window.scrollY || window.pageYOffset || 0;
+  productModalReturnScrollRef.current = requestScrollY;
+  productModalScrollYRef.current = requestScrollY;
 
   if (productRequestOpenTimeoutRef.current) {
     clearTimeout(productRequestOpenTimeoutRef.current);
@@ -5087,14 +5089,69 @@ useEffect(() => {
       }
 
       if (
-      Array.isArray(data.existingRequests) &&
-      data.existingRequests.length > 0
-      )   {
-      setExistingCollectionRequests(data.existingRequests);
+        Array.isArray(data.existingRequests) &&
+        data.existingRequests.length > 0
+      ) {
+        setExistingCollectionRequests(data.existingRequests);
+
+        try {
+          localStorage.setItem(
+            "playnice_existing_collection_requests_v1",
+            JSON.stringify(data.existingRequests)
+          );
+        } catch {}
+      } else {
+        try {
+          const cachedExistingRequests = JSON.parse(
+            localStorage.getItem("playnice_existing_collection_requests_v1") || "[]"
+          );
+
+          setExistingCollectionRequests(
+            Array.isArray(cachedExistingRequests) && cachedExistingRequests.length > 0
+              ? cachedExistingRequests
+              : Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).map(([name, votes]) => ({
+                  name,
+                  votes,
+                  lockedVotes: votes,
+                }))
+          );
+        } catch {
+          setExistingCollectionRequests(
+            Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).map(([name, votes]) => ({
+              name,
+              votes,
+              lockedVotes: votes,
+            }))
+          );
+        }
       }
     }
     } catch (error) {
       console.error("Failed to load scent requests:", error);
+
+      try {
+        const cachedExistingRequests = JSON.parse(
+          localStorage.getItem("playnice_existing_collection_requests_v1") || "[]"
+        );
+
+        setExistingCollectionRequests(
+          Array.isArray(cachedExistingRequests) && cachedExistingRequests.length > 0
+            ? cachedExistingRequests
+            : Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).map(([name, votes]) => ({
+                name,
+                votes,
+                lockedVotes: votes,
+              }))
+        );
+      } catch {
+        setExistingCollectionRequests(
+          Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).map(([name, votes]) => ({
+            name,
+            votes,
+            lockedVotes: votes,
+          }))
+        );
+      }
     }
   };
 
