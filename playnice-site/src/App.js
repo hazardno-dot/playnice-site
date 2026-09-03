@@ -723,7 +723,30 @@ const getInitialShopState = () => {
   const [cart, setCart] = useState([]);
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
-  const [existingCollectionRequests, setExistingCollectionRequests] = useState([]);
+  const [existingCollectionRequests, setExistingCollectionRequests] = useState(() => {
+    const fallback = [
+      { name: "Yves Saint Laurent Y Iced Cologne", votes: 27, lockedVotes: 27 },
+      { name: "Prada Paradigme Eau de Parfum", votes: 25, lockedVotes: 25 },
+      { name: "Valentino Uomo Born In Roma Coral Fantasy", votes: 16, lockedVotes: 16 },
+      { name: "Lattafa Khamrah Waha Eau de Parfum", votes: 13, lockedVotes: 13 },
+      { name: "Club De Nuit Intense Overdose", votes: 12, lockedVotes: 12 },
+      { name: "Carolina Herrera Bad Boy Cobalt Eau de Parfum", votes: 5, lockedVotes: 5 },
+      { name: "Rayhaan Azul Eau de Parfum", votes: 3, lockedVotes: 3 },
+      { name: "Bois Impérial by Essential Parfums", votes: 1, lockedVotes: 1 },
+    ];
+
+    if (typeof window === "undefined") return fallback;
+
+    try {
+      const cached = JSON.parse(
+        localStorage.getItem("playnice_existing_collection_requests_v1") || "[]"
+      );
+
+      return Array.isArray(cached) && cached.length > 0 ? cached : fallback;
+    } catch {
+      return fallback;
+    }
+  });
   const [orderSuccessMessage, setOrderSuccessMessage] = useState("");
   const [storyOpen, setStoryOpen] = useState(false);
   const [inlineAddedKey, setInlineAddedKey] = useState(null);
@@ -748,6 +771,8 @@ const getInitialShopState = () => {
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [isVideoInView, setIsVideoInView] = useState(false);
   const [productModalVisible, setProductModalVisible] = useState(false);
+  const productModalReturnScrollRef = useRef(null);
+  const productRequestOpenTimeoutRef = useRef(null);
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
@@ -1926,6 +1951,10 @@ useEffect(() => {
 
 useEffect(() => {
   return () => {
+    if (productRequestOpenTimeoutRef.current) {
+      clearTimeout(productRequestOpenTimeoutRef.current);
+    }
+
     if (productModalCloseTimeoutRef.current) {
       clearTimeout(productModalCloseTimeoutRef.current);
     }
@@ -2302,68 +2331,191 @@ const sendScentRequest = async (
   fragranceName,
   source = "scent_request"
 ) => {
-  try {
-    const response = await fetch(
-      "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
-      {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          fragrance: fragranceName,
-          lang,
-          page: window.location.pathname,
-          source,
-          deviceId: getPlayNiceDeviceId()
-        })
+  const maxAttempts = 3;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            fragrance: fragranceName,
+            lang,
+            page: window.location.pathname,
+            source,
+            deviceId: getPlayNiceDeviceId()
+          })
+        }
+      );
+
+      const result = await response.json();
+      const isServerBusy =
+        result?.status === "busy" || result?.blockReason === "server_busy";
+
+      if (!isServerBusy || attempt === maxAttempts) {
+        return result;
       }
-    );
 
-    return await response.json();
-  } catch (error) {
-    console.error("Scent request submit failed:", error);
+      await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+    } catch (error) {
+      if (attempt === maxAttempts) {
+        console.error("Scent request submit failed:", error);
+        return {
+          status: "error",
+          message: String(error)
+        };
+      }
 
-    return {
-      status: "error",
-      message: String(error)
-    };
+      await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+    }
   }
+
+  return {
+    status: "error",
+    message: "Scent request retry limit reached"
+  };
 };
 
 /* =========================================
    NORMAL SCENT NAME HELPER
 ========================================= */
 
+const SCENT_NAME_NOISE_WORDS = new Set([
+  "eau", "de", "parfum", "perfume", "edp", "edt", "cologne",
+  "extrait", "extract", "spray",
+]);
+
 const normalizeScentName = (value = "") =>
-  value
+  String(value || "")
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, " and ")
     .replace(/[^a-z0-9]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .filter((token) => !SCENT_NAME_NOISE_WORDS.has(token))
+    .join(" ")
     .trim();
 
-const findExistingProductByRequest = (requestName) => {
+const getScentNameTokens = (value = "") =>
+  normalizeScentName(value).split(" ").filter(Boolean);
+
+const getScentTokenDistance = (left = "", right = "") => {
+  if (left === right) return 0;
+  if (!left || !right) return Math.max(left.length, right.length);
+
+  const previous = Array.from({ length: right.length + 1 }, (_, index) => index);
+
+  for (let i = 1; i <= left.length; i += 1) {
+    let diagonal = previous[0];
+    previous[0] = i;
+
+    for (let j = 1; j <= right.length; j += 1) {
+      const above = previous[j];
+      const substitutionCost = left[i - 1] === right[j - 1] ? 0 : 1;
+      previous[j] = Math.min(
+        previous[j] + 1,
+        previous[j - 1] + 1,
+        diagonal + substitutionCost
+      );
+      diagonal = above;
+    }
+  }
+
+  return previous[right.length];
+};
+
+const scentTokensMatch = (requestToken, candidateToken) => {
+  if (requestToken === candidateToken) return true;
+  if (Math.min(requestToken.length, candidateToken.length) < 5) return false;
+  return getScentTokenDistance(requestToken, candidateToken) <= 1;
+};
+
+const getProductRequestNames = (product) =>
+  [
+    product.shortName,
+    product.cardName,
+    product.name,
+    product.brand && product.shortName ? `${product.brand} ${product.shortName}` : "",
+    product.slug,
+    ...(Array.isArray(product.aliases) ? product.aliases : []),
+  ]
+    .map(normalizeScentName)
+    .filter(Boolean);
+
+const getScentRequestMatchScore = (requestName, product) => {
   const normalizedRequest = normalizeScentName(requestName);
+  if (!normalizedRequest) return 0;
 
-  if (!normalizedRequest) return null;
+  const requestTokens = getScentNameTokens(normalizedRequest);
+  const candidates = getProductRequestNames(product);
+  let bestScore = 0;
 
-  return products.find((product) => {
-    const productName = normalizeScentName(product.name || "");
-    const productBrand = normalizeScentName(product.brand || "");
-    const combined = normalizeScentName(`${product.name || ""} ${product.brand || ""}`);
+  candidates.forEach((candidate) => {
+    if (candidate === normalizedRequest) {
+      bestScore = Math.max(bestScore, 100);
+      return;
+    }
 
-    return (
-      productName.includes(normalizedRequest) ||
-      normalizedRequest.includes(productName) ||
-      combined.includes(normalizedRequest) ||
-      normalizedRequest.includes(combined) ||
-      productBrand.includes(normalizedRequest)
+    if (
+      normalizedRequest.length >= 4 &&
+      (candidate.includes(normalizedRequest) || normalizedRequest.includes(candidate))
+    ) {
+      bestScore = Math.max(bestScore, 90);
+    }
+
+    const candidateTokens = getScentNameTokens(candidate);
+    const allMatch = requestTokens.length > 0 && requestTokens.every((requestToken) =>
+      candidateTokens.some((candidateToken) => scentTokensMatch(requestToken, candidateToken))
+    );
+
+    if (!allMatch) return;
+    bestScore = Math.max(
+      bestScore,
+      requestTokens.length === 1 ? 60 : 70 + Math.min(requestTokens.length, 9)
     );
   });
+
+  return bestScore;
 };
+
+const getScentRequestMatchResult = (requestName) => {
+  const rankedMatches = products
+    .map((product) => ({ product, score: getScentRequestMatchScore(requestName, product) }))
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  if (!rankedMatches.length) {
+    return { product: null, ambiguous: false };
+  }
+
+  const bestScore = rankedMatches[0].score;
+  const topMatches = rankedMatches.filter((item) => item.score === bestScore);
+
+  if (topMatches.length > 1) {
+    return { product: null, ambiguous: true };
+  }
+
+  return { product: rankedMatches[0].product, ambiguous: false };
+};
+
+const findExistingProductByRequest = (requestName) =>
+  getScentRequestMatchResult(requestName).product;
+
+const isAmbiguousScentRequest = (requestName) =>
+  getScentRequestMatchResult(requestName).ambiguous;
+
+const getAmbiguousScentRequestMessage = () =>
+  lang === "sr"
+    ? "Naziv je preširok — postoji više mogućih parfema. Unesite tačan naziv parfema koji tražite."
+    : "This name is too broad — it could refer to several fragrances. Please enter the exact fragrance name.";
 
 /* =========================================
    SCENT REQUEST HELPERS
@@ -2372,37 +2524,28 @@ const findExistingProductByRequest = (requestName) => {
 const openProductFromRequest = (product) => {
   if (!product) return;
 
-  setSelectedProduct(product);
-  setProductModalVisible(true);
-};
+  const requestScrollY = window.scrollY || window.pageYOffset || 0;
+  productModalReturnScrollRef.current = requestScrollY;
+  productModalScrollYRef.current = requestScrollY;
 
-const addExistingCollectionRequest = (product) => {
-  if (!product?.name) return;
+  if (productRequestOpenTimeoutRef.current) {
+    clearTimeout(productRequestOpenTimeoutRef.current);
+  }
 
-  setExistingCollectionRequests((prev) => {
-    const exists = prev.find(
-      (item) => item.name.toLowerCase() === product.name.toLowerCase()
-    );
-
-    if (exists) {
-      return prev
-        .map((item) =>
-          item.name.toLowerCase() === product.name.toLowerCase()
-            ? { ...item, votes: item.votes + 1, product }
-            : item
-        )
-        .sort((a, b) => b.votes - a.votes);
-    }
-
-    return [{ name: product.name, votes: 1, product }, ...prev].sort(
-      (a, b) => b.votes - a.votes
-    );
-  });
+  productRequestOpenTimeoutRef.current = setTimeout(() => {
+    productRequestOpenTimeoutRef.current = null;
+    setSelectedProduct(product);
+    setProductModalVisible(true);
+  }, 450);
 };
 
 const getVisibleCommunityRequests = (requests) =>
   requests
-    .filter((request) => !findExistingProductByRequest(request.name))
+    .filter(
+      (request) =>
+        !findExistingProductByRequest(request.name) &&
+        !isAmbiguousScentRequest(request.name)
+    )
     .sort((a, b) => b.votes - a.votes);
 
 const EXISTING_COLLECTION_LOCKED_VOTES = {
@@ -2414,6 +2557,62 @@ const EXISTING_COLLECTION_LOCKED_VOTES = {
   "Carolina Herrera Bad Boy Cobalt Eau de Parfum": 5,
   "Rayhaan Azul Eau de Parfum": 3,
   "Bois Impérial by Essential Parfums": 1,
+};
+
+const mergeExistingCollectionRequests = (requests = [], existingRequests = []) => {
+  const merged = new Map();
+
+  const addRequest = (item) => {
+    if (!item?.name) return;
+
+    const product = findExistingProductByRequest(item.name);
+    if (!product) return;
+
+    const key = String(product.id || product.slug || normalizeScentName(product.name));
+    const current = merged.get(key) || {
+      name: product.name,
+      product,
+      votes: 0,
+      firstSeen: item.firstSeen || null,
+    };
+
+    const nextFirstSeen = [current.firstSeen, item.firstSeen]
+      .filter(Boolean)
+      .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())[0] || null;
+
+    merged.set(key, {
+      ...current,
+      name: product.name,
+      product,
+      votes: Number(current.votes || 0) + Number(item.votes || 0),
+      firstSeen: nextFirstSeen,
+    });
+  };
+
+  existingRequests.forEach(addRequest);
+  requests.forEach(addRequest);
+
+  Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).forEach(([name, lockedVotes]) => {
+    const product = findExistingProductByRequest(name);
+    if (!product) return;
+
+    const key = String(product.id || product.slug || normalizeScentName(product.name));
+    const current = merged.get(key) || {
+      name: product.name,
+      product,
+      votes: 0,
+      firstSeen: null,
+    };
+
+    merged.set(key, {
+      ...current,
+      name: product.name,
+      product,
+      lockedVotes,
+    });
+  });
+
+  return Array.from(merged.values());
 };
 
 const sortedExistingCollectionRequests = useMemo(
@@ -2447,128 +2646,128 @@ const handleCommunityRequestVote = async (requestName) => {
 
   communityVoteInFlightRef.current.add(requestName);
 
+  const rollbackOptimisticVote = () => {
+    setCommunityRequests((prev) =>
+      prev
+        .map((item) =>
+          item.name === requestName
+            ? { ...item, votes: Math.max(0, Number(item.votes || 0) - 1) }
+            : item
+        )
+        .sort((a, b) => b.votes - a.votes)
+    );
+  };
+
   try {
     const existingProduct = findExistingProductByRequest(requestName);
 
-  if (existingProduct) {
-    const result = await sendScentRequest(
-      existingProduct.name,
-      "existing_collection_request"
-    );
-
-    if (result?.status === "blocked") {
+    if (existingProduct) {
       setScentRequestStatus(
-        getVoteCooldownMessage(existingProduct.name, result.remainingDays)
+        lang === "sr"
+          ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+          : `Already in our collection ✦ Opening ${existingProduct.name}.`
       );
 
       openProductFromRequest(existingProduct);
       return;
     }
 
+    if (isAmbiguousScentRequest(requestName)) {
+      setScentRequestStatus(getAmbiguousScentRequestMessage());
+      return;
+    }
+
+    // List voting is optimistic: the vote appears instantly in the UI while
+    // Apps Script confirms it in the background. If the backend blocks or
+    // rejects it, we roll the local count back and show the real reason.
+    setCommunityRequests((prev) => {
+      const beforeSorted = getVisibleCommunityRequests(prev);
+      const beforeRanks = beforeSorted.reduce((acc, item, index) => {
+        acc[item.name] = index;
+        return acc;
+      }, {});
+
+      const next = prev
+        .map((item) =>
+          item.name === requestName
+            ? { ...item, votes: Number(item.votes || 0) + 1 }
+            : item
+        )
+        .sort((a, b) => b.votes - a.votes);
+
+      const afterSorted = getVisibleCommunityRequests(next);
+
+      const nextTrends = afterSorted.reduce((acc, item, index) => {
+        const previousIndex = beforeRanks[item.name];
+
+        if (previousIndex === undefined) {
+          acc[item.name] = "same";
+        } else if (index < previousIndex) {
+          acc[item.name] = "up";
+        } else if (index > previousIndex) {
+          acc[item.name] = "down";
+        } else {
+          acc[item.name] = "same";
+        }
+
+        return acc;
+      }, {});
+
+      const nextTopThreeEntries = afterSorted.reduce((acc, item, index) => {
+        const previousIndex = beforeRanks[item.name];
+
+        if (
+          previousIndex !== undefined &&
+          previousIndex > 2 &&
+          index <= 2
+        ) {
+          acc[item.name] = true;
+        }
+
+        return acc;
+      }, {});
+
+      setCommunityRequestTrends(nextTrends);
+      setCommunityTopThreeEntries(nextTopThreeEntries);
+
+      return next;
+    });
+
+    setScentRequestStatus(
+      lang === "sr"
+        ? `Glas za ${requestName} je primljen ✦`
+        : `Your vote for ${requestName} was received ✦`
+    );
+
+    const result = await sendScentRequest(requestName);
+
+    if (result?.status === "blocked") {
+      rollbackOptimisticVote();
+      setScentRequestStatus(
+        result.blockReason === "daily_limit"
+          ? lang === "sr"
+            ? `Iskoristio si 3 glasa u poslednja 24 sata. Novi glas možeš dodati za ${result.remainingHours || 1} h.`
+            : `You've used 3 votes in the last 24 hours. You can vote again in ${result.remainingHours || 1}h.`
+          : getVoteCooldownMessage(requestName, result.remainingDays)
+      );
+      return;
+    }
+
     if (result?.status !== "ok") {
+      rollbackOptimisticVote();
       setScentRequestStatus(
         lang === "sr"
           ? "Glas nije prošao. Probaj ponovo."
           : "Vote was not saved. Please try again."
       );
-
       return;
     }
 
-    addExistingCollectionRequest(existingProduct);
-
-    setScentRequestStatus(
-      lang === "sr"
-        ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
-        : `Already in our collection ✦ Opening ${existingProduct.name}.`
-    );
-
-    openProductFromRequest(existingProduct);
-    return;
+    setScentRequestValue("");
+  } finally {
+    communityVoteInFlightRef.current.delete(requestName);
   }
-
-  const result = await sendScentRequest(requestName);
-
-  if (result?.status === "blocked") {
-    setScentRequestStatus(
-      getVoteCooldownMessage(requestName, result.remainingDays)
-    );
-
-    return;
-  }
-
-  if (result?.status !== "ok") {
-    setScentRequestStatus(
-      lang === "sr"
-        ? "Glas nije prošao. Probaj ponovo."
-        : "Vote was not saved. Please try again."
-    );
-
-    return;
-  }
-
-  setCommunityRequests((prev) => {
-    const beforeSorted = getVisibleCommunityRequests(prev);
-    const beforeRanks = beforeSorted.reduce((acc, item, index) => {
-      acc[item.name] = index;
-      return acc;
-    }, {});
-
-    const next = prev
-      .map((item) =>
-        item.name === requestName
-          ? { ...item, votes: item.votes + 1 }
-          : item
-      )
-      .sort((a, b) => b.votes - a.votes);
-
-    const afterSorted = getVisibleCommunityRequests(next);
-
-    const nextTrends = afterSorted.reduce((acc, item, index) => {
-      const previousIndex = beforeRanks[item.name];
-
-      if (previousIndex === undefined) {
-        acc[item.name] = "same";
-      } else if (index < previousIndex) {
-        acc[item.name] = "up";
-      } else if (index > previousIndex) {
-        acc[item.name] = "down";
-      } else {
-        acc[item.name] = "same";
-      }
-
-      return acc;
-    }, {});
-
-    const nextTopThreeEntries = afterSorted.reduce((acc, item, index) => {
-      const previousIndex = beforeRanks[item.name];
-
-      if (
-        previousIndex !== undefined &&
-        previousIndex > 2 &&
-        index <= 2
-      ) {
-        acc[item.name] = true;
-      }
-
-      return acc;
-    }, {});
-
-    setCommunityRequestTrends(nextTrends);
-    setCommunityTopThreeEntries(nextTopThreeEntries);
-
-    return next;
-  });
-
-  setScentRequestStatus(
-    lang === "sr"
-      ? `Još jedan glas za ${requestName}.`
-      : `One more vote for ${requestName}.`
-  );
-    } finally {
-      communityVoteInFlightRef.current.delete(requestName);
-    }
-  };
+};
 
 const handleScentRequestSubmit = async (event) => {
   event.preventDefault();
@@ -2591,56 +2790,38 @@ const handleScentRequestSubmit = async (event) => {
     const existingProduct = findExistingProductByRequest(fragranceName);
 
     if (existingProduct) {
-      const result = await sendScentRequest(
-        existingProduct.name,
-        "existing_collection_request"
-      );
+    setScentRequestValue("");
 
-      if (result?.status === "blocked") {
-        setScentRequestStatus(
-          getVoteCooldownMessage(fragranceName, result.remainingDays)
-        );
+    setScentRequestStatus(
+      lang === "sr"
+        ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
+        : `Already in our collection ✦ Opening ${existingProduct.name}.`
+    );
 
-        setScentRequestValue("");
-        openProductFromRequest(existingProduct);
-        return;
-      }
+    openProductFromRequest(existingProduct);
+    return;
+  }
 
-      if (result?.status !== "ok") {
-        setScentRequestStatus(
-          lang === "sr"
-            ? "Glas nije prošao. Probaj ponovo."
-            : "Vote was not saved. Please try again."
-        );
-
-        return;
-      }
-
-      addExistingCollectionRequest(existingProduct);
-
-      setScentRequestValue("");
-
-      setScentRequestStatus(
-        lang === "sr"
-          ? `Već deo PlayNice kolekcije ✦ Otvaramo ${existingProduct.name}.`
-          : `Already in our collection ✦ Opening ${existingProduct.name}.`
-      );
-
-      openProductFromRequest(existingProduct);
+    if (isAmbiguousScentRequest(fragranceName)) {
+      setScentRequestStatus(getAmbiguousScentRequestMessage());
       return;
     }
 
     const result = await sendScentRequest(fragranceName);
 
     if (result?.status === "blocked") {
-      setScentRequestStatus(
-        lang === "sr"
+    setScentRequestStatus(
+      result.blockReason === "daily_limit"
+        ? lang === "sr"
+          ? `Iskoristio si 3 glasa u poslednja 24 sata. Novi glas možeš dodati za ${result.remainingHours || 1} h.`
+          : `You've used 3 votes in the last 24 hours. You can vote again in ${result.remainingHours || 1}h.`
+        : lang === "sr"
           ? `Već si predložio ${fragranceName}. Možeš ponovo za ${result.remainingDays} dana.`
           : `You already requested ${fragranceName}. You can request it again in ${result.remainingDays} days.`
-      );
+    );
 
-      return;
-    }
+    return;
+  }
 
     if (result?.status !== "ok") {
       setScentRequestStatus(
@@ -2652,16 +2833,16 @@ const handleScentRequestSubmit = async (event) => {
       return;
     }
 
-    const existingRequest = communityRequests.find(
-      (item) =>
-        item.name.toLowerCase() === fragranceName.toLowerCase()
-    );
+    const normalizedFragranceName = normalizeScentName(fragranceName);
+  const existingRequest = communityRequests.find(
+    (item) => normalizeScentName(item.name) === normalizedFragranceName
+  );
 
     if (existingRequest) {
       setCommunityRequests((prev) =>
         prev
           .map((item) =>
-            item.name.toLowerCase() === fragranceName.toLowerCase()
+            normalizeScentName(item.name) === normalizedFragranceName
               ? { ...item, votes: item.votes + 1 }
               : item
           )
@@ -4422,6 +4603,14 @@ const closeProductModal = (
   cleanupDelay = PRODUCT_MODAL_CLOSE_DELAY
 ) => {
   const isMobileModal = isMobileProductModal();
+  const returnScrollY = productModalReturnScrollRef.current;
+
+  if (Number.isFinite(returnScrollY)) {
+    window.setTimeout(() => {
+      window.scrollTo({ top: returnScrollY, left: 0, behavior: "auto" });
+      productModalReturnScrollRef.current = null;
+    }, cleanupDelay + 60);
+  }
 
   setNoteMapOpen(false);
   setProductModalVisible(false);
@@ -5042,19 +5231,57 @@ useEffect(() => {
       if (!isMounted) return;
 
       if (data.status === "ok") {
-      if (Array.isArray(data.requests) && data.requests.length > 0) {
-      setCommunityRequests(data.requests);
-      }
+        const liveRequests = Array.isArray(data.requests) ? data.requests : [];
+        const liveExistingRequests = Array.isArray(data.existingRequests)
+          ? data.existingRequests
+          : [];
 
-      if (
-      Array.isArray(data.existingRequests) &&
-      data.existingRequests.length > 0
-      )   {
-      setExistingCollectionRequests(data.existingRequests);
+        if (liveRequests.length > 0) {
+          setCommunityRequests(liveRequests);
+        }
+
+        const mergedExistingRequests = mergeExistingCollectionRequests(
+          liveRequests,
+          liveExistingRequests
+        );
+
+        if (mergedExistingRequests.length > 0) {
+          setExistingCollectionRequests(mergedExistingRequests);
+
+          try {
+            localStorage.setItem(
+              "playnice_existing_collection_requests_v1",
+              JSON.stringify(mergedExistingRequests)
+            );
+          } catch {}
+        }
       }
-    }
     } catch (error) {
       console.error("Failed to load scent requests:", error);
+
+      try {
+        const cachedExistingRequests = JSON.parse(
+          localStorage.getItem("playnice_existing_collection_requests_v1") || "[]"
+        );
+
+        setExistingCollectionRequests(
+          Array.isArray(cachedExistingRequests) && cachedExistingRequests.length > 0
+            ? cachedExistingRequests
+            : Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).map(([name, votes]) => ({
+                name,
+                votes,
+                lockedVotes: votes,
+              }))
+        );
+      } catch {
+        setExistingCollectionRequests(
+          Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).map(([name, votes]) => ({
+            name,
+            votes,
+            lockedVotes: votes,
+          }))
+        );
+      }
     }
   };
 
@@ -6980,8 +7207,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <small>
   {lang === "sr"
-    ? "Jedan glas po parfemu na svakih 7 dana"
-    : "One vote per fragrance every 7 days"}
+    ? "Do 3 glasa u 24h · isti parfem ponovo nakon 3 dana"
+    : "Up to 3 votes in 24h · same fragrance again after 3 days"}
     </small>
   </div>
 
