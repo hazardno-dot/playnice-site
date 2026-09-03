@@ -19,6 +19,8 @@ import HeroReviewBridge from "./HeroReviewBridge";
 import HeroApplyBridge from "./HeroApplyBridge";
 import "./header-layout.css";
 
+const ACTIVE_MODULE_KEY = "playnice_cc_active_module";
+
 export default function ControlCenterManagers() {
   const [slots, setSlots] = useState({ draft: null, apply: null });
 
@@ -46,6 +48,42 @@ export default function ControlCenterManagers() {
     }
 
     setSlots({ draft: draftSlot, apply: applySlot });
+  }, []);
+
+  useEffect(() => {
+    const nav = document.querySelector(".sidebar nav");
+    const mainStage = document.querySelector(".main-stage");
+    if (!nav || !mainStage) return;
+
+    const rememberModule = (event) => {
+      const button = event.target.closest("button");
+      if (!button || !nav.contains(button)) return;
+      const moduleName = button.textContent?.trim();
+      if (moduleName) window.sessionStorage.setItem(ACTIVE_MODULE_KEY, moduleName);
+    };
+    nav.addEventListener("click", rememberModule);
+
+    const persisted = window.sessionStorage.getItem(ACTIVE_MODULE_KEY);
+    let restoreTimer = null;
+    if (persisted === "Hero") {
+      let attempts = 0;
+      restoreTimer = window.setInterval(() => {
+        attempts += 1;
+        const heading = mainStage.querySelector(".topbar h1");
+        if (heading?.textContent?.trim() === "Hero") {
+          window.clearInterval(restoreTimer);
+          return;
+        }
+        const heroButton = nav.querySelector("[data-hero-manager-nav='true']");
+        if (heroButton) heroButton.click();
+        if (attempts >= 40) window.clearInterval(restoreTimer);
+      }, 50);
+    }
+
+    return () => {
+      nav.removeEventListener("click", rememberModule);
+      if (restoreTimer) window.clearInterval(restoreTimer);
+    };
   }, []);
 
   return <>

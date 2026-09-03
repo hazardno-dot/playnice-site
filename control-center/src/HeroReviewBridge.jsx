@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
 import { supabase } from "./supabase";
@@ -7,8 +7,28 @@ import { mergeHeroDrafts } from "./heroDraft.mjs";
 import "./hero-review.css";
 
 const productSlugs = products.map((product) => product.slug);
+const HERO_WORKFLOW_UPDATED_EVENT = "playnice:hero-workflow-updated";
 
 const statusLabel = (status) => status === "approved" ? "APPROVED" : status === "ready" ? "READY FOR REVIEW" : "DRAFT";
+
+function ensureWorkflowSlot(detail) {
+  let workflowSlot = detail.querySelector("#hero-workflow-slot");
+  if (!workflowSlot) {
+    workflowSlot = document.createElement("div");
+    workflowSlot.id = "hero-workflow-slot";
+    workflowSlot.className = "hero-workflow-stack";
+    const footer = detail.querySelector(".hero-draft-footer");
+    detail.insertBefore(workflowSlot, footer || null);
+  }
+  let reviewSlot = workflowSlot.querySelector("#hero-review-slot");
+  if (!reviewSlot) {
+    reviewSlot = document.createElement("div");
+    reviewSlot.id = "hero-review-slot";
+    const applySlot = workflowSlot.querySelector("#hero-controlled-apply-slot");
+    workflowSlot.insertBefore(reviewSlot, applySlot || null);
+  }
+  return reviewSlot;
+}
 
 export default function HeroReviewBridge() {
   const [slot, setSlot] = useState(null);
@@ -16,6 +36,7 @@ export default function HeroReviewBridge() {
   const [row, setRow] = useState(null);
   const [working, setWorking] = useState(false);
   const [error, setError] = useState("");
+  const lastDraftSignature = useRef("");
 
   const loadSelectedRow = useCallback(async (key) => {
     if (!key) { setRow(null); return; }
@@ -39,29 +60,27 @@ export default function HeroReviewBridge() {
       raf = requestAnimationFrame(() => {
         const heading = mainStage.querySelector(".topbar h1");
         const detail = mainStage.querySelector(".hero-manager-detail");
-        const detailHead = detail?.querySelector(".hero-manager-detail-head");
         const active = mainStage.querySelector(".hero-slide-row.is-active");
-        if (heading?.textContent?.trim() !== "Hero" || !detail || !detailHead || !active) {
+        if (heading?.textContent?.trim() !== "Hero" || !detail || !active) {
           setSlot(null);
           setHeroKey("");
+          setRow(null);
+          lastDraftSignature.current = "";
           return;
         }
 
-        const idMatch = active.textContent?.match(/#(\d+)/);
-        const id = Number(idMatch?.[1]);
+        setSlot(ensureWorkflowSlot(detail));
+        const id = Number(active.textContent?.match(/#(\d+)/)?.[1]);
         if (!id) return;
-
-        let reviewSlot = detail.querySelector("#hero-review-slot");
-        if (!reviewSlot) {
-          reviewSlot = document.createElement("div");
-          reviewSlot.id = "hero-review-slot";
-          detail.appendChild(reviewSlot);
-        }
-        setSlot(reviewSlot);
-
         supabase.from("hero_slides").select("hero_key").eq("id", id).maybeSingle().then(({ data }) => {
           const key = data?.hero_key || "";
           setHeroKey((current) => current === key ? current : key);
+          const hasDraftUi = Boolean(detail.querySelector(".hero-draft-footer"));
+          const signature = `${key}:${hasDraftUi ? "draft" : "baseline"}`;
+          if (key && signature !== lastDraftSignature.current) {
+            lastDraftSignature.current = signature;
+            loadSelectedRow(key);
+          }
         });
       });
     };
@@ -70,7 +89,7 @@ export default function HeroReviewBridge() {
     const observer = new MutationObserver(sync);
     observer.observe(mainStage, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["class"] });
     return () => { cancelAnimationFrame(raf); observer.disconnect(); };
-  }, []);
+  }, [loadSelectedRow]);
 
   useEffect(() => { loadSelectedRow(heroKey); }, [heroKey, loadSelectedRow]);
 
@@ -117,6 +136,7 @@ export default function HeroReviewBridge() {
         .single();
       if (updateError) throw updateError;
       setRow(data);
+      window.dispatchEvent(new CustomEvent(HERO_WORKFLOW_UPDATED_EVENT, { detail: { heroKey, reviewStatus: data.review_status } }));
     } catch (reviewError) {
       setError(reviewError.message || String(reviewError));
     } finally {
@@ -146,6 +166,5 @@ export default function HeroReviewBridge() {
       {approvedLocked ? <button disabled={working} onClick={() => setReviewStatus("draft")}>Return to draft</button> : null}
     </div>
     {status === "approved" && row.reviewed_at ? <div className="hero-review-meta">Approved {new Date(row.reviewed_at).toLocaleString()} · approved snapshot stored in Supabase</div> : null}
-    <div id="hero-apply-anchor" />
   </section>, slot);
 }

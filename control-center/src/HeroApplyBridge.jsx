@@ -3,6 +3,8 @@ import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
 import "./hero-apply.css";
 
+const HERO_WORKFLOW_UPDATED_EVENT = "playnice:hero-workflow-updated";
+
 async function readResponse(response) {
   const text = await response.text();
   try {
@@ -10,6 +12,18 @@ async function readResponse(response) {
   } catch {
     throw new Error(`Server returned ${response.status}: ${text || response.statusText}`);
   }
+}
+
+function ensureWorkflowSlot(detail) {
+  let workflowSlot = detail.querySelector("#hero-workflow-slot");
+  if (!workflowSlot) {
+    workflowSlot = document.createElement("div");
+    workflowSlot.id = "hero-workflow-slot";
+    const footer = detail.querySelector(".hero-draft-footer");
+    if (footer) detail.insertBefore(workflowSlot, footer);
+    else detail.appendChild(workflowSlot);
+  }
+  return workflowSlot;
 }
 
 export default function HeroApplyBridge() {
@@ -41,16 +55,28 @@ export default function HeroApplyBridge() {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const heading = mainStage.querySelector(".topbar h1");
+        const detail = mainStage.querySelector(".hero-manager-detail");
         const active = mainStage.querySelector(".hero-slide-row.is-active");
-        const applyAnchor = mainStage.querySelector("#hero-apply-anchor");
-        if (heading?.textContent?.trim() !== "Hero" || !active || !applyAnchor) {
+        if (heading?.textContent?.trim() !== "Hero" || !detail || !active) {
           setSlot(null);
+          setHeroKey("");
           return;
         }
 
-        setSlot(applyAnchor);
+        const workflowSlot = ensureWorkflowSlot(detail);
+        let applySlot = workflowSlot.querySelector("#hero-controlled-apply-slot");
+        if (!applySlot) {
+          applySlot = document.createElement("div");
+          applySlot.id = "hero-controlled-apply-slot";
+          workflowSlot.appendChild(applySlot);
+        }
+        setSlot(applySlot);
+
         const id = Number(active.textContent?.match(/#(\d+)/)?.[1]);
-        if (!id) return;
+        if (!id) {
+          setHeroKey("");
+          return;
+        }
         supabase.from("hero_slides").select("hero_key").eq("id", id).maybeSingle().then(({ data, error: keyError }) => {
           if (keyError) { setError(keyError.message || String(keyError)); return; }
           const key = data?.hero_key || "";
@@ -66,6 +92,17 @@ export default function HeroApplyBridge() {
   }, []);
 
   useEffect(() => { loadRow(heroKey); }, [heroKey, loadRow]);
+
+  useEffect(() => {
+    const onWorkflowUpdated = (event) => {
+      const key = event?.detail?.heroKey;
+      if (!key) return;
+      setHeroKey(key);
+      loadRow(key);
+    };
+    window.addEventListener(HERO_WORKFLOW_UPDATED_EVENT, onWorkflowUpdated);
+    return () => window.removeEventListener(HERO_WORKFLOW_UPDATED_EVENT, onWorkflowUpdated);
+  }, [loadRow]);
 
   useEffect(() => {
     if (!heroKey) return;

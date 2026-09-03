@@ -1,0 +1,8 @@
+.hero-manager-detail{display:flex;flex-direction:column}
+.hero-manager-detail>.hero-manager-detail-head{order:10}
+.hero-manager-detail>.hero-preview-grid{order:20}
+.hero-manager-detail>.hero-contract-grid{order:30}
+.hero-manager-detail>.hero-collection-contract{order:40}
+.hero-manager-detail>#hero-workflow-slot{order:90;flex:0 0 auto}
+.hero-manager-detail>.hero-draft-footer{order:100}
+.hero-manager-detail>.hero-editor{order:10}
