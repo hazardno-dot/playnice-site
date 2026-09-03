@@ -182,7 +182,7 @@ async function loadDraft(noteKey, token) {
   return draft || null;
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
   if (!SUPABASE_URL || !SUPABASE_KEY) return json(res, 500, { error: "Supabase server configuration is missing." });
   if (!GITHUB_TOKEN) return json(res, 500, { error: "GITHUB_TOKEN is not configured on the Control Center project." });
@@ -272,8 +272,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id }),
     });
     if (!update.ok) throw new Error("Notes PR was created, but its draft metadata could not be persisted.");
-    return json(res, 200, { ok: true, note_key: noteKey, branch, pr_number: pr.number, pr_url: pr.html_url, file: NOTE_SOURCE_PATH, version: "notes-v1-inline" });
+    return json(res, 200, { ok: true, note_key: noteKey, branch, pr_number: pr.number, pr_url: pr.html_url, file: NOTE_SOURCE_PATH, version: "notes-v1-inline-cjs" });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Notes Controlled Apply failed." });
   }
-}
+};
