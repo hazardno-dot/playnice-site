@@ -748,6 +748,8 @@ const getInitialShopState = () => {
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [isVideoInView, setIsVideoInView] = useState(false);
   const [productModalVisible, setProductModalVisible] = useState(false);
+  const productModalReturnScrollRef = useRef(null);
+  const productRequestOpenTimeoutRef = useRef(null);
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [modalAddedKey, setModalAddedKey] = useState(null);
   const modalAddedTimeoutRef = useRef(null);
@@ -1926,6 +1928,10 @@ useEffect(() => {
 
 useEffect(() => {
   return () => {
+    if (productRequestOpenTimeoutRef.current) {
+      clearTimeout(productRequestOpenTimeoutRef.current);
+    }
+
     if (productModalCloseTimeoutRef.current) {
       clearTimeout(productModalCloseTimeoutRef.current);
     }
@@ -2458,8 +2464,17 @@ const findExistingProductByRequest = (requestName) => {
 const openProductFromRequest = (product) => {
   if (!product) return;
 
-  setSelectedProduct(product);
-  setProductModalVisible(true);
+  productModalReturnScrollRef.current = window.scrollY;
+
+  if (productRequestOpenTimeoutRef.current) {
+    clearTimeout(productRequestOpenTimeoutRef.current);
+  }
+
+  productRequestOpenTimeoutRef.current = setTimeout(() => {
+    productRequestOpenTimeoutRef.current = null;
+    setSelectedProduct(product);
+    setProductModalVisible(true);
+  }, 450);
 };
 
 const getVisibleCommunityRequests = (requests) =>
@@ -4439,6 +4454,14 @@ const closeProductModal = (
   cleanupDelay = PRODUCT_MODAL_CLOSE_DELAY
 ) => {
   const isMobileModal = isMobileProductModal();
+  const returnScrollY = productModalReturnScrollRef.current;
+
+  if (Number.isFinite(returnScrollY)) {
+    window.setTimeout(() => {
+      window.scrollTo({ top: returnScrollY, left: 0, behavior: "auto" });
+      productModalReturnScrollRef.current = null;
+    }, cleanupDelay + 60);
+  }
 
   setNoteMapOpen(false);
   setProductModalVisible(false);
