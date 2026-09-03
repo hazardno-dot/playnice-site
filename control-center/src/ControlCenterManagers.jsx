@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import DraftManager from "./DraftManager";
 import InlineValidationBridge from "./InlineValidationBridge";
+import DiscoveryBulkPasteBridge from "./DiscoveryBulkPasteBridge";
 import ControlledApplyManager from "./ControlledApplyManager";
 import ProductWorkflowBridge from "./ProductWorkflowBridge";
 import ProductCatalogCountBridge from "./ProductCatalogCountBridge";
@@ -89,6 +90,7 @@ export default function ControlCenterManagers() {
   return <>
     {slots.draft ? createPortal(<DraftManager />, slots.draft) : <DraftManager />}
     <InlineValidationBridge />
+    <DiscoveryBulkPasteBridge />
     <ProductWorkflowBridge />
     <ProductCatalogCountBridge />
     <HeroManager />
