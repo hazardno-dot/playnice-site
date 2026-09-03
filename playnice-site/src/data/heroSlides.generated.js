@@ -80,16 +80,14 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-5.jpg",
     "desktopImage": "/hero/slide-5.jpg",
     "mobileImage": "/hero/mobile/slide-5-mobile.jpg",
-    "alt": "Summer Bangers",
+    "alt": "Još ih niste probali? – PlayNice izbor parfema",
     "actionPrimary": "collection",
     "actionCollection": [
-      "dolce-gabbana-light-blue-pour-homme-2025",
-      "giorgio-armani-acqua-di-gio-profondo-parfum",
-      "versace-man-eau-fraiche",
-      "ysl-y-iced-cologne",
-      "acqua-di-parma-fico-di-amalfi"
+      "armaf-club-de-nuit-intense-overdose",
+      "narciso-rodriguez-for-him-bleu-noir-extreme-edt",
+      "french-avenue-ravine-ginger-edp"
     ],
-    "collectionTitle": "Summer Bangers"
+    "collectionTitle": "Još ih niste probali?"
   },
   {
     "id": 1,
