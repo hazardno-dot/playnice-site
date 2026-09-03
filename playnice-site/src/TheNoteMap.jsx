@@ -62,6 +62,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/arctical.webp",
     fallback: "❄️",
   },
+  "pomelo": {
+    sr: "pomelo",
+    en: "pomelo",
+    image: "/note-map/pomelo.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
