@@ -82,11 +82,11 @@ export default function InlineValidationBridge() {
   return <div className={`inline-validation-floating ${errors.length ? "blocked" : "ready"}`}>
     <div className="inline-validation-floating-head">
       <span>LIVE VALIDATION</span>
-      <strong>{errors.length ? `BLOCKED · ${errors.length}` : "VISIBLE CHECKS PASS"}</strong>
+      <strong>{errors.length ? `${errors.length} FIELDS REMAINING` : "VISIBLE CHECKS PASS"}</strong>
     </div>
     {errors.length ? <div className="inline-validation-floating-issues">
-      {errors.slice(0, 3).map((issue, index) => <div key={`${issue.field}-${index}`}><strong>{issue.field}</strong><span>{issue.message}</span></div>)}
-      {errors.length > 3 ? <small>+ {errors.length - 3} more</small> : null}
+      {errors.slice(0, 2).map((issue, index) => <div key={`${issue.field}-${index}`}><strong>{issue.field}</strong><span>{issue.message}</span></div>)}
+      {errors.length > 2 ? <small>+ {errors.length - 2} more</small> : null}
     </div> : <p>All visible editor checks pass.</p>}
     <small>Draft Manager performs the authoritative validation before review. Save Draft remains safe and unpublished.</small>
   </div>;
