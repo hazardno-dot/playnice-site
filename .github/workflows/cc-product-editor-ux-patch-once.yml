@@ -28,7 +28,7 @@ jobs:
           grep -q 'left:270px' control-center/src/inline-validation.css
       - name: Install Control Center dependencies
         working-directory: control-center
-        run: npm ci
+        run: npm install
       - name: Control Center production build
         working-directory: control-center
         run: npm run build
