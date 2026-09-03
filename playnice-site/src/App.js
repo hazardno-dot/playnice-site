@@ -2331,35 +2331,55 @@ const sendScentRequest = async (
   fragranceName,
   source = "scent_request"
 ) => {
-  try {
-    const response = await fetch(
-      "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
-      {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          fragrance: fragranceName,
-          lang,
-          page: window.location.pathname,
-          source,
-          deviceId: getPlayNiceDeviceId()
-        })
+  const maxAttempts = 3;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            fragrance: fragranceName,
+            lang,
+            page: window.location.pathname,
+            source,
+            deviceId: getPlayNiceDeviceId()
+          })
+        }
+      );
+
+      const result = await response.json();
+      const isServerBusy =
+        result?.status === "busy" || result?.blockReason === "server_busy";
+
+      if (!isServerBusy || attempt === maxAttempts) {
+        return result;
       }
-    );
 
-    return await response.json();
-  } catch (error) {
-    console.error("Scent request submit failed:", error);
+      await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+    } catch (error) {
+      if (attempt === maxAttempts) {
+        console.error("Scent request submit failed:", error);
+        return {
+          status: "error",
+          message: String(error)
+        };
+      }
 
-    return {
-      status: "error",
-      message: String(error)
-    };
+      await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+    }
   }
+
+  return {
+    status: "error",
+    message: "Scent request retry limit reached"
+  };
 };
 
 /* =========================================
@@ -2668,6 +2688,8 @@ const handleCommunityRequestVote = async (requestName) => {
 
     return;
   }
+
+  setScentRequestValue("");
 
   setCommunityRequests((prev) => {
     const beforeSorted = getVisibleCommunityRequests(prev);
