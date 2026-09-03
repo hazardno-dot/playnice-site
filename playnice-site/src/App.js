@@ -2466,19 +2466,36 @@ const getScentRequestMatchScore = (requestName, product) => {
   return bestScore;
 };
 
-const findExistingProductByRequest = (requestName) => {
+const getScentRequestMatchResult = (requestName) => {
   const rankedMatches = products
     .map((product) => ({ product, score: getScentRequestMatchScore(requestName, product) }))
     .filter((item) => item.score > 0)
     .sort((a, b) => b.score - a.score);
 
-  if (!rankedMatches.length) return null;
-  const [bestMatch, secondMatch] = rankedMatches;
+  if (!rankedMatches.length) {
+    return { product: null, ambiguous: false };
+  }
 
-  // Do not guess when a short request matches multiple variants equally well.
-  if (secondMatch && secondMatch.score === bestMatch.score) return null;
-  return bestMatch.product;
+  const bestScore = rankedMatches[0].score;
+  const topMatches = rankedMatches.filter((item) => item.score === bestScore);
+
+  if (topMatches.length > 1) {
+    return { product: null, ambiguous: true };
+  }
+
+  return { product: rankedMatches[0].product, ambiguous: false };
 };
+
+const findExistingProductByRequest = (requestName) =>
+  getScentRequestMatchResult(requestName).product;
+
+const isAmbiguousScentRequest = (requestName) =>
+  getScentRequestMatchResult(requestName).ambiguous;
+
+const getAmbiguousScentRequestMessage = () =>
+  lang === "sr"
+    ? "Naziv je preširok — postoji više mogućih parfema. Unesite tačan naziv parfema koji tražite."
+    : "This name is too broad — it could refer to several fragrances. Please enter the exact fragrance name.";
 
 /* =========================================
    SCENT REQUEST HELPERS
@@ -2504,7 +2521,11 @@ const openProductFromRequest = (product) => {
 
 const getVisibleCommunityRequests = (requests) =>
   requests
-    .filter((request) => !findExistingProductByRequest(request.name))
+    .filter(
+      (request) =>
+        !findExistingProductByRequest(request.name) &&
+        !isAmbiguousScentRequest(request.name)
+    )
     .sort((a, b) => b.votes - a.votes);
 
 const EXISTING_COLLECTION_LOCKED_VOTES = {
@@ -2618,6 +2639,11 @@ const handleCommunityRequestVote = async (requestName) => {
   openProductFromRequest(existingProduct);
   return;
 }
+
+  if (isAmbiguousScentRequest(requestName)) {
+    setScentRequestStatus(getAmbiguousScentRequestMessage());
+    return;
+  }
 
   const result = await sendScentRequest(requestName);
 
@@ -2738,6 +2764,11 @@ const handleScentRequestSubmit = async (event) => {
     openProductFromRequest(existingProduct);
     return;
   }
+
+    if (isAmbiguousScentRequest(fragranceName)) {
+      setScentRequestStatus(getAmbiguousScentRequestMessage());
+      return;
+    }
 
     const result = await sendScentRequest(fragranceName);
 
