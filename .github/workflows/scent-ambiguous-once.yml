@@ -1,0 +1,123 @@
+name: Patch ambiguous scent requests once
+on:
+  push:
+    paths:
+      - '.github/workflows/scent-ambiguous-once.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: scent-request-vote-guardrails
+          fetch-depth: 1
+      - name: Patch App.js
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          p = Path('playnice-site/src/App.js')
+          s = p.read_text(encoding='utf-8')
+          old = '''const findExistingProductByRequest = (requestName) => {
+            const rankedMatches = products
+              .map((product) => ({ product, score: getScentRequestMatchScore(requestName, product) }))
+              .filter((item) => item.score > 0)
+              .sort((a, b) => b.score - a.score);
+
+            if (!rankedMatches.length) return null;
+            const [bestMatch, secondMatch] = rankedMatches;
+
+            // Do not guess when a short request matches multiple variants equally well.
+            if (secondMatch && secondMatch.score === bestMatch.score) return null;
+            return bestMatch.product;
+          };'''.replace('          ', '')
+          new = '''const getScentRequestMatchResult = (requestName) => {
+            const rankedMatches = products
+              .map((product) => ({ product, score: getScentRequestMatchScore(requestName, product) }))
+              .filter((item) => item.score > 0)
+              .sort((a, b) => b.score - a.score);
+
+            if (!rankedMatches.length) {
+              return { product: null, ambiguous: false };
+            }
+
+            const bestScore = rankedMatches[0].score;
+            const topMatches = rankedMatches.filter((item) => item.score === bestScore);
+
+            if (topMatches.length > 1) {
+              return { product: null, ambiguous: true };
+            }
+
+            return { product: rankedMatches[0].product, ambiguous: false };
+          };
+
+          const findExistingProductByRequest = (requestName) =>
+            getScentRequestMatchResult(requestName).product;
+
+          const isAmbiguousScentRequest = (requestName) =>
+            getScentRequestMatchResult(requestName).ambiguous;
+
+          const getAmbiguousScentRequestMessage = () =>
+            lang === "sr"
+              ? "Naziv je preširok — postoji više mogućih parfema. Unesite tačan naziv parfema koji tražite."
+              : "This name is too broad — it could refer to several fragrances. Please enter the exact fragrance name.";'''.replace('          ', '')
+          if 'const getScentRequestMatchResult =' not in s:
+            if old not in s:
+              raise SystemExit('finder marker not found')
+            s = s.replace(old, new, 1)
+
+          old_visible = '''const getVisibleCommunityRequests = (requests) =>
+  requests
+    .filter((request) => !findExistingProductByRequest(request.name))
+    .sort((a, b) => b.votes - a.votes);'''
+          new_visible = '''const getVisibleCommunityRequests = (requests) =>
+  requests
+    .filter(
+      (request) =>
+        !findExistingProductByRequest(request.name) &&
+        !isAmbiguousScentRequest(request.name)
+    )
+    .sort((a, b) => b.votes - a.votes);'''
+          if old_visible in s:
+            s = s.replace(old_visible, new_visible, 1)
+
+          marker1 = '  const result = await sendScentRequest(requestName);'
+          insert1 = '''  if (isAmbiguousScentRequest(requestName)) {
+    setScentRequestStatus(getAmbiguousScentRequestMessage());
+    return;
+  }
+
+  const result = await sendScentRequest(requestName);'''
+          if 'if (isAmbiguousScentRequest(requestName))' not in s:
+            if marker1 not in s:
+              raise SystemExit('community submit marker not found')
+            s = s.replace(marker1, insert1, 1)
+
+          marker2 = '    const result = await sendScentRequest(fragranceName);'
+          insert2 = '''    if (isAmbiguousScentRequest(fragranceName)) {
+      setScentRequestStatus(getAmbiguousScentRequestMessage());
+      return;
+    }
+
+    const result = await sendScentRequest(fragranceName);'''
+          if 'if (isAmbiguousScentRequest(fragranceName))' not in s:
+            if marker2 not in s:
+              raise SystemExit('form submit marker not found')
+            s = s.replace(marker2, insert2, 1)
+
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Install and verify
+        working-directory: playnice-site
+        run: |
+          npm install --package-lock=false
+          npm test -- --watchAll=false
+          DISABLE_ESLINT_PLUGIN=true npx react-scripts build
+      - name: Commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add playnice-site/src/App.js
+          git commit -m 'fix: reject ambiguous scent requests' || exit 0
+          git push origin HEAD:scent-request-vote-guardrails
