@@ -255,6 +255,24 @@ function preflight(parsed) {
   return { blockers, actions };
 }
 
+function classifyActions(actions) {
+  return actions.map((action) => {
+    if (action.type === "size") return { ...action, changeType: "new" };
+    const current = String(action.control?.value ?? "").trim();
+    const incoming = String(action.value ?? "").trim();
+    if (!current) return { ...action, changeType: "new" };
+    if (current === incoming) return { ...action, changeType: "unchanged" };
+    return { ...action, changeType: "changed" };
+  });
+}
+
+function changeSummary(actions) {
+  return actions.reduce((summary, action) => {
+    summary[action.changeType] += 1;
+    return summary;
+  }, { new: 0, changed: 0, unchanged: 0 });
+}
+
 function nextFrame() {
   return new Promise((resolve) => window.requestAnimationFrame(() => window.requestAnimationFrame(resolve)));
 }
@@ -278,6 +296,7 @@ export default function ProductBulkPasteBridge() {
   const [source, setSource] = useState("");
   const [message, setMessage] = useState("");
   const [expanded, setExpanded] = useState(true);
+  const [mode, setMode] = useState("fill-empty");
 
   useEffect(() => {
     const main = document.querySelector(".main-stage");
@@ -304,20 +323,30 @@ export default function ProductBulkPasteBridge() {
   }, []);
 
   const parsed = useMemo(() => parseSource(source), [source]);
-  const validation = preflight(parsed);
+  const rawValidation = preflight(parsed);
+  const actions = classifyActions(rawValidation.actions);
+  const validation = { ...rawValidation, actions };
+  const summary = changeSummary(actions);
+  const applicableActions = actions.filter((action) =>
+    action.changeType === "new" || (mode === "overwrite" && action.changeType === "changed")
+  );
   const hasInput = Boolean(source.trim());
-  const canApply = hasInput && validation.blockers.length === 0 && validation.actions.length > 0;
+  const canApply = hasInput && validation.blockers.length === 0 && applicableActions.length > 0;
 
   const apply = async () => {
-    const latest = preflight(parsed);
-    if (latest.blockers.length) {
+    const latestRaw = preflight(parsed);
+    if (latestRaw.blockers.length) {
       setMessage("Apply blocked. Fix the preflight issues first; no fields were changed.");
       return;
     }
 
+    const latestActions = classifyActions(latestRaw.actions);
+    const selected = latestActions.filter((action) =>
+      action.changeType === "new" || (mode === "overwrite" && action.changeType === "changed")
+    );
     let applied = 0;
-    const sizeActions = latest.actions.filter((action) => action.type === "size");
-    const fieldActions = latest.actions.filter((action) => action.type === "field");
+    const sizeActions = selected.filter((action) => action.type === "size");
+    const fieldActions = selected.filter((action) => action.type === "field");
 
     fieldActions.forEach((action) => {
       setNativeValue(action.control, action.value);
@@ -332,7 +361,8 @@ export default function ProductBulkPasteBridge() {
       }
     }
 
-    setMessage(`${applied} fields applied. Nothing was saved. Review live validation, then Save Draft.`);
+    const skipped = latestActions.length - selected.length;
+    setMessage(`${applied} fields applied · ${skipped} protected/skipped. Nothing was saved. Review live validation, then Save Draft.`);
   };
 
   if (!slot) return null;
@@ -342,11 +372,21 @@ export default function ProductBulkPasteBridge() {
         <div>
           <span className="eyebrow">FAST ENTRY / DRAFT ONLY</span>
           <strong>Bulk product input</strong>
-          <p>Paste one complete product block. CC preflights the entire block before changing any field; Save Draft stays separate.</p>
+          <p>Paste one complete product block. CC preflights every value first; Save Draft stays separate.</p>
         </div>
         <button type="button" className="secondary-btn" onClick={() => setExpanded((value) => !value)}>{expanded ? "Collapse" : "Open"}</button>
       </div>
       {expanded ? <>
+        <div className="product-bulk-paste-footer">
+          <div className="product-bulk-summary">
+            <strong>Write mode</strong>
+            <span> · default is safe</span>
+          </div>
+          <div>
+            <button type="button" className={mode === "fill-empty" ? "primary-btn" : "secondary-btn"} onClick={() => { setMode("fill-empty"); setMessage(""); }}>Fill empty only</button>{" "}
+            <button type="button" className={mode === "overwrite" ? "primary-btn" : "secondary-btn"} onClick={() => { setMode("overwrite"); setMessage(""); }}>Overwrite existing</button>
+          </div>
+        </div>
         <textarea
           value={source}
           onChange={(event) => { setSource(event.target.value); setMessage(""); }}
@@ -355,10 +395,10 @@ export default function ProductBulkPasteBridge() {
         />
         {hasInput ? <div className={`product-bulk-preflight ${validation.blockers.length ? "has-blockers" : "is-ready"}`}>
           <div className="product-bulk-preflight-title">
-            <strong>{validation.actions.length} ready</strong>
+            <strong>{validation.actions.length} valid</strong>
             <span> · {validation.blockers.length} blockers</span>
           </div>
-          {validation.blockers.length ? <ul>{validation.blockers.slice(0, 8).map((blocker, index) => <li key={`${blocker}-${index}`}>{blocker}</li>)}</ul> : <p>Preflight passed. Apply will only fill the draft editor; it will not save or publish.</p>}
+          {validation.blockers.length ? <ul>{validation.blockers.slice(0, 8).map((blocker, index) => <li key={`${blocker}-${index}`}>{blocker}</li>)}</ul> : <p>Preflight passed. {summary.new} new · {summary.changed} changed · {summary.unchanged} unchanged. {mode === "fill-empty" ? "Changed existing values are protected." : "Changed existing values will be overwritten."}</p>}
           {validation.blockers.length > 8 ? <p>+ {validation.blockers.length - 8} more blockers</p> : null}
         </div> : null}
         <div className="product-bulk-paste-footer">
@@ -366,6 +406,7 @@ export default function ProductBulkPasteBridge() {
             <strong>{parsed.entries.length}</strong> parsed fields
             {parsed.malformed.length ? <span> · {parsed.malformed.length} malformed</span> : null}
             {parsed.duplicates.length ? <span> · {parsed.duplicates.length} duplicates</span> : null}
+            {hasInput && !validation.blockers.length ? <span> · {applicableActions.length} will apply</span> : null}
           </div>
           <button type="button" className="primary-btn" onClick={apply} disabled={!canApply}>Apply to draft fields</button>
         </div>
