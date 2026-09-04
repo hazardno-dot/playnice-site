@@ -405,10 +405,11 @@ export default function ProductBulkPasteBridge() {
     const sizeActions = selected.filter((action) => action.type === "size");
     const fieldActions = selected.filter((action) => action.type === "field");
 
-    fieldActions.forEach((action) => {
+    for (const action of fieldActions) {
       setNativeValue(action.control, action.value);
       applied += 1;
-    });
+      await nextFrame();
+    }
 
     for (const action of sizeActions) {
       if (await addSize(action.size, action.value)) applied += 1;
