@@ -2,14 +2,26 @@ import { products } from "@shop/data/products/index.js";
 import { productCopy } from "@shop/data/products/productCopy.js";
 import { productWearContext } from "@shop/data/products/productWearContext.js";
 import discoveryProfiles from "@shop/data/products/discoveryProfiles.js";
+import noteMapSource from "@shop/TheNoteMap.jsx?raw";
 
 const csv = (value) => String(value ?? "").split(",").map((v) => v.trim()).filter(Boolean);
 const empty = (value) => value == null || String(value).trim() === "";
 const finite = (value) => Number.isFinite(Number(value));
 
-const KNOWN_NOTE_KEYS = new Set(
-  products.flatMap((product) => ["top", "heart", "base"].flatMap((level) => product.noteMap?.[level] || []))
-);
+function noteLibraryKeys(source) {
+  const start = source.indexOf("const NOTE_LIBRARY = {");
+  const end = source.indexOf("const NOTE_SR = {", start);
+  if (start < 0 || end < 0) return [];
+  const section = source.slice(start, end);
+  return [...section.matchAll(/^  (?:(?:"([^"]+)")|(?:'([^']+)')|([A-Za-z0-9_-]+))\s*:\s*\{/gm)]
+    .map((match) => match[1] || match[2] || match[3])
+    .filter(Boolean);
+}
+
+const KNOWN_NOTE_KEYS = new Set([
+  ...products.flatMap((product) => ["top", "heart", "base"].flatMap((level) => product.noteMap?.[level] || [])),
+  ...noteLibraryKeys(noteMapSource),
+]);
 const PRODUCT_SLUGS = new Set(products.map((product) => product.slug));
 const DISCOVERY_KEYS = Object.keys(discoveryProfiles[products[0]?.slug] || {});
 
@@ -29,11 +41,15 @@ export function validateProductDraft(live, draft) {
     issues.push(issue("error", "Core", "Rating", "Rating must be a number from 0 to 10."));
   }
 
-  if (!csv(core.moods).length) issues.push(issue("error", "Core", "Moods", "At least one mood is required."));
+  const moods = csv(core.moods);
+  if (moods.length !== 3) issues.push(issue("error", "Presentation", "Moods", "Exactly 3 moods are required for product-card parity."));
 
   const imagePath = String(core.image || "").trim();
   if (!imagePath.startsWith("/products/") || imagePath === "/products/" || imagePath.endsWith("/")) issues.push(issue("error", "Core", "Image path", "Use a specific product image file under /products/, not a directory placeholder."));
-  if (core.inspiredBy && (!empty(core.inspiredBy.name) || !empty(core.inspiredBy.short)) && (empty(core.inspiredBy.name) || empty(core.inspiredBy.short))) issues.push(issue("warning", "Core", "Inspired by", "Use both inspired-by name and short label, or leave both empty."));
+
+  if (!live && empty(core.badge)) issues.push(issue("error", "Presentation", "Badge", "A new product must have a presentation badge so the modal media column keeps the standard PlayNice hierarchy."));
+  if (!live && empty(core.inspiredBy?.name)) issues.push(issue("error", "Presentation", "Inspired by · name", "A new product must define the modal reference/original-creation label. The optional short DNA label may remain empty."));
+  if (!empty(core.inspiredBy?.short) && empty(core.inspiredBy?.name)) issues.push(issue("warning", "Core", "Inspired by", "A short DNA label cannot be used without the main inspired-by/original-creation label."));
 
   const sizes = core.sizes || {};
   if (!Object.keys(sizes).length) issues.push(issue("error", "Prices", "Sizes", "At least one size and price is required."));
@@ -64,9 +80,33 @@ export function validateProductDraft(live, draft) {
     });
   });
 
+  const presentationLengths = [
+    ["miniTag", 32],
+    ["scentType", 42],
+    ["card", { sr: 82, en: 92 }],
+    ["modal", 230],
+    ["whyChoose", 125],
+  ];
+  presentationLengths.forEach(([field, limit]) => {
+    ["sr", "en"].forEach((lang) => {
+      const value = String(copy?.[field]?.[lang] || "").trim();
+      const max = typeof limit === "object" ? limit[lang] : limit;
+      if (value.length > max) issues.push(issue("error", "Presentation", `${field} · ${lang.toUpperCase()}`, `Copy is ${value.length} characters; keep it at or below ${max} to protect the shared card/modal layout.`));
+    });
+  });
+
+  ["sr", "en"].forEach((lang) => {
+    const dominant = csv(copy?.dominantNotes?.[lang]);
+    const tags = csv(copy?.tags?.[lang]);
+    if (dominant.length !== 4) issues.push(issue("error", "Presentation", `dominantNotes · ${lang.toUpperCase()}`, "Exactly 4 dominant notes are required for modal parity."));
+    if (tags.length !== 3) issues.push(issue("error", "Presentation", `tags · ${lang.toUpperCase()}`, "Exactly 3 tags are required for product presentation parity."));
+  });
+
   const wear = draft?.wear || {};
   ["sr", "en"].forEach((lang) => {
     if (empty(wear?.[lang])) issues.push(issue("error", "Wear", lang.toUpperCase(), "Wear context is required in both languages."));
+    const value = String(wear?.[lang] || "").trim();
+    if (value.length > 90) issues.push(issue("error", "Presentation", `Wear · ${lang.toUpperCase()}`, `Wear context is ${value.length} characters; keep it at or below 90 so product cards remain balanced.`));
   });
 
   const liveDiscovery = discoveryProfiles[live?.slug] || {};
