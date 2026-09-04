@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { DISCOVERY_SCHEMA, formatDiscoveryLabel } from "@shop/data/products/discoveryProfiles";
+import { discoveryProfiles } from "@shop/data/products/discoveryProfiles";
 import "./product-bulk-paste.css";
 
 const normalize = (value) => String(value || "")
@@ -71,7 +71,9 @@ const alias = {
   wear_en: "wear_en"
 };
 
-const discoveryKeys = new Set(DISCOVERY_SCHEMA);
+const discoveryKeys = new Set(
+  Object.values(discoveryProfiles || {}).flatMap((profile) => Object.keys(profile || {}))
+);
 
 function flattenJson(input, out = {}, prefix = "") {
   Object.entries(input || {}).forEach(([key, value]) => {
@@ -217,8 +219,7 @@ function preflight(parsed) {
         blockers.push(`Discovery ${discoveryKey} must be 0–10.`);
         return;
       }
-      const labelKey = normalize(formatDiscoveryLabel(discoveryKey));
-      const control = fieldMap.get(labelKey) || fieldMap.get(normalize(discoveryKey));
+      const control = fieldMap.get(normalize(discoveryKey));
       if (!control) blockers.push(`Field not found: ${discoveryKey}`);
       else actions.push({ type: "field", control, value: rawValue, label: discoveryKey });
       return;
