@@ -16,6 +16,7 @@ import SiteHealthOverviewBridge from "./SiteHealthOverviewBridge";
 import BrowserQaSiteHealthBridge from "./BrowserQaSiteHealthBridge";
 import BrowserQaOverviewBridge from "./BrowserQaOverviewBridge";
 import HeroManager from "./HeroManager";
+import HeroMediaUploadBridge from "./HeroMediaUploadBridge";
 import HeroReviewBridge from "./HeroReviewBridge";
 import HeroApplyBridge from "./HeroApplyBridge";
 import "./header-layout.css";
@@ -94,6 +95,7 @@ export default function ControlCenterManagers() {
     <ProductWorkflowBridge />
     <ProductCatalogCountBridge />
     <HeroManager />
+    <HeroMediaUploadBridge />
     <HeroReviewBridge />
     <HeroApplyBridge />
     <JournalManager />
