@@ -142,16 +142,9 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-11.jpg",
     "desktopImage": "/hero/slide-11.jpg",
     "mobileImage": "/hero/mobile/slide-11-mobile.jpg",
-    "alt": "Od sada u PlayNice kolekciji – 6 ikoničnih mirisa",
-    "actionPrimary": "collection",
-    "actionCollection": [
-      "bvlgari-man-in-black-edp",
-      "carolina-herrera-bad-boy-cobalt-edp",
-      "prada-luna-rossa-ocean-edt",
-      "mancera-aoud-lemon-mint",
-      "prada-paradigme-edp",
-      "ysl-myslf-edp"
-    ],
-    "collectionTitle": "Od sada u PlayNice kolekciji"
+    "alt": "Thomas Kosmala No. 8 Tonic Vert Eau de Parfum at PlayNice",
+    "actionPrimary": "product",
+    "actionProductSlug": "thomas-kosmala-no-8-tonic-vert",
+    "preferredSize": "5ml"
   }
 ];
