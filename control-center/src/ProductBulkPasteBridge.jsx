@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import { DISCOVERY_SCHEMA, formatDiscoveryLabel } from "@shop/data/products/discoveryProfiles";
 import "./product-bulk-paste.css";
 
 const normalize = (value) => String(value || "")
@@ -70,9 +71,7 @@ const alias = {
   wear_en: "wear_en"
 };
 
-const discoveryKeys = new Set([
-  "freshness","sweetness","warmth","darkness","airiness","cleanliness","creaminess","dryness","fruitiness","spiciness","woodiness","aromaticity","florality","gourmandness","citrus","aquatic","powdery","projection","longevity","office","casual","date"
-]);
+const discoveryKeys = new Set(DISCOVERY_SCHEMA);
 
 function flattenJson(input, out = {}, prefix = "") {
   Object.entries(input || {}).forEach(([key, value]) => {
@@ -86,11 +85,13 @@ function flattenJson(input, out = {}, prefix = "") {
 function normalizeKey(rawKey) {
   const raw = String(rawKey || "").trim();
   const lower = raw.toLowerCase();
-  const sizeMatch = lower.match(/^(?:sizes?[._-]?)?(\d+(?:\.\d+)?)\s*ml$/i);
+  const sizeMatch = lower.match(/^(?:(?:commerce[._-])?sizes?[._-]?)?(\d+(?:\.\d+)?)\s*ml$/i);
   if (sizeMatch) return `size:${sizeMatch[1]}ml`;
 
   const stripped = lower
     .replace(/^core[._-]/, "")
+    .replace(/^commerce[._-]/, "")
+    .replace(/^notes?[._-]/, "")
     .replace(/^copy[._-]/, "")
     .replace(/^wear[._-]/, "wear_")
     .replace(/^discovery[._-]/, "")
@@ -111,27 +112,34 @@ function normalizeKey(rawKey) {
 function parseSource(source) {
   const trimmed = source.trim();
   const entries = [];
-  const invalid = [];
-  if (!trimmed) return { entries, invalid: ["empty input"] };
+  const malformed = [];
+  const duplicates = [];
+  if (!trimmed) return { entries, malformed, duplicates };
+
+  const pushEntry = (rawKey, value) => {
+    const key = normalizeKey(rawKey);
+    if (entries.some(([existing]) => existing === key)) duplicates.push(key);
+    entries.push([key, value]);
+  };
 
   if (trimmed.startsWith("{")) {
     try {
       const flat = flattenJson(JSON.parse(trimmed));
-      Object.entries(flat).forEach(([key, value]) => entries.push([normalizeKey(key), value]));
-      return { entries, invalid };
+      Object.entries(flat).forEach(([key, value]) => pushEntry(key, value));
+      return { entries, malformed, duplicates };
     } catch {
-      return { entries: [], invalid: ["invalid JSON"] };
+      return { entries: [], malformed: ["Invalid JSON"], duplicates };
     }
   }
 
-  trimmed.split(/\r?\n/).forEach((line) => {
+  trimmed.split(/\r?\n/).forEach((line, index) => {
     const clean = line.trim();
     if (!clean || clean.startsWith("#")) return;
     const match = clean.match(/^([^:=]+?)\s*[:=]\s*(.*)$/);
-    if (!match) { invalid.push(clean); return; }
-    entries.push([normalizeKey(match[1]), match[2].trim()]);
+    if (!match) { malformed.push(`Line ${index + 1}: ${clean}`); return; }
+    pushEntry(match[1], match[2].trim());
   });
-  return { entries, invalid };
+  return { entries, malformed, duplicates };
 }
 
 function setNativeValue(element, value) {
@@ -156,19 +164,110 @@ function findFieldMap(root) {
   return map;
 }
 
-function addOrSetSize(root, size, price, fieldMap) {
-  const existing = fieldMap.get(normalize(size));
-  if (existing) { setNativeValue(existing, price); return true; }
+function resolveSelectValue(control, rawValue) {
+  if (!(control instanceof HTMLSelectElement)) return String(rawValue ?? "");
+  const target = String(rawValue ?? "").trim().toLowerCase();
+  const option = Array.from(control.options).find((candidate) =>
+    candidate.value.trim().toLowerCase() === target ||
+    candidate.textContent.trim().toLowerCase() === target
+  );
+  return option ? option.value : null;
+}
 
-  const composer = root.querySelector(".size-composer");
-  if (!composer) return false;
-  const inputs = composer.querySelectorAll("input");
-  const addButton = composer.querySelector("button");
-  if (inputs.length < 2 || !addButton) return false;
+function preflight(parsed) {
+  const root = document.querySelector(".product-detail.edit-mode");
+  const blockers = [];
+  const actions = [];
+  if (!parsed.entries.length && !parsed.malformed.length) return { blockers, actions };
+  if (!root) return { blockers: ["Product editor is not available."], actions };
+
+  parsed.malformed.forEach((line) => blockers.push(line));
+  parsed.duplicates.forEach((key) => blockers.push(`Duplicate key: ${key}`));
+
+  const fieldMap = findFieldMap(root);
+  const seen = new Set();
+
+  parsed.entries.forEach(([key, rawValue]) => {
+    if (seen.has(key)) return;
+    seen.add(key);
+
+    if (key.startsWith("size:")) {
+      const size = key.slice(5);
+      const price = Number(rawValue);
+      if (!Number.isFinite(price) || price <= 0) {
+        blockers.push(`Invalid price for ${size}: ${rawValue}`);
+        return;
+      }
+      const existing = fieldMap.get(normalize(size));
+      if (existing) actions.push({ type: "field", control: existing, value: rawValue, label: size });
+      else if (root.querySelector(".size-composer")) actions.push({ type: "size", size, value: rawValue, label: size });
+      else blockers.push(`Cannot add size: ${size}`);
+      return;
+    }
+
+    if (key.startsWith("discovery:")) {
+      const discoveryKey = key.slice(10);
+      if (!discoveryKeys.has(discoveryKey)) {
+        blockers.push(`Unknown Discovery key: ${discoveryKey}`);
+        return;
+      }
+      const number = Number(rawValue);
+      if (!Number.isFinite(number) || number < 0 || number > 10) {
+        blockers.push(`Discovery ${discoveryKey} must be 0–10.`);
+        return;
+      }
+      const labelKey = normalize(formatDiscoveryLabel(discoveryKey));
+      const control = fieldMap.get(labelKey) || fieldMap.get(normalize(discoveryKey));
+      if (!control) blockers.push(`Field not found: ${discoveryKey}`);
+      else actions.push({ type: "field", control, value: rawValue, label: discoveryKey });
+      return;
+    }
+
+    const control = fieldMap.get(key);
+    if (!control) {
+      blockers.push(`Unknown field: ${key}`);
+      return;
+    }
+
+    if (key === "rating") {
+      const rating = Number(rawValue);
+      if (!Number.isFinite(rating) || rating < 0 || rating > 10) {
+        blockers.push(`Rating must be 0–10.`);
+        return;
+      }
+    }
+
+    if (key === "recommendation_slugs_3_comma_separated") {
+      const recommendations = String(rawValue).split(",").map((item) => item.trim()).filter(Boolean);
+      if (recommendations.length !== 3) {
+        blockers.push("Recommendations must contain exactly 3 slugs.");
+        return;
+      }
+    }
+
+    const value = resolveSelectValue(control, rawValue);
+    if (value === null) blockers.push(`Invalid option for ${key}: ${rawValue}`);
+    else actions.push({ type: "field", control, value, label: key });
+  });
+
+  return { blockers, actions };
+}
+
+function nextFrame() {
+  return new Promise((resolve) => window.requestAnimationFrame(() => window.requestAnimationFrame(resolve)));
+}
+
+async function addSize(size, price) {
+  const root = document.querySelector(".product-detail.edit-mode");
+  const composer = root?.querySelector(".size-composer");
+  const inputs = composer?.querySelectorAll("input");
+  const addButton = composer?.querySelector("button");
+  if (!composer || !inputs || inputs.length < 2 || !addButton) return false;
   setNativeValue(inputs[0], size);
   setNativeValue(inputs[1], price);
   addButton.click();
-  return true;
+  await nextFrame();
+  return Boolean(findFieldMap(document.querySelector(".product-detail.edit-mode")).get(normalize(size)));
 }
 
 export default function ProductBulkPasteBridge() {
@@ -176,6 +275,7 @@ export default function ProductBulkPasteBridge() {
   const [source, setSource] = useState("");
   const [message, setMessage] = useState("");
   const [expanded, setExpanded] = useState(true);
+  const [domRevision, setDomRevision] = useState(0);
 
   useEffect(() => {
     const main = document.querySelector(".main-stage");
@@ -192,6 +292,7 @@ export default function ProductBulkPasteBridge() {
         else editor.prepend(host);
       }
       setSlot(host);
+      setDomRevision((value) => value + 1);
     };
     sync();
     const observer = new MutationObserver(sync);
@@ -199,47 +300,37 @@ export default function ProductBulkPasteBridge() {
     return () => observer.disconnect();
   }, []);
 
-  const preview = useMemo(() => parseSource(source), [source]);
+  const parsed = useMemo(() => parseSource(source), [source]);
+  const validation = useMemo(() => preflight(parsed), [parsed, domRevision]);
+  const hasInput = Boolean(source.trim());
+  const canApply = hasInput && validation.blockers.length === 0 && validation.actions.length > 0;
 
-  const apply = () => {
-    const root = document.querySelector(".product-detail.edit-mode");
-    if (!root) { setMessage("Product editor is not available."); return; }
-    const fieldMap = findFieldMap(root);
-    const unknown = [];
-    const invalidValues = [];
+  const apply = async () => {
+    const latest = preflight(parsed);
+    if (latest.blockers.length) {
+      setMessage("Apply blocked. Fix the preflight issues first; no fields were changed.");
+      return;
+    }
+
     let applied = 0;
+    const sizeActions = latest.actions.filter((action) => action.type === "size");
+    const fieldActions = latest.actions.filter((action) => action.type === "field");
 
-    preview.entries.forEach(([key, rawValue]) => {
-      if (key.startsWith("size:")) {
-        const size = key.slice(5);
-        const number = Number(rawValue);
-        if (!Number.isFinite(number) || number < 0) { invalidValues.push(size); return; }
-        if (addOrSetSize(root, size, rawValue, fieldMap)) applied += 1;
-        else unknown.push(key);
-        return;
-      }
-
-      if (key.startsWith("discovery:")) {
-        const discoveryKey = key.slice(10);
-        const number = Number(rawValue);
-        if (!Number.isFinite(number) || number < 0 || number > 10) { invalidValues.push(discoveryKey); return; }
-        const control = fieldMap.get(normalize(discoveryKey));
-        if (!control) unknown.push(discoveryKey);
-        else { setNativeValue(control, rawValue); applied += 1; }
-        return;
-      }
-
-      const control = fieldMap.get(key);
-      if (!control) { unknown.push(key); return; }
-      setNativeValue(control, rawValue);
+    fieldActions.forEach((action) => {
+      setNativeValue(action.control, action.value);
       applied += 1;
     });
 
-    const parts = [`${applied} fields applied`];
-    if (preview.invalid.length) parts.push(`${preview.invalid.length} malformed lines`);
-    if (invalidValues.length) parts.push(`${invalidValues.length} invalid values`);
-    if (unknown.length) parts.push(`${unknown.length} unknown keys`);
-    setMessage(`${parts.join(" · ")}. Nothing was saved. Review live validation, then Save Draft.`);
+    for (const action of sizeActions) {
+      if (await addSize(action.size, action.value)) applied += 1;
+      else {
+        setMessage(`${applied} fields applied, but ${action.size} could not be added. Nothing was saved; review before Save Draft.`);
+        return;
+      }
+    }
+
+    setMessage(`${applied} fields applied. Nothing was saved. Review live validation, then Save Draft.`);
+    setDomRevision((value) => value + 1);
   };
 
   if (!slot) return null;
@@ -249,7 +340,7 @@ export default function ProductBulkPasteBridge() {
         <div>
           <span className="eyebrow">FAST ENTRY / DRAFT ONLY</span>
           <strong>Bulk product input</strong>
-          <p>Paste one complete product block. CC fills matching fields; Save Draft remains a separate explicit action.</p>
+          <p>Paste one complete product block. CC preflights the entire block before changing any field; Save Draft stays separate.</p>
         </div>
         <button type="button" className="secondary-btn" onClick={() => setExpanded((value) => !value)}>{expanded ? "Collapse" : "Open"}</button>
       </div>
@@ -260,12 +351,21 @@ export default function ProductBulkPasteBridge() {
           spellCheck="false"
           placeholder={"name: Brand Fragrance Eau De Parfum\nshortName: Fragrance\ncategory: Arabian\nimage: /products/brand-fragrance.webp\n5ml: 5\n10ml: 9\n20ml: 17\ntopNotes: bergamot, cardamom\nheartNotes: iris, fig\nbaseNotes: vanilla, leather\nminiTagSR: ...\nminiTagEN: ...\nwearSR: ...\nwearEN: ...\nfreshness: 3.2\nsweetness: 6.8\n..."}
         />
+        {hasInput ? <div className={`product-bulk-preflight ${validation.blockers.length ? "has-blockers" : "is-ready"}`}>
+          <div className="product-bulk-preflight-title">
+            <strong>{validation.actions.length} ready</strong>
+            <span> · {validation.blockers.length} blockers</span>
+          </div>
+          {validation.blockers.length ? <ul>{validation.blockers.slice(0, 8).map((blocker, index) => <li key={`${blocker}-${index}`}>{blocker}</li>)}</ul> : <p>Preflight passed. Apply will only fill the draft editor; it will not save or publish.</p>}
+          {validation.blockers.length > 8 ? <p>+ {validation.blockers.length - 8} more blockers</p> : null}
+        </div> : null}
         <div className="product-bulk-paste-footer">
           <div className="product-bulk-summary">
-            <strong>{preview.entries.length}</strong> parsed fields
-            {preview.invalid.length ? <span> · {preview.invalid.length} malformed</span> : null}
+            <strong>{parsed.entries.length}</strong> parsed fields
+            {parsed.malformed.length ? <span> · {parsed.malformed.length} malformed</span> : null}
+            {parsed.duplicates.length ? <span> · {parsed.duplicates.length} duplicates</span> : null}
           </div>
-          <button type="button" className="primary-btn" onClick={apply} disabled={!source.trim()}>Apply to draft fields</button>
+          <button type="button" className="primary-btn" onClick={apply} disabled={!canApply}>Apply to draft fields</button>
         </div>
         {message ? <div className="product-bulk-paste-message">{message}</div> : null}
       </> : null}
