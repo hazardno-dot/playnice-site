@@ -2744,57 +2744,33 @@ export const productCopy = {
 },
 
   "Thomas Kosmala No. 8 Tonic Vert Eau de Parfum": {
-    "miniTag": {
-      "en": "Green. Clean. Precise.",
-      "sr": "Zeleno. Čisto. Precizno."
+    miniTag: {
+      sr: "🌿 Zeleni / Citrusni",
+      en: "🌿 Green / Citrus"
     },
-    "card": {
-      "en": "A bright citrus opening moves into cool mint and a clean green base of vetiver and oakmoss. Tonic Vert is crisp, energetic and effortless to wear.",
-      "sr": "Svež citrusni start prelazi u hladnu mentu i čistu zelenu bazu vetivera i mahovine. Tonic Vert je uredan, energičan i vrlo lak za nošenje."
+    card: {
+      sr: "Citrusi, hladna menta i vetiver u čistom zelenom aromatičnom mirisu.",
+      en: "Citrus, cool mint and vetiver in a clean green aromatic fragrance."
     },
-    "modal": {
-      "en": "No. 8 Tonic Vert opens with a burst of bergamot, lemon, mandarin and lime before moving into fresh mint, geranium and pomelo. Vetiver, musk and oakmoss create a dry, clean and elegantly green finish.\n\nThis is not a sweet citrus fragrance. It feels cooler, sharper and more aromatic — a strong choice for warm days, the office and moments when you want to smell clean without falling into generic blue-fragrance territory.",
-      "sr": "No. 8 Tonic Vert otvara se eksplozijom bergamota, limuna, mandarine i limete, a zatim prelazi u svežinu mente, geranijuma i pomela. Vetiver, mošus i hrastova mahovina u bazi daju mu suvu, čistu i elegantno zelenu završnicu.\n\nOvo nije sladak citrusni parfem. Više je hladan, precizan i aromatičan — odličan izbor za tople dane, kancelariju i trenutke kada želiš da mirišeš čisto bez generičnog “blue fragrance” utiska."
+    modal: {
+      sr: "Bergamot, limun, mandarina i limeta prelaze u hladnu mentu, geranijum i pomelo, dok vetiver, mošus i hrastova mahovina ostavljaju suv, čist i zelen trag.",
+      en: "Bergamot, lemon, mandarin and lime lead into cool mint, geranium and pomelo, while vetiver, musk and oakmoss leave a dry, clean and green trail."
     },
-    "scentType": {
-      "en": "Citrus green aromatic fragrance",
-      "sr": "Citrusno-zeleni aromatični parfem"
+    scentType: {
+      sr: "Citrusno-zeleni aromatični",
+      en: "Citrus green aromatic"
     },
-    "dominantNotes": {
-      "sr": [
-        "bergamot",
-        "limeta",
-        "menta",
-        "vetiver",
-        "hrastova mahovina"
-      ],
-      "en": [
-        "bergamot",
-        "lime",
-        "mint",
-        "vetiver",
-        "oakmoss"
-      ]
+    dominantNotes: {
+      sr: ["bergamot", "menta", "vetiver", "hrastova mahovina"],
+      en: ["bergamot", "mint", "vetiver", "oakmoss"]
     },
-    "tags": {
-      "sr": [
-        "svež",
-        "citrusan",
-        "zelen",
-        "aromatičan",
-        "čist"
-      ],
-      "en": [
-        "fresh",
-        "citrus",
-        "green",
-        "aromatic",
-        "clean"
-      ]
+    tags: {
+      sr: ["Svež", "Čist", "Zelen"],
+      en: ["Fresh", "Clean", "Green"]
     },
-    "whyChoose": {
-      "en": "If you like fresh fragrances but want more greenness, dryness and character.",
-      "sr": "Ako voliš sveže parfeme, ali želiš više zelenila, suvoće i karaktera."
+    whyChoose: {
+      sr: "Ako želiš hladan, suv i čist zeleni parfem za tople dane.",
+      en: "If you want a cool, dry and clean green fragrance for warm days."
     }
   }
 };
