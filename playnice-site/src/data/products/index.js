@@ -2763,7 +2763,7 @@ export const products = [
     category: "Arabian",
     image: "/products/arabiyat-prestige-al-noor.webp",
     sizes: {"5ml":5,"10ml":9,"20ml":17},
-    badge: "NEW",
+    badge: "HIDDEN GEM",
     rating: 8.3,
     ratingLabel: "Popular Pick",
     season: "winter",
