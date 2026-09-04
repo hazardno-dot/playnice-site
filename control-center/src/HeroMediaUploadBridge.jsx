@@ -4,6 +4,7 @@ import { supabase } from "./supabase";
 import "./hero-media-upload.css";
 
 const MAX_IMAGE_BYTES = 1_500_000;
+const HERO_WORKFLOW_UPDATED_EVENT = "playnice:hero-workflow-updated";
 
 function ensureMediaSlot(detail) {
   let slot = detail.querySelector("#hero-media-upload-slot");
@@ -165,7 +166,7 @@ export default function HeroMediaUploadBridge() {
     }
   };
 
-  const createMediaPreview = async () => {
+  const stageMedia = async () => {
     if (!slide || (!desktopFile && !mobileFile)) return;
     setBusy(true); setError(""); setResult(null);
     try {
@@ -181,8 +182,9 @@ export default function HeroMediaUploadBridge() {
         body: JSON.stringify({ hero_key: slide.hero_key, desktop_base64: desktopBase64, mobile_base64: mobileBase64 }),
       });
       const body = await readResponse(response);
-      if (!response.ok) throw new Error(body?.error || "Could not create Hero media preview.");
+      if (!response.ok) throw new Error(body?.error || "Could not stage Hero media.");
       setResult(body);
+      window.dispatchEvent(new CustomEvent(HERO_WORKFLOW_UPDATED_EVENT, { detail: { heroKey: slide.hero_key, mediaStaged: true } }));
     } catch (uploadError) {
       setError(uploadError.message || String(uploadError));
     } finally {
@@ -194,8 +196,8 @@ export default function HeroMediaUploadBridge() {
 
   return createPortal(<section className="hero-media-panel">
     <div className="hero-media-head">
-      <div><span>HERO MEDIA</span><strong>UPLOAD / REPLACE</strong></div>
-      <small>Images only · action and manifesto stay untouched · draft PR only</small>
+      <div><span>HERO MEDIA</span><strong>UPLOAD / STAGE</strong></div>
+      <small>Stage images first · one final Controlled Apply PR later</small>
     </div>
 
     <div className="hero-media-grid">
@@ -205,13 +207,12 @@ export default function HeroMediaUploadBridge() {
 
     {error ? <div className="hero-media-error">{error}</div> : null}
     {result ? <div className="hero-media-result">
-      <div><span>BRANCH</span><code>{result.branch}</code></div>
-      <div><span>PR</span><a href={result.pr_url} target="_blank" rel="noreferrer">Open draft PR #{result.pr_number}</a></div>
-      <small>{result.files?.length || 0} image file{result.files?.length === 1 ? "" : "s"} staged. Review the Vercel preview before merge.</small>
+      <div><span>MEDIA STAGED</span><code>{result.stage_branch}</code></div>
+      <small>{result.files?.length || 0} image file{result.files?.length === 1 ? "" : "s"} staged. No PR yet — continue with Edit, Review and Approve. Controlled Apply will create the single final PR.</small>
     </div> : null}
 
     <div className="hero-media-actions">
-      <button className="primary" disabled={busy || (!desktopFile && !mobileFile)} onClick={createMediaPreview}>{busy ? "Uploading & creating preview…" : "Create media preview PR"}</button>
+      <button className="primary" disabled={busy || (!desktopFile && !mobileFile)} onClick={stageMedia}>{busy ? "Staging media…" : "Stage media for Hero draft"}</button>
     </div>
   </section>, slot);
 }
