@@ -20,6 +20,7 @@ export default function ControlledApplyManager() {
   const [history, setHistory] = useState([]);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState(null);
   const [previewChecks, setPreviewChecks] = useState({});
 
   const readData = async () => {
@@ -109,6 +110,7 @@ export default function ControlledApplyManager() {
   const createApply = async (row) => {
     setBusy(`create:${row.product_slug}`);
     setError("");
+    setNotice(null);
     try {
       const approvalState = getApprovalPayloadState(row);
       if (!approvalState.safe) throw new Error("Approved payload no longer matches the current draft. Review and approve the draft again before Controlled Apply.");
@@ -129,6 +131,14 @@ export default function ControlledApplyManager() {
       catch { throw new Error(raw || "Controlled Apply returned an invalid response."); }
       if (!response.ok) throw new Error(body?.error || "Could not create or update controlled apply branch.");
       setPreviewChecks((current) => ({ ...current, [row.product_slug]: {} }));
+      const branch = body?.branch || row.apply_branch || "preview branch";
+      const shortSha = body?.commit_sha ? String(body.commit_sha).slice(0, 7) : "";
+      setNotice({
+        slug: row.product_slug,
+        text: body?.updated
+          ? `Preview updated · ${branch}${shortSha ? ` · ${shortSha}` : ""}`
+          : `Preview created · ${branch}${shortSha ? ` · ${shortSha}` : ""}`,
+      });
       await load({ sync: false });
     } catch (e) {
       setError(e?.message || "Controlled apply failed.");
@@ -140,6 +150,7 @@ export default function ControlledApplyManager() {
   const verifyPreview = async (row) => {
     setBusy(`verify:${row.product_slug}`);
     setError("");
+    setNotice(null);
     try {
       const checks = previewChecks[row.product_slug] || {};
       const missing = PREVIEW_CHECK_ITEMS.filter(([id]) => checks[id] !== true);
@@ -159,6 +170,7 @@ export default function ControlledApplyManager() {
       try { body = raw ? JSON.parse(raw) : {}; }
       catch { throw new Error(raw || "Preview verification returned an invalid response."); }
       if (!response.ok) throw new Error(body?.error || "Could not verify preview.");
+      setNotice({ slug: row.product_slug, text: "Preview verification saved · ready for merge review" });
       await load({ sync: false });
     } catch (e) {
       setError(e?.message || "Could not verify preview.");
@@ -223,6 +235,11 @@ export default function ControlledApplyManager() {
           <a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">
             Open PR #{row.apply_pr_number}
           </a>
+        </div> : null}
+
+        {notice?.slug === row.product_slug ? <div className="controlled-apply-notice">
+          <strong>DONE</strong>
+          <span>{notice.text}</span>
         </div> : null}
 
         {hasApply && !verified ? <div className="controlled-preview-gate">
