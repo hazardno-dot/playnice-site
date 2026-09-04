@@ -1,0 +1,40 @@
+name: Tonic Vert card copy patch
+on:
+  push:
+    branches:
+      - hotfix-tonic-vert-visual-parity
+    paths:
+      - .github/workflows/tonic-vert-card-copy-patch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hotfix-tonic-vert-visual-parity
+          fetch-depth: 0
+      - name: Patch SR card copy byte-safely
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('playnice-site/src/data/products/productCopy.js')
+          data = p.read_bytes()
+          old = 'Citrusi, hladna menta i vetiver u čistom zelenom aromatičnom mirisu.'.encode('utf-8')
+          new = 'Citrusi, hladna menta i vetiver u čistom zelenom mirisu.'.encode('utf-8')
+          if old not in data:
+              raise SystemExit('Expected Tonic Vert SR card copy not found')
+          if data.count(old) != 1:
+              raise SystemExit(f'Expected exactly one match, found {data.count(old)}')
+          p.write_bytes(data.replace(old, new, 1))
+      - name: Remove temporary workflow and commit
+        run: |
+          rm .github/workflows/tonic-vert-card-copy-patch.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add playnice-site/src/data/products/productCopy.js .github/workflows/tonic-vert-card-copy-patch.yml
+          git commit -m "fix: shorten Tonic Vert SR card copy"
+          git push origin HEAD:hotfix-tonic-vert-visual-parity
