@@ -2742,6 +2742,61 @@ export const productCopy = {
     en: "If you want a cool, clean and elegant fragrance with a dark woody base."
   }
 },
+
+  "Thomas Kosmala No. 8 Tonic Vert Eau de Parfum": {
+    "miniTag": {
+      "en": "Green. Clean. Precise.",
+      "sr": "Zeleno. Čisto. Precizno."
+    },
+    "card": {
+      "en": "A bright citrus opening moves into cool mint and a clean green base of vetiver and oakmoss. Tonic Vert is crisp, energetic and effortless to wear.",
+      "sr": "Svež citrusni start prelazi u hladnu mentu i čistu zelenu bazu vetivera i mahovine. Tonic Vert je uredan, energičan i vrlo lak za nošenje."
+    },
+    "modal": {
+      "en": "No. 8 Tonic Vert opens with a burst of bergamot, lemon, mandarin and lime before moving into fresh mint, geranium and pomelo. Vetiver, musk and oakmoss create a dry, clean and elegantly green finish.\n\nThis is not a sweet citrus fragrance. It feels cooler, sharper and more aromatic — a strong choice for warm days, the office and moments when you want to smell clean without falling into generic blue-fragrance territory.",
+      "sr": "No. 8 Tonic Vert otvara se eksplozijom bergamota, limuna, mandarine i limete, a zatim prelazi u svežinu mente, geranijuma i pomela. Vetiver, mošus i hrastova mahovina u bazi daju mu suvu, čistu i elegantno zelenu završnicu.\n\nOvo nije sladak citrusni parfem. Više je hladan, precizan i aromatičan — odličan izbor za tople dane, kancelariju i trenutke kada želiš da mirišeš čisto bez generičnog “blue fragrance” utiska."
+    },
+    "scentType": {
+      "en": "Citrus green aromatic fragrance",
+      "sr": "Citrusno-zeleni aromatični parfem"
+    },
+    "dominantNotes": {
+      "sr": [
+        "bergamot",
+        "limeta",
+        "menta",
+        "vetiver",
+        "hrastova mahovina"
+      ],
+      "en": [
+        "bergamot",
+        "lime",
+        "mint",
+        "vetiver",
+        "oakmoss"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "svež",
+        "citrusan",
+        "zelen",
+        "aromatičan",
+        "čist"
+      ],
+      "en": [
+        "fresh",
+        "citrus",
+        "green",
+        "aromatic",
+        "clean"
+      ]
+    },
+    "whyChoose": {
+      "en": "If you like fresh fragrances but want more greenness, dryness and character.",
+      "sr": "Ako voliš sveže parfeme, ali želiš više zelenila, suvoće i karaktera."
+    }
+  }
 };
 
 /* =========================================

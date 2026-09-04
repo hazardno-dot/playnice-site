@@ -2859,6 +2859,37 @@ export const discoveryProfiles = {
     "feminine": 2.6,
     "unisex": 5.1
   },
+
+  "thomas-kosmala-no-8-tonic-vert": {
+    "date": 5,
+    "casual": 9.3,
+    "citrus": 9.3,
+    "office": 9,
+    "unisex": 8.5,
+    "warmth": 2,
+    "aquatic": 1,
+    "dryness": 6.3,
+    "evening": 4.5,
+    "powdery": 0.5,
+    "airiness": 8.2,
+    "darkness": 0.8,
+    "elegance": 7.5,
+    "feminine": 4.5,
+    "florality": 2,
+    "freshness": 9.4,
+    "longevity": 6.8,
+    "masculine": 6.5,
+    "spiciness": 2.2,
+    "sweetness": 2.2,
+    "woodiness": 5.6,
+    "creaminess": 0.5,
+    "fruitiness": 5.5,
+    "projection": 6.3,
+    "aromaticity": 8.8,
+    "cleanliness": 9,
+    "versatility": 8.7,
+    "gourmandness": 0
+  }
 };
 
 export default discoveryProfiles;
