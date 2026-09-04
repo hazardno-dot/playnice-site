@@ -80,6 +80,36 @@ function repoPathFromPublicPath(publicPath, label) {
   return `${SHOP_PUBLIC_PREFIX}${value}`;
 }
 
+function rowToSlide(row) {
+  return {
+    id: Number(row.id),
+    heroKey: row.hero_key,
+    kind: row.kind || "imageOnly",
+    enabled: row.enabled !== false,
+    pinnedFirst: Boolean(row.pinned_first),
+    position: Number(row.position || 0),
+    image: row.image || row.desktop_image,
+    desktopImage: row.desktop_image || row.image,
+    mobileImage: row.mobile_image || row.image,
+    alt: row.alt || "",
+    actionPrimary: row.action_type || "none",
+    actionProductSlug: row.product_slug || "",
+    preferredSize: row.preferred_size || "",
+    collectionTitle: row.collection_title || "",
+    actionCollection: Array.isArray(row.collection_slugs) ? row.collection_slugs : [],
+    manifestoType: row.manifesto_type || "",
+  };
+}
+
+async function readRef(branch) {
+  try {
+    return await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/${encodeURIComponent(branch)}`);
+  } catch (error) {
+    if (error.status === 404) return null;
+    throw error;
+  }
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed." });
   if (!SUPABASE_URL || !SUPABASE_KEY || !GITHUB_TOKEN) {
@@ -108,14 +138,25 @@ module.exports = async function handler(req, res) {
       return json(res, 403, { error: "PlayNice admin access required." });
     }
 
-    const slideResponse = await supabaseFetch(
-      `/rest/v1/hero_slides?hero_key=eq.${encodeURIComponent(heroKey)}&select=id,hero_key,desktop_image,mobile_image,alt`,
-      token
-    );
+    const [slideResponse, draftResponse] = await Promise.all([
+      supabaseFetch(`/rest/v1/hero_slides?hero_key=eq.${encodeURIComponent(heroKey)}&select=id,hero_key,kind,enabled,pinned_first,position,image,desktop_image,mobile_image,alt,action_type,product_slug,preferred_size,collection_title,collection_slugs,manifesto_type`, token),
+      supabaseFetch(`/rest/v1/hero_drafts?hero_key=eq.${encodeURIComponent(heroKey)}&select=hero_key,payload,review_status,baseline_snapshot,apply_branch,apply_pr_number`, token),
+    ]);
     const slides = await readJson(slideResponse, "Supabase Hero slide");
+    const drafts = await readJson(draftResponse, "Supabase Hero draft");
     if (!slideResponse.ok) throw new Error(slides?.message || "Could not read Hero slide.");
-    const slide = slides?.[0];
-    if (!slide) return json(res, 404, { error: "Hero slide not found." });
+    if (!draftResponse.ok) throw new Error(drafts?.message || "Could not read Hero draft.");
+    const slideRow = slides?.[0];
+    if (!slideRow) return json(res, 404, { error: "Hero slide not found." });
+    const baseline = rowToSlide(slideRow);
+    const draft = drafts?.[0] || null;
+
+    if (draft?.apply_branch || draft?.apply_pr_number) {
+      return json(res, 409, { error: "A Hero apply preview already exists. Return the Hero to draft before replacing media." });
+    }
+    if (draft && draft.review_status !== "draft") {
+      return json(res, 409, { error: "Hero media can only be changed while the Hero is in Draft." });
+    }
 
     const desktopContent = validateJpeg("Desktop", req.body?.desktop_base64);
     const mobileContent = validateJpeg("Mobile", req.body?.mobile_base64);
@@ -123,74 +164,104 @@ module.exports = async function handler(req, res) {
       return json(res, 400, { error: "Choose at least one Hero image to replace." });
     }
 
-    const desktopRepoPath = repoPathFromPublicPath(slide.desktop_image, "Desktop");
-    const mobileRepoPath = repoPathFromPublicPath(slide.mobile_image, "Mobile");
-
+    const desktopRepoPath = repoPathFromPublicPath(slideRow.desktop_image, "Desktop");
+    const mobileRepoPath = repoPathFromPublicPath(slideRow.mobile_image, "Mobile");
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
     const baseSha = mainRef.object.sha;
-    const stamp = new Date().toISOString().replace(/[-:TZ.]/g, "").slice(0, 12);
-    const safeKey = heroKey.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
-    const branch = `cc-hero-media-${safeKey}-${stamp}`;
 
-    await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, {
-      method: "POST",
-      body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }),
-    });
+    const existingStage = draft?.payload?.mediaStage;
+    let branch = "";
+    if (
+      existingStage?.branch &&
+      existingStage?.baseSha === baseSha &&
+      /^cc-hero-media-stage-[a-z0-9-]+-\d{12}$/i.test(existingStage.branch) &&
+      await readRef(existingStage.branch)
+    ) {
+      branch = existingStage.branch;
+    } else {
+      const stamp = new Date().toISOString().replace(/[-:TZ.]/g, "").slice(0, 12);
+      const safeKey = heroKey.replace(/[^a-z0-9-]/gi, "-").toLowerCase();
+      branch = `cc-hero-media-stage-${safeKey}-${stamp}`;
+      await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, {
+        method: "POST",
+        body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }),
+      });
+    }
 
-    const changedFiles = [];
     const replacements = [
       desktopContent ? { label: "desktop", path: desktopRepoPath, content: desktopContent } : null,
       mobileContent ? { label: "mobile", path: mobileRepoPath, content: mobileContent } : null,
     ].filter(Boolean);
 
+    const stagedFiles = new Set(Array.isArray(existingStage?.files) && existingStage?.baseSha === baseSha ? existingStage.files : []);
     for (const replacement of replacements) {
-      const current = await github(
-        `/repos/${OWNER}/${REPO_NAME}/contents/${replacement.path}?ref=main`
-      );
+      const current = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${replacement.path}?ref=${encodeURIComponent(branch)}`);
       await github(`/repos/${OWNER}/${REPO_NAME}/contents/${replacement.path}`, {
         method: "PUT",
         body: JSON.stringify({
-          message: `Control Center Hero media: ${heroKey} ${replacement.label}`,
+          message: `Stage Hero media: ${heroKey} ${replacement.label}`,
           content: replacement.content,
           sha: current.sha,
           branch,
         }),
       });
-      changedFiles.push(replacement.path);
+      stagedFiles.add(replacement.path);
     }
 
-    const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, {
-      method: "POST",
-      body: JSON.stringify({
-        title: `Control Center Hero media: ${heroKey}`,
-        head: branch,
-        base: "main",
-        draft: true,
-        body: [
-          "Generated by PlayNice Control Center Hero Media Apply v1.",
-          "",
-          `- Hero: ${heroKey}`,
-          `- Slide ID: ${slide.id}`,
-          `- Slide: ${slide.alt || "—"}`,
-          `- Files: ${changedFiles.join(", ")}`,
-          "- Metadata/action: unchanged",
-          "- Safety: draft PR only; no automatic merge",
-          "- Review the Vercel preview before merging",
-        ].join("\n"),
-      }),
-    });
+    const now = new Date().toISOString();
+    const payload = {
+      ...baseline,
+      ...(draft?.payload || {}),
+      mediaStage: {
+        branch,
+        baseSha,
+        files: [...stagedFiles],
+        stagedAt: now,
+      },
+    };
+
+    let saveResponse;
+    if (draft) {
+      saveResponse = await supabaseFetch(`/rest/v1/hero_drafts?hero_key=eq.${encodeURIComponent(heroKey)}`, token, {
+        method: "PATCH",
+        headers: { Prefer: "return=representation" },
+        body: JSON.stringify({
+          payload,
+          review_status: "draft",
+          reviewed_at: null,
+          reviewed_by: null,
+          approved_payload: null,
+          updated_at: now,
+        }),
+      });
+    } else {
+      saveResponse = await supabaseFetch("/rest/v1/hero_drafts", token, {
+        method: "POST",
+        headers: { Prefer: "return=representation" },
+        body: JSON.stringify({
+          hero_key: heroKey,
+          payload,
+          baseline_snapshot: baseline,
+          created_by: user.id,
+          review_status: "draft",
+          updated_at: now,
+        }),
+      });
+    }
+    const saved = await readJson(saveResponse, "Supabase Hero media stage");
+    if (!saveResponse.ok) throw new Error(saved?.message || "Could not save staged Hero media metadata.");
 
     return json(res, 200, {
       ok: true,
       hero_key: heroKey,
-      slide_id: slide.id,
-      branch,
-      pr_number: pr.number,
-      pr_url: pr.html_url,
-      files: changedFiles,
+      slide_id: baseline.id,
+      stage_branch: branch,
+      files: [...stagedFiles],
+      staged_at: now,
+      draft_created: !draft,
     });
   } catch (error) {
-    console.error("Hero media apply failed", error);
-    return json(res, 500, { error: error?.message || "Hero media apply failed." });
+    console.error("Hero media staging failed", error);
+    return json(res, 500, { error: error?.message || "Hero media staging failed." });
   }
 };
