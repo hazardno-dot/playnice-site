@@ -2772,6 +2772,55 @@ export const productCopy = {
       sr: "Ako želiš hladan, suv i čist zeleni parfem za tople dane.",
       en: "If you want a cool, dry and clean green fragrance for warm days."
     }
+  },
+
+  "Arabiyat Prestige Al Noor Eau De Parfum": {
+    "miniTag": {
+      "en": "Spicy · Warm · Dark",
+      "sr": "Začinski · Topao · Taman"
+    },
+    "card": {
+      "en": "Cardamom, fig and iris over a leathery base. Warm, dark and elegant.",
+      "sr": "Kardamom, smokva i iris nad kožnom bazom. Topao, taman i elegantan."
+    },
+    "modal": {
+      "en": "Al Noor opens with cardamom, saffron and nutmeg. Fig, iris and vetiver add creamy depth, while leather, tonka, vanilla and patchouli create a warm, dark drydown.",
+      "sr": "Al Noor otvara kardamomom, šafranom i muškatnim oraščićem. Smokva, iris i vetiver daju kremastu dubinu, dok koža, tonka, vanila i pačuli grade topao i taman završetak."
+    },
+    "scentType": {
+      "en": "Spicy woody",
+      "sr": "Začinski drvenasti"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Kardamom",
+        "smokva",
+        "iris",
+        "koža"
+      ],
+      "en": [
+        "Cardamom",
+        "fig",
+        "iris",
+        "leather"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Začinski",
+        "topao",
+        "elegantan"
+      ],
+      "en": [
+        "Spicy",
+        "warm",
+        "elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For fans of darker spicy scents with fig, leather and refined sweetness.",
+      "sr": "Za ljubitelje tamnijih začinskih mirisa sa smokvom, kožom i elegantnom slatkoćom."
+    }
   }
 };
 
