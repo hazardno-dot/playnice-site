@@ -1,0 +1,32 @@
+name: Tonic Vert visual parity hotfix
+
+on:
+  push:
+    branches: [hotfix-tonic-vert-visual-parity]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hotfix-tonic-vert-visual-parity
+          fetch-depth: 0
+      - name: Apply patch
+        run: python .github/scripts/hotfix_tonic_vert.py
+      - name: Verify scope
+        run: |
+          git diff --check
+          git diff --name-only
+          test "$(git diff --name-only | sort | tr '\n' ' ')" = "playnice-site/src/data/products/index.js playnice-site/src/data/products/productCopy.js playnice-site/src/data/products/productWearContext.js "
+      - name: Commit clean hotfix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/hotfix-tonic-vert-visual-parity.yml .github/scripts/hotfix_tonic_vert.py
+          git add playnice-site/src/data/products/index.js playnice-site/src/data/products/productCopy.js playnice-site/src/data/products/productWearContext.js
+          git commit -m "fix: align Tonic Vert with product presentation contract"
+          git push origin HEAD:hotfix-tonic-vert-visual-parity
