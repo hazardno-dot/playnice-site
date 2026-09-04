@@ -5,6 +5,8 @@ import "./hero-media-upload.css";
 
 const MAX_IMAGE_BYTES = 1_500_000;
 const HERO_WORKFLOW_UPDATED_EVENT = "playnice:hero-workflow-updated";
+const ACCEPTED_IMAGE = /image\/(jpeg|webp)/i;
+const ACCEPTED_EXT = /\.(jpe?g|webp)$/i;
 
 function ensureMediaSlot(detail) {
   let slot = detail.querySelector("#hero-media-upload-slot");
@@ -54,6 +56,41 @@ function fileToBase64(file) {
   });
 }
 
+function convertWebpToJpeg(file, quality = 0.92) {
+  if (!/image\/webp/i.test(file.type) && !/\.webp$/i.test(file.name)) return Promise.resolve(file);
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) throw new Error("Could not prepare image conversion.");
+        ctx.drawImage(image, 0, 0);
+        canvas.toBlob((blob) => {
+          URL.revokeObjectURL(url);
+          if (!blob) {
+            reject(new Error("Could not convert WebP image to JPEG."));
+            return;
+          }
+          const jpegName = file.name.replace(/\.webp$/i, ".jpg");
+          resolve(new File([blob], jpegName, { type: "image/jpeg", lastModified: Date.now() }));
+        }, "image/jpeg", quality);
+      } catch (error) {
+        URL.revokeObjectURL(url);
+        reject(error);
+      }
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Could not read WebP image."));
+    };
+    image.src = url;
+  });
+}
+
 function formatBytes(bytes = 0) {
   if (bytes < 1000) return `${bytes} B`;
   return `${Math.round(bytes / 1000)} KB`;
@@ -69,12 +106,14 @@ function FileCard({ label, variant, file, info, preview, onPick, path }) {
     return info.ratio < 1.8 ? `Desktop image looks unusually narrow (${info.ratio.toFixed(2)}:1).` : "";
   }, [info, variant]);
 
+  const isWebp = Boolean(file && (/image\/webp/i.test(file.type) || /\.webp$/i.test(file.name)));
+
   return <div className={`hero-media-file-card ${file ? "has-file" : ""}`}>
     <div className="hero-media-file-head"><span>{label}</span><code>{path || "—"}</code></div>
     <label className="hero-media-picker">
-      <input type="file" accept="image/jpeg,.jpg,.jpeg" onChange={(event) => onPick(event.target.files?.[0] || null)} />
-      <strong>{file ? "Replace selected file" : "Choose JPEG"}</strong>
-      <small>{file ? `${file.name} · ${formatBytes(file.size)}` : "JPEG only · max 1.5 MB"}</small>
+      <input type="file" accept="image/jpeg,image/webp,.jpg,.jpeg,.webp" onChange={(event) => onPick(event.target.files?.[0] || null)} />
+      <strong>{file ? "Replace selected file" : "Choose JPG / WebP"}</strong>
+      <small>{file ? `${file.name} · ${formatBytes(file.size)}${isWebp ? " · converts to JPEG automatically" : ""}` : "JPG or WebP · max 1.5 MB"}</small>
     </label>
     {preview ? <img className={variant === "mobile" ? "mobile" : ""} src={preview} alt="Selected Hero preview" /> : null}
     {info ? <div className="hero-media-meta"><span>{info.width} × {info.height}px</span><span>{info.ratio.toFixed(2)}:1</span></div> : null}
@@ -148,8 +187,8 @@ export default function HeroMediaUploadBridge() {
     const setPreview = variant === "desktop" ? setDesktopPreview : setMobilePreview;
 
     if (!file) { setFile(null); setInfo(null); setPreview(""); return; }
-    if (!/image\/jpeg/i.test(file.type) && !/\.jpe?g$/i.test(file.name)) {
-      setError(`${variant === "desktop" ? "Desktop" : "Mobile"} image must be JPEG.`); return;
+    if (!ACCEPTED_IMAGE.test(file.type) && !ACCEPTED_EXT.test(file.name)) {
+      setError(`${variant === "desktop" ? "Desktop" : "Mobile"} image must be JPG or WebP.`); return;
     }
     if (file.size > MAX_IMAGE_BYTES) {
       setError(`${variant === "desktop" ? "Desktop" : "Mobile"} image is larger than 1.5 MB.`); return;
@@ -172,9 +211,22 @@ export default function HeroMediaUploadBridge() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
+
+      const [desktopUploadFile, mobileUploadFile] = await Promise.all([
+        desktopFile ? convertWebpToJpeg(desktopFile) : Promise.resolve(null),
+        mobileFile ? convertWebpToJpeg(mobileFile) : Promise.resolve(null),
+      ]);
+
+      if (desktopUploadFile && desktopUploadFile.size > MAX_IMAGE_BYTES) {
+        throw new Error("Desktop image is larger than 1.5 MB after WebP → JPEG conversion.");
+      }
+      if (mobileUploadFile && mobileUploadFile.size > MAX_IMAGE_BYTES) {
+        throw new Error("Mobile image is larger than 1.5 MB after WebP → JPEG conversion.");
+      }
+
       const [desktopBase64, mobileBase64] = await Promise.all([
-        desktopFile ? fileToBase64(desktopFile) : Promise.resolve(""),
-        mobileFile ? fileToBase64(mobileFile) : Promise.resolve(""),
+        desktopUploadFile ? fileToBase64(desktopUploadFile) : Promise.resolve(""),
+        mobileUploadFile ? fileToBase64(mobileUploadFile) : Promise.resolve(""),
       ]);
       const response = await fetch("/api/create-hero-media-apply", {
         method: "POST",
@@ -197,7 +249,7 @@ export default function HeroMediaUploadBridge() {
   return createPortal(<section className="hero-media-panel">
     <div className="hero-media-head">
       <div><span>HERO MEDIA</span><strong>UPLOAD / STAGE</strong></div>
-      <small>Stage images first · one final Controlled Apply PR later</small>
+      <small>JPG or WebP · WebP converts automatically · one final Controlled Apply PR later</small>
     </div>
 
     <div className="hero-media-grid">
