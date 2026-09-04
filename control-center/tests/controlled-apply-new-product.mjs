@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const root=path.resolve(here,"../..");
-const engineSource=fs.readFileSync(path.join(root,"control-center/api/create-new-product-engine.js"),"utf8");
+const engineSource=fs.readFileSync(path.join(root,"control-center/lib/create-new-product-engine.mjs"),"utf8");
 const engineModule=await import(`data:text/javascript;base64,${Buffer.from(engineSource,"utf8").toString("base64")}`);
 const { __test }=engineModule;
 const read=(p)=>fs.readFileSync(path.join(root,p),"utf8");
@@ -15,8 +15,8 @@ const files={
   discovery:read("playnice-site/src/data/products/discoveryProfiles.js"),
 };
 const payload={
-  core:{name:"PlayNice Test Fragrance Eau de Parfum",shortName:"PN Test",category:"Niche",image:"/products/playnice-test.png",sizes:{"2ml":4,"5ml":9},badge:"NEW",rating:8.4,ratingLabel:"Test Pick",season:"all",moods:"clean, signature",recommendations:"afnan-9am, afnan-9pm-rebel, afnan-turathi-blue",inspiredBy:{name:"",short:""},noteMap:{top:"bergamot, mandarin",heart:"lavender",base:"cedarwood, musk"}},
-  copy:{miniTag:{sr:"Test / Čist",en:"Test / Clean"},card:{sr:"Test opis.",en:"Test copy."},modal:{sr:"Test modal.",en:"Test modal."},scentType:{sr:"Test",en:"Test"},dominantNotes:{sr:["bergamot"],en:["bergamot"]},tags:{sr:["Test"],en:["Test"]},whyChoose:{sr:"Test razlog.",en:"Test reason."}},
+  core:{name:"PlayNice Test Fragrance Eau de Parfum",shortName:"PN Test",category:"Niche",image:"/products/playnice-test.png",sizes:{"2ml":4,"5ml":9},badge:"PLAYNICE PICK",rating:8.4,ratingLabel:"Test Pick",season:"all",moods:"clean, signature, summer",recommendations:"afnan-9am, afnan-9pm-rebel, afnan-turathi-blue",inspiredBy:{name:"Original PlayNice creation",short:""},noteMap:{top:"bergamot, mandarin",heart:"lavender",base:"cedarwood, musk"}},
+  copy:{miniTag:{sr:"Test / Čist",en:"Test / Clean"},card:{sr:"Kratak test opis.",en:"Short test copy."},modal:{sr:"Kratak test modal opis.",en:"Short test modal copy."},scentType:{sr:"Test aromatični",en:"Test aromatic"},dominantNotes:{sr:["bergamot","mandarina","lavanda","kedar"],en:["bergamot","mandarin","lavender","cedar"]},tags:{sr:["Svež","Čist","Test"],en:["Fresh","Clean","Test"]},whyChoose:{sr:"Test razlog.",en:"Test reason."}},
   wear:{sr:"Svaki dan.",en:"Every day."},
   discovery:{freshness:8,office:9,longevity:7}
 };
@@ -30,6 +30,7 @@ const expected=Math.max(...ids)+1;
 if(!nextIndex.includes(`id: ${expected},`)) throw new Error("New product id is not max+1.");
 const renderedWithDate=__test.renderProductObject(p,expected,"2026-09-03T20:00:00.000Z");
 if(!renderedWithDate.includes('addedAt: "2026-09-03T20:00:00.000Z"')) throw new Error("New product addedAt is not generated.");
+if(!renderedWithDate.includes('modalName: "PlayNice Test Fragrance EDP"')) throw new Error("Compact modalName was not generated.");
 for(const [source,render,label,key,exportName] of [
   [files.copy,__test.renderCopy(p),"Product Copy",p.core.name,"productCopy"],
   [files.wear,__test.renderWear(p),"Wear Context",p.core.name,"productWearContext"],
@@ -40,9 +41,10 @@ for(const [source,render,label,key,exportName] of [
 }
 let duplicate=false; try{__test.insertProduct(nextIndex,p)}catch(e){duplicate=String(e.message).includes("already exists")} if(!duplicate) throw new Error("Duplicate product guard failed.");
 for(const [k,content] of Object.entries(files)){const actual={index:read("playnice-site/src/data/products/index.js"),copy:read("playnice-site/src/data/products/productCopy.js"),wear:read("playnice-site/src/data/products/productWearContext.js"),discovery:read("playnice-site/src/data/products/discoveryProfiles.js")}[k];if(actual!==content)throw new Error(`${k} mutated on disk.`)}
-console.log("PASS  new product payload validates");
+console.log("PASS  new product payload validates against presentation contract");
 console.log("PASS  catalog insertion assigns max+1 id");
 console.log("PASS  new product receives automatic addedAt timestamp");
+console.log("PASS  compact modalName is generated automatically");
 console.log("PASS  Copy, Wear and Discovery entries render and insert");
 console.log("PASS  duplicate slug/name guard blocks catalog collision");
 console.log("Production untouched: yes (in-memory regression only)");

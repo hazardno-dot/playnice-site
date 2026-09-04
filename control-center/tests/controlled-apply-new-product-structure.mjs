@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "../..");
-const engineSource = fs.readFileSync(path.join(root, "control-center/api/create-new-product-engine.js"), "utf8");
+const engineSource = fs.readFileSync(path.join(root, "control-center/lib/create-new-product-engine.mjs"), "utf8");
 const engineModule = await import(`data:text/javascript;base64,${Buffer.from(engineSource, "utf8").toString("base64")}`);
 const { __test } = engineModule;
 const read = (p) => fs.readFileSync(path.join(root, p), "utf8");

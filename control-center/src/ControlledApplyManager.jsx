@@ -6,11 +6,21 @@ import { getApprovalPayloadState } from "./approvalSafety.mjs";
 import { supabase } from "./supabase";
 import "./controlled-apply.css";
 
+const PREVIEW_CHECK_ITEMS = [
+  ["card", "Product card · SR + EN · title/copy/badges/sizes aligned, no clipping"],
+  ["modal-desktop", "Desktop modal · same shared layout, header/media/content/purchase aligned"],
+  ["modal-390", "Mobile modal · 390px · no overflow, clipping or displaced controls"],
+  ["modal-360", "Mobile modal · 360px · no overflow, clipping or displaced controls"],
+  ["note-map", "Note Map · opens/closes correctly and notes/icons render"],
+  ["purchase", "Purchase block · sizes, price, Add to cart and recommendations remain aligned"],
+];
+
 export default function ControlledApplyManager() {
   const [drafts, setDrafts] = useState([]);
   const [history, setHistory] = useState([]);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
+  const [previewChecks, setPreviewChecks] = useState({});
 
   const readData = async () => {
     const [{ data: draftRows }, { data: historyRows }] = await Promise.all([
@@ -113,7 +123,10 @@ export default function ControlledApplyManager() {
         },
         body: JSON.stringify({ product_slug: row.product_slug }),
       });
-      const body = await response.json();
+      const raw = await response.text();
+      let body = {};
+      try { body = raw ? JSON.parse(raw) : {}; }
+      catch { throw new Error(raw || "Controlled Apply returned an invalid response."); }
       if (!response.ok) throw new Error(body?.error || "Could not create controlled apply branch.");
       await load({ sync: false });
     } catch (e) {
@@ -127,21 +140,24 @@ export default function ControlledApplyManager() {
     setBusy(`verify:${row.product_slug}`);
     setError("");
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Admin session expired. Sign in again.");
-      const now = new Date().toISOString();
-      const { error: updateError } = await supabase
-        .from("product_drafts")
-        .update({ preview_verified_at: now, preview_verified_by: user.id })
-        .eq("product_slug", row.product_slug);
-      if (updateError) throw updateError;
-
-      await supabase.from("draft_audit_log").insert({
-        product_slug: row.product_slug,
-        actor_id: user.id,
-        action: "preview_verified",
-        details: { branch: row.apply_branch, pr_number: row.apply_pr_number },
+      const checks = previewChecks[row.product_slug] || {};
+      const missing = PREVIEW_CHECK_ITEMS.filter(([id]) => checks[id] !== true);
+      if (missing.length) throw new Error("Complete every visual parity check before verification.");
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
+      const response = await fetch("/api/verify-product-preview", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ product_slug: row.product_slug, checks }),
       });
+      const raw = await response.text();
+      let body = {};
+      try { body = raw ? JSON.parse(raw) : {}; }
+      catch { throw new Error(raw || "Preview verification returned an invalid response."); }
+      if (!response.ok) throw new Error(body?.error || "Could not verify preview.");
       await load({ sync: false });
     } catch (e) {
       setError(e?.message || "Could not verify preview.");
@@ -155,7 +171,7 @@ export default function ControlledApplyManager() {
   return <div className="controlled-apply-box">
     <div className="controlled-apply-head">
       <div><span>CONTROLLED APPLY</span><strong>{readyRows.length} active{staleApprovalRows.length ? ` · ${staleApprovalRows.length} blocked` : ""}</strong></div>
-      <small>Manual verification required · never merges automatically</small>
+      <small>Shop preview + visual parity verification required · never merges automatically</small>
     </div>
 
     {staleApprovalRows.map((row) => {
@@ -178,17 +194,20 @@ export default function ControlledApplyManager() {
     {readyRows.map((row) => {
       const hasApply = Boolean(row.apply_branch && row.apply_pr_number);
       const verified = Boolean(row.preview_verified_at);
+      const checks = previewChecks[row.product_slug] || {};
+      const completedChecks = PREVIEW_CHECK_ITEMS.filter(([id]) => checks[id] === true).length;
+      const visualGatePassed = completedChecks === PREVIEW_CHECK_ITEMS.length;
       return <div className="controlled-apply-row controlled-apply-row-stack" key={row.product_slug}>
         <div className="controlled-apply-primary">
           <div>
             <strong>{row.product_slug}</strong>
-            <span>{verified ? "PREVIEW VERIFIED · READY TO MERGE" : hasApply ? "PREVIEW CREATED · VERIFICATION REQUIRED" : "APPROVED · READY TO APPLY"}</span>
+            <span>{verified ? "PREVIEW VERIFIED · READY TO MERGE" : hasApply ? "PREVIEW CREATED · VISUAL QA REQUIRED" : "APPROVED · READY TO APPLY"}</span>
           </div>
           {!hasApply ? <button disabled={busy === `create:${row.product_slug}`} onClick={() => createApply(row)}>
             {busy === `create:${row.product_slug}` ? "Creating…" : "Create preview branch"}
           </button> : null}
-          {hasApply && !verified ? <button disabled={busy === `verify:${row.product_slug}`} onClick={() => verifyPreview(row)}>
-            {busy === `verify:${row.product_slug}` ? "Saving…" : "Mark preview verified"}
+          {hasApply && !verified ? <button disabled={busy === `verify:${row.product_slug}` || !visualGatePassed} onClick={() => verifyPreview(row)}>
+            {busy === `verify:${row.product_slug}` ? "Checking preview…" : visualGatePassed ? "Mark preview verified" : `Visual QA ${completedChecks}/${PREVIEW_CHECK_ITEMS.length}`}
           </button> : null}
         </div>
 
@@ -198,6 +217,30 @@ export default function ControlledApplyManager() {
           <a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">
             Open PR #{row.apply_pr_number}
           </a>
+        </div> : null}
+
+        {hasApply && !verified ? <div className="controlled-preview-gate">
+          <div className="controlled-preview-gate-head">
+            <strong>VISUAL PARITY GATE</strong>
+            <span>{completedChecks}/{PREVIEW_CHECK_ITEMS.length}</span>
+          </div>
+          <p>Merge remains locked in the PlayNice workflow until the current Shop preview is green and every shared card/modal check is confirmed.</p>
+          <div className="controlled-preview-checks">
+            {PREVIEW_CHECK_ITEMS.map(([id, label]) => <label key={id}>
+              <input
+                type="checkbox"
+                checked={checks[id] === true}
+                onChange={(event) => setPreviewChecks((current) => ({
+                  ...current,
+                  [row.product_slug]: {
+                    ...(current[row.product_slug] || {}),
+                    [id]: event.target.checked,
+                  },
+                }))}
+              />
+              <span>{label}</span>
+            </label>)}
+          </div>
         </div> : null}
       </div>;
     })}

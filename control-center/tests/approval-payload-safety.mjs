@@ -71,7 +71,7 @@ assert(!approvalPayloadsEqual(arrayOrderChanged, arrayOrderChangedApproved), "Ar
 
 const root = process.cwd();
 const existingApply = fs.readFileSync(path.join(root, "control-center/api/create-apply.js"), "utf8");
-const newProductApply = fs.readFileSync(path.join(root, "control-center/api/create-new-product-engine.js"), "utf8");
+const newProductApply = fs.readFileSync(path.join(root, "control-center/lib/create-new-product-engine.mjs"), "utf8");
 const publishSync = fs.readFileSync(path.join(root, "control-center/api/sync-publish-status.js"), "utf8");
 const vercelConfig = fs.readFileSync(path.join(root, "playnice-site/vercel.json"), "utf8");
 
