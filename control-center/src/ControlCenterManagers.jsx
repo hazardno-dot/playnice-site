@@ -27,29 +27,44 @@ export default function ControlCenterManagers() {
   const [slots, setSlots] = useState({ draft: null, apply: null });
 
   useEffect(() => {
-    const topbar = document.querySelector(".main-stage .topbar");
     const mainStage = document.querySelector(".main-stage");
-    const actions = topbar?.querySelector(".topbar-actions");
-    const noPublish = actions?.querySelector(".read-only-badge") || topbar?.querySelector(".read-only-badge");
-    if (!topbar || !mainStage || !actions || !noPublish) return;
+    if (!mainStage) return;
 
-    let draftSlot = actions.querySelector("#draft-manager-trigger-slot");
-    if (!draftSlot) {
-      draftSlot = document.createElement("div");
-      draftSlot.id = "draft-manager-trigger-slot";
-      draftSlot.className = "draft-manager-trigger-slot";
-      actions.insertBefore(draftSlot, noPublish);
-    }
+    const syncManagerSlots = () => {
+      const topbar = mainStage.querySelector(".topbar");
+      const actions = topbar?.querySelector(".topbar-actions");
+      const noPublish = actions?.querySelector(".read-only-badge") || topbar?.querySelector(".read-only-badge");
+      if (!topbar || !actions || !noPublish) return;
 
-    let applySlot = mainStage.querySelector("#controlled-apply-slot");
-    if (!applySlot) {
-      applySlot = document.createElement("div");
-      applySlot.id = "controlled-apply-slot";
-      applySlot.className = "controlled-apply-slot";
-      topbar.insertAdjacentElement("afterend", applySlot);
-    }
+      let draftSlot = actions.querySelector("#draft-manager-trigger-slot");
+      if (!draftSlot) {
+        draftSlot = document.createElement("div");
+        draftSlot.id = "draft-manager-trigger-slot";
+        draftSlot.className = "draft-manager-trigger-slot";
+        actions.insertBefore(draftSlot, noPublish);
+      }
 
-    setSlots({ draft: draftSlot, apply: applySlot });
+      let applySlot = mainStage.querySelector("#controlled-apply-slot");
+      if (!applySlot) {
+        applySlot = document.createElement("div");
+        applySlot.id = "controlled-apply-slot";
+        applySlot.className = "controlled-apply-slot";
+        topbar.insertAdjacentElement("afterend", applySlot);
+      } else if (applySlot.previousElementSibling !== topbar) {
+        topbar.insertAdjacentElement("afterend", applySlot);
+      }
+
+      setSlots((current) => (
+        current.draft === draftSlot && current.apply === applySlot
+          ? current
+          : { draft: draftSlot, apply: applySlot }
+      ));
+    };
+
+    syncManagerSlots();
+    const observer = new MutationObserver(syncManagerSlots);
+    observer.observe(mainStage, { childList: true, subtree: true });
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
