@@ -1,0 +1,14 @@
+/* Product modal title resilience for narrow screens.
+   Long fragrance names get one extra line instead of clipping at two lines. */
+@media (max-width: 480px) {
+  .modal-header h2 {
+    max-width: calc(100% - 50px);
+    font-size: clamp(1.62rem, 7.1vw, 1.9rem);
+    line-height: 0.98;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
