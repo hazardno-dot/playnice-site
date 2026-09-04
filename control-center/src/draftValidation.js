@@ -118,6 +118,9 @@ export function validateProductDraft(live, draft) {
       issues.push(issue("error", "Discovery", key, `${key} must be explicitly entered as a number from 0 to 10.`));
     }
   });
+  if (!live && discoveryKeys.length && discoveryKeys.every((key) => finite(discovery[key]) && Number(discovery[key]) === 0)) {
+    issues.push(issue("error", "Discovery", "Scent profile", "The complete scent profile is still the legacy all-zero placeholder. Enter the intended Discovery values before review."));
+  }
 
   if (live) {
     const liveCopy = productCopy[live.name] || {};
