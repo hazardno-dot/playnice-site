@@ -7,6 +7,7 @@ import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
 import "./NewArrivalsScale.css";
 import "./WishlistSurfacePolish.css";
+import "./HeroPaginationPolish.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
