@@ -149,6 +149,16 @@ export default function DraftManager() {
     requestOpenProduct(row.product_slug);
   };
 
+  const renderActions = (row, { status, blocked, busy, isExpanded, top = false }) => <div className="draft-manager-actions" style={top ? { marginTop: 0, marginBottom: 2 } : undefined}>
+    <button onClick={() => setExpanded(isExpanded ? null : row.product_slug)}>{isExpanded ? "Hide review" : "Review changes"}</button>
+    <button onClick={() => openProduct(row)}>Open product</button>
+    {status === "draft" ? <button className="workflow" disabled={blocked || busy} onClick={() => setWorkflowStatus(row, "ready")}>{busy ? "Updating…" : "Mark ready for review"}</button> : null}
+    {status === "ready" ? <button className="workflow approve" disabled={blocked || busy} onClick={() => setWorkflowStatus(row, "approved")}>{busy ? "Updating…" : "Approve"}</button> : null}
+    {status === "approved" && !row.prepared_at ? <button className="workflow prepare" disabled={blocked || busy} onClick={() => prepareApply(row)}>{busy ? "Preparing…" : "Prepare apply"}</button> : null}
+    {status !== "draft" ? <button className="workflow secondary" disabled={busy} onClick={() => setWorkflowStatus(row, "draft")}>Return to draft</button> : null}
+    <button className="danger" onClick={() => discard(row.product_slug)}>Discard draft</button>
+  </div>;
+
   return <>
     <button className={`draft-manager-trigger ${count ? "has-drafts" : ""}`} onClick={() => { setOpen(true); load(); }}><span>Drafts</span><strong>{loading ? "…" : count}</strong></button>
     {open ? <div className="draft-manager-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
@@ -160,12 +170,14 @@ export default function DraftManager() {
           {loading ? <div className="draft-manager-empty">Loading drafts…</div> : !draftRows.length ? <div className="draft-manager-empty">No unpublished drafts.</div> : draftRows.map((row) => {
             const title = row.payload?.core?.name || row.live?.name || row.product_slug, isExpanded = expanded === row.product_slug;
             const blocked = row.validation.status === "blocked", status = row.review_status || "draft", busy = acting.startsWith(`${row.product_slug}:`);
+            const actionState = { status, blocked, busy, isExpanded };
             return <article className="draft-manager-card" key={row.product_slug}>
               <div className="draft-manager-card-top">
                 <div><strong>{title}</strong><span>{row.product_slug}</span><small>Updated {formatDate(row.updated_at)}</small>{row.reviewed_at ? <small>Approved {formatDate(row.reviewed_at)}</small> : null}{row.prepared_at ? <small>Prepared {formatDate(row.prepared_at)}</small> : null}</div>
                 <div className="draft-card-badges"><span className={`draft-workflow-badge ${status}`}>{workflowLabel(status)}</span>{row.readyToApply ? <span className="draft-prep-badge ready">READY TO APPLY</span> : row.drifted ? <span className="draft-prep-badge drift">LIVE DRIFT</span> : null}<span className={`draft-validation-badge ${blocked ? "blocked" : "ready"}`}>{blocked ? `BLOCKED · ${row.validation.errors.length}` : "VALID"}</span><span className="draft-manager-change-count">{row.changes.length} change{row.changes.length === 1 ? "" : "s"}</span></div>
               </div>
               {isExpanded ? <div className="draft-manager-review full-diff">
+                {renderActions(row, { ...actionState, top: true })}
                 <section className={`draft-prepublish-panel ${row.drifted ? "drift" : row.readyToApply ? "ready" : "idle"}`}>
                   <div className="draft-validation-head"><strong>{row.drifted ? "Live data changed" : row.readyToApply ? "Pre-publish preparation passed" : "Pre-publish preparation"}</strong><span>{row.patchPlan.length} file{row.patchPlan.length === 1 ? "" : "s"}</span></div>
                   <p>{row.drifted ? "The current live dataset no longer matches the captured preparation baseline." : row.readyToApply ? "Approved payload, validation and live baseline are aligned. Nothing has been published." : status === "approved" ? "Generate a read-only file plan and capture the live baseline before any future apply step." : "Approval is required before preparation."}</p>
@@ -180,15 +192,7 @@ export default function DraftManager() {
                 </section>)}
                 {status === "approved" ? <section className="draft-patch-plan"><div className="draft-review-section-head"><strong>Generated patch preview</strong><span>READ ONLY</span></div><div className="draft-patch-files">{row.patchPlan.map((plan) => <div className="draft-patch-file" key={plan.file}><strong>{plan.file}</strong>{plan.items.map((item) => <p key={`${plan.file}-${item.section}-${item.label}`}>{item.section} · {item.label}: <span>{displayValue(item.liveValue)}</span> → <b>{displayValue(item.draftValue)}</b></p>)}</div>)}</div></section> : null}
               </div> : null}
-              <div className="draft-manager-actions">
-                <button onClick={() => setExpanded(isExpanded ? null : row.product_slug)}>{isExpanded ? "Hide review" : "Review changes"}</button>
-                <button onClick={() => openProduct(row)}>Open product</button>
-                {status === "draft" ? <button className="workflow" disabled={blocked || busy} onClick={() => setWorkflowStatus(row, "ready")}>{busy ? "Updating…" : "Mark ready for review"}</button> : null}
-                {status === "ready" ? <button className="workflow approve" disabled={blocked || busy} onClick={() => setWorkflowStatus(row, "approved")}>{busy ? "Updating…" : "Approve"}</button> : null}
-                {status === "approved" && !row.prepared_at ? <button className="workflow prepare" disabled={blocked || busy} onClick={() => prepareApply(row)}>{busy ? "Preparing…" : "Prepare apply"}</button> : null}
-                {status !== "draft" ? <button className="workflow secondary" disabled={busy} onClick={() => setWorkflowStatus(row, "draft")}>Return to draft</button> : null}
-                <button className="danger" onClick={() => discard(row.product_slug)}>Discard draft</button>
-              </div>
+              {renderActions(row, actionState)}
             </article>;
           })}
         </div>
