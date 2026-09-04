@@ -8,8 +8,19 @@ import "./hero-review.css";
 
 const productSlugs = products.map((product) => product.slug);
 const HERO_WORKFLOW_UPDATED_EVENT = "playnice:hero-workflow-updated";
+const MEDIA_STAGE_SESSION_PREFIX = "playnice:hero-media-stage:";
 
 const statusLabel = (status) => status === "approved" ? "APPROVED" : status === "ready" ? "READY FOR REVIEW" : "DRAFT";
+
+function readStoredMediaStage(heroKey) {
+  if (!heroKey) return null;
+  try {
+    const raw = sessionStorage.getItem(`${MEDIA_STAGE_SESSION_PREFIX}${heroKey}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
 
 function ensureWorkflowSlot(detail) {
   let workflowSlot = detail.querySelector("#hero-workflow-slot");
@@ -126,6 +137,23 @@ export default function HeroReviewBridge() {
     return data;
   };
 
+  const restoreStoredMediaStage = async (latestRow) => {
+    if (!latestRow?.payload || latestRow.payload.mediaStage) return latestRow;
+    const stored = readStoredMediaStage(heroKey);
+    if (!stored?.branch || !stored?.baseSha) return latestRow;
+
+    const restoredPayload = { ...latestRow.payload, mediaStage: stored };
+    const { data, error: restoreError } = await supabase
+      .from("hero_drafts")
+      .update({ payload: restoredPayload })
+      .eq("hero_key", heroKey)
+      .eq("review_status", "draft")
+      .select("hero_key,payload,review_status,reviewed_at,reviewed_by,approved_payload,baseline_snapshot,updated_at,apply_branch,apply_pr_number")
+      .single();
+    if (restoreError) throw restoreError;
+    return data;
+  };
+
   const setReviewStatus = async (nextStatus) => {
     if (!row || !heroKey) return;
     setWorking(true); setError("");
@@ -134,10 +162,17 @@ export default function HeroReviewBridge() {
       const { data: authData, error: authError } = await supabase.auth.getUser();
       if (authError || !authData?.user?.id) throw authError || new Error("Authenticated admin session required.");
       const userId = authData.user.id;
-      const latestRow = nextStatus === "approved" ? await readLatestDraft() : row;
+
+      let latestRow = (nextStatus === "approved" || nextStatus === "ready") ? await readLatestDraft() : row;
+      if (nextStatus === "ready") latestRow = await restoreStoredMediaStage(latestRow);
+
       if (nextStatus === "approved" && latestRow.review_status !== "ready") {
         throw new Error("Hero draft changed before approval. Return it to review and approve the latest saved draft.");
       }
+      if (nextStatus === "ready" && latestRow.review_status !== "draft") {
+        throw new Error("Hero draft is no longer editable. Refresh the workflow before continuing.");
+      }
+
       const patch = nextStatus === "approved"
         ? { review_status: "approved", reviewed_at: new Date().toISOString(), reviewed_by: userId, approved_payload: latestRow.payload }
         : nextStatus === "ready"
