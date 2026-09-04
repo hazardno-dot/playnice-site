@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import { products } from "@shop/data/products/index.js";
 import { discoveryProfiles } from "@shop/data/products/discoveryProfiles";
+import noteMapSource from "@shop/TheNoteMap.jsx?raw";
+import { validateInlineFields } from "./inlineValidationRules.mjs";
 import "./product-bulk-paste.css";
 
 const normalize = (value) => String(value || "")
@@ -74,6 +77,22 @@ const alias = {
 const discoveryKeys = new Set(
   Object.values(discoveryProfiles || {}).flatMap((profile) => Object.keys(profile || {}))
 );
+const PRODUCT_SLUGS = products.map((product) => product.slug);
+
+function noteLibraryKeys(source) {
+  const start = source.indexOf("const NOTE_LIBRARY = {");
+  const end = source.indexOf("const NOTE_SR = {", start);
+  if (start < 0 || end < 0) return [];
+  const section = source.slice(start, end);
+  return [...section.matchAll(/^  (?:(?:\"([^\"]+)\")|(?:'([^']+)')|([A-Za-z0-9_-]+))\s*:\s*\{/gm)]
+    .map((match) => match[1] || match[2] || match[3])
+    .filter(Boolean);
+}
+
+const NOTE_KEYS = [...new Set([
+  ...products.flatMap((product) => ["top", "heart", "base"].flatMap((level) => product.noteMap?.[level] || [])),
+  ...noteLibraryKeys(noteMapSource),
+])];
 
 function flattenJson(input, out = {}, prefix = "") {
   Object.entries(input || {}).forEach(([key, value]) => {
@@ -85,8 +104,7 @@ function flattenJson(input, out = {}, prefix = "") {
 }
 
 function normalizeKey(rawKey) {
-  const raw = String(rawKey || "").trim();
-  const lower = raw.toLowerCase();
+  const lower = String(rawKey || "").trim().toLowerCase();
   const sizeMatch = lower.match(/^(?:(?:commerce[._-])?sizes?[._-]?)?(\d+(?:\.\d+)?)\s*ml$/i);
   if (sizeMatch) return `size:${sizeMatch[1]}ml`;
 
@@ -273,6 +291,42 @@ function changeSummary(actions) {
   }, { new: 0, changed: 0, unchanged: 0 });
 }
 
+function selectedSlug(root) {
+  const slugNode = root?.querySelector(".slug");
+  return String(slugNode?.textContent || "").split(" · ")[0].trim();
+}
+
+function contractBlockers(actions, mode) {
+  const root = document.querySelector(".product-detail.edit-mode");
+  if (!root) return ["Product editor is not available."];
+
+  const selected = actions.filter((action) =>
+    action.changeType === "new" || action.changeType === "unchanged" || (mode === "overwrite" && action.changeType === "changed")
+  );
+  const overrides = new Map(selected.filter((action) => action.type === "field").map((action) => [action.control, action.value]));
+  const fields = [...root.querySelectorAll(".edit-field")].map((field) => {
+    const name = field.querySelector(":scope > span")?.textContent?.trim() || "Field";
+    const control = field.querySelector("input, textarea, select");
+    return {
+      name,
+      value: overrides.has(control) ? overrides.get(control) : (control?.value ?? ""),
+      type: control?.type || "text",
+    };
+  });
+  selected.filter((action) => action.type === "size").forEach((action) => {
+    fields.push({ name: action.size, value: action.value, type: "number" });
+  });
+
+  const slug = selectedSlug(root);
+  const issues = validateInlineFields(fields, {
+    knownProductSlugs: PRODUCT_SLUGS,
+    knownNoteKeys: NOTE_KEYS,
+    selectedSlug: slug,
+    isNewProduct: Boolean(slug && !PRODUCT_SLUGS.includes(slug)),
+  });
+  return issues.filter((issue) => issue.level === "error").map((issue) => `${issue.field}: ${issue.message}`);
+}
+
 function nextFrame() {
   return new Promise((resolve) => window.requestAnimationFrame(() => window.requestAnimationFrame(resolve)));
 }
@@ -325,8 +379,9 @@ export default function ProductBulkPasteBridge() {
   const parsed = useMemo(() => parseSource(source), [source]);
   const rawValidation = preflight(parsed);
   const actions = classifyActions(rawValidation.actions);
-  const validation = { ...rawValidation, actions };
   const summary = changeSummary(actions);
+  const contractErrors = rawValidation.blockers.length ? [] : contractBlockers(actions, mode);
+  const validation = { ...rawValidation, actions, blockers: [...rawValidation.blockers, ...contractErrors] };
   const applicableActions = actions.filter((action) =>
     action.changeType === "new" || (mode === "overwrite" && action.changeType === "changed")
   );
@@ -335,12 +390,14 @@ export default function ProductBulkPasteBridge() {
 
   const apply = async () => {
     const latestRaw = preflight(parsed);
-    if (latestRaw.blockers.length) {
+    const latestActions = classifyActions(latestRaw.actions);
+    const latestContractErrors = latestRaw.blockers.length ? [] : contractBlockers(latestActions, mode);
+    const blockers = [...latestRaw.blockers, ...latestContractErrors];
+    if (blockers.length) {
       setMessage("Apply blocked. Fix the preflight issues first; no fields were changed.");
       return;
     }
 
-    const latestActions = classifyActions(latestRaw.actions);
     const selected = latestActions.filter((action) =>
       action.changeType === "new" || (mode === "overwrite" && action.changeType === "changed")
     );
@@ -372,7 +429,7 @@ export default function ProductBulkPasteBridge() {
         <div>
           <span className="eyebrow">FAST ENTRY / DRAFT ONLY</span>
           <strong>Bulk product input</strong>
-          <p>Paste one complete product block. CC preflights every value first; Save Draft stays separate.</p>
+          <p>Paste one complete product block. CC checks parser + product contract before changing any field; Save Draft stays separate.</p>
         </div>
         <button type="button" className="secondary-btn" onClick={() => setExpanded((value) => !value)}>{expanded ? "Collapse" : "Open"}</button>
       </div>
@@ -395,10 +452,10 @@ export default function ProductBulkPasteBridge() {
         />
         {hasInput ? <div className={`product-bulk-preflight ${validation.blockers.length ? "has-blockers" : "is-ready"}`}>
           <div className="product-bulk-preflight-title">
-            <strong>{validation.actions.length} valid</strong>
+            <strong>{validation.actions.length} parsed</strong>
             <span> · {validation.blockers.length} blockers</span>
           </div>
-          {validation.blockers.length ? <ul>{validation.blockers.slice(0, 8).map((blocker, index) => <li key={`${blocker}-${index}`}>{blocker}</li>)}</ul> : <p>Preflight passed. {summary.new} new · {summary.changed} changed · {summary.unchanged} unchanged. {mode === "fill-empty" ? "Changed existing values are protected." : "Changed existing values will be overwritten."}</p>}
+          {validation.blockers.length ? <ul>{validation.blockers.slice(0, 8).map((blocker, index) => <li key={`${blocker}-${index}`}>{blocker}</li>)}</ul> : <p>Product preflight passed. {summary.new} new · {summary.changed} changed · {summary.unchanged} unchanged. {mode === "fill-empty" ? "Changed existing values are protected." : "Changed existing values will be overwritten."}</p>}
           {validation.blockers.length > 8 ? <p>+ {validation.blockers.length - 8} more blockers</p> : null}
         </div> : null}
         <div className="product-bulk-paste-footer">
