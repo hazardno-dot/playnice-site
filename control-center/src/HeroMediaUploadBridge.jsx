@@ -5,8 +5,39 @@ import "./hero-media-upload.css";
 
 const MAX_IMAGE_BYTES = 1_500_000;
 const HERO_WORKFLOW_UPDATED_EVENT = "playnice:hero-workflow-updated";
+const MEDIA_STAGE_SESSION_PREFIX = "playnice:hero-media-stage:";
 const ACCEPTED_IMAGE = /image\/(jpeg|webp)/i;
 const ACCEPTED_EXT = /\.(jpe?g|webp)$/i;
+
+const mediaStageSessionKey = (heroKey) => `${MEDIA_STAGE_SESSION_PREFIX}${heroKey}`;
+
+function readStoredMediaStage(heroKey) {
+  if (!heroKey) return null;
+  try {
+    const raw = sessionStorage.getItem(mediaStageSessionKey(heroKey));
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function storeMediaStage(heroKey, mediaStage) {
+  if (!heroKey || !mediaStage?.branch || !mediaStage?.baseSha) return;
+  try {
+    sessionStorage.setItem(mediaStageSessionKey(heroKey), JSON.stringify(mediaStage));
+  } catch {
+    // Session storage is only a defensive guard; Supabase remains the source of truth.
+  }
+}
+
+function clearStoredMediaStage(heroKey) {
+  if (!heroKey) return;
+  try {
+    sessionStorage.removeItem(mediaStageSessionKey(heroKey));
+  } catch {
+    // Ignore storage cleanup failures.
+  }
+}
 
 function ensureMediaSlot(detail) {
   let slot = detail.querySelector("#hero-media-upload-slot");
@@ -175,6 +206,52 @@ export default function HeroMediaUploadBridge() {
     setError(""); setResult(null);
   }, [slide?.id]);
 
+  useEffect(() => {
+    if (!slide?.hero_key) return;
+    let repairing = false;
+
+    const preserveMediaStage = async (row) => {
+      if (!row) {
+        clearStoredMediaStage(slide.hero_key);
+        return;
+      }
+      if (row.review_status !== "draft") {
+        clearStoredMediaStage(slide.hero_key);
+        return;
+      }
+      const stored = readStoredMediaStage(slide.hero_key);
+      if (!stored?.branch || !stored?.baseSha || row.payload?.mediaStage || repairing) return;
+      repairing = true;
+      try {
+        const { error: repairError } = await supabase
+          .from("hero_drafts")
+          .update({ payload: { ...(row.payload || {}), mediaStage: stored } })
+          .eq("hero_key", slide.hero_key)
+          .eq("review_status", "draft");
+        if (repairError) throw repairError;
+        window.dispatchEvent(new CustomEvent(HERO_WORKFLOW_UPDATED_EVENT, { detail: { heroKey: slide.hero_key, mediaStagePreserved: true } }));
+      } catch (repairError) {
+        setError(`Staged media preservation failed: ${repairError.message || String(repairError)}`);
+      } finally {
+        repairing = false;
+      }
+    };
+
+    supabase.from("hero_drafts")
+      .select("hero_key,payload,review_status")
+      .eq("hero_key", slide.hero_key)
+      .maybeSingle()
+      .then(({ data }) => preserveMediaStage(data || null));
+
+    const channel = supabase.channel(`hero-media-stage-guard-${slide.hero_key}`)
+      .on("postgres_changes", { event: "*", schema: "public", table: "hero_drafts", filter: `hero_key=eq.${slide.hero_key}` }, (event) => {
+        preserveMediaStage(event.eventType === "DELETE" ? null : event.new || null);
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [slide?.hero_key]);
+
   useEffect(() => () => {
     if (desktopPreview) URL.revokeObjectURL(desktopPreview);
     if (mobilePreview) URL.revokeObjectURL(mobilePreview);
@@ -235,6 +312,16 @@ export default function HeroMediaUploadBridge() {
       });
       const body = await readResponse(response);
       if (!response.ok) throw new Error(body?.error || "Could not stage Hero media.");
+
+      const { data: stagedDraft, error: stagedDraftError } = await supabase
+        .from("hero_drafts")
+        .select("payload")
+        .eq("hero_key", slide.hero_key)
+        .maybeSingle();
+      if (stagedDraftError) throw stagedDraftError;
+      if (!stagedDraft?.payload?.mediaStage) throw new Error("Media staged, but staging metadata could not be re-read from Supabase.");
+      storeMediaStage(slide.hero_key, stagedDraft.payload.mediaStage);
+
       setResult(body);
       window.dispatchEvent(new CustomEvent(HERO_WORKFLOW_UPDATED_EVENT, { detail: { heroKey: slide.hero_key, mediaStaged: true } }));
     } catch (uploadError) {
