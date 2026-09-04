@@ -1,8 +1,13 @@
-/* Preserve the original Hero pagination appearance and interaction.
- * Only move the dots from the lower edge to the upper edge,
- * keeping the same 18px inset from the Hero frame.
+/* Preserve the original Hero pagination size, spacing and interaction.
+ * Move the dots to the upper edge and make the surrounding capsule fully transparent.
+ * The dots themselves remain visually unchanged and fully clickable.
  */
 .hero-carousel-dots {
   top: 18px;
   bottom: auto;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
