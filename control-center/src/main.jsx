@@ -6,6 +6,7 @@ import ControlCenterManagers from "./ControlCenterManagers";
 import NewProductDiscoveryGuard from "./NewProductDiscoveryGuard";
 import SaveDraftScrollBridge from "./SaveDraftScrollBridge";
 import DraftScrollLockBridge from "./DraftScrollLockBridge";
+import HeroControlledApplyBridge from "./HeroControlledApplyBridge";
 import "./styles.css";
 import "./review-workflow.css";
 import "./foundation-v2.css";
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")).render(
       <NewProductDiscoveryGuard />
       <SaveDraftScrollBridge />
       <DraftScrollLockBridge />
+      <HeroControlledApplyBridge />
     </AuthGate>
   </React.StrictMode>
 );
