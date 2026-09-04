@@ -5,8 +5,11 @@ const REPO = "hazardno-dot/playnice-site";
 const [OWNER, REPO_NAME] = REPO.split("/");
 const SHOP_PUBLIC_PREFIX = "playnice-site/public";
 const MAX_IMAGE_BYTES = 1_500_000;
+const GITHUB_RETRY_STATUSES = new Set([502, 503, 504]);
+const GITHUB_MAX_ATTEMPTS = 3;
 
 const json = (res, status, body) => res.status(status).json(body);
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function readJson(response, label) {
   const text = await response.text();
@@ -30,23 +33,38 @@ async function supabaseFetch(path, token, options = {}) {
 }
 
 async function github(path, options = {}) {
-  const response = await fetch(`https://api.github.com${path}`, {
-    ...options,
-    headers: {
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
-  });
-  const data = await readJson(response, "GitHub API");
-  if (!response.ok) {
-    const error = new Error(data?.message || `GitHub request failed (${response.status})`);
-    error.status = response.status;
-    throw error;
+  let lastError;
+  for (let attempt = 1; attempt <= GITHUB_MAX_ATTEMPTS; attempt += 1) {
+    try {
+      const response = await fetch(`https://api.github.com${path}`, {
+        ...options,
+        headers: {
+          Authorization: `Bearer ${GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+          "Content-Type": "application/json",
+          ...(options.headers || {}),
+        },
+      });
+      const data = await readJson(response, "GitHub API");
+      if (response.ok) return data;
+
+      const error = new Error(data?.message || `GitHub request failed (${response.status})`);
+      error.status = response.status;
+      lastError = error;
+
+      if (!GITHUB_RETRY_STATUSES.has(response.status) || attempt === GITHUB_MAX_ATTEMPTS) {
+        throw error;
+      }
+      await sleep(350 * attempt);
+    } catch (error) {
+      lastError = error;
+      if (error?.status && !GITHUB_RETRY_STATUSES.has(error.status)) throw error;
+      if (attempt === GITHUB_MAX_ATTEMPTS) throw error;
+      await sleep(350 * attempt);
+    }
   }
-  return data;
+  throw lastError || new Error("GitHub request failed.");
 }
 
 function cleanBase64(value = "") {
