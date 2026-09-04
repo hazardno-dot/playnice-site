@@ -127,7 +127,8 @@ export default function ControlledApplyManager() {
       let body = {};
       try { body = raw ? JSON.parse(raw) : {}; }
       catch { throw new Error(raw || "Controlled Apply returned an invalid response."); }
-      if (!response.ok) throw new Error(body?.error || "Could not create controlled apply branch.");
+      if (!response.ok) throw new Error(body?.error || "Could not create or update controlled apply branch.");
+      setPreviewChecks((current) => ({ ...current, [row.product_slug]: {} }));
       await load({ sync: false });
     } catch (e) {
       setError(e?.message || "Controlled apply failed.");
@@ -201,10 +202,13 @@ export default function ControlledApplyManager() {
         <div className="controlled-apply-primary">
           <div>
             <strong>{row.product_slug}</strong>
-            <span>{verified ? "PREVIEW VERIFIED · READY TO MERGE" : hasApply ? "PREVIEW CREATED · VISUAL QA REQUIRED" : "APPROVED · READY TO APPLY"}</span>
+            <span>{verified ? "PREVIEW VERIFIED · READY TO MERGE" : hasApply ? "PREVIEW CREATED · UPDATE OR VERIFY" : "APPROVED · READY TO APPLY"}</span>
           </div>
           {!hasApply ? <button disabled={busy === `create:${row.product_slug}`} onClick={() => createApply(row)}>
             {busy === `create:${row.product_slug}` ? "Creating…" : "Create preview branch"}
+          </button> : null}
+          {hasApply && !verified ? <button disabled={busy === `create:${row.product_slug}`} onClick={() => createApply(row)}>
+            {busy === `create:${row.product_slug}` ? "Updating…" : "Update preview branch"}
           </button> : null}
           {hasApply && !verified ? <button disabled={busy === `verify:${row.product_slug}` || !visualGatePassed} onClick={() => verifyPreview(row)}>
             {busy === `verify:${row.product_slug}` ? "Checking preview…" : visualGatePassed ? "Mark preview verified" : `Visual QA ${completedChecks}/${PREVIEW_CHECK_ITEMS.length}`}
@@ -212,7 +216,7 @@ export default function ControlledApplyManager() {
         </div>
 
         {hasApply ? <div className={`controlled-apply-result ${verified ? "controlled-apply-verified" : ""}`}>
-          <strong>{verified ? "Ready to merge" : "Preview branch created"}</strong>
+          <strong>{verified ? "Ready to merge" : "Preview branch active"}</strong>
           <span>{row.apply_branch}</span>
           <a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">
             Open PR #{row.apply_pr_number}
