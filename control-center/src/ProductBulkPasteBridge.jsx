@@ -156,6 +156,7 @@ function setNativeValue(element, value) {
 
 function findFieldMap(root) {
   const map = new Map();
+  if (!root) return map;
   root.querySelectorAll(".edit-field").forEach((field) => {
     const label = field.querySelector(":scope > span")?.textContent;
     const control = field.querySelector("input, textarea, select");
@@ -232,7 +233,7 @@ function preflight(parsed) {
     if (key === "rating") {
       const rating = Number(rawValue);
       if (!Number.isFinite(rating) || rating < 0 || rating > 10) {
-        blockers.push(`Rating must be 0–10.`);
+        blockers.push("Rating must be 0–10.");
         return;
       }
     }
@@ -267,7 +268,8 @@ async function addSize(size, price) {
   setNativeValue(inputs[1], price);
   addButton.click();
   await nextFrame();
-  return Boolean(findFieldMap(document.querySelector(".product-detail.edit-mode")).get(normalize(size)));
+  const updatedRoot = document.querySelector(".product-detail.edit-mode");
+  return Boolean(findFieldMap(updatedRoot).get(normalize(size)));
 }
 
 export default function ProductBulkPasteBridge() {
@@ -275,7 +277,6 @@ export default function ProductBulkPasteBridge() {
   const [source, setSource] = useState("");
   const [message, setMessage] = useState("");
   const [expanded, setExpanded] = useState(true);
-  const [domRevision, setDomRevision] = useState(0);
 
   useEffect(() => {
     const main = document.querySelector(".main-stage");
@@ -290,9 +291,10 @@ export default function ProductBulkPasteBridge() {
         const warning = editor.querySelector(":scope > .draft-warning");
         if (warning) warning.insertAdjacentElement("afterend", host);
         else editor.prepend(host);
+        setSlot(host);
+        return;
       }
-      setSlot(host);
-      setDomRevision((value) => value + 1);
+      setSlot((current) => current === host ? current : host);
     };
     sync();
     const observer = new MutationObserver(sync);
@@ -301,7 +303,7 @@ export default function ProductBulkPasteBridge() {
   }, []);
 
   const parsed = useMemo(() => parseSource(source), [source]);
-  const validation = useMemo(() => preflight(parsed), [parsed, domRevision]);
+  const validation = preflight(parsed);
   const hasInput = Boolean(source.trim());
   const canApply = hasInput && validation.blockers.length === 0 && validation.actions.length > 0;
 
@@ -330,7 +332,6 @@ export default function ProductBulkPasteBridge() {
     }
 
     setMessage(`${applied} fields applied. Nothing was saved. Review live validation, then Save Draft.`);
-    setDomRevision((value) => value + 1);
   };
 
   if (!slot) return null;
