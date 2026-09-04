@@ -5,6 +5,7 @@ import AuthGate from "./AuthGate";
 import ControlCenterManagers from "./ControlCenterManagers";
 import NewProductDiscoveryGuard from "./NewProductDiscoveryGuard";
 import SaveDraftScrollBridge from "./SaveDraftScrollBridge";
+import DraftScrollLockBridge from "./DraftScrollLockBridge";
 import "./styles.css";
 import "./review-workflow.css";
 import "./foundation-v2.css";
@@ -16,6 +17,7 @@ createRoot(document.getElementById("root")).render(
       <ControlCenterManagers />
       <NewProductDiscoveryGuard />
       <SaveDraftScrollBridge />
+      <DraftScrollLockBridge />
     </AuthGate>
   </React.StrictMode>
 );
