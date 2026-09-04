@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { products } from "@shop/data/products/index.js";
 import "./discovery-bulk-paste.css";
 
 const normalizeKey = (value) => String(value || "").trim().toLowerCase().replace(/[\s-]+/g, "_");
 const normalizeLabel = (value) => normalizeKey(String(value || "").replace(/\s+/g, " "));
+const PRODUCT_SLUGS = new Set(products.map((product) => product.slug));
+
+function selectedSlug(root) {
+  const slugNode = root?.querySelector(".product-detail.edit-mode .slug");
+  return String(slugNode?.textContent || "").split(" · ")[0].trim();
+}
 
 function setReactInputValue(input, value) {
   const descriptor = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value");
@@ -48,14 +55,18 @@ export default function DiscoveryBulkPasteBridge() {
   const [slot, setSlot] = useState(null);
   const [source, setSource] = useState("");
   const [message, setMessage] = useState("");
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     const root = document.querySelector(".main-stage");
     if (!root) return;
 
     const sync = () => {
-      const grid = root.querySelector(".product-detail.edit-mode .discovery-edit-grid");
-      if (!grid) { setSlot(null); return; }
+      const editor = root.querySelector(".product-detail.edit-mode");
+      const grid = editor?.querySelector(".discovery-edit-grid");
+      const slug = selectedSlug(root);
+      const isNewProduct = Boolean(slug && !PRODUCT_SLUGS.has(slug));
+      if (!grid || isNewProduct) { setSlot(null); return; }
       let host = grid.parentElement?.querySelector(":scope > #discovery-bulk-paste-slot");
       if (!host && grid.parentElement) {
         host = document.createElement("div");
@@ -104,17 +115,23 @@ export default function DiscoveryBulkPasteBridge() {
     <div className="discovery-bulk-paste">
       <div className="discovery-bulk-paste-head">
         <div>
-          <strong>Bulk paste</strong>
-          <span>Paste all Discovery values at once · key: value or JSON</span>
+          <strong>Advanced · Scent profile only</strong>
+          <span>Use only when editing Discovery values on an existing product.</span>
         </div>
-        <button type="button" onClick={apply}>Apply values</button>
+        <button type="button" onClick={() => setExpanded((value) => !value)}>{expanded ? "Collapse" : "Open"}</button>
       </div>
-      <textarea
-        value={source}
-        onChange={(event) => { setSource(event.target.value); setMessage(""); }}
-        placeholder={"date: 5.0\ncasual: 9.3\ncitrus: 9.3\noffice: 9.0\n..."}
-      />
-      {message ? <div className="discovery-bulk-paste-message">{message}</div> : null}
+      {expanded ? <>
+        <textarea
+          value={source}
+          onChange={(event) => { setSource(event.target.value); setMessage(""); }}
+          placeholder={"date: 5.0\ncasual: 9.3\ncitrus: 9.3\noffice: 9.0\n..."}
+        />
+        <div className="discovery-bulk-paste-head">
+          <span>Paste all Discovery values at once · key: value or JSON</span>
+          <button type="button" onClick={apply}>Apply values</button>
+        </div>
+        {message ? <div className="discovery-bulk-paste-message">{message}</div> : null}
+      </> : null}
     </div>,
     slot
   );
