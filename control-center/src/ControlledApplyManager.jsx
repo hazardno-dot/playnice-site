@@ -194,18 +194,20 @@ export default function ControlledApplyManager() {
 
     {readyRows.map((row) => {
       const hasApply = Boolean(row.apply_branch && row.apply_pr_number);
+      const hadPreview = Boolean(row.apply_created_at);
       const verified = Boolean(row.preview_verified_at);
       const checks = previewChecks[row.product_slug] || {};
       const completedChecks = PREVIEW_CHECK_ITEMS.filter(([id]) => checks[id] === true).length;
       const visualGatePassed = completedChecks === PREVIEW_CHECK_ITEMS.length;
+      const shouldUpdateExisting = !hasApply && hadPreview && row.baseline_snapshot?.kind === "new_product";
       return <div className="controlled-apply-row controlled-apply-row-stack" key={row.product_slug}>
         <div className="controlled-apply-primary">
           <div>
             <strong>{row.product_slug}</strong>
-            <span>{verified ? "PREVIEW VERIFIED · READY TO MERGE" : hasApply ? "PREVIEW CREATED · UPDATE OR VERIFY" : "APPROVED · READY TO APPLY"}</span>
+            <span>{verified ? "PREVIEW VERIFIED · READY TO MERGE" : hasApply ? "PREVIEW CREATED · UPDATE OR VERIFY" : shouldUpdateExisting ? "PREVIEW EXISTS · READY TO UPDATE" : "APPROVED · READY TO APPLY"}</span>
           </div>
           {!hasApply ? <button disabled={busy === `create:${row.product_slug}`} onClick={() => createApply(row)}>
-            {busy === `create:${row.product_slug}` ? "Creating…" : "Create preview branch"}
+            {busy === `create:${row.product_slug}` ? (shouldUpdateExisting ? "Updating…" : "Creating…") : shouldUpdateExisting ? "Update preview branch" : "Create preview branch"}
           </button> : null}
           {hasApply && !verified ? <button disabled={busy === `create:${row.product_slug}`} onClick={() => createApply(row)}>
             {busy === `create:${row.product_slug}` ? "Updating…" : "Update preview branch"}
