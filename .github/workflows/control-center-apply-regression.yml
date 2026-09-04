@@ -8,6 +8,8 @@ on:
       - "control-center/api/create-apply.js"
       - "control-center/api/create-new-product.js"
       - "control-center/api/create-new-product-engine.js"
+      - "control-center/lib/create-new-product-engine.mjs"
+      - "control-center/api/verify-product-preview.js"
       - "control-center/api/create-hero-apply.js"
       - "control-center/api/finalize-hero-apply.js"
       - "control-center/api/create-journal-apply.js"
@@ -21,6 +23,9 @@ on:
       - "control-center/src/productWorkflowState.mjs"
       - "control-center/src/productNavigation.mjs"
       - "control-center/src/ProductCatalogCountBridge.jsx"
+      - "control-center/src/draftValidation.js"
+      - "control-center/src/ControlledApplyManager.jsx"
+      - "control-center/src/controlled-apply.css"
       - "control-center/src/journalAudit.mjs"
       - "control-center/src/journalDraft.mjs"
       - "control-center/src/JournalManager.jsx"
@@ -45,7 +50,6 @@ on:
       - "control-center/src/App.jsx"
       - "control-center/src/DraftManager.jsx"
       - "control-center/src/ControlCenterManagers.jsx"
-      - "control-center/src/ControlledApplyManager.jsx"
       - "control-center/tests/**"
       - "playnice-site/src/data/products/index.js"
       - "playnice-site/src/data/products/productCopy.js"
@@ -83,6 +87,7 @@ jobs:
           node control-center/tests/controlled-apply-identity.mjs
           node control-center/tests/controlled-apply-new-product.mjs
           node control-center/tests/controlled-apply-new-product-structure.mjs
+          node control-center/tests/product-presentation-guardrails.mjs
           node control-center/tests/product-workflow-state.mjs
           node control-center/tests/inline-validation-contract.mjs
           node control-center/tests/approval-payload-safety.mjs
