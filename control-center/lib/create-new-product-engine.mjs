@@ -55,12 +55,31 @@ function validateNewProduct(p) {
   if (!p.core.image.startsWith("/products/") || p.core.image === "/products/" || p.core.image.endsWith("/")) errors.push("Image must be a specific product file under /products/.");
   if (!Number.isFinite(p.core.rating) || p.core.rating < 0 || p.core.rating > 10) errors.push("Rating must be 0–10.");
   if (!Object.keys(p.core.sizes).length || Object.values(p.core.sizes).some((v)=>!Number.isFinite(v)||v<=0)) errors.push("At least one valid size is required.");
-  if (!p.core.moods.length) errors.push("At least one mood is required.");
+  if (p.core.moods.length !== 3) errors.push("Exactly 3 moods are required for product-card parity.");
+  if (!p.core.badge) errors.push("Presentation badge is required for a new product.");
+  if (!p.core.inspiredBy.name) errors.push("Inspired-by/original-creation name is required for modal parity.");
   if (p.core.recommendations.length !== 3 || new Set(p.core.recommendations).size !== 3) errors.push("Exactly 3 unique recommendations are required.");
   for (const level of ["top","heart","base"]) if (!p.core.noteMap[level].length) errors.push(`${level} notes are required.`);
   for (const field of ["miniTag","scentType","card","modal","whyChoose"]) for (const lang of ["sr","en"]) if (!String(p.copy?.[field]?.[lang] || "").trim()) errors.push(`copy.${field}.${lang} is required.`);
   for (const field of ["dominantNotes","tags"]) for (const lang of ["sr","en"]) if (!csv(p.copy?.[field]?.[lang]).length) errors.push(`copy.${field}.${lang} is required.`);
-  for (const lang of ["sr","en"]) if (!String(p.wear?.[lang] || "").trim()) errors.push(`wear.${lang} is required.`);
+  for (const lang of ["sr","en"]) {
+    if (csv(p.copy?.dominantNotes?.[lang]).length !== 4) errors.push(`copy.dominantNotes.${lang} must contain exactly 4 items.`);
+    if (csv(p.copy?.tags?.[lang]).length !== 3) errors.push(`copy.tags.${lang} must contain exactly 3 items.`);
+  }
+  const lengthRules = [
+    ["miniTag",32,32],["scentType",42,42],["card",82,92],["modal",230,230],["whyChoose",125,125]
+  ];
+  for (const [field,srMax,enMax] of lengthRules) {
+    const sr = String(p.copy?.[field]?.sr || "").trim();
+    const en = String(p.copy?.[field]?.en || "").trim();
+    if (sr.length > srMax) errors.push(`copy.${field}.sr exceeds presentation limit (${sr.length}/${srMax}).`);
+    if (en.length > enMax) errors.push(`copy.${field}.en exceeds presentation limit (${en.length}/${enMax}).`);
+  }
+  for (const lang of ["sr","en"]) {
+    const value = String(p.wear?.[lang] || "").trim();
+    if (!value) errors.push(`wear.${lang} is required.`);
+    if (value.length > 90) errors.push(`wear.${lang} exceeds product-card presentation limit (${value.length}/90).`);
+  }
   if (!Object.keys(p.discovery).length || Object.values(p.discovery).some((v)=>!Number.isFinite(v)||v<0||v>10)) errors.push("Discovery profile must contain numeric 0–10 values.");
   return errors;
 }
@@ -73,10 +92,21 @@ function assertUnique(source, p) {
   if (new RegExp(`\\bslug\\s*:\\s*["']${escapeRegex(p.slug)}["']`).test(source)) throw new Error(`Product slug already exists: ${p.slug}`);
   if (new RegExp(`\\bname\\s*:\\s*["']${escapeRegex(p.core.name)}["']`).test(source)) throw new Error(`Product name already exists: ${p.core.name}`);
 }
+function compactConcentrationName(name) {
+  return String(name || "")
+    .replace(/\bExtrait de Parfum\b/g, "Extrait")
+    .replace(/\bEau de Parfum\b/g, "EDP")
+    .replace(/\bEau de Toilette\b/g, "EDT")
+    .trim();
+}
 function renderProductObject(p, id, addedAt = new Date().toISOString()) {
   const c=p.core;
   const inspired = c.inspiredBy.name || c.inspiredBy.short ? `,\n    inspiredBy: {\n      name: ${js(c.inspiredBy.name)},\n      short: ${js(c.inspiredBy.short)}\n    }` : "";
-  return `  {\n    id: ${id},\n    addedAt: ${js(addedAt)},\n    slug: ${js(p.slug)},\n    name: ${js(c.name)},\n    shortName: ${js(c.shortName)},\n    category: ${js(c.category)},\n    image: ${js(c.image)},\n    sizes: ${js(c.sizes)},\n    badge: ${js(c.badge)},\n    rating: ${c.rating},\n    ratingLabel: ${js(c.ratingLabel)},\n    season: ${js(c.season)},\n    moods: ${js(c.moods)},\n    recommendations: ${js(c.recommendations)}${inspired},\n    noteMap: {\n      top: ${js(c.noteMap.top)},\n      heart: ${js(c.noteMap.heart)},\n      base: ${js(c.noteMap.base)}\n    }\n  }`;
+  const modalName = compactConcentrationName(c.name);
+  const modalLine = modalName && modalName !== c.name ? `\n    modalName: ${js(modalName)},` : "";
+  const cardName = c.name.length > 58 ? modalName : "";
+  const cardLine = cardName && cardName !== c.name ? `\n    cardName: ${js(cardName)},` : "";
+  return `  {\n    id: ${id},\n    addedAt: ${js(addedAt)},\n    slug: ${js(p.slug)},\n    name: ${js(c.name)},${modalLine}${cardLine}\n    shortName: ${js(c.shortName)},\n    category: ${js(c.category)},\n    image: ${js(c.image)},\n    sizes: ${js(c.sizes)},\n    badge: ${js(c.badge)},\n    rating: ${c.rating},\n    ratingLabel: ${js(c.ratingLabel)},\n    season: ${js(c.season)},\n    moods: ${js(c.moods)},\n    recommendations: ${js(c.recommendations)}${inspired},\n    noteMap: {\n      top: ${js(c.noteMap.top)},\n      heart: ${js(c.noteMap.heart)},\n      base: ${js(c.noteMap.base)}\n    }\n  }`;
 }
 function appendSeparator(before) { return /,\s*$/.test(before) ? "" : ","; }
 function insertProduct(source, p) {
@@ -122,7 +152,7 @@ function insertObjectEntry(source, rendered, label, exportName) {
   return `${before}${appendSeparator(before)}\n\n${rendered}\n${after}`;
 }
 
-export const __test = { normalizePayload, validateNewProduct, nextProductId, renderProductObject, insertProduct, insertObjectEntry, renderCopy, renderWear, renderDiscovery, findExportObjectEnd, appendSeparator, stableJson };
+export const __test = { normalizePayload, validateNewProduct, nextProductId, renderProductObject, insertProduct, insertObjectEntry, renderCopy, renderWear, renderDiscovery, findExportObjectEnd, appendSeparator, stableJson, compactConcentrationName };
 
 export default async function handler(req,res){
   if(req.method!=="POST") return json(res,405,{error:"Method not allowed"});
@@ -149,11 +179,12 @@ export default async function handler(req,res){
     const p=normalizePayload(draft.approved_payload,slug);
     const errors=validateNewProduct(p);
     if(errors.length)return json(res,409,{error:"New product validation failed.",errors});
+
     const mainRef=await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
     const baseSha=mainRef.object.sha;
+    const baseCommit=await github(`/repos/${OWNER}/${REPO_NAME}/git/commits/${baseSha}`);
     const stamp=new Date().toISOString().replace(/[-:TZ.]/g,"").slice(0,12);
     const branch=`cc-create-${slug}-${stamp}`;
-    await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`,{method:"POST",body:JSON.stringify({ref:`refs/heads/${branch}`,sha:baseSha})});
     const specs=[
       ["playnice-site/src/data/products/index.js",(s)=>insertProduct(s,p)],
       ["playnice-site/src/data/products/productCopy.js",(s)=>insertObjectEntry(s,renderCopy(p),"Product Copy","productCopy")],
@@ -161,16 +192,22 @@ export default async function handler(req,res){
       ["playnice-site/src/data/products/discoveryProfiles.js",(s)=>insertObjectEntry(s,renderDiscovery(p),"Discovery Profiles","discoveryProfiles")],
     ];
     const files=[];
+    const tree=[];
     for(const [filePath,transform] of specs){
       const file=await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
       const source=Buffer.from(file.content,"base64").toString("utf8");
       const next=transform(source);
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`,{method:"PUT",body:JSON.stringify({message:`Control Center create: ${slug}`,content:Buffer.from(next,"utf8").toString("base64"),sha:file.sha,branch})});
+      const blob=await github(`/repos/${OWNER}/${REPO_NAME}/git/blobs`,{method:"POST",body:JSON.stringify({content:next,encoding:"utf-8"})});
+      tree.push({path:filePath,mode:"100644",type:"blob",sha:blob.sha});
       files.push(filePath);
     }
-    const pr=await github(`/repos/${OWNER}/${REPO_NAME}/pulls`,{method:"POST",body:JSON.stringify({title:`Control Center: create ${slug}`,head:branch,base:"main",draft:true,body:["Generated by PlayNice Control Center controlled apply v2.9.","",`- New product: ${slug}`,`- Name: ${p.core.name}`,`- Files: ${files.join(", ")}`,"- Safety: draft PR only; no automatic merge"].join("\n")})});
+    const nextTree=await github(`/repos/${OWNER}/${REPO_NAME}/git/trees`,{method:"POST",body:JSON.stringify({base_tree:baseCommit.tree,tree})});
+    const commit=await github(`/repos/${OWNER}/${REPO_NAME}/git/commits`,{method:"POST",body:JSON.stringify({message:`Control Center create: ${slug}`,tree:nextTree.sha,parents:[baseSha]})});
+    await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`,{method:"POST",body:JSON.stringify({ref:`refs/heads/${branch}`,sha:commit.sha})});
+
+    const pr=await github(`/repos/${OWNER}/${REPO_NAME}/pulls`,{method:"POST",body:JSON.stringify({title:`Control Center: create ${slug}`,head:branch,base:"main",draft:true,body:["Generated by PlayNice Control Center controlled apply v3.0.","",`- New product: ${slug}`,`- Name: ${p.core.name}`,`- Files: ${files.join(", ")}`,"- Safety: one atomic commit; draft PR only; Shop preview + visual parity verification required before merge"].join("\n")})});
     await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`,token,{method:"PATCH",body:JSON.stringify({apply_branch:branch,apply_pr_number:pr.number,apply_created_at:new Date().toISOString(),apply_created_by:user.id,preview_verified_at:null,preview_verified_by:null})});
-    await supabaseFetch("/rest/v1/draft_audit_log",token,{method:"POST",body:JSON.stringify({product_slug:slug,actor_id:user.id,action:"new_product_branch_created",details:{branch,pr_number:pr.number,version:"2.9",files}})});
-    return json(res,200,{ok:true,branch,pr_number:pr.number,pr_url:pr.html_url,version:"2.9",files});
+    await supabaseFetch("/rest/v1/draft_audit_log",token,{method:"POST",body:JSON.stringify({product_slug:slug,actor_id:user.id,action:"new_product_branch_created",details:{branch,pr_number:pr.number,version:"3.0",files,atomic_commit:true}})});
+    return json(res,200,{ok:true,branch,pr_number:pr.number,pr_url:pr.html_url,version:"3.0",files,atomic_commit:true});
   }catch(error){return json(res,500,{error:error?.message||"New product apply failed."});}
 }
