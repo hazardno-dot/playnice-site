@@ -1,0 +1,8 @@
+/* Preserve the original Hero pagination appearance and interaction.
+ * Only move the dots from the lower edge to the upper edge,
+ * keeping the same 18px inset from the Hero frame.
+ */
+.hero-carousel-dots {
+  top: 18px;
+  bottom: auto;
+}
