@@ -14,6 +14,29 @@ const fmtAge = (value) => {
   return `${Math.floor(hours / 24)}d ago`;
 };
 
+const qaPresentation = (row) => {
+  if (!row) return { state: "unknown", label: "NO DATA", partial: false, notTestedCount: 0 };
+
+  const failed = Number(row.failed_checks || 0);
+  const warnings = Number(row.warning_checks || 0);
+  const findingCount = Array.isArray(row.findings) ? row.findings.length : 0;
+  const notTestedCount = Array.isArray(row.not_tested) ? row.not_tested.length : 0;
+
+  if (failed > 0 || row.overall === "critical") {
+    return { state: "critical", label: "ERROR", partial: false, notTestedCount };
+  }
+
+  if (notTestedCount > 0 && findingCount === 0) {
+    return { state: "partial", label: "PARTIAL", partial: true, notTestedCount };
+  }
+
+  if (warnings > 0 || findingCount > 0 || row.overall === "warning") {
+    return { state: "warning", label: "WARNING", partial: false, notTestedCount };
+  }
+
+  return { state: "healthy", label: "HEALTHY", partial: false, notTestedCount };
+};
+
 export default function BrowserQaOverviewBridge() {
   const [slot, setSlot] = useState(null);
   const [rows, setRows] = useState([]);
@@ -23,7 +46,7 @@ export default function BrowserQaOverviewBridge() {
   const load = useCallback(async () => {
     const { data, error: loadError } = await supabase
       .from("browser_qa_history")
-      .select("id,checked_at,check_type,overall,failed_checks,warning_checks,summary")
+      .select("id,checked_at,check_type,overall,failed_checks,warning_checks,summary,findings,not_tested")
       .order("checked_at", { ascending: false })
       .limit(20);
     if (loadError) {
@@ -82,21 +105,27 @@ export default function BrowserQaOverviewBridge() {
 
   if (!slot) return null;
 
-  const state = error ? "warning" : (latest?.overall || "unknown");
+  const presentation = error
+    ? { state: "warning", label: "WARNING", partial: false, notTestedCount: 0 }
+    : qaPresentation(latest);
+  const dailyPresentation = qaPresentation(daily);
+  const fullPresentation = qaPresentation(full);
   const detail = error
     ? "QA history unavailable"
     : !latest
       ? "waiting for first automated browser QA run"
-      : `Daily ${daily?.overall?.toUpperCase() || "—"} · Full ${full?.overall?.toUpperCase() || "—"}`;
+      : `Daily ${dailyPresentation.label === "NO DATA" ? "—" : dailyPresentation.label} · Full ${fullPresentation.label === "NO DATA" ? "—" : fullPresentation.label}`;
 
   return createPortal(
-    <article className={`overview-card browser-qa-overview-card ${state}`} role="status" aria-live="polite">
+    <article className={`overview-card browser-qa-overview-card ${presentation.state}`} role="status" aria-live="polite">
       <span>PRODUCTION QA</span>
-      <strong>{error ? "WARNING" : latest?.overall?.toUpperCase() || "NO DATA"}</strong>
+      <strong>{presentation.label}</strong>
       <small>{detail}</small>
       <div className="browser-qa-overview-meta">
         <em>{latest?.failed_checks || 0} failed</em>
-        <em>{latest?.warning_checks || 0} warnings</em>
+        {presentation.partial
+          ? <em>{presentation.notTestedCount} not tested</em>
+          : <em>{latest?.warning_checks || 0} warnings</em>}
         <time dateTime={latest?.checked_at || undefined}>{fmtAge(latest?.checked_at)}</time>
       </div>
     </article>,
