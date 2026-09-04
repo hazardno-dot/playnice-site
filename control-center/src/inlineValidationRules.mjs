@@ -36,7 +36,9 @@ export const INLINE_DISCOVERY_FIELDS = new Set([
 ]);
 
 const numberInRange = (value, min, max) => {
-  const number = Number(value);
+  const text = String(value ?? "").trim();
+  if (!text) return false;
+  const number = Number(text);
   return Number.isFinite(number) && number >= min && number <= max;
 };
 
@@ -64,8 +66,8 @@ export function validateInlineFields(rawFields, options = {}) {
     const value = field.value.trim();
 
     if (name === "rating" && !numberInRange(value, 0, 10)) add(field, "Rating must be a number from 0 to 10.");
-    if (INLINE_DISCOVERY_FIELDS.has(name) && field.type === "number" && !numberInRange(value, 0, 10)) add(field, "Discovery values must be from 0 to 10.");
-    if (field.type === "number" && /ml$/i.test(field.name) && (!Number.isFinite(Number(value)) || Number(value) <= 0)) add(field, "Price must be greater than 0.");
+    if (INLINE_DISCOVERY_FIELDS.has(name) && field.type === "number" && !numberInRange(value, 0, 10)) add(field, "Discovery values must be explicitly entered from 0 to 10.");
+    if (field.type === "number" && /ml$/i.test(field.name) && (!value || !Number.isFinite(Number(value)) || Number(value) <= 0)) add(field, "Price must be greater than 0.");
     if (INLINE_REQUIRED_CORE_FIELDS.has(name) && !value) add(field, `${field.name} is required.`);
 
     if (name === "image path" && value && (!value.startsWith("/products/") || value === "/products/" || value.endsWith("/"))) {
