@@ -19,6 +19,14 @@ export const INLINE_REQUIRED_COPY_PREFIXES = [
   "why choose",
 ];
 
+const PRESENTATION_LIMITS = [
+  ["mini tag", 32],
+  ["scent type", 42],
+  ["card copy", { sr: 82, en: 92 }],
+  ["modal copy", 230],
+  ["why choose", 125],
+];
+
 export const INLINE_DISCOVERY_FIELDS = new Set([
   "freshness",
   "sweetness",
@@ -42,9 +50,12 @@ export const INLINE_DISCOVERY_FIELDS = new Set([
   "office",
   "casual",
   "date",
-  "night",
-  "summer",
-  "winter",
+  "evening",
+  "elegance",
+  "versatility",
+  "masculine",
+  "feminine",
+  "unisex",
 ]);
 
 const numberInRange = (value, min, max) => {
@@ -65,6 +76,7 @@ export function validateInlineFields(rawFields, options = {}) {
   const knownProductSlugs = new Set(options.knownProductSlugs || []);
   const knownNoteKeys = new Set(options.knownNoteKeys || []);
   const selectedSlug = String(options.selectedSlug || "").trim();
+  const isNewProduct = Boolean(options.isNewProduct);
 
   const add = (field, message, level = "error") => {
     issues.push({
@@ -99,12 +111,35 @@ export function validateInlineFields(rawFields, options = {}) {
       add(field, "Use a specific product image file under /products/, not a directory placeholder.");
     }
 
-    if (name.startsWith("wear ·") && !value) {
-      add(field, "Wear context is required in both languages.");
+    if (isNewProduct && name.startsWith("badge") && !value) {
+      add(field, "A new product must have a presentation badge.");
     }
 
-    if ((name.includes("· sr") || name.includes("· en")) && INLINE_REQUIRED_COPY_PREFIXES.some((prefix) => name.startsWith(prefix)) && !value) {
-      add(field, "Required bilingual copy is missing.");
+    if (isNewProduct && name.startsWith("inspired by") && name.includes("name") && !value) {
+      add(field, "A new product must define the modal reference/original-creation label.");
+    }
+
+    if (name.startsWith("wear ·")) {
+      if (!value) add(field, "Wear context is required in both languages.");
+      if (value.length > 90) add(field, `Wear context is ${value.length} characters; keep it at or below 90.`);
+    }
+
+    if ((name.includes("· sr") || name.includes("· en")) && INLINE_REQUIRED_COPY_PREFIXES.some((prefix) => name.startsWith(prefix))) {
+      if (!value) add(field, "Required bilingual copy is missing.");
+      const lang = name.includes("· sr") ? "sr" : "en";
+      PRESENTATION_LIMITS.forEach(([prefix, limit]) => {
+        if (!name.startsWith(prefix) || !value) return;
+        const max = typeof limit === "object" ? limit[lang] : limit;
+        if (value.length > max) add(field, `Copy is ${value.length} characters; keep it at or below ${max}.`);
+      });
+    }
+
+    if (name.includes("dominant notes") && csv(value).length !== 4) {
+      add(field, "Exactly 4 dominant notes are required.");
+    }
+
+    if (name.startsWith("tags") && csv(value).length !== 3) {
+      add(field, "Exactly 3 tags are required.");
     }
 
     if (name.includes("notes · comma separated")) {
@@ -133,8 +168,8 @@ export function validateInlineFields(rawFields, options = {}) {
       }
     }
 
-    if (name.includes("moods · comma separated") && !csv(value).length) {
-      add(field, "At least one mood is required.");
+    if (name.includes("moods · comma separated") && csv(value).length !== 3) {
+      add(field, "Exactly 3 moods are required.");
     }
   });
 
