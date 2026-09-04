@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import AuthGate from "./AuthGate";
 import ControlCenterManagers from "./ControlCenterManagers";
+import NewProductDiscoveryGuard from "./NewProductDiscoveryGuard";
 import "./styles.css";
 import "./review-workflow.css";
 import "./foundation-v2.css";
@@ -12,6 +13,7 @@ createRoot(document.getElementById("root")).render(
     <AuthGate>
       <App />
       <ControlCenterManagers />
+      <NewProductDiscoveryGuard />
     </AuthGate>
   </React.StrictMode>
 );
