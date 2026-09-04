@@ -117,7 +117,7 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-8.jpg",
     "desktopImage": "/hero/slide-8.jpg",
     "mobileImage": "/hero/mobile/slide-8-mobile.jpg",
-    "alt": "Optional: special action, drop ili limited stock",
+    "alt": "PlayNice premium packaging with fragrance gifts and branded accessories",
     "actionPrimary": "manifesto",
     "manifestoType": "details"
   },
