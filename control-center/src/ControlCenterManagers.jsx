@@ -20,6 +20,7 @@ import HeroMediaUploadBridge from "./HeroMediaUploadBridge";
 import HeroBranchPreviewBridge from "./HeroBranchPreviewBridge";
 import HeroReviewBridge from "./HeroReviewBridge";
 import HeroApplyBridge from "./HeroApplyBridge";
+import HeroPreviewCacheBustBridge from "./HeroPreviewCacheBustBridge";
 import "./header-layout.css";
 
 const ACTIVE_MODULE_KEY = "playnice_cc_active_module";
@@ -100,6 +101,7 @@ export default function ControlCenterManagers() {
     <HeroBranchPreviewBridge />
     <HeroReviewBridge />
     <HeroApplyBridge />
+    <HeroPreviewCacheBustBridge />
     <JournalManager />
     <JournalApplyManager />
     <NotesManager />
