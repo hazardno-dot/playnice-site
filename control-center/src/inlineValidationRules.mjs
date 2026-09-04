@@ -28,34 +28,11 @@ const PRESENTATION_LIMITS = [
 ];
 
 export const INLINE_DISCOVERY_FIELDS = new Set([
-  "freshness",
-  "sweetness",
-  "warmth",
-  "darkness",
-  "airiness",
-  "cleanliness",
-  "creaminess",
-  "dryness",
-  "fruitiness",
-  "spiciness",
-  "woodiness",
-  "aromaticity",
-  "florality",
-  "gourmandness",
-  "citrus",
-  "aquatic",
-  "powdery",
-  "projection",
-  "longevity",
-  "office",
-  "casual",
-  "date",
-  "evening",
-  "elegance",
-  "versatility",
-  "masculine",
-  "feminine",
-  "unisex",
+  "freshness", "sweetness", "warmth", "darkness", "airiness", "cleanliness",
+  "creaminess", "dryness", "fruitiness", "spiciness", "woodiness", "aromaticity",
+  "florality", "gourmandness", "citrus", "aquatic", "powdery", "projection",
+  "longevity", "office", "casual", "date", "evening", "elegance", "versatility",
+  "masculine", "feminine", "unisex",
 ]);
 
 const numberInRange = (value, min, max) => {
@@ -79,45 +56,24 @@ export function validateInlineFields(rawFields, options = {}) {
   const isNewProduct = Boolean(options.isNewProduct);
 
   const add = (field, message, level = "error") => {
-    issues.push({
-      index: field?.index ?? -1,
-      field: field?.name || "Editor",
-      message,
-      level,
-    });
+    issues.push({ index: field?.index ?? -1, field: field?.name || "Editor", message, level });
   };
 
   fields.forEach((field) => {
     const name = field.name.toLowerCase();
     const value = field.value.trim();
 
-    if (name === "rating" && !numberInRange(value, 0, 10)) {
-      add(field, "Rating must be a number from 0 to 10.");
-    }
-
-    if (INLINE_DISCOVERY_FIELDS.has(name) && field.type === "number" && !numberInRange(value, 0, 10)) {
-      add(field, "Discovery values must be from 0 to 10.");
-    }
-
-    if (field.type === "number" && /ml$/i.test(field.name) && (!Number.isFinite(Number(value)) || Number(value) <= 0)) {
-      add(field, "Price must be greater than 0.");
-    }
-
-    if (INLINE_REQUIRED_CORE_FIELDS.has(name) && !value) {
-      add(field, `${field.name} is required.`);
-    }
+    if (name === "rating" && !numberInRange(value, 0, 10)) add(field, "Rating must be a number from 0 to 10.");
+    if (INLINE_DISCOVERY_FIELDS.has(name) && field.type === "number" && !numberInRange(value, 0, 10)) add(field, "Discovery values must be from 0 to 10.");
+    if (field.type === "number" && /ml$/i.test(field.name) && (!Number.isFinite(Number(value)) || Number(value) <= 0)) add(field, "Price must be greater than 0.");
+    if (INLINE_REQUIRED_CORE_FIELDS.has(name) && !value) add(field, `${field.name} is required.`);
 
     if (name === "image path" && value && (!value.startsWith("/products/") || value === "/products/" || value.endsWith("/"))) {
       add(field, "Use a specific product image file under /products/, not a directory placeholder.");
     }
 
-    if (isNewProduct && name.startsWith("badge") && !value) {
-      add(field, "A new product must have a presentation badge.");
-    }
-
-    if (isNewProduct && name.startsWith("inspired by") && name.includes("name") && !value) {
-      add(field, "A new product must define the modal reference/original-creation label.");
-    }
+    if (isNewProduct && name.startsWith("badge") && !value) add(field, "A new product must have a presentation badge.");
+    if (isNewProduct && name.startsWith("inspired by") && name.includes("name") && !value) add(field, "A new product must define the modal reference/original-creation label.");
 
     if (name.startsWith("wear ·")) {
       if (!value) add(field, "Wear context is required in both languages.");
@@ -134,33 +90,23 @@ export function validateInlineFields(rawFields, options = {}) {
       });
     }
 
-    if (name.includes("dominant notes") && csv(value).length !== 4) {
-      add(field, "Exactly 4 dominant notes are required.");
-    }
+    if (name.includes("dominant notes") && csv(value).length !== 4) add(field, "Exactly 4 dominant notes are required.");
+    if (name.startsWith("tags") && csv(value).length !== 3) add(field, "Exactly 3 tags are required.");
 
-    if (name.startsWith("tags") && csv(value).length !== 3) {
-      add(field, "Exactly 3 tags are required.");
-    }
-
-    if (name.includes("notes · comma separated")) {
+    const isPyramidNotes = name.startsWith("top notes") || name.startsWith("heart notes") || name.startsWith("base notes");
+    if (isPyramidNotes) {
       const notes = csv(value);
-      if (!notes.length) {
-        add(field, "Notes cannot be empty.");
-      } else if (knownNoteKeys.size) {
-        notes.forEach((note) => {
-          if (!knownNoteKeys.has(note)) add(field, `Unknown note key: ${note}. Add it to the Note Library before review.`);
-        });
-      }
+      if (!notes.length) add(field, "Notes cannot be empty.");
+      else if (knownNoteKeys.size) notes.forEach((note) => {
+        if (!knownNoteKeys.has(note)) add(field, `Unknown note key: ${note}. Add it to the Note Library before review.`);
+      });
     }
 
     if (name.includes("recommendation slugs")) {
       const recommendations = csv(value);
-      if (recommendations.length !== 3) {
-        add(field, "Exactly 3 recommendation slugs are required.");
-      } else {
-        if (new Set(recommendations).size !== recommendations.length) {
-          add(field, "Recommendation slugs must be unique.");
-        }
+      if (recommendations.length !== 3) add(field, "Exactly 3 recommendation slugs are required.");
+      else {
+        if (new Set(recommendations).size !== recommendations.length) add(field, "Recommendation slugs must be unique.");
         recommendations.forEach((slug) => {
           if (knownProductSlugs.size && !knownProductSlugs.has(slug)) add(field, `Unknown product slug: ${slug}.`);
           if (selectedSlug && slug === selectedSlug) add(field, "A product cannot recommend itself.");
@@ -168,9 +114,7 @@ export function validateInlineFields(rawFields, options = {}) {
       }
     }
 
-    if (name.includes("moods · comma separated") && csv(value).length !== 3) {
-      add(field, "Exactly 3 moods are required.");
-    }
+    if (name.includes("moods · comma separated") && csv(value).length !== 3) add(field, "Exactly 3 moods are required.");
   });
 
   const priceFields = fields.filter((field) => field.type === "number" && /ml$/i.test(field.name));
