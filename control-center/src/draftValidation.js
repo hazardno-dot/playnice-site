@@ -6,7 +6,7 @@ import noteMapSource from "@shop/TheNoteMap.jsx?raw";
 
 const csv = (value) => String(value ?? "").split(",").map((v) => v.trim()).filter(Boolean);
 const empty = (value) => value == null || String(value).trim() === "";
-const finite = (value) => Number.isFinite(Number(value));
+const finite = (value) => !empty(value) && Number.isFinite(Number(value));
 
 function noteLibraryKeys(source) {
   const start = source.indexOf("const NOTE_LIBRARY = {");
@@ -115,7 +115,7 @@ export function validateProductDraft(live, draft) {
   discoveryKeys.forEach((key) => {
     const value = discovery[key];
     if (!finite(value) || Number(value) < 0 || Number(value) > 10) {
-      issues.push(issue("error", "Discovery", key, `${key} must be a number from 0 to 10.`));
+      issues.push(issue("error", "Discovery", key, `${key} must be explicitly entered as a number from 0 to 10.`));
     }
   });
 
