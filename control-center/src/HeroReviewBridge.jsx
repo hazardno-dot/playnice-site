@@ -115,6 +115,17 @@ export default function HeroReviewBridge() {
     if (audit.errors.length) throw new Error(`Hero validation failed: ${audit.errors[0].message}`);
   };
 
+  const readLatestDraft = async () => {
+    const { data, error: latestError } = await supabase
+      .from("hero_drafts")
+      .select("hero_key,payload,review_status,reviewed_at,reviewed_by,approved_payload,baseline_snapshot,updated_at,apply_branch,apply_pr_number")
+      .eq("hero_key", heroKey)
+      .single();
+    if (latestError) throw latestError;
+    if (!data?.payload) throw new Error("Latest Hero draft payload is unavailable.");
+    return data;
+  };
+
   const setReviewStatus = async (nextStatus) => {
     if (!row || !heroKey) return;
     setWorking(true); setError("");
@@ -123,8 +134,12 @@ export default function HeroReviewBridge() {
       const { data: authData, error: authError } = await supabase.auth.getUser();
       if (authError || !authData?.user?.id) throw authError || new Error("Authenticated admin session required.");
       const userId = authData.user.id;
+      const latestRow = nextStatus === "approved" ? await readLatestDraft() : row;
+      if (nextStatus === "approved" && latestRow.review_status !== "ready") {
+        throw new Error("Hero draft changed before approval. Return it to review and approve the latest saved draft.");
+      }
       const patch = nextStatus === "approved"
-        ? { review_status: "approved", reviewed_at: new Date().toISOString(), reviewed_by: userId, approved_payload: row.payload }
+        ? { review_status: "approved", reviewed_at: new Date().toISOString(), reviewed_by: userId, approved_payload: latestRow.payload }
         : nextStatus === "ready"
           ? { review_status: "ready", reviewed_at: null, reviewed_by: null, approved_payload: null }
           : {
@@ -158,7 +173,7 @@ export default function HeroReviewBridge() {
   const status = row?.review_status || "draft";
   const approvedLocked = status === "approved";
   const copy = useMemo(() => {
-    if (status === "approved") return "Approved payload is frozen for the future Apply step. Production is still untouched.";
+    if (status === "approved") return "Approved payload is frozen from the latest saved Supabase draft. Production is still untouched.";
     if (status === "ready") return "Draft passed validation and is waiting for explicit approval.";
     return "Draft is editable and has not entered review yet.";
   }, [status]);
