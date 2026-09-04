@@ -42,7 +42,7 @@ export default function HeroReviewBridge() {
     if (!key) { setRow(null); return; }
     const { data, error: loadError } = await supabase
       .from("hero_drafts")
-      .select("hero_key,payload,review_status,reviewed_at,reviewed_by,approved_payload,baseline_snapshot,updated_at")
+      .select("hero_key,payload,review_status,reviewed_at,reviewed_by,approved_payload,baseline_snapshot,updated_at,apply_branch,apply_pr_number")
       .eq("hero_key", key)
       .maybeSingle();
     if (loadError) { setError(loadError.message || String(loadError)); return; }
@@ -127,12 +127,23 @@ export default function HeroReviewBridge() {
         ? { review_status: "approved", reviewed_at: new Date().toISOString(), reviewed_by: userId, approved_payload: row.payload }
         : nextStatus === "ready"
           ? { review_status: "ready", reviewed_at: null, reviewed_by: null, approved_payload: null }
-          : { review_status: "draft", reviewed_at: null, reviewed_by: null, approved_payload: null };
+          : {
+              review_status: "draft",
+              reviewed_at: null,
+              reviewed_by: null,
+              approved_payload: null,
+              apply_branch: null,
+              apply_pr_number: null,
+              apply_created_at: null,
+              apply_created_by: null,
+              preview_verified_at: null,
+              preview_verified_by: null,
+            };
       const { data, error: updateError } = await supabase
         .from("hero_drafts")
         .update(patch)
         .eq("hero_key", heroKey)
-        .select("hero_key,payload,review_status,reviewed_at,reviewed_by,approved_payload,baseline_snapshot,updated_at")
+        .select("hero_key,payload,review_status,reviewed_at,reviewed_by,approved_payload,baseline_snapshot,updated_at,apply_branch,apply_pr_number")
         .single();
       if (updateError) throw updateError;
       setRow(data);
