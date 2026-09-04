@@ -2781,7 +2781,7 @@ export const productCopy = {
     },
     "card": {
       "en": "Cardamom, fig and iris over a leathery base. Warm and elegant.",
-      "sr": "Kardamom, smokva i iris sa kožnom bazom. Topao i elegantan."
+      "sr": "Kardamom, smokva i iris na koži. Topao i elegantan."
     },
     "modal": {
       "en": "Al Noor opens with cardamom, saffron and nutmeg. Fig, iris and vetiver add creamy depth, while leather, tonka, vanilla and patchouli create a warm, dark drydown.",
