@@ -2749,7 +2749,7 @@ export const productCopy = {
       en: "🌿 Green / Citrus"
     },
     card: {
-      sr: "Citrusi, hladna menta i vetiver u čistom zelenom aromatičnom mirisu.",
+      sr: "Citrusi, hladna menta i vetiver u čistom zelenom mirisu.",
       en: "Citrus, cool mint and vetiver in a clean green aromatic fragrance."
     },
     modal: {
