@@ -1,24 +1,20 @@
 /* =========================================
-   PLAYNICE MOBILE SHOP — CARD REVEAL
-   IntersectionObserver-driven.
-   Mobile-only, no permanent compositor hints.
+   PLAYNICE MOBILE SHOP — VERTICAL CARD REVEAL
+   One-way reveal: cards animate once as the user scrolls down.
 ========================================= */
 
 @media (max-width: 640px) {
   .shop-section .product-grid > .product-card.mobile-shop-reveal-pending {
     opacity: 0;
-    clip-path: inset(0 100% 0 0 round 16px);
-    transform: translateX(-14px);
+    transform: translateY(14px);
   }
 
   .shop-section .product-grid > .product-card.mobile-shop-reveal-visible {
     opacity: 1;
-    clip-path: inset(0 0 0 0 round 16px);
-    transform: translateX(0);
+    transform: translateY(0);
     transition:
-      clip-path 520ms cubic-bezier(.22,.72,.2,1) var(--mobile-shop-reveal-delay, 0ms),
-      transform 520ms cubic-bezier(.22,.72,.2,1) var(--mobile-shop-reveal-delay, 0ms),
-      opacity 360ms ease-out var(--mobile-shop-reveal-delay, 0ms);
+      transform 360ms cubic-bezier(.22,.72,.2,1),
+      opacity 260ms ease-out;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -27,7 +23,6 @@
     .shop-section .product-grid > .product-card.mobile-shop-reveal-visible {
       transition: none !important;
       opacity: 1 !important;
-      clip-path: none !important;
       transform: none !important;
     }
   }
