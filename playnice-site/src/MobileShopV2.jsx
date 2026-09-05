@@ -71,6 +71,22 @@ function readMoodOptions() {
   );
 }
 
+function forceAllMood(options = []) {
+  return options.map((option, index) => ({
+    ...option,
+    active: index === 0,
+  }));
+}
+
+async function waitForMoodUrlClear(maxFrames = 12) {
+  for (let frame = 0; frame < maxFrames; frame += 1) {
+    const moodParam = new URLSearchParams(window.location.search).get("mood");
+    if (!moodParam) return true;
+    await nextFrame();
+  }
+  return false;
+}
+
 function chooseMood(index) {
   const button = document.querySelectorAll(".scent-mood-filter .scent-mood-chip")[index];
   if (!button) return false;
@@ -286,25 +302,33 @@ export default function MobileShopV2() {
   const resetFilters = async () => {
     const nativeReset = document.querySelector(".clear-filters-button");
 
+    // Optimistically mirror the known native reset semantics immediately.
+    // This prevents the mobile capsule from showing a stale mood while App.js
+    // finishes its state -> URL synchronization.
+    setMoodOptions((current) => forceAllMood(current));
+
     if (nativeReset) {
       nativeReset.click();
-      await nextFrame();
-      await nextFrame();
     } else {
       await chooseMenuOption("category", 0);
       await nextFrame();
       await chooseMenuOption("season", 0);
       await nextFrame();
-    }
-
-    const moods = readMoodOptions();
-    if (moods.length && !moods[0].active) {
       chooseMood(0);
-      await nextFrame();
-      await nextFrame();
     }
 
-    await refreshOptions();
+    await waitForMoodUrlClear();
+    await nextFrame();
+
+    const categories = await readMenuOptions("category");
+    const seasons = await readMenuOptions("season");
+    const sorts = await readMenuOptions("sort");
+
+    setCategoryOptions(categories);
+    setSeasonOptions(seasons);
+    setSortOptions(sorts);
+    setMoodOptions(forceAllMood(readMoodOptions()));
+    setSearchValue(getSearchInput()?.value || "");
   };
 
   const activeMood = moodOptions.find((option) => option.active);
