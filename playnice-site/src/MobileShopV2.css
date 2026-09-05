@@ -60,21 +60,21 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    margin: 0 0 11px;
+    gap: 3px;
+    margin: 0 0 12px;
     text-align: center;
   }
 
   .mobile-shop-wayline strong {
-    color: rgba(220,181,107,0.82);
+    color: rgba(220,181,107,0.84);
     font-size: 8px;
     font-weight: 850;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.17em;
     line-height: 1.1;
   }
 
   .mobile-shop-wayline span {
-    color: rgba(255,248,235,0.46);
+    color: rgba(255,248,235,0.48);
     font-size: 9px;
     font-weight: 600;
     line-height: 1.25;
@@ -82,118 +82,132 @@
 
   .mobile-shop-board {
     position: relative;
-    padding: 9px;
-    border: 1px solid rgba(220,181,107,0.14);
-    border-radius: 22px;
+    padding: 8px;
+    border: 1px solid rgba(220,181,107,0.12);
+    border-radius: 20px;
     background:
-      radial-gradient(circle at 50% 0%, rgba(220,181,107,0.045), transparent 44%),
-      linear-gradient(180deg, rgba(17,15,12,0.78), rgba(8,8,8,0.70));
+      radial-gradient(circle at 50% 0%, rgba(220,181,107,0.035), transparent 44%),
+      linear-gradient(180deg, rgba(16,14,12,0.72), rgba(7,7,7,0.68));
     box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.018),
-      0 14px 36px rgba(0,0,0,0.20);
+      inset 0 1px 0 rgba(255,255,255,0.014),
+      0 10px 28px rgba(0,0,0,0.16);
   }
 
   .mobile-shop-capsules {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 7px;
+    gap: 6px;
   }
 
   .mobile-shop-capsule {
     min-width: 0;
-    min-height: 52px;
-    padding: 8px 10px;
+    min-height: 50px;
+    padding: 7px 9px;
     display: grid;
-    grid-template-columns: 25px minmax(0, 1fr) 12px;
+    grid-template-columns: 24px minmax(0, 1fr) 11px;
     align-items: center;
     gap: 8px;
-    border: 1px solid rgba(220,181,107,0.10);
-    border-radius: 16px;
+    border: 1px solid rgba(220,181,107,0.09);
+    border-radius: 14px;
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.022), rgba(255,255,255,0.006)),
-      rgba(8,8,8,0.58);
+      linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.004)),
+      rgba(8,8,8,0.50);
     color: rgba(255,248,235,0.84);
     text-align: left;
     transition:
       border-color 180ms ease,
       background 180ms ease,
-      transform 160ms ease;
+      transform 150ms ease,
+      box-shadow 180ms ease;
   }
 
   .mobile-shop-capsule:active {
-    transform: scale(0.985);
+    transform: scale(0.988);
+  }
+
+  .mobile-shop-capsule:focus-visible {
+    outline: none;
+    border-color: rgba(237,207,136,0.56);
+    box-shadow: 0 0 0 2px rgba(220,181,107,0.10);
   }
 
   .mobile-shop-capsule.active {
-    border-color: rgba(220,181,107,0.42);
+    border-color: rgba(220,181,107,0.38);
     background:
-      radial-gradient(circle at 10% 50%, rgba(220,181,107,0.11), transparent 46%),
-      rgba(12,10,8,0.90);
+      radial-gradient(circle at 12% 50%, rgba(220,181,107,0.09), transparent 44%),
+      rgba(11,10,8,0.86);
+    box-shadow: inset 0 0 0 1px rgba(220,181,107,0.025);
   }
 
   .mobile-shop-capsule-icon {
-    width: 25px;
-    height: 25px;
+    width: 24px;
+    height: 24px;
     display: grid;
     place-items: center;
-    border: 1px solid rgba(220,181,107,0.14);
-    border-radius: 9px;
-    background: rgba(220,181,107,0.025);
+    border: 1px solid rgba(220,181,107,0.12);
+    border-radius: 8px;
+    background: rgba(220,181,107,0.02);
     color: rgba(220,181,107,0.88);
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1;
+    transform: translateY(-0.25px);
   }
 
   .mobile-shop-capsule > strong {
     min-width: 0;
     overflow: hidden;
-    color: rgba(255,248,235,0.88);
-    font-size: 11.5px;
-    font-weight: 680;
+    color: rgba(255,248,235,0.90);
+    font-size: 11.25px;
+    font-weight: 670;
     line-height: 1.15;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   .mobile-shop-capsule-arrow {
-    color: rgba(220,181,107,0.50);
-    font-size: 9px;
-    transition: transform 180ms ease;
+    display: grid;
+    place-items: center;
+    color: rgba(220,181,107,0.48);
+    font-size: 8px;
+    line-height: 1;
+    transform-origin: center;
+    transition: transform 180ms ease, color 180ms ease;
   }
 
   .mobile-shop-capsule.active .mobile-shop-capsule-arrow {
+    color: rgba(237,207,136,0.78);
     transform: rotate(180deg);
   }
 
   .mobile-shop-popover {
     position: absolute;
-    top: calc(100% + 9px);
+    top: calc(100% + 8px);
     left: 0;
     right: 0;
     z-index: 80;
     max-height: min(56dvh, 440px);
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 14px;
-    border: 1px solid rgba(220,181,107,0.20);
-    border-radius: 20px;
+    padding: 13px;
+    border: 1px solid rgba(220,181,107,0.18);
+    border-radius: 18px;
     background:
-      radial-gradient(circle at 0% 0%, rgba(220,181,107,0.09), transparent 34%),
-      linear-gradient(180deg, rgba(17,15,12,0.99), rgba(6,6,6,0.995));
-    box-shadow: 0 22px 64px rgba(0,0,0,0.58);
+      radial-gradient(circle at 0% 0%, rgba(220,181,107,0.075), transparent 34%),
+      linear-gradient(180deg, rgba(16,14,12,0.99), rgba(6,6,6,0.995));
+    box-shadow: 0 18px 54px rgba(0,0,0,0.54);
     transform-origin: left top;
-    animation: mobileShopUnfold 250ms cubic-bezier(.22,.72,.2,1) both;
+    animation: mobileShopUnfold 240ms cubic-bezier(.22,.72,.2,1) both;
   }
 
   @keyframes mobileShopUnfold {
     from {
       opacity: 0.35;
-      clip-path: inset(0 100% 0 0 round 20px);
+      clip-path: inset(0 100% 0 0 round 18px);
       transform: translateY(-3px);
     }
     to {
       opacity: 1;
-      clip-path: inset(0 0 0 0 round 20px);
+      clip-path: inset(0 0 0 0 round 18px);
       transform: translateY(0);
     }
   }
@@ -218,12 +232,12 @@
     padding-top: 0;
     padding-left: 12px;
     border-top: 0;
-    border-left: 1px solid rgba(220,181,107,0.08);
+    border-left: 1px solid rgba(220,181,107,0.075);
   }
 
   .mobile-shop-filter-panel .mobile-shop-selection-list > button {
     gap: 6px;
-    font-size: 12.5px;
+    font-size: 12.25px;
   }
 
   .mobile-shop-filter-panel .mobile-shop-option-label {
@@ -237,8 +251,8 @@
   .mobile-shop-option-icon {
     flex: 0 0 auto;
     width: 14px;
-    color: rgba(220,181,107,0.78);
-    font-size: 12px;
+    color: rgba(220,181,107,0.80);
+    font-size: 11.5px;
     font-weight: 700;
     line-height: 1;
     text-align: center;
@@ -251,21 +265,21 @@
   .mobile-shop-filter-panel .mobile-shop-reset-link {
     grid-column: 1 / -1;
     justify-self: center;
-    margin-top: 0;
+    margin-top: 1px;
   }
 
   .mobile-shop-selection-section + .mobile-shop-selection-section {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(220,181,107,0.08);
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(220,181,107,0.075);
   }
 
   .mobile-shop-selection-section h4 {
-    margin: 0 0 6px;
-    color: rgba(220,181,107,0.62);
-    font-size: 9px;
+    margin: 0 0 5px;
+    color: rgba(220,181,107,0.64);
+    font-size: 8.5px;
     font-weight: 850;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
   }
 
@@ -275,17 +289,17 @@
   }
 
   .mobile-shop-selection-list > button {
-    min-height: 44px;
-    padding: 0 3px;
+    min-height: 42px;
+    padding: 0 2px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 14px;
+    gap: 12px;
     border: 0;
-    border-bottom: 1px solid rgba(220,181,107,0.07);
+    border-bottom: 1px solid rgba(220,181,107,0.06);
     background: transparent;
     color: rgba(255,248,235,0.68);
-    font-size: 13px;
+    font-size: 12.75px;
     font-weight: 600;
     text-align: left;
   }
@@ -300,24 +314,24 @@
 
   .mobile-shop-selection-list > button i {
     color: rgba(220,181,107,0.68);
-    font-size: 10px;
+    font-size: 9px;
     font-style: normal;
   }
 
   .mobile-shop-search-panel > div {
-    min-height: 52px;
-    padding: 0 12px;
+    min-height: 50px;
+    padding: 0 11px;
     display: grid;
     grid-template-columns: auto minmax(0,1fr) auto;
     align-items: center;
     gap: 9px;
-    border: 1px solid rgba(220,181,107,0.16);
-    border-radius: 15px;
-    background: rgba(0,0,0,0.32);
+    border: 1px solid rgba(220,181,107,0.14);
+    border-radius: 14px;
+    background: rgba(0,0,0,0.30);
   }
 
   .mobile-shop-search-panel > div > span {
-    color: rgba(220,181,107,0.72);
+    color: rgba(220,181,107,0.74);
   }
 
   .mobile-shop-search-panel input {
@@ -327,7 +341,7 @@
     outline: 0;
     background: transparent;
     color: rgba(255,248,235,0.92);
-    font-size: 15px;
+    font-size: 14.5px;
   }
 
   .mobile-shop-search-panel input::placeholder {
@@ -338,15 +352,15 @@
   .mobile-shop-reset-link {
     border: 0;
     background: transparent;
-    color: rgba(220,181,107,0.74);
-    font-size: 11px;
+    color: rgba(220,181,107,0.76);
+    font-size: 10.5px;
     font-weight: 760;
   }
 
   .mobile-shop-reset-link {
     padding: 8px 2px 2px;
     text-decoration: underline;
-    text-decoration-color: rgba(220,181,107,0.30);
+    text-decoration-color: rgba(220,181,107,0.28);
     text-underline-offset: 4px;
   }
 
@@ -369,7 +383,7 @@
   }
 
   .mobile-shop-board {
-    padding: 8px;
+    padding: 7px;
   }
 
   .mobile-shop-capsules {
@@ -377,12 +391,12 @@
   }
 
   .mobile-shop-capsule {
-    min-height: 50px;
-    padding-inline: 9px;
+    min-height: 49px;
+    padding-inline: 8px;
   }
 
   .mobile-shop-capsule > strong {
-    font-size: 11px;
+    font-size: 10.9px;
   }
 
   .mobile-shop-filter-panel .mobile-shop-selection-section:first-child {
@@ -394,6 +408,6 @@
   }
 
   .mobile-shop-filter-panel .mobile-shop-selection-list > button {
-    font-size: 12px;
+    font-size: 11.85px;
   }
 }
