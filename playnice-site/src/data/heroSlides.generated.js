@@ -9,12 +9,12 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-12.jpg",
     "desktopImage": "/hero/slide-12.jpg",
     "mobileImage": "/hero/mobile/slide-12-mobile.jpg",
-    "alt": "Thomas Kosmala No. 7 Le Sel de la Terre",
+    "alt": "PlayNice Thomas Kosmala trio in a sunlit coastal setting.",
     "actionPrimary": "collection",
     "actionCollection": [
       "thomas-kosmala-no-1-tonic-blanc",
-      "thomas-kosmala-no-4-apres-lamour",
-      "thomas-kosmala-no7-le-sel-de-la-terre"
+      "thomas-kosmala-no7-le-sel-de-la-terre",
+      "thomas-kosmala-no-8-tonic-vert"
     ],
     "collectionTitle": "Thomas Kosmala, three times."
   },
