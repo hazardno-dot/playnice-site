@@ -6,6 +6,7 @@ import PrivateSelectionEnhancer from "./PrivateSelectionEnhancer";
 import MobilePartnerSpotlight from "./MobilePartnerSpotlight";
 import MobileDiscoveryTextPolish from "./MobileDiscoveryTextPolish";
 import MobilePrivateSelectionProfile from "./MobilePrivateSelectionProfile";
+import MobileShopV2 from "./MobileShopV2";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
 import "./NewArrivalsScale.css";
@@ -17,6 +18,7 @@ import "./MobileJustInV2.css";
 import "./MobileDiscoverySetsV2.css";
 import "./MobilePrivateSelectionV2.css";
 import "./MobileClosingFooterV2.css";
+import "./MobileShopV2.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -27,5 +29,6 @@ root.render(
     <MobilePartnerSpotlight />
     <MobileDiscoveryTextPolish />
     <MobilePrivateSelectionProfile />
+    <MobileShopV2 />
   </React.StrictMode>
 );
