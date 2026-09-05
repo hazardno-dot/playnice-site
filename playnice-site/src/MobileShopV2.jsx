@@ -97,6 +97,14 @@ function setNativeSearchValue(value) {
   return true;
 }
 
+function getCategoryIcon(label = "") {
+  const value = label.toLowerCase();
+  if (value.includes("arabian") || value.includes("araps")) return "☾";
+  if (value.includes("designer") || value.includes("dizajn")) return "◈";
+  if (value.includes("niche")) return "✦";
+  return "";
+}
+
 export default function MobileShopV2() {
   const [host, setHost] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -206,7 +214,6 @@ export default function MobileShopV2() {
   }, []);
 
   const refreshOptions = async () => {
-    // Existing App dropdowns close one another, so they must be read sequentially.
     const categories = await readMenuOptions("category");
     const seasons = await readMenuOptions("season");
     const sorts = await readMenuOptions("sort");
@@ -382,6 +389,7 @@ export default function MobileShopV2() {
                   title={copy.category}
                   options={categoryOptions}
                   onChoose={(index) => applyMenu("category", index)}
+                  kind="category"
                 />
                 <SelectionSection
                   title={copy.season}
@@ -409,31 +417,39 @@ export default function MobileShopV2() {
   return createPortal(menu, host);
 }
 
-function SelectionSection({ title, options, onChoose }) {
+function SelectionSection({ title, options, onChoose, kind }) {
   if (!options?.length) return null;
   return (
     <div className="mobile-shop-selection-section">
       <h4>{title}</h4>
-      <SelectionList options={options} onChoose={onChoose} />
+      <SelectionList options={options} onChoose={onChoose} kind={kind} />
     </div>
   );
 }
 
-function SelectionList({ options, onChoose }) {
+function SelectionList({ options, onChoose, kind }) {
   if (!options?.length) return null;
   return (
     <div className="mobile-shop-selection-list">
-      {options.map((option) => (
-        <button
-          type="button"
-          key={`${option.index}-${option.label}`}
-          className={option.active ? "active" : ""}
-          onClick={() => onChoose(option.index)}
-        >
-          <span>{option.label}</span>
-          <i aria-hidden="true">{option.active ? "●" : "○"}</i>
-        </button>
-      ))}
+      {options.map((option) => {
+        const categoryIcon = kind === "category" ? getCategoryIcon(option.label) : "";
+        return (
+          <button
+            type="button"
+            key={`${option.index}-${option.label}`}
+            className={option.active ? "active" : ""}
+            onClick={() => onChoose(option.index)}
+          >
+            <span className="mobile-shop-option-label">
+              {categoryIcon && (
+                <b className="mobile-shop-option-icon" aria-hidden="true">{categoryIcon}</b>
+              )}
+              {option.label}
+            </span>
+            <i aria-hidden="true">{option.active ? "●" : "○"}</i>
+          </button>
+        );
+      })}
     </div>
   );
 }
