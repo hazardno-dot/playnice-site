@@ -5,6 +5,12 @@
 ========================================= */
 
 @media (max-width: 640px) {
+  :root {
+    --mobile-home-section-gap: 56px;
+    --mobile-home-related-gap: 32px;
+    --mobile-home-end-gap: 48px;
+  }
+
   /*
    * Mobile Home keeps the high-value path compact:
    * Hero → Trust → Fragrance Intelligence → Just In
@@ -13,79 +19,97 @@
    * through its dedicated navigation entry points.
    */
 
-  /* Duplicate brand education: available from mobile navigation. */
-  .why-how-section {
-    display: none !important;
-  }
-
-  /* Community has a dedicated navigation destination. */
-  .community-requests-section {
-    display: none !important;
-  }
-
-  /* Large editorial film/highlights block is intentionally removed
-     from the primary mobile shopping path. */
-  .impact-split-section {
-    display: none !important;
-  }
-
-  /* PDF catalog is a secondary utility, not a core mobile Home action. */
+  .why-how-section,
+  .community-requests-section,
+  .impact-split-section,
   .catalog-download-section {
     display: none !important;
   }
 
-  /* Remove dividers that belonged only to hidden Home blocks. */
   .homepage-shop-preview + .section-divider,
   .community-requests-section + .section-divider,
   .impact-split-section + .section-divider {
     display: none !important;
   }
 
-  /* Global Home rhythm: fewer sections, more intentional breathing room. */
+  /* Main scene-to-scene rhythm: one protocol, one gap. */
+  .playnice-discovery-portal,
   .new-arrivals-section,
   .discovery-showcase,
-  .homepage-shop-preview {
-    margin-top: 56px;
-  }
-
-  .playnice-discovery-portal {
-    margin-top: 34px;
-  }
-
-  .homepage-shop-preview {
-    margin-bottom: 58px;
-  }
-
-  /* Sponsored mobile micro placement stays, but does not dominate the flow. */
-  .mobile-sponsored-ad-wrap {
-    margin-top: 8px;
-    margin-bottom: 48px;
-  }
-
-  /* Closing statement becomes the deliberate end of the mobile Home journey. */
+  .homepage-shop-preview,
   .closing-section {
-    margin-top: 0;
-    margin-bottom: 48px;
+    margin-top: var(--mobile-home-section-gap);
+  }
+
+  .homepage-shop-preview {
+    margin-bottom: var(--mobile-home-related-gap);
+  }
+
+  /* Sponsored placement is a related utility, not a full scene. */
+  .mobile-sponsored-ad-wrap {
+    margin-top: var(--mobile-home-related-gap);
+    margin-bottom: 0;
+  }
+
+  .closing-section {
+    margin-bottom: var(--mobile-home-end-gap);
   }
 
   .closing-shell {
     padding-top: 34px;
     padding-bottom: 34px;
   }
+
+  /* =========================================
+     MOBILE GLASS DOCK V2
+     Same functionality, lighter visual weight.
+  ========================================= */
+  .sticky-cta-shell {
+    width: min(calc(100vw - 32px), 420px);
+    max-width: min(calc(100vw - 32px), 420px);
+    bottom: calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .sticky-cta-button {
+    min-height: 50px;
+    border: 1px solid rgba(220, 181, 107, 0.15);
+    border-radius: 18px;
+    background:
+      linear-gradient(180deg, rgba(18, 17, 15, 0.56), rgba(7, 7, 7, 0.46)),
+      rgba(7, 7, 7, 0.42);
+    backdrop-filter: blur(24px) saturate(122%);
+    -webkit-backdrop-filter: blur(24px) saturate(122%);
+    box-shadow:
+      0 14px 36px rgba(0, 0, 0, 0.30),
+      0 0 0 1px rgba(255, 255, 255, 0.025) inset;
+  }
+
+  .sticky-cta-main {
+    min-height: 50px;
+  }
+
+  .sticky-cta-copy strong {
+    opacity: 0.92;
+  }
+
+  .sticky-cta-copy small {
+    opacity: 0.72;
+  }
+
+  .sticky-cta-journal-link {
+    opacity: 0.82;
+  }
 }
 
 @media (max-width: 390px) {
-  .new-arrivals-section,
-  .discovery-showcase,
-  .homepage-shop-preview {
-    margin-top: 48px;
+  :root {
+    --mobile-home-section-gap: 48px;
+    --mobile-home-related-gap: 28px;
+    --mobile-home-end-gap: 42px;
   }
 
-  .homepage-shop-preview {
-    margin-bottom: 50px;
-  }
-
-  .mobile-sponsored-ad-wrap {
-    margin-bottom: 42px;
+  .sticky-cta-shell {
+    width: calc(100vw - 28px);
+    max-width: calc(100vw - 28px);
   }
 }
