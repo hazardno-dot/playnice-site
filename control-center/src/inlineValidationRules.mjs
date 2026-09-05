@@ -31,8 +31,8 @@ export const INLINE_DISCOVERY_FIELDS = new Set([
   "freshness", "sweetness", "warmth", "darkness", "airiness", "cleanliness",
   "creaminess", "dryness", "fruitiness", "spiciness", "woodiness", "aromaticity",
   "florality", "gourmandness", "citrus", "aquatic", "powdery", "projection",
-  "longevity", "office", "casual", "date", "evening", "elegance", "versatility",
-  "masculine", "feminine", "unisex",
+  "longevity", "office", "casual", "date", "night", "summer", "winter",
+  "evening", "elegance", "versatility", "masculine", "feminine", "unisex",
 ]);
 
 const numberInRange = (value, min, max) => {
