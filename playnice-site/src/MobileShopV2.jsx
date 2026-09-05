@@ -34,7 +34,7 @@ async function readMenuOptions(name) {
     active: button.getAttribute("aria-selected") === "true",
   }));
 
-  if (!wasOpen) {
+  if (!wasOpen && trigger.getAttribute("aria-expanded") === "true") {
     trigger.click();
   }
 
@@ -61,7 +61,7 @@ async function chooseMenuOption(name, index) {
 }
 
 function readMoodOptions() {
-  return Array.from(document.querySelectorAll(".scent-mood-chip")).map(
+  return Array.from(document.querySelectorAll(".scent-mood-filter .scent-mood-chip")).map(
     (button, index) => ({
       index,
       label: button.textContent?.replace(/\s+/g, " ").trim() || "",
@@ -71,7 +71,7 @@ function readMoodOptions() {
 }
 
 function chooseMood(index) {
-  const button = document.querySelectorAll(".scent-mood-chip")[index];
+  const button = document.querySelectorAll(".scent-mood-filter .scent-mood-chip")[index];
   if (!button) return false;
   button.click();
   return true;
@@ -84,10 +84,11 @@ function getCollectionCount(lang) {
 }
 
 export default function MobileShopV2() {
-  const [host, setHost] = useState(null);
+  const [commandHost, setCommandHost] = useState(null);
+  const [moodHost, setMoodHost] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [lang, setLang] = useState(getLang);
-  const [sheet, setSheet] = useState(null);
+  const [panel, setPanel] = useState(null);
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [seasonOptions, setSeasonOptions] = useState([]);
   const [sortOptions, setSortOptions] = useState([]);
@@ -98,44 +99,22 @@ export default function MobileShopV2() {
     () =>
       lang === "en"
         ? {
-            info: "Why decants?",
             filter: "Filter",
             sort: "Sort",
-            filters: "Filters",
             category: "Category",
             season: "Season",
-            mood: "Mood",
-            reset: "Reset",
-            done: "Show fragrances",
-            close: "Close",
-            way: "The PlayNice Way",
-            title: "Try the scent before the full bottle.",
-            text: "Designer and niche bottles often cost €80–€200+. With PlayNice, you can get to know them from €3.",
-            full: "€80–€200+",
-            fullLabel: "designer and niche full bottles",
-            try: "€3+",
-            tryLabel: "enough to try before you buy",
-            note: "Less risk. More certainty. A better decision.",
+            mood: "Browse by mood",
+            moodNote: "Don’t search notes. Find the moment.",
+            reset: "Reset filters",
           }
         : {
-            info: "Zašto dekanti?",
             filter: "Filter",
             sort: "Sort",
-            filters: "Filteri",
             category: "Kategorija",
             season: "Sezona",
-            mood: "Osećaj",
-            reset: "Poništi",
-            done: "Prikaži parfeme",
-            close: "Zatvori",
-            way: "PlayNice pristup",
-            title: "Probaj miris pre pune bočice.",
-            text: "Designer i niche parfemi često koštaju €80–€200+. Kod PlayNice možeš da ih upoznaš već od €3.",
-            full: "€80–€200+",
-            fullLabel: "pune designer i niche bočice",
-            try: "€3+",
-            tryLabel: "dovoljno da probaš pre kupovine",
-            note: "Manje rizika. Više sigurnosti. Bolja odluka.",
+            mood: "Biraj po osećaju",
+            moodNote: "Ne traži note. Pronađi trenutak.",
+            reset: "Poništi filtere",
           },
     [lang]
   );
@@ -143,27 +122,39 @@ export default function MobileShopV2() {
   const syncSurface = () => {
     const media = window.matchMedia(MOBILE_QUERY);
     const onShop = window.location.pathname === "/shop";
-    setIsMobile(media.matches && onShop);
+    const active = media.matches && onShop;
+
+    setIsMobile(active);
     setLang(getLang());
 
-    if (!media.matches || !onShop) {
-      setHost(null);
-      setSheet(null);
+    if (!active) {
+      setCommandHost(null);
+      setMoodHost(null);
+      setPanel(null);
       return;
     }
 
     const toolbar = document.querySelector(".shop-toolbar-compact");
-    if (!toolbar) return;
+    const intro = document.querySelector(".shop-collection-intro");
+    if (!toolbar || !intro) return;
 
-    let target = document.getElementById("mobile-shop-v2-host");
-    if (!target) {
-      target = document.createElement("div");
-      target.id = "mobile-shop-v2-host";
-      const controls = toolbar.querySelector(".toolbar-row-controls");
-      toolbar.insertBefore(target, controls || null);
+    let moodTarget = document.getElementById("mobile-shop-mood-host");
+    if (!moodTarget) {
+      moodTarget = document.createElement("div");
+      moodTarget.id = "mobile-shop-mood-host";
+      intro.insertAdjacentElement("afterend", moodTarget);
     }
 
-    setHost(target);
+    let commandTarget = document.getElementById("mobile-shop-v2-host");
+    if (!commandTarget) {
+      commandTarget = document.createElement("div");
+      commandTarget.id = "mobile-shop-v2-host";
+      const controls = toolbar.querySelector(".toolbar-row-controls");
+      toolbar.insertBefore(commandTarget, controls || null);
+    }
+
+    setMoodHost(moodTarget);
+    setCommandHost(commandTarget);
     setCollectionCount(getCollectionCount(getLang()));
   };
 
@@ -196,6 +187,7 @@ export default function MobileShopV2() {
       window.removeEventListener("popstate", schedule);
       if (frame) cancelAnimationFrame(frame);
       document.getElementById("mobile-shop-v2-host")?.remove();
+      document.getElementById("mobile-shop-mood-host")?.remove();
     };
   }, []);
 
@@ -205,6 +197,7 @@ export default function MobileShopV2() {
       readMenuOptions("season"),
       readMenuOptions("sort"),
     ]);
+
     setCategoryOptions(categories);
     setSeasonOptions(seasons);
     setSortOptions(sorts);
@@ -212,22 +205,23 @@ export default function MobileShopV2() {
     setCollectionCount(getCollectionCount(getLang()));
   };
 
-  const openSheet = async (name) => {
+  useEffect(() => {
+    if (!isMobile) return;
+    refreshOptions();
+  }, [isMobile]);
+
+  const togglePanel = async (name) => {
+    if (panel === name) {
+      setPanel(null);
+      return;
+    }
     await refreshOptions();
-    setSheet(name);
-    document.body.classList.add("mobile-shop-sheet-open");
+    setPanel(name);
   };
-
-  const closeSheet = () => {
-    setSheet(null);
-    document.body.classList.remove("mobile-shop-sheet-open");
-    requestAnimationFrame(() => setCollectionCount(getCollectionCount(getLang())));
-  };
-
-  useEffect(() => () => document.body.classList.remove("mobile-shop-sheet-open"), []);
 
   const applyMenu = async (name, index) => {
     await chooseMenuOption(name, index);
+    await nextFrame();
     await nextFrame();
     await refreshOptions();
   };
@@ -235,51 +229,110 @@ export default function MobileShopV2() {
   const applyMood = async (index) => {
     chooseMood(index);
     await nextFrame();
+    await nextFrame();
     await refreshOptions();
   };
 
   const resetFilters = async () => {
-    await chooseMenuOption("category", 0);
+    const nativeReset = document.querySelector(".clear-filters-button");
+
+    if (nativeReset) {
+      nativeReset.click();
+    } else {
+      await chooseMenuOption("category", 0);
+      await nextFrame();
+      await chooseMenuOption("season", 0);
+      await nextFrame();
+      chooseMood(0);
+    }
+
     await nextFrame();
-    await chooseMenuOption("season", 0);
-    await nextFrame();
-    chooseMood(0);
     await nextFrame();
     await refreshOptions();
   };
 
-  if (!isMobile || !host) return null;
+  if (!isMobile || !commandHost || !moodHost) return null;
+
+  const moodRail = (
+    <section className="mobile-shop-mood" aria-label={copy.mood}>
+      <div className="mobile-shop-mood-head">
+        <strong>{copy.mood}</strong>
+        <span>{copy.moodNote}</span>
+      </div>
+      <div className="mobile-shop-mood-rail">
+        {moodOptions.map((option) => (
+          <button
+            type="button"
+            key={`${option.index}-${option.label}`}
+            className={option.active ? "active" : ""}
+            onClick={() => applyMood(option.index)}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
+    </section>
+  );
 
   const inline = (
     <div className="mobile-shop-command" aria-label="Mobile shop controls">
-      <button type="button" className="mobile-shop-info-trigger" onClick={() => openSheet("info")}>
-        <span>PLAYNICE</span>
-        <strong>{copy.info}</strong>
-        <i aria-hidden="true">→</i>
-      </button>
+      <div className="mobile-shop-meta-row">
+        <span>{collectionCount}</span>
+      </div>
 
-      <div className="mobile-shop-control-row">
-        <span className="mobile-shop-count">{collectionCount}</span>
-        <button type="button" onClick={() => openSheet("filter")}>
-          {copy.filter}
-          <span aria-hidden="true">⌄</span>
+      <div className="mobile-shop-segmented" role="group" aria-label="Shop controls">
+        <button
+          type="button"
+          className={panel === "filter" ? "active" : ""}
+          aria-expanded={panel === "filter"}
+          onClick={() => togglePanel("filter")}
+        >
+          <span>{copy.filter}</span>
+          <i aria-hidden="true">⌄</i>
         </button>
-        <button type="button" onClick={() => openSheet("sort")}>
-          {copy.sort}
-          <span aria-hidden="true">⌄</span>
+        <button
+          type="button"
+          className={panel === "sort" ? "active" : ""}
+          aria-expanded={panel === "sort"}
+          onClick={() => togglePanel("sort")}
+        >
+          <span>{copy.sort}</span>
+          <i aria-hidden="true">⌄</i>
         </button>
       </div>
 
-      {categoryOptions.length > 0 && (
-        <div className="mobile-shop-quick-categories" aria-label={copy.category}>
-          {categoryOptions.map((option) => (
+      {panel === "filter" && (
+        <div className="mobile-shop-inline-panel mobile-shop-inline-filter">
+          <CompactFilterGroup
+            title={copy.category}
+            options={categoryOptions}
+            onChoose={(index) => applyMenu("category", index)}
+          />
+          <CompactFilterGroup
+            title={copy.season}
+            options={seasonOptions}
+            onChoose={(index) => applyMenu("season", index)}
+          />
+          <button type="button" className="mobile-shop-reset" onClick={resetFilters}>
+            {copy.reset}
+          </button>
+        </div>
+      )}
+
+      {panel === "sort" && (
+        <div className="mobile-shop-inline-panel mobile-shop-inline-sort">
+          {sortOptions.map((option) => (
             <button
               type="button"
               key={`${option.index}-${option.label}`}
               className={option.active ? "active" : ""}
-              onClick={() => applyMenu("category", option.index)}
+              onClick={async () => {
+                await applyMenu("sort", option.index);
+                setPanel(null);
+              }}
             >
-              {option.label}
+              <span>{option.label}</span>
+              {option.active && <i aria-hidden="true">✓</i>}
             </button>
           ))}
         </div>
@@ -287,68 +340,20 @@ export default function MobileShopV2() {
     </div>
   );
 
-  const overlay = sheet ? (
-    <div className="mobile-shop-sheet-layer" role="presentation" onMouseDown={(e) => {
-      if (e.target === e.currentTarget) closeSheet();
-    }}>
-      <section className="mobile-shop-sheet" role="dialog" aria-modal="true" aria-label={sheet === "info" ? copy.way : sheet === "sort" ? copy.sort : copy.filters}>
-        <div className="mobile-shop-sheet-grabber" aria-hidden="true" />
-        <header className="mobile-shop-sheet-header">
-          <div>
-            <span>{sheet === "info" ? copy.way : "PLAYNICE SHOP"}</span>
-            <h3>{sheet === "info" ? copy.title : sheet === "sort" ? copy.sort : copy.filters}</h3>
-          </div>
-          <button type="button" onClick={closeSheet} aria-label={copy.close}>×</button>
-        </header>
-
-        {sheet === "info" && (
-          <div className="mobile-shop-info-sheet">
-            <p>{copy.text}</p>
-            <div className="mobile-shop-info-points">
-              <div><strong>{copy.full}</strong><span>{copy.fullLabel}</span></div>
-              <div className="highlight"><strong>{copy.try}</strong><span>{copy.tryLabel}</span></div>
-            </div>
-            <small>{copy.note}</small>
-          </div>
-        )}
-
-        {sheet === "filter" && (
-          <div className="mobile-shop-filter-sheet">
-            <FilterGroup title={copy.category} options={categoryOptions} onChoose={(index) => applyMenu("category", index)} />
-            <FilterGroup title={copy.season} options={seasonOptions} onChoose={(index) => applyMenu("season", index)} />
-            <FilterGroup title={copy.mood} options={moodOptions} onChoose={applyMood} />
-            <div className="mobile-shop-sheet-actions">
-              <button type="button" className="ghost" onClick={resetFilters}>{copy.reset}</button>
-              <button type="button" className="primary" onClick={closeSheet}>{copy.done}</button>
-            </div>
-          </div>
-        )}
-
-        {sheet === "sort" && (
-          <div className="mobile-shop-sort-sheet">
-            <FilterGroup title={copy.sort} options={sortOptions} onChoose={async (index) => {
-              await applyMenu("sort", index);
-              closeSheet();
-            }} />
-          </div>
-        )}
-      </section>
-    </div>
-  ) : null;
-
   return (
     <>
-      {createPortal(inline, host)}
-      {overlay}
+      {createPortal(moodRail, moodHost)}
+      {createPortal(inline, commandHost)}
     </>
   );
 }
 
-function FilterGroup({ title, options, onChoose }) {
+function CompactFilterGroup({ title, options, onChoose }) {
   if (!options?.length) return null;
+
   return (
-    <div className="mobile-shop-filter-group">
-      <h4>{title}</h4>
+    <div className="mobile-shop-compact-group">
+      <span>{title}</span>
       <div>
         {options.map((option) => (
           <button
@@ -358,7 +363,6 @@ function FilterGroup({ title, options, onChoose }) {
             onClick={() => onChoose(option.index)}
           >
             {option.label}
-            {option.active && <span aria-hidden="true">✓</span>}
           </button>
         ))}
       </div>
