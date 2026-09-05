@@ -3028,16 +3028,16 @@ const announcementItems = useMemo(() => {
     ? getJournalText(latestJournalArticle.title, lang)
     : "";
 
-  const yslIcedAnnouncementItem = {
-  id: "ysl-y-iced-cologne-announcement",
+  const kosmalaNo4AnnouncementItem = {
+  id: "thomas-kosmala-no4-announcement",
   text:
     lang === "sr"
-      ? "❄️ NOVO: YSL Y Iced Cologne 10ml + Mystery Designer Sample • Limited Stock"
-      : "❄️ NEW ARRIVAL: YSL Y Iced Cologne 10ml + Mystery Designer Sample • Limited Stock",
+      ? "✦ NOVO: Thomas Kosmala No. 4 Après l'Amour 10ml + Mystery Designer Sample • Limited Stock"
+      : "✦ NEW: Thomas Kosmala No. 4 Après l'Amour 10ml + Mystery Designer Sample • Limited Stock",
   icon: "→",
   tone: "new-shop",
   action: "openProduct",
-  slug: "ysl-y-iced-cologne",
+  slug: "thomas-kosmala-no-4-apres-lamour",
 };
 
   const shopNewAnnouncementItem = hasNewShopProducts
@@ -3082,7 +3082,7 @@ const announcementItems = useMemo(() => {
   };
 
   const withPriorityAnnouncements = (items) => [
-  yslIcedAnnouncementItem,
+  kosmalaNo4AnnouncementItem,
   ...(shopNewAnnouncementItem ? [shopNewAnnouncementItem] : []),
   ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
   foreverAnnouncementItem,
@@ -5614,7 +5614,7 @@ const titleLengthClass =
             )
           )}
 
-            {product.slug === "ysl-y-iced-cologne" && size === "10ml" && (
+            {product.slug === "thomas-kosmala-no-4-apres-lamour" && size === "10ml" && (
               <span className="size-chip-recommended">
                 {lang === "sr" ? "+ UZORAK" : "+ FREE SAMPLE"}
               </span>
@@ -9359,7 +9359,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             </div>
           )}
 
-          {selectedProduct.slug === "ysl-y-iced-cologne" && (
+          {selectedProduct.slug === "thomas-kosmala-no-4-apres-lamour" && (
             <div className="modal-sample-mini">
               <strong>
                 🎁 {lang === "sr" ? "FREE UZORAK" : "FREE SAMPLE"}
