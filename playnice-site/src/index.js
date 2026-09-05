@@ -11,6 +11,7 @@ import "./WishlistSurfacePolish.css";
 import "./HeroPaginationPosition.css";
 import "./MobileHeaderV2.css";
 import "./MobileHomeV2.css";
+import "./MobileJustInV2.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
