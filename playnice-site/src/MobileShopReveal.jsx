@@ -3,7 +3,7 @@ import { useEffect } from "react";
 const MOBILE_QUERY = "(max-width: 640px)";
 const CARD_SELECTOR = ".shop-section .product-grid > .product-card";
 const GRID_SELECTOR = ".shop-section .product-grid";
-const REVEAL_LINE = 0.84;
+const REVEAL_LINE = 0.96;
 
 export default function MobileShopReveal() {
   useEffect(() => {
