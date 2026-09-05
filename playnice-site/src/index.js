@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import PrivateSelectionEnhancer from "./PrivateSelectionEnhancer";
 import MobilePartnerSpotlight from "./MobilePartnerSpotlight";
+import MobileDiscoveryTextPolish from "./MobileDiscoveryTextPolish";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
 import "./NewArrivalsScale.css";
@@ -21,5 +22,6 @@ root.render(
     <App />
     <PrivateSelectionEnhancer />
     <MobilePartnerSpotlight />
+    <MobileDiscoveryTextPolish />
   </React.StrictMode>
 );
