@@ -6,10 +6,7 @@ const PRIVATE_SELECTION_IDS = [27, 30, 36, 47];
 const MOBILE_QUERY = "(max-width: 640px)";
 const CARD_SELECTOR = ".homepage-shop-preview .product-card";
 
-const cleanMiniTag = (value = "") =>
-  String(value)
-    .replace(/^\s*[^\p{L}\p{N}]+/u, "")
-    .trim();
+const getMiniTagText = (value = "") => String(value).trim();
 
 export default function MobilePrivateSelectionProfile() {
   useEffect(() => {
@@ -49,7 +46,7 @@ export default function MobilePrivateSelectionProfile() {
 
         const copy = productCopy[product.name] || fallbackCopy;
         const miniTag = copy?.miniTag?.[lang] || copy?.miniTag?.en || "";
-        const mobileText = cleanMiniTag(miniTag);
+        const mobileText = getMiniTagText(miniTag);
 
         if (mobileText && label.textContent !== mobileText) {
           label.textContent = mobileText;
