@@ -4,13 +4,25 @@
 ========================================= */
 
 @media (max-width: 640px) {
+  /*
+    SHOP VERTICAL RHYTHM
+    These are flow tokens, not decorative spacing.
+    Keep grid-facing pagination gaps symmetrical.
+  */
   .shop-section {
+    --shop-flow-intro-top: 8px;
+    --shop-flow-section: 14px;
+    --shop-flow-wayline: 12px;
+    --shop-flow-major: 18px;
+    --shop-flow-grid-link: 10px;
+    --shop-flow-footer: 22px;
+
     padding-top: 0;
   }
 
   .shop-collection-intro {
     width: calc(100% - 28px);
-    margin: 8px auto 14px;
+    margin: var(--shop-flow-intro-top) auto var(--shop-flow-section);
   }
 
   .shop-collection-title {
@@ -48,7 +60,7 @@
     position: relative;
     z-index: 18;
     width: calc(100% - 28px);
-    margin: 0 auto 14px;
+    margin: 0 auto var(--shop-flow-section);
   }
 
   .mobile-shop-menu {
@@ -61,7 +73,7 @@
     align-items: center;
     justify-content: center;
     gap: 3px;
-    margin: 0 0 12px;
+    margin: 0 0 var(--shop-flow-wayline);
     text-align: center;
   }
 
@@ -376,14 +388,19 @@
     text-underline-offset: 4px;
   }
 
-  /* Product flow: the top paginator belongs to the grid, not the control board. */
+  /*
+    PRODUCT FLOW
+    One relationship on both sides of the grid:
+    pagination <-> products = --shop-flow-grid-link.
+  */
   .shop-section .shop-pagination-row {
-    margin-top: 18px;
-    margin-bottom: 10px;
+    margin-top: var(--shop-flow-major);
+    margin-bottom: var(--shop-flow-grid-link);
   }
 
-  .shop-section .shop-pagination-row .pagination-wrap {
-    margin: 0;
+  .shop-section .shop-pagination-row .pagination-wrap,
+  .shop-section .shop-pagination-row .pagination-wrap-top {
+    margin: 0 !important;
   }
 
   .shop-section .shop-pagination-row .pagination {
@@ -399,10 +416,17 @@
     margin-top: 0;
   }
 
-  /* Bottom paginator is optically tightened toward the final product row. */
-  .shop-section .pagination-wrap {
-    margin-top: 7px;
-    margin-bottom: 22px;
+  /*
+    Bottom pagination has a legacy inner .pagination-wrap-bottom margin in App.css.
+    Neutralize it here so no hidden spacing can be added to the Shop flow.
+  */
+  .shop-section > .pagination-wrap {
+    margin-top: var(--shop-flow-grid-link);
+    margin-bottom: var(--shop-flow-footer);
+  }
+
+  .shop-section > .pagination-wrap .pagination-wrap-bottom {
+    margin-top: 0 !important;
   }
 
   @media (prefers-reduced-motion: reduce) {
