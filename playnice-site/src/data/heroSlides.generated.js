@@ -70,7 +70,7 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-4.jpg",
     "desktopImage": "/hero/slide-4.jpg",
     "mobileImage": "/hero/mobile/slide-4-mobile.jpg",
-    "alt": "PlayNice Private Selection – trusted premium decants",
+    "alt": "PlayNice Premium Fragrance House – gentleman with fragrance",
     "actionPrimary": "manifesto",
     "manifestoType": "playnice-mission"
   },
