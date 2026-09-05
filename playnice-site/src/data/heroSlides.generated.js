@@ -24,7 +24,7 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-9.jpg",
     "desktopImage": "/hero/slide-9.jpg",
     "mobileImage": "/hero/mobile/slide-9-mobile.jpg",
-    "alt": "Optional: special action, drop ili limited stock",
+    "alt": "PlayNice limited stock fragrance campaign hero banner",
     "actionPrimary": "collection",
     "actionCollection": [
       "swiss-arabian-musk-01",
