@@ -95,9 +95,9 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-1-fix.jpg",
     "desktopImage": "/hero/slide-1-fix.jpg",
     "mobileImage": "/hero/mobile/slide-1-mobile.jpg",
-    "alt": "Yves Saint Laurent Y Iced Cologne",
+    "alt": "Thomas Kosmala No. 4 Après l'Amour Eau de Parfum – magnetic, modern fragrance at PlayNice.",
     "actionPrimary": "product",
-    "actionProductSlug": "ysl-y-iced-cologne",
+    "actionProductSlug": "thomas-kosmala-no-4-apres-lamour",
     "preferredSize": "10ml"
   },
   {
