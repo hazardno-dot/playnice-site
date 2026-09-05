@@ -60,11 +60,13 @@ async function chooseMenuOption(name, index) {
 }
 
 function readMoodOptions() {
+  const moodParam = new URLSearchParams(window.location.search).get("mood");
+
   return Array.from(document.querySelectorAll(".scent-mood-filter .scent-mood-chip")).map(
     (button, index) => ({
       index,
       label: button.textContent?.replace(/\s+/g, " ").trim() || "",
-      active: button.classList.contains("active"),
+      active: moodParam ? button.classList.contains("active") : index === 0,
     })
   );
 }
@@ -295,8 +297,6 @@ export default function MobileShopV2() {
       await nextFrame();
     }
 
-    // Mood is a separate Shop state and is not guaranteed to be covered by
-    // the native filter reset. Reset it explicitly so UI and results agree.
     const moods = readMoodOptions();
     if (moods.length && !moods[0].active) {
       chooseMood(0);
