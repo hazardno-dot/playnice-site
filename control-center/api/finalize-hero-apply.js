@@ -76,6 +76,11 @@ function approvedRuntime(payload, id) {
   return out;
 }
 
+function runtimePayload(payload = {}) {
+  const { mediaStage, ...clean } = payload || {};
+  return clean;
+}
+
 const stable = (value) => JSON.stringify(value, Object.keys(value || {}).sort());
 
 module.exports = async function handler(req, res) {
@@ -124,9 +129,10 @@ module.exports = async function handler(req, res) {
       return json(res, 409, { error: "POST-MERGE SAFETY BLOCK: main Hero config does not match the approved snapshot." });
     }
 
+    const cleanPayload = runtimePayload(draft.approved_payload);
     const rpcResponse = await supabaseFetch("/rest/v1/rpc/finalize_hero_apply", token, {
       method: "POST",
-      body: JSON.stringify({ p_hero_key: heroKey, p_payload: draft.approved_payload }),
+      body: JSON.stringify({ p_hero_key: heroKey, p_payload: cleanPayload }),
     });
     if (!rpcResponse.ok) {
       const rpcBody = await readJson(rpcResponse, "Supabase finalize Hero RPC");
