@@ -4,6 +4,7 @@ import { supabase } from "./supabase";
 import "./hero-apply.css";
 
 const HERO_WORKFLOW_UPDATED_EVENT = "playnice:hero-workflow-updated";
+const HERO_FINALIZE_SCROLL_TOP_KEY = "playnice:hero-finalize-scroll-top";
 
 async function readResponse(response) {
   const text = await response.text();
@@ -26,6 +27,15 @@ function ensureWorkflowSlot(detail) {
   return workflowSlot;
 }
 
+function scrollControlCenterTop() {
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  const mainStage = document.querySelector(".main-stage");
+  if (mainStage) mainStage.scrollTop = 0;
+}
+
 export default function HeroApplyBridge() {
   const [slot, setSlot] = useState(null);
   const [heroKey, setHeroKey] = useState("");
@@ -44,6 +54,15 @@ export default function HeroApplyBridge() {
     if (loadError) { setError(loadError.message || String(loadError)); return; }
     setError("");
     setRow(data || null);
+  }, []);
+
+  useEffect(() => {
+    if (sessionStorage.getItem(HERO_FINALIZE_SCROLL_TOP_KEY) !== "1") return;
+    sessionStorage.removeItem(HERO_FINALIZE_SCROLL_TOP_KEY);
+    if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
+    requestAnimationFrame(() => requestAnimationFrame(scrollControlCenterTop));
+    const timer = window.setTimeout(scrollControlCenterTop, 80);
+    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -183,6 +202,9 @@ export default function HeroApplyBridge() {
       if (!response.ok) throw new Error(body?.error || "Could not finalize Hero apply.");
       setFinalized(`Hero baseline finalized from PR #${body.pr_number}.`);
       await loadRow(heroKey);
+      sessionStorage.setItem(HERO_FINALIZE_SCROLL_TOP_KEY, "1");
+      if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
+      scrollControlCenterTop();
       window.setTimeout(() => window.location.reload(), 700);
     } catch (finalizeError) {
       setError(finalizeError.message || String(finalizeError));
