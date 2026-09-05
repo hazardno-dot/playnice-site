@@ -16,6 +16,7 @@ import "./MobileHomeV2.css";
 import "./MobileJustInV2.css";
 import "./MobileDiscoverySetsV2.css";
 import "./MobilePrivateSelectionV2.css";
+import "./MobileClosingFooterV2.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
