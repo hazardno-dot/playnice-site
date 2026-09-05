@@ -3,7 +3,7 @@ import { useEffect } from "react";
 const MOBILE_QUERY = "(max-width: 640px)";
 const CARD_SELECTOR = ".shop-section .product-grid > .product-card";
 const GRID_SELECTOR = ".shop-section .product-grid";
-const REVEAL_LINE = 0.92;
+const REVEAL_LINE = 0.9;
 
 export default function MobileShopReveal() {
   useEffect(() => {
@@ -16,14 +16,20 @@ export default function MobileShopReveal() {
     let frame = 0;
 
     const revealCard = (card) => {
-      if (!card) return;
+      if (!card || card.dataset.mobileShopRevealed === "true") return;
+
+      card.dataset.mobileShopRevealed = "true";
       card.classList.add("mobile-shop-reveal-visible");
       card.classList.remove("mobile-shop-reveal-pending");
       observer?.unobserve(card);
     };
 
     const revealImmediately = () => {
-      document.querySelectorAll(CARD_SELECTOR).forEach(revealCard);
+      document.querySelectorAll(CARD_SELECTOR).forEach((card) => {
+        card.dataset.mobileShopRevealed = "true";
+        card.classList.remove("mobile-shop-reveal-pending");
+        card.classList.add("mobile-shop-reveal-visible");
+      });
     };
 
     const disconnect = () => {
@@ -54,10 +60,7 @@ export default function MobileShopReveal() {
         .querySelectorAll(`${CARD_SELECTOR}.mobile-shop-reveal-pending`)
         .forEach((card) => {
           const rect = card.getBoundingClientRect();
-
-          if (rect.top <= revealBottom && rect.bottom >= 0) {
-            revealCard(card);
-          }
+          if (rect.top <= revealBottom && rect.bottom >= 0) revealCard(card);
         });
     };
 
@@ -81,28 +84,19 @@ export default function MobileShopReveal() {
           },
           {
             root: null,
-            rootMargin: "0px 0px -8% 0px",
+            rootMargin: "0px 0px -10% 0px",
             threshold: 0.01,
           }
         );
       }
 
-      document.querySelectorAll(CARD_SELECTOR).forEach((card, index) => {
-        if (card.classList.contains("mobile-shop-reveal-visible")) return;
+      document.querySelectorAll(CARD_SELECTOR).forEach((card) => {
+        if (card.dataset.mobileShopRevealed === "true") return;
 
-        card.style.setProperty(
-          "--mobile-shop-reveal-delay",
-          `${index % 2 === 1 ? 70 : 0}ms`
-        );
         card.classList.add("mobile-shop-reveal-pending");
         observer?.observe(card);
       });
 
-      /*
-        IntersectionObserver is an enhancement, never a dependency.
-        Geometry check guarantees that cards already inside the viewport
-        are revealed even in browser/devtools combinations where IO stalls.
-      */
       scheduleViewportCheck();
     };
 
@@ -122,10 +116,7 @@ export default function MobileShopReveal() {
         requestAnimationFrame(observeCards);
       });
 
-      gridObserver.observe(grid, {
-        childList: true,
-      });
-
+      gridObserver.observe(grid, { childList: true });
       observeCards();
     };
 
