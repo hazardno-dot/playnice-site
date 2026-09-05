@@ -258,6 +258,18 @@
     text-align: center;
   }
 
+  .mobile-shop-option-icon-arabian {
+    color: rgba(218, 164, 92, 0.88);
+  }
+
+  .mobile-shop-option-icon-designer {
+    color: rgba(130, 169, 196, 0.86);
+  }
+
+  .mobile-shop-option-icon-niche {
+    color: rgba(171, 145, 192, 0.86);
+  }
+
   .mobile-shop-filter-panel .mobile-shop-selection-list > button > i {
     flex: 0 0 auto;
   }
