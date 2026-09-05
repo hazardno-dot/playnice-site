@@ -30,7 +30,6 @@
     line-height: 1.45;
   }
 
-  /* Existing desktop-first controls stay mounted as the state source of truth. */
   .shop-value-anchor,
   .shop-toolbar.shop-toolbar-compact,
   .scent-mood-filter {
@@ -166,8 +165,6 @@
     transform: rotate(180deg);
   }
 
-  /* One overlay language for Mood / Search / Filter / Sort.
-     The panel unfolds without reflowing the product grid. */
   .mobile-shop-popover {
     position: absolute;
     top: calc(100% + 9px);
@@ -201,20 +198,54 @@
     }
   }
 
-  /* Filter stays fully visible on one mobile viewport: Category + Season side by side. */
   .mobile-shop-filter-panel {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0;
     align-items: start;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-section {
+    min-width: 0;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-section:first-child {
+    padding-right: 12px;
   }
 
   .mobile-shop-filter-panel .mobile-shop-selection-section + .mobile-shop-selection-section {
     margin-top: 0;
     padding-top: 0;
-    padding-left: 14px;
+    padding-left: 12px;
     border-top: 0;
     border-left: 1px solid rgba(220,181,107,0.08);
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-list > button {
+    gap: 6px;
+    font-size: 12.5px;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-option-label {
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .mobile-shop-option-icon {
+    flex: 0 0 auto;
+    width: 14px;
+    color: rgba(220,181,107,0.78);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-list > button > i {
+    flex: 0 0 auto;
   }
 
   .mobile-shop-filter-panel .mobile-shop-reset-link {
@@ -354,11 +385,15 @@
     font-size: 11px;
   }
 
-  .mobile-shop-filter-panel {
-    gap: 10px;
+  .mobile-shop-filter-panel .mobile-shop-selection-section:first-child {
+    padding-right: 9px;
   }
 
   .mobile-shop-filter-panel .mobile-shop-selection-section + .mobile-shop-selection-section {
-    padding-left: 10px;
+    padding-left: 9px;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-list > button {
+    font-size: 12px;
   }
 }
