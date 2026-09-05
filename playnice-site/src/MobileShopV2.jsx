@@ -1,15 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const MOBILE_QUERY = "(max-width: 640px)";
-
 const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
 
 const getLang = () =>
   localStorage.getItem("playnice_lang") === "en" ? "en" : "sr";
 
 const getGroup = (name) => document.querySelector(`.toolbar-group-${name}`);
-
 const getTrigger = (name) =>
   getGroup(name)?.querySelector(".premium-category-trigger, .premium-filter-trigger");
 
@@ -30,7 +28,7 @@ async function readMenuOptions(name) {
 
   const options = getMenuOptions(name).map((button, index) => ({
     index,
-    label: button.textContent?.trim() || "",
+    label: button.textContent?.replace(/\s+/g, " ").trim() || "",
     active: button.getAttribute("aria-selected") === "true",
   }));
 
@@ -83,9 +81,29 @@ function getCollectionCount(lang) {
   return lang === "sr" ? "Kolekcija" : "Collection";
 }
 
+function getSearchInput() {
+  return document.getElementById("shop-search");
+}
+
+function setNativeSearchValue(value) {
+  const input = getSearchInput();
+  if (!input) return false;
+
+  const setter = Object.getOwnPropertyDescriptor(
+    window.HTMLInputElement.prototype,
+    "value"
+  )?.set;
+
+  if (setter) setter.call(input, value);
+  else input.value = value;
+
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  input.dispatchEvent(new Event("change", { bubbles: true }));
+  return true;
+}
+
 export default function MobileShopV2() {
-  const [commandHost, setCommandHost] = useState(null);
-  const [moodHost, setMoodHost] = useState(null);
+  const [host, setHost] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [lang, setLang] = useState(getLang);
   const [panel, setPanel] = useState(null);
@@ -94,27 +112,37 @@ export default function MobileShopV2() {
   const [sortOptions, setSortOptions] = useState([]);
   const [moodOptions, setMoodOptions] = useState([]);
   const [collectionCount, setCollectionCount] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const menuRef = useRef(null);
 
   const copy = useMemo(
     () =>
       lang === "en"
         ? {
+            mood: "Mood",
+            moodDefault: "All moods",
+            search: "Search",
+            searchHint: "Brand or fragrance",
             filter: "Filter",
+            filterDefault: "All filters",
             sort: "Sort",
             category: "Category",
             season: "Season",
-            mood: "Browse by mood",
-            moodNote: "Don’t search notes. Find the moment.",
             reset: "Reset filters",
+            clear: "Clear",
           }
         : {
+            mood: "Osećaj",
+            moodDefault: "Svi osećaji",
+            search: "Pretraga",
+            searchHint: "Brend ili parfem",
             filter: "Filter",
+            filterDefault: "Svi filteri",
             sort: "Sort",
             category: "Kategorija",
             season: "Sezona",
-            mood: "Biraj po osećaju",
-            moodNote: "Ne traži note. Pronađi trenutak.",
             reset: "Poništi filtere",
+            clear: "Obriši",
           },
     [lang]
   );
@@ -128,34 +156,24 @@ export default function MobileShopV2() {
     setLang(getLang());
 
     if (!active) {
-      setCommandHost(null);
-      setMoodHost(null);
+      setHost(null);
       setPanel(null);
       return;
     }
 
-    const toolbar = document.querySelector(".shop-toolbar-compact");
     const intro = document.querySelector(".shop-collection-intro");
-    if (!toolbar || !intro) return;
+    if (!intro) return;
 
-    let moodTarget = document.getElementById("mobile-shop-mood-host");
-    if (!moodTarget) {
-      moodTarget = document.createElement("div");
-      moodTarget.id = "mobile-shop-mood-host";
-      intro.insertAdjacentElement("afterend", moodTarget);
+    let target = document.getElementById("mobile-shop-v2-host");
+    if (!target) {
+      target = document.createElement("div");
+      target.id = "mobile-shop-v2-host";
+      intro.insertAdjacentElement("afterend", target);
     }
 
-    let commandTarget = document.getElementById("mobile-shop-v2-host");
-    if (!commandTarget) {
-      commandTarget = document.createElement("div");
-      commandTarget.id = "mobile-shop-v2-host";
-      const controls = toolbar.querySelector(".toolbar-row-controls");
-      toolbar.insertBefore(commandTarget, controls || null);
-    }
-
-    setMoodHost(moodTarget);
-    setCommandHost(commandTarget);
+    setHost(target);
     setCollectionCount(getCollectionCount(getLang()));
+    setSearchValue(getSearchInput()?.value || "");
   };
 
   useEffect(() => {
@@ -187,7 +205,6 @@ export default function MobileShopV2() {
       window.removeEventListener("popstate", schedule);
       if (frame) cancelAnimationFrame(frame);
       document.getElementById("mobile-shop-v2-host")?.remove();
-      document.getElementById("mobile-shop-mood-host")?.remove();
     };
   }, []);
 
@@ -203,6 +220,7 @@ export default function MobileShopV2() {
     setSortOptions(sorts);
     setMoodOptions(readMoodOptions());
     setCollectionCount(getCollectionCount(getLang()));
+    setSearchValue(getSearchInput()?.value || "");
   };
 
   useEffect(() => {
@@ -210,7 +228,25 @@ export default function MobileShopV2() {
     refreshOptions();
   }, [isMobile]);
 
-  const togglePanel = async (name) => {
+  useEffect(() => {
+    if (!panel) return;
+
+    const onPointerDown = (event) => {
+      if (!menuRef.current?.contains(event.target)) setPanel(null);
+    };
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") setPanel(null);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [panel]);
+
+  const openPanel = async (name) => {
     if (panel === name) {
       setPanel(null);
       return;
@@ -219,11 +255,12 @@ export default function MobileShopV2() {
     setPanel(name);
   };
 
-  const applyMenu = async (name, index) => {
+  const applyMenu = async (name, index, close = false) => {
     await chooseMenuOption(name, index);
     await nextFrame();
     await nextFrame();
     await refreshOptions();
+    if (close) setPanel(null);
   };
 
   const applyMood = async (index) => {
@@ -231,11 +268,11 @@ export default function MobileShopV2() {
     await nextFrame();
     await nextFrame();
     await refreshOptions();
+    setPanel(null);
   };
 
   const resetFilters = async () => {
     const nativeReset = document.querySelector(".clear-filters-button");
-
     if (nativeReset) {
       nativeReset.click();
     } else {
@@ -251,121 +288,155 @@ export default function MobileShopV2() {
     await refreshOptions();
   };
 
-  if (!isMobile || !commandHost || !moodHost) return null;
+  const activeMood = moodOptions.find((option) => option.active);
+  const activeCategory = categoryOptions.find((option) => option.active);
+  const activeSeason = seasonOptions.find((option) => option.active);
+  const activeSort = sortOptions.find((option) => option.active);
 
-  const moodRail = (
-    <section className="mobile-shop-mood" aria-label={copy.mood}>
-      <div className="mobile-shop-mood-head">
-        <strong>{copy.mood}</strong>
-        <span>{copy.moodNote}</span>
-      </div>
-      <div className="mobile-shop-mood-rail">
-        {moodOptions.map((option) => (
+  const filterCount = [activeCategory, activeSeason].filter(
+    (option) => option && option.index !== 0
+  ).length;
+
+  if (!isMobile || !host) return null;
+
+  const capsuleValue = (name) => {
+    if (name === "mood") return activeMood?.label || copy.moodDefault;
+    if (name === "search") return searchValue ? `“${searchValue}”` : copy.searchHint;
+    if (name === "filter") {
+      return filterCount ? `${filterCount} ${lang === "en" ? "active" : "aktivna"}` : copy.filterDefault;
+    }
+    return activeSort?.label || copy.sort;
+  };
+
+  const menu = (
+    <section className="mobile-shop-menu" ref={menuRef} aria-label="Shop menu">
+      <div className="mobile-shop-status">{collectionCount}</div>
+
+      <div className="mobile-shop-capsules">
+        {[
+          ["mood", copy.mood, "◌"],
+          ["search", copy.search, "⌕"],
+          ["filter", copy.filter, "≡"],
+          ["sort", copy.sort, "↕"],
+        ].map(([name, label, icon]) => (
           <button
+            key={name}
             type="button"
-            key={`${option.index}-${option.label}`}
-            className={option.active ? "active" : ""}
-            onClick={() => applyMood(option.index)}
+            className={`mobile-shop-capsule ${panel === name ? "active" : ""}`}
+            aria-expanded={panel === name}
+            onClick={() => openPanel(name)}
           >
-            {option.label}
+            <span className="mobile-shop-capsule-icon" aria-hidden="true">{icon}</span>
+            <span className="mobile-shop-capsule-copy">
+              <small>{label}</small>
+              <strong>{capsuleValue(name)}</strong>
+            </span>
+            <span className="mobile-shop-capsule-arrow" aria-hidden="true">⌄</span>
           </button>
         ))}
       </div>
+
+      {panel && (
+        <div className={`mobile-shop-popover mobile-shop-popover-${panel}`}>
+          {panel === "mood" && (
+            <SelectionList
+              options={moodOptions}
+              onChoose={applyMood}
+            />
+          )}
+
+          {panel === "search" && (
+            <div className="mobile-shop-search-panel">
+              <label htmlFor="mobile-shop-search-proxy">{copy.searchHint}</label>
+              <div>
+                <span aria-hidden="true">⌕</span>
+                <input
+                  id="mobile-shop-search-proxy"
+                  autoFocus
+                  type="search"
+                  value={searchValue}
+                  placeholder={copy.searchHint}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    setSearchValue(value);
+                    setNativeSearchValue(value);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") setPanel(null);
+                  }}
+                />
+                {searchValue && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchValue("");
+                      setNativeSearchValue("");
+                    }}
+                  >
+                    {copy.clear}
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {panel === "filter" && (
+            <div className="mobile-shop-filter-panel">
+              <SelectionSection
+                title={copy.category}
+                options={categoryOptions}
+                onChoose={(index) => applyMenu("category", index)}
+              />
+              <SelectionSection
+                title={copy.season}
+                options={seasonOptions}
+                onChoose={(index) => applyMenu("season", index)}
+              />
+              <button type="button" className="mobile-shop-reset-link" onClick={resetFilters}>
+                {copy.reset}
+              </button>
+            </div>
+          )}
+
+          {panel === "sort" && (
+            <SelectionList
+              options={sortOptions}
+              onChoose={(index) => applyMenu("sort", index, true)}
+            />
+          )}
+        </div>
+      )}
     </section>
   );
 
-  const inline = (
-    <div className="mobile-shop-command" aria-label="Mobile shop controls">
-      <div className="mobile-shop-meta-row">
-        <span>{collectionCount}</span>
-      </div>
+  return createPortal(menu, host);
+}
 
-      <div className="mobile-shop-segmented" role="group" aria-label="Shop controls">
-        <button
-          type="button"
-          className={panel === "filter" ? "active" : ""}
-          aria-expanded={panel === "filter"}
-          onClick={() => togglePanel("filter")}
-        >
-          <span>{copy.filter}</span>
-          <i aria-hidden="true">⌄</i>
-        </button>
-        <button
-          type="button"
-          className={panel === "sort" ? "active" : ""}
-          aria-expanded={panel === "sort"}
-          onClick={() => togglePanel("sort")}
-        >
-          <span>{copy.sort}</span>
-          <i aria-hidden="true">⌄</i>
-        </button>
-      </div>
-
-      {panel === "filter" && (
-        <div className="mobile-shop-inline-panel mobile-shop-inline-filter">
-          <CompactFilterGroup
-            title={copy.category}
-            options={categoryOptions}
-            onChoose={(index) => applyMenu("category", index)}
-          />
-          <CompactFilterGroup
-            title={copy.season}
-            options={seasonOptions}
-            onChoose={(index) => applyMenu("season", index)}
-          />
-          <button type="button" className="mobile-shop-reset" onClick={resetFilters}>
-            {copy.reset}
-          </button>
-        </div>
-      )}
-
-      {panel === "sort" && (
-        <div className="mobile-shop-inline-panel mobile-shop-inline-sort">
-          {sortOptions.map((option) => (
-            <button
-              type="button"
-              key={`${option.index}-${option.label}`}
-              className={option.active ? "active" : ""}
-              onClick={async () => {
-                await applyMenu("sort", option.index);
-                setPanel(null);
-              }}
-            >
-              <span>{option.label}</span>
-              {option.active && <i aria-hidden="true">✓</i>}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-
+function SelectionSection({ title, options, onChoose }) {
+  if (!options?.length) return null;
   return (
-    <>
-      {createPortal(moodRail, moodHost)}
-      {createPortal(inline, commandHost)}
-    </>
+    <div className="mobile-shop-selection-section">
+      <h4>{title}</h4>
+      <SelectionList options={options} onChoose={onChoose} />
+    </div>
   );
 }
 
-function CompactFilterGroup({ title, options, onChoose }) {
+function SelectionList({ options, onChoose }) {
   if (!options?.length) return null;
-
   return (
-    <div className="mobile-shop-compact-group">
-      <span>{title}</span>
-      <div>
-        {options.map((option) => (
-          <button
-            type="button"
-            key={`${option.index}-${option.label}`}
-            className={option.active ? "active" : ""}
-            onClick={() => onChoose(option.index)}
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
+    <div className="mobile-shop-selection-list">
+      {options.map((option) => (
+        <button
+          type="button"
+          key={`${option.index}-${option.label}`}
+          className={option.active ? "active" : ""}
+          onClick={() => onChoose(option.index)}
+        >
+          <span>{option.label}</span>
+          <i aria-hidden="true">{option.active ? "●" : "○"}</i>
+        </button>
+      ))}
     </div>
   );
 }
