@@ -1,0 +1,315 @@
+/* =========================================
+   PLAYNICE MOBILE PRODUCT MODAL V2
+   Mobile-only density and decision-flow polish.
+   Desktop remains untouched.
+========================================= */
+
+@media (max-width: 640px) {
+  .product-modal {
+    width: calc(100vw - 18px);
+    max-height: calc(100dvh - 14px);
+    border-radius: 20px;
+  }
+
+  .product-modal .close-button {
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .modal-header {
+    padding: 14px 14px 10px;
+  }
+
+  .modal-header h2 {
+    max-width: calc(100% - 44px);
+    font-size: 1.78rem;
+    line-height: 0.98;
+  }
+
+  .modal-header-meta {
+    gap: 6px;
+  }
+
+  .modal-rating-stars {
+    gap: 1px;
+  }
+
+  .modal-rating-stars span {
+    font-size: 0.72rem;
+  }
+
+  .modal-rating-score {
+    font-size: 0.88rem;
+  }
+
+  .modal-rating-label {
+    font-size: 0.68rem;
+  }
+
+  .modal-inspired-mini {
+    padding: 6px 9px;
+    min-height: 34px;
+    border-radius: 10px;
+    gap: 6px;
+  }
+
+  .modal-inspired-mini-name {
+    font-size: 0.78rem;
+  }
+
+  .modal-media {
+    padding: 12px 14px 10px;
+  }
+
+  .modal-image-wrap {
+    min-height: 154px;
+    padding: 0;
+  }
+
+  .modal-image-wrap::after {
+    filter: blur(15px);
+    opacity: 0.42;
+  }
+
+  .modal-image {
+    max-height: 138px;
+    max-width: 70%;
+  }
+
+  .modal-wishlist-btn {
+    transform: scale(0.9);
+    transform-origin: top right;
+  }
+
+  .modal-note-map-button,
+  .note-map-trigger {
+    min-height: 28px;
+    padding: 5px 9px;
+    font-size: 0.56rem;
+  }
+
+  .modal-same-energy {
+    margin-top: 8px;
+  }
+
+  .modal-same-energy-list {
+    gap: 6px;
+  }
+
+  .modal-same-energy-item {
+    grid-template-columns: 30px 1fr;
+    min-height: 48px;
+    padding: 6px;
+    border-radius: 12px;
+  }
+
+  .modal-same-energy-img-wrap {
+    width: 30px;
+    height: 36px;
+  }
+
+  .modal-same-energy-text strong {
+    font-size: 0.74rem;
+    line-height: 1.05;
+  }
+
+  .modal-same-energy-text small {
+    display: none;
+  }
+
+  .modal-media-meta {
+    padding-top: 2px;
+  }
+
+  .modal-category {
+    font-size: 0.62rem;
+  }
+
+  .modal-media-meta-copy p {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    line-height: 1.25;
+  }
+
+  .modal-content {
+    padding: 12px 14px 14px;
+    gap: 8px;
+  }
+
+  .modal-chip {
+    padding: 7px 11px 6px;
+    gap: 6px;
+    font-size: 0.68rem;
+  }
+
+  .modal-chip::before {
+    width: 5px;
+    height: 5px;
+    flex-basis: 5px;
+  }
+
+  .modal-description {
+    margin-bottom: 0;
+    font-size: 0.98rem;
+    line-height: 1.28;
+  }
+
+  /* Redundant in the purchase decision flow on mobile. */
+  .product-modal-anchor {
+    display: none;
+  }
+
+  /* One compact information surface instead of two large cards. */
+  .modal-info-grid {
+    gap: 0;
+    margin-top: 2px;
+    overflow: hidden;
+    border: 1px solid rgba(220, 181, 107, 0.12);
+    border-radius: 16px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.008)),
+      rgba(14, 14, 14, 0.88);
+  }
+
+  .modal-info-card {
+    padding: 10px 12px 9px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .modal-info-card + .modal-info-card {
+    border-top: 1px solid rgba(220, 181, 107, 0.10);
+  }
+
+  .modal-info-card::after {
+    display: none;
+  }
+
+  .modal-info-card span {
+    margin-bottom: 6px;
+    font-size: 0.58rem;
+    line-height: 1.05;
+    letter-spacing: 0.15em;
+  }
+
+  .modal-info-card strong {
+    font-size: 0.94rem;
+    line-height: 1.2;
+  }
+
+  .modal-purchase {
+    margin-top: 3px;
+    gap: 8px;
+    padding-top: 0;
+  }
+
+  .modal-label {
+    margin-bottom: 5px;
+    font-size: 0.66rem;
+  }
+
+  .modal-size-helper {
+    margin: -1px 0 6px;
+    font-size: 10.5px;
+  }
+
+  .modal-sizes {
+    gap: 6px;
+  }
+
+  .modal-sizes > button,
+  .modal-size {
+    min-height: 62px;
+    height: 62px;
+    padding: 8px 7px;
+    border-radius: 14px;
+    gap: 4px;
+  }
+
+  .modal-sizes > button span,
+  .modal-size span {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+  }
+
+  .modal-sizes > button strong,
+  .modal-size strong {
+    margin-top: 5px;
+    font-size: 1.04rem;
+  }
+
+  .modal-size.active::after {
+    top: 8px;
+    right: 8px;
+    width: 6px;
+    height: 6px;
+  }
+
+  .modal-purchase-bar {
+    gap: 8px;
+    padding-top: 8px;
+    align-items: stretch;
+  }
+
+  .modal-price-box {
+    flex: 0 0 104px;
+    gap: 3px;
+    padding: 9px 10px 8px;
+    border-radius: 14px;
+  }
+
+  .modal-price-box span {
+    font-size: 0.54rem;
+    letter-spacing: 0.12em;
+  }
+
+  .modal-price-box strong,
+  .modal-selected-price {
+    font-size: 1.24rem;
+    line-height: 1;
+  }
+
+  .modal-price-box::after {
+    left: 10px;
+    bottom: 7px;
+    width: 38px;
+  }
+
+  .modal-cta-group {
+    flex: 1;
+  }
+
+  .modal-add-button {
+    min-height: 44px;
+    padding: 0 18px;
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+  }
+
+  .modal-buy-now {
+    min-height: 38px;
+    font-size: 0.68rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .modal-header h2 {
+    font-size: 1.62rem;
+  }
+
+  .modal-image-wrap {
+    min-height: 144px;
+  }
+
+  .modal-image {
+    max-height: 128px;
+  }
+
+  .modal-price-box {
+    flex-basis: 96px;
+  }
+}
