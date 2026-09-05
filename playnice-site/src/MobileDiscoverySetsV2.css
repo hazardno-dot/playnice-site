@@ -1,0 +1,84 @@
+/* =========================================
+   PLAYNICE MOBILE DISCOVERY SETS V2
+   Mobile-only polish. Desktop remains untouched.
+========================================= */
+
+@media (max-width: 640px) {
+  .discovery-showcase {
+    padding-top: 0;
+  }
+
+  .discovery-showcase-head {
+    margin-bottom: 14px;
+  }
+
+  .discovery-showcase-head h2 {
+    margin-bottom: 6px;
+    font-size: clamp(27px, 7.4vw, 31px);
+    line-height: 1;
+  }
+
+  .discovery-showcase-head p {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .discovery-showcase-grid {
+    gap: 10px;
+  }
+
+  .discovery-showcase-card {
+    min-height: 176px;
+    padding: 14px 10px 11px;
+    gap: 12px;
+    border-radius: 18px;
+  }
+
+  .discovery-showcase-type {
+    min-height: 22px;
+    padding-inline: 9px;
+    font-size: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .discovery-showcase-card h3 {
+    min-height: 2em;
+    margin-bottom: 7px;
+    font-size: 18px;
+    line-height: 1.02;
+  }
+
+  .discovery-showcase-card p {
+    min-height: auto;
+    font-size: 10.5px;
+    line-height: 1.38;
+  }
+
+  .discovery-showcase-button {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+  }
+}
+
+@media (max-width: 390px) {
+  .discovery-showcase-grid {
+    gap: 8px;
+  }
+
+  .discovery-showcase-card {
+    min-height: 172px;
+    padding: 13px 9px 10px;
+  }
+
+  .discovery-showcase-card h3 {
+    font-size: 17px;
+  }
+
+  .discovery-showcase-card p {
+    font-size: 10px;
+  }
+}
