@@ -32,6 +32,12 @@
     display: none !important;
   }
 
+  /* Legacy micro sponsor bar is removed from the mobile commerce flow.
+     Mobile Partner Spotlight now owns the single Home sponsor placement. */
+  .mobile-sponsored-ad-wrap {
+    display: none !important;
+  }
+
   /* Main scene-to-scene rhythm: one protocol, one gap. */
   .playnice-discovery-portal,
   .new-arrivals-section,
@@ -43,12 +49,6 @@
 
   .homepage-shop-preview {
     margin-bottom: var(--mobile-home-related-gap);
-  }
-
-  /* Sponsored placement is a related utility, not a full scene. */
-  .mobile-sponsored-ad-wrap {
-    margin-top: var(--mobile-home-related-gap);
-    margin-bottom: 0;
   }
 
   .closing-section {
