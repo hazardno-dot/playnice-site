@@ -13,6 +13,16 @@
     display: block;
   }
 
+  /*
+   * The legacy footer divider sits immediately before the injected
+   * Partner Spotlight host. On mobile Home it would stack with the
+   * Home end-gap and create an oversized empty band. The Spotlight
+   * now becomes the deliberate transition into the footer instead.
+   */
+  .section-divider:has(+ .mobile-partner-spotlight-host) {
+    display: none !important;
+  }
+
   .mobile-partner-spotlight {
     width: min(calc(100% - 32px), 420px);
     margin: 0 auto var(--mobile-home-section-gap, 56px);
