@@ -1,7 +1,8 @@
 /* =========================================
-   PLAYNICE MOBILE SHOP — SOFT CARD REVEAL
+   PLAYNICE MOBILE SHOP — CARD REVEAL QA PASS
    Progressive enhancement only.
-   No JS observer, no permanent compositor hints.
+   Deliberately stronger than final production tuning
+   so scroll-timeline support is easy to verify.
 ========================================= */
 
 @media (max-width: 640px) {
@@ -12,25 +13,29 @@
       animation-fill-mode: both;
       animation-timing-function: linear;
       animation-timeline: view(block);
-      animation-range: entry 0% entry 72%;
+      animation-range: entry 0% entry 95%;
     }
 
-    /* The second card follows by a fraction, like one row unfolding. */
+    /* Make the paired-card stagger visible during QA. */
     .shop-section .product-grid > .product-card:nth-child(even) {
-      animation-range: entry 8% entry 80%;
+      animation-range: entry 14% entry 100%;
     }
 
     @keyframes mobileShopCardReveal {
       from {
-        opacity: 0.46;
+        opacity: 0.12;
         clip-path: inset(0 100% 0 0 round 16px);
-        transform: translateX(-6px);
+        transform: translateX(-16px) scale(0.985);
+      }
+
+      55% {
+        opacity: 0.72;
       }
 
       to {
         opacity: 1;
         clip-path: inset(0 0 0 0 round 16px);
-        transform: translateX(0);
+        transform: translateX(0) scale(1);
       }
     }
   }
