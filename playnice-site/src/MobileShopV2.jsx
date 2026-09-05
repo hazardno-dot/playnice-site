@@ -4,6 +4,8 @@ import { createPortal } from "react-dom";
 const MOBILE_QUERY = "(max-width: 640px)";
 const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
 
+const MOOD_PARAM_ORDER = ["All", "clean", "summer", "date", "rich", "soft", "signature"];
+
 const getLang = () =>
   localStorage.getItem("playnice_lang") === "en" ? "en" : "sr";
 
@@ -60,31 +62,32 @@ async function chooseMenuOption(name, index) {
 }
 
 function readMoodOptions() {
-  const moodParam = new URLSearchParams(window.location.search).get("mood");
-
   return Array.from(document.querySelectorAll(".scent-mood-filter .scent-mood-chip")).map(
     (button, index) => ({
       index,
+      value: MOOD_PARAM_ORDER[index] || String(index),
       label: button.textContent?.replace(/\s+/g, " ").trim() || "",
-      active: moodParam ? button.classList.contains("active") : index === 0,
+      active: false,
     })
   );
 }
 
-function forceAllMood(options = []) {
-  return options.map((option, index) => ({
-    ...option,
-    active: index === 0,
-  }));
+function getMoodIndexFromUrl(options = []) {
+  const moodParam = new URLSearchParams(window.location.search).get("mood");
+  if (!moodParam) return 0;
+
+  const index = options.findIndex(
+    (option) => String(option.value).toLowerCase() === moodParam.toLowerCase()
+  );
+
+  return index >= 0 ? index : 0;
 }
 
-async function waitForMoodUrlClear(maxFrames = 12) {
-  for (let frame = 0; frame < maxFrames; frame += 1) {
-    const moodParam = new URLSearchParams(window.location.search).get("mood");
-    if (!moodParam) return true;
-    await nextFrame();
-  }
-  return false;
+function withActiveMood(options = [], activeIndex = 0) {
+  return options.map((option, index) => ({
+    ...option,
+    active: index === activeIndex,
+  }));
 }
 
 function chooseMood(index) {
@@ -140,8 +143,10 @@ export default function MobileShopV2() {
   const [seasonOptions, setSeasonOptions] = useState([]);
   const [sortOptions, setSortOptions] = useState([]);
   const [moodOptions, setMoodOptions] = useState([]);
+  const [activeMoodIndex, setActiveMoodIndex] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const menuRef = useRef(null);
+  const wasShopActiveRef = useRef(false);
 
   const copy = useMemo(
     () =>
@@ -179,7 +184,13 @@ export default function MobileShopV2() {
     [lang]
   );
 
-  const syncSurface = () => {
+  const syncMoodFromUrl = () => {
+    const moods = readMoodOptions();
+    setMoodOptions(moods);
+    setActiveMoodIndex(getMoodIndexFromUrl(moods));
+  };
+
+  const syncSurface = ({ syncMood = false } = {}) => {
     const media = window.matchMedia(MOBILE_QUERY);
     const onShop = window.location.pathname === "/shop";
     const active = media.matches && onShop;
@@ -188,6 +199,7 @@ export default function MobileShopV2() {
     setLang(getLang());
 
     if (!active) {
+      wasShopActiveRef.current = false;
       setHost(null);
       setPanel(null);
       return;
@@ -205,6 +217,12 @@ export default function MobileShopV2() {
 
     setHost(target);
     setSearchValue(getSearchInput()?.value || "");
+
+    if (!wasShopActiveRef.current || syncMood) {
+      syncMoodFromUrl();
+    }
+
+    wasShopActiveRef.current = true;
   };
 
   useEffect(() => {
@@ -219,7 +237,9 @@ export default function MobileShopV2() {
       });
     };
 
-    syncSurface();
+    const onPopState = () => syncSurface({ syncMood: true });
+
+    syncSurface({ syncMood: true });
 
     const observer = new MutationObserver(schedule);
     observer.observe(document.getElementById("root") || document.body, {
@@ -228,12 +248,12 @@ export default function MobileShopV2() {
     });
 
     media.addEventListener?.("change", schedule);
-    window.addEventListener("popstate", schedule);
+    window.addEventListener("popstate", onPopState);
 
     return () => {
       observer.disconnect();
       media.removeEventListener?.("change", schedule);
-      window.removeEventListener("popstate", schedule);
+      window.removeEventListener("popstate", onPopState);
       if (frame) cancelAnimationFrame(frame);
       document.getElementById("mobile-shop-v2-host")?.remove();
     };
@@ -243,11 +263,12 @@ export default function MobileShopV2() {
     const categories = await readMenuOptions("category");
     const seasons = await readMenuOptions("season");
     const sorts = await readMenuOptions("sort");
+    const moods = readMoodOptions();
 
     setCategoryOptions(categories);
     setSeasonOptions(seasons);
     setSortOptions(sorts);
-    setMoodOptions(readMoodOptions());
+    setMoodOptions(moods);
     setSearchValue(getSearchInput()?.value || "");
   };
 
@@ -292,20 +313,20 @@ export default function MobileShopV2() {
   };
 
   const applyMood = async (index) => {
+    setActiveMoodIndex(index);
     chooseMood(index);
     await nextFrame();
     await nextFrame();
-    await refreshOptions();
+    setMoodOptions(readMoodOptions());
     setPanel(null);
   };
 
   const resetFilters = async () => {
     const nativeReset = document.querySelector(".clear-filters-button");
 
-    // Optimistically mirror the known native reset semantics immediately.
-    // This prevents the mobile capsule from showing a stale mood while App.js
-    // finishes its state -> URL synchronization.
-    setMoodOptions((current) => forceAllMood(current));
+    // The mobile capsule owns only its display state. Reset it immediately and
+    // never reconstruct it from a transient desktop DOM class afterwards.
+    setActiveMoodIndex(0);
 
     if (nativeReset) {
       nativeReset.click();
@@ -317,7 +338,7 @@ export default function MobileShopV2() {
       chooseMood(0);
     }
 
-    await waitForMoodUrlClear();
+    await nextFrame();
     await nextFrame();
 
     const categories = await readMenuOptions("category");
@@ -327,11 +348,11 @@ export default function MobileShopV2() {
     setCategoryOptions(categories);
     setSeasonOptions(seasons);
     setSortOptions(sorts);
-    setMoodOptions(forceAllMood(readMoodOptions()));
+    setMoodOptions(readMoodOptions());
     setSearchValue(getSearchInput()?.value || "");
   };
 
-  const activeMood = moodOptions.find((option) => option.active);
+  const activeMood = moodOptions[activeMoodIndex];
   const activeCategory = categoryOptions.find((option) => option.active);
   const activeSeason = seasonOptions.find((option) => option.active);
   const activeSort = sortOptions.find((option) => option.active);
@@ -386,7 +407,10 @@ export default function MobileShopV2() {
         {panel && (
           <div className={`mobile-shop-popover mobile-shop-popover-${panel}`}>
             {panel === "mood" && (
-              <SelectionList options={moodOptions} onChoose={applyMood} />
+              <SelectionList
+                options={withActiveMood(moodOptions, activeMoodIndex)}
+                onChoose={applyMood}
+              />
             )}
 
             {panel === "search" && (
