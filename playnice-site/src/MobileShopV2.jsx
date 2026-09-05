@@ -34,6 +34,7 @@ async function readMenuOptions(name) {
 
   if (!wasOpen && trigger.getAttribute("aria-expanded") === "true") {
     trigger.click();
+    await nextFrame();
   }
 
   return options;
@@ -75,12 +76,6 @@ function chooseMood(index) {
   return true;
 }
 
-function getCollectionCount(lang) {
-  const dockText = document.querySelector(".sticky-cta-copy small")?.textContent?.trim();
-  if (dockText) return dockText;
-  return lang === "sr" ? "Kolekcija" : "Collection";
-}
-
 function getSearchInput() {
   return document.getElementById("shop-search");
 }
@@ -111,7 +106,6 @@ export default function MobileShopV2() {
   const [seasonOptions, setSeasonOptions] = useState([]);
   const [sortOptions, setSortOptions] = useState([]);
   const [moodOptions, setMoodOptions] = useState([]);
-  const [collectionCount, setCollectionCount] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const menuRef = useRef(null);
 
@@ -130,6 +124,8 @@ export default function MobileShopV2() {
             season: "Season",
             reset: "Reset filters",
             clear: "Clear",
+            way: "THE PLAYNICE WAY",
+            wayNote: "Less risk. More certainty. A better decision.",
           }
         : {
             mood: "Osećaj",
@@ -143,6 +139,8 @@ export default function MobileShopV2() {
             season: "Sezona",
             reset: "Poništi filtere",
             clear: "Obriši",
+            way: "PLAYNICE PRISTUP",
+            wayNote: "Manje rizika. Više sigurnosti. Bolja odluka.",
           },
     [lang]
   );
@@ -172,7 +170,6 @@ export default function MobileShopV2() {
     }
 
     setHost(target);
-    setCollectionCount(getCollectionCount(getLang()));
     setSearchValue(getSearchInput()?.value || "");
   };
 
@@ -209,17 +206,15 @@ export default function MobileShopV2() {
   }, []);
 
   const refreshOptions = async () => {
-    const [categories, seasons, sorts] = await Promise.all([
-      readMenuOptions("category"),
-      readMenuOptions("season"),
-      readMenuOptions("sort"),
-    ]);
+    // Existing App dropdowns close one another, so they must be read sequentially.
+    const categories = await readMenuOptions("category");
+    const seasons = await readMenuOptions("season");
+    const sorts = await readMenuOptions("sort");
 
     setCategoryOptions(categories);
     setSeasonOptions(seasons);
     setSortOptions(sorts);
     setMoodOptions(readMoodOptions());
-    setCollectionCount(getCollectionCount(getLang()));
     setSearchValue(getSearchInput()?.value || "");
   };
 
@@ -308,104 +303,106 @@ export default function MobileShopV2() {
     return activeSort?.label || copy.sort;
   };
 
+  const controls = [
+    { name: "mood", label: copy.mood, icon: "◌" },
+    { name: "search", label: copy.search, icon: "⌕" },
+    { name: "filter", label: copy.filter, icon: "≡" },
+    { name: "sort", label: copy.sort, icon: "↕" },
+  ];
+
   const menu = (
     <section className="mobile-shop-menu" ref={menuRef} aria-label="Shop menu">
-      <div className="mobile-shop-status">{collectionCount}</div>
-
-      <div className="mobile-shop-capsules">
-        {[
-          ["mood", copy.mood, "◌"],
-          ["search", copy.search, "⌕"],
-          ["filter", copy.filter, "≡"],
-          ["sort", copy.sort, "↕"],
-        ].map(([name, label, icon]) => (
-          <button
-            key={name}
-            type="button"
-            className={`mobile-shop-capsule ${panel === name ? "active" : ""}`}
-            aria-expanded={panel === name}
-            onClick={() => openPanel(name)}
-          >
-            <span className="mobile-shop-capsule-icon" aria-hidden="true">{icon}</span>
-            <span className="mobile-shop-capsule-copy">
-              <small>{label}</small>
-              <strong>{capsuleValue(name)}</strong>
-            </span>
-            <span className="mobile-shop-capsule-arrow" aria-hidden="true">⌄</span>
-          </button>
-        ))}
+      <div className="mobile-shop-wayline">
+        <strong>{copy.way}</strong>
+        <span>{copy.wayNote}</span>
       </div>
 
-      {panel && (
-        <div className={`mobile-shop-popover mobile-shop-popover-${panel}`}>
-          {panel === "mood" && (
-            <SelectionList
-              options={moodOptions}
-              onChoose={applyMood}
-            />
-          )}
-
-          {panel === "search" && (
-            <div className="mobile-shop-search-panel">
-              <label htmlFor="mobile-shop-search-proxy">{copy.searchHint}</label>
-              <div>
-                <span aria-hidden="true">⌕</span>
-                <input
-                  id="mobile-shop-search-proxy"
-                  autoFocus
-                  type="search"
-                  value={searchValue}
-                  placeholder={copy.searchHint}
-                  onChange={(event) => {
-                    const value = event.target.value;
-                    setSearchValue(value);
-                    setNativeSearchValue(value);
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") setPanel(null);
-                  }}
-                />
-                {searchValue && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSearchValue("");
-                      setNativeSearchValue("");
-                    }}
-                  >
-                    {copy.clear}
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
-
-          {panel === "filter" && (
-            <div className="mobile-shop-filter-panel">
-              <SelectionSection
-                title={copy.category}
-                options={categoryOptions}
-                onChoose={(index) => applyMenu("category", index)}
-              />
-              <SelectionSection
-                title={copy.season}
-                options={seasonOptions}
-                onChoose={(index) => applyMenu("season", index)}
-              />
-              <button type="button" className="mobile-shop-reset-link" onClick={resetFilters}>
-                {copy.reset}
-              </button>
-            </div>
-          )}
-
-          {panel === "sort" && (
-            <SelectionList
-              options={sortOptions}
-              onChoose={(index) => applyMenu("sort", index, true)}
-            />
-          )}
+      <div className="mobile-shop-board">
+        <div className="mobile-shop-capsules">
+          {controls.map(({ name, label, icon }) => (
+            <button
+              key={name}
+              type="button"
+              className={`mobile-shop-capsule ${panel === name ? "active" : ""}`}
+              aria-label={`${label}: ${capsuleValue(name)}`}
+              aria-expanded={panel === name}
+              onClick={() => openPanel(name)}
+            >
+              <span className="mobile-shop-capsule-icon" aria-hidden="true">{icon}</span>
+              <strong>{capsuleValue(name)}</strong>
+              <span className="mobile-shop-capsule-arrow" aria-hidden="true">⌄</span>
+            </button>
+          ))}
         </div>
-      )}
+
+        {panel && (
+          <div className={`mobile-shop-popover mobile-shop-popover-${panel}`}>
+            {panel === "mood" && (
+              <SelectionList options={moodOptions} onChoose={applyMood} />
+            )}
+
+            {panel === "search" && (
+              <div className="mobile-shop-search-panel">
+                <div>
+                  <span aria-hidden="true">⌕</span>
+                  <input
+                    id="mobile-shop-search-proxy"
+                    aria-label={copy.searchHint}
+                    autoFocus
+                    type="search"
+                    value={searchValue}
+                    placeholder={copy.searchHint}
+                    onChange={(event) => {
+                      const value = event.target.value;
+                      setSearchValue(value);
+                      setNativeSearchValue(value);
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") setPanel(null);
+                    }}
+                  />
+                  {searchValue && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchValue("");
+                        setNativeSearchValue("");
+                      }}
+                    >
+                      {copy.clear}
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {panel === "filter" && (
+              <div className="mobile-shop-filter-panel">
+                <SelectionSection
+                  title={copy.category}
+                  options={categoryOptions}
+                  onChoose={(index) => applyMenu("category", index)}
+                />
+                <SelectionSection
+                  title={copy.season}
+                  options={seasonOptions}
+                  onChoose={(index) => applyMenu("season", index)}
+                />
+                <button type="button" className="mobile-shop-reset-link" onClick={resetFilters}>
+                  {copy.reset}
+                </button>
+              </div>
+            )}
+
+            {panel === "sort" && (
+              <SelectionList
+                options={sortOptions}
+                onChoose={(index) => applyMenu("sort", index, true)}
+              />
+            )}
+          </div>
+        )}
+      </div>
     </section>
   );
 
