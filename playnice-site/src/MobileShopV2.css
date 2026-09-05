@@ -399,9 +399,9 @@
     margin-top: 0;
   }
 
-  /* Bottom paginator mirrors the top paginator's distance from the product grid. */
+  /* Bottom paginator is optically tightened toward the final product row. */
   .shop-section .pagination-wrap {
-    margin-top: 10px;
+    margin-top: 7px;
     margin-bottom: 22px;
   }
 
