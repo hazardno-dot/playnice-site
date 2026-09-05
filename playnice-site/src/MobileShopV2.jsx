@@ -237,7 +237,25 @@ export default function MobileShopV2() {
       });
     };
 
-    const onPopState = () => syncSurface({ syncMood: true });
+    const syncLocation = () => syncSurface({ syncMood: true });
+
+    const originalPushState = window.history.pushState;
+    const originalReplaceState = window.history.replaceState;
+
+    const wrappedPushState = function (...args) {
+      const result = originalPushState.apply(this, args);
+      window.dispatchEvent(new Event("playnice:locationchange"));
+      return result;
+    };
+
+    const wrappedReplaceState = function (...args) {
+      const result = originalReplaceState.apply(this, args);
+      window.dispatchEvent(new Event("playnice:locationchange"));
+      return result;
+    };
+
+    window.history.pushState = wrappedPushState;
+    window.history.replaceState = wrappedReplaceState;
 
     syncSurface({ syncMood: true });
 
@@ -248,12 +266,22 @@ export default function MobileShopV2() {
     });
 
     media.addEventListener?.("change", schedule);
-    window.addEventListener("popstate", onPopState);
+    window.addEventListener("popstate", syncLocation);
+    window.addEventListener("playnice:locationchange", syncLocation);
 
     return () => {
       observer.disconnect();
       media.removeEventListener?.("change", schedule);
-      window.removeEventListener("popstate", onPopState);
+      window.removeEventListener("popstate", syncLocation);
+      window.removeEventListener("playnice:locationchange", syncLocation);
+
+      if (window.history.pushState === wrappedPushState) {
+        window.history.pushState = originalPushState;
+      }
+      if (window.history.replaceState === wrappedReplaceState) {
+        window.history.replaceState = originalReplaceState;
+      }
+
       if (frame) cancelAnimationFrame(frame);
       document.getElementById("mobile-shop-v2-host")?.remove();
     };
@@ -324,8 +352,6 @@ export default function MobileShopV2() {
   const resetFilters = async () => {
     const nativeReset = document.querySelector(".clear-filters-button");
 
-    // The mobile capsule owns only its display state. Reset it immediately and
-    // never reconstruct it from a transient desktop DOM class afterwards.
     setActiveMoodIndex(0);
 
     if (nativeReset) {
