@@ -13,8 +13,8 @@
     opacity: 1;
     transform: translateY(0);
     transition:
-      transform 420ms cubic-bezier(.22,.72,.2,1),
-      opacity 320ms ease-out;
+      transform 520ms cubic-bezier(.22,.72,.2,1),
+      opacity 420ms ease-out;
   }
 
   .shop-section .product-grid > .product-card.mobile-shop-reveal-static {
