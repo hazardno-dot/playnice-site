@@ -48,10 +48,15 @@
     line-height: 1.02;
   }
 
+  /* Value line: same size, stronger hierarchy. */
   .discovery-showcase-card p {
     min-height: auto;
     font-size: 10.5px;
     line-height: 1.38;
+    font-weight: 650;
+    letter-spacing: 0.015em;
+    color: rgba(232, 205, 150, 0.82);
+    text-shadow: 0 0 14px rgba(220, 181, 107, 0.05);
   }
 
   .discovery-showcase-button {
