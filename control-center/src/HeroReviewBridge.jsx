@@ -8,8 +8,19 @@ import "./hero-review.css";
 
 const productSlugs = products.map((product) => product.slug);
 const HERO_WORKFLOW_UPDATED_EVENT = "playnice:hero-workflow-updated";
+const MEDIA_STAGE_SESSION_PREFIX = "playnice:hero-media-stage:";
 
 const statusLabel = (status) => status === "approved" ? "APPROVED" : status === "ready" ? "READY FOR REVIEW" : "DRAFT";
+
+function readStoredMediaStage(heroKey) {
+  if (!heroKey) return null;
+  try {
+    const raw = sessionStorage.getItem(`${MEDIA_STAGE_SESSION_PREFIX}${heroKey}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
 
 function ensureWorkflowSlot(detail) {
   let workflowSlot = detail.querySelector("#hero-workflow-slot");
@@ -42,7 +53,7 @@ export default function HeroReviewBridge() {
     if (!key) { setRow(null); return; }
     const { data, error: loadError } = await supabase
       .from("hero_drafts")
-      .select("hero_key,payload,review_status,reviewed_at,reviewed_by,approved_payload,baseline_snapshot,updated_at")
+      .select("hero_key,payload,review_status,reviewed_at,reviewed_by,approved_payload,baseline_snapshot,updated_at,apply_branch,apply_pr_number")
       .eq("hero_key", key)
       .maybeSingle();
     if (loadError) { setError(loadError.message || String(loadError)); return; }
@@ -115,6 +126,34 @@ export default function HeroReviewBridge() {
     if (audit.errors.length) throw new Error(`Hero validation failed: ${audit.errors[0].message}`);
   };
 
+  const readLatestDraft = async () => {
+    const { data, error: latestError } = await supabase
+      .from("hero_drafts")
+      .select("hero_key,payload,review_status,reviewed_at,reviewed_by,approved_payload,baseline_snapshot,updated_at,apply_branch,apply_pr_number")
+      .eq("hero_key", heroKey)
+      .single();
+    if (latestError) throw latestError;
+    if (!data?.payload) throw new Error("Latest Hero draft payload is unavailable.");
+    return data;
+  };
+
+  const restoreStoredMediaStage = async (latestRow) => {
+    if (!latestRow?.payload || latestRow.payload.mediaStage) return latestRow;
+    const stored = readStoredMediaStage(heroKey);
+    if (!stored?.branch || !stored?.baseSha) return latestRow;
+
+    const restoredPayload = { ...latestRow.payload, mediaStage: stored };
+    const { data, error: restoreError } = await supabase
+      .from("hero_drafts")
+      .update({ payload: restoredPayload })
+      .eq("hero_key", heroKey)
+      .eq("review_status", "draft")
+      .select("hero_key,payload,review_status,reviewed_at,reviewed_by,approved_payload,baseline_snapshot,updated_at,apply_branch,apply_pr_number")
+      .single();
+    if (restoreError) throw restoreError;
+    return data;
+  };
+
   const setReviewStatus = async (nextStatus) => {
     if (!row || !heroKey) return;
     setWorking(true); setError("");
@@ -123,16 +162,38 @@ export default function HeroReviewBridge() {
       const { data: authData, error: authError } = await supabase.auth.getUser();
       if (authError || !authData?.user?.id) throw authError || new Error("Authenticated admin session required.");
       const userId = authData.user.id;
+
+      let latestRow = (nextStatus === "approved" || nextStatus === "ready") ? await readLatestDraft() : row;
+      if (nextStatus === "ready") latestRow = await restoreStoredMediaStage(latestRow);
+
+      if (nextStatus === "approved" && latestRow.review_status !== "ready") {
+        throw new Error("Hero draft changed before approval. Return it to review and approve the latest saved draft.");
+      }
+      if (nextStatus === "ready" && latestRow.review_status !== "draft") {
+        throw new Error("Hero draft is no longer editable. Refresh the workflow before continuing.");
+      }
+
       const patch = nextStatus === "approved"
-        ? { review_status: "approved", reviewed_at: new Date().toISOString(), reviewed_by: userId, approved_payload: row.payload }
+        ? { review_status: "approved", reviewed_at: new Date().toISOString(), reviewed_by: userId, approved_payload: latestRow.payload }
         : nextStatus === "ready"
           ? { review_status: "ready", reviewed_at: null, reviewed_by: null, approved_payload: null }
-          : { review_status: "draft", reviewed_at: null, reviewed_by: null, approved_payload: null };
+          : {
+              review_status: "draft",
+              reviewed_at: null,
+              reviewed_by: null,
+              approved_payload: null,
+              apply_branch: null,
+              apply_pr_number: null,
+              apply_created_at: null,
+              apply_created_by: null,
+              preview_verified_at: null,
+              preview_verified_by: null,
+            };
       const { data, error: updateError } = await supabase
         .from("hero_drafts")
         .update(patch)
         .eq("hero_key", heroKey)
-        .select("hero_key,payload,review_status,reviewed_at,reviewed_by,approved_payload,baseline_snapshot,updated_at")
+        .select("hero_key,payload,review_status,reviewed_at,reviewed_by,approved_payload,baseline_snapshot,updated_at,apply_branch,apply_pr_number")
         .single();
       if (updateError) throw updateError;
       setRow(data);
@@ -147,7 +208,7 @@ export default function HeroReviewBridge() {
   const status = row?.review_status || "draft";
   const approvedLocked = status === "approved";
   const copy = useMemo(() => {
-    if (status === "approved") return "Approved payload is frozen for the future Apply step. Production is still untouched.";
+    if (status === "approved") return "Approved payload is frozen from the latest saved Supabase draft. Production is still untouched.";
     if (status === "ready") return "Draft passed validation and is waiting for explicit approval.";
     return "Draft is editable and has not entered review yet.";
   }, [status]);
