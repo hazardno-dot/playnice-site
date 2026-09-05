@@ -1,0 +1,108 @@
+/* =========================================
+   PLAYNICE MOBILE CLOSING + FOOTER V2
+   Mobile-only finishing layer. Desktop remains untouched.
+========================================= */
+
+@media (max-width: 640px) {
+  /* Closing: premium, concise final scene. */
+  .closing-section {
+    width: calc(100% - 32px);
+  }
+
+  .closing-shell {
+    padding: 32px 22px;
+    border-radius: 26px;
+  }
+
+  .closing-title {
+    font-size: clamp(38px, 10.5vw, 46px);
+    line-height: 0.96;
+  }
+
+  .closing-copy,
+  .closing-shell > p:not(.section-kicker) {
+    max-width: 310px;
+    margin-inline: auto;
+    font-size: 14px;
+    line-height: 1.58;
+  }
+
+  .closing-actions,
+  .closing-cta-row {
+    gap: 10px;
+  }
+
+  .closing-section .gold-button,
+  .closing-section .ghost-button {
+    min-height: 48px;
+  }
+
+  /* Footer: preserve structure, improve mobile hierarchy and touch comfort. */
+  .site-footer {
+    width: calc(100% - 32px);
+    margin-bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+
+  .footer-benefits {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer-benefit {
+    min-height: 72px;
+    padding: 12px 10px;
+    justify-content: center;
+  }
+
+  .footer-benefit strong {
+    font-size: 12px;
+  }
+
+  .footer-benefit span {
+    font-size: 10.5px;
+  }
+
+  .site-footer-inner {
+    gap: 20px 18px;
+    padding-top: 22px;
+    padding-bottom: 18px;
+  }
+
+  .footer-brand-text {
+    max-width: 330px;
+    margin-top: 11px;
+    font-size: 13px;
+    line-height: 1.52;
+  }
+
+  .footer-column h4 {
+    margin-bottom: 9px;
+  }
+
+  .footer-link,
+  .footer-contact,
+  .footer-mini-link {
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .footer-bottom {
+    padding-top: 12px;
+    gap: 7px;
+  }
+}
+
+@media (max-width: 390px) {
+  .closing-section,
+  .site-footer {
+    width: calc(100% - 28px);
+  }
+
+  .closing-shell {
+    padding: 30px 20px;
+  }
+
+  .footer-benefit {
+    min-height: 68px;
+  }
+}
