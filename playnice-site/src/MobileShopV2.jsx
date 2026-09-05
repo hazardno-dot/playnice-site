@@ -105,6 +105,14 @@ function getCategoryIcon(label = "") {
   return "";
 }
 
+function getCategoryTone(label = "") {
+  const value = label.toLowerCase();
+  if (value.includes("arabian") || value.includes("araps")) return "arabian";
+  if (value.includes("designer") || value.includes("dizajn")) return "designer";
+  if (value.includes("niche")) return "niche";
+  return "neutral";
+}
+
 export default function MobileShopV2() {
   const [host, setHost] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -275,18 +283,27 @@ export default function MobileShopV2() {
 
   const resetFilters = async () => {
     const nativeReset = document.querySelector(".clear-filters-button");
+
     if (nativeReset) {
       nativeReset.click();
+      await nextFrame();
+      await nextFrame();
     } else {
       await chooseMenuOption("category", 0);
       await nextFrame();
       await chooseMenuOption("season", 0);
       await nextFrame();
-      chooseMood(0);
     }
 
-    await nextFrame();
-    await nextFrame();
+    // Mood is a separate Shop state and is not guaranteed to be covered by
+    // the native filter reset. Reset it explicitly so UI and results agree.
+    const moods = readMoodOptions();
+    if (moods.length && !moods[0].active) {
+      chooseMood(0);
+      await nextFrame();
+      await nextFrame();
+    }
+
     await refreshOptions();
   };
 
@@ -433,6 +450,7 @@ function SelectionList({ options, onChoose, kind }) {
     <div className="mobile-shop-selection-list">
       {options.map((option) => {
         const categoryIcon = kind === "category" ? getCategoryIcon(option.label) : "";
+        const categoryTone = kind === "category" ? getCategoryTone(option.label) : "neutral";
         return (
           <button
             type="button"
@@ -442,7 +460,12 @@ function SelectionList({ options, onChoose, kind }) {
           >
             <span className="mobile-shop-option-label">
               {categoryIcon && (
-                <b className="mobile-shop-option-icon" aria-hidden="true">{categoryIcon}</b>
+                <b
+                  className={`mobile-shop-option-icon mobile-shop-option-icon-${categoryTone}`}
+                  aria-hidden="true"
+                >
+                  {categoryIcon}
+                </b>
               )}
               {option.label}
             </span>
