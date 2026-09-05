@@ -3,6 +3,7 @@ import { useEffect } from "react";
 const MOBILE_QUERY = "(max-width: 640px)";
 const CARD_SELECTOR = ".shop-section .product-grid > .product-card";
 const GRID_SELECTOR = ".shop-section .product-grid";
+const REVEAL_LINE = 0.92;
 
 export default function MobileShopReveal() {
   useEffect(() => {
@@ -12,6 +13,18 @@ export default function MobileShopReveal() {
     let observer = null;
     let gridObserver = null;
     let observedGrid = null;
+    let frame = 0;
+
+    const revealCard = (card) => {
+      if (!card) return;
+      card.classList.add("mobile-shop-reveal-visible");
+      card.classList.remove("mobile-shop-reveal-pending");
+      observer?.unobserve(card);
+    };
+
+    const revealImmediately = () => {
+      document.querySelectorAll(CARD_SELECTOR).forEach(revealCard);
+    };
 
     const disconnect = () => {
       observer?.disconnect();
@@ -19,13 +32,38 @@ export default function MobileShopReveal() {
       observer = null;
       gridObserver = null;
       observedGrid = null;
+
+      if (frame) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+      }
     };
 
-    const revealImmediately = () => {
-      document.querySelectorAll(CARD_SELECTOR).forEach((card) => {
-        card.classList.remove("mobile-shop-reveal-pending");
-        card.classList.add("mobile-shop-reveal-visible");
-      });
+    const revealCardsInViewport = () => {
+      frame = 0;
+
+      if (!media.matches || reduceMotion.matches || window.location.pathname !== "/shop") {
+        revealImmediately();
+        return;
+      }
+
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const revealBottom = viewportHeight * REVEAL_LINE;
+
+      document
+        .querySelectorAll(`${CARD_SELECTOR}.mobile-shop-reveal-pending`)
+        .forEach((card) => {
+          const rect = card.getBoundingClientRect();
+
+          if (rect.top <= revealBottom && rect.bottom >= 0) {
+            revealCard(card);
+          }
+        });
+    };
+
+    const scheduleViewportCheck = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(revealCardsInViewport);
     };
 
     const observeCards = () => {
@@ -34,22 +72,17 @@ export default function MobileShopReveal() {
         return;
       }
 
-      if (!observer) {
+      if (!observer && "IntersectionObserver" in window) {
         observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
-              if (!entry.isIntersecting) return;
-
-              const card = entry.target;
-              card.classList.add("mobile-shop-reveal-visible");
-              card.classList.remove("mobile-shop-reveal-pending");
-              observer.unobserve(card);
+              if (entry.isIntersecting) revealCard(entry.target);
             });
           },
           {
             root: null,
             rootMargin: "0px 0px -8% 0px",
-            threshold: 0.08,
+            threshold: 0.01,
           }
         );
       }
@@ -57,10 +90,20 @@ export default function MobileShopReveal() {
       document.querySelectorAll(CARD_SELECTOR).forEach((card, index) => {
         if (card.classList.contains("mobile-shop-reveal-visible")) return;
 
-        card.style.setProperty("--mobile-shop-reveal-delay", `${index % 2 === 1 ? 70 : 0}ms`);
+        card.style.setProperty(
+          "--mobile-shop-reveal-delay",
+          `${index % 2 === 1 ? 70 : 0}ms`
+        );
         card.classList.add("mobile-shop-reveal-pending");
-        observer.observe(card);
+        observer?.observe(card);
       });
+
+      /*
+        IntersectionObserver is an enhancement, never a dependency.
+        Geometry check guarantees that cards already inside the viewport
+        are revealed even in browser/devtools combinations where IO stalls.
+      */
+      scheduleViewportCheck();
     };
 
     const bindGrid = () => {
@@ -94,6 +137,7 @@ export default function MobileShopReveal() {
       }
 
       requestAnimationFrame(bindGrid);
+      scheduleViewportCheck();
     };
 
     sync();
@@ -102,12 +146,16 @@ export default function MobileShopReveal() {
     reduceMotion.addEventListener?.("change", sync);
     window.addEventListener("popstate", sync);
     window.addEventListener("playnice:locationchange", sync);
+    window.addEventListener("scroll", scheduleViewportCheck, { passive: true });
+    window.addEventListener("resize", scheduleViewportCheck, { passive: true });
 
     return () => {
       media.removeEventListener?.("change", sync);
       reduceMotion.removeEventListener?.("change", sync);
       window.removeEventListener("popstate", sync);
       window.removeEventListener("playnice:locationchange", sync);
+      window.removeEventListener("scroll", scheduleViewportCheck);
+      window.removeEventListener("resize", scheduleViewportCheck);
       disconnect();
       revealImmediately();
     };
