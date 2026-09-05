@@ -39,10 +39,27 @@
 
   .homepage-shop-preview .product-card-media {
     min-height: 154px;
+    border-radius: 14px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.006)),
+      rgba(8, 8, 8, 0.42);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.018),
+      inset 0 -18px 28px rgba(0, 0, 0, 0.12);
   }
 
   .homepage-shop-preview .product-card-image {
     max-height: 126px;
+    filter:
+      drop-shadow(0 9px 12px rgba(0, 0, 0, 0.34))
+      brightness(1.015);
+  }
+
+  .homepage-shop-preview .product-card:hover .product-card-image {
+    transform: none;
+    filter:
+      drop-shadow(0 9px 12px rgba(0, 0, 0, 0.34))
+      brightness(1.015);
   }
 
   /* Home is for discovery. Deeper copy and size decisions live in product view. */
@@ -60,11 +77,15 @@
     min-height: 76px;
   }
 
-  .homepage-shop-preview .product-category {
-    margin-bottom: 5px;
+  .homepage-shop-preview .product-category,
+  .homepage-shop-preview .mobile-private-scent-profile {
+    margin-bottom: 6px;
+    color: rgba(220, 181, 107, 0.78);
     font-size: 9px;
-    letter-spacing: 0.11em;
-    opacity: 0.62;
+    font-weight: 750;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    opacity: 1;
   }
 
   .homepage-shop-preview .product-card-title {
