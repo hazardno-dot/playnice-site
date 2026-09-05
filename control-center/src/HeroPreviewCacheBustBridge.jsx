@@ -13,9 +13,10 @@ export default function HeroPreviewCacheBustBridge() {
       const heading = mainStage.querySelector(".topbar h1");
       if (heading?.textContent?.trim() !== "Hero") return;
 
-      mainStage.querySelectorAll(".hero-manager-detail img").forEach((image) => {
+      mainStage.querySelectorAll(".hero-manager img").forEach((image) => {
         const raw = image.getAttribute("src") || "";
         if (!raw || raw.startsWith("blob:") || raw.startsWith("data:")) return;
+        if (raw.startsWith("/api/hero-media-preview")) return;
 
         let url;
         try {
@@ -26,10 +27,11 @@ export default function HeroPreviewCacheBustBridge() {
 
         if (!HERO_PREVIEW_HOSTS.has(url.hostname)) return;
         if (!url.pathname.startsWith("/hero/")) return;
-        if (url.searchParams.get("ccv") === version) return;
 
-        url.searchParams.set("ccv", version);
-        image.setAttribute("src", url.toString());
+        const next = `/api/hero-media-preview?path=${encodeURIComponent(url.pathname)}&ccv=${version}`;
+        if (raw === next) return;
+
+        image.setAttribute("src", next);
       });
     };
 

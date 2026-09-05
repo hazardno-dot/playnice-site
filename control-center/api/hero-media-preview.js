@@ -23,6 +23,14 @@ async function github(path) {
   return { response, body };
 }
 
+function getContentType(path, fallback = "image/jpeg") {
+  const lower = String(path || "").toLowerCase();
+  if (lower.endsWith(".png")) return "image/png";
+  if (lower.endsWith(".webp")) return "image/webp";
+  if (lower.endsWith(".gif")) return "image/gif";
+  return fallback;
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== "GET") return res.status(405).send("Method not allowed");
 
@@ -33,11 +41,32 @@ module.exports = async function handler(req, res) {
 
   const ref = getRef();
 
-  // Normal CC deployments should display the current live Hero assets directly.
-  // Only Hero staging/apply branches need to proxy GitHub branch media.
+  // Normal CC deployments proxy the live Hero asset through the CC origin.
+  // This avoids browser cross-origin image failures while keeping the source
+  // of truth on the live PlayNice site.
   if (!isHeroPreviewRef(ref)) {
-    res.setHeader("Cache-Control", "no-store, max-age=0");
-    return res.redirect(307, `${LIVE_ORIGIN}${rawPath}?ccv=${Date.now()}`);
+    try {
+      const liveUrl = `${LIVE_ORIGIN}${rawPath}?ccv=${Date.now()}`;
+      const liveResponse = await fetch(liveUrl, {
+        headers: { Accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8" },
+        cache: "no-store",
+      });
+
+      if (!liveResponse.ok) {
+        return res.status(liveResponse.status).send("Live Hero media not found");
+      }
+
+      const buffer = Buffer.from(await liveResponse.arrayBuffer());
+      const contentType = liveResponse.headers.get("content-type") || getContentType(rawPath);
+
+      res.setHeader("Content-Type", contentType);
+      res.setHeader("Cache-Control", "no-store, max-age=0");
+      res.setHeader("X-PlayNice-Hero-Source", "live");
+      return res.status(200).send(buffer);
+    } catch (error) {
+      console.error("Live Hero media preview failed", error);
+      return res.status(502).send(error?.message || "Live Hero media preview failed");
+    }
   }
 
   if (!GITHUB_TOKEN) return res.status(500).send("GitHub preview environment is incomplete");
@@ -68,8 +97,7 @@ module.exports = async function handler(req, res) {
     }
 
     const buffer = Buffer.from(String(encoded).replace(/\n/g, ""), "base64");
-    const lower = rawPath.toLowerCase();
-    const contentType = lower.endsWith(".png") ? "image/png" : lower.endsWith(".webp") ? "image/webp" : "image/jpeg";
+    const contentType = getContentType(rawPath);
 
     res.setHeader("Content-Type", contentType);
     res.setHeader("Cache-Control", "no-store, max-age=0");
