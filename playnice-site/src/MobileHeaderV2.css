@@ -5,21 +5,40 @@
 ========================================= */
 
 @media (max-width: 640px) {
+  :root {
+    /*
+     * Mobile chrome spacing contract:
+     * 4px top offset + 56px header + 4px gap + 24px announcement
+     * + 6px breathing room before page content / Hero = 90px system height.
+     */
+    --mobile-header-top-offset: 4px;
+    --mobile-header-height: 56px;
+    --mobile-header-announcement-gap: 4px;
+    --mobile-announcement-height: 24px;
+    --mobile-header-hero-gap: 6px;
+    --mobile-header-system-height: calc(
+      var(--mobile-header-height) +
+      var(--mobile-header-announcement-gap) +
+      var(--mobile-announcement-height) +
+      var(--mobile-header-hero-gap)
+    );
+  }
+
   .header-next-system,
   body.scrolled .header-next-system {
-    top: 4px;
-    height: 90px;
-    min-height: 90px;
+    top: var(--mobile-header-top-offset);
+    height: var(--mobile-header-system-height);
+    min-height: var(--mobile-header-system-height);
   }
 
   .header-next {
-    height: 56px;
+    height: var(--mobile-header-height);
     padding-inline: 12px;
   }
 
   .header-next-bar,
   body.scrolled .header-next-bar {
-    height: 56px;
+    height: var(--mobile-header-height);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -84,12 +103,12 @@
 
   /* Full-height mobile navigation sheet. */
   .header-next-mobile-panel {
-    top: 60px;
+    top: calc(var(--mobile-header-height) + var(--mobile-header-announcement-gap));
     left: 0;
     right: 0;
     bottom: 0;
     width: 100%;
-    height: calc(100dvh - 60px);
+    height: calc(100dvh - (var(--mobile-header-height) + var(--mobile-header-announcement-gap)));
     max-height: none;
     padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
     gap: 22px;
@@ -239,15 +258,16 @@
   /* Keep announcement compact so chrome does not dominate the first viewport. */
   .header-next-system .announcement-bar-system,
   body.scrolled .header-next-system .announcement-bar-system {
-    top: 60px;
+    top: calc(var(--mobile-header-height) + var(--mobile-header-announcement-gap));
     left: 12px;
     right: 12px;
-    height: 24px;
-    min-height: 24px;
+    height: var(--mobile-announcement-height);
+    min-height: var(--mobile-announcement-height);
   }
 
+  /* Explicit Hero breathing room after the header/announcement chrome. */
   .header-next-system + main {
-    padding-top: 6px;
+    padding-top: var(--mobile-header-hero-gap);
   }
 }
 
