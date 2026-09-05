@@ -1,7 +1,6 @@
 /* =========================================
-   PLAYNICE MOBILE SHOP V2
-   Mobile-only Shop entry + progressive disclosure.
-   Desktop Shop remains untouched.
+   PLAYNICE MOBILE SHOP V3 — CAPSULE CONTROL SURFACE
+   Mobile-only. Desktop Shop remains untouched.
 ========================================= */
 
 @media (max-width: 640px) {
@@ -11,7 +10,7 @@
 
   .shop-collection-intro {
     width: calc(100% - 28px);
-    margin: 8px auto 10px;
+    margin: 8px auto 14px;
   }
 
   .shop-collection-title {
@@ -31,43 +30,11 @@
     line-height: 1.45;
   }
 
-  /* Mobile entry prioritises discovery and products. Keep desktop value copy intact. */
-  .shop-value-anchor {
-    display: none !important;
-  }
-
-  /* Existing Shop controls remain the state source, but not the mobile presentation. */
-  .shop-toolbar.shop-toolbar-compact {
-    gap: 10px;
-    margin-top: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  .shop-toolbar .toolbar-group-search {
-    width: 100%;
-  }
-
-  .shop-toolbar .toolbar-group-search > label {
-    display: none;
-  }
-
-  .shop-toolbar .compact-search-shell {
-    min-height: 50px;
-    border: 1px solid rgba(220, 181, 107, 0.15);
-    border-radius: 17px;
-    background: rgba(255, 255, 255, 0.018);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
-  }
-
-  .shop-toolbar .compact-search-shell input {
-    min-height: 48px;
-    font-size: 15px;
-  }
-
-  .shop-toolbar .toolbar-row-controls {
+  /* Mobile Shop uses the capsule surface below. Existing controls remain in
+     the DOM as the source of truth, but do not consume layout space. */
+  .shop-value-anchor,
+  .shop-toolbar.shop-toolbar-compact,
+  .scent-mood-filter {
     position: absolute !important;
     width: 1px !important;
     height: 1px !important;
@@ -79,268 +46,286 @@
     border: 0 !important;
   }
 
-  /* Original mood UI remains the state source; mobile uses the dedicated rail. */
-  .shop-section > .scent-mood-filter,
-  .shop-toolbar + .scent-mood-filter,
-  .scent-mood-filter:not(.mobile-shop-mood) {
-    display: none !important;
-  }
-
-  #mobile-shop-mood-host,
   #mobile-shop-v2-host {
-    width: 100%;
+    position: relative;
+    z-index: 18;
+    width: calc(100% - 28px);
+    margin: 0 auto 14px;
   }
 
-  #mobile-shop-mood-host {
-    margin: 6px 0 12px;
+  .mobile-shop-menu {
+    position: relative;
   }
 
-  .mobile-shop-mood {
-    width: 100%;
-    padding: 12px 0 4px;
-    border-top: 1px solid rgba(220, 181, 107, 0.08);
-    border-bottom: 1px solid rgba(220, 181, 107, 0.08);
+  .mobile-shop-status {
+    margin: 0 2px 8px;
+    color: rgba(255, 248, 235, 0.42);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
   }
 
-  .mobile-shop-mood-head {
+  .mobile-shop-capsules {
     display: grid;
-    gap: 3px;
-    padding: 0 2px 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
-  .mobile-shop-mood-head strong {
-    font-family: "Cormorant Garamond", serif;
-    color: rgba(255, 248, 235, 0.9);
-    font-size: 18px;
-    font-weight: 650;
+  .mobile-shop-capsule {
+    min-width: 0;
+    min-height: 58px;
+    padding: 9px 11px;
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr) 14px;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid rgba(220, 181, 107, 0.13);
+    border-radius: 999px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.024), rgba(255,255,255,0.008)),
+      rgba(8, 8, 8, 0.72);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.018),
+      0 8px 24px rgba(0,0,0,0.16);
+    color: rgba(255, 248, 235, 0.82);
+    text-align: left;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      transform 180ms ease;
+  }
+
+  .mobile-shop-capsule:active {
+    transform: scale(0.985);
+  }
+
+  .mobile-shop-capsule.active {
+    border-color: rgba(220, 181, 107, 0.48);
+    background:
+      radial-gradient(circle at 12% 50%, rgba(220,181,107,0.12), transparent 42%),
+      rgba(10, 9, 8, 0.94);
+  }
+
+  .mobile-shop-capsule-icon {
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(220,181,107,0.12);
+    border-radius: 50%;
+    color: rgba(220,181,107,0.82);
+    font-size: 13px;
     line-height: 1;
   }
 
-  .mobile-shop-mood-head span {
-    color: rgba(220, 181, 107, 0.62);
+  .mobile-shop-capsule-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobile-shop-capsule-copy small {
+    color: rgba(220,181,107,0.62);
     font-size: 8px;
-    font-weight: 800;
-    letter-spacing: 0.12em;
+    font-weight: 850;
+    letter-spacing: 0.13em;
+    line-height: 1.1;
     text-transform: uppercase;
   }
 
-  .mobile-shop-mood-rail {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding: 0 0 8px;
-    scrollbar-width: none;
-    overscroll-behavior-inline: contain;
-  }
-
-  .mobile-shop-mood-rail::-webkit-scrollbar {
-    display: none;
-  }
-
-  .mobile-shop-mood-rail button {
-    flex: 0 0 auto;
-    min-height: 38px;
-    padding: 0 13px;
-    border: 1px solid rgba(220, 181, 107, 0.12);
-    border-radius: 999px;
-    background: transparent;
-    color: rgba(255, 248, 235, 0.58);
-    font-size: 10px;
-    font-weight: 700;
+  .mobile-shop-capsule-copy strong {
+    min-width: 0;
+    overflow: hidden;
+    color: rgba(255,248,235,0.88);
+    font-size: 11.5px;
+    font-weight: 650;
+    line-height: 1.2;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .mobile-shop-mood-rail button.active {
-    border-color: rgba(220, 181, 107, 0.52);
-    background: linear-gradient(180deg, rgba(220, 181, 107, 0.16), rgba(220, 181, 107, 0.07));
-    color: #edcf88;
-  }
-
-  .mobile-shop-command {
-    display: grid;
-    gap: 8px;
-    margin-top: 2px;
-  }
-
-  .mobile-shop-meta-row {
-    min-height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-  }
-
-  .mobile-shop-meta-row span {
-    color: rgba(255, 248, 235, 0.42);
+  .mobile-shop-capsule-arrow {
+    color: rgba(220,181,107,0.56);
     font-size: 10px;
-    font-weight: 650;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    transition: transform 180ms ease;
   }
 
-  /* One clear Shop control bar: Filter | Sort */
-  .mobile-shop-segmented {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    min-height: 52px;
-    overflow: hidden;
-    border: 1px solid rgba(220, 181, 107, 0.16);
-    border-radius: 17px;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.024), rgba(255, 255, 255, 0.008)),
-      rgba(8, 8, 8, 0.76);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
-  }
-
-  .mobile-shop-segmented button {
-    min-width: 0;
-    min-height: 50px;
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    border: 0;
-    background: transparent;
-    color: rgba(255, 248, 235, 0.78);
-    font-size: 12px;
-    font-weight: 760;
-    text-align: left;
-  }
-
-  .mobile-shop-segmented button + button {
-    border-left: 1px solid rgba(220, 181, 107, 0.11);
-  }
-
-  .mobile-shop-segmented button i {
-    color: rgba(220, 181, 107, 0.72);
-    font-size: 13px;
-    font-style: normal;
-    transition: transform 0.2s ease;
-  }
-
-  .mobile-shop-segmented button.active {
-    background: rgba(220, 181, 107, 0.07);
-    color: #f2dfac;
-  }
-
-  .mobile-shop-segmented button.active i {
+  .mobile-shop-capsule.active .mobile-shop-capsule-arrow {
     transform: rotate(180deg);
   }
 
-  /* Inline dropdown panels: no modal, no body lock, no hidden interaction state. */
-  .mobile-shop-inline-panel {
-    margin-top: 2px;
-    padding: 10px 12px 12px;
-    border: 1px solid rgba(220, 181, 107, 0.13);
-    border-radius: 16px;
+  /* One overlay language for Mood / Search / Filter / Sort.
+     The panel unfolds without pushing the product grid. */
+  .mobile-shop-popover {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    z-index: 80;
+    max-height: min(54dvh, 430px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 14px;
+    border: 1px solid rgba(220,181,107,0.20);
+    border-radius: 20px;
     background:
-      linear-gradient(180deg, rgba(16, 14, 11, 0.96), rgba(8, 8, 8, 0.985));
-    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+      radial-gradient(circle at 0% 0%, rgba(220,181,107,0.10), transparent 34%),
+      linear-gradient(180deg, rgba(17,15,12,0.985), rgba(6,6,6,0.99));
+    box-shadow: 0 20px 60px rgba(0,0,0,0.52);
+    transform-origin: left top;
+    animation: mobileShopUnfold 250ms cubic-bezier(.22,.72,.2,1) both;
   }
 
-  .mobile-shop-compact-group {
-    display: grid;
-    gap: 8px;
-    padding: 8px 0 10px;
+  @keyframes mobileShopUnfold {
+    from {
+      opacity: 0.35;
+      clip-path: inset(0 100% 0 0 round 20px);
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0 round 20px);
+      transform: translateY(0);
+    }
   }
 
-  .mobile-shop-compact-group + .mobile-shop-compact-group {
-    border-top: 1px solid rgba(220, 181, 107, 0.08);
+  .mobile-shop-selection-section + .mobile-shop-selection-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(220,181,107,0.08);
   }
 
-  .mobile-shop-compact-group > span {
-    color: rgba(220, 181, 107, 0.64);
+  .mobile-shop-selection-section h4 {
+    margin: 0 0 6px;
+    color: rgba(220,181,107,0.60);
+    font-size: 9px;
+    font-weight: 850;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .mobile-shop-selection-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-shop-selection-list > button {
+    min-height: 44px;
+    padding: 0 3px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    border: 0;
+    border-bottom: 1px solid rgba(220,181,107,0.07);
+    background: transparent;
+    color: rgba(255,248,235,0.68);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .mobile-shop-selection-list > button:last-child {
+    border-bottom: 0;
+  }
+
+  .mobile-shop-selection-list > button.active {
+    color: #edcf88;
+  }
+
+  .mobile-shop-selection-list > button i {
+    color: rgba(220,181,107,0.68);
+    font-size: 10px;
+    font-style: normal;
+  }
+
+  .mobile-shop-search-panel > label {
+    display: block;
+    margin-bottom: 8px;
+    color: rgba(220,181,107,0.62);
     font-size: 9px;
     font-weight: 850;
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
 
-  .mobile-shop-compact-group > div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
-
-  .mobile-shop-compact-group button {
-    min-height: 36px;
+  .mobile-shop-search-panel > div {
+    min-height: 52px;
     padding: 0 12px;
-    border: 1px solid rgba(220, 181, 107, 0.11);
-    border-radius: 999px;
-    background: transparent;
-    color: rgba(255, 248, 235, 0.56);
-    font-size: 10px;
-    font-weight: 700;
-  }
-
-  .mobile-shop-compact-group button.active {
-    border-color: rgba(220, 181, 107, 0.48);
-    background: rgba(220, 181, 107, 0.11);
-    color: #edcf88;
-  }
-
-  .mobile-shop-reset {
-    width: 100%;
-    min-height: 42px;
-    margin-top: 4px;
-    border: 0;
-    border-top: 1px solid rgba(220, 181, 107, 0.08);
-    background: transparent;
-    color: rgba(255, 248, 235, 0.5);
-    font-size: 10px;
-    font-weight: 750;
-    letter-spacing: 0.05em;
-  }
-
-  .mobile-shop-inline-sort {
-    padding: 6px;
-  }
-
-  .mobile-shop-inline-sort > button {
-    width: 100%;
-    min-height: 46px;
-    padding: 0 12px;
-    display: flex;
+    display: grid;
+    grid-template-columns: auto minmax(0,1fr) auto;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    gap: 9px;
+    border: 1px solid rgba(220,181,107,0.18);
+    border-radius: 16px;
+    background: rgba(0,0,0,0.34);
+  }
+
+  .mobile-shop-search-panel > div > span {
+    color: rgba(220,181,107,0.72);
+  }
+
+  .mobile-shop-search-panel input {
+    width: 100%;
+    min-width: 0;
     border: 0;
-    border-radius: 11px;
+    outline: 0;
     background: transparent;
-    color: rgba(255, 248, 235, 0.6);
-    font-size: 12px;
-    font-weight: 650;
-    text-align: left;
+    color: rgba(255,248,235,0.92);
+    font-size: 15px;
   }
 
-  .mobile-shop-inline-sort > button + button {
-    border-top: 1px solid rgba(220, 181, 107, 0.07);
-    border-radius: 0;
+  .mobile-shop-search-panel input::placeholder {
+    color: rgba(255,248,235,0.34);
   }
 
-  .mobile-shop-inline-sort > button.active {
-    color: #edcf88;
-    background: rgba(220, 181, 107, 0.055);
+  .mobile-shop-search-panel button,
+  .mobile-shop-reset-link {
+    border: 0;
+    background: transparent;
+    color: rgba(220,181,107,0.72);
+    font-size: 11px;
+    font-weight: 750;
   }
 
-  .mobile-shop-inline-sort i {
-    color: #edcf88;
-    font-style: normal;
-  }
-
-  /* The first products should arrive quickly. */
-  .shop-section .pagination-wrap {
+  .mobile-shop-reset-link {
     margin-top: 12px;
+    padding: 8px 2px 2px;
+    text-decoration: underline;
+    text-decoration-color: rgba(220,181,107,0.30);
+    text-underline-offset: 4px;
+  }
+
+  .shop-section .pagination-wrap {
+    margin-top: 14px;
     margin-bottom: 14px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-shop-popover {
+      animation: none;
+    }
   }
 }
 
 @media (max-width: 390px) {
+  #mobile-shop-v2-host,
   .shop-collection-intro {
     width: calc(100% - 24px);
   }
 
-  .mobile-shop-segmented button {
-    padding-inline: 14px;
+  .mobile-shop-capsules {
+    gap: 7px;
+  }
+
+  .mobile-shop-capsule {
+    min-height: 56px;
+    padding-inline: 10px;
+  }
+
+  .mobile-shop-capsule-copy strong {
+    font-size: 11px;
   }
 }
