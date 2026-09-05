@@ -19,6 +19,7 @@ import "./MobileDiscoverySetsV2.css";
 import "./MobilePrivateSelectionV2.css";
 import "./MobileClosingFooterV2.css";
 import "./MobileShopV2.css";
+import "./MobileShopReveal.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
