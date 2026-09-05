@@ -1,0 +1,91 @@
+/* =========================================
+   PLAYNICE MOBILE HOME V2
+   Mobile-only home hierarchy and rhythm.
+   Desktop Home remains untouched.
+========================================= */
+
+@media (max-width: 640px) {
+  /*
+   * Mobile Home keeps the high-value path compact:
+   * Hero → Trust → Fragrance Intelligence → Just In
+   * → Discovery Sets → Private Selection → Closing CTA.
+   * Deeper brand/editorial/community content remains available
+   * through its dedicated navigation entry points.
+   */
+
+  /* Duplicate brand education: available from mobile navigation. */
+  .why-how-section {
+    display: none !important;
+  }
+
+  /* Community has a dedicated navigation destination. */
+  .community-requests-section {
+    display: none !important;
+  }
+
+  /* Large editorial film/highlights block is intentionally removed
+     from the primary mobile shopping path. */
+  .impact-split-section {
+    display: none !important;
+  }
+
+  /* PDF catalog is a secondary utility, not a core mobile Home action. */
+  .catalog-download-section {
+    display: none !important;
+  }
+
+  /* Remove dividers that belonged only to hidden Home blocks. */
+  .homepage-shop-preview + .section-divider,
+  .community-requests-section + .section-divider,
+  .impact-split-section + .section-divider {
+    display: none !important;
+  }
+
+  /* Global Home rhythm: fewer sections, more intentional breathing room. */
+  .new-arrivals-section,
+  .discovery-showcase,
+  .homepage-shop-preview {
+    margin-top: 56px;
+  }
+
+  .playnice-discovery-portal {
+    margin-top: 34px;
+  }
+
+  .homepage-shop-preview {
+    margin-bottom: 58px;
+  }
+
+  /* Sponsored mobile micro placement stays, but does not dominate the flow. */
+  .mobile-sponsored-ad-wrap {
+    margin-top: 8px;
+    margin-bottom: 48px;
+  }
+
+  /* Closing statement becomes the deliberate end of the mobile Home journey. */
+  .closing-section {
+    margin-top: 0;
+    margin-bottom: 48px;
+  }
+
+  .closing-shell {
+    padding-top: 34px;
+    padding-bottom: 34px;
+  }
+}
+
+@media (max-width: 390px) {
+  .new-arrivals-section,
+  .discovery-showcase,
+  .homepage-shop-preview {
+    margin-top: 48px;
+  }
+
+  .homepage-shop-preview {
+    margin-bottom: 50px;
+  }
+
+  .mobile-sponsored-ad-wrap {
+    margin-bottom: 42px;
+  }
+}
