@@ -5,18 +5,13 @@
 ========================================= */
 
 @media (max-width: 640px) {
-  body.mobile-shop-sheet-open {
-    overflow: hidden;
-    overscroll-behavior: none;
-  }
-
   .shop-section {
     padding-top: 0;
   }
 
   .shop-collection-intro {
     width: calc(100% - 28px);
-    margin: 8px auto 14px;
+    margin: 8px auto 10px;
   }
 
   .shop-collection-title {
@@ -36,11 +31,12 @@
     line-height: 1.45;
   }
 
-  /* Keep the copy, but move it behind the mobile info sheet. */
+  /* Mobile entry prioritises discovery and products. Keep desktop value copy intact. */
   .shop-value-anchor {
     display: none !important;
   }
 
+  /* Existing Shop controls remain the state source, but not the mobile presentation. */
   .shop-toolbar.shop-toolbar-compact {
     gap: 10px;
     margin-top: 0;
@@ -59,17 +55,18 @@
   }
 
   .shop-toolbar .compact-search-shell {
-    min-height: 48px;
-    border-radius: 16px;
+    min-height: 50px;
+    border: 1px solid rgba(220, 181, 107, 0.15);
+    border-radius: 17px;
+    background: rgba(255, 255, 255, 0.018);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
   }
 
   .shop-toolbar .compact-search-shell input {
-    min-height: 46px;
+    min-height: 48px;
     font-size: 15px;
   }
 
-  /* Existing desktop-first dropdown row remains the source of truth,
-     but is visually replaced by the mobile command center. */
   .shop-toolbar .toolbar-row-controls {
     position: absolute !important;
     width: 1px !important;
@@ -82,361 +79,259 @@
     border: 0 !important;
   }
 
+  /* Original mood UI remains the state source; mobile uses the dedicated rail. */
+  .shop-section > .scent-mood-filter,
+  .shop-toolbar + .scent-mood-filter,
+  .scent-mood-filter:not(.mobile-shop-mood) {
+    display: none !important;
+  }
+
+  #mobile-shop-mood-host,
   #mobile-shop-v2-host {
     width: 100%;
   }
 
-  .mobile-shop-command {
-    display: grid;
-    gap: 10px;
+  #mobile-shop-mood-host {
+    margin: 6px 0 12px;
   }
 
-  .mobile-shop-info-trigger {
+  .mobile-shop-mood {
     width: 100%;
-    min-height: 42px;
-    padding: 0 13px;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 9px;
-    border: 1px solid rgba(220, 181, 107, 0.12);
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.022);
-    color: rgba(255, 248, 235, 0.68);
-    text-align: left;
+    padding: 12px 0 4px;
+    border-top: 1px solid rgba(220, 181, 107, 0.08);
+    border-bottom: 1px solid rgba(220, 181, 107, 0.08);
   }
 
-  .mobile-shop-info-trigger > span {
+  .mobile-shop-mood-head {
+    display: grid;
+    gap: 3px;
+    padding: 0 2px 10px;
+  }
+
+  .mobile-shop-mood-head strong {
+    font-family: "Cormorant Garamond", serif;
+    color: rgba(255, 248, 235, 0.9);
+    font-size: 18px;
+    font-weight: 650;
+    line-height: 1;
+  }
+
+  .mobile-shop-mood-head span {
     color: rgba(220, 181, 107, 0.62);
     font-size: 8px;
-    font-weight: 850;
-    letter-spacing: 0.16em;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
-  .mobile-shop-info-trigger > strong {
-    font-size: 12px;
-    font-weight: 650;
-  }
-
-  .mobile-shop-info-trigger > i {
-    color: rgba(220, 181, 107, 0.78);
-    font-style: normal;
-  }
-
-  .mobile-shop-control-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .mobile-shop-count {
-    min-width: 0;
-    overflow: hidden;
-    color: rgba(255, 248, 235, 0.54);
-    font-size: 11px;
-    font-weight: 650;
-    letter-spacing: 0.02em;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .mobile-shop-control-row button {
-    min-height: 44px;
-    padding: 0 14px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    border: 1px solid rgba(220, 181, 107, 0.16);
-    border-radius: 14px;
-    background: rgba(12, 11, 9, 0.78);
-    color: rgba(255, 248, 235, 0.84);
-    font-size: 12px;
-    font-weight: 750;
-  }
-
-  .mobile-shop-control-row button span {
-    color: rgba(220, 181, 107, 0.78);
-    font-size: 10px;
-  }
-
-  .mobile-shop-quick-categories {
+  .mobile-shop-mood-rail {
     display: flex;
     gap: 8px;
     overflow-x: auto;
-    padding: 1px 0 2px;
+    padding: 0 0 8px;
     scrollbar-width: none;
     overscroll-behavior-inline: contain;
   }
 
-  .mobile-shop-quick-categories::-webkit-scrollbar {
+  .mobile-shop-mood-rail::-webkit-scrollbar {
     display: none;
   }
 
-  .mobile-shop-quick-categories button {
+  .mobile-shop-mood-rail button {
     flex: 0 0 auto;
-    min-height: 36px;
+    min-height: 38px;
     padding: 0 13px;
     border: 1px solid rgba(220, 181, 107, 0.12);
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.018);
-    color: rgba(255, 248, 235, 0.56);
-    font-size: 11px;
+    background: transparent;
+    color: rgba(255, 248, 235, 0.58);
+    font-size: 10px;
     font-weight: 700;
+    white-space: nowrap;
   }
 
-  .mobile-shop-quick-categories button.active {
-    border-color: rgba(220, 181, 107, 0.46);
-    background: rgba(220, 181, 107, 0.12);
+  .mobile-shop-mood-rail button.active {
+    border-color: rgba(220, 181, 107, 0.52);
+    background: linear-gradient(180deg, rgba(220, 181, 107, 0.16), rgba(220, 181, 107, 0.07));
     color: #edcf88;
   }
 
-  /* Mood remains directly discoverable, but compact. */
-  .scent-mood-filter {
-    margin-top: 12px;
-    padding: 12px;
-    border-radius: 16px;
-  }
-
-  .scent-mood-filter-header-inline {
-    margin-bottom: 9px;
-  }
-
-  .scent-mood-filter-header-inline > span {
-    font-size: 15px;
-  }
-
-  .scent-mood-filter-header-inline::after,
-  .scent-mood-filter-header-inline > strong {
-    font-size: 8px;
-  }
-
-  .scent-mood-scroll {
-    gap: 7px;
-  }
-
-  .scent-mood-chip {
-    min-height: 38px;
-    padding-inline: 12px;
-    font-size: 10px;
-  }
-
-  /* Pull the first grid closer without changing card internals. */
-  .shop-section .pagination-wrap {
-    margin-top: 12px;
-    margin-bottom: 14px;
-  }
-
-  /* Bottom sheets */
-  .mobile-shop-sheet-layer {
-    position: fixed;
-    inset: 0;
-    z-index: 5000;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 0 8px;
-    background: rgba(0, 0, 0, 0.56);
-  }
-
-  .mobile-shop-sheet {
-    width: min(100%, 520px);
-    max-height: min(86dvh, 760px);
-    padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    border: 1px solid rgba(220, 181, 107, 0.18);
-    border-bottom: 0;
-    border-radius: 24px 24px 0 0;
-    background:
-      radial-gradient(circle at 88% 0%, rgba(220, 181, 107, 0.08), transparent 28%),
-      linear-gradient(180deg, rgba(16, 14, 11, 0.995), rgba(6, 6, 6, 0.998));
-    box-shadow: 0 -22px 70px rgba(0, 0, 0, 0.54);
-  }
-
-  .mobile-shop-sheet-grabber {
-    width: 42px;
-    height: 4px;
-    margin: 0 auto 12px;
-    border-radius: 999px;
-    background: rgba(255, 248, 235, 0.2);
-  }
-
-  .mobile-shop-sheet-header {
+  .mobile-shop-command {
     display: grid;
-    grid-template-columns: 1fr auto;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .mobile-shop-meta-row {
+    min-height: 18px;
+    display: flex;
     align-items: center;
-    gap: 16px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid rgba(220, 181, 107, 0.1);
+    justify-content: flex-start;
   }
 
-  .mobile-shop-sheet-header span {
-    color: rgba(220, 181, 107, 0.62);
-    font-size: 9px;
-    font-weight: 850;
-    letter-spacing: 0.17em;
-    text-transform: uppercase;
-  }
-
-  .mobile-shop-sheet-header h3 {
-    margin: 4px 0 0;
-    font-family: "Cormorant Garamond", serif;
-    font-size: 28px;
-    line-height: 1;
-  }
-
-  .mobile-shop-sheet-header > button {
-    width: 44px;
-    height: 44px;
-    border: 1px solid rgba(220, 181, 107, 0.16);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.025);
-    color: rgba(255, 248, 235, 0.72);
-    font-size: 22px;
-  }
-
-  .mobile-shop-info-sheet {
-    padding: 18px 0 4px;
-  }
-
-  .mobile-shop-info-sheet > p {
-    margin: 0;
-    color: rgba(255, 248, 235, 0.68);
-    font-size: 14px;
-    line-height: 1.55;
-  }
-
-  .mobile-shop-info-points {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 16px;
-  }
-
-  .mobile-shop-info-points > div {
-    min-height: 92px;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border: 1px solid rgba(220, 181, 107, 0.12);
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.025);
-  }
-
-  .mobile-shop-info-points > div.highlight {
-    background: linear-gradient(180deg, rgba(220, 181, 107, 0.10), rgba(220, 181, 107, 0.035));
-  }
-
-  .mobile-shop-info-points strong {
-    color: #edcf88;
-    font-size: 23px;
-  }
-
-  .mobile-shop-info-points span {
-    margin-top: 4px;
-    color: rgba(255, 248, 235, 0.5);
+  .mobile-shop-meta-row span {
+    color: rgba(255, 248, 235, 0.42);
     font-size: 10px;
-    line-height: 1.3;
+    font-weight: 650;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
   }
 
-  .mobile-shop-info-sheet > small {
-    display: block;
-    margin-top: 16px;
+  /* One clear Shop control bar: Filter | Sort */
+  .mobile-shop-segmented {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-height: 52px;
+    overflow: hidden;
+    border: 1px solid rgba(220, 181, 107, 0.16);
+    border-radius: 17px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.024), rgba(255, 255, 255, 0.008)),
+      rgba(8, 8, 8, 0.76);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.018);
+  }
+
+  .mobile-shop-segmented button {
+    min-width: 0;
+    min-height: 50px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 248, 235, 0.78);
+    font-size: 12px;
+    font-weight: 760;
+    text-align: left;
+  }
+
+  .mobile-shop-segmented button + button {
+    border-left: 1px solid rgba(220, 181, 107, 0.11);
+  }
+
+  .mobile-shop-segmented button i {
+    color: rgba(220, 181, 107, 0.72);
+    font-size: 13px;
+    font-style: normal;
+    transition: transform 0.2s ease;
+  }
+
+  .mobile-shop-segmented button.active {
+    background: rgba(220, 181, 107, 0.07);
+    color: #f2dfac;
+  }
+
+  .mobile-shop-segmented button.active i {
+    transform: rotate(180deg);
+  }
+
+  /* Inline dropdown panels: no modal, no body lock, no hidden interaction state. */
+  .mobile-shop-inline-panel {
+    margin-top: 2px;
+    padding: 10px 12px 12px;
+    border: 1px solid rgba(220, 181, 107, 0.13);
+    border-radius: 16px;
+    background:
+      linear-gradient(180deg, rgba(16, 14, 11, 0.96), rgba(8, 8, 8, 0.985));
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+  }
+
+  .mobile-shop-compact-group {
+    display: grid;
+    gap: 8px;
+    padding: 8px 0 10px;
+  }
+
+  .mobile-shop-compact-group + .mobile-shop-compact-group {
+    border-top: 1px solid rgba(220, 181, 107, 0.08);
+  }
+
+  .mobile-shop-compact-group > span {
     color: rgba(220, 181, 107, 0.64);
     font-size: 9px;
-    font-weight: 750;
+    font-weight: 850;
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
 
-  .mobile-shop-filter-sheet,
-  .mobile-shop-sort-sheet {
-    padding-top: 8px;
+  .mobile-shop-compact-group > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
   }
 
-  .mobile-shop-filter-group {
-    padding: 15px 0;
-    border-bottom: 1px solid rgba(220, 181, 107, 0.08);
-  }
-
-  .mobile-shop-filter-group:last-of-type {
-    border-bottom: 0;
-  }
-
-  .mobile-shop-filter-group h4 {
-    margin: 0 0 10px;
-    color: rgba(220, 181, 107, 0.7);
+  .mobile-shop-compact-group button {
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid rgba(220, 181, 107, 0.11);
+    border-radius: 999px;
+    background: transparent;
+    color: rgba(255, 248, 235, 0.56);
     font-size: 10px;
-    font-weight: 850;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    font-weight: 700;
   }
 
-  .mobile-shop-filter-group > div {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+  .mobile-shop-compact-group button.active {
+    border-color: rgba(220, 181, 107, 0.48);
+    background: rgba(220, 181, 107, 0.11);
+    color: #edcf88;
   }
 
-  .mobile-shop-filter-group button {
+  .mobile-shop-reset {
+    width: 100%;
+    min-height: 42px;
+    margin-top: 4px;
+    border: 0;
+    border-top: 1px solid rgba(220, 181, 107, 0.08);
+    background: transparent;
+    color: rgba(255, 248, 235, 0.5);
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: 0.05em;
+  }
+
+  .mobile-shop-inline-sort {
+    padding: 6px;
+  }
+
+  .mobile-shop-inline-sort > button {
+    width: 100%;
     min-height: 46px;
     padding: 0 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    border: 1px solid rgba(220, 181, 107, 0.12);
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.022);
-    color: rgba(255, 248, 235, 0.68);
+    gap: 12px;
+    border: 0;
+    border-radius: 11px;
+    background: transparent;
+    color: rgba(255, 248, 235, 0.6);
     font-size: 12px;
     font-weight: 650;
     text-align: left;
   }
 
-  .mobile-shop-filter-group button.active {
-    border-color: rgba(220, 181, 107, 0.4);
-    background: rgba(220, 181, 107, 0.09);
+  .mobile-shop-inline-sort > button + button {
+    border-top: 1px solid rgba(220, 181, 107, 0.07);
+    border-radius: 0;
+  }
+
+  .mobile-shop-inline-sort > button.active {
     color: #edcf88;
+    background: rgba(220, 181, 107, 0.055);
   }
 
-  .mobile-shop-filter-group button span {
+  .mobile-shop-inline-sort i {
     color: #edcf88;
+    font-style: normal;
   }
 
-  .mobile-shop-sheet-actions {
-    position: sticky;
-    bottom: -16px;
-    z-index: 2;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 8px;
-    padding: 12px 0 calc(4px + env(safe-area-inset-bottom));
-    background: linear-gradient(180deg, rgba(6, 6, 6, 0), rgba(6, 6, 6, 0.98) 24%);
-  }
-
-  .mobile-shop-sheet-actions button {
-    min-height: 48px;
-    padding-inline: 18px;
-    border-radius: 14px;
-    font-size: 12px;
-    font-weight: 800;
-  }
-
-  .mobile-shop-sheet-actions .ghost {
-    border: 1px solid rgba(220, 181, 107, 0.16);
-    background: transparent;
-    color: rgba(255, 248, 235, 0.62);
-  }
-
-  .mobile-shop-sheet-actions .primary {
-    border: 1px solid rgba(237, 207, 136, 0.66);
-    background: linear-gradient(180deg, #edcf88, #dcb56b);
-    color: #130f08;
+  /* The first products should arrive quickly. */
+  .shop-section .pagination-wrap {
+    margin-top: 12px;
+    margin-bottom: 14px;
   }
 }
 
@@ -445,11 +340,7 @@
     width: calc(100% - 24px);
   }
 
-  .mobile-shop-control-row button {
-    padding-inline: 12px;
-  }
-
-  .mobile-shop-sheet {
+  .mobile-shop-segmented button {
     padding-inline: 14px;
   }
 }
