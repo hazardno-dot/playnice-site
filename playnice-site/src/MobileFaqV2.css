@@ -1,0 +1,26 @@
+/* Mobile-only FAQ surface polish. Keeps accordion geometry unchanged. */
+
+@media (max-width: 640px) {
+  .faq-drawer {
+    background:
+      radial-gradient(circle at 18% 0%, rgba(220, 181, 107, 0.045), transparent 34%),
+      linear-gradient(180deg, rgba(20, 17, 13, 0.985), rgba(10, 9, 8, 0.992));
+    box-shadow:
+      0 28px 90px rgba(0, 0, 0, 0.78),
+      0 0 0 1px rgba(220, 181, 107, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    -webkit-backdrop-filter: blur(18px) saturate(108%);
+    backdrop-filter: blur(18px) saturate(108%);
+  }
+
+  .faq-drawer .story-drawer-header,
+  .faq-drawer .faq-drawer-body {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Smaller mobile type reads cleaner below bold weights. */
+  .faq-drawer .faq-question {
+    font-weight: 500;
+  }
+}

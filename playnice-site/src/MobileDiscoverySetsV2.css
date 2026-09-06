@@ -1,0 +1,207 @@
+/* =========================================
+   PLAYNICE MOBILE DISCOVERY SETS V2
+   Mobile-only polish. Desktop remains untouched.
+========================================= */
+
+@media (max-width: 640px) {
+  .discovery-showcase {
+    padding-top: 0;
+  }
+
+  .discovery-showcase-head {
+    margin-bottom: 14px;
+  }
+
+  .discovery-showcase-head h2 {
+    margin-bottom: 6px;
+    font-size: clamp(27px, 7.4vw, 31px);
+    line-height: 1;
+  }
+
+  .discovery-showcase-head p {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .discovery-showcase-grid {
+    gap: 10px;
+  }
+
+  .discovery-showcase-card {
+    min-height: 176px;
+    padding: 14px 10px 11px;
+    gap: 12px;
+    border-radius: 18px;
+  }
+
+  .discovery-showcase-type {
+    min-height: 22px;
+    padding-inline: 9px;
+    font-size: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .discovery-showcase-card h3 {
+    min-height: 2em;
+    margin-bottom: 7px;
+    font-size: 18px;
+    line-height: 1.02;
+  }
+
+  /* Value line: same size, stronger hierarchy. */
+  .discovery-showcase-card p {
+    min-height: auto;
+    font-size: 10.5px;
+    line-height: 1.38;
+    font-weight: 650;
+    letter-spacing: 0.015em;
+    color: rgba(232, 205, 150, 0.82);
+    text-shadow: 0 0 14px rgba(220, 181, 107, 0.05);
+  }
+
+  .discovery-showcase-button {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+  }
+
+  /* =========================================
+     DISCOVERY BUILDER — MOBILE DENSITY PASS
+     Shared by Designer & Niche + Arabian.
+  ========================================= */
+
+  .discovery-modal {
+    height: calc(100dvh - 16px) !important;
+    max-height: calc(100dvh - 16px) !important;
+    border-radius: 24px 24px 20px 20px !important;
+  }
+
+  .discovery-head {
+    padding: 18px 20px 11px !important;
+  }
+
+  .discovery-head h2 {
+    margin: 4px 0 7px !important;
+    font-size: clamp(28px, 7.7vw, 31px) !important;
+    line-height: 0.96 !important;
+  }
+
+  .discovery-head-text {
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  .discovery-progress {
+    gap: 6px !important;
+    margin-top: 10px !important;
+    padding: 8px 10px !important;
+  }
+
+  .discovery-grid {
+    gap: 10px !important;
+    padding: 12px 14px 16px !important;
+  }
+
+  .discovery-product {
+    min-height: 166px !important;
+    padding: 10px 8px 9px !important;
+    border-radius: 17px !important;
+  }
+
+  .discovery-product img {
+    height: 82px !important;
+    margin: 0 auto 8px !important;
+  }
+
+  .discovery-bar {
+    padding: 10px 14px !important;
+  }
+
+  .discovery-bar strong {
+    font-size: 0.92rem !important;
+  }
+
+  .discovery-bar span {
+    margin-top: 3px !important;
+    font-size: 0.72rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .discovery-bar .gold-button,
+  .discovery-add-button {
+    min-width: 112px !important;
+  }
+
+  .discovery-bar .gold-button:disabled,
+  .discovery-add-button:disabled {
+    opacity: 0.24 !important;
+    filter: saturate(0.35) !important;
+    box-shadow: none !important;
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .discovery-showcase-grid {
+    gap: 8px;
+  }
+
+  .discovery-showcase-card {
+    min-height: 172px;
+    padding: 13px 9px 10px;
+  }
+
+  .discovery-showcase-card h3 {
+    font-size: 17px;
+  }
+
+  .discovery-showcase-card p {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .discovery-head {
+    padding: 17px 18px 10px !important;
+  }
+
+  .discovery-head h2 {
+    font-size: 28px !important;
+  }
+
+  .discovery-head-text {
+    font-size: 12px !important;
+  }
+
+  .discovery-progress {
+    margin-top: 9px !important;
+    padding: 7px 9px !important;
+  }
+
+  .discovery-grid {
+    gap: 8px !important;
+    padding: 10px 12px 14px !important;
+  }
+
+  .discovery-product {
+    min-height: 158px !important;
+    padding: 9px 7px 8px !important;
+  }
+
+  .discovery-product img {
+    height: 76px !important;
+    margin-bottom: 7px !important;
+  }
+
+  .discovery-bar {
+    padding: 9px 12px !important;
+  }
+
+  .discovery-bar .gold-button,
+  .discovery-add-button {
+    min-width: 106px !important;
+  }
+}

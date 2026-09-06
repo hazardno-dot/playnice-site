@@ -1,0 +1,88 @@
+/* =========================================
+   PLAYNICE MOBILE HOW IT WORKS V2
+   Mobile-only density + viewport polish.
+   Desktop remains untouched.
+========================================= */
+
+@media (max-width: 560px) {
+  .how-it-works-drawer {
+    top: 11px !important;
+    right: 10px !important;
+    bottom: 11px !important;
+    left: 10px !important;
+
+    width: auto !important;
+    height: auto !important;
+    max-height: none !important;
+
+    border-radius: 24px !important;
+  }
+
+  .how-it-works-drawer-header {
+    margin-bottom: 6px !important;
+    padding: 15px 58px 10px 17px !important;
+  }
+
+  .how-it-works-drawer-header h3 {
+    margin-top: 4px !important;
+    font-size: clamp(1.72rem, 7.4vw, 2rem) !important;
+    line-height: 0.94 !important;
+  }
+
+  .how-it-works-drawer-body {
+    gap: 12px !important;
+    padding: 10px 16px 14px !important;
+
+    scrollbar-width: none !important;
+    -ms-overflow-style: none;
+  }
+
+  .how-it-works-drawer-body::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .how-it-works-drawer-lead {
+    font-size: 0.9rem !important;
+    line-height: 1.52 !important;
+  }
+
+  .how-it-works-drawer-grid {
+    gap: 10px !important;
+  }
+
+  .how-it-works-drawer-card {
+    padding: 12px 13px 11px !important;
+    border-radius: 15px !important;
+  }
+
+  .how-it-works-drawer-card h4 {
+    margin-bottom: 6px !important;
+    font-size: 0.79rem !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  .how-it-works-drawer-card p {
+    font-size: 0.86rem !important;
+    line-height: 1.48 !important;
+  }
+
+  .how-it-works-drawer-footer {
+    gap: 8px !important;
+    margin-top: 2px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .how-it-works-drawer {
+    right: 8px !important;
+    left: 8px !important;
+  }
+
+  .how-it-works-drawer-header {
+    padding-left: 15px !important;
+  }
+
+  .how-it-works-drawer-body {
+    padding-inline: 14px !important;
+  }
+}

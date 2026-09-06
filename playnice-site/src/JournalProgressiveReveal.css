@@ -1,0 +1,66 @@
+/* =========================================
+   LE JOURNAL — MOBILE PROGRESSIVE REVEAL
+========================================= */
+
+@media (max-width: 640px) {
+  .journal-page-load-more {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    margin: 30px 0 0;
+  }
+
+  .journal-page-load-more::before,
+  .journal-page-load-more::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(220, 181, 107, 0.24)
+    );
+  }
+
+  .journal-page-load-more::after {
+    background: linear-gradient(
+      90deg,
+      rgba(220, 181, 107, 0.24),
+      transparent
+    );
+  }
+
+  .journal-page-load-more button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 8px 4px;
+    border: 0;
+    background: transparent;
+    color: rgba(220, 181, 107, 0.88);
+    font: inherit;
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.25s ease, opacity 0.25s ease;
+  }
+
+  .journal-page-load-more button:active {
+    opacity: 0.72;
+  }
+
+  .journal-page-load-more button:focus-visible {
+    outline: 1px solid rgba(220, 181, 107, 0.48);
+    outline-offset: 5px;
+  }
+
+  .journal-page-load-more button span:last-child {
+    font-size: 13px;
+    transform: translateY(-1px);
+  }
+}

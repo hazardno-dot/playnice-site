@@ -1,0 +1,308 @@
+/* =========================================
+   PLAYNICE MOBILE PRODUCT MODAL V2
+   Mobile-only density and decision-flow polish.
+   Desktop remains untouched.
+========================================= */
+
+@media (max-width: 640px) {
+  .product-modal {
+    width: calc(100vw - 18px);
+    max-height: calc(100dvh - 14px);
+    border-radius: 20px;
+  }
+
+  .product-modal .close-button {
+    top: 12px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .modal-header {
+    padding: 12px 14px 8px;
+  }
+
+  .modal-header h2 {
+    max-width: calc(100% - 42px);
+    font-size: 1.72rem;
+    line-height: 0.98;
+  }
+
+  .modal-header-meta {
+    gap: 5px;
+  }
+
+  .modal-rating-stars {
+    gap: 1px;
+  }
+
+  .modal-rating-stars span {
+    font-size: 0.7rem;
+  }
+
+  .modal-rating-score {
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+
+  .modal-rating-label {
+    font-size: 0.66rem;
+    font-weight: 500;
+  }
+
+  .modal-inspired-mini {
+    padding: 5px 8px;
+    min-height: 31px;
+    border-radius: 10px;
+    gap: 6px;
+  }
+
+  .modal-inspired-mini-name {
+    font-size: 0.76rem;
+    font-weight: 500;
+  }
+
+  .modal-media {
+    padding: 8px 14px 6px;
+  }
+
+  .modal-image-wrap {
+    min-height: 126px;
+    padding: 0;
+  }
+
+  .modal-image-wrap::after {
+    filter: blur(14px);
+    opacity: 0.38;
+  }
+
+  .modal-image {
+    max-height: 112px;
+    max-width: 66%;
+  }
+
+  .modal-wishlist-btn {
+    transform: scale(0.86);
+    transform-origin: top right;
+  }
+
+  .modal-note-map-button,
+  .note-map-trigger {
+    min-height: 26px;
+    padding: 4px 8px;
+    font-size: 0.54rem;
+    font-weight: 500;
+  }
+
+  /* Restore the original desktop recommendation-card language on mobile. */
+  .modal-same-energy {
+    margin-top: 4px;
+  }
+
+  .modal-same-energy-list {
+    display: grid;
+  }
+
+  .modal-same-energy-list > .modal-same-energy-item {
+    display: grid !important;
+  }
+
+  .modal-media-meta {
+    padding-top: 0;
+  }
+
+  .modal-category {
+    font-size: 0.6rem;
+    font-weight: 600;
+  }
+
+  .modal-media-meta-copy p {
+    margin-top: 4px;
+    font-size: 0.88rem;
+    line-height: 1.22;
+  }
+
+  .modal-content {
+    padding: 9px 14px 11px;
+    gap: 6px;
+  }
+
+  .modal-chip {
+    padding: 6px 10px 5px;
+    gap: 6px;
+    font-size: 0.66rem;
+    font-weight: 500;
+  }
+
+  .modal-chip::before {
+    width: 5px;
+    height: 5px;
+    flex-basis: 5px;
+  }
+
+  .modal-description {
+    margin-bottom: 0;
+    font-size: 0.94rem;
+    line-height: 1.24;
+  }
+
+  /* Redundant in the purchase decision flow on mobile. */
+  .product-modal-anchor {
+    display: none;
+  }
+
+  /* Keep desktop information-card language, only compress it. */
+  .modal-info-grid {
+    gap: 6px;
+    margin-top: 0;
+  }
+
+  .modal-info-card {
+    padding: 8px 11px 7px;
+    border-radius: 15px;
+  }
+
+  .modal-info-card span {
+    margin-bottom: 4px;
+    font-size: 0.56rem;
+    line-height: 1.05;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+  }
+
+  .modal-info-card strong {
+    font-size: 0.9rem;
+    line-height: 1.16;
+    font-weight: 500;
+  }
+
+  .modal-info-card::after {
+    left: 11px;
+    bottom: 6px;
+    width: 32px;
+  }
+
+  .modal-purchase {
+    margin-top: 1px;
+    gap: 6px;
+    padding-top: 0;
+  }
+
+  .modal-label {
+    margin-bottom: 3px;
+    font-size: 0.64rem;
+    font-weight: 600;
+  }
+
+  .modal-size-helper {
+    margin: -1px 0 4px;
+    font-size: 10px;
+    font-weight: 400;
+  }
+
+  /* Restore desktop-style size cards, scaled tightly for mobile. */
+  .modal-sizes {
+    gap: 6px;
+  }
+
+  .modal-sizes > button,
+  .modal-size {
+    min-height: 56px;
+    height: 56px;
+    padding: 7px;
+    border-radius: 13px;
+    gap: 3px;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+  }
+
+  .modal-sizes > button span,
+  .modal-size span {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+  }
+
+  .modal-sizes > button strong,
+  .modal-size strong {
+    margin-top: 3px;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .modal-size.active::after {
+    top: 7px;
+    right: 7px;
+    width: 6px;
+    height: 6px;
+  }
+
+  .modal-purchase-bar {
+    gap: 7px;
+    padding-top: 6px;
+    align-items: stretch;
+  }
+
+  .modal-price-box {
+    flex: 0 0 98px;
+    gap: 2px;
+    padding: 8px 9px 7px;
+    border-radius: 13px;
+  }
+
+  .modal-price-box span {
+    font-size: 0.52rem;
+    letter-spacing: 0.11em;
+    font-weight: 500;
+  }
+
+  .modal-price-box strong,
+  .modal-selected-price {
+    font-size: 1.16rem;
+    line-height: 1;
+    font-weight: 500;
+  }
+
+  .modal-price-box::after {
+    left: 9px;
+    bottom: 6px;
+    width: 34px;
+  }
+
+  .modal-cta-group {
+    flex: 1;
+  }
+
+  .modal-add-button {
+    min-height: 42px;
+    padding: 0 16px;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+  }
+
+  .modal-buy-now {
+    min-height: 36px;
+    font-size: 0.66rem;
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 360px) {
+  .modal-header h2 {
+    font-size: 1.58rem;
+  }
+
+  .modal-image-wrap {
+    min-height: 116px;
+  }
+
+  .modal-image {
+    max-height: 102px;
+  }
+
+  .modal-price-box {
+    flex-basis: 92px;
+  }
+}

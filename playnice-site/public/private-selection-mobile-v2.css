@@ -1,0 +1,215 @@
+/* =========================================
+   PRIVATE SELECTION — MOBILE DENSITY V2
+   Keeps desktop untouched while giving saved fragrances
+   priority in the mobile drawer.
+========================================= */
+
+@media (max-width: 768px) {
+  .private-selection-drawer {
+    padding: 16px 14px 14px;
+  }
+
+  .private-selection-header {
+    gap: 10px;
+    padding-bottom: 8px;
+  }
+
+  .private-selection-header .section-kicker {
+    margin-bottom: 5px;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+  }
+
+  .private-selection-header h3 {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: nowrap;
+    gap: 4px;
+    margin: 0;
+    font-size: 1.34rem;
+    line-height: 0.98;
+    white-space: nowrap;
+  }
+
+  .private-selection-header-count {
+    display: inline !important;
+    margin: 0 !important;
+    font: inherit;
+    line-height: inherit;
+    white-space: nowrap;
+  }
+
+  .private-selection-items {
+    gap: 6px;
+    padding-right: 2px;
+    scrollbar-width: none;
+  }
+
+  .private-selection-items::-webkit-scrollbar {
+    display: none;
+  }
+
+  .private-selection-item {
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 10px;
+    min-height: 80px;
+    padding: 7px 8px;
+    align-items: center;
+    border-radius: 14px;
+  }
+
+  .private-selection-item-media {
+    width: 54px;
+    height: 58px;
+    padding: 5px;
+    border-radius: 12px;
+  }
+
+  .private-selection-item-image {
+    max-width: 40px;
+    max-height: 50px;
+  }
+
+  .private-selection-item-info {
+    min-width: 0;
+    gap: 4px;
+  }
+
+  .private-selection-item-category {
+    font-size: 0.56rem;
+    line-height: 1;
+    letter-spacing: 0.13em;
+  }
+
+  .private-selection-item-info h4 {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.03;
+  }
+
+  .private-selection-item-info > p {
+    display: none !important;
+  }
+
+  .private-selection-item-bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    width: 100%;
+    min-height: 18px;
+    margin-top: 10px;
+    gap: 10px;
+  }
+
+  .private-selection-item-price {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+    gap: 4px;
+    font-size: 0.7rem;
+    line-height: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transform: none;
+  }
+
+  .private-selection-item-price span {
+    line-height: 18px;
+  }
+
+  .private-selection-item-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    align-self: center;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+    gap: 8px;
+    line-height: 18px;
+    white-space: nowrap;
+  }
+
+  .private-selection-link,
+  .private-selection-remove {
+    display: inline-flex;
+    align-items: center;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+    font-size: 0.61rem;
+    line-height: 18px;
+    letter-spacing: 0.08em;
+  }
+
+  .private-selection-footer {
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  .private-selection-footer .story-drawer-signature {
+    font-size: 0.66rem;
+  }
+
+  .private-selection-footer .gold-button.small {
+    min-height: 42px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 390px) {
+  .private-selection-drawer {
+    padding: 14px 12px 12px;
+  }
+
+  .private-selection-header h3 {
+    font-size: 1.26rem;
+  }
+
+  .private-selection-item {
+    grid-template-columns: 50px minmax(0, 1fr);
+    min-height: 76px;
+    padding: 6px 7px;
+  }
+
+  .private-selection-item-media {
+    width: 50px;
+    height: 54px;
+  }
+
+  .private-selection-item-image {
+    max-width: 37px;
+    max-height: 46px;
+  }
+
+  .private-selection-item-info h4 {
+    font-size: 0.9rem;
+  }
+
+  .private-selection-item-bottom {
+    margin-top: 9px;
+    gap: 7px;
+  }
+
+  .private-selection-item-price {
+    font-size: 0.68rem;
+  }
+
+  .private-selection-item-actions {
+    gap: 6px;
+  }
+
+  .private-selection-link,
+  .private-selection-remove {
+    font-size: 0.58rem;
+  }
+}

@@ -1,0 +1,36 @@
+/* =========================================
+   PLAYNICE MOBILE SHOP — ROW REVEAL
+   Deterministic, one-way vertical motion.
+========================================= */
+
+@media (max-width: 640px) {
+  .shop-section .product-grid > .product-card.mobile-shop-reveal-pending {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  .shop-section .product-grid > .product-card.mobile-shop-reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      transform 520ms cubic-bezier(.22,.72,.2,1),
+      opacity 420ms ease-out;
+  }
+
+  .shop-section .product-grid > .product-card.mobile-shop-reveal-static {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shop-section .product-grid > .product-card,
+    .shop-section .product-grid > .product-card.mobile-shop-reveal-pending,
+    .shop-section .product-grid > .product-card.mobile-shop-reveal-visible,
+    .shop-section .product-grid > .product-card.mobile-shop-reveal-static {
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+}

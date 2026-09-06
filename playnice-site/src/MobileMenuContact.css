@@ -1,0 +1,306 @@
+/* Mobile-only support + catalog accordions injected into HeaderNext mobile panel. */
+
+@media (max-width: 640px) {
+  .header-next-mobile-primary {
+    order: 0;
+  }
+
+  .header-next-mobile-discover {
+    order: 1;
+  }
+
+  /* Community already exposes Scent Request; avoid the duplicate menu entry. */
+  .header-next-mobile-discover > div > button:nth-child(4) {
+    display: none;
+  }
+
+  .header-next-mobile-catalog {
+    border-top: 1px solid rgba(255, 248, 235, 0.05);
+  }
+
+  .header-next-mobile-catalog-trigger {
+    width: 100%;
+    min-height: 38px;
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 7px;
+    padding: 0 4px !important;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 248, 235, 0.68);
+    text-align: left;
+  }
+
+  .header-next-mobile-catalog-trigger > span {
+    font-size: 12.25px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .header-next-mobile-catalog-chevron {
+    width: 12px;
+    height: 12px;
+    fill: none;
+    stroke: rgba(220, 181, 107, 0.68);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 180ms ease;
+  }
+
+  .header-next-mobile-catalog.is-open .header-next-mobile-catalog-chevron {
+    transform: rotate(180deg);
+  }
+
+  .header-next-mobile-catalog-panel {
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    overflow: hidden;
+    transition:
+      max-height 200ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 150ms ease,
+      visibility 0s linear 200ms;
+  }
+
+  .header-next-mobile-catalog.is-open .header-next-mobile-catalog-panel {
+    max-height: 72px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      max-height 200ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 150ms ease,
+      visibility 0s linear 0s;
+  }
+
+  .header-next-mobile-catalog-panel a {
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    padding: 4px 4px 4px 14px;
+    border-top: 1px solid rgba(255, 248, 235, 0.04);
+    color: rgba(255, 248, 235, 0.58);
+    text-decoration: none;
+  }
+
+  .header-next-mobile-catalog-panel span {
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .header-next-mobile-support {
+    order: 2;
+    border-top: 1px solid rgba(220, 181, 107, 0.12);
+    border-bottom: 1px solid rgba(220, 181, 107, 0.10);
+  }
+
+  .header-next-mobile-support-trigger {
+    width: 100%;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 4px;
+    border: 0;
+    background: transparent;
+    color: rgba(220, 181, 107, 0.78);
+    text-transform: uppercase;
+  }
+
+  .header-next-mobile-support-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .header-next-mobile-support-label > span {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.17em;
+  }
+
+  .header-next-mobile-support-chevron {
+    width: 13px;
+    height: 13px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 180ms ease;
+  }
+
+  .header-next-mobile-support.is-open .header-next-mobile-support-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Closed means genuinely zero footprint. */
+  .header-next-mobile-support-panel {
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    overflow: hidden;
+    transition:
+      max-height 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 160ms ease,
+      visibility 0s linear 220ms;
+  }
+
+  .header-next-mobile-support.is-open .header-next-mobile-support-panel {
+    max-height: 96px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      max-height 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 160ms ease,
+      visibility 0s linear 0s;
+  }
+
+  .header-next-mobile-support-panel button,
+  .header-next-mobile-support-panel a {
+    min-height: 40px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 10px;
+    padding: 5px 4px;
+    border: 0;
+    border-top: 1px solid rgba(255, 248, 235, 0.05);
+    background: transparent;
+    color: rgba(255, 248, 235, 0.68);
+    text-align: left;
+    text-decoration: none;
+  }
+
+  .header-next-mobile-support-panel span {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .header-next-mobile-support-panel small {
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: 2px;
+    color: rgba(255, 248, 235, 0.38);
+    font-size: 9.5px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .header-next-mobile-support-panel strong {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    color: rgba(220, 181, 107, 0.68);
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  /* Keep the whole navigation as one controlled viewport, no pre-distributed empty space. */
+  .header-next-mobile-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 8px;
+    padding-top: 9px;
+    padding-bottom: calc(9px + env(safe-area-inset-bottom));
+    scrollbar-width: none;
+  }
+
+  .header-next-mobile-panel::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Primary navigation: larger editorial serif. */
+  .header-next-mobile-primary .header-next-link {
+    height: 47px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.012em;
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Home is the section entry: keep it in the same clean sans family as section labels. */
+  .header-next-mobile-primary .header-next-link:first-of-type {
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .header-next-mobile-primary .header-next-link::before {
+    top: 11px;
+    height: 25px;
+  }
+
+  .header-next-mobile-primary > div > small {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+  }
+
+  .header-next-mobile-discover p {
+    margin-bottom: 2px;
+    font-weight: 500;
+  }
+
+  .header-next-mobile-discover button {
+    min-height: 38px;
+    font-size: 12.25px;
+    font-weight: 500;
+  }
+
+  .header-next-mobile-language {
+    order: 3;
+    min-height: 40px;
+    margin-top: 0 !important;
+    font-weight: 400;
+  }
+
+  .header-next-mobile-language strong {
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 380px) {
+  .header-next-mobile-panel {
+    gap: 6px;
+    padding-top: 7px;
+    padding-bottom: calc(7px + env(safe-area-inset-bottom));
+  }
+
+  .header-next-mobile-primary .header-next-link {
+    height: 45px;
+    font-size: 21px;
+  }
+
+  .header-next-mobile-primary .header-next-link:first-of-type {
+    font-size: 14.5px;
+  }
+
+  .header-next-mobile-discover button,
+  .header-next-mobile-catalog-trigger {
+    min-height: 36px;
+  }
+
+  .header-next-mobile-catalog-panel a {
+    min-height: 32px;
+  }
+
+  .header-next-mobile-support-trigger,
+  .header-next-mobile-language {
+    min-height: 38px;
+  }
+}

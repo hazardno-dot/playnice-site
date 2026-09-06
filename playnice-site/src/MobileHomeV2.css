@@ -1,0 +1,155 @@
+/* =========================================
+   PLAYNICE MOBILE HOME V2
+   Mobile-only home hierarchy and rhythm.
+   Desktop Home remains untouched.
+========================================= */
+
+@media (max-width: 640px) {
+  :root {
+    --mobile-home-section-gap: 50px;
+    --mobile-home-related-gap: 28px;
+    --mobile-home-end-gap: 44px;
+  }
+
+  /*
+   * Mobile Home keeps the high-value path compact:
+   * Hero → Trust → Fragrance Intelligence → Just In
+   * → Discovery Sets → Private Selection → Community → Partner → Final Impression.
+   * Deeper brand/editorial content remains available
+   * through its dedicated navigation entry points.
+   * Community remains in the document so menu navigation can
+   * land directly on the live request/voting experience.
+   */
+
+  .why-how-section,
+  .impact-split-section,
+  .catalog-download-section {
+    display: none !important;
+  }
+
+  .homepage-shop-preview + .section-divider,
+  .community-requests-section + .section-divider,
+  .impact-split-section + .section-divider {
+    display: none !important;
+  }
+
+  /* Community is a direct mobile destination, not part of the
+     primary commerce rhythm. Keep the existing live logic intact. */
+  .community-requests-section {
+    display: block !important;
+    margin-top: var(--mobile-home-section-gap);
+    margin-bottom: var(--mobile-home-section-gap);
+    scroll-margin-top: 112px;
+  }
+
+  /* Legacy micro sponsor bar is removed from the mobile commerce flow.
+     Mobile Partner Spotlight now owns the single Home sponsor placement. */
+  .mobile-sponsored-ad-wrap {
+    display: none !important;
+  }
+
+  /* Main scene-to-scene rhythm: one protocol, one gap. */
+  .playnice-discovery-portal,
+  .new-arrivals-section,
+  .discovery-showcase,
+  .homepage-shop-preview {
+    margin-top: var(--mobile-home-section-gap);
+  }
+
+  /* Fragrance Intelligence is now a stronger visual gateway, so it can
+     sit a little closer to both the trust strip and Just In section. */
+  .playnice-discovery-portal,
+  .playnice-discovery-portal + .new-arrivals-section,
+  .new-arrivals-section {
+    margin-top: 36px;
+  }
+
+  .homepage-shop-preview {
+    margin-bottom: var(--mobile-home-related-gap);
+  }
+
+  /* =========================================
+     MOBILE GLASS DOCK V2
+     Same functionality, lighter visual weight.
+  ========================================= */
+  .sticky-cta-shell {
+    width: min(calc(100vw - 40px), 380px);
+    max-width: min(calc(100vw - 40px), 380px);
+    bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+
+  .sticky-cta-button {
+    min-height: 46px;
+    border: 1px solid rgba(220, 181, 107, 0.12);
+    border-radius: 17px;
+    background:
+      linear-gradient(180deg, rgba(18, 17, 15, 0.42), rgba(7, 7, 7, 0.34)),
+      rgba(7, 7, 7, 0.30);
+    backdrop-filter: blur(18px) saturate(116%);
+    -webkit-backdrop-filter: blur(18px) saturate(116%);
+    box-shadow:
+      0 10px 26px rgba(0, 0, 0, 0.22),
+      0 0 0 1px rgba(255, 255, 255, 0.018) inset;
+  }
+
+  .sticky-cta-main {
+    min-height: 46px;
+  }
+
+  .sticky-cta-copy strong {
+    opacity: 0.9;
+  }
+
+  .sticky-cta-copy small {
+    opacity: 0.66;
+  }
+
+  .sticky-cta-journal-link {
+    opacity: 0.78;
+  }
+
+  /* =========================================
+     MOBILE FOOTER SOCIAL POLISH
+     Center the social row and preserve recognizable brand colors.
+  ========================================= */
+  .site-footer .social-links {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .site-footer .social-links a[aria-label*="Instagram"] i {
+    color: #e4405f;
+  }
+
+  .site-footer .social-links a[aria-label*="WhatsApp"] i {
+    color: #25d366;
+  }
+
+  .site-footer .social-links a[aria-label*="TikTok"] i {
+    color: #25f4ee;
+    text-shadow: 1px 0 0 rgba(254, 44, 85, 0.7);
+  }
+}
+
+@media (max-width: 390px) {
+  :root {
+    --mobile-home-section-gap: 42px;
+    --mobile-home-related-gap: 24px;
+    --mobile-home-end-gap: 38px;
+  }
+
+  .playnice-discovery-portal,
+  .playnice-discovery-portal + .new-arrivals-section,
+  .new-arrivals-section {
+    margin-top: 32px;
+  }
+
+  .community-requests-section {
+    scroll-margin-top: 106px;
+  }
+
+  .sticky-cta-shell {
+    width: calc(100vw - 36px);
+    max-width: calc(100vw - 36px);
+  }
+}

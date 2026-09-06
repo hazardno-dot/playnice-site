@@ -1,0 +1,260 @@
+/* Mobile UX v2 — Fragrance Intelligence gateway + modal polish */
+
+@media (max-width: 640px) {
+  /* HOME GATEWAY */
+  .playnice-discovery-portal {
+    width: min(calc(100% - 24px), var(--max));
+    padding-top: 16px;
+    padding-bottom: 10px;
+  }
+
+  .playnice-discovery-trigger {
+    position: relative;
+    width: 100%;
+    min-height: 104px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto;
+    column-gap: 11px;
+    row-gap: 3px;
+    align-items: center;
+    padding: 20px 17px;
+    border: 1px solid rgba(220, 181, 107, 0.22);
+    border-radius: 20px;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(220, 181, 107, 0.10), transparent 42%),
+      linear-gradient(145deg, rgba(24, 20, 15, 0.94), rgba(10, 9, 7, 0.98));
+    color: #f1d28e;
+    text-align: left;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.025),
+      0 18px 44px rgba(0, 0, 0, 0.28),
+      0 0 0 1px rgba(220, 181, 107, 0.025);
+    overflow: hidden;
+  }
+
+  .playnice-discovery-trigger::after {
+    content: "Tell us the occasion, style and budget. We'll find the scent.";
+    grid-column: 2;
+    grid-row: 2;
+    display: block;
+    max-width: 280px;
+    color: rgba(255, 248, 235, 0.66);
+    font-family: "Inter", sans-serif;
+    font-size: 11.8px;
+    font-weight: 400;
+    line-height: 1.42;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  html[lang^="sr"] .playnice-discovery-trigger::after {
+    content: "Reci nam priliku, stil i budžet. Mi ćemo pronaći miris.";
+  }
+
+  .playnice-discovery-trigger .playnice-discovery-orbit {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    align-self: center;
+    width: 24px;
+    height: 24px;
+  }
+
+  .playnice-discovery-trigger #playnice-discovery-trigger-label {
+    grid-column: 2;
+    grid-row: 1;
+    color: #e0b965;
+    font-family: "Inter", sans-serif;
+    font-size: 9.3px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.16em;
+  }
+
+  .playnice-discovery-trigger-arrow {
+    grid-column: 2;
+    grid-row: 3;
+    justify-self: start;
+    margin-top: 8px;
+    color: #f1d28e;
+    font-size: 0;
+    line-height: 1;
+  }
+
+  .playnice-discovery-trigger-arrow::before {
+    content: "FIND MY SCENT  →";
+    font-family: "Inter", sans-serif;
+    font-size: 10.2px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+  }
+
+  html[lang^="sr"] .playnice-discovery-trigger-arrow::before {
+    content: "PRONAĐI MOJ MIRIS  →";
+  }
+
+  /* MODAL */
+  .playnice-discovery-overlay {
+    padding: 10px;
+  }
+
+  .playnice-discovery-panel {
+    width: min(calc(100vw - 20px), 430px);
+    max-height: calc(100dvh - 20px);
+    border-radius: 22px;
+  }
+
+  .playnice-discovery-panel-head {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .playnice-discovery-panel-head h2 {
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .playnice-discovery-panel-head > p {
+    max-width: 330px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 10.8px;
+    line-height: 1.48;
+  }
+
+  .playnice-discovery-ai-note {
+    min-height: 28px;
+    margin-top: 9px;
+    padding: 6px 10px;
+    border-color: rgba(114, 151, 255, 0.22);
+    font-size: 0;
+  }
+
+  .playnice-discovery-ai-note > span:last-child {
+    display: none;
+  }
+
+  .playnice-discovery-ai-note::after {
+    content: "Understands style · budget · mood · occasion";
+    color: rgba(210, 220, 255, 0.76);
+    font-family: "Inter", sans-serif;
+    font-size: 8.6px;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: 0.015em;
+  }
+
+  html[lang^="sr"] .playnice-discovery-ai-note::after {
+    content: "Razume stil · budžet · raspoloženje · priliku";
+  }
+
+  .playnice-discovery-search {
+    margin-top: 13px;
+    padding: 6px;
+    border-radius: 19px;
+  }
+
+  .playnice-discovery-input-wrap input {
+    height: 46px;
+    padding-left: 12px;
+    font-size: 12.2px;
+  }
+
+  /* Short mobile placeholder without changing desktop copy. */
+  .playnice-discovery-input-wrap:has(input:placeholder-shown)::after {
+    content: "Fresh summer scent under €15...";
+    position: absolute;
+    left: 36px;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.31);
+    font-family: "Inter", sans-serif;
+    font-size: 11.8px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  html[lang^="sr"] .playnice-discovery-input-wrap:has(input:placeholder-shown)::after {
+    content: "Svež letnji miris do 15 €...";
+  }
+
+  .playnice-discovery-input-wrap input:placeholder-shown::placeholder {
+    color: transparent;
+  }
+
+  .playnice-discovery-input-wrap:focus-within::after {
+    opacity: 0.72;
+  }
+
+  .playnice-discovery-submit {
+    min-height: 40px;
+    margin-top: 5px;
+    color: #0b0906;
+  }
+
+  .playnice-discovery-submit > span:first-child {
+    font-size: 0;
+  }
+
+  .playnice-discovery-submit > span:first-child::after {
+    content: "FIND MY SCENT";
+    font-size: 10.6px;
+    font-weight: 650;
+    letter-spacing: 0.09em;
+    color: #0b0906;
+  }
+
+  html[lang^="sr"] .playnice-discovery-submit > span:first-child::after {
+    content: "PRONAĐI MOJ MIRIS";
+  }
+
+  .playnice-discovery-submit > span:last-child {
+    color: #0b0906;
+  }
+
+  .playnice-discovery-prompts {
+    gap: 7px;
+    margin-top: 10px;
+  }
+
+  .playnice-discovery-prompt {
+    min-height: 31px;
+    padding: 6px 11px;
+    font-size: 9.2px;
+    font-weight: 450;
+    line-height: 1.25;
+  }
+}
+
+@media (max-width: 380px) {
+  .playnice-discovery-portal {
+    padding-top: 14px;
+    padding-bottom: 8px;
+  }
+
+  .playnice-discovery-trigger {
+    min-height: 100px;
+    padding: 18px 15px;
+  }
+
+  .playnice-discovery-trigger::after {
+    font-size: 11.2px;
+  }
+
+  .playnice-discovery-panel {
+    width: calc(100vw - 16px);
+    max-height: calc(100dvh - 16px);
+  }
+
+  .playnice-discovery-input-wrap input {
+    height: 44px;
+  }
+
+  .playnice-discovery-prompt {
+    min-height: 30px;
+    padding: 6px 10px;
+    font-size: 8.9px;
+  }
+}

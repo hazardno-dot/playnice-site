@@ -1,0 +1,485 @@
+/* =========================================
+   PLAYNICE MOBILE SHOP V4 — CONTROL BOARD
+   Mobile-only. Desktop Shop remains untouched.
+========================================= */
+
+@media (max-width: 640px) {
+  /*
+    SHOP VERTICAL RHYTHM
+    These are flow tokens, not decorative spacing.
+    Keep grid-facing pagination gaps symmetrical.
+  */
+  .shop-section {
+    --shop-flow-intro-top: 8px;
+    --shop-flow-section: 14px;
+    --shop-flow-wayline: 12px;
+    --shop-flow-major: 18px;
+    --shop-flow-grid-link: 10px;
+    --shop-flow-footer: 22px;
+
+    padding-top: 0;
+  }
+
+  .shop-collection-intro {
+    width: calc(100% - 28px);
+    margin: var(--shop-flow-intro-top) auto var(--shop-flow-section);
+  }
+
+  .shop-collection-title {
+    font-size: clamp(32px, 9.4vw, 40px);
+    line-height: 0.98;
+  }
+
+  .shop-collection-title::after {
+    width: 58px;
+    margin-top: 10px;
+  }
+
+  .shop-collection-subtext {
+    max-width: 330px;
+    margin-top: 10px;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .shop-value-anchor,
+  .shop-toolbar.shop-toolbar-compact,
+  .scent-mood-filter {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  #mobile-shop-v2-host {
+    position: relative;
+    z-index: 18;
+    width: calc(100% - 28px);
+    margin: 0 auto var(--shop-flow-section);
+  }
+
+  .mobile-shop-menu {
+    position: relative;
+  }
+
+  .mobile-shop-wayline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    margin: 0 0 var(--shop-flow-wayline);
+    text-align: center;
+  }
+
+  .mobile-shop-wayline strong {
+    color: rgba(220,181,107,0.84);
+    font-size: 8px;
+    font-weight: 650;
+    letter-spacing: 0.17em;
+    line-height: 1.1;
+  }
+
+  .mobile-shop-wayline span {
+    color: rgba(255,248,235,0.48);
+    font-size: 9px;
+    font-weight: 500;
+    line-height: 1.25;
+  }
+
+  .mobile-shop-board {
+    position: relative;
+    padding: 8px;
+    border: 1px solid rgba(220,181,107,0.12);
+    border-radius: 20px;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(220,181,107,0.035), transparent 44%),
+      linear-gradient(180deg, rgba(16,14,12,0.72), rgba(7,7,7,0.68));
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.014),
+      0 10px 28px rgba(0,0,0,0.16);
+  }
+
+  .mobile-shop-capsules {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .mobile-shop-capsule {
+    min-width: 0;
+    min-height: 50px;
+    padding: 7px 9px;
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr) 11px;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(220,181,107,0.09);
+    border-radius: 14px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.004)),
+      rgba(8,8,8,0.50);
+    color: rgba(255,248,235,0.84);
+    text-align: left;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      transform 150ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .mobile-shop-capsule:active {
+    transform: scale(0.988);
+  }
+
+  .mobile-shop-capsule:focus-visible {
+    outline: none;
+    border-color: rgba(237,207,136,0.56);
+    box-shadow: 0 0 0 2px rgba(220,181,107,0.10);
+  }
+
+  .mobile-shop-capsule.active {
+    border-color: rgba(220,181,107,0.38);
+    background:
+      radial-gradient(circle at 12% 50%, rgba(220,181,107,0.09), transparent 44%),
+      rgba(11,10,8,0.86);
+    box-shadow: inset 0 0 0 1px rgba(220,181,107,0.025);
+  }
+
+  .mobile-shop-capsule-icon {
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(220,181,107,0.12);
+    border-radius: 8px;
+    background: rgba(220,181,107,0.02);
+    color: rgba(220,181,107,0.88);
+    font-size: 12px;
+    line-height: 1;
+    transform: translateY(-0.25px);
+  }
+
+  .mobile-shop-capsule > strong {
+    min-width: 0;
+    overflow: hidden;
+    color: rgba(255,248,235,0.90);
+    font-size: 11.25px;
+    font-weight: 560;
+    line-height: 1.15;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-shop-capsule-arrow {
+    display: grid;
+    place-items: center;
+    color: rgba(220,181,107,0.48);
+    font-size: 8px;
+    line-height: 1;
+    transform-origin: center;
+    transition: transform 180ms ease, color 180ms ease;
+  }
+
+  .mobile-shop-capsule.active .mobile-shop-capsule-arrow {
+    color: rgba(237,207,136,0.78);
+    transform: rotate(180deg);
+  }
+
+  .mobile-shop-popover {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 80;
+    max-height: min(56dvh, 440px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 13px;
+    border: 1px solid rgba(220,181,107,0.18);
+    border-radius: 18px;
+    background:
+      radial-gradient(circle at 0% 0%, rgba(220,181,107,0.075), transparent 34%),
+      linear-gradient(180deg, rgba(16,14,12,0.99), rgba(6,6,6,0.995));
+    box-shadow: 0 18px 54px rgba(0,0,0,0.54);
+    transform-origin: left top;
+    animation: mobileShopUnfold 240ms cubic-bezier(.22,.72,.2,1) both;
+  }
+
+  @keyframes mobileShopUnfold {
+    from {
+      opacity: 0.35;
+      clip-path: inset(0 100% 0 0 round 18px);
+      transform: translateY(-3px);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0 round 18px);
+      transform: translateY(0);
+    }
+  }
+
+  .mobile-shop-filter-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0;
+    align-items: start;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-section {
+    min-width: 0;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-section:first-child {
+    padding-right: 12px;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-section + .mobile-shop-selection-section {
+    margin-top: 0;
+    padding-top: 0;
+    padding-left: 12px;
+    border-top: 0;
+    border-left: 1px solid rgba(220,181,107,0.075);
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-list > button {
+    gap: 6px;
+    font-size: 12.25px;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-option-label {
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .mobile-shop-option-icon {
+    flex: 0 0 auto;
+    width: 14px;
+    color: rgba(220,181,107,0.80);
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .mobile-shop-option-icon-arabian {
+    color: rgba(218, 164, 92, 0.88);
+  }
+
+  .mobile-shop-option-icon-designer {
+    color: rgba(130, 169, 196, 0.86);
+  }
+
+  .mobile-shop-option-icon-niche {
+    color: rgba(171, 145, 192, 0.86);
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-list > button > i {
+    flex: 0 0 auto;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-reset-link {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin-top: 1px;
+  }
+
+  .mobile-shop-selection-section + .mobile-shop-selection-section {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(220,181,107,0.075);
+  }
+
+  .mobile-shop-selection-section h4 {
+    margin: 0 0 5px;
+    color: rgba(220,181,107,0.64);
+    font-size: 8.5px;
+    font-weight: 650;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .mobile-shop-selection-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-shop-selection-list > button {
+    min-height: 42px;
+    padding: 0 2px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 0;
+    border-bottom: 1px solid rgba(220,181,107,0.06);
+    background: transparent;
+    color: rgba(255,248,235,0.68);
+    font-size: 12.75px;
+    font-weight: 500;
+    text-align: left;
+  }
+
+  .mobile-shop-selection-list > button:last-child {
+    border-bottom: 0;
+  }
+
+  .mobile-shop-selection-list > button.active {
+    color: #edcf88;
+  }
+
+  .mobile-shop-selection-list > button i {
+    color: rgba(220,181,107,0.68);
+    font-size: 9px;
+    font-style: normal;
+  }
+
+  .mobile-shop-search-panel > div {
+    min-height: 50px;
+    padding: 0 11px;
+    display: grid;
+    grid-template-columns: auto minmax(0,1fr) auto;
+    align-items: center;
+    gap: 9px;
+    border: 1px solid rgba(220,181,107,0.14);
+    border-radius: 14px;
+    background: rgba(0,0,0,0.30);
+  }
+
+  .mobile-shop-search-panel > div > span {
+    color: rgba(220,181,107,0.74);
+  }
+
+  .mobile-shop-search-panel input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: rgba(255,248,235,0.92);
+    font-size: 14.5px;
+  }
+
+  .mobile-shop-search-panel input::placeholder {
+    color: rgba(255,248,235,0.34);
+  }
+
+  .mobile-shop-search-panel button,
+  .mobile-shop-reset-link {
+    border: 0;
+    background: transparent;
+    color: rgba(220,181,107,0.76);
+    font-size: 10.5px;
+    font-weight: 600;
+  }
+
+  .mobile-shop-reset-link {
+    padding: 8px 2px 2px;
+    text-decoration: underline;
+    text-decoration-color: rgba(220,181,107,0.28);
+    text-underline-offset: 4px;
+  }
+
+  /*
+    PRODUCT FLOW
+    One relationship on both sides of the grid:
+    pagination <-> products = --shop-flow-grid-link.
+  */
+  .shop-section .shop-pagination-row {
+    margin-top: var(--shop-flow-major);
+    margin-bottom: var(--shop-flow-grid-link);
+  }
+
+  .shop-section .shop-pagination-row .pagination-wrap,
+  .shop-section .shop-pagination-row .pagination-wrap-top {
+    margin: 0 !important;
+  }
+
+  .shop-section .shop-pagination-row .pagination {
+    gap: 7px;
+  }
+
+  .shop-section .shop-pagination-row .pagination button {
+    min-width: 38px;
+    height: 38px;
+  }
+
+  .shop-section .product-grid-anchor {
+    margin-top: 0;
+  }
+
+  /*
+    Bottom pagination has a legacy inner .pagination-wrap-bottom margin in App.css.
+    Neutralize it here so no hidden spacing can be added to the Shop flow.
+  */
+  .shop-section > .pagination-wrap {
+    margin-top: var(--shop-flow-grid-link);
+    margin-bottom: var(--shop-flow-footer);
+  }
+
+  .shop-section > .pagination-wrap .pagination-wrap-bottom {
+    margin-top: 0 !important;
+  }
+
+  /* Product copy: reserve exactly three lines without fixing the whole card stack. */
+  .shop-section .product-card-copy,
+  .shop-section .product-card-copy.premium-card-copy {
+    line-height: 1.32;
+    min-height: calc(1.32em * 3);
+    max-height: calc(1.32em * 3);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-shop-popover {
+      animation: none;
+    }
+  }
+}
+
+@media (max-width: 390px) {
+  #mobile-shop-v2-host,
+  .shop-collection-intro {
+    width: calc(100% - 24px);
+  }
+
+  .mobile-shop-board {
+    padding: 7px;
+  }
+
+  .mobile-shop-capsules {
+    gap: 6px;
+  }
+
+  .mobile-shop-capsule {
+    min-height: 49px;
+    padding-inline: 8px;
+  }
+
+  .mobile-shop-capsule > strong {
+    font-size: 10.9px;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-section:first-child {
+    padding-right: 9px;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-section + .mobile-shop-selection-section {
+    padding-left: 9px;
+  }
+
+  .mobile-shop-filter-panel .mobile-shop-selection-list > button {
+    font-size: 11.85px;
+  }
+}
