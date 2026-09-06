@@ -23,6 +23,7 @@ import "./MobileClosingFooterV2.css";
 import "./MobileShopV2.css";
 import "./MobileShopReveal.css";
 import "./MobileProductModalV2.css";
+import "./MobileCartV2.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
