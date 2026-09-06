@@ -30,8 +30,11 @@ function MobilePartnerSpotlight() {
     };
 
     const ensureHost = () => {
+      const closing = document.querySelector(".closing-section");
       const footer = document.querySelector(".site-footer");
-      if (!footer) {
+      const anchor = closing || footer;
+
+      if (!anchor) {
         setHost(null);
         return;
       }
@@ -40,9 +43,9 @@ function MobilePartnerSpotlight() {
       if (!nextHost) {
         nextHost = document.createElement("div");
         nextHost.className = "mobile-partner-spotlight-host";
-        footer.parentNode?.insertBefore(nextHost, footer);
-      } else if (nextHost.nextElementSibling !== footer) {
-        footer.parentNode?.insertBefore(nextHost, footer);
+        anchor.parentNode?.insertBefore(nextHost, anchor);
+      } else if (nextHost.nextElementSibling !== anchor) {
+        anchor.parentNode?.insertBefore(nextHost, anchor);
       }
 
       setHost(nextHost);
