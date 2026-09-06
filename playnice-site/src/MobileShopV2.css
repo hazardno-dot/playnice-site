@@ -23,25 +23,21 @@
   .shop-collection-intro {
     width: calc(100% - 28px);
     margin: var(--shop-flow-intro-top) auto var(--shop-flow-section);
-    text-align: center;
   }
 
   .shop-collection-title {
-    margin-inline: auto;
-    text-align: center;
     font-size: clamp(32px, 9.4vw, 40px);
     line-height: 0.98;
   }
 
   .shop-collection-title::after {
     width: 58px;
-    margin: 10px auto 0;
+    margin-top: 10px;
   }
 
   .shop-collection-subtext {
     max-width: 330px;
-    margin: 10px auto 0;
-    text-align: center;
+    margin-top: 10px;
     font-size: 13px;
     line-height: 1.45;
   }
