@@ -1,0 +1,149 @@
+/* =========================================
+   PRIVATE SELECTION — MOBILE DENSITY V2
+   Keeps desktop untouched while giving saved fragrances
+   priority in the mobile drawer.
+========================================= */
+
+@media (max-width: 768px) {
+  .private-selection-drawer {
+    padding: 16px 14px 14px;
+  }
+
+  .private-selection-header {
+    gap: 12px;
+    padding-bottom: 10px;
+  }
+
+  .private-selection-header .section-kicker {
+    margin-bottom: 8px;
+  }
+
+  .private-selection-header h3 {
+    margin-top: 0;
+    font-size: 1.52rem;
+    line-height: 1;
+  }
+
+  .private-selection-items {
+    gap: 6px;
+    padding-right: 2px;
+    scrollbar-width: none;
+  }
+
+  .private-selection-items::-webkit-scrollbar {
+    display: none;
+  }
+
+  .private-selection-item {
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 10px;
+    min-height: 74px;
+    padding: 7px 8px;
+    align-items: center;
+    border-radius: 14px;
+  }
+
+  .private-selection-item-media {
+    width: 54px;
+    height: 58px;
+    padding: 5px;
+    border-radius: 12px;
+  }
+
+  .private-selection-item-image {
+    max-width: 40px;
+    max-height: 50px;
+  }
+
+  .private-selection-item-info {
+    gap: 4px;
+  }
+
+  .private-selection-item-category {
+    font-size: 0.56rem;
+    line-height: 1;
+    letter-spacing: 0.13em;
+  }
+
+  .private-selection-item-info h4 {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 0.94rem;
+    line-height: 1.03;
+  }
+
+  /* Card copy is useful on desktop, but consumes the height of an
+     additional saved fragrance on mobile. Keep the scan focused on
+     product name, price and actions. */
+  .private-selection-item-info > p {
+    display: none;
+  }
+
+  .private-selection-item-bottom {
+    margin-top: 1px;
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+
+  .private-selection-item-price {
+    min-width: 0;
+    gap: 4px;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  .private-selection-item-actions {
+    margin-left: auto;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .private-selection-link,
+  .private-selection-remove {
+    font-size: 0.61rem;
+    letter-spacing: 0.08em;
+  }
+
+  .private-selection-footer {
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  .private-selection-footer .story-drawer-signature {
+    font-size: 0.66rem;
+  }
+
+  .private-selection-footer .gold-button.small {
+    min-height: 42px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 390px) {
+  .private-selection-drawer {
+    padding: 14px 12px 12px;
+  }
+
+  .private-selection-item {
+    grid-template-columns: 50px minmax(0, 1fr);
+    min-height: 70px;
+    padding: 6px 7px;
+  }
+
+  .private-selection-item-media {
+    width: 50px;
+    height: 54px;
+  }
+
+  .private-selection-item-image {
+    max-width: 37px;
+    max-height: 46px;
+  }
+
+  .private-selection-item-info h4 {
+    font-size: 0.9rem;
+  }
+}
