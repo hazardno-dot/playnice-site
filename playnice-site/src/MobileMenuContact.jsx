@@ -4,21 +4,25 @@ import "./MobileMenuContact.css";
 
 function MobileMenuContact() {
   const [panelTarget, setPanelTarget] = useState(null);
+  const [discoverTarget, setDiscoverTarget] = useState(null);
   const [lang, setLang] = useState(
     typeof document !== "undefined" && document.documentElement.lang?.toLowerCase().startsWith("sr")
       ? "sr"
       : "en"
   );
   const [supportOpen, setSupportOpen] = useState(false);
+  const [catalogOpen, setCatalogOpen] = useState(false);
 
   useEffect(() => {
     let frameId;
 
     const resolveTarget = () => {
       const panel = document.querySelector(".header-next-mobile-panel");
+      const discover = document.querySelector(".header-next-mobile-discover > div");
 
-      if (panel) {
+      if (panel && discover) {
         setPanelTarget(panel);
+        setDiscoverTarget(discover);
         return;
       }
 
@@ -51,6 +55,7 @@ function MobileMenuContact() {
       const header = document.querySelector(".header-next");
       if (!header?.classList.contains("is-mobile-open")) {
         setSupportOpen(false);
+        setCatalogOpen(false);
       }
     });
 
@@ -76,9 +81,42 @@ function MobileMenuContact() {
     window.requestAnimationFrame(() => faqButton?.click());
   };
 
-  if (!panelTarget) return null;
+  if (!panelTarget || !discoverTarget) return null;
 
-  return createPortal(
+  const catalog = createPortal(
+    <section className={`header-next-mobile-catalog ${catalogOpen ? "is-open" : ""}`}>
+      <button
+        type="button"
+        className="header-next-mobile-catalog-trigger"
+        aria-expanded={catalogOpen}
+        onClick={() => {
+          setCatalogOpen((current) => !current);
+          setSupportOpen(false);
+        }}
+      >
+        <span>{lang === "sr" ? "Katalog" : "Catalog"}</span>
+        <svg
+          className="header-next-mobile-catalog-chevron"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+        >
+          <path d="M4.75 6.25 8 9.5l3.25-3.25" />
+        </svg>
+      </button>
+
+      <div className="header-next-mobile-catalog-panel" aria-hidden={!catalogOpen}>
+        <a href="/catalog-clean.pdf" download onClick={closeMobileMenu}>
+          <span>English · Light</span>
+        </a>
+        <a href="/catalog-dark.pdf" download onClick={closeMobileMenu}>
+          <span>English · Dark</span>
+        </a>
+      </div>
+    </section>,
+    discoverTarget
+  );
+
+  const support = createPortal(
     <section
       className={`header-next-mobile-support ${supportOpen ? "is-open" : ""}`}
       aria-label={lang === "sr" ? "Podrška" : "Support"}
@@ -87,7 +125,10 @@ function MobileMenuContact() {
         type="button"
         className="header-next-mobile-support-trigger"
         aria-expanded={supportOpen}
-        onClick={() => setSupportOpen((current) => !current)}
+        onClick={() => {
+          setSupportOpen((current) => !current);
+          setCatalogOpen(false);
+        }}
       >
         <span className="header-next-mobile-support-label">
           <span>{lang === "sr" ? "Podrška" : "Support"}</span>
@@ -112,6 +153,13 @@ function MobileMenuContact() {
       </div>
     </section>,
     panelTarget
+  );
+
+  return (
+    <>
+      {catalog}
+      {support}
+    </>
   );
 }
 
