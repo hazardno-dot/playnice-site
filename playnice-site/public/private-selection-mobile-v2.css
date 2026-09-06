@@ -40,7 +40,7 @@
   }
 
   .private-selection-items {
-    gap: 6px;
+    gap: 8px;
     padding-right: 2px;
     scrollbar-width: none;
   }
@@ -52,8 +52,8 @@
   .private-selection-item {
     grid-template-columns: 54px minmax(0, 1fr);
     gap: 10px;
-    min-height: 74px;
-    padding: 7px 8px;
+    min-height: 88px;
+    padding: 8px;
     align-items: center;
     border-radius: 14px;
   }
@@ -72,7 +72,7 @@
 
   .private-selection-item-info {
     min-width: 0;
-    gap: 4px;
+    gap: 0;
   }
 
   .private-selection-item-category {
@@ -86,30 +86,29 @@
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    margin: 0;
+    margin: 0 0 12px;
     font-size: 0.94rem;
     line-height: 1.03;
   }
 
-  /* Card copy is useful on desktop, but consumes the height of an
-     additional saved fragrance on mobile. Keep the scan focused on
-     product name, price and actions. */
+  /* Never let desktop card copy occupy the compact mobile item row. */
+  .private-selection-item-info p,
   .private-selection-item-info > p {
-    display: none;
+    display: none !important;
   }
 
   .private-selection-item-bottom {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
+    align-items: baseline;
     width: 100%;
-    margin-top: 9px;
+    margin: 0;
     gap: 10px;
   }
 
   .private-selection-item-price {
-    display: flex;
-    align-items: center;
+    display: inline-flex;
+    align-items: baseline;
     min-width: 0;
     margin: 0;
     gap: 4px;
@@ -118,12 +117,12 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transform: translateY(-1px);
+    transform: none;
   }
 
   .private-selection-item-actions {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: flex-end;
     margin: 0;
     gap: 8px;
@@ -134,6 +133,8 @@
   .private-selection-link,
   .private-selection-remove {
     margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
     font-size: 0.61rem;
     line-height: 1;
     letter-spacing: 0.08em;
@@ -166,8 +167,8 @@
 
   .private-selection-item {
     grid-template-columns: 50px minmax(0, 1fr);
-    min-height: 70px;
-    padding: 6px 7px;
+    min-height: 84px;
+    padding: 7px;
   }
 
   .private-selection-item-media {
@@ -181,11 +182,11 @@
   }
 
   .private-selection-item-info h4 {
+    margin-bottom: 11px;
     font-size: 0.9rem;
   }
 
   .private-selection-item-bottom {
-    margin-top: 8px;
     gap: 7px;
   }
 
