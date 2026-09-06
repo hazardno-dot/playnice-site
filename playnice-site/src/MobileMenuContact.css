@@ -145,9 +145,9 @@
 
   /* Primary navigation: editorial serif, lighter and crisper. */
   .header-next-mobile-primary .header-next-link {
-    height: 43px;
+    height: 45px;
     font-family: "Cormorant Garamond", serif;
-    font-size: 19px;
+    font-size: 20.5px;
     font-weight: 500;
     line-height: 1;
     letter-spacing: 0.012em;
@@ -157,7 +157,7 @@
 
   .header-next-mobile-primary .header-next-link::before {
     top: 10px;
-    height: 23px;
+    height: 25px;
   }
 
   .header-next-mobile-primary > div > small {
@@ -196,8 +196,8 @@
   }
 
   .header-next-mobile-primary .header-next-link {
-    height: 41px;
-    font-size: 18px;
+    height: 43px;
+    font-size: 19.5px;
   }
 
   .header-next-mobile-discover button {
