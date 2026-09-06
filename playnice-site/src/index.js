@@ -8,7 +8,6 @@ import MobileDiscoveryTextPolish from "./MobileDiscoveryTextPolish";
 import MobilePrivateSelectionProfile from "./MobilePrivateSelectionProfile";
 import MobileShopV2 from "./MobileShopV2";
 import MobileShopReveal from "./MobileShopReveal";
-import MobileProductModalBubbles from "./MobileProductModalBubbles";
 import MobileMenuContact from "./MobileMenuContact";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
@@ -17,6 +16,7 @@ import "./WishlistSurfacePolish.css";
 import "./HeroPaginationPosition.css";
 import "./MobileHeaderV2.css";
 import "./MobileHomeV2.css";
+import "./MobileFragranceIntelligenceV2.css";
 import "./MobileJustInV2.css";
 import "./MobileDiscoverySetsV2.css";
 import "./MobileHowItWorksV2.css";
@@ -45,7 +45,6 @@ root.render(
     <MobilePrivateSelectionProfile />
     <MobileShopV2 />
     <MobileShopReveal />
-    <MobileProductModalBubbles />
     <MobileMenuContact />
   </React.StrictMode>
 );
