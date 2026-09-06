@@ -57,6 +57,14 @@
     margin-top: var(--mobile-home-section-gap);
   }
 
+  /* Fragrance Intelligence is now a stronger visual gateway, so it can
+     sit a little closer to both the trust strip and Just In section. */
+  .playnice-discovery-portal,
+  .playnice-discovery-portal + .new-arrivals-section,
+  .new-arrivals-section {
+    margin-top: 36px;
+  }
+
   .homepage-shop-preview {
     margin-bottom: var(--mobile-home-related-gap);
   }
@@ -129,6 +137,12 @@
     --mobile-home-section-gap: 42px;
     --mobile-home-related-gap: 24px;
     --mobile-home-end-gap: 38px;
+  }
+
+  .playnice-discovery-portal,
+  .playnice-discovery-portal + .new-arrivals-section,
+  .new-arrivals-section {
+    margin-top: 32px;
   }
 
   .community-requests-section {
