@@ -81,23 +81,26 @@
 
   .footer-brand {
     margin: 0;
+    text-align: center;
   }
 
   .footer-logo {
     font-size: 30px;
     line-height: 1;
+    text-align: center;
   }
 
   .footer-tagline {
     margin-top: 4px;
+    text-align: center;
   }
 
   .footer-brand-text {
     max-width: 310px;
-    margin-top: 9px;
-    margin-bottom: 0;
+    margin: 9px auto 0;
     font-size: 12.3px;
     line-height: 1.42;
+    text-align: center;
     display: block;
     overflow: visible;
   }
@@ -105,6 +108,7 @@
   .social-links {
     margin-top: 9px;
     gap: 8px;
+    justify-content: center;
   }
 
   .social-links a {
