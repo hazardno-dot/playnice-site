@@ -29,6 +29,7 @@
     margin-bottom: 8px;
     font-size: 0.64rem;
     letter-spacing: 0.21em;
+    font-weight: 500;
   }
 
   .checkout-header h3 {
@@ -41,6 +42,7 @@
     max-width: 300px;
     font-size: 0.76rem;
     line-height: 1.35;
+    font-weight: 400;
   }
 
   /*
@@ -87,6 +89,7 @@
     padding: 10px 12px;
     border-radius: 12px;
     font-size: 0.86rem;
+    font-weight: 400;
   }
 
   .checkout-form textarea {
@@ -114,6 +117,7 @@
     padding: 2px 3px;
     font-size: 9.5px;
     line-height: 1.24;
+    font-weight: 500;
   }
 
   .checkout-trust-item span:first-child {
@@ -132,6 +136,7 @@
   .checkout-summary h4 {
     margin-bottom: 6px;
     font-size: 1rem;
+    font-weight: 600;
   }
 
   .checkout-summary-items {
@@ -147,12 +152,14 @@
   .checkout-summary-item h5 {
     font-size: 0.82rem;
     line-height: 1.15;
+    font-weight: 500;
   }
 
   .checkout-summary-item small,
   .checkout-summary-item p {
     font-size: 0.68rem;
     line-height: 1.2;
+    font-weight: 400;
   }
 
   .checkout-summary .shipping-progress-card {
@@ -164,6 +171,7 @@
 
   .checkout-summary .shipping-note {
     color: rgba(226, 193, 122, 0.88);
+    font-weight: 550;
   }
 
   .checkout-summary .shipping-progress-bar {
@@ -195,11 +203,13 @@
 
   .checkout-totals > div {
     margin-bottom: 5px;
+    font-weight: 500;
   }
 
   .checkout-grand-total {
     margin-top: 7px;
     padding-top: 8px;
+    font-weight: 600;
   }
 
   /* Final action comes only after the review summary. */
@@ -213,6 +223,7 @@
     padding: 11px 14px;
     font-size: 0.76rem;
     letter-spacing: 0.035em;
+    font-weight: 600;
   }
 
   /* Redundant with header + trust messaging on mobile. */
