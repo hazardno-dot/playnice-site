@@ -24,27 +24,23 @@
 
   .cart-drawer-header h3 {
     display: flex;
-    align-items: center;
-    gap: 7px;
+    align-items: baseline;
+    gap: 5px;
     font-size: 25px;
     line-height: 1;
   }
 
   .cart-selected-count {
-    min-width: 21px;
-    height: 21px;
     margin-left: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 5px;
-    border: 1px solid rgba(220, 181, 107, 0.13);
-    border-radius: 999px;
-    background: rgba(220, 181, 107, 0.045);
-    color: rgba(255, 248, 235, 0.48);
-    font-size: 0.43em;
-    font-weight: 600;
-    letter-spacing: -0.04em;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: rgba(255, 248, 235, 0.58);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 0.72em;
+    font-weight: 500;
+    letter-spacing: 0;
     line-height: 1;
   }
 
@@ -222,9 +218,7 @@
 
 @media (max-width: 360px) {
   .cart-selected-count {
-    min-width: 20px;
-    height: 20px;
-    padding: 0 4px;
+    font-size: 0.70em;
   }
 
   .cart-shipping-note.shipping-note-locked .shipping-note {
