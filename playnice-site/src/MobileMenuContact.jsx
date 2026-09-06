@@ -107,9 +107,7 @@ function MobileMenuContact() {
         </button>
 
         <a href="mailto:info@playniceshop.me" onClick={closeMobileMenu}>
-          <span>{lang === "sr" ? "Kontaktiraj nas" : "Contact Us"}</span>
-          <small>info@playniceshop.me</small>
-          <strong aria-hidden="true">→</strong>
+          <span>Contact</span>
         </a>
       </div>
     </section>,
