@@ -37,58 +37,140 @@
     min-height: 48px;
   }
 
-  /* Footer: preserve structure, improve mobile hierarchy and touch comfort. */
+  /* =========================================
+     Footer V2 — mobile information hierarchy
+     Keep only high-value, end-of-page information visible.
+  ========================================= */
   .site-footer {
     width: calc(100% - 32px);
     margin-bottom: calc(18px + env(safe-area-inset-bottom));
   }
 
+  /* Trust summary stays visible, but compact. */
   .footer-benefits {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
   }
 
   .footer-benefit {
-    min-height: 72px;
-    padding: 12px 10px;
+    min-height: 60px;
+    padding: 9px 8px;
     justify-content: center;
   }
 
+  .footer-benefit i {
+    font-size: 14px;
+  }
+
   .footer-benefit strong {
-    font-size: 12px;
+    font-size: 11.5px;
+    line-height: 1.15;
   }
 
   .footer-benefit span {
-    font-size: 10.5px;
+    font-size: 9.8px;
+    line-height: 1.2;
   }
 
+  /* One simple vertical footer flow instead of desktop columns. */
   .site-footer-inner {
-    gap: 20px 18px;
-    padding-top: 22px;
-    padding-bottom: 18px;
+    display: block;
+    padding-top: 20px;
+    padding-bottom: 14px;
+  }
+
+  .footer-brand {
+    margin: 0;
+  }
+
+  .footer-logo {
+    font-size: 30px;
+    line-height: 1;
+  }
+
+  .footer-tagline {
+    margin-top: 4px;
   }
 
   .footer-brand-text {
-    max-width: 330px;
+    max-width: 310px;
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-size: 12.5px;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .social-links {
     margin-top: 11px;
-    font-size: 13px;
-    line-height: 1.52;
+    gap: 8px;
   }
 
-  .footer-column h4 {
-    margin-bottom: 9px;
+  .social-links a {
+    width: 34px;
+    height: 34px;
   }
 
-  .footer-link,
-  .footer-contact,
-  .footer-mini-link {
-    min-height: 32px;
+  /* Primary navigation already lives in the mobile menu.
+     Repeating eight links here adds scroll without adding value. */
+  .site-footer-inner > .footer-column:not(.footer-contact-column) {
+    display: none;
+  }
+
+  /* Contact remains, but as a compact utility line. */
+  .footer-contact-column {
+    margin-top: 15px;
+    padding-top: 13px;
+    border-top: 1px solid rgba(220, 181, 107, 0.10);
+  }
+
+  .footer-contact-column h4 {
+    margin: 0 0 7px;
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+  }
+
+  .footer-contact-column .footer-contact {
+    min-height: 24px;
+    margin-right: 12px;
     display: inline-flex;
     align-items: center;
+    font-size: 11.5px;
+  }
+
+  .footer-contact-column p {
+    display: none;
+  }
+
+  /* Policy detail is available through Help/Checkout and footer fallback link.
+     Do not make it a full content card on mobile. */
+  #delivery-returns {
+    display: none;
   }
 
   .footer-bottom {
+    margin-top: 0;
     padding-top: 12px;
+    padding-bottom: 4px;
     gap: 7px;
+    border-top: 1px solid rgba(220, 181, 107, 0.08);
+  }
+
+  .footer-bottom p {
+    font-size: 10.5px;
+    line-height: 1.25;
+  }
+
+  .footer-bottom-links {
+    gap: 12px;
+  }
+
+  .footer-mini-link {
+    min-height: 26px;
+    font-size: 10.5px;
   }
 }
 
@@ -103,6 +185,10 @@
   }
 
   .footer-benefit {
-    min-height: 68px;
+    min-height: 58px;
+  }
+
+  .footer-brand-text {
+    max-width: 290px;
   }
 }
