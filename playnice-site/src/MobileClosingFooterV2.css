@@ -4,37 +4,74 @@
 ========================================= */
 
 @media (max-width: 640px) {
-  /* Closing: premium, concise final scene. */
+  /* Closing: one memorable brand line before the footer.
+     Keep this intentionally non-interactive — the page has already converted. */
   .closing-section {
     width: calc(100% - 32px);
+    margin-top: 24px;
+    margin-bottom: 20px;
   }
 
   .closing-shell {
-    padding: 32px 22px;
-    border-radius: 26px;
+    position: relative;
+    padding: 28px 20px 30px;
+    border-radius: 24px;
+    text-align: center;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 18%, rgba(220, 181, 107, 0.09), transparent 52%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0.004));
+    border: 1px solid rgba(220, 181, 107, 0.18);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.025),
+      0 18px 46px rgba(0, 0, 0, 0.24);
+  }
+
+  .closing-shell::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 92px;
+    height: 1px;
+    transform: translateX(-50%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(220, 181, 107, 0.82),
+      transparent
+    );
+  }
+
+  .closing-kicker {
+    margin: 0 0 10px;
+    color: var(--gold);
+    font-size: 9.5px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    opacity: 0.86;
   }
 
   .closing-title {
-    font-size: clamp(38px, 10.5vw, 46px);
-    line-height: 0.96;
+    max-width: 330px;
+    margin: 0 auto;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(30px, 8.3vw, 36px);
+    line-height: 0.98;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
   }
 
+  /* On mobile Final Impression is a sign-off, not another sales block. */
+  .closing-text,
   .closing-copy,
-  .closing-shell > p:not(.section-kicker) {
-    max-width: 310px;
-    margin-inline: auto;
-    font-size: 14px;
-    line-height: 1.58;
-  }
-
+  .closing-shell > p:not(.closing-kicker):not(.section-kicker),
   .closing-actions,
   .closing-cta-row {
-    gap: 10px;
-  }
-
-  .closing-section .gold-button,
-  .closing-section .ghost-button {
-    min-height: 48px;
+    display: none;
   }
 
   /* =========================================
@@ -165,8 +202,18 @@
     width: calc(100% - 28px);
   }
 
+  .closing-section {
+    margin-top: 22px;
+    margin-bottom: 18px;
+  }
+
   .closing-shell {
-    padding: 30px 20px;
+    padding: 26px 18px 28px;
+  }
+
+  .closing-title {
+    max-width: 300px;
+    font-size: clamp(29px, 8.4vw, 33px);
   }
 
   .footer-benefit {
