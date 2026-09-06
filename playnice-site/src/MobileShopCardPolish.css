@@ -1,25 +1,18 @@
 /* =========================================
    PLAYNICE MOBILE SHOP — CARD COPY POLISH
-   Mobile-only. Restore a little breathing room without
-   shrinking typography or changing desktop card proportions.
+   Mobile-only. Allow one extra copy line without forcing
+   a fixed copy-stack height or changing desktop proportions.
 ========================================= */
 
 @media (max-width: 640px) {
   .shop-section .product-card-copy,
   .shop-section .product-card-copy.premium-card-copy {
     line-height: 1.32;
-
-    min-height: calc(1.32em * 3);
     max-height: calc(1.32em * 3);
 
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
     overflow: hidden;
-  }
-
-  .shop-section .product-card-copy-stack {
-    min-height: 126px;
-    max-height: 126px;
   }
 }
