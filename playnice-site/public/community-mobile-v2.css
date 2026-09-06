@@ -59,6 +59,11 @@
     font-size: 12px;
     line-height: 1;
     transform: translateY(-1px);
+    transition: transform 0.2s ease;
+  }
+
+  .community-mobile-reveal.is-expanded {
+    margin-top: 14px;
   }
 
   .community-mobile-reveal:active {
