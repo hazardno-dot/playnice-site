@@ -10,6 +10,15 @@
     width: auto;
     max-height: calc(100dvh - 20px);
     border-radius: 20px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .checkout-modal::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
   }
 
   .checkout-header {
@@ -121,17 +130,17 @@
   }
 
   .checkout-summary h4 {
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     font-size: 1rem;
   }
 
   .checkout-summary-items {
-    gap: 7px;
+    gap: 6px;
   }
 
   .checkout-summary-item {
     gap: 8px;
-    padding: 0 0 7px;
+    padding: 0 0 6px;
   }
 
   .checkout-summary-item strong,
@@ -153,10 +162,25 @@
     border-radius: 12px;
   }
 
+  .checkout-summary .shipping-note {
+    color: rgba(226, 193, 122, 0.88);
+  }
+
   .checkout-summary .shipping-progress-bar {
     width: 100%;
     height: 4px;
     margin-top: 7px;
+    background: rgba(220, 181, 107, 0.09);
+  }
+
+  .checkout-summary .shipping-progress-fill {
+    background: linear-gradient(
+      90deg,
+      rgba(190, 141, 64, 0.92) 0%,
+      rgba(231, 198, 125, 0.96) 58%,
+      rgba(199, 158, 82, 0.92) 100%
+    );
+    box-shadow: 0 0 8px rgba(220, 181, 107, 0.18);
   }
 
   /* Policy details are already communicated in the trust block and cart. */
