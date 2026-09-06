@@ -143,11 +143,11 @@
     display: none;
   }
 
-  /* Primary navigation: editorial serif, lighter and crisper. */
+  /* Primary navigation: larger editorial serif. */
   .header-next-mobile-primary .header-next-link {
-    height: 45px;
+    height: 47px;
     font-family: "Cormorant Garamond", serif;
-    font-size: 20.5px;
+    font-size: 22px;
     font-weight: 500;
     line-height: 1;
     letter-spacing: 0.012em;
@@ -155,8 +155,16 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Home is the section entry: keep it in the same clean sans family as section labels. */
+  .header-next-mobile-primary .header-next-link:first-of-type {
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
   .header-next-mobile-primary .header-next-link::before {
-    top: 10px;
+    top: 11px;
     height: 25px;
   }
 
@@ -196,8 +204,12 @@
   }
 
   .header-next-mobile-primary .header-next-link {
-    height: 43px;
-    font-size: 19.5px;
+    height: 45px;
+    font-size: 21px;
+  }
+
+  .header-next-mobile-primary .header-next-link:first-of-type {
+    font-size: 14.5px;
   }
 
   .header-next-mobile-discover button {
