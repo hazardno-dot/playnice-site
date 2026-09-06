@@ -40,7 +40,7 @@
   }
 
   .private-selection-items {
-    gap: 8px;
+    gap: 6px;
     padding-right: 2px;
     scrollbar-width: none;
   }
@@ -52,8 +52,8 @@
   .private-selection-item {
     grid-template-columns: 54px minmax(0, 1fr);
     gap: 10px;
-    min-height: 88px;
-    padding: 8px;
+    min-height: 80px;
+    padding: 7px 8px;
     align-items: center;
     border-radius: 14px;
   }
@@ -72,7 +72,7 @@
 
   .private-selection-item-info {
     min-width: 0;
-    gap: 0;
+    gap: 4px;
   }
 
   .private-selection-item-category {
@@ -86,13 +86,13 @@
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    margin: 0 0 12px;
+    margin: 0;
     font-size: 0.94rem;
     line-height: 1.03;
   }
 
-  /* Never let desktop card copy occupy the compact mobile item row. */
-  .private-selection-item-info p,
+  /* Hide the desktop editorial copy completely on mobile so the
+     product name and the price/actions row form two clean lines. */
   .private-selection-item-info > p {
     display: none !important;
   }
@@ -102,7 +102,7 @@
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: baseline;
     width: 100%;
-    margin: 0;
+    margin-top: 10px;
     gap: 10px;
   }
 
@@ -111,6 +111,7 @@
     align-items: baseline;
     min-width: 0;
     margin: 0;
+    padding: 0;
     gap: 4px;
     font-size: 0.7rem;
     line-height: 1;
@@ -120,11 +121,17 @@
     transform: none;
   }
 
+  .private-selection-item-price span {
+    line-height: 1;
+  }
+
   .private-selection-item-actions {
-    display: flex;
+    display: inline-flex;
     align-items: baseline;
     justify-content: flex-end;
+    align-self: baseline;
     margin: 0;
+    padding: 0;
     gap: 8px;
     line-height: 1;
     white-space: nowrap;
@@ -133,11 +140,11 @@
   .private-selection-link,
   .private-selection-remove {
     margin: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0;
     font-size: 0.61rem;
     line-height: 1;
     letter-spacing: 0.08em;
+    vertical-align: baseline;
   }
 
   .private-selection-footer {
@@ -167,8 +174,8 @@
 
   .private-selection-item {
     grid-template-columns: 50px minmax(0, 1fr);
-    min-height: 84px;
-    padding: 7px;
+    min-height: 76px;
+    padding: 6px 7px;
   }
 
   .private-selection-item-media {
@@ -182,11 +189,11 @@
   }
 
   .private-selection-item-info h4 {
-    margin-bottom: 11px;
     font-size: 0.9rem;
   }
 
   .private-selection-item-bottom {
+    margin-top: 9px;
     gap: 7px;
   }
 
