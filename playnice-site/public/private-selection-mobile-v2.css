@@ -103,19 +103,22 @@
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     width: 100%;
-    margin-top: 2px;
+    margin-top: 9px;
     gap: 10px;
   }
 
   .private-selection-item-price {
+    display: flex;
+    align-items: center;
     min-width: 0;
     margin: 0;
     gap: 4px;
     font-size: 0.7rem;
-    line-height: 1.1;
+    line-height: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transform: translateY(-1px);
   }
 
   .private-selection-item-actions {
@@ -124,6 +127,7 @@
     justify-content: flex-end;
     margin: 0;
     gap: 8px;
+    line-height: 1;
     white-space: nowrap;
   }
 
@@ -181,6 +185,7 @@
   }
 
   .private-selection-item-bottom {
+    margin-top: 8px;
     gap: 7px;
   }
 
