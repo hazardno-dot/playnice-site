@@ -1,41 +1,52 @@
 (() => {
   const MOBILE_QUERY = "(max-width: 640px)";
-  const ACTIVE_VISIBLE = 5;
+  const ACTIVE_VISIBLE = 3;
   const ADDED_VISIBLE = 4;
   const media = window.matchMedia(MOBILE_QUERY);
 
-  let sectionObserver = null;
   let contentObserver = null;
   let currentSection = null;
   let scheduled = false;
+  let focusScheduled = false;
 
   const isEnglish = (section) => {
     const kicker = section?.querySelector(".scent-request-kicker")?.textContent || "";
     return /community/i.test(kicker);
   };
 
-  const revealLabel = (type, english) => {
+  const revealLabel = (type, english, expanded) => {
     if (type === "active") {
+      if (expanded) {
+        return english ? "SHOW LESS REQUESTS" : "PRIKAŽI MANJE ZAHTEVA";
+      }
       return english ? "SHOW ALL REQUESTS" : "PRIKAŽI SVE ZAHTEVE";
     }
 
+    if (expanded) {
+      return english ? "SHOW LESS ADDED SCENTS" : "PRIKAŽI MANJE DODATIH PARFEMA";
+    }
     return english ? "SHOW ALL ADDED SCENTS" : "PRIKAŽI SVE DODATE PARFEME";
   };
 
-  const ensureRevealControl = (list, items, limit, type, english) => {
+  const syncRevealControl = (list, items, limit, type, english) => {
     if (!list) return;
 
     const parent = list.parentElement;
     if (!parent) return;
 
-    let control = parent.querySelector(`.community-mobile-reveal[data-reveal="${type}"]`);
+    let control = parent.querySelector(
+      `.community-mobile-reveal[data-reveal="${type}"]`
+    );
     const expanded = list.dataset.mobileExpanded === "true";
 
     items.forEach((item, index) => {
-      item.classList.toggle("community-mobile-hidden", !expanded && index >= limit);
+      item.classList.toggle(
+        "community-mobile-hidden",
+        !expanded && index >= limit
+      );
     });
 
-    if (expanded || items.length <= limit) {
+    if (items.length <= limit) {
       control?.remove();
       return;
     }
@@ -45,19 +56,61 @@
       control.type = "button";
       control.className = "community-mobile-reveal";
       control.dataset.reveal = type;
-      control.innerHTML = `<span></span><strong></strong><i aria-hidden="true">↓</i><span></span>`;
+      control.innerHTML =
+        '<span></span><strong></strong><i aria-hidden="true">↓</i><span></span>';
 
       control.addEventListener("click", () => {
-        list.dataset.mobileExpanded = "true";
-        items.forEach((item) => item.classList.remove("community-mobile-hidden"));
-        control.remove();
+        const willExpand = list.dataset.mobileExpanded !== "true";
+        list.dataset.mobileExpanded = willExpand ? "true" : "false";
+        enhanceCommunity();
       });
 
       list.insertAdjacentElement("afterend", control);
     }
 
+    control.classList.toggle("is-expanded", expanded);
+    control.setAttribute("aria-expanded", expanded ? "true" : "false");
+
     const label = control.querySelector("strong");
-    if (label) label.textContent = revealLabel(type, english);
+    if (label) label.textContent = revealLabel(type, english, expanded);
+
+    const arrow = control.querySelector("i");
+    if (arrow) arrow.textContent = expanded ? "↑" : "↓";
+  };
+
+  const updateCommunityFocus = () => {
+    focusScheduled = false;
+
+    if (!media.matches) {
+      document.body.classList.remove("community-mobile-focus");
+      return;
+    }
+
+    const section = document.querySelector(".community-requests-section");
+    const panel =
+      section?.querySelector(".community-request-panel-full") || section;
+
+    if (!panel) {
+      document.body.classList.remove("community-mobile-focus");
+      return;
+    }
+
+    const rect = panel.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    const hasEntered = rect.top < viewportHeight - 96;
+    const communityStillOwnsBottom = rect.bottom > viewportHeight * 0.72;
+
+    document.body.classList.toggle(
+      "community-mobile-focus",
+      hasEntered && communityStillOwnsBottom
+    );
+  };
+
+  const scheduleFocusUpdate = () => {
+    if (focusScheduled) return;
+    focusScheduled = true;
+    requestAnimationFrame(updateCommunityFocus);
   };
 
   const enhanceCommunity = () => {
@@ -78,21 +131,6 @@
         requestAnimationFrame(enhanceCommunity);
       });
       contentObserver.observe(section, { childList: true, subtree: true });
-
-      sectionObserver?.disconnect();
-      sectionObserver = new IntersectionObserver(
-        ([entry]) => {
-          document.body.classList.toggle(
-            "community-mobile-focus",
-            Boolean(entry?.isIntersecting) && media.matches
-          );
-        },
-        {
-          threshold: 0,
-          rootMargin: "-88px 0px -54px 0px",
-        }
-      );
-      sectionObserver.observe(section);
     }
 
     const english = isEnglish(section);
@@ -101,7 +139,7 @@
       ? [...activeList.querySelectorAll(":scope > .community-most-wanted-item")]
       : [];
 
-    ensureRevealControl(
+    syncRevealControl(
       activeList,
       activeItems,
       ACTIVE_VISIBLE,
@@ -114,13 +152,15 @@
       ? [...addedList.querySelectorAll(":scope > .already-in-collection-item")]
       : [];
 
-    ensureRevealControl(
+    syncRevealControl(
       addedList,
       addedItems,
       ADDED_VISIBLE,
       "added",
       english
     );
+
+    scheduleFocusUpdate();
   };
 
   const resetDesktop = () => {
@@ -146,6 +186,8 @@
 
   const start = () => {
     appObserver.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener("scroll", scheduleFocusUpdate, { passive: true });
+    window.addEventListener("resize", scheduleFocusUpdate, { passive: true });
     boot();
   };
 
