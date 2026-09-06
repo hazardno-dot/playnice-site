@@ -20,6 +20,7 @@
     margin-bottom: 10px;
     font-size: 0.64rem;
     letter-spacing: 0.21em;
+    font-weight: 500;
   }
 
   .cart-drawer-header h3 {
@@ -70,11 +71,13 @@
     height: 25px;
     background: rgba(255, 255, 255, 0.045);
     color: rgba(255, 248, 235, 0.84);
+    font-weight: 500;
   }
 
   .qty-control span {
     min-width: 17px;
     font-size: 12.5px;
+    font-weight: 500;
   }
 
   .remove-link {
@@ -83,6 +86,7 @@
     color: rgba(215, 203, 183, 0.44);
     font-size: 9.5px;
     line-height: 1;
+    font-weight: 400;
   }
 
   /* Summary */
@@ -113,7 +117,7 @@
     width: 100%;
     color: rgba(234, 190, 111, 0.90);
     font-size: 0.72rem;
-    font-weight: 650;
+    font-weight: 550;
     line-height: 1.22;
     white-space: nowrap;
   }
@@ -157,6 +161,7 @@
     line-height: 1.22;
     letter-spacing: -0.005em;
     white-space: normal;
+    font-weight: 500;
   }
 
   .cart-trust-item + .cart-trust-item {
@@ -185,12 +190,13 @@
 
   .cart-fixed-footer .cart-grand-total span {
     font-size: 0.88rem;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .cart-fixed-footer .cart-grand-total strong {
     font-size: 1.42rem;
     line-height: 1;
+    font-weight: 600;
   }
 
   .cart-footer-shipping-status {
@@ -198,6 +204,7 @@
     color: rgba(255, 248, 235, 0.56);
     font-size: 10.5px;
     line-height: 1.25;
+    font-weight: 400;
   }
 
   .cart-fixed-footer .cart-checkout-button {
@@ -206,6 +213,7 @@
     border-radius: 999px;
     font-size: 0.72rem;
     letter-spacing: 0.045em;
+    font-weight: 600;
   }
 
   .cart-fixed-footer .cart-safe-note {
@@ -213,6 +221,7 @@
     color: rgba(255, 248, 235, 0.58);
     font-size: 0.72rem;
     line-height: 1.28;
+    font-weight: 400;
   }
 }
 
