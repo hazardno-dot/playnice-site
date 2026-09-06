@@ -3,7 +3,8 @@ import { createPortal } from "react-dom";
 import "./MobileMenuContact.css";
 
 function MobileMenuContact() {
-  const [target, setTarget] = useState(null);
+  const [panelTarget, setPanelTarget] = useState(null);
+  const [discoverTarget, setDiscoverTarget] = useState(null);
   const [lang, setLang] = useState(
     typeof document !== "undefined" && document.documentElement.lang?.toLowerCase().startsWith("sr")
       ? "sr"
@@ -13,16 +14,19 @@ function MobileMenuContact() {
   useEffect(() => {
     let frameId;
 
-    const resolveTarget = () => {
+    const resolveTargets = () => {
       const panel = document.querySelector(".header-next-mobile-panel");
-      if (panel) {
-        setTarget(panel);
-        return;
+      const discover = document.querySelector(".header-next-mobile-discover > div");
+
+      if (panel) setPanelTarget(panel);
+      if (discover) setDiscoverTarget(discover);
+
+      if (!panel || !discover) {
+        frameId = window.requestAnimationFrame(resolveTargets);
       }
-      frameId = window.requestAnimationFrame(resolveTarget);
     };
 
-    resolveTarget();
+    resolveTargets();
 
     const languageObserver = new MutationObserver(() => {
       setLang(
@@ -41,23 +45,47 @@ function MobileMenuContact() {
     };
   }, []);
 
-  if (!target) return null;
+  const openFaq = () => {
+    const faqButton = Array.from(document.querySelectorAll(".footer-link")).find(
+      (button) => button.textContent?.trim() === "FAQ"
+    );
 
-  return createPortal(
-    <section className="header-next-mobile-contact" aria-label={lang === "sr" ? "Kontakt" : "Contact Us"}>
-      <p>{lang === "sr" ? "Kontakt" : "Contact Us"}</p>
-      <div className="header-next-mobile-contact-links">
-        <a href="mailto:info@playniceshop.me">info@playniceshop.me</a>
-        <a
-          href="https://www.instagram.com/playnice.me/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          @playnice.me
-        </a>
-      </div>
-    </section>,
-    target
+    faqButton?.click();
+  };
+
+  if (!panelTarget && !discoverTarget) return null;
+
+  return (
+    <>
+      {discoverTarget &&
+        createPortal(
+          <button type="button" onClick={openFaq}>
+            FAQ
+          </button>,
+          discoverTarget
+        )}
+
+      {panelTarget &&
+        createPortal(
+          <section
+            className="header-next-mobile-contact"
+            aria-label={lang === "sr" ? "Kontakt" : "Contact Us"}
+          >
+            <p>{lang === "sr" ? "Kontakt" : "Contact Us"}</p>
+            <div className="header-next-mobile-contact-links">
+              <a href="mailto:info@playniceshop.me">info@playniceshop.me</a>
+              <a
+                href="https://www.instagram.com/playnice.me/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                @playnice.me
+              </a>
+            </div>
+          </section>,
+          panelTarget
+        )}
+    </>
   );
 }
 
