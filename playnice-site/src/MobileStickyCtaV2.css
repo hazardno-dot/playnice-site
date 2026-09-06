@@ -5,40 +5,58 @@
 
 @media (max-width: 640px) {
   .sticky-cta-shell {
-    width: min(calc(100% - 32px), 390px);
-    bottom: calc(10px + env(safe-area-inset-bottom));
+    width: min(calc(100% - 40px), 380px);
+    bottom: calc(8px + env(safe-area-inset-bottom));
+    transition:
+      opacity 180ms ease,
+      transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0s linear 0s;
+  }
+
+  /* Community and the closing partner/footer zone already contain
+     primary actions. Do not cover them with a second floating CTA. */
+  body.community-mobile-focus .sticky-cta-shell,
+  body.mobile-sticky-cta-suppressed .sticky-cta-shell {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(14px);
+    transition:
+      opacity 160ms ease,
+      transform 200ms ease,
+      visibility 0s linear 160ms;
   }
 
   .sticky-cta-button {
-    min-height: 52px;
-    border-radius: 20px;
+    min-height: 46px;
+    border-radius: 17px;
     overflow: hidden;
-    border: 1px solid rgba(220, 181, 107, 0.14);
+    border: 1px solid rgba(220, 181, 107, 0.12);
     background:
-      linear-gradient(180deg, rgba(20, 18, 15, 0.18), rgba(7, 7, 7, 0.12)),
+      linear-gradient(180deg, rgba(20, 18, 15, 0.15), rgba(7, 7, 7, 0.10)),
+      rgba(8, 8, 8, 0.11);
+    backdrop-filter: blur(14px) saturate(112%);
+    -webkit-backdrop-filter: blur(14px) saturate(112%);
+    box-shadow:
+      0 6px 16px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.018);
+  }
+
+  .sticky-cta-button:hover {
+    transform: none;
+    border-color: rgba(220, 181, 107, 0.18);
+    background:
+      linear-gradient(180deg, rgba(20, 18, 15, 0.19), rgba(7, 7, 7, 0.13)),
       rgba(8, 8, 8, 0.14);
-    backdrop-filter: blur(15px) saturate(116%);
-    -webkit-backdrop-filter: blur(15px) saturate(116%);
     box-shadow:
       0 7px 18px rgba(0, 0, 0, 0.14),
       inset 0 1px 0 rgba(255, 255, 255, 0.022);
   }
 
-  .sticky-cta-button:hover {
-    transform: none;
-    border-color: rgba(220, 181, 107, 0.20);
-    background:
-      linear-gradient(180deg, rgba(20, 18, 15, 0.22), rgba(7, 7, 7, 0.16)),
-      rgba(8, 8, 8, 0.18);
-    box-shadow:
-      0 8px 20px rgba(0, 0, 0, 0.16),
-      inset 0 1px 0 rgba(255, 255, 255, 0.026);
-  }
-
   .sticky-cta-main {
     position: relative;
-    min-height: 52px;
-    padding: 9px 50px 9px 15px;
+    min-height: 46px;
+    padding: 7px 46px 7px 14px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -48,11 +66,11 @@
   .sticky-cta-main::after {
     content: "→";
     position: absolute;
-    right: 16px;
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: rgba(229, 195, 122, 0.92);
-    font-size: 18px;
+    color: rgba(229, 195, 122, 0.86);
+    font-size: 16px;
     font-weight: 400;
     line-height: 1;
     transition: transform 0.22s ease, color 0.22s ease;
@@ -63,17 +81,17 @@
   }
 
   .sticky-cta-copy {
-    gap: 1px;
+    gap: 0;
     max-width: calc(100% - 8px);
   }
 
   .sticky-cta-copy strong {
-    color: rgba(255, 249, 239, 0.96);
-    font-size: 0.88rem;
-    line-height: 1.05;
-    letter-spacing: 0.01em;
+    color: rgba(255, 249, 239, 0.92);
+    font-size: 0.82rem;
+    line-height: 1.02;
+    letter-spacing: 0.008em;
     animation: none;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.34);
+    text-shadow: 0 1px 7px rgba(0, 0, 0, 0.28);
   }
 
   .sticky-cta-copy strong::after {
@@ -82,12 +100,12 @@
 
   .sticky-cta-copy small {
     margin-top: 2px;
-    color: rgba(255, 248, 235, 0.58);
-    font-size: 0.62rem;
-    line-height: 1.1;
-    letter-spacing: 0.055em;
+    color: rgba(255, 248, 235, 0.52);
+    font-size: 0.58rem;
+    line-height: 1.08;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    text-shadow: 0 1px 7px rgba(0, 0, 0, 0.28);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.24);
   }
 
   /* Le Journal is now available in the header/menu.
@@ -99,11 +117,11 @@
 
 @media (max-width: 390px) {
   .sticky-cta-shell {
-    width: calc(100% - 28px);
+    width: calc(100% - 36px);
   }
 
   .sticky-cta-main {
-    padding-left: 14px;
-    padding-right: 46px;
+    padding-left: 13px;
+    padding-right: 43px;
   }
 }
