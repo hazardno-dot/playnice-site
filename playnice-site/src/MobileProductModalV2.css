@@ -42,10 +42,12 @@
 
   .modal-rating-score {
     font-size: 0.86rem;
+    font-weight: 600;
   }
 
   .modal-rating-label {
     font-size: 0.66rem;
+    font-weight: 500;
   }
 
   .modal-inspired-mini {
@@ -57,6 +59,7 @@
 
   .modal-inspired-mini-name {
     font-size: 0.76rem;
+    font-weight: 500;
   }
 
   .modal-media {
@@ -88,6 +91,7 @@
     min-height: 26px;
     padding: 4px 8px;
     font-size: 0.54rem;
+    font-weight: 500;
   }
 
   /* Restore the original desktop recommendation-card language.
@@ -114,6 +118,7 @@
 
   .modal-category {
     font-size: 0.6rem;
+    font-weight: 600;
   }
 
   .modal-media-meta-copy p {
@@ -131,6 +136,7 @@
     padding: 6px 10px 5px;
     gap: 6px;
     font-size: 0.66rem;
+    font-weight: 500;
   }
 
   .modal-chip::before {
@@ -166,11 +172,13 @@
     font-size: 0.56rem;
     line-height: 1.05;
     letter-spacing: 0.14em;
+    font-weight: 600;
   }
 
   .modal-info-card strong {
     font-size: 0.9rem;
     line-height: 1.16;
+    font-weight: 500;
   }
 
   .modal-info-card::after {
@@ -188,11 +196,13 @@
   .modal-label {
     margin-bottom: 3px;
     font-size: 0.64rem;
+    font-weight: 600;
   }
 
   .modal-size-helper {
     margin: -1px 0 4px;
     font-size: 10px;
+    font-weight: 400;
   }
 
   /* Restore desktop-style size cards, scaled tightly for mobile. */
@@ -216,12 +226,14 @@
   .modal-size span {
     font-size: 0.6rem;
     letter-spacing: 0.15em;
+    font-weight: 600;
   }
 
   .modal-sizes > button strong,
   .modal-size strong {
     margin-top: 3px;
     font-size: 1rem;
+    font-weight: 600;
   }
 
   .modal-size.active::after {
@@ -247,12 +259,14 @@
   .modal-price-box span {
     font-size: 0.52rem;
     letter-spacing: 0.11em;
+    font-weight: 500;
   }
 
   .modal-price-box strong,
   .modal-selected-price {
     font-size: 1.16rem;
     line-height: 1;
+    font-weight: 500;
   }
 
   .modal-price-box::after {
@@ -270,11 +284,13 @@
     padding: 0 16px;
     font-size: 0.72rem;
     letter-spacing: 0.15em;
+    font-weight: 600;
   }
 
   .modal-buy-now {
     min-height: 36px;
     font-size: 0.66rem;
+    font-weight: 500;
   }
 }
 
