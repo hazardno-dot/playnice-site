@@ -10,18 +10,33 @@
   }
 
   .private-selection-header {
-    gap: 12px;
-    padding-bottom: 10px;
+    gap: 10px;
+    padding-bottom: 8px;
   }
 
   .private-selection-header .section-kicker {
-    margin-bottom: 8px;
+    margin-bottom: 5px;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
   }
 
   .private-selection-header h3 {
-    margin-top: 0;
-    font-size: 1.52rem;
-    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: nowrap;
+    gap: 4px;
+    margin: 0;
+    font-size: 1.34rem;
+    line-height: 0.98;
+    white-space: nowrap;
+  }
+
+  .private-selection-header-count {
+    display: inline !important;
+    margin: 0 !important;
+    font: inherit;
+    line-height: inherit;
+    white-space: nowrap;
   }
 
   .private-selection-items {
@@ -125,6 +140,10 @@
 @media (max-width: 390px) {
   .private-selection-drawer {
     padding: 14px 12px 12px;
+  }
+
+  .private-selection-header h3 {
+    font-size: 1.26rem;
   }
 
   .private-selection-item {
