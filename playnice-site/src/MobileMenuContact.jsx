@@ -69,17 +69,29 @@ function MobileMenuContact() {
         createPortal(
           <section
             className="header-next-mobile-contact"
-            aria-label={lang === "sr" ? "Kontakt" : "Contact Us"}
+            aria-label={lang === "sr" ? "Podrška" : "Support"}
           >
-            <p>{lang === "sr" ? "Kontakt" : "Contact Us"}</p>
+            <p>{lang === "sr" ? "Podrška" : "Support"}</p>
+
             <div className="header-next-mobile-contact-links">
-              <a href="mailto:info@playniceshop.me">info@playniceshop.me</a>
               <a
+                className="header-next-mobile-support-link is-primary"
+                href="mailto:info@playniceshop.me"
+              >
+                <span>{lang === "sr" ? "Kontaktiraj nas" : "Contact Us"}</span>
+                <small>info@playniceshop.me</small>
+                <strong aria-hidden="true">→</strong>
+              </a>
+
+              <a
+                className="header-next-mobile-support-link"
                 href="https://www.instagram.com/playnice.me/"
                 target="_blank"
                 rel="noreferrer"
               >
-                @playnice.me
+                <span>Instagram</span>
+                <small>@playnice.me</small>
+                <strong aria-hidden="true">↗</strong>
               </a>
             </div>
           </section>,
