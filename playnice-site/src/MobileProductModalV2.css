@@ -8,14 +8,18 @@
   .product-modal {
     width: calc(100vw - 18px);
     max-height: calc(100dvh - 14px);
-    border-radius: 20px;
+    border-radius: 18px;
   }
 
   .product-modal .close-button {
-    top: 14px;
-    right: 14px;
-    width: 32px;
-    height: 32px;
+    top: 13px;
+    right: 13px;
+    width: 31px;
+    height: 31px;
+    border-radius: 999px;
+    border-color: rgba(220, 181, 107, 0.16);
+    background: rgba(255, 255, 255, 0.025);
+    box-shadow: none;
   }
 
   .modal-header {
@@ -49,70 +53,79 @@
   }
 
   .modal-inspired-mini {
-    padding: 6px 9px;
-    min-height: 34px;
-    border-radius: 10px;
+    padding: 5px 8px;
+    min-height: 31px;
+    border-radius: 9px;
     gap: 6px;
+    border-color: rgba(220, 181, 107, 0.10);
+    background: rgba(255, 255, 255, 0.018);
+    box-shadow: none;
   }
 
   .modal-inspired-mini-name {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
   }
 
   .modal-media {
-    padding: 12px 14px 10px;
+    padding: 10px 14px 9px;
   }
 
   .modal-image-wrap {
-    min-height: 154px;
+    min-height: 148px;
     padding: 0;
   }
 
   .modal-image-wrap::after {
     filter: blur(15px);
-    opacity: 0.42;
+    opacity: 0.38;
   }
 
   .modal-image {
-    max-height: 138px;
-    max-width: 70%;
+    max-height: 134px;
+    max-width: 68%;
   }
 
   .modal-wishlist-btn {
-    transform: scale(0.9);
+    transform: scale(0.88);
     transform-origin: top right;
   }
 
   .modal-note-map-button,
   .note-map-trigger {
-    min-height: 28px;
+    min-height: 27px;
     padding: 5px 9px;
-    font-size: 0.56rem;
+    border-radius: 999px;
+    font-size: 0.55rem;
+    box-shadow: none;
   }
 
   .modal-same-energy {
-    margin-top: 8px;
+    margin-top: 7px;
   }
 
   .modal-same-energy-list {
-    gap: 6px;
+    gap: 5px;
   }
 
   .modal-same-energy-item {
-    grid-template-columns: 30px 1fr;
-    min-height: 48px;
-    padding: 6px;
-    border-radius: 12px;
+    grid-template-columns: 28px 1fr;
+    min-height: 44px;
+    padding: 5px 7px;
+    border-radius: 10px;
+    border-color: rgba(220, 181, 107, 0.09);
+    background: rgba(255, 255, 255, 0.014);
+    box-shadow: none;
   }
 
   .modal-same-energy-img-wrap {
-    width: 30px;
-    height: 36px;
+    width: 28px;
+    height: 34px;
+    border-radius: 8px;
   }
 
   .modal-same-energy-text strong {
-    font-size: 0.74rem;
-    line-height: 1.05;
+    font-size: 0.72rem;
+    line-height: 1.04;
   }
 
   .modal-same-energy-text small {
@@ -120,28 +133,36 @@
   }
 
   .modal-media-meta {
-    padding-top: 2px;
+    margin-top: 3px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(220, 181, 107, 0.08);
   }
 
   .modal-category {
-    font-size: 0.62rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
   }
 
   .modal-media-meta-copy p {
-    margin-top: 5px;
-    font-size: 0.9rem;
-    line-height: 1.25;
+    margin-top: 4px;
+    font-size: 0.88rem;
+    line-height: 1.22;
+    color: rgba(255, 255, 255, 0.76);
   }
 
   .modal-content {
-    padding: 12px 14px 14px;
-    gap: 8px;
+    padding: 11px 14px 13px;
+    gap: 7px;
   }
 
   .modal-chip {
-    padding: 7px 11px 6px;
+    padding: 6px 10px 5px;
     gap: 6px;
-    font-size: 0.68rem;
+    border-radius: 999px;
+    border-color: rgba(220, 181, 107, 0.12);
+    background: rgba(220, 181, 107, 0.035);
+    box-shadow: none;
+    font-size: 0.66rem;
   }
 
   .modal-chip::before {
@@ -152,8 +173,8 @@
 
   .modal-description {
     margin-bottom: 0;
-    font-size: 0.98rem;
-    line-height: 1.28;
+    font-size: 0.97rem;
+    line-height: 1.27;
   }
 
   /* Redundant in the purchase decision flow on mobile. */
@@ -161,20 +182,19 @@
     display: none;
   }
 
-  /* One compact information surface instead of two large cards. */
+  /* Unified information rail instead of card-on-card UI. */
   .modal-info-grid {
     gap: 0;
     margin-top: 2px;
     overflow: hidden;
-    border: 1px solid rgba(220, 181, 107, 0.12);
-    border-radius: 16px;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.008)),
-      rgba(14, 14, 14, 0.88);
+    border: 1px solid rgba(220, 181, 107, 0.09);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.012);
+    box-shadow: none;
   }
 
   .modal-info-card {
-    padding: 10px 12px 9px;
+    padding: 9px 10px 8px;
     border: 0;
     border-radius: 0;
     background: transparent;
@@ -182,7 +202,7 @@
   }
 
   .modal-info-card + .modal-info-card {
-    border-top: 1px solid rgba(220, 181, 107, 0.10);
+    border-top: 1px solid rgba(220, 181, 107, 0.08);
   }
 
   .modal-info-card::after {
@@ -190,109 +210,146 @@
   }
 
   .modal-info-card span {
-    margin-bottom: 6px;
-    font-size: 0.58rem;
+    margin-bottom: 5px;
+    font-size: 0.56rem;
     line-height: 1.05;
     letter-spacing: 0.15em;
   }
 
   .modal-info-card strong {
-    font-size: 0.94rem;
-    line-height: 1.2;
+    font-size: 0.92rem;
+    line-height: 1.18;
   }
 
   .modal-purchase {
     margin-top: 3px;
-    gap: 8px;
+    gap: 7px;
     padding-top: 0;
   }
 
   .modal-label {
-    margin-bottom: 5px;
-    font-size: 0.66rem;
+    margin-bottom: 4px;
+    font-size: 0.64rem;
+    letter-spacing: 0.16em;
   }
 
   .modal-size-helper {
-    margin: -1px 0 6px;
-    font-size: 10.5px;
+    margin: -1px 0 5px;
+    font-size: 10px;
   }
 
+  /* Segmented size selector: one control, three choices. */
   .modal-sizes {
-    gap: 6px;
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid rgba(220, 181, 107, 0.12);
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.012);
   }
 
   .modal-sizes > button,
   .modal-size {
-    min-height: 62px;
-    height: 62px;
-    padding: 8px 7px;
-    border-radius: 14px;
+    min-height: 58px;
+    height: 58px;
+    padding: 8px 8px;
+    border: 0;
+    border-radius: 0;
     gap: 4px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .modal-sizes > button + button,
+  .modal-size + .modal-size {
+    border-left: 1px solid rgba(220, 181, 107, 0.09);
   }
 
   .modal-sizes > button span,
   .modal-size span {
-    font-size: 0.62rem;
-    letter-spacing: 0.16em;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
   }
 
   .modal-sizes > button strong,
   .modal-size strong {
-    margin-top: 5px;
-    font-size: 1.04rem;
+    margin-top: 4px;
+    font-size: 1rem;
+  }
+
+  .modal-size.active {
+    border-color: transparent;
+    background:
+      linear-gradient(180deg, rgba(220, 181, 107, 0.12), rgba(220, 181, 107, 0.035));
+    box-shadow: inset 0 0 0 1px rgba(220, 181, 107, 0.14);
   }
 
   .modal-size.active::after {
-    top: 8px;
-    right: 8px;
-    width: 6px;
-    height: 6px;
+    top: 7px;
+    right: 7px;
+    width: 5px;
+    height: 5px;
+    box-shadow: 0 0 0 3px rgba(220, 181, 107, 0.06);
   }
 
+  /* Purchase zone: quieter price surface, single dominant action. */
   .modal-purchase-bar {
-    gap: 8px;
-    padding-top: 8px;
-    align-items: stretch;
+    gap: 7px;
+    padding-top: 7px;
+    align-items: center;
+    border-top-color: rgba(220, 181, 107, 0.08);
   }
 
   .modal-price-box {
-    flex: 0 0 104px;
-    gap: 3px;
-    padding: 9px 10px 8px;
-    border-radius: 14px;
+    flex: 0 0 92px;
+    gap: 2px;
+    padding: 7px 8px 6px;
+    border: 0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.018);
+    box-shadow: none;
   }
 
   .modal-price-box span {
-    font-size: 0.54rem;
-    letter-spacing: 0.12em;
+    font-size: 0.5rem;
+    letter-spacing: 0.10em;
   }
 
   .modal-price-box strong,
   .modal-selected-price {
-    font-size: 1.24rem;
+    font-size: 1.18rem;
     line-height: 1;
   }
 
   .modal-price-box::after {
-    left: 10px;
-    bottom: 7px;
-    width: 38px;
+    display: none;
   }
 
   .modal-cta-group {
     flex: 1;
+    gap: 3px;
   }
 
   .modal-add-button {
-    min-height: 44px;
-    padding: 0 18px;
-    font-size: 0.74rem;
-    letter-spacing: 0.16em;
+    min-height: 42px;
+    padding: 0 17px;
+    border-radius: 13px;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    box-shadow:
+      0 8px 18px rgba(220, 181, 107, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
   }
 
   .modal-buy-now {
-    min-height: 38px;
-    font-size: 0.68rem;
+    min-height: 30px;
+    padding: 0 6px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    color: rgba(220, 181, 107, 0.82);
   }
 }
 
@@ -302,14 +359,14 @@
   }
 
   .modal-image-wrap {
-    min-height: 144px;
+    min-height: 140px;
   }
 
   .modal-image {
-    max-height: 128px;
+    max-height: 124px;
   }
 
   .modal-price-box {
-    flex-basis: 96px;
+    flex-basis: 86px;
   }
 }
