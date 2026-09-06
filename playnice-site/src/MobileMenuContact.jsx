@@ -104,7 +104,6 @@ function MobileMenuContact() {
       <div className="header-next-mobile-support-panel" aria-hidden={!supportOpen}>
         <button type="button" onClick={openFaq}>
           <span>FAQ</span>
-          <strong aria-hidden="true">→</strong>
         </button>
 
         <a href="mailto:info@playniceshop.me" onClick={closeMobileMenu}>
