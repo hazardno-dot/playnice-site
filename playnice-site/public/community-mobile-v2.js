@@ -78,12 +78,6 @@
     if (arrow) arrow.textContent = expanded ? "↑" : "↓";
   };
 
-  const overlapsViewportActionZone = (element, viewportHeight) => {
-    if (!element) return false;
-    const rect = element.getBoundingClientRect();
-    return rect.top < viewportHeight - 56 && rect.bottom > viewportHeight * 0.56;
-  };
-
   const updateCommunityFocus = () => {
     focusScheduled = false;
 
@@ -110,19 +104,9 @@
     }
 
     document.body.classList.toggle("community-mobile-focus", communityFocused);
-
-    const closingZones = [
-      document.querySelector(".mobile-partner-spotlight"),
-      document.querySelector(".site-footer"),
-    ];
-
-    const closingZoneFocused = closingZones.some((element) =>
-      overlapsViewportActionZone(element, viewportHeight)
-    );
-
     document.body.classList.toggle(
       "mobile-sticky-cta-suppressed",
-      communityFocused || closingZoneFocused
+      communityFocused
     );
   };
 
