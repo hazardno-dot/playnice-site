@@ -27,6 +27,7 @@ import "./MobilePrivateSelectionV2.css";
 import "./MobileClosingFooterV2.css";
 import "./MobileShopV2.css";
 import "./MobileShopReveal.css";
+import "./MobileShopCardPolish.css";
 import "./MobileProductModalV2.css";
 import "./MobileCartV2.css";
 import "./MobileCheckoutV2.css";
