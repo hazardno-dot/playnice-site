@@ -67,6 +67,81 @@
     font-size: 10px;
     letter-spacing: 0.05em;
   }
+
+  /* =========================================
+     DISCOVERY BUILDER — MOBILE DENSITY PASS
+     Shared by Designer & Niche + Arabian.
+  ========================================= */
+
+  .discovery-modal {
+    height: calc(100dvh - 16px) !important;
+    max-height: calc(100dvh - 16px) !important;
+    border-radius: 24px 24px 20px 20px !important;
+  }
+
+  .discovery-head {
+    padding: 18px 20px 11px !important;
+  }
+
+  .discovery-head h2 {
+    margin: 4px 0 7px !important;
+    font-size: clamp(28px, 7.7vw, 31px) !important;
+    line-height: 0.96 !important;
+  }
+
+  .discovery-head-text {
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  .discovery-progress {
+    gap: 6px !important;
+    margin-top: 10px !important;
+    padding: 8px 10px !important;
+  }
+
+  .discovery-grid {
+    gap: 10px !important;
+    padding: 12px 14px 16px !important;
+  }
+
+  .discovery-product {
+    min-height: 166px !important;
+    padding: 10px 8px 9px !important;
+    border-radius: 17px !important;
+  }
+
+  .discovery-product img {
+    height: 82px !important;
+    margin: 0 auto 8px !important;
+  }
+
+  .discovery-bar {
+    padding: 10px 14px !important;
+  }
+
+  .discovery-bar strong {
+    font-size: 0.92rem !important;
+  }
+
+  .discovery-bar span {
+    margin-top: 3px !important;
+    font-size: 0.72rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .discovery-bar .gold-button,
+  .discovery-add-button {
+    min-width: 112px !important;
+  }
+
+  .discovery-bar .gold-button:disabled,
+  .discovery-add-button:disabled {
+    opacity: 0.24 !important;
+    filter: saturate(0.35) !important;
+    box-shadow: none !important;
+    pointer-events: none;
+  }
 }
 
 @media (max-width: 390px) {
@@ -85,5 +160,48 @@
 
   .discovery-showcase-card p {
     font-size: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .discovery-head {
+    padding: 17px 18px 10px !important;
+  }
+
+  .discovery-head h2 {
+    font-size: 28px !important;
+  }
+
+  .discovery-head-text {
+    font-size: 12px !important;
+  }
+
+  .discovery-progress {
+    margin-top: 9px !important;
+    padding: 7px 9px !important;
+  }
+
+  .discovery-grid {
+    gap: 8px !important;
+    padding: 10px 12px 14px !important;
+  }
+
+  .discovery-product {
+    min-height: 158px !important;
+    padding: 9px 7px 8px !important;
+  }
+
+  .discovery-product img {
+    height: 76px !important;
+    margin-bottom: 7px !important;
+  }
+
+  .discovery-bar {
+    padding: 9px 12px !important;
+  }
+
+  .discovery-bar .gold-button,
+  .discovery-add-button {
+    min-width: 106px !important;
   }
 }
