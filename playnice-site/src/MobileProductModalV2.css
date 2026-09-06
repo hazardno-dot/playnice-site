@@ -94,8 +94,7 @@
     font-weight: 500;
   }
 
-  /* Restore the original desktop recommendation-card language.
-     The bubble experiment is intentionally disabled on mobile. */
+  /* Restore the original desktop recommendation-card language on mobile. */
   .modal-same-energy {
     margin-top: 4px;
   }
@@ -106,10 +105,6 @@
 
   .modal-same-energy-list > .modal-same-energy-item {
     display: grid !important;
-  }
-
-  .mobile-related-bubbles {
-    display: none !important;
   }
 
   .modal-media-meta {
