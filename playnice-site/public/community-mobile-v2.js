@@ -1,6 +1,6 @@
 (() => {
   const MOBILE_QUERY = "(max-width: 640px)";
-  const ACTIVE_VISIBLE = 3;
+  const ACTIVE_VISIBLE = 5;
   const ADDED_VISIBLE = 4;
   const media = window.matchMedia(MOBILE_QUERY);
 
@@ -99,7 +99,7 @@
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
     const hasEntered = rect.top < viewportHeight - 96;
-    const communityStillOwnsBottom = rect.bottom > viewportHeight * 0.72;
+    const communityStillOwnsBottom = rect.bottom > viewportHeight * 1.1;
 
     document.body.classList.toggle(
       "community-mobile-focus",
