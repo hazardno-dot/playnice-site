@@ -4,8 +4,8 @@
   /* HOME GATEWAY */
   .playnice-discovery-portal {
     width: min(calc(100% - 24px), var(--max));
-    padding-top: 24px;
-    padding-bottom: 18px;
+    padding-top: 16px;
+    padding-bottom: 10px;
   }
 
   .playnice-discovery-trigger {
@@ -229,6 +229,11 @@
 }
 
 @media (max-width: 380px) {
+  .playnice-discovery-portal {
+    padding-top: 14px;
+    padding-bottom: 8px;
+  }
+
   .playnice-discovery-trigger {
     min-height: 100px;
     padding: 18px 15px;
