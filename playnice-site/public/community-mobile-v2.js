@@ -99,7 +99,7 @@
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
     const hasEntered = rect.top < viewportHeight - 96;
-    const communityStillOwnsBottom = rect.bottom > viewportHeight * 1.1;
+    const communityStillOwnsBottom = rect.bottom > viewportHeight * 0.9;
 
     document.body.classList.toggle(
       "community-mobile-focus",
