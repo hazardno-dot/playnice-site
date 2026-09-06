@@ -14,7 +14,7 @@
   /*
    * Mobile Home keeps the high-value path compact:
    * Hero → Trust → Fragrance Intelligence → Just In
-   * → Discovery Sets → Private Selection → Closing CTA.
+   * → Discovery Sets → Private Selection → Community → Partner.
    * Deeper brand/editorial content remains available
    * through its dedicated navigation entry points.
    * Community remains in the document so menu navigation can
@@ -23,7 +23,8 @@
 
   .why-how-section,
   .impact-split-section,
-  .catalog-download-section {
+  .catalog-download-section,
+  .closing-section {
     display: none !important;
   }
 
@@ -51,22 +52,12 @@
   .playnice-discovery-portal,
   .new-arrivals-section,
   .discovery-showcase,
-  .homepage-shop-preview,
-  .closing-section {
+  .homepage-shop-preview {
     margin-top: var(--mobile-home-section-gap);
   }
 
   .homepage-shop-preview {
     margin-bottom: var(--mobile-home-related-gap);
-  }
-
-  .closing-section {
-    margin-bottom: var(--mobile-home-end-gap);
-  }
-
-  .closing-shell {
-    padding-top: 34px;
-    padding-bottom: 34px;
   }
 
   /* =========================================
