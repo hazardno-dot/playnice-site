@@ -21,6 +21,7 @@ import "./MobileJustInV2.css";
 import "./MobileDiscoverySetsV2.css";
 import "./MobileHowItWorksV2.css";
 import "./MobileExhibitionV2.css";
+import "./MobileStoryV2.css";
 import "./MobilePrivateSelectionV2.css";
 import "./MobileClosingFooterV2.css";
 import "./MobileShopV2.css";
