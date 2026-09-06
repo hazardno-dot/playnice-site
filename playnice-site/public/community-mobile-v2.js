@@ -78,32 +78,51 @@
     if (arrow) arrow.textContent = expanded ? "↑" : "↓";
   };
 
+  const overlapsViewportActionZone = (element, viewportHeight) => {
+    if (!element) return false;
+    const rect = element.getBoundingClientRect();
+    return rect.top < viewportHeight - 56 && rect.bottom > viewportHeight * 0.56;
+  };
+
   const updateCommunityFocus = () => {
     focusScheduled = false;
 
     if (!media.matches) {
-      document.body.classList.remove("community-mobile-focus");
+      document.body.classList.remove(
+        "community-mobile-focus",
+        "mobile-sticky-cta-suppressed"
+      );
       return;
     }
 
     const section = document.querySelector(".community-requests-section");
     const panel =
       section?.querySelector(".community-request-panel-full") || section;
-
-    if (!panel) {
-      document.body.classList.remove("community-mobile-focus");
-      return;
-    }
-
-    const rect = panel.getBoundingClientRect();
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
-    const hasEntered = rect.top < viewportHeight - 96;
-    const communityStillOwnsBottom = rect.bottom > viewportHeight * 1.0;
+    let communityFocused = false;
+
+    if (panel) {
+      const rect = panel.getBoundingClientRect();
+      const hasEntered = rect.top < viewportHeight - 96;
+      const communityStillOwnsBottom = rect.bottom > viewportHeight * 1.0;
+      communityFocused = hasEntered && communityStillOwnsBottom;
+    }
+
+    document.body.classList.toggle("community-mobile-focus", communityFocused);
+
+    const closingZones = [
+      document.querySelector(".mobile-partner-spotlight"),
+      document.querySelector(".site-footer"),
+    ];
+
+    const closingZoneFocused = closingZones.some((element) =>
+      overlapsViewportActionZone(element, viewportHeight)
+    );
 
     document.body.classList.toggle(
-      "community-mobile-focus",
-      hasEntered && communityStillOwnsBottom
+      "mobile-sticky-cta-suppressed",
+      communityFocused || closingZoneFocused
     );
   };
 
@@ -164,7 +183,10 @@
   };
 
   const resetDesktop = () => {
-    document.body.classList.remove("community-mobile-focus");
+    document.body.classList.remove(
+      "community-mobile-focus",
+      "mobile-sticky-cta-suppressed"
+    );
     document
       .querySelectorAll(".community-mobile-hidden")
       .forEach((item) => item.classList.remove("community-mobile-hidden"));
