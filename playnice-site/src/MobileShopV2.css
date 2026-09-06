@@ -429,6 +429,18 @@
     margin-top: 0 !important;
   }
 
+  /* Product copy: reserve exactly three lines without fixing the whole card stack. */
+  .shop-section .product-card-copy,
+  .shop-section .product-card-copy.premium-card-copy {
+    line-height: 1.32;
+    min-height: calc(1.32em * 3);
+    max-height: calc(1.32em * 3);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .mobile-shop-popover {
       animation: none;
