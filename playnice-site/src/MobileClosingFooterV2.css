@@ -118,7 +118,7 @@
     display: none;
   }
 
-  /* Policy detail is available through Help/Checkout and footer fallback link.
+  /* Policy detail is available through Help/Checkout.
      Do not make it a full content card on mobile. */
   #delivery-returns {
     display: none;
@@ -129,10 +129,8 @@
     padding-top: 9px;
     padding-bottom: 3px;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: 5px 10px;
+    justify-content: center;
     border-top: 1px solid rgba(220, 181, 107, 0.08);
   }
 
@@ -140,26 +138,13 @@
     margin: 0;
     font-size: 10.2px;
     line-height: 1.2;
+    text-align: center;
   }
 
+  /* Contact lives in the mobile menu, policy lives in Help/Checkout.
+     End the mobile footer cleanly at the copyright line. */
   .footer-bottom-links {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  /* Contact details now live in the mobile menu. Keep only policy fallback here. */
-  .footer-bottom-links .footer-mini-link:last-child {
     display: none;
-  }
-
-  .footer-mini-link {
-    min-height: 22px;
-    display: inline-flex;
-    align-items: center;
-    font-size: 10.2px;
-    line-height: 1;
-    opacity: 0.78;
   }
 }
 
@@ -179,9 +164,5 @@
 
   .footer-brand-text {
     max-width: 290px;
-  }
-
-  .footer-bottom {
-    justify-content: flex-start;
   }
 }
