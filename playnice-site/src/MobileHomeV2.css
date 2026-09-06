@@ -100,6 +100,28 @@
   .sticky-cta-journal-link {
     opacity: 0.82;
   }
+
+  /* =========================================
+     MOBILE FOOTER SOCIAL POLISH
+     Center the social row and preserve recognizable brand colors.
+  ========================================= */
+  .site-footer .social-links {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .site-footer .social-links a[aria-label*="Instagram"] i {
+    color: #e4405f;
+  }
+
+  .site-footer .social-links a[aria-label*="WhatsApp"] i {
+    color: #25d366;
+  }
+
+  .site-footer .social-links a[aria-label*="TikTok"] i {
+    color: #25f4ee;
+    text-shadow: 1px 0 0 rgba(254, 44, 85, 0.7);
+  }
 }
 
 @media (max-width: 390px) {
