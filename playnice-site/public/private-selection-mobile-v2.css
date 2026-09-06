@@ -91,8 +91,6 @@
     line-height: 1.03;
   }
 
-  /* Hide the desktop editorial copy completely on mobile so the
-     product name and the price/actions row form two clean lines. */
   .private-selection-item-info > p {
     display: none !important;
   }
@@ -100,21 +98,23 @@
   .private-selection-item-bottom {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    align-items: baseline;
+    align-items: center;
     width: 100%;
+    min-height: 18px;
     margin-top: 10px;
     gap: 10px;
   }
 
   .private-selection-item-price {
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
     min-width: 0;
+    height: 18px;
     margin: 0;
     padding: 0;
     gap: 4px;
     font-size: 0.7rem;
-    line-height: 1;
+    line-height: 18px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -122,29 +122,32 @@
   }
 
   .private-selection-item-price span {
-    line-height: 1;
+    line-height: 18px;
   }
 
   .private-selection-item-actions {
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: flex-end;
-    align-self: baseline;
+    align-self: center;
+    height: 18px;
     margin: 0;
     padding: 0;
     gap: 8px;
-    line-height: 1;
+    line-height: 18px;
     white-space: nowrap;
   }
 
   .private-selection-link,
   .private-selection-remove {
+    display: inline-flex;
+    align-items: center;
+    height: 18px;
     margin: 0;
     padding: 0;
     font-size: 0.61rem;
-    line-height: 1;
+    line-height: 18px;
     letter-spacing: 0.08em;
-    vertical-align: baseline;
   }
 
   .private-selection-footer {
