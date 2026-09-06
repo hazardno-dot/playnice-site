@@ -14,7 +14,7 @@
   /*
    * Mobile Home keeps the high-value path compact:
    * Hero → Trust → Fragrance Intelligence → Just In
-   * → Discovery Sets → Private Selection → Community → Partner.
+   * → Discovery Sets → Private Selection → Community → Partner → Final Impression.
    * Deeper brand/editorial content remains available
    * through its dedicated navigation entry points.
    * Community remains in the document so menu navigation can
@@ -23,8 +23,7 @@
 
   .why-how-section,
   .impact-split-section,
-  .catalog-download-section,
-  .closing-section {
+  .catalog-download-section {
     display: none !important;
   }
 
