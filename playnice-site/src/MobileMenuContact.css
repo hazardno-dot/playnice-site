@@ -22,10 +22,10 @@
 
   .header-next-mobile-support-trigger {
     width: 100%;
-    min-height: 44px;
+    min-height: 40px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 0 4px;
     border: 0;
     background: transparent;
@@ -33,47 +33,66 @@
     text-transform: uppercase;
   }
 
-  .header-next-mobile-support-trigger span {
+  .header-next-mobile-support-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .header-next-mobile-support-label > span {
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.17em;
   }
 
-  .header-next-mobile-support-trigger strong {
-    color: #dcb56b;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1;
+  .header-next-mobile-support-chevron {
+    width: 13px;
+    height: 13px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 180ms ease;
   }
 
+  .header-next-mobile-support.is-open .header-next-mobile-support-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Closed means genuinely zero footprint. */
   .header-next-mobile-support-panel {
-    display: grid;
-    grid-template-rows: 0fr;
+    max-height: 0;
     opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
     overflow: hidden;
     transition:
-      grid-template-rows 220ms cubic-bezier(0.16, 1, 0.3, 1),
-      opacity 160ms ease;
+      max-height 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 160ms ease,
+      visibility 0s linear 220ms;
   }
 
   .header-next-mobile-support.is-open .header-next-mobile-support-panel {
-    grid-template-rows: 1fr;
+    max-height: 96px;
     opacity: 1;
-  }
-
-  .header-next-mobile-support-panel > * {
-    min-height: 0;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      max-height 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 160ms ease,
+      visibility 0s linear 0s;
   }
 
   .header-next-mobile-support-panel button,
   .header-next-mobile-support-panel a {
-    min-height: 42px;
+    min-height: 40px;
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: auto auto;
     align-items: center;
     column-gap: 10px;
-    padding: 6px 4px;
+    padding: 5px 4px;
     border: 0;
     border-top: 1px solid rgba(255, 248, 235, 0.05);
     background: transparent;
@@ -108,15 +127,15 @@
     font-weight: 400;
   }
 
-  .header-next-mobile-language {
-    order: 3;
-  }
-
-  /* Final menu type/density pass: crisp rather than heavy. */
+  /* Keep the whole navigation as one controlled viewport, no pre-distributed empty space. */
   .header-next-mobile-panel {
-    gap: 12px;
-    padding-top: 12px;
-    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 8px;
+    padding-top: 9px;
+    padding-bottom: calc(9px + env(safe-area-inset-bottom));
     scrollbar-width: none;
   }
 
@@ -124,34 +143,43 @@
     display: none;
   }
 
+  /* Primary navigation: editorial serif, lighter and crisper. */
   .header-next-mobile-primary .header-next-link {
-    height: 46px;
-    font-size: 14px;
-    font-weight: 550;
+    height: 43px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.012em;
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
   }
 
   .header-next-mobile-primary .header-next-link::before {
-    top: 11px;
-    height: 24px;
+    top: 10px;
+    height: 23px;
   }
 
   .header-next-mobile-primary > div > small {
-    font-weight: 500;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
   }
 
   .header-next-mobile-discover p {
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     font-weight: 600;
   }
 
   .header-next-mobile-discover button {
-    min-height: 42px;
-    font-size: 12.5px;
+    min-height: 38px;
+    font-size: 12.25px;
     font-weight: 500;
   }
 
   .header-next-mobile-language {
-    min-height: 42px;
+    order: 3;
+    min-height: 40px;
+    margin-top: 0 !important;
     font-weight: 400;
   }
 
@@ -162,19 +190,22 @@
 
 @media (max-width: 380px) {
   .header-next-mobile-panel {
-    gap: 9px;
-    padding-top: 9px;
-    padding-bottom: calc(9px + env(safe-area-inset-bottom));
+    gap: 6px;
+    padding-top: 7px;
+    padding-bottom: calc(7px + env(safe-area-inset-bottom));
   }
 
   .header-next-mobile-primary .header-next-link {
-    height: 43px;
-    font-size: 13.5px;
+    height: 41px;
+    font-size: 18px;
   }
 
-  .header-next-mobile-discover button,
+  .header-next-mobile-discover button {
+    min-height: 36px;
+  }
+
   .header-next-mobile-support-trigger,
   .header-next-mobile-language {
-    min-height: 40px;
+    min-height: 38px;
   }
 }
