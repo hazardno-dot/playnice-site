@@ -114,33 +114,7 @@
 
   /* Primary navigation already lives in the mobile menu.
      Repeating eight links here adds scroll without adding value. */
-  .site-footer-inner > .footer-column:not(.footer-contact-column) {
-    display: none;
-  }
-
-  /* Contact remains, but as a compact utility section. */
-  .footer-contact-column {
-    margin-top: 11px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(220, 181, 107, 0.10);
-  }
-
-  .footer-contact-column h4 {
-    margin: 0 0 5px;
-    font-size: 9px;
-    letter-spacing: 0.17em;
-    opacity: 0.86;
-  }
-
-  .footer-contact-column .footer-contact {
-    min-height: 22px;
-    margin-right: 11px;
-    display: inline-flex;
-    align-items: center;
-    font-size: 11.2px;
-  }
-
-  .footer-contact-column p {
+  .site-footer-inner > .footer-column {
     display: none;
   }
 
@@ -151,7 +125,7 @@
   }
 
   .footer-bottom {
-    margin-top: 0;
+    margin-top: 10px;
     padding-top: 9px;
     padding-bottom: 3px;
     display: flex;
@@ -174,9 +148,17 @@
     gap: 10px;
   }
 
+  /* Contact details now live in the mobile menu. Keep only policy fallback here. */
+  .footer-bottom-links .footer-mini-link:last-child {
+    display: none;
+  }
+
   .footer-mini-link {
     min-height: 22px;
+    display: inline-flex;
+    align-items: center;
     font-size: 10.2px;
+    line-height: 1;
     opacity: 0.78;
   }
 }
