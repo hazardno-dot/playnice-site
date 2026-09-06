@@ -39,6 +39,7 @@
   .community-requests-section {
     display: block !important;
     margin-top: var(--mobile-home-section-gap);
+    margin-bottom: var(--mobile-home-section-gap);
     scroll-margin-top: 112px;
   }
 
