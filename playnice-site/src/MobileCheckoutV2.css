@@ -34,12 +34,31 @@
     line-height: 1.35;
   }
 
+  /*
+   * Mobile decision flow:
+   * form fields -> trust -> order summary/totals -> final CTA.
+   * display:contents lets the existing CTA move after the sibling summary
+   * without duplicating checkout markup or changing desktop structure.
+   */
   .checkout-grid {
+    display: flex;
+    flex-direction: column;
     gap: 0;
   }
 
   .checkout-form {
-    padding: 12px 17px 10px;
+    display: contents;
+  }
+
+  .checkout-form > .form-row,
+  .checkout-form > .checkout-international-note,
+  .checkout-form > .order-success-message {
+    margin-left: 17px;
+    margin-right: 17px;
+  }
+
+  .checkout-form > .form-row:first-child {
+    margin-top: 12px;
   }
 
   /* Restore the intended compact two-column form rows on mobile. */
@@ -68,10 +87,11 @@
   }
 
   .checkout-trust {
+    order: 0;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
-    margin-top: 9px;
+    margin: 1px 17px 0;
     padding: 9px;
     border-radius: 13px;
   }
@@ -91,25 +111,13 @@
     font-size: 9px;
   }
 
-  .checkout-form .gold-button,
-  .checkout-form button[type="button"].gold-button {
-    min-height: 46px;
-    margin-top: 10px;
-    border-radius: 999px;
-    padding: 11px 14px;
-    font-size: 0.76rem;
-    letter-spacing: 0.035em;
-  }
-
-  .checkout-form .cart-safe-note,
-  .checkout-form .checkout-safe-note {
-    margin-top: 7px;
-    font-size: 0.71rem;
-    line-height: 1.3;
-  }
-
+  /* Summary is the final review step before committing the order. */
   .checkout-summary {
-    padding: 12px 17px 14px;
+    order: 1;
+    margin-top: 12px;
+    padding: 12px 17px 13px;
+    border-top: 1px solid rgba(220, 181, 107, 0.08);
+    border-bottom: 1px solid rgba(220, 181, 107, 0.08);
   }
 
   .checkout-summary h4 {
@@ -168,6 +176,25 @@
   .checkout-grand-total {
     margin-top: 7px;
     padding-top: 8px;
+  }
+
+  /* Final action comes only after the review summary. */
+  .checkout-form .gold-button,
+  .checkout-form button[type="button"].gold-button {
+    order: 2;
+    width: auto;
+    min-height: 46px;
+    margin: 12px 17px 14px;
+    border-radius: 999px;
+    padding: 11px 14px;
+    font-size: 0.76rem;
+    letter-spacing: 0.035em;
+  }
+
+  /* Redundant with header + trust messaging on mobile. */
+  .checkout-form .cart-safe-note,
+  .checkout-form .checkout-safe-note {
+    display: none;
   }
 }
 
