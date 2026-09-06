@@ -89,8 +89,16 @@ function MobileMenuContact() {
         aria-expanded={supportOpen}
         onClick={() => setSupportOpen((current) => !current)}
       >
-        <span>{lang === "sr" ? "Podrška" : "Support"}</span>
-        <strong aria-hidden="true">{supportOpen ? "−" : "+"}</strong>
+        <span className="header-next-mobile-support-label">
+          <span>{lang === "sr" ? "Podrška" : "Support"}</span>
+          <svg
+            className="header-next-mobile-support-chevron"
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+          >
+            <path d="M4.75 6.25 8 9.5l3.25-3.25" />
+          </svg>
+        </span>
       </button>
 
       <div className="header-next-mobile-support-panel" aria-hidden={!supportOpen}>
