@@ -8,6 +8,7 @@ import MobileDiscoveryTextPolish from "./MobileDiscoveryTextPolish";
 import MobilePrivateSelectionProfile from "./MobilePrivateSelectionProfile";
 import MobileShopV2 from "./MobileShopV2";
 import MobileShopReveal from "./MobileShopReveal";
+import MobileProductModalBubbles from "./MobileProductModalBubbles";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
 import "./NewArrivalsScale.css";
@@ -34,5 +35,6 @@ root.render(
     <MobilePrivateSelectionProfile />
     <MobileShopV2 />
     <MobileShopReveal />
+    <MobileProductModalBubbles />
   </React.StrictMode>
 );
