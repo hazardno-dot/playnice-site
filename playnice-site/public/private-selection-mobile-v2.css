@@ -71,6 +71,7 @@
   }
 
   .private-selection-item-info {
+    min-width: 0;
     gap: 4px;
   }
 
@@ -85,6 +86,7 @@
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    margin: 0;
     font-size: 0.94rem;
     line-height: 1.03;
   }
@@ -97,27 +99,39 @@
   }
 
   .private-selection-item-bottom {
-    margin-top: 1px;
-    gap: 8px;
-    flex-wrap: nowrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    width: 100%;
+    margin-top: 2px;
+    gap: 10px;
   }
 
   .private-selection-item-price {
     min-width: 0;
+    margin: 0;
     gap: 4px;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
+    line-height: 1.1;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .private-selection-item-actions {
-    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0;
     gap: 8px;
     white-space: nowrap;
   }
 
   .private-selection-link,
   .private-selection-remove {
+    margin: 0;
     font-size: 0.61rem;
+    line-height: 1;
     letter-spacing: 0.08em;
   }
 
@@ -164,5 +178,22 @@
 
   .private-selection-item-info h4 {
     font-size: 0.9rem;
+  }
+
+  .private-selection-item-bottom {
+    gap: 7px;
+  }
+
+  .private-selection-item-price {
+    font-size: 0.68rem;
+  }
+
+  .private-selection-item-actions {
+    gap: 6px;
+  }
+
+  .private-selection-link,
+  .private-selection-remove {
+    font-size: 0.58rem;
   }
 }
