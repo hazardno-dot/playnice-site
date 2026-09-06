@@ -15,12 +15,13 @@
    * Mobile Home keeps the high-value path compact:
    * Hero → Trust → Fragrance Intelligence → Just In
    * → Discovery Sets → Private Selection → Closing CTA.
-   * Deeper brand/editorial/community content remains available
+   * Deeper brand/editorial content remains available
    * through its dedicated navigation entry points.
+   * Community remains in the document so menu navigation can
+   * land directly on the live request/voting experience.
    */
 
   .why-how-section,
-  .community-requests-section,
   .impact-split-section,
   .catalog-download-section {
     display: none !important;
@@ -30,6 +31,14 @@
   .community-requests-section + .section-divider,
   .impact-split-section + .section-divider {
     display: none !important;
+  }
+
+  /* Community is a direct mobile destination, not part of the
+     primary commerce rhythm. Keep the existing live logic intact. */
+  .community-requests-section {
+    display: block !important;
+    margin-top: var(--mobile-home-section-gap);
+    scroll-margin-top: 112px;
   }
 
   /* Legacy micro sponsor bar is removed from the mobile commerce flow.
@@ -106,6 +115,10 @@
     --mobile-home-section-gap: 48px;
     --mobile-home-related-gap: 28px;
     --mobile-home-end-gap: 42px;
+  }
+
+  .community-requests-section {
+    scroll-margin-top: 106px;
   }
 
   .sticky-cta-shell {
