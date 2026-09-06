@@ -4,29 +4,28 @@ import "./MobileMenuContact.css";
 
 function MobileMenuContact() {
   const [panelTarget, setPanelTarget] = useState(null);
-  const [discoverTarget, setDiscoverTarget] = useState(null);
   const [lang, setLang] = useState(
     typeof document !== "undefined" && document.documentElement.lang?.toLowerCase().startsWith("sr")
       ? "sr"
       : "en"
   );
+  const [supportOpen, setSupportOpen] = useState(false);
 
   useEffect(() => {
     let frameId;
 
-    const resolveTargets = () => {
+    const resolveTarget = () => {
       const panel = document.querySelector(".header-next-mobile-panel");
-      const discover = document.querySelector(".header-next-mobile-discover > div");
 
-      if (panel) setPanelTarget(panel);
-      if (discover) setDiscoverTarget(discover);
-
-      if (!panel || !discover) {
-        frameId = window.requestAnimationFrame(resolveTargets);
+      if (panel) {
+        setPanelTarget(panel);
+        return;
       }
+
+      frameId = window.requestAnimationFrame(resolveTarget);
     };
 
-    resolveTargets();
+    resolveTarget();
 
     const languageObserver = new MutationObserver(() => {
       setLang(
@@ -45,59 +44,69 @@ function MobileMenuContact() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!panelTarget) return undefined;
+
+    const observer = new MutationObserver(() => {
+      const header = document.querySelector(".header-next");
+      if (!header?.classList.contains("is-mobile-open")) {
+        setSupportOpen(false);
+      }
+    });
+
+    const header = document.querySelector(".header-next");
+    if (header) {
+      observer.observe(header, { attributes: true, attributeFilter: ["class"] });
+    }
+
+    return () => observer.disconnect();
+  }, [panelTarget]);
+
+  const closeMobileMenu = () => {
+    const trigger = document.querySelector(".header-next-menu-trigger.is-open");
+    trigger?.click();
+  };
+
   const openFaq = () => {
     const faqButton = Array.from(document.querySelectorAll(".footer-link")).find(
       (button) => button.textContent?.trim() === "FAQ"
     );
 
-    faqButton?.click();
+    closeMobileMenu();
+    window.requestAnimationFrame(() => faqButton?.click());
   };
 
-  if (!panelTarget && !discoverTarget) return null;
+  if (!panelTarget) return null;
 
-  return (
-    <>
-      {discoverTarget &&
-        createPortal(
-          <button type="button" onClick={openFaq}>
-            FAQ
-          </button>,
-          discoverTarget
-        )}
+  return createPortal(
+    <section
+      className={`header-next-mobile-support ${supportOpen ? "is-open" : ""}`}
+      aria-label={lang === "sr" ? "Podrška" : "Support"}
+    >
+      <button
+        type="button"
+        className="header-next-mobile-support-trigger"
+        aria-expanded={supportOpen}
+        onClick={() => setSupportOpen((current) => !current)}
+      >
+        <span>{lang === "sr" ? "Podrška" : "Support"}</span>
+        <strong aria-hidden="true">{supportOpen ? "−" : "+"}</strong>
+      </button>
 
-      {panelTarget &&
-        createPortal(
-          <section
-            className="header-next-mobile-contact"
-            aria-label={lang === "sr" ? "Podrška" : "Support"}
-          >
-            <p>{lang === "sr" ? "Podrška" : "Support"}</p>
+      <div className="header-next-mobile-support-panel" aria-hidden={!supportOpen}>
+        <button type="button" onClick={openFaq}>
+          <span>FAQ</span>
+          <strong aria-hidden="true">→</strong>
+        </button>
 
-            <div className="header-next-mobile-contact-links">
-              <a
-                className="header-next-mobile-support-link is-primary"
-                href="mailto:info@playniceshop.me"
-              >
-                <span>{lang === "sr" ? "Kontaktiraj nas" : "Contact Us"}</span>
-                <small>info@playniceshop.me</small>
-                <strong aria-hidden="true">→</strong>
-              </a>
-
-              <a
-                className="header-next-mobile-support-link"
-                href="https://www.instagram.com/playnice.me/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <span>Instagram</span>
-                <small>@playnice.me</small>
-                <strong aria-hidden="true">↗</strong>
-              </a>
-            </div>
-          </section>,
-          panelTarget
-        )}
-    </>
+        <a href="mailto:info@playniceshop.me" onClick={closeMobileMenu}>
+          <span>{lang === "sr" ? "Kontaktiraj nas" : "Contact Us"}</span>
+          <small>info@playniceshop.me</small>
+          <strong aria-hidden="true">→</strong>
+        </a>
+      </div>
+    </section>,
+    panelTarget
   );
 }
 
