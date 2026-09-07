@@ -2920,6 +2920,37 @@ export const discoveryProfiles = {
     "cleanliness": 8.5,
     "versatility": 9.6,
     "gourmandness": 1
+  },
+
+  "playnice-e2e-test-product": {
+    "date": 6.8,
+    "casual": 9.3,
+    "citrus": 7.9,
+    "office": 9.1,
+    "unisex": 7.5,
+    "warmth": 4.6,
+    "aquatic": 2,
+    "dryness": 6.4,
+    "evening": 6.7,
+    "powdery": 1.8,
+    "airiness": 7.5,
+    "darkness": 2.8,
+    "elegance": 7.8,
+    "feminine": 4,
+    "florality": 3.6,
+    "freshness": 8.4,
+    "longevity": 7.4,
+    "masculine": 6.5,
+    "spiciness": 5.3,
+    "sweetness": 3.2,
+    "woodiness": 6.2,
+    "creaminess": 2.1,
+    "fruitiness": 4.1,
+    "projection": 7.2,
+    "aromaticity": 8.1,
+    "cleanliness": 8.8,
+    "versatility": 9.4,
+    "gourmandness": 1.2
   }
 };
 

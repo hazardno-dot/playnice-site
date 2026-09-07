@@ -391,5 +391,10 @@ export const productWearContext = {
   "Christian Dior Sauvage Eau de Parfum": {
     "sr": "Cijele godine; posao, grad, dejt i veče.",
     "en": "Year-round; work, city, dates and evenings."
+  },
+
+  "PlayNice E2E Test Product": {
+    "sr": "Cijele godine; posao, grad i svakodnevno nošenje.",
+    "en": "Year-round; work, city and everyday wear."
   }
 };

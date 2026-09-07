@@ -2779,6 +2779,31 @@ export const products = [
       heart: ["lavender","fresh-spices"],
       base: ["vanilla","ambroxan","patchouli"]
     }
+  },
+  {
+    id: 98,
+    addedAt: "2026-09-07T22:17:00.228Z",
+    slug: "playnice-e2e-test-product",
+    name: "PlayNice E2E Test Product",
+    shortName: "E2E Test",
+    category: "Designer",
+    image: "/products/playnice-e2e-test-product.png",
+    sizes: {"2ml":5,"5ml":10,"10ml":18},
+    badge: "TEST",
+    rating: 8.1,
+    ratingLabel: "Test Pick",
+    season: "all",
+    moods: ["clean","signature","soft"],
+    recommendations: ["thomas-kosmala-no-8-tonic-vert","narciso-rodriguez-for-him-bleu-noir-extreme-edt","afnan-turathi-electric"],
+    inspiredBy: {
+      name: "Original PlayNice test creation",
+      short: "E2E Test DNA"
+    },
+    noteMap: {
+      top: ["bergamot","lemon"],
+      heart: ["lavender","ginger"],
+      base: ["amber","moss"]
+    }
   }
 
 ];

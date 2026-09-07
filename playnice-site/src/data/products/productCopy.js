@@ -2821,6 +2821,55 @@ export const productCopy = {
       "en": "If you want a bold, recognizable and highly versatile fragrance.",
       "sr": "Ako želiš snažan, prepoznatljiv i veoma svestran parfem."
     }
+  },
+
+  "PlayNice E2E Test Product": {
+    "miniTag": {
+      "en": "Clean, modern and versatile.",
+      "sr": "Čist, moderan i svestran."
+    },
+    "card": {
+      "en": "Bergamot and lavender in a clean modern signature.",
+      "sr": "Bergamot i lavanda u čistom, modernom potpisu."
+    },
+    "modal": {
+      "en": "Fresh bergamot moves into lavender and ginger over a clean amber-woody base.",
+      "sr": "Svež bergamot prelazi u lavandu i đumbir, uz čistu amber-drvenastu bazu."
+    },
+    "scentType": {
+      "en": "Fresh aromatic woody fragrance",
+      "sr": "Svež aromatični drvenasti miris"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Bergamot",
+        "Lavanda",
+        "Đumbir",
+        "Amber"
+      ],
+      "en": [
+        "Bergamot",
+        "Lavender",
+        "Ginger",
+        "Amber"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Svež",
+        "Čist",
+        "Moderan"
+      ],
+      "en": [
+        "Fresh",
+        "Clean",
+        "Modern"
+      ]
+    },
+    "whyChoose": {
+      "en": "For a clean, versatile scent that works easily throughout the day.",
+      "sr": "Za čist, svestran miris koji lako radi tokom cijelog dana."
+    }
   }
 };
 
