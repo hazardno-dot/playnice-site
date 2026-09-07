@@ -2782,7 +2782,7 @@ export const products = [
   },
   {
     id: 98,
-    addedAt: "2026-09-07T23:10:44.549Z",
+    addedAt: "2026-09-07T23:22:38.855Z",
     slug: "nishane-hacivat-x",
     name: "Nishane Hacivat X Extrait de Parfum",
     modalName: "Nishane Hacivat X Extrait",
@@ -2791,7 +2791,7 @@ export const products = [
     image: "/products/nishane-hacivat-x.png",
     sizes: {"2ml":14.5,"5ml":33,"10ml":59},
     badge: "JUST IN",
-    rating: 8.8,
+    rating: 9.3,
     ratingLabel: "Premium Pick",
     season: "all",
     moods: ["clean","rich","signature"],

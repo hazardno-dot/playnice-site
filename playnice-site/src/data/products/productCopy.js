@@ -2829,12 +2829,12 @@ export const productCopy = {
       "sr": "🍍 Citrusni / Drvenast"
     },
     "card": {
-      "en": "Pineapple, bergamot and vetiver in a clean elegant chypre signature.",
-      "sr": "Ananas, bergamot i vetiver u čistom, elegantnom chypre potpisu."
+      "en": "Pineapple, bergamot and vetiver in a clean chypre signature.",
+      "sr": "Ananas, bergamot i vetiver u čistom chypre potpisu."
     },
     "modal": {
       "en": "Juicy pineapple and bergamot open with pink pepper, while lime and orange blossom lead into a dry, elegant base of cedar, patchouli and vetiver.",
-      "sr": "Sočan ananas i bergamot otvaraju miris uz ružičasti biber, dok limeta i cvijet narandže vode ka suvoj, elegantnoj bazi kedra, pačulija i vetivera."
+      "sr": "Sočan ananas i bergamot otvaraju miris uz ružičasti biber, dok limeta i cvet narandže vode ka suvoj, elegantnoj bazi kedra, pačulija i vetivera."
     },
     "scentType": {
       "en": "Citrus chypre woody extrait",

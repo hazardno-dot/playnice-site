@@ -394,7 +394,7 @@ export const productWearContext = {
   },
 
   "Nishane Hacivat X Extrait de Parfum": {
-    "sr": "Proljeće do jeseni; grad, posao, večernji izlazak.",
+    "sr": "Proleće do jeseni; grad, posao, večernji izlazak.",
     "en": "Spring through autumn; city, work and evening wear."
   }
 };
