@@ -2779,6 +2779,32 @@ export const products = [
       heart: ["lavender","fresh-spices"],
       base: ["vanilla","ambroxan","patchouli"]
     }
+  },
+  {
+    id: 98,
+    addedAt: "2026-09-07T23:10:44.549Z",
+    slug: "nishane-hacivat-x",
+    name: "Nishane Hacivat X Extrait de Parfum",
+    modalName: "Nishane Hacivat X Extrait",
+    shortName: "Hacivat X",
+    category: "Niche",
+    image: "/products/nishane-hacivat-x.png",
+    sizes: {"2ml":14.5,"5ml":33,"10ml":59},
+    badge: "JUST IN",
+    rating: 8.8,
+    ratingLabel: "Premium Pick",
+    season: "all",
+    moods: ["clean","rich","signature"],
+    recommendations: ["creed-aventus-cologne","mancera-cedrat-boise","bois-imperial-essential-parfums"],
+    inspiredBy: {
+      name: "Original Nishane creation",
+      short: "Hacivat X DNA"
+    },
+    noteMap: {
+      top: ["bergamot","pineapple","pink-pepper"],
+      heart: ["lime","jasmine","orange-blossom"],
+      base: ["patchouli","cedarwood","vetiver"]
+    }
   }
 
 ];
