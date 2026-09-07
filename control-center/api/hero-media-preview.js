@@ -1,7 +1,6 @@
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO = "hazardno-dot/playnice-site";
 const [OWNER, REPO_NAME] = REPO.split("/");
-const LIVE_ORIGIN = "https://www.playniceshop.me";
 
 function getRef() {
   return process.env.VERCEL_GIT_COMMIT_REF || process.env.GITHUB_REF_NAME || "main";
@@ -39,43 +38,15 @@ module.exports = async function handler(req, res) {
     return res.status(400).send("Invalid Hero media path");
   }
 
-  const ref = getRef();
-
-  // Normal CC deployments proxy the live Hero asset through the CC origin.
-  // This avoids browser cross-origin image failures while keeping the source
-  // of truth on the live PlayNice site.
-  if (!isHeroPreviewRef(ref)) {
-    try {
-      const liveUrl = `${LIVE_ORIGIN}${rawPath}?ccv=${Date.now()}`;
-      const liveResponse = await fetch(liveUrl, {
-        headers: { Accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8" },
-        cache: "no-store",
-      });
-
-      if (!liveResponse.ok) {
-        return res.status(liveResponse.status).send("Live Hero media not found");
-      }
-
-      const buffer = Buffer.from(await liveResponse.arrayBuffer());
-      const contentType = liveResponse.headers.get("content-type") || getContentType(rawPath);
-
-      res.setHeader("Content-Type", contentType);
-      res.setHeader("Cache-Control", "no-store, max-age=0");
-      res.setHeader("X-PlayNice-Hero-Source", "live");
-      return res.status(200).send(buffer);
-    } catch (error) {
-      console.error("Live Hero media preview failed", error);
-      return res.status(502).send(error?.message || "Live Hero media preview failed");
-    }
-  }
-
   if (!GITHUB_TOKEN) return res.status(500).send("GitHub preview environment is incomplete");
 
+  const deploymentRef = getRef();
+  const sourceRef = isHeroPreviewRef(deploymentRef) ? deploymentRef : "main";
   const repoPath = `playnice-site/public${rawPath}`;
 
   try {
     const { response: fileResponse, body: fileBody } = await github(
-      `/repos/${OWNER}/${REPO_NAME}/contents/${repoPath}?ref=${encodeURIComponent(ref)}`
+      `/repos/${OWNER}/${REPO_NAME}/contents/${repoPath}?ref=${encodeURIComponent(sourceRef)}`
     );
 
     if (!fileResponse.ok || !fileBody?.sha) {
@@ -101,7 +72,8 @@ module.exports = async function handler(req, res) {
 
     res.setHeader("Content-Type", contentType);
     res.setHeader("Cache-Control", "no-store, max-age=0");
-    res.setHeader("X-PlayNice-Hero-Ref", ref);
+    res.setHeader("X-PlayNice-Hero-Ref", sourceRef);
+    res.setHeader("X-PlayNice-Hero-Deployment-Ref", deploymentRef);
     return res.status(200).send(buffer);
   } catch (error) {
     console.error("Hero media preview failed", error);

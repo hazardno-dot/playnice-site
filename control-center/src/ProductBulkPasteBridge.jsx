@@ -220,8 +220,8 @@ function preflight(parsed) {
         return;
       }
       const existing = fieldMap.get(normalize(size));
-      if (existing) actions.push({ type: "field", control: existing, value: rawValue, label: size });
-      else if (root.querySelector(".size-composer")) actions.push({ type: "size", size, value: rawValue, label: size });
+      if (existing) actions.push({ type: "field", control: existing, value: rawValue, label: size, fieldKey: key });
+      else if (root.querySelector(".size-composer")) actions.push({ type: "size", size, value: rawValue, label: size, fieldKey: key });
       else blockers.push(`Cannot add size: ${size}`);
       return;
     }
@@ -239,7 +239,7 @@ function preflight(parsed) {
       }
       const control = fieldMap.get(normalize(discoveryKey));
       if (!control) blockers.push(`Field not found: ${discoveryKey}`);
-      else actions.push({ type: "field", control, value: rawValue, label: discoveryKey });
+      else actions.push({ type: "field", control, value: rawValue, label: discoveryKey, fieldKey: key, fieldKind: "discovery" });
       return;
     }
 
@@ -267,19 +267,34 @@ function preflight(parsed) {
 
     const value = resolveSelectValue(control, rawValue);
     if (value === null) blockers.push(`Invalid option for ${key}: ${rawValue}`);
-    else actions.push({ type: "field", control, value, label: key });
+    else actions.push({ type: "field", control, value, label: key, fieldKey: key });
   });
 
   return { blockers, actions };
 }
 
 function classifyActions(actions) {
+  const root = document.querySelector(".product-detail.edit-mode");
+  const slug = selectedSlug(root);
+  const isNewProduct = Boolean(slug && !PRODUCT_SLUGS.includes(slug));
+
   return actions.map((action) => {
     if (action.type === "size") return { ...action, changeType: "new" };
     const current = String(action.control?.value ?? "").trim();
     const incoming = String(action.value ?? "").trim();
     if (!current) return { ...action, changeType: "new" };
     if (current === incoming) return { ...action, changeType: "unchanged" };
+
+    // New-product drafts contain UI seed values that are placeholders, not authored data.
+    // Keep Fill empty only safe for existing products, but allow Bulk input to replace
+    // the known new-product template defaults.
+    if (isNewProduct && action.fieldKind === "discovery" && current === "0") {
+      return { ...action, changeType: "new" };
+    }
+    if (isNewProduct && action.fieldKey === "category" && current === "Arabian") {
+      return { ...action, changeType: "new" };
+    }
+
     return { ...action, changeType: "changed" };
   });
 }

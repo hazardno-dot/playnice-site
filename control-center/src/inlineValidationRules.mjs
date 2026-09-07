@@ -1,3 +1,5 @@
+import { presentationLimit } from "./productPresentationContract.mjs";
+
 const csv = (value) => String(value ?? "").split(",").map((part) => part.trim()).filter(Boolean);
 
 export const INLINE_REQUIRED_CORE_FIELDS = new Set([
@@ -19,13 +21,13 @@ export const INLINE_REQUIRED_COPY_PREFIXES = [
   "why choose",
 ];
 
-const PRESENTATION_LIMITS = [
-  ["mini tag", 32],
-  ["scent type", 42],
-  ["card copy", { sr: 82, en: 92 }],
-  ["modal copy", 230],
-  ["why choose", 125],
-];
+const COPY_FIELD_KEYS = new Map([
+  ["mini tag", "miniTag"],
+  ["scent type", "scentType"],
+  ["card copy", "card"],
+  ["modal copy", "modal"],
+  ["why choose", "whyChoose"],
+]);
 
 export const INLINE_DISCOVERY_FIELDS = new Set([
   "freshness", "sweetness", "warmth", "darkness", "airiness", "cleanliness",
@@ -79,17 +81,19 @@ export function validateInlineFields(rawFields, options = {}) {
 
     if (name.startsWith("wear ·")) {
       if (!value) add(field, "Wear context is required in both languages.");
-      if (value.length > 90) add(field, `Wear context is ${value.length} characters; keep it at or below 90.`);
+      const lang = name.includes("· sr") ? "sr" : "en";
+      const max = presentationLimit("wear", lang, { isNewProduct });
+      if (max && value.length > max) add(field, `Wear context is ${value.length} characters; keep it at or below ${max}.`);
     }
 
     if ((name.includes("· sr") || name.includes("· en")) && INLINE_REQUIRED_COPY_PREFIXES.some((prefix) => name.startsWith(prefix))) {
       if (!value) add(field, "Required bilingual copy is missing.");
       const lang = name.includes("· sr") ? "sr" : "en";
-      PRESENTATION_LIMITS.forEach(([prefix, limit]) => {
-        if (!name.startsWith(prefix) || !value) return;
-        const max = typeof limit === "object" ? limit[lang] : limit;
-        if (value.length > max) add(field, `Copy is ${value.length} characters; keep it at or below ${max}.`);
-      });
+      for (const [prefix, fieldKey] of COPY_FIELD_KEYS.entries()) {
+        if (!name.startsWith(prefix) || !value) continue;
+        const max = presentationLimit(fieldKey, lang, { isNewProduct });
+        if (max && value.length > max) add(field, `Copy is ${value.length} characters; keep it at or below ${max}.`);
+      }
     }
 
     if (name.includes("dominant notes") && csv(value).length !== 4) add(field, "Exactly 4 dominant notes are required.");

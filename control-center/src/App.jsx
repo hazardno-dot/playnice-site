@@ -231,10 +231,15 @@ export default function App(){
   const createNew=(slug)=>{setNewProductOpen(false);setActive("Products");setCoverageFilter("all");setQuery(slug);setSelected({slug,__new:true,name:"",shortName:"",category:"Arabian",image:"/products/",sizes:{},moods:[],noteMap:{top:[],heart:[],base:[]},recommendations:[]});setEditing(true);};
   const saveDraft=async(draft)=>{
     const {data:{user},error:userError}=await supabase.auth.getUser();if(userError||!user)throw userError||new Error("No authenticated admin session");
-    const {data,error}=await supabase.from("product_drafts").upsert({product_slug:selected.slug,payload:draft,created_by:user.id},{onConflict:"created_by,product_slug"}).select("product_slug,payload,updated_at").single();
+    const {data:existing,error:existingError}=await supabase.from("product_drafts").select("payload").eq("product_slug",selected.slug).maybeSingle();
+    if(existingError)throw existingError;
+    const preservedMediaStage=existing?.payload?.mediaStage||draft?.mediaStage||null;
+    const nextDraft=preservedMediaStage?{...draft,mediaStage:preservedMediaStage}:draft;
+    const {data,error}=await supabase.from("product_drafts").upsert({product_slug:selected.slug,payload:nextDraft,created_by:user.id},{onConflict:"created_by,product_slug"}).select("product_slug,payload,updated_at").single();
     if(error)throw error;
-    const saved={...(data.payload||draft),savedAt:data.updated_at||draft.savedAt};setDrafts((current)=>({...current,[selected.slug]:saved}));
+    const saved={...(data.payload||nextDraft),savedAt:data.updated_at||nextDraft.savedAt};setDrafts((current)=>({...current,[selected.slug]:saved}));
     if(selected.__new)setSelected(draftProductFromPayload(selected.slug,saved));setEditing(false);
+    window.requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"smooth"}));
   };
 
   return <div className="app-shell"><aside className="sidebar"><div className="brand-block"><div><strong>PlayNice</strong><span>Control Center</span></div></div><nav>{NAV.map((group,index)=><div className="nav-group" key={group.section||index}>{group.section?<span className="nav-label">{group.section}</span>:null}{group.items.map((item)=><button key={item.name} title={item.name} data-hero-manager-nav={item.name==="Hero"?"true":undefined} className={active===item.name?"active":""} onMouseDown={()=>{if(item.name==="Hero"){setActive("Hero");setEditing(false)}}} onClick={()=>{setActive(item.name);setEditing(false)}}><span className="nav-icon" aria-hidden="true">{item.icon}</span><span className="nav-dot"/><span className="nav-text">{item.name}</span></button>)}</div>)}</nav><div className="sidebar-footer"><span className="status-dot"/><div><strong>Supabase draft build</strong><span>Shop remains read only</span></div></div></aside>
