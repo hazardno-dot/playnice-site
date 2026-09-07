@@ -7,6 +7,7 @@ import { getPreviewWorkflowState } from "./previewWorkflowState.mjs";
 import { supabase } from "./supabase";
 import "./controlled-apply.css";
 
+const PRODUCT_WORKFLOW_UPDATED_EVENT = "playnice:product-workflow-updated";
 const PREVIEW_CHECK_ITEMS = [
   ["card", "Product card · SR + EN · title/copy/badges/sizes aligned, no clipping"],
   ["modal-desktop", "Desktop modal · same shared layout, header/media/content/purchase aligned"],
@@ -80,6 +81,8 @@ export default function ControlledApplyManager() {
 
   useEffect(() => {
     load();
+    const handleWorkflowUpdated = () => load({ sync: false });
+    window.addEventListener(PRODUCT_WORKFLOW_UPDATED_EVENT, handleWorkflowUpdated);
     const draftChannel = supabase
       .channel("controlled-apply-drafts")
       .on("postgres_changes", { event: "*", schema: "public", table: "product_drafts" }, () => load({ sync: false }))
@@ -89,6 +92,7 @@ export default function ControlledApplyManager() {
       .on("postgres_changes", { event: "*", schema: "public", table: "publish_history" }, () => load({ sync: false }))
       .subscribe();
     return () => {
+      window.removeEventListener(PRODUCT_WORKFLOW_UPDATED_EVENT, handleWorkflowUpdated);
       supabase.removeChannel(draftChannel);
       supabase.removeChannel(publishChannel);
     };

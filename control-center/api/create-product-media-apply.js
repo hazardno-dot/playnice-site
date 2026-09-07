@@ -211,16 +211,28 @@ async function handler(req, res) {
       justInPath: `/products/thumbs/${slug}.webp`,
       stagedAt: now,
     };
+    const mediaPayload = {
+      ...(draft?.payload || {}),
+      core: { ...(draft?.payload?.core || {}), image: mediaStage.shopPath },
+      mediaStage,
+    };
 
     if (draft) {
-      const payload = { ...(draft.payload || {}), core: { ...(draft.payload?.core || {}), image: mediaStage.shopPath }, mediaStage };
       const saveResponse = await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, {
         method: "PATCH",
         headers: { Prefer: "return=representation" },
-        body: JSON.stringify({ payload, review_status: "draft", reviewed_at: null, reviewed_by: null, approved_payload: null, prepared_at: null, prepared_by: null, updated_at: now }),
+        body: JSON.stringify({ payload: mediaPayload, review_status: "draft", reviewed_at: null, reviewed_by: null, approved_payload: null, prepared_at: null, prepared_by: null, updated_at: now }),
       });
       const saved = await readJson(saveResponse, "Supabase Product media stage");
       if (!saveResponse.ok) throw new Error(saved?.message || "Could not save staged Product media metadata.");
+    } else {
+      const saveResponse = await supabaseFetch("/rest/v1/product_drafts", token, {
+        method: "POST",
+        headers: { Prefer: "return=representation" },
+        body: JSON.stringify({ product_slug: slug, payload: mediaPayload, created_by: user.id, review_status: "draft", updated_at: now }),
+      });
+      const saved = await readJson(saveResponse, "Supabase Product media stage");
+      if (!saveResponse.ok) throw new Error(saved?.message || "Could not create Product draft with staged media metadata.");
     }
 
     return json(res, 200, {
@@ -232,7 +244,7 @@ async function handler(req, res) {
       shop_path: mediaStage.shopPath,
       just_in_path: mediaStage.justInPath,
       media_stage: mediaStage,
-      draft_linked: Boolean(draft),
+      draft_linked: true,
       staged_at: now,
     });
   } catch (error) {

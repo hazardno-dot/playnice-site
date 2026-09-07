@@ -48,7 +48,11 @@ const expected=Math.max(...ids)+1;
 if(!nextIndex.includes(`id: ${expected},`)) throw new Error("New product id is not max+1.");
 const renderedWithDate=__test.renderProductObject(p,expected,"2026-09-03T20:00:00.000Z");
 if(!renderedWithDate.includes('addedAt: "2026-09-03T20:00:00.000Z"')) throw new Error("New product addedAt is not generated.");
-if(!renderedWithDate.includes('modalName: "PlayNice Test Fragrance EDP"')) throw new Error("Compact modalName was not generated.");
+if(renderedWithDate.includes("modalName:")) throw new Error("New products must keep the full catalog name in the modal.");
+const longPayload={...payload,core:{...payload.core,name:"PlayNice Exceptionally Long Test Fragrance Eau de Parfum Edition"}};
+const longProduct=__test.normalizePayload(longPayload,`${slug}-long`);
+const renderedLong=__test.renderProductObject(longProduct,expected+1,"2026-09-03T20:00:00.000Z");
+if(!renderedLong.includes('cardName: "PlayNice Exceptionally Long Test Fragrance EDP Edition"')) throw new Error("Long card names are not compacted independently.");
 for(const [source,render,label,key,exportName] of [
   [files.copy,__test.renderCopy(p),"Product Copy",p.core.name,"productCopy"],
   [files.wear,__test.renderWear(p),"Wear Context",p.core.name,"productWearContext"],
@@ -64,7 +68,8 @@ console.log("PASS  new product requires locked Shop + Just In staged media");
 console.log("PASS  wrong new-product Shop image path is blocked");
 console.log("PASS  catalog insertion assigns max+1 id");
 console.log("PASS  new product receives automatic addedAt timestamp");
-console.log("PASS  compact modalName is generated automatically");
+console.log("PASS  modal keeps the full product name");
+console.log("PASS  long card names compact independently from modal titles");
 console.log("PASS  Copy, Wear and Discovery entries render and insert");
 console.log("PASS  duplicate slug/name guard blocks catalog collision");
 console.log("Production untouched: yes (in-memory regression only)");
