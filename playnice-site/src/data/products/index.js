@@ -2782,7 +2782,7 @@ export const products = [
   },
   {
     id: 98,
-    addedAt: "2026-09-07T22:17:00.228Z",
+    addedAt: "2026-09-07T22:23:49.384Z",
     slug: "playnice-e2e-test-product",
     name: "PlayNice E2E Test Product",
     shortName: "E2E Test",
@@ -2790,7 +2790,7 @@ export const products = [
     image: "/products/playnice-e2e-test-product.png",
     sizes: {"2ml":5,"5ml":10,"10ml":18},
     badge: "TEST",
-    rating: 8.1,
+    rating: 8.2,
     ratingLabel: "Test Pick",
     season: "all",
     moods: ["clean","signature","soft"],
