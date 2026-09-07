@@ -9,13 +9,28 @@ const read = (p) => fs.readFileSync(path.join(root, p), "utf8");
 const validation = read("control-center/src/draftValidation.js");
 for (const token of [
   "Exactly 3 moods are required for product-card parity",
-  "presentationLengths",
+  'import { presentationLimit } from "./productPresentationContract.mjs"',
+  "presentationLimit(field, lang, { isNewProduct })",
+  'presentationLimit("wear", lang, { isNewProduct })',
   "Exactly 4 dominant notes are required for modal parity",
   "Exactly 3 tags are required for product presentation parity",
-  "keep it at or below 90 so product cards remain balanced",
+  "so product cards remain balanced",
   "TheNoteMap.jsx?raw",
 ]) {
   if (!validation.includes(token)) throw new Error(`Draft presentation guard missing: ${token}`);
+}
+
+const presentationContract = read("control-center/src/productPresentationContract.mjs");
+for (const token of [
+  "NEW_PRODUCT_PRESENTATION_LIMITS",
+  "LEGACY_PRESENTATION_LIMITS",
+  "presentationLimit",
+  "card",
+  "modal",
+  "whyChoose",
+  "wear",
+]) {
+  if (!presentationContract.includes(token)) throw new Error(`Central presentation contract missing: ${token}`);
 }
 
 const controlled = read("control-center/src/ControlledApplyManager.jsx");
@@ -49,6 +64,7 @@ if (fs.existsSync(path.join(root, "control-center/api/create-new-product-engine.
 if (!fs.existsSync(path.join(root, "control-center/lib/create-new-product-engine.mjs"))) throw new Error("New-product engine is missing from /lib.");
 
 console.log("PASS  product-card/modal data contract prevents the Tonic Vert failure class");
+console.log("PASS  presentation limits are centralized and consumed by draft validation");
 console.log("PASS  preview verification requires desktop + 390px + 360px visual QA");
 console.log("PASS  server refuses verification unless current Shop preview is green");
 console.log("PASS  new-product runtime engine is outside /api");

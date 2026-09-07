@@ -3,9 +3,12 @@ import { createPortal } from "react-dom";
 import DraftManager from "./DraftManager";
 import InlineValidationBridge from "./InlineValidationBridge";
 import ProductBulkPasteBridge from "./ProductBulkPasteBridge";
+import ProductMediaUploadBridge from "./ProductMediaUploadBridge";
+import ProductMediaStatusBridge from "./ProductMediaStatusBridge";
 import DiscoveryBulkPasteBridge from "./DiscoveryBulkPasteBridge";
 import ControlledApplyManager from "./ControlledApplyManager";
 import ProductWorkflowBridge from "./ProductWorkflowBridge";
+import ProductWorkflowAdvanceBridge from "./ProductWorkflowAdvanceBridge";
 import ProductCatalogCountBridge from "./ProductCatalogCountBridge";
 import JournalManager from "./JournalManager";
 import JournalApplyManager from "./JournalApplyManager";
@@ -18,10 +21,8 @@ import BrowserQaSiteHealthBridge from "./BrowserQaSiteHealthBridge";
 import BrowserQaOverviewBridge from "./BrowserQaOverviewBridge";
 import HeroManager from "./HeroManager";
 import HeroMediaUploadBridge from "./HeroMediaUploadBridge";
-import HeroBranchPreviewBridge from "./HeroBranchPreviewBridge";
 import HeroReviewBridge from "./HeroReviewBridge";
 import HeroApplyBridge from "./HeroApplyBridge";
-import HeroPreviewCacheBustBridge from "./HeroPreviewCacheBustBridge";
 import "./header-layout.css";
 
 const ACTIVE_MODULE_KEY = "playnice_cc_active_module";
@@ -94,16 +95,17 @@ export default function ControlCenterManagers() {
   return <>
     {slots.draft ? createPortal(<DraftManager />, slots.draft) : <DraftManager />}
     <InlineValidationBridge />
+    <ProductMediaUploadBridge />
+    <ProductMediaStatusBridge />
     <ProductBulkPasteBridge />
     <DiscoveryBulkPasteBridge />
     <ProductWorkflowBridge />
+    <ProductWorkflowAdvanceBridge />
     <ProductCatalogCountBridge />
     <HeroManager />
     <HeroMediaUploadBridge />
-    <HeroBranchPreviewBridge />
     <HeroReviewBridge />
     <HeroApplyBridge />
-    <HeroPreviewCacheBustBridge />
     <JournalManager />
     <JournalApplyManager />
     <NotesManager />

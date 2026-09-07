@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
 import "./hero-media-upload.css";
@@ -161,6 +161,8 @@ export default function HeroMediaUploadBridge() {
   const [mobileInfo, setMobileInfo] = useState(null);
   const [desktopPreview, setDesktopPreview] = useState("");
   const [mobilePreview, setMobilePreview] = useState("");
+  const desktopPreviewRef = useRef("");
+  const mobilePreviewRef = useRef("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState(null);
@@ -203,6 +205,11 @@ export default function HeroMediaUploadBridge() {
 
   useEffect(() => {
     setDesktopFile(null); setMobileFile(null); setDesktopInfo(null); setMobileInfo(null);
+    if (desktopPreviewRef.current) URL.revokeObjectURL(desktopPreviewRef.current);
+    if (mobilePreviewRef.current) URL.revokeObjectURL(mobilePreviewRef.current);
+    desktopPreviewRef.current = "";
+    mobilePreviewRef.current = "";
+    setDesktopPreview(""); setMobilePreview("");
     setError(""); setResult(null);
   }, [slide?.id]);
 
@@ -253,17 +260,22 @@ export default function HeroMediaUploadBridge() {
   }, [slide?.hero_key]);
 
   useEffect(() => () => {
-    if (desktopPreview) URL.revokeObjectURL(desktopPreview);
-    if (mobilePreview) URL.revokeObjectURL(mobilePreview);
-  }, [desktopPreview, mobilePreview]);
+    if (desktopPreviewRef.current) URL.revokeObjectURL(desktopPreviewRef.current);
+    if (mobilePreviewRef.current) URL.revokeObjectURL(mobilePreviewRef.current);
+  }, []);
 
   const pickFile = async (variant, file) => {
     setError(""); setResult(null);
     const setFile = variant === "desktop" ? setDesktopFile : setMobileFile;
     const setInfo = variant === "desktop" ? setDesktopInfo : setMobileInfo;
     const setPreview = variant === "desktop" ? setDesktopPreview : setMobilePreview;
+    const previewRef = variant === "desktop" ? desktopPreviewRef : mobilePreviewRef;
 
-    if (!file) { setFile(null); setInfo(null); setPreview(""); return; }
+    if (!file) {
+      if (previewRef.current) URL.revokeObjectURL(previewRef.current);
+      previewRef.current = "";
+      setFile(null); setInfo(null); setPreview(""); return;
+    }
     if (!ACCEPTED_IMAGE.test(file.type) && !ACCEPTED_EXT.test(file.name)) {
       setError(`${variant === "desktop" ? "Desktop" : "Mobile"} image must be JPG or WebP.`); return;
     }
@@ -272,11 +284,10 @@ export default function HeroMediaUploadBridge() {
     }
     try {
       const info = await inspectImage(file);
-      setFile(file); setInfo(info);
-      setPreview((current) => {
-        if (current) URL.revokeObjectURL(current);
-        return URL.createObjectURL(file);
-      });
+      if (previewRef.current) URL.revokeObjectURL(previewRef.current);
+      const nextPreview = URL.createObjectURL(file);
+      previewRef.current = nextPreview;
+      setFile(file); setInfo(info); setPreview(nextPreview);
     } catch (inspectError) {
       setError(inspectError.message || String(inspectError));
     }

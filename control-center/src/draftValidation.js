@@ -3,6 +3,7 @@ import { productCopy } from "@shop/data/products/productCopy.js";
 import { productWearContext } from "@shop/data/products/productWearContext.js";
 import discoveryProfiles from "@shop/data/products/discoveryProfiles.js";
 import noteMapSource from "@shop/TheNoteMap.jsx?raw";
+import { presentationLimit } from "./productPresentationContract.mjs";
 
 const csv = (value) => String(value ?? "").split(",").map((v) => v.trim()).filter(Boolean);
 const empty = (value) => value == null || String(value).trim() === "";
@@ -13,7 +14,7 @@ function noteLibraryKeys(source) {
   const end = source.indexOf("const NOTE_SR = {", start);
   if (start < 0 || end < 0) return [];
   const section = source.slice(start, end);
-  return [...section.matchAll(/^  (?:(?:"([^"]+)")|(?:'([^']+)')|([A-Za-z0-9_-]+))\s*:\s*\{/gm)]
+  return [...section.matchAll(/^  (?:(?:\"([^\"]+)\")|(?:'([^']+)')|([A-Za-z0-9_-]+))\s*:\s*\{/gm)]
     .map((match) => match[1] || match[2] || match[3])
     .filter(Boolean);
 }
@@ -32,6 +33,7 @@ function issue(level, section, field, message) {
 export function validateProductDraft(live, draft) {
   const issues = [];
   const core = draft?.core || {};
+  const isNewProduct = !live;
 
   [["Name", core.name], ["Short name", core.shortName], ["Category", core.category], ["Image path", core.image], ["Season", core.season], ["Rating label", core.ratingLabel]].forEach(([field, value]) => {
     if (empty(value)) issues.push(issue("error", "Core", field, `${field} is required.`));
@@ -47,8 +49,8 @@ export function validateProductDraft(live, draft) {
   const imagePath = String(core.image || "").trim();
   if (!imagePath.startsWith("/products/") || imagePath === "/products/" || imagePath.endsWith("/")) issues.push(issue("error", "Core", "Image path", "Use a specific product image file under /products/, not a directory placeholder."));
 
-  if (!live && empty(core.badge)) issues.push(issue("error", "Presentation", "Badge", "A new product must have a presentation badge so the modal media column keeps the standard PlayNice hierarchy."));
-  if (!live && empty(core.inspiredBy?.name)) issues.push(issue("error", "Presentation", "Inspired by · name", "A new product must define the modal reference/original-creation label. The optional short DNA label may remain empty."));
+  if (isNewProduct && empty(core.badge)) issues.push(issue("error", "Presentation", "Badge", "A new product must have a presentation badge so the modal media column keeps the standard PlayNice hierarchy."));
+  if (isNewProduct && empty(core.inspiredBy?.name)) issues.push(issue("error", "Presentation", "Inspired by · name", "A new product must define the modal reference/original-creation label. The optional short DNA label may remain empty."));
   if (!empty(core.inspiredBy?.short) && empty(core.inspiredBy?.name)) issues.push(issue("warning", "Core", "Inspired by", "A short DNA label cannot be used without the main inspired-by/original-creation label."));
 
   const sizes = core.sizes || {};
@@ -80,18 +82,11 @@ export function validateProductDraft(live, draft) {
     });
   });
 
-  const presentationLengths = [
-    ["miniTag", 32],
-    ["scentType", 42],
-    ["card", { sr: 82, en: 92 }],
-    ["modal", 230],
-    ["whyChoose", 125],
-  ];
-  presentationLengths.forEach(([field, limit]) => {
+  ["miniTag", "scentType", "card", "modal", "whyChoose"].forEach((field) => {
     ["sr", "en"].forEach((lang) => {
       const value = String(copy?.[field]?.[lang] || "").trim();
-      const max = typeof limit === "object" ? limit[lang] : limit;
-      if (value.length > max) issues.push(issue("error", "Presentation", `${field} · ${lang.toUpperCase()}`, `Copy is ${value.length} characters; keep it at or below ${max} to protect the shared card/modal layout.`));
+      const max = presentationLimit(field, lang, { isNewProduct });
+      if (max && value.length > max) issues.push(issue("error", "Presentation", `${field} · ${lang.toUpperCase()}`, `Copy is ${value.length} characters; keep it at or below ${max} to protect the shared card/modal layout.`));
     });
   });
 
@@ -106,7 +101,8 @@ export function validateProductDraft(live, draft) {
   ["sr", "en"].forEach((lang) => {
     if (empty(wear?.[lang])) issues.push(issue("error", "Wear", lang.toUpperCase(), "Wear context is required in both languages."));
     const value = String(wear?.[lang] || "").trim();
-    if (value.length > 90) issues.push(issue("error", "Presentation", `Wear · ${lang.toUpperCase()}`, `Wear context is ${value.length} characters; keep it at or below 90 so product cards remain balanced.`));
+    const max = presentationLimit("wear", lang, { isNewProduct });
+    if (max && value.length > max) issues.push(issue("error", "Presentation", `Wear · ${lang.toUpperCase()}`, `Wear context is ${value.length} characters; keep it at or below ${max} so product cards remain balanced.`));
   });
 
   const liveDiscovery = discoveryProfiles[live?.slug] || {};
@@ -118,7 +114,7 @@ export function validateProductDraft(live, draft) {
       issues.push(issue("error", "Discovery", key, `${key} must be explicitly entered as a number from 0 to 10.`));
     }
   });
-  if (!live && discoveryKeys.length && discoveryKeys.every((key) => finite(discovery[key]) && Number(discovery[key]) === 0)) {
+  if (isNewProduct && discoveryKeys.length && discoveryKeys.every((key) => finite(discovery[key]) && Number(discovery[key]) === 0)) {
     issues.push(issue("error", "Discovery", "Scent profile", "The complete scent profile is still the legacy all-zero placeholder. Enter the intended Discovery values before review."));
   }
 
