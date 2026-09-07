@@ -90,14 +90,38 @@ function scanObject(source, braceStart, label) {
 }
 
 function findProductBlock(source, slug) {
-  const slugRegex = new RegExp(`\\bslug\\s*:\\s*["']${escapeRegex(slug)}["']`);
+  const slugRegex = new RegExp(
+    `\\bslug\\s*:\\s*["']${escapeRegex(slug)}["']`
+  );
+
   const slugMatch = slugRegex.exec(source);
-  if (!slugMatch) throw new Error(`Could not locate ${slug} in main catalog.`);
-  let start = source.lastIndexOf("\n  {", slugMatch.index);
-  if (start < 0) start = source.lastIndexOf("{", slugMatch.index);
-  else start += 3;
-  if (start < 0) throw new Error(`Could not locate product object for ${slug}.`);
-  return scanObject(source, start, slug);
+
+  if (!slugMatch) {
+    throw new Error(`Could not locate ${slug} in main catalog.`);
+  }
+
+  const prefix = source.slice(0, slugMatch.index);
+
+  const objectStarts = [
+    ...prefix.matchAll(/(?:^|\n)[ \t]*\{/g)
+  ];
+
+  const candidate = objectStarts.at(-1);
+
+  if (!candidate) {
+    throw new Error(`Could not locate product object for ${slug}.`);
+  }
+
+  const start =
+    candidate.index + candidate[0].lastIndexOf("{");
+
+  const located = scanObject(source, start, slug);
+
+  if (!slugRegex.test(located.block)) {
+    throw new Error(`Could not safely locate product object for ${slug}.`);
+  }
+
+  return located;
 }
 
 function findNamedObjectBlock(source, objectKey, label = "data object") {
