@@ -2580,7 +2580,7 @@ export const products = [
   shortName: "Jil Sander Sun",
   category: "Designer",
   image: "/products/jil-sander-sun-edt.png",
-  sizes: { "5ml": 4, "10ml": 7, "20ml": 13.5 },
+  sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 },
   badge: "BESTSELLER",
   rating: 8.2,
   ratingLabel: "Timeless Favorite",
