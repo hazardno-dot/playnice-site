@@ -2821,6 +2821,55 @@ export const productCopy = {
       "en": "If you want a bold, recognizable and highly versatile fragrance.",
       "sr": "Ako želiš snažan, prepoznatljiv i veoma svestran parfem."
     }
+  },
+
+  "Nishane Hacivat X Extrait de Parfum": {
+    "miniTag": {
+      "en": "🍍 Citrus / Woody",
+      "sr": "🍍 Citrusni / Drvenast"
+    },
+    "card": {
+      "en": "Pineapple, bergamot and vetiver in a clean chypre signature.",
+      "sr": "Ananas, bergamot i vetiver u čistom chypre potpisu."
+    },
+    "modal": {
+      "en": "Juicy pineapple and bergamot open with pink pepper, while lime and orange blossom lead into a dry, elegant base of cedar, patchouli and vetiver.",
+      "sr": "Sočan ananas i bergamot otvaraju miris uz ružičasti biber, dok limeta i cvet narandže vode ka suvoj, elegantnoj bazi kedra, pačulija i vetivera."
+    },
+    "scentType": {
+      "en": "Citrus chypre woody extrait",
+      "sr": "Citrusni chypre drvenasti extrait"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Ananas",
+        "Bergamot",
+        "Vetiver",
+        "Kedar"
+      ],
+      "en": [
+        "Pineapple",
+        "Bergamot",
+        "Vetiver",
+        "Cedar"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Citrusni",
+        "Drvenasti",
+        "Elegantni"
+      ],
+      "en": [
+        "Citrusy",
+        "Woody",
+        "Elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For a distinctive, clean niche scent with strong presence and excellent versatility.",
+      "sr": "Za upečatljiv, čist niche miris sa ozbiljnim prisustvom i odličnom svestranošću."
+    }
   }
 };
 

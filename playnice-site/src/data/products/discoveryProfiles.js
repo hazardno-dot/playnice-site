@@ -2920,6 +2920,37 @@ export const discoveryProfiles = {
     "cleanliness": 8.5,
     "versatility": 9.6,
     "gourmandness": 1
+  },
+
+  "nishane-hacivat-x": {
+    "date": 7.6,
+    "casual": 7.8,
+    "citrus": 8.5,
+    "office": 8.7,
+    "unisex": 7,
+    "warmth": 4.5,
+    "aquatic": 1.5,
+    "dryness": 7.8,
+    "evening": 8.1,
+    "powdery": 1.3,
+    "airiness": 7.4,
+    "darkness": 3.4,
+    "elegance": 9.2,
+    "feminine": 3.8,
+    "florality": 3.8,
+    "freshness": 8.7,
+    "longevity": 9,
+    "masculine": 7,
+    "spiciness": 4.8,
+    "sweetness": 3.8,
+    "woodiness": 8.2,
+    "creaminess": 1.8,
+    "fruitiness": 7.7,
+    "projection": 8.7,
+    "aromaticity": 7,
+    "cleanliness": 8.6,
+    "versatility": 8.8,
+    "gourmandness": 1.2
   }
 };
 
