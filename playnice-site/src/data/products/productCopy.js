@@ -2780,12 +2780,12 @@ export const productCopy = {
       "sr": "Svež, začinski i magnetičan."
     },
     "card": {
-      "en": "Bergamot, aromatic spice and warm vanilla in a modern, powerful signature.",
-      "sr": "Bergamot, aromatični začini i topla vanila u modernom, moćnom potpisu."
+      "en": "Bergamot, spice and warm vanilla in a modern signature.",
+      "sr": "Bergamot, začini i topla vanila u modernom potpisu."
     },
     "modal": {
-      "en": "Opens with juicy bergamot and aromatic spice, moves through lavender, then settles into warm vanilla, ambroxan and patchouli. Fresh up top and deeper in the drydown, it is instantly recognizable, versatile and masculine.",
-      "sr": "Otvara se sočnim bergamotom i aromatičnim začinima, prelazi u lavandu, a zatim se smiruje na toploj vanili, ambroksanu i pačuliju. Svež na početku, dublji i senzualniji u završnici — izrazito prepoznatljiv i svestran."
+      "en": "Fresh bergamot and aromatic spice move into lavender, warm vanilla and ambroxan, leaving a bold and distinctive trail.",
+      "sr": "Svež bergamot i aromatični začini prelaze u lavandu, toplu vanilu i ambroksan, ostavljajući snažan i prepoznatljiv trag."
     },
     "scentType": {
       "en": "Aromatic amber citrus fragrance",
@@ -2818,8 +2818,8 @@ export const productCopy = {
       ]
     },
     "whyChoose": {
-      "en": "For a recognizable, confident signature that works from the office to an evening out.",
-      "sr": "Za prepoznatljiv, samouveren potpis koji radi od kancelarije do večernjeg izlaska."
+      "en": "If you want a bold, recognizable and highly versatile fragrance.",
+      "sr": "Ako želiš snažan, prepoznatljiv i veoma svestran parfem."
     }
   }
 };

@@ -389,7 +389,7 @@ export const productWearContext = {
   },
 
   "Christian Dior Sauvage Eau de Parfum": {
-    "sr": "Tokom cele godine; posebno dobar za posao, grad, dejt i večernji izlazak.",
-    "en": "Year-round; especially strong for work, city wear, dates and evening occasions."
+    "sr": "Cijele godine; posao, grad, dejt i veče.",
+    "en": "Year-round; work, city, dates and evenings."
   }
 };
