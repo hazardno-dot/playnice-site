@@ -479,6 +479,8 @@
   }
 
   .exhibition-outro-link span {
+    font-size: 22px;
+    line-height: 1;
     transform: rotate(90deg);
   }
 
