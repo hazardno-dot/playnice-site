@@ -40,11 +40,23 @@ const normalizeCsv = (v) => Array.isArray(v)
   ? v.map(String).map((s) => s.trim()).filter(Boolean)
   : String(v ?? "").split(",").map((s) => s.trim()).filter(Boolean);
 
-const normalizeSizes = (value) => Object.keys(value || {}).sort().reduce((out, key) => {
-  const n = Number(value[key]);
-  out[key] = Number.isFinite(n) ? n : value[key];
-  return out;
-}, {});
+const normalizeSizes = (value) =>
+  Object.keys(value || {})
+    .sort((a, b) => {
+      const aMl = Number.parseFloat(a);
+      const bMl = Number.parseFloat(b);
+
+      if (Number.isFinite(aMl) && Number.isFinite(bMl)) {
+        return aMl - bMl;
+      }
+
+      return a.localeCompare(b);
+    })
+    .reduce((out, key) => {
+      const n = Number(value[key]);
+      out[key] = Number.isFinite(n) ? n : value[key];
+      return out;
+    }, {});
 
 const stable = (value) => {
   const normalize = (v) => {
