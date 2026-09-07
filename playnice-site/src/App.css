@@ -15442,6 +15442,10 @@ body.scrolled .header-system .announcement-bar-system {
 
   border: 0;
   outline: 0;
+
+  min-height: var(--announcement-height);
+    padding-inline: 8px;
+
   margin: 0;
   padding: 0;
 
@@ -15902,13 +15906,17 @@ body.scrolled .header-system .announcement-bar-system {
     gap: 22px;
     padding: 0 10px;
 
-    animation-duration: 19s;
+    animation-duration: 23s;
   }
 
   .header-system .announcement-text,
   .header-system .announcement-action {
     font-size: 8.5px;
     letter-spacing: 0.06em;
+  }
+
+  .header-system .announcement-action {
+    padding-inline: 12px;
   }
 
   .header-system .announcement-icon {
@@ -16123,7 +16131,7 @@ body.scrolled .header-system .announcement-bar-system {
     gap: 18px;
     padding: 0 9px;
 
-    animation-duration: 17s;
+    animation-duration: 24s;
   }
 
   .header-system .announcement-text,
