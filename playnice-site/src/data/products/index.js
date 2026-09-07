@@ -2785,7 +2785,7 @@ export const products = [
     addedAt: "2026-09-07T23:22:38.855Z",
     slug: "nishane-hacivat-x",
     name: "Nishane Hacivat X Extrait de Parfum",
-    modalName: "Nishane Hacivat X Extrait",
+    modalName: "Nishane Hacivat X Extrait de Parfum",
     shortName: "Hacivat X",
     category: "Niche",
     image: "/products/nishane-hacivat-x.png",
