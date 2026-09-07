@@ -386,5 +386,10 @@ export const productWearContext = {
   "Thomas Kosmala No. 8 Tonic Vert Eau de Parfum": {
     sr: "Topli dani, posao, svakodnevno nošenje.",
     en: "Warm days, work, everyday wear."
+  },
+
+  "Arabiyat Prestige Al Noor Eau De Parfum": {
+    "sr": "Hladnije vreme, veče i izlazak. Za kancelariju ga nosi umerenije.",
+    "en": "Cooler weather, evenings and nights out. Use moderately in the office."
   }
 };

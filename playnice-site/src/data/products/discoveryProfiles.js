@@ -2889,6 +2889,37 @@ export const discoveryProfiles = {
     "cleanliness": 9,
     "versatility": 8.7,
     "gourmandness": 0
+  },
+
+  "arabiyat-prestige-al-noor": {
+    "date": 9,
+    "casual": 6.8,
+    "citrus": 0,
+    "office": 6.2,
+    "unisex": 7.5,
+    "warmth": 8.4,
+    "aquatic": 0,
+    "dryness": 6.8,
+    "evening": 9.4,
+    "powdery": 5.5,
+    "airiness": 1.5,
+    "darkness": 7.6,
+    "elegance": 8.8,
+    "feminine": 5.2,
+    "florality": 3.8,
+    "freshness": 2.8,
+    "longevity": 8,
+    "masculine": 7.2,
+    "spiciness": 8.7,
+    "sweetness": 5.8,
+    "woodiness": 7.5,
+    "creaminess": 6.5,
+    "fruitiness": 4.8,
+    "projection": 7.8,
+    "aromaticity": 5.8,
+    "cleanliness": 3,
+    "versatility": 6.6,
+    "gourmandness": 4.5
   }
 };
 
