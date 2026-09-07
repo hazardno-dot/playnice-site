@@ -2889,6 +2889,37 @@ export const discoveryProfiles = {
     "cleanliness": 9,
     "versatility": 8.7,
     "gourmandness": 0
+  },
+
+  "christian-dior-sauvage-edp": {
+    "date": 8.4,
+    "casual": 9.2,
+    "citrus": 7.8,
+    "office": 9,
+    "unisex": 3.2,
+    "warmth": 5.8,
+    "aquatic": 1.5,
+    "dryness": 4.6,
+    "evening": 8.5,
+    "powdery": 1.8,
+    "airiness": 4.5,
+    "darkness": 4.8,
+    "elegance": 8.4,
+    "feminine": 1.5,
+    "florality": 2.8,
+    "freshness": 7.2,
+    "longevity": 8.5,
+    "masculine": 9.4,
+    "spiciness": 6.8,
+    "sweetness": 3.8,
+    "woodiness": 7.2,
+    "creaminess": 2.5,
+    "fruitiness": 1.5,
+    "projection": 8.4,
+    "aromaticity": 8.7,
+    "cleanliness": 8.5,
+    "versatility": 9.6,
+    "gourmandness": 1
   }
 };
 

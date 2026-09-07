@@ -386,5 +386,10 @@ export const productWearContext = {
   "Thomas Kosmala No. 8 Tonic Vert Eau de Parfum": {
     sr: "Topli dani, posao, svakodnevno nošenje.",
     en: "Warm days, work, everyday wear."
+  },
+
+  "Christian Dior Sauvage Eau de Parfum": {
+    "sr": "Tokom cele godine; posebno dobar za posao, grad, dejt i večernji izlazak.",
+    "en": "Year-round; especially strong for work, city wear, dates and evening occasions."
   }
 };

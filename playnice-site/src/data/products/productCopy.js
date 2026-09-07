@@ -2772,6 +2772,55 @@ export const productCopy = {
       sr: "Ako želiš hladan, suv i čist zeleni parfem za tople dane.",
       en: "If you want a cool, dry and clean green fragrance for warm days."
     }
+  },
+
+  "Christian Dior Sauvage Eau de Parfum": {
+    "miniTag": {
+      "en": "Fresh, spicy and magnetic.",
+      "sr": "Svež, začinski i magnetičan."
+    },
+    "card": {
+      "en": "Bergamot, aromatic spice and warm vanilla in a modern, powerful signature.",
+      "sr": "Bergamot, aromatični začini i topla vanila u modernom, moćnom potpisu."
+    },
+    "modal": {
+      "en": "Opens with juicy bergamot and aromatic spice, moves through lavender, then settles into warm vanilla, ambroxan and patchouli. Fresh up top and deeper in the drydown, it is instantly recognizable, versatile and masculine.",
+      "sr": "Otvara se sočnim bergamotom i aromatičnim začinima, prelazi u lavandu, a zatim se smiruje na toploj vanili, ambroksanu i pačuliju. Svež na početku, dublji i senzualniji u završnici — izrazito prepoznatljiv i svestran."
+    },
+    "scentType": {
+      "en": "Aromatic amber citrus fragrance",
+      "sr": "Aromatično-ambarni citrusni miris"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Bergamot",
+        "Lavanda",
+        "Vanila",
+        "Ambroksan"
+      ],
+      "en": [
+        "Bergamot",
+        "Lavender",
+        "Vanilla",
+        "Ambroxan"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Svež",
+        "Začinski",
+        "Muževan"
+      ],
+      "en": [
+        "Fresh",
+        "Spicy",
+        "Masculine"
+      ]
+    },
+    "whyChoose": {
+      "en": "For a recognizable, confident signature that works from the office to an evening out.",
+      "sr": "Za prepoznatljiv, samouveren potpis koji radi od kancelarije do večernjeg izlaska."
+    }
   }
 };
 

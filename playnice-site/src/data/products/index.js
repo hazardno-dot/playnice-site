@@ -2753,6 +2753,32 @@ export const products = [
       heart: ["mint","geranium","pomelo"],
       base: ["vetiver","musk","oakmoss"]
     }
+  },
+  {
+    id: 97,
+    addedAt: "2026-09-07T20:09:51.607Z",
+    slug: "christian-dior-sauvage-edp",
+    name: "Christian Dior Sauvage Eau de Parfum",
+    modalName: "Christian Dior Sauvage EDP",
+    shortName: "Sauvage EDP",
+    category: "Designer",
+    image: "/products/christian-dior-sauvage-edp.png",
+    sizes: {"2ml":6.5,"5ml":15,"10ml":27},
+    badge: "ICONIC",
+    rating: 8.8,
+    ratingLabel: "Iconic Pick",
+    season: "all",
+    moods: ["clean","signature","date"],
+    recommendations: ["bleu-de-chanel-edp","ysl-myslf-edp","prada-luna-rossa-ocean-edt"],
+    inspiredBy: {
+      name: "Original Christian Dior creation",
+      short: "Sauvage DNA"
+    },
+    noteMap: {
+      top: ["bergamot"],
+      heart: ["lavender","fresh-spices"],
+      base: ["vanilla","ambroxan","patchouli"]
+    }
   }
 
 ];
