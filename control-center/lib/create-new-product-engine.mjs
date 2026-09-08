@@ -187,12 +187,14 @@ function compactConcentrationName(name) {
 function renderProductObject(product, id, addedAt = new Date().toISOString()) {
   const core = product.core;
   const compactName = compactConcentrationName(core.name);
+  const modalName = compactName;
+  const modalLine = `\n    modalName: ${js(modalName)},`;
   const cardName = core.name.length > 58 ? compactName : "";
   const cardLine = cardName && cardName !== core.name ? `\n    cardName: ${js(cardName)},` : "";
   const inspiredBy = core.inspiredBy.name || core.inspiredBy.short
     ? `,\n    inspiredBy: {\n      name: ${js(core.inspiredBy.name)},\n      short: ${js(core.inspiredBy.short)}\n    }`
     : "";
-  return `  {\n    id: ${id},\n    addedAt: ${js(addedAt)},\n    slug: ${js(product.slug)},\n    name: ${js(core.name)},${cardLine}\n    shortName: ${js(core.shortName)},\n    category: ${js(core.category)},\n    image: ${js(core.image)},\n    sizes: ${js(core.sizes)},\n    badge: ${js(core.badge)},\n    rating: ${core.rating},\n    ratingLabel: ${js(core.ratingLabel)},\n    season: ${js(core.season)},\n    moods: ${js(core.moods)},\n    recommendations: ${js(core.recommendations)}${inspiredBy},\n    noteMap: {\n      top: ${js(core.noteMap.top)},\n      heart: ${js(core.noteMap.heart)},\n      base: ${js(core.noteMap.base)}\n    }\n  }`;
+  return `  {\n    id: ${id},\n    addedAt: ${js(addedAt)},\n    slug: ${js(product.slug)},\n    name: ${js(core.name)},${modalLine}${cardLine}\n    shortName: ${js(core.shortName)},\n    category: ${js(core.category)},\n    image: ${js(core.image)},\n    sizes: ${js(core.sizes)},\n    badge: ${js(core.badge)},\n    rating: ${core.rating},\n    ratingLabel: ${js(core.ratingLabel)},\n    season: ${js(core.season)},\n    moods: ${js(core.moods)},\n    recommendations: ${js(core.recommendations)}${inspiredBy},\n    noteMap: {\n      top: ${js(core.noteMap.top)},\n      heart: ${js(core.noteMap.heart)},\n      base: ${js(core.noteMap.base)}\n    }\n  }`;
 }
 
 function appendSeparator(before) {
