@@ -1,0 +1,36 @@
+/* =========================================
+   PLAYNICE MOBILE PRODUCT CARD TEXT — V2
+   Mobile product-card text rhythm: 2 + 3 + 3 lines
+   title / scent copy / wear context.
+========================================= */
+
+@media (max-width: 640px) {
+  /*
+    App.css gives the mobile copy stack 64px (60px <= 380px).
+    MobileShopV2 already reserves 3 scent-copy lines, so the stack must
+    accommodate 3 scent lines + 3 wear-context lines without clipping.
+    Keep padding at 0: the surrounding product meta already supplies spacing.
+  */
+  .shop-section .product-card-copy-stack {
+    min-height: 90px;
+    max-height: 90px;
+    padding: 0;
+    gap: 4px;
+  }
+
+  .shop-section .product-card-copy,
+  .shop-section .product-card-copy.premium-card-copy {
+    min-height: calc(1.32em * 3);
+    max-height: calc(1.32em * 3);
+    -webkit-line-clamp: 3;
+  }
+
+  .shop-section .product-card-decant-note {
+    display: -webkit-box !important;
+    min-height: calc(1.16em * 3);
+    max-height: calc(1.16em * 3);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+}
