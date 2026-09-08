@@ -10,6 +10,7 @@ import MobileShopV2 from "./MobileShopV2";
 import MobileShopReveal from "./MobileShopReveal";
 import MobileMenuContact from "./MobileMenuContact";
 import CartInteractionV2 from "./CartInteractionV2";
+import DiscoveryImageFallback from "./DiscoveryImageFallback";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
 import "./NewArrivalsScale.css";
@@ -55,5 +56,6 @@ root.render(
     <MobileShopReveal />
     <MobileMenuContact />
     <CartInteractionV2 />
+    <DiscoveryImageFallback />
   </React.StrictMode>
 );
