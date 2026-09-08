@@ -1,6 +1,7 @@
 /* =========================================
    PLAYNICE PRODUCT MODAL PURCHASE FLOW — V2
    Shared desktop + mobile purchase hierarchy.
+   Keep the selected price visually primary in the decision row.
 ========================================= */
 
 .modal-price-box strong.modal-selected-price,
