@@ -11,10 +11,18 @@
   font-weight: 600;
 }
 
+.modal-buy-now {
+  font-weight: 400;
+}
+
 @media (max-width: 640px) {
   .modal-price-box strong.modal-selected-price,
   .modal-selected-price {
     font-size: 1.34rem;
     font-weight: 600;
+  }
+
+  .modal-buy-now {
+    font-weight: 400;
   }
 }
