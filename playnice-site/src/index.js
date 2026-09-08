@@ -36,6 +36,7 @@ import "./MobileStickyCtaV2.css";
 import "./MobileTypographyV2.css";
 import "./MobileProductCardTextV2.css";
 import "./CartConfirmationBar.css";
+import "./MobileManifestoFix.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
