@@ -4,16 +4,22 @@ const timestamp = (value) => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
+const getDraftContentTimestamp = (row = {}) => {
+  const savedAt = timestamp(row?.payload?.core?.savedAt);
+  if (savedAt !== null) return savedAt;
+  return timestamp(row.prepared_at);
+};
+
 export function getPreviewWorkflowState(row = {}) {
   const hasPreview = Boolean(row.apply_branch && row.apply_pr_number);
-  const preparedAt = timestamp(row.prepared_at);
+  const draftContentAt = getDraftContentTimestamp(row);
   const previewCreatedAt = timestamp(row.apply_created_at);
   const verifiedAt = timestamp(row.preview_verified_at);
 
   const needsRefresh = Boolean(
     hasPreview &&
-    preparedAt !== null &&
-    (previewCreatedAt === null || preparedAt > previewCreatedAt)
+    draftContentAt !== null &&
+    (previewCreatedAt === null || draftContentAt > previewCreatedAt)
   );
 
   if (!hasPreview) {
