@@ -18,6 +18,7 @@ import "./HeroPaginationPosition.css";
 import "./MobileHeaderV2.css";
 import "./MobileHomeV2.css";
 import "./MobileFragranceIntelligenceV2.css";
+import "./DesktopFragranceIntelligenceV2.css";
 import "./MobileJustInV2.css";
 import "./MobileDiscoverySetsV2.css";
 import "./MobileHowItWorksV2.css";
