@@ -9,6 +9,7 @@ import MobilePrivateSelectionProfile from "./MobilePrivateSelectionProfile";
 import MobileShopV2 from "./MobileShopV2";
 import MobileShopReveal from "./MobileShopReveal";
 import MobileMenuContact from "./MobileMenuContact";
+import CartInteractionV2 from "./CartInteractionV2";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
 import "./NewArrivalsScale.css";
@@ -34,6 +35,7 @@ import "./MobileCheckoutV2.css";
 import "./MobileStickyCtaV2.css";
 import "./MobileTypographyV2.css";
 import "./MobileProductCardTextV2.css";
+import "./CartConfirmationBar.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -47,5 +49,6 @@ root.render(
     <MobileShopV2 />
     <MobileShopReveal />
     <MobileMenuContact />
+    <CartInteractionV2 />
   </React.StrictMode>
 );
