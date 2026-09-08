@@ -2776,9 +2776,8 @@ export const productCopy = {
 
   "Christian Dior Sauvage Eau de Parfum": {
     "miniTag": {
-      "en": "Fresh, spicy and magnetic.",
-      "sr": "Svež, začinski i magnetičan."
-    },
+      "en": "🌶️ Fresh / Spicy",
+      "sr": "🌶️ Svež / Začinski"},
     "card": {
       "en": "Bergamot, spice and warm vanilla in a modern signature.",
       "sr": "Bergamot, začini i topla vanila u modernom potpisu."
