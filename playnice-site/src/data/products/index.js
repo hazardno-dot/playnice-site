@@ -2776,8 +2776,8 @@ export const products = [
     },
     noteMap: {
       top: ["bergamot"],
-      heart: ["lavender","fresh-spices"],
-      base: ["vanilla","ambroxan","patchouli"]
+      heart: ["sichuan-pepper","lavender","star-anise"],
+      base: ["vanilla","ambroxan"]
     }
   },
   {
