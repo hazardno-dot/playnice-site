@@ -242,9 +242,8 @@
     border-radius: 17px;
   }
 
-  /* Results cards: prioritize the actual fragrance name.
-     The generated reason copy is too generic and too small to add value here. */
-  .playnice-discovery-reason {
+  /* Results cards: prioritize the actual fragrance name. */
+  .playnice-discovery-why {
     display: none;
   }
 
