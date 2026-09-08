@@ -1,10 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "ignoreCommand": "test -z \"$(git show -m --first-parent --pretty='' --name-only HEAD | grep -E '^(control-center/|playnice-site/src/data/products/)' | sed '/^$/d')\"",
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/create-apply",
-      "destination": "/api/create-apply-router"
+      "src": "/api/create-apply",
+      "dest": "/api/create-apply-router"
+    },
+    {
+      "handle": "filesystem"
     }
   ]
 }
