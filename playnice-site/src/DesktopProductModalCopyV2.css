@@ -11,9 +11,26 @@
     gap: 8px;
   }
 
+  /* Slightly reduce the MiniTag footprint so the description can start higher
+   * without making either element feel cramped. */
+  .product-modal .modal-chip {
+    gap: 6px;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    margin-bottom: -5px;
+  }
+
+  .product-modal .modal-chip::before {
+    width: 5px;
+    height: 5px;
+    flex-basis: 5px;
+  }
+
   .product-modal .modal-description {
+    margin-top: 0;
     margin-bottom: 2px;
     font-size: 1.06rem;
     line-height: 1.36;
+    font-weight: 400;
   }
 }
