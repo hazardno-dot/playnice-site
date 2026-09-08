@@ -30,7 +30,7 @@
 
   transform: translateY(-110%);
   opacity: 0;
-  animation: cartConfirmationBarCycle 6.5s cubic-bezier(0.2, 0.82, 0.24, 1) both !important;
+  animation: cartConfirmationBarCycle 5s cubic-bezier(0.2, 0.82, 0.24, 1) both !important;
   overflow: hidden;
   pointer-events: none;
 }
@@ -139,11 +139,11 @@
     opacity: 0;
     transform: translateY(-110%);
   }
-  5% {
+  6% {
     opacity: 1;
     transform: translateY(0);
   }
-  91% {
+  88% {
     opacity: 1;
     transform: translateY(0);
   }
@@ -232,11 +232,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .mini-cart-preview {
-    animation: cartConfirmationBarReduced 6.5s ease both !important;
+    animation: cartConfirmationBarReduced 5s ease both !important;
   }
 }
 
 @keyframes cartConfirmationBarReduced {
   0%, 100% { opacity: 0; }
-  3%, 94% { opacity: 1; }
+  4%, 92% { opacity: 1; }
 }
