@@ -1,5 +1,5 @@
 /* Desktop-only product modal copy normalization.
- * Goal: keep modal proportions consistent across products without truncating copy.
+ * Goal: keep modal proportions and typography consistent across products without truncating copy.
  */
 
 @media (min-width: 769px) {
@@ -16,6 +16,7 @@
     gap: 5px;
     padding: 5px 8px;
     font-size: 0.66rem;
+    font-weight: 600;
     margin-bottom: -5px;
   }
 
@@ -25,6 +26,7 @@
     flex-basis: 4px;
   }
 
+  /* Body copy: calm, light and consistent. */
   .product-modal .modal-description {
     margin-top: 0;
     margin-bottom: 2px;
@@ -34,5 +36,36 @@
 
     /* Reserve exactly three text lines so two-line copy does not shorten the modal. */
     min-height: 4.33rem;
+  }
+
+  .product-modal .product-modal-anchor,
+  .product-modal .modal-size-helper {
+    font-weight: 400;
+  }
+
+  .product-modal .product-modal-anchor strong,
+  .product-modal .modal-size-helper strong {
+    font-weight: 500;
+  }
+
+  /* Section labels may lead the eye, but should not feel heavy. */
+  .product-modal .modal-info-card span,
+  .product-modal .modal-label,
+  .product-modal .modal-price-box > span {
+    font-weight: 700;
+  }
+
+  /* Informational values use normal weight; hierarchy comes from size and typeface. */
+  .product-modal .modal-info-card strong {
+    font-weight: 400;
+  }
+
+  /* Size prices remain clear purchase data without the previous heavy 700 weight. */
+  .product-modal .modal-size span {
+    font-weight: 600;
+  }
+
+  .product-modal .modal-size strong {
+    font-weight: 600;
   }
 }
