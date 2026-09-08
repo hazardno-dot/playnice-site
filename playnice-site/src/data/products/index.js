@@ -2805,6 +2805,32 @@ export const products = [
       heart: ["lime","jasmine","orange-blossom"],
       base: ["patchouli","cedarwood","vetiver"]
     }
+  },
+  {
+    id: 99,
+    addedAt: "2026-09-08T14:04:32.365Z",
+    slug: "yves-saint-laurent-la-nuit-de-lhomme-edt",
+    name: "Yves Saint Laurent La Nuit de L'Homme Eau de Toilette",
+    modalName: "Yves Saint Laurent La Nuit de L'Homme EDT",
+    shortName: "La Nuit de L'Homme",
+    category: "Designer",
+    image: "/products/yves-saint-laurent-la-nuit-de-lhomme-edt.png",
+    sizes: {"2ml":4.5,"5ml":10,"10ml":18},
+    badge: "DATE NIGHT",
+    rating: 8.8,
+    ratingLabel: "Iconic Pick",
+    season: "all",
+    moods: ["date","rich","soft"],
+    recommendations: ["dolce-gabbana-the-one-for-men-edt","boss-the-scent-le-parfum","givenchy-gentleman-reserve-privee"],
+    inspiredBy: {
+      name: "Original Yves Saint Laurent creation",
+      short: "Cardamom Aromatic Woods DNA"
+    },
+    noteMap: {
+      top: ["cardamom","bergamot"],
+      heart: ["lavender","black-pepper","cedarwood"],
+      base: ["tonka-bean","vetiver"]
+    }
   }
 
 ];

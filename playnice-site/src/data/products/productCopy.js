@@ -2869,6 +2869,55 @@ export const productCopy = {
       "en": "For a distinctive, clean niche scent with strong presence and excellent versatility.",
       "sr": "Za upečatljiv, čist niche miris sa ozbiljnim prisustvom i odličnom svestranošću."
     }
+  },
+
+  "Yves Saint Laurent La Nuit de L'Homme Eau de Toilette": {
+    "miniTag": {
+      "en": "🌶️ Spicy / Woody",
+      "sr": "🌶️ Začinski / Drvenast"
+    },
+    "card": {
+      "en": "Cardamom, lavender and cedar in a warm, elegant evening scent.",
+      "sr": "Kardamom, lavanda i kedar u toplom, elegantnom večernjem mirisu."
+    },
+    "modal": {
+      "en": "Cardamom and bergamot open the scent with lavender, black pepper and cedar. Tonka bean and vetiver create a warm, smooth finish made for elegant evenings.",
+      "sr": "Kardamom i bergamot otvaraju miris, uz lavandu, crni biber i kedar. Tonka i vetiver daju toplu, glatku završnicu za elegantne večernje prilike."
+    },
+    "scentType": {
+      "en": "Spicy aromatic woody",
+      "sr": "Začinski aromatični drvenasti"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Kardamom",
+        "Lavanda",
+        "Kedar",
+        "Tonka"
+      ],
+      "en": [
+        "Cardamom",
+        "Lavender",
+        "Cedarwood",
+        "Tonka Bean"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Začinski",
+        "Aromatičan",
+        "Drvenast"
+      ],
+      "en": [
+        "Spicy",
+        "Aromatic",
+        "Woody"
+      ]
+    },
+    "whyChoose": {
+      "en": "For dates and evenings when you want a warm, elegant and quietly seductive scent.",
+      "sr": "Za dejt i veče kada želiš topao, elegantan i nenametljivo zavodljiv miris."
+    }
   }
 };
 
