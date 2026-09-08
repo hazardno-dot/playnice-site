@@ -79,7 +79,8 @@ export default function NoteApplyManager() {
   const noChanges = useMemo(() => {
     if (!liveNote || !row?.payload) return false;
     const livePayload = normalizeNoteDraftPayload({ key: liveNote.key, srLabel: liveNote.srLabel, enLabel: liveNote.enLabel, assetPath: liveNote.assetPath });
-    return stable(livePayload) === stable(normalizeNoteDraftPayload(row.payload));
+    const metadataChanged = Boolean(row.payload?.mediaStage);
+    return !metadataChanged && stable(livePayload) === stable(normalizeNoteDraftPayload(row.payload));
   }, [liveNote, row]);
 
   if (!slot || !noteKey) return null;
@@ -113,7 +114,7 @@ export default function NoteApplyManager() {
     <div className="note-controlled-copy">
       <span>NOTES CONTROLLED APPLY</span>
       <strong>{hasPr ? `DRAFT PR #${row.apply_pr_number}` : prepared ? "READY TO CREATE DRAFT PR" : noChanges ? "NO LIVE CHANGES" : liveNote ? "APPROVED · PREPARE BASELINE" : "NEW NOTE · PREPARE INSERT"}</strong>
-      <small>{liveNote ? "Existing note" : "New note"} · exact TheNoteMap.jsx SHA guard · asset must exist on main · no automatic merge.</small>
+      <small>{liveNote ? "Existing note" : "New note"} · exact TheNoteMap.jsx SHA guard · asset verified on main or staged upload · no automatic merge.</small>
     </div>
     <div className="note-controlled-actions">
       {error ? <span className="note-controlled-error">{error}</span> : null}
