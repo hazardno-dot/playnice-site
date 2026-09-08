@@ -2808,9 +2808,10 @@ export const products = [
   },
   {
     id: 99,
-    addedAt: "2026-09-08T13:32:11.801Z",
+    addedAt: "2026-09-08T14:04:32.365Z",
     slug: "yves-saint-laurent-la-nuit-de-lhomme-edt",
     name: "Yves Saint Laurent La Nuit de L'Homme Eau de Toilette",
+    modalName: "Yves Saint Laurent La Nuit de L'Homme EDT",
     shortName: "La Nuit de L'Homme",
     category: "Designer",
     image: "/products/yves-saint-laurent-la-nuit-de-lhomme-edt.png",
