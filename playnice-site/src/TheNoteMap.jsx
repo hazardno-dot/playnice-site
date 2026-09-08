@@ -68,6 +68,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/pomelo.webp",
     fallback: "•",
   },
+  "sichuan-pepper": {
+    sr: "Sečuanski biber",
+    en: "Sichuan Pepper",
+    image: "/note-map/sichuan-pepper.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
