@@ -9031,11 +9031,12 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 30% 30%,
-      #f2d58a 0%,
-      #d9b45a 45%,
-      #8b6726 100%);
-  border: 1px solid rgba(244, 215, 140, 0.72);
+  background:
+      radial-gradient(circle at 35% 30%,
+        #ffe49a 0%,
+        #e7bd52 48%,
+        #a26f16 100%);
+    border: 1px solid rgba(255, 224, 140, 0.9);
   box-shadow:
     0 0 0 2px rgba(10, 10, 10, 0.55),
     0 8px 18px rgba(0, 0, 0, 0.35);
@@ -9084,21 +9085,39 @@ main {
 
 @media (max-width: 768px) {
   .productMilestoneMedal {
-    top: 58px;
-    right: 14px;
-    width: 34px;
-    height: 34px;
-    font-size: 11px;
+    top: 60px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    font-size: 9px;
   }
 
   .productMilestoneMedal::before {
-    top: -8px;
-    width: 14px;
-    height: 15px;
+    top: -13px;
+    left: 50%;
+    width: 18px;
+    height: 17px;
+    transform: translateX(-50%);
+    border-radius: 2px 2px 8px 8px;
+    background:
+      linear-gradient(90deg,
+        #c9302c 0 33%,
+        #f2eadf 33% 66%,
+        #1f5d9b 66% 100%);
+    border: 0;
+    box-shadow: none;
+    clip-path: polygon(0 0,
+        42% 0,
+        50% 38%,
+        58% 0,
+        100% 0,
+        70% 100%,
+        30% 100%);
+    z-index: 0;
   }
 
   .productMilestoneMedal::after {
-    inset: 4px;
+    inset: 3px;
   }
 }
 
