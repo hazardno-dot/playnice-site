@@ -3,7 +3,7 @@
 ========================================= */
 export const productCopy = {
     "Afnan 9 AM Eau de Parfum": {
-    miniTag: { sr: "🍊 Citrusni / Čist", en: "🍊 Citrus / Clean" },
+    miniTag: { sr: "🍊 Citrusni / Čist", en: "🍊 Citrus / Clean Test"},
     card: {
       sr: "Vedri citrusi i kardamom u čistom, energičnom dnevnom mirisu.",
       en: "Bright citrus and cardamom in a clean, energetic daytime scent.",
