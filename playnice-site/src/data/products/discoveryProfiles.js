@@ -2951,6 +2951,37 @@ export const discoveryProfiles = {
     "cleanliness": 8.6,
     "versatility": 8.8,
     "gourmandness": 1.2
+  },
+
+  "yves-saint-laurent-la-nuit-de-lhomme-edt": {
+    "date": 10,
+    "casual": 5,
+    "citrus": 3,
+    "office": 4,
+    "unisex": 3,
+    "warmth": 7,
+    "aquatic": 0,
+    "dryness": 5,
+    "evening": 10,
+    "powdery": 4,
+    "airiness": 3,
+    "darkness": 7,
+    "elegance": 9,
+    "feminine": 2,
+    "florality": 3,
+    "freshness": 4,
+    "longevity": 6,
+    "masculine": 9,
+    "spiciness": 8,
+    "sweetness": 5,
+    "woodiness": 7,
+    "creaminess": 4,
+    "fruitiness": 1,
+    "projection": 5,
+    "aromaticity": 8,
+    "cleanliness": 4,
+    "versatility": 6,
+    "gourmandness": 2
   }
 };
 

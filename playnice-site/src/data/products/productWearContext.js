@@ -396,5 +396,10 @@ export const productWearContext = {
   "Nishane Hacivat X Extrait de Parfum": {
     "sr": "Proleće do jeseni; grad, posao, večernji izlazak.",
     "en": "Spring through autumn; city, work and evening wear."
+  },
+
+  "Yves Saint Laurent La Nuit de L'Homme Eau de Toilette": {
+    "sr": "Najbolji uveče i po hladnijem vremenu; idealan za dejt.",
+    "en": "Best at night and in cooler weather; ideal for dates."
   }
 };
