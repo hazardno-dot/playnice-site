@@ -401,5 +401,10 @@ export const productWearContext = {
   "Yves Saint Laurent La Nuit de L'Homme Eau de Toilette": {
     "sr": "Najbolji uveče i po hladnijem vremenu; idealan za dejt.",
     "en": "Best at night and in cooler weather; ideal for dates."
+  },
+
+  "Tom Ford Ombré Leather Parfum": {
+    "sr": "Najbolji uveče i po hladnijem vremenu; odličan za dejt.",
+    "en": "Best at night and in cooler weather; excellent for dates."
   }
 };

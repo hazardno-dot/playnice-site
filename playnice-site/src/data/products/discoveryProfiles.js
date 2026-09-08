@@ -2982,6 +2982,37 @@ export const discoveryProfiles = {
     "cleanliness": 4,
     "versatility": 6,
     "gourmandness": 2
+  },
+
+  "tom-ford-ombre-leather-parfum": {
+    "date": 9,
+    "casual": 4,
+    "citrus": 0,
+    "office": 5,
+    "unisex": 8,
+    "warmth": 7,
+    "aquatic": 0,
+    "dryness": 7,
+    "evening": 10,
+    "powdery": 5,
+    "airiness": 3,
+    "darkness": 8,
+    "elegance": 10,
+    "feminine": 5,
+    "florality": 6,
+    "freshness": 3,
+    "longevity": 9,
+    "masculine": 8,
+    "spiciness": 4,
+    "sweetness": 3,
+    "woodiness": 9,
+    "creaminess": 4,
+    "fruitiness": 0,
+    "projection": 8,
+    "aromaticity": 4,
+    "cleanliness": 4,
+    "versatility": 6,
+    "gourmandness": 1
   }
 };
 

@@ -2831,6 +2831,32 @@ export const products = [
       heart: ["lavender","black-pepper","cedarwood"],
       base: ["tonka-bean","vetiver"]
     }
+  },
+  {
+    id: 100,
+    addedAt: "2026-09-08T15:04:31.996Z",
+    slug: "tom-ford-ombre-leather-parfum",
+    name: "Tom Ford Ombré Leather Parfum",
+    modalName: "Tom Ford Ombré Leather Parfum",
+    shortName: "Ombré Leather Parfum",
+    category: "Designer",
+    image: "/products/tom-ford-ombre-leather-parfum.png",
+    sizes: {"2ml":11,"5ml":26,"10ml":47},
+    badge: "LEATHER ICON",
+    rating: 9.2,
+    ratingLabel: "Iconic Pick",
+    season: "all",
+    moods: ["date","rich","signature"],
+    recommendations: ["givenchy-gentleman-reserve-privee","boss-the-scent-le-parfum","bvlgari-man-in-black-edp"],
+    inspiredBy: {
+      name: "Original Tom Ford creation",
+      short: "Leather Floral Woods DNA"
+    },
+    noteMap: {
+      top: ["violet-leaf","cedarwood"],
+      heart: ["jasmine-sambac","orris"],
+      base: ["leather","woody-notes","tobacco"]
+    }
   }
 
 ];
