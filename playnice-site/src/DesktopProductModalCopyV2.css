@@ -62,6 +62,12 @@
     font-weight: 400;
   }
 
+  /* Reserve two value lines for the second info card (Why customers choose...)
+     so one-line products do not create a shorter modal than two-line products. */
+  .product-modal .modal-info-grid .modal-info-card + .modal-info-card strong {
+    min-height: 2.77rem;
+  }
+
   /* Size prices remain clear purchase data without the previous heavy 700 weight. */
   .product-modal .modal-size span {
     font-weight: 600;

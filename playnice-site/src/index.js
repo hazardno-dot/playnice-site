@@ -38,6 +38,7 @@ import "./MobileProductCardTextV2.css";
 import "./CartConfirmationBar.css";
 import "./MobileManifestoFix.css";
 import "./DesktopProductModalCopyV2.css";
+import "./HeaderLanguageColor.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
