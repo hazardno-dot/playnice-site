@@ -33,6 +33,7 @@ import "./ProductModalPurchaseV2.css";
 import "./MobileCartV2.css";
 import "./MobileCheckoutV2.css";
 import "./MobileStickyCtaV2.css";
+import "./DesktopStickyCtaGlass.css";
 import "./MobileTypographyV2.css";
 import "./MobileProductCardTextV2.css";
 import "./CartConfirmationBar.css";

@@ -1,0 +1,29 @@
+/* =========================================
+   PLAYNICE DESKTOP STICKY CTA — GLASS
+   Match the translucent material introduced in Mobile Sticky CTA V2.
+   Desktop sizing, copy, Journal link and interaction structure stay intact.
+========================================= */
+
+@media (min-width: 641px) {
+  .sticky-cta-button {
+    border-color: rgba(220, 181, 107, 0.12);
+    background:
+      linear-gradient(180deg, rgba(20, 18, 15, 0.15), rgba(7, 7, 7, 0.10)),
+      rgba(8, 8, 8, 0.11);
+    backdrop-filter: blur(14px) saturate(112%);
+    -webkit-backdrop-filter: blur(14px) saturate(112%);
+    box-shadow:
+      0 6px 16px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.018);
+  }
+
+  .sticky-cta-button:hover {
+    border-color: rgba(220, 181, 107, 0.18);
+    background:
+      linear-gradient(180deg, rgba(20, 18, 15, 0.19), rgba(7, 7, 7, 0.13)),
+      rgba(8, 8, 8, 0.14);
+    box-shadow:
+      0 7px 18px rgba(0, 0, 0, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.022);
+  }
+}
