@@ -241,6 +241,29 @@
     flex-basis: calc((100% - 40px) / 5);
     border-radius: 17px;
   }
+
+  /* Results cards: prioritize the actual fragrance name.
+     The generated reason copy is too generic and too small to add value here. */
+  .playnice-discovery-reason {
+    display: none;
+  }
+
+  .playnice-discovery-card-copy h4 {
+    margin-top: 3px;
+    font-size: 15px;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    -webkit-line-clamp: 3;
+  }
+
+  .playnice-discovery-card-copy {
+    justify-content: flex-start;
+  }
+
+  .playnice-discovery-card-foot,
+  .playnice-discovery-card-footer {
+    margin-top: auto;
+  }
 }
 
 @media (min-width: 641px) and (max-width: 900px) {
