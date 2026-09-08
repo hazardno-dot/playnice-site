@@ -8,7 +8,9 @@ const bridge = read("control-center/src/NoteMediaUploadBridge.jsx");
 const notesManager = read("control-center/src/NotesManager.jsx");
 const managers = read("control-center/src/ControlCenterManagers.jsx");
 const api = read("control-center/api/create-note-media-apply.js");
-const apply = read("control-center/api/create-note-apply.js");
+const applyRoute = read("control-center/api/create-note-apply.js");
+const applyHandler = read("control-center/server/create-note-apply.cjs");
+const apply = `${applyRoute}\n${applyHandler}`;
 
 for (const token of [
   'accept="image/webp,.webp"',
@@ -44,6 +46,10 @@ for (const token of [
   'included from staged upload',
   'staged asset remains off main until PR merge',
 ]) if (!apply.includes(token)) throw new Error(`Notes Controlled Apply media contract missing: ${token}`);
+
+if (!applyRoute.includes('import handler from "../server/create-note-apply.cjs"') || !applyRoute.includes("export default handler")) {
+  throw new Error("Notes Controlled Apply route does not point to the server handler.");
+}
 
 console.log("PASS  Notes editor exposes staged WebP upload");
 console.log("PASS  first Save draft writes staged Note media into the persisted payload");
