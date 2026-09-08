@@ -13,6 +13,7 @@ import ProductCatalogCountBridge from "./ProductCatalogCountBridge";
 import JournalManager from "./JournalManager";
 import JournalApplyManager from "./JournalApplyManager";
 import NotesManager from "./NotesManager";
+import NoteMediaUploadBridge from "./NoteMediaUploadBridge";
 import NoteApplyManager from "./NoteApplyManager";
 import AnalyticsManager from "./AnalyticsManager";
 import SiteHealthManager from "./SiteHealthManager";
@@ -109,6 +110,7 @@ export default function ControlCenterManagers() {
     <JournalManager />
     <JournalApplyManager />
     <NotesManager />
+    <NoteMediaUploadBridge />
     <NoteApplyManager />
     <AnalyticsManager />
     <SiteHealthManager />
