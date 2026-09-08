@@ -1,0 +1,30 @@
+/* =========================================
+   PLAYNICE MOBILE PRODUCT CARD TEXT — V2
+   Keep the mobile card copy hierarchy at 2 + 2 + 2 lines:
+   title / scent copy / wear context.
+========================================= */
+
+@media (max-width: 640px) {
+  .shop-section .product-card-copy-stack {
+    min-height: 78px;
+    max-height: 78px;
+    padding: 7px 9px;
+    gap: 3px;
+  }
+
+  .shop-section .product-card-copy,
+  .shop-section .product-card-copy.premium-card-copy {
+    min-height: calc(1.32em * 2);
+    max-height: calc(1.32em * 2);
+    -webkit-line-clamp: 2;
+  }
+
+  .shop-section .product-card-decant-note {
+    display: -webkit-box !important;
+    min-height: calc(1.16em * 2);
+    max-height: calc(1.16em * 2);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+}
