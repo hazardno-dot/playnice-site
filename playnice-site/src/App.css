@@ -9035,16 +9035,36 @@ main {
       #f2d58a 0%,
       #d9b45a 45%,
       #8b6726 100%);
-  border: 1px solid rgba(244, 215, 140, 0.7);
+  border: 1px solid rgba(244, 215, 140, 0.72);
   box-shadow:
     0 0 0 2px rgba(10, 10, 10, 0.55),
     0 8px 18px rgba(0, 0, 0, 0.35);
   color: #16120a;
   font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   z-index: 3;
   pointer-events: none;
+}
+
+.productMilestoneMedal::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 18px;
+  border-radius: 10px 10px 6px 6px;
+  background: linear-gradient(180deg,
+      rgba(246, 223, 150, 0.98) 0%,
+      rgba(211, 174, 87, 0.95) 55%,
+      rgba(132, 96, 30, 0.95) 100%);
+  border: 1px solid rgba(244, 215, 140, 0.68);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 245, 210, 0.35);
+  z-index: 0;
 }
 
 .productMilestoneMedal::after {
@@ -9053,12 +9073,33 @@ main {
   inset: 5px;
   border-radius: 999px;
   border: 1px dashed rgba(45, 32, 10, 0.35);
+  z-index: 0;
 }
 
 .productMilestoneMedal>span {
   position: relative;
   z-index: 1;
   line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .productMilestoneMedal {
+    top: 58px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    font-size: 11px;
+  }
+
+  .productMilestoneMedal::before {
+    top: -8px;
+    width: 14px;
+    height: 15px;
+  }
+
+  .productMilestoneMedal::after {
+    inset: 4px;
+  }
 }
 
 /* =========================================
