@@ -9787,8 +9787,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               );
             })()}
 
-                {hasUserPickedSize && (
-                  <button
+                <button
                     type="button"
                     className="modal-buy-now"
                     onClick={() => {
@@ -9824,7 +9823,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   >
                     {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
                   </button>
-                )}
                 </div>
               </div>
             </div>
