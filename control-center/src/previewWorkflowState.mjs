@@ -7,13 +7,15 @@ const timestamp = (value) => {
 export function getPreviewWorkflowState(row = {}) {
   const hasPreview = Boolean(row.apply_branch && row.apply_pr_number);
   const preparedAt = timestamp(row.prepared_at);
+  const draftSavedAt = timestamp(row.payload?.core?.savedAt);
+  const draftContentAt = draftSavedAt ?? preparedAt;
   const previewCreatedAt = timestamp(row.apply_created_at);
   const verifiedAt = timestamp(row.preview_verified_at);
 
   const needsRefresh = Boolean(
     hasPreview &&
-    preparedAt !== null &&
-    (previewCreatedAt === null || preparedAt > previewCreatedAt)
+    draftContentAt !== null &&
+    (previewCreatedAt === null || draftContentAt > previewCreatedAt)
   );
 
   if (!hasPreview) {
