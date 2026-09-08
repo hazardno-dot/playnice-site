@@ -5,7 +5,9 @@ import { noteExists, normalizeNotePayload, resolveLiveNote, stableJson, upsertLi
 const root = process.cwd();
 const sourcePath = path.join(root, "playnice-site/src/TheNoteMap.jsx");
 const source = fs.readFileSync(sourcePath, "utf8");
-const api = fs.readFileSync(path.join(root, "control-center/api/create-note-apply.js"), "utf8");
+const route = fs.readFileSync(path.join(root, "control-center/api/create-note-apply.js"), "utf8");
+const handler = fs.readFileSync(path.join(root, "control-center/server/create-note-apply.cjs"), "utf8");
+const api = `${route}\n${handler}`;
 const manager = fs.readFileSync(path.join(root, "control-center/src/NoteApplyManager.jsx"), "utf8");
 
 const bergamot = resolveLiveNote(source, "bergamot");
