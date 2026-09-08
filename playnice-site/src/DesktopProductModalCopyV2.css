@@ -11,12 +11,14 @@
     gap: 8px;
   }
 
-  /* Keep MiniTag visually secondary and free more room for the copy block. */
+  /* Keep MiniTag visually secondary and align it with the right-side header rhythm. */
   .product-modal .modal-chip {
+    align-self: flex-end;
     gap: 5px;
     padding: 5px 8px;
     font-size: 0.66rem;
     font-weight: 600;
+    margin-top: -7px;
     margin-bottom: -5px;
   }
 
@@ -75,11 +77,11 @@
     padding: 9px 12px 8px;
   }
 
-  /* Balance the decision row 50/50: selected price on the left, CTAs on the right. */
+  /* Balance the decision row 50/50 without forcing the price box to match CTA height. */
   .product-modal .modal-purchase-bar {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: stretch;
+    align-items: start;
     gap: 12px;
   }
 
@@ -91,6 +93,8 @@
 
   .product-modal .modal-price-box {
     flex: none;
+    align-self: start;
+    height: auto;
   }
 
   .product-modal .modal-cta-group {
