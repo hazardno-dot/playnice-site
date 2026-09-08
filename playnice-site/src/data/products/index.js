@@ -2839,6 +2839,7 @@ export const products = [
     name: "Tom Ford Ombré Leather Parfum",
     modalName: "Tom Ford Ombré Leather Parfum",
     shortName: "Ombré Leather Parfum",
+    milestoneBadge: 100,
     category: "Designer",
     image: "/products/tom-ford-ombre-leather-parfum.png",
     sizes: {"2ml":11,"5ml":26,"10ml":47},

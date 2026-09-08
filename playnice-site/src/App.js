@@ -5467,6 +5467,24 @@ const titleLengthClass =
     {tr.justIn}
   </span>
 )}
+
+      {product.milestoneBadge ? (
+        <span
+          className="productMilestoneMedal"
+          aria-label={
+            lang === "sr"
+              ? `${product.milestoneBadge}. parfem u kolekciji`
+              : `${product.milestoneBadge}th fragrance in the collection`
+          }
+          title={
+            lang === "sr"
+              ? `${product.milestoneBadge}. parfem u kolekciji`
+              : `${product.milestoneBadge}th fragrance in the collection`
+          }
+        >
+          <span>{product.milestoneBadge}</span>
+        </span>
+      ) : null}
     </button>
 
      <button
