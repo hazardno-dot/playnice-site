@@ -1,0 +1,53 @@
+name: Repair product modal purchase patch
+
+on:
+  push:
+    branches:
+      - product-modal-purchase-flow-v2
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: product-modal-purchase-flow-v2
+          fetch-depth: 0
+
+      - name: Restore App.js from main and apply byte-safe Buy Now patch
+        run: |
+          git fetch origin main
+          git checkout origin/main -- playnice-site/src/App.js
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("playnice-site/src/App.js")
+          data = path.read_bytes()
+          nl = b"\r\n" if b"\r\n" in data else b"\n"
+
+          opening = b"                {hasUserPickedSize && (" + nl + b"                  <button"
+          replacement_opening = b"                <button"
+
+          closing = b"                  </button>" + nl + b"                )}" + nl + b"                </div>"
+          replacement_closing = b"                  </button>" + nl + b"                </div>"
+
+          if data.count(opening) != 1 or data.count(closing) != 1:
+              raise SystemExit(
+                  f"Unexpected Buy Now block count: opening={data.count(opening)}, closing={data.count(closing)}"
+              )
+
+          data = data.replace(opening, replacement_opening, 1)
+          data = data.replace(closing, replacement_closing, 1)
+          path.write_bytes(data)
+          PY
+
+      - name: Commit repaired patch
+        run: |
+          git config user.name "playnice-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add playnice-site/src/App.js
+          git commit -m "Apply byte-safe Buy Now visibility patch"
+          git push origin HEAD:product-modal-purchase-flow-v2
