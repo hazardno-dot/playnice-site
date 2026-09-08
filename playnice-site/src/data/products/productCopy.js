@@ -2918,6 +2918,55 @@ export const productCopy = {
       "en": "For dates and evenings when you want a warm, elegant and quietly seductive scent.",
       "sr": "Za dejt i veče kada želiš topao, elegantan i nenametljivo zavodljiv miris."
     }
+  },
+
+  "Tom Ford Ombré Leather Parfum": {
+    "miniTag": {
+      "en": "🖤 Leather / Floral",
+      "sr": "🖤 Kožni / Cvetni"
+    },
+    "card": {
+      "en": "Leather, violet and iris in a dark, elegant scent.",
+      "sr": "Koža, ljubičica i iris u tamnom elegantnom mirisu."
+    },
+    "modal": {
+      "en": "Violet leaf and cedar open green and dry. Jasmine sambac and orris soften the leather, while tobacco and woody notes build a deep, elegant trail.",
+      "sr": "List ljubičice i kedar otvaraju miris zeleno i suvo. Sambak jasmin i iris omekšavaju kožu, dok duvan i drvene note grade dubok, elegantan trag."
+    },
+    "scentType": {
+      "en": "Leather floral woody",
+      "sr": "Kožni cvetni drvenasti"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Koža",
+        "List ljubičice",
+        "Iris",
+        "Kedar"
+      ],
+      "en": [
+        "Leather",
+        "Violet Leaf",
+        "Orris",
+        "Cedarwood"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Kožni",
+        "Drvenast",
+        "Elegantan"
+      ],
+      "en": [
+        "Leather",
+        "Woody",
+        "Elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For a distinctive leather scent that balances dark elegance with a clean floral contrast.",
+      "sr": "Za upečatljiv kožni parfem koji spaja tamnu eleganciju sa čistim cvetnim kontrastom."
+    }
   }
 };
 
