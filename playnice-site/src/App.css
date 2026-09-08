@@ -9018,6 +9018,50 @@ main {
 }
 
 /* =========================================
+     productMilestoneMedal
+========================================= */
+
+.productMilestoneMedal {
+  position: absolute;
+  top: 56px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 30% 30%,
+      #f2d58a 0%,
+      #d9b45a 45%,
+      #8b6726 100%);
+  border: 1px solid rgba(244, 215, 140, 0.7);
+  box-shadow:
+    0 0 0 2px rgba(10, 10, 10, 0.55),
+    0 8px 18px rgba(0, 0, 0, 0.35);
+  color: #16120a;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.productMilestoneMedal::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 999px;
+  border: 1px dashed rgba(45, 32, 10, 0.35);
+}
+
+.productMilestoneMedal>span {
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+}
+
+/* =========================================
    SIZE BUTTONS
 ========================================= */
 
