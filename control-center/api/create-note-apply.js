@@ -103,9 +103,7 @@ function upsertLibraryNote(source, payload) {
   const existing = findLibraryEntry(source, value.key);
   const live = resolveLiveNote(source, value.key);
   const rendered = renderLibraryEntry(value, live?.fallback || "•");
-  if (existing) {
-    return { source: source.slice(0, existing.start) + rendered + source.slice(existing.end) };
-  }
+  if (existing) return { source: source.slice(0, existing.start) + rendered + source.slice(existing.end) };
   const marker = "const NOTE_SR = {";
   const sectionEnd = source.indexOf(marker);
   if (sectionEnd < 0) throw new Error("Could not locate NOTE_LIBRARY boundary.");
@@ -147,9 +145,9 @@ async function github(path, options = {}) {
   return data;
 }
 
-async function githubExists(path) {
-  try { await github(path); return true; }
-  catch (error) { if (error.status === 404) return false; throw error; }
+async function githubFile(path, ref) {
+  try { return await github(`/repos/${OWNER}/${REPO_NAME}/contents/${path}?ref=${encodeURIComponent(ref)}`); }
+  catch (error) { if (error.status === 404) return null; throw error; }
 }
 
 function validateNote(value, key) {
@@ -159,6 +157,14 @@ function validateNote(value, key) {
   if (!note.srLabel || !note.enLabel) throw new Error("Approved note requires complete SR/EN labels.");
   if (note.assetPath !== `/note-map/${key}.webp`) throw new Error("Approved note asset path is not canonical.");
   return note;
+}
+
+function validateMediaStage(value, key) {
+  if (!value) return null;
+  const expectedFile = `${NOTE_ASSET_ROOT}/${key}.webp`;
+  if (!value.branch || !value.baseSha) throw new Error("Staged note asset metadata is incomplete.");
+  if (value.file !== expectedFile || value.assetPath !== `/note-map/${key}.webp`) throw new Error("Staged note asset metadata does not match the canonical note path.");
+  return value;
 }
 
 async function authenticate(req) {
@@ -200,24 +206,26 @@ module.exports = async function handler(req, res) {
     if (draft.review_status !== "approved" || !draft.approved_payload) return json(res, 409, { error: "Notes draft must be APPROVED first." });
     if (stableJson(draft.payload) !== stableJson(draft.approved_payload)) return json(res, 409, { error: "Approved payload no longer matches the current Notes draft. Review and approve again." });
     const approved = validateNote(draft.approved_payload, noteKey);
-
-    const assetPath = `/repos/${OWNER}/${REPO_NAME}/contents/${NOTE_ASSET_ROOT}/${encodeURIComponent(noteKey)}.webp?ref=main`;
-    const assetExists = await githubExists(assetPath);
-    if (!assetExists) return json(res, 409, { error: `Missing note asset on main: /${NOTE_ASSET_ROOT}/${noteKey}.webp` });
+    const mediaStage = validateMediaStage(draft.approved_payload?.mediaStage || null, noteKey);
+    const assetFile = `${NOTE_ASSET_ROOT}/${noteKey}.webp`;
+    const mainAsset = await githubFile(assetFile, "main");
+    const stagedAsset = mediaStage ? await githubFile(assetFile, mediaStage.branch) : null;
+    if (mediaStage && !stagedAsset?.sha) return json(res, 409, { error: "Staged note asset is missing from its staging branch." });
+    if (!mainAsset?.sha && !stagedAsset?.sha) return json(res, 409, { error: `Missing note asset: /${assetFile}` });
 
     if (action === "prepare") {
       if (draft.apply_branch && draft.apply_pr_number) return json(res, 409, { error: "A Notes apply PR already exists for this draft." });
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${NOTE_SOURCE_PATH}?ref=main`);
       const source = Buffer.from(file.content, "base64").toString("utf8");
       const live = resolveLiveNote(source, noteKey);
-      if (live && stableJson(live.payload) === stableJson(approved)) return json(res, 409, { error: "No approved Notes changes remain to apply." });
-      const baseline = { mode: live ? "replace" : "insert", note_key: noteKey, source_sha: file.sha, live_payload: live?.payload || null };
+      if (live && stableJson(live.payload) === stableJson(approved) && !mediaStage) return json(res, 409, { error: "No approved Notes changes remain to apply." });
+      const baseline = { mode: live ? "replace" : "insert", note_key: noteKey, source_sha: file.sha, live_payload: live?.payload || null, asset_mode: mediaStage ? "staged" : "main" };
       const response = await supabaseFetch(`/rest/v1/note_drafts?note_key=eq.${encodeURIComponent(noteKey)}`, token, {
         method: "PATCH",
         body: JSON.stringify({ baseline_snapshot: baseline, prepared_at: new Date().toISOString(), prepared_by: user.id, apply_branch: null, apply_pr_number: null, apply_created_at: null, apply_created_by: null }),
       });
       if (!response.ok) throw new Error("Could not persist Notes preparation baseline.");
-      return json(res, 200, { ok: true, prepared: true, note_key: noteKey, mode: baseline.mode });
+      return json(res, 200, { ok: true, prepared: true, note_key: noteKey, mode: baseline.mode, asset_mode: baseline.asset_mode });
     }
 
     if (action !== "apply") return json(res, 400, { error: "Unsupported Notes apply action." });
@@ -233,16 +241,27 @@ module.exports = async function handler(req, res) {
     if (mode === "replace" && !existsNow) return json(res, 409, { error: `LIVE DRIFT: Note ${noteKey} no longer exists on main.` });
 
     const changed = upsertLibraryNote(source, approved);
-    if (changed.source === source) return json(res, 409, { error: "No Notes source change was produced." });
+    if (changed.source === source && !stagedAsset?.sha) return json(res, 409, { error: "No Notes source or asset change was produced." });
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
     const stamp = new Date().toISOString().replace(/[-:TZ.]/g, "").slice(0, 12);
     const branch = `cc-note-${noteKey}-${stamp}`;
     await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, { method: "POST", body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: mainRef.object.sha }) });
-    await github(`/repos/${OWNER}/${REPO_NAME}/contents/${NOTE_SOURCE_PATH}`, {
-      method: "PUT",
-      body: JSON.stringify({ message: `Control Center Notes apply: ${noteKey}`, content: Buffer.from(changed.source, "utf8").toString("base64"), sha: file.sha, branch }),
-    });
+
+    if (changed.source !== source) {
+      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${NOTE_SOURCE_PATH}`, {
+        method: "PUT",
+        body: JSON.stringify({ message: `Control Center Notes apply: ${noteKey}`, content: Buffer.from(changed.source, "utf8").toString("base64"), sha: file.sha, branch }),
+      });
+    }
+
+    if (stagedAsset?.content) {
+      const target = await githubFile(assetFile, branch);
+      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${assetFile}`, {
+        method: "PUT",
+        body: JSON.stringify({ message: `Control Center Notes asset: ${noteKey}`, content: stagedAsset.content.replace(/\s+/g, ""), ...(target?.sha ? { sha: target.sha } : {}), branch }),
+      });
+    }
 
     const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, {
       method: "POST",
@@ -252,16 +271,17 @@ module.exports = async function handler(req, res) {
         base: "main",
         draft: true,
         body: [
-          "Generated by PlayNice Control Center Notes Controlled Apply v1.",
+          "Generated by PlayNice Control Center Notes Controlled Apply v2.",
           "",
           `- Note key: ${noteKey}`,
           `- SR: ${approved.srLabel}`,
           `- EN: ${approved.enLabel}`,
           `- Source: ${NOTE_SOURCE_PATH}`,
-          `- Asset verified on main: /${NOTE_ASSET_ROOT}/${noteKey}.webp`,
+          `- Asset: /${assetFile} (${stagedAsset?.sha ? "included from staged upload" : "verified on main"})`,
           `- Operation: ${mode === "insert" ? "insert new NOTE_LIBRARY entry" : "replace/promote existing note metadata"}`,
           "- Safety: exact TheNoteMap.jsx SHA drift guard",
           "- Safety: approved payload equality guard",
+          "- Safety: staged asset remains off main until PR merge",
           "- Safety: draft PR only; no automatic merge",
         ].join("\n"),
       }),
@@ -272,7 +292,7 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id }),
     });
     if (!update.ok) throw new Error("Notes PR was created, but its draft metadata could not be persisted.");
-    return json(res, 200, { ok: true, note_key: noteKey, branch, pr_number: pr.number, pr_url: pr.html_url, file: NOTE_SOURCE_PATH, version: "notes-v1-inline-cjs" });
+    return json(res, 200, { ok: true, note_key: noteKey, branch, pr_number: pr.number, pr_url: pr.html_url, file: NOTE_SOURCE_PATH, asset: stagedAsset?.sha ? assetFile : null, version: "notes-v2-media" });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Notes Controlled Apply failed." });
   }
