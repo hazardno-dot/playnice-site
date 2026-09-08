@@ -1,7 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "ignoreCommand": "test -z \"$(git show -m --first-parent --pretty='' --name-only HEAD | grep -E '^(control-center/|playnice-site/src/data/products/)' | sed '/^$/d')\"",
-  "rewrites": [
-    { "source": "/api/create-note-apply", "destination": "/api/create-note-apply-v2" }
-  ]
+  "ignoreCommand": "test -z \"$(git show -m --first-parent --pretty='' --name-only HEAD | grep -E '^(control-center/|playnice-site/src/data/products/)' | sed '/^$/d')\""
 }
