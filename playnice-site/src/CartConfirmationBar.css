@@ -30,7 +30,7 @@
 
   transform: translateY(-110%);
   opacity: 0;
-  animation: cartConfirmationBarCycle 4s cubic-bezier(0.2, 0.82, 0.24, 1) both !important;
+  animation: cartConfirmationBarCycle 3.4s cubic-bezier(0.2, 0.82, 0.24, 1) both !important;
   overflow: hidden;
   pointer-events: none;
 }
@@ -228,7 +228,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .mini-cart-preview {
-    animation: cartConfirmationBarReduced 4s ease both !important;
+    animation: cartConfirmationBarReduced 3.4s ease both !important;
   }
 }
 
