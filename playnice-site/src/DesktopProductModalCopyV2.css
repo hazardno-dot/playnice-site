@@ -68,4 +68,40 @@
   .product-modal .modal-size strong {
     font-weight: 600;
   }
+
+  /* Keep the size choices visually compact while preserving the existing type scale. */
+  .product-modal .modal-size {
+    min-height: 62px;
+    padding: 9px 12px 8px;
+  }
+
+  /* Balance the decision row 50/50: selected price on the left, CTAs on the right. */
+  .product-modal .modal-purchase-bar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .product-modal .modal-price-box,
+  .product-modal .modal-cta-group {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .product-modal .modal-price-box {
+    flex: none;
+  }
+
+  .product-modal .modal-cta-group {
+    align-items: stretch;
+  }
+
+  .product-modal .modal-cta-group .modal-add-button,
+  .product-modal .modal-cta-group .modal-buy-now {
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
