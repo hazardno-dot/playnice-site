@@ -93,17 +93,30 @@
     content: "PRONAĐI MOJ MIRIS  →";
   }
 
-  /* MODAL — fullscreen on mobile; horizontal result browsing remains unchanged. */
+  /* MODAL — centered before search; result state can use the full viewport. */
   .playnice-discovery-overlay {
-    padding: 0;
+    align-items: center;
+    padding: 16px 8px;
   }
 
   .playnice-discovery-panel {
+    width: min(calc(100vw - 16px), 430px);
+    max-width: 430px;
+    height: auto;
+    max-height: calc(100dvh - 32px);
+    border-radius: 22px;
+  }
+
+  /* Explicitly beat the base `.panel.has-results` 84dvh cap. */
+  .playnice-discovery-panel.has-results {
     width: 100vw;
     max-width: none;
     height: 100dvh;
     max-height: 100dvh;
+    padding-top: 16px;
+    padding-bottom: 10px;
     border-radius: 0;
+    overflow-y: hidden;
   }
 
   .playnice-discovery-panel-head {
@@ -115,7 +128,6 @@
     max-width: 336px;
     margin-left: auto;
     margin-right: auto;
-    font-size: 1.06em;
   }
 
   .playnice-discovery-panel-head > p {
@@ -229,6 +241,36 @@
     font-weight: 450;
     line-height: 1.25;
   }
+
+  /* Results keep their horizontal browsing; only vertical density is tightened. */
+  .playnice-discovery-panel.has-results .playnice-discovery-search {
+    margin-top: 10px;
+  }
+
+  .playnice-discovery-panel.has-results .playnice-discovery-input-wrap input {
+    height: 44px;
+  }
+
+  .playnice-discovery-panel.has-results .playnice-discovery-submit {
+    min-height: 40px;
+  }
+
+  .playnice-discovery-panel.has-results .playnice-discovery-prompts {
+    margin-top: 8px;
+  }
+
+  .playnice-discovery-panel.has-results .playnice-discovery-prompt {
+    min-height: 30px;
+  }
+
+  .playnice-discovery-panel.has-results .playnice-discovery-results {
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+
+  .playnice-discovery-panel.has-results .playnice-discovery-results-head {
+    margin-bottom: 6px;
+  }
 }
 
 @media (max-width: 380px) {
@@ -246,7 +288,16 @@
     font-size: 11.2px;
   }
 
+  .playnice-discovery-overlay {
+    padding: 14px 8px;
+  }
+
   .playnice-discovery-panel {
+    width: calc(100vw - 16px);
+    max-height: calc(100dvh - 28px);
+  }
+
+  .playnice-discovery-panel.has-results {
     width: 100vw;
     height: 100dvh;
     max-height: 100dvh;
