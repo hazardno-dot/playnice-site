@@ -5469,7 +5469,7 @@ const titleLengthClass =
 )}
 
       {product.milestoneBadge ? (
-        <div
+        <span
           className="productMilestoneMedal"
           aria-label={
             lang === "sr"
@@ -5483,7 +5483,7 @@ const titleLengthClass =
           }
         >
           <span>{product.milestoneBadge}</span>
-        </div>
+        </span>
       ) : null}
     </button>
 
