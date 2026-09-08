@@ -1,0 +1,71 @@
+name: Patch product modal purchase flow
+
+on:
+  push:
+    branches:
+      - product-modal-purchase-flow-v2
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: product-modal-purchase-flow-v2
+          fetch-depth: 0
+
+      - name: Make Buy Now available for the default selected size
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("playnice-site/src/App.js")
+          text = path.read_text(encoding="utf-8")
+          nl = "\r\n" if "\r\n" in text else "\n"
+
+          opening = (
+              "                {hasUserPickedSize && (" + nl
+              + "                  <button"
+          )
+          replacement_opening = "                <button"
+
+          closing = (
+              "                  </button>" + nl
+              + "                )}" + nl
+              + "                </div>"
+          )
+          replacement_closing = (
+              "                  </button>" + nl
+              + "                </div>"
+          )
+
+          opening_count = text.count(opening)
+          closing_count = text.count(closing)
+
+          if opening_count == 0 and closing_count == 0:
+              print("Purchase flow already patched; nothing to do.")
+              raise SystemExit(0)
+
+          if opening_count != 1 or closing_count != 1:
+              raise SystemExit(
+                  f"Expected exactly one Buy Now conditional block; found opening={opening_count}, closing={closing_count}"
+              )
+
+          text = text.replace(opening, replacement_opening, 1)
+          text = text.replace(closing, replacement_closing, 1)
+          path.write_text(text, encoding="utf-8", newline="")
+
+      - name: Commit patch
+        run: |
+          if git diff --quiet -- playnice-site/src/App.js; then
+            echo "No App.js changes to commit."
+            exit 0
+          fi
+          git config user.name "playnice-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add playnice-site/src/App.js
+          git commit -m "Keep Buy Now visible for default product size"
+          git push origin HEAD:product-modal-purchase-flow-v2
