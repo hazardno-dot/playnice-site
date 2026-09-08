@@ -9,6 +9,17 @@ import { supabase } from "./supabase";
 import "./notes-manager.css";
 
 const SHOP_ORIGIN = "https://www.playniceshop.me";
+const NOTE_MEDIA_SESSION_PREFIX = "playnice:note-media-stage:";
+
+function readStoredNoteMediaStage(key) {
+  if (!key) return null;
+  try {
+    const raw = window.sessionStorage.getItem(`${NOTE_MEDIA_SESSION_PREFIX}${key}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
 
 function NoteEditor({ initial, liveKeys, isNew, saving, onCancel, onSave }) {
   const [draft, setDraft] = useState(() => normalizeNoteDraftPayload(initial));
@@ -105,7 +116,8 @@ export default function NotesManager() {
   const selected = workingRows.find((row) => row.key === selectedKey) || filtered[0] || null;
   const selectedDraftRow = selected ? draftRows[selected.key] || null : null;
   const workflow = getNoteDraftState(selectedDraftRow);
-  useEffect(() => { setAssetState(selected ? "loading" : "idle"); }, [selected?.key]);
+  const stagedAsset = selectedDraftRow?.payload?.mediaStage || null;
+  useEffect(() => { setAssetState(selected ? (stagedAsset ? "staged" : "loading") : "idle"); }, [selected?.key, stagedAsset?.branch, stagedAsset?.stagedAt]);
 
   const startNew = () => { const seed = { key: "", srLabel: "", enLabel: "", assetPath: "" }; setNewSeed(seed); setSelectedKey(null); setEditing(true); setError(""); };
   const startEdit = () => { if (!selected) return; setNewSeed(null); setEditing(true); setError(""); };
@@ -120,9 +132,11 @@ export default function NotesManager() {
       const liveExists = liveKeys.includes(key);
       const rowExists = Boolean(draftRows[key]);
       if (!liveExists && !rowExists && workingRows.some((row) => row.key === key)) throw new Error("This note key already exists.");
+      const preservedMediaStage = draftRows[key]?.payload?.mediaStage || readStoredNoteMediaStage(key) || null;
+      const nextPayload = preservedMediaStage ? { ...validation.payload, mediaStage: preservedMediaStage } : validation.payload;
       const query = !liveExists && !rowExists
-        ? supabase.from("note_drafts").insert({ note_key: key, payload: validation.payload, created_by: authData.user.id })
-        : supabase.from("note_drafts").upsert({ note_key: key, payload: validation.payload, created_by: authData.user.id }, { onConflict: "note_key" });
+        ? supabase.from("note_drafts").insert({ note_key: key, payload: nextPayload, created_by: authData.user.id })
+        : supabase.from("note_drafts").upsert({ note_key: key, payload: nextPayload, created_by: authData.user.id }, { onConflict: "note_key" });
       const { data, error: saveError } = await query.select("note_key,payload,review_status,reviewed_at,updated_at,approved_payload").single();
       if (saveError) throw saveError;
       setDraftRows((current) => ({ ...current, [data.note_key]: data }));
@@ -163,7 +177,7 @@ export default function NotesManager() {
     <div className="notes-manager-grid">
       <aside className="notes-catalog"><div className="notes-catalog-head"><div><span>NOTE LIBRARY / USED</span><strong>{audit.uniqueNotes} referenced keys</strong></div><div className="notes-catalog-actions"><span>{filtered.length}</span><button onClick={startNew}>+ New note</button></div></div><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search note, key, product…" /><div className="notes-list">{filtered.map((row) => <button key={row.key} className={row.key === selected?.key ? "active" : ""} onClick={() => setSelectedKey(row.key)}><span className={`notes-status-dot ${row.__draft ? "draft" : row.srSource === "FALLBACK" ? "warn" : ""}`} /><div><strong>{row.enLabel}</strong><small>{row.key} · {row.uses} placement{row.uses === 1 ? "" : "s"}{draftRows[row.key] ? ` · ${getNoteDraftState(draftRows[row.key]).toUpperCase()}` : ""}</small></div><em>{row.productCount}</em></button>)}</div></aside>
       <article className="notes-detail">{!selected ? <div className="notes-empty">No notes match this search.</div> : <>
-        <div className="notes-detail-hero"><div><span>{selectedDraftRow ? "NOTE / DRAFT PREVIEW" : "NOTE / READ ONLY"}</span><h2>{selected.enLabel}</h2><code>{selected.key}</code><div className="notes-detail-actions">{selectedDraftRow ? <><button onClick={startEdit}>Edit draft</button><button className="danger" onClick={discardDraft}>Discard draft</button></> : <button onClick={startEdit}>Create draft</button>}</div></div><div className={`notes-asset-preview ${assetState}`}><img src={`${SHOP_ORIGIN}${selected.assetPath}`} alt={selected.enLabel} onLoad={() => setAssetState("ok")} onError={() => setAssetState("missing")} /><small>{assetState === "missing" ? "ASSET MISSING" : assetState === "ok" ? "ASSET LOADED" : "CHECKING ASSET…"}</small></div></div>
+        <div className="notes-detail-hero"><div><span>{selectedDraftRow ? "NOTE / DRAFT PREVIEW" : "NOTE / READ ONLY"}</span><h2>{selected.enLabel}</h2><code>{selected.key}</code><div className="notes-detail-actions">{selectedDraftRow ? <><button onClick={startEdit}>Edit draft</button><button className="danger" onClick={discardDraft}>Discard draft</button></> : <button onClick={startEdit}>Create draft</button>}</div></div><div className={`notes-asset-preview ${assetState}`}>{stagedAsset ? <div className="notes-asset-staged-mark">✓</div> : <img src={`${SHOP_ORIGIN}${selected.assetPath}`} alt={selected.enLabel} onLoad={() => setAssetState("ok")} onError={() => setAssetState("missing")} />}<small>{assetState === "staged" ? "ASSET STAGED" : assetState === "missing" ? "ASSET MISSING" : assetState === "ok" ? "ASSET LOADED" : "CHECKING ASSET…"}</small></div></div>
         <div className={`notes-workflow ${selectedDraftRow ? workflow : "live"}`}><div><span>NOTE WORKFLOW</span><strong>{selectedDraftRow ? workflow.toUpperCase() : "LIVE ONLY"}</strong></div><div>{selectedDraftRow && workflow === "draft" ? <button onClick={() => setReviewStatus("ready")}>Mark ready</button> : null}{selectedDraftRow && workflow === "ready" ? <><button onClick={() => setReviewStatus("draft")}>Return to draft</button><button className="primary" onClick={() => setReviewStatus("approved")}>Approve</button></> : null}{selectedDraftRow && workflow === "approved" ? <button onClick={() => setReviewStatus("draft")}>Return to draft</button> : null}</div></div>
         <div className="notes-language-contract"><div><span>SR LABEL</span><strong>{selected.srLabel}</strong><small>{selectedDraftRow ? "DRAFT" : selected.srSource}</small></div><div><span>EN LABEL</span><strong>{selected.enLabel}</strong><small>{selectedDraftRow ? "DRAFT" : selected.enSource}</small></div><div><span>LIBRARY</span><strong>{selected.customLibrary ? "CUSTOM" : "CANONICAL"}</strong><small>{selected.customLibrary ? "NOTE_LIBRARY override" : "key + NOTE_SR"}</small></div></div>
         <div className="notes-integrity"><div><span>ASSET CONTRACT</span><strong>{selected.assetPath}</strong></div><p>Every canonical note key expects a matching WebP asset. CI verifies all note assets referenced by products.</p></div>
