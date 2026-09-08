@@ -109,14 +109,14 @@ function findNamedObjectBlock(source, key, label) {
 }
 
 function findChildObjectBlock(block, property) {
-  const regex = new RegExp(`(?:^|\\n|\\{)\\s*(?:["']${escapeRegex(property)}["']|${escapeRegex(property)})\\s*:\\s*\\{`);
+  const regex = new RegExp(`(?:^|\\n|\\{|,)\\s*(?:["']${escapeRegex(property)}["']|${escapeRegex(property)})\\s*:\\s*\\{`);
   const match = regex.exec(block);
   if (!match) throw new Error(`Could not locate nested ${property} object.`);
   return scanObject(block, block.indexOf("{", match.index), property);
 }
 
 function locatePropertyValue(block, property) {
-  const regex = new RegExp(`(?:^|\\n|\\{)\\s*(?:["']${escapeRegex(property)}["']|${escapeRegex(property)})\\s*:\\s*`);
+  const regex = new RegExp(`(?:^|\\n|\\{|,)\\s*(?:["']${escapeRegex(property)}["']|${escapeRegex(property)})\\s*:\\s*`);
   const match = regex.exec(block);
   if (!match) throw new Error(`Could not locate ${property} in object.`);
   const start = match.index + match[0].length;
