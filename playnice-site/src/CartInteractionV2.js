@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const CART_CONFIRMATION_DURATION = 5000;
+const CART_CONFIRMATION_DURATION = 6500;
 const LEGACY_MINI_CART_DURATION = 1700;
 const PRODUCT_MODAL_AUTO_CLOSE_DELAY = 950;
 
@@ -23,29 +23,29 @@ const isModalAddToCartButton = (target) => {
 
 export default function CartInteractionV2() {
   useEffect(() => {
-    const originalSetTimeout = window.setTimeout;
+    const originalSetTimeout = window.setTimeout.bind(window);
+    let suppressProductModalAutoCloseUntil = 0;
 
     const handleClickCapture = (event) => {
-      const keepProductModalOpen = isModalAddToCartButton(event.target);
-      const previousSetTimeout = window.setTimeout;
+      if (isModalAddToCartButton(event.target)) {
+        suppressProductModalAutoCloseUntil = Date.now() + 1600;
+      }
+    };
 
-      window.setTimeout = (callback, delay, ...args) => {
-        if (delay === LEGACY_MINI_CART_DURATION) {
-          return originalSetTimeout(callback, CART_CONFIRMATION_DURATION, ...args);
-        }
+    window.setTimeout = (callback, delay, ...args) => {
+      if (delay === LEGACY_MINI_CART_DURATION) {
+        return originalSetTimeout(callback, CART_CONFIRMATION_DURATION, ...args);
+      }
 
-        if (keepProductModalOpen && delay === PRODUCT_MODAL_AUTO_CLOSE_DELAY) {
-          return null;
-        }
+      if (
+        delay === PRODUCT_MODAL_AUTO_CLOSE_DELAY &&
+        Date.now() < suppressProductModalAutoCloseUntil &&
+        document.querySelector(".product-modal")
+      ) {
+        return null;
+      }
 
-        return originalSetTimeout(callback, delay, ...args);
-      };
-
-      queueMicrotask(() => {
-        if (window.setTimeout !== previousSetTimeout) {
-          window.setTimeout = previousSetTimeout;
-        }
-      });
+      return originalSetTimeout(callback, delay, ...args);
     };
 
     document.addEventListener("click", handleClickCapture, true);
