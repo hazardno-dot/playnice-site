@@ -1,0 +1,19 @@
+/* Desktop-only product modal copy normalization.
+ * Goal: keep modal proportions consistent across products without truncating copy.
+ */
+
+@media (min-width: 769px) {
+  .product-modal .modal-body {
+    grid-template-columns: 0.86fr 1.14fr;
+  }
+
+  .product-modal .modal-content {
+    gap: 8px;
+  }
+
+  .product-modal .modal-description {
+    margin-bottom: 2px;
+    font-size: 1.06rem;
+    line-height: 1.36;
+  }
+}
