@@ -15,6 +15,7 @@ const requiredRefreshTokens = [
   "pr.head?.ref !== draft.apply_branch",
   "pr.base?.ref !== \"main\"",
   "base_tree: mainCommit.tree.sha",
+  "(?:^|\\\\n|\\\\{|,)",
 ];
 for (const token of requiredRefreshTokens) {
   if (!refreshSource.includes(token)) throw new Error(`Product preview refresh contract missing: ${token}`);
@@ -31,6 +32,20 @@ if (!routerSource.includes("createApply(req, res)")) {
 }
 if (!stateSource.includes("row.payload?.core?.savedAt")) {
   throw new Error("Preview freshness must use the actual draft save timestamp when available.");
+}
+
+// Regression fixture: productCopy frequently renders short bilingual groups on one line.
+// The refresh parser must recognize a property after a comma, not only after { or a newline.
+const inlineMiniTag = '{ sr: "🍊 Citrusni / Čist", en: "🍊 Citrus / Clean" }';
+const inlineEn = new RegExp('(?:^|\\n|\\{|,)\\s*(?:["\']en["\']|en)\\s*:\\s*').exec(inlineMiniTag);
+if (!inlineEn) {
+  throw new Error("Product preview refresh parser must support inline bilingual fields such as miniTag.en.");
+}
+const inlineValueStart = inlineEn.index + inlineEn[0].length;
+const inlineValueEnd = inlineMiniTag.indexOf('}', inlineValueStart);
+const inlineValue = inlineMiniTag.slice(inlineValueStart, inlineValueEnd).trim().replace(/,$/, "").trim();
+if (inlineValue !== '"🍊 Citrus / Clean"') {
+  throw new Error("Inline miniTag.en parser regression fixture did not resolve the expected value.");
 }
 
 const { getPreviewWorkflowState } = await import(`../src/previewWorkflowState.mjs?refresh-contract=${Date.now()}`);
@@ -58,4 +73,4 @@ if (!changedAfterPreview.needsRefresh) {
   throw new Error("A draft saved after preview generation must require preview refresh.");
 }
 
-console.log("PASS  Product preview refresh keeps the same PR, rebuilds atomically from main and tracks real draft freshness");
+console.log("PASS  Product preview refresh keeps the same PR, rebuilds atomically from main, supports inline bilingual fields and tracks real draft freshness");
