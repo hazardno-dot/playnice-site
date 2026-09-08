@@ -2878,7 +2878,7 @@ export const productCopy = {
     },
     "card": {
       "en": "Cardamom, lavender and cedar in a warm, elegant evening scent.",
-      "sr": "Kardamom, lavanda i kedar u toplom, elegantnom večernjem mirisu."
+      "sr": "Kardamom, lavanda i kedar u toplom večernjem mirisu."
     },
     "modal": {
       "en": "Cardamom and bergamot open the scent with lavender, black pepper and cedar. Tonka bean and vetiver create a warm, smooth finish made for elegant evenings.",
