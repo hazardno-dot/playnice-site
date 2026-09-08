@@ -242,6 +242,17 @@
     border-radius: 17px;
   }
 
+  /* Give product photography a little more authority now that
+     the generic reason copy has been removed. */
+  .playnice-discovery-image {
+    height: 74px;
+  }
+
+  .playnice-discovery-image img {
+    max-width: 72%;
+    max-height: 61px;
+  }
+
   /* Results cards: prioritize the actual fragrance name. */
   .playnice-discovery-why {
     display: none;
