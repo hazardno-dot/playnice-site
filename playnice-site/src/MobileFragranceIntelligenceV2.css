@@ -93,30 +93,20 @@
     content: "PRONAĐI MOJ MIRIS  →";
   }
 
-  /* MODAL — centered before search; result state can use the full viewport. */
+  /* MODAL — both states size to content and stay centered. */
   .playnice-discovery-overlay {
     align-items: center;
     padding: 16px 8px;
   }
 
-  .playnice-discovery-panel {
+  .playnice-discovery-panel,
+  .playnice-discovery-panel.has-results {
     width: min(calc(100vw - 16px), 430px);
     max-width: 430px;
     height: auto;
     max-height: calc(100dvh - 32px);
     border-radius: 22px;
-  }
-
-  /* Explicitly beat the base `.panel.has-results` 84dvh cap. */
-  .playnice-discovery-panel.has-results {
-    width: 100vw;
-    max-width: none;
-    height: 100dvh;
-    max-height: 100dvh;
-    padding-top: 16px;
-    padding-bottom: 10px;
-    border-radius: 0;
-    overflow-y: hidden;
+    overflow-y: auto;
   }
 
   .playnice-discovery-panel-head {
@@ -242,7 +232,7 @@
     line-height: 1.25;
   }
 
-  /* Results keep their horizontal browsing; only vertical density is tightened. */
+  /* Results keep horizontal browsing; compact spacing avoids needless vertical overflow. */
   .playnice-discovery-panel.has-results .playnice-discovery-search {
     margin-top: 10px;
   }
@@ -292,15 +282,12 @@
     padding: 14px 8px;
   }
 
-  .playnice-discovery-panel {
-    width: calc(100vw - 16px);
-    max-height: calc(100dvh - 28px);
-  }
-
+  .playnice-discovery-panel,
   .playnice-discovery-panel.has-results {
-    width: 100vw;
-    height: 100dvh;
-    max-height: 100dvh;
+    width: calc(100vw - 16px);
+    height: auto;
+    max-height: calc(100dvh - 28px);
+    border-radius: 22px;
   }
 
   .playnice-discovery-input-wrap input {
