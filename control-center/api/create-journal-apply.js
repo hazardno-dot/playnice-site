@@ -106,23 +106,38 @@ async function createBlob(source) {
   return blob.sha;
 }
 
-async function createJournalCommitOnMainBase(source, message) {
+async function resolveMediaTreeEntry(mediaStage, approvedImage, articleId) {
+  if (!mediaStage) return null;
+  const canonicalAssetPath = `/journal/article${articleId}.webp`;
+  const canonicalFile = `playnice-site/public${canonicalAssetPath}`;
+  if (String(mediaStage.assetPath || "") !== canonicalAssetPath || String(mediaStage.file || "") !== canonicalFile) {
+    throw new Error("Journal staged media metadata does not match the canonical article image path.");
+  }
+  if (approvedImage !== canonicalAssetPath) throw new Error("Approved Journal image does not match staged media.");
+  const branch = String(mediaStage.branch || "").trim();
+  if (!/^cc-journal-media-stage-\d+-\d{12}$/i.test(branch)) throw new Error("Journal staged media branch is invalid.");
+  const staged = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${canonicalFile}?ref=${encodeURIComponent(branch)}`);
+  if (!staged?.sha || staged.type !== "file") throw new Error("Journal staged media file could not be resolved.");
+  return { path: canonicalFile, mode: "100644", type: "blob", sha: staged.sha };
+}
+
+async function createJournalCommitOnMainBase(source, message, mediaStage, approvedImage, articleId) {
   const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
   const baseSha = mainRef.object.sha;
   const mainCommit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits/${baseSha}`);
-  const blobSha = await createBlob(source);
+  const journalBlobSha = await createBlob(source);
+  const treeEntries = [{ path: JOURNAL_PATH, mode: "100644", type: "blob", sha: journalBlobSha }];
+  const mediaEntry = await resolveMediaTreeEntry(mediaStage, approvedImage, articleId);
+  if (mediaEntry) treeEntries.push(mediaEntry);
   const tree = await github(`/repos/${OWNER}/${REPO_NAME}/git/trees`, {
     method: "POST",
-    body: JSON.stringify({
-      base_tree: mainCommit.tree.sha,
-      tree: [{ path: JOURNAL_PATH, mode: "100644", type: "blob", sha: blobSha }],
-    }),
+    body: JSON.stringify({ base_tree: mainCommit.tree.sha, tree: treeEntries }),
   });
   const commit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits`, {
     method: "POST",
     body: JSON.stringify({ message, tree: tree.sha, parents: [baseSha] }),
   });
-  return { baseSha, commit };
+  return { baseSha, commit, files: treeEntries.map((entry) => entry.path) };
 }
 
 export default async function handler(req, res) {
@@ -143,6 +158,7 @@ export default async function handler(req, res) {
     if (draft.review_status !== "approved" || !draft.approved_payload) return json(res, 409, { error: "Journal draft must be APPROVED first." });
     if (stableJson(draft.payload) !== stableJson(draft.approved_payload)) return json(res, 409, { error: "Approved payload no longer matches the current Journal draft. Review and approve again." });
     const approved = validateExistingArticle(draft.approved_payload, articleId);
+    const mediaStage = draft.approved_payload?.mediaStage || null;
     const hasAnyPrIdentity = Boolean(draft.apply_branch || draft.apply_pr_number);
     const hasPr = Boolean(draft.apply_branch && draft.apply_pr_number);
     if (hasAnyPrIdentity && !hasPr) return json(res, 409, { error: "Journal draft has incomplete PR metadata. Repair or clear the apply identity before continuing." });
@@ -154,7 +170,7 @@ export default async function handler(req, res) {
 
       if (existsOnMain) {
         const livePayload = validateExistingArticle(req.body?.live_payload, articleId);
-        if (stableJson(livePayload) === stableJson(approved)) return json(res, 409, { error: "No approved Journal changes remain to apply." });
+        if (stableJson(livePayload) === stableJson(approved) && !mediaStage) return json(res, 409, { error: "No approved Journal changes remain to apply." });
         const located = findJournalArticleBlock(source, articleId);
         baseline = { mode: "replace", article_id: articleId, source_block: located.block, source_sha: file.sha, live_payload: livePayload };
       } else {
@@ -168,7 +184,7 @@ export default async function handler(req, res) {
         body: JSON.stringify({ baseline_snapshot: baseline, prepared_at: new Date().toISOString(), prepared_by: user.id }),
       });
       if (!response.ok) throw new Error("Could not persist Journal preparation baseline.");
-      return json(res, 200, { ok: true, prepared: true, refresh: hasPr, article_id: articleId, mode: baseline.mode, branch: draft.apply_branch || null, pr_number: draft.apply_pr_number || null });
+      return json(res, 200, { ok: true, prepared: true, refresh: hasPr, article_id: articleId, mode: baseline.mode, media: Boolean(mediaStage), branch: draft.apply_branch || null, pr_number: draft.apply_pr_number || null });
     }
 
     if (action !== "apply" && action !== "refresh") return json(res, 400, { error: "Unsupported Journal apply action." });
@@ -182,9 +198,9 @@ export default async function handler(req, res) {
 
       const { file, source } = await readMainJournal();
       const { preparationMode, changed } = buildPreparedChange(source, file, draft, approved, articleId);
-      if (changed.source === source) return json(res, 409, { error: "No Journal source change was produced." });
+      if (changed.source === source && !mediaStage) return json(res, 409, { error: "No Journal source change was produced." });
 
-      const { baseSha, commit } = await createJournalCommitOnMainBase(changed.source, `Control Center Journal refresh: article #${articleId}`);
+      const { baseSha, commit, files } = await createJournalCommitOnMainBase(changed.source, `Control Center Journal refresh: article #${articleId}`, mediaStage, approved.image, articleId);
       await github(`/repos/${OWNER}/${REPO_NAME}/git/refs/heads/${encodeURIComponent(draft.apply_branch)}`, {
         method: "PATCH",
         body: JSON.stringify({ sha: commit.sha, force: true }),
@@ -205,12 +221,12 @@ export default async function handler(req, res) {
         branch: draft.apply_branch,
         pr_number: draft.apply_pr_number,
         pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}`,
-        file: JOURNAL_PATH,
+        files,
         operation: preparationMode,
         base_sha: baseSha,
         commit_sha: commit.sha,
         refreshed_at: refreshedAt,
-        version: "journal-v3-refresh",
+        version: "journal-v4-media",
       });
     }
 
@@ -218,22 +234,12 @@ export default async function handler(req, res) {
 
     const { file, source } = await readMainJournal();
     const { preparationMode, changed } = buildPreparedChange(source, file, draft, approved, articleId);
-    if (changed.source === source) return json(res, 409, { error: "No Journal source change was produced." });
+    if (changed.source === source && !mediaStage) return json(res, 409, { error: "No Journal source change was produced." });
 
-    const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
-    const baseSha = mainRef.object.sha;
+    const { commit, files } = await createJournalCommitOnMainBase(changed.source, `Control Center Journal apply: article #${articleId}`, mediaStage, approved.image, articleId);
     const stamp = new Date().toISOString().replace(/[-:TZ.]/g, "").slice(0, 12);
     const branch = `cc-journal-${articleId}-${stamp}`;
-    await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, { method: "POST", body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }) });
-    await github(`/repos/${OWNER}/${REPO_NAME}/contents/${JOURNAL_PATH}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        message: `Control Center Journal apply: article #${articleId}`,
-        content: Buffer.from(changed.source, "utf8").toString("base64"),
-        sha: file.sha,
-        branch,
-      }),
-    });
+    await github(`/repos/${OWNER}/${REPO_NAME}/git/refs`, { method: "POST", body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: commit.sha }) });
 
     const title = String(approved.title?.en || approved.title?.sr || `Article ${articleId}`);
     const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, {
@@ -244,13 +250,14 @@ export default async function handler(req, res) {
         base: "main",
         draft: true,
         body: [
-          "Generated by PlayNice Control Center Journal Controlled Apply v1.",
+          "Generated by PlayNice Control Center Journal Controlled Apply.",
           "",
           `- Journal article: #${articleId}`,
           `- Title: ${title}`,
-          `- File: ${JOURNAL_PATH}`,
+          `- Files: ${files.join(", ")}`,
           "- Source: approved + prepared Supabase Journal draft",
           `- Operation: ${preparationMode === "insert" ? "insert new article" : "replace existing article"}`,
+          mediaStage ? "- Media: staged optimized Journal WebP attached to this PR" : "- Media: existing Journal image path retained",
           preparationMode === "insert" ? "- Safety: exact prepared Journal source SHA drift guard" : "- Safety: exact prepared source-block drift guard",
           "- Safety: draft PR only; no automatic merge",
         ].join("\n"),
@@ -263,10 +270,10 @@ export default async function handler(req, res) {
     });
     if (!update.ok) throw new Error("Journal PR was created, but its draft metadata could not be persisted.");
 
-    return json(res, 200, { ok: true, article_id: articleId, branch, pr_number: pr.number, pr_url: pr.html_url, file: JOURNAL_PATH, version: "journal-v3-refresh" });
+    return json(res, 200, { ok: true, article_id: articleId, branch, pr_number: pr.number, pr_url: pr.html_url, files, version: "journal-v4-media" });
   } catch (error) {
     const message = error?.message || "Journal Controlled Apply failed.";
-    const expectedConflict = /^(LIVE DRIFT:|Journal draft must be prepared|No Journal source change|Unsupported Journal preparation mode)/.test(message);
+    const expectedConflict = /^(LIVE DRIFT:|Journal draft must be prepared|No Journal source change|Unsupported Journal preparation mode|Journal staged media|Approved Journal image)/.test(message);
     return json(res, expectedConflict ? 409 : 500, { error: message });
   }
 }
