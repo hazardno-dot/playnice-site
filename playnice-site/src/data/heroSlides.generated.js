@@ -33,17 +33,6 @@ export const BASE_HERO_SLIDES = [
     "collectionTitle": "SOFT. BOLD. LUXURY."
   },
   {
-    "id": 6,
-    "kind": "imageOnly",
-    "image": "/hero/slide-6.jpg",
-    "desktopImage": "/hero/slide-6.jpg",
-    "mobileImage": "/hero/mobile/slide-6-mobile.jpg",
-    "alt": "JASMINE IN THE SUN · Now at PlayNice",
-    "actionPrimary": "product",
-    "actionProductSlug": "my-geisha-jasmine-in-the-sun",
-    "preferredSize": "10ml"
-  },
-  {
     "id": 2,
     "kind": "imageOnly",
     "image": "/hero/slide-2.jpg",
