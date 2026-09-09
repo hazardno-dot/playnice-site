@@ -10,6 +10,8 @@ import MobileShopV2 from "./MobileShopV2";
 import MobileShopReveal from "./MobileShopReveal";
 import MobileMenuContact from "./MobileMenuContact";
 import CartInteractionV2 from "./CartInteractionV2";
+import DiscoveryImageFallback from "./DiscoveryImageFallback";
+import FragranceIntelligenceToneEnhancer from "./FragranceIntelligenceToneEnhancer";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
 import "./NewArrivalsScale.css";
@@ -18,6 +20,7 @@ import "./HeroPaginationPosition.css";
 import "./MobileHeaderV2.css";
 import "./MobileHomeV2.css";
 import "./MobileFragranceIntelligenceV2.css";
+import "./DesktopFragranceIntelligenceV2.css";
 import "./MobileJustInV2.css";
 import "./MobileDiscoverySetsV2.css";
 import "./MobileHowItWorksV2.css";
@@ -54,5 +57,7 @@ root.render(
     <MobileShopReveal />
     <MobileMenuContact />
     <CartInteractionV2 />
+    <DiscoveryImageFallback />
+    <FragranceIntelligenceToneEnhancer />
   </React.StrictMode>
 );

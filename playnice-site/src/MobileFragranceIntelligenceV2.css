@@ -95,7 +95,7 @@
 
   /* MODAL — both states size to content and stay centered. */
   .playnice-discovery-overlay {
-    align-items: center;
+    place-items: center;
     padding: 16px 8px;
   }
 
@@ -105,6 +105,7 @@
     max-width: 430px;
     height: auto;
     max-height: calc(100dvh - 32px);
+    margin: auto;
     border-radius: 22px;
     overflow-y: auto;
   }
@@ -261,6 +262,28 @@
   .playnice-discovery-panel.has-results .playnice-discovery-results-head {
     margin-bottom: 6px;
   }
+
+  /* Same information hierarchy as desktop: name first, generic reason removed. */
+  .playnice-discovery-why {
+    display: none;
+  }
+
+  .playnice-discovery-card-copy h4 {
+    margin-top: 2px;
+    font-size: 13.2px;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    -webkit-line-clamp: 3;
+  }
+
+  .playnice-discovery-card-copy {
+    justify-content: flex-start;
+  }
+
+  .playnice-discovery-card-foot,
+  .playnice-discovery-card-footer {
+    margin-top: auto;
+  }
 }
 
 @media (max-width: 380px) {
@@ -279,6 +302,7 @@
   }
 
   .playnice-discovery-overlay {
+    place-items: center;
     padding: 14px 8px;
   }
 
@@ -287,6 +311,7 @@
     width: calc(100vw - 16px);
     height: auto;
     max-height: calc(100dvh - 28px);
+    margin: auto;
     border-radius: 22px;
   }
 
@@ -298,5 +323,9 @@
     min-height: 31px;
     padding: 6px 10px;
     font-size: 9.2px;
+  }
+
+  .playnice-discovery-card-copy h4 {
+    font-size: 12.8px;
   }
 }
