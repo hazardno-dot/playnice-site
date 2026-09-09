@@ -2,13 +2,25 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import "./MobileMenuContact.css";
 
+const getActiveLang = () => {
+  const headerLang = document
+    .querySelector(".header-next-language span")
+    ?.textContent?.trim()
+    .toLowerCase();
+
+  if (headerLang === "sr" || headerLang === "en") return headerLang;
+
+  const storedLang = window.localStorage.getItem("playnice_lang")?.toLowerCase();
+  if (storedLang === "sr" || storedLang === "en") return storedLang;
+
+  return document.documentElement.lang?.toLowerCase().startsWith("sr") ? "sr" : "en";
+};
+
 function MobileMenuContact() {
   const [panelTarget, setPanelTarget] = useState(null);
   const [discoverTarget, setDiscoverTarget] = useState(null);
-  const [lang, setLang] = useState(
-    typeof document !== "undefined" && document.documentElement.lang?.toLowerCase().startsWith("sr")
-      ? "sr"
-      : "en"
+  const [lang, setLang] = useState(() =>
+    typeof document !== "undefined" ? getActiveLang() : "en"
   );
   const [supportOpen, setSupportOpen] = useState(false);
   const [catalogOpen, setCatalogOpen] = useState(false);
@@ -31,20 +43,23 @@ function MobileMenuContact() {
 
     resolveTarget();
 
-    const languageObserver = new MutationObserver(() => {
-      setLang(
-        document.documentElement.lang?.toLowerCase().startsWith("sr") ? "sr" : "en"
-      );
+    const syncLang = () => setLang(getActiveLang());
+    const languageObserver = new MutationObserver(syncLang);
+
+    languageObserver.observe(document.body, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: ["lang", "class"]
     });
 
-    languageObserver.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["lang"]
-    });
+    window.addEventListener("storage", syncLang);
 
     return () => {
       window.cancelAnimationFrame(frameId);
       languageObserver.disconnect();
+      window.removeEventListener("storage", syncLang);
     };
   }, []);
 
