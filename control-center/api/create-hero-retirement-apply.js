@@ -121,7 +121,8 @@ function periodFor(date = new Date()) {
 
 function buildExhibitionEntry(heroKey, baseline) {
   const { year, period } = periodFor();
-  const entryId = `hero-${safeId(heroKey)}`;
+  const safeHeroKey = safeId(heroKey);
+  const entryId = safeHeroKey.startsWith("hero-") ? safeHeroKey : `hero-${safeHeroKey}`;
   const candidates = [
     { suffix: "desktop", src: baseline.desktopImage || baseline.image || "", format: "wide" },
     { suffix: "mobile", src: baseline.mobileImage || baseline.image || "", format: "mobile" },
