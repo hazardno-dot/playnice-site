@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
+import { IMAGE_OPTIMIZER_PRESETS, blobToBase64, formatImageBytes, optimizeImage } from "./imageOptimizer.mjs";
 import "./note-media-upload.css";
 
-const MAX_IMAGE_BYTES = 1_500_000;
 const NOTE_MEDIA_SESSION_PREFIX = "playnice:note-media-stage:";
 const NOTE_WORKFLOW_UPDATED_EVENT = "playnice:note-workflow-updated";
+const NOTE_PRESET = IMAGE_OPTIMIZER_PRESETS.notes;
 
 const sessionKey = (key) => `${NOTE_MEDIA_SESSION_PREFIX}${key}`;
 
@@ -47,32 +48,6 @@ function ensureSlot(editor) {
   return slot;
 }
 
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result || "").split(",")[1] || "");
-    reader.onerror = () => reject(reader.error || new Error("Could not read image."));
-    reader.readAsDataURL(file);
-  });
-}
-
-function inspectImage(file) {
-  return new Promise((resolve, reject) => {
-    const url = URL.createObjectURL(file);
-    const image = new Image();
-    image.onload = () => {
-      const result = { width: image.naturalWidth, height: image.naturalHeight };
-      URL.revokeObjectURL(url);
-      resolve(result);
-    };
-    image.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error("Could not read WebP image."));
-    };
-    image.src = url;
-  });
-}
-
 export default function NoteMediaUploadBridge() {
   const [slot, setSlot] = useState(null);
   const [noteKey, setNoteKey] = useState("");
@@ -81,6 +56,7 @@ export default function NoteMediaUploadBridge() {
   const [preview, setPreview] = useState("");
   const previewRef = useRef("");
   const [busy, setBusy] = useState(false);
+  const [optimizing, setOptimizing] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState(null);
 
@@ -145,15 +121,29 @@ export default function NoteMediaUploadBridge() {
   const pick = async (nextFile) => {
     setError(""); setResult(null);
     if (!nextFile) { setFile(null); setInfo(null); setPreview(""); return; }
-    if (nextFile.size > MAX_IMAGE_BYTES) { setError("Note image is larger than 1.5 MB."); return; }
-    if (!/image\/webp/i.test(nextFile.type) && !/\.webp$/i.test(nextFile.name)) { setError("Note image must be WebP."); return; }
+    setOptimizing(true);
     try {
-      const nextInfo = await inspectImage(nextFile);
+      const optimized = await optimizeImage(nextFile, NOTE_PRESET);
+      const optimizedFile = new File([optimized.blob], `${noteKey || "note"}.webp`, { type: "image/webp", lastModified: Date.now() });
       if (previewRef.current) URL.revokeObjectURL(previewRef.current);
-      const url = URL.createObjectURL(nextFile);
+      const url = URL.createObjectURL(optimized.blob);
       previewRef.current = url;
-      setFile(nextFile); setInfo(nextInfo); setPreview(url);
-    } catch (inspectError) { setError(inspectError.message || String(inspectError)); }
+      setFile(optimizedFile);
+      setInfo({
+        width: optimized.width,
+        height: optimized.height,
+        originalWidth: optimized.originalWidth,
+        originalHeight: optimized.originalHeight,
+        originalBytes: optimized.originalBytes,
+        bytes: optimized.blob.size,
+      });
+      setPreview(url);
+    } catch (optimizeError) {
+      setFile(null); setInfo(null); setPreview("");
+      setError(optimizeError.message || String(optimizeError));
+    } finally {
+      setOptimizing(false);
+    }
   };
 
   const stage = async () => {
@@ -166,7 +156,7 @@ export default function NoteMediaUploadBridge() {
       const response = await fetch("/api/create-note-media-apply", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
-        body: JSON.stringify({ note_key: noteKey, asset_base64: await fileToBase64(file), stage_branch: stored?.branch || "", base_sha: stored?.baseSha || "" }),
+        body: JSON.stringify({ note_key: noteKey, asset_base64: await blobToBase64(file), stage_branch: stored?.branch || "", base_sha: stored?.baseSha || "" }),
       });
       const raw = await response.text();
       let body = {};
@@ -183,11 +173,11 @@ export default function NoteMediaUploadBridge() {
   if (!slot) return null;
   const validKey = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(noteKey);
   return createPortal(<section className="note-media-upload">
-    <div className="note-media-copy"><span>NOTE ASSET</span><strong>{validKey ? `/note-map/${noteKey}.webp` : "Enter canonical key first"}</strong><small>WebP · max 1.5 MB · staged safely before Controlled Apply</small></div>
+    <div className="note-media-copy"><span>NOTE ASSET</span><strong>{validKey ? `/note-map/${noteKey}.webp` : "Enter canonical key first"}</strong><small>JPG / PNG / WebP → WebP · max edge {NOTE_PRESET.maxEdge}px · target ≤ {formatImageBytes(NOTE_PRESET.maxBytes)}</small></div>
     <div className="note-media-body">
-      <label className="note-media-picker"><input type="file" accept="image/webp,.webp" disabled={!validKey || busy} onChange={(event) => pick(event.target.files?.[0] || null)} /><strong>{file ? "Replace selected WebP" : "Choose WebP"}</strong><small>{file ? `${file.name} · ${Math.round(file.size / 1000)} KB` : "Image is never written to main directly."}</small></label>
-      {preview ? <div className="note-media-preview"><img src={preview} alt="Note asset preview" /><span>{info?.width} × {info?.height}px</span></div> : null}
-      <button className="primary" disabled={!validKey || !file || busy} onClick={stage}>{busy ? "Staging…" : "Stage asset"}</button>
+      <label className="note-media-picker"><input type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" disabled={!validKey || busy || optimizing} onChange={(event) => pick(event.target.files?.[0] || null)} /><strong>{optimizing ? "Optimizing…" : file ? "Replace source image" : "Choose image"}</strong><small>{file && info ? `${info.originalWidth} × ${info.originalHeight}px · ${formatImageBytes(info.originalBytes)} → ${info.width} × ${info.height}px · ${formatImageBytes(info.bytes)}` : "Automatic resize + WebP compression before staging."}</small></label>
+      {preview ? <div className="note-media-preview"><img src={preview} alt="Optimized Note asset preview" /><span>{info?.width} × {info?.height}px · {formatImageBytes(info?.bytes || 0)}</span></div> : null}
+      <button className="primary" disabled={!validKey || !file || busy || optimizing} onClick={stage}>{busy ? "Staging…" : "Stage optimized asset"}</button>
     </div>
     {result ? <div className="note-media-success">ASSET STAGED · {result.asset_path}</div> : null}
     {error ? <div className="note-media-error">{error}</div> : null}
