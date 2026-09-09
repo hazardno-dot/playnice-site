@@ -5,6 +5,21 @@
 ========================================= */
 
 @media (min-width: 641px) {
+  .sticky-cta-shell {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 180ms ease,
+      visibility 180ms ease,
+      transform 180ms ease;
+  }
+
+  body:not(.scrolled) .sticky-cta-shell {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(12px);
+  }
+
   .sticky-cta-button {
     border-color: rgba(220, 181, 107, 0.12);
     background:
