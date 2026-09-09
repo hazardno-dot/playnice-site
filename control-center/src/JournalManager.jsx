@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { journalArticles } from "@shop/data/journal/index.js";
 import { products } from "@shop/data/products/index.js";
@@ -9,14 +9,78 @@ import "./journal-manager.css";
 
 const SHOP_ORIGIN = "https://www.playniceshop.me";
 const productSlugs = products.map((product) => product.slug);
+const JOURNAL_IMAGE_MAX_BYTES = 500_000;
+const JOURNAL_IMAGE_MAX_EDGE = 1600;
 
 const langPair = (value) => ({ sr: String(value?.sr || ""), en: String(value?.en || "") });
 const csvList = (value) => Array.isArray(value) ? value : String(value || "").split(",").map((item) => item.trim()).filter(Boolean);
 const emptyLink = () => ({ label: { sr: "", en: "" }, action: "" });
 const linkMode = (link) => link?.url ? "url" : "action";
+const formatBytes = (bytes = 0) => bytes < 1000 ? `${bytes} B` : `${Math.round(bytes / 1000)} KB`;
+
+function readImage(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => resolve({ image, url });
+    image.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Could not read selected image.")); };
+    image.src = url;
+  });
+}
+
+function canvasToBlob(canvas, quality) {
+  return new Promise((resolve) => canvas.toBlob(resolve, "image/webp", quality));
+}
+
+async function optimizeJournalImage(file) {
+  if (!file || !/^image\/(jpeg|png|webp)$/i.test(file.type)) throw new Error("Choose a JPG, PNG or WebP image.");
+  const { image, url } = await readImage(file);
+  try {
+    const longest = Math.max(image.naturalWidth, image.naturalHeight);
+    const baseScale = longest > JOURNAL_IMAGE_MAX_EDGE ? JOURNAL_IMAGE_MAX_EDGE / longest : 1;
+    const scales = [baseScale, baseScale * 0.88, baseScale * 0.76, baseScale * 0.64];
+    const qualities = [0.84, 0.78, 0.72, 0.66];
+    let smallest = null;
+    for (const scale of scales) {
+      const width = Math.max(1, Math.round(image.naturalWidth * scale));
+      const height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("Could not prepare Journal image optimization.");
+      ctx.drawImage(image, 0, 0, width, height);
+      for (const quality of qualities) {
+        const blob = await canvasToBlob(canvas, quality);
+        if (!blob) continue;
+        const candidate = { blob, width, height, quality };
+        if (!smallest || blob.size < smallest.blob.size) smallest = candidate;
+        if (blob.size <= JOURNAL_IMAGE_MAX_BYTES) return candidate;
+      }
+    }
+    if (!smallest) throw new Error("Could not create optimized WebP image.");
+    throw new Error(`Image is still ${formatBytes(smallest.blob.size)} after optimization. Please use a smaller source image.`);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || "").split(",")[1] || "");
+    reader.onerror = () => reject(reader.error || new Error("Could not read optimized image."));
+    reader.readAsDataURL(blob);
+  });
+}
 
 function JournalEditor({ initial, onCancel, onSave, saving }) {
   const [draft, setDraft] = useState(() => normalizeJournalDraftPayload(initial));
+  const [mediaBusy, setMediaBusy] = useState(false);
+  const [mediaError, setMediaError] = useState("");
+  const [mediaInfo, setMediaInfo] = useState(null);
+  const [mediaPreview, setMediaPreview] = useState("");
+  const mediaPreviewRef = useRef("");
   const setPair = (field, lang, value) => setDraft((current) => ({ ...current, [field]: { ...langPair(current[field]), [lang]: value } }));
   const setSimple = (field, value) => setDraft((current) => ({ ...current, [field]: value }));
   const setSeries = (lang, value) => setDraft((current) => ({ ...current, series: { ...langPair(current.series), [lang]: value } }));
@@ -37,10 +101,47 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
   const audit = useMemo(() => auditJournalArticles([draft], productSlugs), [draft]);
   const blocked = audit.errors.length > 0;
 
+  useEffect(() => () => {
+    if (mediaPreviewRef.current) URL.revokeObjectURL(mediaPreviewRef.current);
+  }, []);
+
+  const uploadImage = async (file) => {
+    if (!file) return;
+    setMediaBusy(true); setMediaError(""); setMediaInfo(null);
+    try {
+      const optimized = await optimizeJournalImage(file);
+      const base64 = await blobToBase64(optimized.blob);
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || !sessionData?.session?.access_token) throw sessionError || new Error("Authenticated admin session is required.");
+      const response = await fetch("/api/create-journal-media-apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionData.session.access_token}` },
+        body: JSON.stringify({
+          article_id: Number(draft.id),
+          asset_base64: base64,
+          stage_branch: draft.mediaStage?.branch || "",
+          base_sha: draft.mediaStage?.baseSha || "",
+        }),
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(body.error || `Journal image staging failed (${response.status}).`);
+      if (mediaPreviewRef.current) URL.revokeObjectURL(mediaPreviewRef.current);
+      const nextPreview = URL.createObjectURL(optimized.blob);
+      mediaPreviewRef.current = nextPreview;
+      setMediaPreview(nextPreview);
+      setMediaInfo({ width: optimized.width, height: optimized.height, bytes: optimized.blob.size, originalBytes: file.size });
+      setDraft((current) => ({ ...current, image: body.asset_path, mediaStage: body.media_stage }));
+    } catch (uploadError) {
+      setMediaError(uploadError.message || String(uploadError));
+    } finally {
+      setMediaBusy(false);
+    }
+  };
+
   return <div className="journal-editor">
     <div className="journal-editor-head">
       <div><span>ARTICLE / DRAFT EDITOR</span><h2>#{draft.id} · {draft.title?.sr || draft.title?.en || "Untitled"}</h2><p>Supabase draft only · live Journal remains unchanged.</p></div>
-      <div className="journal-editor-actions"><button onClick={onCancel} disabled={saving}>Cancel</button><button className="primary" onClick={() => onSave(draft)} disabled={saving || blocked}>{saving ? "Saving…" : blocked ? "Fix validation" : "Save draft"}</button></div>
+      <div className="journal-editor-actions"><button onClick={onCancel} disabled={saving || mediaBusy}>Cancel</button><button className="primary" onClick={() => onSave(draft)} disabled={saving || mediaBusy || blocked}>{saving ? "Saving…" : mediaBusy ? "Image processing…" : blocked ? "Fix validation" : "Save draft"}</button></div>
     </div>
 
     <div className={`journal-editor-validation ${blocked ? "blocked" : "ok"}`}>
@@ -50,7 +151,15 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
 
     {audit.issues.length ? <div className="journal-editor-issues">{audit.issues.map((issue, index) => <div key={`${issue.field}-${index}`} className={issue.level}><strong>{issue.field}</strong><span>{issue.message}</span></div>)}</div> : null}
 
-    <section className="journal-editor-section"><span>IDENTITY</span><div className="journal-editor-grid"><label><span>Article ID · locked</span><input value={draft.id} disabled /></label><label><span>Image path</span><input value={draft.image || ""} onChange={(event) => setSimple("image", event.target.value)} /></label><label><span>Date · SR</span><input value={draft.date?.sr || ""} onChange={(event) => setPair("date", "sr", event.target.value)} /></label><label><span>Date · EN</span><input value={draft.date?.en || ""} onChange={(event) => setPair("date", "en", event.target.value)} /></label></div></section>
+    <section className="journal-editor-section"><span>IDENTITY</span><div className="journal-editor-grid"><label><span>Article ID · locked</span><input value={draft.id} disabled /></label><label><span>Image path · automatic</span><input value={draft.image || ""} readOnly placeholder={`/journal/article${draft.id}.webp`} /></label><label><span>Date · SR</span><input value={draft.date?.sr || ""} onChange={(event) => setPair("date", "sr", event.target.value)} /></label><label><span>Date · EN</span><input value={draft.date?.en || ""} onChange={(event) => setPair("date", "en", event.target.value)} /></label></div>
+      <div className="journal-image-upload">
+        <div className="journal-image-upload-copy"><strong>JOURNAL IMAGE</strong><span>JPG / PNG / WebP → optimized WebP · max 1600px edge · target ≤ 500 KB</span><code>{draft.image || `/journal/article${draft.id}.webp`}</code></div>
+        <label className={`journal-image-picker ${mediaBusy ? "busy" : ""}`}><input type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" disabled={mediaBusy} onChange={(event) => uploadImage(event.target.files?.[0] || null)} /><strong>{mediaBusy ? "Optimizing + staging…" : draft.image ? "Replace image" : "Upload image"}</strong></label>
+        {mediaPreview ? <img src={mediaPreview} alt="Journal upload preview" /> : draft.image ? <img src={`${SHOP_ORIGIN}${draft.image}`} alt="Current Journal" onError={(event) => { event.currentTarget.style.display = "none"; }} /> : null}
+        {mediaInfo ? <div className="journal-image-result"><span>{mediaInfo.width} × {mediaInfo.height}px</span><span>{formatBytes(mediaInfo.originalBytes)} → <strong>{formatBytes(mediaInfo.bytes)}</strong></span></div> : null}
+        {mediaError ? <div className="journal-image-error">{mediaError}</div> : null}
+      </div>
+    </section>
 
     {["title", "excerpt", "content"].map((field) => <section className="journal-editor-section" key={field}><span>{field.toUpperCase()}</span><div className="journal-editor-lang"><label><span>{field} · SR</span><textarea value={draft[field]?.sr || ""} onChange={(event) => setPair(field, "sr", event.target.value)} /></label><label><span>{field} · EN</span><textarea value={draft[field]?.en || ""} onChange={(event) => setPair(field, "en", event.target.value)} /></label></div></section>)}
 
@@ -72,7 +181,7 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
       })}</div> : <div className="journal-link-empty">No CTA links configured for this article.</div>}
     </section>
 
-    <div className="journal-editor-actions bottom"><button onClick={onCancel} disabled={saving}>Cancel</button><button className="primary" onClick={() => onSave(draft)} disabled={saving || blocked}>{saving ? "Saving…" : blocked ? "Fix validation" : "Save draft"}</button></div>
+    <div className="journal-editor-actions bottom"><button onClick={onCancel} disabled={saving || mediaBusy}>Cancel</button><button className="primary" onClick={() => onSave(draft)} disabled={saving || mediaBusy || blocked}>{saving ? "Saving…" : mediaBusy ? "Image processing…" : blocked ? "Fix validation" : "Save draft"}</button></div>
   </div>;
 }
 
@@ -114,7 +223,7 @@ export default function JournalManager() {
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
-      const { data, error: loadError } = await supabase.from("journal_drafts").select("article_id,payload,review_status,reviewed_at,updated_at,approved_payload").order("updated_at", { ascending: false });
+      const { data, error: loadError } = await supabase.from("journal_drafts").select("article_id,payload,review_status,reviewed_at,updated_at,approved_payload,baseline_snapshot,prepared_at,prepared_by,apply_branch,apply_pr_number,apply_created_at,apply_created_by").order("updated_at", { ascending: false });
       if (cancelled) return;
       if (loadError) { setError(loadError.message); return; }
       setDraftRows(Object.fromEntries((data || []).map((row) => [Number(row.article_id), row])));
@@ -168,17 +277,14 @@ export default function JournalManager() {
       const query = !liveExists && !rowExists
         ? supabase.from("journal_drafts").insert({ article_id: articleId, payload, created_by: authData.user.id })
         : supabase.from("journal_drafts").upsert({ article_id: articleId, payload, created_by: authData.user.id }, { onConflict: "article_id" });
-      const { data, error: saveError } = await query.select("article_id,payload,review_status,reviewed_at,updated_at,approved_payload").single();
+      const { data, error: saveError } = await query.select("article_id,payload,review_status,reviewed_at,updated_at,approved_payload,baseline_snapshot,prepared_at,prepared_by,apply_branch,apply_pr_number,apply_created_at,apply_created_by").single();
       if (saveError) throw saveError;
       setDraftRows((current) => ({ ...current, [Number(data.article_id)]: data }));
       setNewArticleSeed(null);
       setSelectedId(Number(data.article_id));
       setEditing(false);
       requestAnimationFrame(() => {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
     } catch (saveError) { setError(saveError.message || String(saveError)); }
     finally { setSaving(false); }
@@ -195,8 +301,8 @@ export default function JournalManager() {
       ? { review_status: "approved", reviewed_at: new Date().toISOString(), reviewed_by: authData.user.id, approved_payload: selectedRow.payload }
       : nextStatus === "ready"
         ? { review_status: "ready", reviewed_at: null, reviewed_by: null, approved_payload: null }
-        : { review_status: "draft", reviewed_at: null, reviewed_by: null, approved_payload: null };
-    const { data, error: updateError } = await supabase.from("journal_drafts").update(patch).eq("article_id", selectedId).select("article_id,payload,review_status,reviewed_at,updated_at,approved_payload").single();
+        : { review_status: "draft", reviewed_at: null, reviewed_by: null, approved_payload: null, baseline_snapshot: null, prepared_at: null, prepared_by: null };
+    const { data, error: updateError } = await supabase.from("journal_drafts").update(patch).eq("article_id", selectedId).select("article_id,payload,review_status,reviewed_at,updated_at,approved_payload,baseline_snapshot,prepared_at,prepared_by,apply_branch,apply_pr_number,apply_created_at,apply_created_by").single();
     if (updateError) { setError(updateError.message); return; }
     setDraftRows((current) => ({ ...current, [selectedId]: data }));
   };
