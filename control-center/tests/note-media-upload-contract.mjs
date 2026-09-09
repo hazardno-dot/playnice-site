@@ -16,6 +16,8 @@ const apply = `${applyRoute}\n${applyHandler}`;
 for (const token of [
   'accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"',
   'optimizeImage(nextFile, NOTE_PRESET)',
+  '256 × 256 WebP',
+  'center crop',
   'Stage optimized asset',
   '/api/create-note-media-apply',
   'playnice:note-media-stage:',
@@ -25,8 +27,11 @@ for (const token of [
 for (const token of [
   'notes:',
   'outputType: "image/webp"',
-  'maxEdge:',
-  'maxBytes:',
+  'width: 256',
+  'height: 256',
+  'fit: "cover"',
+  'maxBytes: 20_000',
+  'drawCover',
   'blobToBase64',
 ]) if (!optimizer.includes(token)) throw new Error(`Shared image optimizer contract missing: ${token}`);
 
@@ -61,8 +66,8 @@ if (!applyRoute.includes('import handler from "../server/create-note-apply.cjs"'
   throw new Error("Notes Controlled Apply route does not point to the server handler.");
 }
 
-console.log("PASS  Notes editor accepts JPG/PNG/WebP and auto-optimizes to staged WebP");
-console.log("PASS  shared image optimizer remains wired into Notes media upload");
+console.log("PASS  Notes editor accepts JPG/PNG/WebP and auto-optimizes to canonical 256x256 WebP");
+console.log("PASS  Notes canonical square crop and <=20 KB target are locked in shared optimizer");
 console.log("PASS  first Save draft writes staged Note media into the persisted payload");
 console.log("PASS  saved Note draft reports staged asset instead of false ASSET MISSING");
 console.log("PASS  Notes Controlled Apply accepts staged media and includes it in the draft PR");
