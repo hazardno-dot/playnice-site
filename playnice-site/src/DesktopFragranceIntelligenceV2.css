@@ -147,6 +147,16 @@
 ========================================= */
 
 @media (min-width: 981px) {
+  .playnice-discovery-overlay {
+    place-items: center;
+    padding: 20px 14px;
+  }
+
+  .playnice-discovery-panel,
+  .playnice-discovery-panel.has-results {
+    margin: auto;
+  }
+
   .playnice-discovery-panel {
     width: min(1090px, calc(100vw - 56px));
     max-height: min(88vh, 790px);
@@ -237,18 +247,19 @@
 
   /* Results cards — slightly shorter, with a more deliberate tile proportion. */
   .playnice-discovery-card {
-    --fi-tone-glow: rgba(220, 181, 107, 0.055);
-    --fi-tone-aura: rgba(220, 181, 107, 0.13);
-    --fi-tone-border: rgba(255, 255, 255, 0.065);
-    --fi-tone-edge: rgba(255, 255, 255, 0.018);
+    --fi-tone-glow: rgba(220, 181, 107, 0.07);
+    --fi-tone-wash: rgba(220, 181, 107, 0.018);
+    --fi-tone-aura: rgba(220, 181, 107, 0.16);
+    --fi-tone-border: rgba(255, 255, 255, 0.07);
+    --fi-tone-edge: rgba(255, 255, 255, 0.02);
 
     flex-basis: calc((100% - 40px) / 5);
     height: 174px;
     border-color: var(--fi-tone-border);
     border-radius: 16px;
     background:
-      radial-gradient(circle at 50% 0%, var(--fi-tone-glow), transparent 58%),
-      linear-gradient(180deg, rgba(15, 14, 12, 0.97), rgba(7, 7, 7, 0.99));
+      radial-gradient(circle at 50% -8%, var(--fi-tone-glow), transparent 66%),
+      linear-gradient(180deg, var(--fi-tone-wash) 0%, rgba(12, 11, 10, 0.985) 52%, rgba(7, 7, 7, 0.995) 100%);
     box-shadow:
       inset 0 1px 0 var(--fi-tone-edge),
       0 12px 28px rgba(0, 0, 0, 0.18);
@@ -270,15 +281,15 @@
   }
 
   .playnice-discovery-image-aura {
-    width: 62px;
-    height: 18px;
-    bottom: 6px;
+    width: 66px;
+    height: 20px;
+    bottom: 5px;
     background: radial-gradient(
       ellipse at center,
       var(--fi-tone-aura) 0%,
       transparent 72%
     );
-    opacity: 0.86;
+    opacity: 0.94;
   }
 
   /* Results cards: prioritize the actual fragrance name. */
@@ -304,55 +315,61 @@
     padding-top: 5px;
   }
 
-  /* Scent direction accents — intentionally restrained for the dark luxury UI. */
+  /* Scent direction accents — visible at a glance, still restrained. */
   .playnice-discovery-card[data-scent-tone="citrus"] {
-    --fi-tone-glow: rgba(225, 193, 84, 0.115);
-    --fi-tone-aura: rgba(232, 201, 96, 0.24);
-    --fi-tone-border: rgba(225, 193, 84, 0.18);
-    --fi-tone-edge: rgba(246, 220, 135, 0.035);
+    --fi-tone-glow: rgba(225, 193, 84, 0.19);
+    --fi-tone-wash: rgba(225, 193, 84, 0.055);
+    --fi-tone-aura: rgba(232, 201, 96, 0.34);
+    --fi-tone-border: rgba(225, 193, 84, 0.27);
+    --fi-tone-edge: rgba(246, 220, 135, 0.055);
   }
 
   .playnice-discovery-card[data-scent-tone="fresh"] {
-    --fi-tone-glow: rgba(89, 139, 211, 0.105);
-    --fi-tone-aura: rgba(104, 158, 232, 0.23);
-    --fi-tone-border: rgba(95, 145, 216, 0.17);
-    --fi-tone-edge: rgba(146, 185, 239, 0.03);
+    --fi-tone-glow: rgba(89, 139, 211, 0.18);
+    --fi-tone-wash: rgba(89, 139, 211, 0.05);
+    --fi-tone-aura: rgba(104, 158, 232, 0.33);
+    --fi-tone-border: rgba(95, 145, 216, 0.26);
+    --fi-tone-edge: rgba(146, 185, 239, 0.05);
   }
 
   .playnice-discovery-card[data-scent-tone="green"] {
-    --fi-tone-glow: rgba(96, 151, 105, 0.11);
-    --fi-tone-aura: rgba(112, 169, 119, 0.23);
-    --fi-tone-border: rgba(105, 156, 111, 0.17);
-    --fi-tone-edge: rgba(153, 193, 157, 0.03);
+    --fi-tone-glow: rgba(96, 151, 105, 0.185);
+    --fi-tone-wash: rgba(96, 151, 105, 0.05);
+    --fi-tone-aura: rgba(112, 169, 119, 0.33);
+    --fi-tone-border: rgba(105, 156, 111, 0.26);
+    --fi-tone-edge: rgba(153, 193, 157, 0.05);
   }
 
   .playnice-discovery-card[data-scent-tone="dark"] {
-    --fi-tone-glow: rgba(67, 65, 81, 0.13);
-    --fi-tone-aura: rgba(92, 91, 115, 0.23);
-    --fi-tone-border: rgba(103, 101, 122, 0.17);
-    --fi-tone-edge: rgba(143, 139, 165, 0.025);
+    --fi-tone-glow: rgba(76, 72, 96, 0.22);
+    --fi-tone-wash: rgba(82, 76, 104, 0.055);
+    --fi-tone-aura: rgba(105, 101, 135, 0.34);
+    --fi-tone-border: rgba(116, 111, 142, 0.27);
+    --fi-tone-edge: rgba(155, 149, 184, 0.045);
   }
 
   .playnice-discovery-card[data-scent-tone="soft"] {
-    --fi-tone-glow: rgba(181, 146, 145, 0.105);
-    --fi-tone-aura: rgba(204, 170, 166, 0.23);
-    --fi-tone-border: rgba(187, 151, 150, 0.17);
-    --fi-tone-edge: rgba(225, 192, 187, 0.03);
+    --fi-tone-glow: rgba(181, 146, 145, 0.18);
+    --fi-tone-wash: rgba(181, 146, 145, 0.05);
+    --fi-tone-aura: rgba(204, 170, 166, 0.33);
+    --fi-tone-border: rgba(187, 151, 150, 0.26);
+    --fi-tone-edge: rgba(225, 192, 187, 0.05);
   }
 
   .playnice-discovery-card[data-scent-tone="warm"] {
-    --fi-tone-glow: rgba(196, 124, 66, 0.11);
-    --fi-tone-aura: rgba(215, 143, 79, 0.24);
-    --fi-tone-border: rgba(199, 128, 69, 0.18);
-    --fi-tone-edge: rgba(235, 172, 110, 0.035);
+    --fi-tone-glow: rgba(196, 124, 66, 0.19);
+    --fi-tone-wash: rgba(196, 124, 66, 0.055);
+    --fi-tone-aura: rgba(215, 143, 79, 0.34);
+    --fi-tone-border: rgba(199, 128, 69, 0.27);
+    --fi-tone-edge: rgba(235, 172, 110, 0.055);
   }
 
   .playnice-discovery-card:hover {
-    border-color: color-mix(in srgb, var(--fi-tone-border) 82%, white 18%);
+    border-color: color-mix(in srgb, var(--fi-tone-border) 78%, white 22%);
     box-shadow:
       inset 0 1px 0 var(--fi-tone-edge),
       0 15px 32px rgba(0, 0, 0, 0.22),
-      0 0 24px var(--fi-tone-glow);
+      0 0 28px var(--fi-tone-glow);
   }
 }
 
