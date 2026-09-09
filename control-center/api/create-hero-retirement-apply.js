@@ -69,9 +69,9 @@ function parseGeneratedConfig(source) {
   const start = source.indexOf(marker);
   if (start < 0) throw new Error("Generated Hero config export was not found.");
   const raw = source.slice(start + marker.length).trim().replace(/;\s*$/, "");
-  const parsed = Function(`\"use strict\"; return (${raw});`)();
+  const parsed = JSON.parse(raw);
   if (!Array.isArray(parsed)) throw new Error("Generated Hero config is not an array.");
-  return JSON.parse(JSON.stringify(parsed));
+  return parsed;
 }
 
 function renderConfig(runtimeSlides) {
@@ -155,7 +155,7 @@ function insertExhibitionEntry(source, entry) {
   return { source: source.slice(0, index + marker.length) + rendered + source.slice(index + marker.length), alreadyPresent: false };
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed." });
   if (!SUPABASE_URL || !SUPABASE_KEY || !GITHUB_TOKEN) return json(res, 500, { error: "Hero retirement environment is incomplete." });
 
@@ -291,4 +291,4 @@ module.exports = async function handler(req, res) {
     }
     return json(res, 500, { error: error?.message || "Hero retirement apply failed." });
   }
-};
+}
