@@ -748,7 +748,6 @@ const getInitialShopState = () => {
       { name: "Club De Nuit Intense Overdose", votes: 12, lockedVotes: 12 },
       { name: "Carolina Herrera Bad Boy Cobalt Eau de Parfum", votes: 5, lockedVotes: 5 },
       { name: "Rayhaan Azul Eau de Parfum", votes: 3, lockedVotes: 3 },
-      { name: "Bois Impérial by Essential Parfums", votes: 1, lockedVotes: 1 },
     ];
 
     if (typeof window === "undefined") return fallback;
@@ -2570,8 +2569,11 @@ const EXISTING_COLLECTION_LOCKED_VOTES = {
   "Club De Nuit Intense Overdose": 12,
   "Carolina Herrera Bad Boy Cobalt Eau de Parfum": 5,
   "Rayhaan Azul Eau de Parfum": 3,
-  "Bois Impérial by Essential Parfums": 1,
 };
+
+const EXISTING_COLLECTION_EXCLUDED_SLUGS = new Set([
+  "bois-imperial-essential-parfums",
+]);
 
 const mergeExistingCollectionRequests = (requests = [], existingRequests = []) => {
   const merged = new Map();
@@ -2581,6 +2583,8 @@ const mergeExistingCollectionRequests = (requests = [], existingRequests = []) =
 
     const product = findExistingProductByRequest(item.name);
     if (!product) return;
+
+    if (EXISTING_COLLECTION_EXCLUDED_SLUGS.has(product.slug)) return;
 
     const key = String(product.id || product.slug || normalizeScentName(product.name));
     const current = merged.get(key) || {
