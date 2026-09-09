@@ -256,7 +256,6 @@ function preflight(parsed) {
         return;
       }
     }
-
     if (key === "recommendation_slugs_3_comma_separated") {
       const recommendations = String(rawValue).split(",").map((item) => item.trim()).filter(Boolean);
       if (recommendations.length !== 3) {
@@ -364,7 +363,7 @@ export default function ProductBulkPasteBridge() {
   const [slot, setSlot] = useState(null);
   const [source, setSource] = useState("");
   const [message, setMessage] = useState("");
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [mode, setMode] = useState("fill-empty");
 
   useEffect(() => {
