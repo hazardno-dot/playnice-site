@@ -76,7 +76,6 @@ export default function HeroApplyBridge() {
     const mainStage = document.querySelector(".main-stage");
     if (!mainStage) return;
     let raf = 0;
-
     const sync = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
@@ -84,11 +83,8 @@ export default function HeroApplyBridge() {
         const detail = mainStage.querySelector(".hero-manager-detail");
         const active = mainStage.querySelector(".hero-slide-row.is-active");
         if (heading?.textContent?.trim() !== "Hero" || !detail || !active) {
-          setSlot(null);
-          setHeroKey("");
-          return;
+          setSlot(null); setHeroKey(""); return;
         }
-
         const workflowSlot = ensureWorkflowSlot(detail);
         let applySlot = workflowSlot.querySelector("#hero-controlled-apply-slot");
         if (!applySlot) {
@@ -97,12 +93,8 @@ export default function HeroApplyBridge() {
           workflowSlot.appendChild(applySlot);
         }
         setSlot(applySlot);
-
         const id = Number(active.textContent?.match(/#(\d+)/)?.[1]);
-        if (!id) {
-          setHeroKey("");
-          return;
-        }
+        if (!id) { setHeroKey(""); return; }
         supabase.from("hero_slides").select("hero_key").eq("id", id).maybeSingle().then(({ data, error: keyError }) => {
           if (keyError) { setError(keyError.message || String(keyError)); return; }
           const key = data?.hero_key || "";
@@ -110,7 +102,6 @@ export default function HeroApplyBridge() {
         });
       });
     };
-
     sync();
     const observer = new MutationObserver(sync);
     observer.observe(mainStage, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["class"] });
@@ -123,8 +114,7 @@ export default function HeroApplyBridge() {
     const onWorkflowUpdated = (event) => {
       const key = event?.detail?.heroKey;
       if (!key) return;
-      setHeroKey(key);
-      loadRow(key);
+      setHeroKey(key); loadRow(key);
     };
     window.addEventListener(HERO_WORKFLOW_UPDATED_EVENT, onWorkflowUpdated);
     return () => window.removeEventListener(HERO_WORKFLOW_UPDATED_EVENT, onWorkflowUpdated);
@@ -144,14 +134,8 @@ export default function HeroApplyBridge() {
     const locked = row.review_status !== "draft" || Boolean(row.apply_branch);
     const edit = detail.querySelector(".hero-edit-btn");
     const discard = [...detail.querySelectorAll("button")].find((button) => button.textContent?.trim() === "Discard draft");
-    if (edit) {
-      edit.disabled = locked;
-      edit.title = locked ? "Return the draft to Draft before editing." : "";
-    }
-    if (discard) {
-      discard.disabled = locked;
-      discard.title = locked ? "Return the draft to Draft before discarding." : "";
-    }
+    if (edit) { edit.disabled = locked; edit.title = locked ? "Return the draft to Draft before editing." : ""; }
+    if (discard) { discard.disabled = locked; discard.title = locked ? "Return the draft to Draft before discarding." : ""; }
   }, [row, slot]);
 
   const createPreview = async () => {
@@ -162,23 +146,14 @@ export default function HeroApplyBridge() {
       if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
       const retirement = row.approved_payload?.enabled === false;
       const endpoint = retirement ? "/api/create-hero-retirement-apply" : "/api/create-hero-apply";
-      const requestBody = retirement
-        ? { hero_key: heroKey, include_in_exhibition: includeInExhibition, canonical_asset: canonicalAsset }
-        : { hero_key: heroKey };
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
-        body: JSON.stringify(requestBody),
-      });
+      const requestBody = retirement ? { hero_key: heroKey, include_in_exhibition: includeInExhibition, canonical_asset: canonicalAsset } : { hero_key: heroKey };
+      const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` }, body: JSON.stringify(requestBody) });
       const body = await readResponse(response);
       if (!response.ok) throw new Error(body?.error || (retirement ? "Could not create Hero retirement preview." : "Could not create Hero preview branch."));
       await loadRow(heroKey);
     } catch (applyError) {
-      await loadRow(heroKey);
-      setError(applyError.message || String(applyError));
-    } finally {
-      setBusy("");
-    }
+      await loadRow(heroKey); setError(applyError.message || String(applyError));
+    } finally { setBusy(""); }
   };
 
   const verifyPreview = async () => {
@@ -188,16 +163,11 @@ export default function HeroApplyBridge() {
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       if (authError || !user) throw authError || new Error("Admin session expired. Sign in again.");
       const now = new Date().toISOString();
-      const { error: updateError } = await supabase.from("hero_drafts")
-        .update({ preview_verified_at: now, preview_verified_by: user.id })
-        .eq("hero_key", heroKey);
+      const { error: updateError } = await supabase.from("hero_drafts").update({ preview_verified_at: now, preview_verified_by: user.id }).eq("hero_key", heroKey);
       if (updateError) throw updateError;
       await loadRow(heroKey);
-    } catch (verifyError) {
-      setError(verifyError.message || String(verifyError));
-    } finally {
-      setBusy("");
-    }
+    } catch (verifyError) { setError(verifyError.message || String(verifyError)); }
+    finally { setBusy(""); }
   };
 
   const finalizeApply = async () => {
@@ -206,11 +176,7 @@ export default function HeroApplyBridge() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
-      const response = await fetch("/api/finalize-hero-apply", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
-        body: JSON.stringify({ hero_key: heroKey }),
-      });
+      const response = await fetch("/api/finalize-hero-apply", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` }, body: JSON.stringify({ hero_key: heroKey }) });
       const body = await readResponse(response);
       if (!response.ok) throw new Error(body?.error || "Could not finalize Hero apply.");
       setFinalized(`Hero baseline finalized from PR #${body.pr_number}.`);
@@ -219,11 +185,8 @@ export default function HeroApplyBridge() {
       if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
       scrollControlCenterTop();
       window.setTimeout(() => window.location.reload(), 700);
-    } catch (finalizeError) {
-      setError(finalizeError.message || String(finalizeError));
-    } finally {
-      setBusy("");
-    }
+    } catch (finalizeError) { setError(finalizeError.message || String(finalizeError)); }
+    finally { setBusy(""); }
   };
 
   if (!slot || (!row && !finalized) || (row && row.review_status !== "approved")) return null;
