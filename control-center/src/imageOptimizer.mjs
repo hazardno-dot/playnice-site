@@ -46,6 +46,13 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     maxBytes: 450_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66],
   }),
+  journal: Object.freeze({
+    outputType: "image/webp",
+    maxEdge: 1600,
+    maxBytes: 500_000,
+    scales: [1, 0.88, 0.76, 0.64],
+    qualities: [0.84, 0.78, 0.72, 0.66],
+  }),
 });
 
 const ACCEPTED_IMAGE = /^image\/(jpeg|png|webp)$/i;
