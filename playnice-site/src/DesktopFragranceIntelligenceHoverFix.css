@@ -1,0 +1,15 @@
+/* Desktop FI results: preserve original spacing and allow hover lift to render fully. */
+@media (min-width: 981px) {
+  .playnice-discovery-panel.has-results .playnice-discovery-results {
+    margin-top: 15px;
+    padding-top: 15px;
+  }
+
+  .playnice-discovery-panel.has-results .playnice-discovery-results-head {
+    margin-bottom: 10px;
+  }
+
+  .playnice-discovery-grid {
+    overflow: visible;
+  }
+}
