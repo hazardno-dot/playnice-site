@@ -153,26 +153,15 @@ export default function HeroApplyBridge() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
-      const response = await fetch("/api/create-hero-apply", {
+      const retirement = row.approved_payload?.enabled === false;
+      const endpoint = retirement ? "/api/create-hero-retirement-apply" : "/api/create-hero-apply";
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ hero_key: heroKey }),
       });
       const body = await readResponse(response);
-      if (!response.ok) throw new Error(body?.error || "Could not create Hero preview branch.");
-
-      if (row.approved_payload?.enabled === false) {
-        const archiveResponse = await fetch("/api/attach-hero-retirement-exhibition", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
-          body: JSON.stringify({ hero_key: heroKey }),
-        });
-        const archiveBody = await readResponse(archiveResponse);
-        if (!archiveResponse.ok) {
-          throw new Error(`Hero preview PR #${body?.pr_number || ""} was created, but Exhibition archive preparation failed: ${archiveBody?.error || "unknown error"}`);
-        }
-      }
-
+      if (!response.ok) throw new Error(body?.error || (retirement ? "Could not create Hero retirement preview." : "Could not create Hero preview branch."));
       await loadRow(heroKey);
     } catch (applyError) {
       await loadRow(heroKey);
