@@ -13,17 +13,19 @@ assert.equal(shop.outputType, "image/png");
 assert.equal(shop.width, 600);
 assert.equal(shop.height, 600);
 assert.equal(shop.fit, "contain");
+assert.equal(shop.transparent, true);
 assert.equal(shop.maxBytes, 500_000);
 
 assert.equal(justIn.outputType, "image/webp");
 assert.equal(justIn.width, 320);
 assert.equal(justIn.height, 320);
 assert.equal(justIn.fit, "contain");
+assert.equal(justIn.transparent, true);
 assert.equal(justIn.maxBytes, 30_000);
 
 assert.ok(optimizer.includes("function drawContain"), "shared optimizer must support contain placement");
 assert.ok(optimizer.includes('preset.fit === "contain"'), "fixed-size presets must route through contain placement");
-assert.ok(optimizer.includes("ctx.clearRect(0, 0, targetWidth, targetHeight)"), "contain output must preserve transparent padding");
+assert.ok(optimizer.includes('if (!preset.transparent && preset.background)'), "transparent presets must avoid background fill");
 
 assert.ok(uploader.includes('const PRODUCT_SOURCE_ACCEPT = "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"'), "Product uploader must accept JPG/PNG/WebP source files");
 assert.ok(uploader.includes("optimizeImage(sourceFile, preset)"), "Product uploader must use the shared optimizer");
