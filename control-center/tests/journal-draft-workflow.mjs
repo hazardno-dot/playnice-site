@@ -13,11 +13,19 @@ const sample = {
   excerpt: { sr: "Kratko", en: "Short" },
   content: { sr: "Sadržaj", en: "Content" },
   relatedProducts: ["one", "two"],
+  mediaStage: {
+    branch: "cc-journal-media-stage-7-202609091700",
+    baseSha: "abc123",
+    file: "playnice-site/public/journal/article7.webp",
+    assetPath: "/journal/article7.webp",
+    stagedAt: "2026-09-09T17:00:00.000Z",
+  },
 };
 
 const normalized = normalizeJournalDraftPayload(sample);
 assert.equal(normalized.id, 7);
 assert.deepEqual(normalized.relatedProducts, ["one", "two"]);
+assert.equal(normalized.mediaStage.assetPath, "/journal/article7.webp");
 assert.deepEqual(getJournalDraftState(null), { label: "LIVE ONLY", tone: "live" });
 assert.equal(getJournalDraftState({ review_status: "draft" }).label, "DRAFT");
 assert.equal(getJournalDraftState({ review_status: "ready" }).label, "READY FOR REVIEW");
@@ -38,13 +46,18 @@ for (const contract of [
   'approved_payload: selectedRow.payload',
   'delete().eq("article_id", selectedId)',
   'auditJournalArticles([payload], productSlugs)',
+  'baseline_snapshot: null',
+  'prepared_at: null',
+  'apply_pr_number',
 ]) assert.ok(manager.includes(contract), `Missing Journal workflow contract: ${contract}`);
 
 assert.ok(css.includes(".journal-editor"), "Journal editor styles missing");
 assert.ok(css.includes(".journal-workflow.approved"), "Approved workflow styling missing");
+assert.ok(css.includes(".journal-image-upload"), "Journal image upload styling missing");
 
 console.log("PASS  Journal drafts persist in Supabase and refresh in realtime");
 console.log("PASS  new Journal drafts use collision-safe INSERT while saved/live drafts use UPSERT");
 console.log("PASS  Journal validation gates save/review workflow");
 console.log("PASS  Journal review states cover draft → ready → approved");
 console.log("PASS  approved Journal payload is snapshotted for later Controlled Apply");
+console.log("PASS  Journal media staging metadata survives draft normalization");
