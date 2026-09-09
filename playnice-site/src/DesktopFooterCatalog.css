@@ -26,7 +26,7 @@
   .desktop-footer-catalog-panel {
     position: absolute;
     top: 50%;
-    left: calc(100% + 10px);
+    left: calc(100% + 24px);
     z-index: 40;
     width: 158px;
     padding: 6px;
