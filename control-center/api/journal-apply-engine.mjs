@@ -78,7 +78,6 @@ export function normalizeJournalArticle(article = {}) {
   return result;
 }
 
-const indentMultiline = (value, spaces) => String(value).replace(/\n/g, `\n${" ".repeat(spaces)}`);
 const templateLiteral = (value) => `\`${String(value || "").replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${")}\``;
 
 const appendSection = (lines, section) => {
@@ -132,8 +131,8 @@ export function renderJournalArticle(article) {
     `      sr: ${JSON.stringify(value.excerpt.sr)}`,
     "    },",
     "    content: {",
-    `      en: ${indentMultiline(templateLiteral(value.content.en), 6)},`,
-    `      sr: ${indentMultiline(templateLiteral(value.content.sr), 6)}`,
+    `      en: ${templateLiteral(value.content.en)},`,
+    `      sr: ${templateLiteral(value.content.sr)}`,
     "    }",
   ];
   if (value.series) appendSection(lines, ["    series: {", `      en: ${JSON.stringify(value.series.en)},`, `      sr: ${JSON.stringify(value.series.sr)}`, "    }"]);
