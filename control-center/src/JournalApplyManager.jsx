@@ -6,6 +6,7 @@ import { supabase } from "./supabase";
 import "./journal-apply.css";
 
 const SELECT = "article_id,payload,approved_payload,review_status,reviewed_at,baseline_snapshot,prepared_at,apply_branch,apply_pr_number,apply_created_at,updated_at";
+const REPO_PULLS_URL = "https://api.github.com/repos/hazardno-dot/playnice-site/pulls";
 
 const selectedArticleIdFromDom = () => {
   const heading = document.querySelector(".main-stage .topbar h1")?.textContent?.trim();
@@ -13,6 +14,13 @@ const selectedArticleIdFromDom = () => {
   const text = document.querySelector(".journal-detail-hero p")?.textContent || "";
   const match = text.match(/#(\d+)/);
   return match ? Number(match[1]) : null;
+};
+
+const comparablePayload = (article) => {
+  const normalized = normalizeJournalDraftPayload(article);
+  if (!normalized) return normalized;
+  const { mediaStage: _mediaStage, ...comparable } = normalized;
+  return comparable;
 };
 
 export default function JournalApplyManager() {
@@ -88,8 +96,37 @@ export default function JournalApplyManager() {
   const liveArticle = useMemo(() => journalArticles.find((article) => Number(article.id) === Number(articleId)) || null, [articleId]);
   const noChanges = useMemo(() => {
     if (!liveArticle || !row?.payload) return false;
-    return journalPayloadEquals(normalizeJournalDraftPayload(liveArticle), normalizeJournalDraftPayload(row.payload));
+    return journalPayloadEquals(comparablePayload(liveArticle), comparablePayload(row.payload));
   }, [liveArticle, row]);
+
+  useEffect(() => {
+    if (!articleId || !row || row.review_status !== "approved" || !row.apply_pr_number || !noChanges) return;
+    let cancelled = false;
+
+    const reconcilePublishedDraft = async () => {
+      try {
+        const response = await fetch(`${REPO_PULLS_URL}/${row.apply_pr_number}`, {
+          headers: { Accept: "application/vnd.github+json" },
+        });
+        if (!response.ok) return;
+        const pr = await response.json();
+        if (pr.state !== "closed" && !pr.merged_at) return;
+
+        const { error: deleteError } = await supabase
+          .from("journal_drafts")
+          .delete()
+          .eq("article_id", articleId)
+          .eq("apply_pr_number", row.apply_pr_number);
+        if (deleteError || cancelled) return;
+        setRow(null);
+      } catch {
+        // Reconciliation is best-effort. A transient GitHub/network failure leaves the draft intact.
+      }
+    };
+
+    reconcilePublishedDraft();
+    return () => { cancelled = true; };
+  }, [articleId, noChanges, row]);
 
   if (!slot || !articleId || !row || row.review_status !== "approved") return null;
 
