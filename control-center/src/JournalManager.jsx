@@ -4,75 +4,17 @@ import { journalArticles } from "@shop/data/journal/index.js";
 import { products } from "@shop/data/products/index.js";
 import { auditJournalArticles, getJournalAuditText } from "./journalAudit.mjs";
 import { getJournalDraftState, normalizeJournalDraftPayload } from "./journalDraft.mjs";
+import { IMAGE_OPTIMIZER_PRESETS, blobToBase64, formatImageBytes, optimizeImage } from "./imageOptimizer.mjs";
 import { supabase } from "./supabase";
 import "./journal-manager.css";
 
 const SHOP_ORIGIN = "https://www.playniceshop.me";
 const productSlugs = products.map((product) => product.slug);
-const JOURNAL_IMAGE_MAX_BYTES = 500_000;
-const JOURNAL_IMAGE_MAX_EDGE = 1600;
 
 const langPair = (value) => ({ sr: String(value?.sr || ""), en: String(value?.en || "") });
 const csvList = (value) => Array.isArray(value) ? value : String(value || "").split(",").map((item) => item.trim()).filter(Boolean);
 const emptyLink = () => ({ label: { sr: "", en: "" }, action: "" });
 const linkMode = (link) => link?.url ? "url" : "action";
-const formatBytes = (bytes = 0) => bytes < 1000 ? `${bytes} B` : `${Math.round(bytes / 1000)} KB`;
-
-function readImage(file) {
-  return new Promise((resolve, reject) => {
-    const url = URL.createObjectURL(file);
-    const image = new Image();
-    image.onload = () => resolve({ image, url });
-    image.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Could not read selected image.")); };
-    image.src = url;
-  });
-}
-
-function canvasToBlob(canvas, quality) {
-  return new Promise((resolve) => canvas.toBlob(resolve, "image/webp", quality));
-}
-
-async function optimizeJournalImage(file) {
-  if (!file || !/^image\/(jpeg|png|webp)$/i.test(file.type)) throw new Error("Choose a JPG, PNG or WebP image.");
-  const { image, url } = await readImage(file);
-  try {
-    const longest = Math.max(image.naturalWidth, image.naturalHeight);
-    const baseScale = longest > JOURNAL_IMAGE_MAX_EDGE ? JOURNAL_IMAGE_MAX_EDGE / longest : 1;
-    const scales = [baseScale, baseScale * 0.88, baseScale * 0.76, baseScale * 0.64];
-    const qualities = [0.84, 0.78, 0.72, 0.66];
-    let smallest = null;
-    for (const scale of scales) {
-      const width = Math.max(1, Math.round(image.naturalWidth * scale));
-      const height = Math.max(1, Math.round(image.naturalHeight * scale));
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) throw new Error("Could not prepare Journal image optimization.");
-      ctx.drawImage(image, 0, 0, width, height);
-      for (const quality of qualities) {
-        const blob = await canvasToBlob(canvas, quality);
-        if (!blob) continue;
-        const candidate = { blob, width, height, quality };
-        if (!smallest || blob.size < smallest.blob.size) smallest = candidate;
-        if (blob.size <= JOURNAL_IMAGE_MAX_BYTES) return candidate;
-      }
-    }
-    if (!smallest) throw new Error("Could not create optimized WebP image.");
-    throw new Error(`Image is still ${formatBytes(smallest.blob.size)} after optimization. Please use a smaller source image.`);
-  } finally {
-    URL.revokeObjectURL(url);
-  }
-}
-
-function blobToBase64(blob) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result || "").split(",")[1] || "");
-    reader.onerror = () => reject(reader.error || new Error("Could not read optimized image."));
-    reader.readAsDataURL(blob);
-  });
-}
 
 function JournalEditor({ initial, onCancel, onSave, saving }) {
   const [draft, setDraft] = useState(() => normalizeJournalDraftPayload(initial));
@@ -109,7 +51,7 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
     if (!file) return;
     setMediaBusy(true); setMediaError(""); setMediaInfo(null);
     try {
-      const optimized = await optimizeJournalImage(file);
+      const optimized = await optimizeImage(file, IMAGE_OPTIMIZER_PRESETS.journal);
       const base64 = await blobToBase64(optimized.blob);
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       if (sessionError || !sessionData?.session?.access_token) throw sessionError || new Error("Authenticated admin session is required.");
@@ -129,7 +71,7 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
       const nextPreview = URL.createObjectURL(optimized.blob);
       mediaPreviewRef.current = nextPreview;
       setMediaPreview(nextPreview);
-      setMediaInfo({ width: optimized.width, height: optimized.height, bytes: optimized.blob.size, originalBytes: file.size });
+      setMediaInfo({ width: optimized.width, height: optimized.height, bytes: optimized.blob.size, originalBytes: optimized.originalBytes });
       setDraft((current) => ({ ...current, image: body.asset_path, mediaStage: body.media_stage }));
     } catch (uploadError) {
       setMediaError(uploadError.message || String(uploadError));
@@ -156,7 +98,7 @@ function JournalEditor({ initial, onCancel, onSave, saving }) {
         <div className="journal-image-upload-copy"><strong>JOURNAL IMAGE</strong><span>JPG / PNG / WebP → optimized WebP · max 1600px edge · target ≤ 500 KB</span><code>{draft.image || `/journal/article${draft.id}.webp`}</code></div>
         <label className={`journal-image-picker ${mediaBusy ? "busy" : ""}`}><input type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" disabled={mediaBusy} onChange={(event) => uploadImage(event.target.files?.[0] || null)} /><strong>{mediaBusy ? "Optimizing + staging…" : draft.image ? "Replace image" : "Upload image"}</strong></label>
         {mediaPreview ? <img src={mediaPreview} alt="Journal upload preview" /> : draft.image ? <img src={`${SHOP_ORIGIN}${draft.image}`} alt="Current Journal" onError={(event) => { event.currentTarget.style.display = "none"; }} /> : null}
-        {mediaInfo ? <div className="journal-image-result"><span>{mediaInfo.width} × {mediaInfo.height}px</span><span>{formatBytes(mediaInfo.originalBytes)} → <strong>{formatBytes(mediaInfo.bytes)}</strong></span></div> : null}
+        {mediaInfo ? <div className="journal-image-result"><span>{mediaInfo.width} × {mediaInfo.height}px</span><span>{formatImageBytes(mediaInfo.originalBytes)} → <strong>{formatImageBytes(mediaInfo.bytes)}</strong></span></div> : null}
         {mediaError ? <div className="journal-image-error">{mediaError}</div> : null}
       </div>
     </section>

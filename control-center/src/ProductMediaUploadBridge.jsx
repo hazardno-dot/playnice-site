@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
+import { IMAGE_OPTIMIZER_PRESETS, formatImageBytes, optimizeImage } from "./imageOptimizer.mjs";
 import "./product-media-upload.css";
 
-const MAX_IMAGE_BYTES = 1_500_000;
 const PRODUCT_WORKFLOW_UPDATED_EVENT = "playnice:product-workflow-updated";
 const MEDIA_STAGE_SESSION_PREFIX = "playnice:product-media-stage:";
-const ACCEPTED_SHOP = /image\/png/i;
-const ACCEPTED_JUST_IN = /image\/webp/i;
+const PRODUCT_SOURCE_ACCEPT = "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp";
+const SHOP_PRESET = IMAGE_OPTIMIZER_PRESETS.productShop;
+const JUST_IN_PRESET = IMAGE_OPTIMIZER_PRESETS.productJustIn;
 
 const mediaStageSessionKey = (slug) => `${MEDIA_STAGE_SESSION_PREFIX}${slug}`;
 
@@ -46,23 +47,6 @@ function readResponse(response) {
     } catch {
       throw new Error(`Server returned ${response.status}: ${text || response.statusText}`);
     }
-  });
-}
-
-function inspectImage(file) {
-  return new Promise((resolve, reject) => {
-    const url = URL.createObjectURL(file);
-    const image = new Image();
-    image.onload = () => {
-      const result = { width: image.naturalWidth, height: image.naturalHeight };
-      URL.revokeObjectURL(url);
-      resolve(result);
-    };
-    image.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error("Could not read image dimensions."));
-    };
-    image.src = url;
   });
 }
 
@@ -123,16 +107,18 @@ function ensureSlot(editor) {
   return slot;
 }
 
-function MediaCard({ label, hint, accept, file, info, preview, expected, path, onPick }) {
+function MediaCard({ label, outputLabel, file, info, preview, contract, path, optimizing, onPick }) {
   return <div className={`product-media-card ${file ? "has-file" : ""}`}>
     <div className="product-media-card-head"><span>{label}</span><code>{path}</code></div>
     <label className="product-media-picker">
-      <input type="file" accept={accept} onChange={(event) => onPick(event.target.files?.[0] || null)} />
-      <strong>{file ? "Replace selected file" : `Choose ${hint}`}</strong>
-      <small>{file ? `${file.name} · ${Math.round(file.size / 1000)} KB` : `${expected} · max 1.5 MB`}</small>
+      <input type="file" accept={PRODUCT_SOURCE_ACCEPT} disabled={optimizing} onChange={(event) => onPick(event.target.files?.[0] || null)} />
+      <strong>{optimizing ? "Optimizing…" : file ? "Replace source image" : "Choose image"}</strong>
+      <small>{file && info
+        ? `${info.originalWidth} × ${info.originalHeight}px · ${formatImageBytes(info.originalBytes)} → ${info.width} × ${info.height}px · ${formatImageBytes(info.bytes)}`
+        : contract}</small>
     </label>
     {preview ? <img src={preview} alt={`${label} product preview`} /> : null}
-    {info ? <div className="product-media-meta"><span>{info.width} × {info.height}px</span><span>{hint}</span></div> : null}
+    {info ? <div className="product-media-meta"><span>{info.width} × {info.height}px · {formatImageBytes(info.bytes)}</span><span>{outputLabel}</span></div> : null}
   </div>;
 }
 
@@ -149,6 +135,7 @@ export default function ProductMediaUploadBridge() {
   const justInPreviewRef = useRef("");
   const attachInFlightRef = useRef(new Set());
   const [busy, setBusy] = useState(false);
+  const [optimizing, setOptimizing] = useState("");
   const [error, setError] = useState("");
   const [result, setResult] = useState(null);
 
@@ -182,7 +169,7 @@ export default function ProductMediaUploadBridge() {
     if (justInPreviewRef.current) URL.revokeObjectURL(justInPreviewRef.current);
     shopPreviewRef.current = ""; justInPreviewRef.current = "";
     setShopPreview(""); setJustInPreview("");
-    setError(""); setResult(null);
+    setOptimizing(""); setError(""); setResult(null);
   }, [slug]);
 
   useEffect(() => {
@@ -287,38 +274,45 @@ export default function ProductMediaUploadBridge() {
     if (justInPreviewRef.current) URL.revokeObjectURL(justInPreviewRef.current);
   }, []);
 
-  const pick = async (variant, file) => {
+  const pick = async (variant, sourceFile) => {
     setError(""); setResult(null);
     const isShop = variant === "shop";
     const setFile = isShop ? setShopFile : setJustInFile;
     const setInfo = isShop ? setShopInfo : setJustInInfo;
     const setPreview = isShop ? setShopPreview : setJustInPreview;
     const previewRef = isShop ? shopPreviewRef : justInPreviewRef;
-    if (!file) {
+    if (!sourceFile) {
       if (previewRef.current) URL.revokeObjectURL(previewRef.current);
       previewRef.current = "";
       setFile(null); setInfo(null); setPreview(""); return;
     }
-    if (file.size > MAX_IMAGE_BYTES) {
-      setError(`${isShop ? "Shop" : "Just In"} image is larger than 1.5 MB.`); return;
-    }
-    const validType = isShop ? ACCEPTED_SHOP.test(file.type) : ACCEPTED_JUST_IN.test(file.type);
-    const validExt = isShop ? /\.png$/i.test(file.name) : /\.webp$/i.test(file.name);
-    if (!validType && !validExt) {
-      setError(`${isShop ? "Shop" : "Just In"} image must be ${isShop ? "PNG" : "WebP"}.`); return;
-    }
+
+    setOptimizing(variant);
     try {
-      const info = await inspectImage(file);
-      const expectedSize = isShop ? 600 : 320;
-      if (info.width !== expectedSize || info.height !== expectedSize) {
-        setError(`${isShop ? "Shop" : "Just In"} image must be exactly ${expectedSize} × ${expectedSize}px.`); return;
-      }
+      const preset = isShop ? SHOP_PRESET : JUST_IN_PRESET;
+      const optimized = await optimizeImage(sourceFile, preset);
+      const extension = isShop ? "png" : "webp";
+      const outputType = isShop ? "image/png" : "image/webp";
+      const optimizedFile = new File([optimized.blob], `${slug || "product"}.${extension}`, { type: outputType, lastModified: Date.now() });
+
       if (previewRef.current) URL.revokeObjectURL(previewRef.current);
-      const nextPreview = URL.createObjectURL(file);
+      const nextPreview = URL.createObjectURL(optimized.blob);
       previewRef.current = nextPreview;
-      setFile(file); setInfo(info); setPreview(nextPreview);
-    } catch (inspectError) {
-      setError(inspectError.message || String(inspectError));
+      setFile(optimizedFile);
+      setInfo({
+        width: optimized.width,
+        height: optimized.height,
+        bytes: optimized.blob.size,
+        originalWidth: optimized.originalWidth,
+        originalHeight: optimized.originalHeight,
+        originalBytes: optimized.originalBytes,
+      });
+      setPreview(nextPreview);
+    } catch (optimizeError) {
+      setFile(null); setInfo(null); setPreview("");
+      setError(`${isShop ? "Shop" : "Just In"} optimization failed: ${optimizeError.message || String(optimizeError)}`);
+    } finally {
+      setOptimizing("");
     }
   };
 
@@ -361,15 +355,35 @@ export default function ProductMediaUploadBridge() {
   if (!slot || !slug) return null;
   return createPortal(<section className="product-media-panel">
     <div className="product-media-head">
-      <div><span>PRODUCT MEDIA</span><strong>UPLOAD / STAGE</strong></div>
-      <small>Strict dimensions and formats · both files required · staged with the product workflow</small>
+      <div><span>PRODUCT MEDIA</span><strong>AUTO-OPTIMIZE / STAGE</strong></div>
+      <small>Upload JPG, PNG or WebP · Control Center creates the exact Shop and Just In assets · both files required</small>
     </div>
     <div className="product-media-grid">
-      <MediaCard label="SHOP · 600 × 600" hint="PNG" accept="image/png,.png" file={shopFile} info={shopInfo} preview={shopPreview} expected="600 × 600 PNG" path={`/products/${slug}.png`} onPick={(file) => pick("shop", file)} />
-      <MediaCard label="JUST IN · 320 × 320" hint="WebP" accept="image/webp,.webp" file={justInFile} info={justInInfo} preview={justInPreview} expected="320 × 320 WebP" path={`/products/thumbs/${slug}.webp`} onPick={(file) => pick("just-in", file)} />
+      <MediaCard
+        label="SHOP · 600 × 600"
+        outputLabel="PNG · contain"
+        file={shopFile}
+        info={shopInfo}
+        preview={shopPreview}
+        contract={`JPG / PNG / WebP → 600 × 600 PNG · contain · transparent padding · target ≤ ${formatImageBytes(SHOP_PRESET.maxBytes)}`}
+        path={`/products/${slug}.png`}
+        optimizing={optimizing === "shop"}
+        onPick={(file) => pick("shop", file)}
+      />
+      <MediaCard
+        label="JUST IN · 320 × 320"
+        outputLabel="WebP · contain"
+        file={justInFile}
+        info={justInInfo}
+        preview={justInPreview}
+        contract={`JPG / PNG / WebP → 320 × 320 WebP · contain · transparent padding · target ≤ ${formatImageBytes(JUST_IN_PRESET.maxBytes)}`}
+        path={`/products/thumbs/${slug}.webp`}
+        optimizing={optimizing === "just-in"}
+        onPick={(file) => pick("just-in", file)}
+      />
     </div>
     {error ? <div className="product-media-error">{error}</div> : null}
-    {result ? <div className="product-media-result"><div><span>MEDIA STAGED</span><code>{result.stage_branch || "product draft"}</code></div><small>2 image files staged for {slug}. Continue with Bulk product input, review and Save Draft.</small></div> : null}
-    <div className="product-media-actions"><button className="primary" disabled={busy || !shopFile || !justInFile} onClick={stageMedia}>{busy ? "Staging media…" : "Stage product media"}</button></div>
+    {result ? <div className="product-media-result"><div><span>MEDIA STAGED</span><code>{result.stage_branch || "product draft"}</code></div><small>2 optimized image files staged for {slug}. Continue with Bulk product input, review and Save Draft.</small></div> : null}
+    <div className="product-media-actions"><button className="primary" disabled={busy || Boolean(optimizing) || !shopFile || !justInFile} onClick={stageMedia}>{busy ? "Staging media…" : "Stage product media"}</button></div>
   </section>, slot);
 }

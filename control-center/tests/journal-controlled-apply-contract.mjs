@@ -36,7 +36,8 @@ assert.match(mediaApi, /WEBP/, "Journal media endpoint must require WebP content
 assert.match(mediaApi, /review_status !== "draft"/, "Journal media can only change while article is in Draft");
 assert.match(mediaApi, /\/journal\/article\$\{articleId\}\.webp/, "Journal media must use canonical article image path");
 assert.match(mediaApi, /baseline_snapshot: null/, "changing Journal media must invalidate previous preparation");
-assert.match(journalManager, /optimizeJournalImage/, "Journal editor must optimize selected images before upload");
+assert.match(journalManager, /optimizeImage\(file, IMAGE_OPTIMIZER_PRESETS\.journal\)/, "Journal editor must optimize selected images with the shared Journal preset before upload");
+assert.doesNotMatch(journalManager, /optimizeJournalImage/, "legacy Journal-specific optimizer must remain removed");
 assert.match(journalManager, /create-journal-media-apply/, "Journal editor must use controlled Journal media staging endpoint");
 assert.match(journalManager, /Image path · automatic/, "Journal image path should be automatic in the editor");
 assert.match(journalManager, /500 KB/, "Journal editor must communicate the optimized image limit");
@@ -47,4 +48,4 @@ assert.match(api, /journal-v4-media/, "Journal apply response must identify medi
 
 console.log("PASS  Journal Controlled Apply approval + fresh-prepare + drift + draft-PR contract");
 console.log("PASS  existing Journal draft PR identity survives prepare and refreshes in place");
-console.log("PASS  Journal image upload optimizes, stages and joins the same Controlled Apply PR");
+console.log("PASS  Journal image upload uses shared optimization, stages and joins the same Controlled Apply PR");
