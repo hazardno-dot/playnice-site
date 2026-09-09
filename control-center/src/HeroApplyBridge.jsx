@@ -43,6 +43,8 @@ export default function HeroApplyBridge() {
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
   const [finalized, setFinalized] = useState("");
+  const [includeInExhibition, setIncludeInExhibition] = useState(true);
+  const [canonicalAsset, setCanonicalAsset] = useState("desktop");
 
   const loadRow = useCallback(async (key) => {
     if (!key) { setRow(null); return; }
@@ -57,6 +59,11 @@ export default function HeroApplyBridge() {
   }, []);
 
   useEffect(() => {
+    setIncludeInExhibition(true);
+    setCanonicalAsset("desktop");
+  }, [heroKey]);
+
+  useEffect(() => {
     if (sessionStorage.getItem(HERO_FINALIZE_SCROLL_TOP_KEY) !== "1") return;
     sessionStorage.removeItem(HERO_FINALIZE_SCROLL_TOP_KEY);
     if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
@@ -69,7 +76,6 @@ export default function HeroApplyBridge() {
     const mainStage = document.querySelector(".main-stage");
     if (!mainStage) return;
     let raf = 0;
-
     const sync = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
@@ -77,11 +83,8 @@ export default function HeroApplyBridge() {
         const detail = mainStage.querySelector(".hero-manager-detail");
         const active = mainStage.querySelector(".hero-slide-row.is-active");
         if (heading?.textContent?.trim() !== "Hero" || !detail || !active) {
-          setSlot(null);
-          setHeroKey("");
-          return;
+          setSlot(null); setHeroKey(""); return;
         }
-
         const workflowSlot = ensureWorkflowSlot(detail);
         let applySlot = workflowSlot.querySelector("#hero-controlled-apply-slot");
         if (!applySlot) {
@@ -90,12 +93,8 @@ export default function HeroApplyBridge() {
           workflowSlot.appendChild(applySlot);
         }
         setSlot(applySlot);
-
         const id = Number(active.textContent?.match(/#(\d+)/)?.[1]);
-        if (!id) {
-          setHeroKey("");
-          return;
-        }
+        if (!id) { setHeroKey(""); return; }
         supabase.from("hero_slides").select("hero_key").eq("id", id).maybeSingle().then(({ data, error: keyError }) => {
           if (keyError) { setError(keyError.message || String(keyError)); return; }
           const key = data?.hero_key || "";
@@ -103,7 +102,6 @@ export default function HeroApplyBridge() {
         });
       });
     };
-
     sync();
     const observer = new MutationObserver(sync);
     observer.observe(mainStage, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["class"] });
@@ -116,8 +114,7 @@ export default function HeroApplyBridge() {
     const onWorkflowUpdated = (event) => {
       const key = event?.detail?.heroKey;
       if (!key) return;
-      setHeroKey(key);
-      loadRow(key);
+      setHeroKey(key); loadRow(key);
     };
     window.addEventListener(HERO_WORKFLOW_UPDATED_EVENT, onWorkflowUpdated);
     return () => window.removeEventListener(HERO_WORKFLOW_UPDATED_EVENT, onWorkflowUpdated);
@@ -137,14 +134,8 @@ export default function HeroApplyBridge() {
     const locked = row.review_status !== "draft" || Boolean(row.apply_branch);
     const edit = detail.querySelector(".hero-edit-btn");
     const discard = [...detail.querySelectorAll("button")].find((button) => button.textContent?.trim() === "Discard draft");
-    if (edit) {
-      edit.disabled = locked;
-      edit.title = locked ? "Return the draft to Draft before editing." : "";
-    }
-    if (discard) {
-      discard.disabled = locked;
-      discard.title = locked ? "Return the draft to Draft before discarding." : "";
-    }
+    if (edit) { edit.disabled = locked; edit.title = locked ? "Return the draft to Draft before editing." : ""; }
+    if (discard) { discard.disabled = locked; discard.title = locked ? "Return the draft to Draft before discarding." : ""; }
   }, [row, slot]);
 
   const createPreview = async () => {
@@ -153,19 +144,16 @@ export default function HeroApplyBridge() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
-      const response = await fetch("/api/create-hero-apply", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
-        body: JSON.stringify({ hero_key: heroKey }),
-      });
+      const retirement = row.approved_payload?.enabled === false;
+      const endpoint = retirement ? "/api/create-hero-retirement-apply" : "/api/create-hero-apply";
+      const requestBody = retirement ? { hero_key: heroKey, include_in_exhibition: includeInExhibition, canonical_asset: canonicalAsset } : { hero_key: heroKey };
+      const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` }, body: JSON.stringify(requestBody) });
       const body = await readResponse(response);
-      if (!response.ok) throw new Error(body?.error || "Could not create Hero preview branch.");
+      if (!response.ok) throw new Error(body?.error || (retirement ? "Could not create Hero retirement preview." : "Could not create Hero preview branch."));
       await loadRow(heroKey);
     } catch (applyError) {
-      setError(applyError.message || String(applyError));
-    } finally {
-      setBusy("");
-    }
+      await loadRow(heroKey); setError(applyError.message || String(applyError));
+    } finally { setBusy(""); }
   };
 
   const verifyPreview = async () => {
@@ -175,16 +163,11 @@ export default function HeroApplyBridge() {
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       if (authError || !user) throw authError || new Error("Admin session expired. Sign in again.");
       const now = new Date().toISOString();
-      const { error: updateError } = await supabase.from("hero_drafts")
-        .update({ preview_verified_at: now, preview_verified_by: user.id })
-        .eq("hero_key", heroKey);
+      const { error: updateError } = await supabase.from("hero_drafts").update({ preview_verified_at: now, preview_verified_by: user.id }).eq("hero_key", heroKey);
       if (updateError) throw updateError;
       await loadRow(heroKey);
-    } catch (verifyError) {
-      setError(verifyError.message || String(verifyError));
-    } finally {
-      setBusy("");
-    }
+    } catch (verifyError) { setError(verifyError.message || String(verifyError)); }
+    finally { setBusy(""); }
   };
 
   const finalizeApply = async () => {
@@ -193,11 +176,7 @@ export default function HeroApplyBridge() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
-      const response = await fetch("/api/finalize-hero-apply", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
-        body: JSON.stringify({ hero_key: heroKey }),
-      });
+      const response = await fetch("/api/finalize-hero-apply", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` }, body: JSON.stringify({ hero_key: heroKey }) });
       const body = await readResponse(response);
       if (!response.ok) throw new Error(body?.error || "Could not finalize Hero apply.");
       setFinalized(`Hero baseline finalized from PR #${body.pr_number}.`);
@@ -206,26 +185,40 @@ export default function HeroApplyBridge() {
       if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
       scrollControlCenterTop();
       window.setTimeout(() => window.location.reload(), 700);
-    } catch (finalizeError) {
-      setError(finalizeError.message || String(finalizeError));
-    } finally {
-      setBusy("");
-    }
+    } catch (finalizeError) { setError(finalizeError.message || String(finalizeError)); }
+    finally { setBusy(""); }
   };
 
   if (!slot || (!row && !finalized) || (row && row.review_status !== "approved")) return null;
 
   const hasApply = Boolean(row?.apply_branch && row?.apply_pr_number);
   const verified = Boolean(row?.preview_verified_at);
+  const retirement = row?.approved_payload?.enabled === false;
+  const desktopPath = row?.approved_payload?.desktopImage || row?.approved_payload?.image || "";
+  const mobilePath = row?.approved_payload?.mobileImage || "";
 
   return createPortal(<section className={`hero-apply-panel ${verified ? "verified" : hasApply ? "preview" : "approved"}`}>
     <div className="hero-apply-head">
-      <div><span>CONTROLLED APPLY</span><strong>{verified ? "PREVIEW VERIFIED" : hasApply ? "PREVIEW CREATED" : "APPROVED · READY TO APPLY"}</strong></div>
-      <small>approved_payload only · draft PR · manual merge · post-merge finalize</small>
+      <div><span>CONTROLLED APPLY</span><strong>{verified ? "PREVIEW VERIFIED" : hasApply ? "PREVIEW CREATED" : retirement ? "APPROVED · RETIREMENT READY" : "APPROVED · READY TO APPLY"}</strong></div>
+      <small>{retirement ? "Hero out + curated Exhibition decision · " : ""}approved_payload only · draft PR · manual merge · post-merge finalize</small>
     </div>
     {error ? <div className="hero-apply-error">{error}</div> : null}
     {finalized ? <div className="hero-apply-ready">{finalized}</div> : null}
-    {!hasApply ? <div className="hero-apply-actions"><button className="primary" disabled={busy === "create"} onClick={createPreview}>{busy === "create" ? "Creating…" : "Create preview branch"}</button></div> : <div className="hero-apply-result">
+    {!hasApply ? <>
+      {retirement ? <div className="hero-retirement-curation">
+        <div className="hero-retirement-curation-head"><div><span>RETIREMENT → EXHIBITION</span><strong>Should this campaign enter the curated archive?</strong></div><small>Editorial decision required before PR creation.</small></div>
+        <div className="hero-retirement-choice-row">
+          <button type="button" className={includeInExhibition ? "selected" : ""} onClick={() => setIncludeInExhibition(true)}>Yes · include in Exhibition</button>
+          <button type="button" className={!includeInExhibition ? "selected" : ""} onClick={() => setIncludeInExhibition(false)}>No · retire Hero only</button>
+        </div>
+        {includeInExhibition ? <div className="hero-retirement-assets">
+          <div><span>CANONICAL VISUAL</span><small>One idea · one Exhibition asset. Desktop is the default.</small></div>
+          <label className={canonicalAsset === "desktop" ? "selected" : ""}><input type="radio" name="hero-canonical-asset" value="desktop" checked={canonicalAsset === "desktop"} onChange={() => setCanonicalAsset("desktop")} /><span><strong>Desktop / wide</strong><code>{desktopPath || "No desktop asset"}</code></span></label>
+          <label className={canonicalAsset === "mobile" ? "selected" : ""}><input type="radio" name="hero-canonical-asset" value="mobile" checked={canonicalAsset === "mobile"} onChange={() => setCanonicalAsset("mobile")} disabled={!mobilePath} /><span><strong>Mobile</strong><code>{mobilePath || "No mobile asset"}</code></span></label>
+        </div> : <div className="hero-retirement-note">Hero will be removed from the live rotation. No Exhibition record will be created.</div>}
+      </div> : null}
+      <div className="hero-apply-actions"><button className="primary" disabled={busy === "create" || (retirement && includeInExhibition && canonicalAsset === "mobile" && !mobilePath)} onClick={createPreview}>{busy === "create" ? (retirement ? "Creating retirement preview…" : "Creating…") : (retirement ? "Create retirement preview" : "Create preview branch")}</button></div>
+    </> : <div className="hero-apply-result">
       <div><span>BRANCH</span><code>{row.apply_branch}</code></div>
       <div><span>PR</span><a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">Open PR #{row.apply_pr_number}</a></div>
       {!verified ? <button className="primary" disabled={busy === "verify"} onClick={verifyPreview}>{busy === "verify" ? "Saving…" : "Mark preview verified"}</button> : <>
