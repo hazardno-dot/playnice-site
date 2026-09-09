@@ -68,6 +68,59 @@ async function loadDraft(articleId, token) {
   return draft || null;
 }
 
+async function readMainJournal() {
+  const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${JOURNAL_PATH}?ref=main`);
+  return { file, source: Buffer.from(file.content, "base64").toString("utf8") };
+}
+
+function buildPreparedChange(source, fileSha, draft, approved, articleId) {
+  const preparationMode = draft.baseline_snapshot?.mode || (draft.baseline_snapshot?.source_block ? "replace" : null);
+  if (!draft.prepared_at || !preparationMode) throw new Error("Journal draft must be prepared before Controlled Apply.");
+
+  if (preparationMode === "insert") {
+    if (fileSha !== draft.baseline_snapshot.source_sha) throw new Error("LIVE DRIFT: Journal source changed after new-article preparation. Prepare again.");
+    if (journalArticleExists(source, articleId)) throw new Error(`LIVE DRIFT: Journal article #${articleId} now exists on main.`);
+    if (getNextJournalArticleId(source) !== articleId) throw new Error("LIVE DRIFT: Journal next article id changed after preparation.");
+    return { preparationMode, changed: insertJournalArticle(source, approved) };
+  }
+
+  if (preparationMode === "replace") {
+    return { preparationMode, changed: replaceJournalArticle(source, articleId, draft.baseline_snapshot.source_block, approved) };
+  }
+
+  throw new Error("Unsupported Journal preparation mode. Prepare again.");
+}
+
+async function createBlob(source) {
+  const blob = await github(`/repos/${OWNER}/${REPO_NAME}/git/blobs`, {
+    method: "POST",
+    body: JSON.stringify({
+      content: Buffer.from(source, "utf8").toString("base64"),
+      encoding: "base64",
+    }),
+  });
+  return blob.sha;
+}
+
+async function createJournalCommitOnMainBase(source, message) {
+  const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
+  const baseSha = mainRef.object.sha;
+  const mainCommit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits/${baseSha}`);
+  const blobSha = await createBlob(source);
+  const tree = await github(`/repos/${OWNER}/${REPO_NAME}/git/trees`, {
+    method: "POST",
+    body: JSON.stringify({
+      base_tree: mainCommit.tree.sha,
+      tree: [{ path: JOURNAL_PATH, mode: "100644", type: "blob", sha: blobSha }],
+    }),
+  });
+  const commit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits`, {
+    method: "POST",
+    body: JSON.stringify({ message, tree: tree.sha, parents: [baseSha] }),
+  });
+  return { baseSha, commit };
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
   if (!SUPABASE_URL || !SUPABASE_KEY) return json(res, 500, { error: "Supabase server configuration is missing." });
@@ -86,11 +139,12 @@ export default async function handler(req, res) {
     if (draft.review_status !== "approved" || !draft.approved_payload) return json(res, 409, { error: "Journal draft must be APPROVED first." });
     if (stableJson(draft.payload) !== stableJson(draft.approved_payload)) return json(res, 409, { error: "Approved payload no longer matches the current Journal draft. Review and approve again." });
     const approved = validateExistingArticle(draft.approved_payload, articleId);
+    const hasAnyPrIdentity = Boolean(draft.apply_branch || draft.apply_pr_number);
+    const hasPr = Boolean(draft.apply_branch && draft.apply_pr_number);
+    if (hasAnyPrIdentity && !hasPr) return json(res, 409, { error: "Journal draft has incomplete PR metadata. Repair or clear the apply identity before continuing." });
 
     if (action === "prepare") {
-      if (draft.apply_branch && draft.apply_pr_number) return json(res, 409, { error: "A Journal apply PR already exists for this draft." });
-      const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${JOURNAL_PATH}?ref=main`);
-      const source = Buffer.from(file.content, "base64").toString("utf8");
+      const { file, source } = await readMainJournal();
       const existsOnMain = journalArticleExists(source, articleId);
       let baseline;
 
@@ -107,33 +161,59 @@ export default async function handler(req, res) {
 
       const response = await supabaseFetch(`/rest/v1/journal_drafts?article_id=eq.${articleId}`, token, {
         method: "PATCH",
-        body: JSON.stringify({ baseline_snapshot: baseline, prepared_at: new Date().toISOString(), prepared_by: user.id, apply_branch: null, apply_pr_number: null, apply_created_at: null, apply_created_by: null }),
+        body: JSON.stringify({ baseline_snapshot: baseline, prepared_at: new Date().toISOString(), prepared_by: user.id }),
       });
       if (!response.ok) throw new Error("Could not persist Journal preparation baseline.");
-      return json(res, 200, { ok: true, prepared: true, article_id: articleId, mode: baseline.mode });
+      return json(res, 200, { ok: true, prepared: true, refresh: hasPr, article_id: articleId, mode: baseline.mode, branch: draft.apply_branch || null, pr_number: draft.apply_pr_number || null });
     }
 
-    if (action !== "apply") return json(res, 400, { error: "Unsupported Journal apply action." });
-    const preparationMode = draft.baseline_snapshot?.mode || (draft.baseline_snapshot?.source_block ? "replace" : null);
-    if (!draft.prepared_at || !preparationMode) return json(res, 409, { error: "Journal draft must be prepared before Controlled Apply." });
-    if (draft.apply_branch && draft.apply_pr_number) return json(res, 200, { ok: true, existing: true, branch: draft.apply_branch, pr_number: draft.apply_pr_number, pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}` });
+    if (action !== "apply" && action !== "refresh") return json(res, 400, { error: "Unsupported Journal apply action." });
 
-    const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${JOURNAL_PATH}?ref=main`);
-    const source = Buffer.from(file.content, "base64").toString("utf8");
-    let changed;
+    if (action === "refresh") {
+      if (!hasPr) return json(res, 409, { error: "No existing Journal draft PR to refresh." });
+      const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls/${draft.apply_pr_number}`);
+      if (pr.state !== "open") return json(res, 409, { error: `PR #${draft.apply_pr_number} is not open.` });
+      if (pr.head?.ref !== draft.apply_branch) return json(res, 409, { error: `PR #${draft.apply_pr_number} no longer points to ${draft.apply_branch}.` });
+      if (pr.base?.ref !== "main") return json(res, 409, { error: `PR #${draft.apply_pr_number} no longer targets main.` });
 
-    if (preparationMode === "insert") {
-      if (file.sha !== draft.baseline_snapshot.source_sha) return json(res, 409, { error: "LIVE DRIFT: Journal source changed after new-article preparation. Prepare again." });
-      if (journalArticleExists(source, articleId)) return json(res, 409, { error: `LIVE DRIFT: Journal article #${articleId} now exists on main.` });
-      if (getNextJournalArticleId(source) !== articleId) return json(res, 409, { error: "LIVE DRIFT: Journal next article id changed after preparation." });
-      changed = insertJournalArticle(source, approved);
-    } else if (preparationMode === "replace") {
-      changed = replaceJournalArticle(source, articleId, draft.baseline_snapshot.source_block, approved);
-    } else {
-      return json(res, 409, { error: "Unsupported Journal preparation mode. Prepare again." });
+      const { file, source } = await readMainJournal();
+      const { preparationMode, changed } = buildPreparedChange(source, file.sha, draft, approved, articleId);
+      if (changed.source === source) return json(res, 409, { error: "No Journal source change was produced." });
+
+      const { baseSha, commit } = await createJournalCommitOnMainBase(changed.source, `Control Center Journal refresh: article #${articleId}`);
+      await github(`/repos/${OWNER}/${REPO_NAME}/git/refs/heads/${encodeURIComponent(draft.apply_branch)}`, {
+        method: "PATCH",
+        body: JSON.stringify({ sha: commit.sha, force: true }),
+      });
+
+      const refreshedAt = new Date().toISOString();
+      const update = await supabaseFetch(`/rest/v1/journal_drafts?article_id=eq.${articleId}`, token, {
+        method: "PATCH",
+        body: JSON.stringify({ apply_created_at: refreshedAt, apply_created_by: user.id }),
+      });
+      if (!update.ok) throw new Error("Journal PR branch was refreshed, but its draft metadata could not be updated.");
+
+      return json(res, 200, {
+        ok: true,
+        refreshed: true,
+        existing: true,
+        article_id: articleId,
+        branch: draft.apply_branch,
+        pr_number: draft.apply_pr_number,
+        pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}`,
+        file: JOURNAL_PATH,
+        operation: preparationMode,
+        base_sha: baseSha,
+        commit_sha: commit.sha,
+        refreshed_at: refreshedAt,
+        version: "journal-v3-refresh",
+      });
     }
 
+    const { file, source } = await readMainJournal();
+    const { preparationMode, changed } = buildPreparedChange(source, file.sha, draft, approved, articleId);
     if (changed.source === source) return json(res, 409, { error: "No Journal source change was produced." });
+    if (hasPr) return json(res, 200, { ok: true, existing: true, branch: draft.apply_branch, pr_number: draft.apply_pr_number, pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}` });
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
     const baseSha = mainRef.object.sha;
@@ -178,8 +258,10 @@ export default async function handler(req, res) {
     });
     if (!update.ok) throw new Error("Journal PR was created, but its draft metadata could not be persisted.");
 
-    return json(res, 200, { ok: true, article_id: articleId, branch, pr_number: pr.number, pr_url: pr.html_url, file: JOURNAL_PATH, version: "journal-v2" });
+    return json(res, 200, { ok: true, article_id: articleId, branch, pr_number: pr.number, pr_url: pr.html_url, file: JOURNAL_PATH, version: "journal-v3-refresh" });
   } catch (error) {
-    return json(res, 500, { error: error?.message || "Journal Controlled Apply failed." });
+    const message = error?.message || "Journal Controlled Apply failed.";
+    const expectedConflict = /^(LIVE DRIFT:|Journal draft must be prepared|No Journal source change|Unsupported Journal preparation mode)/.test(message);
+    return json(res, expectedConflict ? 409 : 500, { error: message });
   }
 }
