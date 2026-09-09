@@ -1,5 +1,6 @@
 @media (min-width: 901px) {
   .desktop-footer-catalog {
+    position: relative;
     width: 100%;
   }
 
@@ -23,37 +24,56 @@
   }
 
   .desktop-footer-catalog-panel {
-    display: block;
-    max-height: 0;
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 10px);
+    z-index: 40;
+    width: 158px;
+    padding: 6px;
+    border: 1px solid rgba(220, 181, 107, 0.15);
+    border-radius: 12px;
+    background: rgba(10, 9, 8, 0.97);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.34);
     opacity: 0;
-    overflow: hidden;
-    margin: 0;
-    transition: max-height 180ms ease, opacity 160ms ease, margin 180ms ease;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-50%) translateX(-4px) scale(0.98);
+    transform-origin: left center;
+    transition:
+      opacity 150ms ease,
+      transform 180ms ease,
+      visibility 0s linear 180ms;
   }
 
   .desktop-footer-catalog.is-open .desktop-footer-catalog-panel {
-    max-height: 64px;
     opacity: 1;
-    margin: 3px 0 6px;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(-50%) translateX(0) scale(1);
+    transition:
+      opacity 150ms ease,
+      transform 180ms ease,
+      visibility 0s linear 0s;
   }
 
   .desktop-footer-catalog-panel a {
-    min-height: 26px;
+    min-height: 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    padding: 0 2px 0 10px;
-    color: rgba(244, 238, 227, 0.52);
+    padding: 0 9px;
+    border-radius: 8px;
+    color: rgba(244, 238, 227, 0.62);
     font-size: 11px;
     line-height: 1.2;
     text-decoration: none;
-    transition: color 160ms ease, transform 160ms ease;
+    transition: color 160ms ease, background 160ms ease;
   }
 
   .desktop-footer-catalog-panel a:hover {
-    color: rgba(238, 207, 139, 0.92);
-    transform: translateX(2px);
+    color: rgba(238, 207, 139, 0.96);
+    background: rgba(220, 181, 107, 0.055);
   }
 }
 
