@@ -5,6 +5,8 @@ const REPO = "hazardno-dot/playnice-site";
 const [OWNER, REPO_NAME] = REPO.split("/");
 const SHOP_PUBLIC_PREFIX = "playnice-site/public";
 const MAX_IMAGE_BYTES = 1_500_000;
+const HERO_DESKTOP_SIZE = Object.freeze({ width: 1920, height: 700 });
+const HERO_MOBILE_SIZE = Object.freeze({ width: 1200, height: 900 });
 const GITHUB_RETRY_STATUSES = new Set([502, 503, 504]);
 const GITHUB_MAX_ATTEMPTS = 3;
 
@@ -71,7 +73,33 @@ function cleanBase64(value = "") {
   return String(value).replace(/^data:image\/jpeg;base64,/i, "").replace(/\s+/g, "");
 }
 
-function validateJpeg(label, value) {
+function readJpegDimensions(buffer) {
+  if (buffer.length < 4 || buffer[0] !== 0xff || buffer[1] !== 0xd8) return null;
+  const sofMarkers = new Set([0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf]);
+  let offset = 2;
+  while (offset + 3 < buffer.length) {
+    while (offset < buffer.length && buffer[offset] !== 0xff) offset += 1;
+    while (offset < buffer.length && buffer[offset] === 0xff) offset += 1;
+    if (offset >= buffer.length) break;
+    const marker = buffer[offset];
+    offset += 1;
+    if (marker === 0xd8 || marker === 0xd9 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) continue;
+    if (offset + 1 >= buffer.length) break;
+    const segmentLength = buffer.readUInt16BE(offset);
+    if (segmentLength < 2 || offset + segmentLength > buffer.length) break;
+    if (sofMarkers.has(marker)) {
+      if (segmentLength < 7) return null;
+      return {
+        height: buffer.readUInt16BE(offset + 3),
+        width: buffer.readUInt16BE(offset + 5),
+      };
+    }
+    offset += segmentLength;
+  }
+  return null;
+}
+
+function validateJpeg(label, value, expectedSize) {
   const base64 = cleanBase64(value);
   if (!base64) return null;
   let buffer;
@@ -85,6 +113,11 @@ function validateJpeg(label, value) {
   }
   if (buffer[0] !== 0xff || buffer[1] !== 0xd8 || buffer[2] !== 0xff) {
     throw new Error(`${label} image must be a JPEG file.`);
+  }
+  const dimensions = readJpegDimensions(buffer);
+  if (!dimensions) throw new Error(`${label} JPEG dimensions could not be read.`);
+  if (dimensions.width !== expectedSize.width || dimensions.height !== expectedSize.height) {
+    throw new Error(`${label} image must be exactly ${expectedSize.width} × ${expectedSize.height}px.`);
   }
   return buffer.toString("base64");
 }
@@ -176,8 +209,8 @@ module.exports = async function handler(req, res) {
       return json(res, 409, { error: "Hero media can only be changed while the Hero is in Draft." });
     }
 
-    const desktopContent = validateJpeg("Desktop", req.body?.desktop_base64);
-    const mobileContent = validateJpeg("Mobile", req.body?.mobile_base64);
+    const desktopContent = validateJpeg("Desktop", req.body?.desktop_base64, HERO_DESKTOP_SIZE);
+    const mobileContent = validateJpeg("Mobile", req.body?.mobile_base64, HERO_MOBILE_SIZE);
     if (!desktopContent && !mobileContent) {
       return json(res, 400, { error: "Choose at least one Hero image to replace." });
     }
