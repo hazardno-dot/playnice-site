@@ -9,6 +9,22 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     maxBytes: 20_000,
     qualities: [0.84, 0.78, 0.72, 0.66, 0.6, 0.54, 0.48],
   }),
+  productShop: Object.freeze({
+    outputType: "image/png",
+    width: 600,
+    height: 600,
+    fit: "contain",
+    maxBytes: 500_000,
+    qualities: [1],
+  }),
+  productJustIn: Object.freeze({
+    outputType: "image/webp",
+    width: 320,
+    height: 320,
+    fit: "contain",
+    maxBytes: 30_000,
+    qualities: [0.86, 0.8, 0.74, 0.68, 0.62, 0.56, 0.5],
+  }),
 });
 
 const ACCEPTED_IMAGE = /^image\/(jpeg|png|webp)$/i;
@@ -63,6 +79,19 @@ function drawCover(ctx, image, targetWidth, targetHeight) {
   ctx.drawImage(image, sx, sy, sw, sh, 0, 0, targetWidth, targetHeight);
 }
 
+function drawContain(ctx, image, targetWidth, targetHeight) {
+  const sourceWidth = image.naturalWidth;
+  const sourceHeight = image.naturalHeight;
+  const scale = Math.min(targetWidth / sourceWidth, targetHeight / sourceHeight);
+  const width = sourceWidth * scale;
+  const height = sourceHeight * scale;
+  const dx = (targetWidth - width) / 2;
+  const dy = (targetHeight - height) / 2;
+
+  ctx.clearRect(0, 0, targetWidth, targetHeight);
+  ctx.drawImage(image, dx, dy, width, height);
+}
+
 export async function optimizeImage(file, preset) {
   if (!file || !ACCEPTED_IMAGE.test(file.type)) throw new Error("Choose a JPG, PNG or WebP image.");
   if (file.size > IMAGE_SOURCE_MAX_BYTES) throw new Error(`Source image is larger than ${formatImageBytes(IMAGE_SOURCE_MAX_BYTES)}.`);
@@ -88,6 +117,7 @@ export async function optimizeImage(file, preset) {
       if (!ctx) throw new Error("Could not prepare image optimization.");
 
       if (preset.fit === "cover") drawCover(ctx, image, width, height);
+      else if (preset.fit === "contain") drawContain(ctx, image, width, height);
       else ctx.drawImage(image, 0, 0, width, height);
 
       for (const quality of qualities) {
@@ -123,7 +153,7 @@ export async function optimizeImage(file, preset) {
     }
 
     if (!smallest) throw new Error("Could not create optimized image.");
-    throw new Error(`Image is still ${formatImageBytes(smallest.blob.size)} after optimization. Please use a simpler source image.`);
+    throw new Error(`Image is still ${formatImageBytes(smallest.blob.size)} after optimization. Please use a simpler or smaller source image.`);
   } finally {
     URL.revokeObjectURL(url);
   }
