@@ -1756,5 +1756,148 @@ Remember. PlayNice.`
         external: true
       }
     ]
+  },
+  {
+    id: 21,
+    date: {
+      en: "09 Sep",
+      sr: "09 Sep"
+    },
+    image: "/journal/community-most-wanted-drop-03.webp",
+    title: {
+      en: "You asked. We’re still listening.",
+      sr: "Tražili ste. I dalje slušamo."
+    },
+    excerpt: {
+      en: "Four more fragrances moved from the Community list into the PlayNice collection. And one of them, completely by chance, became fragrance number 100.",
+      sr: "Četiri nova parfema prešla su sa Community liste u PlayNice kolekciju. A jedan od njih je, sasvim slučajno, postao naš parfem broj 100."
+    },
+    content: {
+      en: `At first, it was just an idea.
+
+We asked you what you wanted to see in the PlayNice collection. You started sending names. One vote, then another, then a few more. Some names disappeared quickly, while others stayed on the list for weeks. And then fragrances from the wishlist started moving into the collection.
+
+First came YSL Y Iced and Valentino Coral Fantasy. Then Prada Paradigme and Bad Boy Cobalt. Back then, we wrote: Votes become collection.
+
+It turns out that story was not finished.
+
+Since then, four more have arrived.
+
+Lattafa Khamrah Waha — 13 votes.
+Armaf Club de Nuit Intense Overdose — 12 votes.
+
+With those two, the message was not exactly subtle. You asked for them often enough that, at some point, the only real question became: alright, when are we getting them?
+
+So we did.
+
+But Community was never meant to be just a table where the fragrance at the top automatically wins. Which is why the next two may be even more interesting.
+
+Tom Ford Ombré Leather Parfum — 6 votes.
+Rayhaan Azul — 3 votes.
+
+And both made it into the collection.
+
+Because the number of votes is a signal, but it is not the only one. Sometimes twenty people say the same thing. Sometimes three people mention a fragrance that makes so much sense for PlayNice that it becomes difficult to ignore.
+
+And then something small happened with Tom Ford that we did not plan.
+
+When Ombré Leather Parfum entered the Shop, it became our 100th fragrance. We did not choose fragrance number 100. We did not build a countdown. We did not decide in advance that it had to be some major name.
+
+It simply happened that a fragrance you asked for became number 100.
+
+And it is hard to imagine a better way for that number to appear.
+
+Because PlayNice was never supposed to be a collection built by one person behind closed doors. We search. We test. We choose. We reject far more fragrances than we accept.
+
+But you are part of that process. Community tells us where to look.
+
+Today, there are eight fragrances on the right side of the Community page. Eight small pieces of proof that Request is not just a button and that something can actually happen behind a single vote.
+
+And on the left side, the list is growing again. Naxos is there. Torino21 too. Imagination is still refusing to give up.
+
+We do not know which one will be next. And maybe that is the best part of the whole story.
+
+Because Community Series was never about us telling you what you should want. It was about being able to say, every now and then:
+
+this is here because you said it should be.
+
+You asked. We listened.
+
+And apparently... we’re still listening.
+
+— Charlie`,
+      sr: `U početku je to bila samo ideja.
+
+Pitali smo vas šta želite da vidite u PlayNice kolekciji. Vi ste počeli da šaljete imena. Jedan glas, pa drugi, pa još nekoliko. Neka imena su nestala brzo, neka su ostajala nedeljama. A onda su parfemi sa liste želja počeli da prelaze u kolekciju.
+
+Prvo YSL Y Iced i Valentino Coral Fantasy. Zatim Prada Paradigme i Bad Boy Cobalt. Tada smo napisali: Glasovi postaju kolekcija.
+
+Ispostavilo se da ta priča nije bila završena.
+
+Od tada su stigla još četiri.
+
+Lattafa Khamrah Waha — 13 glasova.
+Armaf Club de Nuit Intense Overdose — 12 glasova.
+
+Za ova dva poruka nije bila naročito suptilna. Tražili ste ih dovoljno puta da je u jednom trenutku jedino pravo pitanje bilo: dobro, kada ih nabavljamo?
+
+I nabavili smo ih.
+
+Ali Community nikada nije trebalo da bude samo tabela u kojoj prvi na listi automatski pobeđuje. Zato su nam možda još zanimljivija sledeća dva.
+
+Tom Ford Ombré Leather Parfum — 6 glasova.
+Rayhaan Azul — 3 glasa.
+
+I oba su završila u kolekciji.
+
+Jer broj glasova jeste signal, ali nije jedini. Ponekad dvadeset ljudi kaže isto. Ponekad tri osobe pomenu parfem koji ima toliko smisla za PlayNice da ga više ne možete ignorisati.
+
+A onda se sa Tom Fordom dogodila jedna mala stvar koju nismo planirali.
+
+Kada je Ombré Leather Parfum ušao u Shop, postao je naš stoti parfem. Nismo birali parfem broj 100. Nismo pravili odbrojavanje. Nismo unapred odlučili da to mora biti neko veliko ime.
+
+Jednostavno se dogodilo da parfem koji ste vi tražili postane broj 100.
+
+I teško je zamisliti bolji način da se ta brojka pojavi.
+
+Jer PlayNice nikada nije trebalo da bude kolekcija koju jedna osoba sastavlja iza zatvorenih vrata. Mi tražimo. Probamo. Biramo. Odbijamo mnogo više parfema nego što ih prihvatimo.
+
+Ali vi ste deo tog procesa. Community nam govori gde da pogledamo.
+
+Danas na desnoj strani Community stranice stoji osam parfema. Osam malih dokaza da Request nije samo dugme i da iza jednog glasa stvarno može da se dogodi nešto.
+
+Sa leve strane lista ponovo raste. Naxos je tamo. Torino21 takođe. Imagination se i dalje ne predaje.
+
+Ne znamo koji će biti sledeći. I možda je upravo to najbolji deo cele priče.
+
+Jer Community Series nikada nije bila priča o tome da mi vama kažemo šta treba da želite. Nego o tome da ponekad možemo da vam kažemo:
+
+ovo je ovde zato što ste vi rekli da treba da bude.
+
+You asked. We listened.
+
+And apparently... we’re still listening.
+
+— Čarli`
+    },
+    series: {
+      en: "COMMUNITY SERIES",
+      sr: "SERIJA ZAJEDNICE"
+    },
+    relatedProducts: [
+      "lattafa-khamrah-waha-edp",
+      "armaf-club-de-nuit-intense-overdose",
+      "tom-ford-ombre-leather-parfum",
+      "rayhaan-azul-edp"
+    ],
+    links: [
+      {
+        label: {
+          en: "Request the next fragrance",
+          sr: "Predloži sledeći parfem"
+        },
+        action: "scent-request"
+      }
+    ]
   }
 ];
