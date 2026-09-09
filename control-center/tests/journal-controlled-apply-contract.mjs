@@ -5,7 +5,10 @@ import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const api = fs.readFileSync(path.resolve(here, "../api/create-journal-apply.js"), "utf8");
+const mediaApi = fs.readFileSync(path.resolve(here, "../api/create-journal-media-apply.js"), "utf8");
 const manager = fs.readFileSync(path.resolve(here, "../src/JournalApplyManager.jsx"), "utf8");
+const journalManager = fs.readFileSync(path.resolve(here, "../src/JournalManager.jsx"), "utf8");
+const journalDraft = fs.readFileSync(path.resolve(here, "../src/journalDraft.mjs"), "utf8");
 
 assert.match(api, /review_status !== "approved"/, "server must require approval");
 assert.match(api, /Approved payload no longer matches/, "server must block stale approved payloads");
@@ -26,5 +29,22 @@ assert.doesNotMatch(api, /\/merges\b|merge_pull|merge_method/, "Journal apply AP
 assert.match(manager, /No changes to apply/, "client must block no-change preparation");
 assert.match(manager, /Create draft PR/, "client must expose draft PR creation only after prepare");
 assert.match(manager, /Refresh draft PR/, "client must expose in-place refresh for an existing PR");
+
+assert.match(mediaApi, /MAX_IMAGE_BYTES = 500_000/, "Journal media endpoint must cap optimized assets at 500 KB");
+assert.match(mediaApi, /RIFF/, "Journal media endpoint must validate WebP signature");
+assert.match(mediaApi, /WEBP/, "Journal media endpoint must require WebP content");
+assert.match(mediaApi, /review_status !== "draft"/, "Journal media can only change while article is in Draft");
+assert.match(mediaApi, /\/journal\/article\$\{articleId\}\.webp/, "Journal media must use canonical article image path");
+assert.match(mediaApi, /baseline_snapshot: null/, "changing Journal media must invalidate previous preparation");
+assert.match(journalManager, /optimizeJournalImage/, "Journal editor must optimize selected images before upload");
+assert.match(journalManager, /create-journal-media-apply/, "Journal editor must use controlled Journal media staging endpoint");
+assert.match(journalManager, /Image path · automatic/, "Journal image path should be automatic in the editor");
+assert.match(journalManager, /500 KB/, "Journal editor must communicate the optimized image limit");
+assert.match(journalDraft, /mediaStage/, "Journal draft normalization must preserve media staging metadata");
+assert.match(api, /resolveMediaTreeEntry/, "Journal apply must resolve staged media into the final PR tree");
+assert.match(api, /treeEntries\.push\(mediaEntry\)/, "Journal apply commit must attach staged media beside Journal data");
+assert.match(api, /journal-v4-media/, "Journal apply response must identify media-aware workflow version");
+
 console.log("PASS  Journal Controlled Apply approval + fresh-prepare + drift + draft-PR contract");
 console.log("PASS  existing Journal draft PR identity survives prepare and refreshes in place");
+console.log("PASS  Journal image upload optimizes, stages and joins the same Controlled Apply PR");
