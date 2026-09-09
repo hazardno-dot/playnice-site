@@ -80,12 +80,12 @@ function hasFreshPreparation(draft) {
   return new Date(draft.prepared_at).getTime() >= new Date(draft.reviewed_at).getTime();
 }
 
-function buildPreparedChange(source, fileSha, draft, approved, articleId) {
+function buildPreparedChange(source, file, draft, approved, articleId) {
   const preparationMode = draft.baseline_snapshot?.mode || (draft.baseline_snapshot?.source_block ? "replace" : null);
   if (!hasFreshPreparation(draft)) throw new Error("Journal draft must be prepared after the latest approval before Controlled Apply.");
 
   if (preparationMode === "insert") {
-    if (fileSha !== draft.baseline_snapshot.source_sha) throw new Error("LIVE DRIFT: Journal source changed after new-article preparation. Prepare again.");
+    if (file.sha !== draft.baseline_snapshot.source_sha) throw new Error("LIVE DRIFT: Journal source changed after new-article preparation. Prepare again.");
     if (journalArticleExists(source, articleId)) throw new Error(`LIVE DRIFT: Journal article #${articleId} now exists on main.`);
     if (getNextJournalArticleId(source) !== articleId) throw new Error("LIVE DRIFT: Journal next article id changed after preparation.");
     return { preparationMode, changed: insertJournalArticle(source, approved) };
@@ -181,7 +181,7 @@ export default async function handler(req, res) {
       if (pr.base?.ref !== "main") return json(res, 409, { error: `PR #${draft.apply_pr_number} no longer targets main.` });
 
       const { file, source } = await readMainJournal();
-      const { preparationMode, changed } = buildPreparedChange(source, file.sha, draft, approved, articleId);
+      const { preparationMode, changed } = buildPreparedChange(source, file, draft, approved, articleId);
       if (changed.source === source) return json(res, 409, { error: "No Journal source change was produced." });
 
       const { baseSha, commit } = await createJournalCommitOnMainBase(changed.source, `Control Center Journal refresh: article #${articleId}`);
@@ -217,7 +217,7 @@ export default async function handler(req, res) {
     if (hasPr) return json(res, 200, { ok: true, existing: true, branch: draft.apply_branch, pr_number: draft.apply_pr_number, pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}` });
 
     const { file, source } = await readMainJournal();
-    const { preparationMode, changed } = buildPreparedChange(source, file.sha, draft, approved, articleId);
+    const { preparationMode, changed } = buildPreparedChange(source, file, draft, approved, articleId);
     if (changed.source === source) return json(res, 409, { error: "No Journal source change was produced." });
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
