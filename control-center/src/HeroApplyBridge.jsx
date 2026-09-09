@@ -160,8 +160,22 @@ export default function HeroApplyBridge() {
       });
       const body = await readResponse(response);
       if (!response.ok) throw new Error(body?.error || "Could not create Hero preview branch.");
+
+      if (row.approved_payload?.enabled === false) {
+        const archiveResponse = await fetch("/api/attach-hero-retirement-exhibition", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+          body: JSON.stringify({ hero_key: heroKey }),
+        });
+        const archiveBody = await readResponse(archiveResponse);
+        if (!archiveResponse.ok) {
+          throw new Error(`Hero preview PR #${body?.pr_number || ""} was created, but Exhibition archive preparation failed: ${archiveBody?.error || "unknown error"}`);
+        }
+      }
+
       await loadRow(heroKey);
     } catch (applyError) {
+      await loadRow(heroKey);
       setError(applyError.message || String(applyError));
     } finally {
       setBusy("");
@@ -217,15 +231,16 @@ export default function HeroApplyBridge() {
 
   const hasApply = Boolean(row?.apply_branch && row?.apply_pr_number);
   const verified = Boolean(row?.preview_verified_at);
+  const retirement = row?.approved_payload?.enabled === false;
 
   return createPortal(<section className={`hero-apply-panel ${verified ? "verified" : hasApply ? "preview" : "approved"}`}>
     <div className="hero-apply-head">
-      <div><span>CONTROLLED APPLY</span><strong>{verified ? "PREVIEW VERIFIED" : hasApply ? "PREVIEW CREATED" : "APPROVED · READY TO APPLY"}</strong></div>
-      <small>approved_payload only · draft PR · manual merge · post-merge finalize</small>
+      <div><span>CONTROLLED APPLY</span><strong>{verified ? "PREVIEW VERIFIED" : hasApply ? "PREVIEW CREATED" : retirement ? "APPROVED · RETIREMENT READY" : "APPROVED · READY TO APPLY"}</strong></div>
+      <small>{retirement ? "Hero out + Exhibition archive · " : ""}approved_payload only · draft PR · manual merge · post-merge finalize</small>
     </div>
     {error ? <div className="hero-apply-error">{error}</div> : null}
     {finalized ? <div className="hero-apply-ready">{finalized}</div> : null}
-    {!hasApply ? <div className="hero-apply-actions"><button className="primary" disabled={busy === "create"} onClick={createPreview}>{busy === "create" ? "Creating…" : "Create preview branch"}</button></div> : <div className="hero-apply-result">
+    {!hasApply ? <div className="hero-apply-actions"><button className="primary" disabled={busy === "create"} onClick={createPreview}>{busy === "create" ? (retirement ? "Creating retirement preview…" : "Creating…") : (retirement ? "Create retirement preview" : "Create preview branch")}</button></div> : <div className="hero-apply-result">
       <div><span>BRANCH</span><code>{row.apply_branch}</code></div>
       <div><span>PR</span><a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">Open PR #{row.apply_pr_number}</a></div>
       {!verified ? <button className="primary" disabled={busy === "verify"} onClick={verifyPreview}>{busy === "verify" ? "Saving…" : "Mark preview verified"}</button> : <>
