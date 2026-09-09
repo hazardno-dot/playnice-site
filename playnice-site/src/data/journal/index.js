@@ -1871,5 +1871,184 @@ And apparently... we’re still listening.
         action: "scent-request"
       }
     ]
+  },
+  {
+    id: 22,
+    date: {
+      en: "9 Sep",
+      sr: "9 Sep"
+    },
+    image: "/journal/article22.webp",
+    title: {
+      en: "Across from the Bakery",
+      sr: "Preko puta pekare"
+    },
+    excerpt: {
+      en: "For three months, he watched her from across the street. The only problem was that he had already written the entire story in his head.",
+      sr: "Tri meseca je gledao preko puta pekare. Problem je bio samo u tome što je celu priču već napisao u svojoj glavi."
+    },
+    content: {
+      en: `It's already Saturday, and I'm heading out to buy bread.
+
+I don't look particularly good. I haven't slept enough, the T-shirt I'm wearing has probably survived more seasons than Fernando Alonso, my hair has developed its own political agenda, and the man outside the bakery is trying to start a Golf Mk2 that has clearly had enough of both life and its owner.
+
+And I think: **This is beautiful.**
+
+Nobody is filming. Nobody has put their phone on a tripod. Nobody is saying, *“Guys, a lot of you have been asking me...”*
+
+Nobody asked you anything, Sandra. Just buy the bread.
+
+Across from the bakery there's a small flower shop, and for a while now there's been a girl working there who has, entirely by accident, made me eat a lot more bread than I used to. I don't know her name. I only know that in the morning she carries the flowers outside, ties her hair back when it gets in the way, and has the kind of smile that makes a man forget, for a few seconds, his age, his bills, and the fact that his fridge is already full of bread.
+
+Naturally, I've never spoken to her. I'm a modern man.
+
+Which means I can spend months analysing the situation, look at her a few times, create seventeen possible scenarios in my head and, in the end, do absolutely nothing.
+
+There was, however, one other problem.
+
+Almost every weekend, I saw her with some guy.
+
+Tall, handsome, well dressed, younger than me by exactly enough to make me dislike him immediately. He'd arrive, she'd come outside, hug him, sometimes they'd have coffee together, and I'd continue walking towards the bakery like a man who had just received an answer to a question he'd never asked.
+
+And so it went on for weeks.
+
+Then this Saturday, I'm standing there with a loaf of bread in my hand when I see him arrive. She walks out of the flower shop and hugs him, and then another girl gets out of the car.
+
+She kisses him.
+
+On the mouth.
+
+Right.
+
+This changes the table.
+
+Five minutes later, the three of them are sitting together, laughing, while I, with a completely unjustified level of interest, buy a yoghurt I don't even need.
+
+The woman behind the counter looks at me and says:
+
+“That's her brother.”
+
+There are moments in life when a man can suddenly see every bad decision he's ever made with perfect clarity.
+
+This was one of them.
+
+For months, I'd invented a boyfriend, a relationship, a happy couple, their future together and probably two children, simply because I hadn't had the courage to cross the street and say:
+
+“Hi.”
+
+And that's when it hits me how strange we've become.
+
+We can message someone on the other side of the world, find out where they went last summer, what they listen to, what they eat and who they follow, but walking across the street and speaking to another human being suddenly feels like an extreme sport.
+
+We know everything. We just don't dare do anything anymore.
+
+Maybe that's why we're so hungry for good stories. Not perfect ones. Good ones. The kind where someone gets it wrong, looks stupid, arrives late, gets caught in the rain, says the wrong thing, laughs at themselves and tries anyway.
+
+I don't need another perfect life on a screen.
+
+I want a story.
+
+And apparently, I'd been watching mine from across the street for the past three months.
+
+I put the yoghurt down, crossed the street and walked into the flower shop.
+
+What happened next?
+
+Easy.
+
+Not everything has to go online immediately.
+
+—
+
+**Charlie**
+
+*Remember. PlayNice.*
+`,
+      sr: `## „Preko puta pekare“
+
+Već je subota, izlazim po hleb.
+
+Ne izgledam naročito dobro. Nisam se naspavao, majica koju nosim verovatno je već odradila više sezona nego Fernando Alonso, kosa vodi neku svoju politiku, a čovek ispred pekare pokušava da upali Golfa dvojku kojem je očigledno dosta i života i vlasnika.
+
+I pomislim: **Kako je ovo lepo.**
+
+Niko ne snima, niko nije stavio telefon na tripod, niko ne govori *„Guys, a lot of you have been asking me...”*
+
+Niko te ništa nije pitao, Sandra. Samo kupi hleb.
+
+Preko puta pekare je mala cvećara, a u njoj već neko vreme radi devojka zbog koje sam, sasvim slučajno, počeo mnogo češće da jedem hleb. Ne znam joj ime. Znam samo da ujutru iznosi cveće napolje, vezuje kosu kada joj smeta i ima onaj osmeh zbog kojeg čovek na nekoliko sekundi zaboravi i godine i račune i činjenicu da mu je frižider pun hleba.
+
+Naravno da joj nikada nisam prišao. Ja sam moderan muškarac.
+
+To znači da mogu mesecima da analiziram situaciju, pogledam je nekoliko puta, napravim u glavi sedamnaest mogućih scenarija i na kraju ne uradim ništa.
+
+Postojao je, doduše, još jedan problem.
+
+Gotovo svakog vikenda viđao sam je sa nekim tipom.
+
+Visok, zgodan, uredan, mlađi od mene taman toliko da ga odmah ne volim. Dođe, ona izađe, zagrli ga, nekad zajedno popiju kafu i ja uredno nastavim prema pekari kao čovek koji je upravo dobio odgovor na pitanje koje nikada nije postavio.
+
+I tako nedeljama.
+
+A onda ove subote stojim sa hlebom u ruci i vidim njega kako dolazi. Ona izlazi iz cvećare, grli ga, a iz kola izlazi još jedna devojka. Poljubi ga.
+
+U usta.
+
+Dobro. Ovo već menja tabelu.
+
+Pet minuta kasnije njih troje sede za stolom, smeju se, a ja sa potpuno neopravdanim interesovanjem kupujem jogurt koji mi uopšte ne treba.
+
+Prodavačica me pogleda i kaže:
+
+„To joj je brat.“
+
+Postoje trenuci kada čovek u životu jasno vidi sve svoje pogrešne odluke.
+
+Ovo je bio jedan od njih.
+
+Mesecima sam izmislio momka, vezu, srećan par, njihovu zajedničku budućnost i verovatno dvoje dece, samo zato što nisam imao hrabrosti da pređem ulicu i kažem:
+
+„Ćao.“
+
+I tu mi sine koliko smo postali čudni.
+
+Možemo da pošaljemo poruku nekome na drugom kraju sveta, da saznamo gde je bio prošlog leta, šta sluša, šta jede i koga prati, ali prići čoveku preko puta ulice odjednom izgleda kao ekstremni sport.
+
+Sve znamo. Samo se više ništa ne usuđujemo.
+
+Možda smo zato toliko željni lepih priča. Ne savršenih. Lepih. Onih u kojima neko pogreši, ispadne glup, zakasni, pokisne, kaže nešto pogrešno, nasmeje se sebi i ipak pokuša.
+
+Ne treba mi još jedan savršen život na ekranu.
+
+Hoću priču.
+
+A izgleda da sam svoju već tri meseca gledao preko puta pekare.
+
+Spustio sam jogurt, prešao ulicu i ušao u cvećaru.
+
+Šta se dalje dogodilo?
+
+Polako.
+
+Ne mora baš sve odmah na internet.
+
+—
+
+**Čarli**
+
+*Remember. PlayNice.*
+`
+    },
+    relatedProducts: [
+    ],
+    links: [
+      {
+        label: {
+          en: "If you're crossing the street, smell good.",
+          sr: "Ako već prelaziš ulicu, miriši dobro."
+        },
+        action: "product:nishane-hacivat-x"
+      }
+    ]
   }
 ];
