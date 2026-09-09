@@ -98,12 +98,20 @@ export default function JournalApplyManager() {
 
   const prepared = Boolean(row.prepared_at && (row.baseline_snapshot?.source_block || row.baseline_snapshot?.mode === "insert"));
   const hasPr = Boolean(row.apply_branch && row.apply_pr_number);
+  const stateLabel = hasPr
+    ? prepared ? `DRAFT PR #${row.apply_pr_number} · READY TO REFRESH` : `DRAFT PR #${row.apply_pr_number} · PREPARE REFRESH`
+    : prepared ? "READY TO CREATE DRAFT PR" : noChanges ? "NO LIVE CHANGES" : liveArticle ? "APPROVED · PREPARE BASELINE" : "NEW ARTICLE · PREPARE INSERT";
 
   return createPortal(<section className={`journal-controlled-apply ${hasPr ? "pr" : prepared ? "prepared" : "approved"}`}>
-    <div className="journal-controlled-copy"><span>JOURNAL CONTROLLED APPLY</span><strong>{hasPr ? `DRAFT PR #${row.apply_pr_number}` : prepared ? "READY TO CREATE DRAFT PR" : noChanges ? "NO LIVE CHANGES" : liveArticle ? "APPROVED · PREPARE BASELINE" : "NEW ARTICLE · PREPARE INSERT"}</strong><small>{liveArticle ? "Existing article · exact source-block drift guard" : "New article · sequential ID + exact Journal source SHA guard"} · no automatic merge.</small></div>
+    <div className="journal-controlled-copy"><span>JOURNAL CONTROLLED APPLY</span><strong>{stateLabel}</strong><small>{liveArticle ? "Existing article · exact source-block drift guard" : "New article · sequential ID + exact Journal source SHA guard"} · no automatic merge.</small></div>
     <div className="journal-controlled-actions">
       {error ? <span className="journal-controlled-error">{error}</span> : null}
-      {hasPr ? <a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">Open draft PR ↗</a> : prepared ? <button className="primary" disabled={busy} onClick={() => callApply("apply")}>{busy ? "Creating…" : "Create draft PR"}</button> : <button className="primary" disabled={busy || noChanges} onClick={() => callApply("prepare")}>{busy ? "Preparing…" : noChanges ? "No changes to apply" : "Prepare apply"}</button>}
+      {hasPr ? <>
+        <a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">Open draft PR ↗</a>
+        {prepared
+          ? <button className="primary" disabled={busy} onClick={() => callApply("refresh")}>{busy ? "Refreshing…" : "Refresh draft PR"}</button>
+          : <button className="primary" disabled={busy || noChanges} onClick={() => callApply("prepare")}>{busy ? "Preparing…" : noChanges ? "No changes to apply" : "Prepare refresh"}</button>}
+      </> : prepared ? <button className="primary" disabled={busy} onClick={() => callApply("apply")}>{busy ? "Creating…" : "Create draft PR"}</button> : <button className="primary" disabled={busy || noChanges} onClick={() => callApply("prepare")}>{busy ? "Preparing…" : noChanges ? "No changes to apply" : "Prepare apply"}</button>}
     </div>
   </section>, slot);
 }
