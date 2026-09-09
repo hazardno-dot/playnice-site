@@ -1,0 +1,7 @@
+@media (min-width: 561px) {
+  .mini-cart-preview {
+    min-height: 51px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
