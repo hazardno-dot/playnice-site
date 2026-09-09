@@ -124,9 +124,17 @@ module.exports = async function handler(req, res) {
     const configSource = Buffer.from(configFile.content, "base64").toString("utf8");
     const runtimeSlides = parseGeneratedConfig(configSource);
     const liveSlide = runtimeSlides.find((slide) => Number(slide.id) === Number(baseline.id));
-    const expectedSlide = approvedRuntime(draft.approved_payload, baseline.id);
-    if (!liveSlide || stable(liveSlide) !== stable(expectedSlide)) {
-      return json(res, 409, { error: "POST-MERGE SAFETY BLOCK: main Hero config does not match the approved snapshot." });
+    const retiring = draft.approved_payload?.enabled === false;
+
+    if (retiring) {
+      if (liveSlide) {
+        return json(res, 409, { error: "POST-MERGE SAFETY BLOCK: retired Hero slide is still present in main Hero config." });
+      }
+    } else {
+      const expectedSlide = approvedRuntime(draft.approved_payload, baseline.id);
+      if (!liveSlide || stable(liveSlide) !== stable(expectedSlide)) {
+        return json(res, 409, { error: "POST-MERGE SAFETY BLOCK: main Hero config does not match the approved snapshot." });
+      }
     }
 
     const cleanPayload = runtimePayload(draft.approved_payload);
@@ -139,7 +147,7 @@ module.exports = async function handler(req, res) {
       throw new Error(rpcBody?.message || "Could not finalize Hero baseline.");
     }
 
-    return json(res, 200, { ok: true, hero_key: heroKey, pr_number: draft.apply_pr_number });
+    return json(res, 200, { ok: true, hero_key: heroKey, pr_number: draft.apply_pr_number, retired: retiring });
   } catch (error) {
     console.error("Finalize Hero apply failed", error);
     return json(res, 500, { error: error?.message || "Finalize Hero apply failed." });
