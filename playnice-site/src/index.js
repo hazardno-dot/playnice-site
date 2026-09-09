@@ -9,6 +9,7 @@ import MobilePrivateSelectionProfile from "./MobilePrivateSelectionProfile";
 import MobileShopV2 from "./MobileShopV2";
 import MobileShopReveal from "./MobileShopReveal";
 import MobileMenuContact from "./MobileMenuContact";
+import DesktopFooterCatalog from "./DesktopFooterCatalog";
 import CartInteractionV2 from "./CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
 import FragranceIntelligenceToneEnhancer from "./FragranceIntelligenceToneEnhancer";
@@ -44,6 +45,7 @@ import "./CartConfirmationBar.css";
 import "./MobileManifestoFix.css";
 import "./DesktopProductModalCopyV2.css";
 import "./HeaderLanguageColor.css";
+import "./DesktopDiscoverCleanup.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -57,6 +59,7 @@ root.render(
     <MobileShopV2 />
     <MobileShopReveal />
     <MobileMenuContact />
+    <DesktopFooterCatalog />
     <CartInteractionV2 />
     <DiscoveryImageFallback />
     <FragranceIntelligenceToneEnhancer />
