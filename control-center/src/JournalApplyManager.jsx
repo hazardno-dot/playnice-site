@@ -66,7 +66,23 @@ export default function JournalApplyManager() {
     const channel = supabase.channel(`journal-apply-${articleId}`).on("postgres_changes", { event: "*", schema: "public", table: "journal_drafts", filter: `article_id=eq.${articleId}` }, load).subscribe();
     const onFocus = () => load();
     window.addEventListener("focus", onFocus);
-    return () => { cancelled = true; supabase.removeChannel(channel); window.removeEventListener("focus", onFocus); };
+
+    const workflow = document.querySelector(".main-stage .journal-workflow");
+    const workflowObserver = workflow
+      ? new MutationObserver(() => load())
+      : null;
+    workflowObserver?.observe(workflow, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+
+    return () => {
+      cancelled = true;
+      workflowObserver?.disconnect();
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", onFocus);
+    };
   }, [articleId]);
 
   const liveArticle = useMemo(() => journalArticles.find((article) => Number(article.id) === Number(articleId)) || null, [articleId]);
