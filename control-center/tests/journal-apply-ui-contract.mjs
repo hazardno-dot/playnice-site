@@ -17,6 +17,8 @@ assert.match(source, /comparablePayload/, "post-merge reconciliation must compar
 assert.match(source, /REPO_PULLS_URL/, "post-merge reconciliation must verify the saved GitHub PR");
 assert.match(source, /pr\.state !== "closed" && !pr\.merged_at/, "reconciliation must not delete a draft while its PR is still open");
 assert.match(source, /delete\(\)\s*\.eq\("article_id", articleId\)\s*\.eq\("apply_pr_number", row\.apply_pr_number\)/s, "reconciliation must only delete the exact published Journal draft row");
+assert.match(source, /window\.location\.reload\(\)/, "successful reconciliation must immediately refresh the Journal UI so published drafts show LIVE ONLY without manual F5");
 console.log("PASS  Journal Controlled Apply UI state contract");
 console.log("PASS  existing Journal draft PR requires fresh prepare and can refresh in place");
 console.log("PASS  closed/merged Journal PR with live-equal payload reconciles back to LIVE ONLY");
+console.log("PASS  successful Journal reconciliation refreshes the UI automatically");
