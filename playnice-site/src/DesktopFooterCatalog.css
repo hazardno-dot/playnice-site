@@ -23,21 +23,18 @@
   }
 
   .desktop-footer-catalog-panel {
-    display: grid;
-    grid-template-rows: 0fr;
+    display: block;
+    max-height: 0;
     opacity: 0;
     overflow: hidden;
-    transition: grid-template-rows 180ms ease, opacity 160ms ease, margin 180ms ease;
+    margin: 0;
+    transition: max-height 180ms ease, opacity 160ms ease, margin 180ms ease;
   }
 
   .desktop-footer-catalog.is-open .desktop-footer-catalog-panel {
-    grid-template-rows: 1fr;
+    max-height: 64px;
     opacity: 1;
     margin: 3px 0 6px;
-  }
-
-  .desktop-footer-catalog-panel > * {
-    min-height: 0;
   }
 
   .desktop-footer-catalog-panel a {
