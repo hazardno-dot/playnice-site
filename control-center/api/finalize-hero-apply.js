@@ -49,9 +49,9 @@ function parseGeneratedConfig(source) {
   const start = source.indexOf(marker);
   if (start < 0) throw new Error("Generated Hero config export was not found on main.");
   const raw = source.slice(start + marker.length).trim().replace(/;\s*$/, "");
-  const parsed = Function(`\"use strict\"; return (${raw});`)();
+  const parsed = JSON.parse(raw);
   if (!Array.isArray(parsed)) throw new Error("Generated Hero config is not an array.");
-  return JSON.parse(JSON.stringify(parsed));
+  return parsed;
 }
 
 function approvedRuntime(payload, id) {
@@ -83,7 +83,7 @@ function runtimePayload(payload = {}) {
 
 const stable = (value) => JSON.stringify(value, Object.keys(value || {}).sort());
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed." });
   if (!SUPABASE_URL || !SUPABASE_KEY || !GITHUB_TOKEN) return json(res, 500, { error: "Finalize environment is incomplete." });
 
@@ -152,4 +152,4 @@ module.exports = async function handler(req, res) {
     console.error("Finalize Hero apply failed", error);
     return json(res, 500, { error: error?.message || "Finalize Hero apply failed." });
   }
-};
+}
