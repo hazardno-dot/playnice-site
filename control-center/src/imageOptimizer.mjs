@@ -14,16 +14,37 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     width: 600,
     height: 600,
     fit: "contain",
+    transparent: true,
     maxBytes: 500_000,
-    qualities: [1],
   }),
   productJustIn: Object.freeze({
     outputType: "image/webp",
     width: 320,
     height: 320,
     fit: "contain",
+    transparent: true,
     maxBytes: 30_000,
     qualities: [0.86, 0.8, 0.74, 0.68, 0.62, 0.56, 0.5],
+  }),
+  heroDesktop: Object.freeze({
+    outputType: "image/jpeg",
+    width: 1920,
+    height: 700,
+    fit: "strict",
+    ratioTolerance: 0.03,
+    background: "#000000",
+    maxBytes: 500_000,
+    qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66],
+  }),
+  heroMobile: Object.freeze({
+    outputType: "image/jpeg",
+    width: 1200,
+    height: 900,
+    fit: "strict",
+    ratioTolerance: 0.03,
+    background: "#000000",
+    maxBytes: 450_000,
+    qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66],
   }),
 });
 
@@ -80,16 +101,25 @@ function drawCover(ctx, image, targetWidth, targetHeight) {
 }
 
 function drawContain(ctx, image, targetWidth, targetHeight) {
-  const sourceWidth = image.naturalWidth;
-  const sourceHeight = image.naturalHeight;
-  const scale = Math.min(targetWidth / sourceWidth, targetHeight / sourceHeight);
-  const width = sourceWidth * scale;
-  const height = sourceHeight * scale;
-  const dx = (targetWidth - width) / 2;
-  const dy = (targetHeight - height) / 2;
+  const scale = Math.min(targetWidth / image.naturalWidth, targetHeight / image.naturalHeight);
+  const width = Math.max(1, Math.round(image.naturalWidth * scale));
+  const height = Math.max(1, Math.round(image.naturalHeight * scale));
+  const x = Math.round((targetWidth - width) / 2);
+  const y = Math.round((targetHeight - height) / 2);
+  ctx.drawImage(image, x, y, width, height);
+}
 
-  ctx.clearRect(0, 0, targetWidth, targetHeight);
-  ctx.drawImage(image, dx, dy, width, height);
+function prepareCanvas(width, height, preset) {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Could not prepare image optimization.");
+  if (!preset.transparent && preset.background) {
+    ctx.fillStyle = preset.background;
+    ctx.fillRect(0, 0, width, height);
+  }
+  return { canvas, ctx };
 }
 
 export async function optimizeImage(file, preset) {
@@ -104,18 +134,19 @@ export async function optimizeImage(file, preset) {
   try {
     const originalWidth = image.naturalWidth;
     const originalHeight = image.naturalHeight;
+    const originalRatio = originalWidth / originalHeight;
     const qualities = preset.qualities || [0.82, 0.72, 0.62];
     let smallest = null;
 
     if (fixedSize) {
       const width = Math.round(preset.width);
       const height = Math.round(preset.height);
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) throw new Error("Could not prepare image optimization.");
+      const targetRatio = width / height;
+      if (preset.fit === "strict" && Math.abs(originalRatio - targetRatio) > Number(preset.ratioTolerance || 0)) {
+        throw new Error(`Image ratio ${originalRatio.toFixed(2)}:1 does not match required ${targetRatio.toFixed(2)}:1 (${width} × ${height}px). Use the correct composition; Hero images are never auto-cropped.`);
+      }
 
+      const { canvas, ctx } = prepareCanvas(width, height, preset);
       if (preset.fit === "cover") drawCover(ctx, image, width, height);
       else if (preset.fit === "contain") drawContain(ctx, image, width, height);
       else ctx.drawImage(image, 0, 0, width, height);
@@ -135,11 +166,7 @@ export async function optimizeImage(file, preset) {
       for (const scale of scales) {
         const width = Math.max(1, Math.round(originalWidth * scale));
         const height = Math.max(1, Math.round(originalHeight * scale));
-        const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) throw new Error("Could not prepare image optimization.");
+        const { canvas, ctx } = prepareCanvas(width, height, preset);
         ctx.drawImage(image, 0, 0, width, height);
 
         for (const quality of qualities) {
@@ -153,7 +180,7 @@ export async function optimizeImage(file, preset) {
     }
 
     if (!smallest) throw new Error("Could not create optimized image.");
-    throw new Error(`Image is still ${formatImageBytes(smallest.blob.size)} after optimization. Please use a simpler or smaller source image.`);
+    throw new Error(`Image is still ${formatImageBytes(smallest.blob.size)} after optimization. Please use a simpler source image.`);
   } finally {
     URL.revokeObjectURL(url);
   }
