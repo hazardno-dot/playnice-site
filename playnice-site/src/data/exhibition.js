@@ -1,4 +1,38 @@
 export const exhibitionItems = [
+  {
+    "id": "hero-6",
+    "year": 2026,
+    "period": "sep-dec-2026",
+    "title": "JASMINE IN THE SUN · Now at PlayNice",
+    "kind": "campaign",
+    "status": "archived",
+    "published": true,
+    "label": {
+      "sr": "Hero kampanja",
+      "en": "Hero Campaign"
+    },
+    "line": {
+      "sr": "Kampanja je završena. Ideja ostaje.",
+      "en": "The campaign is over. The idea remains."
+    },
+    "assets": [
+      {
+        "id": "hero-6-desktop",
+        "type": "image",
+        "src": "/hero/slide-6.jpg",
+        "format": "wide",
+        "alt": "JASMINE IN THE SUN · Now at PlayNice"
+      },
+      {
+        "id": "hero-6-mobile",
+        "type": "image",
+        "src": "/hero/mobile/slide-6-mobile.jpg",
+        "format": "mobile",
+        "alt": "JASMINE IN THE SUN · Now at PlayNice"
+      }
+    ]
+  },
+
   /* =========================================================
      MAY — AUG 2026
      ========================================================= */
