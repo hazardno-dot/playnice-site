@@ -42,6 +42,7 @@ import "./DesktopStickyCtaGlass.css";
 import "./MobileTypographyV2.css";
 import "./MobileProductCardTextV2.css";
 import "./CartConfirmationBar.css";
+import "./DesktopConfirmationBarFit.css";
 import "./MobileManifestoFix.css";
 import "./DesktopProductModalCopyV2.css";
 import "./HeaderLanguageColor.css";
