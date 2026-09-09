@@ -119,19 +119,14 @@ function periodFor(date = new Date()) {
   return { year, period: `sep-dec-${year}` };
 }
 
-function buildExhibitionEntry(heroKey, baseline) {
+function buildExhibitionEntry(heroKey, baseline, canonicalAsset) {
   const { year, period } = periodFor();
   const safeHeroKey = safeId(heroKey);
   const entryId = safeHeroKey.startsWith("hero-") ? safeHeroKey : `hero-${safeHeroKey}`;
-  const candidates = [
-    { suffix: "desktop", src: baseline.desktopImage || baseline.image || "", format: "wide" },
-    { suffix: "mobile", src: baseline.mobileImage || baseline.image || "", format: "mobile" },
-  ];
-  const seen = new Set();
-  const assets = candidates
-    .filter((asset) => asset.src && !seen.has(asset.src) && seen.add(asset.src))
-    .map((asset) => ({ id: `${entryId}-${asset.suffix}`, type: "image", src: asset.src, format: asset.format, alt: baseline.alt || heroKey }));
-  if (!assets.length) throw new Error("Retired Hero has no reusable Exhibition image asset.");
+  const asset = canonicalAsset === "mobile"
+    ? { suffix: "mobile", src: baseline.mobileImage || baseline.mobile_image || "", format: "mobile" }
+    : { suffix: "desktop", src: baseline.desktopImage || baseline.image || baseline.desktop_image || "", format: "wide" };
+  if (!asset.src) throw new Error(`Retired Hero has no ${canonicalAsset} Exhibition asset.`);
   return {
     id: entryId,
     year,
@@ -142,7 +137,7 @@ function buildExhibitionEntry(heroKey, baseline) {
     published: true,
     label: { sr: "Hero kampanja", en: "Hero Campaign" },
     line: { sr: "Kampanja je završena. Ideja ostaje.", en: "The campaign is over. The idea remains." },
-    assets,
+    assets: [{ id: `${entryId}-${asset.suffix}`, type: "image", src: asset.src, format: asset.format, alt: baseline.alt || heroKey }],
   };
 }
 
@@ -163,8 +158,12 @@ export default async function handler(req, res) {
   const authHeader = req.headers.authorization || "";
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
   const heroKey = String(req.body?.hero_key || "").trim();
+  const includeInExhibition = req.body?.include_in_exhibition;
+  const canonicalAsset = String(req.body?.canonical_asset || "desktop").trim().toLowerCase();
   if (!token) return json(res, 401, { error: "Admin session required." });
   if (!heroKey) return json(res, 400, { error: "hero_key is required." });
+  if (typeof includeInExhibition !== "boolean") return json(res, 400, { error: "Exhibition decision is required before retirement preview." });
+  if (includeInExhibition && !["desktop", "mobile"].includes(canonicalAsset)) return json(res, 400, { error: "canonical_asset must be desktop or mobile." });
 
   let branch = "";
   let prNumber = null;
@@ -218,16 +217,27 @@ export default async function handler(req, res) {
       body: JSON.stringify({ message: `Retire Hero from runtime: ${heroKey}`, content: Buffer.from(renderConfig(nextRuntime), "utf8").toString("base64"), sha: branchConfig.sha, branch }),
     });
 
-    const exhibitionEntry = buildExhibitionEntry(heroKey, baseline);
-    const exhibitionFile = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${EXHIBITION_PATH}?ref=${encodeURIComponent(branch)}`);
-    const exhibitionSource = Buffer.from(exhibitionFile.content, "base64").toString("utf8");
-    const preparedExhibition = insertExhibitionEntry(exhibitionSource, exhibitionEntry);
-    if (!preparedExhibition.alreadyPresent) {
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${EXHIBITION_PATH}`, {
-        method: "PUT",
-        body: JSON.stringify({ message: `Archive retired Hero in Exhibition: ${heroKey}`, content: Buffer.from(preparedExhibition.source, "utf8").toString("base64"), sha: exhibitionFile.sha, branch }),
-      });
+    let exhibitionEntry = null;
+    if (includeInExhibition) {
+      exhibitionEntry = buildExhibitionEntry(heroKey, baseline, canonicalAsset);
+      const exhibitionFile = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${EXHIBITION_PATH}?ref=${encodeURIComponent(branch)}`);
+      const exhibitionSource = Buffer.from(exhibitionFile.content, "base64").toString("utf8");
+      const preparedExhibition = insertExhibitionEntry(exhibitionSource, exhibitionEntry);
+      if (!preparedExhibition.alreadyPresent) {
+        await github(`/repos/${OWNER}/${REPO_NAME}/contents/${EXHIBITION_PATH}`, {
+          method: "PUT",
+          body: JSON.stringify({ message: `Archive retired Hero in Exhibition: ${heroKey}`, content: Buffer.from(preparedExhibition.source, "utf8").toString("base64"), sha: exhibitionFile.sha, branch }),
+        });
+      }
     }
+
+    const exhibitionLines = includeInExhibition
+      ? [
+          `- Exhibition archive: ${exhibitionEntry.id} → ${EXHIBITION_PATH}`,
+          `- Exhibition period: ${exhibitionEntry.period}`,
+          `- Canonical asset: ${canonicalAsset} → ${exhibitionEntry.assets[0].src}`,
+        ]
+      : ["- Exhibition archive: skipped by explicit editorial decision"];
 
     const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, {
       method: "POST",
@@ -242,11 +252,11 @@ export default async function handler(req, res) {
           `- Hero: ${heroKey}`,
           `- Slide ID: ${baseline.id}`,
           `- Hero runtime: removed from ${CONFIG_PATH}`,
-          `- Exhibition archive: ${exhibitionEntry.id} → ${EXHIBITION_PATH}`,
-          `- Exhibition period: ${exhibitionEntry.period}`,
-          `- Reused assets: ${exhibitionEntry.assets.map((asset) => asset.src).join(", ")}`,
+          ...exhibitionLines,
           "- Source: approved_payload + frozen baseline_snapshot",
           "- Safety: active → inactive retirement only",
+          "- Safety: explicit Exhibition yes/no decision required",
+          "- Safety: one canonical Exhibition asset when included",
           "- Safety: main runtime parity checked before branch creation",
           "- Safety: one draft PR only; no automatic merge",
         ].join("\n"),
@@ -277,9 +287,11 @@ export default async function handler(req, res) {
       pr_number: pr.number,
       pr_url: pr.html_url,
       retirement: true,
-      exhibition_id: exhibitionEntry.id,
-      files: [CONFIG_PATH, EXHIBITION_PATH],
-      assets: exhibitionEntry.assets.map((asset) => asset.src),
+      exhibition_included: includeInExhibition,
+      exhibition_id: exhibitionEntry?.id || null,
+      canonical_asset: includeInExhibition ? canonicalAsset : null,
+      files: includeInExhibition ? [CONFIG_PATH, EXHIBITION_PATH] : [CONFIG_PATH],
+      assets: exhibitionEntry?.assets.map((asset) => asset.src) || [],
     });
   } catch (error) {
     console.error("Hero retirement apply failed", { heroKey, branch, prNumber, error: error?.message || String(error) });
