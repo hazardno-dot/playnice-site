@@ -119,6 +119,7 @@ export default function JournalApplyManager() {
           .eq("apply_pr_number", row.apply_pr_number);
         if (deleteError || cancelled) return;
         setRow(null);
+        window.location.reload();
       } catch {
         // Reconciliation is best-effort. A transient GitHub/network failure leaves the draft intact.
       }
