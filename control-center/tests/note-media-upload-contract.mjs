@@ -24,7 +24,7 @@ for (const token of [
 
 for (const token of [
   'notes:',
-  'mimeType: "image/webp"',
+  'outputType: "image/webp"',
   'maxEdge:',
   'maxBytes:',
   'blobToBase64',
