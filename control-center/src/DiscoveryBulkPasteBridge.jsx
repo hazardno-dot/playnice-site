@@ -48,6 +48,7 @@ export default function DiscoveryBulkPasteBridge() {
   const [slot, setSlot] = useState(null);
   const [source, setSource] = useState("");
   const [message, setMessage] = useState("");
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     const root = document.querySelector(".main-stage");
@@ -101,20 +102,25 @@ export default function DiscoveryBulkPasteBridge() {
 
   if (!slot) return null;
   return createPortal(
-    <div className="discovery-bulk-paste">
+    <div className={`discovery-bulk-paste ${expanded ? "is-open" : ""}`}>
       <div className="discovery-bulk-paste-head">
         <div>
           <strong>Bulk paste</strong>
           <span>Paste all Discovery values at once · key: value or JSON</span>
         </div>
-        <button type="button" onClick={apply}>Apply values</button>
+        <div className="discovery-bulk-paste-actions">
+          {expanded ? <button type="button" onClick={apply}>Apply values</button> : null}
+          <button type="button" onClick={() => setExpanded((value) => !value)}>{expanded ? "Collapse" : "Open"}</button>
+        </div>
       </div>
-      <textarea
-        value={source}
-        onChange={(event) => { setSource(event.target.value); setMessage(""); }}
-        placeholder={"date: 5.0\ncasual: 9.3\ncitrus: 9.3\noffice: 9.0\n..."}
-      />
-      {message ? <div className="discovery-bulk-paste-message">{message}</div> : null}
+      {expanded ? <>
+        <textarea
+          value={source}
+          onChange={(event) => { setSource(event.target.value); setMessage(""); }}
+          placeholder={"date: 5.0\ncasual: 9.3\ncitrus: 9.3\noffice: 9.0\n..."}
+        />
+        {message ? <div className="discovery-bulk-paste-message">{message}</div> : null}
+      </> : null}
     </div>,
     slot
   );
