@@ -174,6 +174,12 @@ export default function JournalManager() {
       setNewArticleSeed(null);
       setSelectedId(Number(data.article_id));
       setEditing(false);
+      requestAnimationFrame(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
     } catch (saveError) { setError(saveError.message || String(saveError)); }
     finally { setSaving(false); }
   };
