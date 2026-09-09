@@ -114,7 +114,7 @@ export default function JournalManager() {
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
-      const { data, error: loadError } = await supabase.from("journal_drafts").select("article_id,payload,review_status,reviewed_at,updated_at,approved_payload").order("updated_at", { ascending: false });
+      const { data, error: loadError } = await supabase.from("journal_drafts").select("article_id,payload,review_status,reviewed_at,updated_at,approved_payload,baseline_snapshot,prepared_at,prepared_by,apply_branch,apply_pr_number,apply_created_at,apply_created_by").order("updated_at", { ascending: false });
       if (cancelled) return;
       if (loadError) { setError(loadError.message); return; }
       setDraftRows(Object.fromEntries((data || []).map((row) => [Number(row.article_id), row])));
@@ -186,10 +186,31 @@ export default function JournalManager() {
     const { data: authData, error: authError } = await supabase.auth.getUser();
     if (authError || !authData?.user?.id) { setError(authError?.message || "Authenticated user is required."); return; }
     const patch = nextStatus === "approved"
-      ? { review_status: "approved", reviewed_at: new Date().toISOString(), reviewed_by: authData.user.id, approved_payload: selectedRow.payload }
+      ? {
+          review_status: "approved",
+          reviewed_at: new Date().toISOString(),
+          reviewed_by: authData.user.id,
+          approved_payload: selectedRow.payload,
+        }
       : nextStatus === "ready"
-        ? { review_status: "ready", reviewed_at: null, reviewed_by: null, approved_payload: null }
-        : { review_status: "draft", reviewed_at: null, reviewed_by: null, approved_payload: null };
+        ? {
+            review_status: "ready",
+            reviewed_at: null,
+            reviewed_by: null,
+            approved_payload: null,
+          }
+        : {
+            review_status: "draft",
+            reviewed_at: null,
+            reviewed_by: null,
+            approved_payload: null,
+
+            // Invalidate the previous preparation,
+            // but keep the PR identity so it can be refreshed later.
+            baseline_snapshot: null,
+            prepared_at: null,
+            prepared_by: null,
+          };
     const { data, error: updateError } = await supabase.from("journal_drafts").update(patch).eq("article_id", selectedId).select("article_id,payload,review_status,reviewed_at,updated_at,approved_payload").single();
     if (updateError) { setError(updateError.message); return; }
     setDraftRows((current) => ({ ...current, [selectedId]: data }));
