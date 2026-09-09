@@ -173,9 +173,9 @@ export default function NoteMediaUploadBridge() {
   if (!slot) return null;
   const validKey = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(noteKey);
   return createPortal(<section className="note-media-upload">
-    <div className="note-media-copy"><span>NOTE ASSET</span><strong>{validKey ? `/note-map/${noteKey}.webp` : "Enter canonical key first"}</strong><small>JPG / PNG / WebP → WebP · max edge {NOTE_PRESET.maxEdge}px · target ≤ {formatImageBytes(NOTE_PRESET.maxBytes)}</small></div>
+    <div className="note-media-copy"><span>NOTE ASSET</span><strong>{validKey ? `/note-map/${noteKey}.webp` : "Enter canonical key first"}</strong><small>JPG / PNG / WebP → 256 × 256 WebP · center crop · target ≤ {formatImageBytes(NOTE_PRESET.maxBytes)}</small></div>
     <div className="note-media-body">
-      <label className="note-media-picker"><input type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" disabled={!validKey || busy || optimizing} onChange={(event) => pick(event.target.files?.[0] || null)} /><strong>{optimizing ? "Optimizing…" : file ? "Replace source image" : "Choose image"}</strong><small>{file && info ? `${info.originalWidth} × ${info.originalHeight}px · ${formatImageBytes(info.originalBytes)} → ${info.width} × ${info.height}px · ${formatImageBytes(info.bytes)}` : "Automatic resize + WebP compression before staging."}</small></label>
+      <label className="note-media-picker"><input type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" disabled={!validKey || busy || optimizing} onChange={(event) => pick(event.target.files?.[0] || null)} /><strong>{optimizing ? "Optimizing…" : file ? "Replace source image" : "Choose image"}</strong><small>{file && info ? `${info.originalWidth} × ${info.originalHeight}px · ${formatImageBytes(info.originalBytes)} → ${info.width} × ${info.height}px · ${formatImageBytes(info.bytes)}` : "Automatic square crop + resize + WebP compression before staging."}</small></label>
       {preview ? <div className="note-media-preview"><img src={preview} alt="Optimized Note asset preview" /><span>{info?.width} × {info?.height}px · {formatImageBytes(info?.bytes || 0)}</span></div> : null}
       <button className="primary" disabled={!validKey || !file || busy || optimizing} onClick={stage}>{busy ? "Staging…" : "Stage optimized asset"}</button>
     </div>
