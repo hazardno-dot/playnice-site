@@ -339,38 +339,6 @@
     transform: translateX(8px);
     pointer-events: none;
   }
-
-  .product-modal .mobile-pager-hint {
-    position: absolute;
-    right: 14px;
-    bottom: 13px;
-    height: 31px;
-    padding: 0 11px 0 13px;
-    border: 1px solid rgba(220, 181, 107, 0.24);
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    color: rgba(247, 229, 191, 0.86);
-    background: rgba(18, 16, 12, 0.9);
-    font-family: "Inter", sans-serif;
-    font-size: 0.56rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    pointer-events: auto;
-    transition: opacity 200ms ease, transform 240ms ease;
-  }
-
-  .product-modal .mobile-pager-hint b {
-    color: rgba(220, 181, 107, 0.95);
-    font-size: 0.82rem;
-  }
-
-  .product-modal.mobile-pager-page-2 .mobile-pager-hint {
-    opacity: 0;
-    transform: translateX(8px);
-    pointer-events: none;
-  }
 }
 
 @media (max-width: 360px) {
@@ -388,8 +356,7 @@
 @media (prefers-reduced-motion: reduce) {
   .product-modal.mobile-pager-enabled .modal-body,
   .product-modal .mobile-pager-dots i,
-  .product-modal .mobile-pager-edge,
-  .product-modal .mobile-pager-hint {
+  .product-modal .mobile-pager-edge {
     transition: none !important;
   }
 }
