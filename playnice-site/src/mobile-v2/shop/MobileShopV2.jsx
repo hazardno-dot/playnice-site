@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { LOCATION_CHANGE_EVENT } from "../../lib/locationEvents";
 
 const MOBILE_QUERY = "(max-width: 640px)";
 const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
@@ -245,24 +246,6 @@ export default function MobileShopV2() {
       });
     };
 
-    const originalPushState = window.history.pushState;
-    const originalReplaceState = window.history.replaceState;
-
-    const wrappedPushState = function (...args) {
-      const result = originalPushState.apply(this, args);
-      window.dispatchEvent(new Event("playnice:locationchange"));
-      return result;
-    };
-
-    const wrappedReplaceState = function (...args) {
-      const result = originalReplaceState.apply(this, args);
-      window.dispatchEvent(new Event("playnice:locationchange"));
-      return result;
-    };
-
-    window.history.pushState = wrappedPushState;
-    window.history.replaceState = wrappedReplaceState;
-
     syncSurface({ syncMood: true });
 
     const languageObserver = new MutationObserver(scheduleLocationSync);
@@ -273,20 +256,13 @@ export default function MobileShopV2() {
 
     media.addEventListener?.("change", schedule);
     window.addEventListener("popstate", scheduleLocationSync);
-    window.addEventListener("playnice:locationchange", scheduleLocationSync);
+    window.addEventListener(LOCATION_CHANGE_EVENT, scheduleLocationSync);
 
     return () => {
       languageObserver.disconnect();
       media.removeEventListener?.("change", schedule);
       window.removeEventListener("popstate", scheduleLocationSync);
-      window.removeEventListener("playnice:locationchange", scheduleLocationSync);
-
-      if (window.history.pushState === wrappedPushState) {
-        window.history.pushState = originalPushState;
-      }
-      if (window.history.replaceState === wrappedReplaceState) {
-        window.history.replaceState = originalReplaceState;
-      }
+      window.removeEventListener(LOCATION_CHANGE_EVENT, scheduleLocationSync);
 
       if (frame) cancelAnimationFrame(frame);
       document.getElementById("mobile-shop-v2-host")?.remove();
