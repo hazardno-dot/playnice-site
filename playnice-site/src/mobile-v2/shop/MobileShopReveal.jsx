@@ -15,6 +15,8 @@ export default function MobileShopReveal() {
     let frame = 0;
 
     const getCards = () => Array.from(document.querySelectorAll(CARD_SELECTOR));
+    const isRevealActive = () =>
+      media.matches && !reduceMotion.matches && window.location.pathname === "/shop";
 
     const revealCard = (card, immediate = false) => {
       if (!card || card.dataset.mobileShopRevealed === "true") return;
@@ -41,7 +43,7 @@ export default function MobileShopReveal() {
     };
 
     const prepareRows = () => {
-      if (!media.matches || reduceMotion.matches || window.location.pathname !== "/shop") {
+      if (!isRevealActive()) {
         revealImmediately();
         return;
       }
@@ -75,7 +77,7 @@ export default function MobileShopReveal() {
     const revealRowsAtLine = () => {
       frame = 0;
 
-      if (!media.matches || reduceMotion.matches || window.location.pathname !== "/shop") {
+      if (!isRevealActive()) {
         revealImmediately();
         return;
       }
@@ -89,7 +91,7 @@ export default function MobileShopReveal() {
         if (!firstCard || firstCard.dataset.mobileShopRevealed === "true") continue;
 
         const rect = firstCard.getBoundingClientRect();
-        if (rect.top <= revealLine) revealRow(cards, row, false);
+        if (rect.top <= revealLine) revealRow(cards, row);
       }
     };
 
@@ -132,7 +134,7 @@ export default function MobileShopReveal() {
     };
 
     const sync = () => {
-      if (!media.matches || reduceMotion.matches || window.location.pathname !== "/shop") {
+      if (!isRevealActive()) {
         disconnect();
         revealImmediately();
         return;
