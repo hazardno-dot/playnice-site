@@ -3,13 +3,6 @@ import { createPortal } from "react-dom";
 import "./MobileMenuContact.css";
 
 const getActiveLang = () => {
-  const headerLang = document
-    .querySelector(".header-next-language span")
-    ?.textContent?.trim()
-    .toLowerCase();
-
-  if (headerLang === "sr" || headerLang === "en") return headerLang;
-
   const storedLang = window.localStorage.getItem("playnice_lang")?.toLowerCase();
   if (storedLang === "sr" || storedLang === "en") return storedLang;
 
@@ -26,38 +19,20 @@ function MobileMenuContact() {
   const [catalogOpen, setCatalogOpen] = useState(false);
 
   useEffect(() => {
-    let frameId;
-
-    const resolveTarget = () => {
-      const panel = document.querySelector(".header-next-mobile-panel");
-      const discover = document.querySelector(".header-next-mobile-discover > div");
-
-      if (panel && discover) {
-        setPanelTarget(panel);
-        setDiscoverTarget(discover);
-        return;
-      }
-
-      frameId = window.requestAnimationFrame(resolveTarget);
-    };
-
-    resolveTarget();
+    setPanelTarget(document.querySelector(".header-next-mobile-panel"));
+    setDiscoverTarget(document.querySelector(".header-next-mobile-discover > div"));
 
     const syncLang = () => setLang(getActiveLang());
     const languageObserver = new MutationObserver(syncLang);
 
-    languageObserver.observe(document.body, {
-      subtree: true,
-      childList: true,
-      characterData: true,
+    languageObserver.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["lang", "class"]
+      attributeFilter: ["lang"]
     });
 
     window.addEventListener("storage", syncLang);
 
     return () => {
-      window.cancelAnimationFrame(frameId);
       languageObserver.disconnect();
       window.removeEventListener("storage", syncLang);
     };
