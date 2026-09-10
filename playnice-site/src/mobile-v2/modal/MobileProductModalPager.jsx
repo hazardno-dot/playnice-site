@@ -110,7 +110,7 @@ function MobileProductModalPager() {
           return;
         }
 
-        suppressNoteMapButtons(modal);
+        const noteMapSources = suppressNoteMapButtons(modal);
 
         if (modal.classList.contains("mobile-pager-enabled")) {
           fitPageOneTitle(modal);
@@ -175,7 +175,6 @@ function MobileProductModalPager() {
         const left = chrome.querySelector(".mobile-pager-edge-left");
         const right = chrome.querySelector(".mobile-pager-edge-right");
 
-        const noteMapSources = suppressNoteMapButtons(modal);
         const imageWrap = mediaPanel.querySelector(".modal-image-wrap");
         let noteMapHit = null;
 
