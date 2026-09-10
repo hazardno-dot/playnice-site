@@ -5842,6 +5842,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         onScentMoodChange={setScentMood}
         searchTerm={searchTerm}
         onSearchTermChange={setSearchTerm}
+        category={category}
+        categoryOptions={categoryOptions}
+        onCategoryChange={setCategory}
+        season={season}
+        seasonOptions={seasonOptions}
+        onSeasonChange={setSeason}
+        sortBy={sortBy}
+        sortOptions={sortOptions}
+        onSortChange={setSortBy}
       />
 
 
