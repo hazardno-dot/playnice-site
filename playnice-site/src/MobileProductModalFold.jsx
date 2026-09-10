@@ -36,6 +36,9 @@ function MobileProductModalFold() {
       modal.querySelectorAll(".mobile-note-map-source").forEach((node) =>
         node.classList.remove("mobile-note-map-source")
       );
+      modal.querySelectorAll(".mobile-pager-original-close").forEach((node) =>
+        node.classList.remove("mobile-pager-original-close")
+      );
     };
 
     const setupPager = () => {
@@ -55,6 +58,8 @@ function MobileProductModalFold() {
         if (!body || !mediaPanel || !contentPanel || !originalHeader || !originalClose) return;
         if (modal.classList.contains("mobile-pager-enabled")) return;
 
+        originalClose.classList.add("mobile-pager-original-close");
+
         const lang = getLang();
         let page = 0;
         let startX = 0;
@@ -66,17 +71,17 @@ function MobileProductModalFold() {
         pageOneHeader.querySelector(".close-button")?.remove();
         mediaPanel.prepend(pageOneHeader);
 
-        const makePageClose = () => {
+        const makePageClose = (pageIndex) => {
           const button = document.createElement("button");
           button.type = "button";
-          button.className = "mobile-pager-page-close";
+          button.className = `mobile-pager-page-close mobile-pager-page-close-${pageIndex}`;
           button.setAttribute("aria-label", lang === "sr" ? "Zatvori prozor" : "Close modal");
           button.textContent = "×";
           return button;
         };
 
-        const pageOneClose = makePageClose();
-        const pageTwoClose = makePageClose();
+        const pageOneClose = makePageClose(1);
+        const pageTwoClose = makePageClose(2);
         mediaPanel.appendChild(pageOneClose);
         contentPanel.appendChild(pageTwoClose);
 
@@ -185,6 +190,7 @@ function MobileProductModalFold() {
           body.removeEventListener("touchend", onTouchEnd);
           noteMapHit?.remove();
           noteMapSources.forEach((button) => button.classList.remove("mobile-note-map-source"));
+          originalClose.classList.remove("mobile-pager-original-close");
         });
       });
     };
