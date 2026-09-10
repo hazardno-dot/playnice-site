@@ -81,6 +81,12 @@
     max-width: 66%;
   }
 
+  /* Increase perceived bottle size only; keep the media box/modal height unchanged. */
+  .modal-image-wrap > .modal-image {
+    scale: 1.45;
+    transform-origin: center;
+  }
+
   .modal-wishlist-btn {
     transform: scale(0.86);
     transform-origin: top right;
@@ -246,6 +252,8 @@
 
   .modal-price-box {
     flex: 0 0 98px;
+    height: 68px;
+    align-self: center;
     gap: 2px;
     padding: 8px 9px 7px;
     border-radius: 13px;
@@ -272,6 +280,8 @@
 
   .modal-cta-group {
     flex: 1;
+    height: 68px;
+    align-self: center;
   }
 
   .modal-add-button {
@@ -283,8 +293,9 @@
   }
 
   .modal-buy-now {
-    min-height: 36px;
-    font-size: 0.66rem;
+    min-height: 20px;
+    height: 20px;
+    font-size: 0.6rem;
     font-weight: 500;
   }
 }
@@ -300,6 +311,10 @@
 
   .modal-image {
     max-height: 102px;
+  }
+
+  .modal-image-wrap > .modal-image {
+    scale: 1.4;
   }
 
   .modal-price-box {
