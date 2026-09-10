@@ -110,7 +110,7 @@ function MobilePartnerSpotlight() {
   };
 
   return createPortal(
-    <section className="mobile-partner-spotlight" aria-label={lang === "sr" ? "PlayNice partner" : "PlayNice partner"}>
+    <section className="mobile-partner-spotlight" aria-label="PlayNice partner">
       <a
         className="mobile-partner-spotlight-card"
         href={FOREVER_URL}
