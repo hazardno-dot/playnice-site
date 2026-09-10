@@ -63,9 +63,9 @@
   }
 
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2 {
-    max-width: calc(100% - 50px);
+    max-width: calc(100% - 44px);
     margin: 0;
-    font-size: 2.05rem !important;
+    font-size: 1.78rem !important;
     line-height: 0.98;
     text-align: left;
     display: -webkit-box;
@@ -181,7 +181,7 @@
     background: radial-gradient(circle, rgba(220, 181, 107, 0.055), transparent 66%);
   }
 
-  /* Page 02 stays centered except for the two requested decision cues. */
+  /* Page 02 stays centered except for the requested decision cues. */
   .product-modal.mobile-pager-enabled .mobile-pager-decision-intro,
   .product-modal.mobile-pager-enabled .modal-description,
   .product-modal.mobile-pager-enabled .modal-info-card,
@@ -206,6 +206,17 @@
 
   .product-modal.mobile-pager-enabled .modal-info-card {
     align-items: center;
+  }
+
+  /* Scent profile card reads from the left; the following editorial card stays centered. */
+  .product-modal.mobile-pager-enabled .modal-info-card:first-of-type {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  .product-modal.mobile-pager-enabled .modal-info-card:first-of-type > * {
+    width: 100%;
+    text-align: left !important;
   }
 
   .product-modal.mobile-pager-enabled .modal-price-box {
@@ -247,7 +258,7 @@
 
 @media (max-width: 360px) {
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2 {
-    font-size: 2.05rem !important;
+    font-size: 1.72rem !important;
   }
 }
 
