@@ -1,11 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import { LOCATION_CHANGE_EVENT } from "../../lib/locationEvents";
 
 const MOBILE_QUERY = "(max-width: 640px)";
-
-const getLang = () =>
-  localStorage.getItem("playnice_lang") === "en" ? "en" : "sr";
 
 const getMoodOptions = (lang) => [
   {
@@ -45,6 +40,7 @@ function getCategoryTone(label = "") {
 }
 
 export default function MobileShopV2({
+  lang = "sr",
   scentMood = "All",
   onScentMoodChange,
   searchTerm = "",
@@ -59,12 +55,9 @@ export default function MobileShopV2({
   sortOptions = [],
   onSortChange,
 }) {
-  const [host, setHost] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [lang, setLang] = useState(getLang);
   const [panel, setPanel] = useState(null);
   const menuRef = useRef(null);
-  const wasShopActiveRef = useRef(false);
 
   const moodOptions = useMemo(() => getMoodOptions(lang), [lang]);
 
@@ -104,79 +97,17 @@ export default function MobileShopV2({
     [lang]
   );
 
-  const syncSurface = () => {
-    const media = window.matchMedia(MOBILE_QUERY);
-    const onShop = window.location.pathname === "/shop";
-    const active = media.matches && onShop;
-
-    setIsMobile(active);
-    setLang(getLang());
-
-    if (!active) {
-      wasShopActiveRef.current = false;
-      setHost(null);
-      setPanel(null);
-      return;
-    }
-
-    const intro = document.querySelector(".shop-collection-intro");
-    if (!intro) return;
-
-    let target = document.getElementById("mobile-shop-v2-host");
-    if (!target) {
-      target = document.createElement("div");
-      target.id = "mobile-shop-v2-host";
-      intro.insertAdjacentElement("afterend", target);
-    }
-
-    setHost(target);
-
-    wasShopActiveRef.current = true;
-  };
-
   useEffect(() => {
     const media = window.matchMedia(MOBILE_QUERY);
-    let frame = 0;
+    const syncMobile = () => setIsMobile(media.matches);
 
-    const schedule = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        syncSurface();
-      });
-    };
-
-    const scheduleLocationSync = () => {
-      if (frame) cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        syncSurface();
-      });
-    };
-
-    syncSurface();
-
-    const languageObserver = new MutationObserver(scheduleLocationSync);
-    languageObserver.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["lang"],
-    });
-
-    media.addEventListener?.("change", schedule);
-    window.addEventListener("popstate", scheduleLocationSync);
-    window.addEventListener(LOCATION_CHANGE_EVENT, scheduleLocationSync);
+    syncMobile();
+    media.addEventListener?.("change", syncMobile);
 
     return () => {
-      languageObserver.disconnect();
-      media.removeEventListener?.("change", schedule);
-      window.removeEventListener("popstate", scheduleLocationSync);
-      window.removeEventListener(LOCATION_CHANGE_EVENT, scheduleLocationSync);
-
-      if (frame) cancelAnimationFrame(frame);
-      document.getElementById("mobile-shop-v2-host")?.remove();
+      media.removeEventListener?.("change", syncMobile);
     };
   }, []);
-
   useEffect(() => {
     if (!panel) return;
 
@@ -245,7 +176,7 @@ export default function MobileShopV2({
 
   const filterCount = [category !== "All", season !== "All"].filter(Boolean).length;
 
-  if (!isMobile || !host) return null;
+  if (!isMobile) return null;
 
   const capsuleValue = (name) => {
     if (name === "mood") return activeMoodOption?.label || copy.moodDefault;
@@ -360,7 +291,7 @@ export default function MobileShopV2({
     </section>
   );
 
-  return createPortal(menu, host);
+  return menu;
 }
 
 function SelectionSection({ title, options, onChoose, kind }) {

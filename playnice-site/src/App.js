@@ -5837,22 +5837,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       })}
   </aside>
 )}
-      <MobileShopV2
-        scentMood={scentMood}
-        onScentMoodChange={setScentMood}
-        searchTerm={searchTerm}
-        onSearchTermChange={setSearchTerm}
-        category={category}
-        categoryOptions={categoryOptions}
-        onCategoryChange={setCategory}
-        season={season}
-        seasonOptions={seasonOptions}
-        onSeasonChange={setSeason}
-        sortBy={sortBy}
-        sortOptions={sortOptions}
-        onSortChange={setSortBy}
-      />
-
 
 <div
   className={`header-system ${
@@ -7734,6 +7718,23 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <p className="shop-subtext shop-collection-subtext">{tr.shopText}</p>
     </div>
   </div>
+
+  <MobileShopV2
+    lang={lang}
+    scentMood={scentMood}
+    onScentMoodChange={setScentMood}
+    searchTerm={searchTerm}
+    onSearchTermChange={setSearchTerm}
+    category={category}
+    categoryOptions={categoryOptions}
+    onCategoryChange={setCategory}
+    season={season}
+    seasonOptions={seasonOptions}
+    onSeasonChange={setSeason}
+    sortBy={sortBy}
+    sortOptions={sortOptions}
+    onSortChange={setSortBy}
+  />
 
   <div
     className="shop-value-anchor shop-value-anchor-compact"
