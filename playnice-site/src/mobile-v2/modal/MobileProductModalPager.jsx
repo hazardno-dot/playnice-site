@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import "./MobileProductModalFold.css";
+import "./MobileProductModalPagerCore.css";
 
 const MOBILE_QUERY = "(max-width: 640px)";
 const SWIPE_THRESHOLD = 54;
 
-function MobileProductModalFold() {
+function MobileProductModalPager() {
   useEffect(() => {
     const media = window.matchMedia(MOBILE_QUERY);
     const cleanupMap = new WeakMap();
@@ -297,4 +297,4 @@ function MobileProductModalFold() {
   return null;
 }
 
-export default MobileProductModalFold;
+export default MobileProductModalPager;
