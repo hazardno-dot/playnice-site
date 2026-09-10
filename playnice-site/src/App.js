@@ -9452,6 +9452,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             )}
 
             {selectedProduct.noteMap && (
+              <button
+                type="button"
+                className="mobile-note-map-hit"
+                aria-label={
+                  lang === "sr" ? "Prikaži note parfema" : "Show fragrance notes"
+                }
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setNoteMapOpen((current) => !current);
+                }}
+              />
+            )}
+            {selectedProduct.noteMap && (
               <TheNoteMap
                 notes={selectedProduct.noteMap}
                 lang={lang}
@@ -9463,7 +9477,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             {selectedProduct.noteMap && (
               <button
                 type="button"
-                className={`the-note-map__mobile-trigger ${
+                className={`the-note-map__mobile-trigger mobile-note-map-source ${
                   noteMapOpen ? "is-open" : ""
                 }`}
                 onClick={(event) => {
@@ -9582,6 +9596,17 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           </div>
 
         <div className="modal-content panel-anim panel-anim-3">
+          <div className="mobile-pager-decision-intro">
+            <span>
+              {lang === "sr" ? "02 · IZABERI SVOJ DEKANT" : "02 · CHOOSE YOUR DECANT"}
+            </span>
+            <h3>{lang === "sr" ? "Probaj ga na svoj način." : "Try it your way."}</h3>
+            <p>
+              {lang === "sr"
+                ? "Detalji, veličina i kupovina — bez žurbe."
+                : "Details, size and purchase — with room to decide."}
+            </p>
+          </div>
           {selectedCopy.miniTag && (
             <span className="modal-chip panel-item-anim panel-item-1">
               {selectedCopy.miniTag}

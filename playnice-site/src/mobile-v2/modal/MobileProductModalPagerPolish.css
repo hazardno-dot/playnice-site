@@ -1,3 +1,7 @@
+.mobile-pager-decision-intro,
+.mobile-note-map-hit {
+  display: none;
+}
 @media (max-width: 640px) {
   /* Keep original React controls mounted only as hidden event sources. */
   .product-modal.mobile-pager-enabled > .modal-header {
@@ -161,6 +165,7 @@
   }
 
   .product-modal.mobile-pager-enabled .mobile-note-map-hit {
+    display: block;
     position: absolute;
     z-index: 14;
     left: 50%;
@@ -184,6 +189,9 @@
   }
 
   /* Page 02 stays centered except for the requested decision cues. */
+  .product-modal.mobile-pager-enabled .mobile-pager-decision-intro {
+    display: block;
+  }
   .product-modal.mobile-pager-enabled .mobile-pager-decision-intro,
   .product-modal.mobile-pager-enabled .modal-description,
   .product-modal.mobile-pager-enabled .modal-info-card,

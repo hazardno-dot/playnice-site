@@ -19,17 +19,6 @@ function MobileProductModalPager() {
       });
     };
 
-    const getNoteMapButtons = (modal) =>
-      Array.from(modal.querySelectorAll("button")).filter((button) =>
-        button.textContent?.toUpperCase().includes("THE NOTE MAP")
-      );
-
-    const suppressNoteMapButtons = (modal) => {
-      const buttons = getNoteMapButtons(modal);
-      buttons.forEach((button) => button.classList.add("mobile-note-map-source"));
-      return buttons;
-    };
-
     const fitPageOneTitle = (modal) => {
       const title = modal.querySelector(".mobile-pager-page1-header h2");
       if (!title) return;
@@ -89,13 +78,8 @@ function MobileProductModalPager() {
       modal.classList.remove("mobile-pager-enabled", "mobile-pager-page-1", "mobile-pager-page-2");
       modal.style.removeProperty("--mobile-pager-page");
       modal.querySelector(".mobile-modal-pager-chrome")?.remove();
-      modal.querySelector(".mobile-pager-decision-intro")?.remove();
       modal.querySelector(".mobile-pager-page1-header")?.remove();
       modal.querySelectorAll(".mobile-pager-page-close").forEach((node) => node.remove());
-      modal.querySelector(".mobile-note-map-hit")?.remove();
-      modal.querySelectorAll(".mobile-note-map-source").forEach((node) =>
-        node.classList.remove("mobile-note-map-source")
-      );
       modal.querySelectorAll(".mobile-pager-original-close").forEach((node) =>
         node.classList.remove("mobile-pager-original-close")
       );
@@ -109,8 +93,6 @@ function MobileProductModalPager() {
           clearPager(modal);
           return;
         }
-
-        const noteMapSources = suppressNoteMapButtons(modal);
 
         if (modal.classList.contains("mobile-pager-enabled")) {
           fitPageOneTitle(modal);
@@ -151,13 +133,6 @@ function MobileProductModalPager() {
         mediaPanel.appendChild(pageOneClose);
         contentPanel.appendChild(pageTwoClose);
 
-        const intro = document.createElement("div");
-        intro.className = "mobile-pager-decision-intro";
-        intro.innerHTML = lang === "sr"
-          ? '<span>02 · IZABERI SVOJ DEKANT</span><h3>Probaj ga na svoj način.</h3><p>Detalji, veličina i kupovina — bez žurbe.</p>'
-          : '<span>02 · CHOOSE YOUR DECANT</span><h3>Try it your way.</h3><p>Details, size and purchase — with room to decide.</p>';
-        contentPanel.prepend(intro);
-
         const chrome = document.createElement("div");
         chrome.className = "mobile-modal-pager-chrome";
         chrome.innerHTML = `
@@ -174,29 +149,6 @@ function MobileProductModalPager() {
         const dots = Array.from(chrome.querySelectorAll(".mobile-pager-dots i"));
         const left = chrome.querySelector(".mobile-pager-edge-left");
         const right = chrome.querySelector(".mobile-pager-edge-right");
-
-        const imageWrap = mediaPanel.querySelector(".modal-image-wrap");
-        let noteMapHit = null;
-
-        if (noteMapSources.length && imageWrap) {
-          noteMapHit = document.createElement("button");
-          noteMapHit.type = "button";
-          noteMapHit.className = "mobile-note-map-hit";
-          noteMapHit.setAttribute(
-            "aria-label",
-            lang === "sr" ? "Prikaži note parfema" : "Show fragrance notes"
-          );
-          noteMapHit.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            const currentSource = getNoteMapButtons(modal).find(
-              (button) => button !== noteMapHit
-            );
-            currentSource?.click();
-            suppressNoteMapButtons(modal);
-          });
-          imageWrap.appendChild(noteMapHit);
-        }
 
         const setPage = (nextPage) => {
           page = Math.max(0, Math.min(1, nextPage));
@@ -254,10 +206,6 @@ function MobileProductModalPager() {
           pageTwoClose.removeEventListener("click", closeModal);
           body.removeEventListener("touchstart", onTouchStart);
           body.removeEventListener("touchend", onTouchEnd);
-          noteMapHit?.remove();
-          modal.querySelectorAll(".mobile-note-map-source").forEach((button) =>
-            button.classList.remove("mobile-note-map-source")
-          );
           originalClose.classList.remove("mobile-pager-original-close");
         });
       });
