@@ -292,12 +292,6 @@
     margin-top: 1px;
   }
 
-  .mobile-shop-selection-section + .mobile-shop-selection-section {
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid rgba(220,181,107,0.075);
-  }
-
   .mobile-shop-selection-section h4 {
     margin: 0 0 5px;
     color: rgba(220,181,107,0.64);
