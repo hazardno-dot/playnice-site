@@ -75,7 +75,6 @@
   .sticky-cta-shell {
     width: min(calc(100vw - 40px), 380px);
     max-width: min(calc(100vw - 40px), 380px);
-    bottom: calc(8px + env(safe-area-inset-bottom));
   }
 
   .sticky-cta-copy strong {
@@ -84,10 +83,6 @@
 
   .sticky-cta-copy small {
     opacity: 0.66;
-  }
-
-  .sticky-cta-journal-link {
-    opacity: 0.78;
   }
 
   /* =========================================
