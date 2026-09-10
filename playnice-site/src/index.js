@@ -10,10 +10,12 @@ import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
 import MobileProductModalPager from "./mobile-v2/modal/MobileProductModalPager";
+import MobileCommunityV2 from "./mobile-v2/community/MobileCommunityV2";
 import DesktopFooterCatalog from "./DesktopFooterCatalog";
 import CartInteractionV2 from "./CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
 import FragranceIntelligenceToneEnhancer from "./FragranceIntelligenceToneEnhancer";
+import { initLocationEvents } from "./lib/locationEvents";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
 import "./NewArrivalsScale.css";
@@ -31,6 +33,7 @@ import "./mobile-v2/content/MobileExhibitionV2.css";
 import "./mobile-v2/content/MobileStoryV2.css";
 import "./mobile-v2/content/MobileFaqV2.css";
 import "./mobile-v2/private-selection/MobilePrivateSelectionV2.css";
+import "./mobile-v2/private-selection/MobilePrivateSelectionDrawerV2.css";
 import "./mobile-v2/navigation/MobileClosingFooterV2.css";
 import "./mobile-v2/shop/MobileShopV2.css";
 import "./mobile-v2/shop/MobileShopReveal.css";
@@ -50,6 +53,8 @@ import "./DesktopProductModalCopyV2.css";
 import "./HeaderLanguageColor.css";
 import "./DesktopDiscoverCleanup.css";
 
+initLocationEvents();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
@@ -63,6 +68,7 @@ root.render(
     <MobileShopReveal />
     <MobileMenuContact />
     <MobileProductModalPager />
+    <MobileCommunityV2 />
     <DesktopFooterCatalog />
     <CartInteractionV2 />
     <DiscoveryImageFallback />

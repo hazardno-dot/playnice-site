@@ -24,6 +24,8 @@ function MobilePartnerSpotlight() {
   );
 
   useEffect(() => {
+    let frame = 0;
+
     const sync = () => {
       setLang(getLanguage());
       setVisible(window.innerWidth <= 640 && isHomePath());
@@ -52,24 +54,29 @@ function MobilePartnerSpotlight() {
     };
 
     const run = () => {
+      frame = 0;
       sync();
       ensureHost();
     };
 
+    const scheduleRun = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(run);
+    };
+
     run();
 
-    const observer = new MutationObserver(run);
-    observer.observe(document.body, { childList: true, subtree: true });
-
     window.addEventListener("resize", sync);
-    window.addEventListener("popstate", run);
+    window.addEventListener("popstate", scheduleRun);
+    window.addEventListener("playnice:locationchange", scheduleRun);
     window.addEventListener("storage", sync);
 
     return () => {
-      observer.disconnect();
       window.removeEventListener("resize", sync);
-      window.removeEventListener("popstate", run);
+      window.removeEventListener("popstate", scheduleRun);
+      window.removeEventListener("playnice:locationchange", scheduleRun);
       window.removeEventListener("storage", sync);
+      if (frame) window.cancelAnimationFrame(frame);
       document.querySelector(".mobile-partner-spotlight-host")?.remove();
     };
   }, []);
