@@ -1,10 +1,6 @@
 /* Mobile-only support + catalog accordions injected into HeaderNext mobile panel. */
 
 @media (max-width: 640px) {
-  .header-next-mobile-primary {
-    order: 0;
-  }
-
   .header-next-mobile-discover {
     order: 1;
   }
