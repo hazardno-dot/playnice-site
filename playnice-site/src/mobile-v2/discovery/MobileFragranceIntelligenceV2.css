@@ -302,17 +302,13 @@
   }
 
   .playnice-discovery-overlay {
-    place-items: center;
     padding: 14px 8px;
   }
 
   .playnice-discovery-panel,
   .playnice-discovery-panel.has-results {
     width: calc(100vw - 16px);
-    height: auto;
     max-height: calc(100dvh - 28px);
-    margin: auto;
-    border-radius: 22px;
   }
 
   .playnice-discovery-input-wrap input {
