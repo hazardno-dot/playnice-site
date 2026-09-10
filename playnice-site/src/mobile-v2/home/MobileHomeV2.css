@@ -49,8 +49,6 @@
   }
 
   /* Main scene-to-scene rhythm: one protocol, one gap. */
-  .playnice-discovery-portal,
-  .new-arrivals-section,
   .discovery-showcase,
   .homepage-shop-preview {
     margin-top: var(--mobile-home-section-gap);
