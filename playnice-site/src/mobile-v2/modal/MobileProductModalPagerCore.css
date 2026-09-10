@@ -7,15 +7,6 @@
     flex-direction: column;
   }
 
-  .product-modal.mobile-pager-enabled .modal-header {
-    position: relative;
-    z-index: 12;
-    flex: 0 0 auto;
-    background:
-      linear-gradient(180deg, rgba(20, 18, 15, 0.99), rgba(15, 14, 12, 0.98));
-    border-bottom: 1px solid rgba(220, 181, 107, 0.08);
-  }
-
   .product-modal.mobile-pager-enabled .modal-body {
     flex: 1 1 auto;
     min-height: 0;
