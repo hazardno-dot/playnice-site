@@ -280,6 +280,8 @@
 
   .modal-cta-group {
     flex: 1;
+    height: 68px;
+    align-self: center;
   }
 
   .modal-add-button {
@@ -291,8 +293,9 @@
   }
 
   .modal-buy-now {
-    min-height: 36px;
-    font-size: 0.66rem;
+    min-height: 20px;
+    height: 20px;
+    font-size: 0.6rem;
     font-weight: 500;
   }
 }
