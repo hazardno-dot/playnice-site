@@ -19,6 +19,66 @@ function MobileProductModalFold() {
       });
     };
 
+    const getNoteMapButtons = (modal) =>
+      Array.from(modal.querySelectorAll("button")).filter((button) =>
+        button.textContent?.toUpperCase().includes("THE NOTE MAP")
+      );
+
+    const suppressNoteMapButtons = (modal) => {
+      const buttons = getNoteMapButtons(modal);
+      buttons.forEach((button) => button.classList.add("mobile-note-map-source"));
+      return buttons;
+    };
+
+    const fitPageOneTitle = (modal) => {
+      const title = modal.querySelector(".mobile-pager-page1-header h2");
+      if (!title) return;
+
+      requestAnimationFrame(() => {
+        title.style.removeProperty("--mobile-pager-title-size");
+
+        const width = title.getBoundingClientRect().width;
+        if (!width) return;
+
+        const computed = getComputedStyle(title);
+        const baseSize = parseFloat(computed.fontSize);
+        const minSize = Math.max(20, baseSize * 0.78);
+
+        const probe = title.cloneNode(true);
+        probe.removeAttribute("id");
+        Object.assign(probe.style, {
+          position: "absolute",
+          left: "-9999px",
+          top: "0",
+          width: `${width}px`,
+          maxWidth: "none",
+          height: "auto",
+          visibility: "hidden",
+          pointerEvents: "none",
+          display: "block",
+          overflow: "visible",
+          WebkitLineClamp: "unset",
+          WebkitBoxOrient: "initial"
+        });
+        title.parentElement?.appendChild(probe);
+
+        let size = baseSize;
+        const fitsTwoLines = () => {
+          probe.style.fontSize = `${size}px`;
+          const probeStyle = getComputedStyle(probe);
+          const lineHeight = parseFloat(probeStyle.lineHeight);
+          return probe.scrollHeight <= lineHeight * 2 + 1;
+        };
+
+        while (size > minSize && !fitsTwoLines()) {
+          size -= 0.5;
+        }
+
+        title.style.setProperty("--mobile-pager-title-size", `${size}px`);
+        probe.remove();
+      });
+    };
+
     const clearPager = (modal) => {
       if (!modal) return;
 
@@ -50,13 +110,21 @@ function MobileProductModalFold() {
           return;
         }
 
+        // React can replace the Note Map trigger after the first interaction.
+        // Re-suppress every replacement even when the pager itself is already mounted.
+        suppressNoteMapButtons(modal);
+
+        if (modal.classList.contains("mobile-pager-enabled")) {
+          fitPageOneTitle(modal);
+          return;
+        }
+
         const body = modal.querySelector(".modal-body");
         const mediaPanel = body?.querySelector(":scope > .modal-media");
         const contentPanel = body?.querySelector(":scope > .modal-content");
         const originalHeader = modal.querySelector(":scope > .modal-header");
         const originalClose = modal.querySelector(":scope > .close-button") || originalHeader?.querySelector(".close-button");
         if (!body || !mediaPanel || !contentPanel || !originalHeader || !originalClose) return;
-        if (modal.classList.contains("mobile-pager-enabled")) return;
 
         originalClose.classList.add("mobile-pager-original-close");
 
@@ -109,15 +177,11 @@ function MobileProductModalFold() {
         const left = chrome.querySelector(".mobile-pager-edge-left");
         const right = chrome.querySelector(".mobile-pager-edge-right");
 
-        const noteMapSources = Array.from(modal.querySelectorAll("button")).filter((button) =>
-          button.textContent?.toUpperCase().includes("THE NOTE MAP")
-        );
-        noteMapSources.forEach((button) => button.classList.add("mobile-note-map-source"));
-        const noteMapSource = noteMapSources[0];
+        const noteMapSources = suppressNoteMapButtons(modal);
         const imageWrap = mediaPanel.querySelector(".modal-image-wrap");
         let noteMapHit = null;
 
-        if (noteMapSource && imageWrap) {
+        if (noteMapSources.length && imageWrap) {
           noteMapHit = document.createElement("button");
           noteMapHit.type = "button";
           noteMapHit.className = "mobile-note-map-hit";
@@ -128,7 +192,11 @@ function MobileProductModalFold() {
           noteMapHit.addEventListener("click", (event) => {
             event.preventDefault();
             event.stopPropagation();
-            noteMapSource.click();
+            const currentSource = getNoteMapButtons(modal).find(
+              (button) => button !== noteMapHit
+            );
+            currentSource?.click();
+            suppressNoteMapButtons(modal);
           });
           imageWrap.appendChild(noteMapHit);
         }
@@ -179,6 +247,7 @@ function MobileProductModalFold() {
         body.addEventListener("touchend", onTouchEnd, { passive: true });
 
         modal.classList.add("mobile-pager-enabled");
+        fitPageOneTitle(modal);
         setPage(0);
 
         cleanupMap.set(modal, () => {
@@ -189,7 +258,9 @@ function MobileProductModalFold() {
           body.removeEventListener("touchstart", onTouchStart);
           body.removeEventListener("touchend", onTouchEnd);
           noteMapHit?.remove();
-          noteMapSources.forEach((button) => button.classList.remove("mobile-note-map-source"));
+          modal.querySelectorAll(".mobile-note-map-source").forEach((button) =>
+            button.classList.remove("mobile-note-map-source")
+          );
           originalClose.classList.remove("mobile-pager-original-close");
         });
       });
