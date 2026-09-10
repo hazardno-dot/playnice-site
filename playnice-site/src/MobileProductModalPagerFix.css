@@ -1,14 +1,40 @@
 @media (max-width: 640px) {
   /* Treat the original product header as part of page 01, not shared chrome. */
   .product-modal.mobile-pager-enabled .modal-header {
-    max-height: 170px;
+    max-height: 190px;
     overflow: hidden;
     opacity: 1;
+    padding: 18px 16px 12px !important;
+    background:
+      radial-gradient(circle at 82% 12%, rgba(220, 181, 107, 0.055), transparent 34%),
+      linear-gradient(180deg, rgba(18, 17, 15, 0.995), rgba(16, 15, 13, 0.995));
+    border-bottom: 0 !important;
+    box-shadow: none !important;
     transition:
       max-height 320ms cubic-bezier(0.22, 0.78, 0.22, 1),
       opacity 180ms ease,
       padding 260ms ease,
       border-color 220ms ease;
+  }
+
+  /* Make page 01 read as one continuous composition with the media panel. */
+  .product-modal.mobile-pager-page-1 .modal-header {
+    padding-bottom: 16px !important;
+  }
+
+  .product-modal.mobile-pager-page-1 .modal-media {
+    padding-top: 10px !important;
+    background:
+      linear-gradient(180deg, rgba(16, 15, 13, 0.995), rgba(11, 11, 10, 0.995));
+  }
+
+  /* Keep the original close control clearly available on page 01. */
+  .product-modal.mobile-pager-page-1 .modal-header .close-button,
+  .product-modal.mobile-pager-page-1 > .close-button {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
   }
 
   .product-modal.mobile-pager-page-2 .modal-header {
@@ -53,6 +79,17 @@
   /* Give page 02 a true full-height composition after page 01 header disappears. */
   .product-modal.mobile-pager-page-2 .modal-content {
     padding-top: 28px !important;
+  }
+
+  /* Reserve a consistent two-line note area so product-to-product height never jumps. */
+  .product-modal.mobile-pager-enabled .modal-media-meta-copy p {
+    min-height: 2.72em;
+    max-height: 2.72em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
   }
 
   /* Separate navigation: page counter left, action hint right. */
