@@ -23,6 +23,7 @@ function MobileProductModalFold() {
       modal.style.removeProperty("--mobile-pager-page");
       modal.querySelector(".mobile-modal-pager-chrome")?.remove();
       modal.querySelector(".mobile-pager-decision-intro")?.remove();
+      modal.querySelector(".mobile-pager-page1-header")?.remove();
     };
 
     const setupPager = () => {
@@ -35,8 +36,9 @@ function MobileProductModalFold() {
         const body = modal.querySelector(".modal-body");
         const mediaPanel = body?.querySelector(":scope > .modal-media");
         const contentPanel = body?.querySelector(":scope > .modal-content");
-        const originalClose = modal.querySelector(".close-button");
-        if (!body || !mediaPanel || !contentPanel) return;
+        const originalHeader = modal.querySelector(":scope > .modal-header");
+        const originalClose = originalHeader?.querySelector(".close-button") || modal.querySelector(".close-button");
+        if (!body || !mediaPanel || !contentPanel || !originalHeader) return;
         if (modal.classList.contains("mobile-pager-enabled")) return;
 
         const lang = getLang();
@@ -44,6 +46,12 @@ function MobileProductModalFold() {
         let startX = 0;
         let startY = 0;
         let tracking = false;
+
+        // Page 01 gets its own header inside the swipe track so title/rating/close travel with the page.
+        const pageOneHeader = originalHeader.cloneNode(true);
+        pageOneHeader.classList.add("mobile-pager-page1-header");
+        mediaPanel.prepend(pageOneHeader);
+        const pageOneClose = pageOneHeader.querySelector(".close-button");
 
         const intro = document.createElement("div");
         intro.className = "mobile-pager-decision-intro";
@@ -117,6 +125,7 @@ function MobileProductModalFold() {
         right.addEventListener("click", goNext);
         hint.addEventListener("click", goNext);
         close.addEventListener("click", closeModal);
+        pageOneClose?.addEventListener("click", closeModal);
         body.addEventListener("touchstart", onTouchStart, { passive: true });
         body.addEventListener("touchend", onTouchEnd, { passive: true });
 
@@ -128,6 +137,7 @@ function MobileProductModalFold() {
           right.removeEventListener("click", goNext);
           hint.removeEventListener("click", goNext);
           close.removeEventListener("click", closeModal);
+          pageOneClose?.removeEventListener("click", closeModal);
           body.removeEventListener("touchstart", onTouchStart);
           body.removeEventListener("touchend", onTouchEnd);
         });
