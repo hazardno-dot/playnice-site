@@ -15,6 +15,7 @@ import { BASE_HERO_SLIDES } from "./data/heroSlides.generated";
 import TheNoteMap from "./TheNoteMap";
 import { discoverFragrances } from "./lib/discoveryEngine";
 import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
+import MobileProductModalPager from "./mobile-v2/modal/MobileProductModalPager";
 
 const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 
@@ -833,6 +834,7 @@ const getInitialShopState = () => {
   const [miniCartPreviewId, setMiniCartPreviewId] = useState(0);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [mobileModalPage, setMobileModalPage] = useState(0);
 
   const [discoveryQuery, setDiscoveryQuery] = useState("");
   const [discoveryResults, setDiscoveryResults] = useState([]);
@@ -9300,6 +9302,26 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         ×
       </button>
 
+      <MobileProductModalPager
+        modalRef={productModalRef}
+        active={productModalVisible}
+        resetKey={selectedProduct.id}
+        page={mobileModalPage}
+        setPage={setMobileModalPage}
+      />
+
+      <div className="mobile-modal-pager-chrome">
+        <button type="button" className="mobile-pager-edge mobile-pager-edge-left" aria-label={lang === "sr" ? "Prethodna strana" : "Previous page"} onClick={() => setMobileModalPage(0)}>‹</button>
+        <div className="mobile-pager-status" aria-live="polite">
+          <span className="mobile-pager-status-label">{mobileModalPage === 0 ? "01 / 02" : "02 / 02"}</span>
+          <span className="mobile-pager-dots" aria-hidden="true">
+            <i className={mobileModalPage === 0 ? "is-active" : ""} />
+            <i className={mobileModalPage === 1 ? "is-active" : ""} />
+          </span>
+        </div>
+        <button type="button" className="mobile-pager-edge mobile-pager-edge-right" aria-label={lang === "sr" ? "Sledeća strana" : "Next page"} onClick={() => setMobileModalPage(1)}>›</button>
+      </div>
+
       <div className="modal-header panel-anim panel-anim-1">
         <span className="modal-eyebrow">PRIVATE DETAIL</span>
         <h2 id="product-modal-title">
@@ -9357,6 +9379,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <div className="modal-body">
         <div className="modal-media panel-anim panel-anim-2">
+          <button type="button" className="mobile-pager-page-close mobile-pager-page-close-1" aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"} onClick={() => closeProductModal()}>×</button>
 
           <button
             type="button"
@@ -9596,6 +9619,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           </div>
 
         <div className="modal-content panel-anim panel-anim-3">
+          <button type="button" className="mobile-pager-page-close mobile-pager-page-close-2" aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"} onClick={() => closeProductModal()}>×</button>
+
           <div className="mobile-pager-decision-intro">
             <span>
               {lang === "sr" ? "02 · IZABERI SVOJ DEKANT" : "02 · CHOOSE YOUR DECANT"}

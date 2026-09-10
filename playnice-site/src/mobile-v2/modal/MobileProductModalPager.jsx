@@ -4,22 +4,31 @@ import "./MobileProductModalPagerCore.css";
 const MOBILE_QUERY = "(max-width: 640px)";
 const SWIPE_THRESHOLD = 54;
 
-function MobileProductModalPager() {
+function MobileProductModalPager({
+  modalRef,
+  active,
+  resetKey,
+  page,
+  setPage,
+}) {
   useEffect(() => {
+    if (!active) return undefined;
+
+    const modal = modalRef?.current;
+    if (!modal) return undefined;
+
     const media = window.matchMedia(MOBILE_QUERY);
-    const cleanupMap = new WeakMap();
+    let cleanupCurrent = null;
 
-    const getLang = () =>
-      document.documentElement.lang?.toLowerCase().startsWith("sr") ? "sr" : "en";
-
-    const markOriginalInspired = (modal) => {
+    const markOriginalInspired = () => {
       modal.querySelectorAll(".modal-inspired-mini").forEach((block) => {
-        const name = block.querySelector(".modal-inspired-mini-name")?.textContent?.trim() || "";
-        block.classList.toggle("modal-inspired-original", /^original\b/i.test(name));
+        const name =
+          block.querySelector(".modal-inspired-mini-name")?.textContent?.trim() || "";
+        block.classList.toggle("modal-inspired-original", /^original\\b/i.test(name));
       });
     };
 
-    const fitPageOneTitle = (modal) => {
+    const fitPageOneTitle = () => {
       const title = modal.querySelector(".mobile-pager-page1-header h2");
       if (!title) return;
 
@@ -32,8 +41,8 @@ function MobileProductModalPager() {
         const computed = getComputedStyle(title);
         const baseSize = parseFloat(computed.fontSize);
         const minSize = Math.max(20, baseSize * 0.78);
-
         const probe = title.cloneNode(true);
+
         probe.removeAttribute("id");
         Object.assign(probe.style, {
           position: "absolute",
@@ -47,8 +56,9 @@ function MobileProductModalPager() {
           display: "block",
           overflow: "visible",
           WebkitLineClamp: "unset",
-          WebkitBoxOrient: "initial"
+          WebkitBoxOrient: "initial",
         });
+
         title.parentElement?.appendChild(probe);
 
         let size = baseSize;
@@ -68,178 +78,122 @@ function MobileProductModalPager() {
       });
     };
 
-    const clearPager = (modal) => {
-      if (!modal) return;
-
-      const cleanup = cleanupMap.get(modal);
-      cleanup?.();
-      cleanupMap.delete(modal);
-
-      modal.classList.remove("mobile-pager-enabled", "mobile-pager-page-1", "mobile-pager-page-2");
-      modal.style.removeProperty("--mobile-pager-page");
-      modal.querySelector(".mobile-modal-pager-chrome")?.remove();
-      modal.querySelector(".mobile-pager-page1-header")?.remove();
-      modal.querySelectorAll(".mobile-pager-page-close").forEach((node) => node.remove());
-      modal.querySelectorAll(".mobile-pager-original-close").forEach((node) =>
-        node.classList.remove("mobile-pager-original-close")
+    const clearPager = () => {
+      cleanupCurrent?.();
+      cleanupCurrent = null;
+      modal.classList.remove(
+        "mobile-pager-enabled",
+        "mobile-pager-page-1",
+        "mobile-pager-page-2"
       );
+      modal.style.removeProperty("--mobile-pager-page");
+      modal.querySelector(".mobile-pager-page1-header")?.remove();
+      modal
+        .querySelectorAll(".mobile-pager-original-close")
+        .forEach((node) => node.classList.remove("mobile-pager-original-close"));
     };
 
     const setupPager = () => {
-      document.querySelectorAll(".product-modal").forEach((modal) => {
-        markOriginalInspired(modal);
+      clearPager();
+      markOriginalInspired();
 
-        if (!media.matches || !modal.classList.contains("open")) {
-          clearPager(modal);
+      if (!media.matches || !active) return;
+
+      const body = modal.querySelector(".modal-body");
+      const mediaPanel = body?.querySelector(":scope > .modal-media");
+      const contentPanel = body?.querySelector(":scope > .modal-content");
+      const originalHeader = modal.querySelector(":scope > .modal-header");
+      const originalClose =
+        modal.querySelector(":scope > .close-button") ||
+        originalHeader?.querySelector(".close-button");
+
+      if (!body || !mediaPanel || !contentPanel || !originalHeader || !originalClose) {
+        return;
+      }
+
+      originalClose.classList.add("mobile-pager-original-close");
+
+      const pageOneHeader = originalHeader.cloneNode(true);
+      pageOneHeader.classList.add("mobile-pager-page1-header");
+      pageOneHeader.querySelector(".close-button")?.remove();
+      mediaPanel.prepend(pageOneHeader);
+
+      let startX = 0;
+      let startY = 0;
+      let tracking = false;
+
+      const onTouchStart = (event) => {
+        const touch = event.touches?.[0];
+        if (!touch) return;
+        startX = touch.clientX;
+        startY = touch.clientY;
+        tracking = true;
+      };
+
+      const onTouchEnd = (event) => {
+        if (!tracking) return;
+        tracking = false;
+
+        const touch = event.changedTouches?.[0];
+        if (!touch) return;
+
+        const dx = touch.clientX - startX;
+        const dy = touch.clientY - startY;
+        if (
+          Math.abs(dx) < SWIPE_THRESHOLD ||
+          Math.abs(dx) < Math.abs(dy) * 1.25
+        ) {
           return;
         }
 
-        if (modal.classList.contains("mobile-pager-enabled")) {
-          fitPageOneTitle(modal);
-          return;
-        }
+        if (dx < 0) setPage((current) => (current === 0 ? 1 : current));
+        if (dx > 0) setPage((current) => (current === 1 ? 0 : current));
+      };
 
-        const body = modal.querySelector(".modal-body");
-        const mediaPanel = body?.querySelector(":scope > .modal-media");
-        const contentPanel = body?.querySelector(":scope > .modal-content");
-        const originalHeader = modal.querySelector(":scope > .modal-header");
-        const originalClose = modal.querySelector(":scope > .close-button") || originalHeader?.querySelector(".close-button");
-        if (!body || !mediaPanel || !contentPanel || !originalHeader || !originalClose) return;
+      body.addEventListener("touchstart", onTouchStart, { passive: true });
+      body.addEventListener("touchend", onTouchEnd, { passive: true });
+      window.addEventListener("resize", fitPageOneTitle, { passive: true });
 
-        originalClose.classList.add("mobile-pager-original-close");
+      modal.classList.add("mobile-pager-enabled");
+      setPage(0);
+      fitPageOneTitle();
 
-        const lang = getLang();
-        let page = 0;
-        let startX = 0;
-        let startY = 0;
-        let tracking = false;
-
-        const pageOneHeader = originalHeader.cloneNode(true);
-        pageOneHeader.classList.add("mobile-pager-page1-header");
-        pageOneHeader.querySelector(".close-button")?.remove();
-        mediaPanel.prepend(pageOneHeader);
-
-        const makePageClose = (pageIndex) => {
-          const button = document.createElement("button");
-          button.type = "button";
-          button.className = `mobile-pager-page-close mobile-pager-page-close-${pageIndex}`;
-          button.setAttribute("aria-label", lang === "sr" ? "Zatvori prozor" : "Close modal");
-          button.textContent = "×";
-          return button;
-        };
-
-        const pageOneClose = makePageClose(1);
-        const pageTwoClose = makePageClose(2);
-        mediaPanel.appendChild(pageOneClose);
-        contentPanel.appendChild(pageTwoClose);
-
-        const chrome = document.createElement("div");
-        chrome.className = "mobile-modal-pager-chrome";
-        chrome.innerHTML = `
-          <button type="button" class="mobile-pager-edge mobile-pager-edge-left" aria-label="${lang === "sr" ? "Prethodna strana" : "Previous page"}">‹</button>
-          <div class="mobile-pager-status" aria-live="polite">
-            <span class="mobile-pager-status-label">01 / 02</span>
-            <span class="mobile-pager-dots" aria-hidden="true"><i class="is-active"></i><i></i></span>
-          </div>
-          <button type="button" class="mobile-pager-edge mobile-pager-edge-right" aria-label="${lang === "sr" ? "Sledeća strana" : "Next page"}">›</button>
-        `;
-        modal.appendChild(chrome);
-
-        const statusLabel = chrome.querySelector(".mobile-pager-status-label");
-        const dots = Array.from(chrome.querySelectorAll(".mobile-pager-dots i"));
-        const left = chrome.querySelector(".mobile-pager-edge-left");
-        const right = chrome.querySelector(".mobile-pager-edge-right");
-
-        const setPage = (nextPage) => {
-          page = Math.max(0, Math.min(1, nextPage));
-          modal.style.setProperty("--mobile-pager-page", String(page));
-          modal.classList.toggle("mobile-pager-page-1", page === 0);
-          modal.classList.toggle("mobile-pager-page-2", page === 1);
-          statusLabel.textContent = page === 0 ? "01 / 02" : "02 / 02";
-          dots.forEach((dot, index) => dot.classList.toggle("is-active", index === page));
-
-          if (page === 0) mediaPanel.scrollTop = 0;
-          if (page === 1) contentPanel.scrollTop = 0;
-        };
-
-        const onTouchStart = (event) => {
-          const touch = event.touches?.[0];
-          if (!touch) return;
-          startX = touch.clientX;
-          startY = touch.clientY;
-          tracking = true;
-        };
-
-        const onTouchEnd = (event) => {
-          if (!tracking) return;
-          tracking = false;
-          const touch = event.changedTouches?.[0];
-          if (!touch) return;
-
-          const dx = touch.clientX - startX;
-          const dy = touch.clientY - startY;
-          if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy) * 1.25) return;
-
-          if (dx < 0 && page === 0) setPage(1);
-          if (dx > 0 && page === 1) setPage(0);
-        };
-
-        const goNext = () => setPage(1);
-        const goBack = () => setPage(0);
-        const closeModal = () => originalClose.click();
-
-        left.addEventListener("click", goBack);
-        right.addEventListener("click", goNext);
-        pageOneClose.addEventListener("click", closeModal);
-        pageTwoClose.addEventListener("click", closeModal);
-        body.addEventListener("touchstart", onTouchStart, { passive: true });
-        body.addEventListener("touchend", onTouchEnd, { passive: true });
-
-        modal.classList.add("mobile-pager-enabled");
-        fitPageOneTitle(modal);
-        setPage(0);
-
-        cleanupMap.set(modal, () => {
-          left.removeEventListener("click", goBack);
-          right.removeEventListener("click", goNext);
-          pageOneClose.removeEventListener("click", closeModal);
-          pageTwoClose.removeEventListener("click", closeModal);
-          body.removeEventListener("touchstart", onTouchStart);
-          body.removeEventListener("touchend", onTouchEnd);
-          originalClose.classList.remove("mobile-pager-original-close");
-        });
-      });
+      cleanupCurrent = () => {
+        body.removeEventListener("touchstart", onTouchStart);
+        body.removeEventListener("touchend", onTouchEnd);
+        window.removeEventListener("resize", fitPageOneTitle);
+        originalClose.classList.remove("mobile-pager-original-close");
+        pageOneHeader.remove();
+      };
     };
 
-    let scheduled = false;
-    const scheduleSetup = () => {
-      if (scheduled) return;
-      scheduled = true;
-      requestAnimationFrame(() => {
-        scheduled = false;
-        setupPager();
-      });
-    };
-
-    const observer = new MutationObserver(scheduleSetup);
-    observer.observe(document.body, {
-      subtree: true,
-      childList: true,
-      attributes: true,
-      attributeFilter: ["class"]
-    });
-
-    media.addEventListener?.("change", scheduleSetup);
-    window.addEventListener("resize", scheduleSetup);
-    scheduleSetup();
+    setupPager();
+    media.addEventListener?.("change", setupPager);
 
     return () => {
-      observer.disconnect();
-      media.removeEventListener?.("change", scheduleSetup);
-      window.removeEventListener("resize", scheduleSetup);
-      document.querySelectorAll(".product-modal").forEach(clearPager);
+      media.removeEventListener?.("change", setupPager);
+      clearPager();
     };
-  }, []);
+  }, [active, modalRef, resetKey, setPage]);
+
+  useEffect(() => {
+    if (!active) return;
+
+    const modal = modalRef?.current;
+    if (!modal || !window.matchMedia(MOBILE_QUERY).matches) return;
+    if (!modal.classList.contains("mobile-pager-enabled")) return;
+
+    const body = modal.querySelector(".modal-body");
+    const mediaPanel = body?.querySelector(":scope > .modal-media");
+    const contentPanel = body?.querySelector(":scope > .modal-content");
+
+    modal.style.setProperty("--mobile-pager-page", String(page));
+    modal.classList.toggle("mobile-pager-page-1", page === 0);
+    modal.classList.toggle("mobile-pager-page-2", page === 1);
+
+    if (page === 0 && mediaPanel) mediaPanel.scrollTop = 0;
+    if (page === 1 && contentPanel) contentPanel.scrollTop = 0;
+  }, [active, modalRef, page]);
 
   return null;
 }

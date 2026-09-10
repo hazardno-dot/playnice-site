@@ -1,3 +1,7 @@
+.mobile-modal-pager-chrome,
+.mobile-pager-page-close {
+  display: none;
+}
 @media (max-width: 640px) {
   .product-modal.mobile-pager-enabled {
     height: calc(100dvh - 14px);
@@ -236,7 +240,8 @@
   }
 
   /* Pager chrome */
-  .product-modal .mobile-modal-pager-chrome {
+  .product-modal.mobile-pager-enabled .mobile-modal-pager-chrome {
+    display: block;
     position: absolute;
     inset: 0;
     z-index: 18;
