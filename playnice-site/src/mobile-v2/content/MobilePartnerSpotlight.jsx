@@ -24,6 +24,8 @@ function MobilePartnerSpotlight() {
   );
 
   useEffect(() => {
+    let frame = 0;
+
     const sync = () => {
       setLang(getLanguage());
       setVisible(window.innerWidth <= 640 && isHomePath());
@@ -52,13 +54,17 @@ function MobilePartnerSpotlight() {
     };
 
     const run = () => {
+      frame = 0;
       sync();
       ensureHost();
     };
 
-    run();
+    const scheduleRun = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(run);
+    };
 
-    const scheduleRun = () => window.requestAnimationFrame(run);
+    run();
 
     window.addEventListener("resize", sync);
     window.addEventListener("popstate", scheduleRun);
@@ -70,6 +76,7 @@ function MobilePartnerSpotlight() {
       window.removeEventListener("popstate", scheduleRun);
       window.removeEventListener("playnice:locationchange", scheduleRun);
       window.removeEventListener("storage", sync);
+      if (frame) window.cancelAnimationFrame(frame);
       document.querySelector(".mobile-partner-spotlight-host")?.remove();
     };
   }, []);
