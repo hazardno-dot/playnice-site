@@ -69,35 +69,56 @@
         var productionHosts = ["playniceshop.me", "www.playniceshop.me"];
         if (productionHosts.indexOf(window.location.hostname) === -1) return;
 
-        var gaScript = document.createElement("script");
-        gaScript.async = true;
-        gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-0E81945BBL";
-        document.head.appendChild(gaScript);
-
         window.dataLayer = window.dataLayer || [];
-        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
         window.gtag("js", new Date());
         window.gtag("config", "G-0E81945BBL", { send_page_view: false });
 
-        !(function(f,b,e,v,n,t,s){
-          if(f.fbq)return;n=f.fbq=function(){
-            n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments)
+        if (!window.fbq) {
+          var fbq = window.fbq = function () {
+            fbq.callMethod ? fbq.callMethod.apply(fbq, arguments) : fbq.queue.push(arguments);
           };
-          if(!f._fbq)f._fbq=n;
-          n.push=n;
-          n.loaded=true;
-          n.version='2.0';
-          n.queue=[];
-          t=b.createElement(e);
-          t.async=true;
-          t.src=v;
-          s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)
-        })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+          if (!window._fbq) window._fbq = fbq;
+          fbq.push = fbq;
+          fbq.loaded = false;
+          fbq.version = "2.0";
+          fbq.queue = [];
+        }
 
-        fbq('set', 'autoConfig', false, '27742218555461978');
-        fbq('init', '27742218555461978');
-        fbq('track', 'PageView');
+        window.fbq("set", "autoConfig", false, "27742218555461978");
+        window.fbq("init", "27742218555461978");
+        window.fbq("track", "PageView");
+
+        var analyticsLoaded = false;
+
+        function loadAnalytics() {
+          if (analyticsLoaded) return;
+          analyticsLoaded = true;
+
+          var gaScript = document.createElement("script");
+          gaScript.async = true;
+          gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-0E81945BBL";
+          document.head.appendChild(gaScript);
+
+          var metaScript = document.createElement("script");
+          metaScript.async = true;
+          metaScript.src = "https://connect.facebook.net/en_US/fbevents.js";
+          document.head.appendChild(metaScript);
+        }
+
+        function scheduleAnalytics() {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadAnalytics, { timeout: 1800 });
+          } else {
+            window.setTimeout(loadAnalytics, 900);
+          }
+        }
+
+        if (document.readyState === "complete") {
+          scheduleAnalytics();
+        } else {
+          window.addEventListener("load", scheduleAnalytics, { once: true });
+        }
       })();
     </script>
 
