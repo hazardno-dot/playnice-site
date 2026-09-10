@@ -6,10 +6,6 @@
 
 @media (max-width: 640px) {
   .story-drawer {
-    top: 50% !important;
-    left: 10px !important;
-    width: calc(100vw - 20px) !important;
-    max-height: calc(100dvh - 20px) !important;
     border-radius: 24px !important;
   }
 
