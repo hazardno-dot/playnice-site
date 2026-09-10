@@ -10,7 +10,15 @@
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap"
+      media="print"
+      onload="this.onload=null;this.media='all'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap"
+      />
+    </noscript>
 
     <link rel="icon" href="/playnice-favicon-32.svg" type="image/svg+xml" sizes="32x32" />
     <link rel="icon" href="/playnice-favicon-64.svg" type="image/svg+xml" sizes="64x64" />
@@ -18,25 +26,20 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0D3D34" />
 
-    <script>
-      (function () {
-        var view = new URLSearchParams(window.location.search).get("view");
-        var isHome =
-          window.location.pathname === "/" &&
-          (!view || view === "home");
-
-        if (!isHome) return;
-
-        var preload = document.createElement("link");
-        preload.rel = "preload";
-        preload.as = "image";
-        preload.href = window.matchMedia("(max-width: 768px)").matches
-          ? "/hero/mobile/slide-9-mobile.jpg"
-          : "/hero/slide-9.jpg";
-        preload.setAttribute("fetchpriority", "high");
-        document.head.appendChild(preload);
-      })();
-    </script>
+    <link
+      rel="preload"
+      as="image"
+      href="/hero/mobile/slide-12-mobile.jpg"
+      media="(max-width: 768px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="/hero/slide-12.jpg"
+      media="(min-width: 769px)"
+      fetchpriority="high"
+    />
 
     <title>PlayNice | Premium parfemi i dekanti u Crnoj Gori</title>
 
@@ -74,35 +77,56 @@
         var productionHosts = ["playniceshop.me", "www.playniceshop.me"];
         if (productionHosts.indexOf(window.location.hostname) === -1) return;
 
-        var gaScript = document.createElement("script");
-        gaScript.async = true;
-        gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-0E81945BBL";
-        document.head.appendChild(gaScript);
-
         window.dataLayer = window.dataLayer || [];
-        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
         window.gtag("js", new Date());
         window.gtag("config", "G-0E81945BBL", { send_page_view: false });
 
-        !(function(f,b,e,v,n,t,s){
-          if(f.fbq)return;n=f.fbq=function(){
-            n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments)
+        if (!window.fbq) {
+          var fbq = window.fbq = function () {
+            fbq.callMethod ? fbq.callMethod.apply(fbq, arguments) : fbq.queue.push(arguments);
           };
-          if(!f._fbq)f._fbq=n;
-          n.push=n;
-          n.loaded=true;
-          n.version='2.0';
-          n.queue=[];
-          t=b.createElement(e);
-          t.async=true;
-          t.src=v;
-          s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)
-        })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+          if (!window._fbq) window._fbq = fbq;
+          fbq.push = fbq;
+          fbq.loaded = false;
+          fbq.version = "2.0";
+          fbq.queue = [];
+        }
 
-        fbq('set', 'autoConfig', false, '27742218555461978');
-        fbq('init', '27742218555461978');
-        fbq('track', 'PageView');
+        window.fbq("set", "autoConfig", false, "27742218555461978");
+        window.fbq("init", "27742218555461978");
+        window.fbq("track", "PageView");
+
+        var analyticsLoaded = false;
+
+        function loadAnalytics() {
+          if (analyticsLoaded) return;
+          analyticsLoaded = true;
+
+          var gaScript = document.createElement("script");
+          gaScript.async = true;
+          gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-0E81945BBL";
+          document.head.appendChild(gaScript);
+
+          var metaScript = document.createElement("script");
+          metaScript.async = true;
+          metaScript.src = "https://connect.facebook.net/en_US/fbevents.js";
+          document.head.appendChild(metaScript);
+        }
+
+        function scheduleAnalytics() {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadAnalytics, { timeout: 1800 });
+          } else {
+            window.setTimeout(loadAnalytics, 900);
+          }
+        }
+
+        if (document.readyState === "complete") {
+          scheduleAnalytics();
+        } else {
+          window.addEventListener("load", scheduleAnalytics, { once: true });
+        }
       })();
     </script>
 
