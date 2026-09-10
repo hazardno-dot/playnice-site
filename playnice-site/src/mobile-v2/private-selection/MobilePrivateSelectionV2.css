@@ -74,8 +74,7 @@
   }
 
   /* Keep a deliberate text zone: profile + name centered, price anchored below. */
-  .homepage-shop-preview .product-meta,
-  .homepage-shop-preview .premium-product-meta {
+  .homepage-shop-preview .product-meta {
     min-height: 142px;
     padding: 9px 4px 2px;
     gap: 6px;
@@ -196,8 +195,7 @@
     max-height: 120px;
   }
 
-  .homepage-shop-preview .product-meta,
-  .homepage-shop-preview .premium-product-meta {
+  .homepage-shop-preview .product-meta {
     min-height: 136px;
   }
 }
