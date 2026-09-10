@@ -205,8 +205,6 @@
   .header-next-mobile-panel {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
     gap: 8px;
     padding-top: 9px;
     padding-bottom: calc(9px + env(safe-area-inset-bottom));
