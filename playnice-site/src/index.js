@@ -6,7 +6,6 @@ import PrivateSelectionEnhancer from "./PrivateSelectionEnhancer";
 import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
 import MobileDiscoveryTextPolish from "./mobile-v2/discovery/MobileDiscoveryTextPolish";
 import MobilePrivateSelectionProfile from "./mobile-v2/private-selection/MobilePrivateSelectionProfile";
-import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
 import MobileProductModalPager from "./mobile-v2/modal/MobileProductModalPager";
@@ -64,7 +63,6 @@ root.render(
     <MobilePartnerSpotlight />
     <MobileDiscoveryTextPolish />
     <MobilePrivateSelectionProfile />
-    <MobileShopV2 />
     <MobileShopReveal />
     <MobileMenuContact />
     <MobileProductModalPager />

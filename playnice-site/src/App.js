@@ -14,6 +14,7 @@ import { translations } from "./data/translations";
 import { BASE_HERO_SLIDES } from "./data/heroSlides.generated";
 import TheNoteMap from "./TheNoteMap";
 import { discoverFragrances } from "./lib/discoveryEngine";
+import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 
 const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 
@@ -5836,6 +5837,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       })}
   </aside>
 )}
+      <MobileShopV2
+        scentMood={scentMood}
+        onScentMoodChange={setScentMood}
+      />
+
 
 <div
   className={`header-system ${

@@ -5,8 +5,6 @@ import { LOCATION_CHANGE_EVENT } from "../../lib/locationEvents";
 const MOBILE_QUERY = "(max-width: 640px)";
 const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
 
-const MOOD_VALUES = ["All", "clean", "summer", "date", "rich", "soft", "signature"];
-
 const getLang = () =>
   localStorage.getItem("playnice_lang") === "en" ? "en" : "sr";
 
@@ -23,11 +21,6 @@ const getMoodOptions = (lang) => [
   { index: 5, value: "soft", label: "Soft Luxury" },
   { index: 6, value: "signature", label: "Signature Energy" },
 ];
-
-const getMoodFromUrl = () => {
-  const mood = new URLSearchParams(window.location.search).get("mood");
-  return MOOD_VALUES.includes(mood) ? mood : "All";
-};
 
 const withActiveMood = (options = [], activeValue = "All") =>
   options.map((option) => ({
@@ -87,13 +80,6 @@ async function chooseMenuOption(name, index) {
   return true;
 }
 
-function chooseMood(index) {
-  const button = document.querySelectorAll(".scent-mood-filter .scent-mood-chip")[index];
-  if (!button) return false;
-  button.click();
-  return true;
-}
-
 function getSearchInput() {
   return document.getElementById("shop-search");
 }
@@ -131,7 +117,7 @@ function getCategoryTone(label = "") {
   return "neutral";
 }
 
-export default function MobileShopV2() {
+export default function MobileShopV2({ scentMood = "All", onScentMoodChange }) {
   const [host, setHost] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [lang, setLang] = useState(getLang);
@@ -139,7 +125,6 @@ export default function MobileShopV2() {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [seasonOptions, setSeasonOptions] = useState([]);
   const [sortOptions, setSortOptions] = useState([]);
-  const [activeMood, setActiveMood] = useState(getMoodFromUrl);
   const [searchValue, setSearchValue] = useState("");
   const menuRef = useRef(null);
   const wasShopActiveRef = useRef(false);
@@ -182,11 +167,7 @@ export default function MobileShopV2() {
     [lang]
   );
 
-  const syncMoodFromUrl = () => {
-    setActiveMood(getMoodFromUrl());
-  };
-
-  const syncSurface = ({ syncMood = false } = {}) => {
+  const syncSurface = () => {
     const media = window.matchMedia(MOBILE_QUERY);
     const onShop = window.location.pathname === "/shop";
     const active = media.matches && onShop;
@@ -214,10 +195,6 @@ export default function MobileShopV2() {
     setHost(target);
     setSearchValue(getSearchInput()?.value || "");
 
-    if (!wasShopActiveRef.current || syncMood) {
-      syncMoodFromUrl();
-    }
-
     wasShopActiveRef.current = true;
   };
 
@@ -237,11 +214,11 @@ export default function MobileShopV2() {
       if (frame) cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         frame = 0;
-        syncSurface({ syncMood: true });
+        syncSurface();
       });
     };
 
-    syncSurface({ syncMood: true });
+    syncSurface();
 
     const languageObserver = new MutationObserver(scheduleLocationSync);
     languageObserver.observe(document.documentElement, {
@@ -315,22 +292,16 @@ export default function MobileShopV2() {
     if (close) setPanel(null);
   };
 
-  const applyMood = async (index) => {
+  const applyMood = (index) => {
     const option = moodOptions[index];
     if (!option) return;
 
-    setActiveMood(option.value);
-    chooseMood(index);
-    await nextFrame();
-    await nextFrame();
-    syncMoodFromUrl();
+    onScentMoodChange?.(option.value);
     setPanel(null);
   };
 
   const resetFilters = async () => {
     const nativeReset = document.querySelector(".clear-filters-button");
-
-    setActiveMood("All");
 
     if (nativeReset) {
       nativeReset.click();
@@ -339,7 +310,7 @@ export default function MobileShopV2() {
       await nextFrame();
       await chooseMenuOption("season", 0);
       await nextFrame();
-      chooseMood(0);
+      onScentMoodChange?.("All");
     }
 
     await nextFrame();
@@ -352,11 +323,10 @@ export default function MobileShopV2() {
     setCategoryOptions(categories);
     setSeasonOptions(seasons);
     setSortOptions(sorts);
-    syncMoodFromUrl();
     setSearchValue(getSearchInput()?.value || "");
   };
 
-  const activeMoodOption = moodOptions.find((option) => option.value === activeMood);
+  const activeMoodOption = moodOptions.find((option) => option.value === scentMood);
   const activeCategory = categoryOptions.find((option) => option.active);
   const activeSeason = seasonOptions.find((option) => option.active);
   const activeSort = sortOptions.find((option) => option.active);
@@ -412,7 +382,7 @@ export default function MobileShopV2() {
           <div className={`mobile-shop-popover mobile-shop-popover-${panel}`}>
             {panel === "mood" && (
               <SelectionList
-                options={withActiveMood(moodOptions, activeMood)}
+                options={withActiveMood(moodOptions, scentMood)}
                 onChoose={applyMood}
               />
             )}
