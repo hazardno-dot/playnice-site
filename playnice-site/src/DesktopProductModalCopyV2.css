@@ -11,6 +11,12 @@
     gap: 8px;
   }
 
+  /* Keep the bottle proportionate after the desktop modal was tightened. */
+  .product-modal .modal-image {
+    scale: 0.8;
+    transform-origin: center;
+  }
+
   /* Keep MiniTag visually secondary while preserving the refined top offset. */
   .product-modal .modal-chip {
     align-self: flex-start;
