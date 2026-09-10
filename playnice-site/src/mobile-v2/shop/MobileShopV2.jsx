@@ -80,27 +80,6 @@ async function chooseMenuOption(name, index) {
   return true;
 }
 
-function getSearchInput() {
-  return document.getElementById("shop-search");
-}
-
-function setNativeSearchValue(value) {
-  const input = getSearchInput();
-  if (!input) return false;
-
-  const setter = Object.getOwnPropertyDescriptor(
-    window.HTMLInputElement.prototype,
-    "value"
-  )?.set;
-
-  if (setter) setter.call(input, value);
-  else input.value = value;
-
-  input.dispatchEvent(new Event("input", { bubbles: true }));
-  input.dispatchEvent(new Event("change", { bubbles: true }));
-  return true;
-}
-
 function getCategoryIcon(label = "") {
   const value = label.toLowerCase();
   if (value.includes("arabian") || value.includes("araps")) return "☾";
@@ -117,7 +96,12 @@ function getCategoryTone(label = "") {
   return "neutral";
 }
 
-export default function MobileShopV2({ scentMood = "All", onScentMoodChange }) {
+export default function MobileShopV2({
+  scentMood = "All",
+  onScentMoodChange,
+  searchTerm = "",
+  onSearchTermChange,
+}) {
   const [host, setHost] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [lang, setLang] = useState(getLang);
@@ -125,7 +109,6 @@ export default function MobileShopV2({ scentMood = "All", onScentMoodChange }) {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [seasonOptions, setSeasonOptions] = useState([]);
   const [sortOptions, setSortOptions] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
   const menuRef = useRef(null);
   const wasShopActiveRef = useRef(false);
 
@@ -193,7 +176,6 @@ export default function MobileShopV2({ scentMood = "All", onScentMoodChange }) {
     }
 
     setHost(target);
-    setSearchValue(getSearchInput()?.value || "");
 
     wasShopActiveRef.current = true;
   };
@@ -249,7 +231,6 @@ export default function MobileShopV2({ scentMood = "All", onScentMoodChange }) {
     setCategoryOptions(categories);
     setSeasonOptions(seasons);
     setSortOptions(sorts);
-    setSearchValue(getSearchInput()?.value || "");
   };
 
   useEffect(() => {
@@ -323,7 +304,6 @@ export default function MobileShopV2({ scentMood = "All", onScentMoodChange }) {
     setCategoryOptions(categories);
     setSeasonOptions(seasons);
     setSortOptions(sorts);
-    setSearchValue(getSearchInput()?.value || "");
   };
 
   const activeMoodOption = moodOptions.find((option) => option.value === scentMood);
@@ -339,7 +319,7 @@ export default function MobileShopV2({ scentMood = "All", onScentMoodChange }) {
 
   const capsuleValue = (name) => {
     if (name === "mood") return activeMoodOption?.label || copy.moodDefault;
-    if (name === "search") return searchValue ? `“${searchValue}”` : copy.searchHint;
+    if (name === "search") return searchTerm ? `“${searchTerm}”` : copy.searchHint;
     if (name === "filter") {
       return filterCount ? `${filterCount} ${lang === "en" ? "active" : "aktivna"}` : copy.filterDefault;
     }
@@ -396,23 +376,20 @@ export default function MobileShopV2({ scentMood = "All", onScentMoodChange }) {
                     aria-label={copy.searchHint}
                     autoFocus
                     type="search"
-                    value={searchValue}
+                    value={searchTerm}
                     placeholder={copy.searchHint}
                     onChange={(event) => {
-                      const value = event.target.value;
-                      setSearchValue(value);
-                      setNativeSearchValue(value);
+                      onSearchTermChange?.(event.target.value);
                     }}
                     onKeyDown={(event) => {
                       if (event.key === "Enter") setPanel(null);
                     }}
                   />
-                  {searchValue && (
+                  {searchTerm && (
                     <button
                       type="button"
                       onClick={() => {
-                        setSearchValue("");
-                        setNativeSearchValue("");
+                        onSearchTermChange?.("");
                       }}
                     >
                       {copy.clear}

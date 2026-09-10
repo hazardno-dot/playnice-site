@@ -5840,6 +5840,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <MobileShopV2
         scentMood={scentMood}
         onScentMoodChange={setScentMood}
+        searchTerm={searchTerm}
+        onSearchTermChange={setSearchTerm}
       />
 
 
