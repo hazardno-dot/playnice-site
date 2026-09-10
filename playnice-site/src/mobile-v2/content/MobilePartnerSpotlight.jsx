@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { trackEvent } from "../../lib/ga";
 import "./MobilePartnerSpotlight.css";
@@ -74,27 +74,24 @@ function MobilePartnerSpotlight() {
     };
   }, []);
 
-  const copy = useMemo(
-    () =>
-      lang === "sr"
-        ? {
-            eyebrow: "PLAYNICE PARTNER",
-            sponsored: "SPONZORISANO",
-            title: "Forever Living",
-            subtitle: "Aloe vera napici",
-            body: "Istraži Forever Living aloe vera napitke — diskretno izdvojeno za PlayNice zajednicu.",
-            cta: "Pogledaj ponudu",
-          }
-        : {
-            eyebrow: "PLAYNICE PARTNER",
-            sponsored: "SPONSORED",
-            title: "Forever Living",
-            subtitle: "Aloe vera drinks",
-            body: "Explore Forever Living aloe vera drinks — a discreet partner pick for the PlayNice community.",
-            cta: "Explore range",
-          },
-    [lang]
-  );
+  const copy =
+    lang === "sr"
+      ? {
+          eyebrow: "PLAYNICE PARTNER",
+          sponsored: "SPONZORISANO",
+          title: "Forever Living",
+          subtitle: "Aloe vera napici",
+          body: "Istraži Forever Living aloe vera napitke — diskretno izdvojeno za PlayNice zajednicu.",
+          cta: "Pogledaj ponudu",
+        }
+      : {
+          eyebrow: "PLAYNICE PARTNER",
+          sponsored: "SPONSORED",
+          title: "Forever Living",
+          subtitle: "Aloe vera drinks",
+          body: "Explore Forever Living aloe vera drinks — a discreet partner pick for the PlayNice community.",
+          cta: "Explore range",
+        };
 
   if (!host || !visible) return null;
 
