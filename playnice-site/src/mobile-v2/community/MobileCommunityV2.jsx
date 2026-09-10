@@ -202,7 +202,17 @@ function MobileCommunityV2() {
       enhanceFrame = requestAnimationFrame(enhanceCommunity);
     });
 
+    const languageObserver = new MutationObserver(() => {
+      if (!media.matches || scheduled) return;
+      scheduled = true;
+      enhanceFrame = requestAnimationFrame(enhanceCommunity);
+    });
+
     appObserver.observe(document.body, { childList: true, subtree: true });
+    languageObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["lang"],
+    });
     window.addEventListener("scroll", scheduleFocusUpdate, { passive: true });
     window.addEventListener("resize", scheduleFocusUpdate, { passive: true });
     media.addEventListener?.("change", boot);
@@ -210,6 +220,7 @@ function MobileCommunityV2() {
 
     return () => {
       appObserver.disconnect();
+      languageObserver.disconnect();
       contentObserver?.disconnect();
       window.removeEventListener("scroll", scheduleFocusUpdate);
       window.removeEventListener("resize", scheduleFocusUpdate);
