@@ -163,7 +163,7 @@ function MobileMenuContact() {
         </button>
 
         <a href="mailto:info@playniceshop.me" onClick={closeMobileMenu}>
-          <span>Contact</span>
+          <span>{lang === "sr" ? "Kontakt" : "Contact"}</span>
         </a>
       </div>
     </section>,
