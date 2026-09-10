@@ -13,7 +13,7 @@ function MobilePartnerSpotlight({ lang = "sr" }) {
           sponsored: "SPONZORISANO",
           title: "Forever Living",
           subtitle: "Aloe vera napici",
-          body: "Istraži Forever Living aloe vera napitke — disketno izdvojeno za PlayNice zajednicu.",
+          body: "Istraži Forever Living aloe vera napitke — diskretno izdvojeno za PlayNice zajednicu.",
           cta: "Pogledaj ponudu",
         }
       : {
@@ -67,7 +67,7 @@ function MobilePartnerSpotlight({ lang = "sr" }) {
 
         <div className="mobile-partner-spotlight-cta">
           <span>{copy.cta}</span>
-          <span aria-hidden="true">↗3/span>
+          <span aria-hidden="true">↗</span>
         </div>
       </a>
     </section>
