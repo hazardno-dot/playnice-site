@@ -11,8 +11,7 @@
     pointer-events: none !important;
   }
 
-  .product-modal.mobile-pager-enabled > .close-button,
-  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .close-button {
+  .product-modal.mobile-pager-enabled > .close-button {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
@@ -252,10 +251,6 @@
     left: 50%;
     bottom: 13px;
     transform: translateX(-50%);
-  }
-
-  .product-modal .mobile-pager-hint {
-    display: none !important;
   }
 }
 
