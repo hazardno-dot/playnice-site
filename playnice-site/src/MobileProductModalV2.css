@@ -245,35 +245,36 @@
   }
 
   .modal-purchase-bar {
+    grid-template-columns: 78px minmax(0, 1fr);
     gap: 7px;
     padding-top: 6px;
     align-items: stretch;
   }
 
   .modal-price-box {
-    flex: 0 0 98px;
-    gap: 2px;
-    padding: 8px 9px 7px;
-    border-radius: 13px;
+    min-width: 0;
+    gap: 1px;
+    padding: 6px 7px 5px;
+    border-radius: 12px;
   }
 
   .modal-price-box span {
-    font-size: 0.52rem;
-    letter-spacing: 0.11em;
+    font-size: 0.48rem;
+    letter-spacing: 0.09em;
     font-weight: 500;
   }
 
   .modal-price-box strong,
   .modal-selected-price {
-    font-size: 1.16rem;
+    font-size: 1.08rem;
     line-height: 1;
     font-weight: 500;
   }
 
   .modal-price-box::after {
-    left: 9px;
-    bottom: 6px;
-    width: 34px;
+    left: 7px;
+    bottom: 5px;
+    width: 28px;
   }
 
   .modal-cta-group {
@@ -289,8 +290,8 @@
   }
 
   .modal-buy-now {
-    min-height: 36px;
-    font-size: 0.66rem;
+    min-height: 30px;
+    font-size: 0.62rem;
     font-weight: 500;
   }
 }
@@ -312,7 +313,7 @@
     scale: 1.4;
   }
 
-  .modal-price-box {
-    flex-basis: 92px;
+  .modal-purchase-bar {
+    grid-template-columns: 76px minmax(0, 1fr);
   }
 }
