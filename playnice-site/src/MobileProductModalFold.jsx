@@ -31,8 +31,11 @@ function MobileProductModalFold() {
       modal.querySelector(".mobile-modal-pager-chrome")?.remove();
       modal.querySelector(".mobile-pager-decision-intro")?.remove();
       modal.querySelector(".mobile-pager-page1-header")?.remove();
+      modal.querySelectorAll(".mobile-pager-page-close").forEach((node) => node.remove());
       modal.querySelector(".mobile-note-map-hit")?.remove();
-      modal.querySelector(".mobile-note-map-source")?.classList.remove("mobile-note-map-source");
+      modal.querySelectorAll(".mobile-note-map-source").forEach((node) =>
+        node.classList.remove("mobile-note-map-source")
+      );
     };
 
     const setupPager = () => {
@@ -48,8 +51,8 @@ function MobileProductModalFold() {
         const mediaPanel = body?.querySelector(":scope > .modal-media");
         const contentPanel = body?.querySelector(":scope > .modal-content");
         const originalHeader = modal.querySelector(":scope > .modal-header");
-        const originalClose = originalHeader?.querySelector(".close-button") || modal.querySelector(":scope > .close-button");
-        if (!body || !mediaPanel || !contentPanel || !originalHeader) return;
+        const originalClose = modal.querySelector(":scope > .close-button") || originalHeader?.querySelector(".close-button");
+        if (!body || !mediaPanel || !contentPanel || !originalHeader || !originalClose) return;
         if (modal.classList.contains("mobile-pager-enabled")) return;
 
         const lang = getLang();
@@ -58,11 +61,24 @@ function MobileProductModalFold() {
         let startY = 0;
         let tracking = false;
 
-        // Page 01 gets its own header inside the swipe track so title/rating travel with the page.
         const pageOneHeader = originalHeader.cloneNode(true);
         pageOneHeader.classList.add("mobile-pager-page1-header");
         pageOneHeader.querySelector(".close-button")?.remove();
         mediaPanel.prepend(pageOneHeader);
+
+        const makePageClose = () => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "mobile-pager-page-close";
+          button.setAttribute("aria-label", lang === "sr" ? "Zatvori prozor" : "Close modal");
+          button.textContent = "×";
+          return button;
+        };
+
+        const pageOneClose = makePageClose();
+        const pageTwoClose = makePageClose();
+        mediaPanel.appendChild(pageOneClose);
+        contentPanel.appendChild(pageTwoClose);
 
         const intro = document.createElement("div");
         intro.className = "mobile-pager-decision-intro";
@@ -74,7 +90,6 @@ function MobileProductModalFold() {
         const chrome = document.createElement("div");
         chrome.className = "mobile-modal-pager-chrome";
         chrome.innerHTML = `
-          <button type="button" class="mobile-pager-close" aria-label="${lang === "sr" ? "Zatvori prozor" : "Close modal"}">×</button>
           <button type="button" class="mobile-pager-edge mobile-pager-edge-left" aria-label="${lang === "sr" ? "Prethodna strana" : "Previous page"}">‹</button>
           <div class="mobile-pager-status" aria-live="polite">
             <span class="mobile-pager-status-label">01 / 02</span>
@@ -88,17 +103,16 @@ function MobileProductModalFold() {
         const dots = Array.from(chrome.querySelectorAll(".mobile-pager-dots i"));
         const left = chrome.querySelector(".mobile-pager-edge-left");
         const right = chrome.querySelector(".mobile-pager-edge-right");
-        const close = chrome.querySelector(".mobile-pager-close");
 
-        // Note Map becomes an image gesture: keep the React source button mounted, but visually hide it.
-        const noteMapSource = Array.from(modal.querySelectorAll("button")).find((button) =>
+        const noteMapSources = Array.from(modal.querySelectorAll("button")).filter((button) =>
           button.textContent?.toUpperCase().includes("THE NOTE MAP")
         );
+        noteMapSources.forEach((button) => button.classList.add("mobile-note-map-source"));
+        const noteMapSource = noteMapSources[0];
         const imageWrap = mediaPanel.querySelector(".modal-image-wrap");
         let noteMapHit = null;
 
         if (noteMapSource && imageWrap) {
-          noteMapSource.classList.add("mobile-note-map-source");
           noteMapHit = document.createElement("button");
           noteMapHit.type = "button";
           noteMapHit.className = "mobile-note-map-hit";
@@ -150,11 +164,12 @@ function MobileProductModalFold() {
 
         const goNext = () => setPage(1);
         const goBack = () => setPage(0);
-        const closeModal = () => originalClose?.click();
+        const closeModal = () => originalClose.click();
 
         left.addEventListener("click", goBack);
         right.addEventListener("click", goNext);
-        close.addEventListener("click", closeModal);
+        pageOneClose.addEventListener("click", closeModal);
+        pageTwoClose.addEventListener("click", closeModal);
         body.addEventListener("touchstart", onTouchStart, { passive: true });
         body.addEventListener("touchend", onTouchEnd, { passive: true });
 
@@ -164,11 +179,12 @@ function MobileProductModalFold() {
         cleanupMap.set(modal, () => {
           left.removeEventListener("click", goBack);
           right.removeEventListener("click", goNext);
-          close.removeEventListener("click", closeModal);
+          pageOneClose.removeEventListener("click", closeModal);
+          pageTwoClose.removeEventListener("click", closeModal);
           body.removeEventListener("touchstart", onTouchStart);
           body.removeEventListener("touchend", onTouchEnd);
           noteMapHit?.remove();
-          noteMapSource?.classList.remove("mobile-note-map-source");
+          noteMapSources.forEach((button) => button.classList.remove("mobile-note-map-source"));
         });
       });
     };
