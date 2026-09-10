@@ -18,25 +18,20 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0D3D34" />
 
-    <script>
-      (function () {
-        var view = new URLSearchParams(window.location.search).get("view");
-        var isHome =
-          window.location.pathname === "/" &&
-          (!view || view === "home");
-
-        if (!isHome) return;
-
-        var preload = document.createElement("link");
-        preload.rel = "preload";
-        preload.as = "image";
-        preload.href = window.matchMedia("(max-width: 768px)").matches
-          ? "/hero/mobile/slide-9-mobile.jpg"
-          : "/hero/slide-9.jpg";
-        preload.setAttribute("fetchpriority", "high");
-        document.head.appendChild(preload);
-      })();
-    </script>
+    <link
+      rel="preload"
+      as="image"
+      href="/hero/mobile/slide-12-mobile.jpg"
+      media="(max-width: 768px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="/hero/slide-12.jpg"
+      media="(min-width: 769px)"
+      fetchpriority="high"
+    />
 
     <title>PlayNice | Premium parfemi i dekanti u Crnoj Gori</title>
 
