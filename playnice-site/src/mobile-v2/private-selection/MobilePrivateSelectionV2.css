@@ -99,8 +99,7 @@
 
   /* Global mobile cards hide product-category; Home Private Selection reuses
      that slot for the scent profile, so explicitly restore it here only. */
-  .homepage-shop-preview .product-category,
-  .homepage-shop-preview .mobile-private-scent-profile {
+  .homepage-shop-preview .product-category {
     display: block !important;
     margin: 0 0 6px;
     color: rgba(220, 181, 107, 0.82);
