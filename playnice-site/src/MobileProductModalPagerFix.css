@@ -112,6 +112,18 @@
       linear-gradient(180deg, rgba(17, 16, 14, 0.995), rgba(11, 11, 10, 0.995));
   }
 
+  /* Keep wishlist attached to the fragrance media, away from the page close and swipe arrow. */
+  .product-modal.mobile-pager-enabled .modal-media > .modal-wishlist-btn {
+    top: 43% !important;
+    right: 16px !important;
+    transform: translateY(-50%) !important;
+    z-index: 20 !important;
+  }
+
+  .product-modal.mobile-pager-enabled .modal-media > .modal-wishlist-btn:active {
+    transform: translateY(-50%) scale(0.96) !important;
+  }
+
   .product-modal.mobile-pager-page-2 .modal-content {
     padding-top: 28px !important;
   }
