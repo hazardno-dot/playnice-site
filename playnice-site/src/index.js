@@ -10,6 +10,7 @@ import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
 import MobileProductModalPager from "./mobile-v2/modal/MobileProductModalPager";
+import MobileCommunityV2 from "./mobile-v2/community/MobileCommunityV2";
 import DesktopFooterCatalog from "./DesktopFooterCatalog";
 import CartInteractionV2 from "./CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
@@ -64,6 +65,7 @@ root.render(
     <MobileShopReveal />
     <MobileMenuContact />
     <MobileProductModalPager />
+    <MobileCommunityV2 />
     <DesktopFooterCatalog />
     <CartInteractionV2 />
     <DiscoveryImageFallback />
