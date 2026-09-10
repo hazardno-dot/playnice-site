@@ -1,123 +1,27 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import { LOCATION_CHANGE_EVENT } from "../../lib/locationEvents";
 
 const MOBILE_QUERY = "(max-width: 640px)";
-const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
 
-const MOOD_PARAM_ORDER = ["All", "clean", "summer", "date", "rich", "soft", "signature"];
+const getMoodOptions = (lang) => [
+  {
+    index: 0,
+    value: "All",
+    label: lang === "en" ? "All moods" : "Svi moodovi",
+  },
+  { index: 1, value: "clean", label: "Clean Everyday" },
+  { index: 2, value: "summer", label: "Summer Heat" },
+  { index: 3, value: "date", label: "Date Night" },
+  { index: 4, value: "rich", label: "Rich & Addictive" },
+  { index: 5, value: "soft", label: "Soft Luxury" },
+  { index: 6, value: "signature", label: "Signature Energy" },
+];
 
-const getLang = () =>
-  localStorage.getItem("playnice_lang") === "en" ? "en" : "sr";
-
-const getGroup = (name) => document.querySelector(`.toolbar-group-${name}`);
-const getTrigger = (name) =>
-  getGroup(name)?.querySelector(".premium-category-trigger, .premium-filter-trigger");
-
-const getMenuOptions = (name) => {
-  const id = name === "category" ? "shop-category-menu" : `shop-${name}-menu`;
-  return Array.from(document.querySelectorAll(`#${id} [role='option']`));
-};
-
-async function readMenuOptions(name) {
-  const trigger = getTrigger(name);
-  if (!trigger) return [];
-
-  const wasOpen = trigger.getAttribute("aria-expanded") === "true";
-  if (!wasOpen) {
-    trigger.click();
-    await nextFrame();
-  }
-
-  const options = getMenuOptions(name).map((button, index) => ({
-    index,
-    label: button.textContent?.replace(/\s+/g, " ").trim() || "",
-    active: button.getAttribute("aria-selected") === "true",
-  }));
-
-  if (!wasOpen && trigger.getAttribute("aria-expanded") === "true") {
-    trigger.click();
-    await nextFrame();
-  }
-
-  return options;
-}
-
-async function chooseMenuOption(name, index) {
-  const trigger = getTrigger(name);
-  if (!trigger) return false;
-
-  if (trigger.getAttribute("aria-expanded") !== "true") {
-    trigger.click();
-    await nextFrame();
-  }
-
-  const option = getMenuOptions(name)[index];
-  if (!option) {
-    if (trigger.getAttribute("aria-expanded") === "true") trigger.click();
-    return false;
-  }
-
-  option.click();
-  return true;
-}
-
-function readMoodOptions() {
-  return Array.from(document.querySelectorAll(".scent-mood-filter .scent-mood-chip")).map(
-    (button, index) => ({
-      index,
-      value: MOOD_PARAM_ORDER[index] || String(index),
-      label: button.textContent?.replace(/\s+/g, " ").trim() || "",
-      active: false,
-    })
-  );
-}
-
-function getMoodIndexFromUrl(options = []) {
-  const moodParam = new URLSearchParams(window.location.search).get("mood");
-  if (!moodParam) return 0;
-
-  const index = options.findIndex(
-    (option) => String(option.value).toLowerCase() === moodParam.toLowerCase()
-  );
-
-  return index >= 0 ? index : 0;
-}
-
-function withActiveMood(options = [], activeIndex = 0) {
-  return options.map((option, index) => ({
+const withActiveMood = (options = [], activeValue = "All") =>
+  options.map((option, index) => ({
     ...option,
-    active: index === activeIndex,
+    index,
+    active: option.value === activeValue,
   }));
-}
-
-function chooseMood(index) {
-  const button = document.querySelectorAll(".scent-mood-filter .scent-mood-chip")[index];
-  if (!button) return false;
-  button.click();
-  return true;
-}
-
-function getSearchInput() {
-  return document.getElementById("shop-search");
-}
-
-function setNativeSearchValue(value) {
-  const input = getSearchInput();
-  if (!input) return false;
-
-  const setter = Object.getOwnPropertyDescriptor(
-    window.HTMLInputElement.prototype,
-    "value"
-  )?.set;
-
-  if (setter) setter.call(input, value);
-  else input.value = value;
-
-  input.dispatchEvent(new Event("input", { bubbles: true }));
-  input.dispatchEvent(new Event("change", { bubbles: true }));
-  return true;
-}
 
 function getCategoryIcon(label = "") {
   const value = label.toLowerCase();
@@ -135,19 +39,27 @@ function getCategoryTone(label = "") {
   return "neutral";
 }
 
-export default function MobileShopV2() {
-  const [host, setHost] = useState(null);
+export default function MobileShopV2({
+  lang = "sr",
+  scentMood = "All",
+  onScentMoodChange,
+  searchTerm = "",
+  onSearchTermChange,
+  category = "All",
+  categoryOptions = [],
+  onCategoryChange,
+  season = "All",
+  seasonOptions = [],
+  onSeasonChange,
+  sortBy = "featured",
+  sortOptions = [],
+  onSortChange,
+}) {
   const [isMobile, setIsMobile] = useState(false);
-  const [lang, setLang] = useState(getLang);
   const [panel, setPanel] = useState(null);
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const [seasonOptions, setSeasonOptions] = useState([]);
-  const [sortOptions, setSortOptions] = useState([]);
-  const [moodOptions, setMoodOptions] = useState([]);
-  const [activeMoodIndex, setActiveMoodIndex] = useState(0);
-  const [searchValue, setSearchValue] = useState("");
   const menuRef = useRef(null);
-  const wasShopActiveRef = useRef(false);
+
+  const moodOptions = useMemo(() => getMoodOptions(lang), [lang]);
 
   const copy = useMemo(
     () =>
@@ -185,108 +97,17 @@ export default function MobileShopV2() {
     [lang]
   );
 
-  const syncMoodFromUrl = () => {
-    const moods = readMoodOptions();
-    setMoodOptions(moods);
-    setActiveMoodIndex(getMoodIndexFromUrl(moods));
-  };
-
-  const syncSurface = ({ syncMood = false } = {}) => {
-    const media = window.matchMedia(MOBILE_QUERY);
-    const onShop = window.location.pathname === "/shop";
-    const active = media.matches && onShop;
-
-    setIsMobile(active);
-    setLang(getLang());
-
-    if (!active) {
-      wasShopActiveRef.current = false;
-      setHost(null);
-      setPanel(null);
-      return;
-    }
-
-    const intro = document.querySelector(".shop-collection-intro");
-    if (!intro) return;
-
-    let target = document.getElementById("mobile-shop-v2-host");
-    if (!target) {
-      target = document.createElement("div");
-      target.id = "mobile-shop-v2-host";
-      intro.insertAdjacentElement("afterend", target);
-    }
-
-    setHost(target);
-    setSearchValue(getSearchInput()?.value || "");
-
-    if (!wasShopActiveRef.current || syncMood) {
-      syncMoodFromUrl();
-    }
-
-    wasShopActiveRef.current = true;
-  };
-
   useEffect(() => {
     const media = window.matchMedia(MOBILE_QUERY);
-    let frame = 0;
+    const syncMobile = () => setIsMobile(media.matches);
 
-    const schedule = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        syncSurface();
-      });
-    };
-
-    const scheduleLocationSync = () => {
-      if (frame) cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        syncSurface({ syncMood: true });
-      });
-    };
-
-    syncSurface({ syncMood: true });
-
-    const languageObserver = new MutationObserver(scheduleLocationSync);
-    languageObserver.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["lang"],
-    });
-
-    media.addEventListener?.("change", schedule);
-    window.addEventListener("popstate", scheduleLocationSync);
-    window.addEventListener(LOCATION_CHANGE_EVENT, scheduleLocationSync);
+    syncMobile();
+    media.addEventListener?.("change", syncMobile);
 
     return () => {
-      languageObserver.disconnect();
-      media.removeEventListener?.("change", schedule);
-      window.removeEventListener("popstate", scheduleLocationSync);
-      window.removeEventListener(LOCATION_CHANGE_EVENT, scheduleLocationSync);
-
-      if (frame) cancelAnimationFrame(frame);
-      document.getElementById("mobile-shop-v2-host")?.remove();
+      media.removeEventListener?.("change", syncMobile);
     };
   }, []);
-
-  const refreshOptions = async () => {
-    const categories = await readMenuOptions("category");
-    const seasons = await readMenuOptions("season");
-    const sorts = await readMenuOptions("sort");
-    const moods = readMoodOptions();
-
-    setCategoryOptions(categories);
-    setSeasonOptions(seasons);
-    setSortOptions(sorts);
-    setMoodOptions(moods);
-    setSearchValue(getSearchInput()?.value || "");
-  };
-
-  useEffect(() => {
-    if (!isMobile) return;
-    refreshOptions();
-  }, [isMobile, lang]);
-
   useEffect(() => {
     if (!panel) return;
 
@@ -305,75 +126,61 @@ export default function MobileShopV2() {
     };
   }, [panel]);
 
-  const openPanel = async (name) => {
+  const openPanel = (name) => {
     if (panel === name) {
       setPanel(null);
       return;
     }
-    await refreshOptions();
     setPanel(name);
   };
 
-  const applyMenu = async (name, index, close = false) => {
-    await chooseMenuOption(name, index);
-    await nextFrame();
-    await nextFrame();
-    await refreshOptions();
-    if (close) setPanel(null);
-  };
-
-  const applyMood = async (index) => {
-    setActiveMoodIndex(index);
-    chooseMood(index);
-    await nextFrame();
-    await nextFrame();
-    setMoodOptions(readMoodOptions());
+  const applySort = (index) => {
+    const option = sortOptions[index];
+    if (!option) return;
+    onSortChange?.(option.value);
     setPanel(null);
   };
 
-  const resetFilters = async () => {
-    const nativeReset = document.querySelector(".clear-filters-button");
-
-    setActiveMoodIndex(0);
-
-    if (nativeReset) {
-      nativeReset.click();
-    } else {
-      await chooseMenuOption("category", 0);
-      await nextFrame();
-      await chooseMenuOption("season", 0);
-      await nextFrame();
-      chooseMood(0);
-    }
-
-    await nextFrame();
-    await nextFrame();
-
-    const categories = await readMenuOptions("category");
-    const seasons = await readMenuOptions("season");
-    const sorts = await readMenuOptions("sort");
-
-    setCategoryOptions(categories);
-    setSeasonOptions(seasons);
-    setSortOptions(sorts);
-    setMoodOptions(readMoodOptions());
-    setSearchValue(getSearchInput()?.value || "");
+  const applyCategory = (index) => {
+    const option = categoryOptions[index];
+    if (!option) return;
+    onCategoryChange?.(option.value);
   };
 
-  const activeMood = moodOptions[activeMoodIndex];
-  const activeCategory = categoryOptions.find((option) => option.active);
-  const activeSeason = seasonOptions.find((option) => option.active);
-  const activeSort = sortOptions.find((option) => option.active);
+  const applySeason = (index) => {
+    const option = seasonOptions[index];
+    if (!option) return;
+    onSeasonChange?.(option.value);
+  };
 
-  const filterCount = [activeCategory, activeSeason].filter(
-    (option) => option && option.index !== 0
-  ).length;
+  const applyMood = (index) => {
+    const option = moodOptions[index];
+    if (!option) return;
 
-  if (!isMobile || !host) return null;
+    onScentMoodChange?.(option.value);
+    setPanel(null);
+  };
+
+  const resetFilters = () => {
+    onCategoryChange?.("All");
+    onSeasonChange?.("All");
+    onScentMoodChange?.("All");
+    onSearchTermChange?.("");
+    onSortChange?.("featured");
+  };
+
+  const activeMoodOption = moodOptions.find((option) => option.value === scentMood);
+  const activeCategory = categoryOptions.find((option) => option.value === category);
+  const activeSeason = seasonOptions.find((option) => option.value === season);
+  const activeSort = sortOptions.find((option) => option.value === sortBy);
+
+  const filterCount = [category !== "All", season !== "All"].filter(Boolean).length;
+
+  if (!isMobile) return null;
 
   const capsuleValue = (name) => {
-    if (name === "mood") return activeMood?.label || copy.moodDefault;
-    if (name === "search") return searchValue ? `“${searchValue}”` : copy.searchHint;
+    if (name === "mood") return activeMoodOption?.label || copy.moodDefault;
+    if (name === "search") return searchTerm ? `“${searchTerm}”` : copy.searchHint;
     if (name === "filter") {
       return filterCount ? `${filterCount} ${lang === "en" ? "active" : "aktivna"}` : copy.filterDefault;
     }
@@ -416,7 +223,7 @@ export default function MobileShopV2() {
           <div className={`mobile-shop-popover mobile-shop-popover-${panel}`}>
             {panel === "mood" && (
               <SelectionList
-                options={withActiveMood(moodOptions, activeMoodIndex)}
+                options={withActiveMood(moodOptions, scentMood)}
                 onChoose={applyMood}
               />
             )}
@@ -430,23 +237,20 @@ export default function MobileShopV2() {
                     aria-label={copy.searchHint}
                     autoFocus
                     type="search"
-                    value={searchValue}
+                    value={searchTerm}
                     placeholder={copy.searchHint}
                     onChange={(event) => {
-                      const value = event.target.value;
-                      setSearchValue(value);
-                      setNativeSearchValue(value);
+                      onSearchTermChange?.(event.target.value);
                     }}
                     onKeyDown={(event) => {
                       if (event.key === "Enter") setPanel(null);
                     }}
                   />
-                  {searchValue && (
+                  {searchTerm && (
                     <button
                       type="button"
                       onClick={() => {
-                        setSearchValue("");
-                        setNativeSearchValue("");
+                        onSearchTermChange?.("");
                       }}
                     >
                       {copy.clear}
@@ -460,14 +264,14 @@ export default function MobileShopV2() {
               <div className="mobile-shop-filter-panel">
                 <SelectionSection
                   title={copy.category}
-                  options={categoryOptions}
-                  onChoose={(index) => applyMenu("category", index)}
+                  options={withActiveMood(categoryOptions, category)}
+                  onChoose={applyCategory}
                   kind="category"
                 />
                 <SelectionSection
                   title={copy.season}
-                  options={seasonOptions}
-                  onChoose={(index) => applyMenu("season", index)}
+                  options={withActiveMood(seasonOptions, season)}
+                  onChoose={applySeason}
                 />
                 <button type="button" className="mobile-shop-reset-link" onClick={resetFilters}>
                   {copy.reset}
@@ -477,8 +281,8 @@ export default function MobileShopV2() {
 
             {panel === "sort" && (
               <SelectionList
-                options={sortOptions}
-                onChoose={(index) => applyMenu("sort", index, true)}
+                options={withActiveMood(sortOptions, sortBy)}
+                onChoose={applySort}
               />
             )}
           </div>
@@ -487,7 +291,7 @@ export default function MobileShopV2() {
     </section>
   );
 
-  return createPortal(menu, host);
+  return menu;
 }
 
 function SelectionSection({ title, options, onChoose, kind }) {

@@ -3,13 +3,8 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import PrivateSelectionEnhancer from "./PrivateSelectionEnhancer";
-import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
-import MobileDiscoveryTextPolish from "./mobile-v2/discovery/MobileDiscoveryTextPolish";
-import MobilePrivateSelectionProfile from "./mobile-v2/private-selection/MobilePrivateSelectionProfile";
-import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
-import MobileProductModalPager from "./mobile-v2/modal/MobileProductModalPager";
 import MobileCommunityV2 from "./mobile-v2/community/MobileCommunityV2";
 import DesktopFooterCatalog from "./DesktopFooterCatalog";
 import CartInteractionV2 from "./CartInteractionV2";
@@ -38,6 +33,7 @@ import "./mobile-v2/navigation/MobileClosingFooterV2.css";
 import "./mobile-v2/shop/MobileShopV2.css";
 import "./mobile-v2/shop/MobileShopReveal.css";
 import "./mobile-v2/modal/MobileProductModalBase.css";
+import "./mobile-v2/modal/MobileProductModalPagerCore.css";
 import "./mobile-v2/modal/MobileProductModalPagerPolish.css";
 import "./ProductModalPurchaseV2.css";
 import "./mobile-v2/cart-checkout/MobileCartV2.css";
@@ -61,13 +57,8 @@ root.render(
   <React.StrictMode>
     <App />
     <PrivateSelectionEnhancer />
-    <MobilePartnerSpotlight />
-    <MobileDiscoveryTextPolish />
-    <MobilePrivateSelectionProfile />
-    <MobileShopV2 />
     <MobileShopReveal />
     <MobileMenuContact />
-    <MobileProductModalPager />
     <MobileCommunityV2 />
     <DesktopFooterCatalog />
     <CartInteractionV2 />

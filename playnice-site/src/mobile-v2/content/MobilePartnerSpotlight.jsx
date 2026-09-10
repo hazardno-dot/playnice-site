@@ -1,86 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import React from "react";
 import { trackEvent } from "../../lib/ga";
 import "./MobilePartnerSpotlight.css";
 
 const FOREVER_URL =
   "https://foreverliving.com/shop/scg/sr-Cyrl-RS/drinks?fboId=360000920762&categoryId=1&title=Napici";
 
-const getLanguage = () => {
-  try {
-    return window.localStorage.getItem("playnice_lang") === "en" ? "en" : "sr";
-  } catch {
-    return "sr";
-  }
-};
-
-const isHomePath = () => window.location.pathname === "/";
-
-function MobilePartnerSpotlight() {
-  const [host, setHost] = useState(null);
-  const [lang, setLang] = useState(() => getLanguage());
-  const [visible, setVisible] = useState(
-    () => typeof window !== "undefined" && window.innerWidth <= 640 && isHomePath()
-  );
-
-  useEffect(() => {
-    let frame = 0;
-
-    const sync = () => {
-      setLang(getLanguage());
-      setVisible(window.innerWidth <= 640 && isHomePath());
-    };
-
-    const ensureHost = () => {
-      const closing = document.querySelector(".closing-section");
-      const footer = document.querySelector(".site-footer");
-      const anchor = closing || footer;
-
-      if (!anchor) {
-        setHost(null);
-        return;
-      }
-
-      let nextHost = document.querySelector(".mobile-partner-spotlight-host");
-      if (!nextHost) {
-        nextHost = document.createElement("div");
-        nextHost.className = "mobile-partner-spotlight-host";
-        anchor.parentNode?.insertBefore(nextHost, anchor);
-      } else if (nextHost.nextElementSibling !== anchor) {
-        anchor.parentNode?.insertBefore(nextHost, anchor);
-      }
-
-      setHost(nextHost);
-    };
-
-    const run = () => {
-      frame = 0;
-      sync();
-      ensureHost();
-    };
-
-    const scheduleRun = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(run);
-    };
-
-    run();
-
-    window.addEventListener("resize", sync);
-    window.addEventListener("popstate", scheduleRun);
-    window.addEventListener("playnice:locationchange", scheduleRun);
-    window.addEventListener("storage", sync);
-
-    return () => {
-      window.removeEventListener("resize", sync);
-      window.removeEventListener("popstate", scheduleRun);
-      window.removeEventListener("playnice:locationchange", scheduleRun);
-      window.removeEventListener("storage", sync);
-      if (frame) window.cancelAnimationFrame(frame);
-      document.querySelector(".mobile-partner-spotlight-host")?.remove();
-    };
-  }, []);
-
+function MobilePartnerSpotlight({ lang = "sr" }) {
   const copy =
     lang === "sr"
       ? {
@@ -100,8 +25,6 @@ function MobilePartnerSpotlight() {
           cta: "Explore range",
         };
 
-  if (!host || !visible) return null;
-
   const handleClick = () => {
     trackEvent("sponsored_ad_click", {
       partner: "forever_living",
@@ -113,7 +36,7 @@ function MobilePartnerSpotlight() {
     });
   };
 
-  return createPortal(
+  return (
     <section className="mobile-partner-spotlight" aria-label="PlayNice partner">
       <a
         className="mobile-partner-spotlight-card"
@@ -147,8 +70,7 @@ function MobilePartnerSpotlight() {
           <span aria-hidden="true">↗</span>
         </div>
       </a>
-    </section>,
-    host
+    </section>
   );
 }
 

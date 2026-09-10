@@ -3,6 +3,9 @@
    Home-only browsing polish. Desktop and Shop remain untouched.
 ========================================= */
 
+.product-category-mobile-profile {
+  display: none;
+}
 @media (max-width: 640px) {
   .homepage-shop-preview .section-head {
     margin-bottom: 18px;
@@ -109,6 +112,14 @@
     letter-spacing: 0.09em;
     text-transform: uppercase;
     opacity: 1;
+  }
+
+  .homepage-shop-preview .product-category.has-mobile-private-profile .product-category-default {
+    display: none;
+  }
+
+  .homepage-shop-preview .product-category.has-mobile-private-profile .product-category-mobile-profile {
+    display: inline;
   }
 
   .homepage-shop-preview .product-card-title {
