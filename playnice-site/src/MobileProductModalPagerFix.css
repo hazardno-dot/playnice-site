@@ -5,7 +5,7 @@
 }
 
 @media (max-width: 640px) {
-  /* The original React header stays mounted for state/events, but page 01 uses a cloned header inside the swipe track. */
+  /* Keep original React controls mounted only as hidden event sources. */
   .product-modal.mobile-pager-enabled > .modal-header {
     position: absolute !important;
     width: 1px !important;
@@ -17,13 +17,21 @@
     pointer-events: none !important;
   }
 
-  /* Use one identical close control for both pages. */
   .product-modal.mobile-pager-enabled > .close-button,
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header .close-button {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
-  .product-modal .mobile-pager-close {
+  /* Each swipe page owns its close control so the X travels with that page. */
+  .product-modal.mobile-pager-enabled .modal-media,
+  .product-modal.mobile-pager-enabled .modal-content {
+    position: relative;
+  }
+
+  .product-modal.mobile-pager-enabled .mobile-pager-page-close {
     position: absolute;
     top: 12px;
     right: 12px;
@@ -34,6 +42,7 @@
     border-radius: 999px;
     display: grid;
     place-items: center;
+    padding: 0;
     color: rgba(244, 232, 207, 0.86);
     background: rgba(20, 19, 17, 0.92);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
@@ -43,6 +52,7 @@
     opacity: 1;
     transform: none;
     pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* PAGE 01 header is part of the first swipe page and moves with it. */
@@ -106,16 +116,10 @@
     padding-top: 28px !important;
   }
 
-  /* Note Map is now revealed by touching the bottle area. */
+  /* Note Map is image-triggered on mobile. Every text trigger stays fully hidden. */
   .product-modal.mobile-pager-enabled .mobile-note-map-source {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    clip: rect(0 0 0 0) !important;
-    clip-path: inset(50%) !important;
+    display: none !important;
+    visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
   }
@@ -199,7 +203,7 @@
     text-align: center;
   }
 
-  /* One centered page status; swipe itself is now the instruction. */
+  /* One centered page status; swipe itself is the instruction. */
   .product-modal .mobile-pager-status {
     left: 50%;
     bottom: 13px;
@@ -218,7 +222,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .product-modal .mobile-pager-close {
+  .product-modal .mobile-pager-page-close {
     transition: none !important;
   }
 }
