@@ -1,3 +1,9 @@
+/* Hide "Inspired by" only when the stored source explicitly marks an original creation.
+   Fragrances with a real inspiration reference keep the existing block on mobile and desktop. */
+.product-modal .modal-inspired-mini.modal-inspired-original {
+  display: none !important;
+}
+
 @media (max-width: 640px) {
   /* The original React header stays mounted for state/events, but page 01 uses a cloned header inside the swipe track. */
   .product-modal.mobile-pager-enabled > .modal-header {
@@ -11,56 +17,17 @@
     pointer-events: none !important;
   }
 
-  /* PAGE 01 header is now part of the first swipe page, so it moves as one composition. */
-  .product-modal.mobile-pager-enabled .mobile-pager-page1-header {
-    position: relative;
-    flex: 0 0 auto;
-    width: 100%;
-    margin: 0 0 8px;
-    padding: 18px 14px 14px !important;
-    border: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    text-align: center;
-  }
-
-  .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2,
-  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-kicker,
-  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-header-meta,
-  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-inspired-mini {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-  }
-
-  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-header-meta,
-  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-inspired-mini {
-    justify-content: center;
-  }
-
+  /* Use one identical close control for both pages. */
+  .product-modal.mobile-pager-enabled > .close-button,
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header .close-button {
-    position: absolute !important;
-    top: 12px !important;
-    right: 12px !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transform: none !important;
+    display: none !important;
   }
 
-  .product-modal.mobile-pager-page-1 .modal-media {
-    padding-top: 0 !important;
-    background:
-      radial-gradient(circle at 82% 9%, rgba(220, 181, 107, 0.045), transparent 30%),
-      linear-gradient(180deg, rgba(17, 16, 14, 0.995), rgba(11, 11, 10, 0.995));
-  }
-
-  /* Page 02 gets its own close affordance. */
   .product-modal .mobile-pager-close {
     position: absolute;
     top: 12px;
     right: 12px;
-    z-index: 20;
+    z-index: 24;
     width: 30px;
     height: 30px;
     border: 1px solid rgba(220, 181, 107, 0.18);
@@ -73,28 +40,117 @@
     font-family: "Inter", sans-serif;
     font-size: 1rem;
     line-height: 1;
-    opacity: 0;
-    transform: translateY(-4px);
-    pointer-events: none;
-    transition: opacity 180ms ease, transform 220ms ease;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
   }
 
-  .product-modal.mobile-pager-page-2 .mobile-pager-close {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
+  /* PAGE 01 header is part of the first swipe page and moves with it. */
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header {
+    position: relative;
+    flex: 0 0 auto;
+    width: 100%;
+    margin: 0 0 10px;
+    padding: 22px 14px 16px !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    text-align: center;
+  }
+
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2 {
+    max-width: calc(100% - 32px);
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.98rem !important;
+    line-height: 0.98;
+    text-align: center;
+  }
+
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-eyebrow,
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-kicker,
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-header-meta,
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-inspired-mini {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-header-meta {
+    width: 100%;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-rating,
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-rating-stars,
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-rating-copy {
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-inspired-mini {
+    justify-content: center;
+  }
+
+  .product-modal.mobile-pager-page-1 .modal-media {
+    padding-top: 0 !important;
+    background:
+      radial-gradient(circle at 82% 9%, rgba(220, 181, 107, 0.045), transparent 30%),
+      linear-gradient(180deg, rgba(17, 16, 14, 0.995), rgba(11, 11, 10, 0.995));
   }
 
   .product-modal.mobile-pager-page-2 .modal-content {
     padding-top: 28px !important;
   }
 
-  /* Keep all non-button copy centered across both pages. */
+  /* Note Map is now revealed by touching the bottle area. */
+  .product-modal.mobile-pager-enabled .mobile-note-map-source {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .product-modal.mobile-pager-enabled .modal-image-wrap {
+    position: relative;
+  }
+
+  .product-modal.mobile-pager-enabled .mobile-note-map-hit {
+    position: absolute;
+    z-index: 14;
+    left: 50%;
+    top: 50%;
+    width: min(78%, 220px);
+    height: calc(100% + 24px);
+    max-height: 196px;
+    transform: translate(-50%, -50%);
+    border: 0;
+    border-radius: 44%;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .product-modal.mobile-pager-enabled .mobile-note-map-hit:active {
+    background: radial-gradient(circle, rgba(220, 181, 107, 0.055), transparent 66%);
+  }
+
+  /* Page 02 stays centered except for the two requested decision cues. */
   .product-modal.mobile-pager-enabled .mobile-pager-decision-intro,
   .product-modal.mobile-pager-enabled .modal-description,
   .product-modal.mobile-pager-enabled .modal-info-card,
-  .product-modal.mobile-pager-enabled .modal-label,
-  .product-modal.mobile-pager-enabled .modal-size-helper,
   .product-modal.mobile-pager-enabled .modal-media-meta,
   .product-modal.mobile-pager-enabled .modal-media-meta-copy,
   .product-modal.mobile-pager-enabled .modal-category,
@@ -108,8 +164,10 @@
     margin-right: auto;
   }
 
+  /* MiniTag back to the left. */
   .product-modal.mobile-pager-enabled .modal-chip {
-    align-self: center !important;
+    align-self: flex-start !important;
+    text-align: left !important;
   }
 
   .product-modal.mobile-pager-enabled .modal-info-card {
@@ -121,9 +179,13 @@
     justify-content: center !important;
   }
 
+  /* Choose size and its helper return to the left. */
   .product-modal.mobile-pager-enabled .modal-purchase > .modal-label,
   .product-modal.mobile-pager-enabled .modal-purchase > .modal-size-helper {
     width: 100%;
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 
   /* Reserve a consistent two-line note area so product-to-product height never jumps. */
@@ -137,16 +199,21 @@
     text-align: center;
   }
 
-  /* Separate navigation: page counter left, action hint right. */
+  /* One centered page status; swipe itself is now the instruction. */
   .product-modal .mobile-pager-status {
-    left: 14px;
+    left: 50%;
     bottom: 13px;
-    transform: none;
+    transform: translateX(-50%);
   }
 
   .product-modal .mobile-pager-hint {
-    right: 14px;
-    bottom: 13px;
+    display: none !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2 {
+    font-size: 1.82rem !important;
   }
 }
 
