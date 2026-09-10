@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import PrivateSelectionEnhancer from "./PrivateSelectionEnhancer";
-import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
 import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
 import MobileCommunityV2 from "./mobile-v2/community/MobileCommunityV2";
@@ -58,7 +57,6 @@ root.render(
   <React.StrictMode>
     <App />
     <PrivateSelectionEnhancer />
-    <MobilePartnerSpotlight />
     <MobileShopReveal />
     <MobileMenuContact />
     <MobileCommunityV2 />
