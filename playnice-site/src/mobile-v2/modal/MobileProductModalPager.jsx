@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import "./MobileProductModalFold.css";
+import "./MobileProductModalPagerCore.css";
 
 const MOBILE_QUERY = "(max-width: 640px)";
 const SWIPE_THRESHOLD = 54;
 
-function MobileProductModalFold() {
+function MobileProductModalPager() {
   useEffect(() => {
     const media = window.matchMedia(MOBILE_QUERY);
     const cleanupMap = new WeakMap();
@@ -110,9 +110,7 @@ function MobileProductModalFold() {
           return;
         }
 
-        // React can replace the Note Map trigger after the first interaction.
-        // Re-suppress every replacement even when the pager itself is already mounted.
-        suppressNoteMapButtons(modal);
+        const noteMapSources = suppressNoteMapButtons(modal);
 
         if (modal.classList.contains("mobile-pager-enabled")) {
           fitPageOneTitle(modal);
@@ -177,7 +175,6 @@ function MobileProductModalFold() {
         const left = chrome.querySelector(".mobile-pager-edge-left");
         const right = chrome.querySelector(".mobile-pager-edge-right");
 
-        const noteMapSources = suppressNoteMapButtons(modal);
         const imageWrap = mediaPanel.querySelector(".modal-image-wrap");
         let noteMapHit = null;
 
@@ -299,4 +296,4 @@ function MobileProductModalFold() {
   return null;
 }
 
-export default MobileProductModalFold;
+export default MobileProductModalPager;

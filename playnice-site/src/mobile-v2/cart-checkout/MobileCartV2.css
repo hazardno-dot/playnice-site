@@ -7,8 +7,6 @@
 @media (max-width: 640px) {
   /* Drawer rhythm */
   .cart-drawer.has-items {
-    width: calc(100vw - 20px);
-    max-height: calc(100dvh - 20px);
     border-radius: 20px;
   }
 
@@ -248,7 +246,6 @@
   }
 
   .cart-trust-item span:first-child {
-    display: inline-block;
     font-size: 7px;
   }
 }

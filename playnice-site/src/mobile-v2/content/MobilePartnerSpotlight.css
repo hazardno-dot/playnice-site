@@ -137,7 +137,6 @@
 @media (max-width: 390px) {
   .mobile-partner-spotlight {
     width: calc(100% - 28px);
-    margin-bottom: var(--mobile-home-section-gap, 48px);
   }
 
   .mobile-partner-spotlight-card {

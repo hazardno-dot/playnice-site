@@ -292,12 +292,6 @@
     margin-top: 1px;
   }
 
-  .mobile-shop-selection-section + .mobile-shop-selection-section {
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid rgba(220,181,107,0.075);
-  }
-
   .mobile-shop-selection-section h4 {
     margin: 0 0 5px;
     color: rgba(220,181,107,0.64);
@@ -430,8 +424,7 @@
   }
 
   /* Product copy: reserve exactly three lines without fixing the whole card stack. */
-  .shop-section .product-card-copy,
-  .shop-section .product-card-copy.premium-card-copy {
+  .shop-section .product-card-copy {
     line-height: 1.32;
     min-height: calc(1.32em * 3);
     max-height: calc(1.32em * 3);
@@ -456,10 +449,6 @@
 
   .mobile-shop-board {
     padding: 7px;
-  }
-
-  .mobile-shop-capsules {
-    gap: 6px;
   }
 
   .mobile-shop-capsule {

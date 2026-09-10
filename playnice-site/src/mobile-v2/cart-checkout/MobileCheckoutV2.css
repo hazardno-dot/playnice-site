@@ -6,9 +6,6 @@
 
 @media (max-width: 640px) {
   .checkout-modal {
-    inset: 10px 10px auto 10px;
-    width: auto;
-    max-height: calc(100dvh - 20px);
     border-radius: 20px;
     overflow-y: auto;
     scrollbar-width: none;
@@ -16,8 +13,6 @@
   }
 
   .checkout-modal::-webkit-scrollbar {
-    width: 0;
-    height: 0;
     display: none;
   }
 
@@ -99,7 +94,6 @@
   }
 
   .checkout-trust {
-    order: 0;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;

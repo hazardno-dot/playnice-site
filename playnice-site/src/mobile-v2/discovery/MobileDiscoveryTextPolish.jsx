@@ -9,7 +9,7 @@ function MobileDiscoveryTextPolish() {
 
     const syncTitles = () => {
       document.querySelectorAll(TITLE_SELECTOR).forEach((title) => {
-        const original = title.dataset.mobileDiscoveryOriginal || title.textContent || "";
+        const original = title.dataset.mobileDiscoveryOriginal || title.textContent;
 
         if (!title.dataset.mobileDiscoveryOriginal) {
           title.dataset.mobileDiscoveryOriginal = original;

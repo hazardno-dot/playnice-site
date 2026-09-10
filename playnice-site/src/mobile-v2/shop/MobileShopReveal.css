@@ -24,10 +24,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .shop-section .product-grid > .product-card,
-    .shop-section .product-grid > .product-card.mobile-shop-reveal-pending,
-    .shop-section .product-grid > .product-card.mobile-shop-reveal-visible,
-    .shop-section .product-grid > .product-card.mobile-shop-reveal-static {
+    .shop-section .product-grid > .product-card {
       transition: none !important;
       opacity: 1 !important;
       transform: none !important;
