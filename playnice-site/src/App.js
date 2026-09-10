@@ -6868,8 +6868,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <h2 id="discovery-showcase-title">
       {lang === "sr"
-        ? "Izaberi svoj Discovery Set."
-        : "Choose your Discovery Set."}
+        ? "Izaberi svoj Discovery Set"
+        : "Choose your Discovery Set"}
     </h2>
 
     <p>
