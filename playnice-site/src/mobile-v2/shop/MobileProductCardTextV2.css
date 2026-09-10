@@ -18,13 +18,6 @@
     gap: 4px;
   }
 
-  .shop-section .product-card-copy,
-  .shop-section .product-card-copy.premium-card-copy {
-    min-height: calc(1.32em * 3);
-    max-height: calc(1.32em * 3);
-    -webkit-line-clamp: 3;
-  }
-
   .shop-section .product-card-decant-note {
     display: -webkit-box !important;
     min-height: calc(1.16em * 3);
