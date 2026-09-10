@@ -6888,8 +6888,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
         <h3>
           {lang === "sr"
-            ? "Napravi svoj signature set."
-            : "Build your signature set."}
+            ? "Napravi svoj signature set"
+            : "Build your signature set"}
+          <span className="discovery-showcase-title-period" aria-hidden="true">.</span>
         </h3>
 
         <p>
@@ -6916,8 +6917,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
         <h3>
           {lang === "sr"
-            ? "Otkrij svet Arabian parfema."
-            : "Discover Arabian perfumery."}
+            ? "Otkrij svet Arabian parfema"
+            : "Discover Arabian perfumery"}
+          <span className="discovery-showcase-title-period" aria-hidden="true">.</span>
         </h3>
 
         <p>

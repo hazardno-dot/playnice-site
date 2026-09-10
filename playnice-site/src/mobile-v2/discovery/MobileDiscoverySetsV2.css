@@ -48,6 +48,10 @@
     line-height: 1.02;
   }
 
+  .discovery-showcase-title-period {
+    display: none;
+  }
+
   /* Value line: same size, stronger hierarchy. */
   .discovery-showcase-card p {
     min-height: auto;
