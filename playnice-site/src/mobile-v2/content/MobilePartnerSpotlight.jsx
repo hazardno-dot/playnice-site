@@ -58,17 +58,17 @@ function MobilePartnerSpotlight() {
 
     run();
 
-    const observer = new MutationObserver(run);
-    observer.observe(document.body, { childList: true, subtree: true });
+    const scheduleRun = () => window.requestAnimationFrame(run);
 
     window.addEventListener("resize", sync);
-    window.addEventListener("popstate", run);
+    window.addEventListener("popstate", scheduleRun);
+    window.addEventListener("playnice:locationchange", scheduleRun);
     window.addEventListener("storage", sync);
 
     return () => {
-      observer.disconnect();
       window.removeEventListener("resize", sync);
-      window.removeEventListener("popstate", run);
+      window.removeEventListener("popstate", scheduleRun);
+      window.removeEventListener("playnice:locationchange", scheduleRun);
       window.removeEventListener("storage", sync);
       document.querySelector(".mobile-partner-spotlight-host")?.remove();
     };
