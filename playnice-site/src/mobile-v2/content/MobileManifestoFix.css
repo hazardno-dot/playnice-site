@@ -6,7 +6,9 @@
     left: 50% !important;
     right: auto !important;
     bottom: auto !important;
+    width: calc(100vw - 20px) !important;
     max-width: none !important;
+    max-height: calc(100dvh - 20px) !important;
     margin: 0 !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
