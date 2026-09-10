@@ -15,6 +15,7 @@ import DesktopFooterCatalog from "./DesktopFooterCatalog";
 import CartInteractionV2 from "./CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
 import FragranceIntelligenceToneEnhancer from "./FragranceIntelligenceToneEnhancer";
+import { initLocationEvents } from "./lib/locationEvents";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
 import "./NewArrivalsScale.css";
@@ -51,6 +52,8 @@ import "./mobile-v2/content/MobileManifestoFix.css";
 import "./DesktopProductModalCopyV2.css";
 import "./HeaderLanguageColor.css";
 import "./DesktopDiscoverCleanup.css";
+
+initLocationEvents();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
