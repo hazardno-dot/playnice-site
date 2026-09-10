@@ -63,9 +63,9 @@
   }
 
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2 {
-    max-width: calc(100% - 44px);
+    max-width: calc(100% - 40px);
     margin: 0;
-    font-size: 1.78rem !important;
+    font-size: 1.58rem !important;
     line-height: 0.98;
     text-align: left;
     display: -webkit-box;
@@ -146,8 +146,11 @@
     padding-top: 28px !important;
   }
 
-  /* Note Map is image-triggered on mobile. Every text trigger stays fully hidden. */
-  .product-modal.mobile-pager-enabled .mobile-note-map-source {
+  /* Note Map is image-triggered on mobile. Hide both known trigger selectors permanently,
+     including React replacements created after opening/closing the note map. */
+  .product-modal.mobile-pager-enabled .mobile-note-map-source,
+  .product-modal.mobile-pager-enabled .modal-note-map-button,
+  .product-modal.mobile-pager-enabled .note-map-trigger {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
@@ -258,7 +261,7 @@
 
 @media (max-width: 360px) {
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2 {
-    font-size: 1.72rem !important;
+    font-size: 1.52rem !important;
   }
 }
 
