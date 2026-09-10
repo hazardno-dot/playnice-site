@@ -65,7 +65,7 @@
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2 {
     max-width: calc(100% - 38px);
     margin: 0;
-    font-size: var(--mobile-pager-title-size, 1.72rem) !important;
+    font-size: var(--mobile-pager-title-size, 1.84rem) !important;
     line-height: 0.98;
     text-align: left;
     display: -webkit-box;
