@@ -309,7 +309,7 @@ export default function MobileShopV2() {
   useEffect(() => {
     if (!isMobile) return;
     refreshOptions();
-  }, [isMobile]);
+  }, [isMobile, lang]);
 
   useEffect(() => {
     if (!panel) return;
