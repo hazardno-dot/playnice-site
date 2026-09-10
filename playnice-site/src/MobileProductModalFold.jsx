@@ -35,6 +35,7 @@ function MobileProductModalFold() {
         const body = modal.querySelector(".modal-body");
         const mediaPanel = body?.querySelector(":scope > .modal-media");
         const contentPanel = body?.querySelector(":scope > .modal-content");
+        const originalClose = modal.querySelector(".close-button");
         if (!body || !mediaPanel || !contentPanel) return;
         if (modal.classList.contains("mobile-pager-enabled")) return;
 
@@ -54,6 +55,7 @@ function MobileProductModalFold() {
         const chrome = document.createElement("div");
         chrome.className = "mobile-modal-pager-chrome";
         chrome.innerHTML = `
+          <button type="button" class="mobile-pager-close" aria-label="${lang === "sr" ? "Zatvori prozor" : "Close modal"}">×</button>
           <button type="button" class="mobile-pager-edge mobile-pager-edge-left" aria-label="${lang === "sr" ? "Prethodna strana" : "Previous page"}">‹</button>
           <div class="mobile-pager-status" aria-live="polite">
             <span class="mobile-pager-status-label">01 / 02</span>
@@ -71,6 +73,7 @@ function MobileProductModalFold() {
         const left = chrome.querySelector(".mobile-pager-edge-left");
         const right = chrome.querySelector(".mobile-pager-edge-right");
         const hint = chrome.querySelector(".mobile-pager-hint");
+        const close = chrome.querySelector(".mobile-pager-close");
 
         const setPage = (nextPage) => {
           page = Math.max(0, Math.min(1, nextPage));
@@ -108,10 +111,12 @@ function MobileProductModalFold() {
 
         const goNext = () => setPage(1);
         const goBack = () => setPage(0);
+        const closeModal = () => originalClose?.click();
 
         left.addEventListener("click", goBack);
         right.addEventListener("click", goNext);
         hint.addEventListener("click", goNext);
+        close.addEventListener("click", closeModal);
         body.addEventListener("touchstart", onTouchStart, { passive: true });
         body.addEventListener("touchend", onTouchEnd, { passive: true });
 
@@ -122,6 +127,7 @@ function MobileProductModalFold() {
           left.removeEventListener("click", goBack);
           right.removeEventListener("click", goNext);
           hint.removeEventListener("click", goNext);
+          close.removeEventListener("click", closeModal);
           body.removeEventListener("touchstart", onTouchStart);
           body.removeEventListener("touchend", onTouchEnd);
         });
