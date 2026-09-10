@@ -9,7 +9,7 @@ import MobilePrivateSelectionProfile from "./mobile-v2/private-selection/MobileP
 import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
-import MobileProductModalFold from "./mobile-v2/modal/MobileProductModalFold";
+import MobileProductModalPager from "./mobile-v2/modal/MobileProductModalPager";
 import DesktopFooterCatalog from "./DesktopFooterCatalog";
 import CartInteractionV2 from "./CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
@@ -62,7 +62,7 @@ root.render(
     <MobileShopV2 />
     <MobileShopReveal />
     <MobileMenuContact />
-    <MobileProductModalFold />
+    <MobileProductModalPager />
     <DesktopFooterCatalog />
     <CartInteractionV2 />
     <DiscoveryImageFallback />
