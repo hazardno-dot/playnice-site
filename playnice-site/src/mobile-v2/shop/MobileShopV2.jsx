@@ -237,7 +237,13 @@ export default function MobileShopV2() {
       });
     };
 
-    const syncLocation = () => syncSurface({ syncMood: true });
+    const scheduleLocationSync = () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        syncSurface({ syncMood: true });
+      });
+    };
 
     const originalPushState = window.history.pushState;
     const originalReplaceState = window.history.replaceState;
@@ -259,21 +265,21 @@ export default function MobileShopV2() {
 
     syncSurface({ syncMood: true });
 
-    const observer = new MutationObserver(schedule);
-    observer.observe(document.getElementById("root") || document.body, {
-      childList: true,
-      subtree: true,
+    const languageObserver = new MutationObserver(scheduleLocationSync);
+    languageObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["lang"],
     });
 
     media.addEventListener?.("change", schedule);
-    window.addEventListener("popstate", syncLocation);
-    window.addEventListener("playnice:locationchange", syncLocation);
+    window.addEventListener("popstate", scheduleLocationSync);
+    window.addEventListener("playnice:locationchange", scheduleLocationSync);
 
     return () => {
-      observer.disconnect();
+      languageObserver.disconnect();
       media.removeEventListener?.("change", schedule);
-      window.removeEventListener("popstate", syncLocation);
-      window.removeEventListener("playnice:locationchange", syncLocation);
+      window.removeEventListener("popstate", scheduleLocationSync);
+      window.removeEventListener("playnice:locationchange", scheduleLocationSync);
 
       if (window.history.pushState === wrappedPushState) {
         window.history.pushState = originalPushState;
