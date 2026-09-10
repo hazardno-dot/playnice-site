@@ -83,7 +83,7 @@
 
   /* Increase perceived bottle size only; keep the media box/modal height unchanged. */
   .modal-image-wrap > .modal-image {
-    scale: 1.24;
+    scale: 1.32;
     transform-origin: center;
   }
 
@@ -309,7 +309,7 @@
   }
 
   .modal-image-wrap > .modal-image {
-    scale: 1.2;
+    scale: 1.26;
   }
 
   .modal-price-box {
