@@ -26,7 +26,7 @@ export default function MobilePrivateSelectionProfile() {
         if (!label) return;
 
         if (!label.dataset.mobilePrivateOriginal) {
-          label.dataset.mobilePrivateOriginal = label.textContent || "";
+          label.dataset.mobilePrivateOriginal = label.textContent;
         }
 
         const original = label.dataset.mobilePrivateOriginal;
