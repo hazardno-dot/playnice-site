@@ -5369,7 +5369,8 @@ const ProductCard = ({
   wishlist,
   toggleWishlist,
   sprayingWishlistId,
-  changeViewOnOpen = true
+  changeViewOnOpen = true,
+  mobileProfileLabel = ""
 }) => {
   const copy = getProductCopy(product, lang);
   const minPrice = getMinPrice(product);
@@ -5535,7 +5536,20 @@ const titleLengthClass =
   <div className="product-meta premium-product-meta">
 
     <div className="product-meta-top">
-      <p className="product-category">{getCategoryLabel(product.category)}</p>
+      <p
+        className={`product-category ${
+          mobileProfileLabel ? "has-mobile-private-profile" : ""
+        }`}
+      >
+        <span className="product-category-default">
+          {getCategoryLabel(product.category)}
+        </span>
+        {mobileProfileLabel && (
+          <span className="product-category-mobile-profile">
+            {mobileProfileLabel}
+          </span>
+        )}
+      </p>
       <h3 className={`product-card-title ${titleLengthClass}`}>
         {displayedCardName}
       </h3>
@@ -6959,6 +6973,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       toggleWishlist={toggleWishlist}
                       sprayingWishlistId={sprayingWishlistId}
                       changeViewOnOpen={false}
+                      mobileProfileLabel={
+                        (productCopy[product.name] || fallbackCopy)?.miniTag?.[lang] ||
+                        (productCopy[product.name] || fallbackCopy)?.miniTag?.en ||
+                        ""
+                      }
                     />
                   ))}
               </div>

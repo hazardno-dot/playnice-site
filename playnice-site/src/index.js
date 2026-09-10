@@ -4,7 +4,6 @@ import "./index.css";
 import App from "./App";
 import PrivateSelectionEnhancer from "./PrivateSelectionEnhancer";
 import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
-import MobilePrivateSelectionProfile from "./mobile-v2/private-selection/MobilePrivateSelectionProfile";
 import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
 import MobileProductModalPager from "./mobile-v2/modal/MobileProductModalPager";
@@ -60,7 +59,6 @@ root.render(
     <App />
     <PrivateSelectionEnhancer />
     <MobilePartnerSpotlight />
-    <MobilePrivateSelectionProfile />
     <MobileShopReveal />
     <MobileMenuContact />
     <MobileProductModalPager />
