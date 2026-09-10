@@ -15,7 +15,6 @@ import { BASE_HERO_SLIDES } from "./data/heroSlides.generated";
 import TheNoteMap from "./TheNoteMap";
 import { discoverFragrances } from "./lib/discoveryEngine";
 import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
-import MobileProductModalPager from "./mobile-v2/modal/MobileProductModalPager";
 
 const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 
@@ -835,6 +834,10 @@ const getInitialShopState = () => {
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [mobileModalPage, setMobileModalPage] = useState(0);
+  const [isMobileProductModalViewport, setIsMobileProductModalViewport] = useState(() =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(max-width: 640px)").matches
+  );
 
   const [discoveryQuery, setDiscoveryQuery] = useState("");
   const [discoveryResults, setDiscoveryResults] = useState([]);
@@ -987,6 +990,9 @@ const isNewRequest = (request) => {
   const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
   const productModalRef = useRef(null);
+  const mobileModalTouchRef = useRef({ startX: 0, startY: 0, tracking: false });
+  const productModalMediaRef = useRef(null);
+  const productModalContentRef = useRef(null);
   const productModalCloseButtonRef = useRef(null);
   const productModalTriggerRef = useRef(null);
   const checkoutAutoCloseTimeoutRef = useRef(null);
@@ -1512,9 +1518,65 @@ const selectedSortOption =
 
   const scrollYRef = useRef(0);
 
+const handleMobileModalTouchStart = (event) => {
+  if (!isMobileProductModalViewport || !productModalVisible) return;
+
+  const touch = event.touches?.[0];
+  if (!touch) return;
+
+  mobileModalTouchRef.current = {
+    startX: touch.clientX,
+    startY: touch.clientY,
+    tracking: true,
+  };
+};
+
+const handleMobileModalTouchEnd = (event) => {
+  const gesture = mobileModalTouchRef.current;
+  if (!gesture.tracking || !isMobileProductModalViewport || !productModalVisible) return;
+
+  mobileModalTouchRef.current = { ...gesture, tracking: false };
+
+  const touch = event.changedTouches?.[0];
+  if (!touch) return;
+
+  const dx = touch.clientX - gesture.startX;
+  const dy = touch.clientY - gesture.startY;
+  const swipeThreshold = 54;
+
+  if (Math.abs(dx) < swipeThreshold || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+
+  if (dx < 0 && mobileModalPage === 0) setMobileModalPage(1);
+  if (dx > 0 && mobileModalPage === 1) setMobileModalPage(0);
+};
 /* =========================================
    EFFECTS
 ========================================= */
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 640px)");
+    const syncMobileModalViewport = () =>
+      setIsMobileProductModalViewport(media.matches);
+
+    syncMobileModalViewport();
+    media.addEventListener?.("change", syncMobileModalViewport);
+
+    return () => media.removeEventListener?.("change", syncMobileModalViewport);
+  }, []);
+
+  useEffect(() => {
+    if (productModalVisible) setMobileModalPage(0);
+  }, [productModalVisible, selectedProduct?.id]);
+
+  useEffect(() => {
+    if (!productModalVisible || !isMobileProductModalViewport) return;
+
+    if (mobileModalPage === 0) {
+      if (productModalMediaRef.current) productModalMediaRef.current.scrollTop = 0;
+      return;
+    }
+
+    if (productModalContentRef.current) productModalContentRef.current.scrollTop = 0;
+  }, [mobileModalPage, productModalVisible, isMobileProductModalViewport]);
   useLayoutEffect(() => {
   const body = document.body;
 
@@ -9286,7 +9348,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   >
     <div
       ref={productModalRef}
-      className={`product-modal ${productModalVisible ? "open panel-open" : ""}`}
+      className={`product-modal ${productModalVisible ? "open panel-open" : ""} ${
+        isMobileProductModalViewport && productModalVisible
+          ? `mobile-pager-enabled ${
+              mobileModalPage === 0 ? "mobile-pager-page-1" : "mobile-pager-page-2"
+            }`
+          : ""
+      }`}
+      style={
+        isMobileProductModalViewport && productModalVisible
+          ? { "--mobile-pager-page": String(mobileModalPage) }
+          : undefined
+      }
       role="dialog"
       aria-modal="true"
       aria-labelledby="product-modal-title"
@@ -9302,13 +9375,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         ×
       </button>
 
-      <MobileProductModalPager
-        modalRef={productModalRef}
-        active={productModalVisible}
-        resetKey={selectedProduct.id}
-        page={mobileModalPage}
-        setPage={setMobileModalPage}
-      />
 
       <div className="mobile-modal-pager-chrome">
         <button type="button" className="mobile-pager-edge mobile-pager-edge-left" aria-label={lang === "sr" ? "Prethodna strana" : "Previous page"} onClick={() => setMobileModalPage(0)}>‹</button>
@@ -9358,7 +9424,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           )}
 
           {selectedProduct.inspiredBy?.name && (
-            <div className="modal-inspired-mini panel-item-anim panel-item-2">
+            <div className={`modal-inspired-mini panel-item-anim panel-item-2 ${/^original\b/i.test(selectedProduct.inspiredBy.name) ? "modal-inspired-original" : ""}`}>
               <span className="modal-inspired-mini-label">
                 {lang === "sr" ? "INSPIRISANO" : "INSPIRED BY"}
               </span>
@@ -9377,8 +9443,69 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </div>
       </div>
 
-      <div className="modal-body">
-        <div className="modal-media panel-anim panel-anim-2">
+      <div
+        className="modal-body"
+        onTouchStart={handleMobileModalTouchStart}
+        onTouchEnd={handleMobileModalTouchEnd}
+      >
+        <div
+          ref={productModalMediaRef}
+          className="modal-media panel-anim panel-anim-2"
+        >
+          <div className="modal-header mobile-pager-page1-header" aria-hidden="true">
+            <span className="modal-eyebrow">PRIVATE DETAIL</span>
+            <h2>
+              {selectedProduct.modalName || selectedProduct.name}
+            </h2>
+
+            <div className="modal-header-meta">
+              {selectedProduct.rating ? (
+                <div className="modal-rating panel-item-anim panel-item-1">
+                  <div className="modal-rating-stars" aria-hidden="true">
+                    {Array.from({ length: 10 }).map((_, index) => (
+                      <span
+                        key={index}
+                        className={
+                          index < Math.round(selectedProduct.rating) ? "filled" : ""
+                        }
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="modal-rating-meta">
+                    <span className="modal-rating-score">
+                      {selectedProduct.rating.toFixed(1)}
+                    </span>
+                    <span className="modal-rating-label">
+                      / 10 • {selectedProduct.ratingLabel}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div />
+              )}
+
+              {selectedProduct.inspiredBy?.name && (
+                <div className={`modal-inspired-mini panel-item-anim panel-item-2 ${/^original\b/i.test(selectedProduct.inspiredBy.name) ? "modal-inspired-original" : ""}`}>
+                  <span className="modal-inspired-mini-label">
+                    {lang === "sr" ? "INSPIRISANO" : "INSPIRED BY"}
+                  </span>
+
+                  <strong className="modal-inspired-mini-name">
+                    {selectedProduct.inspiredBy.name}
+                  </strong>
+
+                  {selectedProduct.inspiredBy.short && (
+                    <span className="modal-inspired-mini-short">
+                      {selectedProduct.inspiredBy.short}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
           <button type="button" className="mobile-pager-page-close mobile-pager-page-close-1" aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"} onClick={() => closeProductModal()}>×</button>
 
           <button
@@ -9618,7 +9745,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             </div>
           </div>
 
-        <div className="modal-content panel-anim panel-anim-3">
+        <div
+          ref={productModalContentRef}
+          className="modal-content panel-anim panel-anim-3"
+        >
           <button type="button" className="mobile-pager-page-close mobile-pager-page-close-2" aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"} onClick={() => closeProductModal()}>×</button>
 
           <div className="mobile-pager-decision-intro">

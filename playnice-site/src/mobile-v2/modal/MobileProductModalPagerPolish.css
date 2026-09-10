@@ -1,5 +1,6 @@
 .mobile-pager-decision-intro,
-.mobile-note-map-hit {
+.mobile-note-map-hit,
+.mobile-pager-page1-header {
   display: none;
 }
 @media (max-width: 640px) {
@@ -52,8 +53,9 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* PAGE 01 header: original hierarchy, with adaptive two-line title fitting. */
+  /* PAGE 01 header: React-owned hierarchy with CSS-only two-line title fitting. */
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header {
+    display: block;
     position: relative;
     flex: 0 0 auto;
     width: 100%;
@@ -68,7 +70,7 @@
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2 {
     max-width: calc(100% - 38px);
     margin: 0;
-    font-size: var(--mobile-pager-title-size, 1.84rem) !important;
+    font-size: clamp(1.4rem, 7.5vw, 1.84rem) !important;
     line-height: 0.98;
     text-align: left;
     display: -webkit-box;
@@ -285,7 +287,7 @@
   }
 
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2 {
-    font-size: var(--mobile-pager-title-size, 1.98rem) !important;
+    font-size: clamp(1.55rem, 7.7vw, 1.98rem) !important;
     line-height: 1;
   }
 
