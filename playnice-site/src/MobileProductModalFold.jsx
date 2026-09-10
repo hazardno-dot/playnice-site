@@ -12,6 +12,13 @@ function MobileProductModalFold() {
     const getLang = () =>
       document.documentElement.lang?.toLowerCase().startsWith("sr") ? "sr" : "en";
 
+    const markOriginalInspired = (modal) => {
+      modal.querySelectorAll(".modal-inspired-mini").forEach((block) => {
+        const name = block.querySelector(".modal-inspired-mini-name")?.textContent?.trim() || "";
+        block.classList.toggle("modal-inspired-original", /^original\b/i.test(name));
+      });
+    };
+
     const clearPager = (modal) => {
       if (!modal) return;
 
@@ -24,10 +31,14 @@ function MobileProductModalFold() {
       modal.querySelector(".mobile-modal-pager-chrome")?.remove();
       modal.querySelector(".mobile-pager-decision-intro")?.remove();
       modal.querySelector(".mobile-pager-page1-header")?.remove();
+      modal.querySelector(".mobile-note-map-hit")?.remove();
+      modal.querySelector(".mobile-note-map-source")?.classList.remove("mobile-note-map-source");
     };
 
     const setupPager = () => {
       document.querySelectorAll(".product-modal").forEach((modal) => {
+        markOriginalInspired(modal);
+
         if (!media.matches || !modal.classList.contains("open")) {
           clearPager(modal);
           return;
@@ -37,7 +48,7 @@ function MobileProductModalFold() {
         const mediaPanel = body?.querySelector(":scope > .modal-media");
         const contentPanel = body?.querySelector(":scope > .modal-content");
         const originalHeader = modal.querySelector(":scope > .modal-header");
-        const originalClose = originalHeader?.querySelector(".close-button") || modal.querySelector(".close-button");
+        const originalClose = originalHeader?.querySelector(".close-button") || modal.querySelector(":scope > .close-button");
         if (!body || !mediaPanel || !contentPanel || !originalHeader) return;
         if (modal.classList.contains("mobile-pager-enabled")) return;
 
@@ -47,11 +58,11 @@ function MobileProductModalFold() {
         let startY = 0;
         let tracking = false;
 
-        // Page 01 gets its own header inside the swipe track so title/rating/close travel with the page.
+        // Page 01 gets its own header inside the swipe track so title/rating travel with the page.
         const pageOneHeader = originalHeader.cloneNode(true);
         pageOneHeader.classList.add("mobile-pager-page1-header");
+        pageOneHeader.querySelector(".close-button")?.remove();
         mediaPanel.prepend(pageOneHeader);
-        const pageOneClose = pageOneHeader.querySelector(".close-button");
 
         const intro = document.createElement("div");
         intro.className = "mobile-pager-decision-intro";
@@ -70,9 +81,6 @@ function MobileProductModalFold() {
             <span class="mobile-pager-dots" aria-hidden="true"><i class="is-active"></i><i></i></span>
           </div>
           <button type="button" class="mobile-pager-edge mobile-pager-edge-right" aria-label="${lang === "sr" ? "Sledeća strana" : "Next page"}">›</button>
-          <button type="button" class="mobile-pager-hint" aria-label="${lang === "sr" ? "Pređi na izbor veličine" : "Continue to size selection"}">
-            <span>${lang === "sr" ? "Prevuci za izbor" : "Swipe to choose"}</span><b aria-hidden="true">→</b>
-          </button>
         `;
         modal.appendChild(chrome);
 
@@ -80,8 +88,31 @@ function MobileProductModalFold() {
         const dots = Array.from(chrome.querySelectorAll(".mobile-pager-dots i"));
         const left = chrome.querySelector(".mobile-pager-edge-left");
         const right = chrome.querySelector(".mobile-pager-edge-right");
-        const hint = chrome.querySelector(".mobile-pager-hint");
         const close = chrome.querySelector(".mobile-pager-close");
+
+        // Note Map becomes an image gesture: keep the React source button mounted, but visually hide it.
+        const noteMapSource = Array.from(modal.querySelectorAll("button")).find((button) =>
+          button.textContent?.toUpperCase().includes("THE NOTE MAP")
+        );
+        const imageWrap = mediaPanel.querySelector(".modal-image-wrap");
+        let noteMapHit = null;
+
+        if (noteMapSource && imageWrap) {
+          noteMapSource.classList.add("mobile-note-map-source");
+          noteMapHit = document.createElement("button");
+          noteMapHit.type = "button";
+          noteMapHit.className = "mobile-note-map-hit";
+          noteMapHit.setAttribute(
+            "aria-label",
+            lang === "sr" ? "Prikaži note parfema" : "Show fragrance notes"
+          );
+          noteMapHit.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            noteMapSource.click();
+          });
+          imageWrap.appendChild(noteMapHit);
+        }
 
         const setPage = (nextPage) => {
           page = Math.max(0, Math.min(1, nextPage));
@@ -123,9 +154,7 @@ function MobileProductModalFold() {
 
         left.addEventListener("click", goBack);
         right.addEventListener("click", goNext);
-        hint.addEventListener("click", goNext);
         close.addEventListener("click", closeModal);
-        pageOneClose?.addEventListener("click", closeModal);
         body.addEventListener("touchstart", onTouchStart, { passive: true });
         body.addEventListener("touchend", onTouchEnd, { passive: true });
 
@@ -135,11 +164,11 @@ function MobileProductModalFold() {
         cleanupMap.set(modal, () => {
           left.removeEventListener("click", goBack);
           right.removeEventListener("click", goNext);
-          hint.removeEventListener("click", goNext);
           close.removeEventListener("click", closeModal);
-          pageOneClose?.removeEventListener("click", closeModal);
           body.removeEventListener("touchstart", onTouchStart);
           body.removeEventListener("touchend", onTouchEnd);
+          noteMapHit?.remove();
+          noteMapSource?.classList.remove("mobile-note-map-source");
         });
       });
     };
