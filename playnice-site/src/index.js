@@ -34,7 +34,7 @@ import "./mobile-v2/private-selection/MobilePrivateSelectionV2.css";
 import "./mobile-v2/navigation/MobileClosingFooterV2.css";
 import "./mobile-v2/shop/MobileShopV2.css";
 import "./mobile-v2/shop/MobileShopReveal.css";
-import "./mobile-v2/modal/MobileProductModalV2.css";
+import "./mobile-v2/modal/MobileProductModalBase.css";
 import "./mobile-v2/modal/MobileProductModalPagerPolish.css";
 import "./ProductModalPurchaseV2.css";
 import "./mobile-v2/cart-checkout/MobileCartV2.css";
