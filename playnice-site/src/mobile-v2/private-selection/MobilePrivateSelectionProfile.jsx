@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { products } from "./data/products";
-import { productCopy, fallbackCopy } from "./data/products/productCopy";
+import { products } from "../../data/products";
+import { productCopy, fallbackCopy } from "../../data/products/productCopy";
 
 const PRIVATE_SELECTION_IDS = [27, 30, 36, 47];
 const MOBILE_QUERY = "(max-width: 640px)";

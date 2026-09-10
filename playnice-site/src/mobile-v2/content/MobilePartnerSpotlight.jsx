@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { trackEvent } from "./lib/ga";
+import { trackEvent } from "../../lib/ga";
 import "./MobilePartnerSpotlight.css";
 
 const FOREVER_URL =
