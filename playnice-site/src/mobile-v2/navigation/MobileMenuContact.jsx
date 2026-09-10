@@ -41,20 +41,17 @@ function MobileMenuContact() {
   useEffect(() => {
     if (!panelTarget) return undefined;
 
-    const observer = new MutationObserver(() => {
-      const header = document.querySelector(".header-next");
-      if (!header?.classList.contains("is-mobile-open")) {
-        setSupportOpen(false);
-        setCatalogOpen(false);
-      }
-    });
+    const trigger = document.querySelector(".header-next-menu-trigger");
+    if (!trigger) return undefined;
 
-    const header = document.querySelector(".header-next");
-    if (header) {
-      observer.observe(header, { attributes: true, attributeFilter: ["class"] });
-    }
+    const resetSubmenus = () => {
+      setSupportOpen(false);
+      setCatalogOpen(false);
+    };
 
-    return () => observer.disconnect();
+    trigger.addEventListener("click", resetSubmenus);
+
+    return () => trigger.removeEventListener("click", resetSubmenus);
   }, [panelTarget]);
 
   const closeMobileMenu = () => {
