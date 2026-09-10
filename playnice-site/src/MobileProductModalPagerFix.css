@@ -65,27 +65,35 @@
     border: 0 !important;
     background: transparent !important;
     box-shadow: none !important;
-    text-align: center;
+    text-align: left;
   }
 
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2 {
-    max-width: calc(100% - 32px);
-    margin-left: auto;
+    max-width: calc(100% - 38px);
+    margin-left: 0;
     margin-right: auto;
-    font-size: 1.98rem !important;
-    line-height: 0.98;
-    text-align: center;
+    font-size: 1.84rem !important;
+    line-height: 1;
+    text-align: left;
   }
 
+  /* Private detail + signature line return to the left. */
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-eyebrow,
-  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-kicker,
-  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-header-meta,
-  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-inspired-mini {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-kicker {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
   }
 
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-inspired-mini {
+    margin-left: 0;
+    margin-right: auto;
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  /* Rating stays centered as a separate visual anchor. */
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-header-meta {
     width: 100%;
     justify-content: center !important;
@@ -101,10 +109,6 @@
     text-align: center !important;
   }
 
-  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-inspired-mini {
-    justify-content: center;
-  }
-
   .product-modal.mobile-pager-page-1 .modal-media {
     padding-top: 0 !important;
     background:
@@ -112,16 +116,9 @@
       linear-gradient(180deg, rgba(17, 16, 14, 0.995), rgba(11, 11, 10, 0.995));
   }
 
-  /* Keep wishlist attached to the fragrance media, away from the page close and swipe arrow. */
-  .product-modal.mobile-pager-enabled .modal-media > .modal-wishlist-btn {
-    top: 43% !important;
-    right: 16px !important;
-    transform: translateY(-50%) !important;
-    z-index: 20 !important;
-  }
-
-  .product-modal.mobile-pager-enabled .modal-media > .modal-wishlist-btn:active {
-    transform: translateY(-50%) scale(0.96) !important;
+  /* Wishlist is intentionally removed from the mobile product pager. */
+  .product-modal.mobile-pager-enabled .modal-wishlist-btn {
+    display: none !important;
   }
 
   .product-modal.mobile-pager-page-2 .modal-content {
@@ -229,7 +226,7 @@
 
 @media (max-width: 360px) {
   .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2 {
-    font-size: 1.82rem !important;
+    font-size: 1.68rem !important;
   }
 }
 
