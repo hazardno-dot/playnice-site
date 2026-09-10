@@ -1,52 +1,61 @@
 @media (max-width: 640px) {
-  /* Treat the original product header as part of page 01, not shared chrome. */
-  .product-modal.mobile-pager-enabled .modal-header {
-    max-height: 190px;
-    overflow: hidden;
-    opacity: 1;
-    padding: 18px 16px 12px !important;
-    background:
-      radial-gradient(circle at 82% 12%, rgba(220, 181, 107, 0.055), transparent 34%),
-      linear-gradient(180deg, rgba(18, 17, 15, 0.995), rgba(16, 15, 13, 0.995));
-    border-bottom: 0 !important;
+  /* The original React header stays mounted for state/events, but page 01 uses a cloned header inside the swipe track. */
+  .product-modal.mobile-pager-enabled > .modal-header {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* PAGE 01 header is now part of the first swipe page, so it moves as one composition. */
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header {
+    position: relative;
+    flex: 0 0 auto;
+    width: 100%;
+    margin: 0 0 8px;
+    padding: 18px 14px 14px !important;
+    border: 0 !important;
+    background: transparent !important;
     box-shadow: none !important;
-    transition:
-      max-height 320ms cubic-bezier(0.22, 0.78, 0.22, 1),
-      opacity 180ms ease,
-      padding 260ms ease,
-      border-color 220ms ease;
+    text-align: center;
   }
 
-  /* Make page 01 read as one continuous composition with the media panel. */
-  .product-modal.mobile-pager-page-1 .modal-header {
-    padding-bottom: 16px !important;
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header h2,
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-kicker,
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-header-meta,
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-inspired-mini {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
   }
 
-  .product-modal.mobile-pager-page-1 .modal-media {
-    padding-top: 10px !important;
-    background:
-      linear-gradient(180deg, rgba(16, 15, 13, 0.995), rgba(11, 11, 10, 0.995));
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-header-meta,
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .modal-inspired-mini {
+    justify-content: center;
   }
 
-  /* Keep the original close control clearly available on page 01. */
-  .product-modal.mobile-pager-page-1 .modal-header .close-button,
-  .product-modal.mobile-pager-page-1 > .close-button {
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header .close-button {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
     transform: none !important;
   }
 
-  .product-modal.mobile-pager-page-2 .modal-header {
-    max-height: 0;
+  .product-modal.mobile-pager-page-1 .modal-media {
     padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    opacity: 0;
-    border-bottom-color: transparent;
-    pointer-events: none;
+    background:
+      radial-gradient(circle at 82% 9%, rgba(220, 181, 107, 0.045), transparent 30%),
+      linear-gradient(180deg, rgba(17, 16, 14, 0.995), rgba(11, 11, 10, 0.995));
   }
 
-  /* Page 02 gets its own close affordance once page 01 header leaves the viewport. */
+  /* Page 02 gets its own close affordance. */
   .product-modal .mobile-pager-close {
     position: absolute;
     top: 12px;
@@ -76,9 +85,45 @@
     pointer-events: auto;
   }
 
-  /* Give page 02 a true full-height composition after page 01 header disappears. */
   .product-modal.mobile-pager-page-2 .modal-content {
     padding-top: 28px !important;
+  }
+
+  /* Keep all non-button copy centered across both pages. */
+  .product-modal.mobile-pager-enabled .mobile-pager-decision-intro,
+  .product-modal.mobile-pager-enabled .modal-description,
+  .product-modal.mobile-pager-enabled .modal-info-card,
+  .product-modal.mobile-pager-enabled .modal-label,
+  .product-modal.mobile-pager-enabled .modal-size-helper,
+  .product-modal.mobile-pager-enabled .modal-media-meta,
+  .product-modal.mobile-pager-enabled .modal-media-meta-copy,
+  .product-modal.mobile-pager-enabled .modal-category,
+  .product-modal.mobile-pager-enabled .modal-price-box {
+    text-align: center !important;
+  }
+
+  .product-modal.mobile-pager-enabled .mobile-pager-decision-intro p,
+  .product-modal.mobile-pager-enabled .modal-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .product-modal.mobile-pager-enabled .modal-chip {
+    align-self: center !important;
+  }
+
+  .product-modal.mobile-pager-enabled .modal-info-card {
+    align-items: center;
+  }
+
+  .product-modal.mobile-pager-enabled .modal-price-box {
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .product-modal.mobile-pager-enabled .modal-purchase > .modal-label,
+  .product-modal.mobile-pager-enabled .modal-purchase > .modal-size-helper {
+    width: 100%;
   }
 
   /* Reserve a consistent two-line note area so product-to-product height never jumps. */
@@ -106,7 +151,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .product-modal.mobile-pager-enabled .modal-header,
   .product-modal .mobile-pager-close {
     transition: none !important;
   }
