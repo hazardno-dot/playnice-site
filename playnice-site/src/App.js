@@ -6,16 +6,16 @@ import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
 import { productCopy, fallbackCopy } from "./data/products/productCopy";
 import { productWearContext } from "./data/products/productWearContext";
-import { discoveryProfiles } from "./data/products/discoveryProfiles";
 import { translations } from "./data/translations";
 import { BASE_HERO_SLIDES } from "./data/heroSlides.generated";
 import TheNoteMap from "./TheNoteMap";
-import { discoverFragrances } from "./lib/discoveryEngine";
 import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
+import { getJournalArticleSlug } from "./lib/journalSlug";
 
 const Exhibition = React.lazy(() => import("./Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./JournalArticlePage"));
+const JournalPage = React.lazy(() => import("./JournalPage"));
 
 const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 
@@ -4570,10 +4570,10 @@ const getDiscoveryAnalyticsParams = (discovery, source = "manual") => {
   };
 };
 
-const handleDiscoverySearch = (
-  queryOverride = discoveryQuery,
-  source = "manual"
-) => {
+    const handleDiscoverySearch = async (
+      queryOverride = discoveryQuery,
+      source = "manual"
+    ) => {
   const nextQuery = String(queryOverride || "").trim();
 
   if (!nextQuery) {
@@ -4582,6 +4582,14 @@ const handleDiscoverySearch = (
     setDiscoveryPage(1);
     return;
   }
+
+      const [
+        { discoverFragrances },
+        { discoveryProfiles },
+      ] = await Promise.all([
+        import("./lib/discoveryEngine"),
+        import("./data/products/discoveryProfiles"),
+      ]);
 
   const discovery = discoverFragrances({
     query: nextQuery,
@@ -6139,11 +6147,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <main>
         {view === "journal" && !journalPageArticle && (
-          <JournalPage
-            lang={lang}
-            articles={journalArticles}
-            onOpenArticle={handleJournalArticleOpen}
-          />
+          <React.Suspense fallback={null}>
+            <JournalPage
+              lang={lang}
+              articles={journalArticles}
+              onOpenArticle={handleJournalArticleOpen}
+            />
+          </React.Suspense>
         )}
 
         {view === "journal" && journalPageArticle && (
