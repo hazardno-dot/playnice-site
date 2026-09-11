@@ -4,17 +4,21 @@ import "./MobileCommunityV2.css";
 const MOBILE_QUERY = "(max-width: 640px)";
 const ACTIVE_VISIBLE = 5;
 const ADDED_VISIBLE = 4;
+const ACTIVATION_MARGIN = "700px 0px";
 
 function MobileCommunityV2() {
   useEffect(() => {
     const media = window.matchMedia(MOBILE_QUERY);
 
     let contentObserver = null;
+    let proximityObserver = null;
     let currentSection = null;
     let scheduled = false;
     let focusScheduled = false;
     let enhanceFrame = 0;
     let focusFrame = 0;
+    let bindFrame = 0;
+    let active = false;
 
     const isEnglish = (section) => {
       const kicker = section?.querySelector(".scent-request-kicker")?.textContent || "";
@@ -39,7 +43,7 @@ function MobileCommunityV2() {
       focusScheduled = false;
       focusFrame = 0;
 
-      if (!media.matches) {
+      if (!media.matches || !active || !currentSection) {
         document.body.classList.remove(
           "community-mobile-focus",
           "mobile-sticky-cta-suppressed"
@@ -47,20 +51,15 @@ function MobileCommunityV2() {
         return;
       }
 
-      const section = document.querySelector(".community-requests-section");
       const panel =
-        section?.querySelector(".community-request-panel-full") || section;
+        currentSection.querySelector(".community-request-panel-full") || currentSection;
       const viewportHeight =
         window.innerHeight || document.documentElement.clientHeight;
 
-      let communityFocused = false;
-
-      if (panel) {
-        const rect = panel.getBoundingClientRect();
-        const hasEntered = rect.top < viewportHeight - 96;
-        const communityStillOwnsBottom = rect.bottom > viewportHeight;
-        communityFocused = hasEntered && communityStillOwnsBottom;
-      }
+      const rect = panel.getBoundingClientRect();
+      const hasEntered = rect.top < viewportHeight - 96;
+      const communityStillOwnsBottom = rect.bottom > viewportHeight;
+      const communityFocused = hasEntered && communityStillOwnsBottom;
 
       document.body.classList.toggle("community-mobile-focus", communityFocused);
       document.body.classList.toggle(
@@ -70,7 +69,7 @@ function MobileCommunityV2() {
     };
 
     const scheduleFocusUpdate = () => {
-      if (focusScheduled) return;
+      if (!active || focusScheduled) return;
       focusScheduled = true;
       focusFrame = requestAnimationFrame(updateCommunityFocus);
     };
@@ -128,24 +127,9 @@ function MobileCommunityV2() {
     const enhanceCommunity = () => {
       scheduled = false;
       enhanceFrame = 0;
-      if (!media.matches) return;
+      if (!media.matches || !active || !currentSection) return;
 
-      const section = document.querySelector(".community-requests-section");
-      if (!section) return;
-
-      if (currentSection !== section) {
-        currentSection = section;
-        section.classList.add("community-mobile-v2");
-
-        contentObserver?.disconnect();
-        contentObserver = new MutationObserver(() => {
-          if (scheduled) return;
-          scheduled = true;
-          enhanceFrame = requestAnimationFrame(enhanceCommunity);
-        });
-        contentObserver.observe(section, { childList: true, subtree: true });
-      }
-
+      const section = currentSection;
       const english = isEnglish(section);
       const activeList = section.querySelector(".community-most-wanted-list");
       const activeItems = activeList
@@ -191,42 +175,102 @@ function MobileCommunityV2() {
         .forEach((control) => control.remove());
     };
 
-    const boot = () => {
-      if (media.matches) enhanceCommunity();
-      else resetDesktop();
+    const deactivate = () => {
+      active = false;
+      contentObserver?.disconnect();
+      contentObserver = null;
+      window.removeEventListener("scroll", scheduleFocusUpdate);
+      window.removeEventListener("resize", scheduleFocusUpdate);
+      document.body.classList.remove(
+        "community-mobile-focus",
+        "mobile-sticky-cta-suppressed"
+      );
     };
 
-    const appObserver = new MutationObserver(() => {
-      if (!media.matches || scheduled) return;
-      scheduled = true;
-      enhanceFrame = requestAnimationFrame(enhanceCommunity);
-    });
+    const activate = () => {
+      if (active || !media.matches || !currentSection) return;
+      active = true;
+      proximityObserver?.disconnect();
+      proximityObserver = null;
+
+      currentSection.classList.add("community-mobile-v2");
+
+      contentObserver = new MutationObserver(() => {
+        if (scheduled) return;
+        scheduled = true;
+        enhanceFrame = requestAnimationFrame(enhanceCommunity);
+      });
+      contentObserver.observe(currentSection, { childList: true, subtree: true });
+
+      window.addEventListener("scroll", scheduleFocusUpdate, { passive: true });
+      window.addEventListener("resize", scheduleFocusUpdate, { passive: true });
+      enhanceCommunity();
+    };
+
+    const bindSection = () => {
+      bindFrame = 0;
+
+      if (!media.matches) {
+        proximityObserver?.disconnect();
+        proximityObserver = null;
+        deactivate();
+        currentSection?.classList.remove("community-mobile-v2");
+        currentSection = null;
+        resetDesktop();
+        return;
+      }
+
+      const nextSection = document.querySelector(".community-requests-section");
+      if (nextSection === currentSection && (active || proximityObserver)) return;
+
+      proximityObserver?.disconnect();
+      proximityObserver = null;
+      deactivate();
+      currentSection?.classList.remove("community-mobile-v2");
+      currentSection = nextSection;
+
+      if (!currentSection) return;
+
+      proximityObserver = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) activate();
+        },
+        { rootMargin: ACTIVATION_MARGIN }
+      );
+      proximityObserver.observe(currentSection);
+    };
+
+    const scheduleBind = () => {
+      if (bindFrame) return;
+      bindFrame = requestAnimationFrame(bindSection);
+    };
 
     const languageObserver = new MutationObserver(() => {
-      if (!media.matches || scheduled) return;
+      if (!active || scheduled) return;
       scheduled = true;
       enhanceFrame = requestAnimationFrame(enhanceCommunity);
     });
 
-    appObserver.observe(document.body, { childList: true, subtree: true });
     languageObserver.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["lang"],
     });
-    window.addEventListener("scroll", scheduleFocusUpdate, { passive: true });
-    window.addEventListener("resize", scheduleFocusUpdate, { passive: true });
-    media.addEventListener?.("change", boot);
-    boot();
+
+    window.addEventListener("popstate", scheduleBind);
+    window.addEventListener("playnice:locationchange", scheduleBind);
+    media.addEventListener?.("change", scheduleBind);
+    scheduleBind();
 
     return () => {
-      appObserver.disconnect();
       languageObserver.disconnect();
-      contentObserver?.disconnect();
-      window.removeEventListener("scroll", scheduleFocusUpdate);
-      window.removeEventListener("resize", scheduleFocusUpdate);
-      media.removeEventListener?.("change", boot);
+      proximityObserver?.disconnect();
+      deactivate();
+      window.removeEventListener("popstate", scheduleBind);
+      window.removeEventListener("playnice:locationchange", scheduleBind);
+      media.removeEventListener?.("change", scheduleBind);
       if (enhanceFrame) cancelAnimationFrame(enhanceFrame);
       if (focusFrame) cancelAnimationFrame(focusFrame);
+      if (bindFrame) cancelAnimationFrame(bindFrame);
       currentSection?.classList.remove("community-mobile-v2");
       resetDesktop();
     };
