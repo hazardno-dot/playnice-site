@@ -34,6 +34,7 @@ import "./mobile-v2/modal/MobileProductModalBase.css";
 import "./mobile-v2/modal/MobileProductModalPagerCore.css";
 import "./mobile-v2/modal/MobileProductModalPagerPolish.css";
 import "./ProductModalPurchaseV2.css";
+import "./mobile-v2/product-page/MobileProductPage.css";
 import "./mobile-v2/cart-checkout/MobileCartV2.css";
 import "./mobile-v2/cart-checkout/MobileCheckoutV2.css";
 import "./mobile-v2/cart-checkout/MobileStickyCtaV2.css";
