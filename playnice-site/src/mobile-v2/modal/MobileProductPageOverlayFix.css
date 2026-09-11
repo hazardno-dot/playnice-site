@@ -52,7 +52,7 @@
     width: 100% !important;
     min-height: 100dvh !important;
     margin: 0 !important;
-    padding: calc(var(--mobile-header-system-height, 90px) + var(--mobile-header-top-offset, 4px)) 0 0 !important;
+    padding: 0 !important;
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
