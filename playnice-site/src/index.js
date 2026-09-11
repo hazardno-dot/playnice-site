@@ -6,6 +6,7 @@ import PrivateSelectionEnhancer from "./PrivateSelectionEnhancer";
 import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
 import MobileCommunityV2 from "./mobile-v2/community/MobileCommunityV2";
+import MobileProductPageEnhancer from "./mobile-v2/modal/MobileProductPageEnhancer";
 import DesktopFooterCatalog from "./DesktopFooterCatalog";
 import CartInteractionV2 from "./CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
@@ -35,6 +36,7 @@ import "./mobile-v2/modal/MobileProductModalPagerCore.css";
 import "./mobile-v2/modal/MobileProductModalPagerPolish.css";
 import "./ProductModalPurchaseV2.css";
 import "./mobile-v2/modal/MobileProductPageV1.css";
+import "./mobile-v2/modal/MobileProductPageV2.css";
 import "./mobile-v2/cart-checkout/MobileCartV2.css";
 import "./mobile-v2/cart-checkout/MobileCheckoutV2.css";
 import "./mobile-v2/cart-checkout/MobileStickyCtaV2.css";
@@ -55,6 +57,7 @@ const renderApp = () => {
       <MobileShopReveal />
       <MobileMenuContact />
       <MobileCommunityV2 />
+      <MobileProductPageEnhancer />
       <DesktopFooterCatalog />
       <CartInteractionV2 />
       <DiscoveryImageFallback />
