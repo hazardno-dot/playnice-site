@@ -102,9 +102,6 @@ export default function MobileProductPage({
   onToggleWishlist,
   onOpenProduct,
   onBackToShop,
-  onHome,
-  onShop,
-  onJournal,
 }) {
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [profile, setProfile] = useState(null);
@@ -149,7 +146,7 @@ export default function MobileProductPage({
   const scentType = copy.scentType?.[lang] || "";
 
   return (
-    <main className="mobile-product-page" data-product-slug={product.slug}>
+    <div className="mobile-product-page" data-product-slug={product.slug}>
       <section className="mobile-product-page__identity">
         <div className="mobile-product-page__identity-topline">
           <button type="button" className="mobile-product-page__back" onClick={onBackToShop}>
@@ -366,26 +363,6 @@ export default function MobileProductPage({
         </section>
       ) : null}
 
-      <footer className="mobile-product-page__footer">
-        <div className="mobile-product-page__footer-brand">
-          <strong>PlayNice</strong>
-          <span>Remember. PlayNice.</span>
-        </div>
-
-        <div className="mobile-product-page__footer-links">
-          <button type="button" onClick={onHome}>{lang === "sr" ? "Početna" : "Home"}</button>
-          <button type="button" onClick={onShop}>Shop</button>
-          <button type="button" onClick={onJournal}>Le Journal</button>
-        </div>
-
-        <p>
-          {lang === "sr"
-            ? "Originalni parfemi. Premium dekanti. Dostava širom Crne Gore."
-            : "Original fragrances. Premium decants. Delivery across Montenegro."}
-        </p>
-
-        <span className="mobile-product-page__footer-url">www.playniceshop.me</span>
-      </footer>
-    </main>
+    </div>
   );
 }
