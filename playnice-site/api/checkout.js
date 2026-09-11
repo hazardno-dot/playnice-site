@@ -35,8 +35,7 @@ class CheckoutResend extends OriginalResend {
         const placeholder = { data: { id: null } };
         context.pendingEmail = {
           payload,
-          placeholder,
-          stagedAt: Date.now()
+          placeholder
         };
         return placeholder;
       }
@@ -102,7 +101,7 @@ global.fetch = async (...args) => {
   }
 };
 
-const legacyModule = require("./checkout-legacy");
+const legacyModule = require("../server/checkout-legacy");
 const legacyHandler = legacyModule.default || legacyModule;
 
 export default async function handler(req, res) {
