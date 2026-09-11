@@ -257,7 +257,11 @@ export default async function handler(req, res) {
     }
 
     const approvedSlide = normalizeApproved(draft.approved_payload, baseline);
-    const nextSlides = baselineSlides.map((slide) => slide.heroKey === heroKey ? approvedSlide : slide);
+    const nextSlides = baselineSlides.map((slide) => {
+      if (slide.heroKey === heroKey) return approvedSlide;
+      if (approvedSlide.pinnedFirst) return { ...slide, pinnedFirst: false };
+      return slide;
+    });
     const nextRuntime = effectiveRuntime(nextSlides);
     const mediaStage = draft.approved_payload?.mediaStage || null;
     const stagedFiles = Array.isArray(mediaStage?.files) ? mediaStage.files : [];
