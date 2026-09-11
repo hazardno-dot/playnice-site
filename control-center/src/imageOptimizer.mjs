@@ -43,8 +43,9 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     fit: "strict",
     ratioTolerance: 0.03,
     background: "#000000",
-    maxBytes: 450_000,
-    qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66],
+    maxBytes: 150_000,
+    neverIncreaseBytes: true,
+    qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62, 0.58, 0.54, 0.5, 0.46],
   }),
   journal: Object.freeze({
     outputType: "image/webp",
@@ -137,6 +138,10 @@ export async function optimizeImage(file, preset) {
   const fixedSize = Number(preset.width) > 0 && Number(preset.height) > 0;
   if (!fixedSize && !preset?.maxEdge) throw new Error("Image optimizer preset needs fixed dimensions or maxEdge.");
 
+  const targetBytes = preset.neverIncreaseBytes
+    ? Math.min(preset.maxBytes, file.size)
+    : preset.maxBytes;
+
   const { image, url } = await readImage(file);
   try {
     const originalWidth = image.naturalWidth;
@@ -161,9 +166,9 @@ export async function optimizeImage(file, preset) {
       for (const quality of qualities) {
         const blob = await canvasToBlob(canvas, preset.outputType, quality);
         if (!blob) continue;
-        const candidate = { blob, width, height, quality, originalWidth, originalHeight, originalBytes: file.size };
+        const candidate = { blob, width, height, quality, originalWidth, originalHeight, originalBytes: file.size, targetBytes };
         if (!smallest || blob.size < smallest.blob.size) smallest = candidate;
-        if (blob.size <= preset.maxBytes) return candidate;
+        if (blob.size <= targetBytes) return candidate;
       }
     } else {
       const longest = Math.max(originalWidth, originalHeight);
@@ -179,15 +184,15 @@ export async function optimizeImage(file, preset) {
         for (const quality of qualities) {
           const blob = await canvasToBlob(canvas, preset.outputType, quality);
           if (!blob) continue;
-          const candidate = { blob, width, height, quality, originalWidth, originalHeight, originalBytes: file.size };
+          const candidate = { blob, width, height, quality, originalWidth, originalHeight, originalBytes: file.size, targetBytes };
           if (!smallest || blob.size < smallest.blob.size) smallest = candidate;
-          if (blob.size <= preset.maxBytes) return candidate;
+          if (blob.size <= targetBytes) return candidate;
         }
       }
     }
 
     if (!smallest) throw new Error("Could not create optimized image.");
-    throw new Error(`Image is still ${formatImageBytes(smallest.blob.size)} after optimization. Please use a simpler source image.`);
+    throw new Error(`Image is still ${formatImageBytes(smallest.blob.size)} after optimization. Target is ${formatImageBytes(targetBytes)} or less. Please use a simpler source image.`);
   } finally {
     URL.revokeObjectURL(url);
   }
