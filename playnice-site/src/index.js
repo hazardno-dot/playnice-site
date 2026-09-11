@@ -20,8 +20,6 @@ import "./mobile-v2/navigation/MobileHeaderV2.css";
 import "./mobile-v2/home/MobileHomeV2.css";
 import "./mobile-v2/home/MobileFirstPaintContainment.css";
 import "./mobile-v2/discovery/MobileFragranceIntelligenceV2.css";
-import "./DesktopFragranceIntelligenceV2.css";
-import "./DesktopFragranceIntelligenceHoverFix.css";
 import "./mobile-v2/shop/MobileJustInV2.css";
 import "./mobile-v2/discovery/MobileDiscoverySetsV2.css";
 import "./mobile-v2/content/MobileHowItWorksV2.css";
@@ -31,7 +29,6 @@ import "./mobile-v2/content/MobileFaqV2.css";
 import "./mobile-v2/private-selection/MobilePrivateSelectionV2.css";
 import "./mobile-v2/private-selection/MobilePrivateSelectionDrawerV2.css";
 import "./mobile-v2/navigation/MobileClosingFooterV2.css";
-import "./mobile-v2/shop/MobileShopV2.css";
 import "./mobile-v2/shop/MobileShopReveal.css";
 import "./mobile-v2/modal/MobileProductModalBase.css";
 import "./mobile-v2/modal/MobileProductModalPagerCore.css";
@@ -40,30 +37,42 @@ import "./ProductModalPurchaseV2.css";
 import "./mobile-v2/cart-checkout/MobileCartV2.css";
 import "./mobile-v2/cart-checkout/MobileCheckoutV2.css";
 import "./mobile-v2/cart-checkout/MobileStickyCtaV2.css";
-import "./DesktopStickyCtaGlass.css";
 import "./mobile-v2/home/MobileTypographyV2.css";
-import "./mobile-v2/shop/MobileProductCardTextV2.css";
 import "./CartConfirmationBar.css";
-import "./DesktopConfirmationBarFit.css";
 import "./mobile-v2/content/MobileManifestoFix.css";
-import "./DesktopProductModalCopyV2.css";
 import "./HeaderLanguageColor.css";
-import "./DesktopDiscoverCleanup.css";
 
-initLocationEvents();
+const renderApp = () => {
+  initLocationEvents();
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+  const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(
-  <React.StrictMode>
-    <App />
-    <PrivateSelectionEnhancer />
-    <MobileShopReveal />
-    <MobileMenuContact />
-    <MobileCommunityV2 />
-    <DesktopFooterCatalog />
-    <CartInteractionV2 />
-    <DiscoveryImageFallback />
-    <FragranceIntelligenceToneLoader />
-  </React.StrictMode>
-);
+  root.render(
+    <React.StrictMode>
+      <App />
+      <PrivateSelectionEnhancer />
+      <MobileShopReveal />
+      <MobileMenuContact />
+      <MobileCommunityV2 />
+      <DesktopFooterCatalog />
+      <CartInteractionV2 />
+      <DiscoveryImageFallback />
+      <FragranceIntelligenceToneLoader />
+    </React.StrictMode>
+  );
+};
+
+if (window.matchMedia("(min-width: 769px)").matches) {
+  Promise.all([
+    import("./DesktopFragranceIntelligenceV2.css"),
+    import("./DesktopFragranceIntelligenceHoverFix.css"),
+    import("./DesktopStickyCtaGlass.css"),
+    import("./DesktopConfirmationBarFit.css"),
+    import("./DesktopProductModalCopyV2.css"),
+    import("./DesktopDiscoverCleanup.css"),
+  ])
+    .then(renderApp)
+    .catch(renderApp);
+} else {
+  renderApp();
+}
