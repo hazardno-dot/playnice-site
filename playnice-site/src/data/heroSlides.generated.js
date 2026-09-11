@@ -4,6 +4,16 @@
 
 export const BASE_HERO_SLIDES = [
   {
+    "id": 2,
+    "kind": "imageOnly",
+    "image": "/hero/slide-2.jpg",
+    "desktopImage": "/hero/slide-2.jpg",
+    "mobileImage": "/hero/mobile/slide-2-mobile.jpg",
+    "alt": "PlayNice – luxury fragrance experience and trust",
+    "actionPrimary": "manifesto",
+    "manifestoType": "confidence"
+  },
+  {
     "id": 12,
     "kind": "imageOnly",
     "image": "/hero/slide-12.jpg",
@@ -31,16 +41,6 @@ export const BASE_HERO_SLIDES = [
       "gisada-luxury-collection-royal"
     ],
     "collectionTitle": "SOFT. BOLD. LUXURY."
-  },
-  {
-    "id": 2,
-    "kind": "imageOnly",
-    "image": "/hero/slide-2.jpg",
-    "desktopImage": "/hero/slide-2.jpg",
-    "mobileImage": "/hero/mobile/slide-2-mobile.jpg",
-    "alt": "PlayNice – luxury fragrance experience and trust",
-    "actionPrimary": "manifesto",
-    "manifestoType": "confidence"
   },
   {
     "id": 3,
