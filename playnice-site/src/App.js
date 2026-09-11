@@ -971,11 +971,6 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
 const [communityRequestTrends, setCommunityRequestTrends] = useState({});
 const [communityTopThreeEntries, setCommunityTopThreeEntries] = useState({});
 
-// HOME_TWO_PHASE_MOUNT: defer non-critical Home DOM until after the first paint.
-const [homeDeferredReady, setHomeDeferredReady] = useState(() =>
-  getInitialView() !== "home"
-);
-
 const isNewRequest = (request) => {
   if (request.votes > 1) return false;
 
@@ -1004,7 +999,6 @@ const isNewRequest = (request) => {
   const checkoutAutoCloseTimeoutRef = useRef(null);
   const fallbackDeviceIdRef = useRef(null);
   const communityVoteInFlightRef = useRef(new Set());
-  const communityRequestsLoadedRef = useRef(false);
   const productModalAutoCloseTimeoutRef = useRef(null);
   const productGridRef = useRef(null);
   const hasMountedShopFiltersRef = useRef(false);
@@ -1151,8 +1145,6 @@ const showHeroSlideWhenReady = useCallback(
   );
 
  const filteredProducts = useMemo(() => {
-    if (view !== "shop") return [];
-
     const sourceProducts = heroCollectionFilter?.length
       ? heroCollectionFilter
           .map((slug) =>
@@ -1237,7 +1229,7 @@ const showHeroSlideWhenReady = useCallback(
               Number(b.id || 0) - Number(a.id || 0)
           );
 }
-}, [view, category, searchTerm, season, scentMood, sortBy, heroCollectionFilter]);
+}, [category, searchTerm, season, scentMood, sortBy, heroCollectionFilter]);
 
   const categoryOptions = [
     {
@@ -1315,7 +1307,7 @@ const selectedScentMood =
    newArrivalProducts
 ========================================= */
 
-const newArrivalProducts = homeDeferredReady ? getJustInProducts(products) : [];
+const newArrivalProducts = getJustInProducts(products);
 
 const getProductThumbnail = (image = "") =>
   image
@@ -1562,37 +1554,6 @@ const handleMobileModalTouchEnd = (event) => {
    EFFECTS
 ========================================= */
   useEffect(() => {
-    if (view !== "home" || homeDeferredReady) return undefined;
-
-    let idleId = null;
-    let timeoutId = null;
-    let secondFrame = null;
-
-    const releaseDeferredHome = () => {
-      setHomeDeferredReady(true);
-    };
-
-    const firstFrame = window.requestAnimationFrame(() => {
-      secondFrame = window.requestAnimationFrame(() => {
-        if (typeof window.requestIdleCallback === "function") {
-          idleId = window.requestIdleCallback(releaseDeferredHome, { timeout: 900 });
-        } else {
-          timeoutId = window.setTimeout(releaseDeferredHome, 0);
-        }
-      });
-    });
-
-    return () => {
-      window.cancelAnimationFrame(firstFrame);
-      if (secondFrame !== null) window.cancelAnimationFrame(secondFrame);
-      if (idleId !== null && typeof window.cancelIdleCallback === "function") {
-        window.cancelIdleCallback(idleId);
-      }
-      if (timeoutId !== null) window.clearTimeout(timeoutId);
-    };
-  }, [view, homeDeferredReady]);
-
-  useEffect(() => {
     const media = window.matchMedia("(max-width: 640px)");
     const syncMobileModalViewport = () =>
       setIsMobileProductModalViewport(media.matches);
@@ -1661,7 +1622,7 @@ const handleMobileModalTouchEnd = (event) => {
 }, [hasBlockingOverlay]);
 
   useEffect(() => {
-    if (view !== "home" || !homeDeferredReady || closingVisible) return;
+    if (view !== "home" || closingVisible) return;
 
     const section = document.querySelector(".closing-section");
     if (!section) return;
@@ -1682,7 +1643,7 @@ const handleMobileModalTouchEnd = (event) => {
     observer.observe(section);
 
     return () => observer.disconnect();
-  }, [view, homeDeferredReady, closingVisible]);
+  }, [view, closingVisible]);
 
   useEffect(() => {
   if (view !== "home") {
@@ -1691,8 +1652,6 @@ const handleMobileModalTouchEnd = (event) => {
     setIsVideoInView(false);
     return;
   }
-
-  if (!homeDeferredReady) return;
 
   const videoFrame = videoFrameRef.current;
   if (!videoFrame) return;
@@ -1735,7 +1694,7 @@ const handleMobileModalTouchEnd = (event) => {
     playbackObserver.disconnect();
     videoRef.current?.pause();
   };
-}, [view, homeDeferredReady]);
+}, [view]);
 
 useEffect(() => {
   const video = videoRef.current;
@@ -3496,7 +3455,6 @@ const handleJournalLinkClick = (link) => {
 
   // Community / Scent Request
   if (target === "scent-request") {
-    setHomeDeferredReady(true);
     switchView("home", { scrollTop: false });
 
     window.setTimeout(() => {
@@ -3530,7 +3488,6 @@ const goHome = () => {
 const goToHomeSection = (selector, block = "start") => {
   const isAlreadyHome = view === "home";
 
-  setHomeDeferredReady(true);
   switchView("home", { scrollTop: false });
 
   window.setTimeout(() => {
@@ -3752,13 +3709,11 @@ const goToHomeSection = (selector, block = "start") => {
    DISCOVERY SET HELPER
 ========================================= */
 
-const discoveryProducts = discoveryBuilderOpen
-  ? products.filter(
-      (product) =>
-        activeDiscoveryConfig.categories.includes(product.category) &&
-        product.sizes?.[activeDiscoveryConfig.size]
-    )
-  : [];
+const discoveryProducts = products.filter(
+  (product) =>
+    activeDiscoveryConfig.categories.includes(product.category) &&
+    product.sizes?.[activeDiscoveryConfig.size]
+);
 
 const discoverySubtotal = discoverySelected.reduce(
   (sum, product) =>
@@ -5355,16 +5310,9 @@ useEffect(() => {
 ========================================= */
 
 useEffect(() => {
-  if (view !== "home" || !homeDeferredReady || communityRequestsLoadedRef.current) {
-    return undefined;
-  }
-
   let isMounted = true;
-  let observer = null;
 
   const loadScentRequests = async () => {
-    if (communityRequestsLoadedRef.current) return;
-
     try {
       const response = await fetch(
         "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec"
@@ -5373,7 +5321,6 @@ useEffect(() => {
       const data = await response.json();
 
       if (!isMounted) return;
-      communityRequestsLoadedRef.current = true;
 
       if (data.status === "ok") {
         const liveRequests = Array.isArray(data.requests) ? data.requests : [];
@@ -5402,9 +5349,6 @@ useEffect(() => {
         }
       }
     } catch (error) {
-      if (isMounted) {
-        communityRequestsLoadedRef.current = false;
-      }
       console.error("Failed to load scent requests:", error);
 
       try {
@@ -5433,31 +5377,12 @@ useEffect(() => {
     }
   };
 
-  const section = document.querySelector(".community-requests-section");
-
-  if (!section || typeof IntersectionObserver === "undefined") {
-    loadScentRequests();
-  } else {
-    observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        observer?.disconnect();
-        loadScentRequests();
-      },
-      {
-        threshold: 0.01,
-        rootMargin: "700px 0px"
-      }
-    );
-
-    observer.observe(section);
-  }
+  loadScentRequests();
 
   return () => {
     isMounted = false;
-    observer?.disconnect();
   };
-}, [view, homeDeferredReady]);
+}, []);
 
 /* =========================================
    VIBE TRACKER I RESOLVER
@@ -6448,8 +6373,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div>{tr.valueDelivery}</div>
 </section>
 
-{homeDeferredReady && (
-  <>
 {/* PLAYNICE FRAGRANCE INTELLIGENCE — V6 */}
 <section
   className="playnice-discovery-portal section-wrap"
@@ -7888,8 +7811,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 </div>
               </div>
             </section>
-          </>
-        )}
           </>
         )}
 
