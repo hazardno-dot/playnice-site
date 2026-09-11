@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const appPath = path.resolve(__dirname, "../src/App.js");
-let source = fs.readFileSync(appPath, "utf8");
+let source = fs.readFileSync(appPath, "utf8").replace(/\r\n/g, "\n");
 
 const MARKER = "HOME_TWO_PHASE_MOUNT";
 
@@ -82,11 +82,6 @@ replaceOnce(
   "closing observer deps",
   "  }, [view, closingVisible]);",
   "  }, [view, homeDeferredReady, closingVisible]);"
-);
-replaceOnce(
-  "video effect gate",
-  "  useEffect(() => {\n  if (view !== \"home\") {",
-  "  useEffect(() => {\n  if (view !== \"home\") {"
 );
 replaceOnce(
   "video frame gate",
