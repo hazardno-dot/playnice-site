@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import TheNoteMap from "../../TheNoteMap";
 import { products } from "../../data/products";
 import { productCopy } from "../../data/products/productCopy";
 import { productWearContext } from "../../data/products/productWearContext";
+import "./MobileProductPageFixes.css";
 
 const PROFILE_KEYS = [
   "freshness",
@@ -32,16 +33,16 @@ const PROFILE_LABELS = {
   airiness: { sr: "Prozračnost", en: "Airiness" },
   cleanliness: { sr: "Čistoća", en: "Cleanliness" },
   creaminess: { sr: "Kremastost", en: "Creaminess" },
-  dryness: { sr: "Suvoća", en: "Dryness" },
-  fruitiness: { sr: "Voćnost", en: "Fruitiness" },
-  spiciness: { sr: "Začinskost", en: "Spiciness" },
-  woodiness: { sr: "Drvenastost", en: "Woodiness" },
+  dryness: { sr: "Suvi karakter", en: "Dryness" },
+  fruitiness: { sr: "Voćni karakter", en: "Fruitiness" },
+  spiciness: { sr: "Začinske note", en: "Spiciness" },
+  woodiness: { sr: "Drvenasti karakter", en: "Woodiness" },
   aromaticity: { sr: "Aromatičnost", en: "Aromatic" },
-  florality: { sr: "Cvetnost", en: "Floral" },
+  florality: { sr: "Cvetni karakter", en: "Floral" },
   gourmandness: { sr: "Gurmanski karakter", en: "Gourmand" },
-  citrus: { sr: "Citrusi", en: "Citrus" },
+  citrus: { sr: "Citrusni karakter", en: "Citrus" },
   aquatic: { sr: "Vodeni karakter", en: "Aquatic" },
-  powdery: { sr: "Puderastost", en: "Powdery" },
+  powdery: { sr: "Puderasti karakter", en: "Powdery" },
 };
 
 const getProductType = (name = "") => {
@@ -106,6 +107,11 @@ export default function MobileProductPage({
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [profile, setProfile] = useState(null);
 
+  useLayoutEffect(() => {
+    if (!product?.slug) return;
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [product?.slug]);
+
   useEffect(() => {
     let cancelled = false;
     setProfile(null);
@@ -150,7 +156,7 @@ export default function MobileProductPage({
       <section className="mobile-product-page__identity">
         <div className="mobile-product-page__identity-topline">
           <button type="button" className="mobile-product-page__back" onClick={onBackToShop}>
-            ← {lang === "sr" ? "SHOP" : "SHOP"}
+            ← SHOP
           </button>
 
           <button
@@ -191,29 +197,31 @@ export default function MobileProductPage({
         </div>
       </section>
 
-      <section className="mobile-product-page__media">
-        {product.badge ? (
+      <section className={`mobile-product-page__media ${noteMapOpen ? "is-note-map-open" : ""}`}>
+        {product.badge && !noteMapOpen ? (
           <div className="mobile-product-page__badge">{product.badge}</div>
         ) : null}
 
-        <button
-          type="button"
-          className={`mobile-product-page__image-button ${product.noteMap ? "has-note-map" : ""}`}
-          onClick={() => product.noteMap && setNoteMapOpen((current) => !current)}
-          aria-label={
-            product.noteMap
-              ? lang === "sr"
-                ? "Prikaži note parfema"
-                : "Show fragrance notes"
-              : product.name
-          }
-        >
-          {product.image ? (
-            <img src={product.image} alt={product.name} />
-          ) : (
-            <span className="mobile-product-page__monogram">{product.name.charAt(0)}</span>
-          )}
-        </button>
+        {!noteMapOpen ? (
+          <button
+            type="button"
+            className={`mobile-product-page__image-button ${product.noteMap ? "has-note-map" : ""}`}
+            onClick={() => product.noteMap && setNoteMapOpen(true)}
+            aria-label={
+              product.noteMap
+                ? lang === "sr"
+                  ? "Prikaži note parfema"
+                  : "Show fragrance notes"
+                : product.name
+            }
+          >
+            {product.image ? (
+              <img src={product.image} alt={product.name} />
+            ) : (
+              <span className="mobile-product-page__monogram">{product.name.charAt(0)}</span>
+            )}
+          </button>
+        ) : null}
 
         {product.noteMap ? (
           <TheNoteMap
@@ -310,7 +318,7 @@ export default function MobileProductPage({
         </details>
 
         <details>
-          <summary>Scent profile<span>+</span></summary>
+          <summary>{lang === "sr" ? "Mirisni profil" : "Scent profile"}<span>+</span></summary>
           <p>{scentType || (lang === "sr" ? "Pažljivo odabran mirisni profil." : "A carefully selected fragrance profile.")}</p>
         </details>
 
@@ -363,6 +371,21 @@ export default function MobileProductPage({
         </section>
       ) : null}
 
+      <div className="mobile-product-page__sticky" aria-label={lang === "sr" ? "Brza kupovina" : "Quick purchase"}>
+        <div className="mobile-product-page__sticky-inner">
+          <div className="mobile-product-page__sticky-copy">
+            <span>{activeSize || "—"}</span>
+            <strong>{Number.isFinite(Number(selectedPrice)) ? `€${Number(selectedPrice).toFixed(2)}` : "—"}</strong>
+          </div>
+          <button
+            type="button"
+            disabled={!activeSize}
+            onClick={() => onAddToCart?.(product, activeSize)}
+          >
+            {lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
