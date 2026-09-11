@@ -6222,15 +6222,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       const nextHeroIndex =
         (currentHero + 1) % heroSlides.length;
 
-      const isMobileViewport =
-        typeof window !== "undefined" &&
-        window.matchMedia("(max-width: 768px)").matches;
-
       const shouldLoadHeroImage =
         isActive ||
-        (!isMobileViewport &&
-          (index === previousHeroIndex ||
-            index === nextHeroIndex));
+        index === previousHeroIndex ||
+        index === nextHeroIndex;
 
       const isActionable =
         slide.actionPrimary === "shop" ||
