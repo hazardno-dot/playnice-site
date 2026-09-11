@@ -3,8 +3,13 @@ const fs = require('fs');
 const appPath = 'playnice-site/src/App.js';
 const pdpPath = 'playnice-site/src/mobile-v2/product-page/MobileProductPage.jsx';
 
-let app = fs.readFileSync(appPath, 'utf8');
-let pdp = fs.readFileSync(pdpPath, 'utf8');
+const appRaw = fs.readFileSync(appPath, 'utf8');
+const pdpRaw = fs.readFileSync(pdpPath, 'utf8');
+const appUsesCrLf = appRaw.includes('\r\n');
+const pdpUsesCrLf = pdpRaw.includes('\r\n');
+
+let app = appRaw.replace(/\r\n/g, '\n');
+let pdp = pdpRaw.replace(/\r\n/g, '\n');
 
 function replaceOnce(source, from, to, label) {
   const count = source.split(from).length - 1;
@@ -108,6 +113,9 @@ pdp = pdp.slice(0, footerStart) + pdp.slice(footerEnd + footerEndToken.length);
 const lastMainClose = pdp.lastIndexOf('    </main>');
 if (lastMainClose === -1) throw new Error('PDP closing main not found');
 pdp = pdp.slice(0, lastMainClose) + '    </div>' + pdp.slice(lastMainClose + '    </main>'.length);
+
+if (appUsesCrLf) app = app.replace(/\n/g, '\r\n');
+if (pdpUsesCrLf) pdp = pdp.replace(/\n/g, '\r\n');
 
 fs.writeFileSync(appPath, app);
 fs.writeFileSync(pdpPath, pdp);
