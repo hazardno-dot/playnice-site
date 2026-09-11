@@ -1,0 +1,600 @@
+/* =========================================
+   PLAYNICE MOBILE PRODUCT PAGE V1
+   Product detail behaves as a full mobile page, not a floating modal.
+   Desktop remains untouched.
+========================================= */
+
+@media (max-width: 640px) {
+  /* Full route surface */
+  .modal-overlay.product-modal-layer {
+    inset: 0 !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    padding: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior-y: contain;
+    background: #0d0c0b !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .modal-overlay.product-modal-layer.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .product-modal,
+  .product-modal.mobile-pager-enabled {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    background:
+      radial-gradient(circle at 78% 5%, rgba(203, 165, 92, 0.08), transparent 25rem),
+      linear-gradient(180deg, #11100e 0%, #0d0c0b 36%, #0b0a09 100%) !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  /* Remove the old two-page/pager interaction entirely. */
+  .product-modal.mobile-pager-enabled .mobile-modal-pager-chrome,
+  .product-modal.mobile-pager-enabled .mobile-pager-page-close,
+  .product-modal.mobile-pager-enabled .mobile-pager-decision-intro,
+  .product-modal.mobile-pager-enabled .mobile-pager-page1-header {
+    display: none !important;
+  }
+
+  .product-modal.mobile-pager-enabled .modal-body {
+    width: 100% !important;
+    min-height: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .product-modal.mobile-pager-enabled .modal-body > .modal-media,
+  .product-modal.mobile-pager-enabled .modal-body > .modal-content {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Page navigation: use the existing close action as browser-style back. */
+  .product-modal > .close-button {
+    position: fixed !important;
+    top: max(12px, env(safe-area-inset-top)) !important;
+    left: 12px !important;
+    right: auto !important;
+    z-index: 80 !important;
+    width: 40px !important;
+    height: 40px !important;
+    border: 1px solid rgba(239, 220, 179, 0.13) !important;
+    border-radius: 999px !important;
+    display: grid !important;
+    place-items: center !important;
+    padding: 0 !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    background: rgba(17, 16, 14, 0.88) !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+  }
+
+  .product-modal > .close-button::before {
+    content: "‹";
+    color: #f1e4c8;
+    font-family: Georgia, serif;
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 0.8;
+    transform: translate(-1px, -1px);
+  }
+
+  /* Product identity */
+  .product-modal > .modal-header {
+    padding: calc(68px + env(safe-area-inset-top)) 20px 15px !important;
+    text-align: center;
+    background: transparent !important;
+    border: 0 !important;
+  }
+
+  .product-modal > .modal-header .modal-eyebrow {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: rgba(211, 177, 111, 0.82) !important;
+    font-family: "Inter", sans-serif;
+    font-size: 0.57rem !important;
+    font-weight: 700;
+    letter-spacing: 0.24em !important;
+  }
+
+  .product-modal > .modal-header h2 {
+    max-width: 15ch !important;
+    margin: 0 auto !important;
+    color: #f5ead4 !important;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(2rem, 9vw, 2.7rem) !important;
+    line-height: 0.94 !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.025em !important;
+    text-wrap: balance;
+  }
+
+  .product-modal > .modal-header .modal-header-meta {
+    max-width: 360px;
+    margin: 15px auto 0 !important;
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px !important;
+  }
+
+  .product-modal > .modal-header .modal-rating {
+    min-height: 30px;
+    padding: 6px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  .product-modal > .modal-header .modal-rating-stars {
+    display: none !important;
+  }
+
+  .product-modal > .modal-header .modal-rating-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+  }
+
+  .product-modal > .modal-header .modal-rating-score {
+    color: #e1bd76 !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+  }
+
+  .product-modal > .modal-header .modal-rating-label {
+    color: rgba(255, 255, 255, 0.62) !important;
+    font-size: 0.63rem !important;
+  }
+
+  .product-modal > .modal-header .modal-inspired-mini {
+    min-height: 30px !important;
+    padding: 6px 10px !important;
+    border-color: rgba(225, 189, 118, 0.12) !important;
+    border-radius: 999px !important;
+    background: rgba(225, 189, 118, 0.035) !important;
+  }
+
+  .product-modal > .modal-header .modal-inspired-mini-label {
+    display: none !important;
+  }
+
+  .product-modal > .modal-header .modal-inspired-mini-name {
+    font-size: 0.67rem !important;
+    font-weight: 600 !important;
+  }
+
+  .product-modal > .modal-header .modal-inspired-mini-short {
+    font-size: 0.59rem !important;
+  }
+
+  /* Hero media */
+  .product-modal.mobile-pager-enabled .modal-media {
+    position: relative;
+    padding: 4px 16px 24px !important;
+    display: flex !important;
+    flex-direction: column;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  .product-modal .modal-wishlist-btn {
+    position: fixed !important;
+    top: max(14px, calc(env(safe-area-inset-top) + 2px)) !important;
+    right: 14px !important;
+    z-index: 80 !important;
+    width: 40px !important;
+    height: 40px !important;
+    transform: none !important;
+    border: 1px solid rgba(239, 220, 179, 0.13) !important;
+    border-radius: 999px !important;
+    background: rgba(17, 16, 14, 0.88) !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .product-modal .modal-wishlist-btn .heart-icon {
+    font-size: 1.05rem !important;
+  }
+
+  .product-modal .modal-badge-stage {
+    order: 1;
+    align-self: center;
+    margin: 2px auto 10px !important;
+  }
+
+  .product-modal .modal-image-wrap {
+    order: 2;
+    width: 100%;
+    min-height: 300px !important;
+    margin: 0 !important;
+    padding: 18px 12px 14px !important;
+    border: 1px solid rgba(255, 255, 255, 0.055);
+    border-radius: 26px !important;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 46%, rgba(224, 192, 126, 0.12), transparent 35%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.008));
+  }
+
+  .product-modal .modal-image-wrap::before {
+    content: "";
+    position: absolute;
+    inset: auto 17% 18px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.34);
+    filter: blur(16px);
+    pointer-events: none;
+  }
+
+  .product-modal .modal-image-wrap::after {
+    opacity: 0.22 !important;
+  }
+
+  .product-modal .modal-image-wrap > .modal-image,
+  .product-modal.mobile-pager-enabled .modal-image {
+    position: relative;
+    z-index: 2;
+    max-width: 74% !important;
+    max-height: 240px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain;
+    scale: 1.06 !important;
+    transform-origin: center;
+    filter: drop-shadow(0 24px 28px rgba(0, 0, 0, 0.28));
+  }
+
+  .product-modal .modal-sample-mini {
+    order: 3;
+    margin: 10px auto 0;
+  }
+
+  .product-modal .modal-media-meta {
+    order: 4;
+    margin: 16px auto 0 !important;
+    padding: 0 8px !important;
+    text-align: center;
+  }
+
+  .product-modal .modal-category {
+    display: inline-flex;
+    margin-bottom: 7px !important;
+    color: #d9b66f !important;
+    font-size: 0.58rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.18em;
+  }
+
+  .product-modal .modal-media-meta-copy p {
+    max-width: 30ch !important;
+    margin: 0 auto !important;
+    color: rgba(255, 255, 255, 0.66) !important;
+    font-size: 0.83rem !important;
+    line-height: 1.45 !important;
+  }
+
+  /* Recommendations are intentionally deferred below the purchase flow in a later pass.
+     Hiding them here keeps the first PDP version focused and avoids a detour before conversion. */
+  .product-modal .modal-same-energy {
+    display: none !important;
+  }
+
+  /* Note Map remains available as an intentional product-detail action. */
+  .product-modal .the-note-map__mobile-trigger.mobile-note-map-source {
+    left: 50% !important;
+    right: auto !important;
+    bottom: 12px !important;
+    transform: translateX(-50%);
+    z-index: 8;
+    min-height: 34px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: rgba(12, 12, 11, 0.86) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Decision section */
+  .product-modal.mobile-pager-enabled .modal-content {
+    position: relative;
+    padding: 28px 18px calc(32px + env(safe-area-inset-bottom)) !important;
+    gap: 0 !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 6rem),
+      #0b0a09 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.055);
+  }
+
+  .product-modal .modal-chip {
+    align-self: flex-start !important;
+    margin: 0 0 12px !important;
+    padding: 6px 10px 5px !important;
+    border-radius: 999px !important;
+    color: #dfbf7e !important;
+    background: rgba(219, 181, 108, 0.055) !important;
+    border: 1px solid rgba(219, 181, 108, 0.13) !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 0.09em;
+  }
+
+  .product-modal .modal-description {
+    max-width: 36ch !important;
+    margin: 0 0 22px !important;
+    color: #eee4d0 !important;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.34rem !important;
+    line-height: 1.28 !important;
+    font-weight: 500;
+  }
+
+  .product-modal .modal-info-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    margin: 0 0 26px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .product-modal .modal-info-card {
+    position: relative;
+    min-height: auto !important;
+    padding: 16px 0 15px !important;
+    border: 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .product-modal .modal-info-card::after {
+    display: none !important;
+  }
+
+  .product-modal .modal-info-card span {
+    margin-bottom: 6px !important;
+    color: rgba(215, 179, 109, 0.76) !important;
+    font-size: 0.56rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .product-modal .modal-info-card strong {
+    color: rgba(255, 255, 255, 0.78) !important;
+    font-size: 0.9rem !important;
+    line-height: 1.45 !important;
+    font-weight: 450 !important;
+  }
+
+  /* Size selection: large, obvious touch targets. */
+  .product-modal .modal-purchase {
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+
+  .product-modal .modal-size-block {
+    margin: 0;
+  }
+
+  .product-modal .modal-label {
+    display: block;
+    margin: 0 0 6px !important;
+    color: #e8cf99 !important;
+    font-size: 0.62rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.17em !important;
+  }
+
+  .product-modal .modal-size-helper {
+    margin: 0 0 14px !important;
+    color: rgba(255, 255, 255, 0.55) !important;
+    font-size: 0.73rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .product-modal .modal-sizes {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(68px, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .product-modal .modal-sizes > button,
+  .product-modal .modal-size,
+  .product-modal.mobile-pager-enabled .modal-sizes > button,
+  .product-modal.mobile-pager-enabled .modal-size {
+    min-width: 0 !important;
+    min-height: 72px !important;
+    height: 72px !important;
+    padding: 10px 9px !important;
+    border: 1px solid rgba(255, 255, 255, 0.085) !important;
+    border-radius: 16px !important;
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    color: rgba(255, 255, 255, 0.78) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    box-shadow: none !important;
+  }
+
+  .product-modal .modal-size.active,
+  .product-modal.mobile-pager-enabled .modal-size.active {
+    border-color: rgba(220, 181, 107, 0.6) !important;
+    background: linear-gradient(180deg, rgba(220, 181, 107, 0.12), rgba(220, 181, 107, 0.045)) !important;
+    box-shadow: inset 0 0 0 1px rgba(220, 181, 107, 0.08) !important;
+  }
+
+  .product-modal .modal-size span,
+  .product-modal .modal-sizes > button span {
+    font-size: 0.61rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.13em !important;
+  }
+
+  .product-modal .modal-size strong,
+  .product-modal .modal-sizes > button strong {
+    margin-top: 3px !important;
+    color: #f3e7cf !important;
+    font-size: 1.08rem !important;
+    font-weight: 600 !important;
+  }
+
+  .product-modal .modal-size.active::after {
+    top: 9px !important;
+    right: 9px !important;
+    width: 6px !important;
+    height: 6px !important;
+    background: #ddb977 !important;
+  }
+
+  /* Purchase zone */
+  .product-modal .modal-purchase-bar,
+  .product-modal.mobile-pager-enabled .modal-purchase-bar {
+    margin: 22px 0 0 !important;
+    padding: 14px !important;
+    gap: 10px !important;
+    display: grid !important;
+    grid-template-columns: 92px minmax(0, 1fr) !important;
+    align-items: stretch !important;
+    border: 1px solid rgba(229, 203, 151, 0.1);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.024);
+  }
+
+  .product-modal .modal-price-box,
+  .product-modal.mobile-pager-enabled .modal-price-box {
+    width: auto !important;
+    height: auto !important;
+    min-height: 78px;
+    flex: none !important;
+    align-self: stretch !important;
+    padding: 10px !important;
+    border-radius: 14px !important;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.2) !important;
+  }
+
+  .product-modal .modal-price-box::after {
+    display: none !important;
+  }
+
+  .product-modal .modal-price-box span {
+    font-size: 0.5rem !important;
+    line-height: 1.2;
+    letter-spacing: 0.1em !important;
+  }
+
+  .product-modal .modal-price-box strong,
+  .product-modal .modal-selected-price {
+    color: #f4e7ca !important;
+    font-size: 1.28rem !important;
+    font-weight: 650 !important;
+  }
+
+  .product-modal .modal-cta-group,
+  .product-modal.mobile-pager-enabled .modal-cta-group {
+    width: 100%;
+    height: auto !important;
+    min-height: 78px;
+    display: grid !important;
+    grid-template-rows: 52px 26px;
+    gap: 5px;
+  }
+
+  .product-modal .modal-add-button,
+  .product-modal.mobile-pager-enabled .modal-add-button {
+    min-height: 52px !important;
+    height: 52px !important;
+    padding: 0 14px !important;
+    border-radius: 14px !important;
+    font-size: 0.7rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .product-modal .modal-buy-now,
+  .product-modal.mobile-pager-enabled .modal-buy-now {
+    min-height: 26px !important;
+    height: 26px !important;
+    border-radius: 10px !important;
+    color: rgba(255, 255, 255, 0.58) !important;
+    font-size: 0.59rem !important;
+    font-weight: 650 !important;
+    letter-spacing: 0.11em;
+  }
+
+  /* Touch and visual polish */
+  .product-modal button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .product-modal button:focus-visible {
+    outline: 2px solid rgba(222, 185, 111, 0.78) !important;
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .product-modal,
+    .product-modal * {
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .product-modal > .modal-header {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .product-modal.mobile-pager-enabled .modal-media,
+  .product-modal.mobile-pager-enabled .modal-content {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .product-modal .modal-image-wrap {
+    min-height: 268px !important;
+  }
+
+  .product-modal .modal-image-wrap > .modal-image {
+    max-height: 218px !important;
+  }
+
+  .product-modal .modal-purchase-bar,
+  .product-modal.mobile-pager-enabled .modal-purchase-bar {
+    grid-template-columns: 84px minmax(0, 1fr) !important;
+    padding: 11px !important;
+  }
+}
