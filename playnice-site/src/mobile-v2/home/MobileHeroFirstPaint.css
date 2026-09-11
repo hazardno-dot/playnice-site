@@ -1,0 +1,24 @@
+/*
+ * PLAYNICE MOBILE HERO — FIRST PAINT DIAGNOSTIC
+ *
+ * The first/pinned Hero slide is the mobile LCP candidate. Keep its final
+ * visual state, but avoid transition/filter compositing during first paint.
+ * Other Hero slides retain the existing carousel motion system.
+ */
+
+@media (max-width: 640px) {
+  .hero-carousel-track > .hero-slide:first-child.active {
+    transition: none !important;
+    filter: none !important;
+    transform: translate3d(0, 0, 0) scale(1) !important;
+    will-change: auto !important;
+  }
+
+  .hero-carousel-track > .hero-slide:first-child.active .hero-image-only-img,
+  .hero-carousel-track > .hero-slide:first-child .hero-image-only-img.is-active {
+    transition: none !important;
+    transform: scale(1.045) translate3d(0, 0, 0) !important;
+    filter: saturate(1.02) !important;
+    will-change: auto !important;
+  }
+}
