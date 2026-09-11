@@ -10,11 +10,10 @@
     "resend": "^6.9.4"
   },
   "scripts": {
-    "prestart": "node scripts/sync-hero-preload.mjs && node scripts/apply-home-two-phase.mjs",
+    "prestart": "node scripts/sync-hero-preload.mjs",
     "start": "react-scripts start",
-    "prebuild": "node scripts/sync-hero-preload.mjs && node scripts/apply-home-two-phase.mjs",
+    "prebuild": "node scripts/sync-hero-preload.mjs",
     "build": "npm test && react-scripts build",
-    "pretest": "node scripts/apply-home-two-phase.mjs",
     "test": "react-scripts test --watchAll=false"
   },
   "browserslist": {

@@ -63,17 +63,13 @@ on:
       - "playnice-site/src/TheNoteMap.jsx"
       - "playnice-site/public/note-map/**"
       - ".github/workflows/control-center-apply-regression.yml"
-  push:
-    branches:
-      - home-two-phase-mount
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   controlled-apply-regression:
-    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -121,29 +117,3 @@ jobs:
           node control-center/tests/site-health-incidents.mjs
           node control-center/tests/site-health-overview-contract.mjs
           node control-center/tests/site-health-freshness.mjs
-
-  materialize-home-source:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/home-two-phase-mount' && !contains(github.event.head_commit.message, '[source-refactored]')
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Checkout branch
-        uses: actions/checkout@v4
-        with:
-          ref: home-two-phase-mount
-          fetch-depth: 0
-
-      - name: Materialize tested Home transform into App source
-        run: |
-          node playnice-site/scripts/apply-home-two-phase.mjs
-          git show origin/main:playnice-site/package.json > playnice-site/package.json
-          rm playnice-site/scripts/apply-home-two-phase.mjs
-          git show origin/main:.github/workflows/control-center-apply-regression.yml > .github/workflows/control-center-apply-regression.yml
-
-      - name: Commit clean source refactor
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add playnice-site/src/App.js playnice-site/package.json playnice-site/scripts/apply-home-two-phase.mjs .github/workflows/control-center-apply-regression.yml
-          git commit -m "Materialize Home two-phase source refactor [source-refactored]"
-          git push origin HEAD:home-two-phase-mount
