@@ -1,3 +1,4 @@
+// Checkout hotfix wrapper: parallel email delivery + timing instrumentation.
 const { AsyncLocalStorage } = require("node:async_hooks");
 const resendModule = require("resend");
 
