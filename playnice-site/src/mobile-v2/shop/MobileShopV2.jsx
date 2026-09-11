@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 
-const MobileShopV2Impl = React.lazy(() => import("./MobileShopV2Impl"));
+const MobileShopV2Impl = React.lazy(() => import("./MobileShopV2Chunk"));
 
 export default function MobileShopV2(props) {
   return (
