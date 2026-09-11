@@ -1,0 +1,126 @@
+/* =========================================
+   PLAYNICE MOBILE PRODUCT PAGE V4 POLISH
+   Safe DOM/CSS-only refinements on stable PDP shell.
+========================================= */
+
+@media (max-width: 640px) {
+  /* Remove the legacy modal close row that was leaving an empty strip below the shared header. */
+  body.mobile-product-page-active .product-modal > .close-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Restore PlayNice's original image-triggered Note Map interaction. */
+  body.mobile-product-page-active .modal-image-wrap > .the-note-map,
+  body.mobile-product-page-active .mobile-note-map-hit,
+  body.mobile-product-page-active .mobile-note-map-source {
+    display: block !important;
+  }
+
+  body.mobile-product-page-active .mobile-note-map-hit {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  body.mobile-product-page-active .mobile-pdp-note-map {
+    display: none !important;
+  }
+
+  /* Purchase block: equal size cards, one dominant full-width CTA. */
+  body.mobile-product-page-active .modal-purchase {
+    width: 100% !important;
+  }
+
+  body.mobile-product-page-active .modal-sizes {
+    display: grid !important;
+    width: 100% !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  body.mobile-product-page-active .modal-sizes > button,
+  body.mobile-product-page-active .modal-size {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 70px !important;
+    padding: 10px 11px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 1px !important;
+  }
+
+  body.mobile-product-page-active .modal-purchase-bar,
+  body.mobile-product-page-active .modal-cta-group,
+  body.mobile-product-page-active .modal-add-button,
+  body.mobile-product-page-active .modal-buy-now {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  body.mobile-product-page-active .modal-cta-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+
+  body.mobile-product-page-active .modal-add-button {
+    min-height: 58px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+  }
+
+  body.mobile-product-page-active .modal-add-button > span {
+    display: inline !important;
+    width: auto !important;
+    text-align: center !important;
+  }
+
+  /* Wider discovery rail: roughly 2.3 cards visible, swipe through up to 10. */
+  body.mobile-product-page-active .mobile-pdp-recommendation-track {
+    display: grid !important;
+    grid-auto-flow: column !important;
+    grid-auto-columns: minmax(126px, 40%) !important;
+    gap: 10px !important;
+    overflow-x: auto !important;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    padding: 2px 1px 6px !important;
+    scrollbar-width: none;
+  }
+
+  body.mobile-product-page-active .mobile-pdp-recommendation-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  body.mobile-product-page-active .mobile-pdp-recommendation-card {
+    min-width: 0 !important;
+    min-height: 214px !important;
+    scroll-snap-align: start;
+  }
+
+  body.mobile-product-page-active .mobile-pdp-recommendation-image {
+    min-height: 112px !important;
+  }
+}
+
+@media (max-width: 370px) {
+  body.mobile-product-page-active .modal-sizes {
+    gap: 6px !important;
+  }
+
+  body.mobile-product-page-active .modal-sizes > button,
+  body.mobile-product-page-active .modal-size {
+    padding-inline: 9px !important;
+  }
+}
