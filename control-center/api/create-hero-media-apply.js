@@ -161,7 +161,7 @@ async function readRef(branch) {
   }
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed." });
   if (!SUPABASE_URL || !SUPABASE_KEY || !GITHUB_TOKEN) {
     return json(res, 500, { error: "Hero media environment is incomplete." });

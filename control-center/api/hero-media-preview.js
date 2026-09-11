@@ -30,7 +30,7 @@ function getContentType(path, fallback = "image/jpeg") {
   return fallback;
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== "GET") return res.status(405).send("Method not allowed");
 
   const rawPath = String(req.query?.path || "").trim();
