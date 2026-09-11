@@ -202,7 +202,15 @@ export default function MobileProductPage({
           <div className="mobile-product-page__badge">{product.badge}</div>
         ) : null}
 
-        <div className={`mobile-product-page__visual-frame ${noteMapOpen ? "is-note-map-open" : ""}`}>
+        <div
+          className={`mobile-product-page__visual-frame ${noteMapOpen ? "is-note-map-open" : ""}`}
+          onClickCapture={(event) => {
+            if (!noteMapOpen) return;
+            if (event.target.closest?.(".the-note-map__levels")) {
+              setNoteMapOpen(false);
+            }
+          }}
+        >
           <button
             type="button"
             className={`mobile-product-page__image-button ${product.noteMap ? "has-note-map" : ""}`}
