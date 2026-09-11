@@ -4,7 +4,17 @@
 ========================================= */
 
 @media (max-width: 640px) {
-  /* Remove the legacy modal close row that was leaving an empty strip below the shared header. */
+  /* Remove the remaining internal gap below the shared header. */
+  body.mobile-product-page-active .product-modal .modal-media {
+    padding-top: 0 !important;
+  }
+
+  body.mobile-product-page-active .product-modal.mobile-pager-enabled .mobile-pager-page1-header,
+  body.mobile-product-page-active .mobile-pager-page1-header {
+    padding-top: 6px !important;
+  }
+
+  /* Legacy modal close row is not part of a real PDP. */
   body.mobile-product-page-active .product-modal > .close-button {
     display: none !important;
     width: 0 !important;
@@ -32,7 +42,7 @@
     display: none !important;
   }
 
-  /* Purchase block: equal size cards, one dominant full-width CTA. */
+  /* Keep the size selector simple and balanced. */
   body.mobile-product-page-active .modal-purchase {
     width: 100% !important;
   }
@@ -48,8 +58,8 @@
   body.mobile-product-page-active .modal-size {
     width: 100% !important;
     min-width: 0 !important;
-    min-height: 70px !important;
-    padding: 10px 11px !important;
+    min-height: 66px !important;
+    padding: 9px 10px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
@@ -57,33 +67,96 @@
     gap: 1px !important;
   }
 
-  body.mobile-product-page-active .modal-purchase-bar,
-  body.mobile-product-page-active .modal-cta-group,
+  /* Restore the proven purchase hierarchy:
+     Selected price | Add to cart
+                    | Buy now          */
+  body.mobile-product-page-active .modal-purchase-bar {
+    display: grid !important;
+    grid-template-columns: 108px minmax(0, 1fr) !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+    padding: 10px !important;
+  }
+
+  body.mobile-product-page-active .modal-price-box {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    min-width: 0 !important;
+    min-height: 70px !important;
+    padding: 10px 11px !important;
+    border: 1px solid rgba(213, 177, 106, 0.12) !important;
+    border-radius: 13px !important;
+    background: rgba(255, 255, 255, 0.012) !important;
+  }
+
+  body.mobile-product-page-active .modal-price-box > span {
+    margin-bottom: 7px !important;
+    color: rgba(245, 236, 218, 0.45) !important;
+    font-size: 0.5rem !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.09em !important;
+    text-transform: uppercase !important;
+  }
+
+  body.mobile-product-page-active .modal-price-box .modal-selected-price,
+  body.mobile-product-page-active .modal-selected-price {
+    color: #e6c982 !important;
+    font-size: 1.18rem !important;
+    line-height: 1 !important;
+    font-weight: 650 !important;
+  }
+
+  body.mobile-product-page-active .modal-cta-group {
+    display: grid !important;
+    grid-template-rows: minmax(46px, 1fr) 24px !important;
+    gap: 3px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+  }
+
   body.mobile-product-page-active .modal-add-button,
   body.mobile-product-page-active .modal-buy-now {
     width: 100% !important;
     max-width: none !important;
   }
 
-  body.mobile-product-page-active .modal-cta-group {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 6px !important;
-  }
-
   body.mobile-product-page-active .modal-add-button {
-    min-height: 58px !important;
+    min-width: 0 !important;
+    min-height: 46px !important;
+    height: auto !important;
+    padding: 0 12px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
     white-space: nowrap !important;
+    overflow: hidden !important;
   }
 
+  /* The enhancer currently appends price to the CTA text. The price belongs in Selected Price. */
   body.mobile-product-page-active .modal-add-button > span {
-    display: inline !important;
-    width: auto !important;
-    text-align: center !important;
+    display: none !important;
+  }
+
+  body.mobile-product-page-active .modal-add-button::before {
+    content: "ADD TO CART";
+    display: inline-block;
+  }
+
+  html[lang="sr"] body.mobile-product-page-active .modal-add-button::before {
+    content: "DODAJ U KORPU";
+  }
+
+  body.mobile-product-page-active .modal-buy-now {
+    min-height: 24px !important;
+    height: 24px !important;
+    padding: 0 !important;
+    align-self: center !important;
   }
 
   /* Wider discovery rail: roughly 2.3 cards visible, swipe through up to 10. */
@@ -122,5 +195,11 @@
   body.mobile-product-page-active .modal-sizes > button,
   body.mobile-product-page-active .modal-size {
     padding-inline: 9px !important;
+  }
+
+  body.mobile-product-page-active .modal-purchase-bar {
+    grid-template-columns: 100px minmax(0, 1fr) !important;
+    gap: 8px !important;
+    padding: 9px !important;
   }
 }
