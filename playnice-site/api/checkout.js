@@ -96,7 +96,23 @@ global.fetch = async (...args) => {
   const sheetsStart = Date.now();
 
   try {
-    return await originalFetch(...args);
+    const response = await originalFetch(...args);
+
+    // Preserve the response body for the legacy checkout handler while also
+    // capturing detailed Apps Script timings from the cloned response.
+    try {
+      const clonedText = await response.clone().text();
+      const clonedData = JSON.parse(clonedText);
+      context.appsScriptTimings = clonedData?.timings || null;
+      context.appsScriptDuplicate = Boolean(clonedData?.duplicate);
+    } catch (timingParseError) {
+      context.appsScriptTimingParseError = safeErrorMessage(
+        timingParseError,
+        "Unable to parse Apps Script timing payload"
+      );
+    }
+
+    return response;
   } finally {
     context.sheetsMs = Date.now() - sheetsStart;
   }
@@ -114,7 +130,10 @@ export default async function handler(req, res) {
     adminEmailSent: null,
     adminEmailError: null,
     customerEmailSent: null,
-    customerEmailError: null
+    customerEmailError: null,
+    appsScriptTimings: null,
+    appsScriptDuplicate: false,
+    appsScriptTimingParseError: null
   };
 
   return checkoutContext.run(context, async () => {
@@ -133,7 +152,8 @@ export default async function handler(req, res) {
         payload.checkoutTimings = {
           sheetsMs: context.sheetsMs,
           emailsMs: context.emailsMs,
-          totalMs
+          totalMs,
+          appsScript: context.appsScriptTimings
         };
       }
 
@@ -143,6 +163,9 @@ export default async function handler(req, res) {
         sheetsMs: context.sheetsMs,
         emailsMs: context.emailsMs,
         totalMs,
+        appsScriptTimings: context.appsScriptTimings,
+        appsScriptDuplicate: context.appsScriptDuplicate,
+        appsScriptTimingParseError: context.appsScriptTimingParseError,
         adminEmailSent: payload?.adminEmailSent ?? context.adminEmailSent,
         customerEmailSent: payload?.customerEmailSent ?? context.customerEmailSent
       }));
