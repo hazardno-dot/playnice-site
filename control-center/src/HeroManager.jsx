@@ -174,7 +174,19 @@ function HeroOverview() {
     if (!selectedBaseline) return;
     setSaving(true); setEditorError("");
     try {
-      const candidate = slides.map((slide) => slide.heroKey === selectedBaseline.heroKey ? normalizeHeroDraftPayload(payload, selectedBaseline) : slide);
+      const normalizedPayload = normalizeHeroDraftPayload(payload, selectedBaseline);
+
+      const candidate = slides.map((slide) => {
+        if (slide.heroKey === selectedBaseline.heroKey) {
+          return normalizedPayload;
+        }
+
+        if (normalizedPayload.pinnedFirst) {
+          return { ...slide, pinnedFirst: false };
+        }
+
+        return slide;
+      });
       const validation = auditHeroSlides(candidate, { productSlugs });
       if (validation.errors.length) throw new Error(validation.errors[0].message);
       const { data: authData, error: authError } = await supabase.auth.getUser();
