@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import TheNoteMap from "../../TheNoteMap";
 import { products } from "../../data/products";
 import { productCopy } from "../../data/products/productCopy";
@@ -105,10 +105,15 @@ export default function MobileProductPage({
 }) {
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [profile, setProfile] = useState(null);
+  const recommendationTrackRef = useRef(null);
 
   useLayoutEffect(() => {
     if (!product?.slug) return;
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    const track = recommendationTrackRef.current;
+    if (track) {
+      track.scrollTo({ left: 0, behavior: "auto" });
+    }
   }, [product?.slug]);
 
   useEffect(() => {
@@ -357,7 +362,7 @@ export default function MobileProductPage({
             </div>
           </div>
 
-          <div className="mobile-product-page__recommendation-track">
+          <div ref={recommendationTrackRef} className="mobile-product-page__recommendation-track">
             {recommendations.map((recommendation) => {
               const minPrice = Math.min(...Object.values(recommendation.sizes || {}).filter(Number.isFinite));
               const recommendationCopy = productCopy[recommendation.name] || {};

@@ -6205,11 +6205,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               openProductModal(product, { changeView: false })
             }
             onBackToShop={() => {
-              if (window.history.state?.playniceProductModal === true) {
-                window.history.back();
-              } else {
-                goToShop();
-              }
+              goToShop();
+              requestAnimationFrame(() => {
+                window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+              });
             }}
           />
         )}
