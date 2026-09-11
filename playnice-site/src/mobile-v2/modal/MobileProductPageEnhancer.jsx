@@ -70,6 +70,32 @@ const getProductType = (name = "") => {
   return matches?.[1] || "";
 };
 
+const buildRecommendations = (product) => {
+  if (!product) return [];
+
+  const explicit = (product.recommendations || [])
+    .map((recommendationSlug) => products.find((item) => item.slug === recommendationSlug))
+    .filter(Boolean);
+
+  const explicitIds = new Set(explicit.map((item) => item.id));
+  const moods = new Set(product.moods || []);
+
+  const ranked = products
+    .filter((item) => item.id !== product.id && !explicitIds.has(item.id))
+    .map((item, index) => {
+      let score = 0;
+      if (item.category === product.category) score += 5;
+      if (item.season === product.season) score += 3;
+      score += (item.moods || []).filter((mood) => moods.has(mood)).length * 2;
+      score += Number(item.rating || 0) / 10;
+      return { item, score, index };
+    })
+    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .map(({ item }) => item);
+
+  return [...explicit, ...ranked].slice(0, 10);
+};
+
 export default function MobileProductPageEnhancer() {
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== "undefined" && window.matchMedia(MOBILE_QUERY).matches
@@ -261,11 +287,7 @@ export default function MobileProductPageEnhancer() {
     .sort((a, b) => b.value - a.value)
     .slice(0, 4);
 
-  const recommendations = (product.recommendations || [])
-    .map((recommendationSlug) => products.find((item) => item.slug === recommendationSlug))
-    .filter(Boolean)
-    .slice(0, 3);
-
+  const recommendations = buildRecommendations(product);
   const characterLine = copy.card?.[lang] || copy.modal?.[lang] || "";
   const fullDescription = copy.modal?.[lang] || characterLine;
   const scentType = copy.scentType?.[lang] || "";
@@ -333,7 +355,7 @@ export default function MobileProductPageEnhancer() {
           </details>
 
           <details>
-            <summary>{lang === "sr" ? "Scent profile" : "Scent profile"}<span>+</span></summary>
+            <summary>Scent profile<span>+</span></summary>
             <p>{scentType || (lang === "sr" ? "Pažljivo odabran mirisni profil." : "A carefully selected fragrance profile.")}</p>
           </details>
 
@@ -356,7 +378,7 @@ export default function MobileProductPageEnhancer() {
           <section className="mobile-pdp-recommendations">
             <div className="mobile-pdp-section-head">
               <span>{lang === "sr" ? "AKO TI SE OVO DOPADA" : "IF YOU LIKE THIS"}</span>
-              <small>{lang === "sr" ? "Još tri dobra pravca" : "Three more directions"}</small>
+              <small>{lang === "sr" ? "Još mirisa u sličnom pravcu" : "More scents in a similar direction"}</small>
             </div>
 
             <div className="mobile-pdp-recommendation-track">
