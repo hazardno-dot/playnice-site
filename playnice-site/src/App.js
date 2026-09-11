@@ -1876,7 +1876,7 @@ useEffect(() => {
   const interval = setInterval(() => {
     const nextHeroIndex = (currentHero + 1) % heroSlides.length;
     showHeroSlideWhenReady(nextHeroIndex);
-  }, 6000);
+  }, 12000);
 
   return () => clearInterval(interval);
 }, [
