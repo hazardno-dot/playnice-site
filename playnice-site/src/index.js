@@ -19,7 +19,6 @@ import "./HeroPaginationPosition.css";
 import "./mobile-v2/navigation/MobileHeaderV2.css";
 import "./mobile-v2/home/MobileHomeV2.css";
 import "./mobile-v2/home/MobileFirstPaintContainment.css";
-import "./mobile-v2/home/MobileHeroFirstPaint.css";
 import "./mobile-v2/discovery/MobileFragranceIntelligenceV2.css";
 import "./DesktopFragranceIntelligenceV2.css";
 import "./DesktopFragranceIntelligenceHoverFix.css";
