@@ -1,0 +1,45 @@
+/*
+ * Mobile first-paint containment
+ *
+ * Keep the critical viewport path (header, announcement, Hero,
+ * Fragrance Intelligence trigger and Just In) fully rendered.
+ * Defer layout/paint work for deeper Home sections until they approach
+ * the viewport. Intrinsic sizes preserve scroll geometry before reveal.
+ */
+
+@media (max-width: 768px) {
+  .discovery-showcase {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 760px;
+  }
+
+  .homepage-shop-preview {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1280px;
+  }
+
+  .why-how-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1500px;
+  }
+
+  .community-requests-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1500px;
+  }
+
+  .catalog-download-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 420px;
+  }
+
+  .mobile-partner-spotlight {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 420px;
+  }
+
+  .closing-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 620px;
+  }
+}
