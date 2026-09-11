@@ -9,7 +9,7 @@ import MobileCommunityV2 from "./mobile-v2/community/MobileCommunityV2";
 import DesktopFooterCatalog from "./DesktopFooterCatalog";
 import CartInteractionV2 from "./CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
-import FragranceIntelligenceToneEnhancer from "./FragranceIntelligenceToneEnhancer";
+import FragranceIntelligenceToneLoader from "./FragranceIntelligenceToneLoader";
 import { initLocationEvents } from "./lib/locationEvents";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
@@ -64,6 +64,6 @@ root.render(
     <DesktopFooterCatalog />
     <CartInteractionV2 />
     <DiscoveryImageFallback />
-    <FragranceIntelligenceToneEnhancer />
+    <FragranceIntelligenceToneLoader />
   </React.StrictMode>
 );

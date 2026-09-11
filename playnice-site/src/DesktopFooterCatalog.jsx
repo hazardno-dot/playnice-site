@@ -24,6 +24,10 @@ function DesktopFooterCatalog() {
   );
 
   useEffect(() => {
+    if (window.matchMedia("(max-width: 640px)").matches) {
+      return undefined;
+    }
+
     let frameId;
     let mountNode = null;
 
