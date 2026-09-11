@@ -1519,7 +1519,6 @@ const selectedSortOption =
 
   const showStickyCta =
   !hasBlockingOverlay &&
-  !isMobileProductPageActive &&
   (view === "home" || view === "shop");
 
   const scrollYRef = useRef(0);
