@@ -1,8 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
 import "./App.css";
 import HeaderNext from "./HeaderNext";
-import Exhibition from "./Exhibition";
-import JournalPage, { getJournalArticleSlug } from "./JournalPage";
 import JournalArticlePage from "./JournalArticlePage";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
@@ -16,6 +14,9 @@ import TheNoteMap from "./TheNoteMap";
 import { discoverFragrances } from "./lib/discoveryEngine";
 import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
+
+const Exhibition = React.lazy(() => import("./Exhibition"));
+const JournalArticlePage = React.lazy(() => import("./JournalArticlePage"));
 
 const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 
@@ -6147,6 +6148,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         )}
 
         {view === "journal" && journalPageArticle && (
+          <React.Suspense fallback={null}>
           <JournalArticlePage
             lang={lang}
             article={journalPageArticle}
@@ -6177,9 +6179,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               });
             }}
           />
+        </React.Suspense>
         )}
 
         {view === "exhibition" && (
+          <React.Suspense fallback={null}>
           <Exhibition
             lang={lang}
             onSeeLive={() => {
@@ -6195,6 +6199,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             });
           }}
         />
+        </React.Suspense>
       )}
 
       {view === "home" && (
