@@ -3,7 +3,6 @@ import TheNoteMap from "../../TheNoteMap";
 import { products } from "../../data/products";
 import { productCopy } from "../../data/products/productCopy";
 import { productWearContext } from "../../data/products/productWearContext";
-import "./MobileProductPageFixes.css";
 
 const PROFILE_KEYS = [
   "freshness",
