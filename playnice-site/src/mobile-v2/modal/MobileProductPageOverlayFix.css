@@ -1,7 +1,28 @@
 /* Mobile PDP must behave as a page, never as a blurred modal overlay. */
 @media (max-width: 640px) {
-  body.mobile-product-page-active .backdrop,
-  body.mobile-product-page-active .backdrop.show {
+  /* Product route owns the viewport: keep the shared mobile header, hide the underlying page. */
+  body.mobile-product-page-active .app-shell > main {
+    display: none !important;
+  }
+
+  body.mobile-product-page-active .app-shell {
+    min-height: 100dvh;
+    background: #090908 !important;
+  }
+
+  /* The normal mobile header stays visible on PDP routes even though legacy modal state adds overlay-lock. */
+  body.mobile-product-page-active .header-system,
+  body.mobile-product-page-active.overlay-lock .header-system {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    z-index: 1600 !important;
+  }
+
+  /* The product's shared backdrop is suppressed only while no real blocking drawer/modal is open. */
+  body.mobile-product-page-active:not(:has(.cart-drawer.open, .checkout-modal.open, .private-selection-drawer.open)) .backdrop,
+  body.mobile-product-page-active:not(:has(.cart-drawer.open, .checkout-modal.open, .private-selection-drawer.open)) .backdrop.show {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
@@ -12,10 +33,10 @@
     filter: none !important;
   }
 
-  body.mobile-product-page-active .backdrop::before,
-  body.mobile-product-page-active .backdrop::after,
-  body.mobile-product-page-active .backdrop.show::before,
-  body.mobile-product-page-active .backdrop.show::after {
+  body.mobile-product-page-active:not(:has(.cart-drawer.open, .checkout-modal.open, .private-selection-drawer.open)) .backdrop::before,
+  body.mobile-product-page-active:not(:has(.cart-drawer.open, .checkout-modal.open, .private-selection-drawer.open)) .backdrop::after,
+  body.mobile-product-page-active:not(:has(.cart-drawer.open, .checkout-modal.open, .private-selection-drawer.open)) .backdrop.show::before,
+  body.mobile-product-page-active:not(:has(.cart-drawer.open, .checkout-modal.open, .private-selection-drawer.open)) .backdrop.show::after {
     content: none !important;
     display: none !important;
     opacity: 0 !important;
@@ -31,7 +52,7 @@
     width: 100% !important;
     min-height: 100dvh !important;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: calc(var(--mobile-header-system-height, 90px) + var(--mobile-header-top-offset, 4px)) 0 0 !important;
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
@@ -66,5 +87,37 @@
     filter: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+  }
+
+  /* The former modal close control becomes a normal in-page back affordance below the shared header. */
+  body.mobile-product-page-active .product-modal > .close-button {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: auto !important;
+    height: 38px !important;
+    margin: 2px 14px 4px !important;
+    padding: 0 2px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+
+  body.mobile-product-page-active .product-modal > .close-button::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  /* Wishlist belongs to the product surface, not the global header utilities. */
+  body.mobile-product-page-active .product-modal .modal-wishlist-btn {
+    position: absolute !important;
+    top: 46px !important;
+    right: 14px !important;
+    z-index: 20 !important;
   }
 }
