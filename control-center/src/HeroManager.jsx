@@ -74,7 +74,18 @@ function HeroEditor({ baseline, initial, allSlides, onCancel, onSave, saving }) 
   const [draft, setDraft] = useState(() => normalizeHeroDraftPayload(initial || baseline, baseline));
   const set = (key, value) => setDraft((current) => ({ ...current, [key]: value }));
   const selectedProduct = products.find((product) => product.slug === draft.actionProductSlug);
-  const effectiveSlides = useMemo(() => allSlides.map((slide) => slide.heroKey === draft.heroKey ? normalizeHeroDraftPayload(draft, baseline) : slide), [allSlides, draft, baseline]);
+  const effectiveSlides = useMemo(
+    () => allSlides.map((slide) => {
+      if (slide.heroKey === draft.heroKey) {
+        return normalizeHeroDraftPayload(draft, baseline);
+      }
+
+      return draft.pinnedFirst
+        ? { ...slide, pinnedFirst: false }
+        : slide;
+    }),
+    [allSlides, draft, baseline]
+  );
   const audit = useMemo(() => auditHeroSlides(effectiveSlides, { productSlugs }), [effectiveSlides]);
   const slideIssues = audit.issues.filter((issue) => issue.field === "pinnedFirst" || issue.field.startsWith(`#${draft.id}.`));
   const blocked = audit.errors.length > 0;
