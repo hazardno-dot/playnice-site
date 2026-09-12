@@ -1,0 +1,34 @@
+name: Wire do-not-wear context
+
+on:
+  push:
+    branches:
+      - mobile-product-page-clean
+    paths:
+      - playnice-site/scripts/wire-do-not-wear-context.cjs
+      - .github/workflows/wire-do-not-wear-context.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mobile-product-page-clean
+          fetch-depth: 0
+      - name: Wire PDP context
+        run: node playnice-site/scripts/wire-do-not-wear-context.cjs
+      - name: Commit source changes
+        run: |
+          if git diff --quiet; then
+            echo "No source changes produced."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add playnice-site/src/mobile-v2/product-page/MobileProductPage.jsx
+          git commit -m "Show when-not-to-wear context on mobile PDP [skip ci]"
+          git push origin HEAD:mobile-product-page-clean
