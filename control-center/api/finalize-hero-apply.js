@@ -1,3 +1,5 @@
+import { heroPublishedEvent } from "../src/socialEventProducer.mjs";
+
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -23,6 +25,7 @@ async function supabaseFetch(path, token, options = {}) {
       apikey: SUPABASE_KEY,
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
+      Prefer: "return=representation",
       ...(options.headers || {}),
     },
   });
@@ -82,6 +85,57 @@ function runtimePayload(payload = {}) {
 }
 
 const stable = (value) => JSON.stringify(value, Object.keys(value || {}).sort());
+
+async function createHeroSocialShadowEvent({ heroKey, payload, token, userId, pr }) {
+  try {
+    const media = [];
+    const desktop = payload?.desktopImage || payload?.image || "";
+    const mobile = payload?.mobileImage || "";
+    if (desktop) media.push({ src: desktop, format: "hero_desktop" });
+    if (mobile && mobile !== desktop) media.push({ src: mobile, format: "hero_mobile" });
+
+    const event = heroPublishedEvent({ heroKey, payload, media, sourceUrl: "/" });
+    const existingRes = await supabaseFetch(
+      `/rest/v1/social_events?event_type=eq.${encodeURIComponent(event.event_type)}&source_type=eq.${encodeURIComponent(event.source_type)}&source_id=eq.${encodeURIComponent(event.source_id)}&select=id&limit=1`,
+      token,
+    );
+    if (!existingRes.ok) return { status: "schema_unavailable" };
+    const existing = await existingRes.json();
+    if (existing.length) return { status: "deduped", id: existing[0].id };
+
+    const createRes = await supabaseFetch("/rest/v1/social_events", token, {
+      method: "POST",
+      body: JSON.stringify({
+        ...event,
+        created_by: userId,
+        metadata: {
+          ...(event.metadata || {}),
+          apply_pr_number: pr.number,
+          merge_commit_sha: pr.merge_commit_sha,
+          merged_at: pr.merged_at,
+          producer: "finalize-hero-apply",
+        },
+      }),
+    });
+    if (!createRes.ok) return { status: "create_failed" };
+    const [created] = await createRes.json();
+
+    await supabaseFetch("/rest/v1/social_audit_log", token, {
+      method: "POST",
+      body: JSON.stringify({
+        social_event_id: created.id,
+        actor_id: userId,
+        action: "shadow_event_created_from_hero_publish",
+        details: { hero_key: heroKey, apply_pr_number: pr.number, merge_commit_sha: pr.merge_commit_sha },
+      }),
+    });
+
+    return { status: "created", id: created.id };
+  } catch (error) {
+    console.warn("Hero Social shadow event creation skipped", error);
+    return { status: "skipped" };
+  }
+}
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed." });
@@ -147,7 +201,17 @@ export default async function handler(req, res) {
       throw new Error(rpcBody?.message || "Could not finalize Hero baseline.");
     }
 
-    return json(res, 200, { ok: true, hero_key: heroKey, pr_number: draft.apply_pr_number, retired: retiring });
+    const social = retiring
+      ? { status: "skipped_retirement" }
+      : await createHeroSocialShadowEvent({ heroKey, payload: cleanPayload, token, userId: user.id, pr });
+
+    return json(res, 200, {
+      ok: true,
+      hero_key: heroKey,
+      pr_number: draft.apply_pr_number,
+      retired: retiring,
+      social_shadow_event: social,
+    });
   } catch (error) {
     console.error("Finalize Hero apply failed", error);
     return json(res, 500, { error: error?.message || "Finalize Hero apply failed." });
