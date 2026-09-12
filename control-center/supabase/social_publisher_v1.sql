@@ -9,6 +9,7 @@ create table if not exists public.social_events (
   source_url text,
   payload jsonb not null default '{}'::jsonb,
   media jsonb not null default '[]'::jsonb,
+  metadata jsonb not null default '{}'::jsonb,
   channels text[] not null default array['instagram_feed','instagram_story','facebook']::text[],
   status text not null default 'draft' check (status in ('draft','ready','scheduled','published','failed','cancelled')),
   publish_mode text not null default 'shadow' check (publish_mode in ('shadow','approval','auto')),
@@ -29,6 +30,9 @@ create table if not exists public.social_events (
   updated_at timestamptz not null default now(),
   unique (event_type, source_type, source_id)
 );
+
+-- Keep this script safe to re-run after the initial table has already been activated.
+alter table public.social_events add column if not exists metadata jsonb not null default '{}'::jsonb;
 
 create index if not exists social_events_status_created_idx on public.social_events(status, created_at desc);
 create index if not exists social_events_source_idx on public.social_events(source_type, source_id);
