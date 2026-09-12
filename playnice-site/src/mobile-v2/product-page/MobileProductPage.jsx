@@ -188,6 +188,28 @@ export default function MobileProductPage({
             ← SHOP
           </button>
 
+          <button
+            type="button"
+            className={`mobile-product-page__wishlist ${isWishlisted ? "is-active" : ""}`}
+            onClick={onToggleWishlist}
+            aria-label={
+              isWishlisted
+                ? lang === "sr"
+                  ? "Ukloni iz Private Selection"
+                  : "Remove from Private Selection"
+                : lang === "sr"
+                ? "Dodaj u Private Selection"
+                : "Add to Private Selection"
+            }
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                className={isWishlisted ? "is-filled" : "is-outline"}
+                d="M20.8 5.9c-1.8-2.1-5.1-2.2-7-.3L12 7.4l-1.8-1.8c-1.9-1.9-5.2-1.8-7 .3-1.7 2-1.4 5 .5 6.9L12 21l8.3-8.2c1.9-1.9 2.2-4.9.5-6.9Z"
+              />
+            </svg>
+          </button>
+
         </div>
 
         {type && <span className="mobile-product-page__type">{type}</span>}
@@ -227,26 +249,6 @@ export default function MobileProductPage({
             }
           }}
         >
-          <button
-            type="button"
-            className={`mobile-product-page__wishlist mobile-product-page__wishlist--media ${isWishlisted ? "is-active" : ""}`}
-            onClick={(event) => {
-              event.stopPropagation();
-              onToggleWishlist?.();
-            }}
-            aria-label={
-              isWishlisted
-                ? lang === "sr"
-                  ? "Ukloni iz Private Selection"
-                  : "Remove from Private Selection"
-                : lang === "sr"
-                ? "Dodaj u Private Selection"
-                : "Add to Private Selection"
-            }
-          >
-            {isWishlisted ? "♥" : "♡"}
-          </button>
-
           {product.discount ? (
             <span className="mobile-product-page__sale-badge">
               SALE · {String(product.discount.size).toUpperCase()} · -{product.discount.percent}%
