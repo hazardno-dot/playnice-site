@@ -120,6 +120,7 @@ export default function MobileProductPage({
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [profile, setProfile] = useState(null);
   const recommendationTrackRef = useRef(null);
+  const accordionRef = useRef(null);
   const previousProductSlugRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -140,6 +141,13 @@ export default function MobileProductPage({
     const track = recommendationTrackRef.current;
     if (track) {
       track.scrollTo({ left: 0, behavior: "auto" });
+    }
+
+    const accordions = accordionRef.current;
+    if (accordions) {
+      accordions.querySelectorAll("details").forEach((details) => {
+        details.open = false;
+      });
     }
   }, [product?.slug]);
 
@@ -447,7 +455,7 @@ export default function MobileProductPage({
         </section>
       ) : null}
 
-      <section className="mobile-product-page__accordions">
+      <section ref={accordionRef} className="mobile-product-page__accordions">
         <details>
           <summary>{lang === "sr" ? "O mirisu" : "About the fragrance"}<span>+</span></summary>
           <p>{fullDescription}</p>
@@ -465,7 +473,7 @@ export default function MobileProductPage({
 
         {doNotWearContext ? (
           <details>
-            <summary>{lang === "sr" ? "Kada ga NE nositi" : "When NOT to wear it"}<span>+</span></summary>
+            <summary>{lang === "sr" ? "Kada ga ne nositi" : "When not to wear it"}<span>+</span></summary>
             <p>{doNotWearContext}</p>
           </details>
         ) : null}
