@@ -274,7 +274,11 @@
 
   .mobile-product-page__price-box strong {
     color: #d9b56c;
-    font: 650 1.02rem/1 Inter, sans-serif;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.45rem;
+    font-weight: 650;
+    line-height: 0.96;
+    letter-spacing: -0.01em;
   }
 
   .mobile-product-page__actions {
