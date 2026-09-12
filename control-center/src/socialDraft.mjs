@@ -3,6 +3,61 @@ const DEFAULT_TAGS = ["#playnice", "#parfemi", "#montenegro"];
 
 const compact = (parts = []) => parts.map((value) => String(value || "").trim()).filter(Boolean);
 const siteUrl = (path = "") => /^https?:\/\//.test(path) ? path : `${SITE_ORIGIN}${path.startsWith("/") ? path : `/${path}`}`;
+const mediaSrc = (item) => String(item?.url || item?.src || "").trim();
+const mediaFormat = (item) => String(item?.format || "").trim().toLowerCase();
+
+const CHANNEL_MEDIA_PRIORITIES = {
+  instagram_feed: ["1:1", "square", "product", "product_image", "journal_cover", "hero_square", "4:3", "hero_mobile", "hero_desktop"],
+  instagram_story: ["9:16", "9:15", "story", "vertical", "hero_story", "hero_mobile", "4:3", "journal_cover", "product", "product_image", "1:1", "hero_desktop"],
+  facebook: ["1:1", "square", "hero_square", "journal_cover", "product", "product_image", "4:3", "hero_mobile", "hero_desktop"],
+};
+
+function normalizeMedia(media = []) {
+  return (Array.isArray(media) ? media : [])
+    .filter((item) => mediaSrc(item))
+    .map((item) => ({ ...item, src: mediaSrc(item), format: item?.format || "unknown" }));
+}
+
+export function selectSocialMedia(media = [], channel = "instagram_feed") {
+  const items = normalizeMedia(media);
+  if (!items.length) return null;
+  const priorities = CHANNEL_MEDIA_PRIORITIES[channel] || CHANNEL_MEDIA_PRIORITIES.instagram_feed;
+  for (const preferred of priorities) {
+    const match = items.find((item) => mediaFormat(item) === preferred);
+    if (match) return { ...match, selection: preferred === mediaFormat(items[0]) ? "preferred" : "channel_priority" };
+  }
+  return { ...items[0], selection: "fallback" };
+}
+
+function payloadMedia(payload = {}, sourceType = "") {
+  const media = [];
+  const add = (src, format) => { if (String(src || "").trim()) media.push({ src: String(src).trim(), format }); };
+  if (sourceType === "product") add(payload.image, "product_image");
+  if (sourceType === "hero") {
+    add(payload.socialSquareImage || payload.squareImage, "1:1");
+    add(payload.socialStoryImage || payload.storyImage, "9:16");
+    add(payload.mobileImage, "hero_mobile");
+    add(payload.desktopImage || payload.image, "hero_desktop");
+  }
+  if (sourceType === "journal") add(payload.image, "journal_cover");
+  return media;
+}
+
+export function resolveEventMedia(event = {}) {
+  const explicit = normalizeMedia(event.media || []);
+  const fallback = payloadMedia(event.payload || {}, event.source_type);
+  const seen = new Set();
+  return [...explicit, ...fallback].filter((item) => {
+    const key = `${mediaSrc(item)}|${mediaFormat(item)}`;
+    if (!mediaSrc(item) || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function channelMedia(event, channel) {
+  return selectSocialMedia(resolveEventMedia(event), channel);
+}
 
 function productDraft(event) {
   const payload = event.payload || {};
@@ -14,9 +69,9 @@ function productDraft(event) {
   const caption = compact([mini.toUpperCase(), name, scent, sizes, link, DEFAULT_TAGS.join(" ")]).join("\n\n");
   return {
     headline: name,
-    instagram_feed: { caption, media: event.media?.[0] || null },
-    instagram_story: { caption: `${name}\n${mini}\n${link}`, media: event.media?.find((item) => item.format === "9:16") || event.media?.[0] || null },
-    facebook: { caption: compact([mini, name, scent, sizes, link]).join("\n\n"), media: event.media?.[0] || null },
+    instagram_feed: { caption, media: channelMedia(event, "instagram_feed") },
+    instagram_story: { caption: `${name}\n${mini}\n${link}`, media: channelMedia(event, "instagram_story") },
+    facebook: { caption: compact([mini, name, scent, sizes, link]).join("\n\n"), media: channelMedia(event, "facebook") },
   };
 }
 
@@ -27,9 +82,9 @@ function heroDraft(event) {
   const link = event.source_url ? siteUrl(event.source_url) : SITE_ORIGIN;
   return {
     headline,
-    instagram_feed: { caption: compact([headline, body, link, DEFAULT_TAGS.join(" ")]).join("\n\n"), media: event.media?.find((item) => item.format === "1:1") || event.media?.[0] || null },
-    instagram_story: { caption: compact([headline, body, link]).join("\n"), media: event.media?.find((item) => item.format === "9:16") || event.media?.[0] || null },
-    facebook: { caption: compact([headline, body, link]).join("\n\n"), media: event.media?.find((item) => item.format === "1:1") || event.media?.[0] || null },
+    instagram_feed: { caption: compact([headline, body, link, DEFAULT_TAGS.join(" ")]).join("\n\n"), media: channelMedia(event, "instagram_feed") },
+    instagram_story: { caption: compact([headline, body, link]).join("\n"), media: channelMedia(event, "instagram_story") },
+    facebook: { caption: compact([headline, body, link]).join("\n\n"), media: channelMedia(event, "facebook") },
   };
 }
 
@@ -40,9 +95,9 @@ function journalDraft(event) {
   const link = event.source_url ? siteUrl(event.source_url) : siteUrl(`/journal/${event.source_id}`);
   return {
     headline: title,
-    instagram_feed: { caption: compact([title, teaser, `Čitaj na ${link}`, "#playnice #lejournal"]).join("\n\n"), media: event.media?.[0] || null },
-    instagram_story: { caption: compact([title, "Le Journal", link]).join("\n"), media: event.media?.find((item) => item.format === "9:16") || event.media?.[0] || null },
-    facebook: { caption: compact([title, teaser, link]).join("\n\n"), media: event.media?.[0] || null },
+    instagram_feed: { caption: compact([title, teaser, `Čitaj na ${link}`, "#playnice #lejournal"]).join("\n\n"), media: channelMedia(event, "instagram_feed") },
+    instagram_story: { caption: compact([title, "Le Journal", link]).join("\n"), media: channelMedia(event, "instagram_story") },
+    facebook: { caption: compact([title, teaser, link]).join("\n\n"), media: channelMedia(event, "facebook") },
   };
 }
 
