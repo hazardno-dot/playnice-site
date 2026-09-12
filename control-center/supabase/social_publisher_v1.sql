@@ -48,10 +48,11 @@ alter table public.social_audit_log enable row level security;
 
 -- Explicit Data API exposure. Supabase no longer guarantees automatic grants for
 -- newly-created public tables, so keep browser/API access deterministic and least-privilege.
-revoke all on table public.social_events from anon;
-revoke all on table public.social_audit_log from anon;
+revoke all on table public.social_events from anon, authenticated;
+revoke all on table public.social_audit_log from anon, authenticated;
 grant select, insert, update, delete on table public.social_events to authenticated;
 grant select, insert on table public.social_audit_log to authenticated;
+revoke all on sequence public.social_audit_log_id_seq from anon, authenticated;
 grant usage, select on sequence public.social_audit_log_id_seq to authenticated;
 
 -- Reuse Control Center admin authorization. These policies intentionally permit
