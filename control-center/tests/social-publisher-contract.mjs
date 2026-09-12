@@ -10,10 +10,12 @@ const event = normalizeSocialEvent({
   source_id: "test-fragrance",
   source_url: "/product/test-fragrance",
   payload: {
-    name: "Test Fragrance",
-    shortName: "Test Fragrance",
-    image: "/products/test.webp",
-    sizes: { "5ml": 9, "10ml": 16 },
+    core: {
+      name: "Test Fragrance Eau de Parfum",
+      shortName: "Test Fragrance",
+      image: "/products/test.webp",
+      sizes: { "5ml": 9, "10ml": 16 },
+    },
     copy: { miniTag: { sr: "Novo u PlayNice." }, card: { sr: "Čist, moderan i lako nosiv." } },
   },
   media: [
@@ -30,6 +32,7 @@ assert.equal(socialEventDedupeKey(event), "product_published:product:test-fragra
 assert.deepEqual(canPublishSocialEvent({ ...event, status: "ready" }), { ok: false, reason: "shadow_mode" });
 
 const draft = generateSocialDraft(event);
+assert.equal(draft.headline, "Test Fragrance");
 assert.match(draft.instagram_feed.caption, /Test Fragrance/);
 assert.match(draft.instagram_feed.caption, /5ml · €9/);
 assert.match(draft.instagram_feed.caption, /playniceshop\.me\/product\/test-fragrance/);
@@ -38,8 +41,8 @@ assert.equal(draft.instagram_story.media.format, "9:16");
 assert.equal(draft.facebook.media.format, "1:1");
 assert.match(draft.facebook.caption, /Čist, moderan i lako nosiv/);
 
-const payloadOnlyMedia = resolveEventMedia({ source_type: "product", payload: { image: "/products/fallback.webp" }, media: [] });
-assert.equal(payloadOnlyMedia[0].format, "product_image", "Product payload image must remain available when no explicit Social media exists.");
+const payloadOnlyMedia = resolveEventMedia({ source_type: "product", payload: { core: { image: "/products/fallback.webp" } }, media: [] });
+assert.equal(payloadOnlyMedia[0].format, "product_image", "Nested Product core image must remain available when no explicit Social media exists.");
 assert.equal(selectSocialMedia(payloadOnlyMedia, "instagram_feed")?.format, "product_image");
 
 const heroMedia = [
@@ -57,6 +60,7 @@ const productPublishSync = fs.readFileSync(path.join(root, "control-center/api/s
 for (const token of [
   "productPublishedEvent",
   "createProductSocialShadowEvent",
+  "const core = payload?.core",
   "product_image",
   "schema_unavailable",
   "publish_history_already_exists",
@@ -107,7 +111,7 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
-for (const token of ["/api/social-draft", "Save draft", "Mark ready", "Return to draft", "draft_content", "approved_content"]) {
+for (const token of ["/api/social-draft", "Save draft", "Mark ready", "Return to draft", "draft_content", "approved_content", "payload?.core?.shortName"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
 assert.ok(socialManager.includes("social-media-meta"), "Social preview must expose selected media metadata.");
@@ -125,6 +129,7 @@ for (const token of ["draft_content jsonb", "approved_content jsonb", "approved_
 }
 
 console.log("PASS  Social Publisher shadow-mode contract");
+console.log("PASS  Nested Product payloads resolve canonical name, sizes and media correctly");
 console.log("PASS  Channel-aware media selection prefers square feed and vertical Story assets with safe fallbacks");
 console.log("PASS  Social captions are editable, auditable and can be marked READY without unlocking Meta publishing");
 console.log("PASS  Product publish creates a best-effort deduped Social shadow event after live merge");
