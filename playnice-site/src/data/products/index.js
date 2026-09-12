@@ -2858,6 +2858,32 @@ export const products = [
       heart: ["jasmine-sambac","orris"],
       base: ["leather","woody-notes","tobacco"]
     }
+  },
+  {
+    id: 101,
+    addedAt: "2026-09-12T23:53:42.853Z",
+    slug: "arabiyat-prestige-al-noor",
+    name: "Arabiyat Prestige Al Noor Eau De Parfum",
+    modalName: "Arabiyat Prestige Al Noor Eau De Parfum",
+    shortName: "Al Noor",
+    category: "Arabian",
+    image: "/products/arabiyat-prestige-al-noor.png",
+    sizes: {"5ml":5,"10ml":9,"20ml":17},
+    badge: "HIDDEN GEM",
+    rating: 8.3,
+    ratingLabel: "Popular Pick",
+    season: "winter",
+    moods: ["rich","date","signature"],
+    recommendations: ["lattafa-asad-elixir","rayhaan-nocturno-elixir","arabiyat-prestige-fahad-gaze"],
+    inspiredBy: {
+      name: "BDK Gris Charnel",
+      short: "Gris Charnel"
+    },
+    noteMap: {
+      top: ["cardamom","nutmeg","saffron"],
+      heart: ["fig","iris","labdanum","vetiver"],
+      base: ["leather","tonka-bean","patchouli","vanilla"]
+    }
   }
 
 ];

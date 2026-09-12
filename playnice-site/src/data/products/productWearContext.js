@@ -406,5 +406,10 @@ export const productWearContext = {
   "Tom Ford Ombré Leather Parfum": {
     "sr": "Najbolji uveče i po hladnijem vremenu; odličan za dejt.",
     "en": "Best at night and in cooler weather; excellent for dates."
+  },
+
+  "Arabiyat Prestige Al Noor Eau De Parfum": {
+    "sr": "Hladnije vreme, veče i izlazak. U kancelariji umerenije.",
+    "en": "Cooler weather, evenings and nights out. Go easy at the office."
   }
 };
