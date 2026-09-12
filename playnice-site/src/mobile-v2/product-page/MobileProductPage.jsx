@@ -221,27 +221,35 @@ export default function MobileProductPage({
 
         <div
           className={`mobile-product-page__visual-frame ${noteMapOpen ? "is-note-map-open" : ""}`}
+          onClickCapture={(event) => {
+            if (!noteMapOpen) return;
+            if (event.target.closest?.(".the-note-map__levels")) {
+              setNoteMapOpen(false);
+            }
+          }}
         >
-          {!noteMapOpen ? (
-            <button
-              type="button"
-              className={`mobile-product-page__image-button ${product.noteMap ? "has-note-map" : ""}`}
-              onClick={() => product.noteMap && setNoteMapOpen(true)}
-              aria-label={
-                product.noteMap
+          <button
+            type="button"
+            className={`mobile-product-page__image-button ${product.noteMap ? "has-note-map" : ""}`}
+            onClick={() => product.noteMap && setNoteMapOpen((current) => !current)}
+            aria-label={
+              product.noteMap
+                ? noteMapOpen
                   ? lang === "sr"
-                    ? "Prikaži note parfema"
-                    : "Show fragrance notes"
-                  : product.name
-              }
-            >
-              {product.image ? (
-                <img src={product.image} alt={product.name} />
-              ) : (
-                <span className="mobile-product-page__monogram">{product.name.charAt(0)}</span>
-              )}
-            </button>
-          ) : null}
+                    ? "Vrati sliku parfema"
+                    : "Show fragrance image"
+                  : lang === "sr"
+                  ? "Prikaži note parfema"
+                  : "Show fragrance notes"
+                : product.name
+            }
+          >
+            {product.image ? (
+              <img src={product.image} alt={product.name} />
+            ) : (
+              <span className="mobile-product-page__monogram">{product.name.charAt(0)}</span>
+            )}
+          </button>
 
           {product.noteMap ? (
             <TheNoteMap
@@ -249,7 +257,6 @@ export default function MobileProductPage({
               lang={lang}
               open={noteMapOpen}
               onToggle={() => setNoteMapOpen((current) => !current)}
-              onNoteClick={() => setNoteMapOpen(false)}
             />
           ) : null}
         </div>

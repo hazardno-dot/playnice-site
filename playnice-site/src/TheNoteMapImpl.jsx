@@ -355,7 +355,7 @@ const getNoteData = (noteKey) => {
   };
 };
 
-function NoteMapItem({ noteKey, lang, delay, onActivate }) {
+function NoteMapItem({ noteKey, lang, delay }) {
   const [imageFailed, setImageFailed] = useState(false);
   const note = getNoteData(noteKey);
   const noteLabel = note[lang] || note.en;
@@ -364,21 +364,8 @@ function NoteMapItem({ noteKey, lang, delay, onActivate }) {
   return (
     <span
       className="the-note-map__note"
-      role={onActivate ? "button" : "listitem"}
-      tabIndex={onActivate ? 0 : undefined}
+      role="listitem"
       style={{ "--note-delay": `${delay}ms` }}
-      onClick={(event) => {
-        if (!onActivate) return;
-        event.preventDefault();
-        event.stopPropagation();
-        onActivate();
-      }}
-      onKeyDown={(event) => {
-        if (!onActivate || (event.key !== "Enter" && event.key !== " ")) return;
-        event.preventDefault();
-        event.stopPropagation();
-        onActivate();
-      }}
     >
       <span className="the-note-map__thumb" aria-hidden="true">
         <span
@@ -411,7 +398,6 @@ export default function TheNoteMap({
   lang = "sr",
   open = false,
   onToggle,
-  onNoteClick,
 }) {
   const componentId = useId().replace(/:/g, "");
   const triggerId = `product-note-map-trigger-${componentId}`;
@@ -469,7 +455,6 @@ export default function TheNoteMap({
                     noteKey={noteKey}
                     lang={activeLang}
                     delay={rowIndex * 220 + noteIndex * 75}
-                    onActivate={onNoteClick}
                   />
                 ))}
               </div>
