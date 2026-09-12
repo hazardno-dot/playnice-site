@@ -38,9 +38,18 @@ if (typeof window !== "undefined" && typeof document !== "undefined") {
   scheduleMobileShopPreload();
 }
 
+function MobileShopLoadingSpacer() {
+  return (
+    <div
+      className="mobile-shop-loading-spacer"
+      aria-hidden="true"
+    />
+  );
+}
+
 export default function MobileShopV2(props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<MobileShopLoadingSpacer />}>
       <MobileShopV2Impl {...props} />
     </Suspense>
   );
