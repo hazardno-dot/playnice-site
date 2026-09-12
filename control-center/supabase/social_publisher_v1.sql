@@ -33,6 +33,8 @@ create table if not exists public.social_events (
 create index if not exists social_events_status_created_idx on public.social_events(status, created_at desc);
 create index if not exists social_events_source_idx on public.social_events(source_type, source_id);
 create index if not exists social_events_schedule_idx on public.social_events(scheduled_for) where status = 'scheduled';
+create index if not exists social_events_created_by_idx on public.social_events(created_by);
+create index if not exists social_events_approved_by_idx on public.social_events(approved_by);
 
 create table if not exists public.social_audit_log (
   id bigint generated always as identity primary key,
@@ -42,6 +44,9 @@ create table if not exists public.social_audit_log (
   details jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now()
 );
+
+create index if not exists social_audit_log_event_idx on public.social_audit_log(social_event_id);
+create index if not exists social_audit_log_actor_idx on public.social_audit_log(actor_id);
 
 alter table public.social_events enable row level security;
 alter table public.social_audit_log enable row level security;
@@ -55,19 +60,19 @@ grant select, insert on table public.social_audit_log to authenticated;
 revoke all on sequence public.social_audit_log_id_seq from anon, authenticated;
 grant usage, select on sequence public.social_audit_log_id_seq to authenticated;
 
--- Reuse Control Center admin authorization. These policies intentionally permit
--- authenticated admins to inspect and edit shadow drafts while public users have no access.
+-- Reuse Control Center admin authorization. The scalar auth.uid() subquery is
+-- deliberately init-plan friendly so it is not re-evaluated for each candidate row.
 drop policy if exists social_events_admin_all on public.social_events;
 create policy social_events_admin_all on public.social_events
 for all to authenticated
-using (exists (select 1 from public.admin_users a where a.user_id = auth.uid()))
-with check (exists (select 1 from public.admin_users a where a.user_id = auth.uid()));
+using (exists (select 1 from public.admin_users a where a.user_id = (select auth.uid())))
+with check (exists (select 1 from public.admin_users a where a.user_id = (select auth.uid())));
 
 drop policy if exists social_audit_admin_all on public.social_audit_log;
 create policy social_audit_admin_all on public.social_audit_log
 for all to authenticated
-using (exists (select 1 from public.admin_users a where a.user_id = auth.uid()))
-with check (exists (select 1 from public.admin_users a where a.user_id = auth.uid()));
+using (exists (select 1 from public.admin_users a where a.user_id = (select auth.uid())))
+with check (exists (select 1 from public.admin_users a where a.user_id = (select auth.uid())));
 
 create or replace function public.set_social_events_updated_at()
 returns trigger
