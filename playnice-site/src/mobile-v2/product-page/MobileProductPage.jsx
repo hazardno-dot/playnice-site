@@ -188,22 +188,6 @@ export default function MobileProductPage({
             ← SHOP
           </button>
 
-          <button
-            type="button"
-            className={`mobile-product-page__wishlist ${isWishlisted ? "is-active" : ""}`}
-            onClick={onToggleWishlist}
-            aria-label={
-              isWishlisted
-                ? lang === "sr"
-                  ? "Ukloni iz Private Selection"
-                  : "Remove from Private Selection"
-                : lang === "sr"
-                ? "Dodaj u Private Selection"
-                : "Add to Private Selection"
-            }
-          >
-            {isWishlisted ? "♥" : "♡"}
-          </button>
         </div>
 
         {type && <span className="mobile-product-page__type">{type}</span>}
@@ -243,6 +227,26 @@ export default function MobileProductPage({
             }
           }}
         >
+          <button
+            type="button"
+            className={`mobile-product-page__wishlist mobile-product-page__wishlist--media ${isWishlisted ? "is-active" : ""}`}
+            onClick={(event) => {
+              event.stopPropagation();
+              onToggleWishlist?.();
+            }}
+            aria-label={
+              isWishlisted
+                ? lang === "sr"
+                  ? "Ukloni iz Private Selection"
+                  : "Remove from Private Selection"
+                : lang === "sr"
+                ? "Dodaj u Private Selection"
+                : "Add to Private Selection"
+            }
+          >
+            {isWishlisted ? "♥" : "♡"}
+          </button>
+
           {product.discount ? (
             <span className="mobile-product-page__sale-badge">
               SALE · {String(product.discount.size).toUpperCase()} · -{product.discount.percent}%
