@@ -1,71 +1,9 @@
 /* =========================================
-   PLAYNICE MOBILE SHOP — FIRST PAINT + ROW REVEAL
-   Keep critical Shop geometry stable before the lazy V2 chunk arrives.
+   PLAYNICE MOBILE SHOP — ROW REVEAL
+   Deterministic, one-way vertical motion.
 ========================================= */
 
 @media (max-width: 640px) {
-  /*
-    FIRST-PAINT CONTRACT
-    These rules intentionally duplicate the critical geometry from
-    MobileShopV2.css. That stylesheet is lazy-loaded with the Shop chunk;
-    keeping the shell here prevents a second layout when it arrives.
-  */
-  .shop-section {
-    --shop-flow-intro-top: 8px;
-    --shop-flow-section: 14px;
-    --shop-flow-wayline: 12px;
-    --shop-flow-major: 18px;
-    --shop-flow-grid-link: 10px;
-    --shop-flow-footer: 22px;
-
-    padding-top: 0;
-  }
-
-  .shop-collection-intro {
-    width: calc(100% - 28px);
-    margin: var(--shop-flow-intro-top) auto var(--shop-flow-section);
-  }
-
-  .shop-value-anchor,
-  .shop-toolbar.shop-toolbar-compact,
-  .scent-mood-filter {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    padding: 0 !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    clip: rect(0 0 0 0) !important;
-    white-space: nowrap !important;
-    border: 0 !important;
-  }
-
-  /*
-    Suspense fallback for the lazy mobile filter board.
-    Match the rendered menu's first-paint height so the product grid never
-    jumps when MobileShopV2Chunk finishes loading.
-  */
-  .mobile-shop-loading-spacer {
-    display: block;
-    width: 100%;
-    height: 157px;
-    flex: 0 0 157px;
-    pointer-events: none;
-  }
-
-  .shop-section .shop-pagination-row {
-    margin-top: var(--shop-flow-major);
-    margin-bottom: var(--shop-flow-grid-link);
-  }
-
-  .shop-section .product-grid-anchor {
-    margin-top: 0;
-  }
-
-  /*
-    ROW REVEAL
-    Initial viewport rows stay static; motion is reserved for scroll entry.
-  */
   .shop-section .product-grid > .product-card.mobile-shop-reveal-pending {
     opacity: 0;
     transform: translateY(22px);
@@ -91,11 +29,5 @@
       opacity: 1 !important;
       transform: none !important;
     }
-  }
-}
-
-@media (max-width: 390px) {
-  .shop-collection-intro {
-    width: calc(100% - 24px);
   }
 }
