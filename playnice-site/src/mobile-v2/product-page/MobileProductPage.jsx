@@ -201,7 +201,10 @@ export default function MobileProductPage({
         <div className="mobile-product-page__meta">
           {product.rating ? (
             <span className="mobile-product-page__rating">
-              ★ {Number(product.rating).toFixed(1)} <small>/ 10 · {product.ratingLabel}</small>
+              <span className="mobile-product-page__rating-stars" aria-hidden="true">★★★★★★★★★★</span>
+              <span className="mobile-product-page__rating-score">
+                {Number(product.rating).toFixed(1)} <small>/ 10 · {product.ratingLabel}</small>
+              </span>
             </span>
           ) : null}
 
