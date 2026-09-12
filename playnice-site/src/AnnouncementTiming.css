@@ -1,0 +1,16 @@
+/* Announcement marquee timing — readability first. */
+.header-system .announcement-track {
+  animation-duration: 26s;
+}
+
+@media (max-width: 820px) {
+  .header-system .announcement-track {
+    animation-duration: 30s;
+  }
+}
+
+@media (max-width: 390px) {
+  .header-system .announcement-track {
+    animation-duration: 32s;
+  }
+}
