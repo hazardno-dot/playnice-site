@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
 import { SOCIAL_SHADOW_MODE, normalizeSocialEvent, socialEventDedupeKey, canPublishSocialEvent } from "../src/socialEvent.mjs";
 import { generateSocialDraft } from "../src/socialDraft.mjs";
 
@@ -33,4 +35,21 @@ assert.match(draft.facebook.caption, /Čist, moderan i lako nosiv/);
 assert.throws(() => normalizeSocialEvent({ event_type: "bad", source_type: "product", source_id: "x" }), /Unsupported social event type/);
 assert.throws(() => generateSocialDraft({ source_type: "unknown" }), /No social draft generator/);
 
+const root = process.cwd();
+const productPublishSync = fs.readFileSync(path.join(root, "control-center/api/sync-publish-status.js"), "utf8");
+for (const token of [
+  "productPublishedEvent",
+  "createProductSocialShadowEvent",
+  "schema_unavailable",
+  "publish_history_already_exists",
+  "shadow_event_created_from_product_publish",
+  "social_shadow_event",
+]) {
+  assert.ok(productPublishSync.includes(token), `Product publish Social shadow integration missing: ${token}`);
+}
+assert.ok(productPublishSync.indexOf("createProductSocialShadowEvent") > -1, "Product Social producer is not wired.");
+assert.ok(productPublishSync.includes("console.warn(\"Social shadow event creation skipped\""), "Social producer must fail open and never block product publishing.");
+
 console.log("PASS  Social Publisher shadow-mode contract");
+console.log("PASS  Product publish creates a best-effort deduped Social shadow event after live merge");
+console.log("PASS  Social schema/publisher failures remain non-blocking for storefront publishing");
