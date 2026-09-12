@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import PrivateSelectionEnhancer from "./PrivateSelectionEnhancer";
-import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
 import MobileCommunityV2 from "./mobile-v2/community/MobileCommunityV2";
 import DesktopFooterCatalog from "./DesktopFooterCatalog";
@@ -29,7 +28,6 @@ import "./mobile-v2/content/MobileFaqV2.css";
 import "./mobile-v2/private-selection/MobilePrivateSelectionV2.css";
 import "./mobile-v2/private-selection/MobilePrivateSelectionDrawerV2.css";
 import "./mobile-v2/navigation/MobileClosingFooterV2.css";
-import "./mobile-v2/shop/MobileShopReveal.css";
 import "./mobile-v2/modal/MobileProductModalBase.css";
 import "./mobile-v2/modal/MobileProductModalPagerCore.css";
 import "./mobile-v2/modal/MobileProductModalPagerPolish.css";
@@ -53,7 +51,6 @@ const renderApp = () => {
     <React.StrictMode>
       <App />
       <PrivateSelectionEnhancer />
-      <MobileShopReveal />
       <MobileMenuContact />
       <MobileCommunityV2 />
       <DesktopFooterCatalog />
