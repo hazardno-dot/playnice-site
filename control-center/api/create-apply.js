@@ -45,11 +45,7 @@ const normalizeSizes = (value) =>
     .sort((a, b) => {
       const aMl = Number.parseFloat(a);
       const bMl = Number.parseFloat(b);
-
-      if (Number.isFinite(aMl) && Number.isFinite(bMl)) {
-        return aMl - bMl;
-      }
-
+      if (Number.isFinite(aMl) && Number.isFinite(bMl)) return aMl - bMl;
       return a.localeCompare(b);
     })
     .reduce((out, key) => {
@@ -102,37 +98,16 @@ function scanObject(source, braceStart, label) {
 }
 
 function findProductBlock(source, slug) {
-  const slugRegex = new RegExp(
-    `\\bslug\\s*:\\s*["']${escapeRegex(slug)}["']`
-  );
-
+  const slugRegex = new RegExp(`\\bslug\\s*:\\s*["']${escapeRegex(slug)}["']`);
   const slugMatch = slugRegex.exec(source);
-
-  if (!slugMatch) {
-    throw new Error(`Could not locate ${slug} in main catalog.`);
-  }
-
+  if (!slugMatch) throw new Error(`Could not locate ${slug} in main catalog.`);
   const prefix = source.slice(0, slugMatch.index);
-
-  const objectStarts = [
-    ...prefix.matchAll(/(?:^|\n)[ \t]*\{/g)
-  ];
-
+  const objectStarts = [...prefix.matchAll(/(?:^|\n)[ \t]*\{/g)];
   const candidate = objectStarts.at(-1);
-
-  if (!candidate) {
-    throw new Error(`Could not locate product object for ${slug}.`);
-  }
-
-  const start =
-    candidate.index + candidate[0].lastIndexOf("{");
-
+  if (!candidate) throw new Error(`Could not locate product object for ${slug}.`);
+  const start = candidate.index + candidate[0].lastIndexOf("{");
   const located = scanObject(source, start, slug);
-
-  if (!slugRegex.test(located.block)) {
-    throw new Error(`Could not safely locate product object for ${slug}.`);
-  }
-
+  if (!slugRegex.test(located.block)) throw new Error(`Could not safely locate product object for ${slug}.`);
   return located;
 }
 
@@ -228,10 +203,9 @@ function patchSizesRaw(raw, baselineValue, draftValue) {
     if (!String(key).trim()) throw new Error("Size label cannot be empty.");
     if (!Number.isFinite(Number(value)) || Number(value) <= 0) throw new Error(`Invalid price for ${key}.`);
   }
-  const trimmed = raw.trim();
-  const quoteMatch = trimmed.match(/[{,]\s*(["'])[^"']+\1\s*:/);
+  const quoteMatch = raw.trim().match(/[{,]\s*(["'])[^"']+\1\s*:/);
   const quote = quoteMatch?.[1] || '"';
-  const separatorMatch = trimmed.match(/,([ \t]*)["']/);
+  const separatorMatch = raw.trim().match(/,([ \t]*)["']/);
   const separator = `,${separatorMatch?.[1] ?? " "}`;
   const beforeBrace = raw.slice(0, raw.indexOf("{") + 1);
   const afterBrace = raw.slice(raw.lastIndexOf("}"));
@@ -343,10 +317,10 @@ function readWearBlock(block) {
   return out;
 }
 
-function patchWearBlock(block, baselineWear, approvedWear) {
+function patchWearBlock(block, baselineWear, approvedWear, label = "Wear Context") {
   const liveWear = readWearBlock(block);
   const baseline = { sr: String(baselineWear?.sr ?? ""), en: String(baselineWear?.en ?? "") };
-  if (stable(liveWear) !== stable(baseline)) throw new Error(`LIVE DRIFT: Wear Context changed after preparation. Main is ${displayValue(liveWear)}, baseline expected ${displayValue(baseline)}.`);
+  if (stable(liveWear) !== stable(baseline)) throw new Error(`LIVE DRIFT: ${label} changed after preparation. Main is ${displayValue(liveWear)}, baseline expected ${displayValue(baseline)}.`);
   let nextBlock = block;
   for (const lang of ["sr", "en"]) {
     const before = String(baselineWear?.[lang] ?? "");
@@ -356,6 +330,93 @@ function patchWearBlock(block, baselineWear, approvedWear) {
     nextBlock = nextBlock.slice(0, range.start) + JSON.stringify(after) + nextBlock.slice(range.end);
   }
   return nextBlock;
+}
+
+function contextChangesBetween(section, baselineContext = {}, approvedContext = {}) {
+  return ["sr", "en"].map((lang) => ({
+    section,
+    field: lang,
+    live: String(baselineContext?.[lang] ?? ""),
+    next: String(approvedContext?.[lang] ?? ""),
+    changed: String(baselineContext?.[lang] ?? "") !== String(approvedContext?.[lang] ?? ""),
+  })).filter((item) => item.changed);
+}
+
+function wearContextProductNames(source) {
+  return [...source.matchAll(/^\s{2}("(?:\\.|[^"\\])*")\s*:\s*\{/gm)].map((match) => {
+    try { return JSON.parse(match[1]); } catch { return ""; }
+  }).filter(Boolean);
+}
+
+function findArrayObjectBlocks(source, label) {
+  const arrayStart = source.indexOf("[");
+  if (arrayStart < 0) throw new Error(`Could not locate array in ${label}.`);
+  const blocks = [];
+  let depth = 0;
+  let quote = "";
+  let escaped = false;
+  for (let i = arrayStart; i < source.length; i += 1) {
+    const ch = source[i];
+    if (quote) {
+      if (escaped) escaped = false;
+      else if (ch === "\\") escaped = true;
+      else if (ch === quote) quote = "";
+      continue;
+    }
+    if (ch === '"' || ch === "'" || ch === "`") { quote = ch; continue; }
+    if (ch === "[") { depth += 1; continue; }
+    if (ch === "]") {
+      depth -= 1;
+      if (depth === 0) break;
+      continue;
+    }
+    if (ch === "{" && depth === 1) {
+      const located = scanObject(source, i, `${label}[${blocks.length}]`);
+      blocks.push(located);
+      i = located.end - 1;
+    }
+  }
+  if (!blocks.length) throw new Error(`Could not locate editorial context entries in ${label}.`);
+  return blocks;
+}
+
+async function resolveEditorialContextIndex(productName, expectedIndex) {
+  const filePath = "playnice-site/src/data/products/productWearContext.js";
+  const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
+  const source = Buffer.from(file.content, "base64").toString("utf8");
+  const names = wearContextProductNames(source);
+  const index = names.indexOf(productName);
+  if (index < 0) throw new Error(`LIVE DRIFT: ${productName} is missing from Wear Context order.`);
+  if (!Number.isInteger(expectedIndex) || expectedIndex < 0) throw new Error("Editorial context baseline index is missing. Prepare the draft again.");
+  if (index !== expectedIndex) throw new Error(`LIVE DRIFT: editorial context index changed after preparation (${expectedIndex} → ${index}). Prepare again.`);
+  return index;
+}
+
+async function patchEditorialContext(prefix, label, index, baselineContext, approvedContext, branch) {
+  let offset = 0;
+  for (let part = 1; part <= 4; part += 1) {
+    const filePath = `playnice-site/src/data/products/${prefix}.part${part}.js`;
+    const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
+    const source = Buffer.from(file.content, "base64").toString("utf8");
+    const blocks = findArrayObjectBlocks(source, filePath);
+    if (index < offset + blocks.length) {
+      const target = blocks[index - offset];
+      const nextBlock = patchWearBlock(target.block, baselineContext, approvedContext, label);
+      const nextSource = source.slice(0, target.start) + nextBlock + source.slice(target.end);
+      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          message: `Control Center apply: editorial context index ${index} (${label})`,
+          content: Buffer.from(nextSource, "utf8").toString("base64"),
+          sha: file.sha,
+          branch,
+        }),
+      });
+      return filePath;
+    }
+    offset += blocks.length;
+  }
+  throw new Error(`LIVE DRIFT: ${label} entry ${index} is outside the four editorial context parts.`);
 }
 
 const COPY_FIELDS = ["miniTag", "card", "modal", "scentType", "dominantNotes", "tags", "whyChoose"];
@@ -482,10 +543,16 @@ export default async function handler(req, res) {
     const inspiredByChanges = inspiredByChangesBetween(baselineCore, approvedCore);
     const baselineWear = baseline.wear || {};
     const approvedWear = approved.wear || {};
-    const wearChanges = ["sr", "en"].map((lang) => ({ section: "Wear", field: lang, live: String(baselineWear?.[lang] ?? ""), next: String(approvedWear?.[lang] ?? ""), changed: String(baselineWear?.[lang] ?? "") !== String(approvedWear?.[lang] ?? "") })).filter((item) => item.changed);
+    const wearChanges = contextChangesBetween("Wear", baselineWear, approvedWear);
+    const baselineDoNotWear = baseline.doNotWear || {};
+    const approvedDoNotWear = approved.doNotWear || {};
+    const doNotWearChanges = contextChangesBetween("Do Not Wear", baselineDoNotWear, approvedDoNotWear);
+    const baselineWhatToWear = baseline.whatToWear || {};
+    const approvedWhatToWear = approved.whatToWear || {};
+    const whatToWearChanges = contextChangesBetween("What To Wear", baselineWhatToWear, approvedWhatToWear);
     const copyChanges = copyChangesBetween(baseline.copy || {}, approved.copy || {});
     const discoveryChanges = discoveryChangesBetween(baseline.discovery || {}, approved.discovery || {});
-    const changes = [...identityChanges, ...coreChanges, ...inspiredByChanges, ...noteMapChanges, ...recommendationChanges, ...wearChanges, ...copyChanges, ...discoveryChanges];
+    const changes = [...identityChanges, ...coreChanges, ...inspiredByChanges, ...noteMapChanges, ...recommendationChanges, ...wearChanges, ...doNotWearChanges, ...whatToWearChanges, ...copyChanges, ...discoveryChanges];
     if (!changes.length) return json(res, 409, { error: "No supported approved changes remain to apply." });
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
@@ -528,13 +595,27 @@ export default async function handler(req, res) {
       const source = Buffer.from(file.content, "base64").toString("utf8");
       if (!oldProductName) throw new Error("Wear Context apply requires a stable product name.");
       const located = findNamedObjectBlock(source, oldProductName, "Wear Context");
-      const nextBlock = wearChanges.length ? patchWearBlock(located.block, baselineWear, approvedWear) : located.block;
+      const nextBlock = wearChanges.length ? patchWearBlock(located.block, baselineWear, approvedWear, "Wear Context") : located.block;
       let nextSource = source.slice(0, located.start) + nextBlock + source.slice(located.end);
       if (nameChanged) nextSource = renameNamedObjectKey(nextSource, oldProductName, newProductName, "Wear Context");
       const summary = [...(nameChanged ? ["identity.name"] : []), ...wearChanges.map((c) => `wear.${c.field}`)].join(", ");
       await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}`, { method: "PUT", body: JSON.stringify({ message: `Control Center apply: ${slug} (${summary})`, content: Buffer.from(nextSource, "utf8").toString("base64"), sha: file.sha, branch }) });
       changedFiles.push(filePath);
     }
+
+    if (doNotWearChanges.length || whatToWearChanges.length) {
+      if (!oldProductName) throw new Error("Editorial context apply requires a stable product name.");
+      const contextIndex = await resolveEditorialContextIndex(oldProductName, baseline.editorialContextIndex);
+      if (doNotWearChanges.length) {
+        const filePath = await patchEditorialContext("productDoNotWearContext", "Do Not Wear", contextIndex, baselineDoNotWear, approvedDoNotWear, branch);
+        changedFiles.push(filePath);
+      }
+      if (whatToWearChanges.length) {
+        const filePath = await patchEditorialContext("productWhatToWearContext", "What To Wear", contextIndex, baselineWhatToWear, approvedWhatToWear, branch);
+        changedFiles.push(filePath);
+      }
+    }
+
     if (copyChanges.length || nameChanged) {
       const filePath = "playnice-site/src/data/products/productCopy.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
@@ -561,10 +642,10 @@ export default async function handler(req, res) {
     }
 
     const changeLines = changes.map((c) => `- ${c.section} · ${String(c.field).toUpperCase()}: ${displayValue(c.live)} → ${displayValue(c.next)}`);
-    const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, { method: "POST", body: JSON.stringify({ title: `Control Center: ${slug} · ${changes.length} approved change${changes.length === 1 ? "" : "s"}`, head: branch, base: "main", draft: true, body: ["Generated by PlayNice Control Center controlled apply v2.7.", "", `- Product: ${slug}`, ...changeLines, `- Files: ${changedFiles.join(", ")}`, "- Source: approved + prepared Supabase draft", "- Safety: draft PR only; no automatic merge"].join("\n") }) });
+    const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, { method: "POST", body: JSON.stringify({ title: `Control Center: ${slug} · ${changes.length} approved change${changes.length === 1 ? "" : "s"}`, head: branch, base: "main", draft: true, body: ["Generated by PlayNice Control Center controlled apply v2.8.", "", `- Product: ${slug}`, ...changeLines, `- Files: ${changedFiles.join(", ")}`, "- Source: approved + prepared Supabase draft", "- Safety: editorial context index + payload drift guards", "- Safety: draft PR only; no automatic merge"].join("\n") }) });
     await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, { method: "PATCH", body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id, preview_verified_at: null, preview_verified_by: null }) });
-    await supabaseFetch("/rest/v1/draft_audit_log", token, { method: "POST", body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "apply_branch_created", details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha, version: "2.7", fields: changes.map((c) => `${c.section.toLowerCase().replace(/ /g, "_")}.${c.field}`), files: changedFiles } }) });
-    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "2.7", fields: changes.map((c) => `${c.section.toLowerCase().replace(/ /g, "_")}.${c.field}`), files: changedFiles });
+    await supabaseFetch("/rest/v1/draft_audit_log", token, { method: "POST", body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "apply_branch_created", details: { branch, pr_number: pr.number, pr_url: pr.html_url, base_sha: baseSha, version: "2.8", fields: changes.map((c) => `${c.section.toLowerCase().replace(/ /g, "_")}.${c.field}`), files: changedFiles } }) });
+    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "2.8", fields: changes.map((c) => `${c.section.toLowerCase().replace(/ /g, "_")}.${c.field}`), files: changedFiles });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Controlled apply failed." });
   }

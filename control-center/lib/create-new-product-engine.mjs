@@ -91,6 +91,8 @@ function normalizePayload(payload, slug) {
       },
     },
     wear: payload?.wear || {},
+    doNotWear: payload?.doNotWear || {},
+    whatToWear: payload?.whatToWear || {},
     discovery: Object.fromEntries(Object.entries(payload?.discovery || {}).map(([key, value]) => [key, Number(value)])),
     mediaStage: payload?.mediaStage || null,
   };
@@ -98,7 +100,7 @@ function normalizePayload(payload, slug) {
 
 function validateNewProduct(product) {
   const errors = [];
-  const { core, copy, wear, discovery } = product;
+  const { core, copy, wear, doNotWear, whatToWear, discovery } = product;
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(product.slug)) errors.push("Slug must be lowercase kebab-case.");
   for (const [label, value] of [["Name", core.name], ["Short name", core.shortName], ["Category", core.category], ["Image", core.image], ["Rating label", core.ratingLabel], ["Season", core.season]]) {
     if (!value) errors.push(`${label} is required.`);
@@ -137,6 +139,8 @@ function validateNewProduct(product) {
     const value = String(wear?.[lang] || "").trim();
     if (!value) errors.push(`wear.${lang} is required.`);
     if (value.length > 90) errors.push(`wear.${lang} exceeds product-card presentation limit (${value.length}/90).`);
+    if (!String(doNotWear?.[lang] || "").trim()) errors.push(`doNotWear.${lang} is required.`);
+    if (!String(whatToWear?.[lang] || "").trim()) errors.push(`whatToWear.${lang} is required.`);
   }
   if (!Object.keys(discovery).length || Object.values(discovery).some((value) => !Number.isFinite(value) || value < 0 || value > 10)) errors.push("Discovery profile must contain numeric 0–10 values.");
   return errors;
@@ -219,6 +223,10 @@ function renderWear(product) {
   return `  ${js(product.core.name)}: ${JSON.stringify({ sr: String(product.wear.sr), en: String(product.wear.en) }, null, 2).replace(/^/gm, "  ").trimStart()}`;
 }
 
+function renderEditorialContext(context) {
+  return JSON.stringify({ sr: String(context?.sr || ""), en: String(context?.en || "") }, null, 2).replace(/^/gm, "  ").trimStart();
+}
+
 function renderDiscovery(product) {
   return `  ${js(product.slug)}: ${JSON.stringify(product.discovery, null, 2).replace(/^/gm, "  ").trimStart()}`;
 }
@@ -254,11 +262,20 @@ function insertObjectEntry(source, rendered, label, exportName) {
   return `${before}${appendSeparator(before)}\n\n${rendered}\n${after}`;
 }
 
+function insertArrayEntry(source, rendered, label) {
+  const end = source.lastIndexOf("\n];");
+  if (end < 0) throw new Error(`Could not locate ${label} array ending.`);
+  const before = source.slice(0, end).replace(/\s+$/, "");
+  return `${before}${appendSeparator(before)}\n  ${rendered}\n${source.slice(end)}`;
+}
+
 async function buildDataTreeEntries(product) {
   const specs = [
     ["playnice-site/src/data/products/index.js", (source) => insertProduct(source, product)],
     ["playnice-site/src/data/products/productCopy.js", (source) => insertObjectEntry(source, renderCopy(product), "Product Copy", "productCopy")],
     ["playnice-site/src/data/products/productWearContext.js", (source) => insertObjectEntry(source, renderWear(product), "Wear Context", "productWearContext")],
+    ["playnice-site/src/data/products/productDoNotWearContext.part4.js", (source) => insertArrayEntry(source, renderEditorialContext(product.doNotWear), "Do Not Wear")],
+    ["playnice-site/src/data/products/productWhatToWearContext.part4.js", (source) => insertArrayEntry(source, renderEditorialContext(product.whatToWear), "What To Wear")],
     ["playnice-site/src/data/products/discoveryProfiles.js", (source) => insertObjectEntry(source, renderDiscovery(product), "Discovery Profiles", "discoveryProfiles")],
   ];
   const files = [];
@@ -297,8 +314,10 @@ export const __test = {
   renderProductObject,
   insertProduct,
   insertObjectEntry,
+  insertArrayEntry,
   renderCopy,
   renderWear,
+  renderEditorialContext,
   renderDiscovery,
   findExportObjectEnd,
   appendSeparator,
@@ -360,31 +379,13 @@ export default async function handler(req, res) {
       const refreshedAt = new Date().toISOString();
       await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, {
         method: "PATCH",
-        body: JSON.stringify({
-          apply_created_at: refreshedAt,
-          preview_verified_at: null,
-          preview_verified_by: null,
-        }),
+        body: JSON.stringify({ apply_created_at: refreshedAt, preview_verified_at: null, preview_verified_by: null }),
       });
       await supabaseFetch("/rest/v1/draft_audit_log", token, {
         method: "POST",
-        body: JSON.stringify({
-          product_slug: slug,
-          actor_id: user.id,
-          action: "new_product_preview_refreshed",
-          details: { branch, pr_number: draft.apply_pr_number, files, commit_sha: commit.sha, media_atomic: true },
-        }),
+        body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "new_product_preview_refreshed", details: { branch, pr_number: draft.apply_pr_number, files, commit_sha: commit.sha, media_atomic: true, editorial_contexts: true } }),
       });
-      return json(res, 200, {
-        ok: true,
-        refreshed: true,
-        branch,
-        pr_number: draft.apply_pr_number,
-        pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}`,
-        files,
-        commit_sha: commit.sha,
-        media_atomic: true,
-      });
+      return json(res, 200, { ok: true, refreshed: true, branch, pr_number: draft.apply_pr_number, pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}`, files, commit_sha: commit.sha, media_atomic: true, editorial_contexts: true });
     }
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
@@ -414,11 +415,12 @@ export default async function handler(req, res) {
         base: "main",
         draft: true,
         body: [
-          "Generated by PlayNice Control Center controlled apply v3.1.",
+          "Generated by PlayNice Control Center controlled apply v3.2.",
           "",
           `- New product: ${slug}`,
           `- Name: ${product.core.name}`,
           `- Files: ${files.join(", ")}`,
+          "- Editorial contexts: Do Not Wear + What To Wear included atomically",
           "- Product media: included in the same atomic preview commit",
           "- Safety: one atomic commit; draft PR only; Shop preview + visual parity verification required before merge",
         ].join("\n"),
@@ -427,26 +429,14 @@ export default async function handler(req, res) {
 
     await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, {
       method: "PATCH",
-      body: JSON.stringify({
-        apply_branch: branch,
-        apply_pr_number: pr.number,
-        apply_created_at: new Date().toISOString(),
-        apply_created_by: user.id,
-        preview_verified_at: null,
-        preview_verified_by: null,
-      }),
+      body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id, preview_verified_at: null, preview_verified_by: null }),
     });
     await supabaseFetch("/rest/v1/draft_audit_log", token, {
       method: "POST",
-      body: JSON.stringify({
-        product_slug: slug,
-        actor_id: user.id,
-        action: "new_product_branch_created",
-        details: { branch, pr_number: pr.number, version: "3.1", files, atomic_commit: true, media_atomic: true },
-      }),
+      body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "new_product_branch_created", details: { branch, pr_number: pr.number, version: "3.2", files, atomic_commit: true, media_atomic: true, editorial_contexts: true } }),
     });
 
-    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "3.1", files, atomic_commit: true, media_atomic: true });
+    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "3.2", files, atomic_commit: true, media_atomic: true, editorial_contexts: true });
   } catch (error) {
     return json(res, 500, { error: error?.message || "New product apply failed." });
   }

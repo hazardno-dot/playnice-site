@@ -1,6 +1,8 @@
 import { products } from "@shop/data/products/index.js";
 import { productCopy } from "@shop/data/products/productCopy.js";
 import { productWearContext } from "@shop/data/products/productWearContext.js";
+import { productDoNotWearContext } from "@shop/data/products/productDoNotWearContext.js";
+import { productWhatToWearContext } from "@shop/data/products/productWhatToWearContext.js";
 import discoveryProfiles from "@shop/data/products/discoveryProfiles.js";
 import noteMapSource from "@shop/TheNoteMap.jsx?raw";
 import { presentationLimit } from "./productPresentationContract.mjs";
@@ -105,6 +107,12 @@ export function validateProductDraft(live, draft) {
     if (max && value.length > max) issues.push(issue("error", "Presentation", `Wear · ${lang.toUpperCase()}`, `Wear context is ${value.length} characters; keep it at or below ${max} so product cards remain balanced.`));
   });
 
+  [["Do Not Wear", draft?.doNotWear || {}], ["What To Wear", draft?.whatToWear || {}]].forEach(([section, context]) => {
+    ["sr", "en"].forEach((lang) => {
+      if (empty(context?.[lang])) issues.push(issue("error", section, lang.toUpperCase(), `${section} context is required in both languages.`));
+    });
+  });
+
   const liveDiscovery = discoveryProfiles[live?.slug] || {};
   const discovery = draft?.discovery || {};
   const discoveryKeys = live ? Object.keys(liveDiscovery) : DISCOVERY_KEYS;
@@ -121,12 +129,18 @@ export function validateProductDraft(live, draft) {
   if (live) {
     const liveCopy = productCopy[live.name] || {};
     const liveWear = productWearContext[live.name] || {};
+    const liveDoNotWear = productDoNotWearContext[live.name] || {};
+    const liveWhatToWear = productWhatToWearContext[live.name] || {};
     const warnIfCleared = (section, field, before, after) => {
       if (!empty(before) && empty(after)) issues.push(issue("warning", section, field, "Existing live value would be cleared."));
     };
     [["Name", live.name, core.name], ["Short name", live.shortName, core.shortName], ["Category", live.category, core.category], ["Badge", live.badge, core.badge], ["Rating label", live.ratingLabel, core.ratingLabel], ["Season", live.season, core.season]].forEach(([field, before, after]) => warnIfCleared("Core", field, before, after));
     ["miniTag", "scentType", "card", "modal", "whyChoose"].forEach((field) => ["sr", "en"].forEach((lang) => warnIfCleared("Copy", `${field} · ${lang.toUpperCase()}`, liveCopy?.[field]?.[lang], copy?.[field]?.[lang])));
-    ["sr", "en"].forEach((lang) => warnIfCleared("Wear", lang.toUpperCase(), liveWear?.[lang], wear?.[lang]));
+    ["sr", "en"].forEach((lang) => {
+      warnIfCleared("Wear", lang.toUpperCase(), liveWear?.[lang], wear?.[lang]);
+      warnIfCleared("Do Not Wear", lang.toUpperCase(), liveDoNotWear?.[lang], draft?.doNotWear?.[lang]);
+      warnIfCleared("What To Wear", lang.toUpperCase(), liveWhatToWear?.[lang], draft?.whatToWear?.[lang]);
+    });
   }
 
   const errors = issues.filter((item) => item.level === "error");

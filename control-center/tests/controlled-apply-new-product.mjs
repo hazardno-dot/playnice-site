@@ -19,6 +19,8 @@ const payload={
   core:{name:"PlayNice Test Fragrance Eau de Parfum",shortName:"PN Test",category:"Niche",image:`/products/${slug}.png`,sizes:{"2ml":4,"5ml":9},badge:"PLAYNICE PICK",rating:8.4,ratingLabel:"Test Pick",season:"all",moods:"clean, signature, summer",recommendations:"afnan-9am, afnan-9pm-rebel, afnan-turathi-blue",inspiredBy:{name:"Original PlayNice creation",short:""},noteMap:{top:"bergamot, mandarin",heart:"lavender",base:"cedarwood, musk"}},
   copy:{miniTag:{sr:"Test / Čist",en:"Test / Clean"},card:{sr:"Kratak test opis.",en:"Short test copy."},modal:{sr:"Kratak test modal opis.",en:"Short test modal copy."},scentType:{sr:"Test aromatični",en:"Test aromatic"},dominantNotes:{sr:["bergamot","mandarina","lavanda","kedar"],en:["bergamot","mandarin","lavender","cedar"]},tags:{sr:["Svež","Čist","Test"],en:["Fresh","Clean","Test"]},whyChoose:{sr:"Test razlog.",en:"Test reason."}},
   wear:{sr:"Svaki dan.",en:"Every day."},
+  doNotWear:{sr:"Ne za ekstremnu vrućinu.",en:"Not for extreme heat."},
+  whatToWear:{sr:"Bela košulja i čiste patike.",en:"White shirt and clean sneakers."},
   discovery:{freshness:8,office:9,longevity:7},
   mediaStage:{
     branch:`cc-product-media-stage-${slug}-202609071900`,
