@@ -1,0 +1,69 @@
+@media (max-width: 640px) {
+  .mobile-product-page__visual-frame {
+    position: relative;
+    min-height: 350px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .mobile-product-page__visual-frame .mobile-product-page__image-button {
+    position: relative;
+    z-index: 1;
+    width: min(62%, 230px);
+    min-height: 286px;
+    height: 286px;
+    margin: 0 auto;
+    padding: 18px;
+    border: 0;
+    border-radius: 22px;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .mobile-product-page__visual-frame .mobile-product-page__image-button img {
+    width: min(88%, 250px);
+    max-height: 254px;
+  }
+
+  .mobile-product-page__visual-frame.is-note-map-open .mobile-product-page__image-button {
+    pointer-events: none;
+  }
+
+  .mobile-product-page__visual-frame.is-note-map-open .mobile-product-page__image-button img,
+  .mobile-product-page__visual-frame.is-note-map-open .mobile-product-page__monogram {
+    opacity: 0;
+    transform: scale(0.96);
+    filter: blur(2px) saturate(0.75) brightness(0.55);
+  }
+
+  .mobile-product-page__visual-frame .the-note-map {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .mobile-product-page__visual-frame .the-note-map__trigger {
+    pointer-events: none;
+  }
+
+  .mobile-product-page__visual-frame .the-note-map__panel {
+    pointer-events: none;
+  }
+
+  .mobile-product-page__visual-frame .the-note-map__levels {
+    padding: 16px;
+    margin: -16px;
+    border-radius: 20px;
+    pointer-events: auto;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .mobile-product-page__visual-frame .the-note-map__note {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+}
