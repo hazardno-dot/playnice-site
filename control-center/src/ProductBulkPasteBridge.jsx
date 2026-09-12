@@ -71,7 +71,19 @@ const alias = {
   wearsr: "wear_sr",
   wear_sr: "wear_sr",
   wearen: "wear_en",
-  wear_en: "wear_en"
+  wear_en: "wear_en",
+  donotwearsr: "do_not_wear_sr",
+  donotwear_sr: "do_not_wear_sr",
+  do_not_wear_sr: "do_not_wear_sr",
+  donotwearen: "do_not_wear_en",
+  donotwear_en: "do_not_wear_en",
+  do_not_wear_en: "do_not_wear_en",
+  whattowearsr: "what_to_wear_sr",
+  whattowear_sr: "what_to_wear_sr",
+  what_to_wear_sr: "what_to_wear_sr",
+  whattowearen: "what_to_wear_en",
+  whattowear_en: "what_to_wear_en",
+  what_to_wear_en: "what_to_wear_en"
 };
 
 const discoveryKeys = new Set(
@@ -284,16 +296,8 @@ function classifyActions(actions) {
     if (!current) return { ...action, changeType: "new" };
     if (current === incoming) return { ...action, changeType: "unchanged" };
 
-    // New-product drafts contain UI seed values that are placeholders, not authored data.
-    // Keep Fill empty only safe for existing products, but allow Bulk input to replace
-    // the known new-product template defaults.
-    if (isNewProduct && action.fieldKind === "discovery" && current === "0") {
-      return { ...action, changeType: "new" };
-    }
-    if (isNewProduct && action.fieldKey === "category" && current === "Arabian") {
-      return { ...action, changeType: "new" };
-    }
-
+    if (isNewProduct && action.fieldKind === "discovery" && current === "0") return { ...action, changeType: "new" };
+    if (isNewProduct && action.fieldKey === "category" && current === "Arabian") return { ...action, changeType: "new" };
     return { ...action, changeType: "changed" };
   });
 }
@@ -463,7 +467,7 @@ export default function ProductBulkPasteBridge() {
           value={source}
           onChange={(event) => { setSource(event.target.value); setMessage(""); }}
           spellCheck="false"
-          placeholder={"name: Brand Fragrance Eau De Parfum\nshortName: Fragrance\ncategory: Arabian\nimage: /products/brand-fragrance.webp\n5ml: 5\n10ml: 9\n20ml: 17\ntopNotes: bergamot, cardamom\nheartNotes: iris, fig\nbaseNotes: vanilla, leather\nminiTagSR: ...\nminiTagEN: ...\nwearSR: ...\nwearEN: ...\nfreshness: 3.2\nsweetness: 6.8\n..."}
+          placeholder={"name: Brand Fragrance Eau De Parfum\nshortName: Fragrance\ncategory: Arabian\nimage: /products/brand-fragrance.webp\n5ml: 5\n10ml: 9\n20ml: 17\ntopNotes: bergamot, cardamom\nheartNotes: iris, fig\nbaseNotes: vanilla, leather\nminiTagSR: ...\nminiTagEN: ...\nwearSR: ...\nwearEN: ...\ndoNotWearSR: ...\ndoNotWearEN: ...\nwhatToWearSR: ...\nwhatToWearEN: ...\nfreshness: 3.2\nsweetness: 6.8\n..."}
         />
         {hasInput ? <div className={`product-bulk-preflight ${validation.blockers.length ? "has-blockers" : "is-ready"}`}>
           <div className="product-bulk-preflight-title">
