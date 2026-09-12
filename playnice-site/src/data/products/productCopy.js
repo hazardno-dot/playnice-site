@@ -2971,8 +2971,8 @@ export const productCopy = {
 
   "Arabiyat Prestige Al Noor Eau De Parfum": {
     "miniTag": {
-      "en": "Spicy · Warm · Dark",
-      "sr": "Začinski · Topao · Taman"
+      "en": "🌶️ Spicy / Warm",
+      "sr": "🌶️ Začinski / Topao"
     },
     "card": {
       "en": "Cardamom, fig and iris over a leathery base. Warm and elegant.",
