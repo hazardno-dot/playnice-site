@@ -3,7 +3,7 @@ import { products } from "../../playnice-site/src/data/products/index.js";
 import { auditProductNotes } from "../src/noteAudit.mjs";
 import { auditNoteLabels, parseNoteLabels } from "../src/noteLabelAudit.mjs";
 
-const source = fs.readFileSync(new URL("../../playnice-site/src/TheNoteMap.jsx", import.meta.url), "utf8");
+const source = fs.readFileSync(new URL("../../playnice-site/src/TheNoteMapImpl.jsx", import.meta.url), "utf8");
 const structural = auditProductNotes(products);
 const parsed = parseNoteLabels(source);
 const labels = auditNoteLabels(structural.rows, source);
