@@ -5,6 +5,7 @@ const compact = (parts = []) => parts.map((value) => String(value || "").trim())
 const siteUrl = (path = "") => /^https?:\/\//.test(path) ? path : `${SITE_ORIGIN}${path.startsWith("/") ? path : `/${path}`}`;
 const mediaSrc = (item) => String(item?.url || item?.src || "").trim();
 const mediaFormat = (item) => String(item?.format || "").trim().toLowerCase();
+const productCore = (payload = {}) => payload?.core && typeof payload.core === "object" ? payload.core : payload;
 
 const CHANNEL_MEDIA_PRIORITIES = {
   instagram_feed: ["1:1", "square", "product", "product_image", "journal_cover", "hero_square", "4:3", "hero_mobile", "hero_desktop"],
@@ -32,7 +33,12 @@ export function selectSocialMedia(media = [], channel = "instagram_feed") {
 function payloadMedia(payload = {}, sourceType = "") {
   const media = [];
   const add = (src, format) => { if (String(src || "").trim()) media.push({ src: String(src).trim(), format }); };
-  if (sourceType === "product") add(payload.image, "product_image");
+  if (sourceType === "product") {
+    const core = productCore(payload);
+    add(core.socialSquareImage || payload.socialSquareImage, "1:1");
+    add(core.socialStoryImage || payload.socialStoryImage, "9:16");
+    add(core.image || payload.image, "product_image");
+  }
   if (sourceType === "hero") {
     add(payload.socialSquareImage || payload.squareImage, "1:1");
     add(payload.socialStoryImage || payload.storyImage, "9:16");
@@ -61,16 +67,17 @@ function channelMedia(event, channel) {
 
 function productDraft(event) {
   const payload = event.payload || {};
-  const name = payload.shortName || payload.name || event.source_id;
-  const mini = payload.copy?.miniTag?.sr || payload.miniTag || "Novo u PlayNice.";
-  const scent = payload.copy?.card?.sr || payload.copy?.scentType?.sr || payload.description || "";
-  const sizes = Object.entries(payload.sizes || {}).map(([size, price]) => `${size} · €${price}`).join("\n");
+  const core = productCore(payload);
+  const name = core.shortName || core.name || payload.shortName || payload.name || event.source_id;
+  const mini = payload.copy?.miniTag?.sr || core.miniTag || payload.miniTag || "Novo u PlayNice.";
+  const scent = payload.copy?.card?.sr || payload.copy?.scentType?.sr || core.description || payload.description || "";
+  const sizes = Object.entries(core.sizes || payload.sizes || {}).map(([size, price]) => `${size} · €${price}`).join("\n");
   const link = event.source_url ? siteUrl(event.source_url) : siteUrl(`/product/${event.source_id}`);
   const caption = compact([mini.toUpperCase(), name, scent, sizes, link, DEFAULT_TAGS.join(" ")]).join("\n\n");
   return {
     headline: name,
     instagram_feed: { caption, media: channelMedia(event, "instagram_feed") },
-    instagram_story: { caption: `${name}\n${mini}\n${link}`, media: channelMedia(event, "instagram_story") },
+    instagram_story: { caption: compact([name, mini, link]).join("\n"), media: channelMedia(event, "instagram_story") },
     facebook: { caption: compact([mini, name, scent, sizes, link]).join("\n\n"), media: channelMedia(event, "facebook") },
   };
 }
@@ -108,4 +115,4 @@ export function generateSocialDraft(event = {}) {
   throw new Error(`No social draft generator for ${event.source_type || "unknown source"}`);
 }
 
-export { SITE_ORIGIN };
+export { SITE_ORIGIN, productCore };
