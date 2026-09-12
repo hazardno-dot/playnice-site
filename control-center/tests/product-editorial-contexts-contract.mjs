@@ -9,19 +9,30 @@ const validation = read("control-center/src/draftValidation.js");
 const prepublish = read("control-center/src/prepublish.js");
 const apply = read("control-center/api/create-apply.js");
 const createNew = read("control-center/lib/create-new-product-engine.mjs");
+const catalog = read("playnice-site/src/data/products/index.js");
 const wear = read("playnice-site/src/data/products/productWearContext.js");
 
 const partCount = (prefix) => [1, 2, 3, 4]
   .map((part) => read(`playnice-site/src/data/products/${prefix}.part${part}.js`))
   .reduce((total, source) => total + (source.match(/^  \{\s*$/gm)?.length || 0), 0);
 
-const wearCount = wear.match(/^  "(?:\\.|[^"\\])*"\s*:\s*\{/gm)?.length || 0;
+const wearNames = [...wear.matchAll(/^\s{2}("(?:\\.|[^"\\])*")\s*:\s*\{/gm)]
+  .map((match) => JSON.parse(match[1]));
+const catalogNames = [...catalog.matchAll(/\bslug\s*:\s*["'][^"']+["'][\s\S]*?\bname\s*:\s*(["'])(.*?)\1/g)]
+  .map((match) => match[2]);
+const missingWear = catalogNames.filter((name) => !wearNames.includes(name));
+const unexpectedWear = wearNames.filter((name) => !catalogNames.includes(name));
+const wearCount = wearNames.length;
+const catalogCount = catalogNames.length;
 const doNotWearCount = partCount("productDoNotWearContext");
 const whatToWearCount = partCount("productWhatToWearContext");
 
-if (!wearCount) throw new Error("Wear Context product order could not be resolved.");
-if (doNotWearCount !== wearCount) throw new Error(`Do Not Wear coverage drift: ${doNotWearCount}/${wearCount}.`);
-if (whatToWearCount !== wearCount) throw new Error(`What To Wear coverage drift: ${whatToWearCount}/${wearCount}.`);
+if (!catalogCount) throw new Error("Catalog product order could not be resolved.");
+if (wearCount !== catalogCount) {
+  throw new Error(`Wear Context coverage drift: ${wearCount}/${catalogCount}. Missing: ${missingWear.join(" | ") || "none"}. Unexpected: ${unexpectedWear.join(" | ") || "none"}.`);
+}
+if (doNotWearCount !== catalogCount) throw new Error(`Do Not Wear coverage drift: ${doNotWearCount}/${catalogCount}.`);
+if (whatToWearCount !== catalogCount) throw new Error(`What To Wear coverage drift: ${whatToWearCount}/${catalogCount}.`);
 
 for (const token of [
   "productDoNotWearContext",
@@ -65,7 +76,7 @@ for (const token of [
   if (!createNew.includes(token)) throw new Error(`New-product editorial contract missing: ${token}`);
 }
 
-console.log(`PASS  editorial context coverage matches Wear Context order (${wearCount} products)`);
+console.log(`PASS  editorial context coverage matches catalog order (${catalogCount} products)`);
 console.log("PASS  Product editor stores Do Not Wear and What To Wear in the native draft payload");
 console.log("PASS  validation and prepublish snapshots protect both editorial contexts");
 console.log("PASS  Controlled Apply uses editorial index + payload drift guards");
