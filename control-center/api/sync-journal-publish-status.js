@@ -1,4 +1,4 @@
-import { findJournalArticleBlock, normalizeJournalArticle, stableJson } from "./journal-apply-engine.mjs";
+import { findJournalArticleBlock, normalizeJournalArticle, renderJournalArticle } from "./journal-apply-engine.mjs";
 import { journalPublishedEvent } from "../src/socialEventProducer.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
@@ -129,9 +129,9 @@ export default async function handler(req, res) {
     const located = findJournalArticleBlock(source, articleId);
     if (!located?.block) return json(res, 409, { error: `POST-MERGE SAFETY BLOCK: Journal article #${articleId} is missing from main.` });
 
-    const live = normalizeJournalArticle(located.article || located.value || located.payload || {});
     const approved = normalizeJournalArticle(draft.approved_payload);
-    if (stableJson(live) !== stableJson(approved)) {
+    const expectedBlock = renderJournalArticle(approved);
+    if (located.block !== expectedBlock) {
       return json(res, 409, { error: `POST-MERGE SAFETY BLOCK: Journal article #${articleId} does not match the approved snapshot.` });
     }
 
