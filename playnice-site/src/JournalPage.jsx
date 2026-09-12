@@ -1,50 +1,51 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./JournalPage.css";
+import "./JournalProgressiveReveal.css";
+import { getJournalArticleSlug, getJournalText } from "./lib/journalSlug";
 
-const getJournalText = (field, lang = "sr") => {
-  if (!field) return "";
-
-  if (typeof field === "string") return field;
-
-  if (typeof field === "object") {
-    return field[lang] || field.en || field.sr || "";
-  }
-
-  return "";
-};
-
-const getJournalArticleSlug = (article) => {
-  if (!article) return "";
-
-  const title =
-    getJournalText(article.title, "en") ||
-    getJournalText(article.title, "sr") ||
-    `article-${article.id}`;
-
-  const normalizedTitle = String(title)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-  return `${article.id}-${normalizedTitle}`;
-};
+const MOBILE_ARCHIVE_BATCH = 5;
 
 function JournalPage({
   lang = "sr",
   articles = [],
   onOpenArticle,
 }) {
+  const [isMobileArchive, setIsMobileArchive] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(max-width: 640px)").matches
+      : false
+  );
+  const [visibleArchiveCount, setVisibleArchiveCount] = useState(
+    MOBILE_ARCHIVE_BATCH
+  );
 
-    useEffect(() => {
-        document.body.classList.add("journal-active");
+  useEffect(() => {
+    document.body.classList.add("journal-active");
 
-        return () => {
-            document.body.classList.remove("journal-active");
-        };
-        }, []);
+    return () => {
+      document.body.classList.remove("journal-active");
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+
+    const mediaQuery = window.matchMedia("(max-width: 640px)");
+    const syncMobileState = (event) => {
+      setIsMobileArchive(event.matches);
+    };
+
+    setIsMobileArchive(mediaQuery.matches);
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", syncMobileState);
+      return () => mediaQuery.removeEventListener("change", syncMobileState);
+    }
+
+    mediaQuery.addListener(syncMobileState);
+    return () => mediaQuery.removeListener(syncMobileState);
+  }, []);
+
   const sortedArticles = useMemo(() => {
     if (!Array.isArray(articles)) return [];
 
@@ -56,6 +57,17 @@ function JournalPage({
   const featuredArticle = sortedArticles[0] || null;
   const archiveArticles = sortedArticles.slice(1);
 
+  useEffect(() => {
+    setVisibleArchiveCount(MOBILE_ARCHIVE_BATCH);
+  }, [archiveArticles.length]);
+
+  const visibleArchiveArticles = isMobileArchive
+    ? archiveArticles.slice(0, visibleArchiveCount)
+    : archiveArticles;
+
+  const hasMoreArchiveStories =
+    isMobileArchive && visibleArchiveCount < archiveArticles.length;
+
   const copy =
     lang === "en"
       ? {
@@ -66,6 +78,7 @@ function JournalPage({
           latest: "Latest Story",
           archive: "From the Archive",
           read: "Read story",
+          showMore: "Show more stories",
           empty: "No stories yet.",
         }
       : {
@@ -76,6 +89,7 @@ function JournalPage({
           latest: "Najnovija priča",
           archive: "Iz arhive",
           read: "Pročitaj priču",
+          showMore: "Prikaži još priča",
           empty: "Još nema priča.",
         };
 
@@ -92,6 +106,12 @@ function JournalPage({
 
     event.preventDefault();
     handleArticleOpen(article);
+  };
+
+  const handleShowMoreStories = () => {
+    setVisibleArchiveCount((count) =>
+      Math.min(count + MOBILE_ARCHIVE_BATCH, archiveArticles.length)
+    );
   };
 
   if (!featuredArticle) {
@@ -195,7 +215,7 @@ function JournalPage({
           </div>
 
           <div className="journal-page-grid">
-            {archiveArticles.map((article, index) => (
+            {visibleArchiveArticles.map((article, index) => (
               <article
                 key={article.id}
                 className={`journal-page-card ${
@@ -254,13 +274,23 @@ function JournalPage({
               </article>
             ))}
           </div>
+
+          {hasMoreArchiveStories && (
+            <div className="journal-page-load-more">
+              <button type="button" onClick={handleShowMoreStories}>
+                <span>{copy.showMore}</span>
+                <span aria-hidden="true">↓</span>
+              </button>
+            </div>
+          )}
         </section>
       )}
-        <footer className="journal-page-editorial-footer">
-          <span>PlayNice Editorial</span>
-          <i aria-hidden="true" />
-          <strong>Remember. PlayNice.</strong>
-        </footer>
+
+      <footer className="journal-page-editorial-footer">
+        <span>PlayNice Editorial</span>
+        <i aria-hidden="true" />
+        <strong>Remember. PlayNice.</strong>
+      </footer>
     </main>
   );
 }

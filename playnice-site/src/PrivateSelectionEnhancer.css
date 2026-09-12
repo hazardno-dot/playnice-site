@@ -183,6 +183,10 @@
     padding-top: 14px;
   }
 
+  .private-selection-personal-head > span {
+    font-weight: 500;
+  }
+
   .private-selection-recommendation {
     grid-template-columns: 40px minmax(0, 1fr);
     gap: 9px;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
 import {
   validateInlineFields,
@@ -40,16 +41,37 @@ function collectIssues(root) {
   return issues;
 }
 
+function ensureValidationSlot() {
+  const mainStage = document.querySelector(".main-stage");
+  const applySlot = mainStage?.querySelector("#controlled-apply-slot");
+  if (!mainStage || !applySlot) return null;
+
+  let slot = mainStage.querySelector("#inline-validation-slot");
+  if (!slot) {
+    slot = document.createElement("div");
+    slot.id = "inline-validation-slot";
+    slot.className = "inline-validation-slot";
+    applySlot.insertAdjacentElement("afterend", slot);
+  } else if (slot.previousElementSibling !== applySlot) {
+    applySlot.insertAdjacentElement("afterend", slot);
+  }
+  return slot;
+}
+
 export default function InlineValidationBridge() {
   const [issues, setIssues] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [slot, setSlot] = useState(null);
 
   useEffect(() => {
     let timer;
+    let raf = 0;
     const mainStage = document.querySelector(".main-stage") || document.body;
 
     const run = () => {
       window.clearTimeout(timer);
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setSlot(ensureValidationSlot()));
       timer = window.setTimeout(() => {
         const editor = document.querySelector(".edit-mode");
         if (!editor) {
@@ -73,13 +95,14 @@ export default function InlineValidationBridge() {
       document.removeEventListener("input", run, true);
       document.removeEventListener("change", run, true);
       window.clearTimeout(timer);
+      cancelAnimationFrame(raf);
     };
   }, []);
 
-  if (!visible) return null;
+  if (!visible || !slot) return null;
   const errors = issues.filter((issue) => issue.level === "error");
 
-  return <div className={`inline-validation-floating ${errors.length ? "blocked" : "ready"}`}>
+  return createPortal(<div className={`inline-validation-floating ${errors.length ? "blocked" : "ready"}`}>
     <div className="inline-validation-floating-head">
       <span>LIVE VALIDATION</span>
       <strong>{errors.length ? `${errors.length} FIELDS REMAINING` : "VISIBLE CHECKS PASS"}</strong>
@@ -89,5 +112,5 @@ export default function InlineValidationBridge() {
       {errors.length > 2 ? <small>+ {errors.length - 2} more</small> : null}
     </div> : <p>All visible editor checks pass.</p>}
     <small>Draft Manager performs the authoritative validation before review. Save Draft remains safe and unpublished.</small>
-  </div>;
+  </div>, slot);
 }

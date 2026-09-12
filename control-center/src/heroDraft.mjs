@@ -35,9 +35,14 @@ export function normalizeHeroDraftPayload(payload = {}, baseline = {}) {
 }
 
 export function mergeHeroDrafts(baselineSlides = [], draftRows = {}) {
+  const explicitPinnedDraft = Object.values(draftRows).find((row) => row?.payload?.pinnedFirst === true);
+  const explicitPinnedKey = explicitPinnedDraft?.hero_key || explicitPinnedDraft?.payload?.heroKey || "";
+
   return baselineSlides.map((slide) => {
     const row = draftRows[slide.heroKey];
-    return row?.payload ? normalizeHeroDraftPayload(row.payload, slide) : cloneHeroSlide(slide);
+    const merged = row?.payload ? normalizeHeroDraftPayload(row.payload, slide) : cloneHeroSlide(slide);
+    if (explicitPinnedKey && merged.heroKey !== explicitPinnedKey) merged.pinnedFirst = false;
+    return merged;
   });
 }
 

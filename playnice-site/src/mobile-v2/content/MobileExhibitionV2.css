@@ -1,0 +1,57 @@
+/* =========================================
+   PLAYNICE MOBILE EXHIBITION V2
+   Mobile-only vertical rhythm polish.
+========================================= */
+
+@media (max-width: 800px) {
+  .exhibition-page {
+    padding-top: 88px;
+    padding-right: 16px;
+    padding-left: 16px;
+    padding-bottom: 0;
+  }
+
+  .exhibition-eyebrow {
+    margin-bottom: 18px;
+  }
+
+  .exhibition-manifesto {
+    margin-top: 24px;
+  }
+
+  .exhibition-index {
+    margin-top: 46px;
+    padding-top: 13px;
+  }
+
+  .exhibition-wall {
+    margin-top: 22px;
+    row-gap: 12px;
+  }
+
+  .exhibition-outro {
+    min-height: 220px;
+    margin-top: 42px;
+    gap: 16px;
+    padding: 30px 18px 52px;
+  }
+}
+
+@media (max-width: 390px) {
+  .exhibition-page {
+    padding-top: 82px;
+  }
+
+  .exhibition-index {
+    margin-top: 42px;
+  }
+
+  .exhibition-wall {
+    margin-top: 20px;
+  }
+
+  .exhibition-outro {
+    margin-top: 36px;
+    padding-bottom: 46px;
+  }
+}

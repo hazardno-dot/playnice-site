@@ -1,0 +1,92 @@
+/* =========================================
+   PLAYNICE MOBILE TYPOGRAPHY V2
+   Final mobile-only weight audit.
+   Keep hierarchy clear without heavy small text.
+========================================= */
+
+@media (max-width: 640px) {
+  /* Discovery Sets */
+  .discovery-showcase-type {
+    font-weight: 600;
+  }
+
+  .discovery-showcase-card p {
+    font-weight: 500;
+  }
+
+  .discovery-showcase-button,
+  .discovery-bar .gold-button,
+  .discovery-add-button {
+    font-weight: 600;
+  }
+
+  /* Community — small data labels should stay crisp, not heavy. */
+  .community-most-wanted-top small {
+    font-weight: 500;
+  }
+
+  .community-most-wanted-name {
+    font-weight: 600;
+  }
+
+  .community-most-wanted-item strong {
+    font-weight: 650;
+  }
+
+  .community-most-wanted-trend {
+    font-weight: 600;
+  }
+
+  .community-request-most-wanted-badge,
+  .community-request-heating-badge,
+  .community-request-new-badge {
+    font-weight: 600;
+  }
+
+  /* Journal — preserve editorial serif headlines; soften utility/meta only. */
+  .journal-page-eyebrow,
+  .journal-page-section-label,
+  .journal-page-featured-meta,
+  .journal-page-card-meta,
+  .journal-page-read-link,
+  .journal-page-card-link {
+    font-weight: 500;
+  }
+
+  /* Footer */
+  .footer-benefit strong {
+    font-weight: 500;
+  }
+
+  .footer-benefit span,
+  .footer-bottom p {
+    font-weight: 400;
+  }
+
+  /* Sticky CTA */
+  .sticky-cta-copy strong {
+    font-weight: 500;
+  }
+
+  .sticky-cta-copy small {
+    font-weight: 400;
+  }
+}
+
+@media (max-width: 800px) {
+  /* Exhibition keeps its intentionally bold hero; only small labels soften. */
+  .exhibition-eyebrow,
+  .exhibition-index,
+  .exhibition-outro-kicker {
+    font-weight: 500;
+  }
+
+  .exhibition-period,
+  .exhibition-tile-meta strong {
+    font-weight: 550;
+  }
+
+  .exhibition-viewer-footer strong {
+    font-weight: 500;
+  }
+}

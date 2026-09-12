@@ -1,0 +1,21 @@
+/* Mobile manifesto drawer alignment fix */
+@media (max-width: 640px) {
+  .story-drawer.manifesto-drawer {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: calc(100vw - 20px) !important;
+    max-width: none !important;
+    max-height: calc(100dvh - 20px) !important;
+    margin: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    transform: translate(-50%, -48.5%) !important;
+  }
+
+  .story-drawer.manifesto-drawer.open {
+    transform: translate(-50%, -50%) !important;
+  }
+}

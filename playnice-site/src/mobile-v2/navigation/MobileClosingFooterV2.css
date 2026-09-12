@@ -1,0 +1,210 @@
+/* =========================================
+   PLAYNICE MOBILE CLOSING + FOOTER V2
+   Mobile-only finishing layer. Desktop remains untouched.
+========================================= */
+
+@media (max-width: 640px) {
+  /* Closing: one memorable brand line before the footer.
+     Keep this intentionally non-interactive — the page has already converted. */
+  .closing-section {
+    width: calc(100% - 32px);
+    margin-top: 28px;
+    margin-bottom: 26px;
+  }
+
+  .closing-shell {
+    position: relative;
+    padding: 0 20px;
+    text-align: center;
+    overflow: visible;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .closing-shell::before {
+    display: none;
+  }
+
+  .closing-kicker {
+    margin: 0 0 10px;
+    color: var(--gold);
+    font-size: 9.5px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    opacity: 0.86;
+  }
+
+  .closing-title {
+    max-width: 330px;
+    margin: 0 auto;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(30px, 8.3vw, 36px);
+    line-height: 0.98;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+
+  /* On mobile Final Impression is a sign-off, not another sales block. */
+  .closing-text,
+  .closing-copy,
+  .closing-shell > p:not(.closing-kicker):not(.section-kicker),
+  .closing-actions,
+  .closing-cta-row {
+    display: none;
+  }
+
+  /* =========================================
+     Footer V2 — mobile information hierarchy
+     Keep only high-value, end-of-page information visible.
+  ========================================= */
+  .site-footer {
+    width: calc(100% - 32px);
+    margin-bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+
+  /* Trust summary stays visible, but compact. */
+  .footer-benefits {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .footer-benefit {
+    min-height: 54px;
+    padding: 7px 8px;
+    justify-content: center;
+  }
+
+  .footer-benefit i {
+    font-size: 13px;
+  }
+
+  .footer-benefit strong {
+    font-size: 11.5px;
+    line-height: 1.12;
+  }
+
+  .footer-benefit span {
+    font-size: 9.7px;
+    line-height: 1.18;
+  }
+
+  /* One simple vertical footer flow instead of desktop columns. */
+  .site-footer-inner {
+    display: block;
+    padding-top: 17px;
+    padding-bottom: 10px;
+  }
+
+  .footer-brand {
+    margin: 0;
+    text-align: center;
+  }
+
+  .footer-logo,
+  .footer-tagline {
+    display: block;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center !important;
+  }
+
+  .footer-logo {
+    font-size: 30px;
+    line-height: 1;
+  }
+
+  .footer-tagline {
+    margin-top: 4px;
+  }
+
+  .footer-brand-text {
+    max-width: 310px;
+    margin: 9px auto 0;
+    font-size: 12.3px;
+    line-height: 1.42;
+    text-align: center;
+    display: block;
+    overflow: visible;
+  }
+
+  .social-links {
+    margin-top: 9px;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .social-links a {
+    width: 33px;
+    height: 33px;
+  }
+
+  /* Primary navigation already lives in the mobile menu.
+     Repeating eight links here adds scroll without adding value. */
+  .site-footer-inner > .footer-column {
+    display: none;
+  }
+
+  /* Policy detail is available through Help/Checkout.
+     Do not make it a full content card on mobile. */
+  #delivery-returns {
+    display: none;
+  }
+
+  .footer-bottom {
+    margin-top: 10px;
+    padding-top: 9px;
+    padding-bottom: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid rgba(220, 181, 107, 0.08);
+  }
+
+  .footer-bottom p {
+    margin: 0;
+    font-size: 10.2px;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  /* Contact lives in the mobile menu, policy lives in Help/Checkout.
+     End the mobile footer cleanly at the copyright line. */
+  .footer-bottom-links {
+    display: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .closing-section,
+  .site-footer {
+    width: calc(100% - 28px);
+  }
+
+  .closing-section {
+    margin-top: 26px;
+    margin-bottom: 24px;
+  }
+
+  .closing-shell {
+    padding: 0 18px;
+  }
+
+  .closing-title {
+    max-width: 300px;
+    font-size: clamp(29px, 8.4vw, 33px);
+  }
+
+  .footer-benefit {
+    min-height: 52px;
+  }
+
+  .footer-brand-text {
+    max-width: 290px;
+  }
+}

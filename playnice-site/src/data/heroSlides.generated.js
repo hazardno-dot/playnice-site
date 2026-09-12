@@ -4,17 +4,27 @@
 
 export const BASE_HERO_SLIDES = [
   {
+    "id": 2,
+    "kind": "imageOnly",
+    "image": "/hero/slide-2.jpg",
+    "desktopImage": "/hero/slide-2.jpg",
+    "mobileImage": "/hero/mobile/slide-2-mobile.jpg",
+    "alt": "PlayNice – luxury fragrance experience and trust",
+    "actionPrimary": "manifesto",
+    "manifestoType": "confidence"
+  },
+  {
     "id": 12,
     "kind": "imageOnly",
     "image": "/hero/slide-12.jpg",
     "desktopImage": "/hero/slide-12.jpg",
     "mobileImage": "/hero/mobile/slide-12-mobile.jpg",
-    "alt": "Thomas Kosmala No. 7 Le Sel de la Terre",
+    "alt": "PlayNice Thomas Kosmala trio in a sunlit coastal setting.",
     "actionPrimary": "collection",
     "actionCollection": [
       "thomas-kosmala-no-1-tonic-blanc",
-      "thomas-kosmala-no-4-apres-lamour",
-      "thomas-kosmala-no7-le-sel-de-la-terre"
+      "thomas-kosmala-no7-le-sel-de-la-terre",
+      "thomas-kosmala-no-8-tonic-vert"
     ],
     "collectionTitle": "Thomas Kosmala, three times."
   },
@@ -24,34 +34,13 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-9.jpg",
     "desktopImage": "/hero/slide-9.jpg",
     "mobileImage": "/hero/mobile/slide-9-mobile.jpg",
-    "alt": "Optional: special action, drop ili limited stock",
+    "alt": "PlayNice limited stock fragrance campaign hero banner",
     "actionPrimary": "collection",
     "actionCollection": [
       "swiss-arabian-musk-01",
       "gisada-luxury-collection-royal"
     ],
     "collectionTitle": "SOFT. BOLD. LUXURY."
-  },
-  {
-    "id": 6,
-    "kind": "imageOnly",
-    "image": "/hero/slide-6.jpg",
-    "desktopImage": "/hero/slide-6.jpg",
-    "mobileImage": "/hero/mobile/slide-6-mobile.jpg",
-    "alt": "JASMINE IN THE SUN · Now at PlayNice",
-    "actionPrimary": "product",
-    "actionProductSlug": "my-geisha-jasmine-in-the-sun",
-    "preferredSize": "10ml"
-  },
-  {
-    "id": 2,
-    "kind": "imageOnly",
-    "image": "/hero/slide-2.jpg",
-    "desktopImage": "/hero/slide-2.jpg",
-    "mobileImage": "/hero/mobile/slide-2-mobile.jpg",
-    "alt": "PlayNice – luxury fragrance experience and trust",
-    "actionPrimary": "manifesto",
-    "manifestoType": "confidence"
   },
   {
     "id": 3,
@@ -70,7 +59,7 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-4.jpg",
     "desktopImage": "/hero/slide-4.jpg",
     "mobileImage": "/hero/mobile/slide-4-mobile.jpg",
-    "alt": "PlayNice Private Selection – trusted premium decants",
+    "alt": "PlayNice Premium Fragrance House – gentleman with fragrance",
     "actionPrimary": "manifesto",
     "manifestoType": "playnice-mission"
   },
@@ -95,9 +84,9 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-1-fix.jpg",
     "desktopImage": "/hero/slide-1-fix.jpg",
     "mobileImage": "/hero/mobile/slide-1-mobile.jpg",
-    "alt": "Yves Saint Laurent Y Iced Cologne",
+    "alt": "Thomas Kosmala No. 4 Après l'Amour Eau de Parfum – magnetic, modern fragrance at PlayNice.",
     "actionPrimary": "product",
-    "actionProductSlug": "ysl-y-iced-cologne",
+    "actionProductSlug": "thomas-kosmala-no-4-apres-lamour",
     "preferredSize": "10ml"
   },
   {
@@ -117,7 +106,7 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-8.jpg",
     "desktopImage": "/hero/slide-8.jpg",
     "mobileImage": "/hero/mobile/slide-8-mobile.jpg",
-    "alt": "Optional: special action, drop ili limited stock",
+    "alt": "PlayNice premium packaging with fragrance gifts and branded accessories",
     "actionPrimary": "manifesto",
     "manifestoType": "details"
   },
@@ -142,16 +131,9 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-11.jpg",
     "desktopImage": "/hero/slide-11.jpg",
     "mobileImage": "/hero/mobile/slide-11-mobile.jpg",
-    "alt": "Od sada u PlayNice kolekciji – 6 ikoničnih mirisa",
-    "actionPrimary": "collection",
-    "actionCollection": [
-      "bvlgari-man-in-black-edp",
-      "carolina-herrera-bad-boy-cobalt-edp",
-      "prada-luna-rossa-ocean-edt",
-      "mancera-aoud-lemon-mint",
-      "prada-paradigme-edp",
-      "ysl-myslf-edp"
-    ],
-    "collectionTitle": "Od sada u PlayNice kolekciji"
+    "alt": "Thomas Kosmala No. 8 Tonic Vert Eau de Parfum at PlayNice",
+    "actionPrimary": "product",
+    "actionProductSlug": "thomas-kosmala-no-8-tonic-vert",
+    "preferredSize": "5ml"
   }
 ];

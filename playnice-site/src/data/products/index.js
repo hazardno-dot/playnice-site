@@ -2580,7 +2580,7 @@ export const products = [
   shortName: "Jil Sander Sun",
   category: "Designer",
   image: "/products/jil-sander-sun-edt.png",
-  sizes: { "5ml": 4, "10ml": 7, "20ml": 13.5 },
+  sizes: { "2ml": 2.5, "5ml": 6, "10ml": 11 },
   badge: "BESTSELLER",
   rating: 8.2,
   ratingLabel: "Timeless Favorite",
@@ -2756,6 +2756,111 @@ export const products = [
   },
   {
     id: 97,
+    addedAt: "2026-09-07T20:55:04.718Z",
+    slug: "christian-dior-sauvage-edp",
+    name: "Christian Dior Sauvage Eau de Parfum",
+    modalName: "Christian Dior Sauvage EDP",
+    shortName: "Sauvage EDP",
+    category: "Designer",
+    image: "/products/christian-dior-sauvage-edp.png",
+    sizes: {"2ml":6.5,"5ml":15,"10ml":27},
+    badge: "ICONIC",
+    rating: 8.8,
+    ratingLabel: "Iconic Pick",
+    season: "all",
+    moods: ["clean","signature","date"],
+    recommendations: ["bleu-de-chanel-edp","ysl-myslf-edp","prada-luna-rossa-ocean-edt"],
+    inspiredBy: {
+      name: "Original Christian Dior creation",
+      short: "Sauvage DNA"
+    },
+    noteMap: {
+      top: ["bergamot"],
+      heart: ["sichuan-pepper","lavender","star-anise"],
+      base: ["vanilla","ambroxan"]
+    }
+  },
+  {
+    id: 98,
+    addedAt: "2026-09-07T23:22:38.855Z",
+    slug: "nishane-hacivat-x",
+    name: "Nishane Hacivat X Extrait de Parfum",
+    modalName: "Nishane Hacivat X Extrait de Parfum",
+    shortName: "Hacivat X",
+    category: "Niche",
+    image: "/products/nishane-hacivat-x.png",
+    sizes: {"2ml":14.5,"5ml":33,"10ml":59},
+    badge: "LUXURY PICK",
+    rating: 9.2,
+    ratingLabel: "Premium Pick",
+    season: "all",
+    moods: ["clean","rich","signature"],
+    recommendations: ["creed-aventus-cologne","mancera-cedrat-boise","bois-imperial-essential-parfums"],
+    inspiredBy: {
+      name: "Original Nishane creation",
+      short: "Hacivat X DNA"
+    },
+    noteMap: {
+      top: ["bergamot","pineapple","pink-pepper"],
+      heart: ["lime","jasmine","orange-blossom"],
+      base: ["patchouli","cedarwood","vetiver"]
+    }
+  },
+  {
+    id: 99,
+    addedAt: "2026-09-08T14:04:32.365Z",
+    slug: "yves-saint-laurent-la-nuit-de-lhomme-edt",
+    name: "Yves Saint Laurent La Nuit de L'Homme Eau de Toilette",
+    modalName: "Yves Saint Laurent La Nuit de L'Homme EDT",
+    shortName: "La Nuit de L'Homme",
+    category: "Designer",
+    image: "/products/yves-saint-laurent-la-nuit-de-lhomme-edt.png",
+    sizes: {"2ml":4.5,"5ml":10,"10ml":18},
+    badge: "DATE NIGHT",
+    rating: 8.8,
+    ratingLabel: "Iconic Pick",
+    season: "all",
+    moods: ["date","rich","soft"],
+    recommendations: ["dolce-gabbana-the-one-for-men-edt","boss-the-scent-le-parfum","givenchy-gentleman-reserve-privee"],
+    inspiredBy: {
+      name: "Original Yves Saint Laurent creation",
+      short: "Cardamom Aromatic Woods DNA"
+    },
+    noteMap: {
+      top: ["cardamom","bergamot"],
+      heart: ["lavender","black-pepper","cedarwood"],
+      base: ["tonka-bean","vetiver"]
+    }
+  },
+  {
+    id: 100,
+    addedAt: "2026-09-08T15:04:31.996Z",
+    slug: "tom-ford-ombre-leather-parfum",
+    name: "Tom Ford Ombré Leather Parfum",
+    modalName: "Tom Ford Ombré Leather Parfum",
+    shortName: "Ombré Leather Parfum",
+    milestoneBadge: 100,
+    category: "Designer",
+    image: "/products/tom-ford-ombre-leather-parfum.png",
+    sizes: {"2ml":11,"5ml":26,"10ml":47},
+    badge: "LEATHER ICON",
+    rating: 9.2,
+    ratingLabel: "Iconic Pick",
+    season: "all",
+    moods: ["date","rich","signature"],
+    recommendations: ["givenchy-gentleman-reserve-privee","boss-the-scent-le-parfum","bvlgari-man-in-black-edp"],
+    inspiredBy: {
+      name: "Original Tom Ford creation",
+      short: "Leather Floral Woods DNA"
+    },
+    noteMap: {
+      top: ["violet-leaf","cedarwood"],
+      heart: ["jasmine-sambac","orris"],
+      base: ["leather","woody-notes","tobacco"]
+    }
+  },
+  {
+    id: 101,
     addedAt: "2026-09-04T15:48:21.529Z",
     slug: "arabiyat-prestige-al-noor",
     name: "Arabiyat Prestige Al Noor Eau De Parfum",

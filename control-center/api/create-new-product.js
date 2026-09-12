@@ -1,4 +1,4 @@
-module.exports = async function handler(req, res) {
-  const mod = await import("../lib/create-new-product-engine.mjs");
-  return mod.default(req, res);
-};
+import handler from "../lib/create-new-product-engine.mjs";
+
+export const config = { maxDuration: 60 };
+export default handler;

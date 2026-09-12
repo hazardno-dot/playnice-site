@@ -91,13 +91,16 @@ function normalizePayload(payload, slug) {
       },
     },
     wear: payload?.wear || {},
+    doNotWear: payload?.doNotWear || {},
+    whatToWear: payload?.whatToWear || {},
     discovery: Object.fromEntries(Object.entries(payload?.discovery || {}).map(([key, value]) => [key, Number(value)])),
+    mediaStage: payload?.mediaStage || null,
   };
 }
 
 function validateNewProduct(product) {
   const errors = [];
-  const { core, copy, wear, discovery } = product;
+  const { core, copy, wear, doNotWear, whatToWear, discovery } = product;
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(product.slug)) errors.push("Slug must be lowercase kebab-case.");
   for (const [label, value] of [["Name", core.name], ["Short name", core.shortName], ["Category", core.category], ["Image", core.image], ["Rating label", core.ratingLabel], ["Season", core.season]]) {
     if (!value) errors.push(`${label} is required.`);
@@ -136,8 +139,34 @@ function validateNewProduct(product) {
     const value = String(wear?.[lang] || "").trim();
     if (!value) errors.push(`wear.${lang} is required.`);
     if (value.length > 90) errors.push(`wear.${lang} exceeds product-card presentation limit (${value.length}/90).`);
+    if (!String(doNotWear?.[lang] || "").trim()) errors.push(`doNotWear.${lang} is required.`);
+    if (!String(whatToWear?.[lang] || "").trim()) errors.push(`whatToWear.${lang} is required.`);
   }
   if (!Object.keys(discovery).length || Object.values(discovery).some((value) => !Number.isFinite(value) || value < 0 || value > 10)) errors.push("Discovery profile must contain numeric 0–10 values.");
+  return errors;
+}
+
+function expectedMediaPaths(slug) {
+  return [
+    `playnice-site/public/products/${slug}.png`,
+    `playnice-site/public/products/thumbs/${slug}.webp`,
+  ];
+}
+
+function validateMediaStage(product) {
+  const errors = [];
+  const mediaStage = product?.mediaStage;
+  const expected = expectedMediaPaths(product?.slug || "");
+  if (!mediaStage?.branch || !mediaStage?.baseSha) {
+    errors.push("Product media must be uploaded before creating a new-product preview.");
+    return errors;
+  }
+  if (!Array.isArray(mediaStage.files) || mediaStage.files.length !== expected.length || expected.some((path) => !mediaStage.files.includes(path))) {
+    errors.push("Product media staging metadata does not contain the locked Shop and Just In files.");
+  }
+  if (product?.core?.image !== `/products/${product.slug}.png`) {
+    errors.push(`Image path must be /products/${product.slug}.png for a staged new product.`);
+  }
   return errors;
 }
 
@@ -161,9 +190,10 @@ function compactConcentrationName(name) {
 
 function renderProductObject(product, id, addedAt = new Date().toISOString()) {
   const core = product.core;
-  const modalName = compactConcentrationName(core.name);
-  const modalLine = modalName && modalName !== core.name ? `\n    modalName: ${js(modalName)},` : "";
-  const cardName = core.name.length > 58 ? modalName : "";
+  const compactName = compactConcentrationName(core.name);
+  const modalName = compactName;
+  const modalLine = `\n    modalName: ${js(modalName)},`;
+  const cardName = core.name.length > 58 ? compactName : "";
   const cardLine = cardName && cardName !== core.name ? `\n    cardName: ${js(cardName)},` : "";
   const inspiredBy = core.inspiredBy.name || core.inspiredBy.short
     ? `,\n    inspiredBy: {\n      name: ${js(core.inspiredBy.name)},\n      short: ${js(core.inspiredBy.short)}\n    }`
@@ -191,6 +221,10 @@ function renderCopy(product) {
 
 function renderWear(product) {
   return `  ${js(product.core.name)}: ${JSON.stringify({ sr: String(product.wear.sr), en: String(product.wear.en) }, null, 2).replace(/^/gm, "  ").trimStart()}`;
+}
+
+function renderEditorialContext(context) {
+  return JSON.stringify({ sr: String(context?.sr || ""), en: String(context?.en || "") }, null, 2).replace(/^/gm, "  ").trimStart();
 }
 
 function renderDiscovery(product) {
@@ -228,15 +262,62 @@ function insertObjectEntry(source, rendered, label, exportName) {
   return `${before}${appendSeparator(before)}\n\n${rendered}\n${after}`;
 }
 
+function insertArrayEntry(source, rendered, label) {
+  const end = source.lastIndexOf("\n];");
+  if (end < 0) throw new Error(`Could not locate ${label} array ending.`);
+  const before = source.slice(0, end).replace(/\s+$/, "");
+  return `${before}${appendSeparator(before)}\n  ${rendered}\n${source.slice(end)}`;
+}
+
+async function buildDataTreeEntries(product) {
+  const specs = [
+    ["playnice-site/src/data/products/index.js", (source) => insertProduct(source, product)],
+    ["playnice-site/src/data/products/productCopy.js", (source) => insertObjectEntry(source, renderCopy(product), "Product Copy", "productCopy")],
+    ["playnice-site/src/data/products/productWearContext.js", (source) => insertObjectEntry(source, renderWear(product), "Wear Context", "productWearContext")],
+    ["playnice-site/src/data/products/productDoNotWearContext.part4.js", (source) => insertArrayEntry(source, renderEditorialContext(product.doNotWear), "Do Not Wear")],
+    ["playnice-site/src/data/products/productWhatToWearContext.part4.js", (source) => insertArrayEntry(source, renderEditorialContext(product.whatToWear), "What To Wear")],
+    ["playnice-site/src/data/products/discoveryProfiles.js", (source) => insertObjectEntry(source, renderDiscovery(product), "Discovery Profiles", "discoveryProfiles")],
+  ];
+  const files = [];
+  const treeEntries = [];
+  for (const [filePath, transform] of specs) {
+    const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
+    const source = Buffer.from(file.content, "base64").toString("utf8");
+    const next = transform(source);
+    const blob = await github(`/repos/${OWNER}/${REPO_NAME}/git/blobs`, {
+      method: "POST",
+      body: JSON.stringify({ content: next, encoding: "utf-8" }),
+    });
+    treeEntries.push({ path: filePath, mode: "100644", type: "blob", sha: blob.sha });
+    files.push(filePath);
+  }
+  return { files, treeEntries };
+}
+
+async function buildMediaTreeEntries(product) {
+  const files = expectedMediaPaths(product.slug);
+  const treeEntries = [];
+  for (const filePath of files) {
+    const source = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=${encodeURIComponent(product.mediaStage.branch)}`);
+    if (!source?.sha) throw new Error(`Staged Product media is missing: ${filePath}`);
+    treeEntries.push({ path: filePath, mode: "100644", type: "blob", sha: source.sha });
+  }
+  return { files, treeEntries };
+}
+
 export const __test = {
   normalizePayload,
   validateNewProduct,
+  validateMediaStage,
+  expectedMediaPaths,
   nextProductId,
   renderProductObject,
   insertProduct,
   insertObjectEntry,
+  insertArrayEntry,
   renderCopy,
   renderWear,
+  renderEditorialContext,
   renderDiscovery,
   findExportObjectEnd,
   appendSeparator,
@@ -268,37 +349,50 @@ export default async function handler(req, res) {
     if (draft.review_status !== "approved" || !draft.prepared_at || draft.baseline_snapshot?.kind !== "new_product") return json(res, 409, { error: "New product draft must be APPROVED and prepared as new_product first." });
     if (!draft.approved_payload) return json(res, 409, { error: "Approved snapshot is missing. Review and approve the new product draft again." });
     if (stableJson(draft.payload) !== stableJson(draft.approved_payload)) return json(res, 409, { error: "Approved payload no longer matches the current new product draft. Review and approve again." });
-    if (draft.apply_branch && draft.apply_pr_number) return json(res, 200, { ok: true, existing: true, branch: draft.apply_branch, pr_number: draft.apply_pr_number, pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}` });
 
     const product = normalizePayload(draft.approved_payload, slug);
-    const errors = validateNewProduct(product);
+    const errors = [...validateNewProduct(product), ...validateMediaStage(product)];
     if (errors.length) return json(res, 409, { error: "New product validation failed.", errors });
+
+    const dataTree = await buildDataTreeEntries(product);
+    const mediaTree = await buildMediaTreeEntries(product);
+    const files = [...dataTree.files, ...mediaTree.files];
+    const treeEntries = [...dataTree.treeEntries, ...mediaTree.treeEntries];
+
+    if (draft.apply_branch && draft.apply_pr_number) {
+      const branch = draft.apply_branch;
+      const branchRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/${encodeURIComponent(branch)}`);
+      const branchSha = branchRef.object.sha;
+      const branchCommit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits/${branchSha}`);
+      const nextTree = await github(`/repos/${OWNER}/${REPO_NAME}/git/trees`, {
+        method: "POST",
+        body: JSON.stringify({ base_tree: branchCommit.tree.sha, tree: treeEntries }),
+      });
+      const commit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits`, {
+        method: "POST",
+        body: JSON.stringify({ message: `Control Center refresh preview: ${slug}`, tree: nextTree.sha, parents: [branchSha] }),
+      });
+      await github(`/repos/${OWNER}/${REPO_NAME}/git/refs/heads/${encodeURIComponent(branch)}`, {
+        method: "PATCH",
+        body: JSON.stringify({ sha: commit.sha, force: false }),
+      });
+      const refreshedAt = new Date().toISOString();
+      await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, {
+        method: "PATCH",
+        body: JSON.stringify({ apply_created_at: refreshedAt, preview_verified_at: null, preview_verified_by: null }),
+      });
+      await supabaseFetch("/rest/v1/draft_audit_log", token, {
+        method: "POST",
+        body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "new_product_preview_refreshed", details: { branch, pr_number: draft.apply_pr_number, files, commit_sha: commit.sha, media_atomic: true, editorial_contexts: true } }),
+      });
+      return json(res, 200, { ok: true, refreshed: true, branch, pr_number: draft.apply_pr_number, pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}`, files, commit_sha: commit.sha, media_atomic: true, editorial_contexts: true });
+    }
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
     const baseSha = mainRef.object.sha;
     const baseCommit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits/${baseSha}`);
     const stamp = new Date().toISOString().replace(/[-:TZ.]/g, "").slice(0, 12);
     const branch = `cc-create-${slug}-${stamp}`;
-    const specs = [
-      ["playnice-site/src/data/products/index.js", (source) => insertProduct(source, product)],
-      ["playnice-site/src/data/products/productCopy.js", (source) => insertObjectEntry(source, renderCopy(product), "Product Copy", "productCopy")],
-      ["playnice-site/src/data/products/productWearContext.js", (source) => insertObjectEntry(source, renderWear(product), "Wear Context", "productWearContext")],
-      ["playnice-site/src/data/products/discoveryProfiles.js", (source) => insertObjectEntry(source, renderDiscovery(product), "Discovery Profiles", "discoveryProfiles")],
-    ];
-
-    const files = [];
-    const treeEntries = [];
-    for (const [filePath, transform] of specs) {
-      const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
-      const source = Buffer.from(file.content, "base64").toString("utf8");
-      const next = transform(source);
-      const blob = await github(`/repos/${OWNER}/${REPO_NAME}/git/blobs`, {
-        method: "POST",
-        body: JSON.stringify({ content: next, encoding: "utf-8" }),
-      });
-      treeEntries.push({ path: filePath, mode: "100644", type: "blob", sha: blob.sha });
-      files.push(filePath);
-    }
 
     const nextTree = await github(`/repos/${OWNER}/${REPO_NAME}/git/trees`, {
       method: "POST",
@@ -321,11 +415,13 @@ export default async function handler(req, res) {
         base: "main",
         draft: true,
         body: [
-          "Generated by PlayNice Control Center controlled apply v3.0.",
+          "Generated by PlayNice Control Center controlled apply v3.2.",
           "",
           `- New product: ${slug}`,
           `- Name: ${product.core.name}`,
           `- Files: ${files.join(", ")}`,
+          "- Editorial contexts: Do Not Wear + What To Wear included atomically",
+          "- Product media: included in the same atomic preview commit",
           "- Safety: one atomic commit; draft PR only; Shop preview + visual parity verification required before merge",
         ].join("\n"),
       }),
@@ -333,26 +429,14 @@ export default async function handler(req, res) {
 
     await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, {
       method: "PATCH",
-      body: JSON.stringify({
-        apply_branch: branch,
-        apply_pr_number: pr.number,
-        apply_created_at: new Date().toISOString(),
-        apply_created_by: user.id,
-        preview_verified_at: null,
-        preview_verified_by: null,
-      }),
+      body: JSON.stringify({ apply_branch: branch, apply_pr_number: pr.number, apply_created_at: new Date().toISOString(), apply_created_by: user.id, preview_verified_at: null, preview_verified_by: null }),
     });
     await supabaseFetch("/rest/v1/draft_audit_log", token, {
       method: "POST",
-      body: JSON.stringify({
-        product_slug: slug,
-        actor_id: user.id,
-        action: "new_product_branch_created",
-        details: { branch, pr_number: pr.number, version: "3.0", files, atomic_commit: true },
-      }),
+      body: JSON.stringify({ product_slug: slug, actor_id: user.id, action: "new_product_branch_created", details: { branch, pr_number: pr.number, version: "3.2", files, atomic_commit: true, media_atomic: true, editorial_contexts: true } }),
     });
 
-    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "3.0", files, atomic_commit: true });
+    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, version: "3.2", files, atomic_commit: true, media_atomic: true, editorial_contexts: true });
   } catch (error) {
     return json(res, 500, { error: error?.message || "New product apply failed." });
   }

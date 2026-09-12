@@ -13,6 +13,7 @@ on:
       - "control-center/api/create-hero-apply.js"
       - "control-center/api/finalize-hero-apply.js"
       - "control-center/api/create-journal-apply.js"
+      - "control-center/api/create-journal-media-apply.js"
       - "control-center/api/journal-apply-engine.mjs"
       - "control-center/api/create-note-apply.js"
       - "control-center/api/note-apply-engine.mjs"
@@ -26,6 +27,7 @@ on:
       - "control-center/src/draftValidation.js"
       - "control-center/src/ControlledApplyManager.jsx"
       - "control-center/src/controlled-apply.css"
+      - "control-center/src/imageOptimizer.mjs"
       - "control-center/src/journalAudit.mjs"
       - "control-center/src/journalDraft.mjs"
       - "control-center/src/JournalManager.jsx"
@@ -37,6 +39,7 @@ on:
       - "control-center/src/noteDraft.mjs"
       - "control-center/src/NotesManager.jsx"
       - "control-center/src/NoteApplyManager.jsx"
+      - "control-center/src/NoteMediaUploadBridge.jsx"
       - "control-center/src/notes-manager.css"
       - "control-center/src/note-apply.css"
       - "control-center/src/AnalyticsManager.jsx"
@@ -108,10 +111,9 @@ jobs:
           node control-center/tests/notes-label-audit.mjs
           node control-center/tests/note-draft-workflow.mjs
           node control-center/tests/note-controlled-apply.mjs
+          node control-center/tests/image-optimizer-notes-contract.mjs
           node control-center/tests/analytics-manager-contract.mjs
           node control-center/tests/site-health-contract.mjs
           node control-center/tests/site-health-incidents.mjs
           node control-center/tests/site-health-overview-contract.mjs
           node control-center/tests/site-health-freshness.mjs
-
-# v2.31 Journal schema contract included in final regression suite

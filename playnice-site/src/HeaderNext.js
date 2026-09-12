@@ -115,7 +115,7 @@ function HeaderNext({
             close: "Zatvori meni",
             cart: "Korpa",
             wishlist: "Private Selection",
-            language: "Promijeni jezik"
+            language: "Promeni jezik"
           }
         : {
             home: "Home",

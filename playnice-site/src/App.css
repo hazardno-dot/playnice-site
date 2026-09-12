@@ -9018,6 +9018,128 @@ main {
 }
 
 /* =========================================
+   productMilestoneMedal
+========================================= */
+
+.productMilestoneMedal {
+  position: absolute;
+  top: 68px;
+  right: 18px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(circle at 35% 30%,
+      #ffe49a 0%,
+      #e7bd52 48%,
+      #a26f16 100%);
+
+  border: 1px solid rgba(255, 224, 140, 0.9);
+
+  box-shadow:
+    0 0 0 2px rgba(10, 10, 10, 0.55),
+    0 8px 18px rgba(0, 0, 0, 0.35);
+
+  color: #16120a;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+
+  z-index: 3;
+  pointer-events: none;
+}
+
+
+/* medal ribbon */
+.productMilestoneMedal::before {
+  content: "";
+  position: absolute;
+
+  top: -15px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 20px;
+  height: 20px;
+
+  background:
+    linear-gradient(90deg,
+      #c9302c 0 33%,
+      #f2eadf 33% 66%,
+      #1f5d9b 66% 100%);
+
+  clip-path:
+    polygon(0 0,
+      42% 0,
+      50% 38%,
+      58% 0,
+      100% 0,
+      70% 100%,
+      30% 100%);
+
+  border: 0;
+  box-shadow: none;
+
+  z-index: 0;
+}
+
+
+/* inner medal ring */
+.productMilestoneMedal::after {
+  content: "";
+  position: absolute;
+
+  inset: 5px;
+
+  border-radius: 999px;
+  border: 1px dashed rgba(45, 32, 10, 0.35);
+
+  z-index: 0;
+}
+
+
+/* number */
+.productMilestoneMedal>span {
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .productMilestoneMedal {
+    top: 60px;
+    right: 12px;
+
+    width: 30px;
+    height: 30px;
+
+    font-size: 9px;
+  }
+
+  .productMilestoneMedal::before {
+    top: -13px;
+
+    width: 18px;
+    height: 17px;
+  }
+
+  .productMilestoneMedal::after {
+    inset: 3px;
+  }
+}
+
+/* =========================================
    SIZE BUTTONS
 ========================================= */
 
@@ -15298,10 +15420,11 @@ body.is-scrolling .back-to-top:active {
     inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
-/* Pause announcement marquee on hover/focus */
-.header-system .announcement-bar-system:hover .announcement-track,
-.header-system .announcement-bar-system:focus-within .announcement-track {
-  animation-play-state: paused;
+/* Pause announcement marquee on intentional desktop hover only */
+@media (hover: hover) and (pointer: fine) {
+  .header-system .announcement-bar-system:hover .announcement-track {
+    animation-play-state: paused;
+  }
 }
 
 .header-system .announcement-bar-system::before,
@@ -15441,6 +15564,10 @@ body.scrolled .header-system .announcement-bar-system {
 
   border: 0;
   outline: 0;
+
+  min-height: var(--announcement-height);
+    padding-inline: 8px;
+
   margin: 0;
   padding: 0;
 
@@ -15901,13 +16028,17 @@ body.scrolled .header-system .announcement-bar-system {
     gap: 22px;
     padding: 0 10px;
 
-    animation-duration: 19s;
+    animation-duration: 23s;
   }
 
   .header-system .announcement-text,
   .header-system .announcement-action {
     font-size: 8.5px;
     letter-spacing: 0.06em;
+  }
+
+  .header-system .announcement-action {
+    padding-inline: 12px;
   }
 
   .header-system .announcement-icon {
@@ -16122,7 +16253,7 @@ body.scrolled .header-system .announcement-bar-system {
     gap: 18px;
     padding: 0 9px;
 
-    animation-duration: 17s;
+    animation-duration: 24s;
   }
 
   .header-system .announcement-text,

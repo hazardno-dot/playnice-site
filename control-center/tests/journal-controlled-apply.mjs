@@ -35,6 +35,13 @@ assert.ok(rendered.includes("\\`"), "backticks must be escaped in template liter
 assert.ok(rendered.includes("\\${must-not-run}"), "template interpolation must be escaped");
 console.log("PASS  Journal renderer escapes template-literal hazards");
 
+const multiline = normalizeJournalArticle(article);
+multiline.content = { ...multiline.content, en: "Line one\nLine two" };
+const multilineRendered = renderJournalArticle(multiline);
+assert.ok(multilineRendered.includes("`Line one\nLine two`"), "content newlines must be preserved exactly");
+assert.ok(!multilineRendered.includes("Line one\n      Line two"), "renderer must not inject indentation into Journal content");
+console.log("PASS  Journal renderer preserves multiline content whitespace exactly");
+
 assert.equal(stableJson(normalizeJournalArticle(article)), stableJson(normalizeJournalArticle(article)), "stable comparison must be deterministic");
 assert.deepEqual(fs.readFileSync(journalPath), beforeDisk, "regression must not modify live Journal data on disk");
 console.log("Production untouched: yes (in-memory Journal apply regression only)");

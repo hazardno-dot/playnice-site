@@ -2774,6 +2774,201 @@ export const productCopy = {
     }
   },
 
+  "Christian Dior Sauvage Eau de Parfum": {
+    "miniTag": {
+      "en": "🌶️ Fresh / Spicy",
+      "sr": "🌶️ Svež / Začinski"},
+    "card": {
+      "en": "Bergamot, spice and warm vanilla in a modern signature.",
+      "sr": "Bergamot, začini i topla vanila u modernom potpisu."
+    },
+    "modal": {
+      "en": "Fresh bergamot and aromatic spice move into lavender, warm vanilla and ambroxan, leaving a bold and distinctive trail.",
+      "sr": "Svež bergamot i aromatični začini prelaze u lavandu, toplu vanilu i ambroksan, ostavljajući snažan i prepoznatljiv trag."
+    },
+    "scentType": {
+      "en": "Aromatic amber citrus fragrance",
+      "sr": "Aromatično-ambarni citrusni miris"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Bergamot",
+        "Lavanda",
+        "Vanila",
+        "Ambroksan"
+      ],
+      "en": [
+        "Bergamot",
+        "Lavender",
+        "Vanilla",
+        "Ambroxan"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Svež",
+        "Začinski",
+        "Muževan"
+      ],
+      "en": [
+        "Fresh",
+        "Spicy",
+        "Masculine"
+      ]
+    },
+    "whyChoose": {
+      "en": "If you want a bold, recognizable and highly versatile fragrance.",
+      "sr": "Ako želiš snažan, prepoznatljiv i veoma svestran parfem."
+    }
+  },
+
+  "Nishane Hacivat X Extrait de Parfum": {
+    "miniTag": {
+      "en": "🍍 Citrus / Woody",
+      "sr": "🍍 Citrusni / Drvenast"
+    },
+    "card": {
+      "en": "Pineapple, bergamot and vetiver in a clean chypre signature.",
+      "sr": "Ananas, bergamot i vetiver u čistom chypre potpisu."
+    },
+    "modal": {
+      "en": "Juicy pineapple and bergamot open with pink pepper, while lime and orange blossom lead into a dry, elegant base of cedar, patchouli and vetiver.",
+      "sr": "Sočan ananas i bergamot otvaraju miris uz ružičasti biber, dok limeta i cvet narandže vode ka suvoj, elegantnoj bazi kedra, pačulija i vetivera."
+    },
+    "scentType": {
+      "en": "Citrus chypre woody extrait",
+      "sr": "Citrusni chypre drvenasti extrait"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Ananas",
+        "Bergamot",
+        "Vetiver",
+        "Kedar"
+      ],
+      "en": [
+        "Pineapple",
+        "Bergamot",
+        "Vetiver",
+        "Cedar"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Citrusni",
+        "Drvenasti",
+        "Elegantni"
+      ],
+      "en": [
+        "Citrusy",
+        "Woody",
+        "Elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For a distinctive, clean niche scent with strong presence and excellent versatility.",
+      "sr": "Za upečatljiv, čist niche miris sa ozbiljnim prisustvom i odličnom svestranošću."
+    }
+  },
+
+  "Yves Saint Laurent La Nuit de L'Homme Eau de Toilette": {
+    "miniTag": {
+      "en": "🌶️ Spicy / Woody",
+      "sr": "🌶️ Začinski / Drvenast"
+    },
+    "card": {
+      "en": "Cardamom, lavender and cedar in a warm, elegant evening scent.",
+      "sr": "Kardamom, lavanda i kedar u toplom večernjem mirisu."
+    },
+    "modal": {
+      "en": "Cardamom and bergamot open the scent with lavender, black pepper and cedar. Tonka bean and vetiver create a warm, smooth finish made for elegant evenings.",
+      "sr": "Kardamom i bergamot otvaraju miris, uz lavandu, crni biber i kedar. Tonka i vetiver daju toplu, glatku završnicu za elegantne večernje prilike."
+    },
+    "scentType": {
+      "en": "Spicy aromatic woody",
+      "sr": "Začinski aromatični drvenasti"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Kardamom",
+        "Lavanda",
+        "Kedar",
+        "Tonka"
+      ],
+      "en": [
+        "Cardamom",
+        "Lavender",
+        "Cedarwood",
+        "Tonka Bean"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Začinski",
+        "Aromatičan",
+        "Drvenast"
+      ],
+      "en": [
+        "Spicy",
+        "Aromatic",
+        "Woody"
+      ]
+    },
+    "whyChoose": {
+      "en": "For dates and evenings when you want a warm, elegant and quietly seductive scent.",
+      "sr": "Za dejt i veče kada želiš topao, elegantan i nenametljivo zavodljiv miris."
+    }
+  },
+
+  "Tom Ford Ombré Leather Parfum": {
+    "miniTag": {
+      "en": "🖤 Leather / Floral",
+      "sr": "🖤 Kožni / Cvetni"
+    },
+    "card": {
+      "en": "Leather, violet and iris in a dark, elegant scent.",
+      "sr": "Koža, ljubičica i iris u tamnom elegantnom mirisu."
+    },
+    "modal": {
+      "en": "Violet leaf and cedar open green and dry. Jasmine sambac and orris soften the leather, while tobacco and woody notes build a deep, elegant trail.",
+      "sr": "List ljubičice i kedar otvaraju miris zeleno i suvo. Sambak jasmin i iris omekšavaju kožu, dok duvan i drvene note grade dubok, elegantan trag."
+    },
+    "scentType": {
+      "en": "Leather floral woody",
+      "sr": "Kožni cvetni drvenasti"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Koža",
+        "List ljubičice",
+        "Iris",
+        "Kedar"
+      ],
+      "en": [
+        "Leather",
+        "Violet Leaf",
+        "Orris",
+        "Cedarwood"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Kožni",
+        "Drvenast",
+        "Elegantan"
+      ],
+      "en": [
+        "Leather",
+        "Woody",
+        "Elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For a distinctive leather scent that balances dark elegance with a clean floral contrast.",
+      "sr": "Za upečatljiv kožni parfem koji spaja tamnu eleganciju sa čistim cvetnim kontrastom."
+    }
+  },
+
   "Arabiyat Prestige Al Noor Eau De Parfum": {
     "miniTag": {
       "en": "Spicy · Warm · Dark",
@@ -2792,30 +2987,12 @@ export const productCopy = {
       "sr": "Začinski drvenasti"
     },
     "dominantNotes": {
-      "sr": [
-        "Kardamom",
-        "smokva",
-        "iris",
-        "koža"
-      ],
-      "en": [
-        "Cardamom",
-        "fig",
-        "iris",
-        "leather"
-      ]
+      "sr": ["Kardamom", "smokva", "iris", "koža"],
+      "en": ["Cardamom", "fig", "iris", "leather"]
     },
     "tags": {
-      "sr": [
-        "Začinski",
-        "topao",
-        "elegantan"
-      ],
-      "en": [
-        "Spicy",
-        "warm",
-        "elegant"
-      ]
+      "sr": ["Začinski", "topao", "elegantan"],
+      "en": ["Spicy", "warm", "elegant"]
     },
     "whyChoose": {
       "en": "For fans of darker spicy scents with fig, leather and refined sweetness.",

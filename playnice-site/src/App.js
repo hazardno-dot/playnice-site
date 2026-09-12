@@ -1,19 +1,22 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
 import "./App.css";
 import HeaderNext from "./HeaderNext";
-import Exhibition from "./Exhibition";
-import JournalPage, { getJournalArticleSlug } from "./JournalPage";
-import JournalArticlePage from "./JournalArticlePage";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
 import { productCopy, fallbackCopy } from "./data/products/productCopy";
 import { productWearContext } from "./data/products/productWearContext";
-import { discoveryProfiles } from "./data/products/discoveryProfiles";
 import { translations } from "./data/translations";
 import { BASE_HERO_SLIDES } from "./data/heroSlides.generated";
 import TheNoteMap from "./TheNoteMap";
-import { discoverFragrances } from "./lib/discoveryEngine";
+import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
+import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
+import MobileProductPage from "./mobile-v2/product-page/MobileProductPage";
+import { getJournalArticleSlug } from "./lib/journalSlug";
+
+const Exhibition = React.lazy(() => import("./Exhibition"));
+const JournalArticlePage = React.lazy(() => import("./JournalArticlePage"));
+const JournalPage = React.lazy(() => import("./JournalPage"));
 
 const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 
@@ -748,7 +751,6 @@ const getInitialShopState = () => {
       { name: "Club De Nuit Intense Overdose", votes: 12, lockedVotes: 12 },
       { name: "Carolina Herrera Bad Boy Cobalt Eau de Parfum", votes: 5, lockedVotes: 5 },
       { name: "Rayhaan Azul Eau de Parfum", votes: 3, lockedVotes: 3 },
-      { name: "Bois Impérial by Essential Parfums", votes: 1, lockedVotes: 1 },
     ];
 
     if (typeof window === "undefined") return fallback;
@@ -833,6 +835,11 @@ const getInitialShopState = () => {
   const [miniCartPreviewId, setMiniCartPreviewId] = useState(0);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [mobileModalPage, setMobileModalPage] = useState(0);
+  const [isMobileProductModalViewport, setIsMobileProductModalViewport] = useState(() =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(max-width: 640px)").matches
+  );
 
   const [discoveryQuery, setDiscoveryQuery] = useState("");
   const [discoveryResults, setDiscoveryResults] = useState([]);
@@ -985,6 +992,9 @@ const isNewRequest = (request) => {
   const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
   const productModalRef = useRef(null);
+  const mobileModalTouchRef = useRef({ startX: 0, startY: 0, tracking: false });
+  const productModalMediaRef = useRef(null);
+  const productModalContentRef = useRef(null);
   const productModalCloseButtonRef = useRef(null);
   const productModalTriggerRef = useRef(null);
   const checkoutAutoCloseTimeoutRef = useRef(null);
@@ -1491,8 +1501,11 @@ const selectedSortOption =
     FREE_SHIPPING_THRESHOLD - subtotal
   );
 
+  const isMobileProductPageActive =
+    isMobileProductModalViewport && Boolean(selectedProduct);
+
   const hasBlockingOverlay =
-  !!selectedProduct ||
+  (!isMobileProductPageActive && !!selectedProduct) ||
   cartOpen ||
   checkoutOpen ||
   storyOpen ||
@@ -1510,9 +1523,65 @@ const selectedSortOption =
 
   const scrollYRef = useRef(0);
 
+const handleMobileModalTouchStart = (event) => {
+  if (!isMobileProductModalViewport || !productModalVisible) return;
+
+  const touch = event.touches?.[0];
+  if (!touch) return;
+
+  mobileModalTouchRef.current = {
+    startX: touch.clientX,
+    startY: touch.clientY,
+    tracking: true,
+  };
+};
+
+const handleMobileModalTouchEnd = (event) => {
+  const gesture = mobileModalTouchRef.current;
+  if (!gesture.tracking || !isMobileProductModalViewport || !productModalVisible) return;
+
+  mobileModalTouchRef.current = { ...gesture, tracking: false };
+
+  const touch = event.changedTouches?.[0];
+  if (!touch) return;
+
+  const dx = touch.clientX - gesture.startX;
+  const dy = touch.clientY - gesture.startY;
+  const swipeThreshold = 54;
+
+  if (Math.abs(dx) < swipeThreshold || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+
+  if (dx < 0 && mobileModalPage === 0) setMobileModalPage(1);
+  if (dx > 0 && mobileModalPage === 1) setMobileModalPage(0);
+};
 /* =========================================
    EFFECTS
 ========================================= */
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 640px)");
+    const syncMobileModalViewport = () =>
+      setIsMobileProductModalViewport(media.matches);
+
+    syncMobileModalViewport();
+    media.addEventListener?.("change", syncMobileModalViewport);
+
+    return () => media.removeEventListener?.("change", syncMobileModalViewport);
+  }, []);
+
+  useEffect(() => {
+    if (productModalVisible) setMobileModalPage(0);
+  }, [productModalVisible, selectedProduct?.id]);
+
+  useEffect(() => {
+    if (!productModalVisible || !isMobileProductModalViewport) return;
+
+    if (mobileModalPage === 0) {
+      if (productModalMediaRef.current) productModalMediaRef.current.scrollTop = 0;
+      return;
+    }
+
+    if (productModalContentRef.current) productModalContentRef.current.scrollTop = 0;
+  }, [mobileModalPage, productModalVisible, isMobileProductModalViewport]);
   useLayoutEffect(() => {
   const body = document.body;
 
@@ -2570,8 +2639,11 @@ const EXISTING_COLLECTION_LOCKED_VOTES = {
   "Club De Nuit Intense Overdose": 12,
   "Carolina Herrera Bad Boy Cobalt Eau de Parfum": 5,
   "Rayhaan Azul Eau de Parfum": 3,
-  "Bois Impérial by Essential Parfums": 1,
 };
+
+const EXISTING_COLLECTION_EXCLUDED_SLUGS = new Set([
+  "bois-imperial-essential-parfums",
+]);
 
 const mergeExistingCollectionRequests = (requests = [], existingRequests = []) => {
   const merged = new Map();
@@ -2581,6 +2653,8 @@ const mergeExistingCollectionRequests = (requests = [], existingRequests = []) =
 
     const product = findExistingProductByRequest(item.name);
     if (!product) return;
+
+    if (EXISTING_COLLECTION_EXCLUDED_SLUGS.has(product.slug)) return;
 
     const key = String(product.id || product.slug || normalizeScentName(product.name));
     const current = merged.get(key) || {
@@ -3028,16 +3102,16 @@ const announcementItems = useMemo(() => {
     ? getJournalText(latestJournalArticle.title, lang)
     : "";
 
-  const yslIcedAnnouncementItem = {
-  id: "ysl-y-iced-cologne-announcement",
+  const kosmalaNo4AnnouncementItem = {
+  id: "thomas-kosmala-no4-announcement",
   text:
     lang === "sr"
-      ? "❄️ NOVO: YSL Y Iced Cologne 10ml + Mystery Designer Sample • Limited Stock"
-      : "❄️ NEW ARRIVAL: YSL Y Iced Cologne 10ml + Mystery Designer Sample • Limited Stock",
+      ? "✦ NOVO: Thomas Kosmala No. 4 Après l'Amour 10ml + Mystery Designer Sample • Limited Stock"
+      : "✦ NEW: Thomas Kosmala No. 4 Après l'Amour 10ml + Mystery Designer Sample • Limited Stock",
   icon: "→",
   tone: "new-shop",
   action: "openProduct",
-  slug: "ysl-y-iced-cologne",
+  slug: "thomas-kosmala-no-4-apres-lamour",
 };
 
   const shopNewAnnouncementItem = hasNewShopProducts
@@ -3082,7 +3156,7 @@ const announcementItems = useMemo(() => {
   };
 
   const withPriorityAnnouncements = (items) => [
-  yslIcedAnnouncementItem,
+  kosmalaNo4AnnouncementItem,
   ...(shopNewAnnouncementItem ? [shopNewAnnouncementItem] : []),
   ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
   foreverAnnouncementItem,
@@ -3336,6 +3410,14 @@ const routeForView = (nextView) => {
 
 const switchView = (nextView, options = {}) => {
   const { scrollTop = true } = options;
+
+  if (isMobileProductPageActive) {
+    setSelectedProduct(null);
+    setSelectedSize("");
+    setProductModalVisible(false);
+    setHasUserPickedSize(false);
+    setNoteMapOpen(false);
+  }
   const nextPath = routeForView(nextView);
   const isSameView = view === nextView;
   const hasRouteChanged = window.location.pathname !== nextPath;
@@ -3407,7 +3489,7 @@ const handleJournalLinkClick = (link) => {
 };
 
 const goHome = () => {
-  if (view === "home") {
+  if (view === "home" && !isMobileProductPageActive) {
     smoothScrollToTop();
     return;
   }
@@ -4406,7 +4488,7 @@ const openProductModal = (product, options = {}) => {
 
   const initialPrice = Number(product.sizes?.[initialSize] || 0);
 
-  if (changeView) {
+  if (changeView || isMobileModal) {
     setView("shop");
   }
 
@@ -4500,10 +4582,10 @@ const getDiscoveryAnalyticsParams = (discovery, source = "manual") => {
   };
 };
 
-const handleDiscoverySearch = (
-  queryOverride = discoveryQuery,
-  source = "manual"
-) => {
+    const handleDiscoverySearch = async (
+      queryOverride = discoveryQuery,
+      source = "manual"
+    ) => {
   const nextQuery = String(queryOverride || "").trim();
 
   if (!nextQuery) {
@@ -4512,6 +4594,14 @@ const handleDiscoverySearch = (
     setDiscoveryPage(1);
     return;
   }
+
+      const [
+        { discoverFragrances },
+        { discoveryProfiles },
+      ] = await Promise.all([
+        import("./lib/discoveryEngine"),
+        import("./data/products/discoveryProfiles"),
+      ]);
 
   const discovery = discoverFragrances({
     query: nextQuery,
@@ -5364,7 +5454,8 @@ const ProductCard = ({
   wishlist,
   toggleWishlist,
   sprayingWishlistId,
-  changeViewOnOpen = true
+  changeViewOnOpen = true,
+  mobileProfileLabel = ""
 }) => {
   const copy = getProductCopy(product, lang);
   const minPrice = getMinPrice(product);
@@ -5467,6 +5558,24 @@ const titleLengthClass =
     {tr.justIn}
   </span>
 )}
+
+      {product.milestoneBadge ? (
+        <span
+          className="productMilestoneMedal"
+          aria-label={
+            lang === "sr"
+              ? `${product.milestoneBadge}. parfem u kolekciji`
+              : `${product.milestoneBadge}th fragrance in the collection`
+          }
+          title={
+            lang === "sr"
+              ? `${product.milestoneBadge}. parfem u kolekciji`
+              : `${product.milestoneBadge}th fragrance in the collection`
+          }
+        >
+          <span>{product.milestoneBadge}</span>
+        </span>
+      ) : null}
     </button>
 
      <button
@@ -5512,7 +5621,20 @@ const titleLengthClass =
   <div className="product-meta premium-product-meta">
 
     <div className="product-meta-top">
-      <p className="product-category">{getCategoryLabel(product.category)}</p>
+      <p
+        className={`product-category ${
+          mobileProfileLabel ? "has-mobile-private-profile" : ""
+        }`}
+      >
+        <span className="product-category-default">
+          {getCategoryLabel(product.category)}
+        </span>
+        {mobileProfileLabel && (
+          <span className="product-category-mobile-profile">
+            {mobileProfileLabel}
+          </span>
+        )}
+      </p>
       <h3 className={`product-card-title ${titleLengthClass}`}>
         {displayedCardName}
       </h3>
@@ -5614,7 +5736,7 @@ const titleLengthClass =
             )
           )}
 
-            {product.slug === "ysl-y-iced-cologne" && size === "10ml" && (
+            {product.slug === "thomas-kosmala-no-4-apres-lamour" && size === "10ml" && (
               <span className="size-chip-recommended">
                 {lang === "sr" ? "+ UZORAK" : "+ FREE SAMPLE"}
               </span>
@@ -6036,15 +6158,72 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
       <main>
-        {view === "journal" && !journalPageArticle && (
-          <JournalPage
+        {isMobileProductPageActive && selectedProduct && (
+          <MobileProductPage
+            product={selectedProduct}
             lang={lang}
-            articles={journalArticles}
-            onOpenArticle={handleJournalArticleOpen}
+            selectedSize={selectedSize}
+            onSelectSize={(size) => {
+              setSelectedSize(size);
+              setHasUserPickedSize(true);
+            }}
+            onAddToCart={(product, size) => {
+              const basePrice = Number(product.sizes?.[size] || 0);
+              const discount = getProductDiscountForSize(product, size);
+              const finalPrice = discount
+                ? getDiscountedPrice(basePrice, discount.percent)
+                : basePrice;
+              const productForCart = discount
+                ? { ...product, sizes: { ...product.sizes, [size]: finalPrice } }
+                : product;
+
+              addToCart(productForCart, size, null, null, {
+                showToast: false,
+                showMiniPreview: true
+              });
+            }}
+            onBuyNow={(product, size) => {
+              const basePrice = Number(product.sizes?.[size] || 0);
+              const discount = getProductDiscountForSize(product, size);
+              const finalPrice = discount
+                ? getDiscountedPrice(basePrice, discount.percent)
+                : basePrice;
+              const productForCart = discount
+                ? { ...product, sizes: { ...product.sizes, [size]: finalPrice } }
+                : product;
+
+              addToCart(productForCart, size, null, null, {
+                showToast: false,
+                showMiniPreview: false
+              });
+              setMiniCartPreview(null);
+              openCheckout();
+            }}
+            isWishlisted={wishlist.includes(selectedProduct.id)}
+            onToggleWishlist={() => toggleWishlist(selectedProduct.id)}
+            onOpenProduct={(product) =>
+              openProductModal(product, { changeView: false })
+            }
+            onBackToShop={() => {
+              goToShop();
+              requestAnimationFrame(() => {
+                window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+              });
+            }}
           />
         )}
+        {!isMobileProductPageActive && view === "journal" && !journalPageArticle && (
+          <React.Suspense fallback={null}>
+            <JournalPage
+              lang={lang}
+              articles={journalArticles}
+              onOpenArticle={handleJournalArticleOpen}
+            />
+          </React.Suspense>
+        )}
 
-        {view === "journal" && journalPageArticle && (
+        {!isMobileProductPageActive && view === "journal" && journalPageArticle && (
+          <React.Suspense fallback={null}>
           <JournalArticlePage
             lang={lang}
             article={journalPageArticle}
@@ -6075,9 +6254,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               });
             }}
           />
+        </React.Suspense>
         )}
 
-        {view === "exhibition" && (
+        {!isMobileProductPageActive && view === "exhibition" && (
+          <React.Suspense fallback={null}>
           <Exhibition
             lang={lang}
             onSeeLive={() => {
@@ -6093,9 +6274,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             });
           }}
         />
+        </React.Suspense>
       )}
 
-      {view === "home" && (
+      {!isMobileProductPageActive && view === "home" && (
         <>
           <section
             className="hero hero-carousel"
@@ -6120,10 +6302,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       const nextHeroIndex =
         (currentHero + 1) % heroSlides.length;
 
+      const isMobileViewport =
+        typeof window !== "undefined" &&
+        window.matchMedia("(max-width: 768px)").matches;
+
       const shouldLoadHeroImage =
         isActive ||
-        index === previousHeroIndex ||
-        index === nextHeroIndex;
+        (!isMobileViewport &&
+          (index === previousHeroIndex ||
+            index === nextHeroIndex));
 
       const isActionable =
         slide.actionPrimary === "shop" ||
@@ -6845,8 +7032,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
     <h2 id="discovery-showcase-title">
       {lang === "sr"
-        ? "Izaberi svoj Discovery Set."
-        : "Choose your Discovery Set."}
+        ? "Izaberi svoj Discovery Set"
+        : "Choose your Discovery Set"}
     </h2>
 
     <p>
@@ -6865,8 +7052,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
         <h3>
           {lang === "sr"
-            ? "Napravi svoj signature set."
-            : "Build your signature set."}
+            ? "Napravi svoj signature set"
+            : "Build your signature set"}
+          <span className="discovery-showcase-title-period" aria-hidden="true">.</span>
         </h3>
 
         <p>
@@ -6893,8 +7081,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
         <h3>
           {lang === "sr"
-            ? "Otkrij svet Arabian parfema."
-            : "Discover Arabian perfumery."}
+            ? "Otkrij svet Arabian parfema"
+            : "Discover Arabian perfumery"}
+          <span className="discovery-showcase-title-period" aria-hidden="true">.</span>
         </h3>
 
         <p>
@@ -6934,6 +7123,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       toggleWishlist={toggleWishlist}
                       sprayingWishlistId={sprayingWishlistId}
                       changeViewOnOpen={false}
+                      mobileProfileLabel={
+                        (productCopy[product.name] || fallbackCopy)?.miniTag?.[lang] ||
+                        (productCopy[product.name] || fallbackCopy)?.miniTag?.en ||
+                        ""
+                      }
                     />
                   ))}
               </div>
@@ -7640,6 +7834,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               </div>
             </section>
 
+            <MobilePartnerSpotlight lang={lang} />
+
             <section
               className={`closing-section section-wrap ${
                 closingVisible ? "is-visible" : ""
@@ -7684,7 +7880,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           </>
         )}
 
-          {view === "shop" && (
+          {!isMobileProductPageActive && view === "shop" && (
   <>
     <section className="shop-section section-wrap">
   <div className="shop-top shop-collection-intro">
@@ -7695,6 +7891,23 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <p className="shop-subtext shop-collection-subtext">{tr.shopText}</p>
     </div>
   </div>
+
+  <MobileShopV2
+    lang={lang}
+    scentMood={scentMood}
+    onScentMoodChange={setScentMood}
+    searchTerm={searchTerm}
+    onSearchTermChange={setSearchTerm}
+    category={category}
+    categoryOptions={categoryOptions}
+    onCategoryChange={setCategory}
+    season={season}
+    seasonOptions={seasonOptions}
+    onSeasonChange={setSeason}
+    sortBy={sortBy}
+    sortOptions={sortOptions}
+    onSortChange={setSortBy}
+  />
 
   <div
     className="shop-value-anchor shop-value-anchor-compact"
@@ -8485,7 +8698,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       className={`backdrop ${
         cartOpen ||
         checkoutOpen ||
-        selectedProduct ||
+        (!isMobileProductPageActive && selectedProduct) ||
         storyOpen ||
         howItWorksOpen ||
         manifestoOpen ||
@@ -9211,7 +9424,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   )}
 </aside>
 
-{selectedProduct && (
+{selectedProduct && !isMobileProductPageActive && (
   <div
     className={`modal-overlay product-modal-layer ${
       productModalVisible ? "show" : ""
@@ -9223,7 +9436,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   >
     <div
       ref={productModalRef}
-      className={`product-modal ${productModalVisible ? "open panel-open" : ""}`}
+      className={`product-modal ${productModalVisible ? "open panel-open" : ""} ${
+        isMobileProductModalViewport && productModalVisible
+          ? `mobile-pager-enabled ${
+              mobileModalPage === 0 ? "mobile-pager-page-1" : "mobile-pager-page-2"
+            }`
+          : ""
+      }`}
+      style={
+        isMobileProductModalViewport && productModalVisible
+          ? { "--mobile-pager-page": String(mobileModalPage) }
+          : undefined
+      }
       role="dialog"
       aria-modal="true"
       aria-labelledby="product-modal-title"
@@ -9238,6 +9462,19 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       >
         ×
       </button>
+
+
+      <div className="mobile-modal-pager-chrome">
+        <button type="button" className="mobile-pager-edge mobile-pager-edge-left" aria-label={lang === "sr" ? "Prethodna strana" : "Previous page"} onClick={() => setMobileModalPage(0)}>‹</button>
+        <div className="mobile-pager-status" aria-live="polite">
+          <span className="mobile-pager-status-label">{mobileModalPage === 0 ? "01 / 02" : "02 / 02"}</span>
+          <span className="mobile-pager-dots" aria-hidden="true">
+            <i className={mobileModalPage === 0 ? "is-active" : ""} />
+            <i className={mobileModalPage === 1 ? "is-active" : ""} />
+          </span>
+        </div>
+        <button type="button" className="mobile-pager-edge mobile-pager-edge-right" aria-label={lang === "sr" ? "Sledeća strana" : "Next page"} onClick={() => setMobileModalPage(1)}>›</button>
+      </div>
 
       <div className="modal-header panel-anim panel-anim-1">
         <span className="modal-eyebrow">PRIVATE DETAIL</span>
@@ -9275,7 +9512,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           )}
 
           {selectedProduct.inspiredBy?.name && (
-            <div className="modal-inspired-mini panel-item-anim panel-item-2">
+            <div className={`modal-inspired-mini panel-item-anim panel-item-2 ${/^original\b/i.test(selectedProduct.inspiredBy.name) ? "modal-inspired-original" : ""}`}>
               <span className="modal-inspired-mini-label">
                 {lang === "sr" ? "INSPIRISANO" : "INSPIRED BY"}
               </span>
@@ -9294,8 +9531,70 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </div>
       </div>
 
-      <div className="modal-body">
-        <div className="modal-media panel-anim panel-anim-2">
+      <div
+        className="modal-body"
+        onTouchStart={handleMobileModalTouchStart}
+        onTouchEnd={handleMobileModalTouchEnd}
+      >
+        <div
+          ref={productModalMediaRef}
+          className="modal-media panel-anim panel-anim-2"
+        >
+          <div className="modal-header mobile-pager-page1-header" aria-hidden="true">
+            <span className="modal-eyebrow">PRIVATE DETAIL</span>
+            <h2>
+              {selectedProduct.modalName || selectedProduct.name}
+            </h2>
+
+            <div className="modal-header-meta">
+              {selectedProduct.rating ? (
+                <div className="modal-rating panel-item-anim panel-item-1">
+                  <div className="modal-rating-stars" aria-hidden="true">
+                    {Array.from({ length: 10 }).map((_, index) => (
+                      <span
+                        key={index}
+                        className={
+                          index < Math.round(selectedProduct.rating) ? "filled" : ""
+                        }
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="modal-rating-meta">
+                    <span className="modal-rating-score">
+                      {selectedProduct.rating.toFixed(1)}
+                    </span>
+                    <span className="modal-rating-label">
+                      / 10 • {selectedProduct.ratingLabel}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div />
+              )}
+
+              {selectedProduct.inspiredBy?.name && (
+                <div className={`modal-inspired-mini panel-item-anim panel-item-2 ${/^original\b/i.test(selectedProduct.inspiredBy.name) ? "modal-inspired-original" : ""}`}>
+                  <span className="modal-inspired-mini-label">
+                    {lang === "sr" ? "INSPIRISANO" : "INSPIRED BY"}
+                  </span>
+
+                  <strong className="modal-inspired-mini-name">
+                    {selectedProduct.inspiredBy.name}
+                  </strong>
+
+                  {selectedProduct.inspiredBy.short && (
+                    <span className="modal-inspired-mini-short">
+                      {selectedProduct.inspiredBy.short}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+          <button type="button" className="mobile-pager-page-close mobile-pager-page-close-1" aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"} onClick={() => closeProductModal()}>×</button>
 
           <button
             type="button"
@@ -9359,7 +9658,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             </div>
           )}
 
-          {selectedProduct.slug === "ysl-y-iced-cologne" && (
+          {selectedProduct.slug === "thomas-kosmala-no-4-apres-lamour" && (
             <div className="modal-sample-mini">
               <strong>
                 🎁 {lang === "sr" ? "FREE UZORAK" : "FREE SAMPLE"}
@@ -9391,6 +9690,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             )}
 
             {selectedProduct.noteMap && (
+              <button
+                type="button"
+                className="mobile-note-map-hit"
+                aria-label={
+                  lang === "sr" ? "Prikaži note parfema" : "Show fragrance notes"
+                }
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setNoteMapOpen((current) => !current);
+                }}
+              />
+            )}
+            {selectedProduct.noteMap && (
               <TheNoteMap
                 notes={selectedProduct.noteMap}
                 lang={lang}
@@ -9402,7 +9715,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             {selectedProduct.noteMap && (
               <button
                 type="button"
-                className={`the-note-map__mobile-trigger ${
+                className={`the-note-map__mobile-trigger mobile-note-map-source ${
                   noteMapOpen ? "is-open" : ""
                 }`}
                 onClick={(event) => {
@@ -9520,7 +9833,23 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             </div>
           </div>
 
-        <div className="modal-content panel-anim panel-anim-3">
+        <div
+          ref={productModalContentRef}
+          className="modal-content panel-anim panel-anim-3"
+        >
+          <button type="button" className="mobile-pager-page-close mobile-pager-page-close-2" aria-label={lang === "sr" ? "Zatvori prozor" : "Close modal"} onClick={() => closeProductModal()}>×</button>
+
+          <div className="mobile-pager-decision-intro">
+            <span>
+              {lang === "sr" ? "02 · IZABERI SVOJ DEKANT" : "02 · CHOOSE YOUR DECANT"}
+            </span>
+            <h3>{lang === "sr" ? "Probaj ga na svoj način." : "Try it your way."}</h3>
+            <p>
+              {lang === "sr"
+                ? "Detalji, veličina i kupovina — bez žurbe."
+                : "Details, size and purchase — with room to decide."}
+            </p>
+          </div>
           {selectedCopy.miniTag && (
             <span className="modal-chip panel-item-anim panel-item-1">
               {selectedCopy.miniTag}
@@ -9769,8 +10098,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               );
             })()}
 
-                {hasUserPickedSize && (
-                  <button
+                <button
                     type="button"
                     className="modal-buy-now"
                     onClick={() => {
@@ -9806,7 +10134,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   >
                     {lang === "sr" ? "KUPI ODMAH" : "BUY NOW"}
                   </button>
-                )}
                 </div>
               </div>
             </div>
@@ -10276,7 +10603,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
-{showBackToTop && !sideRailBlocked && (
+{showBackToTop && (!sideRailBlocked || (isMobileProductPageActive && !hasBlockingOverlay)) && (
   <button
     type="button"
     className="back-to-top"

@@ -153,27 +153,45 @@ function PrivateSelectionEnhancer() {
   const [lang, setLang] = useState(() => getLanguage());
 
   useEffect(() => {
+    let frame = 0;
+
     const sync = () => {
-      setDrawer(document.querySelector(".private-selection-drawer"));
-      setWishlistIds(readWishlist());
-      setLang(getLanguage());
+      const nextDrawer = document.querySelector(".private-selection-drawer");
+      setDrawer((current) => (current === nextDrawer ? current : nextDrawer));
+
+      const nextWishlist = readWishlist();
+      setWishlistIds((current) => {
+        const unchanged =
+          current.length === nextWishlist.length &&
+          current.every((id, index) => id === nextWishlist[index]);
+        return unchanged ? current : nextWishlist;
+      });
+
+      const nextLang = getLanguage();
+      setLang((current) => (current === nextLang ? current : nextLang));
+    };
+
+    const scheduleSync = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        sync();
+      });
     };
 
     sync();
 
-    const observer = new MutationObserver(sync);
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["class"]
-    });
-
-    window.addEventListener("storage", sync);
+    window.addEventListener("storage", scheduleSync);
+    window.addEventListener("popstate", scheduleSync);
+    window.addEventListener("playnice:locationchange", scheduleSync);
+    document.addEventListener("click", scheduleSync, true);
 
     return () => {
-      observer.disconnect();
-      window.removeEventListener("storage", sync);
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("storage", scheduleSync);
+      window.removeEventListener("popstate", scheduleSync);
+      window.removeEventListener("playnice:locationchange", scheduleSync);
+      document.removeEventListener("click", scheduleSync, true);
     };
   }, []);
 

@@ -1,5 +1,14 @@
+const PRODUCTION_HOSTS = new Set([
+  "playniceshop.me",
+  "www.playniceshop.me",
+]);
+
+function isProductionHost() {
+  return typeof window !== "undefined" && PRODUCTION_HOSTS.has(window.location.hostname);
+}
+
 export function trackPageView(path) {
-  if (!window.gtag) return;
+  if (!isProductionHost() || !window.gtag) return;
 
   window.gtag("event", "page_view", {
     page_path: path,
@@ -9,11 +18,11 @@ export function trackPageView(path) {
 }
 
 export function trackEvent(name, params = {}) {
-  if (!window.gtag) return;
+  if (!isProductionHost() || !window.gtag) return;
   window.gtag("event", name, params);
 }
 
 export function trackMeta(name, params = {}) {
-  if (!window.fbq) return;
+  if (!isProductionHost() || !window.fbq) return;
   window.fbq("track", name, params);
 }

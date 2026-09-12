@@ -15,6 +15,17 @@ const normalizeLink = (link = {}) => {
   return value;
 };
 
+const normalizeMediaStage = (stage) => {
+  if (!stage || typeof stage !== "object") return null;
+  const branch = String(stage.branch || "").trim();
+  const baseSha = String(stage.baseSha || "").trim();
+  const file = String(stage.file || "").trim();
+  const assetPath = String(stage.assetPath || "").trim();
+  const stagedAt = String(stage.stagedAt || "").trim();
+  if (!branch || !baseSha || !file || !assetPath) return null;
+  return { branch, baseSha, file, assetPath, ...(stagedAt ? { stagedAt } : {}) };
+};
+
 export function normalizeJournalDraftPayload(article = {}) {
   const payload = {
     id: Number(article.id),
@@ -31,6 +42,8 @@ export function normalizeJournalDraftPayload(article = {}) {
   if (article.links != null) payload.links = Array.isArray(article.links)
     ? article.links.map(normalizeLink)
     : [];
+  const mediaStage = normalizeMediaStage(article.mediaStage);
+  if (mediaStage) payload.mediaStage = mediaStage;
   return payload;
 }
 

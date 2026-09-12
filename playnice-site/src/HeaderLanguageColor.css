@@ -1,0 +1,12 @@
+/* Match the desktop language switcher to the primary HeaderNext navigation tone. */
+
+.header-next-utility .header-next-language {
+  color: rgba(255, 248, 235, 0.62);
+  text-shadow: none;
+}
+
+.header-next-utility .header-next-language:hover,
+.header-next-utility .header-next-language:focus-visible {
+  color: rgba(255, 244, 215, 0.98);
+  text-shadow: 0 0 16px rgba(220, 181, 107, 0.22);
+}

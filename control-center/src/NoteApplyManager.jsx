@@ -9,6 +9,7 @@ import { supabase } from "./supabase";
 import "./note-apply.css";
 
 const SELECT = "note_key,payload,approved_payload,review_status,baseline_snapshot,prepared_at,apply_branch,apply_pr_number,apply_created_at,updated_at";
+const NOTE_WORKFLOW_UPDATED_EVENT = "playnice:note-workflow-updated";
 
 const selectedNoteKeyFromDom = () => {
   const detailKey = document.querySelector(".main-stage .notes-detail-hero code")?.textContent?.trim();
@@ -72,14 +73,25 @@ export default function NoteApplyManager() {
     load();
     const channel = supabase.channel(`note-apply-${noteKey}`).on("postgres_changes", { event: "*", schema: "public", table: "note_drafts", filter: `note_key=eq.${noteKey}` }, load).subscribe();
     const onFocus = () => load();
+    const onWorkflowUpdated = (event) => {
+      const changedKey = event?.detail?.noteKey;
+      if (!changedKey || changedKey === noteKey) load();
+    };
     window.addEventListener("focus", onFocus);
-    return () => { cancelled = true; supabase.removeChannel(channel); window.removeEventListener("focus", onFocus); };
+    window.addEventListener(NOTE_WORKFLOW_UPDATED_EVENT, onWorkflowUpdated);
+    return () => {
+      cancelled = true;
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", onFocus);
+      window.removeEventListener(NOTE_WORKFLOW_UPDATED_EVENT, onWorkflowUpdated);
+    };
   }, [noteKey]);
 
   const noChanges = useMemo(() => {
     if (!liveNote || !row?.payload) return false;
     const livePayload = normalizeNoteDraftPayload({ key: liveNote.key, srLabel: liveNote.srLabel, enLabel: liveNote.enLabel, assetPath: liveNote.assetPath });
-    return stable(livePayload) === stable(normalizeNoteDraftPayload(row.payload));
+    const metadataChanged = Boolean(row.payload?.mediaStage);
+    return !metadataChanged && stable(livePayload) === stable(normalizeNoteDraftPayload(row.payload));
   }, [liveNote, row]);
 
   if (!slot || !noteKey) return null;
@@ -113,7 +125,7 @@ export default function NoteApplyManager() {
     <div className="note-controlled-copy">
       <span>NOTES CONTROLLED APPLY</span>
       <strong>{hasPr ? `DRAFT PR #${row.apply_pr_number}` : prepared ? "READY TO CREATE DRAFT PR" : noChanges ? "NO LIVE CHANGES" : liveNote ? "APPROVED · PREPARE BASELINE" : "NEW NOTE · PREPARE INSERT"}</strong>
-      <small>{liveNote ? "Existing note" : "New note"} · exact TheNoteMap.jsx SHA guard · asset must exist on main · no automatic merge.</small>
+      <small>{liveNote ? "Existing note" : "New note"} · exact TheNoteMap.jsx SHA guard · asset verified on main or staged upload · no automatic merge.</small>
     </div>
     <div className="note-controlled-actions">
       {error ? <span className="note-controlled-error">{error}</span> : null}

@@ -2,22 +2,30 @@ import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import DraftManager from "./DraftManager";
 import InlineValidationBridge from "./InlineValidationBridge";
+import ProductBulkPasteBridge from "./ProductBulkPasteBridge";
+import ProductMediaUploadBridge from "./ProductMediaUploadBridge";
+import ProductMediaStatusBridge from "./ProductMediaStatusBridge";
 import DiscoveryBulkPasteBridge from "./DiscoveryBulkPasteBridge";
 import ControlledApplyManager from "./ControlledApplyManager";
 import ProductWorkflowBridge from "./ProductWorkflowBridge";
+import ProductWorkflowAdvanceBridge from "./ProductWorkflowAdvanceBridge";
 import ProductCatalogCountBridge from "./ProductCatalogCountBridge";
 import JournalManager from "./JournalManager";
 import JournalApplyManager from "./JournalApplyManager";
 import NotesManager from "./NotesManager";
+import NoteMediaUploadBridge from "./NoteMediaUploadBridge";
 import NoteApplyManager from "./NoteApplyManager";
+import NoteWorkflowAdvanceBridge from "./NoteWorkflowAdvanceBridge";
 import AnalyticsManager from "./AnalyticsManager";
 import SiteHealthManager from "./SiteHealthManager";
 import SiteHealthOverviewBridge from "./SiteHealthOverviewBridge";
 import BrowserQaSiteHealthBridge from "./BrowserQaSiteHealthBridge";
 import BrowserQaOverviewBridge from "./BrowserQaOverviewBridge";
 import HeroManager from "./HeroManager";
+import HeroMediaUploadBridge from "./HeroMediaUploadBridge";
 import HeroReviewBridge from "./HeroReviewBridge";
 import HeroApplyBridge from "./HeroApplyBridge";
+import ExhibitionManager from "./ExhibitionManager";
 import "./header-layout.css";
 
 const ACTIVE_MODULE_KEY = "playnice_cc_active_module";
@@ -66,17 +74,18 @@ export default function ControlCenterManagers() {
 
     const persisted = window.sessionStorage.getItem(ACTIVE_MODULE_KEY);
     let restoreTimer = null;
-    if (persisted === "Hero") {
+    if (persisted === "Hero" || persisted === "Exhibition") {
       let attempts = 0;
       restoreTimer = window.setInterval(() => {
         attempts += 1;
         const heading = mainStage.querySelector(".topbar h1");
-        if (heading?.textContent?.trim() === "Hero") {
+        if (heading?.textContent?.trim() === persisted) {
           window.clearInterval(restoreTimer);
           return;
         }
-        const heroButton = nav.querySelector("[data-hero-manager-nav='true']");
-        if (heroButton) heroButton.click();
+        const selector = persisted === "Hero" ? "[data-hero-manager-nav='true']" : "[data-exhibition-manager-nav='true']";
+        const moduleButton = nav.querySelector(selector);
+        if (moduleButton) moduleButton.click();
         if (attempts >= 40) window.clearInterval(restoreTimer);
       }, 50);
     }
@@ -90,16 +99,24 @@ export default function ControlCenterManagers() {
   return <>
     {slots.draft ? createPortal(<DraftManager />, slots.draft) : <DraftManager />}
     <InlineValidationBridge />
+    <ProductMediaUploadBridge />
+    <ProductMediaStatusBridge />
+    <ProductBulkPasteBridge />
     <DiscoveryBulkPasteBridge />
     <ProductWorkflowBridge />
+    <ProductWorkflowAdvanceBridge />
     <ProductCatalogCountBridge />
     <HeroManager />
+    <HeroMediaUploadBridge />
     <HeroReviewBridge />
     <HeroApplyBridge />
+    <ExhibitionManager />
     <JournalManager />
     <JournalApplyManager />
     <NotesManager />
+    <NoteMediaUploadBridge />
     <NoteApplyManager />
+    <NoteWorkflowAdvanceBridge />
     <AnalyticsManager />
     <SiteHealthManager />
     <SiteHealthOverviewBridge />

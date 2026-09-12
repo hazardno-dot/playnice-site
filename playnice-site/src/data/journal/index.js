@@ -1756,5 +1756,293 @@ Remember. PlayNice.`
         external: true
       }
     ]
+  },
+  {
+    id: 21,
+    date: {
+      en: "09 Sep",
+      sr: "09 Sep"
+    },
+    image: "/journal/community-most-wanted-drop-03.webp",
+    title: {
+      en: "You asked. We’re still listening.",
+      sr: "Tražili ste. I dalje slušamo."
+    },
+    excerpt: {
+      en: "Four more fragrances moved from the Community list into the PlayNice collection. And one of them, completely by chance, became fragrance number 100.",
+      sr: "Četiri nova parfema prešla su sa Community liste u PlayNice kolekciju. A jedan od njih je, sasvim slučajno, postao naš parfem broj 100."
+    },
+    content: {
+      en: `At first, it was just an idea.
+
+We asked you what you wanted to see in the PlayNice collection. You started sending names. One vote, then another, then a few more. Some names disappeared quickly, while others stayed on the list for weeks. And then fragrances from the wishlist started moving into the collection.
+
+First came YSL Y Iced and Valentino Coral Fantasy. Then Prada Paradigme and Bad Boy Cobalt. Back then, we wrote: Votes become collection.
+
+It turns out that story was not finished. Since then, four more have arrived.
+
+Lattafa Khamrah Waha — 13 votes.
+Armaf Club de Nuit Intense Overdose — 12 votes.
+
+With those two, the message was not exactly subtle. You asked for them often enough that, at some point, the only real question became: alright, when are we getting them? So we did.
+
+But Community was never meant to be just a table where the fragrance at the top automatically wins. Which is why the next two may be even more interesting.
+
+Tom Ford Ombré Leather Parfum — 6 votes.
+Rayhaan Azul — 3 votes.
+
+And both made it into the collection. Because the number of votes is a signal, but it is not the only one. Sometimes twenty people say the same thing. Sometimes three people mention a fragrance that makes so much sense for PlayNice that it becomes difficult to ignore.
+
+And then something small happened with Tom Ford that we did not plan.
+
+When Ombré Leather Parfum entered the Shop, it became our 100th fragrance. We did not choose fragrance number 100. We did not build a countdown. We did not decide in advance that it had to be some major name. It simply happened that a fragrance you asked for became number 100.
+
+And it is hard to imagine a better way for that number to appear.
+
+Because PlayNice was never supposed to be a collection built by one person behind closed doors. We search. We test. We choose. We reject far more fragrances than we accept. But you are part of that process. Community tells us where to look.
+
+Today, there are eight fragrances on the right side of the Community page. Eight small pieces of proof that Request is not just a button and that something can actually happen behind a single vote. And on the left side, the list is growing again. Naxos is there. Torino21 too. Imagination is still refusing to give up.
+
+We do not know which one will be next. And maybe that is the best part of the whole story.
+
+Because Community Series was never about us telling you what you should want. It was about being able to say, every now and then: this is here because you said it should be.
+
+You asked. We listened.
+
+And apparently... we’re still listening.
+
+— Charlie`,
+      sr: `U početku je to bila samo ideja.
+
+Pitali smo vas šta želite da vidite u PlayNice kolekciji. Vi ste počeli da šaljete imena. Jedan glas, pa drugi, pa još nekoliko. Neka imena su nestala brzo, neka su ostajala nedeljama. A onda su parfemi sa liste želja počeli da prelaze u kolekciju.
+
+Prvo YSL Y Iced i Valentino Coral Fantasy. Zatim Prada Paradigme i Bad Boy Cobalt. Tada smo napisali: Glasovi postaju kolekcija.
+
+Ispostavilo se da ta priča nije bila završena. Od tada su stigla još četiri.
+
+Lattafa Khamrah Waha — 13 glasova.
+Armaf Club de Nuit Intense Overdose — 12 glasova.
+
+Za ova dva poruka nije bila naročito suptilna. Tražili ste ih dovoljno puta da je u jednom trenutku jedino pravo pitanje bilo: dobro, kada ih nabavljamo? I nabavili smo ih.
+
+Ali Community nikada nije trebalo da bude samo tabela u kojoj prvi na listi automatski pobeđuje. Zato su nam možda još zanimljivija sledeća dva.
+
+Tom Ford Ombré Leather Parfum — 6 glasova.
+Rayhaan Azul — 3 glasa.
+
+I oba su završila u kolekciji. Jer broj glasova jeste signal, ali nije jedini. Ponekad dvadeset ljudi kaže isto. Ponekad tri osobe pomenu parfem koji ima toliko smisla za PlayNice da ga više ne možete ignorisati.
+
+A onda se sa Tom Fordom dogodila jedna mala stvar koju nismo planirali.
+
+Kada je Ombré Leather Parfum ušao u Shop, postao je naš stoti parfem. Nismo birali parfem broj 100. Nismo pravili odbrojavanje. Nismo unapred odlučili da to mora biti neko veliko ime. Jednostavno se dogodilo da parfem koji ste vi tražili postane broj 100.
+
+I teško je zamisliti bolji način da se ta brojka pojavi.
+
+Jer PlayNice nikada nije trebalo da bude kolekcija koju jedna osoba sastavlja iza zatvorenih vrata. Mi tražimo. Probamo. Biramo. Odbijamo mnogo više parfema nego što ih prihvatimo. Ali vi ste deo tog procesa. Community nam govori gde da pogledamo.
+
+Danas na desnoj strani Community stranice stoji osam parfema. Osam malih dokaza da Request nije samo dugme i da iza jednog glasa stvarno može da se dogodi nešto. Sa leve strane lista ponovo raste. Naxos je tamo. Torino21 takođe. Imagination se i dalje ne predaje.
+
+Ne znamo koji će biti sledeći. I možda je upravo to najbolji deo cele priče.
+
+Jer Community Series nikada nije bila priča o tome da mi vama kažemo šta treba da želite. Nego o tome da ponekad možemo da vam kažemo: ovo je ovde zato što ste vi rekli da treba da bude.
+
+You asked. We listened.
+
+And apparently... we’re still listening.
+
+— Čarli`
+    },
+    series: {
+      en: "COMMUNITY SERIES",
+      sr: "SERIJA ZAJEDNICE"
+    },
+    relatedProducts: [
+      "lattafa-khamrah-waha-edp",
+      "armaf-club-de-nuit-intense-overdose",
+      "tom-ford-ombre-leather-parfum",
+      "rayhaan-azul-edp"
+    ],
+    links: [
+      {
+        label: {
+          en: "Request the next fragrance",
+          sr: "Predloži sledeći parfem"
+        },
+        action: "scent-request"
+      }
+    ]
+  },
+  {
+    id: 22,
+    date: {
+      en: "9 Sep",
+      sr: "9 Sep"
+    },
+    image: "/journal/article22.webp",
+    title: {
+      en: "Across from the Bakery",
+      sr: "Preko puta pekare"
+    },
+    excerpt: {
+      en: "For three months, he watched her from across the street. The only problem was that he had already written the entire story in his head.",
+      sr: "Tri meseca je gledao preko puta pekare. Problem je bio samo u tome što je celu priču već napisao u svojoj glavi."
+    },
+    content: {
+      en: `It's already Saturday, and I'm heading out to buy bread.
+
+I don't look particularly good. I haven't slept enough, the T-shirt I'm wearing has probably survived more seasons than Fernando Alonso, my hair has developed its own political agenda, and the man outside the bakery is trying to start a Golf Mk2 that has clearly had enough of both life and its owner.
+
+And I think: **This is beautiful.**
+
+Nobody is filming. Nobody has put their phone on a tripod. Nobody is saying, *“Guys, a lot of you have been asking me...”*
+
+Nobody asked you anything, Sandra. Just buy the bread.
+
+Across from the bakery there's a small flower shop, and for a while now there's been a girl working there who has, entirely by accident, made me eat a lot more bread than I used to. I don't know her name. I only know that in the morning she carries the flowers outside, ties her hair back when it gets in the way, and has the kind of smile that makes a man forget, for a few seconds, his age, his bills, and the fact that his fridge is already full of bread.
+
+Naturally, I've never spoken to her. I'm a modern man.
+
+Which means I can spend months analysing the situation, look at her a few times, create seventeen possible scenarios in my head and, in the end, do absolutely nothing.
+
+There was, however, one other problem.
+
+Almost every weekend, I saw her with some guy.
+
+Tall, handsome, well dressed, younger than me by exactly enough to make me dislike him immediately. He'd arrive, she'd come outside, hug him, sometimes they'd have coffee together, and I'd continue walking towards the bakery like a man who had just received an answer to a question he'd never asked.
+
+And so it went on for weeks.
+
+Then this Saturday, I'm standing there with a loaf of bread in my hand when I see him arrive. She walks out of the flower shop and hugs him, and then another girl gets out of the car.
+
+She kisses him.
+
+On the mouth.
+
+Right.
+
+This changes the table.
+
+Five minutes later, the three of them are sitting together, laughing, while I, with a completely unjustified level of interest, buy a yoghurt I don't even need.
+
+The woman behind the counter looks at me and says:
+
+“That's her brother.”
+
+There are moments in life when a man can suddenly see every bad decision he's ever made with perfect clarity.
+
+This was one of them.
+
+For months, I'd invented a boyfriend, a relationship, a happy couple, their future together and probably two children, simply because I hadn't had the courage to cross the street and say:
+
+“Hi.”
+
+And that's when it hits me how strange we've become.
+
+We can message someone on the other side of the world, find out where they went last summer, what they listen to, what they eat and who they follow, but walking across the street and speaking to another human being suddenly feels like an extreme sport.
+
+We know everything. We just don't dare do anything anymore.
+
+Maybe that's why we're so hungry for good stories. Not perfect ones. Good ones. The kind where someone gets it wrong, looks stupid, arrives late, gets caught in the rain, says the wrong thing, laughs at themselves and tries anyway.
+
+I don't need another perfect life on a screen.
+
+I want a story.
+
+And apparently, I'd been watching mine from across the street for the past three months.
+
+I put the yoghurt down, crossed the street and walked into the flower shop.
+
+What happened next?
+
+Easy.
+
+Not everything has to go online immediately.
+
+—
+
+**Charlie**
+
+*Remember. PlayNice.*
+`,
+      sr: `## „Preko puta pekare“
+
+Već je subota, izlazim po hleb.
+
+Ne izgledam naročito dobro. Nisam se naspavao, majica koju nosim verovatno je već odradila više sezona nego Fernando Alonso, kosa vodi neku svoju politiku, a čovek ispred pekare pokušava da upali Golfa dvojku kojem je očigledno dosta i života i vlasnika.
+
+I pomislim: **Kako je ovo lepo.**
+
+Niko ne snima, niko nije stavio telefon na tripod, niko ne govori *„Guys, a lot of you have been asking me...”*
+
+Niko te ništa nije pitao, Sandra. Samo kupi hleb.
+
+Preko puta pekare je mala cvećara, a u njoj već neko vreme radi devojka zbog koje sam, sasvim slučajno, počeo mnogo češće da jedem hleb. Ne znam joj ime. Znam samo da ujutru iznosi cveće napolje, vezuje kosu kada joj smeta i ima onaj osmeh zbog kojeg čovek na nekoliko sekundi zaboravi i godine i račune i činjenicu da mu je frižider pun hleba.
+
+Naravno da joj nikada nisam prišao. Ja sam moderan muškarac.
+
+To znači da mogu mesecima da analiziram situaciju, pogledam je nekoliko puta, napravim u glavi sedamnaest mogućih scenarija i na kraju ne uradim ništa.
+
+Postojao je, doduše, još jedan problem.
+
+Gotovo svakog vikenda viđao sam je sa nekim tipom.
+
+Visok, zgodan, uredan, mlađi od mene taman toliko da ga odmah ne volim. Dođe, ona izađe, zagrli ga, nekad zajedno popiju kafu i ja uredno nastavim prema pekari kao čovek koji je upravo dobio odgovor na pitanje koje nikada nije postavio.
+
+I tako nedeljama.
+
+A onda ove subote stojim sa hlebom u ruci i vidim njega kako dolazi. Ona izlazi iz cvećare, grli ga, a iz kola izlazi još jedna devojka. Poljubi ga.
+
+U usta.
+
+Dobro. Ovo već menja tabelu.
+
+Pet minuta kasnije njih troje sede za stolom, smeju se, a ja sa potpuno neopravdanim interesovanjem kupujem jogurt koji mi uopšte ne treba.
+
+Prodavačica me pogleda i kaže:
+
+„To joj je brat.“
+
+Postoje trenuci kada čovek u životu jasno vidi sve svoje pogrešne odluke.
+
+Ovo je bio jedan od njih.
+
+Mesecima sam izmislio momka, vezu, srećan par, njihovu zajedničku budućnost i verovatno dvoje dece, samo zato što nisam imao hrabrosti da pređem ulicu i kažem:
+
+„Ćao.“
+
+I tu mi sine koliko smo postali čudni.
+
+Možemo da pošaljemo poruku nekome na drugom kraju sveta, da saznamo gde je bio prošlog leta, šta sluša, šta jede i koga prati, ali prići čoveku preko puta ulice odjednom izgleda kao ekstremni sport.
+
+Sve znamo. Samo se više ništa ne usuđujemo.
+
+Možda smo zato toliko željni lepih priča. Ne savršenih. Lepih. Onih u kojima neko pogreši, ispadne glup, zakasni, pokisne, kaže nešto pogrešno, nasmeje se sebi i ipak pokuša.
+
+Ne treba mi još jedan savršen život na ekranu.
+
+Hoću priču.
+
+A izgleda da sam svoju već tri meseca gledao preko puta pekare.
+
+Spustio sam jogurt, prešao ulicu i ušao u cvećaru.
+
+Šta se dalje dogodilo?
+
+Polako.
+
+Ne mora baš sve odmah na internet.
+
+—
+
+**Čarli**
+
+*Remember. PlayNice.*
+`
+    },
+    relatedProducts: [
+      "nishane-hacivat-x"
+    ],
+    links: [
+    ]
   }
 ];

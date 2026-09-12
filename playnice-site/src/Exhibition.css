@@ -465,18 +465,6 @@
   transition: opacity 220ms ease;
 }
 
-.exhibition-outro-link span {
-  transition: transform 220ms ease;
-}
-
-.exhibition-outro-link:hover {
-  opacity: 0.72;
-}
-
-.exhibition-outro-link:hover span {
-  transform: translateX(6px);
-}
-
 @media (max-width: 800px) {
   .exhibition-outro {
     min-height: 300px;
@@ -485,7 +473,19 @@
   }
 
   .exhibition-outro-link {
+    flex-direction: column;
+    gap: 12px;
     font-size: clamp(24px, 8vw, 34px);
+  }
+
+  .exhibition-outro-link span {
+    font-size: 22px;
+    line-height: 1;
+    transform: rotate(90deg);
+  }
+
+  .exhibition-outro-link:hover span {
+    transform: rotate(90deg) translateX(4px);
   }
 }
 
