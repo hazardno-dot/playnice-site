@@ -9,6 +9,7 @@ const CHANNELS = [["instagram_feed", "Instagram Feed"], ["instagram_story", "Ins
 const fmt = (value) => value ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : "—";
 const label = (value) => String(value || "").replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 const mediaSrc = (media) => media?.url || media?.src || "";
+const eventTitle = (event) => event?.payload?.core?.shortName || event?.payload?.core?.name || event?.payload?.shortName || event?.payload?.name || event?.payload?.title?.sr || event?.source_id;
 
 function editableContent(event, generated) {
   const stored = event?.draft_content || event?.approved_content || null;
@@ -118,7 +119,7 @@ function SocialWorkspace() {
       <aside className="social-list">
         <div className="social-list-head"><span>EVENT QUEUE</span><strong>{loading ? "…" : visible.length}</strong></div>
         {visible.length ? visible.map((event) => <button type="button" key={event.id} className={selected?.id === event.id ? "active" : ""} onClick={() => setSelectedId(event.id)}>
-          <div><strong>{event.payload?.shortName || event.payload?.name || event.payload?.title?.sr || event.source_id}</strong><span>{label(event.source_type)} · {label(event.event_type)}</span></div>
+          <div><strong>{eventTitle(event)}</strong><span>{label(event.source_type)} · {label(event.event_type)}</span></div>
           <em className={event.status}>{event.status}</em>
         </button>) : <div className="social-empty">{loading ? "Loading social events…" : "No social events in this view."}</div>}
       </aside>
