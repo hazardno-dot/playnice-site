@@ -64,6 +64,12 @@ function mergeDraft(generated, captions) {
   return next;
 }
 
+function isTestEvent(event = {}) {
+  const metadata = event.metadata && typeof event.metadata === "object" ? event.metadata : {};
+  const sourceId = String(event.source_id || "");
+  return metadata.test === true || metadata.replay === true || sourceId.includes("--shadow-test-") || sourceId.includes("--shadow-replay-");
+}
+
 export default async function handler(req, res) {
   if (!SUPABASE_URL || !SUPABASE_KEY) return json(res, 500, { error: "Server configuration is incomplete." });
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
@@ -75,12 +81,20 @@ export default async function handler(req, res) {
     const id = String(req.body?.id || "").trim();
     const action = String(req.body?.action || "save").trim();
     if (!id) return json(res, 400, { error: "Social event id is required." });
-    if (!["save", "ready", "reopen"].includes(action)) return json(res, 400, { error: "Unsupported Social draft action." });
+    if (!["save", "ready", "reopen", "discard_test"].includes(action)) return json(res, 400, { error: "Unsupported Social draft action." });
 
     const eventRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(id)}&select=*&limit=1`, auth.token);
     if (!eventRes.ok) return json(res, 400, { error: "Could not load Social event." });
     const [event] = await eventRes.json();
     if (!event) return json(res, 404, { error: "Social event not found." });
+
+    if (action === "discard_test") {
+      if (!isTestEvent(event)) return json(res, 409, { error: "Only explicit shadow test/replay events can be discarded." });
+      const deleteRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(id)}`, auth.token, { method: "DELETE" });
+      if (!deleteRes.ok) throw new Error(`Could not discard Social test event (${deleteRes.status}).`);
+      return json(res, 200, { ok: true, discarded: true, id });
+    }
+
     if (["published", "cancelled"].includes(event.status)) return json(res, 409, { error: `Social event is ${event.status} and cannot be edited.` });
 
     const generated = generateSocialDraft(event);
