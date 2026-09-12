@@ -271,7 +271,50 @@ export default function MobileProductPage({
         <div className="mobile-product-page__section-head">
           <div>
             <span>{lang === "sr" ? "IZABERI VELIČINU" : "CHOOSE SIZE"}</span>
-            <small>{lang === "sr" ? "Probaj. Nosi. Odluči." : "Try it. Wear it. Decide."}</small>
+            <small>
+              {(() => {
+                const normalizedSize = String(activeSize || "").toLowerCase();
+
+                if (!normalizedSize) {
+                  return lang === "sr"
+                    ? "Kreni manjom količinom. Nosi ga prvo."
+                    : "Start small. Wear it first.";
+                }
+
+                if (normalizedSize.includes("2ml")) {
+                  return lang === "sr" ? "Brzi test na koži." : "Quick skin test.";
+                }
+
+                if (normalizedSize.includes("5ml")) {
+                  return (
+                    <>
+                      {lang === "sr" ? "Testiraj " : "Test it over "}
+                      <strong>{lang === "sr" ? "nekoliko dana" : "a few days"}</strong>
+                    </>
+                  );
+                }
+
+                if (normalizedSize.includes("10ml")) {
+                  return (
+                    <>
+                      {lang === "sr" ? "Savršen za " : "Perfect for "}
+                      <strong>{lang === "sr" ? "svakodnevno nošenje" : "daily wear"}</strong>
+                    </>
+                  );
+                }
+
+                if (normalizedSize.includes("20ml")) {
+                  return (
+                    <>
+                      {lang === "sr" ? "Skoro kao " : "Almost like a "}
+                      <strong>{lang === "sr" ? "mala bočica" : "small bottle"}</strong>
+                    </>
+                  );
+                }
+
+                return lang === "sr" ? "Probaj. Nosi. Odluči." : "Try it. Wear it. Decide.";
+              })()}
+            </small>
           </div>
         </div>
 
