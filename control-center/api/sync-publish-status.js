@@ -1,3 +1,5 @@
+import { productPublishedEvent } from "../src/socialEventProducer.mjs";
+
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -30,6 +32,61 @@ async function github(path) {
   const data = await response.json();
   if (!response.ok) throw new Error(data?.message || `GitHub request failed (${response.status})`);
   return data;
+}
+
+async function createProductSocialShadowEvent({ draft, token, userId, pr }) {
+  try {
+    const event = productPublishedEvent({
+      slug: draft.product_slug,
+      payload: draft.approved_payload || draft.payload || {},
+      media: [],
+      sourceUrl: `/product/${draft.product_slug}`,
+    });
+
+    const existingRes = await supabaseFetch(
+      `/rest/v1/social_events?event_type=eq.${encodeURIComponent(event.event_type)}&source_type=eq.${encodeURIComponent(event.source_type)}&source_id=eq.${encodeURIComponent(event.source_id)}&select=id&limit=1`,
+      token,
+    );
+    if (!existingRes.ok) return { status: "schema_unavailable" };
+    const existing = await existingRes.json();
+    if (existing.length) return { status: "deduped", id: existing[0].id };
+
+    const createRes = await supabaseFetch("/rest/v1/social_events", token, {
+      method: "POST",
+      body: JSON.stringify({
+        ...event,
+        created_by: userId,
+        metadata: {
+          ...(event.metadata || {}),
+          apply_pr_number: draft.apply_pr_number,
+          merge_commit_sha: pr.merge_commit_sha,
+          merged_at: pr.merged_at,
+          producer: "sync-publish-status",
+        },
+      }),
+    });
+    if (!createRes.ok) return { status: "create_failed" };
+    const [created] = await createRes.json();
+
+    await supabaseFetch("/rest/v1/social_audit_log", token, {
+      method: "POST",
+      body: JSON.stringify({
+        social_event_id: created.id,
+        actor_id: userId,
+        action: "shadow_event_created_from_product_publish",
+        details: {
+          product_slug: draft.product_slug,
+          apply_pr_number: draft.apply_pr_number,
+          merge_commit_sha: pr.merge_commit_sha,
+        },
+      }),
+    });
+
+    return { status: "created", id: created.id };
+  } catch (error) {
+    console.warn("Social shadow event creation skipped", error);
+    return { status: "skipped" };
+  }
 }
 
 export default async function handler(req, res) {
@@ -65,6 +122,7 @@ export default async function handler(req, res) {
 
     const existingRes = await supabaseFetch(`/rest/v1/publish_history?apply_pr_number=eq.${draft.apply_pr_number}&select=id&limit=1`, token);
     const existing = existingRes.ok ? await existingRes.json() : [];
+    let social = { status: "not_attempted" };
 
     if (!existing.length) {
       const historyRes = await supabaseFetch("/rest/v1/publish_history", token, {
@@ -98,6 +156,10 @@ export default async function handler(req, res) {
           },
         }),
       });
+
+      social = await createProductSocialShadowEvent({ draft, token, userId: user.id, pr });
+    } else {
+      social = { status: "publish_history_already_exists" };
     }
 
     const deleteRes = await supabaseFetch(`/rest/v1/product_drafts?product_slug=eq.${encodeURIComponent(slug)}`, token, { method: "DELETE" });
@@ -110,6 +172,7 @@ export default async function handler(req, res) {
       pr_number: draft.apply_pr_number,
       merge_commit_sha: pr.merge_commit_sha,
       published_at: pr.merged_at,
+      social_shadow_event: social,
     });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Publish status sync failed." });
