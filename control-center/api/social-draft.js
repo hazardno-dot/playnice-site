@@ -18,13 +18,24 @@ async function supabaseFetch(path, token, options = {}) {
   });
 }
 
+async function safeJson(response) {
+  const text = await response.text();
+  if (!text) return null;
+  try { return JSON.parse(text); } catch { return { message: text.slice(0, 180) }; }
+}
+
 async function requireAdmin(req) {
   const authHeader = req.headers.authorization || "";
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
   if (!token) return { error: "Missing admin session.", status: 401 };
+
   const userRes = await supabaseFetch("/auth/v1/user", token);
-  if (!userRes.ok) return { error: "Invalid admin session.", status: 401 };
-  const user = await userRes.json();
+  const user = await safeJson(userRes);
+  if (!userRes.ok || !user?.id) {
+    const detail = String(user?.message || user?.msg || user?.error_description || user?.error || "unknown auth error").slice(0, 180);
+    return { error: `Invalid admin session (Supabase ${userRes.status}: ${detail}).`, status: 401 };
+  }
+
   const adminRes = await supabaseFetch(`/rest/v1/admin_users?user_id=eq.${encodeURIComponent(user.id)}&select=user_id&limit=1`, token);
   const admins = adminRes.ok ? await adminRes.json() : [];
   if (!admins.length) return { error: "This account is not authorized.", status: 403 };
