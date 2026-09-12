@@ -46,12 +46,15 @@
   }
 
   .mobile-product-page__wishlist {
-    width: 42px;
+    width: 46px;
+    min-width: 46px;
     height: 42px;
+    flex: 0 0 46px;
     display: grid;
     place-items: center;
-    border: 1px solid rgba(213, 177, 106, 0.2);
+    border: 1px solid var(--line-strong);
     border-radius: 999px;
+    color: var(--gold);
     font-size: 1.2rem;
   }
 
