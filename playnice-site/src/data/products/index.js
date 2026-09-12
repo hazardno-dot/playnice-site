@@ -2861,7 +2861,7 @@ export const products = [
   },
   {
     id: 101,
-    addedAt: "2026-09-12T23:49:40.954Z",
+    addedAt: "2026-09-12T23:53:42.853Z",
     slug: "arabiyat-prestige-al-noor",
     name: "Arabiyat Prestige Al Noor Eau De Parfum",
     modalName: "Arabiyat Prestige Al Noor Eau De Parfum",

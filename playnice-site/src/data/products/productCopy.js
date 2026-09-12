@@ -2989,15 +2989,15 @@ export const productCopy = {
     "dominantNotes": {
       "sr": [
         "Kardamom",
-        "smokva",
-        "iris",
-        "koža"
+        "Smokva",
+        "Iris",
+        "Koža"
       ],
       "en": [
         "Cardamom",
-        "fig",
-        "iris",
-        "leather"
+        "Fig",
+        "Iris",
+        "Leather"
       ]
     },
     "tags": {
