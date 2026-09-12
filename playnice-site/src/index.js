@@ -41,6 +41,7 @@ import "./CartConfirmationBar.css";
 import "./mobile-v2/content/MobileManifestoFix.css";
 import "./HeaderLanguageColor.css";
 import "./mobile-v2/product-page/MobileProductPageNoteMap.css";
+import "./AnnouncementTiming.css";
 
 const renderApp = () => {
   initLocationEvents();
