@@ -65,7 +65,31 @@ const heroSocialInvocationIndex = heroFinalize.lastIndexOf("await createHeroSoci
 assert.ok(heroFinalizeRpcIndex > -1, "Hero finalize RPC marker is missing.");
 assert.ok(heroSocialInvocationIndex > heroFinalizeRpcIndex, "Hero Social event must be downstream of successful Hero finalization.");
 
+const journalPublishSync = fs.readFileSync(path.join(root, "control-center/api/sync-journal-publish-status.js"), "utf8");
+for (const token of [
+  "journalPublishedEvent",
+  "createJournalSocialShadowEvent",
+  "shadow_event_created_from_journal_publish",
+  "POST-MERGE SAFETY BLOCK",
+  "renderJournalArticle(approved)",
+  "social_shadow_event",
+]) {
+  assert.ok(journalPublishSync.includes(token), `Journal publish Social shadow integration missing: ${token}`);
+}
+assert.ok(journalPublishSync.includes("console.warn(\"Journal Social shadow event creation skipped\""), "Journal Social producer must fail open and never block Journal reconciliation.");
+const journalSafetyIndex = journalPublishSync.indexOf("const expectedBlock = renderJournalArticle(approved)");
+const journalSocialInvocationIndex = journalPublishSync.lastIndexOf("await createJournalSocialShadowEvent({");
+const journalDeleteIndex = journalPublishSync.indexOf("journal_drafts?article_id=eq.${articleId}&apply_pr_number=eq.${draft.apply_pr_number}");
+assert.ok(journalSafetyIndex > -1, "Journal post-merge live-source safety check is missing.");
+assert.ok(journalSocialInvocationIndex > journalSafetyIndex, "Journal Social event must be downstream of post-merge live-source verification.");
+assert.ok(journalDeleteIndex > journalSocialInvocationIndex, "Journal draft must only be cleared after the Social shadow producer has run.");
+
+const journalApplyManager = fs.readFileSync(path.join(root, "control-center/src/JournalApplyManager.jsx"), "utf8");
+assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Journal UI must reconcile publication through the authenticated backend endpoint.");
+assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
+
 console.log("PASS  Social Publisher shadow-mode contract");
 console.log("PASS  Product publish creates a best-effort deduped Social shadow event after live merge");
 console.log("PASS  Hero finalize creates a best-effort Social shadow event after post-merge safety checks");
+console.log("PASS  Journal reconciliation verifies live source server-side before creating a Social shadow event");
 console.log("PASS  Social schema/publisher failures remain non-blocking for storefront publishing");
