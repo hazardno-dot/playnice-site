@@ -10,8 +10,10 @@ for (const token of [
   'whattowearen: "what_to_wear_en"',
   'doNotWearSR: ...',
   'whatToWearEN: ...',
+  'action.fieldKey === "image_path" && current === "/products/"',
 ]) {
   if (!source.includes(token)) throw new Error(`Bulk editorial context contract missing: ${token}`);
 }
 
 console.log("PASS  Bulk product input recognizes Do Not Wear and What To Wear bilingual aliases");
+console.log("PASS  New-product /products/ image placeholder is fill-empty eligible");
