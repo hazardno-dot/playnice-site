@@ -46,6 +46,14 @@ create table if not exists public.social_audit_log (
 alter table public.social_events enable row level security;
 alter table public.social_audit_log enable row level security;
 
+-- Explicit Data API exposure. Supabase no longer guarantees automatic grants for
+-- newly-created public tables, so keep browser/API access deterministic and least-privilege.
+revoke all on table public.social_events from anon;
+revoke all on table public.social_audit_log from anon;
+grant select, insert, update, delete on table public.social_events to authenticated;
+grant select, insert on table public.social_audit_log to authenticated;
+grant usage, select on sequence public.social_audit_log_id_seq to authenticated;
+
 -- Reuse Control Center admin authorization. These policies intentionally permit
 -- authenticated admins to inspect and edit shadow drafts while public users have no access.
 drop policy if exists social_events_admin_all on public.social_events;
@@ -61,12 +69,18 @@ using (exists (select 1 from public.admin_users a where a.user_id = auth.uid()))
 with check (exists (select 1 from public.admin_users a where a.user_id = auth.uid()));
 
 create or replace function public.set_social_events_updated_at()
-returns trigger language plpgsql as $$
+returns trigger
+language plpgsql
+security invoker
+set search_path = public
+as $$
 begin
   new.updated_at = now();
   return new;
 end;
 $$;
+
+revoke all on function public.set_social_events_updated_at() from public, anon, authenticated;
 
 drop trigger if exists social_events_updated_at on public.social_events;
 create trigger social_events_updated_at
