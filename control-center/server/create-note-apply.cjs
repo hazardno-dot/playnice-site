@@ -119,7 +119,7 @@ const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO = "hazardno-dot/playnice-site";
 const [OWNER, REPO_NAME] = REPO.split("/");
-const NOTE_SOURCE_PATH = "playnice-site/src/TheNoteMap.jsx";
+const NOTE_SOURCE_PATH = "playnice-site/src/TheNoteMapImpl.jsx";
 const NOTE_ASSET_ROOT = "playnice-site/public/note-map";
 
 const json = (res, status, body) => res.status(status).json(body);
@@ -234,7 +234,7 @@ module.exports = async function handler(req, res) {
     if (draft.apply_branch && draft.apply_pr_number) return json(res, 200, { ok: true, existing: true, branch: draft.apply_branch, pr_number: draft.apply_pr_number, pr_url: `https://github.com/${REPO}/pull/${draft.apply_pr_number}` });
 
     const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${NOTE_SOURCE_PATH}?ref=main`);
-    if (file.sha !== draft.baseline_snapshot.source_sha) return json(res, 409, { error: "LIVE DRIFT: TheNoteMap.jsx changed after Notes preparation. Prepare again." });
+    if (file.sha !== draft.baseline_snapshot.source_sha) return json(res, 409, { error: "LIVE DRIFT: TheNoteMapImpl.jsx changed after Notes preparation. Prepare again." });
     const source = Buffer.from(file.content, "base64").toString("utf8");
     const existsNow = noteExists(source, noteKey);
     if (mode === "insert" && existsNow) return json(res, 409, { error: `LIVE DRIFT: Note ${noteKey} now exists on main.` });
@@ -279,7 +279,7 @@ module.exports = async function handler(req, res) {
           `- Source: ${NOTE_SOURCE_PATH}`,
           `- Asset: /${assetFile} (${stagedAsset?.sha ? "included from staged upload" : "verified on main"})`,
           `- Operation: ${mode === "insert" ? "insert new NOTE_LIBRARY entry" : "replace/promote existing note metadata"}`,
-          "- Safety: exact TheNoteMap.jsx SHA drift guard",
+          "- Safety: exact TheNoteMapImpl.jsx SHA drift guard",
           "- Safety: approved payload equality guard",
           "- Safety: staged asset remains off main until PR merge",
           "- Safety: draft PR only; no automatic merge",
