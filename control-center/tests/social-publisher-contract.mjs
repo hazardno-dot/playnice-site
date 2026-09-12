@@ -113,7 +113,7 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
-for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Discard test event", "Replay latest published product", "draft_content", "approved_content", "payload?.core?.shortName"]) {
+for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Discard test event", "Replay Product", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
 assert.ok(socialManager.includes("social-media-meta"), "Social preview must expose selected media metadata.");
@@ -126,7 +126,21 @@ for (const token of ["generateSocialDraft", "draft_content", "approved_content",
 assert.ok(!socialDraftApi.includes("publish_mode: \"approval\""), "Draft approval must not unlock Meta publishing.");
 
 const replayApi = fs.readFileSync(path.join(root, "control-center/api/social-shadow-replay.js"), "utf8");
-for (const token of ["productPublishedEvent", "publish_history", "--shadow-replay-", "replay: true", "shadow_replay_created_from_publish_history"]) {
+for (const token of [
+  "productPublishedEvent",
+  "heroPublishedEvent",
+  "journalPublishedEvent",
+  "heroRowToSlide",
+  "journalArticles",
+  "publish_history",
+  "hero_slides",
+  "replayProduct",
+  "replayHero",
+  "replayJournal",
+  "source_type",
+  "replay: true",
+  "social-shadow-replay",
+]) {
   assert.ok(replayApi.includes(token), `Social shadow replay contract missing: ${token}`);
 }
 assert.ok(!replayApi.includes("publish_mode: \"approval\""), "Replay must remain shadow-only.");
@@ -142,7 +156,7 @@ console.log("PASS  Relative storefront media are normalized to public PlayNice U
 console.log("PASS  Channel-aware media selection prefers square feed and vertical Story assets with safe fallbacks");
 console.log("PASS  Social captions are editable, auditable and can be marked READY without unlocking Meta publishing");
 console.log("PASS  Explicit test/replay events can be safely discarded without exposing delete for real Social events");
-console.log("PASS  Latest publish history can be replayed into the shadow queue without touching storefront state");
+console.log("PASS  Product, Hero and Journal live sources can be replayed into the shadow queue without touching storefront state");
 console.log("PASS  Product publish creates a best-effort deduped Social shadow event after live merge");
 console.log("PASS  Hero finalize creates a best-effort Social shadow event after post-merge safety checks");
 console.log("PASS  Journal reconciliation verifies live source server-side before creating a Social shadow event");
