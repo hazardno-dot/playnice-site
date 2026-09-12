@@ -10603,7 +10603,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
-{showBackToTop && !sideRailBlocked && (
+{showBackToTop && (!sideRailBlocked || (isMobileProductPageActive && !hasBlockingOverlay)) && (
   <button
     type="button"
     className="back-to-top"
