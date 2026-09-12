@@ -29,17 +29,17 @@ async function requireAdmin(req) {
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
   if (!token) return { error: "Missing admin session.", status: 401 };
 
-  const userRes = await supabaseFetch("/auth/v1/user", token);
-  const user = await safeJson(userRes);
-  if (!userRes.ok || !user?.id) {
-    const detail = String(user?.message || user?.msg || user?.error_description || user?.error || "unknown auth error").slice(0, 180);
-    return { error: `Invalid admin session (Supabase ${userRes.status}: ${detail}).`, status: 401 };
+  const adminRes = await supabaseFetch("/rest/v1/admin_users?select=user_id&limit=1", token);
+  const admins = await safeJson(adminRes);
+  if (!adminRes.ok) {
+    const detail = String(admins?.message || admins?.hint || admins?.details || "token rejected by Supabase").slice(0, 180);
+    return { error: `Invalid admin session (Supabase ${adminRes.status}: ${detail}).`, status: 401 };
+  }
+  if (!Array.isArray(admins) || !admins.length || !admins[0]?.user_id) {
+    return { error: "This account is not authorized.", status: 403 };
   }
 
-  const adminRes = await supabaseFetch(`/rest/v1/admin_users?user_id=eq.${encodeURIComponent(user.id)}&select=user_id&limit=1`, token);
-  const admins = adminRes.ok ? await adminRes.json() : [];
-  if (!admins.length) return { error: "This account is not authorized.", status: 403 };
-  return { token, user };
+  return { token, user: { id: admins[0].user_id } };
 }
 
 const CHANNELS = ["instagram_feed", "instagram_story", "facebook"];
