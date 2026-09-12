@@ -60,7 +60,10 @@ for (const token of [
   assert.ok(heroFinalize.includes(token), `Hero publish Social shadow integration missing: ${token}`);
 }
 assert.ok(heroFinalize.includes("console.warn(\"Hero Social shadow event creation skipped\""), "Hero Social producer must fail open and never block Hero finalization.");
-assert.ok(heroFinalize.indexOf("finalize_hero_apply") < heroFinalize.indexOf("createHeroSocialShadowEvent"), "Hero Social event must be downstream of successful Hero finalization.");
+const heroFinalizeRpcIndex = heroFinalize.indexOf('supabaseFetch("/rest/v1/rpc/finalize_hero_apply"');
+const heroSocialInvocationIndex = heroFinalize.lastIndexOf("await createHeroSocialShadowEvent({");
+assert.ok(heroFinalizeRpcIndex > -1, "Hero finalize RPC marker is missing.");
+assert.ok(heroSocialInvocationIndex > heroFinalizeRpcIndex, "Hero Social event must be downstream of successful Hero finalization.");
 
 console.log("PASS  Social Publisher shadow-mode contract");
 console.log("PASS  Product publish creates a best-effort deduped Social shadow event after live merge");
