@@ -6,6 +6,7 @@ const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 
 const app = read("control-center/src/App.jsx");
 const validation = read("control-center/src/draftValidation.js");
+const draftManager = read("control-center/src/DraftManager.jsx");
 const prepublish = read("control-center/src/prepublish.js");
 const apply = read("control-center/api/create-apply.js");
 const createNew = read("control-center/lib/create-new-product-engine.mjs");
@@ -55,6 +56,10 @@ for (const token of ["Do Not Wear", "What To Wear", "doNotWear", "whatToWear"]) 
   if (!validation.includes(token)) throw new Error(`Draft validation contract missing: ${token}`);
 }
 
+for (const token of ["productDoNotWearContext", "productWhatToWearContext", "Do Not Wear", "What To Wear", "draft.doNotWear", "draft.whatToWear"]) {
+  if (!draftManager.includes(token)) throw new Error(`Draft review editorial diff contract missing: ${token}`);
+}
+
 for (const token of ["doNotWear", "whatToWear", "editorialContextIndex"]) {
   if (!prepublish.includes(token)) throw new Error(`Prepublish snapshot contract missing: ${token}`);
 }
@@ -83,5 +88,6 @@ for (const token of [
 console.log(`PASS  editorial context coverage and order match catalog (${catalogCount} products)`);
 console.log("PASS  Product editor stores Do Not Wear and What To Wear in the native draft payload");
 console.log("PASS  validation and prepublish snapshots protect both editorial contexts");
+console.log("PASS  Draft review shows both editorial contexts in LIVE → DRAFT diff");
 console.log("PASS  Controlled Apply uses editorial index + payload drift guards");
 console.log("PASS  new-product apply appends both editorial contexts atomically");
