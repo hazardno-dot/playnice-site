@@ -23,8 +23,8 @@
   }
 
   .mobile-product-page__visual-frame .mobile-product-page__image-button img {
-    width: min(88%, 250px);
-    max-height: 254px;
+    width: min(98.5%, 280px);
+    max-height: 284px;
   }
 
   .mobile-product-page__visual-frame.is-note-map-open .mobile-product-page__image-button {
