@@ -3,10 +3,14 @@ import { createPortal } from "react-dom";
 import "./MobileMenuContact.css";
 
 const getActiveLang = () => {
+  const documentLang = document.documentElement.lang?.toLowerCase();
+  if (documentLang?.startsWith("sr")) return "sr";
+  if (documentLang?.startsWith("en")) return "en";
+
   const storedLang = window.localStorage.getItem("playnice_lang")?.toLowerCase();
   if (storedLang === "sr" || storedLang === "en") return storedLang;
 
-  return document.documentElement.lang?.toLowerCase().startsWith("sr") ? "sr" : "en";
+  return "en";
 };
 
 function MobileMenuContact() {
@@ -31,10 +35,12 @@ function MobileMenuContact() {
     });
 
     window.addEventListener("storage", syncLang);
+    window.addEventListener("pageshow", syncLang);
 
     return () => {
       languageObserver.disconnect();
       window.removeEventListener("storage", syncLang);
+      window.removeEventListener("pageshow", syncLang);
     };
   }, []);
 
@@ -44,14 +50,15 @@ function MobileMenuContact() {
     const trigger = document.querySelector(".header-next-menu-trigger");
     if (!trigger) return undefined;
 
-    const resetSubmenus = () => {
+    const handleMenuToggle = () => {
+      setLang(getActiveLang());
       setSupportOpen(false);
       setCatalogOpen(false);
     };
 
-    trigger.addEventListener("click", resetSubmenus);
+    trigger.addEventListener("click", handleMenuToggle);
 
-    return () => trigger.removeEventListener("click", resetSubmenus);
+    return () => trigger.removeEventListener("click", handleMenuToggle);
   }, [panelTarget]);
 
   const closeMobileMenu = () => {
