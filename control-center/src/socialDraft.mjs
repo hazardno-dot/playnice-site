@@ -16,7 +16,10 @@ const CHANNEL_MEDIA_PRIORITIES = {
 function normalizeMedia(media = []) {
   return (Array.isArray(media) ? media : [])
     .filter((item) => mediaSrc(item))
-    .map((item) => ({ ...item, src: mediaSrc(item), format: item?.format || "unknown" }));
+    .map((item) => {
+      const raw = mediaSrc(item);
+      return { ...item, src: siteUrl(raw), format: item?.format || "unknown" };
+    });
 }
 
 export function selectSocialMedia(media = [], channel = "instagram_feed") {
@@ -51,7 +54,7 @@ function payloadMedia(payload = {}, sourceType = "") {
 
 export function resolveEventMedia(event = {}) {
   const explicit = normalizeMedia(event.media || []);
-  const fallback = payloadMedia(event.payload || {}, event.source_type);
+  const fallback = normalizeMedia(payloadMedia(event.payload || {}, event.source_type));
   const seen = new Set();
   return [...explicit, ...fallback].filter((item) => {
     const key = `${mediaSrc(item)}|${mediaFormat(item)}`;
