@@ -107,11 +107,26 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
+for (const token of ["/api/social-draft", "Save draft", "Mark ready", "Return to draft", "draft_content", "approved_content"]) {
+  assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
+}
 assert.ok(socialManager.includes("social-media-meta"), "Social preview must expose selected media metadata.");
 assert.ok(socialManager.includes('key === "instagram_story" ? "story" : ""'), "Instagram Story preview must use a vertical-specific layout.");
 
+const socialDraftApi = fs.readFileSync(path.join(root, "control-center/api/social-draft.js"), "utf8");
+for (const token of ["generateSocialDraft", "draft_content", "approved_content", "approved_at", "draft_marked_ready", "draft_reopened", "2200"]) {
+  assert.ok(socialDraftApi.includes(token), `Social draft API contract missing: ${token}`);
+}
+assert.ok(!socialDraftApi.includes("publish_mode: \"approval\""), "Draft approval must not unlock Meta publishing.");
+
+const socialSchema = fs.readFileSync(path.join(root, "control-center/supabase/social_publisher_v1.sql"), "utf8");
+for (const token of ["draft_content jsonb", "approved_content jsonb", "approved_at timestamptz", "publish_mode text not null default 'shadow'"]) {
+  assert.ok(socialSchema.includes(token), `Social schema review-state contract missing: ${token}`);
+}
+
 console.log("PASS  Social Publisher shadow-mode contract");
 console.log("PASS  Channel-aware media selection prefers square feed and vertical Story assets with safe fallbacks");
+console.log("PASS  Social captions are editable, auditable and can be marked READY without unlocking Meta publishing");
 console.log("PASS  Product publish creates a best-effort deduped Social shadow event after live merge");
 console.log("PASS  Hero finalize creates a best-effort Social shadow event after post-merge safety checks");
 console.log("PASS  Journal reconciliation verifies live source server-side before creating a Social shadow event");
