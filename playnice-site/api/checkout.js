@@ -5,6 +5,8 @@ const resendModule = require("resend");
 const checkoutContext = new AsyncLocalStorage();
 const OriginalResend = resendModule.Resend;
 const originalFetch = global.fetch;
+const SHEETS_ATTEMPT_TIMEOUT_MS = 10000;
+const SHEETS_MAX_ATTEMPTS = 2;
 
 function isDomesticCheckout(req) {
   const body = req?.body || {};
@@ -81,6 +83,74 @@ class CheckoutResend extends OriginalResend {
 
 resendModule.Resend = CheckoutResend;
 
+async function fetchOrdersSheetWithRecovery(args, context) {
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= SHEETS_MAX_ATTEMPTS; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), SHEETS_ATTEMPT_TIMEOUT_MS);
+    const requestOptions = {
+      ...(args[1] || {}),
+      signal: controller.signal
+    };
+
+    try {
+      const response = await originalFetch(args[0], requestOptions);
+      let clonedData = null;
+
+      try {
+        const clonedText = await response.clone().text();
+        clonedData = JSON.parse(clonedText);
+        context.appsScriptTimings = clonedData?.timings || null;
+        context.appsScriptDuplicate = Boolean(clonedData?.duplicate);
+        context.appsScriptTimingParseError = null;
+      } catch (timingParseError) {
+        context.appsScriptTimingParseError = safeErrorMessage(
+          timingParseError,
+          "Unable to parse Apps Script timing payload"
+        );
+      }
+
+      const isValidOrderResponse =
+        response.ok &&
+        clonedData?.status === "ok" &&
+        Boolean(clonedData?.orderId);
+
+      if (isValidOrderResponse || attempt === SHEETS_MAX_ATTEMPTS) {
+        context.appsScriptRecoveryAttempts = attempt - 1;
+        return response;
+      }
+
+      context.appsScriptRecoveryAttempts = attempt;
+      console.warn(
+        "Unexpected Apps Script order response; retrying once:",
+        JSON.stringify({
+          attempt,
+          status: response.status,
+          dataStatus: clonedData?.status || null,
+          message: clonedData?.message || null
+        })
+      );
+    } catch (error) {
+      lastError = error;
+      context.appsScriptRecoveryAttempts = attempt;
+
+      if (attempt === SHEETS_MAX_ATTEMPTS) {
+        throw error;
+      }
+
+      console.warn(
+        "Apps Script order request failed or timed out; retrying once:",
+        safeErrorMessage(error, "Unknown Apps Script error")
+      );
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  throw lastError || new Error("Apps Script order request failed");
+}
+
 global.fetch = async (...args) => {
   const context = checkoutContext.getStore();
   const target = typeof args[0] === "string" ? args[0] : args[0]?.url;
@@ -96,23 +166,7 @@ global.fetch = async (...args) => {
   const sheetsStart = Date.now();
 
   try {
-    const response = await originalFetch(...args);
-
-    // Preserve the response body for the legacy checkout handler while also
-    // capturing detailed Apps Script timings from the cloned response.
-    try {
-      const clonedText = await response.clone().text();
-      const clonedData = JSON.parse(clonedText);
-      context.appsScriptTimings = clonedData?.timings || null;
-      context.appsScriptDuplicate = Boolean(clonedData?.duplicate);
-    } catch (timingParseError) {
-      context.appsScriptTimingParseError = safeErrorMessage(
-        timingParseError,
-        "Unable to parse Apps Script timing payload"
-      );
-    }
-
-    return response;
+    return await fetchOrdersSheetWithRecovery(args, context);
   } finally {
     context.sheetsMs = Date.now() - sheetsStart;
   }
@@ -133,7 +187,8 @@ export default async function handler(req, res) {
     customerEmailError: null,
     appsScriptTimings: null,
     appsScriptDuplicate: false,
-    appsScriptTimingParseError: null
+    appsScriptTimingParseError: null,
+    appsScriptRecoveryAttempts: 0
   };
 
   return checkoutContext.run(context, async () => {
@@ -153,7 +208,8 @@ export default async function handler(req, res) {
           sheetsMs: context.sheetsMs,
           emailsMs: context.emailsMs,
           totalMs,
-          appsScript: context.appsScriptTimings
+          appsScript: context.appsScriptTimings,
+          appsScriptRecoveryAttempts: context.appsScriptRecoveryAttempts
         };
       }
 
@@ -166,6 +222,7 @@ export default async function handler(req, res) {
         appsScriptTimings: context.appsScriptTimings,
         appsScriptDuplicate: context.appsScriptDuplicate,
         appsScriptTimingParseError: context.appsScriptTimingParseError,
+        appsScriptRecoveryAttempts: context.appsScriptRecoveryAttempts,
         adminEmailSent: payload?.adminEmailSent ?? context.adminEmailSent,
         customerEmailSent: payload?.customerEmailSent ?? context.customerEmailSent
       }));

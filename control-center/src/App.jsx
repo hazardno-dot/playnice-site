@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { products } from "@shop/data/products/index.js";
 import { productCopy } from "@shop/data/products/productCopy.js";
 import { productWearContext } from "@shop/data/products/productWearContext.js";
+import { productDoNotWearContext } from "@shop/data/products/productDoNotWearContext.js";
+import { productWhatToWearContext } from "@shop/data/products/productWhatToWearContext.js";
 import discoveryProfiles from "@shop/data/products/discoveryProfiles.js";
 import { journalArticles } from "@shop/data/journal/index.js";
 import { supabase } from "./supabase";
@@ -25,7 +27,7 @@ const MODULE_META = {
   Analytics: { eyebrow: "INTELLIGENCE / OPERATIONS", description: "Workflow telemetry, publishing history and Control Center activity." },
   "Site Health": { eyebrow: "SYSTEM / PRODUCTION", description: "Live production contracts, runtime delivery, history and incident intelligence." }
 };
-const FILTERS = [["all","All"],["complete","Complete"],["copy","Missing Copy"],["wear","Missing Wear"],["discovery","Missing Discovery"],["note-map","Missing Note Map"],["recommendations","Missing Recommendations"]];
+const FILTERS = [["all","All"],["complete","Complete"],["copy","Missing Copy"],["wear","Missing Wear"],["do-not-wear","Missing Do Not Wear"],["what-to-wear","Missing What To Wear"],["discovery","Missing Discovery"],["note-map","Missing Note Map"],["recommendations","Missing Recommendations"]];
 const metricKeys = [["category","Category"],["season","Season"],["rating","Rating"],["ratingLabel","Rating label"],["badge","Badge"]];
 const titleCase = (value) => String(value || "").replace(/[-_]/g," ").replace(/\b\w/g,(l)=>l.toUpperCase());
 const emptyWorkflow = { productDrafts:0, heroDrafts:0, journalDrafts:0, noteDrafts:0, approved:0, ready:0, heroSlides:0 };
@@ -34,23 +36,25 @@ function getCoverage(product){
   const draftPayload=product?.__draftPayload;
   const copy=draftPayload?.copy||productCopy[product.name];
   const wear=draftPayload?.wear||productWearContext[product.name];
+  const doNotWear=draftPayload?.doNotWear||productDoNotWearContext[product.name];
+  const whatToWear=draftPayload?.whatToWear||productWhatToWearContext[product.name];
   const discovery=draftPayload?.discovery||discoveryProfiles[product.slug];
-  const checks=[["Core",Boolean(product)],["Copy",Boolean(copy&&Object.keys(copy).length)],["Wear",Boolean(wear&&Object.keys(wear).length)],["Discovery",Boolean(discovery&&Object.keys(discovery).length)],["Note map",Boolean(product.noteMap)],["Recommendations",(product.recommendations||[]).length===3]];
+  const checks=[["Core",Boolean(product)],["Copy",Boolean(copy&&Object.keys(copy).length)],["Wear",Boolean(wear&&Object.keys(wear).length)],["Do not wear",Boolean(doNotWear&&Object.keys(doNotWear).length)],["What to wear",Boolean(whatToWear&&Object.keys(whatToWear).length)],["Discovery",Boolean(discovery&&Object.keys(discovery).length)],["Note map",Boolean(product.noteMap)],["Recommendations",(product.recommendations||[]).length===3]];
   const complete=checks.filter(([,ok])=>ok).length;
-  return {copy,wear,discovery,checks,complete,total:checks.length};
+  return {copy,wear,doNotWear,whatToWear,discovery,checks,complete,total:checks.length};
 }
 function matchesCoverageFilter(product,filter){
   const c=getCoverage(product);
   if(filter==="all")return true;
   if(filter==="complete")return c.complete===c.total;
-  const labels={copy:"Copy",wear:"Wear",discovery:"Discovery","note-map":"Note map",recommendations:"Recommendations"};
+  const labels={copy:"Copy",wear:"Wear","do-not-wear":"Do not wear","what-to-wear":"What to wear",discovery:"Discovery","note-map":"Note map",recommendations:"Recommendations"};
   return c.checks.some(([name,ok])=>name===labels[filter]&&!ok);
 }
 function makeDraft(product){
-  const {copy,wear,discovery}=getCoverage(product);
+  const {copy,wear,doNotWear,whatToWear,discovery}=getCoverage(product);
   return {
     core:{name:product.name||"",shortName:product.shortName||"",category:product.category||"",image:product.image||"",badge:product.badge||"",rating:product.rating??"",ratingLabel:product.ratingLabel||"",season:product.season||"",moods:(product.moods||[]).join(", "),inspiredBy:{name:product.inspiredBy?.name||"",short:product.inspiredBy?.short||""},sizes:{...(product.sizes||{})},noteMap:{top:(product.noteMap?.top||[]).join(", "),heart:(product.noteMap?.heart||[]).join(", "),base:(product.noteMap?.base||[]).join(", ")},recommendations:(product.recommendations||[]).join(", ")},
-    copy:JSON.parse(JSON.stringify(copy||{})),wear:JSON.parse(JSON.stringify(wear||{})),discovery:{...(discovery||{})},savedAt:null
+    copy:JSON.parse(JSON.stringify(copy||{})),wear:JSON.parse(JSON.stringify(wear||{})),doNotWear:JSON.parse(JSON.stringify(doNotWear||{})),whatToWear:JSON.parse(JSON.stringify(whatToWear||{})),discovery:{...(discovery||{})},savedAt:null
   };
 }
 function makeBlankDraft(){
@@ -58,7 +62,7 @@ function makeBlankDraft(){
   return {
     core:{name:"",shortName:"",category:"Arabian",image:"/products/",badge:"",rating:"",ratingLabel:"",season:"all",moods:"",inspiredBy:{name:"",short:""},sizes:{},noteMap:{top:"",heart:"",base:""},recommendations:""},
     copy:{miniTag:{sr:"",en:""},scentType:{sr:"",en:""},card:{sr:"",en:""},modal:{sr:"",en:""},dominantNotes:{sr:"",en:""},tags:{sr:"",en:""},whyChoose:{sr:"",en:""}},
-    wear:{sr:"",en:""},discovery:Object.fromEntries(discoveryKeys.map((key)=>[key,0])),savedAt:null
+    wear:{sr:"",en:""},doNotWear:{sr:"",en:""},whatToWear:{sr:"",en:""},discovery:Object.fromEntries(discoveryKeys.map((key)=>[key,0])),savedAt:null
   };
 }
 const csvList=(value)=>Array.isArray(value)?value:String(value||"").split(",").map((item)=>item.trim()).filter(Boolean);
@@ -111,6 +115,8 @@ function DraftEditor({product,initial,onCancel,onSave}){
     <section className="edit-section"><div className="section-heading"><span>FRAGRANCE DNA</span><h3>Notes & recommendations</h3></div><div className="edit-grid"><Field label="Top notes · comma separated" value={core.noteMap.top} onChange={(v)=>setNote("top",v)}/><Field label="Heart notes · comma separated" value={core.noteMap.heart} onChange={(v)=>setNote("heart",v)}/><Field label="Base notes · comma separated" value={core.noteMap.base} onChange={(v)=>setNote("base",v)}/><Field label="Recommendation slugs · 3 comma separated" value={core.recommendations} onChange={(v)=>setCore("recommendations",v)}/></div></section>
     <section className="edit-section"><div className="section-heading"><span>EDITORIAL</span><h3>Product copy</h3></div><div className="edit-stack"><LangPair label="Mini tag" value={draft.copy.miniTag} onChange={(v)=>setCopy("miniTag",v)}/><LangPair label="Scent type" value={draft.copy.scentType} onChange={(v)=>setCopy("scentType",v)}/><LangPair label="Card copy" multiline value={draft.copy.card} onChange={(v)=>setCopy("card",v)}/><LangPair label="Modal copy" multiline value={draft.copy.modal} onChange={(v)=>setCopy("modal",v)}/><LangPair label="Dominant notes · comma separated" value={draft.copy.dominantNotes} onChange={(v)=>setCopy("dominantNotes",v)}/><LangPair label="Tags · comma separated" value={draft.copy.tags} onChange={(v)=>setCopy("tags",v)}/><LangPair label="Why choose" multiline value={draft.copy.whyChoose} onChange={(v)=>setCopy("whyChoose",v)}/></div></section>
     <section className="edit-section"><div className="section-heading"><span>WEAR CONTEXT</span><h3>When to wear</h3></div><div className="lang-pair"><TextField label="Wear · SR" value={draft.wear?.sr||""} onChange={(v)=>setDraft((d)=>({...d,wear:{...d.wear,sr:v}}))}/><TextField label="Wear · EN" value={draft.wear?.en||""} onChange={(v)=>setDraft((d)=>({...d,wear:{...d.wear,en:v}}))}/></div></section>
+    <section className="edit-section"><div className="section-heading"><span>EDITORIAL CONTEXT</span><h3>When NOT to wear</h3></div><div className="lang-pair"><TextField label="Do not wear · SR" value={draft.doNotWear?.sr||""} onChange={(v)=>setDraft((d)=>({...d,doNotWear:{...d.doNotWear,sr:v}}))}/><TextField label="Do not wear · EN" value={draft.doNotWear?.en||""} onChange={(v)=>setDraft((d)=>({...d,doNotWear:{...d.doNotWear,en:v}}))}/></div></section>
+    <section className="edit-section"><div className="section-heading"><span>STYLE CONTEXT</span><h3>What to wear</h3></div><div className="lang-pair"><TextField label="What to wear · SR" value={draft.whatToWear?.sr||""} onChange={(v)=>setDraft((d)=>({...d,whatToWear:{...d.whatToWear,sr:v}}))}/><TextField label="What to wear · EN" value={draft.whatToWear?.en||""} onChange={(v)=>setDraft((d)=>({...d,whatToWear:{...d.whatToWear,en:v}}))}/></div></section>
     <section className="edit-section"><div className="section-heading"><span>DISCOVERY INTELLIGENCE</span><h3>Scent profile</h3></div><div className="discovery-edit-grid">{Object.entries(draft.discovery||{}).map(([k,v])=><Field key={k} label={titleCase(k)} type="number" step="0.1" value={v} onChange={(x)=>setDraft((d)=>({...d,discovery:{...d.discovery,[k]:x}}))}/>)}</div></section>
     <div className="editor-actions bottom"><button className="secondary-btn" onClick={onCancel} disabled={saving}>Cancel</button><button className="primary-btn" onClick={save} disabled={saving}>{saving?"Saving…":"Save Draft"}</button></div>
   </article>;
@@ -118,13 +124,15 @@ function DraftEditor({product,initial,onCancel,onSave}){
 
 function ProductDetail({product,draft,onEdit}){
   if(!product)return <div className="empty-detail"><h2>Select a fragrance</h2></div>;
-  const c=getCoverage(product); const {copy,wear,discovery}=c;
+  const c=getCoverage(product); const {copy,wear,doNotWear,whatToWear,discovery}=c;
   return <article className="product-detail"><div className="detail-hero"><div><div className="detail-title-row"><span className="eyebrow">PRODUCT / READ ONLY</span>{draft?<span className="draft-badge">DRAFT SAVED</span>:null}</div><h2>{product.name}</h2><p className="slug">{product.slug}</p><button className="edit-btn" onClick={onEdit}>Edit product</button></div>{product.image&&!product.image.endsWith("/")?<img src={`${SHOP_ORIGIN}${product.image}`} alt={product.name}/>:null}</div>
     <CoveragePanel coverage={c}/><div className="detail-grid">{metricKeys.map(([k,l])=><div className="metric" key={k}><span>{l}</span><strong>{product[k]??"—"}</strong></div>)}</div>
     <section className="detail-section"><div className="section-heading"><span>COMMERCE</span><h3>Sizes & prices</h3></div><div className="price-grid">{Object.entries(product.sizes||{}).map(([s,p])=><div className="price-chip" key={s}><span>{s}</span><strong>€{Number(p).toFixed(2).replace(".00","")}</strong></div>)}</div></section>
     <section className="detail-section"><div className="section-heading"><span>CLASSIFICATION</span><h3>Moods</h3></div><div className="tag-row">{(product.moods||[]).map((m)=><span key={m}>{m}</span>)}</div></section>
     <section className="detail-section"><div className="section-heading"><span>EDITORIAL</span><h3>Product copy</h3></div>{copy?<div className="copy-grid"><div><span>Mini tag</span><p>{copy.miniTag?.sr||"—"}</p><small>{copy.miniTag?.en||"—"}</small></div><div><span>Scent type</span><p>{copy.scentType?.sr||"—"}</p><small>{copy.scentType?.en||"—"}</small></div><div className="copy-wide"><span>Card copy</span><p>{copy.card?.sr||"—"}</p><small>{copy.card?.en||"—"}</small></div></div>:null}</section>
     <section className="detail-section"><div className="section-heading"><span>WEAR CONTEXT</span><h3>When to wear</h3></div>{wear?<div className="bilingual-copy"><p>{wear.sr}</p><small>{wear.en}</small></div>:null}</section>
+    <section className="detail-section"><div className="section-heading"><span>EDITORIAL CONTEXT</span><h3>When NOT to wear</h3></div>{doNotWear?<div className="bilingual-copy"><p>{doNotWear.sr}</p><small>{doNotWear.en}</small></div>:null}</section>
+    <section className="detail-section"><div className="section-heading"><span>STYLE CONTEXT</span><h3>What to wear</h3></div>{whatToWear?<div className="bilingual-copy"><p>{whatToWear.sr}</p><small>{whatToWear.en}</small></div>:null}</section>
     <section className="detail-section"><div className="section-heading"><span>FRAGRANCE DNA</span><h3>Note map</h3></div><div className="notes-grid">{["top","heart","base"].map((level)=><div key={level}><span className="note-level">{level}</span><div className="tag-row">{(product.noteMap?.[level]||[]).map((n)=><span key={n}>{n}</span>)}</div></div>)}</div></section>
     <section className="detail-section"><div className="section-heading"><span>DISCOVERY INTELLIGENCE</span><h3>Scent profile</h3></div><div className="discovery-grid">{Object.entries(discovery||{}).map(([k,v])=><div className="discovery-metric" key={k}><div><span>{titleCase(k)}</span><strong>{v}</strong></div><div className="meter"><span style={{width:`${Math.max(0,Math.min(10,Number(v)))*10}%`}}/></div></div>)}</div></section>
     <section className="detail-section"><div className="section-heading"><span>RECOMMENDATIONS</span><h3>Linked products</h3></div><ol className="recommendations">{(product.recommendations||[]).map((slug)=><li key={slug}>{products.find((p)=>p.slug===slug)?.name||slug}</li>)}</ol></section>
@@ -132,7 +140,7 @@ function ProductDetail({product,draft,onEdit}){
 }
 
 function Overview({audit,workflow,workflowLoading}){
-  const layers=[["Copy",audit.layerCounts.Copy],["Wear",audit.layerCounts.Wear],["Discovery",audit.layerCounts.Discovery],["Note map",audit.layerCounts["Note map"]],["Recommendations",audit.layerCounts.Recommendations]];
+  const layers=[["Copy",audit.layerCounts.Copy],["Wear",audit.layerCounts.Wear],["Do not wear",audit.layerCounts["Do not wear"]],["What to wear",audit.layerCounts["What to wear"]],["Discovery",audit.layerCounts.Discovery],["Note map",audit.layerCounts["Note map"]],["Recommendations",audit.layerCounts.Recommendations]];
   const totalDrafts=workflow.productDrafts+workflow.heroDrafts+workflow.journalDrafts+workflow.noteDrafts;
   return <div className="overview-v2"><div className="overview-grid overview-grid-v2">
     <div className="overview-card"><span>Products</span><strong>{products.length}</strong><small>live catalog records</small></div>

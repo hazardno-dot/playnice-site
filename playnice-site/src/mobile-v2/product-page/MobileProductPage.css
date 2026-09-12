@@ -1,0 +1,712 @@
+/* =========================================
+   PLAYNICE MOBILE PRODUCT PAGE — CLEAN
+   Standalone page architecture. No legacy modal selectors.
+========================================= */
+
+@media (max-width: 640px) {
+  .mobile-product-page {
+    min-height: 100dvh;
+    padding: 0 14px 0;
+    background:
+      radial-gradient(circle at 50% 8%, rgba(132, 101, 51, 0.09), transparent 28%),
+      #090908;
+    color: #f4ead8;
+  }
+
+  .mobile-product-page > section,
+  .mobile-product-page > footer {
+    width: 100%;
+    max-width: 520px;
+    margin-inline: auto;
+  }
+
+  .mobile-product-page__identity {
+    padding: 18px 0 16px;
+    border-bottom: 1px solid rgba(213, 177, 106, 0.12);
+  }
+
+  .mobile-product-page__identity-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .mobile-product-page__back,
+  .mobile-product-page__wishlist {
+    border: 0;
+    background: transparent;
+    color: rgba(244, 234, 216, 0.7);
+  }
+
+  .mobile-product-page__back {
+    padding: 8px 0;
+    font: 700 0.68rem/1 Inter, sans-serif;
+    letter-spacing: 0.12em;
+  }
+
+  .mobile-product-page__wishlist {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+  }
+
+  .mobile-product-page__wishlist svg {
+    width: 16px;
+    height: 16px;
+    overflow: visible;
+    fill: none;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .mobile-product-page__wishlist .is-outline {
+    fill: none;
+    stroke: rgba(220, 181, 107, 0.88);
+  }
+
+  .mobile-product-page__wishlist .is-filled {
+    fill: #dcb56b;
+    stroke: #e2bd72;
+  }
+
+  .mobile-product-page__type,
+  .mobile-product-page__section-head span,
+  .mobile-product-page__inspired strong,
+  .mobile-product-page__badge,
+  .mobile-product-page__price-box span {
+    color: #c99d4f;
+    font: 800 0.58rem/1.2 Inter, sans-serif;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .mobile-product-page__identity h1 {
+    width: 100%;
+    margin: 7px 0 10px;
+    max-width: none;
+    color: #f3e7d0;
+    font: 600 clamp(2rem, 8.7vw, 2.6rem)/0.96 "Cormorant Garamond", serif;
+    letter-spacing: -0.035em;
+    text-wrap: wrap;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .mobile-product-page__meta {
+    display: grid;
+    gap: 12px;
+  }
+
+  .mobile-product-page__rating {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    color: #d7b46c;
+    font: 750 0.82rem/1.3 Inter, sans-serif;
+  }
+
+  .mobile-product-page__rating-stars {
+    display: inline-block;
+    color: #d7b46c;
+    font-size: 0.74rem;
+    line-height: 1;
+    letter-spacing: 0.045em;
+    white-space: nowrap;
+    text-shadow: 0 0 10px rgba(220, 181, 107, 0.16);
+  }
+
+  .mobile-product-page__rating-stars .is-filled {
+    color: #d7b46c;
+  }
+
+  .mobile-product-page__rating-stars .is-empty {
+    color: rgba(244, 234, 216, 0.16);
+    text-shadow: none;
+  }
+
+  .mobile-product-page__rating-score {
+    white-space: nowrap;
+  }
+
+  .mobile-product-page__rating small {
+    color: rgba(244, 234, 216, 0.54);
+    font-weight: 500;
+  }
+
+  .mobile-product-page__inspired {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    color: rgba(244, 234, 216, 0.58);
+    font: 500 0.68rem/1.35 Inter, sans-serif;
+  }
+
+  .mobile-product-page__media {
+    position: relative;
+    padding: 24px 0 18px;
+  }
+
+  .mobile-product-page__badge {
+    margin: 0 auto 12px;
+    width: fit-content;
+  }
+
+  .mobile-product-page__sale-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    min-height: 25px;
+    padding: 0 9px;
+    border: 1px solid rgba(209, 76, 76, 0.42);
+    border-radius: 999px;
+    background: rgba(72, 18, 18, 0.88);
+    color: #f2b7ad;
+    font: 800 0.54rem/1 Inter, sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    pointer-events: none;
+  }
+
+  .mobile-product-page__visual-frame.is-note-map-open .mobile-product-page__sale-badge {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+
+  .mobile-product-page__image-button {
+    width: 100%;
+    min-height: 350px;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    border: 1px solid rgba(213, 177, 106, 0.12);
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at 50% 45%, rgba(95, 73, 39, 0.12), transparent 42%),
+      linear-gradient(180deg, #100f0d, #0a0a09);
+    overflow: hidden;
+  }
+
+  .mobile-product-page__image-button.has-note-map {
+    cursor: pointer;
+  }
+
+  .mobile-product-page__image-button img {
+    width: min(80%, 280px);
+    max-height: 314px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .mobile-product-page__monogram {
+    font: 600 5rem/1 "Cormorant Garamond", serif;
+    color: rgba(213, 177, 106, 0.45);
+  }
+
+  .mobile-product-page__story {
+    padding: 17px 2px 21px;
+    border-bottom: 1px solid rgba(213, 177, 106, 0.1);
+  }
+
+  .mobile-product-page__lead {
+    margin: 0;
+    max-width: 32ch;
+    color: #eee1ca;
+    font: 500 1.18rem/1.34 "Cormorant Garamond", serif;
+  }
+
+  .mobile-product-page__scent-type {
+    display: block;
+    margin-top: 11px;
+    color: rgba(244, 234, 216, 0.54);
+    font: 500 0.72rem/1.4 Inter, sans-serif;
+  }
+
+  .mobile-product-page__purchase,
+  .mobile-product-page__glance,
+  .mobile-product-page__recommendations {
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(213, 177, 106, 0.1);
+  }
+
+  .mobile-product-page__section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .mobile-product-page__section-head > div {
+    display: grid;
+    gap: 5px;
+  }
+
+  .mobile-product-page__section-head small {
+    color: rgba(244, 234, 216, 0.42);
+    font: 500 0.66rem/1.35 Inter, sans-serif;
+  }
+
+  .mobile-product-page__sizes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .mobile-product-page__sizes button {
+    position: relative;
+    min-height: 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+    padding: 11px;
+    border: 1px solid rgba(244, 234, 216, 0.1);
+    border-radius: 14px;
+    background: #0d0d0c;
+    color: #f4ead8;
+    text-align: left;
+  }
+
+  .mobile-product-page__sizes button.is-active {
+    border-color: rgba(213, 177, 106, 0.72);
+    box-shadow: inset 0 0 0 1px rgba(213, 177, 106, 0.1);
+    background: linear-gradient(145deg, rgba(213, 177, 106, 0.08), #0d0d0c 62%);
+  }
+
+  .mobile-product-page__sizes button.is-active::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: radial-gradient(circle, #f0d7a3 0%, #dcb56b 100%);
+    box-shadow:
+      0 0 0 4px rgba(220, 181, 107, 0.08),
+      0 0 12px rgba(220, 181, 107, 0.72);
+  }
+
+  .mobile-product-page__sizes span {
+    color: rgba(244, 234, 216, 0.6);
+    font: 700 0.67rem/1 Inter, sans-serif;
+    text-transform: uppercase;
+  }
+
+  .mobile-product-page__sizes strong {
+    font: 650 1.04rem/1 Inter, sans-serif;
+  }
+
+  .mobile-product-page__size-topline {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+  }
+
+  .mobile-product-page__size-topline em {
+    color: #df8f82;
+    font: 800 0.54rem/1 Inter, sans-serif;
+    font-style: normal;
+    letter-spacing: 0.03em;
+  }
+
+  .mobile-product-page__sizes button.has-discount {
+    border-color: rgba(188, 76, 62, 0.34);
+  }
+
+  .mobile-product-page__sizes button.has-discount.is-active {
+    border-color: rgba(213, 177, 106, 0.76);
+  }
+
+  .mobile-product-page__size-price-discount {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .mobile-product-page__size-price-discount del {
+    color: rgba(244, 234, 216, 0.38);
+    font: 600 0.66rem/1 Inter, sans-serif;
+    text-decoration-thickness: 1px;
+  }
+
+  .mobile-product-page__size-price-discount strong {
+    color: #e3bd6e;
+  }
+
+  .mobile-product-page__decision-row {
+    display: grid;
+    grid-template-columns: minmax(88px, 0.34fr) minmax(0, 0.66fr);
+    gap: 10px;
+    margin-top: 12px;
+    padding: 10px;
+    border: 1px solid rgba(213, 177, 106, 0.12);
+    border-radius: 18px;
+    background: rgba(13, 13, 12, 0.92);
+  }
+
+  .mobile-product-page__price-box {
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    padding: 9px;
+    border: 1px solid rgba(213, 177, 106, 0.12);
+    border-radius: 13px;
+    text-align: center;
+  }
+
+  .mobile-product-page__price-box span {
+    color: rgba(244, 234, 216, 0.44);
+    font-size: 0.48rem;
+    line-height: 1.25;
+  }
+
+  .mobile-product-page__price-box strong {
+    color: #d9b56c;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.45rem;
+    font-weight: 650;
+    line-height: 0.96;
+    letter-spacing: -0.01em;
+  }
+
+  .mobile-product-page__selected-discount {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+  }
+
+  .mobile-product-page__selected-discount del {
+    color: rgba(244, 234, 216, 0.38);
+    font: 600 0.66rem/1 Inter, sans-serif;
+    text-decoration-thickness: 1px;
+  }
+
+  .mobile-product-page__selected-discount strong {
+    color: #d9b56c;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.45rem;
+    font-weight: 650;
+    line-height: 0.96;
+    letter-spacing: -0.01em;
+  }
+
+  .mobile-product-page__actions {
+    display: grid;
+    gap: 6px;
+  }
+
+  .mobile-product-page__add {
+    min-height: 50px;
+    border: 0;
+    border-radius: 13px;
+    background: linear-gradient(180deg, #e4c477, #cfa653);
+    color: #18140d;
+    font: 850 0.72rem/1 Inter, sans-serif;
+    letter-spacing: 0.08em;
+  }
+
+  .mobile-product-page__buy-now {
+    min-height: 26px;
+    border: 0;
+    background: transparent;
+    color: rgba(244, 234, 216, 0.5);
+    font: 750 0.58rem/1 Inter, sans-serif;
+    letter-spacing: 0.08em;
+  }
+
+  .mobile-product-page__profile-list {
+    display: grid;
+    gap: 14px;
+    padding: 14px;
+    border: 1px solid rgba(213, 177, 106, 0.12);
+    border-radius: 18px;
+    background: #0d0d0c;
+  }
+
+  .mobile-product-page__profile-row > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    color: rgba(244, 234, 216, 0.68);
+    font: 600 0.68rem/1 Inter, sans-serif;
+  }
+
+  .mobile-product-page__profile-row > div strong {
+    color: #d9b56c;
+  }
+
+  .mobile-product-page__profile-row > i {
+    position: relative;
+    display: block;
+    height: 3px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: rgba(244, 234, 216, 0.08);
+  }
+
+  .mobile-product-page__profile-row > i > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #8e6728, #e2bf72);
+  }
+
+  .mobile-product-page__accordions {
+    padding: 8px 0 14px;
+  }
+
+  .mobile-product-page__accordions details {
+    border-bottom: 1px solid rgba(213, 177, 106, 0.1);
+  }
+
+  .mobile-product-page__accordions summary {
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+    color: #eee4d2;
+    font: 650 0.8rem/1 Inter, sans-serif;
+  }
+
+  .mobile-product-page__accordions summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-product-page__accordions summary span {
+    color: #d5b16a;
+  }
+
+  .mobile-product-page__accordions p {
+    margin: -2px 0 17px;
+    color: rgba(244, 234, 216, 0.6);
+    font: 500 0.75rem/1.6 Inter, sans-serif;
+  }
+
+  .mobile-product-page__recommendation-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(136px, 42%);
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    padding-bottom: 6px;
+  }
+
+  .mobile-product-page__recommendation-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-product-page__recommendation-card {
+    min-height: 220px;
+    display: grid;
+    grid-template-rows: 122px auto auto auto;
+    align-content: start;
+    gap: 5px;
+    padding: 10px;
+    border: 1px solid rgba(213, 177, 106, 0.1);
+    border-radius: 17px;
+    background: #0d0d0c;
+    color: #f4ead8;
+    text-align: left;
+    scroll-snap-align: start;
+  }
+
+  .mobile-product-page__recommendation-image {
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: radial-gradient(circle, rgba(213, 177, 106, 0.08), transparent 60%);
+  }
+
+  .mobile-product-page__recommendation-image img {
+    max-width: 82%;
+    max-height: 104px;
+    object-fit: contain;
+  }
+
+  .mobile-product-page__recommendation-card strong {
+    font: 650 0.72rem/1.25 Inter, sans-serif;
+  }
+
+  .mobile-product-page__recommendation-card small {
+    color: rgba(244, 234, 216, 0.48);
+    font: 500 0.62rem/1.35 Inter, sans-serif;
+  }
+
+  .mobile-product-page__recommendation-card em {
+    color: #d5b16a;
+    font: 650 0.65rem/1.2 Inter, sans-serif;
+    font-style: normal;
+  }
+
+  .mobile-product-page__footer {
+    margin-top: 10px;
+    padding: 30px 0 calc(26px + env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(213, 177, 106, 0.14);
+    text-align: center;
+  }
+
+  .mobile-product-page__footer-brand {
+    display: grid;
+    gap: 2px;
+  }
+
+  .mobile-product-page__footer-brand strong {
+    color: #dcb969;
+    font: 600 1.5rem/1 "Cormorant Garamond", serif;
+  }
+
+  .mobile-product-page__footer-brand span,
+  .mobile-product-page__footer p,
+  .mobile-product-page__footer-url {
+    color: rgba(244, 234, 216, 0.45);
+    font: 500 0.62rem/1.5 Inter, sans-serif;
+  }
+
+  .mobile-product-page__footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 17px;
+    margin: 17px 0 14px;
+  }
+
+  .mobile-product-page__footer-links button {
+    border: 0;
+    background: transparent;
+    color: rgba(244, 234, 216, 0.72);
+    font: 650 0.68rem/1 Inter, sans-serif;
+  }
+
+  .mobile-product-page__footer p {
+    max-width: 34ch;
+    margin: 0 auto 9px;
+  }
+}
+
+@media (max-width: 370px) {
+  .mobile-product-page {
+    padding-inline: 11px;
+  }
+
+  .mobile-product-page__identity h1 {
+    font-size: 1.95rem;
+  }
+
+  .mobile-product-page__sizes {
+    gap: 6px;
+  }
+
+  .mobile-product-page__decision-row {
+    grid-template-columns: 86px minmax(0, 1fr);
+  }
+
+  /* The outer visual frame is presentation only. It is deliberately not
+     the click target; only the product hit zone and the note cluster toggle. */
+  .mobile-product-page__visual-frame {
+    position: relative;
+    min-height: 350px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(213, 177, 106, 0.12);
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at 50% 45%, rgba(95, 73, 39, 0.12), transparent 42%),
+      linear-gradient(180deg, #100f0d, #0a0a09);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* A generous but bounded touch target around the bottle. */
+  .mobile-product-page__visual-frame .mobile-product-page__image-button {
+    position: relative;
+    z-index: 1;
+    width: min(62%, 230px);
+    min-height: 286px;
+    height: 286px;
+    margin: 0 auto;
+    padding: 18px;
+    border: 0;
+    border-radius: 22px;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .mobile-product-page__visual-frame .mobile-product-page__image-button img {
+    width: min(88%, 250px);
+    max-height: 254px;
+  }
+
+  .mobile-product-page__visual-frame .mobile-product-page__image-button img,
+  .mobile-product-page__visual-frame .mobile-product-page__monogram {
+    transition:
+      opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.5s ease;
+  }
+
+  .mobile-product-page__visual-frame.is-note-map-open .mobile-product-page__image-button {
+    pointer-events: none;
+  }
+
+  .mobile-product-page__visual-frame.is-note-map-open .mobile-product-page__image-button img,
+  .mobile-product-page__visual-frame.is-note-map-open .mobile-product-page__monogram {
+    opacity: 0;
+    transform: scale(0.96);
+    filter: blur(2px) saturate(0.75) brightness(0.55);
+  }
+
+  .mobile-product-page__visual-frame .the-note-map {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+  }
+
+  /* Only the note cluster (plus a small halo around it) is interactive
+     while the map is open. Empty frame space stays inert. */
+  .mobile-product-page__visual-frame .the-note-map__levels {
+    padding: 16px;
+    margin: -16px;
+    border-radius: 20px;
+    pointer-events: auto;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .mobile-product-page__visual-frame .the-note-map__note {
+    cursor: pointer;
+  }
+
+  .mobile-product-page__visual-frame.is-note-map-open {
+    border-color: rgba(213, 177, 106, 0.18);
+    background:
+      radial-gradient(circle at 50% 45%, rgba(95, 73, 39, 0.14), transparent 45%),
+      linear-gradient(180deg, #100f0d, #090908);
+  }
+
+}

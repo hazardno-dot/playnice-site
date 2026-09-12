@@ -1,9 +1,12 @@
 import { productCopy } from "@shop/data/products/productCopy.js";
 import { productWearContext } from "@shop/data/products/productWearContext.js";
+import { productDoNotWearContext } from "@shop/data/products/productDoNotWearContext.js";
+import { productWhatToWearContext } from "@shop/data/products/productWhatToWearContext.js";
 import discoveryProfiles from "@shop/data/products/discoveryProfiles.js";
 
 export function makeLiveSnapshot(product) {
   if (!product) return null;
+  const editorialContextIndex = Object.keys(productWearContext).indexOf(product.name);
   return {
     core: {
       name: product.name || "",
@@ -26,6 +29,9 @@ export function makeLiveSnapshot(product) {
     },
     copy: JSON.parse(JSON.stringify(productCopy[product.name] || {})),
     wear: JSON.parse(JSON.stringify(productWearContext[product.name] || {})),
+    doNotWear: JSON.parse(JSON.stringify(productDoNotWearContext[product.name] || {})),
+    whatToWear: JSON.parse(JSON.stringify(productWhatToWearContext[product.name] || {})),
+    editorialContextIndex,
     discovery: { ...(discoveryProfiles[product.slug] || {}) },
   };
 }
@@ -51,6 +57,8 @@ export function buildPatchPlan(changes) {
     "src/data/products/index.js": [],
     "src/data/products/productCopy.js": [],
     "src/data/products/productWearContext.js": [],
+    "src/data/products/productDoNotWearContext.part*.js": [],
+    "src/data/products/productWhatToWearContext.part*.js": [],
     "src/data/products/discoveryProfiles.js": [],
   };
 
@@ -58,6 +66,8 @@ export function buildPatchPlan(changes) {
     let file = "src/data/products/index.js";
     if (change.section === "Copy") file = "src/data/products/productCopy.js";
     if (change.section === "Wear") file = "src/data/products/productWearContext.js";
+    if (change.section === "Do Not Wear") file = "src/data/products/productDoNotWearContext.part*.js";
+    if (change.section === "What To Wear") file = "src/data/products/productWhatToWearContext.part*.js";
     if (change.section === "Discovery") file = "src/data/products/discoveryProfiles.js";
     files[file].push(change);
   });

@@ -39,6 +39,14 @@ function getCategoryTone(label = "") {
   return "neutral";
 }
 
+const getInitialMobileMatch = () => {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return false;
+  }
+
+  return window.matchMedia(MOBILE_QUERY).matches;
+};
+
 export default function MobileShopV2({
   lang = "sr",
   scentMood = "All",
@@ -55,7 +63,7 @@ export default function MobileShopV2({
   sortOptions = [],
   onSortChange,
 }) {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(getInitialMobileMatch);
   const [panel, setPanel] = useState(null);
   const menuRef = useRef(null);
 
@@ -101,13 +109,13 @@ export default function MobileShopV2({
     const media = window.matchMedia(MOBILE_QUERY);
     const syncMobile = () => setIsMobile(media.matches);
 
-    syncMobile();
     media.addEventListener?.("change", syncMobile);
 
     return () => {
       media.removeEventListener?.("change", syncMobile);
     };
   }, []);
+
   useEffect(() => {
     if (!panel) return;
 

@@ -11,6 +11,7 @@ import { BASE_HERO_SLIDES } from "./data/heroSlides.generated";
 import TheNoteMap from "./TheNoteMap";
 import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
+import MobileProductPage from "./mobile-v2/product-page/MobileProductPage";
 import { getJournalArticleSlug } from "./lib/journalSlug";
 
 const Exhibition = React.lazy(() => import("./Exhibition"));
@@ -1500,8 +1501,11 @@ const selectedSortOption =
     FREE_SHIPPING_THRESHOLD - subtotal
   );
 
+  const isMobileProductPageActive =
+    isMobileProductModalViewport && Boolean(selectedProduct);
+
   const hasBlockingOverlay =
-  !!selectedProduct ||
+  (!isMobileProductPageActive && !!selectedProduct) ||
   cartOpen ||
   checkoutOpen ||
   storyOpen ||
@@ -3406,6 +3410,14 @@ const routeForView = (nextView) => {
 
 const switchView = (nextView, options = {}) => {
   const { scrollTop = true } = options;
+
+  if (isMobileProductPageActive) {
+    setSelectedProduct(null);
+    setSelectedSize("");
+    setProductModalVisible(false);
+    setHasUserPickedSize(false);
+    setNoteMapOpen(false);
+  }
   const nextPath = routeForView(nextView);
   const isSameView = view === nextView;
   const hasRouteChanged = window.location.pathname !== nextPath;
@@ -3477,7 +3489,7 @@ const handleJournalLinkClick = (link) => {
 };
 
 const goHome = () => {
-  if (view === "home") {
+  if (view === "home" && !isMobileProductPageActive) {
     smoothScrollToTop();
     return;
   }
@@ -4476,7 +4488,7 @@ const openProductModal = (product, options = {}) => {
 
   const initialPrice = Number(product.sizes?.[initialSize] || 0);
 
-  if (changeView) {
+  if (changeView || isMobileModal) {
     setView("shop");
   }
 
@@ -6146,7 +6158,61 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 {addedFeedback && <div className="added-feedback">{addedFeedback}</div>}
 
       <main>
-        {view === "journal" && !journalPageArticle && (
+        {isMobileProductPageActive && selectedProduct && (
+          <MobileProductPage
+            product={selectedProduct}
+            lang={lang}
+            selectedSize={selectedSize}
+            onSelectSize={(size) => {
+              setSelectedSize(size);
+              setHasUserPickedSize(true);
+            }}
+            onAddToCart={(product, size) => {
+              const basePrice = Number(product.sizes?.[size] || 0);
+              const discount = getProductDiscountForSize(product, size);
+              const finalPrice = discount
+                ? getDiscountedPrice(basePrice, discount.percent)
+                : basePrice;
+              const productForCart = discount
+                ? { ...product, sizes: { ...product.sizes, [size]: finalPrice } }
+                : product;
+
+              addToCart(productForCart, size, null, null, {
+                showToast: false,
+                showMiniPreview: true
+              });
+            }}
+            onBuyNow={(product, size) => {
+              const basePrice = Number(product.sizes?.[size] || 0);
+              const discount = getProductDiscountForSize(product, size);
+              const finalPrice = discount
+                ? getDiscountedPrice(basePrice, discount.percent)
+                : basePrice;
+              const productForCart = discount
+                ? { ...product, sizes: { ...product.sizes, [size]: finalPrice } }
+                : product;
+
+              addToCart(productForCart, size, null, null, {
+                showToast: false,
+                showMiniPreview: false
+              });
+              setMiniCartPreview(null);
+              openCheckout();
+            }}
+            isWishlisted={wishlist.includes(selectedProduct.id)}
+            onToggleWishlist={() => toggleWishlist(selectedProduct.id)}
+            onOpenProduct={(product) =>
+              openProductModal(product, { changeView: false })
+            }
+            onBackToShop={() => {
+              goToShop();
+              requestAnimationFrame(() => {
+                window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+              });
+            }}
+          />
+        )}
+        {!isMobileProductPageActive && view === "journal" && !journalPageArticle && (
           <React.Suspense fallback={null}>
             <JournalPage
               lang={lang}
@@ -6156,7 +6222,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           </React.Suspense>
         )}
 
-        {view === "journal" && journalPageArticle && (
+        {!isMobileProductPageActive && view === "journal" && journalPageArticle && (
           <React.Suspense fallback={null}>
           <JournalArticlePage
             lang={lang}
@@ -6191,7 +6257,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </React.Suspense>
         )}
 
-        {view === "exhibition" && (
+        {!isMobileProductPageActive && view === "exhibition" && (
           <React.Suspense fallback={null}>
           <Exhibition
             lang={lang}
@@ -6211,7 +6277,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </React.Suspense>
       )}
 
-      {view === "home" && (
+      {!isMobileProductPageActive && view === "home" && (
         <>
           <section
             className="hero hero-carousel"
@@ -7814,7 +7880,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           </>
         )}
 
-          {view === "shop" && (
+          {!isMobileProductPageActive && view === "shop" && (
   <>
     <section className="shop-section section-wrap">
   <div className="shop-top shop-collection-intro">
@@ -8632,7 +8698,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       className={`backdrop ${
         cartOpen ||
         checkoutOpen ||
-        selectedProduct ||
+        (!isMobileProductPageActive && selectedProduct) ||
         storyOpen ||
         howItWorksOpen ||
         manifestoOpen ||
@@ -9358,7 +9424,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   )}
 </aside>
 
-{selectedProduct && (
+{selectedProduct && !isMobileProductPageActive && (
   <div
     className={`modal-overlay product-modal-layer ${
       productModalVisible ? "show" : ""
@@ -10537,7 +10603,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
-{showBackToTop && !sideRailBlocked && (
+{showBackToTop && (!sideRailBlocked || (isMobileProductPageActive && !hasBlockingOverlay)) && (
   <button
     type="button"
     className="back-to-top"
