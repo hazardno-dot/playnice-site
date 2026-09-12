@@ -87,7 +87,7 @@ function productDraft(event) {
 
 function heroDraft(event) {
   const payload = event.payload || {};
-  const headline = payload.headline?.sr || payload.headline || payload.title || event.source_id;
+  const headline = payload.headline?.sr || payload.headline || payload.title?.sr || payload.title || payload.alt || payload.collectionTitle || event.source_id;
   const body = payload.copy?.sr || payload.copy || payload.subtitle?.sr || payload.subtitle || "";
   const link = event.source_url ? siteUrl(event.source_url) : SITE_ORIGIN;
   return {
