@@ -27,6 +27,7 @@ import HeroReviewBridge from "./HeroReviewBridge";
 import HeroApplyBridge from "./HeroApplyBridge";
 import ExhibitionManager from "./ExhibitionManager";
 import SocialManager from "./SocialManager";
+import MetaConnectionBridge from "./MetaConnectionBridge";
 import "./header-layout.css";
 
 const ACTIVE_MODULE_KEY = "playnice_cc_active_module";
@@ -113,6 +114,7 @@ export default function ControlCenterManagers() {
     <HeroApplyBridge />
     <ExhibitionManager />
     <SocialManager />
+    <MetaConnectionBridge />
     <JournalManager />
     <JournalApplyManager />
     <NotesManager />
