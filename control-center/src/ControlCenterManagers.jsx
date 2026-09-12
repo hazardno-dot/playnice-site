@@ -26,6 +26,7 @@ import HeroMediaUploadBridge from "./HeroMediaUploadBridge";
 import HeroReviewBridge from "./HeroReviewBridge";
 import HeroApplyBridge from "./HeroApplyBridge";
 import ExhibitionManager from "./ExhibitionManager";
+import SocialManager from "./SocialManager";
 import "./header-layout.css";
 
 const ACTIVE_MODULE_KEY = "playnice_cc_active_module";
@@ -74,7 +75,7 @@ export default function ControlCenterManagers() {
 
     const persisted = window.sessionStorage.getItem(ACTIVE_MODULE_KEY);
     let restoreTimer = null;
-    if (persisted === "Hero" || persisted === "Exhibition") {
+    if (persisted === "Hero" || persisted === "Exhibition" || persisted === "Social") {
       let attempts = 0;
       restoreTimer = window.setInterval(() => {
         attempts += 1;
@@ -83,7 +84,7 @@ export default function ControlCenterManagers() {
           window.clearInterval(restoreTimer);
           return;
         }
-        const selector = persisted === "Hero" ? "[data-hero-manager-nav='true']" : "[data-exhibition-manager-nav='true']";
+        const selector = persisted === "Hero" ? "[data-hero-manager-nav='true']" : persisted === "Exhibition" ? "[data-exhibition-manager-nav='true']" : "[data-social-manager-nav='true']";
         const moduleButton = nav.querySelector(selector);
         if (moduleButton) moduleButton.click();
         if (attempts >= 40) window.clearInterval(restoreTimer);
@@ -111,6 +112,7 @@ export default function ControlCenterManagers() {
     <HeroReviewBridge />
     <HeroApplyBridge />
     <ExhibitionManager />
+    <SocialManager />
     <JournalManager />
     <JournalApplyManager />
     <NotesManager />
