@@ -106,10 +106,23 @@ export default function MobileProductPage({
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [profile, setProfile] = useState(null);
   const recommendationTrackRef = useRef(null);
+  const previousProductSlugRef = useRef(null);
 
   useLayoutEffect(() => {
     if (!product?.slug) return;
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+    const previousSlug = previousProductSlugRef.current;
+    const isProductToProductNavigation =
+      Boolean(previousSlug) && previousSlug !== product.slug;
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: isProductToProductNavigation ? "smooth" : "auto",
+    });
+
+    previousProductSlugRef.current = product.slug;
+
     const track = recommendationTrackRef.current;
     if (track) {
       track.scrollTo({ left: 0, behavior: "auto" });
@@ -208,35 +221,27 @@ export default function MobileProductPage({
 
         <div
           className={`mobile-product-page__visual-frame ${noteMapOpen ? "is-note-map-open" : ""}`}
-          onClickCapture={(event) => {
-            if (!noteMapOpen) return;
-            if (event.target.closest?.(".the-note-map__levels")) {
-              setNoteMapOpen(false);
-            }
-          }}
         >
-          <button
-            type="button"
-            className={`mobile-product-page__image-button ${product.noteMap ? "has-note-map" : ""}`}
-            onClick={() => product.noteMap && setNoteMapOpen((current) => !current)}
-            aria-label={
-              product.noteMap
-                ? noteMapOpen
+          {!noteMapOpen ? (
+            <button
+              type="button"
+              className={`mobile-product-page__image-button ${product.noteMap ? "has-note-map" : ""}`}
+              onClick={() => product.noteMap && setNoteMapOpen(true)}
+              aria-label={
+                product.noteMap
                   ? lang === "sr"
-                    ? "Vrati sliku parfema"
-                    : "Show fragrance image"
-                  : lang === "sr"
-                  ? "Prikaži note parfema"
-                  : "Show fragrance notes"
-                : product.name
-            }
-          >
-            {product.image ? (
-              <img src={product.image} alt={product.name} />
-            ) : (
-              <span className="mobile-product-page__monogram">{product.name.charAt(0)}</span>
-            )}
-          </button>
+                    ? "Prikaži note parfema"
+                    : "Show fragrance notes"
+                  : product.name
+              }
+            >
+              {product.image ? (
+                <img src={product.image} alt={product.name} />
+              ) : (
+                <span className="mobile-product-page__monogram">{product.name.charAt(0)}</span>
+              )}
+            </button>
+          ) : null}
 
           {product.noteMap ? (
             <TheNoteMap
@@ -244,6 +249,7 @@ export default function MobileProductPage({
               lang={lang}
               open={noteMapOpen}
               onToggle={() => setNoteMapOpen((current) => !current)}
+              onNoteClick={() => setNoteMapOpen(false)}
             />
           ) : null}
         </div>
