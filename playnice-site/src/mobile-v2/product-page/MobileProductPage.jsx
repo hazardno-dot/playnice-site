@@ -3,6 +3,7 @@ import TheNoteMap from "../../TheNoteMap";
 import { products } from "../../data/products";
 import { productCopy } from "../../data/products/productCopy";
 import { productWearContext } from "../../data/products/productWearContext";
+import { productDoNotWearContext } from "../../data/products/productDoNotWearContext";
 
 const PROFILE_KEYS = [
   "freshness",
@@ -160,6 +161,7 @@ export default function MobileProductPage({
 
   const copy = product ? productCopy[product.name] || {} : {};
   const wearContext = product ? productWearContext[product.name]?.[lang] || "" : "";
+  const doNotWearContext = product ? productDoNotWearContext[product.name]?.[lang] || "" : "";
   const recommendations = useMemo(() => getRecommendations(product), [product]);
 
   const sensoryHighlights = useMemo(() => {
@@ -460,6 +462,13 @@ export default function MobileProductPage({
           <summary>{lang === "sr" ? "Kada ga nositi" : "When to wear it"}<span>+</span></summary>
           <p>{wearContext || (lang === "sr" ? "Biraj ga prema raspoloženju, prilici i sezoni." : "Wear it according to mood, occasion and season.")}</p>
         </details>
+
+        {doNotWearContext ? (
+          <details>
+            <summary>{lang === "sr" ? "Kada ga NE nositi" : "When NOT to wear it"}<span>+</span></summary>
+            <p>{doNotWearContext}</p>
+          </details>
+        ) : null}
 
         <details>
           <summary>{lang === "sr" ? "Dostava" : "Delivery"}<span>+</span></summary>
