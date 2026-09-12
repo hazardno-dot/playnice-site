@@ -4,6 +4,7 @@ import { products } from "../../data/products";
 import { productCopy } from "../../data/products/productCopy";
 import { productWearContext } from "../../data/products/productWearContext";
 import { productDoNotWearContext } from "../../data/products/productDoNotWearContext";
+import { productWhatToWearContext } from "../../data/products/productWhatToWearContext";
 
 const PROFILE_KEYS = [
   "freshness",
@@ -170,6 +171,7 @@ export default function MobileProductPage({
   const copy = product ? productCopy[product.name] || {} : {};
   const wearContext = product ? productWearContext[product.name]?.[lang] || "" : "";
   const doNotWearContext = product ? productDoNotWearContext[product.name]?.[lang] || "" : "";
+  const whatToWearContext = product ? productWhatToWearContext[product.name]?.[lang] || "" : "";
   const recommendations = useMemo(() => getRecommendations(product), [product]);
 
   const sensoryHighlights = useMemo(() => {
@@ -475,6 +477,13 @@ export default function MobileProductPage({
           <details>
             <summary>{lang === "sr" ? "Kada ga ne nositi" : "When not to wear it"}<span>+</span></summary>
             <p>{doNotWearContext}</p>
+          </details>
+        ) : null}
+
+        {whatToWearContext ? (
+          <details>
+            <summary>{lang === "sr" ? "Šta obući?" : "What to wear?"}<span>+</span></summary>
+            <p>{whatToWearContext}</p>
           </details>
         ) : null}
 
