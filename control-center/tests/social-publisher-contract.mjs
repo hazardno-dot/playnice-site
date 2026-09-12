@@ -47,9 +47,22 @@ for (const token of [
 ]) {
   assert.ok(productPublishSync.includes(token), `Product publish Social shadow integration missing: ${token}`);
 }
-assert.ok(productPublishSync.indexOf("createProductSocialShadowEvent") > -1, "Product Social producer is not wired.");
-assert.ok(productPublishSync.includes("console.warn(\"Social shadow event creation skipped\""), "Social producer must fail open and never block product publishing.");
+assert.ok(productPublishSync.includes("console.warn(\"Social shadow event creation skipped\""), "Product Social producer must fail open and never block product publishing.");
+
+const heroFinalize = fs.readFileSync(path.join(root, "control-center/api/finalize-hero-apply.js"), "utf8");
+for (const token of [
+  "heroPublishedEvent",
+  "createHeroSocialShadowEvent",
+  "shadow_event_created_from_hero_publish",
+  "skipped_retirement",
+  "social_shadow_event",
+]) {
+  assert.ok(heroFinalize.includes(token), `Hero publish Social shadow integration missing: ${token}`);
+}
+assert.ok(heroFinalize.includes("console.warn(\"Hero Social shadow event creation skipped\""), "Hero Social producer must fail open and never block Hero finalization.");
+assert.ok(heroFinalize.indexOf("finalize_hero_apply") < heroFinalize.indexOf("createHeroSocialShadowEvent"), "Hero Social event must be downstream of successful Hero finalization.");
 
 console.log("PASS  Social Publisher shadow-mode contract");
 console.log("PASS  Product publish creates a best-effort deduped Social shadow event after live merge");
+console.log("PASS  Hero finalize creates a best-effort Social shadow event after post-merge safety checks");
 console.log("PASS  Social schema/publisher failures remain non-blocking for storefront publishing");
