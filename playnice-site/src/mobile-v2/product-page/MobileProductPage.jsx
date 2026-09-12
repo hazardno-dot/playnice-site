@@ -60,13 +60,9 @@ const getProductDiscountForSize = (product, size) => {
   return product.discount.size === size ? product.discount : null;
 };
 
-const getRatingStars = (rating) => {
+const getRatingStarCount = (rating) => {
   const normalizedRating = Math.max(0, Math.min(10, Number(rating) || 0));
-  const filledStars = Math.round(normalizedRating);
-
-  return Array.from({ length: 10 }, (_, index) =>
-    index < filledStars ? "★" : "☆"
-  ).join("");
+  return Math.round(normalizedRating);
 };
 
 const getRecommendations = (product) => {
@@ -228,7 +224,10 @@ export default function MobileProductPage({
         <div className="mobile-product-page__meta">
           {product.rating ? (
             <span className="mobile-product-page__rating">
-              <span className="mobile-product-page__rating-stars" aria-hidden="true">{getRatingStars(product.rating)}</span>
+              <span className="mobile-product-page__rating-stars" aria-hidden="true">
+                <span className="is-filled">{"★".repeat(getRatingStarCount(product.rating))}</span>
+                <span className="is-empty">{"★".repeat(10 - getRatingStarCount(product.rating))}</span>
+              </span>
               <span className="mobile-product-page__rating-score">
                 {Number(product.rating).toFixed(1)} <small>/ 10 · {product.ratingLabel}</small>
               </span>

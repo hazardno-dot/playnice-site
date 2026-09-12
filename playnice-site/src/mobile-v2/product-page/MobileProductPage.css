@@ -126,6 +126,15 @@
     text-shadow: 0 0 10px rgba(220, 181, 107, 0.16);
   }
 
+  .mobile-product-page__rating-stars .is-filled {
+    color: #d7b46c;
+  }
+
+  .mobile-product-page__rating-stars .is-empty {
+    color: rgba(244, 234, 216, 0.16);
+    text-shadow: none;
+  }
+
   .mobile-product-page__rating-score {
     white-space: nowrap;
   }
