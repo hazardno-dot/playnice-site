@@ -37,10 +37,11 @@ async function github(path) {
 async function createProductSocialShadowEvent({ draft, token, userId, pr }) {
   try {
     const payload = draft.approved_payload || draft.payload || {};
+    const core = payload?.core && typeof payload.core === "object" ? payload.core : payload;
     const media = [];
-    if (payload.image) media.push({ src: payload.image, format: "product_image" });
-    if (payload.socialSquareImage) media.push({ src: payload.socialSquareImage, format: "1:1" });
-    if (payload.socialStoryImage) media.push({ src: payload.socialStoryImage, format: "9:16" });
+    if (core.socialSquareImage || payload.socialSquareImage) media.push({ src: core.socialSquareImage || payload.socialSquareImage, format: "1:1" });
+    if (core.socialStoryImage || payload.socialStoryImage) media.push({ src: core.socialStoryImage || payload.socialStoryImage, format: "9:16" });
+    if (core.image || payload.image) media.push({ src: core.image || payload.image, format: "product_image" });
 
     const event = productPublishedEvent({
       slug: draft.product_slug,
