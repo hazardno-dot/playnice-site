@@ -9,7 +9,7 @@ const CHANNELS = [["instagram_feed", "Instagram Feed"], ["instagram_story", "Ins
 const fmt = (value) => value ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : "—";
 const label = (value) => String(value || "").replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 const mediaSrc = (media) => media?.url || media?.src || "";
-const eventTitle = (event) => event?.payload?.core?.shortName || event?.payload?.core?.name || event?.payload?.shortName || event?.payload?.name || event?.payload?.title?.sr || event?.source_id;
+const eventTitle = (event) => event?.payload?.core?.shortName || event?.payload?.core?.name || event?.payload?.shortName || event?.payload?.name || event?.payload?.title?.sr || event?.payload?.alt || event?.source_id;
 const isExplicitTestEvent = (event) => Boolean(event?.metadata?.test || event?.metadata?.replay || String(event?.source_id || "").includes("--shadow-test-") || String(event?.source_id || "").includes("--shadow-replay-"));
 
 function editableContent(event, generated) {
@@ -109,7 +109,7 @@ function SocialWorkspace() {
     }
   };
 
-  const replayLatest = async () => {
+  const replayLatest = async (sourceType) => {
     setSaving(true);
     setActionError("");
     try {
@@ -117,9 +117,10 @@ function SocialWorkspace() {
       const response = await fetch("/api/social-shadow-replay", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ source_type: sourceType }),
       });
       const payload = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(payload.error || `Social replay failed (${response.status}).`);
+      if (!response.ok) throw new Error(payload.error || `Social ${sourceType} replay failed (${response.status}).`);
       await load();
       if (payload.event?.id) setSelectedId(payload.event.id);
       else if (payload.event_id) setSelectedId(payload.event_id);
@@ -147,7 +148,9 @@ function SocialWorkspace() {
 
     <div className="social-filter-bar">
       {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${counts[value] || 0}` : ""}</button>)}
-      <button type="button" disabled={saving} onClick={replayLatest}>{saving ? "Working…" : "Replay latest published product"}</button>
+      <button type="button" disabled={saving} onClick={() => replayLatest("product")}>{saving ? "Working…" : "Replay Product"}</button>
+      <button type="button" disabled={saving} onClick={() => replayLatest("hero")}>{saving ? "Working…" : "Replay Hero"}</button>
+      <button type="button" disabled={saving} onClick={() => replayLatest("journal")}>{saving ? "Working…" : "Replay Journal"}</button>
     </div>
 
     <div className="social-layout">
