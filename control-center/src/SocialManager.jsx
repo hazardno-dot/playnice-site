@@ -10,6 +10,7 @@ const fmt = (value) => value ? new Intl.DateTimeFormat("en-GB", { day: "2-digit"
 const label = (value) => String(value || "").replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 const mediaSrc = (media) => media?.url || media?.src || "";
 const eventTitle = (event) => event?.payload?.core?.shortName || event?.payload?.core?.name || event?.payload?.shortName || event?.payload?.name || event?.payload?.title?.sr || event?.source_id;
+const isExplicitTestEvent = (event) => Boolean(event?.metadata?.test || event?.metadata?.replay || String(event?.source_id || "").includes("--shadow-test-") || String(event?.source_id || "").includes("--shadow-replay-"));
 
 function editableContent(event, generated) {
   const stored = event?.draft_content || event?.approved_content || null;
@@ -72,14 +73,21 @@ function SocialWorkspace() {
 
   const updateCaption = (key, value) => setEditing((current) => ({ ...current, [key]: { caption: value } }));
 
+  const sessionToken = async () => {
+    const { data: refreshData } = await supabase.auth.refreshSession().catch(() => ({ data: null }));
+    if (refreshData?.session?.access_token) return refreshData.session.access_token;
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+    const token = sessionData?.session?.access_token;
+    if (sessionError || !token) throw sessionError || new Error("Authenticated admin session is required.");
+    return token;
+  };
+
   const persist = async (action) => {
     if (!selected) return;
     setSaving(true);
     setActionError("");
     try {
-      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-      const token = sessionData?.session?.access_token;
-      if (sessionError || !token) throw sessionError || new Error("Authenticated admin session is required.");
+      const token = await sessionToken();
       const response = await fetch("/api/social-draft", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
@@ -90,9 +98,33 @@ function SocialWorkspace() {
       if (payload.event) {
         setEvents((current) => current.map((event) => event.id === payload.event.id ? payload.event : event));
         setSelectedId(payload.event.id);
-      } else await load();
+      } else {
+        if (payload.discarded) setSelectedId("");
+        await load();
+      }
     } catch (saveError) {
       setActionError(saveError.message || String(saveError));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const replayLatest = async () => {
+    setSaving(true);
+    setActionError("");
+    try {
+      const token = await sessionToken();
+      const response = await fetch("/api/social-shadow-replay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Social replay failed (${response.status}).`);
+      await load();
+      if (payload.event?.id) setSelectedId(payload.event.id);
+      else if (payload.event_id) setSelectedId(payload.event_id);
+    } catch (replayError) {
+      setActionError(replayError.message || String(replayError));
     } finally {
       setSaving(false);
     }
@@ -113,7 +145,10 @@ function SocialWorkspace() {
 
     {error ? <div className="social-error">Social schema is not active in Supabase yet: {error}</div> : null}
 
-    <div className="social-filter-bar">{FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${counts[value] || 0}` : ""}</button>)}</div>
+    <div className="social-filter-bar">
+      {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${counts[value] || 0}` : ""}</button>)}
+      <button type="button" disabled={saving} onClick={replayLatest}>{saving ? "Working…" : "Replay latest published product"}</button>
+    </div>
 
     <div className="social-layout">
       <aside className="social-list">
@@ -148,6 +183,7 @@ function SocialWorkspace() {
           <div className="social-review-row">
             <div><span>REVIEW STATE</span><strong>{selected.status === "ready" ? "READY · APPROVED" : "DRAFT · REVIEW"}</strong></div>
             <div className="social-review-actions">
+              {isExplicitTestEvent(selected) ? <button type="button" disabled={saving} onClick={() => persist("discard_test")}>Discard test event</button> : null}
               {selected.status === "ready"
                 ? <button type="button" disabled={saving} onClick={() => persist("reopen")}>{saving ? "Working…" : "Return to draft"}</button>
                 : <>
