@@ -296,6 +296,7 @@ function classifyActions(actions) {
     if (!current) return { ...action, changeType: "new" };
     if (current === incoming) return { ...action, changeType: "unchanged" };
 
+    if (isNewProduct && action.fieldKey === "image_path" && current === "/products/") return { ...action, changeType: "new" };
     if (isNewProduct && action.fieldKind === "discovery" && current === "0") return { ...action, changeType: "new" };
     if (isNewProduct && action.fieldKey === "category" && current === "Arabian") return { ...action, changeType: "new" };
     return { ...action, changeType: "changed" };
