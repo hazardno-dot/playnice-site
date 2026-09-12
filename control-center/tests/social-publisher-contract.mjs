@@ -113,17 +113,23 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
-for (const token of ["/api/social-draft", "Save draft", "Mark ready", "Return to draft", "draft_content", "approved_content", "payload?.core?.shortName"]) {
+for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Discard test event", "Replay latest published product", "draft_content", "approved_content", "payload?.core?.shortName"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
 assert.ok(socialManager.includes("social-media-meta"), "Social preview must expose selected media metadata.");
 assert.ok(socialManager.includes('key === "instagram_story" ? "story" : ""'), "Instagram Story preview must use a vertical-specific layout.");
 
 const socialDraftApi = fs.readFileSync(path.join(root, "control-center/api/social-draft.js"), "utf8");
-for (const token of ["generateSocialDraft", "draft_content", "approved_content", "approved_at", "draft_marked_ready", "draft_reopened", "2200"]) {
+for (const token of ["generateSocialDraft", "draft_content", "approved_content", "approved_at", "draft_marked_ready", "draft_reopened", "discard_test", "isTestEvent", "2200"]) {
   assert.ok(socialDraftApi.includes(token), `Social draft API contract missing: ${token}`);
 }
 assert.ok(!socialDraftApi.includes("publish_mode: \"approval\""), "Draft approval must not unlock Meta publishing.");
+
+const replayApi = fs.readFileSync(path.join(root, "control-center/api/social-shadow-replay.js"), "utf8");
+for (const token of ["productPublishedEvent", "publish_history", "--shadow-replay-", "replay: true", "shadow_replay_created_from_publish_history"]) {
+  assert.ok(replayApi.includes(token), `Social shadow replay contract missing: ${token}`);
+}
+assert.ok(!replayApi.includes("publish_mode: \"approval\""), "Replay must remain shadow-only.");
 
 const socialSchema = fs.readFileSync(path.join(root, "control-center/supabase/social_publisher_v1.sql"), "utf8");
 for (const token of ["draft_content jsonb", "approved_content jsonb", "approved_at timestamptz", "publish_mode text not null default 'shadow'"]) {
@@ -135,6 +141,8 @@ console.log("PASS  Nested Product payloads resolve canonical name, sizes and med
 console.log("PASS  Relative storefront media are normalized to public PlayNice URLs");
 console.log("PASS  Channel-aware media selection prefers square feed and vertical Story assets with safe fallbacks");
 console.log("PASS  Social captions are editable, auditable and can be marked READY without unlocking Meta publishing");
+console.log("PASS  Explicit test/replay events can be safely discarded without exposing delete for real Social events");
+console.log("PASS  Latest publish history can be replayed into the shadow queue without touching storefront state");
 console.log("PASS  Product publish creates a best-effort deduped Social shadow event after live merge");
 console.log("PASS  Hero finalize creates a best-effort Social shadow event after post-merge safety checks");
 console.log("PASS  Journal reconciliation verifies live source server-side before creating a Social shadow event");
