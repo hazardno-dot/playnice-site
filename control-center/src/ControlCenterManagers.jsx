@@ -6,7 +6,6 @@ import ProductBulkPasteBridge from "./ProductBulkPasteBridge";
 import ProductMediaUploadBridge from "./ProductMediaUploadBridge";
 import ProductMediaStatusBridge from "./ProductMediaStatusBridge";
 import DiscoveryBulkPasteBridge from "./DiscoveryBulkPasteBridge";
-import ProductEditorialContextsBridge from "./ProductEditorialContextsBridge";
 import ControlledApplyManager from "./ControlledApplyManager";
 import ProductWorkflowBridge from "./ProductWorkflowBridge";
 import ProductWorkflowAdvanceBridge from "./ProductWorkflowAdvanceBridge";
@@ -104,7 +103,6 @@ export default function ControlCenterManagers() {
     <ProductMediaStatusBridge />
     <ProductBulkPasteBridge />
     <DiscoveryBulkPasteBridge />
-    <ProductEditorialContextsBridge />
     <ProductWorkflowBridge />
     <ProductWorkflowAdvanceBridge />
     <ProductCatalogCountBridge />
