@@ -43,6 +43,7 @@ assert.match(draft.facebook.caption, /Čist, moderan i lako nosiv/);
 
 const payloadOnlyMedia = resolveEventMedia({ source_type: "product", payload: { core: { image: "/products/fallback.webp" } }, media: [] });
 assert.equal(payloadOnlyMedia[0].format, "product_image", "Nested Product core image must remain available when no explicit Social media exists.");
+assert.equal(payloadOnlyMedia[0].src, "https://www.playniceshop.me/products/fallback.webp", "Relative storefront media must resolve to the canonical public PlayNice origin.");
 assert.equal(selectSocialMedia(payloadOnlyMedia, "instagram_feed")?.format, "product_image");
 
 const heroMedia = [
@@ -50,6 +51,7 @@ const heroMedia = [
   { src: "/hero-mobile.webp", format: "hero_mobile" },
 ];
 assert.equal(selectSocialMedia(heroMedia, "instagram_story")?.format, "hero_mobile", "Story must prefer mobile Hero media when no vertical Social asset exists.");
+assert.equal(selectSocialMedia(heroMedia, "instagram_story")?.src, "https://www.playniceshop.me/hero-mobile.webp", "Hero preview media must use a public absolute URL.");
 assert.equal(selectSocialMedia(heroMedia, "facebook")?.format, "hero_mobile", "Facebook must prefer the more social-friendly mobile Hero asset before desktop fallback.");
 
 assert.throws(() => normalizeSocialEvent({ event_type: "bad", source_type: "product", source_id: "x" }), /Unsupported social event type/);
@@ -130,6 +132,7 @@ for (const token of ["draft_content jsonb", "approved_content jsonb", "approved_
 
 console.log("PASS  Social Publisher shadow-mode contract");
 console.log("PASS  Nested Product payloads resolve canonical name, sizes and media correctly");
+console.log("PASS  Relative storefront media are normalized to public PlayNice URLs");
 console.log("PASS  Channel-aware media selection prefers square feed and vertical Story assets with safe fallbacks");
 console.log("PASS  Social captions are editable, auditable and can be marked READY without unlocking Meta publishing");
 console.log("PASS  Product publish creates a best-effort deduped Social shadow event after live merge");
