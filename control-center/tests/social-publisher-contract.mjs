@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { SOCIAL_SHADOW_MODE, normalizeSocialEvent, socialEventDedupeKey, canPublishSocialEvent } from "../src/socialEvent.mjs";
-import { generateSocialDraft } from "../src/socialDraft.mjs";
+import { generateSocialDraft, resolveEventMedia, selectSocialMedia } from "../src/socialDraft.mjs";
 
 const event = normalizeSocialEvent({
   event_type: "product_published",
@@ -12,10 +12,14 @@ const event = normalizeSocialEvent({
   payload: {
     name: "Test Fragrance",
     shortName: "Test Fragrance",
+    image: "/products/test.webp",
     sizes: { "5ml": 9, "10ml": 16 },
     copy: { miniTag: { sr: "Novo u PlayNice." }, card: { sr: "Čist, moderan i lako nosiv." } },
   },
-  media: [{ src: "https://www.playniceshop.me/products/test.webp", format: "1:1" }],
+  media: [
+    { src: "https://www.playniceshop.me/products/test-square.webp", format: "1:1" },
+    { src: "https://www.playniceshop.me/products/test-story.webp", format: "9:16" },
+  ],
 });
 
 assert.equal(SOCIAL_SHADOW_MODE, true, "v1 must remain in shadow mode");
@@ -30,7 +34,20 @@ assert.match(draft.instagram_feed.caption, /Test Fragrance/);
 assert.match(draft.instagram_feed.caption, /5ml · €9/);
 assert.match(draft.instagram_feed.caption, /playniceshop\.me\/product\/test-fragrance/);
 assert.equal(draft.instagram_feed.media.format, "1:1");
+assert.equal(draft.instagram_story.media.format, "9:16");
+assert.equal(draft.facebook.media.format, "1:1");
 assert.match(draft.facebook.caption, /Čist, moderan i lako nosiv/);
+
+const payloadOnlyMedia = resolveEventMedia({ source_type: "product", payload: { image: "/products/fallback.webp" }, media: [] });
+assert.equal(payloadOnlyMedia[0].format, "product_image", "Product payload image must remain available when no explicit Social media exists.");
+assert.equal(selectSocialMedia(payloadOnlyMedia, "instagram_feed")?.format, "product_image");
+
+const heroMedia = [
+  { src: "/hero-desktop.webp", format: "hero_desktop" },
+  { src: "/hero-mobile.webp", format: "hero_mobile" },
+];
+assert.equal(selectSocialMedia(heroMedia, "instagram_story")?.format, "hero_mobile", "Story must prefer mobile Hero media when no vertical Social asset exists.");
+assert.equal(selectSocialMedia(heroMedia, "facebook")?.format, "hero_mobile", "Facebook must prefer the more social-friendly mobile Hero asset before desktop fallback.");
 
 assert.throws(() => normalizeSocialEvent({ event_type: "bad", source_type: "product", source_id: "x" }), /Unsupported social event type/);
 assert.throws(() => generateSocialDraft({ source_type: "unknown" }), /No social draft generator/);
@@ -40,6 +57,7 @@ const productPublishSync = fs.readFileSync(path.join(root, "control-center/api/s
 for (const token of [
   "productPublishedEvent",
   "createProductSocialShadowEvent",
+  "product_image",
   "schema_unavailable",
   "publish_history_already_exists",
   "shadow_event_created_from_product_publish",
@@ -88,7 +106,12 @@ const journalApplyManager = fs.readFileSync(path.join(root, "control-center/src/
 assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Journal UI must reconcile publication through the authenticated backend endpoint.");
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
+const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
+assert.ok(socialManager.includes("social-media-meta"), "Social preview must expose selected media metadata.");
+assert.ok(socialManager.includes('key === "instagram_story" ? "story" : ""'), "Instagram Story preview must use a vertical-specific layout.");
+
 console.log("PASS  Social Publisher shadow-mode contract");
+console.log("PASS  Channel-aware media selection prefers square feed and vertical Story assets with safe fallbacks");
 console.log("PASS  Product publish creates a best-effort deduped Social shadow event after live merge");
 console.log("PASS  Hero finalize creates a best-effort Social shadow event after post-merge safety checks");
 console.log("PASS  Journal reconciliation verifies live source server-side before creating a Social shadow event");
