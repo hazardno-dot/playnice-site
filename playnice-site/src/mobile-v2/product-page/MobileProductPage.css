@@ -135,8 +135,8 @@
   }
 
   .mobile-product-page__image-button img {
-    width: min(72%, 250px);
-    max-height: 280px;
+    width: min(80%, 280px);
+    max-height: 314px;
     object-fit: contain;
     display: block;
   }
