@@ -36,10 +36,16 @@ async function github(path) {
 
 async function createProductSocialShadowEvent({ draft, token, userId, pr }) {
   try {
+    const payload = draft.approved_payload || draft.payload || {};
+    const media = [];
+    if (payload.image) media.push({ src: payload.image, format: "product_image" });
+    if (payload.socialSquareImage) media.push({ src: payload.socialSquareImage, format: "1:1" });
+    if (payload.socialStoryImage) media.push({ src: payload.socialStoryImage, format: "9:16" });
+
     const event = productPublishedEvent({
       slug: draft.product_slug,
-      payload: draft.approved_payload || draft.payload || {},
-      media: [],
+      payload,
+      media,
       sourceUrl: `/product/${draft.product_slug}`,
     });
 
