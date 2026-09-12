@@ -5,8 +5,10 @@ import { generateSocialDraft } from "./socialDraft.mjs";
 import "./social-manager.css";
 
 const FILTERS = ["all", "draft", "ready", "scheduled", "published", "failed"];
+const CHANNELS = [["instagram_feed", "Instagram Feed"], ["instagram_story", "Instagram Story"], ["facebook", "Facebook"]];
 const fmt = (value) => value ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : "—";
 const label = (value) => String(value || "").replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+const mediaSrc = (media) => media?.url || media?.src || "";
 
 function SocialWorkspace() {
   const [events, setEvents] = useState([]);
@@ -70,11 +72,19 @@ function SocialWorkspace() {
         {selected && draft ? <>
           <div className="social-detail-head"><div><span>{label(selected.source_type)} / {label(selected.event_type)}</span><h3>{draft.headline}</h3><p>{selected.source_url || selected.source_id}</p></div><div><strong>{selected.status}</strong><small>{fmt(selected.created_at)}</small></div></div>
           <div className="social-channel-grid">
-            {[["instagram_feed", "Instagram Feed"], ["instagram_story", "Instagram Story"], ["facebook", "Facebook"]].map(([key, title]) => <section key={key} className="social-channel-card">
-              <div className="social-channel-head"><span>{title}</span><em>PREVIEW</em></div>
-              {draft[key]?.media?.url || draft[key]?.media?.src ? <img src={draft[key].media.url || draft[key].media.src} alt="" /> : <div className="social-media-placeholder">No channel asset selected</div>}
-              <pre>{draft[key]?.caption || "No caption generated."}</pre>
-            </section>)}
+            {CHANNELS.map(([key, title]) => {
+              const media = draft[key]?.media || null;
+              const src = mediaSrc(media);
+              const fallback = media?.selection === "fallback";
+              return <section key={key} className={`social-channel-card ${key === "instagram_story" ? "story" : ""}`}>
+                <div className="social-channel-head"><span>{title}</span><em>PREVIEW</em></div>
+                <div className="social-media-frame">
+                  {src ? <img src={src} alt="" /> : <div className="social-media-placeholder">No channel asset selected</div>}
+                  {media ? <div className={`social-media-meta ${fallback ? "fallback" : ""}`}><span>{media.format || "asset"}</span><strong>{fallback ? "FALLBACK" : "SELECTED"}</strong></div> : null}
+                </div>
+                <pre>{draft[key]?.caption || "No caption generated."}</pre>
+              </section>;
+            })}
           </div>
           <div className="social-safety-row"><div><span>PUBLISH MODE</span><strong>{selected.publish_mode || "shadow"}</strong></div><div><span>CHANNELS</span><strong>{(selected.channels || []).length}</strong></div><button type="button" disabled title="Meta publishing is intentionally disabled in Social Publisher v1">Publish locked</button></div>
         </> : <div className="social-empty-detail"><strong>Social Publisher is ready for shadow events.</strong><span>No event selected.</span></div>}
