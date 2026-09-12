@@ -35,8 +35,8 @@ export function journalPublishedEvent({ articleId, payload = {}, media = [], sou
   });
 }
 
-// Intentionally not wired to production publish flows in v1 shadow infrastructure.
-// Future integration points:
-// 1. product: after sync-publish-status confirms PR merged to main
-// 2. hero: after hero apply finalization confirms live state
-// 3. journal: after journal apply confirms live state
+// Shadow producers are wired only after verified live publication boundaries:
+// 1. product: sync-publish-status confirms the apply PR merged to main
+// 2. hero: finalize-hero-apply completes post-merge safety verification + finalization
+// 3. journal: sync-journal-publish-status verifies the merged article against the approved source block
+// Meta publishing remains separately hard-locked by SOCIAL_SHADOW_MODE.
