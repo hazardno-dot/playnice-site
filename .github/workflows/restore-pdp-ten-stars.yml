@@ -1,0 +1,35 @@
+name: Restore PDP ten-star rating
+
+on:
+  push:
+    branches:
+      - mobile-product-page-clean
+    paths:
+      - playnice-site/scripts/restore-pdp-ten-stars.cjs
+      - .github/workflows/restore-pdp-ten-stars.yml
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: mobile-product-page-clean
+          fetch-depth: 0
+      - name: Apply guarded rating restore
+        run: node playnice-site/scripts/restore-pdp-ten-stars.cjs
+      - name: Commit source change
+        run: |
+          if git diff --quiet; then
+            echo "No source changes produced."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add playnice-site/src/mobile-v2/product-page/MobileProductPage.jsx playnice-site/src/mobile-v2/product-page/MobileProductPage.css
+          git commit -m "Restore ten-star mobile PDP rating treatment [skip ci]"
+          git push origin HEAD:mobile-product-page-clean
