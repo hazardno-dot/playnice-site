@@ -134,6 +134,32 @@
     width: fit-content;
   }
 
+  .mobile-product-page__sale-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    min-height: 25px;
+    padding: 0 9px;
+    border: 1px solid rgba(209, 76, 76, 0.42);
+    border-radius: 999px;
+    background: rgba(72, 18, 18, 0.88);
+    color: #f2b7ad;
+    font: 800 0.54rem/1 Inter, sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    pointer-events: none;
+  }
+
+  .mobile-product-page__visual-frame.is-note-map-open .mobile-product-page__sale-badge {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+
   .mobile-product-page__image-button {
     width: 100%;
     min-height: 350px;
@@ -260,6 +286,45 @@
     font: 650 1.04rem/1 Inter, sans-serif;
   }
 
+  .mobile-product-page__size-topline {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+  }
+
+  .mobile-product-page__size-topline em {
+    color: #df8f82;
+    font: 800 0.54rem/1 Inter, sans-serif;
+    font-style: normal;
+    letter-spacing: 0.03em;
+  }
+
+  .mobile-product-page__sizes button.has-discount {
+    border-color: rgba(188, 76, 62, 0.34);
+  }
+
+  .mobile-product-page__sizes button.has-discount.is-active {
+    border-color: rgba(213, 177, 106, 0.76);
+  }
+
+  .mobile-product-page__size-price-discount {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .mobile-product-page__size-price-discount del {
+    color: rgba(244, 234, 216, 0.38);
+    font: 600 0.66rem/1 Inter, sans-serif;
+    text-decoration-thickness: 1px;
+  }
+
+  .mobile-product-page__size-price-discount strong {
+    color: #e3bd6e;
+  }
+
   .mobile-product-page__decision-row {
     display: grid;
     grid-template-columns: minmax(88px, 0.34fr) minmax(0, 0.66fr);
@@ -291,6 +356,27 @@
   }
 
   .mobile-product-page__price-box strong {
+    color: #d9b56c;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.45rem;
+    font-weight: 650;
+    line-height: 0.96;
+    letter-spacing: -0.01em;
+  }
+
+  .mobile-product-page__selected-discount {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+  }
+
+  .mobile-product-page__selected-discount del {
+    color: rgba(244, 234, 216, 0.38);
+    font: 600 0.66rem/1 Inter, sans-serif;
+    text-decoration-thickness: 1px;
+  }
+
+  .mobile-product-page__selected-discount strong {
     color: #d9b56c;
     font-family: "Cormorant Garamond", serif;
     font-size: 1.45rem;

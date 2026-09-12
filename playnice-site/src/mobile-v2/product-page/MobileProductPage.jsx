@@ -52,6 +52,14 @@ const getProductType = (name = "") => {
   return match?.[1] || "";
 };
 
+const getDiscountedPrice = (price, percent) =>
+  Number((Number(price) * (1 - Number(percent) / 100)).toFixed(2));
+
+const getProductDiscountForSize = (product, size) => {
+  if (!product?.discount) return null;
+  return product.discount.size === size ? product.discount : null;
+};
+
 const getRecommendations = (product) => {
   if (!product) return [];
 
@@ -163,6 +171,10 @@ export default function MobileProductPage({
   const sizes = Object.entries(product.sizes || {});
   const activeSize = selectedSize || sizes[0]?.[0] || "";
   const selectedPrice = product.sizes?.[activeSize];
+  const selectedDiscount = getProductDiscountForSize(product, activeSize);
+  const selectedFinalPrice = selectedDiscount
+    ? getDiscountedPrice(selectedPrice, selectedDiscount.percent)
+    : selectedPrice;
   const type = getProductType(product.name);
   const characterLine = copy.card?.[lang] || copy.modal?.[lang] || "";
   const fullDescription = copy.modal?.[lang] || characterLine;
@@ -231,6 +243,12 @@ export default function MobileProductPage({
             }
           }}
         >
+          {product.discount ? (
+            <span className="mobile-product-page__sale-badge">
+              SALE · {String(product.discount.size).toUpperCase()} · -{product.discount.percent}%
+            </span>
+          ) : null}
+
           <button
             type="button"
             className={`mobile-product-page__image-button ${product.noteMap ? "has-note-map" : ""}`}
@@ -322,23 +340,50 @@ export default function MobileProductPage({
         </div>
 
         <div className="mobile-product-page__sizes">
-          {sizes.map(([size, price]) => (
-            <button
-              key={size}
-              type="button"
-              className={size === activeSize ? "is-active" : ""}
-              onClick={() => onSelectSize?.(size)}
-            >
-              <span>{size}</span>
-              <strong>€{Number(price).toFixed(2)}</strong>
-            </button>
-          ))}
+          {sizes.map(([size, price]) => {
+            const discount = getProductDiscountForSize(product, size);
+            const finalPrice = discount
+              ? getDiscountedPrice(price, discount.percent)
+              : Number(price);
+
+            return (
+              <button
+                key={size}
+                type="button"
+                className={`${size === activeSize ? "is-active" : ""} ${discount ? "has-discount" : ""}`.trim()}
+                onClick={() => onSelectSize?.(size)}
+              >
+                <span className="mobile-product-page__size-topline">
+                  <span>{size}</span>
+                  {discount ? (
+                    <em>-{discount.percent}%</em>
+                  ) : null}
+                </span>
+
+                {discount ? (
+                  <span className="mobile-product-page__size-price-discount">
+                    <del>€{Number(price).toFixed(2)}</del>
+                    <strong>€{finalPrice.toFixed(2)}</strong>
+                  </span>
+                ) : (
+                  <strong>€{Number(price).toFixed(2)}</strong>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         <div className="mobile-product-page__decision-row">
           <div className="mobile-product-page__price-box">
             <span>{lang === "sr" ? "IZABRANA CENA" : "SELECTED PRICE"}</span>
-            <strong>{Number.isFinite(Number(selectedPrice)) ? `€${Number(selectedPrice).toFixed(2)}` : "—"}</strong>
+            {selectedDiscount && Number.isFinite(Number(selectedPrice)) ? (
+              <span className="mobile-product-page__selected-discount">
+                <del>€{Number(selectedPrice).toFixed(2)}</del>
+                <strong>€{Number(selectedFinalPrice).toFixed(2)}</strong>
+              </span>
+            ) : (
+              <strong>{Number.isFinite(Number(selectedFinalPrice)) ? `€${Number(selectedFinalPrice).toFixed(2)}` : "—"}</strong>
+            )}
           </div>
 
           <div className="mobile-product-page__actions">
