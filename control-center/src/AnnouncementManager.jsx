@@ -144,22 +144,80 @@ export default function AnnouncementManager() {
   };
 
   const prepareChange = async (id) => {
-    setWorkflowBusy(`${id}:prepare`); setError("");
+    setWorkflowBusy(`${id}:prepare`);
+    setError("");
+
     try {
-      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-      if (sessionError || !sessionData?.session?.access_token) throw sessionError || new Error("Authenticated admin session is required.");
-      const response = await fetch("/api/prepare-announcement-change", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionData.session.access_token}` },
-        body: JSON.stringify({ announcement_key: id }),
-      });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(payload.error || `Announcement prepare failed (${response.status}).`);
-      const { data, error: reloadError } = await supabase.from("announcement_drafts").select(DRAFT_SELECT).eq("announcement_key", id).single();
-      if (reloadError) throw reloadError;
-      setDraftRows((current) => ({ ...current, [id]: data }));
-    } catch (prepareError) { setError(prepareError.message || String(prepareError)); }
-    finally { setWorkflowBusy(""); }
+      const row = draftRows[id];
+
+      if (
+        !row ||
+        row.review_status !== "approved" ||
+        !row.approved_payload
+      ) {
+        throw new Error("Announcement draft must be APPROVED first.");
+      }
+
+      const { data: authData, error: authError } =
+        await supabase.auth.getUser();
+
+      if (authError || !authData?.user?.id) {
+        throw authError || new Error("Authenticated admin user is required.");
+      }
+
+      const githubResponse = await fetch(
+        "https://api.github.com/repos/hazardno-dot/playnice-site/contents/playnice-site/src/data/announcementConfig.generated.js?ref=main",
+        {
+          headers: {
+            Accept: "application/vnd.github+json",
+          },
+        }
+      );
+
+      if (!githubResponse.ok) {
+        throw new Error(
+          `Could not resolve live Announcement config SHA (${githubResponse.status}).`
+        );
+      }
+
+      const source = await githubResponse.json();
+
+      if (!source?.sha) {
+        throw new Error("Live Announcement config SHA is unavailable.");
+      }
+
+      const baseline = {
+        announcement_key: id,
+        source_path:
+          "playnice-site/src/data/announcementConfig.generated.js",
+        source_sha: source.sha,
+        prepared_from: "main",
+      };
+
+      const { data, error: updateError } = await supabase
+        .from("announcement_drafts")
+        .update({
+          baseline_snapshot: baseline,
+          prepared_at: new Date().toISOString(),
+          prepared_by: authData.user.id,
+        })
+        .eq("announcement_key", id)
+        .select(DRAFT_SELECT)
+        .single();
+
+      if (updateError) {
+        throw updateError;
+      }
+
+      setDraftRows((current) => ({
+        ...current,
+        [id]: data,
+      }));
+    } catch (prepareError) {
+      setError(prepareError.message || String(prepareError));
+    } finally {
+      setWorkflowBusy("");
+    }
   };
 
   if (!slot) return null;
