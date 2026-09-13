@@ -90,6 +90,15 @@ const channelLabel = (channel) => ({
   facebook: "Facebook",
 }[channel] || channel);
 
+function normalizeScheduledFor(value) {
+  const raw = String(value || "").trim();
+  if (!raw) throw new Error("Choose a date and time before scheduling.");
+  const date = new Date(raw);
+  if (Number.isNaN(date.getTime())) throw new Error("Scheduled date/time is invalid.");
+  if (date.getTime() <= Date.now()) throw new Error("Scheduled date/time must be in the future.");
+  return date.toISOString();
+}
+
 async function probePublicImage(url) {
   let parsed;
   try { parsed = new URL(String(url || "")); } catch { return { ok: false, reason: "invalid URL" }; }
@@ -152,7 +161,7 @@ export default async function handler(req, res) {
     const id = String(req.body?.id || "").trim();
     const action = String(req.body?.action || "save").trim();
     if (!id) return json(res, 400, { error: "Social event id is required." });
-    if (!["save", "ready", "reopen", "discard_test"].includes(action)) return json(res, 400, { error: "Unsupported Social draft action." });
+    if (!["save", "ready", "reopen", "schedule", "unschedule", "discard_test"].includes(action)) return json(res, 400, { error: "Unsupported Social draft action." });
 
     const eventRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(id)}&select=*&limit=1`, auth.token);
     if (!eventRes.ok) return json(res, 400, { error: "Could not load Social event." });
@@ -167,18 +176,26 @@ export default async function handler(req, res) {
     }
 
     if (["published", "cancelled"].includes(event.status)) return json(res, 409, { error: `Social event is ${event.status} and cannot be edited.` });
+    if (event.status === "scheduled" && action !== "unschedule") return json(res, 409, { error: "Scheduled events must be unscheduled before they can be changed." });
+    if (action === "schedule" && event.status !== "ready") return json(res, 409, { error: "Only READY events can be scheduled." });
+    if (action === "unschedule" && event.status !== "scheduled") return json(res, 409, { error: "Only scheduled events can be unscheduled." });
 
     const generated = generateSocialDraft(event);
-    const captions = normalizeCaptions(req.body?.content || event.draft_content || generated);
+    const captions = normalizeCaptions(req.body?.content || event.draft_content || event.approved_content || generated);
     const draftContent = mergeDraft(generated, captions);
     const now = new Date().toISOString();
     const mediaValidation = action === "ready" ? await validateReadyMedia(draftContent) : null;
+    const scheduledFor = action === "schedule" ? normalizeScheduledFor(req.body?.scheduled_for) : null;
 
     const patch = action === "reopen"
-      ? { status: "draft", draft_content: draftContent, approved_content: null, approved_by: null, approved_at: null }
+      ? { status: "draft", scheduled_for: null, draft_content: draftContent, approved_content: null, approved_by: null, approved_at: null }
       : action === "ready"
-        ? { status: "ready", draft_content: draftContent, approved_content: draftContent, approved_by: auth.user.id, approved_at: now }
-        : { status: event.status === "ready" ? "draft" : event.status, draft_content: draftContent, approved_content: event.status === "ready" ? null : event.approved_content, approved_by: event.status === "ready" ? null : event.approved_by, approved_at: event.status === "ready" ? null : event.approved_at };
+        ? { status: "ready", scheduled_for: null, draft_content: draftContent, approved_content: draftContent, approved_by: auth.user.id, approved_at: now }
+        : action === "schedule"
+          ? { status: "scheduled", scheduled_for: scheduledFor, draft_content: event.draft_content || draftContent, approved_content: event.approved_content || draftContent }
+          : action === "unschedule"
+            ? { status: "ready", scheduled_for: null }
+            : { status: event.status === "ready" ? "draft" : event.status, scheduled_for: null, draft_content: draftContent, approved_content: event.status === "ready" ? null : event.approved_content, approved_by: event.status === "ready" ? null : event.approved_by, approved_at: event.status === "ready" ? null : event.approved_at };
 
     const updateRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(id)}`, auth.token, {
       method: "PATCH",
@@ -187,15 +204,27 @@ export default async function handler(req, res) {
     if (!updateRes.ok) throw new Error(`Could not update Social draft (${updateRes.status}).`);
     const [updated] = await updateRes.json();
 
+    const auditAction = action === "ready"
+      ? "draft_marked_ready"
+      : action === "reopen"
+        ? "draft_reopened"
+        : action === "schedule"
+          ? "draft_scheduled"
+          : action === "unschedule"
+            ? "draft_unscheduled"
+            : "draft_saved";
+
     await supabaseFetch("/rest/v1/social_audit_log", auth.token, {
       method: "POST",
       body: JSON.stringify({
         social_event_id: id,
         actor_id: auth.user.id,
-        action: action === "ready" ? "draft_marked_ready" : action === "reopen" ? "draft_reopened" : "draft_saved",
+        action: auditAction,
         details: {
           previous_status: event.status,
           next_status: updated?.status || patch.status,
+          ...(scheduledFor ? { scheduled_for: scheduledFor } : {}),
+          ...(action === "unschedule" && event.scheduled_for ? { previous_scheduled_for: event.scheduled_for } : {}),
           ...(mediaValidation ? {
             media_validation: {
               fallback_channels: mediaValidation.selection.fallback,
