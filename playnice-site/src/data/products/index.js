@@ -213,7 +213,7 @@ export const products = [
     shortName: "CDN Sillage",
     category: "Arabian",
     image: "/products/CDN-Sillage.png",
-    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     badge: "FRESH DROP",
     rating: 8.0,
     ratingLabel: "Audience Favorite",
