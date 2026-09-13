@@ -6,11 +6,16 @@ import "./social-manager.css";
 
 const FILTERS = ["all", "draft", "ready", "scheduled", "published", "failed"];
 const CHANNELS = [["instagram_feed", "Instagram Feed"], ["instagram_story", "Instagram Story"], ["facebook", "Facebook"]];
+const PUBLIC_ORIGIN = "https://www.playniceshop.me";
 const fmt = (value) => value ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : "—";
 const label = (value) => String(value || "").replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 const mediaSrc = (media) => media?.url || media?.src || "";
 const eventTitle = (event) => event?.payload?.core?.shortName || event?.payload?.core?.name || event?.payload?.shortName || event?.payload?.name || event?.payload?.title?.sr || event?.payload?.alt || event?.source_id;
 const isExplicitTestEvent = (event) => Boolean(event?.metadata?.test || event?.metadata?.replay || String(event?.source_id || "").includes("--shadow-test-") || String(event?.source_id || "").includes("--shadow-replay-"));
+const publicSourceUrl = (value) => {
+  if (!value) return "";
+  try { return new URL(String(value), PUBLIC_ORIGIN).toString(); } catch { return ""; }
+};
 const localInputValue = (value) => {
   const date = value ? new Date(value) : new Date(Date.now() + 60 * 60 * 1000);
   const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
@@ -34,6 +39,7 @@ function SocialWorkspace() {
   const [selectedId, setSelectedId] = useState("");
   const [editing, setEditing] = useState({});
   const [scheduleFor, setScheduleFor] = useState(localInputValue());
+  const [copiedKey, setCopiedKey] = useState("");
   const [saving, setSaving] = useState(false);
   const [actionError, setActionError] = useState("");
 
@@ -68,6 +74,7 @@ function SocialWorkspace() {
     }, { ...generated });
   }, [selected, generated]);
   const mediaReadiness = useMemo(() => validateSocialDraftMedia(draft || {}), [draft]);
+  const sourceLink = useMemo(() => publicSourceUrl(selected?.source_url), [selected?.source_url]);
 
   useEffect(() => {
     if (visible.length && !visible.some((event) => event.id === selectedId)) setSelectedId(visible[0].id);
@@ -77,10 +84,40 @@ function SocialWorkspace() {
     if (!selected || !generated) { setEditing({}); return; }
     setEditing(editableContent(selected, generated));
     setScheduleFor(localInputValue(selected.scheduled_for || undefined));
+    setCopiedKey("");
     setActionError("");
   }, [selected?.id, selected?.updated_at, generated]);
 
   const updateCaption = (key, value) => setEditing((current) => ({ ...current, [key]: { caption: value } }));
+
+  const copyText = async (value, key) => {
+    const text = String(value || "");
+    if (!text) return;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const node = document.createElement("textarea");
+        node.value = text;
+        node.setAttribute("readonly", "");
+        node.style.position = "fixed";
+        node.style.opacity = "0";
+        document.body.appendChild(node);
+        node.select();
+        document.execCommand("copy");
+        node.remove();
+      }
+      setCopiedKey(key);
+      window.setTimeout(() => setCopiedKey((current) => current === key ? "" : current), 1600);
+    } catch {
+      setActionError("Could not copy to clipboard. Please copy the text manually.");
+    }
+  };
+
+  const openImage = (src) => {
+    if (!src) return;
+    window.open(src, "_blank", "noopener,noreferrer");
+  };
 
   const sessionToken = async () => {
     const { data: refreshData } = await supabase.auth.refreshSession().catch(() => ({ data: null }));
@@ -197,6 +234,11 @@ function SocialWorkspace() {
                 </div>
                 <textarea value={caption} disabled={saving || immutable} onChange={(event) => updateCaption(key, event.target.value)} maxLength={2200} />
                 <div className="social-caption-meta"><span>{caption.length}/2200</span><strong>{snapshotLocked ? "Approved snapshot" : readiness.status === "fallback" ? "Usable fallback" : readiness.status === "missing" ? "Media required" : "Media ready"}</strong></div>
+                <div className="social-review-actions" style={{ padding: "10px 13px", borderTop: "1px solid #20262d", justifyContent: "flex-start" }}>
+                  <button type="button" disabled={!caption} onClick={() => copyText(caption, `${key}:caption`)}>{copiedKey === `${key}:caption` ? "Copied" : "Copy caption"}</button>
+                  <button type="button" disabled={!src} onClick={() => openImage(src)}>Open image</button>
+                  <button type="button" disabled={!sourceLink} onClick={() => copyText(sourceLink, `${key}:link`)}>{copiedKey === `${key}:link` ? "Copied" : "Copy link"}</button>
+                </div>
               </section>;
             })}
           </div>
