@@ -6,7 +6,6 @@ import { supabase } from "./supabase";
 import "./journal-apply.css";
 
 const SELECT = "article_id,payload,approved_payload,review_status,reviewed_at,baseline_snapshot,prepared_at,apply_branch,apply_pr_number,apply_created_at,updated_at";
-const REPO_PULLS_URL = "https://api.github.com/repos/hazardno-dot/playnice-site/pulls";
 
 const selectedArticleIdFromDom = () => {
   const heading = document.querySelector(".main-stage .topbar h1")?.textContent?.trim();
@@ -105,23 +104,21 @@ export default function JournalApplyManager() {
 
     const reconcilePublishedDraft = async () => {
       try {
-        const response = await fetch(`${REPO_PULLS_URL}/${row.apply_pr_number}`, {
-          headers: { Accept: "application/vnd.github+json" },
-        });
-        if (!response.ok) return;
-        const pr = await response.json();
-        if (pr.state !== "closed" && !pr.merged_at) return;
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        const token = sessionData?.session?.access_token;
+        if (sessionError || !token) return;
 
-        const { error: deleteError } = await supabase
-          .from("journal_drafts")
-          .delete()
-          .eq("article_id", articleId)
-          .eq("apply_pr_number", row.apply_pr_number);
-        if (deleteError || cancelled) return;
+        const response = await fetch("/api/sync-journal-publish-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ article_id: articleId }),
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok || payload.status !== "published" || cancelled) return;
         setRow(null);
         window.location.reload();
       } catch {
-        // Reconciliation is best-effort. A transient GitHub/network failure leaves the draft intact.
+        // Publish reconciliation is best-effort. A transient backend/network failure leaves the draft intact.
       }
     };
 
