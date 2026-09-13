@@ -98,7 +98,12 @@ const entries = [
   {
     "sr": "Kožna jakna je previše očigledna. Obucite crnu košulju ili dobar tamni kaput i pustite da koža dolazi iz parfema. Kaubojsku kapu ostavite čoveku koji zaista ima konja.",
     "en": "A leather jacket is too obvious. Wear a black shirt or a good dark coat and let the leather come from the fragrance. Leave the cowboy hat to someone who actually owns a horse."
+  },
+  {
+    "sr": "Tamnu košulju, vunene pantalone i dobar kaput ili sako. Al Noor već radi začinsko-kožnu dramu; garderoba neka bude mirna, čista i skupa bez potrebe da pokazuje logo.",
+    "en": "A dark shirt, wool trousers and a good coat or blazer. Al Noor already handles the spicy-leather drama; keep the clothes calm, clean and expensive-looking without needing to show the logo."
   }
+
 ];
 
 export default entries;
