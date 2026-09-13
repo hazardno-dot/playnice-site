@@ -120,7 +120,7 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
-for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Discard test event", "Replay Product", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "IDEAL", "FALLBACK", "MISSING"]) {
+for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Discard test event", "Replay Product", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
 assert.ok(socialManager.includes("disabled={saving || !mediaReadiness.ok}"), "Mark ready must be locally disabled when a channel has no media.");
