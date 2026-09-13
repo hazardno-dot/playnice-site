@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
-import { generateSocialDraft } from "./socialDraft.mjs";
+import { generateSocialDraft, validateSocialDraftMedia } from "./socialDraft.mjs";
 import "./social-manager.css";
 
 const FILTERS = ["all", "draft", "ready", "scheduled", "published", "failed"];
@@ -60,6 +60,7 @@ function SocialWorkspace() {
       return out;
     }, { ...generated });
   }, [selected, generated]);
+  const mediaReadiness = useMemo(() => validateSocialDraftMedia(draft || {}), [draft]);
 
   useEffect(() => {
     if (visible.length && !visible.some((event) => event.id === selectedId)) setSelectedId(visible[0].id);
@@ -145,6 +146,7 @@ function SocialWorkspace() {
     </div>
 
     {error ? <div className="social-error">Social schema is not active in Supabase yet: {error}</div> : null}
+    {actionError ? <div className="social-error social-action-error">{actionError}</div> : null}
 
     <div className="social-filter-bar">
       {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${counts[value] || 0}` : ""}</button>)}
@@ -169,20 +171,27 @@ function SocialWorkspace() {
             {CHANNELS.map(([key, title]) => {
               const media = draft[key]?.media || null;
               const src = mediaSrc(media);
-              const fallback = media?.selection === "fallback";
+              const readiness = mediaReadiness.channels[key];
               const caption = editing?.[key]?.caption ?? draft[key]?.caption ?? "";
               return <section key={key} className={`social-channel-card ${key === "instagram_story" ? "story" : ""}`}>
                 <div className="social-channel-head"><span>{title}</span><em>{selected.status === "ready" ? "APPROVED" : "EDITABLE"}</em></div>
                 <div className="social-media-frame">
                   {src ? <img src={src} alt="" /> : <div className="social-media-placeholder">No channel asset selected</div>}
-                  {media ? <div className={`social-media-meta ${fallback ? "fallback" : ""}`}><span>{media.format || "asset"}</span><strong>{fallback ? "FALLBACK" : "SELECTED"}</strong></div> : null}
+                  <div className={`social-media-meta ${readiness.status}`}><span>{media?.format || "no asset"}</span><strong>{readiness.label}</strong></div>
                 </div>
                 <textarea value={caption} disabled={saving || selected.status === "published" || selected.status === "cancelled"} onChange={(event) => updateCaption(key, event.target.value)} maxLength={2200} />
-                <div className="social-caption-meta"><span>{caption.length}/2200</span><strong>{selected.status === "ready" ? "Approved snapshot" : "Draft caption"}</strong></div>
+                <div className="social-caption-meta"><span>{caption.length}/2200</span><strong>{selected.status === "ready" ? "Approved snapshot" : readiness.status === "fallback" ? "Usable fallback" : readiness.status === "missing" ? "Media required" : "Media ready"}</strong></div>
               </section>;
             })}
           </div>
-          {actionError ? <div className="social-error social-action-error">{actionError}</div> : null}
+          <div className={`social-media-readiness ${mediaReadiness.ok ? "ready" : "blocked"}`}>
+            <div><span>MEDIA READINESS</span><strong>{mediaReadiness.ok ? "READY CHECK CAN RUN" : "READY BLOCKED"}</strong></div>
+            <p>{mediaReadiness.ok
+              ? mediaReadiness.fallback.length
+                ? `${mediaReadiness.fallback.length} channel(s) use a fallback asset. Backend will still verify every image is publicly reachable before approval.`
+                : "All channels have ideal media. Backend will verify every image is publicly reachable before approval."
+              : `Missing media: ${mediaReadiness.blocking.map(label).join(", ")}.`}</p>
+          </div>
           <div className="social-review-row">
             <div><span>REVIEW STATE</span><strong>{selected.status === "ready" ? "READY · APPROVED" : "DRAFT · REVIEW"}</strong></div>
             <div className="social-review-actions">
@@ -191,7 +200,7 @@ function SocialWorkspace() {
                 ? <button type="button" disabled={saving} onClick={() => persist("reopen")}>{saving ? "Working…" : "Return to draft"}</button>
                 : <>
                   <button type="button" disabled={saving} onClick={() => persist("save")}>{saving ? "Saving…" : "Save draft"}</button>
-                  <button type="button" className="primary" disabled={saving} onClick={() => persist("ready")}>{saving ? "Approving…" : "Mark ready"}</button>
+                  <button type="button" className="primary" disabled={saving || !mediaReadiness.ok} title={!mediaReadiness.ok ? "Add usable media for every channel before marking READY." : "Backend will verify public image availability before approval."} onClick={() => persist("ready")}>{saving ? "Approving…" : "Mark ready"}</button>
                 </>}
             </div>
           </div>
