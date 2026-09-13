@@ -297,7 +297,7 @@ export const products = [
     shortName: "Island Dreams",
     category: "Arabian",
     image: "/products/island.png",
-    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     badge: "SUMMER HIT",
     rating: 8.7,
     ratingLabel: "Audience Favorite",
