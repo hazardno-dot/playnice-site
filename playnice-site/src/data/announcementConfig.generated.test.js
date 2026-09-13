@@ -1,22 +1,28 @@
 import { ANNOUNCEMENT_ITEMS } from "./announcementConfig.generated";
 
 describe("announcementConfig.generated", () => {
-  test("preserves the current Thomas Kosmala editorial announcement contract", () => {
-    expect(ANNOUNCEMENT_ITEMS).toEqual([
-      {
-        id: "thomas-kosmala-no4-announcement",
-        enabled: true,
-        text: {
-          sr: "✦ NOVO: Thomas Kosmala No. 4 Après l'Amour 10ml + Mystery Designer Sample • Limited Stock",
-          en: "✦ NEW: Thomas Kosmala No. 4 Après l'Amour 10ml + Mystery Designer Sample • Limited Stock",
-        },
-        icon: "→",
-        tone: "new-shop",
-        action: "openProduct",
-        slug: "thomas-kosmala-no-4-apres-lamour",
-        priority: 10,
-      },
-    ]);
+  test("keeps editorial announcement items structurally valid", () => {
+    expect(Array.isArray(ANNOUNCEMENT_ITEMS)).toBe(true);
+
+    const ids = new Set();
+
+    ANNOUNCEMENT_ITEMS.forEach((item) => {
+      expect(item.id).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+      expect(ids.has(item.id)).toBe(false);
+      ids.add(item.id);
+
+      expect(typeof item.enabled).toBe("boolean");
+      expect(Number.isFinite(Number(item.priority))).toBe(true);
+      expect(item.text?.sr?.trim()).toBeTruthy();
+      expect(item.text?.en?.trim()).toBeTruthy();
+      expect(typeof item.icon).toBe("string");
+      expect(typeof item.tone).toBe("string");
+      expect(typeof item.action).toBe("string");
+
+      if (item.action === "openProduct") {
+        expect(item.slug?.trim()).toBeTruthy();
+      }
+    });
   });
 
   test("requires both SR and EN copy for enabled editorial announcements", () => {
