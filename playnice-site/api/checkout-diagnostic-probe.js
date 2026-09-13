@@ -65,8 +65,7 @@ export default async function handler(req, res) {
 
   const successful = results.filter((item) => item.appsScript?.status === "ok");
   const roundTrips = successful.map((item) => item.vercelRoundTripMs);
-
-  return res.status(200).json({
+  const payload = {
     count,
     successful: successful.length,
     summary: roundTrips.length
@@ -77,5 +76,9 @@ export default async function handler(req, res) {
         }
       : null,
     results
-  });
+  };
+
+  console.info("[checkout-diagnostic-probe]", JSON.stringify(payload));
+
+  return res.status(200).json(payload);
 }
