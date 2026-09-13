@@ -7,7 +7,7 @@ import { ANNOUNCEMENT_ACTIONS, ANNOUNCEMENT_TONES, auditAnnouncementDraft, getAn
 import "./announcement-manager.css";
 import "./announcement-draft.css";
 
-const DRAFT_SELECT = "announcement_key,payload,review_status,approved_payload,reviewed_at,reviewed_by,baseline_snapshot,prepared_at,prepared_by,apply_branch,apply_pr_number,apply_created_at,apply_created_by,preview_verified_at,preview_verified_by,updated_at";
+const DRAFT_SELECT = "announcement_key,payload,review_status,approved_payload,reviewed_at,reviewed_by,baseline_snapshot,prepared_at,prepared_by,apply_branch,apply_pr_number,apply_created_at,apply_created_by,preview_verified_at,preview_verified_by,merged_at,merged_by,merged_commit_sha,updated_at";
 
 function AnnouncementPreview({ item, lang }) {
   const text = item.text?.[lang] || item.text?.en || item.text?.sr || "";
@@ -131,7 +131,7 @@ export default function AnnouncementManager() {
       if (validation.errors.length) throw new Error(validation.errors.join(" "));
       const { data: authData, error: authError } = await supabase.auth.getUser();
       if (authError || !authData?.user?.id) throw authError || new Error("Authenticated user is required.");
-      const resetApply = { apply_branch: null, apply_pr_number: null, apply_created_at: null, apply_created_by: null, preview_verified_at: null, preview_verified_by: null };
+      const resetApply = { apply_branch: null, apply_pr_number: null, apply_created_at: null, apply_created_by: null, preview_verified_at: null, preview_verified_by: null, merged_at: null, merged_by: null, merged_commit_sha: null };
       const patch = nextStatus === "approved"
         ? { ...resetApply, review_status: "approved", reviewed_at: new Date().toISOString(), reviewed_by: authData.user.id, approved_payload: row.payload, baseline_snapshot: null, prepared_at: null, prepared_by: null }
         : nextStatus === "ready"
@@ -147,11 +147,9 @@ export default function AnnouncementManager() {
   const prepareChange = async (id) => {
     setWorkflowBusy(`${id}:prepare`);
     setError("");
-
     try {
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       if (sessionError || !sessionData?.session?.access_token) throw sessionError || new Error("Authenticated admin session is required.");
-
       const response = await fetch("/api/create-apply", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionData.session.access_token}` },
@@ -159,7 +157,6 @@ export default function AnnouncementManager() {
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Announcement prepare failed (${response.status}).`);
-
       const { data, error: reloadError } = await supabase.from("announcement_drafts").select(DRAFT_SELECT).eq("announcement_key", id).single();
       if (reloadError) throw reloadError;
       setDraftRows((current) => ({ ...current, [id]: data }));
@@ -173,7 +170,6 @@ export default function AnnouncementManager() {
     try {
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       if (sessionError || !sessionData?.session?.access_token) throw sessionError || new Error("Authenticated admin session is required.");
-
       const response = await fetch("/api/create-apply", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionData.session.access_token}` },
@@ -181,11 +177,76 @@ export default function AnnouncementManager() {
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Announcement apply failed (${response.status}).`);
-
       const { data, error: reloadError } = await supabase.from("announcement_drafts").select(DRAFT_SELECT).eq("announcement_key", id).single();
       if (reloadError) throw reloadError;
       setDraftRows((current) => ({ ...current, [id]: data }));
     } catch (applyError) { setError(applyError.message || String(applyError)); }
+    finally { setWorkflowBusy(""); }
+  };
+
+  const openPreview = async (id) => {
+    const popup = window.open("", "_blank");
+    setWorkflowBusy(`${id}:preview`);
+    setError("");
+    try {
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || !sessionData?.session?.access_token) throw sessionError || new Error("Authenticated admin session is required.");
+      const response = await fetch("/api/create-apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionData.session.access_token}` },
+        body: JSON.stringify({ announcement_key: id, announcement_action: "resolve_preview" }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || !payload.preview_url) throw new Error(payload.error || `Announcement Preview is unavailable (${response.status}).`);
+      if (popup) {
+        popup.opener = null;
+        popup.location.href = payload.preview_url;
+      } else {
+        window.open(payload.preview_url, "_blank", "noopener,noreferrer");
+      }
+    } catch (previewError) {
+      if (popup) popup.close();
+      setError(previewError.message || String(previewError));
+    } finally { setWorkflowBusy(""); }
+  };
+
+  const markPreviewVerified = async (id) => {
+    const row = draftRows[id];
+    if (!row?.apply_branch || !row?.apply_pr_number) return;
+    setWorkflowBusy(`${id}:verify`);
+    setError("");
+    try {
+      const { data: authData, error: authError } = await supabase.auth.getUser();
+      if (authError || !authData?.user?.id) throw authError || new Error("Authenticated admin user is required.");
+      const { data, error: updateError } = await supabase
+        .from("announcement_drafts")
+        .update({ preview_verified_at: new Date().toISOString(), preview_verified_by: authData.user.id })
+        .eq("announcement_key", id)
+        .select(DRAFT_SELECT)
+        .single();
+      if (updateError) throw updateError;
+      setDraftRows((current) => ({ ...current, [id]: data }));
+    } catch (verifyError) { setError(verifyError.message || String(verifyError)); }
+    finally { setWorkflowBusy(""); }
+  };
+
+  const mergeVerifiedPr = async (id) => {
+    setWorkflowBusy(`${id}:merge`);
+    setError("");
+    try {
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || !sessionData?.session?.access_token) throw sessionError || new Error("Authenticated admin session is required.");
+      const response = await fetch("/api/create-apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionData.session.access_token}` },
+        body: JSON.stringify({ announcement_key: id, announcement_action: "merge_apply" }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Announcement merge failed (${response.status}).`);
+      const { data, error: reloadError } = await supabase.from("announcement_drafts").select(DRAFT_SELECT).eq("announcement_key", id).single();
+      if (reloadError) throw reloadError;
+      setDraftRows((current) => ({ ...current, [id]: data }));
+    } catch (mergeError) { setError(mergeError.message || String(mergeError)); }
     finally { setWorkflowBusy(""); }
   };
 
@@ -204,8 +265,10 @@ export default function AnnouncementManager() {
           const state = getAnnouncementDraftState(draftRow);
           const prepared = Boolean(draftRow?.prepared_at && draftRow?.baseline_snapshot?.source_sha);
           const hasApply = Boolean(draftRow?.apply_branch && draftRow?.apply_pr_number);
+          const previewVerified = Boolean(draftRow?.preview_verified_at);
+          const merged = Boolean(draftRow?.merged_at && draftRow?.merged_commit_sha);
           return <article className="announcement-row" key={item.id}>
-            <div className="announcement-row-top"><div><span className={`announcement-status ${item.enabled ? "enabled" : "disabled"}`}>{item.enabled ? "ENABLED" : "DISABLED"}</span>{item.__draft ? <span className={`announcement-draft-badge state-${state}`}>{state.toUpperCase()}</span> : null}{prepared ? <span className="announcement-prepared-badge">PREPARED</span> : null}{hasApply ? <span className="announcement-prepared-badge">PR #{draftRow.apply_pr_number}</span> : null}<code>{item.id}</code></div><strong>Priority {item.priority ?? 0}</strong></div>
+            <div className="announcement-row-top"><div><span className={`announcement-status ${item.enabled ? "enabled" : "disabled"}`}>{item.enabled ? "ENABLED" : "DISABLED"}</span>{item.__draft ? <span className={`announcement-draft-badge state-${state}`}>{state.toUpperCase()}</span> : null}{prepared ? <span className="announcement-prepared-badge">PREPARED</span> : null}{hasApply ? <span className="announcement-prepared-badge">PR #{draftRow.apply_pr_number}</span> : null}{previewVerified ? <span className="announcement-prepared-badge">VERIFIED</span> : null}{merged ? <span className="announcement-prepared-badge">MERGED</span> : null}<code>{item.id}</code></div><strong>Priority {item.priority ?? 0}</strong></div>
             <div className="announcement-copy-block"><span>SR</span><p>{item.text?.sr || "—"}</p></div><div className="announcement-copy-block"><span>EN</span><p>{item.text?.en || "—"}</p></div>
             <div className="announcement-meta-row"><span>Icon <strong>{item.icon || "—"}</strong></span><span>Tone <strong>{item.tone || "default"}</strong></span><span>Action <strong>{item.action || "none"}</strong></span>{item.slug ? <span>Slug <strong>{item.slug}</strong></span> : null}</div>
             <div className="announcement-row-actions">
@@ -213,14 +276,17 @@ export default function AnnouncementManager() {
               {draftRow && state === "draft" ? <button className="workflow" disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "ready")}>{workflowBusy === `${item.id}:ready` ? "Updating…" : "Mark ready"}</button> : null}
               {draftRow && state === "ready" ? <><button disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "draft")}>Back to draft</button><button className="workflow primary" disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "approved")}>{workflowBusy === `${item.id}:approved` ? "Approving…" : "Approve"}</button></> : null}
               {draftRow && state === "approved" ? <>
-                <button disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "draft")}>Back to draft</button>
+                {!merged ? <button disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "draft")}>Back to draft</button> : null}
                 {!prepared ? <button className="workflow primary" disabled={Boolean(workflowBusy)} onClick={() => prepareChange(item.id)}>{workflowBusy === `${item.id}:prepare` ? "Preparing…" : "Prepare change"}</button> : null}
                 {prepared && !hasApply ? <button className="workflow primary" disabled={Boolean(workflowBusy)} onClick={() => createDraftPr(item.id)}>{workflowBusy === `${item.id}:apply` ? "Creating PR…" : "Create draft PR"}</button> : null}
                 {hasApply ? <a className="workflow" href={`https://github.com/hazardno-dot/playnice-site/pull/${draftRow.apply_pr_number}`} target="_blank" rel="noopener noreferrer">Open draft PR #{draftRow.apply_pr_number}</a> : null}
+                {hasApply && !merged ? <button className="workflow" disabled={Boolean(workflowBusy)} onClick={() => openPreview(item.id)}>{workflowBusy === `${item.id}:preview` ? "Opening Preview…" : "Open Preview"}</button> : null}
+                {hasApply && !previewVerified ? <button className="workflow primary" disabled={Boolean(workflowBusy)} onClick={() => markPreviewVerified(item.id)}>{workflowBusy === `${item.id}:verify` ? "Verifying…" : "Mark preview verified"}</button> : null}
+                {hasApply && previewVerified && !merged ? <button className="workflow primary" disabled={Boolean(workflowBusy)} onClick={() => mergeVerifiedPr(item.id)}>{workflowBusy === `${item.id}:merge` ? "Merging…" : `Merge verified PR #${draftRow.apply_pr_number}`}</button> : null}
               </> : null}
-              {item.__draft ? <button className="danger" disabled={Boolean(workflowBusy)} onClick={() => discardDraft(item.id)}>Discard draft</button> : null}
+              {item.__draft && !merged ? <button className="danger" disabled={Boolean(workflowBusy)} onClick={() => discardDraft(item.id)}>Discard draft</button> : null}
             </div>
-            {draftRow ? <div className="announcement-workflow-note"><span>WORKFLOW</span><strong>{hasApply ? `PREPARED → DRAFT PR #${draftRow.apply_pr_number}` : prepared ? "APPROVED → PREPARED" : state === "approved" ? "APPROVED → prepare next" : state === "ready" ? "READY → approval next" : "DRAFT → ready next"}</strong>{prepared ? <small>Baseline SHA {String(draftRow.baseline_snapshot.source_sha).slice(0, 10)}… captured from main.{hasApply ? ` Branch ${draftRow.apply_branch}.` : ""}</small> : null}</div> : null}
+            {draftRow ? <div className="announcement-workflow-note"><span>WORKFLOW</span><strong>{merged ? `PR #${draftRow.apply_pr_number} → MERGED` : previewVerified ? `DRAFT PR #${draftRow.apply_pr_number} → PREVIEW VERIFIED` : hasApply ? `PREPARED → DRAFT PR #${draftRow.apply_pr_number}` : prepared ? "APPROVED → PREPARED" : state === "approved" ? "APPROVED → prepare next" : state === "ready" ? "READY → approval next" : "DRAFT → ready next"}</strong>{prepared ? <small>Baseline SHA {String(draftRow.baseline_snapshot.source_sha).slice(0, 10)}… captured from main.{hasApply ? ` Branch ${draftRow.apply_branch}.` : ""}{previewVerified ? " Preview verified." : ""}{merged ? ` Merge commit ${String(draftRow.merged_commit_sha).slice(0, 10)}….` : ""}</small> : null}</div> : null}
           </article>;
         })}{!rows.length ? <div className="announcement-empty">No editorial announcements in generated config.</div> : null}</div>
       </div>
