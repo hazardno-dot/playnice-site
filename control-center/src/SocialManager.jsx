@@ -11,6 +11,11 @@ const label = (value) => String(value || "").replace(/_/g, " ").replace(/\b\w/g,
 const mediaSrc = (media) => media?.url || media?.src || "";
 const eventTitle = (event) => event?.payload?.core?.shortName || event?.payload?.core?.name || event?.payload?.shortName || event?.payload?.name || event?.payload?.title?.sr || event?.payload?.alt || event?.source_id;
 const isExplicitTestEvent = (event) => Boolean(event?.metadata?.test || event?.metadata?.replay || String(event?.source_id || "").includes("--shadow-test-") || String(event?.source_id || "").includes("--shadow-replay-"));
+const localInputValue = (value) => {
+  const date = value ? new Date(value) : new Date(Date.now() + 60 * 60 * 1000);
+  const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return local.toISOString().slice(0, 16);
+};
 
 function editableContent(event, generated) {
   const stored = event?.draft_content || event?.approved_content || null;
@@ -28,6 +33,7 @@ function SocialWorkspace() {
   const [filter, setFilter] = useState("all");
   const [selectedId, setSelectedId] = useState("");
   const [editing, setEditing] = useState({});
+  const [scheduleFor, setScheduleFor] = useState(localInputValue());
   const [saving, setSaving] = useState(false);
   const [actionError, setActionError] = useState("");
 
@@ -53,7 +59,8 @@ function SocialWorkspace() {
   }, [selected]);
   const draft = useMemo(() => {
     if (!selected || !generated) return null;
-    const stored = selected.status === "ready" && selected.approved_content ? selected.approved_content : selected.draft_content;
+    const lockedSnapshot = ["ready", "scheduled"].includes(selected.status) && selected.approved_content ? selected.approved_content : null;
+    const stored = lockedSnapshot || selected.draft_content;
     if (!stored) return generated;
     return CHANNELS.reduce((out, [key]) => {
       out[key] = { ...(generated[key] || {}), ...(stored[key] || {}), media: generated[key]?.media || null };
@@ -69,6 +76,7 @@ function SocialWorkspace() {
   useEffect(() => {
     if (!selected || !generated) { setEditing({}); return; }
     setEditing(editableContent(selected, generated));
+    setScheduleFor(localInputValue(selected.scheduled_for || undefined));
     setActionError("");
   }, [selected?.id, selected?.updated_at, generated]);
 
@@ -83,7 +91,7 @@ function SocialWorkspace() {
     return token;
   };
 
-  const persist = async (action) => {
+  const persist = async (action, extra = {}) => {
     if (!selected) return;
     setSaving(true);
     setActionError("");
@@ -92,7 +100,7 @@ function SocialWorkspace() {
       const response = await fetch("/api/social-draft", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ id: selected.id, action, content: editing }),
+        body: JSON.stringify({ id: selected.id, action, content: editing, ...extra }),
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Social draft update failed (${response.status}).`);
@@ -132,9 +140,16 @@ function SocialWorkspace() {
     }
   };
 
+  const immutable = selected && ["ready", "scheduled", "published", "cancelled"].includes(selected.status);
+  const reviewState = selected?.status === "scheduled"
+    ? "SCHEDULED · LOCKED"
+    : selected?.status === "ready"
+      ? "READY · APPROVED"
+      : "DRAFT · REVIEW";
+
   return <section className="social-manager">
     <div className="social-banner">
-      <div><span>SOCIAL PUBLISHER V1</span><h2>Shadow-mode publishing infrastructure</h2><p>Production content can create social drafts here. Captions can be edited and approved, but Meta publishing remains intentionally locked.</p></div>
+      <div><span>SOCIAL PUBLISHER V1</span><h2>Shadow-mode publishing infrastructure</h2><p>Production content can create social drafts here. Captions can be edited, approved and scheduled, but Meta publishing remains intentionally locked.</p></div>
       <strong>NO META PUBLISH</strong>
     </div>
 
@@ -142,7 +157,7 @@ function SocialWorkspace() {
       <div><span>TOTAL</span><strong>{events.length}</strong><small>social events</small></div>
       <div><span>DRAFT</span><strong>{counts.draft || 0}</strong><small>awaiting review</small></div>
       <div><span>READY</span><strong>{counts.ready || 0}</strong><small>approved shadow queue</small></div>
-      <div><span>PUBLISHED</span><strong>{counts.published || 0}</strong><small>future Meta history</small></div>
+      <div><span>SCHEDULED</span><strong>{counts.scheduled || 0}</strong><small>future shadow queue</small></div>
     </div>
 
     {error ? <div className="social-error">Social schema is not active in Supabase yet: {error}</div> : null}
@@ -159,28 +174,29 @@ function SocialWorkspace() {
       <aside className="social-list">
         <div className="social-list-head"><span>EVENT QUEUE</span><strong>{loading ? "…" : visible.length}</strong></div>
         {visible.length ? visible.map((event) => <button type="button" key={event.id} className={selected?.id === event.id ? "active" : ""} onClick={() => setSelectedId(event.id)}>
-          <div><strong>{eventTitle(event)}</strong><span>{label(event.source_type)} · {label(event.event_type)}</span></div>
+          <div><strong>{eventTitle(event)}</strong><span>{label(event.source_type)} · {label(event.event_type)}{event.scheduled_for ? ` · ${fmt(event.scheduled_for)}` : ""}</span></div>
           <em className={event.status}>{event.status}</em>
         </button>) : <div className="social-empty">{loading ? "Loading social events…" : "No social events in this view."}</div>}
       </aside>
 
       <article className="social-detail">
         {selected && draft ? <>
-          <div className="social-detail-head"><div><span>{label(selected.source_type)} / {label(selected.event_type)}</span><h3>{draft.headline}</h3><p>{selected.source_url || selected.source_id}</p></div><div><strong>{selected.status}</strong><small>{fmt(selected.created_at)}</small>{selected.approved_at ? <small>approved {fmt(selected.approved_at)}</small> : null}</div></div>
+          <div className="social-detail-head"><div><span>{label(selected.source_type)} / {label(selected.event_type)}</span><h3>{draft.headline}</h3><p>{selected.source_url || selected.source_id}</p></div><div><strong>{selected.status}</strong><small>{fmt(selected.created_at)}</small>{selected.approved_at ? <small>approved {fmt(selected.approved_at)}</small> : null}{selected.scheduled_for ? <small>scheduled {fmt(selected.scheduled_for)}</small> : null}</div></div>
           <div className="social-channel-grid">
             {CHANNELS.map(([key, title]) => {
               const media = draft[key]?.media || null;
               const src = mediaSrc(media);
               const readiness = mediaReadiness.channels[key];
               const caption = editing?.[key]?.caption ?? draft[key]?.caption ?? "";
+              const snapshotLocked = ["ready", "scheduled"].includes(selected.status);
               return <section key={key} className={`social-channel-card ${key === "instagram_story" ? "story" : ""}`}>
-                <div className="social-channel-head"><span>{title}</span><em>{selected.status === "ready" ? "APPROVED" : "EDITABLE"}</em></div>
+                <div className="social-channel-head"><span>{title}</span><em>{snapshotLocked ? "APPROVED" : "EDITABLE"}</em></div>
                 <div className="social-media-frame">
                   {src ? <img src={src} alt="" /> : <div className="social-media-placeholder">No channel asset selected</div>}
                   <div className={`social-media-meta ${readiness.status}`}><span>{media?.format || "no asset"}</span><strong>{readiness.label}</strong></div>
                 </div>
-                <textarea value={caption} disabled={saving || selected.status === "published" || selected.status === "cancelled"} onChange={(event) => updateCaption(key, event.target.value)} maxLength={2200} />
-                <div className="social-caption-meta"><span>{caption.length}/2200</span><strong>{selected.status === "ready" ? "Approved snapshot" : readiness.status === "fallback" ? "Usable fallback" : readiness.status === "missing" ? "Media required" : "Media ready"}</strong></div>
+                <textarea value={caption} disabled={saving || immutable} onChange={(event) => updateCaption(key, event.target.value)} maxLength={2200} />
+                <div className="social-caption-meta"><span>{caption.length}/2200</span><strong>{snapshotLocked ? "Approved snapshot" : readiness.status === "fallback" ? "Usable fallback" : readiness.status === "missing" ? "Media required" : "Media ready"}</strong></div>
               </section>;
             })}
           </div>
@@ -188,20 +204,36 @@ function SocialWorkspace() {
             <div><span>MEDIA READINESS</span><strong>{mediaReadiness.ok ? "READY CHECK CAN RUN" : "READY BLOCKED"}</strong></div>
             <p>{mediaReadiness.ok
               ? mediaReadiness.fallback.length
-                ? `${mediaReadiness.fallback.length} channel(s) use a fallback asset. Backend will still verify every image is publicly reachable before approval.`
-                : "All channels have ideal media. Backend will verify every image is publicly reachable before approval."
+                ? `${mediaReadiness.fallback.length} channel(s) use a fallback asset. Backend verifies public image availability before approval.`
+                : "All channels have ideal media. Backend verifies public image availability before approval."
               : `Missing media: ${mediaReadiness.blocking.map(label).join(", ")}.`}</p>
           </div>
+
+          {selected.status === "ready" ? <div className="social-schedule-row">
+            <div><span>SCHEDULE</span><strong>Choose future date & time</strong></div>
+            <div className="social-schedule-controls">
+              <input type="datetime-local" value={scheduleFor} min={localInputValue(new Date(Date.now() + 60000).toISOString())} disabled={saving} onChange={(event) => setScheduleFor(event.target.value)} />
+              <button type="button" className="primary" disabled={saving || !scheduleFor} onClick={() => persist("schedule", { scheduled_for: new Date(scheduleFor).toISOString() })}>{saving ? "Scheduling…" : "Schedule"}</button>
+            </div>
+          </div> : null}
+
+          {selected.status === "scheduled" ? <div className="social-schedule-row scheduled">
+            <div><span>SCHEDULED FOR</span><strong>{fmt(selected.scheduled_for)}</strong></div>
+            <p>Shadow queue only. Nothing will be sent to Meta while publishing is locked.</p>
+          </div> : null}
+
           <div className="social-review-row">
-            <div><span>REVIEW STATE</span><strong>{selected.status === "ready" ? "READY · APPROVED" : "DRAFT · REVIEW"}</strong></div>
+            <div><span>REVIEW STATE</span><strong>{reviewState}</strong></div>
             <div className="social-review-actions">
               {isExplicitTestEvent(selected) ? <button type="button" disabled={saving} onClick={() => persist("discard_test")}>Discard test event</button> : null}
-              {selected.status === "ready"
-                ? <button type="button" disabled={saving} onClick={() => persist("reopen")}>{saving ? "Working…" : "Return to draft"}</button>
-                : <>
-                  <button type="button" disabled={saving} onClick={() => persist("save")}>{saving ? "Saving…" : "Save draft"}</button>
-                  <button type="button" className="primary" disabled={saving || !mediaReadiness.ok} title={!mediaReadiness.ok ? "Add usable media for every channel before marking READY." : "Backend will verify public image availability before approval."} onClick={() => persist("ready")}>{saving ? "Approving…" : "Mark ready"}</button>
-                </>}
+              {selected.status === "scheduled"
+                ? <button type="button" disabled={saving} onClick={() => persist("unschedule")}>{saving ? "Working…" : "Unschedule"}</button>
+                : selected.status === "ready"
+                  ? <button type="button" disabled={saving} onClick={() => persist("reopen")}>{saving ? "Working…" : "Return to draft"}</button>
+                  : <>
+                    <button type="button" disabled={saving} onClick={() => persist("save")}>{saving ? "Saving…" : "Save draft"}</button>
+                    <button type="button" className="primary" disabled={saving || !mediaReadiness.ok} title={!mediaReadiness.ok ? "Add usable media for every channel before marking READY." : "Backend will verify public image availability before approval."} onClick={() => persist("ready")}>{saving ? "Approving…" : "Mark ready"}</button>
+                  </>}
             </div>
           </div>
           <div className="social-safety-row"><div><span>PUBLISH MODE</span><strong>{selected.publish_mode || "shadow"}</strong></div><div><span>CHANNELS</span><strong>{(selected.channels || []).length}</strong></div><button type="button" disabled title="Meta publishing is intentionally disabled in Social Publisher v1">Publish locked</button></div>
