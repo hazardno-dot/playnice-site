@@ -4,6 +4,8 @@ const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 const json = (res, status, body) => res.status(status).json(body);
+const TRANSIENT_SUPABASE_STATUSES = new Set([502, 503, 504]);
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function supabaseFetch(path, token, options = {}) {
   return fetch(`${SUPABASE_URL}${path}`, {
@@ -24,15 +26,27 @@ async function safeJson(response) {
   try { return JSON.parse(text); } catch { return { message: text.slice(0, 180) }; }
 }
 
+async function fetchAdminUser(token) {
+  let response = await supabaseFetch("/rest/v1/admin_users?select=user_id&limit=1", token);
+  if (TRANSIENT_SUPABASE_STATUSES.has(response.status)) {
+    await sleep(350);
+    response = await supabaseFetch("/rest/v1/admin_users?select=user_id&limit=1", token);
+  }
+  return response;
+}
+
 async function requireAdmin(req) {
   const authHeader = req.headers.authorization || "";
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
   if (!token) return { error: "Missing admin session.", status: 401 };
 
-  const adminRes = await supabaseFetch("/rest/v1/admin_users?select=user_id&limit=1", token);
+  const adminRes = await fetchAdminUser(token);
   const admins = await safeJson(adminRes);
   if (!adminRes.ok) {
-    const detail = String(admins?.message || admins?.hint || admins?.details || "token rejected by Supabase").slice(0, 180);
+    const detail = String(admins?.message || admins?.hint || admins?.details || "request rejected by Supabase").slice(0, 180);
+    if (TRANSIENT_SUPABASE_STATUSES.has(adminRes.status)) {
+      return { error: `Supabase is temporarily unavailable (${adminRes.status}: ${detail}). Please try again.`, status: 503 };
+    }
     return { error: `Invalid admin session (Supabase ${adminRes.status}: ${detail}).`, status: 401 };
   }
   if (!Array.isArray(admins) || !admins.length || !admins[0]?.user_id) {
