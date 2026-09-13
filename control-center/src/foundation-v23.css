@@ -1,0 +1,144 @@
+/* PlayNice Control Center · Foundation v2.3
+   Composition normalization only: shared rhythm, surfaces and heading hierarchy. */
+
+:root {
+  --cc-page-gap: 18px;
+  --cc-surface-radius: 16px;
+  --cc-surface-bg: linear-gradient(180deg, rgba(255,255,255,.024), rgba(255,255,255,.016));
+  --cc-surface-highlight: inset 0 1px 0 rgba(255,255,255,.012);
+}
+
+/* Version marker */
+.brand-block div > span::after { content: " · v2.3"; }
+
+/* Page rhythm */
+.main-stage { padding: 24px 28px 42px; }
+.topbar { margin-bottom: 20px; }
+.topbar-copy { gap: 5px; }
+.topbar-copy h1 {
+  font-size: clamp(36px, 3.5vw, 48px);
+  line-height: 1;
+  letter-spacing: -.028em;
+}
+.topbar-copy p {
+  margin-top: 3px;
+  max-width: 700px;
+  line-height: 1.52;
+}
+.controlled-apply-slot { margin-bottom: var(--cc-page-gap); }
+
+.overview-v2,
+.hero-manager,
+.announcement-manager,
+.journal-manager,
+.exhibition-manager,
+.analytics-manager,
+.site-health-manager {
+  gap: var(--cc-page-gap);
+}
+
+/* Shared top-level surfaces */
+.catalog-panel,
+.detail-panel,
+.placeholder-panel:not(.announcement-module-active):not(.journal-module-active),
+.workflow-overview-panel,
+.audit-panel,
+.hero-manager-list,
+.hero-manager-detail,
+.announcement-list-panel,
+.announcement-preview-panel,
+.journal-catalog,
+.journal-detail,
+.exhibition-list-panel,
+.exhibition-detail-panel,
+.commerce-shipping-manager {
+  border-radius: var(--cc-surface-radius) !important;
+  border-color: var(--cc-border) !important;
+  background: var(--cc-surface-bg) !important;
+  box-shadow: var(--cc-surface-highlight);
+}
+
+/* Keep system strips visually lighter than primary work surfaces */
+.announcement-audit-strip,
+.journal-audit-strip,
+.hero-manager-banner {
+  border-radius: 14px !important;
+  border-color: var(--cc-border) !important;
+  background: rgba(255,255,255,.018) !important;
+}
+
+/* Secondary heading hierarchy */
+.catalog-head h2,
+.hero-manager-section-head h2,
+.hero-manager-detail-head h2,
+.announcement-section-head h2 {
+  font-size: 22px !important;
+  line-height: 1.08;
+}
+
+.journal-catalog-head strong {
+  font-size: 22px !important;
+  line-height: 1.08;
+}
+
+.detail-hero h2,
+.journal-detail-hero h2 {
+  font-size: clamp(28px, 3vw, 40px) !important;
+  line-height: 1.04;
+}
+
+.announcement-editor-head h2,
+.journal-editor-head h2 {
+  font-size: 26px !important;
+  line-height: 1.08;
+}
+
+/* Commerce is a settings subsection, not a second page title. */
+.commerce-shipping-manager-slot { margin-top: var(--cc-page-gap); }
+.commerce-shipping-head {
+  padding: 20px 22px !important;
+  gap: 18px !important;
+}
+.commerce-shipping-head h2 {
+  margin: 5px 0 6px !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 26px !important;
+  font-weight: 500 !important;
+  line-height: 1.08;
+}
+.commerce-shipping-head p {
+  font-size: 11px !important;
+  line-height: 1.55 !important;
+}
+.commerce-grid { padding: 18px 22px 8px !important; }
+.commerce-editor { padding: 18px 22px 22px !important; }
+
+/* Keep first-level panel headers on one shared inset rhythm. */
+.catalog-head,
+.hero-manager-section-head,
+.hero-manager-detail-head,
+.announcement-section-head,
+.journal-catalog-head {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+@media (max-width: 1050px) {
+  .main-stage { padding: 22px 22px 36px; }
+}
+
+@media (max-width: 720px) {
+  .main-stage { padding: 18px 12px 30px; }
+  .topbar { margin-bottom: 16px; }
+  .topbar-copy h1 { font-size: clamp(32px, 10vw, 42px); }
+  .overview-v2,
+  .hero-manager,
+  .announcement-manager,
+  .journal-manager,
+  .exhibition-manager,
+  .analytics-manager,
+  .site-health-manager { gap: 14px; }
+  .commerce-shipping-head,
+  .commerce-grid,
+  .commerce-editor { padding-left: 16px !important; padding-right: 16px !important; }
+}
