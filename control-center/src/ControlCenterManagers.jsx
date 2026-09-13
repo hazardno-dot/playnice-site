@@ -82,11 +82,15 @@ export default function ControlCenterManagers() {
     const rememberModule = (event) => {
       const button = event.target.closest("button");
       if (!button || !nav.contains(button)) return;
+
+      const exhibitionButton = nav.querySelector("[data-exhibition-manager-nav='true']");
+      if (exhibitionButton && button !== exhibitionButton) exhibitionButton.classList.remove("active");
+
       const moduleName = button.textContent?.trim();
       if (moduleName) window.sessionStorage.setItem(ACTIVE_MODULE_KEY, moduleName);
       resetModuleScroll();
     };
-    nav.addEventListener("click", rememberModule);
+    nav.addEventListener("click", rememberModule, true);
 
     const persisted = window.sessionStorage.getItem(ACTIVE_MODULE_KEY);
     let restoreTimer = null;
@@ -107,7 +111,7 @@ export default function ControlCenterManagers() {
     }
 
     return () => {
-      nav.removeEventListener("click", rememberModule);
+      nav.removeEventListener("click", rememberModule, true);
       if (restoreTimer) window.clearInterval(restoreTimer);
     };
   }, []);
