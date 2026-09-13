@@ -1,12 +1,22 @@
-// Checkout hotfix wrapper: parallel email delivery + timing instrumentation.
+// Checkout wrapper: Supabase-first durable order save + parallel email delivery.
 const { AsyncLocalStorage } = require("node:async_hooks");
+const { createHash } = require("node:crypto");
 const resendModule = require("resend");
 
 const checkoutContext = new AsyncLocalStorage();
 const OriginalResend = resendModule.Resend;
 const originalFetch = global.fetch;
-const SHEETS_ATTEMPT_TIMEOUT_MS = 10000;
-const SHEETS_MAX_ATTEMPTS = 2;
+
+// These are publishable Supabase credentials, not service-role secrets.
+// Environment variables can override them without changing code.
+const SUPABASE_URL =
+  process.env.SUPABASE_URL || "https://fsujznyfdrstinqexxgs.supabase.co";
+const SUPABASE_ANON_KEY =
+  process.env.SUPABASE_ANON_KEY ||
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZzdWp6bnlmZHJzdGlucWV4eGdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc1OTY5MjQsImV4cCI6MjEwMzE3MjkyNH0.LkOE2rfoPMi9xgi5YbLwnVJSwzzL95v__JMJQMP-fhg";
+const ORDER_STORE_URL = `${SUPABASE_URL}/functions/v1/checkout-order-store`;
+const ORDER_STORE_ATTEMPT_TIMEOUT_MS = 4000;
+const ORDER_STORE_MAX_ATTEMPTS = 2;
 
 function isDomesticCheckout(req) {
   const body = req?.body || {};
@@ -19,6 +29,69 @@ function isDomesticCheckout(req) {
 
 function safeErrorMessage(error, fallback) {
   return error?.message || fallback;
+}
+
+function roundMoney(value) {
+  return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+}
+
+function normalizePhoneDisplay(value) {
+  const original = String(value || "").trim();
+  if (!original) return "";
+
+  let digits = original.replace(/\D/g, "");
+  if (digits.indexOf("00382") === 0) {
+    digits = digits.slice(5);
+  } else if (digits.indexOf("382") === 0) {
+    digits = digits.slice(3);
+  }
+
+  if (digits.length === 8 && digits.charAt(0) !== "0") {
+    digits = "0" + digits;
+  }
+
+  if (/^0\d{8}$/.test(digits)) {
+    return (
+      digits.slice(0, 3) + "/" +
+      digits.slice(3, 6) + "-" +
+      digits.slice(6)
+    );
+  }
+
+  return original;
+}
+
+function normalizePhoneKey(value) {
+  const digits = normalizePhoneDisplay(value).replace(/\D/g, "");
+  if (!digits) return "";
+  return digits.length > 8 ? digits.slice(-8) : digits;
+}
+
+function buildCheckoutFingerprint(order) {
+  const canonicalItems = (Array.isArray(order?.items) ? order.items : []).map(
+    (item) => ({
+      name: String(item?.name || "").trim().toLowerCase(),
+      size: String(item?.size || "").trim().toLowerCase(),
+      quantity: Number(item?.quantity || 0),
+      price: roundMoney(item?.price || 0)
+    })
+  );
+
+  const canonical = JSON.stringify({
+    fullName: String(order?.fullName || "").trim().toLowerCase(),
+    email: String(order?.email || "").trim().toLowerCase(),
+    phone: normalizePhoneKey(order?.phone),
+    city: String(order?.city || "").trim().toLowerCase(),
+    address: String(order?.address || "").trim().toLowerCase(),
+    note: String(order?.note || "").trim(),
+    items: canonicalItems,
+    subtotal: roundMoney(order?.subtotal || 0),
+    shipping: roundMoney(order?.shipping || 0),
+    total: roundMoney(order?.total || 0),
+    orderSource: String(order?.orderSource || "").trim().toLowerCase()
+  });
+
+  return createHash("sha256").update(canonical, "utf8").digest("hex");
 }
 
 class CheckoutResend extends OriginalResend {
@@ -36,10 +109,7 @@ class CheckoutResend extends OriginalResend {
 
       if (!context.pendingEmail) {
         const placeholder = { data: { id: null } };
-        context.pendingEmail = {
-          payload,
-          placeholder
-        };
+        context.pendingEmail = { payload, placeholder };
         return placeholder;
       }
 
@@ -83,92 +153,145 @@ class CheckoutResend extends OriginalResend {
 
 resendModule.Resend = CheckoutResend;
 
-async function fetchOrdersSheetWithRecovery(args, context) {
+async function fetchWithTimeout(url, options, timeoutMs) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await originalFetch(url, {
+      ...(options || {}),
+      signal: controller.signal
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function saveOrderToPrimaryStore(args, context) {
+  let orderPayload;
+  try {
+    orderPayload = JSON.parse(String(args?.[1]?.body || "{}"));
+  } catch {
+    throw new Error("Unable to parse validated checkout payload");
+  }
+
+  if (String(orderPayload?.source || "").trim() !== "order") {
+    return originalFetch(...args);
+  }
+
+  const fingerprint = buildCheckoutFingerprint(orderPayload);
+  const environment = process.env.VERCEL_ENV === "production" ? "production" : "preview";
   let lastError = null;
 
-  for (let attempt = 1; attempt <= SHEETS_MAX_ATTEMPTS; attempt += 1) {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), SHEETS_ATTEMPT_TIMEOUT_MS);
-    const requestOptions = {
-      ...(args[1] || {}),
-      signal: controller.signal
-    };
+  for (let attempt = 1; attempt <= ORDER_STORE_MAX_ATTEMPTS; attempt += 1) {
+    const attemptStartedAt = Date.now();
 
     try {
-      const response = await originalFetch(args[0], requestOptions);
-      let clonedData = null;
+      const response = await fetchWithTimeout(
+        ORDER_STORE_URL,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+            apikey: SUPABASE_ANON_KEY,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            action: "create",
+            payload: orderPayload,
+            fingerprint,
+            environment,
+            syncUrl: String(args[0])
+          })
+        },
+        ORDER_STORE_ATTEMPT_TIMEOUT_MS
+      );
 
+      const text = await response.text();
+      let data = null;
       try {
-        const clonedText = await response.clone().text();
-        clonedData = JSON.parse(clonedText);
-        context.appsScriptTimings = clonedData?.timings || null;
-        context.appsScriptDuplicate = Boolean(clonedData?.duplicate);
-        context.appsScriptTimingParseError = null;
-      } catch (timingParseError) {
-        context.appsScriptTimingParseError = safeErrorMessage(
-          timingParseError,
-          "Unable to parse Apps Script timing payload"
+        data = JSON.parse(text);
+      } catch {
+        data = null;
+      }
+
+      if (
+        response.ok &&
+        data?.status === "ok" &&
+        data?.orderId &&
+        data?.trackingNumber
+      ) {
+        context.primaryStoreAttempts = attempt;
+        context.primaryStoreDuplicate = Boolean(data.duplicate);
+        context.primaryStoreOrderId = data.orderId;
+        context.primaryStoreSheetSyncStatus = data.sheetSyncStatus || "pending";
+
+        console.info(
+          "[checkout-primary-store]",
+          JSON.stringify({
+            orderId: data.orderId,
+            duplicate: Boolean(data.duplicate),
+            environment,
+            attempt,
+            attemptMs: Date.now() - attemptStartedAt,
+            sheetSyncStatus: data.sheetSyncStatus || "pending"
+          })
+        );
+
+        return new Response(
+          JSON.stringify({
+            status: "ok",
+            type: "order",
+            duplicate: Boolean(data.duplicate),
+            orderId: data.orderId,
+            trackingNumber: data.trackingNumber,
+            primaryStore: "supabase",
+            sheetSyncQueued: true
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          }
         );
       }
 
-      const isValidOrderResponse =
-        response.ok &&
-        clonedData?.status === "ok" &&
-        Boolean(clonedData?.orderId);
-
-      if (isValidOrderResponse || attempt === SHEETS_MAX_ATTEMPTS) {
-        context.appsScriptRecoveryAttempts = attempt - 1;
-        return response;
-      }
-
-      context.appsScriptRecoveryAttempts = attempt;
-      console.warn(
-        "Unexpected Apps Script order response; retrying once:",
-        JSON.stringify({
-          attempt,
-          status: response.status,
-          dataStatus: clonedData?.status || null,
-          message: clonedData?.message || null
-        })
+      lastError = new Error(
+        data?.message || `Supabase order store returned HTTP ${response.status}`
       );
     } catch (error) {
       lastError = error;
-      context.appsScriptRecoveryAttempts = attempt;
-
-      if (attempt === SHEETS_MAX_ATTEMPTS) {
-        throw error;
-      }
-
-      console.warn(
-        "Apps Script order request failed or timed out; retrying once:",
-        safeErrorMessage(error, "Unknown Apps Script error")
-      );
-    } finally {
-      clearTimeout(timeout);
     }
+
+    console.warn(
+      "Primary checkout store attempt failed:",
+      JSON.stringify({
+        attempt,
+        attemptMs: Date.now() - attemptStartedAt,
+        error: safeErrorMessage(lastError, "Unknown primary store error")
+      })
+    );
   }
 
-  throw lastError || new Error("Apps Script order request failed");
+  throw lastError || new Error("Failed to persist order in primary store");
 }
 
 global.fetch = async (...args) => {
   const context = checkoutContext.getStore();
   const target = typeof args[0] === "string" ? args[0] : args[0]?.url;
-  const isOrdersSheetRequest =
-    context &&
+  const isLegacyOrderSave =
+    context?.parallelizeDomesticEmails &&
     process.env.GOOGLE_SCRIPT_ORDERS_URL &&
     target === process.env.GOOGLE_SCRIPT_ORDERS_URL;
 
-  if (!isOrdersSheetRequest) {
+  if (!isLegacyOrderSave) {
     return originalFetch(...args);
   }
 
-  const sheetsStart = Date.now();
-
+  const primaryStoreStartedAt = Date.now();
   try {
-    return await fetchOrdersSheetWithRecovery(args, context);
+    return await saveOrderToPrimaryStore(args, context);
   } finally {
-    context.sheetsMs = Date.now() - sheetsStart;
+    context.primaryStoreMs = Date.now() - primaryStoreStartedAt;
   }
 };
 
@@ -179,16 +302,16 @@ export default async function handler(req, res) {
   const context = {
     startedAt: Date.now(),
     parallelizeDomesticEmails: isDomesticCheckout(req),
-    sheetsMs: null,
+    primaryStoreMs: null,
+    primaryStoreAttempts: 0,
+    primaryStoreDuplicate: false,
+    primaryStoreOrderId: null,
+    primaryStoreSheetSyncStatus: null,
     emailsMs: null,
     adminEmailSent: null,
     adminEmailError: null,
     customerEmailSent: null,
-    customerEmailError: null,
-    appsScriptTimings: null,
-    appsScriptDuplicate: false,
-    appsScriptTimingParseError: null,
-    appsScriptRecoveryAttempts: 0
+    customerEmailError: null
   };
 
   return checkoutContext.run(context, async () => {
@@ -197,35 +320,46 @@ export default async function handler(req, res) {
     res.json = (payload) => {
       const totalMs = Date.now() - context.startedAt;
 
-      if (payload?.orderPlaced) {
+      if (payload?.orderPlaced && context.parallelizeDomesticEmails) {
         if (context.adminEmailSent === false) {
           payload.adminEmailSent = false;
           payload.adminEmailError = context.adminEmailError;
-          payload.warning = payload.warning || "Order placed, but admin email was not sent";
+          payload.warning =
+            payload.warning || "Order placed, but admin email was not sent";
         }
 
+        payload.orderPersistence = "supabase";
+        payload.sheetSyncQueued = true;
         payload.checkoutTimings = {
-          sheetsMs: context.sheetsMs,
+          primaryStoreMs: context.primaryStoreMs,
           emailsMs: context.emailsMs,
           totalMs,
-          appsScript: context.appsScriptTimings,
-          appsScriptRecoveryAttempts: context.appsScriptRecoveryAttempts
+          primaryStoreAttempts: context.primaryStoreAttempts
         };
       }
 
-      console.info("[checkout-timing]", JSON.stringify({
-        orderId: payload?.orderId || payload?.enquiryId || null,
-        orderPlaced: Boolean(payload?.orderPlaced),
-        sheetsMs: context.sheetsMs,
-        emailsMs: context.emailsMs,
-        totalMs,
-        appsScriptTimings: context.appsScriptTimings,
-        appsScriptDuplicate: context.appsScriptDuplicate,
-        appsScriptTimingParseError: context.appsScriptTimingParseError,
-        appsScriptRecoveryAttempts: context.appsScriptRecoveryAttempts,
-        adminEmailSent: payload?.adminEmailSent ?? context.adminEmailSent,
-        customerEmailSent: payload?.customerEmailSent ?? context.customerEmailSent
-      }));
+      console.info(
+        "[checkout-timing]",
+        JSON.stringify({
+          orderId:
+            payload?.orderId ||
+            payload?.enquiryId ||
+            context.primaryStoreOrderId ||
+            null,
+          orderPlaced: Boolean(payload?.orderPlaced),
+          primaryStore: context.parallelizeDomesticEmails ? "supabase" : "legacy",
+          primaryStoreMs: context.primaryStoreMs,
+          primaryStoreAttempts: context.primaryStoreAttempts,
+          primaryStoreDuplicate: context.primaryStoreDuplicate,
+          sheetSyncStatusAtCreate: context.primaryStoreSheetSyncStatus,
+          emailsMs: context.emailsMs,
+          totalMs,
+          adminEmailSent:
+            payload?.adminEmailSent ?? context.adminEmailSent,
+          customerEmailSent:
+            payload?.customerEmailSent ?? context.customerEmailSent
+        })
+      );
 
       return originalJson(payload);
     };
