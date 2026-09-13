@@ -159,6 +159,21 @@ class CheckoutResend extends OriginalResend {
         return originalSend(payload);
       }
 
+      if (context.primaryStoreDuplicate) {
+        if (!context.pendingEmail) {
+          const placeholder = { data: { id: null } };
+          context.pendingEmail = { payload, placeholder };
+          return placeholder;
+        }
+
+        context.pendingEmail = null;
+        context.emailsMs = 0;
+        context.emailDuplicateSuppressed = true;
+        context.adminEmailSent = true;
+        context.customerEmailSent = true;
+        return { data: { id: null } };
+      }
+
       if (!context.pendingEmail) {
         const placeholder = { data: { id: null } };
         context.pendingEmail = { payload, placeholder };
@@ -356,6 +371,7 @@ export default async function handler(req, res) {
     emailsMs: null,
     emailAuditMs: null,
     emailAuditError: null,
+    emailDuplicateSuppressed: false,
     adminEmailSent: null,
     adminEmailError: null,
     customerEmailSent: null,
@@ -378,6 +394,8 @@ export default async function handler(req, res) {
 
         payload.orderPersistence = "supabase";
         payload.sheetSyncQueued = true;
+        payload.duplicate = context.primaryStoreDuplicate;
+        payload.emailDeliverySuppressedDuplicate = context.emailDuplicateSuppressed;
         payload.checkoutTimings = {
           primaryStoreMs: context.primaryStoreMs,
           emailsMs: context.emailsMs,
@@ -404,6 +422,7 @@ export default async function handler(req, res) {
           emailsMs: context.emailsMs,
           emailAuditMs: context.emailAuditMs,
           emailAuditError: context.emailAuditError,
+          emailDuplicateSuppressed: context.emailDuplicateSuppressed,
           totalMs,
           adminEmailSent:
             payload?.adminEmailSent ?? context.adminEmailSent,
