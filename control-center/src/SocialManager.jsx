@@ -7,6 +7,19 @@ import "./social-manager.css";
 const FILTERS = ["all", "draft", "ready", "scheduled", "published", "failed"];
 const CHANNELS = [["instagram_feed", "Instagram Feed"], ["instagram_story", "Instagram Story"], ["facebook", "Facebook"]];
 const PUBLIC_ORIGIN = "https://www.playniceshop.me";
+const AUDIT_LABELS = {
+  draft_saved: "Draft saved",
+  draft_marked_ready: "Marked ready",
+  draft_reopened: "Returned to draft",
+  draft_scheduled: "Scheduled",
+  draft_unscheduled: "Unscheduled",
+  shadow_replay_created_from_product: "Product replay created",
+  shadow_replay_created_from_hero: "Hero replay created",
+  shadow_replay_created_from_journal: "Journal replay created",
+  shadow_event_created_from_product_publish: "Created from product publish",
+  shadow_event_created_from_hero_publish: "Created from Hero publish",
+  shadow_event_created_from_journal_publish: "Created from Journal publish",
+};
 const fmt = (value) => value ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : "—";
 const label = (value) => String(value || "").replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 const mediaSrc = (media) => media?.url || media?.src || "";
@@ -20,6 +33,22 @@ const localInputValue = (value) => {
   const date = value ? new Date(value) : new Date(Date.now() + 60 * 60 * 1000);
   const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
   return local.toISOString().slice(0, 16);
+};
+const auditDescription = (entry) => {
+  const details = entry?.details && typeof entry.details === "object" ? entry.details : {};
+  if (entry?.action === "draft_scheduled" && details.scheduled_for) return `For ${fmt(details.scheduled_for)}`;
+  if (entry?.action === "draft_unscheduled") return "Returned to approved READY queue";
+  if (entry?.action === "draft_marked_ready") {
+    const fallback = details?.media_validation?.fallback_channels;
+    if (Array.isArray(fallback) && fallback.length) return `${fallback.length} fallback channel(s); public media verified`;
+    if (details?.media_validation?.public_media_verified) return "Public media verified";
+  }
+  if (details.previous_status || details.next_status) return `${String(details.previous_status || "—").toUpperCase()} → ${String(details.next_status || "—").toUpperCase()}`;
+  if (details.canonical_source_id) return `Source ${details.canonical_source_id}`;
+  if (details.apply_pr_number) return `PR #${details.apply_pr_number}`;
+  if (details.journal_article_id) return `Journal #${details.journal_article_id}`;
+  if (details.hero_id) return `Hero ${details.hero_id}`;
+  return "Social Publisher audit event";
 };
 
 function editableContent(event, generated) {
@@ -40,6 +69,9 @@ function SocialWorkspace() {
   const [editing, setEditing] = useState({});
   const [scheduleFor, setScheduleFor] = useState(localInputValue());
   const [copiedKey, setCopiedKey] = useState("");
+  const [auditRows, setAuditRows] = useState([]);
+  const [auditLoading, setAuditLoading] = useState(false);
+  const [auditError, setAuditError] = useState("");
   const [saving, setSaving] = useState(false);
   const [actionError, setActionError] = useState("");
 
@@ -48,6 +80,20 @@ function SocialWorkspace() {
     const { data, error: loadError } = await supabase.from("social_events").select("*").order("created_at", { ascending: false }).limit(100);
     if (loadError) setError(loadError.message); else { setError(""); setEvents(data || []); }
     setLoading(false);
+  };
+
+  const loadAudit = async (eventId) => {
+    if (!eventId) { setAuditRows([]); setAuditError(""); return; }
+    setAuditLoading(true);
+    const { data, error: loadError } = await supabase
+      .from("social_audit_log")
+      .select("id,action,details,created_at")
+      .eq("social_event_id", eventId)
+      .order("created_at", { ascending: false })
+      .limit(50);
+    if (loadError) { setAuditRows([]); setAuditError(loadError.message); }
+    else { setAuditRows(data || []); setAuditError(""); }
+    setAuditLoading(false);
   };
 
   useEffect(() => {
@@ -81,11 +127,12 @@ function SocialWorkspace() {
   }, [visible, selectedId]);
 
   useEffect(() => {
-    if (!selected || !generated) { setEditing({}); return; }
+    if (!selected || !generated) { setEditing({}); setAuditRows([]); return; }
     setEditing(editableContent(selected, generated));
     setScheduleFor(localInputValue(selected.scheduled_for || undefined));
     setCopiedKey("");
     setActionError("");
+    loadAudit(selected.id);
   }, [selected?.id, selected?.updated_at, generated]);
 
   const updateCaption = (key, value) => setEditing((current) => ({ ...current, [key]: { caption: value } }));
@@ -144,8 +191,9 @@ function SocialWorkspace() {
       if (payload.event) {
         setEvents((current) => current.map((event) => event.id === payload.event.id ? payload.event : event));
         setSelectedId(payload.event.id);
+        await loadAudit(payload.event.id);
       } else {
-        if (payload.discarded) setSelectedId("");
+        if (payload.discarded) { setSelectedId(""); setAuditRows([]); }
         await load();
       }
     } catch (saveError) {
@@ -168,8 +216,8 @@ function SocialWorkspace() {
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Social ${sourceType} replay failed (${response.status}).`);
       await load();
-      if (payload.event?.id) setSelectedId(payload.event.id);
-      else if (payload.event_id) setSelectedId(payload.event_id);
+      if (payload.event?.id) { setSelectedId(payload.event.id); await loadAudit(payload.event.id); }
+      else if (payload.event_id) { setSelectedId(payload.event_id); await loadAudit(payload.event_id); }
     } catch (replayError) {
       setActionError(replayError.message || String(replayError));
     } finally {
@@ -234,7 +282,7 @@ function SocialWorkspace() {
                 </div>
                 <textarea value={caption} disabled={saving || immutable} onChange={(event) => updateCaption(key, event.target.value)} maxLength={2200} />
                 <div className="social-caption-meta"><span>{caption.length}/2200</span><strong>{snapshotLocked ? "Approved snapshot" : readiness.status === "fallback" ? "Usable fallback" : readiness.status === "missing" ? "Media required" : "Media ready"}</strong></div>
-                <div className="social-review-actions" style={{ padding: "10px 13px", borderTop: "1px solid #20262d", justifyContent: "flex-start" }}>
+                <div className="social-manual-actions">
                   <button type="button" disabled={!caption} onClick={() => copyText(caption, `${key}:caption`)}>{copiedKey === `${key}:caption` ? "Copied" : "Copy caption"}</button>
                   <button type="button" disabled={!src} onClick={() => openImage(src)}>Open image</button>
                   <button type="button" disabled={!sourceLink} onClick={() => copyText(sourceLink, `${key}:link`)}>{copiedKey === `${key}:link` ? "Copied" : "Copy link"}</button>
@@ -278,6 +326,18 @@ function SocialWorkspace() {
                   </>}
             </div>
           </div>
+
+          <section className="social-history">
+            <div className="social-history-head"><div><span>AUDIT HISTORY</span><strong>{auditLoading ? "Loading…" : `${auditRows.length} event${auditRows.length === 1 ? "" : "s"}`}</strong></div><small>Read-only Social Publisher timeline</small></div>
+            {auditError ? <div className="social-history-empty">Could not load audit history: {auditError}</div> : auditRows.length ? <div className="social-history-list">
+              {auditRows.map((entry) => <div className="social-history-item" key={entry.id}>
+                <span className="social-history-dot" aria-hidden="true" />
+                <div><strong>{AUDIT_LABELS[entry.action] || label(entry.action)}</strong><p>{auditDescription(entry)}</p></div>
+                <time>{fmt(entry.created_at)}</time>
+              </div>)}
+            </div> : <div className="social-history-empty">{auditLoading ? "Loading audit history…" : "No audit entries for this event yet."}</div>}
+          </section>
+
           <div className="social-safety-row"><div><span>PUBLISH MODE</span><strong>{selected.publish_mode || "shadow"}</strong></div><div><span>CHANNELS</span><strong>{(selected.channels || []).length}</strong></div><button type="button" disabled title="Meta publishing is intentionally disabled in Social Publisher v1">Publish locked</button></div>
         </> : <div className="social-empty-detail"><strong>Social Publisher is ready for shadow events.</strong><span>No event selected.</span></div>}
       </article>
