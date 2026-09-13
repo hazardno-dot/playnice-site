@@ -121,11 +121,13 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
-for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Discard test event", "Replay Product", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
+for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard test event", "Replay Product", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
 assert.ok(socialManager.includes("disabled={saving || !mediaReadiness.ok}"), "Mark ready must be locally disabled when a channel has no media.");
 assert.ok(socialManager.includes('["ready", "scheduled"].includes(selected.status)'), "READY and SCHEDULED must render the approved snapshot instead of editable draft content.");
+assert.ok(socialManager.includes('window.open(src, "_blank", "noopener,noreferrer")'), "Manual fallback must open the exact selected channel asset in a separate tab.");
+assert.ok(socialManager.includes('new URL(String(value), PUBLIC_ORIGIN)'), "Manual fallback must canonicalize relative source URLs before Copy link.");
 assert.ok(socialManager.includes('key === "instagram_story" ? "story" : ""'), "Instagram Story preview must use a vertical-specific layout.");
 
 const socialDraftApi = fs.readFileSync(path.join(root, "control-center/api/social-draft.js"), "utf8");
@@ -169,6 +171,7 @@ console.log("PASS  Relative storefront media are normalized to public PlayNice U
 console.log("PASS  Channel media is classified IDEAL, FALLBACK or MISSING before review approval");
 console.log("PASS  READY is blocked when media is missing or not publicly reachable as an HTTPS image");
 console.log("PASS  READY events can be scheduled for a future time and safely unscheduled without unlocking Meta publishing");
+console.log("PASS  Manual fallback can copy channel captions/source links and open the exact selected media without touching event state");
 console.log("PASS  Social captions are editable, auditable and can be marked READY without unlocking Meta publishing");
 console.log("PASS  Explicit test/replay events can be safely discarded without exposing delete for real Social events");
 console.log("PASS  Product, Hero and Journal live sources can be replayed into the shadow queue without touching storefront state");
