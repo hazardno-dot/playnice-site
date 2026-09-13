@@ -30,6 +30,7 @@ assert.equal(event.publish_mode, "shadow");
 assert.deepEqual(event.channels, ["instagram_feed", "instagram_story", "facebook"]);
 assert.equal(socialEventDedupeKey(event), "product_published:product:test-fragrance");
 assert.deepEqual(canPublishSocialEvent({ ...event, status: "ready" }), { ok: false, reason: "shadow_mode" });
+assert.deepEqual(canPublishSocialEvent({ ...event, status: "scheduled" }), { ok: false, reason: "shadow_mode" });
 
 const draft = generateSocialDraft(event);
 assert.equal(draft.headline, "Test Fragrance");
@@ -120,18 +121,21 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
-for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Discard test event", "Replay Product", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
+for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Discard test event", "Replay Product", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
 assert.ok(socialManager.includes("disabled={saving || !mediaReadiness.ok}"), "Mark ready must be locally disabled when a channel has no media.");
+assert.ok(socialManager.includes('["ready", "scheduled"].includes(selected.status)'), "READY and SCHEDULED must render the approved snapshot instead of editable draft content.");
 assert.ok(socialManager.includes('key === "instagram_story" ? "story" : ""'), "Instagram Story preview must use a vertical-specific layout.");
 
 const socialDraftApi = fs.readFileSync(path.join(root, "control-center/api/social-draft.js"), "utf8");
-for (const token of ["generateSocialDraft", "validateSocialDraftMedia", "validateReadyMedia", "probePublicImage", "content-type", "asset must use HTTPS", "READY blocked", "public_media_verified", "draft_content", "approved_content", "approved_at", "draft_marked_ready", "draft_reopened", "discard_test", "isTestEvent", "2200"]) {
+for (const token of ["generateSocialDraft", "validateSocialDraftMedia", "validateReadyMedia", "probePublicImage", "content-type", "asset must use HTTPS", "READY blocked", "public_media_verified", "draft_content", "approved_content", "approved_at", "scheduled_for", "normalizeScheduledFor", "Only READY events can be scheduled", "Only scheduled events can be unscheduled", "draft_scheduled", "draft_unscheduled", "draft_marked_ready", "draft_reopened", "discard_test", "isTestEvent", "2200"]) {
   assert.ok(socialDraftApi.includes(token), `Social draft API contract missing: ${token}`);
 }
 assert.ok(socialDraftApi.indexOf("await validateReadyMedia(draftContent)") < socialDraftApi.indexOf('status: "ready"'), "Public media validation must run before READY state is persisted.");
-assert.ok(!socialDraftApi.includes("publish_mode: \"approval\""), "Draft approval must not unlock Meta publishing.");
+assert.ok(socialDraftApi.includes('event.status !== "ready"'), "Scheduling must be server-side restricted to READY events.");
+assert.ok(socialDraftApi.includes('event.status !== "scheduled"'), "Unscheduling must be server-side restricted to SCHEDULED events.");
+assert.ok(!socialDraftApi.includes("publish_mode: \"approval\""), "Draft approval or scheduling must not unlock Meta publishing.");
 
 const replayApi = fs.readFileSync(path.join(root, "control-center/api/social-shadow-replay.js"), "utf8");
 for (const token of [
@@ -155,8 +159,8 @@ assert.ok(!replayApi.includes('from "../../playnice-site/src/data/journal/index.
 assert.ok(!replayApi.includes("publish_mode: \"approval\""), "Replay must remain shadow-only.");
 
 const socialSchema = fs.readFileSync(path.join(root, "control-center/supabase/social_publisher_v1.sql"), "utf8");
-for (const token of ["draft_content jsonb", "approved_content jsonb", "approved_at timestamptz", "publish_mode text not null default 'shadow'"]) {
-  assert.ok(socialSchema.includes(token), `Social schema review-state contract missing: ${token}`);
+for (const token of ["draft_content jsonb", "approved_content jsonb", "approved_at timestamptz", "scheduled_for timestamptz", "status = 'scheduled'", "publish_mode text not null default 'shadow'"]) {
+  assert.ok(socialSchema.includes(token), `Social schema review/scheduling contract missing: ${token}`);
 }
 
 console.log("PASS  Social Publisher shadow-mode contract");
@@ -164,6 +168,7 @@ console.log("PASS  Nested Product payloads resolve canonical name, sizes and med
 console.log("PASS  Relative storefront media are normalized to public PlayNice URLs");
 console.log("PASS  Channel media is classified IDEAL, FALLBACK or MISSING before review approval");
 console.log("PASS  READY is blocked when media is missing or not publicly reachable as an HTTPS image");
+console.log("PASS  READY events can be scheduled for a future time and safely unscheduled without unlocking Meta publishing");
 console.log("PASS  Social captions are editable, auditable and can be marked READY without unlocking Meta publishing");
 console.log("PASS  Explicit test/replay events can be safely discarded without exposing delete for real Social events");
 console.log("PASS  Product, Hero and Journal live sources can be replayed into the shadow queue without touching storefront state");
