@@ -143,8 +143,54 @@ export default function AnnouncementManager() {
     finally { setWorkflowBusy(""); }
   };
 
-  const prepareChange = () => {
-    setError("Prepare change will be available after PR #215 is merged and announcementConfig.generated.js exists on main.");
+  const prepareChange = async (id) => {
+    setWorkflowBusy(`${id}:prepare`);
+    setError("");
+
+    try {
+      const { data: sessionData, error: sessionError } =
+        await supabase.auth.getSession();
+
+      if (sessionError || !sessionData?.session?.access_token) {
+        throw sessionError || new Error("Authenticated admin session is required.");
+      }
+
+      const response = await fetch("/api/create-apply", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionData.session.access_token}`,
+        },
+        body: JSON.stringify({
+          announcement_key: id,
+        }),
+      });
+
+      const payload = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(
+          payload.error || `Announcement prepare failed (${response.status}).`
+        );
+      }
+
+      const { data, error: reloadError } = await supabase
+        .from("announcement_drafts")
+        .select(DRAFT_SELECT)
+        .eq("announcement_key", id)
+        .single();
+
+      if (reloadError) throw reloadError;
+
+      setDraftRows((current) => ({
+        ...current,
+        [id]: data,
+      }));
+    } catch (prepareError) {
+      setError(prepareError.message || String(prepareError));
+    } finally {
+      setWorkflowBusy("");
+    }
   };
 
   if (!slot) return null;
@@ -169,10 +215,15 @@ export default function AnnouncementManager() {
               <button onClick={() => startEdit(item)}>{item.__draft ? "Edit draft" : "Create draft"}</button>
               {draftRow && state === "draft" ? <button className="workflow" disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "ready")}>{workflowBusy === `${item.id}:ready` ? "Updating…" : "Mark ready"}</button> : null}
               {draftRow && state === "ready" ? <><button disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "draft")}>Back to draft</button><button className="workflow primary" disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "approved")}>{workflowBusy === `${item.id}:approved` ? "Approving…" : "Approve"}</button></> : null}
-              {draftRow && state === "approved" ? <><button disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "draft")}>Back to draft</button><button className="workflow primary" disabled={Boolean(workflowBusy) || prepared} onClick={() => prepareChange(item.id)}>{prepared ? "Prepared" : "Prepare after merge"}</button></> : null}
+              {draftRow && state === "approved" ? <><button disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "draft")}>Back to draft</button><button className="workflow primary" disabled={Boolean(workflowBusy) || prepared} onClick={() => prepareChange(item.id)}>{prepared
+  ? "Prepared"
+  : workflowBusy === `${item.id}:prepare`
+    ? "Preparing…"
+    : "Prepare change"}</button></> : null}
               {item.__draft ? <button className="danger" disabled={Boolean(workflowBusy)} onClick={() => discardDraft(item.id)}>Discard draft</button> : null}
             </div>
-            {draftRow ? <div className="announcement-workflow-note"><span>WORKFLOW</span><strong>{prepared ? "APPROVED → PREPARED" : state === "approved" ? "APPROVED → Phase 1 merge required" : state === "ready" ? "READY → approval next" : "DRAFT → ready next"}</strong>{prepared ? <small>Baseline SHA {String(draftRow.baseline_snapshot.source_sha).slice(0, 10)}… captured from main.</small> : null}</div> : null}
+            {draftRow ? <div className="announcement-workflow-note"><span>WORKFLOW</span><strong>{prepared ? "APPROVED → PREPARED" : state === "approved"
+  ? "APPROVED → prepare next" : state === "ready" ? "READY → approval next" : "DRAFT → ready next"}</strong>{prepared ? <small>Baseline SHA {String(draftRow.baseline_snapshot.source_sha).slice(0, 10)}… captured from main.</small> : null}</div> : null}
           </article>;
         })}{!rows.length ? <div className="announcement-empty">No editorial announcements in generated config.</div> : null}</div>
       </div>
