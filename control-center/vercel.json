@@ -7,6 +7,10 @@
       "dest": "/api/create-apply-router"
     },
     {
+      "src": "/api/prepare-announcement-change",
+      "dest": "/api/prepare-announcement-change"
+    },
+    {
       "handle": "filesystem"
     }
   ]
