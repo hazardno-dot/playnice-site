@@ -1,4 +1,4 @@
-import { generateSocialDraft } from "../src/socialDraft.mjs";
+import { generateSocialDraft, validateSocialDraftMedia } from "../src/socialDraft.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -70,6 +70,63 @@ function isTestEvent(event = {}) {
   return metadata.test === true || metadata.replay === true || sourceId.includes("--shadow-test-") || sourceId.includes("--shadow-replay-");
 }
 
+const channelLabel = (channel) => ({
+  instagram_feed: "Instagram Feed",
+  instagram_story: "Instagram Story",
+  facebook: "Facebook",
+}[channel] || channel);
+
+async function probePublicImage(url) {
+  let parsed;
+  try { parsed = new URL(String(url || "")); } catch { return { ok: false, reason: "invalid URL" }; }
+  if (parsed.protocol !== "https:") return { ok: false, reason: "asset must use HTTPS" };
+
+  const request = async (method) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 7000);
+    try {
+      return await fetch(parsed.toString(), {
+        method,
+        redirect: "follow",
+        signal: controller.signal,
+        headers: method === "GET" ? { Range: "bytes=0-0" } : undefined,
+      });
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+
+  try {
+    let response = await request("HEAD");
+    if (!response.ok || response.status === 405 || response.status === 501) response = await request("GET");
+    if (!response.ok) return { ok: false, reason: `HTTP ${response.status}` };
+    const contentType = String(response.headers.get("content-type") || "").toLowerCase();
+    if (!contentType.startsWith("image/")) return { ok: false, reason: `unexpected content type ${contentType || "unknown"}` };
+    return { ok: true, content_type: contentType };
+  } catch (error) {
+    return { ok: false, reason: error?.name === "AbortError" ? "request timed out" : String(error?.message || error) };
+  }
+}
+
+async function validateReadyMedia(draftContent) {
+  const selection = validateSocialDraftMedia(draftContent);
+  if (!selection.ok) {
+    throw new Error(`READY blocked: missing media for ${selection.blocking.map(channelLabel).join(", ")}.`);
+  }
+
+  const remote = {};
+  for (const channel of CHANNELS) {
+    const src = draftContent?.[channel]?.media?.src || draftContent?.[channel]?.media?.url || "";
+    remote[channel] = await probePublicImage(src);
+  }
+  const failed = CHANNELS.filter((channel) => !remote[channel]?.ok);
+  if (failed.length) {
+    const details = failed.map((channel) => `${channelLabel(channel)} (${remote[channel].reason})`).join(", ");
+    throw new Error(`READY blocked: media is not publicly usable for ${details}.`);
+  }
+  return { selection, remote };
+}
+
 export default async function handler(req, res) {
   if (!SUPABASE_URL || !SUPABASE_KEY) return json(res, 500, { error: "Server configuration is incomplete." });
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
@@ -101,6 +158,7 @@ export default async function handler(req, res) {
     const captions = normalizeCaptions(req.body?.content || event.draft_content || generated);
     const draftContent = mergeDraft(generated, captions);
     const now = new Date().toISOString();
+    const mediaValidation = action === "ready" ? await validateReadyMedia(draftContent) : null;
 
     const patch = action === "reopen"
       ? { status: "draft", draft_content: draftContent, approved_content: null, approved_by: null, approved_at: null }
@@ -121,11 +179,20 @@ export default async function handler(req, res) {
         social_event_id: id,
         actor_id: auth.user.id,
         action: action === "ready" ? "draft_marked_ready" : action === "reopen" ? "draft_reopened" : "draft_saved",
-        details: { previous_status: event.status, next_status: updated?.status || patch.status },
+        details: {
+          previous_status: event.status,
+          next_status: updated?.status || patch.status,
+          ...(mediaValidation ? {
+            media_validation: {
+              fallback_channels: mediaValidation.selection.fallback,
+              public_media_verified: true,
+            },
+          } : {}),
+        },
       }),
     });
 
-    return json(res, 200, { ok: true, event: updated });
+    return json(res, 200, { ok: true, event: updated, media_validation: mediaValidation });
   } catch (error) {
     return json(res, 400, { error: error?.message || "Could not update Social draft." });
   }
