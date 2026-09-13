@@ -352,7 +352,7 @@ const getProductStructuredData = (product, lang = "sr") => {
     "@type": "OfferShippingDetails",
     shippingRate: {
       "@type": "MonetaryAmount",
-      value: 4,
+      value: 4.5,
       currency: "EUR"
     },
     shippingDestination: {
@@ -433,8 +433,8 @@ const getProductStructuredData = (product, lang = "sr") => {
 ========================================= */
 const PRODUCT_PAGE_SIZE_OPTIONS = [12, 24, 48, 96];
 const DISCOVERY_RESULTS_PER_PAGE = 5;
-const SHIPPING_COST = 4.0;
-const FREE_SHIPPING_THRESHOLD = 39;
+const SHIPPING_COST = 4.5;
+const FREE_SHIPPING_THRESHOLD = 45;
 
 function formatPrice(value) {
   return `€${Number(value).toFixed(2)}`;
