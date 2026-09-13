@@ -185,7 +185,7 @@ export const products = [
     shortName: "CDN Intense Man",
     category: "Arabian",
     image: "/products/armaf-cdn-intense.png",
-    sizes: { "5ml": 4, "10ml": 7, "20ml": 13 },
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     badge: "BESTSELLER",
     rating: 8.8,
     ratingLabel: "Audience Favorite",
