@@ -1,4 +1,4 @@
-export const ANNOUNCEMENT_TONES = ["default", "new-shop", "success", "warning"];
+export const ANNOUNCEMENT_TONES = ["default", "neutral", "new-shop", "journal", "success", "warning"];
 export const ANNOUNCEMENT_ACTIONS = ["none", "openProduct", "openShop"];
 export const ANNOUNCEMENT_REVIEW_STATES = ["draft", "ready", "approved"];
 
