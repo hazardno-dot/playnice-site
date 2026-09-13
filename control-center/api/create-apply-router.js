@@ -1,7 +1,7 @@
 import createApply from "./create-apply.js";
 import refreshProductApply from "./refresh-product-apply.js";
 import prepareAnnouncementChange from "./prepare-announcement-change.js";
-import createAnnouncementApply from "./create-announcement-apply.js";
+import createAnnouncementApply from "./create-announcement-apply-v2.js";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
