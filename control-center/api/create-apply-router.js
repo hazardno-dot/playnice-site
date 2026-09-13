@@ -2,6 +2,8 @@ import createApply from "./create-apply.js";
 import refreshProductApply from "./refresh-product-apply.js";
 import prepareAnnouncementChange from "./prepare-announcement-change.js";
 import createAnnouncementApply from "./create-announcement-apply-v2.js";
+import finalizeAnnouncementApply from "./finalize-announcement-apply.js";
+import resolveAnnouncementPreview from "./resolve-announcement-preview.js";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -29,6 +31,8 @@ async function loadDraftState(req) {
 
 export default async function handler(req, res) {
   if (req.body?.announcement_key) {
+    if (req.body?.announcement_action === "merge_apply") return finalizeAnnouncementApply(req, res);
+    if (req.body?.announcement_action === "resolve_preview") return resolveAnnouncementPreview(req, res);
     if (req.body?.announcement_action === "create_apply") return createAnnouncementApply(req, res);
     return prepareAnnouncementChange(req, res);
   }
