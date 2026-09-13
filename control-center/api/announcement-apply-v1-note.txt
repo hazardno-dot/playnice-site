@@ -1,0 +1,1 @@
+Temporary workflow note: create-announcement-apply-v2.js is the active formatting-preserving handler; create-announcement-apply.js remains as rollback until the first v2-controlled draft PR cycle is verified. Remove this note and the rollback handler after verification.
