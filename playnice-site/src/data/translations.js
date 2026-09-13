@@ -56,7 +56,7 @@ export const translations = {
     goToShop: "Go to Shop",
     subtotal: "Subtotal",
     shipping: "Shipping",
-    freeShippingNote: "Free shipping over €39",
+    freeShippingNote: "Free shipping over €45",
     freeShippingUnlocked: "Free shipping unlocked",
     freeShippingLeft: "left to free shipping",
     freeShippingProgress: "You’re {{amount}} away from free shipping",
@@ -92,7 +92,7 @@ export const translations = {
     remove: "Remove",
     addedToCart: "added to cart",
     justAdded: "Added ✓",
-    announcement1: "Free shipping over €39",
+    announcement1: "Free shipping over €45",
     announcement2: "Try before you buy — 2ml, 5ml, 10ml & 20ml decants",
     announcement3: "Premium niche, designer & arabic fragrances",
     announcement4: "Limited stock drops — don’t miss out",
@@ -100,7 +100,7 @@ export const translations = {
     announcement6: "✔ 500+ satisfied customers",
     announcementDynamicLocked: "Add {{amount}} more to unlock free shipping",
     announcementDynamicUnlocked: "Free shipping unlocked ✓",
-    announcementDynamicEmpty1: "Free shipping over €39",
+    announcementDynamicEmpty1: "Free shipping over €45",
     announcementDynamicEmpty2:
       "Try before you buy — 2ml, 5ml, 10ml & 20ml decants",
     announcementDynamicEmpty3: "Premium niche, designer & arabic fragrances",
@@ -246,7 +246,7 @@ export const translations = {
     goToShop: "Idi na shop",
     subtotal: "Međuzbir",
     shipping: "Dostava",
-    freeShippingNote: "Besplatna dostava preko 39€",
+    freeShippingNote: "Besplatna dostava preko 45€",
     freeShippingUnlocked: "Besplatna dostava otključana",
     freeShippingLeft: "do besplatne dostave",
     freeShippingProgress:
@@ -284,7 +284,7 @@ export const translations = {
     remove: "Ukloni",
     addedToCart: "je dodat u korpu",
     justAdded: "Dodato ✓",
-    announcement1: "Besplatna dostava preko 39€",
+    announcement1: "Besplatna dostava preko 45€",
     announcement2:
       "Probaj pre kupovine — 2ml, 5ml, 10ml & 20ml dekanti",
     announcement3: "Premium niche, dizajnerski & arapski parfemi",
@@ -294,7 +294,7 @@ export const translations = {
     announcementDynamicLocked:
       "Dodaj još {{amount}} za besplatnu dostavu",
     announcementDynamicUnlocked: "Besplatna dostava otključana ✓",
-    announcementDynamicEmpty1: "Besplatna dostava preko 39€",
+    announcementDynamicEmpty1: "Besplatna dostava preko 45€",
     announcementDynamicEmpty2:
       "Probaj pre kupovine — 2ml, 5ml, 10ml i 20ml dekanti",
     announcementDynamicEmpty3:
