@@ -73,7 +73,7 @@ export const products = [
     shortName: "Supremacy Collector's",
     category: "Arabian",
     image: "/products/afnan-supremacy.png",
-    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
     badge: "BESTSELLER",
     rating: 8.1,
     ratingLabel: "Audience Favorite",
