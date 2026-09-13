@@ -1,5 +1,6 @@
 export const ANNOUNCEMENT_TONES = ["default", "new-shop", "success", "warning"];
 export const ANNOUNCEMENT_ACTIONS = ["none", "openProduct", "openShop"];
+export const ANNOUNCEMENT_REVIEW_STATES = ["draft", "ready", "approved"];
 
 export function normalizeAnnouncementDraft(value = {}) {
   const action = ANNOUNCEMENT_ACTIONS.includes(value.action) ? value.action : "none";
@@ -31,4 +32,9 @@ export function auditAnnouncementDraft(value = {}, existingIds = [], originalId 
   if (!Number.isFinite(payload.priority)) errors.push("Priority must be a number.");
   if (payload.action === "openProduct" && !payload.slug) errors.push("Product slug is required for openProduct.");
   return { payload, errors };
+}
+
+export function getAnnouncementDraftState(row) {
+  const status = String(row?.review_status || "draft").toLowerCase();
+  return ANNOUNCEMENT_REVIEW_STATES.includes(status) ? status : "draft";
 }
