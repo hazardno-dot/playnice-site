@@ -26,6 +26,7 @@ import HeroMediaUploadBridge from "./HeroMediaUploadBridge";
 import HeroReviewBridge from "./HeroReviewBridge";
 import HeroApplyBridge from "./HeroApplyBridge";
 import ExhibitionManager from "./ExhibitionManager";
+import AnnouncementManager from "./AnnouncementManager";
 import "./header-layout.css";
 
 const ACTIVE_MODULE_KEY = "playnice_cc_active_module";
@@ -111,6 +112,7 @@ export default function ControlCenterManagers() {
     <HeroReviewBridge />
     <HeroApplyBridge />
     <ExhibitionManager />
+    <AnnouncementManager />
     <JournalManager />
     <JournalApplyManager />
     <NotesManager />
