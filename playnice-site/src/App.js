@@ -8,6 +8,7 @@ import { productCopy, fallbackCopy } from "./data/products/productCopy";
 import { productWearContext } from "./data/products/productWearContext";
 import { translations } from "./data/translations";
 import { BASE_HERO_SLIDES } from "./data/heroSlides.generated";
+import { ANNOUNCEMENT_ITEMS } from "./data/announcementConfig.generated";
 import TheNoteMap from "./TheNoteMap";
 import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
@@ -3102,17 +3103,21 @@ const announcementItems = useMemo(() => {
     ? getJournalText(latestJournalArticle.title, lang)
     : "";
 
-  const kosmalaNo4AnnouncementItem = {
-  id: "thomas-kosmala-no4-announcement",
-  text:
-    lang === "sr"
-      ? "✦ NOVO: Thomas Kosmala No. 4 Après l'Amour 10ml + Mystery Designer Sample • Limited Stock"
-      : "✦ NEW: Thomas Kosmala No. 4 Après l'Amour 10ml + Mystery Designer Sample • Limited Stock",
-  icon: "→",
-  tone: "new-shop",
-  action: "openProduct",
-  slug: "thomas-kosmala-no-4-apres-lamour",
-};
+  const editorialAnnouncementItems = ANNOUNCEMENT_ITEMS
+    .filter((item) => item.enabled)
+    .sort(
+      (a, b) =>
+        Number(a.priority || 0) - Number(b.priority || 0)
+    )
+    .map((item) => ({
+      ...item,
+      text:
+        item.text?.[lang] ||
+        item.text?.en ||
+        item.text?.sr ||
+        "",
+    }))
+    .filter((item) => item.text);
 
   const shopNewAnnouncementItem = hasNewShopProducts
     ? {
@@ -3156,11 +3161,11 @@ const announcementItems = useMemo(() => {
   };
 
   const withPriorityAnnouncements = (items) => [
-  kosmalaNo4AnnouncementItem,
-  ...(shopNewAnnouncementItem ? [shopNewAnnouncementItem] : []),
-  ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
-  foreverAnnouncementItem,
-  ...items,
+    ...editorialAnnouncementItems,
+    ...(shopNewAnnouncementItem ? [shopNewAnnouncementItem] : []),
+    ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
+    foreverAnnouncementItem,
+    ...items,
   ];
 
   if (cart.length === 0) {
