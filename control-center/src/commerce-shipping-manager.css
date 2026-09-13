@@ -1,0 +1,246 @@
+.commerce-shipping-manager-slot {
+  margin-top: 18px;
+}
+
+.commerce-shipping-manager {
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  border-radius: 22px;
+  background: rgba(10, 14, 11, 0.88);
+  overflow: hidden;
+}
+
+.commerce-shipping-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 28px;
+  border-bottom: 1px solid rgba(220, 181, 107, 0.12);
+}
+
+.commerce-shipping-head h2 {
+  margin: 6px 0 8px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 34px;
+  font-weight: 600;
+  color: #f4ead8;
+}
+
+.commerce-shipping-head p {
+  margin: 0;
+  max-width: 760px;
+  color: rgba(244, 234, 216, 0.52);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.commerce-kicker,
+.commerce-card > span,
+.commerce-workflow > span {
+  color: rgba(159, 207, 154, 0.72);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.commerce-live-pill,
+.commerce-badges span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 10px;
+  border: 1px solid rgba(126, 219, 149, 0.28);
+  border-radius: 999px;
+  color: #8fe5a6;
+  background: rgba(126, 219, 149, 0.07);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.commerce-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 22px 28px 8px;
+}
+
+.commerce-card {
+  display: grid;
+  gap: 8px;
+  min-height: 132px;
+  padding: 20px;
+  border: 1px solid rgba(220, 181, 107, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.commerce-card strong {
+  color: #f4ead8;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.commerce-card small,
+.commerce-workflow small {
+  color: rgba(244, 234, 216, 0.44);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.commerce-copy-card {
+  grid-column: 1 / -1;
+  min-height: auto;
+}
+
+.commerce-copy-card strong {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(244, 234, 216, 0.72);
+}
+
+.commerce-editor {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 22px 28px 28px;
+}
+
+.commerce-editor label {
+  display: grid;
+  gap: 8px;
+}
+
+.commerce-editor label span {
+  color: rgba(159, 207, 154, 0.7);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.commerce-editor input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  border-radius: 12px;
+  background: #071009;
+  color: #f4ead8;
+  outline: none;
+}
+
+.commerce-validation {
+  grid-column: 1 / -1;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.commerce-validation.ok {
+  border: 1px solid rgba(126, 219, 149, 0.2);
+  color: #8fe5a6;
+  background: rgba(126, 219, 149, 0.05);
+}
+
+.commerce-validation.blocked,
+.commerce-error {
+  border: 1px solid rgba(255, 111, 111, 0.25);
+  color: #ff9a9a;
+  background: rgba(255, 80, 80, 0.06);
+}
+
+.commerce-error {
+  margin: 18px 28px 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.commerce-badges,
+.commerce-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  padding: 16px 28px 0;
+}
+
+.commerce-actions {
+  padding-bottom: 22px;
+}
+
+.commerce-actions button,
+.commerce-actions a {
+  min-height: 38px;
+  padding: 9px 13px;
+  border: 1px solid rgba(220, 181, 107, 0.18);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  color: #f4ead8;
+  font: inherit;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.commerce-actions .primary {
+  border-color: rgba(126, 219, 149, 0.34);
+  background: rgba(56, 143, 78, 0.28);
+  color: #dff6e5;
+}
+
+.commerce-actions .danger {
+  border-color: rgba(255, 111, 111, 0.24);
+  color: #ff9a9a;
+}
+
+.commerce-actions button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.commerce-workflow {
+  display: grid;
+  gap: 5px;
+  margin: 0 28px 26px;
+  padding: 13px 15px;
+  border: 1px solid rgba(220, 181, 107, 0.1);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.commerce-workflow strong {
+  color: #b7e4c1;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+@media (max-width: 760px) {
+  .commerce-shipping-head,
+  .commerce-grid,
+  .commerce-editor,
+  .commerce-badges,
+  .commerce-actions {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .commerce-shipping-head {
+    flex-direction: column;
+  }
+
+  .commerce-grid,
+  .commerce-editor {
+    grid-template-columns: 1fr;
+  }
+
+  .commerce-copy-card,
+  .commerce-validation {
+    grid-column: auto;
+  }
+
+  .commerce-workflow {
+    margin-left: 18px;
+    margin-right: 18px;
+  }
+}
