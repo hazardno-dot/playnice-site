@@ -12,4 +12,16 @@ export const ANNOUNCEMENT_ITEMS = [
     slug: "thomas-kosmala-no-4-apres-lamour",
     priority: 10,
   },
+  {
+    id: "announcement-workflow-test",
+    enabled: true,
+    text: {
+      sr: "TEST: Announcement Manager workflow",
+      en: "TEST: Announcement Manager workflow",
+    },
+    icon: "→",
+    tone: "default",
+    action: "none",
+    priority: 99,
+  },
 ];
