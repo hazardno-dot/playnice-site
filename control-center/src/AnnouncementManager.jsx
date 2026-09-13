@@ -143,81 +143,8 @@ export default function AnnouncementManager() {
     finally { setWorkflowBusy(""); }
   };
 
-  const prepareChange = async (id) => {
-    setWorkflowBusy(`${id}:prepare`);
-    setError("");
-
-    try {
-      const row = draftRows[id];
-
-      if (
-        !row ||
-        row.review_status !== "approved" ||
-        !row.approved_payload
-      ) {
-        throw new Error("Announcement draft must be APPROVED first.");
-      }
-
-      const { data: authData, error: authError } =
-        await supabase.auth.getUser();
-
-      if (authError || !authData?.user?.id) {
-        throw authError || new Error("Authenticated admin user is required.");
-      }
-
-      const githubResponse = await fetch(
-        "https://api.github.com/repos/hazardno-dot/playnice-site/contents/playnice-site/src/data/announcementConfig.generated.js?ref=main",
-        {
-          headers: {
-            Accept: "application/vnd.github+json",
-          },
-        }
-      );
-
-      if (!githubResponse.ok) {
-        throw new Error(
-          `Could not resolve live Announcement config SHA (${githubResponse.status}).`
-        );
-      }
-
-      const source = await githubResponse.json();
-
-      if (!source?.sha) {
-        throw new Error("Live Announcement config SHA is unavailable.");
-      }
-
-      const baseline = {
-        announcement_key: id,
-        source_path:
-          "playnice-site/src/data/announcementConfig.generated.js",
-        source_sha: source.sha,
-        prepared_from: "main",
-      };
-
-      const { data, error: updateError } = await supabase
-        .from("announcement_drafts")
-        .update({
-          baseline_snapshot: baseline,
-          prepared_at: new Date().toISOString(),
-          prepared_by: authData.user.id,
-        })
-        .eq("announcement_key", id)
-        .select(DRAFT_SELECT)
-        .single();
-
-      if (updateError) {
-        throw updateError;
-      }
-
-      setDraftRows((current) => ({
-        ...current,
-        [id]: data,
-      }));
-    } catch (prepareError) {
-      setError(prepareError.message || String(prepareError));
-    } finally {
-      setWorkflowBusy("");
-    }
+  const prepareChange = () => {
+    setError("Prepare change will be available after PR #215 is merged and announcementConfig.generated.js exists on main.");
   };
 
   if (!slot) return null;
@@ -242,10 +169,10 @@ export default function AnnouncementManager() {
               <button onClick={() => startEdit(item)}>{item.__draft ? "Edit draft" : "Create draft"}</button>
               {draftRow && state === "draft" ? <button className="workflow" disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "ready")}>{workflowBusy === `${item.id}:ready` ? "Updating…" : "Mark ready"}</button> : null}
               {draftRow && state === "ready" ? <><button disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "draft")}>Back to draft</button><button className="workflow primary" disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "approved")}>{workflowBusy === `${item.id}:approved` ? "Approving…" : "Approve"}</button></> : null}
-              {draftRow && state === "approved" ? <><button disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "draft")}>Back to draft</button><button className="workflow primary" disabled={Boolean(workflowBusy) || prepared} onClick={() => prepareChange(item.id)}>{prepared ? "Prepared" : workflowBusy === `${item.id}:prepare` ? "Preparing…" : "Prepare change"}</button></> : null}
+              {draftRow && state === "approved" ? <><button disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "draft")}>Back to draft</button><button className="workflow primary" disabled={Boolean(workflowBusy) || prepared} onClick={() => prepareChange(item.id)}>{prepared ? "Prepared" : "Prepare after merge"}</button></> : null}
               {item.__draft ? <button className="danger" disabled={Boolean(workflowBusy)} onClick={() => discardDraft(item.id)}>Discard draft</button> : null}
             </div>
-            {draftRow ? <div className="announcement-workflow-note"><span>WORKFLOW</span><strong>{prepared ? "APPROVED → PREPARED" : state === "approved" ? "APPROVED → prepare next" : state === "ready" ? "READY → approval next" : "DRAFT → ready next"}</strong>{prepared ? <small>Baseline SHA {String(draftRow.baseline_snapshot.source_sha).slice(0, 10)}… captured from main.</small> : null}</div> : null}
+            {draftRow ? <div className="announcement-workflow-note"><span>WORKFLOW</span><strong>{prepared ? "APPROVED → PREPARED" : state === "approved" ? "APPROVED → Phase 1 merge required" : state === "ready" ? "READY → approval next" : "DRAFT → ready next"}</strong>{prepared ? <small>Baseline SHA {String(draftRow.baseline_snapshot.source_sha).slice(0, 10)}… captured from main.</small> : null}</div> : null}
           </article>;
         })}{!rows.length ? <div className="announcement-empty">No editorial announcements in generated config.</div> : null}</div>
       </div>
