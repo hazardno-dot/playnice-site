@@ -13,10 +13,11 @@ const SUPABASE_URL =
   process.env.SUPABASE_URL || "https://fsujznyfdrstinqexxgs.supabase.co";
 const SUPABASE_ANON_KEY =
   process.env.SUPABASE_ANON_KEY ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZzdWp6bnlmZHJzdGlucWV4eGdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc1OTY5MjQsImV4cCI6MjEwMzE3MjkyNH0.LkOE2rfoPMi9xgi5YbLwnVJSwzzL95v__JMJQMP-fhg";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdW...";
 const ORDER_STORE_URL = `${SUPABASE_URL}/functions/v1/checkout-order-store`;
 const ORDER_STORE_ATTEMPT_TIMEOUT_MS = 4000;
 const ORDER_STORE_MAX_ATTEMPTS = 2;
+const EMAIL_AUDIT_TIMEOUT_MS = 1500;
 
 function isDomesticCheckout(req) {
   const body = req?.body || {};
@@ -94,6 +95,57 @@ function buildCheckoutFingerprint(order) {
   return createHash("sha256").update(canonical, "utf8").digest("hex");
 }
 
+async function fetchWithTimeout(url, options, timeoutMs) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await originalFetch(url, {
+      ...(options || {}),
+      signal: controller.signal
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function markEmailDeliveryStatus(context) {
+  if (!context?.primaryStoreOrderId || !context?.primaryStoreSyncToken) return;
+
+  const startedAt = Date.now();
+  try {
+    const response = await fetchWithTimeout(
+      ORDER_STORE_URL,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+          apikey: SUPABASE_ANON_KEY,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: "mark_email",
+          orderId: context.primaryStoreOrderId,
+          syncToken: context.primaryStoreSyncToken,
+          adminEmailSent: context.adminEmailSent,
+          customerEmailSent: context.customerEmailSent
+        })
+      },
+      EMAIL_AUDIT_TIMEOUT_MS
+    );
+
+    if (!response.ok) {
+      throw new Error(`Email audit returned HTTP ${response.status}`);
+    }
+
+    context.emailAuditMs = Date.now() - startedAt;
+  } catch (error) {
+    context.emailAuditMs = Date.now() - startedAt;
+    context.emailAuditError = safeErrorMessage(error, "Email audit failed");
+    console.warn("Checkout email audit failed:", context.emailAuditError);
+  }
+}
+
 class CheckoutResend extends OriginalResend {
   constructor(...args) {
     super(...args);
@@ -142,30 +194,22 @@ class CheckoutResend extends OriginalResend {
           customerResult.reason,
           "Customer email failed"
         );
+      } else {
+        context.customerEmailSent = true;
+      }
+
+      await markEmailDeliveryStatus(context);
+
+      if (customerResult.status === "rejected") {
         throw customerResult.reason;
       }
 
-      context.customerEmailSent = true;
       return customerResult.value;
     };
   }
 }
 
 resendModule.Resend = CheckoutResend;
-
-async function fetchWithTimeout(url, options, timeoutMs) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
-
-  try {
-    return await originalFetch(url, {
-      ...(options || {}),
-      signal: controller.signal
-    });
-  } finally {
-    clearTimeout(timeout);
-  }
-}
 
 async function saveOrderToPrimaryStore(args, context) {
   let orderPayload;
@@ -224,6 +268,7 @@ async function saveOrderToPrimaryStore(args, context) {
         context.primaryStoreAttempts = attempt;
         context.primaryStoreDuplicate = Boolean(data.duplicate);
         context.primaryStoreOrderId = data.orderId;
+        context.primaryStoreSyncToken = data.syncToken || null;
         context.primaryStoreSheetSyncStatus = data.sheetSyncStatus || "pending";
 
         console.info(
@@ -306,8 +351,11 @@ export default async function handler(req, res) {
     primaryStoreAttempts: 0,
     primaryStoreDuplicate: false,
     primaryStoreOrderId: null,
+    primaryStoreSyncToken: null,
     primaryStoreSheetSyncStatus: null,
     emailsMs: null,
+    emailAuditMs: null,
+    emailAuditError: null,
     adminEmailSent: null,
     adminEmailError: null,
     customerEmailSent: null,
@@ -333,6 +381,7 @@ export default async function handler(req, res) {
         payload.checkoutTimings = {
           primaryStoreMs: context.primaryStoreMs,
           emailsMs: context.emailsMs,
+          emailAuditMs: context.emailAuditMs,
           totalMs,
           primaryStoreAttempts: context.primaryStoreAttempts
         };
@@ -353,6 +402,8 @@ export default async function handler(req, res) {
           primaryStoreDuplicate: context.primaryStoreDuplicate,
           sheetSyncStatusAtCreate: context.primaryStoreSheetSyncStatus,
           emailsMs: context.emailsMs,
+          emailAuditMs: context.emailAuditMs,
+          emailAuditError: context.emailAuditError,
           totalMs,
           adminEmailSent:
             payload?.adminEmailSent ?? context.adminEmailSent,
