@@ -215,11 +215,28 @@ export default function AnnouncementManager() {
               <button onClick={() => startEdit(item)}>{item.__draft ? "Edit draft" : "Create draft"}</button>
               {draftRow && state === "draft" ? <button className="workflow" disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "ready")}>{workflowBusy === `${item.id}:ready` ? "Updating…" : "Mark ready"}</button> : null}
               {draftRow && state === "ready" ? <><button disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "draft")}>Back to draft</button><button className="workflow primary" disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "approved")}>{workflowBusy === `${item.id}:approved` ? "Approving…" : "Approve"}</button></> : null}
-              {draftRow && state === "approved" ? <><button disabled={Boolean(workflowBusy)} onClick={() => setReviewStatus(item.id, "draft")}>Back to draft</button><button className="workflow primary" disabled={Boolean(workflowBusy) || prepared} onClick={() => prepareChange(item.id)}>{prepared
-  ? "Prepared"
-  : workflowBusy === `${item.id}:prepare`
-    ? "Preparing…"
-    : "Prepare change"}</button></> : null}
+              {draftRow && state === "approved" ? (
+                <>
+                  <button
+                    disabled={Boolean(workflowBusy)}
+                    onClick={() => setReviewStatus(item.id, "draft")}
+                  >
+                    Back to draft
+                  </button>
+
+                  {!prepared ? (
+                    <button
+                      className="workflow primary"
+                      disabled={Boolean(workflowBusy)}
+                      onClick={() => prepareChange(item.id)}
+                    >
+                      {workflowBusy === `${item.id}:prepare`
+                        ? "Preparing…"
+                        : "Prepare change"}
+                    </button>
+                  ) : null}
+                </>
+              ) : null}
               {item.__draft ? <button className="danger" disabled={Boolean(workflowBusy)} onClick={() => discardDraft(item.id)}>Discard draft</button> : null}
             </div>
             {draftRow ? <div className="announcement-workflow-note"><span>WORKFLOW</span><strong>{prepared ? "APPROVED → PREPARED" : state === "approved"
