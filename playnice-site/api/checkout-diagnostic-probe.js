@@ -2,6 +2,21 @@
 // Do not merge this file to production.
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const PROBE_TIMEOUT_MS = 6000;
+
+async function fetchWithTimeout(url, options, timeoutMs) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await fetch(url, {
+      ...(options || {}),
+      signal: controller.signal
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
 
 export default async function handler(req, res) {
   res.setHeader("Allow", ["GET"]);
@@ -23,16 +38,20 @@ export default async function handler(req, res) {
     const startedAt = Date.now();
 
     try {
-      const response = await fetch(url, {
-        method: "POST",
-        redirect: "follow",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
+      const response = await fetchWithTimeout(
+        url,
+        {
+          method: "POST",
+          redirect: "follow",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify({
+            source: "checkout_diagnostic_probe"
+          })
         },
-        body: JSON.stringify({
-          source: "checkout_diagnostic_probe"
-        })
-      });
+        PROBE_TIMEOUT_MS
+      );
 
       const text = await response.text();
       let data = null;
@@ -47,6 +66,7 @@ export default async function handler(req, res) {
         index: index + 1,
         httpStatus: response.status,
         vercelRoundTripMs: Date.now() - startedAt,
+        timedOut: false,
         appsScript: data,
         rawPreview: data ? null : text.slice(0, 180)
       });
@@ -54,6 +74,8 @@ export default async function handler(req, res) {
       results.push({
         index: index + 1,
         vercelRoundTripMs: Date.now() - startedAt,
+        timedOut: error?.name === "AbortError",
+        errorName: error?.name || null,
         error: error?.message || String(error)
       });
     }
@@ -65,9 +87,12 @@ export default async function handler(req, res) {
 
   const successful = results.filter((item) => item.appsScript?.status === "ok");
   const roundTrips = successful.map((item) => item.vercelRoundTripMs);
+  const timeoutCount = results.filter((item) => item.timedOut).length;
   const payload = {
     count,
     successful: successful.length,
+    timeoutCount,
+    probeTimeoutMs: PROBE_TIMEOUT_MS,
     summary: roundTrips.length
       ? {
           minMs: Math.min(...roundTrips),
