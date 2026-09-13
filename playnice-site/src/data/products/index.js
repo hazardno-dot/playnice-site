@@ -1664,7 +1664,7 @@ export const products = [
     shortName: "Fahad Gaze",
     category: "Arabian",
     image: "/products/arabiyat-prestige-fahad-gaze.png",
-    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
     badge: "HIDDEN GEM",
     rating: 8.4,
     ratingLabel: "Elegant Pick",
