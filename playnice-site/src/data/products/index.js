@@ -1439,7 +1439,7 @@ export const products = [
     shortName: "Safari Breeze",
     category: "Arabian",
     image: "/products/french-avenue-safari-breeze.png",
-    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     badge: "SUMMER HIT",
     rating: 7.9,
     ratingLabel: "Well Loved",
