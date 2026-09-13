@@ -129,7 +129,7 @@ export const products = [
     shortName: "Prestige Marwa",
     category: "Arabian",
     image: "/products/marwa.png",
-    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     badge: "CROWD FAVORITE",
     rating: 8.0,
     ratingLabel: "Audience Favorite",
