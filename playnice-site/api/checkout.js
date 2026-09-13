@@ -13,7 +13,7 @@ const SUPABASE_URL =
   process.env.SUPABASE_URL || "https://fsujznyfdrstinqexxgs.supabase.co";
 const SUPABASE_ANON_KEY =
   process.env.SUPABASE_ANON_KEY ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdW...";
+  "sb_publishable_XzvxcEV7Cye44oF4bRWxtQ_VUq9gcNN";
 const ORDER_STORE_URL = `${SUPABASE_URL}/functions/v1/checkout-order-store`;
 const ORDER_STORE_ATTEMPT_TIMEOUT_MS = 4000;
 const ORDER_STORE_MAX_ATTEMPTS = 2;
