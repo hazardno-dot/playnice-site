@@ -13,6 +13,12 @@ const CHANNEL_MEDIA_PRIORITIES = {
   facebook: ["1:1", "square", "hero_square", "journal_cover", "product", "product_image", "4:3", "hero_mobile", "hero_desktop"],
 };
 
+const CHANNEL_IDEAL_FORMATS = {
+  instagram_feed: new Set(["1:1", "square"]),
+  instagram_story: new Set(["9:16", "9:15", "story", "vertical", "hero_story"]),
+  facebook: new Set(["1:1", "square", "hero_square", "4:3"]),
+};
+
 function normalizeMedia(media = []) {
   return (Array.isArray(media) ? media : [])
     .filter((item) => mediaSrc(item))
@@ -31,6 +37,26 @@ export function selectSocialMedia(media = [], channel = "instagram_feed") {
     if (match) return { ...match, selection: preferred === mediaFormat(items[0]) ? "preferred" : "channel_priority" };
   }
   return { ...items[0], selection: "fallback" };
+}
+
+export function classifySocialMedia(media, channel = "instagram_feed") {
+  const src = mediaSrc(media);
+  if (!src) return { status: "missing", label: "MISSING", blocking: true, reason: "No media asset selected." };
+  const format = mediaFormat(media);
+  const idealFormats = CHANNEL_IDEAL_FORMATS[channel] || CHANNEL_IDEAL_FORMATS.instagram_feed;
+  if (idealFormats.has(format)) return { status: "ideal", label: "IDEAL", blocking: false, reason: null };
+  return { status: "fallback", label: "FALLBACK", blocking: false, reason: `Using ${format || "unknown"} instead of an ideal ${channel} asset.` };
+}
+
+export function validateSocialDraftMedia(draft = {}) {
+  const channels = ["instagram_feed", "instagram_story", "facebook"];
+  const results = channels.reduce((out, channel) => {
+    out[channel] = classifySocialMedia(draft?.[channel]?.media || null, channel);
+    return out;
+  }, {});
+  const blocking = channels.filter((channel) => results[channel].blocking);
+  const fallback = channels.filter((channel) => results[channel].status === "fallback");
+  return { ok: blocking.length === 0, blocking, fallback, channels: results };
 }
 
 function payloadMedia(payload = {}, sourceType = "") {
