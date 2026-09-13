@@ -14,7 +14,7 @@ import "./editor.css";
 const SHOP_ORIGIN = "https://www.playniceshop.me";
 const NAV = [
   { section: "", items: [{ name: "Overview", icon: "O" }] },
-  { section: "MANAGE", items: [{ name: "Products", icon: "P" }, { name: "Hero", icon: "H" }, { name: "Journal", icon: "J" }, { name: "Notes", icon: "N" }] },
+  { section: "MANAGE", items: [{ name: "Products", icon: "P" }, { name: "Hero", icon: "H" }, { name: "Announcement", icon: "A" }, { name: "Journal", icon: "J" }, { name: "Notes", icon: "N" }] },
   { section: "INTELLIGENCE", items: [{ name: "Analytics", icon: "A" }] },
   { section: "SYSTEM", items: [{ name: "Site Health", icon: "S" }] }
 ];
@@ -22,6 +22,7 @@ const MODULE_META = {
   Overview: { eyebrow: "PLAYNICE / INTERNAL", description: "Operational cockpit for catalog integrity, managed content and workflow state." },
   Products: { eyebrow: "MANAGE / CATALOG", description: "Product data, copy, pricing, discovery intelligence and controlled drafts." },
   Hero: { eyebrow: "MANAGE / EXPERIENCE", description: "Hero contract, media, actions and approved Controlled Apply workflow." },
+  Announcement: { eyebrow: "MANAGE / PROMO", description: "Editorial announcement copy and storefront promo configuration." },
   Journal: { eyebrow: "MANAGE / EDITORIAL", description: "Bilingual editorial library, CTA contracts and controlled article drafts." },
   Notes: { eyebrow: "MANAGE / NOTE MAP", description: "Canonical note library, labels, assets and usage across the catalog." },
   Analytics: { eyebrow: "INTELLIGENCE / OPERATIONS", description: "Workflow telemetry, publishing history and Control Center activity." },
