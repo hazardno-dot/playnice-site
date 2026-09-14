@@ -92,11 +92,11 @@ function AuditPanel() {
       <div>
         <span className="eyebrow">READ-ONLY / CARD COPY</span>
         <h2>Visual fit audit</h2>
-        <p>Compares the current 28ch storefront Card Copy width with wider alternatives. Storefront is not changed.</p>
+        <p>Audits all SR/EN Card Copy against the live desktop two-line contract. Character count is secondary; rendered fit is the authority.</p>
       </div>
       <div className="card-copy-audit-controls">
         <div>
-          <span>STOREFRONT CONTRACT</span>
+          <span>LIVE STOREFRONT CONTRACT</span>
           <strong>{CARD_COPY_TARGET_WIDTH}px box · max {CARD_COPY_MAX_WIDTH_CH}ch · 2 lines</strong>
         </div>
         <button type="button" className={`secondary-btn ${issuesOnly ? "is-active" : ""}`} onClick={() => setIssuesOnly((value) => !value)}>
@@ -108,19 +108,19 @@ function AuditPanel() {
     {!fontReady ? <div className="card-copy-audit-loading">Loading storefront font metrics…</div> : <>
       <div className="card-copy-audit-summary">
         {comparison.map((item) => <div key={item.maxWidthCh} className={item.maxWidthCh === CARD_COPY_MAX_WIDTH_CH ? "is-warning" : ""}>
-          <span>{item.maxWidthCh}CH · PRODUCTS TO FIX</span>
+          <span>{item.maxWidthCh}CH · PRODUCTS TO FIX{item.maxWidthCh === CARD_COPY_MAX_WIDTH_CH ? " · LIVE" : ""}</span>
           <strong>{item.productsToFix}</strong>
           <small>SR {item.srVisual} · EN {item.enVisual}</small>
         </div>)}
       </div>
 
       <div className="card-copy-audit-note">
-        <strong>Comparison only:</strong> 28ch is still the live storefront contract. 30/32/34ch show how many existing Card Copy texts would fit if only the inner text width were relaxed; font, font size, two-line height and card dimensions stay unchanged.
+        <strong>Authority:</strong> 32ch is now the live desktop Card Copy contract. The 28/30/34ch figures remain comparison references only; card dimensions, font, font size and two-line height are unchanged.
       </div>
 
       <div className="card-copy-audit-table-wrap">
         <table className="card-copy-audit-table">
-          <thead><tr><th>Product · current 28ch</th><th>SR</th><th>EN</th></tr></thead>
+          <thead><tr><th>Product · live {CARD_COPY_MAX_WIDTH_CH}ch</th><th>SR</th><th>EN</th></tr></thead>
           <tbody>
             {visibleRows.map(({ product, sr, en }) => <tr key={product.slug || product.name}>
               <td className="card-copy-audit-product"><strong>{product.shortName || product.name}</strong><small>{product.category} · {product.slug}</small></td>
@@ -130,7 +130,7 @@ function AuditPanel() {
           </tbody>
         </table>
       </div>
-      {!visibleRows.length ? <div className="card-copy-audit-empty">No copy-fit issues under the current contract.</div> : null}
+      {!visibleRows.length ? <div className="card-copy-audit-empty">No copy-fit issues under the live contract.</div> : null}
     </>}
   </section>;
 }
