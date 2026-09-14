@@ -78,6 +78,22 @@ function analyzePixels(data, width, height) {
   return { brightness, contrast, saturation, sharpness };
 }
 
+async function analyzeImageFile(file) {
+  const { image, url } = await readImage(file);
+  try {
+    const size = scaledDimensions(image.naturalWidth, image.naturalHeight, MAX_ANALYSIS_EDGE);
+    const canvas = document.createElement("canvas");
+    canvas.width = size.width;
+    canvas.height = size.height;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (!ctx) throw new Error("Could not analyze image quality.");
+    ctx.drawImage(image, 0, 0, size.width, size.height);
+    return analyzePixels(ctx.getImageData(0, 0, size.width, size.height).data, size.width, size.height);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 function buildAdjustments(metrics) {
   let brightness = 1;
   let contrast = 1;
@@ -148,35 +164,45 @@ function qualityLabel(metrics) {
   return issues.length ? { grade: "CHECK", issues } : { grade: "GOOD", issues: [] };
 }
 
+function finalStatus({ sourceMetrics, finalMetrics, enhanced, finalQuality }) {
+  if (finalMetrics.sharpness < 8) return "SOURCE TOO SOFT";
+  if (!enhanced && finalQuality.grade === "GOOD") return "GOOD";
+  if (enhanced && finalQuality.grade === "GOOD") return "IMPROVED";
+  return "CHECK";
+}
+
+function metricDeltaLabel(source, final) {
+  const sourceSharpness = Math.round(source.sharpness);
+  const finalSharpness = Math.round(final.sharpness);
+  if (sourceSharpness === finalSharpness) return `final sharpness ${finalSharpness}`;
+  return `sharpness ${sourceSharpness} → ${finalSharpness}`;
+}
+
 export async function assessAndEnhanceProductImage(file) {
   if (!file || !ACCEPTED_IMAGE.test(file.type)) throw new Error("Choose a JPG, PNG or WebP image.");
 
+  const sourceMetrics = await analyzeImageFile(file);
+  const sourceQuality = qualityLabel(sourceMetrics);
+  const adjustments = buildAdjustments(sourceMetrics);
+  const needsEnhancement = adjustments.notes.length > 0;
+
+  if (!needsEnhancement) {
+    return {
+      file,
+      enhanced: false,
+      report: {
+        ...sourceMetrics,
+        grade: "GOOD",
+        issues: sourceQuality.issues,
+        sourceMetrics,
+        finalMetrics: sourceMetrics,
+        notes: ["source already within PlayNice quality range"],
+      },
+    };
+  }
+
   const { image, url } = await readImage(file);
   try {
-    const analysisSize = scaledDimensions(image.naturalWidth, image.naturalHeight, MAX_ANALYSIS_EDGE);
-    const analysisCanvas = document.createElement("canvas");
-    analysisCanvas.width = analysisSize.width;
-    analysisCanvas.height = analysisSize.height;
-    const analysisCtx = analysisCanvas.getContext("2d", { willReadFrequently: true });
-    if (!analysisCtx) throw new Error("Could not analyze image quality.");
-    analysisCtx.drawImage(image, 0, 0, analysisSize.width, analysisSize.height);
-    const metrics = analyzePixels(
-      analysisCtx.getImageData(0, 0, analysisSize.width, analysisSize.height).data,
-      analysisSize.width,
-      analysisSize.height,
-    );
-    const originalQuality = qualityLabel(metrics);
-    const adjustments = buildAdjustments(metrics);
-    const needsEnhancement = adjustments.notes.length > 0;
-
-    if (!needsEnhancement) {
-      return {
-        file,
-        enhanced: false,
-        report: { ...metrics, grade: originalQuality.grade, issues: originalQuality.issues, notes: ["source already within PlayNice quality range"] },
-      };
-    }
-
     const enhancedSize = scaledDimensions(image.naturalWidth, image.naturalHeight, MAX_ENHANCE_EDGE);
     const canvas = document.createElement("canvas");
     canvas.width = enhancedSize.width;
@@ -196,11 +222,27 @@ export async function assessAndEnhanceProductImage(file) {
     const blob = await canvasToBlob(canvas, "image/png");
     if (!blob) throw new Error("Could not create enhanced image.");
     const enhancedFile = new File([blob], "playnice-enhanced.png", { type: "image/png", lastModified: Date.now() });
+    const finalMetrics = await analyzeImageFile(enhancedFile);
+    const finalQuality = qualityLabel(finalMetrics);
+    const grade = finalStatus({ sourceMetrics, finalMetrics, enhanced: true, finalQuality });
+    const notes = [
+      `applied: ${adjustments.notes.join(", ")}`,
+      metricDeltaLabel(sourceMetrics, finalMetrics),
+    ];
+    if (grade === "SOURCE TOO SOFT") notes.push("source is still soft — consider a higher-quality image");
+    else if (grade === "CHECK" && finalQuality.issues.length) notes.push(`recheck: ${finalQuality.issues.join(", ")}`);
 
     return {
       file: enhancedFile,
       enhanced: true,
-      report: { ...metrics, grade: originalQuality.grade, issues: originalQuality.issues, notes: adjustments.notes },
+      report: {
+        ...finalMetrics,
+        grade,
+        issues: finalQuality.issues,
+        sourceMetrics,
+        finalMetrics,
+        notes,
+      },
     };
   } finally {
     URL.revokeObjectURL(url);
