@@ -469,20 +469,20 @@ export default function MobileProductPage({
         </details>
 
         <details>
-          <summary>{lang === "sr" ? "Kada ga nositi" : "When to wear it"}<span>+</span></summary>
+          <summary>{lang === "sr" ? "Kada ga nositi" : "Best moments"}<span>+</span></summary>
           <p>{wearContext || (lang === "sr" ? "Biraj ga prema raspoloženju, prilici i sezoni." : "Wear it according to mood, occasion and season.")}</p>
         </details>
 
         {doNotWearContext ? (
           <details>
-            <summary>{lang === "sr" ? "Kada ga ne nositi" : "When not to wear it"}<span>+</span></summary>
+            <summary>{lang === "sr" ? "Kada ga preskočiti" : "Skip it when…"}<span>+</span></summary>
             <p>{doNotWearContext}</p>
           </details>
         ) : null}
 
         {whatToWearContext ? (
           <details>
-            <summary>{lang === "sr" ? "Šta obući?" : "What to wear?"}<span>+</span></summary>
+            <summary>{lang === "sr" ? "Šta obući" : "Dress the part"}<span>+</span></summary>
             <p>{whatToWearContext}</p>
           </details>
         ) : null}
