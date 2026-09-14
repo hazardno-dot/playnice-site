@@ -437,7 +437,7 @@ export const products = [
     shortName: "Qaed Al Fursan Untamed",
     category: "Arabian",
     image: "/products/Lattafa-Qaed-Al-Fursan-Untamed.png",
-    sizes: { "5ml": 3, "10ml": 5, "20ml": 10 },
+    sizes: { "5ml": 3.5, "10ml": 6, "20ml": 12 },
     badge: "SIGNATURE",
     rating: 7.5,
     ratingLabel: "Well Loved",
