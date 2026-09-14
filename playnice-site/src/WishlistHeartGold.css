@@ -55,11 +55,39 @@
     height: 15px;
   }
 
+  /* Mobile Just In: render the heart on the control itself so later mobile
+     cascade rules cannot hide the glyph span. Header and product-card hearts
+     remain on the shared span implementation above. */
+  .new-arrival-wishlist-btn {
+    position: relative;
+  }
+
   .new-arrival-wishlist-btn .heart-icon {
+    display: none !important;
+  }
+
+  .new-arrival-wishlist-btn::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
     width: 12px;
     height: 12px;
-    display: inline-block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.8 5.9c-1.8-2.1-5.1-2.2-7-.3L12 7.4l-1.8-1.8c-1.9-1.9-5.2-1.8-7 .3-1.7 2-1.4 5 .5 6.9L12 21l8.3-8.2c1.9-1.9 2.2-4.9.5-6.9Z' fill='none' stroke='%23edcf88' stroke-width='1.55' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    filter:
+      drop-shadow(0 0 4px rgba(220, 181, 107, 0.16))
+      drop-shadow(0 0 8px rgba(220, 181, 107, 0.07));
+  }
+
+  .new-arrival-wishlist-btn.active::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.8 5.9c-1.8-2.1-5.1-2.2-7-.3L12 7.4l-1.8-1.8c-1.9-1.9-5.2-1.8-7 .3-1.7 2-1.4 5 .5 6.9L12 21l8.3-8.2c1.9-1.9 2.2-4.9.5-6.9Z' fill='%23dcb56b' stroke='%23edcf88' stroke-width='1.45' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    filter:
+      drop-shadow(0 0 4px rgba(220, 181, 107, 0.22))
+      drop-shadow(0 0 8px rgba(220, 181, 107, 0.1));
   }
 }
