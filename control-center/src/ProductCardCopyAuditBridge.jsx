@@ -3,20 +3,20 @@ import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
 import { productCopy } from "@shop/data/products/productCopy.js";
 import {
-  CARD_COPY_MAX_WIDTH_CH,
   CARD_COPY_TARGET_WIDTH,
+  CARD_COPY_MAX_WIDTH_CH,
   classifyCardCopyFit,
   ensureCardCopyFont,
 } from "./productCardCopyFit.mjs";
 import "./product-card-copy-audit.css";
 
-const TARGET_WIDTH = CARD_COPY_TARGET_WIDTH;
+const CONTRACT_OPTIONS = [28, 30, 32, 34];
 
-function buildRows() {
+function buildRows(maxWidthCh) {
   return products.map((product) => {
     const copy = productCopy[product.name]?.card || {};
-    const sr = classifyCardCopyFit(copy.sr, "sr", { width: TARGET_WIDTH });
-    const en = classifyCardCopyFit(copy.en, "en", { width: TARGET_WIDTH });
+    const sr = classifyCardCopyFit(copy.sr, "sr", { maxWidthCh });
+    const en = classifyCardCopyFit(copy.en, "en", { maxWidthCh });
     const riskScore = [sr, en].reduce((score, item) => {
       if (item.mismatch) return score + 4;
       if (item.visualPass === false) return score + 3;
@@ -25,6 +25,14 @@ function buildRows() {
     }, 0);
     return { product, sr, en, riskScore };
   }).sort((a, b) => b.riskScore - a.riskScore || a.product.name.localeCompare(b.product.name));
+}
+
+function summarize(rows) {
+  const srVisual = rows.filter((row) => row.sr.visualPass === false).length;
+  const enVisual = rows.filter((row) => row.en.visualPass === false).length;
+  const productsToFix = rows.filter((row) => row.sr.visualPass === false || row.en.visualPass === false).length;
+  const eitherMismatch = rows.filter((row) => row.sr.mismatch || row.en.mismatch).length;
+  return { srVisual, enVisual, productsToFix, eitherMismatch };
 }
 
 function MetricCell({ result }) {
@@ -65,31 +73,32 @@ function AuditPanel() {
     };
   }, []);
 
-  const rows = useMemo(() => fontReady ? buildRows() : [], [fontReady]);
+  const comparison = useMemo(() => {
+    if (!fontReady) return [];
+    return CONTRACT_OPTIONS.map((maxWidthCh) => {
+      const rows = buildRows(maxWidthCh);
+      return { maxWidthCh, rows, ...summarize(rows) };
+    });
+  }, [fontReady]);
+
+  const current = comparison.find((item) => item.maxWidthCh === CARD_COPY_MAX_WIDTH_CH);
+  const rows = current?.rows || [];
   const visibleRows = issuesOnly
     ? rows.filter((row) => row.sr.visualPass === false || row.en.visualPass === false)
     : rows;
-
-  const summary = useMemo(() => {
-    const srVisual = rows.filter((row) => row.sr.visualPass === false).length;
-    const enVisual = rows.filter((row) => row.en.visualPass === false).length;
-    const productsWithIssues = rows.filter((row) => row.sr.visualPass === false || row.en.visualPass === false).length;
-    const eitherMismatch = rows.filter((row) => row.sr.mismatch || row.en.mismatch).length;
-    return { srVisual, enVisual, productsWithIssues, eitherMismatch };
-  }, [rows]);
 
   return <section className="card-copy-audit-panel">
     <div className="card-copy-audit-head">
       <div>
         <span className="eyebrow">READ-ONLY / CARD COPY</span>
         <h2>Visual fit audit</h2>
-        <p>Final audit against the PlayNice desktop Card Copy contract: one idea, maximum two rendered lines.</p>
+        <p>Compares the current 28ch storefront Card Copy width with wider alternatives. Storefront is not changed.</p>
       </div>
       <div className="card-copy-audit-controls">
-        <label>
+        <div>
           <span>STOREFRONT CONTRACT</span>
-          <div className="card-copy-audit-contract">250px box · max {CARD_COPY_MAX_WIDTH_CH}ch · 2 lines</div>
-        </label>
+          <strong>{CARD_COPY_TARGET_WIDTH}px box · max {CARD_COPY_MAX_WIDTH_CH}ch · 2 lines</strong>
+        </div>
         <button type="button" className={`secondary-btn ${issuesOnly ? "is-active" : ""}`} onClick={() => setIssuesOnly((value) => !value)}>
           {issuesOnly ? "Issues only" : "Show all"}
         </button>
@@ -98,20 +107,20 @@ function AuditPanel() {
 
     {!fontReady ? <div className="card-copy-audit-loading">Loading storefront font metrics…</div> : <>
       <div className="card-copy-audit-summary">
-        <div><span>LIVE PRODUCTS</span><strong>{rows.length}</strong></div>
-        <div className={summary.productsWithIssues ? "is-warning" : ""}><span>PRODUCTS TO FIX</span><strong>{summary.productsWithIssues}</strong></div>
-        <div><span>SR · OVER 2 LINES</span><strong>{summary.srVisual}</strong></div>
-        <div><span>EN · OVER 2 LINES</span><strong>{summary.enVisual}</strong></div>
-        <div className={summary.eitherMismatch ? "is-warning" : ""}><span>CC PASS / VISUAL FAIL</span><strong>{summary.eitherMismatch}</strong></div>
+        {comparison.map((item) => <div key={item.maxWidthCh} className={item.maxWidthCh === CARD_COPY_MAX_WIDTH_CH ? "is-warning" : ""}>
+          <span>{item.maxWidthCh}CH · PRODUCTS TO FIX</span>
+          <strong>{item.productsToFix}</strong>
+          <small>SR {item.srVisual} · EN {item.enVisual}</small>
+        </div>)}
       </div>
 
       <div className="card-copy-audit-note">
-        <strong>Authority:</strong> rendered line fit now mirrors the storefront typography and its inherited <code>max-width: {CARD_COPY_MAX_WIDTH_CH}ch</code>. Character count remains a secondary safety ceiling, not the deciding rule.
+        <strong>Comparison only:</strong> 28ch is still the live storefront contract. 30/32/34ch show how many existing Card Copy texts would fit if only the inner text width were relaxed; font, font size, two-line height and card dimensions stay unchanged.
       </div>
 
       <div className="card-copy-audit-table-wrap">
         <table className="card-copy-audit-table">
-          <thead><tr><th>Product</th><th>SR</th><th>EN</th></tr></thead>
+          <thead><tr><th>Product · current 28ch</th><th>SR</th><th>EN</th></tr></thead>
           <tbody>
             {visibleRows.map(({ product, sr, en }) => <tr key={product.slug || product.name}>
               <td className="card-copy-audit-product"><strong>{product.shortName || product.name}</strong><small>{product.category} · {product.slug}</small></td>
@@ -121,7 +130,7 @@ function AuditPanel() {
           </tbody>
         </table>
       </div>
-      {!visibleRows.length ? <div className="card-copy-audit-empty">All Card Copy fits the 2-line storefront contract.</div> : null}
+      {!visibleRows.length ? <div className="card-copy-audit-empty">No copy-fit issues under the current contract.</div> : null}
     </>}
   </section>;
 }
