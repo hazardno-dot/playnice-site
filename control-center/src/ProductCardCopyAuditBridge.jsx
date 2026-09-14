@@ -2,91 +2,24 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
 import { productCopy } from "@shop/data/products/productCopy.js";
-import { presentationLimit } from "./productPresentationContract.mjs";
+import {
+  CARD_COPY_TARGET_WIDTH,
+  classifyCardCopyFit,
+  ensureCardCopyFont,
+} from "./productCardCopyFit.mjs";
 import "./product-card-copy-audit.css";
 
-const FONT_LINK_ID = "playnice-card-copy-audit-font";
-const DEFAULT_WIDTH = 250;
+const DEFAULT_WIDTH = CARD_COPY_TARGET_WIDTH;
 const WIDTH_OPTIONS = [230, 250, 270];
-const LANGS = ["sr", "en"];
-
-function ensureFont() {
-  if (document.getElementById(FONT_LINK_ID)) return;
-  const link = document.createElement("link");
-  link.id = FONT_LINK_ID;
-  link.rel = "stylesheet";
-  link.href = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&display=swap";
-  document.head.appendChild(link);
-}
-
-function countLines(text, width) {
-  const value = String(text || "").trim();
-  if (!value) return 0;
-
-  const node = document.createElement("div");
-  Object.assign(node.style, {
-    position: "fixed",
-    left: "-10000px",
-    top: "0",
-    visibility: "hidden",
-    pointerEvents: "none",
-    width: `${width}px`,
-    margin: "0",
-    padding: "0",
-    border: "0",
-    whiteSpace: "normal",
-    overflowWrap: "normal",
-    wordBreak: "normal",
-    fontFamily: '"Cormorant Garamond", serif',
-    fontStyle: "italic",
-    fontWeight: "400",
-    fontSize: "15.2px",
-    lineHeight: "21.28px",
-    letterSpacing: "0.228px",
-  });
-  node.textContent = value;
-  document.body.appendChild(node);
-  const height = node.getBoundingClientRect().height;
-  node.remove();
-  return Math.max(1, Math.round(height / 21.28));
-}
-
-function classify(text, lang, width) {
-  const value = String(text || "").trim();
-  const chars = Array.from(value).length;
-  const lines = countLines(value, width);
-  const legacyMax = presentationLimit("card", lang, { isNewProduct: false });
-  const newMax = presentationLimit("card", lang, { isNewProduct: true });
-  const ccLegacyPass = chars <= legacyMax;
-  const ccNewPass = chars <= newMax;
-  const visualPass = lines <= 2;
-
-  let status = "ok";
-  if (!visualPass) status = "visual-fail";
-  else if (lines === 2 && chars >= Math.floor(newMax * 0.85)) status = "near";
-
-  return {
-    value,
-    chars,
-    lines,
-    legacyMax,
-    newMax,
-    ccLegacyPass,
-    ccNewPass,
-    visualPass,
-    mismatch: ccLegacyPass && !visualPass,
-    status,
-  };
-}
 
 function buildRows(width) {
   return products.map((product) => {
     const copy = productCopy[product.name]?.card || {};
-    const sr = classify(copy.sr, "sr", width);
-    const en = classify(copy.en, "en", width);
+    const sr = classifyCardCopyFit(copy.sr, "sr", { width });
+    const en = classifyCardCopyFit(copy.en, "en", { width });
     const riskScore = [sr, en].reduce((score, item) => {
       if (item.mismatch) return score + 4;
-      if (!item.visualPass) return score + 3;
+      if (item.visualPass === false) return score + 3;
       if (item.status === "near") return score + 1;
       return score;
     }, 0);
@@ -97,7 +30,7 @@ function buildRows(width) {
 function MetricCell({ result }) {
   const label = result.mismatch
     ? "CC PASS / VISUAL FAIL"
-    : !result.visualPass
+    : result.visualPass === false
       ? "OVER 2 LINES"
       : result.status === "near"
         ? "NEAR LIMIT"
@@ -120,7 +53,7 @@ function AuditPanel() {
   const [fontReady, setFontReady] = useState(false);
 
   useEffect(() => {
-    ensureFont();
+    ensureCardCopyFont();
     let cancelled = false;
     const ready = document.fonts?.load?.('italic 15.2px "Cormorant Garamond"');
     Promise.resolve(ready).finally(() => {
@@ -139,12 +72,10 @@ function AuditPanel() {
     : rows;
 
   const summary = useMemo(() => {
-    const srVisual = rows.filter((row) => !row.sr.visualPass).length;
-    const enVisual = rows.filter((row) => !row.en.visualPass).length;
-    const srMismatch = rows.filter((row) => row.sr.mismatch).length;
-    const enMismatch = rows.filter((row) => row.en.mismatch).length;
+    const srVisual = rows.filter((row) => row.sr.visualPass === false).length;
+    const enVisual = rows.filter((row) => row.en.visualPass === false).length;
     const eitherMismatch = rows.filter((row) => row.sr.mismatch || row.en.mismatch).length;
-    return { srVisual, enVisual, srMismatch, enMismatch, eitherMismatch };
+    return { srVisual, enVisual, eitherMismatch };
   }, [rows]);
 
   return <section className="card-copy-audit-panel">
