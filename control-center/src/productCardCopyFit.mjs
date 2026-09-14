@@ -2,7 +2,7 @@ import { presentationLimit } from "./productPresentationContract.mjs";
 
 export const CARD_COPY_TARGET_WIDTH = 250;
 export const CARD_COPY_HORIZONTAL_PADDING = 24;
-export const CARD_COPY_MAX_WIDTH_CH = 28;
+export const CARD_COPY_MAX_WIDTH_CH = 32;
 export const CARD_COPY_MAX_LINES = 2;
 export const CARD_COPY_FONT = 'italic 400 15.2px "Cormorant Garamond"';
 export const CARD_COPY_LINE_HEIGHT = 21.28;
