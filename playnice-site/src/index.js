@@ -48,6 +48,18 @@ import "./HeaderLanguageColor.css";
 import "./mobile-v2/product-page/MobileProductPageNoteMap.css";
 import "./AnnouncementTiming.css";
 
+const CARD_COPY_FONT_LINK_ID = "playnice-card-copy-italic-font";
+
+const ensureDesktopCardCopyFont = () => {
+  if (document.getElementById(CARD_COPY_FONT_LINK_ID)) return;
+
+  const link = document.createElement("link");
+  link.id = CARD_COPY_FONT_LINK_ID;
+  link.rel = "stylesheet";
+  link.href = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&display=swap";
+  document.head.appendChild(link);
+};
+
 const renderApp = () => {
   initLocationEvents();
 
@@ -69,6 +81,8 @@ const renderApp = () => {
 };
 
 if (window.matchMedia("(min-width: 769px)").matches) {
+  ensureDesktopCardCopyFont();
+
   Promise.all([
     import("./DesktopFragranceIntelligenceV2.css"),
     import("./DesktopFragranceIntelligenceHoverFix.css"),
