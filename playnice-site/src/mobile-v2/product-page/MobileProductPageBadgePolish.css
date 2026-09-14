@@ -54,6 +54,41 @@
       transparent 100%
     );
   }
+
+  /* A restrained version of the desktop bottle aura. Keep it behind the
+     source image so the bottle remains crisp and the effect reads as depth,
+     not as a filter applied to the product itself. */
+  .mobile-product-page__image-button {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .mobile-product-page__image-button::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 184px;
+    height: 184px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(220, 181, 107, 0.095) 0%,
+      rgba(220, 181, 107, 0.055) 38%,
+      transparent 72%
+    );
+    filter: blur(20px);
+    opacity: 0.78;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mobile-product-page__image-button > img,
+  .mobile-product-page__image-button > .mobile-product-page__monogram {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 @media (max-width: 360px) {
@@ -67,5 +102,10 @@
   .mobile-product-page__badge::after {
     width: 18px;
     flex-basis: 18px;
+  }
+
+  .mobile-product-page__image-button::before {
+    width: 166px;
+    height: 166px;
   }
 }
