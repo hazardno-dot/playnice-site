@@ -10,6 +10,7 @@ import DesktopFooterCatalog from "./DesktopFooterCatalog";
 import CartInteractionV2 from "./CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
 import FragranceIntelligenceToneLoader from "./FragranceIntelligenceToneLoader";
+import WhatsAppLinkBridge from "./WhatsAppLinkBridge";
 import { initLocationEvents } from "./lib/locationEvents";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
@@ -77,6 +78,7 @@ const renderApp = () => {
       <CartInteractionV2 />
       <DiscoveryImageFallback />
       <FragranceIntelligenceToneLoader />
+      <WhatsAppLinkBridge />
     </React.StrictMode>
   );
 };
