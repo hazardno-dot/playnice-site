@@ -11,6 +11,7 @@ import ControlledApplyManager from "./ControlledApplyManager";
 import ProductWorkflowBridge from "./ProductWorkflowBridge";
 import ProductWorkflowAdvanceBridge from "./ProductWorkflowAdvanceBridge";
 import ProductCatalogCountBridge from "./ProductCatalogCountBridge";
+import ProductCardCopyAuditBridge from "./ProductCardCopyAuditBridge";
 import JournalManager from "./JournalManager";
 import JournalApplyManager from "./JournalApplyManager";
 import NotesManager from "./NotesManager";
@@ -128,6 +129,7 @@ export default function ControlCenterManagers() {
     <ProductWorkflowBridge />
     <ProductWorkflowAdvanceBridge />
     <ProductCatalogCountBridge />
+    <ProductCardCopyAuditBridge />
     <HeroManager />
     <HeroMediaUploadBridge />
     <HeroReviewBridge />
