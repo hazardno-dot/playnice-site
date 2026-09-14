@@ -38,6 +38,7 @@ import "./ProductModalPurchaseV2.css";
 import "./ProductImageNormalization.css";
 import "./mobile-v2/product-page/MobileProductPage.css";
 import "./mobile-v2/product-page/MobileProductPageBadgePolish.css";
+import "./mobile-v2/product-page/MobileProductPageAccordionChevrons.css";
 import "./mobile-v2/cart-checkout/MobileCartV2.css";
 import "./mobile-v2/cart-checkout/MobileCheckoutV2.css";
 import "./mobile-v2/cart-checkout/MobileStickyCtaV2.css";
