@@ -1,6 +1,5 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import "@shop/data/products/applyCardCopyFinalOverrides.js";
 import App from "./App";
 import AuthGate from "./AuthGate";
 import ControlCenterManagers from "./ControlCenterManagers";
