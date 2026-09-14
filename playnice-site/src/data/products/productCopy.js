@@ -229,7 +229,7 @@ export const productCopy = {
   "French Avenue Vulcan Sable Eau de Parfum": {
     miniTag: { sr: "🥃 Začinski / Topao", en: "🥃 Spicy / Warm" },
     card: {
-      sr: "Viskij, korijander i kremasta sandalovina u bogatom večernjem mirisu.",
+      sr: "Viskij i korijander preko tople, kremaste sandalovine.",
       en: "Whiskey, coriander and creamy sandalwood in a rich evening scent.",
     },
     modal: {
@@ -761,7 +761,7 @@ export const productCopy = {
   "Essential Parfums Bois Impérial Eau de Parfum": {
     miniTag: { sr: "🌿 Začinski / Drvenast", en: "🌿 Spicy / Woody" },
     card: {
-      sr: "Tajlandski bosiljak, Timut biber i vetiver u modernom drvenastom mirisu.",
+      sr: "Bosiljak, Timut biber i vetiver u suvom drvenom tragu.",
       en: "Thai basil, Timut pepper and vetiver in a modern woody fragrance.",
     },
     modal: {
@@ -929,8 +929,8 @@ export const productCopy = {
   "Calvin Klein Defy Parfum": {
     miniTag: { sr: "🍫 Kakao / Sandalovina", en: "🍫 Cocoa / Sandalwood" },
     card: {
-      sr: "Topli začini, ljuska kakaa i sandalovina u glatkom modernom parfemu.",
-      en: "Warm spices, cocoa shell and sandalwood in a smooth modern fragrance.",
+      sr: "Topli začini, kakao i sandalovina. Gladak i moderan trag.",
+      en: "Warm spice, cocoa and sandalwood with a smooth modern finish.",
     },
     modal: {
       sr: "Mandarina, ružičasti biber i kardamom otvaraju miris toplinom, lavanda i đumbir daju živost, a ljuska kakaa, vetiver i sandalovina meku dubinu.",
@@ -1125,7 +1125,7 @@ export const productCopy = {
     "Yves Saint Laurent L'Homme Eau de Parfum": {
     miniTag: { sr: "🍊 Gorka narandža / Drvo", en: "🍊 Bitter Orange / Woods" },
     card: {
-      sr: "Gorka narandža, hrastovo drvo i vetiver u svedenom elegantnom mirisu.",
+      sr: "Gorka narandža, vetiver i hrastovo drvo. Tiha elegancija.",
       en: "Bitter orange, oakwood and vetiver in a refined elegant fragrance.",
     },
     modal: {
@@ -1265,8 +1265,8 @@ export const productCopy = {
   "Terre d'Hermès Eau de Toilette": {
     miniTag: { sr: "🪨 Grejp / Kremen", en: "🪨 Grapefruit / Flint" },
     card: {
-      sr: "Grejp, mineralni kremen i kedar u ikoničnom zemljano-citrusnom mirisu.",
-      en: "Grapefruit, mineral flint and cedarwood in an iconic earthy-citrus scent.",
+      sr: "Grejp, kremen i kedar. Suv, zemljan i odmah prepoznatljiv.",
+      en: "Grapefruit, flint and cedarwood. Dry, earthy and iconic.",
     },
     modal: {
       sr: "Opori grejp otvara miris svetlo, kremen donosi suv mineralni karakter, a kedar zaokružuje kompoziciju čvrstim i elegantnim drvenastim tragom.",
@@ -1293,7 +1293,7 @@ export const productCopy = {
   "Tom Ford Noir Extreme Eau de Parfum": {
     miniTag: { sr: "🍨 Kulfi / Začinski", en: "🍨 Kulfi / Spicy" },
     card: {
-      sr: "Kardamom, kulfi i vanila u raskošnom, kremastom večernjem mirisu.",
+      sr: "Kardamom i kulfi u kremastoj vanili za tamnije večeri.",
       en: "Cardamom, kulfi and vanilla in an opulent creamy evening scent.",
     },
     modal: {
@@ -1406,7 +1406,7 @@ export const productCopy = {
     miniTag: { sr: "🥥 Kokos / Crna ribizla", en: "🥥 Coconut / Black Currant" },
     card: {
       sr: "Kokos, crna ribizla i grejp u zelenom, tropskom letnjem mirisu.",
-      en: "Coconut, black currant and grapefruit in a green tropical summer scent.",
+      en: "Coconut and black currant sharpened by green grapefruit.",
     },
     modal: {
       sr: "Crna ribizla, kokos i grejp daju sočan početak, nana i jasmin unose zelenu svežinu, a vetiver, amber i hrastova mahovina prirodnu dubinu.",
@@ -1573,7 +1573,7 @@ export const productCopy = {
   "Rasasi Hawas Black Eau de Parfum": {
     miniTag: { sr: "🍍 Ananas / Mahovina", en: "🍍 Pineapple / Oakmoss" },
     card: {
-      sr: "Ananas, bergamot i hrastova mahovina u snažnom voćno-drvenastom mirisu.",
+      sr: "Ananas i bergamot nad tamnom mahovinom i drvenom bazom.",
       en: "Pineapple, bergamot and oakmoss in a powerful fruity-woody fragrance.",
     },
     modal: {
@@ -1658,7 +1658,7 @@ export const productCopy = {
     miniTag: { sr: "🌸 Puderasti mošus / Cvetni", en: "🌸 Powdery Musk / Floral" },
     card: {
       sr: "Beli jasmin, bugarska ruža i puderasti mošus u elegantnom mirisu.",
-      en: "White jasmine, Bulgarian rose and powdery musk in an elegant fragrance.",
+      en: "White jasmine and rose wrapped in soft powdery musk.",
     },
     modal: {
       sr: "Beli jasmin i bugarska ruža otvaraju miris nežno, puderasti mošus stvara njegov prepoznatljiv oblak, a vetiver i crni i beli kedar daju toplu dubinu.",
@@ -1685,7 +1685,7 @@ export const productCopy = {
     "Yves Saint Laurent Black Opium Le Parfum": {
     miniTag: { sr: "☕ Vanila / Kafa", en: "☕ Vanilla / Coffee" },
     card: {
-      sr: "Više vrsta vanile, crna kafa i beli cvetovi u bogatom zavodljivom mirisu.",
+      sr: "Vanila i crna kafa preko mekog belog cveća. Bogato i zavodljivo.",
       en: "Multiple vanillas, black coffee and white florals in a rich seductive scent.",
     },
     modal: {
@@ -1797,7 +1797,7 @@ export const productCopy = {
   "Yves Saint Laurent Y Iced Cologne Eau de Toilette Intense": {
     miniTag: { sr: "🧊 Ledena nana / Žalfija", en: "🧊 Iced Mint / Sage" },
     card: {
-      sr: "Ledena nana, plava žalfija i ambroksan u modernoj hladnoj svežini.",
+      sr: "Ledena nana i žalfija preko čistog, hladnog ambroksana.",
       en: "Iced mint, blue sage and ambroxan in modern cooling freshness.",
     },
     modal: {
@@ -2106,7 +2106,7 @@ export const productCopy = {
     miniTag: { sr: "🍋 Citrusni / Kalon", en: "🍋 Citrus / Calone" },
     card: {
       sr: "Bergamot, limun i cvet grejpa u čistom svetlom letnjem mirisu.",
-      en: "Bergamot, lemon and grapefruit blossom in a clean bright summer scent.",
+      en: "Bergamot, lemon and grapefruit in clean summer brightness.",
     },
     modal: {
       sr: "Bergamot i limun otvaraju miris blistavo, cvet grejpa daje prozračno cvetno srce, a kalon i sandalovina čist, hladan i gladak završetak.",
@@ -2217,7 +2217,7 @@ export const productCopy = {
   "Lattafa Khamrah Waha Eau de Parfum": {
     miniTag: { sr: "🥒 Yuzu / Krastavac", en: "🥒 Yuzu / Cucumber" },
     card: {
-      sr: "Yuzu, krastavac i morska so u modernom drvenasto-aromatičnom mirisu.",
+      sr: "Yuzu, krastavac i morska so. Sveže, slano, neočekivano.",
       en: "Yuzu, cucumber and sea salt in a modern woody-aromatic fragrance.",
     },
     modal: {
@@ -2358,7 +2358,7 @@ export const productCopy = {
     miniTag: { sr: "🍋 Bergamot / Cvetni", en: "🍋 Bergamot / Floral" },
     card: {
       sr: "Bergamot, ilang-ilang i kedar u prirodnom svetlom citrusnom mirisu.",
-      en: "Bergamot, ylang-ylang and cedarwood in a natural bright citrus fragrance.",
+      en: "Bergamot, ylang-ylang and cedarwood with a bright natural lift.",
     },
     modal: {
       sr: "Bergamot otvara miris blistavo i sočno, jasmin, ilang-ilang i ruža grade elegantno cvetno srce, a kedar i tonka ostavljaju mekan i topao trag.",
@@ -2385,7 +2385,7 @@ export const productCopy = {
   "Essential Parfums Orange X Santal Eau de Parfum": {
     miniTag: { sr: "🍊 Gorka narandža / Sandalovina", en: "🍊 Bitter Orange / Sandalwood" },
     card: {
-      sr: "Gorka narandža, bosiljak i sandalovina u modernom citrusno-drvenastom mirisu.",
+      sr: "Gorka narandža i bosiljak preko suve, kremaste sandalovine.",
       en: "Bitter orange, basil and sandalwood in a modern citrus-woody fragrance.",
     },
     modal: {

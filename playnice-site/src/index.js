@@ -76,6 +76,7 @@ if (window.matchMedia("(min-width: 769px)").matches) {
     import("./DesktopConfirmationBarFit.css"),
     import("./DesktopProductModalCopyV2.css"),
     import("./DesktopDiscoverCleanup.css"),
+    import("./DesktopCardCopyWidth.css"),
   ])
     .then(renderApp)
     .catch(renderApp);
