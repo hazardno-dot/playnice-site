@@ -17,10 +17,16 @@ export function ensureCardCopyFont() {
   document.head.appendChild(link);
 }
 
+export function isCardCopyFontReady() {
+  if (typeof document === "undefined") return false;
+  if (!document.fonts?.check) return true;
+  return document.fonts.check(CARD_COPY_FONT);
+}
+
 export function measureCardCopyLines(text, width = CARD_COPY_TARGET_WIDTH) {
   const value = String(text || "").trim();
   if (!value) return 0;
-  if (typeof document === "undefined" || !document.body) return null;
+  if (typeof document === "undefined" || !document.body || !isCardCopyFontReady()) return null;
 
   const node = document.createElement("div");
   Object.assign(node.style, {
