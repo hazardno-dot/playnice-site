@@ -409,7 +409,7 @@ export const products = [
     shortName: "Musamam Black Intense",
     category: "Arabian",
     image: "/products/Lattafa-Musamam-Black-Intense.png",
-    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
+    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
     badge: "ARABIAN GEM",
     rating: 7.8,
     ratingLabel: "Well Loved",
