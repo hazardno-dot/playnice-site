@@ -1,0 +1,6 @@
+/* Card Copy width preview for PR #250.
+ * Desktop-only import. Keeps card dimensions, typography and 2-line height unchanged.
+ */
+.product-card-copy.premium-card-copy {
+  max-width: 32ch;
+}
