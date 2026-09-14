@@ -1,0 +1,42 @@
+/* PlayNice wishlist heart alignment
+   Reuses the HeaderNext heart silhouette and gold treatment without changing wishlist behavior. */
+
+.wishlist-btn .heart-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  font-size: 0 !important;
+  line-height: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.8 5.9c-1.8-2.1-5.1-2.2-7-.3L12 7.4l-1.8-1.8c-1.9-1.9-5.2-1.8-7 .3-1.7 2-1.4 5 .5 6.9L12 21l8.3-8.2c1.9-1.9 2.2-4.9.5-6.9Z' fill='none' stroke='%23edcf88' stroke-width='1.55' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  filter:
+    drop-shadow(0 0 4px rgba(220, 181, 107, 0.16))
+    drop-shadow(0 0 8px rgba(220, 181, 107, 0.07));
+  transition:
+    transform 0.22s ease,
+    filter 0.22s ease,
+    opacity 0.22s ease;
+}
+
+.wishlist-btn:hover .heart-icon {
+  transform: translateY(-0.5px) scale(1.04);
+  filter:
+    drop-shadow(0 0 5px rgba(220, 181, 107, 0.22))
+    drop-shadow(0 0 10px rgba(220, 181, 107, 0.1));
+}
+
+.wishlist-btn.active .heart-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.8 5.9c-1.8-2.1-5.1-2.2-7-.3L12 7.4l-1.8-1.8c-1.9-1.9-5.2-1.8-7 .3-1.7 2-1.4 5 .5 6.9L12 21l8.3-8.2c1.9-1.9 2.2-4.9.5-6.9Z' fill='%23dcb56b' stroke='%23edcf88' stroke-width='1.45' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  filter:
+    drop-shadow(0 0 4px rgba(220, 181, 107, 0.22))
+    drop-shadow(0 0 8px rgba(220, 181, 107, 0.1));
+}
+
+@media (max-width: 640px) {
+  .wishlist-btn .heart-icon {
+    width: 17px;
+    height: 17px;
+  }
+}
