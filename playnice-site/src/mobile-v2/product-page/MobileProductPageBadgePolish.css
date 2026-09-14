@@ -1,0 +1,70 @@
+/* Mobile PDP badge polish
+   Editorial treatment for fragrance badges such as LEATHER ICON.
+   Mobile-only: desktop badge animation and styling remain untouched. */
+
+@media (max-width: 640px) {
+  .mobile-product-page__badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: auto;
+    max-width: calc(100% - 28px);
+    margin: 0 auto 18px;
+    padding: 2px 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(0.8rem, 3.4vw, 0.9rem);
+    font-weight: 650;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #e6c77f;
+    text-shadow:
+      0 0 12px rgba(220, 181, 107, 0.12),
+      0 6px 18px rgba(0, 0, 0, 0.34);
+    filter: saturate(1.03);
+  }
+
+  .mobile-product-page__badge::before,
+  .mobile-product-page__badge::after {
+    content: "";
+    width: 24px;
+    height: 1px;
+    flex: 0 0 24px;
+    opacity: 0.82;
+  }
+
+  .mobile-product-page__badge::before {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(220, 181, 107, 0.25) 28%,
+      rgba(237, 207, 136, 0.82) 100%
+    );
+  }
+
+  .mobile-product-page__badge::after {
+    background: linear-gradient(
+      90deg,
+      rgba(237, 207, 136, 0.82) 0%,
+      rgba(220, 181, 107, 0.25) 72%,
+      transparent 100%
+    );
+  }
+}
+
+@media (max-width: 360px) {
+  .mobile-product-page__badge {
+    gap: 8px;
+    font-size: 0.78rem;
+    letter-spacing: 0.085em;
+  }
+
+  .mobile-product-page__badge::before,
+  .mobile-product-page__badge::after {
+    width: 18px;
+    flex-basis: 18px;
+  }
+}
