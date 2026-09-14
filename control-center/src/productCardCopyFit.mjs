@@ -31,7 +31,7 @@ export function isCardCopyFontReady() {
   return document.fonts.check(CARD_COPY_FONT);
 }
 
-export function measureCardCopy(text, width = CARD_COPY_TARGET_WIDTH) {
+export function measureCardCopy(text, width = CARD_COPY_TARGET_WIDTH, maxWidthCh = CARD_COPY_MAX_WIDTH_CH) {
   const value = String(text || "").trim();
   if (!value) {
     return {
@@ -50,7 +50,7 @@ export function measureCardCopy(text, width = CARD_COPY_TARGET_WIDTH) {
     visibility: "hidden",
     pointerEvents: "none",
     width: `${cardCopyTextWidth(width)}px`,
-    maxWidth: `${CARD_COPY_MAX_WIDTH_CH}ch`,
+    maxWidth: `${maxWidthCh}ch`,
     margin: "0",
     padding: "0",
     border: "0",
@@ -76,14 +76,14 @@ export function measureCardCopy(text, width = CARD_COPY_TARGET_WIDTH) {
   };
 }
 
-export function measureCardCopyLines(text, width = CARD_COPY_TARGET_WIDTH) {
-  return measureCardCopy(text, width)?.lines ?? null;
+export function measureCardCopyLines(text, width = CARD_COPY_TARGET_WIDTH, maxWidthCh = CARD_COPY_MAX_WIDTH_CH) {
+  return measureCardCopy(text, width, maxWidthCh)?.lines ?? null;
 }
 
-export function classifyCardCopyFit(text, lang, { width = CARD_COPY_TARGET_WIDTH, isNewProduct = false } = {}) {
+export function classifyCardCopyFit(text, lang, { width = CARD_COPY_TARGET_WIDTH, maxWidthCh = CARD_COPY_MAX_WIDTH_CH, isNewProduct = false } = {}) {
   const value = String(text || "").trim();
   const chars = Array.from(value).length;
-  const measurement = measureCardCopy(value, width);
+  const measurement = measureCardCopy(value, width, maxWidthCh);
   const lines = measurement?.lines ?? null;
   const legacyMax = presentationLimit("card", lang, { isNewProduct: false });
   const newMax = presentationLimit("card", lang, { isNewProduct: true });
@@ -103,7 +103,7 @@ export function classifyCardCopyFit(text, lang, { width = CARD_COPY_TARGET_WIDTH
     boxWidth: Number(width),
     textWidth: measurement?.renderedWidth ?? cardCopyTextWidth(width),
     boxTextWidth: measurement?.boxTextWidth ?? cardCopyTextWidth(width),
-    maxWidthCh: CARD_COPY_MAX_WIDTH_CH,
+    maxWidthCh,
     legacyMax,
     newMax,
     activeMax,
