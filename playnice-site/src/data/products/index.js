@@ -2702,7 +2702,7 @@ export const products = [
   modalName: "Narciso Rodriguez for Him Bleu Noir Extreme",
   shortName: "Bleu Noir Extreme",
   category: "Designer",
-  image: "/products/narciso-rodriguez-bleu-noir-extreme-edt.png",
+  image: "/products/narciso-rodriguez-for-him-bleu-noir-extreme-edt.png",
   sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
   badge: "PLAYNICE PICK",
   rating: 8.5,
