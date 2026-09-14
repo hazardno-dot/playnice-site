@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
 import { productCopy } from "@shop/data/products/productCopy.js";
+import { CARD_COPY_REWRITE_CANDIDATES } from "./cardCopyRewriteCandidates.mjs";
 import {
   CARD_COPY_TARGET_WIDTH,
   CARD_COPY_MAX_WIDTH_CH,
@@ -27,6 +28,25 @@ function buildRows(maxWidthCh) {
   }).sort((a, b) => b.riskScore - a.riskScore || a.product.name.localeCompare(b.product.name));
 }
 
+function buildCandidateRows() {
+  return products
+    .filter((product) => CARD_COPY_REWRITE_CANDIDATES[product.slug])
+    .map((product) => {
+      const current = productCopy[product.name]?.card || {};
+      const candidate = CARD_COPY_REWRITE_CANDIDATES[product.slug] || {};
+      const srValue = candidate.sr ?? current.sr;
+      const enValue = candidate.en ?? current.en;
+      return {
+        product,
+        sr: classifyCardCopyFit(srValue, "sr"),
+        en: classifyCardCopyFit(enValue, "en"),
+        changedSr: typeof candidate.sr === "string",
+        changedEn: typeof candidate.en === "string",
+      };
+    })
+    .sort((a, b) => a.product.name.localeCompare(b.product.name));
+}
+
 function summarize(rows) {
   const srVisual = rows.filter((row) => row.sr.visualPass === false).length;
   const enVisual = rows.filter((row) => row.en.visualPass === false).length;
@@ -35,7 +55,7 @@ function summarize(rows) {
   return { srVisual, enVisual, productsToFix, eitherMismatch };
 }
 
-function MetricCell({ result }) {
+function MetricCell({ result, changed = false }) {
   const label = result.mismatch
     ? "CC PASS / VISUAL FAIL"
     : result.visualPass === false
@@ -49,7 +69,7 @@ function MetricCell({ result }) {
       <strong>{result.chars} chars</strong>
       <span>{result.lines} {result.lines === 1 ? "line" : "lines"}</span>
     </div>
-    <span className={`card-copy-audit-status ${result.mismatch ? "is-mismatch" : ""}`}>{label}</span>
+    <span className={`card-copy-audit-status ${result.mismatch ? "is-mismatch" : ""}`}>{changed ? `CANDIDATE · ${label}` : label}</span>
     <small>{result.textWidth}px rendered · max {result.maxWidthCh}ch · CC legacy ≤ {result.legacyMax} · new ≤ {result.newMax}</small>
     <p>{result.value || "— missing copy —"}</p>
   </div>;
@@ -80,6 +100,9 @@ function AuditPanel() {
       return { maxWidthCh, rows, ...summarize(rows) };
     });
   }, [fontReady]);
+
+  const candidateRows = useMemo(() => fontReady ? buildCandidateRows() : [], [fontReady]);
+  const candidateSummary = useMemo(() => summarize(candidateRows), [candidateRows]);
 
   const current = comparison.find((item) => item.maxWidthCh === CARD_COPY_MAX_WIDTH_CH);
   const rows = current?.rows || [];
@@ -118,9 +141,26 @@ function AuditPanel() {
         <strong>Authority:</strong> 32ch is now the live desktop Card Copy contract. The 28/30/34ch figures remain comparison references only; card dimensions, font, font size and two-line height are unchanged.
       </div>
 
+      <div className="card-copy-audit-note">
+        <strong>Rewrite candidates:</strong> {candidateRows.length} products are staged here read-only. After the proposed copy is substituted, {candidateSummary.productsToFix} still fail the live 2-line contract (SR {candidateSummary.srVisual} · EN {candidateSummary.enVisual}). Nothing below changes product data.
+      </div>
+
       <div className="card-copy-audit-table-wrap">
         <table className="card-copy-audit-table">
-          <thead><tr><th>Product · live {CARD_COPY_MAX_WIDTH_CH}ch</th><th>SR</th><th>EN</th></tr></thead>
+          <thead><tr><th>Candidate rewrite · live {CARD_COPY_MAX_WIDTH_CH}ch</th><th>SR</th><th>EN</th></tr></thead>
+          <tbody>
+            {candidateRows.map(({ product, sr, en, changedSr, changedEn }) => <tr key={`candidate-${product.slug || product.name}`}>
+              <td className="card-copy-audit-product"><strong>{product.shortName || product.name}</strong><small>{product.category} · {product.slug}</small></td>
+              <td><MetricCell result={sr} changed={changedSr} /></td>
+              <td><MetricCell result={en} changed={changedEn} /></td>
+            </tr>)}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="card-copy-audit-table-wrap">
+        <table className="card-copy-audit-table">
+          <thead><tr><th>Current product · live {CARD_COPY_MAX_WIDTH_CH}ch</th><th>SR</th><th>EN</th></tr></thead>
           <tbody>
             {visibleRows.map(({ product, sr, en }) => <tr key={product.slug || product.name}>
               <td className="card-copy-audit-product"><strong>{product.shortName || product.name}</strong><small>{product.category} · {product.slug}</small></td>
