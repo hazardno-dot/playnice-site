@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
 import { IMAGE_OPTIMIZER_PRESETS, formatImageBytes, optimizeImage } from "./imageOptimizer.mjs";
+import { assessAndEnhanceProductImage, formatQualityMetric } from "./imageQualityEnhancer.mjs";
 import "./product-media-upload.css";
 import "./product-media-replace.css";
 
@@ -61,17 +62,48 @@ function ensureSlot(editor) {
   return slot;
 }
 
-function ReplaceCard({ label, path, file, info, preview, optimizing, onPick, contract }) {
+function QualityReport({ report, enhanced }) {
+  if (!report) return null;
+  return <div className={`product-media-quality ${enhanced ? "is-enhanced" : "is-good"}`}>
+    <div className="product-media-quality-head">
+      <span>{enhanced ? "QUALITY ENHANCED" : "QUALITY CHECK"}</span>
+      <strong>{report.grade}</strong>
+    </div>
+    <div className="product-media-quality-metrics">
+      <span>Exposure <b>{formatQualityMetric(report.brightness)}</b></span>
+      <span>Clarity <b>{formatQualityMetric(report.contrast)}</b></span>
+      <span>Sharpness <b>{formatQualityMetric(report.sharpness)}</b></span>
+      <span>Color <b>{formatQualityMetric(report.saturation, "saturation")}</b></span>
+    </div>
+    <small>{(report.notes || []).join(" · ")}</small>
+  </div>;
+}
+
+function ReplaceCard({ label, path, file, info, preview, optimizing, onPick, contract, qualityReport, enhanced }) {
   return <div className={`product-media-card product-media-replace-card ${file ? "has-file" : ""}`}>
-    <div className="product-media-card-head"><span>{label}</span><code>{path || "No existing path"}</code></div>
+    <div className="product-media-card-head">
+      <span>{label}</span>
+      <code title={path || "No existing path"}>{path || "No existing path"}</code>
+    </div>
     <label className="product-media-picker">
       <input type="file" accept={PRODUCT_SOURCE_ACCEPT} disabled={optimizing} onChange={(event) => onPick(event.target.files?.[0] || null)} />
-      <strong>{optimizing ? "Optimizing…" : file ? "Choose another image" : "Choose replacement"}</strong>
+      <strong>{optimizing ? "Checking + optimizing…" : file ? "Choose another image" : "Choose replacement"}</strong>
       <small>{file && info
         ? `${info.originalWidth} × ${info.originalHeight}px · ${formatImageBytes(info.originalBytes)} → ${info.width} × ${info.height}px · ${formatImageBytes(info.bytes)}`
         : contract}</small>
     </label>
+    <QualityReport report={qualityReport} enhanced={enhanced} />
     {preview ? <img src={preview} alt={`${label} replacement preview`} /> : null}
+  </div>;
+}
+
+function PathCard({ label, path, copied, onCopy }) {
+  return <div className="product-media-replace-path-card">
+    <div className="product-media-replace-path-head">
+      <span>{label}</span>
+      <button type="button" className="product-media-copy" onClick={onCopy} disabled={!path}>{copied ? "Copied ✓" : "Copy path"}</button>
+    </div>
+    <code>{path || "Not available"}</code>
   </div>;
 }
 
@@ -84,8 +116,13 @@ export default function ProductMediaReplaceBridge() {
   const [justInFile, setJustInFile] = useState(null);
   const [shopInfo, setShopInfo] = useState(null);
   const [justInInfo, setJustInInfo] = useState(null);
+  const [shopQuality, setShopQuality] = useState(null);
+  const [justInQuality, setJustInQuality] = useState(null);
+  const [shopEnhanced, setShopEnhanced] = useState(false);
+  const [justInEnhanced, setJustInEnhanced] = useState(false);
   const [shopPreview, setShopPreview] = useState("");
   const [justInPreview, setJustInPreview] = useState("");
+  const [copiedPath, setCopiedPath] = useState("");
   const shopPreviewRef = useRef("");
   const justInPreviewRef = useRef("");
   const [optimizing, setOptimizing] = useState("");
@@ -129,11 +166,12 @@ export default function ProductMediaReplaceBridge() {
   useEffect(() => {
     setOpen(false);
     setShopFile(null); setJustInFile(null); setShopInfo(null); setJustInInfo(null);
+    setShopQuality(null); setJustInQuality(null); setShopEnhanced(false); setJustInEnhanced(false);
     if (shopPreviewRef.current) URL.revokeObjectURL(shopPreviewRef.current);
     if (justInPreviewRef.current) URL.revokeObjectURL(justInPreviewRef.current);
     shopPreviewRef.current = ""; justInPreviewRef.current = "";
     setShopPreview(""); setJustInPreview("");
-    setError(""); setResult(null); setOptimizing("");
+    setCopiedPath(""); setError(""); setResult(null); setOptimizing("");
   }, [slug]);
 
   useEffect(() => () => {
@@ -141,27 +179,45 @@ export default function ProductMediaReplaceBridge() {
     if (justInPreviewRef.current) URL.revokeObjectURL(justInPreviewRef.current);
   }, []);
 
+  const copyPath = async (path, key) => {
+    if (!path) return;
+    try {
+      await navigator.clipboard.writeText(path);
+      setCopiedPath(key);
+      window.setTimeout(() => setCopiedPath((current) => current === key ? "" : current), 1400);
+    } catch {
+      setError("Could not copy the path. Select the full path text instead.");
+    }
+  };
+
   const pick = async (variant, sourceFile) => {
     setError(""); setResult(null);
     const isShop = variant === "shop";
     const setFile = isShop ? setShopFile : setJustInFile;
     const setInfo = isShop ? setShopInfo : setJustInInfo;
+    const setQuality = isShop ? setShopQuality : setJustInQuality;
+    const setEnhanced = isShop ? setShopEnhanced : setJustInEnhanced;
     const setPreview = isShop ? setShopPreview : setJustInPreview;
     const previewRef = isShop ? shopPreviewRef : justInPreviewRef;
     if (!sourceFile) {
       if (previewRef.current) URL.revokeObjectURL(previewRef.current);
       previewRef.current = "";
-      setFile(null); setInfo(null); setPreview("");
+      setFile(null); setInfo(null); setQuality(null); setEnhanced(false); setPreview("");
       return;
     }
 
     setOptimizing(variant);
     try {
+      const quality = await assessAndEnhanceProductImage(sourceFile);
+      setQuality(quality.report);
+      setEnhanced(quality.enhanced);
+
       const preset = isShop ? SHOP_PRESET : JUST_IN_PRESET;
-      const optimized = await optimizeImage(sourceFile, preset);
+      const optimized = await optimizeImage(quality.file, preset);
       const extension = isShop ? "png" : "webp";
       const outputType = isShop ? "image/png" : "image/webp";
-      const optimizedFile = new File([optimized.blob], `replacement.${extension}`, { type: outputType, lastModified: Date.now() });
+      const targetName = (isShop ? shopPath : thumbPathFromShopPath(shopPath)).split("/").pop() || `replacement.${extension}`;
+      const optimizedFile = new File([optimized.blob], targetName, { type: outputType, lastModified: Date.now() });
       if (previewRef.current) URL.revokeObjectURL(previewRef.current);
       const nextPreview = URL.createObjectURL(optimized.blob);
       previewRef.current = nextPreview;
@@ -170,14 +226,14 @@ export default function ProductMediaReplaceBridge() {
         width: optimized.width,
         height: optimized.height,
         bytes: optimized.blob.size,
-        originalWidth: optimized.originalWidth,
-        originalHeight: optimized.originalHeight,
-        originalBytes: optimized.originalBytes,
+        originalWidth: sourceFile.width || optimized.originalWidth,
+        originalHeight: sourceFile.height || optimized.originalHeight,
+        originalBytes: sourceFile.size,
       });
       setPreview(nextPreview);
     } catch (optimizeError) {
-      setFile(null); setInfo(null); setPreview("");
-      setError(`${isShop ? "Shop" : "Just In"} optimization failed: ${optimizeError.message || String(optimizeError)}`);
+      setFile(null); setInfo(null); setQuality(null); setEnhanced(false); setPreview("");
+      setError(`${isShop ? "Shop" : "Just In"} image check failed: ${optimizeError.message || String(optimizeError)}`);
     } finally {
       setOptimizing("");
     }
@@ -225,9 +281,10 @@ export default function ProductMediaReplaceBridge() {
     </div>
 
     {open ? <>
+      <div className="product-media-replace-note">Source filename does not matter. Control Center keeps the existing filenames below and replaces only their image content.</div>
       <div className="product-media-replace-paths">
-        <div><span>SHOP PATH</span><code>{shopPath || "Not available"}</code></div>
-        <div><span>JUST IN PATH</span><code>{justInPath || "Not available"}</code></div>
+        <PathCard label="SHOP PATH" path={shopPath} copied={copiedPath === "shop"} onCopy={() => copyPath(shopPath, "shop")} />
+        <PathCard label="JUST IN PATH" path={justInPath} copied={copiedPath === "just-in"} onCopy={() => copyPath(justInPath, "just-in")} />
       </div>
       {!validExistingPath ? <div className="product-media-error">This product does not currently have a replaceable /products/*.png Image Path. No files will be changed.</div> : null}
       <div className="product-media-grid">
@@ -237,9 +294,11 @@ export default function ProductMediaReplaceBridge() {
           file={shopFile}
           info={shopInfo}
           preview={shopPreview}
+          qualityReport={shopQuality}
+          enhanced={shopEnhanced}
           optimizing={optimizing === "shop"}
           onPick={(file) => pick("shop", file)}
-          contract={`JPG / PNG / WebP → 600 × 600 PNG · same filename · target ≤ ${formatImageBytes(SHOP_PRESET.maxBytes)}`}
+          contract={`JPG / PNG / WebP → quality check + gentle enhancement → 600 × 600 PNG · same filename · target ≤ ${formatImageBytes(SHOP_PRESET.maxBytes)}`}
         />
         <ReplaceCard
           label="JUST IN · 320 × 320"
@@ -247,9 +306,11 @@ export default function ProductMediaReplaceBridge() {
           file={justInFile}
           info={justInInfo}
           preview={justInPreview}
+          qualityReport={justInQuality}
+          enhanced={justInEnhanced}
           optimizing={optimizing === "just-in"}
           onPick={(file) => pick("just-in", file)}
-          contract={`JPG / PNG / WebP → 320 × 320 WebP · same basename · target ≤ ${formatImageBytes(JUST_IN_PRESET.maxBytes)}`}
+          contract={`JPG / PNG / WebP → quality check + gentle enhancement → 320 × 320 WebP · same basename · target ≤ ${formatImageBytes(JUST_IN_PRESET.maxBytes)}`}
         />
       </div>
       {error ? <div className="product-media-error">{error}</div> : null}
