@@ -27,7 +27,7 @@ function addFitBadge(field, fit, isNewProduct) {
   const badge = document.createElement("div");
   const failed = fit.visualPass === false;
   badge.className = `card-copy-inline-fit ${failed ? "is-fail" : "is-pass"}`;
-  badge.innerHTML = `<strong>${failed ? "TOO LONG" : "2-LINE PASS"}</strong><span>${fit.chars} chars · ${fit.lines} ${fit.lines === 1 ? "line" : "lines"}${fit.activeMax ? ` · char ceiling ${fit.activeMax}` : ""}</span>`;
+  badge.innerHTML = `<strong>CARD FIT · ${failed ? "TOO LONG" : "2-LINE PASS"}</strong><span>${fit.chars} chars · ${fit.lines} ${fit.lines === 1 ? "line" : "lines"} · ${fit.textWidth}px text${fit.activeMax ? ` · char ceiling ${fit.activeMax}` : ""}</span>`;
   if (failed && !isNewProduct) badge.title = "Existing product: visual-fit warning. Shorten when this copy is next edited.";
   field.label.appendChild(badge);
 }
@@ -64,7 +64,7 @@ function collectIssues(root) {
       issues.push({
         index,
         field: field.name,
-        message: `Visual fit is ${fit.lines} lines; keep card copy within the 2-line Shop contract.`,
+        message: `Visual fit is ${fit.lines} lines at ${fit.textWidth}px text width; keep Card Copy within the 2-line Shop contract.`,
         level: isNewProduct ? "error" : "warning",
       });
     }
