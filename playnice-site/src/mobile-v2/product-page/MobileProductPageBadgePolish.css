@@ -5,26 +5,27 @@
 @media (max-width: 640px) {
   .mobile-product-page__badge {
     position: relative;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    width: auto;
+    width: fit-content;
     max-width: calc(100% - 28px);
     margin: 0 auto 18px;
     padding: 2px 0;
     font-family: "Cormorant Garamond", serif;
-    font-size: clamp(0.8rem, 3.4vw, 0.9rem);
+    font-size: clamp(0.9rem, 3.75vw, 1rem);
     font-weight: 650;
     line-height: 1;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    text-align: center;
     white-space: nowrap;
-    color: #e6c77f;
+    color: #ebcf8e;
     text-shadow:
-      0 0 12px rgba(220, 181, 107, 0.12),
+      0 0 12px rgba(220, 181, 107, 0.14),
       0 6px 18px rgba(0, 0, 0, 0.34);
-    filter: saturate(1.03);
+    filter: saturate(1.04);
   }
 
   .mobile-product-page__badge::before,
@@ -33,7 +34,7 @@
     width: 24px;
     height: 1px;
     flex: 0 0 24px;
-    opacity: 0.82;
+    opacity: 0.86;
   }
 
   .mobile-product-page__badge::before {
@@ -41,14 +42,14 @@
       90deg,
       transparent 0%,
       rgba(220, 181, 107, 0.25) 28%,
-      rgba(237, 207, 136, 0.82) 100%
+      rgba(237, 207, 136, 0.86) 100%
     );
   }
 
   .mobile-product-page__badge::after {
     background: linear-gradient(
       90deg,
-      rgba(237, 207, 136, 0.82) 0%,
+      rgba(237, 207, 136, 0.86) 0%,
       rgba(220, 181, 107, 0.25) 72%,
       transparent 100%
     );
@@ -58,7 +59,7 @@
 @media (max-width: 360px) {
   .mobile-product-page__badge {
     gap: 8px;
-    font-size: 0.78rem;
+    font-size: 0.86rem;
     letter-spacing: 0.085em;
   }
 
