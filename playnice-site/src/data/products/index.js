@@ -693,7 +693,7 @@ export const products = [
     shortName: "Colonia Essenza",
     category: "Niche",
     image: "/products/AdP-Colonia-Essenza.png",
-    sizes: { "2ml": 7, "5ml": 16, "10ml": 29 },
+    sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
     badge: "LUXURY PICK",
     rating: 8.0,
     ratingLabel: "Audience Favorite",
