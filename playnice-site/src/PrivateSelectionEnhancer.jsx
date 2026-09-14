@@ -151,6 +151,7 @@ function PrivateSelectionEnhancer() {
   const [drawer, setDrawer] = useState(null);
   const [wishlistIds, setWishlistIds] = useState(() => readWishlist());
   const [lang, setLang] = useState(() => getLanguage());
+  const [recommendationsOpen, setRecommendationsOpen] = useState(false);
 
   useEffect(() => {
     let frame = 0;
@@ -194,6 +195,10 @@ function PrivateSelectionEnhancer() {
       document.removeEventListener("click", scheduleSync, true);
     };
   }, []);
+
+  useEffect(() => {
+    setRecommendationsOpen(false);
+  }, [drawer, wishlistIds.length]);
 
   useEffect(() => {
     if (!drawer) return;
@@ -263,50 +268,54 @@ function PrivateSelectionEnhancer() {
             <span>{profile.topMoods.join(" · ")}</span>
           )}
         </div>
-
-        <p>
-          {lang === "sr"
-            ? "Tvoj profil se razvija sa svakim parfemom koji zadržiš."
-            : "Your profile evolves with every fragrance you keep."}
-        </p>
       </div>
 
       {recommendations.length > 0 && (
-        <div className="private-selection-recommendations">
-          <div className="private-selection-personal-head">
+        <div className={`private-selection-recommendations${recommendationsOpen ? " is-open" : ""}`}>
+          <button
+            type="button"
+            className="private-selection-recommendations-toggle"
+            aria-expanded={recommendationsOpen}
+            onClick={() => setRecommendationsOpen((open) => !open)}
+          >
             <span>{lang === "sr" ? "NA OSNOVU TVOG IZBORA" : "BASED ON YOUR SELECTION"}</span>
-            <small>{recommendations.length} {lang === "sr" ? "predloga" : "picks"}</small>
-          </div>
+            <span className="private-selection-recommendations-toggle-meta">
+              <small>{recommendations.length} {lang === "sr" ? "predloga" : "picks"}</small>
+              <span className="private-selection-recommendations-chevron" aria-hidden="true">⌄</span>
+            </span>
+          </button>
 
-          <div className="private-selection-recommendation-list">
-            {recommendations.map(({ product, direct, sharedMoods }) => {
-              const minPrice = getMinPrice(product);
-              const reason = getRecommendationReason(direct, sharedMoods, lang);
+          {recommendationsOpen && (
+            <div className="private-selection-recommendation-list">
+              {recommendations.map(({ product, direct, sharedMoods }) => {
+                const minPrice = getMinPrice(product);
+                const reason = getRecommendationReason(direct, sharedMoods, lang);
 
-              return (
-                <button
-                  key={product.id}
-                  type="button"
-                  className="private-selection-recommendation"
-                  onClick={() => openRecommendation(product)}
-                >
-                  <span className="private-selection-recommendation-media">
-                    <img src={product.image || "/placeholder.png"} alt="" loading="lazy" />
-                  </span>
+                return (
+                  <button
+                    key={product.id}
+                    type="button"
+                    className="private-selection-recommendation"
+                    onClick={() => openRecommendation(product)}
+                  >
+                    <span className="private-selection-recommendation-media">
+                      <img src={product.image || "/placeholder.png"} alt="" loading="lazy" />
+                    </span>
 
-                  <span className="private-selection-recommendation-copy">
-                    <strong>{product.shortName || product.cardName || product.name}</strong>
-                    <small>{reason}</small>
-                  </span>
+                    <span className="private-selection-recommendation-copy">
+                      <strong>{product.shortName || product.cardName || product.name}</strong>
+                      <small>{reason}</small>
+                    </span>
 
-                  <span className="private-selection-recommendation-meta">
-                    {minPrice !== null && <small>{lang === "sr" ? "od" : "from"} {formatPrice(minPrice)}</small>}
-                    <span>{lang === "sr" ? "Pogledaj" : "View"} →</span>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+                    <span className="private-selection-recommendation-meta">
+                      {minPrice !== null && <small>{lang === "sr" ? "od" : "from"} {formatPrice(minPrice)}</small>}
+                      <span>{lang === "sr" ? "Pogledaj" : "View"} →</span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
     </section>,
