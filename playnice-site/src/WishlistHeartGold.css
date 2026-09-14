@@ -20,6 +20,21 @@
     opacity 0.22s ease;
 }
 
+/* Full product cards: slightly quieter than the HeaderNext benchmark. */
+.product-card .wishlist-btn:not(.new-arrival-wishlist-btn) .heart-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Compact Just In cards: scale the mark with the smaller card. */
+.new-arrival-wishlist-btn .heart-icon {
+  width: 13px;
+  height: 13px;
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 .wishlist-btn:hover .heart-icon {
   transform: translateY(-0.5px) scale(1.04);
   filter:
@@ -35,8 +50,16 @@
 }
 
 @media (max-width: 640px) {
-  .wishlist-btn .heart-icon {
-    width: 17px;
-    height: 17px;
+  .product-card .wishlist-btn:not(.new-arrival-wishlist-btn) .heart-icon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .new-arrival-wishlist-btn .heart-icon {
+    width: 12px;
+    height: 12px;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 }
