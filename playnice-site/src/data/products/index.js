@@ -157,7 +157,7 @@ export const products = [
     shortName: "CDN Bling",
     category: "Arabian",
     image: "/products/Bling.png",
-    sizes: { "5ml": 6, "10ml": 11, "20ml": 20 },
+    sizes: { "5ml": 7, "10ml": 12.5, "20ml": 24 },
     badge: "ARABIAN GEM",
     rating: 7.7,
     ratingLabel: "Well Loved",
