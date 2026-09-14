@@ -15,6 +15,7 @@ import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
 import "./NewArrivalsScale.css";
 import "./WishlistSurfacePolish.css";
+import "./WishlistHeartGold.css";
 import "./HeroPaginationPosition.css";
 import "./mobile-v2/navigation/MobileHeaderV2.css";
 import "./mobile-v2/home/MobileHomeV2.css";
