@@ -4,6 +4,7 @@ import DraftManager from "./DraftManager";
 import InlineValidationBridge from "./InlineValidationBridge";
 import ProductBulkPasteBridge from "./ProductBulkPasteBridge";
 import ProductMediaUploadBridge from "./ProductMediaUploadBridge";
+import ProductMediaReplaceBridge from "./ProductMediaReplaceBridge";
 import ProductMediaStatusBridge from "./ProductMediaStatusBridge";
 import DiscoveryBulkPasteBridge from "./DiscoveryBulkPasteBridge";
 import ControlledApplyManager from "./ControlledApplyManager";
@@ -120,6 +121,7 @@ export default function ControlCenterManagers() {
     {slots.draft ? createPortal(<DraftManager />, slots.draft) : <DraftManager />}
     <InlineValidationBridge />
     <ProductMediaUploadBridge />
+    <ProductMediaReplaceBridge />
     <ProductMediaStatusBridge />
     <ProductBulkPasteBridge />
     <DiscoveryBulkPasteBridge />
