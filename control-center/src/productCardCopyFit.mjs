@@ -2,6 +2,7 @@ import { presentationLimit } from "./productPresentationContract.mjs";
 
 export const CARD_COPY_TARGET_WIDTH = 250;
 export const CARD_COPY_HORIZONTAL_PADDING = 24;
+export const CARD_COPY_MAX_WIDTH_CH = 28;
 export const CARD_COPY_MAX_LINES = 2;
 export const CARD_COPY_FONT = 'italic 400 15.2px "Cormorant Garamond"';
 export const CARD_COPY_LINE_HEIGHT = 21.28;
@@ -30,9 +31,15 @@ export function isCardCopyFontReady() {
   return document.fonts.check(CARD_COPY_FONT);
 }
 
-export function measureCardCopyLines(text, width = CARD_COPY_TARGET_WIDTH) {
+export function measureCardCopy(text, width = CARD_COPY_TARGET_WIDTH) {
   const value = String(text || "").trim();
-  if (!value) return 0;
+  if (!value) {
+    return {
+      lines: 0,
+      renderedWidth: 0,
+      boxTextWidth: cardCopyTextWidth(width),
+    };
+  }
   if (typeof document === "undefined" || !document.body || !isCardCopyFontReady()) return null;
 
   const node = document.createElement("div");
@@ -43,6 +50,7 @@ export function measureCardCopyLines(text, width = CARD_COPY_TARGET_WIDTH) {
     visibility: "hidden",
     pointerEvents: "none",
     width: `${cardCopyTextWidth(width)}px`,
+    maxWidth: `${CARD_COPY_MAX_WIDTH_CH}ch`,
     margin: "0",
     padding: "0",
     border: "0",
@@ -58,15 +66,25 @@ export function measureCardCopyLines(text, width = CARD_COPY_TARGET_WIDTH) {
   });
   node.textContent = value;
   document.body.appendChild(node);
-  const height = node.getBoundingClientRect().height;
+  const rect = node.getBoundingClientRect();
   node.remove();
-  return Math.max(1, Math.round(height / CARD_COPY_LINE_HEIGHT));
+
+  return {
+    lines: Math.max(1, Math.round(rect.height / CARD_COPY_LINE_HEIGHT)),
+    renderedWidth: Math.round(rect.width * 10) / 10,
+    boxTextWidth: cardCopyTextWidth(width),
+  };
+}
+
+export function measureCardCopyLines(text, width = CARD_COPY_TARGET_WIDTH) {
+  return measureCardCopy(text, width)?.lines ?? null;
 }
 
 export function classifyCardCopyFit(text, lang, { width = CARD_COPY_TARGET_WIDTH, isNewProduct = false } = {}) {
   const value = String(text || "").trim();
   const chars = Array.from(value).length;
-  const lines = measureCardCopyLines(value, width);
+  const measurement = measureCardCopy(value, width);
+  const lines = measurement?.lines ?? null;
   const legacyMax = presentationLimit("card", lang, { isNewProduct: false });
   const newMax = presentationLimit("card", lang, { isNewProduct: true });
   const activeMax = presentationLimit("card", lang, { isNewProduct });
@@ -83,7 +101,9 @@ export function classifyCardCopyFit(text, lang, { width = CARD_COPY_TARGET_WIDTH
     chars,
     lines,
     boxWidth: Number(width),
-    textWidth: cardCopyTextWidth(width),
+    textWidth: measurement?.renderedWidth ?? cardCopyTextWidth(width),
+    boxTextWidth: measurement?.boxTextWidth ?? cardCopyTextWidth(width),
+    maxWidthCh: CARD_COPY_MAX_WIDTH_CH,
     legacyMax,
     newMax,
     activeMax,
