@@ -4,6 +4,7 @@ import { products } from "@shop/data/products/index.js";
 import { productCopy } from "@shop/data/products/productCopy.js";
 import {
   CARD_COPY_TARGET_WIDTH,
+  cardCopyTextWidth,
   classifyCardCopyFit,
   ensureCardCopyFont,
 } from "./productCardCopyFit.mjs";
@@ -42,7 +43,7 @@ function MetricCell({ result }) {
       <span>{result.lines} {result.lines === 1 ? "line" : "lines"}</span>
     </div>
     <span className={`card-copy-audit-status ${result.mismatch ? "is-mismatch" : ""}`}>{label}</span>
-    <small>CC legacy ≤ {result.legacyMax} · new ≤ {result.newMax}</small>
+    <small>{result.boxWidth}px box · {result.textWidth}px text · CC legacy ≤ {result.legacyMax} · new ≤ {result.newMax}</small>
     <p>{result.value || "— missing copy —"}</p>
   </div>;
 }
@@ -83,13 +84,13 @@ function AuditPanel() {
       <div>
         <span className="eyebrow">READ-ONLY / CARD COPY</span>
         <h2>Visual fit audit</h2>
-        <p>Measures the current SR/EN card copy against the actual desktop 2-line typography contract. No product data is changed.</p>
+        <p>Measures SR/EN Card Copy against the desktop 2-line contract, including the storefront copy-box padding. No product data is changed.</p>
       </div>
       <div className="card-copy-audit-controls">
         <label>
-          <span>TEXT WIDTH</span>
+          <span>COPY BOX WIDTH</span>
           <select value={width} onChange={(event) => setWidth(Number(event.target.value))}>
-            {WIDTH_OPTIONS.map((value) => <option key={value} value={value}>{value}px{value === DEFAULT_WIDTH ? " · current target" : ""}</option>)}
+            {WIDTH_OPTIONS.map((value) => <option key={value} value={value}>{value}px box · {cardCopyTextWidth(value)}px text{value === DEFAULT_WIDTH ? " · current target" : ""}</option>)}
           </select>
         </label>
         <button type="button" className={`secondary-btn ${issuesOnly ? "is-active" : ""}`} onClick={() => setIssuesOnly((value) => !value)}>
@@ -107,7 +108,7 @@ function AuditPanel() {
       </div>
 
       <div className="card-copy-audit-note">
-        <strong>Why this matters:</strong> existing-product validation allows SR 82 / EN 92 characters, while new products use SR 68 / EN 72. This audit measures rendered line fit instead of assuming character count equals visual width.
+        <strong>Why this matters:</strong> the storefront copy box has 12px horizontal padding on each side, so the 250px target leaves 226px of real text width. Character count remains a secondary safety check; rendered 2-line fit is the visual authority.
       </div>
 
       <div className="card-copy-audit-table-wrap">
