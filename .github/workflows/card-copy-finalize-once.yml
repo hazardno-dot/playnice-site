@@ -1,0 +1,92 @@
+name: Finalize card copy once
+
+on:
+  push:
+    branches:
+      - card-copy-audit
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: card-copy-audit
+          fetch-depth: 0
+
+      - name: Apply final card copy directly to source
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('playnice-site/src/data/products/productCopy.js')
+          text = path.read_text(encoding='utf-8')
+
+          replacements = {
+            'Topli začini, ljuska kakaa i sandalovina u glatkom modernom parfemu.': 'Topli začini, kakao i sandalovina. Gladak i moderan trag.',
+            'Warm spices, cocoa shell and sandalwood in a smooth modern fragrance.': 'Warm spice, cocoa and sandalwood with a smooth modern finish.',
+            'Grejp, mineralni kremen i kedar u ikoničnom zemljano-citrusnom mirisu.': 'Grejp, kremen i kedar. Suv, zemljan i odmah prepoznatljiv.',
+            'Grapefruit, mineral flint and cedarwood in an iconic earthy-citrus scent.': 'Grapefruit, flint and cedarwood. Dry, earthy and iconic.',
+            'Tajlandski bosiljak, Timut biber i vetiver u modernom drvenastom mirisu.': 'Bosiljak, Timut biber i vetiver u suvom drvenom tragu.',
+            'Bergamot, ylang-ylang and cedarwood in a natural bright citrus fragrance.': 'Bergamot, ylang-ylang and cedarwood with a bright natural lift.',
+            'Gorka narandža, bosiljak i sandalovina u modernom citrusno-drvenastom mirisu.': 'Gorka narandža i bosiljak preko suve, kremaste sandalovine.',
+            'Coconut, black currant and grapefruit in a green tropical summer scent.': 'Coconut and black currant sharpened by green grapefruit.',
+            'Viskij, korijander i kremasta sandalovina u bogatom večernjem mirisu.': 'Viskij i korijander preko tople, kremaste sandalovine.',
+            'Yuzu, krastavac i morska so u modernom drvenasto-aromatičnom mirisu.': 'Yuzu, krastavac i morska so. Sveže, slano, neočekivano.',
+            'White jasmine, Bulgarian rose and powdery musk in an elegant fragrance.': 'White jasmine and rose wrapped in soft powdery musk.',
+            'Ananas, bergamot i hrastova mahovina u snažnom voćno-drvenastom mirisu.': 'Ananas i bergamot nad tamnom mahovinom i drvenom bazom.',
+            'Bergamot, lemon and grapefruit blossom in a clean bright summer scent.': 'Bergamot, lemon and grapefruit in clean summer brightness.',
+            'Kardamom, kulfi i vanila u raskošnom, kremastom večernjem mirisu.': 'Kardamom i kulfi u kremastoj vanili za tamnije večeri.',
+            'Više vrsta vanile, crna kafa i beli cvetovi u bogatom zavodljivom mirisu.': 'Vanila i crna kafa preko mekog belog cveća. Bogato i zavodljivo.',
+            'Gorka narandža, hrastovo drvo i vetiver u svedenom elegantnom mirisu.': 'Gorka narandža, vetiver i hrastovo drvo. Tiha elegancija.',
+            'Ledena nana, plava žalfija i ambroksan u modernoj hladnoj svežini.': 'Ledena nana i žalfija preko čistog, hladnog ambroksana.',
+          }
+
+          missing = []
+          for old, new in replacements.items():
+            count = text.count(old)
+            if count != 1:
+              missing.append((old, count))
+            text = text.replace(old, new)
+
+          if missing:
+            raise SystemExit('Unexpected replacement counts: ' + repr(missing))
+
+          path.write_text(text, encoding='utf-8')
+
+          index_path = Path('playnice-site/src/index.js')
+          index_text = index_path.read_text(encoding='utf-8')
+          index_text = index_text.replace('import "./data/products/applyCardCopyFinalOverrides";\n', '')
+          index_path.write_text(index_text, encoding='utf-8')
+
+          cc_path = Path('control-center/src/main.jsx')
+          cc_text = cc_path.read_text(encoding='utf-8')
+          cc_text = cc_text.replace('import "@shop/data/products/applyCardCopyFinalOverrides.js";\n', '')
+          cc_path.write_text(cc_text, encoding='utf-8')
+
+          override = Path('playnice-site/src/data/products/applyCardCopyFinalOverrides.js')
+          if override.exists():
+            override.unlink()
+
+          workflow = Path('.github/workflows/card-copy-finalize-once.yml')
+          if workflow.exists():
+            workflow.unlink()
+          PY
+
+      - name: Commit consolidated source
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Consolidate final card copy into product source"
+          git push origin HEAD:card-copy-audit
