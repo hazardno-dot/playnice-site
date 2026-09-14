@@ -1,11 +1,18 @@
 import { presentationLimit } from "./productPresentationContract.mjs";
 
 export const CARD_COPY_TARGET_WIDTH = 250;
+export const CARD_COPY_HORIZONTAL_PADDING = 24;
 export const CARD_COPY_MAX_LINES = 2;
 export const CARD_COPY_FONT = 'italic 400 15.2px "Cormorant Garamond"';
 export const CARD_COPY_LINE_HEIGHT = 21.28;
 export const CARD_COPY_LETTER_SPACING = 0.228;
 const FONT_LINK_ID = "playnice-card-copy-fit-font";
+
+export function cardCopyTextWidth(boxWidth = CARD_COPY_TARGET_WIDTH) {
+  const parsed = Number(boxWidth);
+  const width = Number.isFinite(parsed) ? parsed : CARD_COPY_TARGET_WIDTH;
+  return Math.max(1, width - CARD_COPY_HORIZONTAL_PADDING);
+}
 
 export function ensureCardCopyFont() {
   if (typeof document === "undefined") return;
@@ -35,7 +42,7 @@ export function measureCardCopyLines(text, width = CARD_COPY_TARGET_WIDTH) {
     top: "0",
     visibility: "hidden",
     pointerEvents: "none",
-    width: `${width}px`,
+    width: `${cardCopyTextWidth(width)}px`,
     margin: "0",
     padding: "0",
     border: "0",
@@ -75,6 +82,8 @@ export function classifyCardCopyFit(text, lang, { width = CARD_COPY_TARGET_WIDTH
     value,
     chars,
     lines,
+    boxWidth: Number(width),
+    textWidth: cardCopyTextWidth(width),
     legacyMax,
     newMax,
     activeMax,
