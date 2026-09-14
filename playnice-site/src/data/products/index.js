@@ -1777,7 +1777,7 @@ export const products = [
     shortName: "RiiFFS Freeze",
     category: "Arabian",
     image: "/products/riiffs-freeze-extrait.png",
-    sizes: { "5ml": 4.5, "10ml": 8, "20ml": 15 },
+    sizes: { "5ml": 5, "10ml": 9, "20ml": 17 },
     badge: "MOST WANTED",
     rating: 8.3,
     ratingLabel: "Fresh Favorite",
