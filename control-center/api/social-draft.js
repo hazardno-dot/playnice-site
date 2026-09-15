@@ -158,6 +158,9 @@ async function validateReadyMedia(event, draftContent) {
   if (!selection.ok) {
     throw new Error(`READY blocked: missing media for ${selection.blocking.map(channelLabel).join(", ")}.`);
   }
+  if (selection.fallback.length) {
+    throw new Error(`READY blocked: canonical channel media required for ${selection.fallback.map(channelLabel).join(", ")}. Generate a safe asset or upload a prepared creative; fallback media cannot be approved for publishing.`);
+  }
 
   const visualApproval = validateVisualApprovals(event, draftContent);
   const remote = {};
