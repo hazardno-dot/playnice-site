@@ -10,7 +10,24 @@ const isExplicitTestEvent = (event) => Boolean(
   String(event?.source_id || "").includes("--shadow-replay-")
 );
 
-const titleFor = (event) => event?.payload?.core?.shortName || event?.payload?.core?.name || event?.payload?.title?.sr || event?.payload?.name || event?.source_id || "Test event";
+const feedMediaSrc = (event) => String(
+  event?.approved_content?.instagram_feed?.media?.src ||
+  event?.approved_content?.instagram_feed?.media?.url ||
+  ""
+).trim();
+
+const isJpegCandidate = (event) => {
+  const src = feedMediaSrc(event);
+  if (!src) return false;
+  try {
+    const pathname = new URL(src, "https://www.playniceshop.me").pathname.toLowerCase();
+    return pathname.endsWith(".jpg") || pathname.endsWith(".jpeg");
+  } catch {
+    return false;
+  }
+};
+
+const titleFor = (event) => event?.payload?.core?.shortName || event?.payload?.core?.name || event?.payload?.title?.sr || event?.payload?.name || event?.payload?.alt || event?.source_id || "Test event";
 
 export default function SocialInstagramTestPublishBridge() {
   const [slot, setSlot] = useState(null);
@@ -26,7 +43,7 @@ export default function SocialInstagramTestPublishBridge() {
       .in("status", ["ready", "scheduled"])
       .order("updated_at", { ascending: false })
       .limit(20);
-    const candidate = (data || []).find(isExplicitTestEvent) || null;
+    const candidate = (data || []).find((row) => isExplicitTestEvent(row) && isJpegCandidate(row)) || null;
     setEvent(candidate);
   };
 
@@ -99,8 +116,8 @@ export default function SocialInstagramTestPublishBridge() {
     <section className="social-instagram-test-publish">
       <div className="social-instagram-test-copy">
         <span>INSTAGRAM FEED · MANUAL TEST ONLY</span>
-        <strong>{event ? eventTitle : "No approved test/replay event"}</strong>
-        <p>Real Meta transport is isolated behind a dedicated server flag. Only an explicit replay/test event can pass this endpoint.</p>
+        <strong>{event ? eventTitle : "No approved JPEG test/replay event"}</strong>
+        <p>{event ? "JPEG media is approved as a test candidate. Real Meta transport remains isolated behind the dedicated server flag." : "Create a Hero replay and mark it READY. Only explicit test/replay events with approved JPEG Feed media can appear here."}</p>
       </div>
       <div className="social-instagram-test-actions">
         {message ? <small className="ok">{message}</small> : null}
