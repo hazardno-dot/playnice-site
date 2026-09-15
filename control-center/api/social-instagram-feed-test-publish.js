@@ -8,10 +8,13 @@ import {
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const META_PAGE_ACCESS_TOKEN = process.env.META_PAGE_ACCESS_TOKEN;
+const META_GRAPH_API_VERSION = process.env.META_GRAPH_API_VERSION || "v26.0";
 const TEST_PUBLISH_ENABLED = process.env.META_TEST_PUBLISH_INSTAGRAM_FEED_ENABLED === "true";
 const json = (res, status, body) => res.status(status).json(body);
 const TRANSIENT_SUPABASE_STATUSES = new Set([502, 503, 504]);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const MEDIA_PROCESSING_MAX_ATTEMPTS = 15;
+const MEDIA_PROCESSING_DELAY_MS = 1000;
 
 async function safeJson(response) {
   const text = await response.text();
@@ -93,6 +96,41 @@ async function metaPost(request) {
   return payload || {};
 }
 
+async function metaGetMediaStatus(mediaId) {
+  const url = new URL(`https://graph.facebook.com/${META_GRAPH_API_VERSION}/${encodeURIComponent(mediaId)}`);
+  url.searchParams.set("fields", "status_code,status");
+  const response = await fetch(url, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${META_PAGE_ACCESS_TOKEN}` },
+  });
+  const payload = await safeJson(response);
+  if (!response.ok) {
+    const message = payload?.error?.message || payload?.message || `Meta Graph returned HTTP ${response.status}`;
+    const code = payload?.error?.code ? ` (code ${payload.error.code})` : "";
+    throw new Error(`Could not check Instagram media processing status: ${message}${code}`);
+  }
+  return payload || {};
+}
+
+async function waitForInstagramMedia(mediaId) {
+  let lastStatus = null;
+  for (let attempt = 1; attempt <= MEDIA_PROCESSING_MAX_ATTEMPTS; attempt += 1) {
+    const payload = await metaGetMediaStatus(mediaId);
+    const statusCode = String(payload?.status_code || "").trim().toUpperCase();
+    const statusText = String(payload?.status || "").trim();
+    lastStatus = { status_code: statusCode || null, status: statusText || null, attempts: attempt };
+
+    if (statusCode === "FINISHED") return lastStatus;
+    if (["ERROR", "EXPIRED"].includes(statusCode)) {
+      throw new Error(`Instagram media container ${statusCode.toLowerCase()} before publish${statusText ? `: ${statusText}` : "."}`);
+    }
+
+    if (attempt < MEDIA_PROCESSING_MAX_ATTEMPTS) await sleep(MEDIA_PROCESSING_DELAY_MS);
+  }
+
+  throw new Error(`Instagram media container was not ready after ${MEDIA_PROCESSING_MAX_ATTEMPTS} checks (last status: ${lastStatus?.status_code || "unknown"}).`);
+}
+
 async function writeAudit(token, event, userId, details) {
   const response = await supabaseFetch("/rest/v1/social_audit_log", token, {
     method: "POST",
@@ -137,6 +175,7 @@ export default async function handler(req, res) {
     const mediaCheck = await probeInstagramImage(createRequest.body.image_url);
     const createPayload = await metaPost(createRequest);
     const { media_id } = parseInstagramFeedCreateResponse(createPayload);
+    const processing = await waitForInstagramMedia(media_id);
     const publishRequest = buildInstagramFeedPublishRequest({ creation_id: media_id });
     const publishPayload = await metaPost(publishRequest);
     const result = parseInstagramFeedPublishResponse(publishPayload);
@@ -148,6 +187,8 @@ export default async function handler(req, res) {
       post_id: result.post_id,
       content_type: mediaCheck.content_type,
       source_id: event.source_id,
+      processing_attempts: processing.attempts,
+      processing_status_code: processing.status_code,
     });
 
     return json(res, 200, {
@@ -155,6 +196,7 @@ export default async function handler(req, res) {
       mode: "manual_test_publish",
       test_only: true,
       event_id: event.id,
+      processing,
       result: { ...result, media_id },
     });
   } catch (error) {
