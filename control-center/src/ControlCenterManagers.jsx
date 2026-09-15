@@ -29,6 +29,7 @@ import ExhibitionManager from "./ExhibitionManager";
 import SocialManager from "./SocialManager";
 import SocialInstagramTestPublishBridge from "./SocialInstagramTestPublishBridge";
 import SocialFacebookTestPublishBridge from "./SocialFacebookTestPublishBridge";
+import SocialInstagramStoryTestPublishBridge from "./SocialInstagramStoryTestPublishBridge";
 import MetaConnectionBridge from "./MetaConnectionBridge";
 import "./header-layout.css";
 import "./social-dry-run.css";
@@ -119,6 +120,7 @@ export default function ControlCenterManagers() {
     <SocialManager />
     <SocialInstagramTestPublishBridge />
     <SocialFacebookTestPublishBridge />
+    <SocialInstagramStoryTestPublishBridge />
     <MetaConnectionBridge />
     <JournalManager />
     <JournalApplyManager />
