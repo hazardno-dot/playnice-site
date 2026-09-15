@@ -40,6 +40,13 @@ export default function SocialSchedulerBridge() {
     return value;
   };
 
+  const refreshAfterMutation = (payload) => {
+    window.dispatchEvent(new CustomEvent("playnice:social-scheduler-updated", { detail: payload }));
+    // This bridge is temporary test tooling. A short reload guarantees the main Social
+    // workspace reflects the authoritative database state even if realtime delivery lags.
+    window.setTimeout(() => window.location.reload(), 650);
+  };
+
   const runOnce = async (forceFailure = false) => {
     if (running) return;
     setRunning(true);
@@ -59,7 +66,7 @@ export default function SocialSchedulerBridge() {
           ? `FORCED FAILURE · retry ${retry.retry_count}/3 · event moved to FAILED`
           : `FORCED FAILURE · retry ${retry.retry_count}/3 · next ${new Date(retry.next_retry_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
         setResult({ ok: false, text });
-        window.dispatchEvent(new CustomEvent("playnice:social-scheduler-updated", { detail: payload }));
+        refreshAfterMutation(payload);
         return;
       }
 
@@ -70,7 +77,7 @@ export default function SocialSchedulerBridge() {
       } else {
         const shortId = String(payload.event?.id || "").slice(0, 8);
         setResult({ ok: true, text: `SHADOW EXECUTION COMPLETE · ${shortId}… · 0 Meta requests` });
-        window.dispatchEvent(new CustomEvent("playnice:social-scheduler-updated", { detail: payload }));
+        refreshAfterMutation(payload);
       }
     } catch (error) {
       setResult({ ok: false, text: error?.message || String(error) });
