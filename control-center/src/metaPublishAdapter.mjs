@@ -41,6 +41,11 @@ function instagramFeedContent(input = {}) {
   return content && typeof content === "object" ? content : {};
 }
 
+function instagramStoryContent(input = {}) {
+  const content = input?.content?.instagram_story || input?.content || {};
+  return content && typeof content === "object" ? content : {};
+}
+
 function facebookContent(input = {}) {
   const content = input?.content?.facebook || input?.content || {};
   return content && typeof content === "object" ? content : {};
@@ -111,6 +116,83 @@ export function buildInstagramFeedDryRun(input = {}) {
   const create = buildInstagramFeedCreateRequest(input);
   return {
     channel: "instagram_feed",
+    provider: "meta",
+    graph_api_version: META_GRAPH_API_VERSION,
+    create,
+    publish_template: {
+      method: "POST",
+      url: graphUrl(`${cleanString(input.instagram_account_id || process.env.META_INSTAGRAM_ACCOUNT_ID)}/media_publish`),
+      auth: "bearer",
+      body: { creation_id: "<MEDIA_CONTAINER_ID>" },
+    },
+    sends_network_request: false,
+    token_included: false,
+  };
+}
+
+export function buildInstagramStoryCreateRequest(input = {}) {
+  const igAccountId = cleanString(input.instagram_account_id || process.env.META_INSTAGRAM_ACCOUNT_ID);
+  const content = instagramStoryContent(input);
+  const imageUrl = cleanString(content?.media?.src || content?.media?.url || input.image_url);
+
+  if (!igAccountId) throw new Error("META_INSTAGRAM_ACCOUNT_ID is required for Instagram Story publishing.");
+  if (!imageUrl || !/^https:\/\//i.test(imageUrl)) throw new Error("Instagram Story requires a public HTTPS image URL.");
+
+  return {
+    method: "POST",
+    url: graphUrl(`${igAccountId}/media`),
+    auth: "bearer",
+    body: {
+      image_url: imageUrl,
+      media_type: "STORIES",
+    },
+  };
+}
+
+export function parseInstagramStoryCreateResponse(payload = {}) {
+  const mediaId = cleanString(payload?.id);
+  if (!mediaId) throw new Error("Instagram Story media creation response did not include an id.");
+  return { media_id: mediaId };
+}
+
+export function buildInstagramStoryPublishRequest(input = {}) {
+  const igAccountId = cleanString(input.instagram_account_id || process.env.META_INSTAGRAM_ACCOUNT_ID);
+  const creationId = cleanString(input.creation_id || input.media_id);
+
+  if (!igAccountId) throw new Error("META_INSTAGRAM_ACCOUNT_ID is required for Instagram Story publishing.");
+  if (!creationId) throw new Error("Instagram Story publish requires a creation_id.");
+
+  return {
+    method: "POST",
+    url: graphUrl(`${igAccountId}/media_publish`),
+    auth: "bearer",
+    body: {
+      creation_id: creationId,
+    },
+  };
+}
+
+export function parseInstagramStoryPublishResponse(payload = {}, publishedAt = new Date().toISOString()) {
+  const postId = cleanString(payload?.id);
+  if (!postId) throw new Error("Instagram Story publish response did not include an id.");
+  return {
+    ok: true,
+    status: "published",
+    reason: null,
+    channel: "instagram_story",
+    provider: "meta",
+    publish_result_version: META_PUBLISH_RESULT_VERSION,
+    provider_id: postId,
+    media_id: null,
+    post_id: postId,
+    published_at: publishedAt,
+  };
+}
+
+export function buildInstagramStoryDryRun(input = {}) {
+  const create = buildInstagramStoryCreateRequest(input);
+  return {
+    channel: "instagram_story",
     provider: "meta",
     graph_api_version: META_GRAPH_API_VERSION,
     create,
@@ -196,7 +278,13 @@ export async function publishInstagramFeed(input = {}) {
 export async function publishInstagramStory(input = {}) {
   const locked = assertMetaPublishLocked("instagram_story");
   if (locked) return locked;
-  return lockedResult("instagram_story", { reason: "ADAPTER_NOT_IMPLEMENTED", input_received: Boolean(input) });
+
+  try {
+    const dryRun = buildInstagramStoryDryRun(input);
+    return failedResult("instagram_story", "TRANSPORT_NOT_ENABLED", { dry_run: dryRun });
+  } catch (error) {
+    return failedResult("instagram_story", "INVALID_INSTAGRAM_STORY_PAYLOAD", { message: error?.message || String(error) });
+  }
 }
 
 export async function publishFacebook(input = {}) {
