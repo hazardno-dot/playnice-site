@@ -131,12 +131,35 @@ async function probePublicImage(url) {
   }
 }
 
-async function validateReadyMedia(draftContent) {
+function validateVisualApprovals(event, draftContent) {
+  const metadata = event?.metadata && typeof event.metadata === "object" ? event.metadata : {};
+  const approvals = metadata.social_media_approval && typeof metadata.social_media_approval === "object"
+    ? metadata.social_media_approval
+    : {};
+  const missing = [];
+  const verified = {};
+
+  for (const channel of CHANNELS) {
+    const src = String(draftContent?.[channel]?.media?.src || draftContent?.[channel]?.media?.url || "").trim();
+    const approval = approvals?.[channel];
+    const approved = Boolean(approval?.approved) && String(approval?.src || "").trim() === src;
+    verified[channel] = approved;
+    if (!approved) missing.push(channel);
+  }
+
+  if (missing.length) {
+    throw new Error(`READY blocked: visual approval required for ${missing.map(channelLabel).join(", ")}. Review each channel asset and approve it before Mark ready.`);
+  }
+  return { ok: true, channels: verified };
+}
+
+async function validateReadyMedia(event, draftContent) {
   const selection = validateSocialDraftMedia(draftContent);
   if (!selection.ok) {
     throw new Error(`READY blocked: missing media for ${selection.blocking.map(channelLabel).join(", ")}.`);
   }
 
+  const visualApproval = validateVisualApprovals(event, draftContent);
   const remote = {};
   for (const channel of CHANNELS) {
     const src = draftContent?.[channel]?.media?.src || draftContent?.[channel]?.media?.url || "";
@@ -147,7 +170,7 @@ async function validateReadyMedia(draftContent) {
     const details = failed.map((channel) => `${channelLabel(channel)} (${remote[channel].reason})`).join(", ");
     throw new Error(`READY blocked: media is not publicly usable for ${details}.`);
   }
-  return { selection, remote };
+  return { selection, visual_approval: visualApproval, remote };
 }
 
 export default async function handler(req, res) {
@@ -184,7 +207,7 @@ export default async function handler(req, res) {
     const captions = normalizeCaptions(req.body?.content || event.draft_content || event.approved_content || generated);
     const draftContent = mergeDraft(generated, captions);
     const now = new Date().toISOString();
-    const mediaValidation = action === "ready" ? await validateReadyMedia(draftContent) : null;
+    const mediaValidation = action === "ready" ? await validateReadyMedia(event, draftContent) : null;
     const scheduledFor = action === "schedule" ? normalizeScheduledFor(req.body?.scheduled_for) : null;
 
     const patch = action === "reopen"
@@ -228,6 +251,7 @@ export default async function handler(req, res) {
           ...(mediaValidation ? {
             media_validation: {
               fallback_channels: mediaValidation.selection.fallback,
+              visual_approval_verified: mediaValidation.visual_approval.ok,
               public_media_verified: true,
             },
           } : {}),
