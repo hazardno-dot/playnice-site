@@ -5,6 +5,8 @@ const compact = (parts = []) => parts.map((value) => String(value || "").trim())
 const siteUrl = (path = "") => /^https?:\/\//.test(path) ? path : `${SITE_ORIGIN}${path.startsWith("/") ? path : `/${path}`}`;
 const mediaSrc = (item) => String(item?.url || item?.src || "").trim();
 const mediaFormat = (item) => String(item?.format || "").trim().toLowerCase();
+const mediaSource = (item) => String(item?.source || "").trim().toLowerCase();
+const mediaChannel = (item) => String(item?.channel || "").trim().toLowerCase();
 const productCore = (payload = {}) => payload?.core && typeof payload.core === "object" ? payload.core : payload;
 
 const CHANNEL_MEDIA_PRIORITIES = {
@@ -28,9 +30,20 @@ function normalizeMedia(media = []) {
     });
 }
 
+function preferredChannelOverride(items, channel, source) {
+  return items.find((item) => mediaSource(item) === source && mediaChannel(item) === channel) || null;
+}
+
 export function selectSocialMedia(media = [], channel = "instagram_feed") {
   const items = normalizeMedia(media);
   if (!items.length) return null;
+
+  const uploaded = preferredChannelOverride(items, channel, "social_upload");
+  if (uploaded) return { ...uploaded, selection: "channel_upload" };
+
+  const generated = preferredChannelOverride(items, channel, "social_generated");
+  if (generated) return { ...generated, selection: "channel_generated" };
+
   const priorities = CHANNEL_MEDIA_PRIORITIES[channel] || CHANNEL_MEDIA_PRIORITIES.instagram_feed;
   for (const preferred of priorities) {
     const match = items.find((item) => mediaFormat(item) === preferred);
@@ -41,11 +54,22 @@ export function selectSocialMedia(media = [], channel = "instagram_feed") {
 
 export function classifySocialMedia(media, channel = "instagram_feed") {
   const src = mediaSrc(media);
-  if (!src) return { status: "missing", label: "MISSING", blocking: true, reason: "No media asset selected." };
+  if (!src) return { status: "missing", label: "MISSING", blocking: true, reason: "No media asset selected.", origin: "missing" };
   const format = mediaFormat(media);
+  const source = mediaSource(media);
   const idealFormats = CHANNEL_IDEAL_FORMATS[channel] || CHANNEL_IDEAL_FORMATS.instagram_feed;
-  if (idealFormats.has(format)) return { status: "ideal", label: "IDEAL", blocking: false, reason: null };
-  return { status: "fallback", label: "FALLBACK", blocking: false, reason: `Using ${format || "unknown"} instead of an ideal ${channel} asset.` };
+  if (idealFormats.has(format)) {
+    const origin = source === "social_upload" ? "uploaded" : source === "social_generated" ? "generated" : "source";
+    const label = origin === "uploaded" ? "UPLOADED" : origin === "generated" ? "GENERATED" : "IDEAL";
+    return { status: "ideal", label, blocking: false, reason: null, origin };
+  }
+  return {
+    status: "fallback",
+    label: "FALLBACK",
+    blocking: false,
+    reason: `Using ${format || "unknown"} instead of an ideal ${channel} asset.`,
+    origin: source || "source",
+  };
 }
 
 export function validateSocialDraftMedia(draft = {}) {
@@ -83,7 +107,7 @@ export function resolveEventMedia(event = {}) {
   const fallback = normalizeMedia(payloadMedia(event.payload || {}, event.source_type));
   const seen = new Set();
   return [...explicit, ...fallback].filter((item) => {
-    const key = `${mediaSrc(item)}|${mediaFormat(item)}`;
+    const key = `${mediaSrc(item)}|${mediaFormat(item)}|${mediaSource(item)}|${mediaChannel(item)}`;
     if (!mediaSrc(item) || seen.has(key)) return false;
     seen.add(key);
     return true;
