@@ -1,0 +1,13 @@
+@media (min-width: 769px) {
+  .site-footer .social-links a[aria-label="PlayNice Instagram"] i {
+    color: #e1306c;
+  }
+
+  .site-footer .social-links a[aria-label="PlayNice WhatsApp"] i {
+    color: #25d366;
+  }
+
+  .site-footer .social-links a[aria-label="PlayNice TikTok"] i {
+    color: #69c9d0;
+  }
+}

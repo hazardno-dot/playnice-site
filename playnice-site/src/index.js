@@ -94,6 +94,7 @@ if (window.matchMedia("(min-width: 769px)").matches) {
     import("./DesktopProductModalCopyV2.css"),
     import("./DesktopDiscoverCleanup.css"),
     import("./DesktopCardCopyWidth.css"),
+    import("./DesktopFooterSocialColors.css"),
   ])
     .then(renderApp)
     .catch(renderApp);
