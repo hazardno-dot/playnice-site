@@ -10,6 +10,7 @@ import DesktopFooterCatalog from "./DesktopFooterCatalog";
 import CartInteractionV2 from "./CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
 import FragranceIntelligenceToneLoader from "./FragranceIntelligenceToneLoader";
+import WhatsAppLinkBridge from "./WhatsAppLinkBridge";
 import { initLocationEvents } from "./lib/locationEvents";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
@@ -38,6 +39,7 @@ import "./ProductModalPurchaseV2.css";
 import "./ProductImageNormalization.css";
 import "./mobile-v2/product-page/MobileProductPage.css";
 import "./mobile-v2/product-page/MobileProductPageBadgePolish.css";
+import "./mobile-v2/product-page/MobileProductPageAccordionChevrons.css";
 import "./mobile-v2/cart-checkout/MobileCartV2.css";
 import "./mobile-v2/cart-checkout/MobileCheckoutV2.css";
 import "./mobile-v2/cart-checkout/MobileStickyCtaV2.css";
@@ -76,6 +78,7 @@ const renderApp = () => {
       <CartInteractionV2 />
       <DiscoveryImageFallback />
       <FragranceIntelligenceToneLoader />
+      <WhatsAppLinkBridge />
     </React.StrictMode>
   );
 };
