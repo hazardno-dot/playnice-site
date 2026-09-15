@@ -127,6 +127,28 @@ export default function SocialMediaOverrideBridge() {
     try { return generateSocialDraft(sourceOnlyEvent(event)); } catch { return null; }
   }, [event]);
 
+  const sessionToken = async () => {
+    const { data: refreshData } = await supabase.auth.refreshSession().catch(() => ({ data: null }));
+    if (refreshData?.session?.access_token) return refreshData.session.access_token;
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+    const token = sessionData?.session?.access_token;
+    if (sessionError || !token) throw sessionError || new Error("Authenticated admin session is required.");
+    return token;
+  };
+
+  const callMediaEventApi = async (body) => {
+    const token = await sessionToken();
+    const response = await fetch("/api/social-media-event", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify(body),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || `Social media event update failed (${response.status}).`);
+    if (!payload.event) throw new Error("Social media event update returned no event.");
+    return payload;
+  };
+
   const persistMediaAsset = async ({ channel, optimized, source, storageSuffix, source_url = "" }) => {
     const config = CHANNELS.find((item) => item.key === channel);
     if (!config || !event) throw new Error("Social media channel is unavailable.");
@@ -137,7 +159,7 @@ export default function SocialMediaOverrideBridge() {
       cacheControl: "60",
       upsert: true,
     });
-    if (uploadError) throw uploadError;
+    if (uploadError) throw new Error(`STORAGE UPLOAD FAILED: ${uploadError.message || String(uploadError)}`);
 
     const { data: publicData } = supabase.storage.from(BUCKET).getPublicUrl(storagePath);
     const baseUrl = String(publicData?.publicUrl || "").trim();
@@ -157,37 +179,10 @@ export default function SocialMediaOverrideBridge() {
       ...(source_url ? { source_url } : {}),
     };
 
-    const currentMedia = Array.isArray(event.media) ? event.media : [];
-    const nextMedia = [entry, ...currentMedia.filter((item) => !(item?.source === source && item?.channel === channel))];
-    const { data: updated, error: updateError } = await supabase
-      .from("social_events")
-      .update({ media: nextMedia })
-      .eq("id", event.id)
-      .select("*")
-      .single();
-    if (updateError) throw updateError;
-
-    const { data: sessionData } = await supabase.auth.getSession();
-    await supabase.from("social_audit_log").insert({
-      social_event_id: event.id,
-      actor_id: sessionData?.session?.user?.id || null,
-      action: source === "social_upload" ? "social_media_uploaded" : "social_media_generated",
-      details: {
-        channel,
-        format: config.format,
-        width: optimized.width,
-        height: optimized.height,
-        bytes: optimized.blob.size,
-        storage_path: storagePath,
-        fit: "contain",
-        background: "#000000",
-        ...(source_url ? { source_url } : {}),
-      },
-    });
-
-    setEvent(updated);
+    const payload = await callMediaEventApi({ id: event.id, action: "set_media", channel, entry });
+    setEvent(payload.event);
     window.dispatchEvent(new CustomEvent("playnice:social-media-updated", { detail: { eventId: event.id, channel, source } }));
-    return { updated, entry };
+    return { updated: payload.event, entry, auditWarning: payload.audit_warning || "" };
   };
 
   const upload = async (channel, sourceFile) => {
@@ -204,8 +199,8 @@ export default function SocialMediaOverrideBridge() {
     setMessage("");
     try {
       const optimized = await optimizeImage(sourceFile, config.preset);
-      await persistMediaAsset({ channel, optimized, source: "social_upload", storageSuffix: "upload" });
-      setMessage(`${config.label} uploaded · ${optimized.width} × ${optimized.height} · ${formatImageBytes(optimized.blob.size)} · review required`);
+      const result = await persistMediaAsset({ channel, optimized, source: "social_upload", storageSuffix: "upload" });
+      setMessage(`${config.label} uploaded · ${optimized.width} × ${optimized.height} · ${formatImageBytes(optimized.blob.size)} · review required${result.auditWarning ? ` · ${result.auditWarning}` : ""}`);
     } catch (uploadError) {
       setError(uploadError?.message || String(uploadError));
     } finally {
@@ -236,8 +231,8 @@ export default function SocialMediaOverrideBridge() {
       if (!/^image\/(jpeg|png|webp)$/i.test(blob.type)) throw new Error(`Source media is ${blob.type || "not an image"}.`);
       const sourceFile = new File([blob], `social-source-${channel}`, { type: blob.type, lastModified: Date.now() });
       const optimized = await optimizeImage(sourceFile, config.preset);
-      await persistMediaAsset({ channel, optimized, source: "social_generated", storageSuffix: "generated", source_url: sourceUrl });
-      setMessage(`${config.label} generated safely · contain on black · ${optimized.width} × ${optimized.height} · review required`);
+      const result = await persistMediaAsset({ channel, optimized, source: "social_generated", storageSuffix: "generated", source_url: sourceUrl });
+      setMessage(`${config.label} generated safely · contain on black · ${optimized.width} × ${optimized.height} · review required${result.auditWarning ? ` · ${result.auditWarning}` : ""}`);
     } catch (generateError) {
       setError(`Could not generate ${config.label}: ${generateError?.message || String(generateError)}`);
     } finally {
@@ -255,42 +250,9 @@ export default function SocialMediaOverrideBridge() {
     setError("");
     setMessage("");
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const userId = sessionData?.session?.user?.id || null;
-      const metadata = event.metadata && typeof event.metadata === "object" ? event.metadata : {};
-      const approvals = metadata.social_media_approval && typeof metadata.social_media_approval === "object"
-        ? metadata.social_media_approval
-        : {};
-      const nextMetadata = {
-        ...metadata,
-        social_media_approval: {
-          ...approvals,
-          [channel]: {
-            approved: true,
-            src,
-            approved_at: new Date().toISOString(),
-            approved_by: userId,
-          },
-        },
-      };
-
-      const { data: updated, error: updateError } = await supabase
-        .from("social_events")
-        .update({ metadata: nextMetadata })
-        .eq("id", event.id)
-        .select("*")
-        .single();
-      if (updateError) throw updateError;
-
-      await supabase.from("social_audit_log").insert({
-        social_event_id: event.id,
-        actor_id: userId,
-        action: "social_media_visual_approved",
-        details: { channel, src },
-      });
-
-      setEvent(updated);
-      setMessage(`${config.label} visual approved for this exact asset.`);
+      const payload = await callMediaEventApi({ id: event.id, action: "approve_visual", channel, src });
+      setEvent(payload.event);
+      setMessage(`${config.label} visual approved for this exact asset.${payload.audit_warning ? ` ${payload.audit_warning}` : ""}`);
       window.dispatchEvent(new CustomEvent("playnice:social-media-updated", { detail: { eventId: event.id, channel, approval: true } }));
     } catch (approveError) {
       setError(approveError?.message || String(approveError));
