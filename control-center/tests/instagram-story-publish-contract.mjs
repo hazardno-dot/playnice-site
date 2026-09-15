@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
 import {
   META_GRAPH_API_VERSION,
   assertMetaPublishLocked,
@@ -9,6 +11,7 @@ import {
   buildInstagramStoryDryRun,
   publishInstagramStory,
 } from "../src/metaPublishAdapter.mjs";
+import { classifySocialMedia } from "../src/socialDraft.mjs";
 
 const input = {
   instagram_account_id: "17841448113014180",
@@ -71,6 +74,14 @@ assert.throws(
   /public HTTPS image URL/,
 );
 
+const idealStory = classifySocialMedia({ src: "https://www.playniceshop.me/story.jpg", format: "9:16" }, "instagram_story");
+assert.equal(idealStory.status, "ideal");
+assert.equal(idealStory.blocking, false);
+
+const fallbackStory = classifySocialMedia({ src: "https://www.playniceshop.me/mobile.jpg", format: "hero_mobile" }, "instagram_story");
+assert.equal(fallbackStory.status, "fallback");
+assert.equal(fallbackStory.label, "FALLBACK");
+
 assert.equal(assertMetaPublishLocked("instagram_story")?.reason, "PUBLISH_LOCKED");
 const locked = await publishInstagramStory(input);
 assert.equal(locked.ok, false);
@@ -78,6 +89,15 @@ assert.equal(locked.status, "locked");
 assert.equal(locked.reason, "PUBLISH_LOCKED");
 assert.equal(locked.channel, "instagram_story");
 
+const root = process.cwd();
+const endpointSource = fs.readFileSync(path.join(root, "control-center/api/social-instagram-feed-test-publish.js"), "utf8");
+const bridgeSource = fs.readFileSync(path.join(root, "control-center/src/SocialInstagramStoryTestPublishBridge.jsx"), "utf8");
+assert.ok(endpointSource.includes('classifySocialMedia(story.media || null, "instagram_story")'), "Story endpoint must classify approved Story media before transport.");
+assert.ok(endpointSource.includes('readiness.status !== "ideal"'), "Story endpoint must reject non-ideal media.");
+assert.ok(bridgeSource.includes('FALLBACK · DO NOT PUBLISH TO STORY') || bridgeSource.includes('DO NOT PUBLISH TO STORY'), "Story UI must label fallback media as non-publishable.");
+assert.ok(bridgeSource.includes('disabled={!storyReady || loading}'), "Story test button must stay disabled unless ideal Story media is ready.");
+
 console.log("PASS  Instagram Story adapter builds media_type=STORIES create request");
 console.log("PASS  Instagram Story response parsing keeps published Story id");
 console.log("PASS  Instagram Story global publishing remains hard locked");
+console.log("PASS  Instagram Story manual transport is blocked for fallback media");
