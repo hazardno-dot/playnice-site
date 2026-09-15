@@ -8,6 +8,11 @@ const STATUS_LABELS = {
   invalid_connection: "INVALID",
 };
 
+const CREDENTIAL_LABELS = {
+  system_user: "System User",
+  page_env_fallback: "Page token fallback",
+};
+
 const box = {
   display: "grid",
   gap: 12,
@@ -58,6 +63,7 @@ export default function MetaConnectionPanel() {
   const data = state.data || {};
   const status = STATUS_LABELS[data.status] || (state.loading ? "CHECKING" : "UNKNOWN");
   const env = data.env || {};
+  const credentialLabel = CREDENTIAL_LABELS[data.credential_source] || "Not resolved";
 
   return <section style={box}>
     <div style={row}>
@@ -78,10 +84,11 @@ export default function MetaConnectionPanel() {
         <div><span style={small}>FACEBOOK PAGE</span><div>{data.facebook_page?.name || (env.facebook_page_id ? "Configured · not verified" : "Not configured")}</div></div>
         <div><span style={small}>INSTAGRAM</span><div>{data.instagram_account?.username ? `@${data.instagram_account.username}` : (env.instagram_account_id ? "Configured · not verified" : "Not verified")}</div></div>
         <div><span style={small}>GRAPH</span><div>{data.graph_verified ? "Verified" : "Not verified"}</div></div>
+        <div><span style={small}>CREDENTIAL</span><div>{credentialLabel}</div></div>
       </div>
 
       <div style={row}>
-        <div style={small}>App ID {env.app_id ? "✓" : "—"} · App secret {env.app_secret ? "✓" : "—"} · Page ID {env.facebook_page_id ? "✓" : "—"} · Page token {env.page_access_token ? "✓" : "—"} · IG ID {env.instagram_account_id ? "✓" : "—"}</div>
+        <div style={small}>App ID {env.app_id ? "✓" : "—"} · App secret {env.app_secret ? "✓" : "—"} · Page ID {env.facebook_page_id ? "✓" : "—"} · System User {env.system_user_access_token ? "✓" : "—"} · Page fallback {env.page_access_token ? "✓" : "—"} · IG ID {env.instagram_account_id ? "✓" : "—"}</div>
         <button type="button" onClick={load} disabled={state.loading}>{state.loading ? "Checking…" : "Check connection"}</button>
       </div>
 
