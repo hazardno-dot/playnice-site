@@ -13,7 +13,20 @@ const CHANNELS = [
 ];
 
 const mediaUrl = (item) => String(item?.src || item?.url || "").trim();
-const eventRefFromDom = () => String(document.querySelector(".social-manager .social-detail-head p")?.textContent || "").trim();
+
+function selectedQueueState() {
+  const social = document.querySelector(".social-manager");
+  if (!social) return null;
+  const rows = [...social.querySelectorAll(".social-list > button")];
+  const activeIndex = rows.findIndex((row) => row.classList.contains("active"));
+  if (activeIndex < 0) return null;
+
+  const activeFilter = [...social.querySelectorAll(".social-filter-bar > button")]
+    .find((button) => button.classList.contains("active"));
+  const rawFilter = String(activeFilter?.textContent || "all").trim().toLowerCase();
+  const statusFilter = rawFilter.split(/\s+/)[0] || "all";
+  return { activeIndex, statusFilter };
+}
 
 function uploadedOverride(event, channel) {
   return (Array.isArray(event?.media) ? event.media : []).find((item) => item?.source === "social_upload" && item?.channel === channel) || null;
@@ -28,18 +41,31 @@ export default function SocialMediaOverrideBridge() {
   const selectedRef = useRef("");
 
   const loadSelected = async (force = false) => {
-    const ref = eventRefFromDom();
-    if (!ref) {
+    const queueState = selectedQueueState();
+    if (!queueState) {
       selectedRef.current = "";
       setEvent(null);
       return;
     }
-    if (!force && selectedRef.current === ref) return;
-    selectedRef.current = ref;
-    const { data, error: loadError } = await supabase.from("social_events").select("*").order("updated_at", { ascending: false }).limit(100);
-    if (loadError) { setError(loadError.message || String(loadError)); return; }
-    const found = (data || []).find((row) => String(row.source_url || row.source_id || "").trim() === ref) || null;
-    setEvent(found);
+
+    const signature = `${queueState.statusFilter}:${queueState.activeIndex}`;
+    if (!force && selectedRef.current === signature) return;
+    selectedRef.current = signature;
+
+    const { data, error: loadError } = await supabase
+      .from("social_events")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(100);
+    if (loadError) {
+      setError(loadError.message || String(loadError));
+      return;
+    }
+
+    const visible = queueState.statusFilter === "all"
+      ? (data || [])
+      : (data || []).filter((row) => row.status === queueState.statusFilter);
+    setEvent(visible[queueState.activeIndex] || null);
   };
 
   useEffect(() => {
@@ -68,7 +94,7 @@ export default function SocialMediaOverrideBridge() {
     };
     sync();
     observer = new MutationObserver(sync);
-    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["class"] });
     return () => { cancelAnimationFrame(raf); observer.disconnect(); };
   }, []);
 
