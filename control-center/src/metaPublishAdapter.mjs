@@ -41,6 +41,11 @@ function instagramFeedContent(input = {}) {
   return content && typeof content === "object" ? content : {};
 }
 
+function facebookContent(input = {}) {
+  const content = input?.content?.facebook || input?.content || {};
+  return content && typeof content === "object" ? content : {};
+}
+
 export function buildInstagramFeedCreateRequest(input = {}) {
   const igAccountId = cleanString(input.instagram_account_id || process.env.META_INSTAGRAM_ACCOUNT_ID);
   const content = instagramFeedContent(input);
@@ -120,6 +125,57 @@ export function buildInstagramFeedDryRun(input = {}) {
   };
 }
 
+export function buildFacebookPhotoRequest(input = {}) {
+  const pageId = cleanString(input.facebook_page_id || process.env.META_FACEBOOK_PAGE_ID);
+  const content = facebookContent(input);
+  const imageUrl = cleanString(content?.media?.src || content?.media?.url || input.image_url);
+  const message = cleanString(content?.caption || input.caption);
+
+  if (!pageId) throw new Error("META_FACEBOOK_PAGE_ID is required for Facebook Page publishing.");
+  if (!imageUrl || !/^https:\/\//i.test(imageUrl)) throw new Error("Facebook Page requires a public HTTPS image URL.");
+  if (!message) throw new Error("Facebook Page requires a caption.");
+
+  return {
+    method: "POST",
+    url: graphUrl(`${pageId}/photos`),
+    auth: "bearer",
+    body: {
+      url: imageUrl,
+      message,
+      published: true,
+    },
+  };
+}
+
+export function parseFacebookPhotoResponse(payload = {}, publishedAt = new Date().toISOString()) {
+  const mediaId = cleanString(payload?.id);
+  const postId = cleanString(payload?.post_id || payload?.id);
+  if (!mediaId) throw new Error("Facebook photo publish response did not include an id.");
+  return {
+    ok: true,
+    status: "published",
+    reason: null,
+    channel: "facebook",
+    provider: "meta",
+    publish_result_version: META_PUBLISH_RESULT_VERSION,
+    provider_id: postId,
+    media_id: mediaId,
+    post_id: postId,
+    published_at: publishedAt,
+  };
+}
+
+export function buildFacebookDryRun(input = {}) {
+  return {
+    channel: "facebook",
+    provider: "meta",
+    graph_api_version: META_GRAPH_API_VERSION,
+    publish: buildFacebookPhotoRequest(input),
+    sends_network_request: false,
+    token_included: false,
+  };
+}
+
 export function assertMetaPublishLocked(channel = "unknown") {
   if (SOCIAL_SHADOW_MODE || !META_PUBLISH_ENABLED) return lockedResult(channel);
   return null;
@@ -146,7 +202,13 @@ export async function publishInstagramStory(input = {}) {
 export async function publishFacebook(input = {}) {
   const locked = assertMetaPublishLocked("facebook");
   if (locked) return locked;
-  return lockedResult("facebook", { reason: "ADAPTER_NOT_IMPLEMENTED", input_received: Boolean(input) });
+
+  try {
+    const dryRun = buildFacebookDryRun(input);
+    return failedResult("facebook", "TRANSPORT_NOT_ENABLED", { dry_run: dryRun });
+  } catch (error) {
+    return failedResult("facebook", "INVALID_FACEBOOK_PAYLOAD", { message: error?.message || String(error) });
+  }
 }
 
 const PUBLISHERS = {
