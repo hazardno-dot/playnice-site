@@ -20,6 +20,7 @@ create table if not exists public.social_events (
   last_attempt_at timestamptz,
   execution_token uuid,
   execution_lease_until timestamptz,
+  shadow_executed_at timestamptz,
   published_at timestamptz,
   approved_at timestamptz,
   instagram_status text,
@@ -41,6 +42,7 @@ alter table public.social_events add column if not exists next_retry_at timestam
 alter table public.social_events add column if not exists last_attempt_at timestamptz;
 alter table public.social_events add column if not exists execution_token uuid;
 alter table public.social_events add column if not exists execution_lease_until timestamptz;
+alter table public.social_events add column if not exists shadow_executed_at timestamptz;
 
 create index if not exists social_events_status_created_idx on public.social_events(status, created_at desc);
 create index if not exists social_events_source_idx on public.social_events(source_type, source_id);
@@ -109,6 +111,8 @@ for each row execute function public.set_social_events_updated_at();
 
 -- Atomically lease one due event. Keeping status='scheduled' while leased means the
 -- existing UI/status model remains stable; execution_token + lease_until provide the claim.
+-- Shadow events are claimed only once after a successful shadow execution. If publish_mode
+-- is later changed to approval/auto, shadow_executed_at does not block the future live path.
 create or replace function public.claim_due_social_event(
   p_now timestamptz default now(),
   p_lease_seconds integer default 120
@@ -130,6 +134,7 @@ begin
      and e.scheduled_for <= p_now
      and (e.next_retry_at is null or e.next_retry_at <= p_now)
      and (e.execution_lease_until is null or e.execution_lease_until <= p_now)
+     and (e.publish_mode <> 'shadow' or e.shadow_executed_at is null)
    order by coalesce(e.next_retry_at, e.scheduled_for), e.created_at
    for update skip locked
    limit 1;
