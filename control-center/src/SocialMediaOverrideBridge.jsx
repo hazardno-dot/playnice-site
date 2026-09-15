@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
 import { IMAGE_OPTIMIZER_PRESETS, formatImageBytes, optimizeImage } from "./imageOptimizer.mjs";
@@ -25,10 +25,17 @@ export default function SocialMediaOverrideBridge() {
   const [busyChannel, setBusyChannel] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const selectedRef = useRef("");
 
-  const loadSelected = async () => {
+  const loadSelected = async (force = false) => {
     const ref = eventRefFromDom();
-    if (!ref) { setEvent(null); return; }
+    if (!ref) {
+      selectedRef.current = "";
+      setEvent(null);
+      return;
+    }
+    if (!force && selectedRef.current === ref) return;
+    selectedRef.current = ref;
     const { data, error: loadError } = await supabase.from("social_events").select("*").order("updated_at", { ascending: false }).limit(100);
     if (loadError) { setError(loadError.message || String(loadError)); return; }
     const found = (data || []).find((row) => String(row.source_url || row.source_id || "").trim() === ref) || null;
@@ -43,7 +50,12 @@ export default function SocialMediaOverrideBridge() {
       raf = requestAnimationFrame(() => {
         const social = document.querySelector(".social-manager");
         const grid = social?.querySelector(".social-channel-grid");
-        if (!social || !grid) { setSlot(null); setEvent(null); return; }
+        if (!social || !grid) {
+          selectedRef.current = "";
+          setSlot(null);
+          setEvent(null);
+          return;
+        }
         let node = social.querySelector("#social-media-override-slot");
         if (!node) {
           node = document.createElement("div");
@@ -51,7 +63,7 @@ export default function SocialMediaOverrideBridge() {
           grid.insertAdjacentElement("afterend", node);
         }
         setSlot(node);
-        loadSelected();
+        loadSelected(false);
       });
     };
     sync();
@@ -62,7 +74,7 @@ export default function SocialMediaOverrideBridge() {
 
   useEffect(() => {
     const channel = supabase.channel("social-media-override-bridge")
-      .on("postgres_changes", { event: "*", schema: "public", table: "social_events" }, loadSelected)
+      .on("postgres_changes", { event: "*", schema: "public", table: "social_events" }, () => loadSelected(true))
       .subscribe();
     return () => supabase.removeChannel(channel);
   }, []);
