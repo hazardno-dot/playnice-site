@@ -51,6 +51,15 @@ async function patchClaimedEvent(token, event, patch) {
   return rows[0];
 }
 
+function isExplicitTestEvent(event) {
+  return Boolean(
+    event?.metadata?.test
+    || event?.metadata?.replay
+    || String(event?.source_id || "").includes("--shadow-test-")
+    || String(event?.source_id || "").includes("--shadow-replay-")
+  );
+}
+
 export default async function handler(req, res) {
   if (!SUPABASE_URL || !SUPABASE_KEY) return json(res, 500, { error: "Server configuration is incomplete." });
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
@@ -58,6 +67,7 @@ export default async function handler(req, res) {
   const auth = await requireAdmin(req);
   if (auth.error) return json(res, auth.status, { error: auth.error });
 
+  const forceFailure = req.body?.force_failure === true;
   const now = new Date();
   let claimed = null;
   try {
@@ -74,6 +84,14 @@ export default async function handler(req, res) {
     if (!claimed) return json(res, 200, { ok: true, executed: false, reason: "no_due_shadow_event" });
 
     const execution = buildShadowExecution(claimed, now);
+
+    if (forceFailure) {
+      if (!isExplicitTestEvent(claimed)) {
+        throw new Error("Forced scheduler failure is allowed only for explicit replay/test events.");
+      }
+      throw new Error("TEST_ONLY_FORCED_SHADOW_SCHEDULER_FAILURE");
+    }
+
     const updated = await patchClaimedEvent(auth.token, claimed, {
       shadow_executed_at: execution.executed_at,
       execution_token: null,
@@ -124,6 +142,7 @@ export default async function handler(req, res) {
       retry_count: plan.retry_count,
       next_retry_at: plan.next_retry_at,
       exhausted: plan.exhausted,
+      test_only_forced_failure: forceFailure,
       network_requested: false,
       meta_publish_requested: false,
     }).catch(() => false);
@@ -134,6 +153,7 @@ export default async function handler(req, res) {
       error: message,
       retry: plan,
       event: updated,
+      test_only_forced_failure: forceFailure,
     });
   }
 }
