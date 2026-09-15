@@ -60,7 +60,8 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     outputType: "image/jpeg",
     width: 1080,
     height: 1920,
-    fit: "contain",
+    fit: "safe-contain",
+    safeZoom: 1.12,
     background: "#000000",
     maxBytes: 700_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
@@ -144,6 +145,22 @@ function drawContain(ctx, image, targetWidth, targetHeight) {
   ctx.drawImage(image, x, y, width, height);
 }
 
+function drawSafeContain(ctx, image, targetWidth, targetHeight, safeZoom = 1) {
+  const containScale = Math.min(targetWidth / image.naturalWidth, targetHeight / image.naturalHeight);
+  const zoom = Math.max(1, Math.min(Number(safeZoom) || 1, 1.2));
+  const scale = containScale * zoom;
+  const width = Math.max(1, Math.round(image.naturalWidth * scale));
+  const height = Math.max(1, Math.round(image.naturalHeight * scale));
+  const x = Math.round((targetWidth - width) / 2);
+  const y = Math.round((targetHeight - height) / 2);
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(0, 0, targetWidth, targetHeight);
+  ctx.clip();
+  ctx.drawImage(image, x, y, width, height);
+  ctx.restore();
+}
+
 function prepareCanvas(width, height, preset) {
   const canvas = document.createElement("canvas");
   canvas.width = width;
@@ -188,6 +205,7 @@ export async function optimizeImage(file, preset) {
       const { canvas, ctx } = prepareCanvas(width, height, preset);
       if (preset.fit === "cover") drawCover(ctx, image, width, height);
       else if (preset.fit === "contain") drawContain(ctx, image, width, height);
+      else if (preset.fit === "safe-contain") drawSafeContain(ctx, image, width, height, preset.safeZoom);
       else ctx.drawImage(image, 0, 0, width, height);
 
       for (const quality of qualities) {
