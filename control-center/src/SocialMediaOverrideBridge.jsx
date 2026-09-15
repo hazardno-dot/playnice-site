@@ -41,6 +41,11 @@ function sourceOnlyEvent(event) {
   };
 }
 
+function approvalFor(event, channel, src) {
+  const approval = event?.metadata?.social_media_approval?.[channel];
+  return Boolean(approval?.approved) && String(approval?.src || "").trim() === String(src || "").trim();
+}
+
 export default function SocialMediaOverrideBridge() {
   const [slot, setSlot] = useState(null);
   const [event, setEvent] = useState(null);
@@ -200,7 +205,7 @@ export default function SocialMediaOverrideBridge() {
     try {
       const optimized = await optimizeImage(sourceFile, config.preset);
       await persistMediaAsset({ channel, optimized, source: "social_upload", storageSuffix: "upload" });
-      setMessage(`${config.label} uploaded · ${optimized.width} × ${optimized.height} · ${formatImageBytes(optimized.blob.size)}`);
+      setMessage(`${config.label} uploaded · ${optimized.width} × ${optimized.height} · ${formatImageBytes(optimized.blob.size)} · review required`);
     } catch (uploadError) {
       setError(uploadError?.message || String(uploadError));
     } finally {
@@ -232,9 +237,63 @@ export default function SocialMediaOverrideBridge() {
       const sourceFile = new File([blob], `social-source-${channel}`, { type: blob.type, lastModified: Date.now() });
       const optimized = await optimizeImage(sourceFile, config.preset);
       await persistMediaAsset({ channel, optimized, source: "social_generated", storageSuffix: "generated", source_url: sourceUrl });
-      setMessage(`${config.label} generated safely · contain on black · ${optimized.width} × ${optimized.height} · ${formatImageBytes(optimized.blob.size)}`);
+      setMessage(`${config.label} generated safely · contain on black · ${optimized.width} × ${optimized.height} · review required`);
     } catch (generateError) {
       setError(`Could not generate ${config.label}: ${generateError?.message || String(generateError)}`);
+    } finally {
+      setBusyChannel("");
+    }
+  };
+
+  const approveVisual = async (channel, asset) => {
+    if (!event || !asset || busyChannel || event.status !== "draft") return;
+    const src = mediaUrl(asset);
+    const config = CHANNELS.find((item) => item.key === channel);
+    if (!src || !config) return;
+
+    setBusyChannel(channel);
+    setError("");
+    setMessage("");
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const userId = sessionData?.session?.user?.id || null;
+      const metadata = event.metadata && typeof event.metadata === "object" ? event.metadata : {};
+      const approvals = metadata.social_media_approval && typeof metadata.social_media_approval === "object"
+        ? metadata.social_media_approval
+        : {};
+      const nextMetadata = {
+        ...metadata,
+        social_media_approval: {
+          ...approvals,
+          [channel]: {
+            approved: true,
+            src,
+            approved_at: new Date().toISOString(),
+            approved_by: userId,
+          },
+        },
+      };
+
+      const { data: updated, error: updateError } = await supabase
+        .from("social_events")
+        .update({ metadata: nextMetadata })
+        .eq("id", event.id)
+        .select("*")
+        .single();
+      if (updateError) throw updateError;
+
+      await supabase.from("social_audit_log").insert({
+        social_event_id: event.id,
+        actor_id: userId,
+        action: "social_media_visual_approved",
+        details: { channel, src },
+      });
+
+      setEvent(updated);
+      setMessage(`${config.label} visual approved for this exact asset.`);
+      window.dispatchEvent(new CustomEvent("playnice:social-media-updated", { detail: { eventId: event.id, channel, approval: true } }));
+    } catch (approveError) {
+      setError(approveError?.message || String(approveError));
     } finally {
       setBusyChannel("");
     }
@@ -245,20 +304,28 @@ export default function SocialMediaOverrideBridge() {
     <section className="social-media-override-panel">
       <div className="social-media-override-head">
         <div><span>SOCIAL ASSET GENERATOR</span><strong>Generate safely or upload channel-specific creative</strong></div>
-        <small>No automatic crop · generated assets use contain on black · uploaded creative always has priority · visually review before Mark ready</small>
+        <small>No automatic crop · generated assets use contain on black · uploaded creative always has priority · every exact asset requires visual approval before Mark ready</small>
       </div>
       <div className="social-media-override-grid">
         {CHANNELS.map((channel) => {
           const override = overrides[channel.key];
           const generatedAsset = generated[channel.key];
-          const selectedAsset = override || generatedAsset;
+          const sourceAsset = sourceDraft?.[channel.key]?.media || null;
+          const selectedAsset = override || generatedAsset || sourceAsset;
           const src = mediaUrl(selectedAsset);
-          const sourceSrc = mediaUrl(sourceDraft?.[channel.key]?.media);
-          const state = override ? "UPLOADED" : generatedAsset ? "GENERATED" : sourceSrc ? "SOURCE READY" : "NO SOURCE";
-          return <div className={`social-media-override-card ${selectedAsset ? "has-override" : ""}`} key={channel.key}>
+          const sourceSrc = mediaUrl(sourceAsset);
+          const approved = approvalFor(event, channel.key, src);
+          const assetState = override ? "UPLOADED" : generatedAsset ? "GENERATED" : sourceSrc ? "SOURCE" : "NO SOURCE";
+          return <div className={`social-media-override-card ${selectedAsset ? "has-override" : ""} ${approved ? "is-approved" : "needs-review"}`} key={channel.key}>
             <div className="social-media-override-card-head"><span>{channel.label}</span><em>{channel.format} · {channel.size}</em></div>
-            {src ? <img src={src} alt={`${channel.label} social asset`} /> : <div className="social-media-override-empty">{sourceSrc ? "Ready to generate" : "No source media"}</div>}
-            <div className="social-media-asset-state"><strong>{state}</strong><small>{selectedAsset ? "Canonical Social asset" : sourceSrc ? "Generate uses safe contain + black" : "Upload a prepared creative"}</small></div>
+            {src ? <img src={src} alt={`${channel.label} social asset`} /> : <div className="social-media-override-empty">No source media</div>}
+            <div className="social-media-asset-state">
+              <strong>{assetState} · {approved ? "APPROVED" : "NEEDS REVIEW"}</strong>
+              <small>{approved ? "Approval is locked to this exact asset URL" : selectedAsset ? "Inspect preview, then approve visual" : "Upload a prepared creative"}</small>
+            </div>
+            <button className={`social-media-approve ${approved ? "approved" : ""}`} type="button" disabled={immutable || Boolean(busyChannel) || !selectedAsset || approved} onClick={() => approveVisual(channel.key, selectedAsset)}>
+              {busyChannel === channel.key ? "Working…" : approved ? "Visual approved ✓" : "Approve visual"}
+            </button>
             <button className="social-media-generate" type="button" disabled={immutable || Boolean(busyChannel) || !sourceSrc} onClick={() => generate(channel.key)}>
               {busyChannel === channel.key ? "Working…" : generatedAsset ? "Regenerate safe asset" : "Generate safe asset"}
             </button>
