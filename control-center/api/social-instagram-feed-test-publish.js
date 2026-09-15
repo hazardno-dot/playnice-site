@@ -3,6 +3,10 @@ import {
   parseInstagramFeedCreateResponse,
   buildInstagramFeedPublishRequest,
   parseInstagramFeedPublishResponse,
+  buildInstagramStoryCreateRequest,
+  parseInstagramStoryCreateResponse,
+  buildInstagramStoryPublishRequest,
+  parseInstagramStoryPublishResponse,
   buildFacebookPhotoRequest,
   parseFacebookPhotoResponse,
 } from "../src/metaPublishAdapter.mjs";
@@ -12,6 +16,7 @@ const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const META_PAGE_ACCESS_TOKEN = process.env.META_PAGE_ACCESS_TOKEN;
 const META_GRAPH_API_VERSION = process.env.META_GRAPH_API_VERSION || "v26.0";
 const INSTAGRAM_TEST_PUBLISH_ENABLED = process.env.META_TEST_PUBLISH_INSTAGRAM_FEED_ENABLED === "true";
+const INSTAGRAM_STORY_TEST_PUBLISH_ENABLED = process.env.META_TEST_PUBLISH_INSTAGRAM_STORY_ENABLED === "true";
 const FACEBOOK_TEST_PUBLISH_ENABLED = process.env.META_TEST_PUBLISH_FACEBOOK_ENABLED === "true";
 const json = (res, status, body) => res.status(status).json(body);
 const TRANSIENT_SUPABASE_STATUSES = new Set([502, 503, 504]);
@@ -163,6 +168,28 @@ async function publishInstagram(event, admin) {
   return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, processing, result: { ...result, media_id } } };
 }
 
+async function publishInstagramStory(event, admin) {
+  if (!INSTAGRAM_STORY_TEST_PUBLISH_ENABLED) {
+    return { status: 423, body: { error: "Instagram Story test publishing is locked. Set META_TEST_PUBLISH_INSTAGRAM_STORY_ENABLED=true only for the controlled manual test.", publish_enabled: false } };
+  }
+  if (!event.approved_content?.instagram_story) return { status: 409, body: { error: "Approved Instagram Story snapshot is required." } };
+
+  const createRequest = buildInstagramStoryCreateRequest({ content: event.approved_content });
+  const mediaCheck = await probeImage(createRequest.body.image_url, "Instagram Story");
+  const createPayload = await metaPost(createRequest);
+  const { media_id } = parseInstagramStoryCreateResponse(createPayload);
+  const processing = await waitForInstagramMedia(media_id);
+  const publishRequest = buildInstagramStoryPublishRequest({ creation_id: media_id });
+  const publishPayload = await metaPost(publishRequest);
+  const result = parseInstagramStoryPublishResponse(publishPayload);
+  await writeAudit(admin.token, event, admin.user.id, "test_instagram_story_published", {
+    channel: "instagram_story", test_only: true, media_id, post_id: result.post_id,
+    content_type: mediaCheck.content_type, source_id: event.source_id,
+    processing_attempts: processing.attempts, processing_status_code: processing.status_code,
+  });
+  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, processing, result: { ...result, media_id } } };
+}
+
 async function publishFacebookPage(event, admin) {
   if (!FACEBOOK_TEST_PUBLISH_ENABLED) {
     return { status: 423, body: { error: "Facebook Page test publishing is locked. Set META_TEST_PUBLISH_FACEBOOK_ENABLED=true only for the controlled manual test.", publish_enabled: false } };
@@ -190,7 +217,7 @@ export default async function handler(req, res) {
   const eventId = String(req.body?.event_id || "").trim();
   const channel = String(req.body?.channel || "instagram_feed").trim();
   if (!eventId) return json(res, 400, { error: "event_id is required." });
-  if (!["instagram_feed", "facebook"].includes(channel)) return json(res, 400, { error: "Unsupported manual Meta test channel." });
+  if (!["instagram_feed", "instagram_story", "facebook"].includes(channel)) return json(res, 400, { error: "Unsupported manual Meta test channel." });
 
   const eventRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(eventId)}&select=*`, admin.token);
   const events = await safeJson(eventRes);
@@ -201,7 +228,10 @@ export default async function handler(req, res) {
   if (!["ready", "scheduled"].includes(event.status)) return json(res, 409, { error: "Test event must be READY or SCHEDULED with an approved snapshot." });
 
   try {
-    const outcome = channel === "facebook" ? await publishFacebookPage(event, admin) : await publishInstagram(event, admin);
+    let outcome;
+    if (channel === "facebook") outcome = await publishFacebookPage(event, admin);
+    else if (channel === "instagram_story") outcome = await publishInstagramStory(event, admin);
+    else outcome = await publishInstagram(event, admin);
     return json(res, outcome.status, outcome.body);
   } catch (error) {
     return json(res, 400, { ok: false, mode: "manual_test_publish", test_only: true, channel, error: error?.message || String(error) });
