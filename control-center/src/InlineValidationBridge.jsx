@@ -4,9 +4,14 @@ import { products } from "@shop/data/products/index.js";
 import {
   validateInlineFields,
 } from "./inlineValidationRules.mjs";
+import {
+  classifyCardCopyFit,
+  ensureCardCopyFont,
+} from "./productCardCopyFit.mjs";
 import "./inline-validation.css";
 
 const PRODUCT_SLUGS = products.map((product) => product.slug);
+const PRODUCT_SLUG_SET = new Set(PRODUCT_SLUGS);
 const NOTE_KEYS = [...new Set(
   products.flatMap((product) => ["top", "heart", "base"].flatMap((level) => product.noteMap?.[level] || []))
 )];
@@ -17,7 +22,19 @@ const getSelectedSlug = (root) => {
   return String(slugNode.textContent || "").split(" · ")[0].trim();
 };
 
+function addFitBadge(field, fit, isNewProduct) {
+  if (!field?.label || !fit?.visualMeasured) return;
+  const badge = document.createElement("div");
+  const failed = fit.visualPass === false;
+  badge.className = `card-copy-inline-fit ${failed ? "is-fail" : "is-pass"}`;
+  badge.innerHTML = `<strong>CARD FIT · ${failed ? "TOO LONG" : "2-LINE PASS"}</strong><span>${fit.chars} chars · ${fit.lines} ${fit.lines === 1 ? "line" : "lines"} · ${fit.textWidth}px text${fit.activeMax ? ` · char ceiling ${fit.activeMax}` : ""}</span>`;
+  if (failed && !isNewProduct) badge.title = "Existing product: visual-fit warning. Shorten when this copy is next edited.";
+  field.label.appendChild(badge);
+}
+
 function collectIssues(root) {
+  root.querySelectorAll(".card-copy-inline-fit").forEach((node) => node.remove());
+
   const domFields = [...root.querySelectorAll(".edit-field")].map((label) => {
     const name = label.querySelector(":scope > span")?.textContent?.trim() || "Field";
     const control = label.querySelector("input, textarea, select");
@@ -26,10 +43,31 @@ function collectIssues(root) {
 
   domFields.forEach((field) => field.label.classList.remove("inline-field-error", "inline-field-warning"));
 
+  const selectedSlug = getSelectedSlug(root);
+  const isNewProduct = Boolean(selectedSlug) && !PRODUCT_SLUG_SET.has(selectedSlug);
   const issues = validateInlineFields(domFields, {
     knownProductSlugs: PRODUCT_SLUGS,
     knownNoteKeys: NOTE_KEYS,
-    selectedSlug: getSelectedSlug(root),
+    selectedSlug,
+    isNewProduct,
+  });
+
+  domFields.forEach((field, index) => {
+    const name = field.name.toLowerCase();
+    if (!name.startsWith("card copy ·")) return;
+    const lang = name.includes("· sr") ? "sr" : name.includes("· en") ? "en" : null;
+    if (!lang || !String(field.value || "").trim()) return;
+
+    const fit = classifyCardCopyFit(field.value, lang, { isNewProduct });
+    addFitBadge(field, fit, isNewProduct);
+    if (fit.visualPass === false) {
+      issues.push({
+        index,
+        field: field.name,
+        message: `Visual fit is ${fit.lines} lines at ${fit.textWidth}px text width; keep Card Copy within the 2-line Shop contract.`,
+        level: isNewProduct ? "error" : "warning",
+      });
+    }
   });
 
   issues.forEach((issue) => {
@@ -64,6 +102,7 @@ export default function InlineValidationBridge() {
   const [slot, setSlot] = useState(null);
 
   useEffect(() => {
+    ensureCardCopyFont();
     let timer;
     let raf = 0;
     const mainStage = document.querySelector(".main-stage") || document.body;
@@ -85,6 +124,7 @@ export default function InlineValidationBridge() {
     };
 
     run();
+    document.fonts?.ready?.then(run).catch(() => {});
     const observer = new MutationObserver(run);
     observer.observe(mainStage, { childList: true, subtree: true });
     document.addEventListener("input", run, true);
@@ -101,16 +141,20 @@ export default function InlineValidationBridge() {
 
   if (!visible || !slot) return null;
   const errors = issues.filter((issue) => issue.level === "error");
+  const warnings = issues.filter((issue) => issue.level === "warning");
 
   return createPortal(<div className={`inline-validation-floating ${errors.length ? "blocked" : "ready"}`}>
     <div className="inline-validation-floating-head">
       <span>LIVE VALIDATION</span>
-      <strong>{errors.length ? `${errors.length} FIELDS REMAINING` : "VISIBLE CHECKS PASS"}</strong>
+      <strong>{errors.length ? `${errors.length} FIELDS REMAINING` : warnings.length ? `${warnings.length} WARNING${warnings.length === 1 ? "" : "S"}` : "VISIBLE CHECKS PASS"}</strong>
     </div>
     {errors.length ? <div className="inline-validation-floating-issues">
       {errors.slice(0, 2).map((issue, index) => <div key={`${issue.field}-${index}`}><strong>{issue.field}</strong><span>{issue.message}</span></div>)}
       {errors.length > 2 ? <small>+ {errors.length - 2} more</small> : null}
+    </div> : warnings.length ? <div className="inline-validation-floating-issues">
+      {warnings.slice(0, 2).map((issue, index) => <div key={`${issue.field}-${index}`}><strong>{issue.field}</strong><span>{issue.message}</span></div>)}
+      {warnings.length > 2 ? <small>+ {warnings.length - 2} more</small> : null}
     </div> : <p>All visible editor checks pass.</p>}
-    <small>Draft Manager performs the authoritative validation before review. Save Draft remains safe and unpublished.</small>
+    <small>New products must pass the 2-line Card Copy fit before review. Existing products show visual-fit warnings for gradual cleanup.</small>
   </div>, slot);
 }

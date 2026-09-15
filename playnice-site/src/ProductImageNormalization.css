@@ -1,0 +1,35 @@
+/* PlayNice product image normalization
+   Keep source aspect ratios intact while giving compact cards and modals a stable visual box. */
+
+.new-arrival-card-image-wrap {
+  display: grid;
+  place-items: center;
+}
+
+.new-arrival-card-image {
+  width: 80px;
+  height: 80px;
+  max-width: 80px;
+  max-height: 80px;
+  object-fit: contain;
+  object-position: center;
+}
+
+.modal-image-wrap {
+  display: grid;
+  place-items: center;
+}
+
+.modal-image {
+  object-fit: contain;
+  object-position: center;
+}
+
+@media (max-width: 640px) {
+  .new-arrival-card-image {
+    width: 76px;
+    height: 76px;
+    max-width: 76px;
+    max-height: 76px;
+  }
+}

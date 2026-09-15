@@ -98,5 +98,10 @@ export default [
   {
     "sr": "Ako ne želite da pilot razmatra prinudno sletanje zbog čoveka u 14C, nemojte testirati koliko prskanja Ombré Leathera staje na jednu košulju. Koža, tamno cveće i bogata drvenasta baza već imaju dovoljno prisustva. U avionu: 2–3 su sasvim dovoljna. Zahvalićete nam kasnije.",
     "en": "If you would rather the pilot not consider an emergency landing because of the man in 14C, do not test how many sprays of Ombré Leather one shirt can hold. Leather, dark florals and the rich woody base already have enough presence. On a plane, 2–3 sprays are plenty. You can thank us later."
+  },
+  {
+    "sr": "Na velikoj vrućini ili kada želite samo lagan, čist i neprimetan miris. Kardamom, šafran, vetiver, labdanum i koža vode Al Noor u suv, taman i ozbiljniji smer. Ako vam je plan „neka niko ništa ne primeti“, izabrali ste prilično ambiciozan način da to postignete.",
+    "en": "In serious heat or when you only want something light, clean and unobtrusive. Cardamom, saffron, vetiver, labdanum and leather push Al Noor in a dry, darker and more serious direction. If the plan is “let nobody notice anything,” you have chosen a rather ambitious way to achieve it."
   }
+
 ];

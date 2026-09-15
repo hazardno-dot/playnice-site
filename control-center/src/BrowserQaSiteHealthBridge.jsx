@@ -72,15 +72,18 @@ export default function BrowserQaSiteHealthBridge() {
 
   if (!slot) return null;
 
-  const SummaryCard = ({ title, row }) => (
-    <div className={`browser-qa-summary-card ${row?.overall || "unknown"}`}>
+  const SummaryCard = ({ title, row }) => {
+    const partial = row?.overall === "healthy" && Array.isArray(row?.not_tested) && row.not_tested.length > 0;
+    return (
+    <div className={`browser-qa-summary-card ${row?.overall || "unknown"}${partial ? " partial" : ""}`}>
       <span>{title}</span>
-      <strong>{row?.overall?.toUpperCase() || "NO DATA"}</strong>
+      <strong>{row ? (partial ? "HEALTHY · PARTIAL COVERAGE" : row.overall?.toUpperCase()) : "NO DATA"}</strong>
       <small>{row ? fmtTime(row.checked_at) : "Waiting for first run"}</small>
       {row ? <div className="browser-qa-summary-meta"><em>{row.failed_checks || 0} failed</em><em>{row.warning_checks || 0} warnings</em>{row.viewport ? <em>{row.viewport}</em> : null}</div> : null}
       {row?.summary ? <p>{row.summary}</p> : null}
     </div>
-  );
+    );
+  };
 
   return createPortal(
     <article className="site-health-panel browser-qa-panel">
@@ -104,7 +107,7 @@ export default function BrowserQaSiteHealthBridge() {
           return <div className="browser-qa-history-row" key={row.id}>
             <span className={`browser-qa-state-dot ${row.overall}`} />
             <div><strong>{labelFor(row.check_type)}</strong><small>{row.summary || "No summary recorded"}</small></div>
-            <div className="browser-qa-history-stats"><em>{row.overall.toUpperCase()}</em><small>{row.failed_checks || 0} failed · {row.warning_checks || 0} warnings · {findingCount} findings{notTestedCount ? ` · ${notTestedCount} not tested` : ""}</small></div>
+            <div className="browser-qa-history-stats"><em>{row.overall === "healthy" && notTestedCount ? "HEALTHY · PARTIAL" : row.overall.toUpperCase()}</em><small>{row.failed_checks || 0} failed · {row.warning_checks || 0} warnings · {findingCount} findings{notTestedCount ? ` · ${notTestedCount} not tested` : ""}</small></div>
             <time dateTime={row.checked_at}>{fmtTime(row.checked_at)}</time>
           </div>;
         }) : <div className="health-empty">The first Daily Health run will create the browser QA baseline.</div>}

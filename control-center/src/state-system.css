@@ -1,0 +1,48 @@
+/* Control Center shared empty/error state language.
+   This layer is intentionally presentation-only: no workflow or loading logic changes. */
+
+.empty-filter,
+.announcement-empty,
+.exhibition-empty-preview {
+  border: 1px dashed rgba(255,255,255,.09);
+  border-radius: var(--cc-radius, 16px);
+  background: rgba(255,255,255,.012);
+  color: var(--cc-muted, #75857d);
+  padding: 24px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.empty-detail {
+  color: var(--cc-muted, #75857d);
+}
+
+.empty-detail h2,
+.placeholder-panel h2 {
+  color: var(--cc-text, #eef3ef);
+}
+
+.journal-manager-error,
+.hero-editor-error,
+.inline-form-error,
+.announcement-manager-error,
+.commerce-error,
+.note-manager-error {
+  border: 1px solid rgba(229,151,151,.28) !important;
+  border-radius: var(--cc-radius-sm, 11px) !important;
+  background: rgba(229,151,151,.055) !important;
+  color: var(--cc-danger, #e59797) !important;
+  padding: 11px 13px !important;
+  font-size: 10px;
+  line-height: 1.5;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.012);
+}
+
+@media (max-width: 720px) {
+  .empty-filter,
+  .announcement-empty,
+  .exhibition-empty-preview {
+    padding: 20px 16px;
+  }
+}

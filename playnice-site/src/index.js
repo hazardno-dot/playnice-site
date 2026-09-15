@@ -3,17 +3,20 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import PrivateSelectionEnhancer from "./PrivateSelectionEnhancer";
+import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
 import MobileCommunityV2 from "./mobile-v2/community/MobileCommunityV2";
 import DesktopFooterCatalog from "./DesktopFooterCatalog";
 import CartInteractionV2 from "./CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
 import FragranceIntelligenceToneLoader from "./FragranceIntelligenceToneLoader";
+import WhatsAppLinkBridge from "./WhatsAppLinkBridge";
 import { initLocationEvents } from "./lib/locationEvents";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
 import "./NewArrivalsScale.css";
 import "./WishlistSurfacePolish.css";
+import "./WishlistHeartGold.css";
 import "./HeroPaginationPosition.css";
 import "./mobile-v2/navigation/MobileHeaderV2.css";
 import "./mobile-v2/home/MobileHomeV2.css";
@@ -28,11 +31,15 @@ import "./mobile-v2/content/MobileFaqV2.css";
 import "./mobile-v2/private-selection/MobilePrivateSelectionV2.css";
 import "./mobile-v2/private-selection/MobilePrivateSelectionDrawerV2.css";
 import "./mobile-v2/navigation/MobileClosingFooterV2.css";
+import "./mobile-v2/shop/MobileShopReveal.css";
 import "./mobile-v2/modal/MobileProductModalBase.css";
 import "./mobile-v2/modal/MobileProductModalPagerCore.css";
 import "./mobile-v2/modal/MobileProductModalPagerPolish.css";
 import "./ProductModalPurchaseV2.css";
+import "./ProductImageNormalization.css";
 import "./mobile-v2/product-page/MobileProductPage.css";
+import "./mobile-v2/product-page/MobileProductPageBadgePolish.css";
+import "./mobile-v2/product-page/MobileProductPageAccordionChevrons.css";
 import "./mobile-v2/cart-checkout/MobileCartV2.css";
 import "./mobile-v2/cart-checkout/MobileCheckoutV2.css";
 import "./mobile-v2/cart-checkout/MobileStickyCtaV2.css";
@@ -43,6 +50,18 @@ import "./HeaderLanguageColor.css";
 import "./mobile-v2/product-page/MobileProductPageNoteMap.css";
 import "./AnnouncementTiming.css";
 
+const CARD_COPY_FONT_LINK_ID = "playnice-card-copy-italic-font";
+
+const ensureDesktopCardCopyFont = () => {
+  if (document.getElementById(CARD_COPY_FONT_LINK_ID)) return;
+
+  const link = document.createElement("link");
+  link.id = CARD_COPY_FONT_LINK_ID;
+  link.rel = "stylesheet";
+  link.href = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&display=swap";
+  document.head.appendChild(link);
+};
+
 const renderApp = () => {
   initLocationEvents();
 
@@ -52,17 +71,21 @@ const renderApp = () => {
     <React.StrictMode>
       <App />
       <PrivateSelectionEnhancer />
+      <MobileShopReveal />
       <MobileMenuContact />
       <MobileCommunityV2 />
       <DesktopFooterCatalog />
       <CartInteractionV2 />
       <DiscoveryImageFallback />
       <FragranceIntelligenceToneLoader />
+      <WhatsAppLinkBridge />
     </React.StrictMode>
   );
 };
 
 if (window.matchMedia("(min-width: 769px)").matches) {
+  ensureDesktopCardCopyFont();
+
   Promise.all([
     import("./DesktopFragranceIntelligenceV2.css"),
     import("./DesktopFragranceIntelligenceHoverFix.css"),
@@ -70,6 +93,8 @@ if (window.matchMedia("(min-width: 769px)").matches) {
     import("./DesktopConfirmationBarFit.css"),
     import("./DesktopProductModalCopyV2.css"),
     import("./DesktopDiscoverCleanup.css"),
+    import("./DesktopCardCopyWidth.css"),
+    import("./DesktopFooterSocialColors.css"),
   ])
     .then(renderApp)
     .catch(renderApp);

@@ -1,0 +1,37 @@
+@media (max-width: 768px) {
+  .mobile-product-page__accordions summary span {
+    width: 18px;
+    height: 18px;
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 18px;
+    font-size: 0;
+    color: #d5b16a;
+    transform: rotate(0deg);
+    transform-origin: 50% 50%;
+    transition: transform 200ms ease, color 160ms ease;
+  }
+
+  .mobile-product-page__accordions summary span::before {
+    content: "⌄";
+    display: block;
+    font: 700 0.72rem/1 Inter, sans-serif;
+    line-height: 1;
+    transform: translateY(-1px);
+  }
+
+  .mobile-product-page__accordions details[open] > summary span {
+    transform: rotate(180deg);
+  }
+
+  .mobile-product-page__accordions summary:hover span,
+  .mobile-product-page__accordions summary:focus-visible span {
+    color: #e2c178;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-product-page__accordions summary span {
+      transition: none;
+    }
+  }
+}
