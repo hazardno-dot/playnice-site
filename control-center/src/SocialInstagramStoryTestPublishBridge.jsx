@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
+import { classifySocialMedia } from "./socialDraft.mjs";
 import "./social-instagram-test-publish.css";
 
 const isExplicitTestEvent = (event) => Boolean(
@@ -10,11 +11,8 @@ const isExplicitTestEvent = (event) => Boolean(
   String(event?.source_id || "").includes("--shadow-replay-")
 );
 
-const storyMediaSrc = (event) => String(
-  event?.approved_content?.instagram_story?.media?.src ||
-  event?.approved_content?.instagram_story?.media?.url ||
-  ""
-).trim();
+const storyMedia = (event) => event?.approved_content?.instagram_story?.media || null;
+const storyMediaSrc = (event) => String(storyMedia(event)?.src || storyMedia(event)?.url || "").trim();
 
 const isJpegCandidate = (event) => {
   const src = storyMediaSrc(event);
@@ -43,7 +41,7 @@ export default function SocialInstagramStoryTestPublishBridge() {
       .in("status", ["ready", "scheduled"])
       .order("updated_at", { ascending: false })
       .limit(20);
-    const candidate = (data || []).find((row) => isExplicitTestEvent(row) && isJpegCandidate(row)) || null;
+    const candidate = (data || []).find((row) => isExplicitTestEvent(row) && storyMediaSrc(row)) || null;
     setEvent(candidate);
   };
 
@@ -81,9 +79,12 @@ export default function SocialInstagramStoryTestPublishBridge() {
   }, []);
 
   const eventTitle = useMemo(() => titleFor(event), [event]);
+  const readiness = useMemo(() => classifySocialMedia(storyMedia(event), "instagram_story"), [event]);
+  const jpegReady = useMemo(() => isJpegCandidate(event), [event]);
+  const storyReady = Boolean(event && readiness.status === "ideal" && jpegReady);
 
   const publish = async () => {
-    if (!event || loading) return;
+    if (!storyReady || loading) return;
     const confirmed = window.confirm(`REAL TEST STORY\n\nPublish the approved Instagram Story for “${eventTitle}” to @playnice.me now?\n\nThis creates a real public Instagram Story. Scheduler remains locked.`);
     if (!confirmed) return;
 
@@ -116,17 +117,35 @@ export default function SocialInstagramStoryTestPublishBridge() {
   };
 
   if (!slot) return null;
+
+  const statusText = !event
+    ? "NO STORY MEDIA"
+    : readiness.status === "ideal" && jpegReady
+      ? "IDEAL · READY"
+      : readiness.status === "ideal"
+        ? "IDEAL FORMAT · JPEG REQUIRED"
+        : `${readiness.label} · DO NOT PUBLISH TO STORY`;
+
+  const description = !event
+    ? "Create a replay and mark it READY. Instagram Story requires a dedicated approved Story asset."
+    : readiness.status !== "ideal"
+      ? `${readiness.reason || "Story media is not ideal."} Publish is blocked until a dedicated 9:16 / Story / vertical asset is approved.`
+      : !jpegReady
+        ? "Story format is ideal, but the controlled v1 transport currently requires JPEG media."
+        : "Dedicated Story media is approved and ready. v1 publishes the image only; interactive stickers and scheduler remain out of scope.";
+
   return createPortal(
     <section className="social-instagram-test-publish">
       <div className="social-instagram-test-copy">
         <span>INSTAGRAM STORY · MANUAL TEST ONLY</span>
-        <strong>{event ? eventTitle : "No approved JPEG Story test/replay event"}</strong>
-        <p>{event ? "Approved Story image is ready as a test candidate. v1 publishes the image only; interactive stickers and scheduler remain out of scope." : "Create a replay and mark it READY. Only explicit test/replay events with approved JPEG Story media can appear here."}</p>
+        <strong>{event ? eventTitle : "No approved Story test/replay event"}</strong>
+        <p>{statusText}</p>
+        <p>{description}</p>
       </div>
       <div className="social-instagram-test-actions">
         {message ? <small className="ok">{message}</small> : null}
         {error ? <small className="error">{error}</small> : null}
-        <button type="button" onClick={publish} disabled={!event || loading}>{loading ? "Publishing test…" : "Test publish Instagram Story"}</button>
+        <button type="button" onClick={publish} disabled={!storyReady || loading}>{loading ? "Publishing test…" : "Test publish Instagram Story"}</button>
       </div>
     </section>,
     slot,
