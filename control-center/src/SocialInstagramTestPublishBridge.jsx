@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
+import "./social-instagram-test-publish.css";
 
 const isExplicitTestEvent = (event) => Boolean(
   event?.metadata?.test ||
