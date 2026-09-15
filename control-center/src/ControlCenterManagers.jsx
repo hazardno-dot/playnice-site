@@ -4,12 +4,14 @@ import DraftManager from "./DraftManager";
 import InlineValidationBridge from "./InlineValidationBridge";
 import ProductBulkPasteBridge from "./ProductBulkPasteBridge";
 import ProductMediaUploadBridge from "./ProductMediaUploadBridge";
+import ProductMediaReplaceBridge from "./ProductMediaReplaceBridge";
 import ProductMediaStatusBridge from "./ProductMediaStatusBridge";
 import DiscoveryBulkPasteBridge from "./DiscoveryBulkPasteBridge";
 import ControlledApplyManager from "./ControlledApplyManager";
 import ProductWorkflowBridge from "./ProductWorkflowBridge";
 import ProductWorkflowAdvanceBridge from "./ProductWorkflowAdvanceBridge";
 import ProductCatalogCountBridge from "./ProductCatalogCountBridge";
+import ProductCardCopyAuditBridge from "./ProductCardCopyAuditBridge";
 import JournalManager from "./JournalManager";
 import JournalApplyManager from "./JournalApplyManager";
 import NotesManager from "./NotesManager";
@@ -26,6 +28,8 @@ import HeroMediaUploadBridge from "./HeroMediaUploadBridge";
 import HeroReviewBridge from "./HeroReviewBridge";
 import HeroApplyBridge from "./HeroApplyBridge";
 import ExhibitionManager from "./ExhibitionManager";
+import AnnouncementManager from "./AnnouncementManager";
+import CommerceShippingManager from "./CommerceShippingManager";
 import SocialManager from "./SocialManager";
 import SocialMediaOverrideBridge from "./SocialMediaOverrideBridge";
 import SocialReadinessBridge from "./SocialReadinessBridge";
@@ -73,13 +77,31 @@ export default function ControlCenterManagers() {
     const mainStage = document.querySelector(".main-stage");
     if (!nav || !mainStage) return;
 
+    const resetModuleScroll = () => {
+      const reset = () => {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        mainStage.scrollTop = 0;
+        mainStage.scrollLeft = 0;
+      };
+
+      reset();
+      window.requestAnimationFrame(reset);
+    };
+
     const rememberModule = (event) => {
       const button = event.target.closest("button");
       if (!button || !nav.contains(button)) return;
+
+      const exhibitionButton = nav.querySelector("[data-exhibition-manager-nav='true']");
+      if (exhibitionButton && button !== exhibitionButton) exhibitionButton.classList.remove("active");
+
       const moduleName = button.textContent?.trim();
       if (moduleName) window.sessionStorage.setItem(ACTIVE_MODULE_KEY, moduleName);
+      resetModuleScroll();
     };
-    nav.addEventListener("click", rememberModule);
+    nav.addEventListener("click", rememberModule, true);
 
     const persisted = window.sessionStorage.getItem(ACTIVE_MODULE_KEY);
     let restoreTimer = null;
@@ -92,7 +114,11 @@ export default function ControlCenterManagers() {
           window.clearInterval(restoreTimer);
           return;
         }
-        const selector = persisted === "Hero" ? "[data-hero-manager-nav='true']" : persisted === "Exhibition" ? "[data-exhibition-manager-nav='true']" : "[data-social-manager-nav='true']";
+        const selector = persisted === "Hero"
+          ? "[data-hero-manager-nav='true']"
+          : persisted === "Exhibition"
+            ? "[data-exhibition-manager-nav='true']"
+            : "[data-social-manager-nav='true']";
         const moduleButton = nav.querySelector(selector);
         if (moduleButton) moduleButton.click();
         if (attempts >= 40) window.clearInterval(restoreTimer);
@@ -100,7 +126,7 @@ export default function ControlCenterManagers() {
     }
 
     return () => {
-      nav.removeEventListener("click", rememberModule);
+      nav.removeEventListener("click", rememberModule, true);
       if (restoreTimer) window.clearInterval(restoreTimer);
     };
   }, []);
@@ -109,17 +135,21 @@ export default function ControlCenterManagers() {
     {slots.draft ? createPortal(<DraftManager />, slots.draft) : <DraftManager />}
     <InlineValidationBridge />
     <ProductMediaUploadBridge />
+    <ProductMediaReplaceBridge />
     <ProductMediaStatusBridge />
     <ProductBulkPasteBridge />
     <DiscoveryBulkPasteBridge />
     <ProductWorkflowBridge />
     <ProductWorkflowAdvanceBridge />
     <ProductCatalogCountBridge />
+    <ProductCardCopyAuditBridge />
     <HeroManager />
     <HeroMediaUploadBridge />
     <HeroReviewBridge />
     <HeroApplyBridge />
     <ExhibitionManager />
+    <AnnouncementManager />
+    <CommerceShippingManager />
     <SocialManager />
     <SocialMediaOverrideBridge />
     <SocialReadinessBridge />
