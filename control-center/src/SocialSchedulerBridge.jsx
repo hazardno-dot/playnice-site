@@ -42,7 +42,6 @@ export default function SocialSchedulerBridge() {
 
   const refreshAfterMutation = (payload) => {
     window.dispatchEvent(new CustomEvent("playnice:social-scheduler-updated", { detail: payload }));
-    window.setTimeout(() => window.location.reload(), 650);
   };
 
   const runOnce = async () => {
