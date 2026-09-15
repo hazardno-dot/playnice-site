@@ -10,6 +10,7 @@ import {
   buildFacebookPhotoRequest,
   parseFacebookPhotoResponse,
 } from "../src/metaPublishAdapter.mjs";
+import { classifySocialMedia } from "../src/socialDraft.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -172,7 +173,19 @@ async function publishInstagramStory(event, admin) {
   if (!INSTAGRAM_STORY_TEST_PUBLISH_ENABLED) {
     return { status: 423, body: { error: "Instagram Story test publishing is locked. Set META_TEST_PUBLISH_INSTAGRAM_STORY_ENABLED=true only for the controlled manual test.", publish_enabled: false } };
   }
-  if (!event.approved_content?.instagram_story) return { status: 409, body: { error: "Approved Instagram Story snapshot is required." } };
+  const story = event.approved_content?.instagram_story;
+  if (!story) return { status: 409, body: { error: "Approved Instagram Story snapshot is required." } };
+
+  const readiness = classifySocialMedia(story.media || null, "instagram_story");
+  if (readiness.status !== "ideal") {
+    return {
+      status: 409,
+      body: {
+        error: `Instagram Story publish requires IDEAL Story media (9:16 / Story / vertical). Current asset is ${readiness.label}.`,
+        media_readiness: readiness,
+      },
+    };
+  }
 
   const createRequest = buildInstagramStoryCreateRequest({ content: event.approved_content });
   const mediaCheck = await probeImage(createRequest.body.image_url, "Instagram Story");
@@ -185,6 +198,8 @@ async function publishInstagramStory(event, admin) {
   await writeAudit(admin.token, event, admin.user.id, "test_instagram_story_published", {
     channel: "instagram_story", test_only: true, media_id, post_id: result.post_id,
     content_type: mediaCheck.content_type, source_id: event.source_id,
+    story_media_format: story.media?.format || null,
+    media_readiness: readiness.status,
     processing_attempts: processing.attempts, processing_status_code: processing.status_code,
   });
   return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, processing, result: { ...result, media_id } } };
