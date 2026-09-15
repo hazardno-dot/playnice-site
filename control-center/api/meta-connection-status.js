@@ -1,3 +1,5 @@
+import { metaCredentialState, resolveMetaPageAccessToken } from "../lib/meta-page-token.mjs";
+
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
@@ -5,7 +7,6 @@ const META_GRAPH_API_VERSION = String(process.env.META_GRAPH_API_VERSION || "").
 const META_APP_ID = String(process.env.META_APP_ID || "").trim();
 const META_APP_SECRET = String(process.env.META_APP_SECRET || "").trim();
 const META_FACEBOOK_PAGE_ID = String(process.env.META_FACEBOOK_PAGE_ID || "").trim();
-const META_PAGE_ACCESS_TOKEN = String(process.env.META_PAGE_ACCESS_TOKEN || "").trim();
 const META_INSTAGRAM_ACCOUNT_ID = String(process.env.META_INSTAGRAM_ACCOUNT_ID || "").trim();
 
 const REQUIRED_PERMISSIONS = [
@@ -46,15 +47,17 @@ async function requireAdmin(req) {
 }
 
 function envState() {
+  const credential = metaCredentialState();
   const values = {
     graph_api_version: Boolean(META_GRAPH_API_VERSION),
     app_id: Boolean(META_APP_ID),
     app_secret: Boolean(META_APP_SECRET),
     facebook_page_id: Boolean(META_FACEBOOK_PAGE_ID),
-    page_access_token: Boolean(META_PAGE_ACCESS_TOKEN),
+    system_user_access_token: credential.system_user_token,
+    page_access_token: credential.page_access_token,
     instagram_account_id: Boolean(META_INSTAGRAM_ACCOUNT_ID),
   };
-  const connectionReady = values.graph_api_version && values.facebook_page_id && values.page_access_token;
+  const connectionReady = values.graph_api_version && values.facebook_page_id && (values.system_user_access_token || values.page_access_token);
   const oauthReady = values.graph_api_version && values.app_id && values.app_secret;
   return { values, connectionReady, oauthReady };
 }
@@ -89,19 +92,22 @@ export default async function handler(req, res) {
       ...base,
       status: env.oauthReady ? "partial" : "not_configured",
       graph_verified: false,
+      credential_source: null,
       facebook_page: null,
       instagram_account: null,
     });
   }
 
   try {
+    const resolved = await resolveMetaPageAccessToken();
     const fields = "id,name,instagram_business_account{id,username}";
-    const { response, payload } = await graph(`${encodeURIComponent(META_FACEBOOK_PAGE_ID)}?fields=${encodeURIComponent(fields)}`, META_PAGE_ACCESS_TOKEN);
+    const { response, payload } = await graph(`${encodeURIComponent(META_FACEBOOK_PAGE_ID)}?fields=${encodeURIComponent(fields)}`, resolved.token);
     if (!response.ok) {
       return json(res, 200, {
         ...base,
         status: "invalid_connection",
         graph_verified: false,
+        credential_source: resolved.source,
         graph_error: {
           status: response.status,
           code: payload?.error?.code || null,
@@ -119,6 +125,7 @@ export default async function handler(req, res) {
       ...base,
       status: connected ? "connected" : "partial",
       graph_verified: true,
+      credential_source: resolved.source,
       facebook_page: payload?.id ? { id: String(payload.id), name: String(payload.name || "") } : null,
       instagram_account: instagram?.id ? { id: String(instagram.id), username: String(instagram.username || "") } : null,
       instagram_expected_match: expectedMatches,
@@ -128,6 +135,7 @@ export default async function handler(req, res) {
       ...base,
       status: "invalid_connection",
       graph_verified: false,
+      credential_source: metaCredentialState().system_user_token ? "system_user" : "page_env_fallback",
       graph_error: { message: String(error?.message || error).slice(0, 220) },
     });
   }
