@@ -153,18 +153,18 @@ export default function SocialMediaOverrideBridge() {
     const config = CHANNELS.find((item) => item.key === channel);
     if (!config || !event) throw new Error("Social media channel is unavailable.");
 
-    const storagePath = `${event.id}/${channel}-${storageSuffix}.jpg`;
+    const version = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const storagePath = `${event.id}/${channel}-${storageSuffix}-${version}.jpg`;
     const { error: uploadError } = await supabase.storage.from(BUCKET).upload(storagePath, optimized.blob, {
       contentType: "image/jpeg",
-      cacheControl: "60",
-      upsert: true,
+      cacheControl: "31536000",
+      upsert: false,
     });
     if (uploadError) throw new Error(`STORAGE UPLOAD FAILED: ${uploadError.message || String(uploadError)}`);
 
     const { data: publicData } = supabase.storage.from(BUCKET).getPublicUrl(storagePath);
-    const baseUrl = String(publicData?.publicUrl || "").trim();
-    if (!baseUrl) throw new Error("Could not create a public Social media URL.");
-    const publicUrl = `${baseUrl}?v=${Date.now()}`;
+    const publicUrl = String(publicData?.publicUrl || "").trim();
+    if (!publicUrl) throw new Error("Could not create a public Social media URL.");
     const entry = {
       src: publicUrl,
       url: publicUrl,
