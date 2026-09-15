@@ -111,11 +111,11 @@ for each row execute function public.set_social_events_updated_at();
 
 -- Atomically lease one due event. Keeping status='scheduled' while leased means the
 -- existing UI/status model remains stable; execution_token + lease_until provide the claim.
--- Shadow events are claimed only once after a successful shadow execution. If publish_mode
--- is later changed to approval/auto, shadow_executed_at does not block the future live path.
+-- The publish mode is explicit so the shadow executor can never claim approval/auto work.
 create or replace function public.claim_due_social_event(
   p_now timestamptz default now(),
-  p_lease_seconds integer default 120
+  p_lease_seconds integer default 120,
+  p_publish_mode text default 'shadow'
 )
 returns setof public.social_events
 language plpgsql
@@ -125,16 +125,21 @@ as $$
 declare
   claimed_id uuid;
 begin
+  if p_publish_mode not in ('shadow','approval','auto') then
+    raise exception 'Unsupported publish mode: %', p_publish_mode;
+  end if;
+
   select e.id
     into claimed_id
     from public.social_events e
    where e.status = 'scheduled'
+     and e.publish_mode = p_publish_mode
      and e.approved_content is not null
      and e.scheduled_for is not null
      and e.scheduled_for <= p_now
      and (e.next_retry_at is null or e.next_retry_at <= p_now)
      and (e.execution_lease_until is null or e.execution_lease_until <= p_now)
-     and (e.publish_mode <> 'shadow' or e.shadow_executed_at is null)
+     and (p_publish_mode <> 'shadow' or e.shadow_executed_at is null)
    order by coalesce(e.next_retry_at, e.scheduled_for), e.created_at
    for update skip locked
    limit 1;
@@ -153,5 +158,5 @@ begin
 end;
 $$;
 
-revoke all on function public.claim_due_social_event(timestamptz, integer) from public, anon;
-grant execute on function public.claim_due_social_event(timestamptz, integer) to authenticated;
+revoke all on function public.claim_due_social_event(timestamptz, integer, text) from public, anon;
+grant execute on function public.claim_due_social_event(timestamptz, integer, text) to authenticated;
