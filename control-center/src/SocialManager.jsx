@@ -74,6 +74,9 @@ function SocialWorkspace() {
   const [auditError, setAuditError] = useState("");
   const [saving, setSaving] = useState(false);
   const [actionError, setActionError] = useState("");
+  const [feedDryRun, setFeedDryRun] = useState(null);
+  const [feedDryRunLoading, setFeedDryRunLoading] = useState(false);
+  const [feedDryRunError, setFeedDryRunError] = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -132,10 +135,18 @@ function SocialWorkspace() {
     setScheduleFor(localInputValue(selected.scheduled_for || undefined));
     setCopiedKey("");
     setActionError("");
+    setFeedDryRun(null);
+    setFeedDryRunError("");
     loadAudit(selected.id);
   }, [selected?.id, selected?.updated_at, generated]);
 
-  const updateCaption = (key, value) => setEditing((current) => ({ ...current, [key]: { caption: value } }));
+  const updateCaption = (key, value) => {
+    setEditing((current) => ({ ...current, [key]: { caption: value } }));
+    if (key === "instagram_feed") {
+      setFeedDryRun(null);
+      setFeedDryRunError("");
+    }
+  };
 
   const copyText = async (value, key) => {
     const text = String(value || "");
@@ -173,6 +184,32 @@ function SocialWorkspace() {
     const token = sessionData?.session?.access_token;
     if (sessionError || !token) throw sessionError || new Error("Authenticated admin session is required.");
     return token;
+  };
+
+  const previewInstagramFeed = async () => {
+    if (!draft?.instagram_feed) return;
+    setFeedDryRunLoading(true);
+    setFeedDryRunError("");
+    try {
+      const token = await sessionToken();
+      const content = {
+        ...draft.instagram_feed,
+        caption: editing?.instagram_feed?.caption ?? draft.instagram_feed.caption ?? "",
+      };
+      const response = await fetch("/api/social-publish-dry-run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ content }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Instagram Feed dry run failed (${response.status}).`);
+      setFeedDryRun(payload.dry_run || null);
+    } catch (dryRunError) {
+      setFeedDryRun(null);
+      setFeedDryRunError(dryRunError.message || String(dryRunError));
+    } finally {
+      setFeedDryRunLoading(false);
+    }
   };
 
   const persist = async (action, extra = {}) => {
@@ -298,6 +335,20 @@ function SocialWorkspace() {
                 : "All channels have ideal media. Backend verifies public image availability before approval."
               : `Missing media: ${mediaReadiness.blocking.map(label).join(", ")}.`}</p>
           </div>
+
+          <section className="social-history social-dry-run">
+            <div className="social-history-head">
+              <div><span>INSTAGRAM FEED · META DRY RUN</span><strong>{feedDryRun ? "PAYLOAD READY" : "NO REQUEST SENT"}</strong></div>
+              <button type="button" disabled={feedDryRunLoading || !draft?.instagram_feed?.media} onClick={previewInstagramFeed}>{feedDryRunLoading ? "Building…" : "Preview Meta payload"}</button>
+            </div>
+            {feedDryRunError ? <div className="social-history-empty">Dry run failed: {feedDryRunError}</div> : null}
+            {feedDryRun ? <div className="social-history-list">
+              <div className="social-history-item"><span className="social-history-dot" aria-hidden="true" /><div><strong>1. Create media container</strong><p>{feedDryRun.create?.method} {feedDryRun.create?.url}</p></div><time>NETWORK · NO</time></div>
+              <div className="social-history-item"><span className="social-history-dot" aria-hidden="true" /><div><strong>Image URL</strong><p>{feedDryRun.create?.body?.image_url}</p></div><time>TOKEN · NO</time></div>
+              <div className="social-history-item"><span className="social-history-dot" aria-hidden="true" /><div><strong>Caption</strong><p>{feedDryRun.create?.body?.caption}</p></div><time>{String(feedDryRun.create?.body?.caption || "").length} chars</time></div>
+              <div className="social-history-item"><span className="social-history-dot" aria-hidden="true" /><div><strong>2. Publish media container</strong><p>{feedDryRun.publish_template?.method} {feedDryRun.publish_template?.url} · creation_id=&lt;MEDIA_CONTAINER_ID&gt;</p></div><time>PUBLISH · LOCKED</time></div>
+            </div> : <div className="social-history-empty">Builds the exact Instagram Feed Graph request descriptor for this event. No Meta network request is made and no access token is returned to the browser.</div>}
+          </section>
 
           {selected.status === "ready" ? <div className="social-schedule-row">
             <div><span>SCHEDULE</span><strong>Choose future date & time</strong></div>
