@@ -29,6 +29,7 @@ import ExhibitionManager from "./ExhibitionManager";
 import SocialManager from "./SocialManager";
 import SocialMediaOverrideBridge from "./SocialMediaOverrideBridge";
 import SocialReadinessBridge from "./SocialReadinessBridge";
+import SocialSchedulerBridge from "./SocialSchedulerBridge";
 import SocialInstagramTestPublishBridge from "./SocialInstagramTestPublishBridge";
 import SocialFacebookTestPublishBridge from "./SocialFacebookTestPublishBridge";
 import SocialInstagramStoryTestPublishBridge from "./SocialInstagramStoryTestPublishBridge";
@@ -122,6 +123,7 @@ export default function ControlCenterManagers() {
     <SocialManager />
     <SocialMediaOverrideBridge />
     <SocialReadinessBridge />
+    <SocialSchedulerBridge />
     <SocialInstagramTestPublishBridge />
     <SocialFacebookTestPublishBridge />
     <SocialInstagramStoryTestPublishBridge />
