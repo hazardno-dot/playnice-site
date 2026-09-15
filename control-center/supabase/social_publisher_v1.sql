@@ -111,7 +111,8 @@ for each row execute function public.set_social_events_updated_at();
 
 -- Atomically lease one due event. Keeping status='scheduled' while leased means the
 -- existing UI/status model remains stable; execution_token + lease_until provide the claim.
--- The publish mode is explicit so the shadow executor can never claim approval/auto work.
+-- Shadow events are claimed only once after a successful shadow execution. The explicit
+-- publish_mode argument means shadow workers can never claim future approval/auto events.
 create or replace function public.claim_due_social_event(
   p_now timestamptz default now(),
   p_lease_seconds integer default 120,
@@ -160,3 +161,4 @@ $$;
 
 revoke all on function public.claim_due_social_event(timestamptz, integer, text) from public, anon;
 grant execute on function public.claim_due_social_event(timestamptz, integer, text) to authenticated;
+grant execute on function public.claim_due_social_event(timestamptz, integer, text) to service_role;
