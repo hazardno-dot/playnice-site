@@ -32,6 +32,21 @@ const row = {
 
 const small = { color: "#789184", fontSize: 12, letterSpacing: ".04em" };
 
+const checkButton = (loading) => ({
+  minWidth: 142,
+  padding: "9px 13px",
+  border: "1px solid rgba(102, 165, 129, 0.5)",
+  background: loading ? "rgba(21, 34, 27, 0.7)" : "#101a15",
+  color: loading ? "#76877d" : "#a9d3b9",
+  fontSize: 12,
+  letterSpacing: ".03em",
+  lineHeight: 1.2,
+  cursor: loading ? "wait" : "pointer",
+  opacity: loading ? 0.8 : 1,
+  outline: "none",
+  boxShadow: "none",
+});
+
 async function getAdminToken() {
   const { data: refreshData } = await supabase.auth.refreshSession().catch(() => ({ data: null }));
   if (refreshData?.session?.access_token) return refreshData.session.access_token;
@@ -89,7 +104,9 @@ export default function MetaConnectionPanel() {
 
       <div style={row}>
         <div style={small}>App ID {env.app_id ? "✓" : "—"} · App secret {env.app_secret ? "✓" : "—"} · Page ID {env.facebook_page_id ? "✓" : "—"} · System User {env.system_user_access_token ? "✓" : "—"} · Page fallback {env.page_access_token ? "✓" : "—"} · IG ID {env.instagram_account_id ? "✓" : "—"}</div>
-        <button type="button" onClick={load} disabled={state.loading}>{state.loading ? "Checking…" : "Check connection"}</button>
+        <button type="button" onClick={load} disabled={state.loading} style={checkButton(state.loading)}>
+          {state.loading ? "Checking connection…" : "Check connection"}
+        </button>
       </div>
 
       {data.graph_error?.message ? <div className="social-error">Meta Graph: {data.graph_error.message}</div> : null}
