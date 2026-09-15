@@ -30,26 +30,39 @@ export default function SocialSchedulerBridge() {
     return () => observer.disconnect();
   }, []);
 
-  const runOnce = async () => {
+  const token = async () => {
+    const { data: refreshData } = await supabase.auth.refreshSession().catch(() => ({ data: null }));
+    if (refreshData?.session?.access_token) return refreshData.session.access_token;
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError) throw sessionError;
+    const value = sessionData?.session?.access_token || "";
+    if (!value) throw new Error("Authenticated admin session is required.");
+    return value;
+  };
+
+  const runOnce = async (forceFailure = false) => {
     if (running) return;
     setRunning(true);
     setResult(null);
     try {
-      const { data: refreshData } = await supabase.auth.refreshSession().catch(() => ({ data: null }));
-      let token = refreshData?.session?.access_token || "";
-      if (!token) {
-        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-        if (sessionError) throw sessionError;
-        token = sessionData?.session?.access_token || "";
-      }
-      if (!token) throw new Error("Authenticated admin session is required.");
-
+      const accessToken = await token();
       const response = await fetch("/api/social-scheduler-shadow", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-        body: "{}",
+        headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ force_failure: forceFailure }),
       });
       const payload = await response.json().catch(() => ({}));
+
+      if (forceFailure && payload?.retry) {
+        const retry = payload.retry;
+        const text = retry.exhausted
+          ? `FORCED FAILURE · retry ${retry.retry_count}/3 · event moved to FAILED`
+          : `FORCED FAILURE · retry ${retry.retry_count}/3 · next ${new Date(retry.next_retry_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+        setResult({ ok: false, text });
+        window.dispatchEvent(new CustomEvent("playnice:social-scheduler-updated", { detail: payload }));
+        return;
+      }
+
       if (!response.ok) throw new Error(payload.error || `Shadow scheduler failed (${response.status}).`);
 
       if (!payload.executed) {
@@ -74,9 +87,14 @@ export default function SocialSchedulerBridge() {
         <strong style={{ fontSize: 14, fontWeight: 500, color: result ? (result.ok ? "#9fd5b1" : "#e0a3a3") : "#d6ded8" }}>{result?.text || "Manual execution test · due SCHEDULED events only"}</strong>
         <small style={{ color: "#7f9186" }}>Atomic lease · idempotent shadow completion · retry backoff · Meta transport remains locked</small>
       </div>
-      <button type="button" disabled={running} onClick={runOnce} style={{ minWidth: 205, padding: "10px 13px", border: "1px solid #456150", background: "#122019", color: "#b8ddc4", cursor: running ? "wait" : "pointer" }}>
-        {running ? "Running…" : "Run shadow scheduler once"}
-      </button>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
+        <button type="button" disabled={running} onClick={() => runOnce(false)} style={{ minWidth: 190, padding: "10px 13px", border: "1px solid #456150", background: "#122019", color: "#b8ddc4", cursor: running ? "wait" : "pointer" }}>
+          {running ? "Running…" : "Run shadow scheduler once"}
+        </button>
+        <button type="button" disabled={running} onClick={() => runOnce(true)} title="Test-only: forced failure is accepted only for explicit replay/test events." style={{ minWidth: 155, padding: "10px 13px", border: "1px solid #6b5142", background: "#201711", color: "#e0b999", cursor: running ? "wait" : "pointer" }}>
+          Test retry failure
+        </button>
+      </div>
     </section>,
     slot,
   );
