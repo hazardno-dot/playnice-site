@@ -90,9 +90,32 @@ export default function ControlCenterManagers() {
       window.requestAnimationFrame(reset);
     };
 
+    const clearSocialDisplayState = (targetButton) => {
+      const socialButton = nav.querySelector("[data-social-manager-nav='true']");
+      if (!socialButton || targetButton === socialButton) return;
+
+      const socialSlot = mainStage.querySelector("#social-manager-slot");
+      const topbar = mainStage.querySelector(".topbar");
+      const socialIsActive = socialButton.classList.contains("active") || socialSlot?.style.display === "block";
+      if (!socialIsActive) return;
+
+      socialButton.classList.remove("active");
+      if (socialSlot) socialSlot.style.display = "none";
+
+      [...mainStage.children].forEach((child) => {
+        if (child === topbar || child === socialSlot) return;
+        if (child.dataset.socialPreviousDisplay !== undefined) {
+          child.style.display = child.dataset.socialPreviousDisplay;
+          delete child.dataset.socialPreviousDisplay;
+        }
+      });
+    };
+
     const rememberModule = (event) => {
       const button = event.target.closest("button");
       if (!button || !nav.contains(button)) return;
+
+      clearSocialDisplayState(button);
 
       const exhibitionButton = nav.querySelector("[data-exhibition-manager-nav='true']");
       if (exhibitionButton && button !== exhibitionButton) exhibitionButton.classList.remove("active");
