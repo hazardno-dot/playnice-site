@@ -3,13 +3,16 @@ import {
   parseInstagramFeedCreateResponse,
   buildInstagramFeedPublishRequest,
   parseInstagramFeedPublishResponse,
+  buildFacebookPhotoRequest,
+  parseFacebookPhotoResponse,
 } from "../src/metaPublishAdapter.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const META_PAGE_ACCESS_TOKEN = process.env.META_PAGE_ACCESS_TOKEN;
 const META_GRAPH_API_VERSION = process.env.META_GRAPH_API_VERSION || "v26.0";
-const TEST_PUBLISH_ENABLED = process.env.META_TEST_PUBLISH_INSTAGRAM_FEED_ENABLED === "true";
+const INSTAGRAM_TEST_PUBLISH_ENABLED = process.env.META_TEST_PUBLISH_INSTAGRAM_FEED_ENABLED === "true";
+const FACEBOOK_TEST_PUBLISH_ENABLED = process.env.META_TEST_PUBLISH_FACEBOOK_ENABLED === "true";
 const json = (res, status, body) => res.status(status).json(body);
 const TRANSIENT_SUPABASE_STATUSES = new Set([502, 503, 504]);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -58,7 +61,7 @@ const isExplicitTestEvent = (event) => Boolean(
   String(event?.source_id || "").includes("--shadow-replay-")
 );
 
-async function probeInstagramImage(url) {
+async function probeImage(url, channel) {
   let response;
   try {
     response = await fetch(url, { method: "HEAD", redirect: "follow" });
@@ -66,12 +69,13 @@ async function probeInstagramImage(url) {
       response = await fetch(url, { method: "GET", redirect: "follow", headers: { Range: "bytes=0-0" } });
     }
   } catch (error) {
-    throw new Error(`Instagram image is not publicly reachable: ${error?.message || String(error)}`);
+    throw new Error(`${channel} image is not publicly reachable: ${error?.message || String(error)}`);
   }
-  if (!response.ok && response.status !== 206) throw new Error(`Instagram image returned HTTP ${response.status}.`);
+  if (!response.ok && response.status !== 206) throw new Error(`${channel} image returned HTTP ${response.status}.`);
   const contentType = String(response.headers.get("content-type") || "").split(";")[0].trim().toLowerCase();
-  if (contentType !== "image/jpeg") {
-    throw new Error(`Instagram Feed test publish requires JPEG media; received ${contentType || "unknown content type"}.`);
+  const allowed = channel === "Facebook Page" ? ["image/jpeg", "image/png"] : ["image/jpeg"];
+  if (!allowed.includes(contentType)) {
+    throw new Error(`${channel} test publish requires ${channel === "Facebook Page" ? "JPEG or PNG" : "JPEG"} media; received ${contentType || "unknown content type"}.`);
   }
   return { content_type: contentType, public_media_verified: true };
 }
@@ -119,30 +123,61 @@ async function waitForInstagramMedia(mediaId) {
     const statusCode = String(payload?.status_code || "").trim().toUpperCase();
     const statusText = String(payload?.status || "").trim();
     lastStatus = { status_code: statusCode || null, status: statusText || null, attempts: attempt };
-
     if (statusCode === "FINISHED") return lastStatus;
     if (["ERROR", "EXPIRED"].includes(statusCode)) {
       throw new Error(`Instagram media container ${statusCode.toLowerCase()} before publish${statusText ? `: ${statusText}` : "."}`);
     }
-
     if (attempt < MEDIA_PROCESSING_MAX_ATTEMPTS) await sleep(MEDIA_PROCESSING_DELAY_MS);
   }
-
   throw new Error(`Instagram media container was not ready after ${MEDIA_PROCESSING_MAX_ATTEMPTS} checks (last status: ${lastStatus?.status_code || "unknown"}).`);
 }
 
-async function writeAudit(token, event, userId, details) {
+async function writeAudit(token, event, userId, action, details) {
   const response = await supabaseFetch("/rest/v1/social_audit_log", token, {
     method: "POST",
     headers: { Prefer: "return=minimal" },
-    body: JSON.stringify({
-      social_event_id: event.id,
-      action: "test_instagram_feed_published",
-      actor_id: userId,
-      details,
-    }),
+    body: JSON.stringify({ social_event_id: event.id, action, actor_id: userId, details }),
   });
-  if (!response.ok) console.warn("Instagram Feed test publish audit write failed", response.status);
+  if (!response.ok) console.warn(`${action} audit write failed`, response.status);
+}
+
+async function publishInstagram(event, admin) {
+  if (!INSTAGRAM_TEST_PUBLISH_ENABLED) {
+    return { status: 423, body: { error: "Instagram Feed test publishing is locked. Set META_TEST_PUBLISH_INSTAGRAM_FEED_ENABLED=true only for the controlled manual test.", publish_enabled: false } };
+  }
+  if (!event.approved_content?.instagram_feed) return { status: 409, body: { error: "Approved Instagram Feed snapshot is required." } };
+
+  const createRequest = buildInstagramFeedCreateRequest({ content: event.approved_content });
+  const mediaCheck = await probeImage(createRequest.body.image_url, "Instagram Feed");
+  const createPayload = await metaPost(createRequest);
+  const { media_id } = parseInstagramFeedCreateResponse(createPayload);
+  const processing = await waitForInstagramMedia(media_id);
+  const publishRequest = buildInstagramFeedPublishRequest({ creation_id: media_id });
+  const publishPayload = await metaPost(publishRequest);
+  const result = parseInstagramFeedPublishResponse(publishPayload);
+  await writeAudit(admin.token, event, admin.user.id, "test_instagram_feed_published", {
+    channel: "instagram_feed", test_only: true, media_id, post_id: result.post_id,
+    content_type: mediaCheck.content_type, source_id: event.source_id,
+    processing_attempts: processing.attempts, processing_status_code: processing.status_code,
+  });
+  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, processing, result: { ...result, media_id } } };
+}
+
+async function publishFacebookPage(event, admin) {
+  if (!FACEBOOK_TEST_PUBLISH_ENABLED) {
+    return { status: 423, body: { error: "Facebook Page test publishing is locked. Set META_TEST_PUBLISH_FACEBOOK_ENABLED=true only for the controlled manual test.", publish_enabled: false } };
+  }
+  if (!event.approved_content?.facebook) return { status: 409, body: { error: "Approved Facebook snapshot is required." } };
+
+  const request = buildFacebookPhotoRequest({ content: event.approved_content });
+  const mediaCheck = await probeImage(request.body.url, "Facebook Page");
+  const payload = await metaPost(request);
+  const result = parseFacebookPhotoResponse(payload);
+  await writeAudit(admin.token, event, admin.user.id, "test_facebook_published", {
+    channel: "facebook", test_only: true, media_id: result.media_id, post_id: result.post_id,
+    content_type: mediaCheck.content_type, source_id: event.source_id,
+  });
+  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, result } };
 }
 
 export default async function handler(req, res) {
@@ -150,16 +185,12 @@ export default async function handler(req, res) {
 
   const admin = await requireAdmin(req);
   if (admin.error) return json(res, admin.status, { error: admin.error });
-  if (!TEST_PUBLISH_ENABLED) {
-    return json(res, 423, {
-      error: "Instagram Feed test publishing is locked. Set META_TEST_PUBLISH_INSTAGRAM_FEED_ENABLED=true only for the controlled manual test.",
-      publish_enabled: false,
-    });
-  }
   if (!META_PAGE_ACCESS_TOKEN) return json(res, 503, { error: "META_PAGE_ACCESS_TOKEN is not configured." });
 
   const eventId = String(req.body?.event_id || "").trim();
+  const channel = String(req.body?.channel || "instagram_feed").trim();
   if (!eventId) return json(res, 400, { error: "event_id is required." });
+  if (!["instagram_feed", "facebook"].includes(channel)) return json(res, 400, { error: "Unsupported manual Meta test channel." });
 
   const eventRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(eventId)}&select=*`, admin.token);
   const events = await safeJson(eventRes);
@@ -168,43 +199,11 @@ export default async function handler(req, res) {
   if (!event) return json(res, 404, { error: "Social event not found." });
   if (!isExplicitTestEvent(event)) return json(res, 403, { error: "Real Meta test publishing is allowed only for explicit test/replay Social events." });
   if (!["ready", "scheduled"].includes(event.status)) return json(res, 409, { error: "Test event must be READY or SCHEDULED with an approved snapshot." });
-  if (!event.approved_content?.instagram_feed) return json(res, 409, { error: "Approved Instagram Feed snapshot is required." });
 
   try {
-    const createRequest = buildInstagramFeedCreateRequest({ content: event.approved_content });
-    const mediaCheck = await probeInstagramImage(createRequest.body.image_url);
-    const createPayload = await metaPost(createRequest);
-    const { media_id } = parseInstagramFeedCreateResponse(createPayload);
-    const processing = await waitForInstagramMedia(media_id);
-    const publishRequest = buildInstagramFeedPublishRequest({ creation_id: media_id });
-    const publishPayload = await metaPost(publishRequest);
-    const result = parseInstagramFeedPublishResponse(publishPayload);
-
-    await writeAudit(admin.token, event, admin.user.id, {
-      channel: "instagram_feed",
-      test_only: true,
-      media_id,
-      post_id: result.post_id,
-      content_type: mediaCheck.content_type,
-      source_id: event.source_id,
-      processing_attempts: processing.attempts,
-      processing_status_code: processing.status_code,
-    });
-
-    return json(res, 200, {
-      ok: true,
-      mode: "manual_test_publish",
-      test_only: true,
-      event_id: event.id,
-      processing,
-      result: { ...result, media_id },
-    });
+    const outcome = channel === "facebook" ? await publishFacebookPage(event, admin) : await publishInstagram(event, admin);
+    return json(res, outcome.status, outcome.body);
   } catch (error) {
-    return json(res, 400, {
-      ok: false,
-      mode: "manual_test_publish",
-      test_only: true,
-      error: error?.message || String(error),
-    });
+    return json(res, 400, { ok: false, mode: "manual_test_publish", test_only: true, channel, error: error?.message || String(error) });
   }
 }
