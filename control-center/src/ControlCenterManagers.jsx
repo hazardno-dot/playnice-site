@@ -29,6 +29,7 @@ import ExhibitionManager from "./ExhibitionManager";
 import SocialManager from "./SocialManager";
 import MetaConnectionBridge from "./MetaConnectionBridge";
 import "./header-layout.css";
+import "./social-dry-run.css";
 
 const ACTIVE_MODULE_KEY = "playnice_cc_active_module";
 
