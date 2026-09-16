@@ -42,13 +42,6 @@ const syncUnderlyingSize = (size) => {
 const getUnderlyingWishlistState = () =>
   Boolean(document.querySelector(".product-modal .modal-wishlist-btn.active"));
 
-const hasRealBlockingOverlay = () =>
-  Boolean(
-    document.querySelector(
-      ".cart-drawer.open, .checkout-modal.open, .story-drawer.open, .how-it-works-drawer.open, .private-selection-drawer.open, .journal-panel.open"
-    )
-  );
-
 const decorateBadge = () => {
   const badge = document.querySelector(".desktop-product-page__badge");
   if (!badge || badge.dataset.lettersReady === "true") return;
@@ -138,25 +131,6 @@ export default function DesktopProductPageBridge() {
 
     document.body.classList.add("desktop-product-route-active");
 
-    const unlockPage = () => {
-      if (!hasRealBlockingOverlay()) {
-        document.body.classList.remove("overlay-lock");
-        document.body.style.position = "";
-        document.body.style.top = "";
-        document.body.style.width = "";
-        document.body.style.overflow = "";
-        document.documentElement.style.overflow = "";
-      }
-    };
-
-    unlockPage();
-
-    const bodyObserver = new MutationObserver(unlockPage);
-    bodyObserver.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["class", "style"],
-    });
-
     const firstSize = Object.keys(product?.sizes || {})[0] || "";
     setSelectedSize(firstSize);
 
@@ -175,7 +149,6 @@ export default function DesktopProductPageBridge() {
     return () => {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(delayedSync);
-      bodyObserver.disconnect();
       document.body.classList.remove("desktop-product-route-active");
     };
   }, [active, product?.slug]);
