@@ -9,8 +9,14 @@
     background: #050505;
   }
 
+  /*
+   * HeaderNext used to occupy 108px in normal document flow.
+   * Once fixed, reserve that same physical height plus the original
+   * breathing room so the PDP starts at the same Y position as before.
+   * Do not depend on --announcement-height being defined on this route.
+   */
   body.desktop-product-route-active main {
-    padding-top: calc(var(--announcement-height) + 58px + 108px) !important;
+    padding-top: 166px !important;
   }
 
   body.desktop-product-route-active .desktop-product-page__sizes button {
