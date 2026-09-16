@@ -112,6 +112,7 @@
     place-items: center;
     overflow: hidden;
     border-radius: inherit;
+    cursor: pointer;
   }
 
   body.desktop-product-route-active .desktop-product-page__visual.is-note-map-open .desktop-product-page__image-button {
@@ -120,6 +121,51 @@
 
   body.desktop-product-route-active .desktop-product-page__note-map-trigger {
     margin-top: 12px;
+  }
+
+  /* Mobile badge language, scaled for desktop. No letter-drop animation. */
+  body.desktop-product-route-active .desktop-product-page__badge {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: fit-content;
+    min-height: 0;
+    padding: 3px 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ebcf8e;
+    text-shadow: 0 0 12px rgba(220,181,107,0.14), 0 6px 18px rgba(0,0,0,0.34);
+    box-shadow: none;
+    filter: saturate(1.04);
+  }
+
+  body.desktop-product-route-active .desktop-product-page__badge::before,
+  body.desktop-product-route-active .desktop-product-page__badge::after {
+    content: "";
+    width: 24px;
+    height: 1px;
+    flex: 0 0 24px;
+    opacity: 0.86;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__badge::before {
+    background: linear-gradient(90deg, transparent 0%, rgba(220,181,107,0.25) 28%, rgba(237,207,136,0.86) 100%);
+  }
+
+  body.desktop-product-route-active .desktop-product-page__badge::after {
+    background: linear-gradient(90deg, rgba(237,207,136,0.86) 0%, rgba(220,181,107,0.25) 72%, transparent 100%);
   }
 
   body.desktop-product-route-active .desktop-product-page__eyebrow {
@@ -216,6 +262,75 @@
 
   body.desktop-product-route-active .desktop-product-page__sizes {
     gap: 8px;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__sizes button {
+    position: relative;
+    overflow: hidden;
+    min-height: 72px;
+    padding: 12px 14px 10px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(16,16,16,0.92);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.018);
+    transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__sizes button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(220,181,107,0.24);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.012), 0 10px 22px rgba(0,0,0,0.20);
+  }
+
+  body.desktop-product-route-active .desktop-product-page__sizes button > span {
+    display: block;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    line-height: 1.05;
+    font-weight: 750;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: rgba(255,248,235,0.82);
+  }
+
+  body.desktop-product-route-active .desktop-product-page__sizes button > strong {
+    display: block;
+    margin-top: 7px;
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: #f6f1e8;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__sizes button.is-active {
+    border-color: rgba(220,181,107,0.58);
+    background: linear-gradient(180deg, rgba(220,181,107,0.12), rgba(220,181,107,0.04)), rgba(18,16,12,0.98);
+    box-shadow: inset 0 0 0 1px rgba(220,181,107,0.16), 0 16px 34px rgba(0,0,0,0.34), 0 0 24px rgba(220,181,107,0.10);
+  }
+
+  body.desktop-product-route-active .desktop-product-page__sizes button.is-active > span {
+    color: rgba(255,244,220,0.92);
+  }
+
+  body.desktop-product-route-active .desktop-product-page__sizes button.is-active > strong {
+    background: linear-gradient(120deg, #f3d9a4 0%, #e6c88f 30%, #dcb56b 55%, #f0d39a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #dcb56b;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__sizes button.is-active::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #f0cd83;
+    box-shadow: 0 0 0 3px rgba(220,181,107,0.09), 0 0 11px rgba(220,181,107,0.58);
   }
 
   body.desktop-product-route-active .desktop-product-page__actions {
