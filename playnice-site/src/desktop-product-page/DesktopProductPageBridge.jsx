@@ -42,6 +42,18 @@ const syncUnderlyingSize = (size) => {
 const getUnderlyingWishlistState = () =>
   Boolean(document.querySelector(".product-modal .modal-wishlist-btn.active"));
 
+const closeLegacyProductModalAfterNavigation = () => {
+  window.setTimeout(() => {
+    if (window.location.pathname.startsWith("/product/")) return;
+
+    const legacyCloseButton = document.querySelector(
+      '.product-modal .close-button[aria-label="Zatvori prozor"], .product-modal .close-button[aria-label="Close modal"], .product-modal .close-button'
+    );
+
+    legacyCloseButton?.click();
+  }, 0);
+};
+
 export default function DesktopProductPageBridge() {
   const [product, setProduct] = useState(() => getProductFromPath());
   const [lang, setLang] = useState(() => getDesktopLanguage());
@@ -98,12 +110,19 @@ export default function DesktopProductPageBridge() {
   }, [active]);
 
   useEffect(() => {
-    const observer = new MutationObserver(() => setLang(getDesktopLanguage()));
+    const syncLanguage = () => setLang(getDesktopLanguage());
+    const observer = new MutationObserver(syncLanguage);
+
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["lang"],
     });
-    return () => observer.disconnect();
+
+    window.addEventListener("focus", syncLanguage);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("focus", syncLanguage);
+    };
   }, []);
 
   useEffect(() => {
@@ -207,10 +226,11 @@ export default function DesktopProductPageBridge() {
     if (!active) return undefined;
 
     const handleHeaderNavigationCapture = (event) => {
-      const navTarget = event.target.closest?.(
+      const navigationTarget = event.target.closest?.(
         ".header-next-brand, .header-next-link"
       );
-      if (!navTarget) return;
+
+      if (!navigationTarget) return;
 
       document.body.classList.add("desktop-product-route-leaving");
 
@@ -221,10 +241,7 @@ export default function DesktopProductPageBridge() {
         window.history.replaceState(nextState, "", window.location.href);
       }
 
-      const legacyCloseButton = document.querySelector(
-        '.product-modal .close-button[aria-label="Zatvori prozor"], .product-modal .close-button[aria-label="Close modal"], .product-modal .close-button'
-      );
-      legacyCloseButton?.click();
+      closeLegacyProductModalAfterNavigation();
 
       window.setTimeout(() => {
         document.body.classList.remove("desktop-product-route-leaving");
@@ -244,13 +261,14 @@ export default function DesktopProductPageBridge() {
     const handleNoteMapClick = (event) => {
       const stage = event.target.closest?.(".desktop-product-page__note-map-stage");
       if (!stage) return;
-      if (event.target.closest?.(".the-note-map__trigger")) return;
 
+      event.preventDefault();
+      event.stopPropagation();
       document.querySelector(".desktop-product-page__note-map-trigger")?.click();
     };
 
-    document.addEventListener("click", handleNoteMapClick);
-    return () => document.removeEventListener("click", handleNoteMapClick);
+    document.addEventListener("click", handleNoteMapClick, true);
+    return () => document.removeEventListener("click", handleNoteMapClick, true);
   }, [active, product?.slug]);
 
   const selectedProduct = useMemo(() => product, [product]);
