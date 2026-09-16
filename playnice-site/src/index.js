@@ -51,6 +51,7 @@ import "./HeaderLanguageColor.css";
 import "./mobile-v2/product-page/MobileProductPageNoteMap.css";
 import "./AnnouncementTiming.css";
 import "./desktop-product-page/DesktopProductPageCompositionFix.css";
+import "./desktop-product-page/DesktopProductPageInteractionFix.css";
 
 const CARD_COPY_FONT_LINK_ID = "playnice-card-copy-italic-font";
 
