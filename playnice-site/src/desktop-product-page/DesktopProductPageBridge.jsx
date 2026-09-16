@@ -222,6 +222,41 @@ export default function DesktopProductPageBridge() {
     };
   }, [active, product?.slug]);
 
+  useEffect(() => {
+    if (!active) return undefined;
+
+    const handleHeaderNavigationCapture = (event) => {
+      const navTarget = event.target.closest?.(
+        ".header-next-brand, .header-next-link"
+      );
+      if (!navTarget) return;
+
+      document.body.classList.add("desktop-product-route-leaving");
+
+      const state = window.history.state || {};
+      if (state.playniceProductModal) {
+        const nextState = { ...state };
+        delete nextState.playniceProductModal;
+        window.history.replaceState(nextState, "", window.location.href);
+      }
+
+      const legacyCloseButton = document.querySelector(
+        '.product-modal .close-button[aria-label="Zatvori prozor"], .product-modal .close-button[aria-label="Close modal"], .product-modal .close-button'
+      );
+      legacyCloseButton?.click();
+
+      window.setTimeout(() => {
+        document.body.classList.remove("desktop-product-route-leaving");
+      }, 700);
+    };
+
+    document.addEventListener("click", handleHeaderNavigationCapture, true);
+    return () => {
+      document.removeEventListener("click", handleHeaderNavigationCapture, true);
+      document.body.classList.remove("desktop-product-route-leaving");
+    };
+  }, [active]);
+
   const selectedProduct = useMemo(() => product, [product]);
 
   if (!active || !selectedProduct || !portalTarget) return null;
