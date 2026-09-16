@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import TheNoteMap from "../TheNoteMap";
 import { products } from "../data/products";
 import { productCopy } from "../data/products/productCopy";
@@ -139,6 +139,23 @@ export default function DesktopProductPage({
 }) {
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [profile, setProfile] = useState(null);
+  const previousProductSlugRef = useRef(null);
+
+  useLayoutEffect(() => {
+    if (!product?.slug) return;
+
+    const previousSlug = previousProductSlugRef.current;
+    const isProductToProductNavigation =
+      Boolean(previousSlug) && previousSlug !== product.slug;
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: isProductToProductNavigation ? "smooth" : "auto",
+    });
+
+    previousProductSlugRef.current = product.slug;
+  }, [product?.slug]);
 
   useEffect(() => {
     let cancelled = false;
@@ -154,10 +171,6 @@ export default function DesktopProductPage({
     return () => {
       cancelled = true;
     };
-  }, [product?.slug]);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [product?.slug]);
 
   const copy = product ? productCopy[product.name] || {} : {};
