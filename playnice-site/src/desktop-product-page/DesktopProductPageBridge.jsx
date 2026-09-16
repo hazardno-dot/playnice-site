@@ -69,18 +69,6 @@ const getGatewayWishlistState = (productId) => {
   return Boolean(actions.isWishlisted(productId));
 };
 
-const closeLegacyProductModalAfterNavigation = () => {
-  window.setTimeout(() => {
-    if (window.location.pathname.startsWith("/product/")) return;
-
-    const legacyCloseButton = document.querySelector(
-      '.product-modal .close-button[aria-label="Zatvori prozor"], .product-modal .close-button[aria-label="Close modal"], .product-modal .close-button'
-    );
-
-    legacyCloseButton?.click();
-  }, 0);
-};
-
 export default function DesktopProductPageBridge() {
   const [product, setProduct] = useState(() => getProductFromPath());
   const [lang, setLang] = useState(() => getDesktopLanguage());
@@ -252,8 +240,6 @@ export default function DesktopProductPageBridge() {
         delete nextState.playniceProductModal;
         window.history.replaceState(nextState, "", window.location.href);
       }
-
-      closeLegacyProductModalAfterNavigation();
 
       window.setTimeout(() => {
         document.body.classList.remove("desktop-product-route-leaving");
