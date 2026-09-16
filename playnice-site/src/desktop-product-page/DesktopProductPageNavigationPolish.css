@@ -10,7 +10,7 @@
   }
 
   body.desktop-product-route-active main {
-    padding-top: calc(var(--announcement-height) + 18px + 108px) !important;
+    padding-top: calc(var(--announcement-height) + 58px + 108px) !important;
   }
 
   body.desktop-product-route-active .desktop-product-page__sizes button {
