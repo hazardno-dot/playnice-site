@@ -2,6 +2,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "../data/products";
 import { LOCATION_CHANGE_EVENT } from "../lib/locationEvents";
+import {
+  getProductActions,
+  subscribeProductActions,
+} from "../lib/productActionsGateway";
 import DesktopProductPage from "./DesktopProductPage";
 import "./DesktopProductPageBridge.css";
 
@@ -59,20 +63,27 @@ const preloadProductNoteMap = (product) => {
   });
 };
 
+/* Temporary compatibility fallback. Removed once App registers direct actions. */
 const getModalSizeButton = (size) =>
   Array.from(document.querySelectorAll(".product-modal .modal-size")).find((button) => {
     const label = button.querySelector("span")?.textContent?.trim();
     return label === size;
   });
 
-const syncUnderlyingSize = (size) => {
+const syncLegacyModalSize = (size) => {
   if (!size) return;
   const button = getModalSizeButton(size);
   if (button && !button.classList.contains("active")) button.click();
 };
 
-const getUnderlyingWishlistState = () =>
+const getLegacyWishlistState = () =>
   Boolean(document.querySelector(".product-modal .modal-wishlist-btn.active"));
+
+const getGatewayWishlistState = (productId) => {
+  const actions = getProductActions();
+  if (typeof actions?.isWishlisted !== "function") return null;
+  return Boolean(actions.isWishlisted(productId));
+};
 
 const closeLegacyProductModalAfterNavigation = () => {
   window.setTimeout(() => {
@@ -169,7 +180,6 @@ export default function DesktopProductPageBridge() {
     preloadProductNoteMap(product);
   }, [active, product?.slug]);
 
-  /* Route-level presentation state must remain stable while moving between PDPs. */
   useEffect(() => {
     if (!active) {
       document.body.classList.remove("desktop-product-route-active");
@@ -183,38 +193,39 @@ export default function DesktopProductPageBridge() {
     };
   }, [active]);
 
-  /* Product-specific state can reset without tearing down the route shell. */
   useEffect(() => {
     if (!active || !product) return undefined;
 
     const firstSize = Object.keys(product.sizes || {})[0] || "";
     setSelectedSize(firstSize);
 
-    const frame = window.requestAnimationFrame(() => {
-      setIsWishlisted(getUnderlyingWishlistState());
-      syncUnderlyingSize(firstSize);
-    });
+    const syncWishlist = () => {
+      const gatewayState = getGatewayWishlistState(product.id);
+      setIsWishlisted(
+        gatewayState == null ? getLegacyWishlistState() : gatewayState
+      );
+    };
 
-    const delayedSync = window.setTimeout(() => {
-      setIsWishlisted(getUnderlyingWishlistState());
-      syncUnderlyingSize(firstSize);
-    }, 140);
+    const frame = window.requestAnimationFrame(syncWishlist);
+    const delayedSync = window.setTimeout(syncWishlist, 140);
+    const unsubscribe = subscribeProductActions(syncWishlist);
 
     return () => {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(delayedSync);
+      unsubscribe();
     };
-  }, [active, product?.slug]);
+  }, [active, product?.id, product?.slug]);
 
   useEffect(() => {
-    if (!active) return undefined;
+    if (!active || getProductActions()) return undefined;
 
     const observeModal = () => {
       const modal = document.querySelector(".product-modal");
       if (!modal) return null;
 
       const observer = new MutationObserver(() => {
-        setIsWishlisted(getUnderlyingWishlistState());
+        setIsWishlisted(getLegacyWishlistState());
       });
 
       observer.observe(modal, {
@@ -314,18 +325,37 @@ export default function DesktopProductPageBridge() {
 
   const handleSelectSize = (size) => {
     setSelectedSize(size);
-    syncUnderlyingSize(size);
+
+    const actions = getProductActions();
+    if (typeof actions?.selectSize === "function") {
+      actions.selectSize(selectedProduct, size);
+      return;
+    }
+
+    syncLegacyModalSize(size);
   };
 
   const handleAddToCart = (size) => {
-    syncUnderlyingSize(size);
+    const actions = getProductActions();
+    if (typeof actions?.addToCart === "function") {
+      actions.addToCart(selectedProduct, size);
+      return;
+    }
+
+    syncLegacyModalSize(size);
     window.requestAnimationFrame(() => {
       document.querySelector(".product-modal .modal-add-button")?.click();
     });
   };
 
   const handleBuyNow = (size) => {
-    syncUnderlyingSize(size);
+    const actions = getProductActions();
+    if (typeof actions?.buyNow === "function") {
+      actions.buyNow(selectedProduct, size);
+      return;
+    }
+
+    syncLegacyModalSize(size);
     window.requestAnimationFrame(() => {
       const button = document.querySelector(".product-modal .modal-buy-now");
       if (button) {
@@ -337,10 +367,20 @@ export default function DesktopProductPageBridge() {
   };
 
   const handleToggleWishlist = () => {
+    const actions = getProductActions();
+    if (typeof actions?.toggleWishlist === "function") {
+      actions.toggleWishlist(selectedProduct.id);
+      window.requestAnimationFrame(() => {
+        const nextState = getGatewayWishlistState(selectedProduct.id);
+        if (nextState != null) setIsWishlisted(nextState);
+      });
+      return;
+    }
+
     const button = document.querySelector(".product-modal .modal-wishlist-btn");
     if (!button) return;
     button.click();
-    window.requestAnimationFrame(() => setIsWishlisted(getUnderlyingWishlistState()));
+    window.requestAnimationFrame(() => setIsWishlisted(getLegacyWishlistState()));
   };
 
   const handleBackToShop = () => {
