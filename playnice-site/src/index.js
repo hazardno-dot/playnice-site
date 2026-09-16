@@ -13,6 +13,7 @@ import FragranceIntelligenceToneLoader from "./FragranceIntelligenceToneLoader";
 import WhatsAppLinkBridge from "./WhatsAppLinkBridge";
 import DesktopProductPageBridge from "./desktop-product-page/DesktopProductPageBridge";
 import DesktopProductPageHeaderGuard from "./desktop-product-page/DesktopProductPageHeaderGuard";
+import DesktopProductPageNavigationPolish from "./desktop-product-page/DesktopProductPageNavigationPolish";
 import { initLocationEvents } from "./lib/locationEvents";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
@@ -76,6 +77,7 @@ const renderApp = () => {
       <App />
       <DesktopProductPageBridge />
       <DesktopProductPageHeaderGuard />
+      <DesktopProductPageNavigationPolish />
       <PrivateSelectionEnhancer />
       <MobileShopReveal />
       <MobileMenuContact />
