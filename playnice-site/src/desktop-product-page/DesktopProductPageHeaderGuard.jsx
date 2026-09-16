@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { products } from "../data/products";
+import { LOCATION_CHANGE_EVENT } from "../lib/locationEvents";
 
 const PRODUCT_ROUTE = /^\/product\/([^/]+)\/?$/;
 
@@ -55,9 +56,6 @@ const navigateSpa = ({ path, hash = "" }) => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   };
 
-  // Let App finish the route/view transition first, then reset the destination
-  // page to its natural top. A second frame prevents legacy modal scroll
-  // restoration from re-applying the PDP scroll position after navigation.
   requestAnimationFrame(() => {
     resetScroll();
     requestAnimationFrame(resetScroll);
@@ -91,6 +89,24 @@ const ensurePersistentBadge = () => {
 
 export default function DesktopProductPageHeaderGuard() {
   useEffect(() => {
+    let frame = null;
+    let timer = null;
+
+    const scheduleBadgeSync = () => {
+      if (frame) cancelAnimationFrame(frame);
+      if (timer) window.clearTimeout(timer);
+
+      frame = requestAnimationFrame(() => {
+        ensurePersistentBadge();
+        frame = null;
+      });
+
+      timer = window.setTimeout(() => {
+        ensurePersistentBadge();
+        timer = null;
+      }, 100);
+    };
+
     const handleHeaderClickCapture = (event) => {
       if (!isDesktopProductRoute()) return;
 
@@ -109,34 +125,43 @@ export default function DesktopProductPageHeaderGuard() {
       navigateSpa(destination);
     };
 
-    const handleNoteClickCapture = (event) => {
+    const handlePdpClickCapture = (event) => {
       if (!isDesktopProductRoute()) return;
 
       const note = event.target.closest?.(
         ".desktop-product-page__note-map-stage .the-note-map__note"
       );
-      if (!note) return;
 
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation?.();
+      if (note) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation?.();
 
-      document
-        .querySelector(".desktop-product-page__note-map-stage .the-note-map__trigger")
-        ?.click();
+        document
+          .querySelector(".desktop-product-page__note-map-stage .the-note-map__trigger")
+          ?.click();
+      }
+
+      if (event.target.closest?.(".desktop-product-page__visual")) {
+        scheduleBadgeSync();
+      }
     };
 
-    const observer = new MutationObserver(() => ensurePersistentBadge());
-    observer.observe(document.body, { subtree: true, childList: true, attributes: true });
+    const handleRouteChange = () => scheduleBadgeSync();
 
     document.addEventListener("click", handleHeaderClickCapture, true);
-    document.addEventListener("click", handleNoteClickCapture, true);
-    ensurePersistentBadge();
+    document.addEventListener("click", handlePdpClickCapture, true);
+    window.addEventListener("popstate", handleRouteChange);
+    window.addEventListener(LOCATION_CHANGE_EVENT, handleRouteChange);
+    scheduleBadgeSync();
 
     return () => {
-      observer.disconnect();
+      if (frame) cancelAnimationFrame(frame);
+      if (timer) window.clearTimeout(timer);
       document.removeEventListener("click", handleHeaderClickCapture, true);
-      document.removeEventListener("click", handleNoteClickCapture, true);
+      document.removeEventListener("click", handlePdpClickCapture, true);
+      window.removeEventListener("popstate", handleRouteChange);
+      window.removeEventListener(LOCATION_CHANGE_EVENT, handleRouteChange);
     };
   }, []);
 
