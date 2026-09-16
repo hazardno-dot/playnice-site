@@ -16,6 +16,12 @@
     margin-top: 108px !important;
   }
 
+  /* Product pages are focus surfaces. Side rails belong to Home/Shop only and
+     must never flash during legacy modal state transitions between PDPs. */
+  body.desktop-product-route-active .side-ad-rails {
+    display: none !important;
+  }
+
   /* Mobile-derived depth treatment: keep the glow broad and quiet on desktop,
      and give the bottle a little more breathing room inside the existing frame. */
   body.desktop-product-route-active .desktop-product-page__image-button {
