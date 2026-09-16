@@ -20,13 +20,35 @@ const getPrimaryDestination = (button) => {
   );
   const index = primaryButtons.indexOf(button);
 
-  if (index === 0) return "/";
-  if (index === 1) return "/shop";
-  if (index === 2) return "/journal";
-  if (index === 3) return "/#community";
-  if (index === 4) return "/exhibition";
+  if (index === 0) return { path: "/" };
+  if (index === 1) return { path: "/shop" };
+  if (index === 2) return { path: "/journal" };
+  if (index === 3) return { path: "/", hash: "#community" };
+  if (index === 4) return { path: "/exhibition" };
 
   return null;
+};
+
+const navigateSpa = ({ path, hash = "" }) => {
+  const nextUrl = `${path}${hash}`;
+  const nextState = {
+    ...(window.history.state || {}),
+    playniceProductModal: false,
+  };
+
+  delete nextState.productSlug;
+  delete nextState.productOriginView;
+
+  window.history.pushState(nextState, "", nextUrl);
+  window.dispatchEvent(new PopStateEvent("popstate", { state: nextState }));
+
+  if (hash === "#community") {
+    window.setTimeout(() => {
+      document
+        .querySelector(".community-requests-section")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+  }
 };
 
 const ensurePersistentBadge = () => {
@@ -63,7 +85,7 @@ export default function DesktopProductPageHeaderGuard() {
       const primary = event.target.closest?.(".header-next-rail .header-next-link");
 
       let destination = null;
-      if (brand) destination = "/";
+      if (brand) destination = { path: "/" };
       if (primary) destination = getPrimaryDestination(primary);
       if (!destination) return;
 
@@ -71,7 +93,7 @@ export default function DesktopProductPageHeaderGuard() {
       event.stopPropagation();
       event.stopImmediatePropagation?.();
 
-      window.location.assign(destination);
+      navigateSpa(destination);
     };
 
     const handleNoteClickCapture = (event) => {
@@ -97,14 +119,6 @@ export default function DesktopProductPageHeaderGuard() {
     document.addEventListener("click", handleHeaderClickCapture, true);
     document.addEventListener("click", handleNoteClickCapture, true);
     ensurePersistentBadge();
-
-    if (window.location.hash === "#community") {
-      window.setTimeout(() => {
-        document
-          .querySelector(".community-requests-section")
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 350);
-    }
 
     return () => {
       observer.disconnect();
