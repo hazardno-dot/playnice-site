@@ -1,5 +1,5 @@
 @media (min-width: 769px) {
-  body.desktop-product-route-active .header-system {
+  body.desktop-product-route-active .header-next {
     position: sticky !important;
     top: 0 !important;
     z-index: 5000 !important;
