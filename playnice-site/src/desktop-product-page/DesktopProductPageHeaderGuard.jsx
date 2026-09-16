@@ -48,7 +48,20 @@ const navigateSpa = ({ path, hash = "" }) => {
         .querySelector(".community-requests-section")
         ?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 80);
+    return;
   }
+
+  const resetScroll = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  };
+
+  // Let App finish the route/view transition first, then reset the destination
+  // page to its natural top. A second frame prevents legacy modal scroll
+  // restoration from re-applying the PDP scroll position after navigation.
+  requestAnimationFrame(() => {
+    resetScroll();
+    requestAnimationFrame(resetScroll);
+  });
 };
 
 const ensurePersistentBadge = () => {
