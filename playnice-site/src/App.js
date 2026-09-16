@@ -5658,6 +5658,23 @@ const titleLengthClass =
       ) : null}
     </button>
 
+    <button
+      type="button"
+      className="product-card-quick-view"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        window.dispatchEvent(
+          new CustomEvent("playnice:desktop-quick-view", {
+            detail: { productId: product.id }
+          })
+        );
+      }}
+    >
+      {lang === "sr" ? "Brzi pregled" : "Quick view"}
+    </button>
+
      <button
   type="button"
   className={`wishlist-btn ${isWishlisted ? "active" : ""} ${
