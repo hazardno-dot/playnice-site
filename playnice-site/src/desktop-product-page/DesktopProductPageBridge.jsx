@@ -187,6 +187,9 @@ export default function DesktopProductPageBridge() {
     preloadProductNoteMap(product);
   }, [active, product?.slug]);
 
+  /* Keep route-level presentation state stable for the entire PDP session.
+     This must not tear down between product-to-product navigations, otherwise
+     App briefly re-enables Home/Shop side rails for a frame. */
   useEffect(() => {
     if (!active) {
       document.body.classList.remove("desktop-product-route-active");
@@ -195,7 +198,17 @@ export default function DesktopProductPageBridge() {
 
     document.body.classList.add("desktop-product-route-active");
 
-    const firstSize = Object.keys(product?.sizes || {})[0] || "";
+    return () => {
+      document.body.classList.remove("desktop-product-route-active");
+    };
+  }, [active]);
+
+  /* Product-specific state can reset independently without touching the
+     route-level body class above. */
+  useEffect(() => {
+    if (!active || !product) return undefined;
+
+    const firstSize = Object.keys(product.sizes || {})[0] || "";
     setSelectedSize(firstSize);
 
     const frame = window.requestAnimationFrame(() => {
@@ -211,7 +224,6 @@ export default function DesktopProductPageBridge() {
     return () => {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(delayedSync);
-      document.body.classList.remove("desktop-product-route-active");
     };
   }, [active, product?.slug]);
 
