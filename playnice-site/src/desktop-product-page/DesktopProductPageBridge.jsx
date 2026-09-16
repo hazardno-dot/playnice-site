@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "../data/products";
+import { LOCATION_CHANGE_EVENT } from "../lib/locationEvents";
 import DesktopProductPage from "./DesktopProductPage";
 import "./DesktopProductPageBridge.css";
 
 const PRODUCT_ROUTE = /^\/product\/([^/]+)\/?$/;
-const ROUTE_EVENT = "playnice:product-route";
 
 const getProductFromPath = () => {
   const match = window.location.pathname.match(PRODUCT_ROUTE);
@@ -107,32 +107,14 @@ export default function DesktopProductPageBridge() {
 
   useEffect(() => {
     const refreshRoute = () => setProduct(getProductFromPath());
-    const originalPushState = window.history.pushState;
-    const originalReplaceState = window.history.replaceState;
-
-    const emitRouteChange = () => window.dispatchEvent(new Event(ROUTE_EVENT));
-
-    window.history.pushState = function patchedPushState(...args) {
-      const result = originalPushState.apply(this, args);
-      emitRouteChange();
-      return result;
-    };
-
-    window.history.replaceState = function patchedReplaceState(...args) {
-      const result = originalReplaceState.apply(this, args);
-      emitRouteChange();
-      return result;
-    };
 
     window.addEventListener("popstate", refreshRoute);
-    window.addEventListener(ROUTE_EVENT, refreshRoute);
+    window.addEventListener(LOCATION_CHANGE_EVENT, refreshRoute);
     refreshRoute();
 
     return () => {
-      window.history.pushState = originalPushState;
-      window.history.replaceState = originalReplaceState;
       window.removeEventListener("popstate", refreshRoute);
-      window.removeEventListener(ROUTE_EVENT, refreshRoute);
+      window.removeEventListener(LOCATION_CHANGE_EVENT, refreshRoute);
     };
   }, []);
 
@@ -187,9 +169,7 @@ export default function DesktopProductPageBridge() {
     preloadProductNoteMap(product);
   }, [active, product?.slug]);
 
-  /* Keep route-level presentation state stable for the entire PDP session.
-     This must not tear down between product-to-product navigations, otherwise
-     App briefly re-enables Home/Shop side rails for a frame. */
+  /* Route-level presentation state must remain stable while moving between PDPs. */
   useEffect(() => {
     if (!active) {
       document.body.classList.remove("desktop-product-route-active");
@@ -203,8 +183,7 @@ export default function DesktopProductPageBridge() {
     };
   }, [active]);
 
-  /* Product-specific state can reset independently without touching the
-     route-level body class above. */
+  /* Product-specific state can reset without tearing down the route shell. */
   useEffect(() => {
     if (!active || !product) return undefined;
 
@@ -328,22 +307,6 @@ export default function DesktopProductPageBridge() {
       document.body.classList.remove("desktop-product-route-leaving");
     };
   }, [active]);
-
-  useEffect(() => {
-    if (!active) return undefined;
-
-    const handleNoteMapClick = (event) => {
-      const stage = event.target.closest?.(".desktop-product-page__note-map-stage");
-      if (!stage) return;
-
-      event.preventDefault();
-      event.stopPropagation();
-      document.querySelector(".desktop-product-page__note-map-trigger")?.click();
-    };
-
-    document.addEventListener("click", handleNoteMapClick, true);
-    return () => document.removeEventListener("click", handleNoteMapClick, true);
-  }, [active, product?.slug]);
 
   const selectedProduct = useMemo(() => product, [product]);
 
