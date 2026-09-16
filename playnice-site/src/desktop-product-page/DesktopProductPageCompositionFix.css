@@ -1,10 +1,28 @@
 @media (min-width: 769px) {
-  /* The App footer lives inside <main> and currently precedes the portal host.
-     Reorder the visible PDP surfaces without touching the App tree. */
+  body.desktop-product-route-active,
+  body.desktop-product-route-active main,
+  body.desktop-product-route-active .desktop-product-page,
+  body.desktop-product-route-active .desktop-product-route-host {
+    background: #050505 !important;
+  }
+
+  body.desktop-product-route-active .header-system {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1400 !important;
+    background: rgba(5, 5, 5, 0.965) !important;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.22);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
   body.desktop-product-route-active main {
     display: flex !important;
     flex-direction: column !important;
     overflow: visible !important;
+    padding-top: 172px;
   }
 
   body.desktop-product-route-active .desktop-product-route-host {
@@ -15,11 +33,10 @@
 
   body.desktop-product-route-active .site-footer {
     order: 2;
-    margin-top: 52px;
+    margin-top: 44px;
+    background: #050505 !important;
   }
 
-  /* Product page is not a modal. Remove the invisible modal surfaces entirely so
-     wheel / pointer input works anywhere over the page, not only on the scrollbar. */
   body.desktop-product-route-active .product-modal-layer,
   body.desktop-product-route-active .modal-overlay.product-modal-layer,
   body.desktop-product-route-active > .backdrop.show,
@@ -34,10 +51,9 @@
     pointer-events: auto;
   }
 
-  /* Compact editorial rhythm: fewer empty bands, stronger continuity. */
   body.desktop-product-route-active .desktop-product-page__shell {
     width: min(1360px, calc(100% - 64px));
-    padding: 18px 0 46px;
+    padding: 18px 0 44px;
   }
 
   body.desktop-product-route-active .desktop-product-page__breadcrumb {
@@ -47,11 +63,12 @@
   body.desktop-product-route-active .desktop-product-page__hero {
     min-height: 0;
     gap: clamp(42px, 5vw, 72px);
-    align-items: center;
+    align-items: start;
   }
 
   body.desktop-product-route-active .desktop-product-page__media-column {
-    top: 126px;
+    position: static !important;
+    top: auto !important;
   }
 
   body.desktop-product-route-active .desktop-product-page__visual,
@@ -80,8 +97,79 @@
     font-size: clamp(42px, 3.8vw, 62px);
   }
 
+  body.desktop-product-route-active .desktop-product-page__wishlist {
+    display: grid;
+    place-items: center;
+    padding: 0;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__wishlist svg {
+    width: 19px;
+    height: 19px;
+    overflow: visible;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__wishlist path {
+    vector-effect: non-scaling-stroke;
+    transition: fill 180ms ease, stroke 180ms ease, transform 180ms ease;
+    transform-origin: center;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__wishlist .is-outline {
+    fill: transparent;
+    stroke: #dcb56b;
+    stroke-width: 1.45;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__wishlist .is-filled {
+    fill: #dcb56b;
+    stroke: #dcb56b;
+    stroke-width: 1.2;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__wishlist:hover path {
+    transform: scale(1.06);
+  }
+
   body.desktop-product-route-active .desktop-product-page__rating {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     margin-top: 16px;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__rating-stars {
+    display: inline-flex;
+    align-items: center;
+    letter-spacing: 1px;
+    font-size: 11px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__rating-stars .is-filled {
+    color: #dcb56b;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__rating-stars .is-empty {
+    color: rgba(255,255,255,0.16);
+  }
+
+  body.desktop-product-route-active .desktop-product-page__rating-score {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__rating-score strong {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 26px;
+    font-weight: 500;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__rating-score small {
+    color: rgba(245,241,232,0.46);
+    font-size: 10px;
   }
 
   body.desktop-product-route-active .desktop-product-page__lead {
@@ -94,8 +182,8 @@
   }
 
   body.desktop-product-route-active .desktop-product-page__intelligence {
-    margin-top: 44px;
-    padding: 62px 0 54px;
+    margin-top: 42px;
+    padding: 58px 0 50px;
     gap: 58px;
   }
 
@@ -106,7 +194,7 @@
   }
 
   body.desktop-product-route-active .desktop-product-page__context-grid {
-    margin-top: 8px;
+    margin-top: 6px;
     border-radius: 28px;
     overflow: hidden;
   }
@@ -123,7 +211,8 @@
   }
 
   body.desktop-product-route-active .desktop-product-page__recommendations {
-    padding-top: 64px;
+    padding-top: 62px;
+    padding-bottom: 8px;
   }
 
   body.desktop-product-route-active .desktop-product-page__recommendations-head {
@@ -139,7 +228,7 @@
   }
 
   body.desktop-product-route-active .desktop-product-modal-parity {
-    margin-top: 58px;
+    margin-top: 22px;
   }
 
   body.desktop-product-route-active .desktop-product-pdp-sticky {
@@ -147,6 +236,10 @@
   }
 
   @media (max-width: 1180px) {
+    body.desktop-product-route-active main {
+      padding-top: 164px;
+    }
+
     body.desktop-product-route-active .desktop-product-page__shell {
       width: min(100% - 44px, 1180px);
     }
