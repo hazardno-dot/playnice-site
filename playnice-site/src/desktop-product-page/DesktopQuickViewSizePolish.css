@@ -1,0 +1,70 @@
+@media (min-width: 769px) {
+  .desktop-quick-view__sizes {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    width: 100%;
+    margin-top: 13px;
+  }
+
+  .desktop-quick-view__sizes button {
+    width: 100%;
+    min-height: 58px;
+    padding: 10px 16px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    justify-items: stretch;
+    gap: 16px;
+    text-align: left;
+  }
+
+  .desktop-quick-view__size-copy {
+    min-width: 0;
+    display: grid;
+    gap: 4px;
+  }
+
+  .desktop-quick-view__size-label {
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+
+  .desktop-quick-view__size-helper {
+    color: rgba(255, 255, 255, 0.38) !important;
+    font-size: 9px !important;
+    font-weight: 500 !important;
+    line-height: 1.2;
+  }
+
+  .desktop-quick-view__size-price-wrap {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-right: 18px;
+    white-space: nowrap;
+  }
+
+  .desktop-quick-view__size-price-wrap strong {
+    color: #f2eee6;
+    font-size: 13px;
+  }
+
+  .desktop-quick-view__size-price-wrap small {
+    color: #e8bd66;
+    font-size: 8px;
+    font-weight: 700;
+  }
+
+  .desktop-quick-view__sizes button.is-active .desktop-quick-view__size-label,
+  .desktop-quick-view__sizes button.is-active .desktop-quick-view__size-price-wrap strong {
+    color: #f1d08d;
+  }
+
+  .desktop-quick-view__add {
+    width: 100%;
+  }
+}
