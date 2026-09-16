@@ -4633,6 +4633,7 @@ const openProductModal = (product, options = {}) => {
       trackMeta("PageView");
     }
   }
+};
 
 const getDiscoveryAnalyticsParams = (discovery, source = "manual") => {
   const intent = discovery?.intent || {};
