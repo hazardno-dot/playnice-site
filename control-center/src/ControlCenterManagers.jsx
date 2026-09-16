@@ -90,18 +90,9 @@ export default function ControlCenterManagers() {
       window.requestAnimationFrame(reset);
     };
 
-    const clearSocialDisplayState = (targetButton) => {
-      const socialButton = nav.querySelector("[data-social-manager-nav='true']");
-      if (!socialButton || targetButton === socialButton) return;
-
+    const restoreSocialHiddenChildren = () => {
       const socialSlot = mainStage.querySelector("#social-manager-slot");
       const topbar = mainStage.querySelector(".topbar");
-      const socialIsActive = socialButton.classList.contains("active") || socialSlot?.style.display === "block";
-      if (!socialIsActive) return;
-
-      socialButton.classList.remove("active");
-      if (socialSlot) socialSlot.style.display = "none";
-
       [...mainStage.children].forEach((child) => {
         if (child === topbar || child === socialSlot) return;
         if (child.dataset.socialPreviousDisplay !== undefined) {
@@ -111,11 +102,37 @@ export default function ControlCenterManagers() {
       });
     };
 
+    const forceSocialClosed = () => {
+      const socialButton = nav.querySelector("[data-social-manager-nav='true']");
+      const socialSlot = mainStage.querySelector("#social-manager-slot");
+      socialButton?.classList.remove("active");
+      if (socialSlot) socialSlot.style.display = "none";
+      restoreSocialHiddenChildren();
+    };
+
+    const ensureSocialVisible = () => {
+      const socialSlot = mainStage.querySelector("#social-manager-slot");
+      const topbar = mainStage.querySelector(".topbar");
+      if (!socialSlot) return;
+      [...mainStage.children].forEach((child) => {
+        if (child === topbar || child === socialSlot) return;
+        if (child.dataset.socialPreviousDisplay === undefined) child.dataset.socialPreviousDisplay = child.style.display || "";
+        child.style.display = "none";
+      });
+      socialSlot.style.display = "block";
+    };
+
     const rememberModule = (event) => {
       const button = event.target.closest("button");
       if (!button || !nav.contains(button)) return;
 
-      clearSocialDisplayState(button);
+      const socialButton = nav.querySelector("[data-social-manager-nav='true']");
+      if (socialButton && button !== socialButton) {
+        forceSocialClosed();
+        window.requestAnimationFrame(forceSocialClosed);
+      } else if (socialButton && button === socialButton) {
+        window.requestAnimationFrame(ensureSocialVisible);
+      }
 
       const exhibitionButton = nav.querySelector("[data-exhibition-manager-nav='true']");
       if (exhibitionButton && button !== exhibitionButton) exhibitionButton.classList.remove("active");
