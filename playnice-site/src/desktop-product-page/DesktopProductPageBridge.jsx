@@ -16,6 +16,13 @@ const getProductFromPath = () => {
 };
 
 const getDesktopLanguage = () => {
+  const headerLanguage = document
+    .querySelector(".header-next-language span")
+    ?.textContent?.trim()
+    ?.toLowerCase();
+
+  if (headerLanguage === "en" || headerLanguage === "sr") return headerLanguage;
+
   const documentLang = document.documentElement.lang;
   if (documentLang === "en" || documentLang === "sr") return documentLang;
 
@@ -25,6 +32,31 @@ const getDesktopLanguage = () => {
   } catch {
     return "sr";
   }
+};
+
+const getNoteKeys = (noteMap) => {
+  if (!noteMap || typeof noteMap !== "object") return [];
+
+  return Array.from(
+    new Set(
+      Object.values(noteMap)
+        .flatMap((value) => (Array.isArray(value) ? value : []))
+        .filter((value) => typeof value === "string" && value.trim())
+        .map((value) => value.trim())
+    )
+  );
+};
+
+const preloadProductNoteMap = (product) => {
+  if (!product?.noteMap) return;
+
+  import("../TheNoteMapImpl").catch(() => {});
+
+  getNoteKeys(product.noteMap).forEach((noteKey) => {
+    const image = new Image();
+    image.decoding = "async";
+    image.src = `/note-map/${noteKey}.webp`;
+  });
 };
 
 const getModalSizeButton = (size) =>
@@ -111,19 +143,49 @@ export default function DesktopProductPageBridge() {
 
   useEffect(() => {
     const syncLanguage = () => setLang(getDesktopLanguage());
-    const observer = new MutationObserver(syncLanguage);
+    const htmlObserver = new MutationObserver(syncLanguage);
+    const headerObserver = new MutationObserver(syncLanguage);
 
-    observer.observe(document.documentElement, {
+    htmlObserver.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["lang"],
     });
 
+    const observeHeaderLanguage = () => {
+      const languageButton = document.querySelector(".header-next-language");
+      if (!languageButton) return false;
+
+      headerObserver.observe(languageButton, {
+        subtree: true,
+        childList: true,
+        characterData: true,
+      });
+      return true;
+    };
+
+    let retryTimer = null;
+    if (!observeHeaderLanguage()) {
+      retryTimer = window.setTimeout(() => {
+        observeHeaderLanguage();
+        syncLanguage();
+      }, 120);
+    }
+
     window.addEventListener("focus", syncLanguage);
+    syncLanguage();
+
     return () => {
-      observer.disconnect();
+      htmlObserver.disconnect();
+      headerObserver.disconnect();
+      if (retryTimer) window.clearTimeout(retryTimer);
       window.removeEventListener("focus", syncLanguage);
     };
-  }, []);
+  }, [active]);
+
+  useEffect(() => {
+    if (!active || !product) return;
+    preloadProductNoteMap(product);
+  }, [active, product?.slug]);
 
   useEffect(() => {
     if (!active) {
