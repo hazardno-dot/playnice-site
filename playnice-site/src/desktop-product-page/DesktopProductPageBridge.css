@@ -144,35 +144,6 @@
     transform: translateY(0);
   }
 
-  .desktop-product-page__badge {
-    border-radius: 999px;
-    min-height: 34px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1px;
-    overflow: visible;
-  }
-
-  .desktop-product-page__badge-letter {
-    display: inline-block;
-    opacity: 0;
-    transform: translate(var(--drop-x, 0), -46px) rotate(var(--drop-r, 0deg));
-    animation: desktopPdpLetterDrop 860ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: calc(var(--letter-index, 0) * 42ms + 80ms);
-  }
-
-  .desktop-product-page__badge-letter.is-space { width: 0.38em; }
-  .desktop-product-page__badge-letter:nth-child(3n + 1) { --drop-x: -10px; --drop-r: -9deg; }
-  .desktop-product-page__badge-letter:nth-child(3n + 2) { --drop-x: 9px; --drop-r: 7deg; }
-  .desktop-product-page__badge-letter:nth-child(3n) { --drop-x: -3px; --drop-r: 3deg; }
-
-  @keyframes desktopPdpLetterDrop {
-    0% { opacity: 0; transform: translate(var(--drop-x, 0), -46px) rotate(var(--drop-r, 0deg)); }
-    72% { opacity: 1; transform: translate(0, 3px) rotate(0deg); }
-    100% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-  }
-
   .desktop-product-page__intelligence,
   .desktop-product-page__context-grid,
   .desktop-product-page__recommendations {
@@ -217,11 +188,9 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .desktop-product-page__badge-letter,
     .desktop-product-page__intelligence,
     .desktop-product-page__context-grid,
     .desktop-product-page__recommendations {
-      animation: none !important;
       transition: none !important;
       opacity: 1 !important;
       transform: none !important;
