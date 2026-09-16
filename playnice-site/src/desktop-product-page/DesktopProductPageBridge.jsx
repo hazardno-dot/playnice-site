@@ -42,23 +42,6 @@ const syncUnderlyingSize = (size) => {
 const getUnderlyingWishlistState = () =>
   Boolean(document.querySelector(".product-modal .modal-wishlist-btn.active"));
 
-const decorateBadge = () => {
-  const badge = document.querySelector(".desktop-product-page__badge");
-  if (!badge || badge.dataset.lettersReady === "true") return;
-
-  const text = badge.textContent || "";
-  badge.textContent = "";
-  badge.dataset.lettersReady = "true";
-
-  Array.from(text).forEach((character, index) => {
-    const span = document.createElement("span");
-    span.className = `desktop-product-page__badge-letter${character === " " ? " is-space" : ""}`;
-    span.style.setProperty("--letter-index", String(index));
-    span.textContent = character === " " ? " " : character;
-    badge.appendChild(span);
-  });
-};
-
 export default function DesktopProductPageBridge() {
   const [product, setProduct] = useState(() => getProductFromPath());
   const [lang, setLang] = useState(() => getDesktopLanguage());
@@ -137,13 +120,11 @@ export default function DesktopProductPageBridge() {
     const frame = window.requestAnimationFrame(() => {
       setIsWishlisted(getUnderlyingWishlistState());
       syncUnderlyingSize(firstSize);
-      decorateBadge();
     });
 
     const delayedSync = window.setTimeout(() => {
       setIsWishlisted(getUnderlyingWishlistState());
       syncUnderlyingSize(firstSize);
-      decorateBadge();
     }, 140);
 
     return () => {
@@ -256,6 +237,21 @@ export default function DesktopProductPageBridge() {
       document.body.classList.remove("desktop-product-route-leaving");
     };
   }, [active]);
+
+  useEffect(() => {
+    if (!active) return undefined;
+
+    const handleNoteMapClick = (event) => {
+      const stage = event.target.closest?.(".desktop-product-page__note-map-stage");
+      if (!stage) return;
+      if (event.target.closest?.(".the-note-map__trigger")) return;
+
+      document.querySelector(".desktop-product-page__note-map-trigger")?.click();
+    };
+
+    document.addEventListener("click", handleNoteMapClick);
+    return () => document.removeEventListener("click", handleNoteMapClick);
+  }, [active, product?.slug]);
 
   const selectedProduct = useMemo(() => product, [product]);
 
