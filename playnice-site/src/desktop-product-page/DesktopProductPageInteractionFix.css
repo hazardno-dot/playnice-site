@@ -1,5 +1,5 @@
 @media (min-width: 769px) {
-  /* The whole 500px media panel must not behave like one giant button. */
+  /* The media panel itself is not a giant button: only the bottle is clickable. */
   body.desktop-product-route-active .desktop-product-page__visual:not(.is-note-map-open) {
     display: grid;
     place-items: center;
@@ -18,9 +18,9 @@
   }
 
   body.desktop-product-route-active .desktop-product-page__visual:not(.is-note-map-open) .desktop-product-page__image-button img {
-    width: min(430px, 31vw) !important;
+    width: min(390px, 28vw) !important;
     max-width: 100%;
-    max-height: 420px;
+    max-height: 382px !important;
   }
 
   /* Open notes are interactive only on actual note tiles, not the whole panel. */
