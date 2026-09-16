@@ -12,6 +12,7 @@ import DiscoveryImageFallback from "./DiscoveryImageFallback";
 import FragranceIntelligenceToneLoader from "./FragranceIntelligenceToneLoader";
 import WhatsAppLinkBridge from "./WhatsAppLinkBridge";
 import DesktopProductPageBridge from "./desktop-product-page/DesktopProductPageBridge";
+import DesktopProductModalParityBridge from "./desktop-product-page/DesktopProductModalParityBridge";
 import { initLocationEvents } from "./lib/locationEvents";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
@@ -72,6 +73,7 @@ const renderApp = () => {
     <React.StrictMode>
       <App />
       <DesktopProductPageBridge />
+      <DesktopProductModalParityBridge />
       <PrivateSelectionEnhancer />
       <MobileShopReveal />
       <MobileMenuContact />
