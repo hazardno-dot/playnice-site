@@ -16,6 +16,35 @@
     margin-top: 108px !important;
   }
 
+  /* Mobile-derived depth treatment: keep the glow broad and quiet on desktop,
+     and give the bottle a little more breathing room inside the existing frame. */
+  body.desktop-product-route-active .desktop-product-page__image-button {
+    position: relative;
+    isolation: isolate;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__image-button::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: 50%;
+    top: 48%;
+    width: 68%;
+    height: 62%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(95, 73, 39, 0.078) 0%, rgba(95, 73, 39, 0.042) 34%, transparent 70%);
+    filter: blur(14px);
+    pointer-events: none;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__image-button img {
+    position: relative;
+    z-index: 1;
+    width: min(65%, 468px) !important;
+    max-height: 458px !important;
+  }
+
   body.desktop-product-route-active .desktop-product-page__sizes button {
     justify-items: start !important;
     text-align: left !important;
