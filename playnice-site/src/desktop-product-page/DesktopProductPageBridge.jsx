@@ -42,6 +42,30 @@ const syncUnderlyingSize = (size) => {
 const getUnderlyingWishlistState = () =>
   Boolean(document.querySelector(".product-modal .modal-wishlist-btn.active"));
 
+const hasRealBlockingOverlay = () =>
+  Boolean(
+    document.querySelector(
+      ".cart-drawer.open, .checkout-modal.open, .story-drawer.open, .how-it-works-drawer.open, .private-selection-drawer.open, .journal-panel.open"
+    )
+  );
+
+const decorateBadge = () => {
+  const badge = document.querySelector(".desktop-product-page__badge");
+  if (!badge || badge.dataset.lettersReady === "true") return;
+
+  const text = badge.textContent || "";
+  badge.textContent = "";
+  badge.dataset.lettersReady = "true";
+
+  Array.from(text).forEach((character, index) => {
+    const span = document.createElement("span");
+    span.className = `desktop-product-page__badge-letter${character === " " ? " is-space" : ""}`;
+    span.style.setProperty("--letter-index", String(index));
+    span.textContent = character === " " ? " " : character;
+    badge.appendChild(span);
+  });
+};
+
 export default function DesktopProductPageBridge() {
   const [product, setProduct] = useState(() => getProductFromPath());
   const [lang, setLang] = useState(() => getDesktopLanguage());
@@ -82,7 +106,6 @@ export default function DesktopProductPageBridge() {
 
     window.addEventListener("popstate", refreshRoute);
     window.addEventListener(ROUTE_EVENT, refreshRoute);
-
     refreshRoute();
 
     return () => {
@@ -115,22 +138,44 @@ export default function DesktopProductPageBridge() {
 
     document.body.classList.add("desktop-product-route-active");
 
+    const unlockPage = () => {
+      if (!hasRealBlockingOverlay()) {
+        document.body.classList.remove("overlay-lock");
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
+      }
+    };
+
+    unlockPage();
+
+    const bodyObserver = new MutationObserver(unlockPage);
+    bodyObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class", "style"],
+    });
+
     const firstSize = Object.keys(product?.sizes || {})[0] || "";
     setSelectedSize(firstSize);
 
     const frame = window.requestAnimationFrame(() => {
       setIsWishlisted(getUnderlyingWishlistState());
       syncUnderlyingSize(firstSize);
+      decorateBadge();
     });
 
     const delayedSync = window.setTimeout(() => {
       setIsWishlisted(getUnderlyingWishlistState());
       syncUnderlyingSize(firstSize);
-    }, 120);
+      decorateBadge();
+    }, 140);
 
     return () => {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(delayedSync);
+      bodyObserver.disconnect();
       document.body.classList.remove("desktop-product-route-active");
     };
   }, [active, product?.slug]);
@@ -168,6 +213,42 @@ export default function DesktopProductPageBridge() {
     };
   }, [active, product?.slug]);
 
+  useEffect(() => {
+    if (!active) return undefined;
+
+    let observer;
+    const frame = window.requestAnimationFrame(() => {
+      const sections = Array.from(
+        document.querySelectorAll(
+          ".desktop-product-page__intelligence, .desktop-product-page__context-grid, .desktop-product-page__recommendations"
+        )
+      );
+
+      if (typeof IntersectionObserver === "undefined") {
+        sections.forEach((section) => section.classList.add("is-in-view"));
+        return;
+      }
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-in-view");
+            observer?.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+      );
+
+      sections.forEach((section) => observer.observe(section));
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer?.disconnect();
+    };
+  }, [active, product?.slug]);
+
   const selectedProduct = useMemo(() => product, [product]);
 
   if (!active || !selectedProduct || !portalTarget) return null;
@@ -180,6 +261,18 @@ export default function DesktopProductPageBridge() {
   const handleAddToCart = (size) => {
     syncUnderlyingSize(size);
     window.requestAnimationFrame(() => {
+      document.querySelector(".product-modal .modal-add-button")?.click();
+    });
+  };
+
+  const handleBuyNow = (size) => {
+    syncUnderlyingSize(size);
+    window.requestAnimationFrame(() => {
+      const button = document.querySelector(".product-modal .modal-buy-now");
+      if (button) {
+        button.click();
+        return;
+      }
       document.querySelector(".product-modal .modal-add-button")?.click();
     });
   };
@@ -219,6 +312,14 @@ export default function DesktopProductPageBridge() {
     window.dispatchEvent(new PopStateEvent("popstate", { state: window.history.state }));
   };
 
+  const stickyPrice = Number(selectedProduct.sizes?.[selectedSize] || 0);
+
+  const handleStickyClick = () => {
+    document
+      .querySelector(".desktop-product-page__purchase-column")
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
   return createPortal(
     <div className="desktop-product-route-host">
       <DesktopProductPage
@@ -227,11 +328,24 @@ export default function DesktopProductPageBridge() {
         selectedSize={selectedSize}
         onSelectSize={handleSelectSize}
         onAddToCart={handleAddToCart}
+        onBuyNow={handleBuyNow}
         isWishlisted={isWishlisted}
         onToggleWishlist={handleToggleWishlist}
         onOpenProduct={handleOpenProduct}
         onBackToShop={handleBackToShop}
       />
+
+      <div className="desktop-product-pdp-sticky" aria-live="polite">
+        <div className="sticky-cta-button">
+          <button type="button" className="sticky-cta-main" onClick={handleStickyClick}>
+            <span className="sticky-cta-copy">
+              <strong>{lang === "sr" ? "Probaj pre cele bočice" : "Try before the full bottle"}</strong>
+              <small>{selectedProduct.shortName || selectedProduct.modalName || selectedProduct.name} · {selectedSize || ""}</small>
+            </span>
+            <span className="desktop-product-pdp-sticky__price">€{stickyPrice.toFixed(2)}</span>
+          </button>
+        </div>
+      </div>
     </div>,
     portalTarget
   );
