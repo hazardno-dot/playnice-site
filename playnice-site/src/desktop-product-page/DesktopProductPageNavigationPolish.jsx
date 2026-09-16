@@ -67,8 +67,22 @@ export default function DesktopProductPageNavigationPolish() {
       smoothToTop();
 
       const startedAt = performance.now();
+      let released = false;
+
       const releaseClick = () => {
+        if (released) return;
+        released = true;
+
+        if (animationFrame) {
+          window.cancelAnimationFrame(animationFrame);
+          animationFrame = null;
+        }
+        if (fallbackTimer) {
+          window.clearTimeout(fallbackTimer);
+          fallbackTimer = null;
+        }
         if (!document.contains(button)) return;
+
         button.dataset.pdpSmoothReady = "true";
         button.click();
       };
