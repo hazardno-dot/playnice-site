@@ -33,6 +33,26 @@ const getCategoryLabel = (category, lang) => {
   return labels?.[category]?.[lang] || String(category || "").toUpperCase();
 };
 
+const getMiniTag = (copy, lang) => {
+  if (typeof copy?.miniTag === "string") return copy.miniTag;
+  return copy?.miniTag?.[lang] || copy?.miniTag?.en || copy?.miniTag?.sr || "";
+};
+
+const getMiniTagImage = (product) => {
+  const noteKey =
+    product?.noteMap?.top?.[0] ||
+    product?.noteMap?.heart?.[0] ||
+    product?.noteMap?.base?.[0] ||
+    "";
+
+  return noteKey ? `/note-map/${noteKey}.webp` : "";
+};
+
+const getRatingStarCount = (rating) => {
+  const normalizedRating = Math.max(0, Math.min(10, Number(rating) || 0));
+  return Math.round(normalizedRating);
+};
+
 export default function DesktopQuickView() {
   const [product, setProduct] = useState(null);
   const [lang, setLang] = useState(() => getLanguage());
@@ -100,11 +120,16 @@ export default function DesktopQuickView() {
 
   const shortCopy = copy.card?.[lang] || copy.modal?.[lang] || "";
   const scentType = copy.scentType?.[lang] || "";
-  const dominantNotes = Array.isArray(copy.dominantNotes?.[lang])
-    ? copy.dominantNotes[lang].slice(0, 3)
-    : [];
+  const miniTag = getMiniTag(copy, lang);
+  const miniTagImage = getMiniTagImage(product);
+  const ratingStars = getRatingStarCount(product.rating);
 
   const close = () => setProduct(null);
+
+  const selectSize = (size) => {
+    setSelectedSize(size);
+    getProductActions()?.selectSize?.(product, size);
+  };
 
   const addToCart = () => {
     getProductActions()?.addToCart?.(product, activeSize);
@@ -201,15 +226,25 @@ export default function DesktopQuickView() {
                     : "Add to Private Selection"
               }
             >
-              <span aria-hidden="true">♥</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  className={isWishlisted ? "is-filled" : "is-outline"}
+                  d="M20.8 5.9c-1.8-2.1-5.1-2.2-7-.3L12 7.4l-1.8-1.8c-1.9-1.9-5.2-1.8-7 .3-1.7 2-1.4 5 .5 6.9L12 21l8.3-8.2c1.9-1.9 2.2-4.9.5-6.9Z"
+                />
+              </svg>
             </button>
           </div>
 
           {product.rating ? (
             <div className="desktop-quick-view__rating">
-              <span>{"★".repeat(Math.round(Number(product.rating) || 0))}</span>
-              <strong>{Number(product.rating).toFixed(1)}</strong>
-              <small>/ 10{product.ratingLabel ? ` · ${product.ratingLabel}` : ""}</small>
+              <span className="desktop-quick-view__rating-stars" aria-hidden="true">
+                <span className="is-filled">{"★".repeat(ratingStars)}</span>
+                <span className="is-empty">{"★".repeat(10 - ratingStars)}</span>
+              </span>
+              <span className="desktop-quick-view__rating-score">
+                <strong>{Number(product.rating).toFixed(1)}</strong>
+                <small>/ 10{product.ratingLabel ? ` · ${product.ratingLabel}` : ""}</small>
+              </span>
             </div>
           ) : null}
 
@@ -217,11 +252,14 @@ export default function DesktopQuickView() {
             <p className="desktop-quick-view__description">{shortCopy}</p>
           ) : null}
 
-          {dominantNotes.length ? (
-            <div className="desktop-quick-view__notes" aria-label="Key notes">
-              {dominantNotes.map((note) => (
-                <span key={note}>{note}</span>
-              ))}
+          {miniTag ? (
+            <div className="desktop-quick-view__mini-tag">
+              {miniTagImage ? (
+                <span className="desktop-quick-view__mini-tag-image" aria-hidden="true">
+                  <img src={miniTagImage} alt="" />
+                </span>
+              ) : null}
+              <span>{miniTag}</span>
             </div>
           ) : null}
 
@@ -248,10 +286,11 @@ export default function DesktopQuickView() {
                   key={size}
                   type="button"
                   className={size === activeSize ? "is-active" : ""}
-                  onClick={() => setSelectedSize(size)}
+                  onClick={() => selectSize(size)}
                 >
                   <span>{size}</span>
                   <strong>€{sizePrice.toFixed(2)}</strong>
+                  {sizeDiscount ? <small>-{sizeDiscount.percent}%</small> : null}
                 </button>
               );
             })}
