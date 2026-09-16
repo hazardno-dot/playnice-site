@@ -5,6 +5,7 @@ import DesktopProductPage from "./DesktopProductPage";
 import "./DesktopProductPageBridge.css";
 
 const PRODUCT_ROUTE = /^\/product\/([^/]+)\/?$/;
+const ROUTE_EVENT = "playnice:product-route";
 
 const getProductFromPath = () => {
   const match = window.location.pathname.match(PRODUCT_ROUTE);
@@ -62,11 +63,33 @@ export default function DesktopProductPageBridge() {
 
   useEffect(() => {
     const refreshRoute = () => setProduct(getProductFromPath());
+    const originalPushState = window.history.pushState;
+    const originalReplaceState = window.history.replaceState;
+
+    const emitRouteChange = () => window.dispatchEvent(new Event(ROUTE_EVENT));
+
+    window.history.pushState = function patchedPushState(...args) {
+      const result = originalPushState.apply(this, args);
+      emitRouteChange();
+      return result;
+    };
+
+    window.history.replaceState = function patchedReplaceState(...args) {
+      const result = originalReplaceState.apply(this, args);
+      emitRouteChange();
+      return result;
+    };
+
     window.addEventListener("popstate", refreshRoute);
-    window.addEventListener("playnice:product-route", refreshRoute);
+    window.addEventListener(ROUTE_EVENT, refreshRoute);
+
+    refreshRoute();
+
     return () => {
+      window.history.pushState = originalPushState;
+      window.history.replaceState = originalReplaceState;
       window.removeEventListener("popstate", refreshRoute);
-      window.removeEventListener("playnice:product-route", refreshRoute);
+      window.removeEventListener(ROUTE_EVENT, refreshRoute);
     };
   }, []);
 
@@ -100,8 +123,14 @@ export default function DesktopProductPageBridge() {
       syncUnderlyingSize(firstSize);
     });
 
+    const delayedSync = window.setTimeout(() => {
+      setIsWishlisted(getUnderlyingWishlistState());
+      syncUnderlyingSize(firstSize);
+    }, 120);
+
     return () => {
       window.cancelAnimationFrame(frame);
+      window.clearTimeout(delayedSync);
       document.body.classList.remove("desktop-product-route-active");
     };
   }, [active, product?.slug]);
@@ -109,20 +138,34 @@ export default function DesktopProductPageBridge() {
   useEffect(() => {
     if (!active) return undefined;
 
-    const modal = document.querySelector(".product-modal");
-    if (!modal) return undefined;
+    const observeModal = () => {
+      const modal = document.querySelector(".product-modal");
+      if (!modal) return null;
 
-    const observer = new MutationObserver(() => {
-      setIsWishlisted(getUnderlyingWishlistState());
-    });
+      const observer = new MutationObserver(() => {
+        setIsWishlisted(getUnderlyingWishlistState());
+      });
 
-    observer.observe(modal, {
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["class"],
-    });
+      observer.observe(modal, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["class"],
+      });
 
-    return () => observer.disconnect();
+      return observer;
+    };
+
+    let observer = observeModal();
+    const timer = observer
+      ? null
+      : window.setTimeout(() => {
+          observer = observeModal();
+        }, 150);
+
+    return () => {
+      if (timer) window.clearTimeout(timer);
+      observer?.disconnect();
+    };
   }, [active, product?.slug]);
 
   const selectedProduct = useMemo(() => product, [product]);
@@ -173,9 +216,7 @@ export default function DesktopProductPageBridge() {
       nextUrl
     );
 
-    setProduct(nextProduct);
     window.dispatchEvent(new PopStateEvent("popstate", { state: window.history.state }));
-    window.dispatchEvent(new Event("playnice:product-route"));
   };
 
   return createPortal(
