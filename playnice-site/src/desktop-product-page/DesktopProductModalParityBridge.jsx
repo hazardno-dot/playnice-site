@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "../data/products";
 import DesktopProductModalParity from "./DesktopProductModalParity";
+import "./DesktopProductPageCompositionFix.css";
 
 const PRODUCT_ROUTE = /^\/product\/([^/]+)\/?$/;
 const ROUTE_EVENT = "playnice:product-route";
