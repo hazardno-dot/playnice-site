@@ -68,6 +68,34 @@ const getRatingStarCount = (rating) => {
   return Math.round(normalizedRating);
 };
 
+const getSizeHelper = (size, lang) => {
+  const normalized = String(size || "").toLowerCase();
+
+  if (!normalized) {
+    return lang === "sr"
+      ? "Kreni manjom količinom. Nosi ga prvo."
+      : "Start small. Wear it first.";
+  }
+
+  if (normalized.includes("2ml")) {
+    return lang === "sr" ? "Brzi test na koži." : "Quick skin test.";
+  }
+
+  if (normalized.includes("5ml")) {
+    return lang === "sr" ? "Testiraj nekoliko dana." : "Test it over a few days.";
+  }
+
+  if (normalized.includes("10ml")) {
+    return lang === "sr" ? "Savršen za svakodnevno nošenje." : "Perfect for daily wear.";
+  }
+
+  if (normalized.includes("20ml")) {
+    return lang === "sr" ? "Skoro kao mala bočica." : "Almost like a small bottle.";
+  }
+
+  return lang === "sr" ? "Probaj. Nosi. Odluči." : "Try it. Wear it. Decide.";
+};
+
 const getRecommendations = (product) => {
   if (!product) return [];
 
@@ -160,6 +188,7 @@ export default function DesktopProductPage({
   const fullDescription = copy.modal?.[lang] || characterLine;
   const scentType = copy.scentType?.[lang] || "";
   const ratingStars = getRatingStarCount(product.rating);
+  const sizeHelper = getSizeHelper(activeSize, lang);
 
   return (
     <article className="desktop-product-page" data-product-slug={product.slug}>
@@ -175,38 +204,48 @@ export default function DesktopProductPage({
         <section className="desktop-product-page__hero">
           <div className="desktop-product-page__media-column">
             <div className={`desktop-product-page__visual ${noteMapOpen ? "is-note-map-open" : ""}`}>
-              {product.badge ? <span className="desktop-product-page__badge">{product.badge}</span> : null}
-              {product.discount ? (
+              {!noteMapOpen && product.badge ? (
+                <span className="desktop-product-page__badge">{product.badge}</span>
+              ) : null}
+              {!noteMapOpen && product.discount ? (
                 <span className="desktop-product-page__sale">-{product.discount.percent}% · {String(product.discount.size).toUpperCase()}</span>
               ) : null}
 
-              <button
-                type="button"
-                className="desktop-product-page__image-button"
-                onClick={() => product.noteMap && setNoteMapOpen((current) => !current)}
-                aria-label={
-                  product.noteMap
-                    ? noteMapOpen
-                      ? lang === "sr" ? "Vrati sliku parfema" : "Show fragrance image"
-                      : lang === "sr" ? "Prikaži note parfema" : "Show fragrance notes"
-                    : product.name
-                }
-              >
-                {product.image ? <img src={product.image} alt={product.name} /> : <span>{product.name.charAt(0)}</span>}
-              </button>
+              {!noteMapOpen ? (
+                <button
+                  type="button"
+                  className="desktop-product-page__image-button"
+                  onClick={() => product.noteMap && setNoteMapOpen(true)}
+                  aria-label={product.noteMap
+                    ? lang === "sr" ? "Prikaži note parfema" : "Show fragrance notes"
+                    : product.name}
+                >
+                  {product.image ? (
+                    <img src={product.image} alt={product.name} />
+                  ) : (
+                    <span>{product.name.charAt(0)}</span>
+                  )}
+                </button>
+              ) : null}
 
-              {product.noteMap ? (
-                <TheNoteMap
-                  notes={product.noteMap}
-                  lang={lang}
-                  open={noteMapOpen}
-                  onToggle={() => setNoteMapOpen((current) => !current)}
-                />
+              {product.noteMap && noteMapOpen ? (
+                <div className="desktop-product-page__note-map-stage">
+                  <TheNoteMap
+                    notes={product.noteMap}
+                    lang={lang}
+                    open
+                    onToggle={() => setNoteMapOpen(false)}
+                  />
+                </div>
               ) : null}
             </div>
 
             {product.noteMap ? (
-              <button type="button" className="desktop-product-page__note-map-trigger" onClick={() => setNoteMapOpen((current) => !current)}>
+              <button
+                type="button"
+                className="desktop-product-page__note-map-trigger"
+                onClick={() => setNoteMapOpen((current) => !current)}
+              >
                 {noteMapOpen
                   ? lang === "sr" ? "← NAZAD NA PARFEM" : "← BACK TO FRAGRANCE"
                   : lang === "sr" ? "POGLEDAJ NOTE →" : "EXPLORE NOTES →"}
@@ -271,7 +310,7 @@ export default function DesktopProductPage({
             <div className="desktop-product-page__size-head">
               <div>
                 <span>{lang === "sr" ? "IZABERI VELIČINU" : "CHOOSE SIZE"}</span>
-                <small>{lang === "sr" ? "Probaj. Nosi. Odluči." : "Try it. Wear it. Decide."}</small>
+                <small className="desktop-product-page__size-helper">{sizeHelper}</small>
               </div>
               <div className="desktop-product-page__current-price">
                 {selectedDiscount ? <del>€{selectedPrice.toFixed(2)}</del> : null}
@@ -314,28 +353,33 @@ export default function DesktopProductPage({
               <span>{lang === "sr" ? "Plaćanje pouzećem" : "Cash on delivery"}</span>
               <span>{lang === "sr" ? "Dostava širom Crne Gore" : "Delivery across Montenegro"}</span>
             </div>
-          </div>
-        </section>
 
-        <section className="desktop-product-page__intelligence">
-          <div className="desktop-product-page__section-copy">
-            <span className="desktop-product-page__kicker">
-              {lang === "sr" ? "MIRISNI PROFIL" : "SCENT PROFILE"}
-            </span>
-            <h2>{lang === "sr" ? "Kako ovaj parfem zaista nosiš." : "How this fragrance actually wears."}</h2>
-            {fullDescription ? <p>{fullDescription}</p> : null}
-          </div>
+            <section className="desktop-product-page__intelligence desktop-product-page__intelligence--inline">
+              <div className="desktop-product-page__section-copy">
+                <span className="desktop-product-page__kicker">
+                  {lang === "sr" ? "MIRISNI PROFIL" : "SCENT PROFILE"}
+                </span>
+                <h2>{lang === "sr" ? "Kako ovaj parfem zaista radi." : "How this fragrance actually wears."}</h2>
+                {fullDescription ? <p>{fullDescription}</p> : null}
+              </div>
 
-          {sensoryHighlights.length ? (
-            <div className="desktop-product-page__profile-grid">
-              {sensoryHighlights.map(({ key, value }) => (
-                <div key={key} className="desktop-product-page__profile-item">
-                  <div><span>{PROFILE_LABELS[key]?.[lang] || key}</span><strong>{value}/10</strong></div>
-                  <div className="desktop-product-page__profile-track"><span style={{ width: `${Math.min(100, value * 10)}%` }} /></div>
+              {sensoryHighlights.length ? (
+                <div className="desktop-product-page__profile-grid">
+                  {sensoryHighlights.map(({ key, value }) => (
+                    <div key={key} className="desktop-product-page__profile-item">
+                      <div>
+                        <span>{PROFILE_LABELS[key]?.[lang] || key}</span>
+                        <strong>{value}/10</strong>
+                      </div>
+                      <div className="desktop-product-page__profile-track">
+                        <span style={{ width: `${Math.min(100, value * 10)}%` }} />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          ) : null}
+              ) : null}
+            </section>
+          </div>
         </section>
 
         <section className="desktop-product-page__context-grid">
