@@ -53,6 +53,28 @@ const getRatingStarCount = (rating) => {
   return Math.round(normalizedRating);
 };
 
+const getSizeHelper = (size, lang) => {
+  const normalized = String(size || "").toLowerCase();
+
+  if (normalized.includes("2ml")) {
+    return lang === "sr" ? "Brzi test na koži." : "Quick skin test.";
+  }
+
+  if (normalized.includes("5ml")) {
+    return lang === "sr" ? "Testiraj nekoliko dana." : "Test it over a few days.";
+  }
+
+  if (normalized.includes("10ml")) {
+    return lang === "sr" ? "Savršen za svakodnevno nošenje." : "Perfect for daily wear.";
+  }
+
+  if (normalized.includes("20ml")) {
+    return lang === "sr" ? "Skoro kao mala bočica." : "Almost like a small bottle.";
+  }
+
+  return lang === "sr" ? "Probaj. Nosi. Odluči." : "Try it. Wear it. Decide.";
+};
+
 export default function DesktopQuickView() {
   const [product, setProduct] = useState(null);
   const [lang, setLang] = useState(() => getLanguage());
@@ -280,6 +302,7 @@ export default function DesktopQuickView() {
               const sizePrice = sizeDiscount
                 ? getDiscountedPrice(price, sizeDiscount.percent)
                 : Number(price);
+              const helper = getSizeHelper(size, lang);
 
               return (
                 <button
@@ -288,9 +311,14 @@ export default function DesktopQuickView() {
                   className={size === activeSize ? "is-active" : ""}
                   onClick={() => selectSize(size)}
                 >
-                  <span>{size}</span>
-                  <strong>€{sizePrice.toFixed(2)}</strong>
-                  {sizeDiscount ? <small>-{sizeDiscount.percent}%</small> : null}
+                  <span className="desktop-quick-view__size-copy">
+                    <span className="desktop-quick-view__size-label">{size}</span>
+                    <small className="desktop-quick-view__size-helper">{helper}</small>
+                  </span>
+                  <span className="desktop-quick-view__size-price-wrap">
+                    <strong>€{sizePrice.toFixed(2)}</strong>
+                    {sizeDiscount ? <small>-{sizeDiscount.percent}%</small> : null}
+                  </span>
                 </button>
               );
             })}
