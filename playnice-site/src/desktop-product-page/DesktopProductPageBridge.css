@@ -36,6 +36,26 @@
     opacity: 0 !important;
   }
 
+  /* Cart, Private Selection and Checkout are real page-level overlays. On PDP
+     they must keep the same layering as Home: backdrop above the fixed header,
+     panel above the backdrop. The broad backdrop suppression above exists only
+     to prevent the legacy product modal from flashing during PDP routing. */
+  body.desktop-product-route-active:has(.cart-drawer.open) .backdrop.show,
+  body.desktop-product-route-active:has(.private-selection-drawer.open) .backdrop.show,
+  body.desktop-product-route-active:has(.checkout-modal.open) .backdrop.show {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    z-index: 5100 !important;
+  }
+
+  body.desktop-product-route-active .cart-drawer.open,
+  body.desktop-product-route-active .private-selection-drawer.open,
+  body.desktop-product-route-active .checkout-modal.open {
+    z-index: 5200 !important;
+  }
+
   body.desktop-product-route-active.overlay-lock {
     position: static !important;
     width: auto !important;
