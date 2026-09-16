@@ -22,8 +22,7 @@
     display: none !important;
   }
 
-  /* Mobile-derived depth treatment: keep the glow broad and quiet on desktop,
-     and give the bottle a little more breathing room inside the existing frame. */
+  /* Mobile-derived depth treatment: keep the glow broad and quiet on desktop. */
   body.desktop-product-route-active .desktop-product-page__image-button {
     position: relative;
     isolation: isolate;
@@ -47,8 +46,6 @@
   body.desktop-product-route-active .desktop-product-page__image-button img {
     position: relative;
     z-index: 1;
-    width: min(65%, 468px) !important;
-    max-height: 458px !important;
   }
 
   body.desktop-product-route-active .desktop-product-page__sizes button {
