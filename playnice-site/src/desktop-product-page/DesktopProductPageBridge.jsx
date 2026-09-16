@@ -63,25 +63,9 @@ const preloadProductNoteMap = (product) => {
   });
 };
 
-/* Temporary compatibility fallback. Removed once App registers direct actions. */
-const getModalSizeButton = (size) =>
-  Array.from(document.querySelectorAll(".product-modal .modal-size")).find((button) => {
-    const label = button.querySelector("span")?.textContent?.trim();
-    return label === size;
-  });
-
-const syncLegacyModalSize = (size) => {
-  if (!size) return;
-  const button = getModalSizeButton(size);
-  if (button && !button.classList.contains("active")) button.click();
-};
-
-const getLegacyWishlistState = () =>
-  Boolean(document.querySelector(".product-modal .modal-wishlist-btn.active"));
-
 const getGatewayWishlistState = (productId) => {
   const actions = getProductActions();
-  if (typeof actions?.isWishlisted !== "function") return null;
+  if (typeof actions?.isWishlisted !== "function") return false;
   return Boolean(actions.isWishlisted(productId));
 };
 
@@ -200,10 +184,7 @@ export default function DesktopProductPageBridge() {
     setSelectedSize(firstSize);
 
     const syncWishlist = () => {
-      const gatewayState = getGatewayWishlistState(product.id);
-      setIsWishlisted(
-        gatewayState == null ? getLegacyWishlistState() : gatewayState
-      );
+      setIsWishlisted(getGatewayWishlistState(product.id));
     };
 
     const frame = window.requestAnimationFrame(syncWishlist);
@@ -216,39 +197,6 @@ export default function DesktopProductPageBridge() {
       unsubscribe();
     };
   }, [active, product?.id, product?.slug]);
-
-  useEffect(() => {
-    if (!active || getProductActions()) return undefined;
-
-    const observeModal = () => {
-      const modal = document.querySelector(".product-modal");
-      if (!modal) return null;
-
-      const observer = new MutationObserver(() => {
-        setIsWishlisted(getLegacyWishlistState());
-      });
-
-      observer.observe(modal, {
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["class"],
-      });
-
-      return observer;
-    };
-
-    let observer = observeModal();
-    const timer = observer
-      ? null
-      : window.setTimeout(() => {
-          observer = observeModal();
-        }, 150);
-
-    return () => {
-      if (timer) window.clearTimeout(timer);
-      observer?.disconnect();
-    };
-  }, [active, product?.slug]);
 
   useEffect(() => {
     if (!active) return undefined;
@@ -327,60 +275,26 @@ export default function DesktopProductPageBridge() {
     setSelectedSize(size);
 
     const actions = getProductActions();
-    if (typeof actions?.selectSize === "function") {
-      actions.selectSize(selectedProduct, size);
-      return;
-    }
-
-    syncLegacyModalSize(size);
+    actions?.selectSize?.(selectedProduct, size);
   };
 
   const handleAddToCart = (size) => {
     const actions = getProductActions();
-    if (typeof actions?.addToCart === "function") {
-      actions.addToCart(selectedProduct, size);
-      return;
-    }
-
-    syncLegacyModalSize(size);
-    window.requestAnimationFrame(() => {
-      document.querySelector(".product-modal .modal-add-button")?.click();
-    });
+    actions?.addToCart?.(selectedProduct, size);
   };
 
   const handleBuyNow = (size) => {
     const actions = getProductActions();
-    if (typeof actions?.buyNow === "function") {
-      actions.buyNow(selectedProduct, size);
-      return;
-    }
-
-    syncLegacyModalSize(size);
-    window.requestAnimationFrame(() => {
-      const button = document.querySelector(".product-modal .modal-buy-now");
-      if (button) {
-        button.click();
-        return;
-      }
-      document.querySelector(".product-modal .modal-add-button")?.click();
-    });
+    actions?.buyNow?.(selectedProduct, size);
   };
 
   const handleToggleWishlist = () => {
     const actions = getProductActions();
-    if (typeof actions?.toggleWishlist === "function") {
-      actions.toggleWishlist(selectedProduct.id);
-      window.requestAnimationFrame(() => {
-        const nextState = getGatewayWishlistState(selectedProduct.id);
-        if (nextState != null) setIsWishlisted(nextState);
-      });
-      return;
-    }
+    actions?.toggleWishlist?.(selectedProduct.id);
 
-    const button = document.querySelector(".product-modal .modal-wishlist-btn");
-    if (!button) return;
-    button.click();
-    window.requestAnimationFrame(() => setIsWishlisted(getLegacyWishlistState()));
+    window.requestAnimationFrame(() => {
+      setIsWishlisted(getGatewayWishlistState(selectedProduct.id));
+    });
   };
 
   const handleBackToShop = () => {
