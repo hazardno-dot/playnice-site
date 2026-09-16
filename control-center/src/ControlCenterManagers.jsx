@@ -30,7 +30,16 @@ import HeroApplyBridge from "./HeroApplyBridge";
 import ExhibitionManager from "./ExhibitionManager";
 import AnnouncementManager from "./AnnouncementManager";
 import CommerceShippingManager from "./CommerceShippingManager";
+import SocialManager from "./SocialManager";
+import SocialMediaOverrideBridge from "./SocialMediaOverrideBridge";
+import SocialReadinessBridge from "./SocialReadinessBridge";
+import SocialSchedulerBridge from "./SocialSchedulerBridge";
+import SocialInstagramTestPublishBridge from "./SocialInstagramTestPublishBridge";
+import SocialFacebookTestPublishBridge from "./SocialFacebookTestPublishBridge";
+import SocialInstagramStoryTestPublishBridge from "./SocialInstagramStoryTestPublishBridge";
+import MetaConnectionBridge from "./MetaConnectionBridge";
 import "./header-layout.css";
+import "./social-dry-run.css";
 
 const ACTIVE_MODULE_KEY = "playnice_cc_active_module";
 
@@ -81,9 +90,49 @@ export default function ControlCenterManagers() {
       window.requestAnimationFrame(reset);
     };
 
+    const restoreSocialHiddenChildren = () => {
+      const socialSlot = mainStage.querySelector("#social-manager-slot");
+      const topbar = mainStage.querySelector(".topbar");
+      [...mainStage.children].forEach((child) => {
+        if (child === topbar || child === socialSlot) return;
+        if (child.dataset.socialPreviousDisplay !== undefined) {
+          child.style.display = child.dataset.socialPreviousDisplay;
+          delete child.dataset.socialPreviousDisplay;
+        }
+      });
+    };
+
+    const forceSocialClosed = () => {
+      const socialButton = nav.querySelector("[data-social-manager-nav='true']");
+      const socialSlot = mainStage.querySelector("#social-manager-slot");
+      socialButton?.classList.remove("active");
+      if (socialSlot) socialSlot.style.display = "none";
+      restoreSocialHiddenChildren();
+    };
+
+    const ensureSocialVisible = () => {
+      const socialSlot = mainStage.querySelector("#social-manager-slot");
+      const topbar = mainStage.querySelector(".topbar");
+      if (!socialSlot) return;
+      [...mainStage.children].forEach((child) => {
+        if (child === topbar || child === socialSlot) return;
+        if (child.dataset.socialPreviousDisplay === undefined) child.dataset.socialPreviousDisplay = child.style.display || "";
+        child.style.display = "none";
+      });
+      socialSlot.style.display = "block";
+    };
+
     const rememberModule = (event) => {
       const button = event.target.closest("button");
       if (!button || !nav.contains(button)) return;
+
+      const socialButton = nav.querySelector("[data-social-manager-nav='true']");
+      if (socialButton && button !== socialButton) {
+        forceSocialClosed();
+        window.requestAnimationFrame(forceSocialClosed);
+      } else if (socialButton && button === socialButton) {
+        window.requestAnimationFrame(ensureSocialVisible);
+      }
 
       const exhibitionButton = nav.querySelector("[data-exhibition-manager-nav='true']");
       if (exhibitionButton && button !== exhibitionButton) exhibitionButton.classList.remove("active");
@@ -96,7 +145,7 @@ export default function ControlCenterManagers() {
 
     const persisted = window.sessionStorage.getItem(ACTIVE_MODULE_KEY);
     let restoreTimer = null;
-    if (persisted === "Hero" || persisted === "Exhibition") {
+    if (persisted === "Hero" || persisted === "Exhibition" || persisted === "Social") {
       let attempts = 0;
       restoreTimer = window.setInterval(() => {
         attempts += 1;
@@ -105,7 +154,11 @@ export default function ControlCenterManagers() {
           window.clearInterval(restoreTimer);
           return;
         }
-        const selector = persisted === "Hero" ? "[data-hero-manager-nav='true']" : "[data-exhibition-manager-nav='true']";
+        const selector = persisted === "Hero"
+          ? "[data-hero-manager-nav='true']"
+          : persisted === "Exhibition"
+            ? "[data-exhibition-manager-nav='true']"
+            : "[data-social-manager-nav='true']";
         const moduleButton = nav.querySelector(selector);
         if (moduleButton) moduleButton.click();
         if (attempts >= 40) window.clearInterval(restoreTimer);
@@ -137,6 +190,14 @@ export default function ControlCenterManagers() {
     <ExhibitionManager />
     <AnnouncementManager />
     <CommerceShippingManager />
+    <SocialManager />
+    <SocialMediaOverrideBridge />
+    <SocialReadinessBridge />
+    <SocialSchedulerBridge />
+    <SocialInstagramTestPublishBridge />
+    <SocialFacebookTestPublishBridge />
+    <SocialInstagramStoryTestPublishBridge />
+    <MetaConnectionBridge />
     <JournalManager />
     <JournalApplyManager />
     <NotesManager />
