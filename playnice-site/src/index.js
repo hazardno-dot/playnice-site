@@ -14,6 +14,7 @@ import WhatsAppLinkBridge from "./WhatsAppLinkBridge";
 import DesktopProductPageBridge from "./desktop-product-page/DesktopProductPageBridge";
 import DesktopProductPageHeaderGuard from "./desktop-product-page/DesktopProductPageHeaderGuard";
 import DesktopProductPageNavigationPolish from "./desktop-product-page/DesktopProductPageNavigationPolish";
+import DesktopQuickView from "./desktop-product-page/DesktopQuickView";
 import { initLocationEvents } from "./lib/locationEvents";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
@@ -78,6 +79,7 @@ const renderApp = () => {
       <DesktopProductPageBridge />
       <DesktopProductPageHeaderGuard />
       <DesktopProductPageNavigationPolish />
+      <DesktopQuickView />
       <PrivateSelectionEnhancer />
       <MobileShopReveal />
       <MobileMenuContact />
