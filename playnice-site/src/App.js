@@ -14,6 +14,7 @@ import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
 import MobileProductPage from "./mobile-v2/product-page/MobileProductPage";
 import { getJournalArticleSlug } from "./lib/journalSlug";
+import { registerProductActions } from "./lib/productActionsGateway";
 
 const Exhibition = React.lazy(() => import("./Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./JournalArticlePage"));
@@ -3873,6 +3874,86 @@ const handleModalAddToCart = (product, size) => {
     setModalAddedKey(null);
   }, 1300);
 };
+
+const getDirectPurchaseProduct = (product, size) => {
+  if (!product || !size) return product;
+
+  const activePrice = product.sizes?.[size];
+  const discount = getProductDiscountForSize(product, size);
+
+  if (!discount || activePrice == null) return product;
+
+  const finalPrice = getDiscountedPrice(
+    activePrice,
+    discount.percent
+  );
+
+  return {
+    ...product,
+    sizes: {
+      ...product.sizes,
+      [size]: finalPrice,
+    },
+  };
+};
+
+useEffect(() => {
+  return registerProductActions({
+    selectSize: (_product, size) => {
+      if (!size) return;
+
+      setSelectedSize(size);
+      setHasUserPickedSize(true);
+    },
+
+    isWishlisted: (productId) => {
+      return wishlist.includes(productId);
+    },
+
+    toggleWishlist: (productId) => {
+      toggleWishlist(productId);
+    },
+
+    addToCart: (product, size) => {
+      if (!product || !size) return;
+
+      const productForCart =
+        getDirectPurchaseProduct(product, size);
+
+      addToCart(
+        productForCart,
+        size,
+        null,
+        null,
+        {
+          showToast: false,
+          showMiniPreview: true,
+        }
+      );
+    },
+
+    buyNow: (product, size) => {
+      if (!product || !size) return;
+
+      const productForCart =
+        getDirectPurchaseProduct(product, size);
+
+      addToCart(
+        productForCart,
+        size,
+        null,
+        null,
+        {
+          showToast: false,
+          showMiniPreview: false,
+        }
+      );
+
+      setMiniCartPreview(null);
+      openCheckout();
+    },
+  });
+});
 
 const addHeroBottleToCart = () => {
   const heroProduct = {
