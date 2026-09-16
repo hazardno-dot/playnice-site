@@ -1507,7 +1507,9 @@ const selectedSortOption =
     isMobileProductModalViewport && Boolean(selectedProduct);
 
   const hasBlockingOverlay =
-  (!isMobileProductPageActive && !!selectedProduct) ||
+  (!isMobileProductPageActive &&
+    !!selectedProduct &&
+    productModalVisible) ||
   cartOpen ||
   checkoutOpen ||
   storyOpen ||
@@ -4632,15 +4634,6 @@ const openProductModal = (product, options = {}) => {
     }
   }
 
-  if (!isMobileModal) {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setProductModalVisible(true);
-      });
-    });
-  }
-};
-
 const getDiscoveryAnalyticsParams = (discovery, source = "manual") => {
   const intent = discovery?.intent || {};
 
@@ -4881,7 +4874,7 @@ useEffect(() => {
     }
 
     // Product modal is the highest regular layer
-    if (selectedProduct) {
+    if (selectedProduct && productModalVisible) {
       closeProductModal();
       return;
     }
@@ -9510,7 +9503,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   )}
 </aside>
 
-{selectedProduct && !isMobileProductPageActive && (
+{selectedProduct &&
+  !isMobileProductPageActive &&
+  productModalVisible && (
   <div
     className={`modal-overlay product-modal-layer ${
       productModalVisible ? "show" : ""
