@@ -5,6 +5,7 @@ import { productCopy } from "../data/products/productCopy";
 import { productWearContext } from "../data/products/productWearContext";
 import { productDoNotWearContext } from "../data/products/productDoNotWearContext";
 import { productWhatToWearContext } from "../data/products/productWhatToWearContext";
+import DesktopProductModalParity from "./DesktopProductModalParity";
 import "./DesktopProductPage.css";
 
 const PROFILE_KEYS = [
@@ -60,6 +61,11 @@ const getDiscountedPrice = (price, percent) =>
 const getProductDiscountForSize = (product, size) => {
   if (!product?.discount) return null;
   return product.discount.size === size ? product.discount : null;
+};
+
+const getRatingStarCount = (rating) => {
+  const normalizedRating = Math.max(0, Math.min(10, Number(rating) || 0));
+  return Math.round(normalizedRating);
 };
 
 const getRecommendations = (product) => {
@@ -153,12 +159,13 @@ export default function DesktopProductPage({
   const characterLine = copy.card?.[lang] || copy.modal?.[lang] || "";
   const fullDescription = copy.modal?.[lang] || characterLine;
   const scentType = copy.scentType?.[lang] || "";
+  const ratingStars = getRatingStarCount(product.rating);
 
   return (
     <article className="desktop-product-page" data-product-slug={product.slug}>
       <div className="desktop-product-page__shell">
         <nav className="desktop-product-page__breadcrumb" aria-label="Breadcrumb">
-          <button type="button" onClick={onBackToShop}>{lang === "sr" ? "SHOP" : "SHOP"}</button>
+          <button type="button" onClick={onBackToShop}>SHOP</button>
           <span>/</span>
           <span>{product.category}</span>
           <span>/</span>
@@ -197,6 +204,7 @@ export default function DesktopProductPage({
                 />
               ) : null}
             </div>
+
             {product.noteMap ? (
               <button type="button" className="desktop-product-page__note-map-trigger" onClick={() => setNoteMapOpen((current) => !current)}>
                 {noteMapOpen
@@ -204,6 +212,8 @@ export default function DesktopProductPage({
                   : lang === "sr" ? "POGLEDAJ NOTE →" : "EXPLORE NOTES →"}
               </button>
             ) : null}
+
+            <DesktopProductModalParity product={product} lang={lang} />
           </div>
 
           <div className="desktop-product-page__purchase-column">
@@ -221,21 +231,36 @@ export default function DesktopProductPage({
                   </p>
                 ) : null}
               </div>
+
               <button
                 type="button"
                 className={`desktop-product-page__wishlist ${isWishlisted ? "is-active" : ""}`}
                 onClick={onToggleWishlist}
-                aria-label={isWishlisted ? "Remove from Private Selection" : "Add to Private Selection"}
+                aria-label={
+                  isWishlisted
+                    ? lang === "sr" ? "Ukloni iz Private Selection" : "Remove from Private Selection"
+                    : lang === "sr" ? "Dodaj u Private Selection" : "Add to Private Selection"
+                }
               >
-                ♥
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    className={isWishlisted ? "is-filled" : "is-outline"}
+                    d="M20.8 5.9c-1.8-2.1-5.1-2.2-7-.3L12 7.4l-1.8-1.8c-1.9-1.9-5.2-1.8-7 .3-1.7 2-1.4 5 .5 6.9L12 21l8.3-8.2c1.9-1.9 2.2-4.9.5-6.9Z"
+                  />
+                </svg>
               </button>
             </div>
 
             {product.rating ? (
               <div className="desktop-product-page__rating">
-                <strong>{Number(product.rating).toFixed(1)}</strong>
-                <span>/ 10</span>
-                {product.ratingLabel ? <small>{product.ratingLabel}</small> : null}
+                <span className="desktop-product-page__rating-stars" aria-hidden="true">
+                  <span className="is-filled">{"★".repeat(ratingStars)}</span>
+                  <span className="is-empty">{"★".repeat(10 - ratingStars)}</span>
+                </span>
+                <span className="desktop-product-page__rating-score">
+                  <strong>{Number(product.rating).toFixed(1)}</strong>
+                  <small>/ 10{product.ratingLabel ? ` · ${product.ratingLabel}` : ""}</small>
+                </span>
               </div>
             ) : null}
 
@@ -294,7 +319,9 @@ export default function DesktopProductPage({
 
         <section className="desktop-product-page__intelligence">
           <div className="desktop-product-page__section-copy">
-            <span className="desktop-product-page__kicker">FRAGRANCE INTELLIGENCE</span>
+            <span className="desktop-product-page__kicker">
+              {lang === "sr" ? "MIRISNI PROFIL" : "SCENT PROFILE"}
+            </span>
             <h2>{lang === "sr" ? "Kako ovaj parfem zaista nosiš." : "How this fragrance actually wears."}</h2>
             {fullDescription ? <p>{fullDescription}</p> : null}
           </div>
