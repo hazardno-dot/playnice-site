@@ -23,12 +23,16 @@
     max-height: 420px;
   }
 
-  /* Open notes are intentionally one clear return surface. */
+  /* Open notes are interactive only on actual note tiles, not the whole panel. */
   body.desktop-product-route-active .desktop-product-page__note-map-stage {
-    cursor: pointer;
+    cursor: default;
   }
 
   body.desktop-product-route-active .desktop-product-page__note-map-stage .the-note-map {
-    pointer-events: none;
+    pointer-events: auto;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__note-map-stage .the-note-map__note {
+    cursor: pointer;
   }
 }
