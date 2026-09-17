@@ -31,7 +31,7 @@
     padding-left: 10px;
     color: #ff5a52;
     font-family: "Inter", sans-serif;
-    font-size: 7px;
+    font-size: 8.25px;
     font-weight: 800;
     line-height: 1;
     letter-spacing: 0.12em;
@@ -128,19 +128,19 @@
     .desktop-product-page__visual::after {
     content: "100";
     position: absolute;
-    top: 44px;
+    top: 48px;
     left: auto !important;
-    right: 34px;
+    right: 38px;
     bottom: auto !important;
     z-index: 7;
-    width: 62px;
-    height: 62px;
+    width: 55px;
+    height: 55px;
     display: grid;
     place-items: center;
     border: 1px solid rgba(255, 224, 140, 0.9);
     border-radius: 999px;
     outline: 1px dashed rgba(45, 32, 10, 0.35);
-    outline-offset: -9px;
+    outline-offset: -8px;
     background:
       radial-gradient(circle at 35% 30%,
         #ffe49a 0%,
@@ -148,7 +148,7 @@
         #a26f16 100%);
     color: #241704;
     font-family: "Inter", sans-serif;
-    font-size: 14px;
+    font-size: 12.5px;
     font-weight: 900;
     line-height: 1;
     letter-spacing: 0.02em;
@@ -164,13 +164,13 @@
     .desktop-product-page__visual::before {
     content: "";
     position: absolute;
-    top: 25px;
+    top: 28px;
     left: auto !important;
-    right: 50px;
+    right: 52px;
     bottom: auto !important;
     z-index: 6;
-    width: 30px;
-    height: 30px;
+    width: 27px;
+    height: 27px;
     background:
       linear-gradient(90deg,
         #c9302c 0 33%,
