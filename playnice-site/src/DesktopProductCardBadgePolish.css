@@ -46,103 +46,113 @@
     transform-origin: top left;
   }
 
-  /* Quick View is a dedicated secondary action. The large image remains the
-     primary path to the Product Page; preview gets its own small control. */
+  /* Keep the Product Page as the primary image/title action and move Quick View
+     into the old START WITH 5ML CTA slot. This separates the two intentions. */
   .premium-product-card {
     position: relative;
+  }
+
+  .premium-product-card .product-card-media {
+    order: 1;
+  }
+
+  .premium-product-card .product-meta {
+    order: 2;
+  }
+
+  .premium-product-card .product-card-quick-view {
+    order: 3;
+  }
+
+  .premium-product-card .size-buttons {
+    order: 4;
   }
 
   .premium-product-card .product-card-media::after {
     content: none !important;
   }
 
-  .premium-product-card .product-card-quick-view {
-    position: absolute;
-    z-index: 9;
-    top: 166px;
-    right: 14px;
-    left: auto;
-    bottom: auto;
-    width: 30px;
-    min-width: 30px;
-    height: 30px;
-    min-height: 30px;
-    margin: 0;
-    padding: 0;
-    border: 1px solid rgba(220, 181, 107, 0.34);
-    border-radius: 999px;
-    background: rgba(8, 8, 8, 0.72);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow:
-      0 6px 18px rgba(0, 0, 0, 0.34),
-      inset 0 1px 0 rgba(255, 255, 255, 0.035);
-    color: transparent;
-    font-size: 0;
-    line-height: 1;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(4px);
-    transition:
-      opacity 150ms ease,
-      transform 180ms ease,
-      border-color 150ms ease,
-      background 150ms ease,
-      box-shadow 150ms ease;
+  /* Retire the duplicated Product Page CTA. The image/title already perform
+     that action, so this slot can belong exclusively to Quick View. */
+  .premium-product-card .product-preview-line {
+    display: none !important;
   }
 
-  /* Eye / preview glyph. */
+  .premium-product-card .product-card-quick-view {
+    position: relative;
+    z-index: 4;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: auto;
+    min-width: 154px;
+    min-height: 28px;
+    margin: 12px 0 10px;
+    padding: 6px 15px;
+    border: 1px solid rgba(73, 219, 230, 0.28);
+    border-radius: 999px;
+    background:
+      linear-gradient(180deg, rgba(61, 219, 227, 0.055), rgba(61, 219, 227, 0.018)),
+      rgba(5, 16, 17, 0.58);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.035),
+      0 7px 18px rgba(0, 0, 0, 0.16);
+    color: #8ceff4;
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0.96;
+    transform: none;
+    transition:
+      color 160ms ease,
+      border-color 160ms ease,
+      background 160ms ease,
+      box-shadow 180ms ease,
+      transform 160ms ease;
+  }
+
   .premium-product-card .product-card-quick-view::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 13px;
-    height: 8px;
-    border: 1.4px solid rgba(236, 202, 135, 0.92);
-    border-radius: 50% / 62%;
-    transform: translate(-50%, -50%);
+    content: none;
   }
 
   .premium-product-card .product-card-quick-view::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: #e8c880;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 7px rgba(220, 181, 107, 0.34);
-  }
-
-  .premium-product-card .product-card-media:hover + .product-card-quick-view,
-  .premium-product-card .product-card-media:focus-visible + .product-card-quick-view,
-  .premium-product-card .product-card-quick-view:hover,
-  .premium-product-card .product-card-quick-view:focus-visible {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
+    content: "↗";
+    position: static;
+    width: auto;
+    height: auto;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: rgba(140, 239, 244, 0.9);
+    font-size: 11px;
+    line-height: 1;
+    transform: none;
+    box-shadow: none;
   }
 
   .premium-product-card .product-card-quick-view:hover,
   .premium-product-card .product-card-quick-view:focus-visible {
-    border-color: rgba(236, 202, 135, 0.78);
-    background: rgba(14, 12, 9, 0.9);
+    color: #b8fbff;
+    border-color: rgba(73, 219, 230, 0.48);
+    background:
+      linear-gradient(180deg, rgba(61, 219, 227, 0.09), rgba(61, 219, 227, 0.032)),
+      rgba(6, 22, 23, 0.72);
     box-shadow:
-      0 7px 22px rgba(0, 0, 0, 0.42),
-      0 0 0 3px rgba(220, 181, 107, 0.055);
+      inset 0 1px 0 rgba(255, 255, 255, 0.045),
+      0 8px 20px rgba(0, 0, 0, 0.2),
+      0 0 0 3px rgba(73, 219, 230, 0.035);
     outline: none;
+    transform: translateY(-1px);
   }
 
-  /* Tooltip clarifies the secondary action without occupying the image stage. */
-  .premium-product-card .product-card-quick-view:hover {
-    overflow: visible;
-  }
-
-  .premium-product-card .product-card-quick-view:hover span {
-    pointer-events: none;
+  .premium-product-card .product-card-quick-view:active {
+    transform: translateY(0);
   }
 
   /* Keep primary image-stage signals above the bottle without introducing a
