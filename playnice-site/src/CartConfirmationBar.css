@@ -142,8 +142,9 @@
     padding: 10px 26px 10px 22px;
     grid-template-columns:
       42px
-      minmax(300px, 1.18fr)
-      minmax(420px, 1fr)
+      minmax(280px, 1.2fr)
+      minmax(280px, 0.9fr)
+      minmax(300px, 1fr)
       auto;
     gap: 18px;
     border-bottom-color: rgba(220, 181, 107, 0.28);
@@ -218,62 +219,44 @@
     line-height: 1.16;
   }
 
-  .mini-cart-preview-meta {
-    justify-self: end;
-    color: rgba(230, 194, 122, 0.96);
-    font-size: 0.76rem;
-    font-weight: 680;
-    line-height: 1;
-    letter-spacing: 0.01em;
+  .mini-cart-preview-center-message {
+    min-width: 0;
+    justify-self: center;
+    color: rgba(230, 194, 122, 0.9);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.095em;
+    text-align: center;
+    text-transform: uppercase;
     white-space: nowrap;
   }
 
   .mini-cart-preview-shipping {
     min-width: 0;
-    width: min(100%, 520px);
+    width: min(100%, 420px);
     justify-self: center;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "message label"
-      "track track";
-    column-gap: 20px;
-    row-gap: 7px;
-    align-items: center;
+    grid-template-rows: auto auto;
+    gap: 8px;
     align-content: center;
     padding: 0 8px;
   }
 
-  .mini-cart-preview-shipping-message {
-    grid-area: message;
-    overflow: hidden;
-    color: rgba(229, 194, 126, 0.78);
-    font-size: 0.56rem;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: 0.115em;
-    text-align: left;
-    text-transform: uppercase;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
   .mini-cart-preview-shipping-label {
-    grid-area: label;
     overflow: hidden;
-    color: rgba(223, 214, 196, 0.78);
-    font-size: 0.64rem;
+    color: rgba(223, 214, 196, 0.82);
+    font-size: 0.68rem;
     font-weight: 650;
     line-height: 1;
-    letter-spacing: 0.07em;
-    text-align: right;
+    letter-spacing: 0.075em;
+    text-align: center;
     text-transform: uppercase;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
   .mini-cart-preview-shipping-track {
-    grid-area: track;
     position: relative;
     width: 100%;
     height: 2px;
@@ -300,6 +283,16 @@
   .mini-cart-preview-shipping.is-unlocked .mini-cart-preview-shipping-progress {
     background: linear-gradient(90deg, #6f956c, #a9d4a4 58%, #c4e4bf 100%);
     box-shadow: 0 0 10px rgba(169, 212, 164, 0.2);
+  }
+
+  .mini-cart-preview-meta {
+    justify-self: end;
+    color: rgba(230, 194, 122, 0.96);
+    font-size: 0.76rem;
+    font-weight: 680;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
   }
 }
 
@@ -366,6 +359,7 @@
     font-weight: 600;
   }
 
+  .mini-cart-preview-center-message,
   .mini-cart-preview-shipping,
   .mini-cart-preview-meta {
     display: none !important;
