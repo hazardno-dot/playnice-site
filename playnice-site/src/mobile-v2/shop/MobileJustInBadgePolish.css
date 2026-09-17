@@ -42,3 +42,85 @@
     text-shadow: 0 0 10px rgba(255, 90, 82, 0.13);
   }
 }
+
+
+/* =========================================
+   MOBILE TOM FORD MILESTONE
+   Keep compact Shop cards clean; move the 100th-fragrance medal to the PDP.
+========================================= */
+
+@media (max-width: 640px) {
+  .shop-section .product-card .productMilestoneMedal {
+    display: none !important;
+  }
+
+  .mobile-product-page[data-product-slug="tom-ford-ombre-leather-parfum"]
+    .mobile-product-page__visual-frame::after {
+    content: "100";
+    position: absolute;
+    top: 20px;
+    right: 18px;
+    z-index: 5;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 224, 140, 0.9);
+    border-radius: 999px;
+    outline: 1px dashed rgba(45, 32, 10, 0.35);
+    outline-offset: -6px;
+    background:
+      radial-gradient(circle at 35% 30%,
+        #ffe49a 0%,
+        #e7bd52 48%,
+        #a26f16 100%);
+    color: #241704;
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    box-shadow:
+      0 0 0 2px rgba(10, 10, 10, 0.55),
+      0 8px 18px rgba(0, 0, 0, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.38);
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+  }
+
+  .mobile-product-page[data-product-slug="tom-ford-ombre-leather-parfum"]
+    .mobile-product-page__visual-frame::before {
+    content: "";
+    position: absolute;
+    top: 7px;
+    right: 29px;
+    z-index: 4;
+    width: 20px;
+    height: 22px;
+    background:
+      linear-gradient(90deg,
+        #c9302c 0 33%,
+        #f2eadf 33% 66%,
+        #1f5d9b 66% 100%);
+    clip-path:
+      polygon(0 0,
+        42% 0,
+        50% 38%,
+        58% 0,
+        100% 0,
+        100% 100%,
+        50% 76%,
+        0 100%);
+    filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.28));
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+  }
+
+  .mobile-product-page[data-product-slug="tom-ford-ombre-leather-parfum"]
+    .mobile-product-page__visual-frame.is-note-map-open::before,
+  .mobile-product-page[data-product-slug="tom-ford-ombre-leather-parfum"]
+    .mobile-product-page__visual-frame.is-note-map-open::after {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+}
