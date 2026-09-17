@@ -29,8 +29,21 @@ const decorateConfirmationBar = (bar) => {
     ? "en"
     : "sr";
 
+  const body = bar.querySelector(".mini-cart-preview-body");
+  const meta = body?.querySelector("span:not(.mini-cart-preview-kicker)");
+
+  if (meta instanceof HTMLElement) {
+    meta.classList.add("mini-cart-preview-meta");
+  }
+
   const shipping = document.createElement("div");
   shipping.className = `mini-cart-preview-shipping${isUnlocked ? " is-unlocked" : ""}`;
+
+  const message = document.createElement("span");
+  message.className = "mini-cart-preview-shipping-message";
+  message.textContent = lang === "en"
+    ? "Cart updated · Continue exploring"
+    : "Korpa ažurirana · Nastavi da istražuješ";
 
   const label = document.createElement("span");
   label.className = "mini-cart-preview-shipping-label";
@@ -51,8 +64,13 @@ const decorateConfirmationBar = (bar) => {
   progress.style.width = `${percent}%`;
 
   track.appendChild(progress);
-  shipping.append(label, track);
-  bar.appendChild(shipping);
+  shipping.append(message, label, track);
+
+  if (meta instanceof HTMLElement) {
+    bar.append(shipping, meta);
+  } else {
+    bar.appendChild(shipping);
+  }
 };
 
 export default function DesktopCartConfirmationEnhancer() {
