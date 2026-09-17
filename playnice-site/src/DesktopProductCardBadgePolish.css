@@ -121,48 +121,71 @@
     z-index: 8;
   }
 
-  /* The collection milestone is given room on the dedicated PDP media stage. */
+  /* Reuse the original collection-medal language on the roomy desktop PDP.
+     The visual pseudo-elements already exist, so explicitly reset inherited
+     positioning from the base visual decoration before placing them right. */
   .desktop-product-page[data-product-slug="tom-ford-ombre-leather-parfum"]
     .desktop-product-page__visual::after {
     content: "100";
     position: absolute;
-    top: 26px;
-    right: 28px;
-    z-index: 6;
-    width: 54px;
-    height: 54px;
+    top: 44px;
+    left: auto !important;
+    right: 34px;
+    bottom: auto !important;
+    z-index: 7;
+    width: 62px;
+    height: 62px;
     display: grid;
     place-items: center;
-    border: 1px solid rgba(236, 199, 121, 0.62);
-    border-radius: 50%;
+    border: 1px solid rgba(255, 224, 140, 0.9);
+    border-radius: 999px;
+    outline: 1px dashed rgba(45, 32, 10, 0.35);
+    outline-offset: -9px;
     background:
-      radial-gradient(circle at 36% 28%, rgba(255, 242, 195, 0.34), transparent 24%),
-      linear-gradient(145deg, #d6ae58, #8f6424 78%);
-    color: #171108;
+      radial-gradient(circle at 35% 30%,
+        #ffe49a 0%,
+        #e7bd52 48%,
+        #a26f16 100%);
+    color: #241704;
     font-family: "Inter", sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 900;
-    letter-spacing: 0.04em;
+    line-height: 1;
+    letter-spacing: 0.02em;
     box-shadow:
-      0 10px 28px rgba(0, 0, 0, 0.38),
-      0 0 0 4px rgba(220, 181, 107, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      0 0 0 2px rgba(10, 10, 10, 0.55),
+      0 10px 24px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.38);
     pointer-events: none;
   }
 
+  /* Original medal ribbon: red / ivory / blue. */
   .desktop-product-page[data-product-slug="tom-ford-ombre-leather-parfum"]
     .desktop-product-page__visual::before {
-    content: "100th fragrance";
+    content: "";
     position: absolute;
-    top: 86px;
-    right: 18px;
+    top: 25px;
+    left: auto !important;
+    right: 50px;
+    bottom: auto !important;
     z-index: 6;
-    color: rgba(232, 207, 158, 0.62);
-    font-family: "Inter", sans-serif;
-    font-size: 7px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    width: 30px;
+    height: 30px;
+    background:
+      linear-gradient(90deg,
+        #c9302c 0 33%,
+        #f2eadf 33% 66%,
+        #1f5d9b 66% 100%);
+    clip-path:
+      polygon(0 0,
+        42% 0,
+        50% 38%,
+        58% 0,
+        100% 0,
+        100% 100%,
+        50% 76%,
+        0 100%);
+    filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.3));
     pointer-events: none;
   }
 }
