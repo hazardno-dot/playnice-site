@@ -11,6 +11,7 @@ import CartInteractionV2 from "./CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
 import FragranceIntelligenceToneLoader from "./FragranceIntelligenceToneLoader";
 import WhatsAppLinkBridge from "./WhatsAppLinkBridge";
+import DesktopCartConfirmationEnhancer from "./DesktopCartConfirmationEnhancer";
 import DesktopProductPageBridge from "./desktop-product-page/DesktopProductPageBridge";
 import DesktopProductPageHeaderGuard from "./desktop-product-page/DesktopProductPageHeaderGuard";
 import DesktopProductPageNavigationPolish from "./desktop-product-page/DesktopProductPageNavigationPolish";
@@ -84,6 +85,7 @@ const renderApp = () => {
       <DesktopProductPageHeaderGuard />
       <DesktopProductPageNavigationPolish />
       <DesktopQuickView />
+      <DesktopCartConfirmationEnhancer />
       <PrivateSelectionEnhancer />
       <MobileShopReveal />
       <MobileMenuContact />
