@@ -21,7 +21,7 @@ const readShippingProgress = () => {
 
 const decorateConfirmationBar = (bar) => {
   if (!(bar instanceof HTMLElement)) return;
-  if (bar.querySelector(".mini-cart-preview-shipping")) return;
+  if (bar.querySelector(".mini-cart-preview-center-message")) return;
 
   const { percent, remaining } = readShippingProgress();
   const isUnlocked = percent >= 99.9;
@@ -36,14 +36,14 @@ const decorateConfirmationBar = (bar) => {
     meta.classList.add("mini-cart-preview-meta");
   }
 
-  const shipping = document.createElement("div");
-  shipping.className = `mini-cart-preview-shipping${isUnlocked ? " is-unlocked" : ""}`;
-
-  const message = document.createElement("span");
-  message.className = "mini-cart-preview-shipping-message";
-  message.textContent = lang === "en"
+  const centerMessage = document.createElement("div");
+  centerMessage.className = "mini-cart-preview-center-message";
+  centerMessage.textContent = lang === "en"
     ? "Cart updated · Continue exploring"
     : "Korpa ažurirana · Nastavi da istražuješ";
+
+  const shipping = document.createElement("div");
+  shipping.className = `mini-cart-preview-shipping${isUnlocked ? " is-unlocked" : ""}`;
 
   const label = document.createElement("span");
   label.className = "mini-cart-preview-shipping-label";
@@ -64,12 +64,12 @@ const decorateConfirmationBar = (bar) => {
   progress.style.width = `${percent}%`;
 
   track.appendChild(progress);
-  shipping.append(message, label, track);
+  shipping.append(label, track);
 
   if (meta instanceof HTMLElement) {
-    bar.append(shipping, meta);
+    bar.append(centerMessage, shipping, meta);
   } else {
-    bar.appendChild(shipping);
+    bar.append(centerMessage, shipping);
   }
 };
 
