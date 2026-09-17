@@ -304,6 +304,20 @@
       0 0 12px rgba(220, 181, 107, 0.72);
   }
 
+  .mobile-product-page__sizes button.is-active > .mobile-product-page__size-topline > span,
+  .mobile-product-page__sizes button.is-active > span {
+    color: rgba(255, 244, 220, 0.92);
+  }
+
+  .mobile-product-page__sizes button.is-active > strong,
+  .mobile-product-page__sizes button.is-active .mobile-product-page__size-price-discount > strong {
+    background: linear-gradient(120deg, #f3d9a4 0%, #e6c88f 30%, #dcb56b 55%, #f0d39a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #dcb56b;
+  }
+
   .mobile-product-page__sizes span {
     color: rgba(244, 234, 216, 0.6);
     font: 700 0.67rem/1 Inter, sans-serif;
