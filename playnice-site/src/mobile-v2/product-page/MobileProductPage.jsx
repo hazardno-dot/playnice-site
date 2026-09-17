@@ -46,6 +46,35 @@ const PROFILE_LABELS = {
   powdery: { sr: "Puderasti karakter", en: "Powdery" },
 };
 
+
+const CHARACTER_VISUALS = [
+  { match: /clean|čist/i, image: "/note-map/white-musk.webp" },
+  { match: /night|noć|dark|tamn/i, image: "/note-map/incense.webp" },
+  { match: /wood|drven/i, image: "/note-map/cedarwood.webp" },
+  { match: /citrus|citrusn|fresh|svež/i, image: "/note-map/bergamot.webp" },
+  { match: /floral|cvet/i, image: "/note-map/rose.webp" },
+  { match: /soft|mek/i, image: "/note-map/musk.webp" },
+  { match: /warm|topl/i, image: "/note-map/amber.webp" },
+  { match: /spic|začin/i, image: "/note-map/pink-pepper.webp" },
+  { match: /sweet|slatk/i, image: "/note-map/vanilla.webp" },
+  { match: /rich|bogat|elegant|signature|potpis/i, image: "/note-map/sandalwood.webp" },
+  { match: /aquatic|marine|vod|morsk/i, image: "/note-map/sea-salt.webp" },
+  { match: /unisex/i, image: "/note-map/iris.webp" },
+];
+
+const getCharacterVisual = (tag, index) => {
+  const matched = CHARACTER_VISUALS.find((item) => item.match.test(String(tag || "")));
+  if (matched) return matched.image;
+
+  const fallbacks = [
+    "/note-map/bergamot.webp",
+    "/note-map/cedarwood.webp",
+    "/note-map/iris.webp",
+  ];
+
+  return fallbacks[index % fallbacks.length];
+};
+
 const getProductType = (name = "") => {
   const match = String(name).match(
     /(Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum|Cologne)$/i
@@ -196,6 +225,7 @@ export default function MobileProductPage({
   const characterLine = copy.card?.[lang] || copy.modal?.[lang] || "";
   const fullDescription = copy.modal?.[lang] || characterLine;
   const scentType = copy.scentType?.[lang] || "";
+  const characterTags = Array.isArray(copy.tags?.[lang]) ? copy.tags[lang].slice(0, 3) : [];
 
   return (
     <div className="mobile-product-page" data-product-slug={product.slug}>
@@ -311,7 +341,27 @@ export default function MobileProductPage({
 
       <section className="mobile-product-page__story">
         {characterLine ? <p className="mobile-product-page__lead">{characterLine}</p> : null}
-        {scentType ? <span className="mobile-product-page__scent-type">{scentType}</span> : null}
+
+        {characterTags.length ? (
+          <div className="mobile-product-page__character-strip" aria-label={lang === "sr" ? "Karakter" : "Character"}>
+            {characterTags.map((tag, index) => (
+              <span className="mobile-product-page__character-chip" key={tag}>
+                <span className="mobile-product-page__character-visual" aria-hidden="true">
+                  <img src={getCharacterVisual(tag, index)} alt="" loading="lazy" decoding="async" />
+                </span>
+                <strong>{tag}</strong>
+              </span>
+            ))}
+          </div>
+        ) : scentType ? (
+          <span className="mobile-product-page__scent-type">
+            {String(scentType)
+              .trim()
+              .split(/\s+/)
+              .filter(Boolean)
+              .join(" · ")}
+          </span>
+        ) : null}
       </section>
 
       <section className="mobile-product-page__purchase" aria-label={lang === "sr" ? "Kupovina" : "Purchase"}>

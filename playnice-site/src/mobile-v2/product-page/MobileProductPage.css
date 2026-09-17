@@ -221,20 +221,74 @@
   .mobile-product-page__story {
     padding: 17px 2px 21px;
     border-bottom: 1px solid rgba(213, 177, 106, 0.1);
+    text-align: center;
   }
 
   .mobile-product-page__lead {
-    margin: 0;
+    margin: 0 auto;
     max-width: 32ch;
     color: #eee1ca;
     font: 500 1.18rem/1.34 "Cormorant Garamond", serif;
+    text-align: center;
+  }
+
+  .mobile-product-page__character-strip {
+    margin: 13px auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    max-width: 100%;
+  }
+
+  .mobile-product-page__character-chip {
+    min-width: 0;
+    min-height: 40px;
+    padding: 5px 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 1px solid rgba(244, 234, 216, 0.075);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.012);
+  }
+
+  .mobile-product-page__character-visual {
+    width: 26px;
+    height: 26px;
+    flex: 0 0 26px;
+    overflow: hidden;
+    border: 1px solid rgba(220, 181, 107, 0.16);
+    border-radius: 7px;
+    background: #0b0a08;
+  }
+
+  .mobile-product-page__character-visual img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    filter: saturate(0.86) contrast(1.04);
+    opacity: 0.92;
+  }
+
+  .mobile-product-page__character-chip strong {
+    min-width: 0;
+    overflow: hidden;
+    color: rgba(244, 234, 216, 0.76);
+    font: 600 0.63rem/1.1 Inter, sans-serif;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .mobile-product-page__scent-type {
     display: block;
-    margin-top: 11px;
+    margin-top: 12px;
     color: rgba(244, 234, 216, 0.54);
-    font: 500 0.72rem/1.4 Inter, sans-serif;
+    font: 600 0.68rem/1.4 Inter, sans-serif;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
   }
 
   .mobile-product-page__purchase,
@@ -302,6 +356,20 @@
     box-shadow:
       0 0 0 4px rgba(220, 181, 107, 0.08),
       0 0 12px rgba(220, 181, 107, 0.72);
+  }
+
+  .mobile-product-page__sizes button.is-active > .mobile-product-page__size-topline > span,
+  .mobile-product-page__sizes button.is-active > span {
+    color: rgba(255, 244, 220, 0.92);
+  }
+
+  .mobile-product-page__sizes button.is-active > strong,
+  .mobile-product-page__sizes button.is-active .mobile-product-page__size-price-discount > strong {
+    background: linear-gradient(120deg, #f3d9a4 0%, #e6c88f 30%, #dcb56b 55%, #f0d39a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #dcb56b;
   }
 
   .mobile-product-page__sizes span {
