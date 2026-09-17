@@ -1,0 +1,25 @@
+/* =========================================
+   HOME JUST IN — DESKTOP BADGE POLISH
+   Match the refined desktop Product Card JUST IN treatment.
+========================================= */
+
+@media (min-width: 769px) {
+  .new-arrival-card-badge {
+    top: 9px;
+    left: 9px;
+    min-height: 16px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: #ff5a52;
+    font-family: "Inter", sans-serif;
+    font-size: 8.25px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-shadow: 0 0 12px rgba(255, 90, 82, 0.14);
+  }
+}
