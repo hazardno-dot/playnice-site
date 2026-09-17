@@ -458,3 +458,10 @@
     padding: 30px 22px;
   }
 }
+
+@media (max-width: 768px) {
+  .product-card-quick-view,
+  .desktop-quick-view-layer {
+    display: none !important;
+  }
+}
