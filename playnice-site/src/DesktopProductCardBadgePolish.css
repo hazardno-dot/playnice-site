@@ -46,8 +46,8 @@
     transform-origin: top left;
   }
 
-  /* Quick View is an interaction state, not another permanent badge.
-     It sits in the breathing room below the bottle, without adding a veil. */
+  /* Quick View is a dedicated secondary action. The large image remains the
+     primary path to the Product Page; preview gets its own small control. */
   .premium-product-card {
     position: relative;
   }
@@ -58,44 +58,63 @@
 
   .premium-product-card .product-card-quick-view {
     position: absolute;
-    z-index: 7;
-    top: 156px;
-    left: 50%;
-    right: auto;
+    z-index: 9;
+    top: 166px;
+    right: 14px;
+    left: auto;
     bottom: auto;
-    width: auto;
-    min-width: 0;
-    min-height: 24px;
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    min-height: 30px;
     margin: 0;
-    padding: 3px 2px 4px;
-    border: 0;
-    border-bottom: 1px solid rgba(220, 181, 107, 0.5);
-    border-radius: 0;
-    background: transparent;
-    backdrop-filter: none;
-    box-shadow: none;
-    color: rgba(246, 234, 211, 0.96);
-    font-family: "Inter", sans-serif;
-    font-size: 8px;
-    font-weight: 700;
+    padding: 0;
+    border: 1px solid rgba(220, 181, 107, 0.34);
+    border-radius: 999px;
+    background: rgba(8, 8, 8, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow:
+      0 6px 18px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    color: transparent;
+    font-size: 0;
     line-height: 1;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transform: translate(-50%, 6px);
+    transform: translateY(4px);
     transition:
       opacity 150ms ease,
       transform 180ms ease,
       border-color 150ms ease,
-      color 150ms ease;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+      background 150ms ease,
+      box-shadow 150ms ease;
+  }
+
+  /* Eye / preview glyph. */
+  .premium-product-card .product-card-quick-view::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 13px;
+    height: 8px;
+    border: 1.4px solid rgba(236, 202, 135, 0.92);
+    border-radius: 50% / 62%;
+    transform: translate(-50%, -50%);
   }
 
   .premium-product-card .product-card-quick-view::after {
-    content: "  ↗";
-    color: #dcb56b;
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #e8c880;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 7px rgba(220, 181, 107, 0.34);
   }
 
   .premium-product-card .product-card-media:hover + .product-card-quick-view,
@@ -104,13 +123,26 @@
   .premium-product-card .product-card-quick-view:focus-visible {
     opacity: 1;
     pointer-events: auto;
-    transform: translate(-50%, 0);
+    transform: translateY(0);
   }
 
   .premium-product-card .product-card-quick-view:hover,
   .premium-product-card .product-card-quick-view:focus-visible {
-    border-color: rgba(236, 202, 135, 0.86);
-    color: #fff5e4;
+    border-color: rgba(236, 202, 135, 0.78);
+    background: rgba(14, 12, 9, 0.9);
+    box-shadow:
+      0 7px 22px rgba(0, 0, 0, 0.42),
+      0 0 0 3px rgba(220, 181, 107, 0.055);
+    outline: none;
+  }
+
+  /* Tooltip clarifies the secondary action without occupying the image stage. */
+  .premium-product-card .product-card-quick-view:hover {
+    overflow: visible;
+  }
+
+  .premium-product-card .product-card-quick-view:hover span {
+    pointer-events: none;
   }
 
   /* Keep primary image-stage signals above the bottle without introducing a
@@ -128,7 +160,7 @@
     .desktop-product-page__visual::after {
     content: "100";
     position: absolute;
-    top: 48px;
+    top: 47px;
     left: auto !important;
     right: 38px;
     bottom: auto !important;
@@ -164,7 +196,7 @@
     .desktop-product-page__visual::before {
     content: "";
     position: absolute;
-    top: 28px;
+    top: 30px;
     left: auto !important;
     right: 52px;
     bottom: auto !important;
