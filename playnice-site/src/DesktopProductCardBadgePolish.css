@@ -53,19 +53,19 @@
   }
 
   .premium-product-card .product-card-media {
-    order: 1;
+    order: 1 !important;
   }
 
   .premium-product-card .product-meta {
-    order: 2;
+    order: 2 !important;
   }
 
   .premium-product-card .product-card-quick-view {
-    order: 3;
+    order: 3 !important;
   }
 
   .premium-product-card .size-buttons {
-    order: 4;
+    order: 4 !important;
   }
 
   .premium-product-card .product-card-media::after {
@@ -78,8 +78,17 @@
     display: none !important;
   }
 
-  .premium-product-card .product-card-quick-view {
-    position: relative;
+  /* DesktopQuickView.css still contains the legacy floating-card trigger.
+     Neutralize that old positioning/hover system completely so this control
+     stays locked in the CTA slot between metadata and size choices. */
+  .product-card.premium-product-card .product-card-quick-view,
+  .product-card.premium-product-card:hover .product-card-quick-view,
+  .product-card.premium-product-card .product-card-quick-view:focus-visible {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
     z-index: 4;
     align-self: center;
     display: inline-flex;
@@ -89,7 +98,7 @@
     width: auto;
     min-width: 154px;
     min-height: 28px;
-    margin: 12px 0 10px;
+    margin: 10px 0 8px;
     padding: 6px 15px;
     border: 1px solid rgba(73, 219, 230, 0.28);
     border-radius: 999px;
@@ -107,8 +116,9 @@
     letter-spacing: 0.11em;
     text-transform: uppercase;
     white-space: nowrap;
-    opacity: 0.96;
-    transform: none;
+    opacity: 0.96 !important;
+    pointer-events: auto !important;
+    transform: none !important;
     transition:
       color 160ms ease,
       border-color 160ms ease,
@@ -117,11 +127,11 @@
       transform 160ms ease;
   }
 
-  .premium-product-card .product-card-quick-view::before {
-    content: none;
+  .product-card.premium-product-card .product-card-quick-view::before {
+    content: none !important;
   }
 
-  .premium-product-card .product-card-quick-view::after {
+  .product-card.premium-product-card .product-card-quick-view::after {
     content: "↗";
     position: static;
     width: auto;
@@ -136,8 +146,8 @@
     box-shadow: none;
   }
 
-  .premium-product-card .product-card-quick-view:hover,
-  .premium-product-card .product-card-quick-view:focus-visible {
+  .product-card.premium-product-card .product-card-quick-view:hover,
+  .product-card.premium-product-card .product-card-quick-view:focus-visible {
     color: #b8fbff;
     border-color: rgba(73, 219, 230, 0.48);
     background:
@@ -148,11 +158,11 @@
       0 8px 20px rgba(0, 0, 0, 0.2),
       0 0 0 3px rgba(73, 219, 230, 0.035);
     outline: none;
-    transform: translateY(-1px);
+    transform: translateY(-1px) !important;
   }
 
-  .premium-product-card .product-card-quick-view:active {
-    transform: translateY(0);
+  .product-card.premium-product-card .product-card-quick-view:active {
+    transform: translateY(0) !important;
   }
 
   /* Keep primary image-stage signals above the bottle without introducing a
