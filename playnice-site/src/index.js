@@ -50,6 +50,7 @@ import "./mobile-v2/cart-checkout/MobileCheckoutV2.css";
 import "./mobile-v2/cart-checkout/MobileStickyCtaV2.css";
 import "./mobile-v2/home/MobileTypographyV2.css";
 import "./CartConfirmationBar.css";
+import "./DesktopCartConfirmationTone.css";
 import "./mobile-v2/content/MobileManifestoFix.css";
 import "./HeaderLanguageColor.css";
 import "./mobile-v2/product-page/MobileProductPageNoteMap.css";
