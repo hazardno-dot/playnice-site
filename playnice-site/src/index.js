@@ -57,6 +57,7 @@ import "./desktop-product-page/DesktopProductPageCompositionFix.css";
 import "./desktop-product-page/DesktopProductPageInteractionFix.css";
 import "./desktop-product-page/DesktopQuickViewSizePolish.css";
 import "./desktop-product-page/DesktopQuickViewMobileGuard.css";
+import "./ColorHarmonizationV1.css";
 
 const CARD_COPY_FONT_LINK_ID = "playnice-card-copy-italic-font";
 
