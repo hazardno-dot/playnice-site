@@ -9,65 +9,75 @@
     display: none !important;
   }
 
-  /* JUST IN becomes secondary metadata: visually aligned with the category row
-     instead of occupying the product image. */
+  /* The original JUST IN element lives inside the media button. Keep it out of
+     that stage and surface the state beside the category instead. */
   .premium-product-card .product-new-badge {
-    top: calc(100% + 12px);
-    right: 14px;
-    bottom: auto;
-    min-height: 20px;
-    padding: 0 8px;
-    border-color: rgba(220, 181, 107, 0.18);
-    background: rgba(10, 10, 10, 0.72);
-    box-shadow: none;
-    color: rgba(232, 192, 112, 0.9);
-    font-size: 0.48rem;
-    letter-spacing: 0.11em;
-    backdrop-filter: blur(8px);
+    display: none !important;
   }
 
-  .premium-product-card .product-category {
-    padding-right: 72px;
+  .premium-product-card:has(.product-new-badge)
+    .product-category-default::after {
+    content: "JUST IN";
+    display: inline-flex;
+    align-items: center;
+    min-height: 16px;
+    margin-left: 8px;
+    padding-left: 8px;
+    border-left: 1px solid rgba(220, 181, 107, 0.28);
+    color: rgba(232, 192, 112, 0.92);
+    font-family: "Inter", sans-serif;
+    font-size: 7px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    vertical-align: middle;
   }
 
-  /* Quick View is an interaction state, not another permanent badge. */
+  /* Quick View is an interaction state, not another permanent badge.
+     It is positioned over the media zone but does not add a veil or panel. */
+  .premium-product-card {
+    position: relative;
+  }
+
   .premium-product-card .product-card-media::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    border-radius: inherit;
-    background:
-      radial-gradient(circle at 50% 52%, rgba(0, 0, 0, 0.08), transparent 34%),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.24));
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 180ms ease;
-  }
-
-  .premium-product-card:hover .product-card-media::after,
-  .premium-product-card:focus-within .product-card-media::after {
-    opacity: 1;
+    content: none !important;
   }
 
   .premium-product-card .product-card-quick-view {
+    position: absolute;
+    z-index: 7;
+    top: 116px;
     left: 50%;
-    top: 50%;
+    right: auto;
     bottom: auto;
-    min-width: auto;
-    min-height: 28px;
-    padding: 0 2px 4px;
+    width: auto;
+    min-width: 0;
+    min-height: 24px;
+    margin: 0;
+    padding: 3px 2px 4px;
     border: 0;
-    border-bottom: 1px solid rgba(220, 181, 107, 0.44);
+    border-bottom: 1px solid rgba(220, 181, 107, 0.5);
     border-radius: 0;
     background: transparent;
     backdrop-filter: none;
-    color: rgba(246, 234, 211, 0.94);
     box-shadow: none;
+    color: rgba(246, 234, 211, 0.96);
+    font-family: "Inter", sans-serif;
     font-size: 8px;
+    font-weight: 700;
+    line-height: 1;
     letter-spacing: 0.15em;
-    transform: translate(-50%, 8px);
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 6px);
+    transition:
+      opacity 150ms ease,
+      transform 180ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
   }
 
   .premium-product-card .product-card-quick-view::after {
@@ -75,21 +85,27 @@
     color: #dcb56b;
   }
 
-  .premium-product-card:hover .product-card-quick-view,
+  .premium-product-card .product-card-media:hover + .product-card-quick-view,
+  .premium-product-card .product-card-media:focus-visible + .product-card-quick-view,
+  .premium-product-card .product-card-quick-view:hover,
   .premium-product-card .product-card-quick-view:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
     transform: translate(-50%, 0);
   }
 
-  .premium-product-card .product-card-quick-view:hover {
-    border-color: rgba(236, 202, 135, 0.82);
+  .premium-product-card .product-card-quick-view:hover,
+  .premium-product-card .product-card-quick-view:focus-visible {
+    border-color: rgba(236, 202, 135, 0.86);
     color: #fff5e4;
   }
 
-  /* Keep primary image-stage signals above the hover veil. */
+  /* Keep primary image-stage signals above the bottle without introducing a
+     card-wide hover overlay. */
   .premium-product-card .product-floating-badge,
   .premium-product-card .wishlist-btn,
   .premium-product-card .product-sale-badge {
-    z-index: 5;
+    z-index: 8;
   }
 
   /* The collection milestone is given room on the dedicated PDP media stage. */
