@@ -140,8 +140,12 @@
   .mini-cart-preview {
     min-height: 68px;
     padding: 10px 26px 10px 22px;
-    grid-template-columns: 42px minmax(280px, 1.35fr) minmax(250px, 0.95fr);
-    gap: 14px;
+    grid-template-columns:
+      42px
+      minmax(300px, 1.25fr)
+      minmax(300px, 0.95fr)
+      auto;
+    gap: 16px;
     border-bottom-color: rgba(220, 181, 107, 0.28);
     border-radius: 0 0 15px 15px;
     background:
@@ -182,8 +186,11 @@
   }
 
   .mini-cart-preview-body {
-    grid-template-columns: minmax(0, 1fr) auto;
-    column-gap: 16px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "kicker"
+      "name";
+    column-gap: 0;
     row-gap: 4px;
   }
 
@@ -211,10 +218,14 @@
     line-height: 1.16;
   }
 
-  .mini-cart-preview-body span:not(.mini-cart-preview-kicker) {
-    color: rgba(230, 194, 122, 0.94);
-    font-size: 0.73rem;
-    font-weight: 650;
+  .mini-cart-preview-meta {
+    justify-self: end;
+    color: rgba(230, 194, 122, 0.96);
+    font-size: 0.76rem;
+    font-weight: 680;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
   }
 
   .mini-cart-preview-shipping {
@@ -222,18 +233,31 @@
     width: min(100%, 430px);
     justify-self: center;
     display: grid;
-    gap: 8px;
+    gap: 3px;
     align-content: center;
     padding: 0 10px;
+  }
+
+  .mini-cart-preview-shipping-message {
+    overflow: hidden;
+    color: rgba(229, 194, 126, 0.76);
+    font-size: 0.54rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .mini-cart-preview-shipping-label {
     overflow: hidden;
     color: rgba(223, 214, 196, 0.74);
-    font-size: 0.68rem;
+    font-size: 0.66rem;
     font-weight: 650;
     line-height: 1;
-    letter-spacing: 0.085em;
+    letter-spacing: 0.075em;
     text-align: center;
     text-transform: uppercase;
     white-space: nowrap;
@@ -244,6 +268,7 @@
     position: relative;
     width: 100%;
     height: 2px;
+    margin-top: 2px;
     overflow: hidden;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.065);
@@ -333,7 +358,8 @@
     font-weight: 600;
   }
 
-  .mini-cart-preview-shipping {
+  .mini-cart-preview-shipping,
+  .mini-cart-preview-meta {
     display: none !important;
   }
 }
