@@ -1,0 +1,139 @@
+/* =========================================
+   DESKTOP PRODUCT CARD — BADGE / MEDIA POLISH
+   Keeps the image stage calm and moves secondary status away from the bottle.
+========================================= */
+
+@media (min-width: 769px) {
+  /* The milestone belongs on the full Product Page, not on the compact card. */
+  .product-card .productMilestoneMedal {
+    display: none !important;
+  }
+
+  /* JUST IN becomes secondary metadata: visually aligned with the category row
+     instead of occupying the product image. */
+  .premium-product-card .product-new-badge {
+    top: calc(100% + 12px);
+    right: 14px;
+    bottom: auto;
+    min-height: 20px;
+    padding: 0 8px;
+    border-color: rgba(220, 181, 107, 0.18);
+    background: rgba(10, 10, 10, 0.72);
+    box-shadow: none;
+    color: rgba(232, 192, 112, 0.9);
+    font-size: 0.48rem;
+    letter-spacing: 0.11em;
+    backdrop-filter: blur(8px);
+  }
+
+  .premium-product-card .product-category {
+    padding-right: 72px;
+  }
+
+  /* Quick View is an interaction state, not another permanent badge. */
+  .premium-product-card .product-card-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    background:
+      radial-gradient(circle at 50% 52%, rgba(0, 0, 0, 0.08), transparent 34%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.24));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+  }
+
+  .premium-product-card:hover .product-card-media::after,
+  .premium-product-card:focus-within .product-card-media::after {
+    opacity: 1;
+  }
+
+  .premium-product-card .product-card-quick-view {
+    left: 50%;
+    top: 50%;
+    bottom: auto;
+    min-width: auto;
+    min-height: 28px;
+    padding: 0 2px 4px;
+    border: 0;
+    border-bottom: 1px solid rgba(220, 181, 107, 0.44);
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+    color: rgba(246, 234, 211, 0.94);
+    box-shadow: none;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    transform: translate(-50%, 8px);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+  }
+
+  .premium-product-card .product-card-quick-view::after {
+    content: "  ↗";
+    color: #dcb56b;
+  }
+
+  .premium-product-card:hover .product-card-quick-view,
+  .premium-product-card .product-card-quick-view:focus-visible {
+    transform: translate(-50%, 0);
+  }
+
+  .premium-product-card .product-card-quick-view:hover {
+    border-color: rgba(236, 202, 135, 0.82);
+    color: #fff5e4;
+  }
+
+  /* Keep primary image-stage signals above the hover veil. */
+  .premium-product-card .product-floating-badge,
+  .premium-product-card .wishlist-btn,
+  .premium-product-card .product-sale-badge {
+    z-index: 5;
+  }
+
+  /* The collection milestone is given room on the dedicated PDP media stage. */
+  .desktop-product-page[data-product-slug="tom-ford-ombre-leather-parfum"]
+    .desktop-product-page__visual::after {
+    content: "100";
+    position: absolute;
+    top: 26px;
+    right: 28px;
+    z-index: 6;
+    width: 54px;
+    height: 54px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(236, 199, 121, 0.62);
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 36% 28%, rgba(255, 242, 195, 0.34), transparent 24%),
+      linear-gradient(145deg, #d6ae58, #8f6424 78%);
+    color: #171108;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    box-shadow:
+      0 10px 28px rgba(0, 0, 0, 0.38),
+      0 0 0 4px rgba(220, 181, 107, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    pointer-events: none;
+  }
+
+  .desktop-product-page[data-product-slug="tom-ford-ombre-leather-parfum"]
+    .desktop-product-page__visual::before {
+    content: "100th fragrance";
+    position: absolute;
+    top: 86px;
+    right: 18px;
+    z-index: 6;
+    color: rgba(232, 207, 158, 0.62);
+    font-family: "Inter", sans-serif;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+}
