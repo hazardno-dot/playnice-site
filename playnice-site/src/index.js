@@ -28,6 +28,7 @@ import "./mobile-v2/home/MobileHomeV2.css";
 import "./mobile-v2/home/MobileFirstPaintContainment.css";
 import "./mobile-v2/discovery/MobileFragranceIntelligenceV2.css";
 import "./mobile-v2/shop/MobileJustInV2.css";
+import "./mobile-v2/shop/MobileJustInBadgePolish.css";
 import "./mobile-v2/discovery/MobileDiscoverySetsV2.css";
 import "./mobile-v2/content/MobileHowItWorksV2.css";
 import "./mobile-v2/content/MobileExhibitionV2.css";
