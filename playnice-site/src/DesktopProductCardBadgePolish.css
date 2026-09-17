@@ -15,26 +15,39 @@
     display: none !important;
   }
 
+  .premium-product-card .product-category-default {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
   .premium-product-card:has(.product-new-badge)
     .product-category-default::after {
     content: "JUST IN";
     display: inline-flex;
     align-items: center;
     min-height: 16px;
-    margin-left: 8px;
-    padding-left: 8px;
-    border-left: 1px solid rgba(220, 181, 107, 0.28);
-    color: rgba(232, 192, 112, 0.92);
+    margin-left: auto;
+    padding-left: 10px;
+    color: #ff5a52;
     font-family: "Inter", sans-serif;
     font-size: 7px;
     font-weight: 800;
     line-height: 1;
     letter-spacing: 0.12em;
+    text-shadow: 0 0 12px rgba(255, 90, 82, 0.14);
     vertical-align: middle;
   }
 
+  /* Give the scent-profile label slightly less visual weight so the bottle
+     remains the primary object in the media stage. */
+  .premium-product-card .product-floating-badge {
+    transform: scale(0.83);
+    transform-origin: top left;
+  }
+
   /* Quick View is an interaction state, not another permanent badge.
-     It is positioned over the media zone but does not add a veil or panel. */
+     It sits in the breathing room below the bottle, without adding a veil. */
   .premium-product-card {
     position: relative;
   }
@@ -46,7 +59,7 @@
   .premium-product-card .product-card-quick-view {
     position: absolute;
     z-index: 7;
-    top: 116px;
+    top: 156px;
     left: 50%;
     right: auto;
     bottom: auto;
