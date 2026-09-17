@@ -145,6 +145,7 @@ export default function DesktopQuickView() {
   const miniTag = getMiniTag(copy, lang);
   const miniTagImage = getMiniTagImage(product);
   const ratingStars = getRatingStarCount(product.rating);
+  const sizeHelper = getSizeHelper(activeSize, lang);
 
   const close = () => setProduct(null);
 
@@ -288,7 +289,7 @@ export default function DesktopQuickView() {
           <div className="desktop-quick-view__purchase-head">
             <div>
               <span>{lang === "sr" ? "IZABERI VELIČINU" : "CHOOSE SIZE"}</span>
-              <small>{lang === "sr" ? "Brzo, bez napuštanja kolekcije." : "Quickly, without leaving the collection."}</small>
+              <small>{sizeHelper}</small>
             </div>
             <div className="desktop-quick-view__price">
               {discount ? <del>€{basePrice.toFixed(2)}</del> : null}
@@ -302,7 +303,6 @@ export default function DesktopQuickView() {
               const sizePrice = sizeDiscount
                 ? getDiscountedPrice(price, sizeDiscount.percent)
                 : Number(price);
-              const helper = getSizeHelper(size, lang);
 
               return (
                 <button
@@ -311,10 +311,7 @@ export default function DesktopQuickView() {
                   className={size === activeSize ? "is-active" : ""}
                   onClick={() => selectSize(size)}
                 >
-                  <span className="desktop-quick-view__size-copy">
-                    <span className="desktop-quick-view__size-label">{size}</span>
-                    <small className="desktop-quick-view__size-helper">{helper}</small>
-                  </span>
+                  <span className="desktop-quick-view__size-label">{size}</span>
                   <span className="desktop-quick-view__size-price-wrap">
                     <strong>€{sizePrice.toFixed(2)}</strong>
                     {sizeDiscount ? <small>-{sizeDiscount.percent}%</small> : null}
