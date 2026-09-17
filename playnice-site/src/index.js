@@ -11,6 +11,10 @@ import CartInteractionV2 from "./CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
 import FragranceIntelligenceToneLoader from "./FragranceIntelligenceToneLoader";
 import WhatsAppLinkBridge from "./WhatsAppLinkBridge";
+import DesktopProductPageBridge from "./desktop-product-page/DesktopProductPageBridge";
+import DesktopProductPageHeaderGuard from "./desktop-product-page/DesktopProductPageHeaderGuard";
+import DesktopProductPageNavigationPolish from "./desktop-product-page/DesktopProductPageNavigationPolish";
+import DesktopQuickView from "./desktop-product-page/DesktopQuickView";
 import { initLocationEvents } from "./lib/locationEvents";
 import "./PrivateSelectionV1.css";
 import "./PrivateSelectionPolish.css";
@@ -49,6 +53,10 @@ import "./mobile-v2/content/MobileManifestoFix.css";
 import "./HeaderLanguageColor.css";
 import "./mobile-v2/product-page/MobileProductPageNoteMap.css";
 import "./AnnouncementTiming.css";
+import "./desktop-product-page/DesktopProductPageCompositionFix.css";
+import "./desktop-product-page/DesktopProductPageInteractionFix.css";
+import "./desktop-product-page/DesktopQuickViewSizePolish.css";
+import "./desktop-product-page/DesktopQuickViewMobileGuard.css";
 
 const CARD_COPY_FONT_LINK_ID = "playnice-card-copy-italic-font";
 
@@ -70,6 +78,10 @@ const renderApp = () => {
   root.render(
     <React.StrictMode>
       <App />
+      <DesktopProductPageBridge />
+      <DesktopProductPageHeaderGuard />
+      <DesktopProductPageNavigationPolish />
+      <DesktopQuickView />
       <PrivateSelectionEnhancer />
       <MobileShopReveal />
       <MobileMenuContact />

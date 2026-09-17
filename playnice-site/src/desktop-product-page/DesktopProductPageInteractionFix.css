@@ -1,0 +1,38 @@
+@media (min-width: 769px) {
+  /* The media panel itself is not a giant button: only the bottle is clickable. */
+  body.desktop-product-route-active .desktop-product-page__visual:not(.is-note-map-open) {
+    display: grid;
+    place-items: center;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__visual:not(.is-note-map-open) .desktop-product-page__image-button {
+    width: fit-content !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 0 !important;
+    display: inline-grid !important;
+    place-items: center;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__visual:not(.is-note-map-open) .desktop-product-page__image-button img {
+    width: min(390px, 28vw) !important;
+    max-width: 100%;
+    max-height: 382px !important;
+  }
+
+  /* Open notes are interactive only on actual note tiles, not the whole panel. */
+  body.desktop-product-route-active .desktop-product-page__note-map-stage {
+    cursor: default;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__note-map-stage .the-note-map {
+    pointer-events: auto;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__note-map-stage .the-note-map__note {
+    cursor: pointer;
+  }
+}

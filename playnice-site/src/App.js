@@ -14,6 +14,7 @@ import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
 import MobileProductPage from "./mobile-v2/product-page/MobileProductPage";
 import { getJournalArticleSlug } from "./lib/journalSlug";
+import { registerProductActions } from "./lib/productActionsGateway";
 
 const Exhibition = React.lazy(() => import("./Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./JournalArticlePage"));
@@ -1506,7 +1507,9 @@ const selectedSortOption =
     isMobileProductModalViewport && Boolean(selectedProduct);
 
   const hasBlockingOverlay =
-  (!isMobileProductPageActive && !!selectedProduct) ||
+  (!isMobileProductPageActive &&
+    !!selectedProduct &&
+    productModalVisible) ||
   cartOpen ||
   checkoutOpen ||
   storyOpen ||
@@ -3874,6 +3877,86 @@ const handleModalAddToCart = (product, size) => {
   }, 1300);
 };
 
+const getDirectPurchaseProduct = (product, size) => {
+  if (!product || !size) return product;
+
+  const activePrice = product.sizes?.[size];
+  const discount = getProductDiscountForSize(product, size);
+
+  if (!discount || activePrice == null) return product;
+
+  const finalPrice = getDiscountedPrice(
+    activePrice,
+    discount.percent
+  );
+
+  return {
+    ...product,
+    sizes: {
+      ...product.sizes,
+      [size]: finalPrice,
+    },
+  };
+};
+
+useEffect(() => {
+  return registerProductActions({
+    selectSize: (_product, size) => {
+      if (!size) return;
+
+      setSelectedSize(size);
+      setHasUserPickedSize(true);
+    },
+
+    isWishlisted: (productId) => {
+      return wishlist.includes(productId);
+    },
+
+    toggleWishlist: (productId) => {
+      toggleWishlist(productId);
+    },
+
+    addToCart: (product, size) => {
+      if (!product || !size) return;
+
+      const productForCart =
+        getDirectPurchaseProduct(product, size);
+
+      addToCart(
+        productForCart,
+        size,
+        null,
+        null,
+        {
+          showToast: false,
+          showMiniPreview: true,
+        }
+      );
+    },
+
+    buyNow: (product, size) => {
+      if (!product || !size) return;
+
+      const productForCart =
+        getDirectPurchaseProduct(product, size);
+
+      addToCart(
+        productForCart,
+        size,
+        null,
+        null,
+        {
+          showToast: false,
+          showMiniPreview: false,
+        }
+      );
+
+      setMiniCartPreview(null);
+      openCheckout();
+    },
+  });
+});
+
 const addHeroBottleToCart = () => {
   const heroProduct = {
     id: 999,
@@ -4550,14 +4633,6 @@ const openProductModal = (product, options = {}) => {
       trackMeta("PageView");
     }
   }
-
-  if (!isMobileModal) {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setProductModalVisible(true);
-      });
-    });
-  }
 };
 
 const getDiscoveryAnalyticsParams = (discovery, source = "manual") => {
@@ -4800,7 +4875,7 @@ useEffect(() => {
     }
 
     // Product modal is the highest regular layer
-    if (selectedProduct) {
+    if (selectedProduct && productModalVisible) {
       closeProductModal();
       return;
     }
@@ -5581,6 +5656,23 @@ const titleLengthClass =
           <span>{product.milestoneBadge}</span>
         </span>
       ) : null}
+    </button>
+
+    <button
+      type="button"
+      className="product-card-quick-view"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        window.dispatchEvent(
+          new CustomEvent("playnice:desktop-quick-view", {
+            detail: { productId: product.id }
+          })
+        );
+      }}
+    >
+      {lang === "sr" ? "Brzi pregled" : "Quick view"}
     </button>
 
      <button
@@ -9429,7 +9521,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   )}
 </aside>
 
-{selectedProduct && !isMobileProductPageActive && (
+{selectedProduct &&
+  !isMobileProductPageActive &&
+  productModalVisible && (
   <div
     className={`modal-overlay product-modal-layer ${
       productModalVisible ? "show" : ""
