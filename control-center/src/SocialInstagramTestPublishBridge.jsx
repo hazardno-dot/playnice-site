@@ -3,11 +3,14 @@ import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
 import "./social-instagram-test-publish.css";
 
-const isExplicitTestEvent = (event) => Boolean(
+const isControlledPublishEvent = (event) => Boolean(
   event?.metadata?.test ||
   event?.metadata?.replay ||
+  event?.metadata?.manual_product_post ||
+  event?.metadata?.producer === "social-manual-product-post" ||
   String(event?.source_id || "").includes("--shadow-test-") ||
-  String(event?.source_id || "").includes("--shadow-replay-")
+  String(event?.source_id || "").includes("--shadow-replay-") ||
+  String(event?.source_id || "").includes("--manual-social-")
 );
 
 const feedMediaSrc = (event) => String(
@@ -43,7 +46,7 @@ export default function SocialInstagramTestPublishBridge() {
       .in("status", ["ready", "scheduled"])
       .order("updated_at", { ascending: false })
       .limit(20);
-    const candidate = (data || []).find((row) => isExplicitTestEvent(row) && isJpegCandidate(row)) || null;
+    const candidate = (data || []).find((row) => isControlledPublishEvent(row) && isJpegCandidate(row)) || null;
     setEvent(candidate);
   };
 
@@ -80,7 +83,7 @@ export default function SocialInstagramTestPublishBridge() {
 
   const publish = async () => {
     if (!event || loading) return;
-    const confirmed = window.confirm(`REAL TEST POST\n\nPublish the approved Instagram Feed for “${eventTitle}” to @playnice.me now?\n\nThis creates a real public Instagram post. Facebook, Story and scheduler remain locked.`);
+    const confirmed = window.confirm(`REAL INSTAGRAM POST\n\nPublish the approved Instagram Feed for “${eventTitle}” to @playnice.me now?\n\nThis creates a real public Instagram post. Facebook, Story and scheduler remain locked.`);
     if (!confirmed) return;
 
     setLoading(true);
@@ -102,7 +105,7 @@ export default function SocialInstagramTestPublishBridge() {
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Instagram test publish failed (${response.status}).`);
-      setMessage(`Published test Feed post · ${payload?.result?.post_id || "Meta post created"}`);
+      setMessage(`Published Instagram Feed post · ${payload?.result?.post_id || "Meta post created"}`);
       await loadEvent();
     } catch (publishError) {
       setError(publishError?.message || String(publishError));
@@ -115,14 +118,14 @@ export default function SocialInstagramTestPublishBridge() {
   return createPortal(
     <section className="social-instagram-test-publish">
       <div className="social-instagram-test-copy">
-        <span>INSTAGRAM FEED · MANUAL TEST ONLY</span>
-        <strong>{event ? eventTitle : "No approved JPEG test/replay event"}</strong>
-        <p>{event ? "JPEG media is approved as a test candidate. Real Meta transport remains isolated behind the dedicated server flag." : "Create a Hero replay and mark it READY. Only explicit test/replay events with approved JPEG Feed media can appear here."}</p>
+        <span>INSTAGRAM FEED · MANUAL PUBLISH</span>
+        <strong>{event ? eventTitle : "No approved JPEG publish candidate"}</strong>
+        <p>{event ? "Approved JPEG media is ready for controlled manual publishing." : "Create a Product post or replay, approve its Feed visual, then mark it READY."}</p>
       </div>
       <div className="social-instagram-test-actions">
         {message ? <small className="ok">{message}</small> : null}
         {error ? <small className="error">{error}</small> : null}
-        <button type="button" onClick={publish} disabled={!event || loading}>{loading ? "Publishing test…" : "Test publish Instagram Feed"}</button>
+        <button type="button" onClick={publish} disabled={!event || loading}>{loading ? "Publishing…" : "Publish Instagram Feed"}</button>
       </div>
     </section>,
     slot,
