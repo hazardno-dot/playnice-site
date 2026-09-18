@@ -122,7 +122,7 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
-for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard test event", "Replay Product", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
+for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard test event", "Create Product Post", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
 assert.ok(socialManager.includes("disabled={saving || !mediaReadiness.ok}"), "Mark ready must be locally disabled when a channel has no media.");
@@ -174,6 +174,14 @@ for (const token of [
 }
 assert.ok(!replayApi.includes('from "../../playnice-site/src/data/journal/index.js"'), "Replay endpoint must not top-level import the storefront Journal module.");
 assert.ok(!replayApi.includes("publish_mode: \"approval\""), "Replay must remain shadow-only.");
+assert.ok(socialManager.includes('product_slug: product.slug'), "Manual Product post picker must send the selected live product slug.");
+assert.ok(socialManager.includes('product_payload: productPayload'), "Manual Product post picker must send the selected live Product payload.");
+assert.ok(socialManager.includes('productCopy[product.name]'), "Manual Product posts must include current Product editorial copy.");
+assert.ok(replayApi.includes('"manual_product_post_created"'), "Manual Product posts must have a dedicated audit event.");
+assert.ok(replayApi.includes('manualPost ? "social-manual-product-post" : "social-shadow-replay"'), "Manual Product posts must use a non-test producer identity.");
+assert.ok(replayApi.includes("test: !manualPost"), "Manual Product posts must not be marked as test events.");
+assert.ok(replayApi.includes("replay: !manualPost"), "Manual Product posts must not be marked as replay events.");
+assert.ok(replayApi.includes("--manual-social-"), "Manual Product posts must receive their own fresh Social event identity.");
 
 const socialSchema = fs.readFileSync(path.join(root, "control-center/supabase/social_publisher_v1.sql"), "utf8");
 for (const token of ["draft_content jsonb", "approved_content jsonb", "approved_at timestamptz", "scheduled_for timestamptz", "status = 'scheduled'", "publish_mode text not null default 'shadow'"]) {
@@ -190,7 +198,7 @@ console.log("PASS  READY events can be scheduled for a future time and safely un
 console.log("PASS  Manual fallback can copy channel captions/source links and open the exact selected media without touching event state");
 console.log("PASS  Social captions are editable, auditable and can be marked READY without unlocking Meta publishing");
 console.log("PASS  Explicit test/replay events can be safely discarded without exposing delete for real Social events");
-console.log("PASS  Product, Hero and Journal live sources can be replayed into the shadow queue without touching storefront state");
+console.log("PASS  Any live Product can create a fresh publishable Social draft without touching storefront state; Hero and Journal replay remain available");
 console.log("PASS  Product publish creates a best-effort deduped Social shadow event after live merge");
 console.log("PASS  Hero finalize creates a best-effort Social shadow event after post-merge safety checks");
 console.log("PASS  Journal reconciliation verifies live source server-side before creating a Social shadow event");
