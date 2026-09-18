@@ -129,6 +129,9 @@ assert.ok(socialManager.includes('["ready", "scheduled"].includes(selected.statu
 assert.ok(socialManager.includes('window.open(src, "_blank", "noopener,noreferrer")'), "Manual fallback must open the exact selected channel asset in a separate tab.");
 assert.ok(socialManager.includes('new URL(String(value), PUBLIC_ORIGIN)'), "Manual fallback must canonicalize relative source URLs before Copy link.");
 assert.ok(socialManager.includes('key === "instagram_story" ? "story" : ""'), "Instagram Story preview must use a vertical-specific layout.");
+assert.ok(socialManager.includes('window.addEventListener("playnice:social-media-updated", handleSocialMediaUpdated)'), "Social Manager must refresh immediately after channel media changes.");
+assert.ok(socialManager.includes('window.removeEventListener("playnice:social-media-updated", handleSocialMediaUpdated)'), "Social media refresh listener must be cleaned up on unmount.");
+assert.ok(socialManager.includes('setFeedDryRun(null);'), "Social media changes must invalidate any stale Meta dry-run payload.");
 
 const socialDraftApi = fs.readFileSync(path.join(root, "control-center/api/social-draft.js"), "utf8");
 for (const token of ["generateSocialDraft", "validateSocialDraftMedia", "validateReadyMedia", "probePublicImage", "content-type", "asset must use HTTPS", "READY blocked", "public_media_verified", "draft_content", "approved_content", "approved_at", "scheduled_for", "normalizeScheduledFor", "Only READY events can be scheduled", "Only scheduled events can be unscheduled", "draft_scheduled", "draft_unscheduled", "draft_marked_ready", "draft_reopened", "discard_test", "isTestEvent", "2200"]) {
@@ -166,6 +169,7 @@ for (const token of ["draft_content jsonb", "approved_content jsonb", "approved_
 }
 
 console.log("PASS  Social Publisher shadow-mode contract");
+console.log("PASS  Channel media updates invalidate stale Meta dry-run payloads and reload Social event state immediately");
 console.log("PASS  Nested Product payloads resolve canonical name, sizes and media correctly");
 console.log("PASS  Relative storefront media are normalized to public PlayNice URLs");
 console.log("PASS  Channel media is classified IDEAL, FALLBACK or MISSING before review approval");
