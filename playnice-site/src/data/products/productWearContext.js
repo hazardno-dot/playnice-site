@@ -411,5 +411,10 @@ export const productWearContext = {
   "Arabiyat Prestige Al Noor Eau De Parfum": {
     "sr": "Hladnije vreme, veče i izlazak. U kancelariji umerenije.",
     "en": "Cooler weather, evenings and nights out. Go easy at the office."
+  },
+
+  "Rayhaan Elixir Eau de Parfum": {
+    "sr": "Veče, izlazak, dejt i hladniji dani.",
+    "en": "Evenings, dates, nights out and cooler weather."
   }
 };

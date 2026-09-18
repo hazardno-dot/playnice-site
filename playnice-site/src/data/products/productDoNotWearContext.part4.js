@@ -102,6 +102,10 @@ export default [
   {
     "sr": "Na velikoj vrućini ili kada želite samo lagan, čist i neprimetan miris. Kardamom, šafran, vetiver, labdanum i koža vode Al Noor u suv, taman i ozbiljniji smer. Ako vam je plan „neka niko ništa ne primeti“, izabrali ste prilično ambiciozan način da to postignete.",
     "en": "In serious heat or when you only want something light, clean and unobtrusive. Cardamom, saffron, vetiver, labdanum and leather push Al Noor in a dry, darker and more serious direction. If the plan is “let nobody notice anything,” you have chosen a rather ambitious way to achieve it."
+  },
+  {
+    "sr": "Nemojte ga birati za vrelo podne ili malu kancelariju ako planirate šest prskanja. Vanila nema dugme za stišavanje.",
+    "en": "Skip it at hot midday or in a tiny office if six sprays sound reasonable. Vanilla has no volume control."
   }
 
 ];

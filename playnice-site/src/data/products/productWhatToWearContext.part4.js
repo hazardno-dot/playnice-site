@@ -102,6 +102,10 @@ const entries = [
   {
     "sr": "Tamnu košulju, vunene pantalone i dobar kaput ili sako. Al Noor već radi začinsko-kožnu dramu; garderoba neka bude mirna, čista i skupa bez potrebe da pokazuje logo.",
     "en": "A dark shirt, wool trousers and a good coat or blazer. Al Noor already handles the spicy-leather drama; keep the clothes calm, clean and expensive-looking without needing to show the logo."
+  },
+  {
+    "sr": "Tamna košulja, dobra jakna i nešto što izgleda kao da niste birali četrdeset minuta.",
+    "en": "Dark shirt, a good jacket and something that looks like it did not take forty minutes to choose."
   }
 
 ];
