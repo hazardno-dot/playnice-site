@@ -3064,6 +3064,55 @@ export const productCopy = {
       "en": "An easy choice if you like sweet evening scents built around vanilla.",
       "sr": "Ako volite slatke večernje mirise sa vanilom, ovo je vrlo lak izbor."
     }
+  },
+
+  "Jil Sander Sun Men Eau de Toilette": {
+    "miniTag": {
+      "en": "☀️ Fresh / Aromatic",
+      "sr": "☀️ Svež / Aromatičan"
+    },
+    "card": {
+      "en": "Bergamot, rosemary and spice in a clean summer classic.",
+      "sr": "Bergamot, ruzmarin i začini u čistom letnjem klasiku."
+    },
+    "modal": {
+      "en": "Bergamot and rosemary open fresh, cardamom and nutmeg add warmth, while musk and sandalwood keep the drydown clean and soft.",
+      "sr": "Bergamot i ruzmarin otvaraju sveže, kardamom i muškatni oraščić dodaju toplinu, dok mošus i sandalovina ostaju čisti i meki."
+    },
+    "scentType": {
+      "en": "Fresh citrus spicy",
+      "sr": "Sveži citrusno-začinski"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Bergamot",
+        "Ruzmarin",
+        "Kardamom",
+        "Sandalovina"
+      ],
+      "en": [
+        "Bergamot",
+        "Rosemary",
+        "Cardamom",
+        "Sandalwood"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Svež",
+        "Aromatičan",
+        "Letnji"
+      ],
+      "en": [
+        "Fresh",
+        "Aromatic",
+        "Summer"
+      ]
+    },
+    "whyChoose": {
+      "en": "If you want a light, clean and understated summer fragrance for everyday wear.",
+      "sr": "Ako želite lagan, čist i nenametljiv letnji miris za svaki dan."
+    }
   }
 };
 
