@@ -123,11 +123,10 @@ export default function ControlledApplyManager() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
       const hasExistingPreview = Boolean(row.apply_branch && row.apply_pr_number);
-      const endpoint = hasExistingPreview
-        ? "/api/create-apply"
-        : row.baseline_snapshot?.kind === "new_product"
-          ? "/api/create-new-product"
-          : "/api/create-apply";
+      const isNewProduct = row.baseline_snapshot?.kind === "new_product";
+      const endpoint = isNewProduct
+        ? "/api/create-new-product"
+        : "/api/create-apply";
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
