@@ -4,6 +4,7 @@ const repoRoot = process.cwd();
 const refreshSource = fs.readFileSync(`${repoRoot}/control-center/api/refresh-product-apply.js`, "utf8");
 const routerSource = fs.readFileSync(`${repoRoot}/control-center/api/create-apply-router.js`, "utf8");
 const stateSource = fs.readFileSync(`${repoRoot}/control-center/src/previewWorkflowState.mjs`, "utf8");
+const managerSource = fs.readFileSync(`${repoRoot}/control-center/src/ControlledApplyManager.jsx`, "utf8");
 
 const requiredRefreshTokens = [
   "apply_branch_refreshed",
@@ -32,6 +33,13 @@ if (!routerSource.includes("createApply(req, res)")) {
 }
 if (!stateSource.includes("row.payload?.core?.savedAt")) {
   throw new Error("Preview freshness must use the actual draft save timestamp when available.");
+}
+
+if (!managerSource.includes("const hasExistingPreview = Boolean(row.apply_branch && row.apply_pr_number);")) {
+  throw new Error("Controlled Apply UI must detect an existing preview before choosing the new-product endpoint.");
+}
+if (!managerSource.includes('hasExistingPreview\n        ? "/api/create-apply"')) {
+  throw new Error("Existing previews must refresh through /api/create-apply so the router preserves the same PR.");
 }
 
 // Regression fixture: productCopy frequently renders short bilingual groups on one line.
@@ -73,4 +81,4 @@ if (!changedAfterPreview.needsRefresh) {
   throw new Error("A draft saved after preview generation must require preview refresh.");
 }
 
-console.log("PASS  Product preview refresh keeps the same PR, rebuilds atomically from main, supports inline bilingual fields and tracks real draft freshness");
+console.log("PASS  Product preview refresh keeps the same PR, routes existing new-product previews through refresh, rebuilds atomically from main, supports inline bilingual fields and tracks real draft freshness");
