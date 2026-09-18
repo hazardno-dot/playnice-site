@@ -27,8 +27,8 @@ assert.ok(css.includes(".journal-cta-preview"), "CTA read-only preview styling m
 
 assert.equal(
   vercelConfig.ignoreCommand,
-  "test -z \"$(git show -m --first-parent --pretty='' --name-only HEAD | grep -v '^control-center/' | sed '/^$/d')\"",
-  "Canonical Shop Vercel config must preserve the merge-safe Control Center-only skip guard.",
+  "node ../scripts/vercel-ignore-build.mjs storefront",
+  "Canonical Shop Vercel config must delegate storefront build routing to the shared router.",
 );
 
 const internal = normalizeJournalDraftPayload({
@@ -59,5 +59,5 @@ assert.ok(invalidAudit.errors.some((issue) => issue.field === "links[0]"), "CTA 
 console.log("PASS  Journal editor can add/remove bilingual CTA links");
 console.log("PASS  Journal editor switches between internal action and external URL destinations");
 console.log("PASS  CTA changes remain gated by Journal link validation");
-console.log("PASS  Shop Vercel contract is read from canonical playnice-site root");
+console.log("PASS  Shop Vercel contract delegates to the shared storefront deployment router");
 console.log("Production untouched: yes (static/pure regression only)");

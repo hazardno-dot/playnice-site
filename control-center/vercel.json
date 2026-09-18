@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "ignoreCommand": "test -z \"$(git show -m --first-parent --pretty='' --name-only HEAD | grep -E '^(control-center/|playnice-site/src/data/products/)' | grep -Ev '^playnice-site/src/data/products/product(DoNotWear|WhatToWear)Context(\\.part[0-9]+)?\\.js$' | sed '/^$/d')\"",
+  "ignoreCommand": "node ../scripts/vercel-ignore-build.mjs control-center",
   "crons": [
     {
       "path": "/api/social-scheduler-cron",

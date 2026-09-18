@@ -74,6 +74,7 @@ const existingApply = fs.readFileSync(path.join(root, "control-center/api/create
 const newProductApply = fs.readFileSync(path.join(root, "control-center/lib/create-new-product-engine.mjs"), "utf8");
 const publishSync = fs.readFileSync(path.join(root, "control-center/api/sync-publish-status.js"), "utf8");
 const vercelConfig = fs.readFileSync(path.join(root, "playnice-site/vercel.json"), "utf8");
+const vercelRouter = fs.readFileSync(path.join(root, "scripts/vercel-ignore-build.mjs"), "utf8");
 
 for (const source of [existingApply, newProductApply]) {
   assert(source.includes("Approved snapshot is missing"), "Product apply APIs must require an explicit approved snapshot.");
@@ -83,8 +84,10 @@ assert(!existingApply.includes("draft.approved_payload || draft.payload"), "Exis
 assert(!newProductApply.includes("draft.approved_payload||draft.payload"), "New product apply must never fall back to mutable draft payload.");
 assert(publishSync.includes('pr.base?.ref !== "main"'), "Publish sync must verify the tracked PR targets main.");
 assert(publishSync.includes("pr.head?.ref !== draft.apply_branch"), "Publish sync must verify the tracked PR head branch.");
-assert(vercelConfig.includes("git show -m --first-parent"), "Canonical Shop Vercel config must keep merge-safe diff detection.");
-assert(vercelConfig.includes("grep -v '^control-center/'"), "Canonical Shop Vercel config must skip Control Center-only changes.");
+assert(vercelConfig.includes("node ../scripts/vercel-ignore-build.mjs storefront"), "Canonical Shop Vercel config must delegate build routing to the shared deployment router.");
+assert(vercelRouter.includes("VERCEL_GIT_PREVIOUS_SHA"), "Shared Vercel router must compare against the last successful deployment when available.");
+assert(vercelRouter.includes('file.startsWith("control-center/")'), "Shared Vercel router must recognize Control Center-only changes.");
+assert(vercelRouter.includes("process.exit(build ? 1 : 0)"), "Shared Vercel router must preserve the Vercel ignoreCommand exit-code contract.");
 
 console.log("PASS  approval payload equality ignores object key order");
 console.log("PASS  approved + prepared aligned payload is apply-safe");
@@ -94,5 +97,5 @@ console.log("PASS  preparation remains required");
 console.log("PASS  array ordering remains significant");
 console.log("PASS  product apply APIs enforce approved payload equality server-side");
 console.log("PASS  publish sync verifies main base and stored apply head branch");
-console.log("PASS  canonical Shop Vercel config keeps merge-safe Control Center skip guard");
+console.log("PASS  canonical Shop Vercel config delegates to merge-safe shared deployment routing");
 console.log("Production untouched: yes (pure regression only)");
