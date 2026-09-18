@@ -82,8 +82,10 @@ async function loadLiveJournalArticles() {
   return liveModule.journalArticles;
 }
 
-async function createReplay({ auth, sourceType, canonicalId, event, metadata = {}, auditDetails = {} }) {
-  const replayId = `${canonicalId}--shadow-replay-${sourceType}-${metadata.replay_key || Date.now()}`;
+async function createReplay({ auth, sourceType, canonicalId, event, metadata = {}, auditDetails = {}, manualPost = false }) {
+  const replayId = manualPost
+    ? `${canonicalId}--manual-social-${metadata.replay_key || Date.now()}`
+    : `${canonicalId}--shadow-replay-${sourceType}-${metadata.replay_key || Date.now()}`;
   event.source_id = replayId;
 
   const existingRes = await supabaseFetch(
@@ -101,11 +103,11 @@ async function createReplay({ auth, sourceType, canonicalId, event, metadata = {
       ...event,
       created_by: auth.user.id,
       metadata: {
-        test: true,
-        replay: true,
+        test: !manualPost,
+        replay: !manualPost,
         replay_source_type: sourceType,
         canonical_source_id: String(canonicalId),
-        producer: "social-shadow-replay",
+        producer: manualPost ? "social-manual-product-post" : "social-shadow-replay",
         ...metadata,
       },
     }),
@@ -122,7 +124,7 @@ async function createReplay({ auth, sourceType, canonicalId, event, metadata = {
     body: JSON.stringify({
       social_event_id: created?.id,
       actor_id: auth.user.id,
-      action: `shadow_replay_created_from_${sourceType}`,
+      action: manualPost ? "manual_product_post_created" : `shadow_replay_created_from_${sourceType}`,
       details: { canonical_source_id: String(canonicalId), ...auditDetails },
     }),
   });
@@ -133,8 +135,6 @@ async function createReplay({ auth, sourceType, canonicalId, event, metadata = {
 async function replayProduct(auth, options = {}) {
   const requestedSlug = String(options.productSlug || "").trim();
   const manualPayload = options.productPayload && typeof options.productPayload === "object" ? options.productPayload : null;
-  const manual = Boolean(options.manual && requestedSlug);
-
   if (requestedSlug) {
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(requestedSlug)) throw new Error("Invalid product slug for manual Social draft.");
     if (!manualPayload) throw new Error("Live product payload is required for a manual Social draft.");
@@ -157,10 +157,11 @@ async function replayProduct(auth, options = {}) {
       event,
       metadata: {
         replay_key: manualKey,
-        manual_replay: true,
+        manual_product_post: true,
         selected_from_live_catalog: true,
       },
-      auditDetails: { manual_replay: true, selected_from_live_catalog: true },
+      auditDetails: { manual_product_post: true, selected_from_live_catalog: true },
+      manualPost: true,
     });
   }
 
