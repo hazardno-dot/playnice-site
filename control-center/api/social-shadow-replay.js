@@ -130,7 +130,40 @@ async function createReplay({ auth, sourceType, canonicalId, event, metadata = {
   return { status: "created", event: created, canonical_source_id: String(canonicalId) };
 }
 
-async function replayProduct(auth) {
+async function replayProduct(auth, options = {}) {
+  const requestedSlug = String(options.productSlug || "").trim();
+  const manualPayload = options.productPayload && typeof options.productPayload === "object" ? options.productPayload : null;
+  const manual = Boolean(options.manual && requestedSlug);
+
+  if (requestedSlug) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(requestedSlug)) throw new Error("Invalid product slug for manual Social draft.");
+    if (!manualPayload) throw new Error("Live product payload is required for a manual Social draft.");
+
+    const core = manualPayload?.core && typeof manualPayload.core === "object" ? manualPayload.core : manualPayload;
+    if (!String(core?.name || core?.shortName || "").trim()) throw new Error("Selected product is missing its live name.");
+    if (!String(core?.image || manualPayload?.image || "").trim()) throw new Error("Selected product is missing its live source image.");
+
+    const media = [];
+    if (core.socialSquareImage || manualPayload.socialSquareImage) media.push({ src: core.socialSquareImage || manualPayload.socialSquareImage, format: "1:1" });
+    if (core.socialStoryImage || manualPayload.socialStoryImage) media.push({ src: core.socialStoryImage || manualPayload.socialStoryImage, format: "9:16" });
+    if (core.image || manualPayload.image) media.push({ src: core.image || manualPayload.image, format: "product_image" });
+
+    const event = productPublishedEvent({ slug: requestedSlug, payload: manualPayload, media, sourceUrl: `/product/${requestedSlug}` });
+    const manualKey = `manual-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    return createReplay({
+      auth,
+      sourceType: "product",
+      canonicalId: requestedSlug,
+      event,
+      metadata: {
+        replay_key: manualKey,
+        manual_replay: true,
+        selected_from_live_catalog: true,
+      },
+      auditDetails: { manual_replay: true, selected_from_live_catalog: true },
+    });
+  }
+
   const historyRes = await supabaseFetch("/rest/v1/publish_history?select=product_slug,payload,approved_payload,apply_pr_number,published_at,published_commit_sha&order=published_at.desc&limit=1", auth.token);
   const history = await safeJson(historyRes);
   if (!historyRes.ok) {
@@ -221,7 +254,11 @@ export default async function handler(req, res) {
       ? await replayHero(auth)
       : sourceType === "journal"
         ? await replayJournal(auth)
-        : await replayProduct(auth);
+        : await replayProduct(auth, {
+          productSlug: req.body?.product_slug,
+          productPayload: req.body?.product_payload,
+          manual: req.body?.manual,
+        });
 
     return json(res, 200, { ok: true, source_type: sourceType, ...result });
   } catch (error) {
