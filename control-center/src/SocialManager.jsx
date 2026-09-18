@@ -101,8 +101,17 @@ function SocialWorkspace() {
 
   useEffect(() => {
     load();
+    const handleSocialMediaUpdated = () => {
+      setFeedDryRun(null);
+      setFeedDryRunError("");
+      load();
+    };
+    window.addEventListener("playnice:social-media-updated", handleSocialMediaUpdated);
     const channel = supabase.channel("social-events-manager").on("postgres_changes", { event: "*", schema: "public", table: "social_events" }, load).subscribe();
-    return () => supabase.removeChannel(channel);
+    return () => {
+      window.removeEventListener("playnice:social-media-updated", handleSocialMediaUpdated);
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const counts = useMemo(() => events.reduce((out, event) => ({ ...out, [event.status]: (out[event.status] || 0) + 1 }), {}), [events]);
