@@ -122,7 +122,12 @@ export default function ControlledApplyManager() {
       if (!approvalState.safe) throw new Error("Approved payload no longer matches the current draft. Review and approve the draft again before Controlled Apply.");
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
-      const endpoint = row.baseline_snapshot?.kind === "new_product" ? "/api/create-new-product" : "/api/create-apply";
+      const hasExistingPreview = Boolean(row.apply_branch && row.apply_pr_number);
+      const endpoint = hasExistingPreview
+        ? "/api/create-apply"
+        : row.baseline_snapshot?.kind === "new_product"
+          ? "/api/create-new-product"
+          : "/api/create-apply";
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
