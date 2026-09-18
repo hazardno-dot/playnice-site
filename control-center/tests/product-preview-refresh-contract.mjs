@@ -5,6 +5,7 @@ const refreshSource = fs.readFileSync(`${repoRoot}/control-center/api/refresh-pr
 const routerSource = fs.readFileSync(`${repoRoot}/control-center/api/create-apply-router.js`, "utf8");
 const stateSource = fs.readFileSync(`${repoRoot}/control-center/src/previewWorkflowState.mjs`, "utf8");
 const managerSource = fs.readFileSync(`${repoRoot}/control-center/src/ControlledApplyManager.jsx`, "utf8");
+const engineSource = fs.readFileSync(`${repoRoot}/control-center/lib/create-new-product-engine.mjs`, "utf8");
 
 const requiredRefreshTokens = [
   "apply_branch_refreshed",
@@ -36,10 +37,19 @@ if (!stateSource.includes("row.payload?.core?.savedAt")) {
 }
 
 if (!managerSource.includes("const hasExistingPreview = Boolean(row.apply_branch && row.apply_pr_number);")) {
-  throw new Error("Controlled Apply UI must detect an existing preview before choosing the new-product endpoint.");
+  throw new Error("Controlled Apply UI must still detect an existing preview for workflow state.");
 }
-if (!managerSource.includes('hasExistingPreview\n        ? "/api/create-apply"')) {
-  throw new Error("Existing previews must refresh through /api/create-apply so the router preserves the same PR.");
+if (!managerSource.includes('const isNewProduct = row.baseline_snapshot?.kind === "new_product";')) {
+  throw new Error("Controlled Apply UI must distinguish new-product refreshes from live-product refreshes.");
+}
+if (!managerSource.includes('const endpoint = isNewProduct\n        ? "/api/create-new-product"\n        : "/api/create-apply";')) {
+  throw new Error("New products must refresh through /api/create-new-product so the existing PR is rebuilt by the new-product engine.");
+}
+if (!engineSource.includes("if (draft.apply_branch && draft.apply_pr_number)")) {
+  throw new Error("New-product engine must preserve its existing-branch refresh path.");
+}
+if (!engineSource.includes("new_product_preview_refreshed")) {
+  throw new Error("New-product engine must audit preview refreshes.");
 }
 
 // Regression fixture: productCopy frequently renders short bilingual groups on one line.
@@ -81,4 +91,4 @@ if (!changedAfterPreview.needsRefresh) {
   throw new Error("A draft saved after preview generation must require preview refresh.");
 }
 
-console.log("PASS  Product preview refresh keeps the same PR, routes existing new-product previews through refresh, rebuilds atomically from main, supports inline bilingual fields and tracks real draft freshness");
+console.log("PASS  Product preview refresh keeps the same PR, routes new products through their dedicated refresh engine, rebuilds live products atomically from main, supports inline bilingual fields and tracks real draft freshness");
