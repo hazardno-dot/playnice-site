@@ -24,6 +24,8 @@ const TRANSIENT_SUPABASE_STATUSES = new Set([502, 503, 504]);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const MEDIA_PROCESSING_MAX_ATTEMPTS = 15;
 const MEDIA_PROCESSING_DELAY_MS = 1000;
+const STORY_PUBLISH_MAX_ATTEMPTS = 5;
+const STORY_PUBLISH_INITIAL_DELAY_MS = 2500;
 
 async function safeJson(response) {
   const text = await response.text();
@@ -100,8 +102,12 @@ async function metaPost(request, pageToken) {
   const payload = await safeJson(response);
   if (!response.ok) {
     const message = payload?.error?.message || payload?.message || `Meta Graph returned HTTP ${response.status}`;
-    const code = payload?.error?.code ? ` (code ${payload.error.code})` : "";
-    throw new Error(`${message}${code}`);
+    const metaCode = payload?.error?.code ?? null;
+    const code = metaCode ? ` (code ${metaCode})` : "";
+    const error = new Error(`${message}${code}`);
+    error.metaCode = metaCode;
+    error.metaPayload = payload?.error || payload || null;
+    throw error;
   }
   return payload || {};
 }
@@ -165,9 +171,10 @@ async function publishInstagram(event, admin, pageToken, credentialSource) {
     channel: "instagram_feed", test_only: true, media_id, post_id: result.post_id,
     content_type: mediaCheck.content_type, source_id: event.source_id,
     processing_attempts: processing.attempts, processing_status_code: processing.status_code,
+    publish_attempts: publishAttempts,
     credential_source: credentialSource,
   });
-  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, credential_source: credentialSource, processing, result: { ...result, media_id } } };
+  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, credential_source: credentialSource, processing, publish_attempts: publishAttempts, result: { ...result, media_id } } };
 }
 
 async function publishInstagramStory(event, admin, pageToken, credentialSource) {
@@ -194,7 +201,20 @@ async function publishInstagramStory(event, admin, pageToken, credentialSource) 
   const { media_id } = parseInstagramStoryCreateResponse(createPayload);
   const processing = await waitForInstagramMedia(media_id, pageToken);
   const publishRequest = buildInstagramStoryPublishRequest({ creation_id: media_id });
-  const publishPayload = await metaPost(publishRequest, pageToken);
+  await sleep(STORY_PUBLISH_INITIAL_DELAY_MS);
+  let publishPayload = null;
+  let publishAttempts = 0;
+  for (let attempt = 1; attempt <= STORY_PUBLISH_MAX_ATTEMPTS; attempt += 1) {
+    publishAttempts = attempt;
+    try {
+      publishPayload = await metaPost(publishRequest, pageToken);
+      break;
+    } catch (error) {
+      const retryable9007 = Number(error?.metaCode) === 9007;
+      if (!retryable9007 || attempt === STORY_PUBLISH_MAX_ATTEMPTS) throw error;
+      await sleep(STORY_PUBLISH_INITIAL_DELAY_MS * attempt);
+    }
+  }
   const result = parseInstagramStoryPublishResponse(publishPayload);
   await writeAudit(admin.token, event, admin.user.id, "test_instagram_story_published", {
     channel: "instagram_story", test_only: true, media_id, post_id: result.post_id,
