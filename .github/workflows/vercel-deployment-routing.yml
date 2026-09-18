@@ -1,0 +1,32 @@
+name: Vercel Deployment Routing
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/vercel-ignore-build.mjs"
+      - "scripts/vercel-ignore-build.test.mjs"
+      - "playnice-site/vercel.json"
+      - "control-center/vercel.json"
+      - ".github/workflows/vercel-deployment-routing.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  routing-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Verify Vercel deployment routing
+        run: node scripts/vercel-ignore-build.test.mjs
