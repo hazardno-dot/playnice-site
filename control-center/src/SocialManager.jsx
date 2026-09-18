@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
+import { products } from "@shop/data/products/index.js";
+import { productCopy } from "@shop/data/products/productCopy.js";
 import { generateSocialDraft, validateSocialDraftMedia } from "./socialDraft.mjs";
 import "./social-manager.css";
 
@@ -77,6 +79,8 @@ function SocialWorkspace() {
   const [feedDryRun, setFeedDryRun] = useState(null);
   const [feedDryRunLoading, setFeedDryRunLoading] = useState(false);
   const [feedDryRunError, setFeedDryRunError] = useState("");
+  const [productPickerOpen, setProductPickerOpen] = useState(false);
+  const [productQuery, setProductQuery] = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -115,6 +119,15 @@ function SocialWorkspace() {
   }, []);
 
   const counts = useMemo(() => events.reduce((out, event) => ({ ...out, [event.status]: (out[event.status] || 0) + 1 }), {}), [events]);
+  const productCandidates = useMemo(() => {
+    const q = productQuery.trim().toLowerCase();
+    return [...products]
+      .filter((product) => !q || [product.name, product.shortName, product.slug, product.category]
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(q)))
+      .sort((a, b) => String(a.shortName || a.name || "").localeCompare(String(b.shortName || b.name || "")))
+      .slice(0, 60);
+  }, [productQuery]);
   const visible = useMemo(() => filter === "all" ? events : events.filter((event) => event.status === filter), [events, filter]);
   const selected = visible.find((event) => event.id === selectedId) || visible[0] || null;
   const generated = useMemo(() => {
@@ -271,6 +284,41 @@ function SocialWorkspace() {
     }
   };
 
+  const createProductPost = async (product) => {
+    if (!product?.slug) return;
+    setSaving(true);
+    setActionError("");
+    try {
+      const token = await sessionToken();
+      const productPayload = {
+        core: { ...product },
+        copy: productCopy[product.name] || {},
+      };
+      const response = await fetch("/api/social-shadow-replay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          source_type: "product",
+          product_slug: product.slug,
+          product_payload: productPayload,
+          manual: true,
+        }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Could not create Social draft for ${product.shortName || product.name} (${response.status}).`);
+      setFilter("all");
+      setProductPickerOpen(false);
+      setProductQuery("");
+      await load();
+      const eventId = payload.event?.id || payload.event_id || "";
+      if (eventId) { setSelectedId(eventId); await loadAudit(eventId); }
+    } catch (createError) {
+      setActionError(createError.message || String(createError));
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const immutable = selected && ["ready", "scheduled", "published", "cancelled"].includes(selected.status);
   const reviewState = selected?.status === "scheduled"
     ? "SCHEDULED · LOCKED"
@@ -296,10 +344,26 @@ function SocialWorkspace() {
 
     <div className="social-filter-bar">
       {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${counts[value] || 0}` : ""}</button>)}
-      <button type="button" disabled={saving} onClick={() => replayLatest("product")}>{saving ? "Working…" : "Replay Product"}</button>
+      <button type="button" className="social-create-product" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>{saving ? "Working…" : "Create Product Post"}</button>
       <button type="button" disabled={saving} onClick={() => replayLatest("hero")}>{saving ? "Working…" : "Replay Hero"}</button>
       <button type="button" disabled={saving} onClick={() => replayLatest("journal")}>{saving ? "Working…" : "Replay Journal"}</button>
     </div>
+
+    {productPickerOpen ? <div className="social-product-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setProductPickerOpen(false); }}>
+      <section className="social-product-picker" role="dialog" aria-modal="true" aria-label="Create product post">
+        <div className="social-product-picker-head">
+          <div><span>CREATE PRODUCT POST</span><h3>Choose any live product</h3><p>Creates a fresh Social draft without changing the product or storefront.</p></div>
+          <button type="button" disabled={saving} onClick={() => setProductPickerOpen(false)}>Close</button>
+        </div>
+        <input autoFocus type="search" value={productQuery} onChange={(event) => setProductQuery(event.target.value)} placeholder="Search name, brand or slug…" />
+        <div className="social-product-picker-results">
+          {productCandidates.length ? productCandidates.map((product) => <button type="button" key={product.slug} disabled={saving} onClick={() => createProductPost(product)}>
+            <div><strong>{product.shortName || product.name}</strong><span>{product.name}</span><small>{product.slug}</small></div>
+            <em>{product.category || "Product"}</em>
+          </button>) : <div className="social-product-picker-empty">No live products match this search.</div>}
+        </div>
+      </section>
+    </div> : null}
 
     <div className="social-layout">
       <aside className="social-list">
