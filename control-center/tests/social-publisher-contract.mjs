@@ -167,7 +167,7 @@ for (const token of [
   "replayHero",
   "replayJournal",
   "source_type",
-  "replay: true",
+  "replay: !manualPost",
   "social-shadow-replay",
 ]) {
   assert.ok(replayApi.includes(token), `Social shadow replay contract missing: ${token}`);
