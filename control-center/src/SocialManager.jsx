@@ -16,6 +16,7 @@ const AUDIT_LABELS = {
   draft_scheduled: "Scheduled",
   draft_unscheduled: "Unscheduled",
   shadow_replay_created_from_product: "Product replay created",
+  manual_product_post_created: "Product post created",
   shadow_replay_created_from_hero: "Hero replay created",
   shadow_replay_created_from_journal: "Journal replay created",
   shadow_event_created_from_product_publish: "Created from product publish",
@@ -301,7 +302,6 @@ function SocialWorkspace() {
           source_type: "product",
           product_slug: product.slug,
           product_payload: productPayload,
-          manual: true,
         }),
       });
       const payload = await response.json().catch(() => ({}));
