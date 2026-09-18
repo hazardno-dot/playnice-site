@@ -182,6 +182,17 @@ assert.ok(replayApi.includes('manualPost ? "social-manual-product-post" : "socia
 assert.ok(replayApi.includes("test: !manualPost"), "Manual Product posts must not be marked as test events.");
 assert.ok(replayApi.includes("replay: !manualPost"), "Manual Product posts must not be marked as replay events.");
 assert.ok(replayApi.includes("--manual-social-"), "Manual Product posts must receive their own fresh Social event identity.");
+const instagramPublishBridge = fs.readFileSync(path.join(root, "control-center/src/SocialInstagramTestPublishBridge.jsx"), "utf8");
+const storyPublishBridge = fs.readFileSync(path.join(root, "control-center/src/SocialInstagramStoryTestPublishBridge.jsx"), "utf8");
+const facebookPublishBridge = fs.readFileSync(path.join(root, "control-center/src/SocialFacebookTestPublishBridge.jsx"), "utf8");
+for (const source of [instagramPublishBridge, storyPublishBridge, facebookPublishBridge, manualMetaPublishApi]) {
+  assert.ok(source.includes("manual_product_post"), "Controlled Meta publishing must recognize manual Product Social events.");
+  assert.ok(source.includes("--manual-social-"), "Controlled Meta publishing must recognize manual Product Social event ids.");
+}
+assert.ok(manualMetaPublishApi.includes("isControlledPublishEvent"), "Server-side Meta transport must use the controlled publish eligibility gate.");
+assert.ok(instagramPublishBridge.includes("Publish Instagram Feed"), "Instagram Feed bridge must expose controlled manual publishing for READY Product posts.");
+assert.ok(storyPublishBridge.includes("Publish Instagram Story"), "Instagram Story bridge must expose controlled manual publishing for READY Product posts.");
+assert.ok(facebookPublishBridge.includes("Publish Facebook Page"), "Facebook bridge must expose controlled manual publishing for READY Product posts.");
 
 const socialSchema = fs.readFileSync(path.join(root, "control-center/supabase/social_publisher_v1.sql"), "utf8");
 for (const token of ["draft_content jsonb", "approved_content jsonb", "approved_at timestamptz", "scheduled_for timestamptz", "status = 'scheduled'", "publish_mode text not null default 'shadow'"]) {
