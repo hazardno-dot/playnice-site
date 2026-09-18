@@ -3020,9 +3020,8 @@ export const productCopy = {
 
   "Rayhaan Elixir Eau de Parfum": {
     "miniTag": {
-      "en": "Sweet. Warm. Seductive.",
-      "sr": "Slatko. Toplo. Zavodljivo."
-    },
+      "en": "🍦 Vanilla / Aromatic",
+      "sr": "🍦 Vanilast / Aromatičan"},
     "card": {
       "en": "Warm vanilla, lavender and tonka for nights that call for more.",
       "sr": "Topla vanila, lavanda i tonka za večeri koje traže malo više."
