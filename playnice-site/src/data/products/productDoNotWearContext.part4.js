@@ -108,8 +108,8 @@ export default [
     "en": "Skip it at hot midday or in a tiny office if six sprays sound reasonable. Vanilla has no volume control."
   },
   {
-    "sr": "Ne birajte ga za hladnu noć kada želite da parfem uđe u prostoriju pre Vas. Sun Men je napravljen za sunce, ne za demonstraciju sile.",
-    "en": "Skip it on cold nights when you want your fragrance to enter the room before you do. Sun Men was made for sunshine, not a show of force."
+    "sr": "Nemojte ga nositi na zimsku svadbu u 22h, dok svi oko Vas mirišu na vanilu, oud i ozbiljne životne odluke. Sun Men bi tu izgledao kao čovek koji je došao u lanenoj košulji i pitao gde je plaža.",
+    "en": "Don’t wear it to a winter wedding at 10 PM while everyone around you smells of vanilla, oud and serious life decisions. Sun Men would feel like the guy who showed up in a linen shirt asking where the beach is."
   }
 
 ];
