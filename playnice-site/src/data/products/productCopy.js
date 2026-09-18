@@ -3016,6 +3016,55 @@ export const productCopy = {
       "en": "For fans of darker spicy scents with fig, leather and refined sweetness.",
       "sr": "Za ljubitelje tamnijih začinskih mirisa sa smokvom, kožom i elegantnom slatkoćom."
     }
+  },
+
+  "Rayhaan Elixir Eau de Parfum": {
+    "miniTag": {
+      "en": "Sweet. Warm. Seductive.",
+      "sr": "Slatko. Toplo. Zavodljivo."
+    },
+    "card": {
+      "en": "Warm vanilla, lavender and tonka for nights that call for more.",
+      "sr": "Topla vanila, lavanda i tonka za večeri koje traže malo više."
+    },
+    "modal": {
+      "en": "Mint and bergamot open fresh, lavender and benzoin add warmth, while vanilla and tonka finish rich, sweet and distinctly seductive.",
+      "sr": "Mint i bergamot otvaraju sveže, lavanda i benzoin brzo donose toplinu, a vanila i tonka završavaju priču bogato, slatko i vrlo zavodljivo."
+    },
+    "scentType": {
+      "en": "Aromatic amber with vanilla",
+      "sr": "Aromatični amber sa vanilom"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Vanila",
+        "Lavanda",
+        "Benzoin",
+        "Tonka"
+      ],
+      "en": [
+        "Vanilla",
+        "Lavender",
+        "Benzoin",
+        "Tonka Bean"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Sladak",
+        "Topao",
+        "Večernji"
+      ],
+      "en": [
+        "Sweet",
+        "Warm",
+        "Evening"
+      ]
+    },
+    "whyChoose": {
+      "en": "An easy choice if you like sweet evening scents built around vanilla.",
+      "sr": "Ako volite slatke večernje mirise sa vanilom, ovo je vrlo lak izbor."
+    }
   }
 };
 

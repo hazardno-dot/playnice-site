@@ -2884,6 +2884,32 @@ export const products = [
       heart: ["fig","iris","labdanum","vetiver"],
       base: ["leather","tonka-bean","patchouli","vanilla"]
     }
+  },
+  {
+    id: 102,
+    addedAt: "2026-09-18T19:38:55.539Z",
+    slug: "rayhaan-elixir-eau-de-parfum",
+    name: "Rayhaan Elixir Eau de Parfum",
+    modalName: "Rayhaan Elixir EDP",
+    shortName: "Rayhaan Elixir",
+    category: "Arabian",
+    image: "/products/rayhaan-elixir-eau-de-parfum.png",
+    sizes: {"5ml":4,"10ml":7,"20ml":13},
+    badge: "CROWD FAVORITE",
+    rating: 8.6,
+    ratingLabel: "Audience Favorite",
+    season: "all",
+    moods: ["date","rich","signature"],
+    recommendations: ["yves-saint-laurent-la-nuit-de-lhomme-edt","lattafa-asad-elixir","boss-the-scent-le-parfum"],
+    inspiredBy: {
+      name: "Jean Paul Gaultier Le Male Elixir",
+      short: "Le Male Elixir DNA"
+    },
+    noteMap: {
+      top: ["bergamot","mint"],
+      heart: ["lavender","benzoin"],
+      base: ["vanilla","tonka-bean"]
+    }
   }
 
 ];

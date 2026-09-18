@@ -3044,6 +3044,37 @@ export const discoveryProfiles = {
     "cleanliness": 3,
     "versatility": 6.6,
     "gourmandness": 4.5
+  },
+
+  "rayhaan-elixir-eau-de-parfum": {
+    "date": 10,
+    "casual": 6,
+    "citrus": 3,
+    "office": 4,
+    "unisex": 6,
+    "warmth": 9,
+    "aquatic": 0,
+    "dryness": 3,
+    "evening": 10,
+    "powdery": 5,
+    "airiness": 3,
+    "darkness": 6,
+    "elegance": 7,
+    "feminine": 3,
+    "florality": 3,
+    "freshness": 4,
+    "longevity": 8,
+    "masculine": 9,
+    "spiciness": 5,
+    "sweetness": 8,
+    "woodiness": 4,
+    "creaminess": 8,
+    "fruitiness": 2,
+    "projection": 8,
+    "aromaticity": 8,
+    "cleanliness": 4,
+    "versatility": 6,
+    "gourmandness": 8
   }
 };
 
