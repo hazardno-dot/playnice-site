@@ -62,11 +62,14 @@ async function requireAdmin(req) {
   return { token, user: { id: rows[0].user_id } };
 }
 
-const isExplicitTestEvent = (event) => Boolean(
+const isControlledPublishEvent = (event) => Boolean(
   event?.metadata?.test ||
   event?.metadata?.replay ||
+  event?.metadata?.manual_product_post ||
+  event?.metadata?.producer === "social-manual-product-post" ||
   String(event?.source_id || "").includes("--shadow-test-") ||
-  String(event?.source_id || "").includes("--shadow-replay-")
+  String(event?.source_id || "").includes("--shadow-replay-") ||
+  String(event?.source_id || "").includes("--manual-social-")
 );
 
 async function probeImage(url, channel) {
@@ -166,6 +169,7 @@ async function publishInstagram(event, admin, pageToken, credentialSource) {
   const processing = await waitForInstagramMedia(media_id, pageToken);
   const publishRequest = buildInstagramFeedPublishRequest({ creation_id: media_id });
   const publishPayload = await metaPost(publishRequest, pageToken);
+  const publishAttempts = 1;
   const result = parseInstagramFeedPublishResponse(publishPayload);
   await writeAudit(admin.token, event, admin.user.id, "test_instagram_feed_published", {
     channel: "instagram_feed", test_only: true, media_id, post_id: result.post_id,
@@ -261,7 +265,7 @@ export default async function handler(req, res) {
   if (!eventRes.ok) return json(res, 502, { error: `Could not load Social event (${eventRes.status}).` });
   const event = Array.isArray(events) ? events[0] : null;
   if (!event) return json(res, 404, { error: "Social event not found." });
-  if (!isExplicitTestEvent(event)) return json(res, 403, { error: "Real Meta test publishing is allowed only for explicit test/replay Social events." });
+  if (!isControlledPublishEvent(event)) return json(res, 403, { error: "Manual Meta publishing is allowed only for controlled test/replay or manual Product Social events." });
   if (!["ready", "scheduled"].includes(event.status)) return json(res, 409, { error: "Test event must be READY or SCHEDULED with an approved snapshot." });
 
   let credential;
