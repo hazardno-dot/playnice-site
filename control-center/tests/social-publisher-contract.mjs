@@ -143,6 +143,17 @@ assert.ok(socialDraftApi.includes('event.status !== "ready"'), "Scheduling must 
 assert.ok(socialDraftApi.includes('event.status !== "scheduled"'), "Unscheduling must be server-side restricted to SCHEDULED events.");
 assert.ok(!socialDraftApi.includes("publish_mode: \"approval\""), "Draft approval or scheduling must not unlock Meta publishing.");
 
+const manualMetaPublishApi = fs.readFileSync(path.join(root, "control-center/api/social-instagram-feed-test-publish.js"), "utf8");
+for (const token of [
+  "STORY_PUBLISH_MAX_ATTEMPTS",
+  "STORY_PUBLISH_INITIAL_DELAY_MS",
+  "error.metaCode = metaCode",
+  "Number(error?.metaCode) === 9007",
+  "publish_attempts: publishAttempts",
+]) {
+  assert.ok(manualMetaPublishApi.includes(token), `Instagram Story 9007 retry contract missing: ${token}`);
+}
+
 const replayApi = fs.readFileSync(path.join(root, "control-center/api/social-shadow-replay.js"), "utf8");
 for (const token of [
   "productPublishedEvent",
