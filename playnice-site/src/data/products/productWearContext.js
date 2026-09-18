@@ -416,5 +416,10 @@ export const productWearContext = {
   "Rayhaan Elixir Eau de Parfum": {
     "sr": "Veče, izlazak, dejt i hladniji dani.",
     "en": "Evenings, dates, nights out and cooler weather."
+  },
+
+  "Jil Sander Sun Men Eau de Toilette": {
+    "sr": "Topli dani, posao, odmor i opuštene dnevne prilike.",
+    "en": "Warm days, work, holidays and relaxed daytime wear."
   }
 };

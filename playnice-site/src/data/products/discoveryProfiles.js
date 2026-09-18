@@ -3075,6 +3075,37 @@ export const discoveryProfiles = {
     "cleanliness": 4,
     "versatility": 6,
     "gourmandness": 8
+  },
+
+  "jil-sander-sun-men-eau-de-toilette": {
+    "date": 5.5,
+    "casual": 9.5,
+    "citrus": 7.5,
+    "office": 8.5,
+    "unisex": 4,
+    "warmth": 4,
+    "aquatic": 2.5,
+    "dryness": 4,
+    "evening": 4,
+    "powdery": 3,
+    "airiness": 7.5,
+    "darkness": 1,
+    "elegance": 6.5,
+    "feminine": 2,
+    "florality": 2,
+    "freshness": 7.8,
+    "longevity": 5.5,
+    "masculine": 8.5,
+    "spiciness": 5.5,
+    "sweetness": 3,
+    "woodiness": 5.5,
+    "creaminess": 2.5,
+    "fruitiness": 1,
+    "projection": 4.5,
+    "aromaticity": 7.8,
+    "cleanliness": 8.2,
+    "versatility": 7.8,
+    "gourmandness": 0
   }
 };
 

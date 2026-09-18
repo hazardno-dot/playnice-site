@@ -106,6 +106,10 @@ export default [
   {
     "sr": "Nemojte ga birati za vrelo podne ili malu kancelariju ako planirate šest prskanja. Vanila nema dugme za stišavanje.",
     "en": "Skip it at hot midday or in a tiny office if six sprays sound reasonable. Vanilla has no volume control."
+  },
+  {
+    "sr": "Ne birajte ga za hladnu noć kada želite da parfem uđe u prostoriju pre Vas. Sun Men je napravljen za sunce, ne za demonstraciju sile.",
+    "en": "Skip it on cold nights when you want your fragrance to enter the room before you do. Sun Men was made for sunshine, not a show of force."
   }
 
 ];

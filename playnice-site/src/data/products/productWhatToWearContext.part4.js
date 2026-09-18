@@ -106,6 +106,10 @@ const entries = [
   {
     "sr": "Tamna košulja, dobra jakna i nešto što izgleda kao da niste birali četrdeset minuta.",
     "en": "Dark shirt, a good jacket and something that looks like it did not take forty minutes to choose."
+  },
+  {
+    "sr": "Bela majica ili lanena košulja, svetle pantalone i patike. Sve ostalo bi mu samo komplikovalo život.",
+    "en": "A white T-shirt or linen shirt, light trousers and sneakers. Anything more would only complicate things."
   }
 
 ];

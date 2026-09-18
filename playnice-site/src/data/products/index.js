@@ -2910,6 +2910,32 @@ export const products = [
       heart: ["lavender","benzoin"],
       base: ["vanilla","tonka-bean"]
     }
+  },
+  {
+    id: 103,
+    addedAt: "2026-09-18T22:15:10.664Z",
+    slug: "jil-sander-sun-men-eau-de-toilette",
+    name: "Jil Sander Sun Men Eau de Toilette",
+    modalName: "Jil Sander Sun Men EDT",
+    shortName: "Sun Men",
+    category: "Designer",
+    image: "/products/jil-sander-sun-men-eau-de-toilette.png",
+    sizes: {"5ml":3,"10ml":6.5,"20ml":12},
+    badge: "HIDDEN GEM",
+    rating: 8,
+    ratingLabel: "Summer Classic",
+    season: "all",
+    moods: ["clean","summer","soft"],
+    recommendations: ["jil-sander-sun-edt","versace-man-eau-fraiche","essential-parfums-nice-bergamote"],
+    inspiredBy: {
+      name: "Original Jil Sander creation",
+      short: "Summer Aromatic DNA"
+    },
+    noteMap: {
+      top: ["bergamot","rosemary"],
+      heart: ["cardamom","nutmeg"],
+      base: ["musk","sandalwood"]
+    }
   }
 
 ];
