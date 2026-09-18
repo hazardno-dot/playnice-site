@@ -1,5 +1,5 @@
 const SITE_ORIGIN = "https://www.playniceshop.me";
-const DEFAULT_TAGS = ["#playnice", "#parfemi", "#montenegro"];
+const DEFAULT_TAGS = ["#playnice", "#trybeforeyoubuy", "#dekanticrnagora", "#parfemi", "#montenegro"];
 
 const compact = (parts = []) => parts.map((value) => String(value || "").trim()).filter(Boolean);
 const siteUrl = (path = "") => /^https?:\/\//.test(path) ? path : `${SITE_ORIGIN}${path.startsWith("/") ? path : `/${path}`}`;

@@ -37,6 +37,7 @@ assert.equal(draft.headline, "Test Fragrance");
 assert.match(draft.instagram_feed.caption, /Test Fragrance/);
 assert.match(draft.instagram_feed.caption, /5ml · €9/);
 assert.match(draft.instagram_feed.caption, /playniceshop\.me\/product\/test-fragrance/);
+assert.match(draft.instagram_feed.caption, /#playnice #trybeforeyoubuy #dekanticrnagora #parfemi #montenegro/, "Default Product social hashtags must preserve the PlayNice brand/local ordering.");
 assert.equal(draft.instagram_feed.media.format, "1:1");
 assert.equal(draft.instagram_story.media.format, "9:16");
 assert.equal(draft.facebook.media.format, "1:1");
