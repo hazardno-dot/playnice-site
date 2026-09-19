@@ -4551,7 +4551,8 @@ const openProductModal = (product, options = {}) => {
     updateUrl = true,
     preferredSize = "",
     userPickedSize = false,
-    changeView = true
+    changeView = true,
+    originSurface = ""
   } = options;
 
   const isMobileModal = isMobileProductModal();
@@ -4623,7 +4624,8 @@ const openProductModal = (product, options = {}) => {
         {
           playniceProductModal: true,
           productSlug: getProductSlug(product),
-          productOriginView: changeView ? "shop" : view
+          productOriginView: changeView ? "shop" : view,
+          productOriginSurface: originSurface || null
         },
         "",
         productUrl
@@ -6302,6 +6304,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               openProductModal(product, { changeView: false })
             }
             onBackToShop={() => {
+              if (window.history.state?.productOriginSurface === "discovery") {
+                setDiscoveryOpen(true);
+                window.history.back();
+                return;
+              }
+
               goToShop();
               requestAnimationFrame(() => {
                 window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -6858,6 +6866,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                         openProductModal(result.product, {
                           changeView: false,
                           preferredSize: sizeLabel,
+                          originSurface: "discovery",
                         });
                       }}
                       aria-label={
