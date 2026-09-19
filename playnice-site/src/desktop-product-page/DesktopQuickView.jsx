@@ -79,6 +79,7 @@ export default function DesktopQuickView() {
   const [product, setProduct] = useState(null);
   const [lang, setLang] = useState(() => getLanguage());
   const [selectedSize, setSelectedSize] = useState("");
+  const [source, setSource] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
 
@@ -96,6 +97,7 @@ export default function DesktopQuickView() {
       const firstSize = Object.keys(nextProduct.sizes || {})[0] || "";
       setProduct(nextProduct);
       setSelectedSize(firstSize);
+      setSource(event?.detail?.source || "");
       setLang(getLanguage());
       setIsAdded(false);
 
@@ -175,20 +177,31 @@ export default function DesktopQuickView() {
 
     window.dispatchEvent(
       new CustomEvent("playnice:desktop-quick-view-full-product", {
-        detail: { productId: product.id }
+        detail: {
+          productId: product.id,
+          source,
+        }
       })
     );
 
     close();
 
+    const nextState = {
+      ...(window.history.state || {}),
+      productSlug: product.slug,
+      productOriginView: originView,
+    };
+
+    if (source === "discovery") {
+      nextState.playniceDiscoveryOpen = false;
+      nextState.productOriginSurface = "discovery";
+    } else {
+      delete nextState.playniceDiscoveryOpen;
+      delete nextState.productOriginSurface;
+    }
+
     window.history.pushState(
-      {
-        ...(window.history.state || {}),
-        playniceDiscoveryOpen: false,
-        productSlug: product.slug,
-        productOriginView: originView,
-        productOriginSurface: "discovery",
-      },
+      nextState,
       "",
       nextUrl
     );
