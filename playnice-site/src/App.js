@@ -867,10 +867,20 @@ const getInitialShopState = () => {
     );
   }, []);
 
+  const resetDiscoverySession = useCallback(() => {
+    setDiscoveryQuery("");
+    setDiscoveryResults([]);
+    setDiscoveryFeedback("");
+    setDiscoveryPage(1);
+    discoveryAttributionRef.current = null;
+    discoverySearchContextRef.current = null;
+  }, []);
+
   const closeDiscovery = useCallback(() => {
     clearDiscoveryHistoryMarker();
     setDiscoveryOpen(false);
-  }, [clearDiscoveryHistoryMarker]);
+    resetDiscoverySession();
+  }, [clearDiscoveryHistoryMarker, resetDiscoverySession]);
 
   const discoveryTotalPages = Math.max(
     1,
@@ -6690,6 +6700,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       discoveryOriginSurfaceRef.current = "home";
       clearDiscoveryHistoryMarker();
+      resetDiscoverySession();
       setDiscoveryOpen(true);
     }}
     aria-expanded={discoveryOpen}
