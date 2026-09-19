@@ -407,8 +407,8 @@ function SocialWorkspace() {
 
   return <section className="social-manager">
     <div className="social-banner">
-      <div><span>SOCIAL PUBLISHER V1</span><h2>Shadow-mode publishing infrastructure</h2><p>Production content can create social drafts here. Captions can be edited, approved and scheduled, but Meta publishing remains intentionally locked.</p></div>
-      <strong>NO META PUBLISH</strong>
+      <div><span>SOCIAL PUBLISHER V1</span><h2>Plan, review and publish</h2><p>Create social posts from Products, Hero or Journal, review channel assets, then publish manually when everything is ready.</p></div>
+      <strong>MANUAL PUBLISH</strong>
     </div>
 
     <div className="social-kpis">
@@ -421,11 +421,18 @@ function SocialWorkspace() {
     {error ? <div className="social-error">Social schema is not active in Supabase yet: {error}</div> : null}
     {actionError ? <div className="social-error social-action-error">{actionError}</div> : null}
 
-    <div className="social-filter-bar">
-      {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${value === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)).length : counts[value] || 0}` : ""}</button>)}
-      <button type="button" className="social-create-product" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>{saving ? "Working…" : "Create Product Post"}</button>
-      <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>{saving ? "Working…" : "Create Hero Post"}</button>
-      <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>{saving ? "Working…" : "Create Journal Post"}</button>
+    <div className="social-toolbar">
+      <div className="social-filter-bar">
+        {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${value === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)).length : counts[value] || 0}` : ""}</button>)}
+      </div>
+      <div className="social-create-group">
+        <span>CREATE POST FROM</span>
+        <div>
+          <button type="button" className="social-create-product" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>{saving ? "Working…" : "Product"}</button>
+          <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>{saving ? "Working…" : "Hero"}</button>
+          <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>{saving ? "Working…" : "Journal"}</button>
+        </div>
+      </div>
     </div>
 
 
