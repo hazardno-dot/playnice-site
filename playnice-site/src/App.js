@@ -852,9 +852,18 @@ const getInitialShopState = () => {
   const discoverySearchContextRef = useRef(null);
   const discoveryOriginSurfaceRef = useRef("home");
   const productOriginSurfaceRef = useRef("");
+  const discoveryQueryRef = useRef(discoveryQuery);
+  const discoverySearchHandlerRef = useRef(null);
+
+  discoveryQueryRef.current = discoveryQuery;
 
   const clearDiscoveryHistoryMarker = useCallback(() => {
-    if (window.history.state?.playniceDiscoveryOpen !== true) return;
+    if (
+      window.history.state?.playniceDiscoveryOpen !== true &&
+      !window.history.state?.playniceDiscoveryQuery
+    ) {
+      return;
+    }
 
     const nextState = { ...(window.history.state || {}) };
     delete nextState.playniceDiscoveryOpen;
@@ -2155,7 +2164,7 @@ useEffect(() => {
       {
         ...(window.history.state || {}),
         playniceDiscoveryOpen: true,
-        playniceDiscoveryQuery: discoveryQuery,
+        playniceDiscoveryQuery: discoveryQueryRef.current,
       },
       "",
       window.location.pathname + window.location.search
@@ -2288,7 +2297,10 @@ if (journalArticleFromUrl) {
 
       if (restoredDiscoveryQuery) {
         setDiscoveryQuery(restoredDiscoveryQuery);
-        handleDiscoverySearch(restoredDiscoveryQuery, "history-return");
+        discoverySearchHandlerRef.current?.(
+          restoredDiscoveryQuery,
+          "history-return"
+        );
       }
 
       setDiscoveryOpen(true);
@@ -4830,6 +4842,8 @@ const getDiscoveryAnalyticsParams = (discovery, source = "manual") => {
   setDiscoveryPage(1);
 };
 
+discoverySearchHandlerRef.current = handleDiscoverySearch;
+
 const handleFindSimilarWithFI = async (product) => {
   if (!product) return;
 
@@ -7036,6 +7050,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                             {
                               ...(window.history.state || {}),
                               playniceDiscoveryOpen: true,
+                              playniceDiscoveryQuery: discoveryQuery,
                             },
                             "",
                             window.location.pathname + window.location.search
