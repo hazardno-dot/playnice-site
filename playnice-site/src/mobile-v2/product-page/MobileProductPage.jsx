@@ -337,28 +337,6 @@ export default function MobileProductPage({
           </span>
         ) : null}
 
-        {onFindSimilar ? (
-          <button
-            type="button"
-            className="mobile-product-page__find-similar"
-            onClick={() => onFindSimilar(product)}
-          >
-            <span className="mobile-product-page__find-similar-orbit" aria-hidden="true">
-              <i />
-            </span>
-
-            <span className="mobile-product-page__find-similar-copy">
-              <small>FI / MATCH ENGINE</small>
-              <strong>
-                {lang === "sr"
-                  ? "PRONAĐI SLIČNE MIRISE"
-                  : "FIND SIMILAR SCENTS"}
-              </strong>
-            </span>
-
-            <span className="mobile-product-page__find-similar-arrow" aria-hidden="true">↗</span>
-          </button>
-        ) : null}
       </section>
 
       <section className="mobile-product-page__purchase" aria-label={lang === "sr" ? "Kupovina" : "Purchase"}>
@@ -501,6 +479,31 @@ export default function MobileProductPage({
               </div>
             ))}
           </div>
+        </section>
+      ) : null}
+
+      {onFindSimilar ? (
+        <section className="mobile-product-page__find-similar-section">
+          <button
+            type="button"
+            className="mobile-product-page__find-similar"
+            onClick={() => onFindSimilar(product)}
+          >
+            <span className="mobile-product-page__find-similar-orbit" aria-hidden="true">
+              <i />
+            </span>
+
+            <span className="mobile-product-page__find-similar-copy">
+              <small>FI / MATCH ENGINE</small>
+              <strong>
+                {lang === "sr"
+                  ? "PRONAĐI SLIČNE MIRISE"
+                  : "FIND SIMILAR SCENTS"}
+              </strong>
+            </span>
+
+            <span className="mobile-product-page__find-similar-arrow" aria-hidden="true">↗</span>
+          </button>
         </section>
       ) : null}
 
