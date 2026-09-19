@@ -140,6 +140,8 @@ export default function DesktopProductPage({
 }) {
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [profile, setProfile] = useState(null);
+  const [addedCartKey, setAddedCartKey] = useState("");
+  const addedCartTimeoutRef = useRef(null);
   const previousProductSlugRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -157,6 +159,14 @@ export default function DesktopProductPage({
 
     previousProductSlugRef.current = product.slug;
   }, [product?.slug]);
+
+  useEffect(() => {
+    return () => {
+      if (addedCartTimeoutRef.current) {
+        window.clearTimeout(addedCartTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -203,6 +213,24 @@ export default function DesktopProductPage({
   const scentType = copy.scentType?.[lang] || "";
   const ratingStars = getRatingStarCount(product.rating);
   const sizeHelper = getSizeHelper(activeSize, lang);
+  const activeCartKey = `${product.id}-${activeSize}`;
+  const isJustAdded = addedCartKey === activeCartKey;
+
+  const handleAddToCartClick = () => {
+    if (!activeSize) return;
+
+    onAddToCart?.(activeSize);
+    setAddedCartKey(activeCartKey);
+
+    if (addedCartTimeoutRef.current) {
+      window.clearTimeout(addedCartTimeoutRef.current);
+    }
+
+    addedCartTimeoutRef.current = window.setTimeout(() => {
+      setAddedCartKey("");
+      addedCartTimeoutRef.current = null;
+    }, 1300);
+  };
 
   return (
     <article className="desktop-product-page" data-product-slug={product.slug}>
@@ -352,8 +380,19 @@ export default function DesktopProductPage({
             </div>
 
             <div className="desktop-product-page__actions">
-              <button type="button" className="desktop-product-page__add" onClick={() => onAddToCart?.(activeSize)}>
-                {lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}
+              <button
+                type="button"
+                className={`desktop-product-page__add ${isJustAdded ? "is-added" : ""}`}
+                onClick={handleAddToCartClick}
+                aria-live="polite"
+              >
+                {isJustAdded
+                  ? lang === "sr"
+                    ? "DODATO ✓"
+                    : "ADDED ✓"
+                  : lang === "sr"
+                  ? "DODAJ U KORPU"
+                  : "ADD TO CART"}
               </button>
               {onBuyNow ? (
                 <button type="button" className="desktop-product-page__buy" onClick={() => onBuyNow(activeSize)}>
