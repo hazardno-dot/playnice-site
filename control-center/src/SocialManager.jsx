@@ -120,8 +120,8 @@ function SocialWorkspace() {
     };
   }, []);
 
-  const activeEvents = useMemo(() => events.filter((event) => event.status !== "cancelled"), [events]);
-  const counts = useMemo(() => activeEvents.reduce((out, event) => ({ ...out, [event.status]: (out[event.status] || 0) + 1 }), {}), [activeEvents]);
+  const activeEvents = useMemo(() => events.filter((event) => !["cancelled", "published"].includes(event.status)), [events]);
+  const counts = useMemo(() => events.reduce((out, event) => ({ ...out, [event.status]: (out[event.status] || 0) + 1 }), {}), [events]);
   const productCandidates = useMemo(() => {
     const q = productQuery.trim().toLowerCase();
     return [...products]
@@ -131,7 +131,7 @@ function SocialWorkspace() {
       .sort((a, b) => String(a.shortName || a.name || "").localeCompare(String(b.shortName || b.name || "")))
       .slice(0, 60);
   }, [productQuery]);
-  const visible = useMemo(() => filter === "archived" ? events.filter((event) => event.status === "cancelled") : filter === "all" ? activeEvents : activeEvents.filter((event) => event.status === filter), [events, activeEvents, filter]);
+  const visible = useMemo(() => filter === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)) : filter === "published" ? events.filter((event) => event.status === "published") : filter === "all" ? activeEvents : activeEvents.filter((event) => event.status === filter), [events, activeEvents, filter]);
   const selected = visible.find((event) => event.id === selectedId) || visible[0] || null;
   const generated = useMemo(() => {
     if (!selected) return null;
@@ -334,9 +334,11 @@ function SocialWorkspace() {
     ? "SCHEDULED · LOCKED"
     : selected?.status === "ready"
       ? "READY · APPROVED"
-      : selected?.status === "cancelled"
-        ? "ARCHIVED · CANCELLED"
-        : "DRAFT · REVIEW";
+      : selected?.status === "published"
+        ? `ARCHIVED · PUBLISHED · ${fmt(selected.published_at || selected.updated_at)}`
+        : selected?.status === "cancelled"
+          ? `ARCHIVED · DISCARDED · ${fmt(selected.updated_at)}`
+          : "DRAFT · REVIEW";
 
   return <section className="social-manager">
     <div className="social-banner">
@@ -355,7 +357,7 @@ function SocialWorkspace() {
     {actionError ? <div className="social-error social-action-error">{actionError}</div> : null}
 
     <div className="social-filter-bar">
-      {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${value === "archived" ? events.filter((event) => event.status === "cancelled").length : counts[value] || 0}` : ""}</button>)}
+      {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${value === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)).length : counts[value] || 0}` : ""}</button>)}
       <button type="button" className="social-create-product" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>{saving ? "Working…" : "Create Product Post"}</button>
       <button type="button" disabled={saving} onClick={() => replayLatest("hero")}>{saving ? "Working…" : "Replay Hero"}</button>
       <button type="button" disabled={saving} onClick={() => replayLatest("journal")}>{saving ? "Working…" : "Replay Journal"}</button>
