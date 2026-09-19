@@ -118,13 +118,13 @@ export default function SocialFacebookTestPublishBridge() {
     }
   };
 
-  if (!slot) return null;
+  if (!slot || (!event && !message && !error)) return null;
   return createPortal(
     <section className="social-instagram-test-publish">
       <div className="social-instagram-test-copy">
         <span>FACEBOOK PAGE · MANUAL PUBLISH</span>
         <strong>{event ? eventTitle : "No approved image publish candidate"}</strong>
-        <p>{event ? "Approved Facebook media is ready for controlled manual publishing." : "Create a Product post or replay, approve its Facebook visual, then mark it READY."}</p>
+        <p>{event ? "Approved Facebook media is ready for controlled manual publishing." : "Create a Social post, approve its Facebook visual, then mark it READY."}</p>
       </div>
       <div className="social-instagram-test-actions">
         {message ? <small className="ok">{message}</small> : null}
