@@ -119,7 +119,7 @@ export default function SocialInstagramStoryTestPublishBridge() {
     }
   };
 
-  if (!slot) return null;
+  if (!slot || (!event && !message && !error)) return null;
 
   const statusText = !event
     ? "NO STORY MEDIA"
@@ -130,7 +130,7 @@ export default function SocialInstagramStoryTestPublishBridge() {
         : `${readiness.label} · DO NOT PUBLISH TO STORY`;
 
   const description = !event
-    ? "Create a Product post or replay, approve a dedicated Story asset, then mark it READY."
+    ? "Create a Social post, approve a dedicated Story asset, then mark it READY."
     : readiness.status !== "ideal"
       ? `${readiness.reason || "Story media is not ideal."} Publish is blocked until a dedicated 9:16 / Story / vertical asset is approved.`
       : !jpegReady
