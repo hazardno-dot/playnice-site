@@ -850,6 +850,7 @@ const getInitialShopState = () => {
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
   const discoveryAttributionRef = useRef(null);
   const discoverySearchContextRef = useRef(null);
+  const discoveryOriginSurfaceRef = useRef("home");
   const productOriginSurfaceRef = useRef("");
 
   const discoveryTotalPages = Math.max(
@@ -4583,7 +4584,8 @@ const openProductModal = (product, options = {}) => {
     preferredSize = "",
     userPickedSize = false,
     changeView = true,
-    originSurface = ""
+    originSurface = "",
+    quickView = false
   } = options;
 
   const isMobileModal = isMobileProductModal();
@@ -4642,7 +4644,7 @@ const openProductModal = (product, options = {}) => {
     currency: "EUR"
   });
 
-  if (isMobileModal) {
+  if (isMobileModal || quickView) {
     setProductModalVisible(true);
   } else {
     setProductModalVisible(false);
@@ -4765,6 +4767,7 @@ const handleFindSimilarWithFI = async (product) => {
     product_name: product.name,
   });
 
+  discoveryOriginSurfaceRef.current = "product-page";
   setDiscoveryQuery(referenceQuery);
   setDiscoveryOpen(true);
 
@@ -6611,6 +6614,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         view,
       });
 
+      discoveryOriginSurfaceRef.current = "home";
       setDiscoveryOpen(true);
     }}
     aria-expanded={discoveryOpen}
@@ -6914,14 +6918,34 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                             discoverySearchContextRef.current?.has_exclusions || "no",
                         };
 
-                        window.history.replaceState(
-                          {
-                            ...(window.history.state || {}),
-                            playniceDiscoveryOpen: true,
-                          },
-                          "",
-                          window.location.pathname + window.location.search
-                        );
+                        const opensHomeQuickView =
+                          discoveryOriginSurfaceRef.current === "home" &&
+                          !isMobileProductModal();
+
+                        if (opensHomeQuickView) {
+                          openProductModal(result.product, {
+                            updateUrl: false,
+                            changeView: false,
+                            preferredSize: sizeLabel,
+                            quickView: true,
+                          });
+
+                          return;
+                        }
+
+                        if (
+                          discoveryOriginSurfaceRef.current === "home" &&
+                          isMobileProductModal()
+                        ) {
+                          window.history.replaceState(
+                            {
+                              ...(window.history.state || {}),
+                              playniceDiscoveryOpen: true,
+                            },
+                            "",
+                            window.location.pathname + window.location.search
+                          );
+                        }
 
                         setDiscoveryOpen(false);
 
