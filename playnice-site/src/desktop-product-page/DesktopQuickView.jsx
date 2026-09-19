@@ -184,8 +184,10 @@ export default function DesktopQuickView() {
     window.history.pushState(
       {
         ...(window.history.state || {}),
+        playniceDiscoveryOpen: false,
         productSlug: product.slug,
         productOriginView: originView,
+        productOriginSurface: "discovery",
       },
       "",
       nextUrl
