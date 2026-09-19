@@ -645,10 +645,10 @@
     font: 850 0.72rem/1 Inter, sans-serif;
     letter-spacing: 0.08em;
     transition:
-      background-color 180ms ease,
+      background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
       color 180ms ease,
-      box-shadow 180ms ease,
-      transform 180ms ease;
+      box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .mobile-product-page__add.is-added {
@@ -657,7 +657,7 @@
     box-shadow:
       0 12px 26px rgba(95, 159, 115, 0.2),
       inset 0 1px 0 rgba(255, 255, 255, 0.22);
-    transform: translateY(-1px) scale(1.01);
+    transform: translateY(-0.5px) scale(1.006);
   }
 
   .mobile-product-page__buy-now {
