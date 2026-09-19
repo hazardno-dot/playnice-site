@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
 import { classifySocialMedia } from "./socialDraft.mjs";
@@ -40,6 +40,7 @@ export default function SocialInstagramStoryTestPublishBridge() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [published, setPublished] = useState(null);
+  const completedEventRef = useRef(null);
 
   const loadEvent = async () => {
     const { data } = await supabase
@@ -49,6 +50,11 @@ export default function SocialInstagramStoryTestPublishBridge() {
       .order("updated_at", { ascending: false })
       .limit(20);
     const candidate = (data || []).find((row) => isControlledPublishEvent(row) && storyMediaSrc(row)) || null;
+    if (!candidate && completedEventRef.current) {
+      setEvent(completedEventRef.current);
+      return;
+    }
+    if (candidate && completedEventRef.current?.id !== candidate.id) completedEventRef.current = null;
     setEvent(candidate);
     if (!candidate) {
       setPublished(null);
@@ -129,6 +135,7 @@ export default function SocialInstagramStoryTestPublishBridge() {
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Instagram Story test publish failed (${response.status}).`);
+      completedEventRef.current = event;
       setPublished({ created_at: payload?.published_at || new Date().toISOString(), details: payload?.result || {} });
       setMessage(`Published Instagram Story · ${payload?.result?.post_id || "Meta Story created"}`);
       await loadEvent();
@@ -141,17 +148,21 @@ export default function SocialInstagramStoryTestPublishBridge() {
 
   if (!slot || (!event && !message && !error)) return null;
 
-  const statusText = !event
-    ? "NO STORY MEDIA"
-    : readiness.status === "ideal" && jpegReady
-      ? "IDEAL · READY"
+  const statusText = published
+    ? "PUBLISHED ✓"
+    : !event
+      ? "NO STORY MEDIA"
+      : readiness.status === "ideal" && jpegReady
+        ? "IDEAL · READY"
       : readiness.status === "ideal"
         ? "IDEAL FORMAT · JPEG REQUIRED"
         : `${readiness.label} · DO NOT PUBLISH TO STORY`;
 
-  const description = !event
-    ? "Create a Social post, approve a dedicated Story asset, then mark it READY."
-    : readiness.status !== "ideal"
+  const description = published
+    ? "Instagram Story was published successfully. This channel is locked for this Social event."
+    : !event
+      ? "Create a Social post, approve a dedicated Story asset, then mark it READY."
+      : readiness.status !== "ideal"
       ? `${readiness.reason || "Story media is not ideal."} Publish is blocked until a dedicated 9:16 / Story / vertical asset is approved.`
       : !jpegReady
         ? "Story format is ideal, but the controlled v1 transport currently requires JPEG media."
