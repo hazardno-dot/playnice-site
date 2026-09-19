@@ -2171,7 +2171,8 @@ useEffect(() => {
 
       openProductModal(productFromUrl, {
         updateUrl: false,
-        changeView: false
+        changeView: false,
+        originSurface: window.history.state?.productOriginSurface || ""
       });
 
       trackPageView(pagePath || "/");
