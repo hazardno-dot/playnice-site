@@ -206,6 +206,7 @@ assert.ok(reconcilePublishApi.includes("test_instagram_feed_published"), "Reconc
 assert.ok(reconcilePublishApi.includes("test_instagram_story_published"), "Reconciliation must recognize Instagram Story publication audit.");
 assert.ok(reconcilePublishApi.includes("test_facebook_published"), "Reconciliation must recognize Facebook publication audit.");
 assert.ok(reconcilePublishApi.includes('status: "published"'), "Reconciliation must restore already-published events to PUBLISHED history.");
+assert.ok(reconcilePublishApi.includes("status=in.(draft,ready,scheduled,cancelled)"), "Reconciliation must also recover discarded events that have complete publish audit evidence.");
 assert.ok(socialManager.includes("/api/social-reconcile-published"), "Social Manager must reconcile existing publication history on open.");
 assert.ok(instagramPublishBridge.includes("Publish Instagram Feed"), "Instagram Feed bridge must expose controlled manual publishing for READY Product posts.");
 assert.ok(storyPublishBridge.includes("Publish Instagram Story"), "Instagram Story bridge must expose controlled manual publishing for READY Product posts.");
