@@ -6106,7 +6106,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   return (
   <div
     className={`app-shell ${
-      view === "exhibition"
+      view === "home"
+        ? "app-shell--home"
+        : view === "exhibition"
         ? "app-shell--exhibition"
         : view === "journal"
         ? "app-shell--journal"
