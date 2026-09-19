@@ -2112,9 +2112,18 @@ useEffect(() => {
     const pagePath =
       window.location.pathname + window.location.search;
 
+    const isExplicitNavigation =
+      window.history.state?.playniceExplicitNavigation === true;
+
     const returnToDiscovery =
+      !isExplicitNavigation &&
       productOriginSurfaceRef.current === "discovery" &&
       !window.location.pathname.startsWith("/product/");
+
+    if (isExplicitNavigation) {
+      productOriginSurfaceRef.current = "";
+      setDiscoveryOpen(false);
+    }
 
     const productFromUrl = getProductFromCurrentUrl();
 
@@ -3428,6 +3437,14 @@ const routeForView = (nextView) => {
 
 const switchView = (nextView, options = {}) => {
   const { scrollTop = true } = options;
+
+  if (
+    productOriginSurfaceRef.current === "discovery" &&
+    window.location.pathname.startsWith("/product/")
+  ) {
+    productOriginSurfaceRef.current = "";
+    setDiscoveryOpen(false);
+  }
 
   if (isMobileProductPageActive) {
     setSelectedProduct(null);
