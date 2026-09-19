@@ -367,15 +367,17 @@
 .desktop-product-page__find-similar-band {
   width: 100%;
   margin: 28px 0 34px;
+  display: flex;
+  justify-content: center;
 }
 
 .desktop-product-page__find-similar {
-  width: 100%;
+  width: auto;
   min-height: 52px;
-  padding: 0 18px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  padding: 0 24px;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   border: 1px solid rgba(220, 181, 107, 0.16);
   background:
