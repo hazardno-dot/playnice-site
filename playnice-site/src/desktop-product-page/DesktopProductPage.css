@@ -342,11 +342,11 @@
   background-color: #dcb56b;
   color: #090909;
   transition:
-    background-color 180ms ease,
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
     color 180ms ease,
     border-color 180ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .desktop-product-page__add.is-added {
@@ -356,7 +356,7 @@
   box-shadow:
     0 14px 30px rgba(95, 159, 115, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.24);
-  transform: translateY(-1px) scale(1.01);
+  transform: translateY(-0.5px) scale(1.006);
 }
 
 .desktop-product-page__buy {
