@@ -6660,7 +6660,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
 {/* PLAYNICE FRAGRANCE INTELLIGENCE — V6 */}
 <section
-  className="playnice-discovery-portal section-wrap"
+  className={`playnice-discovery-portal section-wrap ${
+    isHomeDiscoverySuspendedForProduct ? "is-suspended-for-product" : ""
+  }`}
   aria-labelledby="playnice-discovery-trigger-label"
 >
   <button
