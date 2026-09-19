@@ -122,9 +122,12 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
-for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard draft", "Discard test event", "archived", "Create Product Post", "Create Hero Post", "Create Journal Post", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
+for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard draft", "Discard test event", "archived", "CREATE POST FROM", "Product", "Hero", "Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
+assert.ok(socialManager.includes('setProductPickerOpen(true)'), "Product create action must open the Product picker.");
+assert.ok(socialManager.includes('openSourcePicker("hero")'), "Hero create action must open the Hero picker.");
+assert.ok(socialManager.includes('openSourcePicker("journal")'), "Journal create action must open the Journal picker.");
 assert.ok(socialManager.includes("disabled={saving || !mediaReadiness.ok}"), "Mark ready must be locally disabled when a channel has no media.");
 assert.ok(socialManager.includes('["ready", "scheduled"].includes(selected.status)'), "READY and SCHEDULED must render the approved snapshot instead of editable draft content.");
 assert.ok(socialManager.includes('window.open(src, "_blank", "noopener,noreferrer")'), "Manual fallback must open the exact selected channel asset in a separate tab.");
