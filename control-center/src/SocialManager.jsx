@@ -15,6 +15,7 @@ const AUDIT_LABELS = {
   draft_reopened: "Returned to draft",
   draft_scheduled: "Scheduled",
   draft_unscheduled: "Unscheduled",
+  draft_discarded: "Draft discarded",
   shadow_replay_created_from_product: "Product replay created",
   manual_product_post_created: "Product post created",
   shadow_replay_created_from_hero: "Hero replay created",
@@ -82,8 +83,6 @@ function SocialWorkspace() {
   const [feedDryRunError, setFeedDryRunError] = useState("");
   const [productPickerOpen, setProductPickerOpen] = useState(false);
   const [productQuery, setProductQuery] = useState("");
-  const [publishDiagnostics, setPublishDiagnostics] = useState(null);
-  const [publishDiagnosticsLoading, setPublishDiagnosticsLoading] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -121,7 +120,8 @@ function SocialWorkspace() {
     };
   }, []);
 
-  const counts = useMemo(() => events.reduce((out, event) => ({ ...out, [event.status]: (out[event.status] || 0) + 1 }), {}), [events]);
+  const activeEvents = useMemo(() => events.filter((event) => event.status !== "cancelled"), [events]);
+  const counts = useMemo(() => activeEvents.reduce((out, event) => ({ ...out, [event.status]: (out[event.status] || 0) + 1 }), {}), [activeEvents]);
   const productCandidates = useMemo(() => {
     const q = productQuery.trim().toLowerCase();
     return [...products]
@@ -131,7 +131,7 @@ function SocialWorkspace() {
       .sort((a, b) => String(a.shortName || a.name || "").localeCompare(String(b.shortName || b.name || "")))
       .slice(0, 60);
   }, [productQuery]);
-  const visible = useMemo(() => filter === "all" ? events : events.filter((event) => event.status === filter), [events, filter]);
+  const visible = useMemo(() => filter === "all" ? activeEvents : activeEvents.filter((event) => event.status === filter), [activeEvents, filter]);
   const selected = visible.find((event) => event.id === selectedId) || visible[0] || null;
   const generated = useMemo(() => {
     if (!selected) return null;
@@ -212,26 +212,6 @@ function SocialWorkspace() {
   };
 
 
-  const loadPublishDiagnostics = async () => {
-    setPublishDiagnosticsLoading(true);
-    setActionError("");
-    try {
-      const token = await sessionToken();
-      const response = await fetch("/api/social-publish-env-diagnostics", {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(payload.error || `Publish diagnostics failed (${response.status}).`);
-      setPublishDiagnostics(payload);
-    } catch (diagnosticError) {
-      setPublishDiagnostics(null);
-      setActionError(diagnosticError.message || String(diagnosticError));
-    } finally {
-      setPublishDiagnosticsLoading(false);
-    }
-  };
-
   const previewInstagramFeed = async () => {
     if (!draft?.instagram_feed) return;
     setFeedDryRunLoading(true);
@@ -284,6 +264,13 @@ function SocialWorkspace() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const discardDraft = async () => {
+    if (!selected || selected.status !== "draft") return;
+    const confirmed = window.confirm(`Discard “${eventTitle(selected)}” Social draft?\n\nIt will leave the active queue but remain preserved in audit history.`);
+    if (!confirmed) return;
+    await persist("discard");
   };
 
   const replayLatest = async (sourceType) => {
@@ -356,7 +343,7 @@ function SocialWorkspace() {
     </div>
 
     <div className="social-kpis">
-      <div><span>TOTAL</span><strong>{events.length}</strong><small>social events</small></div>
+      <div><span>TOTAL</span><strong>{activeEvents.length}</strong><small>active social events</small></div>
       <div><span>DRAFT</span><strong>{counts.draft || 0}</strong><small>awaiting review</small></div>
       <div><span>READY</span><strong>{counts.ready || 0}</strong><small>approved shadow queue</small></div>
       <div><span>SCHEDULED</span><strong>{counts.scheduled || 0}</strong><small>future shadow queue</small></div>
@@ -372,21 +359,6 @@ function SocialWorkspace() {
       <button type="button" disabled={saving} onClick={() => replayLatest("journal")}>{saving ? "Working…" : "Replay Journal"}</button>
     </div>
 
-
-    <section className="social-publish-diagnostics">
-      <div>
-        <span>PUBLISH ENV DIAGNOSTICS</span>
-        <strong>{publishDiagnostics ? `${publishDiagnostics.environment?.vercel_env || "unknown"} · ${publishDiagnostics.environment?.git_ref || "no branch"}` : "Not checked"}</strong>
-        <small>{publishDiagnostics?.environment?.git_sha ? publishDiagnostics.environment.git_sha.slice(0, 10) : "Shows only ON/OFF state and deployment metadata. No secret values."}</small>
-      </div>
-      <div className="social-publish-diagnostic-flags">
-        {["instagram_feed", "instagram_story", "facebook"].map((key) => {
-          const value = publishDiagnostics?.flags?.[key];
-          return <div key={key} className={value === true ? "on" : value === false ? "off" : ""}><span>{label(key)}</span><strong>{value === true ? "ON" : value === false ? "OFF" : "—"}</strong></div>;
-        })}
-      </div>
-      <button type="button" disabled={publishDiagnosticsLoading} onClick={loadPublishDiagnostics}>{publishDiagnosticsLoading ? "Checking…" : "Check publish flags"}</button>
-    </section>
 
     {productPickerOpen ? <div className="social-product-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setProductPickerOpen(false); }}>
       <section className="social-product-picker" role="dialog" aria-modal="true" aria-label="Create product post">
@@ -478,6 +450,7 @@ function SocialWorkspace() {
           <div className="social-review-row">
             <div><span>REVIEW STATE</span><strong>{reviewState}</strong></div>
             <div className="social-review-actions">
+              {selected.status === "draft" && !isExplicitTestEvent(selected) ? <button type="button" disabled={saving} onClick={discardDraft}>Discard draft</button> : null}
               {isExplicitTestEvent(selected) ? <button type="button" disabled={saving} onClick={() => persist("discard_test")}>Discard test event</button> : null}
               {selected.status === "scheduled"
                 ? <button type="button" disabled={saving} onClick={() => persist("unschedule")}>{saving ? "Working…" : "Unschedule"}</button>
