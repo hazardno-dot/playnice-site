@@ -26,6 +26,20 @@
     display: block !important;
   }
 
+  body.desktop-product-route-active .playnice-discovery-portal {
+    position: fixed;
+    inset: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 9998;
+  }
+
+  body.desktop-product-route-active .playnice-discovery-portal > .playnice-discovery-trigger {
+    display: none !important;
+  }
+
   body.desktop-product-route-active .product-modal-layer,
   body.desktop-product-route-active .backdrop.show,
   body.desktop-product-route-leaving .product-modal-layer,
