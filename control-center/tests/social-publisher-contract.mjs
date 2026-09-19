@@ -125,6 +125,8 @@ const socialManager = fs.readFileSync(path.join(root, "control-center/src/Social
 for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard draft", "Discard test event", "archived", "CREATE POST FROM", "Product", "Hero", "Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
+assert.ok(socialManager.includes("No active social posts"), "Empty Social workspace must use the compact active-queue empty state.");
+assert.ok(socialManager.includes('"MANUAL MODE"'), "Social header must expose manual publishing mode instead of the global no-publish label.");
 assert.ok(socialManager.includes('setProductPickerOpen(true)'), "Product create action must open the Product picker.");
 assert.ok(socialManager.includes('openSourcePicker("hero")'), "Hero create action must open the Hero picker.");
 assert.ok(socialManager.includes('openSourcePicker("journal")'), "Journal create action must open the Journal picker.");
