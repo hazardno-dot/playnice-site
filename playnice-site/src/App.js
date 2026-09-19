@@ -858,6 +858,7 @@ const getInitialShopState = () => {
 
     const nextState = { ...(window.history.state || {}) };
     delete nextState.playniceDiscoveryOpen;
+    delete nextState.playniceDiscoveryQuery;
 
     window.history.replaceState(
       nextState,
@@ -2144,6 +2145,7 @@ useEffect(() => {
       {
         ...(window.history.state || {}),
         playniceDiscoveryOpen: true,
+        playniceDiscoveryQuery: discoveryQuery,
       },
       "",
       window.location.pathname + window.location.search
@@ -2175,7 +2177,6 @@ useEffect(() => {
 
     const returnToDiscovery =
       window.history.state?.playniceDiscoveryOpen === true &&
-      productOriginSurfaceRef.current === "discovery" &&
       !window.location.pathname.startsWith("/product/");
 
     if (isExplicitNavigation && !returnToDiscovery) {
@@ -2269,7 +2270,17 @@ if (journalArticleFromUrl) {
     setView(nextView);
 
     if (returnToDiscovery) {
+      const restoredDiscoveryQuery =
+        String(window.history.state?.playniceDiscoveryQuery || "").trim();
+
       productOriginSurfaceRef.current = "";
+      discoveryOriginSurfaceRef.current = "home";
+
+      if (restoredDiscoveryQuery) {
+        setDiscoveryQuery(restoredDiscoveryQuery);
+        handleDiscoverySearch(restoredDiscoveryQuery, "history-return");
+      }
+
       setDiscoveryOpen(true);
     }
 
@@ -4865,7 +4876,10 @@ useEffect(() => {
     return;
   }
 
-  openProductModal(matchedProduct, { updateUrl: false });
+  openProductModal(matchedProduct, {
+    updateUrl: false,
+    originSurface: window.history.state?.productOriginSurface || "",
+  });
 }, []);
 
 useEffect(() => {
