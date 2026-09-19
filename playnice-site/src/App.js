@@ -853,6 +853,24 @@ const getInitialShopState = () => {
   const discoveryOriginSurfaceRef = useRef("home");
   const productOriginSurfaceRef = useRef("");
 
+  const clearDiscoveryHistoryMarker = useCallback(() => {
+    if (window.history.state?.playniceDiscoveryOpen !== true) return;
+
+    const nextState = { ...(window.history.state || {}) };
+    delete nextState.playniceDiscoveryOpen;
+
+    window.history.replaceState(
+      nextState,
+      "",
+      window.location.pathname + window.location.search
+    );
+  }, []);
+
+  const closeDiscovery = useCallback(() => {
+    clearDiscoveryHistoryMarker();
+    setDiscoveryOpen(false);
+  }, [clearDiscoveryHistoryMarker]);
+
   const discoveryTotalPages = Math.max(
     1,
     Math.ceil(discoveryResults.length / DISCOVERY_RESULTS_PER_PAGE)
@@ -5028,17 +5046,7 @@ useEffect(() => {
     }
 
     if (discoveryOpen) {
-      if (window.history.state?.playniceDiscoveryOpen === true) {
-        const nextState = { ...(window.history.state || {}) };
-        delete nextState.playniceDiscoveryOpen;
-        window.history.replaceState(
-          nextState,
-          "",
-          window.location.pathname + window.location.search
-        );
-      }
-
-      setDiscoveryOpen(false);
+      closeDiscovery();
     }
   };
 
@@ -5060,7 +5068,8 @@ useEffect(() => {
   storyOpen,
   privateSelectionOpen,
   discoveryOpen,
-  isSubmittingOrder
+  isSubmittingOrder,
+  closeDiscovery
 ]);
 
 const openImpactProductModal = (product) => {
@@ -6664,17 +6673,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       });
 
       discoveryOriginSurfaceRef.current = "home";
-
-      if (window.history.state?.playniceDiscoveryOpen === true) {
-        const nextState = { ...(window.history.state || {}) };
-        delete nextState.playniceDiscoveryOpen;
-        window.history.replaceState(
-          nextState,
-          "",
-          window.location.pathname + window.location.search
-        );
-      }
-
+      clearDiscoveryHistoryMarker();
       setDiscoveryOpen(true);
     }}
     aria-expanded={discoveryOpen}
@@ -6706,17 +6705,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       aria-hidden={isHomeDiscoverySuspendedForProduct ? "true" : undefined}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
-          if (window.history.state?.playniceDiscoveryOpen === true) {
-            const nextState = { ...(window.history.state || {}) };
-            delete nextState.playniceDiscoveryOpen;
-            window.history.replaceState(
-              nextState,
-              "",
-              window.location.pathname + window.location.search
-            );
-          }
-
-          setDiscoveryOpen(false);
+          closeDiscovery();
         }
       }}
     >
@@ -6735,19 +6724,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <button
           type="button"
           className="playnice-discovery-close"
-          onClick={() => {
-            if (window.history.state?.playniceDiscoveryOpen === true) {
-              const nextState = { ...(window.history.state || {}) };
-              delete nextState.playniceDiscoveryOpen;
-              window.history.replaceState(
-                nextState,
-                "",
-                window.location.pathname + window.location.search
-              );
-            }
-
-            setDiscoveryOpen(false);
-          }}
+          onClick={closeDiscovery}
           aria-label={
             lang === "sr"
               ? "Zatvori Fragrance Intelligence"
