@@ -20,6 +20,7 @@ const AUDIT_LABELS = {
   manual_product_post_created: "Product post created",
   manual_hero_post_created: "Hero post created",
   manual_journal_post_created: "Journal post created",
+  social_history_corrected_published: "Published history corrected",
   shadow_replay_created_from_hero: "Hero replay created",
   shadow_replay_created_from_journal: "Journal replay created",
   shadow_event_created_from_product_publish: "Created from product publish",
@@ -400,7 +401,7 @@ function SocialWorkspace() {
     : selected?.status === "ready"
       ? "READY · APPROVED"
       : selected?.status === "published"
-        ? `ARCHIVED · PUBLISHED · ${fmt(selected.published_at || selected.updated_at)}`
+        ? `ARCHIVED · PUBLISHED · ${selected.published_at ? fmt(selected.published_at) : "DATE UNKNOWN"}`
         : selected?.status === "cancelled"
           ? `ARCHIVED · DISCARDED · ${fmt(selected.updated_at)}`
           : "DRAFT · REVIEW";
