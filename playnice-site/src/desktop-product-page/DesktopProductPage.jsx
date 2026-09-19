@@ -135,6 +135,7 @@ export default function DesktopProductPage({
   isWishlisted = false,
   onToggleWishlist,
   onOpenProduct,
+  onFindSimilar,
   onBackToShop,
 }) {
   const [noteMapOpen, setNoteMapOpen] = useState(false);
@@ -366,6 +367,22 @@ export default function DesktopProductPage({
               <span>{lang === "sr" ? "Plaćanje pouzećem" : "Cash on delivery"}</span>
               <span>{lang === "sr" ? "Dostava širom Crne Gore" : "Delivery across Montenegro"}</span>
             </div>
+
+            {onFindSimilar ? (
+              <button
+                type="button"
+                className="desktop-product-page__find-similar"
+                onClick={() => onFindSimilar(product)}
+              >
+                <span aria-hidden="true">✦</span>
+                <strong>
+                  {lang === "sr"
+                    ? "PRONAĐI SLIČNE MIRISE UZ FI"
+                    : "FIND SIMILAR WITH FI"}
+                </strong>
+                <span aria-hidden="true">→</span>
+              </button>
+            ) : null}
 
             <section className="desktop-product-page__intelligence desktop-product-page__intelligence--inline">
               <div className="desktop-product-page__section-copy">
