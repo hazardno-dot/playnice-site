@@ -449,6 +449,8 @@ function getMinPrice(product) {
   return Math.min(...Object.values(product.sizes));
 }
 
+const CART_STORAGE_KEY = "playnice_cart";
+
 function safeReadLocalStorage(key, fallback) {
   if (typeof window === "undefined") return fallback;
 
@@ -741,7 +743,10 @@ const getInitialShopState = () => {
     initialShopState.currentPage
   );
   const [productsPerPage, setProductsPerPage] = useState(24);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+    const savedCart = safeReadLocalStorage(CART_STORAGE_KEY, []);
+    return Array.isArray(savedCart) ? savedCart : [];
+  });
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [existingCollectionRequests, setExistingCollectionRequests] = useState(() => {
@@ -1777,6 +1782,12 @@ useEffect(() => {
 
     document.documentElement.lang = lang;
   }, [lang]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    } catch {}
+  }, [cart]);
 
   useEffect(() => {
     if (
