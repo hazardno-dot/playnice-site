@@ -293,13 +293,15 @@
 
   .mobile-product-page__find-similar {
     position: relative;
-    width: 100%;
+    width: fit-content;
+    max-width: calc(100% - 24px);
     min-height: 58px;
-    margin-top: 14px;
-    padding: 0 14px;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    margin: 14px auto 0;
+    padding: 0 16px;
+    display: inline-grid;
+    grid-template-columns: auto auto auto;
     align-items: center;
+    justify-content: center;
     gap: 11px;
     overflow: hidden;
     border: 1px solid rgba(135, 214, 255, 0.3);
@@ -330,8 +332,8 @@
 
   .mobile-product-page__find-similar-orbit {
     position: relative;
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     display: grid;
     place-items: center;
     border: 1px solid rgba(123, 216, 255, 0.42);
@@ -339,13 +341,13 @@
     background: rgba(11, 20, 29, 0.74);
     box-shadow:
       0 0 16px rgba(74, 193, 255, 0.11),
-      inset 0 0 0 4px rgba(122, 216, 255, 0.035);
+      inset 0 0 0 3px rgba(122, 216, 255, 0.035);
   }
 
   .mobile-product-page__find-similar-orbit::before {
     content: "";
-    width: 13px;
-    height: 13px;
+    width: 12px;
+    height: 12px;
     border: 1px solid rgba(178, 137, 255, 0.4);
     border-radius: 50%;
   }
@@ -373,6 +375,11 @@
     text-align: left;
   }
 
+  .mobile-product-page__find-similar-copy small,
+  .mobile-product-page__find-similar-copy strong {
+    white-space: nowrap;
+  }
+
   .mobile-product-page__find-similar-copy small {
     color: rgba(146, 218, 255, 0.72);
     font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
@@ -395,8 +402,8 @@
   .mobile-product-page__find-similar-arrow {
     display: grid;
     place-items: center;
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 8px;
     color: #aeeaff;
@@ -415,10 +422,10 @@
 
   @keyframes mobileFiOrbit {
     from {
-      transform: rotate(0deg) translateX(9px) rotate(0deg);
+      transform: rotate(0deg) translateX(8px) rotate(0deg);
     }
     to {
-      transform: rotate(360deg) translateX(9px) rotate(-360deg);
+      transform: rotate(360deg) translateX(8px) rotate(-360deg);
     }
   }
 
