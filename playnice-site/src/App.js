@@ -1513,6 +1513,11 @@ const selectedSortOption =
     discoveryOriginSurfaceRef.current === "home" &&
     window.location.pathname.startsWith("/product/");
 
+  const isHomeDiscoveryHistoryReturn =
+    discoveryOpen &&
+    window.history.state?.playniceDiscoveryOpen === true &&
+    !window.location.pathname.startsWith("/product/");
+
   const hasBlockingOverlay =
   (!isMobileProductPageActive &&
     !!selectedProduct &&
@@ -6668,7 +6673,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   {discoveryOpen && (
     <div
       className={`playnice-discovery-overlay ${
-        isHomeDiscoverySuspendedForProduct ? "is-suspended-for-product" : ""
+        isHomeDiscoverySuspendedForProduct
+          ? "is-suspended-for-product"
+          : isHomeDiscoveryHistoryReturn
+            ? "is-history-restored"
+            : ""
       }`}
       role="presentation"
       aria-hidden={isHomeDiscoverySuspendedForProduct ? "true" : undefined}
