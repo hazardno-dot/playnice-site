@@ -640,10 +640,22 @@
     min-height: 50px;
     border: 0;
     border-radius: 13px;
-    background: linear-gradient(180deg, #e4c477, #cfa653);
+    background-color: #dcb56b;
     color: #18140d;
     font: 850 0.72rem/1 Inter, sans-serif;
     letter-spacing: 0.08em;
+    transition:
+      background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 180ms ease,
+      box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .mobile-product-page__add.is-added {
+    background-color: #8fcf9e;
+    color: #07130b;
+    box-shadow:
+      0 12px 26px rgba(95, 159, 115, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
   }
 
   .mobile-product-page__buy-now {
