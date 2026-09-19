@@ -850,6 +850,7 @@ const getInitialShopState = () => {
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
   const discoveryAttributionRef = useRef(null);
   const discoverySearchContextRef = useRef(null);
+  const productOriginSurfaceRef = useRef("");
 
   const discoveryTotalPages = Math.max(
     1,
@@ -2111,6 +2112,10 @@ useEffect(() => {
     const pagePath =
       window.location.pathname + window.location.search;
 
+    const returnToDiscovery =
+      productOriginSurfaceRef.current === "discovery" &&
+      !window.location.pathname.startsWith("/product/");
+
     const productFromUrl = getProductFromCurrentUrl();
 
     if (productFromUrl) {
@@ -2194,6 +2199,11 @@ if (journalArticleFromUrl) {
     setJournalPageArticle(null);
 
     setView(nextView);
+
+    if (returnToDiscovery) {
+      productOriginSurfaceRef.current = "";
+      setDiscoveryOpen(true);
+    }
 
     trackPageView(pagePath || "/");
     trackMeta("PageView");
@@ -4557,6 +4567,8 @@ const openProductModal = (product, options = {}) => {
 
   const isMobileModal = isMobileProductModal();
 
+  productOriginSurfaceRef.current = originSurface || "";
+
   if (productModalCloseTimeoutRef.current) {
     clearTimeout(productModalCloseTimeoutRef.current);
     productModalCloseTimeoutRef.current = null;
@@ -6304,12 +6316,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               openProductModal(product, { changeView: false })
             }
             onBackToShop={() => {
-              if (window.history.state?.productOriginSurface === "discovery") {
-                setDiscoveryOpen(true);
-                window.history.back();
-                return;
-              }
-
+              productOriginSurfaceRef.current = "";
               goToShop();
               requestAnimationFrame(() => {
                 window.scrollTo({ top: 0, left: 0, behavior: "auto" });
