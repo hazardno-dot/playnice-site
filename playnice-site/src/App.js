@@ -1508,6 +1508,11 @@ const selectedSortOption =
   const isMobileProductPageActive =
     isMobileProductModalViewport && Boolean(selectedProduct);
 
+  const isHomeDiscoverySuspendedForProduct =
+    discoveryOpen &&
+    discoveryOriginSurfaceRef.current === "home" &&
+    window.location.pathname.startsWith("/product/");
+
   const hasBlockingOverlay =
   (!isMobileProductPageActive &&
     !!selectedProduct &&
@@ -1520,7 +1525,7 @@ const selectedSortOption =
   privateSelectionOpen ||
   !!catalogPreview ||
   manifestoOpen ||
-  discoveryOpen ||
+  (discoveryOpen && !isHomeDiscoverySuspendedForProduct) ||
   discoveryBuilderOpen;
 
   const showStickyCta =
@@ -2120,7 +2125,6 @@ useEffect(() => {
     );
 
     productOriginSurfaceRef.current = "discovery";
-    setDiscoveryOpen(false);
   };
 
   window.addEventListener(
@@ -6663,8 +6667,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
   {discoveryOpen && (
     <div
-      className="playnice-discovery-overlay"
+      className={`playnice-discovery-overlay ${
+        isHomeDiscoverySuspendedForProduct ? "is-suspended-for-product" : ""
+      }`}
       role="presentation"
+      aria-hidden={isHomeDiscoverySuspendedForProduct ? "true" : undefined}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
           setDiscoveryOpen(false);
