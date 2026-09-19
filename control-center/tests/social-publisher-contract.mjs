@@ -197,7 +197,7 @@ assert.ok(replayApi.includes("articleId: req.body?.journal_article_id"), "Replay
 const sourceCatalogApi = fs.readFileSync(path.join(root, "control-center/api/social-source-catalog.js"), "utf8");
 assert.ok(sourceCatalogApi.includes('sourceType === "hero"'), "Social source catalog must expose Hero sources.");
 assert.ok(sourceCatalogApi.includes('sourceType === "journal"'), "Social source catalog must expose Journal sources.");
-assert.ok(replayApi.includes('"manual_product_post_created"'), "Manual Product posts must have a dedicated audit event.");
+assert.ok(replayApi.includes("`manual_${sourceType}_post_created`"), "Manual Product, Hero and Journal posts must have source-specific dedicated audit events.");
 assert.ok(replayApi.includes("`social-manual-${sourceType}-post`"), "Manual Social posts must use a source-specific non-test producer identity.");
 assert.ok(replayApi.includes("test: !manualPost"), "Manual Product posts must not be marked as test events.");
 assert.ok(replayApi.includes("replay: !manualPost"), "Manual Product posts must not be marked as replay events.");
