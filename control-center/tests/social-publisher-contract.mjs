@@ -122,7 +122,7 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
-for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard draft", "Discard test event", "archived", "Create Product Post", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
+for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard draft", "Discard test event", "archived", "Create Product Post", "Create Hero Post", "Create Journal Post", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
 assert.ok(socialManager.includes("disabled={saving || !mediaReadiness.ok}"), "Mark ready must be locally disabled when a channel has no media.");
@@ -185,8 +185,20 @@ assert.ok(!replayApi.includes("publish_mode: \"approval\""), "Replay must remain
 assert.ok(socialManager.includes('product_slug: product.slug'), "Manual Product post picker must send the selected live product slug.");
 assert.ok(socialManager.includes('product_payload: productPayload'), "Manual Product post picker must send the selected live Product payload.");
 assert.ok(socialManager.includes('productCopy[product.name]'), "Manual Product posts must include current Product editorial copy.");
+assert.ok(socialManager.includes("/api/social-source-catalog"), "Hero and Journal post pickers must load selectable source catalogs.");
+assert.ok(socialManager.includes('openSourcePicker("hero")'), "Social Manager must expose a Hero picker.");
+assert.ok(socialManager.includes('openSourcePicker("journal")'), "Social Manager must expose a Journal picker.");
+assert.ok(socialManager.includes("body.hero_key = item.key"), "Hero picker must send the selected Hero key.");
+assert.ok(socialManager.includes("body.journal_article_id = item.id"), "Journal picker must send the selected article id.");
+assert.ok(replayApi.includes("manual_hero_post"), "Replay endpoint must create manual Hero Social events.");
+assert.ok(replayApi.includes("manual_journal_post"), "Replay endpoint must create manual Journal Social events.");
+assert.ok(replayApi.includes("heroKey: req.body?.hero_key"), "Replay endpoint must accept a selected Hero key.");
+assert.ok(replayApi.includes("articleId: req.body?.journal_article_id"), "Replay endpoint must accept a selected Journal article id.");
+const sourceCatalogApi = fs.readFileSync(path.join(root, "control-center/api/social-source-catalog.js"), "utf8");
+assert.ok(sourceCatalogApi.includes('sourceType === "hero"'), "Social source catalog must expose Hero sources.");
+assert.ok(sourceCatalogApi.includes('sourceType === "journal"'), "Social source catalog must expose Journal sources.");
 assert.ok(replayApi.includes('"manual_product_post_created"'), "Manual Product posts must have a dedicated audit event.");
-assert.ok(replayApi.includes('manualPost ? "social-manual-product-post" : "social-shadow-replay"'), "Manual Product posts must use a non-test producer identity.");
+assert.ok(replayApi.includes("`social-manual-${sourceType}-post`"), "Manual Social posts must use a source-specific non-test producer identity.");
 assert.ok(replayApi.includes("test: !manualPost"), "Manual Product posts must not be marked as test events.");
 assert.ok(replayApi.includes("replay: !manualPost"), "Manual Product posts must not be marked as replay events.");
 assert.ok(replayApi.includes("--manual-social-"), "Manual Product posts must receive their own fresh Social event identity.");
