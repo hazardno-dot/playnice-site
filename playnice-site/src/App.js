@@ -2119,7 +2119,9 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
-  const handleDesktopQuickViewFullProduct = () => {
+  const handleDesktopQuickViewFullProduct = (event) => {
+    if (event?.detail?.source !== "discovery") return;
+
     window.history.replaceState(
       {
         ...(window.history.state || {}),
@@ -7012,7 +7014,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                         if (opensHomeQuickView) {
                           window.dispatchEvent(
                             new CustomEvent("playnice:desktop-quick-view", {
-                              detail: { productId: result.product.id }
+                              detail: {
+                                productId: result.product.id,
+                                source: "discovery",
+                              }
                             })
                           );
 
