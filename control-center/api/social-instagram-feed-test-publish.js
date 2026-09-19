@@ -156,6 +156,25 @@ async function writeAudit(token, event, userId, action, details) {
   if (!response.ok) console.warn(`${action} audit write failed`, response.status);
 }
 
+
+const PUBLISH_AUDIT_ACTIONS = {
+  instagram_feed: "test_instagram_feed_published",
+  instagram_story: "test_instagram_story_published",
+  facebook: "test_facebook_published",
+};
+
+async function alreadyPublished(token, eventId, channel) {
+  const action = PUBLISH_AUDIT_ACTIONS[channel];
+  if (!action) return null;
+  const response = await supabaseFetch(
+    `/rest/v1/social_audit_log?social_event_id=eq.${encodeURIComponent(eventId)}&action=eq.${encodeURIComponent(action)}&select=id,details,created_at&order=created_at.desc&limit=1`,
+    token,
+  );
+  const rows = await safeJson(response);
+  if (!response.ok || !Array.isArray(rows) || !rows.length) return null;
+  return rows[0];
+}
+
 async function publishInstagram(event, admin, pageToken, credentialSource) {
   if (!INSTAGRAM_TEST_PUBLISH_ENABLED) {
     return { status: 423, body: { error: "Instagram Feed test publishing is locked. Set META_TEST_PUBLISH_INSTAGRAM_FEED_ENABLED=true only for the controlled manual test.", publish_enabled: false } };
@@ -267,6 +286,20 @@ export default async function handler(req, res) {
   if (!event) return json(res, 404, { error: "Social event not found." });
   if (!isControlledPublishEvent(event)) return json(res, 403, { error: "Manual Meta publishing is allowed only for controlled test/replay or manual Product Social events." });
   if (!["ready", "scheduled"].includes(event.status)) return json(res, 409, { error: "Test event must be READY or SCHEDULED with an approved snapshot." });
+
+  const priorPublish = await alreadyPublished(admin.token, event.id, channel);
+  if (priorPublish) {
+    return json(res, 409, {
+      error: "This Social event has already been published to this channel. Create a new Product post to publish it again.",
+      already_published: true,
+      channel,
+      published_at: priorPublish.created_at || null,
+      result: {
+        post_id: priorPublish.details?.post_id || null,
+        media_id: priorPublish.details?.media_id || null,
+      },
+    });
+  }
 
   let credential;
   try {
