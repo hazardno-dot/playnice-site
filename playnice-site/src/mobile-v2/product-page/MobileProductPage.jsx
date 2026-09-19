@@ -123,6 +123,8 @@ export default function MobileProductPage({
 }) {
   const [noteMapOpen, setNoteMapOpen] = useState(false);
   const [profile, setProfile] = useState(null);
+  const [addedCartKey, setAddedCartKey] = useState("");
+  const addedCartTimeoutRef = useRef(null);
   const recommendationTrackRef = useRef(null);
   const accordionRef = useRef(null);
   const previousProductSlugRef = useRef(null);
@@ -154,6 +156,14 @@ export default function MobileProductPage({
       });
     }
   }, [product?.slug]);
+
+  useEffect(() => {
+    return () => {
+      if (addedCartTimeoutRef.current) {
+        window.clearTimeout(addedCartTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -200,6 +210,24 @@ export default function MobileProductPage({
   const fullDescription = copy.modal?.[lang] || characterLine;
   const scentType = copy.scentType?.[lang] || "";
   const characterTags = Array.isArray(copy.tags?.[lang]) ? copy.tags[lang].slice(0, 3) : [];
+  const activeCartKey = `${product.id}-${activeSize}`;
+  const isJustAdded = addedCartKey === activeCartKey;
+
+  const handleAddToCartClick = () => {
+    if (!activeSize) return;
+
+    onAddToCart?.(product, activeSize);
+    setAddedCartKey(activeCartKey);
+
+    if (addedCartTimeoutRef.current) {
+      window.clearTimeout(addedCartTimeoutRef.current);
+    }
+
+    addedCartTimeoutRef.current = window.setTimeout(() => {
+      setAddedCartKey("");
+      addedCartTimeoutRef.current = null;
+    }, 1300);
+  };
 
   return (
     <div className="mobile-product-page" data-product-slug={product.slug}>
@@ -440,11 +468,18 @@ export default function MobileProductPage({
           <div className="mobile-product-page__actions">
             <button
               type="button"
-              className="mobile-product-page__add"
+              className={`mobile-product-page__add ${isJustAdded ? "is-added" : ""}`}
               disabled={!activeSize}
-              onClick={() => onAddToCart?.(product, activeSize)}
+              onClick={handleAddToCartClick}
+              aria-live="polite"
             >
-              {lang === "sr" ? "DODAJ U KORPU" : "ADD TO CART"}
+              {isJustAdded
+                ? lang === "sr"
+                  ? "DODATO ✓"
+                  : "ADDED ✓"
+                : lang === "sr"
+                ? "DODAJ U KORPU"
+                : "ADD TO CART"}
             </button>
 
             <button
