@@ -292,36 +292,140 @@
   }
 
   .mobile-product-page__find-similar {
+    position: relative;
     width: 100%;
-    min-height: 42px;
+    min-height: 58px;
     margin-top: 14px;
-    padding: 0 12px;
+    padding: 0 14px;
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 9px;
-    border: 1px solid rgba(213, 177, 106, 0.16);
-    border-radius: 12px;
+    gap: 11px;
+    overflow: hidden;
+    border: 1px solid rgba(135, 214, 255, 0.3);
+    border-radius: 16px;
     background:
-      linear-gradient(180deg, rgba(213, 177, 106, 0.035), rgba(255, 255, 255, 0.01)),
-      rgba(8, 8, 7, 0.78);
-    color: rgba(223, 190, 124, 0.9);
+      radial-gradient(circle at 10% 20%, rgba(81, 201, 255, 0.16), transparent 30%),
+      radial-gradient(circle at 90% 80%, rgba(159, 112, 255, 0.13), transparent 34%),
+      linear-gradient(135deg, rgba(15, 21, 30, 0.96), rgba(7, 9, 14, 0.96));
+    color: #eef9ff;
+    box-shadow:
+      0 14px 34px rgba(0, 0, 0, 0.34),
+      0 0 0 1px rgba(255, 255, 255, 0.024) inset,
+      0 0 26px rgba(77, 188, 255, 0.07);
     cursor: pointer;
+    isolation: isolate;
   }
 
-  .mobile-product-page__find-similar strong {
-    font: 750 0.6rem/1 Inter, sans-serif;
-    letter-spacing: 0.11em;
+  .mobile-product-page__find-similar::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    z-index: -1;
+    border-radius: 15px;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.045);
+  }
+
+  .mobile-product-page__find-similar-orbit {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(123, 216, 255, 0.42);
+    border-radius: 50%;
+    background: rgba(11, 20, 29, 0.74);
+    box-shadow:
+      0 0 16px rgba(74, 193, 255, 0.11),
+      inset 0 0 0 4px rgba(122, 216, 255, 0.035);
+  }
+
+  .mobile-product-page__find-similar-orbit::before {
+    content: "";
+    width: 13px;
+    height: 13px;
+    border: 1px solid rgba(178, 137, 255, 0.4);
+    border-radius: 50%;
+  }
+
+  .mobile-product-page__find-similar-orbit i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    margin: -2px;
+    border-radius: 50%;
+    background: #9ce7ff;
+    box-shadow:
+      0 0 8px rgba(156, 231, 255, 0.9),
+      0 0 16px rgba(150, 127, 255, 0.48);
+    transform-origin: 2px 2px;
+    animation: mobileFiOrbit 3.8s linear infinite;
+  }
+
+  .mobile-product-page__find-similar-copy {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
     text-align: left;
   }
 
-  .mobile-product-page__find-similar > span {
-    font-size: 0.78rem;
+  .mobile-product-page__find-similar-copy small {
+    color: rgba(146, 218, 255, 0.72);
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 6.5px;
+    font-weight: 700;
     line-height: 1;
+    letter-spacing: 0.16em;
+  }
+
+  .mobile-product-page__find-similar-copy strong {
+    color: #f4fbff;
+    font-family: Inter, sans-serif;
+    font-size: 9px;
+    font-weight: 850;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .mobile-product-page__find-similar-arrow {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: #aeeaff;
+    background: rgba(255,255,255,0.025);
+    font: 700 13px/1 Inter, sans-serif;
   }
 
   .mobile-product-page__find-similar:active {
-    background: rgba(213, 177, 106, 0.07);
+    transform: scale(0.992);
+    border-color: rgba(133, 222, 255, 0.5);
+    background:
+      radial-gradient(circle at 10% 20%, rgba(81, 201, 255, 0.2), transparent 32%),
+      radial-gradient(circle at 90% 80%, rgba(159, 112, 255, 0.17), transparent 36%),
+      linear-gradient(135deg, rgba(17, 25, 36, 0.98), rgba(8, 10, 16, 0.98));
+  }
+
+  @keyframes mobileFiOrbit {
+    from {
+      transform: rotate(0deg) translateX(9px) rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg) translateX(9px) rotate(-360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-product-page__find-similar-orbit i {
+      animation: none;
+    }
   }
 
   .mobile-product-page__purchase,
