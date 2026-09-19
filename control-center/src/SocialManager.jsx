@@ -585,6 +585,8 @@ function SocialWorkspace() {
         <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>Journal</button>
       </div>
     </section>}
+
+    <section id="social-manual-publish-area" className="social-manual-publish-area" aria-label="Manual publishing controls" />
   </section>;
 }
 
