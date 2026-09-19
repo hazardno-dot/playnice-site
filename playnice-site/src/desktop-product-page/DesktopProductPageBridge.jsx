@@ -274,6 +274,11 @@ export default function DesktopProductPageBridge() {
     actions?.buyNow?.(selectedProduct, size);
   };
 
+  const handleFindSimilar = () => {
+    const actions = getProductActions();
+    actions?.findSimilar?.(selectedProduct);
+  };
+
   const handleToggleWishlist = () => {
     const actions = getProductActions();
     actions?.toggleWishlist?.(selectedProduct.id);
@@ -331,6 +336,7 @@ export default function DesktopProductPageBridge() {
         isWishlisted={isWishlisted}
         onToggleWishlist={handleToggleWishlist}
         onOpenProduct={handleOpenProduct}
+        onFindSimilar={handleFindSimilar}
         onBackToShop={handleBackToShop}
       />
 
