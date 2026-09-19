@@ -6853,6 +6853,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                             discoverySearchContextRef.current?.has_exclusions || "no",
                         };
 
+                        setDiscoveryOpen(false);
+
                         openProductModal(result.product, {
                           changeView: false,
                           preferredSize: sizeLabel,
