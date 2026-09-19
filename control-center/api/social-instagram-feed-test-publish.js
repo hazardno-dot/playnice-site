@@ -62,11 +62,14 @@ async function requireAdmin(req) {
   return { token, user: { id: rows[0].user_id } };
 }
 
-const isExplicitTestEvent = (event) => Boolean(
+const isControlledPublishEvent = (event) => Boolean(
   event?.metadata?.test ||
   event?.metadata?.replay ||
+  event?.metadata?.manual_product_post ||
+  event?.metadata?.producer === "social-manual-product-post" ||
   String(event?.source_id || "").includes("--shadow-test-") ||
-  String(event?.source_id || "").includes("--shadow-replay-")
+  String(event?.source_id || "").includes("--shadow-replay-") ||
+  String(event?.source_id || "").includes("--manual-social-")
 );
 
 async function probeImage(url, channel) {
@@ -153,6 +156,52 @@ async function writeAudit(token, event, userId, action, details) {
   if (!response.ok) console.warn(`${action} audit write failed`, response.status);
 }
 
+
+const PUBLISH_AUDIT_ACTIONS = {
+  instagram_feed: "test_instagram_feed_published",
+  instagram_story: "test_instagram_story_published",
+  facebook: "test_facebook_published",
+};
+
+async function alreadyPublished(token, eventId, channel) {
+  const action = PUBLISH_AUDIT_ACTIONS[channel];
+  if (!action) return null;
+  const response = await supabaseFetch(
+    `/rest/v1/social_audit_log?social_event_id=eq.${encodeURIComponent(eventId)}&action=eq.${encodeURIComponent(action)}&select=id,details,created_at&order=created_at.desc&limit=1`,
+    token,
+  );
+  const rows = await safeJson(response);
+  if (!response.ok || !Array.isArray(rows) || !rows.length) return null;
+  return rows[0];
+}
+
+
+async function finalizePublishedEvent(token, event) {
+  const [feed, story, facebook] = await Promise.all([
+    alreadyPublished(token, event.id, "instagram_feed"),
+    alreadyPublished(token, event.id, "instagram_story"),
+    alreadyPublished(token, event.id, "facebook"),
+  ]);
+  if (!feed || !story || !facebook) return null;
+
+  const publishedAt = [feed.created_at, story.created_at, facebook.created_at]
+    .filter(Boolean)
+    .sort()
+    .at(-1) || new Date().toISOString();
+
+  const response = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(event.id)}`, token, {
+    method: "PATCH",
+    body: JSON.stringify({
+      status: "published",
+      published_at: publishedAt,
+      scheduled_for: null,
+    }),
+  });
+  const rows = await safeJson(response);
+  if (!response.ok) throw new Error(`Could not archive completed Social event (${response.status}).`);
+  return Array.isArray(rows) ? rows[0] || null : null;
+}
+
 async function publishInstagram(event, admin, pageToken, credentialSource) {
   if (!INSTAGRAM_TEST_PUBLISH_ENABLED) {
     return { status: 423, body: { error: "Instagram Feed test publishing is locked. Set META_TEST_PUBLISH_INSTAGRAM_FEED_ENABLED=true only for the controlled manual test.", publish_enabled: false } };
@@ -166,6 +215,7 @@ async function publishInstagram(event, admin, pageToken, credentialSource) {
   const processing = await waitForInstagramMedia(media_id, pageToken);
   const publishRequest = buildInstagramFeedPublishRequest({ creation_id: media_id });
   const publishPayload = await metaPost(publishRequest, pageToken);
+  const publishAttempts = 1;
   const result = parseInstagramFeedPublishResponse(publishPayload);
   await writeAudit(admin.token, event, admin.user.id, "test_instagram_feed_published", {
     channel: "instagram_feed", test_only: true, media_id, post_id: result.post_id,
@@ -174,7 +224,8 @@ async function publishInstagram(event, admin, pageToken, credentialSource) {
     publish_attempts: publishAttempts,
     credential_source: credentialSource,
   });
-  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, credential_source: credentialSource, processing, publish_attempts: publishAttempts, result: { ...result, media_id } } };
+  const archivedEvent = await finalizePublishedEvent(admin.token, event);
+  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, archived: Boolean(archivedEvent), published_at: archivedEvent?.published_at || null, credential_source: credentialSource, processing, publish_attempts: publishAttempts, result: { ...result, media_id } } };
 }
 
 async function publishInstagramStory(event, admin, pageToken, credentialSource) {
@@ -224,7 +275,8 @@ async function publishInstagramStory(event, admin, pageToken, credentialSource) 
     processing_attempts: processing.attempts, processing_status_code: processing.status_code,
     credential_source: credentialSource,
   });
-  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, credential_source: credentialSource, processing, result: { ...result, media_id } } };
+  const archivedEvent = await finalizePublishedEvent(admin.token, event);
+  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, archived: Boolean(archivedEvent), published_at: archivedEvent?.published_at || null, credential_source: credentialSource, processing, result: { ...result, media_id } } };
 }
 
 async function publishFacebookPage(event, admin, pageToken, credentialSource) {
@@ -242,7 +294,8 @@ async function publishFacebookPage(event, admin, pageToken, credentialSource) {
     content_type: mediaCheck.content_type, source_id: event.source_id,
     credential_source: credentialSource,
   });
-  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, credential_source: credentialSource, result } };
+  const archivedEvent = await finalizePublishedEvent(admin.token, event);
+  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, archived: Boolean(archivedEvent), published_at: archivedEvent?.published_at || null, credential_source: credentialSource, result } };
 }
 
 export default async function handler(req, res) {
@@ -261,8 +314,22 @@ export default async function handler(req, res) {
   if (!eventRes.ok) return json(res, 502, { error: `Could not load Social event (${eventRes.status}).` });
   const event = Array.isArray(events) ? events[0] : null;
   if (!event) return json(res, 404, { error: "Social event not found." });
-  if (!isExplicitTestEvent(event)) return json(res, 403, { error: "Real Meta test publishing is allowed only for explicit test/replay Social events." });
+  if (!isControlledPublishEvent(event)) return json(res, 403, { error: "Manual Meta publishing is allowed only for controlled test/replay or manual Product Social events." });
   if (!["ready", "scheduled"].includes(event.status)) return json(res, 409, { error: "Test event must be READY or SCHEDULED with an approved snapshot." });
+
+  const priorPublish = await alreadyPublished(admin.token, event.id, channel);
+  if (priorPublish) {
+    return json(res, 409, {
+      error: "This Social event has already been published to this channel. Create a new Product post to publish it again.",
+      already_published: true,
+      channel,
+      published_at: priorPublish.created_at || null,
+      result: {
+        post_id: priorPublish.details?.post_id || null,
+        media_id: priorPublish.details?.media_id || null,
+      },
+    });
+  }
 
   let credential;
   try {

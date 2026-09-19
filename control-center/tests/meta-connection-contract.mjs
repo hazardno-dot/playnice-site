@@ -41,11 +41,12 @@ for (const token of [
 assert.ok(api.includes("instagram_business_account"), "Meta connection check must verify the Page-linked Instagram professional account.");
 assert.ok(!api.includes("/media_publish"), "Connection phase must not expose Instagram publishing.");
 assert.ok(!api.includes("/feed"), "Connection phase must not expose Facebook Page publishing.");
-assert.ok(panel.includes("Publish remains hard locked"), "Meta UI must communicate that publishing is locked.");
+assert.ok(panel.includes("Automatic publishing remains locked"), "Meta UI must communicate that automatic publishing remains locked while manual publishing is available.");
+assert.ok(panel.includes("META CONNECTION · MANUAL PUBLISH"), "Meta UI must identify the manual publish connection mode.");
 assert.ok(panel.includes("/api/meta-connection-status"), "Meta UI must use the authenticated connection-status endpoint.");
 assert.ok(bridge.includes("#social-manager-slot .social-manager"), "Meta status panel must mount inside Social Manager.");
 assert.ok(managers.includes("<MetaConnectionBridge />"), "Meta connection bridge must be active in Control Center managers.");
 
-console.log("PASS  Meta connection phase verifies configuration without enabling publish");
+console.log("PASS  Meta connection phase verifies configuration while keeping automatic publishing locked");
 console.log("PASS  Durable System User credential resolver is primary with Page token fallback");
 console.log("PASS  Instagram/Facebook capability contract is present and publish endpoints remain absent");

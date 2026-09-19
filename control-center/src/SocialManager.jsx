@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
+import { products } from "@shop/data/products/index.js";
+import { productCopy } from "@shop/data/products/productCopy.js";
 import { generateSocialDraft, validateSocialDraftMedia } from "./socialDraft.mjs";
 import "./social-manager.css";
 
-const FILTERS = ["all", "draft", "ready", "scheduled", "published", "failed"];
+const FILTERS = ["all", "draft", "ready", "scheduled", "published", "failed", "archived"];
 const CHANNELS = [["instagram_feed", "Instagram Feed"], ["instagram_story", "Instagram Story"], ["facebook", "Facebook"]];
 const PUBLIC_ORIGIN = "https://www.playniceshop.me";
 const AUDIT_LABELS = {
@@ -13,7 +15,12 @@ const AUDIT_LABELS = {
   draft_reopened: "Returned to draft",
   draft_scheduled: "Scheduled",
   draft_unscheduled: "Unscheduled",
+  draft_discarded: "Draft discarded",
   shadow_replay_created_from_product: "Product replay created",
+  manual_product_post_created: "Product post created",
+  manual_hero_post_created: "Hero post created",
+  manual_journal_post_created: "Journal post created",
+  social_history_corrected_published: "Published history corrected",
   shadow_replay_created_from_hero: "Hero replay created",
   shadow_replay_created_from_journal: "Journal replay created",
   shadow_event_created_from_product_publish: "Created from product publish",
@@ -77,12 +84,31 @@ function SocialWorkspace() {
   const [feedDryRun, setFeedDryRun] = useState(null);
   const [feedDryRunLoading, setFeedDryRunLoading] = useState(false);
   const [feedDryRunError, setFeedDryRunError] = useState("");
+  const [productPickerOpen, setProductPickerOpen] = useState(false);
+  const [productQuery, setProductQuery] = useState("");
+  const [sourcePicker, setSourcePicker] = useState({ open: false, type: "", items: [], query: "", loading: false });
 
   const load = async () => {
     setLoading(true);
     const { data, error: loadError } = await supabase.from("social_events").select("*").order("created_at", { ascending: false }).limit(100);
     if (loadError) setError(loadError.message); else { setError(""); setEvents(data || []); }
     setLoading(false);
+  };
+
+  const reconcilePublished = async () => {
+    try {
+      const { data } = await supabase.auth.getSession();
+      const token = data?.session?.access_token;
+      if (!token) return;
+      const response = await fetch("/api/social-reconcile-published", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (response.ok && Number(payload.reconciled || 0) > 0) await load();
+    } catch {
+      // Reconciliation is best-effort; normal Social loading must remain available.
+    }
   };
 
   const loadAudit = async (eventId) => {
@@ -101,6 +127,7 @@ function SocialWorkspace() {
 
   useEffect(() => {
     load();
+    reconcilePublished();
     const handleSocialMediaUpdated = () => {
       setFeedDryRun(null);
       setFeedDryRunError("");
@@ -114,8 +141,18 @@ function SocialWorkspace() {
     };
   }, []);
 
+  const activeEvents = useMemo(() => events.filter((event) => !["cancelled", "published"].includes(event.status)), [events]);
   const counts = useMemo(() => events.reduce((out, event) => ({ ...out, [event.status]: (out[event.status] || 0) + 1 }), {}), [events]);
-  const visible = useMemo(() => filter === "all" ? events : events.filter((event) => event.status === filter), [events, filter]);
+  const productCandidates = useMemo(() => {
+    const q = productQuery.trim().toLowerCase();
+    return [...products]
+      .filter((product) => !q || [product.name, product.shortName, product.slug, product.category]
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(q)))
+      .sort((a, b) => String(a.shortName || a.name || "").localeCompare(String(b.shortName || b.name || "")))
+      .slice(0, 60);
+  }, [productQuery]);
+  const visible = useMemo(() => filter === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)) : filter === "published" ? events.filter((event) => event.status === "published") : filter === "all" ? activeEvents : activeEvents.filter((event) => event.status === filter), [events, activeEvents, filter]);
   const selected = visible.find((event) => event.id === selectedId) || visible[0] || null;
   const generated = useMemo(() => {
     if (!selected) return null;
@@ -195,6 +232,7 @@ function SocialWorkspace() {
     return token;
   };
 
+
   const previewInstagramFeed = async () => {
     if (!draft?.instagram_feed) return;
     setFeedDryRunLoading(true);
@@ -249,6 +287,58 @@ function SocialWorkspace() {
     }
   };
 
+  const discardDraft = async () => {
+    if (!selected || selected.status !== "draft") return;
+    const confirmed = window.confirm(`Discard “${eventTitle(selected)}” Social draft?\n\nIt will leave the active queue but remain preserved in audit history.`);
+    if (!confirmed) return;
+    await persist("discard");
+  };
+
+  const openSourcePicker = async (sourceType) => {
+    setSourcePicker({ open: true, type: sourceType, items: [], query: "", loading: true });
+    setActionError("");
+    try {
+      const token = await sessionToken();
+      const response = await fetch(`/api/social-source-catalog?source_type=${encodeURIComponent(sourceType)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Could not load ${sourceType} catalog (${response.status}).`);
+      setSourcePicker({ open: true, type: sourceType, items: payload.items || [], query: "", loading: false });
+    } catch (pickerError) {
+      setSourcePicker({ open: false, type: "", items: [], query: "", loading: false });
+      setActionError(pickerError.message || String(pickerError));
+    }
+  };
+
+  const createSourcePost = async (item) => {
+    if (!sourcePicker.type || !item) return;
+    setSaving(true);
+    setActionError("");
+    try {
+      const token = await sessionToken();
+      const body = { source_type: sourcePicker.type };
+      if (sourcePicker.type === "hero") body.hero_key = item.key;
+      if (sourcePicker.type === "journal") body.journal_article_id = item.id;
+      const response = await fetch("/api/social-shadow-replay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify(body),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Could not create ${sourcePicker.type} Social post (${response.status}).`);
+      setFilter("all");
+      setSourcePicker({ open: false, type: "", items: [], query: "", loading: false });
+      await load();
+      const eventId = payload.event?.id || payload.event_id || "";
+      if (eventId) { setSelectedId(eventId); await loadAudit(eventId); }
+    } catch (createError) {
+      setActionError(createError.message || String(createError));
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const replayLatest = async (sourceType) => {
     setSaving(true);
     setActionError("");
@@ -271,21 +361,59 @@ function SocialWorkspace() {
     }
   };
 
+  const createProductPost = async (product) => {
+    if (!product?.slug) return;
+    setSaving(true);
+    setActionError("");
+    try {
+      const token = await sessionToken();
+      const productPayload = {
+        core: { ...product },
+        copy: productCopy[product.name] || {},
+      };
+      const response = await fetch("/api/social-shadow-replay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          source_type: "product",
+          product_slug: product.slug,
+          product_payload: productPayload,
+        }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Could not create Social draft for ${product.shortName || product.name} (${response.status}).`);
+      setFilter("all");
+      setProductPickerOpen(false);
+      setProductQuery("");
+      await load();
+      const eventId = payload.event?.id || payload.event_id || "";
+      if (eventId) { setSelectedId(eventId); await loadAudit(eventId); }
+    } catch (createError) {
+      setActionError(createError.message || String(createError));
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const immutable = selected && ["ready", "scheduled", "published", "cancelled"].includes(selected.status);
   const reviewState = selected?.status === "scheduled"
     ? "SCHEDULED · LOCKED"
     : selected?.status === "ready"
       ? "READY · APPROVED"
-      : "DRAFT · REVIEW";
+      : selected?.status === "published"
+        ? `ARCHIVED · PUBLISHED · ${selected.published_at ? fmt(selected.published_at) : "DATE UNKNOWN"}`
+        : selected?.status === "cancelled"
+          ? `ARCHIVED · DISCARDED · ${fmt(selected.updated_at)}`
+          : "DRAFT · REVIEW";
 
   return <section className="social-manager">
     <div className="social-banner">
-      <div><span>SOCIAL PUBLISHER V1</span><h2>Shadow-mode publishing infrastructure</h2><p>Production content can create social drafts here. Captions can be edited, approved and scheduled, but Meta publishing remains intentionally locked.</p></div>
-      <strong>NO META PUBLISH</strong>
+      <div><span>SOCIAL PUBLISHER V1</span><h2>Plan, review and publish</h2><p>Create social posts from Products, Hero or Journal, review channel assets, then publish manually when everything is ready.</p></div>
+      <strong>MANUAL PUBLISH</strong>
     </div>
 
     <div className="social-kpis">
-      <div><span>TOTAL</span><strong>{events.length}</strong><small>social events</small></div>
+      <div><span>TOTAL</span><strong>{activeEvents.length}</strong><small>active social events</small></div>
       <div><span>DRAFT</span><strong>{counts.draft || 0}</strong><small>awaiting review</small></div>
       <div><span>READY</span><strong>{counts.ready || 0}</strong><small>approved shadow queue</small></div>
       <div><span>SCHEDULED</span><strong>{counts.scheduled || 0}</strong><small>future shadow queue</small></div>
@@ -294,14 +422,58 @@ function SocialWorkspace() {
     {error ? <div className="social-error">Social schema is not active in Supabase yet: {error}</div> : null}
     {actionError ? <div className="social-error social-action-error">{actionError}</div> : null}
 
-    <div className="social-filter-bar">
-      {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${counts[value] || 0}` : ""}</button>)}
-      <button type="button" disabled={saving} onClick={() => replayLatest("product")}>{saving ? "Working…" : "Replay Product"}</button>
-      <button type="button" disabled={saving} onClick={() => replayLatest("hero")}>{saving ? "Working…" : "Replay Hero"}</button>
-      <button type="button" disabled={saving} onClick={() => replayLatest("journal")}>{saving ? "Working…" : "Replay Journal"}</button>
+    <div className="social-toolbar">
+      <div className="social-filter-bar">
+        {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${value === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)).length : counts[value] || 0}` : ""}</button>)}
+      </div>
+      <div className="social-create-group">
+        <span>CREATE POST FROM</span>
+        <div>
+          <button type="button" className="social-create-product" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>{saving ? "Working…" : "Product"}</button>
+          <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>{saving ? "Working…" : "Hero"}</button>
+          <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>{saving ? "Working…" : "Journal"}</button>
+        </div>
+      </div>
     </div>
 
-    <div className="social-layout">
+
+    {sourcePicker.open ? <div className="social-product-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setSourcePicker({ open: false, type: "", items: [], query: "", loading: false }); }}>
+      <section className="social-product-picker" role="dialog" aria-modal="true" aria-label={`Create ${sourcePicker.type} post`}>
+        <div className="social-product-picker-head">
+          <div><span>{`CREATE ${sourcePicker.type.toUpperCase()} POST`}</span><h3>{sourcePicker.type === "hero" ? "Choose any Hero visual" : "Choose any Journal article"}</h3><p>Creates a fresh Social draft without changing the storefront source.</p></div>
+          <button type="button" disabled={saving} onClick={() => setSourcePicker({ open: false, type: "", items: [], query: "", loading: false })}>Close</button>
+        </div>
+        <input autoFocus type="search" value={sourcePicker.query} onChange={(event) => setSourcePicker((current) => ({ ...current, query: event.target.value }))} placeholder={sourcePicker.type === "hero" ? "Search Hero title or key…" : "Search Journal title or article id…"} />
+        <div className="social-product-picker-results">
+          {sourcePicker.loading ? <div className="social-product-picker-empty">Loading…</div> : (() => {
+            const q = sourcePicker.query.trim().toLowerCase();
+            const items = sourcePicker.items.filter((item) => !q || [item.title, item.subtitle, item.key, item.id].filter(Boolean).some((value) => String(value).toLowerCase().includes(q)));
+            return items.length ? items.map((item) => <button type="button" key={`${sourcePicker.type}-${item.id || item.key}`} disabled={saving} onClick={() => createSourcePost(item)}>
+              <div><strong>{item.title || item.key}</strong><span>{item.subtitle || (sourcePicker.type === "hero" ? item.key : `Journal #${item.id}`)}</span><small>{sourcePicker.type === "hero" ? item.key : `Article #${item.id}`}</small></div>
+              {item.image ? <img src={publicSourceUrl(item.image)} alt="" style={{ width: 48, height: 48, objectFit: "cover" }} /> : <em>{label(sourcePicker.type)}</em>}
+            </button>) : <div className="social-product-picker-empty">No matching {sourcePicker.type} sources.</div>;
+          })()}
+        </div>
+      </section>
+    </div> : null}
+
+    {productPickerOpen ? <div className="social-product-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setProductPickerOpen(false); }}>
+      <section className="social-product-picker" role="dialog" aria-modal="true" aria-label="Create product post">
+        <div className="social-product-picker-head">
+          <div><span>CREATE PRODUCT POST</span><h3>Choose any live product</h3><p>Creates a fresh Social draft without changing the product or storefront.</p></div>
+          <button type="button" disabled={saving} onClick={() => setProductPickerOpen(false)}>Close</button>
+        </div>
+        <input autoFocus type="search" value={productQuery} onChange={(event) => setProductQuery(event.target.value)} placeholder="Search name, brand or slug…" />
+        <div className="social-product-picker-results">
+          {productCandidates.length ? productCandidates.map((product) => <button type="button" key={product.slug} disabled={saving} onClick={() => createProductPost(product)}>
+            <div><strong>{product.shortName || product.name}</strong><span>{product.name}</span><small>{product.slug}</small></div>
+            <em>{product.category || "Product"}</em>
+          </button>) : <div className="social-product-picker-empty">No live products match this search.</div>}
+        </div>
+      </section>
+    </div> : null}
+
+    {visible.length ? <div className="social-layout">
       <aside className="social-list">
         <div className="social-list-head"><span>EVENT QUEUE</span><strong>{loading ? "…" : visible.length}</strong></div>
         {visible.length ? visible.map((event) => <button type="button" key={event.id} className={selected?.id === event.id ? "active" : ""} onClick={() => setSelectedId(event.id)}>
@@ -375,6 +547,7 @@ function SocialWorkspace() {
           <div className="social-review-row">
             <div><span>REVIEW STATE</span><strong>{reviewState}</strong></div>
             <div className="social-review-actions">
+              {selected.status === "draft" && !isExplicitTestEvent(selected) ? <button type="button" disabled={saving} onClick={discardDraft}>Discard draft</button> : null}
               {isExplicitTestEvent(selected) ? <button type="button" disabled={saving} onClick={() => persist("discard_test")}>Discard test event</button> : null}
               {selected.status === "scheduled"
                 ? <button type="button" disabled={saving} onClick={() => persist("unschedule")}>{saving ? "Working…" : "Unschedule"}</button>
@@ -398,10 +571,19 @@ function SocialWorkspace() {
             </div> : <div className="social-history-empty">{auditLoading ? "Loading audit history…" : "No audit entries for this event yet."}</div>}
           </section>
 
-          <div className="social-safety-row"><div><span>PUBLISH MODE</span><strong>{selected.publish_mode || "shadow"}</strong></div><div><span>CHANNELS</span><strong>{(selected.channels || []).length}</strong></div><button type="button" disabled title="Meta publishing is intentionally disabled in Social Publisher v1">Publish locked</button></div>
-        </> : <div className="social-empty-detail"><strong>Social Publisher is ready for shadow events.</strong><span>No event selected.</span></div>}
+          <div className="social-safety-row"><div><span>PUBLISH MODE</span><strong>{selected.publish_mode || "shadow"} · manual controlled</strong></div><div><span>CHANNELS</span><strong>{(selected.channels || []).length}</strong></div><button type="button" disabled title="Automatic scheduler-to-Meta publishing remains disabled. Controlled manual channel publishing is available when its environment flag is enabled.">Auto publish locked · manual enabled</button></div>
+        </> : null}
       </article>
-    </div>
+    </div> : <section className="social-empty-workspace">
+      <span>SOCIAL QUEUE</span>
+      <h3>No active social posts</h3>
+      <p>Create a new post from a Product, Hero visual or Journal article.</p>
+      <div>
+        <button type="button" className="social-create-product" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>Product</button>
+        <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>Hero</button>
+        <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>Journal</button>
+      </div>
+    </section>}
   </section>;
 }
 
@@ -442,6 +624,7 @@ export default function SocialManager() {
     const heading = mainStage?.querySelector(".topbar h1");
     const eyebrow = mainStage?.querySelector(".topbar .eyebrow");
     const description = mainStage?.querySelector(".topbar p");
+    const publishBadge = mainStage?.querySelector(".topbar .read-only-badge");
     const navButtons = [...document.querySelectorAll(".sidebar nav button")];
     const button = navButtons.find((item) => item.dataset.socialManagerNav === "true");
     if (!mainStage || !heading || !button) return;
@@ -459,7 +642,8 @@ export default function SocialManager() {
       navButtons.forEach((item) => item.classList.toggle("active", item === button));
       heading.textContent = "Social";
       if (eyebrow) eyebrow.textContent = "MANAGE / SOCIAL PUBLISHER";
-      if (description) description.textContent = "Shadow-mode queue for Instagram and Facebook content generated from live PlayNice publishing events.";
+      if (description) description.textContent = "Create, review and manually publish Instagram and Facebook content from Products, Hero and Journal.";
+      if (publishBadge) publishBadge.textContent = "MANUAL MODE";
       baseChildren.forEach((child) => {
         if (child.dataset.socialPreviousDisplay === undefined) child.dataset.socialPreviousDisplay = child.style.display || "";
         child.style.display = "none";
@@ -474,6 +658,7 @@ export default function SocialManager() {
           delete child.dataset.socialPreviousDisplay;
         }
       });
+      if (publishBadge) publishBadge.textContent = "NO PUBLISH";
       setSlot(null);
     }
   }, [open]);

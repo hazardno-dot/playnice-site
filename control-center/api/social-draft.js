@@ -187,7 +187,7 @@ export default async function handler(req, res) {
     const id = String(req.body?.id || "").trim();
     const action = String(req.body?.action || "save").trim();
     if (!id) return json(res, 400, { error: "Social event id is required." });
-    if (!["save", "ready", "reopen", "schedule", "unschedule", "discard_test"].includes(action)) return json(res, 400, { error: "Unsupported Social draft action." });
+    if (!["save", "ready", "reopen", "schedule", "unschedule", "discard", "discard_test"].includes(action)) return json(res, 400, { error: "Unsupported Social draft action." });
 
     const eventRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(id)}&select=*&limit=1`, auth.token);
     if (!eventRes.ok) return json(res, 400, { error: "Could not load Social event." });
@@ -199,6 +199,42 @@ export default async function handler(req, res) {
       const deleteRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(id)}`, auth.token, { method: "DELETE" });
       if (!deleteRes.ok) throw new Error(`Could not discard Social test event (${deleteRes.status}).`);
       return json(res, 200, { ok: true, discarded: true, id });
+    }
+
+
+    if (action === "discard") {
+      if (event.status !== "draft") return json(res, 409, { error: "Only DRAFT Social events can be discarded. Return the event to draft first." });
+      if (isTestEvent(event)) return json(res, 409, { error: "Explicit test/replay events use Discard test event." });
+
+      const discardRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(id)}`, auth.token, {
+        method: "PATCH",
+        body: JSON.stringify({
+          status: "cancelled",
+          scheduled_for: null,
+          approved_content: null,
+          approved_by: null,
+          approved_at: null,
+        }),
+      });
+      if (!discardRes.ok) throw new Error(`Could not discard Social draft (${discardRes.status}).`);
+      const [discardedEvent] = await discardRes.json();
+
+      await supabaseFetch("/rest/v1/social_audit_log", auth.token, {
+        method: "POST",
+        body: JSON.stringify({
+          social_event_id: id,
+          actor_id: auth.user.id,
+          action: "draft_discarded",
+          details: {
+            previous_status: event.status,
+            next_status: "cancelled",
+            source_type: event.source_type,
+            source_id: event.source_id,
+          },
+        }),
+      });
+
+      return json(res, 200, { ok: true, event: discardedEvent, discarded: true, soft_discard: true });
     }
 
     if (["published", "cancelled"].includes(event.status)) return json(res, 409, { error: `Social event is ${event.status} and cannot be edited.` });

@@ -3,11 +3,14 @@ import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
 import "./social-instagram-test-publish.css";
 
-const isExplicitTestEvent = (event) => Boolean(
+const isControlledPublishEvent = (event) => Boolean(
   event?.metadata?.test ||
   event?.metadata?.replay ||
+  event?.metadata?.manual_product_post ||
+  event?.metadata?.producer === "social-manual-product-post" ||
   String(event?.source_id || "").includes("--shadow-test-") ||
-  String(event?.source_id || "").includes("--shadow-replay-")
+  String(event?.source_id || "").includes("--shadow-replay-") ||
+  String(event?.source_id || "").includes("--manual-social-")
 );
 
 const facebookMediaSrc = (event) => String(
@@ -43,7 +46,7 @@ export default function SocialFacebookTestPublishBridge() {
       .in("status", ["ready", "scheduled"])
       .order("updated_at", { ascending: false })
       .limit(20);
-    const candidate = (data || []).find((row) => isExplicitTestEvent(row) && isFacebookImageCandidate(row)) || null;
+    const candidate = (data || []).find((row) => isControlledPublishEvent(row) && isFacebookImageCandidate(row)) || null;
     setEvent(candidate);
   };
 
@@ -84,7 +87,7 @@ export default function SocialFacebookTestPublishBridge() {
 
   const publish = async () => {
     if (!event || loading) return;
-    const confirmed = window.confirm(`REAL TEST POST\n\nPublish the approved Facebook post for “${eventTitle}” to PlayNice MNE now?\n\nThis creates a real public Facebook Page post. Instagram Story and scheduler remain locked.`);
+    const confirmed = window.confirm(`REAL FACEBOOK POST\n\nPublish the approved Facebook post for “${eventTitle}” to PlayNice MNE now?\n\nThis creates a real public Facebook Page post. Instagram Story and scheduler remain locked.`);
     if (!confirmed) return;
 
     setLoading(true);
@@ -106,7 +109,7 @@ export default function SocialFacebookTestPublishBridge() {
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Facebook test publish failed (${response.status}).`);
-      setMessage(`Published test Facebook post · ${payload?.result?.post_id || "Meta post created"}`);
+      setMessage(`Published Facebook post · ${payload?.result?.post_id || "Meta post created"}`);
       await loadEvent();
     } catch (publishError) {
       setError(publishError?.message || String(publishError));
@@ -115,18 +118,18 @@ export default function SocialFacebookTestPublishBridge() {
     }
   };
 
-  if (!slot) return null;
+  if (!slot || (!event && !message && !error)) return null;
   return createPortal(
     <section className="social-instagram-test-publish">
       <div className="social-instagram-test-copy">
-        <span>FACEBOOK PAGE · MANUAL TEST ONLY</span>
-        <strong>{event ? eventTitle : "No approved image test/replay event"}</strong>
-        <p>{event ? "Facebook media is approved as a test candidate. Real Meta transport remains isolated behind the dedicated server flag." : "Create a replay and mark it READY. Only explicit test/replay events with approved Facebook image media can appear here."}</p>
+        <span>FACEBOOK PAGE · MANUAL PUBLISH</span>
+        <strong>{event ? eventTitle : "No approved image publish candidate"}</strong>
+        <p>{event ? "Approved Facebook media is ready for controlled manual publishing." : "Create a Social post, approve its Facebook visual, then mark it READY."}</p>
       </div>
       <div className="social-instagram-test-actions">
         {message ? <small className="ok">{message}</small> : null}
         {error ? <small className="error">{error}</small> : null}
-        <button type="button" onClick={publish} disabled={!event || loading}>{loading ? "Publishing test…" : "Test publish Facebook Page"}</button>
+        <button type="button" onClick={publish} disabled={!event || loading}>{loading ? "Publishing…" : "Publish Facebook Page"}</button>
       </div>
     </section>,
     slot,

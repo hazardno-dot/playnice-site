@@ -82,8 +82,10 @@ async function loadLiveJournalArticles() {
   return liveModule.journalArticles;
 }
 
-async function createReplay({ auth, sourceType, canonicalId, event, metadata = {}, auditDetails = {} }) {
-  const replayId = `${canonicalId}--shadow-replay-${sourceType}-${metadata.replay_key || Date.now()}`;
+async function createReplay({ auth, sourceType, canonicalId, event, metadata = {}, auditDetails = {}, manualPost = false }) {
+  const replayId = manualPost
+    ? `${canonicalId}--manual-social-${metadata.replay_key || Date.now()}`
+    : `${canonicalId}--shadow-replay-${sourceType}-${metadata.replay_key || Date.now()}`;
   event.source_id = replayId;
 
   const existingRes = await supabaseFetch(
@@ -101,11 +103,11 @@ async function createReplay({ auth, sourceType, canonicalId, event, metadata = {
       ...event,
       created_by: auth.user.id,
       metadata: {
-        test: true,
-        replay: true,
+        test: !manualPost,
+        replay: !manualPost,
         replay_source_type: sourceType,
         canonical_source_id: String(canonicalId),
-        producer: "social-shadow-replay",
+        producer: manualPost ? `social-manual-${sourceType}-post` : "social-shadow-replay",
         ...metadata,
       },
     }),
@@ -122,7 +124,7 @@ async function createReplay({ auth, sourceType, canonicalId, event, metadata = {
     body: JSON.stringify({
       social_event_id: created?.id,
       actor_id: auth.user.id,
-      action: `shadow_replay_created_from_${sourceType}`,
+      action: manualPost ? `manual_${sourceType}_post_created` : `shadow_replay_created_from_${sourceType}`,
       details: { canonical_source_id: String(canonicalId), ...auditDetails },
     }),
   });
@@ -130,7 +132,39 @@ async function createReplay({ auth, sourceType, canonicalId, event, metadata = {
   return { status: "created", event: created, canonical_source_id: String(canonicalId) };
 }
 
-async function replayProduct(auth) {
+async function replayProduct(auth, options = {}) {
+  const requestedSlug = String(options.productSlug || "").trim();
+  const manualPayload = options.productPayload && typeof options.productPayload === "object" ? options.productPayload : null;
+  if (requestedSlug) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(requestedSlug)) throw new Error("Invalid product slug for manual Social draft.");
+    if (!manualPayload) throw new Error("Live product payload is required for a manual Social draft.");
+
+    const core = manualPayload?.core && typeof manualPayload.core === "object" ? manualPayload.core : manualPayload;
+    if (!String(core?.name || core?.shortName || "").trim()) throw new Error("Selected product is missing its live name.");
+    if (!String(core?.image || manualPayload?.image || "").trim()) throw new Error("Selected product is missing its live source image.");
+
+    const media = [];
+    if (core.socialSquareImage || manualPayload.socialSquareImage) media.push({ src: core.socialSquareImage || manualPayload.socialSquareImage, format: "1:1" });
+    if (core.socialStoryImage || manualPayload.socialStoryImage) media.push({ src: core.socialStoryImage || manualPayload.socialStoryImage, format: "9:16" });
+    if (core.image || manualPayload.image) media.push({ src: core.image || manualPayload.image, format: "product_image" });
+
+    const event = productPublishedEvent({ slug: requestedSlug, payload: manualPayload, media, sourceUrl: `/product/${requestedSlug}` });
+    const manualKey = `manual-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    return createReplay({
+      auth,
+      sourceType: "product",
+      canonicalId: requestedSlug,
+      event,
+      metadata: {
+        replay_key: manualKey,
+        manual_product_post: true,
+        selected_from_live_catalog: true,
+      },
+      auditDetails: { manual_product_post: true, selected_from_live_catalog: true },
+      manualPost: true,
+    });
+  }
+
   const historyRes = await supabaseFetch("/rest/v1/publish_history?select=product_slug,payload,approved_payload,apply_pr_number,published_at,published_commit_sha&order=published_at.desc&limit=1", auth.token);
   const history = await safeJson(historyRes);
   if (!historyRes.ok) {
@@ -163,21 +197,39 @@ async function replayProduct(auth) {
   });
 }
 
-async function replayHero(auth) {
-  const heroRes = await supabaseFetch("/rest/v1/hero_slides?select=id,hero_key,kind,enabled,pinned_first,position,image,desktop_image,mobile_image,alt,action_type,product_slug,preferred_size,collection_title,collection_slugs,manifesto_type,updated_at&enabled=eq.true&order=updated_at.desc&limit=1", auth.token);
+async function replayHero(auth, options = {}) {
+  const requestedKey = String(options.heroKey || "").trim();
+  const query = requestedKey
+    ? `/rest/v1/hero_slides?select=id,hero_key,kind,enabled,pinned_first,position,image,desktop_image,mobile_image,alt,action_type,product_slug,preferred_size,collection_title,collection_slugs,manifesto_type,updated_at&hero_key=eq.${encodeURIComponent(requestedKey)}&limit=1`
+    : "/rest/v1/hero_slides?select=id,hero_key,kind,enabled,pinned_first,position,image,desktop_image,mobile_image,alt,action_type,product_slug,preferred_size,collection_title,collection_slugs,manifesto_type,updated_at&enabled=eq.true&order=updated_at.desc&limit=1";
+
+  const heroRes = await supabaseFetch(query, auth.token);
   const rows = await safeJson(heroRes);
   if (!heroRes.ok) {
     const detail = String(rows?.message || rows?.hint || rows?.details || "unknown Hero read error").slice(0, 220);
-    throw new Error(`Could not load latest live Hero slide (Supabase ${heroRes.status}: ${detail}).`);
+    throw new Error(`Could not load Hero slide (Supabase ${heroRes.status}: ${detail}).`);
   }
   const row = Array.isArray(rows) ? rows[0] : null;
-  if (!row?.hero_key) throw new Error("No live Hero slide is available for replay.");
+  if (!row?.hero_key) throw new Error(requestedKey ? "Selected Hero slide was not found." : "No live Hero slide is available for replay.");
 
   const payload = heroRowToSlide(row);
   const media = [];
   if (payload.mobileImage) media.push({ src: payload.mobileImage, format: "hero_mobile" });
   if (payload.desktopImage || payload.image) media.push({ src: payload.desktopImage || payload.image, format: "hero_desktop" });
   const event = heroPublishedEvent({ heroKey: row.hero_key, payload, media, sourceUrl: "/" });
+
+  if (requestedKey) {
+    const manualKey = `manual-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    return createReplay({
+      auth,
+      sourceType: "hero",
+      canonicalId: row.hero_key,
+      event,
+      metadata: { replay_key: manualKey, manual_hero_post: true, selected_from_hero_catalog: true, hero_id: row.id },
+      auditDetails: { manual_hero_post: true, selected_from_hero_catalog: true, hero_id: row.id },
+      manualPost: true,
+    });
+  }
 
   return createReplay({
     auth,
@@ -189,20 +241,37 @@ async function replayHero(auth) {
   });
 }
 
-async function replayJournal(auth) {
+async function replayJournal(auth, options = {}) {
   const journalArticles = await loadLiveJournalArticles();
-  const latest = [...journalArticles].sort((a, b) => Number(b?.id || 0) - Number(a?.id || 0))[0];
-  if (!latest?.id) throw new Error("No live Journal article is available for replay.");
-  const media = latest.image ? [{ src: latest.image, format: "journal_cover" }] : [];
-  const event = journalPublishedEvent({ articleId: latest.id, payload: latest, media, sourceUrl: `/journal/${latest.id}` });
+  const requestedId = String(options.articleId || "").trim();
+  const article = requestedId
+    ? journalArticles.find((item) => String(item?.id) === requestedId)
+    : [...journalArticles].sort((a, b) => Number(b?.id || 0) - Number(a?.id || 0))[0];
+
+  if (!article?.id) throw new Error(requestedId ? "Selected Journal article was not found." : "No live Journal article is available for replay.");
+  const media = article.image ? [{ src: article.image, format: "journal_cover" }] : [];
+  const event = journalPublishedEvent({ articleId: article.id, payload: article, media, sourceUrl: `/journal/${article.id}` });
+
+  if (requestedId) {
+    const manualKey = `manual-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    return createReplay({
+      auth,
+      sourceType: "journal",
+      canonicalId: article.id,
+      event,
+      metadata: { replay_key: manualKey, manual_journal_post: true, selected_from_journal_catalog: true, journal_article_id: article.id, source_branch: "main" },
+      auditDetails: { manual_journal_post: true, selected_from_journal_catalog: true, journal_article_id: article.id, source_branch: "main" },
+      manualPost: true,
+    });
+  }
 
   return createReplay({
     auth,
     sourceType: "journal",
-    canonicalId: latest.id,
+    canonicalId: article.id,
     event,
-    metadata: { replay_key: `article-${latest.id}`, journal_article_id: latest.id, source_branch: "main" },
-    auditDetails: { journal_article_id: latest.id, source_branch: "main" },
+    metadata: { replay_key: `article-${article.id}`, journal_article_id: article.id, source_branch: "main" },
+    auditDetails: { journal_article_id: article.id, source_branch: "main" },
   });
 }
 
@@ -218,10 +287,13 @@ export default async function handler(req, res) {
     if (!["product", "hero", "journal"].includes(sourceType)) return json(res, 400, { error: "Unsupported replay source type." });
 
     const result = sourceType === "hero"
-      ? await replayHero(auth)
+      ? await replayHero(auth, { heroKey: req.body?.hero_key })
       : sourceType === "journal"
-        ? await replayJournal(auth)
-        : await replayProduct(auth);
+        ? await replayJournal(auth, { articleId: req.body?.journal_article_id })
+        : await replayProduct(auth, {
+          productSlug: req.body?.product_slug,
+          productPayload: req.body?.product_payload,
+        });
 
     return json(res, 200, { ok: true, source_type: sourceType, ...result });
   } catch (error) {
