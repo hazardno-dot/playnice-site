@@ -242,6 +242,10 @@ assert.ok(facebookPublishBridge.includes("PUBLISH_AUDIT_ACTION"), "Facebook brid
 assert.ok(instagramPublishBridge.includes('published ? "Published ✓"'), "Instagram Feed publish button must lock after publication.");
 assert.ok(storyPublishBridge.includes('published ? "Published ✓"'), "Instagram Story publish button must lock after publication.");
 assert.ok(facebookPublishBridge.includes('published ? "Published ✓"'), "Facebook publish button must lock after publication.");
+assert.ok(instagramPublishBridge.includes("completedEventRef"), "Instagram Feed bridge must preserve the just-published event while the backend archives it.");
+assert.ok(storyPublishBridge.includes("completedEventRef"), "Instagram Story bridge must preserve the just-published event while the backend archives it.");
+assert.ok(facebookPublishBridge.includes("completedEventRef"), "Facebook bridge must preserve the just-published event while the backend archives it.");
+assert.ok(storyPublishBridge.includes('"PUBLISHED ✓"'), "Instagram Story completed state must not fall back to NO STORY MEDIA after successful publication.");
 assert.ok(socialMediaOverrideBridge.includes("Generate safe fallback"), "Social media generator must describe contain-based generation as a fallback, not a preferred replacement.");
 
 const socialSchema = fs.readFileSync(path.join(root, "control-center/supabase/social_publisher_v1.sql"), "utf8");
