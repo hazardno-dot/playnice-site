@@ -2110,8 +2110,17 @@ useEffect(() => {
 
 useEffect(() => {
   const handleDesktopQuickViewFullProduct = () => {
+    window.history.replaceState(
+      {
+        ...(window.history.state || {}),
+        playniceDiscoveryOpen: true,
+      },
+      "",
+      window.location.pathname + window.location.search
+    );
+
+    productOriginSurfaceRef.current = "discovery";
     setDiscoveryOpen(false);
-    productOriginSurfaceRef.current = "";
   };
 
   window.addEventListener(
