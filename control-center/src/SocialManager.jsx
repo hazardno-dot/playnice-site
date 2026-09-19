@@ -82,6 +82,8 @@ function SocialWorkspace() {
   const [feedDryRunError, setFeedDryRunError] = useState("");
   const [productPickerOpen, setProductPickerOpen] = useState(false);
   const [productQuery, setProductQuery] = useState("");
+  const [publishDiagnostics, setPublishDiagnostics] = useState(null);
+  const [publishDiagnosticsLoading, setPublishDiagnosticsLoading] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -207,6 +209,27 @@ function SocialWorkspace() {
     const token = sessionData?.session?.access_token;
     if (sessionError || !token) throw sessionError || new Error("Authenticated admin session is required.");
     return token;
+  };
+
+
+  const loadPublishDiagnostics = async () => {
+    setPublishDiagnosticsLoading(true);
+    setActionError("");
+    try {
+      const token = await sessionToken();
+      const response = await fetch("/api/social-publish-env-diagnostics", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Publish diagnostics failed (${response.status}).`);
+      setPublishDiagnostics(payload);
+    } catch (diagnosticError) {
+      setPublishDiagnostics(null);
+      setActionError(diagnosticError.message || String(diagnosticError));
+    } finally {
+      setPublishDiagnosticsLoading(false);
+    }
   };
 
   const previewInstagramFeed = async () => {
@@ -348,6 +371,22 @@ function SocialWorkspace() {
       <button type="button" disabled={saving} onClick={() => replayLatest("hero")}>{saving ? "Working…" : "Replay Hero"}</button>
       <button type="button" disabled={saving} onClick={() => replayLatest("journal")}>{saving ? "Working…" : "Replay Journal"}</button>
     </div>
+
+
+    <section className="social-publish-diagnostics">
+      <div>
+        <span>PUBLISH ENV DIAGNOSTICS</span>
+        <strong>{publishDiagnostics ? `${publishDiagnostics.environment?.vercel_env || "unknown"} · ${publishDiagnostics.environment?.git_ref || "no branch"}` : "Not checked"}</strong>
+        <small>{publishDiagnostics?.environment?.git_sha ? publishDiagnostics.environment.git_sha.slice(0, 10) : "Shows only ON/OFF state and deployment metadata. No secret values."}</small>
+      </div>
+      <div className="social-publish-diagnostic-flags">
+        {["instagram_feed", "instagram_story", "facebook"].map((key) => {
+          const value = publishDiagnostics?.flags?.[key];
+          return <div key={key} className={value === true ? "on" : value === false ? "off" : ""}><span>{label(key)}</span><strong>{value === true ? "ON" : value === false ? "OFF" : "—"}</strong></div>;
+        })}
+      </div>
+      <button type="button" disabled={publishDiagnosticsLoading} onClick={loadPublishDiagnostics}>{publishDiagnosticsLoading ? "Checking…" : "Check publish flags"}</button>
+    </section>
 
     {productPickerOpen ? <div className="social-product-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setProductPickerOpen(false); }}>
       <section className="social-product-picker" role="dialog" aria-modal="true" aria-label="Create product post">
