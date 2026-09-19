@@ -234,6 +234,14 @@ assert.ok(socialManager.includes("playnice:social-state-updated"), "Social Manag
 assert.ok(instagramPublishBridge.includes("playnice:social-state-updated"), "Instagram Feed publish bridge must refresh immediately after READY state changes.");
 assert.ok(storyPublishBridge.includes("playnice:social-state-updated"), "Instagram Story publish bridge must refresh immediately after READY state changes.");
 assert.ok(facebookPublishBridge.includes("playnice:social-state-updated"), "Facebook publish bridge must refresh immediately after READY state changes.");
+assert.ok(socialManager.includes('id="social-manual-publish-area"'), "Manual publish controls must render in the dedicated bottom publish area.");
+assert.ok(instagramPublishBridge.includes("PUBLISH_AUDIT_ACTION"), "Instagram Feed bridge must restore published state from audit history.");
+assert.ok(storyPublishBridge.includes("PUBLISH_AUDIT_ACTION"), "Instagram Story bridge must restore published state from audit history.");
+assert.ok(facebookPublishBridge.includes("PUBLISH_AUDIT_ACTION"), "Facebook bridge must restore published state from audit history.");
+assert.ok(instagramPublishBridge.includes('published ? "Published ✓"'), "Instagram Feed publish button must lock after publication.");
+assert.ok(storyPublishBridge.includes('published ? "Published ✓"'), "Instagram Story publish button must lock after publication.");
+assert.ok(facebookPublishBridge.includes('published ? "Published ✓"'), "Facebook publish button must lock after publication.");
+assert.ok(socialMediaOverrideBridge.includes("Generate safe fallback"), "Social media generator must describe contain-based generation as a fallback, not a preferred replacement.");
 
 const socialSchema = fs.readFileSync(path.join(root, "control-center/supabase/social_publisher_v1.sql"), "utf8");
 for (const token of ["draft_content jsonb", "approved_content jsonb", "approved_at timestamptz", "scheduled_for timestamptz", "status = 'scheduled'", "publish_mode text not null default 'shadow'"]) {
