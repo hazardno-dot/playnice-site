@@ -175,6 +175,33 @@ async function alreadyPublished(token, eventId, channel) {
   return rows[0];
 }
 
+
+async function finalizePublishedEvent(token, event) {
+  const [feed, story, facebook] = await Promise.all([
+    alreadyPublished(token, event.id, "instagram_feed"),
+    alreadyPublished(token, event.id, "instagram_story"),
+    alreadyPublished(token, event.id, "facebook"),
+  ]);
+  if (!feed || !story || !facebook) return null;
+
+  const publishedAt = [feed.created_at, story.created_at, facebook.created_at]
+    .filter(Boolean)
+    .sort()
+    .at(-1) || new Date().toISOString();
+
+  const response = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(event.id)}`, token, {
+    method: "PATCH",
+    body: JSON.stringify({
+      status: "published",
+      published_at: publishedAt,
+      scheduled_for: null,
+    }),
+  });
+  const rows = await safeJson(response);
+  if (!response.ok) throw new Error(`Could not archive completed Social event (${response.status}).`);
+  return Array.isArray(rows) ? rows[0] || null : null;
+}
+
 async function publishInstagram(event, admin, pageToken, credentialSource) {
   if (!INSTAGRAM_TEST_PUBLISH_ENABLED) {
     return { status: 423, body: { error: "Instagram Feed test publishing is locked. Set META_TEST_PUBLISH_INSTAGRAM_FEED_ENABLED=true only for the controlled manual test.", publish_enabled: false } };
@@ -197,7 +224,8 @@ async function publishInstagram(event, admin, pageToken, credentialSource) {
     publish_attempts: publishAttempts,
     credential_source: credentialSource,
   });
-  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, credential_source: credentialSource, processing, publish_attempts: publishAttempts, result: { ...result, media_id } } };
+  const archivedEvent = await finalizePublishedEvent(admin.token, event);
+  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, archived: Boolean(archivedEvent), published_at: archivedEvent?.published_at || null, credential_source: credentialSource, processing, publish_attempts: publishAttempts, result: { ...result, media_id } } };
 }
 
 async function publishInstagramStory(event, admin, pageToken, credentialSource) {
@@ -247,7 +275,8 @@ async function publishInstagramStory(event, admin, pageToken, credentialSource) 
     processing_attempts: processing.attempts, processing_status_code: processing.status_code,
     credential_source: credentialSource,
   });
-  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, credential_source: credentialSource, processing, result: { ...result, media_id } } };
+  const archivedEvent = await finalizePublishedEvent(admin.token, event);
+  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, archived: Boolean(archivedEvent), published_at: archivedEvent?.published_at || null, credential_source: credentialSource, processing, result: { ...result, media_id } } };
 }
 
 async function publishFacebookPage(event, admin, pageToken, credentialSource) {
@@ -265,7 +294,8 @@ async function publishFacebookPage(event, admin, pageToken, credentialSource) {
     content_type: mediaCheck.content_type, source_id: event.source_id,
     credential_source: credentialSource,
   });
-  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, credential_source: credentialSource, result } };
+  const archivedEvent = await finalizePublishedEvent(admin.token, event);
+  return { status: 200, body: { ok: true, mode: "manual_test_publish", test_only: true, event_id: event.id, archived: Boolean(archivedEvent), published_at: archivedEvent?.published_at || null, credential_source: credentialSource, result } };
 }
 
 export default async function handler(req, res) {
