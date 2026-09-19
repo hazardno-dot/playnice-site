@@ -122,7 +122,7 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
-for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard test event", "Create Product Post", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
+for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard draft", "Discard test event", "Create Product Post", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
 assert.ok(socialManager.includes("disabled={saving || !mediaReadiness.ok}"), "Mark ready must be locally disabled when a channel has no media.");
@@ -135,12 +135,16 @@ assert.ok(socialManager.includes('window.removeEventListener("playnice:social-me
 assert.ok(socialManager.includes('setFeedDryRun(null);'), "Social media changes must invalidate any stale Meta dry-run payload.");
 
 const socialDraftApi = fs.readFileSync(path.join(root, "control-center/api/social-draft.js"), "utf8");
-for (const token of ["generateSocialDraft", "validateSocialDraftMedia", "validateReadyMedia", "probePublicImage", "content-type", "asset must use HTTPS", "READY blocked", "public_media_verified", "draft_content", "approved_content", "approved_at", "scheduled_for", "normalizeScheduledFor", "Only READY events can be scheduled", "Only scheduled events can be unscheduled", "draft_scheduled", "draft_unscheduled", "draft_marked_ready", "draft_reopened", "discard_test", "isTestEvent", "2200"]) {
+for (const token of ["generateSocialDraft", "validateSocialDraftMedia", "validateReadyMedia", "probePublicImage", "content-type", "asset must use HTTPS", "READY blocked", "public_media_verified", "draft_content", "approved_content", "approved_at", "scheduled_for", "normalizeScheduledFor", "Only READY events can be scheduled", "Only scheduled events can be unscheduled", "draft_scheduled", "draft_unscheduled", "draft_marked_ready", "draft_reopened", "draft_discarded", "discard", "discard_test", "isTestEvent", "2200"]) {
   assert.ok(socialDraftApi.includes(token), `Social draft API contract missing: ${token}`);
 }
 assert.ok(socialDraftApi.indexOf("await validateReadyMedia(draftContent)") < socialDraftApi.indexOf('status: "ready"'), "Public media validation must run before READY state is persisted.");
 assert.ok(socialDraftApi.includes('event.status !== "ready"'), "Scheduling must be server-side restricted to READY events.");
 assert.ok(socialDraftApi.includes('event.status !== "scheduled"'), "Unscheduling must be server-side restricted to SCHEDULED events.");
+assert.ok(socialDraftApi.includes('event.status !== "draft"'), "Soft discard must be server-side restricted to DRAFT events.");
+assert.ok(socialDraftApi.includes('status: "cancelled"'), "Soft discard must preserve the Social event by moving it to CANCELLED.");
+assert.ok(socialManager.includes('event.status !== "cancelled"'), "Cancelled Social events must be hidden from the active queue.");
+assert.ok(socialManager.includes('window.confirm'), "Discard draft must require explicit confirmation.");
 assert.ok(!socialDraftApi.includes("publish_mode: \"approval\""), "Draft approval or scheduling must not unlock Meta publishing.");
 
 const manualMetaPublishApi = fs.readFileSync(path.join(root, "control-center/api/social-instagram-feed-test-publish.js"), "utf8");
