@@ -5026,6 +5026,16 @@ useEffect(() => {
     }
 
     if (discoveryOpen) {
+      if (window.history.state?.playniceDiscoveryOpen === true) {
+        const nextState = { ...(window.history.state || {}) };
+        delete nextState.playniceDiscoveryOpen;
+        window.history.replaceState(
+          nextState,
+          "",
+          window.location.pathname + window.location.search
+        );
+      }
+
       setDiscoveryOpen(false);
     }
   };
@@ -6652,6 +6662,17 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       });
 
       discoveryOriginSurfaceRef.current = "home";
+
+      if (window.history.state?.playniceDiscoveryOpen === true) {
+        const nextState = { ...(window.history.state || {}) };
+        delete nextState.playniceDiscoveryOpen;
+        window.history.replaceState(
+          nextState,
+          "",
+          window.location.pathname + window.location.search
+        );
+      }
+
       setDiscoveryOpen(true);
     }}
     aria-expanded={discoveryOpen}
@@ -6683,6 +6704,16 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       aria-hidden={isHomeDiscoverySuspendedForProduct ? "true" : undefined}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
+          if (window.history.state?.playniceDiscoveryOpen === true) {
+            const nextState = { ...(window.history.state || {}) };
+            delete nextState.playniceDiscoveryOpen;
+            window.history.replaceState(
+              nextState,
+              "",
+              window.location.pathname + window.location.search
+            );
+          }
+
           setDiscoveryOpen(false);
         }
       }}
@@ -6702,7 +6733,19 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <button
           type="button"
           className="playnice-discovery-close"
-          onClick={() => setDiscoveryOpen(false)}
+          onClick={() => {
+            if (window.history.state?.playniceDiscoveryOpen === true) {
+              const nextState = { ...(window.history.state || {}) };
+              delete nextState.playniceDiscoveryOpen;
+              window.history.replaceState(
+                nextState,
+                "",
+                window.location.pathname + window.location.search
+              );
+            }
+
+            setDiscoveryOpen(false);
+          }}
           aria-label={
             lang === "sr"
               ? "Zatvori Fragrance Intelligence"
