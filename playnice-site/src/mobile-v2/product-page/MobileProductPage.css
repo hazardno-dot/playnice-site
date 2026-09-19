@@ -640,23 +640,23 @@
     min-height: 50px;
     border: 0;
     border-radius: 13px;
-    background: linear-gradient(180deg, #e4c477, #cfa653);
+    background-color: #dcb56b;
     color: #18140d;
     font: 850 0.72rem/1 Inter, sans-serif;
     letter-spacing: 0.08em;
     transition:
-      background 220ms ease,
-      color 220ms ease,
-      box-shadow 220ms ease,
-      transform 220ms ease;
+      background-color 180ms ease,
+      color 180ms ease,
+      box-shadow 180ms ease,
+      transform 180ms ease;
   }
 
   .mobile-product-page__add.is-added {
-    background: linear-gradient(135deg, #d9f0df 0%, #8fcf9e 48%, #5f9f73 100%);
+    background-color: #8fcf9e;
     color: #07130b;
     box-shadow:
       0 12px 26px rgba(95, 159, 115, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
     transform: translateY(-1px) scale(1.01);
   }
 
