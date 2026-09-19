@@ -276,6 +276,7 @@ function SocialWorkspace() {
         setEvents((current) => current.map((event) => event.id === payload.event.id ? payload.event : event));
         setSelectedId(payload.event.id);
         await loadAudit(payload.event.id);
+        window.dispatchEvent(new CustomEvent("playnice:social-state-updated", { detail: { event_id: payload.event.id, status: payload.event.status, action } }));
       } else {
         if (payload.discarded) { setSelectedId(""); setAuditRows([]); }
         await load();
@@ -584,6 +585,8 @@ function SocialWorkspace() {
         <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>Journal</button>
       </div>
     </section>}
+
+    <section id="social-manual-publish-area" className="social-manual-publish-area" aria-label="Manual publishing controls" />
   </section>;
 }
 

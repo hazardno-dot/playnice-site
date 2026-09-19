@@ -66,7 +66,9 @@ const isControlledPublishEvent = (event) => Boolean(
   event?.metadata?.test ||
   event?.metadata?.replay ||
   event?.metadata?.manual_product_post ||
-  event?.metadata?.producer === "social-manual-product-post" ||
+  event?.metadata?.manual_hero_post ||
+  event?.metadata?.manual_journal_post ||
+  String(event?.metadata?.producer || "").startsWith("social-manual-") ||
   String(event?.source_id || "").includes("--shadow-test-") ||
   String(event?.source_id || "").includes("--shadow-replay-") ||
   String(event?.source_id || "").includes("--manual-social-")
@@ -314,13 +316,13 @@ export default async function handler(req, res) {
   if (!eventRes.ok) return json(res, 502, { error: `Could not load Social event (${eventRes.status}).` });
   const event = Array.isArray(events) ? events[0] : null;
   if (!event) return json(res, 404, { error: "Social event not found." });
-  if (!isControlledPublishEvent(event)) return json(res, 403, { error: "Manual Meta publishing is allowed only for controlled test/replay or manual Product Social events." });
+  if (!isControlledPublishEvent(event)) return json(res, 403, { error: "Manual Meta publishing is allowed only for controlled test/replay or manual Product, Hero or Journal Social events." });
   if (!["ready", "scheduled"].includes(event.status)) return json(res, 409, { error: "Test event must be READY or SCHEDULED with an approved snapshot." });
 
   const priorPublish = await alreadyPublished(admin.token, event.id, channel);
   if (priorPublish) {
     return json(res, 409, {
-      error: "This Social event has already been published to this channel. Create a new Product post to publish it again.",
+      error: "This Social event has already been published to this channel. Create a new Social post to publish it again.",
       already_published: true,
       channel,
       published_at: priorPublish.created_at || null,

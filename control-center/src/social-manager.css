@@ -59,3 +59,6 @@
 .social-empty-workspace>div{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .social-empty-workspace button{min-width:110px;padding:10px 14px;border:1px solid #33404a;background:#121920;color:#aeb8c4;cursor:pointer}
 .social-empty-workspace .social-create-product{border-color:#416b55;background:#142019;color:#b9dbc8}
+
+.social-manual-publish-area{display:grid;gap:12px;margin-top:4px}
+.social-manual-publish-area:empty{display:none}
