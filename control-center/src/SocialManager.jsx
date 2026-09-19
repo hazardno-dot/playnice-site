@@ -276,6 +276,7 @@ function SocialWorkspace() {
         setEvents((current) => current.map((event) => event.id === payload.event.id ? payload.event : event));
         setSelectedId(payload.event.id);
         await loadAudit(payload.event.id);
+        window.dispatchEvent(new CustomEvent("playnice:social-state-updated", { detail: { event_id: payload.event.id, status: payload.event.status, action } }));
       } else {
         if (payload.discarded) { setSelectedId(""); setAuditRows([]); }
         await load();
