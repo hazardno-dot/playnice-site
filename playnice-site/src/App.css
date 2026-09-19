@@ -18633,6 +18633,34 @@ body.overlay-lock .header-system {
   animation: playniceDiscoveryOverlayIn 180ms ease both;
 }
 
+.playnice-discovery-overlay.is-suspended-for-product {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  z-index: 1;
+  animation: none;
+  transition: none;
+}
+
+.playnice-discovery-overlay.is-suspended-for-product .playnice-discovery-panel {
+  animation: none;
+}
+
+.playnice-discovery-overlay.is-history-restored {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  animation: none;
+  transition: none;
+}
+
+.playnice-discovery-overlay.is-history-restored .playnice-discovery-panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: none;
+  transition: none;
+}
+
 .playnice-discovery-panel {
   position: relative;
   isolation: isolate;

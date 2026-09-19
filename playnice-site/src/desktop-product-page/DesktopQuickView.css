@@ -2,7 +2,7 @@
   .desktop-quick-view-layer {
     position: fixed;
     inset: 0;
-    z-index: 6200;
+    z-index: 10020;
     display: grid;
     place-items: center;
     padding: 28px;

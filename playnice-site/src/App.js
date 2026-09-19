@@ -850,7 +850,46 @@ const getInitialShopState = () => {
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
   const discoveryAttributionRef = useRef(null);
   const discoverySearchContextRef = useRef(null);
+  const discoveryOriginSurfaceRef = useRef("home");
   const productOriginSurfaceRef = useRef("");
+  const discoveryQueryRef = useRef(discoveryQuery);
+  const discoverySearchHandlerRef = useRef(null);
+
+  discoveryQueryRef.current = discoveryQuery;
+
+  const clearDiscoveryHistoryMarker = useCallback(() => {
+    if (
+      window.history.state?.playniceDiscoveryOpen !== true &&
+      !window.history.state?.playniceDiscoveryQuery
+    ) {
+      return;
+    }
+
+    const nextState = { ...(window.history.state || {}) };
+    delete nextState.playniceDiscoveryOpen;
+    delete nextState.playniceDiscoveryQuery;
+
+    window.history.replaceState(
+      nextState,
+      "",
+      window.location.pathname + window.location.search
+    );
+  }, []);
+
+  const resetDiscoverySession = useCallback(() => {
+    setDiscoveryQuery("");
+    setDiscoveryResults([]);
+    setDiscoveryFeedback("");
+    setDiscoveryPage(1);
+    discoveryAttributionRef.current = null;
+    discoverySearchContextRef.current = null;
+  }, []);
+
+  const closeDiscovery = useCallback(() => {
+    clearDiscoveryHistoryMarker();
+    setDiscoveryOpen(false);
+    resetDiscoverySession();
+  }, [clearDiscoveryHistoryMarker, resetDiscoverySession]);
 
   const discoveryTotalPages = Math.max(
     1,
@@ -1507,6 +1546,16 @@ const selectedSortOption =
   const isMobileProductPageActive =
     isMobileProductModalViewport && Boolean(selectedProduct);
 
+  const isHomeDiscoverySuspendedForProduct =
+    discoveryOpen &&
+    discoveryOriginSurfaceRef.current === "home" &&
+    window.location.pathname.startsWith("/product/");
+
+  const isHomeDiscoveryHistoryReturn =
+    discoveryOpen &&
+    window.history.state?.playniceDiscoveryOpen === true &&
+    !window.location.pathname.startsWith("/product/");
+
   const hasBlockingOverlay =
   (!isMobileProductPageActive &&
     !!selectedProduct &&
@@ -1519,7 +1568,7 @@ const selectedSortOption =
   privateSelectionOpen ||
   !!catalogPreview ||
   manifestoOpen ||
-  discoveryOpen ||
+  (discoveryOpen && !isHomeDiscoverySuspendedForProduct) ||
   discoveryBuilderOpen;
 
   const showStickyCta =
@@ -2108,6 +2157,36 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
+  const handleDesktopQuickViewFullProduct = (event) => {
+    if (event?.detail?.source !== "discovery") return;
+
+    window.history.replaceState(
+      {
+        ...(window.history.state || {}),
+        playniceDiscoveryOpen: true,
+        playniceDiscoveryQuery: discoveryQueryRef.current,
+      },
+      "",
+      window.location.pathname + window.location.search
+    );
+
+    productOriginSurfaceRef.current = "discovery";
+  };
+
+  window.addEventListener(
+    "playnice:desktop-quick-view-full-product",
+    handleDesktopQuickViewFullProduct
+  );
+
+  return () => {
+    window.removeEventListener(
+      "playnice:desktop-quick-view-full-product",
+      handleDesktopQuickViewFullProduct
+    );
+  };
+}, []);
+
+useEffect(() => {
   const handlePopState = () => {
     const pagePath =
       window.location.pathname + window.location.search;
@@ -2116,11 +2195,10 @@ useEffect(() => {
       window.history.state?.playniceExplicitNavigation === true;
 
     const returnToDiscovery =
-      !isExplicitNavigation &&
-      productOriginSurfaceRef.current === "discovery" &&
+      window.history.state?.playniceDiscoveryOpen === true &&
       !window.location.pathname.startsWith("/product/");
 
-    if (isExplicitNavigation) {
+    if (isExplicitNavigation && !returnToDiscovery) {
       productOriginSurfaceRef.current = "";
       setDiscoveryOpen(false);
     }
@@ -2142,7 +2220,8 @@ useEffect(() => {
 
       openProductModal(productFromUrl, {
         updateUrl: false,
-        changeView: false
+        changeView: false,
+        originSurface: window.history.state?.productOriginSurface || ""
       });
 
       trackPageView(pagePath || "/");
@@ -2210,7 +2289,20 @@ if (journalArticleFromUrl) {
     setView(nextView);
 
     if (returnToDiscovery) {
+      const restoredDiscoveryQuery =
+        String(window.history.state?.playniceDiscoveryQuery || "").trim();
+
       productOriginSurfaceRef.current = "";
+      discoveryOriginSurfaceRef.current = "home";
+
+      if (restoredDiscoveryQuery) {
+        setDiscoveryQuery(restoredDiscoveryQuery);
+        discoverySearchHandlerRef.current?.(
+          restoredDiscoveryQuery,
+          "history-return"
+        );
+      }
+
       setDiscoveryOpen(true);
     }
 
@@ -4750,6 +4842,8 @@ const getDiscoveryAnalyticsParams = (discovery, source = "manual") => {
   setDiscoveryPage(1);
 };
 
+discoverySearchHandlerRef.current = handleDiscoverySearch;
+
 const handleFindSimilarWithFI = async (product) => {
   if (!product) return;
 
@@ -4765,6 +4859,7 @@ const handleFindSimilarWithFI = async (product) => {
     product_name: product.name,
   });
 
+  discoveryOriginSurfaceRef.current = "product-page";
   setDiscoveryQuery(referenceQuery);
   setDiscoveryOpen(true);
 
@@ -4805,7 +4900,10 @@ useEffect(() => {
     return;
   }
 
-  openProductModal(matchedProduct, { updateUrl: false });
+  openProductModal(matchedProduct, {
+    updateUrl: false,
+    originSurface: window.history.state?.productOriginSurface || "",
+  });
 }, []);
 
 useEffect(() => {
@@ -4986,7 +5084,7 @@ useEffect(() => {
     }
 
     if (discoveryOpen) {
-      setDiscoveryOpen(false);
+      closeDiscovery();
     }
   };
 
@@ -5008,7 +5106,8 @@ useEffect(() => {
   storyOpen,
   privateSelectionOpen,
   discoveryOpen,
-  isSubmittingOrder
+  isSubmittingOrder,
+  closeDiscovery
 ]);
 
 const openImpactProductModal = (product) => {
@@ -6599,7 +6698,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
 {/* PLAYNICE FRAGRANCE INTELLIGENCE — V6 */}
 <section
-  className="playnice-discovery-portal section-wrap"
+  className={`playnice-discovery-portal section-wrap ${
+    isHomeDiscoverySuspendedForProduct ? "is-suspended-for-product" : ""
+  }`}
   aria-labelledby="playnice-discovery-trigger-label"
 >
   <button
@@ -6611,6 +6712,9 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         view,
       });
 
+      discoveryOriginSurfaceRef.current = "home";
+      clearDiscoveryHistoryMarker();
+      resetDiscoverySession();
       setDiscoveryOpen(true);
     }}
     aria-expanded={discoveryOpen}
@@ -6631,11 +6735,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
   {discoveryOpen && (
     <div
-      className="playnice-discovery-overlay"
+      className={`playnice-discovery-overlay ${
+        isHomeDiscoverySuspendedForProduct
+          ? "is-suspended-for-product"
+          : isHomeDiscoveryHistoryReturn
+            ? "is-history-restored"
+            : ""
+      }`}
       role="presentation"
+      aria-hidden={isHomeDiscoverySuspendedForProduct ? "true" : undefined}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
-          setDiscoveryOpen(false);
+          closeDiscovery();
         }
       }}
     >
@@ -6654,7 +6765,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <button
           type="button"
           className="playnice-discovery-close"
-          onClick={() => setDiscoveryOpen(false)}
+          onClick={closeDiscovery}
           aria-label={
             lang === "sr"
               ? "Zatvori Fragrance Intelligence"
@@ -6913,6 +7024,38 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                           hasExclusions:
                             discoverySearchContextRef.current?.has_exclusions || "no",
                         };
+
+                        const opensHomeQuickView =
+                          discoveryOriginSurfaceRef.current === "home" &&
+                          !isMobileProductModal();
+
+                        if (opensHomeQuickView) {
+                          window.dispatchEvent(
+                            new CustomEvent("playnice:desktop-quick-view", {
+                              detail: {
+                                productId: result.product.id,
+                                source: "discovery",
+                              }
+                            })
+                          );
+
+                          return;
+                        }
+
+                        if (
+                          discoveryOriginSurfaceRef.current === "home" &&
+                          isMobileProductModal()
+                        ) {
+                          window.history.replaceState(
+                            {
+                              ...(window.history.state || {}),
+                              playniceDiscoveryOpen: true,
+                              playniceDiscoveryQuery: discoveryQuery,
+                            },
+                            "",
+                            window.location.pathname + window.location.search
+                          );
+                        }
 
                         setDiscoveryOpen(false);
 

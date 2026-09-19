@@ -36,6 +36,10 @@
     z-index: 9998;
   }
 
+  body.desktop-product-route-active .playnice-discovery-portal.is-suspended-for-product {
+    z-index: 1;
+  }
+
   body.desktop-product-route-active .playnice-discovery-portal > .playnice-discovery-trigger {
     display: none !important;
   }
@@ -88,6 +92,7 @@
     display: block;
     min-height: 100vh;
     position: relative;
+    z-index: 2;
     isolation: isolate;
     background: #050505;
   }

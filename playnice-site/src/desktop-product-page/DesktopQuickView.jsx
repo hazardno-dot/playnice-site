@@ -79,6 +79,7 @@ export default function DesktopQuickView() {
   const [product, setProduct] = useState(null);
   const [lang, setLang] = useState(() => getLanguage());
   const [selectedSize, setSelectedSize] = useState("");
+  const [source, setSource] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
 
@@ -96,6 +97,7 @@ export default function DesktopQuickView() {
       const firstSize = Object.keys(nextProduct.sizes || {})[0] || "";
       setProduct(nextProduct);
       setSelectedSize(firstSize);
+      setSource(event?.detail?.source || "");
       setLang(getLanguage());
       setIsAdded(false);
 
@@ -110,8 +112,16 @@ export default function DesktopQuickView() {
   useEffect(() => {
     if (!product) return undefined;
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const body = document.body;
+    const appAlreadyOwnsScrollLock =
+      body.classList.contains("overlay-lock") ||
+      body.style.position === "fixed";
+
+    const previousOverflow = body.style.overflow;
+
+    if (!appAlreadyOwnsScrollLock) {
+      body.style.overflow = "hidden";
+    }
 
     const onKeyDown = (event) => {
       if (event.key === "Escape") setProduct(null);
@@ -120,7 +130,10 @@ export default function DesktopQuickView() {
     window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      if (!appAlreadyOwnsScrollLock) {
+        body.style.overflow = previousOverflow;
+      }
+
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [product]);
@@ -173,14 +186,33 @@ export default function DesktopQuickView() {
     const nextUrl = `/product/${product.slug}`;
     const originView = window.location.pathname.startsWith("/shop") ? "shop" : "home";
 
+    window.dispatchEvent(
+      new CustomEvent("playnice:desktop-quick-view-full-product", {
+        detail: {
+          productId: product.id,
+          source,
+        }
+      })
+    );
+
     close();
 
+    const nextState = {
+      ...(window.history.state || {}),
+      productSlug: product.slug,
+      productOriginView: originView,
+    };
+
+    if (source === "discovery") {
+      nextState.playniceDiscoveryOpen = false;
+      nextState.productOriginSurface = "discovery";
+    } else {
+      delete nextState.playniceDiscoveryOpen;
+      delete nextState.productOriginSurface;
+    }
+
     window.history.pushState(
-      {
-        ...(window.history.state || {}),
-        productSlug: product.slug,
-        productOriginView: originView,
-      },
+      nextState,
       "",
       nextUrl
     );
