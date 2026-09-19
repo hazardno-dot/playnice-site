@@ -364,6 +364,45 @@
   color: rgba(220, 181, 107, 0.72);
 }
 
+.desktop-product-page__find-similar {
+  width: 100%;
+  min-height: 42px;
+  margin-top: 16px;
+  padding: 0 14px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(220, 181, 107, 0.16);
+  background:
+    linear-gradient(180deg, rgba(220, 181, 107, 0.028), rgba(255, 255, 255, 0.006)),
+    rgba(8, 8, 8, 0.72);
+  color: rgba(220, 181, 107, 0.84);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.desktop-product-page__find-similar strong {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-align: left;
+}
+
+.desktop-product-page__find-similar > span {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.desktop-product-page__find-similar:hover {
+  border-color: rgba(220, 181, 107, 0.38);
+  background: rgba(220, 181, 107, 0.055);
+  color: #e4c477;
+}
+
 .desktop-product-page__intelligence {
   display: grid;
   grid-template-columns: minmax(0, 0.82fr) minmax(520px, 1.18fr);
