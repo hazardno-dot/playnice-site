@@ -18634,9 +18634,10 @@ body.overlay-lock .header-system {
 }
 
 .playnice-discovery-overlay.is-suspended-for-product {
-  opacity: 0;
-  visibility: hidden;
+  opacity: 1;
+  visibility: visible;
   pointer-events: none;
+  z-index: 1;
   animation: none;
   transition: none;
 }
