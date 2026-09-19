@@ -95,7 +95,7 @@ const bridgeSource = fs.readFileSync(path.join(root, "control-center/src/SocialI
 assert.ok(endpointSource.includes('classifySocialMedia(story.media || null, "instagram_story")'), "Story endpoint must classify approved Story media before transport.");
 assert.ok(endpointSource.includes('readiness.status !== "ideal"'), "Story endpoint must reject non-ideal media.");
 assert.ok(bridgeSource.includes('FALLBACK · DO NOT PUBLISH TO STORY') || bridgeSource.includes('DO NOT PUBLISH TO STORY'), "Story UI must label fallback media as non-publishable.");
-assert.ok(bridgeSource.includes('disabled={!storyReady || loading}'), "Story test button must stay disabled unless ideal Story media is ready.");
+assert.ok(bridgeSource.includes('disabled={!storyReady || loading || Boolean(published)}'), "Story publish button must stay disabled unless ideal Story media is ready and must remain locked after publication.");
 
 console.log("PASS  Instagram Story adapter builds media_type=STORIES create request");
 console.log("PASS  Instagram Story response parsing keeps published Story id");
