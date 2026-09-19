@@ -229,7 +229,7 @@ export default function DesktopProductPage({
     addedCartTimeoutRef.current = window.setTimeout(() => {
       setAddedCartKey("");
       addedCartTimeoutRef.current = null;
-    }, 1300);
+    }, 600);
   };
 
   return (
