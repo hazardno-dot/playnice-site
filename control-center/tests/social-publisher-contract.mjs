@@ -143,7 +143,7 @@ assert.ok(socialDraftApi.includes('event.status !== "ready"'), "Scheduling must 
 assert.ok(socialDraftApi.includes('event.status !== "scheduled"'), "Unscheduling must be server-side restricted to SCHEDULED events.");
 assert.ok(socialDraftApi.includes('event.status !== "draft"'), "Soft discard must be server-side restricted to DRAFT events.");
 assert.ok(socialDraftApi.includes('status: "cancelled"'), "Soft discard must preserve the Social event by moving it to CANCELLED.");
-assert.ok(socialManager.includes('event.status !== "cancelled"'), "Cancelled Social events must be hidden from the active queue.");
+assert.ok(socialManager.includes('!["cancelled", "published"].includes(event.status)'), "Cancelled and published Social events must be hidden from the active queue.");
 assert.ok(socialManager.includes('filter === "archived"'), "Archived filter must surface cancelled Social events.");
 assert.ok(socialManager.includes("ARCHIVED · PUBLISHED"), "Published Social events must show an explicit archived/published review state.");
 assert.ok(socialManager.includes("ARCHIVED · DISCARDED"), "Discarded Social events must remain distinguishable from published archive history.");
