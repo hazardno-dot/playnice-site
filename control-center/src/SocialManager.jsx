@@ -6,7 +6,7 @@ import { productCopy } from "@shop/data/products/productCopy.js";
 import { generateSocialDraft, validateSocialDraftMedia } from "./socialDraft.mjs";
 import "./social-manager.css";
 
-const FILTERS = ["all", "draft", "ready", "scheduled", "published", "failed"];
+const FILTERS = ["all", "draft", "ready", "scheduled", "published", "failed", "archived"];
 const CHANNELS = [["instagram_feed", "Instagram Feed"], ["instagram_story", "Instagram Story"], ["facebook", "Facebook"]];
 const PUBLIC_ORIGIN = "https://www.playniceshop.me";
 const AUDIT_LABELS = {
@@ -131,7 +131,7 @@ function SocialWorkspace() {
       .sort((a, b) => String(a.shortName || a.name || "").localeCompare(String(b.shortName || b.name || "")))
       .slice(0, 60);
   }, [productQuery]);
-  const visible = useMemo(() => filter === "all" ? activeEvents : activeEvents.filter((event) => event.status === filter), [activeEvents, filter]);
+  const visible = useMemo(() => filter === "archived" ? events.filter((event) => event.status === "cancelled") : filter === "all" ? activeEvents : activeEvents.filter((event) => event.status === filter), [events, activeEvents, filter]);
   const selected = visible.find((event) => event.id === selectedId) || visible[0] || null;
   const generated = useMemo(() => {
     if (!selected) return null;
@@ -334,7 +334,9 @@ function SocialWorkspace() {
     ? "SCHEDULED · LOCKED"
     : selected?.status === "ready"
       ? "READY · APPROVED"
-      : "DRAFT · REVIEW";
+      : selected?.status === "cancelled"
+        ? "ARCHIVED · CANCELLED"
+        : "DRAFT · REVIEW";
 
   return <section className="social-manager">
     <div className="social-banner">
@@ -353,7 +355,7 @@ function SocialWorkspace() {
     {actionError ? <div className="social-error social-action-error">{actionError}</div> : null}
 
     <div className="social-filter-bar">
-      {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${counts[value] || 0}` : ""}</button>)}
+      {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${value === "archived" ? events.filter((event) => event.status === "cancelled").length : counts[value] || 0}` : ""}</button>)}
       <button type="button" className="social-create-product" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>{saving ? "Working…" : "Create Product Post"}</button>
       <button type="button" disabled={saving} onClick={() => replayLatest("hero")}>{saving ? "Working…" : "Replay Hero"}</button>
       <button type="button" disabled={saving} onClick={() => replayLatest("journal")}>{saving ? "Working…" : "Replay Journal"}</button>
