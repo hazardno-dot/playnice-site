@@ -226,7 +226,7 @@ export default function MobileProductPage({
     addedCartTimeoutRef.current = window.setTimeout(() => {
       setAddedCartKey("");
       addedCartTimeoutRef.current = null;
-    }, 1300);
+    }, 600);
   };
 
   return (
