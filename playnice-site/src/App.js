@@ -2116,11 +2116,11 @@ useEffect(() => {
       window.history.state?.playniceExplicitNavigation === true;
 
     const returnToDiscovery =
-      !isExplicitNavigation &&
+      window.history.state?.playniceDiscoveryOpen === true &&
       productOriginSurfaceRef.current === "discovery" &&
       !window.location.pathname.startsWith("/product/");
 
-    if (isExplicitNavigation) {
+    if (isExplicitNavigation && !returnToDiscovery) {
       productOriginSurfaceRef.current = "";
       setDiscoveryOpen(false);
     }
@@ -6913,6 +6913,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                           hasExclusions:
                             discoverySearchContextRef.current?.has_exclusions || "no",
                         };
+
+                        window.history.replaceState(
+                          {
+                            ...(window.history.state || {}),
+                            playniceDiscoveryOpen: true,
+                          },
+                          "",
+                          window.location.pathname + window.location.search
+                        );
 
                         setDiscoveryOpen(false);
 
