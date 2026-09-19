@@ -173,6 +173,12 @@ export default function DesktopQuickView() {
     const nextUrl = `/product/${product.slug}`;
     const originView = window.location.pathname.startsWith("/shop") ? "shop" : "home";
 
+    window.dispatchEvent(
+      new CustomEvent("playnice:desktop-quick-view-full-product", {
+        detail: { productId: product.id }
+      })
+    );
+
     close();
 
     window.history.pushState(
