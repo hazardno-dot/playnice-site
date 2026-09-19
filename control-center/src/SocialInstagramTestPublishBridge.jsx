@@ -7,7 +7,9 @@ const isControlledPublishEvent = (event) => Boolean(
   event?.metadata?.test ||
   event?.metadata?.replay ||
   event?.metadata?.manual_product_post ||
-  event?.metadata?.producer === "social-manual-product-post" ||
+  event?.metadata?.manual_hero_post ||
+  event?.metadata?.manual_journal_post ||
+  String(event?.metadata?.producer || "").startsWith("social-manual-") ||
   String(event?.source_id || "").includes("--shadow-test-") ||
   String(event?.source_id || "").includes("--shadow-replay-") ||
   String(event?.source_id || "").includes("--manual-social-")
@@ -73,10 +75,15 @@ export default function SocialInstagramTestPublishBridge() {
 
   useEffect(() => {
     loadEvent();
+    const refresh = () => loadEvent();
+    window.addEventListener("playnice:social-state-updated", refresh);
     const channel = supabase.channel("social-instagram-test-publish-bridge")
       .on("postgres_changes", { event: "*", schema: "public", table: "social_events" }, loadEvent)
       .subscribe();
-    return () => supabase.removeChannel(channel);
+    return () => {
+      window.removeEventListener("playnice:social-state-updated", refresh);
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const eventTitle = useMemo(() => titleFor(event), [event]);
