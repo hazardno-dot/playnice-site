@@ -91,6 +91,22 @@ function SocialWorkspace() {
     setLoading(false);
   };
 
+  const reconcilePublished = async () => {
+    try {
+      const { data } = await supabase.auth.getSession();
+      const token = data?.session?.access_token;
+      if (!token) return;
+      const response = await fetch("/api/social-reconcile-published", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (response.ok && Number(payload.reconciled || 0) > 0) await load();
+    } catch {
+      // Reconciliation is best-effort; normal Social loading must remain available.
+    }
+  };
+
   const loadAudit = async (eventId) => {
     if (!eventId) { setAuditRows([]); setAuditError(""); return; }
     setAuditLoading(true);
@@ -107,6 +123,7 @@ function SocialWorkspace() {
 
   useEffect(() => {
     load();
+    reconcilePublished();
     const handleSocialMediaUpdated = () => {
       setFeedDryRun(null);
       setFeedDryRunError("");
