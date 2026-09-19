@@ -18,6 +18,8 @@ const AUDIT_LABELS = {
   draft_discarded: "Draft discarded",
   shadow_replay_created_from_product: "Product replay created",
   manual_product_post_created: "Product post created",
+  manual_hero_post_created: "Hero post created",
+  manual_journal_post_created: "Journal post created",
   shadow_replay_created_from_hero: "Hero replay created",
   shadow_replay_created_from_journal: "Journal replay created",
   shadow_event_created_from_product_publish: "Created from product publish",
@@ -83,6 +85,7 @@ function SocialWorkspace() {
   const [feedDryRunError, setFeedDryRunError] = useState("");
   const [productPickerOpen, setProductPickerOpen] = useState(false);
   const [productQuery, setProductQuery] = useState("");
+  const [sourcePicker, setSourcePicker] = useState({ open: false, type: "", items: [], query: "", loading: false });
 
   const load = async () => {
     setLoading(true);
@@ -290,6 +293,51 @@ function SocialWorkspace() {
     await persist("discard");
   };
 
+  const openSourcePicker = async (sourceType) => {
+    setSourcePicker({ open: true, type: sourceType, items: [], query: "", loading: true });
+    setActionError("");
+    try {
+      const token = await sessionToken();
+      const response = await fetch(`/api/social-source-catalog?source_type=${encodeURIComponent(sourceType)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Could not load ${sourceType} catalog (${response.status}).`);
+      setSourcePicker({ open: true, type: sourceType, items: payload.items || [], query: "", loading: false });
+    } catch (pickerError) {
+      setSourcePicker({ open: false, type: "", items: [], query: "", loading: false });
+      setActionError(pickerError.message || String(pickerError));
+    }
+  };
+
+  const createSourcePost = async (item) => {
+    if (!sourcePicker.type || !item) return;
+    setSaving(true);
+    setActionError("");
+    try {
+      const token = await sessionToken();
+      const body = { source_type: sourcePicker.type };
+      if (sourcePicker.type === "hero") body.hero_key = item.key;
+      if (sourcePicker.type === "journal") body.journal_article_id = item.id;
+      const response = await fetch("/api/social-shadow-replay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify(body),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Could not create ${sourcePicker.type} Social post (${response.status}).`);
+      setFilter("all");
+      setSourcePicker({ open: false, type: "", items: [], query: "", loading: false });
+      await load();
+      const eventId = payload.event?.id || payload.event_id || "";
+      if (eventId) { setSelectedId(eventId); await loadAudit(eventId); }
+    } catch (createError) {
+      setActionError(createError.message || String(createError));
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const replayLatest = async (sourceType) => {
     setSaving(true);
     setActionError("");
@@ -376,10 +424,30 @@ function SocialWorkspace() {
     <div className="social-filter-bar">
       {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${value === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)).length : counts[value] || 0}` : ""}</button>)}
       <button type="button" className="social-create-product" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>{saving ? "Working…" : "Create Product Post"}</button>
-      <button type="button" disabled={saving} onClick={() => replayLatest("hero")}>{saving ? "Working…" : "Replay Hero"}</button>
-      <button type="button" disabled={saving} onClick={() => replayLatest("journal")}>{saving ? "Working…" : "Replay Journal"}</button>
+      <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>{saving ? "Working…" : "Create Hero Post"}</button>
+      <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>{saving ? "Working…" : "Create Journal Post"}</button>
     </div>
 
+
+    {sourcePicker.open ? <div className="social-product-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setSourcePicker({ open: false, type: "", items: [], query: "", loading: false }); }}>
+      <section className="social-product-picker" role="dialog" aria-modal="true" aria-label={`Create ${sourcePicker.type} post`}>
+        <div className="social-product-picker-head">
+          <div><span>{`CREATE ${sourcePicker.type.toUpperCase()} POST`}</span><h3>{sourcePicker.type === "hero" ? "Choose any Hero visual" : "Choose any Journal article"}</h3><p>Creates a fresh Social draft without changing the storefront source.</p></div>
+          <button type="button" disabled={saving} onClick={() => setSourcePicker({ open: false, type: "", items: [], query: "", loading: false })}>Close</button>
+        </div>
+        <input autoFocus type="search" value={sourcePicker.query} onChange={(event) => setSourcePicker((current) => ({ ...current, query: event.target.value }))} placeholder={sourcePicker.type === "hero" ? "Search Hero title or key…" : "Search Journal title or article id…"} />
+        <div className="social-product-picker-results">
+          {sourcePicker.loading ? <div className="social-product-picker-empty">Loading…</div> : (() => {
+            const q = sourcePicker.query.trim().toLowerCase();
+            const items = sourcePicker.items.filter((item) => !q || [item.title, item.subtitle, item.key, item.id].filter(Boolean).some((value) => String(value).toLowerCase().includes(q)));
+            return items.length ? items.map((item) => <button type="button" key={`${sourcePicker.type}-${item.id || item.key}`} disabled={saving} onClick={() => createSourcePost(item)}>
+              <div><strong>{item.title || item.key}</strong><span>{item.subtitle || (sourcePicker.type === "hero" ? item.key : `Journal #${item.id}`)}</span><small>{sourcePicker.type === "hero" ? item.key : `Article #${item.id}`}</small></div>
+              {item.image ? <img src={publicSourceUrl(item.image)} alt="" style={{ width: 48, height: 48, objectFit: "cover" }} /> : <em>{label(sourcePicker.type)}</em>}
+            </button>) : <div className="social-product-picker-empty">No matching {sourcePicker.type} sources.</div>;
+          })()}
+        </div>
+      </section>
+    </div> : null}
 
     {productPickerOpen ? <div className="social-product-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setProductPickerOpen(false); }}>
       <section className="social-product-picker" role="dialog" aria-modal="true" aria-label="Create product post">
