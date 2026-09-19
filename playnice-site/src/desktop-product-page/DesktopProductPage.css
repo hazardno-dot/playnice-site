@@ -17,7 +17,7 @@
   min-height: 24px;
   margin-bottom: 28px;
   color: rgba(245, 241, 232, 0.48);
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -319,7 +319,7 @@
   top: 5px;
   right: 6px;
   color: #dcb56b;
-  font-size: 8px;
+  font-size: 7px;
 }
 
 .desktop-product-page__actions {
@@ -374,24 +374,24 @@
 .desktop-product-page__find-similar {
   position: relative;
   width: auto;
-  min-width: 330px;
-  min-height: 72px;
-  padding: 0 20px 0 17px;
+  min-width: 286px;
+  min-height: 62px;
+  padding: 0 17px 0 14px;
   display: inline-grid;
   grid-template-columns: auto auto auto;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 12px;
   overflow: hidden;
   border: 1px solid rgba(135, 214, 255, 0.32);
-  border-radius: 20px;
+  border-radius: 17px;
   background:
     radial-gradient(circle at 14% 18%, rgba(81, 201, 255, 0.17), transparent 32%),
     radial-gradient(circle at 88% 78%, rgba(159, 112, 255, 0.14), transparent 34%),
     linear-gradient(135deg, rgba(15, 21, 30, 0.96), rgba(7, 9, 14, 0.96));
   color: #eef9ff;
   box-shadow:
-    0 18px 50px rgba(0, 0, 0, 0.38),
+    0 16px 42px rgba(0, 0, 0, 0.36),
     0 0 0 1px rgba(255, 255, 255, 0.025) inset,
     0 0 34px rgba(77, 188, 255, 0.08);
   cursor: pointer;
@@ -424,7 +424,7 @@
   position: absolute;
   inset: 1px;
   z-index: -1;
-  border-radius: 19px;
+  border-radius: 16px;
   pointer-events: none;
   background:
     linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0));
@@ -434,37 +434,40 @@
 
 .desktop-product-page__find-similar-orbit {
   position: relative;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   display: grid;
   place-items: center;
   border: 1px solid rgba(123, 216, 255, 0.42);
   border-radius: 50%;
   background: rgba(11, 20, 29, 0.74);
   box-shadow:
-    0 0 22px rgba(74, 193, 255, 0.12),
-    inset 0 0 0 5px rgba(122, 216, 255, 0.035);
+    0 0 18px rgba(74, 193, 255, 0.11),
+    inset 0 0 0 4px rgba(122, 216, 255, 0.035);
 }
 
 .desktop-product-page__find-similar-orbit::before {
   content: "";
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border: 1px solid rgba(178, 137, 255, 0.4);
   border-radius: 50%;
 }
 
 .desktop-product-page__find-similar-orbit i {
   position: absolute;
-  width: 5px;
-  height: 5px;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin: -2px;
   border-radius: 50%;
   background: #9ce7ff;
   box-shadow:
-    0 0 10px rgba(156, 231, 255, 0.9),
-    0 0 22px rgba(150, 127, 255, 0.5);
-  transform: translate(8px, -7px);
-  animation: desktopFiOrbitPulse 2.8s ease-in-out infinite;
+    0 0 9px rgba(156, 231, 255, 0.9),
+    0 0 18px rgba(150, 127, 255, 0.48);
+  transform-origin: 2px 2px;
+  animation: desktopFiOrbit 3.8s linear infinite;
 }
 
 .desktop-product-page__find-similar-copy {
@@ -494,10 +497,10 @@
 .desktop-product-page__find-similar-arrow {
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 25px;
+  height: 25px;
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
+  border-radius: 9px;
   color: #aeeaff;
   background: rgba(255,255,255,0.025);
   font: 700 14px/1 Inter, sans-serif;
@@ -535,14 +538,12 @@
   outline-offset: 4px;
 }
 
-@keyframes desktopFiOrbitPulse {
-  0%, 100% {
-    opacity: 0.75;
-    transform: translate(8px, -7px) scale(0.9);
+@keyframes desktopFiOrbit {
+  from {
+    transform: rotate(0deg) translateX(10px) rotate(0deg);
   }
-  50% {
-    opacity: 1;
-    transform: translate(8px, -7px) scale(1.18);
+  to {
+    transform: rotate(360deg) translateX(10px) rotate(-360deg);
   }
 }
 
