@@ -8798,6 +8798,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         (!isMobileProductPageActive && selectedProduct) ||
         storyOpen ||
         howItWorksOpen ||
+        faqOpen ||
         manifestoOpen ||
         privateSelectionOpen
           ? "show"
