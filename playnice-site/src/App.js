@@ -4748,14 +4748,6 @@ const handleFindSimilarWithFI = async (product) => {
     product_name: product.name,
   });
 
-  productOriginSurfaceRef.current = "";
-  setSelectedProduct(null);
-  setSelectedSize("");
-  setProductModalVisible(false);
-  setHasUserPickedSize(false);
-  setNoteMapOpen(false);
-
-  switchView("home", { scrollTop: false });
   setDiscoveryQuery(referenceQuery);
   setDiscoveryOpen(true);
 
@@ -6423,7 +6415,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </React.Suspense>
       )}
 
-      {!isMobileProductPageActive && view === "home" && (
+      {(
+        (!isMobileProductPageActive && view === "home") ||
+        (discoveryOpen && window.location.pathname.startsWith("/product/"))
+      ) && (
         <>
           <section
             className="hero hero-carousel"
