@@ -3964,6 +3964,10 @@ useEffect(() => {
       setMiniCartPreview(null);
       openCheckout();
     },
+
+    findSimilar: (product) => {
+      handleFindSimilarWithFI(product);
+    },
   });
 });
 
@@ -4727,6 +4731,35 @@ const getDiscoveryAnalyticsParams = (discovery, source = "manual") => {
   setDiscoveryResults(discovery.results);
   setDiscoveryFeedback(discovery.feedback || "");
   setDiscoveryPage(1);
+};
+
+const handleFindSimilarWithFI = async (product) => {
+  if (!product) return;
+
+  const referenceQuery =
+    lang === "sr"
+      ? `nešto kao ${product.name}`
+      : `something like ${product.name}`;
+
+  trackEvent("discovery_open_from_product", {
+    lang,
+    product_id: String(product.id),
+    product_slug: product.slug || "",
+    product_name: product.name,
+  });
+
+  productOriginSurfaceRef.current = "";
+  setSelectedProduct(null);
+  setSelectedSize("");
+  setProductModalVisible(false);
+  setHasUserPickedSize(false);
+  setNoteMapOpen(false);
+
+  switchView("home", { scrollTop: false });
+  setDiscoveryQuery(referenceQuery);
+  setDiscoveryOpen(true);
+
+  await handleDiscoverySearch(referenceQuery, "product-page");
 };
 
 const handleProductCardOpen = (product) => {
@@ -6315,6 +6348,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             onOpenProduct={(product) =>
               openProductModal(product, { changeView: false })
             }
+            onFindSimilar={handleFindSimilarWithFI}
             onBackToShop={() => {
               productOriginSurfaceRef.current = "";
               goToShop();
