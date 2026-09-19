@@ -122,7 +122,7 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
-for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard draft", "Discard test event", "Archived", "Create Product Post", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
+for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard draft", "Discard test event", "archived", "Create Product Post", "Replay Hero", "Replay Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
 assert.ok(socialManager.includes("disabled={saving || !mediaReadiness.ok}"), "Mark ready must be locally disabled when a channel has no media.");
@@ -145,7 +145,9 @@ assert.ok(socialDraftApi.includes('event.status !== "draft"'), "Soft discard mus
 assert.ok(socialDraftApi.includes('status: "cancelled"'), "Soft discard must preserve the Social event by moving it to CANCELLED.");
 assert.ok(socialManager.includes('event.status !== "cancelled"'), "Cancelled Social events must be hidden from the active queue.");
 assert.ok(socialManager.includes('filter === "archived"'), "Archived filter must surface cancelled Social events.");
-assert.ok(socialManager.includes('"ARCHIVED · CANCELLED"'), "Archived Social events must show an explicit archived review state.");
+assert.ok(socialManager.includes("ARCHIVED · PUBLISHED"), "Published Social events must show an explicit archived/published review state.");
+assert.ok(socialManager.includes("ARCHIVED · DISCARDED"), "Discarded Social events must remain distinguishable from published archive history.");
+assert.ok(socialManager.includes("selected.published_at"), "Published archive state must show the Social publish date.");
 assert.ok(socialManager.includes('window.confirm'), "Discard draft must require explicit confirmation.");
 assert.ok(!socialDraftApi.includes("publish_mode: \"approval\""), "Draft approval or scheduling must not unlock Meta publishing.");
 
@@ -196,6 +198,15 @@ for (const source of [instagramPublishBridge, storyPublishBridge, facebookPublis
   assert.ok(source.includes("--manual-social-"), "Controlled Meta publishing must recognize manual Product Social event ids.");
 }
 assert.ok(manualMetaPublishApi.includes("isControlledPublishEvent"), "Server-side Meta transport must use the controlled publish eligibility gate.");
+assert.ok(manualMetaPublishApi.includes("finalizePublishedEvent"), "Manual Meta transport must archive an event after all three channels publish.");
+assert.ok(manualMetaPublishApi.includes('status: "published"'), "Completed Social publication must persist PUBLISHED status.");
+assert.ok(manualMetaPublishApi.includes("published_at: publishedAt"), "Completed Social publication must persist its publication timestamp.");
+const reconcilePublishApi = fs.readFileSync(path.join(root, "control-center/api/social-reconcile-published.js"), "utf8");
+assert.ok(reconcilePublishApi.includes("test_instagram_feed_published"), "Reconciliation must recognize Instagram Feed publication audit.");
+assert.ok(reconcilePublishApi.includes("test_instagram_story_published"), "Reconciliation must recognize Instagram Story publication audit.");
+assert.ok(reconcilePublishApi.includes("test_facebook_published"), "Reconciliation must recognize Facebook publication audit.");
+assert.ok(reconcilePublishApi.includes('status: "published"'), "Reconciliation must restore already-published events to PUBLISHED history.");
+assert.ok(socialManager.includes("/api/social-reconcile-published"), "Social Manager must reconcile existing publication history on open.");
 assert.ok(instagramPublishBridge.includes("Publish Instagram Feed"), "Instagram Feed bridge must expose controlled manual publishing for READY Product posts.");
 assert.ok(storyPublishBridge.includes("Publish Instagram Story"), "Instagram Story bridge must expose controlled manual publishing for READY Product posts.");
 assert.ok(facebookPublishBridge.includes("Publish Facebook Page"), "Facebook bridge must expose controlled manual publishing for READY Product posts.");
