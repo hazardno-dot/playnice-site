@@ -33,6 +33,7 @@ const isFacebookImageCandidate = (event) => {
 };
 
 const titleFor = (event) => event?.payload?.core?.shortName || event?.payload?.core?.name || event?.payload?.title?.sr || event?.payload?.name || event?.payload?.alt || event?.source_id || "Test event";
+const PUBLISH_AUDIT_ACTION = "test_facebook_published";
 
 export default function SocialFacebookTestPublishBridge() {
   const [slot, setSlot] = useState(null);
@@ -40,6 +41,7 @@ export default function SocialFacebookTestPublishBridge() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [published, setPublished] = useState(null);
 
   const loadEvent = async () => {
     const { data } = await supabase
@@ -50,6 +52,18 @@ export default function SocialFacebookTestPublishBridge() {
       .limit(20);
     const candidate = (data || []).find((row) => isControlledPublishEvent(row) && isFacebookImageCandidate(row)) || null;
     setEvent(candidate);
+    if (!candidate) {
+      setPublished(null);
+      return;
+    }
+    const { data: auditRows } = await supabase
+      .from("social_audit_log")
+      .select("created_at,details")
+      .eq("social_event_id", candidate.id)
+      .eq("action", PUBLISH_AUDIT_ACTION)
+      .order("created_at", { ascending: false })
+      .limit(1);
+    setPublished(Array.isArray(auditRows) && auditRows.length ? auditRows[0] : null);
   };
 
   useEffect(() => {
@@ -61,13 +75,11 @@ export default function SocialFacebookTestPublishBridge() {
       if (!node) {
         node = document.createElement("div");
         node.id = "social-facebook-test-publish-slot";
-        const instagram = social.querySelector("#social-instagram-test-publish-slot");
+        const area = social.querySelector("#social-manual-publish-area");
+        const instagram = area?.querySelector("#social-instagram-test-publish-slot");
         if (instagram) instagram.insertAdjacentElement("afterend", node);
-        else {
-          const dryRun = social.querySelector(".social-dry-run");
-          if (dryRun) dryRun.insertAdjacentElement("afterend", node);
-          else social.appendChild(node);
-        }
+        else if (area) area.appendChild(node);
+        else social.appendChild(node);
       }
       setSlot(node);
     };
@@ -93,7 +105,7 @@ export default function SocialFacebookTestPublishBridge() {
   const eventTitle = useMemo(() => titleFor(event), [event]);
 
   const publish = async () => {
-    if (!event || loading) return;
+    if (!event || loading || published) return;
     const confirmed = window.confirm(`REAL FACEBOOK POST\n\nPublish the approved Facebook post for “${eventTitle}” to PlayNice MNE now?\n\nThis creates a real public Facebook Page post. Instagram Story and scheduler remain locked.`);
     if (!confirmed) return;
 
@@ -116,6 +128,7 @@ export default function SocialFacebookTestPublishBridge() {
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Facebook test publish failed (${response.status}).`);
+      setPublished({ created_at: payload?.published_at || new Date().toISOString(), details: payload?.result || {} });
       setMessage(`Published Facebook post · ${payload?.result?.post_id || "Meta post created"}`);
       await loadEvent();
     } catch (publishError) {
@@ -136,7 +149,7 @@ export default function SocialFacebookTestPublishBridge() {
       <div className="social-instagram-test-actions">
         {message ? <small className="ok">{message}</small> : null}
         {error ? <small className="error">{error}</small> : null}
-        <button type="button" onClick={publish} disabled={!event || loading}>{loading ? "Publishing…" : "Publish Facebook Page"}</button>
+        <button type="button" onClick={publish} disabled={!event || loading || Boolean(published)}>{loading ? "Publishing…" : published ? "Published ✓" : "Publish Facebook Page"}</button>
       </div>
     </section>,
     slot,
