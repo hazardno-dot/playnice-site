@@ -501,7 +501,7 @@ function SocialWorkspace() {
             </div> : <div className="social-history-empty">{auditLoading ? "Loading audit history…" : "No audit entries for this event yet."}</div>}
           </section>
 
-          <div className="social-safety-row"><div><span>PUBLISH MODE</span><strong>{selected.publish_mode || "shadow"}</strong></div><div><span>CHANNELS</span><strong>{(selected.channels || []).length}</strong></div><button type="button" disabled title="Meta publishing is intentionally disabled in Social Publisher v1">Publish locked</button></div>
+          <div className="social-safety-row"><div><span>PUBLISH MODE</span><strong>{selected.publish_mode || "shadow"} · manual controlled</strong></div><div><span>CHANNELS</span><strong>{(selected.channels || []).length}</strong></div><button type="button" disabled title="Automatic scheduler-to-Meta publishing remains disabled. Controlled manual channel publishing is available when its environment flag is enabled.">Auto publish locked · manual enabled</button></div>
         </> : <div className="social-empty-detail"><strong>Social Publisher is ready for shadow events.</strong><span>No event selected.</span></div>}
       </article>
     </div>
