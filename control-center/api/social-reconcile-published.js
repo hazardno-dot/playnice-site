@@ -45,7 +45,7 @@ export default async function handler(req, res) {
     const auth = await requireAdmin(req);
     if (auth.error) return json(res, auth.status, { error: auth.error });
 
-    const eventsRes = await supabaseFetch("/rest/v1/social_events?select=id,status,published_at&status=in.(draft,ready,scheduled)&limit=100", auth.token);
+    const eventsRes = await supabaseFetch("/rest/v1/social_events?select=id,status,published_at&status=in.(draft,ready,scheduled,cancelled)&limit=100", auth.token);
     const events = await safeJson(eventsRes);
     if (!eventsRes.ok || !Array.isArray(events)) throw new Error("Could not load active Social events.");
 
