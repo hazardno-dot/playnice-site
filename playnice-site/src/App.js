@@ -6904,6 +6904,16 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                           preferredSize: sizeLabel,
                           originSurface: "discovery",
                         });
+
+                        requestAnimationFrame(() => {
+                          requestAnimationFrame(() => {
+                            window.scrollTo({
+                              top: 0,
+                              left: 0,
+                              behavior: "auto",
+                            });
+                          });
+                        });
                       }}
                       aria-label={
                         lang === "sr"
