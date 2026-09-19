@@ -51,3 +51,11 @@
 .social-banner>strong{border-color:#355847;color:#a8d0b8;background:#101713}
 @media(max-width:1100px){.social-toolbar{grid-template-columns:1fr}.social-create-group{min-width:0;padding-left:0;padding-top:12px;border-left:0;border-top:1px solid #252d35}.social-create-group>div{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:700px){.social-create-group>div{grid-template-columns:1fr}.social-toolbar{padding:10px}}
+
+.social-empty-workspace{min-height:300px;display:grid;place-items:center;align-content:center;gap:8px;padding:48px 24px;border:1px solid #262c34;background:#0f1318;text-align:center}
+.social-empty-workspace>span{font-size:10px;letter-spacing:.13em;color:#6f7a86}
+.social-empty-workspace h3{margin:0;font-size:22px;color:#d8dee5}
+.social-empty-workspace p{margin:0 0 8px;color:#78838f;font-size:12px}
+.social-empty-workspace>div{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.social-empty-workspace button{min-width:110px;padding:10px 14px;border:1px solid #33404a;background:#121920;color:#aeb8c4;cursor:pointer}
+.social-empty-workspace .social-create-product{border-color:#416b55;background:#142019;color:#b9dbc8}
