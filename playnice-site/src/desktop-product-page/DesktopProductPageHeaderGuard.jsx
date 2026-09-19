@@ -35,10 +35,12 @@ const navigateSpa = ({ path, hash = "" }) => {
   const nextState = {
     ...(window.history.state || {}),
     playniceProductModal: false,
+    playniceExplicitNavigation: true,
   };
 
   delete nextState.productSlug;
   delete nextState.productOriginView;
+  delete nextState.productOriginSurface;
 
   window.history.pushState(nextState, "", nextUrl);
   window.dispatchEvent(new PopStateEvent("popstate", { state: nextState }));

@@ -2112,9 +2112,18 @@ useEffect(() => {
     const pagePath =
       window.location.pathname + window.location.search;
 
+    const isExplicitNavigation =
+      window.history.state?.playniceExplicitNavigation === true;
+
     const returnToDiscovery =
+      !isExplicitNavigation &&
       productOriginSurfaceRef.current === "discovery" &&
       !window.location.pathname.startsWith("/product/");
+
+    if (isExplicitNavigation) {
+      productOriginSurfaceRef.current = "";
+      setDiscoveryOpen(false);
+    }
 
     const productFromUrl = getProductFromCurrentUrl();
 
@@ -3429,6 +3438,14 @@ const routeForView = (nextView) => {
 const switchView = (nextView, options = {}) => {
   const { scrollTop = true } = options;
 
+  if (
+    productOriginSurfaceRef.current === "discovery" &&
+    window.location.pathname.startsWith("/product/")
+  ) {
+    productOriginSurfaceRef.current = "";
+    setDiscoveryOpen(false);
+  }
+
   if (isMobileProductPageActive) {
     setSelectedProduct(null);
     setSelectedSize("");
@@ -3963,6 +3980,10 @@ useEffect(() => {
 
       setMiniCartPreview(null);
       openCheckout();
+    },
+
+    findSimilar: (product) => {
+      handleFindSimilarWithFI(product);
     },
   });
 });
@@ -4727,6 +4748,27 @@ const getDiscoveryAnalyticsParams = (discovery, source = "manual") => {
   setDiscoveryResults(discovery.results);
   setDiscoveryFeedback(discovery.feedback || "");
   setDiscoveryPage(1);
+};
+
+const handleFindSimilarWithFI = async (product) => {
+  if (!product) return;
+
+  const referenceQuery =
+    lang === "sr"
+      ? `nešto kao ${product.name}`
+      : `something like ${product.name}`;
+
+  trackEvent("discovery_open_from_product", {
+    lang,
+    product_id: String(product.id),
+    product_slug: product.slug || "",
+    product_name: product.name,
+  });
+
+  setDiscoveryQuery(referenceQuery);
+  setDiscoveryOpen(true);
+
+  await handleDiscoverySearch(referenceQuery, "product-page");
 };
 
 const handleProductCardOpen = (product) => {
@@ -6315,6 +6357,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             onOpenProduct={(product) =>
               openProductModal(product, { changeView: false })
             }
+            onFindSimilar={handleFindSimilarWithFI}
             onBackToShop={() => {
               productOriginSurfaceRef.current = "";
               goToShop();
@@ -6389,7 +6432,10 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </React.Suspense>
       )}
 
-      {!isMobileProductPageActive && view === "home" && (
+      {(
+        (!isMobileProductPageActive && view === "home") ||
+        (discoveryOpen && window.location.pathname.startsWith("/product/"))
+      ) && (
         <>
           <section
             className="hero hero-carousel"
@@ -6874,6 +6920,16 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                           changeView: false,
                           preferredSize: sizeLabel,
                           originSurface: "discovery",
+                        });
+
+                        requestAnimationFrame(() => {
+                          requestAnimationFrame(() => {
+                            window.scrollTo({
+                              top: 0,
+                              left: 0,
+                              behavior: "smooth",
+                            });
+                          });
                         });
                       }}
                       aria-label={

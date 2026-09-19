@@ -274,6 +274,11 @@ export default function DesktopProductPageBridge() {
     actions?.buyNow?.(selectedProduct, size);
   };
 
+  const handleFindSimilar = () => {
+    const actions = getProductActions();
+    actions?.findSimilar?.(selectedProduct);
+  };
+
   const handleToggleWishlist = () => {
     const actions = getProductActions();
     actions?.toggleWishlist?.(selectedProduct.id);
@@ -284,13 +289,18 @@ export default function DesktopProductPageBridge() {
   };
 
   const handleBackToShop = () => {
-    if (window.history.state?.playniceProductModal) {
-      window.history.back();
-      return;
-    }
+    const nextState = {
+      ...(window.history.state || {}),
+      playniceProductModal: false,
+      playniceExplicitNavigation: true,
+    };
 
-    window.history.pushState({}, "", "/shop");
-    window.dispatchEvent(new PopStateEvent("popstate", { state: window.history.state }));
+    delete nextState.productSlug;
+    delete nextState.productOriginView;
+    delete nextState.productOriginSurface;
+
+    window.history.pushState(nextState, "", "/shop");
+    window.dispatchEvent(new PopStateEvent("popstate", { state: nextState }));
   };
 
   const handleOpenProduct = (nextProduct) => {
@@ -331,6 +341,7 @@ export default function DesktopProductPageBridge() {
         isWishlisted={isWishlisted}
         onToggleWishlist={handleToggleWishlist}
         onOpenProduct={handleOpenProduct}
+        onFindSimilar={handleFindSimilar}
         onBackToShop={handleBackToShop}
       />
 

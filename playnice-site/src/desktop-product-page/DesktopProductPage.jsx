@@ -135,6 +135,7 @@ export default function DesktopProductPage({
   isWishlisted = false,
   onToggleWishlist,
   onOpenProduct,
+  onFindSimilar,
   onBackToShop,
 }) {
   const [noteMapOpen, setNoteMapOpen] = useState(false);
@@ -394,6 +395,31 @@ export default function DesktopProductPage({
             </section>
           </div>
         </section>
+
+        {onFindSimilar ? (
+          <section className="desktop-product-page__find-similar-band">
+            <button
+              type="button"
+              className="desktop-product-page__find-similar"
+              onClick={() => onFindSimilar(product)}
+            >
+              <span className="desktop-product-page__find-similar-orbit" aria-hidden="true">
+                <i />
+              </span>
+
+              <span className="desktop-product-page__find-similar-copy">
+                <small>FI / MATCH ENGINE</small>
+                <strong>
+                  {lang === "sr"
+                    ? "PRONAĐI SLIČNE MIRISE"
+                    : "FIND SIMILAR SCENTS"}
+                </strong>
+              </span>
+
+              <span className="desktop-product-page__find-similar-arrow" aria-hidden="true">↗</span>
+            </button>
+          </section>
+        ) : null}
 
         <section className="desktop-product-page__context-grid">
           <article className="desktop-product-page__context-card">

@@ -18,12 +18,26 @@
     overflow: visible !important;
   }
 
-  body.desktop-product-route-active main > :not(.desktop-product-route-host):not(.site-footer) {
+  body.desktop-product-route-active main > :not(.desktop-product-route-host):not(.site-footer):not(.playnice-discovery-portal) {
     display: none !important;
   }
 
   body.desktop-product-route-active .site-footer {
     display: block !important;
+  }
+
+  body.desktop-product-route-active .playnice-discovery-portal {
+    position: fixed;
+    inset: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 9998;
+  }
+
+  body.desktop-product-route-active .playnice-discovery-portal > .playnice-discovery-trigger {
+    display: none !important;
   }
 
   body.desktop-product-route-active .product-modal-layer,

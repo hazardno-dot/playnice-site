@@ -118,6 +118,7 @@ export default function MobileProductPage({
   isWishlisted = false,
   onToggleWishlist,
   onOpenProduct,
+  onFindSimilar,
   onBackToShop,
 }) {
   const [noteMapOpen, setNoteMapOpen] = useState(false);
@@ -334,6 +335,29 @@ export default function MobileProductPage({
               .filter(Boolean)
               .join(" · ")}
           </span>
+        ) : null}
+
+        {onFindSimilar ? (
+          <button
+            type="button"
+            className="mobile-product-page__find-similar"
+            onClick={() => onFindSimilar(product)}
+          >
+            <span className="mobile-product-page__find-similar-orbit" aria-hidden="true">
+              <i />
+            </span>
+
+            <span className="mobile-product-page__find-similar-copy">
+              <small>FI / MATCH ENGINE</small>
+              <strong>
+                {lang === "sr"
+                  ? "PRONAĐI SLIČNE MIRISE"
+                  : "FIND SIMILAR SCENTS"}
+              </strong>
+            </span>
+
+            <span className="mobile-product-page__find-similar-arrow" aria-hidden="true">↗</span>
+          </button>
         ) : null}
       </section>
 
