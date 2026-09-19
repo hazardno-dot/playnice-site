@@ -210,6 +210,7 @@ assert.ok(replayApi.includes("--manual-social-"), "Manual Product posts must rec
 const instagramPublishBridge = fs.readFileSync(path.join(root, "control-center/src/SocialInstagramTestPublishBridge.jsx"), "utf8");
 const storyPublishBridge = fs.readFileSync(path.join(root, "control-center/src/SocialInstagramStoryTestPublishBridge.jsx"), "utf8");
 const facebookPublishBridge = fs.readFileSync(path.join(root, "control-center/src/SocialFacebookTestPublishBridge.jsx"), "utf8");
+const socialMediaOverrideBridge = fs.readFileSync(path.join(root, "control-center/src/SocialMediaOverrideBridge.jsx"), "utf8");
 for (const source of [instagramPublishBridge, storyPublishBridge, facebookPublishBridge, manualMetaPublishApi]) {
   assert.ok(source.includes("manual_product_post"), "Controlled Meta publishing must recognize manual Product Social events.");
   assert.ok(source.includes("manual_hero_post"), "Controlled Meta publishing must recognize manual Hero Social events.");
