@@ -9,6 +9,8 @@
   .community-mobile-v2 .community-request-top3-badge,
   .community-mobile-v2 .community-request-heating-badge,
   .community-mobile-v2 .community-request-new-badge {
+    flex: 0 0 auto;
+    white-space: nowrap;
     transform: scale(0.92);
     transform-origin: left center;
   }

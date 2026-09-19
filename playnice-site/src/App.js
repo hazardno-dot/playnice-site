@@ -850,6 +850,7 @@ const getInitialShopState = () => {
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
   const discoveryAttributionRef = useRef(null);
   const discoverySearchContextRef = useRef(null);
+  const productOriginSurfaceRef = useRef("");
 
   const discoveryTotalPages = Math.max(
     1,
@@ -2111,6 +2112,10 @@ useEffect(() => {
     const pagePath =
       window.location.pathname + window.location.search;
 
+    const returnToDiscovery =
+      productOriginSurfaceRef.current === "discovery" &&
+      !window.location.pathname.startsWith("/product/");
+
     const productFromUrl = getProductFromCurrentUrl();
 
     if (productFromUrl) {
@@ -2194,6 +2199,11 @@ if (journalArticleFromUrl) {
     setJournalPageArticle(null);
 
     setView(nextView);
+
+    if (returnToDiscovery) {
+      productOriginSurfaceRef.current = "";
+      setDiscoveryOpen(true);
+    }
 
     trackPageView(pagePath || "/");
     trackMeta("PageView");
@@ -4551,10 +4561,13 @@ const openProductModal = (product, options = {}) => {
     updateUrl = true,
     preferredSize = "",
     userPickedSize = false,
-    changeView = true
+    changeView = true,
+    originSurface = ""
   } = options;
 
   const isMobileModal = isMobileProductModal();
+
+  productOriginSurfaceRef.current = originSurface || "";
 
   if (productModalCloseTimeoutRef.current) {
     clearTimeout(productModalCloseTimeoutRef.current);
@@ -4623,7 +4636,8 @@ const openProductModal = (product, options = {}) => {
         {
           playniceProductModal: true,
           productSlug: getProductSlug(product),
-          productOriginView: changeView ? "shop" : view
+          productOriginView: changeView ? "shop" : view,
+          productOriginSurface: originSurface || null
         },
         "",
         productUrl
@@ -6302,6 +6316,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               openProductModal(product, { changeView: false })
             }
             onBackToShop={() => {
+              productOriginSurfaceRef.current = "";
               goToShop();
               requestAnimationFrame(() => {
                 window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -6853,9 +6868,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                             discoverySearchContextRef.current?.has_exclusions || "no",
                         };
 
+                        setDiscoveryOpen(false);
+
                         openProductModal(result.product, {
                           changeView: false,
                           preferredSize: sizeLabel,
+                          originSurface: "discovery",
                         });
                       }}
                       aria-label={
@@ -8798,6 +8816,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         (!isMobileProductPageActive && selectedProduct) ||
         storyOpen ||
         howItWorksOpen ||
+        faqOpen ||
         manifestoOpen ||
         privateSelectionOpen
           ? "show"
