@@ -472,7 +472,7 @@ function SocialWorkspace() {
       </section>
     </div> : null}
 
-    <div className="social-layout">
+    {visible.length ? <div className="social-layout">
       <aside className="social-list">
         <div className="social-list-head"><span>EVENT QUEUE</span><strong>{loading ? "…" : visible.length}</strong></div>
         {visible.length ? visible.map((event) => <button type="button" key={event.id} className={selected?.id === event.id ? "active" : ""} onClick={() => setSelectedId(event.id)}>
@@ -571,9 +571,18 @@ function SocialWorkspace() {
           </section>
 
           <div className="social-safety-row"><div><span>PUBLISH MODE</span><strong>{selected.publish_mode || "shadow"} · manual controlled</strong></div><div><span>CHANNELS</span><strong>{(selected.channels || []).length}</strong></div><button type="button" disabled title="Automatic scheduler-to-Meta publishing remains disabled. Controlled manual channel publishing is available when its environment flag is enabled.">Auto publish locked · manual enabled</button></div>
-        </> : <div className="social-empty-detail"><strong>Social Publisher is ready for shadow events.</strong><span>No event selected.</span></div>}
+        </> : null}
       </article>
-    </div>
+    </div> : <section className="social-empty-workspace">
+      <span>SOCIAL QUEUE</span>
+      <h3>No active social posts</h3>
+      <p>Create a new post from a Product, Hero visual or Journal article.</p>
+      <div>
+        <button type="button" className="social-create-product" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>Product</button>
+        <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>Hero</button>
+        <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>Journal</button>
+      </div>
+    </section>}
   </section>;
 }
 
@@ -614,6 +623,7 @@ export default function SocialManager() {
     const heading = mainStage?.querySelector(".topbar h1");
     const eyebrow = mainStage?.querySelector(".topbar .eyebrow");
     const description = mainStage?.querySelector(".topbar p");
+    const publishBadge = mainStage?.querySelector(".topbar .read-only-badge");
     const navButtons = [...document.querySelectorAll(".sidebar nav button")];
     const button = navButtons.find((item) => item.dataset.socialManagerNav === "true");
     if (!mainStage || !heading || !button) return;
@@ -631,7 +641,8 @@ export default function SocialManager() {
       navButtons.forEach((item) => item.classList.toggle("active", item === button));
       heading.textContent = "Social";
       if (eyebrow) eyebrow.textContent = "MANAGE / SOCIAL PUBLISHER";
-      if (description) description.textContent = "Shadow-mode queue for Instagram and Facebook content generated from live PlayNice publishing events.";
+      if (description) description.textContent = "Create, review and manually publish Instagram and Facebook content from Products, Hero and Journal.";
+      if (publishBadge) publishBadge.textContent = "MANUAL MODE";
       baseChildren.forEach((child) => {
         if (child.dataset.socialPreviousDisplay === undefined) child.dataset.socialPreviousDisplay = child.style.display || "";
         child.style.display = "none";
@@ -646,6 +657,7 @@ export default function SocialManager() {
           delete child.dataset.socialPreviousDisplay;
         }
       });
+      if (publishBadge) publishBadge.textContent = "NO PUBLISH";
       setSlot(null);
     }
   }, [open]);
