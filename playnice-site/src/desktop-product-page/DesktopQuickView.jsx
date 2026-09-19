@@ -112,8 +112,16 @@ export default function DesktopQuickView() {
   useEffect(() => {
     if (!product) return undefined;
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const body = document.body;
+    const appAlreadyOwnsScrollLock =
+      body.classList.contains("overlay-lock") ||
+      body.style.position === "fixed";
+
+    const previousOverflow = body.style.overflow;
+
+    if (!appAlreadyOwnsScrollLock) {
+      body.style.overflow = "hidden";
+    }
 
     const onKeyDown = (event) => {
       if (event.key === "Escape") setProduct(null);
@@ -122,7 +130,10 @@ export default function DesktopQuickView() {
     window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      if (!appAlreadyOwnsScrollLock) {
+        body.style.overflow = previousOverflow;
+      }
+
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [product]);
