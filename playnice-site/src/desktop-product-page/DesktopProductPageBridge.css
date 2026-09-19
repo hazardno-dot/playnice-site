@@ -88,6 +88,7 @@
     display: block;
     min-height: 100vh;
     position: relative;
+    z-index: 2;
     isolation: isolate;
     background: #050505;
   }
