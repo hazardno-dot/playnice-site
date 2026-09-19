@@ -17,7 +17,7 @@
   min-height: 24px;
   margin-bottom: 28px;
   color: rgba(245, 241, 232, 0.48);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -319,7 +319,7 @@
   top: 5px;
   right: 6px;
   color: #dcb56b;
-  font-size: 7px;
+  font-size: 8px;
 }
 
 .desktop-product-page__actions {
