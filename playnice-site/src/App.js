@@ -2109,6 +2109,25 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
+  const handleDesktopQuickViewFullProduct = () => {
+    setDiscoveryOpen(false);
+    productOriginSurfaceRef.current = "";
+  };
+
+  window.addEventListener(
+    "playnice:desktop-quick-view-full-product",
+    handleDesktopQuickViewFullProduct
+  );
+
+  return () => {
+    window.removeEventListener(
+      "playnice:desktop-quick-view-full-product",
+      handleDesktopQuickViewFullProduct
+    );
+  };
+}, []);
+
+useEffect(() => {
   const handlePopState = () => {
     const pagePath =
       window.location.pathname + window.location.search;
@@ -4584,8 +4603,7 @@ const openProductModal = (product, options = {}) => {
     preferredSize = "",
     userPickedSize = false,
     changeView = true,
-    originSurface = "",
-    quickView = false
+    originSurface = ""
   } = options;
 
   const isMobileModal = isMobileProductModal();
@@ -4644,7 +4662,7 @@ const openProductModal = (product, options = {}) => {
     currency: "EUR"
   });
 
-  if (isMobileModal || quickView) {
+  if (isMobileModal) {
     setProductModalVisible(true);
   } else {
     setProductModalVisible(false);
@@ -6923,12 +6941,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                           !isMobileProductModal();
 
                         if (opensHomeQuickView) {
-                          openProductModal(result.product, {
-                            updateUrl: false,
-                            changeView: false,
-                            preferredSize: sizeLabel,
-                            quickView: true,
-                          });
+                          window.dispatchEvent(
+                            new CustomEvent("playnice:desktop-quick-view", {
+                              detail: { productId: result.product.id }
+                            })
+                          );
 
                           return;
                         }
