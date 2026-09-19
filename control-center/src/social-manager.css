@@ -22,3 +22,20 @@
 .social-product-picker-results em{flex:0 0 auto;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#91a1af}
 .social-product-picker-empty{padding:24px;color:#707b87;text-align:center;font-size:12px}
 @media(max-width:700px){.social-product-picker-backdrop{padding:14px}.social-product-picker{width:calc(100vw - 28px);max-height:calc(100vh - 28px);padding:16px}.social-product-picker-head{align-items:flex-start}.social-product-picker-head p{max-width:380px}}
+
+.social-publish-diagnostics{display:grid;grid-template-columns:minmax(220px,1fr) auto auto;gap:14px;align-items:center;padding:14px 16px;border:1px solid #33404b;background:#10161b}
+.social-publish-diagnostics>div:first-child{display:grid;gap:4px}
+.social-publish-diagnostics>div:first-child span{font-size:10px;letter-spacing:.12em;color:#7f8995}
+.social-publish-diagnostics>div:first-child strong{font-size:12px;color:#cbd3dc}
+.social-publish-diagnostics>div:first-child small{font-size:10px;color:#68737f}
+.social-publish-diagnostic-flags{display:flex;gap:8px;flex-wrap:wrap}
+.social-publish-diagnostic-flags>div{min-width:112px;display:flex;justify-content:space-between;gap:12px;padding:9px 10px;border:1px solid #303843;background:#0d1217}
+.social-publish-diagnostic-flags span{font-size:9px;letter-spacing:.08em;color:#89939f}
+.social-publish-diagnostic-flags strong{font-size:10px;color:#6f7884}
+.social-publish-diagnostic-flags>div.on{border-color:#355847;background:#101713}
+.social-publish-diagnostic-flags>div.on strong{color:#9bd2b3}
+.social-publish-diagnostic-flags>div.off{border-color:#654040;background:#191212}
+.social-publish-diagnostic-flags>div.off strong{color:#e29a9a}
+.social-publish-diagnostics>button{padding:10px 14px;border:1px solid #3a434d;background:#141a20;color:#b4bdc7;cursor:pointer}
+.social-publish-diagnostics>button:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:1000px){.social-publish-diagnostics{grid-template-columns:1fr}.social-publish-diagnostic-flags{width:100%}.social-publish-diagnostic-flags>div{flex:1}.social-publish-diagnostics>button{justify-self:start}}
