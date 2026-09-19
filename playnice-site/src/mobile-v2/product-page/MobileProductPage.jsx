@@ -343,13 +343,20 @@ export default function MobileProductPage({
             className="mobile-product-page__find-similar"
             onClick={() => onFindSimilar(product)}
           >
-            <span aria-hidden="true">✦</span>
-            <strong>
-              {lang === "sr"
-                ? "PRONAĐI SLIČNE MIRISE UZ FI"
-                : "FIND SIMILAR WITH FI"}
-            </strong>
-            <span aria-hidden="true">→</span>
+            <span className="mobile-product-page__find-similar-orbit" aria-hidden="true">
+              <i />
+            </span>
+
+            <span className="mobile-product-page__find-similar-copy">
+              <small>FI / MATCH ENGINE</small>
+              <strong>
+                {lang === "sr"
+                  ? "PRONAĐI SLIČNE MIRISE"
+                  : "FIND SIMILAR SCENTS"}
+              </strong>
+            </span>
+
+            <span className="mobile-product-page__find-similar-arrow" aria-hidden="true">↗</span>
           </button>
         ) : null}
       </section>
