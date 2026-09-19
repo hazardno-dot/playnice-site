@@ -18,7 +18,7 @@
     overflow: visible !important;
   }
 
-  body.desktop-product-route-active main > :not(.desktop-product-route-host):not(.site-footer) {
+  body.desktop-product-route-active main > :not(.desktop-product-route-host):not(.site-footer):not(.playnice-discovery-portal) {
     display: none !important;
   }
 
