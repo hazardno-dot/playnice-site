@@ -83,12 +83,12 @@ export default function MetaConnectionPanel() {
   return <section style={box}>
     <div style={row}>
       <div>
-        <div style={{ ...small, marginBottom: 5 }}>META CONNECTION · TEST ONLY</div>
+        <div style={{ ...small, marginBottom: 5 }}>META CONNECTION · MANUAL PUBLISH</div>
         <strong style={{ fontSize: 19 }}>Instagram + Facebook connection</strong>
       </div>
       <div style={{ textAlign: "right" }}>
         <strong>{status}</strong>
-        <div style={small}>Publish remains hard locked</div>
+        <div style={small}>Automatic publishing remains locked</div>
       </div>
     </div>
 
