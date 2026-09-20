@@ -2,6 +2,7 @@ import {
   getCartSummary,
   getOverlayVisibility,
   buildManagedShopUrl,
+  getProductOriginView,
 } from "./appStateDerivations";
 
 describe("appStateDerivations", () => {
@@ -180,5 +181,28 @@ describe("appStateDerivations", () => {
         currentPage: 1,
       })
     ).toBe("/journal");
+  });
+  test("restores valid PDP origin views and falls back safely", () => {
+    expect(
+      getProductOriginView({
+        productOriginView: "home",
+      })
+    ).toBe("home");
+
+    expect(
+      getProductOriginView({
+        productOriginView: "journal",
+      })
+    ).toBe("journal");
+
+    expect(
+      getProductOriginView({
+        productOriginView: "invalid",
+      })
+    ).toBe("shop");
+
+    expect(
+      getProductOriginView(null)
+    ).toBe("shop");
   });
 });
