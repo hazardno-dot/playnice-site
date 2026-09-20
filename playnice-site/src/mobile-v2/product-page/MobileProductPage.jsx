@@ -1,9 +1,13 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import TheNoteMap from "../../features/note-map/TheNoteMap";
 import { products } from "../../data/products";
-import { productCopy } from "../../data/products/productCopy";
 import { getCharacterVisual } from "../../data/products/characterVisuals";
-import { productWearContext } from "../../data/products/productWearContext";
+import {
+  productCopyBySlug,
+  productWearContextBySlug,
+  productDoNotWearContextBySlug,
+  productWhatToWearContextBySlug,
+} from "../../data/products/productContentBySlug";
 
 const PROFILE_KEYS = [
   "freshness",
