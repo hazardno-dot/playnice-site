@@ -119,7 +119,7 @@ const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO = "hazardno-dot/playnice-site";
 const [OWNER, REPO_NAME] = REPO.split("/");
-const NOTE_SOURCE_PATH = "playnice-site/src/TheNoteMapImpl.jsx";
+const NOTE_SOURCE_PATH = "playnice-site/src/features/note-map/TheNoteMapImpl.jsx";
 const NOTE_ASSET_ROOT = "playnice-site/public/note-map";
 
 const json = (res, status, body) => res.status(status).json(body);
