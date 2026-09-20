@@ -285,6 +285,78 @@ describe("Fragrance Intelligence — reference matching", () => {
     });
   });
 
+  test.each([
+    [
+      "Something like Naxos, but less sweet",
+      "sweetness",
+      "lower",
+      0.8,
+    ],
+    [
+      "Something like Naxos, but lighter",
+      "projection",
+      "lower",
+      0.6,
+    ],
+    [
+      "Something like Naxos, but stronger",
+      "projection",
+      "higher",
+      0.6,
+    ],
+    [
+      "Something like Naxos, but more elegant",
+      "elegance",
+      "higher",
+      0.5,
+    ],
+  ])(
+    "all returned modifier results move in the requested direction: %s",
+    (query, key, direction, minimumDelta) => {
+      const output = expectRelevantWithResults(query);
+      const anchorProfile = profileOf(
+        output.intent.referenceProduct
+      );
+      const anchorValue =
+        anchorProfile[key] ??
+        anchorProfile[
+          key === "sweetness"
+            ? "sweet"
+            : key === "projection"
+            ? "intensity"
+            : key
+        ] ??
+        0;
+
+      output.results.forEach((item) => {
+        const value =
+          item.profile[key] ??
+          item.profile[
+            key === "sweetness"
+              ? "sweet"
+              : key === "projection"
+              ? "intensity"
+              : key
+          ] ??
+          0;
+
+        if (direction === "lower") {
+          expect(
+            anchorValue - value
+          ).toBeGreaterThanOrEqual(
+            minimumDelta
+          );
+        } else {
+          expect(
+            value - anchorValue
+          ).toBeGreaterThanOrEqual(
+            minimumDelta
+          );
+        }
+      });
+    }
+  );
+
   test("less-sweet reference top result moves in the requested direction", () => {
     const output = expectRelevantWithResults(
       "Something like Naxos, but less sweet"
