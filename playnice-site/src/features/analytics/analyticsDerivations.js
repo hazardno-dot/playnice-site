@@ -34,6 +34,51 @@ export const buildEcommerceItem = (
       item?.quantity ??
       1
   ),
+  ...(
+    overrides.item_list_id ??
+    item?.analyticsListId
+      ? {
+          item_list_id:
+            overrides.item_list_id ??
+            item?.analyticsListId,
+        }
+      : {}
+  ),
+  ...(
+    overrides.item_list_name ??
+    item?.analyticsListName
+      ? {
+          item_list_name:
+            overrides.item_list_name ??
+            item?.analyticsListName,
+        }
+      : {}
+  ),
+  ...(
+    Number.isFinite(
+      Number(
+        overrides.index ??
+        item?.analyticsListIndex
+      )
+    )
+      ? {
+          index: Number(
+            overrides.index ??
+            item?.analyticsListIndex
+          ),
+        }
+      : {}
+  ),
+  ...(
+    overrides.item_source ??
+    item?.analyticsOrigin
+      ? {
+          item_source:
+            overrides.item_source ??
+            item?.analyticsOrigin,
+        }
+      : {}
+  ),
 });
 
 export const buildEcommerceItems = (
