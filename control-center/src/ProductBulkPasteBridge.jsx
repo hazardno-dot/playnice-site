@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
 import { discoveryProfiles } from "@shop/data/products/discoveryProfiles";
-import noteMapSource from "@shop/TheNoteMap.jsx?raw";
+import noteMapSource from "@shop/features/note-map/TheNoteMapImpl.jsx?raw";
 import { validateInlineFields } from "./inlineValidationRules.mjs";
 import "./product-bulk-paste.css";
 
