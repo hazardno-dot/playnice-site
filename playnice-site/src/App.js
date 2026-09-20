@@ -5969,7 +5969,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       changeView: false,
                       analyticsListContext,
                     });
-                  }
+                  }}
                   aria-label={
                     isClone
                       ? undefined
