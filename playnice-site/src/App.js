@@ -2273,6 +2273,125 @@ const privateSelectionProducts = useMemo(() => {
   return products.filter((product) => wishlist.includes(product.id));
 }, [products, wishlist]);
 
+useEffect(() => {
+  if (
+    view !== "shop" ||
+    selectedProduct ||
+    !paginatedProducts.length
+  ) {
+    return;
+  }
+
+  trackProductListView({
+    products: paginatedProducts,
+    listId: "shop-grid",
+    listName: "Shop Grid",
+    signature: [
+      currentPage,
+      productsPerPage,
+      ...paginatedProducts.map(
+        (product) => product.id
+      ),
+    ].join("|"),
+  });
+}, [
+  view,
+  selectedProduct,
+  paginatedProducts,
+  currentPage,
+  productsPerPage,
+]);
+
+useEffect(() => {
+  if (
+    view !== "home" ||
+    selectedProduct
+  ) {
+    return;
+  }
+
+  trackProductListView({
+    products: homeBestsellerProducts,
+    listId: "home-bestsellers",
+    listName: "Home Bestsellers",
+    signature:
+      homeBestsellerProducts
+        .map((product) => product.id)
+        .join("|"),
+  });
+
+  trackProductListView({
+    products: newArrivalProducts,
+    listId: "home-just-in",
+    listName: "Home Just In",
+    signature:
+      newArrivalProducts
+        .map((product) => product.id)
+        .join("|"),
+  });
+}, [
+  view,
+  selectedProduct,
+  homeBestsellerProducts,
+  newArrivalProducts,
+]);
+
+useEffect(() => {
+  if (
+    !discoveryOpen ||
+    !visibleDiscoveryResults.length
+  ) {
+    return;
+  }
+
+  const listProducts =
+    visibleDiscoveryResults.map(
+      (result) => result.product
+    );
+
+  trackProductListView({
+    products: listProducts,
+    listId:
+      "fragrance-intelligence-results",
+    listName:
+      "Fragrance Intelligence Results",
+    signature: [
+      discoveryQuery,
+      discoveryPage,
+      ...listProducts.map(
+        (product) => product.id
+      ),
+    ].join("|"),
+  });
+}, [
+  discoveryOpen,
+  visibleDiscoveryResults,
+  discoveryQuery,
+  discoveryPage,
+]);
+
+useEffect(() => {
+  if (
+    !privateSelectionOpen ||
+    !privateSelectionProducts.length
+  ) {
+    return;
+  }
+
+  trackProductListView({
+    products: privateSelectionProducts,
+    listId: "private-selection",
+    listName: "Private Selection",
+    signature:
+      privateSelectionProducts
+        .map((product) => product.id)
+        .join("|"),
+  });
+}, [
+  privateSelectionOpen,
+  privateSelectionProducts,
+]);
+
 const goToShop = () => {
   const heroSelectionActive = Boolean(
     heroCollectionFilter?.length || heroCollectionTitle
@@ -5574,6 +5693,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                         const searchContext =
                           discoverySearchContextRef.current;
 
+                        const analyticsListContext = {
+                          listId:
+                            "fragrance-intelligence-results",
+                          listName:
+                            "Fragrance Intelligence Results",
+                          index: globalRank,
+                        };
+
+                        trackProductSelection({
+                          product: result.product,
+                          ...analyticsListContext,
+                          variant: sizeLabel,
+                        });
+
                         trackEvent(
                           "discovery_result_click",
                           buildDiscoveryResultClickParams({
@@ -5602,6 +5735,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                               detail: {
                                 productId: result.product.id,
                                 source: "discovery",
+                                analyticsListContext,
                               }
                             })
                           );
@@ -5630,6 +5764,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                           changeView: false,
                           preferredSize: sizeLabel,
                           originSurface: "discovery",
+                          analyticsListContext,
                         });
 
                         requestAnimationFrame(() => {
@@ -5801,7 +5936,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           className="new-arrivals-group"
           aria-hidden={isClone ? "true" : undefined}
         >
-          {newArrivalProducts.map((product) => {
+          {newArrivalProducts.map((product, productIndex) => {
             const minPrice = getMinPrice(product);
             const isWishlisted = wishlist.includes(product.id);
 
@@ -5814,10 +5949,22 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   type="button"
                   className="new-arrival-card"
                   tabIndex={isClone ? -1 : 0}
-                  onClick={() =>
+                  onClick={() => {
+                    const analyticsListContext = {
+                      listId: "home-just-in",
+                      listName: "Home Just In",
+                      index: productIndex + 1,
+                    };
+
+                    trackProductSelection({
+                      product,
+                      ...analyticsListContext,
+                    });
+
                     openProductModal(product, {
                       changeView: false,
-                    })
+                      analyticsListContext,
+                    });
                   }
                   aria-label={
                     isClone
@@ -5989,10 +6136,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               </div>
 
               <div className="product-grid">
-                {[27, 30, 36, 47]
-                  .map((id) => products.find((product) => product.id === id))
-                  .filter(Boolean)
-                  .map((product) => (
+                {homeBestsellerProducts.map(
+                  (product, index) => (
                     <ProductCard
                       key={product.id}
                       product={product}
@@ -6000,11 +6145,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       toggleWishlist={toggleWishlist}
                       sprayingWishlistId={sprayingWishlistId}
                       changeViewOnOpen={false}
+                      analyticsListId="home-bestsellers"
+                      analyticsListName="Home Bestsellers"
+                      analyticsIndex={index + 1}
                       mobileProfileLabel={
                         productCopyBySlug[product.slug]?.miniTag?.[lang] || ""
                       }
                     />
-                  ))}
+                  )
+                )}
               </div>
 
               <div className="section-cta-center">
@@ -7218,13 +7367,21 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 <div className="product-grid-anchor" ref={productGridRef}>
   <div className="product-grid">
   {paginatedProducts.length > 0 ? (
-    paginatedProducts.map((product) => (
+    paginatedProducts.map((product, index) => (
       <ProductCard
         key={product.id}
         product={product}
         wishlist={wishlist}
         toggleWishlist={toggleWishlist}
         sprayingWishlistId={sprayingWishlistId}
+        analyticsListId="shop-grid"
+        analyticsListName="Shop Grid"
+        analyticsIndex={
+          (currentPage - 1) *
+            productsPerPage +
+          index +
+          1
+        }
       />
     ))
   ) : (
@@ -8006,6 +8163,22 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               {privateSelectionProducts.map((product, index) => {
                 const minPrice = getMinPrice(product);
                 const copy = getProductCopy(product, lang);
+                const analyticsListContext = {
+                  listId: "private-selection",
+                  listName: "Private Selection",
+                  index: index + 1,
+                };
+
+                const openPrivateSelectionProduct = () => {
+                  trackProductSelection({
+                    product,
+                    ...analyticsListContext,
+                  });
+
+                  openProductModal(product, {
+                    analyticsListContext,
+                  });
+                };
 
                 return (
                   <div
@@ -8018,9 +8191,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     <button
                       type="button"
                       className="private-selection-item-media"
-                      onClick={() => {
-                        openProductModal(product);
-                      }}
+                      onClick={openPrivateSelectionProduct}
                       aria-label={product.name}
                     >
                       <img
@@ -8048,9 +8219,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                           <button
                             type="button"
                             className="private-selection-link"
-                            onClick={() => {
-                              openProductModal(product);
-                            }}
+                            onClick={openPrivateSelectionProduct}
                           >
                             {lang === "sr" ? "Otvori" : "Open"}
                           </button>
