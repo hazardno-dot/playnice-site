@@ -53,9 +53,9 @@ import "./features/header/HeaderLanguageColor.css";
 import "./mobile-v2/product-page/MobileProductPageNoteMap.css";
 import "./features/header/AnnouncementTiming.css";
 import "./desktop-product-page/DesktopProductPageOverrides.css";
-import "./ColorHarmonizationV1.css";
-import "./DesktopProductCardBadgePolish.css";
-import "./HomeJustInBadgePolish.css";
+import "./shared/theme/ColorHarmonizationV1.css";
+import "./features/product-card/DesktopProductCardBadgePolish.css";
+import "./features/home/HomeJustInBadgePolish.css";
 
 const CARD_COPY_FONT_LINK_ID = "playnice-card-copy-italic-font";
 
@@ -101,10 +101,10 @@ if (window.matchMedia("(min-width: 769px)").matches) {
   Promise.all([
     import("./features/discovery/DesktopFragranceIntelligenceV2.css"),
     import("./features/discovery/DesktopFragranceIntelligenceHoverFix.css"),
-    import("./DesktopStickyCtaGlass.css"),
+    import("./features/sticky-cta/DesktopStickyCtaGlass.css"),
     import("./features/cart/DesktopConfirmationBarFit.css"),
     import("./features/header/DesktopDiscoverCleanup.css"),
-    import("./DesktopCardCopyWidth.css"),
+    import("./features/product-card/DesktopCardCopyWidth.css"),
     import("./features/footer/DesktopFooterSocialColors.css"),
   ])
     .then(renderApp)
