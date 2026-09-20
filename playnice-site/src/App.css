@@ -128,7 +128,10 @@ main {
 }
 
 .app-shell--home {
-  background: #050505;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(220, 181, 107, 0.035), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.012) 0%, transparent 18%),
+    #050505;
 }
 
 .section-wrap {
