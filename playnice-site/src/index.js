@@ -53,7 +53,7 @@ import "./mobile-v2/home/MobileTypographyV2.css";
 import "./features/cart/CartConfirmationBar.css";
 import "./features/cart/DesktopCartConfirmationTone.css";
 import "./mobile-v2/content/MobileManifestoFix.css";
-import "./HeaderLanguageColor.css";
+import "./features/header/HeaderLanguageColor.css";
 import "./mobile-v2/product-page/MobileProductPageNoteMap.css";
 import "./AnnouncementTiming.css";
 import "./desktop-product-page/DesktopProductPageOverrides.css";
