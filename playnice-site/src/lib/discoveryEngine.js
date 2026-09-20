@@ -2105,12 +2105,12 @@ const humanReason = (
     productSpecificLine;
 
   const detailLine =
-    requestedTraitLine &&
-    requestedTraitLine !== briefLine
-      ? requestedTraitLine
-      : productSpecificLine &&
-        productSpecificLine !== briefLine
+    productSpecificLine &&
+    productSpecificLine !== briefLine
       ? productSpecificLine
+      : requestedTraitLine &&
+        requestedTraitLine !== briefLine
+      ? requestedTraitLine
       : contextLines[1] || "";
 
   return [
