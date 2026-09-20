@@ -70,6 +70,7 @@ import {
   readStoredArray,
   releaseSubmissionLock,
 } from "./features/commerce/criticalPathGuards";
+import { getCommerceOverlayTransition } from "./features/commerce/commerceOverlayState";
 import {
   DISCOVERY_PROMPTS,
   getDiscoveryAnalyticsParams as getDiscoveryAnalyticsParamsPure,
@@ -2270,6 +2271,24 @@ const handleSmartStickyClick = useCallback(
   [goToShop, setScentMood]
 );
 
+const applyCommerceOverlayTransition = (action) => {
+  const next = getCommerceOverlayTransition({
+    cartOpen,
+    checkoutOpen,
+    isSubmittingOrder,
+    action,
+  });
+
+  setCartOpen(next.cartOpen);
+  setCheckoutOpen(next.checkoutOpen);
+};
+
+const openCartOverlay = () =>
+  applyCommerceOverlayTransition("open-cart");
+
+const toggleCartOverlay = () =>
+  applyCommerceOverlayTransition("toggle-cart");
+
 const openCheckout = () => {
   if (checkoutAutoCloseTimeoutRef.current) {
     clearTimeout(checkoutAutoCloseTimeoutRef.current);
@@ -2277,8 +2296,7 @@ const openCheckout = () => {
   }
 
   setOrderSuccessMessage("");
-  setCartOpen(false);
-  setCheckoutOpen(true);
+  applyCommerceOverlayTransition("open-checkout");
 };
 
 const stickyCtaData = useMemo(
@@ -2723,7 +2741,7 @@ const addDiscoverySetToCart = () => {
   );
 
   setDiscoveryBuilderOpen(false);
-  setCartOpen(true);
+  openCartOverlay();
   setDiscoverySelected([]);
 };
 
@@ -2815,8 +2833,7 @@ const addHeroBottleToCart = () => {
   };
 
   addToCart(heroProduct, "100ml", 39.5, "100ml Full Bottle");
-  setCartOpen(true);
-  setCheckoutOpen(false);
+  openCartOverlay();
 };
 
   const updateQuantity = (key, delta) => {
@@ -4637,7 +4654,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       onJournal={handleJournalOpen}
       onCommunity={() => goToHomeSection(".community-requests-section")}
       onExhibition={() => switchView("exhibition")}
-      onCart={() => setCartOpen((prev) => !prev)}
+      onCart={toggleCartOverlay}
       onWishlist={() => setPrivateSelectionOpen(true)}
       onLanguage={() => setLang(lang === "sr" ? "en" : "sr")}
       onHowItWorks={() => setHowItWorksOpen(true)}
@@ -4710,7 +4727,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       <button
         className="cart-button cart-button--icon-only"
         type="button"
-        onClick={() => setCartOpen((prev) => !prev)}
+        onClick={toggleCartOverlay}
         aria-label={lang === "sr" ? "Korpa" : "Cart"}
         title={lang === "sr" ? "Korpa" : "Cart"}
       >
