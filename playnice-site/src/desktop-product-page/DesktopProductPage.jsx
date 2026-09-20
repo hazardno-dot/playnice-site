@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { getProductPurchaseSelection } from "../features/commerce/commerceDerivations";
 import TheNoteMap from "../features/note-map/TheNoteMap";
 import { products } from "../data/products";
 import {
@@ -203,12 +204,15 @@ export default function DesktopProductPage({
   if (!product) return null;
 
   const sizes = Object.entries(product.sizes || {});
-  const activeSize = selectedSize || sizes[0]?.[0] || "";
-  const selectedPrice = Number(product.sizes?.[activeSize] || 0);
-  const selectedDiscount = getProductDiscountForSize(product, activeSize);
-  const selectedFinalPrice = selectedDiscount
-    ? getDiscountedPrice(selectedPrice, selectedDiscount.percent)
-    : selectedPrice;
+  const {
+    activeSize,
+    basePrice: selectedPrice,
+    discount: selectedDiscount,
+    finalPrice: selectedFinalPrice,
+  } = getProductPurchaseSelection(
+    product,
+    selectedSize
+  );
   const type = getProductType(product.name);
   const characterLine = copy.card?.[lang] || copy.modal?.[lang] || "";
   const fullDescription = copy.modal?.[lang] || characterLine;
