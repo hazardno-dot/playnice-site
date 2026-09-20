@@ -1653,27 +1653,105 @@ if (intent.gender === "unisex") {
     }
 
     if (intent.referenceModifiers.includes("less-sweet")) {
-      const delta = getVectorValue(anchorProfile, "sweetness") - getVectorValue(profile, "sweetness");
-      if (delta < 0.8) score -= 16;
-      else score += Math.min(delta * 3.5, 14);
+      const delta =
+        getVectorValue(
+          anchorProfile,
+          "sweetness"
+        ) -
+        getVectorValue(
+          profile,
+          "sweetness"
+        );
+
+      if (delta < 0.8) {
+        return {
+          score: -Infinity,
+          selectedSize: null,
+          profile,
+          reasons: [],
+          penalties: [
+            "not-less-sweet-than-reference",
+          ],
+        };
+      }
+
+      score += Math.min(delta * 3.5, 14);
+      reasons.push("modifier:less-sweet");
     }
 
     if (intent.referenceModifiers.includes("lighter")) {
-      const delta = getVectorValue(anchorProfile, "projection") - getVectorValue(profile, "projection");
-      if (delta < 0.6) score -= 14;
-      else score += Math.min(delta * 3.5, 14);
+      const delta =
+        getVectorValue(
+          anchorProfile,
+          "projection"
+        ) -
+        getVectorValue(
+          profile,
+          "projection"
+        );
+
+      if (delta < 0.6) {
+        return {
+          score: -Infinity,
+          selectedSize: null,
+          profile,
+          reasons: [],
+          penalties: [
+            "not-lighter-than-reference",
+          ],
+        };
+      }
+
+      score += Math.min(delta * 3.5, 14);
+      reasons.push("modifier:lighter");
     }
 
     if (intent.referenceModifiers.includes("stronger")) {
-      const delta = getVectorValue(profile, "projection") - getVectorValue(anchorProfile, "projection");
-      if (delta < 0.6) score -= 14;
-      else score += Math.min(delta * 3.5, 14);
+      const delta =
+        getVectorValue(
+          profile,
+          "projection"
+        ) -
+        getVectorValue(
+          anchorProfile,
+          "projection"
+        );
+
+      if (delta < 0.6) {
+        return {
+          score: -Infinity,
+          selectedSize: null,
+          profile,
+          reasons: [],
+          penalties: [
+            "not-stronger-than-reference",
+          ],
+        };
+      }
+
+      score += Math.min(delta * 3.5, 14);
+      reasons.push("modifier:stronger");
     }
 
     if (intent.referenceModifiers.includes("more-elegant")) {
-      const delta = profile.elegance - anchorProfile.elegance;
-      if (delta < 0.5) score -= 12;
-      else score += Math.min(delta * 3.5, 12);
+      const delta =
+        profile.elegance -
+        anchorProfile.elegance;
+
+      if (delta < 0.5) {
+        return {
+          score: -Infinity,
+          selectedSize: null,
+          profile,
+          reasons: [],
+          penalties: [
+            "not-more-elegant-than-reference",
+          ],
+        };
+      }
+
+      score += Math.min(delta * 3.5, 12);
+      reasons.push("modifier:more-elegant");
     }
   }
 
