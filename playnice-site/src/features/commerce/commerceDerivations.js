@@ -103,6 +103,152 @@ export const buildDiscoveryBundleItem = ({
   };
 };
 
+
+export const normalizeCartQuantity = (
+  quantity
+) => {
+  const value = Number(quantity);
+
+  if (
+    !Number.isFinite(value) ||
+    value <= 0
+  ) {
+    return 0;
+  }
+
+  return Math.max(
+    1,
+    Math.floor(value)
+  );
+};
+
+export const updateCartItemQuantity = (
+  cart = [],
+  key,
+  delta
+) =>
+  cart
+    .map((item) => {
+      if (item.key !== key) return item;
+
+      return {
+        ...item,
+        quantity: normalizeCartQuantity(
+          Number(item.quantity || 0) +
+            Number(delta || 0)
+        ),
+      };
+    })
+    .filter(
+      (item) =>
+        normalizeCartQuantity(
+          item.quantity
+        ) > 0
+    );
+
+export const removeCartItem = (
+  cart = [],
+  key
+) =>
+  cart.filter(
+    (item) => item.key !== key
+  );
+
+export const rehydrateCart = (
+  items = [],
+  catalog = []
+) => {
+  const catalogById = new Map(
+    catalog.map((product) => [
+      String(product.id),
+      product,
+    ])
+  );
+
+  const byKey = new Map();
+
+  for (const rawItem of items) {
+    const key = String(
+      rawItem?.key || ""
+    ).trim();
+
+    const quantity =
+      normalizeCartQuantity(
+        rawItem?.quantity
+      );
+
+    if (!key || quantity <= 0) {
+      continue;
+    }
+
+    const catalogProduct =
+      rawItem?.id != null
+        ? catalogById.get(
+            String(rawItem.id)
+          )
+        : null;
+
+    const hasCatalogSize =
+      catalogProduct &&
+      rawItem?.size &&
+      catalogProduct.sizes?.[
+        rawItem.size
+      ] != null;
+
+    let item = {
+      ...rawItem,
+      quantity,
+    };
+
+    if (hasCatalogSize) {
+      const selection =
+        getProductPurchaseSelection(
+          catalogProduct,
+          rawItem.size
+        );
+
+      item = {
+        ...item,
+        id: catalogProduct.id,
+        name: catalogProduct.name,
+        image: catalogProduct.image,
+        price: selection.finalPrice,
+      };
+    } else {
+      const price = Number(
+        rawItem?.price
+      );
+
+      if (
+        !Number.isFinite(price) ||
+        price < 0
+      ) {
+        continue;
+      }
+
+      item.price = price;
+    }
+
+    const existing = byKey.get(key);
+
+    if (existing) {
+      byKey.set(key, {
+        ...item,
+        quantity:
+          normalizeCartQuantity(
+            existing.quantity
+          ) + quantity,
+      });
+    } else {
+      byKey.set(key, item);
+    }
+  }
+
+  return Array.from(
+    byKey.values()
+  );
+};
+
 export const addOrIncrementCartItem = (
   cart = [],
   item
