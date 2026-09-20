@@ -6,6 +6,8 @@ import {
   buildEcommerceItem,
   buildEcommerceItems,
   getEcommerceValue,
+  buildProductListEvent,
+  buildProductSelectionEvent,
 } from "./features/analytics/analyticsDerivations";
 import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
@@ -814,6 +816,14 @@ const showHeroSlideWhenReady = useCallback(
 ========================================= */
 
 const newArrivalProducts = getJustInProducts(products);
+
+const homeBestsellerProducts = [27, 30, 36, 47]
+  .map((id) =>
+    products.find(
+      (product) => product.id === id
+    )
+  )
+  .filter(Boolean);
 
 const getProductThumbnail = (image = "") =>
   getProductThumbnailPure(image);
@@ -2263,6 +2273,125 @@ const privateSelectionProducts = useMemo(() => {
   return products.filter((product) => wishlist.includes(product.id));
 }, [products, wishlist]);
 
+useEffect(() => {
+  if (
+    view !== "shop" ||
+    selectedProduct ||
+    !paginatedProducts.length
+  ) {
+    return;
+  }
+
+  trackProductListView({
+    products: paginatedProducts,
+    listId: "shop-grid",
+    listName: "Shop Grid",
+    signature: [
+      currentPage,
+      productsPerPage,
+      ...paginatedProducts.map(
+        (product) => product.id
+      ),
+    ].join("|"),
+  });
+}, [
+  view,
+  selectedProduct,
+  paginatedProducts,
+  currentPage,
+  productsPerPage,
+]);
+
+useEffect(() => {
+  if (
+    view !== "home" ||
+    selectedProduct
+  ) {
+    return;
+  }
+
+  trackProductListView({
+    products: homeBestsellerProducts,
+    listId: "home-bestsellers",
+    listName: "Home Bestsellers",
+    signature:
+      homeBestsellerProducts
+        .map((product) => product.id)
+        .join("|"),
+  });
+
+  trackProductListView({
+    products: newArrivalProducts,
+    listId: "home-just-in",
+    listName: "Home Just In",
+    signature:
+      newArrivalProducts
+        .map((product) => product.id)
+        .join("|"),
+  });
+}, [
+  view,
+  selectedProduct,
+  homeBestsellerProducts,
+  newArrivalProducts,
+]);
+
+useEffect(() => {
+  if (
+    !discoveryOpen ||
+    !visibleDiscoveryResults.length
+  ) {
+    return;
+  }
+
+  const listProducts =
+    visibleDiscoveryResults.map(
+      (result) => result.product
+    );
+
+  trackProductListView({
+    products: listProducts,
+    listId:
+      "fragrance-intelligence-results",
+    listName:
+      "Fragrance Intelligence Results",
+    signature: [
+      discoveryQuery,
+      discoveryPage,
+      ...listProducts.map(
+        (product) => product.id
+      ),
+    ].join("|"),
+  });
+}, [
+  discoveryOpen,
+  visibleDiscoveryResults,
+  discoveryQuery,
+  discoveryPage,
+]);
+
+useEffect(() => {
+  if (
+    !privateSelectionOpen ||
+    !privateSelectionProducts.length
+  ) {
+    return;
+  }
+
+  trackProductListView({
+    products: privateSelectionProducts,
+    listId: "private-selection",
+    listName: "Private Selection",
+    signature:
+      privateSelectionProducts
+        .map((product) => product.id)
+        .join("|"),
+  });
+}, [
+  privateSelectionOpen,
+  privateSelectionProducts,
+]);
+
 const goToShop = () => {
   const heroSelectionActive = Boolean(
     heroCollectionFilter?.length || heroCollectionTitle
@@ -3445,7 +3574,8 @@ const openProductModal = (product, options = {}) => {
     preferredSize = "",
     userPickedSize = false,
     changeView = true,
-    originSurface = ""
+    originSurface = "",
+    analyticsListContext = null,
   } = options;
 
   const isMobileModal = isMobileProductModal();
@@ -3457,7 +3587,11 @@ const openProductModal = (product, options = {}) => {
       ? preferredSize
       : Object.keys(product.sizes || {})[0] || "";
 
-  const initialPrice = Number(product.sizes?.[initialSize] || 0);
+  const initialPrice =
+    getProductPurchaseSelection(
+      product,
+      initialSize
+    ).finalPrice;
 
   if (changeView || isMobileModal) {
     setView("shop");
@@ -3470,14 +3604,31 @@ const openProductModal = (product, options = {}) => {
   trackEvent("view_item", {
     currency: "EUR",
     value: initialPrice,
+    ...(analyticsListContext?.listId
+      ? {
+          item_list_id:
+            analyticsListContext.listId,
+          item_list_name:
+            analyticsListContext.listName,
+        }
+      : {}),
     items: [
       {
-        item_id: String(product.id),
-        item_name: product.name,
-        item_variant: initialSize,
-        item_category: product.category,
-        price: initialPrice,
-        quantity: 1
+        ...buildEcommerceItem(product, {
+          item_variant: initialSize,
+          price: initialPrice,
+          quantity: 1,
+        }),
+        ...(analyticsListContext?.listId
+          ? {
+              item_list_id:
+                analyticsListContext.listId,
+              item_list_name:
+                analyticsListContext.listName,
+              index:
+                analyticsListContext.index,
+            }
+          : {}),
       }
     ]
   });
@@ -3598,8 +3749,13 @@ const handleFindSimilarWithFI = async (product) => {
   await handleDiscoverySearch(referenceQuery, "product-page");
 };
 
-const handleProductCardOpen = (product) => {
-  openProductModal(product);
+const handleProductCardOpen = (
+  product,
+  analyticsListContext = null
+) => {
+  openProductModal(product, {
+    analyticsListContext,
+  });
 
   if (!isJustInProduct(product) || !newProductsSignature) return;
 
@@ -4188,6 +4344,68 @@ useEffect(() => {
   }
 }, [smartCtaStats, cartCount, wishlist.length]);
 
+const productListViewRef = useRef(
+  new Set()
+);
+
+const trackProductSelection = ({
+  product,
+  index,
+  listId,
+  listName,
+  variant = "",
+}) => {
+  if (!product) return;
+
+  trackEvent(
+    "select_item",
+    buildProductSelectionEvent({
+      product,
+      index,
+      listId,
+      listName,
+      price: getMinPrice(product),
+      variant,
+    })
+  );
+};
+
+const trackProductListView = ({
+  products: listProducts,
+  listId,
+  listName,
+  signature,
+}) => {
+  if (
+    !listProducts?.length ||
+    !listId ||
+    !signature
+  ) {
+    return;
+  }
+
+  const key =
+    `${listId}:${signature}`;
+
+  if (
+    productListViewRef.current.has(key)
+  ) {
+    return;
+  }
+
+  productListViewRef.current.add(key);
+
+  trackEvent(
+    "view_item_list",
+    buildProductListEvent({
+      products: listProducts,
+      listId,
+      listName,
+      getPrice: getMinPrice,
+    })
+  );
+};
+
 /* =========================================
    INNER COMPONENTS
 ========================================= */
@@ -4197,7 +4415,10 @@ const ProductCard = ({
   toggleWishlist,
   sprayingWishlistId,
   changeViewOnOpen = true,
-  mobileProfileLabel = ""
+  mobileProfileLabel = "",
+  analyticsListId = "",
+  analyticsListName = "",
+  analyticsIndex = null,
 }) => {
   const copy = getProductCopy(product, lang);
   const minPrice = getMinPrice(product);
@@ -4268,17 +4489,43 @@ const titleLengthClass =
     ? "is-long-title"
     : "";
 
+const analyticsListContext =
+  analyticsListId
+    ? {
+        listId: analyticsListId,
+        listName: analyticsListName,
+        index: analyticsIndex,
+      }
+    : null;
+
+const openFromProductCard = () => {
+  if (analyticsListContext) {
+    trackProductSelection({
+      product,
+      ...analyticsListContext,
+    });
+  }
+
+  if (changeViewOnOpen) {
+    handleProductCardOpen(
+      product,
+      analyticsListContext
+    );
+  } else {
+    openProductModal(product, {
+      changeView: false,
+      analyticsListContext,
+    });
+  }
+};
+
   return (
   <article className="product-card premium-product-card">
     <button
       type="button"
       className="product-card-media clickable-media"
       onMouseDown={(e) => e.preventDefault()}
-      onClick={() =>
-        changeViewOnOpen
-          ? handleProductCardOpen(product)
-          : openProductModal(product, { changeView: false })
-      }
+      onClick={openFromProductCard}
       aria-label={product.name}
     >
       <img
@@ -4327,9 +4574,19 @@ const titleLengthClass =
         e.preventDefault();
         e.stopPropagation();
 
+        if (analyticsListContext) {
+          trackProductSelection({
+            product,
+            ...analyticsListContext,
+          });
+        }
+
         window.dispatchEvent(
           new CustomEvent("playnice:desktop-quick-view", {
-            detail: { productId: product.id }
+            detail: {
+              productId: product.id,
+              analyticsListContext,
+            }
           })
         );
       }}
@@ -4423,11 +4680,7 @@ const titleLengthClass =
   <button
     type="button"
     className="product-card-cta"
-    onClick={() =>
-      changeViewOnOpen
-        ? handleProductCardOpen(product)
-        : openProductModal(product, { changeView: false })
-    }
+    onClick={openFromProductCard}
   >
     {tr.productCardCta}
   </button>
@@ -5444,6 +5697,20 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                         const searchContext =
                           discoverySearchContextRef.current;
 
+                        const analyticsListContext = {
+                          listId:
+                            "fragrance-intelligence-results",
+                          listName:
+                            "Fragrance Intelligence Results",
+                          index: globalRank,
+                        };
+
+                        trackProductSelection({
+                          product: result.product,
+                          ...analyticsListContext,
+                          variant: sizeLabel,
+                        });
+
                         trackEvent(
                           "discovery_result_click",
                           buildDiscoveryResultClickParams({
@@ -5472,6 +5739,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                               detail: {
                                 productId: result.product.id,
                                 source: "discovery",
+                                analyticsListContext,
                               }
                             })
                           );
@@ -5500,6 +5768,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                           changeView: false,
                           preferredSize: sizeLabel,
                           originSurface: "discovery",
+                          analyticsListContext,
                         });
 
                         requestAnimationFrame(() => {
@@ -5671,7 +5940,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           className="new-arrivals-group"
           aria-hidden={isClone ? "true" : undefined}
         >
-          {newArrivalProducts.map((product) => {
+          {newArrivalProducts.map((product, productIndex) => {
             const minPrice = getMinPrice(product);
             const isWishlisted = wishlist.includes(product.id);
 
@@ -5684,11 +5953,23 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   type="button"
                   className="new-arrival-card"
                   tabIndex={isClone ? -1 : 0}
-                  onClick={() =>
+                  onClick={() => {
+                    const analyticsListContext = {
+                      listId: "home-just-in",
+                      listName: "Home Just In",
+                      index: productIndex + 1,
+                    };
+
+                    trackProductSelection({
+                      product,
+                      ...analyticsListContext,
+                    });
+
                     openProductModal(product, {
                       changeView: false,
-                    })
-                  }
+                      analyticsListContext,
+                    });
+                  }}
                   aria-label={
                     isClone
                       ? undefined
@@ -5859,10 +6140,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               </div>
 
               <div className="product-grid">
-                {[27, 30, 36, 47]
-                  .map((id) => products.find((product) => product.id === id))
-                  .filter(Boolean)
-                  .map((product) => (
+                {homeBestsellerProducts.map(
+                  (product, index) => (
                     <ProductCard
                       key={product.id}
                       product={product}
@@ -5870,11 +6149,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       toggleWishlist={toggleWishlist}
                       sprayingWishlistId={sprayingWishlistId}
                       changeViewOnOpen={false}
+                      analyticsListId="home-bestsellers"
+                      analyticsListName="Home Bestsellers"
+                      analyticsIndex={index + 1}
                       mobileProfileLabel={
                         productCopyBySlug[product.slug]?.miniTag?.[lang] || ""
                       }
                     />
-                  ))}
+                  )
+                )}
               </div>
 
               <div className="section-cta-center">
@@ -7088,13 +7371,21 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 <div className="product-grid-anchor" ref={productGridRef}>
   <div className="product-grid">
   {paginatedProducts.length > 0 ? (
-    paginatedProducts.map((product) => (
+    paginatedProducts.map((product, index) => (
       <ProductCard
         key={product.id}
         product={product}
         wishlist={wishlist}
         toggleWishlist={toggleWishlist}
         sprayingWishlistId={sprayingWishlistId}
+        analyticsListId="shop-grid"
+        analyticsListName="Shop Grid"
+        analyticsIndex={
+          (currentPage - 1) *
+            productsPerPage +
+          index +
+          1
+        }
       />
     ))
   ) : (
@@ -7876,6 +8167,24 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               {privateSelectionProducts.map((product, index) => {
                 const minPrice = getMinPrice(product);
                 const copy = getProductCopy(product, lang);
+                const analyticsListContext = {
+                  listId: "private-selection",
+                  listName: "Private Selection",
+                  index: index + 1,
+                };
+
+                const openPrivateSelectionProduct = () => {
+                  trackProductSelection({
+                    product,
+                    ...analyticsListContext,
+                  });
+
+                  setPrivateSelectionOpen(false);
+
+                  openProductModal(product, {
+                    analyticsListContext,
+                  });
+                };
 
                 return (
                   <div
@@ -7888,9 +8197,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     <button
                       type="button"
                       className="private-selection-item-media"
-                      onClick={() => {
-                        openProductModal(product);
-                      }}
+                      onClick={openPrivateSelectionProduct}
                       aria-label={product.name}
                     >
                       <img
@@ -7918,9 +8225,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                           <button
                             type="button"
                             className="private-selection-link"
-                            onClick={() => {
-                              openProductModal(product);
-                            }}
+                            onClick={openPrivateSelectionProduct}
                           >
                             {lang === "sr" ? "Otvori" : "Open"}
                           </button>
@@ -8006,6 +8311,31 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <div className="cart-items">
           {cart.map((item, index) => {
             const displayName = item.name;
+            const catalogProduct =
+              products.find(
+                (product) =>
+                  String(product.id) ===
+                  String(item.id)
+              );
+
+            const openCartProduct = () => {
+              if (!catalogProduct) return;
+
+              setCartOpen(false);
+
+              openProductModal(
+                catalogProduct,
+                {
+                  preferredSize:
+                    catalogProduct.sizes?.[
+                      item.size
+                    ] != null
+                      ? item.size
+                      : "",
+                  changeView: false,
+                }
+              );
+            };
 
             return (
               <div
@@ -8015,25 +8345,52 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 )}`}
                 key={item.key}
               >
-                <div className="cart-item-main">
-                  <div className="cart-item-thumb">
-                    {item.image ? (
-                      <img src={item.image} alt="" />
-                    ) : (
-                      <span aria-hidden="true">
-                        {displayName?.charAt(0)}
-                      </span>
-                    )}
-                  </div>
+                {catalogProduct ? (
+                  <button
+                    type="button"
+                    className="cart-item-main cart-item-main-link"
+                    onClick={openCartProduct}
+                    aria-label={`${displayName} — ${lang === "sr" ? "otvori proizvod" : "open product"}`}
+                  >
+                    <div className="cart-item-thumb">
+                      {item.image ? (
+                        <img src={item.image} alt="" />
+                      ) : (
+                        <span aria-hidden="true">
+                          {displayName?.charAt(0)}
+                        </span>
+                      )}
+                    </div>
 
-                  <div className="cart-item-info">
-                    <h4>{displayName}</h4>
+                    <div className="cart-item-info">
+                      <h4>{displayName}</h4>
 
-                    <p className="cart-item-meta">
-                      {item.size} · {formatPrice(item.price)}
-                    </p>
+                      <p className="cart-item-meta">
+                        {item.size} · {formatPrice(item.price)}
+                      </p>
+                    </div>
+                  </button>
+                ) : (
+                  <div className="cart-item-main">
+                    <div className="cart-item-thumb">
+                      {item.image ? (
+                        <img src={item.image} alt="" />
+                      ) : (
+                        <span aria-hidden="true">
+                          {displayName?.charAt(0)}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="cart-item-info">
+                      <h4>{displayName}</h4>
+
+                      <p className="cart-item-meta">
+                        {item.size} · {formatPrice(item.price)}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className="cart-item-actions">
                   <div className="qty-control">

@@ -3,6 +3,9 @@ import { createPortal } from "react-dom";
 import { products } from "../data/products";
 import { productCopy } from "../data/products/productCopy";
 import { getProductActions } from "../lib/productActionsGateway";
+import { trackEvent } from "../lib/ga";
+import { getProductPurchaseSelection } from "../features/commerce/commerceDerivations";
+import { buildEcommerceItem } from "../features/analytics/analyticsDerivations";
 import "./DesktopQuickView.css";
 
 export const DESKTOP_QUICK_VIEW_EVENT = "playnice:desktop-quick-view";
@@ -80,6 +83,7 @@ export default function DesktopQuickView() {
   const [lang, setLang] = useState(() => getLanguage());
   const [selectedSize, setSelectedSize] = useState("");
   const [source, setSource] = useState("");
+  const [analyticsListContext, setAnalyticsListContext] = useState(null);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
 
@@ -95,11 +99,54 @@ export default function DesktopQuickView() {
       if (!nextProduct) return;
 
       const firstSize = Object.keys(nextProduct.sizes || {})[0] || "";
+      const listContext =
+        event?.detail?.analyticsListContext || null;
+      const selection =
+        getProductPurchaseSelection(
+          nextProduct,
+          firstSize
+        );
+
       setProduct(nextProduct);
       setSelectedSize(firstSize);
       setSource(event?.detail?.source || "");
+      setAnalyticsListContext(listContext);
       setLang(getLanguage());
       setIsAdded(false);
+
+      trackEvent("view_item", {
+        currency: "EUR",
+        value: selection.finalPrice,
+        ...(listContext?.listId
+          ? {
+              item_list_id:
+                listContext.listId,
+              item_list_name:
+                listContext.listName,
+            }
+          : {}),
+        items: [
+          {
+            ...buildEcommerceItem(nextProduct, {
+              item_variant:
+                selection.activeSize,
+              price:
+                selection.finalPrice,
+              quantity: 1,
+            }),
+            ...(listContext?.listId
+              ? {
+                  item_list_id:
+                    listContext.listId,
+                  item_list_name:
+                    listContext.listName,
+                  index:
+                    listContext.index,
+                }
+              : {}),
+          }
+        ],
+      });
 
       const actions = getProductActions();
       setIsWishlisted(Boolean(actions?.isWishlisted?.(nextProduct.id)));
@@ -191,6 +238,7 @@ export default function DesktopQuickView() {
         detail: {
           productId: product.id,
           source,
+          analyticsListContext,
         }
       })
     );

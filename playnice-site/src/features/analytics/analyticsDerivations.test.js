@@ -2,6 +2,8 @@ import {
   buildEcommerceItem,
   buildEcommerceItems,
   getEcommerceValue,
+  buildProductListEvent,
+  buildProductSelectionEvent,
 } from "./analyticsDerivations";
 
 describe("analyticsDerivations", () => {
@@ -68,5 +70,80 @@ describe("analyticsDerivations", () => {
     expect(
       getEcommerceValue(items)
     ).toBe(24.5);
+  });
+
+  test("builds GA4 product-list payloads with stable list context", () => {
+    const products = [
+      {
+        id: 1,
+        name: "One",
+        category: "Designer",
+      },
+      {
+        id: 2,
+        name: "Two",
+        category: "Niche",
+      },
+    ];
+
+    expect(
+      buildProductListEvent({
+        products,
+        listId: "shop-grid",
+        listName: "Shop Grid",
+        getPrice: (product) =>
+          product.id === 1 ? 5 : 9,
+      })
+    ).toEqual({
+      item_list_id: "shop-grid",
+      item_list_name: "Shop Grid",
+      items: [
+        expect.objectContaining({
+          item_id: "1",
+          item_name: "One",
+          item_list_id: "shop-grid",
+          item_list_name: "Shop Grid",
+          index: 1,
+          price: 5,
+        }),
+        expect.objectContaining({
+          item_id: "2",
+          item_name: "Two",
+          item_list_id: "shop-grid",
+          item_list_name: "Shop Grid",
+          index: 2,
+          price: 9,
+        }),
+      ],
+    });
+  });
+
+  test("builds select_item payload for one clicked list product", () => {
+    expect(
+      buildProductSelectionEvent({
+        product: {
+          id: 7,
+          name: "Clicked",
+          category: "Arabian",
+        },
+        index: 3,
+        listId: "home-just-in",
+        listName: "Home Just In",
+        price: 6,
+      })
+    ).toEqual({
+      item_list_id: "home-just-in",
+      item_list_name: "Home Just In",
+      items: [
+        expect.objectContaining({
+          item_id: "7",
+          item_name: "Clicked",
+          item_list_id: "home-just-in",
+          item_list_name: "Home Just In",
+          index: 3,
+          price: 6,
+        }),
+      ],
+    });
   });
 });

@@ -57,3 +57,90 @@ export const getEcommerceValue = (
       )
       .toFixed(2)
   );
+
+
+export const buildProductListItem = (
+  product,
+  {
+    index,
+    listId,
+    listName,
+    price,
+    variant,
+  } = {}
+) => {
+  const item = buildEcommerceItem(
+    product,
+    {
+      price:
+        price ??
+        product?.price ??
+        0,
+      item_variant:
+        variant ??
+        "",
+      quantity: 1,
+    }
+  );
+
+  return {
+    ...item,
+    ...(listId
+      ? { item_list_id: listId }
+      : {}),
+    ...(listName
+      ? { item_list_name: listName }
+      : {}),
+    ...(Number.isFinite(Number(index))
+      ? { index: Number(index) }
+      : {}),
+  };
+};
+
+export const buildProductListEvent = ({
+  products = [],
+  listId,
+  listName,
+  getPrice,
+}) => ({
+  item_list_id: listId,
+  item_list_name: listName,
+  items: products.map(
+    (product, index) =>
+      buildProductListItem(
+        product,
+        {
+          index: index + 1,
+          listId,
+          listName,
+          price: getPrice
+            ? getPrice(product)
+            : product?.price ?? 0,
+        }
+      )
+  ),
+});
+
+export const buildProductSelectionEvent = ({
+  product,
+  index,
+  listId,
+  listName,
+  price,
+  variant,
+}) => ({
+  item_list_id: listId,
+  item_list_name: listName,
+  items: [
+    buildProductListItem(
+      product,
+      {
+        index,
+        listId,
+        listName,
+        price,
+        variant,
+      }
+    ),
+  ],
+});
