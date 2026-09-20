@@ -2045,10 +2045,59 @@ const humanReason = (
     productSpecificTraits[0]?.[0] ||
     "versatility";
 
-  const productSpecificLine =
-    traitLine[lang]?.[productSpecificKey] ||
-    traitLine.en[productSpecificKey] ||
+  const productSpecificDescriptor = {
+    sr: {
+      freshness: "svežini",
+      clean: "čistom karakteru",
+      elegance: "eleganciji",
+      woody: "drvenastoj strukturi",
+      aromatic: "aromatičnom karakteru",
+      aquatic: "vodenoj svežini",
+      warm: "toplijem karakteru",
+      sweet: "kontrolisanoj slatkoći",
+      projection: "prisustvu",
+      versatility: "svestranosti",
+    },
+    en: {
+      freshness: "freshness",
+      clean: "clean character",
+      elegance: "elegance",
+      woody: "woody structure",
+      aromatic: "aromatic character",
+      aquatic: "aquatic freshness",
+      warm: "warmer character",
+      sweet: "controlled sweetness",
+      projection: "presence",
+      versatility: "versatility",
+    },
+  };
+
+  const productLabel =
+    product.shortName ||
+    product.name ||
     "";
+
+  const descriptor =
+    productSpecificDescriptor[lang]?.[
+      productSpecificKey
+    ] ||
+    productSpecificDescriptor.en[
+      productSpecificKey
+    ] ||
+    "";
+
+  const productSpecificLine =
+    productLabel && descriptor
+      ? lang === "sr"
+        ? `${productLabel} se ovde posebno izdvaja po ${descriptor}.`
+        : `${productLabel} stands out here for its ${descriptor}.`
+      : traitLine[lang]?.[
+          productSpecificKey
+        ] ||
+        traitLine.en[
+          productSpecificKey
+        ] ||
+        "";
 
   const briefLine =
     contextLines[0] ||
