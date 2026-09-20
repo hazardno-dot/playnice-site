@@ -1,11 +1,11 @@
-import { productWearContext } from "./productWearContext";
+import { products } from "./index";
 import part1 from "./productDoNotWearContext.part1";
 import part2 from "./productDoNotWearContext.part2";
 import part3 from "./productDoNotWearContext.part3";
 import part4 from "./productDoNotWearContext.part4";
 
 const copy = [...part1, ...part2, ...part3, ...part4];
-const productNames = Object.keys(productWearContext);
+const productNames = products.map((product) => product.name);
 
 export const productDoNotWearContext = productNames.reduce((result, productName, index) => {
   const entry = copy[index];
