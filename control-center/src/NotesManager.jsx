@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
-import noteMapSource from "@shop/TheNoteMap.jsx?raw";
+import noteMapSource from "@shop/features/note-map/TheNoteMapImpl.jsx?raw";
 import { auditProductNotes, formatNoteKey } from "./noteAudit.mjs";
 import { auditNoteLabels } from "./noteLabelAudit.mjs";
 import { auditNoteDraftPayload, getNoteDraftState, normalizeNoteDraftPayload } from "./noteDraft.mjs";

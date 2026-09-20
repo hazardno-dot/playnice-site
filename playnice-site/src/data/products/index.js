@@ -2650,7 +2650,7 @@ export const products = [
   recommendations: [
     "bois-imperial-essential-parfums",
     "mancera-cosmic-pepper",
-    "thomas-kosmala-no-7-le-sel-de-la-terre"
+    "thomas-kosmala-no7-le-sel-de-la-terre"
   ],
   inspiredBy: {
     name: "Original Thomas Kosmala creation",
