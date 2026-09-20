@@ -89,7 +89,7 @@ body {
   padding-bottom: var(--sticky-cta-safe);
   font-family: "Inter", sans-serif;
   color: var(--text);
-  background: radial-gradient(circle at center, #0a0a0a 0%, #050505 100%);
+  background: #050505;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -125,6 +125,13 @@ main {
     radial-gradient(circle at top, rgba(220, 181, 107, 0.04), transparent 30%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 16%),
     var(--bg);
+}
+
+.app-shell--home {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(220, 181, 107, 0.035), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.012) 0%, transparent 18%),
+    #050505;
 }
 
 .section-wrap {
