@@ -2362,8 +2362,10 @@ const openProductFromRequest = (product) => {
 
   productRequestOpenTimeoutRef.current = setTimeout(() => {
     productRequestOpenTimeoutRef.current = null;
-    setSelectedProduct(product);
-    setProductModalVisible(true);
+    openProductModal(product, {
+      changeView: false,
+      originSurface: "scent-request"
+    });
   }, 450);
 };
 
