@@ -418,11 +418,6 @@ const getInitialShopState = () => {
   const productModalReturnScrollRef = useRef(null);
   const productRequestOpenTimeoutRef = useRef(null);
   const [noteMapOpen, setNoteMapOpen] = useState(false);
-  const [modalAddedKey, setModalAddedKey] = useState(null);
-  const modalAddedTimeoutRef = useRef(null);
-
-  const [modalDiscountFlashKey, setModalDiscountFlashKey] = useState(null);
-
   const [manifestoOpen, setManifestoOpen] = useState(false);
   const [activeManifesto, setActiveManifesto] = useState(null);
 
@@ -1756,14 +1751,6 @@ useEffect(() => {
 
 useEffect(() => {
   return () => {
-    if (modalAddedTimeoutRef.current) {
-      clearTimeout(modalAddedTimeoutRef.current);
-    }
-  };
-}, []);
-
-useEffect(() => {
-  return () => {
     if (heroAutoplayResumeTimeoutRef.current) {
       clearTimeout(heroAutoplayResumeTimeoutRef.current);
     }
@@ -2997,17 +2984,6 @@ const activeJournalFeedback = journalPageArticle
   ? getJournalSavedFeedback(journalPageArticle)
   : null;
 
-const selectedCopy = selectedProduct
-  ? getProductCopy(selectedProduct, lang)
-  : {
-      miniTag: fallbackCopy.miniTag[lang],
-      card: fallbackCopy.card[lang],
-      modal: fallbackCopy.modal[lang],
-      scentType: fallbackCopy.scentType[lang],
-      dominantNotes: fallbackCopy.dominantNotes[lang],
-      tags: fallbackCopy.tags[lang]
-    };
-
 const privateSelectionProducts = useMemo(() => {
   return products.filter((product) => wishlist.includes(product.id));
 }, [products, wishlist]);
@@ -3605,26 +3581,6 @@ const triggerInlineAddedFeedback = (productId, size) => {
 
   setTimeout(() => {
     setInlineAddedKey((current) => (current === key ? null : current));
-  }, 1300);
-};
-
-const handleModalAddToCart = (product, size) => {
-  if (!product || !size) return;
-
-  addToCart(product, size, null, null, {
-    showToast: false,
-    showMiniPreview: true
-  });
-
-  const key = `${product.id}-${size}`;
-  setModalAddedKey(key);
-
-  if (modalAddedTimeoutRef.current) {
-    clearTimeout(modalAddedTimeoutRef.current);
-  }
-
-  modalAddedTimeoutRef.current = setTimeout(() => {
-    setModalAddedKey(null);
   }, 1300);
 };
 
