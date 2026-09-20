@@ -835,7 +835,9 @@ const {
   howItWorksOpen,
   privateSelectionOpen,
   catalogPreview,
-  isMobileProductPageActive,
+  isMobileProductPageActive:
+    isMobileProductModalViewport &&
+    Boolean(selectedProduct),
   sideRailAds,
 });
 
