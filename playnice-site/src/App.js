@@ -107,6 +107,11 @@ import {
   getJournalFeedbackSubmission,
   buildJournalFeedbackPayload,
 } from "./features/journal/journalFeedbackHelpers";
+import {
+  getCartSummary,
+  getOverlayVisibility,
+  buildManagedShopUrl,
+} from "./features/app/appStateDerivations";
 
 const Exhibition = React.lazy(() => import("./features/exhibition/Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./features/journal/JournalArticlePage"));
@@ -932,24 +937,22 @@ const selectedSortOption =
     ]
   );
 
-  const cartCount = useMemo(
-    () => cart.reduce((sum, item) => sum + item.quantity, 0),
+  const {
+    cartCount,
+    subtotal,
+    shipping,
+    total,
+    amountLeftForFreeShipping,
+    freeShippingProgress,
+  } = useMemo(
+    () =>
+      getCartSummary({
+        cart,
+        freeShippingThreshold:
+          FREE_SHIPPING_THRESHOLD,
+        shippingCost: SHIPPING_COST,
+      }),
     [cart]
-  );
-
-  const subtotal = useMemo(
-    () => cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    [cart]
-  );
-
-  const shipping =
-    cart.length === 0 ? 0 : subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
-
-  const total = subtotal + shipping;
-
-  const amountLeftForFreeShipping = Math.max(
-    0,
-    FREE_SHIPPING_THRESHOLD - subtotal
   );
 
   const isMobileProductPageActive =
@@ -965,21 +968,23 @@ const selectedSortOption =
     window.history.state?.playniceDiscoveryOpen === true &&
     !window.location.pathname.startsWith("/product/");
 
-  const hasBlockingOverlay =
-  cartOpen ||
-  checkoutOpen ||
-  storyOpen ||
-  howItWorksOpen ||
-  faqOpen ||
-  privateSelectionOpen ||
-  !!catalogPreview ||
-  manifestoOpen ||
-  (discoveryOpen && !isHomeDiscoverySuspendedForProduct) ||
-  discoveryBuilderOpen;
-
-  const showStickyCta =
-  !hasBlockingOverlay &&
-  (view === "home" || view === "shop");
+  const {
+    hasBlockingOverlay,
+    showStickyCta,
+  } = getOverlayVisibility({
+    cartOpen,
+    checkoutOpen,
+    storyOpen,
+    howItWorksOpen,
+    faqOpen,
+    privateSelectionOpen,
+    catalogPreview,
+    manifestoOpen,
+    discoveryOpen,
+    isHomeDiscoverySuspendedForProduct,
+    discoveryBuilderOpen,
+    view,
+  });
 
   const scrollYRef = useRef(0);
 
@@ -1153,39 +1158,17 @@ useEffect(() => {
       return;
     }
 
-  const params = new URLSearchParams(window.location.search);
-
-  // Ukloni samo PlayNice parametre koje ovaj blok kontroliše.
-  // UTM, gclid, fbclid i ostali attribution parametri ostaju sačuvani.
-  params.delete("view");
-  params.delete("category");
-  params.delete("search");
-  params.delete("season");
-  params.delete("mood");
-  params.delete("sort");
-  params.delete("page");
-
-  if (
-    window.location.pathname === "/" &&
-    view !== "home"
-  ) {
-    params.set("view", view);
-  }
-
-  if (view === "shop") {
-    if (category !== "All") params.set("category", category);
-    if (searchTerm.trim()) params.set("search", searchTerm.trim());
-    if (season !== "All") params.set("season", season);
-    if (scentMood !== "All") params.set("mood", scentMood);
-    if (sortBy !== "featured") params.set("sort", sortBy);
-    if (currentPage > 1) params.set("page", String(currentPage));
-  }
-
-  const query = params.toString();
-
-  const nextUrl = query
-    ? `${window.location.pathname}?${query}`
-    : window.location.pathname;
+  const nextUrl = buildManagedShopUrl({
+    pathname: window.location.pathname,
+    search: window.location.search,
+    view,
+    category,
+    searchTerm,
+    season,
+    scentMood,
+    sortBy,
+    currentPage,
+  });
 
   const currentUrl = `${window.location.pathname}${window.location.search}`;
 
@@ -2272,11 +2255,6 @@ const handleAnnouncementItemClick = (item) => {
     handleJournalArticleOpen(latestJournalArticle);
   }
 };
-
-const freeShippingProgress = Math.min(
-  100,
-  Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)
-);
 
 const activeJournalFeedback = journalPageArticle
   ? getJournalSavedFeedback(journalPageArticle)
