@@ -506,6 +506,44 @@ describe("Fragrance Intelligence — match quality", () => {
   });
 });
 
+describe("Fragrance Intelligence — brief-aware reasons", () => {
+  test("summer freshness brief mentions the requested season or freshness", () => {
+    const output = expectRelevantWithResults(
+      "Fresh for summer under €15"
+    );
+
+    output.results.slice(0, 3).forEach((item) => {
+      expect(
+        /summer|fresh/i.test(item.reason)
+      ).toBe(true);
+    });
+  });
+
+  test("work and elegance brief explains the requested context", () => {
+    const output = expectRelevantWithResults(
+      "Clean and elegant for work"
+    );
+
+    output.results.slice(0, 3).forEach((item) => {
+      expect(
+        /work|elegant|clean/i.test(item.reason)
+      ).toBe(true);
+    });
+  });
+
+  test("excluded-note date brief references the exclusion or date fit", () => {
+    const output = expectRelevantWithResults(
+      "I don't like vanilla, I want something for a date"
+    );
+
+    output.results.slice(0, 3).forEach((item) => {
+      expect(
+        /avoid|date/i.test(item.reason)
+      ).toBe(true);
+    });
+  });
+});
+
 describe("Fragrance Intelligence — result quality invariants", () => {
   test("reasons are not five identical generic sentences", () => {
     const output = expectRelevantWithResults("Clean and elegant for work");
