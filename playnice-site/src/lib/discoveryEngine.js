@@ -1,3 +1,5 @@
+import { getProductPurchaseSelection } from "../features/commerce/commerceDerivations";
+
 /* =========================================
    PLAYNICE DISCOVERY ENGINE — V3.0
    Deterministic, local, zero-API-cost ranking.
@@ -33,11 +35,19 @@ const flattenNotes = (product) =>
 const getAvailableSizes = (product) =>
   Object.entries(product?.sizes || {})
     .filter(([, price]) => Number.isFinite(Number(price)))
-    .map(([size, price]) => ({
-      size,
-      price: Number(price),
-      ml: Number.parseFloat(size) || 0,
-    }))
+    .map(([size]) => {
+      const selection =
+        getProductPurchaseSelection(
+          product,
+          size
+        );
+
+      return {
+        size,
+        price: Number(selection.finalPrice),
+        ml: Number.parseFloat(size) || 0,
+      };
+    })
     .sort((a, b) => a.price - b.price || a.ml - b.ml);
 
 const chooseSizeForBudget = (product, maxPrice) => {
