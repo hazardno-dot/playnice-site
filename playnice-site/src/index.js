@@ -58,7 +58,6 @@ import "./mobile-v2/product-page/MobileProductPageNoteMap.css";
 import "./AnnouncementTiming.css";
 import "./desktop-product-page/DesktopProductPageCompositionFix.css";
 import "./desktop-product-page/DesktopProductPageInteractionFix.css";
-import "./desktop-product-page/DesktopQuickViewSizePolish.css";
 import "./ColorHarmonizationV1.css";
 import "./DesktopProductCardBadgePolish.css";
 import "./HomeJustInBadgePolish.css";
