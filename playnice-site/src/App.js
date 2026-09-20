@@ -456,7 +456,6 @@ const getInitialShopState = () => {
   const [miniCartPreviewId, setMiniCartPreviewId] = useState(0);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [mobileModalPage, setMobileModalPage] = useState(0);
   const [isMobileProductModalViewport, setIsMobileProductModalViewport] = useState(() =>
     typeof window !== "undefined" &&
     window.matchMedia("(max-width: 640px)").matches
@@ -653,10 +652,6 @@ const isNewRequest = (request) => {
   const productModalScrollYRef = useRef(0);
   const productModalCloseTimeoutRef = useRef(null);
   const productModalRef = useRef(null);
-  const mobileModalTouchRef = useRef({ startX: 0, startY: 0, tracking: false });
-  const productModalMediaRef = useRef(null);
-  const productModalContentRef = useRef(null);
-  const productModalCloseButtonRef = useRef(null);
   const productModalTriggerRef = useRef(null);
   const checkoutAutoCloseTimeoutRef = useRef(null);
   const fallbackDeviceIdRef = useRef(null);
@@ -1196,65 +1191,6 @@ const selectedSortOption =
 
   const scrollYRef = useRef(0);
 
-const handleMobileModalTouchStart = (event) => {
-  if (!isMobileProductModalViewport || !productModalVisible) return;
-
-  const touch = event.touches?.[0];
-  if (!touch) return;
-
-  mobileModalTouchRef.current = {
-    startX: touch.clientX,
-    startY: touch.clientY,
-    tracking: true,
-  };
-};
-
-const handleMobileModalTouchEnd = (event) => {
-  const gesture = mobileModalTouchRef.current;
-  if (!gesture.tracking || !isMobileProductModalViewport || !productModalVisible) return;
-
-  mobileModalTouchRef.current = { ...gesture, tracking: false };
-
-  const touch = event.changedTouches?.[0];
-  if (!touch) return;
-
-  const dx = touch.clientX - gesture.startX;
-  const dy = touch.clientY - gesture.startY;
-  const swipeThreshold = 54;
-
-  if (Math.abs(dx) < swipeThreshold || Math.abs(dx) < Math.abs(dy) * 1.25) return;
-
-  if (dx < 0 && mobileModalPage === 0) setMobileModalPage(1);
-  if (dx > 0 && mobileModalPage === 1) setMobileModalPage(0);
-};
-/* =========================================
-   EFFECTS
-========================================= */
-  useEffect(() => {
-    const media = window.matchMedia("(max-width: 640px)");
-    const syncMobileModalViewport = () =>
-      setIsMobileProductModalViewport(media.matches);
-
-    syncMobileModalViewport();
-    media.addEventListener?.("change", syncMobileModalViewport);
-
-    return () => media.removeEventListener?.("change", syncMobileModalViewport);
-  }, []);
-
-  useEffect(() => {
-    if (productModalVisible) setMobileModalPage(0);
-  }, [productModalVisible, selectedProduct?.id]);
-
-  useEffect(() => {
-    if (!productModalVisible || !isMobileProductModalViewport) return;
-
-    if (mobileModalPage === 0) {
-      if (productModalMediaRef.current) productModalMediaRef.current.scrollTop = 0;
-      return;
-    }
-
-    if (productModalContentRef.current) productModalContentRef.current.scrollTop = 0;
-  }, [mobileModalPage, productModalVisible, isMobileProductModalViewport]);
   useLayoutEffect(() => {
   const body = document.body;
 
@@ -1641,75 +1577,6 @@ useEffect(() => {
 useEffect(() => {
   setNoteMapOpen(false);
 }, [selectedProduct?.slug]);
-
-useEffect(() => {
-  if (!selectedProduct || !productModalVisible) return;
-
-  const frame = requestAnimationFrame(() => {
-    productModalCloseButtonRef.current?.focus({
-      preventScroll: true
-    });
-  });
-
-  return () => cancelAnimationFrame(frame);
-}, [selectedProduct, productModalVisible]);
-
-useEffect(() => {
-  if (!selectedProduct || !productModalVisible) return;
-
-  const modal = productModalRef.current;
-  if (!modal) return;
-
-  const handleProductModalTab = (event) => {
-    if (event.key !== "Tab") return;
-
-    const focusableElements = Array.from(
-      modal.querySelectorAll(
-        'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      )
-    ).filter(
-      (element) =>
-        element instanceof HTMLElement &&
-        element.getAttribute("aria-hidden") !== "true" &&
-        element.offsetParent !== null
-    );
-
-    if (focusableElements.length === 0) {
-      event.preventDefault();
-      return;
-    }
-
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-    const activeElement = document.activeElement;
-
-    if (event.shiftKey) {
-      if (
-        activeElement === firstElement ||
-        !modal.contains(activeElement)
-      ) {
-        event.preventDefault();
-        lastElement.focus();
-      }
-
-      return;
-    }
-
-    if (
-      activeElement === lastElement ||
-      !modal.contains(activeElement)
-    ) {
-      event.preventDefault();
-      firstElement.focus();
-    }
-  };
-
-  document.addEventListener("keydown", handleProductModalTab);
-
-  return () => {
-    document.removeEventListener("keydown", handleProductModalTab);
-  };
-}, [selectedProduct, productModalVisible]);
 
 useEffect(() => {
   return () => {
