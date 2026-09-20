@@ -41,14 +41,38 @@ export const getSeoProductUrl = (product) => {
   return `${SITE_BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
 };
 
-export const getProductFromCurrentUrl = () => {
-  const path = window.location.pathname;
-  const match = path.match(/^\/product\/([^/]+)$/);
+export const getProductFromPathname = (
+  pathname = ""
+) => {
+  const match = String(pathname).match(
+    /^\/product\/([^/]+)$/
+  );
+
   if (!match?.[1]) return null;
 
-  const slugFromUrl = decodeURIComponent(match[1]);
-  return products.find((product) => getProductSlug(product) === slugFromUrl) || null;
+  let slugFromUrl = "";
+
+  try {
+    slugFromUrl = decodeURIComponent(
+      match[1]
+    );
+  } catch {
+    return null;
+  }
+
+  return (
+    products.find(
+      (product) =>
+        getProductSlug(product) ===
+        slugFromUrl
+    ) || null
+  );
 };
+
+export const getProductFromCurrentUrl = () =>
+  getProductFromPathname(
+    window.location.pathname
+  );
 
 export const getSeoProductImage = (product) => {
   if (!product?.image) return `${SITE_BASE_URL}/og-image.jpg`;
