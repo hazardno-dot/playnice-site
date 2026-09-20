@@ -15,7 +15,7 @@ for (const token of [
   "Exactly 4 dominant notes are required for modal parity",
   "Exactly 3 tags are required for product presentation parity",
   "so product cards remain balanced",
-  "TheNoteMap.jsx?raw",
+  "features/note-map/TheNoteMapImpl.jsx?raw",
 ]) {
   if (!validation.includes(token)) throw new Error(`Draft presentation guard missing: ${token}`);
 }
