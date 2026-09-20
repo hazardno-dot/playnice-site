@@ -1133,6 +1133,255 @@ const buildReferenceTarget = (anchorProfile, modifiers = []) => {
 
 const profileSimilarity = (a, b) => vectorSimilarity(a, b);
 
+const getIntentMatchQuality = ({
+  product,
+  profile,
+  intent,
+  productCopy,
+  productWearContext,
+  discoveryProfiles,
+}) => {
+  const components = [];
+
+  const addComponent = (value, weight = 1) => {
+    if (!Number.isFinite(value) || weight <= 0) return;
+    components.push({
+      value: clamp(value, 58, 96),
+      weight,
+    });
+  };
+
+  if (intent.seasons.length) {
+    const exactSeason =
+      intent.seasons.includes(product.season);
+    const allSeason =
+      product.season === "all";
+
+    addComponent(
+      exactSeason ? 95 : allSeason ? 86 : 60,
+      1.25
+    );
+  }
+
+  intent.moods.forEach((mood) => {
+    addComponent(
+      product?.moods?.includes(mood) ? 92 : 64,
+      0.65
+    );
+  });
+
+  intent.positiveTraits.forEach(
+    ({ key, strength }) => {
+      const value = Number(profile[key] || 0);
+
+      if (strength === "moderate") {
+        const target =
+          key === "sweet" ? 5.2 : 5.5;
+        const distance =
+          Math.abs(value - target);
+
+        addComponent(
+          94 - distance * 8,
+          1.1
+        );
+        return;
+      }
+
+      addComponent(
+        58 + value * 3.8,
+        strength === "high" ? 1.35 : 1.15
+      );
+    }
+  );
+
+  intent.negativeTraits.forEach(({ key }) => {
+    const value = Number(profile[key] || 0);
+
+    addComponent(
+      96 - Math.max(0, value - 3.5) * 6.5,
+      1.05
+    );
+  });
+
+  if (intent.requiredNoteGroups.length) {
+    intent.requiredNoteGroups.forEach(
+      (group) => {
+        const matched = group.some(
+          (note) =>
+            profile.notes?.includes(note)
+        );
+
+        addComponent(
+          matched ? 94 : 58,
+          1.15
+        );
+      }
+    );
+  }
+
+  if (
+    intent.excludedNotes.length ||
+    intent.hardExcludedNotes.length
+  ) {
+    const excluded = new Set([
+      ...intent.excludedNotes,
+      ...intent.hardExcludedNotes,
+    ]);
+
+    const hasExcluded =
+      profile.notes?.some(
+        (note) => excluded.has(note)
+      );
+
+    addComponent(
+      hasExcluded ? 58 : 94,
+      1.15
+    );
+  }
+
+  const contextProfileKeys = {
+    office: "office",
+    elegant: "elegance",
+    evening: "evening",
+    date: "date",
+    everyday: "versatility",
+  };
+
+  intent.contexts.forEach((context) => {
+    const key =
+      contextProfileKeys[context];
+
+    if (!key) return;
+
+    const value =
+      Number(profile[key] || 0);
+
+    addComponent(
+      58 + value * 3.8,
+      1.2
+    );
+  });
+
+  if (intent.gender) {
+    const masculine =
+      Number(profile.masculine ?? 5);
+    const feminine =
+      Number(profile.feminine ?? 5);
+    const unisex =
+      Number(profile.unisex ?? 5);
+
+    if (intent.gender === "masculine") {
+      const direction =
+        clamp(
+          (masculine - feminine + 5) / 10,
+          0,
+          1
+        );
+
+      addComponent(
+        58 + direction * 38,
+        1.0
+      );
+    }
+
+    if (intent.gender === "feminine") {
+      const direction =
+        clamp(
+          (feminine - masculine + 5) / 10,
+          0,
+          1
+        );
+
+      addComponent(
+        58 + direction * 38,
+        1.0
+      );
+    }
+
+    if (intent.gender === "unisex") {
+      const gap =
+        Math.abs(
+          masculine - feminine
+        );
+
+      const balance =
+        clamp(
+          1 - gap / 4,
+          0,
+          1
+        );
+
+      addComponent(
+        58 +
+          (
+            balance * 0.7 +
+            (unisex / 10) * 0.3
+          ) *
+            38,
+        1.0
+      );
+    }
+  }
+
+  if (intent.referenceProduct) {
+    const anchorProfile =
+      buildProductProfile(
+        intent.referenceProduct,
+        productCopy,
+        productWearContext,
+        discoveryProfiles
+      );
+
+    const target =
+      buildReferenceTarget(
+        anchorProfile,
+        intent.referenceModifiers
+      );
+
+    const similarity =
+      vectorSimilarity(
+        profile,
+        target
+      );
+
+    addComponent(
+      58 + similarity * 38,
+      1.5
+    );
+  }
+
+  if (!components.length) {
+    return 72;
+  }
+
+  const weightedValue =
+    components.reduce(
+      (sum, component) =>
+        sum +
+        component.value *
+          component.weight,
+      0
+    );
+
+  const totalWeight =
+    components.reduce(
+      (sum, component) =>
+        sum +
+        component.weight,
+      0
+    );
+
+  return Math.round(
+    clamp(
+      weightedValue /
+        Math.max(totalWeight, 1),
+      58,
+      96
+    )
+  );
+};
+
+
 const scoreProduct = (product, intent, productCopy, productWearContext, discoveryProfiles) => {
   const profile = buildProductProfile(product, productCopy, productWearContext, discoveryProfiles);
   const notes = profile.notes;
@@ -1825,13 +2074,17 @@ export const discoverFragrances = ({
   const ranked = relevant
     .slice(0, Math.max(1, limit))
     .map((item, index) => {
-      const normalizedMatch =
-        calibrateMatchScore(item.score);
-
       return {
         product: item.product,
         score: Number(item.score.toFixed(2)),
-        match: Math.round(normalizedMatch),
+        match: getIntentMatchQuality({
+          product: item.product,
+          profile: item.profile,
+          intent,
+          productCopy,
+          productWearContext,
+          discoveryProfiles,
+        }),
         selectedSize: item.selectedSize,
         reason: humanReason(
           item.product,
