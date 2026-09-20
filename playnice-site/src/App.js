@@ -170,6 +170,7 @@ const getMinPrice = (product) =>
   getMinPricePure(product);
 
 const CART_STORAGE_KEY = "playnice_cart";
+const CART_OPEN_SESSION_KEY = "playnice_cart_open_v1";
 
 function safeReadLocalStorage(key, fallback) {
   if (typeof window === "undefined") return fallback;
@@ -337,7 +338,26 @@ const getInitialShopState = () => {
   const [seasonMenuOpen, setSeasonMenuOpen] = useState(false);
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(initialShopState.searchTerm);
-  const [cartOpen, setCartOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(() => {
+    if (typeof window === "undefined") return false;
+
+    try {
+      const storedCart =
+        readStoredArray(
+          window.localStorage,
+          CART_STORAGE_KEY
+        );
+
+      return (
+        storedCart.length > 0 &&
+        window.sessionStorage.getItem(
+          CART_OPEN_SESSION_KEY
+        ) === "1"
+      );
+    } catch {
+      return false;
+    }
+  });
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState("");
   const [currentPage, setCurrentPage] = useState(
@@ -1149,6 +1169,21 @@ useEffect(() => {
       window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
     } catch {}
   }, [cart]);
+
+  useEffect(() => {
+    try {
+      if (cartOpen && cart.length > 0) {
+        window.sessionStorage.setItem(
+          CART_OPEN_SESSION_KEY,
+          "1"
+        );
+      } else {
+        window.sessionStorage.removeItem(
+          CART_OPEN_SESSION_KEY
+        );
+      }
+    } catch {}
+  }, [cartOpen, cart.length]);
 
   useEffect(() => {
     if (
