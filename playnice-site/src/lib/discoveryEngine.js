@@ -23,6 +23,16 @@ const includesAny = (text, values = []) =>
 const clamp = (value, min = 0, max = 10) =>
   Math.max(min, Math.min(max, value));
 
+export const getDiscoveryMatchTier = (
+  match
+) => {
+  const value = Number(match || 0);
+
+  if (value >= 92) return 3;
+  if (value >= 86) return 2;
+  return 1;
+};
+
 const unique = (items = []) => [...new Set(items.filter(Boolean))];
 
 const flattenNotes = (product) =>
@@ -2058,10 +2068,44 @@ export const discoverFragrances = ({
       };
     });
 
+  const orderedRanked = ranked
+    .map((result, originalIndex) => ({
+      result,
+      originalIndex,
+    }))
+    .sort((a, b) => {
+      const tierDifference =
+        getDiscoveryMatchTier(b.result.match) -
+        getDiscoveryMatchTier(a.result.match);
+
+      if (tierDifference !== 0) {
+        return tierDifference;
+      }
+
+      const matchDifference =
+        Number(b.result.match || 0) -
+        Number(a.result.match || 0);
+
+      if (matchDifference !== 0) {
+        return matchDifference;
+      }
+
+      const scoreDifference =
+        Number(b.result.score || 0) -
+        Number(a.result.score || 0);
+
+      if (scoreDifference !== 0) {
+        return scoreDifference;
+      }
+
+      return a.originalIndex - b.originalIndex;
+    })
+    .map(({ result }) => result);
+
   return {
     query,
     intent,
-    results: ranked,
+    results: orderedRanked,
     feedback: "",
     isRelevant: true,
   };
