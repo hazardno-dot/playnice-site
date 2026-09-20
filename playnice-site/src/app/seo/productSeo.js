@@ -50,7 +50,7 @@ export const getProductFromCurrentUrl = () => {
   return products.find((product) => getProductSlug(product) === slugFromUrl) || null;
 };
 
-const getSeoProductImage = (product) => {
+export const getSeoProductImage = (product) => {
   if (!product?.image) return `${SITE_BASE_URL}/og-image.jpg`;
   if (product.image.startsWith("http")) return product.image;
   return `${SITE_BASE_URL}${product.image}`;
