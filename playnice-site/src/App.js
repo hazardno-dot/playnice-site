@@ -6,6 +6,8 @@ import {
   buildEcommerceItem,
   buildEcommerceItems,
   getEcommerceValue,
+  buildProductListEvent,
+  buildProductSelectionEvent,
 } from "./features/analytics/analyticsDerivations";
 import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
@@ -814,6 +816,14 @@ const showHeroSlideWhenReady = useCallback(
 ========================================= */
 
 const newArrivalProducts = getJustInProducts(products);
+
+const homeBestsellerProducts = [27, 30, 36, 47]
+  .map((id) =>
+    products.find(
+      (product) => product.id === id
+    )
+  )
+  .filter(Boolean);
 
 const getProductThumbnail = (image = "") =>
   getProductThumbnailPure(image);
@@ -3445,7 +3455,8 @@ const openProductModal = (product, options = {}) => {
     preferredSize = "",
     userPickedSize = false,
     changeView = true,
-    originSurface = ""
+    originSurface = "",
+    analyticsListContext = null,
   } = options;
 
   const isMobileModal = isMobileProductModal();
@@ -3470,14 +3481,31 @@ const openProductModal = (product, options = {}) => {
   trackEvent("view_item", {
     currency: "EUR",
     value: initialPrice,
+    ...(analyticsListContext?.listId
+      ? {
+          item_list_id:
+            analyticsListContext.listId,
+          item_list_name:
+            analyticsListContext.listName,
+        }
+      : {}),
     items: [
       {
-        item_id: String(product.id),
-        item_name: product.name,
-        item_variant: initialSize,
-        item_category: product.category,
-        price: initialPrice,
-        quantity: 1
+        ...buildEcommerceItem(product, {
+          item_variant: initialSize,
+          price: initialPrice,
+          quantity: 1,
+        }),
+        ...(analyticsListContext?.listId
+          ? {
+              item_list_id:
+                analyticsListContext.listId,
+              item_list_name:
+                analyticsListContext.listName,
+              index:
+                analyticsListContext.index,
+            }
+          : {}),
       }
     ]
   });
@@ -3598,8 +3626,13 @@ const handleFindSimilarWithFI = async (product) => {
   await handleDiscoverySearch(referenceQuery, "product-page");
 };
 
-const handleProductCardOpen = (product) => {
-  openProductModal(product);
+const handleProductCardOpen = (
+  product,
+  analyticsListContext = null
+) => {
+  openProductModal(product, {
+    analyticsListContext,
+  });
 
   if (!isJustInProduct(product) || !newProductsSignature) return;
 
@@ -4188,6 +4221,68 @@ useEffect(() => {
   }
 }, [smartCtaStats, cartCount, wishlist.length]);
 
+const productListViewRef = useRef(
+  new Set()
+);
+
+const trackProductSelection = ({
+  product,
+  index,
+  listId,
+  listName,
+  variant = "",
+}) => {
+  if (!product) return;
+
+  trackEvent(
+    "select_item",
+    buildProductSelectionEvent({
+      product,
+      index,
+      listId,
+      listName,
+      price: getMinPrice(product),
+      variant,
+    })
+  );
+};
+
+const trackProductListView = ({
+  products: listProducts,
+  listId,
+  listName,
+  signature,
+}) => {
+  if (
+    !listProducts?.length ||
+    !listId ||
+    !signature
+  ) {
+    return;
+  }
+
+  const key =
+    `${listId}:${signature}`;
+
+  if (
+    productListViewRef.current.has(key)
+  ) {
+    return;
+  }
+
+  productListViewRef.current.add(key);
+
+  trackEvent(
+    "view_item_list",
+    buildProductListEvent({
+      products: listProducts,
+      listId,
+      listName,
+      getPrice: getMinPrice,
+    })
+  );
+};
+
 /* =========================================
    INNER COMPONENTS
 ========================================= */
@@ -4197,7 +4292,10 @@ const ProductCard = ({
   toggleWishlist,
   sprayingWishlistId,
   changeViewOnOpen = true,
-  mobileProfileLabel = ""
+  mobileProfileLabel = "",
+  analyticsListId = "",
+  analyticsListName = "",
+  analyticsIndex = null,
 }) => {
   const copy = getProductCopy(product, lang);
   const minPrice = getMinPrice(product);
@@ -4268,17 +4366,43 @@ const titleLengthClass =
     ? "is-long-title"
     : "";
 
+const analyticsListContext =
+  analyticsListId
+    ? {
+        listId: analyticsListId,
+        listName: analyticsListName,
+        index: analyticsIndex,
+      }
+    : null;
+
+const openFromProductCard = () => {
+  if (analyticsListContext) {
+    trackProductSelection({
+      product,
+      ...analyticsListContext,
+    });
+  }
+
+  if (changeViewOnOpen) {
+    handleProductCardOpen(
+      product,
+      analyticsListContext
+    );
+  } else {
+    openProductModal(product, {
+      changeView: false,
+      analyticsListContext,
+    });
+  }
+};
+
   return (
   <article className="product-card premium-product-card">
     <button
       type="button"
       className="product-card-media clickable-media"
       onMouseDown={(e) => e.preventDefault()}
-      onClick={() =>
-        changeViewOnOpen
-          ? handleProductCardOpen(product)
-          : openProductModal(product, { changeView: false })
-      }
+      onClick={openFromProductCard}
       aria-label={product.name}
     >
       <img
@@ -4327,9 +4451,19 @@ const titleLengthClass =
         e.preventDefault();
         e.stopPropagation();
 
+        if (analyticsListContext) {
+          trackProductSelection({
+            product,
+            ...analyticsListContext,
+          });
+        }
+
         window.dispatchEvent(
           new CustomEvent("playnice:desktop-quick-view", {
-            detail: { productId: product.id }
+            detail: {
+              productId: product.id,
+              analyticsListContext,
+            }
           })
         );
       }}
@@ -4423,11 +4557,7 @@ const titleLengthClass =
   <button
     type="button"
     className="product-card-cta"
-    onClick={() =>
-      changeViewOnOpen
-        ? handleProductCardOpen(product)
-        : openProductModal(product, { changeView: false })
-    }
+    onClick={openFromProductCard}
   >
     {tr.productCardCta}
   </button>
