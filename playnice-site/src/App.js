@@ -3450,8 +3450,8 @@ const getDiscoveryAnalyticsParams = (
   const discovery = discoverFragrances({
     query: nextQuery,
     products,
-    productCopyBySlug,
-    productWearContextBySlug,
+    productCopy: productCopyBySlug,
+    productWearContext: productWearContextBySlug,
     discoveryProfiles,
     lang,
     limit: products.length,
