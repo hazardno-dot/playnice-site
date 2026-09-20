@@ -434,10 +434,11 @@ describe("Fragrance Intelligence — match calibration", () => {
   });
 
   test("maps representative scores into useful public match bands", () => {
-    expect(calibrateMatchScore(50)).toBeGreaterThanOrEqual(76);
-    expect(calibrateMatchScore(75)).toBeGreaterThanOrEqual(86);
-    expect(calibrateMatchScore(95)).toBeGreaterThanOrEqual(90);
-    expect(calibrateMatchScore(140)).toBeLessThanOrEqual(95);
+    expect(calibrateMatchScore(50)).toBe(72);
+    expect(calibrateMatchScore(75)).toBe(83);
+    expect(calibrateMatchScore(95)).toBe(89);
+    expect(calibrateMatchScore(115)).toBe(92);
+    expect(calibrateMatchScore(140)).toBe(95);
   });
 
   test("the same engine score always produces the same public match", () => {
