@@ -171,3 +171,20 @@ export const buildManagedShopUrl = ({
     ? `${pathname}?${query}`
     : pathname;
 };
+
+
+export const getProductOriginView = (
+  historyState
+) => {
+  const originView =
+    historyState?.productOriginView;
+
+  return [
+    "home",
+    "shop",
+    "journal",
+    "exhibition",
+  ].includes(originView)
+    ? originView
+    : "shop";
+};
