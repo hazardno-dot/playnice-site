@@ -37,6 +37,14 @@ import {
   getScentRequestMatchResult as matchScentRequest,
   normalizeScentName,
 } from "./features/scent-request/scentRequestMatching";
+import {
+  getVisibleCommunityRequests as getVisibleCommunityRequestsPure,
+  mergeExistingCollectionRequests as mergeExistingCollectionRequestsPure,
+  sortExistingCollectionRequests,
+  getOptimisticCommunityVoteState,
+  rollbackCommunityVote,
+  upsertCommunityRequestVote,
+} from "./features/scent-request/communityRequestHelpers";
 
 const Exhibition = React.lazy(() => import("./features/exhibition/Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./features/journal/JournalArticlePage"));
@@ -2096,104 +2104,26 @@ const openProductFromRequest = (product) => {
 };
 
 const getVisibleCommunityRequests = (requests) =>
-  requests
-    .filter(
-      (request) =>
-        !findExistingProductByRequest(request.name) &&
-        !isAmbiguousScentRequest(request.name)
-    )
-    .sort((a, b) => b.votes - a.votes);
+  getVisibleCommunityRequestsPure(
+    requests,
+    getScentRequestMatchResult
+  );
 
-const EXISTING_COLLECTION_LOCKED_VOTES = {
-  "Yves Saint Laurent Y Iced Cologne": 27,
-  "Prada Paradigme Eau de Parfum": 25,
-  "Valentino Uomo Born In Roma Coral Fantasy": 16,
-  "Lattafa Khamrah Waha Eau de Parfum": 13,
-  "Club De Nuit Intense Overdose": 12,
-  "Carolina Herrera Bad Boy Cobalt Eau de Parfum": 5,
-  "Rayhaan Azul Eau de Parfum": 3,
-};
-
-const EXISTING_COLLECTION_EXCLUDED_SLUGS = new Set([
-  "bois-imperial-essential-parfums",
-]);
-
-const mergeExistingCollectionRequests = (requests = [], existingRequests = []) => {
-  const merged = new Map();
-
-  const addRequest = (item) => {
-    if (!item?.name) return;
-
-    const product = findExistingProductByRequest(item.name);
-    if (!product) return;
-
-    if (EXISTING_COLLECTION_EXCLUDED_SLUGS.has(product.slug)) return;
-
-    const key = String(product.id || product.slug || normalizeScentName(product.name));
-    const current = merged.get(key) || {
-      name: product.name,
-      product,
-      votes: 0,
-      firstSeen: item.firstSeen || null,
-    };
-
-    const nextFirstSeen = [current.firstSeen, item.firstSeen]
-      .filter(Boolean)
-      .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())[0] || null;
-
-    merged.set(key, {
-      ...current,
-      name: product.name,
-      product,
-      votes: Number(current.votes || 0) + Number(item.votes || 0),
-      firstSeen: nextFirstSeen,
-    });
-  };
-
-  existingRequests.forEach(addRequest);
-  requests.forEach(addRequest);
-
-  Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).forEach(([name, lockedVotes]) => {
-    const product = findExistingProductByRequest(name);
-    if (!product) return;
-
-    const key = String(product.id || product.slug || normalizeScentName(product.name));
-    const current = merged.get(key) || {
-      name: product.name,
-      product,
-      votes: 0,
-      firstSeen: null,
-    };
-
-    merged.set(key, {
-      ...current,
-      name: product.name,
-      product,
-      lockedVotes,
-    });
-  });
-
-  return Array.from(merged.values());
-};
+const mergeExistingCollectionRequests = (
+  requests = [],
+  existingRequests = []
+) =>
+  mergeExistingCollectionRequestsPure(
+    requests,
+    existingRequests,
+    {
+      findExistingProductByRequest,
+      normalizeScentName,
+    }
+  );
 
 const sortedExistingCollectionRequests = useMemo(
-  () =>
-    existingCollectionRequests
-      .map((item) => ({
-        ...item,
-        displayVotes:
-          EXISTING_COLLECTION_LOCKED_VOTES[item.name] ??
-          item.lockedVotes ??
-          item.votes ??
-          1,
-      }))
-      .sort((a, b) => {
-        if (b.displayVotes !== a.displayVotes) {
-          return b.displayVotes - a.displayVotes;
-        }
-
-        return String(a.name).localeCompare(String(b.name));
-      }),
+  () => sortExistingCollectionRequests(existingCollectionRequests),
   [existingCollectionRequests]
 );
 
@@ -2209,13 +2139,7 @@ const handleCommunityRequestVote = async (requestName) => {
 
   const rollbackOptimisticVote = () => {
     setCommunityRequests((prev) =>
-      prev
-        .map((item) =>
-          item.name === requestName
-            ? { ...item, votes: Math.max(0, Number(item.votes || 0) - 1) }
-            : item
-        )
-        .sort((a, b) => b.votes - a.votes)
+      rollbackCommunityVote(prev, requestName)
     );
   };
 
@@ -2242,56 +2166,20 @@ const handleCommunityRequestVote = async (requestName) => {
     // Apps Script confirms it in the background. If the backend blocks or
     // rejects it, we roll the local count back and show the real reason.
     setCommunityRequests((prev) => {
-      const beforeSorted = getVisibleCommunityRequests(prev);
-      const beforeRanks = beforeSorted.reduce((acc, item, index) => {
-        acc[item.name] = index;
-        return acc;
-      }, {});
+      const {
+        nextRequests,
+        trends,
+        topThreeEntries,
+      } = getOptimisticCommunityVoteState(
+        prev,
+        requestName,
+        getVisibleCommunityRequests
+      );
 
-      const next = prev
-        .map((item) =>
-          item.name === requestName
-            ? { ...item, votes: Number(item.votes || 0) + 1 }
-            : item
-        )
-        .sort((a, b) => b.votes - a.votes);
+      setCommunityRequestTrends(trends);
+      setCommunityTopThreeEntries(topThreeEntries);
 
-      const afterSorted = getVisibleCommunityRequests(next);
-
-      const nextTrends = afterSorted.reduce((acc, item, index) => {
-        const previousIndex = beforeRanks[item.name];
-
-        if (previousIndex === undefined) {
-          acc[item.name] = "same";
-        } else if (index < previousIndex) {
-          acc[item.name] = "up";
-        } else if (index > previousIndex) {
-          acc[item.name] = "down";
-        } else {
-          acc[item.name] = "same";
-        }
-
-        return acc;
-      }, {});
-
-      const nextTopThreeEntries = afterSorted.reduce((acc, item, index) => {
-        const previousIndex = beforeRanks[item.name];
-
-        if (
-          previousIndex !== undefined &&
-          previousIndex > 2 &&
-          index <= 2
-        ) {
-          acc[item.name] = true;
-        }
-
-        return acc;
-      }, {});
-
-      setCommunityRequestTrends(nextTrends);
-      setCommunityTopThreeEntries(nextTopThreeEntries);
-
-      return next;
+      return nextRequests;
     });
 
     setScentRequestStatus(
@@ -2394,28 +2282,13 @@ const handleScentRequestSubmit = async (event) => {
       return;
     }
 
-    const normalizedFragranceName = normalizeScentName(fragranceName);
-  const existingRequest = communityRequests.find(
-    (item) => normalizeScentName(item.name) === normalizedFragranceName
-  );
-
-    if (existingRequest) {
-      setCommunityRequests((prev) =>
-        prev
-          .map((item) =>
-            normalizeScentName(item.name) === normalizedFragranceName
-              ? { ...item, votes: item.votes + 1 }
-              : item
-          )
-          .sort((a, b) => b.votes - a.votes)
-      );
-    } else {
-      setCommunityRequests((prev) =>
-        [{ name: fragranceName, votes: 1 }, ...prev].sort(
-          (a, b) => b.votes - a.votes
-        )
-      );
-    }
+    setCommunityRequests((prev) =>
+      upsertCommunityRequestVote(
+        prev,
+        fragranceName,
+        normalizeScentName
+      )
+    );
 
     setScentRequestValue("");
 
