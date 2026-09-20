@@ -3587,7 +3587,11 @@ const openProductModal = (product, options = {}) => {
       ? preferredSize
       : Object.keys(product.sizes || {})[0] || "";
 
-  const initialPrice = Number(product.sizes?.[initialSize] || 0);
+  const initialPrice =
+    getProductPurchaseSelection(
+      product,
+      initialSize
+    ).finalPrice;
 
   if (changeView || isMobileModal) {
     setView("shop");
