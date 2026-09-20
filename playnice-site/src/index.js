@@ -6,11 +6,11 @@ import PrivateSelectionEnhancer from "./features/private-selection/PrivateSelect
 import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
 import MobileCommunityV2 from "./mobile-v2/community/MobileCommunityV2";
-import DesktopFooterCatalog from "./DesktopFooterCatalog";
+import DesktopFooterCatalog from "./features/footer/DesktopFooterCatalog";
 import CartInteractionV2 from "./features/cart/CartInteractionV2";
 import DiscoveryImageFallback from "./features/discovery/DiscoveryImageFallback";
 import FragranceIntelligenceToneLoader from "./features/discovery/FragranceIntelligenceToneLoader";
-import WhatsAppLinkBridge from "./WhatsAppLinkBridge";
+import WhatsAppLinkBridge from "./features/footer/WhatsAppLinkBridge";
 import DesktopCartConfirmationEnhancer from "./features/cart/DesktopCartConfirmationEnhancer";
 import DesktopProductPageBridge from "./desktop-product-page/DesktopProductPageBridge";
 import DesktopProductPageHeaderGuard from "./desktop-product-page/DesktopProductPageHeaderGuard";
@@ -113,7 +113,7 @@ if (window.matchMedia("(min-width: 769px)").matches) {
     import("./DesktopProductModalCopyV2.css"),
     import("./DesktopDiscoverCleanup.css"),
     import("./DesktopCardCopyWidth.css"),
-    import("./DesktopFooterSocialColors.css"),
+    import("./features/footer/DesktopFooterSocialColors.css"),
   ])
     .then(renderApp)
     .catch(renderApp);
