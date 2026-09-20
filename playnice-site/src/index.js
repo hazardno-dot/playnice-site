@@ -41,7 +41,7 @@ import "./mobile-v2/shop/MobileShopReveal.css";
 import "./mobile-v2/modal/MobileProductModalBase.css";
 import "./mobile-v2/modal/MobileProductModalPagerCore.css";
 import "./mobile-v2/modal/MobileProductModalPagerPolish.css";
-import "./ProductModalPurchaseV2.css";
+import "./features/product-modal/ProductModalPurchaseV2.css";
 import "./features/product-media/ProductImageNormalization.css";
 import "./mobile-v2/product-page/MobileProductPage.css";
 import "./mobile-v2/product-page/MobileProductPageBadgePolish.css";
@@ -107,7 +107,7 @@ if (window.matchMedia("(min-width: 769px)").matches) {
     import("./features/discovery/DesktopFragranceIntelligenceHoverFix.css"),
     import("./DesktopStickyCtaGlass.css"),
     import("./features/cart/DesktopConfirmationBarFit.css"),
-    import("./DesktopProductModalCopyV2.css"),
+    import("./features/product-modal/DesktopProductModalCopyV2.css"),
     import("./features/header/DesktopDiscoverCleanup.css"),
     import("./DesktopCardCopyWidth.css"),
     import("./features/footer/DesktopFooterSocialColors.css"),
