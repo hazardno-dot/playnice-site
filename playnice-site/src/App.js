@@ -2844,8 +2844,13 @@ const addHeroBottleToCart = () => {
   };
 
   const handleInternationalEnquiry = async () => {
+  if (!acquireSubmissionLock(checkoutSubmissionInFlightRef)) {
+    return;
+  }
+
   if (cart.length === 0) {
     alert(tr.noItemsCart || (lang === "sr" ? "Korpa je prazna." : "Your cart is empty."));
+    releaseSubmissionLock(checkoutSubmissionInFlightRef);
     return;
   }
 
@@ -2866,6 +2871,7 @@ const addHeroBottleToCart = () => {
         ? "Molimo unesite ime, prezime, email, telefon, zemlju i grad."
         : "Please enter your first name, last name, email, phone, country and city."
     );
+    releaseSubmissionLock(checkoutSubmissionInFlightRef);
     return;
   }
 
@@ -2970,13 +2976,12 @@ const addHeroBottleToCart = () => {
 };
 
 const handlePlaceOrder = async () => {
-  if (!acquireSubmissionLock(checkoutSubmissionInFlightRef)) {
+  if (!isMontenegroOrder) {
+    handleInternationalEnquiry();
     return;
   }
 
-  if (!isMontenegroOrder) {
-    releaseSubmissionLock(checkoutSubmissionInFlightRef);
-    handleInternationalEnquiry();
+  if (!acquireSubmissionLock(checkoutSubmissionInFlightRef)) {
     return;
   }
 
@@ -3180,6 +3185,7 @@ const handlePlaceOrder = async () => {
   } catch (error) {
     alert(tr.orderError);
   } finally {
+    releaseSubmissionLock(checkoutSubmissionInFlightRef);
     setIsSubmittingOrder(false);
   }
 };
