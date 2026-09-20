@@ -6527,11 +6527,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 </div>
 
 {newArrivalProducts.length > 0 && (
-  <div
-    className={`new-arrivals-marquee ${
-      productModalVisible ? "is-product-modal-open" : ""
-    }`}
-  >
+  <div className="new-arrivals-marquee">
     <div className="new-arrivals-track">
       {[false, true].map((isClone, groupIndex) => (
         <div
