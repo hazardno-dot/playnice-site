@@ -1325,13 +1325,12 @@ useEffect(() => {
 
 useEffect(() => {
   if (selectedProduct) {
-    setSelectedSize((currentSize) => {
-      if (currentSize && selectedProduct.sizes?.[currentSize]) {
-        return currentSize;
-      }
-
-      return Object.keys(selectedProduct.sizes || {})[0] || "";
-    });
+    setSelectedSize((currentSize) =>
+      getProductPurchaseSelection(
+        selectedProduct,
+        currentSize
+      ).activeSize
+    );
   } else {
     setSelectedSize("");
   }
