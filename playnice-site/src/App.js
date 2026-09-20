@@ -800,6 +800,7 @@ const sideRailAds =
   buildSideRailAds(lang);
 
 const {
+  blocked: sideRailBlocked,
   shouldShowSideRails,
   mobileSponsoredAd,
   shouldShowMobileSponsoredAd,
