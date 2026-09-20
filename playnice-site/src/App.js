@@ -454,6 +454,7 @@ const getInitialShopState = () => {
   const [discoveryPage, setDiscoveryPage] = useState(1);
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
   const discoveryAttributionRef = useRef(null);
+  const productAttributionRef = useRef(null);
   const discoverySearchContextRef = useRef(null);
   const discoveryOriginSurfaceRef = useRef("home");
   const productOriginSurfaceRef = useRef("");
