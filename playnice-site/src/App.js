@@ -414,14 +414,8 @@ const getInitialShopState = () => {
   const [currentVideo, setCurrentVideo] = useState(0);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [isVideoInView, setIsVideoInView] = useState(false);
-  const [productModalVisible, setProductModalVisible] = useState(false);
-  const productModalReturnScrollRef = useRef(null);
   const productRequestOpenTimeoutRef = useRef(null);
   const [noteMapOpen, setNoteMapOpen] = useState(false);
-  const [modalAddedKey, setModalAddedKey] = useState(null);
-  const modalAddedTimeoutRef = useRef(null);
-
-  const [modalDiscountFlashKey, setModalDiscountFlashKey] = useState(null);
 
   const [manifestoOpen, setManifestoOpen] = useState(false);
   const [activeManifesto, setActiveManifesto] = useState(null);
@@ -461,7 +455,6 @@ const getInitialShopState = () => {
   const [miniCartPreviewId, setMiniCartPreviewId] = useState(0);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [mobileModalPage, setMobileModalPage] = useState(0);
   const [isMobileProductModalViewport, setIsMobileProductModalViewport] = useState(() =>
     typeof window !== "undefined" &&
     window.matchMedia("(max-width: 640px)").matches
@@ -655,18 +648,9 @@ const isNewRequest = (request) => {
   ========================================= */
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-  const productModalScrollYRef = useRef(0);
-  const productModalCloseTimeoutRef = useRef(null);
-  const productModalRef = useRef(null);
-  const mobileModalTouchRef = useRef({ startX: 0, startY: 0, tracking: false });
-  const productModalMediaRef = useRef(null);
-  const productModalContentRef = useRef(null);
-  const productModalCloseButtonRef = useRef(null);
-  const productModalTriggerRef = useRef(null);
   const checkoutAutoCloseTimeoutRef = useRef(null);
   const fallbackDeviceIdRef = useRef(null);
   const communityVoteInFlightRef = useRef(new Set());
-  const productModalAutoCloseTimeoutRef = useRef(null);
   const productGridRef = useRef(null);
   const hasMountedShopFiltersRef = useRef(false);
   const isRestoringShopHistoryRef = useRef(false);
@@ -1029,7 +1013,6 @@ const sideRailBlocked =
   storyOpen ||
   howItWorksOpen ||
   privateSelectionOpen ||
-  productModalVisible ||
   !!catalogPreview;
 
 const shouldShowSideRails =
@@ -1181,9 +1164,6 @@ const selectedSortOption =
     !window.location.pathname.startsWith("/product/");
 
   const hasBlockingOverlay =
-  (!isMobileProductPageActive &&
-    !!selectedProduct &&
-    productModalVisible) ||
   cartOpen ||
   checkoutOpen ||
   storyOpen ||
@@ -1201,65 +1181,6 @@ const selectedSortOption =
 
   const scrollYRef = useRef(0);
 
-const handleMobileModalTouchStart = (event) => {
-  if (!isMobileProductModalViewport || !productModalVisible) return;
-
-  const touch = event.touches?.[0];
-  if (!touch) return;
-
-  mobileModalTouchRef.current = {
-    startX: touch.clientX,
-    startY: touch.clientY,
-    tracking: true,
-  };
-};
-
-const handleMobileModalTouchEnd = (event) => {
-  const gesture = mobileModalTouchRef.current;
-  if (!gesture.tracking || !isMobileProductModalViewport || !productModalVisible) return;
-
-  mobileModalTouchRef.current = { ...gesture, tracking: false };
-
-  const touch = event.changedTouches?.[0];
-  if (!touch) return;
-
-  const dx = touch.clientX - gesture.startX;
-  const dy = touch.clientY - gesture.startY;
-  const swipeThreshold = 54;
-
-  if (Math.abs(dx) < swipeThreshold || Math.abs(dx) < Math.abs(dy) * 1.25) return;
-
-  if (dx < 0 && mobileModalPage === 0) setMobileModalPage(1);
-  if (dx > 0 && mobileModalPage === 1) setMobileModalPage(0);
-};
-/* =========================================
-   EFFECTS
-========================================= */
-  useEffect(() => {
-    const media = window.matchMedia("(max-width: 640px)");
-    const syncMobileModalViewport = () =>
-      setIsMobileProductModalViewport(media.matches);
-
-    syncMobileModalViewport();
-    media.addEventListener?.("change", syncMobileModalViewport);
-
-    return () => media.removeEventListener?.("change", syncMobileModalViewport);
-  }, []);
-
-  useEffect(() => {
-    if (productModalVisible) setMobileModalPage(0);
-  }, [productModalVisible, selectedProduct?.id]);
-
-  useEffect(() => {
-    if (!productModalVisible || !isMobileProductModalViewport) return;
-
-    if (mobileModalPage === 0) {
-      if (productModalMediaRef.current) productModalMediaRef.current.scrollTop = 0;
-      return;
-    }
-
-    if (productModalContentRef.current) productModalContentRef.current.scrollTop = 0;
-  }, [mobileModalPage, productModalVisible, isMobileProductModalViewport]);
   useLayoutEffect(() => {
   const body = document.body;
 
@@ -1648,82 +1569,9 @@ useEffect(() => {
 }, [selectedProduct?.slug]);
 
 useEffect(() => {
-  if (!selectedProduct || !productModalVisible) return;
-
-  const frame = requestAnimationFrame(() => {
-    productModalCloseButtonRef.current?.focus({
-      preventScroll: true
-    });
-  });
-
-  return () => cancelAnimationFrame(frame);
-}, [selectedProduct, productModalVisible]);
-
-useEffect(() => {
-  if (!selectedProduct || !productModalVisible) return;
-
-  const modal = productModalRef.current;
-  if (!modal) return;
-
-  const handleProductModalTab = (event) => {
-    if (event.key !== "Tab") return;
-
-    const focusableElements = Array.from(
-      modal.querySelectorAll(
-        'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      )
-    ).filter(
-      (element) =>
-        element instanceof HTMLElement &&
-        element.getAttribute("aria-hidden") !== "true" &&
-        element.offsetParent !== null
-    );
-
-    if (focusableElements.length === 0) {
-      event.preventDefault();
-      return;
-    }
-
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-    const activeElement = document.activeElement;
-
-    if (event.shiftKey) {
-      if (
-        activeElement === firstElement ||
-        !modal.contains(activeElement)
-      ) {
-        event.preventDefault();
-        lastElement.focus();
-      }
-
-      return;
-    }
-
-    if (
-      activeElement === lastElement ||
-      !modal.contains(activeElement)
-    ) {
-      event.preventDefault();
-      firstElement.focus();
-    }
-  };
-
-  document.addEventListener("keydown", handleProductModalTab);
-
-  return () => {
-    document.removeEventListener("keydown", handleProductModalTab);
-  };
-}, [selectedProduct, productModalVisible]);
-
-useEffect(() => {
   return () => {
     if (productRequestOpenTimeoutRef.current) {
       clearTimeout(productRequestOpenTimeoutRef.current);
-    }
-
-    if (productModalCloseTimeoutRef.current) {
-      clearTimeout(productModalCloseTimeoutRef.current);
     }
   };
 }, []);
@@ -1756,14 +1604,6 @@ useEffect(() => {
 
 useEffect(() => {
   return () => {
-    if (modalAddedTimeoutRef.current) {
-      clearTimeout(modalAddedTimeoutRef.current);
-    }
-  };
-}, []);
-
-useEffect(() => {
-  return () => {
     if (heroAutoplayResumeTimeoutRef.current) {
       clearTimeout(heroAutoplayResumeTimeoutRef.current);
     }
@@ -1778,10 +1618,6 @@ useEffect(() => {
 
     if (journalFeedbackSuccessTimeoutRef.current) {
       clearTimeout(journalFeedbackSuccessTimeoutRef.current);
-    }
-
-    if (productModalAutoCloseTimeoutRef.current) {
-      clearTimeout(productModalAutoCloseTimeoutRef.current);
     }
   };
 }, []);
@@ -1869,7 +1705,6 @@ if (journalArticleFromUrl) {
   setJournalPageArticle(journalArticleFromUrl);
 
   setNoteMapOpen(false);
-  setProductModalVisible(false);
   setSelectedProduct(null);
   setSelectedSize("");
   setHasUserPickedSize(false);
@@ -1909,8 +1744,7 @@ if (journalArticleFromUrl) {
     }
 
     setNoteMapOpen(false);
-    setProductModalVisible(false);
-    setSelectedProduct(null);
+      setSelectedProduct(null);
     setSelectedSize("");
     setHasUserPickedSize(false);
 
@@ -2351,10 +2185,6 @@ const getAmbiguousScentRequestMessage = () =>
 
 const openProductFromRequest = (product) => {
   if (!product) return;
-
-  const requestScrollY = window.scrollY || window.pageYOffset || 0;
-  productModalReturnScrollRef.current = requestScrollY;
-  productModalScrollYRef.current = requestScrollY;
 
   if (productRequestOpenTimeoutRef.current) {
     clearTimeout(productRequestOpenTimeoutRef.current);
@@ -2997,17 +2827,6 @@ const activeJournalFeedback = journalPageArticle
   ? getJournalSavedFeedback(journalPageArticle)
   : null;
 
-const selectedCopy = selectedProduct
-  ? getProductCopy(selectedProduct, lang)
-  : {
-      miniTag: fallbackCopy.miniTag[lang],
-      card: fallbackCopy.card[lang],
-      modal: fallbackCopy.modal[lang],
-      scentType: fallbackCopy.scentType[lang],
-      dominantNotes: fallbackCopy.dominantNotes[lang],
-      tags: fallbackCopy.tags[lang]
-    };
-
 const privateSelectionProducts = useMemo(() => {
   return products.filter((product) => wishlist.includes(product.id));
 }, [products, wishlist]);
@@ -3173,8 +2992,7 @@ const switchView = (nextView, options = {}) => {
   if (isMobileProductPageActive) {
     setSelectedProduct(null);
     setSelectedSize("");
-    setProductModalVisible(false);
-    setHasUserPickedSize(false);
+      setHasUserPickedSize(false);
     setNoteMapOpen(false);
   }
   const nextPath = routeForView(nextView);
@@ -3605,26 +3423,6 @@ const triggerInlineAddedFeedback = (productId, size) => {
 
   setTimeout(() => {
     setInlineAddedKey((current) => (current === key ? null : current));
-  }, 1300);
-};
-
-const handleModalAddToCart = (product, size) => {
-  if (!product || !size) return;
-
-  addToCart(product, size, null, null, {
-    showToast: false,
-    showMiniPreview: true
-  });
-
-  const key = `${product.id}-${size}`;
-  setModalAddedKey(key);
-
-  if (modalAddedTimeoutRef.current) {
-    clearTimeout(modalAddedTimeoutRef.current);
-  }
-
-  modalAddedTimeoutRef.current = setTimeout(() => {
-    setModalAddedKey(null);
   }, 1300);
 };
 
@@ -4294,14 +4092,6 @@ const isMobileProductModal = () =>
 const openProductModal = (product, options = {}) => {
   if (!product) return;
 
-  const activeElement = document.activeElement;
-
-    productModalTriggerRef.current =
-      activeElement instanceof HTMLElement &&
-      activeElement !== document.body
-        ? activeElement
-        : null;
-
   const {
     updateUrl = true,
     preferredSize = "",
@@ -4313,19 +4103,6 @@ const openProductModal = (product, options = {}) => {
   const isMobileModal = isMobileProductModal();
 
   productOriginSurfaceRef.current = originSurface || "";
-
-  if (productModalCloseTimeoutRef.current) {
-    clearTimeout(productModalCloseTimeoutRef.current);
-    productModalCloseTimeoutRef.current = null;
-  }
-
-  if (productModalAutoCloseTimeoutRef.current) {
-    clearTimeout(productModalAutoCloseTimeoutRef.current);
-    productModalAutoCloseTimeoutRef.current = null;
-  }
-
-  productModalScrollYRef.current =
-    window.scrollY || window.pageYOffset || 0;
 
   const initialSize =
     preferredSize && product.sizes?.[preferredSize]
@@ -4366,7 +4143,6 @@ const openProductModal = (product, options = {}) => {
     currency: "EUR"
   });
 
-  setProductModalVisible(false);
 
   if (updateUrl) {
     const productUrl = getProductUrl(product);
@@ -4548,117 +4324,12 @@ useEffect(() => {
   window.history.replaceState({}, "", "/journal");
 }, []);
 
-const PRODUCT_MODAL_CLOSE_DELAY = 180;
-const PRODUCT_MODAL_CART_CLOSE_DELAY = 240;
-
-const restoreProductModalScroll = () => {
-  const targetScrollY = productModalScrollYRef.current;
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      window.scrollTo({
-        top: targetScrollY,
-        left: 0,
-        behavior: "auto"
-      });
-    });
-  });
-};
-
-const closeProductModal = (
-  cleanupDelay = PRODUCT_MODAL_CLOSE_DELAY
-) => {
-  const isMobileModal = isMobileProductModal();
-  const returnScrollY = productModalReturnScrollRef.current;
-
-  if (Number.isFinite(returnScrollY)) {
-    window.setTimeout(() => {
-      window.scrollTo({ top: returnScrollY, left: 0, behavior: "auto" });
-      productModalReturnScrollRef.current = null;
-    }, cleanupDelay + 60);
-  }
-
-  setNoteMapOpen(false);
-  setProductModalVisible(false);
-  setHasUserPickedSize(false);
-  setModalDiscountFlashKey(null);
-
-  if (productModalAutoCloseTimeoutRef.current) {
-    clearTimeout(productModalAutoCloseTimeoutRef.current);
-    productModalAutoCloseTimeoutRef.current = null;
-  }
-
-  if (productModalCloseTimeoutRef.current) {
-    clearTimeout(productModalCloseTimeoutRef.current);
-    productModalCloseTimeoutRef.current = null;
-  }
-
-  const cleanupProductModal = () => {
-    setSelectedProduct(null);
-    setSelectedSize("");
-    productModalCloseTimeoutRef.current = null;
-
-    const triggerElement = productModalTriggerRef.current;
-      productModalTriggerRef.current = null;
-
-      requestAnimationFrame(() => {
-        if (
-          triggerElement &&
-          document.contains(triggerElement)
-        ) {
-          triggerElement.focus({
-            preventScroll: true
-          });
-        }
-      });
-
-    if (window.location.pathname.startsWith("/product/")) {
-      const openedInsidePlayNice =
-        window.history.state?.playniceProductModal === true;
-
-      if (openedInsidePlayNice) {
-        window.addEventListener(
-          "popstate",
-          restoreProductModalScroll,
-          { once: true }
-        );
-
-        window.history.back();
-      } else {
-        window.history.replaceState({}, "", "/shop");
-        setView("shop");
-        trackPageView("/shop");
-        trackMeta("PageView");
-        restoreProductModalScroll();
-      }
-    } else {
-      restoreProductModalScroll();
-    }
-  };
-
-  if (isMobileModal) {
-    cleanupProductModal();
-    return;
-  }
-
-  productModalCloseTimeoutRef.current = setTimeout(() => {
-    cleanupProductModal();
-  }, cleanupDelay);
-};
-
 useEffect(() => {
   const handleGlobalEscape = (event) => {
     if (event.key !== "Escape") return;
 
-    // Nested layer inside Product modal
     if (noteMapOpen) {
       setNoteMapOpen(false);
-      return;
-    }
-
-    // Product modal is the highest regular layer
-    if (selectedProduct && productModalVisible) {
-      closeProductModal();
       return;
     }
 
