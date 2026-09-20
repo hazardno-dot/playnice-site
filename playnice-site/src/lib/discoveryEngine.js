@@ -2023,7 +2023,7 @@ const humanReason = (
       )
       .find(Boolean) || "";
 
-  const fallbackTraits = [
+  const productSpecificTraits = [
     ["freshness", p.freshness],
     ["clean", p.clean ?? p.cleanliness],
     ["elegance", p.elegance],
@@ -2035,23 +2035,38 @@ const humanReason = (
     ["projection", p.projection ?? p.intensity],
     ["versatility", p.versatility],
   ]
-    .filter(([, value]) =>
-      Number.isFinite(value)
+    .filter(([key, value]) =>
+      Number.isFinite(value) &&
+      !requestedTraits.includes(key)
     )
     .sort((a, b) => b[1] - a[1]);
 
-  const fallbackKey =
-    fallbackTraits[0]?.[0] ||
+  const productSpecificKey =
+    productSpecificTraits[0]?.[0] ||
     "versatility";
 
-  const fallbackLine =
-    traitLine[lang]?.[fallbackKey] ||
-    traitLine.en[fallbackKey] ||
+  const productSpecificLine =
+    traitLine[lang]?.[productSpecificKey] ||
+    traitLine.en[productSpecificKey] ||
     "";
 
+  const briefLine =
+    contextLines[0] ||
+    requestedTraitLine ||
+    productSpecificLine;
+
+  const detailLine =
+    requestedTraitLine &&
+    requestedTraitLine !== briefLine
+      ? requestedTraitLine
+      : productSpecificLine &&
+        productSpecificLine !== briefLine
+      ? productSpecificLine
+      : contextLines[1] || "";
+
   return [
-    contextLines[0] || "",
-    requestedTraitLine || fallbackLine,
+    briefLine,
+    detailLine,
   ]
     .filter(Boolean)
     .slice(0, 2)
