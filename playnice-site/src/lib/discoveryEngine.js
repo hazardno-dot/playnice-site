@@ -1,7 +1,7 @@
 /* =========================================
    PLAYNICE DISCOVERY ENGINE — V3.0
    Deterministic, local, zero-API-cost ranking.
-   Uses products + productCopy + productWearContext.
+   Uses products + slug-keyed product copy + wear context.
 ========================================= */
 
 const normalizeText = (value = "") =>
@@ -150,7 +150,7 @@ const signalCount = (text, aliases = []) =>
   aliases.reduce((sum, alias) => sum + (text.includes(normalizeText(alias)) ? 1 : 0), 0);
 
 const getCopyText = (product, productCopy = {}) => {
-  const copy = productCopy?.[product?.name] || {};
+  const copy = productCopy?.[product?.slug] || {};
   const values = [
     copy?.miniTag?.sr, copy?.miniTag?.en,
     copy?.card?.sr, copy?.card?.en,
@@ -164,7 +164,7 @@ const getCopyText = (product, productCopy = {}) => {
 };
 
 const getWearText = (product, productWearContext = {}) => {
-  const wear = productWearContext?.[product?.name] || {};
+  const wear = productWearContext?.[product?.slug] || {};
   return normalizeText([wear?.sr, wear?.en].filter(Boolean).join(" "));
 };
 

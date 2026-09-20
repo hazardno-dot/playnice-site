@@ -6,41 +6,18 @@ export const getMinPrice = (product) =>
 export const getProductCopy = (
   product,
   lang,
-  productCopy,
-  fallbackCopy
+  productCopyBySlug
 ) => {
-  const copy =
-    productCopy[product.name] || fallbackCopy;
+  const copy = productCopyBySlug[product.slug];
 
   return {
-    miniTag:
-      copy.miniTag?.[lang] ||
-      copy.miniTag?.en ||
-      fallbackCopy.miniTag[lang],
-    card:
-      copy.card?.[lang] ||
-      copy.card?.en ||
-      fallbackCopy.card[lang],
-    modal:
-      copy.modal?.[lang] ||
-      copy.modal?.en ||
-      fallbackCopy.modal[lang],
-    scentType:
-      copy.scentType?.[lang] ||
-      copy.scentType?.en ||
-      fallbackCopy.scentType[lang],
-    dominantNotes:
-      copy.dominantNotes?.[lang] ||
-      copy.dominantNotes?.en ||
-      fallbackCopy.dominantNotes[lang],
-    tags:
-      copy.tags?.[lang] ||
-      copy.tags?.en ||
-      fallbackCopy.tags[lang],
-    whyChoose:
-      copy.whyChoose?.[lang] ||
-      copy.whyChoose?.en ||
-      fallbackCopy.whyChoose[lang],
+    miniTag: copy?.miniTag?.[lang] || "",
+    card: copy?.card?.[lang] || "",
+    modal: copy?.modal?.[lang] || "",
+    scentType: copy?.scentType?.[lang] || "",
+    dominantNotes: copy?.dominantNotes?.[lang] || [],
+    tags: copy?.tags?.[lang] || [],
+    whyChoose: copy?.whyChoose?.[lang] || "",
   };
 };
 

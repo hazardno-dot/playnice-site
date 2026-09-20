@@ -1,11 +1,13 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import TheNoteMap from "../../features/note-map/TheNoteMap";
 import { products } from "../../data/products";
-import { productCopy } from "../../data/products/productCopy";
 import { getCharacterVisual } from "../../data/products/characterVisuals";
-import { productWearContext } from "../../data/products/productWearContext";
-import { productDoNotWearContext } from "../../data/products/productDoNotWearContext";
-import { productWhatToWearContext } from "../../data/products/productWhatToWearContext";
+import {
+  productCopyBySlug,
+  productWearContextBySlug,
+  productDoNotWearContextBySlug,
+  productWhatToWearContextBySlug,
+} from "../../data/products/productContentBySlug";
 
 const PROFILE_KEYS = [
   "freshness",
@@ -181,10 +183,10 @@ export default function MobileProductPage({
     };
   }, [product?.slug]);
 
-  const copy = product ? productCopy[product.name] || {} : {};
-  const wearContext = product ? productWearContext[product.name]?.[lang] || "" : "";
-  const doNotWearContext = product ? productDoNotWearContext[product.name]?.[lang] || "" : "";
-  const whatToWearContext = product ? productWhatToWearContext[product.name]?.[lang] || "" : "";
+  const copy = product ? productCopyBySlug[product.slug] || {} : {};
+  const wearContext = product ? productWearContextBySlug[product.slug]?.[lang] || "" : "";
+  const doNotWearContext = product ? productDoNotWearContextBySlug[product.slug]?.[lang] || "" : "";
+  const whatToWearContext = product ? productWhatToWearContextBySlug[product.slug]?.[lang] || "" : "";
   const recommendations = useMemo(() => getRecommendations(product), [product]);
 
   const sensoryHighlights = useMemo(() => {
@@ -594,7 +596,7 @@ export default function MobileProductPage({
           <div ref={recommendationTrackRef} className="mobile-product-page__recommendation-track">
             {recommendations.map((recommendation) => {
               const minPrice = Math.min(...Object.values(recommendation.sizes || {}).filter(Number.isFinite));
-              const recommendationCopy = productCopy[recommendation.name] || {};
+              const recommendationCopy = productCopyBySlug[recommendation.slug] || {};
 
               return (
                 <button

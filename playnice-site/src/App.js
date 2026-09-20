@@ -4,8 +4,10 @@ import HeaderNext from "./features/header/HeaderNext";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
-import { productCopy, fallbackCopy } from "./data/products/productCopy";
-import { productWearContext } from "./data/products/productWearContext";
+import {
+  productCopyBySlug,
+  productWearContextBySlug,
+} from "./data/products/productContentBySlug";
 import { translations } from "./data/translations";
 import { BASE_HERO_SLIDES } from "./data/heroSlides.generated";
 import { ANNOUNCEMENT_ITEMS } from "./data/announcementConfig.generated";
@@ -200,8 +202,7 @@ function getProductCopy(product, lang) {
   return getProductCopyPure(
     product,
     lang,
-    productCopy,
-    fallbackCopy
+    productCopyBySlug
   );
 }
 
@@ -3449,8 +3450,8 @@ const getDiscoveryAnalyticsParams = (
   const discovery = discoverFragrances({
     query: nextQuery,
     products,
-    productCopy,
-    productWearContext,
+    productCopy: productCopyBySlug,
+    productWearContext: productWearContextBySlug,
     discoveryProfiles,
     lang,
     limit: products.length,
@@ -4148,7 +4149,7 @@ const ProductCard = ({
   };
 
   const getWearContext = (product, lang) => {
-  return productWearContext[product.name]?.[lang] || "";
+  return productWearContextBySlug[product.slug]?.[lang] || "";
 };
 
   const tr = translations[lang];
@@ -5785,9 +5786,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       sprayingWishlistId={sprayingWishlistId}
                       changeViewOnOpen={false}
                       mobileProfileLabel={
-                        (productCopy[product.name] || fallbackCopy)?.miniTag?.[lang] ||
-                        (productCopy[product.name] || fallbackCopy)?.miniTag?.en ||
-                        ""
+                        productCopyBySlug[product.slug]?.miniTag?.[lang] || ""
                       }
                     />
                   ))}
