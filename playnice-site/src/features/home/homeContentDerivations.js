@@ -77,6 +77,7 @@ export const getSideRailVisibility = ({
   howItWorksOpen,
   privateSelectionOpen,
   catalogPreview,
+  isMobileProductPageActive = false,
   sideRailAds = [],
 }) => {
   const blocked =
@@ -88,8 +89,9 @@ export const getSideRailVisibility = ({
     Boolean(catalogPreview);
 
   const onSupportedView =
-    view === "home" ||
-    view === "shop";
+    (view === "home" ||
+      view === "shop") &&
+    !isMobileProductPageActive;
 
   const mobileSponsoredAd =
     sideRailAds.find(
@@ -203,3 +205,19 @@ export const getHeroManifestos = (
     action: "shop",
   },
 });
+
+
+export const shouldShowBackToTopButton = ({
+  showBackToTop,
+  sideRailBlocked,
+  isMobileProductPageActive,
+  hasBlockingOverlay,
+}) =>
+  Boolean(showBackToTop) &&
+  (
+    !Boolean(sideRailBlocked) ||
+    (
+      Boolean(isMobileProductPageActive) &&
+      !Boolean(hasBlockingOverlay)
+    )
+  );
