@@ -125,32 +125,64 @@ export const addOrIncrementCartItem = (
   return [...cart, item];
 };
 
-export const getDirectPurchaseProduct = (
+
+export const getProductPurchaseSelection = (
   product,
-  size,
-  getDiscountForSize,
-  getDiscountedPrice
+  preferredSize = ""
 ) => {
-  if (!product || !size) return product;
+  const sizes = product?.sizes || {};
+  const activeSize =
+    preferredSize && sizes[preferredSize] != null
+      ? preferredSize
+      : Object.keys(sizes)[0] || "";
 
-  const activePrice = product.sizes?.[size];
-  const discount = getDiscountForSize(product, size);
+  const basePrice =
+    activeSize && sizes[activeSize] != null
+      ? Number(sizes[activeSize])
+      : 0;
 
-  if (!discount || activePrice == null) return product;
+  const discount =
+    product?.discount?.size === activeSize
+      ? product.discount
+      : null;
 
-  const finalPrice = getDiscountedPrice(
-    activePrice,
-    discount.percent
-  );
+  const finalPrice = discount
+    ? Number(
+        (
+          basePrice *
+          (1 - Number(discount.percent) / 100)
+        ).toFixed(2)
+      )
+    : basePrice;
+
+  const productForCart =
+    discount && activeSize
+      ? {
+          ...product,
+          sizes: {
+            ...sizes,
+            [activeSize]: finalPrice,
+          },
+        }
+      : product;
 
   return {
-    ...product,
-    sizes: {
-      ...product.sizes,
-      [size]: finalPrice,
-    },
+    activeSize,
+    basePrice,
+    discount,
+    finalPrice,
+    productForCart,
   };
 };
+
+export const getDirectPurchaseProduct = (
+  product,
+  size
+) =>
+  getProductPurchaseSelection(
+    product,
+    size
+  ).productForCart;
 
 export const buildCheckoutEmailRecommendations = (
   cart = [],

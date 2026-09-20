@@ -5,6 +5,7 @@ import {
   buildDiscoveryBundleItem,
   addOrIncrementCartItem,
   getDirectPurchaseProduct,
+  getProductPurchaseSelection,
   buildCheckoutEmailRecommendations,
 } from "./commerceDerivations";
 
@@ -128,7 +129,7 @@ describe("commerceDerivations", () => {
     ]);
   });
 
-  test("applies only the active size discount for direct purchase", () => {
+  test("resolves one canonical purchase selection for size, discount and cart price", () => {
     const product = {
       id: 9,
       sizes: { "5ml": 10, "10ml": 18 },
@@ -138,25 +139,38 @@ describe("commerceDerivations", () => {
       },
     };
 
-    const getDiscountForSize = (item, size) =>
-      item.discount?.size === size
-        ? item.discount
-        : null;
+    expect(
+      getProductPurchaseSelection(
+        product,
+        "10ml"
+      )
+    ).toEqual({
+      activeSize: "10ml",
+      basePrice: 18,
+      discount: product.discount,
+      finalPrice: 14.4,
+      productForCart: {
+        ...product,
+        sizes: {
+          "5ml": 10,
+          "10ml": 14.4,
+        },
+      },
+    });
 
-    const getDiscountedPrice = (price, percent) =>
-      Number(
-        (price * (1 - percent / 100)).toFixed(2)
-      );
+    expect(
+      getProductPurchaseSelection(
+        product,
+        ""
+      ).activeSize
+    ).toBe("5ml");
 
-    const result = getDirectPurchaseProduct(
-      product,
-      "10ml",
-      getDiscountForSize,
-      getDiscountedPrice
-    );
-
-    expect(result.sizes["10ml"]).toBe(14.4);
-    expect(result.sizes["5ml"]).toBe(10);
+    expect(
+      getDirectPurchaseProduct(
+        product,
+        "10ml"
+      ).sizes["10ml"]
+    ).toBe(14.4);
   });
 
   test("builds unique checkout recommendations and excludes purchased products", () => {

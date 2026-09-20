@@ -62,6 +62,7 @@ import {
   buildDiscoveryBundleItem,
   addOrIncrementCartItem,
   getDirectPurchaseProduct as getDirectPurchaseProductPure,
+  getProductPurchaseSelection,
   buildCheckoutEmailRecommendations,
 } from "./features/commerce/commerceDerivations";
 import {
@@ -1324,13 +1325,12 @@ useEffect(() => {
 
 useEffect(() => {
   if (selectedProduct) {
-    setSelectedSize((currentSize) => {
-      if (currentSize && selectedProduct.sizes?.[currentSize]) {
-        return currentSize;
-      }
-
-      return Object.keys(selectedProduct.sizes || {})[0] || "";
-    });
+    setSelectedSize((currentSize) =>
+      getProductPurchaseSelection(
+        selectedProduct,
+        currentSize
+      ).activeSize
+    );
   } else {
     setSelectedSize("");
   }
@@ -2757,9 +2757,7 @@ const triggerInlineAddedFeedback = (productId, size) => {
 const getDirectPurchaseProduct = (product, size) =>
   getDirectPurchaseProductPure(
     product,
-    size,
-    getProductDiscountForSize,
-    getDiscountedPrice
+    size
   );
 
 useEffect(() => {
@@ -4382,20 +4380,14 @@ const titleLengthClass =
     : size === "5ml";
     const wearHint = getSizeWearHint(size);
 
-    const discount = getProductDiscountForSize(product, size);
-    const finalPrice = discount
-      ? getDiscountedPrice(price, discount.percent)
-      : price;
-
-    const productForCart = discount
-      ? {
-          ...product,
-          sizes: {
-            ...product.sizes,
-            [size]: finalPrice,
-          },
-        }
-      : product;
+    const {
+      discount,
+      finalPrice,
+      productForCart,
+    } = getProductPurchaseSelection(
+      product,
+      size
+    );
 
     return (
       <button
@@ -4867,14 +4859,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               setHasUserPickedSize(true);
             }}
             onAddToCart={(product, size) => {
-              const basePrice = Number(product.sizes?.[size] || 0);
-              const discount = getProductDiscountForSize(product, size);
-              const finalPrice = discount
-                ? getDiscountedPrice(basePrice, discount.percent)
-                : basePrice;
-              const productForCart = discount
-                ? { ...product, sizes: { ...product.sizes, [size]: finalPrice } }
-                : product;
+              const { productForCart } =
+                getProductPurchaseSelection(
+                  product,
+                  size
+                );
 
               addToCart(productForCart, size, null, null, {
                 showToast: false,
@@ -4882,14 +4871,11 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
               });
             }}
             onBuyNow={(product, size) => {
-              const basePrice = Number(product.sizes?.[size] || 0);
-              const discount = getProductDiscountForSize(product, size);
-              const finalPrice = discount
-                ? getDiscountedPrice(basePrice, discount.percent)
-                : basePrice;
-              const productForCart = discount
-                ? { ...product, sizes: { ...product.sizes, [size]: finalPrice } }
-                : product;
+              const { productForCart } =
+                getProductPurchaseSelection(
+                  product,
+                  size
+                );
 
               addToCart(productForCart, size, null, null, {
                 showToast: false,
