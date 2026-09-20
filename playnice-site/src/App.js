@@ -9,7 +9,7 @@ import { productWearContext } from "./data/products/productWearContext";
 import { translations } from "./data/translations";
 import { BASE_HERO_SLIDES } from "./data/heroSlides.generated";
 import { ANNOUNCEMENT_ITEMS } from "./data/announcementConfig.generated";
-import TheNoteMap from "./TheNoteMap";
+import TheNoteMap from "./features/note-map/TheNoteMap";
 import MobileShopV2 from "./mobile-v2/shop/MobileShopV2";
 import MobilePartnerSpotlight from "./mobile-v2/content/MobilePartnerSpotlight";
 import MobileProductPage from "./mobile-v2/product-page/MobileProductPage";
