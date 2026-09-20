@@ -2,17 +2,18 @@ import {
   products,
 } from "./index";
 import {
-  productCopy,
-} from "./productCopy";
-import {
-  productWearContext,
-} from "./productWearContext";
+  productCopyBySlug,
+  productWearContextBySlug,
+  productDoNotWearContextBySlug,
+  productWhatToWearContextBySlug,
+} from "./productContentBySlug";
 import {
   assertProductCatalogContract,
   validateProduct,
   validateProductCatalog,
   validateProductCopy,
   validateProductWearContext,
+  validateLocalizedProductContext,
 } from "./productContract";
 
 describe("Product Data Contract v2", () => {
@@ -20,8 +21,10 @@ describe("Product Data Contract v2", () => {
     expect(() =>
       assertProductCatalogContract({
         products,
-        productCopy,
-        productWearContext,
+        productCopyBySlug,
+        productWearContextBySlug,
+        productDoNotWearContextBySlug,
+        productWhatToWearContextBySlug,
       })
     ).not.toThrow();
   });
@@ -85,13 +88,25 @@ describe("Product Data Contract v2", () => {
           base,
           { ...base },
         ],
-        productCopy: {
-          One: copy,
+        productCopyBySlug: {
+          one: copy,
         },
-        productWearContext: {
-          One: {
+        productWearContextBySlug: {
+          one: {
             sr: "Svaki dan.",
             en: "Every day.",
+          },
+        },
+        productDoNotWearContextBySlug: {
+          one: {
+            sr: "Ne u avionu.",
+            en: "Not on a plane.",
+          },
+        },
+        productWhatToWearContextBySlug: {
+          one: {
+            sr: "Bela košulja.",
+            en: "White shirt.",
           },
         },
       });
@@ -162,6 +177,27 @@ describe("Product Data Contract v2", () => {
         ),
       ])
     );
+  });
+
+  test("requires all extended bilingual product contexts", () => {
+    const product = {
+      slug: "test",
+      name: "Test",
+    };
+
+    expect(
+      validateLocalizedProductContext(
+        product,
+        {
+          sr: "Ne ovde.",
+        },
+        "productDoNotWearContext"
+      )
+    ).toEqual([
+      expect.stringContaining(
+        "productDoNotWearContext.en"
+      ),
+    ]);
   });
 
   test("requires bilingual wear context", () => {

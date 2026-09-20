@@ -311,17 +311,18 @@ export const validateProductCopy = (
   return errors;
 };
 
-export const validateProductWearContext = (
+export const validateLocalizedProductContext = (
   product,
-  wearContext
+  context,
+  field
 ) => {
   const errors = [];
 
-  if (!wearContext) {
+  if (!context) {
     pushError(
       errors,
       product,
-      "productWearContext",
+      field,
       "is missing"
     );
     return errors;
@@ -330,17 +331,29 @@ export const validateProductWearContext = (
   validateLocalizedText({
     errors,
     product,
-    value: wearContext,
-    field: "productWearContext",
+    value: context,
+    field,
   });
 
   return errors;
 };
 
+export const validateProductWearContext = (
+  product,
+  wearContext
+) =>
+  validateLocalizedProductContext(
+    product,
+    wearContext,
+    "productWearContext"
+  );
+
 export const validateProductCatalog = ({
   products = [],
-  productCopy = {},
-  productWearContext = {},
+  productCopyBySlug = {},
+  productWearContextBySlug = {},
+  productDoNotWearContextBySlug = {},
+  productWhatToWearContextBySlug = {},
 }) => {
   const errors = [];
   const ids = new Set();
@@ -373,7 +386,7 @@ export const validateProductCatalog = ({
         errors,
         product,
         "name",
-        "must be unique while legacy copy joins use product.name"
+        "must be unique for source adapter integrity"
       );
     }
     names.add(product.name);
@@ -386,13 +399,27 @@ export const validateProductCatalog = ({
       }),
       ...validateProductCopy(
         product,
-        productCopy[product.name]
+        productCopyBySlug[product.slug]
       ),
       ...validateProductWearContext(
         product,
-        productWearContext[
-          product.name
+        productWearContextBySlug[
+          product.slug
         ]
+      ),
+      ...validateLocalizedProductContext(
+        product,
+        productDoNotWearContextBySlug[
+          product.slug
+        ],
+        "productDoNotWearContext"
+      ),
+      ...validateLocalizedProductContext(
+        product,
+        productWhatToWearContextBySlug[
+          product.slug
+        ],
+        "productWhatToWearContext"
       )
     );
   }
