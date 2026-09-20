@@ -87,6 +87,7 @@ import {
   getDiscoveryAnalyticsParams as getDiscoveryAnalyticsParamsPure,
   getDiscoveryReferenceQuery,
   getDiscoveryResultPresentation,
+  orderDiscoveryResultsForPresentation,
   buildDiscoveryResultClickParams,
   buildDiscoveryAttribution,
 } from "./features/discovery/discoveryDerivations";
@@ -517,18 +518,32 @@ const getInitialShopState = () => {
     resetDiscoverySession();
   }, [clearDiscoveryHistoryMarker, resetDiscoverySession]);
 
+  const orderedDiscoveryResults = useMemo(
+    () =>
+      orderDiscoveryResultsForPresentation(
+        discoveryResults
+      ),
+    [discoveryResults]
+  );
+
   const discoveryTotalPages = Math.max(
     1,
-    Math.ceil(discoveryResults.length / DISCOVERY_RESULTS_PER_PAGE)
+    Math.ceil(
+      orderedDiscoveryResults.length /
+        DISCOVERY_RESULTS_PER_PAGE
+    )
   );
 
   const discoveryPageStart =
-    (discoveryPage - 1) * DISCOVERY_RESULTS_PER_PAGE;
+    (discoveryPage - 1) *
+    DISCOVERY_RESULTS_PER_PAGE;
 
-  const visibleDiscoveryResults = discoveryResults.slice(
-    discoveryPageStart,
-    discoveryPageStart + DISCOVERY_RESULTS_PER_PAGE
-  );
+  const visibleDiscoveryResults =
+    orderedDiscoveryResults.slice(
+      discoveryPageStart,
+      discoveryPageStart +
+        DISCOVERY_RESULTS_PER_PAGE
+    );
 
   const newProductsSignature = useMemo(() => {
     return getNewProductsSignature(products);

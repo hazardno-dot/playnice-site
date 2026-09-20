@@ -12,6 +12,7 @@ import {
   buildProductProfile,
   discoverFragrances,
   parseQuery,
+  getIntentMatchQuality,
 } from "./discoveryEngine";
 
 const run = (query, lang = "en") =>
@@ -417,6 +418,91 @@ describe("Fragrance Intelligence — language parity", () => {
     const overlap = en.results.filter((item) => srSlugs.has(item.product.slug));
 
     expect(overlap.length).toBeGreaterThanOrEqual(2);
+  });
+});
+
+describe("Fragrance Intelligence — match quality", () => {
+  test("scores the requested brief rather than the ranking baseline", () => {
+    const intent = {
+      seasons: ["summer"],
+      moods: ["summer"],
+      positiveTraits: [
+        {
+          key: "freshness",
+          strength: "normal",
+        },
+      ],
+      negativeTraits: [],
+      requiredNoteGroups: [],
+      excludedNotes: [],
+      hardExcludedNotes: [],
+      contexts: [],
+      gender: null,
+      referenceProduct: null,
+      referenceModifiers: [],
+    };
+
+    const strong = getIntentMatchQuality({
+      product: {
+        season: "summer",
+        moods: ["summer"],
+      },
+      profile: {
+        freshness: 9,
+        notes: [],
+      },
+      intent,
+      productCopy: {},
+      productWearContext: {},
+      discoveryProfiles: {},
+    });
+
+    const weak = getIntentMatchQuality({
+      product: {
+        season: "winter",
+        moods: [],
+      },
+      profile: {
+        freshness: 4,
+        notes: [],
+      },
+      intent,
+      productCopy: {},
+      productWearContext: {},
+      discoveryProfiles: {},
+    });
+
+    expect(strong).toBeGreaterThanOrEqual(90);
+    expect(weak).toBeLessThan(80);
+    expect(strong).toBeGreaterThan(weak);
+  });
+
+  test("budget eligibility does not inflate match quality by itself", () => {
+    const intent = {
+      seasons: [],
+      moods: [],
+      positiveTraits: [],
+      negativeTraits: [],
+      requiredNoteGroups: [],
+      excludedNotes: [],
+      hardExcludedNotes: [],
+      contexts: [],
+      gender: null,
+      referenceProduct: null,
+      referenceModifiers: [],
+      maxPrice: 15,
+    };
+
+    expect(
+      getIntentMatchQuality({
+        product: {},
+        profile: { notes: [] },
+        intent,
+        productCopy: {},
+        productWearContext: {},
+        discoveryProfiles: {},
+      })
+    ).toBe(72);
   });
 });
 
