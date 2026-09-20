@@ -32,7 +32,7 @@ const calibrateMatchScore = (score) => {
 
   const effectiveScore = Math.max(
     0,
-    numericScore - 35
+    numericScore - 25
   );
 
   const calibrated =
