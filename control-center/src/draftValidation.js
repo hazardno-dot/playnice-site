@@ -1,8 +1,10 @@
 import { products } from "@shop/data/products/index.js";
-import { productCopy } from "@shop/data/products/productCopy.js";
-import { productWearContext } from "@shop/data/products/productWearContext.js";
-import { productDoNotWearContext } from "@shop/data/products/productDoNotWearContext.js";
-import { productWhatToWearContext } from "@shop/data/products/productWhatToWearContext.js";
+import {
+  productCopyBySlug,
+  productWearContextBySlug,
+  productDoNotWearContextBySlug,
+  productWhatToWearContextBySlug,
+} from "@shop/data/products/productContentBySlug.js";
 import discoveryProfiles from "@shop/data/products/discoveryProfiles.js";
 import noteMapSource from "@shop/features/note-map/TheNoteMapImpl.jsx?raw";
 import { presentationLimit } from "./productPresentationContract.mjs";
@@ -127,10 +129,10 @@ export function validateProductDraft(live, draft) {
   }
 
   if (live) {
-    const liveCopy = productCopy[live.name] || {};
-    const liveWear = productWearContext[live.name] || {};
-    const liveDoNotWear = productDoNotWearContext[live.name] || {};
-    const liveWhatToWear = productWhatToWearContext[live.name] || {};
+    const liveCopy = productCopyBySlug[live.slug] || {};
+    const liveWear = productWearContextBySlug[live.slug] || {};
+    const liveDoNotWear = productDoNotWearContextBySlug[live.slug] || {};
+    const liveWhatToWear = productWhatToWearContextBySlug[live.slug] || {};
     const warnIfCleared = (section, field, before, after) => {
       if (!empty(before) && empty(after)) issues.push(issue("warning", section, field, "Existing live value would be cleared."));
     };
