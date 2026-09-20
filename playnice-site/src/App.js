@@ -2367,10 +2367,10 @@ const switchView = (nextView, options = {}) => {
     setDiscoveryOpen(false);
   }
 
-  if (isMobileProductPageActive) {
+  if (selectedProduct) {
     setSelectedProduct(null);
     setSelectedSize("");
-      setHasUserPickedSize(false);
+    setHasUserPickedSize(false);
     setNoteMapOpen(false);
   }
   const nextPath = routeForView(nextView);
