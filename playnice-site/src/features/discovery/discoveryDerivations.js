@@ -1,12 +1,9 @@
+import { getDiscoveryMatchTier as getDiscoveryMatchTierFromEngine } from "../../lib/discoveryEngine";
+
 export const getDiscoveryMatchTier = (
   match
-) => {
-  const value = Number(match || 0);
-
-  if (value >= 92) return 3;
-  if (value >= 86) return 2;
-  return 1;
-};
+) =>
+  getDiscoveryMatchTierFromEngine(match);
 
 export const orderDiscoveryResultsForPresentation = (
   results = []
