@@ -4,6 +4,7 @@ import {
   getImpactProducts,
   buildSideRailAds,
   getSideRailVisibility,
+  shouldShowBackToTopButton,
   getHeroManifestos,
 } from "./homeContentDerivations";
 
@@ -90,6 +91,60 @@ describe("homeContentDerivations", () => {
       mobileSponsoredAd: ads[0],
       shouldShowMobileSponsoredAd: true,
     });
+  });
+
+
+  test("suppresses rails while mobile PDP is active", () => {
+    const ads =
+      buildSideRailAds("en");
+
+    expect(
+      getSideRailVisibility({
+        view: "shop",
+        cartOpen: false,
+        checkoutOpen: false,
+        storyOpen: false,
+        howItWorksOpen: false,
+        privateSelectionOpen: false,
+        catalogPreview: null,
+        isMobileProductPageActive: true,
+        sideRailAds: ads,
+      })
+    ).toEqual({
+      blocked: false,
+      shouldShowSideRails: false,
+      mobileSponsoredAd: ads[0],
+      shouldShowMobileSponsoredAd: false,
+    });
+  });
+
+  test("keeps back-to-top available on an unblocked mobile PDP", () => {
+    expect(
+      shouldShowBackToTopButton({
+        showBackToTop: true,
+        sideRailBlocked: true,
+        isMobileProductPageActive: true,
+        hasBlockingOverlay: false,
+      })
+    ).toBe(true);
+
+    expect(
+      shouldShowBackToTopButton({
+        showBackToTop: true,
+        sideRailBlocked: true,
+        isMobileProductPageActive: true,
+        hasBlockingOverlay: true,
+      })
+    ).toBe(false);
+
+    expect(
+      shouldShowBackToTopButton({
+        showBackToTop: false,
+        sideRailBlocked: false,
+        isMobileProductPageActive: true,
+        hasBlockingOverlay: false,
+      })
+    ).toBe(false);
   });
 
   test("builds localized hero manifestos with current actions", () => {

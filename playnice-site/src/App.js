@@ -133,6 +133,7 @@ import {
   getImpactProducts,
   buildSideRailAds,
   getSideRailVisibility,
+  shouldShowBackToTopButton,
   getHeroManifestos,
 } from "./features/home/homeContentDerivations";
 
@@ -834,6 +835,9 @@ const {
   howItWorksOpen,
   privateSelectionOpen,
   catalogPreview,
+  isMobileProductPageActive:
+    isMobileProductModalViewport &&
+    Boolean(selectedProduct),
   sideRailAds,
 });
 
@@ -2363,10 +2367,10 @@ const switchView = (nextView, options = {}) => {
     setDiscoveryOpen(false);
   }
 
-  if (isMobileProductPageActive) {
+  if (selectedProduct) {
     setSelectedProduct(null);
     setSelectedSize("");
-      setHasUserPickedSize(false);
+    setHasUserPickedSize(false);
     setNoteMapOpen(false);
   }
   const nextPath = routeForView(nextView);
@@ -8577,7 +8581,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
-{showBackToTop && (!sideRailBlocked || (isMobileProductPageActive && !hasBlockingOverlay)) && (
+{shouldShowBackToTopButton({
+  showBackToTop,
+  sideRailBlocked,
+  isMobileProductPageActive,
+  hasBlockingOverlay,
+}) && (
   <button
     type="button"
     className="back-to-top"
