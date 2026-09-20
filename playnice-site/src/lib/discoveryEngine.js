@@ -30,24 +30,37 @@ const calibrateMatchScore = (score) => {
     return 58;
   }
 
-  const effectiveScore = Math.max(
-    0,
-    numericScore - 25
-  );
+  const anchors = [
+    [35, 58],
+    [50, 72],
+    [75, 83],
+    [95, 89],
+    [115, 92],
+    [140, 95],
+    [170, 96],
+  ];
 
-  const calibrated =
-    58 +
-    38 *
-      (
-        1 -
-        Math.exp(
-          -effectiveScore / 35
-        )
+  if (numericScore <= anchors[0][0]) {
+    return anchors[0][1];
+  }
+
+  for (let index = 1; index < anchors.length; index += 1) {
+    const [scoreHigh, matchHigh] = anchors[index];
+    const [scoreLow, matchLow] = anchors[index - 1];
+
+    if (numericScore <= scoreHigh) {
+      const ratio =
+        (numericScore - scoreLow) /
+        Math.max(scoreHigh - scoreLow, 1);
+
+      return Math.round(
+        matchLow +
+          (matchHigh - matchLow) * ratio
       );
+    }
+  }
 
-  return Math.round(
-    clamp(calibrated, 58, 96)
-  );
+  return 96;
 };
 
 const unique = (items = []) => [...new Set(items.filter(Boolean))];
