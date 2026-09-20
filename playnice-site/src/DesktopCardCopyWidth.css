@@ -1,6 +1,0 @@
-/* PlayNice desktop Card Copy contract.
- * Keep typography and the 2-line height unchanged; only allow a wider text measure.
- */
-.product-card-copy.premium-card-copy {
-  max-width: 32ch;
-}
