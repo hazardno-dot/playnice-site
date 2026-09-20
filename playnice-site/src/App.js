@@ -61,6 +61,14 @@ import {
   getDirectPurchaseProduct as getDirectPurchaseProductPure,
   buildCheckoutEmailRecommendations,
 } from "./features/commerce/commerceDerivations";
+import {
+  DISCOVERY_PROMPTS,
+  getDiscoveryAnalyticsParams as getDiscoveryAnalyticsParamsPure,
+  getDiscoveryReferenceQuery,
+  getDiscoveryResultPresentation,
+  buildDiscoveryResultClickParams,
+  buildDiscoveryAttribution,
+} from "./features/discovery/discoveryDerivations";
 
 const Exhibition = React.lazy(() => import("./features/exhibition/Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./features/journal/JournalArticlePage"));
@@ -3724,32 +3732,14 @@ const openProductModal = (product, options = {}) => {
   }
 };
 
-const getDiscoveryAnalyticsParams = (discovery, source = "manual") => {
-  const intent = discovery?.intent || {};
-
-  return {
+const getDiscoveryAnalyticsParams = (
+  discovery,
+  source = "manual"
+) =>
+  getDiscoveryAnalyticsParamsPure(discovery, {
     lang,
-    search_source: source,
-    result_count: discovery?.results?.length || 0,
-    is_relevant: discovery?.isRelevant ? "yes" : "no",
-    has_budget: intent.maxPrice != null ? "yes" : "no",
-    has_reference: intent.referenceProduct ? "yes" : "no",
-    category: intent.categories?.[0] || "none",
-    gender: intent.gender || "none",
-    contexts: intent.contexts?.length
-      ? intent.contexts.join("|")
-      : "none",
-    modifiers: intent.referenceModifiers?.length
-      ? intent.referenceModifiers.join("|")
-      : "none",
-    has_exclusions:
-      intent.negativeTraits?.length ||
-      intent.excludedNotes?.length ||
-      intent.hardExcludedNotes?.length
-        ? "yes"
-        : "no",
-  };
-};
+    source,
+  });
 
     const handleDiscoverySearch = async (
       queryOverride = discoveryQuery,
@@ -3810,9 +3800,7 @@ const handleFindSimilarWithFI = async (product) => {
   if (!product) return;
 
   const referenceQuery =
-    lang === "sr"
-      ? `nešto kao ${product.name}`
-      : `something like ${product.name}`;
+    getDiscoveryReferenceQuery(product, lang);
 
   trackEvent("discovery_open_from_product", {
     lang,
@@ -5702,24 +5690,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </form>
 
         <div className="playnice-discovery-prompts">
-          {[
-            {
-              sr: "Sveže za leto do 15 €",
-              en: "Fresh for summer under €15",
-            },
-            {
-              sr: "Nešto kao Naxos",
-              en: "Something like Naxos",
-            },
-            {
-              sr: "Čisto i elegantno za posao",
-              en: "Clean and elegant for work",
-            },
-            {
-              sr: "Za dejt, ali ne previše slatko",
-              en: "Date night, not too sweet",
-            },
-          ].map((prompt) => {
+          {DISCOVERY_PROMPTS.map((prompt) => {
             const promptText = lang === "sr" ? prompt.sr : prompt.en;
 
             return (
@@ -5780,26 +5751,15 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             >
               {visibleDiscoveryResults.map((result, index) => {
                 const globalRank = discoveryPageStart + index + 1;
-                const matchLabel =
-                  result.match >= 92
-                    ? lang === "sr"
-                      ? "Najbolji izbor"
-                      : "Best match"
-                    : result.match >= 86
-                      ? lang === "sr"
-                        ? "Odličan izbor"
-                        : "Excellent match"
-                      : lang === "sr"
-                        ? "Dobar izbor"
-                        : "Good match";
-
-                const sizeLabel = result.selectedSize?.size || "";
-                const priceLabel = Number.isFinite(result.selectedSize?.price)
-                  ? `€${Number(result.selectedSize.price).toFixed(
-                      Number(result.selectedSize.price) % 1 === 0 ? 0 : 1
-                    )}`
-                  : "";
-                const refinedReason = result.reason || "";
+                const {
+                  matchLabel,
+                  sizeLabel,
+                  priceLabel,
+                  refinedReason,
+                } = getDiscoveryResultPresentation(
+                  result,
+                  lang
+                );
 
                 return (
                   <article
@@ -5810,58 +5770,26 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                       type="button"
                       className="playnice-discovery-card-main"
                       onClick={() => {
-                        trackEvent("discovery_result_click", {
-                          lang,
-                          rank: globalRank,
-                          product_id: String(result.product.id),
-                          product_slug: result.product.slug || "",
-                          product_name: result.product.name,
-                          match: Number(result.match || 0),
-                          selected_size: sizeLabel || "none",
-                          selected_price: Number(result.selectedSize?.price || 0),
-                          search_source:
-                            discoverySearchContextRef.current?.search_source || "unknown",
+                        const searchContext =
+                          discoverySearchContextRef.current;
 
-                          has_budget:
-                            discoverySearchContextRef.current?.has_budget || "no",
+                        trackEvent(
+                          "discovery_result_click",
+                          buildDiscoveryResultClickParams({
+                            result,
+                            rank: globalRank,
+                            lang,
+                            searchContext,
+                          })
+                        );
 
-                          has_reference:
-                            discoverySearchContextRef.current?.has_reference || "no",
-
-                          category:
-                            discoverySearchContextRef.current?.category || "none",
-
-                          gender:
-                            discoverySearchContextRef.current?.gender || "none",
-
-                          has_exclusions:
-                            discoverySearchContextRef.current?.has_exclusions || "no",
-                        });
-
-                        discoveryAttributionRef.current = {
-                          productId: result.product.id,
-                          rank: globalRank,
-                          match: Number(result.match || 0),
-                          selectedSize: sizeLabel || "",
-                          clickedAt: Date.now(),
-                          searchSource:
-                            discoverySearchContextRef.current?.search_source || "unknown",
-
-                          category:
-                            discoverySearchContextRef.current?.category || "none",
-
-                          gender:
-                            discoverySearchContextRef.current?.gender || "none",
-
-                          hasBudget:
-                            discoverySearchContextRef.current?.has_budget || "no",
-
-                          hasReference:
-                            discoverySearchContextRef.current?.has_reference || "no",
-
-                          hasExclusions:
-                            discoverySearchContextRef.current?.has_exclusions || "no",
-                        };
+                        discoveryAttributionRef.current =
+                          buildDiscoveryAttribution({
+                            result,
+                            rank: globalRank,
+                            clickedAt: Date.now(),
+                            searchContext,
+                          });
 
                         const opensHomeQuickView =
                           discoveryOriginSurfaceRef.current === "home" &&
