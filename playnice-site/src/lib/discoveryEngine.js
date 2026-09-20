@@ -41,7 +41,7 @@ const calibrateMatchScore = (score) => {
       (
         1 -
         Math.exp(
-          -effectiveScore / 50
+          -effectiveScore / 35
         )
       );
 
