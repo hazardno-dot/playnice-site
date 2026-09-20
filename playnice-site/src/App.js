@@ -35,8 +35,8 @@ import {
 } from "./app/seo/journalSeo";
 
 const Exhibition = React.lazy(() => import("./Exhibition"));
-const JournalArticlePage = React.lazy(() => import("./JournalArticlePage"));
-const JournalPage = React.lazy(() => import("./JournalPage"));
+const JournalArticlePage = React.lazy(() => import("./features/journal/JournalArticlePage"));
+const JournalPage = React.lazy(() => import("./features/journal/JournalPage"));
 
 const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 
