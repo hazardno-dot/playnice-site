@@ -100,6 +100,51 @@ describe("Fragrance Intelligence — intent guard", () => {
   });
 });
 
+describe("Fragrance Intelligence — discounted budget pricing", () => {
+  test("uses the canonical discounted size price for budget eligibility", () => {
+    const discountedProduct = {
+      id: 9991,
+      slug: "discounted-test-fragrance",
+      name: "Discounted Test Fragrance",
+      shortName: "Discounted Test",
+      category: "Designer",
+      sizes: {
+        "5ml": 10,
+      },
+      discount: {
+        size: "5ml",
+        percent: 20,
+      },
+      rating: 8,
+      season: "all",
+      moods: ["clean", "signature"],
+      noteMap: {
+        top: ["bergamot"],
+        heart: ["lavender"],
+        base: ["cedarwood"],
+      },
+    };
+
+    const output = discoverFragrances({
+      query: "Perfume under €9",
+      products: [discountedProduct],
+      productCopy: {},
+      productWearContext: {},
+      discoveryProfiles: {},
+      lang: "en",
+      limit: 5,
+    });
+
+    expect(output.isRelevant).toBe(true);
+    expect(output.results).toHaveLength(1);
+    expect(output.results[0].selectedSize).toEqual({
+      size: "5ml",
+      price: 8,
+      ml: 5,
+    });
+  });
+});
+
 describe("Fragrance Intelligence — budget invariants", () => {
   test.each([
     ["Office do 10 €", 10],
