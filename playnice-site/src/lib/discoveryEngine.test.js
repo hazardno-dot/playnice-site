@@ -420,6 +420,33 @@ describe("Fragrance Intelligence — language parity", () => {
   });
 });
 
+describe("Fragrance Intelligence — match calibration", () => {
+  test("maps absolute engine score monotonically into the public match range", () => {
+    const weak = calibrateMatchScore(50);
+    const solid = calibrateMatchScore(90);
+    const strong = calibrateMatchScore(140);
+
+    expect(weak).toBeGreaterThanOrEqual(58);
+    expect(weak).toBeLessThan(solid);
+    expect(solid).toBeLessThan(strong);
+    expect(strong).toBeLessThanOrEqual(96);
+  });
+
+  test("the same engine score always produces the same public match", () => {
+    expect(calibrateMatchScore(100)).toBe(
+      calibrateMatchScore(100)
+    );
+  });
+
+  test("a normal search no longer awards 96 simply to the first result", () => {
+    const output = expectRelevantWithResults(
+      "Clean and elegant for work"
+    );
+
+    expect(output.results[0].match).toBeLessThan(96);
+  });
+});
+
 describe("Fragrance Intelligence — result quality invariants", () => {
   test("reasons are not five identical generic sentences", () => {
     const output = expectRelevantWithResults("Clean and elegant for work");
