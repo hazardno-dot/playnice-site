@@ -33,7 +33,10 @@ import {
   getJournalSeoDescription,
   getJournalStructuredData,
 } from "./app/seo/journalSeo";
-import { getScentRequestMatchResult as matchScentRequest } from "./features/scent-request/scentRequestMatching";
+import {
+  getScentRequestMatchResult as matchScentRequest,
+  normalizeScentName,
+} from "./features/scent-request/scentRequestMatching";
 
 const Exhibition = React.lazy(() => import("./features/exhibition/Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./features/journal/JournalArticlePage"));
