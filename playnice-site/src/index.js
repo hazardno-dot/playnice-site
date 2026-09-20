@@ -7,11 +7,11 @@ import MobileShopReveal from "./mobile-v2/shop/MobileShopReveal";
 import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
 import MobileCommunityV2 from "./mobile-v2/community/MobileCommunityV2";
 import DesktopFooterCatalog from "./DesktopFooterCatalog";
-import CartInteractionV2 from "./CartInteractionV2";
+import CartInteractionV2 from "./features/cart/CartInteractionV2";
 import DiscoveryImageFallback from "./DiscoveryImageFallback";
 import FragranceIntelligenceToneLoader from "./FragranceIntelligenceToneLoader";
 import WhatsAppLinkBridge from "./WhatsAppLinkBridge";
-import DesktopCartConfirmationEnhancer from "./DesktopCartConfirmationEnhancer";
+import DesktopCartConfirmationEnhancer from "./features/cart/DesktopCartConfirmationEnhancer";
 import DesktopProductPageBridge from "./desktop-product-page/DesktopProductPageBridge";
 import DesktopProductPageHeaderGuard from "./desktop-product-page/DesktopProductPageHeaderGuard";
 import DesktopProductPageNavigationPolish from "./desktop-product-page/DesktopProductPageNavigationPolish";
@@ -50,8 +50,8 @@ import "./mobile-v2/cart-checkout/MobileCartV2.css";
 import "./mobile-v2/cart-checkout/MobileCheckoutV2.css";
 import "./mobile-v2/cart-checkout/MobileStickyCtaV2.css";
 import "./mobile-v2/home/MobileTypographyV2.css";
-import "./CartConfirmationBar.css";
-import "./DesktopCartConfirmationTone.css";
+import "./features/cart/CartConfirmationBar.css";
+import "./features/cart/DesktopCartConfirmationTone.css";
 import "./mobile-v2/content/MobileManifestoFix.css";
 import "./HeaderLanguageColor.css";
 import "./mobile-v2/product-page/MobileProductPageNoteMap.css";
@@ -109,7 +109,7 @@ if (window.matchMedia("(min-width: 769px)").matches) {
     import("./DesktopFragranceIntelligenceV2.css"),
     import("./DesktopFragranceIntelligenceHoverFix.css"),
     import("./DesktopStickyCtaGlass.css"),
-    import("./DesktopConfirmationBarFit.css"),
+    import("./features/cart/DesktopConfirmationBarFit.css"),
     import("./DesktopProductModalCopyV2.css"),
     import("./DesktopDiscoverCleanup.css"),
     import("./DesktopCardCopyWidth.css"),
