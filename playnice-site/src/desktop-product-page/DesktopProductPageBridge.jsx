@@ -54,7 +54,7 @@ const getNoteKeys = (noteMap) => {
 const preloadProductNoteMap = (product) => {
   if (!product?.noteMap) return;
 
-  import("../TheNoteMapImpl").catch(() => {});
+  import("../features/note-map/TheNoteMapImpl").catch(() => {});
 
   getNoteKeys(product.noteMap).forEach((noteKey) => {
     const image = new Image();
