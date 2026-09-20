@@ -120,6 +120,7 @@ import {
   getCartSummary,
   getOverlayVisibility,
   buildManagedShopUrl,
+  getProductOriginView,
 } from "./features/app/appStateDerivations";
 import {
   HERO_VIDEOS,
@@ -1442,17 +1443,11 @@ useEffect(() => {
     const productFromUrl = getProductFromCurrentUrl();
 
     if (productFromUrl) {
-      const originView = window.history.state?.productOriginView;
-
-      const validOriginView =
-        originView === "home" ||
-        originView === "shop" ||
-        originView === "journal" ||
-        originView === "exhibition"
-          ? originView
-          : "shop";
-
-      setView(validOriginView);
+      setView(
+        getProductOriginView(
+          window.history.state
+        )
+      );
 
       openProductModal(productFromUrl, {
         updateUrl: false,
