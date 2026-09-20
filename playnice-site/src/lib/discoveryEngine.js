@@ -20,8 +20,35 @@ const normalizeText = (value = "") =>
 const includesAny = (text, values = []) =>
   values.some((value) => text.includes(normalizeText(value)));
 
-const clamp = (value, min = 0, max = 10) =>
-  Math.max(min, Math.min(max, value));
+const clamp = (value, min = 0, max = 10) =>
+  Math.max(min, Math.min(max, value));
+
+const calibrateMatchScore = (score) => {
+  const numericScore = Number(score);
+
+  if (!Number.isFinite(numericScore)) {
+    return 58;
+  }
+
+  const effectiveScore = Math.max(
+    0,
+    numericScore - 35
+  );
+
+  const calibrated =
+    58 +
+    38 *
+      (
+        1 -
+        Math.exp(
+          -effectiveScore / 50
+        )
+      );
+
+  return Math.round(
+    clamp(calibrated, 58, 96)
+  );
+};
 
 const unique = (items = []) => [...new Set(items.filter(Boolean))];
 
@@ -1784,14 +1811,9 @@ export const discoverFragrances = ({
 
   const ranked = relevant
     .slice(0, Math.max(1, limit))
-    .map((item, index, all) => {
-      const bestScore = all[0]?.score || item.score;
-
-      const normalizedMatch = clamp(
-        72 + (item.score / Math.max(bestScore, 1)) * 24 - index * 1.5,
-        58,
-        96
-      );
+    .map((item, index) => {
+      const normalizedMatch =
+        calibrateMatchScore(item.score);
 
       return {
         product: item.product,
@@ -1819,4 +1841,8 @@ export const discoverFragrances = ({
   };
 };
 
-export { buildProductProfile, parseQuery };
+export {
+  buildProductProfile,
+  parseQuery,
+  calibrateMatchScore,
+};
