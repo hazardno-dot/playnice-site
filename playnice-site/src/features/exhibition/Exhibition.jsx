@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./Exhibition.css";
-import { exhibitionItems } from "./data/exhibition";
+import { exhibitionItems } from "../../data/exhibition";
 
 const getText = (value, lang) => {
   if (!value) return "";

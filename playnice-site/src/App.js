@@ -34,7 +34,7 @@ import {
   getJournalStructuredData,
 } from "./app/seo/journalSeo";
 
-const Exhibition = React.lazy(() => import("./Exhibition"));
+const Exhibition = React.lazy(() => import("./features/exhibition/Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./features/journal/JournalArticlePage"));
 const JournalPage = React.lazy(() => import("./features/journal/JournalPage"));
 
