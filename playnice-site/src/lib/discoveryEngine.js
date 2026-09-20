@@ -23,46 +23,6 @@ const includesAny = (text, values = []) =>
 const clamp = (value, min = 0, max = 10) =>
   Math.max(min, Math.min(max, value));
 
-const calibrateMatchScore = (score) => {
-  const numericScore = Number(score);
-
-  if (!Number.isFinite(numericScore)) {
-    return 58;
-  }
-
-  const anchors = [
-    [35, 58],
-    [50, 72],
-    [75, 83],
-    [95, 89],
-    [115, 92],
-    [140, 95],
-    [170, 96],
-  ];
-
-  if (numericScore <= anchors[0][0]) {
-    return anchors[0][1];
-  }
-
-  for (let index = 1; index < anchors.length; index += 1) {
-    const [scoreHigh, matchHigh] = anchors[index];
-    const [scoreLow, matchLow] = anchors[index - 1];
-
-    if (numericScore <= scoreHigh) {
-      const ratio =
-        (numericScore - scoreLow) /
-        Math.max(scoreHigh - scoreLow, 1);
-
-      return Math.round(
-        matchLow +
-          (matchHigh - matchLow) * ratio
-      );
-    }
-  }
-
-  return 96;
-};
-
 const unique = (items = []) => [...new Set(items.filter(Boolean))];
 
 const flattenNotes = (product) =>
@@ -2110,5 +2070,5 @@ export const discoverFragrances = ({
 export {
   buildProductProfile,
   parseQuery,
-  calibrateMatchScore,
+  getIntentMatchQuality,
 };
