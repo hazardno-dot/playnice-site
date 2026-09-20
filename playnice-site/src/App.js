@@ -52,6 +52,15 @@ import {
   incrementSmartCtaStats,
   buildStickyCtaData,
 } from "./features/sticky-cta/stickyCtaDerivations";
+import {
+  getDiscoveryProducts,
+  calculateDiscoverySetTotals,
+  toggleDiscoverySelection,
+  buildDiscoveryBundleItem,
+  addOrIncrementCartItem,
+  getDirectPurchaseProduct as getDirectPurchaseProductPure,
+  buildCheckoutEmailRecommendations,
+} from "./features/commerce/commerceDerivations";
 
 const Exhibition = React.lazy(() => import("./features/exhibition/Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./features/journal/JournalArticlePage"));
@@ -2940,24 +2949,19 @@ const goToHomeSection = (selector, block = "start") => {
    DISCOVERY SET HELPER
 ========================================= */
 
-const discoveryProducts = products.filter(
-  (product) =>
-    activeDiscoveryConfig.categories.includes(product.category) &&
-    product.sizes?.[activeDiscoveryConfig.size]
+const discoveryProducts = getDiscoveryProducts(
+  products,
+  activeDiscoveryConfig
 );
 
-const discoverySubtotal = discoverySelected.reduce(
-  (sum, product) =>
-    sum + Number(product.sizes[activeDiscoveryConfig.size] || 0),
-  0
-);
-
-const discoveryBundlePrice = Number(
-  (discoverySubtotal * (1 - DISCOVERY_DISCOUNT)).toFixed(2)
-);
-
-const discoverySavings = Number(
-  (discoverySubtotal - discoveryBundlePrice).toFixed(2)
+const {
+  subtotal: discoverySubtotal,
+  bundlePrice: discoveryBundlePrice,
+  savings: discoverySavings,
+} = calculateDiscoverySetTotals(
+  discoverySelected,
+  activeDiscoveryConfig,
+  DISCOVERY_DISCOUNT
 );
 
 const openDiscoveryBuilder = (type = "designerNiche") => {
@@ -2969,53 +2973,28 @@ const openDiscoveryBuilder = (type = "designerNiche") => {
 };
 
 const toggleDiscoveryProduct = (product) => {
-  setDiscoverySelected((prev) => {
-    const exists = prev.some((item) => item.id === product.id);
-
-    if (exists) {
-      return prev.filter((item) => item.id !== product.id);
-    }
-
-    if (prev.length >= DISCOVERY_REQUIRED_COUNT) {
-      return prev;
-    }
-
-    return [...prev, product];
-  });
+  setDiscoverySelected((prev) =>
+    toggleDiscoverySelection(
+      prev,
+      product,
+      DISCOVERY_REQUIRED_COUNT
+    )
+  );
 };
 
 const addDiscoverySetToCart = () => {
   if (discoverySelected.length !== DISCOVERY_REQUIRED_COUNT) return;
 
-  const bundleKey =
-    `discovery-set-${activeDiscoveryConfig.key}-${discoverySelected
-      .map((product) => product.id)
-      .sort((a, b) => a - b)
-      .join("-")}`;
+  const bundleItem = buildDiscoveryBundleItem({
+    selectedProducts: discoverySelected,
+    config: activeDiscoveryConfig,
+    requiredCount: DISCOVERY_REQUIRED_COUNT,
+    bundlePrice: discoveryBundlePrice,
+  });
 
-  const bundleSize =
-    `${DISCOVERY_REQUIRED_COUNT} × ${activeDiscoveryConfig.size}`;
-
-  const bundleName = activeDiscoveryConfig.cartName;
-
-  const bundleItem = {
-    key: bundleKey,
-    id: bundleKey,
-    type: "bundle",
-    name: bundleName,
-    image: discoverySelected[0]?.image,
-    size: bundleSize,
-    price: discoveryBundlePrice,
-    quantity: 1,
-
-    bundleItems: discoverySelected.map((product) => ({
-      id: product.id,
-      name: product.name,
-      image: product.image,
-      size: activeDiscoveryConfig.size,
-      price: product.sizes[activeDiscoveryConfig.size]
-    }))
-  };
+  const bundleKey = bundleItem.key;
+  const bundleSize = bundleItem.size;
+  const bundleName = bundleItem.name;
 
   trackEvent("add_to_cart", {
     currency: "EUR",
@@ -3040,19 +3019,9 @@ const addDiscoverySetToCart = () => {
     currency: "EUR"
   });
 
-  setCart((prev) => {
-    const existing = prev.find((item) => item.key === bundleKey);
-
-    if (existing) {
-      return prev.map((item) =>
-        item.key === bundleKey
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      );
-    }
-
-    return [...prev, bundleItem];
-  });
+  setCart((prev) =>
+    addOrIncrementCartItem(prev, bundleItem)
+  );
 
   setDiscoveryBuilderOpen(false);
   setCartOpen(true);
@@ -3068,27 +3037,13 @@ const triggerInlineAddedFeedback = (productId, size) => {
   }, 1300);
 };
 
-const getDirectPurchaseProduct = (product, size) => {
-  if (!product || !size) return product;
-
-  const activePrice = product.sizes?.[size];
-  const discount = getProductDiscountForSize(product, size);
-
-  if (!discount || activePrice == null) return product;
-
-  const finalPrice = getDiscountedPrice(
-    activePrice,
-    discount.percent
+const getDirectPurchaseProduct = (product, size) =>
+  getDirectPurchaseProductPure(
+    product,
+    size,
+    getProductDiscountForSize,
+    getDiscountedPrice
   );
-
-  return {
-    ...product,
-    sizes: {
-      ...product.sizes,
-      [size]: finalPrice,
-    },
-  };
-};
 
 useEffect(() => {
   return registerProductActions({
@@ -3343,51 +3298,12 @@ const handlePlaceOrder = async () => {
   setIsSubmittingOrder(true);
 
   try {
-    const purchasedProductSlugs = new Set(
-      cart
-        .map((item) =>
-          products.find(
-            (product) => String(product.id) === String(item.id)
-          )
-        )
-        .filter(Boolean)
-        .map((product) => product.slug)
-    );
-
-    const recommendationSlugs = [];
-
-    cart.forEach((item) => {
-      const sourceProduct = products.find(
-        (product) => String(product.id) === String(item.id)
+    const emailRecommendations =
+      buildCheckoutEmailRecommendations(
+        cart,
+        products,
+        3
       );
-
-      (sourceProduct?.recommendations || []).forEach((slug) => {
-        if (
-          slug &&
-          !purchasedProductSlugs.has(slug) &&
-          !recommendationSlugs.includes(slug)
-        ) {
-          recommendationSlugs.push(slug);
-        }
-      });
-    });
-
-    const emailRecommendations = recommendationSlugs
-      .slice(0, 3)
-      .map((slug) =>
-        products.find((product) => product.slug === slug)
-      )
-      .filter(Boolean)
-      .map((product) => ({
-        name: product.name,
-        shortName:
-          product.shortName ||
-          product.cardName ||
-          product.name,
-        slug: product.slug,
-        image: product.image,
-        category: product.category
-      }));
 
     const payload = {
       type: "order",
