@@ -20,6 +20,7 @@ import {
   getProductSlug,
   getProductUrl,
   getSeoProductUrl,
+  getSeoProductImage,
   getProductFromCurrentUrl,
   getProductSeoTitle,
   getProductMetaDescription,
