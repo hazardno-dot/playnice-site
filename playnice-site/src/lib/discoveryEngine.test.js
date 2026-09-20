@@ -12,7 +12,7 @@ import {
   buildProductProfile,
   discoverFragrances,
   parseQuery,
-  calibrateMatchScore,
+  getIntentMatchQuality,
 } from "./discoveryEngine";
 
 const run = (query, lang = "en") =>
@@ -421,38 +421,88 @@ describe("Fragrance Intelligence — language parity", () => {
   });
 });
 
-describe("Fragrance Intelligence — match calibration", () => {
-  test("maps absolute engine score monotonically into the public match range", () => {
-    const weak = calibrateMatchScore(50);
-    const solid = calibrateMatchScore(90);
-    const strong = calibrateMatchScore(140);
+describe("Fragrance Intelligence — match quality", () => {
+  test("scores the requested brief rather than the ranking baseline", () => {
+    const intent = {
+      seasons: ["summer"],
+      moods: ["summer"],
+      positiveTraits: [
+        {
+          key: "freshness",
+          strength: "normal",
+        },
+      ],
+      negativeTraits: [],
+      requiredNoteGroups: [],
+      excludedNotes: [],
+      hardExcludedNotes: [],
+      contexts: [],
+      gender: null,
+      referenceProduct: null,
+      referenceModifiers: [],
+    };
 
-    expect(weak).toBeGreaterThanOrEqual(58);
-    expect(weak).toBeLessThan(solid);
-    expect(solid).toBeLessThan(strong);
-    expect(strong).toBeLessThanOrEqual(96);
+    const strong = getIntentMatchQuality({
+      product: {
+        season: "summer",
+        moods: ["summer"],
+      },
+      profile: {
+        freshness: 9,
+        notes: [],
+      },
+      intent,
+      productCopy: {},
+      productWearContext: {},
+      discoveryProfiles: {},
+    });
+
+    const weak = getIntentMatchQuality({
+      product: {
+        season: "winter",
+        moods: [],
+      },
+      profile: {
+        freshness: 4,
+        notes: [],
+      },
+      intent,
+      productCopy: {},
+      productWearContext: {},
+      discoveryProfiles: {},
+    });
+
+    expect(strong).toBeGreaterThanOrEqual(90);
+    expect(weak).toBeLessThan(80);
+    expect(strong).toBeGreaterThan(weak);
   });
 
-  test("maps representative scores into useful public match bands", () => {
-    expect(calibrateMatchScore(50)).toBe(72);
-    expect(calibrateMatchScore(75)).toBe(83);
-    expect(calibrateMatchScore(95)).toBe(89);
-    expect(calibrateMatchScore(115)).toBe(92);
-    expect(calibrateMatchScore(140)).toBe(95);
-  });
+  test("budget eligibility does not inflate match quality by itself", () => {
+    const intent = {
+      seasons: [],
+      moods: [],
+      positiveTraits: [],
+      negativeTraits: [],
+      requiredNoteGroups: [],
+      excludedNotes: [],
+      hardExcludedNotes: [],
+      contexts: [],
+      gender: null,
+      referenceProduct: null,
+      referenceModifiers: [],
+      maxPrice: 15,
+    };
 
-  test("the same engine score always produces the same public match", () => {
-    expect(calibrateMatchScore(100)).toBe(
-      calibrateMatchScore(100)
-    );
-  });
-
-  test("a normal search no longer awards 96 simply to the first result", () => {
-    const output = expectRelevantWithResults(
-      "Clean and elegant for work"
-    );
-
-    expect(output.results[0].match).toBeLessThan(96);
+    expect(
+      getIntentMatchQuality({
+        product: {},
+        profile: { notes: [] },
+        intent,
+        productCopy: {},
+        productWearContext: {},
+        discoveryProfiles: {},
+      })
+    ).toBe(72);
   });
 });
 
