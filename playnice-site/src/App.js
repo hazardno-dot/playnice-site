@@ -65,6 +65,12 @@ import {
   buildCheckoutEmailRecommendations,
 } from "./features/commerce/commerceDerivations";
 import {
+  acquireSubmissionLock,
+  isConfirmedOrderResult,
+  readStoredArray,
+  releaseSubmissionLock,
+} from "./features/commerce/criticalPathGuards";
+import {
   DISCOVERY_PROMPTS,
   getDiscoveryAnalyticsParams as getDiscoveryAnalyticsParamsPure,
   getDiscoveryReferenceQuery,
@@ -324,10 +330,14 @@ const getInitialShopState = () => {
     initialShopState.currentPage
   );
   const [productsPerPage, setProductsPerPage] = useState(24);
-  const [cart, setCart] = useState(() => {
-    const savedCart = safeReadLocalStorage(CART_STORAGE_KEY, []);
-    return Array.isArray(savedCart) ? savedCart : [];
-  });
+  const [cart, setCart] = useState(() =>
+    readStoredArray(
+      typeof window === "undefined"
+        ? null
+        : window.localStorage,
+      CART_STORAGE_KEY
+    )
+  );
   const [selectedSize, setSelectedSize] = useState("");
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [existingCollectionRequests, setExistingCollectionRequests] = useState(() => {
@@ -610,6 +620,7 @@ const isNewRequest = (request) => {
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const checkoutAutoCloseTimeoutRef = useRef(null);
+  const checkoutSubmissionInFlightRef = useRef(false);
   const fallbackDeviceIdRef = useRef(null);
   const communityVoteInFlightRef = useRef(new Set());
   const productGridRef = useRef(null);
@@ -2864,6 +2875,7 @@ const addHeroBottleToCart = () => {
         ? "Molimo unesite ispravnu email adresu."
         : "Please enter a valid email address."
     );
+    releaseSubmissionLock(checkoutSubmissionInFlightRef);
     return;
   }
 
@@ -2952,18 +2964,25 @@ const addHeroBottleToCart = () => {
         : "Something went wrong while sending your enquiry. Please try again or contact us directly."
     );
   } finally {
+    releaseSubmissionLock(checkoutSubmissionInFlightRef);
     setIsSubmittingOrder(false);
   }
 };
 
 const handlePlaceOrder = async () => {
+  if (!acquireSubmissionLock(checkoutSubmissionInFlightRef)) {
+    return;
+  }
+
   if (!isMontenegroOrder) {
+    releaseSubmissionLock(checkoutSubmissionInFlightRef);
     handleInternationalEnquiry();
     return;
   }
 
   if (cart.length === 0) {
     alert(tr.emptyCartAlert);
+    releaseSubmissionLock(checkoutSubmissionInFlightRef);
     return;
   }
 
@@ -2976,6 +2995,7 @@ const handlePlaceOrder = async () => {
     !checkoutForm.address.trim()
   ) {
     alert(tr.fillRequired);
+    releaseSubmissionLock(checkoutSubmissionInFlightRef);
     return;
   }
 
@@ -3036,11 +3056,7 @@ const handlePlaceOrder = async () => {
 
     const result = await response.json();
 
-    if (
-      !result?.success ||
-      !result?.orderPlaced ||
-      !result?.orderId
-    ) {
+    if (!isConfirmedOrderResult(result)) {
       throw new Error("Order was not confirmed by checkout API");
     }
 
