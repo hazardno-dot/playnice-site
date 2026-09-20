@@ -215,7 +215,24 @@ export default function DesktopQuickView() {
   };
 
   const addToCart = () => {
-    getProductActions()?.addToCart?.(product, activeSize);
+    getProductActions()?.addToCart?.(
+      product,
+      activeSize,
+      {
+        productId: product.id,
+        origin:
+          source ||
+          analyticsListContext?.listId ||
+          "quick-view",
+        listId:
+          analyticsListContext?.listId || "",
+        listName:
+          analyticsListContext?.listName || "",
+        listIndex:
+          analyticsListContext?.index ?? null,
+        openedAt: Date.now(),
+      }
+    );
     setIsAdded(true);
     window.setTimeout(() => setIsAdded(false), 1200);
   };

@@ -170,6 +170,7 @@ const getMinPrice = (product) =>
   getMinPricePure(product);
 
 const CART_STORAGE_KEY = "playnice_cart";
+const CART_OPEN_SESSION_KEY = "playnice_cart_open_v1";
 
 function safeReadLocalStorage(key, fallback) {
   if (typeof window === "undefined") return fallback;
@@ -337,7 +338,26 @@ const getInitialShopState = () => {
   const [seasonMenuOpen, setSeasonMenuOpen] = useState(false);
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(initialShopState.searchTerm);
-  const [cartOpen, setCartOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(() => {
+    if (typeof window === "undefined") return false;
+
+    try {
+      const storedCart =
+        readStoredArray(
+          window.localStorage,
+          CART_STORAGE_KEY
+        );
+
+      return (
+        storedCart.length > 0 &&
+        window.sessionStorage.getItem(
+          CART_OPEN_SESSION_KEY
+        ) === "1"
+      );
+    } catch {
+      return false;
+    }
+  });
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState("");
   const [currentPage, setCurrentPage] = useState(
@@ -454,6 +474,7 @@ const getInitialShopState = () => {
   const [discoveryPage, setDiscoveryPage] = useState(1);
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
   const discoveryAttributionRef = useRef(null);
+  const productAttributionRef = useRef(null);
   const discoverySearchContextRef = useRef(null);
   const discoveryOriginSurfaceRef = useRef("home");
   const productOriginSurfaceRef = useRef("");
@@ -1148,6 +1169,21 @@ useEffect(() => {
       window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
     } catch {}
   }, [cart]);
+
+  useEffect(() => {
+    try {
+      if (cartOpen && cart.length > 0) {
+        window.sessionStorage.setItem(
+          CART_OPEN_SESSION_KEY,
+          "1"
+        );
+      } else {
+        window.sessionStorage.removeItem(
+          CART_OPEN_SESSION_KEY
+        );
+      }
+    } catch {}
+  }, [cartOpen, cart.length]);
 
   useEffect(() => {
     if (
@@ -2709,6 +2745,18 @@ const goToHomeSection = (selector, block = "start") => {
   const label = customLabel || size;
 
   const discoveryAttribution = discoveryAttributionRef.current;
+  const productAttribution =
+    options.analyticsContext ||
+    productAttributionRef.current;
+
+  const isProductAttributed =
+    productAttribution?.productId === product.id &&
+    (
+      options.analyticsContext ||
+      Date.now() -
+        Number(productAttribution?.openedAt || 0) <=
+        30 * 60 * 1000
+    );
 
   const isDiscoveryAttributed =
     discoveryAttribution?.productId === product.id &&
@@ -2737,11 +2785,32 @@ const goToHomeSection = (selector, block = "start") => {
     currency: "EUR",
     value: Number(price),
     items: [
-      buildEcommerceItem(product, {
-        item_variant: label,
-        price,
-        quantity: 1,
-      })
+      buildEcommerceItem(
+        {
+          ...product,
+          analyticsOrigin:
+            isProductAttributed
+              ? productAttribution.origin || "direct"
+              : "direct",
+          analyticsListId:
+            isProductAttributed
+              ? productAttribution.listId || ""
+              : "",
+          analyticsListName:
+            isProductAttributed
+              ? productAttribution.listName || ""
+              : "",
+          analyticsListIndex:
+            isProductAttributed
+              ? productAttribution.listIndex ?? null
+              : null,
+        },
+        {
+          item_variant: label,
+          price,
+          quantity: 1,
+        }
+      )
     ]
   });
 
@@ -2777,6 +2846,22 @@ const goToHomeSection = (selector, block = "start") => {
         analyticsSource: isDiscoveryAttributed
           ? "fragrance_intelligence"
           : "standard",
+
+        analyticsOrigin: isProductAttributed
+          ? productAttribution.origin || "direct"
+          : "direct",
+
+        analyticsListId: isProductAttributed
+          ? productAttribution.listId || ""
+          : "",
+
+        analyticsListName: isProductAttributed
+          ? productAttribution.listName || ""
+          : "",
+
+        analyticsListIndex: isProductAttributed
+          ? productAttribution.listIndex ?? null
+          : null,
 
         discoveryRank: isDiscoveryAttributed
           ? discoveryAttribution.rank
@@ -2935,7 +3020,11 @@ useEffect(() => {
       toggleWishlist(productId);
     },
 
-    addToCart: (product, size) => {
+    addToCart: (
+      product,
+      size,
+      analyticsContext = null
+    ) => {
       if (!product || !size) return;
 
       const productForCart =
@@ -2947,6 +3036,7 @@ useEffect(() => {
         null,
         null,
         {
+          analyticsContext,
           showToast: false,
           showMiniPreview: true,
         }
@@ -3581,6 +3671,21 @@ const openProductModal = (product, options = {}) => {
   const isMobileModal = isMobileProductModal();
 
   productOriginSurfaceRef.current = originSurface || "";
+
+  productAttributionRef.current = {
+    productId: product.id,
+    origin:
+      originSurface ||
+      analyticsListContext?.listId ||
+      "direct",
+    listId:
+      analyticsListContext?.listId || "",
+    listName:
+      analyticsListContext?.listName || "",
+    listIndex:
+      analyticsListContext?.index ?? null,
+    openedAt: Date.now(),
+  };
 
   const initialSize =
     preferredSize && product.sizes?.[preferredSize]
