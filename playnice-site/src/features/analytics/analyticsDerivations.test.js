@@ -27,6 +27,29 @@ describe("analyticsDerivations", () => {
     });
   });
 
+  test("preserves per-item list and source attribution", () => {
+    expect(
+      buildEcommerceItem({
+        id: 9,
+        name: "Attributed",
+        size: "5ml",
+        price: 8,
+        quantity: 1,
+        analyticsListId: "home-just-in",
+        analyticsListName: "Home Just In",
+        analyticsListIndex: 4,
+        analyticsOrigin: "home-just-in",
+      })
+    ).toEqual(
+      expect.objectContaining({
+        item_list_id: "home-just-in",
+        item_list_name: "Home Just In",
+        index: 4,
+        item_source: "home-just-in",
+      })
+    );
+  });
+
   test("falls back to cart key and omits missing category", () => {
     expect(
       buildEcommerceItem({
