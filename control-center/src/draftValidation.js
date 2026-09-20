@@ -4,7 +4,7 @@ import { productWearContext } from "@shop/data/products/productWearContext.js";
 import { productDoNotWearContext } from "@shop/data/products/productDoNotWearContext.js";
 import { productWhatToWearContext } from "@shop/data/products/productWhatToWearContext.js";
 import discoveryProfiles from "@shop/data/products/discoveryProfiles.js";
-import noteMapSource from "@shop/TheNoteMap.jsx?raw";
+import noteMapSource from "@shop/features/note-map/TheNoteMapImpl.jsx?raw";
 import { presentationLimit } from "./productPresentationContract.mjs";
 
 const csv = (value) => String(value ?? "").split(",").map((v) => v.trim()).filter(Boolean);
