@@ -3010,6 +3010,7 @@ const handlePlaceOrder = async () => {
         ? "Molimo unesite ispravnu email adresu."
         : "Please enter a valid email address."
     );
+    releaseSubmissionLock(checkoutSubmissionInFlightRef);
     return;
   }
 
