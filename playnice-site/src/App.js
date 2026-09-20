@@ -61,6 +61,9 @@ import {
   toggleDiscoverySelection,
   buildDiscoveryBundleItem,
   addOrIncrementCartItem,
+  rehydrateCart,
+  updateCartItemQuantity,
+  removeCartItem,
   getDirectPurchaseProduct as getDirectPurchaseProductPure,
   getProductPurchaseSelection,
   buildCheckoutEmailRecommendations,
@@ -334,11 +337,14 @@ const getInitialShopState = () => {
   );
   const [productsPerPage, setProductsPerPage] = useState(24);
   const [cart, setCart] = useState(() =>
-    readStoredArray(
-      typeof window === "undefined"
-        ? null
-        : window.localStorage,
-      CART_STORAGE_KEY
+    rehydrateCart(
+      readStoredArray(
+        typeof window === "undefined"
+          ? null
+          : window.localStorage,
+        CART_STORAGE_KEY
+      ),
+      products
     )
   );
   const [selectedSize, setSelectedSize] = useState("");
@@ -2836,16 +2842,21 @@ const addHeroBottleToCart = () => {
 
   const updateQuantity = (key, delta) => {
     setCart((prev) =>
-      prev
-        .map((item) =>
-          item.key === key ? { ...item, quantity: item.quantity + delta } : item
-        )
-        .filter((item) => item.quantity > 0)
+      updateCartItemQuantity(
+        prev,
+        key,
+        delta
+      )
     );
   };
 
   const removeFromCart = (key) => {
-    setCart((prev) => prev.filter((item) => item.key !== key));
+    setCart((prev) =>
+      removeCartItem(
+        prev,
+        key
+      )
+    );
   };
 
   const handleCheckoutInput = (e) => {
