@@ -22,31 +22,26 @@ describe("shopBootstrapHelpers", () => {
     ).toBe(4);
   });
 
-  test("builds localized product copy with existing fallbacks", () => {
-    const fallback = {
-      miniTag: { sr: "Fallback SR", en: "Fallback EN" },
-      card: { sr: "Card SR", en: "Card EN" },
-      modal: { sr: "Modal SR", en: "Modal EN" },
-      scentType: { sr: "Type SR", en: "Type EN" },
-      dominantNotes: { sr: "Notes SR", en: "Notes EN" },
-      tags: { sr: ["tag-sr"], en: ["tag-en"] },
-      whyChoose: { sr: "Why SR", en: "Why EN" },
-    };
-
+  test("builds localized product copy from canonical slug data", () => {
     const result = getProductCopy(
-      { name: "Test" },
+      { slug: "test-product" },
       "sr",
       {
-        Test: {
-          ...fallback,
-          card: { en: "English card" },
+        "test-product": {
+          miniTag: { sr: "Tag SR", en: "Tag EN" },
+          card: { sr: "Card SR", en: "Card EN" },
+          modal: { sr: "Modal SR", en: "Modal EN" },
+          scentType: { sr: "Type SR", en: "Type EN" },
+          dominantNotes: { sr: ["nota"], en: ["note"] },
+          tags: { sr: ["tag-sr"], en: ["tag-en"] },
+          whyChoose: { sr: "Why SR", en: "Why EN" },
         },
-      },
-      fallback
+      }
     );
 
-    expect(result.card).toBe("English card");
+    expect(result.card).toBe("Card SR");
     expect(result.modal).toBe("Modal SR");
+    expect(result.dominantNotes).toEqual(["nota"]);
   });
 
   test("resolves initial view from path before legacy query view", () => {
