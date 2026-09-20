@@ -89,6 +89,16 @@ import {
   getPaginationData,
   getProductThumbnail as getProductThumbnailPure,
 } from "./features/shop/shopDerivations";
+import {
+  getJournalText as getJournalTextPure,
+  getJournalAvatarLetter as getJournalAvatarLetterPure,
+  getJournalArticleKey as getJournalArticleKeyPure,
+  getRelatedJournalProducts as getRelatedJournalProductsPure,
+  sortJournalArticles,
+  getJournalNavigation,
+  getLatestJournalState,
+  findJournalArticleBySlug,
+} from "./features/journal/journalDerivations";
 
 const Exhibition = React.lazy(() => import("./features/exhibition/Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./features/journal/JournalArticlePage"));
@@ -173,65 +183,36 @@ function getProductCopy(product, lang) {
   );
 }
 
-const getJournalText = (field, lang) => {
-  if (!field) return "";
+const getJournalText = (field, lang) =>
+  getJournalTextPure(field, lang);
 
-  if (typeof field === "string") return field;
+const getJournalAvatarLetter = (lang) =>
+  getJournalAvatarLetterPure(lang);
 
-  if (typeof field === "object") {
-    return field[lang] || field.en || field.sr || "";
-  }
+const getRelatedJournalProducts = (article) =>
+  getRelatedJournalProductsPure({
+    article,
+    products,
+    getProductSlug,
+  });
 
-  return "";
-};
-
-const getJournalAvatarLetter = (lang) => (lang === "sr" ? "Č" : "C");
-
-const getRelatedJournalProducts = (article) => {
-  if (!article?.relatedProducts?.length) return [];
-
-  return article.relatedProducts
-    .map((relatedRef) => {
-      const normalizedRef = String(relatedRef || "").trim();
-
-      if (!normalizedRef) return null;
-
-      return (
-        products.find(
-          (product) => getProductSlug(product) === normalizedRef
-        ) ||
-        products.find(
-          (product) =>
-            product.name?.trim().toLowerCase() ===
-            normalizedRef.toLowerCase()
-        ) ||
-        null
-      );
-    })
-    .filter(Boolean);
-};
-
-const getJournalArticleKey = (article) => {
-  if (!article) return "";
-  return article.id || article.slug || article.title?.en || article.title?.sr || article.title || "";
-};
+const getJournalArticleKey = (article) =>
+  getJournalArticleKeyPure(article);
 
 const getJournalArticleFromCurrentUrl = () => {
   if (typeof window === "undefined") return null;
 
-  const path = window.location.pathname;
-
-  const match = path.match(/^\/journal\/([^/]+)$/);
+  const match = window.location.pathname.match(
+    /^\/journal\/([^/]+)$/
+  );
 
   if (!match?.[1]) return null;
 
-  const slugFromUrl = decodeURIComponent(match[1]);
-
-  return (
-    journalArticles.find(
-      (article) => getJournalArticleSlug(article) === slugFromUrl
-    ) || null
-  );
+  return findJournalArticleBySlug({
+    articles: journalArticles,
+    slug: decodeURIComponent(match[1]),
+    getArticleSlug: getJournalArticleSlug,
+  });
 };
 
 const getInitialView = () => {
@@ -2128,49 +2109,32 @@ const getProductDiscountForSize = (product, size) => {
    DERIVED DATA
 ========================================= */
 
-const sortedJournalArticles = useMemo(() => {
-  if (!journalArticles?.length) return [];
+const sortedJournalArticles = useMemo(
+  () => sortJournalArticles(journalArticles),
+  []
+);
 
-  return [...journalArticles].sort((a, b) => {
-    const aId = Number(a?.id || 0);
-    const bId = Number(b?.id || 0);
-
-    return bId - aId;
-  });
-}, [journalArticles]);
-
-const activeJournalArticleIndex = journalPageArticle
-  ? sortedJournalArticles.findIndex(
-      (article) =>
-        String(article.id) === String(journalPageArticle.id)
-    )
-  : -1;
-
-const previousJournalArticle =
-  activeJournalArticleIndex >= 0
-    ? sortedJournalArticles[activeJournalArticleIndex + 1] || null
-    : null;
-
-const nextJournalArticle =
-  activeJournalArticleIndex > 0
-    ? sortedJournalArticles[activeJournalArticleIndex - 1] || null
-    : null;
+const {
+  previousArticle: previousJournalArticle,
+  nextArticle: nextJournalArticle,
+} = getJournalNavigation({
+  sortedArticles: sortedJournalArticles,
+  activeArticle: journalPageArticle,
+});
 
 const journalPageRelatedProducts = journalPageArticle
   ? getRelatedJournalProducts(journalPageArticle)
   : [];
 
-const latestJournalArticle = sortedJournalArticles?.[0] || null;
-
-const latestJournalArticleKey = latestJournalArticle?.id
-  ? String(latestJournalArticle.id)
-  : "";
-
-const hasNewJournalArticle =
-  Boolean(latestJournalArticleKey) &&
-  String(seenLatestJournalKey) !== String(latestJournalArticleKey);
-
-const journalUnreadCount = hasNewJournalArticle ? 1 : 0;
+const {
+  latestArticle: latestJournalArticle,
+  latestArticleKey: latestJournalArticleKey,
+  hasNewArticle: hasNewJournalArticle,
+  unreadCount: journalUnreadCount,
+} = getLatestJournalState({
+  sortedArticles: sortedJournalArticles,
+  seenLatestJournalKey,
+});
 
 const markLatestJournalAsSeen = () => {
   if (!latestJournalArticleKey) return;
