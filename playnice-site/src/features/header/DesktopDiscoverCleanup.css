@@ -1,0 +1,5 @@
+@media (min-width: 901px) {
+  .header-next-discover-panel > button:last-child {
+    display: none;
+  }
+}
