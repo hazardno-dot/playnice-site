@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { products } from "./data/products";
+import { products } from "../../data/products";
 import "./PrivateSelectionEnhancer.css";
 
 const WISHLIST_KEY = "playnice_wishlist";
