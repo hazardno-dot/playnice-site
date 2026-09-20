@@ -45,6 +45,13 @@ import {
   rollbackCommunityVote,
   upsertCommunityRequestVote,
 } from "./features/scent-request/communityRequestHelpers";
+import { buildAnnouncementItems } from "./features/announcement/announcementItems";
+import {
+  SMART_CTA_INITIAL_STATS,
+  resolveSmartCtaVibe,
+  incrementSmartCtaStats,
+  buildStickyCtaData,
+} from "./features/sticky-cta/stickyCtaDerivations";
 
 const Exhibition = React.lazy(() => import("./features/exhibition/Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./features/journal/JournalArticlePage"));
@@ -2448,106 +2455,21 @@ const announcementItems = useMemo(() => {
     ? getJournalText(latestJournalArticle.title, lang)
     : "";
 
-  const editorialAnnouncementItems = ANNOUNCEMENT_ITEMS
-    .filter((item) => item.enabled)
-    .sort(
-      (a, b) =>
-        Number(a.priority || 0) - Number(b.priority || 0)
-    )
-    .map((item) => ({
-      ...item,
-      text:
-        item.text?.[lang] ||
-        item.text?.en ||
-        item.text?.sr ||
-        "",
-    }))
-    .filter((item) => item.text);
-
-  const shopNewAnnouncementItem = hasNewShopProducts
-    ? {
-        id: "new-shop-products-announcement",
-        text:
-          lang === "sr"
-            ? "Novi parfemi su stigli u PlayNice"
-            : "New fragrances just arrived at PlayNice",
-        icon: "→",
-        tone: "new-shop",
-        action: "openShop",
-      }
-    : null;
-
-  const journalAnnouncementItem =
-    hasNewJournalArticle && latestJournalArticle && latestJournalTitle
-      ? {
-          id: "latest-journal-announcement",
-          text:
-            lang === "sr"
-              ? `Novo u rubrici Le Journal: ${latestJournalTitle}`
-              : `New in Le Journal: ${latestJournalTitle}`,
-          icon: "→",
-          tone: "journal",
-          action: "openLatestJournalArticle",
-        }
-      : null;
-
-  const foreverAnnouncementItem = {
-    id: "forever-announcement-logo",
-    type: "logoLink",
-    text: "Forever Living Products",
-    icon: "★",
-    tone: "forever",
-    href: foreverAloeUrl,
-    logoSrc: "/partners/forever-logo-wide.png",
-    logoAlt: "Forever Living Products",
-    partner: "forever_living",
-    sellerId: "360000920762",
-    campaign: "aloe_drinks",
-  };
-
-  const withPriorityAnnouncements = (items) => [
-    ...editorialAnnouncementItems,
-    ...(shopNewAnnouncementItem ? [shopNewAnnouncementItem] : []),
-    ...(journalAnnouncementItem ? [journalAnnouncementItem] : []),
-    foreverAnnouncementItem,
-    ...items,
-  ];
-
-  if (cart.length === 0) {
-    return withPriorityAnnouncements([
-      { text: tr.announcementDynamicEmpty1, icon: "🚚" },
-      { text: tr.announcementDynamicEmpty2, icon: "✓" },
-      { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-      { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-      { text: tr.announcementDynamicEmpty5, icon: "🚚" },
-      { text: tr.announcementDynamicEmpty6, icon: "★" },
-    ]);
-  }
-
-  if (subtotal >= FREE_SHIPPING_THRESHOLD) {
-    return withPriorityAnnouncements([
-      { text: tr.announcementDynamicUnlocked, icon: "✓", tone: "success" },
-      { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-      { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-      { text: tr.announcementDynamicEmpty5, icon: "🚚" },
-      { text: tr.announcementDynamicEmpty6, icon: "★" },
-    ]);
-  }
-
-  return withPriorityAnnouncements([
-    {
-      text: tr.announcementDynamicLocked.replace(
-        "{{amount}}",
-        formatPrice(amountLeftForFreeShipping)
-      ),
-      icon: "🚚",
-      tone: "warning",
-    },
-    { text: tr.announcementDynamicEmpty2, icon: "✓" },
-    { text: tr.announcementDynamicEmpty3, icon: "🔥" },
-    { text: tr.announcementDynamicEmpty4, icon: "🔥" },
-    { text: tr.announcementDynamicEmpty6, icon: "★" },
-  ]);
+  return buildAnnouncementItems({
+    announcementItems: ANNOUNCEMENT_ITEMS,
+    lang,
+    hasNewShopProducts,
+    hasNewJournalArticle,
+    latestJournalArticle,
+    latestJournalTitle,
+    foreverAloeUrl,
+    cartLength: cart.length,
+    subtotal,
+    freeShippingThreshold: FREE_SHIPPING_THRESHOLD,
+    amountLeftForFreeShipping,
+    tr,
+    formatPrice,
+  });
 }, [
   cart.length,
   subtotal,
@@ -2623,14 +2545,9 @@ const goToShop = () => {
 };
 
 const [smartCtaVibe, setSmartCtaVibe] = useState(null);
-const [smartCtaStats, setSmartCtaStats] = useState({
-  summer: 0,
-  clean: 0,
-  rich: 0,
-  date: 0,
-  soft: 0,
-  signature: 0
-});
+const [smartCtaStats, setSmartCtaStats] = useState(
+  SMART_CTA_INITIAL_STATS
+);
 
 const handleSmartStickyClick = useCallback(
   (moodId) => {
@@ -2656,79 +2573,35 @@ const openCheckout = () => {
   setCheckoutOpen(true);
 };
 
-const stickyCtaData = useMemo(() => {
-  if (cartCount > 0) {
-    return {
-      label: tr.stickyCheckout,
-      sublabel: `${cartCount} ${
-        cartCount === 1 ? tr.stickyItem : tr.stickyItems
-      } • ${formatPrice(total)}`,
-      onClick: openCheckout
-    };
-  }
-
-  if (wishlist.length > 0 && view === "shop") {
-    return {
-      label: tr.stickySaved,
-      sublabel: `${wishlist.length} ${
-        wishlist.length === 1 ? tr.stickyItem : tr.stickyItems
-      }`,
-      onClick: () => setPrivateSelectionOpen(true)
-    };
-  }
-
-  const smartStickyCopy = {
-  summer: {
-    label: lang === "sr" ? "Treba ti letnji starter?" : "Need a summer starter?",
-    sublabel: lang === "sr" ? "Otvori Summer Heat izbor" : "Open Summer Heat picks",
-    moodId: "summer"
-  },
-  clean: {
-    label: lang === "sr" ? "Kreni od čistih potpisa" : "Start with clean signatures",
-    sublabel: lang === "sr" ? "Otvori Clean Everyday izbor" : "Open Clean Everyday picks",
-    moodId: "clean"
-  },
-  rich: {
-    label: lang === "sr" ? "Idi malo dublje" : "Go deeper",
-    sublabel: lang === "sr" ? "Otvori Rich & Addictive izbor" : "Open Rich & Addictive picks",
-    moodId: "rich"
-  },
-  date: {
-    label: lang === "sr" ? "Nešto za veče?" : "Something for after dark?",
-    sublabel: lang === "sr" ? "Otvori Date Night izbor" : "Open Date Night picks",
-    moodId: "date"
-  },
-  signature: {
-    label: lang === "sr" ? "Pronađi svoj potpis" : "Find your signature",
-    sublabel: lang === "sr" ? "Otvori Signature Energy izbor" : "Open Signature Energy picks",
-    moodId: "signature"
-  }
-};
-
-const smartCopy = smartCtaVibe ? smartStickyCopy[smartCtaVibe] : null;
-
-return {
-  label: smartCopy?.label || tr.stickyExplore,
-  sublabel:
-    smartCopy?.sublabel ||
-    (view === "shop"
-      ? `${filteredProducts.length} ${
-          lang === "sr" ? "parfema" : "fragrances"
-        }`
-      : tr.privateSelection),
-  onClick: () => handleSmartStickyClick(smartCopy?.moodId)
-};
-}, [
-  cartCount,
-  total,
-  wishlist.length,
-  view,
-  filteredProducts.length,
-  tr,
-  lang,
-  smartCtaVibe,
-  handleSmartStickyClick
-]);
+const stickyCtaData = useMemo(
+  () =>
+    buildStickyCtaData({
+      cartCount,
+      total,
+      wishlistCount: wishlist.length,
+      view,
+      filteredProductsCount: filteredProducts.length,
+      tr,
+      lang,
+      smartCtaVibe,
+      formatPrice,
+      onCheckout: openCheckout,
+      onOpenPrivateSelection: () =>
+        setPrivateSelectionOpen(true),
+      onSmartClick: handleSmartStickyClick,
+    }),
+  [
+    cartCount,
+    total,
+    wishlist.length,
+    view,
+    filteredProducts.length,
+    tr,
+    lang,
+    smartCtaVibe,
+    handleSmartStickyClick,
+  ]
+);
 
 const stickyCtaJournalHasNew = journalUnreadCount > 0;
 
@@ -4706,46 +4579,25 @@ useEffect(() => {
 useEffect(() => {
   if (!selectedProduct) return;
 
-  const moods = selectedProduct.moods || selectedProduct.scentMoods || [];
+  const moods =
+    selectedProduct.moods ||
+    selectedProduct.scentMoods ||
+    [];
 
-  setSmartCtaStats((prev) => {
-    const next = { ...prev };
-
-    moods.forEach((mood) => {
-      if (next[mood] !== undefined) {
-        next[mood] += 1;
-      }
-    });
-
-    return next;
-  });
+  setSmartCtaStats((prev) =>
+    incrementSmartCtaStats(prev, moods)
+  );
 }, [selectedProduct]);
 
 useEffect(() => {
-  if (cartCount > 0 || wishlist.length > 0) return;
+  const nextVibe = resolveSmartCtaVibe({
+    stats: smartCtaStats,
+    cartCount,
+    wishlistCount: wishlist.length,
+  });
 
-  if (smartCtaStats.summer >= 3) {
-    setSmartCtaVibe("summer");
-    return;
-  }
-
-  if (smartCtaStats.clean >= 2 || smartCtaStats.soft >= 2) {
-    setSmartCtaVibe("clean");
-    return;
-  }
-
-  if (smartCtaStats.rich >= 2) {
-    setSmartCtaVibe("rich");
-    return;
-  }
-
-  if (smartCtaStats.date >= 2) {
-    setSmartCtaVibe("date");
-    return;
-  }
-
-  if (smartCtaStats.signature >= 2) {
-    setSmartCtaVibe("signature");
+  if (nextVibe) {
+    setSmartCtaVibe(nextVibe);
   }
 }, [smartCtaStats, cartCount, wishlist.length]);
 
