@@ -4,6 +4,10 @@ import {
   toggleDiscoverySelection,
   buildDiscoveryBundleItem,
   addOrIncrementCartItem,
+  normalizeCartQuantity,
+  updateCartItemQuantity,
+  removeCartItem,
+  rehydrateCart,
   getDirectPurchaseProduct,
   getProductPurchaseSelection,
   buildCheckoutEmailRecommendations,
@@ -108,6 +112,151 @@ describe("commerceDerivations", () => {
     );
     expect(item.size).toBe("2 × 2ml");
     expect(item.bundleItems).toHaveLength(2);
+  });
+
+
+  test("rehydrates persisted cart with current catalog price and merges duplicate keys", () => {
+    const catalog = [
+      {
+        id: 9,
+        name: "Current Product",
+        image: "/current.webp",
+        sizes: {
+          "5ml": 10,
+          "10ml": 18,
+        },
+        discount: {
+          size: "10ml",
+          percent: 20,
+        },
+      },
+    ];
+
+    expect(
+      rehydrateCart(
+        [
+          {
+            key: "9-10ml-",
+            id: 9,
+            name: "Old Name",
+            image: "/old.webp",
+            size: "10ml",
+            price: 99,
+            quantity: 1,
+          },
+          {
+            key: "9-10ml-",
+            id: 9,
+            name: "Old Name",
+            image: "/old.webp",
+            size: "10ml",
+            price: 99,
+            quantity: 2,
+          },
+        ],
+        catalog
+      )
+    ).toEqual([
+      expect.objectContaining({
+        key: "9-10ml-",
+        id: 9,
+        name: "Current Product",
+        image: "/current.webp",
+        size: "10ml",
+        price: 14.4,
+        quantity: 3,
+      }),
+    ]);
+  });
+
+  test("preserves valid custom items and drops malformed persisted entries", () => {
+    expect(
+      rehydrateCart(
+        [
+          {
+            key: "discovery-set",
+            size: "2 × 2ml",
+            price: "9",
+            quantity: "2",
+          },
+          {
+            key: "",
+            price: 5,
+            quantity: 1,
+          },
+          {
+            key: "bad-price",
+            price: "oops",
+            quantity: 1,
+          },
+          {
+            key: "bad-quantity",
+            price: 5,
+            quantity: 0,
+          },
+        ],
+        []
+      )
+    ).toEqual([
+      expect.objectContaining({
+        key: "discovery-set",
+        price: 9,
+        quantity: 2,
+      }),
+    ]);
+  });
+
+  test("normalizes quantity updates and removes an item at zero", () => {
+    expect(
+      normalizeCartQuantity("2.8")
+    ).toBe(2);
+
+    expect(
+      normalizeCartQuantity("bad")
+    ).toBe(0);
+
+    expect(
+      updateCartItemQuantity(
+        [
+          {
+            key: "one",
+            quantity: 1,
+          },
+        ],
+        "one",
+        -1
+      )
+    ).toEqual([]);
+
+    expect(
+      updateCartItemQuantity(
+        [
+          {
+            key: "one",
+            quantity: 2,
+          },
+        ],
+        "one",
+        1
+      )
+    ).toEqual([
+      {
+        key: "one",
+        quantity: 3,
+      },
+    ]);
+
+    expect(
+      removeCartItem(
+        [
+          { key: "one" },
+          { key: "two" },
+        ],
+        "one"
+      )
+    ).toEqual([
+      { key: "two" },
+    ]);
   });
 
   test("increments an existing cart bundle instead of duplicating it", () => {
