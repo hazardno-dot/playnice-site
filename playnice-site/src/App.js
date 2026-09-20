@@ -4366,11 +4366,7 @@ const openProductModal = (product, options = {}) => {
     currency: "EUR"
   });
 
-  if (isMobileModal) {
-    setProductModalVisible(true);
-  } else {
-    setProductModalVisible(false);
-  }
+  setProductModalVisible(false);
 
   if (updateUrl) {
     const productUrl = getProductUrl(product);
