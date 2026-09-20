@@ -1,3 +1,42 @@
+export const getDiscoveryMatchTier = (
+  match
+) => {
+  const value = Number(match || 0);
+
+  if (value >= 92) return 3;
+  if (value >= 86) return 2;
+  return 1;
+};
+
+export const orderDiscoveryResultsForPresentation = (
+  results = []
+) =>
+  results
+    .map((result, originalIndex) => ({
+      result,
+      originalIndex,
+    }))
+    .sort((a, b) => {
+      const tierDifference =
+        getDiscoveryMatchTier(b.result?.match) -
+        getDiscoveryMatchTier(a.result?.match);
+
+      if (tierDifference !== 0) {
+        return tierDifference;
+      }
+
+      const matchDifference =
+        Number(b.result?.match || 0) -
+        Number(a.result?.match || 0);
+
+      if (matchDifference !== 0) {
+        return matchDifference;
+      }
+
+      return a.originalIndex - b.originalIndex;
+    })
+    .map(({ result }) => result);
+
 export const DISCOVERY_PROMPTS = [
   {
     sr: "Sveže za leto do 15 €",
