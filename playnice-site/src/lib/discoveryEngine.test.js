@@ -12,6 +12,7 @@ import {
   buildProductProfile,
   discoverFragrances,
   parseQuery,
+  calibrateMatchScore,
 } from "./discoveryEngine";
 
 const run = (query, lang = "en") =>
