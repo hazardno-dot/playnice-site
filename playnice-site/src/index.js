@@ -22,7 +22,7 @@ import "./features/private-selection/PrivateSelectionPolish.css";
 import "./features/product-media/NewArrivalsScale.css";
 import "./features/private-selection/WishlistSurfacePolish.css";
 import "./features/private-selection/WishlistHeartGold.css";
-import "./HeroPaginationPosition.css";
+import "./features/hero/HeroPaginationPosition.css";
 import "./mobile-v2/navigation/MobileHeaderV2.css";
 import "./mobile-v2/home/MobileHomeV2.css";
 import "./mobile-v2/home/MobileFirstPaintContainment.css";
@@ -55,7 +55,7 @@ import "./features/cart/DesktopCartConfirmationTone.css";
 import "./mobile-v2/content/MobileManifestoFix.css";
 import "./features/header/HeaderLanguageColor.css";
 import "./mobile-v2/product-page/MobileProductPageNoteMap.css";
-import "./AnnouncementTiming.css";
+import "./features/header/AnnouncementTiming.css";
 import "./desktop-product-page/DesktopProductPageOverrides.css";
 import "./ColorHarmonizationV1.css";
 import "./DesktopProductCardBadgePolish.css";
@@ -108,7 +108,7 @@ if (window.matchMedia("(min-width: 769px)").matches) {
     import("./DesktopStickyCtaGlass.css"),
     import("./features/cart/DesktopConfirmationBarFit.css"),
     import("./DesktopProductModalCopyV2.css"),
-    import("./DesktopDiscoverCleanup.css"),
+    import("./features/header/DesktopDiscoverCleanup.css"),
     import("./DesktopCardCopyWidth.css"),
     import("./features/footer/DesktopFooterSocialColors.css"),
   ])
