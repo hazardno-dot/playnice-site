@@ -8,8 +8,8 @@ import MobileMenuContact from "./mobile-v2/navigation/MobileMenuContact";
 import MobileCommunityV2 from "./mobile-v2/community/MobileCommunityV2";
 import DesktopFooterCatalog from "./DesktopFooterCatalog";
 import CartInteractionV2 from "./features/cart/CartInteractionV2";
-import DiscoveryImageFallback from "./DiscoveryImageFallback";
-import FragranceIntelligenceToneLoader from "./FragranceIntelligenceToneLoader";
+import DiscoveryImageFallback from "./features/discovery/DiscoveryImageFallback";
+import FragranceIntelligenceToneLoader from "./features/discovery/FragranceIntelligenceToneLoader";
 import WhatsAppLinkBridge from "./WhatsAppLinkBridge";
 import DesktopCartConfirmationEnhancer from "./features/cart/DesktopCartConfirmationEnhancer";
 import DesktopProductPageBridge from "./desktop-product-page/DesktopProductPageBridge";
@@ -106,8 +106,8 @@ if (window.matchMedia("(min-width: 769px)").matches) {
   ensureDesktopCardCopyFont();
 
   Promise.all([
-    import("./DesktopFragranceIntelligenceV2.css"),
-    import("./DesktopFragranceIntelligenceHoverFix.css"),
+    import("./features/discovery/DesktopFragranceIntelligenceV2.css"),
+    import("./features/discovery/DesktopFragranceIntelligenceHoverFix.css"),
     import("./DesktopStickyCtaGlass.css"),
     import("./features/cart/DesktopConfirmationBarFit.css"),
     import("./DesktopProductModalCopyV2.css"),

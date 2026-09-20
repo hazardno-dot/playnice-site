@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { products } from "./data/products";
-import { discoveryProfiles } from "./data/products/discoveryProfiles";
+import { products } from "../../data/products";
+import { discoveryProfiles } from "../../data/products/discoveryProfiles";
 
 const normalizeName = (value = "") =>
   String(value)
