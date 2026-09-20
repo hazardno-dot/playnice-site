@@ -2,6 +2,11 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallba
 import "./App.css";
 import HeaderNext from "./features/header/HeaderNext";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
+import {
+  buildEcommerceItem,
+  buildEcommerceItems,
+  getEcommerceValue,
+} from "./features/analytics/analyticsDerivations";
 import { journalArticles } from "./data/journal";
 import { categoryLabels, products } from "./data/products";
 import {
@@ -1190,6 +1195,7 @@ useEffect(() => {
   }, [addedFeedback]);
 
   const checkoutTrackedRef = useRef(false);
+  const cartTrackedRef = useRef(false);
 
 useEffect(() => {
   if (!orderSuccessMessage) return;
@@ -1200,6 +1206,28 @@ useEffect(() => {
 
   return () => clearTimeout(timer);
 }, [orderSuccessMessage]);
+
+useEffect(() => {
+  if (!cartOpen) {
+    cartTrackedRef.current = false;
+    return;
+  }
+
+  if (
+    cartTrackedRef.current ||
+    cart.length === 0
+  ) {
+    return;
+  }
+
+  cartTrackedRef.current = true;
+
+  trackEvent("view_cart", {
+    currency: "EUR",
+    value: getEcommerceValue(cart),
+    items: buildEcommerceItems(cart),
+  });
+}, [cartOpen, cart]);
 
 useEffect(() => {
   if (!checkoutOpen) {
@@ -1216,13 +1244,7 @@ useEffect(() => {
   trackEvent("begin_checkout", {
     currency: "EUR",
     value: Number(subtotal),
-    items: cart.map((item) => ({
-      item_id: String(item.id ?? item.key),
-      item_name: item.name,
-      item_variant: item.size,
-      price: Number(item.price),
-      quantity: Number(item.quantity || 1)
-    }))
+    items: buildEcommerceItems(cart)
   });
 
   const alertPayload = {
@@ -2586,14 +2608,11 @@ const goToHomeSection = (selector, block = "start") => {
     currency: "EUR",
     value: Number(price),
     items: [
-      {
-        item_id: String(product.id),
-        item_name: product.name,
+      buildEcommerceItem(product, {
         item_variant: label,
-        item_category: product.category,
-        price: Number(price),
-        quantity: 1
-      }
+        price,
+        quantity: 1,
+      })
     ]
   });
 
@@ -2728,14 +2747,14 @@ const addDiscoverySetToCart = () => {
     value: Number(discoveryBundlePrice),
 
     items: [
-      {
+      buildEcommerceItem(bundleItem, {
         item_id: bundleKey,
         item_name: bundleName,
         item_variant: bundleSize,
         item_category: "Discovery Set",
-        price: Number(discoveryBundlePrice),
-        quantity: 1
-      }
+        price: discoveryBundlePrice,
+        quantity: 1,
+      })
     ]
   });
 
@@ -2845,6 +2864,25 @@ const addHeroBottleToCart = () => {
 };
 
   const updateQuantity = (key, delta) => {
+    if (Number(delta) < 0) {
+      const item = cart.find(
+        (candidate) =>
+          candidate.key === key
+      );
+
+      if (item) {
+        trackEvent("remove_from_cart", {
+          currency: "EUR",
+          value: Number(item.price),
+          items: [
+            buildEcommerceItem(item, {
+              quantity: 1,
+            }),
+          ],
+        });
+      }
+    }
+
     setCart((prev) =>
       updateCartItemQuantity(
         prev,
@@ -2855,6 +2893,23 @@ const addHeroBottleToCart = () => {
   };
 
   const removeFromCart = (key) => {
+    const item = cart.find(
+      (candidate) =>
+        candidate.key === key
+    );
+
+    if (item) {
+      trackEvent("remove_from_cart", {
+        currency: "EUR",
+        value:
+          Number(item.price) *
+          Number(item.quantity || 1),
+        items: [
+          buildEcommerceItem(item),
+        ],
+      });
+    }
+
     setCart((prev) =>
       removeCartItem(
         prev,
@@ -3158,13 +3213,7 @@ const handlePlaceOrder = async () => {
       currency: "EUR",
       value: Number(subtotal),
       shipping: Number(shipping),
-      items: cart.map((item) => ({
-        item_id: String(item.id ?? item.key),
-        item_name: item.name,
-        item_variant: item.size,
-        price: Number(item.price),
-        quantity: Number(item.quantity || 1)
-      }))
+      items: buildEcommerceItems(cart)
     });
 
     trackMeta("Purchase", {
