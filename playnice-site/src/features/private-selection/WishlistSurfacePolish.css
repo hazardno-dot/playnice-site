@@ -1,0 +1,153 @@
+/* =========================================
+   PRIVATE SELECTION HEART — SURFACE POLISH
+   Shared proportions + modal / Just In placement
+========================================= */
+
+/* Give the heart glyph a touch more horizontal presence without enlarging the control. */
+.wishlist-btn .heart-icon {
+  display: inline-block;
+  transform: scaleX(1.08);
+  transform-origin: center;
+}
+
+/* =========================================
+   PRIVATE SELECTION HEART — GOLD THEME
+   One consistent PlayNice wishlist language across product cards,
+   product modal and Just In cards.
+========================================= */
+.wishlist-btn {
+  color: rgba(220, 181, 107, 0.72) !important;
+  border-color: rgba(220, 181, 107, 0.24) !important;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(220, 181, 107, 0.075), transparent 66%),
+    rgba(10, 10, 10, 0.72) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 0 0 1px rgba(220, 181, 107, 0.015) !important;
+}
+
+.wishlist-btn:hover {
+  color: rgba(240, 207, 139, 0.96) !important;
+  border-color: rgba(220, 181, 107, 0.42) !important;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(220, 181, 107, 0.12), transparent 68%),
+    rgba(12, 12, 12, 0.82) !important;
+  box-shadow:
+    0 0 16px rgba(220, 181, 107, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035) !important;
+}
+
+.wishlist-btn.active {
+  color: #e2bd72 !important;
+  border-color: rgba(226, 189, 114, 0.56) !important;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(226, 189, 114, 0.18), transparent 67%),
+    rgba(15, 13, 9, 0.88) !important;
+  box-shadow:
+    0 0 18px rgba(220, 181, 107, 0.13),
+    inset 0 0 0 1px rgba(255, 228, 168, 0.025) !important;
+}
+
+.wishlist-btn.active .heart-icon {
+  color: #e2bd72 !important;
+  text-shadow: 0 0 10px rgba(226, 189, 114, 0.24);
+}
+
+.wishlist-btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(220, 181, 107, 0.14),
+    0 0 18px rgba(220, 181, 107, 0.1) !important;
+}
+
+/* Product modal: anchor the wishlist action to the full left media pane. */
+.modal-media {
+  position: relative;
+}
+
+.modal-media > .modal-wishlist-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 12;
+  width: 36px;
+  height: 34px;
+  padding: 0;
+}
+
+.modal-media > .modal-wishlist-btn .heart-icon {
+  font-size: 14px;
+}
+
+/* Just In needs a non-nested interactive structure: shell + product button + heart. */
+.new-arrival-card-shell {
+  position: relative;
+  flex: 0 0 142px;
+  min-width: 0;
+}
+
+.new-arrival-card-shell > .new-arrival-card {
+  width: 100%;
+  height: 100%;
+  flex: 0 0 auto;
+}
+
+.new-arrival-card-shell > .new-arrival-wishlist-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 6;
+  width: 28px;
+  height: 27px;
+  padding: 0;
+}
+
+.new-arrival-card-shell > .new-arrival-wishlist-btn .heart-icon {
+  font-size: 12px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .new-arrival-card-shell:hover > .new-arrival-card {
+    border-color: rgba(220, 181, 107, 0.28);
+  }
+}
+
+@media (max-width: 640px) {
+  .new-arrival-card-shell {
+    flex-basis: 126px;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+
+  .new-arrival-card-shell > .new-arrival-card {
+    scroll-snap-align: none;
+  }
+
+  .new-arrival-card-shell > .new-arrival-wishlist-btn {
+    top: 7px;
+    right: 7px;
+    width: 27px;
+    height: 26px;
+  }
+
+  .new-arrival-card-shell > .new-arrival-wishlist-btn .heart-icon {
+    font-size: 11px;
+  }
+
+  .modal-media > .modal-wishlist-btn {
+    top: 8px;
+    right: 8px;
+    width: 33px;
+    height: 32px;
+  }
+
+  .modal-media > .modal-wishlist-btn .heart-icon {
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wishlist-btn .heart-icon {
+    animation: none !important;
+  }
+}
