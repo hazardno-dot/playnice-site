@@ -99,6 +99,14 @@ import {
   getLatestJournalState,
   findJournalArticleBySlug,
 } from "./features/journal/journalDerivations";
+import {
+  getJournalSavedFeedback as getJournalSavedFeedbackPure,
+  updateJournalFeedbackVote,
+  updateJournalFeedbackNote,
+  clearSubmittedJournalNote,
+  getJournalFeedbackSubmission,
+  buildJournalFeedbackPayload,
+} from "./features/journal/journalFeedbackHelpers";
 
 const Exhibition = React.lazy(() => import("./features/exhibition/Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./features/journal/JournalArticlePage"));
@@ -1592,31 +1600,34 @@ if (journalArticleFromUrl) {
 /* feedback helper */
 
 const sendJournalFeedback = (article, override = {}) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return;
+  const submission = getJournalFeedbackSubmission({
+    feedback: journalFeedback,
+    article,
+    override,
+    getArticleKey: getJournalArticleKey,
+  });
 
-  const saved = journalFeedback[key] || {};
-  const vote = override.vote ?? saved.vote ?? "";
-  const note = (override.note ?? saved.note ?? "").trim();
-
-  if (!vote) return;
+  if (!submission) return;
 
   const deviceId = getPlayNiceDeviceId();
-  const feedbackId = `journal_${deviceId}_${key}`;
 
   try {
-    const payloadToSend = JSON.stringify({
-      timestamp: new Date().toISOString(),
-      feedbackId,
-      deviceId,
-      article: key,
-      articleTitle: getJournalText(article?.title, lang),
-      vote,
-      note,
-      lang,
-      page: window.location.pathname,
-      source: "journal"
-    });
+    const payloadToSend = JSON.stringify(
+      buildJournalFeedbackPayload({
+        article,
+        articleKey: submission.key,
+        articleTitle: getJournalText(
+          article?.title,
+          lang
+        ),
+        vote: submission.vote,
+        note: submission.note,
+        lang,
+        page: window.location.pathname,
+        deviceId,
+        timestamp: new Date().toISOString(),
+      })
+    );
 
     const blob = new Blob([payloadToSend], {
       type: "text/plain;charset=utf-8"
@@ -1632,11 +1643,12 @@ const sendJournalFeedback = (article, override = {}) => {
   }
 };
 
-const getJournalSavedFeedback = (article) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return null;
-  return journalFeedback[key] || null;
-};
+const getJournalSavedFeedback = (article) =>
+  getJournalSavedFeedbackPure(
+    journalFeedback,
+    article,
+    getJournalArticleKey
+  );
 
 const triggerJournalVoteSuccess = (vote) => {
   setJournalVoteSuccess(vote);
@@ -1652,20 +1664,19 @@ const triggerJournalVoteSuccess = (vote) => {
 };
 
 const handleJournalFeedbackVote = (article, vote) => {
-  const key = getJournalArticleKey(article);
+  const {
+    key,
+    current,
+    nextFeedback,
+  } = updateJournalFeedbackVote({
+    feedback: journalFeedback,
+    article,
+    vote,
+    now: Date.now(),
+    getArticleKey: getJournalArticleKey,
+  });
+
   if (!key) return;
-
-  const current = journalFeedback[key] || {};
-  const nextVote = vote;
-
-  const nextFeedback = {
-    ...journalFeedback,
-    [key]: {
-      ...current,
-      vote: nextVote,
-      submittedAt: nextVote ? Date.now() : current.submittedAt || null
-    }
-  };
 
   setJournalFeedback(nextFeedback);
 
@@ -1678,34 +1689,31 @@ const handleJournalFeedbackVote = (article, vote) => {
     console.error("Journal feedback storage failed:", error);
   }
 
-  if (!nextVote) return;
+  if (!vote) return;
 
   const feedbackQueued = sendJournalFeedback(article, {
-    vote: nextVote,
+    vote,
     note: (current.note || "").trim()
   });
 
   if (feedbackQueued) {
-    triggerJournalVoteSuccess(nextVote);
+    triggerJournalVoteSuccess(vote);
   } else {
     console.error("Journal vote feedback was not queued.");
   }
 };
 
 const handleJournalFeedbackNoteChange = (article, value) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return;
+  if (!getJournalArticleKey(article)) return;
 
-  setJournalFeedback((prev) => {
-    const current = prev[key] || {};
-    return {
-      ...prev,
-      [key]: {
-        ...current,
-        note: value
-      }
-    };
-  });
+  setJournalFeedback((prev) =>
+    updateJournalFeedbackNote({
+      feedback: prev,
+      article,
+      value,
+      getArticleKey: getJournalArticleKey,
+    })
+  );
 };
 
 const handleJournalFeedbackSubmit = (article) => {
@@ -1728,16 +1736,13 @@ const handleJournalFeedbackSubmit = (article) => {
   }
 
   setJournalFeedback((prev) => {
-    const prevItem = prev[key] || {};
-
-    const nextFeedback = {
-      ...prev,
-      [key]: {
-        ...prevItem,
-        note: "",
-        submittedAt: Date.now()
-      }
-    };
+    const nextFeedback =
+      clearSubmittedJournalNote({
+        feedback: prev,
+        article,
+        now: Date.now(),
+        getArticleKey: getJournalArticleKey,
+      });
 
     try {
       localStorage.setItem(
