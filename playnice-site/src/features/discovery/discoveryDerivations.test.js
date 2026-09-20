@@ -1,3 +1,38 @@
+describe("discovery result presentation ordering", () => {
+  test("orders Best before Excellent before Good", () => {
+    const ordered =
+      orderDiscoveryResultsForPresentation([
+        { product: { id: 1 }, match: 84 },
+        { product: { id: 2 }, match: 89 },
+        { product: { id: 3 }, match: 93 },
+        { product: { id: 4 }, match: 87 },
+        { product: { id: 5 }, match: 81 },
+      ]);
+
+    expect(
+      ordered.map((item) => item.product.id)
+    ).toEqual([3, 2, 4, 1, 5]);
+  });
+
+  test("keeps stable order when tier and match are equal", () => {
+    const ordered =
+      orderDiscoveryResultsForPresentation([
+        { product: { id: 1 }, match: 88 },
+        { product: { id: 2 }, match: 88 },
+      ]);
+
+    expect(
+      ordered.map((item) => item.product.id)
+    ).toEqual([1, 2]);
+  });
+
+  test("uses the same thresholds as the visible match labels", () => {
+    expect(getDiscoveryMatchTier(92)).toBe(3);
+    expect(getDiscoveryMatchTier(86)).toBe(2);
+    expect(getDiscoveryMatchTier(85)).toBe(1);
+  });
+});
+
 import {
   DISCOVERY_PROMPTS,
   getDiscoveryAnalyticsParams,
@@ -7,6 +42,8 @@ import {
   getDiscoveryResultPresentation,
   buildDiscoveryResultClickParams,
   buildDiscoveryAttribution,
+  getDiscoveryMatchTier,
+  orderDiscoveryResultsForPresentation,
 } from "./discoveryDerivations";
 
 describe("discoveryDerivations", () => {
