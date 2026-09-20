@@ -43,9 +43,12 @@ describe("Scent Request matching", () => {
   });
 
   test("tolerates a one-character typo in longer tokens", () => {
-    const result = getScentRequestMatchResult("Hawas Ise", sampleProducts);
+    const result = getScentRequestMatchResult(
+      "Narciso Rodrigez Poudree",
+      sampleProducts
+    );
     expect(result.ambiguous).toBe(false);
-    expect(result.product?.id).toBe("hawas-ice");
+    expect(result.product?.id).toBe("narciso-poudree");
   });
 
   test("reports ambiguous broad matches instead of guessing", () => {
