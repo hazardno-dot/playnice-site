@@ -69,6 +69,16 @@ import {
   buildDiscoveryResultClickParams,
   buildDiscoveryAttribution,
 } from "./features/discovery/discoveryDerivations";
+import {
+  getMinPrice as getMinPricePure,
+  getProductCopy as getProductCopyPure,
+  getInitialViewFromLocation,
+  getJustInProducts,
+  getNewProductsSignature,
+  createJustInProductIdSet,
+  isProductInIdSet,
+  getInitialShopStateFromSearch,
+} from "./features/shop/shopBootstrapHelpers";
 
 const Exhibition = React.lazy(() => import("./features/exhibition/Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./features/journal/JournalArticlePage"));
@@ -100,9 +110,8 @@ function isValidEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
 }
 
-function getMinPrice(product) {
-  return Math.min(...Object.values(product.sizes));
-}
+const getMinPrice = (product) =>
+  getMinPricePure(product);
 
 const CART_STORAGE_KEY = "playnice_cart";
 
@@ -154,27 +163,12 @@ function getDefaultLanguage() {
 }
 
 function getProductCopy(product, lang) {
-  const copy = productCopy[product.name] || fallbackCopy;
-
-  return {
-    miniTag:
-      copy.miniTag?.[lang] || copy.miniTag?.en || fallbackCopy.miniTag[lang],
-    card: copy.card?.[lang] || copy.card?.en || fallbackCopy.card[lang],
-    modal: copy.modal?.[lang] || copy.modal?.en || fallbackCopy.modal[lang],
-    scentType:
-      copy.scentType?.[lang] ||
-      copy.scentType?.en ||
-      fallbackCopy.scentType[lang],
-    dominantNotes:
-      copy.dominantNotes?.[lang] ||
-      copy.dominantNotes?.en ||
-      fallbackCopy.dominantNotes[lang],
-    tags: copy.tags?.[lang] || copy.tags?.en || fallbackCopy.tags[lang],
-    whyChoose:
-      copy.whyChoose?.[lang] ||
-      copy.whyChoose?.en ||
-      fallbackCopy.whyChoose[lang]
-  };
+  return getProductCopyPure(
+    product,
+    lang,
+    productCopy,
+    fallbackCopy
+  );
 }
 
 const getJournalText = (field, lang) => {
@@ -241,19 +235,10 @@ const getJournalArticleFromCurrentUrl = () => {
 const getInitialView = () => {
   if (typeof window === "undefined") return "home";
 
-  const path = window.location.pathname;
-
-  if (path === "/shop") return "shop";
-  if (path === "/journal" || path.startsWith("/journal/")) return "journal";
-  if (path === "/exhibition") return "exhibition";
-  if (path.startsWith("/product/")) return "shop";
-
-  const params = new URLSearchParams(window.location.search);
-  const urlView = params.get("view");
-
-  return ["home", "shop", "journal", "exhibition"].includes(urlView)
-    ? urlView
-    : "home";
+  return getInitialViewFromLocation({
+    pathname: window.location.pathname,
+    search: window.location.search,
+  });
 };
 
 const shuffleHeroSlides = (slides) => {
@@ -272,92 +257,27 @@ const shuffleHeroSlides = (slides) => {
 ========================================= */
 const SHOP_NEW_PRODUCTS_SEEN_KEY = "playnice_seen_new_products_signature";
 
-const JUST_IN_LIMIT = 16;
-
-const getJustInProducts = (items = []) =>
-  [...items]
-    .filter((product) => Boolean(product?.addedAt))
-    .sort((a, b) => {
-      const dateDifference =
-        new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime();
-      return dateDifference || Number(b.id || 0) - Number(a.id || 0);
-    })
-    .slice(0, JUST_IN_LIMIT);
-
-const JUST_IN_PRODUCT_IDS = new Set(
-  getJustInProducts(products).map((product) => String(product.id))
-);
+const JUST_IN_PRODUCT_IDS =
+  createJustInProductIdSet(products);
 
 const isJustInProduct = (product) =>
-  JUST_IN_PRODUCT_IDS.has(String(product?.id ?? ""));
-
-const getNewProductsSignature = (items = []) =>
-  getJustInProducts(items)
-    .map((product) => String(product.id))
-    .join("|");
+  isProductInIdSet(
+    product,
+    JUST_IN_PRODUCT_IDS
+  );
 
 /* =========================================
    getInitialShopState
 ========================================= */
 
 const getInitialShopState = () => {
-  const defaults = {
-    category: "All",
-    searchTerm: "",
-    currentPage: 1,
-    sortBy: "featured",
-    season: "All",
-    scentMood: "All"
-  };
+  if (typeof window === "undefined") {
+    return getInitialShopStateFromSearch("");
+  }
 
-  if (typeof window === "undefined") return defaults;
-
-  const params = new URLSearchParams(window.location.search);
-
-  const category = params.get("category");
-  const searchTerm = params.get("search") || "";
-  const sortBy = params.get("sort");
-  const season = params.get("season");
-  const scentMood = params.get("mood");
-  const parsedPage = Number(params.get("page"));
-
-  return {
-    category: ["All", "Arabian", "Designer", "Niche"].includes(category)
-      ? category
-      : defaults.category,
-
-    searchTerm,
-
-    currentPage:
-      Number.isInteger(parsedPage) && parsedPage > 0
-        ? parsedPage
-        : defaults.currentPage,
-
-    sortBy: [
-      "featured",
-      "rating",
-      "priceLow",
-      "priceHigh",
-      "name"
-    ].includes(sortBy)
-      ? sortBy
-      : defaults.sortBy,
-
-    season: ["All", "summer", "winter"].includes(season)
-      ? season
-      : defaults.season,
-
-    scentMood: [
-      "clean",
-      "summer",
-      "date",
-      "rich",
-      "soft",
-      "signature"
-    ].includes(scentMood)
-      ? scentMood
-      : defaults.scentMood
-  };
+  return getInitialShopStateFromSearch(
+    window.location.search
+  );
 };
 
 /* =========================================
