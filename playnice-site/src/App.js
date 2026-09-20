@@ -79,20 +79,22 @@ import {
   isProductInIdSet,
   getInitialShopStateFromSearch,
 } from "./features/shop/shopBootstrapHelpers";
+import {
+  filterAndSortProducts,
+  getCategoryOptions,
+  getScentMoodOptions,
+  getSeasonOptions,
+  getSortOptions,
+  getSelectedOption,
+  getPaginationData,
+  getProductThumbnail as getProductThumbnailPure,
+} from "./features/shop/shopDerivations";
 
 const Exhibition = React.lazy(() => import("./features/exhibition/Exhibition"));
 const JournalArticlePage = React.lazy(() => import("./features/journal/JournalArticlePage"));
 const JournalPage = React.lazy(() => import("./features/journal/JournalPage"));
 
 const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
-
-const normalizeShopSearch = (value = "") =>
-  String(value)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
 
 /* =========================================
    GLOBAL CONSTANTS & HELPERS
@@ -750,164 +752,45 @@ const showHeroSlideWhenReady = useCallback(
     []
   );
 
- const filteredProducts = useMemo(() => {
-    const sourceProducts = heroCollectionFilter?.length
-      ? heroCollectionFilter
-          .map((slug) =>
-            products.find((product) => product.slug === slug)
-          )
-          .filter(Boolean)
-      : products;
+ const filteredProducts = useMemo(
+  () =>
+    filterAndSortProducts({
+      products,
+      heroCollectionFilter,
+      category,
+      searchTerm,
+      season,
+      scentMood,
+      sortBy,
+      getMinPrice,
+    }),
+  [
+    category,
+    searchTerm,
+    season,
+    scentMood,
+    sortBy,
+    heroCollectionFilter,
+  ]
+);
 
-  const normalizedSearchTerm = normalizeShopSearch(searchTerm);
-
-  const result = sourceProducts.filter((product) => {
-  const categoryMatch =
-    category === "All" || product.category === category;
-
-  const searchableProductText = normalizeShopSearch(
-    [product.brand, product.name].filter(Boolean).join(" ")
-  );
-
-  const searchMatch =
-    normalizedSearchTerm === "" ||
-    searchableProductText.includes(normalizedSearchTerm);
-
-    const selectedSeason = String(season || "").toLowerCase();
-    const productSeason = String(product.season || "").toLowerCase();
-
-    const seasonMatch =
-      selectedSeason === "all" ||
-      productSeason === "all" ||
-      productSeason === selectedSeason;
-
-    const selectedMood = String(scentMood || "").toLowerCase();
-
-    const productMoods = Array.isArray(product.moods)
-      ? product.moods.map((mood) => String(mood).toLowerCase())
-      : [];
-
-    const moodMatch =
-      selectedMood === "all" || productMoods.includes(selectedMood);
-
-    return categoryMatch && searchMatch && seasonMatch && moodMatch;
-  });
-
-  const newestFirstTieBreak = (a, b) =>
-    Number(b.id || 0) - Number(a.id || 0);
-
-  switch (sortBy) {
-  case "rating":
-  return [...result].sort((a, b) => {
-    const ratingDifference =
-      Number(b.rating || 0) - Number(a.rating || 0);
-
-    return ratingDifference || newestFirstTieBreak(a, b);
-  });
-
-  case "priceLow":
-  return [...result].sort((a, b) => {
-    const priceDifference =
-      getMinPrice(a) - getMinPrice(b);
-
-    return priceDifference || newestFirstTieBreak(a, b);
-  });
-
-  case "priceHigh":
-  return [...result].sort((a, b) => {
-    const priceDifference =
-      getMinPrice(b) - getMinPrice(a);
-
-    return priceDifference || newestFirstTieBreak(a, b);
-  });
-
-  case "name":
-    return [...result].sort((a, b) =>
-      a.name.localeCompare(b.name)
-    );
-
-  case "featured":
-    default:
-      return heroCollectionFilter?.length
-        ? result
-        : [...result].sort(
-            (a, b) =>
-              Number(b.id || 0) - Number(a.id || 0)
-          );
-}
-}, [category, searchTerm, season, scentMood, sortBy, heroCollectionFilter]);
-
-  const categoryOptions = [
-    {
-      value: "All",
-      label: lang === "sr" ? "Sve" : "All",
-    },
-    {
-      value: "Arabian",
-      label: lang === "sr" ? "Arapski" : "Arabian",
-    },
-    {
-      value: "Designer",
-      label: lang === "sr" ? "Dizajner" : "Designer",
-    },
-    {
-      value: "Niche",
-      label: "Niche",
-    },
-  ];
+  const categoryOptions =
+    getCategoryOptions(lang);
 
   const selectedCategory =
-    categoryOptions.find((option) => option.value === category) ||
-    categoryOptions[0];
+    getSelectedOption(
+      categoryOptions,
+      category
+    );
 
-  const scentMoodOptions = [
-  {
-    value: "All",
-    label: lang === "sr" ? "Svi moodovi" : "All moods",
-    icon: "✦",
-    hint: lang === "sr" ? "Explore Collection" : "Explore Collection",
-  },
-  {
-    value: "clean",
-    label: "Clean Everyday",
-    icon: "❄️",
-    hint: "Fresh / Daily",
-  },
-  {
-    value: "summer",
-    label: "Summer Heat",
-    icon: "☀️",
-    hint: "Bright / Warm",
-  },
-  {
-    value: "date",
-    label: "Date Night",
-    icon: "🌙",
-    hint: "Close / Seductive",
-  },
-  {
-    value: "rich",
-    label: "Rich & Addictive",
-    icon: "🥃",
-    hint: "Deep / Sweet",
-  },
-  {
-    value: "soft",
-    label: "Soft Luxury",
-    icon: "🕊️",
-    hint: "Smooth / Elegant",
-  },
-  {
-    value: "signature",
-    label: "Signature Energy",
-    icon: "💎",
-    hint: "Memorable",
-  },
-];
+  const scentMoodOptions =
+    getScentMoodOptions(lang);
 
-const selectedScentMood =
-  scentMoodOptions.find((option) => option.value === scentMood) ||
-  scentMoodOptions[0];
+  const selectedScentMood =
+    getSelectedOption(
+      scentMoodOptions,
+      scentMood
+    );
 
 /* =========================================
    newArrivalProducts
@@ -916,9 +799,7 @@ const selectedScentMood =
 const newArrivalProducts = getJustInProducts(products);
 
 const getProductThumbnail = (image = "") =>
-  image
-    .replace("/products/", "/products/thumbs/")
-    .replace(/\.png$/i, ".webp");
+  getProductThumbnailPure(image);
 
 /* =========================================
    SIDE RAILS ADS
@@ -1024,66 +905,43 @@ const handleProductsPerPageChange = (value) => {
 /* =========================================
    seasonOptions
 ========================================= */
-const seasonOptions = [
-  {
-    value: "All",
-    label: tr.seasonAll,
-  },
-  {
-    value: "summer",
-    label: `☀️ ${tr.seasonSummer}`,
-  },
-  {
-    value: "winter",
-    label: `❄️ ${tr.seasonWinter}`,
-  },
-];
+const seasonOptions =
+  getSeasonOptions(tr);
 
-const sortOptions = [
-  {
-    value: "featured",
-    label: tr.sortFeatured,
-  },
-  {
-    value: "rating",
-    label: `★ ${tr.sortRating}`,
-  },
-  {
-    value: "priceLow",
-    label: `↗ ${tr.sortPriceLow}`,
-  },
-  {
-    value: "priceHigh",
-    label: `↘ ${tr.sortPriceHigh}`,
-  },
-  {
-    value: "name",
-    label: tr.sortName,
-  },
-];
+const sortOptions =
+  getSortOptions(tr);
 
 const selectedSeasonOption =
-  seasonOptions.find((option) => option.value === season) || seasonOptions[0];
+  getSelectedOption(
+    seasonOptions,
+    season
+  );
 
 const selectedSortOption =
-  sortOptions.find((option) => option.value === sortBy) || sortOptions[0];
+  getSelectedOption(
+    sortOptions,
+    sortBy
+  );
 
 /* =========================================
    TOTAL PAGES
 ========================================= */
-  const totalPages = Math.max(
-  1,
-  Math.ceil(filteredProducts.length / productsPerPage)
+  const {
+    totalPages,
+    paginatedProducts,
+  } = useMemo(
+    () =>
+      getPaginationData({
+        filteredProducts,
+        currentPage,
+        productsPerPage,
+      }),
+    [
+      filteredProducts,
+      currentPage,
+      productsPerPage,
+    ]
   );
-
-  const paginatedProducts = useMemo(() => {
-  const start = (currentPage - 1) * productsPerPage;
-
-  return filteredProducts.slice(
-    start,
-    start + productsPerPage
-  );
-}, [filteredProducts, currentPage, productsPerPage]);
 
   const cartCount = useMemo(
     () => cart.reduce((sum, item) => sum + item.quantity, 0),
