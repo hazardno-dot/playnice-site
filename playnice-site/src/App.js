@@ -8179,6 +8179,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                     ...analyticsListContext,
                   });
 
+                  setPrivateSelectionOpen(false);
+
                   openProductModal(product, {
                     analyticsListContext,
                   });
@@ -8309,6 +8311,31 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         <div className="cart-items">
           {cart.map((item, index) => {
             const displayName = item.name;
+            const catalogProduct =
+              products.find(
+                (product) =>
+                  String(product.id) ===
+                  String(item.id)
+              );
+
+            const openCartProduct = () => {
+              if (!catalogProduct) return;
+
+              setCartOpen(false);
+
+              openProductModal(
+                catalogProduct,
+                {
+                  preferredSize:
+                    catalogProduct.sizes?.[
+                      item.size
+                    ] != null
+                      ? item.size
+                      : "",
+                  changeView: false,
+                }
+              );
+            };
 
             return (
               <div
@@ -8318,25 +8345,52 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 )}`}
                 key={item.key}
               >
-                <div className="cart-item-main">
-                  <div className="cart-item-thumb">
-                    {item.image ? (
-                      <img src={item.image} alt="" />
-                    ) : (
-                      <span aria-hidden="true">
-                        {displayName?.charAt(0)}
-                      </span>
-                    )}
-                  </div>
+                {catalogProduct ? (
+                  <button
+                    type="button"
+                    className="cart-item-main cart-item-main-link"
+                    onClick={openCartProduct}
+                    aria-label={`${displayName} — ${lang === "sr" ? "otvori proizvod" : "open product"}`}
+                  >
+                    <div className="cart-item-thumb">
+                      {item.image ? (
+                        <img src={item.image} alt="" />
+                      ) : (
+                        <span aria-hidden="true">
+                          {displayName?.charAt(0)}
+                        </span>
+                      )}
+                    </div>
 
-                  <div className="cart-item-info">
-                    <h4>{displayName}</h4>
+                    <div className="cart-item-info">
+                      <h4>{displayName}</h4>
 
-                    <p className="cart-item-meta">
-                      {item.size} · {formatPrice(item.price)}
-                    </p>
+                      <p className="cart-item-meta">
+                        {item.size} · {formatPrice(item.price)}
+                      </p>
+                    </div>
+                  </button>
+                ) : (
+                  <div className="cart-item-main">
+                    <div className="cart-item-thumb">
+                      {item.image ? (
+                        <img src={item.image} alt="" />
+                      ) : (
+                        <span aria-hidden="true">
+                          {displayName?.charAt(0)}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="cart-item-info">
+                      <h4>{displayName}</h4>
+
+                      <p className="cart-item-meta">
+                        {item.size} · {formatPrice(item.price)}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className="cart-item-actions">
                   <div className="qty-control">
