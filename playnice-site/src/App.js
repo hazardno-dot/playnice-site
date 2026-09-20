@@ -33,6 +33,7 @@ import {
   getJournalSeoDescription,
   getJournalStructuredData,
 } from "./app/seo/journalSeo";
+import { getAppSeoMetadata } from "./app/seo/appSeo";
 import {
   getScentRequestMatchResult as matchScentRequest,
   normalizeScentName,
@@ -3685,45 +3686,23 @@ useEffect(() => {
     return;
   }
 
-  const seoTitle = selectedProduct
-    ? getProductSeoTitle(selectedProduct, lang)
-    : view === "shop"
-    ? lang === "en"
-      ? "Shop | Premium fragrances and decants in Montenegro | PlayNice"
-      : "Shop | Premium parfemi i dekanti u Crnoj Gori | PlayNice"
-    : view === "journal"
-    ? lang === "en"
-      ? "Le Journal | Fragrance stories and recommendations | PlayNice"
-      : "Le Journal | Mirisne priče i preporuke | PlayNice"
-    : lang === "en"
-    ? "PlayNice | Premium fragrances and decants in Montenegro"
-    : "PlayNice | Premium parfemi i dekanti u Crnoj Gori";
-
-  const seoDescription = selectedProduct
-    ? getProductMetaDescription(selectedProduct, lang)
-    : view === "shop"
-    ? lang === "en"
-      ? "Explore the PlayNice collection of premium fragrance decants in Montenegro. Designer, niche and Arabian fragrances with delivery across Montenegro."
-      : "Istraži PlayNice kolekciju premium parfema i dekanata u Crnoj Gori. Designer, niche i Arabian mirisi, dostava širom Crne Gore."
-    : view === "journal"
-    ? lang === "en"
-      ? "Le Journal by PlayNice brings short fragrance stories, recommendations and guides for choosing the right perfume."
-      : "PlayNice rubrika Le Journal donosi kratke mirisne priče, preporuke i vodiče za bolji izbor parfema."
-    : lang === "en"
-    ? "Premium fragrance decants and original perfumes in Montenegro. Try before you buy with PlayNice — designer, niche and Arabian fragrances."
-    : "Premium dekanti i originalni parfemi u Crnoj Gori. Probaj prije kupovine uz PlayNice — designer, niche i Arabian mirisi.";
-
-  const seoUrl = selectedProduct
-    ? getSeoProductUrl(selectedProduct)
-    : view === "shop"
-    ? `${SITE_BASE_URL}/shop`
-    : view === "journal"
-    ? `${SITE_BASE_URL}/journal`
-    : `${SITE_BASE_URL}/`;
-
-  const seoImage = selectedProduct
-    ? getSeoProductImage(selectedProduct)
-    : `${SITE_BASE_URL}/og-image.jpg`;
+  const {
+    title: seoTitle,
+    description: seoDescription,
+    canonicalUrl: seoUrl,
+    imageUrl: seoImage,
+    ogType,
+    twitterCard,
+  } = getAppSeoMetadata({
+    view,
+    selectedProduct,
+    lang,
+    siteBaseUrl: SITE_BASE_URL,
+    getProductSeoTitle,
+    getProductMetaDescription,
+    getSeoProductUrl,
+    getSeoProductImage,
+  });
 
   document.title = seoTitle;
 
@@ -3762,12 +3741,12 @@ useEffect(() => {
   setMeta('meta[property="og:description"]', "content", seoDescription);
   setMeta('meta[property="og:url"]', "content", seoUrl);
   setMeta('meta[property="og:image"]', "content", seoImage);
-  setMeta('meta[property="og:type"]', "content", selectedProduct ? "product" : "website");
+  setMeta('meta[property="og:type"]', "content", ogType);
 
   setMeta('meta[name="twitter:title"]', "content", seoTitle);
   setMeta('meta[name="twitter:description"]', "content", seoDescription);
   setMeta('meta[name="twitter:image"]', "content", seoImage);
-  setMeta('meta[name="twitter:card"]', "content", "summary_large_image");
+  setMeta('meta[name="twitter:card"]', "content", twitterCard);
 }, [view, selectedProduct, lang]);
 
 /* =========================================
