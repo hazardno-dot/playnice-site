@@ -133,6 +133,7 @@ import {
   getImpactProducts,
   buildSideRailAds,
   getSideRailVisibility,
+  shouldShowBackToTopButton,
   getHeroManifestos,
 } from "./features/home/homeContentDerivations";
 
@@ -834,6 +835,7 @@ const {
   howItWorksOpen,
   privateSelectionOpen,
   catalogPreview,
+  isMobileProductPageActive,
   sideRailAds,
 });
 
@@ -8577,7 +8579,12 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   </div>
 )}
 
-{showBackToTop && (!sideRailBlocked || (isMobileProductPageActive && !hasBlockingOverlay)) && (
+{shouldShowBackToTopButton({
+  showBackToTop,
+  sideRailBlocked,
+  isMobileProductPageActive,
+  hasBlockingOverlay,
+}) && (
   <button
     type="button"
     className="back-to-top"
