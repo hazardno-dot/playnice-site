@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./JournalPage.css";
 import "./JournalProgressiveReveal.css";
-import { getJournalArticleSlug, getJournalText } from "./lib/journalSlug";
+import { getJournalArticleSlug, getJournalText } from "../../lib/journalSlug";
 
 const MOBILE_ARCHIVE_BATCH = 5;
 
