@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
+import { productCopyBySlug } from "@shop/data/products/productContentBySlug.js";
 import {
   validateInlineFields,
 } from "./inlineValidationRules.mjs";
@@ -45,11 +46,13 @@ function collectIssues(root) {
 
   const selectedSlug = getSelectedSlug(root);
   const isNewProduct = Boolean(selectedSlug) && !PRODUCT_SLUG_SET.has(selectedSlug);
+  const liveDominantNotes = isNewProduct ? {} : productCopyBySlug[selectedSlug]?.dominantNotes || {};
   const issues = validateInlineFields(domFields, {
     knownProductSlugs: PRODUCT_SLUGS,
     knownNoteKeys: NOTE_KEYS,
     selectedSlug,
     isNewProduct,
+    liveDominantNotes,
   });
 
   domFields.forEach((field, index) => {
