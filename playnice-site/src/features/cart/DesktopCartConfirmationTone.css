@@ -1,9 +1,0 @@
-@media (min-width: 769px) {
-  .mini-cart-preview-center-message {
-    color: rgba(126, 203, 224, 0.94);
-    font-size: 0.73rem;
-    font-weight: 560;
-    letter-spacing: 0.105em;
-    text-shadow: 0 0 12px rgba(126, 203, 224, 0.08);
-  }
-}

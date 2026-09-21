@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import "./HeaderNext.css";
 
-const CartIcon = ({ filled = false }) => (
+export const CartIcon = ({ filled = false }) => (
   <span className={`header-next-cart-icon ${filled ? "is-full" : ""}`}>
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path
