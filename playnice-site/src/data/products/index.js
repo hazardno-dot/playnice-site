@@ -1065,7 +1065,7 @@ export const products = [
     shortName: "Ambassador Men",
     category: "Designer",
     image: "/products/Gisada-Ambassador-Men-EdP.png",
-    sizes: { "2ml": 5, "5ml": 11, "10ml": 20 },
+    sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
     badge: "EDITOR'S CHOICE",
     rating: 8.6,
     ratingLabel: "Audience Favorite",
