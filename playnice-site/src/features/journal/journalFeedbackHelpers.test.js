@@ -159,6 +159,7 @@ describe("journalFeedbackHelpers", () => {
         articleTitle: "Title",
         vote: "up",
         note: "Nice",
+        operation: "note",
         lang: "sr",
         page: "/journal/test",
         deviceId: "device-1",
@@ -175,9 +176,16 @@ describe("journalFeedbackHelpers", () => {
       articleTitle: "Title",
       vote: "up",
       note: "Nice",
+      operation: "note",
       lang: "sr",
       page: "/journal/test",
-      source: "journal",
+      source: "journal_feedback",
     });
   });
+});
+
+test("vote payload never includes a draft note", () => {
+  const payload = buildJournalFeedbackPayload({deviceId: "d", articleKey: 21, vote: "up", note: "draft", operation: "vote"});
+  expect(payload).not.toHaveProperty("note");
+  expect(payload.operation).toBe("vote");
 });

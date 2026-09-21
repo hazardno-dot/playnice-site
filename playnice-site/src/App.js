@@ -123,12 +123,10 @@ import {
 } from "./features/journal/journalDerivations";
 import {
   getJournalSavedFeedback as getJournalSavedFeedbackPure,
-  updateJournalFeedbackVote,
   updateJournalFeedbackNote,
-  clearSubmittedJournalNote,
-  getJournalFeedbackSubmission,
   buildJournalFeedbackPayload,
 } from "./features/journal/journalFeedbackHelpers";
+import { submitJournalFeedback } from "./features/journal/journalFeedbackTransport";
 import {
   getCartSummary,
   getOverlayVisibility,
@@ -620,8 +618,8 @@ const isInternationalEnquiry = checkoutForm.country && checkoutForm.country !== 
 });
 
   const [journalFeedback, setJournalFeedback] = useState({});
-  const [journalVoteSuccess, setJournalVoteSuccess] = useState("");
-  const [journalFeedbackSuccess, setJournalFeedbackSuccess] = useState(false);
+  const [journalFeedbackStatus, setJournalFeedbackStatus] = useState({});
+  const journalFeedbackPendingRef = useRef(new Set());
 
   const [scentRequestValue, setScentRequestValue] = useState("");
   const [scentRequestStatus, setScentRequestStatus] = useState("");
@@ -687,8 +685,6 @@ const isNewRequest = (request) => {
     sortBy
   });
   const [shouldScrollToGrid, setShouldScrollToGrid] = useState(false);
-  const journalVoteSuccessTimeoutRef = useRef(null);
-  const journalFeedbackSuccessTimeoutRef = useRef(null);
 
   useEffect(() => {
     shopFilterStateRef.current = {
@@ -1456,10 +1452,6 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
-  setJournalVoteSuccess("");
-}, [journalPageArticle]);
-
-useEffect(() => {
   return () => {
     if (miniCartTimerRef.current) {
       clearTimeout(miniCartTimerRef.current);
@@ -1471,18 +1463,6 @@ useEffect(() => {
   return () => {
     if (heroAutoplayResumeTimeoutRef.current) {
       clearTimeout(heroAutoplayResumeTimeoutRef.current);
-    }
-  };
-}, []);
-
-useEffect(() => {
-  return () => {
-    if (journalVoteSuccessTimeoutRef.current) {
-      clearTimeout(journalVoteSuccessTimeoutRef.current);
-    }
-
-    if (journalFeedbackSuccessTimeoutRef.current) {
-      clearTimeout(journalFeedbackSuccessTimeoutRef.current);
     }
   };
 }, []);
@@ -1642,173 +1622,77 @@ if (journalArticleFromUrl) {
 
 /* feedback helper */
 
-const sendJournalFeedback = (article, override = {}) => {
-  const submission = getJournalFeedbackSubmission({
-    feedback: journalFeedback,
-    article,
-    override,
-    getArticleKey: getJournalArticleKey,
-  });
-
-  if (!submission) return;
-
-  const deviceId = getPlayNiceDeviceId();
-
-  try {
-    const payloadToSend = JSON.stringify(
-      buildJournalFeedbackPayload({
-        article,
-        articleKey: submission.key,
-        articleTitle: getJournalText(
-          article?.title,
-          lang
-        ),
-        vote: submission.vote,
-        note: submission.note,
-        lang,
-        page: window.location.pathname,
-        deviceId,
-        timestamp: new Date().toISOString(),
-      })
-    );
-
-    const blob = new Blob([payloadToSend], {
-      type: "text/plain;charset=utf-8"
-    });
-
-    return navigator.sendBeacon(
-      "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
-      blob
-    );
-  } catch (error) {
-    console.error("Journal feedback submit failed:", error);
-    return false;
-  }
-};
-
 const getJournalSavedFeedback = (article) =>
-  getJournalSavedFeedbackPure(
-    journalFeedback,
-    article,
-    getJournalArticleKey
-  );
+  getJournalSavedFeedbackPure(journalFeedback, article, getJournalArticleKey);
 
-const triggerJournalVoteSuccess = (vote) => {
-  setJournalVoteSuccess(vote);
-
-  if (journalVoteSuccessTimeoutRef.current) {
-    clearTimeout(journalVoteSuccessTimeoutRef.current);
-  }
-
-  journalVoteSuccessTimeoutRef.current = setTimeout(() => {
-    setJournalVoteSuccess("");
-    journalVoteSuccessTimeoutRef.current = null;
-  }, 1100);
-};
-
-const handleJournalFeedbackVote = (article, vote) => {
-  const {
-    key,
-    current,
-    nextFeedback,
-  } = updateJournalFeedbackVote({
-    feedback: journalFeedback,
-    article,
-    vote,
-    now: Date.now(),
-    getArticleKey: getJournalArticleKey,
-  });
-
-  if (!key) return;
-
-  setJournalFeedback(nextFeedback);
-
+const persistJournalFeedback = (next) => {
   try {
-    localStorage.setItem(
-      "playnice_journal_feedback",
-      JSON.stringify(nextFeedback)
-    );
+    localStorage.setItem("playnice_journal_feedback", JSON.stringify(next));
   } catch (error) {
     console.error("Journal feedback storage failed:", error);
   }
+};
 
-  if (!vote) return;
-
-  const feedbackQueued = sendJournalFeedback(article, {
-    vote,
-    note: (current.note || "").trim()
-  });
-
-  if (feedbackQueued) {
-    triggerJournalVoteSuccess(vote);
-  } else {
-    console.error("Journal vote feedback was not queued.");
+const sendJournalFeedback = async (article, operation, vote, note = "") => {
+  const key = getJournalArticleKey(article);
+  if (!key || journalFeedbackPendingRef.current.has(key)) return;
+  journalFeedbackPendingRef.current.add(key);
+  setJournalFeedbackStatus((prev) => ({ ...prev, [key]: { pending: true } }));
+  try {
+    const payload = buildJournalFeedbackPayload({
+      articleKey: key,
+      articleTitle: getJournalText(article?.title, lang),
+      vote, note, lang, operation,
+      page: window.location.pathname,
+      deviceId: getPlayNiceDeviceId(),
+      timestamp: new Date().toISOString(),
+    });
+    await submitJournalFeedback(payload);
+    setJournalFeedback((prev) => {
+      const current = prev[key] || {};
+      const next = { ...prev, [key]: {
+        ...current,
+        vote,
+        confirmedVote: vote,
+        note: operation === "note" && (current.note || "").trim() === note
+          ? "" : current.note || "",
+        submittedAt: Date.now(),
+      } };
+      persistJournalFeedback(next);
+      return next;
+    });
+    setJournalFeedbackStatus((prev) => ({ ...prev, [key]: { success: operation, vote } }));
+  } catch (error) {
+    setJournalFeedbackStatus((prev) => ({ ...prev, [key]: { error: true } }));
+  } finally {
+    journalFeedbackPendingRef.current.delete(key);
   }
+};
+
+const handleJournalFeedbackVote = (article, vote) => {
+  const current = getJournalSavedFeedback(article);
+  if (current?.confirmedVote === vote) return;
+  return sendJournalFeedback(article, "vote", vote);
 };
 
 const handleJournalFeedbackNoteChange = (article, value) => {
-  if (!getJournalArticleKey(article)) return;
-
-  setJournalFeedback((prev) =>
-    updateJournalFeedbackNote({
-      feedback: prev,
-      article,
-      value,
-      getArticleKey: getJournalArticleKey,
-    })
-  );
+  const key = getJournalArticleKey(article);
+  if (!key || journalFeedbackPendingRef.current.has(key)) return;
+  setJournalFeedbackStatus((prev) => ({ ...prev, [key]: {} }));
+  setJournalFeedback((prev) => {
+    const next = updateJournalFeedbackNote({
+      feedback: prev, article, value, getArticleKey: getJournalArticleKey,
+    });
+    persistJournalFeedback(next);
+    return next;
+  });
 };
 
 const handleJournalFeedbackSubmit = (article) => {
-  const key = getJournalArticleKey(article);
-  if (!key) return;
-
-  const current = journalFeedback[key] || {};
-  const trimmedNote = (current.note || "").trim();
-
-  if (!current.vote || !trimmedNote) return;
-
-  const feedbackQueued = sendJournalFeedback(article, {
-    vote: current.vote,
-    note: trimmedNote
-  });
-
-  if (!feedbackQueued) {
-    console.error("Journal note feedback was not queued.");
-    return;
-  }
-
-  setJournalFeedback((prev) => {
-    const nextFeedback =
-      clearSubmittedJournalNote({
-        feedback: prev,
-        article,
-        now: Date.now(),
-        getArticleKey: getJournalArticleKey,
-      });
-
-    try {
-      localStorage.setItem(
-        "playnice_journal_feedback",
-        JSON.stringify(nextFeedback)
-      );
-    } catch (error) {
-      console.error("Journal feedback storage failed:", error);
-    }
-
-    return nextFeedback;
-  });
-
-  setJournalFeedbackSuccess(true);
-
-  if (journalFeedbackSuccessTimeoutRef.current) {
-    clearTimeout(journalFeedbackSuccessTimeoutRef.current);
-  }
-
-  journalFeedbackSuccessTimeoutRef.current = setTimeout(() => {
-    setJournalFeedbackSuccess(false);
-    journalFeedbackSuccessTimeoutRef.current = null;
-  }, 1200);
+  const current = getJournalSavedFeedback(article);
+  const note = (current?.note || "").trim();
+  if (!current?.vote || !note) return;
+  return sendJournalFeedback(article, "note", current.vote, note);
 };
 
 /* =========================================
@@ -5358,8 +5242,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             onOpenArticle={handleJournalArticleOpen}
             onArticleLink={handleJournalLinkClick}
             feedback={activeJournalFeedback}
-            voteSuccess={journalVoteSuccess}
-            feedbackSuccess={journalFeedbackSuccess}
+            feedbackStatus={journalFeedbackStatus[getJournalArticleKey(journalPageArticle)] || {}}
 
             onFeedbackVote={(vote) =>
               handleJournalFeedbackVote(journalPageArticle, vote)

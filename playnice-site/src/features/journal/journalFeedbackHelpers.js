@@ -131,6 +131,7 @@ export const buildJournalFeedbackPayload = ({
   page,
   deviceId,
   timestamp,
+  operation = "vote",
 }) => ({
   timestamp,
   feedbackId:
@@ -139,8 +140,9 @@ export const buildJournalFeedbackPayload = ({
   article: articleKey,
   articleTitle,
   vote,
-  note,
+  ...(operation === "note" ? { note } : {}),
+  operation,
   lang,
   page,
-  source: "journal",
+  source: "journal_feedback",
 });

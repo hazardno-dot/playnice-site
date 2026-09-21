@@ -30,8 +30,7 @@ function JournalArticlePage({
   relatedProducts = [],
 
   feedback = null,
-  voteSuccess = "",
-  feedbackSuccess = false,
+  feedbackStatus = {},
 
   onBackToJournal,
   onOpenArticle,
@@ -369,6 +368,8 @@ useEffect(() => {
                     className={`journal-article-feedback-vote ${
                     feedback?.vote === "up" ? "active" : ""
                     }`}
+                    disabled={feedbackStatus.pending}
+                    aria-pressed={feedback?.vote === "up"}
                     onClick={() => onFeedbackVote?.("up")}
                     aria-label={
                     lang === "sr"
@@ -379,7 +380,7 @@ useEffect(() => {
                     <span aria-hidden="true">↑</span>
 
                     <strong>
-                    {voteSuccess === "up"
+                    {feedbackStatus.success === "vote" && feedbackStatus.vote === "up"
                         ? lang === "sr"
                         ? "Hvala"
                         : "Thanks"
@@ -394,6 +395,8 @@ useEffect(() => {
                     className={`journal-article-feedback-vote ${
                     feedback?.vote === "down" ? "active" : ""
                     }`}
+                    disabled={feedbackStatus.pending}
+                    aria-pressed={feedback?.vote === "down"}
                     onClick={() => onFeedbackVote?.("down")}
                     aria-label={
                     lang === "sr"
@@ -404,7 +407,7 @@ useEffect(() => {
                     <span aria-hidden="true">↓</span>
 
                     <strong>
-                    {voteSuccess === "down"
+                    {feedbackStatus.success === "vote" && feedbackStatus.vote === "down"
                         ? lang === "sr"
                         ? "Primljeno"
                         : "Got it"
@@ -415,9 +418,16 @@ useEffect(() => {
                 </button>
                 </div>
 
+                <div role="status" aria-live="polite">
+                  {feedbackStatus.pending ? (lang === "sr" ? "Slanje…" : "Sending…") : null}
+                  {feedbackStatus.error ? (lang === "sr" ? "Slanje nije potvrđeno. Pokušaj ponovo; beleška je sačuvana." : "Submission could not be confirmed. Please try again; your note is saved.") : null}
+                </div>
                 {feedback?.vote && (
                 <div className="journal-article-feedback-note">
                     <textarea
+                    disabled={feedbackStatus.pending}
+                    maxLength={2000}
+                    aria-label={lang === "sr" ? "Beleška o priči" : "Story feedback note"}
                     value={feedback?.note || ""}
                     onChange={(event) =>
                         onFeedbackNoteChange?.(event.target.value)
@@ -433,9 +443,9 @@ useEffect(() => {
                     <button
                     type="button"
                     onClick={onFeedbackSubmit}
-                    disabled={!feedback?.note?.trim()}
+                    disabled={feedbackStatus.pending || !feedback?.note?.trim()}
                     >
-                    {feedbackSuccess
+                    {feedbackStatus.success === "note"
                         ? lang === "sr"
                         ? "Poslato ✓"
                         : "Sent ✓"
