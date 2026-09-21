@@ -8124,7 +8124,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         ))}
 
         <div className="story-drawer-footer manifesto-drawer-footer">
-          <span className="story-drawer-signature">Remember. PlayNice.</span>
+          <span className="story-drawer-signature" aria-label="PlayNice Premium Fragrance House">
+            <img
+              className="story-drawer-signature-logo"
+              src="/playnice-header-logo.svg"
+              alt=""
+              aria-hidden="true"
+            />
+          </span>
 
           <button
             className="gold-button small"
@@ -8225,7 +8232,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     </div>
 
     <div className="how-it-works-drawer-footer panel-anim panel-anim-4">
-      <span className="story-drawer-signature">Remember. PlayNice.</span>
+      <span className="story-drawer-text-signature">Remember. PlayNice.</span>
 
       <button
         className="gold-button small"
@@ -8388,7 +8395,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
             </div>
 
             <div className="private-selection-footer panel-anim panel-anim-3">
-              <span className="story-drawer-signature">Remember. PlayNice.</span>
+              <span className="story-drawer-text-signature">Remember. PlayNice.</span>
 
               <button
                 className="gold-button small"
