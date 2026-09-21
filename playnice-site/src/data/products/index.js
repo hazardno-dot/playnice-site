@@ -2936,6 +2936,32 @@ export const products = [
       heart: ["cardamom","nutmeg"],
       base: ["musk","sandalwood"]
     }
+  },
+  {
+    id: 104,
+    addedAt: "2026-09-21T15:07:27.527Z",
+    slug: "my-geisha-unseen-extrait-de-parfum",
+    name: "My Geisha Unseen Extrait de Parfum",
+    modalName: "My Geisha Unseen Extrait",
+    shortName: "Unseen",
+    category: "Niche",
+    image: "/products/my-geisha-unseen-extrait-de-parfum.png",
+    sizes: {"2ml":7,"5ml":16,"10ml":29},
+    badge: "LUXURY PICK",
+    rating: 9.1,
+    ratingLabel: "Rich Gourmand",
+    season: "winter",
+    moods: ["rich","date","signature"],
+    recommendations: ["givenchy-gentleman-reserve-privee","tom-ford-noir-extreme","swiss-arabian-tobacco-01"],
+    inspiredBy: {
+      name: "Original My Geisha creation",
+      short: "Oriental Gourmand DNA"
+    },
+    noteMap: {
+      top: ["cognac","caramel","tobacco","bergamot"],
+      heart: ["dates","praline","tuberose","mahonial"],
+      base: ["vanilla","tonka-bean","amberwood","benzoin","oud"]
+    }
   }
 
 ];

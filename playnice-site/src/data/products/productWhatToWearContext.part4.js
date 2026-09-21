@@ -110,6 +110,10 @@ const entries = [
   {
     "sr": "Bela majica ili lanena košulja, svetle pantalone i patike. Sve ostalo bi mu samo komplikovalo život.",
     "en": "A white T-shirt or linen shirt, light trousers and sneakers. Anything more would only complicate things."
+  },
+  {
+    "sr": "Tamna rolka ili košulja, kaput i ozbiljne cipele. Unseen već nosi konjak, duvan i oud — neka garderoba samo drži tempo.",
+    "en": "A dark turtleneck or shirt, a coat and serious shoes. Unseen already brings cognac, tobacco and oud — let the outfit simply keep pace."
   }
 
 ];

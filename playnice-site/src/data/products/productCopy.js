@@ -3113,6 +3113,55 @@ export const productCopy = {
       "en": "If you want a light, clean and understated summer fragrance for everyday wear.",
       "sr": "Ako želite lagan, čist i nenametljiv letnji miris za svaki dan."
     }
+  },
+
+  "My Geisha Unseen Extrait de Parfum": {
+    "miniTag": {
+      "en": "🥃 Cognac / Gourmand",
+      "sr": "🥃 Konjak / Gurmanski"
+    },
+    "card": {
+      "en": "Cognac, caramel and tobacco over vanilla, tonka and dark oud.",
+      "sr": "Konjak, karamela i duvan preko vanile, tonke i tamnog ouda."
+    },
+    "modal": {
+      "en": "Cognac, caramel and tobacco open richly; dates, praline and tuberose add body, while vanilla, tonka, oud, myrrh and benzoin form a deep warm base.",
+      "sr": "Konjak, karamela i duvan otvaraju bogato; urme, pralina i tuberoza daju punoću, dok vanila, tonka, oud, smirna i benzoin grade duboku toplu bazu."
+    },
+    "scentType": {
+      "en": "Oriental gourmand woody",
+      "sr": "Orijentalni, gurmanski i drvenast"
+    },
+    "dominantNotes": {
+      "sr": [
+        "konjak",
+        "vanila",
+        "duvan",
+        "oud"
+      ],
+      "en": [
+        "cognac",
+        "vanilla",
+        "tobacco",
+        "oud"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "Bogat",
+        "Dejt",
+        "Prepoznatljiv"
+      ],
+      "en": [
+        "Rich",
+        "Date Night",
+        "Signature"
+      ]
+    },
+    "whyChoose": {
+      "en": "If you want a dark, sweet and opulent unisex gourmand with tobacco, vanilla and oud.",
+      "sr": "Ako želiš taman, sladak i raskošan uniseks gourmand sa duvanom, vanilom i oudom."
+    }
   }
 };
 
