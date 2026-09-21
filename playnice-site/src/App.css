@@ -11659,26 +11659,20 @@ main {
 }
 
 .footer-logo {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 2.25rem;
-  line-height: 0.9;
-  letter-spacing: -0.035em;
-  color: #f6efe6;
+  width: 125px;
+  line-height: 0;
 }
 
-.footer-tagline {
-  margin-top: 5px;
-
-  color: rgba(220, 181, 107, 0.72);
-  font-size: 0.61rem;
-  font-weight: 800;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+.footer-logo-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .footer-brand-text {
   max-width: 380px;
-  margin: 14px 0 0;
+  margin: 10px 0 0;
 
   color: rgba(255, 248, 235, 0.56);
   font-size: 0.86rem;
