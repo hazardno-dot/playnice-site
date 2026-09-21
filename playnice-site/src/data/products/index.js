@@ -1323,7 +1323,7 @@ export const products = [
     shortName: "Noir Extreme",
     category: "Designer",
     image: "/products/Tom-Ford-Noir-Extreme-EdP.png",
-    sizes: { "2ml": 9, "5ml": 21, "10ml": 37 },
+    sizes: { "2ml": 7.5, "5ml": 17, "10ml": 30 },
     badge: "LUXURY PICK",
     rating: 9.1,
     ratingLabel: "Top Rated",
