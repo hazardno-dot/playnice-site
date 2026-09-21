@@ -1693,7 +1693,7 @@ export const products = [
     shortName: "NARCISO Poudrée",
     category: "Designer",
     image: "/products/narciso-rodriguez-poudree.png",
-    sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
+    sizes: { "2ml": 5, "5ml": 12, "10ml": 21 },
     badge: "SIGNATURE",
     rating: 8.9,
     ratingLabel: "Elegant Favorite",
