@@ -504,7 +504,7 @@ export default function DesktopProductPage({
           <section className="desktop-product-page__recommendations">
             <div className="desktop-product-page__recommendations-head">
               <span className="desktop-product-page__kicker">SAME ENERGY</span>
-              <h2>{lang === "sr" ? "Ako ti ovo radi, probaj i ove." : "If this works for you, try these."}</h2>
+              <h2>{lang === "sr" ? "Sličan vajb, druga priča." : "Same vibe, different story."}</h2>
             </div>
             <div className="desktop-product-page__recommendation-grid">
               {recommendations.map((item) => (
