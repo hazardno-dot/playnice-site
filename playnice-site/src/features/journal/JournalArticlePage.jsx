@@ -419,7 +419,6 @@ useEffect(() => {
                 </div>
 
                 <div role="status" aria-live="polite">
-                  {feedbackStatus.pending ? (lang === "sr" ? "Slanje…" : "Sending…") : null}
                   {feedbackStatus.error ? (lang === "sr" ? "Slanje nije potvrđeno. Pokušaj ponovo; beleška je sačuvana." : "Submission could not be confirmed. Please try again; your note is saved.") : null}
                 </div>
                 {feedback?.vote && (

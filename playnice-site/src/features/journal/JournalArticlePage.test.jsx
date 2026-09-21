@@ -16,10 +16,10 @@ test('vote controls expose selection and do not submit a note', () => {
   act(() => buttons[1].click());
   expect(vote).toHaveBeenCalledWith('down'); expect(submit).not.toHaveBeenCalled();
 });
-test('pending request disables votes, note and submit with visible status', () => {
+test('pending request keeps safeguards without a visible sending message', () => {
   render({feedback:{vote:'up',note:'draft'},feedbackStatus:{pending:true}});
   expect([...host.querySelectorAll('.journal-article-feedback button, .journal-article-feedback textarea')].every(el=>el.disabled)).toBe(true);
-  expect(host.querySelector('[role="status"]').textContent).toContain('Sending');
+  expect(host.querySelector('[role="status"]').textContent).toBe('');
 });
 test('failure retains draft and allows explicit retry; whitespace cannot submit', () => {
   const submit=jest.fn();
