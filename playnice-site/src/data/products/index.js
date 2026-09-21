@@ -1834,7 +1834,7 @@ export const products = [
     shortName: "Y Iced Cologne",
     category: "Designer",
     image: "/products/ysl-y-iced-cologne.png",
-    sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
+    sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
     badge: "PLAYNICE PICK",
     rating: 8.8,
     ratingLabel: "Summer Hit",
