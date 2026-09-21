@@ -6685,7 +6685,18 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                   : `Opening ${product.name}. Already in our collection.`
               );
 
-              openProductFromRequest(product);
+              if (window.matchMedia("(min-width: 769px)").matches) {
+                window.dispatchEvent(
+                  new CustomEvent("playnice:desktop-quick-view", {
+                    detail: {
+                      productId: product.id,
+                      source: "scent-request",
+                    },
+                  })
+                );
+              } else {
+                openProductFromRequest(product);
+              }
             }}
           >
             <span className="already-in-collection-rank">
