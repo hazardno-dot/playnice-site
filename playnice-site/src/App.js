@@ -8896,7 +8896,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       {orderSuccessMessage && (
         <div className="order-success-message panel-item-anim panel-item-7">
-          {orderSuccessMessage}
+          <img
+            className="order-success-logo"
+            src="/playnice-header-logo.svg"
+            alt=""
+            aria-hidden="true"
+          />
+          <span>{orderSuccessMessage}</span>
         </div>
       )}
 
