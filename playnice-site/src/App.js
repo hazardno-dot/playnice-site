@@ -7599,8 +7599,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           alt="PlayNice Premium Fragrance House"
         />
       </div>
-      <div className="footer-tagline">Remember. PlayNice.</div>
-
       <p className="footer-brand-text">
         {lang === "sr"
           ? "Kurirana selekcija designer, niche i Arabian parfema za one koji žele da probaju pre pune bočice."
