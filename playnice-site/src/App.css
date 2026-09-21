@@ -11659,11 +11659,15 @@ main {
 }
 
 .footer-logo {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 2.25rem;
-  line-height: 0.9;
-  letter-spacing: -0.035em;
-  color: #f6efe6;
+  width: 170px;
+  line-height: 0;
+}
+
+.footer-logo-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .footer-tagline {
