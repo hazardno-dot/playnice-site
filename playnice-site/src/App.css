@@ -9574,6 +9574,8 @@ main {
 }
 
 .product-sale-badge {
+  scale: 0.82;
+  transform-origin: bottom left;
   position: absolute;
   left: 12px;
   bottom: 12px;

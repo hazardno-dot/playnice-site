@@ -163,6 +163,8 @@
   }
 
   .mobile-product-page__sale-badge {
+    scale: 0.82;
+    transform-origin: top left;
     position: absolute;
     top: 14px;
     left: 14px;

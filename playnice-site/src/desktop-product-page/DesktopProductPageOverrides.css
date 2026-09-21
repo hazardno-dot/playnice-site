@@ -1,3 +1,9 @@
+@media (min-width: 769px) and (max-width: 1100px) {
+  body.desktop-product-route-active .desktop-product-page__sizes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (min-width: 769px) {
   /* One uninterrupted PlayNice black surface. */
   html,
@@ -255,6 +261,28 @@
     margin-bottom: 13px;
   }
 
+  body.desktop-product-route-active .desktop-product-page__sale {
+    scale: 0.82;
+    transform-origin: top right;
+    border-color: rgba(209, 76, 76, 0.42);
+    border-radius: 999px;
+    background: rgba(72, 18, 18, 0.88);
+    color: #f2b7ad;
+    font-family: "Inter", sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__current-price:has(del) {
+    display: grid;
+    justify-items: end;
+    gap: 2px;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__current-price:has(del) strong {
+    color: #d9b56c;
+  }
+
   body.desktop-product-route-active .desktop-product-page__size-helper {
     min-height: 16px;
     transition: opacity 180ms ease;
@@ -281,8 +309,15 @@
     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.012), 0 10px 22px rgba(0,0,0,0.20);
   }
 
-  body.desktop-product-route-active .desktop-product-page__sizes button > span {
-    display: block;
+  body.desktop-product-route-active .desktop-product-page__size-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    width: 100%;
+    padding-right: 14px;
+    min-width: 0;
+    flex-wrap: wrap;
     font-family: "Inter", sans-serif;
     font-size: 13px;
     line-height: 1.05;
@@ -292,7 +327,8 @@
     color: rgba(255,248,235,0.82);
   }
 
-  body.desktop-product-route-active .desktop-product-page__sizes button > strong {
+  body.desktop-product-route-active .desktop-product-page__sizes button > strong,
+  body.desktop-product-route-active .desktop-product-page__size-price-discount strong {
     display: block;
     margin-top: 7px;
     font-family: "Inter", sans-serif;
@@ -301,6 +337,36 @@
     font-weight: 700;
     letter-spacing: 0.01em;
     color: #f6f1e8;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__size-topline em {
+    color: #df8f82;
+    font: 800 10px/1 "Inter", sans-serif;
+    font-style: normal;
+    letter-spacing: 0.03em;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__sizes button.has-discount {
+    border-color: rgba(188, 76, 62, 0.34);
+  }
+
+  body.desktop-product-route-active .desktop-product-page__size-price-discount {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+    margin-top: 7px;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__size-price-discount del {
+    color: rgba(244, 234, 216, 0.38);
+    font: 600 11px/1 "Inter", sans-serif;
+    text-decoration-thickness: 1px;
+  }
+
+  body.desktop-product-route-active .desktop-product-page__size-price-discount strong {
+    margin-top: 0;
+    color: #e3bd6e;
   }
 
   body.desktop-product-route-active .desktop-product-page__sizes button.is-active {
@@ -313,7 +379,8 @@
     color: rgba(255,244,220,0.92);
   }
 
-  body.desktop-product-route-active .desktop-product-page__sizes button.is-active > strong {
+  body.desktop-product-route-active .desktop-product-page__sizes button.is-active > strong,
+  body.desktop-product-route-active .desktop-product-page__sizes button.is-active .desktop-product-page__size-price-discount strong {
     background: linear-gradient(120deg, #f3d9a4 0%, #e6c88f 30%, #dcb56b 55%, #f0d39a 100%);
     -webkit-background-clip: text;
     background-clip: text;
