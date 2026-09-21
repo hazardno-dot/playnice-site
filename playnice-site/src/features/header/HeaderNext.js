@@ -82,7 +82,6 @@ function HeaderNext({
   const cartSpinStartTimerRef = useRef(null);
   const previousWishlistCountRef = useRef(wishlistCount);
   const wishlistBeatTimerRef = useRef(null);
-  const wishlistFeedbackTimerRef = useRef(null);
   const [hoveredKey, setHoveredKey] = useState("");
   const [lensStyle, setLensStyle] = useState({ opacity: 0 });
   const [lensMoving, setLensMoving] = useState(false);
@@ -94,7 +93,6 @@ function HeaderNext({
   const [cartSpinning, setCartSpinning] = useState(false);
   const [cartFeedbackCount, setCartFeedbackCount] = useState(null);
   const [wishlistBeating, setWishlistBeating] = useState(false);
-  const [wishlistFeedbackCount, setWishlistFeedbackCount] = useState(null);
 
   const copy = useMemo(
     () =>
@@ -279,7 +277,6 @@ function HeaderNext({
       window.clearTimeout(cartSpinTimerRef.current);
       window.clearTimeout(cartSpinStartTimerRef.current);
       window.clearTimeout(wishlistBeatTimerRef.current);
-      window.clearTimeout(wishlistFeedbackTimerRef.current);
     },
     []
   );
@@ -346,18 +343,13 @@ function HeaderNext({
 
     if (wishlistCount > previousCount) {
       window.clearTimeout(wishlistBeatTimerRef.current);
-      window.clearTimeout(wishlistFeedbackTimerRef.current);
 
-      setWishlistFeedbackCount(wishlistCount);
       setWishlistBeating(false);
 
       requestAnimationFrame(() => {
         setWishlistBeating(true);
       });
 
-      wishlistFeedbackTimerRef.current = window.setTimeout(() => {
-        setWishlistFeedbackCount(null);
-      }, 540);
 
       wishlistBeatTimerRef.current = window.setTimeout(() => {
         setWishlistBeating(false);
@@ -511,18 +503,8 @@ function HeaderNext({
     aria-label={copy.wishlist}
     title={copy.wishlist}
   >
-    <span
-      className={`header-next-heart-wrap ${
-        wishlistFeedbackCount !== null ? "is-feedback" : ""
-      }`}
-    >
+    <span className="header-next-heart-wrap">
       <HeartIcon filled={wishlistCount > 0} />
-
-      {wishlistFeedbackCount !== null && (
-        <span className="header-next-heart-feedback">
-          {wishlistFeedbackCount}
-        </span>
-      )}
     </span>
   </button>
 
@@ -569,18 +551,8 @@ function HeaderNext({
         aria-label={copy.wishlist}
         title={copy.wishlist}
       >
-        <span
-          className={`header-next-heart-wrap ${
-            wishlistFeedbackCount !== null ? "is-feedback" : ""
-          }`}
-        >
+        <span className="header-next-heart-wrap">
           <HeartIcon filled={wishlistCount > 0} />
-
-          {wishlistFeedbackCount !== null && (
-            <span className="header-next-heart-feedback">
-              {wishlistFeedbackCount}
-            </span>
-          )}
         </span>
       </button>
 
