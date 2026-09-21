@@ -400,6 +400,126 @@ describe("Fragrance Intelligence — reference matching", () => {
   });
 });
 
+describe("Fragrance Intelligence — real-world top-3 benchmark", () => {
+  test("fresh summer budget brief returns genuinely fresh warm-weather top results", () => {
+    const output = expectRelevantWithResults(
+      "Sveže za leto do 15 €",
+      "sr"
+    );
+
+    output.results.slice(0, 3).forEach((item) => {
+      expect(["summer", "all"]).toContain(
+        item.product.season
+      );
+      expect(
+        item.profile.freshness ?? 0
+      ).toBeGreaterThanOrEqual(6.5);
+      expect(
+        item.selectedSize.price
+      ).toBeLessThanOrEqual(15);
+    });
+  });
+
+  test("clean elegant office brief keeps top results polished and office-capable", () => {
+    const output = expectRelevantWithResults(
+      "Čisto i elegantno za posao",
+      "sr"
+    );
+
+    output.results.slice(0, 3).forEach((item) => {
+      expect(item.profile.office ?? 0)
+        .toBeGreaterThanOrEqual(7);
+      expect(item.profile.elegance ?? 0)
+        .toBeGreaterThanOrEqual(6.5);
+      expect(
+        item.profile.clean ??
+          item.profile.cleanliness ??
+          0
+      ).toBeGreaterThanOrEqual(6);
+    });
+  });
+
+  test("date brief that avoids vanilla still returns seductive, vanilla-free top results", () => {
+    const output = expectRelevantWithResults(
+      "Ne volim vanilu, hoću nešto za dejt",
+      "sr"
+    );
+
+    output.results.slice(0, 3).forEach((item) => {
+      expect(item.profile.date ?? 0)
+        .toBeGreaterThanOrEqual(5.5);
+      expect(item.profile.notes || [])
+        .not.toContain("vanilla");
+    });
+  });
+
+  test("strong rich winter brief returns winter-suitable, projecting top results", () => {
+    const output = expectRelevantWithResults(
+      "Jak i bogat parfem za zimu",
+      "sr"
+    );
+
+    output.results.slice(0, 3).forEach((item) => {
+      expect(["winter", "all"]).toContain(
+        item.product.season
+      );
+      expect(
+        item.profile.projection ??
+          item.profile.intensity ??
+          0
+      ).toBeGreaterThanOrEqual(6.5);
+      expect(
+        item.profile.warm ??
+          item.profile.warmth ??
+          0
+      ).toBeGreaterThanOrEqual(5);
+    });
+  });
+
+  test("unisex everyday brief avoids strongly gendered or difficult top results", () => {
+    const output = expectRelevantWithResults(
+      "Unisex miris za svaki dan",
+      "sr"
+    );
+
+    output.results.slice(0, 3).forEach((item) => {
+      const masculine =
+        item.profile.masculine ?? 5;
+      const feminine =
+        item.profile.feminine ?? 5;
+
+      expect(
+        Math.abs(masculine - feminine)
+      ).toBeLessThanOrEqual(3.5);
+      expect(
+        item.profile.versatility ?? 0
+      ).toBeGreaterThanOrEqual(6.5);
+    });
+  });
+
+  test("niche elegant evening brief keeps top results niche, elegant and evening-capable", () => {
+    const output = expectRelevantWithResults(
+      "Niche elegant evening scent"
+    );
+
+    const top3 = output.results.slice(0, 3);
+
+    expect(
+      top3.filter(
+        (item) =>
+          item.product.category === "Niche"
+      ).length
+    ).toBeGreaterThanOrEqual(2);
+
+    top3.forEach((item) => {
+      expect(item.profile.elegance ?? 0)
+        .toBeGreaterThanOrEqual(6);
+      expect(item.profile.evening ?? 0)
+        .toBeGreaterThanOrEqual(5.5);
+    });
+  });
+});
+
 describe("Fragrance Intelligence — category, season and context", () => {
   test("summer brief strongly prefers summer/all", () => {
     const output = expectRelevantWithResults(
