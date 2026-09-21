@@ -841,7 +841,7 @@ export const products = [
     shortName: "The Scent Elixir",
     category: "Designer",
     image: "/products/BOSS-The-Scent-Elixir.png",
-    sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
+    sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
     badge: "LUXURY PICK",
     rating: 8.1,
     ratingLabel: "Audience Favorite",

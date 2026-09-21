@@ -826,7 +826,7 @@ export const productCopy = {
     },
     scentType: {
       sr: "Začinski, aromatičan i drvenast",
-      en: "Spicy aromatic woody",
+      en: "Spicy, aromatic and woody",
     },
     dominantNotes: {
       sr: ["pimento", "lavandin", "sandalovina"],
