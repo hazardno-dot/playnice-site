@@ -53,9 +53,9 @@
   z-index: 3;
   isolation: isolate;
 
-  width: 216px;
-  height: 58px;
-  padding: 0 20px;
+  width: 206px;
+  height: 54px;
+  padding: 0 18px;
 
   display: flex;
   flex-direction: column;
@@ -64,7 +64,7 @@
 
   overflow: hidden;
 
-  border: 1px solid rgba(226, 190, 112, 0.58);
+  border: 1px solid rgba(226, 190, 112, 0.50);
   border-radius: 999px;
 
   background:
@@ -81,9 +81,9 @@
   color: #edcf88;
 
   box-shadow:
-    0 15px 38px rgba(0, 0, 0, 0.42),
-    0 0 0 1px rgba(7, 40, 27, 0.44),
-    0 0 22px rgba(35, 102, 70, 0.12),
+    0 13px 32px rgba(0, 0, 0, 0.38),
+    0 0 0 1px rgba(7, 40, 27, 0.40),
+    0 0 16px rgba(35, 102, 70, 0.09),
     inset 0 1px 0 rgba(255, 245, 211, 0.12),
     inset 0 -8px 18px rgba(0, 0, 0, 0.18);
 
@@ -138,10 +138,10 @@
   border-color: rgba(237, 207, 136, 0.82);
 
   box-shadow:
-    0 18px 44px rgba(0, 0, 0, 0.46),
-    0 0 0 1px rgba(22, 73, 49, 0.52),
-    0 0 28px rgba(54, 128, 88, 0.17),
-    0 0 18px rgba(220, 181, 107, 0.06),
+    0 16px 38px rgba(0, 0, 0, 0.43),
+    0 0 0 1px rgba(22, 73, 49, 0.48),
+    0 0 20px rgba(54, 128, 88, 0.12),
+    0 0 12px rgba(220, 181, 107, 0.04),
     inset 0 1px 0 rgba(255, 246, 214, 0.15),
     inset 0 -8px 18px rgba(0, 0, 0, 0.16);
 }
@@ -151,7 +151,7 @@
   z-index: 2;
 
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 29px;
+  font-size: 28px;
   font-weight: 800;
   line-height: 0.88;
   letter-spacing: 0.018em;
@@ -169,7 +169,7 @@
 
   width: 100%;
   height: 9px;
-  margin-top: 6px;
+  margin-top: 5px;
 
   display: grid;
   place-items: center;
@@ -240,11 +240,11 @@
   }
 
   18% {
-    opacity: 0.6;
+    opacity: 0.42;
   }
 
   72% {
-    opacity: 0.28;
+    opacity: 0.18;
   }
 
   100% {
@@ -1004,7 +1004,7 @@
   }
 
   .header-next-brand {
-    width: 176px;
+    width: 172px;
   }
 
   .header-next-utility {
@@ -1052,9 +1052,9 @@
     left: 50%;
     z-index: 11;
 
-    width: 162px;
-    height: 48px;
-    padding-inline: 13px;
+    width: 152px;
+    height: 46px;
+    padding-inline: 12px;
 
     transform: translateX(-50%);
   }
@@ -1065,14 +1065,35 @@
   }
 
   .header-next-brand > span {
-    font-size: 24px;
+    font-size: 23px;
   }
 
   .header-next-brand-tagline {
-    margin-top: 5px;
+    margin-top: 4px;
     height: 7px;
-    font-size: 5.8px;
-    letter-spacing: 0.17em;
+    font-size: 5.6px;
+    letter-spacing: 0.16em;
+  }
+
+  .header-next-brand-tagline > span {
+    visibility: hidden;
+  }
+
+  .header-next-brand-tagline::after {
+    content: "TRY BEFORE YOU BUY";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: rgba(255, 248, 235, 0.52);
+    font: inherit;
+    letter-spacing: inherit;
+    white-space: nowrap;
+  }
+
+  .header-next-brand:has(.header-next-brand-tagline.is-out)::after,
+  .header-next-brand:has(.header-next-brand-tagline.is-in)::after {
+    animation: none;
   }
 
   .header-next-center,
@@ -1349,7 +1370,7 @@
 @media (max-width: 390px) {
   .header-next-brand,
   body.scrolled .header-next-brand {
-    width: 144px;
+    width: 140px;
   }
 
   .header-next-mobile-actions {
