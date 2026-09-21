@@ -256,7 +256,7 @@ export default function DesktopProductPage({
                 <span className="desktop-product-page__badge">{product.badge}</span>
               ) : null}
               {!noteMapOpen && product.discount ? (
-                <span className="desktop-product-page__sale">-{product.discount.percent}% · {String(product.discount.size).toUpperCase()}</span>
+                <span className="desktop-product-page__sale">SALE · {String(product.discount.size).toUpperCase()} · -{product.discount.percent}%</span>
               ) : null}
 
               {!noteMapOpen ? (
@@ -374,12 +374,22 @@ export default function DesktopProductPage({
                   <button
                     key={size}
                     type="button"
-                    className={size === activeSize ? "is-active" : ""}
+                    className={`${size === activeSize ? "is-active" : ""} ${discount ? "has-discount" : ""}`.trim()}
+                    aria-pressed={size === activeSize}
                     onClick={() => onSelectSize?.(size)}
                   >
-                    <span>{size}</span>
-                    <strong>€{finalPrice.toFixed(2)}</strong>
-                    {discount ? <small>-{discount.percent}%</small> : null}
+                    <span className="desktop-product-page__size-topline">
+                      <span>{size}</span>
+                      {discount ? <em>-{discount.percent}%</em> : null}
+                    </span>
+                    {discount ? (
+                      <span className="desktop-product-page__size-price-discount">
+                        <del>€{Number(price).toFixed(2)}</del>
+                        <strong>€{finalPrice.toFixed(2)}</strong>
+                      </span>
+                    ) : (
+                      <strong>€{finalPrice.toFixed(2)}</strong>
+                    )}
                   </button>
                 );
               })}
