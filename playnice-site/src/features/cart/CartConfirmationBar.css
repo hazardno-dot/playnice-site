@@ -134,18 +134,23 @@
   white-space: nowrap;
 }
 
-/* Desktop confirmation bar gets more room now that it no longer competes with
-   the old desktop product modal. Keep mobile behavior below unchanged. */
+.mini-cart-preview-shipping,
+.mini-cart-preview-actions,
+.mini-cart-preview-meta,
+.mini-cart-preview-cart {
+  display: none;
+}
+
+/* Product, delivery progress, and a direct route to the existing cart. */
 @media (min-width: 769px) {
   .mini-cart-preview {
     min-height: 68px;
-    padding: 10px 26px 10px 22px;
+    padding: 10px clamp(28px, calc((100vw - var(--max)) / 2 + 30px), 78px) 10px 22px;
     grid-template-columns:
       42px
-      minmax(280px, 1.2fr)
-      minmax(280px, 0.9fr)
-      minmax(300px, 1fr)
-      auto;
+      minmax(0, 1fr)
+      minmax(180px, 420px)
+      minmax(0, 1fr);
     gap: 18px;
     border-bottom-color: rgba(220, 181, 107, 0.28);
     border-radius: 0 0 15px 15px;
@@ -219,17 +224,8 @@
     line-height: 1.16;
   }
 
-  .mini-cart-preview-center-message {
-    min-width: 0;
-    justify-self: center;
-    color: rgba(230, 194, 122, 0.9);
-    font-size: 0.72rem;
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: 0.095em;
-    text-align: center;
-    text-transform: uppercase;
-    white-space: nowrap;
+  .mini-cart-preview-body .mini-cart-preview-mobile-meta {
+    display: none;
   }
 
   .mini-cart-preview-shipping {
@@ -286,6 +282,7 @@
   }
 
   .mini-cart-preview-meta {
+    display: block;
     justify-self: end;
     color: rgba(230, 194, 122, 0.96);
     font-size: 0.76rem;
@@ -293,6 +290,89 @@
     line-height: 1;
     letter-spacing: 0.01em;
     white-space: nowrap;
+  }
+
+  .mini-cart-preview-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .mini-cart-preview-cart {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    border: 0;
+    border-radius: 22px;
+    background: transparent;
+    color: #edcf88;
+    font: inherit;
+    font-size: 0.68rem;
+    font-weight: 650;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .mini-cart-preview-cart-circle {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(220, 181, 107, 0.25);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  .mini-cart-preview-cart:hover .mini-cart-preview-cart-circle {
+    border-color: #dcb56b;
+    background: rgba(220, 181, 107, 0.09);
+  }
+
+  .mini-cart-preview-cart:focus-visible {
+    outline: 2px solid #dcb56b;
+    outline-offset: 4px;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1180px) {
+  .mini-cart-preview {
+    padding-right: clamp(19px, calc((100vw - var(--max)) / 2 + 21px), 69px);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  .mini-cart-preview {
+    grid-template-columns: 42px minmax(0, 1fr) minmax(180px, 0.9fr) auto;
+    gap: 12px;
+  }
+
+  .mini-cart-preview-shipping {
+    padding: 0;
+  }
+
+  .mini-cart-preview-actions {
+    gap: 12px;
+  }
+
+  .mini-cart-preview-shipping-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.025em;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 900px) {
+  .mini-cart-preview {
+    padding-inline: 12px 8px;
+  }
+
+  .mini-cart-preview-cart {
+    gap: 6px;
+    font-size: 0.6rem;
   }
 }
 
@@ -359,11 +439,6 @@
     font-weight: 600;
   }
 
-  .mini-cart-preview-center-message,
-  .mini-cart-preview-shipping,
-  .mini-cart-preview-meta {
-    display: none !important;
-  }
 }
 
 @media (max-width: 380px) {

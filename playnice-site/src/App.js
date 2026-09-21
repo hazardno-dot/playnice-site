@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
 import "./App.css";
-import HeaderNext from "./features/header/HeaderNext";
+import HeaderNext, { CartIcon } from "./features/header/HeaderNext";
 import { trackPageView, trackEvent, trackMeta } from "./lib/ga";
 import {
   buildEcommerceItem,
@@ -9111,9 +9111,49 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
       <strong>{miniCartPreview.name}</strong>
 
-      <span>
+      <span className="mini-cart-preview-mobile-meta">
         {miniCartPreview.size} · {formatPrice(miniCartPreview.price)}
       </span>
+    </div>
+
+    <div className={`mini-cart-preview-shipping${amountLeftForFreeShipping === 0 ? " is-unlocked" : ""}`}>
+      <span className="mini-cart-preview-shipping-label">
+        {amountLeftForFreeShipping === 0
+          ? lang === "sr"
+            ? "Besplatna dostava otključana"
+            : "Free delivery unlocked"
+          : lang === "sr"
+            ? `Još ${formatPrice(amountLeftForFreeShipping)} do besplatne dostave`
+            : `${formatPrice(amountLeftForFreeShipping)} to free delivery`}
+      </span>
+      <div className="mini-cart-preview-shipping-track" aria-hidden="true">
+        <span
+          className="mini-cart-preview-shipping-progress"
+          style={{ width: `${freeShippingProgress}%` }}
+        />
+      </div>
+    </div>
+
+    <div className="mini-cart-preview-actions">
+      <span className="mini-cart-preview-meta">
+        {miniCartPreview.size} · {formatPrice(miniCartPreview.price)}
+      </span>
+
+      <button
+        type="button"
+        className="mini-cart-preview-cart"
+        onClick={() => {
+          clearTimeout(miniCartTimerRef.current);
+          miniCartTimerRef.current = null;
+          setMiniCartPreview(null);
+          openCartOverlay();
+        }}
+      >
+        <span>{lang === "sr" ? "Idi u korpu" : "Go to cart"}</span>
+        <span className="mini-cart-preview-cart-circle">
+          <CartIcon filled={cartCount > 0} />
+        </span>
+      </button>
     </div>
   </div>
 )}
