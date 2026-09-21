@@ -1037,7 +1037,7 @@ export const products = [
     shortName: "ADG Profondo Parfum",
     category: "Designer",
     image: "/products/AcquadiGiò-Profondo-Parfum.png",
-    sizes: { "2ml": 6.5, "5ml": 15, "10ml": 27 },
+    sizes: { "2ml": 5.5, "5ml": 13, "10ml": 23 },
     badge: "FRESH DROP",
     rating: 8.8,
     ratingLabel: "Audience Favorite",
