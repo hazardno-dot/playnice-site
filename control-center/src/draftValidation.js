@@ -38,6 +38,7 @@ export function validateProductDraft(live, draft) {
   const issues = [];
   const core = draft?.core || {};
   const isNewProduct = !live;
+  const liveCopy = live ? productCopyBySlug[live.slug] || {} : {};
 
   [["Name", core.name], ["Short name", core.shortName], ["Category", core.category], ["Image path", core.image], ["Season", core.season], ["Rating label", core.ratingLabel]].forEach(([field, value]) => {
     if (empty(value)) issues.push(issue("error", "Core", field, `${field} is required.`));
@@ -96,8 +97,14 @@ export function validateProductDraft(live, draft) {
 
   ["sr", "en"].forEach((lang) => {
     const dominant = csv(copy?.dominantNotes?.[lang]);
+    const liveDominant = csv(liveCopy?.dominantNotes?.[lang]);
     const tags = csv(copy?.tags?.[lang]);
-    if (dominant.length !== 4) issues.push(issue("error", "Presentation", `dominantNotes · ${lang.toUpperCase()}`, "Exactly 4 dominant notes are required for modal parity."));
+    const unchangedLegacyDominant = Boolean(live)
+      && dominant.length > 0
+      && dominant.length !== 4
+      && JSON.stringify(dominant) === JSON.stringify(liveDominant);
+    if (dominant.length !== 4 && !unchangedLegacyDominant) issues.push(issue("error", "Presentation", `dominantNotes · ${lang.toUpperCase()}`, "Exactly 4 dominant notes are required for modal parity."));
+    if (unchangedLegacyDominant) issues.push(issue("warning", "Presentation", `dominantNotes · ${lang.toUpperCase()}`, "Existing live dominant notes use the legacy count. Unchanged legacy copy does not block review."));
     if (tags.length !== 3) issues.push(issue("error", "Presentation", `tags · ${lang.toUpperCase()}`, "Exactly 3 tags are required for product presentation parity."));
   });
 
@@ -129,7 +136,6 @@ export function validateProductDraft(live, draft) {
   }
 
   if (live) {
-    const liveCopy = productCopyBySlug[live.slug] || {};
     const liveWear = productWearContextBySlug[live.slug] || {};
     const liveDoNotWear = productDoNotWearContextBySlug[live.slug] || {};
     const liveWhatToWear = productWhatToWearContextBySlug[live.slug] || {};
