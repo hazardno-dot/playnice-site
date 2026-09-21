@@ -83,48 +83,6 @@
   filter: blur(7px);
   opacity: 0.72;
   pointer-events: none;
-  transition:
-    opacity 260ms ease,
-    filter 260ms ease;
-}
-
-.header-next-brand::after {
-  content: "";
-  position: absolute;
-  inset: 5px 18px 4px;
-  z-index: 0;
-  border-radius: 50%;
-  background:
-    radial-gradient(
-      ellipse at center,
-      rgba(4, 4, 4, 0.58) 0%,
-      rgba(4, 4, 4, 0.38) 42%,
-      rgba(4, 4, 4, 0.16) 64%,
-      transparent 82%
-    );
-  opacity: 0;
-  backdrop-filter: blur(4px) saturate(88%);
-  -webkit-backdrop-filter: blur(4px) saturate(88%);
-  pointer-events: none;
-  transition: opacity 260ms ease;
-}
-
-body.scrolled .header-next-brand::before {
-  opacity: 0.9;
-  filter: blur(8px);
-}
-
-body.scrolled .header-next-brand::after {
-  opacity: 1;
-}
-
-body.scrolled .header-next-brand-logo {
-  transform: scale(0.965);
-}
-
-body.scrolled .header-next-brand:hover .header-next-brand-logo,
-body.scrolled .header-next-brand:focus-visible .header-next-brand-logo {
-  transform: translateY(-1px) scale(0.965);
 }
 
 .header-next-brand-logo {
@@ -973,22 +931,11 @@ body.scrolled .header-next-brand:focus-visible .header-next-brand-logo {
     transform: translateX(-50%);
   }
 
-  .header-next-brand::before {
+  .header-next-brand::before,
+  body.scrolled .header-next-brand::before {
     inset: 8px 17px 7px;
     filter: blur(6px);
     opacity: 0.68;
-  }
-
-  body.scrolled .header-next-brand::before {
-    inset: 7px 14px 6px;
-    filter: blur(7px);
-    opacity: 0.94;
-  }
-
-  .header-next-brand::after {
-    inset: 5px 11px 4px;
-    backdrop-filter: blur(5px) saturate(84%);
-    -webkit-backdrop-filter: blur(5px) saturate(84%);
   }
 
   .header-next-brand-logo,
