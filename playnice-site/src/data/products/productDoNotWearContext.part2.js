@@ -1,7 +1,7 @@
 export default [
   {
-    "sr": "Kada vam treba težina koja probija tri sloja zimske odeće. Colonia Pura je svetla, čista i prozračna. Nije greška parfema ako ste je poslali na pogrešnu smenu.",
-    "en": "When you need enough weight to cut through three layers of winter clothing. Colonia Pura is bright, clean and airy. It is not the fragrance’s fault if you sent it to the wrong shift."
+    "sr": "Posle četrnaest sati putovanja avionom, tri presedanja i spavanja sa glavom na rancu. Colonia Pura može da učini da mirišete kao jedina osoba na terminalu koja zna gde postoji tajni tuš. Nećete steći prijatelje.",
+    "en": "After fourteen hours of air travel, three connections and sleeping with your head on a backpack. Colonia Pura can make you smell like the only person in the terminal who knows where the secret shower is. You will not make friends."
   },
   {
     "sr": "Teško ga je stvarno pogrešno obući. Ali deset prskanja pred razgovor za posao jeste sasvim pristojan pokušaj da pokvarite nešto što je Chanel već odlično rešio.",
@@ -16,8 +16,8 @@ export default [
     "en": "When you want something extreme and dark for a dramatic night out. Beyond is more polished than dangerous. A manager who knows what he is doing, not a man security is keeping an eye on."
   },
   {
-    "sr": "Na velikoj vrućini, posebno u gužvi. Bogat, topao i sladak karakter ovog parfema bolje radi kada vazduh nije već dovoljno težak sam od sebe.",
-    "en": "In serious heat, especially in a crowd. Its rich, warm and sweet character works much better when the air is not already heavy enough by itself."
+    "sr": "Sa njim ćete verovatno uspeti da smuvate i Salmu Hayek. Nemojte. Žena je udata, a mi ne plaćamo advokate.",
+    "en": "With this on, you could probably charm Salma Hayek. Don't. She's married, and we do not pay for lawyers."
   },
   {
     "sr": "Na plaži u dva popodne. Iris i koža traže elegantniji, intimniji okvir. Možete nositi smoking i u plićaku, ali pitanje je zašto.",
@@ -28,32 +28,32 @@ export default [
     "en": "When you want the fragrance to be the main topic of the evening. CK All is light, clean and uncomplicated. If you expect a nuclear scent trail, you have misunderstood both the fragrance and physics."
   },
   {
-    "sr": "Kada tražite duboku, slatku zimsku senzualnost. Defy EDT je svežiji, aromatičan i uredan. Ne zahtevajte od bele majice da postane smoking.",
-    "en": "When you want deep, sweet winter sensuality. Defy EDT is fresher, more aromatic and neater. Do not ask a white T-shirt to become a tuxedo."
+    "sr": "U subotnji celovečernji izlazak sa društvom. Ostaviće vas i dok ste još trezni, 100% — a to prijatelji pamte duže nego parfem.",
+    "en": "On an all-night Saturday out with friends. It will be gone while you're still sober, 100% — and your friends will remember that longer than the fragrance."
   },
   {
-    "sr": "Tokom najtoplijeg dela vrelog dana ako planirate obilno prskanje. Kakao, sandalovina i toplija baza nisu neprijatelji leta — ali ne moraju baš zajedno na 38°C.",
-    "en": "During the hottest part of a scorching day if you are planning to spray heavily. Cocoa, sandalwood and the warmer base are not enemies of summer — they just do not all need to meet at 38°C."
+    "sr": "Jednom sam skakao padobranom. Defy Parfum je mirisao sva četiri kilometra do zemlje. Šta je previše, previše je.",
+    "en": "I once went skydiving. Defy Parfum smelled all four kilometres down. Too much is too much."
   },
   {
     "sr": "U liftu prepunom ljudi nakon sedam prskanja. Duvan, koža, oud i ambergris nemaju dugme „diskretno“. Lift ima. Pritisnite sprat, ne atomizer.",
     "en": "In a packed elevator after seven sprays. Tobacco, leather, oud and ambergris do not have a “discreet” button. The elevator does. Press the floor, not the atomizer."
   },
   {
-    "sr": "Kada očekujete gust, sladak zimski oblak. Aventus Cologne je svetliji i pokretljiviji član porodice. Ferrari kabriolet nije loš automobil samo zato što ste krenuli po sneg.",
-    "en": "When you expect a thick, sweet winter cloud. Aventus Cologne is the brighter, more mobile member of the family. A Ferrari convertible is not a bad car just because you drove it into the snow."
+    "sr": "Kada ga ne nositi? Takva situacija još nije izmišljena. Ako je pronađete, javite Creedu — verovatno će je patentirati.",
+    "en": "When should you not wear it? That situation has not been invented yet. If you find one, tell Creed — they'll probably patent it."
   },
   {
-    "sr": "Kada želite gourmand, vanilast parfem za hladnu noć. Profondo Parfum ostaje morski, aromatičan i elegantan. More nije dužno da miriše na kolač.",
-    "en": "When you want a gourmand, vanilla-heavy scent for a cold night. Profondo Parfum stays marine, aromatic and elegant. The sea is under no obligation to smell like cake."
+    "sr": "Ispod zimske jakne. Ući će unutra sa vama i izaći negde u aprilu.",
+    "en": "Under a winter jacket. It will go in with you and come back out sometime in April."
   },
   {
     "sr": "U malom uredu ako ste upravo otkrili da bočica ima atomizer. Mango, amber, vanila i drvenasta baza umeju da budu vrlo prisutni. Kolege već znaju da ste stigli.",
     "en": "In a small office when you have just discovered the bottle has an atomizer. Mango, amber, vanilla and the woody base can be very present. Your colleagues already know you arrived."
   },
   {
-    "sr": "Po velikoj letnjoj vrućini. Kesten, iris, benzoin i drvenasta toplina traže hladniju pozornicu. Viski pored bazena može; u samom bazenu ipak ne.",
-    "en": "In serious summer heat. Chestnut, iris, benzoin and woody warmth want a cooler stage. Whisky by the pool works; in the pool, less so."
+    "sr": "Ako ste kum na svadbi i već ste obećali mladencima da ćete se ponašati. Réserve Privée ima nezgodnu sposobnost da vam posle trećeg komplimenta objasni da je mikrofon zapravo vaš.",
+    "en": "If you're the best man and already promised the newlyweds you'll behave. Réserve Privée has a nasty habit of convincing you after the third compliment that the microphone actually belongs to you."
   },
   {
     "sr": "Kada očekujete formalnu težinu i ogromnu večernju projekciju. Man Blue je opušteniji i ležerniji. Došao je na vikend, ne na sastanak upravnog odbora.",
@@ -72,8 +72,8 @@ export default [
     "en": "With too many sprays in a tight space. Citrus opens the story, but woods, leather, moss and vanilla stay for the second act. Do not judge it only by the first five minutes."
   },
   {
-    "sr": "Na najsparnijem letnjem podnevu. Drvenasta, kožna, mahovinasta i vanilasta dubina ove verzije traži malo hladniji vazduh. „Extreme“ već stoji na bočici; ne dodajte „heat test“.",
-    "en": "At the muggiest point of a summer afternoon. The woody, leathery, mossy and vanilla depth of this version wants slightly cooler air. “Extreme” is already on the bottle; do not add “heat test.”"
+    "sr": "Ako partnerki kažete da je vikend-putovanje „spontano“ dok u gepeku imate tri kofera, aparat za espresso i rezervne cipele. Sa Explorer Extreme na sebi priča o minimalizmu već ima previše rupa.",
+    "en": "If you tell your partner the weekend trip is “spontaneous” while the boot contains three suitcases, an espresso machine and spare shoes. With Explorer Extreme on, the story about minimalism already has too many holes."
   },
   {
     "sr": "Ako želite bučan parfem koji će vas najaviti sa parkinga. Mošus, tamno drvo i vetiver ovde rade bliže koži. Diskrecija nije kvar.",

@@ -1,7 +1,7 @@
 export default [
   {
-    "sr": "Kada želite težak večernji parfem za najhladniji dan godine. Citrusno-cvetna svežina i sandalovina ovde mnogo više vole sunce. Azul vam čak i bojom pokušava objasniti.",
-    "en": "When you want a heavy evening fragrance for the coldest day of the year. Citrus-floral freshness and sandalwood prefer sunshine considerably more. Even the colour is trying to explain it."
+    "sr": "Ako vas prijatelji konačno nateraju da izađete iz kuće posle tri nedelje i kažu: „Samo jedno piće.“ Azul ima onu vrstu svežeg samopouzdanja zbog koje se „jedno“ vrlo lako pretvori u doručak.",
+    "en": "If your friends finally drag you out after three weeks indoors and say, “Just one drink.” Azul has the kind of fresh confidence that turns “one” into breakfast remarkably easily."
   },
   {
     "sr": "Kada tražite gust, sladak arapski parfem. Grejpfrutov cvet, calone i sandalovina čine ga mnogo prozračnijim. Ne mora svaka Lattafa da miriše kao desertni meni.",
@@ -24,8 +24,8 @@ export default [
     "en": "When you only want light, sporty freshness. Amber, woods and labdanum push Nocturno in a deeper, more evening-focused direction. The word Nocturno was another subtle clue we found for you."
   },
   {
-    "sr": "Kada očekujete gustu vanilu i zimsku toplinu. Žalfija, lavanda, morska so, mahovina, kedar i ambroksan daju hladniji, suv karakter. Ice. Opet su vam rekli u imenu.",
-    "en": "When you expect dense vanilla and winter warmth. Sage, lavender, sea salt, moss, cedar and ambroxan give it a cooler, drier character. Ice. Once again, they told you in the name."
+    "sr": "Ako glumite da ste bolesni samo da biste izbegli obaveze. Ravine Ice vas ostavlja toliko svežim da će i termometar početi da sumnja u vašu priču.",
+    "en": "If you're faking sick just to get out of your obligations. Ravine Ice leaves you smelling so fresh that even the thermometer will start questioning your story."
   },
   {
     "sr": "Kada želite formalno ozbiljan, taman parfem. Bilje, čempres, nana, ozonske note i mahovina nose energiju koktela i otvorenog prostora. Generalni direktor možda može. Njegov advokat neka odluči.",
@@ -72,16 +72,16 @@ export default [
     "en": "In a small enclosed space after six or seven sprays. Dry woods, amber and musk of this type can project seriously. “Après l’Amour” is not French for “spray half the bottle.”"
   },
   {
-    "sr": "Kada očekujete raskošan sladak parfem za hladnu noć. Mahovina, sandalovina, kedar i mošus daju mu čistiji, suvlji karakter. Tonic je trag. Blanc je drugi.",
-    "en": "When you expect a rich, sweet fragrance for a cold night. Moss, sandalwood, cedar and musk give it a cleaner, drier character. Tonic is one clue. Blanc is another."
+    "sr": "Ako ste mamurni i pokušavate da ubedite svet da ste potpuno funkcionalni. Tonic Blanc može da odradi deo posla, ali čim progovorite, projekat ulazi u fazu u kojoj parfem više nema ovlašćenja.",
+    "en": "If you're hungover and trying to convince the world you're fully functional. Tonic Blanc can cover part of the job, but the moment you start talking, the project enters a phase outside the fragrance's authority."
   },
   {
     "sr": "Ako želite parfem koji će biti glasniji od muzike. Mošus, kedar, ebanovina i labdanum ovde stvaraju sofisticiraniji, bliži utisak. „Extreme“ ne znači da morate i vi biti ekstremni.",
     "en": "If you want a fragrance louder than the music. Musk, cedar, ebony and labdanum create something more sophisticated and closer to the skin. “Extreme” does not mean you have to be extreme too."
   },
   {
-    "sr": "Kada želite topao gourmand za zimski dejt. Nana, pomelo, geranijum, vetiver, mošus i mahovina su praktično sastavili zeleni manifest protiv te ideje.",
-    "en": "When you want a warm gourmand for a winter date. Mint, pomelo, geranium, vetiver, musk and moss have basically written a green manifesto against that idea."
+    "sr": "Ako ste upravo rekli da ste „samo na brzinu izašli iz kuće“. Tonic Vert miriše toliko sređeno da ta priča više nema nikakvu pravnu težinu.",
+    "en": "If you've just said you “only popped out for a minute.” Tonic Vert smells so put-together that your story no longer has any legal standing."
   },
   {
     "sr": "U liftu, avionu ili čekaonici posle deset prskanja. Sauvage EDP je već napravljen da bude primetan. Ako ga svi mogu identifikovati pre nego što vas vide, test je završen.",
@@ -115,5 +115,4 @@ export default [
     "sr": "Na degustaciji vina ili viskija. Posle nekoliko prskanja čovek pored vas više neće znati da li oseća konjak u čaši ili vas.",
     "en": "At a wine or whisky tasting. After a few sprays, the person next to you may no longer know whether the cognac is in the glass or on you."
   }
-
 ];

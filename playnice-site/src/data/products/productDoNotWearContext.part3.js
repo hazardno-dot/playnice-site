@@ -16,12 +16,12 @@ export default [
     "en": "When you expect it to beat a thick coat and February air. This is a light citrus-aquatic Versace. Do not send a sailboat to break ice."
   },
   {
-    "sr": "Ako želite topao, slatkast miris za hladnu noć uz kamin. Zelenije aromatične note, estragon i žalfija imaju dnevni plan. Kamin mogu da pogledaju kroz prozor.",
-    "en": "If you want a warm, sweet scent for a cold night by the fireplace. Greener aromatic notes, tarragon and sage have daytime plans. They can admire the fire through the window."
+    "sr": "Ako ste na planinarenju sa ekipom koja je ozbiljno shvatila reč „avantura“. Voux Zingy ima toliko urednu, zelenu energiju da ćete u jednom trenutku izgledati kao čovek koji je došao da fotografiše stazu, a ne da je preživi.",
+    "en": "If you're hiking with a group that took the word “adventure” very seriously. Voux Zingy has such polished green energy that at some point you'll look like the person who came to photograph the trail, not survive it."
   },
   {
-    "sr": "Na tropskoj vrućini, posebno uz mnogo prskanja. Benzoin, vanila, tonka i heliotropin daju mu toplu slatkoću. Sunce već radi dovoljno.",
-    "en": "In tropical heat, especially with too many sprays. Benzoin, vanilla, tonka and heliotropin give it warm sweetness. The sun is already doing enough."
+    "sr": "Ako vam je plan da se izvinite i odete kući neprimećeno. Crimson nema baš taj talenat — više je tip koji se vrati po jaknu, ostane još dva sata i nekako završi na zajedničkoj fotografiji.",
+    "en": "If the plan is to make your excuses and slip home unnoticed. Crimson does not really have that talent — it's more the type to come back for the jacket, stay another two hours and somehow end up in the group photo."
   },
   {
     "sr": "Kada želite potpuno tih, bezazlen parfem za skučen prostor. Drvo, pačuli, mahovina i amber daju mu znatno ozbiljniji karakter. „Black“ ovde nije administrativna greška.",
@@ -44,8 +44,8 @@ export default [
     "en": "At 35°C in an office with the windows closed. Multiple vanillas, coffee and white florals can be luxurious. Luxury becomes less entertaining when your colleague starts looking for oxygen."
   },
   {
-    "sr": "Kada želite težak, sladak zimski parfem. Citrus, đumbir i ambergris igraju svetlije i čistije. Oryn nije doneo ćebe; doneo je otvoren prozor.",
-    "en": "When you want a heavy, sweet winter fragrance. Citrus, ginger and ambergris play brighter and cleaner. Oryn did not bring a blanket; it brought an open window."
+    "sr": "Ako ste krenuli „samo do prodavnice“ i rekli da se vraćate za deset minuta. Oryn ima taj problem što svež, sređen i samouveren čovek retko izgleda kao da je stvarno krenuo samo po hleb.",
+    "en": "If you said you're “just popping to the shop” and will be back in ten minutes. Oryn has one problem: someone this fresh, polished and confident rarely looks like they genuinely went out just for bread."
   },
   {
     "sr": "Kada želite topao gourmand za decembarsku noć. Ledeni akord, čaj, žalfija i đumbir vrlo jasno glasaju za drugu stranku.",
@@ -56,16 +56,16 @@ export default [
     "en": "If you expect a vanilla-heavy Arabian bomb simply because the bottle says Lattafa. Mint, juniper, rosemary, vetiver and ambroxan are much greener and fresher here. Disappointment prevented."
   },
   {
-    "sr": "Kada vam treba velika zimska postojanost i gusta slatka baza. Iced Cologne je napravljen oko hladnije, aromatične svežine. Led se, na naše zaprepašćenje, najbolje ponaša van peći.",
-    "en": "When you need huge winter longevity and a dense sweet base. Iced Cologne is built around cooler aromatic freshness. Ice, surprisingly enough, behaves better away from the oven."
+    "sr": "Ako u kancelariji već pola sata ubeđujete sve da ugase klimu jer vam je hladno, nemojte stavljati Y Iced Cologne. Teško je tražiti 26°C dok sami mirišete kao otvorena vrata frižidera.",
+    "en": "If you've spent half an hour at the office trying to convince everyone to turn off the AC because you're freezing, don't wear Y Iced Cologne. It's hard to demand 26°C while you smell like an open refrigerator door."
   },
   {
     "sr": "U vrelo podne ako ćete ga predozirati. Voćna slatkoća, aromatično srce i duvansko-drvenasta baza umeju da postanu mnogo puniji nego što početak sugeriše.",
     "en": "At scorching noon if you are planning to overdose. Fruity sweetness, the aromatic heart and the tobacco-woody base can become much fuller than the opening suggests."
   },
   {
-    "sr": "Kada želite težak parfem koji će komandovati zimskim večernjim izlaskom. Light Blue je i dalje Light Blue. Ime vam je praktično poslalo vremensku prognozu.",
-    "en": "When you want a heavy fragrance to command a winter night out. Light Blue is still Light Blue. The name has practically sent you a weather forecast."
+    "sr": "Ako ste upravo slagali da vam „more uopšte ne nedostaje“. Light Blue će vas odati pre nego što završite rečenicu. Neke laži jednostavno ne treba izgovarati uz parfem koji praktično dolazi sa pogledom na obalu.",
+    "en": "If you've just lied that you “don't miss the sea at all.” Light Blue will expose you before you finish the sentence. Some lies simply should not be told while wearing a fragrance that practically comes with an ocean view."
   },
   {
     "sr": "Na plaži usred avgusta. Koža, iris, tuberoza, tonka, guaiac i benzoin nisu oprema za 38°C. Ni crna kožna jakna nije, pa ipak uvek neko pokuša.",
@@ -88,8 +88,8 @@ export default [
     "en": "When you want something strictly classic and conservative. Plum, an aromatic heart and a modern woody character show very little interest in a board meeting from 1994."
   },
   {
-    "sr": "Kada očekujete gustu, tamnu zimsku senzualnost. Lavanda, žalfija, iris, vetiver i tonka ovde su čisti i kontrolisani. Ocean ne duguje nikome kamin.",
-    "en": "When you expect dense, dark winter sensuality. Lavender, sage, iris, vetiver and tonka are clean and controlled here. Ocean owes nobody a fireplace."
+    "sr": "Ako prvi put idete na jedrenje i želite da delujete kao da znate šta radite. Ocean na vama može da zavara ljude dovoljno dugo da vam stvarno daju konopac. Tu šala prestaje.",
+    "en": "If it's your first time sailing and you want to look like you know what you're doing. Ocean may fool people long enough for someone to actually hand you a rope. That's where the joke ends."
   },
   {
     "sr": "Kada želite sladak parfem koji miriše kao desert. Vodeni akordi, sveže cveće, drvo i mošus idu u potpuno drugom smeru. So i karamela nisu isto samo zato što obe stoje u kuhinji.",
