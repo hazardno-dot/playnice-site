@@ -421,5 +421,10 @@ export const productWearContext = {
   "Jil Sander Sun Men Eau de Toilette": {
     "sr": "Topli dani, posao, odmor i opuštene dnevne prilike.",
     "en": "Warm days, work, holidays and relaxed daytime wear."
+  },
+
+  "My Geisha Unseen Extrait de Parfum": {
+    "sr": "Hladnije vreme, dejt, veče i posebne prilike.",
+    "en": "Cooler weather, dates, evenings and special occasions."
   }
 };

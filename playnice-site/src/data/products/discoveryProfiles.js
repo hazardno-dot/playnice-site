@@ -3106,6 +3106,37 @@ export const discoveryProfiles = {
     "cleanliness": 8.2,
     "versatility": 7.8,
     "gourmandness": 0
+  },
+
+  "my-geisha-unseen-extrait-de-parfum": {
+    "date": 9.3,
+    "casual": 5.6,
+    "citrus": 1.8,
+    "office": 3.6,
+    "unisex": 9.5,
+    "warmth": 9.2,
+    "aquatic": 0,
+    "dryness": 2.4,
+    "evening": 9.6,
+    "powdery": 3.2,
+    "airiness": 1.2,
+    "darkness": 7.7,
+    "elegance": 8.5,
+    "feminine": 5.5,
+    "florality": 3.5,
+    "freshness": 1.6,
+    "longevity": 9.1,
+    "masculine": 5.5,
+    "spiciness": 4.3,
+    "sweetness": 8.8,
+    "woodiness": 7.6,
+    "creaminess": 7.8,
+    "fruitiness": 4.5,
+    "projection": 8.7,
+    "aromaticity": 2.5,
+    "cleanliness": 1.5,
+    "versatility": 5.4,
+    "gourmandness": 9.5
   }
 };
 
