@@ -869,7 +869,7 @@ export const products = [
     shortName: "The Scent Le Parfum",
     category: "Designer",
     image: "/products/BOSS-The-Scent-Le-Parfum.png",
-    sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
+    sizes: { "2ml": 4.5, "5ml": 10, "10ml": 18 },
     badge: "HIDDEN GEM",
     rating: 7.9,
     ratingLabel: "Well Loved",
