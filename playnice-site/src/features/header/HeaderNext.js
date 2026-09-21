@@ -42,12 +42,6 @@ const HeartIcon = ({ filled = false }) => (
   </svg>
 );
 
-const BRAND_TAGLINES = [
-  "Remember. PlayNice.",
-  "Try before you buy",
-  "Fragrance Intelligence"
-];
-
 function HeaderNext({
   lang,
   view,
@@ -72,8 +66,6 @@ function HeaderNext({
   const railRef = useRef(null);
   const itemRefs = useRef({});
   const motionTimerRef = useRef(null);
-  const brandFlipTimerRef = useRef(null);
-  const brandFlipResetRef = useRef(null);
   const languageSpinTimerRef = useRef(null);
   const languageSwitchTimerRef = useRef(null);
   const previousCartCountRef = useRef(cartCount);
@@ -88,8 +80,6 @@ function HeaderNext({
   const [lensMoving, setLensMoving] = useState(false);
   const [discoverOpen, setDiscoverOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [brandTaglineIndex, setBrandTaglineIndex] = useState(0);
-  const [brandTaglinePhase, setBrandTaglinePhase] = useState("idle");
   const [languageSpinning, setLanguageSpinning] = useState(false);
   const [cartSpinning, setCartSpinning] = useState(false);
   const [cartFeedbackCount, setCartFeedbackCount] = useState(null);
@@ -285,32 +275,6 @@ function HeaderNext({
   );
 
   useEffect(() => {
-    const startFlip = () => {
-      setBrandTaglinePhase("out");
-
-      brandFlipTimerRef.current = window.setTimeout(() => {
-        setBrandTaglineIndex(
-          (current) => (current + 1) % BRAND_TAGLINES.length
-        );
-
-        setBrandTaglinePhase("in");
-
-        brandFlipResetRef.current = window.setTimeout(() => {
-          setBrandTaglinePhase("idle");
-        }, 480);
-      }, 360);
-    };
-
-    const interval = window.setInterval(startFlip, 5000);
-
-    return () => {
-      window.clearInterval(interval);
-      window.clearTimeout(brandFlipTimerRef.current);
-      window.clearTimeout(brandFlipResetRef.current);
-    };
-  }, []);
-
-  useEffect(() => {
   const previousCount = previousCartCountRef.current;
 
   if (cartCount > previousCount) {
@@ -410,15 +374,14 @@ function HeaderNext({
           className="header-next-brand"
           type="button"
           onClick={() => runAction(onHome)}
+          aria-label={lang === "sr" ? "PlayNice početna" : "PlayNice home"}
         >
-          <span>PlayNice</span>
-
-          <small
-            className={`header-next-brand-tagline is-${brandTaglinePhase}`}
+          <img
+            className="header-next-brand-logo"
+            src="/playnice-header-logo.svg"
+            alt=""
             aria-hidden="true"
-          >
-            <span>{BRAND_TAGLINES[brandTaglineIndex]}</span>
-          </small>
+          />
         </button>
 
         <div className="header-next-center">
