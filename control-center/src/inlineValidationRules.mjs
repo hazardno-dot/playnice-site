@@ -1,6 +1,7 @@
 import { presentationLimit } from "./productPresentationContract.mjs";
 
 const csv = (value) => String(value ?? "").split(",").map((part) => part.trim()).filter(Boolean);
+const sameCsv = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 export const INLINE_REQUIRED_CORE_FIELDS = new Set([
   "name",
@@ -58,6 +59,7 @@ export function validateInlineFields(rawFields, options = {}) {
   const knownNoteKeys = new Set(options.knownNoteKeys || []);
   const selectedSlug = String(options.selectedSlug || "").trim();
   const isNewProduct = Boolean(options.isNewProduct);
+  const liveDominantNotes = options.liveDominantNotes || {};
 
   const add = (field, message, level = "error") => {
     issues.push({ index: field?.index ?? -1, field: field?.name || "Editor", message, level });
@@ -96,7 +98,25 @@ export function validateInlineFields(rawFields, options = {}) {
       }
     }
 
-    if (name.includes("dominant notes") && csv(value).length !== 4) add(field, "Exactly 4 dominant notes are required.");
+    if (name.includes("dominant notes")) {
+      const dominant = csv(value);
+      if (dominant.length !== 4) {
+        const lang = name.includes("· sr") ? "sr" : name.includes("· en") ? "en" : null;
+        const liveDominant = lang ? csv(liveDominantNotes?.[lang]) : [];
+        const unchangedLegacyDominant = !isNewProduct
+          && dominant.length > 0
+          && Boolean(lang)
+          && liveDominant.length !== 4
+          && sameCsv(dominant, liveDominant);
+        add(
+          field,
+          unchangedLegacyDominant
+            ? "Existing live dominant notes use the legacy count. Unchanged legacy copy does not block review."
+            : "Exactly 4 dominant notes are required.",
+          unchangedLegacyDominant ? "warning" : "error"
+        );
+      }
+    }
     if (name.startsWith("tags") && csv(value).length !== 3) add(field, "Exactly 3 tags are required.");
 
     const isPyramidNotes = name.startsWith("top notes") || name.startsWith("heart notes") || name.startsWith("base notes");
