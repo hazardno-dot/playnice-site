@@ -262,6 +262,8 @@
   }
 
   body.desktop-product-route-active .desktop-product-page__sale {
+    scale: 0.82;
+    transform-origin: top right;
     border-color: rgba(209, 76, 76, 0.42);
     border-radius: 999px;
     background: rgba(72, 18, 18, 0.88);
