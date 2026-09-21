@@ -693,7 +693,7 @@
   stroke: rgba(220, 181, 107, 0.88);
 }
 
-/* tokom heartbeat feedbacka: veliko srce + broj u centru */
+/* tokom heartbeat feedbacka: veliko srce */
 .header-next-heart-wrap.is-feedback svg {
   width: 31px;
   height: 31px;
@@ -710,27 +710,6 @@
     drop-shadow(0 0 5px rgba(220, 181, 107, 0.24)) drop-shadow(0 0 12px rgba(220, 181, 107, 0.12));
 }
 
-.header-next-heart-feedback {
-  position: absolute;
-  inset: 0;
-
-  display: grid;
-  place-items: center;
-
-  color: #edcf88;
-
-  font-size: 12px;
-  font-weight: 850;
-  line-height: 1;
-  letter-spacing: -0.05em;
-
-  text-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.95),
-    0 0 9px rgba(220, 181, 107, 0.22);
-
-  pointer-events: none;
-  z-index: 3;
-}
 
 .header-next-wishlist-button.is-beating {
   animation:

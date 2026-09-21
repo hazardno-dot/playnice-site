@@ -517,12 +517,6 @@ function HeaderNext({
       }`}
     >
       <HeartIcon filled={wishlistCount > 0} />
-
-      {wishlistFeedbackCount !== null && (
-        <span className="header-next-heart-feedback">
-          {wishlistFeedbackCount}
-        </span>
-      )}
     </span>
   </button>
 
@@ -575,12 +569,6 @@ function HeaderNext({
           }`}
         >
           <HeartIcon filled={wishlistCount > 0} />
-
-          {wishlistFeedbackCount !== null && (
-            <span className="header-next-heart-feedback">
-              {wishlistFeedbackCount}
-            </span>
-          )}
         </span>
       </button>
 
