@@ -8040,6 +8040,16 @@ main {
   object-fit: contain;
 }
 
+.story-drawer-text-signature {
+  margin: 0;
+  color: var(--gold);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
 .story-drawer-footer .button,
 .story-drawer-footer .btn,
 .story-drawer-footer .gold-button {
@@ -8113,6 +8123,10 @@ main {
 
   .story-drawer-signature {
     width: 95px;
+  }
+
+  .story-drawer-text-signature {
+    font-size: 1.3rem;
   }
 
   .story-drawer .close-button {
@@ -17061,7 +17075,7 @@ body.overlay-lock .header-system {
 }
 
 .manifesto-drawer-footer .story-drawer-signature {
-  font-size: 1.75rem;
+  width: 105px;
 }
 
 .manifesto-drawer-footer .gold-button.small {
@@ -17132,7 +17146,7 @@ body.overlay-lock .header-system {
   }
 
   .manifesto-drawer-footer .story-drawer-signature {
-    font-size: 1.45rem;
+    width: 90px;
   }
 
   .manifesto-drawer-footer .gold-button.small {
