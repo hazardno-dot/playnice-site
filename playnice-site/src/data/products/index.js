@@ -1863,7 +1863,7 @@ export const products = [
     shortName: "Coral Fantasy",
     category: "Designer",
     image: "/products/valentino-coral-fantasy.png",
-    sizes: { "2ml": 6, "5ml": 14, "10ml": 25 },
+    sizes: { "2ml": 5, "5ml": 12, "10ml": 21 },
     badge: "PLAYNICE PICK",
     rating: 9.1,
     ratingLabel: "Crowd Favorite",
