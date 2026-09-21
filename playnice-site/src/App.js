@@ -7953,7 +7953,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
           </div>
 
           <div className="story-drawer-footer panel-anim panel-anim-6">
-            <span className="story-drawer-signature">Remember. PlayNice.</span>
+            <span className="story-drawer-signature" aria-label="PlayNice Premium Fragrance House">
+              <img
+                className="story-drawer-signature-logo"
+                src="/playnice-header-logo.svg"
+                alt=""
+                aria-hidden="true"
+              />
+            </span>
 
             <button
               className="gold-button small"
