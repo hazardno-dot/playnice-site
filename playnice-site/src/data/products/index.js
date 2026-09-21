@@ -2842,7 +2842,7 @@ export const products = [
     milestoneBadge: 100,
     category: "Designer",
     image: "/products/tom-ford-ombre-leather-parfum.png",
-    sizes: {"2ml":11,"5ml":26,"10ml":47},
+    sizes: {"2ml": 9,"5ml": 20,"10ml": 36},
     badge: "LEATHER ICON",
     rating: 9.2,
     ratingLabel: "Iconic Pick",
