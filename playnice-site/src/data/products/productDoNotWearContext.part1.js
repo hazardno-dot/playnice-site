@@ -4,24 +4,24 @@ export default [
     "en": "When you want your fragrance to enter the room five minutes before you do. 9 AM is clean, fresh and civilized — it was not designed to compensate for low confidence with projection."
   },
   {
-    "sr": "Na velikoj vrućini, naročito uz tešku ruku na atomizeru. Voće, karamela i slatka drvenasta baza na 35°C mogu od „privlačno“ vrlo brzo napraviti „otvorite prozor“.",
-    "en": "In serious heat, especially with a heavy hand on the atomizer. Fruit, caramel and a sweet woody base at 35°C can turn “attractive” into “open a window” remarkably quickly."
+    "sr": "Ako idete na prvi sastanak i želite da ostavite utisak misterioznog čoveka. Posle šest prskanja 9 PM Rebel-a misterija je rešena — stigli ste vi, karamela i pola voćare.",
+    "en": "If you're going on a first date hoping to seem mysterious, go easy. After six sprays of 9 PM Rebel, the mystery is solved — you, caramel and half the fruit aisle have arrived."
   },
   {
     "sr": "U maloj kancelariji ako planirate osam prskanja. Ovaj tip voćno-drvenog Aventus karaktera već zna da privuče pažnju; ne morate mu dati megafon.",
     "en": "In a small office if you are planning eight sprays. This fruity-woody Aventus-style character already knows how to get attention; it does not need a megaphone."
   },
   {
-    "sr": "Kada tražite topao, sladak parfem za ledenu zimsku noć. Turathi Blue živi od bergamota, ambre i sveže drvenaste energije — smoking na snegu može, japanke baš i ne.",
-    "en": "When you want a warm, sweet fragrance for an icy winter night. Turathi Blue lives on bergamot, amber and fresh woody energy — a tuxedo in the snow can work; flip-flops, less so."
+    "sr": "Ako večeras treba da izgledate opasno. Turathi Blue miriše kao čovek koji je rezervisao dobar sto, ne kao čovek zbog kojeg je obezbeđenje pozvalo pojačanje.",
+    "en": "If you need to look dangerous tonight, maybe not. Turathi Blue smells like the man who booked a good table, not the man who made security call for backup."
   },
   {
     "sr": "Ako želite težak, taman večernji parfem. Čaj, đumbir, bergamot i ambroksan ovde igraju na čistoću i vazduh; Marwa neće glumiti mafijaškog bosa u kožnoj fotelji.",
     "en": "When you want something heavy and dark for the evening. Tea, ginger, bergamot and ambroxan are playing the clean, airy game here; Marwa has no interest in pretending to be a mafia boss in a leather chair."
   },
   {
-    "sr": "Na podnevnoj avgustovskoj žezi. Slatka vanila i bogatiji cvetno-drvenasti karakter mnogo lepše rade kada temperatura prestane da pokušava da vas skuva.",
-    "en": "At noon in the middle of an August heatwave. Sweet vanilla and the richer floral-woody character work much better once the weather stops actively trying to cook you."
+    "sr": "Na sastanak sa poreskim inspektorom. Slatka vanila, cveće i ime Bling šalju tačno suprotnu poruku od „verujte mi, ove godine gotovo ništa nisam zaradio“.",
+    "en": "To a meeting with the tax inspector. Sweet vanilla, flowers and a fragrance called Bling send exactly the opposite message from: “Trust me, I barely made anything this year.”"
   },
   {
     "sr": "Neposredno pre nego što sednete nekome 40 centimetara od lica. Njegov limunasto-dimni početak ume da bude vrlo direktan. Dajte mu malo vremena — i ljudima malo vazduha.",
@@ -32,16 +32,16 @@ export default [
     "en": "If metallic citrus and an ultra-clean profile already tend to wear you out. Sillage is not a shy freshie; if you prefer soft freshness, this is not the moment to prove your resilience."
   },
   {
-    "sr": "Po vrućem letnjem danu u zatvorenom prostoru. Viski, sandalovina, tonka, benzoin i vanila nisu klima-uređaj. Ne terajte ih da se tako ponašaju.",
-    "en": "Indoors on a hot summer day. Whisky, sandalwood, tonka, benzoin and vanilla are not air conditioning. Please stop asking them to behave like it."
+    "sr": "Pre razgovora sa policajcem koji vas pita da li ste pili. Vulcan Sable već miriše na viski. Ne komplikujte čoveku smenu.",
+    "en": "Right before talking to a police officer who's asking whether you've been drinking. Vulcan Sable already smells like whisky. Don't make the poor man's shift any harder."
   },
   {
-    "sr": "Kada vam treba parfem koji će dominirati hladnom zimskom noći. Ovo je citrusno-drvenasti, uredan plavi miris. Ne šaljite polo majicu da radi posao zimskog kaputa.",
-    "en": "When you need a fragrance to dominate a cold winter night. This is a neat citrus-woody blue scent. Do not send a polo shirt to do a winter coat’s job."
+    "sr": "Ako želite parfem koji će odraditi ličnost umesto vas. Signature Blue je uredan, prijatan i vrlo civilizovan. Ostatak intervjua ipak morate sami.",
+    "en": "If you need a fragrance to provide the personality for you. Signature Blue is neat, pleasant and very civilized. You still have to handle the rest of the interview yourself."
   },
   {
-    "sr": "Kada želite mračan, ozbiljan miris za kasnu zimsku noć. Bergamot, đumbir i grejpfrut ovde imaju druge planove — uglavnom sunce i nešto hladno u čaši.",
-    "en": "When you want something dark and serious for a late winter night. Bergamot, ginger and grapefruit have other plans — mostly sunshine and something cold in a glass."
+    "sr": "Ako ste upravo završili trening i razmišljate da parfem može da zameni tuširanje. Bergamot, đumbir i grejpfrut mogu da osveže priču — ali ne mogu da obrišu prethodno poglavlje.",
+    "en": "If you've just finished a workout and are wondering whether fragrance can replace a shower. Bergamot, ginger and grapefruit can freshen the story — they cannot erase the previous chapter."
   },
   {
     "sr": "U pregrejanoj prostoriji nakon šest prskanja. Duvan, vanila, tamno drvo i smole već imaju dovoljno autoriteta. Ne morate da ih unapredite u disciplinsku meru.",
@@ -64,8 +64,8 @@ export default [
     "en": "If you are trying to go unnoticed. Aromatic notes, caramel, cedar, incense and labdanum did not come together to make a fragrance that apologizes for existing."
   },
   {
-    "sr": "Kada želite gust, sladak parfem za zimski dejt. Trillium je vetiverasto-svežiji i zeleniji; došao je sređen, ali nije poneo tortu.",
-    "en": "When you want a dense, sweet scent for a winter date. Trillium is fresher, greener and more vetiver-driven; it arrived well dressed, but it did not bring cake."
+    "sr": "Ako vas traže u velikom parku, Trillium nije najbolji izbor za spasilačku akciju. Vetiver, zelenilo i sveža drvenasta struktura daju vam otprilike istu kamuflažu kao vojniku koji je ozbiljno shvatio zadatak.",
+    "en": "If a search party is looking for you in a large park, Trillium is not the smartest choice. Vetiver, greenery and fresh woods give you roughly the camouflage of a soldier who took the assignment very seriously."
   },
   {
     "sr": "Po velikoj vrućini ili pre treninga. Med, cimet, duvan, tonka i vanila već zvuče kao desert posle večere. Ne treba im 34°C i traka za trčanje.",
@@ -80,8 +80,8 @@ export default [
     "en": "When you want something completely discreet and anonymous. Its spicy-floral, slightly sweet structure likes to leave an impression. There are other bottles for “I barely tried.”"
   },
   {
-    "sr": "Kada napolju ozbiljno pada sneg i želite da parfem ima težinu preko debelog kaputa. Aquatica je napravljena da diše. Na minus pet će se osećati kao da ste naručili mojito u januaru.",
-    "en": "When it is properly snowing outside and you want your fragrance to punch through a heavy coat. Aquatica was made to breathe. At minus five, it will feel like you ordered a mojito in January."
+    "sr": "Ako pokušavate da ubedite ljude da ste ozbiljan kancelarijski čovek. Aquatica vrlo brzo oda da biste radije bili negde gde telefon nema signal, a piće ima led.",
+    "en": "If you're trying to convince people you're a serious office person. Aquatica gives away rather quickly that you'd rather be somewhere with no phone signal and ice in the drink."
   },
   {
     "sr": "Kada tražite taman, suv i strogo poslovan miris. Đumbir, tropsko cveće, beli rum i šećerna trska imaju prilično jasnu ideju zabave.",
@@ -92,8 +92,8 @@ export default [
     "en": "At a meeting in a small room in the middle of July, especially if you are generous with the sprays. Tobacco, honey, amber, vanilla and sandalwood are not an emergency ventilation team."
   },
   {
-    "sr": "Kada očekujete deset sati mračnog zimskog autoriteta. Smokva, citrusi i mediteranska lakoća ovde rade nešto sasvim drugo. Ovo je Amalfi, ne bunker.",
-    "en": "When you expect ten hours of dark winter authority. Fig, citrus and Mediterranean lightness are doing something entirely different here. This is Amalfi, not a bunker."
+    "sr": "Ako ste sa Bear Gryllsom na testu preživljavanja usred Amazonske prašume, Fico di Amalfi možda nije najbolji izbor. Smokva, citrusi i mediteranski vazduh mogu čoveka toliko da zbune da počne da proverava GPS misleći da vas je greškom doveo u Italiju. Mada, ako do večere uhvati ribu, atmosfera je praktično kompletna.",
+    "en": "If you're doing a survival test with Bear Grylls in the middle of the Amazon rainforest, Fico di Amalfi may not be the smartest choice. Fig, citrus and Mediterranean air could confuse the man enough to make him check the GPS in case he accidentally brought you to Italy. Although if he catches a fish for dinner, the atmosphere is basically complete."
   },
   {
     "sr": "Kada želite sladak, zavodljiv klupski parfem. Essenza dolazi sa čistom košuljom, citrusima i dobrim manirima. Ne pokušavajte od nje da napravite čoveka koji naručuje bocu sa prskalicama.",
