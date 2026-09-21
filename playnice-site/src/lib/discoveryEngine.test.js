@@ -468,6 +468,49 @@ describe("Fragrance Intelligence — category, season and context", () => {
   });
 });
 
+describe("Fragrance Intelligence — exclusions", () => {
+  test.each([
+    "Bez vanile, nešto za dejt",
+    "Without vanilla, something for a date",
+    "Ne volim vanilu, hoću nešto za dejt",
+    "I don't like vanilla, I want something for a date",
+  ])("hard vanilla exclusion is respected by every result: %s", (query) => {
+    const output = expectRelevantWithResults(query);
+
+    output.results.forEach((item) => {
+      expect(item.profile.notes || []).not.toContain("vanilla");
+    });
+  });
+
+  test.each([
+    "Slatko, ali ne previše",
+    "Sweet, but not too sweet",
+  ])("moderate sweetness avoids very sweet top results: %s", (query) => {
+    const output = expectRelevantWithResults(query);
+
+    output.results.slice(0, 3).forEach((item) => {
+      expect(
+        item.profile.sweet ??
+          item.profile.sweetness ??
+          0
+      ).toBeLessThanOrEqual(6.4);
+    });
+  });
+
+  test.each([
+    "Sveže za leto, ali ne previše citrusno",
+    "Fresh for summer, but not too citrusy",
+  ])("soft citrus negation avoids citrus-heavy top results: %s", (query) => {
+    const output = expectRelevantWithResults(query);
+
+    output.results.slice(0, 3).forEach((item) => {
+      expect(
+        item.profile.citrus ?? 0
+      ).toBeLessThanOrEqual(6.5);
+    });
+  });
+});
+
 describe("Fragrance Intelligence — language parity", () => {
   test.each([
     [
