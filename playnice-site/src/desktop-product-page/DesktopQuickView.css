@@ -134,32 +134,31 @@
   }
 
   .desktop-quick-view__title-row h2 {
-  position: relative;
+    position: relative;
     min-width: 0;
+    height: 1.96em;
     margin: 0;
+    overflow: hidden;
     color: #f2eee6;
     font-family: "Cormorant Garamond", Georgia, serif;
     font-size: clamp(31px, 2.55vw, 41px);
     font-weight: 500;
     line-height: 0.98;
     letter-spacing: -0.025em;
-    min-height: 1.96em;
-    max-height: 1.96em;
-    overflow: hidden;
   }
-.desktop-quick-view__title-row h2 > .product-title-measure {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: auto;
-  min-height: 0;
-  max-height: none;
-  overflow: visible;
-  visibility: hidden;
-  pointer-events: none;
-  display: block;
-}
 
+  .desktop-quick-view__title-row h2 > .product-title-measure {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+    visibility: hidden;
+    pointer-events: none;
+  }
 
   .desktop-quick-view__wishlist {
     width: 42px;
