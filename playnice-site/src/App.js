@@ -7732,14 +7732,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         FAQ
       </button>
 
-      <button
-        type="button"
-        className="footer-link footer-catalog-link"
-        onClick={() => openCatalogPreview("/catalog-dark.pdf")}
-      >
-        <span>{lang === "sr" ? "Katalog" : "Catalog"}</span>
-        <span className="footer-catalog-caret" aria-hidden="true">⌄</span>
-      </button>
     </div>
 
     <div className="footer-column footer-contact-column">
