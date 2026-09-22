@@ -817,7 +817,6 @@ const showHeroSlideWhenReady = useCallback(
       season,
       scentMood,
       sortBy,
-      getMinPrice,
     }),
   [
     category,
