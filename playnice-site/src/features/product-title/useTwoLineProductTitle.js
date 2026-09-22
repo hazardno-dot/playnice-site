@@ -1,78 +1,38 @@
 import { useLayoutEffect, useRef, useState } from "react";
 
-const fitsInTwoLines = (element, text) => {
-  const rect = element.getBoundingClientRect();
-  const parent = element.parentElement;
-  const styles = window.getComputedStyle(element);
-  const maxWidth = Number.parseFloat(styles.maxWidth);
-  const width = Number.isFinite(maxWidth)
-    ? Math.min(rect.width, maxWidth)
-    : rect.width;
-
-  if (!width || !parent) return true;
-
-  // Keep the probe inside the real title container so parent-scoped CSS
-  // (PDP, mobile PDP and Quick View typography) is applied exactly as it is
-  // to the visible heading. The probe is absolutely positioned and hidden,
-  // so it never participates in layout.
-  const probe = element.cloneNode(false);
-
-  probe.textContent = text;
-  probe.removeAttribute("id");
-  probe.setAttribute("aria-hidden", "true");
-
-  Object.assign(probe.style, {
-    position: "absolute",
-    inset: "0 auto auto 0",
-    width: `${width}px`,
-    maxWidth: "none",
-    height: "auto",
-    maxHeight: "none",
-    minHeight: "0",
-    margin: "0",
-    overflow: "visible",
-    visibility: "hidden",
-    pointerEvents: "none",
-    display: "block",
-    WebkitLineClamp: "unset",
-    WebkitBoxOrient: "unset",
-  });
-
-  parent.appendChild(probe);
-
-  const probeStyles = window.getComputedStyle(probe);
-  const lineHeight = Number.parseFloat(probeStyles.lineHeight);
-  const maxTwoLineHeight = Number.isFinite(lineHeight)
-    ? lineHeight * 2 + 1
-    : Number.POSITIVE_INFINITY;
-  const fits = probe.scrollHeight <= maxTwoLineHeight;
-
-  probe.remove();
-  return fits;
-};
-
 export const useTwoLineProductTitle = (product) => {
   const fullName = product?.name || "";
   const fallbackName = product?.modalName || fullName;
   const [displayName, setDisplayName] = useState(fullName);
   const titleRef = useRef(null);
+  const measureRef = useRef(null);
 
   useLayoutEffect(() => {
-    const element = titleRef.current;
-    if (!element) return undefined;
+    const title = titleRef.current;
+    const measure = measureRef.current;
+    if (!title || !measure) return undefined;
 
     let frameId = 0;
     let disposed = false;
-    let lastWidth = element.getBoundingClientRect().width;
+    let lastWidth = title.getBoundingClientRect().width;
 
     const updateDisplayName = () => {
       window.cancelAnimationFrame(frameId);
-      frameId = window.requestAnimationFrame(() => {
-        if (disposed || !titleRef.current) return;
 
-        const nextName = fitsInTwoLines(titleRef.current, fullName)
-          ? fullName
-          : fallbackName;
+      frameId = window.requestAnimationFrame(() => {
+        if (disposed || !measureRef.current) return;
+
+        const probe = measureRef.current;
+        const styles = window.getComputedStyle(probe);
+        const lineHeight = Number.parseFloat(styles.lineHeight);
+        const maxTwoLineHeight = Number.isFinite(lineHeight)
+          ? lineHeight * 2 + 1
+          : Number.POSITIVE_INFINITY;
+
+        const nextName =
+          probe.scrollHeight <= maxTwoLineHeight
+            ? fullName
+            : fallbackName;
 
         setDisplayName((current) => (current === nextName ? current : nextName));
       });
@@ -82,15 +42,15 @@ export const useTwoLineProductTitle = (product) => {
 
     const resizeObserver =
       typeof ResizeObserver === "function"
-        ? new ResizeObserver((entries) => {
-            const nextWidth = entries[0]?.contentRect?.width ?? 0;
+        ? new ResizeObserver(() => {
+            const nextWidth = titleRef.current?.getBoundingClientRect().width ?? 0;
             if (Math.abs(nextWidth - lastWidth) < 0.5) return;
             lastWidth = nextWidth;
             updateDisplayName();
           })
         : null;
 
-    resizeObserver?.observe(element);
+    resizeObserver?.observe(title);
 
     if (document.fonts?.ready) {
       document.fonts.ready.then(() => {
@@ -105,5 +65,10 @@ export const useTwoLineProductTitle = (product) => {
     };
   }, [fullName, fallbackName]);
 
-  return { displayName, titleRef };
+  return {
+    displayName,
+    fullName,
+    titleRef,
+    measureRef,
+  };
 };
