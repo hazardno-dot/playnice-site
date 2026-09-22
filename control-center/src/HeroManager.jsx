@@ -21,12 +21,16 @@ function getActionTarget(slide) {
 }
 
 function getSummary(slides) {
+  const activeSlides = slides.filter((slide) => slide.enabled !== false);
+
   return {
     total: slides.length,
-    pinned: slides.filter((slide) => slide.pinnedFirst).length,
-    product: slides.filter((slide) => slide.actionPrimary === "product").length,
-    collection: slides.filter((slide) => slide.actionPrimary === "collection").length,
-    manifesto: slides.filter((slide) => slide.actionPrimary === "manifesto").length
+    active: activeSlides.length,
+    inactive: slides.length - activeSlides.length,
+    pinned: activeSlides.filter((slide) => slide.pinnedFirst).length,
+    product: activeSlides.filter((slide) => slide.actionPrimary === "product").length,
+    collection: activeSlides.filter((slide) => slide.actionPrimary === "collection").length,
+    manifesto: activeSlides.filter((slide) => slide.actionPrimary === "manifesto").length
   };
 }
 
@@ -144,7 +148,7 @@ function HeroOverview() {
     const load = async () => {
       setLoading(true);
       const [{ data, error }, { data: draftData, error: draftError }] = await Promise.all([
-        supabase.from("hero_slides").select("id,hero_key,kind,enabled,pinned_first,position,image,desktop_image,mobile_image,alt,action_type,product_slug,preferred_size,collection_title,collection_slugs,manifesto_type,updated_at").eq("enabled", true).order("position", { ascending: true }),
+        supabase.from("hero_slides").select("id,hero_key,kind,enabled,pinned_first,position,image,desktop_image,mobile_image,alt,action_type,product_slug,preferred_size,collection_title,collection_slugs,manifesto_type,updated_at").order("position", { ascending: true }),
         supabase.from("hero_drafts").select("hero_key,payload,review_status,updated_at,baseline_snapshot").order("updated_at", { ascending: false })
       ]);
       if (cancelled) return;
@@ -213,7 +217,7 @@ function HeroOverview() {
 
   return <div className="hero-manager">
     <section className="hero-manager-summary">
-      <div><span>Slides</span><strong>{summary.total}</strong><small>{source}</small></div>
+      <div><span>Slides</span><strong>{summary.active}</strong><small>{summary.total} mapped slots · {summary.inactive} inactive</small></div>
       <div className="good"><span>Pinned first</span><strong>{summary.pinned}</strong><small>fixed before shuffle</small></div>
       <div><span>Product actions</span><strong>{summary.product}</strong><small>open product modal</small></div>
       <div><span>Collections</span><strong>{summary.collection}</strong><small>open filtered Shop</small></div>
@@ -225,13 +229,13 @@ function HeroOverview() {
 
     <div className="hero-manager-layout">
       <section className="hero-manager-list">
-        <div className="hero-manager-section-head"><div><span>HERO CONTRACT</span><h2>{summary.total} mapped slides</h2></div><span className={`hero-manager-health ${health === "HEALTHY" ? "" : "warn"}`}>{health}</span></div>
-        <div className="hero-slide-list">{slides.map((slide) => <button key={slide.id} className={`hero-slide-row ${selectedId === slide.id ? "is-active" : ""}`} onClick={() => { setSelectedId(slide.id); setEditing(false); }}><img src={`${SHOP_ORIGIN}${slide.desktopImage || slide.image}`} alt="" loading="lazy" /><div className="hero-slide-row-copy"><div className="hero-slide-row-title"><strong>#{slide.id} · {slide.alt}</strong>{slide.pinnedFirst ? <span>PINNED FIRST</span> : null}{draftRows[slide.heroKey] ? <span className="hero-draft-badge">DRAFT</span> : null}</div><small>{slide.pinnedFirst ? "Fixed first" : "Shuffle pool"} · {slide.actionPrimary.toUpperCase()} · {getActionTarget(slide)}</small></div></button>)}</div>
+        <div className="hero-manager-section-head"><div><span>HERO CONTRACT</span><h2>{summary.total} mapped slots · {summary.active} active</h2></div><span className={`hero-manager-health ${health === "HEALTHY" ? "" : "warn"}`}>{health}</span></div>
+        <div className="hero-slide-list">{slides.map((slide) => <button key={slide.id} className={`hero-slide-row ${slide.enabled === false ? "is-inactive" : ""} ${selectedId === slide.id ? "is-active" : ""}`} onClick={() => { setSelectedId(slide.id); setEditing(false); }}><img src={`${SHOP_ORIGIN}${slide.desktopImage || slide.image}`} alt="" loading="lazy" /><div className="hero-slide-row-copy"><div className="hero-slide-row-title"><strong>#{slide.id} · {slide.alt}</strong>{slide.enabled === false ? <span className="hero-inactive-badge">INACTIVE SLOT</span> : null}{slide.pinnedFirst ? <span>PINNED FIRST</span> : null}{draftRows[slide.heroKey] ? <span className="hero-draft-badge">DRAFT</span> : null}</div><small>{slide.enabled === false ? "Inactive slot" : slide.pinnedFirst ? "Fixed first" : "Shuffle pool"} · {slide.actionPrimary.toUpperCase()} · {getActionTarget(slide)}</small></div></button>)}</div>
       </section>
 
       <section className="hero-manager-detail">
         {selected && selectedBaseline ? editing ? <HeroEditor key={`${selected.heroKey}-${selectedDraft?.updated_at || "new"}`} baseline={selectedBaseline} initial={selectedDraft?.payload || selected} allSlides={slides} onCancel={() => setEditing(false)} onSave={saveDraft} saving={saving} /> : <>
-          <div className="hero-manager-detail-head"><div><span>SLIDE / {selectedDraft ? "DRAFT PREVIEW" : "BASELINE"}</span><h2>#{selected.id} · {selected.alt}</h2></div><div className="hero-detail-actions">{selectedDraft ? <span className="hero-draft-badge large">DRAFT SAVED</span> : null}<button className="hero-edit-btn" onClick={() => setEditing(true)}>Edit slide</button></div></div>
+          <div className="hero-manager-detail-head"><div><span>SLIDE / {selectedDraft ? "DRAFT PREVIEW" : "BASELINE"}</span><h2>#{selected.id} · {selected.alt}</h2></div><div className="hero-detail-actions">{selected.enabled === false ? <span className="hero-inactive-badge large">INACTIVE SLOT</span> : null}{selectedDraft ? <span className="hero-draft-badge large">DRAFT SAVED</span> : null}<button className="hero-edit-btn" onClick={() => setEditing(true)}>Edit slide</button></div></div>
           <div className="hero-preview-grid"><div><span>DESKTOP</span><img src={`${SHOP_ORIGIN}${selected.desktopImage || selected.image}`} alt={selected.alt} /></div><div className="mobile"><span>MOBILE · 4:3</span><img src={`${SHOP_ORIGIN}${selected.mobileImage || selected.image}`} alt={selected.alt} /></div></div>
           <div className="hero-contract-grid"><div><span>ID</span><strong>{selected.id}</strong></div><div><span>KIND</span><strong>{selected.kind}</strong></div><div><span>ACTION</span><strong>{selected.actionPrimary}</strong></div><div><span>TARGET</span><strong>{getActionTarget(selected)}</strong></div>{selected.preferredSize ? <div><span>PREFERRED SIZE</span><strong>{selected.preferredSize}</strong></div> : null}<div><span>DESKTOP PATH</span><code>{selected.desktopImage || selected.image}</code></div><div><span>MOBILE PATH</span><code>{selected.mobileImage || selected.image}</code></div></div>
           {selected.actionPrimary === "collection" ? <section className="hero-collection-contract"><span>COLLECTION PRODUCT SLUGS</span><ol>{selected.actionCollection.map((slug) => <li key={slug}><code>{slug}</code></li>)}</ol></section> : null}
