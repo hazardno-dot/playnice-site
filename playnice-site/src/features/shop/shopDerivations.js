@@ -6,6 +6,84 @@ export const normalizeShopSearch = (value = "") =>
     .replace(/\s+/g, " ")
     .trim();
 
+const getEffectiveSizePrice = (product, size) => {
+  const basePrice = Number(product?.sizes?.[size]);
+
+  if (!Number.isFinite(basePrice) || basePrice < 0) {
+    return null;
+  }
+
+  const discountPercent =
+    product?.discount?.size === size
+      ? Number(product.discount.percent)
+      : 0;
+
+  const safeDiscountPercent =
+    Number.isFinite(discountPercent) &&
+    discountPercent > 0
+      ? Math.min(discountPercent, 100)
+      : 0;
+
+  return Number(
+    (
+      basePrice *
+      (1 - safeDiscountPercent / 100)
+    ).toFixed(2)
+  );
+};
+
+export const getComparableProductPrice = (product) => {
+  const standardSize = "5ml";
+  const standardPrice =
+    getEffectiveSizePrice(product, standardSize);
+
+  if (standardPrice != null) {
+    return standardPrice;
+  }
+
+  const fallbackSizes = [
+    "10ml",
+    "2ml",
+    "20ml",
+  ];
+
+  const orderedSizes = [
+    ...fallbackSizes,
+    ...Object.keys(product?.sizes || {}).filter(
+      (size) => !fallbackSizes.includes(size)
+    ),
+  ];
+
+  for (const size of orderedSizes) {
+    const match = String(size).match(
+      /^(\d+(?:\.\d+)?)ml$/i
+    );
+
+    if (!match) continue;
+
+    const volumeMl = Number(match[1]);
+    const effectivePrice =
+      getEffectiveSizePrice(product, size);
+
+    if (
+      !Number.isFinite(volumeMl) ||
+      volumeMl <= 0 ||
+      effectivePrice == null
+    ) {
+      continue;
+    }
+
+    return Number(
+      (
+        effectivePrice *
+        (5 / volumeMl)
+      ).toFixed(2)
+    );
+  }
+
+  return null;
+};
+
 export const filterAndSortProducts = ({
   products = [],
   heroCollectionFilter = null,
@@ -100,22 +178,40 @@ export const filterAndSortProducts = ({
 
     case "priceLow":
       return [...result].sort((a, b) => {
-        const priceDifference =
-          getMinPrice(a) - getMinPrice(b);
+        const aPrice =
+          getComparableProductPrice(a);
+        const bPrice =
+          getComparableProductPrice(b);
+
+        if (aPrice == null && bPrice == null) {
+          return newestFirstTieBreak(a, b);
+        }
+
+        if (aPrice == null) return 1;
+        if (bPrice == null) return -1;
 
         return (
-          priceDifference ||
+          aPrice - bPrice ||
           newestFirstTieBreak(a, b)
         );
       });
 
     case "priceHigh":
       return [...result].sort((a, b) => {
-        const priceDifference =
-          getMinPrice(b) - getMinPrice(a);
+        const aPrice =
+          getComparableProductPrice(a);
+        const bPrice =
+          getComparableProductPrice(b);
+
+        if (aPrice == null && bPrice == null) {
+          return newestFirstTieBreak(a, b);
+        }
+
+        if (aPrice == null) return 1;
+        if (bPrice == null) return -1;
 
         return (
-          priceDifference ||
+          bPrice - aPrice ||
           newestFirstTieBreak(a, b)
         );
       });
