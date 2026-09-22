@@ -1,5 +1,6 @@
 import {
   normalizeShopSearch,
+  getComparableProductPrice,
   filterAndSortProducts,
   getCategoryOptions,
   getScentMoodOptions,
@@ -9,9 +10,6 @@ import {
   getPaginationData,
   getProductThumbnail,
 } from "./shopDerivations";
-
-const getMinPrice = (product) =>
-  Math.min(...Object.values(product.sizes));
 
 const products = [
   {
@@ -64,7 +62,6 @@ describe("shopDerivations", () => {
       season: "summer",
       scentMood: "clean",
       sortBy: "featured",
-      getMinPrice,
     });
 
     expect(result.map((p) => p.id)).toEqual([1]);
@@ -77,7 +74,6 @@ describe("shopDerivations", () => {
       season: "summer",
       scentMood: "clean",
       sortBy: "featured",
-      getMinPrice,
     });
 
     expect(result.map((p) => p.id)).toEqual([2, 1]);
@@ -87,28 +83,89 @@ describe("shopDerivations", () => {
     const result = filterAndSortProducts({
       products,
       sortBy: "rating",
-      getMinPrice,
     });
 
     expect(result.map((p) => p.id)).toEqual([3, 2, 1]);
   });
 
-  test("sorts by price both directions", () => {
+  test("sorts by comparable 5ml price instead of cheapest available size", () => {
+    const mixedSizes = [
+      {
+        id: 1,
+        slug: "has-2ml",
+        name: "Has 2ml",
+        category: "Niche",
+        season: "all",
+        moods: [],
+        sizes: {
+          "2ml": 9,
+          "5ml": 20,
+          "10ml": 36,
+        },
+      },
+      {
+        id: 2,
+        slug: "no-2ml",
+        name: "No 2ml",
+        category: "Niche",
+        season: "all",
+        moods: [],
+        sizes: {
+          "5ml": 16,
+          "10ml": 29,
+        },
+      },
+      {
+        id: 3,
+        slug: "cheaper",
+        name: "Cheaper",
+        category: "Niche",
+        season: "all",
+        moods: [],
+        sizes: {
+          "2ml": 7.5,
+          "5ml": 15.3,
+          "10ml": 30,
+        },
+      },
+    ];
+
     expect(
       filterAndSortProducts({
-        products,
+        products: mixedSizes,
         sortBy: "priceLow",
-        getMinPrice,
       }).map((p) => p.id)
     ).toEqual([3, 2, 1]);
 
     expect(
       filterAndSortProducts({
-        products,
+        products: mixedSizes,
         sortBy: "priceHigh",
-        getMinPrice,
       }).map((p) => p.id)
     ).toEqual([1, 2, 3]);
+  });
+
+  test("uses discounted 5ml price and normalizes a fallback size to 5ml", () => {
+    expect(
+      getComparableProductPrice({
+        sizes: {
+          "5ml": 20,
+          "10ml": 36,
+        },
+        discount: {
+          size: "5ml",
+          percent: 15,
+        },
+      })
+    ).toBe(17);
+
+    expect(
+      getComparableProductPrice({
+        sizes: {
+          "10ml": 30,
+        },
+      })
+    ).toBe(15);
   });
 
   test("preserves hero collection order for featured", () => {
@@ -119,7 +176,6 @@ describe("shopDerivations", () => {
         "three",
       ],
       sortBy: "featured",
-      getMinPrice,
     });
 
     expect(result.map((p) => p.id)).toEqual([1, 3]);
