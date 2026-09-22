@@ -87,6 +87,16 @@
     max-height: 380px;
     object-fit: contain;
     filter: drop-shadow(0 24px 26px rgba(0, 0, 0, 0.48));
+    transform: translateY(0) scale(1);
+    transition:
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 260ms ease;
+    will-change: transform;
+  }
+
+  .desktop-quick-view__image-stage:hover img {
+    transform: translateY(-8px) scale(1.018);
+    filter: drop-shadow(0 32px 34px rgba(0, 0, 0, 0.56));
   }
 
   .desktop-quick-view__content {
@@ -529,5 +539,15 @@
 
   .desktop-quick-view__add {
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desktop-quick-view__image-stage img {
+    transition: none;
+  }
+
+  .desktop-quick-view__image-stage:hover img {
+    transform: none;
   }
 }
