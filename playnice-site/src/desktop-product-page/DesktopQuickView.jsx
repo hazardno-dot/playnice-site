@@ -98,7 +98,11 @@ export default function DesktopQuickView() {
 
       if (!nextProduct) return;
 
-      const firstSize = Object.keys(nextProduct.sizes || {})[0] || "";
+      const requestedSize = String(event?.detail?.preferredSize || "");
+      const firstSize =
+        requestedSize && nextProduct.sizes?.[requestedSize]
+          ? requestedSize
+          : Object.keys(nextProduct.sizes || {})[0] || "";
       const listContext =
         event?.detail?.analyticsListContext || null;
       const selection =
