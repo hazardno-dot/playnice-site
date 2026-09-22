@@ -11,9 +11,6 @@ import {
   getProductThumbnail,
 } from "./shopDerivations";
 
-const getMinPrice = (product) =>
-  Math.min(...Object.values(product.sizes));
-
 const products = [
   {
     id: 1,
@@ -65,7 +62,6 @@ describe("shopDerivations", () => {
       season: "summer",
       scentMood: "clean",
       sortBy: "featured",
-      getMinPrice,
     });
 
     expect(result.map((p) => p.id)).toEqual([1]);
@@ -78,7 +74,6 @@ describe("shopDerivations", () => {
       season: "summer",
       scentMood: "clean",
       sortBy: "featured",
-      getMinPrice,
     });
 
     expect(result.map((p) => p.id)).toEqual([2, 1]);
@@ -88,7 +83,6 @@ describe("shopDerivations", () => {
     const result = filterAndSortProducts({
       products,
       sortBy: "rating",
-      getMinPrice,
     });
 
     expect(result.map((p) => p.id)).toEqual([3, 2, 1]);
@@ -140,7 +134,6 @@ describe("shopDerivations", () => {
       filterAndSortProducts({
         products: mixedSizes,
         sortBy: "priceLow",
-        getMinPrice,
       }).map((p) => p.id)
     ).toEqual([3, 2, 1]);
 
@@ -148,7 +141,6 @@ describe("shopDerivations", () => {
       filterAndSortProducts({
         products: mixedSizes,
         sortBy: "priceHigh",
-        getMinPrice,
       }).map((p) => p.id)
     ).toEqual([1, 2, 3]);
   });
@@ -184,7 +176,6 @@ describe("shopDerivations", () => {
         "three",
       ],
       sortBy: "featured",
-      getMinPrice,
     });
 
     expect(result.map((p) => p.id)).toEqual([1, 3]);
