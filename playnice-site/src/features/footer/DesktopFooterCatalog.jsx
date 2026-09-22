@@ -43,15 +43,15 @@ function DesktopFooterCatalog() {
         return;
       }
 
-      const firstLink = serviceColumn.querySelector(".footer-link");
-      if (!firstLink) {
+      const lastLink = serviceColumn.querySelector(".footer-link:last-of-type");
+      if (!lastLink) {
         frameId = window.requestAnimationFrame(resolveTarget);
         return;
       }
 
       mountNode = document.createElement("div");
       mountNode.className = "desktop-footer-catalog-mount";
-      firstLink.insertAdjacentElement("afterend", mountNode);
+      lastLink.insertAdjacentElement("afterend", mountNode);
       setTarget(mountNode);
     };
 

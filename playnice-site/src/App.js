@@ -7653,31 +7653,34 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 
   <div className="site-footer-inner">
     <div className="footer-brand">
-      <div className="footer-logo">
-        <img
-          className="footer-logo-image"
-          src="/playnice-header-logo.svg"
-          alt="PlayNice Premium Fragrance House"
-        />
-      </div>
       <p className="footer-brand-text">
         {lang === "sr"
           ? "Kurirana selekcija designer, niche i Arabian parfema za one koji žele da probaju pre pune bočice."
           : "A curated selection of designer, niche and Arabian fragrances for those who want to try before committing to a full bottle."}
       </p>
 
-      <div className="social-links">
-        <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" aria-label="PlayNice Instagram">
-          <i className="fa-brands fa-instagram"></i>
-        </a>
+      <div className="footer-brand-row">
+        <div className="footer-logo">
+          <img
+            className="footer-logo-image"
+            src="/playnice-header-logo.svg"
+            alt="PlayNice Premium Fragrance House"
+          />
+        </div>
 
-        <a href="https://wa.me/382XXXXXXXXX" target="_blank" rel="noreferrer" aria-label="PlayNice WhatsApp">
-          <i className="fa-brands fa-whatsapp"></i>
-        </a>
+        <div className="social-links">
+          <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" aria-label="PlayNice Instagram">
+            <i className="fa-brands fa-instagram"></i>
+          </a>
 
-        <a href="https://tiktok.com/@playnice" target="_blank" rel="noreferrer" aria-label="PlayNice TikTok">
-          <i className="fa-brands fa-tiktok"></i>
-        </a>
+          <a href="https://wa.me/382XXXXXXXXX" target="_blank" rel="noreferrer" aria-label="PlayNice WhatsApp">
+            <i className="fa-brands fa-whatsapp"></i>
+          </a>
+
+          <a href="https://tiktok.com/@playnice" target="_blank" rel="noreferrer" aria-label="PlayNice TikTok">
+            <i className="fa-brands fa-tiktok"></i>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -7721,13 +7724,26 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         {lang === "sr" ? "Kako funkcioniše?" : "How it works"}
       </button>
 
+      <button type="button" className="footer-link" onClick={() => setPrivateSelectionOpen(true)}>
+        Private Selection
+      </button>
+
       <button type="button" className="footer-link" onClick={() => setFaqOpen(true)}>
         FAQ
       </button>
 
-      <button type="button" className="footer-link" onClick={() => setPrivateSelectionOpen(true)}>
-        Private Selection
-      </button>
+    </div>
+
+    <div className="footer-column footer-contact-column">
+      <h4>{lang === "sr" ? "Kontakt" : "Contact"}</h4>
+
+      <a href="mailto:info@playniceshop.me" className="footer-contact">
+        info@playniceshop.me
+      </a>
+
+      <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" className="footer-contact">
+        @playnice.me
+      </a>
 
       <button
         type="button"
@@ -7741,20 +7757,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       >
         {lang === "sr" ? "Dostava i povrat" : "Delivery & Returns"}
       </button>
-    </div>
-
-    <div className="footer-column footer-contact-column">
-      <h4>{lang === "sr" ? "Kontakt" : "Contact"}</h4>
-
-      <a href="mailto:info@playniceshop.me" className="footer-contact">
-       info@playniceshop.me
-      </a>
-
-      <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" className="footer-contact">
-        @playnice.me
-      </a>
-
-      <p>{lang === "sr" ? "Dostava širom Crne Gore" : "Delivery across Montenegro"}</p>
     </div>
   </div>
 

@@ -103,9 +103,18 @@
   .footer-brand {
     margin: 0;
     text-align: center;
+    align-items: center;
+  }
+
+  /* Desktop groups logo + socials in one row.
+     Flatten that wrapper on mobile so the original mobile hierarchy stays:
+     logo -> copy -> socials. */
+  .footer-brand-row {
+    display: contents;
   }
 
   .footer-logo {
+    order: 1;
     display: block;
     width: 105px;
     margin-left: auto;
@@ -114,6 +123,7 @@
   }
 
   .footer-brand-text {
+    order: 2;
     max-width: 310px;
     margin: 8px auto 0;
     font-size: 12.3px;
@@ -124,6 +134,7 @@
   }
 
   .social-links {
+    order: 3;
     margin-top: 9px;
     gap: 8px;
     justify-content: center;
