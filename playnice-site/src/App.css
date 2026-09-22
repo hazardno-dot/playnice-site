@@ -11815,19 +11815,6 @@ button.active-filter-chip:focus-visible {
   transform: translateX(2px);
 }
 
-.footer-catalog-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.footer-catalog-caret {
-  color: rgba(220, 181, 107, 0.72);
-  font-size: 0.78em;
-  line-height: 1;
-  transform: translateY(-1px);
-}
-
 .footer-contact-column p {
   margin: 3px 0 0;
 
