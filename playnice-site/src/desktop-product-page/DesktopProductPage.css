@@ -161,19 +161,20 @@
 .desktop-product-page__title-row h1 {
   position: relative;
   max-width: 620px;
+  height: 1.96em;
   margin: 0;
+  overflow: hidden;
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(44px, 4.3vw, 70px);
   font-weight: 500;
   line-height: 0.98;
   letter-spacing: -0.025em;
-  min-height: 1.96em;
-  max-height: 1.96em;
-  overflow: hidden;
 }
+
 .desktop-product-page__title-row h1 > .product-title-measure {
   position: absolute;
   inset: 0;
+  display: block;
   width: 100%;
   height: auto;
   min-height: 0;
@@ -181,9 +182,7 @@
   overflow: visible;
   visibility: hidden;
   pointer-events: none;
-  display: block;
 }
-
 
 .desktop-product-page__inspired {
   margin: 16px 0 0;
