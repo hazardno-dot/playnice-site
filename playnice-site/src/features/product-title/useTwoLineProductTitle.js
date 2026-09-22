@@ -2,8 +2,12 @@ import { useLayoutEffect, useRef, useState } from "react";
 
 const fitsInTwoLines = (element, text) => {
   const rect = element.getBoundingClientRect();
-  const width = rect.width;
   const parent = element.parentElement;
+  const styles = window.getComputedStyle(element);
+  const maxWidth = Number.parseFloat(styles.maxWidth);
+  const width = Number.isFinite(maxWidth)
+    ? Math.min(rect.width, maxWidth)
+    : rect.width;
 
   if (!width || !parent) return true;
 
@@ -36,8 +40,8 @@ const fitsInTwoLines = (element, text) => {
 
   parent.appendChild(probe);
 
-  const styles = window.getComputedStyle(probe);
-  const lineHeight = Number.parseFloat(styles.lineHeight);
+  const probeStyles = window.getComputedStyle(probe);
+  const lineHeight = Number.parseFloat(probeStyles.lineHeight);
   const maxTwoLineHeight = Number.isFinite(lineHeight)
     ? lineHeight * 2 + 1
     : Number.POSITIVE_INFINITY;
