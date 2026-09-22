@@ -195,6 +195,9 @@ export default function DesktopQuickView() {
     [product]
   );
 
+  const { displayName: productTitle, titleRef: productTitleRef } =
+    useTwoLineProductTitle(product);
+
   if (!product) return null;
 
   const sizes = Object.entries(product.sizes || {});
@@ -211,8 +214,6 @@ export default function DesktopQuickView() {
   const miniTagImage = getMiniTagImage(product);
   const ratingStars = getRatingStarCount(product.rating);
   const sizeHelper = getSizeHelper(activeSize, lang);
-  const { displayName: productTitle, titleRef: productTitleRef } =
-    useTwoLineProductTitle(product);
 
   const close = () => setProduct(null);
 
