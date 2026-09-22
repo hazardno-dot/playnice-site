@@ -92,7 +92,6 @@ export const filterAndSortProducts = ({
   season = "All",
   scentMood = "All",
   sortBy = "featured",
-  getMinPrice,
 }) => {
   const sourceProducts = heroCollectionFilter?.length
     ? heroCollectionFilter
