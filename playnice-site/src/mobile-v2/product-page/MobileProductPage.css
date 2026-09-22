@@ -97,6 +97,9 @@
     color: #f3e7d0;
     font: 600 clamp(2rem, 8.7vw, 2.6rem)/0.96 "Cormorant Garamond", serif;
     letter-spacing: -0.035em;
+    min-height: 1.92em;
+    max-height: 1.92em;
+    overflow: hidden;
     text-wrap: wrap;
     overflow-wrap: normal;
     word-break: normal;
