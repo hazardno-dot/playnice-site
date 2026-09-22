@@ -19936,8 +19936,8 @@ body.overlay-lock .header-system {
 }
 
 @media (max-width: 640px) {
-  .shop-results-meta strong {
-    margin-inline-end: 5px;
+  .shop-results-meta {
+    display: none;
   }
 }
 
