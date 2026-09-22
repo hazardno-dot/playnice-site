@@ -2789,7 +2789,7 @@ export const products = [
     shortName: "Hacivat X",
     category: "Niche",
     image: "/products/nishane-hacivat-x.png",
-    sizes: {"2ml":14.5,"5ml":33,"10ml":59},
+    sizes: {"2ml": 11,"5ml": 26,"10ml": 47},
     badge: "LUXURY PICK",
     rating: 9.2,
     ratingLabel: "Premium Pick",
