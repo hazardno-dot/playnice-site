@@ -7438,25 +7438,67 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   <div className="active-filters-bar active-filters-bar-compact">
     <div className="active-filters-left">
       {category !== "All" && (
-        <span className="active-filter-chip">
-          {getCategoryLabel(category)}
-        </span>
+        <button
+          type="button"
+          className="active-filter-chip active-filter-chip-remove"
+          onClick={() => setCategory("All")}
+          aria-label={
+            lang === "sr"
+              ? `Ukloni filter kategorije: ${getCategoryLabel(category)}`
+              : `Remove category filter: ${getCategoryLabel(category)}`
+          }
+        >
+          <span>{getCategoryLabel(category)}</span>
+          <span className="active-filter-chip-x" aria-hidden="true">×</span>
+        </button>
       )}
 
       {season !== "All" && (
-        <span className="active-filter-chip">
-          {selectedSeasonOption.label}
-        </span>
+        <button
+          type="button"
+          className="active-filter-chip active-filter-chip-remove"
+          onClick={() => setSeason("All")}
+          aria-label={
+            lang === "sr"
+              ? `Ukloni filter sezone: ${selectedSeasonOption.label}`
+              : `Remove season filter: ${selectedSeasonOption.label}`
+          }
+        >
+          <span>{selectedSeasonOption.label}</span>
+          <span className="active-filter-chip-x" aria-hidden="true">×</span>
+        </button>
       )}
 
       {scentMood !== "All" && (
-        <span className="active-filter-chip">
-          {selectedScentMood.label}
-        </span>
+        <button
+          type="button"
+          className="active-filter-chip active-filter-chip-remove"
+          onClick={() => setScentMood("All")}
+          aria-label={
+            lang === "sr"
+              ? `Ukloni mood filter: ${selectedScentMood.label}`
+              : `Remove mood filter: ${selectedScentMood.label}`
+          }
+        >
+          <span>{selectedScentMood.label}</span>
+          <span className="active-filter-chip-x" aria-hidden="true">×</span>
+        </button>
       )}
 
       {searchTerm.trim() !== "" && (
-        <span className="active-filter-chip">“{searchTerm.trim()}”</span>
+        <button
+          type="button"
+          className="active-filter-chip active-filter-chip-remove"
+          onClick={() => setSearchTerm("")}
+          aria-label={
+            lang === "sr"
+              ? `Ukloni pretragu: ${searchTerm.trim()}`
+              : `Remove search: ${searchTerm.trim()}`
+          }
+        >
+          <span>“{searchTerm.trim()}”</span>
+          <span className="active-filter-chip-x" aria-hidden="true">×</span>
+        </button>
       )}
     </div>
 
@@ -7470,7 +7512,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         setSearchTerm("");
       }}
     >
-      {lang === "sr" ? "Obriši" : "Clear"}
+      {lang === "sr" ? "Obriši sve" : "Clear all"}
     </button>
   </div>
 )}
