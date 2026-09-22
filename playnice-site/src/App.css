@@ -19738,7 +19738,7 @@ body.overlay-lock .header-system {
     flex: 0 0 auto;
     color: rgba(220, 181, 107, 0.58);
     font-size: 0.58rem;
-    font-weight: 800;
+    font-weight: 620;
     letter-spacing: 0.09em;
     line-height: 1;
     text-transform: uppercase;
@@ -19755,7 +19755,7 @@ body.overlay-lock .header-system {
     overflow: hidden;
     color: rgba(255, 248, 235, 0.88);
     font-size: 0.78rem;
-    font-weight: 700;
+    font-weight: 560;
     line-height: 1;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -19778,11 +19778,36 @@ body.overlay-lock .header-system {
     margin-bottom: 9px;
   }
 
+  .scent-mood-filter-header > span {
+    font-weight: 600;
+  }
+
+  .scent-mood-filter-header small {
+    font-weight: 600;
+  }
+
+  .scent-mood-filter-header-inline .scent-mood-inline-description strong {
+    font-weight: 600;
+  }
+
+  .premium-category-option {
+    font-weight: 550;
+  }
+
+  .premium-category-option.active {
+    font-weight: 650;
+  }
+
   .scent-mood-chip {
     min-height: 33px;
     padding-inline: 13px;
     border-color: rgba(220, 181, 107, 0.13);
+    font-weight: 580;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  }
+
+  .scent-mood-chip.active {
+    font-weight: 680;
   }
 
   .active-filters-bar-compact {
@@ -19801,6 +19826,7 @@ body.overlay-lock .header-system {
     border-color: rgba(220, 181, 107, 0.12);
     background: rgba(220, 181, 107, 0.025);
     color: rgba(255, 248, 235, 0.70);
+    font-weight: 560;
   }
 
   .active-filters-bar-compact .clear-filters-button {
@@ -19809,6 +19835,7 @@ body.overlay-lock .header-system {
     border: 0;
     color: rgba(220, 181, 107, 0.68);
     background: transparent;
+    font-weight: 600;
   }
 
   .active-filters-bar-compact .clear-filters-button:hover {
@@ -19831,7 +19858,7 @@ body.overlay-lock .header-system {
     color: rgba(255, 248, 235, 0.42);
     font-family: "Inter", sans-serif;
     font-size: 0.64rem;
-    font-weight: 650;
+    font-weight: 500;
     letter-spacing: 0.07em;
     text-transform: uppercase;
   }
@@ -19839,12 +19866,13 @@ body.overlay-lock .header-system {
   .shop-results-meta strong {
     color: rgba(220, 181, 107, 0.86);
     font-size: 0.72rem;
-    font-weight: 820;
+    font-weight: 650;
   }
 
   .products-per-page-buttons {
     gap: 6px;
     color: rgba(255, 248, 235, 0.42);
+    font-weight: 560;
   }
 
   .per-page-button {
@@ -19852,6 +19880,19 @@ body.overlay-lock .header-system {
     height: 27px;
     background: rgba(9, 9, 9, 0.54);
     box-shadow: none;
+    font-weight: 600;
+  }
+
+  .per-page-button.is-active {
+    font-weight: 700;
+  }
+
+  .shop-pagination-row .pagination-wrap button {
+    font-weight: 560;
+  }
+
+  .shop-pagination-row .pagination-number.active {
+    font-weight: 680;
   }
 }
 
