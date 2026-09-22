@@ -1,5 +1,28 @@
 import { useLayoutEffect, useRef, useState } from "react";
 
+const countRenderedLines = (element) => {
+  const textNode = element.firstChild;
+  if (!textNode || textNode.nodeType !== Node.TEXT_NODE) return 0;
+
+  const range = document.createRange();
+  range.selectNodeContents(element);
+
+  const rects = Array.from(range.getClientRects()).filter(
+    (rect) => rect.width > 0 && rect.height > 0
+  );
+
+  range.detach?.();
+
+  const lineTops = [];
+  rects.forEach((rect) => {
+    if (!lineTops.some((top) => Math.abs(top - rect.top) < 1)) {
+      lineTops.push(rect.top);
+    }
+  });
+
+  return lineTops.length;
+};
+
 export const useTwoLineProductTitle = (product) => {
   const fullName = product?.name || "";
   const fallbackName = product?.modalName || fullName;
@@ -12,32 +35,23 @@ export const useTwoLineProductTitle = (product) => {
     const measure = measureRef.current;
     if (!title || !measure) return undefined;
 
-    let frameId = 0;
     let disposed = false;
     let lastWidth = title.getBoundingClientRect().width;
 
     const updateDisplayName = () => {
-      window.cancelAnimationFrame(frameId);
+      if (disposed || !measureRef.current) return;
 
-      frameId = window.requestAnimationFrame(() => {
-        if (disposed || !measureRef.current) return;
+      const renderedLines = countRenderedLines(measureRef.current);
+      const nextName =
+        renderedLines > 0 && renderedLines <= 2
+          ? fullName
+          : fallbackName;
 
-        const probe = measureRef.current;
-        const styles = window.getComputedStyle(probe);
-        const lineHeight = Number.parseFloat(styles.lineHeight);
-        const maxTwoLineHeight = Number.isFinite(lineHeight)
-          ? lineHeight * 2 + 1
-          : Number.POSITIVE_INFINITY;
-
-        const nextName =
-          probe.scrollHeight <= maxTwoLineHeight
-            ? fullName
-            : fallbackName;
-
-        setDisplayName((current) => (current === nextName ? current : nextName));
-      });
+      setDisplayName((current) => (current === nextName ? current : nextName));
     };
 
+    // useLayoutEffect runs before paint, so the initial choice is made without
+    // exposing a full-name -> fallback swap to the user.
     updateDisplayName();
 
     const resizeObserver =
@@ -60,7 +74,6 @@ export const useTwoLineProductTitle = (product) => {
 
     return () => {
       disposed = true;
-      window.cancelAnimationFrame(frameId);
       resizeObserver?.disconnect();
     };
   }, [fullName, fallbackName]);
