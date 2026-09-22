@@ -195,8 +195,12 @@ export default function DesktopQuickView() {
     [product]
   );
 
-  const { displayName: productTitle, titleRef: productTitleRef } =
-    useTwoLineProductTitle(product);
+  const {
+    displayName: productTitle,
+    fullName: productFullName,
+    titleRef: productTitleRef,
+    measureRef: productTitleMeasureRef,
+  } = useTwoLineProductTitle(product);
 
   if (!product) return null;
 
@@ -337,7 +341,8 @@ export default function DesktopQuickView() {
 
           <div className="desktop-quick-view__title-row">
             <h2 id="desktop-quick-view-title" ref={productTitleRef}>
-              {productTitle}
+              <span ref={productTitleMeasureRef} className="product-title-measure" aria-hidden="true">{productFullName}</span>
+              <span>{productTitle}</span>
             </h2>
 
             <button
