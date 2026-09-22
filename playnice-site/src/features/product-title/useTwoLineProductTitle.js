@@ -3,9 +3,14 @@ import { useLayoutEffect, useRef, useState } from "react";
 const fitsInTwoLines = (element, text) => {
   const rect = element.getBoundingClientRect();
   const width = rect.width;
-  if (!width) return true;
+  const parent = element.parentElement;
 
-  const styles = window.getComputedStyle(element);
+  if (!width || !parent) return true;
+
+  // Keep the probe inside the real title container so parent-scoped CSS
+  // (PDP, mobile PDP and Quick View typography) is applied exactly as it is
+  // to the visible heading. The probe is absolutely positioned and hidden,
+  // so it never participates in layout.
   const probe = element.cloneNode(false);
 
   probe.textContent = text;
@@ -13,14 +18,14 @@ const fitsInTwoLines = (element, text) => {
   probe.setAttribute("aria-hidden", "true");
 
   Object.assign(probe.style, {
-    position: "fixed",
-    left: "-99999px",
-    top: "0",
+    position: "absolute",
+    inset: "0 auto auto 0",
     width: `${width}px`,
     maxWidth: "none",
     height: "auto",
     maxHeight: "none",
     minHeight: "0",
+    margin: "0",
     overflow: "visible",
     visibility: "hidden",
     pointerEvents: "none",
@@ -29,10 +34,10 @@ const fitsInTwoLines = (element, text) => {
     WebkitBoxOrient: "unset",
   });
 
-  document.body.appendChild(probe);
+  parent.appendChild(probe);
 
-  const probeStyles = window.getComputedStyle(probe);
-  const lineHeight = Number.parseFloat(probeStyles.lineHeight || styles.lineHeight);
+  const styles = window.getComputedStyle(probe);
+  const lineHeight = Number.parseFloat(styles.lineHeight);
   const maxTwoLineHeight = Number.isFinite(lineHeight)
     ? lineHeight * 2 + 1
     : Number.POSITIVE_INFINITY;
