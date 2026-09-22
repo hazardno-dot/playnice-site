@@ -2763,7 +2763,7 @@ export const products = [
     shortName: "Sauvage EDP",
     category: "Designer",
     image: "/products/christian-dior-sauvage-edp.png",
-    sizes: {"2ml":6.5,"5ml":15,"10ml":27},
+    sizes: {"2ml": 5,"5ml": 12,"10ml": 21},
     badge: "ICONIC",
     rating: 8.8,
     ratingLabel: "Iconic Pick",
