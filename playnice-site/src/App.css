@@ -19935,6 +19935,12 @@ body.overlay-lock .header-system {
   }
 }
 
+@media (max-width: 640px) {
+  .shop-results-meta strong {
+    margin-inline-end: 5px;
+  }
+}
+
 @media (min-width: 641px) and (max-width: 1100px) {
   .shop-toolbar-compact {
     grid-template-columns: 1fr;
