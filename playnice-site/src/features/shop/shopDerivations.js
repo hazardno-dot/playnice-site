@@ -7,9 +7,15 @@ export const normalizeShopSearch = (value = "") =>
     .trim();
 
 const getEffectiveSizePrice = (product, size) => {
-  const basePrice = Number(product?.sizes?.[size]);
+  const rawPrice = product?.sizes?.[size];
 
-  if (!Number.isFinite(basePrice) || basePrice < 0) {
+  if (rawPrice == null) {
+    return null;
+  }
+
+  const basePrice = Number(rawPrice);
+
+  if (!Number.isFinite(basePrice) || basePrice <= 0) {
     return null;
   }
 
