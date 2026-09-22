@@ -153,6 +153,11 @@
   gap: 24px;
 }
 
+.desktop-product-page__title-row > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .desktop-product-page__title-row h1 {
   max-width: 620px;
   margin: 0;
@@ -161,6 +166,9 @@
   font-weight: 500;
   line-height: 0.98;
   letter-spacing: -0.025em;
+  min-height: 1.96em;
+  max-height: 1.96em;
+  overflow: hidden;
 }
 
 .desktop-product-page__inspired {
