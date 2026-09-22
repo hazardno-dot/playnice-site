@@ -200,6 +200,9 @@ export default function MobileProductPage({
       .slice(0, 4);
   }, [profile]);
 
+  const { displayName: productTitle, titleRef: productTitleRef } =
+    useTwoLineProductTitle(product);
+
   if (!product) return null;
 
   const sizes = Object.entries(product.sizes || {});
@@ -219,8 +222,6 @@ export default function MobileProductPage({
   const characterTags = Array.isArray(copy.tags?.[lang]) ? copy.tags[lang].slice(0, 3) : [];
   const activeCartKey = `${product.id}-${activeSize}`;
   const isJustAdded = addedCartKey === activeCartKey;
-  const { displayName: productTitle, titleRef: productTitleRef } =
-    useTwoLineProductTitle(product);
 
   const handleAddToCartClick = () => {
     if (!activeSize) return;
