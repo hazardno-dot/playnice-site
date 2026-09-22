@@ -1,9 +1,31 @@
 import { useLayoutEffect, useRef, useState } from "react";
 
-const countRenderedLines = (element) => {
-  const textNode = element.firstChild;
-  if (!textNode || textNode.nodeType !== Node.TEXT_NODE) return 0;
+const COMPACT_CONCENTRATIONS = [
+  [/Extrait de Parfum/gi, "Extrait"],
+  [/Eau de Parfum/gi, "EDP"],
+  [/Eau de Toilette/gi, "EDT"],
+  [/Eau de Cologne/gi, "EDC"],
+];
 
+const compactConcentration = (value = "") =>
+  COMPACT_CONCENTRATIONS.reduce(
+    (result, [pattern, replacement]) => result.replace(pattern, replacement),
+    String(value)
+  );
+
+export const getProductTitleCandidates = (product) => {
+  const fullName = String(product?.name || "").trim();
+  const modalName = String(product?.modalName || "").trim();
+  const compactName = compactConcentration(fullName);
+  const shortName = String(product?.shortName || "").trim();
+
+  return [fullName, modalName, compactName, shortName].filter(
+    (candidate, index, candidates) =>
+      candidate && candidates.indexOf(candidate) === index
+  );
+};
+
+const countRenderedLines = (element) => {
   const range = document.createRange();
   range.selectNodeContents(element);
 
@@ -11,9 +33,8 @@ const countRenderedLines = (element) => {
     (rect) => rect.width > 0 && rect.height > 0
   );
 
-  range.detach?.();
-
   const lineTops = [];
+
   rects.forEach((rect) => {
     if (!lineTops.some((top) => Math.abs(top - rect.top) < 1)) {
       lineTops.push(rect.top);
@@ -24,8 +45,8 @@ const countRenderedLines = (element) => {
 };
 
 export const useTwoLineProductTitle = (product) => {
-  const fullName = product?.name || "";
-  const fallbackName = product?.modalName || fullName;
+  const candidates = getProductTitleCandidates(product);
+  const fullName = candidates[0] || "";
   const [displayName, setDisplayName] = useState(fullName);
   const titleRef = useRef(null);
   const measureRef = useRef(null);
@@ -41,30 +62,44 @@ export const useTwoLineProductTitle = (product) => {
     const updateDisplayName = () => {
       if (disposed || !measureRef.current) return;
 
-      const renderedLines = countRenderedLines(measureRef.current);
-      const nextName =
-        renderedLines > 0 && renderedLines <= 2
-          ? fullName
-          : fallbackName;
+      const probe = measureRef.current;
+      let nextName = candidates[candidates.length - 1] || fullName;
 
+      for (const candidate of candidates) {
+        probe.textContent = candidate;
+
+        const renderedLines = countRenderedLines(probe);
+        if (renderedLines > 0 && renderedLines <= 2) {
+          nextName = candidate;
+          break;
+        }
+      }
+
+      probe.textContent = fullName;
       setDisplayName((current) => (current === nextName ? current : nextName));
     };
 
-    // useLayoutEffect runs before paint, so the initial choice is made without
-    // exposing a full-name -> fallback swap to the user.
+    // useLayoutEffect resolves the initial title before paint.
     updateDisplayName();
 
     const resizeObserver =
       typeof ResizeObserver === "function"
         ? new ResizeObserver(() => {
-            const nextWidth = titleRef.current?.getBoundingClientRect().width ?? 0;
+            const nextWidth =
+              titleRef.current?.getBoundingClientRect().width ?? 0;
+
             if (Math.abs(nextWidth - lastWidth) < 0.5) return;
+
             lastWidth = nextWidth;
             updateDisplayName();
           })
         : null;
 
-    resizeObserver?.observe(title);
+    if (resizeObserver) {
+      resizeObserver.observe(title);
+    } else {
+      window.addEventListener("resize", updateDisplayName);
+    }
 
     if (document.fonts?.ready) {
       document.fonts.ready.then(() => {
@@ -75,8 +110,9 @@ export const useTwoLineProductTitle = (product) => {
     return () => {
       disposed = true;
       resizeObserver?.disconnect();
+      window.removeEventListener("resize", updateDisplayName);
     };
-  }, [fullName, fallbackName]);
+  }, [candidates, fullName]);
 
   return {
     displayName,
