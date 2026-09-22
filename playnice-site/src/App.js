@@ -7724,13 +7724,34 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         {lang === "sr" ? "Kako funkcioniše?" : "How it works"}
       </button>
 
+      <button type="button" className="footer-link" onClick={() => setPrivateSelectionOpen(true)}>
+        Private Selection
+      </button>
+
       <button type="button" className="footer-link" onClick={() => setFaqOpen(true)}>
         FAQ
       </button>
 
-      <button type="button" className="footer-link" onClick={() => setPrivateSelectionOpen(true)}>
-        Private Selection
+      <button
+        type="button"
+        className="footer-link footer-catalog-link"
+        onClick={() => openCatalogPreview("/catalog-dark.pdf")}
+      >
+        <span>{lang === "sr" ? "Katalog" : "Catalog"}</span>
+        <span className="footer-catalog-caret" aria-hidden="true">⌄</span>
       </button>
+    </div>
+
+    <div className="footer-column footer-contact-column">
+      <h4>{lang === "sr" ? "Kontakt" : "Contact"}</h4>
+
+      <a href="mailto:info@playniceshop.me" className="footer-contact">
+        info@playniceshop.me
+      </a>
+
+      <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" className="footer-contact">
+        @playnice.me
+      </a>
 
       <button
         type="button"
@@ -7744,20 +7765,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
       >
         {lang === "sr" ? "Dostava i povrat" : "Delivery & Returns"}
       </button>
-    </div>
-
-    <div className="footer-column footer-contact-column">
-      <h4>{lang === "sr" ? "Kontakt" : "Contact"}</h4>
-
-      <a href="mailto:info@playniceshop.me" className="footer-contact">
-       info@playniceshop.me
-      </a>
-
-      <a href="https://www.instagram.com/playnice.me/" target="_blank" rel="noreferrer" className="footer-contact">
-        @playnice.me
-      </a>
-
-      <p>{lang === "sr" ? "Dostava širom Crne Gore" : "Delivery across Montenegro"}</p>
     </div>
   </div>
 
