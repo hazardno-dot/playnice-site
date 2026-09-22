@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 
 const COMPACT_CONCENTRATIONS = [
   [/Extrait de Parfum/gi, "Extrait"],
@@ -45,7 +45,13 @@ const countRenderedLines = (element) => {
 };
 
 export const useTwoLineProductTitle = (product) => {
-  const candidates = getProductTitleCandidates(product);
+  const productName = product?.name || "";
+  const modalName = product?.modalName || "";
+  const shortName = product?.shortName || "";
+  const candidates = useMemo(
+    () => getProductTitleCandidates({ name: productName, modalName, shortName }),
+    [modalName, productName, shortName]
+  );
   const fullName = candidates[0] || "";
   const [displayName, setDisplayName] = useState(fullName);
   const titleRef = useRef(null);
