@@ -3570,8 +3570,28 @@ const handleHeroSlideAction = (slide) => {
       return;
     }
 
+    const preferredSize = slide.preferredSize || "10ml";
+
+    if (window.matchMedia("(min-width: 769px)").matches) {
+      window.dispatchEvent(
+        new CustomEvent("playnice:desktop-quick-view", {
+          detail: {
+            productId: product.id,
+            source: "hero",
+            preferredSize,
+            analyticsListContext: {
+              listId: "home-hero",
+              listName: "Home Hero",
+            },
+          },
+        })
+      );
+
+      return;
+    }
+
     openProductModal(product, {
-      preferredSize: slide.preferredSize || "10ml",
+      preferredSize,
       userPickedSize: true,
       changeView: false,
     });
