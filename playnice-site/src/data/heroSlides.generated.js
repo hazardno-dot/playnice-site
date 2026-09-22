@@ -4,14 +4,15 @@
 
 export const BASE_HERO_SLIDES = [
   {
-    "id": 2,
+    "id": 6,
     "kind": "imageOnly",
-    "image": "/hero/slide-2.jpg",
-    "desktopImage": "/hero/slide-2.jpg",
-    "mobileImage": "/hero/mobile/slide-2-mobile.jpg",
-    "alt": "PlayNice – luxury fragrance experience and trust",
-    "actionPrimary": "manifesto",
-    "manifestoType": "confidence"
+    "image": "/hero/slide-6.jpg",
+    "desktopImage": "/hero/slide-6.jpg",
+    "mobileImage": "/hero/mobile/slide-6-mobile.jpg",
+    "alt": "MY GEISHA UNSEEN — miris koji se ne zaboravlja. Sada u PlayNice dekantima.",
+    "actionPrimary": "product",
+    "actionProductSlug": "my-geisha-unseen-extrait-de-parfum",
+    "preferredSize": "10ml"
   },
   {
     "id": 12,
@@ -41,6 +42,16 @@ export const BASE_HERO_SLIDES = [
       "gisada-luxury-collection-royal"
     ],
     "collectionTitle": "SOFT. BOLD. LUXURY."
+  },
+  {
+    "id": 2,
+    "kind": "imageOnly",
+    "image": "/hero/slide-2.jpg",
+    "desktopImage": "/hero/slide-2.jpg",
+    "mobileImage": "/hero/mobile/slide-2-mobile.jpg",
+    "alt": "PlayNice – luxury fragrance experience and trust",
+    "actionPrimary": "manifesto",
+    "manifestoType": "confidence"
   },
   {
     "id": 3,
