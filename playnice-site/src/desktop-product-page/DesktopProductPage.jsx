@@ -9,6 +9,7 @@ import {
   productWhatToWearContextBySlug,
 } from "../data/products/productContentBySlug";
 import DesktopProductModalParity from "./DesktopProductModalParity";
+import { useTwoLineProductTitle } from "../features/product-title/useTwoLineProductTitle";
 import "./DesktopProductPage.css";
 
 const PROFILE_KEYS = [
@@ -221,6 +222,8 @@ export default function DesktopProductPage({
   const sizeHelper = getSizeHelper(activeSize, lang);
   const activeCartKey = `${product.id}-${activeSize}`;
   const isJustAdded = addedCartKey === activeCartKey;
+  const { displayName: productTitle, titleRef: productTitleRef } =
+    useTwoLineProductTitle(product);
 
   const handleAddToCartClick = () => {
     if (!activeSize) return;
@@ -311,7 +314,7 @@ export default function DesktopProductPage({
 
             <div className="desktop-product-page__title-row">
               <div>
-                <h1>{product.modalName || product.name}</h1>
+                <h1 ref={productTitleRef}>{productTitle}</h1>
                 {product.inspiredBy?.name ? (
                   <p className="desktop-product-page__inspired">
                     <strong>{lang === "sr" ? "INSPIRISANO" : "INSPIRED BY"}</strong> {product.inspiredBy.name}
