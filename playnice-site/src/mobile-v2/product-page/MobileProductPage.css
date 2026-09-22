@@ -91,6 +91,7 @@
   }
 
   .mobile-product-page__identity h1 {
+  position: relative;
     width: 100%;
     margin: 7px 0 10px;
     max-width: none;
@@ -104,6 +105,19 @@
     overflow-wrap: normal;
     word-break: normal;
   }
+.mobile-product-page__identity h1 > .product-title-measure {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+  visibility: hidden;
+  pointer-events: none;
+  display: block;
+}
+
 
   .mobile-product-page__meta {
     display: grid;
