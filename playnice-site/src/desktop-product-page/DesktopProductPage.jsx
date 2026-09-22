@@ -202,6 +202,9 @@ export default function DesktopProductPage({
       .slice(0, 6);
   }, [profile]);
 
+  const { displayName: productTitle, titleRef: productTitleRef } =
+    useTwoLineProductTitle(product);
+
   if (!product) return null;
 
   const sizes = Object.entries(product.sizes || {});
@@ -222,8 +225,6 @@ export default function DesktopProductPage({
   const sizeHelper = getSizeHelper(activeSize, lang);
   const activeCartKey = `${product.id}-${activeSize}`;
   const isJustAdded = addedCartKey === activeCartKey;
-  const { displayName: productTitle, titleRef: productTitleRef } =
-    useTwoLineProductTitle(product);
 
   const handleAddToCartClick = () => {
     if (!activeSize) return;
