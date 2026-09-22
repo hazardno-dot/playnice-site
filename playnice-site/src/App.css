@@ -1961,6 +1961,45 @@ main {
   white-space: nowrap;
 }
 
+button.active-filter-chip {
+  appearance: none;
+  -webkit-appearance: none;
+  gap: 7px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.active-filter-chip-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  color: rgba(220, 181, 107, 0.72);
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1;
+  transform: translateY(-0.5px);
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+button.active-filter-chip:hover {
+  border-color: rgba(220, 181, 107, 0.26);
+  color: rgba(255, 248, 235, 0.9);
+}
+
+button.active-filter-chip:hover .active-filter-chip-x {
+  color: rgba(240, 208, 136, 0.96);
+  transform: translateY(-0.5px) scale(1.08);
+}
+
+button.active-filter-chip:focus-visible {
+  outline: 2px solid rgba(220, 181, 107, 0.48);
+  outline-offset: 2px;
+}
+
 .clear-filters-button {
   flex-shrink: 0;
 
