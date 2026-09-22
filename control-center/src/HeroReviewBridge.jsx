@@ -114,7 +114,10 @@ export default function HeroReviewBridge() {
 
   const validateHeroSet = async () => {
     const [{ data: baselineRows, error: baselineError }, { data: draftRows, error: draftError }] = await Promise.all([
-      supabase.from("hero_slides").select("id,hero_key,kind,enabled,pinned_first,position,image,desktop_image,mobile_image,alt,action_type,product_slug,preferred_size,collection_title,collection_slugs,manifesto_type").eq("enabled", true).order("position", { ascending: true }),
+      // Load every mapped slot, including inactive ones. An inactive slot can be
+      // reactivated by its draft, so filtering it out here would also drop its
+      // pinnedFirst=true draft before validation.
+      supabase.from("hero_slides").select("id,hero_key,kind,enabled,pinned_first,position,image,desktop_image,mobile_image,alt,action_type,product_slug,preferred_size,collection_title,collection_slugs,manifesto_type").order("position", { ascending: true }),
       supabase.from("hero_drafts").select("hero_key,payload,review_status,updated_at,baseline_snapshot")
     ]);
     if (baselineError) throw baselineError;
@@ -122,7 +125,8 @@ export default function HeroReviewBridge() {
     const baseline = (baselineRows || []).map(heroRowToSlide);
     const drafts = Object.fromEntries((draftRows || []).map((item) => [item.hero_key, item]));
     const effective = mergeHeroDrafts(baseline, drafts);
-    const audit = auditHeroSlides(effective, { productSlugs });
+    const activeEffective = effective.filter((slide) => slide.enabled !== false);
+    const audit = auditHeroSlides(activeEffective, { productSlugs });
     if (audit.errors.length) throw new Error(`Hero validation failed: ${audit.errors[0].message}`);
   };
 
