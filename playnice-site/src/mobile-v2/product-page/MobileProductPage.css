@@ -91,15 +91,31 @@
   }
 
   .mobile-product-page__identity h1 {
+    position: relative;
     width: 100%;
+    height: 1.92em;
     margin: 7px 0 10px;
     max-width: none;
+    overflow: hidden;
     color: #f3e7d0;
     font: 600 clamp(2rem, 8.7vw, 2.6rem)/0.96 "Cormorant Garamond", serif;
     letter-spacing: -0.035em;
     text-wrap: wrap;
     overflow-wrap: normal;
     word-break: normal;
+  }
+
+  .mobile-product-page__identity h1 > .product-title-measure {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .mobile-product-page__meta {

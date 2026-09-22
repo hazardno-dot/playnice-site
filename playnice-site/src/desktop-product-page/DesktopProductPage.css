@@ -153,14 +153,35 @@
   gap: 24px;
 }
 
+.desktop-product-page__title-row > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .desktop-product-page__title-row h1 {
+  position: relative;
   max-width: 620px;
+  height: 1.96em;
   margin: 0;
+  overflow: hidden;
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(44px, 4.3vw, 70px);
   font-weight: 500;
   line-height: 0.98;
   letter-spacing: -0.025em;
+}
+
+.desktop-product-page__title-row h1 > .product-title-measure {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .desktop-product-page__inspired {

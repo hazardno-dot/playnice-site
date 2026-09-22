@@ -6,6 +6,7 @@ import { getProductActions } from "../lib/productActionsGateway";
 import { trackEvent } from "../lib/ga";
 import { getProductPurchaseSelection } from "../features/commerce/commerceDerivations";
 import { buildEcommerceItem } from "../features/analytics/analyticsDerivations";
+import { useTwoLineProductTitle } from "../features/product-title/useTwoLineProductTitle";
 import "./DesktopQuickView.css";
 
 export const DESKTOP_QUICK_VIEW_EVENT = "playnice:desktop-quick-view";
@@ -194,6 +195,13 @@ export default function DesktopQuickView() {
     [product]
   );
 
+  const {
+    displayName: productTitle,
+    fullName: productFullName,
+    titleRef: productTitleRef,
+    measureRef: productTitleMeasureRef,
+  } = useTwoLineProductTitle(product);
+
   if (!product) return null;
 
   const sizes = Object.entries(product.sizes || {});
@@ -332,8 +340,9 @@ export default function DesktopQuickView() {
           </div>
 
           <div className="desktop-quick-view__title-row">
-            <h2 id="desktop-quick-view-title">
-              {product.modalName || product.name}
+            <h2 id="desktop-quick-view-title" ref={productTitleRef}>
+              <span ref={productTitleMeasureRef} className="product-title-measure" aria-hidden="true">{productFullName}</span>
+              <span>{productTitle}</span>
             </h2>
 
             <button

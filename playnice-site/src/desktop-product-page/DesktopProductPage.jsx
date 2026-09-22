@@ -9,6 +9,7 @@ import {
   productWhatToWearContextBySlug,
 } from "../data/products/productContentBySlug";
 import DesktopProductModalParity from "./DesktopProductModalParity";
+import { useTwoLineProductTitle } from "../features/product-title/useTwoLineProductTitle";
 import "./DesktopProductPage.css";
 
 const PROFILE_KEYS = [
@@ -201,6 +202,13 @@ export default function DesktopProductPage({
       .slice(0, 6);
   }, [profile]);
 
+  const {
+    displayName: productTitle,
+    fullName: productFullName,
+    titleRef: productTitleRef,
+    measureRef: productTitleMeasureRef,
+  } = useTwoLineProductTitle(product);
+
   if (!product) return null;
 
   const sizes = Object.entries(product.sizes || {});
@@ -311,7 +319,7 @@ export default function DesktopProductPage({
 
             <div className="desktop-product-page__title-row">
               <div>
-                <h1>{product.modalName || product.name}</h1>
+                <h1 ref={productTitleRef}><span ref={productTitleMeasureRef} className="product-title-measure" aria-hidden="true">{productFullName}</span><span>{productTitle}</span></h1>
                 {product.inspiredBy?.name ? (
                   <p className="desktop-product-page__inspired">
                     <strong>{lang === "sr" ? "INSPIRISANO" : "INSPIRED BY"}</strong> {product.inspiredBy.name}

@@ -3,6 +3,7 @@ import { getProductPurchaseSelection } from "../../features/commerce/commerceDer
 import TheNoteMap from "../../features/note-map/TheNoteMap";
 import { products } from "../../data/products";
 import { getCharacterVisual } from "../../data/products/characterVisuals";
+import { useTwoLineProductTitle } from "../../features/product-title/useTwoLineProductTitle";
 import {
   productCopyBySlug,
   productWearContextBySlug,
@@ -199,6 +200,13 @@ export default function MobileProductPage({
       .slice(0, 4);
   }, [profile]);
 
+  const {
+    displayName: productTitle,
+    fullName: productFullName,
+    titleRef: productTitleRef,
+    measureRef: productTitleMeasureRef,
+  } = useTwoLineProductTitle(product);
+
   if (!product) return null;
 
   const sizes = Object.entries(product.sizes || {});
@@ -269,7 +277,7 @@ export default function MobileProductPage({
 
         {type && <span className="mobile-product-page__type">{type}</span>}
 
-        <h1>{product.modalName || product.name}</h1>
+        <h1 ref={productTitleRef}><span ref={productTitleMeasureRef} className="product-title-measure" aria-hidden="true">{productFullName}</span><span>{productTitle}</span></h1>
 
         <div className="mobile-product-page__meta">
           {product.rating ? (
