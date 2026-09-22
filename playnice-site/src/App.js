@@ -7134,8 +7134,8 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         type="text"
         placeholder={
           lang === "sr"
-            ? "Npr. Prada, Mancera, Lattafa..."
-            : "E.g. Prada, Mancera, Lattafa..."
+            ? "Pretraži brend ili parfem..."
+            : "Search brand or fragrance..."
         }
         value={searchTerm}
         onChange={(e) => {
@@ -7173,7 +7173,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
   setCategoryMenuOpen((open) => !open);
 }}
         >
-          <span>{selectedCategory.label}</span>
+          <span className="premium-filter-trigger-copy">
+            <span className="premium-filter-trigger-label">
+              {tr.categoryLabel}
+            </span>
+            <span className="premium-filter-trigger-value">
+              {selectedCategory.label}
+            </span>
+          </span>
           <span className="premium-category-arrow" aria-hidden="true">
             ▾
           </span>
@@ -7233,7 +7240,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         setSeasonMenuOpen((open) => !open);
       }}
     >
-      <span>{selectedSeasonOption.label}</span>
+      <span className="premium-filter-trigger-copy">
+        <span className="premium-filter-trigger-label">
+          {tr.seasonLabel}
+        </span>
+        <span className="premium-filter-trigger-value">
+          {selectedSeasonOption.label}
+        </span>
+      </span>
 
       <span className="premium-category-arrow" aria-hidden="true">
         ▾
@@ -7294,7 +7308,14 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         setSortMenuOpen((open) => !open);
       }}
     >
-      <span>{selectedSortOption.label}</span>
+      <span className="premium-filter-trigger-copy">
+        <span className="premium-filter-trigger-label">
+          {tr.sortLabel}
+        </span>
+        <span className="premium-filter-trigger-value">
+          {selectedSortOption.label}
+        </span>
+      </span>
 
       <span className="premium-category-arrow" aria-hidden="true">
         ▾
@@ -7413,7 +7434,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 {(category !== "All" ||
   season !== "All" ||
   scentMood !== "All" ||
-  sortBy !== "featured" ||
   searchTerm.trim() !== "") && (
   <div className="active-filters-bar active-filters-bar-compact">
     <div className="active-filters-left">
@@ -7435,12 +7455,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         </span>
       )}
 
-      {sortBy !== "featured" && (
-        <span className="active-filter-chip">
-          {selectedSortOption.label}
-        </span>
-      )}
-
       {searchTerm.trim() !== "" && (
         <span className="active-filter-chip">“{searchTerm.trim()}”</span>
       )}
@@ -7453,7 +7467,6 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
         setCategory("All");
         setSeason("All");
         setScentMood("All");
-        setSortBy("featured");
         setSearchTerm("");
       }}
     >
@@ -7463,6 +7476,13 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
 )}
 
 <div className="shop-pagination-row">
+  <div className="shop-results-meta" aria-live="polite">
+    <strong>{filteredProducts.length}</strong>
+    <span>
+      {lang === "sr" ? "parfema" : "fragrances"}
+    </span>
+  </div>
+
   {renderPagination("top")}
 
   <div
