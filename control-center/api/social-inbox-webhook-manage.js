@@ -1,6 +1,6 @@
 import { createHmac } from "node:crypto";
 import { metaCredentialState, resolveMetaPageAccessToken } from "../lib/meta-page-token.mjs";
-import { telegramAssistantState } from "../lib/social-inbox-notify.mjs";
+import { sendAssistantTelegramTest, telegramAssistantState } from "../lib/social-inbox-notify.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -214,6 +214,12 @@ export default async function handler(req, res) {
       automation_active: Boolean(state.app_subscription && state.page_subscription),
       auto_send: false,
     });
+  }
+
+  if (String(req.body?.action || "") === "test_telegram") {
+    const result = await sendAssistantTelegramTest({ baseUrl: baseUrl(req) });
+    if (!result.ok) return json(res, 400, { ...result, auto_send: false });
+    return json(res, 200, { ...result, auto_send: false });
   }
 
   try {
