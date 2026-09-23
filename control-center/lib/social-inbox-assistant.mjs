@@ -6,6 +6,7 @@ const OWNER = "hazardno-dot";
 const REPO_NAME = "playnice-site";
 const PRODUCT_PATH = "playnice-site/src/data/products/index.js";
 const CATALOG_CACHE_MS = 5 * 60 * 1000;
+const RESPONSE_WINDOW_MS = 24 * 60 * 60 * 1000;
 export const ASSISTANT_RULES_VERSION = "assistant-v2.0";
 
 let catalogCache = { expiresAt: 0, products: [] };
@@ -584,6 +585,12 @@ export async function prepareAssistantDrafts(token, { threadIds = [], limit = 12
     const latest = messages[messages.length - 1] || null;
     if (!latest || latest.direction !== "inbound") {
       skipped.push({ thread_id: thread.id, reason: "latest_not_inbound" });
+      continue;
+    }
+
+    const latestTime = new Date(latest.sent_at || "").getTime();
+    if (!Number.isFinite(latestTime) || Date.now() - latestTime > RESPONSE_WINDOW_MS) {
+      skipped.push({ thread_id: thread.id, reason: "outside_response_window" });
       continue;
     }
 
