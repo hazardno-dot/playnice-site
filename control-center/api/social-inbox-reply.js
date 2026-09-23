@@ -1,4 +1,5 @@
 import { resolveMetaPageAccessToken } from "../lib/meta-page-token.mjs";
+import { markAssistantDraftSent } from "../lib/social-inbox-assistant.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -179,6 +180,17 @@ export default async function handler(req, res) {
       }
     );
     if (!threadPatch.ok) storageWarnings.push(`Message sent but thread state update failed (Supabase ${threadPatch.status}).`);
+
+    try {
+      await markAssistantDraftSent(auth.token, {
+        threadId: thread.id,
+        finalText: text,
+        metaMessageId: messageId || null,
+        sentAt: now,
+      });
+    } catch (assistantError) {
+      storageWarnings.push(`Message sent but Assistant draft audit update failed: ${String(assistantError?.message || assistantError).slice(0, 180)}`);
+    }
 
     return json(res, 200, {
       ok: true,
