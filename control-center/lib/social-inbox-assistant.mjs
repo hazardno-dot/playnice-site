@@ -599,6 +599,7 @@ export async function prepareAssistantDrafts(token, { threadIds = [], limit = 12
   if (!response.ok) throw new Error(`Could not load assistant candidate threads (Supabase ${response.status}).`);
 
   const created = [];
+  const notificationCandidates = [];
   const skipped = [];
 
   for (const thread of Array.isArray(threads) ? threads : []) {
@@ -617,19 +618,29 @@ export async function prepareAssistantDrafts(token, { threadIds = [], limit = 12
 
     const previous = await existingDraft(token, thread.id, latest.id);
     if (previous) {
+      if (["ready", "needs_review"].includes(previous.status) && !previous.notified_at) {
+        notificationCandidates.push({
+          ...previous,
+          participant_name: thread.participant_name || null,
+          customer_message: latest.body || null,
+        });
+      }
       skipped.push({ thread_id: thread.id, reason: "already_prepared", draft_id: previous.id });
       continue;
     }
 
     const result = buildAssistantDraft({ thread, messages, products });
     const draft = await saveDraft(token, thread, result);
-    created.push({ ...draft, participant_name: thread.participant_name || null, customer_message: latest.body || null });
+    const prepared = { ...draft, participant_name: thread.participant_name || null, customer_message: latest.body || null };
+    created.push(prepared);
+    notificationCandidates.push(prepared);
   }
 
   return {
     ok: true,
     rules_version: ASSISTANT_RULES_VERSION,
     created,
+    notification_candidates: notificationCandidates,
     skipped,
     auto_send: false,
   };
