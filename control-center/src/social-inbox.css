@@ -47,3 +47,8 @@
 .social-inbox-missing-config span{font-size:10px;line-height:1.45;color:#9c8f79}
 .social-inbox-missing-config b{font-weight:600;color:#c7b48e}
 @media(max-width:700px){.social-inbox-missing-config{display:grid;gap:5px}}
+
+.social-inbox-telegram-chats{grid-column:1/-1;display:grid;gap:6px;margin-top:3px}
+.social-inbox-telegram-chats>div{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:7px 9px;border:1px solid #3b4650;background:#10151a}
+.social-inbox-telegram-chats span{font-size:10px;color:#9aa5af}.social-inbox-telegram-chats code{font-size:11px;color:#d8e0e7;user-select:all}
+@media(max-width:700px){.social-inbox-telegram-chats>div{align-items:flex-start;flex-direction:column}}
