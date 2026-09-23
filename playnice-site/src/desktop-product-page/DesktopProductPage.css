@@ -11,6 +11,7 @@
 }
 
 .desktop-product-page__breadcrumb {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -38,6 +39,7 @@
   flex: 1 1 auto;
   min-width: 0;
   gap: 10px;
+  padding-right: 176px;
 }
 
 .desktop-product-page__breadcrumb-path > span:last-child {
@@ -47,12 +49,13 @@
 }
 
 .desktop-product-page__sequence-nav {
+  position: absolute;
+  top: 50%;
+  right: 0;
   display: inline-flex;
   align-items: center;
-  flex: 0 0 auto;
   gap: 8px;
-  margin-left: auto;
-  padding-left: 28px;
+  transform: translateY(-50%);
 }
 
 .desktop-product-page__sequence-position {
