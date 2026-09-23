@@ -40,7 +40,7 @@ async function requireAdmin(req) {
 }
 
 async function graphPost(path, token, body) {
-  const url = `https://graph.facebook.com/${META_GRAPH_API_VERSION}/${path.replace(/^\\/+/, "")}`;
+  const url = `https://graph.facebook.com/${META_GRAPH_API_VERSION}/${path.replace(/^\/+/, "")}`;
   const response = await fetch(url, {
     method: "POST",
     headers: {
