@@ -35,6 +35,7 @@
 .desktop-product-page__breadcrumb-path {
   display: flex;
   align-items: center;
+  flex: 1 1 auto;
   min-width: 0;
   gap: 10px;
 }
@@ -49,22 +50,22 @@
   display: inline-flex;
   align-items: center;
   flex: 0 0 auto;
-  gap: 2px;
-  margin-left: 6px;
+  gap: 8px;
+  margin-left: auto;
+  padding-left: 28px;
 }
 
 .desktop-product-page__sequence-position {
-  min-width: 58px;
-  margin-right: 4px;
-  color: rgba(245, 241, 232, 0.4);
+  min-width: 68px;
+  color: rgba(245, 241, 232, 0.42);
   font-size: 10px;
-  letter-spacing: 0.08em;
-  text-align: right;
+  letter-spacing: 0.09em;
+  text-align: center;
   white-space: nowrap;
 }
 
 .desktop-product-page__sequence-nav button {
-  width: 30px;
+  width: 32px;
   height: 30px;
   display: grid;
   place-items: center;
@@ -72,7 +73,7 @@
   border: 0;
   border-radius: 0;
   background: transparent;
-  color: rgba(245, 241, 232, 0.66);
+  color: rgba(245, 241, 232, 0.68);
   letter-spacing: 0;
   transition:
     color 180ms ease,
@@ -80,8 +81,8 @@
 }
 
 .desktop-product-page__sequence-nav button svg {
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.55;
