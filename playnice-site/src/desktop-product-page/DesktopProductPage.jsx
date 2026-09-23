@@ -10,6 +10,10 @@ import {
 } from "../data/products/productContentBySlug";
 import DesktopProductModalParity from "./DesktopProductModalParity";
 import { useTwoLineProductTitle } from "../features/product-title/useTwoLineProductTitle";
+import {
+  getProductNavigationLabel,
+  getProductSequenceNeighbors,
+} from "../features/product-navigation/productSequence";
 import "./DesktopProductPage.css";
 
 const PROFILE_KEYS = [
@@ -193,6 +197,15 @@ export default function DesktopProductPage({
   const doNotWearContext = product ? productDoNotWearContextBySlug[product.slug]?.[lang] || "" : "";
   const whatToWearContext = product ? productWhatToWearContextBySlug[product.slug]?.[lang] || "" : "";
   const recommendations = useMemo(() => getRecommendations(product), [product]);
+  const {
+    previousProduct,
+    nextProduct,
+    position: productPosition,
+    total: productTotal,
+  } = useMemo(
+    () => getProductSequenceNeighbors(products, product?.slug),
+    [product?.slug]
+  );
 
   const sensoryHighlights = useMemo(() => {
     if (!profile) return [];
@@ -250,11 +263,50 @@ export default function DesktopProductPage({
     <article className="desktop-product-page" data-product-slug={product.slug}>
       <div className="desktop-product-page__shell">
         <nav className="desktop-product-page__breadcrumb" aria-label="Breadcrumb">
-          <button type="button" onClick={onBackToShop}>SHOP</button>
-          <span>/</span>
-          <span>{product.category}</span>
-          <span>/</span>
-          <span>{product.modalName || product.name}</span>
+          <div className="desktop-product-page__breadcrumb-path">
+            <button type="button" onClick={onBackToShop}>SHOP</button>
+            <span>/</span>
+            <span>{product.category}</span>
+            <span>/</span>
+            <span>{product.modalName || product.name}</span>
+          </div>
+
+          {previousProduct && nextProduct ? (
+            <div
+              className="desktop-product-page__sequence-nav"
+              aria-label={lang === "sr" ? "Navigacija kroz parfeme" : "Fragrance navigation"}
+            >
+              <button
+                type="button"
+                onClick={() => onOpenProduct?.(previousProduct)}
+                aria-label={
+                  lang === "sr"
+                    ? `Prethodni parfem: ${getProductNavigationLabel(previousProduct)}`
+                    : `Previous fragrance: ${getProductNavigationLabel(previousProduct)}`
+                }
+                title={getProductNavigationLabel(previousProduct)}
+              >
+                ←
+              </button>
+
+              <span className="desktop-product-page__sequence-position">
+                {productPosition} / {productTotal}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => onOpenProduct?.(nextProduct)}
+                aria-label={
+                  lang === "sr"
+                    ? `Sledeći parfem: ${getProductNavigationLabel(nextProduct)}`
+                    : `Next fragrance: ${getProductNavigationLabel(nextProduct)}`
+                }
+                title={getProductNavigationLabel(nextProduct)}
+              >
+                →
+              </button>
+            </div>
+          ) : null}
         </nav>
 
         <section className="desktop-product-page__hero">
