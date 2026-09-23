@@ -101,6 +101,23 @@ export async function sendAssistantTelegramTest({ baseUrl = "" } = {}) {
     return { ok: false, configured: false, error: "Telegram is not configured for Control Center." };
   }
 
+  const meResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getMe`);
+  const mePayload = await safeJson(meResponse);
+  if (!meResponse.ok || !mePayload?.ok) {
+    return {
+      ok: false,
+      configured: true,
+      error: mePayload?.description || `Telegram getMe returned HTTP ${meResponse.status}`,
+    };
+  }
+  if (String(mePayload?.result?.id || "") === TELEGRAM_CHAT_ID) {
+    return {
+      ok: false,
+      configured: true,
+      error: "TELEGRAM_CHAT_ID is the bot's own ID. Use the chat ID of your personal Telegram conversation with the bot.",
+    };
+  }
+
   const lines = [
     "✅ PLAYNICE · ASSISTANT V2",
     "",
