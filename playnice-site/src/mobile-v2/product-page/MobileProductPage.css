@@ -53,8 +53,7 @@
     transition:
       opacity 0.22s ease,
       transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-      color 0.18s ease,
-      filter 0.18s ease;
+      color 0.18s ease;
   }
 
   .mobile-product-page__floating-sequence-button.is-previous {
@@ -111,7 +110,6 @@
     font: 700 0.68rem/1 Inter, sans-serif;
     letter-spacing: 0.12em;
   }
-
 
   .mobile-product-page__wishlist {
     width: 36px;
