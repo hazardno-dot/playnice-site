@@ -115,6 +115,30 @@ function outbound(id, body) {
   assert.match(result.body, /5 ml, 10 ml, 20 ml/);
 }
 
+
+{
+  const result = buildAssistantDraft({
+    thread: { participant_name: "Test" },
+    products,
+    messages: [inbound("11", "Koliko je 10ml Afnan 9 AM?")],
+  });
+  assert.equal(result.status, "ready");
+  assert.match(result.body, /10 ml 9 AM je u trenutnoj ponudi po ceni od 7 €/);
+  assert.doesNotMatch(result.body, /5 ml — 4 €/);
+  assert.doesNotMatch(result.body, /20 ml — 13 €/);
+}
+
+{
+  const result = buildAssistantDraft({
+    thread: { participant_name: "Test" },
+    products,
+    messages: [inbound("12", "Imate li 2ml Afnan 9AM?")],
+  });
+  assert.equal(result.status, "ready");
+  assert.match(result.body, /2 ml nije navedeno/);
+  assert.match(result.body, /5 ml, 10 ml, 20 ml/);
+}
+
 console.log("PASS  Assistant rules ground prices and sizes in the supplied catalog");
 console.log("PASS  Unknown products and operational status questions are escalated for review");
 console.log("PASS  Contextual size follow-ups preserve product context and customer language");
