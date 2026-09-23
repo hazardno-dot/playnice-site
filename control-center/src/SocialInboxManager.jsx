@@ -48,6 +48,8 @@ function InboxWorkspace() {
   const [loadedDraftId, setLoadedDraftId] = useState("");
   const [assistantState, setAssistantState] = useState(null);
   const [activatingAssistant, setActivatingAssistant] = useState(false);
+  const [testingTelegram, setTestingTelegram] = useState(false);
+  const [telegramTestStatus, setTelegramTestStatus] = useState("");
 
   const loadThreads = async () => {
     const { data, error: loadError } = await supabase
@@ -282,6 +284,32 @@ function InboxWorkspace() {
     }
   };
 
+  const testTelegram = async () => {
+    if (testingTelegram) return;
+    setTestingTelegram(true);
+    setTelegramTestStatus("");
+    setError("");
+    try {
+      const token = await getAdminToken();
+      const response = await fetch("/api/social-inbox-webhook-manage", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "test_telegram" }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Telegram test failed (${response.status}).`);
+      setTelegramTestStatus("Telegram test sent.");
+    } catch (testError) {
+      setTelegramTestStatus("");
+      setError(testError?.message || String(testError));
+    } finally {
+      setTestingTelegram(false);
+    }
+  };
+
   const activateAssistant = async () => {
     if (activatingAssistant) return;
     setActivatingAssistant(true);
@@ -346,14 +374,24 @@ function InboxWorkspace() {
           {" · "}customer send always requires approval
         </small>
       </div>
-      {!assistantState.automation_active ? <button
-        type="button"
-        disabled={activatingAssistant || !assistantState?.env?.production || !assistantState.webhook_ready || !assistantState.notification_ready}
-        onClick={activateAssistant}
-        title={!assistantState?.env?.production ? "Activation is available only on the production Control Center." : ""}
-      >
-        {activatingAssistant ? "Activating…" : (assistantState?.env?.production ? "Activate automation" : "Activate after merge")}
-      </button> : <strong className="social-inbox-assistant-live">LIVE</strong>}
+      <div className="social-inbox-assistant-actions">
+        <button
+          type="button"
+          disabled={testingTelegram || !assistantState.notification_ready}
+          onClick={testTelegram}
+        >
+          {testingTelegram ? "Testing…" : "Test Telegram"}
+        </button>
+        {!assistantState.automation_active ? <button
+          type="button"
+          disabled={activatingAssistant || !assistantState?.env?.production || !assistantState.webhook_ready || !assistantState.notification_ready}
+          onClick={activateAssistant}
+          title={!assistantState?.env?.production ? "Activation is available only on the production Control Center." : ""}
+        >
+          {activatingAssistant ? "Activating…" : (assistantState?.env?.production ? "Activate automation" : "Activate after merge")}
+        </button> : <strong className="social-inbox-assistant-live">LIVE</strong>}
+      </div>
+      {telegramTestStatus ? <small className="social-inbox-telegram-test">{telegramTestStatus}</small> : null}
     </div> : null}
 
     {syncState ? <div className="social-inbox-status">
