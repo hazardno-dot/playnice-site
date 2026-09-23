@@ -4,7 +4,7 @@ import { syncPlatform } from "./social-inbox-sync.js";
 import { prepareAssistantDrafts } from "../lib/social-inbox-assistant.mjs";
 import { notifyAssistantDrafts } from "../lib/social-inbox-notify.mjs";
 
-const SUPABASE_SERVICE_ROLE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
+const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SECRET_KEY || "").trim();
 const META_APP_SECRET = String(process.env.META_APP_SECRET || "").trim();
 const META_FACEBOOK_PAGE_ID = String(process.env.META_FACEBOOK_PAGE_ID || "").trim();
 
@@ -69,7 +69,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
-  if (!expected || !SUPABASE_SERVICE_ROLE_KEY) {
+  if (!expected || !SUPABASE_SECRET_KEY) {
     return json(res, 503, { ok: false, accepted: false, error: "Webhook server configuration is incomplete." });
   }
 
@@ -87,7 +87,7 @@ export default async function handler(req, res) {
 
     for (const participantId of senderIds) {
       try {
-        const result = await syncPlatform("facebook", resolved.token, SUPABASE_SERVICE_ROLE_KEY, { participantId });
+        const result = await syncPlatform("facebook", resolved.token, SUPABASE_SECRET_KEY, { participantId });
         syncResults.push({ participant_id: participantId, ...result });
         for (const id of result?.thread_ids || []) threadIds.add(id);
         if (!result?.conversations) targetedFailed = true;
@@ -101,18 +101,18 @@ export default async function handler(req, res) {
     }
 
     if (targetedFailed || !threadIds.size) {
-      const fallback = await syncPlatform("facebook", resolved.token, SUPABASE_SERVICE_ROLE_KEY);
+      const fallback = await syncPlatform("facebook", resolved.token, SUPABASE_SECRET_KEY);
       syncResults.push({ fallback_full_sync: true, ...fallback });
       for (const id of fallback?.thread_ids || []) threadIds.add(id);
     }
 
-    const assistant = await prepareAssistantDrafts(SUPABASE_SERVICE_ROLE_KEY, {
+    const assistant = await prepareAssistantDrafts(SUPABASE_SECRET_KEY, {
       threadIds: [...threadIds],
       limit: Math.max(8, threadIds.size + 2),
     });
 
     const notifications = await notifyAssistantDrafts(
-      SUPABASE_SERVICE_ROLE_KEY,
+      SUPABASE_SECRET_KEY,
       assistant.notification_candidates,
       {
         baseUrl: requestBaseUrl(req),
