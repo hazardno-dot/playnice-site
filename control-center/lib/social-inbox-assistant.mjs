@@ -126,13 +126,21 @@ export function matchAssistantProducts(text, products, limit = 3) {
     .map((item) => item.product);
 }
 
-function detectEnglish(text) {
+function languageSignals(text) {
   const normalized = normalizeAssistantText(text);
   const english = ["hello", "hi", "price", "how much", "shipping", "delivery", "do you have", "available", "full bottle", "order", "buy", "thank you", "thanks"];
   const local = ["zdravo", "cena", "cijena", "koliko", "dostava", "isporuka", "imate li", "ima li", "poruc", "naruc", "hvala", "bocica"];
-  const en = english.reduce((sum, item) => sum + (normalized.includes(normalizeAssistantText(item)) ? 1 : 0), 0);
-  const sr = local.reduce((sum, item) => sum + (normalized.includes(normalizeAssistantText(item)) ? 1 : 0), 0);
-  return en > sr;
+  return {
+    en: english.reduce((sum, item) => sum + (normalized.includes(normalizeAssistantText(item)) ? 1 : 0), 0),
+    local: local.reduce((sum, item) => sum + (normalized.includes(normalizeAssistantText(item)) ? 1 : 0), 0),
+  };
+}
+
+function detectEnglish(text, fallbackText = "") {
+  const primary = languageSignals(text);
+  if (primary.en || primary.local) return primary.en > primary.local;
+  const fallback = languageSignals(fallbackText);
+  return fallback.en > fallback.local;
 }
 
 function extractRequestedSizes(text) {
@@ -199,7 +207,12 @@ export function buildAssistantDraft({ thread, messages, products }) {
   const latest = [...ordered].reverse().find((message) => message?.direction === "inbound") || null;
   const latestText = String(latest?.body || "").trim();
   const normalized = normalizeAssistantText(latestText);
-  const english = detectEnglish(latestText);
+  const previousInbound = [...ordered].reverse().find((message) =>
+    message?.direction === "inbound" &&
+    message !== latest &&
+    String(message?.body || "").trim()
+  );
+  const english = detectEnglish(latestText, previousInbound?.body || "");
   const context = findContextProducts(ordered, products, latestText);
   const matchedProducts = context.products;
   const primary = matchedProducts[0] || null;
