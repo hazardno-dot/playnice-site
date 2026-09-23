@@ -25,6 +25,8 @@ for (const token of [
   "/api/social-inbox-webhook-manage",
   "social_inbox_drafts",
   "Activate automation",
+  "Test Telegram",
+  "test_telegram",
   "notification_ready",
   "webhook_ready",
   "ASSISTANT DRAFT",
@@ -116,6 +118,8 @@ for (const token of [
   'process.env.VERCEL_ENV !== "production"',
   "/subscriptions",
   "/subscribed_apps",
+  "sendAssistantTelegramTest",
+  "test_telegram",
   'fields: "messages"',
   "webhook_ready",
   "automation_active",
@@ -132,6 +136,7 @@ for (const token of [
   "Approve & Send ostaje obavezan",
   "notified_at",
   "claimDraftNotification",
+  "sendAssistantTelegramTest",
 ]) {
   assert.ok(notify.includes(token), `Assistant notification contract missing: ${token}`);
 }
