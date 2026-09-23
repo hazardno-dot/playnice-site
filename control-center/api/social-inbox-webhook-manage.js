@@ -2,6 +2,7 @@
 import { createHmac } from "node:crypto";
 import { metaCredentialState, resolveMetaPageAccessToken } from "../lib/meta-page-token.mjs";
 import { detectAssistantTelegramChats, sendAssistantTelegramTest, telegramAssistantState } from "../lib/social-inbox-notify.mjs";
+import { supabaseRestHeaders } from "../lib/supabase-server-auth.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -33,11 +34,10 @@ async function supabaseFetch(path, token) {
 async function supabaseServiceFetch(path) {
   if (!SUPABASE_URL || !SUPABASE_SECRET_KEY) return null;
   return fetch(`${SUPABASE_URL}${path}`, {
-    headers: {
-      apikey: SUPABASE_SECRET_KEY,
-      Authorization: `Bearer ${SUPABASE_SECRET_KEY}`,
-      "Content-Type": "application/json",
-    },
+    headers: supabaseRestHeaders({
+      token: SUPABASE_SECRET_KEY,
+      serverKey: SUPABASE_SECRET_KEY,
+    }),
   });
 }
 
