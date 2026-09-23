@@ -141,4 +141,41 @@ function outbound(id, body) {
 
 console.log("PASS  Assistant rules ground prices and sizes in the supplied catalog");
 console.log("PASS  Unknown products and operational status questions are escalated for review");
+
+{
+  const result = buildAssistantDraft({
+    thread: { participant_name: "Test" },
+    products,
+    messages: [inbound("13", "Imate li Afnan 9 AM, koje su cijene i koliko je dostava?")],
+  });
+  assert.equal(result.status, "ready");
+  assert.match(result.body, /sljedećim dekant veličinama/);
+  assert.doesNotMatch(result.body, /sledećim dekant veličinama/);
+}
+
+{
+  const result = buildAssistantDraft({
+    thread: { participant_name: "Test" },
+    products,
+    messages: [
+      inbound("14", "Imate li Afnan 9 AM i koje su cijene?"),
+      outbound("15", "Da."),
+      inbound("16", "10 ml"),
+    ],
+  });
+  assert.equal(result.status, "ready");
+  assert.match(result.body, /10 ml of 9 AM is 7 €/u);
+}
+
+{
+  const result = buildAssistantDraft({
+    thread: { participant_name: "Test" },
+    products,
+    messages: [inbound("17", "Imate li 100ml Afnan 9 AM? Možete li provjeriti?")],
+  });
+  assert.equal(result.status, "ready");
+  assert.match(result.body, /nije dio naše standardne ponude/);
+  assert.match(result.body, /Možemo provjeriti dostupnost/);
+}
+
 console.log("PASS  Contextual size follow-ups preserve product context and customer language");
