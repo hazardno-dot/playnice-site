@@ -38,3 +38,7 @@
 .social-inbox-draft-pill.ready{border-color:#416b55;background:#142019;color:#b9dbc8}.social-inbox-draft-pill.needs_review{border-color:#684e2d;background:#1c1710;color:#d8bb8d}
 .social-inbox-needs-review{display:grid;gap:4px;padding:10px 12px;border:1px solid #684e2d;background:#1c1710}.social-inbox-needs-review strong{font-size:11px;color:#d8bb8d}.social-inbox-needs-review span{font-size:10px;line-height:1.45;color:#a89171}
 @media(max-width:700px){.social-inbox-assistant-status{align-items:stretch;flex-direction:column}.social-inbox-assistant-status button{width:100%}.social-inbox-assistant-live{align-self:flex-start}}
+
+.social-inbox-assistant-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.social-inbox-telegram-test{grid-column:1/-1;color:#b8d6c4}
+@media(max-width:700px){.social-inbox-assistant-actions{width:100%;display:grid;grid-template-columns:1fr}.social-inbox-assistant-actions button{width:100%}}
