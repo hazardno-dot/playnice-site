@@ -147,6 +147,23 @@ function detectEnglish(text, fallbackText = "") {
   return fallback.en > fallback.local;
 }
 
+function detectIjekavian(text, fallbackText = "") {
+  const score = (value) => {
+    const normalized = normalizeAssistantText(value);
+    const ijekavian = ["cijena", "cijene", "gdje", "sljedec", "prije", "vrijeme", "lijep", "zeljela", "htjela", "uvijek"];
+    const ekavian = ["cena", "cene", "gde", "sledec", "pre odluke", "vreme", "lep", "zelela", "htela", "uvek"];
+    return {
+      ije: ijekavian.reduce((sum, item) => sum + (normalized.includes(normalizeAssistantText(item)) ? 1 : 0), 0),
+      eka: ekavian.reduce((sum, item) => sum + (normalized.includes(normalizeAssistantText(item)) ? 1 : 0), 0),
+    };
+  };
+
+  const primary = score(text);
+  if (primary.ije || primary.eka) return primary.ije > primary.eka;
+  const fallback = score(fallbackText);
+  return fallback.ije > fallback.eka;
+}
+
 function extractRequestedSizes(text) {
   const matches = [...String(text || "").matchAll(/\b(2|5|10|20|30|50|100)\s*ml\b/gi)];
   return [...new Set(matches.map((match) => `${match[1]}ml`))];
@@ -162,9 +179,10 @@ function productLabel(product) {
   return String(product?.shortName || product?.name || "").trim();
 }
 
-function sizeAdvice(english) {
-  return english
-    ? "For a first impression, 2 ml is enough. If you want to wear the fragrance several times before deciding, 5 ml is the better choice."
+function sizeAdvice(english, ijekavian = false) {
+  if (english) return "For a first impression, 2 ml is enough. If you want to wear the fragrance several times before deciding, 5 ml is the better choice.";
+  return ijekavian
+    ? "Za prvi utisak 2 ml je dovoljno. Ako želite da parfem nosite nekoliko puta prije odluke, 5 ml je bolji izbor."
     : "Za prvi utisak 2 ml je dovoljno. Ako želite da parfem nosite nekoliko puta pre odluke, 5 ml je bolji izbor.";
 }
 
@@ -174,10 +192,13 @@ function shippingCopy(english) {
     : "Dostava u Crnoj Gori je 4 €. Za porudžbine od 39 € i više je besplatna, a isporuka je obično 1–2 radna dana nakon što kurir preuzme pošiljku.";
 }
 
-function fullBottleCopy(english, product) {
+function fullBottleCopy(english, product, ijekavian = false) {
   const label = product ? productLabel(product) : "";
-  return english
-    ? `${label ? `For ${label}, ` : ""}full bottles / 100 ml are not part of our standard webshop offer. We can check availability with our supplier and get back to you.`
+  if (english) {
+    return `${label ? `For ${label}, ` : ""}full bottles / 100 ml are not part of our standard webshop offer. We can check availability with our supplier and get back to you.`;
+  }
+  return ijekavian
+    ? `${label ? `Za ${label}, ` : ""}puna bočica / 100 ml nije dio naše standardne ponude na sajtu. Možemo provjeriti dostupnost kod dobavljača i javiti Vam.`
     : `${label ? `Za ${label}, ` : ""}puna bočica / 100 ml nije deo naše standardne ponude na sajtu. Možemo proveriti dostupnost kod dobavljača i javiti Vam.`;
 }
 
@@ -217,6 +238,7 @@ export function buildAssistantDraft({ thread, messages, products }) {
     String(message?.body || "").trim()
   );
   const english = detectEnglish(latestText, previousInbound?.body || "");
+  const ijekavian = !english && detectIjekavian(latestText, previousInbound?.body || "");
   const context = findContextProducts(ordered, products, latestText);
   const matchedProducts = context.products;
   const primary = matchedProducts[0] || null;
@@ -291,7 +313,7 @@ export function buildAssistantDraft({ thread, messages, products }) {
       status: "ready",
       intent: "size_advice",
       confidence: 0.96,
-      body: sizeAdvice(english),
+      body: sizeAdvice(english, ijekavian),
       reason: "Standard decant-size guidance.",
       products: [],
       sourceMessage: latest,
@@ -299,7 +321,7 @@ export function buildAssistantDraft({ thread, messages, products }) {
   }
 
   if (asksFullBottle) {
-    const parts = [fullBottleCopy(english, primary)];
+    const parts = [fullBottleCopy(english, primary, ijekavian)];
     if (asksShipping) parts.push(shippingCopy(english));
     return {
       status: "ready",
@@ -425,7 +447,7 @@ export function buildAssistantDraft({ thread, messages, products }) {
   }
 
   if (asksSizeAdvice) {
-    parts.push(sizeAdvice(english));
+    parts.push(sizeAdvice(english, ijekavian));
     intents.push("size_advice");
   }
 
