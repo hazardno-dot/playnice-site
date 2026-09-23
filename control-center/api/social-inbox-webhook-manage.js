@@ -1,4 +1,3 @@
-// Preview refresh marker: Telegram chat ID updated.
 // Assistant v2 environment-sensitive management endpoint.
 import { createHmac } from "node:crypto";
 import { metaCredentialState, resolveMetaPageAccessToken } from "../lib/meta-page-token.mjs";
