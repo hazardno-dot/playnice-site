@@ -37,6 +37,7 @@ for (const token of [
   "instagram: false",
   "social_inbox_threads",
   "social_inbox_messages",
+  'status: last?.direction === "outbound" ? "replied" : "open"',
 ]) {
   assert.ok(syncApi.includes(token), `Social Inbox sync contract missing: ${token}`);
 }
@@ -71,3 +72,4 @@ console.log("PASS  Social Inbox is isolated and admin-only");
 console.log("PASS  Facebook read + explicit Approve & Send use the existing Meta credential resolver");
 console.log("PASS  Instagram sending remains disabled");
 console.log("PASS  Facebook replies are blocked outside the stored 24-hour response window");
+console.log("PASS  New inbound Meta sync reopens a previously replied thread");

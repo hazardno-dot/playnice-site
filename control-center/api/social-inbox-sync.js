@@ -156,6 +156,7 @@ async function syncPlatform(platform, pageToken, adminToken) {
       meta_conversation_id: conversationId,
       participant_id: String(participant?.id || "").trim() || null,
       participant_name: String(participant?.name || "").trim() || null,
+      status: last?.direction === "outbound" ? "replied" : "open",
       last_message_text: last?.body || null,
       last_message_direction: last?.direction || null,
       last_message_at: last?.sent_at || null,

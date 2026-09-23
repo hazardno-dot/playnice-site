@@ -240,7 +240,11 @@ function InboxWorkspace() {
     {syncState ? <div className="social-inbox-status">
       <span>LAST META SYNC</span>
       <strong>Instagram {syncState.results?.instagram?.conversations ?? "—"} · Facebook {syncState.results?.facebook?.conversations ?? "—"}</strong>
-      <small>{Object.keys(syncState.meta_errors || {}).length ? "Partial sync · one Meta channel needs attention" : "Both channels read successfully"}</small>
+      <small>{syncState.results?.facebook
+        ? (syncState.results?.instagram?.conversations
+            ? "Facebook + Instagram read successfully"
+            : "Facebook connected · Instagram Advanced Access unavailable")
+        : "Facebook sync needs attention"}</small>
     </div> : null}
 
     <div className="social-inbox-layout">
