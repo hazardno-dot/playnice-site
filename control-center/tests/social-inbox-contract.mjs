@@ -25,6 +25,8 @@ for (const token of [
   "/api/social-inbox-webhook-manage",
   "social_inbox_drafts",
   "Activate automation",
+  "notification_ready",
+  "webhook_ready",
   "ASSISTANT DRAFT",
   "NO AUTO-SEND",
   "Approve & Send",
@@ -108,6 +110,7 @@ for (const token of [
   "/subscriptions",
   "/subscribed_apps",
   'fields: "messages"',
+  "webhook_ready",
   "automation_active",
   "auto_send: false",
 ]) {
