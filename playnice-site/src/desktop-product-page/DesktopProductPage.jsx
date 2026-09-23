@@ -265,53 +265,52 @@ export default function DesktopProductPage({
         <nav className="desktop-product-page__breadcrumb" aria-label="Breadcrumb">
           <div className="desktop-product-page__breadcrumb-path">
             <button type="button" onClick={onBackToShop}>SHOP</button>
-
-            {previousProduct && nextProduct ? (
-              <div
-                className="desktop-product-page__sequence-nav"
-                aria-label={lang === "sr" ? "Navigacija kroz parfeme" : "Fragrance navigation"}
-              >
-                <span className="desktop-product-page__sequence-position">
-                  {productTotal} / {productPosition}
-                </span>
-
-                <button
-                  type="button"
-                  onClick={() => onOpenProduct?.(nextProduct)}
-                  aria-label={
-                    lang === "sr"
-                      ? `Sledeći parfem: ${getProductNavigationLabel(nextProduct)}`
-                      : `Next fragrance: ${getProductNavigationLabel(nextProduct)}`
-                  }
-                  title={getProductNavigationLabel(nextProduct)}
-                >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="m15 5-7 7 7 7" />
-                  </svg>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => onOpenProduct?.(previousProduct)}
-                  aria-label={
-                    lang === "sr"
-                      ? `Prethodni parfem: ${getProductNavigationLabel(previousProduct)}`
-                      : `Previous fragrance: ${getProductNavigationLabel(previousProduct)}`
-                  }
-                  title={getProductNavigationLabel(previousProduct)}
-                >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="m9 5 7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
-            ) : null}
-
             <span>/</span>
             <span>{product.category}</span>
             <span>/</span>
             <span>{product.modalName || product.name}</span>
           </div>
+
+          {previousProduct && nextProduct ? (
+            <div
+              className="desktop-product-page__sequence-nav"
+              aria-label={lang === "sr" ? "Navigacija kroz parfeme" : "Fragrance navigation"}
+            >
+              <button
+                type="button"
+                onClick={() => onOpenProduct?.(previousProduct)}
+                aria-label={
+                  lang === "sr"
+                    ? `Prethodni parfem: ${getProductNavigationLabel(previousProduct)}`
+                    : `Previous fragrance: ${getProductNavigationLabel(previousProduct)}`
+                }
+                title={getProductNavigationLabel(previousProduct)}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m15 5-7 7 7 7" />
+                </svg>
+              </button>
+
+              <span className="desktop-product-page__sequence-position">
+                {productTotal} / {productPosition}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => onOpenProduct?.(nextProduct)}
+                aria-label={
+                  lang === "sr"
+                    ? `Sledeći parfem: ${getProductNavigationLabel(nextProduct)}`
+                    : `Next fragrance: ${getProductNavigationLabel(nextProduct)}`
+                }
+                title={getProductNavigationLabel(nextProduct)}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m9 5 7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          ) : null}
         </nav>
 
         <section className="desktop-product-page__hero">
