@@ -168,6 +168,10 @@ function InboxWorkspace() {
 
   const generateAiDraft = async () => {
     if (!selected || selected.platform !== "facebook" || generatingDraft || sendingReply) return;
+    if (replyText.trim()) {
+      const replaceDraft = window.confirm("Replace the current reply with a new AI draft?");
+      if (!replaceDraft) return;
+    }
 
     setGeneratingDraft(true);
     setReplyError("");
@@ -230,6 +234,7 @@ function InboxWorkspace() {
       if (!response.ok) throw new Error(payload.error || `Facebook reply failed (${response.status}).`);
 
       setReplyText("");
+      setDraftMeta(null);
       setReplyStatus(payload.storage_warnings?.length
         ? "Sent to Facebook. Local sync reported a storage warning; use Sync now before sending again."
         : "Sent to Facebook.");
