@@ -72,6 +72,7 @@ export default async function handler(req, res) {
   if (auth.error) return json(res, auth.status, { error: auth.error });
 
   const threadId = String(req.body?.thread_id || "").trim();
+  const assistantDraftId = String(req.body?.assistant_draft_id || "").trim();
   const text = String(req.body?.text || "").trim();
   if (!threadId) return json(res, 400, { error: "Inbox thread id is required." });
   if (req.body?.approved !== true) return json(res, 400, { error: "Explicit admin approval is required before sending." });
@@ -92,7 +93,7 @@ export default async function handler(req, res) {
   if (!thread.participant_id) return json(res, 409, { error: "Facebook recipient id is missing. Run Sync now and try again." });
 
   const inboundRes = await supabaseFetch(
-    `/rest/v1/social_inbox_messages?thread_id=eq.${encodeURIComponent(thread.id)}&direction=eq.inbound&select=sent_at&order=sent_at.desc&limit=1`,
+    `/rest/v1/social_inbox_messages?thread_id=eq.${encodeURIComponent(thread.id)}&direction=eq.inbound&select=id,sent_at&order=sent_at.desc&limit=1`,
     auth.token
   );
   const inboundRows = await safeJson(inboundRes);
@@ -104,6 +105,22 @@ export default async function handler(req, res) {
   }
   if (Date.now() - lastInboundTime > RESPONSE_WINDOW_MS) {
     return json(res, 409, { error: "Facebook reply blocked: the latest customer message is outside Meta's 24-hour response window." });
+  }
+
+  if (assistantDraftId) {
+    const draftRes = await supabaseFetch(
+      `/rest/v1/social_inbox_drafts?id=eq.${encodeURIComponent(assistantDraftId)}&thread_id=eq.${encodeURIComponent(thread.id)}&select=id,source_message_id,status&limit=1`,
+      auth.token
+    );
+    const draftRows = await safeJson(draftRes);
+    if (!draftRes.ok) return json(res, 400, { error: `Could not verify Assistant draft freshness (Supabase ${draftRes.status}).` });
+    const draft = Array.isArray(draftRows) ? draftRows[0] : null;
+    if (!draft || !["ready", "needs_review"].includes(draft.status)) {
+      return json(res, 409, { error: "Assistant draft is no longer active. Refresh the conversation before sending." });
+    }
+    if (String(draft.source_message_id || "") !== String(inboundRows[0]?.id || "")) {
+      return json(res, 409, { error: "A newer customer message arrived. Refresh the Assistant draft before sending." });
+    }
   }
 
   try {
