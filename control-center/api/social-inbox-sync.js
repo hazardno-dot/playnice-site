@@ -1,7 +1,9 @@
 import { resolveMetaPageAccessToken } from "../lib/meta-page-token.mjs";
+import { prepareAssistantDrafts } from "../lib/social-inbox-assistant.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SECRET_KEY || "").trim();
 const META_GRAPH_API_VERSION = String(process.env.META_GRAPH_API_VERSION || "v26.0").trim();
 const META_FACEBOOK_PAGE_ID = String(process.env.META_FACEBOOK_PAGE_ID || "").trim();
 const META_INSTAGRAM_ACCOUNT_ID = String(process.env.META_INSTAGRAM_ACCOUNT_ID || "").trim();
@@ -18,7 +20,9 @@ async function supabaseFetch(path, token, init = {}) {
   return fetch(`${SUPABASE_URL}${path}`, {
     ...init,
     headers: {
-      apikey: SUPABASE_KEY,
+      apikey: token && SUPABASE_SECRET_KEY && token === SUPABASE_SECRET_KEY
+        ? SUPABASE_SECRET_KEY
+        : SUPABASE_KEY,
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
       ...(init.headers || {}),
@@ -124,16 +128,19 @@ async function upsertMessages(token, rows) {
   return usable.length;
 }
 
-async function syncPlatform(platform, pageToken, adminToken) {
+export async function syncPlatform(platform, pageToken, adminToken, options = {}) {
+  const participantId = String(options?.participantId || "").trim();
   const params = {
     fields: "id,updated_time,participants.limit(10){id,name}",
-    limit: 50,
+    limit: participantId ? 5 : 50,
   };
+  if (platform === "facebook" && participantId) params.user_id = participantId;
   if (platform === "instagram") params.platform = "instagram";
 
   const list = await graphGet(`${encodeURIComponent(META_FACEBOOK_PAGE_ID)}/conversations`, pageToken, params);
   const conversations = Array.isArray(list?.data) ? list.data : [];
   let messagesSaved = 0;
+  const threadIds = [];
 
   for (const summary of conversations) {
     const conversationId = String(summary?.id || "").trim();
@@ -165,6 +172,7 @@ async function syncPlatform(platform, pageToken, adminToken) {
       metadata: { source: "meta_graph", history_window: "latest_20_messages" },
     });
     if (!thread?.id) throw new Error("Inbox thread upsert did not return an id.");
+    threadIds.push(thread.id);
 
     messagesSaved += await upsertMessages(
       adminToken,
@@ -172,7 +180,7 @@ async function syncPlatform(platform, pageToken, adminToken) {
     );
   }
 
-  return { conversations: conversations.length, messages: messagesSaved };
+  return { conversations: conversations.length, messages: messagesSaved, thread_ids: [...new Set(threadIds)] };
 }
 
 function metaError(error) {
@@ -216,12 +224,26 @@ export default async function handler(req, res) {
       });
     }
 
+    let assistant = null;
+    if (results.facebook) {
+      try {
+        assistant = await prepareAssistantDrafts(auth.token);
+      } catch (assistantError) {
+        assistant = {
+          ok: false,
+          auto_send: false,
+          error: String(assistantError?.message || assistantError).slice(0, 300),
+        };
+      }
+    }
+
     return json(res, 200, {
       ok: true,
       mode: "facebook_reply_enabled",
       credential_source: resolved.source,
       results,
       meta_errors: errors,
+      assistant,
       sending_enabled: { facebook: true, instagram: false },
     });
   } catch (error) {

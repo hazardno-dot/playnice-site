@@ -26,10 +26,16 @@ function contactLabel(thread) {
   return `${platformLabel(thread?.platform)} conversation`;
 }
 
+function initialInboxThread() {
+  if (typeof window === "undefined") return "";
+  return new URLSearchParams(window.location.search).get("inbox") || "";
+}
+
 function InboxWorkspace() {
   const [threads, setThreads] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [selectedId, setSelectedId] = useState("");
+  const [drafts, setDrafts] = useState([]);
+  const [selectedId, setSelectedId] = useState(() => initialInboxThread());
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
@@ -39,6 +45,13 @@ function InboxWorkspace() {
   const [sendingReply, setSendingReply] = useState(false);
   const [replyError, setReplyError] = useState("");
   const [replyStatus, setReplyStatus] = useState("");
+  const [loadedDraftId, setLoadedDraftId] = useState("");
+  const [assistantState, setAssistantState] = useState(null);
+  const [activatingAssistant, setActivatingAssistant] = useState(false);
+  const [testingTelegram, setTestingTelegram] = useState(false);
+  const [telegramTestStatus, setTelegramTestStatus] = useState("");
+  const [detectingTelegram, setDetectingTelegram] = useState(false);
+  const [telegramChats, setTelegramChats] = useState([]);
 
   const loadThreads = async () => {
     const { data, error: loadError } = await supabase
@@ -55,6 +68,38 @@ function InboxWorkspace() {
     setError("");
     setThreads(data || []);
     return data || [];
+  };
+
+  const loadDrafts = async () => {
+    const { data, error: loadError } = await supabase
+      .from("social_inbox_drafts")
+      .select("*")
+      .in("status", ["ready", "needs_review"])
+      .order("created_at", { ascending: false })
+      .limit(200);
+    if (loadError) {
+      setError(loadError.message);
+      setDrafts([]);
+      return [];
+    }
+    setDrafts(data || []);
+    return data || [];
+  };
+
+  const loadAssistantState = async () => {
+    try {
+      const token = await getAdminToken();
+      const response = await fetch("/api/social-inbox-webhook-manage", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Assistant status failed (${response.status}).`);
+      setAssistantState(payload);
+      return payload;
+    } catch (stateError) {
+      setAssistantState({ ok: false, error: stateError?.message || String(stateError) });
+      return null;
+    }
   };
 
   const loadMessages = async (threadId) => {
@@ -95,7 +140,7 @@ function InboxWorkspace() {
         throw new Error(`${payload.error || `Inbox sync failed (${response.status}).`}${details ? ` ${details}` : ""}`);
       }
       setSyncState(payload);
-      const rows = await loadThreads();
+      const [rows] = await Promise.all([loadThreads(), loadDrafts(), loadAssistantState()]);
       if (!selectedId && rows[0]?.id) setSelectedId(rows[0].id);
     } catch (syncError) {
       setSyncState(null);
@@ -110,20 +155,25 @@ function InboxWorkspace() {
     let cancelled = false;
     (async () => {
       setLoading(true);
-      const rows = await loadThreads();
+      const [rows] = await Promise.all([loadThreads(), loadDrafts(), loadAssistantState()]);
       if (!cancelled && rows[0]?.id) setSelectedId((current) => current || rows[0].id);
       if (!cancelled) await syncInbox(true);
       if (!cancelled) setLoading(false);
     })();
 
-    const channel = supabase
+    const threadChannel = supabase
       .channel("social-inbox-threads-manager")
       .on("postgres_changes", { event: "*", schema: "public", table: "social_inbox_threads" }, loadThreads)
+      .subscribe();
+    const draftChannel = supabase
+      .channel("social-inbox-drafts-manager")
+      .on("postgres_changes", { event: "*", schema: "public", table: "social_inbox_drafts" }, loadDrafts)
       .subscribe();
 
     return () => {
       cancelled = true;
-      supabase.removeChannel(channel);
+      supabase.removeChannel(threadChannel);
+      supabase.removeChannel(draftChannel);
     };
   }, []);
 
@@ -151,6 +201,14 @@ function InboxWorkspace() {
     [threads, filter]
   );
   const selected = visible.find((thread) => thread.id === selectedId) || visible[0] || null;
+  const draftByThread = useMemo(() => {
+    const map = new Map();
+    for (const draft of drafts) {
+      if (draft?.thread_id && !map.has(draft.thread_id)) map.set(draft.thread_id, draft);
+    }
+    return map;
+  }, [drafts]);
+  const selectedDraft = selected?.id ? draftByThread.get(selected.id) || null : null;
 
   useEffect(() => {
     if (selected?.id && selected.id !== selectedId) setSelectedId(selected.id);
@@ -161,7 +219,29 @@ function InboxWorkspace() {
     setReplyText("");
     setReplyError("");
     setReplyStatus("");
+    setLoadedDraftId("");
   }, [selectedId]);
+
+  useEffect(() => {
+    if (!selectedDraft || selectedDraft.id === loadedDraftId) return;
+
+    if (loadedDraftId && selectedDraft.id !== loadedDraftId) {
+      setReplyText(selectedDraft.status === "ready" ? String(selectedDraft.body || "") : "");
+      setLoadedDraftId(selectedDraft.id);
+      setReplyError("");
+      setReplyStatus(selectedDraft.status === "ready"
+        ? "New customer message arrived. The previous Assistant draft was replaced with a fresh one."
+        : "New customer message arrived. The previous draft was cleared because this message needs manual review.");
+      return;
+    }
+
+    if (replyText) return;
+    setLoadedDraftId(selectedDraft.id);
+    if (selectedDraft.status === "ready" && selectedDraft.body) {
+      setReplyText(selectedDraft.body);
+      setReplyStatus("Assistant v2 prepared this draft automatically. Review or edit it before sending.");
+    }
+  }, [selectedDraft?.id, selectedDraft?.status, selectedDraft?.body, loadedDraftId, replyText]);
 
   const sendFacebookReply = async () => {
     const text = replyText.trim();
@@ -185,6 +265,7 @@ function InboxWorkspace() {
         },
         body: JSON.stringify({
           thread_id: selected.id,
+          assistant_draft_id: selectedDraft?.id || null,
           text,
           approved: true,
         }),
@@ -192,15 +273,92 @@ function InboxWorkspace() {
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Facebook reply failed (${response.status}).`);
 
+      const sentDraftId = selectedDraft?.id || "";
+      if (sentDraftId) {
+        setDrafts((current) => current.filter((draft) => draft.id !== sentDraftId));
+      }
       setReplyText("");
+      setLoadedDraftId(sentDraftId);
       setReplyStatus(payload.storage_warnings?.length
         ? "Sent to Facebook. Local sync reported a storage warning; use Sync now before sending again."
         : "Sent to Facebook.");
-      await Promise.all([loadMessages(selected.id), loadThreads()]);
+      await Promise.all([loadMessages(selected.id), loadThreads(), loadDrafts()]);
     } catch (sendError) {
       setReplyError(sendError?.message || String(sendError));
     } finally {
       setSendingReply(false);
+    }
+  };
+
+  const detectTelegramChat = async () => {
+    if (detectingTelegram) return;
+    setDetectingTelegram(true);
+    setTelegramChats([]);
+    setError("");
+    try {
+      const token = await getAdminToken();
+      const response = await fetch("/api/social-inbox-webhook-manage", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "detect_telegram_chat" }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Telegram chat detection failed (${response.status}).`);
+      setTelegramChats(Array.isArray(payload.chats) ? payload.chats : []);
+      if (!payload.chats?.length) setTelegramTestStatus(payload.hint || "No Telegram chats found yet.");
+    } catch (detectError) {
+      setError(detectError?.message || String(detectError));
+    } finally {
+      setDetectingTelegram(false);
+    }
+  };
+
+  const testTelegram = async () => {
+    if (testingTelegram) return;
+    setTestingTelegram(true);
+    setTelegramTestStatus("");
+    setError("");
+    try {
+      const token = await getAdminToken();
+      const response = await fetch("/api/social-inbox-webhook-manage", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "test_telegram" }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Telegram test failed (${response.status}).`);
+      setTelegramTestStatus("Telegram test sent.");
+    } catch (testError) {
+      setTelegramTestStatus("");
+      setError(testError?.message || String(testError));
+    } finally {
+      setTestingTelegram(false);
+    }
+  };
+
+  const activateAssistant = async () => {
+    if (activatingAssistant) return;
+    setActivatingAssistant(true);
+    setError("");
+    try {
+      const token = await getAdminToken();
+      const response = await fetch("/api/social-inbox-webhook-manage", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Assistant activation failed (${response.status}).`);
+      setAssistantState(payload);
+    } catch (activationError) {
+      setError(activationError?.message || String(activationError));
+    } finally {
+      setActivatingAssistant(false);
     }
   };
 
@@ -213,11 +371,11 @@ function InboxWorkspace() {
   return <section className="social-inbox-manager">
     <div className="social-inbox-banner">
       <div>
-        <span>SOCIAL INBOX V1</span>
-        <h2>Instagram + Facebook messages</h2>
-        <p>Facebook conversations can be reviewed and replied to after explicit approval. Instagram remains unavailable until Meta Advanced Access is available.</p>
+        <span>SOCIAL INBOX V2</span>
+        <h2>Inbox Assistant</h2>
+        <p>Facebook messages can be synced automatically, matched against PlayNice rules and the live catalog, and prepared as drafts. Sending still requires explicit approval.</p>
       </div>
-      <strong>FB APPROVAL SEND</strong>
+      <strong>NO AUTO-SEND</strong>
     </div>
 
     <div className="social-inbox-toolbar">
@@ -237,6 +395,57 @@ function InboxWorkspace() {
     </div>
 
     {error ? <div className="social-inbox-error">{error}</div> : null}
+    {assistantState ? <div className={`social-inbox-assistant-status ${assistantState.automation_active ? "active" : "setup"}`}>
+      <div>
+        <span>ASSISTANT V2</span>
+        <strong>{assistantState.automation_active
+          ? "Automatic Facebook intake is active"
+          : (assistantState.assistant_ready ? "Draft engine ready · webhook not active yet" : "Assistant setup is incomplete")}</strong>
+        <small>
+          Rule engine {assistantState.assistant_ready ? "ready" : "needs configuration"}
+          {" · "}Webhook {assistantState.webhook_ready ? "ready" : "needs configuration"}
+          {" · "}Telegram {assistantState.notification_ready ? "ready" : "not configured"}
+          {" · "}customer send always requires approval
+        </small>
+        {(assistantState.missing?.assistant?.length || assistantState.missing?.webhook?.length || assistantState.missing?.telegram?.length) ? <div className="social-inbox-missing-config">
+          {assistantState.missing?.assistant?.length ? <span><b>Assistant:</b> {assistantState.missing.assistant.join(", ")}</span> : null}
+          {assistantState.missing?.webhook?.length ? <span><b>Webhook:</b> {assistantState.missing.webhook.join(", ")}</span> : null}
+          {assistantState.missing?.telegram?.length ? <span><b>Telegram:</b> {assistantState.missing.telegram.join(", ")}</span> : null}
+        </div> : null}
+      </div>
+      <div className="social-inbox-assistant-actions">
+        <button
+          type="button"
+          disabled={detectingTelegram || !assistantState?.env?.telegram_bot_token}
+          onClick={detectTelegramChat}
+        >
+          {detectingTelegram ? "Detecting…" : "Detect chat ID"}
+        </button>
+        <button
+          type="button"
+          disabled={testingTelegram || !assistantState.notification_ready}
+          onClick={testTelegram}
+        >
+          {testingTelegram ? "Testing…" : "Test Telegram"}
+        </button>
+        {!assistantState.automation_active ? <button
+          type="button"
+          disabled={activatingAssistant || !assistantState?.env?.production || !assistantState.webhook_ready || !assistantState.notification_ready}
+          onClick={activateAssistant}
+          title={!assistantState?.env?.production ? "Activation is available only on the production Control Center." : ""}
+        >
+          {activatingAssistant ? "Activating…" : (assistantState?.env?.production ? "Activate automation" : "Activate after merge")}
+        </button> : <strong className="social-inbox-assistant-live">LIVE</strong>}
+      </div>
+      {telegramChats.length ? <div className="social-inbox-telegram-chats">
+        {telegramChats.map((chat) => <div key={chat.id}>
+          <span>{chat.name || chat.username || "Telegram chat"}{chat.type ? ` · ${chat.type}` : ""}</span>
+          <code>{chat.id}</code>
+        </div>)}
+      </div> : null}
+      {telegramTestStatus ? <small className="social-inbox-telegram-test">{telegramTestStatus}</small> : null}
+    </div> : null}
+
     {syncState ? <div className="social-inbox-status">
       <span>LAST META SYNC</span>
       <strong>Instagram {syncState.results?.instagram?.conversations ?? "—"} · Facebook {syncState.results?.facebook?.conversations ?? "—"}</strong>
@@ -260,6 +469,9 @@ function InboxWorkspace() {
             <strong>{contactLabel(thread)}</strong>
             <span>{platformLabel(thread.platform)} · {thread.last_message_direction === "outbound" ? "You replied" : "Customer"}</span>
             <p>{thread.last_message_text || "Media / attachment or no text"}</p>
+            {draftByThread.get(thread.id) ? <em className={`social-inbox-draft-pill ${draftByThread.get(thread.id).status}`}>
+              {draftByThread.get(thread.id).status === "ready" ? "DRAFT READY" : "NEEDS REVIEW"}
+            </em> : null}
           </div>
           <time>{fmt(thread.last_message_at || thread.meta_updated_at)}</time>
         </button>) : <div className="social-inbox-empty">{loading ? "Loading conversations…" : "No conversations synced yet."}</div>}
@@ -291,15 +503,24 @@ function InboxWorkspace() {
 
           {selected.platform === "facebook" ? <div className="social-inbox-reply-composer">
             <div className="social-inbox-reply-head">
-              <div><span>FACEBOOK REPLY</span><strong>Draft → review → Approve & Send</strong></div>
+              <div>
+                <span>{selectedDraft?.status === "ready" ? "ASSISTANT DRAFT" : "FACEBOOK REPLY"}</span>
+                <strong>{selectedDraft?.status === "ready"
+                  ? `Prepared automatically · ${Math.round(Number(selectedDraft.confidence || 0) * 100)}% rule confidence`
+                  : "Draft → review → Approve & Send"}</strong>
+              </div>
               <small>Meta 24-hour response window is enforced server-side.</small>
             </div>
+            {selectedDraft?.status === "needs_review" ? <div className="social-inbox-needs-review">
+              <strong>Assistant needs your review</strong>
+              <span>{selectedDraft.reason || "This message does not match a safe deterministic rule."}</span>
+            </div> : null}
             <textarea
               value={replyText}
               maxLength={2000}
               rows={3}
               disabled={sendingReply}
-              placeholder="Write a Facebook reply…"
+              placeholder={selectedDraft?.status === "needs_review" ? "Write the reply manually…" : "Write a Facebook reply…"}
               onChange={(event) => {
                 setReplyText(event.target.value);
                 setReplyError("");
@@ -309,7 +530,11 @@ function InboxWorkspace() {
             {replyError ? <div className="social-inbox-reply-error">{replyError}</div> : null}
             {replyStatus ? <div className="social-inbox-reply-success">{replyStatus}</div> : null}
             <div className="social-inbox-reply-actions">
-              <small>{replyText.length}/2000</small>
+              <small>
+                {selectedDraft?.status === "ready"
+                  ? (replyText.trim() === String(selectedDraft.body || "").trim() ? "ASSISTANT · UNEDITED" : "ASSISTANT · EDITED")
+                  : `${replyText.length}/2000`}
+              </small>
               <button
                 type="button"
                 disabled={sendingReply || !replyText.trim()}
@@ -329,7 +554,7 @@ function InboxWorkspace() {
 }
 
 export default function SocialInboxManager() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(() => Boolean(initialInboxThread()));
   const [slot, setSlot] = useState(null);
 
   useEffect(() => {
@@ -352,7 +577,16 @@ export default function SocialInboxManager() {
       else manageGroup.appendChild(button);
     }
 
-    const close = () => setOpen(false);
+    const close = () => {
+      setOpen(false);
+      if (typeof window !== "undefined") {
+        const url = new URL(window.location.href);
+        if (url.searchParams.has("inbox")) {
+          url.searchParams.delete("inbox");
+          window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+        }
+      }
+    };
     const show = (event) => { event.preventDefault(); event.stopPropagation(); setOpen(true); };
     button.addEventListener("click", show);
     [...sidebar.querySelectorAll("button")].filter((item) => item !== button).forEach((item) => item.addEventListener("click", close));
@@ -385,8 +619,8 @@ export default function SocialInboxManager() {
       navButtons.forEach((item) => item.classList.toggle("active", item === button));
       heading.textContent = "Inbox";
       if (eyebrow) eyebrow.textContent = "MANAGE / SOCIAL INBOX";
-      if (description) description.textContent = "Review social conversations in one place and send explicitly approved Facebook replies.";
-      if (publishBadge) publishBadge.textContent = "FB SEND";
+      if (description) description.textContent = "Automatic Facebook intake, prepared PlayNice drafts, and explicit approval before every send.";
+      if (publishBadge) publishBadge.textContent = "ASSISTED SEND";
       baseChildren.forEach((child) => {
         if (child.dataset.inboxPreviousDisplay === undefined) child.dataset.inboxPreviousDisplay = child.style.display || "";
         child.style.display = "none";
