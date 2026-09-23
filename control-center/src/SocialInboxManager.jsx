@@ -39,6 +39,8 @@ function InboxWorkspace() {
   const [sendingReply, setSendingReply] = useState(false);
   const [replyError, setReplyError] = useState("");
   const [replyStatus, setReplyStatus] = useState("");
+  const [generatingDraft, setGeneratingDraft] = useState(false);
+  const [draftMeta, setDraftMeta] = useState(null);
 
   const loadThreads = async () => {
     const { data, error: loadError } = await supabase
@@ -161,7 +163,42 @@ function InboxWorkspace() {
     setReplyText("");
     setReplyError("");
     setReplyStatus("");
+    setDraftMeta(null);
   }, [selectedId]);
+
+  const generateAiDraft = async () => {
+    if (!selected || selected.platform !== "facebook" || generatingDraft || sendingReply) return;
+
+    setGeneratingDraft(true);
+    setReplyError("");
+    setReplyStatus("");
+    setDraftMeta(null);
+    try {
+      const token = await getAdminToken();
+      const response = await fetch("/api/social-inbox-ai-draft", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ thread_id: selected.id }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `AI draft failed (${response.status}).`);
+      if (!String(payload.draft || "").trim()) throw new Error("AI returned an empty draft.");
+
+      setReplyText(String(payload.draft).trim());
+      setDraftMeta({
+        model: payload.model || "AI",
+        generatedAt: payload.generated_at || new Date().toISOString(),
+      });
+      setReplyStatus("AI draft generated from this conversation and the live catalog. Review and edit before sending.");
+    } catch (draftError) {
+      setReplyError(draftError?.message || String(draftError));
+    } finally {
+      setGeneratingDraft(false);
+    }
+  };
 
   const sendFacebookReply = async () => {
     const text = replyText.trim();
@@ -304,19 +341,33 @@ function InboxWorkspace() {
                 setReplyText(event.target.value);
                 setReplyError("");
                 setReplyStatus("");
+                setDraftMeta(null);
               }}
             />
             {replyError ? <div className="social-inbox-reply-error">{replyError}</div> : null}
             {replyStatus ? <div className="social-inbox-reply-success">{replyStatus}</div> : null}
             <div className="social-inbox-reply-actions">
-              <small>{replyText.length}/2000</small>
-              <button
-                type="button"
-                disabled={sendingReply || !replyText.trim()}
-                onClick={sendFacebookReply}
-              >
-                {sendingReply ? "Sending…" : "Approve & Send"}
-              </button>
+              <div className="social-inbox-ai-actions">
+                <button
+                  type="button"
+                  className="social-inbox-ai-button"
+                  disabled={generatingDraft || sendingReply}
+                  onClick={generateAiDraft}
+                >
+                  {generatingDraft ? "Drafting…" : (replyText.trim() ? "Regenerate AI draft" : "Generate AI draft")}
+                </button>
+                <small>{draftMeta ? `AI DRAFT · ${draftMeta.model} · REVIEW REQUIRED` : "AI draft only · nothing is sent automatically"}</small>
+              </div>
+              <div className="social-inbox-send-actions">
+                <small>{replyText.length}/2000</small>
+                <button
+                  type="button"
+                  disabled={sendingReply || generatingDraft || !replyText.trim()}
+                  onClick={sendFacebookReply}
+                >
+                  {sendingReply ? "Sending…" : "Approve & Send"}
+                </button>
+              </div>
             </div>
           </div> : <div className="social-inbox-reply-lock">
             <div><span>INSTAGRAM</span><strong>Messaging API unavailable without Meta Advanced Access</strong></div>
