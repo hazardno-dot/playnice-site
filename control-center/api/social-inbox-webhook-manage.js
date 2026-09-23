@@ -1,3 +1,4 @@
+// Assistant v2 environment-sensitive management endpoint.
 import { createHmac } from "node:crypto";
 import { metaCredentialState, resolveMetaPageAccessToken } from "../lib/meta-page-token.mjs";
 import { sendAssistantTelegramTest, telegramAssistantState } from "../lib/social-inbox-notify.mjs";
