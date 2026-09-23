@@ -150,8 +150,8 @@ function detectEnglish(text, fallbackText = "") {
 function detectIjekavian(text, fallbackText = "") {
   const score = (value) => {
     const normalized = normalizeAssistantText(value);
-    const ijekavian = ["cijena", "cijene", "gdje", "sljedec", "prije", "vrijeme", "lijep", "zeljela", "htjela", "uvijek"];
-    const ekavian = ["cena", "cene", "gde", "sledec", "pre odluke", "vreme", "lep", "zelela", "htela", "uvek"];
+    const ijekavian = ["cijena", "cijene", "gdje", "sljedec", "prije", "vrijeme", "lijep", "zeljela", "htjela", "uvijek", "provjer", "vidjet"];
+    const ekavian = ["cena", "cene", "gde", "sledec", "pre odluke", "vreme", "lep", "zelela", "htela", "uvek", "prover", "videt"];
     return {
       ije: ijekavian.reduce((sum, item) => sum + (normalized.includes(normalizeAssistantText(item)) ? 1 : 0), 0),
       eka: ekavian.reduce((sum, item) => sum + (normalized.includes(normalizeAssistantText(item)) ? 1 : 0), 0),
@@ -400,7 +400,7 @@ export function buildAssistantDraft({ thread, messages, products }) {
         for (const size of offeredRequested) {
           requestedParts.push(english
             ? `${size.replace("ml", " ml")} of ${label} is listed at ${Number(sizes[size])} €.`
-            : `${size.replace("ml", " ml")} ${label} je u trenutnoj ponudi po ceni od ${Number(sizes[size])} €.`);
+            : `${size.replace("ml", " ml")} ${label} je u trenutnoj ponudi po ${ijekavian ? "cijeni" : "ceni"} od ${Number(sizes[size])} €.`);
         }
         if (unavailableRequested.length) {
           requestedParts.push(english
@@ -413,7 +413,7 @@ export function buildAssistantDraft({ thread, messages, products }) {
         if (asksPrice) {
           parts.push(english
             ? `${label} is currently offered in these decant sizes:\n${lines.join("\n")}`
-            : `${label} je trenutno u ponudi u sledećim dekant veličinama:\n${lines.join("\n")}`);
+            : `${label} je trenutno u ponudi u ${ijekavian ? "sljedećim" : "sledećim"} dekant veličinama:\n${lines.join("\n")}`);
         } else {
           parts.push(english
             ? `${label} is in our current webshop offer. Available decant sizes are:\n${lines.join("\n")}`
@@ -459,7 +459,7 @@ export function buildAssistantDraft({ thread, messages, products }) {
   }
 
   if (asksWebsite) {
-    parts.push(english ? "You can see the current offer at playniceshop.me." : "Aktuelnu ponudu možete videti na playniceshop.me.");
+    parts.push(english ? "You can see the current offer at playniceshop.me." : `Aktuelnu ponudu možete ${ijekavian ? "vidjeti" : "videti"} na playniceshop.me.`);
     intents.push("website");
   }
 
