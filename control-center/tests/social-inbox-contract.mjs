@@ -14,6 +14,7 @@ const notify = fs.readFileSync(path.join(root, "control-center/lib/social-inbox-
 const schemaV1 = fs.readFileSync(path.join(root, "control-center/supabase/social_inbox_v1.sql"), "utf8");
 const schemaV2 = fs.readFileSync(path.join(root, "control-center/supabase/social_inbox_assistant_v2.sql"), "utf8");
 const schemaHeartbeat = fs.readFileSync(path.join(root, "control-center/supabase/social_inbox_webhook_heartbeat.sql"), "utf8");
+const supabaseServerAuth = fs.readFileSync(path.join(root, "control-center/lib/supabase-server-auth.mjs"), "utf8");
 
 assert.ok(managers.includes('import SocialInboxManager from "./SocialInboxManager";'));
 assert.ok(managers.includes("<SocialInboxManager />"));
@@ -64,6 +65,8 @@ for (const token of [
   "social_inbox_threads",
   "social_inbox_messages",
   "thread_ids",
+  "supabaseRestHeaders",
+  "SUPABASE_SERVICE_ROLE_KEY",
   'status: last?.direction === "outbound" ? "replied" : "open"',
 ]) {
   assert.ok(syncApi.includes(token), `Social Inbox sync contract missing: ${token}`);
@@ -101,6 +104,8 @@ for (const token of [
   "limit=100",
   "prepareAssistantDrafts",
   "notification_candidates",
+  "supabaseRestHeaders",
+  "SUPABASE_SERVICE_ROLE_KEY",
   "RESPONSE_WINDOW_MS",
   "outside_response_window",
   'status: "needs_review"',
@@ -121,6 +126,7 @@ for (const token of [
   'process.env.VERCEL_ENV === "production"',
   "inboundSenderIds",
   "recordWebhookState",
+  "supabaseRestHeaders",
   "social_inbox_webhook_state",
   'last_reason: "processed"',
   'last_reason: "error"',
@@ -144,6 +150,7 @@ for (const token of [
   "metaFieldNames",
   "activation_confirmed",
   "webhookHeartbeat",
+  "supabaseRestHeaders",
   "webhook_heartbeat",
   "social_inbox_webhook_state",
   "missing",
@@ -166,6 +173,8 @@ for (const token of [
   "Approve & Send ostaje obavezan",
   "notified_at",
   "claimDraftNotification",
+  "supabaseRestHeaders",
+  "SUPABASE_SERVICE_ROLE_KEY",
   "sendAssistantTelegramTest",
   "detectAssistantTelegramChats",
   "getUpdates",
@@ -219,3 +228,15 @@ for (const token of [
 }
 
 console.log("PASS  Webhook heartbeat stores delivery diagnostics without customer message content");
+
+for (const token of [
+  "isModernSupabaseSecretKey",
+  "sb_secret_",
+  "headers.apikey = secretKey",
+  "if (!isModernSupabaseSecretKey(secretKey))",
+  "headers.Authorization = `Bearer ${secretKey}`",
+]) {
+  assert.ok(supabaseServerAuth.includes(token), `Supabase server auth helper contract missing: ${token}`);
+}
+
+console.log("PASS  Modern Supabase secret keys use apikey auth without being treated as JWT Bearer tokens");
