@@ -113,7 +113,7 @@ export default async function handler(req, res) {
 
     const notifications = await notifyAssistantDrafts(
       SUPABASE_SERVICE_ROLE_KEY,
-      assistant.created,
+      assistant.notification_candidates,
       {
         baseUrl: requestBaseUrl(req),
         enabled: process.env.VERCEL_ENV === "production",
