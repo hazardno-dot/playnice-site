@@ -428,6 +428,18 @@ function InboxWorkspace() {
           {assistantState.missing?.webhook?.length ? <span><b>Webhook:</b> {assistantState.missing.webhook.join(", ")}</span> : null}
           {assistantState.missing?.telegram?.length ? <span><b>Telegram:</b> {assistantState.missing.telegram.join(", ")}</span> : null}
         </div> : null}
+        {assistantState.webhook_heartbeat ? <small className="social-inbox-webhook-heartbeat">
+          Last webhook: {assistantState.webhook_heartbeat.last_received_at
+            ? fmt(assistantState.webhook_heartbeat.last_received_at)
+            : "never received"}
+          {assistantState.webhook_heartbeat.last_reason ? ` · ${assistantState.webhook_heartbeat.last_reason}` : ""}
+          {assistantState.webhook_heartbeat.last_sender_count != null
+            ? ` · senders ${assistantState.webhook_heartbeat.last_sender_count}`
+            : ""}
+          {assistantState.webhook_heartbeat.last_error
+            ? ` · ${assistantState.webhook_heartbeat.last_error}`
+            : ""}
+        </small> : null}
       </div>
       <div className="social-inbox-assistant-actions">
         <button
