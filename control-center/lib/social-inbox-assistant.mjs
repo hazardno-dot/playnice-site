@@ -369,18 +369,36 @@ export function buildAssistantDraft({ thread, messages, products }) {
   if (primary && (asksPrice || asksAvailability)) {
     for (const product of matchedProducts) {
       const label = productLabel(product);
-      const lines = priceLines(product, english);
-      if (asksPrice) {
-        parts.push(english
-          ? `${label} is currently offered in these decant sizes:\n${lines.join("\n")}`
-          : `${label} je trenutno u ponudi u sledećim dekant veličinama:\n${lines.join("\n")}`);
-        intents.push("price");
+      const sizes = product?.sizes || {};
+      const offeredRequested = requestedSizes.filter((size) => Object.prototype.hasOwnProperty.call(sizes, size));
+      const unavailableRequested = requestedSizes.filter((size) => !Object.prototype.hasOwnProperty.call(sizes, size));
+
+      if (requestedSizes.length) {
+        const requestedParts = [];
+        for (const size of offeredRequested) {
+          requestedParts.push(english
+            ? `${size.replace("ml", " ml")} of ${label} is listed at ${Number(sizes[size])} €.`
+            : `${size.replace("ml", " ml")} ${label} je u trenutnoj ponudi po ceni od ${Number(sizes[size])} €.`);
+        }
+        if (unavailableRequested.length) {
+          requestedParts.push(english
+            ? `${unavailableRequested.map((size) => size.replace("ml", " ml")).join(", ")} is not listed for this fragrance. Current sizes are: ${Object.keys(sizes).map((size) => size.replace("ml", " ml")).join(", ")}.`
+            : `${unavailableRequested.map((size) => size.replace("ml", " ml")).join(", ")} nije navedeno za ovaj parfem. Trenutne veličine su: ${Object.keys(sizes).map((size) => size.replace("ml", " ml")).join(", ")}.`);
+        }
+        if (requestedParts.length) parts.push(requestedParts.join("\n\n"));
       } else {
-        parts.push(english
-          ? `${label} is in our current webshop offer. Available decant sizes are:\n${lines.join("\n")}`
-          : `${label} je u našoj trenutnoj ponudi na sajtu. Dostupne dekant veličine su:\n${lines.join("\n")}`);
-        intents.push("availability");
+        const lines = priceLines(product, english);
+        if (asksPrice) {
+          parts.push(english
+            ? `${label} is currently offered in these decant sizes:\n${lines.join("\n")}`
+            : `${label} je trenutno u ponudi u sledećim dekant veličinama:\n${lines.join("\n")}`);
+        } else {
+          parts.push(english
+            ? `${label} is in our current webshop offer. Available decant sizes are:\n${lines.join("\n")}`
+            : `${label} je u našoj trenutnoj ponudi na sajtu. Dostupne dekant veličine su:\n${lines.join("\n")}`);
+        }
       }
+      intents.push(asksPrice ? "price" : "availability");
     }
   }
 
