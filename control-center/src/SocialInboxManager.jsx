@@ -35,6 +35,10 @@ function InboxWorkspace() {
   const [syncing, setSyncing] = useState(false);
   const [error, setError] = useState("");
   const [syncState, setSyncState] = useState(null);
+  const [replyText, setReplyText] = useState("");
+  const [sendingReply, setSendingReply] = useState(false);
+  const [replyError, setReplyError] = useState("");
+  const [replyStatus, setReplyStatus] = useState("");
 
   const loadThreads = async () => {
     const { data, error: loadError } = await supabase
@@ -153,6 +157,53 @@ function InboxWorkspace() {
     if (!selected) setMessages([]);
   }, [selected?.id, selectedId]);
 
+  useEffect(() => {
+    setReplyText("");
+    setReplyError("");
+    setReplyStatus("");
+  }, [selectedId]);
+
+  const sendFacebookReply = async () => {
+    const text = replyText.trim();
+    if (!selected || selected.platform !== "facebook" || !text || sendingReply) return;
+
+    const confirmed = window.confirm(
+      `Approve and send this Facebook reply to ${contactLabel(selected)}?\n\n${text}`
+    );
+    if (!confirmed) return;
+
+    setSendingReply(true);
+    setReplyError("");
+    setReplyStatus("");
+    try {
+      const token = await getAdminToken();
+      const response = await fetch("/api/social-inbox-reply", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          thread_id: selected.id,
+          text,
+          approved: true,
+        }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Facebook reply failed (${response.status}).`);
+
+      setReplyText("");
+      setReplyStatus(payload.storage_warnings?.length
+        ? "Sent to Facebook. Local sync reported a storage warning; use Sync now before sending again."
+        : "Sent to Facebook.");
+      await Promise.all([loadMessages(selected.id), loadThreads()]);
+    } catch (sendError) {
+      setReplyError(sendError?.message || String(sendError));
+    } finally {
+      setSendingReply(false);
+    }
+  };
+
   const counts = useMemo(() => ({
     all: threads.length,
     instagram: threads.filter((thread) => thread.platform === "instagram").length,
@@ -164,9 +215,9 @@ function InboxWorkspace() {
       <div>
         <span>SOCIAL INBOX V1</span>
         <h2>Instagram + Facebook messages</h2>
-        <p>Read-only inbox sync first. Messages can be reviewed here, but reply controls stay locked until the Meta read path is verified.</p>
+        <p>Facebook conversations can be reviewed and replied to after explicit approval. Instagram remains unavailable until Meta Advanced Access is available.</p>
       </div>
-      <strong>READ ONLY</strong>
+      <strong>FB APPROVAL SEND</strong>
     </div>
 
     <div className="social-inbox-toolbar">
@@ -234,10 +285,39 @@ function InboxWorkspace() {
             </div>) : <div className="social-inbox-empty">No stored messages for this conversation.</div>}
           </div>
 
-          <div className="social-inbox-reply-lock">
-            <div><span>NEXT PHASE</span><strong>AI draft → review → Approve & Send</strong></div>
+          {selected.platform === "facebook" ? <div className="social-inbox-reply-composer">
+            <div className="social-inbox-reply-head">
+              <div><span>FACEBOOK REPLY</span><strong>Draft → review → Approve & Send</strong></div>
+              <small>Meta 24-hour response window is enforced server-side.</small>
+            </div>
+            <textarea
+              value={replyText}
+              maxLength={2000}
+              rows={3}
+              disabled={sendingReply}
+              placeholder="Write a Facebook reply…"
+              onChange={(event) => {
+                setReplyText(event.target.value);
+                setReplyError("");
+                setReplyStatus("");
+              }}
+            />
+            {replyError ? <div className="social-inbox-reply-error">{replyError}</div> : null}
+            {replyStatus ? <div className="social-inbox-reply-success">{replyStatus}</div> : null}
+            <div className="social-inbox-reply-actions">
+              <small>{replyText.length}/2000</small>
+              <button
+                type="button"
+                disabled={sendingReply || !replyText.trim()}
+                onClick={sendFacebookReply}
+              >
+                {sendingReply ? "Sending…" : "Approve & Send"}
+              </button>
+            </div>
+          </div> : <div className="social-inbox-reply-lock">
+            <div><span>INSTAGRAM</span><strong>Messaging API unavailable without Meta Advanced Access</strong></div>
             <button type="button" disabled>Reply locked</button>
-          </div>
+          </div>}
         </> : <div className="social-inbox-empty social-inbox-empty-thread">Select a conversation after the first Meta sync.</div>}
       </article>
     </div>
@@ -301,8 +381,8 @@ export default function SocialInboxManager() {
       navButtons.forEach((item) => item.classList.toggle("active", item === button));
       heading.textContent = "Inbox";
       if (eyebrow) eyebrow.textContent = "MANAGE / SOCIAL INBOX";
-      if (description) description.textContent = "Review Instagram and Facebook conversations in one place before approved replies are enabled.";
-      if (publishBadge) publishBadge.textContent = "READ ONLY";
+      if (description) description.textContent = "Review social conversations in one place and send explicitly approved Facebook replies.";
+      if (publishBadge) publishBadge.textContent = "FB SEND";
       baseChildren.forEach((child) => {
         if (child.dataset.inboxPreviousDisplay === undefined) child.dataset.inboxPreviousDisplay = child.style.display || "";
         child.style.display = "none";

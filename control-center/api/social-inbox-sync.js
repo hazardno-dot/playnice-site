@@ -217,11 +217,11 @@ export default async function handler(req, res) {
 
     return json(res, 200, {
       ok: true,
-      mode: "read_only",
+      mode: "facebook_reply_enabled",
       credential_source: resolved.source,
       results,
       meta_errors: errors,
-      sending_enabled: false,
+      sending_enabled: { facebook: true, instagram: false },
     });
   } catch (error) {
     return json(res, 400, { error: String(error?.message || error).slice(0, 300) });
