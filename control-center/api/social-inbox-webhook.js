@@ -4,7 +4,8 @@ import { syncPlatform } from "./social-inbox-sync.js";
 import { prepareAssistantDrafts } from "../lib/social-inbox-assistant.mjs";
 import { notifyAssistantDrafts } from "../lib/social-inbox-notify.mjs";
 
-const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SECRET_KEY || "").trim();
+const SUPABASE_URL = String(process.env.VITE_SUPABASE_URL || "").trim();
+const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
 const META_APP_SECRET = String(process.env.META_APP_SECRET || "").trim();
 const META_FACEBOOK_PAGE_ID = String(process.env.META_FACEBOOK_PAGE_ID || "").trim();
 
@@ -21,6 +22,35 @@ function secureEqual(left, right) {
   const a = Buffer.from(String(left || ""));
   const b = Buffer.from(String(right || ""));
   return a.length === b.length && a.length > 0 && timingSafeEqual(a, b);
+}
+
+async function recordWebhookState(patch = {}) {
+  if (!SUPABASE_URL || !SUPABASE_SECRET_KEY) return;
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/social_inbox_webhook_state?on_conflict=platform`,
+      {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_SECRET_KEY,
+          Authorization: `Bearer ${SUPABASE_SECRET_KEY}`,
+          "Content-Type": "application/json",
+          Prefer: "resolution=merge-duplicates,return=minimal",
+        },
+        body: JSON.stringify({
+          platform: "facebook",
+          updated_at: new Date().toISOString(),
+          ...patch,
+        }),
+      }
+    );
+    if (!response.ok) {
+      const detail = await response.text().catch(() => "");
+      console.warn("[social-inbox-webhook-heartbeat]", response.status, detail.slice(0, 240));
+    }
+  } catch (error) {
+    console.warn("[social-inbox-webhook-heartbeat]", String(error?.message || error).slice(0, 240));
+  }
 }
 
 function requestBaseUrl(req) {
@@ -77,6 +107,16 @@ export default async function handler(req, res) {
   if (!secureEqual(callbackKey, expected)) return json(res, 401, { ok: false, accepted: false });
 
   const senderIds = inboundSenderIds(req.body);
+  const entryCount = Array.isArray(req.body?.entry) ? req.body.entry.length : 0;
+  await recordWebhookState({
+    last_received_at: new Date().toISOString(),
+    last_event_object: String(req.body?.object || "").slice(0, 80),
+    last_entry_count: entryCount,
+    last_sender_count: senderIds.length,
+    last_processed: 0,
+    last_reason: senderIds.length ? "received" : "no_inbound_message",
+    last_error: null,
+  });
   if (!senderIds.length) return json(res, 200, { ok: true, accepted: true, processed: 0, reason: "no_inbound_message" });
 
   try {
@@ -120,6 +160,13 @@ export default async function handler(req, res) {
       }
     );
 
+    await recordWebhookState({
+      last_sender_count: senderIds.length,
+      last_processed: senderIds.length,
+      last_reason: "processed",
+      last_error: null,
+    });
+
     return json(res, 200, {
       ok: true,
       accepted: true,
@@ -134,6 +181,12 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error("[social-inbox-webhook]", error);
+    await recordWebhookState({
+      last_sender_count: senderIds.length,
+      last_processed: 0,
+      last_reason: "error",
+      last_error: String(error?.message || error).slice(0, 300),
+    });
     // Acknowledge a valid Meta webhook to avoid a retry storm. Manual Sync now remains the recovery path.
     return json(res, 200, {
       ok: false,
