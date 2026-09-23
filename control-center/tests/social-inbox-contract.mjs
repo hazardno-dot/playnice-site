@@ -79,6 +79,7 @@ for (const token of [
   "loadLiveProducts",
   "buildAssistantDraft",
   "prepareAssistantDrafts",
+  "notification_candidates",
   "RESPONSE_WINDOW_MS",
   "outside_response_window",
   'status: "needs_review"',
@@ -124,6 +125,7 @@ for (const token of [
   "PORUKA TRAŽI PREGLED",
   "Approve & Send ostaje obavezan",
   "notified_at",
+  "claimDraftNotification",
 ]) {
   assert.ok(notify.includes(token), `Assistant notification contract missing: ${token}`);
 }
