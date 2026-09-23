@@ -271,8 +271,12 @@ function InboxWorkspace() {
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Facebook reply failed (${response.status}).`);
 
+      const sentDraftId = selectedDraft?.id || "";
+      if (sentDraftId) {
+        setDrafts((current) => current.filter((draft) => draft.id !== sentDraftId));
+      }
       setReplyText("");
-      setLoadedDraftId("");
+      setLoadedDraftId(sentDraftId);
       setReplyStatus(payload.storage_warnings?.length
         ? "Sent to Facebook. Local sync reported a storage warning; use Sync now before sending again."
         : "Sent to Facebook.");
