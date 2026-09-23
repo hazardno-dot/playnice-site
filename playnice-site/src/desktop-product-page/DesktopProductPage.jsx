@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "re
 import { getProductPurchaseSelection } from "../features/commerce/commerceDerivations";
 import TheNoteMap from "../features/note-map/TheNoteMap";
 import { products } from "../data/products";
+import { getProductType } from "../data/products/productType";
 import {
   productCopyBySlug,
   productWearContextBySlug,
@@ -54,13 +55,6 @@ const PROFILE_LABELS = {
   citrus: { sr: "Citrusni karakter", en: "Citrus" },
   aquatic: { sr: "Vodeni karakter", en: "Aquatic" },
   powdery: { sr: "Puderasti karakter", en: "Powdery" },
-};
-
-const getProductType = (name = "") => {
-  const match = String(name).match(
-    /(Extrait de Parfum|Eau de Parfum|Eau de Toilette|Parfum|Cologne)$/i
-  );
-  return match?.[1] || "";
 };
 
 const getDiscountedPrice = (price, percent) =>
