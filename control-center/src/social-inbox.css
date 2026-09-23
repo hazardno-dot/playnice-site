@@ -28,3 +28,13 @@
 .social-inbox-reply-actions{display:flex;justify-content:space-between;gap:12px;align-items:center}.social-inbox-reply-actions small{font-size:9px;color:#65717d}.social-inbox-reply-actions button{padding:10px 14px;border:1px solid #416b55;background:#142019;color:#c4dfd0;cursor:pointer}.social-inbox-reply-actions button:disabled{opacity:.45;cursor:not-allowed}.social-inbox-empty{padding:24px;color:#707b87;text-align:center;font-size:11px}.social-inbox-empty-thread{display:grid;place-items:center;height:100%}
 @media(max-width:1000px){.social-inbox-layout{grid-template-columns:1fr}.social-inbox-list{max-height:320px}.social-inbox-thread{min-height:540px}.social-inbox-status{grid-template-columns:1fr}.social-inbox-status small{justify-self:start}}
 @media(max-width:700px){.social-inbox-manager{padding:0 14px 32px}.social-inbox-banner,.social-inbox-toolbar,.social-inbox-thread-head,.social-inbox-reply-lock,.social-inbox-reply-head{align-items:flex-start;flex-direction:column}.social-inbox-sync{width:100%}.social-inbox-message>div{max-width:88%}}
+
+.social-inbox-ai-actions,.social-inbox-send-actions{display:flex;gap:10px;align-items:center}
+.social-inbox-ai-actions{min-width:0;flex-wrap:wrap}.social-inbox-ai-actions small{font-size:9px;color:#778694;letter-spacing:.04em}
+.social-inbox-ai-button{padding:10px 14px;border:1px solid #4b5f75;background:#121a23;color:#bed0e2;cursor:pointer}
+.social-inbox-ai-button:hover:not(:disabled){border-color:#68819a;background:#16212c}
+.social-inbox-ai-button:disabled{opacity:.45;cursor:not-allowed}
+.social-inbox-send-actions{justify-content:flex-end}.social-inbox-send-actions>small{font-size:9px;color:#65717d;white-space:nowrap}
+.social-inbox-send-actions>button{padding:10px 14px;border:1px solid #416b55;background:#142019;color:#c4dfd0;cursor:pointer}
+.social-inbox-send-actions>button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:700px){.social-inbox-reply-actions{align-items:stretch;flex-direction:column}.social-inbox-ai-actions,.social-inbox-send-actions{justify-content:space-between}.social-inbox-ai-button,.social-inbox-send-actions>button{min-height:40px}}
