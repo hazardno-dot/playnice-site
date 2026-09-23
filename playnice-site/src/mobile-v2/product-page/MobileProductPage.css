@@ -26,9 +26,10 @@
   }
 
   .mobile-product-page__identity-topline {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
-    justify-content: space-between;
+    gap: 10px;
     margin-bottom: 18px;
   }
 
@@ -45,7 +46,44 @@
     letter-spacing: 0.12em;
   }
 
+  .mobile-product-page__sequence-nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .mobile-product-page__sequence-nav button {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(213, 177, 106, 0.2);
+    border-radius: 50%;
+    background: rgba(213, 177, 106, 0.035);
+    color: rgba(244, 234, 216, 0.72);
+    font: 600 0.9rem/1 Inter, sans-serif;
+    touch-action: manipulation;
+  }
+
+  .mobile-product-page__sequence-nav button:active {
+    border-color: rgba(213, 177, 106, 0.5);
+    background: rgba(213, 177, 106, 0.1);
+    color: #dcb56b;
+    transform: scale(0.97);
+  }
+
+  .mobile-product-page__sequence-nav span {
+    min-width: 38px;
+    color: rgba(244, 234, 216, 0.4);
+    font: 700 0.56rem/1 Inter, sans-serif;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+
   .mobile-product-page__wishlist {
+    justify-self: end;
     width: 36px;
     min-width: 36px;
     height: 36px;
