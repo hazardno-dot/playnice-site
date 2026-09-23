@@ -1,3 +1,4 @@
+// AI Draft v1: server-side only.
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
