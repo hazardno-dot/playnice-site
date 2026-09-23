@@ -5,7 +5,7 @@ import { detectAssistantTelegramChats, sendAssistantTelegramTest, telegramAssist
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SECRET_KEY || "").trim();
+const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
 const GITHUB_TOKEN = String(process.env.GITHUB_TOKEN || "").trim();
 const META_GRAPH_API_VERSION = String(process.env.META_GRAPH_API_VERSION || "v26.0").trim();
 const META_APP_ID = String(process.env.META_APP_ID || "").trim();
@@ -79,6 +79,16 @@ async function metaRequest(path, { method = "GET", token = "", form = null } = {
   return payload || {};
 }
 
+function metaFieldNames(fields) {
+  return (Array.isArray(fields) ? fields : [])
+    .map((field) => {
+      if (typeof field === "string") return field;
+      if (field && typeof field === "object") return String(field.name || field.field || field.key || "");
+      return "";
+    })
+    .filter(Boolean);
+}
+
 async function appAccessToken() {
   if (!META_APP_ID || !META_APP_SECRET) throw new Error("META_APP_ID / META_APP_SECRET are not configured.");
   const url = new URL(`https://graph.facebook.com/${META_GRAPH_API_VERSION}/oauth/access_token`);
@@ -145,7 +155,7 @@ async function subscriptionState(req) {
     const expectedBase = `${baseUrl(req)}/api/social-inbox-webhook`;
     result.app_subscription = (Array.isArray(subscriptions?.data) ? subscriptions.data : []).some((item) => {
       const callback = String(item?.callback_url || "");
-      const fields = Array.isArray(item?.fields) ? item.fields : [];
+      const fields = metaFieldNames(item?.fields);
       return item?.object === "page" && callback.startsWith(expectedBase) && fields.includes("messages");
     });
   } catch (error) {
@@ -159,7 +169,7 @@ async function subscriptionState(req) {
       { token: page.token }
     );
     result.page_subscription = (Array.isArray(subscriptions?.data) ? subscriptions.data : []).some((item) => {
-      const fields = Array.isArray(item?.subscribed_fields) ? item.subscribed_fields : [];
+      const fields = metaFieldNames(item?.subscribed_fields);
       return String(item?.id || "") === META_APP_ID && fields.includes("messages");
     });
   } catch (error) {
@@ -232,6 +242,7 @@ export default async function handler(req, res) {
       ),
       notification_ready: state.env.telegram,
       automation_active: Boolean(state.app_subscription && state.page_subscription),
+      activation_confirmed: Boolean(state.app_subscription && state.page_subscription),
       auto_send: false,
     });
   }
@@ -268,6 +279,7 @@ export default async function handler(req, res) {
       ),
       notification_ready: state.env.telegram,
       automation_active: Boolean(state.app_subscription && state.page_subscription),
+      activation_confirmed: Boolean(state.app_subscription && state.page_subscription),
       auto_send: false,
     });
   } catch (error) {

@@ -48,6 +48,7 @@ function InboxWorkspace() {
   const [loadedDraftId, setLoadedDraftId] = useState("");
   const [assistantState, setAssistantState] = useState(null);
   const [activatingAssistant, setActivatingAssistant] = useState(false);
+  const [activationStatus, setActivationStatus] = useState("");
   const [testingTelegram, setTestingTelegram] = useState(false);
   const [telegramTestStatus, setTelegramTestStatus] = useState("");
   const [detectingTelegram, setDetectingTelegram] = useState(false);
@@ -355,7 +356,20 @@ function InboxWorkspace() {
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Assistant activation failed (${response.status}).`);
       setAssistantState(payload);
+      if (payload.automation_active) {
+        setActivationStatus("Automation activated and confirmed.");
+        setError("");
+      } else {
+        const detail = [
+          `App subscription: ${payload.app_subscription ? "ON" : "OFF"}`,
+          `Page subscription: ${payload.page_subscription ? "ON" : "OFF"}`,
+          ...(Array.isArray(payload.status_errors) ? payload.status_errors : []),
+        ].join(" · ");
+        setActivationStatus("");
+        setError(`Activation was not confirmed. ${detail}`);
+      }
     } catch (activationError) {
+      setActivationStatus("");
       setError(activationError?.message || String(activationError));
     } finally {
       setActivatingAssistant(false);
@@ -405,6 +419,8 @@ function InboxWorkspace() {
           Rule engine {assistantState.assistant_ready ? "ready" : "needs configuration"}
           {" · "}Webhook {assistantState.webhook_ready ? "ready" : "needs configuration"}
           {" · "}Telegram {assistantState.notification_ready ? "ready" : "not configured"}
+          {" · "}Meta app {assistantState.app_subscription ? "ON" : "OFF"}
+          {" · "}Page subscription {assistantState.page_subscription ? "ON" : "OFF"}
           {" · "}customer send always requires approval
         </small>
         {(assistantState.missing?.assistant?.length || assistantState.missing?.webhook?.length || assistantState.missing?.telegram?.length) ? <div className="social-inbox-missing-config">
@@ -443,6 +459,7 @@ function InboxWorkspace() {
           <code>{chat.id}</code>
         </div>)}
       </div> : null}
+      {activationStatus ? <small className="social-inbox-telegram-test">{activationStatus}</small> : null}
       {telegramTestStatus ? <small className="social-inbox-telegram-test">{telegramTestStatus}</small> : null}
     </div> : null}
 
