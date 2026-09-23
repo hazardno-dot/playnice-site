@@ -73,12 +73,17 @@ for (const token of [
 }
 
 for (const token of [
-  'ASSISTANT_RULES_VERSION = "assistant-v2.0"',
+  'ASSISTANT_RULES_VERSION = "assistant-v2.1"',
   "playnice-site/src/data/products/index.js",
   "GITHUB_TOKEN",
   "loadLiveProducts",
   "buildAssistantDraft",
   "detectIjekavian",
+  "www.playniceshop.me",
+  "conversationAlreadySharedWebsite",
+  "shouldProactivelyShareWebsite",
+  "asksOffer",
+  "limit=100",
   "prepareAssistantDrafts",
   "notification_candidates",
   "RESPONSE_WINDOW_MS",
