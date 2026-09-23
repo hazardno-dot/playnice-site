@@ -307,6 +307,45 @@ export function buildAssistantDraft({ thread, messages, products }) {
     };
   }
 
+  if (
+    primary &&
+    requestedSizes.length &&
+    !asksPrice &&
+    !asksAvailability &&
+    !asksOrder &&
+    !asksFullBottle &&
+    !asksShipping &&
+    !asksRecommendation &&
+    !asksSizeAdvice &&
+    !asksAuthenticity &&
+    !asksWebsite
+  ) {
+    const offered = requestedSizes.filter((size) => Object.prototype.hasOwnProperty.call(primary?.sizes || {}, size));
+    const unavailable = requestedSizes.filter((size) => !Object.prototype.hasOwnProperty.call(primary?.sizes || {}, size));
+    const lines = [];
+
+    for (const size of offered) {
+      lines.push(english
+        ? `${size.replace("ml", " ml")} of ${productLabel(primary)} is ${Number(primary.sizes[size])} €.`
+        : `${size.replace("ml", " ml")} ${productLabel(primary)} je ${Number(primary.sizes[size])} €.`);
+    }
+    if (unavailable.length) {
+      lines.push(english
+        ? `${unavailable.map((size) => size.replace("ml", " ml")).join(", ")} is not listed for this fragrance. Current sizes are: ${Object.keys(primary.sizes || {}).map((size) => size.replace("ml", " ml")).join(", ")}.`
+        : `${unavailable.map((size) => size.replace("ml", " ml")).join(", ")} nije navedeno za ovaj parfem. Trenutne veličine su: ${Object.keys(primary.sizes || {}).map((size) => size.replace("ml", " ml")).join(", ")}.`);
+    }
+
+    return {
+      status: "ready",
+      intent: "size_followup",
+      confidence: context.inferred ? 0.88 : 0.96,
+      body: lines.join("\n\n"),
+      reason: context.inferred ? "Size follow-up resolved from recent product context." : "Size follow-up matched to the live catalog.",
+      products: [primary],
+      sourceMessage: latest,
+    };
+  }
+
   const parts = [];
   const intents = [];
 
