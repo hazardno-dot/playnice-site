@@ -1,4 +1,5 @@
 import { resolveMetaPageAccessToken } from "../lib/meta-page-token.mjs";
+import { prepareAssistantDrafts } from "../lib/social-inbox-assistant.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -124,7 +125,7 @@ async function upsertMessages(token, rows) {
   return usable.length;
 }
 
-async function syncPlatform(platform, pageToken, adminToken) {
+export async function syncPlatform(platform, pageToken, adminToken) {
   const params = {
     fields: "id,updated_time,participants.limit(10){id,name}",
     limit: 50,
@@ -216,12 +217,26 @@ export default async function handler(req, res) {
       });
     }
 
+    let assistant = null;
+    if (results.facebook) {
+      try {
+        assistant = await prepareAssistantDrafts(auth.token);
+      } catch (assistantError) {
+        assistant = {
+          ok: false,
+          auto_send: false,
+          error: String(assistantError?.message || assistantError).slice(0, 300),
+        };
+      }
+    }
+
     return json(res, 200, {
       ok: true,
       mode: "facebook_reply_enabled",
       credential_source: resolved.source,
       results,
       meta_errors: errors,
+      assistant,
       sending_enabled: { facebook: true, instagram: false },
     });
   } catch (error) {
