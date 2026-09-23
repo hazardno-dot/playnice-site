@@ -8,7 +8,7 @@ const REPO_NAME = "playnice-site";
 const PRODUCT_PATH = "playnice-site/src/data/products/index.js";
 const CATALOG_CACHE_MS = 5 * 60 * 1000;
 const RESPONSE_WINDOW_MS = 24 * 60 * 60 * 1000;
-export const ASSISTANT_RULES_VERSION = "assistant-v2.0";
+export const ASSISTANT_RULES_VERSION = "assistant-v2.1";
 
 let catalogCache = { expiresAt: 0, products: [] };
 
@@ -208,6 +208,21 @@ function orderDetailsCopy(english) {
     : "Za porudžbinu nam pošaljite ime i prezime, broj telefona, adresu, grad i email.";
 }
 
+const PLAYNICE_SITE = "www.playniceshop.me";
+
+function websiteFooter(english) {
+  return english
+    ? `You can see our full offer at ${PLAYNICE_SITE}.`
+    : `Kompletnu ponudu možete pogledati na ${PLAYNICE_SITE}.`;
+}
+
+function conversationAlreadySharedWebsite(messages) {
+  return (Array.isArray(messages) ? messages : []).some((message) =>
+    message?.direction === "outbound" &&
+    normalizeAssistantText(message?.body || "").includes("playniceshop me")
+  );
+}
+
 function findContextProducts(messages, products, latestText) {
   const direct = matchAssistantProducts(latestText, products);
   if (direct.length) return { products: direct, inferred: false };
@@ -277,10 +292,16 @@ export function buildAssistantDraft({ thread, messages, products }) {
   const asksAvailability = phrase(normalized, ["imate li", "ima li", "dostupan", "dostupno", "na stanju", "available", "in stock", "do you have"]);
   const asksShipping = phrase(normalized, ["dostava", "isporuka", "kurir", "koliko traje", "kada stize", "kad stize", "shipping", "delivery", "when does it arrive"]);
   const asksRecommendation = phrase(normalized, ["preporuc", "preporuka", "slican", "slicno", "alternativa", "recommend", "similar to", "alternative"]);
+  const asksOffer = phrase(normalized, [
+    "kompletna ponuda", "kompletnu ponudu", "cela ponuda", "cijela ponuda",
+    "sta imate", "koje parfeme imate", "koji parfemi su u ponudi", "katalog",
+    "full offer", "full selection", "what do you have", "what fragrances do you have", "catalog", "catalogue"
+  ]);
   const asksOrder = phrase(normalized, ["porucio bih", "porucila bih", "porucim", "poruciti", "narucim", "naruciti", "uzeo bih", "uzela bih", "hocu da uzmem", "zelim da uzmem", "order", "buy"]);
   const asksSizeAdvice = phrase(normalized, ["2 ml dovoljno", "2ml dovoljno", "koliko traje 2 ml", "koliko traje 2ml", "is 2 ml enough", "is 2ml enough"]);
   const asksAuthenticity = phrase(normalized, ["original", "originalni", "originalan", "authentic", "genuine"]);
-  const asksWebsite = phrase(normalized, ["sajt", "webshop", "website", "web site", "link"]);
+  const asksWebsite = phrase(normalized, ["sajt", "webshop", "website", "web site", "link", "playniceshop"]);
+  const websiteAlreadyShared = conversationAlreadySharedWebsite(ordered);
   const onlyGreeting = /^(zdravo|cao|dobar dan|dobro vece|pozdrav|hello|hi|hey)[!. ]*$/.test(normalized);
   const onlyThanks = /^(hvala|hvala vam|thanks|thank you)[!. ]*$/.test(normalized);
 
@@ -334,7 +355,7 @@ export function buildAssistantDraft({ thread, messages, products }) {
     };
   }
 
-  if ((asksPrice || asksAvailability) && !primary) {
+  if ((asksPrice || asksAvailability) && !primary && !asksOffer && !asksWebsite) {
     return {
       status: "needs_review",
       intent: asksPrice ? "price_unknown_product" : "availability_unknown_product",
@@ -373,6 +394,8 @@ export function buildAssistantDraft({ thread, messages, products }) {
         ? `${unavailable.map((size) => size.replace("ml", " ml")).join(", ")} is not listed for this fragrance. Current sizes are: ${Object.keys(primary.sizes || {}).map((size) => size.replace("ml", " ml")).join(", ")}.`
         : `${unavailable.map((size) => size.replace("ml", " ml")).join(", ")} nije navedeno za ovaj parfem. Trenutne veličine su: ${Object.keys(primary.sizes || {}).map((size) => size.replace("ml", " ml")).join(", ")}.`);
     }
+
+    if (!websiteAlreadyShared) lines.push(websiteFooter(english));
 
     return {
       status: "ready",
@@ -458,9 +481,9 @@ export function buildAssistantDraft({ thread, messages, products }) {
     intents.push("authenticity");
   }
 
-  if (asksWebsite) {
-    parts.push(english ? "You can see the current offer at playniceshop.me." : `Aktuelnu ponudu možete ${ijekavian ? "vidjeti" : "videti"} na playniceshop.me.`);
-    intents.push("website");
+  if (asksWebsite || asksOffer) {
+    parts.push(websiteFooter(english));
+    intents.push(asksWebsite ? "website" : "offer");
   }
 
   if (asksShipping) {
@@ -492,6 +515,16 @@ export function buildAssistantDraft({ thread, messages, products }) {
   }
 
   if (parts.length) {
+    const shouldProactivelyShareWebsite =
+      !asksWebsite &&
+      !asksOffer &&
+      !websiteAlreadyShared &&
+      (asksPrice || asksAvailability || asksRecommendation);
+
+    if (shouldProactivelyShareWebsite && !parts.some((part) => normalizeAssistantText(part).includes("playniceshop me"))) {
+      parts.push(websiteFooter(english));
+    }
+
     const confidence = context.inferred ? 0.82 : (matchedProducts.length > 1 ? 0.9 : 0.96);
     return {
       status: "ready",
@@ -517,7 +550,7 @@ export function buildAssistantDraft({ thread, messages, products }) {
 
 async function loadThreadMessages(token, threadId) {
   const response = await supabaseFetch(
-    `/rest/v1/social_inbox_messages?thread_id=eq.${encodeURIComponent(threadId)}&select=id,direction,body,sent_at,meta_message_id&order=sent_at.desc&limit=20`,
+    `/rest/v1/social_inbox_messages?thread_id=eq.${encodeURIComponent(threadId)}&select=id,direction,body,sent_at,meta_message_id&order=sent_at.desc&limit=100`,
     token
   );
   const payload = await safeJson(response);
