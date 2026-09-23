@@ -25,11 +25,77 @@
     border-bottom: 1px solid rgba(213, 177, 106, 0.12);
   }
 
+  .mobile-product-page__floating-sequence {
+    position: fixed;
+    inset: 50% 0 auto;
+    z-index: 138;
+    pointer-events: none;
+  }
+
+  .mobile-product-page__floating-sequence-button {
+    position: fixed;
+    top: 50%;
+    width: 46px;
+    height: 54px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: rgba(226, 191, 122, 0.82);
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+    cursor: pointer;
+    pointer-events: auto;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.7));
+    transition:
+      opacity 0.22s ease,
+      transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.18s ease,
+      filter 0.18s ease;
+  }
+
+  .mobile-product-page__floating-sequence-button.is-previous {
+    left: 0;
+  }
+
+  .mobile-product-page__floating-sequence-button.is-next {
+    right: 0;
+  }
+
+  .mobile-product-page__floating-sequence-button svg {
+    width: 28px;
+    height: 28px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.55;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .mobile-product-page__floating-sequence-button:active {
+    color: #f0cf8c;
+    transform: translateY(-50%) scale(0.9);
+  }
+
+  body.is-scrolling .mobile-product-page__floating-sequence-button {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.86);
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-product-page__floating-sequence-button {
+      transition: none;
+    }
+  }
+
   .mobile-product-page__identity-topline {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
     margin-bottom: 18px;
   }
 
@@ -46,57 +112,6 @@
     letter-spacing: 0.12em;
   }
 
-  .mobile-product-page__top-actions {
-    margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .mobile-product-page__sequence-nav {
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
-  }
-
-  .mobile-product-page__sequence-position {
-    min-width: 48px;
-    margin-right: 4px;
-    color: rgba(244, 234, 216, 0.42);
-    font: 700 0.54rem/1 Inter, sans-serif;
-    letter-spacing: 0.04em;
-    text-align: right;
-    white-space: nowrap;
-  }
-
-  .mobile-product-page__sequence-nav button {
-    width: 30px;
-    height: 30px;
-    display: grid;
-    place-items: center;
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    color: rgba(244, 234, 216, 0.68);
-    touch-action: manipulation;
-    transition: color 160ms ease, transform 160ms ease;
-  }
-
-  .mobile-product-page__sequence-nav button svg {
-    width: 17px;
-    height: 17px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.55;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .mobile-product-page__sequence-nav button:active {
-    color: #dcb56b;
-    transform: scale(0.92);
-  }
 
   .mobile-product-page__wishlist {
     width: 36px;
