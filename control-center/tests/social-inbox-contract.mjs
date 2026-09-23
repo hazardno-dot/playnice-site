@@ -13,6 +13,7 @@ const assistant = fs.readFileSync(path.join(root, "control-center/lib/social-inb
 const notify = fs.readFileSync(path.join(root, "control-center/lib/social-inbox-notify.mjs"), "utf8");
 const schemaV1 = fs.readFileSync(path.join(root, "control-center/supabase/social_inbox_v1.sql"), "utf8");
 const schemaV2 = fs.readFileSync(path.join(root, "control-center/supabase/social_inbox_assistant_v2.sql"), "utf8");
+const schemaHeartbeat = fs.readFileSync(path.join(root, "control-center/supabase/social_inbox_webhook_heartbeat.sql"), "utf8");
 
 assert.ok(managers.includes('import SocialInboxManager from "./SocialInboxManager";'));
 assert.ok(managers.includes("<SocialInboxManager />"));
@@ -34,6 +35,9 @@ for (const token of [
   "test_telegram",
   "notification_ready",
   "webhook_ready",
+  "webhook_heartbeat",
+  "social-inbox-webhook-heartbeat",
+  "Last webhook:",
   "social-inbox-missing-config",
   "Assistant setup is incomplete",
   "ASSISTANT DRAFT",
@@ -116,6 +120,10 @@ for (const token of [
   "notifyAssistantDrafts",
   'process.env.VERCEL_ENV === "production"',
   "inboundSenderIds",
+  "recordWebhookState",
+  "social_inbox_webhook_state",
+  'last_reason: "processed"',
+  'last_reason: "error"',
   "accepted: true",
   "auto_send: false",
 ]) {
@@ -135,6 +143,9 @@ for (const token of [
   "webhook_ready",
   "metaFieldNames",
   "activation_confirmed",
+  "webhookHeartbeat",
+  "webhook_heartbeat",
+  "social_inbox_webhook_state",
   "missing",
   "SUPABASE_SECRET_KEY",
   "META_APP_ID",
@@ -192,3 +203,17 @@ console.log("PASS  Assistant drafts use deterministic PlayNice rules and the liv
 console.log("PASS  Meta webhook can wake sync + draft preparation but has no Facebook send path");
 console.log("PASS  Telegram notifications are draft alerts only; customer send remains manual");
 console.log("PASS  Assistant draft storage has RLS, Realtime and source-message idempotency");
+
+for (const token of [
+  "create table if not exists public.social_inbox_webhook_state",
+  "last_received_at",
+  "last_sender_count",
+  "last_reason",
+  "enable row level security",
+  "revoke all on table public.social_inbox_webhook_state from anon, authenticated",
+  "grant select, insert, update on table public.social_inbox_webhook_state to service_role",
+]) {
+  assert.ok(schemaHeartbeat.includes(token), `Webhook heartbeat schema contract missing: ${token}`);
+}
+
+console.log("PASS  Webhook heartbeat stores delivery diagnostics without customer message content");
