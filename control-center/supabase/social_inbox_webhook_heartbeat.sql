@@ -18,5 +18,11 @@ alter table public.social_inbox_webhook_state enable row level security;
 revoke all on table public.social_inbox_webhook_state from anon, authenticated, service_role;
 grant select, insert, update on table public.social_inbox_webhook_state to service_role;
 
+drop policy if exists social_inbox_webhook_state_no_client_access on public.social_inbox_webhook_state;
+create policy social_inbox_webhook_state_no_client_access
+on public.social_inbox_webhook_state
+for select to authenticated
+using (false);
+
 comment on table public.social_inbox_webhook_state is
   'Technical heartbeat for Social Inbox webhook delivery. No customer message content is stored.';
