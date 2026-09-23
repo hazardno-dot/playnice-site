@@ -31,6 +31,7 @@ import ExhibitionManager from "./ExhibitionManager";
 import AnnouncementManager from "./AnnouncementManager";
 import CommerceShippingManager from "./CommerceShippingManager";
 import SocialManager from "./SocialManager";
+import SocialInboxManager from "./SocialInboxManager";
 import SocialMediaOverrideBridge from "./SocialMediaOverrideBridge";
 import SocialReadinessBridge from "./SocialReadinessBridge";
 import SocialSchedulerBridge from "./SocialSchedulerBridge";
@@ -145,7 +146,7 @@ export default function ControlCenterManagers() {
 
     const persisted = window.sessionStorage.getItem(ACTIVE_MODULE_KEY);
     let restoreTimer = null;
-    if (persisted === "Hero" || persisted === "Exhibition" || persisted === "Social") {
+    if (persisted === "Hero" || persisted === "Exhibition" || persisted === "Social" || persisted === "Inbox") {
       let attempts = 0;
       restoreTimer = window.setInterval(() => {
         attempts += 1;
@@ -158,7 +159,9 @@ export default function ControlCenterManagers() {
           ? "[data-hero-manager-nav='true']"
           : persisted === "Exhibition"
             ? "[data-exhibition-manager-nav='true']"
-            : "[data-social-manager-nav='true']";
+            : persisted === "Social"
+              ? "[data-social-manager-nav='true']"
+              : "[data-social-inbox-manager-nav='true']";
         const moduleButton = nav.querySelector(selector);
         if (moduleButton) moduleButton.click();
         if (attempts >= 40) window.clearInterval(restoreTimer);
@@ -191,6 +194,7 @@ export default function ControlCenterManagers() {
     <AnnouncementManager />
     <CommerceShippingManager />
     <SocialManager />
+    <SocialInboxManager />
     <SocialMediaOverrideBridge />
     <SocialReadinessBridge />
     <SocialSchedulerBridge />
