@@ -202,6 +202,14 @@ export default async function handler(req, res) {
         state.env.facebook_page_id &&
         state.env.meta_page_credential
       ),
+      webhook_ready: Boolean(
+        state.env.supabase_service_role &&
+        state.env.github_catalog &&
+        state.env.meta_app_id &&
+        state.env.meta_app_secret &&
+        state.env.facebook_page_id &&
+        state.env.meta_page_credential
+      ),
       notification_ready: state.env.telegram,
       automation_active: Boolean(state.app_subscription && state.page_subscription),
       auto_send: false,
@@ -216,6 +224,14 @@ export default async function handler(req, res) {
       assistant_ready: Boolean(
         state.env.supabase_service_role &&
         state.env.github_catalog &&
+        state.env.facebook_page_id &&
+        state.env.meta_page_credential
+      ),
+      webhook_ready: Boolean(
+        state.env.supabase_service_role &&
+        state.env.github_catalog &&
+        state.env.meta_app_id &&
+        state.env.meta_app_secret &&
         state.env.facebook_page_id &&
         state.env.meta_page_credential
       ),
