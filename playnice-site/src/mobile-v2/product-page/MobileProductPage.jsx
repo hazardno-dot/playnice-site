@@ -5,6 +5,10 @@ import { products } from "../../data/products";
 import { getCharacterVisual } from "../../data/products/characterVisuals";
 import { useTwoLineProductTitle } from "../../features/product-title/useTwoLineProductTitle";
 import {
+  getProductNavigationLabel,
+  getProductSequenceNeighbors,
+} from "../../features/product-navigation/productSequence";
+import {
   productCopyBySlug,
   productWearContextBySlug,
   productDoNotWearContextBySlug,
@@ -190,6 +194,15 @@ export default function MobileProductPage({
   const doNotWearContext = product ? productDoNotWearContextBySlug[product.slug]?.[lang] || "" : "";
   const whatToWearContext = product ? productWhatToWearContextBySlug[product.slug]?.[lang] || "" : "";
   const recommendations = useMemo(() => getRecommendations(product), [product]);
+  const {
+    previousProduct,
+    nextProduct,
+    position: productPosition,
+    total: productTotal,
+  } = useMemo(
+    () => getProductSequenceNeighbors(products, product?.slug),
+    [product?.slug]
+  );
 
   const sensoryHighlights = useMemo(() => {
     if (!profile) return [];
@@ -251,6 +264,39 @@ export default function MobileProductPage({
             ← SHOP
           </button>
 
+          {previousProduct && nextProduct ? (
+            <div
+              className="mobile-product-page__sequence-nav"
+              aria-label={lang === "sr" ? "Navigacija kroz parfeme" : "Fragrance navigation"}
+            >
+              <button
+                type="button"
+                onClick={() => onOpenProduct?.(previousProduct)}
+                aria-label={
+                  lang === "sr"
+                    ? `Prethodni parfem: ${getProductNavigationLabel(previousProduct)}`
+                    : `Previous fragrance: ${getProductNavigationLabel(previousProduct)}`
+                }
+              >
+                ←
+              </button>
+
+              <span>{productPosition}/{productTotal}</span>
+
+              <button
+                type="button"
+                onClick={() => onOpenProduct?.(nextProduct)}
+                aria-label={
+                  lang === "sr"
+                    ? `Sledeći parfem: ${getProductNavigationLabel(nextProduct)}`
+                    : `Next fragrance: ${getProductNavigationLabel(nextProduct)}`
+                }
+              >
+                →
+              </button>
+            </div>
+          ) : null}
+
           <button
             type="button"
             className={`mobile-product-page__wishlist ${isWishlisted ? "is-active" : ""}`}
@@ -272,7 +318,6 @@ export default function MobileProductPage({
               />
             </svg>
           </button>
-
         </div>
 
         {type && <span className="mobile-product-page__type">{type}</span>}
