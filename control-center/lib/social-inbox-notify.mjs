@@ -62,17 +62,37 @@ function notificationText(draft, baseUrl) {
 }
 
 async function patchDraft(token, draftId, patch) {
-  if (!draftId) return;
+  if (!draftId) return null;
   const response = await supabaseFetch(
     `/rest/v1/social_inbox_drafts?id=eq.${encodeURIComponent(draftId)}`,
     token,
     {
       method: "PATCH",
-      headers: { Prefer: "return=minimal" },
+      headers: { Prefer: "return=representation" },
       body: JSON.stringify(patch),
     }
   );
+  const payload = await safeJson(response);
   if (!response.ok) throw new Error(`Could not update Assistant notification state (Supabase ${response.status}).`);
+  return Array.isArray(payload) ? payload[0] || null : payload;
+}
+
+async function claimDraftNotification(token, draftId) {
+  if (!draftId) return null;
+  const claimedAt = new Date().toISOString();
+  const response = await supabaseFetch(
+    `/rest/v1/social_inbox_drafts?id=eq.${encodeURIComponent(draftId)}&notified_at=is.null&status=in.(ready,needs_review)`,
+    token,
+    {
+      method: "PATCH",
+      headers: { Prefer: "return=representation" },
+      body: JSON.stringify({ notified_at: claimedAt, notification_error: null }),
+    }
+  );
+  const payload = await safeJson(response);
+  if (!response.ok) throw new Error(`Could not claim Assistant notification (Supabase ${response.status}).`);
+  const row = Array.isArray(payload) ? payload[0] || null : payload;
+  return row ? { ...row, notified_at: claimedAt } : null;
 }
 
 export async function notifyAssistantDrafts(token, drafts, { baseUrl = "", enabled = true } = {}) {
@@ -91,7 +111,13 @@ export async function notifyAssistantDrafts(token, drafts, { baseUrl = "", enabl
   const errors = [];
 
   for (const draft of rows) {
+    let claimed = null;
     try {
+      claimed = await claimDraftNotification(token, draft.id);
+      if (!claimed) {
+        continue;
+      }
+
       const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -106,16 +132,17 @@ export async function notifyAssistantDrafts(token, drafts, { baseUrl = "", enabl
         throw new Error(payload?.description || `Telegram returned HTTP ${response.status}`);
       }
 
-      await patchDraft(token, draft.id, {
-        notified_at: new Date().toISOString(),
-        notification_error: null,
-      });
       sent += 1;
     } catch (error) {
       failed += 1;
       const message = String(error?.message || error).slice(0, 260);
       errors.push({ draft_id: draft.id, error: message });
-      await patchDraft(token, draft.id, { notification_error: message }).catch(() => {});
+      if (claimed) {
+        await patchDraft(token, draft.id, {
+          notified_at: null,
+          notification_error: message,
+        }).catch(() => {});
+      }
     }
   }
 
