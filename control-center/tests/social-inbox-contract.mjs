@@ -147,6 +147,7 @@ for (const token of [
   "notified_at",
   "claimDraftNotification",
   "sendAssistantTelegramTest",
+  "the bot's own ID",
 ]) {
   assert.ok(notify.includes(token), `Assistant notification contract missing: ${token}`);
 }
