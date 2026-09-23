@@ -164,7 +164,7 @@ console.log("PASS  Unknown products and operational status questions are escalat
     ],
   });
   assert.equal(result.status, "ready");
-  assert.match(result.body, /10 ml of 9 AM is 7 €/u);
+  assert.match(result.body, /10 ml 9 AM je 7 €/u);
 }
 
 {
