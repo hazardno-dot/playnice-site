@@ -335,7 +335,7 @@ function InboxWorkspace() {
               value={replyText}
               maxLength={2000}
               rows={3}
-              disabled={sendingReply}
+              disabled={sendingReply || generatingDraft}
               placeholder="Write a Facebook reply…"
               onChange={(event) => {
                 setReplyText(event.target.value);
