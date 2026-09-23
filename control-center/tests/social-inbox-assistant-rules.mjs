@@ -47,6 +47,7 @@ function outbound(id, body) {
   assert.match(result.body, /10 ml — 7 €/);
   assert.match(result.body, /20 ml — 13 €/);
   assert.match(result.body, /Dostava u Crnoj Gori je 4 €/);
+  assert.match(result.body, /Kompletnu ponudu možete pogledati na www\.playniceshop\.me\./);
   assert.doesNotMatch(result.body, /2 ml/);
 }
 
@@ -179,3 +180,44 @@ console.log("PASS  Unknown products and operational status questions are escalat
 }
 
 console.log("PASS  Contextual size follow-ups preserve product context and customer language");
+
+{
+  const result = buildAssistantDraft({
+    thread: { participant_name: "Test" },
+    products,
+    messages: [
+      inbound("18", "Koliko je 10ml Afnan 9 AM?"),
+      outbound("19", "Kompletnu ponudu možete pogledati na www.playniceshop.me."),
+      inbound("20", "A koliko je 20ml Afnan 9 AM?"),
+    ],
+  });
+  assert.equal(result.status, "ready");
+  assert.match(result.body, /20 ml 9 AM je u trenutnoj ponudi po ceni od 13 €/);
+  assert.doesNotMatch(result.body, /playniceshop\.me/);
+}
+
+{
+  const result = buildAssistantDraft({
+    thread: { participant_name: "Test" },
+    products,
+    messages: [
+      outbound("21", "Kompletnu ponudu možete pogledati na www.playniceshop.me."),
+      inbound("22", "Koja vam je kompletna ponuda?"),
+    ],
+  });
+  assert.equal(result.status, "ready");
+  assert.match(result.body, /Kompletnu ponudu možete pogledati na www\.playniceshop\.me\./);
+}
+
+{
+  const result = buildAssistantDraft({
+    thread: { participant_name: "Test" },
+    products,
+    messages: [inbound("23", "What fragrances do you have?")],
+  });
+  assert.equal(result.status, "ready");
+  assert.match(result.body, /You can see our full offer at www\.playniceshop\.me\./);
+}
+
+console.log("PASS  Webshop footer is added to relevant commercial replies without repetitive thread spam");
+
