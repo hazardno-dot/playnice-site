@@ -189,6 +189,8 @@ for (const token of [
   "enable row level security",
   "social_inbox_threads_admin_select",
   "social_inbox_messages_admin_select",
+  "grant select, insert, update on table public.social_inbox_threads to service_role",
+  "grant select, insert, update on table public.social_inbox_messages to service_role",
   "supabase_realtime",
 ]) {
   assert.ok(schemaV1.includes(token), `Social Inbox v1 schema contract missing: ${token}`);
@@ -201,6 +203,7 @@ for (const token of [
   "social_inbox_drafts_admin_insert",
   "social_inbox_drafts_admin_update",
   "social_inbox_drafts_source_message_idx",
+  "grant select, insert, update on table public.social_inbox_drafts to service_role",
   "security invoker",
   "supabase_realtime",
 ]) {
