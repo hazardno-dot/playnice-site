@@ -4,7 +4,7 @@ import { sendAssistantTelegramTest, telegramAssistantState } from "../lib/social
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-const SUPABASE_SERVICE_ROLE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
+const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SECRET_KEY || "").trim();
 const GITHUB_TOKEN = String(process.env.GITHUB_TOKEN || "").trim();
 const META_GRAPH_API_VERSION = String(process.env.META_GRAPH_API_VERSION || "v26.0").trim();
 const META_APP_ID = String(process.env.META_APP_ID || "").trim();
@@ -97,7 +97,7 @@ async function subscriptionState(req) {
   const credential = metaCredentialState();
   const env = {
     production: process.env.VERCEL_ENV === "production",
-    supabase_service_role: Boolean(SUPABASE_SERVICE_ROLE_KEY),
+    supabase_secret: Boolean(SUPABASE_SECRET_KEY),
     github_catalog: Boolean(GITHUB_TOKEN),
     meta_app_id: Boolean(META_APP_ID),
     meta_app_secret: Boolean(META_APP_SECRET),
@@ -108,7 +108,7 @@ async function subscriptionState(req) {
 
   const missing = {
     assistant: [
-      !env.supabase_service_role ? "SUPABASE_SERVICE_ROLE_KEY" : null,
+      !env.supabase_secret ? "SUPABASE_SECRET_KEY" : null,
       !env.github_catalog ? "GITHUB_TOKEN" : null,
       !env.facebook_page_id ? "META_FACEBOOK_PAGE_ID" : null,
       !env.meta_page_credential ? "META_SYSTEM_USER_ACCESS_TOKEN or META_PAGE_ACCESS_TOKEN" : null,
@@ -215,13 +215,13 @@ export default async function handler(req, res) {
       ok: true,
       ...state,
       assistant_ready: Boolean(
-        state.env.supabase_service_role &&
+        state.env.supabase_secret &&
         state.env.github_catalog &&
         state.env.facebook_page_id &&
         state.env.meta_page_credential
       ),
       webhook_ready: Boolean(
-        state.env.supabase_service_role &&
+        state.env.supabase_secret &&
         state.env.github_catalog &&
         state.env.meta_app_id &&
         state.env.meta_app_secret &&
@@ -246,13 +246,13 @@ export default async function handler(req, res) {
       ok: true,
       ...state,
       assistant_ready: Boolean(
-        state.env.supabase_service_role &&
+        state.env.supabase_secret &&
         state.env.github_catalog &&
         state.env.facebook_page_id &&
         state.env.meta_page_credential
       ),
       webhook_ready: Boolean(
-        state.env.supabase_service_role &&
+        state.env.supabase_secret &&
         state.env.github_catalog &&
         state.env.meta_app_id &&
         state.env.meta_app_secret &&
