@@ -35,6 +35,8 @@ for (const token of [
   "NO AUTO-SEND",
   "Approve & Send",
   "assistant_draft_id",
+  "sentDraftId",
+  "setDrafts((current) => current.filter((draft) => draft.id !== sentDraftId))",
   "Meta 24-hour response window is enforced server-side.",
   "postgres_changes",
 ]) {
