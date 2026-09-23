@@ -36,8 +36,9 @@ create index if not exists social_inbox_drafts_source_message_idx
 
 alter table public.social_inbox_drafts enable row level security;
 
-revoke all on table public.social_inbox_drafts from anon, authenticated;
+revoke all on table public.social_inbox_drafts from anon, authenticated, service_role;
 grant select, insert, update on table public.social_inbox_drafts to authenticated;
+grant select, insert, update on table public.social_inbox_drafts to service_role;
 
 drop policy if exists social_inbox_drafts_admin_select on public.social_inbox_drafts;
 create policy social_inbox_drafts_admin_select on public.social_inbox_drafts

@@ -47,10 +47,12 @@ create index if not exists social_inbox_messages_thread_idx
 alter table public.social_inbox_threads enable row level security;
 alter table public.social_inbox_messages enable row level security;
 
-revoke all on table public.social_inbox_threads from anon, authenticated;
-revoke all on table public.social_inbox_messages from anon, authenticated;
+revoke all on table public.social_inbox_threads from anon, authenticated, service_role;
+revoke all on table public.social_inbox_messages from anon, authenticated, service_role;
 grant select, insert, update on table public.social_inbox_threads to authenticated;
 grant select, insert, update on table public.social_inbox_messages to authenticated;
+grant select, insert, update on table public.social_inbox_threads to service_role;
+grant select, insert, update on table public.social_inbox_messages to service_role;
 
 drop policy if exists social_inbox_threads_admin_select on public.social_inbox_threads;
 create policy social_inbox_threads_admin_select on public.social_inbox_threads
