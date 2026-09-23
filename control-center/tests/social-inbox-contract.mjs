@@ -104,7 +104,7 @@ assert.ok(!assistant.includes("api.openai.com"), "Assistant v2 must not depend o
 assert.ok(!assistant.includes("OPENAI_API_KEY"), "Assistant v2 must not require an OpenAI API key.");
 
 for (const token of [
-  "SUPABASE_SERVICE_ROLE_KEY",
+  "SUPABASE_SECRET_KEY",
   "resolveMetaPageAccessToken",
   "syncPlatform",
   "prepareAssistantDrafts",
@@ -127,7 +127,7 @@ for (const token of [
   'fields: "messages"',
   "webhook_ready",
   "missing",
-  "SUPABASE_SERVICE_ROLE_KEY",
+  "SUPABASE_SECRET_KEY",
   "META_APP_ID",
   "META_APP_SECRET",
   "TELEGRAM_BOT_TOKEN",
