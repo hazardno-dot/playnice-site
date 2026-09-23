@@ -264,60 +264,68 @@ export default function MobileProductPage({
             ← SHOP
           </button>
 
-          {previousProduct && nextProduct ? (
-            <div
-              className="mobile-product-page__sequence-nav"
-              aria-label={lang === "sr" ? "Navigacija kroz parfeme" : "Fragrance navigation"}
+          <div className="mobile-product-page__top-actions">
+            {previousProduct && nextProduct ? (
+              <div
+                className="mobile-product-page__sequence-nav"
+                aria-label={lang === "sr" ? "Navigacija kroz parfeme" : "Fragrance navigation"}
+              >
+                <span className="mobile-product-page__sequence-position">
+                  {productPosition} / {productTotal}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => onOpenProduct?.(previousProduct)}
+                  aria-label={
+                    lang === "sr"
+                      ? `Prethodni parfem: ${getProductNavigationLabel(previousProduct)}`
+                      : `Previous fragrance: ${getProductNavigationLabel(previousProduct)}`
+                  }
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m14.5 6-6 6 6 6" />
+                  </svg>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => onOpenProduct?.(nextProduct)}
+                  aria-label={
+                    lang === "sr"
+                      ? `Sledeći parfem: ${getProductNavigationLabel(nextProduct)}`
+                      : `Next fragrance: ${getProductNavigationLabel(nextProduct)}`
+                  }
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m9.5 6 6 6-6 6" />
+                  </svg>
+                </button>
+              </div>
+            ) : null}
+
+            <button
+              type="button"
+              className={`mobile-product-page__wishlist ${isWishlisted ? "is-active" : ""}`}
+              onClick={onToggleWishlist}
+              aria-label={
+                isWishlisted
+                  ? lang === "sr"
+                    ? "Ukloni iz Private Selection"
+                    : "Remove from Private Selection"
+                  : lang === "sr"
+                  ? "Dodaj u Private Selection"
+                  : "Add to Private Selection"
+              }
             >
-              <button
-                type="button"
-                onClick={() => onOpenProduct?.(previousProduct)}
-                aria-label={
-                  lang === "sr"
-                    ? `Prethodni parfem: ${getProductNavigationLabel(previousProduct)}`
-                    : `Previous fragrance: ${getProductNavigationLabel(previousProduct)}`
-                }
-              >
-                ←
-              </button>
-
-              <span>{productPosition}/{productTotal}</span>
-
-              <button
-                type="button"
-                onClick={() => onOpenProduct?.(nextProduct)}
-                aria-label={
-                  lang === "sr"
-                    ? `Sledeći parfem: ${getProductNavigationLabel(nextProduct)}`
-                    : `Next fragrance: ${getProductNavigationLabel(nextProduct)}`
-                }
-              >
-                →
-              </button>
-            </div>
-          ) : null}
-
-          <button
-            type="button"
-            className={`mobile-product-page__wishlist ${isWishlisted ? "is-active" : ""}`}
-            onClick={onToggleWishlist}
-            aria-label={
-              isWishlisted
-                ? lang === "sr"
-                  ? "Ukloni iz Private Selection"
-                  : "Remove from Private Selection"
-                : lang === "sr"
-                ? "Dodaj u Private Selection"
-                : "Add to Private Selection"
-            }
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                className={isWishlisted ? "is-filled" : "is-outline"}
-                d="M20.8 5.9c-1.8-2.1-5.1-2.2-7-.3L12 7.4l-1.8-1.8c-1.9-1.9-5.2-1.8-7 .3-1.7 2-1.4 5 .5 6.9L12 21l8.3-8.2c1.9-1.9 2.2-4.9.5-6.9Z"
-              />
-            </svg>
-          </button>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  className={isWishlisted ? "is-filled" : "is-outline"}
+                  d="M20.8 5.9c-1.8-2.1-5.1-2.2-7-.3L12 7.4l-1.8-1.8c-1.9-1.9-5.2-1.8-7 .3-1.7 2-1.4 5 .5 6.9L12 21l8.3-8.2c1.9-1.9 2.2-4.9.5-6.9Z"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {type && <span className="mobile-product-page__type">{type}</span>}
