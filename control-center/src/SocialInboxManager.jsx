@@ -341,13 +341,14 @@ function InboxWorkspace() {
         <strong>{assistantState.automation_active ? "Automatic Facebook intake is active" : "Draft engine ready · webhook not active yet"}</strong>
         <small>
           Rule engine {assistantState.assistant_ready ? "ready" : "needs configuration"}
+          {" · "}Webhook {assistantState.webhook_ready ? "ready" : "needs configuration"}
           {" · "}Telegram {assistantState.notification_ready ? "ready" : "not configured"}
           {" · "}customer send always requires approval
         </small>
       </div>
       {!assistantState.automation_active ? <button
         type="button"
-        disabled={activatingAssistant || !assistantState?.env?.production || !assistantState.assistant_ready}
+        disabled={activatingAssistant || !assistantState?.env?.production || !assistantState.webhook_ready || !assistantState.notification_ready}
         onClick={activateAssistant}
         title={!assistantState?.env?.production ? "Activation is available only on the production Control Center." : ""}
       >
@@ -486,7 +487,16 @@ export default function SocialInboxManager() {
       else manageGroup.appendChild(button);
     }
 
-    const close = () => setOpen(false);
+    const close = () => {
+      setOpen(false);
+      if (typeof window !== "undefined") {
+        const url = new URL(window.location.href);
+        if (url.searchParams.has("inbox")) {
+          url.searchParams.delete("inbox");
+          window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+        }
+      }
+    };
     const show = (event) => { event.preventDefault(); event.stopPropagation(); setOpen(true); };
     button.addEventListener("click", show);
     [...sidebar.querySelectorAll("button")].filter((item) => item !== button).forEach((item) => item.addEventListener("click", close));
@@ -519,8 +529,8 @@ export default function SocialInboxManager() {
       navButtons.forEach((item) => item.classList.toggle("active", item === button));
       heading.textContent = "Inbox";
       if (eyebrow) eyebrow.textContent = "MANAGE / SOCIAL INBOX";
-      if (description) description.textContent = "Review social conversations in one place and send explicitly approved Facebook replies.";
-      if (publishBadge) publishBadge.textContent = "FB SEND";
+      if (description) description.textContent = "Automatic Facebook intake, prepared PlayNice drafts, and explicit approval before every send.";
+      if (publishBadge) publishBadge.textContent = "ASSISTED SEND";
       baseChildren.forEach((child) => {
         if (child.dataset.inboxPreviousDisplay === undefined) child.dataset.inboxPreviousDisplay = child.style.display || "";
         child.style.display = "none";
