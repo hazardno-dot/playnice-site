@@ -108,6 +108,7 @@ export async function notifyAssistantDrafts(token, drafts, { baseUrl = "", enabl
 
   let sent = 0;
   let failed = 0;
+  let skipped = 0;
   const errors = [];
 
   for (const draft of rows) {
@@ -115,6 +116,7 @@ export async function notifyAssistantDrafts(token, drafts, { baseUrl = "", enabl
     try {
       claimed = await claimDraftNotification(token, draft.id);
       if (!claimed) {
+        skipped += 1;
         continue;
       }
 
@@ -146,5 +148,5 @@ export async function notifyAssistantDrafts(token, drafts, { baseUrl = "", enabl
     }
   }
 
-  return { configured: true, sent, failed, skipped: 0, errors };
+  return { configured: true, sent, failed, skipped, errors };
 }
