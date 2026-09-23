@@ -1,6 +1,7 @@
+import { supabaseRestHeaders } from "./supabase-server-auth.mjs";
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SECRET_KEY || "").trim();
+const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 const OWNER = "hazardno-dot";
@@ -22,14 +23,12 @@ async function supabaseFetch(path, token, init = {}) {
   if (!SUPABASE_URL || !SUPABASE_KEY) throw new Error("Supabase server configuration is incomplete.");
   return fetch(`${SUPABASE_URL}${path}`, {
     ...init,
-    headers: {
-      apikey: token && SUPABASE_SECRET_KEY && token === SUPABASE_SECRET_KEY
-        ? SUPABASE_SECRET_KEY
-        : SUPABASE_KEY,
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      ...(init.headers || {}),
-    },
+    headers: supabaseRestHeaders({
+      token,
+      publishableKey: SUPABASE_KEY,
+      serverKey: SUPABASE_SECRET_KEY,
+      extra: init.headers || {},
+    }),
   });
 }
 
