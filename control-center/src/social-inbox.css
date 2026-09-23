@@ -42,3 +42,8 @@
 .social-inbox-assistant-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .social-inbox-telegram-test{grid-column:1/-1;color:#b8d6c4}
 @media(max-width:700px){.social-inbox-assistant-actions{width:100%;display:grid;grid-template-columns:1fr}.social-inbox-assistant-actions button{width:100%}}
+
+.social-inbox-missing-config{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:3px}
+.social-inbox-missing-config span{font-size:10px;line-height:1.45;color:#9c8f79}
+.social-inbox-missing-config b{font-weight:600;color:#c7b48e}
+@media(max-width:700px){.social-inbox-missing-config{display:grid;gap:5px}}
