@@ -78,6 +78,7 @@ for (const token of [
   "GITHUB_TOKEN",
   "loadLiveProducts",
   "buildAssistantDraft",
+  "detectIjekavian",
   "prepareAssistantDrafts",
   "notification_candidates",
   "RESPONSE_WINDOW_MS",
