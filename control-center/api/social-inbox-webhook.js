@@ -3,6 +3,7 @@ import { resolveMetaPageAccessToken } from "../lib/meta-page-token.mjs";
 import { syncPlatform } from "./social-inbox-sync.js";
 import { prepareAssistantDrafts } from "../lib/social-inbox-assistant.mjs";
 import { notifyAssistantDrafts } from "../lib/social-inbox-notify.mjs";
+import { supabaseRestHeaders } from "../lib/supabase-server-auth.mjs";
 
 const SUPABASE_URL = String(process.env.VITE_SUPABASE_URL || "").trim();
 const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
@@ -31,12 +32,11 @@ async function recordWebhookState(patch = {}) {
       `${SUPABASE_URL}/rest/v1/social_inbox_webhook_state?on_conflict=platform`,
       {
         method: "POST",
-        headers: {
-          apikey: SUPABASE_SECRET_KEY,
-          Authorization: `Bearer ${SUPABASE_SECRET_KEY}`,
-          "Content-Type": "application/json",
-          Prefer: "resolution=merge-duplicates,return=minimal",
-        },
+        headers: supabaseRestHeaders({
+          token: SUPABASE_SECRET_KEY,
+          serverKey: SUPABASE_SECRET_KEY,
+          extra: { Prefer: "resolution=merge-duplicates,return=minimal" },
+        }),
         body: JSON.stringify({
           platform: "facebook",
           updated_at: new Date().toISOString(),
