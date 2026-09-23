@@ -95,6 +95,43 @@ async function claimDraftNotification(token, draftId) {
   return row ? { ...row, notified_at: claimedAt } : null;
 }
 
+export async function sendAssistantTelegramTest({ baseUrl = "" } = {}) {
+  const state = telegramAssistantState();
+  if (!state.configured) {
+    return { ok: false, configured: false, error: "Telegram is not configured for Control Center." };
+  }
+
+  const lines = [
+    "✅ PLAYNICE · ASSISTANT V2",
+    "",
+    "Telegram obavještenja su povezana i spremna.",
+    "Kada stigne nova Facebook poruka, ovdje će stići kupčeva poruka i pripremljen odgovor.",
+    "",
+    "Ništa se ne šalje kupcu automatski."
+  ];
+  if (baseUrl) lines.push("", `Control Center: ${baseUrl.replace(/\/$/, "")}/?inbox=latest`);
+
+  const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: TELEGRAM_CHAT_ID,
+      text: lines.join("\n"),
+      disable_web_page_preview: true,
+    }),
+  });
+  const payload = await safeJson(response);
+  if (!response.ok || !payload?.ok) {
+    return {
+      ok: false,
+      configured: true,
+      error: payload?.description || `Telegram returned HTTP ${response.status}`,
+    };
+  }
+
+  return { ok: true, configured: true };
+}
+
 export async function notifyAssistantDrafts(token, drafts, { baseUrl = "", enabled = true } = {}) {
   const state = telegramAssistantState();
   const rows = (Array.isArray(drafts) ? drafts : []).filter((draft) => draft?.id && !draft?.notified_at);
