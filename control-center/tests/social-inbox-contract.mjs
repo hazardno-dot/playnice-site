@@ -28,6 +28,7 @@ for (const token of [
   "ASSISTANT DRAFT",
   "NO AUTO-SEND",
   "Approve & Send",
+  "assistant_draft_id",
   "Meta 24-hour response window is enforced server-side.",
   "postgres_changes",
 ]) {
@@ -55,6 +56,9 @@ assert.ok(!syncApi.includes('messaging_type: "RESPONSE"'), "Inbox sync must neve
 for (const token of [
   "resolveMetaPageAccessToken",
   "markAssistantDraftSent",
+  "assistantDraftId",
+  "source_message_id",
+  "A newer customer message arrived",
   'thread.platform !== "facebook"',
   "req.body?.approved !== true",
   'messaging_type: "RESPONSE"',
@@ -73,6 +77,8 @@ for (const token of [
   "loadLiveProducts",
   "buildAssistantDraft",
   "prepareAssistantDrafts",
+  "RESPONSE_WINDOW_MS",
+  "outside_response_window",
   'status: "needs_review"',
   "social_inbox_drafts",
   "auto_send: false",
