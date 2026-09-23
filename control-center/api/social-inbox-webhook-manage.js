@@ -106,8 +106,26 @@ async function subscriptionState(req) {
     telegram: telegram.configured,
   };
 
+  const missing = {
+    assistant: [
+      !env.supabase_service_role ? "SUPABASE_SERVICE_ROLE_KEY" : null,
+      !env.github_catalog ? "GITHUB_TOKEN" : null,
+      !env.facebook_page_id ? "META_FACEBOOK_PAGE_ID" : null,
+      !env.meta_page_credential ? "META_SYSTEM_USER_ACCESS_TOKEN or META_PAGE_ACCESS_TOKEN" : null,
+    ].filter(Boolean),
+    webhook: [
+      !env.meta_app_id ? "META_APP_ID" : null,
+      !env.meta_app_secret ? "META_APP_SECRET" : null,
+    ].filter(Boolean),
+    telegram: [
+      !telegram.bot_token ? "TELEGRAM_BOT_TOKEN" : null,
+      !telegram.chat_id ? "TELEGRAM_CHAT_ID" : null,
+    ].filter(Boolean),
+  };
+
   const result = {
     env,
+    missing,
     callback_path: "/api/social-inbox-webhook",
     app_subscription: false,
     page_subscription: false,
