@@ -174,12 +174,15 @@ async function generateDraft(context) {
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
-  if (!SUPABASE_URL || !SUPABASE_KEY || !OPENAI_API_KEY || !GITHUB_TOKEN) {
-    return json(res, 500, { error: "AI draft server configuration is incomplete." });
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    return json(res, 500, { error: "Server configuration is incomplete." });
   }
 
   const auth = await requireAdmin(req);
   if (auth.error) return json(res, auth.status, { error: auth.error });
+  if (!OPENAI_API_KEY || !GITHUB_TOKEN) {
+    return json(res, 500, { error: "AI draft server configuration is incomplete." });
+  }
 
   const threadId = String(req.body?.thread_id || "").trim();
   if (!threadId) return json(res, 400, { error: "Inbox thread id is required." });
