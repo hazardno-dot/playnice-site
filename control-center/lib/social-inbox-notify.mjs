@@ -1,5 +1,6 @@
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const SUPABASE_SERVICE_ROLE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
 const TELEGRAM_BOT_TOKEN = String(process.env.TELEGRAM_BOT_TOKEN || "").trim();
 const TELEGRAM_CHAT_ID = String(process.env.TELEGRAM_CHAT_ID || "").trim();
 
@@ -13,7 +14,9 @@ async function supabaseFetch(path, token, init = {}) {
   return fetch(`${SUPABASE_URL}${path}`, {
     ...init,
     headers: {
-      apikey: SUPABASE_KEY,
+      apikey: token && SUPABASE_SERVICE_ROLE_KEY && token === SUPABASE_SERVICE_ROLE_KEY
+        ? SUPABASE_SERVICE_ROLE_KEY
+        : SUPABASE_KEY,
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
       ...(init.headers || {}),
