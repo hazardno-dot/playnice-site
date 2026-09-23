@@ -261,6 +261,7 @@ function InboxWorkspace() {
         },
         body: JSON.stringify({
           thread_id: selected.id,
+          assistant_draft_id: selectedDraft?.id || null,
           text,
           approved: true,
         }),
