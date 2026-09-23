@@ -125,16 +125,19 @@ async function upsertMessages(token, rows) {
   return usable.length;
 }
 
-export async function syncPlatform(platform, pageToken, adminToken) {
+export async function syncPlatform(platform, pageToken, adminToken, options = {}) {
+  const participantId = String(options?.participantId || "").trim();
   const params = {
     fields: "id,updated_time,participants.limit(10){id,name}",
-    limit: 50,
+    limit: participantId ? 5 : 50,
   };
+  if (platform === "facebook" && participantId) params.user_id = participantId;
   if (platform === "instagram") params.platform = "instagram";
 
   const list = await graphGet(`${encodeURIComponent(META_FACEBOOK_PAGE_ID)}/conversations`, pageToken, params);
   const conversations = Array.isArray(list?.data) ? list.data : [];
   let messagesSaved = 0;
+  const threadIds = [];
 
   for (const summary of conversations) {
     const conversationId = String(summary?.id || "").trim();
@@ -166,6 +169,7 @@ export async function syncPlatform(platform, pageToken, adminToken) {
       metadata: { source: "meta_graph", history_window: "latest_20_messages" },
     });
     if (!thread?.id) throw new Error("Inbox thread upsert did not return an id.");
+    threadIds.push(thread.id);
 
     messagesSaved += await upsertMessages(
       adminToken,
@@ -173,7 +177,7 @@ export async function syncPlatform(platform, pageToken, adminToken) {
     );
   }
 
-  return { conversations: conversations.length, messages: messagesSaved };
+  return { conversations: conversations.length, messages: messagesSaved, thread_ids: [...new Set(threadIds)] };
 }
 
 function metaError(error) {
