@@ -5,6 +5,10 @@ import { products } from "../../data/products";
 import { getCharacterVisual } from "../../data/products/characterVisuals";
 import { useTwoLineProductTitle } from "../../features/product-title/useTwoLineProductTitle";
 import {
+  getProductNavigationLabel,
+  getProductSequenceNeighbors,
+} from "../../features/product-navigation/productSequence";
+import {
   productCopyBySlug,
   productWearContextBySlug,
   productDoNotWearContextBySlug,
@@ -190,6 +194,10 @@ export default function MobileProductPage({
   const doNotWearContext = product ? productDoNotWearContextBySlug[product.slug]?.[lang] || "" : "";
   const whatToWearContext = product ? productWhatToWearContextBySlug[product.slug]?.[lang] || "" : "";
   const recommendations = useMemo(() => getRecommendations(product), [product]);
+  const { previousProduct, nextProduct } = useMemo(
+    () => getProductSequenceNeighbors(products, product?.slug),
+    [product?.slug]
+  );
 
   const sensoryHighlights = useMemo(() => {
     if (!profile) return [];
@@ -245,6 +253,43 @@ export default function MobileProductPage({
 
   return (
     <div className="mobile-product-page" data-product-slug={product.slug}>
+      {previousProduct && nextProduct ? (
+        <nav
+          className="mobile-product-page__floating-sequence"
+          aria-label={lang === "sr" ? "Navigacija kroz parfeme" : "Fragrance navigation"}
+        >
+          <button
+            type="button"
+            className="mobile-product-page__floating-sequence-button is-previous"
+            onClick={() => onOpenProduct?.(previousProduct)}
+            aria-label={
+              lang === "sr"
+                ? `Prethodni parfem: ${getProductNavigationLabel(previousProduct)}`
+                : `Previous fragrance: ${getProductNavigationLabel(previousProduct)}`
+            }
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m15 5-7 7 7 7" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            className="mobile-product-page__floating-sequence-button is-next"
+            onClick={() => onOpenProduct?.(nextProduct)}
+            aria-label={
+              lang === "sr"
+                ? `Sledeći parfem: ${getProductNavigationLabel(nextProduct)}`
+                : `Next fragrance: ${getProductNavigationLabel(nextProduct)}`
+            }
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m9 5 7 7-7 7" />
+            </svg>
+          </button>
+        </nav>
+      ) : null}
+
       <section className="mobile-product-page__identity">
         <div className="mobile-product-page__identity-topline">
           <button type="button" className="mobile-product-page__back" onClick={onBackToShop}>
@@ -272,9 +317,7 @@ export default function MobileProductPage({
               />
             </svg>
           </button>
-
         </div>
-
         {type && <span className="mobile-product-page__type">{type}</span>}
 
         <h1 ref={productTitleRef}><span ref={productTitleMeasureRef} className="product-title-measure" aria-hidden="true">{productFullName}</span><span>{productTitle}</span></h1>
