@@ -57,7 +57,6 @@ const PROFILE_LABELS = {
   powdery: { sr: "Puderasti karakter", en: "Powdery" },
 };
 
-
 const getDiscountedPrice = (price, percent) =>
   Number((Number(price) * (1 - Number(percent) / 100)).toFixed(2));
 
