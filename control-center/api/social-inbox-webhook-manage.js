@@ -1,7 +1,7 @@
 // Assistant v2 environment-sensitive management endpoint.
 import { createHmac } from "node:crypto";
 import { metaCredentialState, resolveMetaPageAccessToken } from "../lib/meta-page-token.mjs";
-import { sendAssistantTelegramTest, telegramAssistantState } from "../lib/social-inbox-notify.mjs";
+import { detectAssistantTelegramChats, sendAssistantTelegramTest, telegramAssistantState } from "../lib/social-inbox-notify.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -105,6 +105,7 @@ async function subscriptionState(req) {
     facebook_page_id: Boolean(META_FACEBOOK_PAGE_ID),
     meta_page_credential: Boolean(credential.system_user_token || credential.page_access_token),
     telegram: telegram.configured,
+    telegram_bot_token: telegram.bot_token,
   };
 
   const missing = {
@@ -233,6 +234,11 @@ export default async function handler(req, res) {
       automation_active: Boolean(state.app_subscription && state.page_subscription),
       auto_send: false,
     });
+  }
+
+  if (String(req.body?.action || "") === "detect_telegram_chat") {
+    const result = await detectAssistantTelegramChats();
+    return json(res, result.ok ? 200 : 400, { ...result, auto_send: false });
   }
 
   if (String(req.body?.action || "") === "test_telegram") {
