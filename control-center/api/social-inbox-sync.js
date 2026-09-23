@@ -3,7 +3,7 @@ import { prepareAssistantDrafts } from "../lib/social-inbox-assistant.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-const SUPABASE_SERVICE_ROLE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
+const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SECRET_KEY || "").trim();
 const META_GRAPH_API_VERSION = String(process.env.META_GRAPH_API_VERSION || "v26.0").trim();
 const META_FACEBOOK_PAGE_ID = String(process.env.META_FACEBOOK_PAGE_ID || "").trim();
 const META_INSTAGRAM_ACCOUNT_ID = String(process.env.META_INSTAGRAM_ACCOUNT_ID || "").trim();
@@ -20,8 +20,8 @@ async function supabaseFetch(path, token, init = {}) {
   return fetch(`${SUPABASE_URL}${path}`, {
     ...init,
     headers: {
-      apikey: token && SUPABASE_SERVICE_ROLE_KEY && token === SUPABASE_SERVICE_ROLE_KEY
-        ? SUPABASE_SERVICE_ROLE_KEY
+      apikey: token && SUPABASE_SECRET_KEY && token === SUPABASE_SECRET_KEY
+        ? SUPABASE_SECRET_KEY
         : SUPABASE_KEY,
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
