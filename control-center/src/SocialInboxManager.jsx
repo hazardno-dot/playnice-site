@@ -50,6 +50,8 @@ function InboxWorkspace() {
   const [activatingAssistant, setActivatingAssistant] = useState(false);
   const [testingTelegram, setTestingTelegram] = useState(false);
   const [telegramTestStatus, setTelegramTestStatus] = useState("");
+  const [detectingTelegram, setDetectingTelegram] = useState(false);
+  const [telegramChats, setTelegramChats] = useState([]);
 
   const loadThreads = async () => {
     const { data, error: loadError } = await supabase
@@ -288,6 +290,32 @@ function InboxWorkspace() {
     }
   };
 
+  const detectTelegramChat = async () => {
+    if (detectingTelegram) return;
+    setDetectingTelegram(true);
+    setTelegramChats([]);
+    setError("");
+    try {
+      const token = await getAdminToken();
+      const response = await fetch("/api/social-inbox-webhook-manage", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "detect_telegram_chat" }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Telegram chat detection failed (${response.status}).`);
+      setTelegramChats(Array.isArray(payload.chats) ? payload.chats : []);
+      if (!payload.chats?.length) setTelegramTestStatus(payload.hint || "No Telegram chats found yet.");
+    } catch (detectError) {
+      setError(detectError?.message || String(detectError));
+    } finally {
+      setDetectingTelegram(false);
+    }
+  };
+
   const testTelegram = async () => {
     if (testingTelegram) return;
     setTestingTelegram(true);
@@ -388,6 +416,13 @@ function InboxWorkspace() {
       <div className="social-inbox-assistant-actions">
         <button
           type="button"
+          disabled={detectingTelegram || !assistantState?.env?.telegram_bot_token}
+          onClick={detectTelegramChat}
+        >
+          {detectingTelegram ? "Detecting…" : "Detect chat ID"}
+        </button>
+        <button
+          type="button"
           disabled={testingTelegram || !assistantState.notification_ready}
           onClick={testTelegram}
         >
@@ -402,6 +437,12 @@ function InboxWorkspace() {
           {activatingAssistant ? "Activating…" : (assistantState?.env?.production ? "Activate automation" : "Activate after merge")}
         </button> : <strong className="social-inbox-assistant-live">LIVE</strong>}
       </div>
+      {telegramChats.length ? <div className="social-inbox-telegram-chats">
+        {telegramChats.map((chat) => <div key={chat.id}>
+          <span>{chat.name || chat.username || "Telegram chat"}{chat.type ? ` · ${chat.type}` : ""}</span>
+          <code>{chat.id}</code>
+        </div>)}
+      </div> : null}
       {telegramTestStatus ? <small className="social-inbox-telegram-test">{telegramTestStatus}</small> : null}
     </div> : null}
 
