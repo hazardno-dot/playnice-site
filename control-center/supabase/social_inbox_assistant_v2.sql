@@ -31,6 +31,9 @@ create index if not exists social_inbox_drafts_thread_idx
 create index if not exists social_inbox_drafts_status_idx
   on public.social_inbox_drafts(status, created_at desc);
 
+create index if not exists social_inbox_drafts_source_message_idx
+  on public.social_inbox_drafts(source_message_id);
+
 alter table public.social_inbox_drafts enable row level security;
 
 revoke all on table public.social_inbox_drafts from anon, authenticated;
