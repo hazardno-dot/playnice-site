@@ -15,7 +15,7 @@ create table if not exists public.social_inbox_webhook_state (
 
 alter table public.social_inbox_webhook_state enable row level security;
 
-revoke all on table public.social_inbox_webhook_state from anon, authenticated;
+revoke all on table public.social_inbox_webhook_state from anon, authenticated, service_role;
 grant select, insert, update on table public.social_inbox_webhook_state to service_role;
 
 comment on table public.social_inbox_webhook_state is
