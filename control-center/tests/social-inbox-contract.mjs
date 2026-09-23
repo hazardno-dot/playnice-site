@@ -212,6 +212,8 @@ for (const token of [
   "enable row level security",
   "revoke all on table public.social_inbox_webhook_state from anon, authenticated",
   "grant select, insert, update on table public.social_inbox_webhook_state to service_role",
+  "social_inbox_webhook_state_no_client_access",
+  "using (false)",
 ]) {
   assert.ok(schemaHeartbeat.includes(token), `Webhook heartbeat schema contract missing: ${token}`);
 }
