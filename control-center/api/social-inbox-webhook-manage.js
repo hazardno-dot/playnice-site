@@ -30,6 +30,42 @@ async function supabaseFetch(path, token) {
   });
 }
 
+async function supabaseServiceFetch(path) {
+  if (!SUPABASE_URL || !SUPABASE_SECRET_KEY) return null;
+  return fetch(`${SUPABASE_URL}${path}`, {
+    headers: {
+      apikey: SUPABASE_SECRET_KEY,
+      Authorization: `Bearer ${SUPABASE_SECRET_KEY}`,
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+async function webhookHeartbeat() {
+  try {
+    const response = await supabaseServiceFetch(
+      "/rest/v1/social_inbox_webhook_state?platform=eq.facebook&select=last_received_at,last_event_object,last_entry_count,last_sender_count,last_processed,last_reason,last_error,updated_at&limit=1"
+    );
+    if (!response) return { available: false, reason: "supabase_secret_missing" };
+    const rows = await safeJson(response);
+    if (!response.ok) {
+      return {
+        available: false,
+        reason: "read_failed",
+        error: `Supabase ${response.status}`,
+      };
+    }
+    const row = Array.isArray(rows) ? rows[0] || null : null;
+    return row ? { available: true, ...row } : { available: true, never_received: true };
+  } catch (error) {
+    return {
+      available: false,
+      reason: "read_failed",
+      error: String(error?.message || error).slice(0, 180),
+    };
+  }
+}
+
 async function requireAdmin(req) {
   const authHeader = req.headers.authorization || "";
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
@@ -143,6 +179,7 @@ async function subscriptionState(req) {
     page_subscription: false,
     fields: ["messages"],
     status_errors: [],
+    webhook_heartbeat: await webhookHeartbeat(),
   };
 
   if (!env.meta_app_id || !env.meta_app_secret || !env.facebook_page_id || !env.meta_page_credential) {
