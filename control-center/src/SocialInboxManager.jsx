@@ -366,13 +366,20 @@ function InboxWorkspace() {
     {assistantState ? <div className={`social-inbox-assistant-status ${assistantState.automation_active ? "active" : "setup"}`}>
       <div>
         <span>ASSISTANT V2</span>
-        <strong>{assistantState.automation_active ? "Automatic Facebook intake is active" : "Draft engine ready · webhook not active yet"}</strong>
+        <strong>{assistantState.automation_active
+          ? "Automatic Facebook intake is active"
+          : (assistantState.assistant_ready ? "Draft engine ready · webhook not active yet" : "Assistant setup is incomplete")}</strong>
         <small>
           Rule engine {assistantState.assistant_ready ? "ready" : "needs configuration"}
           {" · "}Webhook {assistantState.webhook_ready ? "ready" : "needs configuration"}
           {" · "}Telegram {assistantState.notification_ready ? "ready" : "not configured"}
           {" · "}customer send always requires approval
         </small>
+        {(assistantState.missing?.assistant?.length || assistantState.missing?.webhook?.length || assistantState.missing?.telegram?.length) ? <div className="social-inbox-missing-config">
+          {assistantState.missing?.assistant?.length ? <span><b>Assistant:</b> {assistantState.missing.assistant.join(", ")}</span> : null}
+          {assistantState.missing?.webhook?.length ? <span><b>Webhook:</b> {assistantState.missing.webhook.join(", ")}</span> : null}
+          {assistantState.missing?.telegram?.length ? <span><b>Telegram:</b> {assistantState.missing.telegram.join(", ")}</span> : null}
+        </div> : null}
       </div>
       <div className="social-inbox-assistant-actions">
         <button
