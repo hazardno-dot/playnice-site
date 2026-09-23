@@ -95,6 +95,50 @@ async function claimDraftNotification(token, draftId) {
   return row ? { ...row, notified_at: claimedAt } : null;
 }
 
+export async function detectAssistantTelegramChats() {
+  const state = telegramAssistantState();
+  if (!state.bot_token) {
+    return { ok: false, configured: false, chats: [], error: "TELEGRAM_BOT_TOKEN is not configured." };
+  }
+
+  const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?limit=50&timeout=0`);
+  const payload = await safeJson(response);
+  if (!response.ok || !payload?.ok) {
+    return {
+      ok: false,
+      configured: state.configured,
+      chats: [],
+      error: payload?.description || `Telegram getUpdates returned HTTP ${response.status}`,
+    };
+  }
+
+  const byId = new Map();
+  for (const update of Array.isArray(payload?.result) ? payload.result : []) {
+    const chat = update?.message?.chat || update?.edited_message?.chat || update?.callback_query?.message?.chat || null;
+    if (!chat?.id) continue;
+    const id = String(chat.id);
+    byId.set(id, {
+      id,
+      type: String(chat.type || ""),
+      name: [chat.first_name, chat.last_name].filter(Boolean).join(" ").trim() || chat.title || "",
+      username: chat.username ? `@${chat.username}` : "",
+    });
+  }
+
+  const chats = [...byId.values()]
+    .sort((a, b) => (a.type === "private" ? -1 : 1) - (b.type === "private" ? -1 : 1))
+    .slice(0, 10);
+
+  return {
+    ok: true,
+    configured: state.configured,
+    chats,
+    hint: chats.length
+      ? "Use the ID for your personal/private chat with the PlayNice bot."
+      : "Open the PlayNice bot in Telegram, press Start or send 'test', then detect again.",
+  };
+}
+
 export async function sendAssistantTelegramTest({ baseUrl = "" } = {}) {
   const state = telegramAssistantState();
   if (!state.configured) {
