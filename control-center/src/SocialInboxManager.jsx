@@ -219,12 +219,24 @@ function InboxWorkspace() {
   }, [selectedId]);
 
   useEffect(() => {
-    if (!selectedDraft || selectedDraft.status !== "ready" || !selectedDraft.body) return;
-    if (selectedDraft.id === loadedDraftId) return;
+    if (!selectedDraft || selectedDraft.id === loadedDraftId) return;
+
+    if (loadedDraftId && selectedDraft.id !== loadedDraftId) {
+      setReplyText(selectedDraft.status === "ready" ? String(selectedDraft.body || "") : "");
+      setLoadedDraftId(selectedDraft.id);
+      setReplyError("");
+      setReplyStatus(selectedDraft.status === "ready"
+        ? "New customer message arrived. The previous Assistant draft was replaced with a fresh one."
+        : "New customer message arrived. The previous draft was cleared because this message needs manual review.");
+      return;
+    }
+
     if (replyText) return;
-    setReplyText(selectedDraft.body);
     setLoadedDraftId(selectedDraft.id);
-    setReplyStatus("Assistant v2 prepared this draft automatically. Review or edit it before sending.");
+    if (selectedDraft.status === "ready" && selectedDraft.body) {
+      setReplyText(selectedDraft.body);
+      setReplyStatus("Assistant v2 prepared this draft automatically. Review or edit it before sending.");
+    }
   }, [selectedDraft?.id, selectedDraft?.status, selectedDraft?.body, loadedDraftId, replyText]);
 
   const sendFacebookReply = async () => {
