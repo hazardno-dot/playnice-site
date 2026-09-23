@@ -7,6 +7,7 @@ const managers = fs.readFileSync(path.join(root, "control-center/src/ControlCent
 const inbox = fs.readFileSync(path.join(root, "control-center/src/SocialInboxManager.jsx"), "utf8");
 const syncApi = fs.readFileSync(path.join(root, "control-center/api/social-inbox-sync.js"), "utf8");
 const replyApi = fs.readFileSync(path.join(root, "control-center/api/social-inbox-reply.js"), "utf8");
+const aiDraftApi = fs.readFileSync(path.join(root, "control-center/api/social-inbox-ai-draft.js"), "utf8");
 const schema = fs.readFileSync(path.join(root, "control-center/supabase/social_inbox_v1.sql"), "utf8");
 
 assert.ok(managers.includes('import SocialInboxManager from "./SocialInboxManager";'));
@@ -17,6 +18,9 @@ for (const token of [
   "SOCIAL INBOX V1",
   "/api/social-inbox-sync",
   "/api/social-inbox-reply",
+  "/api/social-inbox-ai-draft",
+  "Generate AI draft",
+  "AI draft only · nothing is sent automatically",
   "FB APPROVAL SEND",
   "Approve & Send",
   "Meta 24-hour response window is enforced server-side.",
@@ -43,6 +47,27 @@ for (const token of [
 }
 
 assert.ok(!syncApi.includes('messaging_type: "RESPONSE"'), "Inbox sync must never send a Meta message.");
+for (const token of [
+  "OPENAI_API_KEY",
+  "OPENAI_INBOX_MODEL",
+  "\"gpt-5.6-luna\"",
+  "https://api.openai.com/v1/responses",
+  "store: false",
+  "GITHUB_TOKEN",
+  "playnice-site/src/data/products/index.js",
+  "LIVE CATALOG",
+  "latest.direction !== \"inbound\"",
+  "24-hour response window",
+  "review_required: true",
+  "sent: false",
+]) {
+  assert.ok(aiDraftApi.includes(token), `AI draft contract missing: ${token}`);
+}
+
+assert.ok(!aiDraftApi.includes("graph.facebook.com"), "AI draft endpoint must never call Meta Graph.");
+assert.ok(!aiDraftApi.includes('messaging_type: "RESPONSE"'), "AI draft endpoint must never send a Meta message.");
+assert.ok(aiDraftApi.includes("requireAdmin"), "AI draft endpoint must remain admin-only.");
+
 
 for (const token of [
   "resolveMetaPageAccessToken",
@@ -70,6 +95,7 @@ for (const token of [
 
 console.log("PASS  Social Inbox is isolated and admin-only");
 console.log("PASS  Facebook read + explicit Approve & Send use the existing Meta credential resolver");
+console.log("PASS  AI draft is admin-only, catalog-grounded, review-required, and cannot send to Meta");
 console.log("PASS  Instagram sending remains disabled");
 console.log("PASS  Facebook replies are blocked outside the stored 24-hour response window");
 console.log("PASS  New inbound Meta sync reopens a previously replied thread");
