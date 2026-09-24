@@ -5,7 +5,7 @@ const bridgePath = path.resolve(process.cwd(), "control-center/src/ProductWorkfl
 const managersPath = path.resolve(process.cwd(), "control-center/src/ControlCenterManagers.jsx");
 const appPath = path.resolve(process.cwd(), "control-center/src/App.jsx");
 const controlledApplyPath = path.resolve(process.cwd(), "control-center/src/ControlledApplyManager.jsx");
-const mediaApiPath = path.resolve(process.cwd(), "control-center/api/create-product-media-apply.js");
+const mediaApiPath = path.resolve(process.cwd(), "control-center/server/create-product-media-apply.js");
 
 const bridge = fs.readFileSync(bridgePath, "utf8");
 const managers = fs.readFileSync(managersPath, "utf8");

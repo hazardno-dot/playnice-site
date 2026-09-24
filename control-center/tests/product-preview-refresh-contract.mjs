@@ -1,8 +1,8 @@
 import fs from "node:fs";
 
 const repoRoot = process.cwd();
-const refreshSource = fs.readFileSync(`${repoRoot}/control-center/api/refresh-product-apply.js`, "utf8");
-const routerSource = fs.readFileSync(`${repoRoot}/control-center/api/create-apply-router.js`, "utf8");
+const refreshSource = fs.readFileSync(`${repoRoot}/control-center/server/refresh-product-apply.js`, "utf8");
+const routerSource = fs.readFileSync(`${repoRoot}/control-center/server/create-apply-router.js`, "utf8");
 const stateSource = fs.readFileSync(`${repoRoot}/control-center/src/previewWorkflowState.mjs`, "utf8");
 const managerSource = fs.readFileSync(`${repoRoot}/control-center/src/ControlledApplyManager.jsx`, "utf8");
 const engineSource = fs.readFileSync(`${repoRoot}/control-center/lib/create-new-product-engine.mjs`, "utf8");

@@ -4,8 +4,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const api = fs.readFileSync(path.resolve(here, "../api/create-journal-apply.js"), "utf8");
-const mediaApi = fs.readFileSync(path.resolve(here, "../api/create-journal-media-apply.js"), "utf8");
+const api = fs.readFileSync(path.resolve(here, "../server/create-journal-apply.js"), "utf8");
+const mediaApi = fs.readFileSync(path.resolve(here, "../server/create-journal-media-apply.js"), "utf8");
 const manager = fs.readFileSync(path.resolve(here, "../src/JournalApplyManager.jsx"), "utf8");
 const journalManager = fs.readFileSync(path.resolve(here, "../src/JournalManager.jsx"), "utf8");
 const journalDraft = fs.readFileSync(path.resolve(here, "../src/journalDraft.mjs"), "utf8");
