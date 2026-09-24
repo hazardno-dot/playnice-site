@@ -331,3 +331,77 @@
   }
 }
 
+/* Overview structural correction — remove inherited empty-space stretch */
+.overview-v2 {
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, .9fr);
+  align-items: start;
+}
+
+/* Override legacy v2 slot spans, not only the portalled cards. */
+.overview-grid-v2 > .site-health-overview-slot,
+.overview-grid-v2 > .browser-qa-overview-slot {
+  grid-column: span 6 !important;
+  display: block !important;
+  min-width: 0;
+}
+.overview-grid-v2 > .site-health-overview-slot > .overview-card,
+.overview-grid-v2 > .browser-qa-overview-slot > .overview-card {
+  width: 100%;
+  height: 100%;
+}
+
+/* Keep the operational panels dense instead of matching the taller sibling. */
+.workflow-overview-panel,
+.audit-panel {
+  height: auto !important;
+  align-self: start;
+}
+
+.workflow-module-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.workflow-module-grid > div {
+  min-height: 72px;
+}
+
+/* Two-column audit turns seven identical rows into a compact scan surface. */
+.audit-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px !important;
+  border-top: 0;
+}
+.audit-row {
+  min-height: 42px;
+  padding: 9px 10px !important;
+  border: 1px solid var(--cc-border-soft);
+  border-radius: 9px;
+}
+.audit-row:last-child {
+  border-bottom: 1px solid var(--cc-border-soft);
+}
+.audit-row:nth-child(7) {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1180px) {
+  .overview-grid-v2 > .site-health-overview-slot,
+  .overview-grid-v2 > .browser-qa-overview-slot {
+    grid-column: span 3 !important;
+  }
+  .workflow-module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  .overview-grid-v2 > .site-health-overview-slot,
+  .overview-grid-v2 > .browser-qa-overview-slot {
+    grid-column: 1 / -1 !important;
+  }
+  .audit-list {
+    grid-template-columns: 1fr;
+  }
+  .audit-row:nth-child(7) {
+    grid-column: auto;
+  }
+}
+
