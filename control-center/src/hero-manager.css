@@ -81,7 +81,8 @@
 }
 
 .hero-slide-list {
-  max-height: 620px;
+  max-height: none;
+  overflow: visible;
   padding: 6px;
 }
 .hero-slide-row {
@@ -209,9 +210,6 @@
 @media (max-width: 1100px) {
   .hero-manager-layout {
     grid-template-columns: 1fr;
-  }
-  .hero-slide-list {
-    max-height: 480px;
   }
 }
 
