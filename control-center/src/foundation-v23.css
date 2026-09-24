@@ -2970,3 +2970,38 @@
 .social-inbox-reply-composer textarea {
   font-size: 9px;
 }
+
+/* Inbox readability correction */
+.social-inbox-list > button strong {
+  font-size: 11px;
+}
+.social-inbox-list > button span,
+.social-inbox-list > button p,
+.social-inbox-list > button time {
+  font-size: 8px;
+}
+.social-inbox-thread-head h3 {
+  font-size: 18px;
+}
+.social-inbox-thread-head p,
+.social-inbox-thread-head small,
+.social-inbox-thread-head > div:last-child strong {
+  font-size: 8px;
+}
+.social-inbox-message p {
+  font-size: 10.5px;
+}
+.social-inbox-message span,
+.social-inbox-message time {
+  font-size: 8px;
+}
+.social-inbox-reply-head strong {
+  font-size: 10px;
+}
+.social-inbox-reply-head small,
+.social-inbox-reply-actions small {
+  font-size: 8px;
+}
+.social-inbox-reply-composer textarea {
+  font-size: 10px;
+}
