@@ -6,7 +6,7 @@ const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 
 const optimizer = read("control-center/src/imageOptimizer.mjs");
 const bridge = read("control-center/src/HeroMediaUploadBridge.jsx");
-const api = read("control-center/api/create-hero-media-apply.js");
+const api = read("control-center/server/create-hero-media-apply.js");
 
 for (const token of [
   'heroDesktop:',
