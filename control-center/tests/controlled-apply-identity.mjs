@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "../..");
-const source = fs.readFileSync(path.resolve(here, "../api/create-apply.js"), "utf8");
+const source = fs.readFileSync(path.resolve(here, "../server/create-apply.js"), "utf8");
 const marker = source.indexOf("export default async function handler");
 if (marker < 0) throw new Error("Could not isolate helpers.");
 const context = { process: { env: {} }, Buffer, console, fetch: async () => { throw new Error("Network disabled"); } };
