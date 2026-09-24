@@ -67,7 +67,7 @@ assert.throws(() => normalizeSocialEvent({ event_type: "bad", source_type: "prod
 assert.throws(() => generateSocialDraft({ source_type: "unknown" }), /No social draft generator/);
 
 const root = process.cwd();
-const productPublishSync = fs.readFileSync(path.join(root, "control-center/api/sync-publish-status.js"), "utf8");
+const productPublishSync = fs.readFileSync(path.join(root, "control-center/server/sync-publish-status.js"), "utf8");
 for (const token of [
   "productPublishedEvent",
   "createProductSocialShadowEvent",
@@ -82,7 +82,7 @@ for (const token of [
 }
 assert.ok(productPublishSync.includes("console.warn(\"Social shadow event creation skipped\""), "Product Social producer must fail open and never block product publishing.");
 
-const heroFinalize = fs.readFileSync(path.join(root, "control-center/api/finalize-hero-apply.js"), "utf8");
+const heroFinalize = fs.readFileSync(path.join(root, "control-center/server/finalize-hero-apply.js"), "utf8");
 for (const token of [
   "heroPublishedEvent",
   "createHeroSocialShadowEvent",
@@ -98,7 +98,7 @@ const heroSocialInvocationIndex = heroFinalize.lastIndexOf("await createHeroSoci
 assert.ok(heroFinalizeRpcIndex > -1, "Hero finalize RPC marker is missing.");
 assert.ok(heroSocialInvocationIndex > heroFinalizeRpcIndex, "Hero Social event must be downstream of successful Hero finalization.");
 
-const journalPublishSync = fs.readFileSync(path.join(root, "control-center/api/sync-journal-publish-status.js"), "utf8");
+const journalPublishSync = fs.readFileSync(path.join(root, "control-center/server/sync-journal-publish-status.js"), "utf8");
 for (const token of [
   "journalPublishedEvent",
   "createJournalSocialShadowEvent",
@@ -139,7 +139,7 @@ assert.ok(socialManager.includes('window.addEventListener("playnice:social-media
 assert.ok(socialManager.includes('window.removeEventListener("playnice:social-media-updated", handleSocialMediaUpdated)'), "Social media refresh listener must be cleaned up on unmount.");
 assert.ok(socialManager.includes('setFeedDryRun(null);'), "Social media changes must invalidate any stale Meta dry-run payload.");
 
-const socialDraftApi = fs.readFileSync(path.join(root, "control-center/api/social-draft.js"), "utf8");
+const socialDraftApi = fs.readFileSync(path.join(root, "control-center/server/social-draft.js"), "utf8");
 for (const token of ["generateSocialDraft", "validateSocialDraftMedia", "validateReadyMedia", "probePublicImage", "content-type", "asset must use HTTPS", "READY blocked", "public_media_verified", "draft_content", "approved_content", "approved_at", "draft_marked_ready", "draft_reopened", "draft_discarded", "discard", "discard_test", "isTestEvent", "2200"]) {
   assert.ok(socialDraftApi.includes(token), `Social draft API contract missing: ${token}`);
 }
@@ -154,7 +154,7 @@ assert.ok(socialManager.includes("selected.published_at"), "Published archive st
 assert.ok(socialManager.includes('window.confirm'), "Discard draft must require explicit confirmation.");
 assert.ok(!socialDraftApi.includes("publish_mode: \"approval\""), "Draft approval or scheduling must not unlock Meta publishing.");
 
-const manualMetaPublishApi = fs.readFileSync(path.join(root, "control-center/api/social-instagram-feed-test-publish.js"), "utf8");
+const manualMetaPublishApi = fs.readFileSync(path.join(root, "control-center/server/social-instagram-feed-test-publish.js"), "utf8");
 for (const token of [
   "STORY_PUBLISH_MAX_ATTEMPTS",
   "STORY_PUBLISH_INITIAL_DELAY_MS",
@@ -165,7 +165,7 @@ for (const token of [
   assert.ok(manualMetaPublishApi.includes(token), `Instagram Story 9007 retry contract missing: ${token}`);
 }
 
-const replayApi = fs.readFileSync(path.join(root, "control-center/api/social-shadow-replay.js"), "utf8");
+const replayApi = fs.readFileSync(path.join(root, "control-center/server/social-shadow-replay.js"), "utf8");
 for (const token of [
   "productPublishedEvent",
   "heroPublishedEvent",
@@ -197,7 +197,7 @@ assert.ok(replayApi.includes("manual_hero_post"), "Replay endpoint must create m
 assert.ok(replayApi.includes("manual_journal_post"), "Replay endpoint must create manual Journal Social events.");
 assert.ok(replayApi.includes("heroKey: req.body?.hero_key"), "Replay endpoint must accept a selected Hero key.");
 assert.ok(replayApi.includes("articleId: req.body?.journal_article_id"), "Replay endpoint must accept a selected Journal article id.");
-const sourceCatalogApi = fs.readFileSync(path.join(root, "control-center/api/social-source-catalog.js"), "utf8");
+const sourceCatalogApi = fs.readFileSync(path.join(root, "control-center/server/social-source-catalog.js"), "utf8");
 assert.ok(sourceCatalogApi.includes('sourceType === "hero"'), "Social source catalog must expose Hero sources.");
 assert.ok(sourceCatalogApi.includes('sourceType === "journal"'), "Social source catalog must expose Journal sources.");
 assert.ok(replayApi.includes("`manual_${sourceType}_post_created`"), "Manual Product, Hero and Journal posts must have source-specific dedicated audit events.");
@@ -219,7 +219,7 @@ assert.ok(manualMetaPublishApi.includes("isControlledPublishEvent"), "Server-sid
 assert.ok(manualMetaPublishApi.includes("finalizePublishedEvent"), "Manual Meta transport must archive an event after all three channels publish.");
 assert.ok(manualMetaPublishApi.includes('status: "published"'), "Completed Social publication must persist PUBLISHED status.");
 assert.ok(manualMetaPublishApi.includes("published_at: publishedAt"), "Completed Social publication must persist its publication timestamp.");
-const reconcilePublishApi = fs.readFileSync(path.join(root, "control-center/api/social-reconcile-published.js"), "utf8");
+const reconcilePublishApi = fs.readFileSync(path.join(root, "control-center/server/social-reconcile-published.js"), "utf8");
 assert.ok(reconcilePublishApi.includes("test_instagram_feed_published"), "Reconciliation must recognize Instagram Feed publication audit.");
 assert.ok(reconcilePublishApi.includes("test_instagram_story_published"), "Reconciliation must recognize Instagram Story publication audit.");
 assert.ok(reconcilePublishApi.includes("test_facebook_published"), "Reconciliation must recognize Facebook publication audit.");
