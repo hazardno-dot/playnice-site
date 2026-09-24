@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, "../..");
-const applyPath = path.resolve(here, "../api/create-apply.js");
+const applyPath = path.resolve(here, "../server/create-apply.js");
 const applySource = fs.readFileSync(applyPath, "utf8");
 const handlerMarker = "export default async function handler";
 const markerIndex = applySource.indexOf(handlerMarker);
