@@ -3176,3 +3176,306 @@
     grid-template-columns: repeat(2, minmax(0,1fr));
   }
 }
+
+/* CC Visual Polish v1 · System / Site Health */
+.site-health-manager {
+  gap: 14px;
+  padding-bottom: 24px;
+}
+
+.site-health-head {
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: var(--cc-surface-radius);
+  background: var(--cc-surface-bg);
+  box-shadow: var(--cc-surface-highlight);
+}
+.site-health-head > div:first-child {
+  gap: 4px;
+}
+.site-health-head span,
+.site-health-panel-head span,
+.site-health-kpis span,
+.health-build-grid span,
+.health-trend-kpis span,
+.health-incident-kpis span {
+  font-size: 8px;
+}
+.site-health-head h2 {
+  margin: 4px 0 5px;
+  font-size: 22px;
+}
+.site-health-head p {
+  max-width: 760px;
+  font-size: 10px;
+  line-height: 1.45;
+}
+.site-health-head-actions {
+  gap: 7px;
+}
+.site-health-head-actions button {
+  padding: 7px 9px;
+  border-radius: 8px;
+  font-size: 9px;
+}
+.site-health-state {
+  padding: 6px 8px;
+  font-size: 8px !important;
+}
+
+.site-health-error,
+.site-health-history-warning {
+  padding: 9px 11px;
+  border-radius: 9px;
+  font-size: 10px;
+}
+
+.site-health-kpis {
+  gap: 10px;
+}
+.site-health-kpis > div {
+  min-height: 82px;
+  padding: 12px 13px;
+  border-radius: 11px;
+}
+.site-health-kpis strong,
+.health-build-grid strong,
+.health-trend-kpis strong,
+.health-incident-kpis strong {
+  margin: 4px 0;
+  font-size: 22px;
+}
+.site-health-kpis small,
+.health-build-grid small,
+.health-trend-kpis small,
+.health-incident-kpis small {
+  font-size: 8px;
+}
+
+.site-health-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+.site-health-panel {
+  padding: 14px;
+  border-radius: var(--cc-surface-radius);
+  background: var(--cc-surface-bg);
+  box-shadow: var(--cc-surface-highlight);
+}
+.site-health-grid > .site-health-panel {
+  height: 100%;
+}
+.site-health-panel-head {
+  gap: 10px;
+  padding-bottom: 9px;
+  margin-bottom: 6px;
+}
+.site-health-panel-head h3 {
+  font-size: 17px;
+}
+.site-health-panel-head small {
+  font-size: 8px;
+}
+
+.health-check-row {
+  grid-template-columns: 10px minmax(0,1fr) 42px 58px;
+  gap: 8px;
+  padding: 8px 2px;
+}
+.health-check-row > div {
+  gap: 2px;
+}
+.health-check-row strong {
+  font-size: 10px;
+}
+.health-check-row small {
+  font-size: 8px;
+}
+.health-diagnostic {
+  font-size: 8px !important;
+  line-height: 1.35;
+}
+.health-check-row em,
+.health-check-row time {
+  font-size: 8px;
+}
+.health-empty {
+  padding: 14px 2px;
+  font-size: 9px;
+}
+
+/* Runtime bundles can grow; contain them instead of stretching the page indefinitely. */
+.site-health-manager > .site-health-panel:nth-of-type(1) .health-check-list {
+  max-height: 280px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.health-build-grid,
+.health-trend-kpis,
+.health-incident-kpis,
+.health-contract-grid {
+  gap: 8px;
+}
+.health-build-grid > div,
+.health-contract-grid > div,
+.health-trend-kpis > div,
+.health-incident-kpis > div {
+  gap: 4px;
+  padding: 10px 11px;
+  border-radius: 9px;
+}
+.health-trend-kpis strong,
+.health-incident-kpis strong {
+  font-size: 18px;
+}
+
+.health-history-strip {
+  gap: 6px;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 9px;
+}
+.health-history-point span {
+  height: 22px;
+  border-radius: 5px;
+}
+.health-history-point small {
+  margin-top: 4px;
+  font-size: 8px;
+}
+.health-history-meta {
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 8px;
+}
+
+.health-incident-list {
+  gap: 6px;
+  margin-top: 10px;
+  max-height: 360px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+.health-incident-row {
+  grid-template-columns: 76px minmax(0,1fr) minmax(220px,.8fr);
+  gap: 12px;
+  padding: 10px;
+  border-radius: 9px;
+}
+.health-incident-badge {
+  padding: 5px 7px;
+  font-size: 8px;
+}
+.health-incident-row > div:nth-child(2) > strong {
+  font-size: 10px;
+}
+.health-incident-row > div:nth-child(2) > small {
+  font-size: 8px;
+}
+.health-incident-row p {
+  margin-top: 5px;
+  font-size: 9px;
+  line-height: 1.4;
+}
+.health-incident-times {
+  gap: 6px;
+}
+.health-incident-times span {
+  font-size: 8px;
+}
+.health-incident-times strong {
+  margin-top: 3px;
+  font-size: 8px;
+}
+.incident-recovery-time {
+  font-size: 13px !important;
+}
+
+.health-contract-grid strong {
+  font-size: 10px;
+}
+.health-contract-grid span {
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+/* Browser QA belongs to Site Health visually, not as a separate oversized subsystem. */
+.browser-qa-panel {
+  padding: 14px !important;
+  border-radius: var(--cc-surface-radius) !important;
+  background: var(--cc-surface-bg) !important;
+  box-shadow: var(--cc-surface-highlight);
+}
+.browser-qa-summary-grid {
+  gap: 8px;
+}
+.browser-qa-summary-card {
+  padding: 10px 11px;
+  border-radius: 9px;
+}
+.browser-qa-summary-card > span,
+.browser-qa-history-head > span {
+  font-size: 8px;
+}
+.browser-qa-summary-card > strong {
+  margin-top: 4px;
+  font-size: 16px;
+}
+.browser-qa-summary-card > small,
+.browser-qa-history-head > small {
+  font-size: 8px;
+}
+.browser-qa-summary-card > p {
+  margin-top: 7px;
+  font-size: 9px;
+  line-height: 1.4;
+}
+.browser-qa-summary-meta {
+  gap: 5px 8px;
+  margin-top: 7px;
+}
+.browser-qa-summary-meta em {
+  font-size: 8px;
+}
+.browser-qa-history-head {
+  margin: 12px 0 6px;
+}
+.browser-qa-history-list {
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+.browser-qa-history-row {
+  grid-template-columns: 8px minmax(0,1fr) auto auto;
+  gap: 9px;
+  padding: 8px 0;
+}
+.browser-qa-history-row strong {
+  font-size: 10px;
+}
+.browser-qa-history-row small,
+.browser-qa-history-stats em,
+.browser-qa-history-row time {
+  font-size: 8px;
+}
+
+@media (max-width: 1050px) {
+  .site-health-grid {
+    grid-template-columns: 1fr;
+  }
+  .health-incident-row {
+    grid-template-columns: 72px minmax(0,1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .site-health-kpis {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+  .health-incident-list,
+  .browser-qa-history-list {
+    max-height: none;
+  }
+}
