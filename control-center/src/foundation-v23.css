@@ -854,3 +854,346 @@
   }
 }
 
+/* CC Visual Polish v1 · Manage / Announcement
+   Editorial announcements + Commerce shipping as one compact workspace. */
+.announcement-manager {
+  gap: 14px;
+}
+
+.announcement-audit-strip {
+  gap: 14px;
+  padding: 11px 13px;
+  border-radius: 12px;
+}
+.announcement-audit-strip > div:first-child {
+  gap: 3px;
+}
+.announcement-audit-strip span,
+.announcement-section-head span,
+.announcement-preview-group > span {
+  font-size: 9px;
+}
+.announcement-audit-strip strong {
+  font-size: 14px;
+}
+.announcement-audit-note {
+  font-size: 9px;
+}
+
+.announcement-manager-grid {
+  grid-template-columns: minmax(0, 1.5fr) minmax(300px, .5fr);
+  gap: 14px;
+}
+.announcement-list-panel,
+.announcement-preview-panel {
+  min-width: 0;
+  border-radius: var(--cc-surface-radius);
+  border-color: var(--cc-border);
+  background: var(--cc-surface-bg);
+  box-shadow: var(--cc-surface-highlight);
+}
+
+.announcement-section-head {
+  gap: 10px;
+  padding: 14px 15px !important;
+}
+.announcement-section-head h2 {
+  font-size: 20px !important;
+}
+.announcement-count {
+  min-width: 30px;
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
+}
+.announcement-head-actions {
+  gap: 7px;
+}
+.announcement-head-actions button {
+  padding: 7px 9px;
+  font-size: 10px;
+}
+
+.announcement-row {
+  gap: 10px;
+  padding: 13px 15px;
+}
+.announcement-row-top {
+  gap: 12px;
+}
+.announcement-row-top > div {
+  gap: 6px;
+}
+.announcement-row-top code,
+.announcement-row-top > strong {
+  font-size: 10px;
+}
+.announcement-status,
+.announcement-draft-badge,
+.announcement-prepared-badge {
+  min-height: 20px;
+  padding: 2px 6px;
+  margin-left: 0;
+  font-size: 8px;
+}
+
+.announcement-copy-block {
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 8px;
+}
+.announcement-copy-block > span {
+  font-size: 8px;
+  padding-top: 2px;
+}
+.announcement-copy-block p {
+  font-size: 11px;
+  line-height: 1.45;
+}
+.announcement-meta-row {
+  gap: 6px 12px;
+  padding-top: 1px;
+  font-size: 9px;
+}
+
+.announcement-row-actions {
+  gap: 6px;
+  margin-top: 4px;
+}
+.announcement-row-actions button,
+.announcement-row-actions a {
+  padding: 6px 8px;
+  border-radius: 7px;
+  font-size: 9px;
+}
+
+.announcement-workflow-note {
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 8px;
+  margin-top: 2px;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+.announcement-workflow-note > span {
+  font-size: 8px;
+}
+.announcement-workflow-note > strong {
+  font-size: 10px;
+}
+.announcement-workflow-note > small {
+  font-size: 8px;
+}
+
+.announcement-preview-panel {
+  position: sticky;
+  top: 118px;
+}
+.announcement-preview-group {
+  gap: 7px;
+  padding: 12px 14px;
+}
+.announcement-preview {
+  min-height: 38px;
+  gap: 8px;
+  padding: 8px 9px;
+  font-size: 10px;
+  line-height: 1.35;
+  border-radius: 8px;
+}
+.announcement-scope-note {
+  padding: 12px 14px;
+}
+.announcement-scope-note strong {
+  font-size: 9px;
+}
+.announcement-scope-note p {
+  margin-top: 6px;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+/* Announcement editor */
+.announcement-editor {
+  padding: 18px;
+  border-radius: var(--cc-surface-radius);
+}
+.announcement-editor-head {
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.announcement-editor-head > div:first-child > span,
+.announcement-editor-preview > span {
+  margin-bottom: 4px;
+  font-size: 9px;
+}
+.announcement-editor-head h2 {
+  font-size: 26px;
+}
+.announcement-editor-head p {
+  margin-top: 6px;
+  font-size: 10px;
+}
+.announcement-editor-actions {
+  gap: 6px;
+}
+.announcement-editor-actions button {
+  padding: 7px 9px;
+  font-size: 10px;
+}
+.announcement-editor-validation {
+  gap: 10px;
+  padding: 9px 11px;
+  margin-bottom: 14px;
+  border-radius: 9px;
+}
+.announcement-editor-validation strong {
+  font-size: 9px;
+}
+.announcement-editor-validation span {
+  font-size: 10px;
+}
+.announcement-editor-grid {
+  gap: 10px;
+}
+.announcement-editor-grid label {
+  gap: 5px;
+}
+.announcement-editor-grid label > span {
+  font-size: 9px;
+}
+.announcement-editor-grid input,
+.announcement-editor-grid textarea,
+.announcement-editor-grid select {
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+}
+.announcement-editor-grid textarea {
+  min-height: 82px;
+}
+.announcement-editor-preview {
+  margin-top: 16px;
+  padding-top: 14px;
+  gap: 8px;
+}
+
+/* Commerce / Shipping belongs to Announcement workspace visually. */
+.commerce-shipping-manager-slot {
+  margin-top: 14px;
+}
+.commerce-shipping-manager {
+  border-radius: var(--cc-surface-radius);
+  border-color: var(--cc-border);
+  background: var(--cc-surface-bg);
+  box-shadow: var(--cc-surface-highlight);
+}
+.commerce-shipping-head {
+  gap: 16px;
+  padding: 16px 18px;
+}
+.commerce-shipping-head h2 {
+  margin: 4px 0 5px;
+  font-size: 25px;
+}
+.commerce-shipping-head p {
+  font-size: 11px;
+  line-height: 1.45;
+}
+.commerce-live-pill,
+.commerce-badges span {
+  min-height: 20px;
+  padding: 3px 7px;
+  font-size: 8px;
+}
+
+.commerce-grid {
+  gap: 10px;
+  padding: 14px 18px 6px;
+}
+.commerce-card {
+  gap: 5px;
+  min-height: 96px;
+  padding: 13px 14px;
+  border-radius: 11px;
+}
+.commerce-card strong {
+  font-size: 22px;
+}
+.commerce-card small,
+.commerce-workflow small {
+  font-size: 9px;
+  line-height: 1.45;
+}
+.commerce-copy-card strong {
+  font-size: 11px;
+}
+
+.commerce-editor {
+  gap: 10px;
+  padding: 14px 18px 18px;
+}
+.commerce-editor label {
+  gap: 5px;
+}
+.commerce-editor input {
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+}
+.commerce-validation {
+  padding: 9px 11px;
+  border-radius: 9px;
+  font-size: 10px;
+}
+
+.commerce-badges,
+.commerce-actions {
+  gap: 6px;
+  padding: 11px 18px 0;
+}
+.commerce-actions {
+  padding-bottom: 16px;
+}
+.commerce-actions button,
+.commerce-actions a {
+  min-height: 32px;
+  padding: 7px 9px;
+  border-radius: 8px;
+  font-size: 10px;
+}
+.commerce-workflow {
+  gap: 4px;
+  margin: 0 18px 18px;
+  padding: 10px 11px;
+  border-radius: 9px;
+}
+.commerce-workflow strong {
+  font-size: 10px;
+}
+
+@media (max-width: 1100px) {
+  .announcement-manager-grid {
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+  }
+}
+
+@media (max-width: 980px) {
+  .announcement-manager-grid {
+    grid-template-columns: 1fr;
+  }
+  .announcement-preview-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .announcement-audit-strip,
+  .announcement-editor-head,
+  .commerce-shipping-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .announcement-row-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
