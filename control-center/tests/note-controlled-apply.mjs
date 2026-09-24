@@ -1,11 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
-import { noteExists, normalizeNotePayload, resolveLiveNote, stableJson, upsertLibraryNote } from "../api/note-apply-engine.mjs";
+import { noteExists, normalizeNotePayload, resolveLiveNote, stableJson, upsertLibraryNote } from "../server/note-apply-engine.mjs";
 
 const root = process.cwd();
 const sourcePath = path.join(root, "playnice-site/src/features/note-map/TheNoteMapImpl.jsx");
 const source = fs.readFileSync(sourcePath, "utf8");
-const route = fs.readFileSync(path.join(root, "control-center/api/create-note-apply.js"), "utf8");
+const route = fs.readFileSync(path.join(root, "control-center/server/create-note-apply.js"), "utf8");
 const handler = fs.readFileSync(path.join(root, "control-center/server/create-note-apply.cjs"), "utf8");
 const api = `${route}\n${handler}`;
 const manager = fs.readFileSync(path.join(root, "control-center/src/NoteApplyManager.jsx"), "utf8");

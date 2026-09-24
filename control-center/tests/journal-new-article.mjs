@@ -6,7 +6,7 @@ import {
   getNextJournalArticleId,
   insertJournalArticle,
   journalArticleExists,
-} from "../api/journal-apply-engine.mjs";
+} from "../server/journal-apply-engine.mjs";
 
 const source = await readFile(new URL("../../playnice-site/src/data/journal/index.js", import.meta.url), "utf8");
 const ids = getJournalArticleIds(source);
@@ -48,7 +48,7 @@ assert.throws(() => insertJournalArticle(source, { ...article, id: nextId + 1 })
 
 const manager = await readFile(new URL("../src/JournalManager.jsx", import.meta.url), "utf8");
 const applyManager = await readFile(new URL("../src/JournalApplyManager.jsx", import.meta.url), "utf8");
-const api = await readFile(new URL("../api/create-journal-apply.js", import.meta.url), "utf8");
+const api = await readFile(new URL("../server/create-journal-apply.js", import.meta.url), "utf8");
 
 assert.match(manager, /const nextArticleId = useMemo/);
 assert.match(manager, /\+ New article/);

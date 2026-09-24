@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { journalArticles } from "../../playnice-site/src/data/journal/index.js";
-import { findJournalArticleBlock, normalizeJournalArticle, renderJournalArticle, replaceJournalArticle, stableJson } from "../api/journal-apply-engine.mjs";
+import { findJournalArticleBlock, normalizeJournalArticle, renderJournalArticle, replaceJournalArticle, stableJson } from "../server/journal-apply-engine.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const journalPath = path.resolve(here, "../../playnice-site/src/data/journal/index.js");

@@ -1,12 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "ignoreCommand": "node ../scripts/vercel-ignore-build.mjs control-center",
-  "crons": [
-    {
-      "path": "/api/social-scheduler-cron",
-      "schedule": "* * * * *"
-    }
-  ],
   "routes": [
     {
       "src": "/api/create-apply",
@@ -14,6 +8,12 @@
     },
     {
       "handle": "filesystem"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/:route",
+      "destination": "/api/router?route=:route"
     }
   ]
 }

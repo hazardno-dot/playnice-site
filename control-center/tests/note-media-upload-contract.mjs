@@ -8,8 +8,8 @@ const bridge = read("control-center/src/NoteMediaUploadBridge.jsx");
 const optimizer = read("control-center/src/imageOptimizer.mjs");
 const notesManager = read("control-center/src/NotesManager.jsx");
 const managers = read("control-center/src/ControlCenterManagers.jsx");
-const api = read("control-center/api/create-note-media-apply.js");
-const applyRoute = read("control-center/api/create-note-apply.js");
+const api = read("control-center/server/create-note-media-apply.js");
+const applyRoute = read("control-center/server/create-note-apply.js");
 const applyHandler = read("control-center/server/create-note-apply.cjs");
 const apply = `${applyRoute}\n${applyHandler}`;
 

@@ -46,7 +46,7 @@ for (const token of [
   if (!controlled.includes(token)) throw new Error(`Controlled Apply visual gate missing: ${token}`);
 }
 
-const verifyApi = read("control-center/api/verify-product-preview.js");
+const verifyApi = read("control-center/server/verify-product-preview.js");
 for (const token of [
   "REQUIRED_CHECKS",
   "playnice-site",
@@ -58,7 +58,7 @@ for (const token of [
   if (!verifyApi.includes(token)) throw new Error(`Server preview gate missing: ${token}`);
 }
 
-const wrapper = read("control-center/api/create-new-product.js");
+const wrapper = read("control-center/server/create-new-product.js");
 if (!wrapper.includes('../lib/create-new-product-engine.mjs')) throw new Error("New-product runtime wrapper is not using the non-API engine.");
 if (fs.existsSync(path.join(root, "control-center/api/create-new-product-engine.js"))) throw new Error("New-product helper must not remain inside /api as a Vercel route.");
 if (!fs.existsSync(path.join(root, "control-center/lib/create-new-product-engine.mjs"))) throw new Error("New-product engine is missing from /lib.");

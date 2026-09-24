@@ -7,7 +7,7 @@ const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const bridge = read("control-center/src/NoteWorkflowAdvanceBridge.jsx");
 const apply = read("control-center/src/NoteApplyManager.jsx");
 const managers = read("control-center/src/ControlCenterManagers.jsx");
-const route = read("control-center/api/create-note-apply.js");
+const route = read("control-center/server/create-note-apply.js");
 
 for (const token of ["Approve", "note_drafts", "playnice:note-workflow-updated"]) {
   if (!bridge.includes(token)) throw new Error(`Notes workflow advance bridge missing: ${token}`);

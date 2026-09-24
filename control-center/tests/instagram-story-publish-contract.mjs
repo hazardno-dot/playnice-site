@@ -90,7 +90,7 @@ assert.equal(locked.reason, "PUBLISH_LOCKED");
 assert.equal(locked.channel, "instagram_story");
 
 const root = process.cwd();
-const endpointSource = fs.readFileSync(path.join(root, "control-center/api/social-instagram-feed-test-publish.js"), "utf8");
+const endpointSource = fs.readFileSync(path.join(root, "control-center/server/social-instagram-feed-test-publish.js"), "utf8");
 const bridgeSource = fs.readFileSync(path.join(root, "control-center/src/SocialInstagramStoryTestPublishBridge.jsx"), "utf8");
 assert.ok(endpointSource.includes('classifySocialMedia(story.media || null, "instagram_story")'), "Story endpoint must classify approved Story media before transport.");
 assert.ok(endpointSource.includes('readiness.status !== "ideal"'), "Story endpoint must reject non-ideal media.");

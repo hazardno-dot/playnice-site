@@ -4,7 +4,7 @@ import { IMAGE_OPTIMIZER_PRESETS } from "../src/imageOptimizer.mjs";
 
 const uploader = fs.readFileSync("control-center/src/ProductMediaUploadBridge.jsx", "utf8");
 const optimizer = fs.readFileSync("control-center/src/imageOptimizer.mjs", "utf8");
-const api = fs.readFileSync("control-center/api/create-product-media-apply.js", "utf8");
+const api = fs.readFileSync("control-center/server/create-product-media-apply.js", "utf8");
 
 const shop = IMAGE_OPTIMIZER_PRESETS.productShop;
 const justIn = IMAGE_OPTIMIZER_PRESETS.productJustIn;

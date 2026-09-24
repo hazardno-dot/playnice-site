@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
-const api = fs.readFileSync(path.join(root, "control-center/api/meta-connection-status.js"), "utf8");
+const api = fs.readFileSync(path.join(root, "control-center/server/meta-connection-status.js"), "utf8");
 const resolver = fs.readFileSync(path.join(root, "control-center/lib/meta-page-token.mjs"), "utf8");
 const panel = fs.readFileSync(path.join(root, "control-center/src/MetaConnectionPanel.jsx"), "utf8");
 const bridge = fs.readFileSync(path.join(root, "control-center/src/MetaConnectionBridge.jsx"), "utf8");

@@ -4,7 +4,7 @@ import { IMAGE_OPTIMIZER_PRESETS } from "../src/imageOptimizer.mjs";
 
 const optimizer = fs.readFileSync("control-center/src/imageOptimizer.mjs", "utf8");
 const journalManager = fs.readFileSync("control-center/src/JournalManager.jsx", "utf8");
-const journalApi = fs.readFileSync("control-center/api/create-journal-media-apply.js", "utf8");
+const journalApi = fs.readFileSync("control-center/server/create-journal-media-apply.js", "utf8");
 
 const journal = IMAGE_OPTIMIZER_PRESETS.journal;
 assert.equal(journal.outputType, "image/webp");

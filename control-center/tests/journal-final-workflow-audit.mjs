@@ -8,7 +8,7 @@ import {
   normalizeJournalArticle,
   renderJournalArticle,
   replaceJournalArticle,
-} from "../api/journal-apply-engine.mjs";
+} from "../server/journal-apply-engine.mjs";
 
 const journalPath = new URL("../../playnice-site/src/data/journal/index.js", import.meta.url);
 const source = fs.readFileSync(journalPath, "utf8");

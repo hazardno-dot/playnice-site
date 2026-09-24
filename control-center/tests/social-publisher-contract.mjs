@@ -67,7 +67,7 @@ assert.throws(() => normalizeSocialEvent({ event_type: "bad", source_type: "prod
 assert.throws(() => generateSocialDraft({ source_type: "unknown" }), /No social draft generator/);
 
 const root = process.cwd();
-const productPublishSync = fs.readFileSync(path.join(root, "control-center/api/sync-publish-status.js"), "utf8");
+const productPublishSync = fs.readFileSync(path.join(root, "control-center/server/sync-publish-status.js"), "utf8");
 for (const token of [
   "productPublishedEvent",
   "createProductSocialShadowEvent",
@@ -82,7 +82,7 @@ for (const token of [
 }
 assert.ok(productPublishSync.includes("console.warn(\"Social shadow event creation skipped\""), "Product Social producer must fail open and never block product publishing.");
 
-const heroFinalize = fs.readFileSync(path.join(root, "control-center/api/finalize-hero-apply.js"), "utf8");
+const heroFinalize = fs.readFileSync(path.join(root, "control-center/server/finalize-hero-apply.js"), "utf8");
 for (const token of [
   "heroPublishedEvent",
   "createHeroSocialShadowEvent",
@@ -98,7 +98,7 @@ const heroSocialInvocationIndex = heroFinalize.lastIndexOf("await createHeroSoci
 assert.ok(heroFinalizeRpcIndex > -1, "Hero finalize RPC marker is missing.");
 assert.ok(heroSocialInvocationIndex > heroFinalizeRpcIndex, "Hero Social event must be downstream of successful Hero finalization.");
 
-const journalPublishSync = fs.readFileSync(path.join(root, "control-center/api/sync-journal-publish-status.js"), "utf8");
+const journalPublishSync = fs.readFileSync(path.join(root, "control-center/server/sync-journal-publish-status.js"), "utf8");
 for (const token of [
   "journalPublishedEvent",
   "createJournalSocialShadowEvent",
@@ -122,7 +122,7 @@ assert.ok(journalApplyManager.includes('/api/sync-journal-publish-status'), "Jou
 assert.ok(!journalApplyManager.includes("api.github.com/repos/hazardno-dot/playnice-site/pulls"), "Journal UI must not directly use the public GitHub PR API for publish reconciliation.");
 
 const socialManager = fs.readFileSync(path.join(root, "control-center/src/SocialManager.jsx"), "utf8");
-for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Schedule", "Unschedule", "SCHEDULED · LOCKED", "scheduled_for", "datetime-local", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard draft", "Discard test event", "archived", "CREATE POST FROM", "Product", "Hero", "Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
+for (const token of ["/api/social-draft", "/api/social-shadow-replay", "Save draft", "Mark ready", "Return to draft", "Copy caption", "Open image", "Copy link", "navigator.clipboard", "publicSourceUrl", "Discard draft", "Discard test event", "archived", "CREATE POST FROM", "Product", "Hero", "Journal", "source_type: sourceType", "draft_content", "approved_content", "payload?.core?.shortName", "validateSocialDraftMedia", "MEDIA READINESS", "READY BLOCKED", "readiness.label", "Usable fallback", "Media required", "Media ready"]) {
   assert.ok(socialManager.includes(token), `Social Manager editing/review workflow missing: ${token}`);
 }
 assert.ok(socialManager.includes("No active social posts"), "Empty Social workspace must use the compact active-queue empty state.");
@@ -131,7 +131,7 @@ assert.ok(socialManager.includes('setProductPickerOpen(true)'), "Product create 
 assert.ok(socialManager.includes('openSourcePicker("hero")'), "Hero create action must open the Hero picker.");
 assert.ok(socialManager.includes('openSourcePicker("journal")'), "Journal create action must open the Journal picker.");
 assert.ok(socialManager.includes("disabled={saving || !mediaReadiness.ok}"), "Mark ready must be locally disabled when a channel has no media.");
-assert.ok(socialManager.includes('["ready", "scheduled"].includes(selected.status)'), "READY and SCHEDULED must render the approved snapshot instead of editable draft content.");
+assert.ok(socialManager.includes('selected.status === "ready"'), "READY must render the approved snapshot instead of editable draft content.");
 assert.ok(socialManager.includes('window.open(src, "_blank", "noopener,noreferrer")'), "Manual fallback must open the exact selected channel asset in a separate tab.");
 assert.ok(socialManager.includes('new URL(String(value), PUBLIC_ORIGIN)'), "Manual fallback must canonicalize relative source URLs before Copy link.");
 assert.ok(socialManager.includes('key === "instagram_story" ? "story" : ""'), "Instagram Story preview must use a vertical-specific layout.");
@@ -139,13 +139,11 @@ assert.ok(socialManager.includes('window.addEventListener("playnice:social-media
 assert.ok(socialManager.includes('window.removeEventListener("playnice:social-media-updated", handleSocialMediaUpdated)'), "Social media refresh listener must be cleaned up on unmount.");
 assert.ok(socialManager.includes('setFeedDryRun(null);'), "Social media changes must invalidate any stale Meta dry-run payload.");
 
-const socialDraftApi = fs.readFileSync(path.join(root, "control-center/api/social-draft.js"), "utf8");
-for (const token of ["generateSocialDraft", "validateSocialDraftMedia", "validateReadyMedia", "probePublicImage", "content-type", "asset must use HTTPS", "READY blocked", "public_media_verified", "draft_content", "approved_content", "approved_at", "scheduled_for", "normalizeScheduledFor", "Only READY events can be scheduled", "Only scheduled events can be unscheduled", "draft_scheduled", "draft_unscheduled", "draft_marked_ready", "draft_reopened", "draft_discarded", "discard", "discard_test", "isTestEvent", "2200"]) {
+const socialDraftApi = fs.readFileSync(path.join(root, "control-center/server/social-draft.js"), "utf8");
+for (const token of ["generateSocialDraft", "validateSocialDraftMedia", "validateReadyMedia", "probePublicImage", "content-type", "asset must use HTTPS", "READY blocked", "public_media_verified", "draft_content", "approved_content", "approved_at", "draft_marked_ready", "draft_reopened", "draft_discarded", "discard", "discard_test", "isTestEvent", "2200"]) {
   assert.ok(socialDraftApi.includes(token), `Social draft API contract missing: ${token}`);
 }
 assert.ok(socialDraftApi.indexOf("await validateReadyMedia(draftContent)") < socialDraftApi.indexOf('status: "ready"'), "Public media validation must run before READY state is persisted.");
-assert.ok(socialDraftApi.includes('event.status !== "ready"'), "Scheduling must be server-side restricted to READY events.");
-assert.ok(socialDraftApi.includes('event.status !== "scheduled"'), "Unscheduling must be server-side restricted to SCHEDULED events.");
 assert.ok(socialDraftApi.includes('event.status !== "draft"'), "Soft discard must be server-side restricted to DRAFT events.");
 assert.ok(socialDraftApi.includes('status: "cancelled"'), "Soft discard must preserve the Social event by moving it to CANCELLED.");
 assert.ok(socialManager.includes('!["cancelled", "published"].includes(event.status)'), "Cancelled and published Social events must be hidden from the active queue.");
@@ -156,7 +154,7 @@ assert.ok(socialManager.includes("selected.published_at"), "Published archive st
 assert.ok(socialManager.includes('window.confirm'), "Discard draft must require explicit confirmation.");
 assert.ok(!socialDraftApi.includes("publish_mode: \"approval\""), "Draft approval or scheduling must not unlock Meta publishing.");
 
-const manualMetaPublishApi = fs.readFileSync(path.join(root, "control-center/api/social-instagram-feed-test-publish.js"), "utf8");
+const manualMetaPublishApi = fs.readFileSync(path.join(root, "control-center/server/social-instagram-feed-test-publish.js"), "utf8");
 for (const token of [
   "STORY_PUBLISH_MAX_ATTEMPTS",
   "STORY_PUBLISH_INITIAL_DELAY_MS",
@@ -167,7 +165,7 @@ for (const token of [
   assert.ok(manualMetaPublishApi.includes(token), `Instagram Story 9007 retry contract missing: ${token}`);
 }
 
-const replayApi = fs.readFileSync(path.join(root, "control-center/api/social-shadow-replay.js"), "utf8");
+const replayApi = fs.readFileSync(path.join(root, "control-center/server/social-shadow-replay.js"), "utf8");
 for (const token of [
   "productPublishedEvent",
   "heroPublishedEvent",
@@ -199,7 +197,7 @@ assert.ok(replayApi.includes("manual_hero_post"), "Replay endpoint must create m
 assert.ok(replayApi.includes("manual_journal_post"), "Replay endpoint must create manual Journal Social events.");
 assert.ok(replayApi.includes("heroKey: req.body?.hero_key"), "Replay endpoint must accept a selected Hero key.");
 assert.ok(replayApi.includes("articleId: req.body?.journal_article_id"), "Replay endpoint must accept a selected Journal article id.");
-const sourceCatalogApi = fs.readFileSync(path.join(root, "control-center/api/social-source-catalog.js"), "utf8");
+const sourceCatalogApi = fs.readFileSync(path.join(root, "control-center/server/social-source-catalog.js"), "utf8");
 assert.ok(sourceCatalogApi.includes('sourceType === "hero"'), "Social source catalog must expose Hero sources.");
 assert.ok(sourceCatalogApi.includes('sourceType === "journal"'), "Social source catalog must expose Journal sources.");
 assert.ok(replayApi.includes("`manual_${sourceType}_post_created`"), "Manual Product, Hero and Journal posts must have source-specific dedicated audit events.");
@@ -221,12 +219,12 @@ assert.ok(manualMetaPublishApi.includes("isControlledPublishEvent"), "Server-sid
 assert.ok(manualMetaPublishApi.includes("finalizePublishedEvent"), "Manual Meta transport must archive an event after all three channels publish.");
 assert.ok(manualMetaPublishApi.includes('status: "published"'), "Completed Social publication must persist PUBLISHED status.");
 assert.ok(manualMetaPublishApi.includes("published_at: publishedAt"), "Completed Social publication must persist its publication timestamp.");
-const reconcilePublishApi = fs.readFileSync(path.join(root, "control-center/api/social-reconcile-published.js"), "utf8");
+const reconcilePublishApi = fs.readFileSync(path.join(root, "control-center/server/social-reconcile-published.js"), "utf8");
 assert.ok(reconcilePublishApi.includes("test_instagram_feed_published"), "Reconciliation must recognize Instagram Feed publication audit.");
 assert.ok(reconcilePublishApi.includes("test_instagram_story_published"), "Reconciliation must recognize Instagram Story publication audit.");
 assert.ok(reconcilePublishApi.includes("test_facebook_published"), "Reconciliation must recognize Facebook publication audit.");
 assert.ok(reconcilePublishApi.includes('status: "published"'), "Reconciliation must restore already-published events to PUBLISHED history.");
-assert.ok(reconcilePublishApi.includes("status=in.(draft,ready,scheduled,cancelled)"), "Reconciliation must also recover discarded events that have complete publish audit evidence.");
+assert.ok(reconcilePublishApi.includes("status=in.(draft,ready,scheduled,cancelled)"), "Reconciliation may still recognize legacy scheduled rows while recovering publication audit evidence.");
 assert.ok(socialManager.includes("/api/social-reconcile-published"), "Social Manager must reconcile existing publication history on open.");
 assert.ok(instagramPublishBridge.includes("Publish Instagram Feed"), "Instagram Feed bridge must expose controlled manual publishing for READY Product posts.");
 assert.ok(storyPublishBridge.includes("Publish Instagram Story"), "Instagram Story bridge must expose controlled manual publishing for READY Product posts.");
@@ -249,7 +247,7 @@ assert.ok(storyPublishBridge.includes('"PUBLISHED ✓"'), "Instagram Story compl
 assert.ok(socialMediaOverrideBridge.includes("Generate safe fallback"), "Social media generator must describe contain-based generation as a fallback, not a preferred replacement.");
 
 const socialSchema = fs.readFileSync(path.join(root, "control-center/supabase/social_publisher_v1.sql"), "utf8");
-for (const token of ["draft_content jsonb", "approved_content jsonb", "approved_at timestamptz", "scheduled_for timestamptz", "status = 'scheduled'", "publish_mode text not null default 'shadow'"]) {
+for (const token of ["draft_content jsonb", "approved_content jsonb", "approved_at timestamptz", "publish_mode text not null default 'shadow'"]) {
   assert.ok(socialSchema.includes(token), `Social schema review/scheduling contract missing: ${token}`);
 }
 
@@ -259,7 +257,7 @@ console.log("PASS  Nested Product payloads resolve canonical name, sizes and med
 console.log("PASS  Relative storefront media are normalized to public PlayNice URLs");
 console.log("PASS  Channel media is classified IDEAL, FALLBACK or MISSING before review approval");
 console.log("PASS  READY is blocked when media is missing or not publicly reachable as an HTTPS image");
-console.log("PASS  READY events can be scheduled for a future time and safely unscheduled without unlocking Meta publishing");
+console.log("PASS  Social Publisher is manual-only; scheduling UI and scheduler runtime are retired");
 console.log("PASS  Manual fallback can copy channel captions/source links and open the exact selected media without touching event state");
 console.log("PASS  Social captions are editable, auditable and can be marked READY without unlocking Meta publishing");
 console.log("PASS  Explicit test/replay events can be safely discarded without exposing delete for real Social events");

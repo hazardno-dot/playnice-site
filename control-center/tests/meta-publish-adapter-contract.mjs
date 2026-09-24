@@ -110,7 +110,7 @@ assert.deepEqual(Object.keys(eventResult.results), ["instagram_feed", "instagram
 
 const root = process.cwd();
 const adapterSource = fs.readFileSync(path.join(root, "control-center/src/metaPublishAdapter.mjs"), "utf8");
-const publishApiSource = fs.readFileSync(path.join(root, "control-center/api/social-publish.js"), "utf8");
+const publishApiSource = fs.readFileSync(path.join(root, "control-center/server/social-publish.js"), "utf8");
 
 for (const token of [
   "publishInstagramFeed",
