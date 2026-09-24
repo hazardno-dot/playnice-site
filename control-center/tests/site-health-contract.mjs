@@ -3,7 +3,7 @@ import path from "node:path";
 
 const root = process.cwd();
 const manager = fs.readFileSync(path.join(root, "control-center/src/SiteHealthManager.jsx"), "utf8");
-const api = fs.readFileSync(path.join(root, "control-center/api/site-health.js"), "utf8");
+const api = fs.readFileSync(path.join(root, "control-center/server/site-health.js"), "utf8");
 const incidents = fs.readFileSync(path.join(root, "control-center/src/siteHealthIncidents.mjs"), "utf8");
 const mount = fs.readFileSync(path.join(root, "control-center/src/ControlCenterManagers.jsx"), "utf8");
 
