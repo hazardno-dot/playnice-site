@@ -40,7 +40,7 @@
 /* Shared top-level surfaces */
 .catalog-panel,
 .detail-panel,
-.placeholder-panel:not(.announcement-module-active):not(.journal-module-active):not(.hero-module-active):not(.exhibition-module-active):not(.social-module-active),
+.placeholder-panel:not(.announcement-module-active):not(.journal-module-active):not(.hero-module-active):not(.exhibition-module-active):not(.social-module-active):not(.inbox-module-active),
 .workflow-overview-panel,
 .audit-panel,
 .hero-manager-list,
@@ -2645,4 +2645,25 @@
   .social-kpis {
     grid-template-columns: 1fr;
   }
+}
+
+/* Shell-aware Social Inbox mount */
+.placeholder-panel.inbox-module-active {
+  display: block;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  color: inherit;
+  overflow: visible;
+}
+.placeholder-panel.inbox-module-active > .eyebrow,
+.placeholder-panel.inbox-module-active > h2,
+.placeholder-panel.inbox-module-active > p {
+  display: none;
+}
+.social-inbox-manager-slot {
+  width: 100%;
+  min-width: 0;
 }

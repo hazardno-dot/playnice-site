@@ -583,90 +583,39 @@ function InboxWorkspace() {
 }
 
 export default function SocialInboxManager() {
-  const [open, setOpen] = useState(() => Boolean(initialInboxThread()));
   const [slot, setSlot] = useState(null);
 
   useEffect(() => {
-    const sidebar = document.querySelector(".sidebar nav");
     const mainStage = document.querySelector(".main-stage");
-    if (!sidebar || !mainStage) return;
-    const manageGroup = [...sidebar.querySelectorAll(".nav-group")]
-      .find((group) => group.querySelector(".nav-label")?.textContent?.trim() === "MANAGE");
-    if (!manageGroup) return;
+    if (!mainStage) return;
 
-    let button = manageGroup.querySelector("[data-social-inbox-manager-nav='true']");
-    if (!button) {
-      button = document.createElement("button");
-      button.type = "button";
-      button.dataset.socialInboxManagerNav = "true";
-      button.title = "Inbox";
-      button.innerHTML = '<span class="nav-icon" aria-hidden="true">I</span><span class="nav-dot"></span><span class="nav-text">Inbox</span>';
-      const socialButton = manageGroup.querySelector("[data-social-manager-nav='true']");
-      if (socialButton?.nextSibling) manageGroup.insertBefore(button, socialButton.nextSibling);
-      else manageGroup.appendChild(button);
-    }
+    const sync = () => {
+      const heading = mainStage.querySelector(".topbar h1");
+      const placeholder = mainStage.querySelector(".placeholder-panel");
 
-    const close = () => {
-      setOpen(false);
-      if (typeof window !== "undefined") {
-        const url = new URL(window.location.href);
-        if (url.searchParams.has("inbox")) {
-          url.searchParams.delete("inbox");
-          window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
-        }
+      if (!placeholder || heading?.textContent?.trim() !== "Inbox") {
+        setSlot(null);
+        return;
       }
-    };
-    const show = (event) => { event.preventDefault(); event.stopPropagation(); setOpen(true); };
-    button.addEventListener("click", show);
-    [...sidebar.querySelectorAll("button")].filter((item) => item !== button).forEach((item) => item.addEventListener("click", close));
-    return () => {
-      button.removeEventListener("click", show);
-      [...sidebar.querySelectorAll("button")].filter((item) => item !== button).forEach((item) => item.removeEventListener("click", close));
-    };
-  }, []);
 
-  useEffect(() => {
-    const mainStage = document.querySelector(".main-stage");
-    const heading = mainStage?.querySelector(".topbar h1");
-    const eyebrow = mainStage?.querySelector(".topbar .eyebrow");
-    const description = mainStage?.querySelector(".topbar p");
-    const publishBadge = mainStage?.querySelector(".topbar .read-only-badge");
-    const navButtons = [...document.querySelectorAll(".sidebar nav button")];
-    const button = navButtons.find((item) => item.dataset.socialInboxManagerNav === "true");
-    if (!mainStage || !heading || !button) return;
+      placeholder.classList.add("inbox-module-active");
+      placeholder.dataset.sendMode = "ASSISTED SEND";
 
-    let nextSlot = mainStage.querySelector("#social-inbox-manager-slot");
-    if (!nextSlot) {
-      nextSlot = document.createElement("div");
-      nextSlot.id = "social-inbox-manager-slot";
-      mainStage.appendChild(nextSlot);
-    }
-    const topbar = mainStage.querySelector(".topbar");
-    const baseChildren = [...mainStage.children].filter((child) => child !== topbar && child !== nextSlot);
-
-    if (open) {
-      navButtons.forEach((item) => item.classList.toggle("active", item === button));
-      heading.textContent = "Inbox";
-      if (eyebrow) eyebrow.textContent = "MANAGE / SOCIAL INBOX";
-      if (description) description.textContent = "Automatic Facebook intake, prepared PlayNice drafts, and explicit approval before every send.";
-      if (publishBadge) publishBadge.textContent = "ASSISTED SEND";
-      baseChildren.forEach((child) => {
-        if (child.dataset.inboxPreviousDisplay === undefined) child.dataset.inboxPreviousDisplay = child.style.display || "";
-        child.style.display = "none";
-      });
-      nextSlot.style.display = "block";
+      let nextSlot = placeholder.querySelector("#social-inbox-manager-slot");
+      if (!nextSlot) {
+        nextSlot = document.createElement("div");
+        nextSlot.id = "social-inbox-manager-slot";
+        nextSlot.className = "social-inbox-manager-slot";
+        placeholder.appendChild(nextSlot);
+      }
       setSlot(nextSlot);
-    } else {
-      nextSlot.style.display = "none";
-      baseChildren.forEach((child) => {
-        if (child.dataset.inboxPreviousDisplay !== undefined) {
-          child.style.display = child.dataset.inboxPreviousDisplay;
-          delete child.dataset.inboxPreviousDisplay;
-        }
-      });
-      setSlot(null);
-    }
-  }, [open]);
+    };
+
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(mainStage, { childList: true, subtree: true, characterData: true });
+    return () => observer.disconnect();
+  }, []);
 
   return slot ? createPortal(<InboxWorkspace />, slot) : null;
 }
