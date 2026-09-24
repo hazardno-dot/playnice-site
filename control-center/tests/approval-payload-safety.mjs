@@ -70,9 +70,9 @@ const arrayOrderChangedApproved = {
 assert(!approvalPayloadsEqual(arrayOrderChanged, arrayOrderChangedApproved), "Array order changes must count as payload drift.");
 
 const root = process.cwd();
-const existingApply = fs.readFileSync(path.join(root, "control-center/api/create-apply.js"), "utf8");
+const existingApply = fs.readFileSync(path.join(root, "control-center/server/create-apply.js"), "utf8");
 const newProductApply = fs.readFileSync(path.join(root, "control-center/lib/create-new-product-engine.mjs"), "utf8");
-const publishSync = fs.readFileSync(path.join(root, "control-center/api/sync-publish-status.js"), "utf8");
+const publishSync = fs.readFileSync(path.join(root, "control-center/server/sync-publish-status.js"), "utf8");
 const vercelConfig = fs.readFileSync(path.join(root, "playnice-site/vercel.json"), "utf8");
 const vercelRouter = fs.readFileSync(path.join(root, "scripts/vercel-ignore-build.mjs"), "utf8");
 
