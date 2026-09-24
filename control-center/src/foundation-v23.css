@@ -1197,3 +1197,27 @@
     flex-direction: column;
   }
 }
+
+/* Announcement composition correction:
+   remove legacy placeholder centering so both child modules share full page width. */
+.placeholder-panel.announcement-module-active {
+  display: block;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  color: inherit;
+  overflow: visible;
+}
+.announcement-manager-slot,
+.commerce-shipping-manager-slot {
+  width: 100%;
+  min-width: 0;
+}
+.commerce-shipping-manager-slot {
+  margin-top: 14px;
+}
+.commerce-shipping-manager {
+  width: 100%;
+}

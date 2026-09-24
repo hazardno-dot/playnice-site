@@ -22,7 +22,7 @@ async function getSessionToken() {
 
 async function commerceApi(action, extra = {}) {
   const token = await getSessionToken();
-  const response = await fetch("/api/create-apply", {
+  const response = await fetch("/api/commerce-shipping", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     body: JSON.stringify({ commerce_key: COMMERCE_KEY, commerce_action: action, ...extra }),

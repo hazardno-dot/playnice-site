@@ -1,3 +1,6 @@
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import assert from "node:assert/strict";
 import {
   COMMERCE_KEY,
@@ -5,6 +8,9 @@ import {
   getCommerceCopyPreview,
   normalizeCommerceShippingDraft,
 } from "../src/commerceShippingDraft.mjs";
+
+const here = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(here, "../..");
 
 assert.equal(COMMERCE_KEY, "shipping");
 
@@ -24,3 +30,8 @@ assert.deepEqual(getCommerceCopyPreview({ shippingPrice: 4, freeShippingThreshol
 });
 
 console.log("PASS commerce shipping contract");
+
+
+const managerSource = fs.readFileSync(path.resolve(repoRoot, "control-center/src/CommerceShippingManager.jsx"), "utf8");
+assert.ok(managerSource.includes('fetch("/api/commerce-shipping"'), "Commerce manager must use dedicated commerce route.");
+assert.ok(!managerSource.includes('fetch("/api/create-apply"'), "Commerce manager must not fall through Product create-apply routing.");
