@@ -233,6 +233,25 @@ export default function App(){
   },[]);
 
   useEffect(()=>{
+    const reset=()=>{
+      window.scrollTo({top:0,left:0,behavior:"auto"});
+      document.documentElement.scrollTop=0;
+      document.body.scrollTop=0;
+      const mainStage=document.querySelector(".main-stage");
+      if(mainStage){
+        mainStage.scrollTop=0;
+        mainStage.scrollLeft=0;
+      }
+    };
+    reset();
+    const first=window.requestAnimationFrame(()=>{
+      reset();
+      window.requestAnimationFrame(reset);
+    });
+    return()=>window.cancelAnimationFrame(first);
+  },[active]);
+
+  useEffect(()=>{
     const handleOpenProduct=(event)=>{
       const slug=String(event.detail?.slug||"").trim();if(!slug)return;
       setActive("Products");setCoverageFilter("all");setQuery(slug);
