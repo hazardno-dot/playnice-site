@@ -585,6 +585,7 @@ export default function SocialManager() {
       }
 
       placeholder.classList.add("social-module-active");
+      placeholder.dataset.publishMode = "MANUAL MODE";
       let nextSlot = placeholder.querySelector("#social-manager-slot");
       if (!nextSlot) {
         nextSlot = document.createElement("div");
