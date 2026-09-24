@@ -15,11 +15,29 @@ const kindLabel = (kind) => String(kind || "item").replace(/[-_]/g, " ").replace
 const publishedItems = (items) => items.filter((item) => item?.published !== false && item?.status !== "active");
 const primaryAsset = (item) => (item?.assets || []).find((asset) => asset?.type === "image") || item?.assets?.[0] || null;
 
+const exhibitionImageSrc = (asset) => asset?.src || "";
+const exhibitionVideoSrc = (asset) => asset?.src ? `${SHOP_ORIGIN}${asset.src}` : "";
+
+function ExhibitionImage({ asset, alt = "", className, loading }) {
+  const [src, setSrc] = useState(() => exhibitionImageSrc(asset));
+  useEffect(() => setSrc(exhibitionImageSrc(asset)), [asset?.src]);
+  if (!asset?.src) return null;
+  return <img
+    src={src}
+    alt={alt}
+    className={className}
+    loading={loading}
+    onError={() => {
+      const liveSrc = `${SHOP_ORIGIN}${asset.src}`;
+      if (src !== liveSrc) setSrc(liveSrc);
+    }}
+  />;
+}
+
 function AssetPreview({ asset, title }) {
   if (!asset) return <div className="exhibition-empty-preview">No asset attached.</div>;
-  const src = `${SHOP_ORIGIN}${asset.src}`;
-  if (asset.type === "video") return <video controls preload="metadata" src={src} />;
-  return <img src={src} alt={asset.alt || title || ""} />;
+  if (asset.type === "video") return <video controls preload="metadata" src={exhibitionVideoSrc(asset)} />;
+  return <ExhibitionImage asset={asset} alt={asset.alt || title || ""} />;
 }
 
 function ExhibitionOverview() {
@@ -76,7 +94,7 @@ function ExhibitionOverview() {
         <div className="exhibition-list">{visible.map((item) => {
           const asset = primaryAsset(item);
           return <button type="button" key={item.id} className={selected?.id === item.id ? "active" : ""} onClick={() => setSelectedId(item.id)}>
-            <div className="exhibition-thumb">{asset?.type === "image" ? <img src={`${SHOP_ORIGIN}${asset.src}`} alt="" loading="lazy" /> : <span>{asset?.type === "video" ? "▶" : "—"}</span>}</div>
+            <div className="exhibition-thumb">{asset?.type === "image" ? <ExhibitionImage asset={asset} alt="" loading="lazy" /> : <span>{asset?.type === "video" ? "▶" : "—"}</span>}</div>
             <div><strong>{item.title}</strong><span>{kindLabel(item.kind)} · {item.period || "No period"}</span></div>
             <em className={item.published === false ? "draft" : "published"}>{item.published === false ? "HIDDEN" : "LIVE"}</em>
           </button>;
