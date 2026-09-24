@@ -406,3 +406,451 @@
     text-align: right;
   }
 }
+
+/* CC Visual Polish v1 · Manage / Products
+   Consolidated presentation layer across catalog, detail, editor and product bridges. */
+.products-layout {
+  grid-template-columns: minmax(350px, .72fr) minmax(0, 1.28fr);
+  gap: 14px;
+  min-height: calc(100vh - 156px);
+  align-items: stretch;
+}
+
+.catalog-panel,
+.detail-panel {
+  min-width: 0;
+}
+
+.catalog-head {
+  padding: 16px 16px 12px !important;
+  gap: 14px;
+}
+.catalog-head h2 {
+  margin-top: 3px;
+  font-size: 22px !important;
+}
+.catalog-head .editor-actions {
+  align-items: center;
+  gap: 7px;
+}
+.catalog-head .secondary-btn {
+  padding: 7px 9px;
+  font-size: 10px;
+}
+.catalog-count {
+  min-width: 32px;
+  width: 32px;
+  height: 32px;
+  font-size: 10px;
+}
+
+.search-wrap {
+  padding: 0 12px 10px;
+}
+.search-wrap input {
+  padding: 10px 12px;
+  border-radius: 9px;
+  font-size: 11px;
+}
+.filter-bar {
+  gap: 5px;
+  padding: 0 12px 10px;
+}
+.filter-btn {
+  padding: 6px 8px;
+  font-size: 9px;
+}
+
+.product-list {
+  padding: 0 6px 8px;
+}
+.product-row {
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 8px 7px;
+}
+.product-thumb-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 9px;
+}
+.product-row-copy {
+  gap: 3px;
+}
+.product-row-copy strong {
+  font-size: 12px;
+}
+.product-row-copy span {
+  font-size: 9px;
+}
+.row-flags {
+  gap: 6px;
+}
+.coverage-dot {
+  width: 7px;
+  height: 7px;
+}
+.new-pill {
+  padding: 4px 6px;
+  font-size: 7px;
+}
+
+/* Read-only product detail */
+.product-detail {
+  padding: 20px;
+}
+.detail-hero {
+  grid-template-columns: minmax(0, 1fr) 128px;
+  gap: 18px;
+  padding-bottom: 20px;
+}
+.detail-hero h2 {
+  margin: 6px 0 7px;
+  font-size: clamp(28px, 2.7vw, 38px) !important;
+}
+.detail-hero img {
+  width: 128px;
+  height: 128px;
+  border-radius: 14px;
+}
+.slug {
+  font-size: 10px;
+}
+.edit-btn {
+  margin-top: 6px;
+  padding: 7px 10px;
+  font-size: 10px;
+}
+
+.coverage-panel {
+  margin-top: 14px;
+  padding: 11px 12px;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: 10px;
+  border-radius: 10px;
+}
+.coverage-panel > div:first-child {
+  gap: 3px;
+}
+.coverage-panel > div:first-child strong {
+  font-size: 13px;
+}
+.coverage-status {
+  padding: 5px 7px;
+  font-size: 8px;
+}
+.coverage-checks {
+  gap: 5px;
+}
+.coverage-checks span {
+  padding: 4px 6px;
+  font-size: 8px;
+}
+
+.detail-grid {
+  gap: 7px;
+  margin: 14px 0 20px;
+}
+.metric {
+  padding: 9px 10px;
+  border-radius: 9px;
+}
+.metric span,
+.note-level {
+  font-size: 8px;
+}
+.metric strong {
+  font-size: 11px;
+}
+
+.detail-section {
+  padding: 17px 0;
+}
+.section-heading span {
+  font-size: 8px;
+}
+.section-heading h3 {
+  margin: 4px 0 10px;
+  font-size: 18px;
+}
+.price-grid,
+.tag-row {
+  gap: 6px;
+}
+.price-chip {
+  min-width: 84px;
+  padding: 8px 10px;
+  border-radius: 9px;
+}
+.copy-grid,
+.discovery-grid {
+  gap: 8px;
+}
+.copy-grid > div,
+.bilingual-copy {
+  padding: 10px 12px;
+  border-radius: 9px;
+}
+.discovery-metric {
+  padding: 9px 10px;
+  border-radius: 9px;
+}
+
+/* Draft editor */
+.editor-head {
+  gap: 16px;
+  padding-bottom: 16px;
+}
+.editor-head h2 {
+  margin: 5px 0;
+  font-size: 30px;
+}
+.draft-warning {
+  margin: 13px 0;
+  padding: 9px 11px;
+}
+.edit-section {
+  padding: 18px 0;
+}
+.edit-grid,
+.lang-pair {
+  gap: 10px;
+}
+.edit-stack {
+  gap: 12px;
+}
+.edit-field {
+  gap: 5px;
+}
+.edit-field input,
+.edit-field textarea,
+.edit-field select {
+  padding: 9px 10px;
+}
+.edit-field textarea {
+  min-height: 78px;
+}
+.discovery-edit-grid {
+  gap: 8px;
+}
+.editor-actions.bottom {
+  padding-top: 16px;
+}
+
+/* Workflow strip directly under product identity. */
+.product-workflow-strip {
+  padding: 10px 12px;
+  gap: 12px;
+}
+.product-workflow-copy {
+  gap: 10px;
+}
+.product-workflow-actions {
+  gap: 6px;
+}
+.product-workflow-actions button {
+  padding: 6px 8px;
+}
+
+/* Read-only card-copy audit is useful context, not the primary Products workspace. */
+.product-card-copy-audit-slot {
+  margin: 0 0 14px;
+}
+.card-copy-audit-panel {
+  padding: 15px;
+  border-radius: var(--cc-surface-radius);
+  box-shadow: var(--cc-surface-highlight);
+}
+.card-copy-audit-head {
+  gap: 14px;
+}
+.card-copy-audit-head h2 {
+  margin: 3px 0 4px;
+  font-size: 21px;
+}
+.card-copy-audit-head p {
+  font-size: 11px;
+  line-height: 1.45;
+}
+.card-copy-audit-controls {
+  gap: 7px;
+}
+.card-copy-audit-summary {
+  gap: 7px;
+  margin-top: 12px;
+}
+.card-copy-audit-summary > div {
+  min-height: 60px;
+  padding: 10px;
+  border-radius: 10px;
+}
+.card-copy-audit-summary strong {
+  font-size: 19px;
+}
+.card-copy-audit-note {
+  margin-top: 8px;
+  padding: 8px 10px;
+  font-size: 10px;
+}
+.card-copy-audit-table-wrap {
+  max-height: 300px;
+  margin-top: 9px;
+  border-radius: 11px;
+}
+.card-copy-audit-table th,
+.card-copy-audit-table td {
+  padding: 8px 9px;
+}
+.card-copy-audit-product strong {
+  font-size: 14px;
+}
+
+/* Product media / utility bridges */
+.product-media-panel {
+  margin: 14px 0;
+  padding: 14px;
+  border-radius: 12px;
+}
+.product-media-head {
+  gap: 14px;
+  margin-bottom: 11px;
+}
+.product-media-head span {
+  font-size: 9px;
+}
+.product-media-head strong {
+  font-size: 13px;
+}
+.product-media-head small {
+  font-size: 10px;
+}
+.product-media-grid {
+  gap: 10px;
+}
+.product-media-card {
+  padding: 11px;
+  border-radius: 11px;
+}
+.product-media-picker {
+  padding: 11px;
+  border-radius: 9px;
+}
+.product-media-card img {
+  max-width: 200px;
+  margin-top: 10px;
+}
+.product-media-persisted {
+  margin: -3px 0 14px;
+  padding: 10px 12px;
+}
+
+.product-media-replace-panel {
+  margin: 10px 0 14px;
+  border-radius: 12px;
+}
+.product-media-replace-summary {
+  padding: 12px 14px;
+}
+.product-media-replace-summary strong {
+  font-size: 14px;
+}
+.product-media-replace-summary small {
+  font-size: 10px;
+}
+.product-media-replace-note {
+  margin: 10px 14px 0;
+  padding: 8px 10px;
+  font-size: 10px;
+}
+.product-media-replace-paths {
+  gap: 8px;
+  padding: 10px 14px 3px;
+}
+.product-media-replace-panel .product-media-grid {
+  padding: 8px 14px 4px;
+}
+.product-media-replace-panel .product-media-actions {
+  padding: 10px 14px 13px;
+}
+
+.product-bulk-paste {
+  margin: 14px 0 6px;
+  padding: 13px;
+  border-radius: 12px;
+}
+.product-bulk-paste-head {
+  gap: 14px;
+}
+.product-bulk-paste-head strong {
+  font-size: 16px;
+}
+.product-bulk-paste-head p {
+  font-size: 10px;
+}
+.product-bulk-paste textarea {
+  min-height: 200px;
+  margin-top: 11px;
+  padding: 11px 12px;
+}
+.discovery-bulk-paste {
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 11px;
+  border-radius: 10px;
+}
+
+@media (max-width: 1220px) {
+  .products-layout {
+    grid-template-columns: minmax(320px, .8fr) minmax(0, 1.2fr);
+  }
+  .coverage-panel {
+    grid-template-columns: 1fr auto;
+  }
+  .coverage-checks {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 1050px) {
+  .products-layout {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .catalog-panel {
+    max-height: 500px;
+  }
+  .card-copy-audit-table-wrap {
+    max-height: 260px;
+  }
+}
+
+@media (max-width: 720px) {
+  .products-layout {
+    gap: 12px;
+  }
+  .catalog-head {
+    padding: 14px 14px 10px !important;
+  }
+  .product-detail {
+    padding: 16px;
+  }
+  .detail-hero {
+    grid-template-columns: minmax(0, 1fr) 96px;
+    gap: 14px;
+  }
+  .detail-hero img {
+    width: 96px;
+    height: 96px;
+  }
+  .coverage-panel {
+    grid-template-columns: 1fr;
+  }
+  .card-copy-audit-panel {
+    padding: 13px;
+  }
+  .card-copy-audit-table-wrap {
+    max-height: 240px;
+  }
+}
+
