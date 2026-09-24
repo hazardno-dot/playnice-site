@@ -5,3 +5,229 @@
 .hero-slide-row.is-inactive:hover,.hero-slide-row.is-inactive.is-active{opacity:1;border-color:rgba(214,168,74,.28);background:rgba(214,168,74,.07)}
 .hero-slide-row-title .hero-inactive-badge,.hero-inactive-badge.large{background:rgba(214,168,74,.12);color:#d9b66a;border:1px solid rgba(214,168,74,.2)}
 .hero-inactive-badge.large{padding:6px 9px;border-radius:999px;font-size:10px;letter-spacing:.1em}
+
+/* CC Visual Polish v1 · Hero
+   Horizontal-shell mount + compact daily workspace. */
+.placeholder-panel.hero-module-active {
+  display: block;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  color: inherit;
+  overflow: visible;
+}
+.placeholder-panel.hero-module-active > .eyebrow,
+.placeholder-panel.hero-module-active > h2,
+.placeholder-panel.hero-module-active > p {
+  display: none;
+}
+.hero-manager-slot {
+  width: 100%;
+}
+
+.hero-manager {
+  gap: 14px;
+  padding-bottom: 24px;
+}
+
+.hero-manager-summary {
+  gap: 10px;
+}
+.hero-manager-summary > div {
+  min-height: 92px;
+  padding: 13px 14px;
+  border-radius: 13px;
+}
+.hero-manager-summary span,
+.hero-manager-summary small {
+  font-size: 10px;
+}
+.hero-manager-summary strong {
+  margin: 5px 0 3px;
+  font-size: 24px;
+}
+
+.hero-manager-banner {
+  gap: 14px;
+  padding: 10px 13px;
+  border-radius: 11px;
+}
+.hero-manager-banner strong {
+  font-size: 10px;
+}
+.hero-manager-banner span {
+  font-size: 11px;
+}
+
+.hero-manager-layout {
+  grid-template-columns: minmax(330px, .72fr) minmax(0, 1.28fr);
+  gap: 14px;
+}
+.hero-manager-list,
+.hero-manager-detail {
+  border-radius: 14px;
+}
+.hero-manager-section-head,
+.hero-manager-detail-head {
+  gap: 12px;
+  padding: 14px 15px 11px !important;
+}
+.hero-manager-section-head h2,
+.hero-manager-detail-head h2 {
+  margin-top: 3px;
+  font-size: 21px !important;
+}
+
+.hero-slide-list {
+  max-height: 620px;
+  padding: 6px;
+}
+.hero-slide-row {
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 10px;
+  padding: 8px;
+  border-radius: 10px;
+}
+.hero-slide-row img {
+  width: 96px;
+  height: 55px;
+  border-radius: 7px;
+}
+.hero-slide-row-title {
+  gap: 6px;
+}
+.hero-slide-row-title strong {
+  font-size: 12px;
+}
+.hero-slide-row-title span {
+  padding: 3px 5px;
+  font-size: 8px;
+}
+.hero-slide-row-copy small {
+  font-size: 9px;
+  line-height: 1.35;
+}
+
+.hero-preview-grid {
+  grid-template-columns: minmax(0, 1.55fr) minmax(150px, .45fr);
+  gap: 10px;
+  padding: 13px;
+}
+.hero-preview-grid > div {
+  padding: 8px;
+  border-radius: 11px;
+}
+.hero-preview-grid img {
+  margin-top: 6px;
+  border-radius: 8px;
+}
+.hero-contract-grid {
+  gap: 8px;
+  padding: 0 13px 13px;
+}
+.hero-contract-grid > div {
+  padding: 9px 10px;
+  border-radius: 9px;
+}
+.hero-contract-grid strong,
+.hero-contract-grid code {
+  margin-top: 4px;
+  font-size: 10px;
+}
+.hero-collection-contract {
+  margin: 0 13px 13px;
+  padding: 11px 12px;
+  border-radius: 10px;
+}
+
+.hero-detail-actions {
+  gap: 6px;
+}
+.hero-edit-btn,
+.hero-editor-actions button,
+.hero-draft-footer button {
+  padding: 7px 9px;
+  border-radius: 8px;
+  font-size: 10px;
+}
+
+.hero-editor {
+  padding: 15px;
+}
+.hero-editor-head {
+  gap: 14px;
+  padding-bottom: 13px;
+}
+.hero-editor-head h2 {
+  margin: 4px 0;
+  font-size: 21px;
+}
+.hero-editor-head p {
+  font-size: 10px;
+}
+.hero-editor-validation {
+  margin: 11px 0;
+  padding: 9px 10px;
+  border-radius: 9px;
+  font-size: 10px;
+}
+.hero-editor-section {
+  margin-top: 11px;
+  padding: 11px;
+  border-radius: 11px;
+}
+.hero-editor-grid {
+  gap: 8px;
+  margin-top: 9px;
+}
+.hero-editor-grid label {
+  gap: 5px;
+}
+.hero-editor-grid label > span {
+  font-size: 10px;
+}
+.hero-editor-grid input,
+.hero-editor-grid select {
+  padding: 8px 9px;
+  border-radius: 8px;
+  font-size: 11px;
+}
+.hero-editor-preview {
+  gap: 10px;
+  margin-top: 11px;
+}
+.hero-editor-preview > div {
+  padding: 8px;
+  border-radius: 11px;
+}
+.hero-editor-actions.bottom {
+  margin-top: 11px;
+}
+
+@media (max-width: 1100px) {
+  .hero-manager-layout {
+    grid-template-columns: 1fr;
+  }
+  .hero-slide-list {
+    max-height: 480px;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-manager {
+    gap: 12px;
+  }
+  .hero-manager-summary {
+    gap: 8px;
+  }
+  .hero-manager-summary > div {
+    min-height: 84px;
+    padding: 11px 12px;
+  }
+  .hero-manager-section-head,
+  .hero-manager-detail-head {
+    padding: 13px !important;
+  }
+}

@@ -40,7 +40,7 @@
 /* Shared top-level surfaces */
 .catalog-panel,
 .detail-panel,
-.placeholder-panel:not(.announcement-module-active):not(.journal-module-active),
+.placeholder-panel:not(.announcement-module-active):not(.journal-module-active):not(.hero-module-active),
 .workflow-overview-panel,
 .audit-panel,
 .hero-manager-list,
