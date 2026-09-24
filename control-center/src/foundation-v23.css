@@ -1221,3 +1221,19 @@
 .commerce-shipping-manager {
   width: 100%;
 }
+
+/* Announcement column height parity */
+.announcement-manager-grid {
+  align-items: stretch;
+}
+.announcement-list-panel {
+  height: 100%;
+}
+.announcement-preview-panel {
+  align-self: start;
+}
+@media (max-width: 980px) {
+  .announcement-list-panel {
+    height: auto;
+  }
+}
