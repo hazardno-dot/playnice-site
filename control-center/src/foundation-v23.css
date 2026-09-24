@@ -40,7 +40,7 @@
 /* Shared top-level surfaces */
 .catalog-panel,
 .detail-panel,
-.placeholder-panel:not(.announcement-module-active):not(.journal-module-active):not(.hero-module-active):not(.exhibition-module-active),
+.placeholder-panel:not(.announcement-module-active):not(.journal-module-active):not(.hero-module-active):not(.exhibition-module-active):not(.social-module-active),
 .workflow-overview-panel,
 .audit-panel,
 .hero-manager-list,
@@ -2253,4 +2253,25 @@
   .exhibition-media video {
     min-height: 220px;
   }
+}
+
+/* Shell-aware Social mount */
+.placeholder-panel.social-module-active {
+  display: block;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  color: inherit;
+  overflow: visible;
+}
+.placeholder-panel.social-module-active > .eyebrow,
+.placeholder-panel.social-module-active > h2,
+.placeholder-panel.social-module-active > p {
+  display: none;
+}
+.social-manager-slot {
+  width: 100%;
+  min-width: 0;
 }
