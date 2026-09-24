@@ -233,22 +233,20 @@ export default function App(){
   },[]);
 
   useEffect(()=>{
-    const reset=()=>{
-      window.scrollTo({top:0,left:0,behavior:"auto"});
-      document.documentElement.scrollTop=0;
-      document.body.scrollTop=0;
-      const mainStage=document.querySelector(".main-stage");
-      if(mainStage){
-        mainStage.scrollTop=0;
-        mainStage.scrollLeft=0;
-      }
-    };
-    reset();
-    const first=window.requestAnimationFrame(()=>{
-      reset();
-      window.requestAnimationFrame(reset);
+    let secondFrame=0;
+    const firstFrame=window.requestAnimationFrame(()=>{
+      secondFrame=window.requestAnimationFrame(()=>{
+        window.scrollTo({top:0,left:0,behavior:"smooth"});
+        const mainStage=document.querySelector(".main-stage");
+        if(mainStage && (mainStage.scrollTop||mainStage.scrollLeft)){
+          mainStage.scrollTo({top:0,left:0,behavior:"smooth"});
+        }
+      });
     });
-    return()=>window.cancelAnimationFrame(first);
+    return()=>{
+      window.cancelAnimationFrame(firstFrame);
+      if(secondFrame)window.cancelAnimationFrame(secondFrame);
+    };
   },[active]);
 
   useEffect(()=>{
