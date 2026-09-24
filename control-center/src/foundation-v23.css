@@ -142,3 +142,148 @@
   .commerce-grid,
   .commerce-editor { padding-left: 16px !important; padding-right: 16px !important; }
 }
+
+/* CC Visual Polish v1 · Overview
+   Presentation only: denser executive scan, clearer operational hierarchy. */
+.overview-v2 {
+  grid-template-columns: minmax(0, 1.18fr) minmax(360px, .82fr);
+  align-items: stretch;
+  gap: 14px;
+}
+.overview-grid-v2 {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 10px;
+}
+.overview-grid-v2 > .overview-card {
+  grid-column: span 2;
+  min-width: 0;
+  min-height: 104px;
+  padding: 15px 16px 14px;
+  border-radius: 14px;
+  border-color: var(--cc-border) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.024), rgba(255,255,255,.012)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.014);
+}
+.overview-grid-v2 > .overview-card span {
+  color: #7f8e86;
+  font-size: 9px;
+  letter-spacing: .13em;
+}
+.overview-grid-v2 > .overview-card strong {
+  margin-top: 7px;
+  font-size: clamp(28px, 2.5vw, 38px);
+  line-height: .95;
+}
+.overview-grid-v2 > .overview-card small {
+  margin-top: 8px;
+  color: #6f7e76;
+  font-size: 9px;
+  line-height: 1.35;
+}
+.overview-grid-v2 > .overview-card.good {
+  border-color: rgba(86,210,145,.16) !important;
+}
+.overview-grid-v2 > .overview-card.warn {
+  border-color: rgba(216,185,107,.22) !important;
+  background: linear-gradient(180deg, rgba(216,185,107,.035), rgba(255,255,255,.012)) !important;
+}
+
+.workflow-overview-panel,
+.audit-panel {
+  min-width: 0;
+  height: 100%;
+  padding: 17px 18px !important;
+}
+.workflow-overview-panel .audit-head,
+.audit-panel .audit-head {
+  gap: 14px;
+  margin-bottom: 0;
+}
+.workflow-overview-panel .audit-head h2,
+.audit-panel .audit-head h2 {
+  margin: 4px 0 0;
+  font-size: 22px;
+  line-height: 1.05;
+}
+.workflow-overview-panel .audit-status,
+.audit-panel .audit-status {
+  font-size: 9px;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.workflow-module-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.workflow-module-grid > div {
+  min-height: 79px;
+  padding: 11px 12px;
+  border-radius: 10px;
+}
+.workflow-module-grid strong {
+  font-size: 22px;
+  line-height: 1;
+}
+.workflow-module-grid small {
+  margin-top: 1px;
+}
+
+.audit-list {
+  display: grid;
+  gap: 0 !important;
+  margin-top: 12px;
+  border-top: 1px solid var(--cc-border-soft);
+}
+.audit-row {
+  min-height: 39px;
+  padding: 9px 2px !important;
+  border-bottom: 1px solid var(--cc-border-soft);
+  background: transparent !important;
+}
+.audit-row:last-child {
+  border-bottom: 0;
+}
+.audit-row strong {
+  font-size: 11px;
+  font-weight: 600;
+}
+.audit-row span {
+  font-size: 9px;
+  white-space: nowrap;
+}
+.audit-row.ok strong {
+  color: #cdd8d2;
+}
+.audit-row.warn strong,
+.audit-row.warn span {
+  color: #d8bd78;
+}
+
+@media (max-width: 1180px) {
+  .overview-v2 { grid-template-columns: 1fr; }
+  .overview-grid-v2 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .overview-grid-v2 > .overview-card { grid-column: span 2; }
+}
+@media (max-width: 760px) {
+  .overview-grid-v2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .overview-grid-v2 > .overview-card { grid-column: span 1; min-height: 96px; }
+  .workflow-overview-panel,
+  .audit-panel { padding: 15px !important; }
+  .workflow-overview-panel .audit-head,
+  .audit-panel .audit-head { align-items: flex-start; }
+  .workflow-overview-panel .audit-status,
+  .audit-panel .audit-status { text-align: left; }
+}
+@media (max-width: 420px) {
+  .overview-grid-v2 { grid-template-columns: 1fr 1fr; }
+  .overview-grid-v2 > .overview-card { min-height: 92px; padding: 13px 12px 12px; }
+  .overview-grid-v2 > .overview-card strong { font-size: 30px; }
+  .workflow-module-grid { grid-template-columns: 1fr 1fr; }
+  .audit-row { align-items: flex-start; gap: 4px; }
+  .audit-row span { white-space: normal; text-align: right; }
+}
+
