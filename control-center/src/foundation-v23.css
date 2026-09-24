@@ -3005,3 +3005,174 @@
 .social-inbox-reply-composer textarea {
   font-size: 10px;
 }
+
+/* CC Visual Polish v1 · Intelligence / Analytics */
+.analytics-manager {
+  gap: 14px;
+  padding-bottom: 24px;
+}
+
+.analytics-head {
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: var(--cc-surface-radius);
+  background: var(--cc-surface-bg);
+  box-shadow: var(--cc-surface-highlight);
+}
+.analytics-head > div:first-child {
+  gap: 4px;
+}
+.analytics-head span,
+.analytics-panel-head span,
+.analytics-kpis span,
+.analytics-summary span {
+  font-size: 8px;
+}
+.analytics-head h2 {
+  font-size: 22px;
+}
+.analytics-head p {
+  max-width: 760px;
+  font-size: 10px;
+  line-height: 1.45;
+}
+.analytics-live {
+  padding: 6px 8px;
+  font-size: 8px;
+}
+
+.analytics-error {
+  padding: 9px 11px;
+  border-radius: 9px;
+  font-size: 10px;
+}
+
+.analytics-kpis {
+  gap: 10px;
+}
+.analytics-kpis > div {
+  min-height: 82px;
+  gap: 4px;
+  padding: 12px 13px;
+  border-radius: 11px;
+}
+.analytics-kpis strong {
+  font-size: 23px;
+}
+.analytics-kpis small {
+  font-size: 8px;
+}
+
+.analytics-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+.analytics-panel {
+  padding: 14px;
+  border-radius: var(--cc-surface-radius);
+  background: var(--cc-surface-bg);
+  box-shadow: var(--cc-surface-highlight);
+}
+.analytics-grid > .analytics-panel {
+  height: 100%;
+}
+.analytics-panel-head {
+  gap: 12px;
+  padding-bottom: 10px;
+}
+.analytics-panel-head > div {
+  gap: 3px;
+}
+.analytics-panel-head h3 {
+  font-size: 17px;
+}
+.analytics-panel-head > strong {
+  font-size: 22px;
+}
+.analytics-panel-head > small {
+  font-size: 8px;
+}
+
+.workflow-table {
+  margin-top: 5px;
+}
+.workflow-row {
+  grid-template-columns: minmax(110px,1fr) 42px 58px 58px 58px;
+  gap: 7px;
+  padding: 9px 2px;
+}
+.workflow-row strong {
+  font-size: 10px;
+}
+.workflow-row > span {
+  font-size: 17px;
+}
+.workflow-row em {
+  padding: 5px 6px;
+  font-size: 8px;
+}
+
+.analytics-summary {
+  gap: 8px;
+  margin-top: 10px;
+}
+.analytics-summary > div {
+  gap: 4px;
+  padding: 10px 11px;
+  border-radius: 9px;
+}
+.analytics-summary strong {
+  font-size: 20px;
+}
+.analytics-note {
+  margin-top: 10px;
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.activity-panel {
+  padding-bottom: 8px;
+}
+.activity-list {
+  max-height: 420px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+.activity-row {
+  grid-template-columns: 68px minmax(150px,1fr) minmax(130px,.8fr) 112px;
+  gap: 10px;
+  padding: 8px 2px;
+}
+.activity-row > span {
+  padding: 4px 6px;
+  font-size: 7px;
+}
+.activity-row strong {
+  font-size: 10px;
+}
+.activity-row small {
+  font-size: 9px;
+}
+.activity-row time {
+  font-size: 8px;
+}
+.activity-empty {
+  padding: 14px 2px;
+  font-size: 10px;
+}
+
+@media (max-width: 1080px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+  .activity-list {
+    max-height: 360px;
+  }
+}
+
+@media (max-width: 720px) {
+  .analytics-kpis {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}
