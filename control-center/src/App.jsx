@@ -33,6 +33,7 @@ const MODULE_META = {
   Announcement: { eyebrow: "MANAGE / PROMO", description: "Editorial announcement copy and storefront promo configuration." },
   Journal: { eyebrow: "MANAGE / EDITORIAL", description: "Bilingual editorial library, CTA contracts and controlled article drafts." },
   Notes: { eyebrow: "MANAGE / NOTE MAP", description: "Canonical note library, labels, assets and usage across the catalog." },
+  Exhibition: { eyebrow: "MANAGE / VISUAL ARCHIVE", description: "Curated campaigns, stories, films and retired Hero ideas with canonical preview." },
   Analytics: { eyebrow: "INTELLIGENCE / OPERATIONS", description: "Workflow telemetry, publishing history and Control Center activity." },
   "Site Health": { eyebrow: "SYSTEM / PRODUCTION", description: "Live production contracts, runtime delivery, history and incident intelligence." }
 };

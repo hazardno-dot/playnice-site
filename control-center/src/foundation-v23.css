@@ -40,7 +40,7 @@
 /* Shared top-level surfaces */
 .catalog-panel,
 .detail-panel,
-.placeholder-panel:not(.announcement-module-active):not(.journal-module-active):not(.hero-module-active),
+.placeholder-panel:not(.announcement-module-active):not(.journal-module-active):not(.hero-module-active):not(.exhibition-module-active),
 .workflow-overview-panel,
 .audit-panel,
 .hero-manager-list,
@@ -2006,5 +2006,251 @@
   }
   .note-media-body {
     grid-template-columns: 1fr;
+  }
+}
+
+/* CC Visual Polish v1 · Manage / Exhibition
+   Shell-aware curated archive workspace. */
+.placeholder-panel.exhibition-module-active {
+  display: block;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  color: inherit;
+  overflow: visible;
+}
+.placeholder-panel.exhibition-module-active > .eyebrow,
+.placeholder-panel.exhibition-module-active > h2,
+.placeholder-panel.exhibition-module-active > p {
+  display: none;
+}
+.exhibition-manager-slot {
+  width: 100%;
+  min-width: 0;
+}
+
+.exhibition-manager {
+  padding-bottom: 24px;
+}
+
+.exhibition-kpis {
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.exhibition-kpis > div {
+  gap: 4px;
+  min-height: 92px;
+  padding: 13px 14px;
+  border-radius: 13px;
+}
+.exhibition-kpis span,
+.exhibition-banner span,
+.exhibition-list-head span,
+.exhibition-detail-head span,
+.exhibition-meta-grid span,
+.exhibition-section-head span {
+  font-size: 9px;
+}
+.exhibition-kpis strong {
+  font-size: 24px;
+}
+.exhibition-kpis small {
+  font-size: 9px;
+}
+
+.exhibition-banner {
+  gap: 14px;
+  margin-bottom: 14px;
+  padding: 10px 13px;
+  border-radius: 11px;
+}
+.exhibition-banner > div {
+  gap: 3px;
+}
+.exhibition-banner strong {
+  font-size: 12px;
+}
+.exhibition-banner small {
+  font-size: 9px;
+}
+
+.exhibition-toolbar {
+  grid-template-columns: minmax(220px,1fr) 170px 150px auto;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.exhibition-toolbar input,
+.exhibition-toolbar select {
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-size: 10px;
+}
+.exhibition-open-live {
+  min-height: 36px;
+  padding: 0 11px;
+  border-radius: 8px;
+  font-size: 10px;
+}
+
+.exhibition-layout {
+  grid-template-columns: minmax(310px,.68fr) minmax(0,1.32fr);
+  gap: 14px;
+  align-items: start;
+}
+.exhibition-list-panel,
+.exhibition-detail-panel {
+  min-width: 0;
+  border-radius: var(--cc-surface-radius);
+  border-color: var(--cc-border);
+  background: var(--cc-surface-bg);
+  box-shadow: var(--cc-surface-highlight);
+}
+
+.exhibition-list-head {
+  padding: 11px 13px;
+}
+.exhibition-list-head strong {
+  font-size: 11px;
+}
+.exhibition-list {
+  max-height: none;
+  overflow: visible;
+  padding: 6px;
+}
+.exhibition-list button {
+  grid-template-columns: 72px minmax(0,1fr) auto;
+  gap: 9px;
+  padding: 7px;
+  border-radius: 9px;
+}
+.exhibition-thumb {
+  width: 72px;
+  height: 48px;
+  border-radius: 7px;
+}
+.exhibition-list button > div:nth-child(2) {
+  gap: 3px;
+}
+.exhibition-list button strong {
+  font-size: 11px;
+}
+.exhibition-list button span {
+  font-size: 9px;
+}
+.exhibition-list em {
+  padding: 4px 6px;
+  font-size: 8px;
+}
+
+.exhibition-detail-panel {
+  padding: 15px;
+}
+.exhibition-detail-head {
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.exhibition-detail-head > div:first-child {
+  gap: 4px;
+}
+.exhibition-detail-head h2 {
+  font-size: 23px;
+}
+.exhibition-detail-head p,
+.exhibition-status strong,
+.exhibition-status span {
+  font-size: 9px;
+}
+
+.exhibition-card-preview {
+  grid-template-columns: minmax(0,1.5fr) minmax(210px,.5fr);
+  margin-bottom: 12px;
+  border-radius: 12px;
+}
+.exhibition-media,
+.exhibition-media img,
+.exhibition-media video {
+  min-height: 280px;
+}
+.exhibition-card-copy {
+  padding: 16px;
+}
+.exhibition-card-copy span {
+  font-size: 9px;
+}
+.exhibition-card-copy h3 {
+  margin: 6px 0 7px;
+  font-size: 20px;
+}
+.exhibition-card-copy p {
+  margin-bottom: 12px;
+  font-size: 10px;
+  line-height: 1.45;
+}
+.exhibition-card-copy small {
+  font-size: 9px;
+}
+
+.exhibition-meta-grid {
+  gap: 7px;
+  margin-bottom: 12px;
+}
+.exhibition-meta-grid > div {
+  gap: 4px;
+  padding: 9px 10px;
+  border-radius: 9px;
+}
+.exhibition-meta-grid strong {
+  font-size: 10px;
+}
+
+.exhibition-assets {
+  padding-top: 11px;
+}
+.exhibition-section-head {
+  margin-bottom: 5px;
+}
+.exhibition-assets > div:not(.exhibition-section-head) {
+  grid-template-columns: minmax(120px,.38fr) minmax(0,1fr) auto;
+  gap: 10px;
+  padding: 8px 0;
+}
+.exhibition-assets strong {
+  font-size: 10px;
+}
+.exhibition-assets span,
+.exhibition-assets code,
+.exhibition-assets em {
+  font-size: 9px;
+}
+
+@media (max-width: 1050px) {
+  .exhibition-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+  .exhibition-layout {
+    grid-template-columns: 1fr;
+  }
+  .exhibition-list {
+    max-height: 440px;
+    overflow: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .exhibition-kpis,
+  .exhibition-toolbar,
+  .exhibition-meta-grid {
+    grid-template-columns: 1fr;
+  }
+  .exhibition-card-preview {
+    grid-template-columns: 1fr;
+  }
+  .exhibition-media,
+  .exhibition-media img,
+  .exhibition-media video {
+    min-height: 220px;
   }
 }
