@@ -6,7 +6,7 @@ import { productCopy } from "@shop/data/products/productCopy.js";
 import { generateSocialDraft, validateSocialDraftMedia } from "./socialDraft.mjs";
 import "./social-manager.css";
 
-const FILTERS = ["all", "draft", "ready", "scheduled", "published", "failed", "archived"];
+const FILTERS = ["all", "draft", "ready", "published", "failed", "archived"];
 const CHANNELS = [["instagram_feed", "Instagram Feed"], ["instagram_story", "Instagram Story"], ["facebook", "Facebook"]];
 const PUBLIC_ORIGIN = "https://www.playniceshop.me";
 const AUDIT_LABELS = {
@@ -35,11 +35,6 @@ const isExplicitTestEvent = (event) => Boolean(event?.metadata?.test || event?.m
 const publicSourceUrl = (value) => {
   if (!value) return "";
   try { return new URL(String(value), PUBLIC_ORIGIN).toString(); } catch { return ""; }
-};
-const localInputValue = (value) => {
-  const date = value ? new Date(value) : new Date(Date.now() + 60 * 60 * 1000);
-  const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-  return local.toISOString().slice(0, 16);
 };
 const auditDescription = (entry) => {
   const details = entry?.details && typeof entry.details === "object" ? entry.details : {};
@@ -74,7 +69,6 @@ function SocialWorkspace() {
   const [filter, setFilter] = useState("all");
   const [selectedId, setSelectedId] = useState("");
   const [editing, setEditing] = useState({});
-  const [scheduleFor, setScheduleFor] = useState(localInputValue());
   const [copiedKey, setCopiedKey] = useState("");
   const [auditRows, setAuditRows] = useState([]);
   const [auditLoading, setAuditLoading] = useState(false);
@@ -160,7 +154,7 @@ function SocialWorkspace() {
   }, [selected]);
   const draft = useMemo(() => {
     if (!selected || !generated) return null;
-    const lockedSnapshot = ["ready", "scheduled"].includes(selected.status) && selected.approved_content ? selected.approved_content : null;
+    const lockedSnapshot = selected.status === "ready" && selected.approved_content ? selected.approved_content : null;
     const stored = lockedSnapshot || selected.draft_content;
     if (!stored) return generated;
     return CHANNELS.reduce((out, [key]) => {
@@ -178,7 +172,6 @@ function SocialWorkspace() {
   useEffect(() => {
     if (!selected || !generated) { setEditing({}); setAuditRows([]); return; }
     setEditing(editableContent(selected, generated));
-    setScheduleFor(localInputValue(selected.scheduled_for || undefined));
     setCopiedKey("");
     setActionError("");
     setFeedDryRun(null);
@@ -396,10 +389,8 @@ function SocialWorkspace() {
     }
   };
 
-  const immutable = selected && ["ready", "scheduled", "published", "cancelled"].includes(selected.status);
-  const reviewState = selected?.status === "scheduled"
-    ? "SCHEDULED · LOCKED"
-    : selected?.status === "ready"
+  const immutable = selected && ["ready", "published", "cancelled"].includes(selected.status);
+  const reviewState = selected?.status === "ready"
       ? "READY · APPROVED"
       : selected?.status === "published"
         ? `ARCHIVED · PUBLISHED · ${selected.published_at ? fmt(selected.published_at) : "DATE UNKNOWN"}`
@@ -417,7 +408,6 @@ function SocialWorkspace() {
       <div><span>TOTAL</span><strong>{activeEvents.length}</strong><small>active social events</small></div>
       <div><span>DRAFT</span><strong>{counts.draft || 0}</strong><small>awaiting review</small></div>
       <div><span>READY</span><strong>{counts.ready || 0}</strong><small>approved shadow queue</small></div>
-      <div><span>SCHEDULED</span><strong>{counts.scheduled || 0}</strong><small>future shadow queue</small></div>
     </div>
 
     {error ? <div className="social-error">Social schema is not active in Supabase yet: {error}</div> : null}
@@ -478,21 +468,21 @@ function SocialWorkspace() {
       <aside className="social-list">
         <div className="social-list-head"><span>EVENT QUEUE</span><strong>{loading ? "…" : visible.length}</strong></div>
         {visible.length ? visible.map((event) => <button type="button" key={event.id} className={selected?.id === event.id ? "active" : ""} onClick={() => setSelectedId(event.id)}>
-          <div><strong>{eventTitle(event)}</strong><span>{label(event.source_type)} · {label(event.event_type)}{event.scheduled_for ? ` · ${fmt(event.scheduled_for)}` : ""}</span></div>
+          <div><strong>{eventTitle(event)}</strong><span>{label(event.source_type)} · {label(event.event_type)}</span></div>
           <em className={event.status}>{event.status}</em>
         </button>) : <div className="social-empty">{loading ? "Loading social events…" : "No social events in this view."}</div>}
       </aside>
 
       <article className="social-detail">
         {selected && draft ? <>
-          <div className="social-detail-head"><div><span>{label(selected.source_type)} / {label(selected.event_type)}</span><h3>{draft.headline}</h3><p>{selected.source_url || selected.source_id}</p></div><div><strong>{selected.status}</strong><small>{fmt(selected.created_at)}</small>{selected.approved_at ? <small>approved {fmt(selected.approved_at)}</small> : null}{selected.scheduled_for ? <small>scheduled {fmt(selected.scheduled_for)}</small> : null}</div></div>
+          <div className="social-detail-head"><div><span>{label(selected.source_type)} / {label(selected.event_type)}</span><h3>{draft.headline}</h3><p>{selected.source_url || selected.source_id}</p></div><div><strong>{selected.status}</strong><small>{fmt(selected.created_at)}</small>{selected.approved_at ? <small>approved {fmt(selected.approved_at)}</small> : null}</div></div>
           <div className="social-channel-grid">
             {CHANNELS.map(([key, title]) => {
               const media = draft[key]?.media || null;
               const src = mediaSrc(media);
               const readiness = mediaReadiness.channels[key];
               const caption = editing?.[key]?.caption ?? draft[key]?.caption ?? "";
-              const snapshotLocked = ["ready", "scheduled"].includes(selected.status);
+              const snapshotLocked = selected.status === "ready";
               return <section key={key} className={`social-channel-card ${key === "instagram_story" ? "story" : ""}`}>
                 <div className="social-channel-head"><span>{title}</span><em>{snapshotLocked ? "APPROVED" : "EDITABLE"}</em></div>
                 <div className="social-media-frame">
@@ -532,18 +522,6 @@ function SocialWorkspace() {
             </div> : <div className="social-history-empty">Builds the exact Instagram Feed Graph request descriptor for this event. No Meta network request is made and no access token is returned to the browser.</div>}
           </section>
 
-          {selected.status === "ready" ? <div className="social-schedule-row">
-            <div><span>SCHEDULE</span><strong>Choose future date & time</strong></div>
-            <div className="social-schedule-controls">
-              <input type="datetime-local" value={scheduleFor} min={localInputValue(new Date(Date.now() + 60000).toISOString())} disabled={saving} onChange={(event) => setScheduleFor(event.target.value)} />
-              <button type="button" className="primary" disabled={saving || !scheduleFor} onClick={() => persist("schedule", { scheduled_for: new Date(scheduleFor).toISOString() })}>{saving ? "Scheduling…" : "Schedule"}</button>
-            </div>
-          </div> : null}
-
-          {selected.status === "scheduled" ? <div className="social-schedule-row scheduled">
-            <div><span>SCHEDULED FOR</span><strong>{fmt(selected.scheduled_for)}</strong></div>
-            <p>Shadow queue only. Nothing will be sent to Meta while publishing is locked.</p>
-          </div> : null}
 
           <div className="social-review-row">
             <div><span>REVIEW STATE</span><strong>{reviewState}</strong></div>
