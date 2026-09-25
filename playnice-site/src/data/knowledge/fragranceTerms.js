@@ -9,6 +9,296 @@
 export const fragranceTerms = [
 
   {
+    id: "vanilla-vanillin",
+    name: "Vanilla / Vanillin",
+    aliases: ["vanilla", "vanilin", "vanillin", "vanila u parfemu", "vanilla in perfume"],
+    kind: "material-family",
+    answer: {
+      sr: "Vanila kao mirisni profil i vanilin kao molekula nisu isto. Prirodni ekstrakti vanile sadrže veliki broj aromatičnih komponenti, dok je vanilin jedna od ključnih molekula koje daju prepoznatljiv sladak, kremast i balsamičan utisak. U parfimeriji se vrlo često koriste i prirodni ekstrakti i sintetički vanilin, pojedinačno ili zajedno.",
+      en: "Vanilla as an olfactory profile and vanillin as a molecule are not the same thing. Natural vanilla extracts contain many aromatic compounds, while vanillin is one of the key molecules responsible for the familiar sweet, creamy and balsamic impression. Perfumery commonly uses natural extracts and synthetic vanillin, separately or together.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "sandalwood",
+    name: "Sandalwood",
+    aliases: ["sandalwood", "sandalovina", "sandalovo drvo"],
+    kind: "material",
+    answer: {
+      sr: "Sandalovina daje mekan, kremast, mlečno-drvenast i blago sladak karakter. Prirodna sandalovina je cenjena i ograničena sirovina, pa savremene formule često kombinuju prirodne ekstrakte sa sintetičkim sandalwood molekulima kako bi dobile željenu teksturu, stabilnost i održivost.",
+      en: "Sandalwood brings a soft, creamy, milky-woody and slightly sweet character. Natural sandalwood is valuable and limited, so modern formulas often combine natural extracts with synthetic sandalwood molecules to achieve the desired texture, stability and sustainability.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "cedarwood",
+    name: "Cedarwood",
+    aliases: ["cedarwood", "cedar", "kedrovina", "kedar", "cedar note"],
+    kind: "material-family",
+    answer: {
+      sr: "Kedrovina u parfimeriji može biti suva, čista, olovkasto-drvenasta, dimna ili blago aromatična, zavisno od vrste kedra i materijala koji se koristi. Različiti cedarwood materijali ne mirišu identično, pa 'cedar' na listi nota ne označava jednu univerzalnu aromu.",
+      en: "Cedarwood can smell dry, clean, pencil-like, smoky or lightly aromatic depending on the species and material used. Different cedarwood materials do not smell identical, so 'cedar' on a note list does not represent one universal aroma.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "oakmoss",
+    name: "Oakmoss",
+    aliases: ["oakmoss", "oak moss", "hrastova mahovina"],
+    kind: "material",
+    answer: {
+      sr: "Oakmoss je klasična parfemska sirovina sa vlažnim, zemljanim, zelenim, mahovinastim i blago kožastim karakterom. Istorijski je ključna u chypre i fougère strukturama. Savremena upotreba prirodnog oakmossa je regulisana, pa se često koriste pročišćene frakcije i zamenski akordi.",
+      en: "Oakmoss is a classic perfumery material with damp, earthy, green, mossy and slightly leathery facets. Historically it is central to chypre and fougère structures. Modern use of natural oakmoss is regulated, so purified fractions and substitute accords are commonly used.",
+    },
+    sources: [
+      {
+        label: "IFRA — Standards",
+        url: "https://ifrafragrance.org/safe-use/standards",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
+    id: "rose",
+    name: "Rose",
+    aliases: ["rose note", "ruža u parfemu", "ruza u parfemu", "rose in perfume"],
+    kind: "material-family",
+    answer: {
+      sr: "Ruža u parfimeriji nije jedan jedini miris. Različite vrste, ekstrakcije i sintetički materijali mogu dati sve od sveže, citrusne i zelene ruže do medne, začinske, voćne, puderaste ili tamne ruže. Zato dve 'rose' kompozicije mogu imati vrlo različit karakter.",
+      en: "Rose in perfumery is not one single smell. Different species, extraction methods and synthetic materials can range from fresh, citrusy and green rose to honeyed, spicy, fruity, powdery or dark rose effects. Two 'rose' fragrances can therefore smell very different.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "jasmine",
+    name: "Jasmine",
+    aliases: ["jasmine", "jasmin", "jasmin u parfemu", "jasmine in perfume"],
+    kind: "material-family",
+    answer: {
+      sr: "Jasmin može biti svetao, cvetan i kremast, ali i zelen, voćan ili blago animalan. Prirodni jasmine absolute je kompleksan, dok savremena parfimerija često gradi jasminski efekat kombinacijom prirodnih i sintetičkih materijala poput Hedionea i drugih jasminskih molekula.",
+      en: "Jasmine can be bright, floral and creamy, but also green, fruity or slightly animalic. Natural jasmine absolute is complex, while modern perfumery often builds jasmine effects with combinations of natural and synthetic materials such as Hedione and other jasmine-related molecules.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "tuberose",
+    name: "Tuberose",
+    aliases: ["tuberose", "tuberoza", "tuberoza u parfemu"],
+    kind: "material-family",
+    answer: {
+      sr: "Tuberoza je intenzivno belo cveće sa kremastim, slatkim, zelenim i ponekad gotovo animalnim karakterom. U parfimeriji može delovati raskošno i gusto, ali se može stilizovati i kao svetlija, vazdušnija cvetna nota.",
+      en: "Tuberose is an intensely scented white flower with creamy, sweet, green and sometimes almost animalic facets. In perfumery it can feel lush and dense, but it can also be styled as a lighter, airier floral note.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "violet-ionones",
+    name: "Violet / Ionones",
+    aliases: ["violet note", "ljubičica u parfemu", "ljubicica u parfemu", "ionones", "jononi"],
+    kind: "material-family",
+    answer: {
+      sr: "Miris ljubičice u parfimeriji uglavnom se rekonstruiše, jer cvet ljubičice nije praktičan izvor etarskog ulja za klasičnu proizvodnju. Iononi i srodni materijali daju karakterističan puderast, cvetan, drvenast i blago voćan efekat koji se povezuje sa ljubičicom i irisnim akordima.",
+      en: "The smell of violet in perfumery is usually reconstructed because violet flowers are not a practical source of essential oil for conventional production. Ionones and related materials create the characteristic powdery, floral, woody and slightly fruity effect associated with violet and iris accords.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "heliotrope-heliotropin",
+    name: "Heliotrope / Heliotropin",
+    aliases: ["heliotrope", "heliotropin", "heliotrop", "heliotropin u parfemu"],
+    kind: "material-family",
+    answer: {
+      sr: "Heliotropni efekat je mekan, puderast, bademast i vanilast. Heliotropin je važna aromatična molekula za takav profil i često se koristi u puderastim, floralnim i gourmand kompozicijama. Naziv može opisivati i akord, ne nužno prirodni ekstrakt cveta.",
+      en: "A heliotrope effect is soft, powdery, almond-like and vanilla-like. Heliotropin is an important aroma molecule for this profile and is common in powdery, floral and gourmand compositions. The term can describe an accord rather than a natural flower extract.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "ambrette",
+    name: "Ambrette seed",
+    aliases: ["ambrette", "ambrette seed", "seme ambrete", "sjeme ambrete"],
+    kind: "material",
+    answer: {
+      sr: "Ambrette seed je biljna sirovina sa mekim, toplim, mošusnim i blago voćno-kruškastim karakterom. Često se opisuje kao jedan od retkih prirodnih materijala koji mogu dati izraženo mošusni efekat, ali ne miriše identično modernim sintetičkim mošusima.",
+      en: "Ambrette seed is a botanical material with a soft, warm, musky and slightly fruity, pear-like character. It is often described as one of the relatively rare natural materials capable of giving a distinctly musky effect, though it does not smell identical to modern synthetic musks.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "petitgrain",
+    name: "Petitgrain",
+    aliases: ["petitgrain", "petit grain", "petitgren"],
+    kind: "material",
+    answer: {
+      sr: "Petitgrain se najčešće dobija destilacijom listova i grančica gorke narandže. Profil je citrusno-zelen, aromatičan, blago drvenast i cvetan. Iako dolazi sa istog drveta kao neroli i bitter orange peel, miriše drugačije jer potiče iz drugog dela biljke.",
+      en: "Petitgrain is most commonly distilled from the leaves and twigs of the bitter orange tree. Its profile is citrus-green, aromatic, lightly woody and floral. Although it comes from the same tree as neroli and bitter orange peel, it smells different because it is derived from a different part of the plant.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "galbanum",
+    name: "Galbanum",
+    aliases: ["galbanum", "galbanum resin", "galbanum u parfemu"],
+    kind: "material",
+    answer: {
+      sr: "Galbanum je smolasti materijal poznat po vrlo zelenom, gorkom, biljnom i blago zemljanom karakteru. U malim količinama može dati snažan efekat presečene stabljike i oštrinu koja je važna u klasičnim zelenim i chypre kompozicijama.",
+      en: "Galbanum is a resinous material known for an intensely green, bitter, vegetal and slightly earthy character. In small amounts it can create a vivid cut-stem effect and sharpness important in classic green and chypre compositions.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "myrrh",
+    name: "Myrrh",
+    aliases: ["myrrh", "mirra", "smirna u parfemu"],
+    kind: "material",
+    answer: {
+      sr: "Mirra je aromatična smola sa toplim, balsamičnim, smolastim, blago dimnim i ponekad lekovito-gorkim karakterom. Često se koristi u amber, incense i orijentalno inspirisanim kompozicijama, gde daje dubinu i suvu slatkoću.",
+      en: "Myrrh is an aromatic resin with warm, balsamic, resinous, lightly smoky and sometimes medicinal-bitter facets. It is common in amber, incense and oriental-inspired compositions, where it adds depth and dry sweetness.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "elemi",
+    name: "Elemi",
+    aliases: ["elemi", "elemi resin", "elemi smola"],
+    kind: "material",
+    answer: {
+      sr: "Elemi je smola sa svetlim, limunasto-biberastim, zelenim i balsamičnim karakterom. Može povezati citrusne, začinske i smolaste delove kompozicije i dati transparentniji resinous efekat od težih smola poput labdanuma ili mirre.",
+      en: "Elemi is a resin with bright lemony-peppery, green and balsamic facets. It can bridge citrus, spice and resinous parts of a composition and create a more transparent resin effect than heavier resins such as labdanum or myrrh.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "osmanthus",
+    name: "Osmanthus",
+    aliases: ["osmanthus", "osmantus", "osmanthus note"],
+    kind: "material-family",
+    answer: {
+      sr: "Osmanthus je cvetni materijal poznat po neobičnoj kombinaciji kajsijasto-voćnih, cvetnih, čajnih i blago kožastih nijansi. U kompoziciji može povezati voćne, floralne i leather elemente bez klasične slatkoće.",
+      en: "Osmanthus is a floral material known for an unusual combination of apricot-like fruitiness, florals, tea facets and a slight leather nuance. In a composition it can bridge fruity, floral and leather effects without conventional sweetness.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "tea-accord",
+    name: "Tea accord",
+    aliases: ["tea accord", "tea note", "čajna nota", "cajna nota", "čaj u parfemu", "caj u parfemu"],
+    kind: "accord",
+    answer: {
+      sr: "Čajna nota u parfemu često je akord, a ne direktan ekstrakt šolje čaja. Može biti citrusno-zelen, aromatičan, diman, cvetan ili blago suv i taninski, zavisno od toga da li kompozicija cilja utisak zelenog, crnog, mate ili drugog čaja.",
+      en: "A tea note in perfume is often an accord rather than a direct extract of brewed tea. It can be citrus-green, aromatic, smoky, floral or dry and tannic depending on whether the composition aims to suggest green tea, black tea, mate or another tea style.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "lactonic",
+    name: "Lactonic",
+    aliases: ["lactonic", "laktonski", "mlečna nota", "mlecna nota", "milky note"],
+    kind: "descriptor",
+    answer: {
+      sr: "Lactonic opisuje mlečan, kremast, kokosast, breskvast ili mekan voćno-kremasti efekat koji često dolazi od laktona i srodnih materijala. To nije jedna nota; različiti laktoni mogu mirisati vrlo različito i davati različite teksture.",
+      en: "Lactonic describes milky, creamy, coconut-like, peachy or soft fruity-creamy effects often produced by lactones and related materials. It is not one single note; different lactones can smell very different and create different textures.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+
+  {
     id: "perfume-oil",
     name: "Perfume oil",
     aliases: ["perfume oil", "parfemsko ulje", "uljani parfem"],
