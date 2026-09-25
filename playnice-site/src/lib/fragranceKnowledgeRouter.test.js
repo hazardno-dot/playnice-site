@@ -156,6 +156,27 @@ describe("FI Knowledge — entity routing", () => {
     }
   );
 
+  test.each([
+    ["Ko radi u Givaudanu?", "Quentin Bisch"],
+    ["Koji parfimeri rade u dsm-firmenich?", "Alberto Morillas"],
+    ["Koji parfimeri rade u Essential Parfums?", "Quentin Bisch"],
+    ["Who works at Givaudan?", "Quentin Bisch"],
+  ])("answers house-to-perfumer relationship %s", (query, expectedName) => {
+    const result = resolveFragranceKnowledgeQuery(query, "sr");
+    expect(result.handled).toBe(true);
+    expect(result.answer).toContain(expectedName);
+  });
+
+  test.each([
+    ["Gde radi Quentin Bisch?", "Givaudan"],
+    ["Za koga radi Nathalie Lorson?", "dsm-firmenich"],
+    ["Where does Alberto Morillas work?", "dsm-firmenich"],
+  ])("answers perfumer-to-house relationship %s", (query, expectedHouse) => {
+    const result = resolveFragranceKnowledgeQuery(query, "sr");
+    expect(result.handled).toBe(true);
+    expect(result.answer).toContain(expectedHouse);
+  });
+
   test("routes fragrance house question into knowledge", () => {
     const result = resolveFragranceKnowledgeQuery(
       "Ko je Essential Parfums?",

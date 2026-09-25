@@ -208,6 +208,91 @@ export const getPerfumerKnowledgeAnswer = (perfumer, lang = "sr") => {
     : `${namedSummary} Među potvrđenim radovima u ovoj bazi su: ${works.join(", ")}.`;
 };
 
+const getLinkedPerfumerNames = (house) =>
+  (house?.perfumerIds || [])
+    .map((id) =>
+      perfumers.find((perfumer) => perfumer.id === id)
+    )
+    .filter(Boolean)
+    .map((perfumer) => perfumer.name);
+
+const HOUSE_RELATION_CUES = [
+  "ko radi u",
+  "koji parfimeri",
+  "koji parfimer",
+  "ko radi za",
+  "who works at",
+  "which perfumers",
+  "which perfumer",
+  "perfumers at",
+];
+
+const PERFUMER_RELATION_CUES = [
+  "gde radi",
+  "gdje radi",
+  "za koga radi",
+  "u kojoj kuci",
+  "u kojoj kući",
+  "which house",
+  "where does",
+  "works for",
+];
+
+const getHouseRelationshipAnswer = (
+  query,
+  house,
+  lang = "sr"
+) => {
+  const text = normalizeKnowledgeText(query);
+  const isRelationQuestion =
+    HOUSE_RELATION_CUES.some((cue) =>
+      text.includes(normalizeKnowledgeText(cue))
+    );
+
+  if (!isRelationQuestion) return "";
+
+  const names = getLinkedPerfumerNames(house);
+  if (!names.length) {
+    return lang === "en"
+      ? `I don't have a verified perfumer relationship recorded for ${house.name} yet.`
+      : `Za ${house.name} još nemam zabeleženu potvrđenu vezu sa parfimerom.`;
+  }
+
+  return lang === "en"
+    ? `Verified perfumer relationships recorded for ${house.name}: ${names.join(", ")}.`
+    : `Potvrđene veze sa parfimerima koje trenutno imam za ${house.name}: ${names.join(", ")}.`;
+};
+
+const getPerfumerRelationshipAnswer = (
+  query,
+  perfumer,
+  lang = "sr"
+) => {
+  const text = normalizeKnowledgeText(query);
+  const isRelationQuestion =
+    PERFUMER_RELATION_CUES.some((cue) =>
+      text.includes(normalizeKnowledgeText(cue))
+    );
+
+  if (!isRelationQuestion) return "";
+
+  const houses = fragranceHouses.filter((house) =>
+    (house.perfumerIds || []).includes(perfumer.id)
+  );
+
+  if (!houses.length) {
+    return lang === "en"
+      ? `I don't have a verified house or company relationship recorded for ${perfumer.name} yet.`
+      : `Za ${perfumer.name} još nemam zabeleženu potvrđenu vezu sa kućom ili kompanijom.`;
+  }
+
+  const names = houses.map((house) => house.name);
+
+  return lang === "en"
+    ? `Verified house/company relationships recorded for ${perfumer.name}: ${names.join(", ")}.`
+    : `Potvrđene veze sa kućama ili kompanijama koje trenutno imam za ${perfumer.name}: ${names.join(", ")}.`;
+};
+
 export const getFragranceHouseKnowledgeAnswer = (
   house,
   lang = "sr"
@@ -251,12 +336,24 @@ export const resolveFragranceKnowledgeQuery = (query, lang = "sr") => {
   }
 
   if (classification.type === "perfumer") {
+    const relationshipAnswer =
+      getPerfumerRelationshipAnswer(
+        query,
+        classification.entity,
+        lang
+      );
+
     return {
       handled: true,
       type: "perfumer",
       confidence: classification.confidence,
       entity: classification.entity,
-      answer: getPerfumerKnowledgeAnswer(classification.entity, lang),
+      answer:
+        relationshipAnswer ||
+        getPerfumerKnowledgeAnswer(
+          classification.entity,
+          lang
+        ),
     };
   }
 
@@ -264,15 +361,24 @@ export const resolveFragranceKnowledgeQuery = (query, lang = "sr") => {
     classification.type === "fragrance-house" ||
     classification.type === "fragrance-company"
   ) {
+    const relationshipAnswer =
+      getHouseRelationshipAnswer(
+        query,
+        classification.entity,
+        lang
+      );
+
     return {
       handled: true,
       type: classification.type,
       confidence: classification.confidence,
       entity: classification.entity,
-      answer: getFragranceHouseKnowledgeAnswer(
-        classification.entity,
-        lang
-      ),
+      answer:
+        relationshipAnswer ||
+        getFragranceHouseKnowledgeAnswer(
+          classification.entity,
+          lang
+        ),
     };
   }
 

@@ -54,6 +54,10 @@ export const fiUltraRoutingBenchmark = {
     ["Ko je Frederic Malle?", "fragrance-house"],
     ["Šta je Givaudan?", "fragrance-company"],
     ["Šta je dsm-firmenich?", "fragrance-company"],
+    ["Ko radi u Givaudanu?", "fragrance-company"],
+    ["Koji parfimeri rade u Essential Parfums?", "fragrance-house"],
+    ["Gde radi Quentin Bisch?", "perfumer"],
+    ["Za koga radi Nathalie Lorson?", "perfumer"],
   ],
 };
 
