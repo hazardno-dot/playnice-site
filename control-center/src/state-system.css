@@ -46,3 +46,675 @@
     padding: 20px 16px;
   }
 }
+
+/* CC Mobile Polish v1
+   Final 390–430px workspace pass. Presentation only; no workflow/data logic changes. */
+@media (max-width: 720px) {
+  html, body, #root {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Shell: give navigation the width, not the brand. */
+  .cc-navigation {
+    backdrop-filter: blur(14px);
+  }
+  .cc-primary-row {
+    min-height: 44px;
+    padding: 0 10px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .cc-primary-row .brand-block {
+    display: none;
+  }
+  .cc-primary-nav {
+    width: 100%;
+    min-width: 0;
+    gap: 2px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+  }
+  .cc-primary-nav::-webkit-scrollbar,
+  .cc-secondary-nav::-webkit-scrollbar,
+  .filter-bar::-webkit-scrollbar,
+  .social-filter-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .cc-primary-nav button {
+    flex: 0 0 auto;
+    min-height: 40px;
+    padding: 8px 10px;
+    border-radius: 7px;
+    font-size: 11px;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+  .cc-secondary-nav {
+    min-height: 36px;
+    padding: 0 10px;
+    gap: 1px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .cc-secondary-nav button {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 9px 9px 8px;
+    font-size: 10px;
+    white-space: nowrap;
+  }
+  .cc-secondary-nav button.active::after {
+    left: 9px;
+    right: 9px;
+  }
+
+  /* Global stage/header rhythm. */
+  .main-stage {
+    padding: 14px 10px 24px !important;
+  }
+  .topbar {
+    gap: 10px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .topbar-copy {
+    width: 100%;
+  }
+  .topbar-copy .eyebrow {
+    font-size: 8px;
+    letter-spacing: .15em;
+  }
+  .topbar-copy h1 {
+    margin-top: 5px;
+    font-size: 34px !important;
+    line-height: 1;
+  }
+  .topbar-copy p {
+    margin: 7px 0 0;
+    max-width: 100%;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    overflow-x: auto;
+    padding-bottom: 1px;
+    scrollbar-width: none;
+  }
+  .workflow-pill,
+  .topbar-actions .draft-manager-trigger,
+  .topbar-actions .read-only-badge,
+  .topbar-actions > .read-only-badge {
+    flex: 0 0 auto;
+    min-height: 30px;
+    padding: 5px 8px !important;
+    font-size: 8px !important;
+  }
+  .workflow-pill strong,
+  .topbar-actions .draft-manager-trigger strong {
+    min-width: 18px !important;
+    height: 18px !important;
+    font-size: 9px;
+  }
+
+  /* Shared Controlled Apply / publish history. */
+  .controlled-apply-slot {
+    margin-bottom: 10px !important;
+  }
+  .controlled-apply-box {
+    padding: 9px 10px !important;
+    border-radius: 10px !important;
+  }
+  .controlled-apply-head {
+    gap: 8px;
+    padding-bottom: 7px;
+  }
+  .controlled-apply-head,
+  .controlled-apply-primary {
+    align-items: flex-start;
+  }
+  .controlled-apply-head span,
+  .controlled-apply-head strong,
+  .controlled-apply-head small,
+  .controlled-apply-row strong,
+  .controlled-apply-row span {
+    font-size: 8px !important;
+  }
+  .controlled-published-history {
+    max-height: 160px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+  .controlled-published-row {
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) auto;
+    align-items: center !important;
+    gap: 8px;
+    padding: 6px 7px;
+  }
+  .controlled-published-row strong {
+    font-size: 9px;
+  }
+  .controlled-published-row span,
+  .controlled-published-meta a {
+    font-size: 8px;
+  }
+  .controlled-published-meta {
+    width: auto !important;
+    gap: 6px;
+  }
+
+  /* Universal manager spacing. */
+  .overview-v2,
+  .hero-manager,
+  .announcement-manager,
+  .journal-manager,
+  .notes-manager,
+  .exhibition-manager,
+  .social-manager,
+  .social-inbox-manager,
+  .analytics-manager,
+  .site-health-manager {
+    gap: 10px !important;
+  }
+
+  /* Overview. */
+  .overview-grid-v2 {
+    gap: 8px !important;
+  }
+  .overview-grid-v2 > .overview-card {
+    min-height: 82px !important;
+    padding: 10px !important;
+  }
+  .overview-grid-v2 > .overview-card strong {
+    font-size: 25px !important;
+  }
+  .workflow-overview-panel,
+  .audit-panel {
+    padding: 12px !important;
+  }
+
+  /* Products. */
+  .products-layout {
+    gap: 10px !important;
+  }
+  .catalog-panel {
+    max-height: 360px !important;
+    border-radius: 12px;
+  }
+  .catalog-head {
+    padding: 11px 11px 8px !important;
+  }
+  .catalog-head h2 {
+    font-size: 19px !important;
+  }
+  .search-wrap {
+    padding: 0 10px 9px;
+  }
+  .search-wrap input {
+    padding: 9px 10px;
+    font-size: 10px;
+  }
+  .filter-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 5px;
+    overflow-x: auto;
+    padding: 0 10px 9px;
+    scrollbar-width: none;
+  }
+  .filter-bar .filter-btn {
+    flex: 0 0 auto;
+    font-size: 8px;
+    padding: 6px 7px;
+  }
+  .product-list {
+    padding: 0 6px 8px;
+  }
+  .product-row {
+    grid-template-columns: 42px minmax(0,1fr) auto;
+    gap: 9px;
+    padding: 8px 6px;
+  }
+  .product-thumb-wrap {
+    width: 40px;
+    height: 40px;
+  }
+  .product-row-copy strong {
+    font-size: 11px;
+  }
+  .product-row-copy span {
+    font-size: 8px;
+  }
+  .product-detail {
+    padding: 12px !important;
+  }
+  .detail-hero {
+    grid-template-columns: minmax(0,1fr) 82px !important;
+    gap: 10px !important;
+    padding-bottom: 14px;
+  }
+  .detail-hero h2 {
+    font-size: 25px !important;
+  }
+  .detail-hero img {
+    width: 82px !important;
+    height: 82px !important;
+  }
+  .detail-grid {
+    gap: 6px;
+    margin: 12px 0 16px;
+  }
+
+  /* Hero. */
+  .hero-manager-summary {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 7px !important;
+  }
+  .hero-manager-summary > div {
+    min-height: 72px !important;
+    padding: 9px 10px !important;
+  }
+  .hero-manager-list,
+  .hero-slide-list {
+    max-height: 360px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+  .hero-manager-section-head,
+  .hero-manager-detail-head {
+    padding: 11px !important;
+  }
+  .hero-slide-row {
+    grid-template-columns: 74px minmax(0,1fr) !important;
+    gap: 8px;
+  }
+  .hero-slide-row img {
+    width: 74px !important;
+    height: 46px !important;
+  }
+
+  /* Announcement. */
+  .announcement-manager-grid {
+    gap: 10px;
+  }
+  .announcement-list-panel,
+  .announcement-preview-panel {
+    border-radius: 12px;
+  }
+  .announcement-list {
+    max-height: 380px;
+    overflow-y: auto;
+  }
+  .announcement-audit-strip,
+  .announcement-row,
+  .announcement-preview-panel {
+    padding: 11px !important;
+  }
+  .commerce-shipping-head,
+  .commerce-grid,
+  .commerce-editor {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Journal. */
+  .journal-manager-grid {
+    gap: 10px;
+  }
+  .journal-catalog {
+    max-height: 340px !important;
+    padding: 10px !important;
+  }
+  .journal-list {
+    max-height: 270px;
+    overflow-y: auto;
+  }
+  .journal-detail,
+  .journal-editor {
+    padding: 12px !important;
+  }
+  .journal-detail-hero {
+    grid-template-columns: minmax(0,1fr) 78px !important;
+    gap: 10px;
+  }
+  .journal-detail-hero img {
+    width: 78px !important;
+    height: 64px !important;
+  }
+  .journal-detail-hero h2,
+  .journal-editor-head h2 {
+    font-size: 24px !important;
+  }
+
+  /* Notes. */
+  .notes-manager-grid {
+    gap: 10px;
+  }
+  .notes-catalog {
+    padding: 10px !important;
+  }
+  .notes-list {
+    max-height: 300px !important;
+  }
+  .notes-detail,
+  .note-editor {
+    padding: 12px !important;
+  }
+  .notes-detail-hero {
+    gap: 10px;
+  }
+  .notes-detail-hero h2,
+  .note-editor-head h2 {
+    font-size: 24px !important;
+  }
+  .notes-asset-preview {
+    width: 86px !important;
+    min-width: 86px !important;
+  }
+  .notes-asset-preview img {
+    width: 74px !important;
+    height: 74px !important;
+  }
+  .notes-tier-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 6px;
+  }
+
+  /* Exhibition. */
+  .exhibition-kpis {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 7px !important;
+  }
+  .exhibition-kpis > div {
+    min-height: 72px;
+    padding: 9px 10px;
+  }
+  .exhibition-toolbar {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+  }
+  .exhibition-toolbar input {
+    grid-column: 1 / -1;
+  }
+  .exhibition-open-live {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+  .exhibition-list {
+    max-height: 320px !important;
+  }
+  .exhibition-card-preview {
+    grid-template-columns: 1fr !important;
+  }
+  .exhibition-media,
+  .exhibition-media img,
+  .exhibition-media video {
+    min-height: 0 !important;
+    max-height: 280px;
+  }
+  .exhibition-media img,
+  .exhibition-media video {
+    width: 100%;
+    object-fit: contain;
+  }
+  .exhibition-card-copy {
+    padding: 12px !important;
+  }
+  .exhibition-meta-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 6px !important;
+  }
+
+  /* Social Publisher. */
+  .social-banner,
+  .social-inbox-banner {
+    padding: 11px 12px !important;
+  }
+  .social-banner h2,
+  .social-inbox-banner h2 {
+    font-size: 19px !important;
+  }
+  .social-banner p,
+  .social-inbox-banner p {
+    font-size: 10px !important;
+  }
+  .social-kpis {
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 6px !important;
+  }
+  .social-kpis > div {
+    min-height: 68px;
+    padding: 9px;
+  }
+  .social-kpis strong {
+    font-size: 20px;
+  }
+  .social-toolbar {
+    grid-template-columns: 1fr !important;
+    gap: 7px;
+  }
+  .social-filter-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .social-create-group {
+    min-width: 0 !important;
+    width: 100%;
+    padding-left: 0 !important;
+    border-left: 0 !important;
+  }
+  .social-list {
+    max-height: 260px !important;
+  }
+  .social-detail {
+    padding: 11px !important;
+  }
+  .social-channel-grid,
+  .social-media-override-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .social-media-frame,
+  .social-channel-card.story .social-media-frame,
+  .social-media-override-card img,
+  .social-media-override-empty,
+  .social-media-override-card:nth-child(2) img,
+  .social-media-override-card:nth-child(2) .social-media-override-empty,
+  .social-media-override-card:nth-child(3) img,
+  .social-media-override-card:nth-child(3) .social-media-override-empty {
+    height: auto !important;
+    max-height: 340px !important;
+  }
+
+  /* Inbox: preserve workbench behaviour, reduce mobile footprint. */
+  .social-inbox-toolbar,
+  .social-inbox-assistant-status,
+  .social-inbox-status {
+    padding: 8px 9px !important;
+  }
+  .social-inbox-assistant-status {
+    grid-template-columns: 1fr;
+  }
+  .social-inbox-assistant-actions {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .social-inbox-layout {
+    gap: 10px !important;
+  }
+  .social-inbox-list {
+    height: 220px !important;
+    max-height: 220px !important;
+  }
+  .social-inbox-thread {
+    height: 540px !important;
+    min-height: 540px !important;
+  }
+  .social-inbox-thread-head {
+    padding: 9px 10px !important;
+  }
+  .social-inbox-messages {
+    padding: 10px !important;
+    gap: 7px !important;
+  }
+  .social-inbox-message > div {
+    max-width: 92% !important;
+    padding: 8px 9px !important;
+  }
+  .social-inbox-message p {
+    font-size: 10px !important;
+  }
+  .social-inbox-reply-composer,
+  .social-inbox-reply-lock {
+    padding: 9px 10px !important;
+  }
+  .social-inbox-reply-composer textarea {
+    min-height: 58px !important;
+  }
+
+  /* Analytics. */
+  .analytics-head,
+  .site-health-head {
+    padding: 11px 12px !important;
+  }
+  .analytics-head h2,
+  .site-health-head h2 {
+    font-size: 20px !important;
+  }
+  .analytics-kpis,
+  .site-health-kpis {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 7px !important;
+  }
+  .analytics-kpis > div,
+  .site-health-kpis > div {
+    min-height: 70px;
+    padding: 9px 10px;
+  }
+  .analytics-panel,
+  .site-health-panel {
+    padding: 11px !important;
+  }
+  .workflow-row {
+    grid-template-columns: minmax(90px,1fr) repeat(4, 42px) !important;
+    gap: 5px !important;
+    overflow-x: auto;
+  }
+  .activity-list {
+    max-height: 320px !important;
+  }
+  .activity-row {
+    grid-template-columns: 58px minmax(120px,1fr) minmax(110px,.9fr) 88px !important;
+    gap: 7px !important;
+    min-width: 430px;
+  }
+  .activity-panel {
+    overflow-x: auto;
+  }
+
+  /* Site Health. */
+  .site-health-head-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .health-check-row {
+    grid-template-columns: 8px minmax(0,1fr) 36px 48px !important;
+    gap: 6px !important;
+  }
+  .health-check-row strong {
+    font-size: 9px !important;
+  }
+  .health-check-row small,
+  .health-check-row em,
+  .health-check-row time {
+    font-size: 7px !important;
+  }
+  .health-build-grid,
+  .health-trend-kpis,
+  .health-incident-kpis,
+  .health-contract-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 6px !important;
+  }
+  .health-history-strip {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .health-history-point {
+    min-width: 34px;
+  }
+  .health-incident-row {
+    grid-template-columns: 64px minmax(0,1fr) !important;
+    gap: 8px !important;
+  }
+  .health-incident-times {
+    grid-column: 1 / -1;
+  }
+  .browser-qa-summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .browser-qa-history-list {
+    max-height: 300px !important;
+    overflow-y: auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .cc-primary-nav button {
+    padding-inline: 9px;
+    font-size: 10px;
+  }
+  .cc-secondary-nav button {
+    font-size: 9px;
+  }
+  .main-stage {
+    padding-inline: 9px !important;
+  }
+  .topbar-copy h1 {
+    font-size: 32px !important;
+  }
+
+  .overview-grid-v2,
+  .hero-manager-summary,
+  .exhibition-kpis,
+  .notes-tier-grid,
+  .analytics-kpis,
+  .site-health-kpis,
+  .health-build-grid,
+  .health-trend-kpis,
+  .health-incident-kpis,
+  .health-contract-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  }
+
+  .social-kpis {
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+  }
+  .social-kpis span,
+  .social-kpis small {
+    font-size: 7px !important;
+  }
+
+  .exhibition-toolbar {
+    grid-template-columns: 1fr !important;
+  }
+  .exhibition-toolbar input,
+  .exhibition-open-live {
+    grid-column: auto;
+  }
+
+  .social-inbox-thread {
+    height: 520px !important;
+    min-height: 520px !important;
+  }
+}

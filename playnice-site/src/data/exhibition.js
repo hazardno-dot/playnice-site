@@ -19,7 +19,7 @@ export const exhibitionItems = [
       {
         "id": "hero-6-desktop",
         "type": "image",
-        "src": "/hero/slide-6.jpg",
+        "src": "/exhibition/2026/hero/jasmine-in-the-sun.jpg",
         "format": "wide",
         "alt": "JASMINE IN THE SUN · Now at PlayNice"
       }

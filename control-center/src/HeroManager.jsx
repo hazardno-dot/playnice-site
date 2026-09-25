@@ -248,42 +248,36 @@ function HeroOverview() {
 
 export default function HeroManager() {
   const [slot, setSlot] = useState(null);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const sidebar = document.querySelector(".sidebar nav");
     const mainStage = document.querySelector(".main-stage");
-    if (!sidebar || !mainStage) return;
-    const manageGroup = [...sidebar.querySelectorAll(".nav-group")].find((group) => group.querySelector(".nav-label")?.textContent?.trim() === "MANAGE");
-    if (!manageGroup) return;
-    let button = manageGroup.querySelector("[data-hero-manager-nav='true']");
-    if (!button) {
-      button = document.createElement("button"); button.type = "button"; button.dataset.heroManagerNav = "true"; button.innerHTML = '<span class="nav-dot"></span>Hero';
-      const journalButton = [...manageGroup.querySelectorAll("button")].find((item) => item.textContent?.trim() === "Journal"); manageGroup.insertBefore(button, journalButton || null);
-    }
-    const closeHero = () => setOpen(false);
-    const openHero = (event) => { event.preventDefault(); event.stopPropagation(); setOpen(true); };
-    button.addEventListener("click", openHero);
-    [...sidebar.querySelectorAll("button")].filter((item) => item !== button).forEach((item) => item.addEventListener("click", closeHero));
-    return () => { button?.removeEventListener("click", openHero); [...sidebar.querySelectorAll("button")].filter((item) => item !== button).forEach((item) => item.removeEventListener("click", closeHero)); };
+    if (!mainStage) return;
+
+    const sync = () => {
+      const heading = mainStage.querySelector(".topbar h1");
+      const placeholder = mainStage.querySelector(".placeholder-panel");
+
+      if (!placeholder || heading?.textContent?.trim() !== "Hero") {
+        setSlot(null);
+        return;
+      }
+
+      placeholder.classList.add("hero-module-active");
+      let nextSlot = placeholder.querySelector("#hero-manager-slot");
+      if (!nextSlot) {
+        nextSlot = document.createElement("div");
+        nextSlot.id = "hero-manager-slot";
+        nextSlot.className = "hero-manager-slot";
+        placeholder.appendChild(nextSlot);
+      }
+      setSlot(nextSlot);
+    };
+
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(mainStage, { childList: true, subtree: true, characterData: true });
+    return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    const mainStage = document.querySelector(".main-stage");
-    const heading = mainStage?.querySelector(".topbar h1");
-    const navButtons = [...document.querySelectorAll(".sidebar nav button")];
-    const heroButton = navButtons.find((button) => button.dataset.heroManagerNav === "true");
-    if (!mainStage || !heading || !heroButton) return;
-    let heroSlot = mainStage.querySelector("#hero-manager-slot");
-    if (!heroSlot) { heroSlot = document.createElement("div"); heroSlot.id = "hero-manager-slot"; mainStage.appendChild(heroSlot); }
-    const baseChildren = [...mainStage.children].filter((child) => child !== mainStage.querySelector(".topbar") && child !== heroSlot);
-    if (open) {
-      navButtons.forEach((button) => button.classList.toggle("active", button === heroButton)); heading.textContent = "Hero";
-      baseChildren.forEach((child) => { child.dataset.heroPreviousDisplay = child.style.display || ""; child.style.display = "none"; }); heroSlot.style.display = "block"; setSlot(heroSlot);
-    } else {
-      heroSlot.style.display = "none"; baseChildren.forEach((child) => { child.style.display = child.dataset.heroPreviousDisplay || ""; delete child.dataset.heroPreviousDisplay; }); setSlot(null);
-    }
-  }, [open]);
 
   return slot ? createPortal(<HeroOverview />, slot) : null;
 }

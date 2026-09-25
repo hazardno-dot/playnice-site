@@ -33,6 +33,9 @@ const MODULE_META = {
   Announcement: { eyebrow: "MANAGE / PROMO", description: "Editorial announcement copy and storefront promo configuration." },
   Journal: { eyebrow: "MANAGE / EDITORIAL", description: "Bilingual editorial library, CTA contracts and controlled article drafts." },
   Notes: { eyebrow: "MANAGE / NOTE MAP", description: "Canonical note library, labels, assets and usage across the catalog." },
+  Exhibition: { eyebrow: "MANAGE / VISUAL ARCHIVE", description: "Curated campaigns, stories, films and retired Hero ideas with canonical preview." },
+  Social: { eyebrow: "SOCIAL / PUBLISHER", description: "Create, review and manually publish Instagram and Facebook content from live PlayNice sources." },
+  Inbox: { eyebrow: "SOCIAL / INBOX", description: "Facebook intake, prepared replies and explicit approval before every send." },
   Analytics: { eyebrow: "INTELLIGENCE / OPERATIONS", description: "Workflow telemetry, publishing history and Control Center activity." },
   "Site Health": { eyebrow: "SYSTEM / PRODUCTION", description: "Live production contracts, runtime delivery, history and incident intelligence." }
 };
@@ -231,6 +234,23 @@ export default function App(){
     const onFocus=()=>loadWorkflow();window.addEventListener("focus",onFocus);
     return()=>{cancelled=true;tables.forEach((channel)=>supabase.removeChannel(channel));window.removeEventListener("focus",onFocus)};
   },[]);
+
+  useEffect(()=>{
+    let secondFrame=0;
+    const firstFrame=window.requestAnimationFrame(()=>{
+      secondFrame=window.requestAnimationFrame(()=>{
+        window.scrollTo({top:0,left:0,behavior:"smooth"});
+        const mainStage=document.querySelector(".main-stage");
+        if(mainStage && (mainStage.scrollTop||mainStage.scrollLeft)){
+          mainStage.scrollTo({top:0,left:0,behavior:"smooth"});
+        }
+      });
+    });
+    return()=>{
+      window.cancelAnimationFrame(firstFrame);
+      if(secondFrame)window.cancelAnimationFrame(secondFrame);
+    };
+  },[active]);
 
   useEffect(()=>{
     const handleOpenProduct=(event)=>{

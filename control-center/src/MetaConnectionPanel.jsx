@@ -15,9 +15,9 @@ const CREDENTIAL_LABELS = {
 
 const box = {
   display: "grid",
-  gap: 12,
-  padding: "18px 20px",
-  margin: "0 0 20px",
+  gap: 9,
+  padding: "12px 14px",
+  margin: "0 0 14px",
   border: "1px solid rgba(118, 151, 137, 0.28)",
   background: "rgba(10, 16, 14, 0.72)",
 };
@@ -30,15 +30,15 @@ const row = {
   flexWrap: "wrap",
 };
 
-const small = { color: "#789184", fontSize: 12, letterSpacing: ".04em" };
+const small = { color: "#789184", fontSize: 10, letterSpacing: ".04em" };
 
 const checkButton = (loading) => ({
-  minWidth: 142,
-  padding: "9px 13px",
+  minWidth: 124,
+  padding: "7px 10px",
   border: "1px solid rgba(102, 165, 129, 0.5)",
   background: loading ? "rgba(21, 34, 27, 0.7)" : "#101a15",
   color: loading ? "#76877d" : "#a9d3b9",
-  fontSize: 12,
+  fontSize: 10,
   letterSpacing: ".03em",
   lineHeight: 1.2,
   cursor: loading ? "wait" : "pointer",
@@ -84,7 +84,7 @@ export default function MetaConnectionPanel() {
     <div style={row}>
       <div>
         <div style={{ ...small, marginBottom: 5 }}>META CONNECTION · MANUAL PUBLISH</div>
-        <strong style={{ fontSize: 19 }}>Instagram + Facebook connection</strong>
+        <strong style={{ fontSize: 16 }}>Instagram + Facebook connection</strong>
       </div>
       <div style={{ textAlign: "right" }}>
         <strong>{status}</strong>
