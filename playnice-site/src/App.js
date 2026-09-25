@@ -3835,7 +3835,8 @@ const getDiscoveryAnalyticsParams = (
       const knowledge =
         resolveFragranceKnowledgeQuery(
           nextQuery,
-          lang
+          lang,
+          { products }
         );
 
       if (knowledge.handled) {

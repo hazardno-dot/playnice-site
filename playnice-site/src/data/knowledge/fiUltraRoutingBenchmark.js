@@ -60,6 +60,10 @@ export const fiUltraRoutingBenchmark = {
     ["Koji parfimeri rade u Essential Parfums?", "fragrance-house"],
     ["Gde radi Quentin Bisch?", "perfumer"],
     ["Za koga radi Nathalie Lorson?", "perfumer"],
+    ["Šta je Bois Imperial?", "fragrance"],
+    ["Ko je napravio Bois Imperial?", "fragrance"],
+    ["Ko je parfimer Nice Bergamote?", "fragrance"],
+    ["Ko potpisuje Orange X Santal?", "fragrance"],
   ],
 };
 

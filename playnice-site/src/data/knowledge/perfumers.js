@@ -124,6 +124,63 @@ export const perfumers = [
     ],
   },
   {
+    id: "antoine-maisondieu",
+    name: "Antoine Maisondieu",
+    aliases: [
+      "antoine maisondieu",
+      "antoan maisondieu",
+      "antoine maison dieu",
+    ],
+    role: "Perfumer",
+    summary: {
+      sr: "Francuski parfimer čiji rad za Essential Parfums uključuje Nice Bergamote. Kuća ga navodi kao autora te kompozicije.",
+      en: "A French perfumer whose work for Essential Parfums includes Nice Bergamote. The house credits him as the creator of that composition.",
+    },
+    notableWorks: [
+      {
+        name: "Nice Bergamote",
+        brand: "Essential Parfums",
+        verified: true,
+      },
+    ],
+    sources: [
+      {
+        label: "Essential Parfums — Nice Bergamote",
+        url: "https://www.essentialparfums.com/en/collections/nice-bergamote",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "natalie-gracia-cetto",
+    name: "Natalie Gracia-Cetto",
+    aliases: [
+      "natalie gracia cetto",
+      "natalie gracia-cetto",
+      "nathalie gracia cetto",
+      "natalie gracia",
+    ],
+    role: "Perfumer",
+    summary: {
+      sr: "Parfimerka čiji rad za Essential Parfums uključuje Orange X Santal. Kuća je navodi kao autorku te kompozicije.",
+      en: "A perfumer whose work for Essential Parfums includes Orange X Santal. The house credits her as the creator of that composition.",
+    },
+    notableWorks: [
+      {
+        name: "Orange X Santal",
+        brand: "Essential Parfums",
+        verified: true,
+      },
+    ],
+    sources: [
+      {
+        label: "Essential Parfums — Orange X Santal",
+        url: "https://www.essentialparfums.com/en/collections/orange-x-santal",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
     id: "dominique-ropion",
     name: "Dominique Ropion",
     aliases: [

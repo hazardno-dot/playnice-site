@@ -3,6 +3,7 @@ import {
   findPerfumerByQuery,
   findFragrancePersonalityByQuery,
   findFragranceHouseByQuery,
+  findPerfumeByQuery,
   findFragranceTermByQuery,
   getPerfumerKnowledgeAnswer,
   resolveFragranceKnowledgeQuery,
@@ -44,6 +45,14 @@ describe("FI Knowledge — entity routing", () => {
     ["Dominik Ropion", "dominique-ropion"],
   ])("resolves perfumer %s", (query, expectedId) => {
     expect(findPerfumerByQuery(query)?.id).toBe(expectedId);
+  });
+
+  test.each([
+    ["Šta je Bois Imperial?", "bois-imperial"],
+    ["Ko je napravio Nice Bergamote?", "nice-bergamote"],
+    ["Ko potpisuje Orange X Santal?", "orange-x-santal"],
+  ])("resolves fragrance entity %s", (query, expectedId) => {
+    expect(findPerfumeByQuery(query)?.id).toBe(expectedId);
   });
 
   test.each([
@@ -177,6 +186,45 @@ describe("FI Knowledge — entity routing", () => {
     const result = resolveFragranceKnowledgeQuery(query, "sr");
     expect(result.handled).toBe(true);
     expect(result.answer).toContain(expectedHouse);
+  });
+
+  test.each([
+    ["Ko je napravio Bois Imperial?", "Quentin Bisch"],
+    ["Ko je parfimer Nice Bergamote?", "Antoine Maisondieu"],
+    ["Ko potpisuje Orange X Santal?", "Natalie Gracia-Cetto"],
+  ])("answers perfume authorship %s", (query, expectedName) => {
+    const result = resolveFragranceKnowledgeQuery(query, "sr");
+    expect(result.handled).toBe(true);
+    expect(result.type).toBe("fragrance");
+    expect(result.answer).toContain(expectedName);
+  });
+
+  test("answers which verified perfumes by a perfumer are in PlayNice", () => {
+    const products = [
+      { slug: "bois-imperial-essential-parfums" },
+      { slug: "essential-parfums-nice-bergamote" },
+    ];
+
+    const result = resolveFragranceKnowledgeQuery(
+      "Šta imate od Quentin Bisch?",
+      "sr",
+      { products }
+    );
+
+    expect(result.handled).toBe(true);
+    expect(result.answer).toContain("Bois Impérial");
+    expect(result.answer).not.toContain("Nice Bergamote");
+  });
+
+  test("does not claim catalog availability when product is absent", () => {
+    const result = resolveFragranceKnowledgeQuery(
+      "Šta imate od Quentin Bisch?",
+      "sr",
+      { products: [] }
+    );
+
+    expect(result.handled).toBe(true);
+    expect(result.answer).toContain("nemam potvrđen");
   });
 
   test("routes fragrance house question into knowledge", () => {
