@@ -181,6 +181,109 @@ export const perfumers = [
     ],
   },
   {
+    id: "anne-flipo",
+    name: "Anne Flipo",
+    aliases: [
+      "anne flipo",
+      "an flipo",
+    ],
+    role: "Master Perfumer",
+    summary: {
+      sr: "Anne Flipo je Master Perfumer u IFF-u i jedna od najuticajnijih savremenih parfimerki. IFF je navodi kao autorku ili koautorku parfema kao što su La Vie Est Belle, Libre, Invictus i L’Interdit.",
+      en: "Anne Flipo is a Master Perfumer at IFF and one of the most influential contemporary perfumers. IFF credits her as creator or co-creator of fragrances including La Vie Est Belle, Libre, Invictus and L’Interdit.",
+    },
+    notableWorks: [
+      { name: "La Vie Est Belle", brand: "Lancôme", verified: true },
+      { name: "Libre", brand: "Yves Saint Laurent", verified: true },
+      { name: "L’Interdit", brand: "Givenchy", verified: true },
+    ],
+    sources: [
+      {
+        label: "IFF — Anne Flipo Lifetime Achievement Award",
+        url: "https://www.iff.com/media/news/iff-master-perfumer-anne-flipo-receives-fragrance-foundation-lifetime-achievement-award/",
+        type: "employer-official",
+      },
+    ],
+  },
+  {
+    id: "carlos-benaim",
+    name: "Carlos Benaïm",
+    aliases: [
+      "carlos benaim",
+      "carlos benaïm",
+      "karlos benaim",
+    ],
+    role: "Master Perfumer",
+    summary: {
+      sr: "Carlos Benaïm je Master Perfumer u IFF-u sa karijerom dužom od šest decenija. IFF ga navodi kao autora ili koautora brojnih poznatih parfema, među njima Polo, Polo Blue, Eternity for Men, Flowerbomb i YSL Libre.",
+      en: "Carlos Benaïm is a Master Perfumer at IFF with a career spanning more than six decades. IFF credits him with creating or co-creating many major fragrances including Polo, Polo Blue, Eternity for Men, Flowerbomb and YSL Libre.",
+    },
+    notableWorks: [
+      { name: "Polo", brand: "Ralph Lauren", verified: true },
+      { name: "Polo Blue", brand: "Ralph Lauren", verified: true },
+      { name: "Eternity for Men", brand: "Calvin Klein", verified: true },
+    ],
+    sources: [
+      {
+        label: "IFF — Carlos Benaim",
+        url: "https://www.iff.com/experts/carlos-benaim/",
+        type: "employer-official",
+      },
+    ],
+  },
+  {
+    id: "olivier-cresp",
+    name: "Olivier Cresp",
+    aliases: [
+      "olivier cresp",
+      "olivije cresp",
+    ],
+    role: "Master Perfumer",
+    summary: {
+      sr: "Olivier Cresp je Master Perfumer u dsm-firmenichu, rođen i odrastao u Grasseu u porodici sa dugom tradicijom rada sa prirodnim mirisnim sirovinama. dsm-firmenich navodi da je u kompaniji od 1992.",
+      en: "Olivier Cresp is a Master Perfumer at dsm-firmenich, raised in Grasse in a family with a long tradition of working with natural fragrance materials. dsm-firmenich states that he has been with the company since 1992.",
+    },
+    notableWorks: [],
+    sources: [
+      {
+        label: "dsm-firmenich — Olivier Cresp",
+        url: "https://www.dsm-firmenich.com/en/businesses/perfumery-beauty/perfumery/fine-fragrance/people/olivier-cresp.html",
+        type: "employer-official",
+      },
+    ],
+  },
+  {
+    id: "hamid-merati-kashani",
+    name: "Hamid Merati-Kashani",
+    aliases: [
+      "hamid merati kashani",
+      "hamid merati-kashani",
+      "hamid merati",
+    ],
+    role: "Principal Perfumer",
+    summary: {
+      sr: "Hamid Merati-Kashani je Principal Perfumer u dsm-firmenichu. Njegov zvanični profil posebno naglašava snažnu vezu sa bliskoistočnom mirisnom kulturom i sirovinama.",
+      en: "Hamid Merati-Kashani is a Principal Perfumer at dsm-firmenich. His official profile highlights a strong connection to Middle Eastern olfactory culture and raw materials.",
+    },
+    notableWorks: [
+      { name: "Oriana", brand: "Parfums de Marly", verified: true },
+      { name: "Sedley", brand: "Parfums de Marly", verified: true },
+      { name: "Percival", brand: "Parfums de Marly", verified: true },
+    ],
+    sources: [
+      {
+        label: "dsm-firmenich — Hamid Merati-Kashani",
+        url: "https://www.dsm-firmenich.com/en/businesses/perfumery-beauty/perfumery/fine-fragrance/people/hamid-merati-kashani.html",
+        type: "employer-official",
+      },
+      {
+        label: "dsm-firmenich — Hamid Merati-Kashani wins",
+        url: "https://www.dsm-firmenich.com/content/dam/dsm-firmenich/perfumery-beauty/perfumery/perfumer-wins/Major%20Win%20List%20-%20Hamid%20Merati%20-%20Kashani.pdf.html",
+        type: "employer-official",
+      },
+    ],
+  },
+  {
     id: "dominique-ropion",
     name: "Dominique Ropion",
     aliases: [

@@ -43,6 +43,10 @@ describe("FI Knowledge — entity routing", () => {
     ["parfimer Alberto Morillas", "alberto-morillas"],
     ["Ko je Natalie Lorson?", "nathalie-lorson"],
     ["Dominik Ropion", "dominique-ropion"],
+    ["Ko je Anne Flipo?", "anne-flipo"],
+    ["Ko je Carlos Benaim?", "carlos-benaim"],
+    ["Ko je Olivier Cresp?", "olivier-cresp"],
+    ["Ko je Hamid Merati Kashani?", "hamid-merati-kashani"],
   ])("resolves perfumer %s", (query, expectedId) => {
     expect(findPerfumerByQuery(query)?.id).toBe(expectedId);
   });
@@ -61,6 +65,7 @@ describe("FI Knowledge — entity routing", () => {
     ["Ko je Frederic Malle?", "frederic-malle"],
     ["Šta je Givaudan?", "givaudan"],
     ["Šta je dsm-firmenich?", "dsm-firmenich"],
+    ["Šta je IFF?", "iff"],
   ])("resolves fragrance house/company %s", (query, expectedId) => {
     expect(findFragranceHouseByQuery(query)?.id).toBe(expectedId);
   });
@@ -172,6 +177,8 @@ describe("FI Knowledge — entity routing", () => {
     ["Koji parfimeri rade u dsm-firmenich?", "Alberto Morillas"],
     ["Koji parfimeri rade u Essential Parfums?", "Quentin Bisch"],
     ["Who works at Givaudan?", "Quentin Bisch"],
+    ["Ko radi u IFF-u?", "Anne Flipo"],
+    ["Ko radi u IFF-u?", "Carlos Benaïm"],
   ])("answers house-to-perfumer relationship %s", (query, expectedName) => {
     const result = resolveFragranceKnowledgeQuery(query, "sr");
     expect(result.handled).toBe(true);
@@ -182,6 +189,8 @@ describe("FI Knowledge — entity routing", () => {
     ["Gde radi Quentin Bisch?", "Givaudan"],
     ["Za koga radi Nathalie Lorson?", "dsm-firmenich"],
     ["Where does Alberto Morillas work?", "dsm-firmenich"],
+    ["Gde radi Olivier Cresp?", "dsm-firmenich"],
+    ["Gde radi Carlos Benaim?", "IFF"],
   ])("answers perfumer-to-house relationship %s", (query, expectedHouse) => {
     const result = resolveFragranceKnowledgeQuery(query, "sr");
     expect(result.handled).toBe(true);

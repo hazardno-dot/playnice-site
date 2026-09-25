@@ -7,6 +7,34 @@
 
 export const fragranceHouses = [
   {
+    id: "iff",
+    name: "IFF",
+    aliases: [
+      "iff",
+      "iff-u",
+      "iffu",
+      "international flavors fragrances",
+      "international flavors and fragrances",
+    ],
+    entityType: "fragrance-company",
+    summary: {
+      sr: "IFF (International Flavors & Fragrances) je globalna kompanija za mirise i sastojke. Među njenim Master Perfumerima u ovoj bazi su Anne Flipo, Carlos Benaïm i Dominique Ropion.",
+      en: "IFF (International Flavors & Fragrances) is a global fragrance and ingredients company. Master Perfumers represented in this knowledge base include Anne Flipo, Carlos Benaïm and Dominique Ropion.",
+    },
+    perfumerIds: [
+      "anne-flipo",
+      "carlos-benaim",
+      "dominique-ropion",
+    ],
+    sourceLinks: [
+      {
+        label: "IFF — Fine Fragrances",
+        url: "https://www.iff.com/scent/fine-fragrances/",
+        type: "employer-official",
+      },
+    ],
+  },
+  {
     id: "essential-parfums",
     name: "Essential Parfums",
     aliases: [
@@ -136,7 +164,12 @@ export const fragranceHouses = [
       sr: "dsm-firmenich je globalna kompanija za parfimeriju, beauty i sastojke. Alberto Morillas i Nathalie Lorson su među njenim istaknutim Master Perfumerima.",
       en: "dsm-firmenich is a global perfumery, beauty and ingredients company. Alberto Morillas and Nathalie Lorson are among its prominent Master Perfumers.",
     },
-    perfumerIds: ["alberto-morillas", "nathalie-lorson"],
+    perfumerIds: [
+      "alberto-morillas",
+      "nathalie-lorson",
+      "olivier-cresp",
+      "hamid-merati-kashani",
+    ],
     sourceLinks: [
       {
         label: "dsm-firmenich — Fine Fragrance People",
