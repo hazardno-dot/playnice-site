@@ -172,7 +172,16 @@ export const fragranceTerms = [
   {
     id: "neroli-orange-blossom",
     name: "Neroli and orange blossom",
-    aliases: ["neroli", "orange blossom", "cvet narandze", "cvijet narandze"],
+    aliases: [
+      "neroli",
+      "nerolija",
+      "orange blossom",
+      "orange blossoma",
+      "neroli i orange blossom",
+      "nerolija i orange blossoma",
+      "cvet narandze",
+      "cvijet narandze",
+    ],
     kind: "material",
     answer: {
       sr: "Neroli i orange blossom potiču od cvetova gorke narandže, ali nisu isti materijal. Neroli je etarsko ulje dobijeno destilacijom i često deluje sveže, zeleno, citrusno i blago gorko; orange blossom absolute se obično dobija ekstrakcijom i može biti bogatiji, topliji, slađi i senzualniji.",

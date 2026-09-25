@@ -56,6 +56,7 @@ describe("FI Knowledge — entity routing", () => {
     ["Kako i gde treba pravilno čuvati parfem?", "fragrance-storage"],
     ["Koja je razlika između designer i niche parfema?", "niche-designer-indie"],
     ["Šta su mirisne porodice?", "fragrance-families"],
+    ["Šta su parfemske porodice?", "fragrance-families"],
     ["Šta je chypre parfem?", "chypre"],
     ["Šta je fougere?", "fougere"],
     ["Šta znači gourmand parfem?", "gourmand"],
@@ -65,6 +66,7 @@ describe("FI Knowledge — entity routing", () => {
     ["Šta je pačuli?", "patchouli"],
     ["Šta je vetiver?", "vetiver"],
     ["Koja je razlika između nerolija i orange blossoma?", "neroli-orange-blossom"],
+    ["Koja je razlika između neroli i orange blossom?", "neroli-orange-blossom"],
     ["Šta je mošus u parfemu?", "musk"],
     ["Šta je fiksativ u parfemu?", "fixative"],
   ])("resolves explanatory fragrance term %s", (query, expectedId) => {
