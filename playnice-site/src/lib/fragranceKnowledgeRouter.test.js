@@ -2,6 +2,7 @@ import {
   classifyFragranceKnowledgeQuery,
   findPerfumerByQuery,
   findFragrancePersonalityByQuery,
+  findFragranceHouseByQuery,
   findFragranceTermByQuery,
   getPerfumerKnowledgeAnswer,
   resolveFragranceKnowledgeQuery,
@@ -43,6 +44,16 @@ describe("FI Knowledge — entity routing", () => {
     ["Dominik Ropion", "dominique-ropion"],
   ])("resolves perfumer %s", (query, expectedId) => {
     expect(findPerfumerByQuery(query)?.id).toBe(expectedId);
+  });
+
+  test.each([
+    ["Ko je Essential Parfums?", "essential-parfums"],
+    ["Šta je MFK?", "maison-francis-kurkdjian"],
+    ["Ko je Frederic Malle?", "frederic-malle"],
+    ["Šta je Givaudan?", "givaudan"],
+    ["Šta je dsm-firmenich?", "dsm-firmenich"],
+  ])("resolves fragrance house/company %s", (query, expectedId) => {
+    expect(findFragranceHouseByQuery(query)?.id).toBe(expectedId);
   });
 
   test("keeps Daniel René canonical without Serbian case ending in aliases", () => {
@@ -144,6 +155,29 @@ describe("FI Knowledge — entity routing", () => {
       });
     }
   );
+
+  test("routes fragrance house question into knowledge", () => {
+    const result = resolveFragranceKnowledgeQuery(
+      "Ko je Essential Parfums?",
+      "sr"
+    );
+
+    expect(result.handled).toBe(true);
+    expect(result.type).toBe("fragrance-house");
+    expect(result.entity.id).toBe("essential-parfums");
+    expect(result.answer).toContain("Essential Parfums");
+  });
+
+  test("routes fragrance company question into knowledge", () => {
+    const result = resolveFragranceKnowledgeQuery(
+      "Šta je Givaudan?",
+      "sr"
+    );
+
+    expect(result.handled).toBe(true);
+    expect(result.type).toBe("fragrance-company");
+    expect(result.entity.id).toBe("givaudan");
+  });
 
   test("routes verified perfumer question into knowledge", () => {
     const result = resolveFragranceKnowledgeQuery("Ko je Quentine Bish?", "sr");

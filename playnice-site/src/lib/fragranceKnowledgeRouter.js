@@ -1,6 +1,7 @@
 import { perfumers } from "../data/knowledge/perfumers";
 import { fragrancePersonalities } from "../data/knowledge/fragrancePersonalities";
 import { fragranceTerms } from "../data/knowledge/fragranceTerms";
+import { fragranceHouses } from "../data/knowledge/fragranceHouses";
 
 export const normalizeKnowledgeText = (value = "") =>
   String(value)
@@ -112,6 +113,18 @@ export const findPerfumerByQuery = (query) => {
   return matches[0]?.perfumer || null;
 };
 
+export const findFragranceHouseByQuery = (query) => {
+  const matches = fragranceHouses
+    .map((house) => ({
+      house,
+      alias: getAliasMatch(query, house),
+    }))
+    .filter((item) => Boolean(item.alias))
+    .sort((a, b) => b.alias.length - a.alias.length);
+
+  return matches[0]?.house || null;
+};
+
 export const findFragrancePersonalityByQuery = (query) => {
   const matches = fragrancePersonalities
     .map((person) => ({ person, alias: getAliasMatch(query, person) }))
@@ -147,6 +160,15 @@ export const classifyFragranceKnowledgeQuery = (query) => {
       type: "perfumer",
       confidence: PERFUMER_CUES.some((cue) => text.includes(cue)) ? "high" : "medium",
       entity: perfumer,
+    };
+  }
+
+  const house = findFragranceHouseByQuery(query);
+  if (house) {
+    return {
+      type: house.entityType || "fragrance-house",
+      confidence: "high",
+      entity: house,
     };
   }
 
@@ -186,6 +208,22 @@ export const getPerfumerKnowledgeAnswer = (perfumer, lang = "sr") => {
     : `${namedSummary} Među potvrđenim radovima u ovoj bazi su: ${works.join(", ")}.`;
 };
 
+export const getFragranceHouseKnowledgeAnswer = (
+  house,
+  lang = "sr"
+) => {
+  if (!house) return "";
+  const safeLang = lang === "en" ? "en" : "sr";
+  const summary =
+    house.summary?.[safeLang] ||
+    house.summary?.en ||
+    "";
+
+  return summary
+    ? `${house.name} — ${summary}`
+    : house.name;
+};
+
 export const getFragrancePersonalityKnowledgeAnswer = (person, lang = "sr") => {
   if (!person) return "";
   const safeLang = lang === "en" ? "en" : "sr";
@@ -219,6 +257,22 @@ export const resolveFragranceKnowledgeQuery = (query, lang = "sr") => {
       confidence: classification.confidence,
       entity: classification.entity,
       answer: getPerfumerKnowledgeAnswer(classification.entity, lang),
+    };
+  }
+
+  if (
+    classification.type === "fragrance-house" ||
+    classification.type === "fragrance-company"
+  ) {
+    return {
+      handled: true,
+      type: classification.type,
+      confidence: classification.confidence,
+      entity: classification.entity,
+      answer: getFragranceHouseKnowledgeAnswer(
+        classification.entity,
+        lang
+      ),
     };
   }
 

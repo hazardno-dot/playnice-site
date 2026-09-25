@@ -49,6 +49,11 @@ export const fiUltraRoutingBenchmark = {
     ["Šta je pačuli?", "fragrance-term"],
     ["Šta je Calone?", "fragrance-term"],
     ["Šta je fiksativ u parfemu?", "fragrance-term"],
+    ["Ko je Essential Parfums?", "fragrance-house"],
+    ["Šta je MFK?", "fragrance-house"],
+    ["Ko je Frederic Malle?", "fragrance-house"],
+    ["Šta je Givaudan?", "fragrance-company"],
+    ["Šta je dsm-firmenich?", "fragrance-company"],
   ],
 };
 
