@@ -21,7 +21,7 @@ const PERFUMER_CUES = [
 ];
 
 const KNOWLEDGE_CUES = [
-  "sta je", "sta su", "sta znaci", "objasni", "zasto", "zbog cega",
+  "sta je", "sta su", "sta znaci", "sta radi", "objasni", "zasto", "zbog cega",
   "kako", "koliko", "gde", "gdje", "ili", "da li", "koja je razlika", "razlika izmedju",
   "what is", "what does", "explain", "why", "how", "is it",
   "difference between", "meaning of",
