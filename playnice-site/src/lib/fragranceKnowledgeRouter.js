@@ -85,14 +85,50 @@ export const getPerfumerKnowledgeAnswer = (
     perfumer.summary?.en ||
     "";
 
+  const namedSummary = summary
+    ? `${perfumer.name} — ${summary}`
+    : perfumer.name;
+
   const works = (perfumer.notableWorks || [])
     .filter((work) => work.verified)
     .slice(0, 3)
     .map((work) => `${work.name} — ${work.brand}`);
 
-  if (!works.length) return summary;
+  if (!works.length) return namedSummary;
 
   return safeLang === "en"
-    ? `${summary} Verified works in this knowledge set include: ${works.join(", ")}.`
-    : `${summary} Među potvrđenim radovima u ovoj bazi su: ${works.join(", ")}.`;
+    ? `${namedSummary} Verified works in this knowledge set include: ${works.join(", ")}.`
+    : `${namedSummary} Među potvrđenim radovima u ovoj bazi su: ${works.join(", ")}.`;
+};
+
+export const resolveFragranceKnowledgeQuery = (
+  query,
+  lang = "sr"
+) => {
+  const classification =
+    classifyFragranceKnowledgeQuery(query);
+
+  if (
+    classification.type !== "perfumer" ||
+    !classification.entity
+  ) {
+    return {
+      handled: false,
+      type: "unknown",
+      confidence: "low",
+      entity: null,
+      answer: "",
+    };
+  }
+
+  return {
+    handled: true,
+    type: "perfumer",
+    confidence: classification.confidence,
+    entity: classification.entity,
+    answer: getPerfumerKnowledgeAnswer(
+      classification.entity,
+      lang
+    ),
+  };
 };

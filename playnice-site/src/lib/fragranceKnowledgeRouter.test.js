@@ -2,6 +2,7 @@ import {
   classifyFragranceKnowledgeQuery,
   findPerfumerByQuery,
   getPerfumerKnowledgeAnswer,
+  resolveFragranceKnowledgeQuery,
 } from "./fragranceKnowledgeRouter";
 
 describe("FI Knowledge — perfumer routing", () => {
@@ -38,6 +39,35 @@ describe("FI Knowledge — perfumer routing", () => {
     expect(result.type).toBe("perfumer");
     expect(result.confidence).toBe("high");
     expect(result.entity.id).toBe("quentin-bisch");
+  });
+
+  test.each([
+    "Sveže za leto do 15 €",
+    "Nešto kao Naxos",
+    "Čisto i elegantno za posao",
+    "Date night, not too sweet",
+  ])("does not intercept existing Discovery Engine query: %s", (query) => {
+    expect(
+      resolveFragranceKnowledgeQuery(query, "sr")
+    ).toEqual({
+      handled: false,
+      type: "unknown",
+      confidence: "low",
+      entity: null,
+      answer: "",
+    });
+  });
+
+  test("routes a verified perfumer question into knowledge without touching discovery", () => {
+    const result = resolveFragranceKnowledgeQuery(
+      "Ko je Quentine Bish?",
+      "sr"
+    );
+
+    expect(result.handled).toBe(true);
+    expect(result.type).toBe("perfumer");
+    expect(result.entity.id).toBe("quentin-bisch");
+    expect(result.answer).toContain("Quentin Bisch");
   });
 
   test("renders a source-backed perfumer answer without external generation", () => {

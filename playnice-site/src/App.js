@@ -3826,6 +3826,40 @@ const getDiscoveryAnalyticsParams = (
     return;
   }
 
+      // Knowledge is an opt-in side route: only verified entities are
+      // intercepted. Every other query falls through to the existing
+      // Discovery Engine unchanged.
+      const { resolveFragranceKnowledgeQuery } =
+        await import("./lib/fragranceKnowledgeRouter");
+
+      const knowledge =
+        resolveFragranceKnowledgeQuery(
+          nextQuery,
+          lang
+        );
+
+      if (knowledge.handled) {
+        discoverySearchContextRef.current = null;
+
+        trackEvent("discovery_knowledge_answer", {
+          lang,
+          search_source: source,
+          knowledge_type: knowledge.type,
+          knowledge_confidence:
+            knowledge.confidence,
+          entity_id:
+            knowledge.entity?.id || "",
+        });
+
+        setDiscoveryQuery(nextQuery);
+        setDiscoveryResults([]);
+        setDiscoveryFeedback(
+          knowledge.answer || ""
+        );
+        setDiscoveryPage(1);
+        return;
+      }
+
       const [
         { discoverFragrances },
         { discoveryProfiles },
@@ -5733,6 +5767,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 onClick={() => {
                     setDiscoveryQuery("");
                     setDiscoveryResults([]);
+                    setDiscoveryFeedback("");
                     setDiscoveryPage(1);
                   }}
                 aria-label={lang === "sr" ? "Obriši upit" : "Clear query"}
@@ -5800,6 +5835,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
                 onClick={() => {
                   setDiscoveryQuery("");
                   setDiscoveryResults([]);
+                  setDiscoveryFeedback("");
                   setDiscoveryPage(1);
                 }}
               >
