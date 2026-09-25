@@ -8,6 +8,103 @@
 
 export const fragrancePerfumes = [
   {
+    id: "baccarat-rouge-540-edp",
+    name: "Baccarat Rouge 540 Eau de Parfum",
+    aliases: [
+      "baccarat rouge 540",
+      "br540",
+      "baccarat 540",
+      "baccarat rouge 540 edp",
+    ],
+    entityType: "fragrance",
+    houseId: "maison-francis-kurkdjian",
+    perfumerIds: ["francis-kurkdjian"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "Baccarat Rouge 540 Eau de Parfum je kreacija Francisa Kurkdjiana za Maison Francis Kurkdjian, nastala iz saradnje kuće sa Baccaratom. Kuća je opisuje kao drvenasto-ambrasto-cvetnu kompoziciju zasnovanu na kontrastu jasmina, šafrana, ambergris efekta i suvih drvenih tonova.",
+      en: "Baccarat Rouge 540 Eau de Parfum is a creation by Francis Kurkdjian for Maison Francis Kurkdjian, born from the house's collaboration with Baccarat. The house describes it as a woody-amber-floral composition built around jasmine, saffron, an ambergris effect and dry woods.",
+    },
+    sources: [
+      {
+        label: "Maison Francis Kurkdjian — Baccarat Rouge 540",
+        url: "https://www.franciskurkdjian.com/us-en/landing_page_baccarat-rouge-540.html",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "twilly-d-hermes-edp",
+    name: "Twilly d’Hermès Eau de Parfum",
+    aliases: [
+      "twilly d hermes",
+      "twilly d’hermès",
+      "twilly d hermes edp",
+      "twilly hermes",
+    ],
+    entityType: "fragrance",
+    houseId: "hermes",
+    perfumerIds: ["christine-nagel"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "Twilly d’Hermès Eau de Parfum kreirala je Christine Nagel 2017. Hermès ga opisuje kao floralno-začinski parfem sa đumbirom, tuberozom i sandalovinom.",
+      en: "Twilly d’Hermès Eau de Parfum was created by Christine Nagel in 2017. Hermès describes it as a floral-spicy fragrance built around ginger, tuberose and sandalwood.",
+    },
+    sources: [
+      {
+        label: "Hermès — Twilly d’Hermès Eau de Parfum",
+        url: "https://www.hermes.com/us/en/product/twilly-d-hermes-eau-de-parfum-V107264V0/",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "tutti-twilly-d-hermes-edp",
+    name: "Tutti Twilly d’Hermès Eau de Parfum",
+    aliases: [
+      "tutti twilly",
+      "tutti twilly d hermes",
+      "tutti twilly d’hermès",
+    ],
+    entityType: "fragrance",
+    houseId: "hermes",
+    perfumerIds: ["christine-nagel"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "Tutti Twilly d’Hermès Eau de Parfum kreirala je Christine Nagel za Hermès. Kompozicija je floralno-voćna, sa đumbirovim cvetom, ličijem i mošusom.",
+      en: "Tutti Twilly d’Hermès Eau de Parfum was created by Christine Nagel for Hermès. It is a floral-fruity composition built around ginger blossom, lychee and musk.",
+    },
+    sources: [
+      {
+        label: "Hermès — Tutti Twilly d’Hermès",
+        url: "https://www.hermes.com/us/en/product/tutti-twilly-d-hermes-eau-de-parfum-V110826V0/",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "un-jardin-sur-la-lagune",
+    name: "Un Jardin sur la Lagune",
+    aliases: [
+      "un jardin sur la lagune",
+      "jardin sur la lagune",
+    ],
+    entityType: "fragrance",
+    houseId: "hermes",
+    perfumerIds: ["christine-nagel"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "Un Jardin sur la Lagune je Hermès kompozicija Christine Nagel iz 2019. Hermès ga opisuje kao floralno-drvenast miris inspirisan skrivenim vrtom u Veneciji, sa magnolijom, pittosporumom i Madonna ljiljanom.",
+      en: "Un Jardin sur la Lagune is a 2019 Hermès composition by Christine Nagel. Hermès describes it as a floral-woody fragrance inspired by a hidden garden in Venice, with magnolia, pittosporum and Madonna lily.",
+    },
+    sources: [
+      {
+        label: "Hermès — Un Jardin sur la Lagune",
+        url: "https://www.hermes.com/ca/en/product/compose-your-own-set-of-4-travel-sizes-V4NOMADEGIFT/",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
     id: "ganymede",
     name: "Ganymede",
     aliases: ["ganymede", "ganymede marc antoine barrois"],

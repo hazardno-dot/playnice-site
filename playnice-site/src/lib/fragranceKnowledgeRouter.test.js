@@ -64,6 +64,10 @@ describe("FI Knowledge — entity routing", () => {
     ["Ko je napravio Le Male?", "le-male"],
     ["Ko potpisuje Portrait of a Lady?", "portrait-of-a-lady"],
     ["Ko je parfimer Carnal Flower?", "carnal-flower"],
+    ["Ko je napravio Baccarat Rouge 540?", "baccarat-rouge-540-edp"],
+    ["Ko je napravio Twilly d Hermes?", "twilly-d-hermes-edp"],
+    ["Ko je napravio Tutti Twilly?", "tutti-twilly-d-hermes-edp"],
+    ["Ko potpisuje Un Jardin sur la Lagune?", "un-jardin-sur-la-lagune"],
   ])("resolves fragrance entity %s", (query, expectedId) => {
     expect(findPerfumeByQuery(query)?.id).toBe(expectedId);
   });
@@ -215,6 +219,10 @@ describe("FI Knowledge — entity routing", () => {
     ["Ko je napravio Le Male?", "Francis Kurkdjian"],
     ["Ko potpisuje Portrait of a Lady?", "Dominique Ropion"],
     ["Ko je parfimer Carnal Flower?", "Dominique Ropion"],
+    ["Ko je napravio Baccarat Rouge 540?", "Francis Kurkdjian"],
+    ["Ko je napravio Twilly d Hermes?", "Christine Nagel"],
+    ["Ko je napravio Tutti Twilly?", "Christine Nagel"],
+    ["Ko potpisuje Un Jardin sur la Lagune?", "Christine Nagel"],
   ])("answers perfume authorship %s", (query, expectedName) => {
     const result = resolveFragranceKnowledgeQuery(query, "sr");
     expect(result.handled).toBe(true);
