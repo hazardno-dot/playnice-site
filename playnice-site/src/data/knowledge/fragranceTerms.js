@@ -9,6 +9,171 @@
 export const fragranceTerms = [
 
   {
+    id: "spray-count",
+    name: "Spray count",
+    aliases: [
+      "koliko prskanja",
+      "broj prskanja",
+      "how many sprays",
+      "spray count",
+    ],
+    kind: "usage",
+    answer: {
+      sr: "Ne postoji univerzalan broj prskanja koji važi za svaki parfem. Jačina formule, atomizer, koncentracija, stil mirisa, temperatura, prostor i lična tolerancija menjaju optimalnu dozu. Kao praktičan pristup, kreni skromnije i proceni projekciju posle 15–30 minuta pre nego što dodaš još.",
+      en: "There is no universal spray count that works for every fragrance. Formula strength, atomizer output, concentration, fragrance style, temperature, setting and personal tolerance all affect the appropriate dose. A practical approach is to start modestly and reassess projection after 15–30 minutes before adding more.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — How to wear perfume",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/how-to-wear-perfume/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "skin-vs-clothes",
+    name: "Skin vs clothes",
+    aliases: [
+      "parfem na koži ili odeći",
+      "parfem na kozi ili odeci",
+      "skin or clothes",
+      "perfume on clothes",
+      "perfume on skin",
+    ],
+    kind: "usage",
+    answer: {
+      sr: "Na koži parfem reaguje sa temperaturom, vlagom i sebumom pa se razvoj mirisa vidi potpunije. Na odeći često traje duže jer je isparavanje sporije, ali razvoj može biti ravniji i postoji rizik od fleka ili oštećenja osetljivih materijala. Za procenu mirisa koža je korisnija; za produžen trag odeća može pomoći ako je tkanina bezbedna za prskanje.",
+      en: "On skin, fragrance interacts with warmth, moisture and skin oils, so its development is easier to observe. On clothing it often lasts longer because evaporation is slower, but the scent can develop more linearly and there is a risk of staining or damaging delicate fabrics. Skin is better for evaluating a fragrance; clothing can extend the trail when the fabric is safe to spray.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — How to wear perfume",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/how-to-wear-perfume/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "pulse-points",
+    name: "Pulse points",
+    aliases: [
+      "pulse points",
+      "pulse point",
+      "tačke pulsa",
+      "tacke pulsa",
+      "gde nanositi parfem",
+      "gdje nanositi parfem",
+    ],
+    kind: "usage",
+    answer: {
+      sr: "Tačke pulsa su toplije zone poput vrata, ručnih zglobova i pregiba laktova. Toplota može pomoći isparavanju i difuziji mirisa, ali nema potrebe trljati zglobove jedan o drugi — to ne poboljšava parfem i može ubrzati promenu najhlapljivijih nota.",
+      en: "Pulse points are warmer areas such as the neck, wrists and inner elbows. Warmth can help evaporation and diffusion, but there is no need to rub the wrists together; rubbing does not improve the fragrance and can accelerate the loss of the most volatile opening materials.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — How to wear perfume",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/how-to-wear-perfume/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "weather-performance",
+    name: "Weather and fragrance performance",
+    aliases: [
+      "vreme i parfem",
+      "vrijeme i parfem",
+      "temperatura i parfem",
+      "weather and perfume",
+      "heat and perfume",
+      "cold weather perfume",
+    ],
+    kind: "performance",
+    answer: {
+      sr: "Temperatura menja brzinu isparavanja mirisnih materijala. Toplota obično pojačava difuziju i projekciju, dok hladnoća usporava isparavanje i može učiniti parfem mirnijim i zatvorenijim. Zato isti parfem može delovati znatno drugačije leti i zimi, iako formula nije promenjena.",
+      en: "Temperature changes the evaporation rate of fragrance materials. Heat generally increases diffusion and projection, while cold slows evaporation and can make a fragrance feel quieter and more closed. The same perfume can therefore behave very differently in summer and winter even though the formula has not changed.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — How perfume works",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/how-does-perfume-work/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "humidity-performance",
+    name: "Humidity and fragrance performance",
+    aliases: [
+      "vlaga i parfem",
+      "vlažnost i parfem",
+      "vlaznost i parfem",
+      "humidity and perfume",
+      "humid weather perfume",
+    ],
+    kind: "performance",
+    answer: {
+      sr: "Vlažnost može promeniti način na koji parfem deluje u vazduhu i na koži. U toplom i vlažnom okruženju miris često deluje punije i prisutnije, pa teške, slatke ili vrlo amberske kompozicije mogu brže postati napadne. To je razlog da se doza prilagodi uslovima, a ne samo koncentraciji na etiketi.",
+      en: "Humidity can change how a fragrance feels in the air and on skin. In warm, humid conditions a scent can feel fuller and more present, so heavy, sweet or strongly ambery compositions may become overwhelming more quickly. This is why dosage should adapt to conditions, not only to the concentration printed on the label.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — How to wear perfume",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/how-to-wear-perfume/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "seasonality",
+    name: "Fragrance seasonality",
+    aliases: [
+      "sezonski parfem",
+      "parfem po sezoni",
+      "parfem za godišnje doba",
+      "parfem za godisnje doba",
+      "fragrance seasonality",
+      "seasonal fragrance",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Sezonske oznake u parfimeriji su praktična smernica, ne fizičko pravilo. Sveži citrusni, aromatični i aquatic mirisi često su lakši za visoke temperature, dok bogati amber, gourmand, oud i začinski profili često bolje podnose hladnoću. Ali doza, klima, prostor i lični ukus mogu biti važniji od same oznake 'letnji' ili 'zimski'.",
+      en: "Seasonal labels in perfumery are practical guidance, not a physical rule. Fresh citrus, aromatic and aquatic scents are often easier to wear in high heat, while rich amber, gourmand, oud and spicy profiles often suit colder conditions. But dosage, climate, setting and personal taste can matter more than the label 'summer' or 'winter'.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Choosing fragrance",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "overapplication",
+    name: "Overapplication",
+    aliases: [
+      "previše parfema",
+      "previse parfema",
+      "previše prskanja",
+      "previse prskanja",
+      "overapplication",
+      "too much perfume",
+    ],
+    kind: "usage",
+    answer: {
+      sr: "Preterano nanošenje može pojačati projekciju do nivoa koji je neprijatan drugima, naročito u zatvorenim prostorima. Takođe može ubrzati olfaktornu adaptaciju, pa osoba koja nosi parfem ima utisak da ga više ne oseća dok je drugima i dalje vrlo jak. Manja početna doza je pouzdanija od naknadnog 'jurjenja' mirisa dodatnim prskanjem.",
+      en: "Overapplication can increase projection to a level that is uncomfortable for others, especially indoors. It can also accelerate olfactory adaptation, making the wearer feel the scent has disappeared while it remains strong to other people. A smaller initial dose is more reliable than chasing the scent with repeated extra sprays.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — How to wear perfume",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/how-to-wear-perfume/",
+        type: "industry-education",
+      },
+    ],
+  },
+
+  {
     id: "drydown",
     name: "Drydown",
     aliases: ["drydown", "dry down", "sušenje parfema", "završnica parfema"],
