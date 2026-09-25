@@ -158,6 +158,8 @@ describe("FI Knowledge — entity routing", () => {
 
   test.each([
     ["Ko radi u Givaudanu?", "Quentin Bisch"],
+    ["Ko radi u Givaudan?", "Quentin Bisch"],
+    ["Koji parfimeri rade u dsm-firmenichu?", "Alberto Morillas"],
     ["Koji parfimeri rade u dsm-firmenich?", "Alberto Morillas"],
     ["Koji parfimeri rade u Essential Parfums?", "Quentin Bisch"],
     ["Who works at Givaudan?", "Quentin Bisch"],

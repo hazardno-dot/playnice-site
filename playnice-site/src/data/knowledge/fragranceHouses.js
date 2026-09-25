@@ -9,7 +9,12 @@ export const fragranceHouses = [
   {
     id: "essential-parfums",
     name: "Essential Parfums",
-    aliases: ["essential parfums", "essential perfumes"],
+    aliases: [
+      "essential parfums",
+      "essential perfumes",
+      "essential parfumsu",
+      "essential parfums-u",
+    ],
     entityType: "fragrance-house",
     summary: {
       sr: "Essential Parfums je francuska parfemska kuća osnovana 2018. sa idejom da fokus vrati na parfemere i kvalitet sirovina. Kuća javno ističe autore svake kompozicije i sarađuje sa poznatim parfimerima poput Quentina Bischa, Nathalie Lorson i drugih.",
@@ -27,7 +32,13 @@ export const fragranceHouses = [
   {
     id: "maison-francis-kurkdjian",
     name: "Maison Francis Kurkdjian",
-    aliases: ["maison francis kurkdjian", "mfk"],
+    aliases: [
+      "maison francis kurkdjian",
+      "maison francis kurkdjianu",
+      "mfk",
+      "mfk-u",
+      "mfku",
+    ],
     entityType: "fragrance-house",
     summary: {
       sr: "Maison Francis Kurkdjian je parfemska kuća koju su 2009. osnovali Francis Kurkdjian i Marc Chaya. Kuća je izgrađena oko Kurkdjianovog autorskog pristupa parfimeriji i danas je deo LVMH grupe.",
@@ -45,7 +56,12 @@ export const fragranceHouses = [
   {
     id: "frederic-malle",
     name: "Éditions de Parfums Frédéric Malle",
-    aliases: ["frederic malle", "frédéric malle", "editions de parfums frederic malle"],
+    aliases: [
+      "frederic malle",
+      "frédéric malle",
+      "frederic malleu",
+      "editions de parfums frederic malle",
+    ],
     entityType: "fragrance-house",
     summary: {
       sr: "Éditions de Parfums Frédéric Malle je kuća pokrenuta 2000. sa uredničkim pristupom: parfimerima daje autorski prostor i jasno ih potpisuje uz svaku kompoziciju. Dominique Ropion je jedan od najvažnijih saradnika kuće.",
@@ -63,7 +79,12 @@ export const fragranceHouses = [
   {
     id: "dior",
     name: "Dior",
-    aliases: ["dior", "parfums christian dior", "christian dior"],
+    aliases: [
+      "dior",
+      "dioru",
+      "parfums christian dior",
+      "christian dior",
+    ],
     entityType: "fragrance-house",
     summary: {
       sr: "Parfums Christian Dior je parfemski ogranak kuće Dior. Francis Kurkdjian je 2021. imenovan za Perfume Creation Director i vodi savremeni kreativni pravac parfema kuće.",
@@ -81,7 +102,10 @@ export const fragranceHouses = [
   {
     id: "givaudan",
     name: "Givaudan",
-    aliases: ["givaudan"],
+    aliases: [
+      "givaudan",
+      "givaudanu",
+    ],
     entityType: "fragrance-company",
     summary: {
       sr: "Givaudan je jedna od najvećih svetskih kompanija za mirise i ukuse i zapošljava veliki broj vodećih parfumera. Quentin Bisch radi u Givaudanu kao parfimer.",
@@ -99,7 +123,14 @@ export const fragranceHouses = [
   {
     id: "dsm-firmenich",
     name: "dsm-firmenich",
-    aliases: ["dsm firmenich", "dsm-firmenich", "firmenich"],
+    aliases: [
+      "dsm firmenich",
+      "dsm-firmenich",
+      "dsm firmenichu",
+      "dsm-firmenichu",
+      "firmenich",
+      "firmenichu",
+    ],
     entityType: "fragrance-company",
     summary: {
       sr: "dsm-firmenich je globalna kompanija za parfimeriju, beauty i sastojke. Alberto Morillas i Nathalie Lorson su među njenim istaknutim Master Perfumerima.",
