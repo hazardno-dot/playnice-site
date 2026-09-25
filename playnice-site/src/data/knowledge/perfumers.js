@@ -1,0 +1,153 @@
+/*
+ * PLAYNICE FI KNOWLEDGE — PERFUMERS
+ *
+ * Curated, source-backed facts only.
+ * Do not add uncertain identities, attributions, employers or works as facts.
+ * Keep aliases for common spelling/transliteration mistakes so FI can resolve
+ * natural customer language without inventing a person.
+ */
+
+export const perfumers = [
+  {
+    id: "quentin-bisch",
+    name: "Quentin Bisch",
+    aliases: [
+      "quentin bisch",
+      "quentine bisch",
+      "quentin bish",
+      "quentine bish",
+    ],
+    role: "Master Perfumer",
+    summary: {
+      sr: "Francuski parfimer poznat po izražajnom, modernom pristupu kompoziciji. Essential Parfums ga predstavlja kao Master Perfumera; među njegovim radovima za kuću je Bois Impérial.",
+      en: "A French perfumer known for an expressive, modern approach to composition. Essential Parfums presents him as a Master Perfumer; his work for the house includes Bois Impérial.",
+    },
+    notableWorks: [
+      {
+        name: "Bois Impérial",
+        brand: "Essential Parfums",
+        verified: true,
+      },
+    ],
+    sources: [
+      {
+        label: "Essential Parfums — Quentin Bisch",
+        url: "https://www.essentialparfums.com/pages/quentin-bisch",
+        type: "brand-official",
+      },
+      {
+        label: "Essential Parfums — Bois Impérial",
+        url: "https://www.essentialparfums.com/en/collections/bois-imperial",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "francis-kurkdjian",
+    name: "Francis Kurkdjian",
+    aliases: [
+      "francis kurkdjian",
+      "francis kurkdijan",
+      "fransis kurkdjian",
+      "fransis kurkdijan",
+    ],
+    role: "Perfume Creation Director, Parfums Christian Dior",
+    summary: {
+      sr: "Parfimer i suosnivač Maison Francis Kurkdjian. Dior navodi da je sa 25 godina komponovao Jean Paul Gaultier Le Male i da je 2021. imenovan za direktora kreacije parfema Parfums Christian Dior.",
+      en: "Perfumer and co-founder of Maison Francis Kurkdjian. Dior states that he composed Jean Paul Gaultier Le Male at age 25 and was appointed Perfume Creation Director at Parfums Christian Dior in 2021.",
+    },
+    notableWorks: [
+      {
+        name: "Le Male",
+        brand: "Jean Paul Gaultier",
+        verified: true,
+      },
+    ],
+    sources: [
+      {
+        label: "Dior — Francis Kurkdjian",
+        url: "https://www.dior.com/en_gb/beauty/fragrance/dlp-franciskurkdjian.html",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "alberto-morillas",
+    name: "Alberto Morillas",
+    aliases: [
+      "alberto morillas",
+      "alberto morilas",
+    ],
+    role: "Master Perfumer",
+    summary: {
+      sr: "Master Perfumer u dsm-firmenichu, sa višedecenijskom karijerom i snažnim osloncem na istoriju parfimerije, prirodne tehnike i savremene mirisne molekule.",
+      en: "A Master Perfumer at dsm-firmenich with a career spanning decades, combining deep knowledge of perfume history with natural techniques and modern aroma molecules.",
+    },
+    notableWorks: [],
+    sources: [
+      {
+        label: "dsm-firmenich — Alberto Morillas",
+        url: "https://www.dsm-firmenich.com/en/businesses/perfumery-beauty/perfumery/fine-fragrance/people/alberto-morillas.html",
+        type: "employer-official",
+      },
+    ],
+  },
+  {
+    id: "nathalie-lorson",
+    name: "Nathalie Lorson",
+    aliases: [
+      "nathalie lorson",
+      "natalie lorson",
+      "natali lorson",
+    ],
+    role: "Master Perfumer",
+    summary: {
+      sr: "Master Perfumer u dsm-firmenichu. Njen zvanični profil naglašava jednostavne, rezonantne formule i precizno doziranje sastojaka.",
+      en: "A Master Perfumer at dsm-firmenich. Her official profile emphasizes simple, resonant formulas and precise ingredient dosage.",
+    },
+    notableWorks: [
+      { name: "Black Opium", brand: "Yves Saint Laurent", verified: true },
+      { name: "Encre Noire", brand: "Lalique", verified: true },
+      { name: "Another 13", brand: "Le Labo", verified: true },
+    ],
+    sources: [
+      {
+        label: "dsm-firmenich — Nathalie Lorson",
+        url: "https://www.dsm-firmenich.com/en/businesses/perfumery-beauty/perfumery/fine-fragrance/people/nathalie-lorson.html",
+        type: "employer-official",
+      },
+      {
+        label: "dsm-firmenich — Nathalie Lorson major wins",
+        url: "https://www.dsm-firmenich.com/content/dam/dsm-firmenich/perfumery-beauty/perfumery/perfumer-wins/Major%20Win%20List%20-%20Nathalie%20Lorson.pdf",
+        type: "employer-official",
+      },
+    ],
+  },
+  {
+    id: "dominique-ropion",
+    name: "Dominique Ropion",
+    aliases: [
+      "dominique ropion",
+      "dominik ropion",
+    ],
+    role: "Perfumer",
+    summary: {
+      sr: "Parfimer poznat po preciznom balansu snažnih materijala i detaljno građenih akorda. Frédéric Malle ga opisuje kao perfekcionistu i inventivnog autora.",
+      en: "A perfumer known for balancing powerful materials with meticulously built accords. Frédéric Malle describes him as a perfectionist and inventive creator.",
+    },
+    notableWorks: [
+      { name: "Portrait of a Lady", brand: "Frédéric Malle", verified: true },
+      { name: "Carnal Flower", brand: "Frédéric Malle", verified: true },
+      { name: "Vetiver Extraordinaire", brand: "Frédéric Malle", verified: true },
+    ],
+    sources: [
+      {
+        label: "Frédéric Malle — Dominique Ropion",
+        url: "https://www.fredericmalle.com/perfumer/dominique-ropion",
+        type: "brand-official",
+      },
+    ],
+  },
+];
+
+export default perfumers;

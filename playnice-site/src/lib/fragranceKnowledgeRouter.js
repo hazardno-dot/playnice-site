@@ -1,0 +1,98 @@
+import { perfumers } from "../data/knowledge/perfumers";
+
+export const normalizeKnowledgeText = (value = "") =>
+  String(value)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "dj")
+    .replace(/[’']/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const PERFUMER_CUES = [
+  "ko je",
+  "who is",
+  "parfimer",
+  "perfumer",
+  "nos",
+  "potpisuje",
+  "napravio",
+  "napravila",
+  "created",
+  "creator",
+  "nose",
+];
+
+const getAliasMatch = (query, entity) => {
+  const normalizedQuery = normalizeKnowledgeText(query);
+  const aliases = (entity.aliases || [])
+    .map(normalizeKnowledgeText)
+    .filter(Boolean)
+    .sort((a, b) => b.length - a.length);
+
+  return aliases.find((alias) =>
+    normalizedQuery === alias ||
+    normalizedQuery.startsWith(alias + " ") ||
+    normalizedQuery.endsWith(" " + alias) ||
+    normalizedQuery.includes(" " + alias + " ")
+  );
+};
+
+export const findPerfumerByQuery = (query) => {
+  const matches = perfumers
+    .map((perfumer) => ({
+      perfumer,
+      alias: getAliasMatch(query, perfumer),
+    }))
+    .filter((item) => Boolean(item.alias))
+    .sort((a, b) => b.alias.length - a.alias.length);
+
+  return matches[0]?.perfumer || null;
+};
+
+export const classifyFragranceKnowledgeQuery = (query) => {
+  const text = normalizeKnowledgeText(query);
+  const perfumer = findPerfumerByQuery(query);
+
+  if (perfumer) {
+    return {
+      type: "perfumer",
+      confidence: PERFUMER_CUES.some((cue) => text.includes(cue))
+        ? "high"
+        : "medium",
+      entity: perfumer,
+    };
+  }
+
+  return {
+    type: "unknown",
+    confidence: "low",
+    entity: null,
+  };
+};
+
+export const getPerfumerKnowledgeAnswer = (
+  perfumer,
+  lang = "sr"
+) => {
+  if (!perfumer) return "";
+
+  const safeLang = lang === "en" ? "en" : "sr";
+  const summary =
+    perfumer.summary?.[safeLang] ||
+    perfumer.summary?.en ||
+    "";
+
+  const works = (perfumer.notableWorks || [])
+    .filter((work) => work.verified)
+    .slice(0, 3)
+    .map((work) => `${work.name} — ${work.brand}`);
+
+  if (!works.length) return summary;
+
+  return safeLang === "en"
+    ? `${summary} Verified works in this knowledge set include: ${works.join(", ")}.`
+    : `${summary} Među potvrđenim radovima u ovoj bazi su: ${works.join(", ")}.`;
+};
