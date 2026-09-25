@@ -1,5 +1,6 @@
 import { perfumers } from "../data/knowledge/perfumers";
 import { fragrancePersonalities } from "../data/knowledge/fragrancePersonalities";
+import { fragranceTerms } from "../data/knowledge/fragranceTerms";
 
 export const normalizeKnowledgeText = (value = "") =>
   String(value)
@@ -15,6 +16,11 @@ export const normalizeKnowledgeText = (value = "") =>
 const PERFUMER_CUES = [
   "ko je", "who is", "parfimer", "perfumer", "nos",
   "potpisuje", "napravio", "napravila", "created", "creator", "nose",
+];
+
+const KNOWLEDGE_CUES = [
+  "sta je", "sta znaci", "objasni", "koja je razlika", "razlika izmedju",
+  "what is", "what does", "explain", "difference between", "meaning of",
 ];
 
 const getAliasMatch = (query, entity) => {
@@ -47,6 +53,21 @@ export const findFragrancePersonalityByQuery = (query) => {
   return matches[0]?.person || null;
 };
 
+export const findFragranceTermByQuery = (query) => {
+  const text = normalizeKnowledgeText(query);
+  const hasKnowledgeCue = KNOWLEDGE_CUES.some((cue) =>
+    text.includes(normalizeKnowledgeText(cue))
+  );
+  if (!hasKnowledgeCue) return null;
+
+  const matches = fragranceTerms
+    .map((term) => ({ term, alias: getAliasMatch(query, term) }))
+    .filter((item) => Boolean(item.alias))
+    .sort((a, b) => b.alias.length - a.alias.length);
+
+  return matches[0]?.term || null;
+};
+
 export const classifyFragranceKnowledgeQuery = (query) => {
   const text = normalizeKnowledgeText(query);
   const perfumer = findPerfumerByQuery(query);
@@ -64,6 +85,15 @@ export const classifyFragranceKnowledgeQuery = (query) => {
       type: "fragrance-personality",
       confidence: "high",
       entity: personality,
+    };
+  }
+
+  const term = findFragranceTermByQuery(query);
+  if (term) {
+    return {
+      type: "fragrance-term",
+      confidence: "high",
+      entity: term,
     };
   }
 
@@ -90,6 +120,12 @@ export const getFragrancePersonalityKnowledgeAnswer = (person, lang = "sr") => {
   const safeLang = lang === "en" ? "en" : "sr";
   const summary = person.summary?.[safeLang] || person.summary?.en || "";
   return summary ? `${person.name} — ${summary}` : person.name;
+};
+
+export const getFragranceTermKnowledgeAnswer = (term, lang = "sr") => {
+  if (!term) return "";
+  const safeLang = lang === "en" ? "en" : "sr";
+  return term.answer?.[safeLang] || term.answer?.en || "";
 };
 
 export const resolveFragranceKnowledgeQuery = (query, lang = "sr") => {
@@ -122,6 +158,16 @@ export const resolveFragranceKnowledgeQuery = (query, lang = "sr") => {
       confidence: classification.confidence,
       entity: classification.entity,
       answer: getFragrancePersonalityKnowledgeAnswer(classification.entity, lang),
+    };
+  }
+
+  if (classification.type === "fragrance-term") {
+    return {
+      handled: true,
+      type: "fragrance-term",
+      confidence: classification.confidence,
+      entity: classification.entity,
+      answer: getFragranceTermKnowledgeAnswer(classification.entity, lang),
     };
   }
 

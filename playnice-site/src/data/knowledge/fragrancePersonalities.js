@@ -13,7 +13,6 @@ export const fragrancePersonalities = [
     aliases: [
       "daniel rene",
       "daniel rené",
-      "daniel renea",
       "danielrenemusic",
       "daniel rene music",
     ],
