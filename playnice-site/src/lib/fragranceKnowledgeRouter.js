@@ -20,13 +20,48 @@ const PERFUMER_CUES = [
 
 const KNOWLEDGE_CUES = [
   "sta je", "sta znaci", "objasni", "zasto", "zbog cega",
-  "koja je razlika", "razlika izmedju",
-  "what is", "what does", "explain", "why",
+  "kako", "da li", "koja je razlika", "razlika izmedju",
+  "what is", "what does", "explain", "why", "how", "is it",
   "difference between", "meaning of",
 ];
 
+const containsOrderedTokens = (
+  queryText,
+  aliasText
+) => {
+  const queryTokens = queryText
+    .split(" ")
+    .filter(Boolean);
+  const aliasTokens = aliasText
+    .split(" ")
+    .filter(Boolean);
+
+  if (!aliasTokens.length) return false;
+
+  let queryIndex = 0;
+
+  for (const aliasToken of aliasTokens) {
+    while (
+      queryIndex < queryTokens.length &&
+      queryTokens[queryIndex] !== aliasToken
+    ) {
+      queryIndex += 1;
+    }
+
+    if (queryIndex >= queryTokens.length) {
+      return false;
+    }
+
+    queryIndex += 1;
+  }
+
+  return true;
+};
+
 const getAliasMatch = (query, entity) => {
-  const normalizedQuery = normalizeKnowledgeText(query);
+  const normalizedQuery =
+    normalizeKnowledgeText(query);
+
   return (entity.aliases || [])
     .map(normalizeKnowledgeText)
     .filter(Boolean)
@@ -35,7 +70,11 @@ const getAliasMatch = (query, entity) => {
       normalizedQuery === alias ||
       normalizedQuery.startsWith(alias + " ") ||
       normalizedQuery.endsWith(" " + alias) ||
-      normalizedQuery.includes(" " + alias + " ")
+      normalizedQuery.includes(" " + alias + " ") ||
+      containsOrderedTokens(
+        normalizedQuery,
+        alias
+      )
     );
 };
 

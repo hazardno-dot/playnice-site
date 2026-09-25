@@ -7,6 +7,266 @@
  */
 
 export const fragranceTerms = [
+
+  {
+    id: "projection",
+    name: "Projection",
+    aliases: [
+      "projection",
+      "projekcija",
+      "koliko se oseca parfem",
+      "koliko se osjeca parfem",
+      "koliko daleko se oseca",
+      "koliko daleko se osjeca",
+      "scent circle",
+      "throw",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Projection opisuje koliko se miris širi od osobe koja ga nosi u datom trenutku — praktično njegov mirisni 'radijus'. Sillage je druga stvar: trag koji ostaje iza tebe dok se krećeš. Jak projection može postojati uz kraći sillage i obrnuto; oba se menjaju kroz razvoj parfema.",
+      en: "Projection describes how far a fragrance radiates from the wearer at a given moment — its practical scent radius. Sillage is different: the trail left behind as the wearer moves. Strong projection can exist with a shorter trail and vice versa, and both can change during a fragrance's development.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — FAQ / scent circle",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/faq/",
+        type: "industry-education",
+      },
+      {
+        label: "The Perfume Society — A-Z / Sillage",
+        url: "https://perfumesociety.org/wp-content/uploads/2018/06/SL31.OnlineIssue.pdf",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "flanker",
+    name: "Flanker",
+    aliases: [
+      "flanker",
+      "flanker parfem",
+      "flanker fragrance",
+      "flanker miris",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Flanker je novo izdanje povezano sa postojećim parfemom — obično deli ime, identitet ili deo mirisne ideje originala, ali menja koncentraciju, karakter, note ili namenu. Može biti trajno izdanje ili limited edition. Nije nužno samo 'jača verzija' originala.",
+      en: "A flanker is a new release connected to an existing fragrance, usually sharing its name, identity or part of its olfactory idea while changing concentration, character, notes or purpose. It may be permanent or limited edition and is not necessarily just a stronger version of the original.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Frequently Asked Questions",
+        url: "https://perfumesociety.org/frequently-asked-questions/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "reformulation",
+    name: "Reformulation",
+    aliases: [
+      "reformulation",
+      "reformulacija",
+      "reformulisan parfem",
+      "reformuliran parfem",
+      "promenjena formula parfema",
+      "promijenjena formula parfema",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Reformulacija znači da je formula postojećeg parfema promenjena nakon originalnog lansiranja. Razlozi mogu uključivati dostupnost sirovina, regulatorna ograničenja, stabilnost, trošak ili kreativnu odluku brenda. Dobra reformulacija pokušava da sačuva identitet mirisa čak i kada se pojedini materijali moraju zameniti ili ograničiti.",
+      en: "Reformulation means the formula of an existing fragrance has been changed after its original release. Reasons can include raw-material availability, regulatory restrictions, stability, cost or a creative brand decision. A good reformulation aims to preserve the fragrance's identity even when certain materials must be replaced or restricted.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — fragrance advice / reformulation",
+        url: "https://perfumesociety.org/tag/advice/",
+        type: "industry-education",
+      },
+      {
+        label: "IFRA — Understanding the Standards",
+        url: "https://ifrafragrance.org/understanding-standards",
+        type: "industry-standard",
+      },
+    ],
+  },
+  {
+    id: "niche-designer-indie",
+    name: "Designer, niche and indie fragrance",
+    aliases: [
+      "designer vs niche",
+      "niche vs designer",
+      "designer i niche",
+      "designer i nisni",
+      "dizajnerski i nisni",
+      "niche parfem",
+      "nisni parfem",
+      "indie parfem",
+      "indie fragrance",
+      "artisan perfume",
+      "artisanal perfume",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Designer parfem obično dolazi iz modne, beauty ili lifestyle kuće kojoj parfemi nisu jedina delatnost. 'Niche' je istorijski označavao nezavisnije kuće fokusirane na parfem, ali je granica danas prilično zamagljena i termin često opisuje umetničkiji, manje masovno orijentisan pristup. 'Indie' se najčešće koristi za manje nezavisne kuće i autore. To su tržišne i kulturne kategorije, ne garancije kvaliteta.",
+      en: "Designer fragrance usually comes from a fashion, beauty or lifestyle house for which perfume is not the only business. Historically, 'niche' referred more to independent perfume-focused houses, but the boundary is now blurred and the term often signals a more artistic, less mass-oriented approach. 'Indie' usually refers to smaller independent houses and creators. These are market and cultural categories, not guarantees of quality.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — What is niche fragrance?",
+        url: "https://perfumesociety.org/tag/what-is-niche/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "maceration",
+    name: "Maceration",
+    aliases: [
+      "maceration",
+      "maceracija",
+      "macerate perfume",
+      "macerating perfume",
+      "odlezavanje parfema",
+      "odlezhavanje parfema",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "U klasičnom procesu proizvodnje parfema, maceracija označava period tokom kog se već pomešani mirisni sastojci ostavljaju da zajedno odstoje i razviju se pre završne procene i punjenja. The Perfume Society opisuje period od više nedelja, dok Fragonard navodi da pojedine mešavine sazrevaju jedan do tri meseca. U internet zajednicama se reč često koristi mnogo šire za 'odležavanje bočice', pa FI ne treba automatski da tretira svaku takvu tvrdnju kao industrijski standard.",
+      en: "In classical perfume production, maceration is the resting period in which blended fragrance materials are allowed to sit together and develop before final evaluation and bottling. The Perfume Society describes a period of several weeks, while Fragonard notes that some blends mature for one to three months. Online fragrance communities often use the word more loosely for 'letting a bottle sit', so FI should not treat every such claim as an industry standard.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — A-Z / Maceration",
+        url: "https://perfumesociety.org/wp-content/uploads/2018/06/SL31.OnlineIssue.pdf",
+        type: "industry-education",
+      },
+      {
+        label: "The Perfume Society — Fragonard",
+        url: "https://perfumesociety.org/perfume-house/fragonard/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "natural-vs-synthetic",
+    name: "Natural and synthetic fragrance materials",
+    aliases: [
+      "natural vs synthetic",
+      "synthetic vs natural",
+      "prirodni i sinteticki",
+      "prirodni vs sinteticki",
+      "prirodni sastojci",
+      "sinteticki sastojci",
+      "synthetic ingredients",
+      "natural ingredients",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Moderna parfimerija gotovo uvek kombinuje prirodne i sintetičke materijale. Prirodni materijali mogu biti kompleksni ekstrakti biljaka ili drugih prirodnih izvora; sintetičke molekule mogu rekreirati prirodne efekte ili dati potpuno nove mirisne mogućnosti. 'Prirodno' ne znači automatski kvalitetnije ili bezbednije, niti 'sintetičko' znači jeftino ili loše — oba tipa materijala su osnovni alat savremenog parfumera.",
+      en: "Modern perfumery almost always combines natural and synthetic materials. Naturals can be complex extracts from plants or other natural sources; synthetic molecules can recreate natural effects or create entirely new olfactory possibilities. 'Natural' does not automatically mean higher quality or safer, and 'synthetic' does not mean cheap or inferior — both are fundamental tools of modern perfumery.",
+    },
+    sources: [
+      {
+        label: "IFRA — The fragrance value chain",
+        url: "https://ifrafragrance.org/about-fragrance/fragrance-value-chain",
+        type: "industry-standard",
+      },
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "layering",
+    name: "Fragrance layering",
+    aliases: [
+      "layering",
+      "layer perfumes",
+      "layer fragrance",
+      "mesanje parfema",
+      "mijesanje parfema",
+      "kombinovanje parfema",
+      "kombiniranje parfema",
+      "nositi dva parfema",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Layering je nošenje dva ili više mirisa zajedno da bi se dobio ličniji rezultat. Najlakši početak je kombinovati mirise iz slične porodice ili koristiti jedan jednostavniji miris kao osnovu, pa dodati svežinu, cvetnost, začine ili baznu dubinu drugim. Nema univerzalno 'tačne' kombinacije — testiranje na koži je važnije od teorije.",
+      en: "Layering means wearing two or more fragrances together to create a more personal result. An easy starting point is combining scents from related families or using a simpler scent as a base, then adding freshness, florals, spice or deeper base character with another. There is no universally 'correct' combination — testing on skin matters more than theory.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — FAQ / layering",
+        url: "https://perfumesociety.org/frequently-asked-questions/",
+        type: "industry-education",
+      },
+      {
+        label: "The Perfume Society — How to layer",
+        url: "https://perfumesociety.org/tag/how-to-layer/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "blotter-vs-skin",
+    name: "Blotter vs skin testing",
+    aliases: [
+      "blotter vs skin",
+      "paper vs skin",
+      "bloter ili koza",
+      "blotter ili koza",
+      "papir ili koza",
+      "testirati na kozi",
+      "testirati na papiru",
+      "probati na kozi",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Blotter je odličan za prvi utisak i brzo poređenje više mirisa, ali nije zamena za kožu. Parfem se na koži zagreva, razvija i može drugačije da se ponaša tokom sati. Najpraktičnije je prvo eliminisati očigledne promašaje na blotteru, a favorite zatim nositi na koži dovoljno dugo da prođu top note i pokažu srce i bazu.",
+      en: "A blotter is excellent for a first impression and for comparing several scents quickly, but it is not a substitute for skin. On skin a fragrance warms, develops and can behave differently over hours. A practical method is to eliminate obvious misses on blotters first, then wear the favourites on skin long enough for the top notes to fade and the heart and base to emerge.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Frequently Asked Questions",
+        url: "https://perfumesociety.org/frequently-asked-questions/",
+        type: "industry-education",
+      },
+      {
+        label: "The Perfume Society — Blotters",
+        url: "https://perfumesociety.org/product/perfume-society-blotters/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "fragrance-storage",
+    name: "Fragrance storage",
+    aliases: [
+      "store perfume",
+      "perfume storage",
+      "cuvanje parfema",
+      "čuvanje parfema",
+      "gde drzati parfem",
+      "gdje drzati parfem",
+      "kupatilo parfem",
+      "bathroom perfume",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Parfem je najbolje čuvati dalje od direktne svetlosti i velikih temperaturnih promena. Tamni ormar ili fioka u umereno hladnoj prostoriji su bolji izbor od sunčane police ili kupatila. Toplota i svetlost mogu ubrzati promene formule, naročito kod lakših, citrusnih kompozicija.",
+      en: "Fragrance is best stored away from direct light and large temperature swings. A dark cupboard or drawer in a moderately cool room is a better choice than a sunny shelf or bathroom. Heat and light can accelerate changes in the formula, especially in lighter citrus-heavy compositions.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Storage",
+        url: "https://perfumesociety.org/tag/storage/",
+        type: "industry-education",
+      },
+    ],
+  },
   {
     id: "sillage",
     name: "Sillage",

@@ -43,6 +43,16 @@ describe("FI Knowledge — entity routing", () => {
     ["Objasni top heart i base notes", "note-pyramid"],
     ["Šta znači trajnost parfema?", "longevity"],
     ["Šta je parfemski akord?", "accord"],
+    ["Šta je projection?", "projection"],
+    ["Koja je razlika između projection i sillage?", "projection"],
+    ["Šta je flanker parfem?", "flanker"],
+    ["Šta znači reformulacija parfema?", "reformulation"],
+    ["Koja je razlika između niche i designer parfema?", "niche-designer-indie"],
+    ["Šta je maceracija parfema?", "maceration"],
+    ["Prirodni vs sintetički sastojci — koja je razlika?", "natural-vs-synthetic"],
+    ["Kako se radi layering parfema?", "layering"],
+    ["Blotter ili koža — kako da testiram parfem?", "blotter-vs-skin"],
+    ["Kako treba čuvati parfem?", "fragrance-storage"],
   ])("resolves explanatory fragrance term %s", (query, expectedId) => {
     expect(findFragranceTermByQuery(query)?.id).toBe(expectedId);
   });
@@ -53,6 +63,10 @@ describe("FI Knowledge — entity routing", () => {
     "Nešto sa Hedione za leto",
     "Parfem sa Ambroxanom za izlazak",
     "Trajan parfem za posao do 20 €",
+    "Niche parfem za veče do 25 €",
+    "Designer parfem za posao",
+    "Parfem sa jakom projekcijom do 20 €",
+    "Parfem za layering do 15 €",
   ])("does not steal recommendation-style material query: %s", (query) => {
     expect(findFragranceTermByQuery(query)).toBeNull();
   });
@@ -63,6 +77,8 @@ describe("FI Knowledge — entity routing", () => {
     "Čisto i elegantno za posao",
     "Date night, not too sweet",
     "Hoću parfem sa Iso E Super do 15 €",
+    "Niche parfem za veče do 25 €",
+    "Parfem sa jakom projekcijom do 20 €",
   ])("does not intercept Discovery Engine query: %s", (query) => {
     expect(resolveFragranceKnowledgeQuery(query, "sr")).toEqual({
       handled: false,
@@ -86,6 +102,20 @@ describe("FI Knowledge — entity routing", () => {
     const answer = getPerfumerKnowledgeAnswer(perfumer, "sr");
     expect(answer).toContain("Quentin");
     expect(answer).toContain("Bois Impérial");
+  });
+
+  test("ordered-token matching handles natural wording with filler words", () => {
+    expect(
+      findFragranceTermByQuery(
+        "Why can't I smell my own perfume?"
+      )?.id
+    ).toBe("olfactory-fatigue");
+
+    expect(
+      findFragranceTermByQuery(
+        "Kako i gde treba pravilno čuvati parfem?"
+      )?.id
+    ).toBe("fragrance-storage");
   });
 
   test("answers fragrance education without invoking recommendation routing", () => {
