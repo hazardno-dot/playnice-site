@@ -246,6 +246,19 @@ describe("FI Knowledge — entity routing", () => {
     expect(result.answer).toContain(expectedName);
   });
 
+  test.each([
+    ["Koje parfeme je napravio Quentin Bisch?", "Ganymede"],
+    ["Koje parfeme potpisuje Dominique Ropion?", "Portrait of a Lady"],
+    ["Šta je napravio Francis Kurkdjian?", "Le Male"],
+    ["What fragrances did Christine Nagel create?", "Twilly d’Hermès"],
+  ])("answers verified perfumer works without confusing them with catalog: %s", (query, expectedWork) => {
+    const result = resolveFragranceKnowledgeQuery(query, "sr");
+    expect(result.handled).toBe(true);
+    expect(result.type).toBe("perfumer");
+    expect(result.answer).toContain(expectedWork);
+    expect(result.answer).not.toContain("PlayNice katalog");
+  });
+
   test("answers which verified perfumes by a perfumer are in PlayNice", () => {
     const products = [
       { slug: "bois-imperial-essential-parfums" },

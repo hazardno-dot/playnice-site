@@ -355,13 +355,34 @@ const PERFUME_AUTHOR_CUES = [
 const PERFUMER_CATALOG_CUES = [
   "sta imamo od",
   "sta imate od",
-  "koje parfeme",
-  "koji parfemi",
   "imate li nesto od",
   "imate li nešto od",
+  "imate li parfem od",
+  "imate li parfeme od",
+  "u ponudi od",
+  "u katalogu od",
   "what do you have by",
-  "which perfumes",
-  "which fragrances",
+  "do you have anything by",
+  "in your catalog by",
+];
+
+const PERFUMER_WORK_CUES = [
+  "koje parfeme je napravio",
+  "koje parfeme je napravila",
+  "koje parfeme potpisuje",
+  "koje parfeme je kreirao",
+  "koje parfeme je kreirala",
+  "koji parfemi su njegovi",
+  "koji parfemi su njeni",
+  "sta je napravio",
+  "sta je napravila",
+  "sta je kreirao",
+  "sta je kreirala",
+  "what perfumes did",
+  "what fragrances did",
+  "which perfumes did",
+  "which fragrances did",
+  "what did",
 ];
 
 const getPerfumeRelationshipAnswer = (
@@ -387,6 +408,62 @@ const getPerfumeRelationshipAnswer = (
   return lang === "en"
     ? `${fragrance.name} was created by ${names.join(", ")}.`
     : `${fragrance.name} potpisuje ${names.join(", ")}.`;
+};
+
+const getPerfumerWorksAnswer = (
+  query,
+  perfumer,
+  lang = "sr"
+) => {
+  const text = normalizeKnowledgeText(query);
+  const asksWorks = PERFUMER_WORK_CUES.some(
+    (cue) =>
+      text.includes(
+        normalizeKnowledgeText(cue)
+      )
+  );
+
+  if (!asksWorks) return "";
+
+  const linked = fragrancePerfumes.filter(
+    (fragrance) =>
+      (fragrance.perfumerIds || []).includes(
+        perfumer.id
+      )
+  );
+
+  const byName = new Map();
+
+  (perfumer.notableWorks || [])
+    .filter((work) => work.verified)
+    .forEach((work) => {
+      byName.set(
+        normalizeKnowledgeText(work.name),
+        `${work.name} — ${work.brand}`
+      );
+    });
+
+  linked.forEach((fragrance) => {
+    const house = getPerfumeHouse(fragrance);
+    byName.set(
+      normalizeKnowledgeText(fragrance.name),
+      house
+        ? `${fragrance.name} — ${house.name}`
+        : fragrance.name
+    );
+  });
+
+  const works = Array.from(byName.values());
+
+  if (!works.length) {
+    return lang === "en"
+      ? `I don't yet have verified fragrance works recorded for ${perfumer.name} in this knowledge base.`
+      : `Za ${perfumer.name} još nemam zabeležene potvrđene parfeme u ovoj knowledge bazi.`;
+  }
+
+  return lang === "en"
+    ? `Verified fragrance works currently recorded for ${perfumer.name}: ${works.join(", ")}.`
+    : `Potvrđeni parfemi koje trenutno imam zabeležene za ${perfumer.name}: ${works.join(", ")}.`;
 };
 
 const getPerfumerCatalogAnswer = (
@@ -516,6 +593,13 @@ export const resolveFragranceKnowledgeQuery = (
         context.products || []
       );
 
+    const worksAnswer =
+      getPerfumerWorksAnswer(
+        query,
+        classification.entity,
+        lang
+      );
+
     const relationshipAnswer =
       getPerfumerRelationshipAnswer(
         query,
@@ -530,6 +614,7 @@ export const resolveFragranceKnowledgeQuery = (
       entity: classification.entity,
       answer:
         catalogAnswer ||
+        worksAnswer ||
         relationshipAnswer ||
         getPerfumerKnowledgeAnswer(
           classification.entity,
