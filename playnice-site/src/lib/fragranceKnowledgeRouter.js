@@ -38,6 +38,19 @@ const RECOMMENDATION_CUES = [
   "for summer", "for winter", "for office", "for wedding",
 ];
 
+const ENTITY_RECOMMENDATION_CUES = [
+  "preporuci", "preporuka", "predlozi", "trazim", "treba mi",
+  "hocu", "zelim", "daj mi", "nesto kao", "nešto kao",
+  "slican", "sličan", "alternativa za", "zamena za", "zamjena za",
+  "za posao", "za dejt", "za izlazak", "za leto", "za ljeto",
+  "za zimu", "za prolece", "za proljece", "za jesen",
+  "za svadbu", "za kancelariju", "za more", "za svaki dan",
+  "recommend", "suggest", "looking for", "i want", "i need",
+  "something like", "similar to", "alternative to",
+  "for work", "for date", "for summer", "for winter",
+  "for office", "for wedding",
+];
+
 const hasBudgetSignal = (text) =>
   /(^|\s)(do|ispod|under|max|maximum|budget|budzet)\s*€?\s*\d+/i.test(text) ||
   /€\s*\d+|\d+\s*€/.test(text);
@@ -47,6 +60,17 @@ const isRecommendationStyleQuery = (query) => {
 
   return (
     RECOMMENDATION_CUES.some((cue) =>
+      text.includes(normalizeKnowledgeText(cue))
+    ) ||
+    hasBudgetSignal(String(query || ""))
+  );
+};
+
+const isEntityRecommendationStyleQuery = (query) => {
+  const text = normalizeKnowledgeText(query);
+
+  return (
+    ENTITY_RECOMMENDATION_CUES.some((cue) =>
       text.includes(normalizeKnowledgeText(cue))
     ) ||
     hasBudgetSignal(String(query || ""))
@@ -167,6 +191,10 @@ export const findFragranceTermByQuery = (query) => {
 
 export const classifyFragranceKnowledgeQuery = (query) => {
   const text = normalizeKnowledgeText(query);
+
+  if (isEntityRecommendationStyleQuery(query)) {
+    return { type: "unknown", confidence: "low", entity: null };
+  }
   const perfumer = findPerfumerByQuery(query);
   if (perfumer) {
     return {

@@ -179,6 +179,27 @@ describe("FI Knowledge — entity routing", () => {
     expect(findFragranceTermByQuery(query)).toBeNull();
   });
 
+  test.each([
+    "Nešto kao Ganymede",
+    "Preporuči mi nešto kao Baccarat Rouge 540",
+    "Ganymede za leto do 20 €",
+    "Hoću nešto slično Bois Imperial",
+    "Alternativa za YSL Libre za posao",
+    "Something like Terre d Hermes for summer",
+    "Recommend something similar to Le Male",
+    "I want a fragrance like Baccarat Rouge 540 under €25",
+    "Preporuči mi nešto od Quentin Bisch",
+    "Treba mi nešto od Essential Parfums za leto",
+  ])("known entity names do not steal recommendation queries: %s", (query) => {
+    expect(resolveFragranceKnowledgeQuery(query, "sr")).toEqual({
+      handled: false,
+      type: "unknown",
+      confidence: "low",
+      entity: null,
+      answer: "",
+    });
+  });
+
   test.each(discoveryRegressionQueries)(
     "does not intercept Discovery Engine query: %s",
     (query) => {
