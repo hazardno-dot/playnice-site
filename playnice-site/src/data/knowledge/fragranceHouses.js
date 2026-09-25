@@ -7,6 +7,24 @@
 
 export const fragranceHouses = [
   {
+    id: "louis-vuitton",
+    name: "Louis Vuitton",
+    aliases: ["louis vuitton", "lv parfums", "lv perfumes"],
+    entityType: "fragrance-house",
+    summary: {
+      sr: "Louis Vuitton je francuska luksuzna kuća čiji savremeni parfemski univerzum vodi Master Perfumer Jacques Cavallier Belletrud. Kuća ga direktno potpisuje kao autora svojih savremenih mirisnih kolekcija.",
+      en: "Louis Vuitton is a French luxury house whose contemporary fragrance universe is led by Master Perfumer Jacques Cavallier Belletrud. The house directly credits him as the author behind its modern fragrance collections.",
+    },
+    perfumerIds: ["jacques-cavallier-belletrud"],
+    sourceLinks: [
+      {
+        label: "Louis Vuitton — Perfumes",
+        url: "https://us.louisvuitton.com/eng-us/stories/lvperfumes",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
     id: "chanel",
     name: "CHANEL",
     aliases: ["chanel", "šanel", "chanel parfums"],

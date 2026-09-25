@@ -9,6 +9,211 @@
 export const fragranceTerms = [
 
   {
+    id: "cashmeran",
+    name: "Cashmeran",
+    aliases: ["cashmeran", "cashmeran molecule", "kašmeran", "kasmeran"],
+    kind: "material",
+    answer: {
+      sr: "Cashmeran je sintetički mirisni materijal sa drvenastim, mošusnim, toplim, blago začinskim i mineralnim nijansama. Često se koristi da kompoziciji da teksturu, mekoću i suv, obavijajući drvenasti efekat.",
+      en: "Cashmeran is a synthetic aroma material with woody, musky, warm, slightly spicy and mineral facets. It is often used to add texture, softness and a dry enveloping woody effect to a composition.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "ethyl-maltol",
+    name: "Ethyl maltol",
+    aliases: ["ethyl maltol", "etil maltol"],
+    kind: "material",
+    answer: {
+      sr: "Ethyl maltol je snažan sladak aromatični materijal koji može dati utisak karamele, karamelizovanog šećera, candy floss-a i toplog gourmand efekta. U malim količinama zaobljava kompoziciju; u većim može postati veoma dominantan.",
+      en: "Ethyl maltol is a powerful sweet aroma material that can suggest caramel, cooked sugar, cotton candy and warm gourmand effects. In small amounts it can round a composition; at higher levels it can become very dominant.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "linalool",
+    name: "Linalool",
+    aliases: ["linalool", "linalol"],
+    kind: "material",
+    answer: {
+      sr: "Linalool je rasprostranjena mirisna molekula prisutna u brojnim biljkama i etarskim uljima. Profil joj je cvetan, svež, blago citrusan i aromatičan. Može biti prirodnog ili sintetičkog porekla; hemijski identitet molekule je isti.",
+      en: "Linalool is a widely occurring aroma molecule found in many plants and essential oils. Its profile is floral, fresh, lightly citrusy and aromatic. It may be naturally sourced or synthetic; the chemical identity of the molecule is the same.",
+    },
+    sources: [
+      {
+        label: "IFRA — Safe use",
+        url: "https://ifrafragrance.org/safe-use",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
+    id: "limonene",
+    name: "Limonene",
+    aliases: ["limonene", "limonen"],
+    kind: "material",
+    answer: {
+      sr: "Limonene je citrusna mirisna molekula obilno prisutna u korama citrusa. Daje svetao limunasto-narandžast efekat i čest je sastojak citrusnih ulja. Kao i mnogi terpeni, može oksidirati, zbog čega su pravilno čuvanje i bezbednosna kontrola važni.",
+      en: "Limonene is a citrus aroma molecule abundant in citrus peels. It gives a bright lemon-orange effect and is common in citrus oils. Like many terpenes, it can oxidize, which is why proper storage and safety control matter.",
+    },
+    sources: [
+      {
+        label: "IFRA — Safe use",
+        url: "https://ifrafragrance.org/safe-use",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
+    id: "eugenol",
+    name: "Eugenol",
+    aliases: ["eugenol"],
+    kind: "material",
+    answer: {
+      sr: "Eugenol je začinska aromatična molekula snažno povezana sa mirisom karanfilića. Daje topao, začinski, blago diman i lekovito-slatkast karakter i koristi se u začinskim, floralnim i amber kompozicijama.",
+      en: "Eugenol is a spicy aroma molecule strongly associated with clove. It brings warm, spicy, slightly smoky and medicinal-sweet facets and is used in spicy, floral and amber compositions.",
+    },
+    sources: [
+      {
+        label: "IFRA — Safe use",
+        url: "https://ifrafragrance.org/safe-use",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
+    id: "geraniol",
+    name: "Geraniol",
+    aliases: ["geraniol"],
+    kind: "material",
+    answer: {
+      sr: "Geraniol je cvetna mirisna molekula koja se prirodno nalazi u ruži, geranijumu i drugim biljkama. Daje svež, ružičast, cvetan i blago citrusan karakter i široko se koristi u floralnim akordima.",
+      en: "Geraniol is a floral aroma molecule naturally present in rose, geranium and other plants. It gives a fresh, rosy, floral and slightly citrusy character and is widely used in floral accords.",
+    },
+    sources: [
+      {
+        label: "IFRA — Safe use",
+        url: "https://ifrafragrance.org/safe-use",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
+    id: "ozonic",
+    name: "Ozonic",
+    aliases: ["ozonic", "ozonska nota", "ozonski parfem"],
+    kind: "descriptor",
+    answer: {
+      sr: "Ozonic opisuje prozračan, hladan, čist i često 'vazdušast' efekat koji može podsećati na vazduh posle oluje ili otvoren prostor. To je mirisni opis/akord, ne doslovno prisustvo ozona u parfemu.",
+      en: "Ozonic describes an airy, cool, clean and often open-space effect that can evoke the air after a storm. It is an olfactory descriptor or accord, not literal ozone contained in the perfume.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Perfume glossary",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/perfume-glossary/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "mineral",
+    name: "Mineral",
+    aliases: ["mineral note", "mineralna nota", "mineralni parfem"],
+    kind: "descriptor",
+    answer: {
+      sr: "Mineral je apstraktan mirisni opis za hladne, kamene, slane, kredaste, metalne ili suve teksture u parfemu. Ne znači da parfem sadrži 'miris kamena' kao jednu sirovinu; efekat se gradi kombinacijom različitih materijala.",
+      en: "Mineral is an abstract olfactory descriptor for cool, stony, salty, chalky, metallic or dry textures in fragrance. It does not mean the perfume contains a single 'stone smell' ingredient; the effect is built from combinations of materials.",
+    },
+    sources: [
+      {
+        label: "PlayNice — Fragrance Intelligence terminology",
+        url: "https://playniceshop.me/",
+        type: "first-party-editorial",
+      },
+    ],
+  },
+  {
+    id: "salty",
+    name: "Salty",
+    aliases: ["salty note", "slana nota", "salt accord"],
+    kind: "descriptor",
+    answer: {
+      sr: "Slani efekat u parfemu je akordska iluzija. Može delovati morski, mineralno, kožno ili gotovo telesno, zavisno od drugih materijala oko njega. Ne podrazumeva jednostavno dodavanje kuhinjske soli kao mirisne note.",
+      en: "A salty effect in fragrance is an accord-based illusion. It can feel marine, mineral, leathery or almost skin-like depending on the surrounding materials. It does not simply mean adding table salt as an olfactory note.",
+    },
+    sources: [
+      {
+        label: "PlayNice — Fragrance Intelligence terminology",
+        url: "https://playniceshop.me/",
+        type: "first-party-editorial",
+      },
+    ],
+  },
+  {
+    id: "smoky",
+    name: "Smoky",
+    aliases: ["smoky note", "dimna nota", "dimni parfem"],
+    kind: "descriptor",
+    answer: {
+      sr: "Dimni karakter može dolaziti iz incense, guaiac, cade, vetiver, leather, tobacco i drugih materijala ili akorda. 'Smoky' zato opisuje efekat, ne jednu obaveznu sirovinu, a raspon ide od suptilne suve zadimljenosti do tamnog katranastog utiska.",
+      en: "Smoky character can come from incense, guaiac, cade, vetiver, leather, tobacco and other materials or accords. 'Smoky' therefore describes an effect rather than one mandatory ingredient, ranging from subtle dry smoke to dark tarry impressions.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "green",
+    name: "Green",
+    aliases: ["green note", "zelena nota", "zeleni miris"],
+    kind: "descriptor",
+    answer: {
+      sr: "Green opisuje mirisne efekte koji podsećaju na list, travu, stabljiku, biljnu gorčinu ili sveže presečenu vegetaciju. Može nastati iz prirodnih materijala poput galbanuma i petitgraina ili iz sintetičkih zelenih molekula i akorda.",
+      en: "Green describes olfactory effects reminiscent of leaves, grass, stems, vegetal bitterness or freshly cut plant material. It can come from natural materials such as galbanum and petitgrain or from synthetic green molecules and accords.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "aromatic",
+    name: "Aromatic",
+    aliases: ["aromatic fragrance", "aromatični parfem", "aromatic note"],
+    kind: "descriptor",
+    answer: {
+      sr: "Aromatic u parfimeriji najčešće opisuje profil zasnovan na biljnim, herbalnim i svežim materijalima poput lavande, žalfije, ruzmarina, bosiljka ili mente. Često se prepliće sa fougère i fresh stilovima, ali nije isto što i bilo koji pojedinačni sastojak.",
+      en: "Aromatic in perfumery usually describes a profile built around herbal, fresh plant-like materials such as lavender, sage, rosemary, basil or mint. It often overlaps with fougère and fresh styles, but it is not the same thing as any single ingredient.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Fragrance families",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/fragrance-families/",
+        type: "industry-education",
+      },
+    ],
+  },
+
+  {
     id: "vanilla-vanillin",
     name: "Vanilla / Vanillin",
     aliases: [

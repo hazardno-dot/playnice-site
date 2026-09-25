@@ -54,6 +54,7 @@ describe("FI Knowledge — entity routing", () => {
     ["Ko je Cecile Zarokian?", "cecile-zarokian"],
     ["Ko je Christine Nagel?", "christine-nagel"],
     ["Ko je Olivier Polge?", "olivier-polge"],
+    ["Ko je Jacques Cavallier Belletrud?", "jacques-cavallier-belletrud"],
   ])("resolves perfumer %s", (query, expectedId) => {
     expect(findPerfumerByQuery(query)?.id).toBe(expectedId);
   });
@@ -76,6 +77,11 @@ describe("FI Knowledge — entity routing", () => {
     ["Ko potpisuje YSL Jumpsuit?", "ysl-jumpsuit"],
     ["Ko je napravio Chanel Paris Riviera?", "chanel-paris-riviera"],
     ["Ko potpisuje Chanel Paris Paris?", "chanel-paris-paris"],
+    ["Ko je napravio Louis Vuitton Imagination?", "louis-vuitton-imagination"],
+    ["Ko je napravio H24?", "hermes-h24-edt"],
+    ["Ko je napravio H24 EDP?", "hermes-h24-edp"],
+    ["Ko potpisuje Gentle Fluidity Gold?", "gentle-fluidity-gold"],
+    ["Ko potpisuje Gentle Fluidity Silver?", "gentle-fluidity-silver"],
   ])("resolves fragrance entity %s", (query, expectedId) => {
     expect(findPerfumeByQuery(query)?.id).toBe(expectedId);
   });
@@ -90,6 +96,7 @@ describe("FI Knowledge — entity routing", () => {
     ["Šta je CHANEL?", "chanel"],
     ["Šta je YSL?", "yves-saint-laurent"],
     ["Šta je Lancome?", "lancome"],
+    ["Šta je Louis Vuitton?", "louis-vuitton"],
   ])("resolves fragrance house/company %s", (query, expectedId) => {
     expect(findFragranceHouseByQuery(query)?.id).toBe(expectedId);
   });
@@ -203,6 +210,18 @@ describe("FI Knowledge — entity routing", () => {
     ["Šta je osmanthus?", "osmanthus"],
     ["Šta je čajna nota u parfemu?", "tea-accord"],
     ["Šta znači lactonic parfem?", "lactonic"],
+    ["Šta je Cashmeran?", "cashmeran"],
+    ["Šta je ethyl maltol?", "ethyl-maltol"],
+    ["Šta je linalool?", "linalool"],
+    ["Šta je limonene?", "limonene"],
+    ["Šta je eugenol?", "eugenol"],
+    ["Šta je geraniol?", "geraniol"],
+    ["Šta znači ozonic parfem?", "ozonic"],
+    ["Šta znači mineralna nota?", "mineral"],
+    ["Šta je slana nota u parfemu?", "salty"],
+    ["Šta znači dimna nota?", "smoky"],
+    ["Šta znači zelena nota?", "green"],
+    ["Šta znači aromatic parfem?", "aromatic"],
     ["Šta su aldehidi u parfemu?", "aldehydes"],
     ["Šta je kumarin?", "coumarin"],
     ["Šta je labdanum?", "labdanum"],
@@ -321,6 +340,11 @@ describe("FI Knowledge — entity routing", () => {
     ["Ko potpisuje YSL Jumpsuit?", "Carlos Benaïm"],
     ["Ko je napravio Chanel Paris Riviera?", "Olivier Polge"],
     ["Ko potpisuje Chanel Paris Paris?", "Olivier Polge"],
+    ["Ko je napravio Louis Vuitton Imagination?", "Jacques Cavallier Belletrud"],
+    ["Ko je napravio H24?", "Christine Nagel"],
+    ["Ko je napravio H24 EDP?", "Christine Nagel"],
+    ["Ko potpisuje Gentle Fluidity Gold?", "Francis Kurkdjian"],
+    ["Ko potpisuje Gentle Fluidity Silver?", "Francis Kurkdjian"],
   ])("answers perfume authorship %s", (query, expectedName) => {
     const result = resolveFragranceKnowledgeQuery(query, "sr");
     expect(result.handled).toBe(true);

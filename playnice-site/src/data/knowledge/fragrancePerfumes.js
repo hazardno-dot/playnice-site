@@ -8,6 +8,106 @@
 
 export const fragrancePerfumes = [
   {
+    id: "louis-vuitton-imagination",
+    name: "Imagination",
+    aliases: ["imagination", "louis vuitton imagination", "lv imagination"],
+    entityType: "fragrance",
+    houseId: "louis-vuitton",
+    perfumerIds: ["jacques-cavallier-belletrud"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "Imagination je Louis Vuitton kompozicija Jacquesa Cavalliera Belletruda, građena oko kontrasta amberskog efekta i crnog čaja, uz citruse, začine i izražen Ambrox karakter.",
+      en: "Imagination is a Louis Vuitton composition by Jacques Cavallier Belletrud, built around the contrast of an amber effect and black tea, with citrus, spices and a pronounced Ambrox character.",
+    },
+    sources: [
+      {
+        label: "Louis Vuitton — Imagination",
+        url: "https://eu.louisvuitton.com/eng-e1/stories/imagination",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "hermes-h24-edt",
+    name: "H24 Eau de Toilette",
+    aliases: ["h24", "h24 edt", "hermes h24", "hermès h24"],
+    entityType: "fragrance",
+    houseId: "hermes",
+    perfumerIds: ["christine-nagel"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "H24 Eau de Toilette je Hermès kompozicija Christine Nagel. Kuća je opisuje kao aromatično-botanički miris sa žalfijom, narcisom, rosewoodom i toplim metalnim efektom sclarenea.",
+      en: "H24 Eau de Toilette is an Hermès composition by Christine Nagel. The house describes it as an aromatic-botanical fragrance with clary sage, narcissus, rosewood and the warm metallic effect of sclarene.",
+    },
+    sources: [
+      {
+        label: "Hermès — H24 Eau de Toilette",
+        url: "https://www.hermes.com/us/en/product/h24-eau-de-toilette-V101563V0/",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "hermes-h24-edp",
+    name: "H24 Eau de Parfum",
+    aliases: ["h24 edp", "h24 eau de parfum", "hermes h24 edp"],
+    entityType: "fragrance",
+    houseId: "hermes",
+    perfumerIds: ["christine-nagel"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "H24 Eau de Parfum je Hermès kompozicija Christine Nagel, drvenasto-aromatična interpretacija sa žalfijom, moss efektom i toplim sclarene karakterom.",
+      en: "H24 Eau de Parfum is an Hermès composition by Christine Nagel, a woody-aromatic interpretation centered on sage, a moss effect and warm sclarene facets.",
+    },
+    sources: [
+      {
+        label: "Hermès — H24 Eau de Parfum",
+        url: "https://www.hermes.com/us/en/product/h24-eau-de-parfum-V108422V0/",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "gentle-fluidity-gold",
+    name: "Gentle Fluidity Gold",
+    aliases: ["gentle fluidity gold", "mfk gentle fluidity gold"],
+    entityType: "fragrance",
+    houseId: "maison-francis-kurkdjian",
+    perfumerIds: ["francis-kurkdjian"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "Gentle Fluidity Gold je Maison Francis Kurkdjian Eau de Parfum iz Gentle Fluidity dua. Koristi isti osnovni set sastojaka kao Silver izdanje, ali ih raspoređuje ka mekšem mošusno-amberskom profilu sa vanilom.",
+      en: "Gentle Fluidity Gold is a Maison Francis Kurkdjian Eau de Parfum from the Gentle Fluidity duo. It uses the same core ingredient set as the Silver edition but shapes them into a softer musky-amber profile with vanilla.",
+    },
+    sources: [
+      {
+        label: "Maison Francis Kurkdjian — Gentle Fluidity Gold",
+        url: "https://www.franciskurkdjian.com/eu-en/p/gentle-fluidity-gold-edition---eau-de-parfum-RA122821.html",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "gentle-fluidity-silver",
+    name: "Gentle Fluidity Silver",
+    aliases: ["gentle fluidity silver", "mfk gentle fluidity silver"],
+    entityType: "fragrance",
+    houseId: "maison-francis-kurkdjian",
+    perfumerIds: ["francis-kurkdjian"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "Gentle Fluidity Silver je Maison Francis Kurkdjian Eau de Parfum iz istog dua kao Gold. Kuća ga klasifikuje kao woody aromatic, sa naglašenijim svežim, začinskim i aromatičnim licem zajedničkog seta sastojaka.",
+      en: "Gentle Fluidity Silver is a Maison Francis Kurkdjian Eau de Parfum from the same duo as Gold. The house classifies it as woody aromatic, emphasizing the fresher, spicier and more aromatic side of the shared ingredient set.",
+    },
+    sources: [
+      {
+        label: "Maison Francis Kurkdjian — Gentle Fluidity Collection",
+        url: "https://www.franciskurkdjian.com/us-en/gentle-fluidity-collection/landing-GentleFluidity.html",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
     id: "libre-edp",
     name: "Libre Eau de Parfum",
     aliases: [
