@@ -46,6 +46,7 @@ const ENTITY_RECOMMENDATION_CUES = [
   "za zimu", "za prolece", "za proljece", "za jesen",
   "za svadbu", "za kancelariju", "za more", "za svaki dan",
   "recommend", "suggest", "looking for", "i want", "i need",
+  "parfem kao", "miris kao",
   "something like", "similar to", "alternative to",
   "for work", "for date", "for summer", "for winter",
   "for office", "for wedding",

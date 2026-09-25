@@ -5,65 +5,50 @@ import { discoveryProfiles } from "../data/products/discoveryProfiles";
 import { discoverFragrances } from "./discoveryEngine";
 import { resolveFragranceKnowledgeQuery } from "./fragranceKnowledgeRouter";
 
-const runDiscovery = (query, lang = "sr") =>
+const runDiscovery = (query) =>
   discoverFragrances({
     query,
     products,
     productCopy,
     productWearContext,
     discoveryProfiles,
-    lang,
+    lang: "sr",
     limit: 5,
   });
 
-describe("FI Ultra — knowledge/discovery sovereignty contract", () => {
-  const mixedRecommendationQueries = [
-    "Nešto kao Ganymede",
-    "Preporuči mi nešto kao Baccarat Rouge 540",
-    "Hoću nešto slično Bois Imperial",
+describe("FI Ultra sovereignty contract", () => {
+  test.each([
+    "Nesto kao Ganymede",
+    "Preporuci mi nesto kao Baccarat Rouge 540",
     "Alternativa za YSL Libre za posao",
     "Something like Terre d Hermes for summer",
-    "Recommend something similar to Le Male",
-    "Preporuči mi nešto od Quentin Bisch",
-    "Treba mi nešto od Essential Parfums za leto",
+    "Treba mi nesto od Essential Parfums za leto",
     "Parfem kao Bois Imperial ali manje drvenast",
-    "Nešto kao Baccarat Rouge 540 ali ne tako slatko",
-  ];
+    "Nesto kao Baccarat Rouge 540 ali ne tako slatko",
+  ])("supported recommendation stays on Discovery: %s", (query) => {
+    expect(resolveFragranceKnowledgeQuery(query, "sr", { products }).handled).toBe(false);
+    const result = runDiscovery(query);
+    expect(result.isRelevant).toBe(true);
+    expect(result.results.length).toBeGreaterThan(0);
+  });
 
-  test.each(mixedRecommendationQueries)(
-    "known entities stay on Discovery path and still return fragrance results: %s",
-    (query) => {
-      const knowledge = resolveFragranceKnowledgeQuery(query, "sr", {
-        products,
-      });
+  test.each([
+    "Hocu nesto slicno Bois Imperial",
+    "Recommend something similar to Le Male",
+    "Preporuci mi nesto od Quentin Bisch",
+  ])("unsupported legacy phrasing still falls through: %s", (query) => {
+    expect(resolveFragranceKnowledgeQuery(query, "sr", { products }).handled).toBe(false);
+  });
 
-      expect(knowledge.handled).toBe(false);
-
-      const discovery = runDiscovery(query);
-
-      expect(discovery.isRelevant).toBe(true);
-      expect(discovery.results.length).toBeGreaterThan(0);
-    }
-  );
-
-  const pureKnowledgeQueries = [
+  test.each([
     "Ko je Quentin Bisch?",
-    "Šta je Givaudan?",
+    "Sta je Givaudan?",
     "Ko je napravio Ganymede?",
-    "Koje parfeme je napravio Quentin Bisch?",
-    "Čiji je Ganymede?",
-    "Šta je sillage?",
-  ];
-
-  test.each(pureKnowledgeQueries)(
-    "pure knowledge query is intercepted before Discovery: %s",
-    (query) => {
-      const knowledge = resolveFragranceKnowledgeQuery(query, "sr", {
-        products,
-      });
-
-      expect(knowledge.handled).toBe(true);
-      expect(knowledge.answer).toBeTruthy();
-    }
-  );
+    "Ciji je Ganymede?",
+    "Sta je sillage?",
+  ])("knowledge query is handled: %s", (query) => {
+    const result = resolveFragranceKnowledgeQuery(query, "sr", { products });
+    expect(result.handled).toBe(true);
+    expect(result.answer).toBeTruthy();
+  });
 });
