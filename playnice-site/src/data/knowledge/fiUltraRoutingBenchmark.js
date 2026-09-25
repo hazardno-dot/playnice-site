@@ -98,6 +98,12 @@ export const fiUltraRoutingBenchmark = {
     ["Ko potpisuje YSL Jumpsuit?", "fragrance"],
     ["Ko je napravio Chanel Paris Riviera?", "fragrance"],
     ["Ko potpisuje Chanel Paris Paris?", "fragrance"],
+    ["Čiji je Ganymede?", "fragrance"],
+    ["Koja kuća pravi Terre d Hermes?", "fragrance"],
+    ["Koji brend pravi Baccarat Rouge 540?", "fragrance"],
+    ["Koje parfeme ima Hermès?", "fragrance-house"],
+    ["Koje parfeme pravi Frédéric Malle?", "fragrance-house"],
+    ["What fragrances does CHANEL have?", "fragrance-house"],
   ],
 };
 

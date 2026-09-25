@@ -287,6 +287,57 @@ describe("FI Knowledge — entity routing", () => {
     expect(result.answer).toContain("nemam potvrđen");
   });
 
+  test.each([
+    ["Čiji je Ganymede?", "Marc-Antoine Barrois"],
+    ["Koja kuća pravi Terre d Hermes?", "Hermès"],
+    ["Koji brend pravi Baccarat Rouge 540?", "Maison Francis Kurkdjian"],
+  ])("answers fragrance-to-house relationship %s", (query, expectedHouse) => {
+    const result = resolveFragranceKnowledgeQuery(query, "sr");
+    expect(result.handled).toBe(true);
+    expect(result.type).toBe("fragrance");
+    expect(result.answer).toContain(expectedHouse);
+  });
+
+  test.each([
+    ["Koje parfeme ima Hermès?", "Terre d’Hermès"],
+    ["Koje parfeme pravi Frédéric Malle?", "Portrait of a Lady"],
+    ["What fragrances does CHANEL have?", "PARIS-RIVIERA"],
+  ])("answers verified house works %s", (query, expectedWork) => {
+    const result = resolveFragranceKnowledgeQuery(query, "sr");
+    expect(result.handled).toBe(true);
+    expect(result.answer).toContain(expectedWork);
+    expect(result.answer).not.toContain("PlayNice katalog");
+  });
+
+  test("answers live PlayNice catalog by house separately from house knowledge", () => {
+    const products = [
+      { slug: "bois-imperial-essential-parfums" },
+      { slug: "essential-parfums-orange-x-santal" },
+    ];
+
+    const result = resolveFragranceKnowledgeQuery(
+      "Šta imate od Essential Parfums?",
+      "sr",
+      { products }
+    );
+
+    expect(result.handled).toBe(true);
+    expect(result.answer).toContain("Bois Impérial");
+    expect(result.answer).toContain("Orange X Santal");
+    expect(result.answer).not.toContain("Nice Bergamote");
+  });
+
+  test("does not claim house catalog availability when mapped products are absent", () => {
+    const result = resolveFragranceKnowledgeQuery(
+      "Šta imate od Essential Parfums?",
+      "sr",
+      { products: [] }
+    );
+
+    expect(result.handled).toBe(true);
+    expect(result.answer).toContain("nemam potvrđen");
+  });
+
   test("routes fragrance house question into knowledge", () => {
     const result = resolveFragranceKnowledgeQuery(
       "Ko je Essential Parfums?",

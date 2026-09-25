@@ -249,6 +249,22 @@ const HOUSE_RELATION_CUES = [
   "perfumers at",
 ];
 
+const HOUSE_WORK_CUES = [
+  "koje parfeme ima", "koje parfeme pravi", "koje parfeme potpisuje",
+  "what fragrances does", "what perfumes does"
+];
+
+const HOUSE_CATALOG_CUES = [
+  "sta imamo od", "sta imate od", "imate li od",
+  "u ponudi od", "u katalogu od",
+  "what do you have from", "what do you carry from"
+];
+
+const FRAGRANCE_HOUSE_CUES = [
+  "ciji je", "koja kuca pravi", "koja kuca stoji iza",
+  "koji brend pravi", "which house makes", "which brand makes"
+];
+
 const PERFUMER_RELATION_CUES = [
   "gde radi",
   "gdje radi",
@@ -259,6 +275,34 @@ const PERFUMER_RELATION_CUES = [
   "where does",
   "works for",
 ];
+
+const getHouseWorksAnswer = (query, house, lang = "sr") => {
+  const text = normalizeKnowledgeText(query);
+  if (!HOUSE_WORK_CUES.some((cue) => text.includes(normalizeKnowledgeText(cue)))) return "";
+  const works = fragrancePerfumes.filter((fragrance) => fragrance.houseId === house.id);
+  if (!works.length) return lang === "en"
+    ? `I don't yet have verified fragrance works recorded for ${house.name}.`
+    : `Za ${house.name} još nemam zabeležene potvrđene parfeme u ovoj knowledge bazi.`;
+  const names = works.map((fragrance) => fragrance.name);
+  return lang === "en"
+    ? `Verified fragrances currently recorded for ${house.name}: ${names.join(", ")}.`
+    : `Potvrđeni parfemi koje trenutno imam zabeležene za ${house.name}: ${names.join(", ")}.`;
+};
+
+const getHouseCatalogAnswer = (query, house, lang = "sr", products = []) => {
+  const text = normalizeKnowledgeText(query);
+  if (!HOUSE_CATALOG_CUES.some((cue) => text.includes(normalizeKnowledgeText(cue)))) return "";
+  const available = fragrancePerfumes
+    .filter((fragrance) => fragrance.houseId === house.id)
+    .filter((fragrance) => isCatalogFragranceAvailable(fragrance, products));
+  if (!available.length) return lang === "en"
+    ? `I don't currently have a verified PlayNice catalog fragrance from ${house.name} in this knowledge set.`
+    : `Trenutno nemam potvrđen PlayNice katalog parfem kuće ${house.name} u ovoj knowledge bazi.`;
+  const names = available.map((fragrance) => fragrance.name);
+  return lang === "en"
+    ? `Currently verified in the PlayNice catalog from ${house.name}: ${names.join(", ")}.`
+    : `Trenutno potvrđeno u PlayNice katalogu od kuće ${house.name}: ${names.join(", ")}.`;
+};
 
 const getHouseRelationshipAnswer = (
   query,
@@ -384,6 +428,16 @@ const PERFUMER_WORK_CUES = [
   "which fragrances did",
   "what did",
 ];
+
+const getPerfumeHouseAnswer = (query, fragrance, lang = "sr") => {
+  const text = normalizeKnowledgeText(query);
+  if (!FRAGRANCE_HOUSE_CUES.some((cue) => text.includes(normalizeKnowledgeText(cue)))) return "";
+  const house = getPerfumeHouse(fragrance);
+  if (!house) return "";
+  return lang === "en"
+    ? `${fragrance.name} is from ${house.name}.`
+    : `${fragrance.name} je parfem kuće ${house.name}.`;
+};
 
 const getPerfumeRelationshipAnswer = (
   query,
@@ -624,6 +678,7 @@ export const resolveFragranceKnowledgeQuery = (
   }
 
   if (classification.type === "fragrance") {
+    const houseAnswer = getPerfumeHouseAnswer(query, classification.entity, lang);
     const relationshipAnswer =
       getPerfumeRelationshipAnswer(
         query,
@@ -637,6 +692,7 @@ export const resolveFragranceKnowledgeQuery = (
       confidence: classification.confidence,
       entity: classification.entity,
       answer:
+        houseAnswer ||
         relationshipAnswer ||
         getFragranceKnowledgeAnswer(
           classification.entity,
@@ -649,6 +705,10 @@ export const resolveFragranceKnowledgeQuery = (
     classification.type === "fragrance-house" ||
     classification.type === "fragrance-company"
   ) {
+    const catalogAnswer = getHouseCatalogAnswer(
+      query, classification.entity, lang, context.products || []
+    );
+    const worksAnswer = getHouseWorksAnswer(query, classification.entity, lang);
     const relationshipAnswer =
       getHouseRelationshipAnswer(
         query,
@@ -662,6 +722,8 @@ export const resolveFragranceKnowledgeQuery = (
       confidence: classification.confidence,
       entity: classification.entity,
       answer:
+        catalogAnswer ||
+        worksAnswer ||
         relationshipAnswer ||
         getFragranceHouseKnowledgeAnswer(
           classification.entity,
