@@ -11,7 +11,19 @@ export const fragranceTerms = [
   {
     id: "vanilla-vanillin",
     name: "Vanilla / Vanillin",
-    aliases: ["vanilla", "vanilin", "vanillin", "vanila u parfemu", "vanilla in perfume"],
+    aliases: [
+      "vanilla",
+      "vanila",
+      "vanile",
+      "vanilin",
+      "vanillin",
+      "vanilina",
+      "vanila i vanilin",
+      "vanile i vanilina",
+      "razlika izmedju vanile i vanilina",
+      "vanila u parfemu",
+      "vanilla in perfume",
+    ],
     kind: "material-family",
     answer: {
       sr: "Vanila kao mirisni profil i vanilin kao molekula nisu isto. Prirodni ekstrakti vanile sadrže veliki broj aromatičnih komponenti, dok je vanilin jedna od ključnih molekula koje daju prepoznatljiv sladak, kremast i balsamičan utisak. U parfimeriji se vrlo često koriste i prirodni ekstrakti i sintetički vanilin, pojedinačno ili zajedno.",
