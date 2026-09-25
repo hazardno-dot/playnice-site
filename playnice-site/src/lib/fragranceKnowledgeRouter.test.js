@@ -53,6 +53,8 @@ describe("FI Knowledge — entity routing", () => {
     ["Kako se radi layering parfema?", "layering"],
     ["Blotter ili koža — kako da testiram parfem?", "blotter-vs-skin"],
     ["Kako treba čuvati parfem?", "fragrance-storage"],
+    ["Kako i gde treba pravilno čuvati parfem?", "fragrance-storage"],
+    ["Koja je razlika između designer i niche parfema?", "niche-designer-indie"],
   ])("resolves explanatory fragrance term %s", (query, expectedId) => {
     expect(findFragranceTermByQuery(query)?.id).toBe(expectedId);
   });
