@@ -7,6 +7,65 @@
 
 export const fragranceHouses = [
   {
+    id: "chanel",
+    name: "CHANEL",
+    aliases: ["chanel", "šanel", "chanel parfums"],
+    entityType: "fragrance-house",
+    summary: {
+      sr: "CHANEL je francuska luksuzna kuća sa dugom autorskom tradicijom u parfimeriji. Olivier Polge je njen savremeni In-House Perfumer Creator.",
+      en: "CHANEL is a French luxury house with a long authorial tradition in perfumery. Olivier Polge is its contemporary In-House Perfumer Creator.",
+    },
+    perfumerIds: ["olivier-polge"],
+    sourceLinks: [
+      {
+        label: "CHANEL — Parfumeur",
+        url: "https://www.chanel.com/ba/fragrance/chanel-parfumeur/i-am-a-nose/",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "yves-saint-laurent",
+    name: "Yves Saint Laurent",
+    aliases: [
+      "yves saint laurent",
+      "ysl",
+      "ysl beauty",
+      "saint laurent",
+    ],
+    entityType: "fragrance-house",
+    summary: {
+      sr: "Yves Saint Laurent Beauty je beauty i parfemski ogranak kuće Yves Saint Laurent. U savremenom portfoliju sarađuje sa vodećim parfimerima kao što su Anne Flipo i Carlos Benaïm.",
+      en: "Yves Saint Laurent Beauty is the beauty and fragrance arm of Yves Saint Laurent. Its contemporary portfolio includes work by leading perfumers such as Anne Flipo and Carlos Benaïm.",
+    },
+    perfumerIds: ["anne-flipo", "carlos-benaim"],
+    sourceLinks: [
+      {
+        label: "YSL Beauty — Diva Lavender Heart / Libre",
+        url: "https://www.yslbeauty.com/int/diva-lavender-heart/ingredients-lavender.html",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "lancome",
+    name: "Lancôme",
+    aliases: ["lancome", "lancôme"],
+    entityType: "fragrance-house",
+    summary: {
+      sr: "Lancôme je francuska beauty kuća sa velikim parfemskim portfoliom. Među parfimerima koji su potpisali njena najpoznatija izdanja su Anne Flipo i Dominique Ropion.",
+      en: "Lancôme is a French beauty house with a major fragrance portfolio. Perfumers behind some of its best-known creations include Anne Flipo and Dominique Ropion.",
+    },
+    perfumerIds: ["anne-flipo", "dominique-ropion"],
+    sourceLinks: [
+      {
+        label: "Lancôme — Meet Our Perfumers",
+        url: "https://www.lancome-usa.com/our-perfumers.html",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
     id: "marc-antoine-barrois",
     name: "Marc-Antoine Barrois",
     aliases: [

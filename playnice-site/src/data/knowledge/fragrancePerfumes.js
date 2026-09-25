@@ -8,6 +8,119 @@
 
 export const fragrancePerfumes = [
   {
+    id: "libre-edp",
+    name: "Libre Eau de Parfum",
+    aliases: [
+      "libre",
+      "libre edp",
+      "ysl libre",
+      "yves saint laurent libre",
+    ],
+    entityType: "fragrance",
+    houseId: "yves-saint-laurent",
+    perfumerIds: ["anne-flipo", "carlos-benaim"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "Libre Eau de Parfum je YSL kompozicija koju su osmislili Master Perfumeri Anne Flipo i Carlos Benaïm. YSL ističe napetost između lavande i orange blossom akorda kao centralni potpis mirisa.",
+      en: "Libre Eau de Parfum is a YSL composition conceived by Master Perfumers Anne Flipo and Carlos Benaïm. YSL highlights the tension between lavender and orange blossom as the fragrance's central signature.",
+    },
+    sources: [
+      {
+        label: "YSL Beauty — Libre / Diva Lavender Heart",
+        url: "https://www.yslbeauty.com/int/diva-lavender-heart/ingredients-lavender.html",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "la-vie-est-belle-edp",
+    name: "La Vie Est Belle Eau de Parfum",
+    aliases: [
+      "la vie est belle",
+      "la vie est belle edp",
+      "lancome la vie est belle",
+    ],
+    entityType: "fragrance",
+    houseId: "lancome",
+    perfumerIds: ["anne-flipo", "dominique-ropion"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "La Vie Est Belle Eau de Parfum je Lancôme floralno-gourmand kompozicija koju aktuelna zvanična stranica proizvoda pripisuje Anne Flipo i Dominiqueu Ropionu, sa irisom, pačulijem, vanilom i spun-sugar efektom.",
+      en: "La Vie Est Belle Eau de Parfum is a Lancôme floral-gourmand composition currently credited on the official product page to Anne Flipo and Dominique Ropion, with iris, patchouli, vanilla and a spun-sugar effect.",
+    },
+    sources: [
+      {
+        label: "Lancôme — La Vie Est Belle Eau de Parfum",
+        url: "https://www.lancome-usa.com/fragrance/la-vie-est-belle-eau-de-parfum/3614273749381.html",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "ysl-jumpsuit",
+    name: "Jumpsuit Eau de Parfum",
+    aliases: [
+      "jumpsuit",
+      "ysl jumpsuit",
+      "jumpsuit eau de parfum",
+    ],
+    entityType: "fragrance",
+    houseId: "yves-saint-laurent",
+    perfumerIds: ["carlos-benaim"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "Jumpsuit Eau de Parfum iz YSL Le Vestiaire des Parfums kolekcije potpisuje Carlos Benaïm. YSL ga opisuje kao kompoziciju fokusiranu na magnoliju i bergamot.",
+      en: "Jumpsuit Eau de Parfum from YSL's Le Vestiaire des Parfums collection is created by Carlos Benaïm. YSL describes it as a composition centered on magnolia and bergamot.",
+    },
+    sources: [
+      {
+        label: "YSL Beauty — Jumpsuit Eau de Parfum",
+        url: "https://www.yslbeauty.com/int/fragrance/unisex-fragrances/jumpsuit-eau-de-parfum/3614274184952.html",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "chanel-paris-riviera",
+    name: "PARIS-RIVIERA",
+    aliases: ["paris riviera", "chanel paris riviera"],
+    entityType: "fragrance",
+    houseId: "chanel",
+    perfumerIds: ["olivier-polge"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "PARIS-RIVIERA je CHANEL kompozicija Oliviera Polgea, svetao floralni miris inspirisan Azurnom obalom, sa sicilijanskom narandžom, nerolijem, sandalovinom i mošusom.",
+      en: "PARIS-RIVIERA is a CHANEL composition by Olivier Polge, a luminous floral fragrance inspired by the French Riviera with Sicilian orange, neroli, sandalwood and musk.",
+    },
+    sources: [
+      {
+        label: "CHANEL — PARIS-RIVIERA",
+        url: "https://www.chanel.com/us/fragrance/les-eaux-de-chanel/paris-riviera/",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "chanel-paris-paris",
+    name: "PARIS-PARIS",
+    aliases: ["paris paris", "chanel paris paris"],
+    entityType: "fragrance",
+    houseId: "chanel",
+    perfumerIds: ["olivier-polge"],
+    playNiceCatalogSlug: null,
+    summary: {
+      sr: "PARIS-PARIS je CHANEL kompozicija Oliviera Polgea sa citrusima, damask ružom, pink pepperom i pačulijem, zamišljena kao mirisni portret Pariza.",
+      en: "PARIS-PARIS is a CHANEL composition by Olivier Polge with citrus, Damask rose, pink pepper and patchouli, conceived as an olfactory portrait of Paris.",
+    },
+    sources: [
+      {
+        label: "CHANEL — PARIS-PARIS",
+        url: "https://www.chanel.com/ae-en/fragrance/les-eaux-de-chanel/paris-paris/",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
     id: "baccarat-rouge-540-edp",
     name: "Baccarat Rouge 540 Eau de Parfum",
     aliases: [

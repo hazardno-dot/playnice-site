@@ -51,6 +51,7 @@ describe("FI Knowledge — entity routing", () => {
     ["Ko je Jacques Cavallier?", "jacques-cavallier-belletrud"],
     ["Ko je Cecile Zarokian?", "cecile-zarokian"],
     ["Ko je Christine Nagel?", "christine-nagel"],
+    ["Ko je Olivier Polge?", "olivier-polge"],
   ])("resolves perfumer %s", (query, expectedId) => {
     expect(findPerfumerByQuery(query)?.id).toBe(expectedId);
   });
@@ -68,6 +69,11 @@ describe("FI Knowledge — entity routing", () => {
     ["Ko je napravio Twilly d Hermes?", "twilly-d-hermes-edp"],
     ["Ko je napravio Tutti Twilly?", "tutti-twilly-d-hermes-edp"],
     ["Ko potpisuje Un Jardin sur la Lagune?", "un-jardin-sur-la-lagune"],
+    ["Ko je napravio YSL Libre?", "libre-edp"],
+    ["Ko je napravio La Vie Est Belle?", "la-vie-est-belle-edp"],
+    ["Ko potpisuje YSL Jumpsuit?", "ysl-jumpsuit"],
+    ["Ko je napravio Chanel Paris Riviera?", "chanel-paris-riviera"],
+    ["Ko potpisuje Chanel Paris Paris?", "chanel-paris-paris"],
   ])("resolves fragrance entity %s", (query, expectedId) => {
     expect(findPerfumeByQuery(query)?.id).toBe(expectedId);
   });
@@ -79,6 +85,9 @@ describe("FI Knowledge — entity routing", () => {
     ["Šta je Givaudan?", "givaudan"],
     ["Šta je dsm-firmenich?", "dsm-firmenich"],
     ["Šta je IFF?", "iff"],
+    ["Šta je CHANEL?", "chanel"],
+    ["Šta je YSL?", "yves-saint-laurent"],
+    ["Šta je Lancome?", "lancome"],
   ])("resolves fragrance house/company %s", (query, expectedId) => {
     expect(findFragranceHouseByQuery(query)?.id).toBe(expectedId);
   });
@@ -223,6 +232,13 @@ describe("FI Knowledge — entity routing", () => {
     ["Ko je napravio Twilly d Hermes?", "Christine Nagel"],
     ["Ko je napravio Tutti Twilly?", "Christine Nagel"],
     ["Ko potpisuje Un Jardin sur la Lagune?", "Christine Nagel"],
+    ["Ko je napravio YSL Libre?", "Anne Flipo"],
+    ["Ko je napravio YSL Libre?", "Carlos Benaïm"],
+    ["Ko je napravio La Vie Est Belle?", "Anne Flipo"],
+    ["Ko je napravio La Vie Est Belle?", "Dominique Ropion"],
+    ["Ko potpisuje YSL Jumpsuit?", "Carlos Benaïm"],
+    ["Ko je napravio Chanel Paris Riviera?", "Olivier Polge"],
+    ["Ko potpisuje Chanel Paris Paris?", "Olivier Polge"],
   ])("answers perfume authorship %s", (query, expectedName) => {
     const result = resolveFragranceKnowledgeQuery(query, "sr");
     expect(result.handled).toBe(true);

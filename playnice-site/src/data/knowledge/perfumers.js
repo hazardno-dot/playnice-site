@@ -376,6 +376,31 @@ export const perfumers = [
     ],
   },
   {
+    id: "olivier-polge",
+    name: "Olivier Polge",
+    aliases: [
+      "olivier polge",
+      "olivije polge",
+      "olivier polž",
+    ],
+    role: "CHANEL In-House Perfumer Creator",
+    summary: {
+      sr: "Olivier Polge je kućni parfimer-kreator kuće CHANEL. CHANEL ga predstavlja kao svog in-house parfumera koji oblikuje savremeni mirisni jezik kuće.",
+      en: "Olivier Polge is CHANEL's In-House Perfumer Creator. CHANEL presents him as the house perfumer shaping its contemporary olfactory language.",
+    },
+    notableWorks: [
+      { name: "PARIS-PARIS", brand: "CHANEL", verified: true },
+      { name: "PARIS-RIVIERA", brand: "CHANEL", verified: true },
+    ],
+    sources: [
+      {
+        label: "CHANEL — I am a nose",
+        url: "https://www.chanel.com/ba/fragrance/chanel-parfumeur/i-am-a-nose/",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
     id: "dominique-ropion",
     name: "Dominique Ropion",
     aliases: [
