@@ -36,6 +36,11 @@ describe("FI Knowledge — entity routing", () => {
     ["Šta znači EDP?", "fragrance-concentration"],
     ["Objasni Iso E Super", "iso-e-super"],
     ["What is Hedione?", "hedione"],
+    ["Šta je Ambroxan?", "ambrox"],
+    ["Zašto ne osećam svoj parfem?", "olfactory-fatigue"],
+    ["Objasni top heart i base notes", "note-pyramid"],
+    ["Šta znači trajnost parfema?", "longevity"],
+    ["Šta je parfemski akord?", "accord"],
   ])("resolves explanatory fragrance term %s", (query, expectedId) => {
     expect(findFragranceTermByQuery(query)?.id).toBe(expectedId);
   });
@@ -44,6 +49,8 @@ describe("FI Knowledge — entity routing", () => {
     "Hoću parfem sa Iso E Super do 15 €",
     "EDP za posao do 20 €",
     "Nešto sa Hedione za leto",
+    "Parfem sa Ambroxanom za izlazak",
+    "Trajan parfem za posao do 20 €",
   ])("does not steal recommendation-style material query: %s", (query) => {
     expect(findFragranceTermByQuery(query)).toBeNull();
   });

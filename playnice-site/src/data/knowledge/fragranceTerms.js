@@ -69,6 +69,139 @@ export const fragranceTerms = [
     ],
   },
   {
+    id: "ambrox",
+    name: "Ambrox / Ambroxan",
+    aliases: [
+      "ambrox",
+      "ambroxan",
+      "ambrox super",
+      "cetalox",
+    ],
+    kind: "material",
+    answer: {
+      sr: "Ambrox i srodne ambergris-molekule daju suv, mineralan, drvenasto-ambarski efekat i često veoma dobru difuziju i postojanost. dsm-firmenich navodi da je Ambrox razvijen iz istraživanja mirisnog karaktera ambergrisa, dok je Ambrox Super modernija, izrazito snažna i elegantna ambrasta varijanta sa mošusnim i drvenastim tonovima.",
+      en: "Ambrox and related ambergris-style molecules give a dry, mineral, woody-amber effect and are often highly diffusive and persistent. dsm-firmenich traces Ambrox to research into the odor character of ambergris, while Ambrox Super is a more modern, very powerful and elegant ambery variant with musky and woody tonalities.",
+    },
+    sources: [
+      {
+        label: "dsm-firmenich — Biotechnology / Ambrox Super",
+        url: "https://www.dsm-firmenich.com/en/businesses/perfumery-beauty/ingredients/biotechnology.html",
+        type: "manufacturer-official",
+      },
+      {
+        label: "dsm-firmenich — Cetalox",
+        url: "https://studio.dsm-firmenich.com/product/cetaloxr-pe-922560",
+        type: "manufacturer-official",
+      },
+    ],
+  },
+  {
+    id: "olfactory-fatigue",
+    name: "Olfactory fatigue",
+    aliases: [
+      "olfactory fatigue",
+      "nose fatigue",
+      "zamaranje nosa",
+      "navikavanje nosa",
+      "ne osecam svoj parfem",
+      "ne osećam svoj parfem",
+      "ne mogu da osetim parfem",
+      "ne mogu da osjetim parfem",
+      "anosmia",
+      "anosmija",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Ako posle nekog vremena više ne osećaš svoj parfem, to ne znači automatski da je nestao. Nos može da se desenzitizuje na miris koji je stalno prisutan, pa ga drugi ljudi i dalje mogu primećivati. To nije isto što i prava anosmija: anosmija znači gubitak ili odsustvo čula mirisa, a moguća je i selektivna slabija osetljivost na pojedine velike molekule, poput nekih mošusa.",
+      en: "If you stop noticing your own fragrance after a while, it does not automatically mean it has disappeared. The nose can become desensitized to a continuously present smell while other people can still notice it. That is not the same as true anosmia, which is loss or absence of smell; selective reduced sensitivity to some large aroma molecules, such as certain musks, can also occur.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — FAQ",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/faq/",
+        type: "industry-education",
+      },
+      {
+        label: "The Perfume Society — Fragrant facts & myths",
+        url: "https://perfumesociety.org/fragrant-facts-myths-everything-your-nose-needs-to-know/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "note-pyramid",
+    name: "Top, heart and base notes",
+    aliases: [
+      "top notes",
+      "heart notes",
+      "middle notes",
+      "base notes",
+      "note pyramid",
+      "piramida nota",
+      "gornje note",
+      "srednje note",
+      "bazne note",
+      "note parfema",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Klasična parfemska piramida deli razvoj mirisa na top, heart i base note. Top note se prve osete i obično su lakše i brže isparavaju; heart note čine centralni karakter mirisa; base note se razvijaju kasnije i obično najduže ostaju. To je koristan model, ali nije svaki moderan parfem strogo piramidalan — postoje i linearnije kompozicije koje se tokom nošenja menjaju mnogo manje.",
+      en: "The classical fragrance pyramid divides development into top, heart and base notes. Top notes appear first and are usually lighter and faster to evaporate; heart notes form the central character; base notes emerge later and usually last the longest. It is a useful model, but not every modern fragrance follows a strict pyramid — some are more linear and change much less over time.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — FAQ",
+        url: "https://perfumesociety.org/frequently-asked-questions/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "longevity",
+    name: "Longevity",
+    aliases: [
+      "longevity",
+      "trajnost",
+      "koliko traje parfem",
+      "koliko dugo traje parfem",
+      "postojanost parfema",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Longevity je koliko dugo parfem ostaje primetljiv na koži ili odeći. Ne određuje ga samo koncentracija: utiču i formula, tip materijala, koža, temperatura i vlažnost. Teže bazne note poput drveta, smola, kože i duvana obično isparavaju sporije od laganih citrusnih nota.",
+      en: "Longevity is how long a fragrance remains noticeable on skin or clothing. It is not determined by concentration alone: formula, materials, skin, temperature and humidity all matter. Heavier base-note materials such as woods, resins, leather and tobacco usually evaporate more slowly than light citrus notes.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Make perfume last longer",
+        url: "https://perfumesociety.org/make-perfume-last-longer/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "accord",
+    name: "Accord",
+    aliases: [
+      "accord",
+      "akord",
+      "mirisni akord",
+      "parfemski akord",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Akord je kombinacija više mirisnih materijala koja zajedno stvara novi, prepoznatljiv utisak — slično akordu u muzici. Na primer, amber u parfimeriji često nije jedna sirovina nego akord građen od materijala poput labdanuma, benzoina i vanile.",
+      en: "An accord is a combination of several fragrance materials that together create a distinct new impression, similar to a chord in music. For example, amber in perfumery is often not a single raw material but an accord built from materials such as labdanum, benzoin and vanilla.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients / Amber",
+        url: "https://perfumesociety.org/ingredients/?letter=a",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
     id: "hedione",
     name: "Hedione",
     aliases: ["hedione", "hedion"],
