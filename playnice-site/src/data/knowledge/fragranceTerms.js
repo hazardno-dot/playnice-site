@@ -84,6 +84,8 @@ export const fragranceTerms = [
       "vreme i parfem",
       "vrijeme i parfem",
       "temperatura i parfem",
+      "temperatura utiče na parfem",
+      "temperatura utice na parfem",
       "weather and perfume",
       "heat and perfume",
       "cold weather perfume",
@@ -106,6 +108,8 @@ export const fragranceTerms = [
     name: "Humidity and fragrance performance",
     aliases: [
       "vlaga i parfem",
+      "vlaga utiče na parfem",
+      "vlaga utice na parfem",
       "vlažnost i parfem",
       "vlaznost i parfem",
       "humidity and perfume",
