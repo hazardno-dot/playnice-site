@@ -9,6 +9,142 @@
 export const fragranceTerms = [
 
   {
+    id: "perfume-oil",
+    name: "Perfume oil",
+    aliases: ["perfume oil", "parfemsko ulje", "uljani parfem"],
+    kind: "formulation",
+    answer: {
+      sr: "Perfume oil je mirisna kompozicija razblažena u uljnom ili drugom nealkoholnom nosaču umesto u tipičnoj alkoholnoj bazi spreja. Takvi proizvodi često ostaju bliže koži i razvijaju se drugačije od alkoholnih sprejeva, ali naziv 'oil' sam po sebi ne garantuje veću postojanost ili kvalitet.",
+      en: "A perfume oil is a fragrance composition diluted in an oil-based or other non-alcoholic carrier instead of the typical alcoholic spray base. These products often stay closer to skin and develop differently from alcohol sprays, but the word 'oil' alone does not guarantee greater longevity or quality.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Perfume glossary",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/perfume-glossary/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "attar-itr",
+    name: "Attar / Itr",
+    aliases: ["attar", "itr", "ittar", "attar perfume", "attar parfem"],
+    kind: "formulation-tradition",
+    answer: {
+      sr: "Attar, itr ili ittar je tradicionalni naziv za koncentrisani miris, naročito povezan sa južnoazijskom i bliskoistočnom parfemskom kulturom. Tradicionalni attari mogu biti destilovani u sandalovom ulju, dok se danas termin koristi šire i za različite alkohol-free parfemske uljne formate. Zato sastav treba proveravati po konkretnom proizvodu.",
+      en: "Attar, itr or ittar is a traditional term for concentrated fragrance, especially associated with South Asian and Middle Eastern perfumery. Traditional attars may be distilled into sandalwood oil, while today the term is used more broadly for different alcohol-free perfume-oil formats. The actual composition should therefore be checked product by product.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Perfume glossary",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/perfume-glossary/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "ethanol-role",
+    name: "Alcohol / ethanol in perfume",
+    aliases: [
+      "alkohol u parfemu",
+      "etanol u parfemu",
+      "alcohol in perfume",
+      "ethanol in perfume"
+    ],
+    kind: "formulation",
+    answer: {
+      sr: "Etanol je najčešći nosač u klasičnim parfemskim sprejevima. Rastvara veliki broj mirisnih materijala, brzo isparava i pomaže da se kompozicija rasprši i projektuje sa kože. Njegova uloga nije da 'pokvari' parfem; pravilno formulisan alkoholni parfem je standardan format fine fragrance industrije.",
+      en: "Ethanol is the most common carrier in classic fine-fragrance sprays. It dissolves many aroma materials, evaporates quickly and helps the composition disperse and project from skin. Its role is not to 'damage' the perfume; a properly formulated alcoholic fragrance is a standard fine-fragrance format.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — How perfume works",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/how-does-perfume-work/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "fragrance-dilution",
+    name: "Fragrance dilution",
+    aliases: ["dilution", "razblaživanje parfema", "razblazivanje parfema", "diluting perfume"],
+    kind: "formulation",
+    answer: {
+      sr: "Razblaživanje u parfimeriji znači podešavanje koncentracije mirisne kompozicije odgovarajućim nosačem, najčešće etanolom, vodom u kontrolisanom udelu ili uljnom bazom kod oil formata. Promena koncentracije može promeniti projekciju, teksturu i razvoj, a ne samo 'jačinu'.",
+      en: "Dilution in perfumery means adjusting the concentration of the fragrance compound with a suitable carrier, most commonly ethanol, controlled amounts of water, or an oil base in oil formats. Changing concentration can alter projection, texture and development, not merely make a scent 'stronger' or 'weaker'.",
+    },
+    sources: [
+      {
+        label: "IFRA — Safe use of fragrance",
+        url: "https://ifrafragrance.org/safe-use",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
+    id: "concentration-performance-myth",
+    name: "Concentration vs performance",
+    aliases: [
+      "da li edp traje duže od edt",
+      "da li edp traje duze od edt",
+      "is edp stronger than edt",
+      "is parfum stronger than edp",
+      "concentration and performance"
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Veća deklarisana koncentracija ne garantuje automatski veću projekciju niti dužu postojanost. EDT, EDP, Parfum i Extrait opisuju približne koncentracione stilove, ali formule mogu biti različite, a materijali imaju različitu isparljivost. EDP može trajati duže od EDT-a, ali to nije univerzalno pravilo.",
+      en: "A higher labeled concentration does not automatically guarantee stronger projection or longer wear. EDT, EDP, Parfum and Extrait describe approximate concentration styles, but formulas may differ and aroma materials have different volatilities. An EDP may last longer than an EDT, but it is not a universal rule.",
+    },
+    sources: [
+      {
+        label: "IFRA — Fragrance concentration terminology",
+        url: "https://ifrafragrance.org/",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
+    id: "extrait-projection",
+    name: "Extrait projection",
+    aliases: [
+      "da li extrait najviše projektuje",
+      "da li extrait najvise projektuje",
+      "does extrait project more",
+      "extrait projection"
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Extrait ili Parfum često ima višu koncentraciju mirisne kompozicije, ali to ne znači da nužno projektuje više. Viša koncentracija može dati gušći, bogatiji i dugotrajniji osećaj bliže koži, dok lakše i hlapljivije formule ponekad projektuju snažnije u prvom delu nošenja.",
+      en: "Extrait or Parfum often contains a higher concentration of fragrance compound, but that does not necessarily mean greater projection. Higher concentration can create a denser, richer and longer-lasting effect closer to skin, while lighter, more volatile formulas may project more strongly early in the wear.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Perfume glossary",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/perfume-glossary/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "alcohol-free",
+    name: "Alcohol-free fragrance",
+    aliases: ["alcohol free fragrance", "alcohol-free perfume", "parfem bez alkohola"],
+    kind: "formulation",
+    answer: {
+      sr: "Parfem bez alkohola koristi drugi nosač, na primer uljnu, vodenu ili emulzionu bazu. To menja način raspršivanja, sušenja i projekcije, ali ne znači automatski da je proizvod prirodniji, jači ili pogodniji za svaku osetljivu kožu. Bezbednost zavisi od kompletne formule.",
+      en: "An alcohol-free fragrance uses another carrier, such as an oil, water-based or emulsion system. This changes spray behavior, drying and projection, but does not automatically make the product more natural, stronger or suitable for every sensitive skin type. Safety depends on the complete formula.",
+    },
+    sources: [
+      {
+        label: "IFRA — Safe use of fragrance",
+        url: "https://ifrafragrance.org/safe-use",
+        type: "industry-official",
+      },
+    ],
+  },
+
+  {
     id: "steam-distillation",
     name: "Steam distillation",
     aliases: ["steam distillation", "destilacija parom", "parna destilacija"],
