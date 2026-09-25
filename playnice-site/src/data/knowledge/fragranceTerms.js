@@ -9,6 +9,194 @@
 export const fragranceTerms = [
 
   {
+    id: "aldehydes",
+    name: "Aldehydes",
+    aliases: ["aldehydes", "aldehidi", "aldehidni parfem", "aldehydic"],
+    kind: "material-family",
+    answer: {
+      sr: "Aldehidi su široka grupa mirisnih molekula, a u parfimeriji se često vezuju za blistav, čist, sapunast, citrusan, metalan ili voštan efekat — zavisno od konkretnog aldehida. Nisu jedna nota niti svi mirišu isto. U klasičnoj parfimeriji poznati su po tome što mogu da daju kompoziciji sjaj, volumen i apstraktniji karakter.",
+      en: "Aldehydes are a broad family of aroma molecules. In perfumery they can create sparkling, clean, soapy, citrusy, metallic or waxy effects depending on the specific aldehyde. They are not a single note and do not all smell alike. In classical perfumery they are famous for adding lift, volume and a more abstract character.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "coumarin",
+    name: "Coumarin",
+    aliases: ["coumarin", "kumarin"],
+    kind: "material",
+    answer: {
+      sr: "Kumarin je mirisna molekula sa toplim, slatkastim, seno-likim i bademasto-tonka karakterom. Prirodno je prisutan, između ostalog, u tonka pasulju, ali se u parfimeriji široko koristi i kao sintetički materijal. Posebno je važan u fougère strukturama.",
+      en: "Coumarin is an aroma molecule with a warm, sweet, hay-like, almond-tonka character. It occurs naturally in materials such as tonka bean and is also widely used synthetically in perfumery. It is especially important in fougère structures.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "labdanum",
+    name: "Labdanum",
+    aliases: ["labdanum", "labdanum resin", "cistus", "cistus labdanum"],
+    kind: "material",
+    answer: {
+      sr: "Labdanum je smolasti materijal dobijen iz biljaka roda Cistus. U parfimeriji daje topao, ambrast, kožast, balzamičan, smolast i ponekad blago animalan karakter. Jedan je od ključnih gradivnih materijala klasičnih amber akorda.",
+      en: "Labdanum is a resinous material obtained from Cistus plants. In perfumery it gives warm, ambery, leathery, balsamic, resinous and sometimes slightly animalic facets. It is one of the key building materials of classical amber accords.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "benzoin",
+    name: "Benzoin",
+    aliases: ["benzoin", "benzoe", "benzoin resin", "benzoinska smola"],
+    kind: "material",
+    answer: {
+      sr: "Benzoin je balzamična smola sa toplim, slatkim, vanilastim, blago začinskim i karamelnim nijansama. Često se koristi u amber, balsamic i gourmand kompozicijama, a može doprineti i zaobljenosti i postojanosti baze.",
+      en: "Benzoin is a balsamic resin with warm, sweet, vanilla-like, lightly spicy and caramel facets. It is common in amber, balsamic and gourmand compositions and can also contribute roundness and persistence to a fragrance base.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "tonka-bean",
+    name: "Tonka bean",
+    aliases: ["tonka", "tonka bean", "tonka pasulj", "tonka zrno"],
+    kind: "material",
+    answer: {
+      sr: "Tonka pasulj potiče iz semena drveta Dipteryx odorata. Miris mu je topao, sladak i složen, često sa utiscima vanile, badema, sena, duvana i začina. Bogat je kumarinom i čest je u fougère, amber i gourmand parfemima.",
+      en: "Tonka bean comes from the seeds of Dipteryx odorata. Its scent is warm, sweet and complex, often suggesting vanilla, almond, hay, tobacco and spice. It is rich in coumarin and common in fougère, amber and gourmand fragrances.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "saffron",
+    name: "Saffron",
+    aliases: ["saffron", "šafran", "safran"],
+    kind: "material",
+    answer: {
+      sr: "Šafran u parfimeriji može dati suv, začinski, kožast, blago metalan i topao efekat. Prirodni šafran je skup, pa se njegov mirisni utisak često gradi kombinacijom prirodnih i sintetičkih materijala. Posebno je čest u modernim amber, leather i oud kompozicijama.",
+      en: "Saffron can bring dry, spicy, leathery, slightly metallic and warm effects to fragrance. Natural saffron is expensive, so its olfactory impression is often built with a combination of natural and synthetic materials. It is especially common in modern amber, leather and oud compositions.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "leather-accord",
+    name: "Leather accord",
+    aliases: ["leather accord", "leather note", "kožna nota", "kozna nota", "kožni akord", "kozni akord"],
+    kind: "accord",
+    answer: {
+      sr: "Kožna nota u parfemu najčešće nije ekstrakt prave kože, već akord izgrađen od više mirisnih materijala. Može biti suva, dimna, katranasta, antilopasta, meka, animalna ili elegantno puderasta. Istorijski je povezana sa dimnim i fenolnim materijalima, a savremeni leather akordi mogu biti mnogo mekši i čistiji.",
+      en: "A leather note in perfume is usually not an extract of real leather but an accord built from multiple aroma materials. It can be dry, smoky, tarry, suede-like, soft, animalic or elegantly powdery. Historically it is linked with smoky and phenolic materials, while modern leather accords can be much softer and cleaner.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "aquatic-calone",
+    name: "Aquatic / Calone",
+    aliases: ["calone", "aquatic accord", "aquatic note", "vodena nota", "morska nota", "marine accord"],
+    kind: "material-family",
+    answer: {
+      sr: "Aquatic ili marine efekat u savremenoj parfimeriji često se gradi sintetičkim molekulima i akordima. Calone je jedan od najpoznatijih materijala tog tipa i može dati morski, ozonski, vodenast i blago dinjasto-voćni utisak. Aquatic parfem zato ne mora doslovno da sadrži 'morsku vodu' kao sirovinu.",
+      en: "Aquatic or marine effects in modern perfumery are often built with synthetic aroma molecules and accords. Calone is one of the best-known materials of this type and can create marine, ozonic, watery and slightly melon-like facets. An aquatic fragrance therefore does not literally need to contain 'sea water' as a raw material.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "incense-olibanum",
+    name: "Incense / Olibanum",
+    aliases: ["incense", "olibanum", "frankincense", "tamjan"],
+    kind: "material",
+    answer: {
+      sr: "Olibanum, odnosno frankincense ili tamjan, aromatična je smola koja može dati svetao citrusno-smolast, suv, mineralan, diman, balzamičan i duhovno-asocijativan karakter. U parfimeriji se koristi i u svežim i u tamnim kompozicijama — nije rezervisan samo za teške orijentalne mirise.",
+      en: "Olibanum, also called frankincense or incense, is an aromatic resin that can bring bright citrus-resinous, dry, mineral, smoky, balsamic and contemplative facets. In perfumery it appears in both fresh and dark compositions and is not limited to heavy oriental styles.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "tobacco-note",
+    name: "Tobacco note",
+    aliases: ["tobacco note", "tobacco", "duvan", "duvanska nota"],
+    kind: "material-family",
+    answer: {
+      sr: "Duvanska nota u parfemu može ići od suvog lista, sena i začina do mednog, slatkog, dimnog, kožastog ili gotovo čokoladnog karaktera. Često je akordska interpretacija, a ne jednostavno 'miris cigarete'. Zato dva tobacco parfema mogu mirisati potpuno različito.",
+      en: "A tobacco note in fragrance can range from dry leaf, hay and spice to honeyed, sweet, smoky, leathery or almost chocolate-like facets. It is often an accord-based interpretation rather than simply 'the smell of a cigarette', so two tobacco fragrances can smell completely different.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "powdery-effect",
+    name: "Powdery effect",
+    aliases: ["powdery", "puderast", "puderasta nota", "powdery perfume"],
+    kind: "concept",
+    answer: {
+      sr: "Puderast karakter nije jedna jedina sirovina. Može nastati iz materijala i akorda poput irisa/orrisa, heliotropina, ljubičice, mošusa, vanile i nekih aldehida. Rezultat može podsećati na kozmetički puder, ruž za usne, mekanu kožu ili suvu baršunastu teksturu.",
+      en: "A powdery effect is not one single raw material. It can come from materials and accords such as iris/orris, heliotropin, violet, musks, vanilla and some aldehydes. The result can evoke face powder, lipstick, soft skin or a dry velvety texture.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+
+  {
     id: "fragrance-families",
     name: "Fragrance families",
     aliases: [
