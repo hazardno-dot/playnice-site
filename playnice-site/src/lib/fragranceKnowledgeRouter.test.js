@@ -8,6 +8,32 @@ import {
 } from "./fragranceKnowledgeRouter";
 
 describe("FI Knowledge — entity routing", () => {
+  const discoveryRegressionQueries = [
+    "Sveže za leto do 15 €",
+    "Nešto kao Naxos",
+    "Čisto i elegantno za posao",
+    "Date night, not too sweet",
+    "Hoću parfem sa Iso E Super do 15 €",
+    "Niche parfem za veče do 25 €",
+    "Parfem sa jakom projekcijom do 20 €",
+    "Oud parfem do 20 €",
+    "Vetiver za leto do 15 €",
+    "Gourmand za dejt do 20 €",
+    "Tobacco parfem za zimu",
+    "Kožni parfem za veče",
+    "Puderast parfem za nju do 20 €",
+    "Aquatic parfem za leto",
+    "Kako da nađem oud parfem za veče do 25 €?",
+    "Da li imaš niche parfem za posao do 20 €?",
+    "Koji parfem sa vetiverom je dobar za leto?",
+    "Preporuči nešto puderasto za nju",
+    "Treba mi parfem sa jakom projekcijom za izlazak",
+    "Želim nešto sa tonkom za zimu",
+    "Suggest a woody fragrance for work under €20",
+    "How do I find a fresh aquatic fragrance for summer?",
+    "Which perfume with ambergris works for a date?",
+    "I need a gourmand fragrance under €25",
+  ];
   test.each([
     ["Ko je Quentin Bisch?", "quentin-bisch"],
     ["Ko je Quentine Bish?", "quentin-bisch"],
@@ -106,30 +132,18 @@ describe("FI Knowledge — entity routing", () => {
     expect(findFragranceTermByQuery(query)).toBeNull();
   });
 
-  test.each([
-    "Sveže za leto do 15 €",
-    "Nešto kao Naxos",
-    "Čisto i elegantno za posao",
-    "Date night, not too sweet",
-    "Hoću parfem sa Iso E Super do 15 €",
-    "Niche parfem za veče do 25 €",
-    "Parfem sa jakom projekcijom do 20 €",
-    "Oud parfem do 20 €",
-    "Vetiver za leto do 15 €",
-    "Gourmand za dejt do 20 €",
-    "Tobacco parfem za zimu",
-    "Kožni parfem za veče",
-    "Puderast parfem za nju do 20 €",
-    "Aquatic parfem za leto",
-  ])("does not intercept Discovery Engine query: %s", (query) => {
-    expect(resolveFragranceKnowledgeQuery(query, "sr")).toEqual({
-      handled: false,
-      type: "unknown",
-      confidence: "low",
-      entity: null,
-      answer: "",
-    });
-  });
+  test.each(discoveryRegressionQueries)(
+    "does not intercept Discovery Engine query: %s",
+    (query) => {
+      expect(resolveFragranceKnowledgeQuery(query, "sr")).toEqual({
+        handled: false,
+        type: "unknown",
+        confidence: "low",
+        entity: null,
+        answer: "",
+      });
+    }
+  );
 
   test("routes verified perfumer question into knowledge", () => {
     const result = resolveFragranceKnowledgeQuery("Ko je Quentine Bish?", "sr");
@@ -144,6 +158,15 @@ describe("FI Knowledge — entity routing", () => {
     const answer = getPerfumerKnowledgeAnswer(perfumer, "sr");
     expect(answer).toContain("Quentin");
     expect(answer).toContain("Bois Impérial");
+  });
+
+  test.each([
+    "Kako da nađem oud parfem za veče do 25 €?",
+    "Da li imaš niche parfem za posao do 20 €?",
+    "How do I find a fresh aquatic fragrance for summer?",
+    "Which perfume with ambergris works for a date?",
+  ])("recommendation intent wins even when a knowledge cue is present: %s", (query) => {
+    expect(findFragranceTermByQuery(query)).toBeNull();
   });
 
   test("ordered-token matching handles natural wording with filler words", () => {

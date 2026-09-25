@@ -25,6 +25,32 @@ const KNOWLEDGE_CUES = [
   "difference between", "meaning of",
 ];
 
+const RECOMMENDATION_CUES = [
+  "preporuci", "preporuka", "predlozi", "trazim", "treba mi",
+  "hocu", "zelim", "daj mi", "koji parfem", "koji miris",
+  "za posao", "za dejt", "za izlazak", "za leto", "za ljeto",
+  "za zimu", "za prolece", "za proljece", "za jesen",
+  "za svadbu", "za kancelariju", "za more", "za svaki dan",
+  "recommend", "suggest", "looking for", "i want", "i need",
+  "which perfume", "which fragrance", "for work", "for date",
+  "for summer", "for winter", "for office", "for wedding",
+];
+
+const hasBudgetSignal = (text) =>
+  /(^|\s)(do|ispod|under|max|maximum|budget|budzet)\s*€?\s*\d+/i.test(text) ||
+  /€\s*\d+|\d+\s*€/.test(text);
+
+const isRecommendationStyleQuery = (query) => {
+  const text = normalizeKnowledgeText(query);
+
+  return (
+    RECOMMENDATION_CUES.some((cue) =>
+      text.includes(normalizeKnowledgeText(cue))
+    ) ||
+    hasBudgetSignal(String(query || ""))
+  );
+};
+
 const containsOrderedTokens = (
   queryText,
   aliasText
@@ -95,6 +121,10 @@ export const findFragrancePersonalityByQuery = (query) => {
 };
 
 export const findFragranceTermByQuery = (query) => {
+  if (isRecommendationStyleQuery(query)) {
+    return null;
+  }
+
   const text = normalizeKnowledgeText(query);
   const hasKnowledgeCue = KNOWLEDGE_CUES.some((cue) =>
     text.includes(normalizeKnowledgeText(cue))
