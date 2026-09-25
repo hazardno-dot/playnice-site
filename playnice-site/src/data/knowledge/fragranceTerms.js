@@ -9,6 +9,143 @@
 export const fragranceTerms = [
 
   {
+    id: "beast-mode",
+    name: "Beast mode",
+    aliases: ["beast mode", "beastmode", "zver od parfema", "zvijer od parfema"],
+    kind: "community-term",
+    answer: {
+      sr: "“Beast mode” je neformalni izraz iz parfemske zajednice za miris koji se doživljava kao vrlo snažan po projekciji, sili mirisnog traga i/ili postojanosti. Nije tehnički standard i nema univerzalni prag; utisak zavisi od doze, kože, klime, prostora i osobe koja ga procenjuje.",
+      en: "“Beast mode” is an informal fragrance-community term for a scent perceived as very strong in projection, trail and/or longevity. It is not a technical standard and has no universal threshold; perception depends on dose, skin, climate, setting and the person evaluating it.",
+    },
+    sources: [
+      {
+        label: "PlayNice — Fragrance Intelligence community terminology",
+        url: "https://playniceshop.me/",
+        type: "first-party-editorial",
+      },
+    ],
+  },
+  {
+    id: "signature-scent",
+    name: "Signature scent",
+    aliases: ["signature scent", "signature fragrance", "potpisni parfem", "parfem kao potpis"],
+    kind: "community-term",
+    answer: {
+      sr: "Signature scent je parfem koji osoba nosi dovoljno često da postane deo njenog prepoznatljivog mirisnog identiteta. Ne mora biti najjači, najskuplji ili najsloženiji parfem; važnije je da odgovara osobi, svakodnevici i rasponu situacija u kojima ga realno nosi.",
+      en: "A signature scent is a fragrance worn often enough to become part of a person's recognizable olfactory identity. It does not have to be the strongest, most expensive or most complex perfume; fit with the wearer, daily life and real use cases matters more.",
+    },
+    sources: [
+      {
+        label: "PlayNice — Fragrance Intelligence community terminology",
+        url: "https://playniceshop.me/",
+        type: "first-party-editorial",
+      },
+    ],
+  },
+  {
+    id: "dumb-reach",
+    name: "Dumb reach",
+    aliases: ["dumb reach", "easy reach", "bez razmišljanja parfem", "bez razmisljanja parfem"],
+    kind: "community-term",
+    answer: {
+      sr: "“Dumb reach” je neformalni izraz za parfem koji se lako bira bez mnogo razmišljanja jer radi u mnogo svakodnevnih situacija. Obično podrazumeva prijatnost, svestranost i relativno nizak rizik da bude pretežak ili neprikladan za prostor.",
+      en: "“Dumb reach” is informal fragrance-community language for a scent that is easy to choose without much thought because it works across many everyday situations. It usually implies pleasantness, versatility and relatively low risk of being too heavy or inappropriate for the setting.",
+    },
+    sources: [
+      {
+        label: "PlayNice — Fragrance Intelligence community terminology",
+        url: "https://playniceshop.me/",
+        type: "first-party-editorial",
+      },
+    ],
+  },
+  {
+    id: "blue-fragrance",
+    name: "Blue fragrance",
+    aliases: ["blue fragrance", "blue perfume", "plavi parfem", "blue scent"],
+    kind: "community-term",
+    answer: {
+      sr: "“Blue fragrance” je neformalna kategorija, ne zvanična olfaktorna porodica. Obično opisuje moderan, čist, svež i svestran profil koji često kombinuje citruse, aromatične note, drvene ili amberske molekule i ponekad aquatic ili začinske elemente. Granice kategorije su subjektivne.",
+      en: "“Blue fragrance” is an informal category rather than an official olfactory family. It usually describes a modern, clean, fresh and versatile profile combining citrus, aromatic notes, woods or amber materials, sometimes with aquatic or spicy facets. The category boundaries are subjective.",
+    },
+    sources: [
+      {
+        label: "PlayNice — Fragrance Intelligence community terminology",
+        url: "https://playniceshop.me/",
+        type: "first-party-editorial",
+      },
+    ],
+  },
+  {
+    id: "freshie",
+    name: "Freshie",
+    aliases: ["freshie", "fresh fragrance", "svežak parfem", "svezak parfem"],
+    kind: "community-term",
+    answer: {
+      sr: "“Freshie” je neformalni naziv za parfem koji se doživljava pretežno sveže, lagano i osvežavajuće. Često uključuje citruse, aquatic, zelene ili aromatične elemente, ali nema strogu formulu niti zvaničnu definiciju.",
+      en: "“Freshie” is informal fragrance-community language for a perfume perceived as predominantly fresh, light and refreshing. It often includes citrus, aquatic, green or aromatic elements, but there is no strict formula or official definition.",
+    },
+    sources: [
+      {
+        label: "PlayNice — Fragrance Intelligence community terminology",
+        url: "https://playniceshop.me/",
+        type: "first-party-editorial",
+      },
+    ],
+  },
+  {
+    id: "compliment-getter",
+    name: "Compliment getter",
+    aliases: ["compliment getter", "kompliment parfem", "parfem za komplimente"],
+    kind: "community-term",
+    answer: {
+      sr: "“Compliment getter” je zajednički izraz za parfem za koji ljudi često tvrde da dobija pozitivne reakcije okoline. To nije merljiva osobina samog parfema: reakcije zavise od osobe, doze, konteksta, kulture, blizine i ukusa ljudi oko nje.",
+      en: "“Compliment getter” is community language for a fragrance people often claim receives positive reactions from others. It is not a measurable property of the perfume itself; reactions depend on the wearer, dose, context, culture, proximity and the tastes of people nearby.",
+    },
+    sources: [
+      {
+        label: "PlayNice — Fragrance Intelligence community terminology",
+        url: "https://playniceshop.me/",
+        type: "first-party-editorial",
+      },
+    ],
+  },
+  {
+    id: "office-safe",
+    name: "Office safe",
+    aliases: ["office safe", "office-safe", "bezbedan za kancelariju", "siguran za kancelariju"],
+    kind: "community-term",
+    answer: {
+      sr: "“Office safe” obično znači da parfem ima kontrolisanu projekciju, prijatan i relativno nenametljiv profil i da je manje verovatno da će smetati ljudima u zatvorenom prostoru. To nije apsolutna oznaka: količina prskanja, ventilacija, pravila radnog mesta i osetljivost drugih ljudi su presudni.",
+      en: "“Office safe” usually means a fragrance has controlled projection, a pleasant relatively unobtrusive profile and a lower chance of bothering people indoors. It is not an absolute label; spray amount, ventilation, workplace rules and other people's sensitivity are decisive.",
+    },
+    sources: [
+      {
+        label: "PlayNice — Fragrance Intelligence community terminology",
+        url: "https://playniceshop.me/",
+        type: "first-party-editorial",
+      },
+    ],
+  },
+  {
+    id: "batch-variation",
+    name: "Batch variation",
+    aliases: ["batch variation", "razlika između batch-eva", "razlika izmedju batcheva", "razlika između serija parfema", "razlika izmedju serija parfema"],
+    kind: "concept",
+    answer: {
+      sr: "Batch variation znači da različite proizvodne serije istog parfema mogu pokazati male razlike u boji, intenzitetu ili mirisnom utisku. Razlozi mogu uključiti prirodne sirovine, dozvoljene proizvodne tolerancije, starenje bočice i reformulacije kroz vreme. Velike razlike ne treba automatski pripisivati batch-u bez dodatnih dokaza.",
+      en: "Batch variation means different production lots of the same fragrance may show small differences in color, intensity or olfactory impression. Causes can include natural raw materials, permitted manufacturing tolerances, bottle aging and reformulations over time. Large differences should not automatically be blamed on batch variation without additional evidence.",
+    },
+    sources: [
+      {
+        label: "IFRA — Fragrance materials and safe use",
+        url: "https://ifrafragrance.org/safe-use",
+        type: "industry-official",
+      },
+    ],
+  },
+
+  {
     id: "spray-count",
     name: "Spray count",
     aliases: [
