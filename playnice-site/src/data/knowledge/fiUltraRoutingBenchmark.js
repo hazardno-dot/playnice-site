@@ -76,6 +76,11 @@ export const fiUltraRoutingBenchmark = {
     ["Ko je napravio Bois Imperial?", "fragrance"],
     ["Ko je parfimer Nice Bergamote?", "fragrance"],
     ["Ko potpisuje Orange X Santal?", "fragrance"],
+    ["Ko je napravio Ganymede?", "fragrance"],
+    ["Ko je napravio Terre d Hermes?", "fragrance"],
+    ["Ko je napravio Le Male?", "fragrance"],
+    ["Ko potpisuje Portrait of a Lady?", "fragrance"],
+    ["Ko je parfimer Carnal Flower?", "fragrance"],
   ],
 };
 

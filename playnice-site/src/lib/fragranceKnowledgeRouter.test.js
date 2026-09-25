@@ -59,6 +59,11 @@ describe("FI Knowledge — entity routing", () => {
     ["Šta je Bois Imperial?", "bois-imperial"],
     ["Ko je napravio Nice Bergamote?", "nice-bergamote"],
     ["Ko potpisuje Orange X Santal?", "orange-x-santal"],
+    ["Ko je napravio Ganymede?", "ganymede"],
+    ["Ko je napravio Terre d Hermes?", "terre-d-hermes-edt"],
+    ["Ko je napravio Le Male?", "le-male"],
+    ["Ko potpisuje Portrait of a Lady?", "portrait-of-a-lady"],
+    ["Ko je parfimer Carnal Flower?", "carnal-flower"],
   ])("resolves fragrance entity %s", (query, expectedId) => {
     expect(findPerfumeByQuery(query)?.id).toBe(expectedId);
   });
@@ -205,6 +210,11 @@ describe("FI Knowledge — entity routing", () => {
     ["Ko je napravio Bois Imperial?", "Quentin Bisch"],
     ["Ko je parfimer Nice Bergamote?", "Antoine Maisondieu"],
     ["Ko potpisuje Orange X Santal?", "Natalie Gracia-Cetto"],
+    ["Ko je napravio Ganymede?", "Quentin Bisch"],
+    ["Ko je napravio Terre d Hermes?", "Jean-Claude Ellena"],
+    ["Ko je napravio Le Male?", "Francis Kurkdjian"],
+    ["Ko potpisuje Portrait of a Lady?", "Dominique Ropion"],
+    ["Ko je parfimer Carnal Flower?", "Dominique Ropion"],
   ])("answers perfume authorship %s", (query, expectedName) => {
     const result = resolveFragranceKnowledgeQuery(query, "sr");
     expect(result.handled).toBe(true);

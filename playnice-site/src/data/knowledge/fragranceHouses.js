@@ -7,6 +7,69 @@
 
 export const fragranceHouses = [
   {
+    id: "marc-antoine-barrois",
+    name: "Marc-Antoine Barrois",
+    aliases: [
+      "marc antoine barrois",
+      "marc-antoine barrois",
+      "mab",
+    ],
+    entityType: "fragrance-house",
+    summary: {
+      sr: "Marc-Antoine Barrois je francuska kuća koja je izgradila prepoznatljiv parfemski univerzum u saradnji sa parfimerom Quentinom Bischem. Ganymede je jedan od najpoznatijih rezultata te saradnje.",
+      en: "Marc-Antoine Barrois is a French house that built a distinctive fragrance universe in collaboration with perfumer Quentin Bisch. Ganymede is one of the best-known results of that partnership.",
+    },
+    perfumerIds: ["quentin-bisch"],
+    sourceLinks: [
+      {
+        label: "Marc-Antoine Barrois — Ganymede / Quentin Bisch",
+        url: "https://marcantoinebarrois.com/en/products/ganymede",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "hermes",
+    name: "Hermès",
+    aliases: ["hermes", "hermès", "hermes parfums"],
+    entityType: "fragrance-house",
+    summary: {
+      sr: "Hermès je francuska luksuzna kuća sa snažnom autorskom parfemskom tradicijom. Jean-Claude Ellena je 2004. postao njen prvi kućni parfimer, a Christine Nagel je kasnije preuzela vodeću kreativnu ulogu.",
+      en: "Hermès is a French luxury house with a strong authorial fragrance tradition. Jean-Claude Ellena became its first in-house perfumer in 2004, and Christine Nagel later took over the leading creative role.",
+    },
+    perfumerIds: ["jean-claude-ellena", "christine-nagel"],
+    sourceLinks: [
+      {
+        label: "Hermès — Jean-Claude Ellena",
+        url: "https://www.hermes.com/us/en/content/106191-jean-claude-ellena/",
+        type: "brand-official",
+      },
+      {
+        label: "Hermès — Christine Nagel",
+        url: "https://www.hermes.com/us/en/content/106192-christine-nagel/",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "jean-paul-gaultier",
+    name: "Jean Paul Gaultier",
+    aliases: ["jean paul gaultier", "jpg", "gaultier"],
+    entityType: "fragrance-house",
+    summary: {
+      sr: "Jean Paul Gaultier je francuska modna kuća sa velikim parfemskim portfoliom. Francis Kurkdjian je kao vrlo mlad parfimer kreirao originalni Le Male, koji je postao jedno od najpoznatijih izdanja kuće.",
+      en: "Jean Paul Gaultier is a French fashion house with a major fragrance portfolio. Francis Kurkdjian created the original Le Male early in his career, which became one of the house's best-known releases.",
+    },
+    perfumerIds: ["francis-kurkdjian"],
+    sourceLinks: [
+      {
+        label: "Dior — Francis Kurkdjian biography / Le Male",
+        url: "https://www.dior.com/en_us/beauty/fragrance/dlp-franciskurkdjian.html",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
     id: "iff",
     name: "IFF",
     aliases: [
