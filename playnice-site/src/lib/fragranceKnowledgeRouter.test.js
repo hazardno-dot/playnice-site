@@ -47,6 +47,10 @@ describe("FI Knowledge — entity routing", () => {
     ["Ko je Carlos Benaim?", "carlos-benaim"],
     ["Ko je Olivier Cresp?", "olivier-cresp"],
     ["Ko je Hamid Merati Kashani?", "hamid-merati-kashani"],
+    ["Ko je Jean Claude Ellena?", "jean-claude-ellena"],
+    ["Ko je Jacques Cavallier?", "jacques-cavallier-belletrud"],
+    ["Ko je Cecile Zarokian?", "cecile-zarokian"],
+    ["Ko je Christine Nagel?", "christine-nagel"],
   ])("resolves perfumer %s", (query, expectedId) => {
     expect(findPerfumerByQuery(query)?.id).toBe(expectedId);
   });

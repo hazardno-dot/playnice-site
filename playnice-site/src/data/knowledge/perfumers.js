@@ -284,6 +284,98 @@ export const perfumers = [
     ],
   },
   {
+    id: "jean-claude-ellena",
+    name: "Jean-Claude Ellena",
+    aliases: [
+      "jean claude ellena",
+      "jean-claude ellena",
+      "zan klod elena",
+    ],
+    role: "Perfumer",
+    summary: {
+      sr: "Jean-Claude Ellena je francuski parfimer poznat po minimalističkom, prozračnom i veoma preciznom stilu. Hermès ga je 2004. imenovao za svog prvog kućnog parfumera, a njegov rad snažno je obeležio savremenu parfimeriju.",
+      en: "Jean-Claude Ellena is a French perfumer known for a minimalist, airy and highly precise style. Hermès appointed him as its first in-house perfumer in 2004, and his work has had a major influence on contemporary perfumery.",
+    },
+    notableWorks: [
+      { name: "Terre d’Hermès", brand: "Hermès", verified: true },
+      { name: "Un Jardin sur le Nil", brand: "Hermès", verified: true },
+    ],
+    sources: [
+      {
+        label: "Hermès — Jean-Claude Ellena",
+        url: "https://www.hermes.com/us/en/content/106191-jean-claude-ellena/",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "jacques-cavallier-belletrud",
+    name: "Jacques Cavallier Belletrud",
+    aliases: [
+      "jacques cavallier belletrud",
+      "jacques cavallier",
+      "zak kavalije",
+    ],
+    role: "Master Perfumer",
+    summary: {
+      sr: "Jacques Cavallier Belletrud je Master Perfumer kuće Louis Vuitton. Kuća ga navodi kao kreativnog autora svojih savremenih mirisnih kolekcija, uz snažan fokus na kvalitet sirovina i savremene ekstrakcione tehnike.",
+      en: "Jacques Cavallier Belletrud is Louis Vuitton's Master Perfumer. The house presents him as the creative author behind its contemporary fragrance collections, with a strong focus on raw-material quality and modern extraction techniques.",
+    },
+    notableWorks: [],
+    sources: [
+      {
+        label: "Louis Vuitton — Jacques Cavallier Belletrud",
+        url: "https://us.louisvuitton.com/eng-us/stories/jacques-cavallier-belletrud",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
+    id: "cecile-zarokian",
+    name: "Cécile Zarokian",
+    aliases: [
+      "cecile zarokian",
+      "cécile zarokian",
+      "sesil zarokian",
+    ],
+    role: "Independent Perfumer",
+    summary: {
+      sr: "Cécile Zarokian je nezavisna francuska parfimerka i osnivačica studija Cécile Zarokian Parfumeur. Poznata je po radu za niche i nezavisne kuće i po veoma širokom rasponu stilova.",
+      en: "Cécile Zarokian is an independent French perfumer and founder of Cécile Zarokian Parfumeur. She is known for work with niche and independent houses across a broad range of styles.",
+    },
+    notableWorks: [],
+    sources: [
+      {
+        label: "Cécile Zarokian Parfumeur — About",
+        url: "https://www.cecilezarokian.com/",
+        type: "perfumer-official",
+      },
+    ],
+  },
+  {
+    id: "christine-nagel",
+    name: "Christine Nagel",
+    aliases: [
+      "christine nagel",
+      "kristin nagel",
+    ],
+    role: "Perfumer, Hermès",
+    summary: {
+      sr: "Christine Nagel je parfimerka kuće Hermès i nasledila je Jean-Claude Ellenu kao vodeći kreativni nos kuće. Poznata je po kombinovanju kontrasta i savremenom tumačenju Hermès parfemskog jezika.",
+      en: "Christine Nagel is a perfumer at Hermès and succeeded Jean-Claude Ellena as the house's leading fragrance creator. She is known for combining contrasts and for a contemporary interpretation of the Hermès olfactory language.",
+    },
+    notableWorks: [
+      { name: "Twilly d’Hermès", brand: "Hermès", verified: true },
+    ],
+    sources: [
+      {
+        label: "Hermès — Christine Nagel",
+        url: "https://www.hermes.com/us/en/content/106192-christine-nagel/",
+        type: "brand-official",
+      },
+    ],
+  },
+  {
     id: "dominique-ropion",
     name: "Dominique Ropion",
     aliases: [
