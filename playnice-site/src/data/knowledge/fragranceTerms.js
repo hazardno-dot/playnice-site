@@ -9,6 +9,177 @@
 export const fragranceTerms = [
 
   {
+    id: "steam-distillation",
+    name: "Steam distillation",
+    aliases: ["steam distillation", "destilacija parom", "parna destilacija"],
+    kind: "process",
+    answer: {
+      sr: "Destilacija parom je klasična metoda dobijanja etarskih ulja iz aromatičnih biljnih materijala. Para prolazi kroz biljku, nosi isparljive mirisne komponente, a zatim se kondenzuje i odvaja od vode. Metoda je pogodna za mnoge sirovine, ali ne za sve — toplota može promeniti ili oštetiti osetljive mirisne molekule.",
+      en: "Steam distillation is a classic method for obtaining essential oils from aromatic plant materials. Steam passes through the botanical material, carries volatile aromatic compounds, and is then condensed so the oil can be separated from the water. It works well for many materials, but not all, because heat can alter or damage delicate aroma molecules.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "expression",
+    name: "Expression",
+    aliases: ["expression", "cold pressing", "hladno ceđenje", "hladno cedjenje", "ceđenje citrusa", "cedjenje citrusa"],
+    kind: "process",
+    answer: {
+      sr: "Expression, odnosno hladno ceđenje, koristi se prvenstveno za citrusne kore. Ulje se mehanički oslobađa iz kore bez klasične destilacije. Tako se dobijaju veoma sveži i prirodni citrusni profili, ali citrusna ulja mogu sadržati komponente osetljive na svetlost i oksidaciju.",
+      en: "Expression, or cold pressing, is used mainly for citrus peels. The aromatic oil is mechanically released from the peel rather than distilled. This preserves very fresh, natural citrus character, though citrus oils can contain components sensitive to light and oxidation.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "solvent-extraction",
+    name: "Solvent extraction",
+    aliases: ["solvent extraction", "ekstrakcija rastvaračem", "ekstrakcija rastvaracem"],
+    kind: "process",
+    answer: {
+      sr: "Ekstrakcija rastvaračem koristi se za mirisne materijale koji su previše osetljivi za visoku temperaturu. Biljni materijal se obrađuje odgovarajućim rastvaračem da bi se izdvojile aromatične i voštane komponente; daljom obradom može nastati absolute. Cilj je sačuvati kompleksnije, manje termički izmenjene mirisne nijanse.",
+      en: "Solvent extraction is used for aromatic materials that are too delicate for high heat. Botanical material is treated with a suitable solvent to extract aromatic and waxy components; further processing can produce an absolute. The aim is to preserve complex facets with less heat-induced alteration.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "absolute",
+    name: "Absolute",
+    aliases: ["absolute", "absolut", "parfemski absolute", "mirisni absolute"],
+    kind: "material-form",
+    answer: {
+      sr: "Absolute je visoko koncentrisan aromatični ekstrakt koji se često dobija nakon solventne ekstrakcije biljnog materijala. U poređenju sa etarskim uljem iste biljke, absolute može imati drugačiji, puniji i kompleksniji profil jer metoda izvlači drugačiji skup mirisnih komponenti.",
+      en: "An absolute is a highly concentrated aromatic extract commonly produced after solvent extraction of botanical material. Compared with an essential oil from the same plant, an absolute can smell different, richer and more complex because the extraction method captures a different range of aromatic components.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "essential-oil",
+    name: "Essential oil",
+    aliases: ["essential oil", "etarско ulje", "etarsko ulje", "eterično ulje", "etericno ulje"],
+    kind: "material-form",
+    answer: {
+      sr: "Etarsko ulje je koncentrisana aromatična frakcija biljnog materijala, najčešće dobijena destilacijom ili, kod citrusa, ceđenjem kore. Nije isto što i parfemsko ulje kao gotov proizvod, niti znači da je materijal automatski bezbedniji samo zato što je prirodan.",
+      en: "An essential oil is a concentrated aromatic fraction of botanical material, usually obtained by distillation or, for citrus, by peel expression. It is not the same thing as a finished 'perfume oil', and being natural does not automatically make a material safer.",
+    },
+    sources: [
+      {
+        label: "IFRA — Safe use of fragrance",
+        url: "https://ifrafragrance.org/safe-use",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
+    id: "co2-extraction",
+    name: "CO2 extraction",
+    aliases: ["co2 extraction", "co2 ekstrakcija", "supercritical co2", "superkritični co2", "superkriticni co2"],
+    kind: "process",
+    answer: {
+      sr: "CO₂ ekstrakcija koristi ugljen-dioksid pod kontrolisanim pritiskom i temperaturom kao ekstrakcioni medijum. Može da izdvoji mirisne komponente pri nižim temperaturama nego klasična destilacija, pa često daje vrlo veran, detaljan profil sirovine. Tačan rezultat zavisi od procesa i materijala.",
+      en: "CO₂ extraction uses carbon dioxide under controlled pressure and temperature as the extraction medium. It can capture aromatic components at lower temperatures than traditional distillation and often gives a highly detailed, material-faithful profile. The exact result depends on the process and raw material.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "headspace",
+    name: "Headspace technology",
+    aliases: ["headspace", "headspace technology", "headspace tehnika", "headspace tehnologija"],
+    kind: "process",
+    answer: {
+      sr: "Headspace tehnike hvataju i analiziraju isparljive molekule u vazduhu neposredno oko mirisnog objekta — na primer cveta, voća ili prostora — bez potrebe da se sam objekat klasično ekstrahuje. Dobijeni hemijski profil parfimeru pomaže da rekonstruiše mirisni utisak kombinacijom dostupnih materijala.",
+      en: "Headspace techniques capture and analyze volatile molecules in the air immediately surrounding a fragrant object, such as a flower, fruit or place, without conventionally extracting the object itself. The resulting chemical profile helps perfumers reconstruct the olfactory impression using available materials.",
+    },
+    sources: [
+      {
+        label: "Givaudan — ScentTrek",
+        url: "https://www.givaudan.com/fragrance-beauty/innovation/creative-innovation/scenttrek",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
+    id: "enfleurage",
+    name: "Enfleurage",
+    aliases: ["enfleurage", "anfleraž", "anfleraz"],
+    kind: "process",
+    answer: {
+      sr: "Enfleurage je istorijska metoda ekstrakcije mirisa u kojoj se sveže cveće polaže na mast koja upija aromatične molekule. Proces je spor i radno intenzivan i danas se gotovo ne koristi u industrijskoj parfimeriji, ali je važan za istoriju ekstrakcije vrlo osetljivih cvetova.",
+      en: "Enfleurage is a historical fragrance-extraction method in which fresh flowers are placed on fat that absorbs their aromatic molecules. The process is slow and labor-intensive and is now rarely used industrially, but it remains important in the history of extracting very delicate flowers.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "captive-material",
+    name: "Captive fragrance material",
+    aliases: ["captive", "captive molecule", "captive material", "ekskluzivna molekula"],
+    kind: "industry",
+    answer: {
+      sr: "Captive je mirisni materijal koji određena kompanija razvije i zadrži za sopstvenu ili ograničenu upotrebu umesto da ga slobodno prodaje celoj industriji. Takvi materijali mogu parfimerima te kuće dati specifične teksture ili efekte koje konkurenti ne mogu jednostavno kupiti kao istu sirovinu.",
+      en: "A captive is an aroma material developed by a fragrance company and kept for proprietary or limited use rather than sold broadly across the industry. Captives can give that company's perfumers distinctive textures or effects that competitors cannot simply purchase as the identical raw material.",
+    },
+    sources: [
+      {
+        label: "dsm-firmenich — Perfumery ingredients",
+        url: "https://www.dsm-firmenich.com/en/businesses/perfumery-beauty/ingredients.html",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
+    id: "tincture",
+    name: "Tincture",
+    aliases: ["tincture", "tinktura", "parfemska tinktura"],
+    kind: "process",
+    answer: {
+      sr: "Tinktura u parfimeriji nastaje potapanjem aromatičnog materijala u alkohol da bi se deo mirisnih komponenti postepeno rastvorio. Istorijski se koristila za različite prirodne materijale; danas je češća u zanatskoj i eksperimentalnoj parfimeriji nego u velikoj industrijskoj proizvodnji.",
+      en: "A perfumery tincture is made by soaking an aromatic material in alcohol so some of its fragrant components gradually dissolve. Historically it was used for many natural materials; today it is more common in artisanal and experimental perfumery than in large-scale industrial production.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+
+  {
     id: "beast-mode",
     name: "Beast mode",
     aliases: ["beast mode", "beastmode", "zver od parfema", "zvijer od parfema"],
