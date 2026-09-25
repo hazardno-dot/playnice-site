@@ -9,6 +9,177 @@
 export const fragranceTerms = [
 
   {
+    id: "drydown",
+    name: "Drydown",
+    aliases: ["drydown", "dry down", "sušenje parfema", "završnica parfema"],
+    kind: "concept",
+    answer: {
+      sr: "Drydown je kasnija faza razvoja parfema na koži, kada najisparljiviji materijali uglavnom više nisu dominantni i više dolaze do izražaja baza, vezujući materijali i sporije isparljive komponente. Nije potpuno odvojena 'treća scena' — razvoj je kontinuiran i može biti vrlo linearan ili veoma promenljiv, zavisno od formule.",
+      en: "Drydown is the later stage of a fragrance's development on skin, when the most volatile materials are no longer dominant and base materials, fixative effects and slower-evaporating components become more apparent. It is not a completely separate third act; development is continuous and can be very linear or highly evolving depending on the formula.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — How perfume works",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/how-does-perfume-work/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "linear-fragrance",
+    name: "Linear fragrance",
+    aliases: ["linear fragrance", "linear perfume", "linearan parfem", "linearni parfem"],
+    kind: "concept",
+    answer: {
+      sr: "Linearan parfem je miris čiji se osnovni karakter relativno malo menja od otvaranja do kasnijeg nošenja. To ne znači da se ništa ne menja — isparavanje i dalje postoji — već da je glavna mirisna slika namerno stabilnija i manje piramidalna.",
+      en: "A linear fragrance keeps a relatively consistent core character from opening through later wear. That does not mean nothing changes—evaporation still occurs—but the main olfactory picture is deliberately more stable and less pyramid-like.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — How perfume works",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/how-does-perfume-work/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "skin-scent",
+    name: "Skin scent",
+    aliases: ["skin scent", "skin-scent", "miris uz kožu", "miris uz kozu"],
+    kind: "concept",
+    answer: {
+      sr: "Skin scent je parfemski stil ili faza nošenja sa malom projekcijom: miris ostaje blizu kože i uglavnom ga primećuju osoba koja ga nosi i ljudi u neposrednoj blizini. To nije isto što i loša postojanost — parfem može trajati dugo, a ipak projektovati vrlo malo.",
+      en: "A skin scent is a fragrance style or wearing phase with low projection: the scent stays close to the skin and is noticed mainly by the wearer and people nearby. It is not the same as poor longevity; a fragrance can last a long time while projecting very little.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Perfume glossary",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/perfume-glossary/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "decant",
+    name: "Decant",
+    aliases: ["decant", "dekant", "dekant parfema", "šta je dekant", "sta je dekant"],
+    kind: "concept",
+    answer: {
+      sr: "Dekant je manja količina originalnog parfema pretočena iz originalne bočice u zasebnu manju bočicu ili atomizer. Sadržaj ostaje originalni parfem; menja se samo pakovanje i količina. Dekanti služe da se parfem realno proba kroz više nošenja bez kupovine pune bočice.",
+      en: "A decant is a smaller quantity of original fragrance transferred from the original bottle into a separate smaller vial or atomizer. The liquid remains the original fragrance; only the packaging and quantity change. Decants let someone test a fragrance over multiple wears without buying a full bottle.",
+    },
+    sources: [
+      {
+        label: "PlayNice — Try before you buy",
+        url: "https://playniceshop.me/",
+        type: "first-party",
+      },
+    ],
+  },
+  {
+    id: "atomizer",
+    name: "Atomizer",
+    aliases: ["atomizer", "atomiser", "raspršivač parfema", "rasprsivac parfema"],
+    kind: "concept",
+    answer: {
+      sr: "Atomizer je mehanizam i bočica koji parfem pretvaraju u finu maglicu pri prskanju. Količina po prskanju nije univerzalna: zavisi od pumpe, mlaznice, viskoznosti formule i samog pakovanja, pa broj prskanja nije pouzdana univerzalna mera doze.",
+      en: "An atomizer is the pump/nozzle system and container that turns fragrance into a fine spray. The amount delivered per spray is not universal; it depends on the pump, nozzle, formula viscosity and packaging, so spray count is not a universal dosage measurement.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Perfume glossary",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/perfume-glossary/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "oxidation",
+    name: "Oxidation",
+    aliases: ["oxidation", "oksidacija", "oksidacija parfema", "parfem oksidirao"],
+    kind: "concept",
+    answer: {
+      sr: "Oksidacija je hemijska promena koja može nastati kada mirisni materijali reaguju sa kiseonikom. Toplota, svetlost i vazduh mogu ubrzati promene u parfemu. Blaga promena boje sama po sebi ne dokazuje da je parfem pokvaren; važniji su trajna promena mirisa, oštra ili neobična nota i loši uslovi čuvanja.",
+      en: "Oxidation is a chemical change that can occur when fragrance materials react with oxygen. Heat, light and air can accelerate changes in a perfume. A slight color change alone does not prove a fragrance has spoiled; a persistent change in smell, harsh or unusual facets and poor storage conditions are more meaningful signals.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — How to store perfume",
+        url: "https://perfumesociety.org/how-to-store-your-fragrance/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "shelf-life",
+    name: "Fragrance shelf life",
+    aliases: ["shelf life", "rok trajanja parfema", "koliko traje parfem u bočici", "koliko traje parfem u bocici"],
+    kind: "concept",
+    answer: {
+      sr: "Parfem nema jedan univerzalni rok nakon kog odjednom postaje neupotrebljiv. Stabilnost zavisi od formule, pakovanja i čuvanja. Dobro zatvoren parfem, zaštićen od toplote, svetlosti i velikih temperaturnih promena, često ostaje upotrebljiv godinama. Procenu je bolje zasnivati na stvarnoj promeni mirisa nego samo na starosti bočice.",
+      en: "There is no single universal date after which every perfume suddenly becomes unusable. Stability depends on formula, packaging and storage. A well-sealed fragrance protected from heat, light and large temperature swings can often remain usable for years. Actual odor change is more informative than bottle age alone.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — How to store perfume",
+        url: "https://perfumesociety.org/how-to-store-your-fragrance/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "ifra",
+    name: "IFRA",
+    aliases: ["ifra", "ifra standard", "ifra standards"],
+    kind: "industry",
+    answer: {
+      sr: "IFRA je International Fragrance Association. Njeni standardi određuju zabrane, ograničenja ili uslove upotrebe određenih mirisnih sastojaka na osnovu bezbednosnih procena. IFRA standard nije isto što i zakon, ali ga industrija široko koristi kao sistem upravljanja bezbednom upotrebom mirisnih materijala.",
+      en: "IFRA is the International Fragrance Association. Its Standards set prohibitions, restrictions or conditions of use for certain fragrance ingredients based on safety assessments. An IFRA Standard is not the same thing as law, but it is widely used by the industry as a system for managing the safe use of fragrance materials.",
+    },
+    sources: [
+      {
+        label: "IFRA — Standards",
+        url: "https://ifrafragrance.org/safe-use/standards",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
+    id: "fragrance-allergens",
+    name: "Fragrance allergens",
+    aliases: ["fragrance allergens", "perfume allergens", "alergeni u parfemu", "alergeni u parfemima"],
+    kind: "safety",
+    answer: {
+      sr: "Neki mirisni sastojci mogu izazvati alergijsku reakciju kod osetljivih osoba. Zato regulativa i industrijski standardi zahtevaju kontrolu i, u određenim slučajevima, deklarisanje pojedinih alergena. Prisustvo deklarisanog alergena ne znači da će svako reagovati; rizik zavisi od osobe, izloženosti i koncentracije.",
+      en: "Some fragrance ingredients can trigger allergic reactions in sensitized individuals. Regulations and industry standards therefore require control and, in certain cases, disclosure of specific allergens. The presence of a listed allergen does not mean everyone will react; risk depends on the individual, exposure and concentration.",
+    },
+    sources: [
+      {
+        label: "IFRA — Safe use of fragrance",
+        url: "https://ifrafragrance.org/safe-use",
+        type: "industry-official",
+      },
+    ],
+  },
+  {
+    id: "clone-inspired-by",
+    name: "Clone / inspired-by fragrance",
+    aliases: ["clone fragrance", "perfume clone", "klon parfema", "inspired by fragrance", "inspirisan parfem"],
+    kind: "concept",
+    answer: {
+      sr: "U parfemskoj zajednici 'clone' ili 'inspired-by' obično znači miris koji namerno cilja prepoznatljiv profil drugog parfema. To ne znači da je formula identična, da koristi iste sirovine ili da će se ponašati isto na koži. Sličnost može biti velika u određenoj fazi, a razlike u otvaranju, teksturi, projekciji i drydownu značajne.",
+      en: "In fragrance-community usage, a 'clone' or 'inspired-by' fragrance usually means a scent deliberately targeting the recognizable profile of another perfume. It does not mean the formula is identical, uses the same materials or performs the same on skin. Similarity can be high in one phase while opening, texture, projection and drydown differ substantially.",
+    },
+    sources: [
+      {
+        label: "PlayNice — Fragrance Intelligence terminology",
+        url: "https://playniceshop.me/",
+        type: "first-party-editorial",
+      },
+    ],
+  },
+
+  {
     id: "aldehydes",
     name: "Aldehydes",
     aliases: ["aldehydes", "aldehidi", "aldehidni parfem", "aldehydic"],
