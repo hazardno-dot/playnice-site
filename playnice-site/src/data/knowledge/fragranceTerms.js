@@ -198,7 +198,13 @@ export const fragranceTerms = [
   {
     id: "aromatic",
     name: "Aromatic",
-    aliases: ["aromatic fragrance", "aromatični parfem", "aromatic note"],
+    aliases: [
+      "aromatic",
+      "aromatic fragrance",
+      "aromatic parfem",
+      "aromatični parfem",
+      "aromatic note",
+    ],
     kind: "descriptor",
     answer: {
       sr: "Aromatic u parfimeriji najčešće opisuje profil zasnovan na biljnim, herbalnim i svežim materijalima poput lavande, žalfije, ruzmarina, bosiljka ili mente. Često se prepliće sa fougère i fresh stilovima, ali nije isto što i bilo koji pojedinačni sastojak.",
