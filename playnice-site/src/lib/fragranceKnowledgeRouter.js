@@ -19,8 +19,10 @@ const PERFUMER_CUES = [
 ];
 
 const KNOWLEDGE_CUES = [
-  "sta je", "sta znaci", "objasni", "koja je razlika", "razlika izmedju",
-  "what is", "what does", "explain", "difference between", "meaning of",
+  "sta je", "sta znaci", "objasni", "zasto", "zbog cega",
+  "koja je razlika", "razlika izmedju",
+  "what is", "what does", "explain", "why",
+  "difference between", "meaning of",
 ];
 
 const getAliasMatch = (query, entity) => {

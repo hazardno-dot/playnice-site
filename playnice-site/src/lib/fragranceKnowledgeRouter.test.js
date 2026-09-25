@@ -38,6 +38,8 @@ describe("FI Knowledge — entity routing", () => {
     ["What is Hedione?", "hedione"],
     ["Šta je Ambroxan?", "ambrox"],
     ["Zašto ne osećam svoj parfem?", "olfactory-fatigue"],
+    ["Zbog čega ne mogu da osetim parfem?", "olfactory-fatigue"],
+    ["Why can't I smell my own perfume?", "olfactory-fatigue"],
     ["Objasni top heart i base notes", "note-pyramid"],
     ["Šta znači trajnost parfema?", "longevity"],
     ["Šta je parfemski akord?", "accord"],
