@@ -9,6 +9,219 @@
 export const fragranceTerms = [
 
   {
+    id: "fragrance-families",
+    name: "Fragrance families",
+    aliases: [
+      "fragrance families",
+      "perfume families",
+      "families of perfume",
+      "fragrance family",
+      "mirisne porodice",
+      "parfemske porodice",
+      "porodice parfema",
+    ],
+    kind: "concept",
+    answer: {
+      sr: "Mirisne porodice su klasifikacioni sistem koji grupiše parfeme prema dominantnom karakteru. Različiti sistemi koriste malo drugačije podele, ali često srećeš fresh/citrus, floral, woody, ambrée/amber, gourmand, chypre i fougère. Granice nisu apsolutne: jedan parfem može pripadati više porodica ili stajati između njih.",
+      en: "Fragrance families are a classification system that groups perfumes by dominant olfactory character. Different systems use slightly different divisions, but common groups include fresh/citrus, floral, woody, amber, gourmand, chypre and fougère. The borders are not absolute: one perfume can belong to more than one family or sit between them.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Fragrance Families",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/fragrance-families/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "chypre",
+    name: "Chypre",
+    aliases: ["chypre", "sipra", "šipra", "chypre family", "chypre parfem"],
+    kind: "family",
+    answer: {
+      sr: "Chypre je klasična mirisna porodica čiji je tradicionalni kostur suv, topao i mahovinasto-drvenast. Najčešće se vezuje za kontrast bergamota na vrhu i baze od hrastove mahovine, pačulija i labdanuma. Moderni chypre parfemi često prilagođavaju tu strukturu savremenim regulatornim i kreativnim uslovima.",
+      en: "Chypre is a classic fragrance family with a traditionally dry, warm, mossy-woody structure. It is commonly associated with a bergamot opening over a base built around oakmoss, patchouli and labdanum. Modern chypres often reinterpret that structure for contemporary regulatory and creative conditions.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Chypre",
+        url: "https://perfumesociety.org/fragrance-families/chypre/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "fougere",
+    name: "Fougère",
+    aliases: ["fougere", "fougère", "fuzer", "fougere family", "fougere parfem"],
+    kind: "family",
+    answer: {
+      sr: "Fougère je porodica čije ime na francuskom znači 'paprat'. Klasična fougère struktura obično spaja aromatičnu lavandu sa bergamotom, geranijumom, mahovinom, vetiverom i kumarinom. Danas je vrlo česta u muškoj parfimeriji, ali sama struktura nije vezana isključivo za pol.",
+      en: "Fougère is a fragrance family whose name means 'fern' in French. A classic fougère structure commonly combines aromatic lavender with bergamot, geranium, moss, vetiver and coumarin. It is very common in masculine perfumery today, but the structure itself is not inherently gender-specific.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Fougère",
+        url: "https://perfumesociety.org/fragrance-families/fougere/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "gourmand",
+    name: "Gourmand",
+    aliases: ["gourmand", "gurmanski", "gourmand perfume", "gurmanski parfem"],
+    kind: "family",
+    answer: {
+      sr: "Gourmand parfemi grade utisak jestivih ili desertnih nota — vanile, karamele, čokolade, meda, kafe, pralina i sličnih akorda. To je relativno mlada moderna porodica koja je snažno porasla od 1990-ih. Gourmand ne znači nužno samo 'veoma sladak': kompozicija može biti suva, začinska, dimna ili drvenasta, a i dalje imati jestivi karakter.",
+      en: "Gourmand fragrances create an edible or dessert-like impression with notes such as vanilla, caramel, chocolate, honey, coffee or praline. It is a relatively young modern family that expanded strongly from the 1990s onward. Gourmand does not necessarily mean simply 'very sweet': a composition can be dry, spicy, smoky or woody while retaining an edible character.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Fragrance Families",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/fragrance-families/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "oud",
+    name: "Oud / Oudh",
+    aliases: ["oud", "oudh", "agarwood", "agar wood", "agar drvo"],
+    kind: "material",
+    answer: {
+      sr: "Oud, odnosno oudh ili agarwood, potiče od smolastog drveta određenih Aquilaria stabala koje nastaje kao odgovor na infekciju ili oštećenje. Prirodni oud može imati vrlo kompleksan drvenast, balzamičan, zemljan, diman i ponekad animalan karakter. Zbog retkosti i cene, savremena parfimerija često koristi i sintetičke oud akorde.",
+      en: "Oud, oudh or agarwood comes from resinous wood formed in certain Aquilaria trees as a response to infection or damage. Natural oud can be extremely complex, with woody, balsamic, earthy, smoky and sometimes animalic facets. Because it is rare and expensive, modern perfumery also frequently uses synthetic oud accords.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients / Oudh",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "ambergris",
+    name: "Ambergris",
+    aliases: ["ambergris", "siva ambra", "grey amber", "gray amber"],
+    kind: "material",
+    answer: {
+      sr: "Ambergris je retka prirodna supstanca povezana sa sistemom za varenje ulješure. Posle dugog sazrevanja u morskom okruženju dobija kompleksan topao, slan, mineralan i animalno-ambarski karakter. Istorijski je bio cenjen i kao fiksativ; danas se u većini moderne parfimerije njegov efekat postiže sintetičkim molekulima i akordima.",
+      en: "Ambergris is a rare natural substance associated with the digestive system of sperm whales. After long ageing in a marine environment it develops a complex warm, salty, mineral and animalic-amber character. Historically it was also valued as a fixative; in most modern perfumery its effect is recreated with synthetic molecules and accords.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients / Ambergris",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "orris-iris",
+    name: "Iris / Orris",
+    aliases: ["orris", "orris root", "iris", "iris note", "koren irisa", "korijen irisa"],
+    kind: "material",
+    answer: {
+      sr: "U parfimeriji se 'iris' često odnosi na orris — materijal dobijen iz rizoma irisa, a ne prvenstveno iz cveta. Rizomi se dugo suše i sazrevaju pre destilacije, zbog čega je kvalitetan orris veoma skup. Miris može biti puderast, mekan, zemljan, puterast, ljubičast i elegantno drvenast.",
+      en: "In perfumery, 'iris' often refers to orris — material obtained from iris rhizomes rather than mainly from the flower. The rhizomes are dried and aged for years before processing, which helps make high-quality orris very expensive. Its scent can be powdery, soft, earthy, buttery, violet-like and elegantly woody.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients / Orris root",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "patchouli",
+    name: "Patchouli",
+    aliases: ["patchouli", "pačuli", "paculi"],
+    kind: "material",
+    answer: {
+      sr: "Pačuli dolazi iz listova biljke Pogostemon cablin iz porodice nane. Njegov miris može biti zemljan, vlažan, drvenast, diman, začinski, kamforast ili čak čokoladno-taman, zavisno od kvaliteta i obrade. Važan je u chypre, amber, woody i mnogim modernim kompozicijama.",
+      en: "Patchouli comes from the leaves of Pogostemon cablin, a member of the mint family. Depending on quality and processing, it can smell earthy, damp, woody, smoky, spicy, camphoraceous or even dark and chocolate-like. It is important in chypre, amber, woody and many modern compositions.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients / Patchouli",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "vetiver",
+    name: "Vetiver",
+    aliases: ["vetiver", "vetivert", "vetiver note"],
+    kind: "material",
+    answer: {
+      sr: "Vetiver se dobija prvenstveno iz korena tropske trave Chrysopogon zizanioides. U parfemu može dati suv, zemljan, korenast, diman, zelen, orašast ili čak blago citrusan efekat. Zbog velike postojanosti često se koristi u bazi, ali može biti i glavna tema cele kompozicije.",
+      en: "Vetiver is obtained mainly from the roots of the tropical grass Chrysopogon zizanioides. In fragrance it can smell dry, earthy, rooty, smoky, green, nutty or even slightly citrusy. Because of its persistence it is often used in the base, but it can also be the central theme of an entire composition.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "neroli-orange-blossom",
+    name: "Neroli and orange blossom",
+    aliases: ["neroli", "orange blossom", "cvet narandze", "cvijet narandze"],
+    kind: "material",
+    answer: {
+      sr: "Neroli i orange blossom potiču od cvetova gorke narandže, ali nisu isti materijal. Neroli je etarsko ulje dobijeno destilacijom i često deluje sveže, zeleno, citrusno i blago gorko; orange blossom absolute se obično dobija ekstrakcijom i može biti bogatiji, topliji, slađi i senzualniji.",
+      en: "Neroli and orange blossom come from bitter-orange flowers, but they are not the same material. Neroli is an essential oil produced by distillation and often smells fresh, green, citrusy and slightly bitter; orange blossom absolute is typically extracted and can feel richer, warmer, sweeter and more sensual.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "musk",
+    name: "Musk",
+    aliases: ["musk", "mošus", "mosus", "white musk", "beli mosus", "bijeli mosus"],
+    kind: "material",
+    answer: {
+      sr: "Savremeni parfemski mošusi su gotovo uvek sintetički materijali. Mogu biti čisti i 'vešasti', puderasti, kremasti, topli, kožasti ili blago animalni, zavisno od molekula. Često služe kao mekana baza, daju osećaj kože i pomažu da kompozicija deluje zaokruženije i dugotrajnije.",
+      en: "Modern perfumery musks are almost always synthetic materials. Depending on the molecule they can smell clean and laundry-like, powdery, creamy, warm, skin-like or mildly animalic. They often form a soft base, create a skin-like effect and help a composition feel more rounded and persistent.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — Ingredients",
+        url: "https://perfumesociety.org/discover-perfume/an-introduction/ingredients/",
+        type: "industry-education",
+      },
+    ],
+  },
+  {
+    id: "fixative",
+    name: "Fixative",
+    aliases: ["fixative", "fiksativ", "fixative in perfume", "fiksativ u parfemu"],
+    kind: "concept",
+    answer: {
+      sr: "Fiksativ je naziv za materijal ili funkciju u formuli koja usporava isparavanje i pomaže da miris traje i razvija se ravnomernije. Mnogi teži bazni materijali — smole, određena drveta, pačuli, vetiver, orris i mošusi — mogu imati fiksativni efekat. To nije magični sastojak koji automatski pretvara svaki parfem u '12 sati trajnosti'.",
+      en: "A fixative is a material or function in a formula that slows evaporation and helps a fragrance last and develop more evenly. Many heavier base materials — resins, certain woods, patchouli, vetiver, orris and musks — can have a fixative effect. It is not a magic ingredient that automatically turns every perfume into a '12-hour fragrance'.",
+    },
+    sources: [
+      {
+        label: "The Perfume Society — A-Z / Fixative",
+        url: "https://perfumesociety.org/wp-content/uploads/2018/06/SL31.OnlineIssue.pdf",
+        type: "industry-education",
+      },
+    ],
+  },
+
+  {
     id: "projection",
     name: "Projection",
     aliases: [

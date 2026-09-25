@@ -55,6 +55,18 @@ describe("FI Knowledge — entity routing", () => {
     ["Kako treba čuvati parfem?", "fragrance-storage"],
     ["Kako i gde treba pravilno čuvati parfem?", "fragrance-storage"],
     ["Koja je razlika između designer i niche parfema?", "niche-designer-indie"],
+    ["Šta su mirisne porodice?", "fragrance-families"],
+    ["Šta je chypre parfem?", "chypre"],
+    ["Šta je fougere?", "fougere"],
+    ["Šta znači gourmand parfem?", "gourmand"],
+    ["Šta je oud?", "oud"],
+    ["Šta je ambergris?", "ambergris"],
+    ["Šta je orris?", "orris-iris"],
+    ["Šta je pačuli?", "patchouli"],
+    ["Šta je vetiver?", "vetiver"],
+    ["Koja je razlika između nerolija i orange blossoma?", "neroli-orange-blossom"],
+    ["Šta je mošus u parfemu?", "musk"],
+    ["Šta je fiksativ u parfemu?", "fixative"],
   ])("resolves explanatory fragrance term %s", (query, expectedId) => {
     expect(findFragranceTermByQuery(query)?.id).toBe(expectedId);
   });
@@ -69,6 +81,10 @@ describe("FI Knowledge — entity routing", () => {
     "Designer parfem za posao",
     "Parfem sa jakom projekcijom do 20 €",
     "Parfem za layering do 15 €",
+    "Oud parfem do 20 €",
+    "Vetiver za leto do 15 €",
+    "Gourmand za dejt do 20 €",
+    "Musk parfem za posao",
   ])("does not steal recommendation-style material query: %s", (query) => {
     expect(findFragranceTermByQuery(query)).toBeNull();
   });
@@ -81,6 +97,9 @@ describe("FI Knowledge — entity routing", () => {
     "Hoću parfem sa Iso E Super do 15 €",
     "Niche parfem za veče do 25 €",
     "Parfem sa jakom projekcijom do 20 €",
+    "Oud parfem do 20 €",
+    "Vetiver za leto do 15 €",
+    "Gourmand za dejt do 20 €",
   ])("does not intercept Discovery Engine query: %s", (query) => {
     expect(resolveFragranceKnowledgeQuery(query, "sr")).toEqual({
       handled: false,
