@@ -1,5 +1,6 @@
 import { supabaseRestHeaders } from "../lib/supabase-server-auth.mjs";
 
+// Preview redeploy marker: Orders write-through v1
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const SHEET_SYNC_URL = String(
