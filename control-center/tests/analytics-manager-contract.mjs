@@ -16,7 +16,7 @@ for (const token of [
   'Operational analytics',
   'FREE SHIPPING',
   'COD PENDING',
-  'Decant mix',
+  'Size mix',
   'Sales by city',
   'Top products',
   'Commerce intelligence',
