@@ -166,11 +166,12 @@ function OrdersWorkspace() {
     </div>
 
     <div className="orders-kpis">
-      <div><span>ALL RECORDS</span><strong>{orders.length}</strong><small>{saleOrders.length} sales · {counts.DUPLICATE || 0} duplicate</small></div>
+      <div><span>ALL RECORDS</span><strong>{orders.length}</strong><small>{saleOrders.length} orders · {counts.DUPLICATE || 0} duplicate</small></div>
       <div><span>NEW</span><strong>{counts.NEW || 0}</strong><small>waiting to pack</small></div>
       <div><span>PACKED</span><strong>{counts.PACKED || 0}</strong><small>ready for courier</small></div>
       <div><span>IN TRANSIT</span><strong>{(counts.SHIPPED || 0) + (counts.OUT_FOR_DELIVERY || 0)}</strong><small>shipped / delivery</small></div>
       <div><span>DELIVERED</span><strong>{counts.DELIVERED || 0}</strong><small>completed orders</small></div>
+      <div><span>FAILED</span><strong>{counts.DELIVERY_FAILED || 0}</strong><small>delivery failed</small></div>
       <div><span>COD PENDING</span><strong>{money(codPending)}</strong><small>courier settlement</small></div>
     </div>
 
