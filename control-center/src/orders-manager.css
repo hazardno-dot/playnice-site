@@ -199,3 +199,13 @@
   .orders-sync-row { align-items: flex-start; flex-direction: column; }
   .orders-sync-row button { width: 100%; }
 }
+
+.orders-delivery {
+  border-top: 1px solid rgba(118,151,137,.14);
+  padding-top: 11px;
+}
+.orders-delivery-note {
+  margin-top: 7px;
+  color: #75897f;
+  font-size: 8px;
+}
