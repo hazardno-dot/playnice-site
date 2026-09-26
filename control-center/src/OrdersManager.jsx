@@ -54,6 +54,13 @@ function itemSummary(items) {
   }).join(", ");
 }
 
+function syncLabel(order) {
+  const status = order?.sheet_state_sync_status || "synced";
+  if (status === "failed") return "Backup sync failed";
+  if (status === "pending") return "Backup sync pending";
+  return "Google backup synced";
+}
+
 function OrdersWorkspace() {
   const [orders, setOrders] = useState([]);
   const [events, setEvents] = useState([]);
@@ -61,17 +68,22 @@ function OrdersWorkspace() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [writeEnabled, setWriteEnabled] = useState(false);
+  const [tracking, setTracking] = useState("");
 
   const absorb = (payload) => {
     const nextOrders = Array.isArray(payload?.orders) ? payload.orders : [];
     setOrders(nextOrders);
     setEvents(Array.isArray(payload?.events) ? payload.events : []);
+    setWriteEnabled(Boolean(payload?.write_enabled));
     setSelectedId((current) => nextOrders.some((order) => order.id === current) ? current : (nextOrders[0]?.id || ""));
   };
 
   const load = async () => {
-    setLoading(true); setError("");
+    setLoading(true); setError(""); setNotice("");
     try { absorb(await ordersApi("GET")); }
     catch (loadError) { setError(loadError.message || String(loadError)); }
     finally { setLoading(false); }
@@ -80,6 +92,7 @@ function OrdersWorkspace() {
   useEffect(() => { load(); }, []);
 
   const selected = orders.find((order) => order.id === selectedId) || null;
+  useEffect(() => { setTracking(selected?.tracking_number || ""); }, [selected?.id, selected?.tracking_number]);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -102,16 +115,34 @@ function OrdersWorkspace() {
   }, [orders]);
 
   const saleOrders = useMemo(() => orders.filter((order) => order.status !== "DUPLICATE"), [orders]);
-
   const codPending = useMemo(() => saleOrders.reduce((sum, order) => {
     if (order.courier_payment_status !== "PENDING") return sum;
     return sum + Number(order.source_payload?.total || 0);
   }, 0), [saleOrders]);
-
   const selectedEvents = useMemo(() => events.filter((event) => event.order_id === selectedId), [events, selectedId]);
+
+  const mutate = async (body, key) => {
+    setBusy(key); setError(""); setNotice("");
+    try {
+      const result = await ordersApi("POST", body);
+      absorb(result);
+      if (result?.mirror_warning) setNotice(result.mirror_warning);
+    } catch (actionError) {
+      setError(actionError.message || String(actionError));
+    } finally {
+      setBusy("");
+    }
+  };
 
   const payload = selected?.source_payload || {};
   const items = Array.isArray(payload.items) ? payload.items : [];
+  const editable = Boolean(writeEnabled && selected && selected.status !== "DUPLICATE");
+  const nextStatus = selected?.status === "NEW" ? "PACKED" : selected?.status === "PACKED" ? "SHIPPED" : null;
+
+  const saveTracking = () => mutate({ action: "save_tracking", id: selected.id, tracking_number: tracking }, "tracking");
+  const setStatus = (status) => mutate({ action: "set_status", id: selected.id, status }, "status:" + status);
+  const setPayment = (status) => mutate({ action: "set_courier_payment", id: selected.id, status }, "payment");
+  const retrySync = () => mutate({ action: "retry_sheet_sync", id: selected.id }, "retry");
 
   return <section className="orders-manager">
     <div className="orders-banner">
@@ -120,13 +151,17 @@ function OrdersWorkspace() {
         <h2>Fulfillment desk</h2>
         <p>Pack, ship, track and settle COD orders from one operational view.</p>
       </div>
-      <button type="button" onClick={load} disabled={loading}>{loading ? "Loading…" : "Refresh"}</button>
+      <button type="button" onClick={load} disabled={loading || Boolean(busy)}>{loading ? "Loading…" : "Refresh"}</button>
     </div>
 
     {error ? <div className="orders-error">{error}</div> : null}
-    <div className="orders-readonly">
-      <strong>READ-ONLY MIGRATION PHASE</strong>
-      <span>Supabase is the canonical order store. Continue operational edits in Google Sheets until write-through backup sync is enabled.</span>
+    {notice ? <div className="orders-warning">{notice}</div> : null}
+
+    <div className={writeEnabled ? "orders-write-mode active" : "orders-write-mode"}>
+      <strong>{writeEnabled ? "WRITE-THROUGH ACTIVE" : "READ-ONLY MIGRATION PHASE"}</strong>
+      <span>{writeEnabled
+        ? "Supabase is primary. Every Control Center change is mirrored to Google Sheets and sync failures stay visible."
+        : "Supabase is canonical. Operational edits remain in Google Sheets until the write-through mirror is configured."}</span>
     </div>
 
     <div className="orders-kpis">
@@ -197,7 +232,19 @@ function OrdersWorkspace() {
 
           <section className="orders-tracking">
             <div className="orders-section-title"><span>TRACKING</span><strong>{selected.tracking_number || "Not set"}</strong></div>
-            <div className="orders-readonly-value">{selected.tracking_number || "No tracking number recorded"}</div>
+            {editable ? <div><input value={tracking} onChange={(event) => setTracking(event.target.value)} placeholder="Tracking number" /><button type="button" onClick={saveTracking} disabled={Boolean(busy)}>{busy === "tracking" ? "Saving…" : "Save tracking"}</button></div>
+              : <div className="orders-readonly-value">{selected.tracking_number || "No tracking number recorded"}</div>}
+          </section>
+
+          <section className="orders-actions">
+            <div className="orders-section-title"><span>FULFILLMENT ACTIONS</span><strong>Write-through v1</strong></div>
+            <div className="orders-action-row">
+              {editable && nextStatus ? <button type="button" className="primary" onClick={() => setStatus(nextStatus)} disabled={Boolean(busy)}>
+                {busy === "status:" + nextStatus ? "Updating…" : nextStatus === "PACKED" ? "Mark packed" : "Mark shipped"}
+              </button> : null}
+              {editable && ["NEW","PACKED"].includes(selected.status) ? <button type="button" className="danger" onClick={() => setStatus("CANCELLED")} disabled={Boolean(busy)}>Cancel order</button> : null}
+              {selected.status === "SHIPPED" ? <span className="orders-action-note">Extended delivery lifecycle stays locked until the legacy shipped-email/revenue automation is migrated.</span> : null}
+            </div>
           </section>
 
           <section className="orders-payment">
@@ -211,6 +258,17 @@ function OrdersWorkspace() {
                     ? "Waiting for courier payout"
                     : "No courier payout tracking for this historical order"}</span>
               </div>
+              {editable && ["PENDING","PAID"].includes(selected.courier_payment_status) ? <button type="button" onClick={() => setPayment(selected.courier_payment_status === "PAID" ? "PENDING" : "PAID")} disabled={Boolean(busy)}>
+                {busy === "payment" ? "Updating…" : selected.courier_payment_status === "PAID" ? "Mark pending" : "Mark paid"}
+              </button> : null}
+            </div>
+          </section>
+
+          <section className="orders-sync">
+            <div className="orders-section-title"><span>GOOGLE BACKUP</span><strong className={"orders-sync-state " + (selected.sheet_state_sync_status || "synced")}>{syncLabel(selected)}</strong></div>
+            <div className="orders-sync-row">
+              <span>{selected.sheet_state_sync_status === "failed" ? selected.sheet_state_sync_error || "Last backup sync failed." : selected.sheet_state_synced_at ? "Last synced " + dateTime(selected.sheet_state_synced_at) : "Historical parity confirmed."}</span>
+              {writeEnabled && selected.sheet_state_sync_status === "failed" ? <button type="button" onClick={retrySync} disabled={Boolean(busy)}>{busy === "retry" ? "Retrying…" : "Retry backup sync"}</button> : null}
             </div>
           </section>
 

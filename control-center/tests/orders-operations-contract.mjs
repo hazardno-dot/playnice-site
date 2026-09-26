@@ -17,13 +17,17 @@ assert.ok(app.includes('Orders: { eyebrow: "OPERATIONS / FULFILLMENT"'), "Orders
 assert.ok(managers.includes('import OrdersManager from "./OrdersManager";'), "Orders manager must be mounted.");
 assert.ok(managers.includes("<OrdersManager />"), "Orders manager component must render.");
 assert.ok(router.includes('"orders": () => import("../server/orders.js")'), "Orders API must use consolidated router.");
-assert.ok(server.includes("get_control_center_orders"), "Orders API must read orders and timeline through the admin-gated Supabase RPC.");
-assert.ok(server.includes('mode: "read_only_migration"'), "Orders API must remain read-only during migration.");
-assert.ok(server.includes('req.method !== "GET"'), "Orders API must reject write requests during migration.");
-assert.ok(!server.includes("SUPABASE_SECRET_KEY"), "Orders read path must not depend on a Vercel server secret during migration.");
+assert.ok(server.includes("get_control_center_orders"), "Orders API must read through the admin-gated Supabase RPC.");
+assert.ok(server.includes("update_control_center_order"), "Orders API must mutate through the admin-gated Supabase RPC.");
+assert.ok(server.includes("mark_control_center_order_sheet_sync"), "Orders API must persist Google backup sync results.");
+assert.ok(server.includes("order_state_sync"), "Orders API must use the dedicated Google Sheets state-sync contract.");
+assert.ok(server.includes("ORDERS_WRITE_THROUGH_ENABLED"), "Orders writes must stay behind an explicit feature gate.");
+assert.ok(server.includes("ORDERS_SHEET_SYNC_SECRET"), "Orders mirror writes must require a server-side shared secret.");
 assert.ok(ui.includes('fetch("/api/orders"'), "Orders UI must use the authenticated server route.");
-assert.ok(ui.includes("OUT_FOR_DELIVERY"), "Orders UI must understand the delivery lifecycle.");
-assert.ok(ui.includes("DUPLICATE"), "Orders UI must expose canonical duplicate audit records.");
-assert.ok(ui.includes("READ-ONLY MIGRATION PHASE"), "Orders UI must clearly communicate read-only migration safety.");
+assert.ok(ui.includes("WRITE-THROUGH ACTIVE"), "Orders UI must communicate active write-through mode.");
+assert.ok(ui.includes("Retry backup sync"), "Orders UI must expose retry for failed Google backup sync.");
+assert.ok(ui.includes("Mark packed"), "Orders UI must support the safe PACKED transition.");
+assert.ok(ui.includes("Mark shipped"), "Orders UI must support the legacy-compatible SHIPPED transition.");
+assert.ok(ui.includes("DUPLICATE"), "Orders UI must keep duplicate audit records visible.");
 
 console.log("PASS orders operations contract");

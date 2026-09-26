@@ -178,3 +178,24 @@
 @media (max-width: 720px) {
   .orders-readonly { align-items: flex-start; flex-direction: column; gap: 4px; }
 }
+
+.orders-warning { padding: 10px 12px; border: 1px solid rgba(183,143,72,.45); background: rgba(81,55,16,.25); color: #dbc38d; border-radius: 9px; font-size: 10px; }
+.orders-write-mode { display: flex; align-items: center; gap: 10px; border: 1px solid rgba(176,145,76,.32); background: rgba(78,58,18,.18); border-radius: 9px; padding: 8px 10px; }
+.orders-write-mode strong { flex: 0 0 auto; color: #cbb777; font-size: 8px; letter-spacing: .08em; }
+.orders-write-mode span { color: #8f8667; font-size: 9px; }
+.orders-write-mode.active { border-color: rgba(88,157,116,.36); background: rgba(24,71,43,.2); }
+.orders-write-mode.active strong { color: #9bd0ae; }
+.orders-write-mode.active span { color: #86a996; }
+.orders-action-note { color: #72877b; font-size: 8px; align-self: center; }
+.orders-sync { border-top: 1px solid rgba(118,151,137,.14); padding-top: 11px; }
+.orders-sync-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.orders-sync-row > span { color: #75897f; font-size: 8px; }
+.orders-sync-row button { border: 1px solid rgba(183,143,72,.4); background: rgba(72,49,16,.25); color: #dbc38d; border-radius: 8px; padding: 7px 9px; font-size: 9px; cursor: pointer; }
+.orders-sync-state.synced { color: #8fc3a3; }
+.orders-sync-state.pending { color: #d0bd83; }
+.orders-sync-state.failed { color: #d8a0a0; }
+@media (max-width: 720px) {
+  .orders-write-mode { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .orders-sync-row { align-items: flex-start; flex-direction: column; }
+  .orders-sync-row button { width: 100%; }
+}
