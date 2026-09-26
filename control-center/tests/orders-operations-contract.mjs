@@ -32,5 +32,6 @@ assert.ok(ui.includes("Mark shipped"), "Orders UI must support the legacy-compat
 assert.ok(ui.includes("Return to new"), "Orders UI must support undoing an accidental PACKED transition.");
 assert.ok(ui.includes("DUPLICATE"), "Orders UI must keep duplicate audit records visible.");
 assert.ok(ui.includes("UNREACHABLE"), "Orders UI must expose the existing delivery issue workflow.");
+assert.ok(ui.includes("Mark delivery failed"), "Orders UI must support the terminal delivery-failed transition.");
 
 console.log("PASS orders operations contract");
