@@ -17,6 +17,7 @@ const ROUTES = {
   "finalize-hero-apply": () => import("../server/finalize-hero-apply.js"),
   "hero-media-preview": () => import("../server/hero-media-preview.js"),
   "meta-connection-status": () => import("../server/meta-connection-status.js"),
+  "orders": () => import("../server/orders.js"),
   "prepare-announcement-change": () => import("../server/prepare-announcement-change.js"),
   "refresh-product-apply": () => import("../server/refresh-product-apply.js"),
   "replace-product-media": () => import("../server/replace-product-media.js"),

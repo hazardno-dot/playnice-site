@@ -30,6 +30,7 @@ import HeroApplyBridge from "./HeroApplyBridge";
 import ExhibitionManager from "./ExhibitionManager";
 import AnnouncementManager from "./AnnouncementManager";
 import CommerceShippingManager from "./CommerceShippingManager";
+import OrdersManager from "./OrdersManager";
 import SocialManager from "./SocialManager";
 import SocialInboxManager from "./SocialInboxManager";
 import SocialMediaOverrideBridge from "./SocialMediaOverrideBridge";
@@ -192,6 +193,7 @@ export default function ControlCenterManagers() {
     <ExhibitionManager />
     <AnnouncementManager />
     <CommerceShippingManager />
+    <OrdersManager />
     <SocialManager />
     <SocialInboxManager />
     <SocialMediaOverrideBridge />
