@@ -18,9 +18,11 @@ assert.ok(managers.includes('import OrdersManager from "./OrdersManager";'), "Or
 assert.ok(managers.includes("<OrdersManager />"), "Orders manager component must render.");
 assert.ok(router.includes('"orders": () => import("../server/orders.js")'), "Orders API must use consolidated router.");
 assert.ok(server.includes("get_control_center_orders"), "Orders API must read through the admin-gated Supabase RPC.");
+assert.ok(server.includes("get_control_center_order_analytics"), "Orders API must expose admin-gated commerce analytics.");
 assert.ok(server.includes("update_control_center_order"), "Orders API must mutate through the admin-gated Supabase RPC.");
 assert.ok(server.includes("mark_control_center_order_sheet_sync"), "Orders API must persist Google backup sync results.");
 assert.ok(server.includes("order_state_sync"), "Orders API must use the dedicated Google Sheets state-sync contract.");
+assert.ok(server.includes('status === "DELIVERED"'), "Delivered lifecycle must map back to legacy SHIPPED for Google Sheets compatibility.");
 assert.ok(server.includes("set_delivery_issue"), "Orders API must support delivery issue write-through.");
 assert.ok(server.includes("ORDERS_WRITE_THROUGH_ENABLED"), "Orders writes must stay behind an explicit feature gate.");
 assert.ok(server.includes("ORDERS_SHEET_SYNC_SECRET"), "Orders mirror writes must require a server-side shared secret.");
