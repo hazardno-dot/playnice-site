@@ -149,3 +149,32 @@
   .orders-payment-row { align-items: flex-start; flex-direction: column; }
   .orders-payment-row button { width: 100%; }
 }
+
+.orders-readonly {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(176,145,76,.32);
+  background: rgba(78,58,18,.18);
+  border-radius: 9px;
+  padding: 8px 10px;
+}
+.orders-readonly strong { flex: 0 0 auto; color: #cbb777; font-size: 8px; letter-spacing: .08em; }
+.orders-readonly span { color: #8f8667; font-size: 9px; }
+.orders-readonly-value {
+  border: 1px solid rgba(118,151,137,.12);
+  background: rgba(6,12,9,.35);
+  border-radius: 8px;
+  padding: 9px 10px;
+  color: #9aada2;
+  font-size: 9px;
+}
+.orders-source { border-top: 1px solid rgba(118,151,137,.14); padding-top: 11px; }
+.status-duplicate {
+  border-color: rgba(151,112,112,.45);
+  color: #c4a0a0;
+  background: rgba(86,38,38,.16);
+}
+@media (max-width: 720px) {
+  .orders-readonly { align-items: flex-start; flex-direction: column; gap: 4px; }
+}

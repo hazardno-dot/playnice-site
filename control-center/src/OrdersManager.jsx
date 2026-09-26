@@ -11,7 +11,8 @@ const STATUS_LABELS = {
   DELIVERED: "Delivered",
   DELIVERY_FAILED: "Delivery failed",
   RETURNED: "Returned",
-  CANCELLED: "Cancelled"
+  CANCELLED: "Cancelled",
+  DUPLICATE: "Duplicate"
 };
 
 const NEXT_STATUS = {
@@ -75,9 +76,7 @@ function OrdersWorkspace() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [loading, setLoading] = useState(true);
-  const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
-  const [tracking, setTracking] = useState("");
 
   const absorb = (payload) => {
     const nextOrders = Array.isArray(payload?.orders) ? payload.orders : [];
@@ -96,7 +95,6 @@ function OrdersWorkspace() {
   useEffect(() => { load(); }, []);
 
   const selected = orders.find((order) => order.id === selectedId) || null;
-  useEffect(() => { setTracking(selected?.tracking_number || ""); }, [selected?.id, selected?.tracking_number]);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -118,27 +116,17 @@ function OrdersWorkspace() {
     return result;
   }, [orders]);
 
-  const codPending = useMemo(() => orders.reduce((sum, order) => {
-    if (order.courier_payment_status === "PAID" || order.status === "CANCELLED") return sum;
+  const saleOrders = useMemo(() => orders.filter((order) => order.status !== "DUPLICATE"), [orders]);
+
+  const codPending = useMemo(() => saleOrders.reduce((sum, order) => {
+    if (order.courier_payment_status !== "PENDING") return sum;
     return sum + Number(order.source_payload?.total || 0);
-  }, 0), [orders]);
+  }, 0), [saleOrders]);
 
   const selectedEvents = useMemo(() => events.filter((event) => event.order_id === selectedId), [events, selectedId]);
 
-  const mutate = async (body, key) => {
-    setBusy(key); setError("");
-    try { absorb(await ordersApi("POST", body)); }
-    catch (actionError) { setError(actionError.message || String(actionError)); }
-    finally { setBusy(""); }
-  };
-
-  const setStatus = (status) => mutate({ action: "set_status", id: selected.id, status }, "status:" + status);
-  const saveTracking = () => mutate({ action: "save_tracking", id: selected.id, tracking_number: tracking }, "tracking");
-  const setPayment = (status) => mutate({ action: "set_courier_payment", id: selected.id, status }, "payment");
-
   const payload = selected?.source_payload || {};
   const items = Array.isArray(payload.items) ? payload.items : [];
-  const nextStatus = selected ? NEXT_STATUS[selected.status] : null;
 
   return <section className="orders-manager">
     <div className="orders-banner">
@@ -147,13 +135,17 @@ function OrdersWorkspace() {
         <h2>Fulfillment desk</h2>
         <p>Pack, ship, track and settle COD orders from one operational view.</p>
       </div>
-      <button type="button" onClick={load} disabled={loading || Boolean(busy)}>{loading ? "Loading…" : "Refresh"}</button>
+      <button type="button" onClick={load} disabled={loading}>{loading ? "Loading…" : "Refresh"}</button>
     </div>
 
     {error ? <div className="orders-error">{error}</div> : null}
+    <div className="orders-readonly">
+      <strong>READ-ONLY MIGRATION PHASE</strong>
+      <span>Supabase is the canonical order store. Continue operational edits in Google Sheets until write-through backup sync is enabled.</span>
+    </div>
 
     <div className="orders-kpis">
-      <div><span>ALL ORDERS</span><strong>{orders.length}</strong><small>production records</small></div>
+      <div><span>ALL RECORDS</span><strong>{orders.length}</strong><small>{saleOrders.length} sales · {counts.DUPLICATE || 0} duplicate</small></div>
       <div><span>NEW</span><strong>{counts.NEW || 0}</strong><small>waiting to pack</small></div>
       <div><span>PACKED</span><strong>{counts.PACKED || 0}</strong><small>ready for courier</small></div>
       <div><span>IN TRANSIT</span><strong>{(counts.SHIPPED || 0) + (counts.OUT_FOR_DELIVERY || 0)}</strong><small>shipped / delivery</small></div>
@@ -164,7 +156,7 @@ function OrdersWorkspace() {
     <div className="orders-toolbar">
       <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search order, customer, city, tracking, product…" />
       <div className="orders-status-filters">
-        {["ALL","NEW","PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED","RETURNED","CANCELLED"].map((status) =>
+        {["ALL","NEW","PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED","RETURNED","CANCELLED","DUPLICATE"].map((status) =>
           <button type="button" key={status} className={statusFilter === status ? "active" : ""} onClick={() => setStatusFilter(status)}>
             {status === "ALL" ? "All" : STATUS_LABELS[status]} <em>{counts[status] || 0}</em>
           </button>
@@ -220,34 +212,33 @@ function OrdersWorkspace() {
 
           <section className="orders-tracking">
             <div className="orders-section-title"><span>TRACKING</span><strong>{selected.tracking_number || "Not set"}</strong></div>
-            <div><input value={tracking} onChange={(event) => setTracking(event.target.value)} placeholder="Tracking number" /><button type="button" onClick={saveTracking} disabled={Boolean(busy)}>{busy === "tracking" ? "Saving…" : "Save tracking"}</button></div>
-          </section>
-
-          <section className="orders-actions">
-            <div className="orders-section-title"><span>FULFILLMENT ACTIONS</span><strong>{STATUS_LABELS[selected.status]}</strong></div>
-            <div className="orders-action-row">
-              {nextStatus ? <button type="button" className="primary" onClick={() => setStatus(nextStatus)} disabled={Boolean(busy)}>{busy === "status:" + nextStatus ? "Updating…" : NEXT_LABEL[nextStatus]}</button> : null}
-              {["NEW","PACKED"].includes(selected.status) ? <button type="button" className="danger" onClick={() => setStatus("CANCELLED")} disabled={Boolean(busy)}>Cancel order</button> : null}
-              {["SHIPPED","OUT_FOR_DELIVERY"].includes(selected.status) ? <button type="button" onClick={() => setStatus("DELIVERY_FAILED")} disabled={Boolean(busy)}>Delivery failed</button> : null}
-              {["SHIPPED","OUT_FOR_DELIVERY","DELIVERY_FAILED"].includes(selected.status) ? <button type="button" onClick={() => setStatus("RETURNED")} disabled={Boolean(busy)}>Mark returned</button> : null}
-            </div>
+            <div className="orders-readonly-value">{selected.tracking_number || "No tracking number recorded"}</div>
           </section>
 
           <section className="orders-payment">
-            <div className="orders-section-title"><span>COURIER / COD</span><strong>{selected.courier_payment_status || "PENDING"}</strong></div>
+            <div className="orders-section-title"><span>COURIER / COD</span><strong>{selected.courier_payment_status || "N/A"}</strong></div>
             <div className="orders-payment-row">
-              <div><strong>{money(payload.total)}</strong><span>{selected.courier_payment_status === "PAID" ? "Courier payout received " + dateTime(selected.courier_paid_at) : "Waiting for courier payout"}</span></div>
-              <button type="button" onClick={() => setPayment(selected.courier_payment_status === "PAID" ? "PENDING" : "PAID")} disabled={Boolean(busy)}>
-                {busy === "payment" ? "Updating…" : selected.courier_payment_status === "PAID" ? "Mark pending" : "Mark paid"}
-              </button>
+              <div>
+                <strong>{money(payload.total)}</strong>
+                <span>{selected.courier_payment_status === "PAID"
+                  ? "Courier payout received " + dateTime(selected.courier_paid_at)
+                  : selected.courier_payment_status === "PENDING"
+                    ? "Waiting for courier payout"
+                    : "No courier payout tracking for this historical order"}</span>
+              </div>
             </div>
+          </section>
+
+          <section className="orders-source">
+            <div className="orders-section-title"><span>RECORD SOURCE</span><strong>{selected.origin === "google_sheets_canonical" ? "Canonical import" : selected.origin || "Supabase"}</strong></div>
+            <div className="orders-readonly-value">{selected.legacy_sheet_row ? "Google Sheets Orders row " + selected.legacy_sheet_row : "Supabase-native order"}</div>
           </section>
 
           <section className="orders-timeline">
             <div className="orders-section-title"><span>ORDER TIMELINE</span><strong>{selectedEvents.length} events</strong></div>
             <div className="orders-timeline-list">
               {selectedEvents.map((event) => <div className="orders-timeline-row" key={event.id}>
-                <i></i><div><strong>{STATUS_LABELS[event.status] || event.status}</strong><span>{event.source === "backfill" ? "Initial imported state" : "Control Center"}</span></div><time>{dateTime(event.created_at)}</time>
+                <i></i><div><strong>{STATUS_LABELS[event.status] || event.status}</strong><span>{event.source === "google_sheets_canonical_import" ? "Imported from Google Sheets" : event.source === "backfill" ? "Initial imported state" : "Control Center"}</span></div><time>{dateTime(event.created_at)}</time>
               </div>)}
             </div>
           </section>

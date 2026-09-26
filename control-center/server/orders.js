@@ -7,7 +7,8 @@ const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.en
 const ORDER_SELECT = [
   "id","order_id","tracking_number","status","source_payload","created_at","updated_at",
   "packed_at","shipped_at","out_for_delivery_at","delivered_at","cancelled_at",
-  "courier_payment_status","courier_paid_at","courier_batch_id"
+  "courier_payment_status","courier_paid_at","courier_batch_id",
+  "origin","legacy_sheet_row","legacy_imported_at"
 ].join(",");
 
 const STATUSES = new Set([
@@ -70,20 +71,25 @@ async function serverFetch(path, init = {}) {
 async function authenticate(req) {
   const authHeader = req.headers.authorization || "";
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
-  if (!token) return { error: [401, "Missing admin session."] };
+  if (!token) return { error: [401, "Admin session required."] };
 
-  const userResponse = await userFetch("/auth/v1/user", token, { method: "GET" });
+  const userResponse = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}` }
+  });
   const user = await safeJson(userResponse);
-  if (!userResponse.ok || !user?.id) return { error: [401, "Invalid admin session."] };
+  if (!userResponse.ok || !user?.id) return { error: [401, "Admin session expired."] };
 
   const adminResponse = await userFetch(
-    "/rest/v1/admin_users?user_id=eq." + encodeURIComponent(user.id) + "&select=user_id&limit=1",
+    `/rest/v1/admin_users?user_id=eq.${encodeURIComponent(user.id)}&select=user_id&limit=1`,
     token,
     { method: "GET" }
   );
   const admins = await safeJson(adminResponse);
-  if (!adminResponse.ok || !Array.isArray(admins) || !admins.length) {
-    return { error: [403, "This account is not authorized for Orders."] };
+  if (!adminResponse.ok) {
+    return { error: [401, `Admin lookup failed (Supabase ${adminResponse.status}).`] };
+  }
+  if (!Array.isArray(admins) || !admins.length) {
+    return { error: [403, "PlayNice admin access required."] };
   }
   return { token, user };
 }
@@ -193,7 +199,11 @@ async function setCourierPayment(body) {
 }
 
 export default async function handler(req, res) {
-  if (!["GET","POST"].includes(req.method)) return json(res, 405, { error: "Method not allowed" });
+  if (req.method !== "GET") {
+    return json(res, 409, {
+      error: "Orders are read-only during the Supabase migration phase. Operational edits still belong in Google Sheets."
+    });
+  }
   if (!SUPABASE_URL || !SUPABASE_KEY || !SUPABASE_SECRET_KEY) {
     return json(res, 500, { error: "Supabase server configuration is incomplete." });
   }
@@ -202,21 +212,15 @@ export default async function handler(req, res) {
   if (auth.error) return json(res, auth.error[0], { error: auth.error[1] });
 
   try {
-    if (req.method === "GET") {
-      const data = await readOrders();
-      return json(res, 200, { ok: true, ...data });
-    }
-
-    const action = String(req.body?.action || "").trim();
-    let order = null;
-    if (action === "set_status") order = await setStatus(req.body, auth.user);
-    else if (action === "save_tracking") order = await saveTracking(req.body);
-    else if (action === "set_courier_payment") order = await setCourierPayment(req.body);
-    else return json(res, 400, { error: "Unknown order action." });
-
     const data = await readOrders();
-    return json(res, 200, { ok: true, order, ...data });
+    return json(res, 200, {
+      ok: true,
+      mode: "read_only_migration",
+      canonical_source: "supabase",
+      backup_source: "google_sheets",
+      ...data
+    });
   } catch (error) {
-    return json(res, 400, { error: String(error?.message || error).slice(0, 400) });
+    return json(res, 500, { error: String(error?.message || error).slice(0, 400) });
   }
 }
