@@ -8,6 +8,16 @@
 .placeholder-panel.orders-module-active > p {
   display: none;
 }
+.placeholder-panel.orders-module-active,
+#orders-manager-slot,
+.orders-manager {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  justify-self: stretch;
+  align-self: stretch;
+  box-sizing: border-box;
+}
 .orders-manager { display: grid; gap: 12px; }
 .orders-banner,
 .orders-list-panel,
@@ -51,7 +61,7 @@
   padding: 10px 12px; border: 1px solid rgba(180,92,92,.45);
   background: rgba(76,24,24,.28); color: #e5b8b8; border-radius: 9px; font-size: 10px;
 }
-.orders-kpis { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 8px; }
+.orders-kpis { display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); gap: 8px; }
 .orders-kpis > div { min-height: 76px; padding: 10px 11px; display: grid; align-content: center; gap: 3px; }
 .orders-kpis span { color: #70897c; font-size: 8px; letter-spacing: .1em; }
 .orders-kpis strong { font-size: 21px; line-height: 1; }
