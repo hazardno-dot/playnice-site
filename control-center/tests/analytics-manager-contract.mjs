@@ -18,7 +18,7 @@ for (const token of [
   'COD PENDING',
   'Size mix',
   'Sales by city',
-  'Top products',
+  'Fragrance volume',
   'Commerce intelligence',
   '/api/orders?view=analytics',
   'ACTIVE DRAFTS',
