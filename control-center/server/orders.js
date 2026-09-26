@@ -3,36 +3,6 @@ import { supabaseRestHeaders } from "../lib/supabase-server-auth.mjs";
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-const ORDER_SELECT = [
-  "id","order_id","tracking_number","status","source_payload","created_at","updated_at",
-  "packed_at","shipped_at","out_for_delivery_at","delivered_at","cancelled_at",
-  "courier_payment_status","courier_paid_at","courier_batch_id",
-  "origin","legacy_sheet_row","legacy_imported_at"
-].join(",");
-
-const STATUSES = new Set([
-  "NEW","PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED","RETURNED","CANCELLED"
-]);
-
-const TRANSITIONS = {
-  NEW: new Set(["PACKED","CANCELLED"]),
-  PACKED: new Set(["SHIPPED","CANCELLED"]),
-  SHIPPED: new Set(["OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED","RETURNED"]),
-  OUT_FOR_DELIVERY: new Set(["DELIVERED","DELIVERY_FAILED","RETURNED"]),
-  DELIVERY_FAILED: new Set(["OUT_FOR_DELIVERY","RETURNED"]),
-  DELIVERED: new Set([]),
-  RETURNED: new Set([]),
-  CANCELLED: new Set([])
-};
-
-const STATUS_TIMESTAMP = {
-  PACKED: "packed_at",
-  SHIPPED: "shipped_at",
-  OUT_FOR_DELIVERY: "out_for_delivery_at",
-  DELIVERED: "delivered_at",
-  CANCELLED: "cancelled_at"
-};
-
 const json = (res, status, body) => {
   res.setHeader("Cache-Control", "no-store");
   return res.status(status).json(body);

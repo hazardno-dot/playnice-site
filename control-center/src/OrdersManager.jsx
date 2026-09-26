@@ -15,21 +15,6 @@ const STATUS_LABELS = {
   DUPLICATE: "Duplicate"
 };
 
-const NEXT_STATUS = {
-  NEW: "PACKED",
-  PACKED: "SHIPPED",
-  SHIPPED: "OUT_FOR_DELIVERY",
-  OUT_FOR_DELIVERY: "DELIVERED",
-  DELIVERY_FAILED: "OUT_FOR_DELIVERY"
-};
-
-const NEXT_LABEL = {
-  PACKED: "Mark packed",
-  SHIPPED: "Mark shipped",
-  OUT_FOR_DELIVERY: "Out for delivery",
-  DELIVERED: "Mark delivered"
-};
-
 const money = (value) => {
   const number = Number(value || 0);
   return Number.isFinite(number) ? number.toLocaleString("en-IE", { style: "currency", currency: "EUR" }) : "€0.00";
