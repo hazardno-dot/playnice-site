@@ -1,6 +1,5 @@
 import { supabaseRestHeaders } from "../lib/supabase-server-auth.mjs";
 
-// Preview redeploy marker: Orders write-through v1
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const SHEET_SYNC_URL = String(
@@ -93,6 +92,7 @@ function buildMirror(order) {
     trackingNumber: order.tracking_number || "",
     courierPaid: order.courier_payment_status || "N/A",
     courierPaidAt: order.courier_paid_at || null,
+    deliveryIssue: order.delivery_issue || "",
     stateVersion: Number(order.sheet_state_version || 0)
   };
 }
@@ -118,19 +118,20 @@ async function syncMirror(mirror) {
   return data;
 }
 
-async function markMirror(token, orderId, stateVersion, status, error = null) {
+async function markMirror(token, orderId, stateVersion, status, error = null, alertEmailStatus = null) {
   return rpc("mark_control_center_order_sheet_sync", token, {
     p_record_id: orderId,
     p_state_version: Number(stateVersion),
     p_status: status,
-    p_error: error
+    p_error: error,
+    p_alert_email_status: alertEmailStatus
   });
 }
 
 async function mirrorWithAudit(token, order, mirror) {
   try {
-    await syncMirror(mirror);
-    await markMirror(token, order.id, mirror.stateVersion, "synced", null);
+    const sheetResult = await syncMirror(mirror);
+    await markMirror(token, order.id, mirror.stateVersion, "synced", null, sheetResult?.alertEmailSent || null);
     return { mirror_status: "synced", mirror_warning: null };
   } catch (error) {
     const message = String(error?.message || error).slice(0, 400);
@@ -155,6 +156,7 @@ async function mutateOrder(token, body) {
   if (action === "set_status") value = String(body?.status || "").trim();
   else if (action === "save_tracking") value = String(body?.tracking_number || "").trim();
   else if (action === "set_courier_payment") value = String(body?.status || "").trim();
+  else if (action === "set_delivery_issue") value = String(body?.delivery_issue || "").trim();
   else throw new Error("Unknown order action.");
 
   const mutation = await rpc("update_control_center_order", token, {
