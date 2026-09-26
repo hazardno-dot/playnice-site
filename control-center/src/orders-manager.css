@@ -72,8 +72,8 @@
   width: 100%; box-sizing: border-box; border: 1px solid rgba(112,147,129,.28);
   background: rgba(5,10,8,.8); color: #d9e4dd; border-radius: 8px; padding: 9px 10px; font-size: 10px;
 }
-.orders-status-filters { display: flex; gap: 5px; flex-wrap: wrap; }
-.orders-status-filters button { padding: 6px 8px; font-size: 8px; }
+.orders-status-filters { display: flex; gap: 7px; flex-wrap: wrap; }
+.orders-status-filters button { padding: 7px 10px; font-size: 9px; min-height: 30px; }
 .orders-status-filters button.active { border-color: rgba(121,190,153,.7); color: #c8ead7; background: rgba(43,86,63,.35); }
 .orders-status-filters em { font-style: normal; color: #759083; margin-left: 3px; }
 .orders-layout { display: grid; grid-template-columns: minmax(340px,.85fr) minmax(0,1.35fr); gap: 10px; align-items: start; }
