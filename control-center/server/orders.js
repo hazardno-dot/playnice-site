@@ -2,7 +2,6 @@ import { supabaseRestHeaders } from "../lib/supabase-server-auth.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-const SUPABASE_SECRET_KEY = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "").trim();
 
 const ORDER_SELECT = [
   "id","order_id","tracking_number","status","source_payload","created_at","updated_at",
@@ -56,17 +55,6 @@ async function userFetch(path, token, init = {}) {
   });
 }
 
-async function serverFetch(path, init = {}) {
-  return fetch(SUPABASE_URL + path, {
-    ...init,
-    headers: supabaseRestHeaders({
-      token: SUPABASE_SECRET_KEY,
-      publishableKey: SUPABASE_KEY,
-      serverKey: SUPABASE_SECRET_KEY,
-      extra: init.headers || {}
-    })
-  });
-}
 
 async function authenticate(req) {
   const authHeader = req.headers.authorization || "";
@@ -94,108 +82,20 @@ async function authenticate(req) {
   return { token, user };
 }
 
-async function readOrders() {
-  const ordersResponse = await serverFetch(
-    "/rest/v1/checkout_orders?select=" + encodeURIComponent(ORDER_SELECT) +
-    "&environment=eq.production&order=created_at.desc&limit=250",
-    { method: "GET" }
+async function readOrders(token) {
+  const response = await userFetch(
+    "/rest/v1/rpc/get_control_center_orders",
+    token,
+    { method: "POST", body: "{}" }
   );
-  const orders = await safeJson(ordersResponse);
-  if (!ordersResponse.ok) throw new Error("Could not load orders (Supabase " + ordersResponse.status + ").");
-
-  const eventsResponse = await serverFetch(
-    "/rest/v1/order_status_events?select=id,order_id,status,note,source,created_at&order=created_at.asc&limit=1000",
-    { method: "GET" }
-  );
-  const events = await safeJson(eventsResponse);
-  if (!eventsResponse.ok) throw new Error("Could not load order timeline (Supabase " + eventsResponse.status + ").");
-
-  return {
-    orders: Array.isArray(orders) ? orders : [],
-    events: Array.isArray(events) ? events : []
-  };
-}
-
-async function readOrder(id) {
-  const response = await serverFetch(
-    "/rest/v1/checkout_orders?id=eq." + encodeURIComponent(id) + "&select=" + encodeURIComponent(ORDER_SELECT) + "&limit=1",
-    { method: "GET" }
-  );
-  const rows = await safeJson(response);
-  if (!response.ok) throw new Error("Could not read order (Supabase " + response.status + ").");
-  return Array.isArray(rows) ? rows[0] || null : null;
-}
-
-async function patchOrder(id, patch) {
-  const response = await serverFetch(
-    "/rest/v1/checkout_orders?id=eq." + encodeURIComponent(id),
-    {
-      method: "PATCH",
-      headers: { Prefer: "return=representation" },
-      body: JSON.stringify(patch)
-    }
-  );
-  const rows = await safeJson(response);
-  if (!response.ok) throw new Error("Could not update order (Supabase " + response.status + ").");
-  return Array.isArray(rows) ? rows[0] || null : null;
-}
-
-async function addEvent(orderId, status, userId, note = null) {
-  const response = await serverFetch("/rest/v1/order_status_events", {
-    method: "POST",
-    headers: { Prefer: "return=minimal" },
-    body: JSON.stringify({
-      order_id: orderId,
-      status,
-      note: note ? String(note).slice(0, 500) : null,
-      source: "control_center",
-      created_by: userId
-    })
-  });
-  if (!response.ok) throw new Error("Order changed but timeline event could not be saved.");
-}
-
-async function setStatus(body, user) {
-  const id = String(body?.id || "").trim();
-  const next = String(body?.status || "").trim().toUpperCase();
-  if (!id || !STATUSES.has(next)) throw new Error("Invalid order status request.");
-
-  const current = await readOrder(id);
-  if (!current) throw new Error("Order not found.");
-  if (current.status === next) return current;
-
-  const allowed = TRANSITIONS[current.status] || new Set();
-  if (!allowed.has(next)) {
-    throw new Error("Status cannot move from " + current.status + " to " + next + ".");
+  const data = await safeJson(response);
+  if (!response.ok) {
+    throw new Error(data?.message || data?.hint || "Could not load orders (Supabase " + response.status + ").");
   }
-
-  const now = new Date().toISOString();
-  const patch = { status: next, updated_at: now };
-  if (STATUS_TIMESTAMP[next]) patch[STATUS_TIMESTAMP[next]] = now;
-  const updated = await patchOrder(id, patch);
-  await addEvent(id, next, user.id, body?.note || null);
-  return updated;
-}
-
-async function saveTracking(body) {
-  const id = String(body?.id || "").trim();
-  const tracking = String(body?.tracking_number || "").trim().slice(0, 120);
-  if (!id) throw new Error("Missing order id.");
-  return patchOrder(id, {
-    tracking_number: tracking,
-    updated_at: new Date().toISOString()
-  });
-}
-
-async function setCourierPayment(body) {
-  const id = String(body?.id || "").trim();
-  const status = String(body?.status || "").trim().toUpperCase();
-  if (!id || !["PENDING","PAID"].includes(status)) throw new Error("Invalid courier payment status.");
-  return patchOrder(id, {
-    courier_payment_status: status,
-    courier_paid_at: status === "PAID" ? new Date().toISOString() : null,
-    updated_at: new Date().toISOString()
-  });
+  return {
+    orders: Array.isArray(data?.orders) ? data.orders : [],
+    events: Array.isArray(data?.events) ? data.events : []
+  };
 }
 
 export default async function handler(req, res) {
@@ -204,7 +104,7 @@ export default async function handler(req, res) {
       error: "Orders are read-only during the Supabase migration phase. Operational edits still belong in Google Sheets."
     });
   }
-  if (!SUPABASE_URL || !SUPABASE_KEY || !SUPABASE_SECRET_KEY) {
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
     return json(res, 500, { error: "Supabase server configuration is incomplete." });
   }
 
@@ -212,7 +112,7 @@ export default async function handler(req, res) {
   if (auth.error) return json(res, auth.error[0], { error: auth.error[1] });
 
   try {
-    const data = await readOrders();
+    const data = await readOrders(auth.token);
     return json(res, 200, {
       ok: true,
       mode: "read_only_migration",
