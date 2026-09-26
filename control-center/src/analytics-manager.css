@@ -47,3 +47,9 @@
 .workflow-section-head p{margin:0;color:#6f8178;font-size:9px}
 .fragrance-row>span{min-width:68px;text-align:right}
 .volume-kpis>div:nth-child(4){border-color:rgba(107,211,155,.24);background:rgba(107,211,155,.035)}
+
+.sales-section-head h2{margin:0;font-family:Georgia,serif;font-size:30px;font-weight:500;color:#eef3ef;line-height:1.08}
+.sales-head-meta{display:flex;align-items:center;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.sales-head-meta .analytics-live{position:static}
+.analytics-manager>.analytics-head{display:none}
+@media(max-width:720px){.sales-head-meta{justify-content:flex-start}}
