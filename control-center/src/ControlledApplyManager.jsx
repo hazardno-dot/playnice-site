@@ -23,6 +23,7 @@ export default function ControlledApplyManager() {
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
   const [previewChecks, setPreviewChecks] = useState({});
+  const [expanded, setExpanded] = useState(false);
 
   const readData = async () => {
     const [{ data: draftRows }, { data: historyRows }] = await Promise.all([
@@ -183,12 +184,14 @@ export default function ControlledApplyManager() {
 
   if (!readyRows.length && !staleApprovalRows.length && !history.length && !error) return null;
 
-  return <div className="controlled-apply-box">
-    <div className="controlled-apply-head">
+  return <div className={`controlled-apply-box ${expanded ? "is-expanded" : "is-collapsed"}`}>
+    <button type="button" className="controlled-apply-toggle" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded}>
       <div><span>CONTROLLED APPLY</span><strong>{readyRows.length} active{staleApprovalRows.length ? ` · ${staleApprovalRows.length} blocked` : ""}</strong></div>
-      <small>Shop preview + visual parity verification required · never merges automatically</small>
-    </div>
+      <small>{expanded ? "Hide release workflow" : history.length ? `${history.length} recent publishes · show workflow` : "Show release workflow"}</small>
+      <b aria-hidden="true">{expanded ? "−" : "+"}</b>
+    </button>
 
+    {expanded ? <>
     {staleApprovalRows.map((row) => {
       const approvalState = getApprovalPayloadState(row);
       return <div className="controlled-apply-row controlled-apply-row-stack" key={`blocked:${row.product_slug}`}>
@@ -287,5 +290,6 @@ export default function ControlledApplyManager() {
     </div> : null}
 
     {error ? <div className="controlled-apply-error">{error}</div> : null}
+    </> : null}
   </div>;
 }
