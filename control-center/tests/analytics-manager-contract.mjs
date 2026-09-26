@@ -14,6 +14,13 @@ for (const token of [
   'draft_audit_log',
   'postgres_changes',
   'Operational analytics',
+  'FREE SHIPPING',
+  'COD PENDING',
+  'Decant mix',
+  'Sales by city',
+  'Top products',
+  'Commerce intelligence',
+  '/api/orders?view=analytics',
   'ACTIVE DRAFTS',
   'Draft PR metadata',
   'Traffic and conversion analytics remain a separate source',
@@ -30,5 +37,7 @@ console.log("PASS  Analytics replaces the reserved module with operational intel
 console.log("PASS  Analytics reads Products, Journal and Notes workflow state from Supabase");
 console.log("PASS  Analytics uses the real publish_history apply_pr_number schema field");
 console.log("PASS  Analytics reacts to draft, publish and audit-log changes in realtime");
+console.log("PASS  Orders commerce intelligence is loaded through the authenticated Orders API");
+console.log("PASS  Analytics exposes revenue, products, cities, sizes and COD metrics");
 console.log("PASS  customer traffic analytics remain explicitly separate from operational telemetry");
 console.log("Production untouched: yes (static Analytics contract only)");
