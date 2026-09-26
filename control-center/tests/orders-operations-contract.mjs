@@ -17,10 +17,10 @@ assert.ok(app.includes('Orders: { eyebrow: "OPERATIONS / FULFILLMENT"'), "Orders
 assert.ok(managers.includes('import OrdersManager from "./OrdersManager";'), "Orders manager must be mounted.");
 assert.ok(managers.includes("<OrdersManager />"), "Orders manager component must render.");
 assert.ok(router.includes('"orders": () => import("../server/orders.js")'), "Orders API must use consolidated router.");
-assert.ok(server.includes("order_status_events"), "Orders API must read timeline events.");
+assert.ok(server.includes("get_control_center_orders"), "Orders API must read orders and timeline through the admin-gated Supabase RPC.");
 assert.ok(server.includes('mode: "read_only_migration"'), "Orders API must remain read-only during migration.");
 assert.ok(server.includes('req.method !== "GET"'), "Orders API must reject write requests during migration.");
-assert.ok(server.includes("SUPABASE_SECRET_KEY"), "Orders data access must stay server-side.");
+assert.ok(!server.includes("SUPABASE_SECRET_KEY"), "Orders read path must not depend on a Vercel server secret during migration.");
 assert.ok(ui.includes('fetch("/api/orders"'), "Orders UI must use the authenticated server route.");
 assert.ok(ui.includes("OUT_FOR_DELIVERY"), "Orders UI must understand the delivery lifecycle.");
 assert.ok(ui.includes("DUPLICATE"), "Orders UI must expose canonical duplicate audit records.");
