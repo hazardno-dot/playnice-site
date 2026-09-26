@@ -245,13 +245,15 @@ function OrdersWorkspace() {
                 {busy === "status:" + nextStatus ? "Updating…" : nextStatus === "PACKED" ? "Mark packed" : "Mark shipped"}
               </button> : null}
               {editable && ["NEW","PACKED"].includes(selected.status) ? <button type="button" className="danger" onClick={() => setStatus("CANCELLED")} disabled={Boolean(busy)}>Cancel order</button> : null}
-              {selected.status === "SHIPPED" ? <span className="orders-action-note">Extended delivery lifecycle stays locked until the legacy shipped-email/revenue automation is migrated.</span> : null}
+              {editable && selected.status === "SHIPPED" ? <button type="button" className="danger" onClick={() => setStatus("DELIVERY_FAILED")} disabled={Boolean(busy)}>{busy === "status:DELIVERY_FAILED" ? "Updating…" : "Mark delivery failed"}</button> : null}
+              {editable && selected.status === "DELIVERY_FAILED" ? <button type="button" onClick={() => setStatus("SHIPPED")} disabled={Boolean(busy)}>{busy === "status:SHIPPED" ? "Updating…" : "Return to shipped"}</button> : null}
+              {selected.status === "SHIPPED" ? <span className="orders-action-note">Extended delivery lifecycle stays locked until the remaining legacy delivery automation is migrated.</span> : null}
             </div>
           </section>
 
           <section className="orders-delivery">
             <div className="orders-section-title"><span>DELIVERY ISSUE</span><strong>{selected.delivery_issue || "None"}</strong></div>
-            {selected.status === "SHIPPED" ? <div className="orders-action-row">
+            {["SHIPPED","DELIVERY_FAILED"].includes(selected.status) ? <div className="orders-action-row">
               {["UNREACHABLE","REFUSED","RETURNED","RESOLVED"].map((issue) =>
                 <button type="button" key={issue} className={selected.delivery_issue === issue ? "primary" : ""} onClick={() => setDeliveryIssue(issue)} disabled={!editable || Boolean(busy)}>
                   {busy === "delivery:" + issue ? "Updating…" : issue}
