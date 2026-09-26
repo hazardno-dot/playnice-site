@@ -67,9 +67,12 @@ export default function ControlCenterManagers() {
       applySlot = document.createElement("div");
       applySlot.id = "controlled-apply-slot";
       applySlot.className = "controlled-apply-slot";
-      topbar.insertAdjacentElement("afterend", applySlot);
+      mainStage.appendChild(applySlot);
     }
 
+    window.requestAnimationFrame(() => {
+      if (applySlot.parentElement === mainStage) mainStage.appendChild(applySlot);
+    });
     setSlots({ draft: draftSlot, apply: applySlot });
   }, []);
 
