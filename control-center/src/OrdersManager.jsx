@@ -114,7 +114,7 @@ function OrdersWorkspace() {
     return result;
   }, [orders]);
 
-  const saleOrders = useMemo(() => orders.filter((order) => order.status !== "DUPLICATE"), [orders]);
+  const saleOrders = useMemo(() => orders.filter((order) => order.status !== "DUPLICATE" && order.origin !== "regression_test"), [orders]);
   const codPending = useMemo(() => saleOrders.reduce((sum, order) => {
     if (order.courier_payment_status !== "PENDING") return sum;
     return sum + Number(order.source_payload?.total || 0);
@@ -143,6 +143,7 @@ function OrdersWorkspace() {
   const setStatus = (status) => mutate({ action: "set_status", id: selected.id, status }, "status:" + status);
   const setPayment = (status) => mutate({ action: "set_courier_payment", id: selected.id, status }, "payment");
   const retrySync = () => mutate({ action: "retry_sheet_sync", id: selected.id }, "retry");
+  const setDeliveryIssue = (delivery_issue) => mutate({ action: "set_delivery_issue", id: selected.id, delivery_issue }, "delivery:" + delivery_issue);
 
   return <section className="orders-manager">
     <div className="orders-banner">
@@ -239,11 +240,28 @@ function OrdersWorkspace() {
           <section className="orders-actions">
             <div className="orders-section-title"><span>FULFILLMENT ACTIONS</span><strong>Write-through v1</strong></div>
             <div className="orders-action-row">
+              {editable && selected.status === "PACKED" ? <button type="button" onClick={() => setStatus("NEW")} disabled={Boolean(busy)}>{busy === "status:NEW" ? "Updating…" : "Return to new"}</button> : null}
               {editable && nextStatus ? <button type="button" className="primary" onClick={() => setStatus(nextStatus)} disabled={Boolean(busy)}>
                 {busy === "status:" + nextStatus ? "Updating…" : nextStatus === "PACKED" ? "Mark packed" : "Mark shipped"}
               </button> : null}
               {editable && ["NEW","PACKED"].includes(selected.status) ? <button type="button" className="danger" onClick={() => setStatus("CANCELLED")} disabled={Boolean(busy)}>Cancel order</button> : null}
               {selected.status === "SHIPPED" ? <span className="orders-action-note">Extended delivery lifecycle stays locked until the legacy shipped-email/revenue automation is migrated.</span> : null}
+            </div>
+          </section>
+
+          <section className="orders-delivery">
+            <div className="orders-section-title"><span>DELIVERY ISSUE</span><strong>{selected.delivery_issue || "None"}</strong></div>
+            {selected.status === "SHIPPED" ? <div className="orders-action-row">
+              {["UNREACHABLE","REFUSED","RETURNED","RESOLVED"].map((issue) =>
+                <button type="button" key={issue} className={selected.delivery_issue === issue ? "primary" : ""} onClick={() => setDeliveryIssue(issue)} disabled={!editable || Boolean(busy)}>
+                  {busy === "delivery:" + issue ? "Updating…" : issue}
+                </button>
+              )}
+            </div> : <div className="orders-readonly-value">Delivery issue controls are available after shipment.</div>}
+            <div className="orders-delivery-note">
+              {selected.delivery_issue === "UNREACHABLE"
+                ? (selected.delivery_alert_email_status === "YES" ? "Customer alert email sent." : selected.delivery_alert_email_status === "NO_EMAIL" ? "No customer email available." : "UNREACHABLE will trigger the existing customer alert email.")
+                : "Only UNREACHABLE triggers the existing customer alert email."}
             </div>
           </section>
 
