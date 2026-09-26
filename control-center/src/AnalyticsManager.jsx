@@ -125,20 +125,19 @@ export default function AnalyticsManager() {
 
   if (!slot) return null;
   return createPortal(<section className="analytics-manager">
-    <div className="analytics-head">
-      <div><span>CONTROL CENTER INTELLIGENCE</span><h2>Operational analytics</h2><p>Commerce performance and Control Center workflow telemetry, separated into clear operational sections. Traffic and conversion analytics remain a separate source.</p></div>
-      <div className={`analytics-live ${loading ? "loading" : error ? "error" : "ok"}`}>{loading ? "SYNCING" : error ? "PARTIAL DATA" : "LIVE"}</div>
-    </div>
     {error ? <div className="analytics-error">{error}</div> : null}
 
     <section className="sales-intelligence">
       <div className="sales-section-head">
         <div>
           <span>ORDERS / SALES</span>
-          <h3>Commerce intelligence</h3>
-          <p>Realized sales use DELIVERED orders only. Active, failed, cancelled and duplicate orders are excluded from revenue.</p>
+          <h2>Commerce intelligence</h2>
+          <p>Revenue, fulfillment, fragrance volume and customer geography from completed orders.</p>
         </div>
-        <small>Supabase canonical · Sheets history reconciled</small>
+        <div className="sales-head-meta">
+          <span className={`analytics-live ${loading ? "loading" : error ? "error" : "ok"}`}>{loading ? "SYNCING" : error ? "PARTIAL DATA" : "LIVE"}</span>
+          <small>Supabase canonical · Sheets history reconciled</small>
+        </div>
       </div>
 
       <div className="sales-subsection-label"><strong>MONEY</strong><span>What was earned from completed deliveries</span></div>
