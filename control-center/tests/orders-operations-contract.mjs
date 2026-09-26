@@ -21,6 +21,7 @@ assert.ok(server.includes("get_control_center_orders"), "Orders API must read th
 assert.ok(server.includes("update_control_center_order"), "Orders API must mutate through the admin-gated Supabase RPC.");
 assert.ok(server.includes("mark_control_center_order_sheet_sync"), "Orders API must persist Google backup sync results.");
 assert.ok(server.includes("order_state_sync"), "Orders API must use the dedicated Google Sheets state-sync contract.");
+assert.ok(server.includes("set_delivery_issue"), "Orders API must support delivery issue write-through.");
 assert.ok(server.includes("ORDERS_WRITE_THROUGH_ENABLED"), "Orders writes must stay behind an explicit feature gate.");
 assert.ok(server.includes("ORDERS_SHEET_SYNC_SECRET"), "Orders mirror writes must require a server-side shared secret.");
 assert.ok(ui.includes('fetch("/api/orders"'), "Orders UI must use the authenticated server route.");
@@ -28,6 +29,8 @@ assert.ok(ui.includes("WRITE-THROUGH ACTIVE"), "Orders UI must communicate activ
 assert.ok(ui.includes("Retry backup sync"), "Orders UI must expose retry for failed Google backup sync.");
 assert.ok(ui.includes("Mark packed"), "Orders UI must support the safe PACKED transition.");
 assert.ok(ui.includes("Mark shipped"), "Orders UI must support the legacy-compatible SHIPPED transition.");
+assert.ok(ui.includes("Return to new"), "Orders UI must support undoing an accidental PACKED transition.");
 assert.ok(ui.includes("DUPLICATE"), "Orders UI must keep duplicate audit records visible.");
+assert.ok(ui.includes("UNREACHABLE"), "Orders UI must expose the existing delivery issue workflow.");
 
 console.log("PASS orders operations contract");
