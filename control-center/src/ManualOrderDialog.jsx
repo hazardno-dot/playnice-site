@@ -112,12 +112,16 @@ export default function ManualOrderDialog({ open, busy, onClose, onCreate }) {
     );
     if (!confirmed) return;
 
-    await onCreate({
-      ...form,
-      items: items.map(({ name, size: itemSize, quantity: itemQuantity, price }) => ({
-        name, size: itemSize, quantity: itemQuantity, price
-      }))
-    });
+    try {
+      await onCreate({
+        ...form,
+        items: items.map(({ name, size: itemSize, quantity: itemQuantity, price }) => ({
+          name, size: itemSize, quantity: itemQuantity, price
+        }))
+      });
+    } catch (createError) {
+      setError(createError?.message || "Manual order could not be created.");
+    }
   };
 
   return createPortal(
