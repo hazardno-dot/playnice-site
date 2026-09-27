@@ -128,6 +128,15 @@ function OrdersWorkspace() {
     setGiftExtra(extra || legacy.extraGift || "");
   }, [selected?.id, selected?.source_payload?.freeGift]);
 
+  useEffect(() => {
+    const matched = giftProducts.find((product) => product.name === giftSampleName);
+    if (!matched) return;
+    const sizes = Object.keys(matched.sizes || {});
+    if (sizes.length && !sizes.includes(giftSampleSize)) {
+      setGiftSampleSize(sizes.includes("2ml") ? "2ml" : sizes[0]);
+    }
+  }, [giftSampleName, giftSampleSize]);
+
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return orders.filter((order) => {
