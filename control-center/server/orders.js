@@ -1,3 +1,4 @@
+// Production redeploy trigger: env refresh.
 import { supabaseRestHeaders } from "../lib/supabase-server-auth.mjs";
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
