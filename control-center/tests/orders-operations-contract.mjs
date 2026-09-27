@@ -35,5 +35,11 @@ assert.ok(ui.includes("Return to new"), "Orders UI must support undoing an accid
 assert.ok(ui.includes("DUPLICATE"), "Orders UI must keep duplicate audit records visible.");
 assert.ok(ui.includes("UNREACHABLE"), "Orders UI must expose the existing delivery issue workflow.");
 assert.ok(ui.includes("Mark delivery failed"), "Orders UI must support the terminal delivery-failed transition.");
+assert.ok(server.includes("settle_control_center_courier_batch"), "Orders API must use the admin-gated courier settlement RPC.");
+assert.ok(server.includes('action === "settle_courier_batch"'), "Orders API must expose courier batch settlement through the existing write-through route.");
+assert.ok(ui.includes("COURIER SETTLEMENT V1"), "Orders UI must expose the courier settlement workspace.");
+assert.ok(ui.includes('order.status === "DELIVERED" && order.courier_payment_status === "PENDING"'), "Courier settlement eligibility must be limited to delivered pending orders.");
+assert.ok(ui.includes("Record courier payout"), "Orders UI must provide a batch payout action.");
+assert.ok(ui.includes("courier_batch_id"), "Orders UI must derive settlement history from canonical batch ids.");
 
 console.log("PASS orders operations contract");
