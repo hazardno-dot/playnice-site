@@ -134,10 +134,14 @@ async function syncToGoogleSheets(admin: any, input: {
     let data: any = null;
     try { data = JSON.parse(text); } catch { data = null; }
 
-    const ok = response.ok && data?.status === "ok" && data?.orderId === input.orderId;
+    const liveAck = response.ok && text.trim() === "Apps Script is live";
+    const ok = response.ok && (
+      (data?.status === "ok" && data?.orderId === input.orderId) ||
+      liveAck
+    );
 
     if (!ok) {
-      const reason = data?.message || `Unexpected Google Apps Script response (${response.status})`;
+      const reason = data?.message || text.trim().slice(0, 180) || `Unexpected Google Apps Script response (${response.status})`;
       console.error("checkout-order-store sheet sync failed", {
         orderId: input.orderId,
         durationMs: Date.now() - startedAt,
