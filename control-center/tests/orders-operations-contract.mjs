@@ -51,9 +51,13 @@ assert.ok(server.includes('action === "set_gift_sample"'), "Orders API must expo
 assert.ok(server.includes("update_control_center_order_gift"), "Gift/sample updates must use an admin-gated Supabase RPC.");
 assert.ok(server.includes("giftSyncVersion"), "Gift/sample mirror must require an explicit Apps Script acknowledgement.");
 assert.ok(server.includes("settle_control_center_courier_batch"), "Orders API must use the admin-gated courier settlement RPC.");
+const settlementSql = fs.readFileSync(path.resolve(root, "control-center/supabase/courier_settlement_v1.sql"), "utf8");
+assert.ok(settlementSql.includes("status in ('SHIPPED','OUT_FOR_DELIVERY','DELIVERED')"), "Courier payout must accept active shipped orders as delivery confirmation.");
+assert.ok(settlementSql.includes("status = 'DELIVERED'"), "Courier payout must atomically close the fulfillment lifecycle.");
+assert.ok(settlementSql.includes("delivered_at = coalesce(delivered_at, v_now)"), "Courier payout must timestamp delivery when no earlier delivery timestamp exists.");
 assert.ok(server.includes('action === "settle_courier_batch"'), "Orders API must expose courier batch settlement through the existing write-through route.");
 assert.ok(ui.includes("COURIER SETTLEMENT V1"), "Orders UI must expose the courier settlement workspace.");
-assert.ok(ui.includes('order.status === "DELIVERED" && order.courier_payment_status === "PENDING"'), "Courier settlement eligibility must be limited to delivered pending orders.");
+assert.ok(ui.includes('["SHIPPED","OUT_FOR_DELIVERY","DELIVERED"].includes(order.status)'), "Courier settlement must accept shipped, out-for-delivery and delivered pending COD orders.");
 assert.ok(ui.includes("Record courier payout"), "Orders UI must provide a batch payout action.");
 assert.ok(ui.includes("courier_batch_id"), "Orders UI must derive settlement history from canonical batch ids.");
 assert.ok(server.includes("Batched courier settlements cannot be reopened per order."), "Orders API must protect settled batch integrity.");
