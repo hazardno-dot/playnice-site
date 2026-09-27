@@ -128,15 +128,6 @@ function OrdersWorkspace() {
     setGiftExtra(extra || legacy.extraGift || "");
   }, [selected?.id, selected?.source_payload?.freeGift]);
 
-  useEffect(() => {
-    const matched = giftProducts.find((product) => product.name === giftSampleName);
-    if (!matched) return;
-    const sizes = Object.keys(matched.sizes || {});
-    if (sizes.length && !sizes.includes(giftSampleSize)) {
-      setGiftSampleSize(sizes.includes("2ml") ? "2ml" : sizes[0]);
-    }
-  }, [giftSampleName, giftSampleSize]);
-
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return orders.filter((order) => {
@@ -447,11 +438,7 @@ function OrdersWorkspace() {
               <label>
                 <span>SAMPLE SIZE</span>
                 <select value={giftSampleSize} onChange={(event) => setGiftSampleSize(event.target.value)} disabled={!editable || !giftSampleName || Boolean(busy)}>
-                  {(() => {
-                    const matched = giftProducts.find((product) => product.name === giftSampleName);
-                    const sizes = matched ? Object.keys(matched.sizes || {}) : ["2ml","5ml","10ml","20ml"];
-                    return (sizes.length ? sizes : ["2ml"]).map((size) => <option value={size} key={size}>{size}</option>);
-                  })()}
+                  {["2ml","5ml","10ml","20ml"].map((size) => <option value={size} key={size}>{size}</option>)}
                 </select>
               </label>
               <label>
