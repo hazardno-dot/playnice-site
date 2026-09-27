@@ -367,12 +367,14 @@ function OrdersWorkspace() {
                     ? "Waiting for courier payout"
                     : "No courier payout tracking for this historical order"}</span>
               </div>
-              {editable && selected.courier_payment_status === "PAID" ? <button type="button" onClick={() => setPayment("PENDING")} disabled={Boolean(busy)}>
+              {editable && selected.courier_payment_status === "PAID" && !selected.courier_batch_id ? <button type="button" onClick={() => setPayment("PENDING")} disabled={Boolean(busy)}>
                 {busy === "payment" ? "Updating…" : "Mark pending"}
               </button> : null}
-              {selected.status === "DELIVERED" && selected.courier_payment_status === "PENDING"
-                ? <span className="orders-action-note">Use Courier Settlement v1 above to record this payout.</span>
-                : null}
+              {selected.courier_payment_status === "PAID" && selected.courier_batch_id
+                ? <span className="orders-action-note">Settled in batch {selected.courier_batch_id}. Batch settlements stay locked per order.</span>
+                : selected.status === "DELIVERED" && selected.courier_payment_status === "PENDING"
+                  ? <span className="orders-action-note">Use Courier Settlement v1 above to record this payout.</span>
+                  : null}
             </div>
           </section>
 
