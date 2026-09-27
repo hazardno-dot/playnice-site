@@ -77,8 +77,13 @@ async function readOrders(token) {
   };
 }
 
+async function readOrderAnalytics(token) {
+  return rpc("get_control_center_order_analytics", token, {});
+}
+
 function legacyStatusFor(status) {
   if (status === "PACKED") return "NEW";
+  if (status === "DELIVERED" || status === "OUT_FOR_DELIVERY") return "SHIPPED";
   return status;
 }
 
@@ -195,6 +200,13 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === "GET") {
+      if (String(req.query?.view || "").trim().toLowerCase() === "analytics") {
+        return json(res, 200, {
+          ok: true,
+          analytics: await readOrderAnalytics(auth.token)
+        });
+      }
+
       const data = await readOrders(auth.token);
       return json(res, 200, {
         ok: true,

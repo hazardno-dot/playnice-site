@@ -8,6 +8,16 @@
 .placeholder-panel.orders-module-active > p {
   display: none;
 }
+.placeholder-panel.orders-module-active,
+#orders-manager-slot,
+.orders-manager {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  justify-self: stretch;
+  align-self: stretch;
+  box-sizing: border-box;
+}
 .orders-manager { display: grid; gap: 12px; }
 .orders-banner,
 .orders-list-panel,
@@ -51,7 +61,7 @@
   padding: 10px 12px; border: 1px solid rgba(180,92,92,.45);
   background: rgba(76,24,24,.28); color: #e5b8b8; border-radius: 9px; font-size: 10px;
 }
-.orders-kpis { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 8px; }
+.orders-kpis { display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); gap: 8px; }
 .orders-kpis > div { min-height: 76px; padding: 10px 11px; display: grid; align-content: center; gap: 3px; }
 .orders-kpis span { color: #70897c; font-size: 8px; letter-spacing: .1em; }
 .orders-kpis strong { font-size: 21px; line-height: 1; }
@@ -62,8 +72,8 @@
   width: 100%; box-sizing: border-box; border: 1px solid rgba(112,147,129,.28);
   background: rgba(5,10,8,.8); color: #d9e4dd; border-radius: 8px; padding: 9px 10px; font-size: 10px;
 }
-.orders-status-filters { display: flex; gap: 5px; flex-wrap: wrap; }
-.orders-status-filters button { padding: 6px 8px; font-size: 8px; }
+.orders-status-filters { display: flex; gap: 7px; flex-wrap: wrap; }
+.orders-status-filters button { padding: 7px 10px; font-size: 9px; min-height: 30px; }
 .orders-status-filters button.active { border-color: rgba(121,190,153,.7); color: #c8ead7; background: rgba(43,86,63,.35); }
 .orders-status-filters em { font-style: normal; color: #759083; margin-left: 3px; }
 .orders-layout { display: grid; grid-template-columns: minmax(340px,.85fr) minmax(0,1.35fr); gap: 10px; align-items: start; }
