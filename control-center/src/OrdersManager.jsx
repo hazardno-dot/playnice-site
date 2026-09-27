@@ -179,7 +179,7 @@ function OrdersWorkspace() {
       <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search order, customer, city, tracking, product…" />
       <div className="orders-status-filters">
         {["ALL","NEW","PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED","RETURNED","CANCELLED","DUPLICATE"].map((status) =>
-          <button type="button" key={status} className={statusFilter === status ? "active" : ""} onClick={() => setStatusFilter(status)}>
+          <button type="button" key={status} className={`filter-status filter-status-${status.toLowerCase()} ${statusFilter === status ? "active" : ""}`} onClick={() => setStatusFilter(status)}>
             {status === "ALL" ? "All" : STATUS_LABELS[status]} <em>{counts[status] || 0}</em>
           </button>
         )}
@@ -192,7 +192,7 @@ function OrdersWorkspace() {
         <div className="orders-list">
           {loading ? <div className="orders-empty">Loading orders…</div> : filtered.length ? filtered.map((order) => {
             const data = order.source_payload || {};
-            return <button type="button" key={order.id} className={"orders-row " + (selectedId === order.id ? "active" : "")} onClick={() => setSelectedId(order.id)}>
+            return <button type="button" key={order.id} className={`orders-row status-row-${String(order.status || "").toLowerCase()} ${selectedId === order.id ? "active" : ""}`} onClick={() => setSelectedId(order.id)}>
               <div className="orders-row-main"><strong>{order.order_id}</strong><span>{data.fullName || "Customer"} · {data.city || "—"}</span><small>{itemSummary(data.items)}</small></div>
               <div className="orders-row-side"><strong>{money(data.total)}</strong><span className={"order-status status-" + String(order.status || "").toLowerCase()}>{STATUS_LABELS[order.status] || order.status}</span><time>{dateTime(order.created_at)}</time></div>
             </button>;
