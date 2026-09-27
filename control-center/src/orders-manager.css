@@ -268,3 +268,146 @@
 .status-returned{border-color:rgba(202,128,68,.58);color:#dbb084}
 .status-cancelled{border-color:rgba(160,87,98,.55);color:#cfa1a9}
 .status-duplicate{border-color:rgba(143,118,173,.55);color:#c2afd6;background:rgba(86,38,82,.10)}
+
+
+/* Courier Settlement v1 */
+.orders-settlement {
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  background: rgba(255,255,255,.025);
+  overflow: hidden;
+}
+.orders-settlement-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.orders-settlement-head > div:first-child { max-width: 760px; }
+.orders-settlement-head span,
+.orders-settlement-actions span {
+  display: block;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .58;
+}
+.orders-settlement-head h3 { margin: 5px 0 6px; font-size: 21px; }
+.orders-settlement-head p { margin: 0; opacity: .65; line-height: 1.45; }
+.orders-settlement-summary { text-align: right; white-space: nowrap; }
+.orders-settlement-summary strong { display: block; font-size: 26px; }
+.orders-settlement-summary span { margin-top: 4px; }
+.orders-settlement-body { padding: 18px 24px 20px; }
+.orders-settlement-actions {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.orders-settlement-actions > div { text-align: right; }
+.orders-settlement-actions > div strong { display: block; margin-top: 2px; }
+.orders-settlement-list {
+  display: grid;
+  gap: 8px;
+}
+.orders-settlement-list label {
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 13px;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px;
+  background: rgba(0,0,0,.12);
+  cursor: pointer;
+}
+.orders-settlement-list label.selected {
+  border-color: rgba(87, 191, 132, .42);
+  background: rgba(87, 191, 132, .07);
+}
+.orders-settlement-list input { margin: 0; }
+.orders-settlement-list label > div { min-width: 0; }
+.orders-settlement-list label > div strong,
+.orders-settlement-list label > div span { display: block; }
+.orders-settlement-list label > div span { margin-top: 2px; opacity: .58; font-size: 12px; }
+.orders-settlement-empty {
+  padding: 18px 24px;
+  opacity: .58;
+}
+.orders-settlement-history {
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+.orders-settlement-history summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  cursor: pointer;
+  list-style: none;
+}
+.orders-settlement-history summary::-webkit-details-marker { display: none; }
+.orders-settlement-history > div { border-top: 1px solid rgba(255,255,255,.06); }
+.orders-settlement-batch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 24px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.orders-settlement-batch div strong,
+.orders-settlement-batch div span { display: block; }
+.orders-settlement-batch div span { margin-top: 2px; font-size: 12px; opacity: .56; }
+.orders-settlement-legacy {
+  padding: 12px 24px;
+  font-size: 12px;
+  opacity: .52;
+}
+@media (max-width: 900px) {
+  .orders-settlement-head { align-items: flex-start; flex-direction: column; }
+  .orders-settlement-summary { text-align: left; }
+  .orders-settlement-actions { grid-template-columns: 1fr 1fr; }
+  .orders-settlement-actions > div { text-align: right; }
+  .orders-settlement-actions .primary { grid-column: 1 / -1; }
+}
+
+
+/* Courier Settlement action clarity */
+.orders-settlement-actions > button {
+  border: 1px solid rgba(140, 177, 158, .5);
+  background: rgba(19, 32, 25, .98);
+  color: #d7e8de;
+  border-radius: 8px;
+  padding: 9px 13px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .16s ease, border-color .16s ease, color .16s ease, transform .16s ease;
+}
+.orders-settlement-actions > button:hover:not(:disabled) {
+  background: rgba(35, 58, 45, .98);
+  border-color: rgba(153, 202, 176, .75);
+  color: #f0f8f3;
+}
+.orders-settlement-actions > button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.orders-settlement-actions > button.primary {
+  border-color: rgba(86, 175, 123, .82);
+  background: rgba(40, 108, 69, .72);
+  color: #e4f5eb;
+}
+.orders-settlement-actions > button.primary:hover:not(:disabled) {
+  background: rgba(47, 130, 82, .82);
+  border-color: rgba(107, 207, 148, .95);
+}
+.orders-settlement-actions > button:disabled {
+  background: rgba(37, 44, 40, .72);
+  border-color: rgba(132, 145, 138, .24);
+  color: rgba(205, 216, 210, .38);
+  cursor: not-allowed;
+  opacity: 1;
+}

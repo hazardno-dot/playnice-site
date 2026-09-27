@@ -73,6 +73,7 @@ function OrdersWorkspace() {
   const [notice, setNotice] = useState("");
   const [writeEnabled, setWriteEnabled] = useState(false);
   const [tracking, setTracking] = useState("");
+  const [settlementSelection, setSettlementSelection] = useState([]);
 
   const absorb = (payload) => {
     const nextOrders = Array.isArray(payload?.orders) ? payload.orders : [];
@@ -115,10 +116,38 @@ function OrdersWorkspace() {
   }, [orders]);
 
   const saleOrders = useMemo(() => orders.filter((order) => order.status !== "DUPLICATE" && order.origin !== "regression_test"), [orders]);
-  const codPending = useMemo(() => saleOrders.reduce((sum, order) => {
-    if (order.courier_payment_status !== "PENDING") return sum;
-    return sum + Number(order.source_payload?.total || 0);
-  }, 0), [saleOrders]);
+  const settlementEligible = useMemo(() => saleOrders.filter((order) =>
+    order.status === "DELIVERED" && order.courier_payment_status === "PENDING"
+  ), [saleOrders]);
+  const codPending = useMemo(() => settlementEligible.reduce((sum, order) =>
+    sum + Number(order.source_payload?.total || 0), 0
+  ), [settlementEligible]);
+  const settlementSelectedOrders = useMemo(() => settlementEligible.filter((order) =>
+    settlementSelection.includes(order.id)
+  ), [settlementEligible, settlementSelection]);
+  const settlementSelectedTotal = useMemo(() => settlementSelectedOrders.reduce((sum, order) =>
+    sum + Number(order.source_payload?.total || 0), 0
+  ), [settlementSelectedOrders]);
+  const settlementHistory = useMemo(() => {
+    const batches = new Map();
+    for (const order of saleOrders) {
+      if (order.courier_payment_status !== "PAID" || !order.courier_batch_id) continue;
+      const current = batches.get(order.courier_batch_id) || {
+        batch_id: order.courier_batch_id,
+        paid_at: order.courier_paid_at,
+        orders: [],
+        total: 0
+      };
+      current.orders.push(order);
+      current.total += Number(order.source_payload?.total || 0);
+      if (!current.paid_at || (order.courier_paid_at && order.courier_paid_at > current.paid_at)) current.paid_at = order.courier_paid_at;
+      batches.set(order.courier_batch_id, current);
+    }
+    return [...batches.values()].sort((a, b) => String(b.paid_at || "").localeCompare(String(a.paid_at || "")));
+  }, [saleOrders]);
+  const legacyPaidCount = useMemo(() => saleOrders.filter((order) =>
+    order.courier_payment_status === "PAID" && !order.courier_batch_id
+  ).length, [saleOrders]);
   const selectedEvents = useMemo(() => events.filter((event) => event.order_id === selectedId), [events, selectedId]);
 
   const mutate = async (body, key) => {
@@ -126,7 +155,11 @@ function OrdersWorkspace() {
     try {
       const result = await ordersApi("POST", body);
       absorb(result);
+      if (key === "settlement") setSettlementSelection([]);
       if (result?.mirror_warning) setNotice(result.mirror_warning);
+      else if (result?.settlement?.batch_id) {
+        setNotice("Courier settlement " + result.settlement.batch_id + " recorded · " + money(result.settlement.total) + ".");
+      }
     } catch (actionError) {
       setError(actionError.message || String(actionError));
     } finally {
@@ -142,6 +175,22 @@ function OrdersWorkspace() {
   const saveTracking = () => mutate({ action: "save_tracking", id: selected.id, tracking_number: tracking }, "tracking");
   const setStatus = (status) => mutate({ action: "set_status", id: selected.id, status }, "status:" + status);
   const setPayment = (status) => mutate({ action: "set_courier_payment", id: selected.id, status }, "payment");
+  const settleSelected = () => {
+    if (!settlementSelection.length) return;
+    const confirmed = window.confirm(
+      "Record courier payout for " + settlementSelection.length + " order" +
+      (settlementSelection.length === 1 ? "" : "s") + " · " + money(settlementSelectedTotal) +
+      "?\n\nThis creates a settlement batch and marks the selected orders as PAID."
+    );
+    if (!confirmed) return;
+    mutate({ action: "settle_courier_batch", order_ids: settlementSelection }, "settlement");
+  };
+  const toggleSettlement = (id) => setSettlementSelection((current) =>
+    current.includes(id) ? current.filter((value) => value !== id) : [...current, id]
+  );
+  const toggleAllSettlement = () => setSettlementSelection((current) =>
+    current.length === settlementEligible.length ? [] : settlementEligible.map((order) => order.id)
+  );
   const retrySync = () => mutate({ action: "retry_sheet_sync", id: selected.id }, "retry");
   const setDeliveryIssue = (delivery_issue) => mutate({ action: "set_delivery_issue", id: selected.id, delivery_issue }, "delivery:" + delivery_issue);
 
@@ -174,6 +223,54 @@ function OrdersWorkspace() {
       <div><span>FAILED</span><strong>{counts.DELIVERY_FAILED || 0}</strong><small>delivery failed</small></div>
       <div><span>COD PENDING</span><strong>{money(codPending)}</strong><small>courier settlement</small></div>
     </div>
+
+    <section className="orders-settlement">
+      <div className="orders-settlement-head">
+        <div>
+          <span>COURIER SETTLEMENT V1</span>
+          <h3>COD payout desk</h3>
+          <p>Only delivered orders waiting for courier payout are eligible. One confirmation records a single settlement batch.</p>
+        </div>
+        <div className="orders-settlement-summary">
+          <strong>{money(codPending)}</strong>
+          <span>{settlementEligible.length} pending delivered order{settlementEligible.length === 1 ? "" : "s"}</span>
+        </div>
+      </div>
+
+      {settlementEligible.length ? <div className="orders-settlement-body">
+        <div className="orders-settlement-actions">
+          <button type="button" onClick={toggleAllSettlement} disabled={!writeEnabled || Boolean(busy)}>
+            {settlementSelection.length === settlementEligible.length ? "Clear selection" : "Select all"}
+          </button>
+          <div><span>SELECTED</span><strong>{settlementSelection.length} · {money(settlementSelectedTotal)}</strong></div>
+          <button type="button" className="primary" onClick={settleSelected} disabled={!writeEnabled || !settlementSelection.length || Boolean(busy)}>
+            {busy === "settlement" ? "Recording…" : "Record courier payout"}
+          </button>
+        </div>
+        <div className="orders-settlement-list">
+          {settlementEligible.map((order) => {
+            const data = order.source_payload || {};
+            const checked = settlementSelection.includes(order.id);
+            return <label key={order.id} className={checked ? "selected" : ""}>
+              <input type="checkbox" checked={checked} onChange={() => toggleSettlement(order.id)} disabled={!writeEnabled || Boolean(busy)} />
+              <div><strong>{order.order_id}</strong><span>{data.fullName || "Customer"} · {data.city || "—"}</span></div>
+              <strong>{money(data.total)}</strong>
+            </label>;
+          })}
+        </div>
+      </div> : <div className="orders-settlement-empty">No delivered COD orders are waiting for courier payout.</div>}
+
+      <details className="orders-settlement-history">
+        <summary>Settlement history <strong>{settlementHistory.length}</strong></summary>
+        <div>
+          {settlementHistory.length ? settlementHistory.map((batch) => <div className="orders-settlement-batch" key={batch.batch_id}>
+            <div><strong>{batch.batch_id}</strong><span>{dateTime(batch.paid_at)} · {batch.orders.length} order{batch.orders.length === 1 ? "" : "s"}</span></div>
+            <strong>{money(batch.total)}</strong>
+          </div>) : <div className="orders-settlement-empty">No v1 settlement batches recorded yet.</div>}
+          {legacyPaidCount ? <div className="orders-settlement-legacy">{legacyPaidCount} earlier paid order{legacyPaidCount === 1 ? "" : "s"} remain as legacy individual settlements.</div> : null}
+        </div>
+      </details>
+    </section>
 
     <div className="orders-toolbar">
       <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search order, customer, city, tracking, product…" />
@@ -279,9 +376,14 @@ function OrdersWorkspace() {
                     ? "Waiting for courier payout"
                     : "No courier payout tracking for this historical order"}</span>
               </div>
-              {editable && ["PENDING","PAID"].includes(selected.courier_payment_status) ? <button type="button" onClick={() => setPayment(selected.courier_payment_status === "PAID" ? "PENDING" : "PAID")} disabled={Boolean(busy)}>
-                {busy === "payment" ? "Updating…" : selected.courier_payment_status === "PAID" ? "Mark pending" : "Mark paid"}
+              {editable && selected.courier_payment_status === "PAID" && !selected.courier_batch_id ? <button type="button" onClick={() => setPayment("PENDING")} disabled={Boolean(busy)}>
+                {busy === "payment" ? "Updating…" : "Mark pending"}
               </button> : null}
+              {selected.courier_payment_status === "PAID" && selected.courier_batch_id
+                ? <span className="orders-action-note">Settled in batch {selected.courier_batch_id}. Batch settlements stay locked per order.</span>
+                : selected.status === "DELIVERED" && selected.courier_payment_status === "PENDING"
+                  ? <span className="orders-action-note">Use Courier Settlement v1 above to record this payout.</span>
+                  : null}
             </div>
           </section>
 

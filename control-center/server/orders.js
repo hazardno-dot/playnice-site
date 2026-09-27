@@ -165,6 +165,14 @@ async function mutateOrder(token, body) {
   else if (action === "set_delivery_issue") value = String(body?.delivery_issue || "").trim();
   else throw new Error("Unknown order action.");
 
+  if (action === "set_courier_payment" && value === "PENDING") {
+    const current = await readOrders(token);
+    const currentOrder = current.orders.find((item) => item.id === id);
+    if (currentOrder?.courier_batch_id) {
+      throw new Error("Batched courier settlements cannot be reopened per order.");
+    }
+  }
+
   const mutation = await rpc("update_control_center_order", token, {
     p_record_id: id,
     p_action: action,
@@ -189,6 +197,40 @@ async function retryMirror(token, body) {
   return {
     order,
     ...(await mirrorWithAudit(token, order, buildMirror(order)))
+  };
+}
+
+async function settleCourierBatch(token, body) {
+  const orderIds = Array.isArray(body?.order_ids)
+    ? [...new Set(body.order_ids.map((id) => String(id || "").trim()).filter(Boolean))]
+    : [];
+  if (!orderIds.length) throw new Error("Select at least one delivered COD order.");
+
+  const settlement = await rpc("settle_control_center_courier_batch", token, {
+    p_order_ids: orderIds
+  });
+  const batchOrders = Array.isArray(settlement?.orders) ? settlement.orders : [];
+  if (!settlement?.batch_id || batchOrders.length !== orderIds.length) {
+    throw new Error("Courier settlement returned an incomplete result.");
+  }
+
+  const mirrorWarnings = [];
+  for (const order of batchOrders) {
+    const mirrorResult = await mirrorWithAudit(token, order, buildMirror(order));
+    if (mirrorResult.mirror_warning) mirrorWarnings.push(order.order_id + ": " + mirrorResult.mirror_warning);
+  }
+
+  return {
+    settlement: {
+      batch_id: settlement.batch_id,
+      settled_at: settlement.settled_at,
+      order_count: settlement.order_count,
+      total: settlement.total
+    },
+    mirror_status: mirrorWarnings.length ? "partial" : "synced",
+    mirror_warning: mirrorWarnings.length
+      ? "Settlement saved in Supabase, but some Google Sheets mirrors need retry: " + mirrorWarnings.join(" | ")
+      : null
   };
 }
 
@@ -228,7 +270,9 @@ export default async function handler(req, res) {
     const action = String(req.body?.action || "").trim();
     const result = action === "retry_sheet_sync"
       ? await retryMirror(auth.token, req.body)
-      : await mutateOrder(auth.token, req.body);
+      : action === "settle_courier_batch"
+        ? await settleCourierBatch(auth.token, req.body)
+        : await mutateOrder(auth.token, req.body);
     const data = await readOrders(auth.token);
 
     return json(res, 200, {
