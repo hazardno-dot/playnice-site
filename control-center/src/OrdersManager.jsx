@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
+import ManualOrderDialog from "./ManualOrderDialog";
 import "./orders-manager.css";
 
 const STATUS_LABELS = {
@@ -74,6 +75,7 @@ function OrdersWorkspace() {
   const [writeEnabled, setWriteEnabled] = useState(false);
   const [tracking, setTracking] = useState("");
   const [settlementSelection, setSettlementSelection] = useState([]);
+  const [manualOrderOpen, setManualOrderOpen] = useState(false);
 
   const absorb = (payload) => {
     const nextOrders = Array.isArray(payload?.orders) ? payload.orders : [];
@@ -194,6 +196,28 @@ function OrdersWorkspace() {
   const retrySync = () => mutate({ action: "retry_sheet_sync", id: selected.id }, "retry");
   const setDeliveryIssue = (delivery_issue) => mutate({ action: "set_delivery_issue", id: selected.id, delivery_issue }, "delivery:" + delivery_issue);
 
+  const createManualOrder = async (order) => {
+    setBusy("manual:create"); setError(""); setNotice("");
+    try {
+      const result = await ordersApi("POST", { action: "create_manual_order", order });
+      absorb(result);
+      const recordId = result?.manual_order?.record_id;
+      if (recordId) setSelectedId(recordId);
+      setManualOrderOpen(false);
+      const created = result?.manual_order;
+      if (created?.duplicate) {
+        setNotice("Identical manual order already existed · " + created.order_id + ". Existing order selected.");
+      } else {
+        setNotice("Manual order " + created?.order_id + " created · " + money(created?.total) + ". Google Sheets backup sync is queued.");
+      }
+    } catch (actionError) {
+      setError(actionError.message || String(actionError));
+      throw actionError;
+    } finally {
+      setBusy("");
+    }
+  };
+
   return <section className="orders-manager">
     <div className="orders-banner">
       <div>
@@ -201,7 +225,10 @@ function OrdersWorkspace() {
         <h2>Fulfillment desk</h2>
         <p>Pack, ship, track and settle COD orders from one operational view.</p>
       </div>
-      <button type="button" onClick={load} disabled={loading || Boolean(busy)}>{loading ? "Loading…" : "Refresh"}</button>
+      <div className="orders-banner-actions">
+        <button type="button" className="primary" onClick={() => setManualOrderOpen(true)} disabled={!writeEnabled || loading || Boolean(busy)}>+ Create order</button>
+        <button type="button" onClick={load} disabled={loading || Boolean(busy)}>{loading ? "Loading…" : "Refresh"}</button>
+      </div>
     </div>
 
     {error ? <div className="orders-error">{error}</div> : null}
@@ -411,6 +438,12 @@ function OrdersWorkspace() {
         </>}
       </div>
     </div>
+    <ManualOrderDialog
+      open={manualOrderOpen}
+      busy={busy === "manual:create"}
+      onClose={() => { if (busy !== "manual:create") setManualOrderOpen(false); }}
+      onCreate={createManualOrder}
+    />
   </section>;
 }
 
