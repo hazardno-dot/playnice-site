@@ -23,12 +23,23 @@ export default function ManualOrderDialog({ open, busy, onClose, onCreate }) {
   });
   const [items, setItems] = useState([]);
   const [productSlug, setProductSlug] = useState(firstProduct?.slug || "");
+  const [productQuery, setProductQuery] = useState(firstProduct?.name || "");
+  const [productPickerOpen, setProductPickerOpen] = useState(false);
   const [size, setSize] = useState(firstProduct ? Object.keys(firstProduct.sizes || {})[0] || "" : "");
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
 
   const product = sortedProducts.find((item) => item.slug === productSlug) || firstProduct;
   const sizes = Object.entries(product?.sizes || {});
+  const productMatches = useMemo(() => {
+    const needle = productQuery.trim().toLowerCase();
+    if (!needle) return sortedProducts.slice(0, 12);
+    return sortedProducts.filter((item) =>
+      [item.name, item.shortName, item.slug, item.category]
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(needle))
+    ).slice(0, 12);
+  }, [productQuery]);
 
   useEffect(() => {
     if (!product) return;
@@ -44,6 +55,8 @@ export default function ManualOrderDialog({ open, busy, onClose, onCreate }) {
     });
     setItems([]);
     setProductSlug(firstProduct?.slug || "");
+    setProductQuery(firstProduct?.name || "");
+    setProductPickerOpen(false);
     setSize(firstProduct ? Object.keys(firstProduct.sizes || {})[0] || "" : "");
     setQuantity(1);
     setError("");
@@ -143,7 +156,7 @@ export default function ManualOrderDialog({ open, busy, onClose, onCreate }) {
               <label><span>LANGUAGE</span><select value={form.language} onChange={(e) => change("language", e.target.value)}>
                 <option value="sr">SR</option><option value="en">EN</option>
               </select></label>
-              <label className="wide"><span>INSTAGRAM USERNAME · OPTIONAL</span><input value={form.instagramUsername} onChange={(e) => change("instagramUsername", e.target.value)} placeholder="@username" /></label>
+              {form.orderSource === "instagram" ? <label className="wide"><span>INSTAGRAM USERNAME · OPTIONAL</span><input value={form.instagramUsername} onChange={(e) => change("instagramUsername", e.target.value)} placeholder="@username" /></label> : null}
               <label className="wide"><span>FREE GIFT · OPTIONAL</span><input value={form.freeGift} onChange={(e) => change("freeGift", e.target.value)} placeholder="Fragrance · size + extras" /></label>
             </div>
           </section>
@@ -152,9 +165,33 @@ export default function ManualOrderDialog({ open, busy, onClose, onCreate }) {
         <section className="manual-order-items">
           <div className="manual-order-section-title"><span>ORDER</span><strong>Fragrances & sizes</strong></div>
           <div className="manual-item-composer">
-            <label className="product"><span>FRAGRANCE</span><select value={productSlug} onChange={(e) => setProductSlug(e.target.value)}>
-              {sortedProducts.map((item) => <option key={item.slug} value={item.slug}>{item.name}</option>)}
-            </select></label>
+            <label className="product manual-product-picker"><span>FRAGRANCE</span>
+              <input
+                value={productQuery}
+                onFocus={() => setProductPickerOpen(true)}
+                onChange={(e) => {
+                  setProductQuery(e.target.value);
+                  setProductPickerOpen(true);
+                }}
+                placeholder="Search fragrance…"
+                autoComplete="off"
+              />
+              {productPickerOpen ? <div className="manual-product-results">
+                {productMatches.length ? productMatches.map((item) => <button
+                  type="button"
+                  key={item.slug}
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => {
+                    setProductSlug(item.slug);
+                    setProductQuery(item.name);
+                    setProductPickerOpen(false);
+                  }}
+                >
+                  <span>{item.name}</span>
+                  <small>{item.category} · {Object.keys(item.sizes || {}).join(" / ")}</small>
+                </button>) : <div className="manual-product-no-results">No matching fragrance.</div>}
+              </div> : null}
+            </label>
             <label><span>SIZE</span><select value={size} onChange={(e) => setSize(e.target.value)}>
               {sizes.map(([label, price]) => <option key={label} value={label}>{label} · {money(price)}</option>)}
             </select></label>
