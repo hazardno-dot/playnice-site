@@ -44,5 +44,21 @@ assert.ok(ui.includes("courier_batch_id"), "Orders UI must derive settlement his
 assert.ok(server.includes("Batched courier settlements cannot be reopened per order."), "Orders API must protect settled batch integrity.");
 assert.ok(ui.includes("Batch settlements stay locked per order."), "Orders UI must communicate locked batch settlements.");
 assert.ok(ui.includes("window.confirm("), "Courier settlement must require explicit confirmation before recording payout.");
+assert.ok(server.includes('action === "create_manual_order"'), "Orders API must expose manual order creation through the existing write-through route.");
+assert.ok(server.includes('"manual_create"'), "Orders API must use the canonical checkout order store for manual creation.");
+assert.ok(server.includes("FREE_SHIPPING_THRESHOLD = 39"), "Manual order shipping must preserve the live free-shipping threshold.");
+assert.ok(server.includes("SHIPPING_PRICE = 4"), "Manual order shipping must preserve the live courier charge.");
+assert.ok(ui.includes("ManualOrderDialog"), "Orders UI must mount the manual order intake dialog.");
+
+const manualUi = fs.readFileSync(path.resolve(root, "control-center/src/ManualOrderDialog.jsx"), "utf8");
+assert.ok(manualUi.includes('from "@shop/data/products/index.js"'), "Manual order intake must use the canonical Shop product catalog.");
+assert.ok(manualUi.includes("Create production order"), "Manual order intake must explicitly identify production creation.");
+assert.ok(manualUi.includes("No automatic customer or admin email is sent for manual orders."), "Manual order intake must communicate the v1 email behavior.");
+assert.ok(manualUi.includes("window.confirm("), "Manual production order creation must require explicit confirmation.");
+
+const edgeStore = fs.readFileSync(path.resolve(root, "control-center/supabase/functions/checkout-order-store/index.ts"), "utf8");
+assert.ok(edgeStore.includes('action === "create" || action === "manual_create"'), "Checkout order store must support manual creation.");
+assert.ok(edgeStore.includes('.from("admin_users")'), "Manual order creation must verify Control Center admin membership.");
+assert.ok(edgeStore.includes('source: "manual_order"'), "Manual orders must retain a distinct canonical source.");
 
 console.log("PASS orders operations contract");
