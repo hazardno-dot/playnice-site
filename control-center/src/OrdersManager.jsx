@@ -337,7 +337,7 @@ function OrdersWorkspace() {
         </div>
         <div className="orders-settlement-summary">
           <strong>{money(codPending)}</strong>
-          <span>{settlementEligible.length} pending delivered order{settlementEligible.length === 1 ? "" : "s"}</span>
+          <span>{settlementEligible.length} pending COD order{settlementEligible.length === 1 ? "" : "s"}</span>
         </div>
       </div>
 
