@@ -179,7 +179,6 @@ function OrdersWorkspace() {
     selected?.status === "OUT_FOR_DELIVERY" ? "DELIVERED" :
     null;
 
-  const saveTracking = () => mutate({ action: "save_tracking", id: selected.id, tracking_number: tracking }, "tracking");
   const setStatus = (status) => mutate({ action: "set_status", id: selected.id, status }, "status:" + status);
   const setPayment = (status) => mutate({ action: "set_courier_payment", id: selected.id, status }, "payment");
   const settleSelected = () => {
@@ -362,9 +361,10 @@ function OrdersWorkspace() {
           </section>
 
           <section className="orders-tracking">
-            <div className="orders-section-title"><span>TRACKING</span><strong>{selected.tracking_number || "Not set"}</strong></div>
-            {editable ? <div><input value={tracking} onChange={(event) => setTracking(event.target.value)} placeholder="Tracking number" /><button type="button" onClick={saveTracking} disabled={Boolean(busy)}>{busy === "tracking" ? "Saving…" : "Save tracking"}</button></div>
-              : <div className="orders-readonly-value">{selected.tracking_number || "No tracking number recorded"}</div>}
+            <div className="orders-section-title"><span>ORDER REFERENCE</span><strong>{selected.tracking_number || "Not set"}</strong></div>
+            <div className="orders-readonly-value">
+              {selected.tracking_number || "No internal order reference recorded"}
+            </div>
           </section>
 
           <section className="orders-actions">
