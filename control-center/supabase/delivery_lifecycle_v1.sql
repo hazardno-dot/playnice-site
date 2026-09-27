@@ -88,6 +88,7 @@ begin
   if v_order.status='DUPLICATE' then raise exception 'DUPLICATE_IS_AUDIT_ONLY'; end if;
 
   if v_action='set_status' then
+    perform set_config('app.orders_lifecycle_write','control_center',true);
     v_next_status := upper(v_value);
     if v_next_status not in (
       'NEW','PACKED','SHIPPED','OUT_FOR_DELIVERY','DELIVERED',
@@ -208,3 +209,40 @@ begin
   );
 end;
 $function$;
+
+
+-- Supabase is canonical. Legacy Sheets or any other external writer may mirror
+-- lifecycle fields, but cannot overwrite the canonical fulfillment state.
+create or replace function public.protect_checkout_order_lifecycle()
+returns trigger
+language plpgsql
+set search_path = ''
+as $function$
+begin
+  if coalesce(current_setting('app.orders_lifecycle_write', true),'') <> 'control_center' then
+    new.status := old.status;
+    new.packed_at := old.packed_at;
+    new.shipped_at := old.shipped_at;
+    new.out_for_delivery_at := old.out_for_delivery_at;
+    new.delivered_at := old.delivered_at;
+    new.returned_at := old.returned_at;
+    new.cancelled_at := old.cancelled_at;
+  end if;
+  return new;
+end;
+$function$;
+
+drop trigger if exists checkout_orders_lifecycle_guard on public.checkout_orders;
+create trigger checkout_orders_lifecycle_guard
+before update on public.checkout_orders
+for each row
+when (
+  new.status is distinct from old.status or
+  new.packed_at is distinct from old.packed_at or
+  new.shipped_at is distinct from old.shipped_at or
+  new.out_for_delivery_at is distinct from old.out_for_delivery_at or
+  new.delivered_at is distinct from old.delivered_at or
+  new.returned_at is distinct from old.returned_at or
+  new.cancelled_at is distinct from old.cancelled_at
+)
+execute function public.protect_checkout_order_lifecycle();
