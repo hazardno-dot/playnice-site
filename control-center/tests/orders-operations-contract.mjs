@@ -43,5 +43,6 @@ assert.ok(ui.includes("Record courier payout"), "Orders UI must provide a batch 
 assert.ok(ui.includes("courier_batch_id"), "Orders UI must derive settlement history from canonical batch ids.");
 assert.ok(server.includes("Batched courier settlements cannot be reopened per order."), "Orders API must protect settled batch integrity.");
 assert.ok(ui.includes("Batch settlements stay locked per order."), "Orders UI must communicate locked batch settlements.");
+assert.ok(ui.includes("window.confirm("), "Courier settlement must require explicit confirmation before recording payout.");
 
 console.log("PASS orders operations contract");
