@@ -63,5 +63,6 @@ const edgeStore = fs.readFileSync(path.resolve(root, "control-center/supabase/fu
 assert.ok(edgeStore.includes('action === "create" || action === "manual_create"'), "Checkout order store must support manual creation.");
 assert.ok(edgeStore.includes('.from("admin_users")'), "Manual order creation must verify Control Center admin membership.");
 assert.ok(edgeStore.includes('source: "manual_order"'), "Manual orders must retain a distinct canonical source.");
+assert.ok(edgeStore.includes('text.trim() === "Apps Script is live"'), "Checkout mirror must accept the deployed Apps Script live acknowledgement after a successful write.");
 
 console.log("PASS orders operations contract");
