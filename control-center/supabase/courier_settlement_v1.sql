@@ -16,6 +16,7 @@ declare
   v_eligible integer;
   v_total numeric(12,2);
   v_orders jsonb;
+  v_transitioned_ids uuid[];
 begin
   if v_user is null or not exists (
     select 1 from public.admin_users where user_id = v_user
@@ -43,6 +44,14 @@ begin
     raise exception 'Settlement selection contains an order that is not SHIPPED / OUT_FOR_DELIVERY / DELIVERED + PENDING.';
   end if;
 
+  select coalesce(array_agg(id), array[]::uuid[])
+    into v_transitioned_ids
+  from public.checkout_orders
+  where id = any(p_order_ids)
+    and status in ('SHIPPED','OUT_FOR_DELIVERY')
+    and courier_payment_status = 'PENDING'
+    and origin <> 'regression_test';
+
   perform set_config('app.orders_lifecycle_write','control_center',true);
 
   with updated as (
@@ -68,6 +77,13 @@ begin
 
   if jsonb_array_length(v_orders) <> v_requested then
     raise exception 'Courier settlement changed concurrently. Refresh and try again.';
+  end if;
+
+  if cardinality(v_transitioned_ids) > 0 then
+    insert into public.order_status_events(order_id,status,note,source,created_by,created_at)
+    select id,'DELIVERED','Courier payout confirmed delivery.','courier_settlement',v_user,v_now
+    from public.checkout_orders
+    where id = any(v_transitioned_ids);
   end if;
 
   return jsonb_build_object(
