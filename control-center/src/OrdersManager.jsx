@@ -172,9 +172,13 @@ function OrdersWorkspace() {
   const payload = selected?.source_payload || {};
   const items = Array.isArray(payload.items) ? payload.items : [];
   const editable = Boolean(writeEnabled && selected && selected.status !== "DUPLICATE");
-  const nextStatus = selected?.status === "NEW" ? "PACKED" : selected?.status === "PACKED" ? "SHIPPED" : null;
+  const nextStatus =
+    selected?.status === "NEW" ? "PACKED" :
+    selected?.status === "PACKED" ? "SHIPPED" :
+    selected?.status === "SHIPPED" ? "OUT_FOR_DELIVERY" :
+    selected?.status === "OUT_FOR_DELIVERY" ? "DELIVERED" :
+    null;
 
-  const saveTracking = () => mutate({ action: "save_tracking", id: selected.id, tracking_number: tracking }, "tracking");
   const setStatus = (status) => mutate({ action: "set_status", id: selected.id, status }, "status:" + status);
   const setPayment = (status) => mutate({ action: "set_courier_payment", id: selected.id, status }, "payment");
   const settleSelected = () => {
@@ -357,34 +361,41 @@ function OrdersWorkspace() {
           </section>
 
           <section className="orders-tracking">
-            <div className="orders-section-title"><span>TRACKING</span><strong>{selected.tracking_number || "Not set"}</strong></div>
-            {editable ? <div><input value={tracking} onChange={(event) => setTracking(event.target.value)} placeholder="Tracking number" /><button type="button" onClick={saveTracking} disabled={Boolean(busy)}>{busy === "tracking" ? "Saving…" : "Save tracking"}</button></div>
-              : <div className="orders-readonly-value">{selected.tracking_number || "No tracking number recorded"}</div>}
+            <div className="orders-section-title"><span>ORDER REFERENCE</span><strong>{selected.tracking_number || "Not set"}</strong></div>
+            <div className="orders-readonly-value">
+              {selected.tracking_number || "No internal order reference recorded"}
+            </div>
           </section>
 
           <section className="orders-actions">
             <div className="orders-section-title"><span>FULFILLMENT ACTIONS</span><strong>Write-through v1</strong></div>
             <div className="orders-action-row">
               {editable && selected.status === "PACKED" ? <button type="button" onClick={() => setStatus("NEW")} disabled={Boolean(busy)}>{busy === "status:NEW" ? "Updating…" : "Return to new"}</button> : null}
+              {editable && selected.status === "OUT_FOR_DELIVERY" ? <button type="button" onClick={() => setStatus("SHIPPED")} disabled={Boolean(busy)}>{busy === "status:SHIPPED" ? "Updating…" : "Return to shipped"}</button> : null}
               {editable && nextStatus ? <button type="button" className="primary" onClick={() => setStatus(nextStatus)} disabled={Boolean(busy)}>
-                {busy === "status:" + nextStatus ? "Updating…" : nextStatus === "PACKED" ? "Mark packed" : "Mark shipped"}
+                {busy === "status:" + nextStatus ? "Updating…" :
+                  nextStatus === "PACKED" ? "Mark packed" :
+                  nextStatus === "SHIPPED" ? "Mark shipped" :
+                  nextStatus === "OUT_FOR_DELIVERY" ? "Out for delivery" :
+                  "Mark delivered"}
               </button> : null}
               {editable && ["NEW","PACKED"].includes(selected.status) ? <button type="button" className="danger" onClick={() => setStatus("CANCELLED")} disabled={Boolean(busy)}>Cancel order</button> : null}
-              {editable && selected.status === "SHIPPED" ? <button type="button" className="danger" onClick={() => setStatus("DELIVERY_FAILED")} disabled={Boolean(busy)}>{busy === "status:DELIVERY_FAILED" ? "Updating…" : "Mark delivery failed"}</button> : null}
-              {editable && selected.status === "DELIVERY_FAILED" ? <button type="button" onClick={() => setStatus("SHIPPED")} disabled={Boolean(busy)}>{busy === "status:SHIPPED" ? "Updating…" : "Return to shipped"}</button> : null}
-              {selected.status === "SHIPPED" ? <span className="orders-action-note">Extended delivery lifecycle stays locked until the remaining legacy delivery automation is migrated.</span> : null}
+              {editable && ["SHIPPED","OUT_FOR_DELIVERY"].includes(selected.status) ? <button type="button" className="danger" onClick={() => setStatus("DELIVERY_FAILED")} disabled={Boolean(busy)}>{busy === "status:DELIVERY_FAILED" ? "Updating…" : "Mark delivery failed"}</button> : null}
+              {editable && selected.status === "DELIVERY_FAILED" ? <button type="button" className="primary" onClick={() => setStatus("OUT_FOR_DELIVERY")} disabled={Boolean(busy)}>{busy === "status:OUT_FOR_DELIVERY" ? "Updating…" : "Retry delivery"}</button> : null}
+              {editable && selected.status === "DELIVERY_FAILED" ? <button type="button" className="danger" onClick={() => setStatus("RETURNED")} disabled={Boolean(busy)}>{busy === "status:RETURNED" ? "Updating…" : "Mark returned"}</button> : null}
+              {["DELIVERED","RETURNED"].includes(selected.status) ? <span className="orders-action-note">Terminal fulfillment state. Further changes require a corrective workflow.</span> : null}
             </div>
           </section>
 
           <section className="orders-delivery">
             <div className="orders-section-title"><span>DELIVERY ISSUE</span><strong>{selected.delivery_issue || "None"}</strong></div>
-            {["SHIPPED","DELIVERY_FAILED"].includes(selected.status) ? <div className="orders-action-row">
+            {["SHIPPED","OUT_FOR_DELIVERY","DELIVERY_FAILED"].includes(selected.status) ? <div className="orders-action-row">
               {["UNREACHABLE","REFUSED","RETURNED","RESOLVED"].map((issue) =>
                 <button type="button" key={issue} className={selected.delivery_issue === issue ? "primary" : ""} onClick={() => setDeliveryIssue(issue)} disabled={!editable || Boolean(busy)}>
                   {busy === "delivery:" + issue ? "Updating…" : issue}
                 </button>
               )}
-            </div> : <div className="orders-readonly-value">Delivery issue controls are available after shipment.</div>}
+            </div> : <div className="orders-readonly-value">Delivery issue controls are available while the order is in the delivery lifecycle.</div>}
             <div className="orders-delivery-note">
               {selected.delivery_issue === "UNREACHABLE"
                 ? (selected.delivery_alert_email_status === "YES" ? "Customer alert email sent." : selected.delivery_alert_email_status === "NO_EMAIL" ? "No customer email available." : "UNREACHABLE will trigger the existing customer alert email.")

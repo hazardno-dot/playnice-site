@@ -23,6 +23,7 @@ assert.ok(server.includes("update_control_center_order"), "Orders API must mutat
 assert.ok(server.includes("mark_control_center_order_sheet_sync"), "Orders API must persist Google backup sync results.");
 assert.ok(server.includes("order_state_sync"), "Orders API must use the dedicated Google Sheets state-sync contract.");
 assert.ok(server.includes('status === "DELIVERED"'), "Delivered lifecycle must map back to legacy SHIPPED for Google Sheets compatibility.");
+assert.ok(server.includes('status === "OUT_FOR_DELIVERY"'), "Out-for-delivery lifecycle must map back to legacy SHIPPED for Google Sheets compatibility.");
 assert.ok(server.includes("set_delivery_issue"), "Orders API must support delivery issue write-through.");
 assert.ok(server.includes("ORDERS_WRITE_THROUGH_ENABLED"), "Orders writes must stay behind an explicit feature gate.");
 assert.ok(server.includes("ORDERS_SHEET_SYNC_SECRET"), "Orders mirror writes must require a server-side shared secret.");
@@ -34,7 +35,14 @@ assert.ok(ui.includes("Mark shipped"), "Orders UI must support the legacy-compat
 assert.ok(ui.includes("Return to new"), "Orders UI must support undoing an accidental PACKED transition.");
 assert.ok(ui.includes("DUPLICATE"), "Orders UI must keep duplicate audit records visible.");
 assert.ok(ui.includes("UNREACHABLE"), "Orders UI must expose the existing delivery issue workflow.");
-assert.ok(ui.includes("Mark delivery failed"), "Orders UI must support the terminal delivery-failed transition.");
+assert.ok(ui.includes("Mark delivery failed"), "Orders UI must support delivery-failed transitions from active delivery.");
+assert.ok(ui.includes("Out for delivery"), "Orders UI must expose SHIPPED → OUT_FOR_DELIVERY.");
+assert.ok(ui.includes("Mark delivered"), "Orders UI must expose OUT_FOR_DELIVERY → DELIVERED.");
+assert.ok(ui.includes("Retry delivery"), "Orders UI must expose DELIVERY_FAILED → OUT_FOR_DELIVERY.");
+assert.ok(ui.includes("Mark returned"), "Orders UI must expose DELIVERY_FAILED → RETURNED.");
+assert.ok(ui.includes("Terminal fulfillment state."), "Delivered and returned orders must communicate terminal lifecycle state.");
+assert.ok(ui.includes("ORDER REFERENCE"), "Generated order reference must be presented as a read-only internal reference.");
+assert.ok(!ui.includes("Save tracking"), "Orders UI must not expose the generated internal reference as editable courier tracking.");
 assert.ok(server.includes("settle_control_center_courier_batch"), "Orders API must use the admin-gated courier settlement RPC.");
 assert.ok(server.includes('action === "settle_courier_batch"'), "Orders API must expose courier batch settlement through the existing write-through route.");
 assert.ok(ui.includes("COURIER SETTLEMENT V1"), "Orders UI must expose the courier settlement workspace.");
@@ -64,5 +72,14 @@ assert.ok(edgeStore.includes('action === "create" || action === "manual_create"'
 assert.ok(edgeStore.includes('.from("admin_users")'), "Manual order creation must verify Control Center admin membership.");
 assert.ok(edgeStore.includes('source: "manual_order"'), "Manual orders must retain a distinct canonical source.");
 assert.ok(edgeStore.includes('text.trim() === "Apps Script is live"'), "Checkout mirror must accept the deployed Apps Script live acknowledgement after a successful write.");
+
+const lifecycleSql = fs.readFileSync(path.resolve(root, "control-center/supabase/delivery_lifecycle_v1.sql"), "utf8");
+assert.ok(lifecycleSql.includes("returned_at timestamptz"), "Delivery lifecycle schema must track returned_at.");
+assert.ok(lifecycleSql.includes("v_order.status='SHIPPED' and v_next_status in ('OUT_FOR_DELIVERY','DELIVERY_FAILED')"), "Lifecycle RPC must allow shipped orders into active delivery.");
+assert.ok(lifecycleSql.includes("v_order.status='OUT_FOR_DELIVERY' and v_next_status in ('SHIPPED','DELIVERED','DELIVERY_FAILED')"), "Lifecycle RPC must support delivery completion and safe undo.");
+assert.ok(lifecycleSql.includes("v_order.status='DELIVERY_FAILED' and v_next_status in ('OUT_FOR_DELIVERY','RETURNED')"), "Lifecycle RPC must support retry or return after failure.");
+assert.ok(lifecycleSql.includes("when v_order.status in ('OUT_FOR_DELIVERY','DELIVERED') then 'SHIPPED'"), "Lifecycle mirror must preserve legacy Sheets SHIPPED semantics.");
+assert.ok(lifecycleSql.includes("set_config('app.orders_lifecycle_write','control_center',true)"), "Canonical lifecycle changes must be explicitly marked by the admin RPC.");
+assert.ok(lifecycleSql.includes("protect_checkout_order_lifecycle"), "Supabase must guard canonical lifecycle fields from reverse-sync overwrites.");
 
 console.log("PASS orders operations contract");
