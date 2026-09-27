@@ -45,6 +45,7 @@ assert.ok(ui.includes("ORDER REFERENCE"), "Generated order reference must be pre
 assert.ok(!ui.includes("Save tracking"), "Orders UI must not expose the generated internal reference as editable courier tracking.");
 assert.ok(ui.includes("GIFT / SAMPLE"), "Orders UI must expose structured gift/sample editing.");
 assert.ok(ui.includes("Customer sample history"), "Orders UI must show earlier gifts/samples for the same customer.");
+assert.ok(ui.includes('["2ml","5ml","10ml","20ml"]'), "Gift sample sizes must be independent from sale variant availability.");
 assert.ok(ui.includes('from "@shop/data/products/index.js"'), "Gift/sample editor must use the canonical Shop catalog.");
 assert.ok(server.includes('action === "set_gift_sample"'), "Orders API must expose gift/sample mutation through the write-through route.");
 assert.ok(server.includes("update_control_center_order_gift"), "Gift/sample updates must use an admin-gated Supabase RPC.");
