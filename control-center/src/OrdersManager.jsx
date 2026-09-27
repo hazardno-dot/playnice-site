@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
 import ManualOrderDialog from "./ManualOrderDialog";
+import { products } from "@shop/data/products/index.js";
 import "./orders-manager.css";
 
 const STATUS_LABELS = {
@@ -55,6 +56,24 @@ function itemSummary(items) {
   }).join(", ");
 }
 
+const giftProducts = [...products].sort((a, b) => String(a.name).localeCompare(String(b.name)));
+
+function normalizeCustomerKey(value) {
+  return String(value || "").trim().toLowerCase().replace(/\s+/g, "");
+}
+
+function parseLegacyGift(value) {
+  const text = String(value || "").trim();
+  if (!text) return { sampleName: "", sampleSize: "2ml", extraGift: "" };
+  const match = text.match(/^(.*?)\s*[-–—]\s*([0-9]+(?:\.[0-9]+)?\s*ml)(?:\s*\+\s*(.*))?$/i);
+  if (!match) return { sampleName: "", sampleSize: "2ml", extraGift: text };
+  return {
+    sampleName: String(match[1] || "").trim(),
+    sampleSize: String(match[2] || "2ml").replace(/\s+/g, ""),
+    extraGift: String(match[3] || "").trim()
+  };
+}
+
 function syncLabel(order) {
   const status = order?.sheet_state_sync_status || "synced";
   if (status === "failed") return "Backup sync failed";
@@ -76,6 +95,9 @@ function OrdersWorkspace() {
   const [tracking, setTracking] = useState("");
   const [settlementSelection, setSettlementSelection] = useState([]);
   const [manualOrderOpen, setManualOrderOpen] = useState(false);
+  const [giftSampleName, setGiftSampleName] = useState("");
+  const [giftSampleSize, setGiftSampleSize] = useState("2ml");
+  const [giftExtra, setGiftExtra] = useState("");
 
   const absorb = (payload) => {
     const nextOrders = Array.isArray(payload?.orders) ? payload.orders : [];
@@ -96,6 +118,15 @@ function OrdersWorkspace() {
 
   const selected = orders.find((order) => order.id === selectedId) || null;
   useEffect(() => { setTracking(selected?.tracking_number || ""); }, [selected?.id, selected?.tracking_number]);
+  useEffect(() => {
+    const data = selected?.source_payload || {};
+    const sample = Array.isArray(data.giftSamples) ? data.giftSamples[0] : null;
+    const extra = Array.isArray(data.giftExtras) ? data.giftExtras[0] : "";
+    const legacy = parseLegacyGift(data.freeGift);
+    setGiftSampleName(sample?.name || legacy.sampleName || "");
+    setGiftSampleSize(sample?.size || legacy.sampleSize || "2ml");
+    setGiftExtra(extra || legacy.extraGift || "");
+  }, [selected?.id, selected?.source_payload?.freeGift]);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -151,6 +182,24 @@ function OrdersWorkspace() {
     order.courier_payment_status === "PAID" && !order.courier_batch_id
   ).length, [saleOrders]);
   const selectedEvents = useMemo(() => events.filter((event) => event.order_id === selectedId), [events, selectedId]);
+  const customerGiftHistory = useMemo(() => {
+    if (!selected) return [];
+    const current = selected.source_payload || {};
+    const emailKey = normalizeCustomerKey(current.email);
+    const phoneKey = String(current.phone || "").replace(/\D/g, "").slice(-8);
+    return orders.filter((order) => {
+      if (order.id === selected.id || order.status === "DUPLICATE") return false;
+      const data = order.source_payload || {};
+      if (!String(data.freeGift || "").trim()) return false;
+      const sameEmail = emailKey && normalizeCustomerKey(data.email) === emailKey;
+      const samePhone = phoneKey && String(data.phone || "").replace(/\D/g, "").slice(-8) === phoneKey;
+      return sameEmail || samePhone;
+    }).map((order) => ({
+      order_id: order.order_id,
+      created_at: order.created_at,
+      freeGift: order.source_payload?.freeGift || ""
+    })).sort((a, b) => String(b.created_at || "").localeCompare(String(a.created_at || "")));
+  }, [orders, selected]);
 
   const mutate = async (body, key) => {
     setBusy(key); setError(""); setNotice("");
@@ -199,6 +248,13 @@ function OrdersWorkspace() {
   );
   const retrySync = () => mutate({ action: "retry_sheet_sync", id: selected.id }, "retry");
   const setDeliveryIssue = (delivery_issue) => mutate({ action: "set_delivery_issue", id: selected.id, delivery_issue }, "delivery:" + delivery_issue);
+  const saveGiftSample = () => mutate({
+    action: "set_gift_sample",
+    id: selected.id,
+    sample_name: giftSampleName,
+    sample_size: giftSampleName ? giftSampleSize : "",
+    extra_gift: giftExtra
+  }, "gift");
 
   const createManualOrder = async (order) => {
     setBusy("manual:create"); setError(""); setNotice("");
@@ -358,6 +414,54 @@ function OrdersWorkspace() {
               <div><strong>{item?.name || "Item"}</strong><span>{item?.size || "—"} · qty {Number(item?.quantity || 1)}</span></div>
               <strong>{money(Number(item?.price || 0) * Number(item?.quantity || 1))}</strong>
             </div>)}
+          </section>
+
+          <section className="orders-gift">
+            <div className="orders-section-title">
+              <span>GIFT / SAMPLE</span>
+              <strong>{payload.freeGift || "None"}</strong>
+            </div>
+            <div className="orders-gift-editor">
+              <label>
+                <span>SAMPLE FRAGRANCE</span>
+                <input
+                  list="orders-gift-products"
+                  value={giftSampleName}
+                  onChange={(event) => setGiftSampleName(event.target.value)}
+                  placeholder="Search fragrance…"
+                  disabled={!editable || Boolean(busy)}
+                />
+                <datalist id="orders-gift-products">
+                  {giftProducts.map((product) => <option value={product.name} key={product.slug} />)}
+                </datalist>
+              </label>
+              <label>
+                <span>SAMPLE SIZE</span>
+                <select value={giftSampleSize} onChange={(event) => setGiftSampleSize(event.target.value)} disabled={!editable || !giftSampleName || Boolean(busy)}>
+                  {["2ml","5ml","10ml","20ml"].map((size) => <option value={size} key={size}>{size}</option>)}
+                </select>
+              </label>
+              <label>
+                <span>EXTRA GIFT</span>
+                <input value={giftExtra} onChange={(event) => setGiftExtra(event.target.value)} placeholder="e.g. olovka" disabled={!editable || Boolean(busy)} />
+              </label>
+              <button type="button" className="primary" onClick={saveGiftSample} disabled={!editable || Boolean(busy)}>
+                {busy === "gift" ? "Saving…" : "Save gift"}
+              </button>
+            </div>
+            <div className="orders-gift-preview">
+              <span>CURRENT RECORD</span>
+              <strong>{giftSampleName ? giftSampleName + " - " + giftSampleSize + (giftExtra ? " + " + giftExtra : "") : (giftExtra || "No gift recorded")}</strong>
+            </div>
+            <details className="orders-gift-history">
+              <summary>Customer sample history <strong>{customerGiftHistory.length}</strong></summary>
+              <div>
+                {customerGiftHistory.length ? customerGiftHistory.map((entry) => <div key={entry.order_id}>
+                  <span>{entry.order_id} · {dateTime(entry.created_at)}</span>
+                  <strong>{entry.freeGift}</strong>
+                </div>) : <p>No earlier gift/sample recorded for this customer.</p>}
+              </div>
+            </details>
           </section>
 
           <section className="orders-tracking">

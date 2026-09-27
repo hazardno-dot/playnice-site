@@ -103,6 +103,8 @@ function buildMirror(order) {
     courierPaid: order.courier_payment_status || "N/A",
     courierPaidAt: order.courier_paid_at || null,
     deliveryIssue: order.delivery_issue || "",
+    freeGift: String(order.source_payload?.freeGift || ""),
+    giftSyncVersion: Array.isArray(order.source_payload?.giftSamples) || Array.isArray(order.source_payload?.giftExtras) ? 1 : null,
     stateVersion: Number(order.sheet_state_version || 0)
   };
 }
@@ -121,7 +123,8 @@ async function syncMirror(mirror) {
     data?.status !== "ok" ||
     data?.type !== "order_state_sync" ||
     data?.orderId !== mirror.orderId ||
-    Number(data?.stateVersion) !== Number(mirror.stateVersion)
+    Number(data?.stateVersion) !== Number(mirror.stateVersion) ||
+    (mirror.giftSyncVersion && Number(data?.giftSyncVersion) !== Number(mirror.giftSyncVersion))
   ) {
     throw new Error(data?.message || `Google Sheets mirror returned an unexpected response (${response.status}).`);
   }
@@ -186,6 +189,32 @@ async function mutateOrder(token, body) {
 
   if (!mutation?.order?.id || !mutation?.mirror) throw new Error("Supabase order mutation returned an incomplete result.");
 
+  return {
+    order: mutation.order,
+    ...(await mirrorWithAudit(token, mutation.order, mutation.mirror))
+  };
+}
+
+async function updateGiftSample(token, body) {
+  const id = String(body?.id || "").trim();
+  if (!id) throw new Error("Missing order id.");
+
+  const sampleName = cleanText(body?.sample_name, 180);
+  const sampleSize = cleanText(body?.sample_size, 40);
+  const extraGift = cleanText(body?.extra_gift, 120);
+
+  const mutation = await rpc("update_control_center_order_gift", token, {
+    p_record_id: id,
+    p_sample_name: sampleName,
+    p_sample_size: sampleSize,
+    p_extra_gift: extraGift
+  });
+
+  if (!mutation?.order?.id || !mutation?.mirror) {
+    throw new Error("Supabase gift mutation returned an incomplete result.");
+  }
+
+  mutation.mirror.giftSyncVersion = 1;
   return {
     order: mutation.order,
     ...(await mirrorWithAudit(token, mutation.order, mutation.mirror))
@@ -390,7 +419,9 @@ export default async function handler(req, res) {
         ? await settleCourierBatch(auth.token, req.body)
         : action === "create_manual_order"
           ? await createManualOrder(auth.token, req.body)
-          : await mutateOrder(auth.token, req.body);
+          : action === "set_gift_sample"
+            ? await updateGiftSample(auth.token, req.body)
+            : await mutateOrder(auth.token, req.body);
     const data = await readOrders(auth.token);
 
     return json(res, 200, {

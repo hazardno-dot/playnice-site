@@ -43,6 +43,13 @@ assert.ok(ui.includes("Mark returned"), "Orders UI must expose DELIVERY_FAILED â
 assert.ok(ui.includes("Terminal fulfillment state."), "Delivered and returned orders must communicate terminal lifecycle state.");
 assert.ok(ui.includes("ORDER REFERENCE"), "Generated order reference must be presented as a read-only internal reference.");
 assert.ok(!ui.includes("Save tracking"), "Orders UI must not expose the generated internal reference as editable courier tracking.");
+assert.ok(ui.includes("GIFT / SAMPLE"), "Orders UI must expose structured gift/sample editing.");
+assert.ok(ui.includes("Customer sample history"), "Orders UI must show earlier gifts/samples for the same customer.");
+assert.ok(ui.includes('["2ml","5ml","10ml","20ml"]'), "Gift sample sizes must be independent from sale variant availability.");
+assert.ok(ui.includes('from "@shop/data/products/index.js"'), "Gift/sample editor must use the canonical Shop catalog.");
+assert.ok(server.includes('action === "set_gift_sample"'), "Orders API must expose gift/sample mutation through the write-through route.");
+assert.ok(server.includes("update_control_center_order_gift"), "Gift/sample updates must use an admin-gated Supabase RPC.");
+assert.ok(server.includes("giftSyncVersion"), "Gift/sample mirror must require an explicit Apps Script acknowledgement.");
 assert.ok(server.includes("settle_control_center_courier_batch"), "Orders API must use the admin-gated courier settlement RPC.");
 assert.ok(server.includes('action === "settle_courier_batch"'), "Orders API must expose courier batch settlement through the existing write-through route.");
 assert.ok(ui.includes("COURIER SETTLEMENT V1"), "Orders UI must expose the courier settlement workspace.");
@@ -81,5 +88,16 @@ assert.ok(lifecycleSql.includes("v_order.status='DELIVERY_FAILED' and v_next_sta
 assert.ok(lifecycleSql.includes("when v_order.status in ('OUT_FOR_DELIVERY','DELIVERED') then 'SHIPPED'"), "Lifecycle mirror must preserve legacy Sheets SHIPPED semantics.");
 assert.ok(lifecycleSql.includes("set_config('app.orders_lifecycle_write','control_center',true)"), "Canonical lifecycle changes must be explicitly marked by the admin RPC.");
 assert.ok(lifecycleSql.includes("protect_checkout_order_lifecycle"), "Supabase must guard canonical lifecycle fields from reverse-sync overwrites.");
+
+const giftSql = fs.readFileSync(path.resolve(root, "control-center/supabase/gift_sample_editor_v1.sql"), "utf8");
+assert.ok(giftSql.includes("giftSamples"), "Gift/sample RPC must persist structured sample metadata.");
+assert.ok(giftSql.includes("giftExtras"), "Gift/sample RPC must persist structured extra-gift metadata.");
+assert.ok(giftSql.includes("freeGift"), "Gift/sample RPC must preserve the legacy freeGift compatibility field.");
+assert.ok(giftSql.includes("sizeMl"), "Gift/sample RPC must persist numeric sample volume for future inventory analytics.");
+
+const appsScriptPatch = fs.readFileSync(path.resolve(root, "control-center/google-apps-script/order-state-sync-v4.md"), "utf8");
+assert.ok(appsScriptPatch.includes("giftSyncVersion"), "Apps Script v4 contract must acknowledge gift mirror writes.");
+assert.ok(appsScriptPatch.includes("ORDER_COL.FREE_GIFT"), "Apps Script v4 contract must update the freeGift column.");
+assert.ok(appsScriptPatch.includes("OUT_FOR_DELIVERY"), "Apps Script v4 contract must accept the full delivery lifecycle.");
 
 console.log("PASS orders operations contract");
