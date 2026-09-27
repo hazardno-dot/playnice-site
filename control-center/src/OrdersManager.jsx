@@ -175,7 +175,16 @@ function OrdersWorkspace() {
   const saveTracking = () => mutate({ action: "save_tracking", id: selected.id, tracking_number: tracking }, "tracking");
   const setStatus = (status) => mutate({ action: "set_status", id: selected.id, status }, "status:" + status);
   const setPayment = (status) => mutate({ action: "set_courier_payment", id: selected.id, status }, "payment");
-  const settleSelected = () => mutate({ action: "settle_courier_batch", order_ids: settlementSelection }, "settlement");
+  const settleSelected = () => {
+    if (!settlementSelection.length) return;
+    const confirmed = window.confirm(
+      "Record courier payout for " + settlementSelection.length + " order" +
+      (settlementSelection.length === 1 ? "" : "s") + " · " + money(settlementSelectedTotal) +
+      "?\n\nThis creates a settlement batch and marks the selected orders as PAID."
+    );
+    if (!confirmed) return;
+    mutate({ action: "settle_courier_batch", order_ids: settlementSelection }, "settlement");
+  };
   const toggleSettlement = (id) => setSettlementSelection((current) =>
     current.includes(id) ? current.filter((value) => value !== id) : [...current, id]
   );
