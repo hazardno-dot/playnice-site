@@ -41,6 +41,8 @@ assert.ok(ui.includes("Mark delivered"), "Orders UI must expose OUT_FOR_DELIVERY
 assert.ok(ui.includes("Retry delivery"), "Orders UI must expose DELIVERY_FAILED → OUT_FOR_DELIVERY.");
 assert.ok(ui.includes("Mark returned"), "Orders UI must expose DELIVERY_FAILED → RETURNED.");
 assert.ok(ui.includes("Terminal fulfillment state."), "Delivered and returned orders must communicate terminal lifecycle state.");
+assert.ok(ui.includes("ORDER REFERENCE"), "Generated order reference must be presented as a read-only internal reference.");
+assert.ok(!ui.includes("Save tracking"), "Orders UI must not expose the generated internal reference as editable courier tracking.");
 assert.ok(server.includes("settle_control_center_courier_batch"), "Orders API must use the admin-gated courier settlement RPC.");
 assert.ok(server.includes('action === "settle_courier_batch"'), "Orders API must expose courier batch settlement through the existing write-through route.");
 assert.ok(ui.includes("COURIER SETTLEMENT V1"), "Orders UI must expose the courier settlement workspace.");
@@ -77,5 +79,7 @@ assert.ok(lifecycleSql.includes("v_order.status='SHIPPED' and v_next_status in (
 assert.ok(lifecycleSql.includes("v_order.status='OUT_FOR_DELIVERY' and v_next_status in ('SHIPPED','DELIVERED','DELIVERY_FAILED')"), "Lifecycle RPC must support delivery completion and safe undo.");
 assert.ok(lifecycleSql.includes("v_order.status='DELIVERY_FAILED' and v_next_status in ('OUT_FOR_DELIVERY','RETURNED')"), "Lifecycle RPC must support retry or return after failure.");
 assert.ok(lifecycleSql.includes("when v_order.status in ('OUT_FOR_DELIVERY','DELIVERED') then 'SHIPPED'"), "Lifecycle mirror must preserve legacy Sheets SHIPPED semantics.");
+assert.ok(lifecycleSql.includes("set_config('app.orders_lifecycle_write','control_center',true)"), "Canonical lifecycle changes must be explicitly marked by the admin RPC.");
+assert.ok(lifecycleSql.includes("protect_checkout_order_lifecycle"), "Supabase must guard canonical lifecycle fields from reverse-sync overwrites.");
 
 console.log("PASS orders operations contract");
