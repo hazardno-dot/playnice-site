@@ -1,6 +1,6 @@
 -- Courier Settlement v1
 -- Supabase remains canonical; Google Sheets stays a per-order mirror.
--- This RPC groups delivered + pending COD orders into one courier payout batch.
+-- This RPC groups confirmed COD payouts into one batch. Settlement is also the delivery confirmation when courier tracking is unavailable.
 
 create or replace function public.settle_control_center_courier_batch(p_order_ids uuid[])
 returns jsonb
@@ -24,7 +24,7 @@ begin
   end if;
 
   if p_order_ids is null or cardinality(p_order_ids) = 0 then
-    raise exception 'Select at least one delivered COD order.';
+    raise exception 'Select at least one pending COD order.';
   end if;
 
   select count(distinct id)
@@ -35,17 +35,21 @@ begin
     into v_eligible, v_total
   from public.checkout_orders
   where id = any(p_order_ids)
-    and status = 'DELIVERED'
+    and status in ('SHIPPED','OUT_FOR_DELIVERY','DELIVERED')
     and courier_payment_status = 'PENDING'
     and origin <> 'regression_test';
 
   if v_eligible <> v_requested then
-    raise exception 'Settlement selection contains an order that is not DELIVERED + PENDING.';
+    raise exception 'Settlement selection contains an order that is not SHIPPED / OUT_FOR_DELIVERY / DELIVERED + PENDING.';
   end if;
+
+  perform set_config('app.orders_lifecycle_write','control_center',true);
 
   with updated as (
     update public.checkout_orders
-    set courier_payment_status = 'PAID',
+    set status = 'DELIVERED',
+        delivered_at = coalesce(delivered_at, v_now),
+        courier_payment_status = 'PAID',
         courier_paid_at = v_now,
         courier_batch_id = v_batch_id,
         sheet_state_version = sheet_state_version + 1,
@@ -53,7 +57,7 @@ begin
         sheet_state_sync_error = null,
         updated_at = v_now
     where id = any(p_order_ids)
-      and status = 'DELIVERED'
+      and status in ('SHIPPED','OUT_FOR_DELIVERY','DELIVERED')
       and courier_payment_status = 'PENDING'
       and origin <> 'regression_test'
     returning *
