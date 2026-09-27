@@ -165,6 +165,14 @@ async function mutateOrder(token, body) {
   else if (action === "set_delivery_issue") value = String(body?.delivery_issue || "").trim();
   else throw new Error("Unknown order action.");
 
+  if (action === "set_courier_payment" && value === "PENDING") {
+    const current = await readOrders(token);
+    const currentOrder = current.orders.find((item) => item.id === id);
+    if (currentOrder?.courier_batch_id) {
+      throw new Error("Batched courier settlements cannot be reopened per order.");
+    }
+  }
+
   const mutation = await rpc("update_control_center_order", token, {
     p_record_id: id,
     p_action: action,
