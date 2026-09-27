@@ -13,6 +13,10 @@ const WRITE_THROUGH_ENABLED =
   String(process.env.ORDERS_WRITE_THROUGH_ENABLED || "").trim().toLowerCase() === "true" &&
   Boolean(SHEET_SYNC_URL) &&
   Boolean(SHEET_SYNC_SECRET);
+const ORDER_STORE_URL = SUPABASE_URL ? SUPABASE_URL + "/functions/v1/checkout-order-store" : "";
+const SHIPPING_PRICE = 4;
+const FREE_SHIPPING_THRESHOLD = 39;
+const MANUAL_ORDER_SOURCES = new Set(["instagram", "email", "whatsapp", "viber", "phone", "message", "manual"]);
 
 const json = (res, status, body) => {
   res.setHeader("Cache-Control", "no-store");
@@ -200,6 +204,118 @@ async function retryMirror(token, body) {
   };
 }
 
+function roundMoney(value) {
+  return Math.round((Number(value || 0) + Number.EPSILON) * 100) / 100;
+}
+
+function cleanText(value, max = 300) {
+  return String(value || "").trim().slice(0, max);
+}
+
+function sanitizeManualItems(items) {
+  if (!Array.isArray(items)) return [];
+  return items.map((item) => ({
+    name: cleanText(item?.name, 180),
+    size: cleanText(item?.size, 40),
+    quantity: Number(item?.quantity),
+    price: roundMoney(item?.price)
+  })).filter((item) =>
+    item.name &&
+    item.size &&
+    Number.isInteger(item.quantity) &&
+    item.quantity > 0 &&
+    item.quantity <= 50 &&
+    Number.isFinite(item.price) &&
+    item.price >= 0
+  );
+}
+
+async function createManualOrder(token, body) {
+  const input = body?.order && typeof body.order === "object" ? body.order : {};
+  const fullName = cleanText(input.fullName, 160);
+  const email = cleanText(input.email, 180).toLowerCase();
+  const phone = cleanText(input.phone, 60);
+  const city = cleanText(input.city, 120);
+  const address = cleanText(input.address, 220);
+  const note = cleanText(input.note, 500);
+  const instagramUsername = cleanText(input.instagramUsername, 120);
+  const freeGift = cleanText(input.freeGift, 220);
+  const language = input.language === "en" ? "en" : "sr";
+  const source = MANUAL_ORDER_SOURCES.has(String(input.orderSource || "").trim().toLowerCase())
+    ? String(input.orderSource).trim().toLowerCase()
+    : "manual";
+  const items = sanitizeManualItems(input.items);
+
+  if (!fullName || !phone || !city || !address) {
+    throw new Error("Full name, phone, city and address are required.");
+  }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new Error("Email address is not valid.");
+  }
+  if (!items.length || items.length !== (Array.isArray(input.items) ? input.items.length : 0)) {
+    throw new Error("Manual order contains an invalid item.");
+  }
+
+  const subtotal = roundMoney(items.reduce((sum, item) => sum + item.price * item.quantity, 0));
+  if (subtotal <= 0) throw new Error("Manual order subtotal must be greater than zero.");
+  const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_PRICE;
+  const total = roundMoney(subtotal + shipping);
+
+  const payload = {
+    source: "manual_order",
+    fullName,
+    email,
+    phone,
+    city,
+    address,
+    note,
+    items,
+    subtotal,
+    shipping,
+    total,
+    orderSource: source,
+    instagramUsername,
+    regularSubtotal: subtotal,
+    discount: 0,
+    freeGift,
+    language,
+    recommendations: []
+  };
+
+  const response = await fetch(ORDER_STORE_URL, {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      action: "manual_create",
+      payload,
+      syncUrl: SHEET_SYNC_URL
+    }),
+    signal: AbortSignal.timeout(15000)
+  });
+  const result = await safeJson(response);
+  if (!response.ok || result?.status !== "ok" || !result?.orderId || !result?.recordId) {
+    throw new Error(result?.message || "Manual order could not be created.");
+  }
+
+  return {
+    manual_order: {
+      order_id: result.orderId,
+      record_id: result.recordId,
+      tracking_number: result.trackingNumber || "",
+      duplicate: Boolean(result.duplicate),
+      duplicate_reason: result.duplicateReason || null,
+      sheet_sync_status: result.sheetSyncStatus || "pending",
+      subtotal,
+      shipping,
+      total
+    }
+  };
+}
+
 async function settleCourierBatch(token, body) {
   const orderIds = Array.isArray(body?.order_ids)
     ? [...new Set(body.order_ids.map((id) => String(id || "").trim()).filter(Boolean))]
@@ -272,7 +388,9 @@ export default async function handler(req, res) {
       ? await retryMirror(auth.token, req.body)
       : action === "settle_courier_batch"
         ? await settleCourierBatch(auth.token, req.body)
-        : await mutateOrder(auth.token, req.body);
+        : action === "create_manual_order"
+          ? await createManualOrder(auth.token, req.body)
+          : await mutateOrder(auth.token, req.body);
     const data = await readOrders(auth.token);
 
     return json(res, 200, {
