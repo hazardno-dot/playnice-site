@@ -150,7 +150,8 @@ function OrdersWorkspace() {
 
   const saleOrders = useMemo(() => orders.filter((order) => order.status !== "DUPLICATE" && order.origin !== "regression_test"), [orders]);
   const settlementEligible = useMemo(() => saleOrders.filter((order) =>
-    order.status === "DELIVERED" && order.courier_payment_status === "PENDING"
+    ["SHIPPED","OUT_FOR_DELIVERY","DELIVERED"].includes(order.status) &&
+    order.courier_payment_status === "PENDING"
   ), [saleOrders]);
   const codPending = useMemo(() => settlementEligible.reduce((sum, order) =>
     sum + Number(order.source_payload?.total || 0), 0
@@ -316,7 +317,7 @@ function OrdersWorkspace() {
         <div>
           <span>COURIER SETTLEMENT V1</span>
           <h3>COD payout desk</h3>
-          <p>Only delivered orders waiting for courier payout are eligible. One confirmation records a single settlement batch.</p>
+          <p>Courier payout is the delivery confirmation when live courier status is unavailable. Settling a shipped order marks it delivered and paid in one step.</p>
         </div>
         <div className="orders-settlement-summary">
           <strong>{money(codPending)}</strong>
@@ -345,7 +346,7 @@ function OrdersWorkspace() {
             </label>;
           })}
         </div>
-      </div> : <div className="orders-settlement-empty">No delivered COD orders are waiting for courier payout.</div>}
+      </div> : <div className="orders-settlement-empty">No shipped or delivered COD orders are waiting for courier payout.</div>}
 
       <details className="orders-settlement-history">
         <summary>Settlement history <strong>{settlementHistory.length}</strong></summary>
