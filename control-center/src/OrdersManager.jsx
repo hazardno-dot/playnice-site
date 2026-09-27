@@ -333,7 +333,7 @@ function OrdersWorkspace() {
         <div>
           <span>COURIER SETTLEMENT V1</span>
           <h3>COD payout desk</h3>
-          <p>Courier payout is the delivery confirmation when live courier status is unavailable. Settling a shipped order marks it delivered and paid in one step.</p>
+          <p>Courier payout confirms delivery when live courier status is unavailable. Settling a shipped order marks it delivered and paid in one step.</p>
         </div>
         <div className="orders-settlement-summary">
           <strong>{money(codPending)}</strong>
