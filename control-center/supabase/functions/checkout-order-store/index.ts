@@ -213,7 +213,15 @@ Deno.serve(async (req: Request) => {
         const userId = userData?.user?.id;
         if (userError || !userId) return json(401, { status: "error", message: "Invalid admin session" });
 
-        const { data: adminRows, error: adminError } = await admin
+        const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+        if (!anonKey) return json(500, { status: "error", message: "Admin auth client is not configured" });
+
+        const userClient = createClient(supabaseUrl, anonKey, {
+          global: { headers: { Authorization: "Bearer " + token } },
+          auth: { persistSession: false, autoRefreshToken: false },
+        });
+
+        const { data: adminRows, error: adminError } = await userClient
           .from("admin_users")
           .select("user_id")
           .eq("user_id", userId)
