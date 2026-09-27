@@ -55,6 +55,11 @@ const settlementSql = fs.readFileSync(path.resolve(root, "control-center/supabas
 assert.ok(settlementSql.includes("status in ('SHIPPED','OUT_FOR_DELIVERY','DELIVERED')"), "Courier payout must accept active shipped orders as delivery confirmation.");
 assert.ok(settlementSql.includes("status = 'DELIVERED'"), "Courier payout must atomically close the fulfillment lifecycle.");
 assert.ok(settlementSql.includes("delivered_at = coalesce(delivered_at, v_now)"), "Courier payout must timestamp delivery when no earlier delivery timestamp exists.");
+assert.ok(settlementSql.includes("'Courier payout confirmed delivery.'"), "Settlement-confirmed delivery must be recorded in the order timeline.");
+assert.ok(settlementSql.includes("'courier_settlement'"), "Settlement-confirmed delivery events must retain their source.");
+
+const settlementAnalyticsSql = fs.readFileSync(path.resolve(root, "control-center/supabase/settlement_confirmed_delivery_v1.sql"), "utf8");
+assert.ok(settlementAnalyticsSql.includes("status in (''SHIPPED'',''OUT_FOR_DELIVERY'',''DELIVERED'')"), "COD pending analytics must match payout eligibility.");
 assert.ok(server.includes('action === "settle_courier_batch"'), "Orders API must expose courier batch settlement through the existing write-through route.");
 assert.ok(ui.includes("COURIER SETTLEMENT V1"), "Orders UI must expose the courier settlement workspace.");
 assert.ok(ui.includes('["SHIPPED","OUT_FOR_DELIVERY","DELIVERED"].includes(order.status)'), "Courier settlement must accept shipped, out-for-delivery and delivered pending COD orders.");
