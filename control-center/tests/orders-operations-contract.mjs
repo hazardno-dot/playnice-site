@@ -45,15 +45,27 @@ assert.ok(ui.includes("ORDER REFERENCE"), "Generated order reference must be pre
 assert.ok(!ui.includes("Save tracking"), "Orders UI must not expose the generated internal reference as editable courier tracking.");
 assert.ok(ui.includes("GIFT / SAMPLE"), "Orders UI must expose structured gift/sample editing.");
 assert.ok(ui.includes("Customer sample history"), "Orders UI must show earlier gifts/samples for the same customer.");
+assert.ok(ui.includes('selected?.status === "NEW"'), "Gift/sample editing must be limited to NEW orders.");
+assert.ok(ui.includes("Gift/sample is locked once the order is packed."), "Packed and later orders must communicate that gift/sample data is locked.");
+assert.ok(ui.includes("!giftChanged"), "Save gift must stay disabled when no gift/sample change has been made.");
 assert.ok(ui.includes('["2ml","5ml","10ml","20ml"]'), "Gift sample sizes must be independent from sale variant availability.");
 assert.ok(ui.includes('from "@shop/data/products/index.js"'), "Gift/sample editor must use the canonical Shop catalog.");
 assert.ok(server.includes('action === "set_gift_sample"'), "Orders API must expose gift/sample mutation through the write-through route.");
 assert.ok(server.includes("update_control_center_order_gift"), "Gift/sample updates must use an admin-gated Supabase RPC.");
 assert.ok(server.includes("giftSyncVersion"), "Gift/sample mirror must require an explicit Apps Script acknowledgement.");
 assert.ok(server.includes("settle_control_center_courier_batch"), "Orders API must use the admin-gated courier settlement RPC.");
+const settlementSql = fs.readFileSync(path.resolve(root, "control-center/supabase/courier_settlement_v1.sql"), "utf8");
+assert.ok(settlementSql.includes("status in ('SHIPPED','OUT_FOR_DELIVERY','DELIVERED')"), "Courier payout must accept active shipped orders as delivery confirmation.");
+assert.ok(settlementSql.includes("status = 'DELIVERED'"), "Courier payout must atomically close the fulfillment lifecycle.");
+assert.ok(settlementSql.includes("delivered_at = coalesce(delivered_at, v_now)"), "Courier payout must timestamp delivery when no earlier delivery timestamp exists.");
+assert.ok(settlementSql.includes("'Courier payout confirmed delivery.'"), "Settlement-confirmed delivery must be recorded in the order timeline.");
+assert.ok(settlementSql.includes("'courier_settlement'"), "Settlement-confirmed delivery events must retain their source.");
+
+const settlementAnalyticsSql = fs.readFileSync(path.resolve(root, "control-center/supabase/settlement_confirmed_delivery_v1.sql"), "utf8");
+assert.ok(settlementAnalyticsSql.includes("status in (''SHIPPED'',''OUT_FOR_DELIVERY'',''DELIVERED'')"), "COD pending analytics must match payout eligibility.");
 assert.ok(server.includes('action === "settle_courier_batch"'), "Orders API must expose courier batch settlement through the existing write-through route.");
 assert.ok(ui.includes("COURIER SETTLEMENT V1"), "Orders UI must expose the courier settlement workspace.");
-assert.ok(ui.includes('order.status === "DELIVERED" && order.courier_payment_status === "PENDING"'), "Courier settlement eligibility must be limited to delivered pending orders.");
+assert.ok(ui.includes('["SHIPPED","OUT_FOR_DELIVERY","DELIVERED"].includes(order.status)'), "Courier settlement must accept shipped, out-for-delivery and delivered pending COD orders.");
 assert.ok(ui.includes("Record courier payout"), "Orders UI must provide a batch payout action.");
 assert.ok(ui.includes("courier_batch_id"), "Orders UI must derive settlement history from canonical batch ids.");
 assert.ok(server.includes("Batched courier settlements cannot be reopened per order."), "Orders API must protect settled batch integrity.");
