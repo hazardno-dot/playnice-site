@@ -55,6 +55,8 @@ assert.ok(manualUi.includes('from "@shop/data/products/index.js"'), "Manual orde
 assert.ok(manualUi.includes("Create production order"), "Manual order intake must explicitly identify production creation.");
 assert.ok(manualUi.includes("No automatic customer or admin email is sent for manual orders."), "Manual order intake must communicate the v1 email behavior.");
 assert.ok(manualUi.includes("window.confirm("), "Manual production order creation must require explicit confirmation.");
+assert.ok(manualUi.includes("productMatches"), "Manual order fragrance selection must be searchable.");
+assert.ok(manualUi.includes('form.orderSource === "instagram"'), "Instagram username must only appear for Instagram-sourced orders.");
 
 const edgeStore = fs.readFileSync(path.resolve(root, "control-center/supabase/functions/checkout-order-store/index.ts"), "utf8");
 assert.ok(edgeStore.includes('action === "create" || action === "manual_create"'), "Checkout order store must support manual creation.");
