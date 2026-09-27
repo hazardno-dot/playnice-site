@@ -183,6 +183,22 @@ function OrdersWorkspace() {
     order.courier_payment_status === "PAID" && !order.courier_batch_id
   ).length, [saleOrders]);
   const selectedEvents = useMemo(() => events.filter((event) => event.order_id === selectedId), [events, selectedId]);
+  const giftEditable = Boolean(writeEnabled && selected?.status === "NEW");
+  const savedGift = useMemo(() => {
+    const data = selected?.source_payload || {};
+    const sample = Array.isArray(data.giftSamples) ? data.giftSamples[0] : null;
+    const extra = Array.isArray(data.giftExtras) ? data.giftExtras[0] : "";
+    const legacy = parseLegacyGift(data.freeGift);
+    return {
+      sampleName: sample?.name || legacy.sampleName || "",
+      sampleSize: sample?.size || legacy.sampleSize || "2ml",
+      extraGift: extra || legacy.extraGift || ""
+    };
+  }, [selected?.id, selected?.source_payload?.freeGift]);
+  const giftChanged =
+    giftSampleName !== savedGift.sampleName ||
+    giftSampleSize !== savedGift.sampleSize ||
+    giftExtra !== savedGift.extraGift;
   const customerGiftHistory = useMemo(() => {
     if (!selected) return [];
     const current = selected.source_payload || {};
@@ -430,7 +446,7 @@ function OrdersWorkspace() {
                   value={giftSampleName}
                   onChange={(event) => setGiftSampleName(event.target.value)}
                   placeholder="Search fragrance…"
-                  disabled={!editable || Boolean(busy)}
+                  disabled={!giftEditable || Boolean(busy)}
                 />
                 <datalist id="orders-gift-products">
                   {giftProducts.map((product) => <option value={product.name} key={product.slug} />)}
@@ -438,18 +454,19 @@ function OrdersWorkspace() {
               </label>
               <label>
                 <span>SAMPLE SIZE</span>
-                <select value={giftSampleSize} onChange={(event) => setGiftSampleSize(event.target.value)} disabled={!editable || !giftSampleName || Boolean(busy)}>
+                <select value={giftSampleSize} onChange={(event) => setGiftSampleSize(event.target.value)} disabled={!giftEditable || !giftSampleName || Boolean(busy)}>
                   {["2ml","5ml","10ml","20ml"].map((size) => <option value={size} key={size}>{size}</option>)}
                 </select>
               </label>
               <label>
                 <span>EXTRA GIFT</span>
-                <input value={giftExtra} onChange={(event) => setGiftExtra(event.target.value)} placeholder="e.g. olovka" disabled={!editable || Boolean(busy)} />
+                <input value={giftExtra} onChange={(event) => setGiftExtra(event.target.value)} placeholder="e.g. olovka" disabled={!giftEditable || Boolean(busy)} />
               </label>
-              <button type="button" className="primary" onClick={saveGiftSample} disabled={!editable || Boolean(busy)}>
-                {busy === "gift" ? "Saving…" : "Save gift"}
+              <button type="button" className="primary" onClick={saveGiftSample} disabled={!giftEditable || !giftChanged || Boolean(busy)}>
+                {busy === "gift" ? "Saving…" : giftEditable ? "Save gift" : "Gift locked"}
               </button>
             </div>
+            {!giftEditable && selected?.status !== "NEW" ? <div className="orders-gift-lock-note">Gift/sample is locked once the order is packed.</div> : null}
             <div className="orders-gift-preview">
               <span>CURRENT RECORD</span>
               <strong>{giftSampleName ? giftSampleName + " - " + giftSampleSize + (giftExtra ? " + " + giftExtra : "") : (giftExtra || "No gift recorded")}</strong>
