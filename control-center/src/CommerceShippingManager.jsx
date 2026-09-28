@@ -32,6 +32,7 @@ async function commerceApi(action, extra = {}) {
   return payload;
 }
 
+// Commerce shipping source-of-truth UI.
 export default function CommerceShippingManager() {
   const [slot, setSlot] = useState(null);
   const [live, setLive] = useState(null);
