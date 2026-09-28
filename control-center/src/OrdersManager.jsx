@@ -260,7 +260,8 @@ function OrdersWorkspace() {
       const result = await ordersApi("POST", body);
       absorb(result);
       if (key === "settlement") setSettlementSelection([]);
-      if (result?.mirror_warning) setNotice(result.mirror_warning);
+      if (result?.status_email_warning) setNotice(result.status_email_warning);
+      else if (result?.mirror_warning) setNotice(result.mirror_warning);
       else if (result?.settlement?.batch_id) {
         setNotice("Courier settlement " + result.settlement.batch_id + " recorded · " + money(result.settlement.total) + ".");
       }
