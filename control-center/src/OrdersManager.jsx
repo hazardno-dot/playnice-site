@@ -211,12 +211,37 @@ function OrdersWorkspace() {
       const sameEmail = emailKey && normalizeCustomerKey(data.email) === emailKey;
       const samePhone = phoneKey && String(data.phone || "").replace(/\D/g, "").slice(-8) === phoneKey;
       return sameEmail || samePhone;
-    }).map((order) => ({
-      order_id: order.order_id,
-      created_at: order.created_at,
-      freeGift: order.source_payload?.freeGift || ""
-    })).sort((a, b) => String(b.created_at || "").localeCompare(String(a.created_at || "")));
+    }).map((order) => {
+      const data = order.source_payload || {};
+      const sample = Array.isArray(data.giftSamples) ? data.giftSamples[0] : null;
+      const extra = Array.isArray(data.giftExtras) ? data.giftExtras[0] : "";
+      const legacy = parseLegacyGift(data.freeGift);
+      return {
+        order_id: order.order_id,
+        created_at: order.created_at,
+        sampleName: sample?.name || legacy.sampleName || "",
+        sampleSize: sample?.size || legacy.sampleSize || "",
+        extraGift: extra || legacy.extraGift || "",
+        freeGift: data.freeGift || ""
+      };
+    }).sort((a, b) => String(b.created_at || "").localeCompare(String(a.created_at || "")));
   }, [orders, selected]);
+
+  const customerGiftSummary = useMemo(() => {
+    const uniqueSamples = new Set(
+      customerGiftHistory
+        .map((entry) => normalizeCustomerKey(entry.sampleName))
+        .filter(Boolean)
+    );
+    const extras = customerGiftHistory.filter((entry) => String(entry.extraGift || "").trim()).length;
+    return { uniqueSamples: uniqueSamples.size, extras };
+  }, [customerGiftHistory]);
+
+  const repeatedGiftHistory = useMemo(() => {
+    const key = normalizeCustomerKey(giftSampleName);
+    if (!key) return [];
+    return customerGiftHistory.filter((entry) => normalizeCustomerKey(entry.sampleName) === key);
+  }, [customerGiftHistory, giftSampleName]);
 
   const mutate = async (body, key) => {
     setBusy(key); setError(""); setNotice("");
@@ -467,6 +492,10 @@ function OrdersWorkspace() {
               <span>GIFT / SAMPLE</span>
               <strong>{payload.freeGift || "None"}</strong>
             </div>
+            {repeatedGiftHistory.length ? <div className="orders-gift-repeat-warning">
+              <strong>Already sampled</strong>
+              <span>This customer previously received {giftSampleName} {repeatedGiftHistory.length} time{repeatedGiftHistory.length === 1 ? "" : "s"}.</span>
+            </div> : null}
             <div className="orders-gift-editor">
               <label>
                 <span>SAMPLE FRAGRANCE</span>
@@ -501,12 +530,26 @@ function OrdersWorkspace() {
               <strong>{giftSampleName ? giftSampleName + " - " + giftSampleSize + (giftExtra ? " + " + giftExtra : "") : (giftExtra || "No gift recorded")}</strong>
             </div>
             <details className="orders-gift-history">
-              <summary>Customer sample history <strong>{customerGiftHistory.length}</strong></summary>
-              <div>
-                {customerGiftHistory.length ? customerGiftHistory.map((entry) => <div key={entry.order_id}>
-                  <span>{entry.order_id} · {dateTime(entry.created_at)}</span>
-                  <strong>{entry.freeGift}</strong>
-                </div>) : <p>No earlier gift/sample recorded for this customer.</p>}
+              <summary>
+                <span>Customer gift history</span>
+                <strong>{customerGiftHistory.length}</strong>
+                {customerGiftHistory.length ? <em>{customerGiftSummary.uniqueSamples} unique sample{customerGiftSummary.uniqueSamples === 1 ? "" : "s"}</em> : null}
+              </summary>
+              <div className="orders-gift-history-list">
+                {customerGiftHistory.length ? customerGiftHistory.map((entry) => <article key={entry.order_id} className="orders-gift-history-row">
+                  <div>
+                    <span>{entry.order_id}</span>
+                    <small>{dateTime(entry.created_at)}</small>
+                  </div>
+                  <div>
+                    <strong>{entry.sampleName || "Extra gift only"}</strong>
+                    {entry.sampleSize ? <small>{entry.sampleSize}</small> : null}
+                  </div>
+                  <div>
+                    <span>EXTRA</span>
+                    <strong>{entry.extraGift || "—"}</strong>
+                  </div>
+                </article>) : <p>No earlier gift/sample recorded for this customer.</p>}
               </div>
             </details>
           </section>
