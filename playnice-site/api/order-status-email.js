@@ -2,7 +2,7 @@ const { Resend } = require("resend");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Shared production asset used across PlayNice customer emails.
+// Shared production asset for PlayNice transactional customer emails.
 
 const SUPABASE_URL =
   process.env.SUPABASE_URL || "https://fsujznyfdrstinqexxgs.supabase.co";
