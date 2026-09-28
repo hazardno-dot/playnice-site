@@ -110,9 +110,10 @@ function getEmailCopy(language = "sr") {
 
   return isEn
     ? {
-        title: "Order received",
+        title: "Your order has been received",
+        salutation: (fullName) => "Dear " + escapeHtml(fullName) + ",",
         intro: (fullName, orderId) =>
-          `${escapeHtml(fullName)}, thank you for choosing PlayNice. Your order <strong style="color:#edcf88;">${escapeHtml(orderId)}</strong> is safely with us. We’ll take care of the details and let you know as soon as it is ready for the courier.`,
+          "Thank you for choosing PlayNice. Your order <strong style=\"color:#edcf88;\">" + escapeHtml(orderId) + "</strong> has been received successfully and will move into preparation shortly.",
         progress: ["ORDER RECEIVED", "PREPARING", "WITH COURIER"],
         summary: "Order summary",
         orderId: "Order ID",
@@ -129,7 +130,7 @@ function getEmailCopy(language = "sr") {
         shipping: "Shipping",
         free: "Free",
         nextTitle: "What happens next",
-        nextText: "It’s over to us now. We’ll check the details and prepare your order with care. As soon as it is handed to the courier, we’ll send you another email with delivery information.",
+        nextText: "We’ll prepare your order with care. When it is ready for courier collection, we’ll update you with the next status.",
         payment: "Payment on delivery",
         recommendationsTitle: "YOU MAY ALSO LIKE",
         recommendationsKicker: "A few scents worth discovering next.",
@@ -144,9 +145,10 @@ function getEmailCopy(language = "sr") {
         pause3: "Payment is on delivery, so nothing is charged in advance."
       }
     : {
-        title: "Porudžbina je primljena",
+        title: "Vaša porudžbina je primljena",
+        salutation: (fullName) => "Poštovani " + escapeHtml(fullName) + ",",
         intro: (fullName, orderId) =>
-          `${escapeHtml(fullName)}, hvala Vam što ste izabrali PlayNice. Vaša porudžbina <strong style="color:#edcf88;">${escapeHtml(orderId)}</strong> je uspešno primljena. Mi ćemo se pobrinuti za detalje i javiti Vam se čim bude spremna za kurira.`,
+          "Hvala Vam što ste izabrali PlayNice. Vaša porudžbina <strong style=\"color:#edcf88;\">" + escapeHtml(orderId) + "</strong> je uspešno primljena i uskoro kreće u pripremu.",
         progress: ["PORUDŽBINA PRIMLJENA", "PRIPREMA", "KOD KURIRA"],
         summary: "Pregled porudžbine",
         orderId: "Broj porudžbine",
@@ -163,7 +165,7 @@ function getEmailCopy(language = "sr") {
         shipping: "Dostava",
         free: "Besplatna",
         nextTitle: "Šta sledi",
-        nextText: "Sada je red na nama. Proverićemo sve detalje i pažljivo pripremiti Vašu porudžbinu. Čim je predamo kuriru, stići će Vam novi mejl sa informacijama o isporuci.",
+        nextText: "Pažljivo ćemo pripremiti Vašu porudžbinu. Kada bude spremna za preuzimanje od strane kurirske službe, obavestićemo Vas o sledećem statusu.",
         payment: "Plaćanje pouzećem",
         recommendationsTitle: "MOŽDA ĆE VAM SE DOPASTI",
         recommendationsKicker: "Još nekoliko mirisa koje vredi otkriti.",
@@ -485,8 +487,8 @@ function customerEmailHtml({
   <div style="margin:0;padding:0;background:#0b0b0b;font-family:Inter,Arial,sans-serif;color:#f7f2e8;">
     <div style="max-width:720px;margin:0 auto;padding:32px 20px;">
       <div style="background:linear-gradient(180deg,#171717,#0f0f0f);border:1px solid rgba(220,181,107,0.22);border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.28);">
-        <div style="padding:28px 28px 18px;border-bottom:1px solid rgba(220,181,107,0.14);">
-          <div style="letter-spacing:.35rem;font-weight:700;color:#edcf88;font-size:18px;">PLAYNICE</div>
+        <div style="padding:24px 28px 18px;border-bottom:1px solid rgba(220,181,107,0.14);">
+          <img src="https://www.playniceshop.me/playnice-header-logo.svg" width="190" alt="PlayNice Premium Fragrance House" style="display:block;width:190px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;">
           <div style="color:rgba(247,242,232,0.58);font-size:12px;margin-top:8px;">Remember. PlayNice.</div>
         </div>
 
@@ -499,6 +501,9 @@ function customerEmailHtml({
             ${c.title}
           </h1>
 
+          <p style="margin:0 0 8px;color:#f7f2e8;line-height:1.7;font-size:15px;font-weight:600;">
+            ${c.salutation(fullName)}
+          </p>
           <p style="margin:0 0 20px;color:rgba(247,242,232,0.82);line-height:1.85;font-size:15px;font-weight:400;">
             ${c.intro(fullName, orderId)}
           </p>
@@ -661,10 +666,12 @@ Remember. PlayNice.
 ${c.title.toUpperCase()}
 
 ${language === "en"
-  ? `${fullName}, thank you for choosing PlayNice.
-Your order ${orderId} is safely with us. We’ll take care of the details and let you know as soon as it is ready for the courier.`
-  : `${fullName}, hvala Vam što ste izabrali PlayNice.
-Vaša porudžbina ${orderId} je uspešno primljena. Mi ćemo se pobrinuti za detalje i javiti Vam se čim bude spremna za kurira.`}
+  ? `Dear ${fullName},
+
+Thank you for choosing PlayNice. Your order ${orderId} has been received successfully and will move into preparation shortly.`
+  : `Poštovani ${fullName},
+
+Hvala Vam što ste izabrali PlayNice. Vaša porudžbina ${orderId} je uspešno primljena i uskoro kreće u pripremu.`}
 
 01 — ${c.progress[0]} ●
 02 — ${c.progress[1]} ○
