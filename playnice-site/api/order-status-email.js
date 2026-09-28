@@ -61,8 +61,8 @@ function getCopy(language = "sr") {
     ? {
         kicker: "ORDER UPDATE",
         title: "Your order is ready to ship",
-        intro: (fullName) =>
-          `Hello ${escapeHtml(fullName)}, your PlayNice order has been packed and is ready to ship.`,
+        salutation: (fullName) => "Dear " + escapeHtml(fullName) + ",",
+        intro: () => "Your PlayNice order has been packed and is ready to ship.",
         detail:
           "It is currently waiting to be collected by the courier. Once the shipment has been collected, we’ll update you with the next status.",
         thanks: "Thank you for choosing PlayNice.",
@@ -73,9 +73,9 @@ function getCopy(language = "sr") {
       }
     : {
         kicker: "STATUS PORUDŽBINE",
-        title: "Porudžbina je spremna za slanje",
-        intro: (fullName) =>
-          `Zdravo ${escapeHtml(fullName)}, Vaša PlayNice porudžbina je spakovana i spremna za slanje.`,
+        title: "Vaša porudžbina je spremna za slanje",
+        salutation: (fullName) => "Poštovani " + escapeHtml(fullName) + ",",
+        intro: () => "Vaša PlayNice porudžbina je spakovana i spremna za slanje.",
         detail:
           "Trenutno čeka preuzimanje od strane kurirske službe. Kada pošiljka bude preuzeta, obavestićemo Vas o sledećem statusu.",
         thanks: "Hvala Vam što ste izabrali PlayNice.",
@@ -150,8 +150,8 @@ function packedEmailHtml({ orderId, fullName, language = "sr" }) {
   <div style="margin:0;padding:0;background:#0b0b0b;font-family:Inter,Arial,sans-serif;color:#f7f2e8;">
     <div style="max-width:720px;margin:0 auto;padding:32px 20px;">
       <div style="background:linear-gradient(180deg,#171717,#0f0f0f);border:1px solid rgba(220,181,107,0.22);border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.28);">
-        <div style="padding:28px 28px 18px;border-bottom:1px solid rgba(220,181,107,0.14);">
-          <div style="letter-spacing:.35rem;font-weight:700;color:#edcf88;font-size:18px;">PLAYNICE</div>
+        <div style="padding:24px 28px 18px;border-bottom:1px solid rgba(220,181,107,0.14);">
+          <img src="https://www.playniceshop.me/playnice-header-logo.svg" width="190" alt="PlayNice Premium Fragrance House" style="display:block;width:190px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;">
           <div style="color:rgba(247,242,232,0.58);font-size:12px;margin-top:8px;">Remember. PlayNice.</div>
         </div>
 
@@ -164,6 +164,9 @@ function packedEmailHtml({ orderId, fullName, language = "sr" }) {
             ${c.title}
           </h1>
 
+          <p style="margin:0 0 8px;color:#f7f2e8;line-height:1.7;font-size:15px;font-weight:600;">
+            ${c.salutation(fullName)}
+          </p>
           <p style="margin:0 0 12px;color:rgba(247,242,232,0.82);line-height:1.85;font-size:15px;font-weight:400;">
             ${c.intro(fullName)}
           </p>
