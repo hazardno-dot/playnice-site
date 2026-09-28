@@ -19,6 +19,7 @@ import NoteMediaUploadBridge from "./NoteMediaUploadBridge";
 import NoteApplyManager from "./NoteApplyManager";
 import NoteWorkflowAdvanceBridge from "./NoteWorkflowAdvanceBridge";
 import AnalyticsManager from "./AnalyticsManager";
+import WorkflowManager from "./WorkflowManager";
 import SiteHealthManager from "./SiteHealthManager";
 import SiteHealthOverviewBridge from "./SiteHealthOverviewBridge";
 import BrowserQaSiteHealthBridge from "./BrowserQaSiteHealthBridge";
@@ -212,6 +213,7 @@ export default function ControlCenterManagers() {
     <NoteApplyManager />
     <NoteWorkflowAdvanceBridge />
     <AnalyticsManager />
+    <WorkflowManager />
     <SiteHealthManager />
     <SiteHealthOverviewBridge />
     <BrowserQaSiteHealthBridge />

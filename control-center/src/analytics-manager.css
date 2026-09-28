@@ -78,3 +78,8 @@
 .inventory-notice{padding:8px 9px;border:1px solid rgba(107,211,155,.18);border-radius:8px;color:#9bc9ad;font-size:9px}
 @media(max-width:900px){.inventory-grid{grid-template-columns:1fr}}
 @media(max-width:720px){.inventory-summary{grid-template-columns:repeat(2,1fr)}.inventory-row{grid-template-columns:minmax(0,1fr) 64px}.inventory-row em{grid-column:2}}
+
+.inventory-intelligence{display:grid;gap:14px}
+.inventory-row:not(.stock-low):not(.stock-depleted){grid-template-columns:minmax(0,1fr) 76px}
+.inventory-row:not(.stock-low):not(.stock-depleted)>span{grid-column:2}
+.workflow-intelligence{display:grid;gap:16px}
