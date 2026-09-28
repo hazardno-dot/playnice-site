@@ -70,7 +70,7 @@ export default function ControlCenterManagers() {
   }, []);
 
   useEffect(() => {
-    const nav = document.querySelector(".sidebar nav");
+    const nav = document.querySelector(".cc-navigation");
     const mainStage = document.querySelector(".main-stage");
     if (!nav || !mainStage) return;
 
@@ -82,58 +82,13 @@ export default function ControlCenterManagers() {
         mainStage.scrollTop = 0;
         mainStage.scrollLeft = 0;
       };
-
       reset();
       window.requestAnimationFrame(reset);
-    };
-
-    const restoreSocialHiddenChildren = () => {
-      const socialSlot = mainStage.querySelector("#social-manager-slot");
-      const topbar = mainStage.querySelector(".topbar");
-      [...mainStage.children].forEach((child) => {
-        if (child === topbar || child === socialSlot) return;
-        if (child.dataset.socialPreviousDisplay !== undefined) {
-          child.style.display = child.dataset.socialPreviousDisplay;
-          delete child.dataset.socialPreviousDisplay;
-        }
-      });
-    };
-
-    const forceSocialClosed = () => {
-      const socialButton = nav.querySelector("[data-social-manager-nav='true']");
-      const socialSlot = mainStage.querySelector("#social-manager-slot");
-      socialButton?.classList.remove("active");
-      if (socialSlot) socialSlot.style.display = "none";
-      restoreSocialHiddenChildren();
-    };
-
-    const ensureSocialVisible = () => {
-      const socialSlot = mainStage.querySelector("#social-manager-slot");
-      const topbar = mainStage.querySelector(".topbar");
-      if (!socialSlot) return;
-      [...mainStage.children].forEach((child) => {
-        if (child === topbar || child === socialSlot) return;
-        if (child.dataset.socialPreviousDisplay === undefined) child.dataset.socialPreviousDisplay = child.style.display || "";
-        child.style.display = "none";
-      });
-      socialSlot.style.display = "block";
     };
 
     const rememberModule = (event) => {
       const button = event.target.closest("button");
       if (!button || !nav.contains(button)) return;
-
-      const socialButton = nav.querySelector("[data-social-manager-nav='true']");
-      if (socialButton && button !== socialButton) {
-        forceSocialClosed();
-        window.requestAnimationFrame(forceSocialClosed);
-      } else if (socialButton && button === socialButton) {
-        window.requestAnimationFrame(ensureSocialVisible);
-      }
-
-      const exhibitionButton = nav.querySelector("[data-exhibition-manager-nav='true']");
-      if (exhibitionButton && button !== exhibitionButton) exhibitionButton.classList.remove("active");
-
       const moduleName = button.textContent?.trim();
       if (moduleName) window.sessionStorage.setItem(ACTIVE_MODULE_KEY, moduleName);
       resetModuleScroll();
@@ -141,8 +96,18 @@ export default function ControlCenterManagers() {
     nav.addEventListener("click", rememberModule, true);
 
     const persisted = window.sessionStorage.getItem(ACTIVE_MODULE_KEY);
+    const restoreTarget = persisted === "Hero"
+      ? { group: "Manage", selector: "[data-hero-manager-nav='true']" }
+      : persisted === "Exhibition"
+        ? { group: "Manage", selector: "[data-exhibition-manager-nav='true']" }
+        : persisted === "Social"
+          ? { group: "Social", selector: "[data-social-manager-nav='true']" }
+          : persisted === "Inbox"
+            ? { group: "Social", selector: "[data-social-inbox-manager-nav='true']" }
+            : null;
+
     let restoreTimer = null;
-    if (persisted === "Hero" || persisted === "Exhibition" || persisted === "Social" || persisted === "Inbox") {
+    if (restoreTarget) {
       let attempts = 0;
       restoreTimer = window.setInterval(() => {
         attempts += 1;
@@ -151,15 +116,16 @@ export default function ControlCenterManagers() {
           window.clearInterval(restoreTimer);
           return;
         }
-        const selector = persisted === "Hero"
-          ? "[data-hero-manager-nav='true']"
-          : persisted === "Exhibition"
-            ? "[data-exhibition-manager-nav='true']"
-            : persisted === "Social"
-              ? "[data-social-manager-nav='true']"
-              : "[data-social-inbox-manager-nav='true']";
-        const moduleButton = nav.querySelector(selector);
-        if (moduleButton) moduleButton.click();
+
+        const moduleButton = nav.querySelector(restoreTarget.selector);
+        if (moduleButton) {
+          moduleButton.click();
+        } else {
+          const groupButton = [...nav.querySelectorAll(".cc-primary-nav button")]
+            .find((button) => button.textContent?.trim() === restoreTarget.group);
+          groupButton?.click();
+        }
+
         if (attempts >= 40) window.clearInterval(restoreTimer);
       }, 50);
     }

@@ -163,6 +163,7 @@ export default function JournalManager() {
   }, []);
 
   useEffect(() => {
+    if (!slot) return undefined;
     let cancelled = false;
     const load = async () => {
       const { data, error: loadError } = await supabase.from("journal_drafts").select("article_id,payload,review_status,reviewed_at,updated_at,approved_payload,baseline_snapshot,prepared_at,prepared_by,apply_branch,apply_pr_number,apply_created_at,apply_created_by").order("updated_at", { ascending: false });
@@ -173,7 +174,7 @@ export default function JournalManager() {
     load();
     const channel = supabase.channel("journal-drafts-manager").on("postgres_changes", { event: "*", schema: "public", table: "journal_drafts" }, load).subscribe();
     return () => { cancelled = true; supabase.removeChannel(channel); };
-  }, []);
+  }, [slot]);
 
   const workingArticles = useMemo(() => {
     const liveIds = new Set(sorted.map((article) => Number(article.id)));

@@ -1,66 +1,22 @@
-name: Control Center Apply Regression
+name: Control Center Regression
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - "control-center/api/create-apply.js"
-      - "control-center/api/create-new-product.js"
-      - "control-center/api/create-new-product-engine.js"
-      - "control-center/lib/create-new-product-engine.mjs"
-      - "control-center/api/verify-product-preview.js"
-      - "control-center/api/create-hero-apply.js"
-      - "control-center/api/finalize-hero-apply.js"
-      - "control-center/api/create-journal-apply.js"
-      - "control-center/api/create-journal-media-apply.js"
-      - "control-center/api/journal-apply-engine.mjs"
-      - "control-center/api/create-note-apply.js"
-      - "control-center/api/note-apply-engine.mjs"
-      - "control-center/api/site-health.js"
-      - "control-center/vite.config.js"
-      - "control-center/src/approvalSafety.mjs"
-      - "control-center/src/inlineValidationRules.mjs"
-      - "control-center/src/productWorkflowState.mjs"
-      - "control-center/src/productNavigation.mjs"
-      - "control-center/src/ProductCatalogCountBridge.jsx"
-      - "control-center/src/draftValidation.js"
-      - "control-center/src/ControlledApplyManager.jsx"
-      - "control-center/src/controlled-apply.css"
-      - "control-center/src/imageOptimizer.mjs"
-      - "control-center/src/journalAudit.mjs"
-      - "control-center/src/journalDraft.mjs"
-      - "control-center/src/JournalManager.jsx"
-      - "control-center/src/JournalApplyManager.jsx"
-      - "control-center/src/journal-manager.css"
-      - "control-center/src/journal-apply.css"
-      - "control-center/src/noteAudit.mjs"
-      - "control-center/src/noteLabelAudit.mjs"
-      - "control-center/src/noteDraft.mjs"
-      - "control-center/src/NotesManager.jsx"
-      - "control-center/src/NoteApplyManager.jsx"
-      - "control-center/src/NoteMediaUploadBridge.jsx"
-      - "control-center/src/notes-manager.css"
-      - "control-center/src/note-apply.css"
-      - "control-center/src/AnalyticsManager.jsx"
-      - "control-center/src/analytics-manager.css"
-      - "control-center/src/SiteHealthManager.jsx"
-      - "control-center/src/SiteHealthOverviewBridge.jsx"
-      - "control-center/src/siteHealthIncidents.mjs"
-      - "control-center/src/siteHealthFreshness.mjs"
-      - "control-center/src/site-health-manager.css"
-      - "control-center/src/site-health-overview.css"
-      - "control-center/src/App.jsx"
-      - "control-center/src/DraftManager.jsx"
-      - "control-center/src/ControlCenterManagers.jsx"
+      - "control-center/api/**"
+      - "control-center/server/**"
+      - "control-center/src/**"
+      - "control-center/supabase/**"
       - "control-center/tests/**"
-      - "playnice-site/src/data/products/index.js"
-      - "playnice-site/src/data/products/productCopy.js"
-      - "playnice-site/src/data/products/productWearContext.js"
-      - "playnice-site/src/data/products/discoveryProfiles.js"
+      - "control-center/package.json"
+      - "control-center/vite.config.js"
+      - "control-center/vercel.json"
+      - "playnice-site/src/data/products/**"
       - "playnice-site/src/data/heroSlides.generated.js"
-      - "playnice-site/src/data/journal/index.js"
-      - "playnice-site/src/TheNoteMap.jsx"
+      - "playnice-site/src/data/journal/**"
+      - "playnice-site/src/features/note-map/**"
       - "playnice-site/public/note-map/**"
       - ".github/workflows/control-center-apply-regression.yml"
   workflow_dispatch:
@@ -69,9 +25,9 @@ permissions:
   contents: read
 
 jobs:
-  controlled-apply-regression:
+  control-center-regression:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -81,39 +37,5 @@ jobs:
         with:
           node-version: 24
 
-      - name: Run Controlled Apply regression suite
-        run: |
-          node control-center/tests/controlled-apply-regression.mjs
-          node control-center/tests/controlled-apply-inline-copy.mjs
-          node control-center/tests/controlled-apply-category.mjs
-          node control-center/tests/controlled-apply-metadata.mjs
-          node control-center/tests/controlled-apply-identity.mjs
-          node control-center/tests/controlled-apply-new-product.mjs
-          node control-center/tests/controlled-apply-new-product-structure.mjs
-          node control-center/tests/product-presentation-guardrails.mjs
-          node control-center/tests/product-workflow-state.mjs
-          node control-center/tests/inline-validation-contract.mjs
-          node control-center/tests/approval-payload-safety.mjs
-          node control-center/tests/draft-realtime-contract.mjs
-          node control-center/tests/product-navigation-contract.mjs
-          node control-center/tests/draft-only-product-lifecycle.mjs
-          node control-center/tests/product-catalog-count-contract.mjs
-          node control-center/tests/journal-audit-contract.mjs
-          node control-center/tests/journal-draft-workflow.mjs
-          node control-center/tests/journal-controlled-apply.mjs
-          node control-center/tests/journal-controlled-apply-contract.mjs
-          node control-center/tests/journal-controlled-apply-schema-contract.mjs
-          node control-center/tests/journal-apply-ui-contract.mjs
-          node control-center/tests/journal-new-article.mjs
-          node control-center/tests/journal-final-workflow-audit.mjs
-          node control-center/tests/journal-link-editor.mjs
-          node control-center/tests/notes-audit-contract.mjs
-          node control-center/tests/notes-label-audit.mjs
-          node control-center/tests/note-draft-workflow.mjs
-          node control-center/tests/note-controlled-apply.mjs
-          node control-center/tests/image-optimizer-notes-contract.mjs
-          node control-center/tests/analytics-manager-contract.mjs
-          node control-center/tests/site-health-contract.mjs
-          node control-center/tests/site-health-incidents.mjs
-          node control-center/tests/site-health-overview-contract.mjs
-          node control-center/tests/site-health-freshness.mjs
+      - name: Run complete Control Center contract suite
+        run: node control-center/tests/run-all.mjs
