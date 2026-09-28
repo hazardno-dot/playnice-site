@@ -73,12 +73,14 @@ assert.ok(ui.includes("Batch settlements stay locked per order."), "Orders UI mu
 assert.ok(ui.includes("window.confirm("), "Courier settlement must require explicit confirmation before recording payout.");
 assert.ok(server.includes('action === "create_manual_order"'), "Orders API must expose manual order creation through the existing write-through route.");
 assert.ok(server.includes('"manual_create"'), "Orders API must use the canonical checkout order store for manual creation.");
-assert.ok(server.includes("FREE_SHIPPING_THRESHOLD = 39"), "Manual order shipping must preserve the live free-shipping threshold.");
+assert.ok(server.includes("FREE_SHIPPING_THRESHOLD = 49"), "Manual order shipping must preserve the live free-shipping threshold.");
 assert.ok(server.includes("SHIPPING_PRICE = 4"), "Manual order shipping must preserve the live courier charge.");
 assert.ok(ui.includes("ManualOrderDialog"), "Orders UI must mount the manual order intake dialog.");
 
 const manualUi = fs.readFileSync(path.resolve(root, "control-center/src/ManualOrderDialog.jsx"), "utf8");
 assert.ok(manualUi.includes('from "@shop/data/products/index.js"'), "Manual order intake must use the canonical Shop product catalog.");
+assert.ok(manualUi.includes("FREE_SHIPPING_THRESHOLD = 49"), "Manual order UI must use the live free-shipping threshold.");
+assert.ok(manualUi.includes("subtotal < FREE_SHIPPING_THRESHOLD ? SHIPPING_PRICE : 0"), "Manual order UI must calculate shipping from the shared Commerce contract values.");
 assert.ok(manualUi.includes("Create production order"), "Manual order intake must explicitly identify production creation.");
 assert.ok(manualUi.includes("No automatic customer or admin email is sent for manual orders."), "Manual order intake must communicate the v1 email behavior.");
 assert.ok(manualUi.includes("window.confirm("), "Manual production order creation must require explicit confirmation.");

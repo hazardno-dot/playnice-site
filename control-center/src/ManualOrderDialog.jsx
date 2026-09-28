@@ -12,6 +12,8 @@ const SOURCES = [
   ["manual", "Manual"]
 ];
 
+const SHIPPING_PRICE = 4;
+const FREE_SHIPPING_THRESHOLD = 49;
 const money = (value) => Number(value || 0).toLocaleString("en-IE", { style: "currency", currency: "EUR" });
 const sortedProducts = [...products].sort((a, b) => String(a.name).localeCompare(String(b.name)));
 
@@ -63,7 +65,7 @@ export default function ManualOrderDialog({ open, busy, onClose, onCreate }) {
   }, [open]);
 
   const subtotal = useMemo(() => items.reduce((sum, item) => sum + Number(item.price) * Number(item.quantity), 0), [items]);
-  const shipping = subtotal > 0 && subtotal < 39 ? 4 : 0;
+  const shipping = subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? SHIPPING_PRICE : 0;
   const total = subtotal + shipping;
 
   if (!open) return null;

@@ -157,7 +157,7 @@ const JOURNAL_SEEN_KEY = "playnice_latest_journal_seen_v1";
 const PRODUCT_PAGE_SIZE_OPTIONS = [12, 24, 48, 96];
 const DISCOVERY_RESULTS_PER_PAGE = 5;
 const SHIPPING_COST = 4.0;
-const FREE_SHIPPING_THRESHOLD = 39;
+const FREE_SHIPPING_THRESHOLD = 49;
 
 function formatPrice(value) {
   return `€${Number(value).toFixed(2)}`;
@@ -4930,7 +4930,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     title: isSr ? "Dostava i povrat" : "Delivery & Returns",
     delivery: isSr ? "Dostava širom CG" : "Delivery across Montenegro",
     shipping: isSr ? "Dostava €4" : "Shipping €4",
-    free: isSr ? "Besplatno preko €39" : "Free over €39",
+    free: isSr ? `Besplatno preko €${FREE_SHIPPING_THRESHOLD}` : `Free over €${FREE_SHIPPING_THRESHOLD}`,
     cod: isSr ? "Plaćanje pouzećem" : "Cash on delivery",
     returnNote: isSr
       ? "Otvoreni dekanti se ne vraćaju iz higijenskih razloga. Povrat je moguć za neotvoreno, nekorišćeno i neoštećeno pakovanje, ili u slučaju greške/oštećenja pri dostavi."
@@ -7661,7 +7661,7 @@ const DeliveryReturnsMini = ({ surface = "footer" }) => {
     <div className="footer-benefit">
       <i className="fa-solid fa-gift"></i>
       <strong>{lang === "sr" ? "Besplatna dostava" : "Free shipping"}</strong>
-      <span>{lang === "sr" ? "Preko 39€" : "Over €39"}</span>
+      <span>{lang === "sr" ? `Preko ${FREE_SHIPPING_THRESHOLD}€` : `Over €${FREE_SHIPPING_THRESHOLD}`}</span>
     </div>
 
     <div className="footer-benefit">

@@ -15,7 +15,7 @@ const WRITE_THROUGH_ENABLED =
   Boolean(SHEET_SYNC_SECRET);
 const ORDER_STORE_URL = SUPABASE_URL ? SUPABASE_URL + "/functions/v1/checkout-order-store" : "";
 const SHIPPING_PRICE = 4;
-const FREE_SHIPPING_THRESHOLD = 39;
+const FREE_SHIPPING_THRESHOLD = 49;
 const MANUAL_ORDER_SOURCES = new Set(["instagram", "email", "whatsapp", "viber", "phone", "message", "manual"]);
 
 const json = (res, status, body) => {
