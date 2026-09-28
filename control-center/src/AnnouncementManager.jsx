@@ -75,6 +75,7 @@ export default function AnnouncementManager() {
   }, []);
 
   useEffect(() => {
+    if (!slot) return undefined;
     let cancelled = false;
     const load = async () => {
       const { data, error: loadError } = await supabase.from("announcement_drafts").select(DRAFT_SELECT).order("updated_at", { ascending: false });
@@ -85,7 +86,7 @@ export default function AnnouncementManager() {
     load();
     const channel = supabase.channel("announcement-drafts-manager").on("postgres_changes", { event: "*", schema: "public", table: "announcement_drafts" }, load).subscribe();
     return () => { cancelled = true; supabase.removeChannel(channel); };
-  }, []);
+  }, [slot]);
 
   const liveRows = useMemo(() => [...ANNOUNCEMENT_ITEMS].sort((a, b) => Number(a.priority || 0) - Number(b.priority || 0)), []);
   const liveIds = useMemo(() => liveRows.map((item) => item.id), [liveRows]);

@@ -63,12 +63,12 @@ function displayValue(value) { const text = String(value ?? ""); return text.len
 const workflowLabel = (status) => status === "approved" ? "APPROVED" : status === "ready" ? "READY FOR REVIEW" : "DRAFT";
 
 export default function DraftManager() {
-  const [open, setOpen] = useState(false), [drafts, setDrafts] = useState([]), [loading, setLoading] = useState(true), [expanded, setExpanded] = useState(null), [error, setError] = useState(""), [acting, setActing] = useState("");
+  const [open, setOpen] = useState(false), [drafts, setDrafts] = useState([]), [loading, setLoading] = useState(true), [draftsAvailable, setDraftsAvailable] = useState(true), [expanded, setExpanded] = useState(null), [error, setError] = useState(""), [acting, setActing] = useState("");
   const load = async ({ quiet = false } = {}) => {
     if (!quiet) { setLoading(true); setError(""); }
     const { data, error: loadError } = await supabase.from("product_drafts").select("product_slug,payload,updated_at,review_status,reviewed_at,reviewed_by,baseline_snapshot,approved_payload,prepared_at,prepared_by").order("updated_at", { ascending: false });
-    if (loadError) { setError(loadError.message || "Could not load drafts."); if (!quiet) setLoading(false); return; }
-    setDrafts(data || []); setLoading(false);
+    if (loadError) { setDraftsAvailable(false); setError(loadError.message || "Could not load drafts."); if (!quiet) setLoading(false); return; }
+    setDraftsAvailable(true); setDrafts(data || []); setLoading(false);
   };
   useEffect(() => {
     if (!open) return undefined;
@@ -168,7 +168,7 @@ export default function DraftManager() {
   };
 
   return <>
-    <button className={`draft-manager-trigger ${count ? "has-drafts" : ""}`} onClick={() => { setOpen(true); load(); }}><span>Drafts</span><strong>{loading ? "…" : count}</strong></button>
+    <button className={`draft-manager-trigger ${count ? "has-drafts" : ""}`} title={draftsAvailable ? undefined : "Draft data unavailable"} onClick={() => { setOpen(true); load(); }}><span>Drafts</span><strong>{loading ? "…" : draftsAvailable ? count : "—"}</strong></button>
     {open ? <div className="draft-manager-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
       <aside className="draft-manager-panel">
         <header className="draft-manager-head"><div><span className="eyebrow">SUPABASE / UNPUBLISHED</span><h2>Draft management</h2><p>{count} persistent draft{count === 1 ? "" : "s"}</p></div><button className="draft-manager-close" onClick={() => setOpen(false)}>×</button></header>

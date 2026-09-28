@@ -81,6 +81,7 @@ export default function NotesManager() {
   }, []);
 
   useEffect(() => {
+    if (!slot) return undefined;
     let cancelled = false;
     const load = async () => {
       const { data, error: loadError } = await supabase.from("note_drafts").select("note_key,payload,review_status,reviewed_at,updated_at,approved_payload").order("updated_at", { ascending: false });
@@ -91,7 +92,7 @@ export default function NotesManager() {
     load();
     const channel = supabase.channel("note-drafts-manager").on("postgres_changes", { event: "*", schema: "public", table: "note_drafts" }, load).subscribe();
     return () => { cancelled = true; supabase.removeChannel(channel); };
-  }, []);
+  }, [slot]);
 
   const audit = useMemo(() => ({ ...structuralAudit, rows: baseRows, errors: [...structuralAudit.errors, ...labelAudit.errors], warnings: [...structuralAudit.warnings, ...labelAudit.warnings] }), [structuralAudit, baseRows, labelAudit]);
   const workingRows = useMemo(() => {

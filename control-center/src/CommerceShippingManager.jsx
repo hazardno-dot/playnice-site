@@ -88,6 +88,7 @@ export default function CommerceShippingManager() {
   };
 
   useEffect(() => {
+    if (!slot) return undefined;
     loadLive();
     loadDraft();
     const channel = supabase
@@ -95,7 +96,7 @@ export default function CommerceShippingManager() {
       .on("postgres_changes", { event: "*", schema: "public", table: "commerce_drafts" }, loadDraft)
       .subscribe();
     return () => { supabase.removeChannel(channel); };
-  }, []);
+  }, [slot]);
 
   const working = row?.payload ? normalizeCommerceShippingDraft(row.payload) : live;
   const audit = useMemo(() => auditCommerceShippingDraft(draft), [draft]);
