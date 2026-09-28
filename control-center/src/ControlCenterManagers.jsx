@@ -63,7 +63,7 @@ export default function ControlCenterManagers() {
       actions.insertBefore(draftSlot, noPublish);
     }
 
-    const applySlot = topbar.querySelector("#controlled-apply-slot");
+    const applySlot = mainStage.querySelector("#controlled-apply-slot");
     if (!applySlot) return;
 
     setSlots({ draft: draftSlot, apply: applySlot });
