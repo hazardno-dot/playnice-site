@@ -17,6 +17,11 @@ const ORDER_STORE_URL = SUPABASE_URL ? SUPABASE_URL + "/functions/v1/checkout-or
 const SHIPPING_PRICE = 4;
 const FREE_SHIPPING_THRESHOLD = 49;
 const COURIER_FEE = 4;
+const STATUS_EMAIL_URL = String(
+  process.env.ORDER_STATUS_EMAIL_URL ||
+  "https://www.playniceshop.me/api/order-status-email"
+).trim();
+const STATUS_EMAIL_ENABLED = process.env.VERCEL_ENV === "production";
 const MANUAL_ORDER_SOURCES = new Set(["instagram", "email", "whatsapp", "viber", "phone", "message", "manual"]);
 
 const json = (res, status, body) => {
@@ -298,6 +303,64 @@ async function mirrorWithAudit(token, order, mirror) {
   }
 }
 
+async function sendPackedStatusEmail(token, order, previousStatus) {
+  if (previousStatus !== "NEW" || order?.status !== "PACKED") {
+    return { status_email_status: "not_applicable", status_email_warning: null };
+  }
+
+  if (!STATUS_EMAIL_ENABLED) {
+    return { status_email_status: "preview_skipped", status_email_warning: null };
+  }
+
+  const payload = order?.source_payload || {};
+  const email = cleanText(payload.email, 180).toLowerCase();
+  const fullName = cleanText(payload.fullName, 160);
+  const language = payload.language === "en" ? "en" : "sr";
+
+  if (!email || !fullName) {
+    return {
+      status_email_status: "skipped_missing_customer_email",
+      status_email_warning: "Order was packed, but the customer status email was skipped because customer email data is incomplete."
+    };
+  }
+
+  try {
+    const response = await fetch(STATUS_EMAIL_URL, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        status: "PACKED",
+        orderId: order.order_id,
+        fullName,
+        email,
+        language
+      }),
+      signal: AbortSignal.timeout(12000)
+    });
+
+    const result = await safeJson(response);
+    if (!response.ok || result?.ok !== true) {
+      throw new Error(result?.error || `Status email returned HTTP ${response.status}`);
+    }
+
+    return {
+      status_email_status: "sent",
+      status_email_warning: null,
+      status_email_message_id: result.messageId || null
+    };
+  } catch (error) {
+    const message = String(error?.message || error).slice(0, 300);
+    console.error("Packed status email failed", message);
+    return {
+      status_email_status: "failed",
+      status_email_warning: "Order was packed successfully, but the customer status email could not be sent: " + message
+    };
+  }
+}
+
 async function mutateOrder(token, body) {
   const action = String(body?.action || "").trim();
   const id = String(body?.id || "").trim();
@@ -309,13 +372,17 @@ async function mutateOrder(token, body) {
   else if (action === "set_delivery_issue") value = String(body?.delivery_issue || "").trim();
   else throw new Error("Unknown order action.");
 
-  if (action === "set_courier_payment" && value === "PENDING") {
+  let currentOrder = null;
+  if (action === "set_status" || (action === "set_courier_payment" && value === "PENDING")) {
     const current = await readOrders(token);
-    const currentOrder = current.orders.find((item) => item.id === id);
-    if (currentOrder?.courier_batch_id) {
-      throw new Error("Batched courier settlements cannot be reopened per order.");
-    }
+    currentOrder = current.orders.find((item) => item.id === id) || null;
   }
+
+  if (action === "set_courier_payment" && value === "PENDING" && currentOrder?.courier_batch_id) {
+    throw new Error("Batched courier settlements cannot be reopened per order.");
+  }
+
+  const previousStatus = currentOrder?.status || null;
 
   const mutation = await rpc("update_control_center_order", token, {
     p_record_id: id,
@@ -326,9 +393,15 @@ async function mutateOrder(token, body) {
 
   if (!mutation?.order?.id || !mutation?.mirror) throw new Error("Supabase order mutation returned an incomplete result.");
 
+  const mirrorResult = await mirrorWithAudit(token, mutation.order, mutation.mirror);
+  const emailResult = action === "set_status"
+    ? await sendPackedStatusEmail(token, mutation.order, previousStatus)
+    : { status_email_status: "not_applicable", status_email_warning: null };
+
   return {
     order: mutation.order,
-    ...(await mirrorWithAudit(token, mutation.order, mutation.mirror))
+    ...mirrorResult,
+    ...emailResult
   };
 }
 
