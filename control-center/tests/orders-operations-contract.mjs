@@ -75,6 +75,15 @@ assert.ok(server.includes('action === "settle_courier_batch"'), "Orders API must
 assert.ok(ui.includes("COURIER SETTLEMENT V1"), "Orders UI must expose the courier settlement workspace.");
 assert.ok(ui.includes('["SHIPPED","OUT_FOR_DELIVERY","DELIVERED"].includes(order.status)'), "Courier settlement must accept shipped, out-for-delivery and delivered pending COD orders.");
 assert.ok(ui.includes("Record courier payout"), "Orders UI must provide a batch payout action.");
+
+assert.ok(ui.includes("COURIER_FEE = 4"), "Courier payout UI must use the current €4 courier fee.");
+assert.ok(ui.includes("courierPayout(order)"), "Courier payout desk must calculate net remittance per order.");
+assert.ok(ui.includes("COURIER DUE"), "Orders KPI must distinguish net courier remittance from gross COD collected.");
+assert.ok(ui.includes("SELECTED PAYOUT"), "Courier selection must show the net payout amount.");
+assert.ok(server.includes("COURIER_FEE = 4"), "Orders API must use the current €4 courier fee for settlement accounting.");
+assert.ok(server.includes("gross_total: grossTotal"), "Settlement response must preserve gross COD collected.");
+assert.ok(server.includes("courier_fee_total: courierFeeTotal"), "Settlement response must expose total courier fees.");
+assert.ok(server.includes("total: payoutTotal"), "Settlement total must represent the net payout actually received.");
 assert.ok(ui.includes("courier_batch_id"), "Orders UI must derive settlement history from canonical batch ids.");
 assert.ok(server.includes("Batched courier settlements cannot be reopened per order."), "Orders API must protect settled batch integrity.");
 assert.ok(ui.includes("Batch settlements stay locked per order."), "Orders UI must communicate locked batch settlements.");

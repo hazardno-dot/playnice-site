@@ -971,3 +971,9 @@
   .orders-gift-repeat-warning span{text-align:left}
   .orders-gift-history-row{grid-template-columns:1fr}
 }
+
+.orders-settlement-amount{display:grid;justify-items:end;gap:2px}
+.orders-settlement-amount span,.orders-settlement-batch-total span{font-size:8px;color:#718078}
+.orders-settlement-amount strong{font-size:12px}
+.orders-settlement-batch-total{display:grid;justify-items:end;gap:2px}
+.orders-settlement-actions>div small{display:block;margin-top:2px;font-size:8px;color:#718078;text-align:right}
