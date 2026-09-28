@@ -9,6 +9,8 @@ const PATHS = {
   app: "playnice-site/src/App.js",
   translations: "playnice-site/src/data/translations.js",
   checkout: "playnice-site/server/checkout-legacy.js",
+  manualOrdersApi: "control-center/server/orders.js",
+  manualOrderDialog: "control-center/src/ManualOrderDialog.jsx",
 };
 const ALLOWED_FILES = Object.values(PATHS);
 
@@ -116,14 +118,25 @@ function parseNumber(source, regex, label) {
   return value;
 }
 
-function parseLive(appSource, checkoutSource, translationsSource) {
+function parseLive(appSource, checkoutSource, translationsSource, manualApiSource, manualDialogSource) {
   const appShipping = parseNumber(appSource, /const\s+SHIPPING_COST\s*=\s*([0-9.]+)\s*;/, "Storefront shipping price");
   const appThreshold = parseNumber(appSource, /const\s+FREE_SHIPPING_THRESHOLD\s*=\s*([0-9.]+)\s*;/, "Storefront free-shipping threshold");
   const checkoutShipping = parseNumber(checkoutSource, /const\s+SHIPPING_PRICE\s*=\s*([0-9.]+)\s*;/, "Checkout shipping price");
   const checkoutThreshold = parseNumber(checkoutSource, /const\s+FREE_SHIPPING_THRESHOLD\s*=\s*([0-9.]+)\s*;/, "Checkout free-shipping threshold");
+  const manualApiShipping = parseNumber(manualApiSource, /const\s+SHIPPING_PRICE\s*=\s*([0-9.]+)\s*;/, "Manual order API shipping price");
+  const manualApiThreshold = parseNumber(manualApiSource, /const\s+FREE_SHIPPING_THRESHOLD\s*=\s*([0-9.]+)\s*;/, "Manual order API free-shipping threshold");
+  const manualDialogShipping = parseNumber(manualDialogSource, /const\s+SHIPPING_PRICE\s*=\s*([0-9.]+)\s*;/, "Manual order UI shipping price");
+  const manualDialogThreshold = parseNumber(manualDialogSource, /const\s+FREE_SHIPPING_THRESHOLD\s*=\s*([0-9.]+)\s*;/, "Manual order UI free-shipping threshold");
 
-  if (appShipping !== checkoutShipping || appThreshold !== checkoutThreshold) {
-    throw new Error("COMMERCE DRIFT: storefront and checkout shipping values do not match.");
+  if (
+    appShipping !== checkoutShipping ||
+    appShipping !== manualApiShipping ||
+    appShipping !== manualDialogShipping ||
+    appThreshold !== checkoutThreshold ||
+    appThreshold !== manualApiThreshold ||
+    appThreshold !== manualDialogThreshold
+  ) {
+    throw new Error("COMMERCE DRIFT: storefront, checkout and manual-order shipping values do not match.");
   }
 
   const thresholdText = Number.isInteger(appThreshold) ? String(appThreshold) : String(appThreshold);
@@ -207,7 +220,13 @@ async function patchDraft(token, patch) {
 
 async function actionReadLive(res) {
   const files = await readMainSources();
-  const live = parseLive(files[PATHS.app].source, files[PATHS.checkout].source, files[PATHS.translations].source);
+  const live = parseLive(
+    files[PATHS.app].source,
+    files[PATHS.checkout].source,
+    files[PATHS.translations].source,
+    files[PATHS.manualOrdersApi].source,
+    files[PATHS.manualOrderDialog].source,
+  );
   return json(res, 200, { ok: true, live });
 }
 
@@ -219,8 +238,14 @@ async function actionPrepare(token, user, res) {
 
   const approved = validatePayload(draft.approved_payload);
   const files = await readMainSources();
-  const live = parseLive(files[PATHS.app].source, files[PATHS.checkout].source, files[PATHS.translations].source);
-  const expectedFiles = [PATHS.app, PATHS.checkout];
+  const live = parseLive(
+    files[PATHS.app].source,
+    files[PATHS.checkout].source,
+    files[PATHS.translations].source,
+    files[PATHS.manualOrdersApi].source,
+    files[PATHS.manualOrderDialog].source,
+  );
+  const expectedFiles = [PATHS.app, PATHS.checkout, PATHS.manualOrdersApi, PATHS.manualOrderDialog];
   if (approved.freeShippingThreshold !== live.freeShippingThreshold) expectedFiles.push(PATHS.translations);
 
   const baseline = {
@@ -253,12 +278,20 @@ async function actionCreateApply(token, user, res) {
       return json(res, 409, { error: `LIVE DRIFT: ${path} changed after Commerce preparation. Review and prepare again.` });
     }
   }
-  const before = parseLive(files[PATHS.app].source, files[PATHS.checkout].source, files[PATHS.translations].source);
+  const before = parseLive(
+    files[PATHS.app].source,
+    files[PATHS.checkout].source,
+    files[PATHS.translations].source,
+    files[PATHS.manualOrdersApi].source,
+    files[PATHS.manualOrderDialog].source,
+  );
   if (stable(before) === stable(approved)) return json(res, 409, { error: "Approved Commerce draft contains no runtime change." });
 
   const patched = {
     [PATHS.app]: patchApp(files[PATHS.app].source, before, approved),
     [PATHS.checkout]: patchCheckout(files[PATHS.checkout].source, approved),
+    [PATHS.manualOrdersApi]: patchCheckout(files[PATHS.manualOrdersApi].source, approved),
+    [PATHS.manualOrderDialog]: patchCheckout(files[PATHS.manualOrderDialog].source, approved),
     [PATHS.translations]: patchTranslations(files[PATHS.translations].source, before, approved),
   };
   const changedPaths = ALLOWED_FILES.filter((path) => patched[path] !== files[path].source).sort();
@@ -302,7 +335,7 @@ async function actionCreateApply(token, user, res) {
         `- Files: ${changedPaths.join(", ")}`,
         "- Safety: approved payload parity checked",
         "- Safety: all prepared file SHAs must still match main",
-        "- Safety: storefront, checkout, SEO and bilingual free-shipping copy are patched together",
+        "- Safety: storefront, checkout, manual orders, SEO and bilingual free-shipping copy are patched together",
         "- Safety: no automatic merge",
       ].join("\n"),
     }),

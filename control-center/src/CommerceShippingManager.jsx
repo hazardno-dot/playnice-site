@@ -37,7 +37,7 @@ export default function CommerceShippingManager() {
   const [live, setLive] = useState(null);
   const [row, setRow] = useState(null);
   const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState({ shippingPrice: 4, freeShippingThreshold: 39 });
+  const [draft, setDraft] = useState({ shippingPrice: 4, freeShippingThreshold: 49 });
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
 
@@ -107,7 +107,7 @@ export default function CommerceShippingManager() {
 
   const startEdit = () => {
     setError("");
-    setDraft(normalizeCommerceShippingDraft(row?.payload || live || { shippingPrice: 4, freeShippingThreshold: 39 }));
+    setDraft(normalizeCommerceShippingDraft(row?.payload || live || { shippingPrice: 4, freeShippingThreshold: 49 }));
     setEditing(true);
   };
 
