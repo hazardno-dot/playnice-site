@@ -118,6 +118,24 @@ function parseNumber(source, regex, label) {
   return value;
 }
 
+function parseManualDialogShipping(source) {
+  const shippingConstant = /const\s+SHIPPING_PRICE\s*=\s*([0-9.]+)\s*;/.exec(source);
+  const thresholdConstant = /const\s+FREE_SHIPPING_THRESHOLD\s*=\s*([0-9.]+)\s*;/.exec(source);
+  if (shippingConstant && thresholdConstant) {
+    return {
+      shippingPrice: Number(shippingConstant[1]),
+      freeShippingThreshold: Number(thresholdConstant[1]),
+    };
+  }
+
+  const legacy = /const\s+shipping\s*=\s*subtotal\s*>\s*0\s*&&\s*subtotal\s*<\s*([0-9.]+)\s*\?\s*([0-9.]+)\s*:\s*0\s*;/.exec(source);
+  if (!legacy) throw new Error("Manual order UI shipping contract was not found.");
+  return {
+    shippingPrice: Number(legacy[2]),
+    freeShippingThreshold: Number(legacy[1]),
+  };
+}
+
 function parseLive(appSource, checkoutSource, translationsSource, manualApiSource, manualDialogSource) {
   const appShipping = parseNumber(appSource, /const\s+SHIPPING_COST\s*=\s*([0-9.]+)\s*;/, "Storefront shipping price");
   const appThreshold = parseNumber(appSource, /const\s+FREE_SHIPPING_THRESHOLD\s*=\s*([0-9.]+)\s*;/, "Storefront free-shipping threshold");
@@ -125,8 +143,9 @@ function parseLive(appSource, checkoutSource, translationsSource, manualApiSourc
   const checkoutThreshold = parseNumber(checkoutSource, /const\s+FREE_SHIPPING_THRESHOLD\s*=\s*([0-9.]+)\s*;/, "Checkout free-shipping threshold");
   const manualApiShipping = parseNumber(manualApiSource, /const\s+SHIPPING_PRICE\s*=\s*([0-9.]+)\s*;/, "Manual order API shipping price");
   const manualApiThreshold = parseNumber(manualApiSource, /const\s+FREE_SHIPPING_THRESHOLD\s*=\s*([0-9.]+)\s*;/, "Manual order API free-shipping threshold");
-  const manualDialogShipping = parseNumber(manualDialogSource, /const\s+SHIPPING_PRICE\s*=\s*([0-9.]+)\s*;/, "Manual order UI shipping price");
-  const manualDialogThreshold = parseNumber(manualDialogSource, /const\s+FREE_SHIPPING_THRESHOLD\s*=\s*([0-9.]+)\s*;/, "Manual order UI free-shipping threshold");
+  const manualDialog = parseManualDialogShipping(manualDialogSource);
+  const manualDialogShipping = manualDialog.shippingPrice;
+  const manualDialogThreshold = manualDialog.freeShippingThreshold;
 
   if (
     appShipping !== checkoutShipping ||
