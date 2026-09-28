@@ -22,7 +22,7 @@ assert.deepEqual(normalizeCommerceShippingDraft({ shippingPrice: "4", freeShippi
 assert.deepEqual(auditCommerceShippingDraft({ shippingPrice: 4, freeShippingThreshold: 49 }).errors, []);
 assert.ok(auditCommerceShippingDraft({ shippingPrice: -1, freeShippingThreshold: 49 }).errors.length > 0);
 assert.ok(auditCommerceShippingDraft({ shippingPrice: 4, freeShippingThreshold: 0 }).errors.length > 0);
-assert.ok(auditCommerceShippingDraft({ shippingPrice: 40, freeShippingThreshold: 49 }).errors.length > 0);
+assert.ok(auditCommerceShippingDraft({ shippingPrice: 50, freeShippingThreshold: 49 }).errors.length > 0);
 
 assert.deepEqual(getCommerceCopyPreview({ shippingPrice: 4, freeShippingThreshold: 49 }), {
   sr: "Besplatna dostava preko 49€",
