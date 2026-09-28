@@ -95,7 +95,6 @@ function OrdersWorkspace() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [writeEnabled, setWriteEnabled] = useState(false);
-  const [tracking, setTracking] = useState("");
   const [settlementSelection, setSettlementSelection] = useState([]);
   const [manualOrderOpen, setManualOrderOpen] = useState(false);
   const [giftSampleName, setGiftSampleName] = useState("");
@@ -120,7 +119,6 @@ function OrdersWorkspace() {
   useEffect(() => { load(); }, []);
 
   const selected = orders.find((order) => order.id === selectedId) || null;
-  useEffect(() => { setTracking(selected?.tracking_number || ""); }, [selected?.id, selected?.tracking_number]);
   useEffect(() => {
     const data = selected?.source_payload || {};
     const sample = Array.isArray(data.giftSamples) ? data.giftSamples[0] : null;
@@ -376,10 +374,10 @@ function OrdersWorkspace() {
     {notice ? <div className="orders-warning">{notice}</div> : null}
 
     <div className={writeEnabled ? "orders-write-mode active" : "orders-write-mode"}>
-      <strong>{writeEnabled ? "WRITE-THROUGH ACTIVE" : "READ-ONLY MIGRATION PHASE"}</strong>
+      <strong>{writeEnabled ? "WRITE-THROUGH ACTIVE" : "WRITE-THROUGH UNAVAILABLE"}</strong>
       <span>{writeEnabled
         ? "Supabase is primary. Every Control Center change is mirrored to Google Sheets and sync failures stay visible."
-        : "Supabase is canonical. Operational edits remain in Google Sheets until the write-through mirror is configured."}</span>
+        : "Supabase remains canonical. Control Center writes are disabled until the Google Sheets backup mirror configuration is restored."}</span>
     </div>
 
     <div className="orders-kpis">
@@ -444,7 +442,7 @@ function OrdersWorkspace() {
     </section>
 
     <div className="orders-toolbar">
-      <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search order, customer, city, tracking, product…" />
+      <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search order, customer, city, reference, product…" />
       <div className="orders-status-filters">
         {["ALL","NEW","PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED","RETURNED","CANCELLED","DUPLICATE"].map((status) =>
           <button type="button" key={status} className={`filter-status filter-status-${status.toLowerCase()} ${statusFilter === status ? "active" : ""}`} onClick={() => setStatusFilter(status)}>

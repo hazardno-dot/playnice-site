@@ -305,7 +305,6 @@ async function mutateOrder(token, body) {
 
   let value = "";
   if (action === "set_status") value = String(body?.status || "").trim();
-  else if (action === "save_tracking") value = String(body?.tracking_number || "").trim();
   else if (action === "set_courier_payment") value = String(body?.status || "").trim();
   else if (action === "set_delivery_issue") value = String(body?.delivery_issue || "").trim();
   else throw new Error("Unknown order action.");
