@@ -1,15 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
-import { journalArticles } from "@shop/data/journal/index.js";
-import { auditProductNotes } from "./noteAudit.mjs";
 import { supabase } from "./supabase";
 import "./analytics-manager.css";
 
-const STATUS_ORDER = ["draft", "ready", "approved"];
-const fmtDate = (value) => value ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : "—";
-const thirtyDaysAgo = () => new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-const countStatuses = (rows = []) => STATUS_ORDER.reduce((out, status) => ({ ...out, [status]: rows.filter((row) => String(row.review_status || "draft").toLowerCase() === status).length }), {});
 const money = (value) => Number(value || 0).toLocaleString("en-IE", { style: "currency", currency: "EUR" });
 const number = (value, digits = 0) => Number(value || 0).toLocaleString("en-IE", { maximumFractionDigits: digits });
 const percent = (value) => number(value, 1) + "%";
@@ -27,10 +21,15 @@ async function loadOrderAnalytics() {
 
 export default function AnalyticsManager() {
   const [slot, setSlot] = useState(null);
+  const [module, setModule] = useState("Commerce");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [data, setData] = useState({ productDrafts: [], heroDrafts: [], journalDrafts: [], noteDrafts: [], publishHistory: [], auditLog: [], heroSlides: 0, orderAnalytics: {} });
-  const noteAudit = useMemo(() => auditProductNotes(products), []);
+  const [data, setData] = useState({ orderAnalytics: {} });
+  const [inventoryProduct, setInventoryProduct] = useState("");
+  const [inventoryMl, setInventoryMl] = useState("");
+  const [inventoryNote, setInventoryNote] = useState("");
+  const [inventoryBusy, setInventoryBusy] = useState(false);
+  const [inventoryNotice, setInventoryNotice] = useState("");
 
   useEffect(() => {
     const mainStage = document.querySelector(".main-stage");
@@ -38,7 +37,8 @@ export default function AnalyticsManager() {
     const sync = () => {
       const heading = mainStage.querySelector(".topbar h1")?.textContent?.trim();
       const placeholder = mainStage.querySelector(".placeholder-panel");
-      if (!placeholder || heading !== "Analytics") { setSlot(null); return; }
+      if (!placeholder || !["Commerce", "Inventory"].includes(heading)) { setSlot(null); return; }
+      setModule(heading);
       let nextSlot = placeholder.querySelector("#analytics-manager-slot");
       if (!nextSlot) {
         placeholder.classList.add("analytics-module-active");
@@ -56,57 +56,29 @@ export default function AnalyticsManager() {
   }, []);
 
   useEffect(() => {
+    if (!slot) return;
     let cancelled = false;
     const load = async () => {
       setLoading(true);
-      const since = thirtyDaysAgo();
-      const [productDrafts, heroDrafts, journalDrafts, noteDrafts, publishHistory, auditLog, heroSlides, orderAnalytics] = await Promise.all([
-        supabase.from("product_drafts").select("product_slug,review_status,updated_at,apply_pr_number,published_at").order("updated_at", { ascending: false }),
-        supabase.from("hero_drafts").select("hero_key,review_status,updated_at,apply_pr_number,preview_verified_at").order("updated_at", { ascending: false }),
-        supabase.from("journal_drafts").select("article_id,review_status,updated_at,apply_pr_number").order("updated_at", { ascending: false }),
-        supabase.from("note_drafts").select("note_key,review_status,updated_at,apply_pr_number").order("updated_at", { ascending: false }),
-        supabase.from("publish_history").select("product_slug,published_at,apply_pr_number,published_commit_sha").gte("published_at", since).order("published_at", { ascending: false }).limit(30),
-        supabase.from("draft_audit_log").select("id,product_slug,action,created_at").gte("created_at", since).order("created_at", { ascending: false }).limit(30),
-        supabase.from("hero_slides").select("hero_key", { count: "exact", head: true }).eq("enabled", true),
-        loadOrderAnalytics().then((analytics) => ({ data: analytics, error: null })).catch((loadError) => ({ data: {}, error: loadError })),
-      ]);
-      if (cancelled) return;
-      const firstError = [productDrafts, heroDrafts, journalDrafts, noteDrafts, publishHistory, auditLog, heroSlides, orderAnalytics].find((result) => result.error)?.error;
-      if (firstError) setError(firstError.message); else setError("");
-      setData({
-        productDrafts: productDrafts.data || [],
-        heroDrafts: heroDrafts.data || [],
-        journalDrafts: journalDrafts.data || [],
-        noteDrafts: noteDrafts.data || [],
-        publishHistory: publishHistory.data || [],
-        auditLog: auditLog.data || [],
-        heroSlides: heroSlides.count || 0,
-        orderAnalytics: orderAnalytics.data || {},
-      });
-      setLoading(false);
+      try {
+        const orderAnalytics = await loadOrderAnalytics();
+        if (cancelled) return;
+        setData({ orderAnalytics });
+        setError("");
+      } catch (loadError) {
+        if (!cancelled) setError(loadError.message || String(loadError));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     };
     load();
-    const channels = ["product_drafts", "hero_drafts", "journal_drafts", "note_drafts", "publish_history", "draft_audit_log"].map((table) =>
-      supabase.channel(`analytics-${table}`).on("postgres_changes", { event: "*", schema: "public", table }, load).subscribe()
-    );
     const onFocus = () => load();
     window.addEventListener("focus", onFocus);
     return () => {
       cancelled = true;
-      channels.forEach((channel) => supabase.removeChannel(channel));
       window.removeEventListener("focus", onFocus);
     };
-  }, []);
-
-  const productStatus = useMemo(() => countStatuses(data.productDrafts), [data.productDrafts]);
-  const heroStatus = useMemo(() => countStatuses(data.heroDrafts), [data.heroDrafts]);
-  const journalStatus = useMemo(() => countStatuses(data.journalDrafts), [data.journalDrafts]);
-  const noteStatus = useMemo(() => countStatuses(data.noteDrafts), [data.noteDrafts]);
-  const allManaged = [...data.productDrafts, ...data.heroDrafts, ...data.journalDrafts, ...data.noteDrafts];
-  const totalDrafts = allManaged.length;
-  const totalApproved = productStatus.approved + heroStatus.approved + journalStatus.approved + noteStatus.approved;
-  const openPrs = allManaged.filter((row) => row.apply_pr_number).length;
-  const verifiedHeroPreviews = data.heroDrafts.filter((row) => row.preview_verified_at).length;
+  }, [slot]);
 
   const sales = data.orderAnalytics?.summary || {};
   const monthlySales = data.orderAnalytics?.monthly || [];
@@ -116,17 +88,56 @@ export default function AnalyticsManager() {
   const salesBySource = data.orderAnalytics?.sources || [];
   const fullBottles = data.orderAnalytics?.full_bottles || [];
   const giftProducts = data.orderAnalytics?.gifts || [];
+  const inventory = data.orderAnalytics?.inventory || {};
+  const inventoryRows = inventory.rows || [];
+  const inventoryTrackedNames = new Set(inventoryRows.map((row) => String(row.product_name || "").toLowerCase()));
+  const inventoryIsTracked = inventoryTrackedNames.has(String(inventoryProduct || "").toLowerCase());
 
-  const recent = useMemo(() => [
-    ...data.publishHistory.map((row) => ({ type: "PUBLISH", subject: row.product_slug, detail: row.apply_pr_number ? `PR #${row.apply_pr_number}` : "published", at: row.published_at })),
-    ...data.auditLog.map((row) => ({ type: "PRODUCT", subject: row.product_slug, detail: String(row.action || "activity").replace(/_/g, " "), at: row.created_at })),
-    ...data.heroDrafts.filter((row) => row.updated_at).map((row) => ({ type: "HERO", subject: row.hero_key, detail: row.preview_verified_at ? "preview verified" : String(row.review_status || "draft"), at: row.updated_at })),
-  ].sort((a, b) => new Date(b.at) - new Date(a.at)).slice(0, 12), [data.publishHistory, data.auditLog, data.heroDrafts]);
+  const addInventoryStock = async () => {
+    const quantity = Number(inventoryMl);
+    if (!inventoryProduct || !Number.isFinite(quantity) || quantity <= 0) {
+      setInventoryNotice("Select a fragrance and enter a valid ml quantity.");
+      return;
+    }
+    setInventoryBusy(true);
+    setInventoryNotice("");
+    try {
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || !sessionData?.session?.access_token) throw sessionError || new Error("Authenticated admin session is required.");
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionData.session.access_token
+        },
+        body: JSON.stringify({
+          action: "add_inventory_stock",
+          product_name: inventoryProduct,
+          quantity_ml: quantity,
+          note: inventoryNote
+        })
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || "Could not record inventory stock.");
+      setData((current) => ({ ...current, orderAnalytics: payload.analytics || current.orderAnalytics }));
+      setInventoryNotice(
+        payload.inventory_event?.event_type === "OPENING"
+          ? "Opening balance recorded."
+          : "Restock recorded."
+      );
+      setInventoryMl("");
+      setInventoryNote("");
+    } catch (inventoryError) {
+      setInventoryNotice(inventoryError.message || String(inventoryError));
+    } finally {
+      setInventoryBusy(false);
+    }
+  };
 
   if (!slot) return null;
   return createPortal(<section className="analytics-manager">
     {error ? <div className="analytics-error">{error}</div> : null}
-
+    {module === "Commerce" ? <>
     <section className="sales-intelligence">
       <div className="sales-section-head">
         <div>
@@ -245,40 +256,76 @@ export default function AnalyticsManager() {
       </div>
     </section>
 
-    <div className="workflow-section-head">
-      <div><span>CONTROL CENTER WORKFLOW</span><h3>Editorial & release operations</h3></div>
-      <p>Separate from commerce metrics above.</p>
-    </div>
 
-    <div className="analytics-kpis">
-      <div><span>PRODUCTS</span><strong>{products.length}</strong><small>live catalog</small></div>
-      <div><span>HERO</span><strong>{data.heroSlides}</strong><small>managed live slides</small></div>
-      <div><span>JOURNAL</span><strong>{journalArticles.length}</strong><small>live articles</small></div>
-      <div><span>NOTES</span><strong>{noteAudit.uniqueNotes}</strong><small>{noteAudit.placements} placements</small></div>
-      <div><span>ACTIVE DRAFTS</span><strong>{totalDrafts}</strong><small>all managed modules</small></div>
-      <div><span>APPROVED</span><strong>{totalApproved}</strong><small>awaiting next step</small></div>
-    </div>
-
-    <div className="analytics-grid">
-      <article className="analytics-panel workflow-panel"><div className="analytics-panel-head"><div><span>WORKFLOW</span><h3>Draft state by module</h3></div><small>Realtime</small></div>
-        <div className="workflow-table">
-          {[
-            {name:"Products", total:data.productDrafts.length, status:productStatus},
-            {name:"Hero", total:data.heroDrafts.length, status:heroStatus},
-            {name:"Journal", total:data.journalDrafts.length, status:journalStatus},
-            {name:"Notes", total:data.noteDrafts.length, status:noteStatus}
-          ].map((row) => <div className="workflow-row" key={row.name}><strong>{row.name}</strong><span>{row.total}</span><em className="draft">D {row.status.draft}</em><em className="ready">R {row.status.ready}</em><em className="approved">A {row.status.approved}</em></div>)}
+    </> : <>
+    <section className="inventory-intelligence">
+      <div className="sales-section-head">
+        <div>
+          <span>STOCK / CONSUMPTION</span>
+          <h2>Fragrance inventory</h2>
+          <p>Current measured stock, restocks and decant consumption after tracking starts.</p>
         </div>
-      </article>
+        <div className="sales-head-meta">
+          <span className={`analytics-live ${loading ? "loading" : error ? "error" : "ok"}`}>{loading ? "SYNCING" : error ? "PARTIAL DATA" : "LIVE"}</span>
+          <small>Supabase canonical inventory ledger</small>
+        </div>
+      </div>
+      <div className="sales-grid inventory-grid">
+        <article className="analytics-panel sales-wide inventory-panel">
+          <div className="analytics-panel-head">
+            <div><span>INVENTORY</span><h3>Inventory watch</h3></div>
+            <small>Current measured stock · decant consumption after tracking starts</small>
+          </div>
 
-      <article className="analytics-panel"><div className="analytics-panel-head"><div><span>CONTROLLED APPLY</span><h3>Release queue</h3></div><strong>{openPrs}</strong></div>
-        <div className="analytics-summary"><div><span>Draft PR metadata</span><strong>{openPrs}</strong></div><div><span>Hero previews verified</span><strong>{verifiedHeroPreviews}</strong></div></div>
-        <p className="analytics-note">Apply metadata is operational state only. Merge remains manual and Production is never changed from this analytics surface.</p>
-      </article>
-    </div>
+          <div className="inventory-summary">
+            <div><span>TRACKED</span><strong>{number(inventory.tracked_count)}</strong></div>
+            <div><span>LOW STOCK</span><strong>{number(inventory.low_count)}</strong></div>
+            <div><span>DEPLETED</span><strong>{number(inventory.depleted_count)}</strong></div>
+            <div><span>REMAINING</span><strong>{number(inventory.remaining_total_ml, 1)} ml</strong></div>
+          </div>
 
-    <article className="analytics-panel activity-panel"><div className="analytics-panel-head"><div><span>RECENT ACTIVITY</span><h3>Latest workflow events</h3></div><small>Newest first</small></div>
-      <div className="activity-list">{recent.length ? recent.map((item, index) => <div className="activity-row" key={`${item.type}-${item.subject}-${item.at}-${index}`}><span className={item.type.toLowerCase()}>{item.type}</span><strong>{item.subject || "—"}</strong><small>{item.detail}</small><time>{fmtDate(item.at)}</time></div>) : <div className="activity-empty">No workflow activity recorded in the last 30 days.</div>}</div>
-    </article>
+          <div className="inventory-list">
+            {inventoryRows.length ? inventoryRows.map((row) => <div className={"inventory-row stock-" + String(row.stock_status || "ok").toLowerCase()} key={row.product_name}>
+              <div>
+                <strong>{row.product_name}</strong>
+                <small>Opening {number(row.opening_balance_ml, 1)} ml · restocked {number(row.restock_ml, 1)} ml · consumed {number(row.consumed_since_tracking_ml, 1)} ml</small>
+              </div>
+              <span>{number(row.remaining_ml, 1)} ml</span>
+              {row.stock_status === "OK" ? null : <em>{row.stock_status}</em>}
+            </div>) : <div className="activity-empty">No fragrances are tracked yet. Start with the current physical ml remaining in a bottle.</div>}
+          </div>
+        </article>
+
+        <article className="analytics-panel inventory-entry-panel">
+          <div className="analytics-panel-head">
+            <div><span>STOCK LEDGER</span><h3>{inventoryIsTracked ? "Add stock" : "Start tracking"}</h3></div>
+            <small>{inventoryIsTracked ? "Restock" : "Current physical balance"}</small>
+          </div>
+          <div className="inventory-form">
+            <label>
+              <span>FRAGRANCE</span>
+              <input list="inventory-products" value={inventoryProduct} onChange={(event) => setInventoryProduct(event.target.value)} placeholder="Search fragrance…" />
+              <datalist id="inventory-products">
+                {[...products].sort((a,b) => String(a.name).localeCompare(String(b.name))).map((product) => <option value={product.name} key={product.slug} />)}
+              </datalist>
+            </label>
+            <label>
+              <span>{inventoryIsTracked ? "ADD ML" : "CURRENT ML"}</span>
+              <input type="number" min="0.1" step="0.1" value={inventoryMl} onChange={(event) => setInventoryMl(event.target.value)} placeholder={inventoryIsTracked ? "e.g. 100" : "e.g. 62"} />
+            </label>
+            <label>
+              <span>NOTE · OPTIONAL</span>
+              <input value={inventoryNote} onChange={(event) => setInventoryNote(event.target.value)} placeholder={inventoryIsTracked ? "New bottle / restock" : "Measured opening balance"} />
+            </label>
+            <button type="button" onClick={addInventoryStock} disabled={inventoryBusy || !inventoryProduct || !(Number(inventoryMl) > 0)}>
+              {inventoryBusy ? "Saving…" : inventoryIsTracked ? "+ Add stock" : "Start tracking"}
+            </button>
+            <p>First entry is the current physical balance. Future entries add stock; packed orders and gift samples reduce the estimate automatically.</p>
+            {inventoryNotice ? <div className="inventory-notice">{inventoryNotice}</div> : null}
+          </div>
+        </article>
+      </div>
+    </section>
+    </>}
   </section>, slot);
 }
