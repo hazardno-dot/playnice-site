@@ -4,6 +4,8 @@ import path from "node:path";
 const root = process.cwd();
 const manager = fs.readFileSync(path.join(root, "control-center/src/AnalyticsManager.jsx"), "utf8");
 const mount = fs.readFileSync(path.join(root, "control-center/src/ControlCenterManagers.jsx"), "utf8");
+const app = fs.readFileSync(path.join(root, "control-center/src/App.jsx"), "utf8");
+const workflow = fs.readFileSync(path.join(root, "control-center/src/WorkflowManager.jsx"), "utf8");
 
 for (const token of [
   '["Commerce", "Inventory"].includes(heading)',
@@ -53,8 +55,6 @@ console.log("PASS  Analytics exposes revenue, products, cities, sizes and COD me
 console.log("PASS  customer traffic analytics remain explicitly separate from operational telemetry");
 console.log("Production untouched: yes (static Analytics contract only)");
 
-const app = fs.readFileSync(path.join(root, "control-center/src/App.jsx"), "utf8");
-const workflow = fs.readFileSync(path.join(root, "control-center/src/WorkflowManager.jsx"), "utf8");
 if (!app.includes('modules: ["Commerce", "Inventory"]')) throw new Error("Intelligence must be split into Commerce and Inventory.");
 if (!app.includes('modules: ["Site Health", "Workflow"]')) throw new Error("System must include Workflow.");
 if (!workflow.includes("Latest workflow events")) throw new Error("Workflow activity must live under System / Workflow.");
