@@ -82,8 +82,145 @@ async function readOrders(token) {
   };
 }
 
+async function readInventoryStock(token) {
+  const rows = await rpc("get_control_center_inventory_stock", token, {});
+  return Array.isArray(rows) ? rows : [];
+}
+
+const PRODUCT_ALIASES = new Map([
+  ["thomas kosmala no. 4 après l'amour edp", "Thomas Kosmala No. 4 Après l'Amour Eau de Parfum"],
+  ["thomas kosmala no. 4 après l'amour eau de parfum", "Thomas Kosmala No. 4 Après l'Amour Eau de Parfum"],
+  ["thomas kosmala no. 7 le sel de la terre", "Thomas Kosmala No. 7 Le Sel de la Terre Eau de Parfum"],
+  ["thomas kosmala no. 7 le sel de la terre eau de parfum", "Thomas Kosmala No. 7 Le Sel de la Terre Eau de Parfum"],
+  ["afnan supremacy collector's edition pour homme", "Afnan Supremacy Collector's Edition Pour Homme Eau de Parfum"],
+  ["afnan supremacy collector's edition pour homme eau de parfum", "Afnan Supremacy Collector's Edition Pour Homme Eau de Parfum"],
+  ["afnan turathi blue", "Afnan Turathi Blue Homme Eau de Parfum"],
+  ["afnan turathi blue homme eau de parfum", "Afnan Turathi Blue Homme Eau de Parfum"],
+  ["arabiat prestige marwa edp", "Arabiyat Prestige Marwa"],
+  ["arabiyat p. marwa", "Arabiyat Prestige Marwa"],
+  ["arabiyat prestige marwa", "Arabiyat Prestige Marwa"],
+  ["french avenue ravine ginger edp", "French Avenue Ravine Ginger Extrait de Parfum"],
+  ["the french avenue ravine ginger extrait de parfum", "French Avenue Ravine Ginger Extrait de Parfum"],
+  ["french avenue ravine ginger extrait de parfum", "French Avenue Ravine Ginger Extrait de Parfum"],
+  ["my geisha jasmine in the sun extrait de parfum", "My Geisha Jasmine in the Sun Extrait de Parfum"],
+  ["rayhaan pacific aura", "Rayhaan Pacific Aura Eau de Parfum"],
+  ["rayhaan pacific aura eau de parfum", "Rayhaan Pacific Aura Eau de Parfum"],
+  ["afnan 9am", "Afnan 9 AM Eau de Parfum"],
+  ["afnan 9 am eau de parfum", "Afnan 9 AM Eau de Parfum"],
+  ["kadlaj island dreams", "Khadlaj Island Dreams"]
+]);
+
+function canonicalProductName(value) {
+  const name = String(value || "").trim();
+  return PRODUCT_ALIASES.get(name.toLowerCase()) || name;
+}
+
+function parseMl(value) {
+  const match = String(value || "").match(/([0-9]+(?:\.[0-9]+)?)\s*ml/i);
+  return match ? Number(match[1]) : 0;
+}
+
+function inventorySaleItems(items) {
+  const out = [];
+  for (const item of Array.isArray(items) ? items : []) {
+    const qty = Math.max(1, Number(item?.quantity || 1));
+    const bundles = Array.isArray(item?.bundleItems) ? item.bundleItems : [];
+    if (bundles.length) {
+      for (const bundle of bundles) {
+        const sizeMl = parseMl(bundle?.size);
+        if (sizeMl > 0 && sizeMl < 50) out.push({ product_name: canonicalProductName(bundle?.name), ml: sizeMl * qty });
+      }
+      continue;
+    }
+    const sizeMl = Number(item?.sizeMl || 0) || parseMl(item?.size);
+    if (sizeMl > 0 && sizeMl < 50) out.push({ product_name: canonicalProductName(item?.name), ml: sizeMl * qty });
+  }
+  return out;
+}
+
+function inventoryGiftItems(payload) {
+  const samples = Array.isArray(payload?.giftSamples) ? payload.giftSamples : [];
+  if (samples.length) {
+    return samples.map((sample) => ({
+      product_name: canonicalProductName(sample?.name),
+      ml: Number(sample?.sizeMl || 0) || parseMl(sample?.size)
+    })).filter((sample) => sample.product_name && sample.ml > 0);
+  }
+
+  const legacy = String(payload?.freeGift || "").trim().match(/^(.*?)\s*[-–—]\s*([0-9]+(?:\.[0-9]+)?)\s*ml/i);
+  return legacy ? [{ product_name: canonicalProductName(legacy[1]), ml: Number(legacy[2]) }] : [];
+}
+
+function buildInventoryAnalytics(orders, stockRows) {
+  const tracked = new Map((Array.isArray(stockRows) ? stockRows : []).map((row) => [
+    canonicalProductName(row.product_name).toLowerCase(),
+    {
+      ...row,
+      product_name: canonicalProductName(row.product_name),
+      tracking_started_at: row.tracking_started_at,
+      opening_balance_ml: Number(row.opening_balance_ml || 0),
+      restock_ml: Number(row.restock_ml || 0),
+      stock_in_ml: Number(row.stock_in_ml || 0),
+      consumed_since_tracking_ml: 0
+    }
+  ]));
+
+  for (const order of Array.isArray(orders) ? orders : []) {
+    if (!["PACKED","SHIPPED","OUT_FOR_DELIVERY","DELIVERED","DELIVERY_FAILED","RETURNED"].includes(order.status)) continue;
+    const consumedAt = order.packed_at || order.shipped_at || order.updated_at || order.created_at;
+    if (!consumedAt) continue;
+    const payload = order.source_payload || {};
+    const entries = [...inventorySaleItems(payload.items), ...inventoryGiftItems(payload)];
+    for (const entry of entries) {
+      const row = tracked.get(String(entry.product_name || "").toLowerCase());
+      if (!row || new Date(consumedAt) < new Date(row.tracking_started_at)) continue;
+      row.consumed_since_tracking_ml += Number(entry.ml || 0);
+    }
+  }
+
+  const rows = [...tracked.values()].map((row) => {
+    const consumed = Math.round((row.consumed_since_tracking_ml + Number.EPSILON) * 100) / 100;
+    const remaining = Math.round((row.stock_in_ml - consumed + Number.EPSILON) * 100) / 100;
+    return {
+      ...row,
+      consumed_since_tracking_ml: consumed,
+      remaining_ml: remaining,
+      stock_status: remaining <= 0 ? "DEPLETED" : remaining <= 20 ? "LOW" : "OK"
+    };
+  }).sort((a, b) => a.remaining_ml - b.remaining_ml || a.product_name.localeCompare(b.product_name));
+
+  return {
+    tracked_count: rows.length,
+    low_count: rows.filter((row) => row.stock_status === "LOW").length,
+    depleted_count: rows.filter((row) => row.stock_status === "DEPLETED").length,
+    remaining_total_ml: Math.round((rows.reduce((sum, row) => sum + Math.max(0, row.remaining_ml), 0) + Number.EPSILON) * 100) / 100,
+    rows
+  };
+}
+
 async function readOrderAnalytics(token) {
-  return rpc("get_control_center_order_analytics", token, {});
+  const [analytics, inventoryStock, orderData] = await Promise.all([
+    rpc("get_control_center_order_analytics", token, {}),
+    readInventoryStock(token),
+    readOrders(token)
+  ]);
+  return {
+    ...(analytics || {}),
+    inventory: buildInventoryAnalytics(orderData.orders, inventoryStock)
+  };
+}
+
+async function recordInventoryStock(token, body) {
+  const productName = cleanText(body?.product_name, 180);
+  const quantityMl = Number(body?.quantity_ml);
+  const note = cleanText(body?.note, 300);
+  if (!productName) throw new Error("Select a fragrance.");
+  if (!Number.isFinite(quantityMl) || quantityMl <= 0 || quantityMl > 5000) throw new Error("Stock quantity must be between 0 and 5000 ml.");
+  return rpc("record_control_center_inventory_stock", token, {
+    p_product_name: productName,
+    p_quantity_ml: quantityMl,
+    p_note: note || null
+  });
 }
 
 function legacyStatusFor(status) {
@@ -406,13 +543,24 @@ export default async function handler(req, res) {
       });
     }
 
+    const action = String(req.body?.action || "").trim();
+
+    if (action === "add_inventory_stock") {
+      const inventory_event = await recordInventoryStock(auth.token, req.body);
+      return json(res, 200, {
+        ok: true,
+        canonical_source: "supabase",
+        inventory_event,
+        analytics: await readOrderAnalytics(auth.token)
+      });
+    }
+
     if (!WRITE_THROUGH_ENABLED) {
       return json(res, 409, {
         error: "Order write-through is not enabled yet. Configure the Google Sheets mirror before changing orders in Control Center."
       });
     }
 
-    const action = String(req.body?.action || "").trim();
     const result = action === "retry_sheet_sync"
       ? await retryMirror(auth.token, req.body)
       : action === "settle_courier_batch"
