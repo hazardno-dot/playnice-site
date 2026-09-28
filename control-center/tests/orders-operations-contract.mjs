@@ -45,6 +45,10 @@ assert.ok(ui.includes("ORDER REFERENCE"), "Generated order reference must be pre
 assert.ok(!ui.includes("Save tracking"), "Orders UI must not expose the generated internal reference as editable courier tracking.");
 assert.ok(ui.includes("GIFT / SAMPLE"), "Orders UI must expose structured gift/sample editing.");
 assert.ok(ui.includes("Customer sample history"), "Orders UI must show earlier gifts/samples for the same customer.");
+
+assert.ok(ui.includes('window.localStorage.setItem("PLAYNICE_CC_LABEL_ORDER"'), "Orders detail must prepare canonical order data for label printing.");
+assert.ok(ui.includes('window.open("/PlayNice-Label-Generator.html?cc=1"'), "Orders detail must open the 100x150 label generator from Control Center.");
+assert.ok(ui.includes(">Print label</button>"), "Orders detail must expose a Print label action.");
 assert.ok(ui.includes('selected?.status === "NEW"'), "Gift/sample editing must be limited to NEW orders.");
 assert.ok(ui.includes("Gift/sample is locked once the order is packed."), "Packed and later orders must communicate that gift/sample data is locked.");
 assert.ok(ui.includes("!giftChanged"), "Save gift must stay disabled when no gift/sample change has been made.");

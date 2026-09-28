@@ -878,3 +878,33 @@
   font-size: 9px;
   letter-spacing: .04em;
 }
+
+
+.orders-detail-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.orders-detail-head-actions button {
+  border: 1px solid rgba(112,147,129,.35);
+  background: rgba(18,28,23,.95);
+  color: #bdd2c5;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 10px;
+  cursor: pointer;
+}
+.orders-detail-head-actions button:hover {
+  border-color: rgba(96,164,126,.58);
+  color: #d7eee1;
+}
+.orders-detail-head-actions button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+@media (max-width: 720px) {
+  .orders-detail-head-actions {
+    align-items: flex-end;
+    flex-direction: column-reverse;
+  }
+}

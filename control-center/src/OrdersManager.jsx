@@ -273,6 +273,32 @@ function OrdersWorkspace() {
     extra_gift: giftExtra
   }, "gift");
 
+  const printLabel = () => {
+    if (!selected || selected.status === "DUPLICATE") return;
+    const data = selected.source_payload || {};
+    const labelOrder = {
+      orderId: selected.order_id,
+      timestamp: selected.shipped_at || selected.packed_at || selected.created_at,
+      fullName: data.fullName || "",
+      address: data.address || "",
+      city: data.city || "",
+      phone: data.phone || "",
+      note: data.note || "",
+      items: Array.isArray(data.items) ? data.items : [],
+      subtotal: Number(data.subtotal || 0),
+      shipping: Number(data.shipping || 0),
+      trackingNumber: selected.tracking_number || selected.order_id
+    };
+
+    try {
+      window.localStorage.setItem("PLAYNICE_CC_LABEL_ORDER", JSON.stringify(labelOrder));
+      const popup = window.open("/PlayNice-Label-Generator.html?cc=1", "_blank");
+      if (!popup) setError("Label window was blocked by the browser. Allow pop-ups for Control Center and try again.");
+    } catch (labelError) {
+      setError(labelError?.message || "Could not prepare the shipping label.");
+    }
+  };
+
   const createManualOrder = async (order) => {
     setBusy("manual:create"); setError(""); setNotice("");
     try {
@@ -405,7 +431,10 @@ function OrdersWorkspace() {
         {!selected ? <div className="orders-empty">Select an order.</div> : <>
           <div className="orders-detail-head">
             <div><span>ORDER</span><h3>{selected.order_id}</h3><p>{dateTime(selected.created_at)}</p></div>
-            <span className={"order-status large status-" + String(selected.status || "").toLowerCase()}>{STATUS_LABELS[selected.status] || selected.status}</span>
+            <div className="orders-detail-head-actions">
+              <button type="button" onClick={printLabel} disabled={selected.status === "DUPLICATE"}>Print label</button>
+              <span className={"order-status large status-" + String(selected.status || "").toLowerCase()}>{STATUS_LABELS[selected.status] || selected.status}</span>
+            </div>
           </div>
 
           <div className="orders-detail-grid">
