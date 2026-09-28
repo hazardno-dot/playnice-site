@@ -43,6 +43,12 @@ assert.ok(ui.includes("Mark returned"), "Orders UI must expose DELIVERY_FAILED â
 assert.ok(ui.includes("Terminal fulfillment state."), "Delivered and returned orders must communicate terminal lifecycle state.");
 assert.ok(ui.includes("ORDER REFERENCE"), "Generated order reference must be presented as a read-only internal reference.");
 assert.ok(!ui.includes("Save tracking"), "Orders UI must not expose the generated internal reference as editable courier tracking.");
+
+assert.ok(!ui.includes("setTracking("), "Orders UI must not retain dead editable-tracking state.");
+assert.ok(!server.includes('action === "save_tracking"'), "Orders API must not expose the deprecated tracking write action.");
+assert.ok(ui.includes("Search order, customer, city, reference, productâ€¦"), "Orders search copy must describe the generated value as a reference.");
+assert.ok(ui.includes("WRITE-THROUGH UNAVAILABLE"), "Orders fallback mode must describe unavailable write-through rather than a legacy migration phase.");
+assert.ok(ui.includes("Supabase remains canonical."), "Orders fallback copy must preserve Supabase as the canonical source.");
 assert.ok(ui.includes("GIFT / SAMPLE"), "Orders UI must expose structured gift/sample editing.");
 assert.ok(ui.includes("Customer gift history"), "Orders UI must show earlier gifts/samples for the same customer.");
 assert.ok(ui.includes("Already sampled"), "Gift editor must warn when a selected fragrance was already gifted to the customer.");
