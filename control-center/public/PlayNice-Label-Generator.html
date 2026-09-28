@@ -809,13 +809,25 @@ function formatItemsForLabel(items = []) {
     .join("\n");
 }
 
+function formatPhoneME(value) {
+  let digits = String(value || "").replace(/\D/g, "");
+  if (digits.startsWith("382")) digits = "0" + digits.slice(3);
+  else if (digits.length === 8 && digits.startsWith("6")) digits = "0" + digits;
+
+  if (/^0\d{8}$/.test(digits)) {
+    return digits.slice(0, 3) + "/" + digits.slice(3, 6) + "-" + digits.slice(6);
+  }
+
+  return String(value || "").trim();
+}
+
 function applyOrderToLabel(order) {
   document.getElementById("orderInput").value = order.orderId || "";
   document.getElementById("dateInput").value = formatOrderDate(order.timestamp);
   document.getElementById("nameInput").value = order.fullName || "";
   document.getElementById("addressInput").value = order.address || "";
   document.getElementById("cityInput").value = order.city || "";
-  document.getElementById("phoneInput").value = order.phone || "";
+  document.getElementById("phoneInput").value = formatPhoneME(order.phone || "");
   document.getElementById("remarksInput").value =
     order.note || "Pozvati pre isporuke";
 
@@ -934,7 +946,8 @@ function generateBarcode(text) {
 
 function updateLabel() {
   Object.entries(fields).forEach(([id, key]) => {
-    setBoundValue(key, document.getElementById(id).value);
+    const rawValue = document.getElementById(id).value;
+    setBoundValue(key, key === "phone" ? formatPhoneME(rawValue) : rawValue);
   });
 
   const order = document.getElementById("orderInput").value;
