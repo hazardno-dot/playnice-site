@@ -22,6 +22,9 @@ const money = (value) => {
   return Number.isFinite(number) ? number.toLocaleString("en-IE", { style: "currency", currency: "EUR" }) : "€0.00";
 };
 
+const COURIER_FEE = 4;
+const courierPayout = (order) => Math.max(0, Number(order?.source_payload?.total || 0) - COURIER_FEE);
+
 const dateTime = (value) => {
   if (!value) return "—";
   const date = new Date(value);
@@ -153,14 +156,20 @@ function OrdersWorkspace() {
     ["SHIPPED","OUT_FOR_DELIVERY","DELIVERED"].includes(order.status) &&
     order.courier_payment_status === "PENDING"
   ), [saleOrders]);
-  const codPending = useMemo(() => settlementEligible.reduce((sum, order) =>
+  const codPendingGross = useMemo(() => settlementEligible.reduce((sum, order) =>
     sum + Number(order.source_payload?.total || 0), 0
+  ), [settlementEligible]);
+  const codPending = useMemo(() => settlementEligible.reduce((sum, order) =>
+    sum + courierPayout(order), 0
   ), [settlementEligible]);
   const settlementSelectedOrders = useMemo(() => settlementEligible.filter((order) =>
     settlementSelection.includes(order.id)
   ), [settlementEligible, settlementSelection]);
-  const settlementSelectedTotal = useMemo(() => settlementSelectedOrders.reduce((sum, order) =>
+  const settlementSelectedGross = useMemo(() => settlementSelectedOrders.reduce((sum, order) =>
     sum + Number(order.source_payload?.total || 0), 0
+  ), [settlementSelectedOrders]);
+  const settlementSelectedTotal = useMemo(() => settlementSelectedOrders.reduce((sum, order) =>
+    sum + courierPayout(order), 0
   ), [settlementSelectedOrders]);
   const settlementHistory = useMemo(() => {
     const batches = new Map();
@@ -170,10 +179,14 @@ function OrdersWorkspace() {
         batch_id: order.courier_batch_id,
         paid_at: order.courier_paid_at,
         orders: [],
+        gross_total: 0,
+        courier_fee_total: 0,
         total: 0
       };
       current.orders.push(order);
-      current.total += Number(order.source_payload?.total || 0);
+      current.gross_total += Number(order.source_payload?.total || 0);
+      current.courier_fee_total += COURIER_FEE;
+      current.total += courierPayout(order);
       if (!current.paid_at || (order.courier_paid_at && order.courier_paid_at > current.paid_at)) current.paid_at = order.courier_paid_at;
       batches.set(order.courier_batch_id, current);
     }
@@ -376,7 +389,7 @@ function OrdersWorkspace() {
       <div><span>IN TRANSIT</span><strong>{(counts.SHIPPED || 0) + (counts.OUT_FOR_DELIVERY || 0)}</strong><small>shipped / delivery</small></div>
       <div><span>DELIVERED</span><strong>{counts.DELIVERED || 0}</strong><small>completed orders</small></div>
       <div><span>FAILED</span><strong>{counts.DELIVERY_FAILED || 0}</strong><small>delivery failed</small></div>
-      <div><span>COD PENDING</span><strong>{money(codPending)}</strong><small>courier settlement</small></div>
+      <div><span>COURIER DUE</span><strong>{money(codPending)}</strong><small>{money(codPendingGross)} COD collected</small></div>
     </div>
 
     <section className="orders-settlement">
@@ -388,7 +401,7 @@ function OrdersWorkspace() {
         </div>
         <div className="orders-settlement-summary">
           <strong>{money(codPending)}</strong>
-          <span>{settlementEligible.length} pending COD order{settlementEligible.length === 1 ? "" : "s"}</span>
+          <span>{settlementEligible.length} pending COD order{settlementEligible.length === 1 ? "" : "s"} · {money(codPendingGross)} collected − {money(settlementEligible.length * COURIER_FEE)} courier fees</span>
         </div>
       </div>
 
@@ -397,7 +410,7 @@ function OrdersWorkspace() {
           <button type="button" onClick={toggleAllSettlement} disabled={!writeEnabled || Boolean(busy)}>
             {settlementSelection.length === settlementEligible.length ? "Clear selection" : "Select all"}
           </button>
-          <div><span>SELECTED</span><strong>{settlementSelection.length} · {money(settlementSelectedTotal)}</strong></div>
+          <div><span>SELECTED PAYOUT</span><strong>{settlementSelection.length} · {money(settlementSelectedTotal)}</strong><small>{money(settlementSelectedGross)} − {money(settlementSelection.length * COURIER_FEE)}</small></div>
           <button type="button" className="primary" onClick={settleSelected} disabled={!writeEnabled || !settlementSelection.length || Boolean(busy)}>
             {busy === "settlement" ? "Recording…" : "Record courier payout"}
           </button>
@@ -409,7 +422,10 @@ function OrdersWorkspace() {
             return <label key={order.id} className={checked ? "selected" : ""}>
               <input type="checkbox" checked={checked} onChange={() => toggleSettlement(order.id)} disabled={!writeEnabled || Boolean(busy)} />
               <div><strong>{order.order_id}</strong><span>{data.fullName || "Customer"} · {data.city || "—"}</span></div>
-              <strong>{money(data.total)}</strong>
+              <div className="orders-settlement-amount">
+                <span>{money(data.total)} − {money(COURIER_FEE)}</span>
+                <strong>{money(courierPayout(order))}</strong>
+              </div>
             </label>;
           })}
         </div>
@@ -420,7 +436,7 @@ function OrdersWorkspace() {
         <div>
           {settlementHistory.length ? settlementHistory.map((batch) => <div className="orders-settlement-batch" key={batch.batch_id}>
             <div><strong>{batch.batch_id}</strong><span>{dateTime(batch.paid_at)} · {batch.orders.length} order{batch.orders.length === 1 ? "" : "s"}</span></div>
-            <strong>{money(batch.total)}</strong>
+            <div className="orders-settlement-batch-total"><span>{money(batch.gross_total)} − {money(batch.courier_fee_total)}</span><strong>{money(batch.total)}</strong></div>
           </div>) : <div className="orders-settlement-empty">No v1 settlement batches recorded yet.</div>}
           {legacyPaidCount ? <div className="orders-settlement-legacy">{legacyPaidCount} earlier paid order{legacyPaidCount === 1 ? "" : "s"} remain as legacy individual settlements.</div> : null}
         </div>

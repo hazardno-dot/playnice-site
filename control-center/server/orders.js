@@ -16,6 +16,7 @@ const WRITE_THROUGH_ENABLED =
 const ORDER_STORE_URL = SUPABASE_URL ? SUPABASE_URL + "/functions/v1/checkout-order-store" : "";
 const SHIPPING_PRICE = 4;
 const FREE_SHIPPING_THRESHOLD = 49;
+const COURIER_FEE = 4;
 const MANUAL_ORDER_SOURCES = new Set(["instagram", "email", "whatsapp", "viber", "phone", "message", "manual"]);
 
 const json = (res, status, body) => {
@@ -502,12 +503,18 @@ async function settleCourierBatch(token, body) {
     if (mirrorResult.mirror_warning) mirrorWarnings.push(order.order_id + ": " + mirrorResult.mirror_warning);
   }
 
+  const grossTotal = batchOrders.reduce((sum, order) => sum + Number(order?.source_payload?.total || 0), 0);
+  const courierFeeTotal = batchOrders.length * COURIER_FEE;
+  const payoutTotal = Math.max(0, Math.round((grossTotal - courierFeeTotal + Number.EPSILON) * 100) / 100);
+
   return {
     settlement: {
       batch_id: settlement.batch_id,
       settled_at: settlement.settled_at,
       order_count: settlement.order_count,
-      total: settlement.total
+      gross_total: grossTotal,
+      courier_fee_total: courierFeeTotal,
+      total: payoutTotal
     },
     mirror_status: mirrorWarnings.length ? "partial" : "synced",
     mirror_warning: mirrorWarnings.length
