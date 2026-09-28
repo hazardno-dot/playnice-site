@@ -14,4 +14,7 @@ assert.ok(label.includes("order.subtotal"), "Label COD must preserve existing su
 assert.ok(label.includes("order.shipping"), "Label must show shipping separately.");
 assert.ok(label.includes("order.trackingNumber"), "Label must use the canonical order reference/tracking value.");
 
+assert.ok(label.includes("function formatPhoneME(value)"), "Label generator must normalize Montenegro phone numbers.");
+assert.ok(label.includes('return digits.slice(0, 3) + "/" + digits.slice(3, 6) + "-" + digits.slice(6);'), "Label phone output must use 0XX/XXX-XXX format.");
+
 console.log("PASS label printing contract");
