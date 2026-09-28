@@ -40,3 +40,5 @@ const commerceServer = fs.readFileSync(path.resolve(repoRoot, "control-center/se
 assert.ok(commerceServer.includes('manualOrdersApi: "control-center/server/orders.js"'), "Commerce Controlled Apply must include the manual-order API shipping contract.");
 assert.ok(commerceServer.includes('manualOrderDialog: "control-center/src/ManualOrderDialog.jsx"'), "Commerce Controlled Apply must include the manual-order UI shipping contract.");
 assert.ok(commerceServer.includes("storefront, checkout and manual-order shipping values do not match"), "Commerce live validation must block manual-order shipping drift.");
+assert.ok(commerceServer.includes("parseManualDialogShipping"), "Commerce live validation must support the legacy inline Manual Order shipping contract during rollout.");
+assert.ok(commerceServer.includes("Manual order UI shipping contract was not found."), "Commerce live validation must fail clearly when neither manual-order shipping contract exists.");
