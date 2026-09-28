@@ -44,7 +44,11 @@ assert.ok(ui.includes("Terminal fulfillment state."), "Delivered and returned or
 assert.ok(ui.includes("ORDER REFERENCE"), "Generated order reference must be presented as a read-only internal reference.");
 assert.ok(!ui.includes("Save tracking"), "Orders UI must not expose the generated internal reference as editable courier tracking.");
 assert.ok(ui.includes("GIFT / SAMPLE"), "Orders UI must expose structured gift/sample editing.");
-assert.ok(ui.includes("Customer sample history"), "Orders UI must show earlier gifts/samples for the same customer.");
+assert.ok(ui.includes("Customer gift history"), "Orders UI must show earlier gifts/samples for the same customer.");
+assert.ok(ui.includes("Already sampled"), "Gift editor must warn when a selected fragrance was already gifted to the customer.");
+assert.ok(ui.includes("unique sample"), "Customer gift history must summarize unique sample fragrances.");
+assert.ok(ui.includes("sampleName"), "Customer gift history must parse structured or legacy sample names.");
+assert.ok(ui.includes("extraGift"), "Customer gift history must expose prior extra gifts.");
 
 assert.ok(ui.includes('window.localStorage.setItem("PLAYNICE_CC_LABEL_ORDER"'), "Orders detail must prepare canonical order data for label printing.");
 assert.ok(ui.includes('window.open("/PlayNice-Label-Generator.html?cc=1"'), "Orders detail must open the 100x150 label generator from Control Center.");
