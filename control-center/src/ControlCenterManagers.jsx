@@ -63,17 +63,9 @@ export default function ControlCenterManagers() {
       actions.insertBefore(draftSlot, noPublish);
     }
 
-    let applySlot = mainStage.querySelector("#controlled-apply-slot");
-    if (!applySlot) {
-      applySlot = document.createElement("div");
-      applySlot.id = "controlled-apply-slot";
-      applySlot.className = "controlled-apply-slot";
-      mainStage.appendChild(applySlot);
-    }
+    const applySlot = topbar.querySelector("#controlled-apply-slot");
+    if (!applySlot) return;
 
-    window.requestAnimationFrame(() => {
-      if (applySlot.parentElement === mainStage) mainStage.appendChild(applySlot);
-    });
     setSlots({ draft: draftSlot, apply: applySlot });
   }, []);
 
