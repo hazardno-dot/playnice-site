@@ -21,7 +21,7 @@ const STATUS_EMAIL_URL = String(
   process.env.ORDER_STATUS_EMAIL_URL ||
   "https://www.playniceshop.me/api/order-status-email"
 ).trim();
-const STATUS_EMAIL_ENABLED = process.env.VERCEL_ENV === "production";
+const STATUS_EMAIL_ENABLED = process.env.VERCEL_ENV === "production"; // Customer status emails are production-only.
 const MANUAL_ORDER_SOURCES = new Set(["instagram", "email", "whatsapp", "viber", "phone", "message", "manual"]);
 
 const json = (res, status, body) => {
