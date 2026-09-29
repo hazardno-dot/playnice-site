@@ -91,7 +91,7 @@ begin
   v_text := replace(v_text, '&', ' and ');
   v_text := regexp_replace(v_text, '[^a-z0-9]+', ' ', 'g');
 
-  foreach v_token in array regexp_split_to_array(trim(v_text), '\\s+')
+  foreach v_token in array regexp_split_to_array(trim(v_text), '[[:space:]]+')
   loop
     if v_token <> '' and v_token not in (
       'eau','de','parfum','perfume','edp','edt','cologne','extrait','extract','spray'
