@@ -112,7 +112,7 @@ function ScentRequestsWorkspace() {
 
   const summary = useMemo(() => ({
     votes: rows.reduce((sum, row) => sum + Number(row.votes || 0), 0),
-    fragrances: rows.length,
+    rawGroups: rows.length,\n    tracked: enriched.length,
     open: enriched.filter((row) => row.status === "OPEN").length,
     collection: enriched.filter((row) => row.status === "IN_COLLECTION").length,
     review: enriched.filter((row) => row.status === "REVIEW").length
@@ -148,7 +148,7 @@ function ScentRequestsWorkspace() {
 
     <div className="scent-request-kpis">
       <div><span>REQUEST EVENTS</span><strong>{summary.votes}</strong><small>valid historical scent_request rows</small></div>
-      <div><span>RAW GROUPS</span><strong>{summary.fragrances}</strong><small>normalized request groups in Supabase</small></div>
+      <div><span>TRACKED FRAGRANCES</span><strong>{summary.tracked}</strong><small>{summary.rawGroups} request groups + preserved collection history</small></div>
       <div><span>OPEN DEMAND</span><strong>{summary.open}</strong><small>not currently in catalog</small></div>
       <div><span>IN COLLECTION</span><strong>{summary.collection}</strong><small>derived from live products</small></div>
       {summary.review ? <div className="warn"><span>REVIEW MATCH</span><strong>{summary.review}</strong><small>ambiguous catalog match</small></div> : null}
