@@ -17,7 +17,8 @@ const NAV = [
   { section: "MANAGE", items: [{ name: "Products", icon: "P" }, { name: "Hero", icon: "H" }, { name: "Announcement", icon: "A" }, { name: "Journal", icon: "J" }, { name: "Notes", icon: "N" }, { name: "Exhibition", icon: "E" }] },
   { section: "OPERATIONS", items: [{ name: "Orders", icon: "O" }] },
   { section: "SOCIAL", items: [{ name: "Social", icon: "S" }, { name: "Inbox", icon: "I" }] },
-  { section: "INTELLIGENCE", items: [{ name: "Commerce", icon: "C" }, { name: "Inventory", icon: "I" }] },\n  { section: "COMMUNITY", items: [{ name: "Scent Requests", icon: "R" }] },
+  { section: "INTELLIGENCE", items: [{ name: "Commerce", icon: "C" }, { name: "Inventory", icon: "I" }] },
+  { section: "COMMUNITY", items: [{ name: "Scent Requests", icon: "R" }] },
   { section: "SYSTEM", items: [{ name: "Site Health", icon: "S" }, { name: "Workflow", icon: "W" }] }
 ];
 const PRIMARY_NAV = [
@@ -25,7 +26,8 @@ const PRIMARY_NAV = [
   { name: "Manage", modules: ["Products", "Hero", "Announcement", "Journal", "Notes", "Exhibition"] },
   { name: "Operations", modules: ["Orders"] },
   { name: "Social", modules: ["Social", "Inbox"] },
-  { name: "Intelligence", modules: ["Commerce", "Inventory"] },\n  { name: "Community", modules: ["Scent Requests"] },
+  { name: "Intelligence", modules: ["Commerce", "Inventory"] },
+  { name: "Community", modules: ["Scent Requests"] },
   { name: "System", modules: ["Site Health", "Workflow"] }
 ];
 const MODULE_META = {
