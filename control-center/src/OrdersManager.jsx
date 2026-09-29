@@ -100,6 +100,7 @@ function OrdersWorkspace() {
   const [giftSampleName, setGiftSampleName] = useState("");
   const [giftSampleSize, setGiftSampleSize] = useState("2ml");
   const [giftExtra, setGiftExtra] = useState("");
+  const [giftUnlocked, setGiftUnlocked] = useState(false);
 
   const absorb = (payload) => {
     const nextOrders = Array.isArray(payload?.orders) ? payload.orders : [];
@@ -127,7 +128,8 @@ function OrdersWorkspace() {
     setGiftSampleName(sample?.name || legacy.sampleName || "");
     setGiftSampleSize(sample?.size || legacy.sampleSize || "2ml");
     setGiftExtra(extra || legacy.extraGift || "");
-  }, [selected?.id, selected?.source_payload?.freeGift]);
+    setGiftUnlocked(false);
+  }, [selected?.id, selected?.status, selected?.source_payload?.freeGift]);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -194,7 +196,11 @@ function OrdersWorkspace() {
     order.courier_payment_status === "PAID" && !order.courier_batch_id
   ).length, [saleOrders]);
   const selectedEvents = useMemo(() => events.filter((event) => event.order_id === selectedId), [events, selectedId]);
-  const giftEditable = Boolean(writeEnabled && selected?.status === "NEW");
+  const giftEditable = Boolean(
+    writeEnabled &&
+    (selected?.status === "NEW" || (selected?.status === "PACKED" && giftUnlocked))
+  );
+  const canUnlockGift = Boolean(writeEnabled && selected?.status === "PACKED");
   const savedGift = useMemo(() => {
     const data = selected?.source_payload || {};
     const sample = Array.isArray(data.giftSamples) ? data.giftSamples[0] : null;
@@ -260,6 +266,7 @@ function OrdersWorkspace() {
       const result = await ordersApi("POST", body);
       absorb(result);
       if (key === "settlement") setSettlementSelection([]);
+      if (key === "gift") setGiftUnlocked(false);
       if (result?.status_email_warning) setNotice(result.status_email_warning);
       else if (result?.mirror_warning) setNotice(result.mirror_warning);
       else if (result?.settlement?.batch_id) {
@@ -309,6 +316,20 @@ function OrdersWorkspace() {
     sample_size: giftSampleName ? giftSampleSize : "",
     extra_gift: giftExtra
   }, "gift");
+
+  const toggleGiftUnlock = (event) => {
+    const next = event.target.checked;
+    if (!next) {
+      setGiftUnlocked(false);
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "This order is already packed. Unlock gift editing to add or correct the gift before courier handoff?\n\nSaving the gift will not change the order status or resend the customer email."
+    );
+
+    setGiftUnlocked(confirmed);
+  };
 
   const printLabel = () => {
     if (!selected || selected.status === "DUPLICATE") return;
@@ -539,7 +560,23 @@ function OrdersWorkspace() {
                 {busy === "gift" ? "Saving…" : giftEditable ? "Save gift" : "Gift locked"}
               </button>
             </div>
-            {!giftEditable && selected?.status !== "NEW" ? <div className="orders-gift-lock-note">Gift/sample is locked once the order is packed.</div> : null}
+            {canUnlockGift ? <label className="orders-gift-unlock">
+              <input
+                type="checkbox"
+                checked={giftUnlocked}
+                onChange={toggleGiftUnlock}
+                disabled={Boolean(busy)}
+              />
+              <span>{giftUnlocked ? "Gift editing unlocked" : "Unlock gift editing"}</span>
+            </label> : null}
+            {selected?.status === "PACKED" ? <div className="orders-gift-lock-note">
+              {giftUnlocked
+                ? "Editing is temporarily unlocked. Save gift will re-lock this section without changing the order status or resending the customer email."
+                : "Gift/sample is locked after packing. Unlock only to add or correct the gift before courier handoff."}
+            </div> : null}
+            {selected && !["NEW","PACKED"].includes(selected.status) ? <div className="orders-gift-lock-note">
+              Gift/sample editing is unavailable after the order has been handed to the courier.
+            </div> : null}
             <div className="orders-gift-preview">
               <span>CURRENT RECORD</span>
               <strong>{giftSampleName ? giftSampleName + " - " + giftSampleSize + (giftExtra ? " + " + giftExtra : "") : (giftExtra || "No gift recorded")}</strong>

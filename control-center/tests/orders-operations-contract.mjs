@@ -59,8 +59,11 @@ assert.ok(ui.includes("extraGift"), "Customer gift history must expose prior ext
 assert.ok(ui.includes('window.localStorage.setItem("PLAYNICE_CC_LABEL_ORDER"'), "Orders detail must prepare canonical order data for label printing.");
 assert.ok(ui.includes('window.open("/PlayNice-Label-Generator.html?cc=1"'), "Orders detail must open the 100x150 label generator from Control Center.");
 assert.ok(ui.includes(">Print label</button>"), "Orders detail must expose a Print label action.");
-assert.ok(ui.includes('selected?.status === "NEW"'), "Gift/sample editing must be limited to NEW orders.");
-assert.ok(ui.includes("Gift/sample is locked once the order is packed."), "Packed and later orders must communicate that gift/sample data is locked.");
+assert.ok(ui.includes('selected?.status === "NEW" || (selected?.status === "PACKED" && giftUnlocked)'), "Gift/sample editing must allow NEW orders and explicitly unlocked PACKED orders.");
+assert.ok(ui.includes('selected?.status === "PACKED"'), "PACKED orders must expose the controlled gift-edit override.");
+assert.ok(ui.includes("Unlock gift editing"), "PACKED orders must provide an explicit gift unlock control.");
+assert.ok(ui.includes("Save gift will re-lock this section without changing the order status or resending the customer email."), "Packed gift override must explain that saving re-locks without lifecycle or email side effects.");
+assert.ok(ui.includes('!["NEW","PACKED"].includes(selected.status)'), "Gift/sample editing must remain unavailable after courier handoff.");
 assert.ok(ui.includes("!giftChanged"), "Save gift must stay disabled when no gift/sample change has been made.");
 assert.ok(ui.includes('["2ml","5ml","10ml","20ml"]'), "Gift sample sizes must be independent from sale variant availability.");
 assert.ok(ui.includes('from "@shop/data/products/index.js"'), "Gift/sample editor must use the canonical Shop catalog.");
