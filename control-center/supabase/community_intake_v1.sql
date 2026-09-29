@@ -384,6 +384,11 @@ begin
 end;
 $function$;
 
+revoke execute on function public.get_control_center_community_intake() from public, anon;
+revoke execute on function public.submit_scent_request(text,text,text,text) from public;
+revoke execute on function public.upsert_journal_feedback(text,text,text,text,text,text,text,text,text) from public;
+revoke execute on function public.get_public_scent_request_totals() from public;
+
 grant execute on function public.submit_scent_request(text,text,text,text) to anon, authenticated;
 grant execute on function public.upsert_journal_feedback(text,text,text,text,text,text,text,text,text) to anon, authenticated;
 grant execute on function public.get_public_scent_request_totals() to anon, authenticated;
