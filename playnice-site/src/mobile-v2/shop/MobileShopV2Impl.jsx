@@ -119,17 +119,26 @@ export default function MobileShopV2({
   useEffect(() => {
     if (!panel) return;
 
-    const onPointerDown = (event) => {
+    /*
+      Close the mobile shop popover after the outside click has completed.
+
+      Using pointerdown here used to mutate the filter UI before the browser
+      resolved the following click. On mobile, especially while the search
+      input/keyboard was active, the viewport could reflow between pointerdown
+      and click and the release would occasionally land on the Filter or Sort
+      capsule instead of the product card underneath ("click-through").
+    */
+    const onDocumentClick = (event) => {
       if (!menuRef.current?.contains(event.target)) setPanel(null);
     };
     const onKeyDown = (event) => {
       if (event.key === "Escape") setPanel(null);
     };
 
-    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("click", onDocumentClick);
     document.addEventListener("keydown", onKeyDown);
     return () => {
-      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("click", onDocumentClick);
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [panel]);
