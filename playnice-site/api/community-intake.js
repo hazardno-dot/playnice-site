@@ -1,5 +1,8 @@
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+const SUPABASE_URL =
+  process.env.SUPABASE_URL || "https://fsujznyfdrstinqexxgs.supabase.co";
+const SUPABASE_ANON_KEY =
+  process.env.SUPABASE_ANON_KEY ||
+  "sb_publishable_XzvxcEV7Cye44oF4bRWxtQ_VUq9gcNN";
 const APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec";
 
