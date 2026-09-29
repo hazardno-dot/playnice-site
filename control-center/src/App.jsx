@@ -6,6 +6,7 @@ import { productDoNotWearContext } from "@shop/data/products/productDoNotWearCon
 import { productWhatToWearContext } from "@shop/data/products/productWhatToWearContext.js";
 import discoveryProfiles from "@shop/data/products/discoveryProfiles.js";
 import { journalArticles } from "@shop/data/journal/index.js";
+import { BASE_HERO_SLIDES } from "@shop/data/heroSlides.generated.js";
 import { supabase } from "./supabase";
 import { OPEN_PRODUCT_EVENT } from "./productNavigation.mjs";
 import "./audit.css";
@@ -51,7 +52,7 @@ const MODULE_META = {
 const FILTERS = [["all","All"],["complete","Complete"],["copy","Missing Copy"],["wear","Missing Wear"],["do-not-wear","Missing Do Not Wear"],["what-to-wear","Missing What To Wear"],["discovery","Missing Discovery"],["note-map","Missing Note Map"],["recommendations","Missing Recommendations"]];
 const metricKeys = [["category","Category"],["season","Season"],["rating","Rating"],["ratingLabel","Rating label"],["badge","Badge"]];
 const titleCase = (value) => String(value || "").replace(/[-_]/g," ").replace(/\b\w/g,(l)=>l.toUpperCase());
-const emptyWorkflow = { productDrafts:0, heroDrafts:0, journalDrafts:0, noteDrafts:0, approved:0, ready:0, heroSlides:0, heroActiveSlides:0 };
+const emptyWorkflow = { productDrafts:0, heroDrafts:0, journalDrafts:0, noteDrafts:0, approved:0, ready:0 };
 
 function getCoverage(product){
   const draftPayload=product?.__draftPayload;
@@ -168,7 +169,7 @@ function Overview({audit,workflow,workflowLoading,workflowError,onNavigate}){
     <button type="button" className="overview-card overview-card-link" onClick={()=>onNavigate("Products")}><span>Products</span><strong>{products.length}</strong><small>live catalog records</small></button>
     <button type="button" className="overview-card overview-card-link good" onClick={()=>onNavigate("Products","complete")}><span>Complete products</span><strong>{audit.complete}</strong><small>all product layers aligned</small></button>
     <button type="button" className="overview-card overview-card-link" onClick={()=>onNavigate("Journal")}><span>Journal</span><strong>{journalArticles.length}</strong><small>live editorial articles</small></button>
-    <button type="button" className="overview-card overview-card-link" onClick={()=>onNavigate("Hero")}><span>Hero</span><strong>{workflowValue(workflow.heroSlides)}</strong><small>{workflowLoading?"syncing live Hero…":workflowError?"Hero data unavailable":`${workflow.heroActiveSlides} active · ${Math.max(0,workflow.heroSlides-workflow.heroActiveSlides)} inactive`}</small></button>
+    <button type="button" className="overview-card overview-card-link" onClick={()=>onNavigate("Hero")}><span>Hero</span><strong>{BASE_HERO_SLIDES.length}</strong><small>live storefront slides</small></button>
     <button type="button" className={`overview-card overview-card-link ${workflowError?"":totalDrafts?"warn":"good"}`} onClick={()=>onNavigate("Workflow")}><span>Active drafts</span><strong>{workflowValue(totalDrafts)}</strong><small>Products · Hero · Journal · Notes</small></button>
     <button type="button" className={`overview-card overview-card-link ${workflowError?"":workflow.approved?"warn":"good"}`} onClick={()=>onNavigate("Workflow")}><span>Approved</span><strong>{workflowValue(workflow.approved)}</strong><small>awaiting controlled next step</small></button>
   </div>
@@ -227,16 +228,14 @@ export default function App(){
   useEffect(()=>{
     let cancelled=false;
     const loadWorkflow=async()=>{
-      const [productRows,heroRows,journalRows,noteRows,heroSlides,heroActiveSlides]=await Promise.all([
+      const [productRows,heroRows,journalRows,noteRows]=await Promise.all([
         supabase.from("product_drafts").select("review_status"),
         supabase.from("hero_drafts").select("review_status"),
         supabase.from("journal_drafts").select("review_status"),
-        supabase.from("note_drafts").select("review_status"),
-        supabase.from("hero_slides").select("hero_key",{count:"exact",head:true}),
-        supabase.from("hero_slides").select("hero_key",{count:"exact",head:true}).eq("enabled",true)
+        supabase.from("note_drafts").select("review_status")
       ]);
       if(cancelled)return;
-      const results=[productRows,heroRows,journalRows,noteRows,heroSlides,heroActiveSlides];
+      const results=[productRows,heroRows,journalRows,noteRows];
       const firstError=results.find((result)=>result.error)?.error;
       if(firstError){
         console.error("Failed to load workflow summary",firstError);
@@ -246,12 +245,12 @@ export default function App(){
       }
       const groups=[productRows.data||[],heroRows.data||[],journalRows.data||[],noteRows.data||[]];
       const all=groups.flat();
-      setWorkflow({productDrafts:groups[0].length,heroDrafts:groups[1].length,journalDrafts:groups[2].length,noteDrafts:groups[3].length,approved:all.filter((r)=>r.review_status==="approved").length,ready:all.filter((r)=>r.review_status==="ready").length,heroSlides:heroSlides.count||0,heroActiveSlides:heroActiveSlides.count||0});
+      setWorkflow({productDrafts:groups[0].length,heroDrafts:groups[1].length,journalDrafts:groups[2].length,noteDrafts:groups[3].length,approved:all.filter((r)=>r.review_status==="approved").length,ready:all.filter((r)=>r.review_status==="ready").length});
       setWorkflowError("");
       setWorkflowLoading(false);
     };
     loadWorkflow();
-    const tables=["product_drafts","hero_drafts","journal_drafts","note_drafts","hero_slides"].map((table)=>supabase.channel(`shell-${table}`).on("postgres_changes",{event:"*",schema:"public",table},loadWorkflow).subscribe());
+    const tables=["product_drafts","hero_drafts","journal_drafts","note_drafts"].map((table)=>supabase.channel(`shell-${table}`).on("postgres_changes",{event:"*",schema:"public",table},loadWorkflow).subscribe());
     const onFocus=()=>loadWorkflow();window.addEventListener("focus",onFocus);
     return()=>{cancelled=true;tables.forEach((channel)=>supabase.removeChannel(channel));window.removeEventListener("focus",onFocus)};
   },[]);
