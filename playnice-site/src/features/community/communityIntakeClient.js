@@ -27,6 +27,19 @@ const callCommunityApi = async (options = {}) => {
   return data;
 };
 
+const queueCommunityMirror = (body) => {
+  void fetch("/api/community-mirror", {
+    method: "POST",
+    keepalive: true,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  }).catch((error) => {
+    console.warn("Community Sheets mirror request failed:", error);
+  });
+};
+
 export const loadScentRequestTotals = async () =>
   callCommunityApi({ method: "GET" });
 
@@ -35,30 +48,45 @@ export const submitCanonicalScentRequest = async ({
   lang,
   page,
   deviceId
-}) =>
-  callCommunityApi({
+}) => {
+  const token = requestToken();
+  const payload = {
+    timestamp: new Date().toISOString(),
+    fragrance,
+    lang,
+    page,
+    deviceId
+  };
+
+  const canonical = await callCommunityApi({
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
       type: "scent_request",
-      requestToken: requestToken(),
-      payload: {
-        timestamp: new Date().toISOString(),
-        fragrance,
-        lang,
-        page,
-        deviceId
-      }
+      requestToken: token,
+      payload
     })
   });
+
+  if (canonical?.status === "ok") {
+    queueCommunityMirror({
+      type: "scent_request",
+      canonicalId: canonical.id,
+      requestToken: token,
+      payload
+    });
+  }
+
+  return canonical;
+};
 
 export const submitCanonicalJournalFeedback = async (
   payload,
   operation = "vote"
-) =>
-  callCommunityApi({
+) => {
+  const canonical = await callCommunityApi({
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -69,3 +97,13 @@ export const submitCanonicalJournalFeedback = async (
       payload
     })
   });
+
+  if (canonical?.status === "ok") {
+    queueCommunityMirror({
+      type: "journal_feedback",
+      payload
+    });
+  }
+
+  return canonical;
+};
