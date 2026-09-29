@@ -496,14 +496,14 @@ function customerEmailHtml({
             ${language === "en" ? "ORDER UPDATE" : "PORUDŽBINA"}
           </div>
 
-          <h1 style="margin:0 0 14px;font-family:Georgia,serif;font-size:30px;line-height:1.08;color:#edcf88;font-weight:600;">
+          <h1 style="margin:0 0 24px;font-family:Georgia,serif;font-size:30px;line-height:1.08;color:#edcf88;font-weight:600;">
             ${c.title}
           </h1>
 
-          <p style="margin:0 0 8px;color:#f7f2e8;line-height:1.7;font-size:15px;font-weight:600;">
+          <p style="margin:0 0 12px;color:#f7f2e8;line-height:1.7;font-size:15px;font-weight:600;">
             ${c.salutation(fullName)}
           </p>
-          <p style="margin:0 0 20px;color:rgba(247,242,232,0.82);line-height:1.85;font-size:15px;font-weight:400;">
+          <p style="margin:0 0 28px;color:rgba(247,242,232,0.82);line-height:1.85;font-size:15px;font-weight:400;">
             ${c.intro(fullName, orderId)}
           </p>
 
