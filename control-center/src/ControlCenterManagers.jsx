@@ -19,6 +19,7 @@ import NoteMediaUploadBridge from "./NoteMediaUploadBridge";
 import NoteApplyManager from "./NoteApplyManager";
 import NoteWorkflowAdvanceBridge from "./NoteWorkflowAdvanceBridge";
 import AnalyticsManager from "./AnalyticsManager";
+import ScentRequestsManager from "./ScentRequestsManager";
 import WorkflowManager from "./WorkflowManager";
 import SiteHealthManager from "./SiteHealthManager";
 import SiteHealthOverviewBridge from "./SiteHealthOverviewBridge";
@@ -171,6 +172,7 @@ export default function ControlCenterManagers() {
     <NoteApplyManager />
     <NoteWorkflowAdvanceBridge />
     <AnalyticsManager />
+    <ScentRequestsManager />
     <WorkflowManager />
     <SiteHealthManager />
     <SiteHealthOverviewBridge />
