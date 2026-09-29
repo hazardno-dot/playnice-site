@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { products } from "@shop/data/products/index.js";
 import { getScentRequestMatchResult } from "@shop/features/scent-request/scentRequestMatching.js";
+import { EXISTING_COLLECTION_LOCKED_VOTES } from "@shop/features/scent-request/communityRequestHelpers.js";
 import { supabase } from "./supabase";
 import { requestOpenProduct } from "./productNavigation.mjs";
 import "./scent-requests-manager.css";
@@ -52,20 +53,70 @@ function ScentRequestsWorkspace() {
     return () => window.removeEventListener("focus", onFocus);
   }, []);
 
-  const enriched = useMemo(() => rows.map((row) => {
-    const match = getScentRequestMatchResult(row.fragrance, products);
-    const product = match?.product || null;
-    const status = product ? "IN_COLLECTION" : match?.ambiguous ? "REVIEW" : "OPEN";
-    return { ...row, product, status };
-  }), [rows]);
+  const enriched = useMemo(() => {
+    const merged = new Map();
+
+    rows.forEach((row) => {
+      const match = getScentRequestMatchResult(row.fragrance, products);
+      const product = match?.product || null;
+      const status = product ? "IN_COLLECTION" : match?.ambiguous ? "REVIEW" : "OPEN";
+      const key = product ? `product:${product.slug}` : `request:${row.fragrance_normalized}`;
+
+      merged.set(key, {
+        ...row,
+        product,
+        status,
+        display_votes: Number(row.votes || 0),
+        locked_votes: null,
+        historical_only: false
+      });
+    });
+
+    Object.entries(EXISTING_COLLECTION_LOCKED_VOTES).forEach(([name, lockedVotes]) => {
+      const match = getScentRequestMatchResult(name, products);
+      const product = match?.product || null;
+      if (!product) return;
+
+      const key = `product:${product.slug}`;
+      const current = merged.get(key);
+
+      if (current) {
+        merged.set(key, {
+          ...current,
+          display_votes: Number(lockedVotes),
+          locked_votes: Number(lockedVotes)
+        });
+        return;
+      }
+
+      merged.set(key, {
+        fragrance: product.name,
+        fragrance_normalized: name.toLowerCase(),
+        votes: 0,
+        unique_devices: 0,
+        first_requested_at: null,
+        last_requested_at: null,
+        product,
+        status: "IN_COLLECTION",
+        display_votes: Number(lockedVotes),
+        locked_votes: Number(lockedVotes),
+        historical_only: true
+      });
+    });
+
+    return [...merged.values()].sort((a, b) =>
+      Number(b.display_votes || 0) - Number(a.display_votes || 0) ||
+      String(a.fragrance || "").localeCompare(String(b.fragrance || ""))
+    );
+  }, [rows]);
 
   const summary = useMemo(() => ({
-    votes: enriched.reduce((sum, row) => sum + Number(row.votes || 0), 0),
-    fragrances: enriched.length,
+    votes: rows.reduce((sum, row) => sum + Number(row.votes || 0), 0),
+    fragrances: rows.length,
     open: enriched.filter((row) => row.status === "OPEN").length,
     collection: enriched.filter((row) => row.status === "IN_COLLECTION").length,
     review: enriched.filter((row) => row.status === "REVIEW").length
-  }), [enriched]);
+  }), [rows, enriched]);
 
   const visible = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -96,8 +147,8 @@ function ScentRequestsWorkspace() {
     {error ? <div className="scent-requests-error">{error}</div> : null}
 
     <div className="scent-request-kpis">
-      <div><span>VALID VOTES</span><strong>{summary.votes}</strong><small>historical scent_request rows</small></div>
-      <div><span>FRAGRANCES</span><strong>{summary.fragrances}</strong><small>normalized request groups</small></div>
+      <div><span>REQUEST EVENTS</span><strong>{summary.votes}</strong><small>valid historical scent_request rows</small></div>
+      <div><span>RAW GROUPS</span><strong>{summary.fragrances}</strong><small>normalized request groups in Supabase</small></div>
       <div><span>OPEN DEMAND</span><strong>{summary.open}</strong><small>not currently in catalog</small></div>
       <div><span>IN COLLECTION</span><strong>{summary.collection}</strong><small>derived from live products</small></div>
       {summary.review ? <div className="warn"><span>REVIEW MATCH</span><strong>{summary.review}</strong><small>ambiguous catalog match</small></div> : null}
@@ -139,7 +190,7 @@ function ScentRequestsWorkspace() {
           <strong>{row.fragrance}</strong>
           <small>{row.fragrance_normalized}</small>
         </div>
-        <strong className="scent-request-votes">{Number(row.votes || 0)}</strong>
+        <div className="scent-request-vote-cell"><strong className="scent-request-votes">{Number(row.display_votes ?? row.votes ?? 0)}</strong>{row.locked_votes ? <small>historical locked</small> : null}</div>
         <span>{Number(row.unique_devices || 0)}</span>
         <time>{dateTime(row.first_requested_at)}</time>
         <time>{dateTime(row.last_requested_at)}</time>
@@ -157,7 +208,7 @@ function ScentRequestsWorkspace() {
     </div>
 
     <div className="scent-request-footnote">
-      <strong>Historical note.</strong> “Known devices” excludes older request rows created before device IDs were introduced. Those votes remain included in the total.
+      <strong>Historical note.</strong> “Known devices” excludes older request rows created before device IDs were introduced. In-collection rows with preserved public historical totals are marked “historical locked” and remain derived from the same storefront constants used by “From request to collection ✦”.
     </div>
   </section>;
 }
