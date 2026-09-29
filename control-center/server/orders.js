@@ -316,6 +316,13 @@ async function sendPackedStatusEmail(token, order, previousStatus) {
   const email = cleanText(payload.email, 180).toLowerCase();
   const fullName = cleanText(payload.fullName, 160);
   const language = payload.language === "en" ? "en" : "sr";
+  const items = Array.isArray(payload.items)
+    ? payload.items.slice(0, 30).map((item) => ({
+        name: cleanText(item?.name, 220),
+        size: cleanText(item?.size, 60),
+        quantity: Math.max(1, Math.min(99, Number(item?.quantity) || 1))
+      })).filter((item) => item.name)
+    : [];
 
   if (!email || !fullName) {
     return {
@@ -336,7 +343,8 @@ async function sendPackedStatusEmail(token, order, previousStatus) {
         orderId: order.order_id,
         fullName,
         email,
-        language
+        language,
+        items
       }),
       signal: AbortSignal.timeout(12000)
     });
