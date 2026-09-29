@@ -112,7 +112,8 @@ function ScentRequestsWorkspace() {
 
   const summary = useMemo(() => ({
     votes: rows.reduce((sum, row) => sum + Number(row.votes || 0), 0),
-    rawGroups: rows.length,\n    tracked: enriched.length,
+    rawGroups: rows.length,
+    tracked: enriched.length,
     open: enriched.filter((row) => row.status === "OPEN").length,
     collection: enriched.filter((row) => row.status === "IN_COLLECTION").length,
     review: enriched.filter((row) => row.status === "REVIEW").length
