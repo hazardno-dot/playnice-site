@@ -1,0 +1,386 @@
+.placeholder-panel.journal-feedback-module-active {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.placeholder-panel.journal-feedback-module-active > .eyebrow,
+.placeholder-panel.journal-feedback-module-active > h2,
+.placeholder-panel.journal-feedback-module-active > p {
+  display: none;
+}
+
+.journal-feedback-manager-slot { width: 100%; }
+
+.journal-feedback-manager {
+  display: grid;
+  gap: 16px;
+  color: var(--cc-text);
+}
+
+.journal-feedback-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 22px;
+  border: 1px solid rgba(86,210,145,.16);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(86,210,145,.04), rgba(255,255,255,.016));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.012);
+}
+
+.journal-feedback-head > div:first-child { display: grid; gap: 5px; }
+
+.journal-feedback-head > div:first-child > span,
+.journal-feedback-live > span,
+.journal-feedback-kpis span,
+.journal-feedback-panel-head span {
+  color: #71877c;
+  font-size: 9px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.journal-feedback-head h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: #eef3ef;
+}
+
+.journal-feedback-head p {
+  margin: 0;
+  max-width: 760px;
+  color: #75857d;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.journal-feedback-live {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+  text-align: right;
+}
+
+.journal-feedback-live > span {
+  padding: 7px 10px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 999px;
+  background: rgba(255,255,255,.018);
+}
+
+.journal-feedback-live > span.ok {
+  color: #69d99d;
+  border-color: rgba(86,210,145,.28);
+  background: rgba(86,210,145,.06);
+}
+
+.journal-feedback-live > span.error {
+  color: #e59797;
+  border-color: rgba(221,102,102,.28);
+  background: rgba(221,102,102,.045);
+}
+
+.journal-feedback-live > span.loading { color: #d8b96b; }
+
+.journal-feedback-live small,
+.journal-feedback-kpis small,
+.journal-feedback-footnote,
+.article-feedback-row small,
+.journal-feedback-panel-head small,
+.latest-feedback-meta small {
+  color: #6f8078;
+}
+
+.journal-feedback-error {
+  padding: 11px 13px;
+  border: 1px solid rgba(221,102,102,.28);
+  border-radius: 11px;
+  background: rgba(221,102,102,.045);
+  color: #e89d9d;
+  font-size: 11px;
+}
+
+.journal-feedback-kpis {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.journal-feedback-kpis > div {
+  min-height: 100px;
+  padding: 15px 16px;
+  display: grid;
+  align-content: space-between;
+  gap: 6px;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 13px;
+  background: rgba(255,255,255,.018);
+}
+
+.journal-feedback-kpis > div:nth-child(2),
+.journal-feedback-kpis > div:nth-child(3) {
+  border-color: rgba(86,210,145,.16);
+  background: rgba(86,210,145,.022);
+}
+
+.journal-feedback-kpis > div.warn {
+  border-color: rgba(216,185,107,.22);
+  background: rgba(216,185,107,.035);
+}
+
+.journal-feedback-kpis strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1;
+  color: #eef3ef;
+}
+
+.journal-feedback-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, .98fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.journal-feedback-panel {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 15px;
+  background: rgba(255,255,255,.012);
+}
+
+.journal-feedback-panel-head {
+  min-height: 66px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid rgba(255,255,255,.055);
+}
+
+.journal-feedback-panel-head > div { display: grid; gap: 4px; }
+
+.journal-feedback-panel-head h3 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 19px;
+  font-weight: 500;
+  color: #eef3ef;
+}
+
+.article-feedback-list,
+.latest-feedback-list {
+  display: grid;
+}
+
+.article-feedback-row {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 64px 78px 82px;
+  gap: 12px;
+  align-items: center;
+  min-height: 66px;
+  padding: 11px 15px;
+  border-bottom: 1px solid rgba(255,255,255,.055);
+}
+
+.article-feedback-row:last-child { border-bottom: 0; }
+
+.article-feedback-row > div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.article-feedback-row strong {
+  overflow: hidden;
+  color: #dfe8e2;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.article-feedback-row small { font-size: 8px; }
+
+.article-feedback-row > span {
+  color: #91a198;
+  font-size: 9px;
+  text-align: right;
+}
+
+.article-feedback-row em {
+  color: #8fc9a8;
+  font-size: 9px;
+  font-style: normal;
+  text-align: right;
+}
+
+.journal-feedback-toolbar {
+  padding: 12px 14px;
+  display: grid;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,.055);
+}
+
+.journal-feedback-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.journal-feedback-filters button {
+  padding: 6px 9px;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 999px;
+  background: rgba(255,255,255,.018);
+  color: #8f9d95;
+  cursor: pointer;
+  font: inherit;
+  font-size: 9px;
+}
+
+.journal-feedback-filters button:hover {
+  border-color: rgba(86,210,145,.24);
+  background: rgba(86,210,145,.045);
+  color: #cbe8d8;
+}
+
+.journal-feedback-filters button.active {
+  border-color: rgba(86,210,145,.34);
+  background: rgba(86,210,145,.08);
+  color: #8ee0b2;
+}
+
+.journal-feedback-toolbar input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 11px;
+  border: 1px solid rgba(112,147,129,.24);
+  border-radius: 9px;
+  background: rgba(5,10,8,.82);
+  color: #d9e4dd;
+  outline: none;
+  font-size: 10px;
+}
+
+.journal-feedback-toolbar input::placeholder { color: #66766e; }
+
+.journal-feedback-toolbar input:focus {
+  border-color: rgba(86,210,145,.42);
+  box-shadow: 0 0 0 3px rgba(86,210,145,.06);
+}
+
+.latest-feedback-row {
+  display: grid;
+  gap: 9px;
+  padding: 13px 15px;
+  border-bottom: 1px solid rgba(255,255,255,.055);
+}
+
+.latest-feedback-row:last-child { border-bottom: 0; }
+
+.latest-feedback-meta {
+  display: grid;
+  grid-template-columns: 24px minmax(0,1fr);
+  gap: 9px;
+  align-items: center;
+}
+
+.latest-feedback-meta > span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.latest-feedback-meta > span.vote-up {
+  color: #69d99d;
+  border: 1px solid rgba(86,210,145,.2);
+  background: rgba(86,210,145,.05);
+}
+
+.latest-feedback-meta > span.vote-down {
+  color: #d8b96b;
+  border: 1px solid rgba(216,185,107,.22);
+  background: rgba(216,185,107,.045);
+}
+
+.latest-feedback-meta > div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.latest-feedback-meta strong {
+  overflow: hidden;
+  color: #dfe8e2;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.latest-feedback-meta small { font-size: 8px; }
+
+.latest-feedback-row p {
+  margin: 0 0 0 33px;
+  color: #b9c8c0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.latest-feedback-row p.no-comment {
+  color: #66766e;
+  font-family: inherit;
+  font-size: 9px;
+}
+
+.journal-feedback-empty {
+  padding: 18px 15px;
+  color: #718078;
+  font-size: 10px;
+}
+
+.journal-feedback-footnote {
+  padding: 2px 4px;
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+.journal-feedback-footnote strong { color: #899990; }
+
+@media (max-width: 1180px) {
+  .journal-feedback-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .journal-feedback-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  .journal-feedback-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .journal-feedback-live {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .journal-feedback-kpis { grid-template-columns: 1fr 1fr; }
+
+  .article-feedback-row {
+    grid-template-columns: minmax(0,1fr) 58px 70px;
+  }
+
+  .article-feedback-row em {
+    grid-column: 2 / -1;
+  }
+}

@@ -19,6 +19,8 @@ import NoteMediaUploadBridge from "./NoteMediaUploadBridge";
 import NoteApplyManager from "./NoteApplyManager";
 import NoteWorkflowAdvanceBridge from "./NoteWorkflowAdvanceBridge";
 import AnalyticsManager from "./AnalyticsManager";
+import ScentRequestsManager from "./ScentRequestsManager";
+import JournalFeedbackManager from "./JournalFeedbackManager";
 import WorkflowManager from "./WorkflowManager";
 import SiteHealthManager from "./SiteHealthManager";
 import SiteHealthOverviewBridge from "./SiteHealthOverviewBridge";
@@ -104,7 +106,11 @@ export default function ControlCenterManagers() {
           ? { group: "Social", selector: "[data-social-manager-nav='true']" }
           : persisted === "Inbox"
             ? { group: "Social", selector: "[data-social-inbox-manager-nav='true']" }
-            : null;
+            : persisted === "Scent Requests"
+              ? { group: "Community", selector: "[data-scent-requests-manager-nav='true']" }
+              : persisted === "Journal Feedback"
+                ? { group: "Community", selector: "[data-journal-feedback-manager-nav='true']" }
+                : null;
 
     let restoreTimer = null;
     if (restoreTarget) {
@@ -171,6 +177,8 @@ export default function ControlCenterManagers() {
     <NoteApplyManager />
     <NoteWorkflowAdvanceBridge />
     <AnalyticsManager />
+    <ScentRequestsManager />
+    <JournalFeedbackManager />
     <WorkflowManager />
     <SiteHealthManager />
     <SiteHealthOverviewBridge />

@@ -130,6 +130,11 @@ import {
   buildJournalFeedbackPayload,
 } from "./features/journal/journalFeedbackHelpers";
 import {
+  loadScentRequestTotals,
+  submitCanonicalJournalFeedback,
+  submitCanonicalScentRequest,
+} from "./features/community/communityIntakeClient";
+import {
   getCartSummary,
   getOverlayVisibility,
   buildManagedShopUrl,
@@ -1641,7 +1646,11 @@ if (journalArticleFromUrl) {
 
 /* feedback helper */
 
-const sendJournalFeedback = (article, override = {}) => {
+const sendJournalFeedback = async (
+  article,
+  override = {},
+  operation = "vote"
+) => {
   const submission = getJournalFeedbackSubmission({
     feedback: journalFeedback,
     article,
@@ -1649,36 +1658,27 @@ const sendJournalFeedback = (article, override = {}) => {
     getArticleKey: getJournalArticleKey,
   });
 
-  if (!submission) return;
+  if (!submission) return false;
 
   const deviceId = getPlayNiceDeviceId();
+  const payload = buildJournalFeedbackPayload({
+    article,
+    articleKey: submission.key,
+    articleTitle: getJournalText(
+      article?.title,
+      lang
+    ),
+    vote: submission.vote,
+    note: submission.note,
+    lang,
+    page: window.location.pathname,
+    deviceId,
+    timestamp: new Date().toISOString(),
+  });
 
   try {
-    const payloadToSend = JSON.stringify(
-      buildJournalFeedbackPayload({
-        article,
-        articleKey: submission.key,
-        articleTitle: getJournalText(
-          article?.title,
-          lang
-        ),
-        vote: submission.vote,
-        note: submission.note,
-        lang,
-        page: window.location.pathname,
-        deviceId,
-        timestamp: new Date().toISOString(),
-      })
-    );
-
-    const blob = new Blob([payloadToSend], {
-      type: "text/plain;charset=utf-8"
-    });
-
-    return navigator.sendBeacon(
-      "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
-      blob
-    );
+    const result = await submitCanonicalJournalFeedback(payload, operation);
+    return result?.status === "ok";
   } catch (error) {
     console.error("Journal feedback submit failed:", error);
     return false;
@@ -1705,7 +1705,7 @@ const triggerJournalVoteSuccess = (vote) => {
   }, 1100);
 };
 
-const handleJournalFeedbackVote = (article, vote) => {
+const handleJournalFeedbackVote = async (article, vote) => {
   const {
     key,
     current,
@@ -1733,16 +1733,42 @@ const handleJournalFeedbackVote = (article, vote) => {
 
   if (!vote) return;
 
-  const feedbackQueued = sendJournalFeedback(article, {
-    vote,
-    note: (current.note || "").trim()
+  const feedbackSaved = await sendJournalFeedback(
+    article,
+    {
+      vote,
+      note: (current.note || "").trim()
+    },
+    "vote"
+  );
+
+  if (feedbackSaved) {
+    triggerJournalVoteSuccess(vote);
+    return;
+  }
+
+  setJournalFeedback((prev) => {
+    const reverted = { ...prev };
+
+    if (current && Object.keys(current).length > 0) {
+      reverted[key] = current;
+    } else {
+      delete reverted[key];
+    }
+
+    try {
+      localStorage.setItem(
+        "playnice_journal_feedback",
+        JSON.stringify(reverted)
+      );
+    } catch (error) {
+      console.error("Journal feedback storage failed:", error);
+    }
+
+    return reverted;
   });
 
-  if (feedbackQueued) {
-    triggerJournalVoteSuccess(vote);
-  } else {
-    console.error("Journal vote feedback was not queued.");
-  }
+  console.error("Journal vote feedback was not saved.");
 };
 
 const handleJournalFeedbackNoteChange = (article, value) => {
@@ -1758,7 +1784,7 @@ const handleJournalFeedbackNoteChange = (article, value) => {
   );
 };
 
-const handleJournalFeedbackSubmit = (article) => {
+const handleJournalFeedbackSubmit = async (article) => {
   const key = getJournalArticleKey(article);
   if (!key) return;
 
@@ -1767,13 +1793,17 @@ const handleJournalFeedbackSubmit = (article) => {
 
   if (!current.vote || !trimmedNote) return;
 
-  const feedbackQueued = sendJournalFeedback(article, {
-    vote: current.vote,
-    note: trimmedNote
-  });
+  const feedbackSaved = await sendJournalFeedback(
+    article,
+    {
+      vote: current.vote,
+      note: trimmedNote
+    },
+    "note"
+  );
 
-  if (!feedbackQueued) {
-    console.error("Journal note feedback was not queued.");
+  if (!feedbackSaved) {
+    console.error("Journal note feedback was not saved.");
     return;
   }
 
@@ -1848,55 +1878,27 @@ const sendScentRequest = async (
   fragranceName,
   source = "scent_request"
 ) => {
-  const maxAttempts = 3;
-
-  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-    try {
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec",
-        {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-          },
-          body: JSON.stringify({
-            timestamp: new Date().toISOString(),
-            fragrance: fragranceName,
-            lang,
-            page: window.location.pathname,
-            source,
-            deviceId: getPlayNiceDeviceId()
-          })
-        }
-      );
-
-      const result = await response.json();
-      const isServerBusy =
-        result?.status === "busy" || result?.blockReason === "server_busy";
-
-      if (!isServerBusy || attempt === maxAttempts) {
-        return result;
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
-    } catch (error) {
-      if (attempt === maxAttempts) {
-        console.error("Scent request submit failed:", error);
-        return {
-          status: "error",
-          message: String(error)
-        };
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
-    }
+  if (source !== "scent_request") {
+    return {
+      status: "error",
+      message: "Unsupported scent request source"
+    };
   }
 
-  return {
-    status: "error",
-    message: "Scent request retry limit reached"
-  };
+  try {
+    return await submitCanonicalScentRequest({
+      fragrance: fragranceName,
+      lang,
+      page: window.location.pathname,
+      deviceId: getPlayNiceDeviceId()
+    });
+  } catch (error) {
+    console.error("Scent request submit failed:", error);
+    return {
+      status: "error",
+      message: String(error)
+    };
+  }
 };
 
 const getScentRequestMatchResult = (requestName) =>
@@ -4384,11 +4386,7 @@ useEffect(() => {
 
   const loadScentRequests = async () => {
     try {
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycby38XWvXcD6Cgw2_ExKEpegaYg-mgiuYLVXzDgcwefVSCZtyWVL2QvVQzmX7nrltene/exec"
-      );
-
-      const data = await response.json();
+      const data = await loadScentRequestTotals();
 
       if (!isMounted) return;
 
