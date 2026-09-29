@@ -68,6 +68,11 @@ function getCopy(language = "sr") {
         thanks: "Thank you for choosing PlayNice.",
         progress: ["ORDER RECEIVED", "PREPARING", "WITH COURIER"],
         orderId: "Order ID",
+        summary: "Packed for you",
+        quantity: "Qty",
+        itemsUnavailable: "Order items are unavailable.",
+        surpriseTitle: "ONE MORE THING…",
+        surpriseText: "A small PlayNice extra is waiting for you in the package.",
         explore: "Explore PlayNice",
         contact: "Contact"
       }
@@ -81,6 +86,11 @@ function getCopy(language = "sr") {
         thanks: "Hvala Vam što ste izabrali PlayNice.",
         progress: ["PORUDŽBINA PRIMLJENA", "PRIPREMA", "KOD KURIRA"],
         orderId: "Broj porudžbine",
+        summary: "Spakovano za Vas",
+        quantity: "Kol.",
+        itemsUnavailable: "Stavke porudžbine nisu dostupne.",
+        surpriseTitle: "I JOŠ NEŠTO…",
+        surpriseText: "U paketu Vas čeka i mali PlayNice znak pažnje.",
         explore: "Istražite PlayNice",
         contact: "Kontakt"
       };
@@ -118,6 +128,47 @@ function buildOrderProgressHtml(language = "sr") {
   `;
 }
 
+function normalizePackedItems(items) {
+  if (!Array.isArray(items)) return [];
+
+  return items.slice(0, 30).map((item) => ({
+    name: normalizeText(item?.name).slice(0, 220),
+    size: normalizeText(item?.size).slice(0, 60),
+    quantity: Math.max(1, Math.min(99, Number(item?.quantity) || 1))
+  })).filter((item) => item.name);
+}
+
+function buildPackedItemsHtml(items, language = "sr") {
+  const c = getCopy(language);
+  const normalized = normalizePackedItems(items);
+
+  if (!normalized.length) {
+    return `<div style="color:rgba(247,242,232,0.62);font-size:13px;font-weight:400;">${c.itemsUnavailable}</div>`;
+  }
+
+  return normalized.map((item, index) => `
+    <div style="padding:11px 0;border-top:${index === 0 ? "0" : "1px solid rgba(220,181,107,0.10)"};">
+      <div style="color:#f7f2e8;font-size:14px;font-weight:500;line-height:1.5;">
+        ${index + 1}. ${escapeHtml(item.name)}${item.size ? ` — ${escapeHtml(item.size)}` : ""}
+      </div>
+      <div style="margin-top:5px;color:rgba(247,242,232,0.56);font-size:12px;font-weight:400;">
+        ${c.quantity}: ${item.quantity}
+      </div>
+    </div>
+  `).join("");
+}
+
+function buildPackedItemsText(items, language = "sr") {
+  const c = getCopy(language);
+  const normalized = normalizePackedItems(items);
+
+  if (!normalized.length) return c.itemsUnavailable;
+
+  return normalized.map((item, index) =>
+    `${index + 1}. ${item.name}${item.size ? ` — ${item.size}` : ""} · ${c.quantity}: ${item.quantity}`
+  ).join("\n");
+}
+
 function buildFooterHtml(language = "sr") {
   const c = getCopy(language);
 
@@ -147,7 +198,7 @@ function buildFooterHtml(language = "sr") {
   `;
 }
 
-function packedEmailHtml({ orderId, fullName, language = "sr" }) {
+function packedEmailHtml({ orderId, fullName, items = [], language = "sr" }) {
   const c = getCopy(language);
 
   return `
@@ -183,6 +234,22 @@ function packedEmailHtml({ orderId, fullName, language = "sr" }) {
             </div>
           </div>
 
+          <div style="margin-top:18px;padding:16px 18px;border-radius:18px;background:rgba(255,255,255,0.025);border:1px solid rgba(220,181,107,0.11);">
+            <div style="font-size:11px;letter-spacing:.15em;font-weight:700;color:#edcf88;margin-bottom:8px;">
+              ${c.summary.toUpperCase()}
+            </div>
+            ${buildPackedItemsHtml(items, language)}
+          </div>
+
+          <div style="margin-top:18px;padding:16px 18px;border-radius:18px;background:rgba(220,181,107,0.055);border:1px solid rgba(220,181,107,0.16);">
+            <div style="font-size:10px;letter-spacing:.16em;font-weight:700;color:rgba(237,207,136,0.82);">
+              ${c.surpriseTitle}
+            </div>
+            <div style="margin-top:7px;color:rgba(247,242,232,0.74);line-height:1.7;font-size:13px;font-weight:400;">
+              ${c.surpriseText}
+            </div>
+          </div>
+
           <p style="margin:20px 0 0;color:rgba(247,242,232,0.72);line-height:1.8;font-size:14px;">
             ${c.thanks}
           </p>
@@ -195,7 +262,7 @@ function packedEmailHtml({ orderId, fullName, language = "sr" }) {
   `;
 }
 
-function packedEmailText({ orderId, fullName, language = "sr" }) {
+function packedEmailText({ orderId, fullName, items = [], language = "sr" }) {
   const c = getCopy(language);
 
   return language === "en"
@@ -216,6 +283,12 @@ It is currently waiting to be collected by the courier. Once the shipment has be
 
 ${c.orderId}: ${orderId}
 
+${c.summary.toUpperCase()}
+${buildPackedItemsText(items, language)}
+
+${c.surpriseTitle}
+${c.surpriseText}
+
 Thank you for choosing PlayNice.
 
 Remember. PlayNice.`
@@ -235,6 +308,12 @@ Trenutno čeka preuzimanje od strane kurirske službe. Kada pošiljka bude preuz
 03 — ${c.progress[2]} ○
 
 ${c.orderId}: ${orderId}
+
+${c.summary.toUpperCase()}
+${buildPackedItemsText(items, language)}
+
+${c.surpriseTitle}
+${c.surpriseText}
 
 Hvala Vam što ste izabrali PlayNice.
 
@@ -263,6 +342,7 @@ module.exports = async function handler(req, res) {
     const email = normalizeText(body.email).toLowerCase();
     const language = normalizeText(body.language) === "en" ? "en" : "sr";
     const status = normalizeText(body.status).toUpperCase();
+    const items = normalizePackedItems(body.items);
 
     if (status !== "PACKED") {
       return res.status(400).json({ ok: false, error: "Unsupported order status email" });
@@ -281,8 +361,8 @@ module.exports = async function handler(req, res) {
       subject: language === "en"
         ? `Your PlayNice order is ready to ship • ${orderId}`
         : `Vaša PlayNice porudžbina je spremna za slanje • ${orderId}`,
-      html: packedEmailHtml({ orderId, fullName, language }),
-      text: packedEmailText({ orderId, fullName, language })
+      html: packedEmailHtml({ orderId, fullName, items, language }),
+      text: packedEmailText({ orderId, fullName, items, language })
     });
 
     return res.status(200).json({
