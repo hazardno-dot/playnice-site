@@ -202,7 +202,7 @@ function buildRecommendationsHtml(recommendations, language = "sr") {
       : "";
 
     return `
-      <td width="33.33%" valign="top" style="padding:${index === 0 ? "0 8px 0 0" : index === 2 ? "0 0 0 8px" : "0 8px"};">
+      <td width="33.33%" valign="top" style="padding:${index === 0 ? "0 4px 0 0" : index === 2 ? "0 0 0 4px" : "0 4px"};">
         <div style="text-align:center;">
           ${imageUrl ? `
             <a href="${productUrl}" style="text-decoration:none;">
@@ -273,7 +273,11 @@ function buildEmailFooterHtml(language = "sr") {
         <a href="mailto:info@playniceshop.me" style="color:rgba(247,242,232,0.66);text-decoration:none;">${c.contact}</a>
       </div>
 
-      <div style="margin-top:18px;color:#edcf88;font-size:12px;font-weight:600;letter-spacing:.04em;">
+      <div style="margin-top:24px;text-align:center;">
+        <img src="https://www.playniceshop.me/playnice-header-logo.svg" width="170" alt="PlayNice Premium Fragrance House" style="display:block;width:170px;max-width:70%;height:auto;margin:0 auto;border:0;outline:none;text-decoration:none;">
+      </div>
+
+      <div style="margin-top:12px;color:#edcf88;font-size:12px;font-weight:600;letter-spacing:.04em;">
         Remember. PlayNice.
       </div>
     </div>
@@ -441,7 +445,7 @@ function buildOrderProgressHtml(activeStep = 1, language = "sr") {
   ];
 
   return `
-    <div style="margin:0 0 20px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,0.025);border:1px solid rgba(220,181,107,0.13);">
+    <div style="margin:0 0 20px;padding:10px 8px;border-radius:16px;background:rgba(255,255,255,0.025);border:1px solid rgba(220,181,107,0.13);">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;table-layout:fixed;">
         <tr>
           ${steps.map((step, index) => {
@@ -455,9 +459,9 @@ function buildOrderProgressHtml(activeStep = 1, language = "sr") {
 
             return `
               <td width="33.33%" valign="middle" style="padding:${index === 0 ? "0 8px 0 0" : index === 2 ? "0 0 0 8px" : "0 8px"};${index > 0 ? "border-left:1px solid rgba(220,181,107,0.10);" : ""}">
-                <div style="font-size:10px;line-height:1.35;letter-spacing:.07em;color:${color};white-space:normal;">
+                <div style="font-size:9px;line-height:1.3;letter-spacing:.03em;color:${color};white-space:normal;">
                   <span style="font-weight:700;">${step.number} ${marker}</span>
-                  <span style="margin-left:4px;">${step.label}</span>
+                  <span style="margin-left:3px;">${step.label}</span>
                 </div>
               </td>
             `;
@@ -485,19 +489,14 @@ function customerEmailHtml({
 
   return `
   <div style="margin:0;padding:0;background:#0b0b0b;font-family:Inter,Arial,sans-serif;color:#f7f2e8;">
-    <div style="max-width:720px;margin:0 auto;padding:32px 20px;">
+    <div style="max-width:720px;margin:0 auto;padding:24px 12px;">
       <div style="background:linear-gradient(180deg,#171717,#0f0f0f);border:1px solid rgba(220,181,107,0.22);border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.28);">
-        <div style="padding:24px 28px 18px;border-bottom:1px solid rgba(220,181,107,0.14);">
-          <img src="https://www.playniceshop.me/playnice-header-logo.svg" width="190" alt="PlayNice Premium Fragrance House" style="display:block;width:190px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;">
-          <div style="color:rgba(247,242,232,0.58);font-size:12px;margin-top:8px;">Remember. PlayNice.</div>
-        </div>
-
-        <div style="padding:28px;">
-          <div style="font-size:11px;letter-spacing:.18em;font-weight:600;color:rgba(247,242,232,0.52);margin-bottom:10px;">
+        <div style="padding:22px 20px;">
+          <div style="font-size:11px;letter-spacing:.16em;font-weight:600;color:rgba(247,242,232,0.52);margin-bottom:9px;">
             ${language === "en" ? "ORDER UPDATE" : "PORUDŽBINA"}
           </div>
 
-          <h1 style="margin:0 0 14px;font-family:Georgia,serif;font-size:36px;line-height:1.04;color:#edcf88;font-weight:600;">
+          <h1 style="margin:0 0 14px;font-family:Georgia,serif;font-size:30px;line-height:1.08;color:#edcf88;font-weight:600;">
             ${c.title}
           </h1>
 
