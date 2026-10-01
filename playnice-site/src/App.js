@@ -482,6 +482,7 @@ const getInitialShopState = () => {
   const discoveryAttributionRef = useRef(null);
   const productAttributionRef = useRef(null);
   const discoverySearchContextRef = useRef(null);
+  const discoveryConversationRef = useRef(null);
   const discoveryOriginSurfaceRef = useRef("home");
   const productOriginSurfaceRef = useRef("");
   const discoveryQueryRef = useRef(discoveryQuery);
@@ -515,6 +516,7 @@ const getInitialShopState = () => {
     setDiscoveryPage(1);
     discoveryAttributionRef.current = null;
     discoverySearchContextRef.current = null;
+    discoveryConversationRef.current = null;
   }, []);
 
   const closeDiscovery = useCallback(() => {
@@ -3819,21 +3821,41 @@ const getDiscoveryAnalyticsParams = (
       queryOverride = discoveryQuery,
       source = "manual"
     ) => {
-  const nextQuery = String(queryOverride || "").trim();
+  const rawQuery = String(queryOverride || "").trim();
 
-  if (!nextQuery) {
+  if (!rawQuery) {
     setDiscoveryResults([]);
     setDiscoveryFeedback("");
     setDiscoveryPage(1);
     return;
   }
 
+      const [
+        { resolveFragranceKnowledgeQuery },
+        {
+          buildDiscoveryConversationContext,
+          resolveDiscoveryFollowUp,
+        },
+      ] = await Promise.all([
+        import("./lib/fragranceKnowledgeRouter"),
+        import("./lib/conversationContinuity"),
+      ]);
+
+      const continuity =
+        resolveDiscoveryFollowUp({
+          query: rawQuery,
+          context:
+            discoveryConversationRef.current,
+          products,
+          lang,
+        });
+
+      const nextQuery =
+        continuity.resolvedQuery;
+
       // Knowledge is an opt-in side route: only verified entities are
       // intercepted. Every other query falls through to the existing
       // Discovery Engine unchanged.
-      const { resolveFragranceKnowledgeQuery } =
-        await import("./lib/fragranceKnowledgeRouter");
-
       const knowledge =
         resolveFragranceKnowledgeQuery(
           nextQuery,
@@ -3854,7 +3876,30 @@ const getDiscoveryAnalyticsParams = (
             knowledge.entity?.id || "",
         });
 
-        setDiscoveryQuery(nextQuery);
+        discoveryConversationRef.current =
+          buildDiscoveryConversationContext({
+            rawQuery,
+            effectiveQuery: nextQuery,
+            knowledge,
+          });
+
+        if (continuity.usedContext) {
+          trackEvent(
+            "discovery_continuity_followup",
+            {
+              lang,
+              search_source: source,
+              continuity_kind:
+                continuity.kind,
+              product_count:
+                continuity
+                  .sourceProductSlugs
+                  .length,
+            }
+          );
+        }
+
+        setDiscoveryQuery(rawQuery);
         setDiscoveryResults([]);
         setDiscoveryFeedback(
           knowledge.answer || ""
@@ -3891,13 +3936,36 @@ const getDiscoveryAnalyticsParams = (
     searchedAt: Date.now(),
   };
 
+  discoveryConversationRef.current =
+    buildDiscoveryConversationContext({
+      rawQuery,
+      effectiveQuery: nextQuery,
+      discovery,
+    });
+
+  if (continuity.usedContext) {
+    trackEvent(
+      "discovery_continuity_followup",
+      {
+        lang,
+        search_source: source,
+        continuity_kind:
+          continuity.kind,
+        product_count:
+          continuity
+            .sourceProductSlugs
+            .length,
+      }
+    );
+  }
+
   trackEvent("discovery_search", analyticsParams);
 
   if (!discovery.results?.length) {
     trackEvent("discovery_no_results", analyticsParams);
   }
 
-  setDiscoveryQuery(nextQuery);
+  setDiscoveryQuery(rawQuery);
   setDiscoveryResults(discovery.results);
   setDiscoveryFeedback(discovery.feedback || "");
   setDiscoveryPage(1);
