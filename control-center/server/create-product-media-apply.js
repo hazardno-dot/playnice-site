@@ -172,7 +172,6 @@ async function handler(req, res) {
     if (!draftResponse.ok) throw new Error(drafts?.message || "Could not read Product draft.");
     const draft = drafts?.[0] || null;
     if (draft?.apply_branch || draft?.apply_pr_number) return json(res, 409, { error: "A Product apply preview already exists. Return the Product to draft before replacing media." });
-    if (draft && draft.review_status !== "draft") return json(res, 409, { error: "Product media can only be changed while the Product is in Draft." });
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
     const baseSha = mainRef.object.sha;
