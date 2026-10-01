@@ -3,6 +3,7 @@ import { fragrancePersonalities } from "../data/knowledge/fragrancePersonalities
 import { fragranceTerms } from "../data/knowledge/fragranceTerms";
 import { fragranceHouses } from "../data/knowledge/fragranceHouses";
 import { fragrancePerfumes } from "../data/knowledge/fragrancePerfumes";
+import { resolveCatalogProductIntelligenceQuery } from "./fragranceProductIntelligence";
 
 export const normalizeKnowledgeText = (value = "") =>
   String(value)
@@ -659,6 +660,17 @@ export const resolveFragranceKnowledgeQuery = (
   lang = "sr",
   context = {}
 ) => {
+  const productIntelligence =
+    resolveCatalogProductIntelligenceQuery(
+      query,
+      lang,
+      context
+    );
+
+  if (productIntelligence.handled) {
+    return productIntelligence;
+  }
+
   const classification = classifyFragranceKnowledgeQuery(query);
 
   if (!classification.entity) {
