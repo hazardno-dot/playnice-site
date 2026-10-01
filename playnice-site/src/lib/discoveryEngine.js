@@ -1,4 +1,5 @@
 import { getProductPurchaseSelection } from "../features/commerce/commerceDerivations";
+import { buildDiscoveryEvidence } from "./evidenceEnvelope";
 import {
   describeBuyerReasoningFit,
   getBuyerReasoningMatchComponents,
@@ -2321,6 +2322,10 @@ export const discoverFragrances = ({
         ),
         profile: item.profile,
         signals: item.reasons,
+        ...buildDiscoveryEvidence({
+          product: item.product,
+          profile: item.profile,
+        }),
       };
     });
 

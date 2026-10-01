@@ -165,3 +165,44 @@ describe("FI Ultra v1.1 — catalog product intelligence", () => {
     expect(result.handled).toBe(false);
   });
 });
+
+
+describe("FI Ultra v1.4 — product evidence provenance", () => {
+  test("live price grounding is catalog-grounded", () => {
+    const output =
+      resolveCatalogProductIntelligenceQuery(
+        "Koliko je Hawas Ice 10ml?",
+        "sr",
+        { products }
+      );
+
+    expect(output.handled).toBe(true);
+    expect(output.evidenceLevel).toBe("grounded");
+    expect(output.provenance)
+      .toContain("catalog-live");
+    expect(output.provenance)
+      .not.toContain("playnice-fi-profile");
+    expect(output.evidenceConfidence)
+      .toBe("high");
+  });
+
+  test("buyer comparison exposes FI interpretation provenance", () => {
+    const output =
+      resolveCatalogProductIntelligenceQuery(
+        "Hawas Ice ili Afnan 9AM — koji je bolji za posao?",
+        "sr",
+        { products }
+      );
+
+    expect(output.handled).toBe(true);
+    expect(output.evidenceLevel)
+      .toBe("interpretive");
+    expect(output.provenance)
+      .toEqual(
+        expect.arrayContaining([
+          "catalog-live",
+          "playnice-fi-profile",
+        ])
+      );
+  });
+});
