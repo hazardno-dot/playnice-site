@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
+import { products } from "@shop/data/products/index.js";
 import "./product-media-upload.css";
 
 function getSelectedSlug() {
@@ -79,19 +80,20 @@ export default function ProductMediaStatusBridge() {
 
   if (!slot || !slug) return null;
   const mediaStage = row?.approved_payload?.mediaStage || row?.payload?.mediaStage;
-  if (!mediaStage?.branch || !Array.isArray(mediaStage.files) || mediaStage.files.length < 2) return null;
-
-  const hasShop = mediaStage.files.some((path) => /\/products\/[^/]+\.png$/i.test(path));
-  const hasJustIn = mediaStage.files.some((path) => /\/products\/thumbs\/[^/]+\.webp$/i.test(path));
+  const isNewProduct = !products.some((product) => product.slug === slug);
+  const hasStage = Boolean(mediaStage?.branch && Array.isArray(mediaStage?.files) && mediaStage.files.length >= 2);
+  const hasShop = hasStage && mediaStage.files.some((path) => /\/products\/[^/]+\.png$/i.test(path));
+  const hasJustIn = hasStage && mediaStage.files.some((path) => /\/products\/thumbs\/[^/]+\.webp$/i.test(path));
   const attached = Boolean(row?.apply_branch && row?.apply_pr_number);
+  if (!hasStage && !isNewProduct) return null;
 
   return createPortal(
     <section className="product-media-persisted" aria-label="Uploaded Product media status">
       <div className="product-media-persisted-copy">
-        <span>MEDIA UPLOADED</span>
-        <strong>{attached ? "STAGED + ATTACHED TO PREVIEW" : "READY IN PRODUCT DRAFT"}</strong>
-        <small>No re-upload needed. These files remain linked to this Product workflow.</small>
-        <code>{mediaStage.branch}</code>
+        <span>{hasStage ? "MEDIA UPLOADED" : "MEDIA REQUIRED"}</span>
+        <strong>{hasStage ? (attached ? "STAGED + ATTACHED TO PREVIEW" : "READY IN PRODUCT DRAFT") : "STAGE SHOP + JUST IN BEFORE REVIEW"}</strong>
+        <small>{hasStage ? "No re-upload needed. These files remain linked to this Product workflow." : "New products cannot enter review until both canonical image files are staged."}</small>
+        {mediaStage?.branch ? <code>{mediaStage.branch}</code> : null}
       </div>
       <div className="product-media-persisted-checks" aria-label="Uploaded media files">
         <div className={hasShop ? "is-ready" : "is-missing"}>
