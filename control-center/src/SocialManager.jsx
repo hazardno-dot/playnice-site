@@ -526,7 +526,7 @@ function SocialWorkspace() {
           <div className="social-review-row">
             <div><span>REVIEW STATE</span><strong>{reviewState}</strong></div>
             <div className="social-review-actions">
-              {selected.status === "draft" && !isExplicitTestEvent(selected) ? <button type="button" disabled={saving} onClick={discardDraft}>Discard draft</button> : null}
+              {selected.status === "draft" && !isExplicitTestEvent(selected) ? <><button type="button" disabled={saving} onClick={discardDraft}>Discard draft</button><button type="button" className="danger" disabled={saving} onClick={deleteDraft}>Delete draft</button></> : null}
               {isExplicitTestEvent(selected) ? <button type="button" disabled={saving} onClick={() => persist("discard_test")}>Discard test event</button> : null}
               {selected.status === "scheduled"
                 ? <button type="button" disabled={saving} onClick={() => persist("unschedule")}>{saving ? "Working…" : "Unschedule"}</button>
