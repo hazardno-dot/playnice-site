@@ -62,3 +62,5 @@
 
 .social-manual-publish-area{display:grid;gap:12px;margin-top:4px}
 .social-manual-publish-area:empty{display:none}
+
+.social-review-actions button.danger{border-color:#6a3f3f;background:#1d1212;color:#e1a1a1}.social-review-actions button.danger:hover{border-color:#8b4b4b;color:#f0b7b7}
