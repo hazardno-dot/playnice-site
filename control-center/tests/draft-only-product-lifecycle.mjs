@@ -22,6 +22,8 @@ if(!draftManager.includes("This draft matches live data. Make at least one chang
 if(!validation.includes("Use a specific product image file under /products/"))throw new Error("Authoritative image placeholder guard missing.");
 if(!inline.includes("name === \"image path\""))throw new Error("Inline image placeholder guard missing.");
 if(!engine.includes("Image must be a specific product file under /products/."))throw new Error("Server-side new-product image guard missing.");
+if(!validation.includes("Stage both Shop 600×600 PNG and Just In 320×320 WebP before review."))throw new Error("New-product workflow does not block review before media staging.");
 if(!app.includes('p.image&&!p.image.endsWith("/")'))throw new Error("Draft-only image rendering guard missing.");
 console.log("PASS  no-change drafts cannot enter apply lifecycle");
 console.log("PASS  image directory placeholders are blocked end-to-end");
+console.log("PASS  new products cannot enter review before both media assets are staged");
