@@ -83,15 +83,40 @@ export default function NotesManager() {
   useEffect(() => {
     if (!slot) return undefined;
     let cancelled = false;
+    let reconciling = false;
     const load = async () => {
       const { data, error: loadError } = await supabase.from("note_drafts").select("note_key,payload,review_status,reviewed_at,updated_at,approved_payload").order("updated_at", { ascending: false });
       if (cancelled) return;
       if (loadError) { setError(loadError.message); return; }
       setDraftRows(Object.fromEntries((data || []).map((row) => [row.note_key, row])));
     };
-    load();
+    const reconcileMerged = async () => {
+      if (reconciling) return;
+      reconciling = true;
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        const token = sessionData?.session?.access_token;
+        if (!token) return;
+        const response = await fetch("/api/reconcile-note-drafts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({}),
+        });
+        if (!response.ok) return;
+        const payload = await response.json().catch(() => ({}));
+        if (Number(payload.reconciled || 0) > 0) {
+          window.dispatchEvent(new CustomEvent("playnice:note-workflow-updated", { detail: { reconciled: payload.closed || [] } }));
+        }
+      } finally {
+        reconciling = false;
+        await load();
+      }
+    };
+    reconcileMerged();
     const channel = supabase.channel("note-drafts-manager").on("postgres_changes", { event: "*", schema: "public", table: "note_drafts" }, load).subscribe();
-    return () => { cancelled = true; supabase.removeChannel(channel); };
+    const onFocus = () => reconcileMerged();
+    window.addEventListener("focus", onFocus);
+    return () => { cancelled = true; supabase.removeChannel(channel); window.removeEventListener("focus", onFocus); };
   }, [slot]);
 
   const audit = useMemo(() => ({ ...structuralAudit, rows: baseRows, errors: [...structuralAudit.errors, ...labelAudit.errors], warnings: [...structuralAudit.warnings, ...labelAudit.warnings] }), [structuralAudit, baseRows, labelAudit]);

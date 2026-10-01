@@ -20,6 +20,7 @@ const ROUTES = {
   "orders": () => import("../server/orders.js"),
   "prepare-announcement-change": () => import("../server/prepare-announcement-change.js"),
   "refresh-product-apply": () => import("../server/refresh-product-apply.js"),
+  "reconcile-note-drafts": () => import("../server/reconcile-note-drafts.js"),
   "replace-product-media": () => import("../server/replace-product-media.js"),
   "resolve-announcement-preview": () => import("../server/resolve-announcement-preview.js"),
   "site-health": () => import("../server/site-health.js"),
