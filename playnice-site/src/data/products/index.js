@@ -2962,6 +2962,32 @@ export const products = [
       heart: ["dates","praline","tuberose","mahonial"],
       base: ["vanilla","tonka-bean","amberwood","benzoin","oud"]
     }
+  },
+  {
+    id: 105,
+    addedAt: "2026-10-01T19:11:15.170Z",
+    slug: "nishane-hundred-silent-ways-x",
+    name: "Nishane Hundred Silent Ways X Extrait de Parfum",
+    modalName: "Nishane Hundred Silent Ways X Extrait",
+    shortName: "Hundred Silent Ways X",
+    category: "Niche",
+    image: "/products/nishane-hundred-silent-ways-x.png",
+    sizes: {"2ml":12,"5ml":27,"10ml":49},
+    badge: "LUXURY PICK",
+    rating: 8.9,
+    ratingLabel: "Niche Pick",
+    season: "all",
+    moods: ["elegant","date","rich"],
+    recommendations: ["ysl-black-opium-le-parfum","my-geisha-unseen-extrait-de-parfum","gisada-luxury-collection-royal"],
+    inspiredBy: {
+      name: "Original Nishane creation",
+      short: "Nishane original"
+    },
+    noteMap: {
+      top: ["tuberose","mandarin","peach"],
+      heart: ["gardenia","orris","jasmine","heliotrope"],
+      base: ["vanilla","leather","patchouli"]
+    }
   }
 
 ];

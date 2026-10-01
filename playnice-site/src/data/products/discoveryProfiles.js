@@ -3137,6 +3137,37 @@ export const discoveryProfiles = {
     "cleanliness": 1.5,
     "versatility": 5.4,
     "gourmandness": 9.5
+  },
+
+  "nishane-hundred-silent-ways-x": {
+    "date": 9.3,
+    "casual": 5.5,
+    "citrus": 3,
+    "office": 4.4,
+    "unisex": 9.2,
+    "warmth": 8.1,
+    "aquatic": 0,
+    "dryness": 3.3,
+    "evening": 9.2,
+    "powdery": 6.1,
+    "airiness": 3,
+    "darkness": 6.7,
+    "elegance": 8.8,
+    "feminine": 6.4,
+    "florality": 8.6,
+    "freshness": 3.2,
+    "longevity": 8.5,
+    "masculine": 5,
+    "spiciness": 2.1,
+    "sweetness": 8.4,
+    "woodiness": 3.5,
+    "creaminess": 8,
+    "fruitiness": 6.4,
+    "projection": 7.8,
+    "aromaticity": 1.6,
+    "cleanliness": 3.8,
+    "versatility": 6.1,
+    "gourmandness": 7.9
   }
 };
 

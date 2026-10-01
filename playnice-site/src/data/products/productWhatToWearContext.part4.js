@@ -114,6 +114,10 @@ const entries = [
   {
     "sr": "Tamna rolka ili košulja, kaput i ozbiljne cipele. Unseen već nosi konjak, duvan i oud — neka garderoba samo drži tempo.",
     "en": "A dark turtleneck or shirt, a coat and serious shoes. Unseen already brings cognac, tobacco and oud — let the outfit simply keep pace."
+  },
+  {
+    "sr": "Košulja, sako, kaput ili elegantan večernji outfit.",
+    "en": "A shirt, blazer, coat or an elegant evening outfit."
   }
 
 ];
