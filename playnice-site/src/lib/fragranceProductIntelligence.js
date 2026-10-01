@@ -12,10 +12,10 @@ export const normalizeProductIntelText = (value = "") =>
     .trim();
 
 const CONCENTRATION_WORDS = [
+  "extrait de parfum",
   "eau de parfum",
   "eau de toilette",
   "parfum",
-  "extrait de parfum",
   "extrait",
   "edp",
   "edt",
@@ -44,10 +44,19 @@ const getProductAliases = (product) => {
     String(product?.slug || "").replace(/-/g, " "),
   ]
     .filter(Boolean)
-    .flatMap((value) => [
-      normalizeProductIntelText(value),
-      normalizeProductName(value),
-    ])
+    .flatMap((value) => {
+      const normalized = normalizeProductIntelText(value);
+      const withoutConcentration = normalizeProductName(value);
+      const compact = [normalized, withoutConcentration]
+        .filter((alias) => /\d/.test(alias))
+        .map((alias) => alias.replace(/\s+/g, ""));
+
+      return [
+        normalized,
+        withoutConcentration,
+        ...compact,
+      ];
+    })
     .filter(isUsefulAlias);
 
   return Array.from(new Set(candidates)).sort(
@@ -55,11 +64,27 @@ const getProductAliases = (product) => {
   );
 };
 
-const hasBoundedAlias = (queryText, alias) =>
-  queryText === alias ||
-  queryText.startsWith(alias + " ") ||
-  queryText.endsWith(" " + alias) ||
-  queryText.includes(" " + alias + " ");
+const hasBoundedAlias = (queryText, alias) => {
+  const compactQuery = /\d/.test(alias)
+    ? queryText.replace(/\s+/g, "")
+    : "";
+
+  return (
+    queryText === alias ||
+    queryText.startsWith(alias + " ") ||
+    queryText.endsWith(" " + alias) ||
+    queryText.includes(" " + alias + " ") ||
+    (
+      compactQuery &&
+      (
+        compactQuery === alias ||
+        compactQuery.startsWith(alias) ||
+        compactQuery.endsWith(alias) ||
+        compactQuery.includes(alias)
+      )
+    )
+  );
+};
 
 export const findCatalogProductsByQuery = (
   query,
