@@ -67,8 +67,15 @@ export default function DraftManager() {
   const load = async ({ quiet = false } = {}) => {
     if (!quiet) { setLoading(true); setError(""); }
     const { data, error: loadError } = await supabase.from("product_drafts").select("product_slug,payload,updated_at,review_status,reviewed_at,reviewed_by,baseline_snapshot,approved_payload,prepared_at,prepared_by").order("updated_at", { ascending: false });
-    if (loadError) { setDraftsAvailable(false); setError(loadError.message || "Could not load drafts."); if (!quiet) setLoading(false); return; }
-    setDraftsAvailable(true); setDrafts(data || []); setLoading(false);
+    if (loadError) {
+      if (!quiet) {
+        setDraftsAvailable(false);
+        setError(loadError.message || "Could not load drafts.");
+        setLoading(false);
+      }
+      return;
+    }
+    setDraftsAvailable(true); setDrafts(data || []); if (!quiet) setError(""); setLoading(false);
   };
   useEffect(() => {
     if (!open) return undefined;
