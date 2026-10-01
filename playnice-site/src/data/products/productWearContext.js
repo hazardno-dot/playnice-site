@@ -429,7 +429,7 @@ export const productWearContext = {
   },
 
   "Nishane Hundred Silent Ways X Extrait de Parfum": {
-    "sr": "Veče, dejt i elegantne prilike u hladnijem dijelu godine.",
+    "sr": "Veče, dejt i elegantne prilike u hladnijem delu godine.",
     "en": "Evenings, dates and dressed-up occasions in cooler weather."
   }
 };
