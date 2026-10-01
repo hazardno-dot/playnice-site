@@ -532,3 +532,38 @@ describe("FI Knowledge — entity routing", () => {
     expect(result.answer).toContain("IFF");
   });
 });
+
+
+describe("FI Ultra v1.4 — knowledge evidence provenance", () => {
+  test("verified knowledge answer carries external source metadata", () => {
+    const output =
+      resolveFragranceKnowledgeQuery(
+        "Ko je Quentin Bisch?",
+        "sr"
+      );
+
+    expect(output.handled).toBe(true);
+    expect(output.evidence.length)
+      .toBeGreaterThan(0);
+    expect(output.provenance.length)
+      .toBeGreaterThan(0);
+    expect(
+      output.evidence.every(
+        (item) =>
+          item.provenance &&
+          item.confidence
+      )
+    ).toBe(true);
+  });
+
+  test("unknown query does not claim evidence", () => {
+    const output =
+      resolveFragranceKnowledgeQuery(
+        "random unrelated sentence",
+        "sr"
+      );
+
+    expect(output.handled).toBe(false);
+    expect(output.evidence).toBeUndefined();
+  });
+});

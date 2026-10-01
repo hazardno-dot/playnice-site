@@ -4,6 +4,10 @@ import { fragranceTerms } from "../data/knowledge/fragranceTerms";
 import { fragranceHouses } from "../data/knowledge/fragranceHouses";
 import { fragrancePerfumes } from "../data/knowledge/fragrancePerfumes";
 import { resolveCatalogProductIntelligenceQuery } from "./fragranceProductIntelligence";
+import {
+  attachEvidence,
+  buildKnowledgeEvidence,
+} from "./evidenceEnvelope";
 
 export const normalizeKnowledgeText = (value = "") =>
   String(value)
@@ -706,20 +710,26 @@ export const resolveFragranceKnowledgeQuery = (
         lang
       );
 
-    return {
-      handled: true,
-      type: "perfumer",
-      confidence: classification.confidence,
-      entity: classification.entity,
-      answer:
-        catalogAnswer ||
-        worksAnswer ||
-        relationshipAnswer ||
-        getPerfumerKnowledgeAnswer(
-          classification.entity,
-          lang
-        ),
-    };
+    return attachEvidence(
+      {
+        handled: true,
+        type: "perfumer",
+        confidence: classification.confidence,
+        entity: classification.entity,
+        answer:
+          catalogAnswer ||
+          worksAnswer ||
+          relationshipAnswer ||
+          getPerfumerKnowledgeAnswer(
+            classification.entity,
+            lang
+          ),
+      },
+      buildKnowledgeEvidence(
+        classification.entity,
+        classification.confidence
+      )
+    );
   }
 
   if (classification.type === "fragrance") {
@@ -731,19 +741,25 @@ export const resolveFragranceKnowledgeQuery = (
         lang
       );
 
-    return {
-      handled: true,
-      type: "fragrance",
-      confidence: classification.confidence,
-      entity: classification.entity,
-      answer:
-        houseAnswer ||
-        relationshipAnswer ||
-        getFragranceKnowledgeAnswer(
-          classification.entity,
-          lang
-        ),
-    };
+    return attachEvidence(
+      {
+        handled: true,
+        type: "fragrance",
+        confidence: classification.confidence,
+        entity: classification.entity,
+        answer:
+          houseAnswer ||
+          relationshipAnswer ||
+          getFragranceKnowledgeAnswer(
+            classification.entity,
+            lang
+          ),
+      },
+      buildKnowledgeEvidence(
+        classification.entity,
+        classification.confidence
+      )
+    );
   }
 
   if (
@@ -761,40 +777,66 @@ export const resolveFragranceKnowledgeQuery = (
         lang
       );
 
-    return {
-      handled: true,
-      type: classification.type,
-      confidence: classification.confidence,
-      entity: classification.entity,
-      answer:
-        catalogAnswer ||
-        worksAnswer ||
-        relationshipAnswer ||
-        getFragranceHouseKnowledgeAnswer(
-          classification.entity,
-          lang
-        ),
-    };
+    return attachEvidence(
+      {
+        handled: true,
+        type: classification.type,
+        confidence: classification.confidence,
+        entity: classification.entity,
+        answer:
+          catalogAnswer ||
+          worksAnswer ||
+          relationshipAnswer ||
+          getFragranceHouseKnowledgeAnswer(
+            classification.entity,
+            lang
+          ),
+      },
+      buildKnowledgeEvidence(
+        classification.entity,
+        classification.confidence
+      )
+    );
   }
 
   if (classification.type === "fragrance-personality") {
-    return {
-      handled: true,
-      type: "fragrance-personality",
-      confidence: classification.confidence,
-      entity: classification.entity,
-      answer: getFragrancePersonalityKnowledgeAnswer(classification.entity, lang),
-    };
+    return attachEvidence(
+      {
+        handled: true,
+        type: "fragrance-personality",
+        confidence: classification.confidence,
+        entity: classification.entity,
+        answer:
+          getFragrancePersonalityKnowledgeAnswer(
+            classification.entity,
+            lang
+          ),
+      },
+      buildKnowledgeEvidence(
+        classification.entity,
+        classification.confidence
+      )
+    );
   }
 
   if (classification.type === "fragrance-term") {
-    return {
-      handled: true,
-      type: "fragrance-term",
-      confidence: classification.confidence,
-      entity: classification.entity,
-      answer: getFragranceTermKnowledgeAnswer(classification.entity, lang),
-    };
+    return attachEvidence(
+      {
+        handled: true,
+        type: "fragrance-term",
+        confidence: classification.confidence,
+        entity: classification.entity,
+        answer:
+          getFragranceTermKnowledgeAnswer(
+            classification.entity,
+            lang
+          ),
+      },
+      buildKnowledgeEvidence(
+        classification.entity,
+        classification.confidence
+      )
+    );
   }
 
   return {

@@ -1,4 +1,8 @@
 import { discoveryProfiles } from "../data/products/discoveryProfiles";
+import {
+  attachEvidence,
+  buildProductEvidence,
+} from "./evidenceEnvelope";
 
 export const normalizeProductIntelText = (value = "") =>
   String(value)
@@ -726,7 +730,7 @@ export const resolveCatalogProductIntelligenceQuery = (
     );
 
     if (answer) {
-      return {
+      const result = {
         handled: true,
         type: "product-comparison",
         confidence: "high",
@@ -736,6 +740,15 @@ export const resolveCatalogProductIntelligenceQuery = (
         },
         answer,
       };
+
+      return attachEvidence(
+        result,
+        buildProductEvidence({
+          query,
+          type: result.type,
+          products: [first, second],
+        })
+      );
     }
   }
 
@@ -755,7 +768,7 @@ export const resolveCatalogProductIntelligenceQuery = (
     );
 
     if (answer) {
-      return {
+      const result = {
         handled: true,
         type: "product-grounding",
         confidence: "high",
@@ -765,6 +778,15 @@ export const resolveCatalogProductIntelligenceQuery = (
         },
         answer,
       };
+
+      return attachEvidence(
+        result,
+        buildProductEvidence({
+          query,
+          type: result.type,
+          products: [product],
+        })
+      );
     }
   }
 
