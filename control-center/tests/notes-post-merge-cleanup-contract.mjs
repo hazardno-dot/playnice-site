@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 
+const router = fs.readFileSync("control-center/api/router.js", "utf8");
+assert.ok(router.includes('"reconcile-note-drafts"'), "Control Center API router must expose Notes reconciliation.");
 const notesManager = fs.readFileSync("control-center/src/NotesManager.jsx", "utf8");
 const noteApplyManager = fs.readFileSync("control-center/src/NoteApplyManager.jsx", "utf8");
 const reconcileApi = fs.readFileSync("control-center/server/reconcile-note-drafts.js", "utf8");
