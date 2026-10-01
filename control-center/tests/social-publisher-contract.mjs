@@ -244,6 +244,8 @@ assert.ok(instagramPublishBridge.includes('published ? "Published ✓"'), "Insta
 assert.ok(storyPublishBridge.includes('published ? "Published ✓"'), "Instagram Story publish button must lock after publication.");
 assert.ok(facebookPublishBridge.includes('published ? "Published ✓"'), "Facebook publish button must lock after publication.");
 assert.ok(instagramPublishBridge.includes("completedEventRef"), "Instagram Feed bridge must preserve the just-published event while the backend archives it.");
+assert.ok(manualMetaPublishApi.includes("FEED_PUBLISH_MAX_ATTEMPTS"), "Instagram Feed publishing must retry transient Meta media-unavailable errors.");
+assert.ok(manualMetaPublishApi.includes("Number(error?.metaCode) === 9007"), "Instagram Feed publishing must recognize Meta code 9007 as retryable.");
 assert.ok(storyPublishBridge.includes("completedEventRef"), "Instagram Story bridge must preserve the just-published event while the backend archives it.");
 assert.ok(facebookPublishBridge.includes("completedEventRef"), "Facebook bridge must preserve the just-published event while the backend archives it.");
 assert.ok(storyPublishBridge.includes('"PUBLISHED ✓"'), "Instagram Story completed state must not fall back to NO STORY MEDIA after successful publication.");
