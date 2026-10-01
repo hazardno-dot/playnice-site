@@ -3,6 +3,7 @@ import fs from "node:fs";
 for (const path of [
   "control-center/src/SocialInstagramTestPublishBridge.jsx",
   "control-center/src/SocialFacebookTestPublishBridge.jsx",
+  "control-center/src/SocialInstagramStoryTestPublishBridge.jsx",
 ]) {
   const source = fs.readFileSync(path, "utf8");
   if (!source.includes('String(event?.metadata?.producer || "") === "sync-publish-status"')) {
@@ -10,4 +11,4 @@ for (const path of [
   }
 }
 
-console.log("PASS  canonical sync-publish-status product events can use manual Instagram/Facebook controls");
+console.log("PASS  canonical sync-publish-status product events can use manual Instagram Feed, Story and Facebook controls");
