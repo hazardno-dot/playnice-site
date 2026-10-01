@@ -37,6 +37,9 @@ if (!controlledApply.includes('load({ sync: false })')) {
 if (!mediaApi.includes('method: "POST"') || !mediaApi.includes('created_by: user.id') || !mediaApi.includes('draft_linked: true')) {
   throw new Error("Product media staging must create a persistent draft when media is uploaded before first Save Draft.");
 }
+if (mediaApi.includes('Product media can only be changed while the Product is in Draft.')) {
+  throw new Error("Pre-preview media staging must be allowed to invalidate READY/APPROVED state and return the Product to draft.");
+}
 if (!managers.includes('import ProductWorkflowAdvanceBridge from "./ProductWorkflowAdvanceBridge"')) {
   throw new Error("ControlCenterManagers does not import ProductWorkflowAdvanceBridge.");
 }
@@ -52,3 +55,4 @@ console.log("PASS  Mark ready for review opens Review changes automatically");
 console.log("PASS  Prepare apply closes Draft Manager and advances to Overview");
 console.log("PASS  Controlled Apply reloads immediately after Product preparation");
 console.log("PASS  staged media persists even before the first Product Save Draft");
+console.log("PASS  pre-preview media staging can reset READY/APPROVED workflow back to draft");
