@@ -74,6 +74,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/sichuan-pepper.webp",
     fallback: "•",
   },
+  "peach": {
+    sr: "Breskva",
+    en: "Peach",
+    image: "/note-map/peach.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
