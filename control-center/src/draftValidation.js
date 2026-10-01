@@ -54,6 +54,20 @@ export function validateProductDraft(live, draft) {
   const imagePath = String(core.image || "").trim();
   if (!imagePath.startsWith("/products/") || imagePath === "/products/" || imagePath.endsWith("/")) issues.push(issue("error", "Core", "Image path", "Use a specific product image file under /products/, not a directory placeholder."));
 
+  if (isNewProduct) {
+    const mediaStage = draft?.mediaStage;
+    const expectedShop = `/products/${draft?.slug || ""}.png`;
+    const hasStage = Boolean(mediaStage?.branch && mediaStage?.baseSha && Array.isArray(mediaStage?.files) && mediaStage.files.length >= 2);
+    const hasShop = hasStage && mediaStage.files.some((path) => /\/products\/[^/]+\.png$/i.test(path));
+    const hasJustIn = hasStage && mediaStage.files.some((path) => /\/products\/thumbs\/[^/]+\.webp$/i.test(path));
+    if (!hasStage || !hasShop || !hasJustIn) {
+      issues.push(issue("error", "Media", "Product media", "Stage both Shop 600×600 PNG and Just In 320×320 WebP before review."));
+    }
+    if (draft?.slug && imagePath && imagePath !== expectedShop) {
+      issues.push(issue("error", "Media", "Image path", `New product image path must be ${expectedShop} after media staging.`));
+    }
+  }
+
   if (isNewProduct && empty(core.badge)) issues.push(issue("error", "Presentation", "Badge", "A new product must have a presentation badge so the modal media column keeps the standard PlayNice hierarchy."));
   if (isNewProduct && empty(core.inspiredBy?.name)) issues.push(issue("error", "Presentation", "Inspired by · name", "A new product must define the modal reference/original-creation label. The optional short DNA label may remain empty."));
   if (!empty(core.inspiredBy?.short) && empty(core.inspiredBy?.name)) issues.push(issue("warning", "Core", "Inspired by", "A short DNA label cannot be used without the main inspired-by/original-creation label."));
