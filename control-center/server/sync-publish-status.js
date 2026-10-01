@@ -120,12 +120,13 @@ export default async function handler(req, res) {
     if (!draftRes.ok) return json(res, 400, { error: "Could not load draft." });
     const [draft] = await draftRes.json();
     if (!draft) return json(res, 200, { ok: true, status: "no_active_draft" });
-    if (!draft.apply_pr_number || !draft.apply_branch || !draft.preview_verified_at) return json(res, 200, { ok: true, status: "not_ready" });
+    if (!draft.apply_pr_number || !draft.apply_branch) return json(res, 200, { ok: true, status: "not_ready" });
 
     const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls/${draft.apply_pr_number}`);
     if (pr.base?.ref !== "main") return json(res, 409, { error: "Tracked apply PR does not target main." });
     if (pr.head?.ref !== draft.apply_branch) return json(res, 409, { error: "Tracked apply PR head no longer matches the stored apply branch." });
-    if (!pr.merged_at) return json(res, 200, { ok: true, status: "not_merged", pr_number: draft.apply_pr_number });
+    if (!pr.merged_at) return json(res, 200, { ok: true, status: draft.preview_verified_at ? "not_merged" : "awaiting_visual_qa", pr_number: draft.apply_pr_number });
+    const reconciledWithoutPreviewVerification = !draft.preview_verified_at;
 
     const existingRes = await supabaseFetch(`/rest/v1/publish_history?apply_pr_number=eq.${draft.apply_pr_number}&select=id&limit=1`, token);
     const existing = existingRes.ok ? await existingRes.json() : [];
@@ -160,6 +161,7 @@ export default async function handler(req, res) {
             branch: draft.apply_branch,
             merge_commit_sha: pr.merge_commit_sha,
             merged_at: pr.merged_at,
+            reconciled_without_preview_verification: reconciledWithoutPreviewVerification,
           },
         }),
       });
@@ -180,6 +182,7 @@ export default async function handler(req, res) {
       merge_commit_sha: pr.merge_commit_sha,
       published_at: pr.merged_at,
       social_shadow_event: social,
+      reconciled_without_preview_verification: reconciledWithoutPreviewVerification,
     });
   } catch (error) {
     return json(res, 500, { error: error?.message || "Publish status sync failed." });

@@ -46,10 +46,7 @@ export default function ControlledApplyManager() {
     setHistory(first.historyRows);
 
     if (!sync) return;
-    const candidates = first.draftRows.filter((row) => {
-      const previewState = getPreviewWorkflowState(row);
-      return row.apply_pr_number && previewState.verified && !previewState.needsRefresh;
-    });
+    const candidates = first.draftRows.filter((row) => row.apply_pr_number && row.apply_branch);
     if (!candidates.length) return;
 
     const { data: { session } } = await supabase.auth.getSession();
@@ -140,7 +137,10 @@ export default function ControlledApplyManager() {
       let body = {};
       try { body = raw ? JSON.parse(raw) : {}; }
       catch { throw new Error(raw || "Controlled Apply returned an invalid response."); }
-      if (!response.ok) throw new Error(body?.error || "Could not create controlled apply branch.");
+      if (!response.ok) {
+        const details = Array.isArray(body?.errors) && body.errors.length ? ` ${body.errors.join(" · ")}` : "";
+        throw new Error(`${body?.error || "Could not create controlled apply branch."}${details}`);
+      }
       setPreviewChecks((current) => ({ ...current, [row.product_slug]: {} }));
       await load({ sync: false });
     } catch (e) {
