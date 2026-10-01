@@ -271,7 +271,7 @@ function SocialWorkspace() {
         await loadAudit(payload.event.id);
         window.dispatchEvent(new CustomEvent("playnice:social-state-updated", { detail: { event_id: payload.event.id, status: payload.event.status, action } }));
       } else {
-        if (payload.discarded) { setSelectedId(""); setAuditRows([]); }
+        if (payload.discarded || payload.deleted) { setSelectedId(""); setAuditRows([]); }
         await load();
       }
     } catch (saveError) {
@@ -286,6 +286,13 @@ function SocialWorkspace() {
     const confirmed = window.confirm(`Discard “${eventTitle(selected)}” Social draft?\n\nIt will leave the active queue but remain preserved in audit history.`);
     if (!confirmed) return;
     await persist("discard");
+  };
+
+  const deleteDraft = async () => {
+    if (!selected || selected.status !== "draft") return;
+    const confirmed = window.confirm(`Permanently delete “${eventTitle(selected)}” Social draft?\n\nThis cannot be undone.`);
+    if (!confirmed) return;
+    await persist("delete");
   };
 
   const openSourcePicker = async (sourceType) => {
@@ -526,7 +533,7 @@ function SocialWorkspace() {
           <div className="social-review-row">
             <div><span>REVIEW STATE</span><strong>{reviewState}</strong></div>
             <div className="social-review-actions">
-              {selected.status === "draft" && !isExplicitTestEvent(selected) ? <button type="button" disabled={saving} onClick={discardDraft}>Discard draft</button> : null}
+              {selected.status === "draft" && !isExplicitTestEvent(selected) ? <><button type="button" disabled={saving} onClick={discardDraft}>Discard draft</button><button type="button" className="danger" disabled={saving} onClick={deleteDraft}>Delete draft</button></> : null}
               {isExplicitTestEvent(selected) ? <button type="button" disabled={saving} onClick={() => persist("discard_test")}>Discard test event</button> : null}
               {selected.status === "scheduled"
                 ? <button type="button" disabled={saving} onClick={() => persist("unschedule")}>{saving ? "Working…" : "Unschedule"}</button>

@@ -24,6 +24,8 @@ const TRANSIENT_SUPABASE_STATUSES = new Set([502, 503, 504]);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const MEDIA_PROCESSING_MAX_ATTEMPTS = 15;
 const MEDIA_PROCESSING_DELAY_MS = 1000;
+const FEED_PUBLISH_MAX_ATTEMPTS = 5;
+const FEED_PUBLISH_INITIAL_DELAY_MS = 2500;
 const STORY_PUBLISH_MAX_ATTEMPTS = 5;
 const STORY_PUBLISH_INITIAL_DELAY_MS = 2500;
 
@@ -216,8 +218,20 @@ async function publishInstagram(event, admin, pageToken, credentialSource) {
   const { media_id } = parseInstagramFeedCreateResponse(createPayload);
   const processing = await waitForInstagramMedia(media_id, pageToken);
   const publishRequest = buildInstagramFeedPublishRequest({ creation_id: media_id });
-  const publishPayload = await metaPost(publishRequest, pageToken);
-  const publishAttempts = 1;
+  await sleep(FEED_PUBLISH_INITIAL_DELAY_MS);
+  let publishPayload = null;
+  let publishAttempts = 0;
+  for (let attempt = 1; attempt <= FEED_PUBLISH_MAX_ATTEMPTS; attempt += 1) {
+    publishAttempts = attempt;
+    try {
+      publishPayload = await metaPost(publishRequest, pageToken);
+      break;
+    } catch (error) {
+      const retryable9007 = Number(error?.metaCode) === 9007;
+      if (!retryable9007 || attempt === FEED_PUBLISH_MAX_ATTEMPTS) throw error;
+      await sleep(FEED_PUBLISH_INITIAL_DELAY_MS * attempt);
+    }
+  }
   const result = parseInstagramFeedPublishResponse(publishPayload);
   await writeAudit(admin.token, event, admin.user.id, "test_instagram_feed_published", {
     channel: "instagram_feed", test_only: true, media_id, post_id: result.post_id,

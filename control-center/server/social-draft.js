@@ -179,12 +179,19 @@ export default async function handler(req, res) {
     const id = String(req.body?.id || "").trim();
     const action = String(req.body?.action || "save").trim();
     if (!id) return json(res, 400, { error: "Social event id is required." });
-    if (!["save", "ready", "reopen", "discard", "discard_test"].includes(action)) return json(res, 400, { error: "Unsupported Social draft action." });
+    if (!["save", "ready", "reopen", "discard", "delete", "discard_test"].includes(action)) return json(res, 400, { error: "Unsupported Social draft action." });
 
     const eventRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(id)}&select=*&limit=1`, auth.token);
     if (!eventRes.ok) return json(res, 400, { error: "Could not load Social event." });
     const [event] = await eventRes.json();
     if (!event) return json(res, 404, { error: "Social event not found." });
+
+    if (action === "delete") {
+      if (event.status !== "draft") return json(res, 409, { error: "Only DRAFT Social events can be permanently deleted. Return the event to draft first." });
+      const deleteRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(id)}`, auth.token, { method: "DELETE" });
+      if (!deleteRes.ok) throw new Error(`Could not delete Social draft (${deleteRes.status}).`);
+      return json(res, 200, { ok: true, deleted: true, id });
+    }
 
     if (action === "discard_test") {
       if (!isTestEvent(event)) return json(res, 409, { error: "Only explicit shadow test/replay events can be discarded." });

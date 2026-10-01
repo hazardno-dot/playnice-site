@@ -11,6 +11,7 @@ const isControlledPublishEvent = (event) => Boolean(
   event?.metadata?.manual_hero_post ||
   event?.metadata?.manual_journal_post ||
   String(event?.metadata?.producer || "").startsWith("social-manual-") ||
+  String(event?.metadata?.producer || "") === "sync-publish-status" ||
   String(event?.source_id || "").includes("--shadow-test-") ||
   String(event?.source_id || "").includes("--shadow-replay-") ||
   String(event?.source_id || "").includes("--manual-social-")
