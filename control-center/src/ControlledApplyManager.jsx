@@ -140,7 +140,10 @@ export default function ControlledApplyManager() {
       let body = {};
       try { body = raw ? JSON.parse(raw) : {}; }
       catch { throw new Error(raw || "Controlled Apply returned an invalid response."); }
-      if (!response.ok) throw new Error(body?.error || "Could not create controlled apply branch.");
+      if (!response.ok) {
+        const details = Array.isArray(body?.errors) && body.errors.length ? ` ${body.errors.join(" · ")}` : "";
+        throw new Error(`${body?.error || "Could not create controlled apply branch."}${details}`);
+      }
       setPreviewChecks((current) => ({ ...current, [row.product_slug]: {} }));
       await load({ sync: false });
     } catch (e) {
