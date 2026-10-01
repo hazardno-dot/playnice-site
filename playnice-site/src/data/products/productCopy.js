@@ -3171,15 +3171,15 @@ export const productCopy = {
     },
     "card": {
       "en": "Peach and white florals melt into creamy vanilla and leather.",
-      "sr": "Breskva i bijelo cvijeće prelaze u kremastu vanilu i kožu."
+      "sr": "Breskva i belo cveće prelaze u kremastu vanilu i kožu."
     },
     "modal": {
       "en": "A rich floral scent with juicy peach, creamy vanilla and leather for a deeper, more elegant finish.",
-      "sr": "Bogat cvjetni miris sa sočnom breskvom, kremastom vanilom i kožom koja mu daje dublji, elegantniji završetak."
+      "sr": "Bogat cvetni miris sa sočnom breskvom, kremastom vanilom i kožom koja mu daje dublji, elegantniji završetak."
     },
     "scentType": {
       "en": "Floral, sweet and leathery",
-      "sr": "Cvjetni, slatki i kožni"
+      "sr": "Cvetni, slatki i kožni"
     },
     "dominantNotes": {
       "sr": [
@@ -3209,7 +3209,7 @@ export const productCopy = {
     },
     "whyChoose": {
       "en": "For those who enjoy rich florals with vanilla and an elegant leathery finish.",
-      "sr": "Za one koji vole bogate cvjetne mirise sa vanilom i elegantnim kožnim završetkom."
+      "sr": "Za one koji vole bogate cvetne mirise sa vanilom i elegantnim kožnim završetkom."
     }
   }
 };
