@@ -118,6 +118,28 @@ export default function NoteApplyManager() {
     finally { setBusy(false); }
   };
 
+  const closeAfterMerge = async () => {
+    if (!row?.apply_pr_number || busy) return;
+    setBusy(true); setError("");
+    try {
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || !sessionData?.session?.access_token) throw sessionError || new Error("Authenticated admin session is required.");
+      const response = await fetch("/api/reconcile-note-drafts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionData.session.access_token}` },
+        body: JSON.stringify({ note_key: noteKey }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Notes merge reconciliation failed (${response.status}).`);
+      setRow(null);
+      window.dispatchEvent(new CustomEvent(NOTE_WORKFLOW_UPDATED_EVENT, { detail: { noteKey, merged: true, closed: true } }));
+    } catch (closeError) {
+      setError(closeError.message || String(closeError));
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const prepared = Boolean(row.prepared_at && row.baseline_snapshot?.source_sha);
   const hasPr = Boolean(row.apply_branch && row.apply_pr_number);
 
@@ -129,7 +151,7 @@ export default function NoteApplyManager() {
     </div>
     <div className="note-controlled-actions">
       {error ? <span className="note-controlled-error">{error}</span> : null}
-      {hasPr ? <a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">Open draft PR ↗</a>
+      {hasPr ? <><a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">Open draft PR ↗</a><button className="primary" disabled={busy} onClick={closeAfterMerge}>{busy ? "Checking merge…" : "Close after merge"}</button></>
         : prepared ? <button className="primary" disabled={busy} onClick={() => callApply("apply")}>{busy ? "Creating…" : "Create draft PR"}</button>
           : <button className="primary" disabled={busy || noChanges} onClick={() => callApply("prepare")}>{busy ? "Preparing…" : noChanges ? "No changes to apply" : "Prepare apply"}</button>}
     </div>
