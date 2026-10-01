@@ -426,5 +426,10 @@ export const productWearContext = {
   "My Geisha Unseen Extrait de Parfum": {
     "sr": "Hladnije vreme, dejt, veče i posebne prilike.",
     "en": "Cooler weather, dates, evenings and special occasions."
+  },
+
+  "Nishane Hundred Silent Ways X Extrait de Parfum": {
+    "sr": "Veče, dejt i elegantne prilike u hladnijem dijelu godine.",
+    "en": "Evenings, dates and dressed-up occasions in cooler weather."
   }
 };

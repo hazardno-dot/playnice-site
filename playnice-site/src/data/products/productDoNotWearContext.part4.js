@@ -114,5 +114,10 @@ export default [
   {
     "sr": "Na degustaciji vina ili viskija. Posle nekoliko prskanja čovek pored vas više neće znati da li oseća konjak u čaši ili vas.",
     "en": "At a wine or whisky tasting. After a few sprays, the person next to you may no longer know whether the cognac is in the glass or on you."
+  },
+  {
+    "sr": "Da je Đoković ovo nosio na mečevima, oduvao bi protivnike — i skrenuo pažnju pola tribina. Za teren ipak nešto lakše.",
+    "en": "If Djokovic wore this on court, he’d blow away his opponents — and distract half the stands. For tennis, though, go lighter."
   }
+
 ];

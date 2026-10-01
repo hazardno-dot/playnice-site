@@ -3162,6 +3162,55 @@ export const productCopy = {
       "en": "If you want a dark, sweet and opulent unisex gourmand with tobacco, vanilla and oud.",
       "sr": "Ako želiš taman, sladak i raskošan uniseks gourmand sa duvanom, vanilom i oudom."
     }
+  },
+
+  "Nishane Hundred Silent Ways X Extrait de Parfum": {
+    "miniTag": {
+      "en": "🍑 Peach / Vanilla / Leather",
+      "sr": "🍑 Breskva / Vanila / Koža"
+    },
+    "card": {
+      "en": "Peach and white florals melt into creamy vanilla and leather.",
+      "sr": "Breskva i bijelo cvijeće prelaze u kremastu vanilu i kožu."
+    },
+    "modal": {
+      "en": "A rich floral scent with juicy peach, creamy vanilla and leather for a deeper, more elegant finish.",
+      "sr": "Bogat cvjetni miris sa sočnom breskvom, kremastom vanilom i kožom koja mu daje dublji, elegantniji završetak."
+    },
+    "scentType": {
+      "en": "Floral, sweet and leathery",
+      "sr": "Cvjetni, slatki i kožni"
+    },
+    "dominantNotes": {
+      "sr": [
+        "Breskva",
+        "tuberoza",
+        "vanila",
+        "koža"
+      ],
+      "en": [
+        "Peach",
+        "tuberose",
+        "vanilla",
+        "leather"
+      ]
+    },
+    "tags": {
+      "sr": [
+        "cvjetno",
+        "kremasto",
+        "elegantno"
+      ],
+      "en": [
+        "floral",
+        "creamy",
+        "elegant"
+      ]
+    },
+    "whyChoose": {
+      "en": "For those who enjoy rich florals with vanilla and an elegant leathery finish.",
+      "sr": "Za one koji vole bogate cvjetne mirise sa vanilom i elegantnim kožnim završetkom."
+    }
   }
 };
 
