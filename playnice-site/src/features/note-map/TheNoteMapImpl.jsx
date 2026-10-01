@@ -80,6 +80,12 @@ const NOTE_LIBRARY = {
     image: "/note-map/peach.webp",
     fallback: "•",
   },
+  "gardenia": {
+    sr: "Gardenija",
+    en: "Gardenia",
+    image: "/note-map/gardenia.webp",
+    fallback: "•",
+  },
 };
 
 const NOTE_SR = {
