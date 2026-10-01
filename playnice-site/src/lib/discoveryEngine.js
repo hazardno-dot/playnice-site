@@ -1,4 +1,10 @@
 import { getProductPurchaseSelection } from "../features/commerce/commerceDerivations";
+import {
+  describeBuyerReasoningFit,
+  getBuyerReasoningMatchComponents,
+  parseBuyerReasoning,
+  scoreBuyerReasoning,
+} from "./buyerReasoning";
 
 /* =========================================
    PLAYNICE DISCOVERY ENGINE — V3.0
@@ -847,6 +853,8 @@ const parseQuery = (rawQuery, products = []) => {
     referenceProduct: null,
     referenceSource: null,
     referenceModifiers: [],
+    buyerReasoning:
+      parseBuyerReasoning(rawQuery),
   };
 
   Object.entries(QUERY_DICTIONARY.season).forEach(([key, aliases]) => {
@@ -1232,6 +1240,16 @@ const getIntentMatchQuality = ({
     );
   });
 
+  getBuyerReasoningMatchComponents(
+    profile,
+    intent.buyerReasoning
+  ).forEach((component) => {
+    addComponent(
+      component.value,
+      component.weight
+    );
+  });
+
   if (intent.gender) {
     const masculine =
       Number(profile.masculine ?? 5);
@@ -1449,6 +1467,15 @@ const scoreProduct = (product, intent, productCopy, productWearContext, discover
       reasons.push(`balanced:${key}`);
     }
   });
+
+  const buyerScore =
+    scoreBuyerReasoning(
+      profile,
+      intent.buyerReasoning
+    );
+
+  score += buyerScore.adjustment;
+  reasons.push(...buyerScore.reasons);
 
   if (intent.requiredNoteGroups.length) {
     const matchedGroups = intent.requiredNoteGroups.filter((group) =>
@@ -1846,7 +1873,8 @@ const hasDiscoveryIntent = (intent) => {
     intent.excludedNotes?.length ||
     intent.hardExcludedNotes?.length ||
     intent.contexts?.length ||
-    intent.referenceModifiers?.length
+    intent.referenceModifiers?.length ||
+    intent.buyerReasoning?.preferences?.length
   );
 };
 
@@ -1863,6 +1891,8 @@ const getDiscoveryIntentConfidence = (rawQuery, intent) => {
   const traitCount =
     (intent?.positiveTraits?.length || 0) +
     (intent?.negativeTraits?.length || 0);
+  const buyerPreferenceCount =
+    intent?.buyerReasoning?.preferences?.length || 0;
 
   const noteCount =
     (intent?.requiredNotes?.length || 0) +
@@ -1875,6 +1905,10 @@ const getDiscoveryIntentConfidence = (rawQuery, intent) => {
   if (intent?.categories?.length) score += 3;
 
   score += Math.min(4, traitCount * 1.8);
+  score += Math.min(
+    4,
+    buyerPreferenceCount * 1.8
+  );
   score += Math.min(3, (intent?.moods?.length || 0) * 1.5);
   score += Math.min(3, (intent?.contexts?.length || 0) * 1.5);
   score += Math.min(2, (intent?.seasons?.length || 0) * 1.0);
@@ -2177,8 +2211,16 @@ const humanReason = (
         ] ||
         "";
 
+  const buyerReasonLine =
+    describeBuyerReasoningFit(
+      p,
+      intent.buyerReasoning,
+      lang
+    );
+
   const briefLine =
     contextLines[0] ||
+    buyerReasonLine ||
     requestedTraitLine ||
     productSpecificLine;
 
@@ -2186,6 +2228,9 @@ const humanReason = (
     productSpecificLine &&
     productSpecificLine !== briefLine
       ? productSpecificLine
+      : buyerReasonLine &&
+        buyerReasonLine !== briefLine
+      ? buyerReasonLine
       : requestedTraitLine &&
         requestedTraitLine !== briefLine
       ? requestedTraitLine

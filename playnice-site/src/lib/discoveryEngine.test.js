@@ -14,6 +14,9 @@ import {
   parseQuery,
   getIntentMatchQuality,
 } from "./discoveryEngine";
+import {
+  parseBuyerReasoning,
+} from "./buyerReasoning";
 
 const run = (query, lang = "en") =>
   discoverFragrances({
@@ -875,5 +878,136 @@ describe("Fragrance Intelligence — catalog coverage", () => {
       .map((product) => product.slug);
 
     expect(invalid).toEqual([]);
+  });
+});
+
+describe("FI Ultra v1.2 — buyer reasoning layer", () => {
+  test.each([
+    ["Dugo traje, ali nije napadan", [["longevity", "high"], ["projection", "low"]]],
+    ["Airy creamy scent", [["airiness", "high"], ["creaminess", "high"]]],
+    ["Dark fragrance with strong projection", [["darkness", "high"], ["projection", "high"]]],
+    ["Sweet but not too sweet", [["sweetness", "moderate"]]],
+    ["Easy reach for every day", [["versatility", "high"]]],
+  ])("extracts buyer preferences: %s", (query, expected) => {
+    const reasoning = parseBuyerReasoning(query);
+    expected.forEach(([key, direction]) => {
+      expect(reasoning.preferences).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            key,
+            direction,
+            provenance: "buyer-language",
+          }),
+        ])
+      );
+    });
+  });
+
+  test("buyer-only language can drive a relevant recommendation", () => {
+    const output = expectRelevantWithResults(
+      "Dugo traje, ali nije napadan",
+      "sr"
+    );
+    expect(output.intent.buyerReasoning.preferences.length)
+      .toBeGreaterThanOrEqual(2);
+    expect(
+      output.results.some((item) =>
+        (item.signals || []).some((signal) =>
+          signal.startsWith("buyer:")
+        )
+      )
+    ).toBe(true);
+  });
+
+  test("longevity + discreet projection pushes the top result toward the requested trade-off", () => {
+    const output = expectRelevantWithResults(
+      "Parfem koji dugo traje, ali nije napadan",
+      "sr"
+    );
+    const top = output.results[0];
+    expect(top.profile.longevity ?? 0)
+      .toBeGreaterThanOrEqual(6);
+    expect(top.profile.projection ?? top.profile.intensity ?? 10)
+      .toBeLessThanOrEqual(8);
+  });
+
+  test("airy clean office brief rewards airiness without losing office fit", () => {
+    const output = expectRelevantWithResults(
+      "Prozračan i čist parfem za posao",
+      "sr"
+    );
+    output.results.slice(0, 3).forEach((item) => {
+      expect(item.profile.airiness ?? 0)
+        .toBeGreaterThanOrEqual(5);
+      expect(item.profile.office ?? 0)
+        .toBeGreaterThanOrEqual(6);
+    });
+  });
+
+  test("dark high-projection evening brief moves top results toward both requested vectors", () => {
+    const output = expectRelevantWithResults(
+      "Dark fragrance with strong projection for evening"
+    );
+    const top3 = output.results.slice(0, 3);
+    expect(
+      top3.reduce(
+        (sum, item) => sum + (item.profile.darkness || 0),
+        0
+      ) / top3.length
+    ).toBeGreaterThanOrEqual(5.5);
+    expect(
+      top3.reduce(
+        (sum, item) =>
+          sum + (item.profile.projection ?? item.profile.intensity ?? 0),
+        0
+      ) / top3.length
+    ).toBeGreaterThanOrEqual(6);
+  });
+
+  test("buyer preference contributes to public match quality", () => {
+    const intent = {
+      seasons: [],
+      moods: [],
+      positiveTraits: [],
+      negativeTraits: [],
+      requiredNoteGroups: [],
+      excludedNotes: [],
+      hardExcludedNotes: [],
+      contexts: [],
+      gender: null,
+      referenceProduct: null,
+      referenceModifiers: [],
+      buyerReasoning: parseBuyerReasoning("Strong projection"),
+    };
+
+    const strong = getIntentMatchQuality({
+      product: {},
+      profile: { projection: 9, notes: [] },
+      intent,
+      productCopy: {},
+      productWearContext: {},
+      discoveryProfiles: {},
+    });
+    const weak = getIntentMatchQuality({
+      product: {},
+      profile: { projection: 3, notes: [] },
+      intent,
+      productCopy: {},
+      productWearContext: {},
+      discoveryProfiles: {},
+    });
+
+    expect(strong).toBeGreaterThan(weak);
+  });
+
+  test("buyer-aware reasons expose the requested trade-off", () => {
+    const output = expectRelevantWithResults(
+      "Long lasting perfume, not overpowering"
+    );
+    expect(
+      output.results.slice(0, 3).every((item) =>
+        /longevity|projection|discreet|presence/i.test(item.reason)
+      )
+    ).toBe(true);
   });
 });
