@@ -10,6 +10,7 @@ const NO_BUILD_EXACT = new Set([
 
 const ROUTER_SOURCE = "scripts/vercel-ignore-build.mjs";
 const CC_EXTERNAL_PRODUCT_PREFIX = "playnice-site/src/data/products/";
+const CC_EXTERNAL_NOTE_MAP_SOURCE = "playnice-site/src/features/note-map/TheNoteMapImpl.jsx";
 const CC_EXTERNAL_EXCLUDE = /^playnice-site\/src\/data\/products\/product(?:DoNotWear|WhatToWear)Context(?:\.part[0-9]+)?\.js$/;
 
 const normalize = (value) => String(value || "").trim().replace(/^\.\//, "").replace(/\\/g, "/");
@@ -31,8 +32,11 @@ export function classifyPath(path) {
   }
 
   if (file.startsWith("playnice-site/")) {
-    const controlCenter = file.startsWith(CC_EXTERNAL_PRODUCT_PREFIX) && !CC_EXTERNAL_EXCLUDE.test(file);
-    return { storefront: true, controlCenter, reason: controlCenter ? "shared-product-data" : "storefront" };
+    const sharedProductData = file.startsWith(CC_EXTERNAL_PRODUCT_PREFIX) && !CC_EXTERNAL_EXCLUDE.test(file);
+    const sharedNoteMapSource = file === CC_EXTERNAL_NOTE_MAP_SOURCE;
+    const controlCenter = sharedProductData || sharedNoteMapSource;
+    const reason = sharedProductData ? "shared-product-data" : sharedNoteMapSource ? "shared-note-map-source" : "storefront";
+    return { storefront: true, controlCenter, reason };
   }
 
   // Unknown root-level files are treated conservatively. A new shared config should
