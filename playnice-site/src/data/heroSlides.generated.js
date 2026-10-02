@@ -123,14 +123,10 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-10.jpg",
     "desktopImage": "/hero/slide-10.jpg",
     "mobileImage": "/hero/mobile/slide-10-mobile.jpg",
-    "alt": "Optional: special action, drop ili limited stock",
-    "actionPrimary": "collection",
-    "actionCollection": [
-      "essential-parfums-nice-bergamote",
-      "essential-parfums-orange-x-santal",
-      "bois-imperial-essential-parfums"
-    ],
-    "collectionTitle": "Three parfumers. Three icons. One house."
+    "alt": "Odobreno za večernji sastanak. Šta se dešava posle deserta, ostaje između vas dvoje.",
+    "actionPrimary": "product",
+    "actionProductSlug": "tom-ford-noir-extreme",
+    "preferredSize": "5ml"
   },
   {
     "id": 11,
