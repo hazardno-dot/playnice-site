@@ -20,6 +20,7 @@ export function makeLiveSnapshot(product) {
       season: product.season || "",
       moods: [...(product.moods || [])],
       sizes: { ...(product.sizes || {}) },
+      discount: product.discount ? { size: product.discount.size || "", percent: product.discount.percent ?? "" } : null,
       noteMap: {
         top: [...(product.noteMap?.top || [])],
         heart: [...(product.noteMap?.heart || [])],
