@@ -46,7 +46,7 @@ function buildChanges(live, draft) {
   pushChange(changes, "Recommendations", "Linked products", asCsv(live.recommendations || []), core.recommendations || "");
 
   const liveCopy = productCopy[live.name] || {}, draftCopy = draft.copy || {};
-  ["miniTag", "scentType", "card", "modal", "whyChoose"].forEach((key) => ["sr", "en"].forEach((lang) => pushChange(changes, "Copy", `${key} · ${lang.toUpperCase()}`, liveCopy?.[key]?.[lang] || "", draftCopy?.[key]?.[lang] || "")));
+  ["miniTag", "scentType", "card", "modal", "dominantNotes", "tags", "whyChoose"].forEach((key) => ["sr", "en"].forEach((lang) => pushChange(changes, "Copy", `${key} · ${lang.toUpperCase()}`, liveCopy?.[key]?.[lang] || "", draftCopy?.[key]?.[lang] || "")));
   const liveWear = productWearContext[live.name] || {}, draftWear = draft.wear || {};
   ["sr", "en"].forEach((lang) => pushChange(changes, "Wear", lang.toUpperCase(), liveWear?.[lang] || "", draftWear?.[lang] || ""));
   const liveDoNotWear = productDoNotWearContext[live.name] || {}, draftDoNotWear = draft.doNotWear || {};
