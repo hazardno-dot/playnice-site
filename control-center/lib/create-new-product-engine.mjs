@@ -63,6 +63,7 @@ function normalizePayload(payload, slug) {
       category: String(core.category || "").trim(),
       image: String(core.image || "").trim(),
       sizes: Object.fromEntries(Object.entries(core.sizes || {}).map(([key, value]) => [String(key).trim(), Number(value)])),
+      discount: core.discount ? { size: String(core.discount.size || "").trim(), percent: Number(core.discount.percent) } : null,
       badge: String(core.badge || "").trim(),
       rating: Number(core.rating),
       ratingLabel: String(core.ratingLabel || "").trim(),
@@ -108,6 +109,7 @@ function validateNewProduct(product) {
   if (!core.image.startsWith("/products/") || core.image === "/products/" || core.image.endsWith("/")) errors.push("Image must be a specific product file under /products/.");
   if (!Number.isFinite(core.rating) || core.rating < 0 || core.rating > 10) errors.push("Rating must be 0–10.");
   if (!Object.keys(core.sizes).length || Object.values(core.sizes).some((value) => !Number.isFinite(value) || value <= 0)) errors.push("At least one valid size is required.");
+  if (core.discount && (!Object.prototype.hasOwnProperty.call(core.sizes, core.discount.size) || !Number.isFinite(core.discount.percent) || core.discount.percent <= 0 || core.discount.percent >= 100)) errors.push("Discount must reference an existing size and use a percent between 0 and 100.");
   if (core.moods.length !== 3) errors.push("Exactly 3 moods are required for product-card parity.");
   if (!core.badge) errors.push("Presentation badge is required for a new product.");
   if (!core.inspiredBy.name) errors.push("Inspired-by/original-creation name is required for modal parity.");
@@ -198,7 +200,8 @@ function renderProductObject(product, id, addedAt = new Date().toISOString()) {
   const inspiredBy = core.inspiredBy.name || core.inspiredBy.short
     ? `,\n    inspiredBy: {\n      name: ${js(core.inspiredBy.name)},\n      short: ${js(core.inspiredBy.short)}\n    }`
     : "";
-  return `  {\n    id: ${id},\n    addedAt: ${js(addedAt)},\n    slug: ${js(product.slug)},\n    name: ${js(core.name)},${modalLine}${cardLine}\n    shortName: ${js(core.shortName)},\n    category: ${js(core.category)},\n    image: ${js(core.image)},\n    sizes: ${js(core.sizes)},\n    badge: ${js(core.badge)},\n    rating: ${core.rating},\n    ratingLabel: ${js(core.ratingLabel)},\n    season: ${js(core.season)},\n    moods: ${js(core.moods)},\n    recommendations: ${js(core.recommendations)}${inspiredBy},\n    noteMap: {\n      top: ${js(core.noteMap.top)},\n      heart: ${js(core.noteMap.heart)},\n      base: ${js(core.noteMap.base)}\n    }\n  }`;
+  const discount = core.discount ? `,\n    discount: {\n      size: ${js(core.discount.size)},\n      percent: ${Number(core.discount.percent)}\n    }` : "";
+  return `  {\n    id: ${id},\n    addedAt: ${js(addedAt)},\n    slug: ${js(product.slug)},\n    name: ${js(core.name)},${modalLine}${cardLine}\n    shortName: ${js(core.shortName)},\n    category: ${js(core.category)},\n    image: ${js(core.image)},\n    sizes: ${js(core.sizes)},\n    badge: ${js(core.badge)},\n    rating: ${core.rating},\n    ratingLabel: ${js(core.ratingLabel)},\n    season: ${js(core.season)},\n    moods: ${js(core.moods)},\n    recommendations: ${js(core.recommendations)}${inspiredBy},\n    noteMap: {\n      top: ${js(core.noteMap.top)},\n      heart: ${js(core.noteMap.heart)},\n      base: ${js(core.noteMap.base)}\n    }${discount}\n  }`;
 }
 
 function appendSeparator(before) {
