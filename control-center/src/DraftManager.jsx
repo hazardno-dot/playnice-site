@@ -26,7 +26,7 @@ const pushChange = (arr, section, label, liveValue, draftValue) => { if (!same(l
 
 function buildChanges(live, draft) {
   if (!draft) return [];
-  live = live || { name:"", shortName:"", category:"", image:"", inspiredBy:{}, badge:"", rating:"", ratingLabel:"", season:"", moods:[], sizes:{}, noteMap:{top:[],heart:[],base:[]}, recommendations:[], slug:"" };
+  live = live || { name:"", shortName:"", category:"", image:"", inspiredBy:{}, badge:"", rating:"", ratingLabel:"", season:"", moods:[], sizes:{}, discount:null, noteMap:{top:[],heart:[],base:[]}, recommendations:[], slug:"" };
   const changes = []; const core = draft.core || {};
   pushChange(changes, "Core", "Name", live.name, core.name);
   pushChange(changes, "Core", "Short name", live.shortName, core.shortName);
@@ -42,6 +42,7 @@ function buildChanges(live, draft) {
 
   const liveSizes = live.sizes || {}, draftSizes = core.sizes || {};
   [...new Set([...Object.keys(liveSizes), ...Object.keys(draftSizes)])].forEach((size) => pushChange(changes, "Prices", size, String(liveSizes[size] ?? ""), String(draftSizes[size] ?? "")));
+  pushChange(changes, "Discount", "Promotion", live.discount || null, core.discount || null);
   ["top", "heart", "base"].forEach((level) => pushChange(changes, "Notes", level, asCsv(live.noteMap?.[level] || []), core.noteMap?.[level] || ""));
   pushChange(changes, "Recommendations", "Linked products", asCsv(live.recommendations || []), core.recommendations || "");
 
