@@ -449,7 +449,7 @@ function SocialWorkspace() {
         {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${value === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)).length : counts[value] || 0}` : ""}</button>)}
       </div>
       <div className="social-create-group">
-        <span>CREATE POST</span>
+        <span>CREATE POST FROM / NEW</span>
         <div>
           <button type="button" className="social-create-product" disabled={saving} onClick={createBlankPost}>{saving ? "Working…" : "New draft"}</button>
           <button type="button" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>{saving ? "Working…" : "Product"}</button>
