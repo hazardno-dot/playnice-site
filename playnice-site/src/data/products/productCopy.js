@@ -3197,7 +3197,7 @@ export const productCopy = {
     },
     "tags": {
       "sr": [
-        "cvjetno",
+        "cvetno",
         "kremasto",
         "elegantno"
       ],
