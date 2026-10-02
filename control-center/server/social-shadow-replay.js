@@ -275,6 +275,32 @@ async function replayJournal(auth, options = {}) {
   });
 }
 
+async function replayCustom(auth) {
+  const stamp = new Date().toISOString();
+  const event = {
+    event_type: "manual_post",
+    source_type: "custom",
+    source_id: "",
+    source_url: "",
+    payload: { title: "New Social draft", created_at: stamp },
+    media: [],
+    channels: ["instagram_feed", "instagram_story", "facebook"],
+    status: "draft",
+    publish_mode: "shadow",
+    metadata: {},
+  };
+  const manualKey = `manual-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  return createReplay({
+    auth,
+    sourceType: "custom",
+    canonicalId: "campaign",
+    event,
+    metadata: { replay_key: manualKey, manual_custom_post: true },
+    auditDetails: { manual_custom_post: true },
+    manualPost: true,
+  });
+}
+
 export default async function handler(req, res) {
   if (!SUPABASE_URL || !SUPABASE_KEY) return json(res, 500, { error: "Server configuration is incomplete." });
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
@@ -284,13 +310,15 @@ export default async function handler(req, res) {
     if (auth.error) return json(res, auth.status, { error: auth.error });
 
     const sourceType = String(req.body?.source_type || "product").trim().toLowerCase();
-    if (!["product", "hero", "journal"].includes(sourceType)) return json(res, 400, { error: "Unsupported replay source type." });
+    if (!["product", "hero", "journal", "custom"].includes(sourceType)) return json(res, 400, { error: "Unsupported replay source type." });
 
-    const result = sourceType === "hero"
-      ? await replayHero(auth, { heroKey: req.body?.hero_key })
-      : sourceType === "journal"
-        ? await replayJournal(auth, { articleId: req.body?.journal_article_id })
-        : await replayProduct(auth, {
+    const result = sourceType === "custom"
+      ? await replayCustom(auth)
+      : sourceType === "hero"
+        ? await replayHero(auth, { heroKey: req.body?.hero_key })
+        : sourceType === "journal"
+          ? await replayJournal(auth, { articleId: req.body?.journal_article_id })
+          : await replayProduct(auth, {
           productSlug: req.body?.product_slug,
           productPayload: req.body?.product_payload,
         });
