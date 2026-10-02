@@ -68,10 +68,18 @@ const stable = (value) => {
 
 const displayValue = (value) => typeof value === "string" ? value : JSON.stringify(value);
 
+const normalizeDiscount = (value) => {
+  if (!value || typeof value !== "object") return null;
+  const size = String(value.size || "").trim();
+  const percent = Number(value.percent);
+  return size && Number.isFinite(percent) ? { size, percent } : null;
+};
+
 const valueForField = (field, core) => {
   if (field === "rating") return Number(core?.rating);
   if (field === "moods") return normalizeCsv(core?.moods);
   if (field === "sizes") return normalizeSizes(core?.sizes || {});
+  if (field === "discount") return normalizeDiscount(core?.discount);
   return String(core?.[field] ?? "");
 };
 
@@ -247,6 +255,56 @@ function patchProperty(block, field, baselineValue, draftValue) {
   const liveNormalized = field === "rating" ? Number(liveValue) : String(liveValue ?? "");
   if (stable(liveNormalized) !== stable(baselineValue)) throw new Error(`LIVE DRIFT: main ${field} is ${displayValue(liveNormalized)}, preparation baseline expected ${displayValue(baselineValue)}.`);
   return block.slice(0, range.start) + serializeField(field, draftValue) + block.slice(range.end);
+}
+
+function readDiscount(block) {
+  try {
+    const located = findChildObjectBlock(block, "discount");
+    const sizeRange = locatePropertyValue(located.block, "size");
+    const percentRange = locatePropertyValue(located.block, "percent");
+    return {
+      size: String(parseJsLiteral(located.block.slice(sizeRange.start, sizeRange.end)) || "").trim(),
+      percent: Number(parseJsLiteral(located.block.slice(percentRange.start, percentRange.end))),
+    };
+  } catch {
+    return null;
+  }
+}
+
+function renderDiscount(value) {
+  const normalized = normalizeDiscount(value);
+  if (!normalized) return "";
+  return `    discount: {\n      size: ${JSON.stringify(normalized.size)},\n      percent: ${normalized.percent}\n    }`;
+}
+
+function patchDiscount(block, baselineValue, draftValue) {
+  const baseline = normalizeDiscount(baselineValue);
+  const next = normalizeDiscount(draftValue);
+  const live = readDiscount(block);
+  if (stable(live) !== stable(baseline)) {
+    throw new Error(`LIVE DRIFT: main discount is ${displayValue(live)}, preparation baseline expected ${displayValue(baseline)}.`);
+  }
+  if (stable(live) === stable(next)) return block;
+
+  if (live) {
+    const located = findChildObjectBlock(block, "discount");
+    const lineStart = block.lastIndexOf("\n", located.start);
+    const propertyStart = lineStart >= 0 ? lineStart : 0;
+    if (!next) {
+      let before = block.slice(0, propertyStart);
+      const lastNonSpace = before.search(/,\s*$/);
+      if (lastNonSpace >= 0) before = before.replace(/,\s*$/, "");
+      return before + block.slice(located.end);
+    }
+    return block.slice(0, propertyStart) + "\n" + renderDiscount(next) + block.slice(located.end);
+  }
+
+  if (!next) return block;
+  const closingLine = block.lastIndexOf("\n");
+  if (closingLine < 0) throw new Error("Could not locate product closing line for discount insertion.");
+  const before = block.slice(0, closingLine).replace(/\s+$/, "");
+  const after = block.slice(closingLine);
+  return `${before},\n${renderDiscount(next)}${after}`;
 }
 
 function noteMapChangesBetween(baselineNoteMap = {}, approvedNoteMap = {}) {
@@ -526,6 +584,8 @@ export default async function handler(req, res) {
     const baselineCore = baseline.core;
     const approvedCore = approved.core;
     const supportedFields = ["category", "image", "rating", "ratingLabel", "badge", "season", "moods", "sizes"];
+    const discountChange = { section: "Discount", field: "discount", live: valueForField("discount", baselineCore), next: valueForField("discount", approvedCore) };
+    discountChange.changed = stable(discountChange.live) !== stable(discountChange.next);
     const identityChanges = ["name", "shortName"].map((field) => {
       const live = String(baselineCore?.[field] ?? "");
       const next = String(approvedCore?.[field] ?? "");
@@ -552,7 +612,7 @@ export default async function handler(req, res) {
     const whatToWearChanges = contextChangesBetween("What To Wear", baselineWhatToWear, approvedWhatToWear);
     const copyChanges = copyChangesBetween(baseline.copy || {}, approved.copy || {});
     const discoveryChanges = discoveryChangesBetween(baseline.discovery || {}, approved.discovery || {});
-    const changes = [...identityChanges, ...coreChanges, ...inspiredByChanges, ...noteMapChanges, ...recommendationChanges, ...wearChanges, ...doNotWearChanges, ...whatToWearChanges, ...copyChanges, ...discoveryChanges];
+    const changes = [...identityChanges, ...coreChanges, ...(discountChange.changed ? [discountChange] : []), ...inspiredByChanges, ...noteMapChanges, ...recommendationChanges, ...wearChanges, ...doNotWearChanges, ...whatToWearChanges, ...copyChanges, ...discoveryChanges];
     if (!changes.length) return json(res, 409, { error: "No supported approved changes remain to apply." });
 
     const mainRef = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/main`);
@@ -577,7 +637,7 @@ export default async function handler(req, res) {
     }
     const changedFiles = [];
 
-    if (identityChanges.length || coreChanges.length || inspiredByChanges.length || noteMapChanges.length || recommendationChanges.length) {
+    if (identityChanges.length || coreChanges.length || discountChange.changed || inspiredByChanges.length || noteMapChanges.length || recommendationChanges.length) {
       const filePath = "playnice-site/src/data/products/index.js";
       const file = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${filePath}?ref=main`);
       const source = Buffer.from(file.content, "base64").toString("utf8");
@@ -585,6 +645,7 @@ export default async function handler(req, res) {
       let nextBlock = located.block;
       for (const change of identityChanges) nextBlock = patchProperty(nextBlock, change.field, change.live, change.next);
       for (const change of coreChanges) nextBlock = patchProperty(nextBlock, change.field, change.live, change.next);
+      if (discountChange.changed) nextBlock = patchDiscount(nextBlock, discountChange.live, discountChange.next);
       if (inspiredByChanges.length) nextBlock = patchInspiredBy(nextBlock, baselineCore.inspiredBy || {}, approvedCore.inspiredBy || {});
       if (noteMapChanges.length) nextBlock = patchNoteMap(nextBlock, baselineCore.noteMap || {}, approvedCore.noteMap || {});
       if (recommendationChanges.length) nextBlock = patchRecommendations(nextBlock, baselineCore.recommendations, approvedCore.recommendations);
@@ -592,6 +653,7 @@ export default async function handler(req, res) {
       const summary = [
         ...identityChanges.map((c) => c.field),
         ...coreChanges.map((c) => c.field),
+        ...(discountChange.changed ? ["discount"] : []),
         ...inspiredByChanges.map((c) => `inspiredBy.${c.field}`),
         ...noteMapChanges.map((c) => `noteMap.${c.field}`),
         ...recommendationChanges.map(() => "recommendations"),
