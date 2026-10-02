@@ -213,6 +213,10 @@ const storyPublishBridge = fs.readFileSync(path.join(root, "control-center/src/S
 const facebookPublishBridge = fs.readFileSync(path.join(root, "control-center/src/SocialFacebookTestPublishBridge.jsx"), "utf8");
 const socialMediaOverrideBridge = fs.readFileSync(path.join(root, "control-center/src/SocialMediaOverrideBridge.jsx"), "utf8");
 for (const source of [instagramPublishBridge, storyPublishBridge, facebookPublishBridge, manualMetaPublishApi]) {
+  assert.ok(source.includes("CANONICAL_PUBLISH_PRODUCERS"), "Controlled Meta publishing must recognize canonical Product/Hero/Journal publish producers.");
+  assert.ok(source.includes("finalize-hero-apply"), "Canonical Hero publish events must be manually publishable after READY.");
+  assert.ok(source.includes("sync-journal-publish-status"), "Canonical Journal publish events must be manually publishable after READY.");
+  assert.ok(source.includes("sync-publish-status"), "Canonical Product publish events must be manually publishable after READY.");
   assert.ok(source.includes("manual_product_post"), "Controlled Meta publishing must recognize manual Product Social events.");
   assert.ok(source.includes("manual_hero_post"), "Controlled Meta publishing must recognize manual Hero Social events.");
   assert.ok(source.includes("manual_journal_post"), "Controlled Meta publishing must recognize manual Journal Social events.");
