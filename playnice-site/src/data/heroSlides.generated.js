@@ -4,30 +4,15 @@
 
 export const BASE_HERO_SLIDES = [
   {
-    "id": 6,
-    "kind": "imageOnly",
-    "image": "/hero/slide-6.jpg",
-    "desktopImage": "/hero/slide-6.jpg",
-    "mobileImage": "/hero/mobile/slide-6-mobile.jpg",
-    "alt": "MY GEISHA UNSEEN — miris koji se ne zaboravlja. Sada u PlayNice dekantima.",
-    "actionPrimary": "product",
-    "actionProductSlug": "my-geisha-unseen-extrait-de-parfum",
-    "preferredSize": "10ml"
-  },
-  {
     "id": 12,
     "kind": "imageOnly",
     "image": "/hero/slide-12.jpg",
     "desktopImage": "/hero/slide-12.jpg",
     "mobileImage": "/hero/mobile/slide-12-mobile.jpg",
-    "alt": "PlayNice Thomas Kosmala trio in a sunlit coastal setting.",
-    "actionPrimary": "collection",
-    "actionCollection": [
-      "thomas-kosmala-no-1-tonic-blanc",
-      "thomas-kosmala-no7-le-sel-de-la-terre",
-      "thomas-kosmala-no-8-tonic-vert"
-    ],
-    "collectionTitle": "Thomas Kosmala, three times."
+    "alt": "YOU DON’T HAVE TO SAY A WORD. HUNDRED SILENT WAYS.",
+    "actionPrimary": "product",
+    "actionProductSlug": "nishane-hundred-silent-ways-x",
+    "preferredSize": "5ml"
   },
   {
     "id": 9,
@@ -42,6 +27,17 @@ export const BASE_HERO_SLIDES = [
       "gisada-luxury-collection-royal"
     ],
     "collectionTitle": "SOFT. BOLD. LUXURY."
+  },
+  {
+    "id": 6,
+    "kind": "imageOnly",
+    "image": "/hero/slide-6.jpg",
+    "desktopImage": "/hero/slide-6.jpg",
+    "mobileImage": "/hero/mobile/slide-6-mobile.jpg",
+    "alt": "MY GEISHA UNSEEN — miris koji se ne zaboravlja. Sada u PlayNice dekantima.",
+    "actionPrimary": "product",
+    "actionProductSlug": "my-geisha-unseen-extrait-de-parfum",
+    "preferredSize": "10ml"
   },
   {
     "id": 2,
