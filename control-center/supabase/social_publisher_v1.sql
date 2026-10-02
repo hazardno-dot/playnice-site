@@ -3,8 +3,8 @@
 
 create table if not exists public.social_events (
   id uuid primary key default gen_random_uuid(),
-  event_type text not null check (event_type in ('product_published','hero_published','journal_published')),
-  source_type text not null check (source_type in ('product','hero','journal')),
+  event_type text not null check (event_type in ('product_published','hero_published','journal_published','manual_post')),
+  source_type text not null check (source_type in ('product','hero','journal','custom')),
   source_id text not null,
   source_url text,
   payload jsonb not null default '{}'::jsonb,

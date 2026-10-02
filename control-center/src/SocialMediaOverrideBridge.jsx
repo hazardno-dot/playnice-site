@@ -18,15 +18,9 @@ const mediaUrl = (item) => String(item?.src || item?.url || "").trim();
 function selectedQueueState() {
   const social = document.querySelector(".social-manager");
   if (!social) return null;
-  const rows = [...social.querySelectorAll(".social-list > button")];
-  const activeIndex = rows.findIndex((row) => row.classList.contains("active"));
-  if (activeIndex < 0) return null;
-
-  const activeFilter = [...social.querySelectorAll(".social-filter-bar > button")]
-    .find((button) => button.classList.contains("active"));
-  const rawFilter = String(activeFilter?.textContent || "all").trim().toLowerCase();
-  const statusFilter = rawFilter.split(/\s+/)[0] || "all";
-  return { activeIndex, statusFilter };
+  const activeRow = social.querySelector(".social-list > button.active");
+  const eventId = String(activeRow?.dataset?.socialEventId || "").trim();
+  return eventId ? { eventId } : null;
 }
 
 function socialAsset(event, channel, source) {
@@ -62,24 +56,21 @@ export default function SocialMediaOverrideBridge() {
       return;
     }
 
-    const signature = `${queueState.statusFilter}:${queueState.activeIndex}`;
+    const signature = queueState.eventId;
     if (!force && selectedRef.current === signature) return;
     selectedRef.current = signature;
 
     const { data, error: loadError } = await supabase
       .from("social_events")
       .select("*")
-      .order("created_at", { ascending: false })
-      .limit(100);
+      .eq("id", queueState.eventId)
+      .maybeSingle();
     if (loadError) {
       setError(loadError.message || String(loadError));
       return;
     }
 
-    const visible = queueState.statusFilter === "all"
-      ? (data || [])
-      : (data || []).filter((row) => row.status === queueState.statusFilter);
-    setEvent(visible[queueState.activeIndex] || null);
+    setEvent(data || null);
   };
 
   useEffect(() => {
@@ -179,7 +170,13 @@ export default function SocialMediaOverrideBridge() {
       ...(source_url ? { source_url } : {}),
     };
 
-    const payload = await callMediaEventApi({ id: event.id, action: "set_media", channel, entry });
+    let payload;
+    try {
+      payload = await callMediaEventApi({ id: event.id, action: "set_media", channel, entry });
+    } catch (error) {
+      await supabase.storage.from(BUCKET).remove([storagePath]).catch(() => {});
+      throw error;
+    }
     setEvent(payload.event);
     window.dispatchEvent(new CustomEvent("playnice:social-media-updated", { detail: { eventId: event.id, channel, source } }));
     return { updated: payload.event, entry, auditWarning: payload.audit_warning || "" };

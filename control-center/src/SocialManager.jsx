@@ -20,6 +20,7 @@ const AUDIT_LABELS = {
   manual_product_post_created: "Product post created",
   manual_hero_post_created: "Hero post created",
   manual_journal_post_created: "Journal post created",
+  manual_custom_post_created: "Blank Social draft created",
   social_history_corrected_published: "Published history corrected",
   shadow_replay_created_from_hero: "Hero replay created",
   shadow_replay_created_from_journal: "Journal replay created",
@@ -362,6 +363,29 @@ function SocialWorkspace() {
     }
   };
 
+  const createBlankPost = async () => {
+    setSaving(true);
+    setActionError("");
+    try {
+      const token = await sessionToken();
+      const response = await fetch("/api/social-shadow-replay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ source_type: "custom" }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Could not create blank Social draft (${response.status}).`);
+      setFilter("all");
+      await load();
+      const eventId = payload.event?.id || payload.event_id || "";
+      if (eventId) { setSelectedId(eventId); await loadAudit(eventId); }
+    } catch (createError) {
+      setActionError(createError.message || String(createError));
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const createProductPost = async (product) => {
     if (!product?.slug) return;
     setSaving(true);
@@ -425,9 +449,10 @@ function SocialWorkspace() {
         {FILTERS.map((value) => <button key={value} type="button" className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{label(value)}{value !== "all" ? ` ${value === "archived" ? events.filter((event) => ["cancelled", "published"].includes(event.status)).length : counts[value] || 0}` : ""}</button>)}
       </div>
       <div className="social-create-group">
-        <span>CREATE POST FROM</span>
+        <span>CREATE POST FROM / NEW</span>
         <div>
-          <button type="button" className="social-create-product" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>{saving ? "Working…" : "Product"}</button>
+          <button type="button" className="social-create-product" disabled={saving} onClick={createBlankPost}>{saving ? "Working…" : "New draft"}</button>
+          <button type="button" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>{saving ? "Working…" : "Product"}</button>
           <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>{saving ? "Working…" : "Hero"}</button>
           <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>{saving ? "Working…" : "Journal"}</button>
         </div>
@@ -474,7 +499,7 @@ function SocialWorkspace() {
     {visible.length ? <div className="social-layout">
       <aside className="social-list">
         <div className="social-list-head"><span>EVENT QUEUE</span><strong>{loading ? "…" : visible.length}</strong></div>
-        {visible.length ? visible.map((event) => <button type="button" key={event.id} className={selected?.id === event.id ? "active" : ""} onClick={() => setSelectedId(event.id)}>
+        {visible.length ? visible.map((event) => <button type="button" key={event.id} data-social-event-id={event.id} className={selected?.id === event.id ? "active" : ""} onClick={() => setSelectedId(event.id)}>
           <div><strong>{eventTitle(event)}</strong><span>{label(event.source_type)} · {label(event.event_type)}</span></div>
           <em className={event.status}>{event.status}</em>
         </button>) : <div className="social-empty">{loading ? "Loading social events…" : "No social events in this view."}</div>}
@@ -563,9 +588,10 @@ function SocialWorkspace() {
     </div> : <section className="social-empty-workspace">
       <span>SOCIAL QUEUE</span>
       <h3>No active social posts</h3>
-      <p>Create a new post from a Product, Hero visual or Journal article.</p>
+      <p>Create a clean campaign draft, or start from a Product, Hero visual or Journal article.</p>
       <div>
-        <button type="button" className="social-create-product" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>Product</button>
+        <button type="button" className="social-create-product" disabled={saving} onClick={createBlankPost}>{saving ? "Working…" : "New draft"}</button>
+        <button type="button" disabled={saving} onClick={() => { setProductQuery(""); setProductPickerOpen(true); }}>Product</button>
         <button type="button" disabled={saving} onClick={() => openSourcePicker("hero")}>Hero</button>
         <button type="button" disabled={saving} onClick={() => openSourcePicker("journal")}>Journal</button>
       </div>

@@ -1,5 +1,5 @@
-export const SOCIAL_SOURCE_TYPES = ["product", "hero", "journal"];
-export const SOCIAL_EVENT_TYPES = ["product_published", "hero_published", "journal_published"];
+export const SOCIAL_SOURCE_TYPES = ["product", "hero", "journal", "custom"];
+export const SOCIAL_EVENT_TYPES = ["product_published", "hero_published", "journal_published", "manual_post"];
 export const SOCIAL_CHANNELS = ["instagram_feed", "instagram_story", "facebook"];
 export const SOCIAL_STATUSES = ["draft", "ready", "scheduled", "published", "failed", "cancelled"];
 

@@ -161,10 +161,21 @@ function journalDraft(event) {
   };
 }
 
+function customDraft(event) {
+  const headline = event?.payload?.title || "New Social draft";
+  return {
+    headline,
+    instagram_feed: { caption: "", media: channelMedia(event, "instagram_feed") },
+    instagram_story: { caption: "", media: channelMedia(event, "instagram_story") },
+    facebook: { caption: "", media: channelMedia(event, "facebook") },
+  };
+}
+
 export function generateSocialDraft(event = {}) {
   if (event.source_type === "product") return productDraft(event);
   if (event.source_type === "hero") return heroDraft(event);
   if (event.source_type === "journal") return journalDraft(event);
+  if (event.source_type === "custom") return customDraft(event);
   throw new Error(`No social draft generator for ${event.source_type || "unknown source"}`);
 }
 
