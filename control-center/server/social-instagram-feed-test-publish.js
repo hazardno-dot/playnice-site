@@ -64,12 +64,14 @@ async function requireAdmin(req) {
   return { token, user: { id: rows[0].user_id } };
 }
 
+const CANONICAL_PUBLISH_PRODUCERS = new Set(["sync-publish-status", "finalize-hero-apply", "sync-journal-publish-status"]);
 const isControlledPublishEvent = (event) => Boolean(
   event?.metadata?.test ||
   event?.metadata?.replay ||
   event?.metadata?.manual_product_post ||
   event?.metadata?.manual_hero_post ||
   event?.metadata?.manual_journal_post ||
+  CANONICAL_PUBLISH_PRODUCERS.has(String(event?.metadata?.producer || "")) ||
   String(event?.metadata?.producer || "").startsWith("social-manual-") ||
   String(event?.source_id || "").includes("--shadow-test-") ||
   String(event?.source_id || "").includes("--shadow-replay-") ||

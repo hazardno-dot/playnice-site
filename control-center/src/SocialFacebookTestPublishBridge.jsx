@@ -3,12 +3,14 @@ import { createPortal } from "react-dom";
 import { supabase } from "./supabase";
 import "./social-instagram-test-publish.css";
 
+const CANONICAL_PUBLISH_PRODUCERS = new Set(["sync-publish-status", "finalize-hero-apply", "sync-journal-publish-status"]);
 const isControlledPublishEvent = (event) => Boolean(
   event?.metadata?.test ||
   event?.metadata?.replay ||
   event?.metadata?.manual_product_post ||
   event?.metadata?.manual_hero_post ||
   event?.metadata?.manual_journal_post ||
+  CANONICAL_PUBLISH_PRODUCERS.has(String(event?.metadata?.producer || "")) ||
   String(event?.metadata?.producer || "").startsWith("social-manual-") ||
   String(event?.metadata?.producer || "") === "sync-publish-status" ||
   String(event?.source_id || "").includes("--shadow-test-") ||
