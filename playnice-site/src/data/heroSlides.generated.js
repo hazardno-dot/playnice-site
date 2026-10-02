@@ -138,9 +138,9 @@ export const BASE_HERO_SLIDES = [
     "image": "/hero/slide-11.jpg",
     "desktopImage": "/hero/slide-11.jpg",
     "mobileImage": "/hero/mobile/slide-11-mobile.jpg",
-    "alt": "Thomas Kosmala No. 8 Tonic Vert Eau de Parfum at PlayNice",
+    "alt": "NE TREBA SVE DA BUDE NEŽNO. OMBRÉ LEATHER PARFUM.",
     "actionPrimary": "product",
-    "actionProductSlug": "thomas-kosmala-no-8-tonic-vert",
+    "actionProductSlug": "tom-ford-ombre-leather-parfum",
     "preferredSize": "5ml"
   }
 ];
