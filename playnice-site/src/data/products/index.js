@@ -1342,10 +1342,6 @@ export const products = [
       top: ["neroli", "saffron", "cardamom", "mandarin", "nutmeg"],
       heart: ["kulfi", "rose", "jasmine", "orange-blossom"],
       base: ["sandalwood", "vanilla", "amber", "woody-notes"]
-    },
-    discount: {
-      size: "5ml",
-      percent: 10
     }
   },
   {
