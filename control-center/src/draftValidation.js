@@ -72,6 +72,18 @@ export function validateProductDraft(live, draft) {
     if (!finite(price) || Number(price) <= 0) issues.push(issue("error", "Prices", size, `${size} price must be greater than 0.`));
   });
 
+  const discount = core.discount;
+  if (discount) {
+    const discountSize = String(discount.size || "").trim();
+    const discountPercent = Number(discount.percent);
+    if (!Object.prototype.hasOwnProperty.call(sizes, discountSize)) {
+      issues.push(issue("error", "Discount", "Size", "Discount size must match one of the product sizes."));
+    }
+    if (!Number.isFinite(discountPercent) || discountPercent <= 0 || discountPercent >= 100) {
+      issues.push(issue("error", "Discount", "Percent", "Discount percent must be greater than 0 and below 100."));
+    }
+  }
+
   const recs = csv(core.recommendations);
   if (recs.length !== 3) issues.push(issue("error", "Recommendations", "Linked products", "Exactly 3 recommendation slugs are required."));
   recs.forEach((slug) => {
