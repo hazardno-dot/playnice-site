@@ -87,7 +87,7 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     backgroundPattern: "/playnice-social-pattern.webp",
     patternOpacity: 0.72,
     patternShade: 0.03,
-    patternPanelScale: 0.312,
+    patternPanelScale: 0.2652,
     safeZonePadding: 0.10,
     safeZoneStrength: 0.89,
     maxBytes: 500_000,
