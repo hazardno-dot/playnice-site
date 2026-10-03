@@ -121,10 +121,10 @@ export default async function handler(req, res) {
 
   if (!eventId) return json(res, 400, { error: "event_id is required." });
   if (!PUBLISH_ACTIONS[channel]) return json(res, 400, { error: "Unsupported published Social channel." });
-  if (!["open", "delete"].includes(action)) return json(res, 400, { error: "Unsupported published Social action." });
+  if (!["open", "delete", "republish"].includes(action)) return json(res, 400, { error: "Unsupported published Social action." });
 
   const eventRes = await supabaseFetch(
-    `/rest/v1/social_events?id=eq.${encodeURIComponent(eventId)}&select=id,status,source_type,source_id,published_at&limit=1`,
+    `/rest/v1/social_events?id=eq.${encodeURIComponent(eventId)}&select=*&limit=1`,
     admin.token,
   );
   const events = await safeJson(eventRes);
@@ -137,14 +137,89 @@ export default async function handler(req, res) {
   if (!publishAudit) return json(res, 404, { error: "No published Meta record exists for this channel." });
 
   const deletedAudit = await readLatestAudit(admin.token, eventId, DELETE_ACTIONS[channel]);
-  if (deletedAudit) {
-    return json(res, action === "delete" ? 200 : 410, {
-      ok: action === "delete",
+  if (deletedAudit && action === "delete") {
+    return json(res, 200, {
+      ok: true,
       deleted: true,
       already_deleted: true,
       channel,
       deleted_at: deletedAudit.created_at || null,
-      error: action === "open" ? "This published Meta item was already deleted from Control Center." : undefined,
+    });
+  }
+  if (deletedAudit && action === "open") {
+    return json(res, 410, {
+      ok: false,
+      deleted: true,
+      already_deleted: true,
+      channel,
+      deleted_at: deletedAudit.created_at || null,
+      error: "This published Meta item was already deleted from Control Center.",
+    });
+  }
+  if (!deletedAudit && action === "republish") {
+    return json(res, 409, { error: "Republish is available only after this channel has been deleted from Meta." });
+  }
+
+  if (action === "republish") {
+    const stamp = Date.now();
+    const retrySourceId = `${event.source_id}--manual-social-republish-${channel}-${stamp}`;
+    const metadata = event.metadata && typeof event.metadata === "object" ? event.metadata : {};
+    const retryMetadata = {
+      ...metadata,
+      test: false,
+      replay: false,
+      producer: `social-manual-${channel}-republish`,
+      republish: true,
+      republish_channel: channel,
+      republish_parent_event_id: event.id,
+      canonical_source_id: metadata.canonical_source_id || event.source_id,
+      social_media_approval: metadata.social_media_approval || {},
+    };
+
+    const createRes = await supabaseFetch("/rest/v1/social_events", admin.token, {
+      method: "POST",
+      body: JSON.stringify({
+        event_type: event.event_type,
+        source_type: event.source_type,
+        source_id: retrySourceId,
+        source_url: event.source_url,
+        payload: event.payload || {},
+        media: Array.isArray(event.media) ? event.media : [],
+        metadata: retryMetadata,
+        channels: [channel],
+        status: "draft",
+        publish_mode: "shadow",
+        draft_content: event.approved_content || event.draft_content || null,
+        created_by: admin.user.id,
+      }),
+    });
+    const createdRows = await safeJson(createRes);
+    if (!createRes.ok) {
+      const detail = String(createdRows?.message || createdRows?.hint || createdRows?.details || "unknown Supabase insert error").slice(0, 220);
+      throw new Error(`Could not create channel republish draft (Supabase ${createRes.status}: ${detail}).`);
+    }
+    const retryEvent = Array.isArray(createdRows) ? createdRows[0] : null;
+    if (!retryEvent?.id) throw new Error("Channel republish draft was created without an event id.");
+
+    await writeAudit(admin.token, event.id, admin.user.id, "published_channel_republish_draft_created", {
+      channel,
+      retry_event_id: retryEvent.id,
+      retry_source_id: retrySourceId,
+      parent_event_id: event.id,
+    });
+    await writeAudit(admin.token, retryEvent.id, admin.user.id, "channel_republish_draft_created", {
+      channel,
+      parent_event_id: event.id,
+      original_publish_audit_id: publishAudit.id,
+      original_deleted_audit_id: deletedAudit.id,
+    });
+
+    return json(res, 200, {
+      ok: true,
+      republish: true,
+      channel,
+      parent_event_id: event.id,
+      event: retryEvent,
     });
   }
 
