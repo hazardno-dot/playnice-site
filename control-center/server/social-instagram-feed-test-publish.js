@@ -334,6 +334,10 @@ export default async function handler(req, res) {
   if (!event) return json(res, 404, { error: "Social event not found." });
   if (!isControlledPublishEvent(event)) return json(res, 403, { error: "Manual Meta publishing is allowed only for controlled test/replay or manual Product, Hero or Journal Social events." });
   if (!["ready", "scheduled"].includes(event.status)) return json(res, 409, { error: "Test event must be READY or SCHEDULED with an approved snapshot." });
+  const configuredChannels = Array.isArray(event.channels) ? event.channels : [];
+  if (configuredChannels.length && !configuredChannels.includes(channel)) {
+    return json(res, 409, { error: "This Social event is not configured for the requested channel." });
+  }
 
   const priorPublish = await alreadyPublished(admin.token, event.id, channel);
   if (priorPublish) {
