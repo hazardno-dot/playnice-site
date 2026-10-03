@@ -299,9 +299,10 @@ function SocialWorkspace() {
 
     let popup = null;
     if (action === "open") {
-      popup = window.open("", "_blank", "noopener,noreferrer");
+      popup = window.open("about:blank", "_blank");
       if (popup) {
         try {
+          popup.opener = null;
           popup.document.title = "Opening Meta post…";
           popup.document.body.innerHTML = "<p style='font-family:sans-serif;padding:24px'>Opening live Meta post…</p>";
         } catch {
@@ -679,10 +680,12 @@ function SocialWorkspace() {
                 ? <button type="button" disabled={saving} onClick={() => persist("unschedule")}>{saving ? "Working…" : "Unschedule"}</button>
                 : selected.status === "ready"
                   ? <button type="button" disabled={saving} onClick={() => persist("reopen")}>{saving ? "Working…" : "Return to draft"}</button>
-                  : <>
-                    <button type="button" disabled={saving} onClick={() => persist("save")}>{saving ? "Saving…" : "Save draft"}</button>
-                    <button type="button" className="primary" disabled={saving || !mediaReadiness.ok} title={!mediaReadiness.ok ? "Add usable media for every channel before marking READY." : "Backend will verify public image availability before approval."} onClick={() => persist("ready")}>{saving ? "Approving…" : "Mark ready"}</button>
-                  </>}
+                  : selected.status === "draft"
+                    ? <>
+                      <button type="button" disabled={saving} onClick={() => persist("save")}>{saving ? "Saving…" : "Save draft"}</button>
+                      <button type="button" className="primary" disabled={saving || !mediaReadiness.ok} title={!mediaReadiness.ok ? "Add usable media for every channel before marking READY." : "Backend will verify public image availability before approval."} onClick={() => persist("ready")}>{saving ? "Approving…" : "Mark ready"}</button>
+                    </>
+                    : null}
             </div>
           </div>
 
