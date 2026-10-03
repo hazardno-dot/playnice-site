@@ -161,6 +161,50 @@ async function readRef(branch) {
   }
 }
 
+async function createBlob(content, encoding = "base64") {
+  return github(`/repos/${OWNER}/${REPO_NAME}/git/blobs`, {
+    method: "POST",
+    body: JSON.stringify({ content, encoding }),
+  });
+}
+
+async function rewriteSingleStageCommit({ branch, baseSha, stagedFiles, replacements, heroKey }) {
+  const baseCommit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits/${baseSha}`);
+  const replacementByPath = new Map(replacements.map((item) => [item.path, item]));
+  const tree = [];
+
+  for (const path of stagedFiles) {
+    const replacement = replacementByPath.get(path);
+    let sha;
+    if (replacement) {
+      const blob = await createBlob(replacement.content, "base64");
+      sha = blob.sha;
+    } else {
+      const existing = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${path}?ref=${encodeURIComponent(branch)}`);
+      sha = existing.sha;
+    }
+    tree.push({ path, mode: "100644", type: "blob", sha });
+  }
+
+  const nextTree = await github(`/repos/${OWNER}/${REPO_NAME}/git/trees`, {
+    method: "POST",
+    body: JSON.stringify({ base_tree: baseCommit.tree.sha, tree }),
+  });
+  const commit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits`, {
+    method: "POST",
+    body: JSON.stringify({
+      message: `Stage Hero media: ${heroKey}`,
+      tree: nextTree.sha,
+      parents: [baseSha],
+    }),
+  });
+  await github(`/repos/${OWNER}/${REPO_NAME}/git/refs/heads/${encodeURIComponent(branch)}`, {
+    method: "PATCH",
+    body: JSON.stringify({ sha: commit.sha, force: true }),
+  });
+  return commit.sha;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed." });
   if (!SUPABASE_URL || !SUPABASE_KEY || !GITHUB_TOKEN) {
@@ -245,19 +289,14 @@ export default async function handler(req, res) {
     ].filter(Boolean);
 
     const stagedFiles = new Set(Array.isArray(existingStage?.files) && existingStage?.baseSha === baseSha ? existingStage.files : []);
-    for (const replacement of replacements) {
-      const current = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${replacement.path}?ref=${encodeURIComponent(branch)}`);
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${replacement.path}`, {
-        method: "PUT",
-        body: JSON.stringify({
-          message: `Stage Hero media: ${heroKey} ${replacement.label}`,
-          content: replacement.content,
-          sha: current.sha,
-          branch,
-        }),
-      });
-      stagedFiles.add(replacement.path);
-    }
+    replacements.forEach((replacement) => stagedFiles.add(replacement.path));
+    const stageCommitSha = await rewriteSingleStageCommit({
+      branch,
+      baseSha,
+      stagedFiles: [...stagedFiles],
+      replacements,
+      heroKey,
+    });
 
     const now = new Date().toISOString();
     const payload = {
@@ -309,6 +348,8 @@ export default async function handler(req, res) {
       stage_branch: branch,
       files: [...stagedFiles],
       staged_at: now,
+      stage_commit_sha: stageCommitSha,
+      commit_count: 1,
       draft_created: !draft,
     });
   } catch (error) {
