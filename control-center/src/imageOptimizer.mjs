@@ -53,6 +53,11 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     height: 1080,
     fit: "contain",
     background: "#000000",
+    backgroundPattern: "/playnice-social-pattern.webp",
+    patternOpacity: 0.30,
+    patternShade: 0.16,
+    safeZonePadding: 0.16,
+    safeZoneStrength: 0.94,
     maxBytes: 500_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
   }),
@@ -62,6 +67,11 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     height: 1920,
     fit: "contain",
     background: "#000000",
+    backgroundPattern: "/playnice-social-pattern.webp",
+    patternOpacity: 0.30,
+    patternShade: 0.16,
+    safeZonePadding: 0.18,
+    safeZoneStrength: 0.94,
     maxBytes: 700_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
   }),
@@ -71,6 +81,11 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     height: 900,
     fit: "contain",
     background: "#000000",
+    backgroundPattern: "/playnice-social-pattern.webp",
+    patternOpacity: 0.30,
+    patternShade: 0.16,
+    safeZonePadding: 0.16,
+    safeZoneStrength: 0.94,
     maxBytes: 500_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
   }),
@@ -135,13 +150,138 @@ function drawCover(ctx, image, targetWidth, targetHeight) {
   ctx.drawImage(image, sx, sy, sw, sh, 0, 0, targetWidth, targetHeight);
 }
 
-function drawContain(ctx, image, targetWidth, targetHeight) {
+function containRect(image, targetWidth, targetHeight) {
   const scale = Math.min(targetWidth / image.naturalWidth, targetHeight / image.naturalHeight);
   const width = Math.max(1, Math.round(image.naturalWidth * scale));
   const height = Math.max(1, Math.round(image.naturalHeight * scale));
   const x = Math.round((targetWidth - width) / 2);
   const y = Math.round((targetHeight - height) / 2);
-  ctx.drawImage(image, x, y, width, height);
+  return { x, y, width, height, scale };
+}
+
+function drawContain(ctx, image, targetWidth, targetHeight) {
+  const rect = containRect(image, targetWidth, targetHeight);
+  ctx.drawImage(image, rect.x, rect.y, rect.width, rect.height);
+  return rect;
+}
+
+const backgroundImageCache = new Map();
+
+function readBackgroundImage(src) {
+  if (!src) return Promise.resolve(null);
+  if (backgroundImageCache.has(src)) return backgroundImageCache.get(src);
+  const pending = new Promise((resolve) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => resolve(null);
+    image.src = src;
+  });
+  backgroundImageCache.set(src, pending);
+  return pending;
+}
+
+function visibleAlphaBounds(image) {
+  const maxEdge = 420;
+  const scale = Math.min(1, maxEdge / Math.max(image.naturalWidth, image.naturalHeight));
+  const width = Math.max(1, Math.round(image.naturalWidth * scale));
+  const height = Math.max(1, Math.round(image.naturalHeight * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, width, height);
+  ctx.drawImage(image, 0, 0, width, height);
+
+  let pixels;
+  try {
+    pixels = ctx.getImageData(0, 0, width, height).data;
+  } catch {
+    return null;
+  }
+
+  let minX = width;
+  let minY = height;
+  let maxX = -1;
+  let maxY = -1;
+  let visible = 0;
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const alpha = pixels[(y * width + x) * 4 + 3];
+      if (alpha <= 10) continue;
+      visible += 1;
+      if (x < minX) minX = x;
+      if (x > maxX) maxX = x;
+      if (y < minY) minY = y;
+      if (y > maxY) maxY = y;
+    }
+  }
+
+  if (!visible || visible / (width * height) > 0.96 || maxX < minX || maxY < minY) return null;
+  return {
+    x: minX / scale,
+    y: minY / scale,
+    width: (maxX - minX + 1) / scale,
+    height: (maxY - minY + 1) / scale,
+  };
+}
+
+function objectBoundsInTarget(image, targetWidth, targetHeight) {
+  const rect = containRect(image, targetWidth, targetHeight);
+  const alphaBounds = visibleAlphaBounds(image);
+  if (!alphaBounds) return rect;
+  return {
+    x: rect.x + alphaBounds.x * rect.scale,
+    y: rect.y + alphaBounds.y * rect.scale,
+    width: alphaBounds.width * rect.scale,
+    height: alphaBounds.height * rect.scale,
+  };
+}
+
+function drawSafeZone(ctx, bounds, targetWidth, targetHeight, preset) {
+  const padding = Number(preset.safeZonePadding ?? 0.16);
+  const strength = Number(preset.safeZoneStrength ?? 0.94);
+  const centerX = bounds.x + bounds.width / 2;
+  const centerY = bounds.y + bounds.height / 2;
+  const radiusX = Math.max(bounds.width * (0.5 + padding), targetWidth * 0.19);
+  const radiusY = Math.max(bounds.height * (0.5 + padding), targetHeight * 0.14);
+
+  ctx.save();
+  ctx.translate(centerX, centerY);
+  ctx.scale(radiusX, radiusY);
+  const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
+  gradient.addColorStop(0, `rgba(0,0,0,${strength})`);
+  gradient.addColorStop(0.58, `rgba(0,0,0,${Math.max(0, strength - 0.06)})`);
+  gradient.addColorStop(0.82, `rgba(0,0,0,${Math.max(0, strength * 0.48)})`);
+  gradient.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(-1.35, -1.35, 2.7, 2.7);
+  ctx.restore();
+}
+
+async function drawBrandedBackground(ctx, image, targetWidth, targetHeight, preset) {
+  ctx.fillStyle = preset.background || "#000000";
+  ctx.fillRect(0, 0, targetWidth, targetHeight);
+
+  const patternImage = await readBackgroundImage(preset.backgroundPattern);
+  if (patternImage) {
+    const pattern = ctx.createPattern(patternImage, "repeat");
+    if (pattern) {
+      ctx.save();
+      ctx.globalAlpha = Number(preset.patternOpacity ?? 0.30);
+      ctx.fillStyle = pattern;
+      ctx.fillRect(0, 0, targetWidth, targetHeight);
+      ctx.restore();
+    }
+  }
+
+  const shade = Number(preset.patternShade ?? 0.16);
+  if (shade > 0) {
+    ctx.fillStyle = `rgba(0,0,0,${Math.min(1, Math.max(0, shade))})`;
+    ctx.fillRect(0, 0, targetWidth, targetHeight);
+  }
+
+  drawSafeZone(ctx, objectBoundsInTarget(image, targetWidth, targetHeight), targetWidth, targetHeight, preset);
 }
 
 function prepareCanvas(width, height, preset) {
@@ -186,6 +326,9 @@ export async function optimizeImage(file, preset) {
       }
 
       const { canvas, ctx } = prepareCanvas(width, height, preset);
+      if (preset.backgroundPattern && preset.fit === "contain") {
+        await drawBrandedBackground(ctx, image, width, height, preset);
+      }
       if (preset.fit === "cover") drawCover(ctx, image, width, height);
       else if (preset.fit === "contain") drawContain(ctx, image, width, height);
       else ctx.drawImage(image, 0, 0, width, height);
