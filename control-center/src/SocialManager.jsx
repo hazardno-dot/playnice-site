@@ -27,12 +27,25 @@ const AUDIT_LABELS = {
   shadow_event_created_from_product_publish: "Created from product publish",
   shadow_event_created_from_hero_publish: "Created from Hero publish",
   shadow_event_created_from_journal_publish: "Created from Journal publish",
+  published_instagram_feed_deleted: "Instagram Feed deleted",
+  published_instagram_story_deleted: "Instagram Story deleted",
+  published_facebook_deleted: "Facebook post deleted",
 };
 const fmt = (value) => value ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : "—";
 const label = (value) => String(value || "").replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 const mediaSrc = (media) => media?.url || media?.src || "";
 const eventTitle = (event) => event?.payload?.core?.shortName || event?.payload?.core?.name || event?.payload?.shortName || event?.payload?.name || event?.payload?.title?.sr || event?.payload?.alt || event?.source_id;
 const isExplicitTestEvent = (event) => Boolean(event?.metadata?.test || event?.metadata?.replay || String(event?.source_id || "").includes("--shadow-test-") || String(event?.source_id || "").includes("--shadow-replay-"));
+const PUBLISH_AUDIT_ACTIONS = {
+  instagram_feed: "test_instagram_feed_published",
+  instagram_story: "test_instagram_story_published",
+  facebook: "test_facebook_published",
+};
+const DELETE_AUDIT_ACTIONS = {
+  instagram_feed: "published_instagram_feed_deleted",
+  instagram_story: "published_instagram_story_deleted",
+  facebook: "published_facebook_deleted",
+};
 const publicSourceUrl = (value) => {
   if (!value) return "";
   try { return new URL(String(value), PUBLIC_ORIGIN).toString(); } catch { return ""; }
@@ -82,6 +95,9 @@ function SocialWorkspace() {
   const [productPickerOpen, setProductPickerOpen] = useState(false);
   const [productQuery, setProductQuery] = useState("");
   const [sourcePicker, setSourcePicker] = useState({ open: false, type: "", items: [], query: "", loading: false });
+  const [publishedAction, setPublishedAction] = useState("");
+  const [publishedMessage, setPublishedMessage] = useState("");
+  const [publishedError, setPublishedError] = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -177,6 +193,9 @@ function SocialWorkspace() {
     setActionError("");
     setFeedDryRun(null);
     setFeedDryRunError("");
+    setPublishedAction("");
+    setPublishedMessage("");
+    setPublishedError("");
     loadAudit(selected.id);
   }, [selected?.id, selected?.updated_at, generated]);
 
@@ -250,6 +269,71 @@ function SocialWorkspace() {
       setFeedDryRunError(dryRunError.message || String(dryRunError));
     } finally {
       setFeedDryRunLoading(false);
+    }
+  };
+
+
+  const publishedChannelState = (channel) => {
+    const publishAction = PUBLISH_AUDIT_ACTIONS[channel];
+    const deleteAction = DELETE_AUDIT_ACTIONS[channel];
+    const published = auditRows.find((entry) => entry.action === publishAction) || null;
+    const deleted = auditRows.find((entry) => entry.action === deleteAction) || null;
+    return { published, deleted };
+  };
+
+  const managePublished = async (channel, action) => {
+    if (!selected || selected.status !== "published" || publishedAction) return;
+
+    if (action === "delete") {
+      const [, title] = CHANNELS.find(([key]) => key === channel) || [channel, label(channel)];
+      const confirmed = window.confirm(
+        `DELETE LIVE META POST\n\nDelete the published ${title} item for “${eventTitle(selected)}”?\n\nThis removes the live post from Meta. The PlayNice audit history remains preserved. This cannot be undone.`,
+      );
+      if (!confirmed) return;
+    }
+
+    const actionKey = `${action}:${channel}`;
+    setPublishedAction(actionKey);
+    setPublishedMessage("");
+    setPublishedError("");
+
+    let popup = null;
+    if (action === "open") {
+      popup = window.open("", "_blank", "noopener,noreferrer");
+      if (popup) {
+        try {
+          popup.document.title = "Opening Meta post…";
+          popup.document.body.innerHTML = "<p style='font-family:sans-serif;padding:24px'>Opening live Meta post…</p>";
+        } catch {
+          // Cross-window setup is best-effort.
+        }
+      }
+    }
+
+    try {
+      const token = await sessionToken();
+      const response = await fetch("/api/social-published-management", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ event_id: selected.id, channel, action }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Published Social ${action} failed (${response.status}).`);
+
+      if (action === "open") {
+        if (!payload.live_url) throw new Error("Meta did not return a live post URL.");
+        if (popup) popup.location.replace(payload.live_url);
+        else window.open(payload.live_url, "_blank", "noopener,noreferrer");
+      } else {
+        if (popup) popup.close();
+        setPublishedMessage(`${label(channel)} deleted from Meta.`);
+        await loadAudit(selected.id);
+      }
+    } catch (manageError) {
+      if (popup) popup.close();
+      setPublishedError(manageError.message || String(manageError));
+    } finally {
+      setPublishedAction("");
     }
   };
 
@@ -554,6 +638,37 @@ function SocialWorkspace() {
             </div> : <div className="social-history-empty">Builds the exact Instagram Feed Graph request descriptor for this event. No Meta network request is made and no access token is returned to the browser.</div>}
           </section>
 
+
+          {selected.status === "published" ? <section className="social-published-management">
+            <div className="social-published-management-head">
+              <div><span>PUBLISHED MANAGEMENT</span><strong>Live Meta controls</strong></div>
+              <small>Open or remove the exact published item recorded in Social audit history.</small>
+            </div>
+            {publishedMessage ? <div className="social-published-management-message ok">{publishedMessage}</div> : null}
+            {publishedError ? <div className="social-published-management-message error">{publishedError}</div> : null}
+            <div className="social-published-management-grid">
+              {CHANNELS.map(([key, title]) => {
+                const state = publishedChannelState(key);
+                const hasPublished = Boolean(state.published);
+                const isDeleted = Boolean(state.deleted);
+                const opening = publishedAction === `open:${key}`;
+                const deleting = publishedAction === `delete:${key}`;
+                const postId = state.published?.details?.post_id || state.published?.details?.media_id || "";
+                return <div className={`social-published-channel ${isDeleted ? "deleted" : ""}`} key={`published-${key}`}>
+                  <div>
+                    <span>{title}</span>
+                    <strong>{isDeleted ? "DELETED FROM META" : hasPublished ? "LIVE · PUBLISHED" : "NO PUBLISH RECORD"}</strong>
+                    <small>{isDeleted ? `Deleted ${fmt(state.deleted?.created_at)}` : hasPublished ? `Published ${fmt(state.published?.created_at)}` : "No channel publish audit record found."}</small>
+                    {postId ? <code>{postId}</code> : null}
+                  </div>
+                  <div className="social-published-channel-actions">
+                    <button type="button" disabled={!hasPublished || isDeleted || Boolean(publishedAction)} onClick={() => managePublished(key, "open")}>{opening ? "Opening…" : "Open live post"}</button>
+                    <button type="button" className="danger" disabled={!hasPublished || isDeleted || Boolean(publishedAction)} onClick={() => managePublished(key, "delete")}>{deleting ? "Deleting…" : isDeleted ? "Deleted" : "Delete from Meta"}</button>
+                  </div>
+                </div>;
+              })}
+            </div>
+          </section> : null}
 
           <div className="social-review-row">
             <div><span>REVIEW STATE</span><strong>{reviewState}</strong></div>
