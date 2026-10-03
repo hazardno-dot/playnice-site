@@ -180,6 +180,15 @@ function SocialWorkspace() {
     }, { ...generated });
   }, [selected, generated]);
   const mediaReadiness = useMemo(() => validateSocialDraftMedia(draft || {}), [draft]);
+  const activeChannelKeys = useMemo(() => {
+    const configured = Array.isArray(selected?.channels) ? selected.channels.filter((channel) => CHANNELS.some(([key]) => key === channel)) : [];
+    return configured.length ? configured : CHANNELS.map(([key]) => key);
+  }, [selected?.channels]);
+  const scopedMediaReadiness = useMemo(() => {
+    const blocking = mediaReadiness.blocking.filter((channel) => activeChannelKeys.includes(channel));
+    const fallback = mediaReadiness.fallback.filter((channel) => activeChannelKeys.includes(channel));
+    return { ...mediaReadiness, blocking, fallback, ok: blocking.length === 0 };
+  }, [mediaReadiness, activeChannelKeys]);
   const sourceLink = useMemo(() => publicSourceUrl(selected?.source_url), [selected?.source_url]);
 
   useEffect(() => {
@@ -284,6 +293,14 @@ function SocialWorkspace() {
   const managePublished = async (channel, action) => {
     if (!selected || selected.status !== "published" || publishedAction) return;
 
+    if (action === "republish") {
+      const [, title] = CHANNELS.find(([key]) => key === channel) || [channel, label(channel)];
+      const confirmed = window.confirm(
+        `REPUBLISH ${title.toUpperCase()}\n\nCreate a new ${title}-only draft from “${eventTitle(selected)}”?\n\nThe original Published event and deletion history will stay unchanged.`,
+      );
+      if (!confirmed) return;
+    }
+
     if (action === "delete") {
       const [, title] = CHANNELS.find(([key]) => key === channel) || [channel, label(channel)];
       const confirmed = window.confirm(
@@ -325,6 +342,15 @@ function SocialWorkspace() {
         if (!payload.live_url) throw new Error("Meta did not return a live post URL.");
         if (popup) popup.location.replace(payload.live_url);
         else window.open(payload.live_url, "_blank", "noopener,noreferrer");
+      } else if (action === "republish") {
+        if (!payload.event?.id) throw new Error("Republish draft was created without an event id.");
+        if (popup) popup.close();
+        setFilter("draft");
+        await load();
+        setSelectedId(payload.event.id);
+        await loadAudit(payload.event.id);
+        setPublishedMessage("");
+        window.dispatchEvent(new CustomEvent("playnice:social-state-updated", { detail: { event_id: payload.event.id, status: "draft", action: "republish" } }));
       } else {
         if (popup) popup.close();
         setPublishedMessage(`${label(channel)} deleted from Meta.`);
@@ -594,7 +620,7 @@ function SocialWorkspace() {
         {selected && draft ? <>
           <div className="social-detail-head"><div><span>{label(selected.source_type)} / {label(selected.event_type)}</span><h3>{draft.headline}</h3><p>{selected.source_url || selected.source_id}</p></div><div><strong>{selected.status}</strong><small>{fmt(selected.created_at)}</small>{selected.approved_at ? <small>approved {fmt(selected.approved_at)}</small> : null}</div></div>
           <div className="social-channel-grid">
-            {CHANNELS.map(([key, title]) => {
+            {CHANNELS.filter(([key]) => activeChannelKeys.includes(key)).map(([key, title]) => {
               const media = draft[key]?.media || null;
               const src = mediaSrc(media);
               const readiness = mediaReadiness.channels[key];
@@ -617,12 +643,14 @@ function SocialWorkspace() {
             })}
           </div>
           <div className={`social-media-readiness ${mediaReadiness.ok ? "ready" : "blocked"}`}>
-            <div><span>MEDIA READINESS</span><strong>{mediaReadiness.ok ? "READY CHECK CAN RUN" : "READY BLOCKED"}</strong></div>
-            <p>{mediaReadiness.ok
-              ? mediaReadiness.fallback.length
-                ? `${mediaReadiness.fallback.length} channel(s) use a fallback asset. Backend verifies public image availability before approval.`
-                : "All channels have ideal media. Backend verifies public image availability before approval."
-              : `Missing media: ${mediaReadiness.blocking.map(label).join(", ")}.`}</p>
+            <div><span>MEDIA READINESS</span><strong>{scopedMediaReadiness.ok ? "READY CHECK CAN RUN" : "READY BLOCKED"}</strong></div>
+            <p>{scopedMediaReadiness.ok
+              ? scopedMediaReadiness.fallback.length
+                ? `${scopedMediaReadiness.fallback.length} active channel(s) use a fallback asset. Backend verifies public image availability before approval.`
+                : activeChannelKeys.length === 1
+                  ? `${label(activeChannelKeys[0])} media is ready. Backend verifies public image availability before approval.`
+                  : "All active channels have ideal media. Backend verifies public image availability before approval."
+              : `Missing media: ${scopedMediaReadiness.blocking.map(label).join(", ")}.`}</p>
           </div>
 
           <section className="social-history social-dry-run">
@@ -654,6 +682,7 @@ function SocialWorkspace() {
                 const isDeleted = Boolean(state.deleted);
                 const opening = publishedAction === `open:${key}`;
                 const deleting = publishedAction === `delete:${key}`;
+                const republishing = publishedAction === `republish:${key}`;
                 const postId = state.published?.details?.post_id || state.published?.details?.media_id || "";
                 return <div className={`social-published-channel ${isDeleted ? "deleted" : ""}`} key={`published-${key}`}>
                   <div>
@@ -662,9 +691,13 @@ function SocialWorkspace() {
                     <small>{isDeleted ? `Deleted ${fmt(state.deleted?.created_at)}` : hasPublished ? `Published ${fmt(state.published?.created_at)}` : "No channel publish audit record found."}</small>
                     {postId ? <code>{postId}</code> : null}
                   </div>
-                  <div className="social-published-channel-actions">
-                    <button type="button" disabled={!hasPublished || isDeleted || Boolean(publishedAction)} onClick={() => managePublished(key, "open")}>{opening ? "Opening…" : "Open live post"}</button>
-                    <button type="button" className="danger" disabled={!hasPublished || isDeleted || Boolean(publishedAction)} onClick={() => managePublished(key, "delete")}>{deleting ? "Deleting…" : isDeleted ? "Deleted" : "Delete from Meta"}</button>
+                  <div className={`social-published-channel-actions ${isDeleted ? "republish" : ""}`}>
+                    {isDeleted
+                      ? <button type="button" className="republish" disabled={!hasPublished || Boolean(publishedAction)} onClick={() => managePublished(key, "republish")}>{republishing ? "Creating draft…" : `Republish ${title}`}</button>
+                      : <>
+                        <button type="button" disabled={!hasPublished || Boolean(publishedAction)} onClick={() => managePublished(key, "open")}>{opening ? "Opening…" : "Open live post"}</button>
+                        <button type="button" className="danger" disabled={!hasPublished || Boolean(publishedAction)} onClick={() => managePublished(key, "delete")}>{deleting ? "Deleting…" : "Delete from Meta"}</button>
+                      </>}
                   </div>
                 </div>;
               })}
@@ -683,7 +716,7 @@ function SocialWorkspace() {
                   : selected.status === "draft"
                     ? <>
                       <button type="button" disabled={saving} onClick={() => persist("save")}>{saving ? "Saving…" : "Save draft"}</button>
-                      <button type="button" className="primary" disabled={saving || !mediaReadiness.ok} title={!mediaReadiness.ok ? "Add usable media for every channel before marking READY." : "Backend will verify public image availability before approval."} onClick={() => persist("ready")}>{saving ? "Approving…" : "Mark ready"}</button>
+                      <button type="button" className="primary" disabled={saving || !scopedMediaReadiness.ok} title={!scopedMediaReadiness.ok ? "Add usable media for every active channel before marking READY." : "Backend will verify public image availability before approval."} onClick={() => persist("ready")}>{saving ? "Approving…" : "Mark ready"}</button>
                     </>
                     : null}
             </div>
