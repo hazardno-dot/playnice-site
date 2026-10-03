@@ -11,6 +11,8 @@ const matrix = [
   ["Do-not-wear split context", ["playnice-site/src/data/products/productDoNotWearContext.part3.js"], true, false],
   ["What-to-wear editorial context", ["playnice-site/src/data/products/productWhatToWearContext.js"], true, false],
   ["Hero generated data", ["playnice-site/src/data/heroSlides.generated.js"], true, false],
+  ["Shared Exhibition data", ["playnice-site/src/data/exhibition.js"], true, true],
+  ["Shared Exhibition asset", ["playnice-site/public/exhibition/2026/hero/example.jpg"], true, true],
   ["Journal source", ["playnice-site/src/data/journal/index.js"], true, false],
   ["Note Map source", ["playnice-site/src/features/note-map/TheNoteMapImpl.jsx"], true, true],
   ["Note Map asset", ["playnice-site/public/note-map/pomelo.webp"], true, false],
@@ -38,6 +40,16 @@ assert.deepEqual(classifyPath("playnice-site/src/features/note-map/TheNoteMapImp
   storefront: true,
   controlCenter: true,
   reason: "shared-note-map-source",
+});
+assert.deepEqual(classifyPath("playnice-site/src/data/exhibition.js"), {
+  storefront: true,
+  controlCenter: true,
+  reason: "shared-exhibition-data",
+});
+assert.deepEqual(classifyPath("playnice-site/public/exhibition/2026/hero/example.jpg"), {
+  storefront: true,
+  controlCenter: true,
+  reason: "shared-exhibition-asset",
 });
 assert.deepEqual(classifyPath(".github/workflows/example.yml"), {
   storefront: false,
