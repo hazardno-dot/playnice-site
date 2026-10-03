@@ -52,7 +52,7 @@ export default function SocialInstagramStoryTestPublishBridge() {
       .in("status", ["ready", "scheduled"])
       .order("updated_at", { ascending: false })
       .limit(20);
-    const candidate = (data || []).find((row) => isControlledPublishEvent(row) && storyMediaSrc(row)) || null;
+    const candidate = (data || []).find((row) => isControlledPublishEvent(row) && (!Array.isArray(row.channels) || row.channels.includes("instagram_story")) && storyMediaSrc(row)) || null;
     if (!candidate && completedEventRef.current) {
       setEvent(completedEventRef.current);
       return;

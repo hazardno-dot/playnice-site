@@ -130,7 +130,7 @@ assert.ok(socialManager.includes('"MANUAL MODE"'), "Social header must expose ma
 assert.ok(socialManager.includes('setProductPickerOpen(true)'), "Product create action must open the Product picker.");
 assert.ok(socialManager.includes('openSourcePicker("hero")'), "Hero create action must open the Hero picker.");
 assert.ok(socialManager.includes('openSourcePicker("journal")'), "Journal create action must open the Journal picker.");
-assert.ok(socialManager.includes("disabled={saving || !mediaReadiness.ok}"), "Mark ready must be locally disabled when a channel has no media.");
+assert.ok(socialManager.includes("disabled={saving || !scopedMediaReadiness.ok}"), "Mark ready must be locally disabled when an active channel has no media.");
 assert.ok(socialManager.includes('selected.status === "ready"'), "READY must render the approved snapshot instead of editable draft content.");
 assert.ok(socialManager.includes('window.open(src, "_blank", "noopener,noreferrer")'), "Manual fallback must open the exact selected channel asset in a separate tab.");
 assert.ok(socialManager.includes('new URL(String(value), PUBLIC_ORIGIN)'), "Manual fallback must canonicalize relative source URLs before Copy link.");
@@ -143,7 +143,7 @@ const socialDraftApi = fs.readFileSync(path.join(root, "control-center/server/so
 for (const token of ["generateSocialDraft", "validateSocialDraftMedia", "validateReadyMedia", "probePublicImage", "content-type", "asset must use HTTPS", "READY blocked", "public_media_verified", "draft_content", "approved_content", "approved_at", "draft_marked_ready", "draft_reopened", "draft_discarded", "discard", "delete", "discard_test", "isTestEvent", "2200"]) {
   assert.ok(socialDraftApi.includes(token), `Social draft API contract missing: ${token}`);
 }
-assert.ok(socialDraftApi.indexOf("await validateReadyMedia(draftContent)") < socialDraftApi.indexOf('status: "ready"'), "Public media validation must run before READY state is persisted.");
+assert.ok(socialDraftApi.indexOf("await validateReadyMedia(event, draftContent)") < socialDraftApi.indexOf('status: "ready"'), "Public media validation must run before READY state is persisted.");
 assert.ok(socialDraftApi.includes('event.status !== "draft"'), "Soft discard must be server-side restricted to DRAFT events.");
 assert.ok(socialDraftApi.includes('action === "delete"'), "Permanent Social draft delete action must exist.");
 assert.ok(socialDraftApi.includes('Only DRAFT Social events can be permanently deleted'), "Permanent delete must be server-side restricted to DRAFT events.");
@@ -223,7 +223,7 @@ for (const source of [instagramPublishBridge, storyPublishBridge, facebookPublis
   assert.ok(source.includes("--manual-social-"), "Controlled Meta publishing must recognize manual Product Social event ids.");
 }
 assert.ok(manualMetaPublishApi.includes("isControlledPublishEvent"), "Server-side Meta transport must use the controlled publish eligibility gate.");
-assert.ok(manualMetaPublishApi.includes("finalizePublishedEvent"), "Manual Meta transport must archive an event after all three channels publish.");
+assert.ok(manualMetaPublishApi.includes("finalizePublishedEvent"), "Manual Meta transport must archive an event after all configured channels publish.");
 assert.ok(manualMetaPublishApi.includes('status: "published"'), "Completed Social publication must persist PUBLISHED status.");
 assert.ok(manualMetaPublishApi.includes("published_at: publishedAt"), "Completed Social publication must persist its publication timestamp.");
 const reconcilePublishApi = fs.readFileSync(path.join(root, "control-center/server/social-reconcile-published.js"), "utf8");

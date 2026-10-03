@@ -183,14 +183,13 @@ async function alreadyPublished(token, eventId, channel) {
 
 
 async function finalizePublishedEvent(token, event) {
-  const [feed, story, facebook] = await Promise.all([
-    alreadyPublished(token, event.id, "instagram_feed"),
-    alreadyPublished(token, event.id, "instagram_story"),
-    alreadyPublished(token, event.id, "facebook"),
-  ]);
-  if (!feed || !story || !facebook) return null;
+  const channels = Array.isArray(event.channels) && event.channels.length
+    ? event.channels.filter((channel) => PUBLISH_AUDIT_ACTIONS[channel])
+    : ["instagram_feed", "instagram_story", "facebook"];
+  const publishedRows = await Promise.all(channels.map((channel) => alreadyPublished(token, event.id, channel)));
+  if (!channels.length || publishedRows.some((row) => !row)) return null;
 
-  const publishedAt = [feed.created_at, story.created_at, facebook.created_at]
+  const publishedAt = publishedRows.map((row) => row.created_at)
     .filter(Boolean)
     .sort()
     .at(-1) || new Date().toISOString();
@@ -334,6 +333,10 @@ export default async function handler(req, res) {
   if (!event) return json(res, 404, { error: "Social event not found." });
   if (!isControlledPublishEvent(event)) return json(res, 403, { error: "Manual Meta publishing is allowed only for controlled test/replay or manual Product, Hero or Journal Social events." });
   if (!["ready", "scheduled"].includes(event.status)) return json(res, 409, { error: "Test event must be READY or SCHEDULED with an approved snapshot." });
+  const configuredChannels = Array.isArray(event.channels) ? event.channels : [];
+  if (configuredChannels.length && !configuredChannels.includes(channel)) {
+    return json(res, 409, { error: "This Social event is not configured for the requested channel." });
+  }
 
   const priorPublish = await alreadyPublished(admin.token, event.id, channel);
   if (priorPublish) {

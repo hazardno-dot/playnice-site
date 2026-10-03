@@ -35,6 +35,7 @@ const ROUTES = {
   "social-publish-dry-run": () => import("../server/social-publish-dry-run.js"),
   "social-publish-env-diagnostics": () => import("../server/social-publish-env-diagnostics.js"),
   "social-publish": () => import("../server/social-publish.js"),
+  "social-published-management": () => import("../server/social-published-management.js"),
   "social-reconcile-published": () => import("../server/social-reconcile-published.js"),
   "social-shadow-replay": () => import("../server/social-shadow-replay.js"),
   "social-source-catalog": () => import("../server/social-source-catalog.js"),

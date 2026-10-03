@@ -94,9 +94,12 @@ export default function SocialReadinessBridge() {
     let draft;
     try { draft = generateSocialDraft(event); } catch { return null; }
     const readiness = validateSocialDraftMedia(draft);
-    const missing = readiness.blocking;
-    const fallback = readiness.fallback;
-    const unapproved = CHANNELS.filter((channel) => {
+    const activeChannels = Array.isArray(event.channels) && event.channels.length
+      ? event.channels.filter((channel) => CHANNELS.includes(channel))
+      : CHANNELS;
+    const missing = readiness.blocking.filter((channel) => activeChannels.includes(channel));
+    const fallback = readiness.fallback.filter((channel) => activeChannels.includes(channel));
+    const unapproved = activeChannels.filter((channel) => {
       const media = draft?.[channel]?.media;
       return mediaSrc(media) && !fallback.includes(channel) && !isApproved(event, channel, mediaSrc(media));
     });
@@ -122,7 +125,9 @@ export default function SocialReadinessBridge() {
     return {
       tone: "ready",
       title: "READY CHECK CAN RUN",
-      detail: "All three channels use canonical media and each exact asset has visual approval. Backend will verify public availability before READY.",
+      detail: activeChannels.length === 1
+        ? `${LABELS[activeChannels[0]]} uses canonical media and its exact asset has visual approval. Backend will verify public availability before READY.`
+        : "All active channels use canonical media and each exact asset has visual approval. Backend will verify public availability before READY.",
       ready: true,
     };
   }, [event]);

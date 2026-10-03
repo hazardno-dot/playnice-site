@@ -66,3 +66,31 @@
 .social-manual-publish-area:empty{display:none}
 
 .social-review-actions button.danger{border-color:#6a3f3f;background:#1d1212;color:#e1a1a1}.social-review-actions button.danger:hover{border-color:#8b4b4b;color:#f0b7b7}
+
+
+.social-published-management{margin-top:16px;border:1px solid #31413a;background:#0f1512}
+.social-published-management-head{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:14px 16px;border-bottom:1px solid #28352f}
+.social-published-management-head>div{display:grid;gap:4px}
+.social-published-management-head span{font-size:10px;letter-spacing:.12em;color:#7f9989}
+.social-published-management-head strong{font-size:13px;color:#c8d8ce}
+.social-published-management-head small{max-width:540px;color:#708079;font-size:10px;text-align:right;line-height:1.45}
+.social-published-management-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:12px}
+.social-published-channel{display:grid;gap:12px;padding:13px;border:1px solid #2f3c36;background:#111915}
+.social-published-channel>div:first-child{min-width:0;display:grid;gap:4px}
+.social-published-channel span{font-size:9px;letter-spacing:.11em;color:#819087;text-transform:uppercase}
+.social-published-channel strong{font-size:11px;color:#9fd0b1}
+.social-published-channel small{font-size:9px;color:#6f7d75}
+.social-published-channel code{display:block;margin-top:3px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#68756e;font-size:9px}
+.social-published-channel.deleted{border-color:#4c3939;background:#171111}
+.social-published-channel.deleted strong{color:#cf9696}
+.social-published-channel-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.social-published-channel-actions button{min-width:0;padding:9px 8px;border:1px solid #3a4b42;background:#151f19;color:#b6c9bd;font-size:10px;cursor:pointer}
+.social-published-channel-actions button.danger{border-color:#674141;background:#1d1212;color:#dda1a1}
+.social-published-channel-actions button:disabled{opacity:.4;cursor:not-allowed}
+.social-published-management-message{margin:12px 12px 0;padding:10px 12px;border:1px solid #3b4b43;background:#121a16;font-size:11px}
+.social-published-management-message.ok{border-color:#3e624e;color:#a7cfb5}
+.social-published-management-message.error{border-color:#6a4141;background:#1c1212;color:#e0a0a0}
+@media(max-width:1100px){.social-published-management-grid{grid-template-columns:1fr}.social-published-management-head{align-items:flex-start;flex-direction:column}.social-published-management-head small{text-align:left}}
+
+.social-published-channel-actions.republish{grid-template-columns:1fr}
+.social-published-channel-actions button.republish{border-color:#416b55;background:#142019;color:#b9dbc8}

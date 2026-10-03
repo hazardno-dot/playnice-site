@@ -45,7 +45,7 @@ export default async function handler(req, res) {
     const auth = await requireAdmin(req);
     if (auth.error) return json(res, auth.status, { error: auth.error });
 
-    const eventsRes = await supabaseFetch("/rest/v1/social_events?select=id,status,published_at&status=in.(draft,ready,scheduled,cancelled)&limit=100", auth.token);
+    const eventsRes = await supabaseFetch("/rest/v1/social_events?select=id,status,published_at,channels&status=in.(draft,ready,scheduled,cancelled)&limit=100", auth.token);
     const events = await safeJson(eventsRes);
     if (!eventsRes.ok || !Array.isArray(events)) throw new Error("Could not load active Social events.");
 
@@ -59,10 +59,20 @@ export default async function handler(req, res) {
       if (!auditRes.ok || !Array.isArray(rows)) continue;
 
       const publishedRows = rows.filter((row) => ACTIONS.has(row.action));
-      const channels = new Set(publishedRows.map((row) => row.action));
-      if (channels.size !== ACTIONS.size) continue;
+      const requiredActions = (Array.isArray(event.channels) && event.channels.length
+        ? event.channels
+        : ["instagram_feed", "instagram_story", "facebook"])
+        .map((channel) => ({
+          instagram_feed: "test_instagram_feed_published",
+          instagram_story: "test_instagram_story_published",
+          facebook: "test_facebook_published",
+        }[channel]))
+        .filter(Boolean);
+      const seenActions = new Set(publishedRows.map((row) => row.action));
+      if (!requiredActions.length || requiredActions.some((action) => !seenActions.has(action))) continue;
 
-      const publishedAt = publishedRows.map((row) => row.created_at).filter(Boolean).sort().at(-1) || new Date().toISOString();
+      const relevantRows = publishedRows.filter((row) => requiredActions.includes(row.action));
+      const publishedAt = relevantRows.map((row) => row.created_at).filter(Boolean).sort().at(-1) || new Date().toISOString();
       const patchRes = await supabaseFetch(`/rest/v1/social_events?id=eq.${encodeURIComponent(event.id)}`, auth.token, {
         method: "PATCH",
         body: JSON.stringify({ status: "published", published_at: publishedAt, scheduled_for: null }),
