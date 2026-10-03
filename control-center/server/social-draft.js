@@ -57,6 +57,11 @@ async function requireAdmin(req) {
 }
 
 const CHANNELS = ["instagram_feed", "instagram_story", "facebook"];
+function activeChannels(event = {}) {
+  const configured = Array.isArray(event.channels) ? event.channels.filter((channel) => CHANNELS.includes(channel)) : [];
+  return configured.length ? [...new Set(configured)] : CHANNELS;
+}
+
 function normalizeCaptions(value = {}) {
   const out = {};
   for (const channel of CHANNELS) {
@@ -130,8 +135,9 @@ function validateVisualApprovals(event, draftContent) {
     : {};
   const missing = [];
   const verified = {};
+  const channels = activeChannels(event);
 
-  for (const channel of CHANNELS) {
+  for (const channel of channels) {
     const src = String(draftContent?.[channel]?.media?.src || draftContent?.[channel]?.media?.url || "").trim();
     const approval = approvals?.[channel];
     const approved = Boolean(approval?.approved) && String(approval?.src || "").trim() === src;
@@ -146,26 +152,29 @@ function validateVisualApprovals(event, draftContent) {
 }
 
 async function validateReadyMedia(event, draftContent) {
+  const channels = activeChannels(event);
   const selection = validateSocialDraftMedia(draftContent);
-  if (!selection.ok) {
-    throw new Error(`READY blocked: missing media for ${selection.blocking.map(channelLabel).join(", ")}.`);
+  const blocking = selection.blocking.filter((channel) => channels.includes(channel));
+  const fallback = selection.fallback.filter((channel) => channels.includes(channel));
+  if (blocking.length) {
+    throw new Error(`READY blocked: missing media for ${blocking.map(channelLabel).join(", ")}.`);
   }
-  if (selection.fallback.length) {
-    throw new Error(`READY blocked: canonical channel media required for ${selection.fallback.map(channelLabel).join(", ")}. Generate a safe asset or upload a prepared creative; fallback media cannot be approved for publishing.`);
+  if (fallback.length) {
+    throw new Error(`READY blocked: canonical channel media required for ${fallback.map(channelLabel).join(", ")}. Generate a safe asset or upload a prepared creative; fallback media cannot be approved for publishing.`);
   }
 
   const visualApproval = validateVisualApprovals(event, draftContent);
   const remote = {};
-  for (const channel of CHANNELS) {
+  for (const channel of channels) {
     const src = draftContent?.[channel]?.media?.src || draftContent?.[channel]?.media?.url || "";
     remote[channel] = await probePublicImage(src);
   }
-  const failed = CHANNELS.filter((channel) => !remote[channel]?.ok);
+  const failed = channels.filter((channel) => !remote[channel]?.ok);
   if (failed.length) {
     const details = failed.map((channel) => `${channelLabel(channel)} (${remote[channel].reason})`).join(", ");
     throw new Error(`READY blocked: media is not publicly usable for ${details}.`);
   }
-  return { selection, visual_approval: visualApproval, remote };
+  return { selection: { ...selection, blocking, fallback, active_channels: channels }, visual_approval: visualApproval, remote };
 }
 
 export default async function handler(req, res) {
