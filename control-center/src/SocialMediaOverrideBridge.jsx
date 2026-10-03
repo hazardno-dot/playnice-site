@@ -266,7 +266,7 @@ export default function SocialMediaOverrideBridge() {
         <small>Uploaded channel-specific creative has priority. Safe generated assets preserve the full source with contain on black, so nothing is cropped.</small>
       </div>
       <div className="social-media-override-grid">
-        {CHANNELS.map((channel) => {
+        {CHANNELS.filter((channel) => !Array.isArray(event.channels) || !event.channels.length || event.channels.includes(channel.key)).map((channel) => {
           const override = overrides[channel.key];
           const generatedAsset = generated[channel.key];
           const sourceAsset = sourceDraft?.[channel.key]?.media || null;
