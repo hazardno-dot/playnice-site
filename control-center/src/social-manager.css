@@ -91,3 +91,6 @@
 .social-published-management-message.ok{border-color:#3e624e;color:#a7cfb5}
 .social-published-management-message.error{border-color:#6a4141;background:#1c1212;color:#e0a0a0}
 @media(max-width:1100px){.social-published-management-grid{grid-template-columns:1fr}.social-published-management-head{align-items:flex-start;flex-direction:column}.social-published-management-head small{text-align:left}}
+
+.social-published-channel-actions.republish{grid-template-columns:1fr}
+.social-published-channel-actions button.republish{border-color:#416b55;background:#142019;color:#b9dbc8}
