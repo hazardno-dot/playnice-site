@@ -270,6 +270,44 @@ async function readMaybeGithubFile(path, ref) {
   }
 }
 
+async function createGitBlob(content, encoding = "utf-8") {
+  return github(`/repos/${OWNER}/${REPO_NAME}/git/blobs`, {
+    method: "POST",
+    body: JSON.stringify({ content, encoding }),
+  });
+}
+
+async function commitBatchToBranch(branch, entries, message) {
+  const ref = await github(`/repos/${OWNER}/${REPO_NAME}/git/ref/heads/${encodeURIComponent(branch)}`);
+  const parentSha = ref?.object?.sha;
+  if (!parentSha) throw new Error("Could not resolve Hero apply branch head.");
+
+  const parentCommit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits/${parentSha}`);
+  const tree = [];
+  for (const entry of entries) {
+    let sha = entry.sha || "";
+    if (!sha) {
+      const blob = await createGitBlob(entry.content, entry.encoding || "utf-8");
+      sha = blob.sha;
+    }
+    tree.push({ path: entry.path, mode: "100644", type: "blob", sha });
+  }
+
+  const nextTree = await github(`/repos/${OWNER}/${REPO_NAME}/git/trees`, {
+    method: "POST",
+    body: JSON.stringify({ base_tree: parentCommit.tree.sha, tree }),
+  });
+  const commit = await github(`/repos/${OWNER}/${REPO_NAME}/git/commits`, {
+    method: "POST",
+    body: JSON.stringify({ message, tree: nextTree.sha, parents: [parentSha] }),
+  });
+  await github(`/repos/${OWNER}/${REPO_NAME}/git/refs/heads/${encodeURIComponent(branch)}`, {
+    method: "PATCH",
+    body: JSON.stringify({ sha: commit.sha, force: false }),
+  });
+  return commit.sha;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return json(res, 405, { error: "Method not allowed." });
   if (!SUPABASE_URL || !SUPABASE_KEY || !GITHUB_TOKEN) return json(res, 500, { error: "Controlled Apply environment is incomplete." });
@@ -365,17 +403,14 @@ export default async function handler(req, res) {
     }
 
     const configContent = renderConfig(nextRuntime);
-    const branchGeneratedFile = await readMaybeGithubFile(CONFIG_PATH, branch);
-    const configBody = { message: `Control Center Hero apply: ${heroKey}`, content: Buffer.from(configContent, "utf8").toString("base64"), branch };
-    if (branchGeneratedFile) configBody.sha = branchGeneratedFile.sha;
-    await github(`/repos/${OWNER}/${REPO_NAME}/contents/${CONFIG_PATH}`, { method: "PUT", body: JSON.stringify(configBody) });
-
+    const applyEntries = [{ path: CONFIG_PATH, content: configContent, encoding: "utf-8" }];
     const changedFiles = [...new Set([...stagedFiles, CONFIG_PATH])];
+
     if (hardcoded) {
       const branchAppFile = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${APP_PATH}?ref=${encodeURIComponent(branch)}`);
       const branchAppSource = Buffer.from(branchAppFile.content, "base64").toString("utf8");
       const nextApp = addConfigImportAndRemoveBlock(branchAppSource);
-      await github(`/repos/${OWNER}/${REPO_NAME}/contents/${APP_PATH}`, { method: "PUT", body: JSON.stringify({ message: "Extract Hero slides to generated config", content: Buffer.from(nextApp, "utf8").toString("base64"), sha: branchAppFile.sha, branch }) });
+      applyEntries.push({ path: APP_PATH, content: nextApp, encoding: "utf-8" });
       changedFiles.push(APP_PATH);
     }
 
@@ -387,32 +422,25 @@ export default async function handler(req, res) {
       const oldAssetFile = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${archive.sourcePath}?ref=main`);
       const archiveAssetFile = await readMaybeGithubFile(archive.repositoryPath, branch);
       if (!archiveAssetFile) {
-        await github(`/repos/${OWNER}/${REPO_NAME}/contents/${archive.repositoryPath}`, {
-          method: "PUT",
-          body: JSON.stringify({
-            message: `Archive replaced Hero visual: ${heroKey}`,
-            content: oldAssetFile.content,
-            branch,
-          }),
-        });
+        applyEntries.push({ path: archive.repositoryPath, sha: oldAssetFile.sha });
       }
 
       const exhibitionFile = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${EXHIBITION_PATH}?ref=${encodeURIComponent(branch)}`);
       const exhibitionSource = Buffer.from(exhibitionFile.content, "base64").toString("utf8");
       const prepared = insertExhibitionEntry(exhibitionSource, exhibitionEntry);
       if (!prepared.alreadyPresent) {
-        await github(`/repos/${OWNER}/${REPO_NAME}/contents/${EXHIBITION_PATH}`, {
-          method: "PUT",
-          body: JSON.stringify({
-            message: `Archive replaced Hero in Exhibition: ${heroKey}`,
-            content: Buffer.from(prepared.source, "utf8").toString("base64"),
-            sha: exhibitionFile.sha,
-            branch,
-          }),
-        });
+        applyEntries.push({ path: EXHIBITION_PATH, content: prepared.source, encoding: "utf-8" });
       }
       changedFiles.push(archive.repositoryPath, EXHIBITION_PATH);
     }
+
+    const applyCommitSha = await commitBatchToBranch(
+      branch,
+      applyEntries,
+      replacement && includeInExhibition
+        ? `Apply Hero replacement + Exhibition archive: ${heroKey}`
+        : `Control Center Hero apply: ${heroKey}`,
+    );
 
     const beforeSlide = baselineRuntime.find((slide) => Number(slide.id) === Number(baseline.id));
     const afterSlide = nextRuntime.find((slide) => Number(slide.id) === Number(baseline.id));
@@ -471,6 +499,8 @@ export default async function handler(req, res) {
       exhibition_included: replacement ? includeInExhibition : false,
       exhibition_id: exhibitionEntry?.id || null,
       canonical_asset: replacement && includeInExhibition ? canonicalAsset : null,
+      apply_commit_sha: applyCommitSha,
+      expected_commit_count: hasMediaStage ? 2 : 1,
     });
   } catch (error) {
     console.error("Hero Controlled Apply failed", error);
