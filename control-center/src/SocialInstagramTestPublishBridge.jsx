@@ -54,7 +54,7 @@ export default function SocialInstagramTestPublishBridge() {
       .in("status", ["ready", "scheduled"])
       .order("updated_at", { ascending: false })
       .limit(20);
-    const candidate = (data || []).find((row) => isControlledPublishEvent(row) && isJpegCandidate(row)) || null;
+    const candidate = (data || []).find((row) => isControlledPublishEvent(row) && (!Array.isArray(row.channels) || row.channels.includes("instagram_feed")) && isJpegCandidate(row)) || null;
     if (!candidate && completedEventRef.current) {
       setEvent(completedEventRef.current);
       return;
