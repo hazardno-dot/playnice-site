@@ -54,8 +54,9 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     fit: "contain",
     background: "#000000",
     backgroundPattern: "/playnice-social-pattern.webp",
-    patternOpacity: 0.30,
-    patternShade: 0.16,
+    patternOpacity: 0.62,
+    patternShade: 0.05,
+    patternPanel: "square",
     safeZonePadding: 0.16,
     safeZoneStrength: 0.94,
     maxBytes: 500_000,
@@ -68,8 +69,9 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     fit: "contain",
     background: "#000000",
     backgroundPattern: "/playnice-social-pattern.webp",
-    patternOpacity: 0.30,
-    patternShade: 0.16,
+    patternOpacity: 0.65,
+    patternShade: 0.05,
+    patternPanel: "story",
     safeZonePadding: 0.18,
     safeZoneStrength: 0.94,
     maxBytes: 700_000,
@@ -82,8 +84,9 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     fit: "contain",
     background: "#000000",
     backgroundPattern: "/playnice-social-pattern.webp",
-    patternOpacity: 0.30,
-    patternShade: 0.16,
+    patternOpacity: 0.60,
+    patternShade: 0.05,
+    patternPanel: "facebook",
     safeZonePadding: 0.16,
     safeZoneStrength: 0.94,
     maxBytes: 500_000,
@@ -265,14 +268,18 @@ async function drawBrandedBackground(ctx, image, targetWidth, targetHeight, pres
 
   const patternImage = await readBackgroundImage(preset.backgroundPattern);
   if (patternImage) {
-    const pattern = ctx.createPattern(patternImage, "repeat");
-    if (pattern) {
-      ctx.save();
-      ctx.globalAlpha = Number(preset.patternOpacity ?? 0.30);
-      ctx.fillStyle = pattern;
-      ctx.fillRect(0, 0, targetWidth, targetHeight);
-      ctx.restore();
+    // Build a format-specific panel from the canonical PlayNice artwork.
+    // The source is fitted to the exact target width, then repeated vertically
+    // only when the target canvas is taller (1:1 and 9:16). 4:3 resolves to
+    // one exact panel. This avoids the old native-size tile/crop behaviour.
+    const panelWidth = targetWidth;
+    const panelHeight = Math.max(1, Math.round(patternImage.naturalHeight * (panelWidth / patternImage.naturalWidth)));
+    ctx.save();
+    ctx.globalAlpha = Number(preset.patternOpacity ?? 0.60);
+    for (let y = 0; y < targetHeight; y += panelHeight) {
+      ctx.drawImage(patternImage, 0, y, panelWidth, panelHeight);
     }
+    ctx.restore();
   }
 
   const shade = Number(preset.patternShade ?? 0.16);
