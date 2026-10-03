@@ -54,11 +54,11 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     fit: "contain",
     background: "#000000",
     backgroundPattern: "/playnice-social-pattern.webp",
-    patternOpacity: 0.62,
-    patternShade: 0.05,
-    patternPanel: "square",
-    safeZonePadding: 0.16,
-    safeZoneStrength: 0.94,
+    patternOpacity: 0.72,
+    patternShade: 0.03,
+    patternPanelScale: 0.58,
+    safeZonePadding: 0.12,
+    safeZoneStrength: 0.92,
     maxBytes: 500_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
   }),
@@ -69,11 +69,11 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     fit: "contain",
     background: "#000000",
     backgroundPattern: "/playnice-social-pattern.webp",
-    patternOpacity: 0.65,
-    patternShade: 0.05,
-    patternPanel: "story",
-    safeZonePadding: 0.18,
-    safeZoneStrength: 0.94,
+    patternOpacity: 0.74,
+    patternShade: 0.03,
+    patternPanelScale: 0.62,
+    safeZonePadding: 0.14,
+    safeZoneStrength: 0.92,
     maxBytes: 700_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
   }),
@@ -84,11 +84,11 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     fit: "contain",
     background: "#000000",
     backgroundPattern: "/playnice-social-pattern.webp",
-    patternOpacity: 0.60,
-    patternShade: 0.05,
-    patternPanel: "facebook",
-    safeZonePadding: 0.16,
-    safeZoneStrength: 0.94,
+    patternOpacity: 0.72,
+    patternShade: 0.03,
+    patternPanelScale: 0.60,
+    safeZonePadding: 0.12,
+    safeZoneStrength: 0.92,
     maxBytes: 500_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
   }),
@@ -268,16 +268,25 @@ async function drawBrandedBackground(ctx, image, targetWidth, targetHeight, pres
 
   const patternImage = await readBackgroundImage(preset.backgroundPattern);
   if (patternImage) {
-    // Build a format-specific panel from the canonical PlayNice artwork.
-    // The source is fitted to the exact target width, then repeated vertically
-    // only when the target canvas is taller (1:1 and 9:16). 4:3 resolves to
-    // one exact panel. This avoids the old native-size tile/crop behaviour.
-    const panelWidth = targetWidth;
+    // Compose a true panel for each target ratio. The canonical 4:3 artwork is
+    // reduced and repeated from the canvas centre, so branding stays balanced
+    // on both sides of differently shaped bottles instead of becoming one
+    // oversized crop.
+    const panelScale = Number(preset.patternPanelScale ?? 0.60);
+    const panelWidth = Math.max(1, Math.round(targetWidth * panelScale));
     const panelHeight = Math.max(1, Math.round(patternImage.naturalHeight * (panelWidth / patternImage.naturalWidth)));
+
+    let startX = Math.round((targetWidth - panelWidth) / 2);
+    let startY = Math.round((targetHeight - panelHeight) / 2);
+    while (startX > 0) startX -= panelWidth;
+    while (startY > 0) startY -= panelHeight;
+
     ctx.save();
-    ctx.globalAlpha = Number(preset.patternOpacity ?? 0.60);
-    for (let y = 0; y < targetHeight; y += panelHeight) {
-      ctx.drawImage(patternImage, 0, y, panelWidth, panelHeight);
+    ctx.globalAlpha = Number(preset.patternOpacity ?? 0.72);
+    for (let y = startY; y < targetHeight; y += panelHeight) {
+      for (let x = startX; x < targetWidth; x += panelWidth) {
+        ctx.drawImage(patternImage, x, y, panelWidth, panelHeight);
+      }
     }
     ctx.restore();
   }
