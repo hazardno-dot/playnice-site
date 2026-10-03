@@ -195,7 +195,8 @@ export default function SocialMediaOverrideBridge() {
     setError("");
     setMessage("");
     try {
-      const optimized = await optimizeImage(sourceFile, config.preset);
+      const uploadPreset = { ...config.preset, backgroundPattern: "" };
+      const optimized = await optimizeImage(sourceFile, uploadPreset);
       const result = await persistMediaAsset({ channel, optimized, source: "social_upload", storageSuffix: "upload" });
       setMessage(`${config.label} uploaded · ${optimized.width} × ${optimized.height} · ${formatImageBytes(optimized.blob.size)} · review required${result.auditWarning ? ` · ${result.auditWarning}` : ""}`);
     } catch (uploadError) {
@@ -229,7 +230,7 @@ export default function SocialMediaOverrideBridge() {
       const sourceFile = new File([blob], `social-source-${channel}`, { type: blob.type, lastModified: Date.now() });
       const optimized = await optimizeImage(sourceFile, config.preset);
       const result = await persistMediaAsset({ channel, optimized, source: "social_generated", storageSuffix: "generated", source_url: sourceUrl });
-      setMessage(`${config.label} safe fallback generated · full source preserved with contain on black · ${optimized.width} × ${optimized.height} · review required${result.auditWarning ? ` · ${result.auditWarning}` : ""}`);
+      setMessage(`${config.label} safe fallback generated · full source preserved with adaptive protected product zone · ${optimized.width} × ${optimized.height} · review required${result.auditWarning ? ` · ${result.auditWarning}` : ""}`);
     } catch (generateError) {
       setError(`Could not generate ${config.label}: ${generateError?.message || String(generateError)}`);
     } finally {
@@ -263,7 +264,7 @@ export default function SocialMediaOverrideBridge() {
     <section className="social-media-override-panel">
       <div className="social-media-override-head">
         <div><span>SOCIAL ASSET GENERATOR</span><strong>Generate safely or upload channel-specific creative</strong></div>
-        <small>Uploaded channel-specific creative has priority. Safe generated assets preserve the full source with contain on black, so nothing is cropped.</small>
+        <small>Uploaded channel-specific creative has priority. Generated assets preserve the full source, add the subtle PlayNice pattern and adapt a protected dark zone to the product, so nothing is cropped.</small>
       </div>
       <div className="social-media-override-grid">
         {CHANNELS.filter((channel) => !Array.isArray(event.channels) || !event.channels.length || event.channels.includes(channel.key)).map((channel) => {
@@ -286,7 +287,7 @@ export default function SocialMediaOverrideBridge() {
               {busyChannel === channel.key ? "Working…" : approved ? "Visual approved ✓" : "Approve visual"}
             </button>
             <button className="social-media-generate" type="button" disabled={immutable || Boolean(busyChannel) || !sourceSrc} onClick={() => generate(channel.key)}>
-              {busyChannel === channel.key ? "Working…" : override ? "Generate safe fallback" : generatedAsset ? "Regenerate safe fallback" : "Generate safe fallback"}
+              {busyChannel === channel.key ? "Working…" : override ? "Generate branded fallback" : generatedAsset ? "Regenerate branded fallback" : "Generate branded fallback"}
             </button>
             <label className={`social-media-override-picker ${immutable ? "disabled" : ""}`}>
               <input type="file" accept={ACCEPT} disabled={immutable || Boolean(busyChannel)} onChange={(pickEvent) => {
