@@ -5,6 +5,7 @@ const REPO = "hazardno-dot/playnice-site";
 const [OWNER, REPO_NAME] = REPO.split("/");
 const APP_PATH = "playnice-site/src/App.js";
 const CONFIG_PATH = "playnice-site/src/data/heroSlides.generated.js";
+const EXHIBITION_PATH = "playnice-site/src/data/exhibition.js";
 
 const json = (res, status, body) => res.status(status).json(body);
 
@@ -181,6 +182,72 @@ function renderConfig(runtimeSlides) {
   ].join("\n");
 }
 
+function safeId(value) {
+  return String(value || "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
+function periodFor(date = new Date()) {
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth() + 1;
+  if (month <= 4) return { year, period: `feb-apr-${year}` };
+  if (month <= 8) return { year, period: `may-aug-${year}` };
+  return { year, period: `sep-dec-${year}` };
+}
+
+function extensionFor(source) {
+  const clean = String(source || "").split("?")[0];
+  const match = clean.match(/\.([a-z0-9]+)$/i);
+  return match?.[1]?.toLowerCase() || "jpg";
+}
+
+function buildReplacementExhibitionEntry(heroKey, baseline, canonicalAsset) {
+  const { year, period } = periodFor();
+  const title = String(baseline.alt || heroKey).trim();
+  const campaignSlug = safeId(title).slice(0, 52) || safeId(heroKey) || `slot-${baseline.id}`;
+  const entryId = `hero-${baseline.id}-${campaignSlug}`;
+  const source = canonicalAsset === "mobile"
+    ? (baseline.mobileImage || baseline.image || "")
+    : (baseline.desktopImage || baseline.image || "");
+  if (!source || !source.startsWith("/")) {
+    throw new Error(`Replaced Hero has no local ${canonicalAsset} asset to archive.`);
+  }
+  const ext = extensionFor(source);
+  const publicPath = `/exhibition/${year}/hero/${entryId}.${ext}`;
+  const repositoryPath = `playnice-site/public${publicPath}`;
+  return {
+    repositoryPath,
+    sourcePath: `playnice-site/public${source}`,
+    entry: {
+      id: entryId,
+      year,
+      period,
+      title,
+      kind: "campaign",
+      status: "archived",
+      published: true,
+      label: { sr: "Hero kampanja", en: "Hero Campaign" },
+      line: { sr: "Kampanja je završena. Ideja ostaje.", en: "The campaign is over. The idea remains." },
+      assets: [{
+        id: `${entryId}-${canonicalAsset}`,
+        type: "image",
+        src: publicPath,
+        format: canonicalAsset === "mobile" ? "mobile" : "wide",
+        alt: title || heroKey,
+      }],
+    },
+  };
+}
+
+function insertExhibitionEntry(source, entry) {
+  const marker = "export const exhibitionItems = [\n";
+  const index = source.indexOf(marker);
+  if (index < 0) throw new Error("Could not locate Exhibition data array.");
+  const duplicateNeedles = [`id: "${entry.id}"`, `"id": "${entry.id}"`];
+  if (duplicateNeedles.some((needle) => source.includes(needle))) return { source, alreadyPresent: true };
+  const rendered = `  ${JSON.stringify(entry, null, 2).replace(/\n/g, "\n  ")},\n\n`;
+  return { source: source.slice(0, index + marker.length) + rendered + source.slice(index + marker.length), alreadyPresent: false };
+}
+
 function addConfigImportAndRemoveBlock(appSource) {
   const importLine = 'import { BASE_HERO_SLIDES } from "./data/heroSlides.generated";';
   let next = appSource;
@@ -210,6 +277,8 @@ export default async function handler(req, res) {
   const authHeader = req.headers.authorization || "";
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
   const heroKey = String(req.body?.hero_key || "").trim();
+  const includeInExhibition = req.body?.include_in_exhibition;
+  const canonicalAsset = String(req.body?.canonical_asset || "desktop").trim().toLowerCase();
   if (!token) return json(res, 401, { error: "Admin session required." });
   if (!heroKey) return json(res, 400, { error: "hero_key is required." });
 
@@ -266,6 +335,13 @@ export default async function handler(req, res) {
     const mediaStage = draft.approved_payload?.mediaStage || null;
     const stagedFiles = Array.isArray(mediaStage?.files) ? mediaStage.files : [];
     const hasMediaStage = Boolean(mediaStage?.branch && stagedFiles.length);
+    const replacement = baseline.enabled !== false && approvedSlide.enabled !== false && hasMediaStage;
+    if (replacement && typeof includeInExhibition !== "boolean") {
+      return json(res, 400, { error: "Exhibition decision is required when replacing an active Hero campaign." });
+    }
+    if (replacement && includeInExhibition && !["desktop", "mobile"].includes(canonicalAsset)) {
+      return json(res, 400, { error: "canonical_asset must be desktop or mobile." });
+    }
     if (stable(nextRuntime) === stable(baselineRuntime) && !hasMediaStage) {
       return json(res, 409, { error: "Approved Hero draft contains no runtime or media change." });
     }
@@ -303,6 +379,41 @@ export default async function handler(req, res) {
       changedFiles.push(APP_PATH);
     }
 
+    let exhibitionEntry = null;
+    if (replacement && includeInExhibition) {
+      const archive = buildReplacementExhibitionEntry(heroKey, baseline, canonicalAsset);
+      exhibitionEntry = archive.entry;
+
+      const oldAssetFile = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${archive.sourcePath}?ref=main`);
+      const archiveAssetFile = await readMaybeGithubFile(archive.repositoryPath, branch);
+      if (!archiveAssetFile) {
+        await github(`/repos/${OWNER}/${REPO_NAME}/contents/${archive.repositoryPath}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            message: `Archive replaced Hero visual: ${heroKey}`,
+            content: oldAssetFile.content,
+            branch,
+          }),
+        });
+      }
+
+      const exhibitionFile = await github(`/repos/${OWNER}/${REPO_NAME}/contents/${EXHIBITION_PATH}?ref=${encodeURIComponent(branch)}`);
+      const exhibitionSource = Buffer.from(exhibitionFile.content, "base64").toString("utf8");
+      const prepared = insertExhibitionEntry(exhibitionSource, exhibitionEntry);
+      if (!prepared.alreadyPresent) {
+        await github(`/repos/${OWNER}/${REPO_NAME}/contents/${EXHIBITION_PATH}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            message: `Archive replaced Hero in Exhibition: ${heroKey}`,
+            content: Buffer.from(prepared.source, "utf8").toString("base64"),
+            sha: exhibitionFile.sha,
+            branch,
+          }),
+        });
+      }
+      changedFiles.push(archive.repositoryPath, EXHIBITION_PATH);
+    }
+
     const beforeSlide = baselineRuntime.find((slide) => Number(slide.id) === Number(baseline.id));
     const afterSlide = nextRuntime.find((slide) => Number(slide.id) === Number(baseline.id));
     const pr = await github(`/repos/${OWNER}/${REPO_NAME}/pulls`, {
@@ -320,7 +431,10 @@ export default async function handler(req, res) {
           `- Before: ${JSON.stringify(beforeSlide)}`,
           `- Approved: ${JSON.stringify(afterSlide)}`,
           `- Staged media: ${hasMediaStage ? stagedFiles.join(", ") : "none"}`,
-          `- Files: ${changedFiles.join(", ")}`,
+          `- Active campaign replacement: ${replacement ? "yes" : "no"}`,
+          `- Exhibition archive: ${replacement ? (includeInExhibition ? exhibitionEntry?.id || "included" : "skipped by explicit editorial decision") : "not applicable"}`,
+          `- Canonical archive asset: ${replacement && includeInExhibition ? canonicalAsset : "n/a"}`,
+          `- Files: ${[...new Set(changedFiles)].join(", ")}`,
           "- Source: approved_payload + staged Hero media",
           "- Safety: full Hero baseline parity checked before PR creation",
           "- Safety: staged media must be based on current main",
@@ -346,7 +460,18 @@ export default async function handler(req, res) {
       throw new Error(patchBody?.message || "Could not save Hero apply metadata.");
     }
 
-    return json(res, 200, { ok: true, branch, pr_number: pr.number, pr_url: pr.html_url, files: changedFiles, media_files: stagedFiles });
+    return json(res, 200, {
+      ok: true,
+      branch,
+      pr_number: pr.number,
+      pr_url: pr.html_url,
+      files: [...new Set(changedFiles)],
+      media_files: stagedFiles,
+      replacement,
+      exhibition_included: replacement ? includeInExhibition : false,
+      exhibition_id: exhibitionEntry?.id || null,
+      canonical_asset: replacement && includeInExhibition ? canonicalAsset : null,
+    });
   } catch (error) {
     console.error("Hero Controlled Apply failed", error);
     return json(res, 500, { error: error?.message || "Hero Controlled Apply failed." });

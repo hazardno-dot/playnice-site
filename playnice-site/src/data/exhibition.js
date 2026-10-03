@@ -1,5 +1,86 @@
 export const exhibitionItems = [
   {
+    "id": "hero-12-thomas-kosmala-trio",
+    "year": 2026,
+    "period": "sep-dec-2026",
+    "title": "Thomas Kosmala — Three Ways to Wear",
+    "kind": "campaign",
+    "status": "archived",
+    "published": true,
+    "label": {
+      "sr": "Hero kampanja",
+      "en": "Hero Campaign"
+    },
+    "line": {
+      "sr": "Kampanja je završena. Ideja ostaje.",
+      "en": "The campaign is over. The idea remains."
+    },
+    "assets": [
+      {
+        "id": "hero-12-thomas-kosmala-trio-desktop",
+        "type": "image",
+        "src": "/exhibition/2026/hero/hero-12-thomas-kosmala-trio.jpg",
+        "format": "wide",
+        "alt": "PlayNice Thomas Kosmala trio in a sunlit coastal setting."
+      }
+    ]
+  },
+
+  {
+    "id": "hero-11-thomas-kosmala-no-8-tonic-vert",
+    "year": 2026,
+    "period": "sep-dec-2026",
+    "title": "Thomas Kosmala No. 8 Tonic Vert",
+    "kind": "campaign",
+    "status": "archived",
+    "published": true,
+    "label": {
+      "sr": "Hero kampanja",
+      "en": "Hero Campaign"
+    },
+    "line": {
+      "sr": "Kampanja je završena. Ideja ostaje.",
+      "en": "The campaign is over. The idea remains."
+    },
+    "assets": [
+      {
+        "id": "hero-11-thomas-kosmala-no-8-tonic-vert-desktop",
+        "type": "image",
+        "src": "/exhibition/2026/hero/hero-11-thomas-kosmala-no-8-tonic-vert.jpg",
+        "format": "wide",
+        "alt": "Thomas Kosmala No. 8 Tonic Vert Eau de Parfum at PlayNice"
+      }
+    ]
+  },
+
+  {
+    "id": "hero-10-essential-parfums-three-perfumers",
+    "year": 2026,
+    "period": "sep-dec-2026",
+    "title": "Essential Parfums — Three Perfumers. Three Icons. One House.",
+    "kind": "campaign",
+    "status": "archived",
+    "published": true,
+    "label": {
+      "sr": "Hero kampanja",
+      "en": "Hero Campaign"
+    },
+    "line": {
+      "sr": "Kampanja je završena. Ideja ostaje.",
+      "en": "The campaign is over. The idea remains."
+    },
+    "assets": [
+      {
+        "id": "hero-10-essential-parfums-three-perfumers-desktop",
+        "type": "image",
+        "src": "/exhibition/2026/hero/hero-10-essential-parfums-three-perfumers.jpg",
+        "format": "wide",
+        "alt": "Essential Parfums trio campaign at PlayNice"
+      }
+    ]
+  },
+
+  {
     "id": "hero-6",
     "year": 2026,
     "period": "sep-dec-2026",

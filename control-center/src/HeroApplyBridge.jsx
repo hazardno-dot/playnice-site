@@ -50,7 +50,7 @@ export default function HeroApplyBridge() {
     if (!key) { setRow(null); return; }
     const { data, error: loadError } = await supabase
       .from("hero_drafts")
-      .select("hero_key,payload,approved_payload,review_status,apply_branch,apply_pr_number,apply_created_at,preview_verified_at,preview_verified_by")
+      .select("hero_key,payload,approved_payload,review_status,baseline_snapshot,apply_branch,apply_pr_number,apply_created_at,preview_verified_at,preview_verified_by")
       .eq("hero_key", key)
       .maybeSingle();
     if (loadError) { setError(loadError.message || String(loadError)); return; }
@@ -145,8 +145,12 @@ export default function HeroApplyBridge() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("Admin session expired. Sign in again.");
       const retirement = row.approved_payload?.enabled === false;
+      const stagedFiles = Array.isArray(row.approved_payload?.mediaStage?.files) ? row.approved_payload.mediaStage.files : [];
+      const replacement = !retirement && row.baseline_snapshot?.enabled !== false && stagedFiles.length > 0;
       const endpoint = retirement ? "/api/create-hero-retirement-apply" : "/api/create-hero-apply";
-      const requestBody = retirement ? { hero_key: heroKey, include_in_exhibition: includeInExhibition, canonical_asset: canonicalAsset } : { hero_key: heroKey };
+      const requestBody = retirement || replacement
+        ? { hero_key: heroKey, include_in_exhibition: includeInExhibition, canonical_asset: canonicalAsset }
+        : { hero_key: heroKey };
       const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` }, body: JSON.stringify(requestBody) });
       const body = await readResponse(response);
       if (!response.ok) throw new Error(body?.error || (retirement ? "Could not create Hero retirement preview." : "Could not create Hero preview branch."));
@@ -194,30 +198,34 @@ export default function HeroApplyBridge() {
   const hasApply = Boolean(row?.apply_branch && row?.apply_pr_number);
   const verified = Boolean(row?.preview_verified_at);
   const retirement = row?.approved_payload?.enabled === false;
-  const desktopPath = row?.approved_payload?.desktopImage || row?.approved_payload?.image || "";
-  const mobilePath = row?.approved_payload?.mobileImage || "";
+  const stagedFiles = Array.isArray(row?.approved_payload?.mediaStage?.files) ? row.approved_payload.mediaStage.files : [];
+  const replacement = !retirement && row?.baseline_snapshot?.enabled !== false && stagedFiles.length > 0;
+  const curation = retirement || replacement;
+  const sourcePayload = replacement ? row?.baseline_snapshot : row?.approved_payload;
+  const desktopPath = sourcePayload?.desktopImage || sourcePayload?.image || "";
+  const mobilePath = sourcePayload?.mobileImage || "";
 
   return createPortal(<section className={`hero-apply-panel ${verified ? "verified" : hasApply ? "preview" : "approved"}`}>
     <div className="hero-apply-head">
-      <div><span>CONTROLLED APPLY</span><strong>{verified ? "PREVIEW VERIFIED" : hasApply ? "PREVIEW CREATED" : retirement ? "APPROVED · RETIREMENT READY" : "APPROVED · READY TO APPLY"}</strong></div>
-      <small>{retirement ? "Hero out + curated Exhibition decision · " : ""}approved_payload only · draft PR · manual merge · post-merge finalize</small>
+      <div><span>CONTROLLED APPLY</span><strong>{verified ? "PREVIEW VERIFIED" : hasApply ? "PREVIEW CREATED" : retirement ? "APPROVED · RETIREMENT READY" : replacement ? "APPROVED · REPLACEMENT READY" : "APPROVED · READY TO APPLY"}</strong></div>
+      <small>{retirement ? "Hero out + curated Exhibition decision · " : replacement ? "Old campaign archive + new Hero campaign · " : ""}approved_payload only · draft PR · manual merge · post-merge finalize</small>
     </div>
     {error ? <div className="hero-apply-error">{error}</div> : null}
     {finalized ? <div className="hero-apply-ready">{finalized}</div> : null}
     {!hasApply ? <>
-      {retirement ? <div className="hero-retirement-curation">
-        <div className="hero-retirement-curation-head"><div><span>RETIREMENT → EXHIBITION</span><strong>Should this campaign enter the curated archive?</strong></div><small>Editorial decision required before PR creation.</small></div>
+      {curation ? <div className="hero-retirement-curation">
+        <div className="hero-retirement-curation-head"><div><span>{retirement ? "RETIREMENT → EXHIBITION" : "REPLACED HERO → EXHIBITION"}</span><strong>{retirement ? "Should this campaign enter the curated archive?" : "Should the previous campaign enter the curated archive?"}</strong></div><small>Editorial decision required before PR creation.</small></div>
         <div className="hero-retirement-choice-row">
           <button type="button" className={includeInExhibition ? "selected" : ""} onClick={() => setIncludeInExhibition(true)}>Yes · include in Exhibition</button>
-          <button type="button" className={!includeInExhibition ? "selected" : ""} onClick={() => setIncludeInExhibition(false)}>No · retire Hero only</button>
+          <button type="button" className={!includeInExhibition ? "selected" : ""} onClick={() => setIncludeInExhibition(false)}>{retirement ? "No · retire Hero only" : "No · replace without archiving"}</button>
         </div>
         {includeInExhibition ? <div className="hero-retirement-assets">
-          <div><span>CANONICAL VISUAL</span><small>One idea · one Exhibition asset. Desktop is the default.</small></div>
+          <div><span>CANONICAL VISUAL</span><small>{replacement ? "The previous campaign visual will be preserved before staged media replaces the Hero slot." : "One idea · one Exhibition asset. Desktop is the default."}</small></div>
           <label className={canonicalAsset === "desktop" ? "selected" : ""}><input type="radio" name="hero-canonical-asset" value="desktop" checked={canonicalAsset === "desktop"} onChange={() => setCanonicalAsset("desktop")} /><span><strong>Desktop / wide</strong><code>{desktopPath || "No desktop asset"}</code></span></label>
           <label className={canonicalAsset === "mobile" ? "selected" : ""}><input type="radio" name="hero-canonical-asset" value="mobile" checked={canonicalAsset === "mobile"} onChange={() => setCanonicalAsset("mobile")} disabled={!mobilePath} /><span><strong>Mobile</strong><code>{mobilePath || "No mobile asset"}</code></span></label>
-        </div> : <div className="hero-retirement-note">Hero will be removed from the live rotation. No Exhibition record will be created.</div>}
+        </div> : <div className="hero-retirement-note">{retirement ? "Hero will be removed from the live rotation. No Exhibition record will be created." : "The active Hero slot will be replaced. The previous campaign will not be added to Exhibition."}</div>}
       </div> : null}
-      <div className="hero-apply-actions"><button className="primary" disabled={busy === "create" || (retirement && includeInExhibition && canonicalAsset === "mobile" && !mobilePath)} onClick={createPreview}>{busy === "create" ? (retirement ? "Creating retirement preview…" : "Creating…") : (retirement ? "Create retirement preview" : "Create preview branch")}</button></div>
+      <div className="hero-apply-actions"><button className="primary" disabled={busy === "create" || (curation && includeInExhibition && canonicalAsset === "mobile" && !mobilePath)} onClick={createPreview}>{busy === "create" ? (retirement ? "Creating retirement preview…" : replacement ? "Creating replacement preview…" : "Creating…") : (retirement ? "Create retirement preview" : replacement ? "Create replacement preview" : "Create preview branch")}</button></div>
     </> : <div className="hero-apply-result">
       <div><span>BRANCH</span><code>{row.apply_branch}</code></div>
       <div><span>PR</span><a href={`https://github.com/hazardno-dot/playnice-site/pull/${row.apply_pr_number}`} target="_blank" rel="noreferrer">Open PR #{row.apply_pr_number}</a></div>
