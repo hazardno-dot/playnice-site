@@ -56,9 +56,9 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     backgroundPattern: "/playnice-social-pattern.webp",
     patternOpacity: 0.72,
     patternShade: 0.03,
-    patternPanelScale: 0.58,
-    safeZonePadding: 0.12,
-    safeZoneStrength: 0.92,
+    patternPanelScale: 0.46,
+    safeZonePadding: 0.10,
+    safeZoneStrength: 0.89,
     maxBytes: 500_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
   }),
@@ -71,9 +71,9 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     backgroundPattern: "/playnice-social-pattern.webp",
     patternOpacity: 0.74,
     patternShade: 0.03,
-    patternPanelScale: 0.62,
-    safeZonePadding: 0.14,
-    safeZoneStrength: 0.92,
+    patternPanelScale: 0.50,
+    safeZonePadding: 0.12,
+    safeZoneStrength: 0.89,
     maxBytes: 700_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
   }),
@@ -86,9 +86,9 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     backgroundPattern: "/playnice-social-pattern.webp",
     patternOpacity: 0.72,
     patternShade: 0.03,
-    patternPanelScale: 0.60,
-    safeZonePadding: 0.12,
-    safeZoneStrength: 0.92,
+    patternPanelScale: 0.48,
+    safeZonePadding: 0.10,
+    safeZoneStrength: 0.89,
     maxBytes: 500_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
   }),
@@ -268,23 +268,23 @@ async function drawBrandedBackground(ctx, image, targetWidth, targetHeight, pres
 
   const patternImage = await readBackgroundImage(preset.backgroundPattern);
   if (patternImage) {
-    // Compose a true panel for each target ratio. The canonical 4:3 artwork is
-    // reduced and repeated from the canvas centre, so branding stays balanced
-    // on both sides of differently shaped bottles instead of becoming one
-    // oversized crop.
-    const panelScale = Number(preset.patternPanelScale ?? 0.60);
+    // Build an exact target-ratio panel. We calculate the full tile matrix
+    // first, then center the matrix as a whole. This keeps equal crop on the
+    // left/right and top/bottom edges and avoids the previous phase drift.
+    const panelScale = Number(preset.patternPanelScale ?? 0.48);
     const panelWidth = Math.max(1, Math.round(targetWidth * panelScale));
     const panelHeight = Math.max(1, Math.round(patternImage.naturalHeight * (panelWidth / patternImage.naturalWidth)));
-
-    let startX = Math.round((targetWidth - panelWidth) / 2);
-    let startY = Math.round((targetHeight - panelHeight) / 2);
-    while (startX > 0) startX -= panelWidth;
-    while (startY > 0) startY -= panelHeight;
+    const columns = Math.max(3, Math.ceil(targetWidth / panelWidth) + 2);
+    const rows = Math.max(3, Math.ceil(targetHeight / panelHeight) + 2);
+    const startX = Math.round((targetWidth - columns * panelWidth) / 2);
+    const startY = Math.round((targetHeight - rows * panelHeight) / 2);
 
     ctx.save();
     ctx.globalAlpha = Number(preset.patternOpacity ?? 0.72);
-    for (let y = startY; y < targetHeight; y += panelHeight) {
-      for (let x = startX; x < targetWidth; x += panelWidth) {
+    for (let row = 0; row < rows; row += 1) {
+      const y = startY + row * panelHeight;
+      for (let column = 0; column < columns; column += 1) {
+        const x = startX + column * panelWidth;
         ctx.drawImage(patternImage, x, y, panelWidth, panelHeight);
       }
     }
