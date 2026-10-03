@@ -53,6 +53,13 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     height: 1080,
     fit: "contain",
     background: "#000000",
+    backgroundPattern: "/playnice-social-pattern.webp",
+    patternOpacity: 0.72,
+    patternShade: 0.03,
+    patternPanelScale: 0.342,
+    centerVisibleObject: true,
+    safeZonePadding: 0.10,
+    safeZoneStrength: 0.89,
     maxBytes: 500_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
   }),
@@ -62,6 +69,13 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     height: 1920,
     fit: "contain",
     background: "#000000",
+    backgroundPattern: "/playnice-social-pattern.webp",
+    patternOpacity: 0.74,
+    patternShade: 0.03,
+    patternPanelScale: 0.378,
+    centerVisibleObject: true,
+    safeZonePadding: 0.12,
+    safeZoneStrength: 0.89,
     maxBytes: 700_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
   }),
@@ -71,6 +85,13 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     height: 900,
     fit: "contain",
     background: "#000000",
+    backgroundPattern: "/playnice-social-pattern.webp",
+    patternOpacity: 0.72,
+    patternShade: 0.03,
+    patternPanelScale: 0.2652,
+    centerVisibleObject: true,
+    safeZonePadding: 0.10,
+    safeZoneStrength: 0.89,
     maxBytes: 500_000,
     qualities: [0.9, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.62],
   }),
@@ -135,13 +156,160 @@ function drawCover(ctx, image, targetWidth, targetHeight) {
   ctx.drawImage(image, sx, sy, sw, sh, 0, 0, targetWidth, targetHeight);
 }
 
-function drawContain(ctx, image, targetWidth, targetHeight) {
+function containRect(image, targetWidth, targetHeight, preset = {}) {
   const scale = Math.min(targetWidth / image.naturalWidth, targetHeight / image.naturalHeight);
   const width = Math.max(1, Math.round(image.naturalWidth * scale));
   const height = Math.max(1, Math.round(image.naturalHeight * scale));
-  const x = Math.round((targetWidth - width) / 2);
-  const y = Math.round((targetHeight - height) / 2);
-  ctx.drawImage(image, x, y, width, height);
+  let x = Math.round((targetWidth - width) / 2);
+  let y = Math.round((targetHeight - height) / 2);
+
+  if (preset.centerVisibleObject) {
+    const alphaBounds = visibleAlphaBounds(image);
+    if (alphaBounds) {
+      x = Math.round(targetWidth / 2 - (alphaBounds.x + alphaBounds.width / 2) * scale);
+      y = Math.round(targetHeight / 2 - (alphaBounds.y + alphaBounds.height / 2) * scale);
+    }
+  }
+
+  return { x, y, width, height, scale };
+}
+
+function drawContain(ctx, image, targetWidth, targetHeight, preset = {}) {
+  const rect = containRect(image, targetWidth, targetHeight, preset);
+  ctx.drawImage(image, rect.x, rect.y, rect.width, rect.height);
+  return rect;
+}
+
+const backgroundImageCache = new Map();
+
+function readBackgroundImage(src) {
+  if (!src) return Promise.resolve(null);
+  if (backgroundImageCache.has(src)) return backgroundImageCache.get(src);
+  const pending = new Promise((resolve) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => resolve(null);
+    image.src = src;
+  });
+  backgroundImageCache.set(src, pending);
+  return pending;
+}
+
+function visibleAlphaBounds(image) {
+  const maxEdge = 420;
+  const scale = Math.min(1, maxEdge / Math.max(image.naturalWidth, image.naturalHeight));
+  const width = Math.max(1, Math.round(image.naturalWidth * scale));
+  const height = Math.max(1, Math.round(image.naturalHeight * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, width, height);
+  ctx.drawImage(image, 0, 0, width, height);
+
+  let pixels;
+  try {
+    pixels = ctx.getImageData(0, 0, width, height).data;
+  } catch {
+    return null;
+  }
+
+  let minX = width;
+  let minY = height;
+  let maxX = -1;
+  let maxY = -1;
+  let visible = 0;
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const alpha = pixels[(y * width + x) * 4 + 3];
+      if (alpha <= 10) continue;
+      visible += 1;
+      if (x < minX) minX = x;
+      if (x > maxX) maxX = x;
+      if (y < minY) minY = y;
+      if (y > maxY) maxY = y;
+    }
+  }
+
+  if (!visible || visible / (width * height) > 0.96 || maxX < minX || maxY < minY) return null;
+  return {
+    x: minX / scale,
+    y: minY / scale,
+    width: (maxX - minX + 1) / scale,
+    height: (maxY - minY + 1) / scale,
+  };
+}
+
+function objectBoundsInTarget(image, targetWidth, targetHeight, preset = {}) {
+  const rect = containRect(image, targetWidth, targetHeight, preset);
+  const alphaBounds = visibleAlphaBounds(image);
+  if (!alphaBounds) return rect;
+  return {
+    x: rect.x + alphaBounds.x * rect.scale,
+    y: rect.y + alphaBounds.y * rect.scale,
+    width: alphaBounds.width * rect.scale,
+    height: alphaBounds.height * rect.scale,
+  };
+}
+
+function drawSafeZone(ctx, bounds, targetWidth, targetHeight, preset) {
+  const padding = Number(preset.safeZonePadding ?? 0.16);
+  const strength = Number(preset.safeZoneStrength ?? 0.94);
+  const centerX = bounds.x + bounds.width / 2;
+  const centerY = bounds.y + bounds.height / 2;
+  const radiusX = Math.max(bounds.width * (0.5 + padding), targetWidth * 0.19);
+  const radiusY = Math.max(bounds.height * (0.5 + padding), targetHeight * 0.14);
+
+  ctx.save();
+  ctx.translate(centerX, centerY);
+  ctx.scale(radiusX, radiusY);
+  const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
+  gradient.addColorStop(0, `rgba(0,0,0,${strength})`);
+  gradient.addColorStop(0.58, `rgba(0,0,0,${Math.max(0, strength - 0.06)})`);
+  gradient.addColorStop(0.82, `rgba(0,0,0,${Math.max(0, strength * 0.48)})`);
+  gradient.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(-1.35, -1.35, 2.7, 2.7);
+  ctx.restore();
+}
+
+async function drawBrandedBackground(ctx, image, targetWidth, targetHeight, preset) {
+  ctx.fillStyle = preset.background || "#000000";
+  ctx.fillRect(0, 0, targetWidth, targetHeight);
+
+  const patternImage = await readBackgroundImage(preset.backgroundPattern);
+  if (patternImage) {
+    // Build an exact target-ratio panel. We calculate the full tile matrix
+    // first, then center the matrix as a whole. This keeps equal crop on the
+    // left/right and top/bottom edges and avoids the previous phase drift.
+    const panelScale = Number(preset.patternPanelScale ?? 0.48);
+    const panelWidth = Math.max(1, Math.round(targetWidth * panelScale));
+    const panelHeight = Math.max(1, Math.round(patternImage.naturalHeight * (panelWidth / patternImage.naturalWidth)));
+    const columns = Math.max(3, Math.ceil(targetWidth / panelWidth) + 2);
+    const rows = Math.max(3, Math.ceil(targetHeight / panelHeight) + 2);
+    const startX = Math.round((targetWidth - columns * panelWidth) / 2);
+    const startY = Math.round((targetHeight - rows * panelHeight) / 2);
+
+    ctx.save();
+    ctx.globalAlpha = Number(preset.patternOpacity ?? 0.72);
+    for (let row = 0; row < rows; row += 1) {
+      const y = startY + row * panelHeight;
+      for (let column = 0; column < columns; column += 1) {
+        const x = startX + column * panelWidth;
+        ctx.drawImage(patternImage, x, y, panelWidth, panelHeight);
+      }
+    }
+    ctx.restore();
+  }
+
+  const shade = Number(preset.patternShade ?? 0.16);
+  if (shade > 0) {
+    ctx.fillStyle = `rgba(0,0,0,${Math.min(1, Math.max(0, shade))})`;
+    ctx.fillRect(0, 0, targetWidth, targetHeight);
+  }
+
+  drawSafeZone(ctx, objectBoundsInTarget(image, targetWidth, targetHeight, preset), targetWidth, targetHeight, preset);
 }
 
 function prepareCanvas(width, height, preset) {
@@ -186,8 +354,11 @@ export async function optimizeImage(file, preset) {
       }
 
       const { canvas, ctx } = prepareCanvas(width, height, preset);
+      if (preset.backgroundPattern && preset.fit === "contain") {
+        await drawBrandedBackground(ctx, image, width, height, preset);
+      }
       if (preset.fit === "cover") drawCover(ctx, image, width, height);
-      else if (preset.fit === "contain") drawContain(ctx, image, width, height);
+      else if (preset.fit === "contain") drawContain(ctx, image, width, height, preset);
       else ctx.drawImage(image, 0, 0, width, height);
 
       for (const quality of qualities) {
