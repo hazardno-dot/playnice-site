@@ -4,6 +4,17 @@
 
 export const BASE_HERO_SLIDES = [
   {
+    "id": 3,
+    "kind": "imageOnly",
+    "image": "/hero/slide-3.jpg",
+    "desktopImage": "/hero/slide-3.jpg",
+    "mobileImage": "/hero/mobile/slide-3-mobile.jpg",
+    "alt": "SUCCESS DOESN’T HAVE A SEASON.",
+    "actionPrimary": "product",
+    "actionProductSlug": "creed-aventus-cologne",
+    "preferredSize": "5ml"
+  },
+  {
     "id": 12,
     "kind": "imageOnly",
     "image": "/hero/slide-12.jpg",
@@ -48,17 +59,6 @@ export const BASE_HERO_SLIDES = [
     "alt": "PlayNice – luxury fragrance experience and trust",
     "actionPrimary": "manifesto",
     "manifestoType": "confidence"
-  },
-  {
-    "id": 3,
-    "kind": "imageOnly",
-    "image": "/hero/slide-3.jpg",
-    "desktopImage": "/hero/slide-3.jpg",
-    "mobileImage": "/hero/mobile/slide-3-mobile.jpg",
-    "alt": "Rayhaan Nocturno Elixir · Bleu de Chanel L’Exclusif alternative",
-    "actionPrimary": "product",
-    "actionProductSlug": "rayhaan-nocturno-elixir",
-    "preferredSize": "10ml"
   },
   {
     "id": 4,

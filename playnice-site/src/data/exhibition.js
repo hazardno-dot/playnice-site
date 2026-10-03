@@ -1,5 +1,32 @@
 export const exhibitionItems = [
   {
+    "id": "hero-3-rayhaan-nocturno-elixir-bleu-de-chanel-l-exclusif-al",
+    "year": 2026,
+    "period": "sep-dec-2026",
+    "title": "Rayhaan Nocturno Elixir · Bleu de Chanel L’Exclusif alternative",
+    "kind": "campaign",
+    "status": "archived",
+    "published": true,
+    "label": {
+      "sr": "Hero kampanja",
+      "en": "Hero Campaign"
+    },
+    "line": {
+      "sr": "Kampanja je završena. Ideja ostaje.",
+      "en": "The campaign is over. The idea remains."
+    },
+    "assets": [
+      {
+        "id": "hero-3-rayhaan-nocturno-elixir-bleu-de-chanel-l-exclusif-al-desktop",
+        "type": "image",
+        "src": "/exhibition/2026/hero/hero-3-rayhaan-nocturno-elixir-bleu-de-chanel-l-exclusif-al.jpg",
+        "format": "wide",
+        "alt": "Rayhaan Nocturno Elixir · Bleu de Chanel L’Exclusif alternative"
+      }
+    ]
+  },
+
+  {
     "id": "hero-12-thomas-kosmala-trio",
     "year": 2026,
     "period": "sep-dec-2026",
