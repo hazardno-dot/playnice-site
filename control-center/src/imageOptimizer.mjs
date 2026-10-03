@@ -56,7 +56,7 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     backgroundPattern: "/playnice-social-pattern.webp",
     patternOpacity: 0.72,
     patternShade: 0.03,
-    patternPanelScale: 0.46,
+    patternPanelScale: 0.42,
     safeZonePadding: 0.10,
     safeZoneStrength: 0.89,
     maxBytes: 500_000,
@@ -71,7 +71,8 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     backgroundPattern: "/playnice-social-pattern.webp",
     patternOpacity: 0.74,
     patternShade: 0.03,
-    patternPanelScale: 0.50,
+    patternPanelScale: 0.42,
+    patternOffsetX: 0.08,
     safeZonePadding: 0.12,
     safeZoneStrength: 0.89,
     maxBytes: 700_000,
@@ -86,7 +87,7 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     backgroundPattern: "/playnice-social-pattern.webp",
     patternOpacity: 0.72,
     patternShade: 0.03,
-    patternPanelScale: 0.48,
+    patternPanelScale: 0.43,
     safeZonePadding: 0.10,
     safeZoneStrength: 0.89,
     maxBytes: 500_000,
@@ -276,7 +277,8 @@ async function drawBrandedBackground(ctx, image, targetWidth, targetHeight, pres
     const panelHeight = Math.max(1, Math.round(patternImage.naturalHeight * (panelWidth / patternImage.naturalWidth)));
     const columns = Math.max(3, Math.ceil(targetWidth / panelWidth) + 2);
     const rows = Math.max(3, Math.ceil(targetHeight / panelHeight) + 2);
-    const startX = Math.round((targetWidth - columns * panelWidth) / 2);
+    const patternOffsetX = Number(preset.patternOffsetX ?? 0);
+    const startX = Math.round((targetWidth - columns * panelWidth) / 2 + panelWidth * patternOffsetX);
     const startY = Math.round((targetHeight - rows * panelHeight) / 2);
 
     ctx.save();
