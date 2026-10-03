@@ -183,14 +183,13 @@ async function alreadyPublished(token, eventId, channel) {
 
 
 async function finalizePublishedEvent(token, event) {
-  const [feed, story, facebook] = await Promise.all([
-    alreadyPublished(token, event.id, "instagram_feed"),
-    alreadyPublished(token, event.id, "instagram_story"),
-    alreadyPublished(token, event.id, "facebook"),
-  ]);
-  if (!feed || !story || !facebook) return null;
+  const channels = Array.isArray(event.channels) && event.channels.length
+    ? event.channels.filter((channel) => PUBLISH_AUDIT_ACTIONS[channel])
+    : ["instagram_feed", "instagram_story", "facebook"];
+  const publishedRows = await Promise.all(channels.map((channel) => alreadyPublished(token, event.id, channel)));
+  if (!channels.length || publishedRows.some((row) => !row)) return null;
 
-  const publishedAt = [feed.created_at, story.created_at, facebook.created_at]
+  const publishedAt = publishedRows.map((row) => row.created_at)
     .filter(Boolean)
     .sort()
     .at(-1) || new Date().toISOString();
