@@ -30,6 +30,8 @@ const AUDIT_LABELS = {
   published_instagram_feed_deleted: "Instagram Feed deleted",
   published_instagram_story_deleted: "Instagram Story deleted",
   published_facebook_deleted: "Facebook post deleted",
+  published_channel_republish_draft_created: "Channel republish draft created",
+  channel_republish_draft_created: "Republish draft created",
 };
 const fmt = (value) => value ? new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : "—";
 const label = (value) => String(value || "").replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
@@ -642,7 +644,7 @@ function SocialWorkspace() {
               </section>;
             })}
           </div>
-          <div className={`social-media-readiness ${mediaReadiness.ok ? "ready" : "blocked"}`}>
+          <div className={`social-media-readiness ${scopedMediaReadiness.ok ? "ready" : "blocked"}`}>
             <div><span>MEDIA READINESS</span><strong>{scopedMediaReadiness.ok ? "READY CHECK CAN RUN" : "READY BLOCKED"}</strong></div>
             <p>{scopedMediaReadiness.ok
               ? scopedMediaReadiness.fallback.length
@@ -653,7 +655,7 @@ function SocialWorkspace() {
               : `Missing media: ${scopedMediaReadiness.blocking.map(label).join(", ")}.`}</p>
           </div>
 
-          <section className="social-history social-dry-run">
+          {activeChannelKeys.includes("instagram_feed") ? <section className="social-history social-dry-run">
             <div className="social-history-head">
               <div><span>INSTAGRAM FEED · META DRY RUN</span><strong>{feedDryRun ? "PAYLOAD READY" : "NO REQUEST SENT"}</strong></div>
               <button type="button" disabled={feedDryRunLoading || !draft?.instagram_feed?.media} onClick={previewInstagramFeed}>{feedDryRunLoading ? "Building…" : "Preview Meta payload"}</button>
@@ -665,7 +667,7 @@ function SocialWorkspace() {
               <div className="social-history-item"><span className="social-history-dot" aria-hidden="true" /><div><strong>Caption</strong><p>{feedDryRun.create?.body?.caption}</p></div><time>{String(feedDryRun.create?.body?.caption || "").length} chars</time></div>
               <div className="social-history-item"><span className="social-history-dot" aria-hidden="true" /><div><strong>2. Publish media container</strong><p>{feedDryRun.publish_template?.method} {feedDryRun.publish_template?.url} · creation_id=&lt;MEDIA_CONTAINER_ID&gt;</p></div><time>PUBLISH · LOCKED</time></div>
             </div> : <div className="social-history-empty">Builds the exact Instagram Feed Graph request descriptor for this event. No Meta network request is made and no access token is returned to the browser.</div>}
-          </section>
+          </section> : null}
 
 
           {selected.status === "published" ? <section className="social-published-management">
@@ -676,7 +678,7 @@ function SocialWorkspace() {
             {publishedMessage ? <div className="social-published-management-message ok">{publishedMessage}</div> : null}
             {publishedError ? <div className="social-published-management-message error">{publishedError}</div> : null}
             <div className="social-published-management-grid">
-              {CHANNELS.map(([key, title]) => {
+              {CHANNELS.filter(([key]) => activeChannelKeys.includes(key)).map(([key, title]) => {
                 const state = publishedChannelState(key);
                 const hasPublished = Boolean(state.published);
                 const isDeleted = Boolean(state.deleted);
