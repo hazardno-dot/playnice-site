@@ -1,6 +1,7 @@
 import fs from "node:fs";
 
 const optimizer = fs.readFileSync("control-center/src/imageOptimizer.mjs", "utf8");
+const pattern = fs.readFileSync("control-center/public/playnice-social-pattern.svg", "utf8");
 
 for (const required of [
   "patternGridPadding",
@@ -30,3 +31,14 @@ if (!optimizer.includes("const startX = Math.round((targetWidth - matrixWidth) /
 }
 
 console.log("PASS  Social pattern uses centered full tiles without clipped edge cells");
+
+
+if (!optimizer.includes("/playnice-social-pattern.svg")) {
+  throw new Error("Social presets must use the uncropped SVG pattern asset.");
+}
+
+for (const text of ["PLAYNICE", "Remember. PlayNice.", "www.playniceshop.me"]) {
+  if (!pattern.includes(text)) {
+    throw new Error(`Social pattern asset is missing complete brand text: ${text}`);
+  }
+}
