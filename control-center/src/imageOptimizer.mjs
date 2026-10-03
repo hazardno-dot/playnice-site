@@ -57,6 +57,7 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     patternOpacity: 0.72,
     patternShade: 0.03,
     patternPanelScale: 0.342,
+    centerVisibleObject: true,
     safeZonePadding: 0.10,
     safeZoneStrength: 0.89,
     maxBytes: 500_000,
@@ -72,7 +73,7 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     patternOpacity: 0.74,
     patternShade: 0.03,
     patternPanelScale: 0.378,
-    patternOffsetX: 0.08,
+    centerVisibleObject: true,
     safeZonePadding: 0.12,
     safeZoneStrength: 0.89,
     maxBytes: 700_000,
@@ -88,6 +89,7 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     patternOpacity: 0.72,
     patternShade: 0.03,
     patternPanelScale: 0.2652,
+    centerVisibleObject: true,
     safeZonePadding: 0.10,
     safeZoneStrength: 0.89,
     maxBytes: 500_000,
@@ -154,17 +156,26 @@ function drawCover(ctx, image, targetWidth, targetHeight) {
   ctx.drawImage(image, sx, sy, sw, sh, 0, 0, targetWidth, targetHeight);
 }
 
-function containRect(image, targetWidth, targetHeight) {
+function containRect(image, targetWidth, targetHeight, preset = {}) {
   const scale = Math.min(targetWidth / image.naturalWidth, targetHeight / image.naturalHeight);
   const width = Math.max(1, Math.round(image.naturalWidth * scale));
   const height = Math.max(1, Math.round(image.naturalHeight * scale));
-  const x = Math.round((targetWidth - width) / 2);
-  const y = Math.round((targetHeight - height) / 2);
+  let x = Math.round((targetWidth - width) / 2);
+  let y = Math.round((targetHeight - height) / 2);
+
+  if (preset.centerVisibleObject) {
+    const alphaBounds = visibleAlphaBounds(image);
+    if (alphaBounds) {
+      x = Math.round(targetWidth / 2 - (alphaBounds.x + alphaBounds.width / 2) * scale);
+      y = Math.round(targetHeight / 2 - (alphaBounds.y + alphaBounds.height / 2) * scale);
+    }
+  }
+
   return { x, y, width, height, scale };
 }
 
-function drawContain(ctx, image, targetWidth, targetHeight) {
-  const rect = containRect(image, targetWidth, targetHeight);
+function drawContain(ctx, image, targetWidth, targetHeight, preset = {}) {
+  const rect = containRect(image, targetWidth, targetHeight, preset);
   ctx.drawImage(image, rect.x, rect.y, rect.width, rect.height);
   return rect;
 }
@@ -230,8 +241,8 @@ function visibleAlphaBounds(image) {
   };
 }
 
-function objectBoundsInTarget(image, targetWidth, targetHeight) {
-  const rect = containRect(image, targetWidth, targetHeight);
+function objectBoundsInTarget(image, targetWidth, targetHeight, preset = {}) {
+  const rect = containRect(image, targetWidth, targetHeight, preset);
   const alphaBounds = visibleAlphaBounds(image);
   if (!alphaBounds) return rect;
   return {
@@ -277,8 +288,7 @@ async function drawBrandedBackground(ctx, image, targetWidth, targetHeight, pres
     const panelHeight = Math.max(1, Math.round(patternImage.naturalHeight * (panelWidth / patternImage.naturalWidth)));
     const columns = Math.max(3, Math.ceil(targetWidth / panelWidth) + 2);
     const rows = Math.max(3, Math.ceil(targetHeight / panelHeight) + 2);
-    const patternOffsetX = Number(preset.patternOffsetX ?? 0);
-    const startX = Math.round((targetWidth - columns * panelWidth) / 2 + panelWidth * patternOffsetX);
+    const startX = Math.round((targetWidth - columns * panelWidth) / 2);
     const startY = Math.round((targetHeight - rows * panelHeight) / 2);
 
     ctx.save();
@@ -299,7 +309,7 @@ async function drawBrandedBackground(ctx, image, targetWidth, targetHeight, pres
     ctx.fillRect(0, 0, targetWidth, targetHeight);
   }
 
-  drawSafeZone(ctx, objectBoundsInTarget(image, targetWidth, targetHeight), targetWidth, targetHeight, preset);
+  drawSafeZone(ctx, objectBoundsInTarget(image, targetWidth, targetHeight, preset), targetWidth, targetHeight, preset);
 }
 
 function prepareCanvas(width, height, preset) {
@@ -348,7 +358,7 @@ export async function optimizeImage(file, preset) {
         await drawBrandedBackground(ctx, image, width, height, preset);
       }
       if (preset.fit === "cover") drawCover(ctx, image, width, height);
-      else if (preset.fit === "contain") drawContain(ctx, image, width, height);
+      else if (preset.fit === "contain") drawContain(ctx, image, width, height, preset);
       else ctx.drawImage(image, 0, 0, width, height);
 
       for (const quality of qualities) {
