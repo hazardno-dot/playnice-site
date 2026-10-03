@@ -287,7 +287,7 @@ export default function SocialMediaOverrideBridge() {
               {busyChannel === channel.key ? "Working…" : approved ? "Visual approved ✓" : "Approve visual"}
             </button>
             <button className="social-media-generate" type="button" disabled={immutable || Boolean(busyChannel) || !sourceSrc} onClick={() => generate(channel.key)}>
-              {busyChannel === channel.key ? "Working…" : override ? "Generate branded fallback" : generatedAsset ? "Regenerate branded fallback" : "Generate branded fallback"}
+              {busyChannel === channel.key ? "Working…" : override ? "Generate safe fallback" : generatedAsset ? "Regenerate safe fallback" : "Generate safe fallback"}
             </button>
             <label className={`social-media-override-picker ${immutable ? "disabled" : ""}`}>
               <input type="file" accept={ACCEPT} disabled={immutable || Boolean(busyChannel)} onChange={(pickEvent) => {
