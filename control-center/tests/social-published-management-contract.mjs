@@ -26,12 +26,22 @@ for (const action of [
   }
 }
 
-if (!server.includes('action === "open"') || !server.includes('method: "DELETE"')) {
-  throw new Error("Published management must support open and delete operations.");
+if (!server.includes('action === "open"') || !server.includes('method: "DELETE"') || !server.includes('action === "republish"')) {
+  throw new Error("Published management must support open, delete and republish operations.");
 }
 
-if (!manager.includes("Open live post") || !manager.includes("Delete from Meta")) {
+if (!server.includes("channels: [channel]") || !server.includes("republish_parent_event_id")) {
+  throw new Error("Republish must create a channel-only child draft linked to the original Published event.");
+}
+
+if (!manager.includes("Open live post") || !manager.includes("Delete from Meta") || !manager.includes("Republish")) {
   throw new Error("Published management controls are missing from Social Manager.");
 }
 
-console.log("PASS  Published Social management exposes audited Open live post and Delete from Meta controls");
+const draftServer = fs.readFileSync("control-center/server/social-draft.js", "utf8");
+const publishServer = fs.readFileSync("control-center/server/social-instagram-feed-test-publish.js", "utf8");
+if (!draftServer.includes("activeChannels(event)") || !publishServer.includes("configuredChannels.includes(channel)")) {
+  throw new Error("Channel-only republish scope is not enforced by READY and publish backends.");
+}
+
+console.log("PASS  Published Social management exposes audited Open, Delete and channel-only Republish controls");
