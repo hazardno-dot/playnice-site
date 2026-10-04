@@ -79,10 +79,31 @@
         var productionHosts = ["playniceshop.me", "www.playniceshop.me"];
         if (productionHosts.indexOf(window.location.hostname) === -1) return;
 
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
-        window.gtag("js", new Date());
-        window.gtag("config", "G-0E81945BBL", { send_page_view: false });
+        var internalAnalyticsKey = "playnice_internal_analytics";
+        var url = new URL(window.location.href);
+        var internalParam = url.searchParams.get("pn_internal");
+
+        if (internalParam === "1") {
+          try { window.localStorage.setItem(internalAnalyticsKey, "1"); } catch (error) {}
+          url.searchParams.delete("pn_internal");
+          window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+        } else if (internalParam === "0") {
+          try { window.localStorage.removeItem(internalAnalyticsKey); } catch (error) {}
+          url.searchParams.delete("pn_internal");
+          window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+        }
+
+        var isInternalAnalyticsUser = false;
+        try {
+          isInternalAnalyticsUser = window.localStorage.getItem(internalAnalyticsKey) === "1";
+        } catch (error) {}
+
+        if (!isInternalAnalyticsUser) {
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+          window.gtag("js", new Date());
+          window.gtag("config", "G-0E81945BBL", { send_page_view: false });
+        }
 
         if (!window.fbq) {
           var fbq = window.fbq = function () {
@@ -105,10 +126,12 @@
           if (analyticsLoaded) return;
           analyticsLoaded = true;
 
-          var gaScript = document.createElement("script");
-          gaScript.async = true;
-          gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-0E81945BBL";
-          document.head.appendChild(gaScript);
+          if (!isInternalAnalyticsUser) {
+            var gaScript = document.createElement("script");
+            gaScript.async = true;
+            gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-0E81945BBL";
+            document.head.appendChild(gaScript);
+          }
 
           var metaScript = document.createElement("script");
           metaScript.async = true;
