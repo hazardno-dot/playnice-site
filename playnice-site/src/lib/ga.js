@@ -3,12 +3,24 @@ const PRODUCTION_HOSTS = new Set([
   "www.playniceshop.me",
 ]);
 
+const INTERNAL_ANALYTICS_KEY = "playnice_internal_analytics";
+
 function isProductionHost() {
   return typeof window !== "undefined" && PRODUCTION_HOSTS.has(window.location.hostname);
 }
 
+function isInternalAnalyticsUser() {
+  if (typeof window === "undefined") return false;
+
+  try {
+    return window.localStorage.getItem(INTERNAL_ANALYTICS_KEY) === "1";
+  } catch (error) {
+    return false;
+  }
+}
+
 export function trackPageView(path) {
-  if (!isProductionHost() || !window.gtag) return;
+  if (!isProductionHost() || isInternalAnalyticsUser() || !window.gtag) return;
 
   window.gtag("event", "page_view", {
     page_path: path,
@@ -18,7 +30,7 @@ export function trackPageView(path) {
 }
 
 export function trackEvent(name, params = {}) {
-  if (!isProductionHost() || !window.gtag) return;
+  if (!isProductionHost() || isInternalAnalyticsUser() || !window.gtag) return;
   window.gtag("event", name, params);
 }
 
