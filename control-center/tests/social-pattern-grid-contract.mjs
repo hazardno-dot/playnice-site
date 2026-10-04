@@ -32,7 +32,8 @@ if (!optimizer.includes("const startX = Math.round((targetWidth - matrixWidth) /
   throw new Error("Social pattern matrix must remain centered after full-tile fitting.");
 }
 
-if ((optimizer.match(/\\/playnice-social-pattern\\.svg/g) || []).length !== 3) {
+const patternReference = 'backgroundPattern: "/playnice-social-pattern.svg"';
+if (optimizer.split(patternReference).length - 1 !== 3) {
   throw new Error("All three Social presets must use the composed PlayNice pattern asset.");
 }
 
@@ -42,13 +43,23 @@ for (const required of ["Remember. PlayNice.", "www.playniceshop.me"]) {
   }
 }
 
-if (socialPattern.includes("M0 -14 7 -7") || socialPattern.includes("Arial, Helvetica, sans-serif\" font-size=\"20\"")) {
+if (socialPattern.includes("M0 -14 7 -7") ||
+    socialPattern.includes('Arial, Helvetica, sans-serif" font-size="20"')) {
   throw new Error("Social pattern must not restore the old synthetic/fake logo artwork.");
 }
 
-const canonicalPath = siteHeaderLogo.match(/<path[\\s\\S]*?\\/>/)?.[0];
-const patternPath = socialPattern.match(/<path[\\s\\S]*?\\/>/)?.[0];
-const normalizeLogoPath = (value = "") => value.replace(/fill=\"url\\\(#(?:g|brandGold)\\\)\"/, 'fill="url(#gold)"');
+const extractPath = (svg) => {
+  const start = svg.indexOf("<path ");
+  if (start < 0) return "";
+  const end = svg.indexOf("/>", start);
+  return end < 0 ? "" : svg.slice(start, end + 2);
+};
+const normalizeLogoPath = (value = "") =>
+  value.replace('fill="url(#g)"', 'fill="url(#gold)"')
+       .replace('fill="url(#brandGold)"', 'fill="url(#gold)"');
+
+const canonicalPath = extractPath(siteHeaderLogo);
+const patternPath = extractPath(socialPattern);
 if (!canonicalPath || !patternPath || normalizeLogoPath(canonicalPath) !== normalizeLogoPath(patternPath)) {
   throw new Error("Social pattern must embed the exact canonical PlayNice header logo geometry.");
 }
