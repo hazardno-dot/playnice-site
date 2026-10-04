@@ -207,3 +207,453 @@
     font-size: 12px;
   }
 }
+
+
+/* Phase 2: extend the same scale across Manage, Social, Intelligence,
+   Community and System without changing component geometry. */
+
+/* Shared workspace chrome / topbar */
+.topbar-copy .eyebrow {
+  font-size: var(--cc-type-label);
+}
+
+.topbar-copy p {
+  font-size: 11px;
+}
+
+.workflow-pill,
+.topbar-actions .draft-manager-trigger,
+.topbar-actions .read-only-badge,
+.topbar-actions > .read-only-badge {
+  font-size: var(--cc-type-meta);
+}
+
+.workflow-pill strong,
+.topbar-actions .draft-manager-trigger strong {
+  font-size: var(--cc-type-meta);
+}
+
+/* Manage / Products */
+.search-wrap input {
+  font-size: var(--cc-type-control);
+}
+
+.filter-bar .filter-btn {
+  font-size: var(--cc-type-meta);
+}
+
+.product-row-copy span {
+  font-size: var(--cc-type-meta);
+}
+
+.edit-field > span,
+.field-hint,
+.discount-preview span,
+.discount-live-summary span,
+.card-copy-audit-controls label > span,
+.card-copy-audit-summary span,
+.card-copy-audit-table th,
+.product-workflow-copy > span,
+.product-workflow-history-head span,
+.product-workflow-history-head small,
+.product-workflow-history-item small,
+.product-media-persisted-copy > code,
+.product-media-persisted-checks small {
+  font-size: var(--cc-type-meta);
+}
+
+.discount-toggle,
+.draft-warning,
+.product-workflow-copy strong,
+.product-workflow-copy small,
+.product-workflow-history-item strong,
+.product-workflow-history-empty,
+.product-media-replace-summary span,
+.product-media-replace-paths span,
+.product-media-replace-result span,
+.product-media-quality-head span,
+.product-media-copy,
+.product-media-quality-metrics span,
+.product-media-quality small,
+.product-media-persisted-copy > span,
+.product-media-persisted-copy > small,
+.product-media-persisted-checks span {
+  font-size: var(--cc-type-control);
+}
+
+.product-workflow-actions button {
+  font-size: var(--cc-type-control);
+}
+
+/* Announcement / Hero / Journal / Notes / Exhibition editors */
+.announcement-workflow-note > span,
+.hero-slide-row-title span,
+.hero-slide-row-copy small,
+.hero-collection-picker summary strong,
+.hero-collection-results-head span,
+.hero-collection-results-head small,
+.hero-collection-product-copy small,
+.hero-review-status,
+.journal-audit-strip span,
+.journal-catalog-head span,
+.journal-detail-hero > div > span,
+.journal-copy-audit > span,
+.journal-related > span,
+.journal-issues > span,
+.journal-editor-head span,
+.journal-editor-section > span,
+.journal-workflow span,
+.journal-cta-preview > span,
+.journal-link-editor-head > span,
+.journal-editor label > span,
+.journal-cta-preview em,
+.journal-image-upload-copy code,
+.journal-image-result,
+.notes-audit-strip span,
+.notes-catalog-head span,
+.notes-detail-hero > div > span,
+.notes-usage > span,
+.notes-products > span,
+.notes-integrity span,
+.notes-language-contract span,
+.notes-workflow span,
+.note-editor span,
+.notes-asset-preview small,
+.notes-language-contract small,
+.notes-tier-grid small,
+.notes-products small,
+.exhibition-list em,
+.exhibition-assets em {
+  font-size: var(--cc-type-meta);
+}
+
+.announcement-draft-badge,
+.announcement-prepared-badge,
+.announcement-status,
+.announcement-copy-block > span,
+.announcement-workflow-note > small,
+.hero-manager-section-head span,
+.hero-manager-detail-head > div > span,
+.hero-preview-grid > div > span,
+.hero-contract-grid span,
+.hero-collection-contract > span,
+.hero-manager-health,
+.hero-pinned-badge,
+.hero-draft-badge.large,
+.hero-inactive-badge.large,
+.hero-editor-head > div:first-child > span,
+.hero-editor-section > span,
+.hero-editor-preview > div > span,
+.hero-manager-summary span,
+.hero-manager-summary small,
+.hero-manager-banner strong,
+.hero-contract-grid strong,
+.hero-contract-grid code,
+.hero-editor-head p,
+.hero-editor-validation,
+.hero-editor-grid label > span,
+.hero-review-head > div > span,
+.hero-apply-head span,
+.hero-apply-result span,
+.hero-retirement-curation-head span,
+.hero-retirement-assets > div > span,
+.hero-retirement-curation-head small,
+.hero-retirement-assets small,
+.hero-retirement-assets code,
+.hero-collection-selected-head strong,
+.hero-collection-empty,
+.hero-collection-no-results,
+.journal-list button small,
+.journal-integrity strong,
+.journal-integrity span,
+.journal-copy-audit > div > strong,
+.journal-copy-audit small,
+.journal-related > div > span,
+.journal-issues > div strong,
+.journal-issues > div p,
+.journal-editor-head p,
+.journal-editor-validation strong,
+.journal-editor-validation span,
+.journal-editor-issues span,
+.journal-link-editor > p,
+.journal-link-card-head strong,
+.journal-link-empty,
+.journal-cta-preview strong,
+.journal-cta-preview small,
+.journal-cta-preview code,
+.journal-image-upload-copy strong,
+.journal-image-upload-copy span,
+.journal-image-picker strong,
+.journal-image-error,
+.notes-list small,
+.notes-list em,
+.notes-integrity p,
+.note-editor-head p,
+.note-editor-validation span,
+.note-editor-issues > div,
+.exhibition-kpis span,
+.exhibition-banner span,
+.exhibition-list-head span,
+.exhibition-detail-head span,
+.exhibition-meta-grid span,
+.exhibition-section-head span,
+.exhibition-list button span,
+.exhibition-detail-head p,
+.exhibition-status strong,
+.exhibition-status span,
+.exhibition-card-copy span,
+.exhibition-card-copy small,
+.exhibition-assets span,
+.exhibition-assets code {
+  font-size: var(--cc-type-control);
+}
+
+.hero-edit-btn,
+.hero-editor-actions button,
+.hero-draft-footer button,
+.hero-collection-selected button,
+.hero-collection-search-row button,
+.journal-new-button,
+.journal-detail-actions button,
+.journal-editor-actions button,
+.journal-workflow-actions button,
+.journal-link-editor-head button,
+.journal-controlled-actions button,
+.journal-controlled-actions a,
+.note-controlled-actions button,
+.note-controlled-actions a {
+  font-size: var(--cc-type-control);
+}
+
+/* Intelligence / Analytics */
+.analytics-head span,
+.analytics-panel-head span,
+.analytics-kpis span,
+.analytics-summary span,
+.analytics-live,
+.analytics-kpis small,
+.analytics-panel-head > small,
+.workflow-row em,
+.sales-section-head span,
+.sales-section-head small,
+.sales-kpis span,
+.sales-kpis small,
+.sales-row-head span,
+.ranking-row small,
+.sales-subsection-label strong,
+.sales-subsection-label span,
+.workflow-section-head span,
+.workflow-section-head p,
+.inventory-summary span,
+.inventory-form label > span,
+.inventory-row small,
+.inventory-row em,
+.inventory-form p,
+.inventory-notice {
+  font-size: var(--cc-type-meta);
+}
+
+.analytics-note,
+.activity-row small,
+.sales-section-head p,
+.sales-row span,
+.sales-row strong,
+.ranking-row strong,
+.inventory-row strong,
+.inventory-form input,
+.inventory-form button {
+  font-size: var(--cc-type-control);
+}
+
+.activity-row > span {
+  font-size: var(--cc-type-meta);
+}
+
+.activity-row time {
+  font-size: var(--cc-type-footnote);
+}
+
+/* Community: Scent Requests + Journal Feedback */
+.scent-requests-head > div:first-child > span,
+.scent-requests-live > span,
+.scent-request-kpis span,
+.scent-request-row-head,
+.scent-request-name small,
+.scent-request-vote-cell small,
+.scent-request-row time,
+.collection-link,
+.status-open,
+.status-review,
+.scent-request-footnote,
+.journal-feedback-head > div:first-child > span,
+.journal-feedback-live > span,
+.journal-feedback-kpis span,
+.journal-feedback-panel-head span,
+.article-feedback-row small,
+.article-feedback-row > span,
+.article-feedback-row em,
+.latest-feedback-meta small,
+.latest-feedback-row p.no-comment,
+.journal-feedback-footnote {
+  font-size: var(--cc-type-meta);
+}
+
+.scent-request-filters button,
+.scent-request-row > span,
+.article-feedback-row strong,
+.journal-feedback-filters button,
+.journal-feedback-toolbar input,
+.latest-feedback-meta strong,
+.journal-feedback-empty {
+  font-size: var(--cc-type-control);
+}
+
+/* Social */
+.social-kpis span,
+.social-kpis small,
+.social-list em,
+.social-channel-head em,
+.social-media-meta span,
+.social-media-meta strong,
+.social-publish-diagnostic-flags span,
+.social-create-group > span,
+.social-published-channel span,
+.social-published-channel small,
+.social-published-channel code,
+.social-media-override-card-head em,
+.social-media-asset-state strong,
+.social-media-asset-state small,
+.social-media-override-picker small,
+.social-inbox-list > button time,
+.social-inbox-thread-head small,
+.social-inbox-message span,
+.social-inbox-message time,
+.social-inbox-reply-head small,
+.social-inbox-reply-actions small,
+.social-inbox-draft-pill {
+  font-size: var(--cc-type-meta);
+}
+
+.social-caption-meta,
+.social-manual-actions button,
+.social-history-head > small,
+.social-history-item p,
+.social-history-item time,
+.social-product-picker-head span,
+.social-product-picker-results small,
+.social-publish-diagnostics > div:first-child span,
+.social-publish-diagnostics > div:first-child small,
+.social-publish-diagnostic-flags strong,
+.social-empty-workspace > span,
+.social-published-management-head span,
+.social-published-management-head small,
+.social-published-channel-actions button,
+.social-media-override-head span,
+.social-media-override-head small,
+.social-media-override-card-head span,
+.social-media-approve,
+.social-media-generate,
+.social-media-override-message,
+.social-readiness-bridge span,
+.social-readiness-bridge p,
+.social-inbox-banner span,
+.social-inbox-list-head span,
+.social-inbox-thread-head span,
+.social-inbox-reply-lock span,
+.social-inbox-reply-head span,
+.social-inbox-status span,
+.social-inbox-status small,
+.social-inbox-list > button span,
+.social-inbox-thread-head p,
+.social-inbox-thread-head > div:last-child strong,
+.social-inbox-reply-error,
+.social-inbox-reply-success,
+.social-inbox-assistant-status span,
+.social-inbox-assistant-status small,
+.social-inbox-assistant-live,
+.social-inbox-needs-review span,
+.social-inbox-missing-config span,
+.social-inbox-telegram-chats span,
+.social-instagram-test-copy span,
+.social-instagram-test-actions small {
+  font-size: var(--cc-type-control);
+}
+
+.social-banner p,
+.social-inbox-banner p,
+.social-inbox-message p {
+  font-size: var(--cc-type-ui);
+}
+
+/* System: Site Health / Browser QA / Controlled Apply */
+.site-health-head span,
+.site-health-panel-head span,
+.site-health-kpis span,
+.health-build-grid span,
+.health-trend-kpis span,
+.health-incident-kpis span,
+.site-health-state,
+.site-health-kpis small,
+.site-health-panel-head small,
+.health-check-row small,
+.health-build-grid small,
+.health-trend-kpis small,
+.health-incident-kpis small,
+.health-history-meta,
+.health-incident-row > div:nth-child(2) > small,
+.browser-qa-summary-card > span,
+.browser-qa-history-head > span,
+.browser-qa-summary-meta em,
+.browser-qa-history-stats em,
+.controlled-apply-head span,
+.controlled-apply-head small,
+.controlled-apply-row span,
+.controlled-published-title span,
+.controlled-published-title strong,
+.controlled-published-row span,
+.controlled-published-meta a,
+.controlled-preview-gate-head span,
+.controlled-preview-gate > p,
+.controlled-preview-checks label,
+.controlled-preview-checks span,
+.controlled-apply-toggle span,
+.controlled-apply-toggle small {
+  font-size: var(--cc-type-meta);
+}
+
+.health-history-point small,
+.health-incident-badge,
+.health-incident-times span,
+.browser-qa-overview-meta em,
+.browser-qa-overview-meta time,
+.browser-qa-history-row time {
+  font-size: var(--cc-type-footnote);
+}
+
+.health-check-row strong,
+.health-check-row em,
+.health-check-row time,
+.health-incident-times strong,
+.browser-qa-summary-card > small,
+.browser-qa-history-head > small,
+.controlled-apply-row button,
+.controlled-apply-result,
+.controlled-apply-error,
+.controlled-preview-stale strong,
+.controlled-published-row strong,
+.controlled-preview-gate-head strong,
+.controlled-apply-toggle strong {
+  font-size: var(--cc-type-control);
+}
+
+.controlled-preview-stale p {
+  font-size: var(--cc-type-meta);
+}
+
+/* Keep compact decorative badges compact, but never below 9px. */
+.card-copy-inline-fit strong,
+.card-copy-inline-fit span,
+.hero-collection-results > button > b,
+.draft-change small {
+  font-size: var(--cc-type-footnote);
+}
