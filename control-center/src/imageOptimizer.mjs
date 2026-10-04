@@ -53,7 +53,7 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     height: 1080,
     fit: "contain",
     background: "#000000",
-    backgroundPattern: "/playnice-social-pattern.webp",
+    backgroundPattern: "/playnice-social-pattern.svg",
     patternOpacity: 0.72,
     patternShade: 0.03,
     patternPanelScale: 0.342,
@@ -69,7 +69,7 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     height: 1920,
     fit: "contain",
     background: "#000000",
-    backgroundPattern: "/playnice-social-pattern.webp",
+    backgroundPattern: "/playnice-social-pattern.svg",
     patternOpacity: 0.74,
     patternShade: 0.03,
     patternPanelScale: 0.378,
@@ -85,7 +85,7 @@ export const IMAGE_OPTIMIZER_PRESETS = Object.freeze({
     height: 900,
     fit: "contain",
     background: "#000000",
-    backgroundPattern: "/playnice-social-pattern.webp",
+    backgroundPattern: "/playnice-social-pattern.svg",
     patternOpacity: 0.72,
     patternShade: 0.03,
     patternPanelScale: 0.2652,
@@ -280,16 +280,27 @@ async function drawBrandedBackground(ctx, image, targetWidth, targetHeight, pres
 
   const patternImage = await readBackgroundImage(preset.backgroundPattern);
   if (patternImage) {
-    // Build an exact target-ratio panel. We calculate the full tile matrix
-    // first, then center the matrix as a whole. This keeps equal crop on the
-    // left/right and top/bottom edges and avoids the previous phase drift.
+    // Treat patternPanelScale as a density target, then quantize the matrix to
+    // whole cells that fit entirely inside the canvas. No edge tile is ever
+    // cropped, so brand text such as "PlayNice" and "www.playniceshop.me"
+    // cannot be cut in half at the final asset boundary.
     const panelScale = Number(preset.patternPanelScale ?? 0.48);
-    const panelWidth = Math.max(1, Math.round(targetWidth * panelScale));
-    const panelHeight = Math.max(1, Math.round(patternImage.naturalHeight * (panelWidth / patternImage.naturalWidth)));
-    const columns = Math.max(3, Math.ceil(targetWidth / panelWidth) + 2);
-    const rows = Math.max(3, Math.ceil(targetHeight / panelHeight) + 2);
-    const startX = Math.round((targetWidth - columns * panelWidth) / 2);
-    const startY = Math.round((targetHeight - rows * panelHeight) / 2);
+    const gridPadding = Math.min(0.12, Math.max(0, Number(preset.patternGridPadding ?? 0.02)));
+    const usableWidth = Math.max(1, targetWidth * (1 - gridPadding * 2));
+    const usableHeight = Math.max(1, targetHeight * (1 - gridPadding * 2));
+    const sourceRatio = patternImage.naturalHeight / patternImage.naturalWidth;
+    const desiredPanelWidth = Math.max(1, targetWidth * panelScale);
+    const desiredPanelHeight = Math.max(1, desiredPanelWidth * sourceRatio);
+    const columns = Math.max(1, Math.round(usableWidth / desiredPanelWidth));
+    const rows = Math.max(1, Math.round(usableHeight / desiredPanelHeight));
+    const widthFromColumns = usableWidth / columns;
+    const widthFromRows = (usableHeight / rows) / sourceRatio;
+    const panelWidth = Math.max(1, Math.floor(Math.min(widthFromColumns, widthFromRows)));
+    const panelHeight = Math.max(1, Math.floor(panelWidth * sourceRatio));
+    const matrixWidth = columns * panelWidth;
+    const matrixHeight = rows * panelHeight;
+    const startX = Math.round((targetWidth - matrixWidth) / 2);
+    const startY = Math.round((targetHeight - matrixHeight) / 2);
 
     ctx.save();
     ctx.globalAlpha = Number(preset.patternOpacity ?? 0.72);
