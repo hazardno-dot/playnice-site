@@ -1,7 +1,8 @@
 import fs from "node:fs";
 
 const optimizer = fs.readFileSync("control-center/src/imageOptimizer.mjs", "utf8");
-const pattern = fs.readFileSync("control-center/public/playnice-social-pattern.svg", "utf8");
+const controlCenterLogo = fs.readFileSync("control-center/public/playnice-header-logo.svg", "utf8");
+const siteHeaderLogo = fs.readFileSync("playnice-site/public/playnice-header-logo.svg", "utf8");
 
 for (const required of [
   "patternGridPadding",
@@ -30,15 +31,16 @@ if (!optimizer.includes("const startX = Math.round((targetWidth - matrixWidth) /
   throw new Error("Social pattern matrix must remain centered after full-tile fitting.");
 }
 
-console.log("PASS  Social pattern uses centered full tiles without clipped edge cells");
-
-
-if (!optimizer.includes("/playnice-social-pattern.svg")) {
-  throw new Error("Social presets must use the uncropped SVG pattern asset.");
+if (!optimizer.includes("/playnice-header-logo.svg")) {
+  throw new Error("Social presets must use the canonical PlayNice header logo.");
 }
 
-for (const text of ["PLAYNICE", "Remember. PlayNice.", "www.playniceshop.me"]) {
-  if (!pattern.includes(text)) {
-    throw new Error(`Social pattern asset is missing complete brand text: ${text}`);
-  }
+if (optimizer.includes("/playnice-social-pattern.svg")) {
+  throw new Error("Synthetic Social pattern asset must not be referenced.");
 }
+
+if (controlCenterLogo !== siteHeaderLogo) {
+  throw new Error("Control Center Social logo must exactly match the production site header logo.");
+}
+
+console.log("PASS  Social pattern uses centered full tiles with the canonical PlayNice header logo");
