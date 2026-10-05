@@ -102,11 +102,11 @@ begin
       (v_order.status='PACKED' and v_next_status in ('NEW','SHIPPED','CANCELLED')) or
       (v_order.status='SHIPPED' and (
         v_next_status in ('OUT_FOR_DELIVERY','DELIVERY_FAILED')
-        or (v_next_status='RETURNED' and v_order.delivery_issue in ('UNREACHABLE','REFUSED','RETURNED'))
+        or (v_next_status='RETURNED' and v_order.delivery_issue in ('UNREACHABLE','REFUSED'))
       )) or
       (v_order.status='OUT_FOR_DELIVERY' and (
         v_next_status in ('SHIPPED','DELIVERED','DELIVERY_FAILED')
-        or (v_next_status='RETURNED' and v_order.delivery_issue in ('UNREACHABLE','REFUSED','RETURNED'))
+        or (v_next_status='RETURNED' and v_order.delivery_issue in ('UNREACHABLE','REFUSED'))
       )) or
       (v_order.status='DELIVERY_FAILED' and v_next_status in ('OUT_FOR_DELIVERY','RETURNED'))
     ) then
@@ -134,14 +134,11 @@ begin
         cancelled_at=case when v_next_status='CANCELLED' then v_now else cancelled_at end,
         delivery_issue=case
           when v_next_status='OUT_FOR_DELIVERY' and v_order.status='DELIVERY_FAILED' then 'RESOLVED'
-          when v_next_status='RETURNED' then 'RETURNED'
           else delivery_issue
         end,
         source_payload=case
           when v_next_status='OUT_FOR_DELIVERY' and v_order.status='DELIVERY_FAILED'
             then jsonb_set(source_payload,'{deliveryIssue}',to_jsonb('RESOLVED'::text),true)
-          when v_next_status='RETURNED'
-            then jsonb_set(source_payload,'{deliveryIssue}',to_jsonb('RETURNED'::text),true)
           else source_payload
         end,
         updated_at=v_now,
@@ -175,7 +172,7 @@ begin
 
   elsif v_action='set_delivery_issue' then
     v_value := upper(v_value);
-    if v_value not in ('UNREACHABLE','REFUSED','RETURNED','RESOLVED') then
+    if v_value not in ('UNREACHABLE','REFUSED','RESOLVED') then
       raise exception 'INVALID_DELIVERY_ISSUE';
     end if;
     if v_order.status not in ('SHIPPED','OUT_FOR_DELIVERY','DELIVERY_FAILED') then
