@@ -174,6 +174,11 @@ end;
 $function$;
 
 revoke all on public.customer_watches from anon, authenticated;
+
+revoke all on function public.get_control_center_customer_watches() from public, anon;
+revoke all on function public.upsert_control_center_customer_watch(uuid,text,text) from public, anon;
+revoke all on function public.deactivate_control_center_customer_watch(uuid) from public, anon;
+
 grant execute on function public.get_control_center_customer_watches() to authenticated;
 grant execute on function public.upsert_control_center_customer_watch(uuid,text,text) to authenticated;
 grant execute on function public.deactivate_control_center_customer_watch(uuid) to authenticated;
