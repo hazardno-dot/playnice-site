@@ -1,5 +1,5 @@
-const CACHE_NAME = "playnice-cc-v14";
-const APP_SHELL = ["/", "/manifest.webmanifest", "/pwa-192.svg", "/pwa-512.svg", "/pwa-favicon.svg"];
+const CACHE_NAME = "playnice-cc-v15";
+const APP_SHELL = ["/", "/manifest.webmanifest", "/pwa-192.png", "/pwa-512.png", "/pwa-favicon.svg"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -19,12 +19,9 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const request = event.request;
-
   if (request.method !== "GET") return;
-
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
@@ -37,10 +34,8 @@ self.addEventListener("fetch", (event) => {
     );
     return;
   }
-
   const cacheableDestinations = new Set(["script", "style", "image", "font"]);
   if (!cacheableDestinations.has(request.destination)) return;
-
   event.respondWith(
     caches.match(request).then((cached) => {
       const network = fetch(request).then((response) => {
@@ -50,7 +45,6 @@ self.addEventListener("fetch", (event) => {
         }
         return response;
       });
-
       return cached || network;
     })
   );
