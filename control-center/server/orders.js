@@ -258,7 +258,7 @@ async function syncMirror(mirror) {
     redirect: "follow",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify({ ...mirror, syncSecret: SHEET_SYNC_SECRET }),
-    signal: AbortSignal.timeout(15000)
+    signal: AbortSignal.timeout(30000)
   });
   const data = await safeJson(response);
   if (
@@ -445,9 +445,58 @@ async function retryMirror(token, body) {
   const current = await readOrders(token);
   const order = current.orders.find((item) => item.id === id);
   if (!order) throw new Error("Order not found.");
+
+  const timeoutUnknown =
+    order.sheet_state_sync_status === "failed" &&
+    /aborted due to timeout|timeout/i.test(String(order.sheet_state_sync_error || "")) &&
+    order.delivery_issue === "UNREACHABLE" &&
+    !order.delivery_alert_email_status;
+
+  if (timeoutUnknown) {
+    throw new Error("Backup acknowledgement timed out for an UNREACHABLE alert. Verify the Google Sheets row before retrying so the customer email is not sent twice.");
+  }
+
   return {
     order,
     ...(await mirrorWithAudit(token, order, buildMirror(order)))
+  };
+}
+
+async function confirmMirrorAfterTimeout(token, body) {
+  const id = String(body?.id || "").trim();
+  const alertEmailSent = String(body?.alert_email_sent || "").trim().toUpperCase();
+  if (!id) throw new Error("Missing order id.");
+
+  const current = await readOrders(token);
+  const order = current.orders.find((item) => item.id === id);
+  if (!order) throw new Error("Order not found.");
+
+  const timeoutUnknown =
+    order.sheet_state_sync_status === "failed" &&
+    /aborted due to timeout|timeout/i.test(String(order.sheet_state_sync_error || ""));
+
+  if (!timeoutUnknown) {
+    throw new Error("Manual reconciliation is only available after a backup acknowledgement timeout.");
+  }
+
+  if (order.delivery_issue === "UNREACHABLE" && alertEmailSent !== "YES") {
+    throw new Error("Confirm alertEmailSent=YES in Google Sheets before reconciling an UNREACHABLE alert.");
+  }
+
+  await markMirror(
+    token,
+    order.id,
+    Number(order.sheet_state_version || 0),
+    "synced",
+    null,
+    order.delivery_issue === "UNREACHABLE" ? "YES" : null
+  );
+
+  return {
+    order,
+    mirror_status: "synced",
+    mirror_warning: null,
+    reconciled_from_sheet: true
   };
 }
 
@@ -650,7 +699,9 @@ export default async function handler(req, res) {
 
     const result = action === "retry_sheet_sync"
       ? await retryMirror(auth.token, req.body)
-      : action === "settle_courier_batch"
+      : action === "confirm_sheet_sync"
+        ? await confirmMirrorAfterTimeout(auth.token, req.body)
+        : action === "settle_courier_batch"
         ? await settleCourierBatch(auth.token, req.body)
         : action === "create_manual_order"
           ? await createManualOrder(auth.token, req.body)
