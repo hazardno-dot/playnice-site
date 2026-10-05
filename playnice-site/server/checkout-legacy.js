@@ -1013,6 +1013,7 @@ export default async function handler(req, res) {
     const address = normalizeText(customer.address);
     const note = normalizeText(customer.note);
     const page = normalizeText(body.page);
+    const deviceId = normalizeText(body.deviceId).slice(0, 200);
     const language = normalizeText(body.language) === "en" ? "en" : "sr";
     const items = sanitizeItems(body.items);
     const recommendations = sanitizeRecommendations(body.recommendations);
@@ -1162,6 +1163,7 @@ let trackingNumber = "";
       total,
       orderSource: "website",
       language,
+      deviceId,
       recommendations
     });
 

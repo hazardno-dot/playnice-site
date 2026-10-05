@@ -3362,6 +3362,7 @@ const handlePlaceOrder = async () => {
       total,
       language: lang,
       source: "checkout_order",
+      deviceId: getPlayNiceDeviceId(),
       page: window.location.href,
       createdAt: new Date().toISOString()
     };
