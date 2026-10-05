@@ -60,6 +60,7 @@ assert.ok(ui.includes("Supabase remains canonical."), "Orders fallback copy must
 assert.ok(ui.includes("GIFT / SAMPLE"), "Orders UI must expose structured gift/sample editing.");
 assert.ok(ui.includes("Customer gift history"), "Orders UI must show earlier gifts/samples for the same customer.");
 assert.ok(ui.includes("CUSTOMER WATCH"), "Orders UI must expose the Customer Watch workspace.");
+assert.ok(ui.includes("defaultOpen={Boolean(selectedWatch)}"), "Customer Watch must stay collapsed by default for ordinary customers and open for flagged customers.");
 assert.ok(ui.includes("VERIFY BEFORE SHIPPING watch"), "Operational status transitions must require confirmation for verify-before-shipping customers.");
 assert.ok(ui.includes("customer_watch_acknowledged"), "Fulfillment writes must send explicit Customer Watch acknowledgement.");
 assert.ok(server.includes("Customer Watch acknowledgement is required before packing or shipping this order."), "Orders API must reject unacknowledged flagged-customer packing/shipping writes.");
@@ -93,10 +94,14 @@ assert.ok(settlementSql.includes("'Courier payout confirmed delivery.'"), "Settl
 assert.ok(settlementSql.includes("'courier_settlement'"), "Settlement-confirmed delivery events must retain their source.");
 
 const settlementAnalyticsSql = fs.readFileSync(path.resolve(root, "control-center/supabase/settlement_confirmed_delivery_v1.sql"), "utf8");
+const codDeliveryIssueGuardSql = fs.readFileSync(path.resolve(root, "control-center/supabase/cod_delivery_issue_guard_v1.sql"), "utf8");
 assert.ok(settlementAnalyticsSql.includes("status in (''SHIPPED'',''OUT_FOR_DELIVERY'',''DELIVERED'')"), "COD pending analytics must match payout eligibility.");
+assert.ok(codDeliveryIssueGuardSql.includes("(delivery_issue is null or delivery_issue = 'RESOLVED')"), "Courier settlement RPC must exclude active delivery issues.");
+assert.ok(codDeliveryIssueGuardSql.includes("delivery_issue=''RESOLVED''"), "COD pending analytics must exclude active delivery issues.");
 assert.ok(server.includes('action === "settle_courier_batch"'), "Orders API must expose courier batch settlement through the existing write-through route.");
 assert.ok(ui.includes("COURIER SETTLEMENT V1"), "Orders UI must expose the courier settlement workspace.");
 assert.ok(ui.includes('["SHIPPED","OUT_FOR_DELIVERY","DELIVERED"].includes(order.status)'), "Courier settlement must accept shipped, out-for-delivery and delivered pending COD orders.");
+assert.ok(ui.includes('!order.delivery_issue || order.delivery_issue === "RESOLVED"'), "Orders with active delivery issues must be excluded from COD payout eligibility.");
 assert.ok(ui.includes("Record courier payout"), "Orders UI must provide a batch payout action.");
 
 assert.ok(ui.includes("COURIER_FEE = 4"), "Courier payout UI must use the current €4 courier fee.");
