@@ -61,8 +61,35 @@ function itemSummary(items) {
 
 const giftProducts = [...products].sort((a, b) => String(a.name).localeCompare(String(b.name)));
 
+const WATCH_LABELS = {
+  WATCH: "Watch",
+  VERIFY_BEFORE_SHIPPING: "Verify before shipping",
+  MANUAL_APPROVAL: "Manual approval"
+};
+
+const WATCH_BADGES = {
+  WATCH: "WATCH",
+  VERIFY_BEFORE_SHIPPING: "VERIFY",
+  MANUAL_APPROVAL: "APPROVAL"
+};
+
 function normalizeCustomerKey(value) {
   return String(value || "").trim().toLowerCase().replace(/\s+/g, "");
+}
+
+function normalizePhoneKey(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  return digits.length >= 8 ? digits.slice(-8) : "";
+}
+
+function customerWatchFor(order, watches) {
+  const data = order?.source_payload || {};
+  const emailKey = normalizeCustomerKey(data.email);
+  const phoneKey = normalizePhoneKey(data.phone);
+  return (Array.isArray(watches) ? watches : []).find((watch) =>
+    (emailKey && watch.email_key === emailKey) ||
+    (phoneKey && watch.phone_key === phoneKey)
+  ) || null;
 }
 
 function parseLegacyGift(value) {
@@ -93,6 +120,7 @@ function syncLabel(order) {
 function OrdersWorkspace() {
   const [orders, setOrders] = useState([]);
   const [events, setEvents] = useState([]);
+  const [customerWatches, setCustomerWatches] = useState([]);
   const [selectedId, setSelectedId] = useState("");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
@@ -107,11 +135,14 @@ function OrdersWorkspace() {
   const [giftSampleSize, setGiftSampleSize] = useState("2ml");
   const [giftExtra, setGiftExtra] = useState("");
   const [giftUnlocked, setGiftUnlocked] = useState(false);
+  const [watchLevel, setWatchLevel] = useState("VERIFY_BEFORE_SHIPPING");
+  const [watchReason, setWatchReason] = useState("");
 
   const absorb = (payload) => {
     const nextOrders = Array.isArray(payload?.orders) ? payload.orders : [];
     setOrders(nextOrders);
     setEvents(Array.isArray(payload?.events) ? payload.events : []);
+    setCustomerWatches(Array.isArray(payload?.customer_watches) ? payload.customer_watches : []);
     setWriteEnabled(Boolean(payload?.write_enabled));
     setSelectedId((current) => nextOrders.some((order) => order.id === current) ? current : (nextOrders[0]?.id || ""));
   };
@@ -126,6 +157,8 @@ function OrdersWorkspace() {
   useEffect(() => { load(); }, []);
 
   const selected = orders.find((order) => order.id === selectedId) || null;
+  const selectedWatch = useMemo(() => customerWatchFor(selected, customerWatches), [selected, customerWatches]);
+
   useEffect(() => {
     const data = selected?.source_payload || {};
     const sample = Array.isArray(data.giftSamples) ? data.giftSamples[0] : null;
@@ -136,6 +169,11 @@ function OrdersWorkspace() {
     setGiftExtra(extra || legacy.extraGift || "");
     setGiftUnlocked(false);
   }, [selected?.id, selected?.status, selected?.source_payload?.freeGift]);
+
+  useEffect(() => {
+    setWatchLevel(selectedWatch?.level || "VERIFY_BEFORE_SHIPPING");
+    setWatchReason(selectedWatch?.reason || "");
+  }, [selected?.id, selectedWatch?.id, selectedWatch?.level, selectedWatch?.reason]);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -160,7 +198,8 @@ function OrdersWorkspace() {
   const saleOrders = useMemo(() => orders.filter((order) => order.status !== "DUPLICATE" && order.origin !== "regression_test"), [orders]);
   const settlementEligible = useMemo(() => saleOrders.filter((order) =>
     ["SHIPPED","OUT_FOR_DELIVERY","DELIVERED"].includes(order.status) &&
-    order.courier_payment_status === "PENDING"
+    order.courier_payment_status === "PENDING" &&
+    (!order.delivery_issue || order.delivery_issue === "RESOLVED")
   ), [saleOrders]);
   const codPendingGross = useMemo(() => settlementEligible.reduce((sum, order) =>
     sum + Number(order.source_payload?.total || 0), 0
@@ -288,14 +327,32 @@ function OrdersWorkspace() {
   const payload = selected?.source_payload || {};
   const items = Array.isArray(payload.items) ? payload.items : [];
   const editable = Boolean(writeEnabled && selected && selected.status !== "DUPLICATE");
+  const hasActiveDeliveryIssue = Boolean(
+    selected && ["UNREACHABLE","REFUSED"].includes(selected.delivery_issue)
+  );
   const nextStatus =
     selected?.status === "NEW" ? "PACKED" :
     selected?.status === "PACKED" ? "SHIPPED" :
+    selected?.status === "SHIPPED" && hasActiveDeliveryIssue ? "RETURNED" :
     selected?.status === "SHIPPED" ? "OUT_FOR_DELIVERY" :
+    selected?.status === "OUT_FOR_DELIVERY" && hasActiveDeliveryIssue ? "RETURNED" :
     selected?.status === "OUT_FOR_DELIVERY" ? "DELIVERED" :
     null;
 
-  const setStatus = (status) => mutate({ action: "set_status", id: selected.id, status }, "status:" + status);
+  const setStatus = (status) => {
+    if (selectedWatch && ["PACKED","SHIPPED"].includes(status) && selectedWatch.level !== "WATCH") {
+      const approvalCopy = selectedWatch.level === "MANUAL_APPROVAL"
+        ? "This customer has a MANUAL APPROVAL watch. Confirm that you have manually approved this order before continuing."
+        : "This customer has a VERIFY BEFORE SHIPPING watch. Confirm that the customer/order has been verified before continuing.";
+      if (!window.confirm(approvalCopy + "\n\nReason: " + selectedWatch.reason)) return;
+    }
+    mutate({
+      action: "set_status",
+      id: selected.id,
+      status,
+      customer_watch_acknowledged: Boolean(selectedWatch && selectedWatch.level !== "WATCH" && ["PACKED","SHIPPED"].includes(status))
+    }, "status:" + status);
+  };
   const setPayment = (status) => mutate({ action: "set_courier_payment", id: selected.id, status }, "payment");
   const settleSelected = () => {
     if (!settlementSelection.length) return;
@@ -330,6 +387,19 @@ function OrdersWorkspace() {
     }, "confirm-sync");
   };
   const setDeliveryIssue = (delivery_issue) => mutate({ action: "set_delivery_issue", id: selected.id, delivery_issue }, "delivery:" + delivery_issue);
+  const saveCustomerWatch = () => mutate({
+    action: "set_customer_watch",
+    id: selected.id,
+    level: watchLevel,
+    reason: watchReason
+  }, "customer-watch");
+
+  const clearCustomerWatch = () => {
+    if (!selectedWatch) return;
+    if (!window.confirm("Remove this Customer Watch flag? Future orders will no longer show this alert.")) return;
+    mutate({ action: "clear_customer_watch", watch_id: selectedWatch.id }, "customer-watch-clear");
+  };
+
   const saveGiftSample = () => mutate({
     action: "set_gift_sample",
     id: selected.id,
@@ -501,8 +571,9 @@ function OrdersWorkspace() {
         <div className="orders-list">
           {loading ? <div className="orders-empty">Loading orders…</div> : filtered.length ? filtered.map((order) => {
             const data = order.source_payload || {};
-            return <button type="button" key={order.id} className={`orders-row status-row-${String(order.status || "").toLowerCase()} ${selectedId === order.id ? "active" : ""}`} onClick={() => setSelectedId(order.id)}>
-              <div className="orders-row-main"><strong>{order.order_id}</strong><span>{data.fullName || "Customer"} · {data.city || "—"}</span><small>{itemSummary(data.items)}</small></div>
+            const customerWatch = customerWatchFor(order, customerWatches);
+            return <button type="button" key={order.id} className={`orders-row status-row-${String(order.status || "").toLowerCase()} ${customerWatch ? "customer-watch-row" : ""} ${selectedId === order.id ? "active" : ""}`} onClick={() => setSelectedId(order.id)}>
+              <div className="orders-row-main"><strong>{order.order_id}{customerWatch ? <em className="customer-watch-badge">{WATCH_BADGES[customerWatch.level] || "WATCH"}</em> : null}</strong><span>{data.fullName || "Customer"} · {data.city || "—"}</span><small>{itemSummary(data.items)}</small></div>
               <div className="orders-row-side"><strong>{money(data.total)}</strong><span className={"order-status status-" + String(order.status || "").toLowerCase()}>{STATUS_LABELS[order.status] || order.status}</span><time>{dateTime(order.created_at)}</time></div>
             </button>;
           }) : <div className="orders-empty">No orders match this filter.</div>}
@@ -535,6 +606,47 @@ function OrdersWorkspace() {
               <p>{payload.orderSource || payload.source || "webshop"}</p>
             </section>
           </div>
+
+          <details
+            key={selected.id + ":" + (selectedWatch?.id || "none")}
+            className={selectedWatch ? "orders-customer-watch active" : "orders-customer-watch"}
+            defaultOpen={Boolean(selectedWatch)}
+          >
+            <summary>
+              <span>CUSTOMER WATCH</span>
+              <strong>{selectedWatch ? WATCH_LABELS[selectedWatch.level] || selectedWatch.level : "No active flag"}</strong>
+              <em>{selectedWatch ? "Review" : "Add if needed"}</em>
+            </summary>
+            <div className="orders-customer-watch-body">
+              {selectedWatch ? <div className="orders-customer-watch-alert">
+                <div>
+                  <strong>{WATCH_LABELS[selectedWatch.level] || selectedWatch.level}</strong>
+                  <span>{selectedWatch.reason}</span>
+                  <small>Matched by customer email / phone · updated {dateTime(selectedWatch.updated_at)}</small>
+                </div>
+              </div> : <p className="orders-customer-watch-empty">Add an internal alert if a future order from this customer should receive extra review.</p>}
+              <div className="orders-customer-watch-editor">
+                <label>
+                  <span>ALERT LEVEL</span>
+                  <select value={watchLevel} onChange={(event) => setWatchLevel(event.target.value)} disabled={!editable || Boolean(busy)}>
+                    <option value="WATCH">Watch</option>
+                    <option value="VERIFY_BEFORE_SHIPPING">Verify before shipping</option>
+                    <option value="MANUAL_APPROVAL">Manual approval</option>
+                  </select>
+                </label>
+                <label className="reason">
+                  <span>INTERNAL REASON</span>
+                  <input value={watchReason} onChange={(event) => setWatchReason(event.target.value)} maxLength={500} placeholder="Keep this factual and operational…" disabled={!editable || Boolean(busy)} />
+                </label>
+                <button type="button" className="primary" onClick={saveCustomerWatch} disabled={!editable || watchReason.trim().length < 4 || Boolean(busy)}>
+                  {busy === "customer-watch" ? "Saving…" : selectedWatch ? "Update watch" : "Add watch"}
+                </button>
+                {selectedWatch ? <button type="button" onClick={clearCustomerWatch} disabled={!editable || Boolean(busy)}>
+                  {busy === "customer-watch-clear" ? "Removing…" : "Remove watch"}
+                </button> : null}
+              </div>
+            </div>
+          </details>
 
           <section className="orders-items">
             <div className="orders-section-title"><span>ITEMS</span><strong>{items.length}</strong></div>
@@ -644,10 +756,11 @@ function OrdersWorkspace() {
                   nextStatus === "PACKED" ? "Mark packed" :
                   nextStatus === "SHIPPED" ? "Mark shipped" :
                   nextStatus === "OUT_FOR_DELIVERY" ? "Out for delivery" :
+                  nextStatus === "RETURNED" ? "Mark returned" :
                   "Mark delivered"}
               </button> : null}
               {editable && ["NEW","PACKED"].includes(selected.status) ? <button type="button" className="danger" onClick={() => setStatus("CANCELLED")} disabled={Boolean(busy)}>Cancel order</button> : null}
-              {editable && ["SHIPPED","OUT_FOR_DELIVERY"].includes(selected.status) ? <button type="button" className="danger" onClick={() => setStatus("DELIVERY_FAILED")} disabled={Boolean(busy)}>{busy === "status:DELIVERY_FAILED" ? "Updating…" : "Mark delivery failed"}</button> : null}
+              {editable && ["SHIPPED","OUT_FOR_DELIVERY"].includes(selected.status) && !hasActiveDeliveryIssue ? <button type="button" className="danger" onClick={() => setStatus("DELIVERY_FAILED")} disabled={Boolean(busy)}>{busy === "status:DELIVERY_FAILED" ? "Updating…" : "Mark delivery failed"}</button> : null}
               {editable && selected.status === "DELIVERY_FAILED" ? <button type="button" className="primary" onClick={() => setStatus("OUT_FOR_DELIVERY")} disabled={Boolean(busy)}>{busy === "status:OUT_FOR_DELIVERY" ? "Updating…" : "Retry delivery"}</button> : null}
               {editable && selected.status === "DELIVERY_FAILED" ? <button type="button" className="danger" onClick={() => setStatus("RETURNED")} disabled={Boolean(busy)}>{busy === "status:RETURNED" ? "Updating…" : "Mark returned"}</button> : null}
               {["DELIVERED","RETURNED"].includes(selected.status) ? <span className="orders-action-note">Terminal fulfillment state. Further changes require a corrective workflow.</span> : null}
@@ -657,7 +770,7 @@ function OrdersWorkspace() {
           <section className="orders-delivery">
             <div className="orders-section-title"><span>DELIVERY ISSUE</span><strong>{selected.delivery_issue || "None"}</strong></div>
             {["SHIPPED","OUT_FOR_DELIVERY","DELIVERY_FAILED"].includes(selected.status) ? <div className="orders-action-row">
-              {["UNREACHABLE","REFUSED","RETURNED","RESOLVED"].map((issue) =>
+              {["UNREACHABLE","REFUSED","RESOLVED"].map((issue) =>
                 <button type="button" key={issue} className={selected.delivery_issue === issue ? "primary" : ""} onClick={() => setDeliveryIssue(issue)} disabled={!editable || Boolean(busy)}>
                   {busy === "delivery:" + issue ? "Updating…" : issue}
                 </button>

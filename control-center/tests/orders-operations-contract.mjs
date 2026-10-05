@@ -21,6 +21,9 @@ assert.ok(server.includes("get_control_center_orders"), "Orders API must read th
 assert.ok(server.includes("get_control_center_order_analytics"), "Orders API must expose admin-gated commerce analytics.");
 assert.ok(server.includes("update_control_center_order"), "Orders API must mutate through the admin-gated Supabase RPC.");
 assert.ok(server.includes("mark_control_center_order_sheet_sync"), "Orders API must persist Google backup sync results.");
+assert.ok(server.includes("get_control_center_customer_watches"), "Orders API must load active Customer Watch records.");
+assert.ok(server.includes('action === "set_customer_watch"'), "Orders API must support Customer Watch creation/update.");
+assert.ok(server.includes('action === "clear_customer_watch"'), "Orders API must support Customer Watch removal.");
 assert.ok(server.includes("order_state_sync"), "Orders API must use the dedicated Google Sheets state-sync contract.");
 assert.ok(server.includes('status === "DELIVERED"'), "Delivered lifecycle must map back to legacy SHIPPED for Google Sheets compatibility.");
 assert.ok(server.includes('status === "OUT_FOR_DELIVERY"'), "Out-for-delivery lifecycle must map back to legacy SHIPPED for Google Sheets compatibility.");
@@ -40,11 +43,15 @@ assert.ok(ui.includes("Mark shipped"), "Orders UI must support the legacy-compat
 assert.ok(ui.includes("Return to new"), "Orders UI must support undoing an accidental PACKED transition.");
 assert.ok(ui.includes("DUPLICATE"), "Orders UI must keep duplicate audit records visible.");
 assert.ok(ui.includes("UNREACHABLE"), "Orders UI must expose the existing delivery issue workflow.");
+assert.ok(ui.includes('["UNREACHABLE","REFUSED","RESOLVED"].map((issue)'), "Delivery issue controls must use reasons only.");
+assert.ok(!ui.includes('["UNREACHABLE","REFUSED","RETURNED","RESOLVED"].map((issue)'), "RETURNED must not appear as a delivery issue control.");
 assert.ok(ui.includes("Mark delivery failed"), "Orders UI must support delivery-failed transitions from active delivery.");
 assert.ok(ui.includes("Out for delivery"), "Orders UI must expose SHIPPED → OUT_FOR_DELIVERY.");
 assert.ok(ui.includes("Mark delivered"), "Orders UI must expose OUT_FOR_DELIVERY → DELIVERED.");
 assert.ok(ui.includes("Retry delivery"), "Orders UI must expose DELIVERY_FAILED → OUT_FOR_DELIVERY.");
-assert.ok(ui.includes("Mark returned"), "Orders UI must expose DELIVERY_FAILED → RETURNED.");
+assert.ok(ui.includes("Mark returned"), "Orders UI must expose RETURNED as a fulfillment action.");
+assert.ok(ui.includes('selected?.status === "SHIPPED" && hasActiveDeliveryIssue ? "RETURNED"'), "Active delivery issues must make RETURNED the next SHIPPED action.");
+assert.ok(ui.includes('selected?.status === "OUT_FOR_DELIVERY" && hasActiveDeliveryIssue ? "RETURNED"'), "Active delivery issues must make RETURNED the next OUT_FOR_DELIVERY action.");
 assert.ok(ui.includes("Terminal fulfillment state."), "Delivered and returned orders must communicate terminal lifecycle state.");
 assert.ok(ui.includes("ORDER REFERENCE"), "Generated order reference must be presented as a read-only internal reference.");
 assert.ok(!ui.includes("Save tracking"), "Orders UI must not expose the generated internal reference as editable courier tracking.");
@@ -56,6 +63,13 @@ assert.ok(ui.includes("WRITE-THROUGH UNAVAILABLE"), "Orders fallback mode must d
 assert.ok(ui.includes("Supabase remains canonical."), "Orders fallback copy must preserve Supabase as the canonical source.");
 assert.ok(ui.includes("GIFT / SAMPLE"), "Orders UI must expose structured gift/sample editing.");
 assert.ok(ui.includes("Customer gift history"), "Orders UI must show earlier gifts/samples for the same customer.");
+assert.ok(ui.includes("CUSTOMER WATCH"), "Orders UI must expose the Customer Watch workspace.");
+assert.ok(ui.includes("defaultOpen={Boolean(selectedWatch)}"), "Customer Watch must stay collapsed by default for ordinary customers and open for flagged customers.");
+assert.ok(ui.includes("VERIFY BEFORE SHIPPING watch"), "Operational status transitions must require confirmation for verify-before-shipping customers.");
+assert.ok(ui.includes("customer_watch_acknowledged"), "Fulfillment writes must send explicit Customer Watch acknowledgement.");
+assert.ok(server.includes("Customer Watch acknowledgement is required before packing or shipping this order."), "Orders API must reject unacknowledged flagged-customer packing/shipping writes.");
+assert.ok(ui.includes("customerWatchFor(order, customerWatches)"), "Order rows must match future orders against normalized Customer Watch identity.");
+assert.ok(ui.includes("customer-watch-badge"), "Flagged customers must be visible in the order list.");
 assert.ok(ui.includes("Already sampled"), "Gift editor must warn when a selected fragrance was already gifted to the customer.");
 assert.ok(ui.includes("unique sample"), "Customer gift history must summarize unique sample fragrances.");
 assert.ok(ui.includes("sampleName"), "Customer gift history must parse structured or legacy sample names.");
@@ -84,10 +98,19 @@ assert.ok(settlementSql.includes("'Courier payout confirmed delivery.'"), "Settl
 assert.ok(settlementSql.includes("'courier_settlement'"), "Settlement-confirmed delivery events must retain their source.");
 
 const settlementAnalyticsSql = fs.readFileSync(path.resolve(root, "control-center/supabase/settlement_confirmed_delivery_v1.sql"), "utf8");
+const codDeliveryIssueGuardSql = fs.readFileSync(path.resolve(root, "control-center/supabase/cod_delivery_issue_guard_v1.sql"), "utf8");
+const directReturnSql = fs.readFileSync(path.resolve(root, "control-center/supabase/direct_return_delivery_issue_v1.sql"), "utf8");
+const deliveryIssueCleanupSql = fs.readFileSync(path.resolve(root, "control-center/supabase/delivery_issue_semantics_cleanup_v1.sql"), "utf8");
 assert.ok(settlementAnalyticsSql.includes("status in (''SHIPPED'',''OUT_FOR_DELIVERY'',''DELIVERED'')"), "COD pending analytics must match payout eligibility.");
+assert.ok(codDeliveryIssueGuardSql.includes("(delivery_issue is null or delivery_issue = 'RESOLVED')"), "Courier settlement RPC must exclude active delivery issues.");
+assert.ok(codDeliveryIssueGuardSql.includes("delivery_issue=''RESOLVED''"), "COD pending analytics must exclude active delivery issues.");
+assert.ok(directReturnSql.includes("UNREACHABLE"), "Direct return migration must cover unreachable delivery issues.");
+assert.ok(directReturnSql.includes("v_next_status=''RETURNED''"), "Direct return migration must enable RETURNED as the direct terminal action.");
+assert.ok(deliveryIssueCleanupSql.includes("RETURNED is a terminal fulfillment status"), "Delivery issue cleanup migration must preserve RETURNED as fulfillment semantics only.");
 assert.ok(server.includes('action === "settle_courier_batch"'), "Orders API must expose courier batch settlement through the existing write-through route.");
 assert.ok(ui.includes("COURIER SETTLEMENT V1"), "Orders UI must expose the courier settlement workspace.");
 assert.ok(ui.includes('["SHIPPED","OUT_FOR_DELIVERY","DELIVERED"].includes(order.status)'), "Courier settlement must accept shipped, out-for-delivery and delivered pending COD orders.");
+assert.ok(ui.includes('!order.delivery_issue || order.delivery_issue === "RESOLVED"'), "Orders with active delivery issues must be excluded from COD payout eligibility.");
 assert.ok(ui.includes("Record courier payout"), "Orders UI must provide a batch payout action.");
 
 assert.ok(ui.includes("COURIER_FEE = 4"), "Courier payout UI must use the current €4 courier fee.");
@@ -127,12 +150,30 @@ assert.ok(edgeStore.includes('text.trim() === "Apps Script is live"'), "Checkout
 
 const lifecycleSql = fs.readFileSync(path.resolve(root, "control-center/supabase/delivery_lifecycle_v1.sql"), "utf8");
 assert.ok(lifecycleSql.includes("returned_at timestamptz"), "Delivery lifecycle schema must track returned_at.");
-assert.ok(lifecycleSql.includes("v_order.status='SHIPPED' and v_next_status in ('OUT_FOR_DELIVERY','DELIVERY_FAILED')"), "Lifecycle RPC must allow shipped orders into active delivery.");
-assert.ok(lifecycleSql.includes("v_order.status='OUT_FOR_DELIVERY' and v_next_status in ('SHIPPED','DELIVERED','DELIVERY_FAILED')"), "Lifecycle RPC must support delivery completion and safe undo.");
+assert.ok(
+  lifecycleSql.includes("v_order.status='SHIPPED'") &&
+  lifecycleSql.includes("v_next_status in ('OUT_FOR_DELIVERY','DELIVERY_FAILED')"),
+  "Lifecycle RPC must allow shipped orders into active delivery."
+);
+assert.ok(
+  lifecycleSql.includes("v_order.status='OUT_FOR_DELIVERY'") &&
+  lifecycleSql.includes("v_next_status in ('SHIPPED','DELIVERED','DELIVERY_FAILED')"),
+  "Lifecycle RPC must support delivery completion and safe undo."
+);
 assert.ok(lifecycleSql.includes("v_order.status='DELIVERY_FAILED' and v_next_status in ('OUT_FOR_DELIVERY','RETURNED')"), "Lifecycle RPC must support retry or return after failure.");
+assert.ok(lifecycleSql.includes("v_next_status='RETURNED' and v_order.delivery_issue in ('UNREACHABLE','REFUSED')"), "Lifecycle RPC must allow direct return from active delivery issues.");
+assert.ok(lifecycleSql.includes("if v_value not in ('UNREACHABLE','REFUSED','RESOLVED') then"), "Delivery issue writes must not accept RETURNED as a reason.");
+assert.ok(!lifecycleSql.includes("when v_next_status='RETURNED' then 'RETURNED'"), "Returning an order must preserve the actual delivery issue reason.");
 assert.ok(lifecycleSql.includes("when v_order.status in ('OUT_FOR_DELIVERY','DELIVERED') then 'SHIPPED'"), "Lifecycle mirror must preserve legacy Sheets SHIPPED semantics.");
 assert.ok(lifecycleSql.includes("set_config('app.orders_lifecycle_write','control_center',true)"), "Canonical lifecycle changes must be explicitly marked by the admin RPC.");
 assert.ok(lifecycleSql.includes("protect_checkout_order_lifecycle"), "Supabase must guard canonical lifecycle fields from reverse-sync overwrites.");
+
+const watchSql = fs.readFileSync(path.resolve(root, "control-center/supabase/customer_watch_v1.sql"), "utf8");
+assert.ok(watchSql.includes("create table if not exists public.customer_watches"), "Customer Watch must use a dedicated canonical Supabase table.");
+assert.ok(watchSql.includes("VERIFY_BEFORE_SHIPPING"), "Customer Watch must support verify-before-shipping severity.");
+assert.ok(watchSql.includes("MANUAL_APPROVAL"), "Customer Watch must support manual-approval severity.");
+assert.ok(watchSql.includes("right(v_phone,8)"), "Customer Watch must normalize phone matching for future orders.");
+assert.ok(watchSql.includes("security definer"), "Customer Watch RPCs must remain admin-gated server-side functions.");
 
 const giftSql = fs.readFileSync(path.resolve(root, "control-center/supabase/gift_sample_editor_v1.sql"), "utf8");
 assert.ok(giftSql.includes("giftSamples"), "Gift/sample RPC must persist structured sample metadata.");
